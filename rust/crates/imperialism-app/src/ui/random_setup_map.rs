@@ -90,10 +90,10 @@ pub(crate) fn attach_random_setup_meanings(commands: &mut Commands, spawned: &Sp
 fn sync_random_setup_coat(
     setup: Res<RandomGameSetup>,
     mut pictures: UiAssetResources,
-    added_coats: Query<(), Added<RandomSetupCoat>>,
     mut coats: Query<(&mut RandomSetupCoat, &mut ImageNode)>,
 ) {
-    if !setup.is_changed() && added_coats.is_empty() {
+    let added = coats.iter_mut().any(|(coat, _)| coat.is_added());
+    if !setup.is_changed() && !added {
         return;
     }
     for (mut coat, mut image_node) in &mut coats {
@@ -124,11 +124,11 @@ fn sync_random_setup_flag(
     mut commands: Commands,
     setup: Res<RandomGameSetup>,
     mut pictures: UiAssetResources,
-    added_flags: Query<(), Added<RandomSetupFlag>>,
     mut flags: Query<(Entity, &mut RandomSetupFlag, Option<&mut ImageNode>)>,
     mut atlas_transparency_applied: Local<bool>,
 ) {
-    if !setup.is_changed() && added_flags.is_empty() {
+    let added = flags.iter_mut().any(|(_, flag, _)| flag.is_added());
+    if !setup.is_changed() && !added {
         return;
     }
     let handle = match pictures.picture(FLAG_ATLAS_PICTURE) {

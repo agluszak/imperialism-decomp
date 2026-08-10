@@ -985,7 +985,7 @@ fn on_diplomacy_map_click(
     maps: Query<(&RelativeCursorPosition, &DiplomacyMapHit)>,
     modals: Query<(), With<ModalDialog>>,
     mut screens: Query<&mut DiplomacyScreen>,
-    mut session: ResMut<GameSession>,
+    session: Option<ResMut<GameSession>>,
     mut commands: Commands,
 ) {
     if !modals.is_empty() {
@@ -1001,6 +1001,9 @@ fn on_diplomacy_map_click(
         return;
     };
     let Some(tile) = tile_at_diplomacy_position(normalized) else {
+        return;
+    };
+    let Some(mut session) = session else {
         return;
     };
     let Some(target) = session.0.world[tile]

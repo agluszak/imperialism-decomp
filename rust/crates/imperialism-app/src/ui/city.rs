@@ -1563,7 +1563,7 @@ fn on_city_canvas_click(
     dialogs: Query<(Entity, &CityBuildingDialog, &GlobalZIndex)>,
     screen_roots: Query<Entity, With<CityScreenRoot>>,
     modal_dialogs: Query<(), With<ModalDialog>>,
-    mut session: ResMut<GameSession>,
+    session: Option<ResMut<GameSession>>,
     catalog: Res<UiCatalogResource>,
     mut ui: UiSpawner,
 ) {
@@ -1586,6 +1586,9 @@ fn on_city_canvas_click(
         .rev()
         .find(|building| building.mask.contains(point - building.origin))
     else {
+        return;
+    };
+    let Some(mut session) = session else {
         return;
     };
     let Some(nation) = MajorNationId::from_nation(session.0.turn.active_nation) else {
@@ -3714,7 +3717,7 @@ fn on_city_expansion_open(
     dialogs: Query<Entity, With<CityBuildingDialog>>,
     screen_roots: Query<Entity, With<CityScreenRoot>>,
     modals: Query<(), With<ModalDialog>>,
-    mut session: ResMut<GameSession>,
+    session: Option<ResMut<GameSession>>,
     mut ui: UiSpawner,
 ) {
     let Ok(open) = openers.get(activate.entity) else {
@@ -3723,6 +3726,9 @@ fn on_city_expansion_open(
     if dialogs.get(open.dialog).is_err() || !modals.is_empty() {
         return;
     }
+    let Some(mut session) = session else {
+        return;
+    };
     assert!(
         industry_page(open.slot).is_some(),
         "expansion hotspot belongs to an ordinary industry"
@@ -3787,7 +3793,7 @@ fn on_city_building_change_choice(
     change_dialogs: Query<(), With<CityBuildingChangeDialog>>,
     dialogs: Query<Entity, With<CityBuildingDialog>>,
     screen_roots: Query<Entity, With<CityScreenRoot>>,
-    mut session: ResMut<GameSession>,
+    session: Option<ResMut<GameSession>>,
     mut commands: Commands,
 ) {
     let Ok(choice) = choices.get(activate.entity) else {
@@ -3796,6 +3802,9 @@ fn on_city_building_change_choice(
     if change_dialogs.get(choice.dialog).is_err() {
         return;
     }
+    let Some(mut session) = session else {
+        return;
+    };
     if choice.slot == ProductionSlot::PowerPlant {
         if choice.accept {
             session.0.set_power_plant_upgrade(choice.nation, true);
@@ -3888,7 +3897,7 @@ fn on_city_amount_bar_click(
     modals: Query<(), With<ModalDialog>>,
     dialogs: Query<Entity, With<CityBuildingDialog>>,
     screen_roots: Query<Entity, With<CityScreenRoot>>,
-    mut session: ResMut<GameSession>,
+    session: Option<ResMut<GameSession>>,
     mut commands: Commands,
 ) {
     if !modals.is_empty() {
@@ -3903,6 +3912,9 @@ fn on_city_amount_bar_click(
     if dialogs.get(bar.dialog).is_err() {
         return;
     }
+    let Some(mut session) = session else {
+        return;
+    };
     click.propagate(false);
     let x = (((normalized.x + 0.5) * f32::from(INDUSTRY_BAR_WIDTH)).floor() as i16)
         .clamp(0, INDUSTRY_BAR_WIDTH - 1);
@@ -4080,7 +4092,7 @@ fn on_city_order_adjust(
     mut shipyard_selections: Query<&mut ShipyardSelection>,
     shipyard_rows: Query<(Entity, &ShipyardRowChoice, Has<Checked>)>,
     screen_roots: Query<Entity, With<CityScreenRoot>>,
-    mut session: ResMut<GameSession>,
+    session: Option<ResMut<GameSession>>,
     mut commands: Commands,
 ) {
     if !modals.is_empty() {
@@ -4092,6 +4104,9 @@ fn on_city_order_adjust(
     if dialogs.get(action.dialog).is_err() {
         return;
     }
+    let Some(mut session) = session else {
+        return;
+    };
     if let CityOrderId::MilitaryRecruit(category) = action.order
         && let Ok(mut selection) = armory_selections.get_mut(action.dialog)
     {

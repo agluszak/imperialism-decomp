@@ -163,9 +163,14 @@ fn spawn_flag_view_chrome(
     // implemented yet, so keep both inert rather than leave unbound no-ops.
     disable_control(commands, &spawned, fourcc!("end "));
     disable_control(commands, &spawned, fourcc!("quer"));
-    commands
-        .entity(spawned.root)
-        .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
+    for entity in spawned.nodes.values() {
+        commands.entity(*entity).insert(Pickable::IGNORE);
+    }
+    commands.entity(spawned.root).insert((
+        GameScreenRoot(view_id),
+        DespawnOnExit(current),
+        Pickable::IGNORE,
+    ));
 }
 
 pub(crate) fn bind_game_screen_nav(
