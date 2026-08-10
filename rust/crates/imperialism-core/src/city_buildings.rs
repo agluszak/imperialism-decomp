@@ -3,8 +3,6 @@ use serde::{Deserialize, Serialize};
 
 /// A fixed building position on the city production screen.
 ///
-/// Values with an `Unidentified` name have a stable retail slot but no
-/// recovered building name yet.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[repr(u8)]
 #[serde(rename_all = "snake_case")]
@@ -16,13 +14,13 @@ pub enum ProductionSlot {
     LumberMill,
     FurnitureFactory,
     OilRefinery,
-    Unidentified7,
+    Shipyard,
     Armory,
-    Unidentified9,
+    TradeSchool,
     University,
     PowerPlant,
-    Unidentified12,
-    Unidentified13,
+    FoodProcessing,
+    Warehouse,
     Transport,
     RegionalPopulation,
 }
@@ -40,13 +38,13 @@ impl ProductionSlot {
             4 => Some(Self::LumberMill),
             5 => Some(Self::FurnitureFactory),
             6 => Some(Self::OilRefinery),
-            7 => Some(Self::Unidentified7),
+            7 => Some(Self::Shipyard),
             8 => Some(Self::Armory),
-            9 => Some(Self::Unidentified9),
+            9 => Some(Self::TradeSchool),
             10 => Some(Self::University),
             11 => Some(Self::PowerPlant),
-            12 => Some(Self::Unidentified12),
-            13 => Some(Self::Unidentified13),
+            12 => Some(Self::FoodProcessing),
+            13 => Some(Self::Warehouse),
             14 => Some(Self::Transport),
             15 => Some(Self::RegionalPopulation),
             _ => None,
@@ -204,7 +202,7 @@ impl CityState {
             ProductionSlot::OilRefinery | ProductionSlot::PowerPlant => {
                 i16::from(building_type != 0)
             }
-            ProductionSlot::Unidentified7 => i16::from(active_nation_has_technology_15) + 1,
+            ProductionSlot::Shipyard => i16::from(active_nation_has_technology_15) + 1,
             ProductionSlot::Armory => {
                 if status[PendingActionKind::ConquestMonumentArmory].status()
                     == crate::PendingActionStatus::Level3

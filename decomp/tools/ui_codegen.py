@@ -259,6 +259,20 @@ class UiTextPropertyPatch:
     evidence: str
 
 
+@dataclass(frozen=True)
+class CityBuildingVisual:
+    slot: str
+    origin: tuple[int, int]
+    draw_order: int
+    dialog: UiResourceKey
+
+
+@dataclass(frozen=True)
+class CityBuildingVisuals:
+    view: UiResourceKey
+    visuals: tuple[CityBuildingVisual, ...]
+
+
 _GAME_HEADER_CACHE: dict[str, dict[str, str]] = {}
 
 
@@ -517,6 +531,69 @@ def load_windows_text_property_patches(repo_root: Path) -> tuple[UiTextPropertyP
                 int(patch.node_id, 16),
             ),
         )
+    )
+
+
+def load_city_building_visuals(repo_root: Path) -> CityBuildingVisuals:
+    data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
+    context = f"{WINDOWS_DELTA_PATH}: city_buildings"
+    section = _mapping(data.get("city_buildings"), context)
+    if set(section) != {"view", "evidence", "visuals"}:
+        raise ValueError(f"{context}: expected view, evidence, and visuals")
+    if not str(section["evidence"]).strip():
+        raise ValueError(f"{context}: evidence is required")
+
+    rows = _sequence(section["visuals"], 16, f"{context}/visuals")
+    visuals: list[CityBuildingVisual] = []
+    slots: set[str] = set()
+    draw_orders: set[int] = set()
+    for index, raw_row in enumerate(rows):
+        row_context = f"{context}/visuals[{index}]"
+        row = _mapping(raw_row, row_context)
+        if set(row) != {"slot", "origin", "draw_order", "dialog"}:
+            raise ValueError(f"{row_context}: malformed city building visual")
+        slot = str(row["slot"])
+        if not slot or slot in slots:
+            raise ValueError(f"{row_context}: duplicate or empty slot {slot!r}")
+        slots.add(slot)
+        origin = _sequence(row["origin"], 2, f"{row_context}/origin")
+        draw_order = int(row["draw_order"])
+        if not 0 <= draw_order < 16 or draw_order in draw_orders:
+            raise ValueError(f"{row_context}: invalid or duplicate draw order {draw_order}")
+        draw_orders.add(draw_order)
+        visuals.append(
+            CityBuildingVisual(
+                slot=slot,
+                origin=(int(origin[0]), int(origin[1])),
+                draw_order=draw_order,
+                dialog=UiResourceKey.parse(str(row["dialog"])),
+            )
+        )
+    if draw_orders != set(range(16)):
+        raise ValueError(f"{context}: draw order must be exactly 0 through 15")
+    expected_slots = (
+        "textile_mill",
+        "clothing_factory",
+        "steel_mill",
+        "metalworks",
+        "lumber_mill",
+        "furniture_factory",
+        "oil_refinery",
+        "shipyard",
+        "armory",
+        "trade_school",
+        "university",
+        "power_plant",
+        "food_processing",
+        "warehouse",
+        "transport",
+        "regional_population",
+    )
+    if tuple(visual.slot for visual in visuals) != expected_slots:
+        raise ValueError(f"{context}: slots must follow the production-slot order")
+    return CityBuildingVisuals(
+        view=UiResourceKey.parse(str(section["view"])),
+        visuals=tuple(visuals),
     )
 
 
@@ -1105,10 +1182,11 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
         return "text_edit"
     if node.type_code == "tevw":
         return "scroll_area"
-    if node.class_name in ("TMapPreviewView", "TCitySiteView"):
+    if node.class_name in ("TMapPreviewView", "TCitySiteView", "TCityProductionView"):
         return "pointer_canvas"
     if (
         node.type_code in ("cntl", "nmbr")
+        or node.class_name == "TSidewaysArrow"
         or (node.type_code == "pict" and "button" in class_name)
         # TSetupRandomMapPicture::DoEvent handles this otherwise passive
         # TNoHilitePicture as the random-map regeneration action.
@@ -1249,8 +1327,30 @@ def build_rust_ui_catalog(
 ) -> dict[str, object]:
     recipe_list = list(recipes)
     text_property_patches = load_windows_text_property_patches(repo_root)
+    city_buildings = load_city_building_visuals(repo_root)
+    catalog_keys = set(resource_backed_catalog_keys(recipe_list))
+    if city_buildings.view not in catalog_keys:
+        raise ValueError(
+            f"{WINDOWS_DELTA_PATH}: city building view "
+            f"{city_buildings.view.text()} is not in the Rust catalog"
+        )
+    for visual in city_buildings.visuals:
+        if visual.dialog not in catalog_keys:
+            raise ValueError(
+                f"{WINDOWS_DELTA_PATH}: city building dialog "
+                f"{visual.dialog.text()} is not in the Rust catalog"
+            )
+    for index, visual in enumerate(city_buildings.visuals):
+        expected_dialogs = [
+            key for key in catalog_keys if key.view_id == 9200 + index
+        ]
+        if len(expected_dialogs) != 1 or visual.dialog != expected_dialogs[0]:
+            raise ValueError(
+                f"{WINDOWS_DELTA_PATH}: city building {visual.slot} dialog "
+                "does not match the recovered factory case"
+            )
     catalog_views: list[dict[str, object]] = []
-    for key in resource_backed_catalog_keys(recipe_list):
+    for key in sorted(catalog_keys, key=lambda item: (item.resource_file, item.view_id)):
         raw_view = views.get(key)
         if raw_view is None:
             raise ValueError(f"{key.text()}: missing committed Mac View IR")
@@ -1261,15 +1361,27 @@ def build_rust_ui_catalog(
             key, semantic_view, text_property_patches
         )
         nodes = _emit_catalog_view_nodes(key, semantic_view)
-        catalog_views.append(
-            {
-                "id": {
-                    "resource_file": key.resource_file,
-                    "resource_id": key.view_id,
-                },
-                "nodes": nodes,
-            }
-        )
+        emitted: dict[str, object] = {
+            "id": {
+                "resource_file": key.resource_file,
+                "resource_id": key.view_id,
+            },
+            "nodes": nodes,
+        }
+        if key == city_buildings.view:
+            emitted["city_buildings"] = [
+                {
+                    "slot": visual.slot,
+                    "origin": list(visual.origin),
+                    "draw_order": visual.draw_order,
+                    "dialog": {
+                        "resource_file": visual.dialog.resource_file,
+                        "resource_id": visual.dialog.view_id,
+                    },
+                }
+                for visual in city_buildings.visuals
+            ]
+        catalog_views.append(emitted)
     return {
         "logical_resolution": [640, 480],
         "views": catalog_views,

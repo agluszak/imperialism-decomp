@@ -12,12 +12,7 @@ use bevy::prelude::*;
 use bevy::text::{EditableText, TextEditChange};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, SelectAllOnFocus, ValueChange};
-use imperialism_core::{
-    COUNTRY_NAME_MAX_CHARS, Difficulty, GameState, MajorNationId, MapTopology,
-    RandomSetupPreview as GeneratedRandomSetupPreview, RetailCrtRng, RetailLcg, create_random_game,
-    enter_strategic_map_without_capital_selection, generate_english_random_setup_name,
-    generate_random_setup_preview_with_clock_seed, requires_capital_site_selection,
-};
+use imperialism_core::*;
 use imperialism_formats::{OKAY, ScopedViewId, fourcc};
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -99,11 +94,11 @@ impl FromWorld for RandomGameSetup {
 
 /// Authoritative game state produced when Random Setup Accept/Okay succeeds.
 #[derive(Resource, Clone, Debug, PartialEq)]
-pub(crate) struct GameSession(pub GameState);
+pub(crate) struct GameSession(pub(crate) GameState);
 
 /// The generated map data owned by the setup screen.
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
-pub(crate) struct RandomSetupPreview(pub(crate) GeneratedRandomSetupPreview);
+pub(crate) struct RandomSetupPreview(pub(crate) imperialism_core::RandomSetupPreview);
 
 impl FromWorld for RandomSetupPreview {
     fn from_world(world: &mut World) -> Self {
@@ -567,7 +562,7 @@ fn commit_planet_seed_dialog(commit: &mut PlanetSeedCommit<'_, '_>) {
 
 fn update_random_setup_preview(
     preview: &mut RandomSetupPreview,
-    generated: GeneratedRandomSetupPreview,
+    generated: imperialism_core::RandomSetupPreview,
 ) {
     preview.0 = generated;
 }

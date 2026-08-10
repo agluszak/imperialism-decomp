@@ -158,6 +158,36 @@ class UiCodegenTests(unittest.TestCase):
             text = setup_by_tag[tag]["text"]
             self.assertEqual((text["font_family"], text["point_size"]), (1, 14))
 
+        city = by_id[("Citymain.rsrc", 2011)]
+        city_by_tag = {node["tag"]: node for node in city["nodes"]}
+        self.assertEqual(city_by_tag["main"]["behavior"], "pointer_canvas")
+        self.assertEqual(len(city["city_buildings"]), 16)
+        self.assertEqual(
+            [row["slot"] for row in sorted(city["city_buildings"], key=lambda row: row["draw_order"])],
+            [
+                "food_processing",
+                "warehouse",
+                "shipyard",
+                "university",
+                "transport",
+                "regional_population",
+                "trade_school",
+                "oil_refinery",
+                "power_plant",
+                "steel_mill",
+                "metalworks",
+                "armory",
+                "textile_mill",
+                "clothing_factory",
+                "lumber_mill",
+                "furniture_factory",
+            ],
+        )
+        clothing = by_id[("Citydlog.rsrc", 9201)]
+        clothing_by_tag = {node["tag"]: node for node in clothing["nodes"]}
+        self.assertEqual(clothing_by_tag["left"]["behavior"], "activate")
+        self.assertEqual(clothing_by_tag["rght"]["behavior"], "activate")
+
         planet_dialog = by_id[("Linger.rsrc", 954)]
         planet_by_tag = {node["tag"]: node for node in planet_dialog["nodes"]}
         self.assertEqual(planet_by_tag["plan"]["behavior"], "text_edit")

@@ -8,12 +8,8 @@ use bevy::prelude::*;
 use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled, Pressed, RelativeCursorPosition};
 use bevy::ui_widgets::{Button as UiButton, Checkbox, RadioButton, RadioGroup};
-use imperialism_formats::{
-    FourCc, PictureId, PictureVisual, RetailAssetError, RetailFontFace, RetailTextAlignment,
-    RetailTextStyleError, RetailTextStylePreset, ScopedViewId, UiBehavior, UiCatalog,
-    UiNode as CatalogNode, UiNodeId, UiTextBinding, UiView as CatalogView, UiViewIndex,
-    resolve_retail_text_style,
-};
+use imperialism_formats::*;
+use imperialism_formats::{UiNode as CatalogNode, UiView as CatalogView};
 use std::collections::{HashMap, HashSet};
 
 #[derive(Resource)]
@@ -286,7 +282,7 @@ fn missing_view(view_id: &ScopedViewId) -> UiBindError {
 }
 
 #[derive(Debug, thiserror::Error)]
-enum UiTextBindingError {
+pub(crate) enum UiTextBindingError {
     #[error(transparent)]
     Style(#[from] RetailTextStyleError),
     #[error(transparent)]
@@ -346,6 +342,25 @@ impl UiAssetResources<'_> {
             .expect("picture handle was just resolved against Assets<Image>");
         Ok(f(&mut image))
     }
+
+    pub(crate) fn indexed_picture(
+        &self,
+        picture_id: PictureId,
+    ) -> Result<IndexedPicture, RetailAssetError> {
+        self.retail_assets.assets().indexed_picture(picture_id)
+    }
+
+    pub(crate) fn text_style(
+        &mut self,
+        preset: RetailTextStylePreset,
+    ) -> Result<(TextFont, TextLayout, bool), UiTextBindingError> {
+        load_retail_text_style(
+            preset,
+            &self.retail_assets,
+            &mut self.fonts,
+            &mut self.font_handles,
+        )
+    }
 }
 
 /// Marks a modal dialog root with standard z-order and pointer blocking.
@@ -383,21 +398,25 @@ pub(crate) struct UiSpawner<'w, 's> {
 }
 
 impl UiSpawner<'_, '_> {
-    pub(crate) fn spawn_modal(&mut self, view_id: ScopedViewId) -> SpawnedView {
+    pub(crate) fn spawn(&mut self, view_id: ScopedViewId) -> SpawnedView {
         let view = self
             .catalog
             .view(&view_id)
             .expect("validated UI catalog view");
-        let spawned = spawn_view(
+        spawn_view(
             &mut self.commands,
             self.catalog.catalog(),
             view,
             &mut self.assets,
-        );
+        )
+    }
+
+    pub(crate) fn spawn_modal(&mut self, view_id: ScopedViewId) -> SpawnedView {
+        let spawned = self.spawn(view_id);
         self.commands.entity(spawned.root).insert((
             ModalDialog,
             TabGroup::modal(),
-            ZIndex(10),
+            GlobalZIndex(20),
             Pickable::default(),
         ));
         spawned
@@ -690,12 +709,26 @@ fn load_retail_text(
     fonts: &mut Assets<Font>,
     font_handles: &mut RetailFontHandles,
 ) -> Result<(TextFont, TextLayout, bool), UiTextBindingError> {
-    let style = resolve_retail_text_style(RetailTextStylePreset {
-        font_family: binding.font_family,
-        face_flags: binding.face_flags,
-        point_size: binding.point_size,
-        alignment: binding.alignment,
-    })?;
+    load_retail_text_style(
+        RetailTextStylePreset {
+            font_family: binding.font_family,
+            face_flags: binding.face_flags,
+            point_size: binding.point_size,
+            alignment: binding.alignment,
+        },
+        retail_assets,
+        fonts,
+        font_handles,
+    )
+}
+
+fn load_retail_text_style(
+    preset: RetailTextStylePreset,
+    retail_assets: &RetailAssetsResource,
+    fonts: &mut Assets<Font>,
+    font_handles: &mut RetailFontHandles,
+) -> Result<(TextFont, TextLayout, bool), UiTextBindingError> {
+    let style = resolve_retail_text_style(preset)?;
     let bytes = retail_assets.assets().font_bytes(style.face);
     let handle = match font_handles.0.get(&style.face) {
         Some(handle) => handle.clone(),

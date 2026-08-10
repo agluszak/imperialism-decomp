@@ -118,7 +118,6 @@ impl Plugin for GameShellPlugin {
         for state in [
             AppState::StrategicMap,
             AppState::Trade,
-            AppState::City,
             AppState::Transport,
             AppState::Diplomacy,
         ] {
@@ -128,7 +127,7 @@ impl Plugin for GameShellPlugin {
 }
 
 #[derive(Component, Clone, Debug, Eq, PartialEq)]
-struct GameScreenRoot(ScopedViewId);
+pub(crate) struct GameScreenRoot(pub(crate) ScopedViewId);
 
 fn enter_game_screen(
     mut commands: Commands,
@@ -175,7 +174,7 @@ fn spawn_flag_view_chrome(
         .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
 }
 
-fn bind_game_screen_nav(
+pub(crate) fn bind_game_screen_nav(
     commands: &mut Commands,
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
@@ -206,7 +205,7 @@ fn bind_game_screen_nav(
 
 /// Marks a catalog-tagged control [`InteractionDisabled`] because its retail behavior
 /// is not implemented yet.
-fn disable_control(commands: &mut Commands, spawned: &SpawnedView, tag: FourCc) {
+pub(crate) fn disable_control(commands: &mut Commands, spawned: &SpawnedView, tag: FourCc) {
     let entity = spawned
         .require_unique(tag)
         .expect("validated disabled control binding");
