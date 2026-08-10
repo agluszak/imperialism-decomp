@@ -82,8 +82,7 @@ RuntimeActionResult RunDiplomacyReset(NativeTransition& transition) {
 
   nation->diplomacyPolicyByNation[policyTarget] = kDiplomacyProposalBuildConsulate;
 
-  if (!nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(oneTimeGrantTarget,
-                                                                oneTimeGrant) ||
+  if (!nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(oneTimeGrantTarget, oneTimeGrant) ||
       !nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(recurringGrantTarget,
                                                                 recurringGrantEntry)) {
     return RuntimeActionResult::Failure("retail rejected the seeded diplomacy grants");
