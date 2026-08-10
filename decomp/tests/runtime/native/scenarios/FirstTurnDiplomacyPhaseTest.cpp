@@ -1,14 +1,13 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonObject.h"
+#include "RuntimeDifferentialCapture.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
-#include "RuntimeSemanticCapture.h"
 
 #include "game/globals/shared_globals.h"
 #include "game/ui_screens/TSimMgr.h"
-
-#include "parson.h"
 
 namespace {
 
@@ -34,13 +33,11 @@ private:
     // Phase 5 has no first-turn alert work. Put the fixture at the exact phase-6 operation
     // boundary so this scenario observes only diplomacy application and replies.
     g_pSimMgr->turnStateCode = 6;
-    if (!CaptureGameState(RunState(), "before")) {
-      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
-    }
 
-    RunState().SetCapture("case", json_value_init_null());
-    if (!RunState().HasCapture("case")) {
-      return RuntimeActionResult::Failure("the void case capture is unavailable");
+    RuntimeDifferentialCapture capture(RunState());
+    RuntimeActionResult started = capture.Begin(JsonNullValue());
+    if (!started.Succeeded()) {
+      return started;
     }
 
     g_pSimMgr->AdvanceGlobalTurnStateMachine();
@@ -48,13 +45,7 @@ private:
       return RuntimeActionResult::Failure("the diplomacy phase did not advance to phase 7");
     }
 
-    if (!CaptureVoidOpResult(RunState())) {
-      return RuntimeActionResult::Failure("the void operation result capture is unavailable");
-    }
-    if (!CaptureGameState(RunState(), "after")) {
-      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
-    }
-    return RuntimeActionResult::Success();
+    return capture.Finish();
   }
 };
 

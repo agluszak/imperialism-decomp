@@ -1,7 +1,6 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeGameStateCapture.h"
-#include "RuntimeSemanticCapture.h"
 #include "RuntimeTestFactory.h"
 #include "RuntimeRun.h"
 #include "flows/EndTurnFlow.h"
@@ -26,7 +25,7 @@ JSON_Value* BuildEasyTurnCaseJson() {
 }
 
 // One Easy end-turn from a retail save already on the strategic map. Captures
-// before/case/after/result for the Rust differential; game_state mirrors after.
+// before/case/after/result for the Rust differential.
 class EasyTurnFromSaveTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -61,11 +60,12 @@ private:
   }
 
   RuntimeActionResult CaptureAfter() {
-    if (!CaptureVoidOpResult(RunState())) {
-      return RuntimeActionResult::Failure("could not capture the void operation result");
+    RunState().SetCapture("result", json_value_init_null());
+    if (!RunState().HasCapture("result")) {
+      return RuntimeActionResult::Failure("could not capture differential void result");
     }
 
-    if (!CaptureGameState(RunState(), "after") || !CaptureGameState(RunState(), "game_state")) {
+    if (!CaptureGameState(RunState(), "after")) {
       return RuntimeActionResult::Failure("could not capture after game_state");
     }
     return RuntimeActionResult::Success();

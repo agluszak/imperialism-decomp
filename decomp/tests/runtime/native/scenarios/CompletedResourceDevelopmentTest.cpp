@@ -2,9 +2,9 @@
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
 #include "JsonObject.h"
+#include "RuntimeDifferentialCapture.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
-#include "RuntimeSemanticCapture.h"
 
 #include "game/civilian_domain_types.h"
 #include "game/globals/shared_globals.h"
@@ -74,25 +74,19 @@ private:
     surfaceWorker->SetOrders(kUnitOrderDevelopResource, surfaceTile);
     surfaceWorker->remainingTurns24 = 1;
 
-    if (!CaptureGameState(RunState(), "before")) {
-      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
-    }
-
     JsonObject caseCapture;
     caseCapture.Set("extractive_worker", extractiveWorker->persistentUnitId20);
     caseCapture.Set("surface_worker", surfaceWorker->persistentUnitId20);
-    RunState().SetCapture("case", caseCapture.Release());
+
+    RuntimeDifferentialCapture capture(RunState());
+    RuntimeActionResult started = capture.Begin(caseCapture.Release());
+    if (!started.Succeeded()) {
+      return started;
+    }
 
     extractiveWorker->ContinueOrders();
     surfaceWorker->ContinueOrders();
-    if (!CaptureVoidOpResult(RunState())) {
-      return RuntimeActionResult::Failure("the void operation result capture is unavailable");
-    }
-
-    if (!CaptureGameState(RunState(), "after")) {
-      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
-    }
-    return RuntimeActionResult::Success();
+    return capture.Finish();
   }
 };
 
