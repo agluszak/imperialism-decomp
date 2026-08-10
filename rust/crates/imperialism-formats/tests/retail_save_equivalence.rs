@@ -1,9 +1,6 @@
 use imperialism_core::GameState;
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
-use imperialism_testkit::{
-    EvidenceKind, RuntimeResultExpectations, assert_game_state_eq, read_runtime_result,
-    run_native_scenario,
-};
+use imperialism_testkit::{assert_game_state_eq, run_retail_fixture_result};
 
 const BEGINNING_OF_GAME: &[u8] =
     include_bytes!("../../../../fixtures/retail/beginning_of_game.imp");
@@ -11,16 +8,7 @@ const BEGINNING_OF_GAME: &[u8] =
 #[test]
 #[ignore = "requires the native runtime harness and Wine"]
 fn beginning_save_projection_matches_cpp_loaded_state() -> anyhow::Result<()> {
-    let result_path = run_native_scenario("load_saved_game", 1)?;
-    let runtime = read_runtime_result(
-        &result_path,
-        RuntimeResultExpectations {
-            name: "load_saved_game",
-            seed: 1,
-            evidence_kind: EvidenceKind::RetailFixtureOracle,
-            required_captures: &["game_state"],
-        },
-    )?;
+    let runtime = run_retail_fixture_result("load_saved_game", &["game_state"])?;
     let expected: GameState = runtime.capture("game_state")?;
 
     let save = LegacySaveV62::parse(BEGINNING_OF_GAME)?;

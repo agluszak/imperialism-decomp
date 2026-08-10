@@ -48,7 +48,7 @@ run-original *args:
 [group('debug')]
 diff-run scenario *args:
   just runtime-test-build
-  uv run python -m tools.runtime.differential "{{scenario}}" {{args}}
+  uv run python -m tools.runtime.retail_checkpoint_differential "{{scenario}}" {{args}}
 
 # Invoke the retail and recomp map-region scanline fill against the same isolated,
 # fixed SeaSegment tables and compare every resulting tile-region byte.
