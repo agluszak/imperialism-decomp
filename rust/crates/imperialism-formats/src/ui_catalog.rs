@@ -1,3 +1,4 @@
+use imperialism_core::*;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fmt;
@@ -204,9 +205,20 @@ pub struct UiNode {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(deny_unknown_fields)]
+pub struct CityBuildingVisual {
+    pub slot: ProductionSlot,
+    pub origin: [i32; 2],
+    pub draw_order: u8,
+    pub dialog: ScopedViewId,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct UiView {
     pub id: ScopedViewId,
     pub nodes: Vec<UiNode>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub city_buildings: Vec<CityBuildingVisual>,
 }
 
 /// Precomputed lookups over a catalog view hierarchy.

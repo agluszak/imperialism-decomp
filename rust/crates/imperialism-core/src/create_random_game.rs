@@ -40,6 +40,11 @@ const CITY_STOCK_PRESET_BY_DIFFICULTY: EnumMap<Difficulty, ResourceTable<i16>> =
 const SCENARIO_FORCED_PRODUCTION: ProductionTable<i16> =
     ProductionTable::from_array([0, 0, 0, 0, 0, 0, 0, 999, 999, 999, 999, 0, 0, 999, 999, 0]);
 
+/// `TCity::ICity` starter capacity retained by human Introductory/Easy cities
+/// before `ApplyScenarioRelationPresetAndSpawnFrogCity` forces the other slots.
+const LOW_DIFFICULTY_HUMAN_PRODUCTION: ProductionTable<i16> =
+    ProductionTable::from_array([2, 1, 2, 1, 2, 1, 0, 999, 999, 999, 999, 0, 0, 999, 999, 0]);
+
 /// Builds the Normal start-boundary [`GameState`] from the retained preview.
 ///
 /// Retail Accept does not regenerate the map. It commits setup options and rebuilds
@@ -1897,9 +1902,14 @@ fn scenario_city(difficulty: Difficulty, human: bool) -> CityState {
     } else {
         LaborPool::new(4, 2, 1)
     };
+    let production = if human && difficulty < Difficulty::Normal {
+        LOW_DIFFICULTY_HUMAN_PRODUCTION
+    } else {
+        SCENARIO_FORCED_PRODUCTION
+    };
     CityState::for_random_start(
         CITY_STOCK_PRESET_BY_DIFFICULTY[difficulty],
-        SCENARIO_FORCED_PRODUCTION,
+        production,
         labor,
         human,
     )

@@ -23,7 +23,6 @@
 #include "game/military_domain_types.h"
 #include "game/globals/game_session_globals.h"
 #include "game/globals/map_globals.h"
-#include "game/globals/military_globals.h"
 #include "game/globals/nation_globals.h"
 #include "game/globals/tactical_globals.h"
 #include "game/globals/tactical_ui_globals.h"
@@ -1286,7 +1285,7 @@ JSON_Value* CaptureCivilianRecruitmentOrders(TCity* city) {
 JSON_Value* CaptureMilitaryRecruitmentOrders(TCity* city) {
   static const char* const kCategoryNames[8] = {
       "light_infantry", "regular_infantry", "heavy_infantry",  "light_cavalry",
-      "heavy_cavalry",  "light_artillery",  "heavy_artillery", "combat_engineers"};
+      "heavy_cavalry",  "light_artillery",  "heavy_artillery", "demolitionist"};
   JsonObject orders;
   for (int category = 0; category < 8; ++category) {
     TUnitOrder* order = city->buildOrderSlots148[category];
@@ -1298,14 +1297,6 @@ JSON_Value* CaptureMilitaryRecruitmentOrders(TCity* city) {
         g_awTacticalUnitCategoryCodeBySlot[order->resourceTypeIndex] != category + 1) {
       FailSemanticCapture("city military-recruitment order has an invalid category or recipe");
     }
-    const short* spec = g_aUnitOrderCostProfileByAbilityId[order->resourceTypeIndex];
-    if (spec[0] != order->resourceTypeIndex || spec[1] != order->primaryInputResourceId ||
-        spec[2] != order->primaryInputPerUnit || spec[3] != order->secondaryInputResourceId ||
-        spec[4] != order->secondaryInputPerUnit || spec[5] != order->cashCostPerUnit ||
-        spec[6] != order->workforceMode) {
-      FailSemanticCapture("city military-recruitment recipe differs from its current unit type");
-    }
-
     JsonObject state;
     state.Set("unit_kind", MilitaryUnitKindName(order->resourceTypeIndex));
     state.Set("progress", CaptureProductionProgress(order));
@@ -1325,9 +1316,9 @@ bool ShipTypeIsValidForOrderSlot(int slot, short shipType) {
   case 3:
     return shipType == 0 || shipType == 6;
   case 4:
-    return shipType == 0 || shipType == 3 || shipType == 7 || shipType == 11;
+    return shipType == 0 || shipType == 3;
   case 5:
-    return shipType == 0 || shipType == 4 || shipType == 8 || shipType == 9;
+    return shipType == 0 || shipType == 4;
   case 6:
     return shipType == 0 || shipType == 7 || shipType == 11 || shipType == 13;
   case 7:

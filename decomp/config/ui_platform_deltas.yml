@@ -59,6 +59,30 @@ node_property_patches:
     properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
     evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles rand at 12 and calls SetTextAlignmentAndMaybeRefresh(1, 0)
 
+# TCityProductionView draws and hit-tests these buildings dynamically rather
+# than constructing sixteen resource-backed child controls. Keep this one
+# recovered table attached to Citymain instead of creating a general scene DSL.
+city_buildings:
+  view: Citymain.rsrc:2011
+  evidence: TCityProductionView.cpp and g_anCityBuildingSlotOrder/g_anCityBuildingSlotCoords at 0x00696178/0x00696198
+  visuals:
+    - {slot: textile_mill, origin: [200, 235], draw_order: 12, dialog: Citydlog.rsrc:9200}
+    - {slot: clothing_factory, origin: [340, 300], draw_order: 13, dialog: Citydlog.rsrc:9201}
+    - {slot: steel_mill, origin: [281, 184], draw_order: 9, dialog: Citydlog.rsrc:9202}
+    - {slot: metalworks, origin: [340, 266], draw_order: 10, dialog: Citydlog.rsrc:9203}
+    - {slot: lumber_mill, origin: [87, 286], draw_order: 14, dialog: Citydlog.rsrc:9204}
+    - {slot: furniture_factory, origin: [230, 310], draw_order: 15, dialog: Citydlog.rsrc:9205}
+    - {slot: oil_refinery, origin: [340, 139], draw_order: 7, dialog: Citydlog.rsrc:9206}
+    - {slot: shipyard, origin: [240, 35], draw_order: 2, dialog: Shipyard.rsrc:9207}
+    - {slot: armory, origin: [50, 220], draw_order: 11, dialog: Armory.rsrc:9208}
+    - {slot: trade_school, origin: [50, 107], draw_order: 6, dialog: Citydlog.rsrc:9209}
+    - {slot: university, origin: [50, 35], draw_order: 3, dialog: Univ.rsrc:9210}
+    - {slot: power_plant, origin: [340, 139], draw_order: 8, dialog: Citydlog.rsrc:9211}
+    - {slot: food_processing, origin: [82, 35], draw_order: 0, dialog: Citydlog.rsrc:9212}
+    - {slot: warehouse, origin: [300, 35], draw_order: 1, dialog: Citydlog.rsrc:9213}
+    - {slot: transport, origin: [340, 44], draw_order: 4, dialog: Citydlog.rsrc:9214}
+    - {slot: regional_population, origin: [150, 95], draw_order: 5, dialog: Citydlog.rsrc:9215}
+
 # Explicit semantic differences between the Mac resource class name and the
 # Windows source model. These are not ABI claims; each substitution must remain
 # represented by tools.ui_codegen.CLASS_ALIASES.

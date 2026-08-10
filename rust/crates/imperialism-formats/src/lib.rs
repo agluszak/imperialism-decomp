@@ -20,7 +20,5 @@ pub use retail_fonts::{
     ResolvedRetailTextStyle, RetailFontFace, RetailTextAlignment, RetailTextStyleError,
     RetailTextStylePreset, resolve_retail_text_style,
 };
-pub use ui_catalog::{
-    FourCc, LogicalRect, OKAY, PictureId, PictureVisual, ScopedViewId, TRADE, UiBehavior,
-    UiCatalog, UiNode, UiNodeId, UiTextBinding, UiView, UiViewIndex,
-};
+pub use retail_resources::IndexedPicture;
+pub use ui_catalog::*;

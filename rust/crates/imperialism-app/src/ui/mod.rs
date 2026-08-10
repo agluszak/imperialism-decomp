@@ -1,4 +1,5 @@
 mod catalog;
+mod city;
 mod city_site;
 mod game_shell;
 mod main_menu;
@@ -6,6 +7,7 @@ mod random_setup;
 mod random_setup_map;
 
 pub(crate) use catalog::{UiCatalogPlugin, UiCatalogResource};
+pub(crate) use city::CityPlugin;
 pub(crate) use city_site::CitySitePlugin;
 pub(crate) use game_shell::GameShellPlugin;
 pub(crate) use main_menu::MainMenuPlugin;
@@ -17,6 +19,7 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
     random_setup::validate_application_bindings(catalog)?;
     random_setup_map::validate_application_bindings(catalog)?;
     city_site::validate_application_bindings(catalog)?;
+    city::validate_application_bindings(catalog)?;
     game_shell::validate_application_bindings(catalog)
 }
 

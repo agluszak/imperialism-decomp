@@ -3208,7 +3208,7 @@ fn read_city_orders(stream: &mut LegacyStream<'_>) -> Result<CityOrders, LegacyS
         read_military_recruit_order(
             stream,
             "slot 32 combat engineers",
-            MilitaryRecruitmentCategory::CombatEngineers,
+            MilitaryRecruitmentCategory::Demolitionist,
         )?,
     ]);
 

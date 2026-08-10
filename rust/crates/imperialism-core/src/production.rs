@@ -145,7 +145,7 @@ pub enum MilitaryRecruitmentCategory {
     HeavyCavalry,
     LightArtillery,
     HeavyArtillery,
-    CombatEngineers,
+    Demolitionist,
 }
 
 pub type MilitaryRecruitOrderTable<T> = EnumMap<MilitaryRecruitmentCategory, T>;
@@ -201,19 +201,10 @@ pub const fn ship_type_is_valid_for_order_slot(slot: ShipOrderSlot, ship_type: S
             matches!(ship_type, ShipType::NoShip | ShipType::Clipper)
         }
         ShipOrderSlot::WarshipEarlyPrimary => {
-            matches!(
-                ship_type,
-                ShipType::NoShip | ShipType::Frigate | ShipType::Raider | ShipType::ArmoredCruiser
-            )
+            matches!(ship_type, ShipType::NoShip | ShipType::Frigate)
         }
         ShipOrderSlot::WarshipEarlySecondary => {
-            matches!(
-                ship_type,
-                ShipType::NoShip
-                    | ShipType::ShipOfTheLine
-                    | ShipType::Ironclad
-                    | ShipType::AdvancedIronclad
-            )
+            matches!(ship_type, ShipType::NoShip | ShipType::ShipOfTheLine)
         }
         ShipOrderSlot::WarshipAdvancedPrimary => matches!(
             ship_type,
@@ -402,7 +393,7 @@ pub const fn military_recruitment_category(
         | MilitaryUnitKind::RailroadGuns => Some(MilitaryRecruitmentCategory::HeavyArtillery),
         MilitaryUnitKind::Sappers
         | MilitaryUnitKind::CombatEngineers
-        | MilitaryUnitKind::Saboteurs => Some(MilitaryRecruitmentCategory::CombatEngineers),
+        | MilitaryUnitKind::Saboteurs => Some(MilitaryRecruitmentCategory::Demolitionist),
         MilitaryUnitKind::Minutemen
         | MilitaryUnitKind::Militia
         | MilitaryUnitKind::Conscripts

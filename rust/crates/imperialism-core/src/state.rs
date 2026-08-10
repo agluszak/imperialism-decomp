@@ -167,6 +167,10 @@ impl MajorNation {
     pub const fn economy(&self) -> &GreatPowerState {
         &self.economy
     }
+
+    pub const fn city(&self) -> &CityState {
+        &self.city
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -1272,6 +1276,10 @@ impl PopulationState {
 
     pub const fn baseline_labor(&self) -> LaborPool {
         self.baseline_labor
+    }
+
+    pub fn predicted_need(&self, resource: ResourceKind) -> i16 {
+        self.predicted_need_by_resource[resource]
     }
 }
 

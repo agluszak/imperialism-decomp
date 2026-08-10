@@ -1322,6 +1322,7 @@
           "tag": "fabr"
         },
         {
+          "behavior": "activate",
           "id": 1016,
           "parent": 902,
           "picture_id": 9240,
@@ -1335,6 +1336,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 1126,
           "parent": 902,
           "picture_id": 9242,
@@ -1566,6 +1568,7 @@
           "tag": "clot"
         },
         {
+          "behavior": "activate",
           "id": 1016,
           "parent": 902,
           "picture_id": 9240,
@@ -1579,6 +1582,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 1126,
           "parent": 902,
           "picture_id": 9242,
@@ -1774,6 +1778,7 @@
           "tag": "stee"
         },
         {
+          "behavior": "activate",
           "id": 1016,
           "parent": 902,
           "picture_id": 9240,
@@ -1787,6 +1792,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 1126,
           "parent": 902,
           "picture_id": 9242,
@@ -2000,6 +2006,7 @@
           "tag": "hard"
         },
         {
+          "behavior": "activate",
           "id": 1016,
           "parent": 902,
           "picture_id": 9240,
@@ -2013,6 +2020,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 1126,
           "parent": 902,
           "picture_id": 9242,
@@ -2069,6 +2077,7 @@
           "tag": "arma"
         },
         {
+          "behavior": "activate",
           "id": 1553,
           "parent": 1439,
           "picture_id": 9240,
@@ -2082,6 +2091,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 1663,
           "parent": 1439,
           "picture_id": 9242,
@@ -2295,6 +2305,7 @@
           "tag": "lumb"
         },
         {
+          "behavior": "activate",
           "id": 1016,
           "parent": 902,
           "picture_id": 9240,
@@ -2308,6 +2319,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 1126,
           "parent": 902,
           "picture_id": 9242,
@@ -2364,6 +2376,7 @@
           "tag": "pape"
         },
         {
+          "behavior": "activate",
           "id": 1553,
           "parent": 1439,
           "picture_id": 9240,
@@ -2377,6 +2390,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 1663,
           "parent": 1439,
           "picture_id": 9242,
@@ -2590,6 +2604,7 @@
           "tag": "furn"
         },
         {
+          "behavior": "activate",
           "id": 1016,
           "parent": 902,
           "picture_id": 9240,
@@ -2603,6 +2618,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 1126,
           "parent": 902,
           "picture_id": 9242,
@@ -2798,6 +2814,7 @@
           "tag": "fuel"
         },
         {
+          "behavior": "activate",
           "id": 1016,
           "parent": 902,
           "picture_id": 9240,
@@ -2811,6 +2828,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 1126,
           "parent": 902,
           "picture_id": 9242,
@@ -2977,6 +2995,7 @@
           "tag": "trai"
         },
         {
+          "behavior": "activate",
           "id": 845,
           "parent": 735,
           "picture_id": 9240,
@@ -2990,6 +3009,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 955,
           "parent": 735,
           "picture_id": 9242,
@@ -3046,6 +3066,7 @@
           "tag": "prof"
         },
         {
+          "behavior": "activate",
           "id": 1374,
           "parent": 1264,
           "picture_id": 9240,
@@ -3059,6 +3080,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 1484,
           "parent": 1264,
           "picture_id": 9242,
@@ -3373,6 +3395,7 @@
           "tag": "powe"
         },
         {
+          "behavior": "activate",
           "id": 910,
           "parent": 800,
           "picture_id": 9240,
@@ -3386,6 +3409,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 1020,
           "parent": 800,
           "picture_id": 9242,
@@ -3537,6 +3561,7 @@
           "tag": "food"
         },
         {
+          "behavior": "activate",
           "id": 1012,
           "parent": 902,
           "picture_id": 9240,
@@ -3550,6 +3575,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 1122,
           "parent": 902,
           "picture_id": 9242,
@@ -4378,6 +4404,7 @@
           "tag": "rail"
         },
         {
+          "behavior": "activate",
           "id": 1012,
           "parent": 902,
           "picture_id": 9240,
@@ -4391,6 +4418,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 1122,
           "parent": 902,
           "picture_id": 9242,
@@ -4578,6 +4606,7 @@
           "tag": "popu"
         },
         {
+          "behavior": "activate",
           "id": 1114,
           "parent": 1004,
           "picture_id": 9240,
@@ -4591,6 +4620,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 1224,
           "parent": 1004,
           "picture_id": 9242,
@@ -5041,6 +5071,200 @@
       ]
     },
     {
+      "city_buildings": [
+        {
+          "dialog": {
+            "resource_file": "Citydlog.rsrc",
+            "resource_id": 9200
+          },
+          "draw_order": 12,
+          "origin": [
+            200,
+            235
+          ],
+          "slot": "textile_mill"
+        },
+        {
+          "dialog": {
+            "resource_file": "Citydlog.rsrc",
+            "resource_id": 9201
+          },
+          "draw_order": 13,
+          "origin": [
+            340,
+            300
+          ],
+          "slot": "clothing_factory"
+        },
+        {
+          "dialog": {
+            "resource_file": "Citydlog.rsrc",
+            "resource_id": 9202
+          },
+          "draw_order": 9,
+          "origin": [
+            281,
+            184
+          ],
+          "slot": "steel_mill"
+        },
+        {
+          "dialog": {
+            "resource_file": "Citydlog.rsrc",
+            "resource_id": 9203
+          },
+          "draw_order": 10,
+          "origin": [
+            340,
+            266
+          ],
+          "slot": "metalworks"
+        },
+        {
+          "dialog": {
+            "resource_file": "Citydlog.rsrc",
+            "resource_id": 9204
+          },
+          "draw_order": 14,
+          "origin": [
+            87,
+            286
+          ],
+          "slot": "lumber_mill"
+        },
+        {
+          "dialog": {
+            "resource_file": "Citydlog.rsrc",
+            "resource_id": 9205
+          },
+          "draw_order": 15,
+          "origin": [
+            230,
+            310
+          ],
+          "slot": "furniture_factory"
+        },
+        {
+          "dialog": {
+            "resource_file": "Citydlog.rsrc",
+            "resource_id": 9206
+          },
+          "draw_order": 7,
+          "origin": [
+            340,
+            139
+          ],
+          "slot": "oil_refinery"
+        },
+        {
+          "dialog": {
+            "resource_file": "Shipyard.rsrc",
+            "resource_id": 9207
+          },
+          "draw_order": 2,
+          "origin": [
+            240,
+            35
+          ],
+          "slot": "shipyard"
+        },
+        {
+          "dialog": {
+            "resource_file": "Armory.rsrc",
+            "resource_id": 9208
+          },
+          "draw_order": 11,
+          "origin": [
+            50,
+            220
+          ],
+          "slot": "armory"
+        },
+        {
+          "dialog": {
+            "resource_file": "Citydlog.rsrc",
+            "resource_id": 9209
+          },
+          "draw_order": 6,
+          "origin": [
+            50,
+            107
+          ],
+          "slot": "trade_school"
+        },
+        {
+          "dialog": {
+            "resource_file": "Univ.rsrc",
+            "resource_id": 9210
+          },
+          "draw_order": 3,
+          "origin": [
+            50,
+            35
+          ],
+          "slot": "university"
+        },
+        {
+          "dialog": {
+            "resource_file": "Citydlog.rsrc",
+            "resource_id": 9211
+          },
+          "draw_order": 8,
+          "origin": [
+            340,
+            139
+          ],
+          "slot": "power_plant"
+        },
+        {
+          "dialog": {
+            "resource_file": "Citydlog.rsrc",
+            "resource_id": 9212
+          },
+          "draw_order": 0,
+          "origin": [
+            82,
+            35
+          ],
+          "slot": "food_processing"
+        },
+        {
+          "dialog": {
+            "resource_file": "Citydlog.rsrc",
+            "resource_id": 9213
+          },
+          "draw_order": 1,
+          "origin": [
+            300,
+            35
+          ],
+          "slot": "warehouse"
+        },
+        {
+          "dialog": {
+            "resource_file": "Citydlog.rsrc",
+            "resource_id": 9214
+          },
+          "draw_order": 4,
+          "origin": [
+            340,
+            44
+          ],
+          "slot": "transport"
+        },
+        {
+          "dialog": {
+            "resource_file": "Citydlog.rsrc",
+            "resource_id": 9215
+          },
+          "draw_order": 5,
+          "origin": [
+            150,
+            95
+          ],
+          "slot": "regional_population"
+        }
+      ],
       "id": {
         "resource_file": "Citymain.rsrc",
         "resource_id": 2011
@@ -5057,6 +5281,7 @@
           "tag": "base"
         },
         {
+          "behavior": "pointer_canvas",
           "content_insets": [
             1,
             0,
@@ -20213,6 +20438,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 1998,
           "parent": 1418,
           "picture_id": 2121,
@@ -20226,6 +20452,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 2108,
           "parent": 1418,
           "picture_id": 2123,
@@ -20343,6 +20570,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 3099,
           "parent": 2409,
           "picture_id": 2121,
@@ -20356,6 +20584,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 3209,
           "parent": 2409,
           "picture_id": 2123,
@@ -20461,6 +20690,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 4090,
           "parent": 3400,
           "picture_id": 2121,
@@ -20474,6 +20704,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 4200,
           "parent": 3400,
           "picture_id": 2123,
@@ -20579,6 +20810,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 5081,
           "parent": 4391,
           "picture_id": 2121,
@@ -20592,6 +20824,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 5191,
           "parent": 4391,
           "picture_id": 2123,
@@ -20685,6 +20918,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 5962,
           "parent": 5382,
           "picture_id": 2121,
@@ -20710,6 +20944,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 6182,
           "parent": 5382,
           "picture_id": 2123,
@@ -20803,6 +21038,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 6953,
           "parent": 6373,
           "picture_id": 2121,
@@ -20828,6 +21064,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 7173,
           "parent": 6373,
           "picture_id": 2123,
@@ -20921,6 +21158,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 7944,
           "parent": 7364,
           "picture_id": 2121,
@@ -20946,6 +21184,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 8164,
           "parent": 7364,
           "picture_id": 2123,
@@ -21039,6 +21278,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 8935,
           "parent": 8355,
           "picture_id": 2121,
@@ -21064,6 +21304,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 9155,
           "parent": 8355,
           "picture_id": 2123,
@@ -21157,6 +21398,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 9926,
           "parent": 9346,
           "picture_id": 2121,
@@ -21182,6 +21424,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 10146,
           "parent": 9346,
           "picture_id": 2123,
@@ -21275,6 +21518,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 10917,
           "parent": 10337,
           "picture_id": 2121,
@@ -21300,6 +21544,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 11137,
           "parent": 10337,
           "picture_id": 2123,
@@ -21393,6 +21638,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 11908,
           "parent": 11328,
           "picture_id": 2121,
@@ -21418,6 +21664,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 12128,
           "parent": 11328,
           "picture_id": 2123,
@@ -21511,6 +21758,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 12899,
           "parent": 12319,
           "picture_id": 2121,
@@ -21536,6 +21784,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 13119,
           "parent": 12319,
           "picture_id": 2123,
@@ -21629,6 +21878,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 13890,
           "parent": 13310,
           "picture_id": 2121,
@@ -21654,6 +21904,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 14110,
           "parent": 13310,
           "picture_id": 2123,
@@ -21747,6 +21998,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 14881,
           "parent": 14301,
           "picture_id": 2121,
@@ -21772,6 +22024,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 15101,
           "parent": 14301,
           "picture_id": 2123,
@@ -21865,6 +22118,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 15872,
           "parent": 15292,
           "picture_id": 2121,
@@ -21890,6 +22144,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 16092,
           "parent": 15292,
           "picture_id": 2123,
@@ -21983,6 +22238,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 16863,
           "parent": 16283,
           "picture_id": 2121,
@@ -22008,6 +22264,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 17083,
           "parent": 16283,
           "picture_id": 2123,
@@ -22101,6 +22358,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 17854,
           "parent": 17274,
           "picture_id": 2121,
@@ -22126,6 +22384,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 18074,
           "parent": 17274,
           "picture_id": 2123,
@@ -22563,6 +22822,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 1112,
           "parent": 532,
           "picture_id": 2121,
@@ -22576,6 +22836,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 1222,
           "parent": 532,
           "picture_id": 2123,
@@ -22693,6 +22954,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 2213,
           "parent": 1523,
           "picture_id": 2121,
@@ -22706,6 +22968,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 2323,
           "parent": 1523,
           "picture_id": 2123,
@@ -22811,6 +23074,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 3204,
           "parent": 2514,
           "picture_id": 2121,
@@ -22824,6 +23088,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 3314,
           "parent": 2514,
           "picture_id": 2123,
@@ -22929,6 +23194,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 4195,
           "parent": 3505,
           "picture_id": 2121,
@@ -22942,6 +23208,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 4305,
           "parent": 3505,
           "picture_id": 2123,
@@ -23035,6 +23302,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 5076,
           "parent": 4496,
           "picture_id": 2121,
@@ -23060,6 +23328,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 5296,
           "parent": 4496,
           "picture_id": 2123,
@@ -23153,6 +23422,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 6067,
           "parent": 5487,
           "picture_id": 2121,
@@ -23178,6 +23448,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 6287,
           "parent": 5487,
           "picture_id": 2123,
@@ -23271,6 +23542,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 7058,
           "parent": 6478,
           "picture_id": 2121,
@@ -23296,6 +23568,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 7278,
           "parent": 6478,
           "picture_id": 2123,
@@ -23389,6 +23662,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 8049,
           "parent": 7469,
           "picture_id": 2121,
@@ -23414,6 +23688,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 8269,
           "parent": 7469,
           "picture_id": 2123,
@@ -23507,6 +23782,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 9040,
           "parent": 8460,
           "picture_id": 2121,
@@ -23532,6 +23808,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 9260,
           "parent": 8460,
           "picture_id": 2123,
@@ -23625,6 +23902,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 10031,
           "parent": 9451,
           "picture_id": 2121,
@@ -23650,6 +23928,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 10251,
           "parent": 9451,
           "picture_id": 2123,
@@ -23743,6 +24022,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 11022,
           "parent": 10442,
           "picture_id": 2121,
@@ -23768,6 +24048,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 11242,
           "parent": 10442,
           "picture_id": 2123,
@@ -23861,6 +24142,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 12013,
           "parent": 11433,
           "picture_id": 2121,
@@ -23886,6 +24168,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 12233,
           "parent": 11433,
           "picture_id": 2123,
@@ -23979,6 +24262,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 13004,
           "parent": 12424,
           "picture_id": 2121,
@@ -24004,6 +24288,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 13224,
           "parent": 12424,
           "picture_id": 2123,
@@ -24097,6 +24382,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 13995,
           "parent": 13415,
           "picture_id": 2121,
@@ -24122,6 +24408,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 14215,
           "parent": 13415,
           "picture_id": 2123,
@@ -24215,6 +24502,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 14986,
           "parent": 14406,
           "picture_id": 2121,
@@ -24240,6 +24528,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 15206,
           "parent": 14406,
           "picture_id": 2123,
@@ -24333,6 +24622,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 15977,
           "parent": 15397,
           "picture_id": 2121,
@@ -24358,6 +24648,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 16197,
           "parent": 15397,
           "picture_id": 2123,
@@ -24451,6 +24742,7 @@
           "tag": "offr"
         },
         {
+          "behavior": "activate",
           "id": 16968,
           "parent": 16388,
           "picture_id": 2121,
@@ -24476,6 +24768,7 @@
           "tag": "gree"
         },
         {
+          "behavior": "activate",
           "id": 17188,
           "parent": 16388,
           "picture_id": 2123,
@@ -25114,6 +25407,7 @@
           "tag": "fish"
         },
         {
+          "behavior": "activate",
           "id": 1651,
           "parent": 1538,
           "picture_id": 4020,
@@ -25127,6 +25421,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 1761,
           "parent": 1538,
           "picture_id": 4021,
@@ -25152,6 +25447,7 @@
           "tag": "prod"
         },
         {
+          "behavior": "activate",
           "id": 1984,
           "parent": 1871,
           "picture_id": 4020,
@@ -25165,6 +25461,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 2094,
           "parent": 1871,
           "picture_id": 4021,
@@ -25190,6 +25487,7 @@
           "tag": "grai"
         },
         {
+          "behavior": "activate",
           "id": 2317,
           "parent": 2204,
           "picture_id": 4020,
@@ -25203,6 +25501,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 2427,
           "parent": 2204,
           "picture_id": 4021,
@@ -25228,6 +25527,7 @@
           "tag": "timb"
         },
         {
+          "behavior": "activate",
           "id": 2650,
           "parent": 2537,
           "picture_id": 4020,
@@ -25241,6 +25541,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 2760,
           "parent": 2537,
           "picture_id": 4021,
@@ -25266,6 +25567,7 @@
           "tag": "lumb"
         },
         {
+          "behavior": "activate",
           "id": 2983,
           "parent": 2870,
           "picture_id": 4020,
@@ -25279,6 +25581,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 3093,
           "parent": 2870,
           "picture_id": 4021,
@@ -25304,6 +25607,7 @@
           "tag": "furn"
         },
         {
+          "behavior": "activate",
           "id": 3316,
           "parent": 3203,
           "picture_id": 4020,
@@ -25317,6 +25621,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 3426,
           "parent": 3203,
           "picture_id": 4021,
@@ -25342,6 +25647,7 @@
           "tag": "coal"
         },
         {
+          "behavior": "activate",
           "id": 3649,
           "parent": 3536,
           "picture_id": 4020,
@@ -25355,6 +25661,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 3759,
           "parent": 3536,
           "picture_id": 4021,
@@ -25380,6 +25687,7 @@
           "tag": "iron"
         },
         {
+          "behavior": "activate",
           "id": 3982,
           "parent": 3869,
           "picture_id": 4020,
@@ -25393,6 +25701,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 4092,
           "parent": 3869,
           "picture_id": 4021,
@@ -25418,6 +25727,7 @@
           "tag": "stee"
         },
         {
+          "behavior": "activate",
           "id": 4315,
           "parent": 4202,
           "picture_id": 4020,
@@ -25431,6 +25741,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 4425,
           "parent": 4202,
           "picture_id": 4021,
@@ -25456,6 +25767,7 @@
           "tag": "hard"
         },
         {
+          "behavior": "activate",
           "id": 4648,
           "parent": 4535,
           "picture_id": 4020,
@@ -25469,6 +25781,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 4758,
           "parent": 4535,
           "picture_id": 4021,
@@ -25494,6 +25807,7 @@
           "tag": "cott"
         },
         {
+          "behavior": "activate",
           "id": 4981,
           "parent": 4868,
           "picture_id": 4022,
@@ -25507,6 +25821,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 5091,
           "parent": 4868,
           "picture_id": 4023,
@@ -25532,6 +25847,7 @@
           "tag": "fabr"
         },
         {
+          "behavior": "activate",
           "id": 5314,
           "parent": 5201,
           "picture_id": 4022,
@@ -25545,6 +25861,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 5424,
           "parent": 5201,
           "picture_id": 4023,
@@ -25570,6 +25887,7 @@
           "tag": "clot"
         },
         {
+          "behavior": "activate",
           "id": 5647,
           "parent": 5534,
           "picture_id": 4022,
@@ -25583,6 +25901,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 5757,
           "parent": 5534,
           "picture_id": 4023,
@@ -25608,6 +25927,7 @@
           "tag": "oil "
         },
         {
+          "behavior": "activate",
           "id": 5980,
           "parent": 5867,
           "picture_id": 4022,
@@ -25621,6 +25941,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 6090,
           "parent": 5867,
           "picture_id": 4023,
@@ -25646,6 +25967,7 @@
           "tag": "fuel"
         },
         {
+          "behavior": "activate",
           "id": 6313,
           "parent": 6200,
           "picture_id": 4022,
@@ -25659,6 +25981,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 6423,
           "parent": 6200,
           "picture_id": 4023,
@@ -25684,6 +26007,7 @@
           "tag": "hors"
         },
         {
+          "behavior": "activate",
           "id": 6646,
           "parent": 6533,
           "picture_id": 4022,
@@ -25697,6 +26021,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 6756,
           "parent": 6533,
           "picture_id": 4023,
@@ -25722,6 +26047,7 @@
           "tag": "gold"
         },
         {
+          "behavior": "activate",
           "id": 6979,
           "parent": 6866,
           "picture_id": 4022,
@@ -25735,6 +26061,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 7089,
           "parent": 6866,
           "picture_id": 4023,
@@ -25760,6 +26087,7 @@
           "tag": "gems"
         },
         {
+          "behavior": "activate",
           "id": 7312,
           "parent": 7199,
           "picture_id": 4022,
@@ -25773,6 +26101,7 @@
           "tag": "left"
         },
         {
+          "behavior": "activate",
           "id": 7422,
           "parent": 7199,
           "picture_id": 4023,

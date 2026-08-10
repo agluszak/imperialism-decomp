@@ -1,5 +1,5 @@
 use crate::color::DibPalette;
-use crate::retail_resources::{bitmap_palette_rgb, bitmap_resource_to_bmp};
+use crate::retail_resources::*;
 use crate::{PictureId, RetailFontFace};
 use pelite::pe32::{Pe, PeFile};
 use pelite::resources::{FindError, Name};
@@ -62,6 +62,20 @@ impl RetailAssets {
     ///
     /// The returned bytes are a BMP file assembled from the retail DIB resource.
     pub fn picture(&self, picture_id: PictureId) -> Result<Vec<u8>, RetailAssetError> {
+        let (path, dib) = self.picture_resource(picture_id)?;
+        bitmap_resource_to_bmp(dib).map_err(|error| resource_error(path, error))
+    }
+
+    /// Resolves a 1-bpp or 8-bpp retail picture as unpacked palette indexes.
+    pub fn indexed_picture(
+        &self,
+        picture_id: PictureId,
+    ) -> Result<IndexedPicture, RetailAssetError> {
+        let (path, dib) = self.picture_resource(picture_id)?;
+        bitmap_resource_to_indexed_picture(dib).map_err(|error| resource_error(path, error))
+    }
+
+    fn picture_resource(&self, picture_id: PictureId) -> Result<(&Path, &[u8]), RetailAssetError> {
         let named = format!("{picture_id}.BMP");
         let names = [
             ResourceName::Text(named),
@@ -70,8 +84,7 @@ impl RetailAssets {
         for name in &names {
             for archive in &self.pictures {
                 if let Some(dib) = archive.find(ResourceName::Id(2), name.clone()) {
-                    return bitmap_resource_to_bmp(dib)
-                        .map_err(|error| resource_error(&archive.path, error));
+                    return Ok((&archive.path, dib));
                 }
             }
         }

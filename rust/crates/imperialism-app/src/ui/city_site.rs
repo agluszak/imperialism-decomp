@@ -10,9 +10,7 @@ use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::Activate;
-use imperialism_core::{
-    CapitalSite, MajorNationId, confirm_capital_site, validate_capital_site_selection,
-};
+use imperialism_core::*;
 use imperialism_formats::{FourCc, OKAY, ScopedViewId, fourcc};
 
 const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
