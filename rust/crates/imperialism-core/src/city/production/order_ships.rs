@@ -1,7 +1,7 @@
 //! Shipyard order helpers.
 
-use crate::*;
 use super::*;
+use crate::*;
 
 pub(crate) fn ship_max_order(state: &ShipOrderState, city: &CityState) -> i16 {
     let costs = ship_order_costs(state.ship_type);
@@ -22,7 +22,11 @@ pub(crate) fn ship_max_order(state: &ShipOrderState, city: &CityState) -> i16 {
     state.progress.quantity + limit
 }
 
-pub(crate) fn set_ship_quantity(state: &mut ShipOrderState, city: &mut CityState, quantity: i16) -> bool {
+pub(crate) fn set_ship_quantity(
+    state: &mut ShipOrderState,
+    city: &mut CityState,
+    quantity: i16,
+) -> bool {
     let delta = quantity - state.progress.quantity;
     if quantity > ship_max_order(state, city) || quantity < 0 {
         return false;

@@ -5,7 +5,6 @@ mod production;
 mod state;
 
 pub use buildings::{BuildingWindowState, CityFacilitySlot};
-pub use state::{CityState, Stockpile, TownState};
 pub use production::{
     CIVILIAN_RESOURCE_SPECIALTIES, CityOrderChange, CityOrderId, CityOrderStatus, CityOrders,
     ExpandableFacility, ItemInputs, ItemOrderSpec, ManufacturedItem, MaterialOrderSpec,
@@ -17,3 +16,4 @@ pub use production::{
     resource_development_yield, ship_display_stats, ship_order_costs,
     ship_type_is_valid_for_order_slot, transport_capacity_order_spec,
 };
+pub use state::{CityState, Stockpile, TownState};

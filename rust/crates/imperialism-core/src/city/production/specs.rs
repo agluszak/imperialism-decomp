@@ -1,7 +1,7 @@
 //! Fixed retail recipes and cost tables for city orders.
 
-use crate::*;
 use super::*;
+use crate::*;
 use enum_map::{Enum, EnumMap};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

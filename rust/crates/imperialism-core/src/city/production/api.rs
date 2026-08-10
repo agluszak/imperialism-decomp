@@ -1,7 +1,7 @@
 //! `GameState` city-order query and mutation API.
 
-use crate::*;
 use super::*;
+use crate::*;
 
 impl GameState {
     fn with_city_orders<R>(

@@ -63,7 +63,11 @@ pub struct BuildingWindowState {
 }
 
 impl CityState {
-    pub fn set_building_window_state(&mut self, slot: CityFacilitySlot, state: BuildingWindowState) {
+    pub fn set_building_window_state(
+        &mut self,
+        slot: CityFacilitySlot,
+        state: BuildingWindowState,
+    ) {
         self.production_flags[slot] = state.flag;
         self.production_current[slot] = state.current;
         self.production_progress[slot] = state.accumulated;

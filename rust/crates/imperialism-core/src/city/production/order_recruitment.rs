@@ -1,7 +1,7 @@
 //! Civilian and military recruitment order helpers.
 
-use crate::*;
 use super::*;
+use crate::*;
 
 #[allow(clippy::too_many_arguments)]
 pub(crate) fn max_recruit_order(

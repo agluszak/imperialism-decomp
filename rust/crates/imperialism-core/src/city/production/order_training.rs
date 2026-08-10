@@ -1,7 +1,7 @@
 //! Trade-school training order helpers.
 
-use crate::*;
 use super::*;
+use crate::*;
 
 pub(crate) fn training_max_order(
     level: TrainingLevel,

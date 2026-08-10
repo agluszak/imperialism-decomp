@@ -1,7 +1,7 @@
 //! Manufactured-item order helpers and shared input reservation.
 
-use crate::*;
 use super::*;
+use crate::*;
 
 pub(crate) fn item_max_order(
     state: &mut RequestedCityOrderState,
@@ -134,7 +134,11 @@ pub(crate) fn set_item_quantity(
     true
 }
 
-pub(crate) fn produce_item(state: &mut RequestedCityOrderState, city: &mut CityState, spec: ItemOrderSpec) {
+pub(crate) fn produce_item(
+    state: &mut RequestedCityOrderState,
+    city: &mut CityState,
+    spec: ItemOrderSpec,
+) {
     let production = &mut city.production_accum[spec.production_slot];
     *production += state.progress.quantity;
     city.adjust_stock(spec.output, state.progress.quantity);

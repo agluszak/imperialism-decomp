@@ -1,9 +1,12 @@
 //! Population growth, food processing, capacity, expansion, and power-plant order helpers.
 
-use crate::*;
 use super::*;
+use crate::*;
 
-pub(crate) fn population_growth_max_order(progress: &mut ProductionProgress, city: &CityState) -> i16 {
+pub(crate) fn population_growth_max_order(
+    progress: &mut ProductionProgress,
+    city: &CityState,
+) -> i16 {
     let mut limit = city.stockpile[ResourceKind::Furniture] + progress.quantity;
     limit = limit.min(city.stockpile[ResourceKind::Clothing] + progress.quantity);
     limit = limit.min(city.stockpile[ResourceKind::Food] + progress.quantity);

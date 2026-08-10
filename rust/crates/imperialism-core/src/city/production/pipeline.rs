@@ -1,7 +1,7 @@
 //! End-of-phase city production resolution.
 
-use crate::*;
 use super::*;
+use crate::*;
 
 impl GameState {
     /// Resolves the city's retained production orders and starts its next
@@ -49,11 +49,7 @@ impl GameState {
                 let state = orders.items[output.resource()]
                     .as_mut()
                     .expect("item order exists for every retail recipe");
-                produce_item(
-                    state,
-                    city,
-                    item_order_spec(output),
-                );
+                produce_item(state, city, item_order_spec(output));
             }
             produce_training(
                 TrainingLevel::Medium,
@@ -127,11 +123,7 @@ impl GameState {
                 let state = orders.items[output.resource()]
                     .as_mut()
                     .expect("item order exists for every retail recipe");
-                restock_item(
-                    state,
-                    city,
-                    item_order_spec(output),
-                );
+                restock_item(state, city, item_order_spec(output));
             }
             city.production_accum[CityFacilitySlot::RegionalPopulation] =
                 retail_region_capacity(economy, owned_region_count);
@@ -219,6 +211,10 @@ pub(crate) fn apply_resource_cost(city: &mut CityState, cost: ResourceCost, quan
 }
 
 #[allow(dead_code)]
-pub(crate) fn set_pending_action(owner: &mut GreatPowerState, action: PendingActionKind, payload: i16) {
+pub(crate) fn set_pending_action(
+    owner: &mut GreatPowerState,
+    action: PendingActionKind,
+    payload: i16,
+) {
     owner.pending_actions[action].queue(payload);
 }
