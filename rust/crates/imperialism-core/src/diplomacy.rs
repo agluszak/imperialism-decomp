@@ -1,12 +1,224 @@
 use crate::*;
 
 const TRADE_CONSULATE_COST: i32 = 500;
+const PLAYER_DIPLOMACY_GRANT_AMOUNTS: [i32; 4] = [1_000, 3_000, 5_000, 10_000];
+const PLAYER_TRADE_POLICY_SCORES: [TradePolicyScore; 7] = [
+    TradePolicyScore::new(95),
+    TradePolicyScore::new(90),
+    TradePolicyScore::new(75),
+    TradePolicyScore::new(50),
+    TradePolicyScore::new(25),
+    TradePolicyScore::new(0),
+    TradePolicyScore::BOYCOTT,
+];
 const DIPLOMACY_PLANNING_QUARTER_BY_NATION: [i32; MajorNationId::COUNT as usize] =
     [0, 3, 1, 2, 1, 2, 0];
 const SEEK_ALLIANCE_BY_FOREIGN_SKILL: [f32; 7] = [0.6, 0.7, 0.7, 0.7, 0.8, 0.6, 0.6];
 const SEEK_ALLIANCE_BY_DEFENSE_SKILL: [f32; 5] = [0.7, 1.1, 1.3, 0.9, 1.0];
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum PlayerDiplomacyOrderResult {
+    Applied,
+    SelectedNation,
+    Rejected(PlayerDiplomacyRejection),
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum PlayerDiplomacyRejection {
+    TargetIsNotIndependent,
+    EmbassyRequired,
+    TradeConsulateRequired,
+    AlliedNationCannotBeBoycotted,
+    InsufficientGrantFunds,
+}
+
 impl GameState {
+    /// Toggles one grant selected on the player diplomacy map.
+    ///
+    /// Retail lets an existing matching grant be withdrawn directly. Posting or
+    /// replacing a grant requires an independent foreign nation and an embassy.
+    pub fn toggle_player_diplomacy_grant(
+        &mut self,
+        source: MajorNationId,
+        target: NationId,
+        grant: DiplomacyGrant,
+    ) -> PlayerDiplomacyOrderResult {
+        assert!(
+            self.nations.majors[source].economy.controller.is_human(),
+            "player diplomacy orders require a human major nation"
+        );
+        assert!(
+            PLAYER_DIPLOMACY_GRANT_AMOUNTS.contains(&grant.amount),
+            "player diplomacy grants use one of the four recovered amounts"
+        );
+        if source.nation() == target {
+            return PlayerDiplomacyOrderResult::SelectedNation;
+        }
+
+        if self.nations.majors[source]
+            .economy
+            .diplomacy_grants_by_nation[target]
+            == Some(grant)
+        {
+            let removed = self.set_diplomacy_grant(source, target, None);
+            debug_assert!(removed, "removing a grant cannot fail");
+            return PlayerDiplomacyOrderResult::Applied;
+        }
+
+        let target_state = self
+            .nations
+            .common(target)
+            .expect("player diplomacy target must be present");
+        if target_state.status != CountryStatus::Independent {
+            return PlayerDiplomacyOrderResult::Rejected(
+                PlayerDiplomacyRejection::TargetIsNotIndependent,
+            );
+        }
+        if self.diplomacy.mission_levels[source.nation()][target] != DiplomaticMissionLevel::Embassy
+        {
+            return PlayerDiplomacyOrderResult::Rejected(PlayerDiplomacyRejection::EmbassyRequired);
+        }
+
+        if self.set_diplomacy_grant(source, target, Some(grant)) {
+            PlayerDiplomacyOrderResult::Applied
+        } else {
+            PlayerDiplomacyOrderResult::Rejected(PlayerDiplomacyRejection::InsufficientGrantFunds)
+        }
+    }
+
+    /// Toggles one of the seven recovered player trade-policy choices.
+    pub fn toggle_player_trade_policy(
+        &mut self,
+        source: MajorNationId,
+        target: NationId,
+        policy: TradePolicyScore,
+    ) -> PlayerDiplomacyOrderResult {
+        assert!(
+            self.nations.majors[source].economy.controller.is_human(),
+            "player diplomacy orders require a human major nation"
+        );
+        assert!(
+            PLAYER_TRADE_POLICY_SCORES.contains(&policy),
+            "player trade policy uses one of the seven recovered scores"
+        );
+        if source.nation() == target {
+            return PlayerDiplomacyOrderResult::SelectedNation;
+        }
+        let target_state = self
+            .nations
+            .common(target)
+            .expect("player diplomacy target must be present");
+        if target_state.status != CountryStatus::Independent {
+            return PlayerDiplomacyOrderResult::Rejected(
+                PlayerDiplomacyRejection::TargetIsNotIndependent,
+            );
+        }
+        let rejection = if policy == TradePolicyScore::BOYCOTT {
+            (self.diplomacy.relationships[source.nation()][target]
+                == DiplomaticRelationship::Alliance)
+                .then_some(PlayerDiplomacyRejection::AlliedNationCannotBeBoycotted)
+        } else {
+            (self.diplomacy.mission_levels[source.nation()][target] == DiplomaticMissionLevel::None)
+                .then_some(PlayerDiplomacyRejection::TradeConsulateRequired)
+        };
+        if let Some(rejection) = rejection {
+            return PlayerDiplomacyOrderResult::Rejected(rejection);
+        }
+
+        let current = self.nations.majors[source].common.trade_policy_by_nation[target];
+        let next = if current == policy {
+            TradePolicyScore::NEUTRAL
+        } else {
+            policy
+        };
+        self.set_trade_policy(source, target, next);
+        PlayerDiplomacyOrderResult::Applied
+    }
+
+    /// Retail nation information panel military classification.
+    pub fn diplomacy_military_power_band(&self, nation: MajorNationId) -> u8 {
+        let scores = (0..MajorNationId::COUNT)
+            .map(MajorNationId::new)
+            .filter(|&candidate| self.major_is_event_eligible(candidate))
+            .map(|candidate| self.military_power_score(candidate) as f32)
+            .collect::<Vec<_>>();
+        classify_diplomacy_information_band(self.military_power_score(nation) as f32, &scores)
+    }
+
+    /// Retail nation information panel industry classification.
+    pub fn diplomacy_industry_band(&self, nation: MajorNationId) -> u8 {
+        let scores = (0..MajorNationId::COUNT)
+            .map(MajorNationId::new)
+            .filter(|&candidate| self.major_is_event_eligible(candidate))
+            .map(|candidate| self.diplomacy_industry_score(candidate) as f32)
+            .collect::<Vec<_>>();
+        classify_diplomacy_information_band(self.diplomacy_industry_score(nation) as f32, &scores)
+    }
+
+    /// Retail `TDiplomacyMgr::GetFavoriteTradePartner` read model.
+    pub fn favorite_trade_partner(&self, minor: MinorNationId) -> Option<MajorNationId> {
+        let minor_nation = minor.nation();
+        let mut best_score = 0;
+        let mut selected = None;
+        for major in (0..MajorNationId::COUNT)
+            .map(MajorNationId::new)
+            .filter(|&major| self.major_is_event_eligible(major))
+        {
+            let policy = self.nations.majors[major].common.trade_policy_by_nation[minor_nation];
+            let score = (200 - policy.retail())
+                * i32::from(self.diplomacy.standings[minor_nation][major.nation()]);
+            let select = if score > best_score {
+                true
+            } else if score == best_score {
+                if self.nations.minors[minor].as_ref().is_some_and(|nation| {
+                    nation.common.status == CountryStatus::ColonyOf(major.nation())
+                }) {
+                    true
+                } else {
+                    let mut tie_seed = i32::from(minor.get()) * 7
+                        + i32::from(major.get())
+                        + self.turn.economic_turn
+                        + score;
+                    if tie_seed == 0 {
+                        tie_seed = i32::from(minor.get());
+                    }
+                    let draw = (tie_seed as u32).wrapping_mul(0x015a_4e35).wrapping_add(1);
+                    (draw >> 12) & 1 != 0
+                }
+            } else {
+                false
+            };
+            if select {
+                best_score = score;
+                selected = Some(major);
+            }
+        }
+        selected
+    }
+
+    fn major_is_event_eligible(&self, nation: MajorNationId) -> bool {
+        !matches!(
+            self.nations.majors[nation].common.status,
+            CountryStatus::ProtectorateOf(_)
+        )
+    }
+
+    fn diplomacy_industry_score(&self, nation: MajorNationId) -> i32 {
+        let major = &self.nations.majors[nation];
+        4 + [
+            ProductionSlot::TextileMill,
+            ProductionSlot::ClothingFactory,
+            ProductionSlot::SteelMill,
+            ProductionSlot::Metalworks,
+            ProductionSlot::LumberMill,
+            ProductionSlot::FurnitureFactory,
+            ProductionSlot::OilRefinery,
+        ]
+        .into_iter()
+        .map(|slot| i32::from(major.city.production_orders[slot]))
+        .sum::<i32>()
+    }
+
     /// Whether every still-unported first-turn diplomacy call is provably a no-op.
     pub(crate) fn supports_first_turn_diplomacy_phase(&self) -> bool {
         if self.turn.economic_turn != 1
@@ -307,5 +519,28 @@ impl GameState {
             .min(army_power / 2);
         let production = i32::from(city.production_orders[ProductionSlot::Metalworks]);
         army_power + reinforcement + production.min(army_power / 4)
+    }
+}
+
+fn classify_diplomacy_information_band(own_score: f32, scores: &[f32]) -> u8 {
+    if scores.len() < 2 {
+        return 2;
+    }
+    let count = scores.len() as f32;
+    let sum = scores.iter().sum::<f32>();
+    let mean = sum / count;
+    let sum_of_squares = scores.iter().map(|score| score * score).sum::<f32>();
+    let deviation =
+        ((sum_of_squares - 2.0 * mean * sum + mean * mean * count) / (count - 1.0)).sqrt();
+    if own_score > mean + 2.0 * deviation {
+        4
+    } else if own_score > mean + deviation {
+        3
+    } else if own_score >= mean - deviation {
+        2
+    } else if own_score >= mean - 2.0 * deviation {
+        1
+    } else {
+        0
     }
 }

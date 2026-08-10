@@ -47,6 +47,7 @@ pub use city_site::{
 pub use civilian_work::{CivilianWorkOrder, RailSegment, TurnsRemaining};
 pub use create_random_game::create_random_game;
 pub use difficulty::Difficulty;
+pub use diplomacy::{PlayerDiplomacyOrderResult, PlayerDiplomacyRejection};
 pub use ids::{
     CivilianUnitId, MajorNationId, MilitaryUnitId, MinorNationId, NationId, OceanZoneId,
     ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,

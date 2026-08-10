@@ -52,10 +52,9 @@ const LOW_DIFFICULTY_HUMAN_PRODUCTION: ProductionTable<i16> =
 /// The returned state matches the capital-selection-ready boundary for Normal+
 /// (`phase_code = 2`, human capital not yet placed).
 ///
-/// Country display name / localized-name policy are intentionally not inputs here:
-/// retail stores them on `TCountry` identity strings and `TSimMgr::useLocalizedNameTables68`,
-/// outside the semantic `GameState` capture. Wire them only when those fields exist in
-/// authoritative state.
+/// Random-map display-name generation and localized-name selection are separate
+/// setup operations that are not yet ported. Nation display names therefore remain
+/// empty here rather than inventing values at this construction boundary.
 pub fn create_random_game(
     preview: &RandomSetupPreview,
     human_nation: MajorNationId,
@@ -1905,6 +1904,7 @@ fn minor_nation(nation: MinorNationId) -> MinorNation {
     let first_member = MinorNationId::FIRST + (nation.get() - MinorNationId::FIRST) / 4 * 4;
     MinorNation {
         common: NationCommonState {
+            display_name: String::new(),
             status: CountryStatus::Independent,
             owned_regions: Vec::new(),
             treasury: 5_000,
