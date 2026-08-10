@@ -53,6 +53,11 @@ runtime-test-list:
 runtime-run name *args:
   uv run python -m tools.runtime.cli run "{{name}}" {{args}}
 
+[doc('Run one native model transition case through the shared oracle')]
+[group('runtime-test')]
+native-oracle case *args:
+  IMPERIALISM_NATIVE_CASE="{{case}}" just runtime-run native_transition_oracle {{args}}
+
 [doc('Run one named native semantic runtime test (rebuilds first)')]
 [group('runtime-test')]
 runtime-test name *args:

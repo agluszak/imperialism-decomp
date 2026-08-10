@@ -11,12 +11,12 @@ reconstruction in `../decomp/`. Run Rust commands from this directory.
 - `imperialism-testkit` reads named semantic captures and runs process-isolated differential
   checks.
 
-Native semantic scenarios capture `before`, `case`, `after`, and `result` JSON. The testkit strictly
-validates the published scenario name, seed, status, evidence kind, required captures, and unknown
-fields, then compares operation outcomes as well as complete `GameState`. Each Rust scenario keeps
-its name, case type, result type, and direct apply function together, then calls
-`differential(SCENARIO, apply_scenario)`. Retail fixtures live in `../fixtures/retail/`. The Rust game
-state does not depend on C++ layouts or Bevy ECS entities.
+Native semantic transitions capture `before`, `case`, `after`, and `result` JSON through one shared
+C++ oracle (`native_transition_oracle`). The testkit strictly validates the published oracle name,
+seed, status, evidence kind, required captures, and unknown fields, then compares operation outcomes
+as well as complete `GameState`. Domain integration tests call `compare_native(case, apply)`. Retail
+fixtures live in `../fixtures/retail/`. The Rust game state does not depend on C++ layouts or Bevy ECS
+entities.
 
 Evidence classifications are retained: `retail_fixture_oracle` means Rust agrees with the current C++
 reconstruction from a retail-derived fixture; it is not direct original-executable equivalence.
@@ -33,7 +33,7 @@ cargo clippy --workspace --all-targets -- -D warnings
 Native-oracle differential tests are ignored by default (they need Wine/`just runtime-run`):
 
 ```sh
-cargo test -p imperialism-testkit -- --ignored
+cargo test -p imperialism-core -- --ignored
 ```
 
 ## Normal retail launch

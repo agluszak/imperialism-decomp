@@ -33,31 +33,23 @@ class RuntimeCatalogTests(unittest.TestCase):
         factories = [test.native_factory for test in TESTS]
         self.assertEqual(len(factories), len(set(factories)))
 
-    def test_rolling_stock_corpus_has_success_and_insufficient_resources(self) -> None:
-        success = find_test("rolling_stock")
-        insufficient = find_test("rolling_stock_insufficient_resources")
-        self.assertIsNotNone(success)
-        self.assertIsNotNone(insufficient)
-        assert success is not None
-        assert insufficient is not None
-        self.assertEqual(success.fixture, insufficient.fixture)
-        self.assertEqual(success.evidence_kind, insufficient.evidence_kind)
-        self.assertEqual(success.native_snapshots, insufficient.native_snapshots)
-        self.assertIn("RollingStockInsufficientResourcesTest()", render_factories())
-        self.assertIn('"rolling_stock_insufficient_resources"', render_registry())
-
-    def test_first_turn_alert_phase_is_a_retail_fixture_differential(self) -> None:
-        phase = find_test("first_turn_alert_phase")
+    def test_native_transition_oracle_is_the_sole_model_differential_entry(self) -> None:
+        oracle = find_test("native_transition_oracle")
         loaded_turn = find_test("easy_turn_from_save")
-        self.assertIsNotNone(phase)
+        self.assertIsNotNone(oracle)
         self.assertIsNotNone(loaded_turn)
-        assert phase is not None
+        assert oracle is not None
         assert loaded_turn is not None
-        self.assertEqual(phase.fixture, loaded_turn.fixture)
-        self.assertEqual(phase.evidence_kind, "retail_fixture_oracle")
-        self.assertEqual(phase.native_snapshots, ("game_state",))
-        self.assertIn("FirstTurnAlertPhaseTest()", render_factories())
-        self.assertIn('"first_turn_alert_phase"', render_registry())
+        self.assertEqual(oracle.fixture, loaded_turn.fixture)
+        self.assertEqual(oracle.evidence_kind, "retail_fixture_oracle")
+        self.assertEqual(oracle.native_snapshots, ("game_state",))
+        self.assertEqual(oracle.suites, ())
+        self.assertEqual(oracle.required_oracles, ())
+        self.assertIn("NativeTransitionOracle()", render_factories())
+        self.assertIn('"native_transition_oracle"', render_registry())
+        self.assertIsNone(find_test("rolling_stock"))
+        self.assertIsNone(find_test("city_item_order_increase"))
+        self.assertIsNone(find_test("first_turn_alert_phase"))
 
     def test_pr_suite_is_nonempty_and_part_of_full(self) -> None:
         pr_names = {test.name for test in tests_in_suite("pr")}

@@ -1,14 +1,13 @@
 #![forbid(unsafe_code)]
 
 mod differential;
-pub mod differential_scenarios;
 mod oracle;
 mod runtime_capture;
 
 pub use differential::{
-    assert_game_state_eq, differential, differential_from_result, run_native_scenario,
+    assert_game_state_eq, compare_native, compare_native_from_result, run_native_case,
+    run_native_scenario,
 };
-pub use differential_scenarios::ScenarioMeta;
 use imperialism_core::{
     Difficulty, MajorNationId, MapTopology, RetailLcg,
     differential_trace::{

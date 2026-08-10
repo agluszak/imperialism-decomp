@@ -1,8 +1,8 @@
 #include "NativeCases.h"
 
-#include "RuntimeScenario.h"
-#include "RuntimeTestFactory.h"
 #include "flows/LoadGameFlow.h"
+#include "scenarios/RuntimeScenario.h"
+#include "scenarios/RuntimeTestFactory.h"
 
 #include <stdlib.h>
 #include <string.h>
