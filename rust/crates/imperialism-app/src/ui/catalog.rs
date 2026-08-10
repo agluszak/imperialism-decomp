@@ -398,6 +398,12 @@ pub(crate) struct UiSpawner<'w, 's> {
 }
 
 impl UiSpawner<'_, '_> {
+    pub(crate) fn palette_color(&self, index: u8) -> Color {
+        let [red, green, blue] =
+            self.assets.retail_assets.assets().default_dib_palette()[index].to_array();
+        Color::srgb_u8(red, green, blue)
+    }
+
     pub(crate) fn spawn(&mut self, view_id: ScopedViewId) -> SpawnedView {
         let view = self
             .catalog

@@ -1284,6 +1284,10 @@ impl PopulationState {
         self.baseline_labor
     }
 
+    pub const fn production_labor(&self) -> LaborPool {
+        self.production_labor
+    }
+
     pub fn predicted_need(&self, resource: ResourceKind) -> i16 {
         self.predicted_need_by_resource[resource]
     }
