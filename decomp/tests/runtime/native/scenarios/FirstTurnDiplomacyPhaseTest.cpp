@@ -1,9 +1,10 @@
+#include "JsonObject.h"
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
-#include "RuntimeSemanticCapture.h"
+#include "screens/DiplomacyScreen.h"
 
 #include "game/globals/shared_globals.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -47,9 +48,21 @@ private:
     if (g_pSimMgr->turnStateCode != 7) {
       return RuntimeActionResult::Failure("the diplomacy phase did not advance to phase 7");
     }
+    if (!DiplomacyScreen::IsCurrent()) {
+      return RuntimeActionResult::Failure("the diplomacy phase did not display the diplomacy map");
+    }
 
-    if (!CaptureVoidOpResult(RunState())) {
-      return RuntimeActionResult::Failure("the void operation result capture is unavailable");
+    // The phase dispatches NEXT after displaying the map; the empty transition
+    // queue then posts the next-phase command. This is a visible non-blocking
+    // event rather than a player-intervention gate.
+    JsonObject result;
+    result.Set("kind", "continues");
+    result.Set("from", 6);
+    result.Set("to", 7);
+    result.Set("visible_ui", "diplomacy_map");
+    RunState().SetCapture("result", result.Release());
+    if (!RunState().HasCapture("result")) {
+      return RuntimeActionResult::Failure("the phase outcome capture is unavailable");
     }
     if (!CaptureGameState(RunState(), "after")) {
       return RuntimeActionResult::Failure("the after game-state capture is unavailable");

@@ -7,6 +7,38 @@ impl PendingWorkState {
     pub(crate) fn queue_newspaper_event(&mut self, event: PendingNewspaperEvent) {
         self.newspaper_events.insert(0, event);
     }
+
+    /// Retail concatenates consulate and embassy stories by the major nation
+    /// that established them. A later target joins the existing nation mask;
+    /// the first target creates a new record at the front of the shared queue.
+    pub(crate) fn queue_diplomatic_mission_event(
+        &mut self,
+        event: InterNationNewsKind,
+        subject: MajorNationId,
+        counterpart: NationId,
+    ) {
+        for pending in &mut self.newspaper_events {
+            if let PendingNewspaperEvent::InterNation {
+                event: pending_event,
+                subject: pending_subject,
+                related_nations,
+            } = pending
+                && *pending_event == event
+                && *pending_subject == subject
+            {
+                related_nations[counterpart] = true;
+                return;
+            }
+        }
+
+        let mut related_nations = NationTable::default();
+        related_nations[counterpart] = true;
+        self.queue_newspaper_event(PendingNewspaperEvent::InterNation {
+            event,
+            subject,
+            related_nations,
+        });
+    }
 }
 
 #[cfg(test)]

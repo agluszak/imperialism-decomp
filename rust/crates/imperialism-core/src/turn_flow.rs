@@ -1,4 +1,5 @@
 use crate::{GameState, TurnState};
+use serde::{Deserialize, Serialize};
 
 impl TurnState {
     /// Mirrors `TSimMgr::AdvanceSeason`.
@@ -14,90 +15,112 @@ impl TurnState {
 }
 
 /// Why turn progression stopped and requires UI or a future phase port.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", content = "detail", rename_all = "snake_case")]
 pub enum TurnBlock {
     PlayerOrders,
-    Unimplemented { phase: i32 },
+    Ui(UiGate),
+    Unsupported { phase: crate::PhaseCode },
 }
 
-/// Result of advancing the recovered global turn state machine once.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum AdvanceTurnOutcome {
-    Continues { from: i32, to: i32 },
-    Blocked { phase: i32, block: TurnBlock },
+/// Retail screens that can be exposed by global turn progression.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum UiGate {
+    DiplomacyMap,
+    OfferSheet,
+    Combat,
+    DiplomacyOffer,
+    DealBook,
+    TechnologyAdvance,
+    Newspaper,
+    TurnAlert,
+}
+
+/// Result of resolving one recovered global turn phase.
+///
+/// A `visible_ui` on `Continues` is displayed by retail without waiting for
+/// player intervention. UI that does wait is represented by
+/// `Blocked { block: TurnBlock::Ui(_) }`.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum TurnPhaseOutcome {
+    Continues {
+        from: crate::PhaseCode,
+        to: crate::PhaseCode,
+        visible_ui: Option<UiGate>,
+    },
+    Blocked {
+        phase: crate::PhaseCode,
+        block: TurnBlock,
+    },
 }
 
 impl GameState {
     /// Advance one recoverable turn phase without pretending unported phases completed.
-    pub fn advance_turn_step(&mut self) -> AdvanceTurnOutcome {
-        let from = self.turn.phase.retail();
-        match from {
+    pub fn advance_turn_step(&mut self) -> TurnPhaseOutcome {
+        let from = self.turn.phase;
+        match from.retail() {
             4 => {
                 self.turn.phase = crate::PhaseCode::STRATEGIC_MAP;
-                AdvanceTurnOutcome::Blocked {
-                    phase: 5,
+                TurnPhaseOutcome::Blocked {
+                    phase: crate::PhaseCode::STRATEGIC_MAP,
                     block: TurnBlock::PlayerOrders,
                 }
             }
             5 if self.turn.economic_turn == 1 => {
                 self.turn.phase = crate::PhaseCode::TURN;
-                AdvanceTurnOutcome::Continues { from, to: 6 }
+                TurnPhaseOutcome::Continues {
+                    from,
+                    to: crate::PhaseCode::TURN,
+                    visible_ui: None,
+                }
             }
-            5 => AdvanceTurnOutcome::Blocked {
-                phase: 5,
-                block: TurnBlock::Unimplemented { phase: 5 },
+            5 => TurnPhaseOutcome::Blocked {
+                phase: from,
+                block: TurnBlock::Unsupported { phase: from },
             },
+            6 => self.resolve_diplomacy_phase(),
             0x10 => {
                 self.turn.phase = crate::PhaseCode::from_retail(0x11);
                 self.turn.advance_season();
-                AdvanceTurnOutcome::Continues { from, to: 0x11 }
+                TurnPhaseOutcome::Continues {
+                    from,
+                    to: self.turn.phase,
+                    visible_ui: None,
+                }
             }
-            0x12 => AdvanceTurnOutcome::Blocked {
-                phase: 0x12,
-                block: TurnBlock::Unimplemented { phase: 0x12 },
+            0x12 => TurnPhaseOutcome::Blocked {
+                phase: from,
+                block: TurnBlock::Unsupported { phase: from },
             },
-            phase => AdvanceTurnOutcome::Blocked {
-                phase,
-                block: TurnBlock::Unimplemented { phase },
+            _ => TurnPhaseOutcome::Blocked {
+                phase: from,
+                block: TurnBlock::Unsupported { phase: from },
             },
         }
     }
 
-    pub fn advance_until_blocked(&mut self) -> AdvanceTurnOutcome {
+    /// Advance across silent phases until retail exposes UI or progression
+    /// blocks for input or an unsupported phase.
+    pub fn advance_until_boundary(&mut self) -> TurnPhaseOutcome {
         loop {
             match self.advance_turn_step() {
-                AdvanceTurnOutcome::Continues { .. } => continue,
-                blocked => return blocked,
+                TurnPhaseOutcome::Continues {
+                    visible_ui: None, ..
+                } => continue,
+                boundary => return boundary,
             }
         }
     }
 
-    pub fn finish_player_orders(&mut self) -> AdvanceTurnOutcome {
+    pub fn finish_player_orders(&mut self) -> TurnPhaseOutcome {
         assert_eq!(
             self.turn.phase,
             crate::PhaseCode::STRATEGIC_MAP,
             "player orders can finish only at the strategic-map boundary"
         );
-        self.advance_until_blocked()
-    }
-
-    pub fn resume_after_offer_sheet(&mut self) -> AdvanceTurnOutcome {
-        self.resume_after_phase(9)
-    }
-    pub fn resume_after_deal_book(&mut self) -> AdvanceTurnOutcome {
-        self.resume_after_phase(0xe)
-    }
-    pub fn resume_after_newspaper(&mut self) -> AdvanceTurnOutcome {
-        self.resume_after_phase(0x12)
-    }
-
-    fn resume_after_phase(&mut self, expected: i32) -> AdvanceTurnOutcome {
-        let phase = self.turn.phase.retail();
-        assert_eq!(
-            phase, expected,
-            "turn continuation resumed from the wrong phase"
-        );
-        self.advance_until_blocked()
+        self.advance_until_boundary()
     }
 }
 
@@ -164,14 +187,14 @@ mod tests {
     }
 
     #[test]
-    fn advance_until_blocked_stops_at_the_player_order_boundary() {
+    fn advance_until_boundary_stops_at_the_player_order_boundary() {
         let mut state = crate::test_support::game_state();
         state.turn.phase = crate::PhaseCode::HOME_PLACEMENT;
 
         assert_eq!(
-            state.advance_until_blocked(),
-            AdvanceTurnOutcome::Blocked {
-                phase: crate::PhaseCode::STRATEGIC_MAP.retail(),
+            state.advance_until_boundary(),
+            TurnPhaseOutcome::Blocked {
+                phase: crate::PhaseCode::STRATEGIC_MAP,
                 block: TurnBlock::PlayerOrders,
             }
         );
@@ -186,7 +209,11 @@ mod tests {
 
         assert_eq!(
             state.advance_turn_step(),
-            AdvanceTurnOutcome::Continues { from: 5, to: 6 }
+            TurnPhaseOutcome::Continues {
+                from: crate::PhaseCode::STRATEGIC_MAP,
+                to: crate::PhaseCode::TURN,
+                visible_ui: None,
+            }
         );
         assert_eq!(state.turn.phase, crate::PhaseCode::TURN);
     }
@@ -199,9 +226,11 @@ mod tests {
             state.turn.phase = crate::PhaseCode::from_retail(phase);
             assert_eq!(
                 state.advance_turn_step(),
-                AdvanceTurnOutcome::Blocked {
-                    phase,
-                    block: TurnBlock::Unimplemented { phase },
+                TurnPhaseOutcome::Blocked {
+                    phase: crate::PhaseCode::from_retail(phase),
+                    block: TurnBlock::Unsupported {
+                        phase: crate::PhaseCode::from_retail(phase),
+                    },
                 }
             );
             assert_eq!(state.turn.phase.retail(), phase);
@@ -209,16 +238,18 @@ mod tests {
     }
 
     #[test]
-    fn unported_diplomacy_phase_does_not_advance_state() {
+    fn unsupported_diplomacy_branch_does_not_advance_state() {
         let mut state = crate::test_support::game_state();
         state.turn.economic_turn = 1;
         state.turn.phase = crate::PhaseCode::TURN;
 
         assert_eq!(
             state.advance_turn_step(),
-            AdvanceTurnOutcome::Blocked {
-                phase: 6,
-                block: TurnBlock::Unimplemented { phase: 6 },
+            TurnPhaseOutcome::Blocked {
+                phase: crate::PhaseCode::TURN,
+                block: TurnBlock::Unsupported {
+                    phase: crate::PhaseCode::TURN,
+                },
             }
         );
         assert_eq!(state.turn.phase, crate::PhaseCode::TURN);
