@@ -217,6 +217,28 @@ const LUMBER_STOCKS: [(ResourceKind, FourCc, i16); 1] =
 const FURNITURE_STOCKS: [(ResourceKind, FourCc, i16); 1] =
     [(ResourceKind::Lumber, fourcc!("lumb"), 2)];
 const OIL_STOCKS: [(ResourceKind, FourCc, i16); 1] = [(ResourceKind::Oil, fourcc!("oil "), 2)];
+const WAREHOUSE_STOCKS: [(ResourceKind, FourCc); 20] = [
+    (ResourceKind::Cotton, fourcc!("cott")),
+    (ResourceKind::Wool, fourcc!("wool")),
+    (ResourceKind::Timber, fourcc!("timb")),
+    (ResourceKind::Coal, fourcc!("coal")),
+    (ResourceKind::Iron, fourcc!("iron")),
+    (ResourceKind::Horses, fourcc!("hors")),
+    (ResourceKind::Oil, fourcc!("oil ")),
+    (ResourceKind::Food, fourcc!("food")),
+    (ResourceKind::Fabric, fourcc!("fabr")),
+    (ResourceKind::Lumber, fourcc!("lumb")),
+    (ResourceKind::Paper, fourcc!("pape")),
+    (ResourceKind::Steel, fourcc!("stee")),
+    (ResourceKind::Fuel, fourcc!("fuel")),
+    (ResourceKind::Clothing, fourcc!("clot")),
+    (ResourceKind::Furniture, fourcc!("furn")),
+    (ResourceKind::Hardware, fourcc!("hard")),
+    (ResourceKind::Arms, fourcc!("arma")),
+    (ResourceKind::Grain, fourcc!("grai")),
+    (ResourceKind::Fruit, fourcc!("prod")),
+    (ResourceKind::Livestock, fourcc!("live")),
+];
 
 #[derive(Clone, Copy)]
 struct CityOrderBinding {
@@ -566,6 +588,20 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
                 catalog.require_control_under(view_id, tag, &[binding.tag])?;
             }
         }
+    }
+    let warehouse = dialog(ProductionSlot::Warehouse)?;
+    catalog.require_unique_bindings(
+        warehouse,
+        &[
+            fourcc!("WIND"),
+            fourcc!("DLOG"),
+            fourcc!("name"),
+            fourcc!("labo"),
+            fourcc!("powe"),
+        ],
+    )?;
+    for &(_, tag) in &WAREHOUSE_STOCKS {
+        catalog.require_unique_bindings(warehouse, &[tag])?;
     }
     let armory = dialog(ProductionSlot::Armory)?;
     catalog.require_unique_bindings(
@@ -920,6 +956,8 @@ enum CityValue {
     LaborHigh,
     LaborAvailable,
     PowerAvailable,
+    Stock(ResourceKind),
+    WarehouseFishAndLivestock,
     Treasury,
     PredictedNeed(ResourceKind),
     OrderQuantity(CityOrderId),
@@ -1489,6 +1527,7 @@ fn supports_city_dialog(slot: ProductionSlot) -> bool {
                 | ProductionSlot::Armory
                 | ProductionSlot::University
                 | ProductionSlot::Shipyard
+                | ProductionSlot::Warehouse
                 | ProductionSlot::FoodProcessing
                 | ProductionSlot::PowerPlant
                 | ProductionSlot::Transport
@@ -1634,6 +1673,13 @@ fn open_city_dialog(
                 &spawned,
                 nation,
                 shipyard_data.expect("Shipyard branch has retail ship data"),
+            ),
+            ProductionSlot::Warehouse => bind_warehouse_dialog(
+                ui,
+                &spawned,
+                nation,
+                building_name,
+                state.technology.oil_drilling_available,
             ),
             ProductionSlot::FoodProcessing => {
                 bind_food_dialog(&mut ui.commands, catalog, &spawned, nation, building_name)
@@ -2498,6 +2544,146 @@ fn bind_shipyard_dialog(
     commands
         .entity(picture)
         .insert(ShipyardDetailPicture { dialog: root });
+}
+
+fn bind_warehouse_dialog(
+    ui: &mut UiSpawner,
+    spawned: &SpawnedView,
+    nation: MajorNationId,
+    building_name: String,
+    oil_drilling_available: bool,
+) {
+    let (title_font, title_layout, _) = ui
+        .text_style(RetailTextStylePreset {
+            font_family: 1,
+            face_flags: 0,
+            point_size: 12,
+            alignment: 1,
+        })
+        .expect("retail Warehouse title text style");
+    let (value_font, value_layout, _) = ui
+        .text_style(RetailTextStylePreset {
+            font_family: 3,
+            face_flags: 0,
+            point_size: 10,
+            alignment: 1,
+        })
+        .expect("retail Warehouse value text style");
+    let text_color = ui.palette_color(0);
+    let root = bind_city_dialog_root(&mut ui.commands, spawned, nation, ProductionSlot::Warehouse);
+    let name = spawned
+        .require_unique(fourcc!("name"))
+        .expect("validated Warehouse name binding");
+    ui.commands.entity(name).insert((
+        Text::new(building_name),
+        title_font,
+        title_layout,
+        TextColor(text_color),
+    ));
+
+    for &(resource, tag) in &WAREHOUSE_STOCKS {
+        let value = if resource == ResourceKind::Livestock {
+            CityValue::WarehouseFishAndLivestock
+        } else {
+            CityValue::Stock(resource)
+        };
+        let control = spawned
+            .require_unique(tag)
+            .expect("validated Warehouse stock binding");
+        ui.commands.entity(control).insert((
+            Text::new(""),
+            CityValueBinding {
+                dialog: Some(root),
+                value,
+            },
+            value_font.clone(),
+            value_layout,
+            TextColor(text_color),
+        ));
+    }
+    for (tag, value) in [
+        (fourcc!("labo"), CityValue::LaborAvailable),
+        (fourcc!("powe"), CityValue::PowerAvailable),
+    ] {
+        let control = spawned
+            .require_unique(tag)
+            .expect("validated Warehouse city-value binding");
+        ui.commands.entity(control).insert((
+            Text::new(""),
+            CityValueBinding {
+                dialog: Some(root),
+                value,
+            },
+            value_font.clone(),
+            value_layout,
+            TextColor(text_color),
+        ));
+    }
+
+    for tag in [fourcc!("oil "), fourcc!("fuel"), fourcc!("powe")] {
+        let control = spawned
+            .require_unique(tag)
+            .expect("validated Warehouse oil-technology binding");
+        let mut control_commands = ui.commands.entity(control);
+        if oil_drilling_available {
+            control_commands
+                .insert(Visibility::Visible)
+                .remove::<InteractionDisabled>();
+        } else {
+            control_commands.insert((Visibility::Hidden, InteractionDisabled));
+        }
+    }
+    if !oil_drilling_available {
+        return;
+    }
+
+    let picture = PictureId::new(9215);
+    let dialog = spawned
+        .require_unique(fourcc!("DLOG"))
+        .expect("validated Warehouse picture binding");
+    match ui.picture(picture) {
+        Ok(handle) => {
+            ui.commands.entity(dialog).insert(ImageNode::new(handle));
+        }
+        Err(error) => warn!("could not load Warehouse picture {picture}: {error}"),
+    }
+    ui.commands
+        .entity(dialog)
+        .entry::<Node>()
+        .and_modify(|mut node| node.overflow = Overflow::clip());
+    for tag in [fourcc!("WIND"), fourcc!("DLOG")] {
+        let entity = spawned
+            .require_unique(tag)
+            .expect("validated Warehouse bounds binding");
+        ui.commands
+            .entity(entity)
+            .entry::<Node>()
+            .and_modify(|mut node| {
+                node.width = px(176);
+                node.height = px(335);
+            });
+    }
+    for tag in [
+        fourcc!("hors"),
+        fourcc!("food"),
+        fourcc!("labo"),
+        fourcc!("grai"),
+        fourcc!("prod"),
+        fourcc!("live"),
+    ] {
+        let entity = spawned
+            .require_unique(tag)
+            .expect("validated Warehouse shifted-control binding");
+        ui.commands
+            .entity(entity)
+            .entry::<Node>()
+            .and_modify(|mut node| {
+                let Val::Px(top) = node.top else {
+                    panic!("catalog Warehouse control has fixed retail coordinates");
+                };
+                node.top = px(top + 176.0);
+            });
+    }
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -3465,7 +3651,10 @@ fn sync_city_values(
     for (root, dialog, armory_selection) in &dialogs {
         let mut order_views = Vec::new();
         let bindings = dialog_orders(dialog.slot);
-        assert!(!bindings.is_empty(), "open city dialog has order bindings");
+        assert!(
+            !bindings.is_empty() || dialog.slot == ProductionSlot::Warehouse,
+            "only the retail Warehouse dialog has no city orders"
+        );
         if !matches!(
             dialog.slot,
             ProductionSlot::Armory | ProductionSlot::University | ProductionSlot::Shipyard
@@ -3541,6 +3730,10 @@ fn sync_city_values(
             CityValue::LaborHigh => labor.high,
             CityValue::LaborAvailable => labor_available,
             CityValue::PowerAvailable => city.power_available,
+            CityValue::Stock(resource) => city.stockpile[resource],
+            CityValue::WarehouseFishAndLivestock => {
+                city.stockpile[ResourceKind::Fish] + city.stockpile[ResourceKind::Livestock]
+            }
             CityValue::PredictedNeed(resource) => city.population.predicted_need(resource),
             CityValue::Treasury => {
                 text.0 = format_currency(major.common().treasury);
