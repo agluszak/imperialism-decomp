@@ -1,6 +1,7 @@
 #include "JsonArray.h"
 #include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
+#include "RuntimeDifferentialCapture.h"
 #include "RuntimeRun.h"
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
@@ -48,12 +49,10 @@ private:
           "military cleanup did not begin from the retained offer-sheet presentation");
     }
 
-    if (!CaptureGameState(RunState(), "before")) {
-      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
-    }
-    RunState().SetCapture("case", json_value_init_null());
-    if (!RunState().HasCapture("case")) {
-      return RuntimeActionResult::Failure("the void case capture is unavailable");
+    RuntimeDifferentialCapture capture(RunState());
+    RuntimeActionResult started = capture.Begin(json_value_init_null());
+    if (!started.Succeeded()) {
+      return started;
     }
 
     g_pSimMgr->AdvanceGlobalTurnStateMachine();
@@ -71,14 +70,7 @@ private:
     result.Set("from", 0x15);
     result.Set("to", 0xd);
     result.Set("effects", effects.Release());
-    RunState().SetCapture("result", result.Release());
-    if (!RunState().HasCapture("result")) {
-      return RuntimeActionResult::Failure("the turn outcome capture is unavailable");
-    }
-    if (!CaptureGameState(RunState(), "after")) {
-      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
-    }
-    return RuntimeActionResult::Success();
+    return capture.Finish(result.Release());
   }
 };
 

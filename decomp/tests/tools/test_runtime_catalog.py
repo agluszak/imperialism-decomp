@@ -55,7 +55,7 @@ class RuntimeCatalogTests(unittest.TestCase):
         assert loaded_turn is not None
         self.assertEqual(phase.fixture, loaded_turn.fixture)
         self.assertEqual(phase.evidence_kind, "retail_fixture_oracle")
-        self.assertEqual(phase.native_snapshots, ("game_state",))
+        self.assertEqual(phase.native_snapshots, ())
         self.assertIn("FirstTurnAlertPhaseTest()", render_factories())
         self.assertIn('"first_turn_alert_phase"', render_registry())
 

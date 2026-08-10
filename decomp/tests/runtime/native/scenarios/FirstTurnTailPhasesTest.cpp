@@ -1,6 +1,7 @@
 #include "JsonArray.h"
 #include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
+#include "RuntimeDifferentialCapture.h"
 #include "RuntimeRun.h"
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
@@ -95,14 +96,12 @@ private:
           "the requested tail phase began with the wrong presentation state");
     }
 
-    if (!CaptureGameState(RunState(), "before")) {
-      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
+    RuntimeDifferentialCapture capture(RunState());
+    RuntimeActionResult started = capture.Begin(json_value_init_null());
+    if (!started.Succeeded()) {
+      return started;
     }
     MarkScriptStep("tail phase before state captured");
-    RunState().SetCapture("case", json_value_init_null());
-    if (!RunState().HasCapture("case")) {
-      return RuntimeActionResult::Failure("the void case capture is unavailable");
-    }
 
     g_pSimMgr->AdvanceGlobalTurnStateMachine();
     if (g_pSimMgr->turnStateCode != toPhase_) {
@@ -132,12 +131,9 @@ private:
       result.Set("block", block.Release());
     }
     result.Set("effects", effects.Release());
-    RunState().SetCapture("result", result.Release());
-    if (!RunState().HasCapture("result")) {
-      return RuntimeActionResult::Failure("the turn outcome capture is unavailable");
-    }
-    if (!CaptureGameState(RunState(), "after")) {
-      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
+    RuntimeActionResult finished = capture.Finish(result.Release());
+    if (!finished.Succeeded()) {
+      return finished;
     }
     if (!DiscardScheduledTurnAdvances(RunState().MainWindowHandle())) {
       return RuntimeActionResult::Failure(

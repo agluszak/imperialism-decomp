@@ -13,10 +13,9 @@ reconstruction in `../decomp/`. Run Rust commands from this directory.
 
 Native semantic scenarios capture `before`, `case`, `after`, and `result` JSON. The testkit strictly
 validates the published scenario name, seed, status, evidence kind, required captures, and unknown
-fields, then compares operation outcomes as well as complete `GameState`. Each Rust scenario keeps
-its name, case type, result type, and direct apply function together, then calls
-`differential(SCENARIO, apply_scenario)`. Retail fixtures live in `../fixtures/retail/`. The Rust game
-state does not depend on C++ layouts or Bevy ECS entities.
+fields, then compares operation outcomes as well as complete `GameState`. Each Rust differential is
+one scenario name plus a typed closure via `differential(name, apply)`. Retail fixtures live in
+`../fixtures/retail/`. The Rust game state does not depend on C++ layouts or Bevy ECS entities.
 
 Evidence classifications are retained: `retail_fixture_oracle` means Rust agrees with the current C++
 reconstruction from a retail-derived fixture; it is not direct original-executable equivalence.

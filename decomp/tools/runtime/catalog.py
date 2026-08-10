@@ -74,6 +74,23 @@ class RuntimeTestSpec:
     default_timeout: float = 300.0
 
 
+BEGINNING_OF_GAME = RuntimeFixtureSpec(
+    "beginning_of_game.imp",
+    "retail_fixture_oracle",
+)
+
+
+def retail_fixture_case(name: str, factory: str) -> RuntimeTestSpec:
+    return RuntimeTestSpec(
+        name,
+        factory,
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=BEGINNING_OF_GAME,
+        required_oracles=(),
+    )
+
+
 TESTS = (
     RuntimeTestSpec(
         "boot_managers",
@@ -198,68 +215,15 @@ TESTS = (
         "EasyTurnFromSaveTest",
         ("full",),
         "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
+        fixture=BEGINNING_OF_GAME,
         required_oracles=(),
-        native_snapshots=("game_state",),
         record_game_flow=True,
     ),
-    RuntimeTestSpec(
-        "first_turn_alert_phase",
-        "FirstTurnAlertPhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "first_turn_diplomacy_phase",
-        "FirstTurnDiplomacyPhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "first_turn_trade_phase",
-        "FirstTurnTradePhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "first_turn_civilian_phase",
-        "FirstTurnCivilianPhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "first_turn_military_phase",
-        "FirstTurnMilitaryPhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
+    retail_fixture_case("first_turn_alert_phase", "FirstTurnAlertPhaseTest"),
+    retail_fixture_case("first_turn_diplomacy_phase", "FirstTurnDiplomacyPhaseTest"),
+    retail_fixture_case("first_turn_trade_phase", "FirstTurnTradePhaseTest"),
+    retail_fixture_case("first_turn_civilian_phase", "FirstTurnCivilianPhaseTest"),
+    retail_fixture_case("first_turn_military_phase", "FirstTurnMilitaryPhaseTest"),
     RuntimeTestSpec(
         "easy_turns_advance_three_times",
         "MultiTurnAdvanceTest",
@@ -298,435 +262,45 @@ TESTS = (
         native_snapshots=("map_state",),
         record_game_flow=True,
     ),
-    RuntimeTestSpec(
-        "specialist_recruitment",
-        "SpecialistRecruitmentTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "military_maintenance",
-        "MilitaryMaintenanceTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "completed_resource_development",
-        "CompletedResourceDevelopmentTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "completed_rail_section",
-        "CompletedRailSectionTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "major_trade_settlement",
-        "MajorTradeSettlementTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "diplomacy_grant_entry_updates_treasury",
-        "DiplomacyGrantEntryTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "diplomacy_reset_preserves_recurring_grants",
-        "DiplomacyResetTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "purchased_items_phase",
-        "PurchasedItemsPhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "created_items_phase",
-        "CreatedItemsPhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "transported_items_phase",
-        "TransportedItemsPhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "direct_transport",
-        "DirectTransportTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "aid_allocation",
-        "AidAllocationTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "rolling_stock",
-        "RollingStockTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "rolling_stock_insufficient_resources",
-        "RollingStockInsufficientResourcesTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "city_item_order_increase",
-        "CityItemOrderIncreaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "city_item_order_decrease",
-        "CityItemOrderDecreaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "merchant_marine",
-        "MerchantMarineTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "transport_need_allocation",
-        "TransportNeedAllocationTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "nation_resource_yield_rebuild",
-        "NationResourceYieldRebuildTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "first_turn_combat_movement_phase",
-        "FirstTurnCombatMovementPhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "first_turn_military_cleanup_phase",
-        "FirstTurnMilitaryCleanupPhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "first_turn_diplomacy_offer_phase",
-        "FirstTurnDiplomacyOfferPhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "first_turn_elimination_phase",
-        "FirstTurnEliminationPhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "first_turn_city_transport_phase",
-        "FirstTurnCityTransportPhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "first_turn_great_power_pressure_phase",
-        "FirstTurnGreatPowerPressurePhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "first_turn_deal_book_phase",
-        "FirstTurnDealBookPhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "first_turn_quarter_gate_phase",
-        "FirstTurnQuarterGatePhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "first_turn_season_advance_phase",
-        "FirstTurnSeasonAdvancePhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "first_turn_technology_advances_phase",
-        "FirstTurnTechnologyAdvancesPhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "first_turn_newspaper_phase",
-        "FirstTurnNewspaperPhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "first_turn_return_to_map_phase",
-        "FirstTurnReturnToMapPhaseTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "ai_nation_resource_yield_rebuild_clamps_targets",
-        "AiNationResourceYieldRebuildClampsTargetsTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "trade_capacity_refresh",
-        "TradeCapacityRefreshTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "recall_trade_bids",
-        "RecallTradeBidsTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "player_trade_phase_reset",
-        "PlayerTradePhaseResetTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "trade_market_price",
-        "TradeMarketPriceTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "trade_policy_step",
-        "TradePolicyStepTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "trade_policy_set",
-        "TradePolicySetTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
-        "power_plant_upgrade",
-        "PowerPlantUpgradeTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
+    retail_fixture_case("specialist_recruitment", "SpecialistRecruitmentTest"),
+    retail_fixture_case("military_maintenance", "MilitaryMaintenanceTest"),
+    retail_fixture_case("completed_resource_development", "CompletedResourceDevelopmentTest"),
+    retail_fixture_case("completed_rail_section", "CompletedRailSectionTest"),
+    retail_fixture_case("major_trade_settlement", "MajorTradeSettlementTest"),
+    retail_fixture_case("diplomacy_grant_entry_updates_treasury", "DiplomacyGrantEntryTest"),
+    retail_fixture_case("diplomacy_reset_preserves_recurring_grants", "DiplomacyResetTest"),
+    retail_fixture_case("purchased_items_phase", "PurchasedItemsPhaseTest"),
+    retail_fixture_case("created_items_phase", "CreatedItemsPhaseTest"),
+    retail_fixture_case("transported_items_phase", "TransportedItemsPhaseTest"),
+    retail_fixture_case("direct_transport", "DirectTransportTest"),
+    retail_fixture_case("aid_allocation", "AidAllocationTest"),
+    retail_fixture_case("rolling_stock", "RollingStockTest"),
+    retail_fixture_case("rolling_stock_insufficient_resources", "RollingStockInsufficientResourcesTest"),
+    retail_fixture_case("city_item_order_increase", "CityItemOrderIncreaseTest"),
+    retail_fixture_case("city_item_order_decrease", "CityItemOrderDecreaseTest"),
+    retail_fixture_case("merchant_marine", "MerchantMarineTest"),
+    retail_fixture_case("transport_need_allocation", "TransportNeedAllocationTest"),
+    retail_fixture_case("nation_resource_yield_rebuild", "NationResourceYieldRebuildTest"),
+    retail_fixture_case("first_turn_combat_movement_phase", "FirstTurnCombatMovementPhaseTest"),
+    retail_fixture_case("first_turn_military_cleanup_phase", "FirstTurnMilitaryCleanupPhaseTest"),
+    retail_fixture_case("first_turn_diplomacy_offer_phase", "FirstTurnDiplomacyOfferPhaseTest"),
+    retail_fixture_case("first_turn_elimination_phase", "FirstTurnEliminationPhaseTest"),
+    retail_fixture_case("first_turn_city_transport_phase", "FirstTurnCityTransportPhaseTest"),
+    retail_fixture_case("first_turn_great_power_pressure_phase", "FirstTurnGreatPowerPressurePhaseTest"),
+    retail_fixture_case("first_turn_deal_book_phase", "FirstTurnDealBookPhaseTest"),
+    retail_fixture_case("first_turn_quarter_gate_phase", "FirstTurnQuarterGatePhaseTest"),
+    retail_fixture_case("first_turn_season_advance_phase", "FirstTurnSeasonAdvancePhaseTest"),
+    retail_fixture_case("first_turn_technology_advances_phase", "FirstTurnTechnologyAdvancesPhaseTest"),
+    retail_fixture_case("first_turn_newspaper_phase", "FirstTurnNewspaperPhaseTest"),
+    retail_fixture_case("first_turn_return_to_map_phase", "FirstTurnReturnToMapPhaseTest"),
+    retail_fixture_case("ai_nation_resource_yield_rebuild_clamps_targets", "AiNationResourceYieldRebuildClampsTargetsTest"),
+    retail_fixture_case("trade_capacity_refresh", "TradeCapacityRefreshTest"),
+    retail_fixture_case("recall_trade_bids", "RecallTradeBidsTest"),
+    retail_fixture_case("player_trade_phase_reset", "PlayerTradePhaseResetTest"),
+    retail_fixture_case("trade_market_price", "TradeMarketPriceTest"),
+    retail_fixture_case("trade_policy_step", "TradePolicyStepTest"),
+    retail_fixture_case("trade_policy_set", "TradePolicySetTest"),
+    retail_fixture_case("power_plant_upgrade", "PowerPlantUpgradeTest"),
     RuntimeTestSpec(
         "diplomacy_screen_operates",
         "DiplomacyScreenTest",
@@ -799,9 +373,7 @@ TESTS = (
         "LoadSavedGameTest",
         ("full",),
         "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
+        fixture=BEGINNING_OF_GAME,
         required_oracles=("map",),
         native_snapshots=("map_state", "game_state"),
         record_game_flow=True,

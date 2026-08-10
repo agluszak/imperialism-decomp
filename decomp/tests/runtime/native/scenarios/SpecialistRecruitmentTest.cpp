@@ -2,9 +2,9 @@
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
 #include "JsonObject.h"
+#include "RuntimeDifferentialCapture.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
-#include "RuntimeSemanticCapture.h"
 
 #include "game/city/TCity.h"
 #include "game/city/TUnitOrder.h"
@@ -36,28 +36,22 @@ private:
       return RuntimeActionResult::Failure("the loaded player has no recruitment state");
     }
 
-    if (!CaptureGameState(RunState(), "before")) {
-      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
-    }
-
     JsonObject caseCapture;
     caseCapture.Set("nation", static_cast<int>(nationSlot));
     caseCapture.Set("unit_kind", "sappers");
     caseCapture.Set("quantity", 1);
-    RunState().SetCapture("case", caseCapture.Release());
+
+    RuntimeDifferentialCapture capture(RunState());
+    RuntimeActionResult started = capture.Begin(caseCapture.Release());
+    if (!started.Succeeded()) {
+      return started;
+    }
 
     TUnitOrder order;
     order.IUnitOrder(nation->city, 24, -1, 0, -1, 0, 0, kHighSkillWorkforceMode, 1);
     order.quantity = 1;
     order.Produce();
-    if (!CaptureVoidOpResult(RunState())) {
-      return RuntimeActionResult::Failure("the void operation result capture is unavailable");
-    }
-
-    if (!CaptureGameState(RunState(), "after")) {
-      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
-    }
-    return RuntimeActionResult::Success();
+    return capture.Finish();
   }
 };
 

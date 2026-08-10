@@ -2,9 +2,9 @@
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
 #include "JsonObject.h"
+#include "RuntimeDifferentialCapture.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
-#include "RuntimeSemanticCapture.h"
 
 #include "game/city/TCity.h"
 #include "game/city/TItemOrder.h"
@@ -52,24 +52,18 @@ RuntimeActionResult SetClothingOrderQuantity(RuntimeRun& run, bool seedOne, shor
     return RuntimeActionResult::Failure("the seeded clothing order was rejected");
   }
 
-  if (!CaptureGameState(run, "before")) {
-    return RuntimeActionResult::Failure("the before game-state capture is unavailable");
-  }
-
   JsonObject caseCapture;
   caseCapture.Set("nation", static_cast<int>(nationSlot));
   caseCapture.Set("output", "clothing");
   caseCapture.Set("quantity", static_cast<int>(targetQuantity));
-  run.SetCapture("case", caseCapture.Release());
 
-  const bool accepted = order->SetQuantity(targetQuantity);
-  if (!CaptureBooleanOpResult(run, accepted)) {
-    return RuntimeActionResult::Failure("the city-order result capture is unavailable");
+  RuntimeDifferentialCapture capture(run);
+  RuntimeActionResult started = capture.Begin(caseCapture.Release());
+  if (!started.Succeeded()) {
+    return started;
   }
-  if (!CaptureGameState(run, "after")) {
-    return RuntimeActionResult::Failure("the after game-state capture is unavailable");
-  }
-  return RuntimeActionResult::Success();
+
+  return capture.Finish(order->SetQuantity(targetQuantity));
 }
 
 class CityItemOrderIncreaseTestCase : public LoadedMapScriptScenario {

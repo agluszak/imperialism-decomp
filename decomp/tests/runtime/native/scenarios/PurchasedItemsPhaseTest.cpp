@@ -1,9 +1,9 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "RuntimeDifferentialCapture.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
-#include "RuntimeSemanticCapture.h"
 
 #include "game/city/TCity.h"
 #include "game/globals/shared_globals.h"
@@ -78,28 +78,22 @@ private:
     nation->SetItemPotentials(kResourceFabric, -1);
     nation->SetItemPotentials(kResourceClothing, -1);
 
-    if (!CaptureGameState(RunState(), "before")) {
-      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
-    }
-
     JSON_Value* caseValue = BuildPurchasedItemsCaseJson(nationSlot);
     if (caseValue == 0) {
       return RuntimeActionResult::Failure("could not build purchased-items case JSON");
     }
-    RunState().SetCapture("case", caseValue);
+
+    RuntimeDifferentialCapture capture(RunState());
+    RuntimeActionResult started = capture.Begin(caseValue);
+    if (!started.Succeeded()) {
+      return started;
+    }
 
     nation->RememberTradeBids();
     nation->PurchaseItem(kResourceFabric, 3, 7);
     nation->PurchaseItem(kResourceFood, -30, 1);
     nation->AddPurchasedItems();
-    if (!CaptureVoidOpResult(RunState())) {
-      return RuntimeActionResult::Failure("the void operation result capture is unavailable");
-    }
-
-    if (!CaptureGameState(RunState(), "after")) {
-      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
-    }
-    return RuntimeActionResult::Success();
+    return capture.Finish();
   }
 };
 

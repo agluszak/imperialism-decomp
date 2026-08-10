@@ -1,7 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
+#include "RuntimeDifferentialCapture.h"
 #include "RuntimeGameStateCapture.h"
-#include "RuntimeSemanticCapture.h"
 #include "RuntimeTestFactory.h"
 #include "RuntimeRun.h"
 
@@ -55,7 +55,7 @@ JSON_Value* BuildMajorTradeCaseJson(int nationSlot) {
 }
 
 // Apply one purchase and two sales. Captures before/case/after/result for the Rust
-// differential; game_state mirrors after so catalog auto-capture stays satisfied.
+// differential.
 class MajorTradeSettlementTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -75,28 +75,21 @@ private:
       return RuntimeActionResult::Failure("the loaded player has no major-nation state");
     }
 
-    if (!CaptureGameState(RunState(), "before")) {
-      return RuntimeActionResult::Failure("could not capture before game_state");
-    }
-
     JSON_Value* caseValue = BuildMajorTradeCaseJson(nationSlot);
     if (caseValue == 0) {
       return RuntimeActionResult::Failure("could not build trade case JSON");
     }
-    RunState().SetCapture("case", caseValue);
+
+    RuntimeDifferentialCapture capture(RunState());
+    RuntimeActionResult started = capture.Begin(caseValue);
+    if (!started.Succeeded()) {
+      return started;
+    }
 
     nation->PurchaseItem(kResourceFabric, 3, 7);
     nation->PurchaseItem(kResourceClothing, -2, 5);
     nation->PurchaseItem(kResourceFabric, -1, 4);
-
-    if (!CaptureVoidOpResult(RunState())) {
-      return RuntimeActionResult::Failure("could not capture the void operation result");
-    }
-
-    if (!CaptureGameState(RunState(), "after") || !CaptureGameState(RunState(), "game_state")) {
-      return RuntimeActionResult::Failure("could not capture after game_state");
-    }
-    return RuntimeActionResult::Success();
+    return capture.Finish();
   }
 };
 

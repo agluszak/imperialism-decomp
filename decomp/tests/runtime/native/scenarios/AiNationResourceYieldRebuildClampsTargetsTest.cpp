@@ -4,7 +4,7 @@
 #include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
-#include "RuntimeSemanticCapture.h"
+#include "RuntimeDifferentialCapture.h"
 
 #include "game/city/TCity.h"
 #include "game/city/TTown.h"
@@ -95,13 +95,14 @@ private:
     nation->needTargetByType[kResourceCotton] = 6;
     nation->reservedTransportCapacity = 10;
 
-    if (!CaptureGameState(RunState(), "before")) {
-      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
-    }
-
     JsonObject caseCapture;
     caseCapture.Set("nation", static_cast<int>(nationSlot));
-    RunState().SetCapture("case", caseCapture.Release());
+
+    RuntimeDifferentialCapture capture(RunState());
+    RuntimeActionResult started = capture.Begin(caseCapture.Release());
+    if (!started.Succeeded()) {
+      return started;
+    }
 
     nation->RebuildNationResourceYieldCountersAndDevelopmentTargets();
     if (nation->needCurrentByType[kResourceCotton] != 4 ||
@@ -112,14 +113,7 @@ private:
       return RuntimeActionResult::Failure(
           "the AI yield rebuild did not exercise the clamp-then-rollover branch");
     }
-    if (!CaptureVoidOpResult(RunState())) {
-      return RuntimeActionResult::Failure("the void operation result capture is unavailable");
-    }
-
-    if (!CaptureGameState(RunState(), "after")) {
-      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
-    }
-    return RuntimeActionResult::Success();
+    return capture.Finish();
   }
 };
 
