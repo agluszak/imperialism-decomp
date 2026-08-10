@@ -40,6 +40,7 @@
 #include "game/map/TScatteredShipsMission.h"
 #include "game/map/TZone.h"
 #include "game/map/map_records.h"
+#include "game/military/TArmyMgr.h"
 #include "game/military/TArmyMission.h"
 #include "game/military/TAttackProvinceMission.h"
 #include "game/military/TCivUnit.h"
@@ -62,6 +63,7 @@
 #include "game/navy/TTaskForce.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_core/CIterator.h"
+#include "game/ui_core/TSortedPtrList.h"
 #include "game/ui_screens/TNewsMgr.h"
 #include "game/ui_screens/TPortZone.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -2508,6 +2510,15 @@ JSON_Value* CapturePending() {
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     nations.Add(CaptureNationPendingWork(g_apNationStates[nationSlot]));
   }
+  if (g_pMapContextActionManager == 0 ||
+      g_pMapContextActionManager->mapContextActionRecordList04 == 0) {
+    FailSemanticCapture("combat-report state is unavailable");
+  }
+  const int combatReportCount = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
+  if (combatReportCount < 0 ||
+      (g_pMapContextActionManager->GetByteFlagAtOffset8() != 0) != (combatReportCount != 0)) {
+    FailSemanticCapture("combat-report count and gate flag disagree");
+  }
   TSortedPtrList* queue = g_pDiplomacyTurnStateManager != 0
                               ? g_pDiplomacyTurnStateManager->pendingWarTransitionQueue
                               : 0;
@@ -2529,6 +2540,7 @@ JSON_Value* CapturePending() {
     transitions.Add(transition.Release());
   }
   object.Set("nations", nations.Release());
+  object.Set("combat_reports_pending", g_pMapContextActionManager->GetByteFlagAtOffset8() != 0);
   object.Set("newspaper_events", CapturePendingNewspaperEvents());
   object.Set("war_transitions", transitions.Release());
   return object.Release();
