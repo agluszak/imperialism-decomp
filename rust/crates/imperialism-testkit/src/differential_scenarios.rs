@@ -151,6 +151,16 @@ mod scenarios {
         state.advance_turn_step()
     }
 
+    const FIRST_TURN_MILITARY_CLEANUP_PHASE: ScenarioMeta =
+        retail_fixture("first_turn_military_cleanup_phase");
+
+    fn apply_first_turn_military_cleanup_phase(
+        state: &mut GameState,
+        (): (),
+    ) -> imperialism_core::AdvanceTurnOutcome {
+        state.advance_turn_step()
+    }
+
     const TRANSPORTED_ITEMS_PHASE: ScenarioMeta = retail_fixture("transported_items_phase");
 
     fn apply_transported_items_phase(state: &mut GameState, case: NationCase) {
@@ -428,6 +438,11 @@ mod scenarios {
             first_turn_combat_movement_phase,
             FIRST_TURN_COMBAT_MOVEMENT_PHASE,
             apply_first_turn_combat_movement_phase
+        );
+        differential_test!(
+            first_turn_military_cleanup_phase,
+            FIRST_TURN_MILITARY_CLEANUP_PHASE,
+            apply_first_turn_military_cleanup_phase
         );
         differential_test!(
             transported_items_phase,

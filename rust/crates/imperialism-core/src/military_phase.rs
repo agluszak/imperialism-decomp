@@ -315,7 +315,7 @@ impl GameState {
             .is_some()
     }
 
-    fn first_turn_heatmap_plan(&self) -> Option<ProvinceTable<i32>> {
+    pub(crate) fn first_turn_heatmap_plan(&self) -> Option<ProvinceTable<i32>> {
         let mut weights = ResourceTable::<i32>::default();
         for commodity in crate::market::all_trade_commodities() {
             weights[commodity.resource()] = self.market.rows[commodity].base_price;

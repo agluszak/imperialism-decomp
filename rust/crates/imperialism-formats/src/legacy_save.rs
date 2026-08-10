@@ -11,10 +11,13 @@ const TRADE_CATEGORY_COUNT: usize = 17;
 const DIPLOMACY_SERIALIZED_SIZE_V62: usize = 5_460;
 const TECH_SERIALIZED_SIZE_V62: usize = 1_914;
 const TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62: usize = 0x180;
+const TECH_INDUSTRY_ENABLED_OFFSET_V62: usize = 0x19d;
 const TECH_ADVANCED_IRON_WORKING_OFFSET_V62: usize = 0x1a5;
 const TECH_MARINE_ENGINEERING_OFFSET_V62: usize = 0x1a8;
 const TECH_ORDER_CAP_ROWS_OFFSET_V62: usize = 0x262;
 const TECH_ORDER_CAP_ROW_SIZE: usize = 0x1d;
+const TECH_ABILITY_ACTIVE_ROWS_OFFSET_V62: usize = 0x38f;
+const TECH_ABILITY_ACTIVE_ROW_SIZE: usize = 30;
 const TECH_ADVANCED_IRON_WORKING_ID: usize = 0x0f;
 const TECH_OIL_DRILLING_ID: usize = 0x13;
 const TECH_UNIVERSITY_AVAILABILITY_OFFSET_V62: usize = 0x461;
@@ -684,6 +687,7 @@ impl LegacyMission {
             path_nation: optional_nation_id(self.path_marker)?,
             state: self.state,
             importance_bits: self.importance_bits,
+            held: self.flag != 0,
             marker: self.marker,
         })
     }
@@ -2304,6 +2308,23 @@ fn interior_civilian_state(
             .try_into()
             .expect("resource metric prefix has the fixed resource-table length"),
     );
+    let pending_development_actions = minister.integer_lists[2]
+        .iter()
+        .map(|&value| {
+            let action = match value {
+                0..=29 => MilitaryUnitKind::from_index(value as u8)
+                    .map(|unit_type| PendingDevelopmentAction::LandUnit { unit_type }),
+                30..=43 => ProductionSlot::from_index((value - 30) as u8)
+                    .map(|slot| PendingDevelopmentAction::Industry { slot }),
+                _ => None,
+            };
+            action.ok_or_else(|| {
+                LegacySaveError::StateProjection(format!(
+                    "major nation {nation} pending development action {value} is out of range"
+                ))
+            })
+        })
+        .collect::<Result<Vec<_>, _>>()?;
     Ok(InteriorCivilianState::from_parts(
         pending_recruitment,
         optional_tile_id(i32::from(minister.order_scalars[6]))?,
@@ -2312,6 +2333,10 @@ fn interior_civilian_state(
         ResourceTable::from_array(minister.order_type_tables[1]),
         ResourceTable::from_array(minister.order_type_tables[2]),
         ResourceTable::from_array(minister.civilian_order_demand_by_resource),
+        // Retail constructs this transient table as zero and does not deserialize it.
+        // The city-and-transport phase rebuilds it only after this loaded-save turn slice.
+        0,
+        pending_development_actions,
     ))
 }
 
@@ -2974,9 +2999,31 @@ fn read_technology_state(
     let researched = |nation: usize, technology: usize| {
         Ok::<bool, LegacySaveError>(status(nation, technology)? == 2)
     };
+    let mut industry_enabled_by_slot = [false; 14];
+    for (slot, enabled) in industry_enabled_by_slot.iter_mut().enumerate() {
+        *enabled = retail_boolean(
+            bytes[TECH_INDUSTRY_ENABLED_OFFSET_V62 + slot],
+            "technology industry enabled flag",
+        )?;
+    }
+    let mut military_unit_ability_active_by_nation =
+        std::array::from_fn(|_| MilitaryUnitTable::default());
     let mut city_capabilities_by_nation =
         std::array::from_fn(|_| CityTechnologyCapabilities::default());
     for (nation, capabilities) in city_capabilities_by_nation.iter_mut().enumerate() {
+        let mut active_by_unit_type = [false; TECH_ABILITY_ACTIVE_ROW_SIZE];
+        for (unit_type, active) in active_by_unit_type.iter_mut().enumerate() {
+            let offset = TECH_ABILITY_ACTIVE_ROWS_OFFSET_V62
+                + nation * TECH_ABILITY_ACTIVE_ROW_SIZE
+                + unit_type;
+            *active = retail_boolean(
+                bytes[offset],
+                "technology military unit ability active flag",
+            )?;
+        }
+        military_unit_ability_active_by_nation[nation] =
+            MilitaryUnitTable::from_array(active_by_unit_type);
+
         capabilities.advanced_iron_working = researched(nation, TECH_ADVANCED_IRON_WORKING_ID)?;
         capabilities.oil_drilling = researched(nation, TECH_OIL_DRILLING_ID)?;
         capabilities.primary_civilian_distance_terrain = CivilianTerrainAccess {
@@ -3037,6 +3084,10 @@ fn read_technology_state(
             bytes[TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62 + TECH_OIL_DRILLING_ID],
             "technology oil drilling availability",
         )?,
+        industry_enabled_by_slot,
+        military_unit_ability_active_by_nation: MajorNationTable::from_array(
+            military_unit_ability_active_by_nation,
+        ),
         city_capabilities_by_nation: MajorNationTable::from_array(city_capabilities_by_nation),
     })
 }
@@ -4671,6 +4722,10 @@ mod tests {
         bytes[TECH_ADVANCED_IRON_WORKING_OFFSET_V62] = 1;
         bytes[TECH_MARINE_ENGINEERING_OFFSET_V62] = 1;
         bytes[TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62 + TECH_OIL_DRILLING_ID] = 1;
+        bytes[TECH_INDUSTRY_ENABLED_OFFSET_V62 + ProductionSlot::OilRefinery as usize] = 1;
+        bytes[TECH_ABILITY_ACTIVE_ROWS_OFFSET_V62
+            + 2 * TECH_ABILITY_ACTIVE_ROW_SIZE
+            + MilitaryUnitKind::SiegeArtillery as usize] = 1;
         bytes[TECH_ORDER_CAP_ROWS_OFFSET_V62
             + 2 * TECH_ORDER_CAP_ROW_SIZE
             + TECH_ADVANCED_IRON_WORKING_ID] = 2;
@@ -4689,6 +4744,11 @@ mod tests {
         assert!(technology.advanced_iron_working);
         assert!(technology.marine_engineering);
         assert!(technology.oil_drilling_available);
+        assert!(technology.industry_enabled_by_slot[ProductionSlot::OilRefinery as usize]);
+        assert!(
+            technology.military_unit_ability_active_by_nation[MajorNationId::new(2)]
+                [MilitaryUnitKind::SiegeArtillery]
+        );
         assert!(
             technology.city_capabilities_by_nation[MajorNationId::new(2)].advanced_iron_working
         );
@@ -4717,6 +4777,11 @@ mod tests {
             (TECH_MARINE_ENGINEERING_OFFSET_V62, u8::MAX),
             (
                 TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62 + TECH_OIL_DRILLING_ID,
+                2,
+            ),
+            (TECH_INDUSTRY_ENABLED_OFFSET_V62 + 13, 2),
+            (
+                TECH_ABILITY_ACTIVE_ROWS_OFFSET_V62 + 6 * TECH_ABILITY_ACTIVE_ROW_SIZE + 29,
                 2,
             ),
         ] {
@@ -5222,6 +5287,70 @@ mod tests {
             ForeignMinisterPersonality::Base,
             "the human constructs the base minister even though setup policy 3 names Diplomat"
         );
+    }
+
+    #[test]
+    fn projects_mission_holds_and_ordered_pending_development_actions() {
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        first_great_power_mut(&mut save)
+            .ministers
+            .interior
+            .as_mut()
+            .unwrap()
+            .integer_lists[2] = vec![34, 7];
+
+        let state = save.game_state(game_context()).unwrap();
+        let held_mission_indices = state
+            .missions
+            .iter()
+            .enumerate()
+            .filter_map(|(index, mission)| mission.held.then_some(index))
+            .collect::<Vec<_>>();
+        assert_eq!(held_mission_indices, [62, 63, 64]);
+        let interior_civilian = serde_json::to_value(
+            &*state
+                .nations
+                .major(MajorNationId::new(0))
+                .economy()
+                .interior_civilian,
+        )
+        .unwrap();
+        assert_eq!(
+            interior_civilian["pending_development_actions"],
+            serde_json::json!([
+                {"kind": "industry", "slot": "lumber_mill"},
+                {"kind": "land_unit", "unit_type": "artillery"}
+            ])
+        );
+        assert_eq!(
+            interior_civilian["average_development_order_allocation"],
+            serde_json::json!(0)
+        );
+        assert_eq!(
+            serde_json::to_value(&state.missions[62]).unwrap()["held"],
+            serde_json::json!(true)
+        );
+    }
+
+    #[test]
+    fn rejects_pending_development_actions_outside_both_retail_domains() {
+        for invalid in [-1, 44] {
+            let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+            first_great_power_mut(&mut save)
+                .ministers
+                .interior
+                .as_mut()
+                .unwrap()
+                .integer_lists[2] = vec![invalid];
+
+            assert!(matches!(
+                save.game_state(game_context()),
+                Err(LegacySaveError::StateProjection(message))
+                    if message == format!(
+                        "major nation 0 pending development action {invalid} is out of range"
+                    )
+            ));
+        }
     }
 
     #[test]

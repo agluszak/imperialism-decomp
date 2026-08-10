@@ -519,6 +519,17 @@ TESTS = (
         native_snapshots=("game_state",),
     ),
     RuntimeTestSpec(
+        "first_turn_military_cleanup_phase",
+        "FirstTurnMilitaryCleanupPhaseTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game_state",),
+    ),
+    RuntimeTestSpec(
         "ai_nation_resource_yield_rebuild_clamps_targets",
         "AiNationResourceYieldRebuildClampsTargetsTest",
         ("full",),

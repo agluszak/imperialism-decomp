@@ -19,6 +19,7 @@
 #include "game/city/TTrainingOrder.h"
 #include "game/city/TUnitOrder.h"
 #include "game/city_ui/TCityInteriorMinister.h"
+#include "game/city_ui/TLongintList.h"
 #include "game/civilian_domain_types.h"
 #include "game/debug/TLaborPool.h"
 #include "game/diplomacy_domain_types.h"
@@ -120,6 +121,11 @@ const char* const kShipTypeNames[kIndustryActionSlotCount] = {
     "no_ship",       "trader",          "indiaman",    "frigate",      "ship_of_the_line",
     "paddlewheeler", "clipper",         "raider",      "ironclad",     "advanced_ironclad",
     "freighter",     "armored_cruiser", "dreadnought", "battlecruiser"};
+
+const char* const kIndustryActionSlotNames[kIndustryActionSlotCount] = {
+    "textile_mill",      "clothing_factory", "steel_mill",      "metalworks", "lumber_mill",
+    "furniture_factory", "oil_refinery",     "shipyard",        "armory",     "trade_school",
+    "university",        "power_plant",      "food_processing", "warehouse"};
 
 const char* const kTerrainNames[8] = {"plains", "forest", "hills",  "mountain",
                                       "swamp",  "water",  "desert", "farmland"};
@@ -344,6 +350,13 @@ const char* ShipTypeName(int value) {
     FailSemanticCapture("ship type is outside its semantic range");
   }
   return kShipTypeNames[value];
+}
+
+const char* IndustryActionSlotName(int value) {
+  if (value < 0 || value >= kIndustryActionSlotCount) {
+    FailSemanticCapture("industry action slot is outside its semantic range");
+  }
+  return kIndustryActionSlotNames[value];
 }
 
 JSON_Value* CaptureShortArray(const short* values, int count) {
@@ -755,6 +768,15 @@ JSON_Value* CaptureTechnology() {
     FailSemanticCapture("global oil-drilling availability is not boolean");
   }
   JsonObject technology;
+  JsonArray industryEnabledBySlot;
+  for (int slot = 0; slot < kIndustryActionSlotCount; ++slot) {
+    const unsigned char enabled = g_pTechMgr->resourceTypeEnabled19d[slot];
+    if (enabled > 1) {
+      FailSemanticCapture("technology industry-enabled flag is not boolean");
+    }
+    industryEnabledBySlot.Add(enabled != 0);
+  }
+  JsonArray militaryUnitAbilityActiveByNation;
   JsonArray cityCapabilitiesByNation;
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     const TTechMgr::OrderCapRow& technologyStatus = g_pTechMgr->orderCapRows277[nationSlot];
@@ -770,6 +792,17 @@ JSON_Value* CaptureTechnology() {
         FailSemanticCapture("major-nation civilian technology status is invalid");
       }
     }
+
+    JsonObject abilityActiveByUnitType;
+    for (int unitType = 0; unitType < kMilitaryUnitKindCount; ++unitType) {
+      const unsigned char active =
+          g_pTechMgr->abilityActiveRows395[nationSlot].abilityActiveById[unitType];
+      if (active > 1) {
+        FailSemanticCapture("major-nation military-unit ability flag is not boolean");
+      }
+      abilityActiveByUnitType.Set(MilitaryUnitKindName(unitType), active != 0);
+    }
+    militaryUnitAbilityActiveByNation.Add(abilityActiveByUnitType.Release());
 
     JsonObject cityCapabilities;
     cityCapabilities.Set("advanced_iron_working", advancedIronWorkingStatus == 2);
@@ -811,6 +844,9 @@ JSON_Value* CaptureTechnology() {
   technology.Set("advanced_iron_working", advancedIronWorking != 0);
   technology.Set("marine_engineering", marineEngineering != 0);
   technology.Set("oil_drilling_available", oilDrillingAvailable != 0);
+  technology.Set("industry_enabled_by_slot", industryEnabledBySlot.Release());
+  technology.Set("military_unit_ability_active_by_nation",
+                 militaryUnitAbilityActiveByNation.Release());
   technology.Set("city_capabilities_by_nation", cityCapabilitiesByNation.Release());
   return technology.Release();
 }
@@ -1238,6 +1274,30 @@ JSON_Value* CapturePendingShip(TGreatPower* nation) {
   return RuntimeJsonString(ShipTypeName(pendingShip));
 }
 
+JSON_Value* CapturePendingDevelopmentActions(TCityInteriorMinister* minister) {
+  if (minister->list190 == 0) {
+    FailSemanticCapture("interior-minister pending development action list is unavailable");
+  }
+  JsonArray actions;
+  const int count = minister->list190->GetSize();
+  if (count < 0) {
+    FailSemanticCapture("interior-minister pending development action count is negative");
+  }
+  for (int ordinal = 1; ordinal <= count; ++ordinal) {
+    const long value = minister->list190->At(ordinal);
+    JsonObject action;
+    if (value >= 30) {
+      action.Set("kind", "industry");
+      action.Set("slot", IndustryActionSlotName(static_cast<int>(value - 30)));
+    } else {
+      action.Set("kind", "land_unit");
+      action.Set("unit_type", MilitaryUnitKindName(static_cast<int>(value)));
+    }
+    actions.Add(action.Release());
+  }
+  return actions.Release();
+}
+
 JSON_Value* CaptureInteriorCivilianState(TGreatPower* nation) {
   if (nation->interiorMinister == 0) {
     FailSemanticCapture("major nation has no interior minister");
@@ -1250,6 +1310,9 @@ JSON_Value* CaptureInteriorCivilianState(TGreatPower* nation) {
   } else {
     state.Set("pending_recruitment", CivilianUnitKindName(pendingRecruitment));
   }
+  state.Set("pending_development_actions", CapturePendingDevelopmentActions(minister));
+  state.Set("average_development_order_allocation",
+            minister->GetAverageDevelopmentOrderAllocation());
   if (minister->field3c < -1 || minister->field3c >= 0x1950) {
     FailSemanticCapture("interior-minister railhead target is outside the strategic map");
   }
@@ -1284,6 +1347,8 @@ JSON_Value* CaptureAiDevelopmentPressure(TGreatPower* nation) {
             FloatBits(automaticNation->expansionPressurePerCompatibleRegionB64));
   state.Set("average_unit_divergence_per_owned_region_bits",
             FloatBits(automaticNation->averageUnitDivergencePerOwnedRegionB68));
+  state.Set("active_mission_pressure_average_bits",
+            FloatBits(automaticNation->activeMissionPressureAverageB6c));
   return state.Release();
 }
 
@@ -2258,6 +2323,7 @@ JSON_Value* CaptureMissions() {
       object.SetOptional("path_nation", static_cast<int>(mission->pathMarker06));
       object.Set("state", static_cast<unsigned int>(mission->state08));
       object.Set("importance_bits", FloatBits(mission->importanceScore0c));
+      object.Set("held", mission->flag10 != 0);
       object.Set("marker", static_cast<unsigned int>(mission->marker11));
       missions.Add(object.Release());
     }

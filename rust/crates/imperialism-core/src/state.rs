@@ -367,12 +367,36 @@ impl CityTechnologyCapabilities {
 }
 
 /// Global technology milestones and the city capabilities of every major nation.
-#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TechnologyState {
     pub advanced_iron_working: bool,
     pub marine_engineering: bool,
     pub oil_drilling_available: bool,
+    pub industry_enabled_by_slot: [bool; 14],
+    pub military_unit_ability_active_by_nation: MajorNationTable<MilitaryUnitTable<bool>>,
     pub city_capabilities_by_nation: MajorNationTable<CityTechnologyCapabilities>,
+}
+
+impl Default for TechnologyState {
+    fn default() -> Self {
+        Self {
+            advanced_iron_working: false,
+            marine_engineering: false,
+            oil_drilling_available: false,
+            industry_enabled_by_slot: [
+                true, true, true, true, true, false, false, false, false, false, false, false,
+                false, false,
+            ],
+            military_unit_ability_active_by_nation: MajorNationTable::from_fn(|_| {
+                MilitaryUnitTable::from_array([
+                    true, true, true, true, true, true, true, true, false, false, false, false,
+                    false, false, false, false, false, false, false, false, false, false, false,
+                    false, true, false, false, true, false, false,
+                ])
+            }),
+            city_capabilities_by_nation: MajorNationTable::default(),
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
@@ -460,6 +484,7 @@ impl PhaseCode {
     pub const TRADE: Self = Self(7);
     pub const OFFER_SHEET: Self = Self(9);
     pub const MILITARY: Self = Self(10);
+    pub const DIPLOMACY_OFFER: Self = Self(0x0d);
     pub const DEAL_BOOK: Self = Self(0xe);
     pub const SEASON_ADVANCE: Self = Self(0x10);
     pub const TECHNOLOGY_ADVANCES: Self = Self(0x11);
@@ -1341,9 +1366,20 @@ pub struct InteriorCivilianState {
     pub(crate) exterior_need_by_resource: ResourceTable<i16>,
     pub(crate) historical_need_by_resource: ResourceTable<i16>,
     pub(crate) civilian_order_demand_by_resource: ResourceTable<i16>,
+    pub(crate) average_development_order_allocation: i32,
+    pub(crate) pending_development_actions: Vec<PendingDevelopmentAction>,
+}
+
+/// One ordered city-development request retained by an AI interior minister.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum PendingDevelopmentAction {
+    Industry { slot: ProductionSlot },
+    LandUnit { unit_type: MilitaryUnitKind },
 }
 
 impl InteriorCivilianState {
+    #[allow(clippy::too_many_arguments)]
     pub fn from_parts(
         pending_recruitment: Option<CivilianUnitKind>,
         railhead_target: Option<TileId>,
@@ -1352,6 +1388,8 @@ impl InteriorCivilianState {
         exterior_need_by_resource: ResourceTable<i16>,
         historical_need_by_resource: ResourceTable<i16>,
         civilian_order_demand_by_resource: ResourceTable<i16>,
+        average_development_order_allocation: i32,
+        pending_development_actions: Vec<PendingDevelopmentAction>,
     ) -> Self {
         Self {
             pending_recruitment,
@@ -1361,6 +1399,8 @@ impl InteriorCivilianState {
             exterior_need_by_resource,
             historical_need_by_resource,
             civilian_order_demand_by_resource,
+            average_development_order_allocation,
+            pending_development_actions,
         }
     }
 }
@@ -1370,6 +1410,7 @@ impl InteriorCivilianState {
 pub struct AiDevelopmentPressureState {
     pub(crate) expansion_pressure_per_compatible_region_bits: u32,
     pub(crate) average_unit_divergence_per_owned_region_bits: u32,
+    pub(crate) active_mission_pressure_average_bits: u32,
 }
 
 impl AiDevelopmentPressureState {
@@ -1379,6 +1420,10 @@ impl AiDevelopmentPressureState {
 
     pub(crate) fn average_unit_divergence_per_owned_region(self) -> f32 {
         f32::from_bits(self.average_unit_divergence_per_owned_region_bits)
+    }
+
+    pub(crate) fn active_mission_pressure_average(self) -> f32 {
+        f32::from_bits(self.active_mission_pressure_average_bits)
     }
 }
 
@@ -2138,6 +2183,8 @@ pub struct MissionState {
     pub state: u8,
     /// Exact IEEE-754 importance-score bits.
     pub importance_bits: u32,
+    /// Whether retail's AI assignment pass is currently holding this mission.
+    pub held: bool,
     /// Open retail mission-status byte; bit zero is consumed by current retail AI logic.
     pub marker: u8,
 }

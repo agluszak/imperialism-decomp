@@ -1255,6 +1255,7 @@ fn mission_state(nation: MajorNationId, data: MissionData, importance_bits: u32)
         path_nation: None,
         state: 2,
         importance_bits,
+        held: false,
         marker: 0,
     }
 }

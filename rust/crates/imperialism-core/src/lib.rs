@@ -16,6 +16,7 @@ mod ids;
 mod map_geometry;
 mod market;
 mod military;
+mod military_cleanup_phase;
 mod military_phase;
 mod nation_economy;
 mod news;
