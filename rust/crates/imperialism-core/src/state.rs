@@ -482,6 +482,7 @@ impl PhaseCode {
     pub const STRATEGIC_MAP: Self = Self(5);
     pub const DIPLOMACY: Self = Self(6);
     pub const TRADE: Self = Self(7);
+    pub const CITY_AND_TRANSPORT: Self = Self(8);
     pub const OFFER_SHEET: Self = Self(9);
     pub const MILITARY: Self = Self(10);
     pub const DIPLOMACY_OFFER: Self = Self(0x0d);
@@ -491,6 +492,7 @@ impl PhaseCode {
     pub const NEWSPAPER: Self = Self(0x12);
     pub const COMBAT_MOVES: Self = Self(0x14);
     pub const MILITARY_CLEANUP: Self = Self(0x15);
+    pub const ELIMINATION: Self = Self(0x19);
     pub const fn from_retail(value: i32) -> Self {
         Self(value)
     }
@@ -2192,6 +2194,8 @@ pub struct MissionState {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct PendingWorkState {
     pub nations: MajorNationTable<NationPendingWork>,
+    /// Whether retail's post-combat map boundary has battle reports to present.
+    pub combat_reports_pending: bool,
     pub newspaper_events: Vec<PendingNewspaperEvent>,
     pub war_transitions: Vec<WarTransition>,
 }

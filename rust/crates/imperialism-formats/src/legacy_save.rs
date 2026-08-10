@@ -1575,7 +1575,10 @@ impl LegacySaveV62 {
         let mut military_units = Vec::new();
         let mut civilian_units = Vec::new();
         let mut missions = Vec::new();
-        let mut pending = PendingWorkState::default();
+        let mut pending = PendingWorkState {
+            combat_reports_pending: self.army_report_count != 0,
+            ..PendingWorkState::default()
+        };
         let live_ocean_context_count = validate_ocean_contexts(&self.ocean)?;
         let port_zone_owners = port_zone_owners(&self.ocean, &self.map)?;
         let mut majors = Vec::with_capacity(MAJOR_NATION_COUNT);

@@ -161,6 +161,26 @@ mod scenarios {
         state.advance_turn_step()
     }
 
+    const FIRST_TURN_DIPLOMACY_OFFER_PHASE: ScenarioMeta =
+        retail_fixture("first_turn_diplomacy_offer_phase");
+
+    fn apply_first_turn_diplomacy_offer_phase(
+        state: &mut GameState,
+        (): (),
+    ) -> imperialism_core::AdvanceTurnOutcome {
+        state.advance_turn_step()
+    }
+
+    const FIRST_TURN_ELIMINATION_PHASE: ScenarioMeta =
+        retail_fixture("first_turn_elimination_phase");
+
+    fn apply_first_turn_elimination_phase(
+        state: &mut GameState,
+        (): (),
+    ) -> imperialism_core::AdvanceTurnOutcome {
+        state.advance_turn_step()
+    }
+
     const TRANSPORTED_ITEMS_PHASE: ScenarioMeta = retail_fixture("transported_items_phase");
 
     fn apply_transported_items_phase(state: &mut GameState, case: NationCase) {
@@ -443,6 +463,16 @@ mod scenarios {
             first_turn_military_cleanup_phase,
             FIRST_TURN_MILITARY_CLEANUP_PHASE,
             apply_first_turn_military_cleanup_phase
+        );
+        differential_test!(
+            first_turn_diplomacy_offer_phase,
+            FIRST_TURN_DIPLOMACY_OFFER_PHASE,
+            apply_first_turn_diplomacy_offer_phase
+        );
+        differential_test!(
+            first_turn_elimination_phase,
+            FIRST_TURN_ELIMINATION_PHASE,
+            apply_first_turn_elimination_phase
         );
         differential_test!(
             transported_items_phase,

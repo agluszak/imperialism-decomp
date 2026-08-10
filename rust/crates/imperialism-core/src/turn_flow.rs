@@ -1,4 +1,4 @@
-use crate::{GameState, TurnState};
+use crate::{CountryStatus, GameState, MajorNationId, MinorNationId, NationId, TurnState};
 use serde::{Deserialize, Serialize};
 
 impl TurnState {
@@ -133,6 +133,22 @@ impl GameState {
                     effects: Vec::new(),
                 }
             }
+            crate::PhaseCode::DIPLOMACY_OFFER if !self.pending.combat_reports_pending => {
+                self.turn.phase = crate::PhaseCode::ELIMINATION;
+                AdvanceTurnOutcome::Continues {
+                    from,
+                    to: crate::PhaseCode::ELIMINATION,
+                    effects: Vec::new(),
+                }
+            }
+            crate::PhaseCode::ELIMINATION if self.supports_no_elimination_phase() => {
+                self.turn.phase = crate::PhaseCode::CITY_AND_TRANSPORT;
+                AdvanceTurnOutcome::Continues {
+                    from,
+                    to: crate::PhaseCode::CITY_AND_TRANSPORT,
+                    effects: Vec::new(),
+                }
+            }
             crate::PhaseCode::SEASON_ADVANCE => {
                 self.turn.phase = crate::PhaseCode::TECHNOLOGY_ADVANCES;
                 self.turn.advance_season();
@@ -186,6 +202,34 @@ impl GameState {
             "player orders can finish only at the strategic-map boundary"
         );
         self.advance_until_blocked()
+    }
+
+    fn supports_no_elimination_phase(&self) -> bool {
+        if MajorNationId::from_nation(self.turn.active_nation).is_none()
+            || matches!(
+                self.nations.country_status(self.turn.active_nation),
+                Some(CountryStatus::ProtectorateOf(_)) | None
+            )
+            || (0..MajorNationId::COUNT)
+                .map(MajorNationId::new)
+                .any(|nation| self.nations.owned_region_count(nation.nation()) == Some(0))
+            || (MinorNationId::FIRST..NationId::COUNT)
+                .map(NationId::new)
+                .any(|nation| self.nations.owned_region_count(nation) == Some(0))
+        {
+            return false;
+        }
+
+        (0..MajorNationId::COUNT)
+            .map(MajorNationId::new)
+            .filter(|nation| {
+                !matches!(
+                    self.nations.country_status(nation.nation()),
+                    Some(CountryStatus::ProtectorateOf(_))
+                )
+            })
+            .count()
+            != 1
     }
 }
 
