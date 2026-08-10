@@ -123,6 +123,15 @@ mod scenarios {
         state.advance_turn_step()
     }
 
+    const FIRST_TURN_CIVILIAN_PHASE: ScenarioMeta = retail_fixture("first_turn_civilian_phase");
+
+    fn apply_first_turn_civilian_phase(
+        state: &mut GameState,
+        (): (),
+    ) -> imperialism_core::AdvanceTurnOutcome {
+        state.advance_turn_step()
+    }
+
     const TRANSPORTED_ITEMS_PHASE: ScenarioMeta = retail_fixture("transported_items_phase");
 
     fn apply_transported_items_phase(state: &mut GameState, case: NationCase) {
@@ -372,6 +381,11 @@ mod scenarios {
             first_turn_trade_phase,
             FIRST_TURN_TRADE_PHASE,
             apply_first_turn_trade_phase
+        );
+        differential_test!(
+            first_turn_civilian_phase,
+            FIRST_TURN_CIVILIAN_PHASE,
+            apply_first_turn_civilian_phase
         );
         differential_test!(
             transported_items_phase,
