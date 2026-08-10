@@ -417,20 +417,6 @@ fn major_nation_palette(nation: MajorNationId) -> u8 {
     MAJOR_NATION_PALETTES[usize::from(nation.get())]
 }
 
-pub(crate) fn tile_at_preview_position(normalized_position: Vec2) -> Option<TileId> {
-    let column_px = ((normalized_position.x + 0.5) * PREVIEW_WIDTH as f32).floor();
-    let row_px = ((normalized_position.y + 0.5) * PREVIEW_HEIGHT as f32).floor();
-    if !(0.0..PREVIEW_WIDTH as f32).contains(&column_px)
-        || !(0.0..PREVIEW_HEIGHT as f32).contains(&row_px)
-    {
-        return None;
-    }
-    let row = row_px as u16 / 3;
-    let adjusted = (column_px as u16).checked_sub(u16::from(row & 1 != 0))?;
-    let column = adjusted / 3;
-    MapGeometry::new(MapTopology::Bounded).tile(row, column)
-}
-
 fn nation_at_preview_position(
     palette_indices: &[u8],
     normalized_position: Vec2,

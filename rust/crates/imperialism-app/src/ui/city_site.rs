@@ -1,11 +1,9 @@
 use crate::AppState;
-use crate::RetailAssetsResource;
 use crate::ui::catalog::{ModalDialog, UiAssetResources, UiCatalogResource, UiSpawner, spawn_view};
 use crate::ui::random_setup::GameSession;
-use crate::ui::random_setup_map::{
-    compose_owner_preview_indices, preview_image_from_indices, tile_at_preview_position,
+use crate::ui::strategic_map::{
+    StrategicBaseTerrainCanvas, bind_strategic_base_terrain, strategic_base_terrain_tile_at_cursor,
 };
-use bevy::log::warn;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
@@ -43,9 +41,6 @@ enum CitySiteAction {
 }
 
 #[derive(Component)]
-struct CitySiteMap;
-
-#[derive(Component)]
 struct NewCityDialogRoot(CapitalSite);
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -59,10 +54,6 @@ pub(crate) struct CitySitePlugin;
 impl Plugin for CitySitePlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(AppState::CitySite), enter_city_site)
-            .add_systems(
-                Update,
-                render_city_site_map.run_if(in_state(AppState::CitySite)),
-            )
             .add_observer(on_city_site_activate)
             .add_observer(on_city_site_map_click)
             .add_observer(on_new_city_activate);
@@ -73,12 +64,14 @@ fn enter_city_site(
     mut commands: Commands,
     catalog: Res<UiCatalogResource>,
     mut assets: UiAssetResources,
+    session: Res<GameSession>,
 ) {
     let view = catalog
         .view(&city_site_view_id())
         .expect("validated city-site catalog view");
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
     bind_city_site_controls(&mut commands, &spawned);
+    bind_strategic_base_terrain(&mut commands, &spawned, &mut assets, &session.0);
     commands
         .entity(spawned.root)
         .insert(DespawnOnExit(AppState::CitySite));
@@ -89,47 +82,6 @@ fn bind_city_site_controls(commands: &mut Commands, spawned: &crate::ui::catalog
         .require_unique(fourcc!("canc"))
         .expect("validated city-site cancel binding");
     commands.entity(cancel).insert(CitySiteAction::Cancel);
-    // Retail opens the New City dialog from a validated map click, not from `send`.
-    let map = spawned
-        .require_unique(MAP_TAG)
-        .expect("validated city-site map binding");
-    commands.entity(map).insert(CitySiteMap);
-}
-
-fn render_city_site_map(
-    mut commands: Commands,
-    session: Res<GameSession>,
-    retail_assets: Res<RetailAssetsResource>,
-    mut images: ResMut<Assets<Image>>,
-    mut maps: Query<(Entity, Option<&mut ImageNode>), Added<CitySiteMap>>,
-) {
-    if maps.is_empty() {
-        return;
-    }
-    let Some(selected) = MajorNationId::from_nation(session.0.turn.active_nation) else {
-        warn!(
-            "city-site map render skipped: active nation {:?} is not a major nation",
-            session.0.turn.active_nation
-        );
-        return;
-    };
-    let palette_indices =
-        compose_owner_preview_indices(|tile| session.0.world[tile].owner_nation, selected.nation());
-    let palette = retail_assets.assets().default_dib_palette();
-    let image = preview_image_from_indices(&palette_indices, palette);
-    for (entity, image_node) in &mut maps {
-        if let Some(mut image_node) = image_node {
-            if let Some(mut existing) = images.get_mut(&image_node.image) {
-                *existing = image.clone();
-            } else {
-                image_node.image = images.add(image.clone());
-            }
-        } else {
-            commands
-                .entity(entity)
-                .insert(ImageNode::new(images.add(image.clone())));
-        }
-    }
 }
 
 fn on_city_site_activate(
@@ -153,25 +105,19 @@ fn on_city_site_map_click(
     click: On<Pointer<Click>>,
     dialog_open: Query<(), With<ModalDialog>>,
     session: Option<Res<GameSession>>,
-    maps: Query<(&RelativeCursorPosition, &CitySiteMap)>,
+    maps: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
     mut ui: UiSpawner,
 ) {
     if !dialog_open.is_empty() {
         return;
     }
-    let Ok((cursor, _map)) = maps.get(click.entity) else {
-        return;
-    };
-    if !cursor.cursor_over() {
-        return;
-    }
-    let Some(normalized) = cursor.normalized else {
-        return;
-    };
-    let Some(tile) = tile_at_preview_position(normalized) else {
-        return;
-    };
     let Some(session) = session else {
+        return;
+    };
+    let Ok(cursor) = maps.get(click.entity) else {
+        return;
+    };
+    let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.0, cursor) else {
         return;
     };
     let Some(nation) = MajorNationId::from_nation(session.0.turn.active_nation) else {

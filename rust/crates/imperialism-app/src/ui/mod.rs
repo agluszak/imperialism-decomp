@@ -6,6 +6,7 @@ mod game_shell;
 mod main_menu;
 mod random_setup;
 mod random_setup_map;
+mod strategic_map;
 mod trade;
 mod transport;
 

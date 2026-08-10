@@ -1,5 +1,8 @@
 use crate::AppState;
 use crate::ui::catalog::{SpawnedView, UiAssetResources, UiCatalogResource, spawn_view};
+use crate::ui::random_setup::GameSession;
+use crate::ui::strategic_map::{bind_strategic_base_terrain, sync_strategic_base_terrain};
+use bevy::log::warn;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
@@ -14,16 +17,6 @@ pub(crate) fn strategic_map_view_id() -> ScopedViewId {
     ScopedViewId {
         resource_file: "MapView.rsrc".to_owned(),
         resource_id: 2013,
-    }
-}
-
-/// Retail's persistent newspaper/flag chrome. It is spawned alongside the strategic
-/// map only: Trade, City, Transport, and Diplomacy each embed their own toolbar
-/// (including their own `end ` control) directly in their own view.
-pub(crate) fn flag_view_id() -> ScopedViewId {
-    ScopedViewId {
-        resource_file: "FlagView.rsrc".to_owned(),
-        resource_id: 8451,
     }
 }
 
@@ -58,9 +51,14 @@ pub(crate) fn diplomacy_view_id() -> ScopedViewId {
 pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Result<(), String> {
     catalog.require_unique_bindings(
         &strategic_map_view_id(),
-        &[TRADE, fourcc!("tran"), fourcc!("city"), fourcc!("dipl")],
+        &[
+            fourcc!("DLOG"),
+            TRADE,
+            fourcc!("tran"),
+            fourcc!("city"),
+            fourcc!("dipl"),
+        ],
     )?;
-    catalog.require_unique_bindings(&flag_view_id(), &[fourcc!("end "), fourcc!("quer")])?;
     for view_id in [
         trade_view_id(),
         city_view_id(),
@@ -116,7 +114,11 @@ pub(crate) struct GameShellPlugin;
 impl Plugin for GameShellPlugin {
     fn build(&self, app: &mut App) {
         app.add_observer(on_game_screen_activate);
-        app.add_systems(OnEnter(AppState::StrategicMap), enter_game_screen);
+        app.add_systems(OnEnter(AppState::StrategicMap), enter_game_screen)
+            .add_systems(
+                Update,
+                sync_strategic_base_terrain.run_if(in_state(AppState::StrategicMap)),
+            );
     }
 }
 
@@ -128,6 +130,7 @@ fn enter_game_screen(
     catalog: Res<UiCatalogResource>,
     mut assets: UiAssetResources,
     state: Res<State<AppState>>,
+    session: Option<Res<GameSession>>,
 ) {
     let current = *state.get();
     let Some(view_id) = view_id_for_state(current) else {
@@ -138,39 +141,16 @@ fn enter_game_screen(
         .expect("validated game-screen catalog view");
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
     bind_game_screen_nav(&mut commands, &catalog, &spawned);
+    if current == AppState::StrategicMap {
+        if let Some(session) = session {
+            bind_strategic_base_terrain(&mut commands, &spawned, &mut assets, &session.0);
+        } else {
+            warn!("strategic map opened without an authoritative game session");
+        }
+    }
     commands
         .entity(spawned.root)
         .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
-
-    if current == AppState::StrategicMap {
-        spawn_flag_view_chrome(&mut commands, &catalog, &mut assets, current);
-    }
-}
-
-/// Spawns retail's persistent newspaper/flag chrome alongside the strategic map.
-fn spawn_flag_view_chrome(
-    commands: &mut Commands,
-    catalog: &UiCatalogResource,
-    assets: &mut UiAssetResources,
-    current: AppState,
-) {
-    let view_id = flag_view_id();
-    let view = catalog
-        .view(&view_id)
-        .expect("validated flag-view catalog view");
-    let spawned = spawn_view(commands, catalog.catalog(), view, assets);
-    // `end ` is End Turn and `quer` is the help/query hotspot; neither is
-    // implemented yet, so keep both inert rather than leave unbound no-ops.
-    disable_control(commands, &spawned, fourcc!("end "));
-    disable_control(commands, &spawned, fourcc!("quer"));
-    for entity in spawned.nodes.values() {
-        commands.entity(*entity).insert(Pickable::IGNORE);
-    }
-    commands.entity(spawned.root).insert((
-        GameScreenRoot(view_id),
-        DespawnOnExit(current),
-        Pickable::IGNORE,
-    ));
 }
 
 pub(crate) fn bind_game_screen_nav(
@@ -279,9 +259,6 @@ mod tests {
     #[derive(Resource)]
     struct TestSpawned(SpawnedView);
 
-    #[derive(Resource)]
-    struct TestFlagSpawned(SpawnedView);
-
     fn enter_game_screen_structure_only(
         mut commands: Commands,
         catalog: Res<UiCatalogResource>,
@@ -300,24 +277,6 @@ mod tests {
         commands
             .entity(spawned.root)
             .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
-
-        if current == AppState::StrategicMap {
-            let flag_view_id = flag_view_id();
-            let flag_view = catalog
-                .view(&flag_view_id)
-                .expect("validated flag-view catalog view");
-            let flag_spawned = spawn_view_nodes(
-                &mut commands,
-                catalog.catalog().logical_resolution,
-                flag_view,
-            );
-            disable_control(&mut commands, &flag_spawned, fourcc!("end "));
-            disable_control(&mut commands, &flag_spawned, fourcc!("quer"));
-            commands.insert_resource(TestFlagSpawned(flag_spawned.clone()));
-            commands
-                .entity(flag_spawned.root)
-                .insert((GameScreenRoot(flag_view_id), DespawnOnExit(current)));
-        }
     }
 
     fn app_at(state: AppState) -> App {
@@ -361,11 +320,11 @@ mod tests {
     }
 
     #[test]
-    fn strategic_map_spawns_flag_view_and_combined_map_with_toolbar_navigation() {
+    fn strategic_map_spawns_combined_map_with_toolbar_navigation() {
         let mut app = app_at(AppState::StrategicMap);
         assert_eq!(
             current_roots(&mut app),
-            HashSet::from([strategic_map_view_id(), flag_view_id()])
+            HashSet::from([strategic_map_view_id()])
         );
         for action in [
             GameScreenNavAction::Trade,
@@ -376,25 +335,6 @@ mod tests {
             let entity = nav_entity(&mut app, action);
             assert!(app.world().get::<UiButton>(entity).is_some());
             assert!(app.world().get::<InteractionDisabled>(entity).is_none());
-        }
-    }
-
-    #[test]
-    fn strategic_map_flag_view_disables_end_turn_and_query() {
-        let app = app_at(AppState::StrategicMap);
-        let spawned = app.world().resource::<TestFlagSpawned>().0.clone();
-        for tag in [fourcc!("end "), fourcc!("quer")] {
-            let entity = spawned
-                .require_unique(tag)
-                .unwrap_or_else(|error| panic!("flag view missing {tag}: {error}"));
-            assert!(
-                app.world().get::<InteractionDisabled>(entity).is_some(),
-                "{tag} should be disabled"
-            );
-            assert!(
-                app.world().get::<GameScreenNavAction>(entity).is_none(),
-                "{tag} must not be bound to a nav action"
-            );
         }
     }
 
@@ -427,7 +367,7 @@ mod tests {
             );
             assert_eq!(
                 current_roots(&mut app),
-                HashSet::from([strategic_map_view_id(), flag_view_id()])
+                HashSet::from([strategic_map_view_id()])
             );
         }
     }
@@ -510,7 +450,6 @@ mod tests {
         let catalog = catalog();
         for (view_id, min_nodes) in [
             (strategic_map_view_id(), 70usize),
-            (flag_view_id(), 8),
             (trade_view_id(), 160),
             (city_view_id(), 20),
             (transport_view_id(), 60),

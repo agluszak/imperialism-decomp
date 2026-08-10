@@ -104,10 +104,13 @@ impl FromWorld for RandomSetupPreview {
     fn from_world(world: &mut World) -> Self {
         let clock = world.resource::<RandomSetupClockSeed>().0;
         let setup = world.resource::<RandomGameSetup>();
+        let mut sea_zone_marker_crt = RetailCrtRng::from_state(clock);
+        let _ = sea_zone_marker_crt.next_rand();
         Self(generate_random_setup_preview_with_clock_seed(
             setup.planet_seed.as_bytes(),
             setup.topology,
             clock,
+            sea_zone_marker_crt,
         ))
     }
 }
@@ -466,6 +469,7 @@ fn regenerate_random_setup_planet(
             setup.planet_seed.as_bytes(),
             setup.topology,
             clock_seed,
+            RetailCrtRng::from_state(clock_seed),
         ),
     );
 }
@@ -552,6 +556,7 @@ fn commit_planet_seed_dialog(commit: &mut PlanetSeedCommit<'_, '_>) {
                 commit.setup.planet_seed.as_bytes(),
                 commit.setup.topology,
                 commit.clock_seed.0,
+                RetailCrtRng::from_state(commit.clock_seed.0),
             ),
         );
     }
@@ -600,6 +605,17 @@ mod tests {
             );
         app.update();
         app
+    }
+
+    fn initial_seed_one_preview() -> imperialism_core::RandomSetupPreview {
+        let mut sea_zone_marker_crt = RetailCrtRng::from_state(1);
+        let _ = sea_zone_marker_crt.next_rand();
+        generate_random_setup_preview_with_clock_seed(
+            b"Woopnist",
+            MapTopology::Wrapping,
+            1,
+            sea_zone_marker_crt,
+        )
     }
 
     fn enter_main_menu_structure_only(mut commands: Commands, catalog: Res<UiCatalogResource>) {
@@ -772,7 +788,7 @@ mod tests {
         enter_random_setup_screen(&mut app);
         assert_eq!(
             app.world().resource::<RandomSetupPreview>().0,
-            generate_random_setup_preview_with_clock_seed(b"Woopnist", MapTopology::Wrapping, 1)
+            initial_seed_one_preview()
         );
         let okay = action_entity(&mut app, RandomSetupAction::Accept);
         assert!(app.world().get::<InteractionDisabled>(okay).is_none());
@@ -795,7 +811,7 @@ mod tests {
         );
         assert_eq!(
             app.world().resource::<RandomSetupPreview>().0,
-            generate_random_setup_preview_with_clock_seed(b"Woopnist", MapTopology::Wrapping, 1,)
+            initial_seed_one_preview()
         );
     }
 
@@ -827,6 +843,13 @@ mod tests {
                 difficulty: Difficulty::NighOnImpossible,
                 name_mode: NationNameMode::Random,
             }
+        );
+        assert_eq!(
+            app.world()
+                .resource::<RandomSetupPreview>()
+                .0
+                .sea_zone_marker_crt,
+            RetailCrtRng::from_state(1)
         );
     }
 
