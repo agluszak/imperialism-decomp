@@ -21,6 +21,13 @@ const CITY_DIALOG_CLOSE_SIZE: f32 = 14.0;
 const CITY_BUILDING_STRING_GROUP: i16 = 0x2719;
 const CITY_TEXT_STRING_GROUP: i16 = 0x2738;
 
+fn construction_dialog_view_id() -> ScopedViewId {
+    ScopedViewId {
+        resource_file: "Citydlog.rsrc".to_owned(),
+        resource_id: 9220,
+    }
+}
+
 fn expansion_dialog_view_id() -> ScopedViewId {
     ScopedViewId {
         resource_file: "Citydlog.rsrc".to_owned(),
@@ -642,6 +649,23 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
         }
     }
     catalog.require_unique_bindings(
+        &construction_dialog_view_id(),
+        &[
+            fourcc!("WIND"),
+            fourcc!("DLOG"),
+            fourcc!("okay"),
+            fourcc!("cncl"),
+            fourcc!("tex1"),
+            fourcc!("tex2"),
+            fourcc!("warn"),
+            fourcc!("name"),
+            fourcc!("cost"),
+            fourcc!("capT"),
+            fourcc!("or  "),
+            fourcc!("buck"),
+        ],
+    )?;
+    catalog.require_unique_bindings(
         &expansion_dialog_view_id(),
         &[
             fourcc!("WIND"),
@@ -817,10 +841,10 @@ struct CityExpansionOpen {
 }
 
 #[derive(Component, Clone, Copy)]
-struct CityExpansionDialog;
+struct CityBuildingChangeDialog;
 
 #[derive(Component, Clone, Copy)]
-struct CityExpansionChoice {
+struct CityBuildingChangeChoice {
     dialog: Entity,
     nation: MajorNationId,
     slot: ProductionSlot,
@@ -975,7 +999,7 @@ impl Plugin for CityPlugin {
             .add_observer(on_shipyard_row_selected)
             .add_observer(on_city_amount_bar_click)
             .add_observer(on_city_expansion_open)
-            .add_observer(on_city_expansion_choice)
+            .add_observer(on_city_building_change_choice)
             .add_observer(on_city_order_adjust);
     }
 }
@@ -1377,12 +1401,14 @@ fn animate_city_building_actions(
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn on_city_canvas_click(
     click: On<Pointer<Click>>,
     canvases: Query<(&RelativeCursorPosition, &CityCanvas)>,
-    dialogs: Query<(&CityBuildingDialog, &GlobalZIndex)>,
+    dialogs: Query<(Entity, &CityBuildingDialog, &GlobalZIndex)>,
+    screen_roots: Query<Entity, With<CityScreenRoot>>,
     modal_dialogs: Query<(), With<ModalDialog>>,
-    session: Res<GameSession>,
+    mut session: ResMut<GameSession>,
     catalog: Res<UiCatalogResource>,
     mut ui: UiSpawner,
 ) {
@@ -1410,23 +1436,38 @@ fn on_city_canvas_click(
     let Some(nation) = MajorNationId::from_nation(session.0.turn.active_nation) else {
         return;
     };
-    let major = session.0.nations.major(nation);
-    if CityState::is_capacity_center(building.slot)
-        && major.city().building_type(
-            building.slot,
-            major.economy(),
-            major.common().owned_regions.len() as i32,
-        ) == 0
-    {
-        return;
-    }
     if dialogs
         .iter()
-        .any(|(dialog, _)| dialog.nation == nation && dialog.slot == building.slot)
+        .any(|(_, dialog, _)| dialog.nation == nation && dialog.slot == building.slot)
     {
         return;
     }
-    let z_index = dialogs.iter().map(|(_, z)| z.0).max().unwrap_or(0) + 1;
+    let unbuilt_capacity_center = {
+        let major = session.0.nations.major(nation);
+        CityState::is_capacity_center(building.slot)
+            && major.city().building_type(
+                building.slot,
+                major.economy(),
+                major.common().owned_regions.len() as i32,
+            ) == 0
+    };
+    if unbuilt_capacity_center {
+        let available = !matches!(
+            building.slot,
+            ProductionSlot::OilRefinery | ProductionSlot::PowerPlant
+        ) || session.0.technology.city_capabilities_by_nation[nation].oil_drilling;
+        if available {
+            open_city_construction_dialog(&mut ui, &mut session, nation, building.slot);
+            for (entity, _, _) in &dialogs {
+                ui.commands.entity(entity).insert(CityDialogNeedsSync);
+            }
+            for root in &screen_roots {
+                ui.commands.entity(root).insert(CityScreenNeedsSync);
+            }
+            return;
+        }
+    }
+    let z_index = dialogs.iter().map(|(_, _, z)| z.0).max().unwrap_or(0) + 1;
     assert!(z_index < 20, "modeless City dialogs remain below modals");
     open_city_dialog(
         &mut ui,
@@ -1460,15 +1501,18 @@ fn city_string(ui: &UiSpawner, group: i16, zero_based_index: i16) -> String {
         .expect("validated English retail City string")
 }
 
-fn format_retail_number(template: &str, value: i16) -> String {
-    let value = value.to_string();
+fn format_retail_value(template: &str, value: &str) -> String {
     if template.contains("[1: number]") {
-        template.replace("[1: number]", &value)
+        template.replace("[1: number]", value)
     } else if template.contains("[1:number]") {
-        template.replace("[1:number]", &value)
+        template.replace("[1:number]", value)
     } else {
         panic!("retail City number template has no first-number token");
     }
+}
+
+fn format_retail_number(template: &str, value: i16) -> String {
+    format_retail_value(template, &value.to_string())
 }
 
 fn format_currency(value: i32) -> String {
@@ -2664,6 +2708,211 @@ fn bind_population_dialog(
         .insert(RetailNumberTemplate(province_template));
 }
 
+fn open_city_construction_dialog(
+    ui: &mut UiSpawner,
+    session: &mut GameSession,
+    nation: MajorNationId,
+    slot: ProductionSlot,
+) {
+    assert!(
+        CityState::is_capacity_center(slot),
+        "retail construction dialog belongs to a City capacity center"
+    );
+    let (capacity_value, can_reserve) = match slot {
+        ProductionSlot::PowerPlant => {
+            session.0.set_power_plant_upgrade(nation, false);
+            let major = session.0.nations.major(nation);
+            let can_reserve = major
+                .economy()
+                .available_diplomacy_budget(major.common().treasury)
+                >= 5_000;
+            (city_string(ui, CITY_TEXT_STRING_GROUP, 0x15), can_reserve)
+        }
+        _ => {
+            assert!(
+                is_ordinary_industry(slot),
+                "non-power capacity center has a retail expansion order"
+            );
+            let (next_capacity, needed, original_quantity) = {
+                let major = session.0.nations.major(nation);
+                let city = major.city();
+                let owned_regions = major.common().owned_regions.len() as i32;
+                let current = city.building_type(slot, major.economy(), owned_regions);
+                let next_capacity =
+                    city.max_building_capacity(slot, major.economy(), owned_regions);
+                let original_quantity = city.orders.expansions[slot]
+                    .as_ref()
+                    .expect("ordinary capacity center has a retail expansion order")
+                    .progress
+                    .quantity;
+                (next_capacity, next_capacity - current, original_quantity)
+            };
+            let order = CityOrderId::Expansion(slot);
+            let can_reserve = session.0.set_city_order_quantity(nation, order, needed);
+            assert!(
+                session
+                    .0
+                    .set_city_order_quantity(nation, order, original_quantity),
+                "retail construction probe must restore its original quantity"
+            );
+            (next_capacity.to_string(), can_reserve)
+        }
+    };
+    let spawned = ui.spawn_modal(construction_dialog_view_id());
+    bind_construction_dialog(ui, &spawned, nation, slot, &capacity_value, can_reserve);
+}
+
+fn bind_construction_dialog(
+    ui: &mut UiSpawner,
+    spawned: &SpawnedView,
+    nation: MajorNationId,
+    slot: ProductionSlot,
+    capacity_value: &str,
+    can_reserve: bool,
+) {
+    let root = spawned.root;
+    ui.commands
+        .entity(root)
+        .insert((CityBuildingChangeDialog, DespawnOnExit(AppState::City)));
+
+    let picture = PictureId::new(9250 + i16::from(slot as u8) * 5);
+    match ui.picture(picture) {
+        Ok(handle) => {
+            let dialog = spawned
+                .require_unique(fourcc!("DLOG"))
+                .expect("validated construction-dialog picture binding");
+            ui.commands.entity(dialog).insert(ImageNode::new(handle));
+        }
+        Err(error) => warn!("could not load construction-dialog picture {picture}: {error}"),
+    }
+
+    let capacity = format_retail_value(
+        &city_string(ui, CITY_TEXT_STRING_GROUP, 0x10),
+        capacity_value,
+    );
+    let text_group = 0x2422 + i16::from(slot as u8);
+    let text = [
+        (
+            fourcc!("tex1"),
+            ui.string(text_group, 1)
+                .expect("validated English retail construction headline"),
+        ),
+        (
+            fourcc!("name"),
+            city_string(ui, CITY_BUILDING_STRING_GROUP, slot as i16),
+        ),
+        (fourcc!("capT"), capacity),
+        (
+            fourcc!("cost"),
+            city_string(ui, CITY_TEXT_STRING_GROUP, 0x14),
+        ),
+    ];
+    for (tag, value) in text {
+        let entity = spawned
+            .require_unique(tag)
+            .expect("validated construction-dialog text binding");
+        ui.commands.entity(entity).insert(Text::new(value));
+    }
+
+    let text2 = spawned
+        .require_unique(fourcc!("tex2"))
+        .expect("validated construction detail binding");
+    if slot == ProductionSlot::PowerPlant {
+        ui.commands
+            .entity(text2)
+            .entry::<Node>()
+            .and_modify(|mut node| {
+                let Val::Px(top) = node.top else {
+                    panic!("catalog construction detail has fixed retail coordinates");
+                };
+                node.top = px(top + 5.0);
+            });
+    }
+
+    let connective = spawned
+        .require_unique(fourcc!("or  "))
+        .expect("validated construction connective binding");
+    let connective_left = match slot {
+        ProductionSlot::TextileMill => Some(0x98),
+        ProductionSlot::Metalworks => Some(0xcd),
+        ProductionSlot::LumberMill => Some(0xd0),
+        _ => None,
+    };
+    if let Some(left) = connective_left {
+        let connective_text = city_string(ui, CITY_TEXT_STRING_GROUP, 0x11);
+        let mut connective_commands = ui.commands.entity(connective);
+        connective_commands.insert((Text::new(connective_text), Visibility::Visible));
+        connective_commands
+            .entry::<Node>()
+            .and_modify(move |mut node| node.left = px(left as f32));
+    } else {
+        ui.commands.entity(connective).insert(Visibility::Hidden);
+    }
+
+    let buck = spawned
+        .require_unique(fourcc!("buck"))
+        .expect("validated construction cash binding");
+    ui.commands.entity(buck).insert((
+        Text::new(if slot == ProductionSlot::PowerPlant {
+            format_currency(5_000)
+        } else {
+            String::new()
+        }),
+        if slot == ProductionSlot::PowerPlant {
+            Visibility::Visible
+        } else {
+            Visibility::Hidden
+        },
+    ));
+
+    let warning = spawned
+        .require_unique(fourcc!("warn"))
+        .expect("validated construction warning binding");
+    let warning_text = city_string(
+        ui,
+        CITY_TEXT_STRING_GROUP,
+        if slot == ProductionSlot::PowerPlant {
+            0x16
+        } else {
+            0x17
+        },
+    );
+    let warning_color = ui.palette_color(0xcb);
+    ui.commands.entity(warning).insert((
+        Text::new(warning_text),
+        TextColor(warning_color),
+        if can_reserve {
+            Visibility::Hidden
+        } else {
+            Visibility::Visible
+        },
+    ));
+
+    let okay = spawned
+        .require_unique(fourcc!("okay"))
+        .expect("validated construction OK binding");
+    let mut okay_commands = ui.commands.entity(okay);
+    okay_commands.insert(CityBuildingChangeChoice {
+        dialog: root,
+        nation,
+        slot,
+        accept: true,
+    });
+    if !can_reserve {
+        okay_commands.insert((InteractionDisabled, Visibility::Hidden));
+    }
+
+    let cancel = spawned
+        .require_unique(fourcc!("cncl"))
+        .expect("validated construction cancel binding");
+    ui.commands.entity(cancel).insert(CityBuildingChangeChoice {
+        dialog: root,
+        nation,
+        slot,
+        accept: false,
+    });
+}
+
 #[allow(clippy::too_many_arguments)]
 fn bind_expansion_dialog(
     ui: &mut UiSpawner,
@@ -2678,7 +2927,7 @@ fn bind_expansion_dialog(
     let root = spawned.root;
     ui.commands
         .entity(root)
-        .insert((CityExpansionDialog, DespawnOnExit(AppState::City)));
+        .insert((CityBuildingChangeDialog, DespawnOnExit(AppState::City)));
 
     let picture = PictureId::new(9250 + i16::from(slot as u8) * 5 + i16::from(next_level));
     match ui.picture(picture) {
@@ -2726,7 +2975,7 @@ fn bind_expansion_dialog(
         .require_unique(fourcc!("okay"))
         .expect("validated expansion OK binding");
     let mut okay_commands = ui.commands.entity(okay);
-    okay_commands.insert(CityExpansionChoice {
+    okay_commands.insert(CityBuildingChangeChoice {
         dialog: root,
         nation,
         slot,
@@ -2739,7 +2988,7 @@ fn bind_expansion_dialog(
     let cancel = spawned
         .require_unique(fourcc!("cncl"))
         .expect("validated expansion cancel binding");
-    ui.commands.entity(cancel).insert(CityExpansionChoice {
+    ui.commands.entity(cancel).insert(CityBuildingChangeChoice {
         dialog: root,
         nation,
         slot,
@@ -2820,10 +3069,10 @@ fn on_city_expansion_open(
 }
 
 #[allow(clippy::too_many_arguments)]
-fn on_city_expansion_choice(
+fn on_city_building_change_choice(
     activate: On<Activate>,
-    choices: Query<&CityExpansionChoice>,
-    expansion_dialogs: Query<(), With<CityExpansionDialog>>,
+    choices: Query<&CityBuildingChangeChoice>,
+    change_dialogs: Query<(), With<CityBuildingChangeDialog>>,
     dialogs: Query<Entity, With<CityBuildingDialog>>,
     screen_roots: Query<Entity, With<CityScreenRoot>>,
     mut session: ResMut<GameSession>,
@@ -2832,35 +3081,41 @@ fn on_city_expansion_choice(
     let Ok(choice) = choices.get(activate.entity) else {
         return;
     };
-    if expansion_dialogs.get(choice.dialog).is_err() {
+    if change_dialogs.get(choice.dialog).is_err() {
         return;
     }
-    let order = CityOrderId::Expansion(choice.slot);
-    if choice.accept {
-        let needed = {
-            let major = session.0.nations.major(choice.nation);
-            let city = major.city();
-            let owned_regions = major.common().owned_regions.len() as i32;
-            city.max_building_capacity(choice.slot, major.economy(), owned_regions)
-                - city.building_type(choice.slot, major.economy(), owned_regions)
-        };
-        let _ = session
-            .0
-            .set_city_order_quantity(choice.nation, order, needed);
+    if choice.slot == ProductionSlot::PowerPlant {
+        if choice.accept {
+            session.0.set_power_plant_upgrade(choice.nation, true);
+        }
     } else {
-        let quantity = session
-            .0
-            .nations
-            .major(choice.nation)
-            .city()
-            .orders
-            .expansions[choice.slot]
-            .as_ref()
-            .expect("ordinary industry has an expansion order")
-            .progress
-            .quantity;
-        if quantity > 0 {
-            let _ = session.0.set_city_order_quantity(choice.nation, order, 0);
+        let order = CityOrderId::Expansion(choice.slot);
+        if choice.accept {
+            let needed = {
+                let major = session.0.nations.major(choice.nation);
+                let city = major.city();
+                let owned_regions = major.common().owned_regions.len() as i32;
+                city.max_building_capacity(choice.slot, major.economy(), owned_regions)
+                    - city.building_type(choice.slot, major.economy(), owned_regions)
+            };
+            let _ = session
+                .0
+                .set_city_order_quantity(choice.nation, order, needed);
+        } else {
+            let quantity = session
+                .0
+                .nations
+                .major(choice.nation)
+                .city()
+                .orders
+                .expansions[choice.slot]
+                .as_ref()
+                .expect("ordinary industry has an expansion order")
+                .progress
+                .quantity;
+            if quantity > 0 {
+                let _ = session.0.set_city_order_quantity(choice.nation, order, 0);
+            }
         }
     }
 
