@@ -62,6 +62,118 @@ struct CivilianPhasePlan {
 }
 
 impl GameState {
+    /// Rebuilds one major nation's transportable resource supply from its
+    /// currently linked city territory.
+    ///
+    /// Retail invokes this immediately before opening the Transport screen and
+    /// again from city/transport turn resolution. Targets that no longer fit
+    /// the rebuilt supply are reduced through the same reserved-capacity seam
+    /// used by player allocation.
+    pub fn rebuild_nation_resource_yields(&mut self, nation: MajorNationId) {
+        let town = self.nations.majors[nation]
+            .city
+            .home_town
+            .expect("resource-yield rebuild requires the nation's home town");
+        let (_, town_transport_linked) = self
+            .transport_influence(nation, town)
+            .expect("the nation's home town must remain on owned territory");
+
+        let mut influence = vec![0_u8; STRATEGIC_TILE_COUNT];
+        if town_transport_linked {
+            let level = u8::from(town.enabled) + 1;
+            influence[usize::from(town.tile.get())] = level;
+            let owner = Some(TileOwnerTag::from_nation(nation.nation()));
+            for neighbor in self
+                .world
+                .geometry()
+                .neighbors(town.tile)
+                .into_iter()
+                .flatten()
+            {
+                let tile = &self.world[neighbor];
+                let entry = &mut influence[usize::from(neighbor.get())];
+                if (tile.owner_nation == owner || tile.region_tile_subtype.retail() == 0)
+                    && *entry < level
+                {
+                    *entry = level;
+                }
+            }
+        }
+
+        let mut current = ResourceTable::<i16>::default();
+        for (index, &level) in influence.iter().enumerate() {
+            if level == 0 {
+                continue;
+            }
+            let tile_id = TileId::new(index as u16);
+            let tile = &self.world[tile_id];
+            if tile.region_tile_subtype.retail() == 0 {
+                if level == 2 {
+                    current[ResourceKind::Fish] = current[ResourceKind::Fish].wrapping_add(1);
+                }
+                continue;
+            }
+
+            for resource in tile.edge_resources.into_iter().flatten() {
+                let development = if matches!(
+                    resource,
+                    ResourceKind::Coal
+                        | ResourceKind::Iron
+                        | ResourceKind::Oil
+                        | ResourceKind::Gems
+                        | ResourceKind::Gold
+                ) {
+                    tile.development.extractive.get()
+                } else {
+                    tile.development.surface.get()
+                };
+                let contribution = UNIVERSITY_REQUIREMENT_LEVEL[resource as usize]
+                    .get(usize::from(development))
+                    .expect("resource development level must be in 0..=3");
+                current[resource] = current[resource].wrapping_add(*contribution);
+            }
+
+            if tile.river.is_some() && level == 2 {
+                current[ResourceKind::Fish] = current[ResourceKind::Fish].wrapping_add(1);
+            }
+            if let Some(province) = tile.province
+                && self.provinces[province].city_tile() == Some(tile_id)
+            {
+                for index in ResourceKind::Food as u8..=ResourceKind::Arms as u8 {
+                    let resource = ResourceKind::from_index(index)
+                        .expect("the manufactured resource range is semantic");
+                    current[resource] = current[resource].wrapping_add(
+                        self.provinces[province].resource_development_by_type()[resource],
+                    );
+                }
+            }
+        }
+
+        let major = &mut self.nations.majors[nation];
+        major
+            .city
+            .home_town
+            .as_mut()
+            .expect("resource-yield rebuild retains the home town")
+            .transport_linked = town_transport_linked;
+        major.economy.need_current_by_type = current;
+        for resource in all_resources() {
+            if major.economy.need_current_by_type[resource]
+                < major.economy.need_target_by_type[resource]
+            {
+                major
+                    .economy
+                    .update_need_target(resource, major.economy.need_current_by_type[resource]);
+            }
+        }
+        if !major.economy.controller.is_human() {
+            let fish = major.economy.need_current_by_type[ResourceKind::Fish];
+            major.economy.need_current_by_type[ResourceKind::Fish] = 0;
+            major.economy.need_current_by_type[ResourceKind::Livestock] =
+                major.economy.need_current_by_type[ResourceKind::Livestock].wrapping_add(fish);
+        }
+    }
+
     /// Whether phase nine is the recovered Easy beginning-save civilian pass.
     pub(crate) fn supports_first_turn_civilian_phase(&self) -> bool {
         self.first_turn_civilian_plan().is_some()
