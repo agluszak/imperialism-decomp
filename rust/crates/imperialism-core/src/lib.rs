@@ -38,6 +38,7 @@ pub(crate) mod test_support;
 mod trade;
 mod trade_phase;
 mod turn_flow;
+mod turn_tail;
 mod units;
 
 pub use calendar::TurnCalendar;
@@ -101,5 +102,5 @@ pub use tables::{
 };
 pub use territory::{CountryStatus, ProvinceState, ProvinceStateError, TerritoryInvariantError};
 pub use trade::{PlayerTradeOrder, TransportAllocation};
-pub use turn_flow::{AdvanceTurnOutcome, TurnBlock, TurnEffect};
+pub use turn_flow::{AdvanceTurnOutcome, TurnBlock, TurnEffect, UiGate};
 pub use units::{CivilianUnitKind, CivilianUnitTable, MilitaryUnitKind, MilitaryUnitTable};

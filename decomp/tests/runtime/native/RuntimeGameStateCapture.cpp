@@ -24,12 +24,15 @@
 #include "game/debug/TLaborPool.h"
 #include "game/diplomacy_domain_types.h"
 #include "game/military_domain_types.h"
+#include "game/assets/TAssetMgr.h"
+#include "game/globals/assets_globals.h"
 #include "game/globals/game_session_globals.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/nation_globals.h"
 #include "game/globals/tactical_globals.h"
 #include "game/globals/tactical_ui_globals.h"
 #include "game/globals/trade_ui_globals.h"
+#include "game/globals/ui_core_globals.h"
 #include "game/map/TBeachheadMission.h"
 #include "game/map/TBlockadePortMission.h"
 #include "game/map/TControlSeaZoneMission.h"
@@ -63,6 +66,7 @@
 #include "game/navy/TTaskForce.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_core/CIterator.h"
+#include "game/ui_core/TLanguageMgr.h"
 #include "game/ui_core/TSortedPtrList.h"
 #include "game/ui_screens/TNewsMgr.h"
 #include "game/ui_screens/TPortZone.h"
@@ -762,14 +766,21 @@ JSON_Value* CaptureTechnology() {
   const int kOilDrillingTechId = TTechMgr::kProductionOrderTechId;
   const unsigned char advancedIronWorking = g_pTechMgr->resourceTypeEnabled19d[8];
   const unsigned char marineEngineering = g_pTechMgr->resourceTypeEnabled19d[0xb];
-  const unsigned char oilDrillingAvailable = g_pTechMgr->perTechUnlockFlag180[kOilDrillingTechId];
   if (advancedIronWorking > 1 || marineEngineering > 1) {
     FailSemanticCapture("technology resource-type flag is not boolean");
   }
-  if (oilDrillingAvailable > 1) {
-    FailSemanticCapture("global oil-drilling availability is not boolean");
-  }
   JsonObject technology;
+  JsonArray scheduledUnlockTurnByTechnology;
+  JsonArray globalUnlocksByTechnology;
+  for (int technologyId = 0; technologyId < 0x1d; ++technologyId) {
+    scheduledUnlockTurnByTechnology.Add(
+        static_cast<int>(g_pTechMgr->prioritySlots04[technologyId]));
+    const unsigned char unlocked = g_pTechMgr->perTechUnlockFlag180[technologyId];
+    if (unlocked > 1) {
+      FailSemanticCapture("global technology unlock flag is not boolean");
+    }
+    globalUnlocksByTechnology.Add(unlocked != 0);
+  }
   JsonArray industryEnabledBySlot;
   for (int slot = 0; slot < kIndustryActionSlotCount; ++slot) {
     const unsigned char enabled = g_pTechMgr->resourceTypeEnabled19d[slot];
@@ -780,6 +791,7 @@ JSON_Value* CaptureTechnology() {
   }
   JsonArray militaryUnitAbilityActiveByNation;
   JsonArray cityCapabilitiesByNation;
+  JsonArray researchStatusByNation;
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     const TTechMgr::OrderCapRow& technologyStatus = g_pTechMgr->orderCapRows277[nationSlot];
     const unsigned char advancedIronWorkingStatus =
@@ -794,6 +806,17 @@ JSON_Value* CaptureTechnology() {
         FailSemanticCapture("major-nation civilian technology status is invalid");
       }
     }
+
+    JsonArray researchStatus;
+    for (int technologyId = 0; technologyId < 0x1d; ++technologyId) {
+      const unsigned char status = technologyStatus.techStatusByTechId[technologyId];
+      if (status > 2) {
+        FailSemanticCapture("major-nation technology status is invalid");
+      }
+      const char* const names[3] = {"not_started", "pending", "researched"};
+      researchStatus.Add(names[status]);
+    }
+    researchStatusByNation.Add(researchStatus.Release());
 
     JsonObject abilityActiveByUnitType;
     for (int unitType = 0; unitType < kMilitaryUnitKindCount; ++unitType) {
@@ -845,7 +868,9 @@ JSON_Value* CaptureTechnology() {
   }
   technology.Set("advanced_iron_working", advancedIronWorking != 0);
   technology.Set("marine_engineering", marineEngineering != 0);
-  technology.Set("oil_drilling_available", oilDrillingAvailable != 0);
+  technology.Set("scheduled_unlock_turn_by_technology", scheduledUnlockTurnByTechnology.Release());
+  technology.Set("global_unlocks_by_technology", globalUnlocksByTechnology.Release());
+  technology.Set("research_status_by_nation", researchStatusByNation.Release());
   technology.Set("industry_enabled_by_slot", industryEnabledBySlot.Release());
   technology.Set("military_unit_ability_active_by_nation",
                  militaryUnitAbilityActiveByNation.Release());
@@ -1043,10 +1068,195 @@ JSON_Value* CaptureTurn(const RuntimeRun& run) {
   object.Set("economic_turn", g_pSimMgr->economicTurn);
   object.Set("diplomacy_year_term_raw", static_cast<int>(g_pSimMgr->field6c));
   object.Set("phase", g_pSimMgr->turnStateCode);
+  object.Set("turn_flow_status_flags", g_pSimMgr->turnFlowStatusFlags);
+  JsonArray quarterGateByDecade;
+  for (int decade = 0; decade < 10; ++decade) {
+    quarterGateByDecade.Add(static_cast<int>(g_pSimMgr->phaseStateByDecade[decade]));
+  }
+  object.Set("quarter_gate_by_decade", quarterGateByDecade.Release());
   object.Set("difficulty", DifficultyName(g_pSimMgr->difficultyLevel));
   object.Set("active_nation", g_pSimMgr->activeNationSlot);
   object.Set("selected_nation", run.SelectedNationSlot());
   return object.Release();
+}
+
+unsigned int ByteSwapNewsDword(unsigned int value) {
+  return ((value & 0x000000ffU) << 24) | ((value & 0x0000ff00U) << 8) |
+         ((value & 0x00ff0000U) >> 8) | ((value & 0xff000000U) >> 24);
+}
+
+void ByteSwapNewsEntry(newsEntry* entry) {
+  entry->storyId = static_cast<int>(ByteSwapNewsDword(entry->storyId));
+  entry->headlineTextOffset = static_cast<int>(ByteSwapNewsDword(entry->headlineTextOffset));
+  entry->headlineTextLength = static_cast<int>(ByteSwapNewsDword(entry->headlineTextLength));
+  entry->storyTextOffset = static_cast<int>(ByteSwapNewsDword(entry->storyTextOffset));
+  entry->storyTextLength = static_cast<int>(ByteSwapNewsDword(entry->storyTextLength));
+  entry->reserved14 = static_cast<int>(ByteSwapNewsDword(entry->reserved14));
+}
+
+int FindNewsTemplateIndex(const newsEntry& entry, const newsEntry* templates, int count) {
+  int match = -1;
+  for (int index = 0; index < count; ++index) {
+    if (memcmp(&entry, &templates[index], sizeof(entry)) == 0) {
+      if (match != -1) {
+        FailSemanticCapture("newspaper story matches more than one template row");
+      }
+      match = index;
+    }
+  }
+  if (match == -1) {
+    FailSemanticCapture("newspaper story does not match NEWS.TAB");
+  }
+  return match;
+}
+
+JSON_Value* CaptureNewsArgument(int kind, int value) {
+  JsonObject argument;
+  switch (kind) {
+  case 0:
+    argument.Set("kind", "empty");
+    break;
+  case 1:
+    argument.Set("kind", "nation_mask");
+    argument.Set("nations", CaptureNewspaperNationMask(value));
+    break;
+  case 2:
+    argument.Set("kind", "nation_list");
+    argument.Set("nations", CaptureNewspaperNationMask(value));
+    break;
+  case 3:
+    if (value < 0 || value > 0xffff) {
+      FailSemanticCapture("newspaper province argument is outside the unsigned-short range");
+    }
+    argument.Set("kind", "province");
+    argument.Set("province", value);
+    break;
+  case 4:
+    if (value < -0x8000 || value > 0x7fff) {
+      FailSemanticCapture("newspaper zone argument is outside the signed-short range");
+    }
+    argument.Set("kind", "zone");
+    argument.Set("ordinal", value);
+    break;
+  default:
+    FailSemanticCapture("newspaper argument has an unknown kind");
+  }
+  return argument.Release();
+}
+
+JSON_Value* CaptureNewsStory(const newsStory& story, const newsEntry* templates,
+                             int templateCount) {
+  if (story.entry.storyId < -0x8000 || story.entry.storyId > 0x7fff) {
+    FailSemanticCapture("newspaper story id is outside the signed-short range");
+  }
+  if (story.feature38 > 1) {
+    FailSemanticCapture("newspaper feature flag is not boolean");
+  }
+  JsonObject object;
+  object.Set("template_index", FindNewsTemplateIndex(story.entry, templates, templateCount));
+  object.Set("story_id", story.entry.storyId);
+  object.Set("feature", story.feature38 != 0);
+  JsonArray arguments;
+  for (int argument = 0; argument < 4; ++argument) {
+    arguments.Add(CaptureNewsArgument(story.parmKind[argument], story.parmValue[argument]));
+  }
+  object.Set("arguments", arguments.Release());
+  return object.Release();
+}
+
+JSON_Value* CaptureNews() {
+  const int kNewsTemplateCount = 360;
+  JsonObject news;
+  JsonArray pages;
+  JsonArray lastUsedByNation;
+
+  if (g_pNewsMgr->storyTemplateCount == 0) {
+    for (int nation = 0; nation < kMajorNationCount; ++nation) {
+      pages.AddNull();
+      JsonArray lastUsed;
+      for (int index = 0; index < kNewsTemplateCount; ++index) {
+        lastUsed.Add(0);
+      }
+      lastUsedByNation.Add(lastUsed.Release());
+    }
+    news.Set("pages", pages.Release());
+    news.Set("last_used_turn_by_nation_and_template", lastUsedByNation.Release());
+    return news.Release();
+  }
+
+  if (g_pNewsMgr->storyTemplateCount != kNewsTemplateCount || g_pAssetMgr == 0 ||
+      g_pLanguageMgr == 0) {
+    FailSemanticCapture("initialized newspaper state does not use the 360-row NEWS.TAB");
+  }
+  CFile* stream = g_pAssetMgr->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTabPath());
+  if (stream == 0) {
+    FailSemanticCapture("NEWS.TAB is unavailable for newspaper capture");
+  }
+  const int byteCount = g_pAssetMgr->GetResourceStreamSize(stream);
+  if (byteCount != kNewsTemplateCount * static_cast<int>(sizeof(newsEntry))) {
+    g_pAssetMgr->ReleaseResourceStreamIfNotNull(stream);
+    FailSemanticCapture("NEWS.TAB does not contain exactly 360 rows");
+  }
+  newsEntry* templates = new newsEntry[kNewsTemplateCount];
+  if (templates == 0) {
+    g_pAssetMgr->ReleaseResourceStreamIfNotNull(stream);
+    FailSemanticCapture("NEWS.TAB capture allocation failed");
+  }
+  int bytesRead = byteCount;
+  g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(stream, templates, &bytesRead);
+  g_pAssetMgr->ReleaseResourceStreamIfNotNull(stream);
+  if (bytesRead != byteCount) {
+    delete[] templates;
+    FailSemanticCapture("NEWS.TAB capture read was incomplete");
+  }
+  for (int index = 0; index < kNewsTemplateCount; ++index) {
+    ByteSwapNewsEntry(&templates[index]);
+  }
+
+  for (int nation = 0; nation < kMajorNationCount; ++nation) {
+    if (g_pNewsMgr->perNationStoryLastUsedTick[nation] == 0) {
+      delete[] templates;
+      FailSemanticCapture("initialized newspaper state has no last-used history");
+    }
+    bool hasStory = false;
+    for (int column = 0; column < 3; ++column) {
+      for (int row = 0; row < 3; ++row) {
+        if (g_pNewsMgr->stories[nation][column][row].entry.storyId != 0) {
+          hasStory = true;
+        }
+      }
+    }
+    if (!hasStory) {
+      pages.AddNull();
+    } else {
+      JsonObject page;
+      JsonArray columns;
+      for (int column = 0; column < 3; ++column) {
+        JsonArray rows;
+        for (int row = 0; row < 3; ++row) {
+          const newsStory& story = g_pNewsMgr->stories[nation][column][row];
+          if (story.entry.storyId == 0) {
+            rows.AddNull();
+          } else {
+            rows.Add(CaptureNewsStory(story, templates, kNewsTemplateCount));
+          }
+        }
+        columns.Add(rows.Release());
+      }
+      page.Set("stories", columns.Release());
+      pages.Add(page.Release());
+    }
+
+    JsonArray lastUsed;
+    for (int index = 0; index < kNewsTemplateCount; ++index) {
+      lastUsed.Add(static_cast<int>(g_pNewsMgr->perNationStoryLastUsedTick[nation][index]));
+    }
+    lastUsedByNation.Add(lastUsed.Release());
+  }
+  delete[] templates;
+  news.Set("pages", pages.Release());
+  news.Set("last_used_turn_by_nation_and_template", lastUsedByNation.Release());
+  return news.Release();
 }
 
 JSON_Value* CaptureRng() {
@@ -2652,6 +2862,7 @@ bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("task_forces", CaptureTaskForces());
   object.Set("missions", CaptureMissions());
   object.Set("pending", CapturePending());
+  object.Set("news", CaptureNews());
   *state = object.Release();
   return true;
 }

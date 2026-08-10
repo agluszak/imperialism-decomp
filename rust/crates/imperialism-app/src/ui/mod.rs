@@ -16,6 +16,7 @@ pub(crate) use city_site::CitySitePlugin;
 pub(crate) use diplomacy::DiplomacyPlugin;
 pub(crate) use game_shell::GameShellPlugin;
 pub(crate) use main_menu::MainMenuPlugin;
+pub(crate) use random_setup::GameSession;
 pub(crate) use random_setup::RandomSetupPlugin;
 pub(crate) use random_setup_map::MapPreviewPlugin;
 pub(crate) use trade::TradePlugin;

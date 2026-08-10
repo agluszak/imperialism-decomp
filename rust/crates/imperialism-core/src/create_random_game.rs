@@ -149,6 +149,8 @@ pub fn create_random_game(
             economic_turn: 0,
             diplomacy_year_term_raw: 1914,
             phase: crate::PhaseCode::CAPITAL_SELECTION,
+            turn_flow_status_flags: 0,
+            quarter_gate_by_decade: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             difficulty,
             active_nation: human_nation.nation(),
             selected_nation: human_nation.nation(),
@@ -173,6 +175,7 @@ pub fn create_random_game(
         ships: Vec::new(),
         task_forces: Vec::new(),
         missions,
+        news: NewsState::default(),
         pending,
     };
     state

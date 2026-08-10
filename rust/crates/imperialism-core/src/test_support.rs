@@ -122,6 +122,8 @@ pub(crate) fn game_state() -> GameState {
             economic_turn: 1,
             diplomacy_year_term_raw: 1914,
             phase: crate::PhaseCode::STRATEGIC_MAP,
+            turn_flow_status_flags: 0,
+            quarter_gate_by_decade: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             difficulty: Difficulty::Easy,
             active_nation: NationId::new(0),
             selected_nation: NationId::new(0),
@@ -155,6 +157,7 @@ pub(crate) fn game_state() -> GameState {
         ships: Vec::new(),
         task_forces: Vec::new(),
         missions: Vec::new(),
+        news: crate::NewsState::default(),
         pending: crate::PendingWorkState::default(),
     }
 }

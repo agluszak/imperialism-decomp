@@ -19,7 +19,21 @@ impl TurnState {
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum TurnBlock {
     PlayerOrders,
-    Unimplemented { phase: crate::PhaseCode },
+    Ui { gate: UiGate },
+    Unsupported { phase: crate::PhaseCode },
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum UiGate {
+    DiplomacyMap,
+    OfferSheet,
+    Combat,
+    DiplomacyOffer,
+    DealBook,
+    TechnologyAdvance,
+    Newspaper,
+    TurnAlert,
 }
 
 /// Ordered presentation work emitted by authoritative turn progression.
@@ -69,7 +83,7 @@ impl GameState {
             }
             crate::PhaseCode::STRATEGIC_MAP => AdvanceTurnOutcome::Blocked {
                 phase: from,
-                block: TurnBlock::Unimplemented { phase: from },
+                block: TurnBlock::Unsupported { phase: from },
                 effects: Vec::new(),
             },
             crate::PhaseCode::DIPLOMACY if self.supports_first_turn_diplomacy_phase() => {
@@ -160,8 +174,36 @@ impl GameState {
                     effects: Vec::new(),
                 }
             }
+            crate::PhaseCode::GREAT_POWER_PRESSURE if self.supports_first_turn_pressure_phase() => {
+                self.run_first_turn_pressure_phase();
+                self.turn.phase = crate::PhaseCode::DEAL_BOOK;
+                AdvanceTurnOutcome::Continues {
+                    from,
+                    to: crate::PhaseCode::DEAL_BOOK,
+                    effects: Vec::new(),
+                }
+            }
+            crate::PhaseCode::DEAL_BOOK if self.supports_first_turn_deal_book_phase() => {
+                self.turn.phase = crate::PhaseCode::QUARTER_GATE;
+                AdvanceTurnOutcome::Blocked {
+                    phase: crate::PhaseCode::QUARTER_GATE,
+                    block: TurnBlock::Ui {
+                        gate: UiGate::DealBook,
+                    },
+                    effects: Vec::new(),
+                }
+            }
+            crate::PhaseCode::QUARTER_GATE if self.supports_first_turn_quarter_gate_phase() => {
+                self.turn.phase = crate::PhaseCode::SEASON_ADVANCE;
+                AdvanceTurnOutcome::Continues {
+                    from,
+                    to: crate::PhaseCode::SEASON_ADVANCE,
+                    effects: Vec::new(),
+                }
+            }
             crate::PhaseCode::SEASON_ADVANCE => {
                 self.turn.phase = crate::PhaseCode::TECHNOLOGY_ADVANCES;
+                self.turn.turn_flow_status_flags = 0;
                 self.turn.advance_season();
                 AdvanceTurnOutcome::Continues {
                     from,
@@ -169,14 +211,40 @@ impl GameState {
                     effects: Vec::new(),
                 }
             }
-            crate::PhaseCode::NEWSPAPER => AdvanceTurnOutcome::Blocked {
-                phase: from,
-                block: TurnBlock::Unimplemented { phase: from },
-                effects: Vec::new(),
-            },
+            crate::PhaseCode::TECHNOLOGY_ADVANCES
+                if self.supports_first_turn_technology_phase() =>
+            {
+                self.turn.turn_flow_status_flags |= 0x40;
+                self.turn.phase = crate::PhaseCode::NEWSPAPER;
+                AdvanceTurnOutcome::Continues {
+                    from,
+                    to: crate::PhaseCode::NEWSPAPER,
+                    effects: Vec::new(),
+                }
+            }
+            crate::PhaseCode::NEWSPAPER if self.supports_first_turn_newspaper_phase() => {
+                self.run_first_turn_newspaper_phase();
+                self.turn.phase = crate::PhaseCode::RETURN_TO_MAP;
+                AdvanceTurnOutcome::Blocked {
+                    phase: crate::PhaseCode::RETURN_TO_MAP,
+                    block: TurnBlock::Ui {
+                        gate: UiGate::Newspaper,
+                    },
+                    effects: Vec::new(),
+                }
+            }
+            crate::PhaseCode::RETURN_TO_MAP if self.supports_first_turn_map_return_phase() => {
+                self.run_first_turn_map_return_phase();
+                self.turn.phase = crate::PhaseCode::STRATEGIC_MAP;
+                AdvanceTurnOutcome::Blocked {
+                    phase: crate::PhaseCode::STRATEGIC_MAP,
+                    block: TurnBlock::PlayerOrders,
+                    effects: Vec::new(),
+                }
+            }
             phase => AdvanceTurnOutcome::Blocked {
                 phase,
-                block: TurnBlock::Unimplemented { phase },
+                block: TurnBlock::Unsupported { phase },
                 effects: Vec::new(),
             },
         }
@@ -212,6 +280,34 @@ impl GameState {
             crate::PhaseCode::STRATEGIC_MAP,
             "player orders can finish only at the strategic-map boundary"
         );
+        self.advance_until_blocked()
+    }
+
+    /// Continue from a retail screen that owns the current turn-state gate.
+    /// A mismatched close command is rejected without mutating authoritative state.
+    pub fn resume_after_ui(&mut self, gate: UiGate) -> AdvanceTurnOutcome {
+        let expected_phase = match gate {
+            UiGate::DealBook => crate::PhaseCode::QUARTER_GATE,
+            UiGate::Newspaper => crate::PhaseCode::RETURN_TO_MAP,
+            _ => {
+                return AdvanceTurnOutcome::Blocked {
+                    phase: self.turn.phase,
+                    block: TurnBlock::Unsupported {
+                        phase: self.turn.phase,
+                    },
+                    effects: Vec::new(),
+                };
+            }
+        };
+        if self.turn.phase != expected_phase {
+            return AdvanceTurnOutcome::Blocked {
+                phase: self.turn.phase,
+                block: TurnBlock::Unsupported {
+                    phase: self.turn.phase,
+                },
+                effects: Vec::new(),
+            };
+        }
         self.advance_until_blocked()
     }
 
@@ -283,6 +379,8 @@ mod tests {
             economic_turn: 2,
             diplomacy_year_term_raw: 1914,
             phase: crate::PhaseCode::HOME_PLACEMENT,
+            turn_flow_status_flags: 0,
+            quarter_gate_by_decade: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             difficulty: Difficulty::Easy,
             active_nation: NationId::new(6),
             selected_nation: NationId::new(6),
@@ -349,7 +447,7 @@ mod tests {
                 state.advance_turn_step(),
                 AdvanceTurnOutcome::Blocked {
                     phase,
-                    block: TurnBlock::Unimplemented { phase },
+                    block: TurnBlock::Unsupported { phase },
                     effects: Vec::new(),
                 }
             );
@@ -394,7 +492,7 @@ mod tests {
             state.advance_until_blocked(),
             AdvanceTurnOutcome::Blocked {
                 phase: crate::PhaseCode::TRADE,
-                block: TurnBlock::Unimplemented {
+                block: TurnBlock::Unsupported {
                     phase: crate::PhaseCode::TRADE,
                 },
                 effects: vec![TurnEffect::ShowDiplomacyMap {
@@ -421,7 +519,7 @@ mod tests {
             state.advance_turn_step(),
             AdvanceTurnOutcome::Blocked {
                 phase: crate::PhaseCode::DIPLOMACY,
-                block: TurnBlock::Unimplemented {
+                block: TurnBlock::Unsupported {
                     phase: crate::PhaseCode::DIPLOMACY,
                 },
                 effects: Vec::new(),

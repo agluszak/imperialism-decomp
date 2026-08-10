@@ -69,7 +69,7 @@ impl GameState {
             || self.turn.selected_nation != player.nation()
             || !self.ships.is_empty()
             || !self.task_forces.is_empty()
-            || self.technology.oil_drilling_available
+            || self.technology.oil_drilling_available()
             || self.military_units.iter().any(|unit| unit.roster_id == 0)
             || (0..MajorNationId::COUNT).any(|major| {
                 (MajorNationId::COUNT..NationId::COUNT).any(|minor| {

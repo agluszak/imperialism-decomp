@@ -332,7 +332,7 @@ impl GameState {
                 tile.development.extractive.get() << 4 | tile.development.surface.get(),
             );
             for &resource in tile.edge_resources.iter().flatten() {
-                if resource == ResourceKind::Oil && !self.technology.oil_drilling_available {
+                if resource == ResourceKind::Oil && !self.technology.oil_drilling_available() {
                     continue;
                 }
                 let value = i32::from(heatmap_requirement_level(resource, packed_development));
