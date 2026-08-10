@@ -10,7 +10,6 @@
 #include "game/city/TTown.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
-#include "game/nation/TAutoGreatPower.h"
 #include "game/nation/TGreatPower.h"
 #include "game/resource_domain_types.h"
 #include "game/ui_core/TSortedList.h"
@@ -51,8 +50,7 @@ private:
     TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation == 0 || nation->city == 0 || nation->city->homeTownMarkerB0 == 0 ||
         nation->townMarkerList == 0 || nation->townMarkerList->GetCount() != 1 ||
-        nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0 || g_pGlobalMapState == 0 ||
-        g_pGlobalMapState->terrainStateTable == 0) {
+        g_pGlobalMapState == 0 || g_pGlobalMapState->terrainStateTable == 0) {
       return RuntimeActionResult::Failure(
           "the loaded fixture has no supported automated one-town nation zero");
     }

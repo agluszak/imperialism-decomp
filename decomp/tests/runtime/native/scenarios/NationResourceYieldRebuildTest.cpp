@@ -9,7 +9,6 @@
 #include "game/city/TCity.h"
 #include "game/city/TTown.h"
 #include "game/globals/shared_globals.h"
-#include "game/nation/TAutoGreatPower.h"
 #include "game/nation/TGreatPower.h"
 #include "game/ui_screens/TSimMgr.h"
 
@@ -32,8 +31,7 @@ private:
   RuntimeActionResult RebuildResourceYields() {
     const NationSlot nationSlot = g_pSimMgr->GetActiveNationId();
     TGreatPower* nation = g_apNationStates[nationSlot];
-    if (nation == 0 || nation->city == 0 || nation->city->homeTownMarkerB0 == 0 ||
-        nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0) {
+    if (nation == 0 || nation->city == 0 || nation->city->homeTownMarkerB0 == 0) {
       return RuntimeActionResult::Failure(
           "the loaded active nation is not the human beginning-save player");
     }
