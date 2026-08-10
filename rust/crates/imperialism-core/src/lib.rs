@@ -102,5 +102,5 @@ pub use tables::{
 };
 pub use territory::{CountryStatus, ProvinceState, ProvinceStateError, TerritoryInvariantError};
 pub use trade::{PlayerTradeOrder, TransportAllocation};
-pub use turn_flow::{AdvanceTurnOutcome, TurnBlock, TurnEffect, UiGate};
+pub use turn_flow::{AdvanceTurnOutcome, TurnEffect, TurnYield, UiRequest};
 pub use units::{CivilianUnitKind, CivilianUnitTable, MilitaryUnitKind, MilitaryUnitTable};

@@ -30,7 +30,7 @@ the decomp uses them.
   observables absent from authoritative state, such as notifications, sounds, modal prompts, or
   acknowledgement requests. Do not emit effects that merely restate state mutations.
 - Keep app flow `input → one core operation → state/results/effects → UI projection`. Turn sequencing
-  belongs in core through `advance_turn_step` / `advance_until_blocked`, not in a Bevy schedule.
+  belongs in core through `advance_turn_step` / `advance_until_yield`, not in a Bevy schedule.
 - External decode or malformed payload errors return `Result`. Legal gameplay rejection returns a
   typed outcome or narrow domain error the UI can use. Broken internal invariants are prevented by
   structure where practical and otherwise assert or `expect`; do not thread them through rule APIs.

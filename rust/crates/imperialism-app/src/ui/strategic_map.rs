@@ -210,7 +210,7 @@ fn compose_strategic_base_terrain_indices(
     river_masks: &[IndexedPicture],
 ) -> Vec<u8> {
     let mut indices = vec![0_u8; VIEWPORT_WIDTH * VIEWPORT_HEIGHT];
-    let (origin_row, origin_column) = state.world.geometry().row_column(state.world.view_origin());
+    let (origin_row, origin_column) = state.world().geometry().row_column(state.world().view_origin());
     let origin_row = i32::from(origin_row);
     let origin_column = i32::from(origin_column);
 
@@ -228,7 +228,7 @@ fn compose_strategic_base_terrain_indices(
                 continue;
             }
             let column = normalize_map_column(unwrapped_column);
-            let Some(tile) = state.world.geometry().tile(row as u16, column as u16) else {
+            let Some(tile) = state.world().geometry().tile(row as u16, column as u16) else {
                 continue;
             };
             let tile_pixels =
@@ -268,9 +268,9 @@ fn draw_city_site_selection(
     draw_frame(viewport, x, y, 0);
 
     let active_owner = TileOwnerTag::from_nation(nation.nation());
-    let neighbors = state.world.geometry().neighbors(tile).map(|neighbor| {
+    let neighbors = state.world().geometry().neighbors(tile).map(|neighbor| {
         neighbor.filter(|&neighbor| {
-            let neighbor = &state.world[neighbor];
+            let neighbor = &state.world()[neighbor];
             neighbor.terrain == TerrainKind::Water || neighbor.owner_nation == Some(active_owner)
         })
     });
@@ -366,8 +366,8 @@ fn draw_city_site_neighbor_outline(
 }
 
 fn strategic_tile_screen_origin(state: &GameState, tile: TileId) -> (i32, i32) {
-    let (origin_row, origin_column) = state.world.geometry().row_column(state.world.view_origin());
-    let (row, column) = state.world.geometry().row_column(tile);
+    let (origin_row, origin_column) = state.world().geometry().row_column(state.world().view_origin());
+    let (row, column) = state.world().geometry().row_column(tile);
     let y = (i32::from(row) - i32::from(origin_row)) * TILE_SIZE;
     let mut x = (i32::from(column) - i32::from(origin_column)) * TILE_SIZE;
     if row & 1 != 0 {
@@ -405,15 +405,15 @@ fn compose_strategic_base_tile(
     terrain_pictures: &[IndexedPicture],
     river_masks: &[IndexedPicture],
 ) -> Vec<u8> {
-    let tile_state = &state.world[tile];
+    let tile_state = &state.world()[tile];
     let center_column = {
-        let (_, origin_column) = state.world.geometry().row_column(state.world.view_origin());
+        let (_, origin_column) = state.world().geometry().row_column(state.world().view_origin());
         (i32::from(origin_column) + VIEWPORT_TILE_SPAN / 2)
             .rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
     };
-    let (_, tile_column) = state.world.geometry().row_column(tile);
+    let (_, tile_column) = state.world().geometry().row_column(tile);
     // Retail's stored flag is inverted: this seam substitution belongs to Rust's bounded map.
-    let wrapped_seam = state.world.topology() == MapTopology::Bounded
+    let wrapped_seam = state.world().topology() == MapTopology::Bounded
         && ((tile_column == 0 && center_column > 54)
             || (tile_column == STRATEGIC_MAP_WIDTH - 1 && center_column < 54));
     if wrapped_seam {
@@ -706,7 +706,7 @@ fn strategic_tile_at_position(state: &GameState, normalized: Vec2) -> Option<Til
     if !(0..VIEWPORT_WIDTH as i32).contains(&x) || !(0..VIEWPORT_HEIGHT as i32).contains(&y) {
         return None;
     }
-    let (origin_row, origin_column) = state.world.geometry().row_column(state.world.view_origin());
+    let (origin_row, origin_column) = state.world().geometry().row_column(state.world().view_origin());
     let row = i32::from(origin_row) + y / TILE_SIZE;
     if !(0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&row) {
         return None;
@@ -718,7 +718,7 @@ fn strategic_tile_at_position(state: &GameState, normalized: Vec2) -> Option<Til
         absolute_x / TILE_SIZE
     };
     let column = normalize_map_column(column);
-    state.world.geometry().tile(row as u16, column as u16)
+    state.world().geometry().tile(row as u16, column as u16)
 }
 
 pub(crate) fn strategic_base_terrain_tile_at_cursor(

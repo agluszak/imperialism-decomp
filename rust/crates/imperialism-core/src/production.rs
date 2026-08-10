@@ -278,11 +278,31 @@ pub enum CityOrderId {
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct CityOrderView {
+pub struct CityOrderStatus {
     pub quantity: i16,
     pub requested_quantity: i16,
     pub maximum: i16,
     pub limiting_constraint: ProductionConstraint,
+}
+
+/// Result of an explicit city-order quantity change.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum CityOrderChange {
+    Applied(CityOrderStatus),
+    Rejected(CityOrderStatus),
+}
+
+impl CityOrderChange {
+    pub const fn status(self) -> CityOrderStatus {
+        match self {
+            Self::Applied(status) | Self::Rejected(status) => status,
+        }
+    }
+
+    pub const fn applied(self) -> bool {
+        matches!(self, Self::Applied(_))
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -1488,12 +1508,13 @@ impl GameState {
     }
 
     /// Recomputes the retail maximum and remembered limiting constraint for a
-    /// city order, then returns the projection used by city dialogs.
+    /// city order. Call this from explicit UI actions (dialog open, order edit),
+    /// never from frame-driven projection.
     pub fn refresh_city_order(
         &mut self,
         nation: MajorNationId,
         order: CityOrderId,
-    ) -> CityOrderView {
+    ) -> CityOrderStatus {
         self.with_city_orders(nation, |orders, city, owner, treasury| {
             let (progress, requested_quantity, maximum) = match order {
                 CityOrderId::Item(output) => {
@@ -1582,7 +1603,7 @@ impl GameState {
                     (&*progress, progress.quantity, maximum)
                 }
             };
-            CityOrderView {
+            CityOrderStatus {
                 quantity: progress.quantity,
                 requested_quantity,
                 maximum,
@@ -1591,16 +1612,175 @@ impl GameState {
         })
     }
 
-    /// Applies an absolute retail city-order quantity. Legal rejection is the
-    /// observed boolean return, while the remembered limiting constraint may
-    /// still be refreshed by the rejected call.
+    /// Pure projection of a city order's current quantity, request, maximum, and
+    /// remembered limiting constraint. Does not mutate authoritative state.
+    pub fn city_order_status(&self, nation: MajorNationId, order: CityOrderId) -> CityOrderStatus {
+        let major = self.nations.major(nation);
+        let city = major.city();
+        let owner = major.economy();
+        let treasury = major.common().treasury;
+        // Compute maxima against temporary order copies so projection cannot
+        // refresh the remembered limiting constraint.
+        match order {
+            CityOrderId::Item(output) => {
+                let spec = item_order_spec(output).expect("item order has a retail recipe");
+                let mut state = city.orders.items[output]
+                    .clone()
+                    .expect("item order exists for every retail item recipe");
+                let maximum = item_max_order(&mut state, city, spec);
+                CityOrderStatus {
+                    quantity: state.progress.quantity,
+                    requested_quantity: state.requested_quantity,
+                    maximum,
+                    limiting_constraint: city.orders.items[output]
+                        .as_ref()
+                        .expect("item order exists for every retail item recipe")
+                        .progress
+                        .limiting_constraint,
+                }
+            }
+            CityOrderId::CivilianRecruit(kind) => {
+                let spec = civilian_recruitment_spec(kind);
+                let mut progress = city.orders.civilian_recruitment[kind].clone();
+                let maximum = max_recruit_order(
+                    &mut progress,
+                    spec.primary,
+                    spec.secondary,
+                    spec.cash_per_unit,
+                    spec.workforce,
+                    city,
+                    owner,
+                    treasury,
+                );
+                CityOrderStatus {
+                    quantity: city.orders.civilian_recruitment[kind].quantity,
+                    requested_quantity: city.orders.civilian_recruitment[kind].quantity,
+                    maximum,
+                    limiting_constraint: city.orders.civilian_recruitment[kind].limiting_constraint,
+                }
+            }
+            CityOrderId::MilitaryRecruit(category) => {
+                let mut state = city.orders.military_recruitment[category].clone();
+                let spec = military_recruitment_spec(state.unit_kind)
+                    .expect("military order has a recruitable retail unit recipe");
+                let maximum = max_recruit_order(
+                    &mut state.progress,
+                    spec.primary,
+                    spec.secondary,
+                    spec.cash_per_unit,
+                    spec.workforce,
+                    city,
+                    owner,
+                    treasury,
+                );
+                let original = &city.orders.military_recruitment[category];
+                CityOrderStatus {
+                    quantity: original.progress.quantity,
+                    requested_quantity: original.progress.quantity,
+                    maximum,
+                    limiting_constraint: original.progress.limiting_constraint,
+                }
+            }
+            CityOrderId::Ship(track) => {
+                let state = &city.orders.ships[track];
+                let maximum = ship_max_order(state, city);
+                CityOrderStatus {
+                    quantity: state.progress.quantity,
+                    requested_quantity: state.progress.quantity,
+                    maximum,
+                    limiting_constraint: state.progress.limiting_constraint,
+                }
+            }
+            CityOrderId::Training(level) => {
+                let mut progress = city.orders.training[level].clone();
+                let maximum = training_max_order(level, &mut progress, city, owner, treasury);
+                let original = &city.orders.training[level];
+                CityOrderStatus {
+                    quantity: original.quantity,
+                    requested_quantity: original.quantity,
+                    maximum,
+                    limiting_constraint: original.limiting_constraint,
+                }
+            }
+            CityOrderId::Expansion(slot) => {
+                let spec = expansion_order_spec(slot)
+                    .expect("expansion order has a retail material recipe");
+                let state = city.orders.expansions[slot]
+                    .clone()
+                    .expect("expansion order exists for every expandable production slot");
+                let maximum = expansion_max_order(&state, city, spec.primary, spec.secondary);
+                let original = city.orders.expansions[slot]
+                    .as_ref()
+                    .expect("expansion order exists for every expandable production slot");
+                CityOrderStatus {
+                    quantity: original.progress.quantity,
+                    requested_quantity: original.requested_quantity,
+                    maximum,
+                    limiting_constraint: original.progress.limiting_constraint,
+                }
+            }
+            CityOrderId::FoodProcessing => {
+                let progress = &city.orders.food_processing;
+                let maximum = food_processing_max_order(progress, city);
+                CityOrderStatus {
+                    quantity: progress.quantity,
+                    requested_quantity: progress.quantity,
+                    maximum,
+                    limiting_constraint: progress.limiting_constraint,
+                }
+            }
+            CityOrderId::PowerPlant => {
+                let state = &city.orders.power_plant;
+                let maximum = power_plant_max_order(state, city);
+                CityOrderStatus {
+                    quantity: state.progress.quantity,
+                    requested_quantity: state.desired_quantity,
+                    maximum,
+                    limiting_constraint: state.progress.limiting_constraint,
+                }
+            }
+            CityOrderId::TransportCapacity => {
+                let spec = transport_capacity_order_spec();
+                let mut state = city.orders.transport_capacity.clone();
+                let maximum = capacity_max_order(
+                    &mut state,
+                    city,
+                    spec.primary,
+                    spec.secondary,
+                    spec.production_slot,
+                );
+                let original = &city.orders.transport_capacity;
+                CityOrderStatus {
+                    quantity: original.progress.quantity,
+                    requested_quantity: original.requested_quantity,
+                    maximum,
+                    limiting_constraint: original.progress.limiting_constraint,
+                }
+            }
+            CityOrderId::PopulationGrowth => {
+                let mut progress = city.orders.population_growth.clone();
+                let maximum = population_growth_max_order(&mut progress, city);
+                let original = &city.orders.population_growth;
+                CityOrderStatus {
+                    quantity: original.quantity,
+                    requested_quantity: original.quantity,
+                    maximum,
+                    limiting_constraint: original.limiting_constraint,
+                }
+            }
+        }
+    }
+
+    /// Applies an absolute retail city-order quantity. Legal rejection is an
+    /// explicit [`CityOrderChange::Rejected`]; the remembered limiting constraint may
+    /// still be refreshed by either outcome.
     pub fn set_city_order_quantity(
         &mut self,
         nation: MajorNationId,
         order: CityOrderId,
         quantity: i16,
-    ) -> bool {
-        self.with_city_orders(nation, |orders, city, owner, treasury| match order {
+    ) -> CityOrderChange {
+        let applied = self.with_city_orders(nation, |orders, city, owner, treasury| match order {
             CityOrderId::Item(output) => {
                 let spec = item_order_spec(output).expect("item order has a retail recipe");
                 let state = orders.items[output]
@@ -1675,7 +1855,13 @@ impl GameState {
             CityOrderId::PopulationGrowth => {
                 set_population_growth_quantity(&mut orders.population_growth, city, quantity)
             }
-        })
+        });
+        let status = self.city_order_status(nation, order);
+        if applied {
+            CityOrderChange::Applied(status)
+        } else {
+            CityOrderChange::Rejected(status)
+        }
     }
 
     /// Applies a signed quantity step through the same absolute retail setter.
@@ -1684,7 +1870,7 @@ impl GameState {
         nation: MajorNationId,
         order: CityOrderId,
         delta: i16,
-    ) -> bool {
+    ) -> CityOrderChange {
         let quantity = {
             let city = self.nations.city(nation);
             match order {
@@ -2064,7 +2250,7 @@ mod tests {
             city.stockpile[ResourceKind::Coal] = 1;
         }
 
-        assert!(game.adjust_city_order(nation, CityOrderId::Item(ResourceKind::Steel), 1));
+        assert!(game.adjust_city_order(nation, CityOrderId::Item(ResourceKind::Steel), 1).applied());
         let city = game.nations.city(nation);
         let steel = city.orders.items[ResourceKind::Steel].as_ref().unwrap();
         assert_eq!(steel.progress.quantity, 1);
@@ -2077,7 +2263,7 @@ mod tests {
         assert_eq!(city.population.strength, 10);
         assert_eq!(city.production_accum[ProductionSlot::SteelMill], 0);
 
-        assert!(game.adjust_city_order(nation, CityOrderId::Item(ResourceKind::Steel), -1));
+        assert!(game.adjust_city_order(nation, CityOrderId::Item(ResourceKind::Steel), -1).applied());
         let city = game.nations.city(nation);
         let steel = city.orders.items[ResourceKind::Steel].as_ref().unwrap();
         assert_eq!(steel.progress.quantity, 0);

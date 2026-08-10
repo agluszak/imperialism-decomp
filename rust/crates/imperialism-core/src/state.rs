@@ -1,9 +1,34 @@
 use crate::*;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
-use std::ops::{Index, IndexMut};
+use std::ops::Index;
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct GameState {
+    pub(crate) turn: TurnState,
+    pub(crate) unit_ids: UnitIdAllocator,
+    pub(crate) world: StrategicMap,
+    pub(crate) provinces: ProvinceTable<ProvinceState>,
+    pub(crate) port_zone_owners: Vec<PortZoneOwner>,
+    pub(crate) rng: RngState,
+    pub(crate) market: TradeMarketState,
+    pub(crate) technology: TechnologyState,
+    pub(crate) diplomacy: DiplomacyState,
+    pub(crate) nations: Nations,
+    pub(crate) military_units: Vec<MilitaryUnitState>,
+    pub(crate) civilian_units: Vec<CivilianUnitState>,
+    pub(crate) ships: Vec<ShipState>,
+    pub(crate) task_forces: Vec<TaskForceState>,
+    pub(crate) missions: Vec<MissionState>,
+    pub(crate) news: NewsState,
+    pub(crate) pending: PendingWorkState,
+}
+
+/// Construction-only parameter object for assembling a validated [`GameState`].
+///
+/// Formats loaders consume this immediately. It is not a second long-lived game
+/// representation and must not be serialized or retained beside `GameState`.
+#[derive(Clone, Debug)]
+pub struct GameStateParts {
     pub turn: TurnState,
     pub unit_ids: UnitIdAllocator,
     pub world: StrategicMap,
@@ -24,6 +49,120 @@ pub struct GameState {
 }
 
 impl GameState {
+    /// Assembles authoritative state from loader-built parts.
+    ///
+    /// Callers must already have normalized retail values; territory-index
+    /// validation remains the caller's responsibility after construction.
+    pub fn from_parts(parts: GameStateParts) -> Self {
+        Self {
+            turn: parts.turn,
+            unit_ids: parts.unit_ids,
+            world: parts.world,
+            provinces: parts.provinces,
+            port_zone_owners: parts.port_zone_owners,
+            rng: parts.rng,
+            market: parts.market,
+            technology: parts.technology,
+            diplomacy: parts.diplomacy,
+            nations: parts.nations,
+            military_units: parts.military_units,
+            civilian_units: parts.civilian_units,
+            ships: parts.ships,
+            task_forces: parts.task_forces,
+            missions: parts.missions,
+            news: parts.news,
+            pending: parts.pending,
+        }
+    }
+
+    pub const fn turn(&self) -> &TurnState {
+        &self.turn
+    }
+
+    pub const fn unit_ids(&self) -> &UnitIdAllocator {
+        &self.unit_ids
+    }
+
+    pub const fn world(&self) -> &StrategicMap {
+        &self.world
+    }
+
+    pub const fn provinces(&self) -> &ProvinceTable<ProvinceState> {
+        &self.provinces
+    }
+
+    pub const fn port_zone_owners(&self) -> &Vec<PortZoneOwner> {
+        &self.port_zone_owners
+    }
+
+    pub const fn rng(&self) -> &RngState {
+        &self.rng
+    }
+
+    pub const fn market(&self) -> &TradeMarketState {
+        &self.market
+    }
+
+    pub const fn technology(&self) -> &TechnologyState {
+        &self.technology
+    }
+
+    pub const fn diplomacy(&self) -> &DiplomacyState {
+        &self.diplomacy
+    }
+
+    pub const fn nations(&self) -> &Nations {
+        &self.nations
+    }
+
+    pub fn nation(&self, id: NationId) -> Option<&NationCommonState> {
+        self.nations.common(id)
+    }
+
+    pub fn city(&self, id: MajorNationId) -> &CityState {
+        self.nations.city(id)
+    }
+
+    pub fn military_units(&self) -> &[MilitaryUnitState] {
+        &self.military_units
+    }
+
+    pub fn civilian_units(&self) -> &[CivilianUnitState] {
+        &self.civilian_units
+    }
+
+    pub fn ships(&self) -> &[ShipState] {
+        &self.ships
+    }
+
+    pub fn task_forces(&self) -> &[TaskForceState] {
+        &self.task_forces
+    }
+
+    pub fn missions(&self) -> &[MissionState] {
+        &self.missions
+    }
+
+    pub const fn news(&self) -> &NewsState {
+        &self.news
+    }
+
+    pub const fn pending(&self) -> &PendingWorkState {
+        &self.pending
+    }
+
+    /// Sets whether a civilian unit kind is unlocked in the nation's University.
+    pub fn set_university_civilian_available(
+        &mut self,
+        nation: MajorNationId,
+        kind: crate::CivilianUnitKind,
+        available: bool,
+    ) {
+        self.technology.city_capabilities_by_nation[nation]
+            .university
+            .available[kind] = available;
+    }
+
     /// Enters the retail strategic-map view by selecting the active nation's first idle
     /// civilian and centering the 9-by-7 tile viewport on it.
     pub fn enter_strategic_map_view(&mut self) {
@@ -313,7 +452,7 @@ pub struct TurnState {
     ///
     /// This is not the 1815-based display calendar.
     pub diplomacy_year_term_raw: i16,
-    pub phase: PhaseCode,
+    pub(crate) phase: PhaseCode,
     /// Persisted turn-flow status bits consumed by the alert and technology phases.
     pub turn_flow_status_flags: u32,
     /// Retail's decade-boundary presentation state, indexed by `economic_turn / 40`.
@@ -321,6 +460,37 @@ pub struct TurnState {
     pub difficulty: Difficulty,
     pub active_nation: NationId,
     pub selected_nation: NationId,
+}
+
+impl TurnState {
+    #[allow(clippy::too_many_arguments)]
+    pub const fn new(
+        scenario_map: Option<ScenarioMapId>,
+        economic_turn: i32,
+        diplomacy_year_term_raw: i16,
+        phase: PhaseCode,
+        turn_flow_status_flags: u32,
+        quarter_gate_by_decade: [u8; 10],
+        difficulty: Difficulty,
+        active_nation: NationId,
+        selected_nation: NationId,
+    ) -> Self {
+        Self {
+            scenario_map,
+            economic_turn,
+            diplomacy_year_term_raw,
+            phase,
+            turn_flow_status_flags,
+            quarter_gate_by_decade,
+            difficulty,
+            active_nation,
+            selected_nation,
+        }
+    }
+
+    pub const fn phase(self) -> PhaseCode {
+        self.phase
+    }
 }
 
 /// Per-nation University capability state used by city production and recruitment.
@@ -664,8 +834,9 @@ impl Index<TileId> for StrategicMap {
     }
 }
 
-impl IndexMut<TileId> for StrategicMap {
-    fn index_mut(&mut self, index: TileId) -> &mut Self::Output {
+impl StrategicMap {
+    /// Mutable tile access for authoritative map operations inside core.
+    pub(crate) fn tile_mut(&mut self, index: TileId) -> &mut TileState {
         &mut self.tiles[usize::from(index.get())]
     }
 }

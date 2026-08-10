@@ -345,7 +345,10 @@ impl GameState {
         let maximum = self
             .refresh_city_order(nation, CityOrderId::Ship(slot))
             .maximum;
-        assert!(self.set_city_order_quantity(nation, CityOrderId::Ship(slot), maximum.min(1),));
+        assert!(
+            self.set_city_order_quantity(nation, CityOrderId::Ship(slot), maximum.min(1))
+                .applied()
+        );
     }
 
     fn rebalance_first_turn_ai_labor(&mut self, nation: MajorNationId) -> i16 {
@@ -377,7 +380,10 @@ impl GameState {
                 .refresh_city_order(nation, CityOrderId::Training(level))
                 .maximum;
             let accepted = requested.min(maximum);
-            assert!(self.set_city_order_quantity(nation, CityOrderId::Training(level), accepted,));
+            assert!(
+                self.set_city_order_quantity(nation, CityOrderId::Training(level), accepted)
+                    .applied()
+            );
             self.nations.majors[nation]
                 .economy
                 .interior_civilian
@@ -392,11 +398,14 @@ impl GameState {
         let maximum = self
             .refresh_city_order(nation, CityOrderId::PopulationGrowth)
             .maximum;
-        assert!(self.set_city_order_quantity(
-            nation,
-            CityOrderId::PopulationGrowth,
-            requested.min(maximum),
-        ));
+        assert!(
+            self.set_city_order_quantity(
+                nation,
+                CityOrderId::PopulationGrowth,
+                requested.min(maximum),
+            )
+            .applied()
+        );
         self.nations.majors[nation]
             .economy
             .interior_civilian
@@ -479,7 +488,10 @@ impl GameState {
                 .refresh_city_order(nation, CityOrderId::Expansion(slot))
                 .maximum;
             let accepted = requested.min(maximum);
-            assert!(self.set_city_order_quantity(nation, CityOrderId::Expansion(slot), accepted,));
+            assert!(
+                self.set_city_order_quantity(nation, CityOrderId::Expansion(slot), accepted)
+                    .applied()
+            );
             let interior = self.nations.majors[nation]
                 .economy
                 .interior_civilian
@@ -541,7 +553,10 @@ impl GameState {
             .refresh_city_order(nation, CityOrderId::FoodProcessing)
             .maximum;
         let accepted = requested.min(maximum);
-        assert!(self.set_city_order_quantity(nation, CityOrderId::FoodProcessing, accepted,));
+        assert!(
+            self.set_city_order_quantity(nation, CityOrderId::FoodProcessing, accepted)
+                .applied()
+        );
         let metric = &mut self.nations.majors[nation]
             .economy
             .interior_civilian
@@ -595,7 +610,10 @@ impl GameState {
                 .interior_civilian
                 .production_deficit_by_slot[spec.production_slot] += requested - accepted;
         }
-        assert!(self.set_city_order_quantity(nation, CityOrderId::Item(output), accepted,));
+        assert!(
+            self.set_city_order_quantity(nation, CityOrderId::Item(output), accepted)
+                .applied()
+        );
         let metric = &mut self.nations.majors[nation]
             .economy
             .interior_civilian

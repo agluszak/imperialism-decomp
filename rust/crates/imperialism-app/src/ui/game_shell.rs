@@ -6,7 +6,7 @@ use bevy::log::warn;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
-use imperialism_core::{AdvanceTurnOutcome, MajorNationId, TurnBlock, UiGate};
+use imperialism_core::{AdvanceTurnOutcome, MajorNationId, TurnYield, UiRequest};
 use imperialism_formats::{FourCc, ScopedViewId, TRADE, fourcc};
 
 pub(crate) const TOOLBAR_PARENT_TAGS: &[FourCc] = &[fourcc!("tool"), fourcc!("topB")];
@@ -156,7 +156,7 @@ enum GameScreenNavAction {
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum TurnFlowAction {
     FinishPlayerOrders,
-    Resume(UiGate),
+    Resume(UiRequest),
 }
 
 pub(crate) struct GameShellPlugin;
@@ -250,8 +250,8 @@ fn enter_turn_flow_screen(
         .require_unique(fourcc!("end "))
         .expect("validated turn-flow close binding");
     let gate = match current {
-        AppState::DealBook => UiGate::DealBook,
-        AppState::Newspaper => UiGate::Newspaper,
+        AppState::DealBook => UiRequest::DealBook,
+        AppState::Newspaper => UiRequest::Newspaper,
         _ => unreachable!(),
     };
     commands
@@ -313,10 +313,10 @@ fn project_date_and_treasury(
         commands,
         spawned,
         fourcc!("seas"),
-        format_retail_date(assets, state.turn.economic_turn),
+        format_retail_date(assets, state.turn().economic_turn),
     );
-    let treasury = MajorNationId::from_nation(state.turn.active_nation)
-        .map(|nation| format_currency(state.nations.major(nation).common().treasury))
+    let treasury = MajorNationId::from_nation(state.turn().active_nation)
+        .map(|nation| format_currency(state.nations().major(nation).common().treasury))
         .unwrap_or_default();
     set_control_text(commands, spawned, fourcc!("trea"), treasury);
 }
@@ -328,7 +328,7 @@ fn project_newspaper_chrome(
     session: Option<&GameSession>,
 ) {
     let date = session.map_or_else(String::new, |session| {
-        format_retail_date(assets, session.0.turn.economic_turn)
+        format_retail_date(assets, session.0.turn().economic_turn)
     });
     set_control_text(commands, spawned, fourcc!("date"), date);
     // The catalog carries a false date placeholder here. The quarter-specific
@@ -425,12 +425,33 @@ fn control_under_parents(
 fn on_game_screen_activate(
     activate: On<Activate>,
     actions: Query<&GameScreenNavAction>,
+    session: Option<ResMut<GameSession>>,
     state: Res<State<AppState>>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
+    if *action == GameScreenNavAction::StrategicMap
+        && let Some(mut session) = session
+        && let Some(request) = session.0.pending_ui_request()
+    {
+        match request {
+            UiRequest::DiplomacyMap { .. } if *state.get() == AppState::Diplomacy => {
+                let outcome = session.0.resume_after_ui(request);
+                let _effects = outcome.effects();
+                apply_turn_yield_destination(&outcome, &state, &mut next_state);
+                return;
+            }
+            UiRequest::OfferSheet { .. } if *state.get() == AppState::Trade => {
+                let outcome = session.0.resume_after_ui(request);
+                let _effects = outcome.effects();
+                apply_turn_yield_destination(&outcome, &state, &mut next_state);
+                return;
+            }
+            _ => {}
+        }
+    }
     let destination = match *action {
         GameScreenNavAction::StrategicMap => AppState::StrategicMap,
         GameScreenNavAction::Trade => AppState::Trade,
@@ -439,6 +460,47 @@ fn on_game_screen_activate(
         GameScreenNavAction::Diplomacy => AppState::Diplomacy,
     };
     if destination != *state.get() {
+        next_state.set(destination);
+    }
+}
+
+fn apply_turn_yield_destination(
+    outcome: &AdvanceTurnOutcome,
+    state: &State<AppState>,
+    next_state: &mut NextState<AppState>,
+) {
+    let destination = match outcome {
+        AdvanceTurnOutcome::Blocked {
+            yield_: TurnYield::PlayerOrders,
+            ..
+        } => Some(AppState::StrategicMap),
+        AdvanceTurnOutcome::Blocked {
+            yield_: TurnYield::Ui {
+                request: UiRequest::DealBook,
+            },
+            ..
+        } => Some(AppState::DealBook),
+        AdvanceTurnOutcome::Blocked {
+            yield_: TurnYield::Ui {
+                request: UiRequest::Newspaper,
+            },
+            ..
+        } => Some(AppState::Newspaper),
+        AdvanceTurnOutcome::Blocked {
+            yield_: TurnYield::Ui {
+                request: UiRequest::DiplomacyMap { .. },
+            },
+            ..
+        } => Some(AppState::Diplomacy),
+        AdvanceTurnOutcome::Blocked {
+            yield_: TurnYield::Ui {
+                request: UiRequest::OfferSheet { .. },
+            },
+            ..
+        } => Some(AppState::Trade),
+        _ => None,
+    };
+    if let Some(destination) = destination.filter(|destination| *destination != *state.get()) {
         next_state.set(destination);
     }
 }
@@ -461,42 +523,8 @@ fn on_turn_flow_activate(
         TurnFlowAction::FinishPlayerOrders => session.0.finish_player_orders(),
         TurnFlowAction::Resume(gate) => session.0.resume_after_ui(gate),
     };
-    let destination = match outcome {
-        AdvanceTurnOutcome::Blocked {
-            block: TurnBlock::PlayerOrders,
-            ..
-        } => Some(AppState::StrategicMap),
-        AdvanceTurnOutcome::Blocked {
-            block: TurnBlock::Ui {
-                gate: UiGate::DealBook,
-            },
-            ..
-        } => Some(AppState::DealBook),
-        AdvanceTurnOutcome::Blocked {
-            block: TurnBlock::Ui {
-                gate: UiGate::Newspaper,
-            },
-            ..
-        } => Some(AppState::Newspaper),
-        AdvanceTurnOutcome::Continues { .. }
-        | AdvanceTurnOutcome::Blocked {
-            block:
-                TurnBlock::Ui {
-                    gate:
-                        UiGate::DiplomacyMap
-                        | UiGate::OfferSheet
-                        | UiGate::Combat
-                        | UiGate::DiplomacyOffer
-                        | UiGate::TechnologyAdvance
-                        | UiGate::TurnAlert,
-                }
-                | TurnBlock::Unsupported { .. },
-            ..
-        } => None,
-    };
-    if let Some(destination) = destination.filter(|destination| *destination != *state.get()) {
-        next_state.set(destination);
-    }
+    let _effects = outcome.effects();
+    apply_turn_yield_destination(&outcome, &state, &mut next_state);
 }
 
 #[cfg(test)]
@@ -663,7 +691,7 @@ mod tests {
             .insert_resource(fixture_session())
             .add_systems(OnEnter(AppState::StrategicMap), enter_strategic_map_view);
         assert_eq!(
-            app.world().resource::<GameSession>().0.world.view_origin(),
+            app.world().resource::<GameSession>().0.world().view_origin(),
             imperialism_core::TileId::new(1)
         );
 
@@ -674,7 +702,7 @@ mod tests {
         app.update();
 
         assert_eq!(
-            app.world().resource::<GameSession>().0.world.view_origin(),
+            app.world().resource::<GameSession>().0.world().view_origin(),
             imperialism_core::TileId::new(1358)
         );
     }
@@ -757,26 +785,39 @@ mod tests {
         app.insert_resource(fixture_session());
 
         activate_turn_flow(&mut app, TurnFlowAction::FinishPlayerOrders);
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::DealBook
-        );
+        // First-turn yields may stop at diplomacy-map or offer-sheet before the deal book.
+        loop {
+            let current = *app.world().resource::<State<AppState>>().get();
+            let request = app
+                .world()
+                .resource::<GameSession>()
+                .0
+                .pending_ui_request();
+            match (current, request) {
+                (AppState::DealBook, Some(UiRequest::DealBook)) => break,
+                (AppState::Diplomacy, Some(request @ UiRequest::DiplomacyMap { .. }))
+                | (AppState::Trade, Some(request @ UiRequest::OfferSheet { .. })) => {
+                    activate_turn_flow(&mut app, TurnFlowAction::Resume(request));
+                }
+                other => panic!("unexpected turn-flow yield state: {other:?}"),
+            }
+        }
 
-        activate_turn_flow(&mut app, TurnFlowAction::Resume(UiGate::DealBook));
+        activate_turn_flow(&mut app, TurnFlowAction::Resume(UiRequest::DealBook));
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::Newspaper
         );
 
-        activate_turn_flow(&mut app, TurnFlowAction::Resume(UiGate::Newspaper));
+        activate_turn_flow(&mut app, TurnFlowAction::Resume(UiRequest::Newspaper));
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::StrategicMap
         );
         let session = app.world().resource::<GameSession>();
-        assert_eq!(session.0.turn.economic_turn, 2);
+        assert_eq!(session.0.turn().economic_turn, 2);
         assert_eq!(
-            session.0.turn.phase,
+            session.0.turn().phase(),
             imperialism_core::PhaseCode::STRATEGIC_MAP
         );
     }

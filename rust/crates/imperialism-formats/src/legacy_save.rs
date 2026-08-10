@@ -1762,25 +1762,25 @@ impl LegacySaveV62 {
                 )
             })?;
 
-        let state = GameState {
-            turn: TurnState {
-                scenario_map: self.simulation.game_setup.scenario_map,
-                economic_turn: i32::from(self.simulation.economic_turn),
-                diplomacy_year_term_raw: self.simulation.diplomacy_year_term_raw,
-                phase: PhaseCode::from_retail(i32::from(self.simulation.turn_state_code)),
-                turn_flow_status_flags: self.simulation.turn_flow_status_flags,
-                quarter_gate_by_decade: self.simulation.phase_state_by_decade[..10]
+        let state = GameState::from_parts(GameStateParts {
+            turn: TurnState::new(
+                self.simulation.game_setup.scenario_map,
+                i32::from(self.simulation.economic_turn),
+                self.simulation.diplomacy_year_term_raw,
+                PhaseCode::from_retail(i32::from(self.simulation.turn_state_code)),
+                self.simulation.turn_flow_status_flags,
+                self.simulation.phase_state_by_decade[..10]
                     .try_into()
                     .expect("ten retail decade-gate bytes"),
-                difficulty: Difficulty::try_from(self.simulation.difficulty).map_err(|_| {
+                Difficulty::try_from(self.simulation.difficulty).map_err(|_| {
                     LegacySaveError::StateProjection(format!(
                         "invalid difficulty {}",
                         self.simulation.difficulty
                     ))
                 })?,
-                active_nation: nation_id_from_retail_i16(self.simulation.active_nation)?,
-                selected_nation: context.selected_nation,
-            },
+                nation_id_from_retail_i16(self.simulation.active_nation)?,
+                context.selected_nation,
+            ),
             unit_ids: UnitIdAllocator::from_retail(persistent_unit_id_counter),
             world: self.map.world_state()?,
             provinces: self.map.province_states()?,
@@ -1801,7 +1801,7 @@ impl LegacySaveV62 {
             missions,
             news: NewsState::default(),
             pending,
-        };
+        });
         state.validate_territory_index().map_err(|error| {
             LegacySaveError::StateProjection(format!("invalid territory index: {error}"))
         })?;
@@ -4810,11 +4810,11 @@ mod tests {
 
         let save = LegacySaveV62::parse(&bytes).unwrap();
         let state = save.game_state(game_context()).unwrap();
-        assert_eq!(state.turn.diplomacy_year_term_raw, -1234);
-        assert!(state.technology.advanced_iron_working);
-        assert!(state.technology.marine_engineering);
+        assert_eq!(state.turn().diplomacy_year_term_raw, -1234);
+        assert!(state.technology().advanced_iron_working);
+        assert!(state.technology().marine_engineering);
         assert_eq!(
-            state.market.rows[TradeCommodity::Oil].maximum_offer_by_nation[NationId::new(22)],
+            state.market().rows[TradeCommodity::Oil].maximum_offer_by_nation[NationId::new(22)],
             321
         );
     }
@@ -5042,7 +5042,7 @@ mod tests {
         context.crt_rand_state = 0x1234_5678;
 
         let state = save.game_state(context).unwrap();
-        let pending = &state.pending.nations[MajorNationId::new(0)];
+        let pending = &state.pending().nations[MajorNationId::new(0)];
         assert_eq!(
             pending.turn_events,
             vec![
@@ -5069,7 +5069,7 @@ mod tests {
                 },
             ]
         );
-        assert_eq!(state.rng.crt_rand.state(), 0x1234_5678);
+        assert_eq!(state.rng().crt_rand.state(), 0x1234_5678);
     }
 
     #[test]
@@ -5095,7 +5095,7 @@ mod tests {
         context.crt_rand_state = 0x1234_5678;
 
         let state = save.game_state(context).unwrap();
-        let pending = &state.pending.nations[MajorNationId::new(0)];
+        let pending = &state.pending().nations[MajorNationId::new(0)];
         assert_eq!(
             pending.turn_events,
             vec![
@@ -5122,7 +5122,7 @@ mod tests {
                 },
             ]
         );
-        assert_eq!(state.rng.crt_rand.state(), 0x1234_5678);
+        assert_eq!(state.rng().crt_rand.state(), 0x1234_5678);
     }
 
     #[test]
@@ -5177,7 +5177,7 @@ mod tests {
             .zip(expected_provinces)
             .enumerate()
         {
-            let major = state.nations.major(MajorNationId::new(slot as u8));
+            let major = state.nations().major(MajorNationId::new(slot as u8));
             let targets = major.economy().ai_zone_targets.as_ref().unwrap();
             assert_eq!(targets.len(), 83);
             let mut expected_targets = vec![AiTargetState::Unmarked; 83];
@@ -5197,21 +5197,21 @@ mod tests {
             }
             assert_eq!(major.economy().army_movement_budget, 15);
         }
-        let human = state.nations.major(MajorNationId::new(6)).economy();
+        let human = state.nations().major(MajorNationId::new(6)).economy();
         assert!(human.ai_zone_targets.is_none());
         assert!(human.ai_province_targets.is_none());
         assert_eq!(human.army_movement_budget, 15);
         for province in (0..ProvinceId::COUNT).map(ProvinceId::new) {
-            assert_eq!(state.provinces[province].development_stage(), 0);
+            assert_eq!(state.provinces()[province].development_stage(), 0);
             assert!(
                 (0..MajorNationId::COUNT)
                     .map(MajorNationId::new)
-                    .all(|nation| !state.provinces[province].explored_by_majors()[nation])
+                    .all(|nation| !state.provinces()[province].explored_by_majors()[nation])
             );
         }
-        assert_eq!(state.port_zone_owners.len(), 23);
+        assert_eq!(state.port_zone_owners().len(), 23);
         for (owner, saved) in state
-            .port_zone_owners
+            .port_zone_owners()
             .iter()
             .zip(save.ocean.port_zones.iter().rev())
         {
@@ -5338,7 +5338,7 @@ mod tests {
         );
         assert_eq!(
             state
-                .nations
+                .nations()
                 .majors()
                 .map(|nation| nation.economy().foreign_minister_personality)
                 .collect::<Vec<_>>(),
@@ -5354,13 +5354,13 @@ mod tests {
         );
         assert_eq!(
             state
-                .nations
+                .nations()
                 .majors()
                 .map(|nation| nation.economy().foreign_minister_skill_index)
                 .collect::<Vec<_>>(),
             [0, 4, 0, 4, 0, 5, 0]
         );
-        assert!(state.nations.majors().enumerate().all(|(index, nation)| {
+        assert!(state.nations().majors().enumerate().all(|(index, nation)| {
             let mut expansion_demand = [0_i16; ProductionSlot::COUNT];
             if index < 6 {
                 expansion_demand[..7].copy_from_slice(&[2, 1, 2, 0, 2, 0, 0]);
@@ -5392,12 +5392,12 @@ mod tests {
                 && nation.economy().defense_minister_skill_index == 0
                 && *nation.economy().interior_civilian == expected_interior
         }));
-        assert!(state.nations.majors().take(6).all(|nation| {
+        assert!(state.nations().majors().take(6).all(|nation| {
             nation.economy().ai_development_pressure == Some(AiDevelopmentPressureState::default())
         }));
         assert_eq!(
             state
-                .nations
+                .nations()
                 .major(MajorNationId::new(6))
                 .economy()
                 .ai_development_pressure,
@@ -5405,7 +5405,7 @@ mod tests {
         );
         assert_eq!(
             state
-                .nations
+                .nations()
                 .majors()
                 .map(|nation| nation.city().home_town)
                 .collect::<Vec<_>>(),
@@ -5418,7 +5418,7 @@ mod tests {
         );
         assert_eq!(
             state
-                .nations
+                .nations()
                 .major(MajorNationId::new(6))
                 .economy()
                 .foreign_minister_personality,
@@ -5439,7 +5439,7 @@ mod tests {
 
         let state = save.game_state(game_context()).unwrap();
         let held_mission_indices = state
-            .missions
+            .missions()
             .iter()
             .enumerate()
             .filter_map(|(index, mission)| mission.held.then_some(index))
@@ -5447,7 +5447,7 @@ mod tests {
         assert_eq!(held_mission_indices, [62, 63, 64]);
         let interior_civilian = serde_json::to_value(
             &*state
-                .nations
+                .nations()
                 .major(MajorNationId::new(0))
                 .economy()
                 .interior_civilian,
@@ -5465,7 +5465,7 @@ mod tests {
             serde_json::json!(0)
         );
         assert_eq!(
-            serde_json::to_value(&state.missions[62]).unwrap()["held"],
+            serde_json::to_value(&state.missions()[62]).unwrap()["held"],
             serde_json::json!(true)
         );
     }
@@ -5496,7 +5496,7 @@ mod tests {
         let save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
         let state = save.game_state(game_context()).unwrap();
 
-        let nation_zero = state.nations.major(MajorNationId::new(0)).common();
+        let nation_zero = state.nations().major(MajorNationId::new(0)).common();
         assert_eq!(nation_zero.status(), CountryStatus::Independent);
         assert_eq!(
             nation_zero.owned_regions(),
@@ -5505,7 +5505,7 @@ mod tests {
                 .to_vec()
         );
 
-        let province_zero = &state.provinces[ProvinceId::new(0)];
+        let province_zero = &state.provinces()[ProvinceId::new(0)];
         assert_eq!(province_zero.owner(), Some(NationId::new(12)));
         assert_eq!(province_zero.former_owner(), Some(NationId::new(12)));
         assert_eq!(province_zero.adjacency(), [8, 1, 17].map(ProvinceId::new));
@@ -5518,7 +5518,7 @@ mod tests {
         );
         assert_eq!(province_zero.city_score(), 0);
 
-        let province_seventy_nine = &state.provinces[ProvinceId::new(79)];
+        let province_seventy_nine = &state.provinces()[ProvinceId::new(79)];
         assert_eq!(province_seventy_nine.owner(), Some(NationId::new(0)));
         assert_eq!(
             province_seventy_nine.adjacency(),
@@ -5535,7 +5535,7 @@ mod tests {
 
         for province in 120..PROVINCE_COUNT {
             assert_eq!(
-                state.provinces[ProvinceId::new(province as u16)],
+                state.provinces()[ProvinceId::new(province as u16)],
                 ProvinceState::default()
             );
         }
@@ -5975,55 +5975,56 @@ mod tests {
                 selected_nation: NationId::new(6),
             })
             .unwrap();
-        assert_eq!(game.market, save.market);
-        assert_eq!(game.nations.display_name(NationId::new(0)), Some("Zimm"));
+        assert_eq!(game.market(), &save.market);
+        assert_eq!(game.nations().display_name(NationId::new(0)), Some("Zimm"));
         assert_eq!(
-            game.nations.display_name(NationId::new(6)),
+            game.nations().display_name(NationId::new(6)),
             Some("Testland")
         );
-        assert_eq!(game.nations.display_name(NationId::new(22)), Some("Sindel"));
+        assert_eq!(game.nations().display_name(NationId::new(22)), Some("Sindel"));
         let expected_civilian_count = save
             .major_nations
             .iter()
             .map(|nation| nation.great_power().post_city.civilian_units.len())
             .sum::<usize>();
-        assert_eq!(game.military_units.len(), 461);
+        assert_eq!(game.military_units().len(), 461);
         assert!(expected_civilian_count > 0);
-        assert_eq!(game.civilian_units.len(), expected_civilian_count);
-        assert_eq!(game.civilian_units[0].nation(), NationId::new(0));
+        assert_eq!(game.civilian_units().len(), expected_civilian_count);
+        assert_eq!(game.civilian_units()[0].nation(), NationId::new(0));
         assert_eq!(
-            game.civilian_units[0].id().get(),
+            game.civilian_units()[0].id().get(),
             save.major_nations[0].great_power().post_city.civilian_units[0].persistent_id
         );
-        assert_eq!(game.missions.len(), 66);
-        assert_eq!(game.unit_ids.current(), 950);
+        assert_eq!(game.missions().len(), 66);
+        assert_eq!(game.unit_ids().current(), 950);
         assert_eq!(
-            game.nations
+            game.nations()
                 .minor(MinorNationId::new(7))
                 .unwrap()
                 .consortium_members
                 .map(MinorNationId::get),
             [7, 8, 9, 10]
         );
-        assert_eq!(game.civilian_units.len(), expected_civilian_count);
+        assert_eq!(game.civilian_units().len(), expected_civilian_count);
         assert!(game.all_humans_finished());
-        assert!(!game.turn.in_linear_phase());
+        assert!(!game.turn().in_linear_phase());
         game.reset_turn_flags();
         assert!(
-            game.nations
+            game.nations()
                 .majors()
                 .take(6)
                 .all(|nation| nation.economy().turn_finished)
         );
         assert!(
             !game
-                .nations
+                .nations()
                 .major(MajorNationId::new(6))
                 .economy()
                 .turn_finished
         );
-        game.turn.advance_season();
-        assert_eq!(game.turn.economic_turn, 2);
+        let mut turn = *game.turn();
+        turn.advance_season();
+        assert_eq!(turn.economic_turn, 2);
     }
 
     #[test]
@@ -6087,7 +6088,7 @@ mod tests {
         let state = save.game_state(game_context()).unwrap();
         assert_eq!(
             state
-                .nations
+                .nations()
                 .majors()
                 .next()
                 .unwrap()
@@ -6227,7 +6228,7 @@ mod tests {
         let state = save.game_state(game_context()).unwrap();
         assert_eq!(
             state
-                .nations
+                .nations()
                 .major(MajorNationId::new(0))
                 .economy()
                 .deal_book[TradeCommodity::Cotton],

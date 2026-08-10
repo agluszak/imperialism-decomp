@@ -348,7 +348,7 @@ impl GameState {
         }
     }
 
-    pub(crate) fn first_turn_diplomacy_effects(&self) -> Vec<TurnEffect> {
+    pub(crate) fn first_turn_diplomacy_ui_request(&self) -> Option<UiRequest> {
         let has_tracked_human_civilian =
             (0..MajorNationId::COUNT)
                 .map(MajorNationId::new)
@@ -360,12 +360,11 @@ impl GameState {
                             .any(|unit| unit.nation == nation.nation())
                 });
         if !has_tracked_human_civilian {
-            return Vec::new();
+            return None;
         }
 
         MajorNationId::from_nation(self.turn.active_nation)
-            .map(|nation| vec![TurnEffect::ShowDiplomacyMap { nation }])
-            .unwrap_or_default()
+            .map(|nation| UiRequest::DiplomacyMap { nation })
     }
 
     fn set_first_turn_diplomacy_policies(&mut self, nation: MajorNationId) {

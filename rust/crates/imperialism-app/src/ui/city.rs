@@ -439,12 +439,12 @@ fn city_building_level(
     nation: MajorNationId,
     slot: ProductionSlot,
 ) -> Option<i16> {
-    let major = state.nations.major(nation);
+    let major = state.nations().major(nation);
     Some(major.city().next_building_type(
         slot,
         major.economy(),
         major.common().owned_region_count() as i32,
-        state.technology.city_capabilities_by_nation[nation].advanced_iron_working,
+        state.technology().city_capabilities_by_nation[nation].advanced_iron_working,
     ))
 }
 
@@ -1173,7 +1173,7 @@ fn enter_city_screen(
         warn!("city screen opened without an authoritative game session");
         return;
     };
-    let Some(nation) = MajorNationId::from_nation(session.0.turn.active_nation) else {
+    let Some(nation) = MajorNationId::from_nation(session.0.turn().active_nation) else {
         warn!("city screen active nation is not a major nation");
         return;
     };
@@ -1268,7 +1268,7 @@ fn spawn_city_buildings(
     let main = spawned
         .require_unique(fourcc!("main"))
         .expect("validated city canvas binding");
-    let city = state.nations.major(nation).city();
+    let city = state.nations().major(nation).city();
     let mut buildings = Vec::new();
     for visual in visuals {
         let Some(level) = city_building_level(state, nation, visual.slot) else {
@@ -1546,7 +1546,7 @@ fn animate_city_building_actions(
                 left + action.frame_size[0] as f32,
                 action.frame_size[1] as f32,
             ));
-            let city = session.0.nations.major(action.nation).city();
+            let city = session.0.nations().major(action.nation).city();
             *visibility = if city_building_action_enabled(city, action.slot) {
                 Visibility::Visible
             } else {
@@ -1591,7 +1591,7 @@ fn on_city_canvas_click(
     let Some(mut session) = session else {
         return;
     };
-    let Some(nation) = MajorNationId::from_nation(session.0.turn.active_nation) else {
+    let Some(nation) = MajorNationId::from_nation(session.0.turn().active_nation) else {
         return;
     };
     if dialogs
@@ -1601,7 +1601,7 @@ fn on_city_canvas_click(
         return;
     }
     let unbuilt_capacity_center = {
-        let major = session.0.nations.major(nation);
+        let major = session.0.nations().major(nation);
         CityState::is_capacity_center(building.slot)
             && major.city().building_type(
                 building.slot,
@@ -1613,7 +1613,7 @@ fn on_city_canvas_click(
         let available = !matches!(
             building.slot,
             ProductionSlot::OilRefinery | ProductionSlot::PowerPlant
-        ) || session.0.technology.city_capabilities_by_nation[nation].oil_drilling;
+        ) || session.0.technology().city_capabilities_by_nation[nation].oil_drilling;
         if available {
             open_city_construction_dialog(&mut ui, &mut session, nation, building.slot);
             for (entity, _, _) in &dialogs {
@@ -1766,7 +1766,7 @@ fn open_city_dialog(
             })
             .expect("retail University unit-name fallback text style");
         UniversityDialogData {
-            available: state.technology.city_capabilities_by_nation[nation]
+            available: state.technology().city_capabilities_by_nation[nation]
                 .university
                 .available,
             rows: UNIVERSITY_ORDERS.map(|binding| {
@@ -1799,7 +1799,7 @@ fn open_city_dialog(
         }
     });
     let shipyard_data = (slot == ProductionSlot::Shipyard).then(|| {
-        let city = state.nations.major(nation).city();
+        let city = state.nations().major(nation).city();
         let material_pictures = SHIPYARD_MATERIALS
             .map(|resource| transparent_picture(ui, PictureId::new(700 + resource as i16)));
         let (detail_font, _, _) = ui
@@ -1914,7 +1914,7 @@ fn open_city_dialog(
                 &spawned,
                 nation,
                 building_name,
-                state.technology.oil_drilling_available(),
+                state.technology().oil_drilling_available(),
             ),
             ProductionSlot::FoodProcessing => {
                 bind_food_dialog(&mut ui.commands, catalog, &spawned, nation, building_name)
@@ -2043,14 +2043,14 @@ fn restore_city_dialogs(
         }
         return;
     };
-    let nation = MajorNationId::from_nation(session.0.turn.active_nation)
+    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("City screen requires an active major nation");
     let buildings = catalog
         .view(&city_view_id())
         .expect("validated City screen catalog view")
         .city_buildings
         .clone();
-    let city = session.0.nations.major(nation).city();
+    let city = session.0.nations().major(nation).city();
     let mut next_z = dialogs.iter().map(|(_, z)| z.0).max().unwrap_or(0) + 1;
     for building in buildings {
         if !supports_city_dialog(building.slot) {
@@ -2109,7 +2109,7 @@ fn leave_city_screen(
     windows: Query<&Node, With<CityDialogWindow>>,
 ) {
     if let Some(session) = session.as_mut() {
-        let nation = MajorNationId::from_nation(session.0.turn.active_nation)
+        let nation = MajorNationId::from_nation(session.0.turn().active_nation)
             .expect("City screen requires an active major nation");
         let slots = catalog
             .view(&city_view_id())
@@ -3436,7 +3436,7 @@ fn open_city_construction_dialog(
     let (capacity_value, can_reserve) = match slot {
         ProductionSlot::PowerPlant => {
             session.0.set_power_plant_upgrade(nation, false);
-            let major = session.0.nations.major(nation);
+            let major = session.0.nations().major(nation);
             let can_reserve = major
                 .economy()
                 .available_diplomacy_budget(major.common().treasury)
@@ -3449,7 +3449,7 @@ fn open_city_construction_dialog(
                 "non-power capacity center has a retail expansion order"
             );
             let (next_capacity, needed, original_quantity) = {
-                let major = session.0.nations.major(nation);
+                let major = session.0.nations().major(nation);
                 let city = major.city();
                 let owned_regions = major.common().owned_region_count() as i32;
                 let current = city.building_type(slot, major.economy(), owned_regions);
@@ -3463,11 +3463,12 @@ fn open_city_construction_dialog(
                 (next_capacity, next_capacity - current, original_quantity)
             };
             let order = CityOrderId::Expansion(slot);
-            let can_reserve = session.0.set_city_order_quantity(nation, order, needed);
+            let can_reserve = session.0.set_city_order_quantity(nation, order, needed).applied();
             assert!(
                 session
                     .0
-                    .set_city_order_quantity(nation, order, original_quantity),
+                    .set_city_order_quantity(nation, order, original_quantity)
+                    .applied(),
                 "retail construction probe must restore its original quantity"
             );
             (next_capacity.to_string(), can_reserve)
@@ -3734,7 +3735,7 @@ fn on_city_expansion_open(
         "expansion hotspot belongs to an ordinary industry"
     );
     let (next_capacity, needed, next_level) = {
-        let major = session.0.nations.major(open.nation);
+        let major = session.0.nations().major(open.nation);
         let city = major.city();
         let owned_regions = major.common().owned_region_count() as i32;
         let current = city.building_type(open.slot, major.economy(), owned_regions);
@@ -3748,7 +3749,7 @@ fn on_city_expansion_open(
     let order = CityOrderId::Expansion(open.slot);
     let original_quantity = session
         .0
-        .nations
+        .nations()
         .major(open.nation)
         .city()
         .orders
@@ -3759,11 +3760,13 @@ fn on_city_expansion_open(
         .quantity;
     let can_reserve = session
         .0
-        .set_city_order_quantity(open.nation, order, needed);
+        .set_city_order_quantity(open.nation, order, needed)
+        .applied();
     assert!(
         session
             .0
-            .set_city_order_quantity(open.nation, order, original_quantity),
+            .set_city_order_quantity(open.nation, order, original_quantity)
+            .applied(),
         "retail expansion probe must restore its original quantity"
     );
     let spawned = ui.spawn_modal(expansion_dialog_view_id());
@@ -3813,7 +3816,7 @@ fn on_city_building_change_choice(
         let order = CityOrderId::Expansion(choice.slot);
         if choice.accept {
             let needed = {
-                let major = session.0.nations.major(choice.nation);
+                let major = session.0.nations().major(choice.nation);
                 let city = major.city();
                 let owned_regions = major.common().owned_region_count() as i32;
                 city.max_building_capacity(choice.slot, major.economy(), owned_regions)
@@ -3821,11 +3824,12 @@ fn on_city_building_change_choice(
             };
             let _ = session
                 .0
-                .set_city_order_quantity(choice.nation, order, needed);
+                .set_city_order_quantity(choice.nation, order, needed)
+                    .applied();
         } else {
             let quantity = session
                 .0
-                .nations
+                .nations()
                 .major(choice.nation)
                 .city()
                 .orders
@@ -3863,7 +3867,7 @@ fn sync_city_building_pictures(
             *visibility = Visibility::Hidden;
             continue;
         };
-        let city = session.0.nations.major(building.nation).city();
+        let city = session.0.nations().major(building.nation).city();
         let Some(picture) = city_building_picture(city, building.slot, level) else {
             *visibility = Visibility::Hidden;
             continue;
@@ -3918,7 +3922,7 @@ fn on_city_amount_bar_click(
     click.propagate(false);
     let x = (((normalized.x + 0.5) * f32::from(INDUSTRY_BAR_WIDTH)).floor() as i16)
         .clamp(0, INDUSTRY_BAR_WIDTH - 1);
-    let city = session.0.nations.major(bar.nation).city();
+    let city = session.0.nations().major(bar.nation).city();
     let capacity = city.production_orders[bar.slot];
     let previous = match bar.order {
         CityOrderId::Item(output) => {
@@ -3945,6 +3949,7 @@ fn on_city_amount_bar_click(
     if !session
         .0
         .set_city_order_quantity(bar.nation, bar.order, quantity)
+        .applied()
         || quantity == previous
     {
         return;
@@ -4144,7 +4149,7 @@ fn on_city_order_adjust(
     }
     if !session
         .0
-        .adjust_city_order(action.nation, action.order, action.delta)
+        .adjust_city_order(action.nation, action.order, action.delta).applied()
     {
         return;
     }
@@ -4159,7 +4164,7 @@ fn on_city_order_adjust(
 #[allow(clippy::too_many_arguments, clippy::type_complexity)]
 fn sync_city_values(
     mut commands: Commands,
-    mut session: ResMut<GameSession>,
+    session: Res<GameSession>,
     screens: Query<Entity, With<CityScreenNeedsSync>>,
     dialogs: Query<
         (Entity, &CityBuildingDialog, Option<&ArmorySelection>),
@@ -4231,7 +4236,7 @@ fn sync_city_values(
         return;
     }
 
-    let screen_nation = MajorNationId::from_nation(session.0.turn.active_nation);
+    let screen_nation = MajorNationId::from_nation(session.0.turn().active_nation);
     let mut dialog_states = Vec::new();
     for (root, dialog, armory_selection) in &dialogs {
         let mut order_views = Vec::new();
@@ -4245,7 +4250,7 @@ fn sync_city_values(
             ProductionSlot::Armory | ProductionSlot::University | ProductionSlot::Shipyard
         ) {
             for binding in bindings {
-                let view = session.0.refresh_city_order(dialog.nation, binding.order);
+                let view = session.0.city_order_status(dialog.nation, binding.order);
                 order_views.push((binding.order, view));
             }
         }
@@ -4262,7 +4267,7 @@ fn sync_city_values(
     {
         let (nation, order_views, armory_selection): (
             MajorNationId,
-            &[(CityOrderId, CityOrderView)],
+            &[(CityOrderId, CityOrderStatus)],
             Option<MilitaryRecruitmentCategory>,
         ) = match binding.dialog {
             Some(root) => {
@@ -4281,7 +4286,7 @@ fn sync_city_values(
                 (nation, &[], None)
             }
         };
-        let major = session.0.nations.major(nation);
+        let major = session.0.nations().major(nation);
         let city = major.city();
         let labor = city.population.baseline_labor();
         let labor_available = city.population.strength();
@@ -4650,7 +4655,7 @@ fn sync_city_values(
                 continue;
             };
             let specialties = CIVILIAN_RESOURCE_SPECIALTIES[selection.kind];
-            let levels = &session.0.technology.city_capabilities_by_nation[*nation]
+            let levels = &session.0.technology().city_capabilities_by_nation[*nation]
                 .university
                 .requirement_levels;
             let running_max = specialties[..=binding.row]
@@ -4677,7 +4682,7 @@ fn sync_city_values(
             else {
                 continue;
             };
-            let levels = &session.0.technology.city_capabilities_by_nation[*nation]
+            let levels = &session.0.technology().city_capabilities_by_nation[*nation]
                 .university
                 .requirement_levels;
             let maximum = CIVILIAN_RESOURCE_SPECIALTIES[selection.kind]
@@ -4711,7 +4716,7 @@ fn sync_city_values(
             else {
                 continue;
             };
-            let stock = session.0.nations.major(*nation).city().stockpile[material.resource];
+            let stock = session.0.nations().major(*nation).city().stockpile[material.resource];
             text.0 = if binding.available {
                 stock.to_string()
             } else {
@@ -4747,7 +4752,7 @@ fn sync_city_values(
         let Some((_, view)) = order_views.iter().find(|(order, _)| *order == bar.order) else {
             continue;
         };
-        let capacity = session.0.nations.major(*nation).city().production_orders[bar.slot];
+        let capacity = session.0.nations().major(*nation).city().production_orders[bar.slot];
         let scale = |quantity: i16| {
             if capacity > 0 {
                 (i32::from(quantity) * i32::from(INDUSTRY_BAR_WIDTH) / i32::from(capacity))
@@ -4775,7 +4780,7 @@ fn sync_city_values(
         else {
             continue;
         };
-        let city = session.0.nations.major(*nation).city();
+        let city = session.0.nations().major(*nation).city();
         *visibility = if city_is_expanding(city, indicator.slot) {
             Visibility::Visible
         } else {
@@ -4956,7 +4961,7 @@ mod tests {
         let view = catalog.view(&view_id).unwrap();
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
         let technology =
-            session.0.technology.city_capabilities_by_nation[MajorNationId::new(6)].university;
+            session.0.technology().city_capabilities_by_nation[MajorNationId::new(6)].university;
         bind_university_dialog(
             &mut commands,
             &catalog,
@@ -5071,7 +5076,7 @@ mod tests {
         );
         {
             let session = app.world().resource::<GameSession>();
-            let city = session.0.nations.major(MajorNationId::new(6)).city();
+            let city = session.0.nations().major(MajorNationId::new(6)).city();
             assert_eq!(city.stockpile[ResourceKind::Fabric], 8);
             assert_eq!(city.population.strength(), 10);
             assert_eq!(city.production_accum[ProductionSlot::ClothingFactory], 0);
@@ -5098,7 +5103,7 @@ mod tests {
         );
         {
             let session = app.world().resource::<GameSession>();
-            let city = session.0.nations.major(MajorNationId::new(6)).city();
+            let city = session.0.nations().major(MajorNationId::new(6)).city();
             assert_eq!(city.stockpile[ResourceKind::Fabric], 10);
             assert_eq!(city.population.strength(), 12);
             assert_eq!(city.production_accum[ProductionSlot::ClothingFactory], 1);
@@ -5115,7 +5120,7 @@ mod tests {
             app.world()
                 .resource::<GameSession>()
                 .0
-                .nations
+                .nations()
                 .major(MajorNationId::new(6))
                 .city()
                 .building_window_state(ProductionSlot::ClothingFactory),
@@ -5151,7 +5156,7 @@ mod tests {
         assert_eq!(app.world().get::<Text>(first.high_quantity).unwrap().0, "1");
         {
             let session = app.world().resource::<GameSession>();
-            let major = session.0.nations.major(MajorNationId::new(6));
+            let major = session.0.nations().major(MajorNationId::new(6));
             let city = major.city();
             assert_eq!(city.stockpile[ResourceKind::Paper], 5);
             assert_eq!(major.common().treasury, 8_900);
@@ -5179,7 +5184,7 @@ mod tests {
         activate(&mut app, reopened.high_decrease);
         {
             let session = app.world().resource::<GameSession>();
-            let major = session.0.nations.major(MajorNationId::new(6));
+            let major = session.0.nations().major(MajorNationId::new(6));
             let city = major.city();
             assert_eq!(city.stockpile[ResourceKind::Paper], 8);
             assert_eq!(major.common().treasury, 10_000);
@@ -5193,10 +5198,15 @@ mod tests {
         let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
         let nation = MajorNationId::new(6);
         let mut session = fixture_session();
-        let university = &mut session.0.technology.city_capabilities_by_nation[nation].university;
-        university.available[CivilianUnitKind::Forester] = true;
-        university.available[CivilianUnitKind::Engineer] = true;
-        university.available[CivilianUnitKind::Driller] = false;
+        session
+            .0
+            .set_university_civilian_available(nation, CivilianUnitKind::Forester, true);
+        session
+            .0
+            .set_university_civilian_available(nation, CivilianUnitKind::Engineer, true);
+        session
+            .0
+            .set_university_civilian_available(nation, CivilianUnitKind::Driller, false);
 
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
@@ -5250,7 +5260,7 @@ mod tests {
             app.world()
                 .resource::<GameSession>()
                 .0
-                .nations
+                .nations()
                 .major(nation)
                 .city()
                 .orders

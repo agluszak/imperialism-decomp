@@ -6,7 +6,7 @@
 
 use crate::differential;
 use imperialism_core::*;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 macro_rules! differential_test {
     ($name:ident, |$state:ident, _: $case_ty:ty| $body:block) => {
@@ -127,8 +127,16 @@ enum EasyTurnFromSaveResult {
     Completed {
         from_turn: i32,
         to_turn: i32,
-        gates: Vec<UiGate>,
+        gates: Vec<ReportedUiGate>,
     },
+}
+
+/// Result-only gate labels for easy-turn captures. C++ still emits bare strings.
+#[derive(Debug, Deserialize, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+enum ReportedUiGate {
+    DealBook,
+    Newspaper,
 }
 
 differential_test!(
@@ -236,44 +244,57 @@ differential_test!(first_turn_return_to_map_phase, |state, _: ()| {
 differential_test!(easy_turn_from_save, |state, case: EasyTurnFromSaveCase| {
     assert!(case.reject_offers);
     assert!(case.expect_exactly_one_turn);
-    let from_turn = state.turn.economic_turn;
+    let from_turn = state.turn().economic_turn;
 
-    let first = state.finish_player_orders();
-    assert!(matches!(
-        first,
-        AdvanceTurnOutcome::Blocked {
-            block: TurnBlock::Ui {
-                gate: UiGate::DealBook
-            },
-            ..
+    let mut outcome = state.finish_player_orders();
+    loop {
+        match outcome {
+            AdvanceTurnOutcome::Blocked {
+                yield_: TurnYield::Ui {
+                    request: request @ (UiRequest::DiplomacyMap { .. } | UiRequest::OfferSheet { .. }),
+                },
+                ..
+            } => {
+                let _ = outcome.effects();
+                outcome = state.resume_after_ui(request);
+            }
+            AdvanceTurnOutcome::Blocked {
+                yield_: TurnYield::Ui {
+                    request: UiRequest::DealBook,
+                },
+                ..
+            } => break,
+            other => panic!("expected deal-book yield after first-turn phases, got {other:?}"),
         }
-    ));
+    }
 
-    let second = state.resume_after_ui(UiGate::DealBook);
+    let second = state.resume_after_ui(UiRequest::DealBook);
     assert!(matches!(
         second,
         AdvanceTurnOutcome::Blocked {
-            block: TurnBlock::Ui {
-                gate: UiGate::Newspaper
+            yield_: TurnYield::Ui {
+                request: UiRequest::Newspaper,
             },
             ..
         }
     ));
+    let _ = second.effects();
 
-    let third = state.resume_after_ui(UiGate::Newspaper);
+    let third = state.resume_after_ui(UiRequest::Newspaper);
     assert!(matches!(
         third,
         AdvanceTurnOutcome::Blocked {
-            block: TurnBlock::PlayerOrders,
+            yield_: TurnYield::PlayerOrders,
             ..
         }
     ));
-    assert_eq!(state.turn.economic_turn, from_turn + 1);
+    let _ = third.effects();
+    assert_eq!(state.turn().economic_turn, from_turn + 1);
 
     EasyTurnFromSaveResult::Completed {
         from_turn,
-        to_turn: state.turn.economic_turn,
-        gates: vec![UiGate::DealBook, UiGate::Newspaper],
+        to_turn: state.turn().economic_turn,
+        gates: vec![ReportedUiGate::DealBook, ReportedUiGate::Newspaper],
     }
 });
 
@@ -317,14 +338,18 @@ differential_test!(merchant_marine, |state, case: NationCase| {
 differential_test!(
     city_item_order_increase,
     |state, case: CityItemOrderCase| {
-        state.set_city_order_quantity(case.nation, CityOrderId::Item(case.output), case.quantity)
+        state
+            .set_city_order_quantity(case.nation, CityOrderId::Item(case.output), case.quantity)
+            .applied()
     }
 );
 
 differential_test!(
     city_item_order_decrease,
     |state, case: CityItemOrderCase| {
-        state.set_city_order_quantity(case.nation, CityOrderId::Item(case.output), case.quantity)
+        state
+            .set_city_order_quantity(case.nation, CityOrderId::Item(case.output), case.quantity)
+            .applied()
     }
 );
 

@@ -153,7 +153,7 @@ pub fn validate_capital_site_selection(
 
 /// Tile marking from `TMapMgr::PlaceCity` that fits the current [`TileState`] fields.
 pub fn place_city(world: &mut StrategicMap, tile: TileId, owner_nation: TileOwnerTag) {
-    world[tile].flags = TileFlags::PLACED_CITY_STATE;
+    world.tile_mut(tile).flags = TileFlags::PLACED_CITY_STATE;
     flood_fill_region_marker(world, tile, owner_nation);
 }
 
@@ -191,9 +191,9 @@ fn bind_home_city_tile(state: &mut GameState, nation: MajorNationId, tile: TileI
 fn flood_fill_region_marker(world: &mut StrategicMap, tile: TileId, owner_nation: TileOwnerTag) {
     let geometry = world.geometry();
     let marker = next_region_marker(world);
-    world[tile].region = Some(marker);
+    world.tile_mut(tile).region = Some(marker);
     for neighbor in geometry.neighbors(tile).into_iter().flatten() {
-        let neighbor_state = &mut world[neighbor];
+        let neighbor_state = world.tile_mut(neighbor);
         if neighbor_state.owner_nation != Some(owner_nation) {
             continue;
         }
@@ -357,12 +357,12 @@ mod tests {
             .flatten()
             .next()
             .expect("interior tiles still have neighbors on a wrapping map");
-        state.world[sea].terrain = TerrainKind::Water;
-        state.world[sea].owner_nation = Some(TileOwnerTag::new(6));
-        state.world[sea].action = None;
+        state.world.tile_mut(sea).terrain = TerrainKind::Water;
+        state.world.tile_mut(sea).owner_nation = Some(TileOwnerTag::new(6));
+        state.world.tile_mut(sea).action = None;
         for direction in HexDirection::ALL {
             let around = home_site_scan_neighbor(sea, direction);
-            state.world[around].owner_nation = Some(TileOwnerTag::new(6));
+            state.world.tile_mut(around).owner_nation = Some(TileOwnerTag::new(6));
         }
 
         let site = validate_capital_site_selection(&state, MajorNationId::new(6), tile).unwrap();
@@ -422,17 +422,17 @@ mod tests {
         )
         .unwrap();
         for index in 0..TileId::COUNT {
-            world[TileId::new(index)].owner_nation = Some(owner);
+            world.tile_mut(TileId::new(index)).owner_nation = Some(owner);
         }
         let candidate = TileId::new(0);
         let wrapped_sea = TileId::new(107);
-        world[wrapped_sea].terrain = TerrainKind::Water;
+        world.tile_mut(wrapped_sea).terrain = TerrainKind::Water;
 
         assert!(is_valid_secondary_nation_home_tile_candidate(
             &world, candidate
         ));
 
-        world[TileId::new(106)].owner_nation = None;
+        world.tile_mut(TileId::new(106)).owner_nation = None;
         assert!(!is_valid_secondary_nation_home_tile_candidate(
             &world, candidate
         ));
@@ -450,17 +450,17 @@ mod tests {
         let south_east = geometry.neighbor(start, HexDirection::SouthEast).unwrap();
         let water = geometry.neighbor(south_east, HexDirection::East).unwrap();
         let owner = TileOwnerTag::new(6);
-        world[start].owner_nation = Some(owner);
-        world[start].river = crate::RiverSegment::from_connection_code(1);
-        world[south_east].owner_nation = Some(owner);
-        world[south_east].river = crate::RiverSegment::from_connection_code(6);
-        world[water].terrain = TerrainKind::Water;
+        world.tile_mut(start).owner_nation = Some(owner);
+        world.tile_mut(start).river = crate::RiverSegment::from_connection_code(1);
+        world.tile_mut(south_east).owner_nation = Some(owner);
+        world.tile_mut(south_east).river = crate::RiverSegment::from_connection_code(6);
+        world.tile_mut(water).terrain = TerrainKind::Water;
 
         assert!(river_reaches_sea_without_crossing_nation(
             &world, &geometry, start
         ));
 
-        world[south_east].owner_nation = Some(TileOwnerTag::new(5));
+        world.tile_mut(south_east).owner_nation = Some(TileOwnerTag::new(5));
         assert!(!river_reaches_sea_without_crossing_nation(
             &world, &geometry, start
         ));

@@ -113,7 +113,7 @@ pub fn create_random_game(
         &mut port_zones,
     );
     for (index, &subtype) in post.gate_flags.iter().enumerate() {
-        world[TileId::new(index as u16)].region_tile_subtype =
+        world.tile_mut(TileId::new(index as u16)).region_tile_subtype =
             RegionTileSubtype::from_retail(subtype);
     }
     if requires_capital_site_selection(difficulty) {
@@ -578,7 +578,7 @@ fn reset_tile_to_base_transport_flag(
     tile: TileId,
 ) {
     set_region_tile_subtype_and_refresh_neighbor_flags(world, gate_flags, province_capitals, tile);
-    world[tile].flags = TileFlags::MINOR_HOME_STATE;
+    world.tile_mut(tile).flags = TileFlags::MINOR_HOME_STATE;
     initialize_world_tile_neighbor_connection_mask_if_needed(world, gate_flags, tile);
 }
 
@@ -644,7 +644,7 @@ fn spawn_initial_militia_for_minor(
                 Some(province),
                 order,
             );
-            world[capital]
+            world.tile_mut(capital)
                 .flags
                 .insert(TileFlags::PROVINCE_CAPITAL_FORTIFICATION);
         }
@@ -899,7 +899,7 @@ fn place_ai_capital(
             .iter()
             .any(|edge| matches!(edge, Some(ResourceKind::Grain) | Some(ResourceKind::Fruit)));
         if eligible {
-            world[neighbor].development.surface = DevelopmentLevel::new(1);
+            world.tile_mut(neighbor).development.surface = DevelopmentLevel::new(1);
         }
     }
     gate_flags[index] =
@@ -919,8 +919,8 @@ fn set_region_tile_subtype_and_refresh_neighbor_flags(
     let province_index = usize::from(province.get());
     if let Some(old_tile) = province_capitals[province_index] {
         let old_index = usize::from(old_tile.get());
-        world[old_tile].flags = TileFlags::empty();
-        world[old_tile].edge_resources[0] = Some(ResourceKind::Grain);
+        world.tile_mut(old_tile).flags = TileFlags::empty();
+        world.tile_mut(old_tile).edge_resources[0] = Some(ResourceKind::Grain);
         gate_flags[old_index] = resolve_region_tile_subtype_code_for_state(
             &world[old_tile],
             gate_flags[old_index],
@@ -928,7 +928,7 @@ fn set_region_tile_subtype_and_refresh_neighbor_flags(
         );
     }
     let new_index = usize::from(new_tile.get());
-    world[new_tile].flags = TileFlags::PROVINCE_ANCHOR_STATE;
+    world.tile_mut(new_tile).flags = TileFlags::PROVINCE_ANCHOR_STATE;
     province_capitals[province_index] = Some(new_tile);
     gate_flags[new_index] = resolve_region_tile_subtype_code_for_state(
         &world[new_tile],
@@ -939,7 +939,7 @@ fn set_region_tile_subtype_and_refresh_neighbor_flags(
     for index in 0..STRATEGIC_TILE_COUNT {
         let tile_id = TileId::new(index as u16);
         if tile_id != new_tile && world[tile_id].province == Some(province) {
-            world[tile_id].flags.clear_city_marker();
+            world.tile_mut(tile_id).flags.clear_city_marker();
         }
     }
 }
@@ -953,8 +953,8 @@ fn initialize_world_tile_neighbor_connection_mask_if_needed(
     if gate_flags[index] == 1 {
         return;
     }
-    world[tile].terrain = TerrainKind::Plains;
-    world[tile].edge_resources = [Some(ResourceKind::Grain), None];
+    world.tile_mut(tile).terrain = TerrainKind::Plains;
+    world.tile_mut(tile).edge_resources = [Some(ResourceKind::Grain), None];
     gate_flags[index] =
         resolve_region_tile_subtype_code_for_state(&world[tile], gate_flags[index], index);
 
@@ -963,7 +963,7 @@ fn initialize_world_tile_neighbor_connection_mask_if_needed(
         let Some(neighbor) = neighbor else {
             continue;
         };
-        world[neighbor].rendering.transition_mask &= !(1_u8 << direction.opposite() as u8);
+        world.tile_mut(neighbor).rendering.transition_mask &= !(1_u8 << direction.opposite() as u8);
     }
 }
 
@@ -1057,17 +1057,17 @@ fn initialize_sea_zone_map_markers(world: &mut StrategicMap, mut map_build_crt: 
             SEA_OWNER_BIAS + u8::try_from(zone).expect("fresh-map sea-zone tag fits in one byte"),
         );
         let center = select_sea_zone_seed_tile(world, geometry, &costs, owner, &mut map_build_crt);
-        world[center].action = TileAction::try_from_retail(ACTION_STATE_ZONE_CENTER);
+        world.tile_mut(center).action = TileAction::try_from_retail(ACTION_STATE_ZONE_CENTER);
 
         let north_west = geometry
             .neighbor(center, HexDirection::NorthWest)
             .expect("fresh-map sea-zone seed is below the north map edge");
-        world[north_west].action = TileAction::try_from_retail(ACTION_STATE_ZONE_NORTH_WEST);
+        world.tile_mut(north_west).action = TileAction::try_from_retail(ACTION_STATE_ZONE_NORTH_WEST);
 
         let north_east = geometry
             .neighbor(north_west, HexDirection::NorthEast)
             .expect("fresh-map sea-zone marker is below the north map edge");
-        world[north_east].action = TileAction::try_from_retail(ACTION_STATE_ZONE_NORTH_EAST);
+        world.tile_mut(north_east).action = TileAction::try_from_retail(ACTION_STATE_ZONE_NORTH_EAST);
     }
 }
 
@@ -1214,7 +1214,7 @@ fn ensure_port_zone_for_tile(world: &mut StrategicMap, ports: &mut PortZoneTable
             former_owner,
         },
     );
-    world[best_sea].action = TileAction::try_from_retail(ACTION_STATE_ANCHOR);
+    world.tile_mut(best_sea).action = TileAction::try_from_retail(ACTION_STATE_ANCHOR);
 }
 
 fn select_port_sea_tile(
@@ -2421,12 +2421,12 @@ mod tests {
         )
         .unwrap();
         for tile in [old_tile, new_tile, sibling] {
-            world[tile].province = Some(province);
+            world.tile_mut(tile).province = Some(province);
         }
-        world[old_tile].flags = TileFlags::PLACED_CITY_STATE;
+        world.tile_mut(old_tile).flags = TileFlags::PLACED_CITY_STATE;
         let sibling_flags =
             TileFlags::PLACED_CITY_STATE | TileFlags::PROVINCE_CAPITAL_FORTIFICATION;
-        world[sibling].flags = sibling_flags;
+        world.tile_mut(sibling).flags = sibling_flags;
         let mut gate_flags = vec![1; STRATEGIC_TILE_COUNT];
         let mut capitals = vec![Some(old_tile)];
 
@@ -2454,7 +2454,7 @@ mod tests {
             vec![TileState::default(); STRATEGIC_TILE_COUNT],
         )
         .unwrap();
-        world[tile].province = Some(province);
+        world.tile_mut(tile).province = Some(province);
         let mut gate_flags = vec![1; STRATEGIC_TILE_COUNT];
         let mut capitals = vec![None];
 
