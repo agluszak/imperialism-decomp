@@ -14,8 +14,9 @@ from tools.ui_codegen import (
     DEFAULT_CLASSES,
     _render_factory_with_map,
     apply_case_windows_overrides,
-    load_recipes,
+    load_city_building_action_visuals,
     load_city_building_visuals,
+    load_recipes,
     load_text_resources,
     load_ui_views,
     load_windows_views,
@@ -35,6 +36,7 @@ def _load_delta_config(repo_root: Path) -> dict:
         "functional_parity_cases",
         "node_property_patches",
         "city_buildings",
+        "city_building_actions",
     }
     unknown = sorted(set(data) - allowed)
     if unknown:
@@ -71,6 +73,7 @@ def _semantic_snapshot(node) -> dict:
 def build_report(repo_root: Path) -> tuple[dict, list[str]]:
     config = _load_delta_config(repo_root)
     load_city_building_visuals(repo_root)
+    load_city_building_action_visuals(repo_root)
     recipes = load_recipes(repo_root)
     raw_views = load_ui_views(repo_root)
     text_resources = load_text_resources(repo_root)

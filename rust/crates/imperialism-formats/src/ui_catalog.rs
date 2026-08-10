@@ -214,11 +214,24 @@ pub struct CityBuildingVisual {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(deny_unknown_fields)]
+pub struct CityBuildingActionVisual {
+    pub slot: ProductionSlot,
+    pub level: u8,
+    pub picture_id: PictureId,
+    pub frame_count: u8,
+    pub origin: [i32; 2],
+    pub frame_size: [i32; 2],
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct UiView {
     pub id: ScopedViewId,
     pub nodes: Vec<UiNode>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub city_buildings: Vec<CityBuildingVisual>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub city_building_actions: Vec<CityBuildingActionVisual>,
 }
 
 /// Precomputed lookups over a catalog view hierarchy.

@@ -3794,21 +3794,42 @@ int TMapMgr::CollectSecondDegreeLinksWithMinorNationFallback(ProvinceIndex cityR
   return resultCount;
 }
 
+namespace {
+
+// RecomputeTileStrategicScoreHeatmap indexes the four-column requirement table with the
+// tile's whole packed development byte. Retail's valid 0x00..0x33 values can therefore
+// read up to 44 bytes past that table, into the globals that immediately follow it at
+// 0x696df8..0x696e23. Preserve those exact bytes without crossing C++ array objects.
+const unsigned char kHeatmapPackedDevelopmentOverflow[44] = {
+    0, 0, 0, 1, 1, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 10, 0, 4, 0, 7, 0, 6, 0, 8, 0, 0, 0, 9, 0, 5, 0, 1, 0, 2, 0};
+
+unsigned char GetHeatmapRequirementLevel(int resourceType, signed char packedDevelopment) {
+  const int flatIndex = resourceType * 4 + packedDevelopment;
+  if (flatIndex < static_cast<int>(sizeof(g_abUniversityRequirementLevelById))) {
+    return g_abUniversityRequirementLevelById[flatIndex / 4][flatIndex % 4];
+  }
+  return kHeatmapPackedDevelopmentOverflow
+      [flatIndex - static_cast<int>(sizeof(g_abUniversityRequirementLevelById))];
+}
+
+} // namespace
+
 // FUNCTION: IMPERIALISM 0x00518130
 void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
   int r;
   int i;
   int edge;
-  // The original reserves a 6-int scratch here (zero-filled via rep stosd, then seeded
-  // {[4]=500,[5]=200}) that is never read afterwards; MSVC5 elides this dead local in the
-  // recompile, so its frame is 0x14 smaller and the resulting register/stack-offset
-  // allocation diverges from the original even though every instruction matches in kind
-  // and order (the FPU diffusion + vtable calls are exact). Left documented, not forced.
-  // Per-resource-type weight, pulled from the nation-interaction metric buckets.
-  int resourceWeights[17];
+  // The original declares seventeen market-backed weights followed immediately by a
+  // six-int harvested-resource block. The tile loop deliberately indexes the two blocks
+  // as one 23-entry table: Grain..Livestock are zero, Gems is 500, and Gold is 200.
+  // Keep that effective table explicit instead of depending on cross-array stack reads.
+  int resourceWeights[kResourceKindCount] = {0};
   for (int resType = 0; resType < kResourceManufacturedEnd; ++resType) {
     resourceWeights[resType] = g_pTradeMgr->GetBasePrice(static_cast<short>(resType));
   }
+  resourceWeights[kResourceGems] = 500;
+  resourceWeights[kResourceGold] = 200;
 
   int regionScores[0x180];
 
@@ -3826,7 +3847,7 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
           if ((resType != kResourceOil ||
                g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) &&
               resType != -1) {
-            score += g_abUniversityRequirementLevelById[resType][tile->developmentClassNibbles0c] *
+            score += GetHeatmapRequirementLevel(resType, tile->developmentClassNibbles0c) *
                      resourceWeights[resType];
           }
         }

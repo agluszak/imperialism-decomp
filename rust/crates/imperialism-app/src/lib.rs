@@ -5,6 +5,7 @@ mod ui;
 use bevy::input_focus::tab_navigation::TabNavigationPlugin;
 use bevy::prelude::*;
 use bevy::window::WindowPlugin;
+use imperialism_core::GameState;
 use imperialism_formats::{RetailAssets, UiCatalog};
 
 const COMPILED_UI_CATALOG: &str = include_str!("../../imperialism-formats/assets/ui_catalog.json");
@@ -20,6 +21,8 @@ pub(crate) enum AppState {
     City,
     Transport,
     Diplomacy,
+    DealBook,
+    Newspaper,
 }
 
 #[derive(Resource)]
@@ -35,7 +38,7 @@ impl RetailAssetsResource {
     }
 }
 
-pub fn run(retail_assets: RetailAssets) {
+pub fn run(retail_assets: RetailAssets, initial_game: Option<GameState>) {
     let ui_catalog = serde_json::from_str::<UiCatalog>(COMPILED_UI_CATALOG)
         .expect("the compiled UI catalog must deserialize");
 
@@ -58,18 +61,26 @@ pub fn run(retail_assets: RetailAssets) {
     ui::validate_application_bindings(&ui_catalog)
         .expect("compiled UI catalog must contain every application binding");
     app.insert_resource(ui_catalog)
-        .insert_resource(RetailAssetsResource::new(retail_assets))
-        .init_state::<AppState>()
-        .add_plugins((
-            TabNavigationPlugin,
-            ui::UiCatalogPlugin,
-            ui::MainMenuPlugin,
-            ui::RandomSetupPlugin,
-            ui::MapPreviewPlugin,
-            ui::CitySitePlugin,
-            ui::GameShellPlugin,
-            ui::CityPlugin,
-        ));
+        .insert_resource(RetailAssetsResource::new(retail_assets));
+    if let Some(game) = initial_game {
+        app.insert_resource(ui::GameSession(game))
+            .insert_state(AppState::StrategicMap);
+    } else {
+        app.init_state::<AppState>();
+    }
+    app.add_plugins((
+        TabNavigationPlugin,
+        ui::UiCatalogPlugin,
+        ui::MainMenuPlugin,
+        ui::RandomSetupPlugin,
+        ui::MapPreviewPlugin,
+        ui::CitySitePlugin,
+        ui::GameShellPlugin,
+        ui::CityPlugin,
+        ui::TransportPlugin,
+        ui::TradePlugin,
+        ui::DiplomacyPlugin,
+    ));
     app.world_mut().spawn(Camera2d);
     app.run();
 }

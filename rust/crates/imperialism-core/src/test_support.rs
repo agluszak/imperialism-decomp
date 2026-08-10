@@ -22,7 +22,7 @@ pub(crate) fn city() -> CityState {
         low_production: false,
         low_stock: false,
         reserved_by_type: ResourceTable::default(),
-        home_town_tile: Some(TileId::new(1)),
+        home_town: Some(TownState::for_frog_city(TileId::new(1))),
         power_available: 0,
         stockpile: crate::Stockpile::default(),
         production_orders: ProductionTable::default(),
@@ -52,8 +52,12 @@ pub(crate) fn great_power_state() -> GreatPowerState {
     GreatPowerState {
         controller: crate::MajorNationController::Human,
         ai_zone_targets: None,
+        ai_province_targets: None,
         foreign_minister_personality: crate::ForeignMinisterPersonality::Base,
         foreign_minister_skill_index: 0,
+        foreign_trade: crate::ForeignTradeState::for_random_start(
+            crate::ForeignMinisterPersonality::Base,
+        ),
         development_grant_by_nation: NationTable::default(),
         defense_minister_skill_index: 0,
         capacities: NationCapacities::default(),
@@ -69,6 +73,11 @@ pub(crate) fn great_power_state() -> GreatPowerState {
         unfilled_trade_turns_by_resource: ResourceTable::default(),
         transported_items_by_resource: ResourceTable::default(),
         remembered_trade_offers_by_resource: ResourceTable::default(),
+        deal_book: crate::TradeCommodityTable::default(),
+        pending_ship: None,
+        interior_civilian: Box::default(),
+        ai_trade: None,
+        ai_development_pressure: None,
         aid_allocation_by_minor_nation: MinorNationTable::default(),
         budget_pool_base: 0,
         budget_pool_delta: 0,
@@ -81,6 +90,7 @@ pub(crate) fn great_power_state() -> GreatPowerState {
         escalation_counter: 0,
         pending_commitment_cost: 0,
         pressure_counter: 0,
+        army_movement_budget: 0,
         aid_allocation_total: 0,
         colony_boycott_flags: NationTable::default(),
         military_expenses: 0,
@@ -90,13 +100,14 @@ pub(crate) fn great_power_state() -> GreatPowerState {
 /// A present major nation with common state, rule state, and a city.
 pub(crate) fn major_nation() -> MajorNation {
     MajorNation {
-        common: NationCommonState {
-            status: crate::CountryStatus::Independent,
-            owned_regions: Vec::new(),
-            treasury: 1_000,
-            home_tile: Some(TileId::new(0)),
-            trade_policy_by_nation: NationTable::default(),
-        },
+        common: NationCommonState::from_parts(
+            String::new(),
+            crate::CountryStatus::Independent,
+            Vec::new(),
+            1_000,
+            Some(TileId::new(0)),
+            NationTable::default(),
+        ),
         economy: great_power_state(),
         city: city(),
     }
@@ -111,6 +122,8 @@ pub(crate) fn game_state() -> GameState {
             economic_turn: 1,
             diplomacy_year_term_raw: 1914,
             phase: crate::PhaseCode::STRATEGIC_MAP,
+            turn_flow_status_flags: 0,
+            quarter_gate_by_decade: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             difficulty: Difficulty::Easy,
             active_nation: NationId::new(0),
             selected_nation: NationId::new(0),
@@ -135,15 +148,16 @@ pub(crate) fn game_state() -> GameState {
             Difficulty::Normal,
             &mut diplomacy_rng,
         ),
-        nations: Nations {
-            majors: MajorNationTable::from_fn(|_nation| major_nation()),
-            minors: MinorNationTable::default(),
-        },
+        nations: Nations::new(
+            MajorNationTable::from_fn(|_nation| major_nation()),
+            MinorNationTable::default(),
+        ),
         military_units: Vec::new(),
         civilian_units: Vec::new(),
         ships: Vec::new(),
         task_forces: Vec::new(),
         missions: Vec::new(),
+        news: crate::NewsState::default(),
         pending: crate::PendingWorkState::default(),
     }
 }

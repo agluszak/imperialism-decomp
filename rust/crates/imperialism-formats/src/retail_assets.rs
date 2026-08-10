@@ -10,6 +10,8 @@ use std::ops::Range;
 use std::path::{Path, PathBuf};
 
 const ENGLISH_LANGUAGE: u32 = 1033;
+const STRING_RESOURCE_TYPE: u32 = 6;
+const STRINGS_ARCHIVE_PATH: &str = "Data/STR#ENU.GOB";
 
 const PICTURE_ARCHIVE_PATHS: [&str; 4] = [
     "Data/pictenu.gob",
@@ -25,6 +27,7 @@ const PICTURE_ARCHIVE_PATHS: [&str; 4] = [
 #[derive(Debug)]
 pub struct RetailAssets {
     pictures: [ResourceArchive; 4],
+    strings: ResourceArchive,
     fonts: RetailFonts,
     default_dib_palette: DibPalette,
 }
@@ -49,10 +52,12 @@ impl RetailAssets {
                 .ok_or(RetailAssetError::DefaultDibPaletteNotFound)?;
             bitmap_palette_rgb(dib).map_err(|error| resource_error(&archive.path, error))?
         };
+        let strings = ResourceArchive::read(&root, STRINGS_ARCHIVE_PATH)?;
         let fonts = RetailFonts::read(&root)?;
 
         Ok(Self {
             pictures,
+            strings,
             fonts,
             default_dib_palette,
         })
@@ -73,6 +78,24 @@ impl RetailAssets {
     ) -> Result<IndexedPicture, RetailAssetError> {
         let (path, dib) = self.picture_resource(picture_id)?;
         bitmap_resource_to_indexed_picture(dib).map_err(|error| resource_error(path, error))
+    }
+
+    /// Loads one direct `LoadStringA` index from the English retail string library.
+    pub fn string(&self, group: i16, direct_index: i16) -> Result<String, RetailAssetError> {
+        let string_id = group.wrapping_mul(100).wrapping_add(direct_index) as u16;
+        let block_id = u32::from((string_id >> 4) + 1);
+        let slot = usize::from(string_id & 0xf);
+        let block = self
+            .strings
+            .find(
+                ResourceName::Id(STRING_RESOURCE_TYPE),
+                ResourceName::Id(block_id),
+            )
+            .ok_or(RetailAssetError::StringNotFound {
+                group,
+                direct_index,
+            })?;
+        decode_string_table_entry(&self.strings.path, block, slot)
     }
 
     fn picture_resource(&self, picture_id: PictureId) -> Result<(&Path, &[u8]), RetailAssetError> {
@@ -267,6 +290,8 @@ pub enum RetailAssetError {
     Resource { path: PathBuf, detail: String },
     #[error("no English picture {0} is available")]
     PictureNotFound(PictureId),
+    #[error("no English string is available for group {group:#06x}, direct index {direct_index}")]
+    StringNotFound { group: i16, direct_index: i16 },
     #[error("Data/pictenu.gob has no English BITMAP resource 950.BMP")]
     DefaultDibPaletteNotFound,
 }
@@ -294,6 +319,36 @@ fn invalid_resource_shape(path: &Path, detail: &str) -> RetailAssetError {
         path: path.to_owned(),
         detail: detail.to_owned(),
     }
+}
+
+fn decode_string_table_entry(
+    path: &Path,
+    block: &[u8],
+    slot: usize,
+) -> Result<String, RetailAssetError> {
+    let mut offset = 0;
+    for current_slot in 0..=slot {
+        let length_bytes = block
+            .get(offset..offset + 2)
+            .ok_or_else(|| invalid_resource_shape(path, "truncated RT_STRING entry length"))?;
+        let length = usize::from(u16::from_le_bytes([length_bytes[0], length_bytes[1]]));
+        offset += 2;
+        let end = offset
+            .checked_add(length * 2)
+            .ok_or_else(|| invalid_resource_shape(path, "RT_STRING entry length overflows"))?;
+        let encoded = block
+            .get(offset..end)
+            .ok_or_else(|| invalid_resource_shape(path, "truncated RT_STRING entry text"))?;
+        if current_slot == slot {
+            let words = encoded
+                .chunks_exact(2)
+                .map(|word| u16::from_le_bytes([word[0], word[1]]))
+                .collect::<Vec<_>>();
+            return String::from_utf16(&words).map_err(|error| resource_error(path, error));
+        }
+        offset = end;
+    }
+    unreachable!("RT_STRING slot loop includes the requested slot")
 }
 
 #[cfg(test)]
@@ -363,7 +418,6 @@ mod tests {
             "Data/pictwv1.gob",
             "Data/pictwv2.gob",
             "Data/pictwv3.gob",
-            "Data/STR#ENU.GOB",
             "Data/wave.gob",
             "MUSIC/Track06.ogg",
         ] {
@@ -372,6 +426,7 @@ mod tests {
         let assets = RetailAssets::open(root.path()).unwrap();
 
         assert_eq!(assets.font_bytes(RetailFontFace::BelweBold), b"not a font");
+        assert_eq!(assets.string(0x2719, 1).unwrap(), "Textile Mill");
 
         let bitmap = assets.picture(PictureId::new(4500)).unwrap();
         assert_eq!(bitmap[bitmap.len() - 4], 0x22);
@@ -401,6 +456,7 @@ mod tests {
         );
         let assets = RetailAssets::open(&root).unwrap();
 
+        assert_eq!(assets.string(0x2719, 1).unwrap(), "Textile Mill");
         assert!(
             assets
                 .picture(PictureId::new(4500))
@@ -446,6 +502,15 @@ mod tests {
             }
             write_retail_file(root.path(), relative, &synthetic_pe(resources));
         }
+        write_retail_file(
+            root.path(),
+            STRINGS_ARCHIVE_PATH,
+            &synthetic_pe(vec![TestResource::new(
+                TestName::id(STRING_RESOURCE_TYPE),
+                TestName::id(1117),
+                string_table_block(5, "Textile Mill"),
+            )]),
+        );
 
         for relative in ["Data/Antqua.ttf", "Data/Antquab.ttf", "Data/WeBeBd__.ttf"] {
             write_retail_file(root.path(), relative, b"not a font");
@@ -500,6 +565,22 @@ mod tests {
         }
         dib.extend_from_slice(&[0, 0, 0, 0]);
         dib
+    }
+
+    fn string_table_block(slot: usize, text: &str) -> Vec<u8> {
+        let mut block = Vec::new();
+        for current_slot in 0..16 {
+            let words = if current_slot == slot {
+                text.encode_utf16().collect::<Vec<_>>()
+            } else {
+                Vec::new()
+            };
+            block.extend_from_slice(&(words.len() as u16).to_le_bytes());
+            for word in words {
+                block.extend_from_slice(&word.to_le_bytes());
+            }
+        }
+        block
     }
 
     fn synthetic_pe(resources: Vec<TestResource>) -> Vec<u8> {

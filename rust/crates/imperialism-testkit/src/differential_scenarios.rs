@@ -115,6 +115,22 @@ struct SpecialistRecruitmentCase {
     quantity: i16,
 }
 
+#[derive(Debug, Deserialize)]
+struct EasyTurnFromSaveCase {
+    reject_offers: bool,
+    expect_exactly_one_turn: bool,
+}
+
+#[derive(Debug, Deserialize, PartialEq)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+enum EasyTurnFromSaveResult {
+    Completed {
+        from_turn: i32,
+        to_turn: i32,
+        gates: Vec<UiGate>,
+    },
+}
+
 differential_test!(
     major_trade_settlement,
     |state, case: MajorTradeSettlementCase| {
@@ -154,7 +170,111 @@ differential_test!(first_turn_alert_phase, |state, _: ()| {
 });
 
 differential_test!(first_turn_diplomacy_phase, |state, _: ()| {
-    let _ = state.advance_turn_step();
+    state.advance_turn_step()
+});
+
+differential_test!(first_turn_trade_phase, |state, _: ()| {
+    state.advance_turn_step()
+});
+
+differential_test!(first_turn_civilian_phase, |state, _: ()| {
+    state.advance_turn_step()
+});
+
+differential_test!(first_turn_military_phase, |state, _: ()| {
+    state.advance_turn_step()
+});
+
+differential_test!(first_turn_combat_movement_phase, |state, _: ()| {
+    state.advance_turn_step()
+});
+
+differential_test!(first_turn_military_cleanup_phase, |state, _: ()| {
+    state.advance_turn_step()
+});
+
+differential_test!(first_turn_diplomacy_offer_phase, |state, _: ()| {
+    state.advance_turn_step()
+});
+
+differential_test!(first_turn_elimination_phase, |state, _: ()| {
+    state.advance_turn_step()
+});
+
+differential_test!(first_turn_city_transport_phase, |state, _: ()| {
+    state.advance_turn_step()
+});
+
+differential_test!(first_turn_great_power_pressure_phase, |state, _: ()| {
+    state.advance_turn_step()
+});
+
+differential_test!(first_turn_deal_book_phase, |state, _: ()| {
+    state.advance_turn_step()
+});
+
+differential_test!(first_turn_quarter_gate_phase, |state, _: ()| {
+    state.advance_turn_step()
+});
+
+differential_test!(first_turn_season_advance_phase, |state, _: ()| {
+    state.advance_turn_step()
+});
+
+differential_test!(first_turn_technology_advances_phase, |state, _: ()| {
+    state.advance_turn_step()
+});
+
+differential_test!(first_turn_newspaper_phase, |state, _: ()| {
+    state.advance_turn_step()
+});
+
+differential_test!(first_turn_return_to_map_phase, |state, _: ()| {
+    state.advance_turn_step()
+});
+
+differential_test!(easy_turn_from_save, |state, case: EasyTurnFromSaveCase| {
+    assert!(case.reject_offers);
+    assert!(case.expect_exactly_one_turn);
+    let from_turn = state.turn.economic_turn;
+
+    let first = state.finish_player_orders();
+    assert!(matches!(
+        first,
+        AdvanceTurnOutcome::Blocked {
+            block: TurnBlock::Ui {
+                gate: UiGate::DealBook
+            },
+            ..
+        }
+    ));
+
+    let second = state.resume_after_ui(UiGate::DealBook);
+    assert!(matches!(
+        second,
+        AdvanceTurnOutcome::Blocked {
+            block: TurnBlock::Ui {
+                gate: UiGate::Newspaper
+            },
+            ..
+        }
+    ));
+
+    let third = state.resume_after_ui(UiGate::Newspaper);
+    assert!(matches!(
+        third,
+        AdvanceTurnOutcome::Blocked {
+            block: TurnBlock::PlayerOrders,
+            ..
+        }
+    ));
+    assert_eq!(state.turn.economic_turn, from_turn + 1);
+
+    EasyTurnFromSaveResult::Completed {
+        from_turn,
+        to_turn: state.turn.economic_turn,
+        gates: vec![UiGate::DealBook, UiGate::Newspaper],
+    }
 });
 
 differential_test!(transported_items_phase, |state, case: NationCase| {
@@ -272,6 +392,20 @@ fn rolling_stock_cases() {
     for name in ["rolling_stock", "rolling_stock_insufficient_resources"] {
         differential(name, |state, case: NationCase| {
             state.increase_rolling_stock(case.nation)
+        })
+        .unwrap();
+    }
+}
+
+#[test]
+#[ignore = "requires the native C++ runtime oracle"]
+fn nation_resource_yield_rebuild_cases() {
+    for name in [
+        "nation_resource_yield_rebuild",
+        "ai_nation_resource_yield_rebuild_clamps_targets",
+    ] {
+        differential(name, |state, case: NationCase| {
+            state.rebuild_nation_resource_yields(case.nation);
         })
         .unwrap();
     }

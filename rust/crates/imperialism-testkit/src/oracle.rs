@@ -1,11 +1,7 @@
 //! Oracle check commands shared by the `imperialism-oracle` binary.
 
 use anyhow::{Context, Result, bail};
-use imperialism_core::{
-    Difficulty, GameState, MAJOR_NATION_COUNT, MajorNationId, RANDOM_MAP_CLASS_COUNT, RetailCrtRng,
-    RetailLcg, STRATEGIC_TILE_COUNT, TileId, create_random_game,
-    generate_english_random_setup_name, generate_random_map, generate_random_setup_preview,
-};
+use imperialism_core::*;
 use std::path::Path;
 
 use crate::{
@@ -110,14 +106,17 @@ pub fn check_random_setup(result: &Path, seed: u32) -> Result<()> {
     let setup: RandomGameSetupCapture = runtime
         .capture("random_game_setup")
         .with_context(|| format!("could not read {}", result.display()))?;
-    let preview =
-        generate_random_setup_preview(setup.planet_seed.as_bytes(), setup.topology.topology())
-            .with_context(|| {
-                format!(
-                    "could not replay the explicit setup seed {:?}",
-                    setup.planet_seed
-                )
-            })?;
+    let preview = generate_random_setup_preview(
+        setup.planet_seed.as_bytes(),
+        setup.topology.topology(),
+        RetailCrtRng::from_state(seed),
+    )
+    .with_context(|| {
+        format!(
+            "could not replay the explicit setup seed {:?}",
+            setup.planet_seed
+        )
+    })?;
     let terrain: RandomMapTerrainCapture = runtime
         .capture("random_map_terrain")
         .with_context(|| format!("could not read {}", result.display()))?;
@@ -229,6 +228,7 @@ pub fn check_random_setup_initial(result: &Path, seed: u32) -> Result<()> {
     let preview = generate_random_setup_preview(
         expected.planet_seed.as_bytes(),
         expected.topology.topology(),
+        initial_sea_zone_marker_crt(clock_seed),
     )
     .context("could not replay the generated initial setup seed")?;
     let trace = generate_and_compare_terrain_capture(&terrain).map_err(|difference| {
@@ -312,14 +312,17 @@ pub fn check_random_game_start(result: &Path, seed: u32) -> Result<()> {
         );
     }
 
-    let preview =
-        generate_random_setup_preview(setup.planet_seed.as_bytes(), setup.topology.topology())
-            .with_context(|| {
-                format!(
-                    "could not replay the explicit setup seed {:?}",
-                    setup.planet_seed
-                )
-            })?;
+    let preview = generate_random_setup_preview(
+        setup.planet_seed.as_bytes(),
+        setup.topology.topology(),
+        initial_sea_zone_marker_crt(runtime.seed),
+    )
+    .with_context(|| {
+        format!(
+            "could not replay the explicit setup seed {:?}",
+            setup.planet_seed
+        )
+    })?;
     // RandomSetupFlow captures the stable generated preview before it selects the scenario's
     // requested difficulty. The constructed game state is the authoritative accepted setting.
     let actual = create_random_game(&preview, setup.nation, difficulty, runtime.seed);
@@ -433,6 +436,12 @@ fn initial_defaults(clock_seed: u32) -> RandomGameSetupCapture {
     }
 }
 
+fn initial_sea_zone_marker_crt(clock_seed: u32) -> RetailCrtRng {
+    let mut crt_rng = RetailCrtRng::from_state(clock_seed);
+    let _ = crt_rng.next_rand();
+    crt_rng
+}
+
 fn validate_setup(
     actual: &RandomGameSetupCapture,
     expected: &RandomGameSetupCapture,
@@ -504,9 +513,12 @@ mod tests {
     #[test]
     fn seed_one_initial_preview_reaches_the_native_final_state() {
         let setup = initial_defaults(1);
-        let preview =
-            generate_random_setup_preview(setup.planet_seed.as_bytes(), setup.topology.topology())
-                .unwrap();
+        let preview = generate_random_setup_preview(
+            setup.planet_seed.as_bytes(),
+            setup.topology.topology(),
+            initial_sea_zone_marker_crt(1),
+        )
+        .unwrap();
         assert_eq!(preview.map.tiles().len(), 6_480);
         assert_eq!(preview.map.provinces().len(), 120);
         assert_eq!(preview.final_map_lcg, 0x8c98_13e1);

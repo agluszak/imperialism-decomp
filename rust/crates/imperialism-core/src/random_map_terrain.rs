@@ -3,8 +3,8 @@ use crate::random_map::trace_coarse_random_map;
 use crate::random_map::{CoarseMap, generate_coarse_random_map};
 use crate::{
     EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, MapGeometry, MapTopology, ProvinceId,
-    RANDOM_MAP_CLASS_COUNT, RetailLcg, RiverSegment, TerrainKind, TileId, TileOwnerTag,
-    hash_retail_scenario_tag,
+    RANDOM_MAP_CLASS_COUNT, RetailCrtRng, RetailLcg, RiverSegment, TerrainKind, TileId,
+    TileOwnerTag, hash_retail_scenario_tag,
 };
 use serde::{Deserialize, Deserializer, Serialize};
 
@@ -229,8 +229,9 @@ impl<'de> Deserialize<'de> for GeneratedMap {
 /// The generated map preview retained by the random-game setup screen.
 ///
 /// `final_map_lcg` is the state after every rejected and accepted map-generation
-/// attempt, so accepting the setup can preserve retail's RNG result without
-/// regenerating the preview.
+/// attempt. `sea_zone_marker_crt` is the separate CRT stream at the point where
+/// that retained map assigns its sea-zone markers. Accepting the setup can
+/// therefore preserve both retail RNG results without regenerating the preview.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RandomSetupPreview {
     /// The topology used for the retained map. Accept must not be able to
@@ -238,6 +239,7 @@ pub struct RandomSetupPreview {
     pub topology: MapTopology,
     pub map: GeneratedMap,
     pub final_map_lcg: u32,
+    pub sea_zone_marker_crt: RetailCrtRng,
 }
 
 /// A retail setup seed needs the original clock-derived fallback when its
@@ -309,10 +311,14 @@ pub fn generate_random_map(
 pub fn generate_random_setup_preview(
     seed: &[u8],
     topology: MapTopology,
+    sea_zone_marker_crt: RetailCrtRng,
 ) -> Result<RandomSetupPreview, RandomSetupPreviewError> {
     let mut rng = retail_random_setup_lcg(seed)?;
     Ok(generate_random_setup_preview_from_lcg(
-        seed, topology, &mut rng,
+        seed,
+        topology,
+        &mut rng,
+        sea_zone_marker_crt,
     ))
 }
 
@@ -327,21 +333,24 @@ pub fn generate_random_setup_preview_with_clock_seed(
     seed: &[u8],
     topology: MapTopology,
     clock_seed: u32,
+    sea_zone_marker_crt: RetailCrtRng,
 ) -> RandomSetupPreview {
     let mut rng = retail_random_setup_lcg_with_clock_seed(seed, clock_seed);
-    generate_random_setup_preview_from_lcg(seed, topology, &mut rng)
+    generate_random_setup_preview_from_lcg(seed, topology, &mut rng, sea_zone_marker_crt)
 }
 
 fn generate_random_setup_preview_from_lcg(
     seed: &[u8],
     topology: MapTopology,
     rng: &mut RetailLcg,
+    sea_zone_marker_crt: RetailCrtRng,
 ) -> RandomSetupPreview {
     let map = generate_random_map(seed, topology, rng);
     RandomSetupPreview {
         topology,
         map,
         final_map_lcg: rng.state(),
+        sea_zone_marker_crt,
     }
 }
 
@@ -1609,11 +1618,18 @@ mod tests {
             retail_random_setup_lcg(b"ordinary").unwrap().state(),
             3_122_877_655
         );
-        let preview = generate_random_setup_preview(b"ordinary", topology).unwrap();
+        let sea_zone_marker_crt = RetailCrtRng::from_state(1);
+        let preview =
+            generate_random_setup_preview(b"ordinary", topology, sea_zone_marker_crt).unwrap();
         assert_eq!(preview.map, expected);
         assert_eq!(preview.final_map_lcg, expected_rng.state());
         assert_eq!(
-            generate_random_setup_preview_with_clock_seed(b"ordinary", topology, 1),
+            generate_random_setup_preview_with_clock_seed(
+                b"ordinary",
+                topology,
+                1,
+                sea_zone_marker_crt,
+            ),
             preview
         );
     }

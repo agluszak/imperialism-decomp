@@ -20,6 +20,8 @@ public:
   RuntimeActionResult Finish();
   RuntimeActionResult Finish(bool result);
   RuntimeActionResult Finish(int result);
+  // Takes ownership of result.
+  RuntimeActionResult Finish(JSON_Value* result);
 
 private:
   RuntimeActionResult CaptureAfter();

@@ -54,6 +54,55 @@ public:
   short GetDiplomacyRandomThreshold124() const {
     return diplomacyRandomThreshold124;
   }
+  short GetCurrentTradeSupply(ResourceKindStorage resourceKind) const {
+    ASSERT(resourceKind >= 0 && resourceKind < kResourceKindCount);
+    return needCurrentByType[resourceKind];
+  }
+  short GetTradeOffer(ResourceKindStorage resourceKind) const {
+    ASSERT(resourceKind >= 0 && resourceKind < kResourceKindCount);
+    return tradeOffersByResource[resourceKind];
+  }
+  short GetTradeGrantDelta(ResourceKindStorage resourceKind) const {
+    ASSERT(resourceKind >= 0 && resourceKind < kResourceKindCount);
+    return grantAmountsByResource[resourceKind];
+  }
+  short GetPrimaryManufacturedPriceThreshold() const {
+    return diplomacyRandomThreshold11e;
+  }
+  short GetSecondaryManufacturedPriceThreshold() const {
+    return diplomacyRandomThreshold120;
+  }
+  short GetGeneralOfferPriceThreshold() const {
+    return diplomacyRandomThreshold122;
+  }
+  short GetRandomOfferPriceThreshold() const {
+    return diplomacyRandomThreshold124;
+  }
+  short GetCoalOfferPriceThreshold() const {
+    return diplomacyRandomThreshold126;
+  }
+  short GetIronOfferPriceThreshold() const {
+    return diplomacyRandomThreshold128;
+  }
+  short GetOilOfferPriceThreshold() const {
+    return diplomacyRandomThreshold12a;
+  }
+  ResourceKindStorage GetPrimaryManufacturedRequest() const {
+    return diplomacyPolicyPredicateCode12c;
+  }
+  ResourceKindStorage GetSecondaryManufacturedRequest() const {
+    return diplomacyPolicyPredicateCode12e;
+  }
+  short GetPrimaryManufacturedRequestFulfilledAmount() const {
+    return diplomacyPolicyGate130;
+  }
+  short GetSecondaryManufacturedRequestFulfilledAmount() const {
+    return diplomacyPolicyGate132;
+  }
+  short GetIndependentResourceCount(ResourceKindStorage resourceKind) const {
+    ASSERT(resourceKind >= 0 && resourceKind < kResourceKindCount);
+    return diplomacySaveExt13c[resourceKind];
+  }
   NationSlot GetConsortiumMember(int index) const {
     ASSERT(index >= 0 && index < 4);
     return diplomacySaveFields134[index];

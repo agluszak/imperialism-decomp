@@ -1,12 +1,14 @@
+#include "JsonArray.h"
+#include "JsonObject.h"
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
-#include "JsonObject.h"
 #include "RuntimeDifferentialCapture.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
 
 #include "game/globals/shared_globals.h"
+#include "game/turn_event_codes.h"
 #include "game/ui_screens/TSimMgr.h"
 
 namespace {
@@ -44,8 +46,22 @@ private:
     if (g_pSimMgr->turnStateCode != 7) {
       return RuntimeActionResult::Failure("the diplomacy phase did not advance to phase 7");
     }
+    if (CurrentTurnEvent() != kTurnEventDiplomacyMap) {
+      return RuntimeActionResult::Failure("the diplomacy phase did not show the diplomacy map");
+    }
 
-    return capture.Finish();
+    JsonObject effect;
+    effect.Set("kind", "show_diplomacy_map");
+    effect.Set("nation", static_cast<int>(g_pSimMgr->activeNationSlot));
+    JsonArray effects;
+    effects.Add(effect.Release());
+
+    JsonObject result;
+    result.Set("kind", "continues");
+    result.Set("from", 6);
+    result.Set("to", 7);
+    result.Set("effects", effects.Release());
+    return capture.Finish(result.Release());
   }
 };
 

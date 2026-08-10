@@ -28,8 +28,7 @@ pub enum ProductionSlot {
 impl ProductionSlot {
     pub const COUNT: usize = 16;
 
-    #[cfg(test)]
-    pub(crate) const fn from_index(value: u8) -> Option<Self> {
+    pub const fn from_index(value: u8) -> Option<Self> {
         match value {
             0 => Some(Self::TextileMill),
             1 => Some(Self::ClothingFactory),
@@ -253,6 +252,20 @@ impl CityState {
             *treasury += 5_000;
             self.power_plant_upgrade_queued = false;
         }
+    }
+}
+
+impl GameState {
+    /// Records the retail building-window presence and client origin for one city.
+    pub fn set_city_building_window_state(
+        &mut self,
+        nation: MajorNationId,
+        slot: ProductionSlot,
+        state: BuildingWindowState,
+    ) {
+        self.nations
+            .city_mut(nation)
+            .set_building_window_state(slot, state);
     }
 }
 

@@ -44,6 +44,17 @@ RuntimeActionResult RuntimeDifferentialCapture::Finish(int result) {
   return CaptureAfter();
 }
 
+RuntimeActionResult RuntimeDifferentialCapture::Finish(JSON_Value* result) {
+  if (result == 0) {
+    return RuntimeActionResult::Failure("could not capture differential result");
+  }
+  run_.SetCapture("result", result);
+  if (!run_.HasCapture("result")) {
+    return RuntimeActionResult::Failure("could not capture differential result");
+  }
+  return CaptureAfter();
+}
+
 RuntimeActionResult RuntimeDifferentialCapture::CaptureAfter() {
   if (!CaptureGameState(run_, "after")) {
     return RuntimeActionResult::Failure("could not capture differential after-state");

@@ -6,13 +6,19 @@ mod city_buildings;
 mod city_economy;
 mod city_industry;
 mod city_site;
+mod city_transport_phase;
+mod civilian_phase;
 mod civilian_work;
+mod combat_movement_phase;
 mod create_random_game;
 mod difficulty;
+mod diplomacy;
 mod ids;
 mod map_geometry;
 mod market;
 mod military;
+mod military_cleanup_phase;
+mod military_phase;
 mod nation_economy;
 mod news;
 mod population;
@@ -30,7 +36,9 @@ mod territory;
 #[cfg(test)]
 pub(crate) mod test_support;
 mod trade;
+mod trade_phase;
 mod turn_flow;
+mod turn_tail;
 mod units;
 
 pub use calendar::TurnCalendar;
@@ -44,6 +52,7 @@ pub use city_site::{
 pub use civilian_work::{CivilianWorkOrder, RailSegment, TurnsRemaining};
 pub use create_random_game::create_random_game;
 pub use difficulty::Difficulty;
+pub use diplomacy::{PlayerDiplomacyOrderResult, PlayerDiplomacyRejection};
 pub use ids::{
     CivilianUnitId, MajorNationId, MilitaryUnitId, MinorNationId, NationId, OceanZoneId,
     ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,
@@ -52,7 +61,10 @@ pub use map_geometry::{
     HexDirection, MapGeometry, MapTopology, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH,
     STRATEGIC_TILE_COUNT,
 };
-pub use market::{TradeCommodity, TradeCommodityTable, TradeMarketRow, TradeMarketState};
+pub use market::{
+    DealBookEntryKind, ProcessedTradeCommodity, ProcessedTradeCommodityTable, TradeCommodity,
+    TradeCommodityTable, TradeDealBookEntry, TradeMarketRow, TradeMarketState,
+};
 pub use population::{FoodOutcome, LaborPool, SkillBand};
 pub use production::*;
 pub use random_map::{
@@ -88,6 +100,7 @@ pub use tables::{
     NationCapacities, NationTable, PENDING_ACTION_COUNT, PROVINCE_COUNT, PendingActionKind,
     PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable,
 };
-pub use territory::{CountryStatus, ProvinceState, ProvinceStateError};
-pub use turn_flow::{AdvanceTurnOutcome, TurnBlock};
+pub use territory::{CountryStatus, ProvinceState, ProvinceStateError, TerritoryInvariantError};
+pub use trade::{PlayerTradeOrder, TransportAllocation};
+pub use turn_flow::{AdvanceTurnOutcome, TurnBlock, TurnEffect, UiGate};
 pub use units::{CivilianUnitKind, CivilianUnitTable, MilitaryUnitKind, MilitaryUnitTable};
