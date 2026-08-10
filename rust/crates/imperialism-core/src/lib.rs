@@ -8,6 +8,7 @@ mod city_industry;
 mod city_site;
 mod civilian_phase;
 mod civilian_work;
+mod combat_movement_phase;
 mod create_random_game;
 mod difficulty;
 mod diplomacy;
