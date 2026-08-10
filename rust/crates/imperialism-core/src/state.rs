@@ -238,7 +238,13 @@ impl PhaseCode {
     pub const PRE_MAP: Self = Self(3);
     pub const HOME_PLACEMENT: Self = Self(4);
     pub const STRATEGIC_MAP: Self = Self(5);
-    pub const TURN: Self = Self(6);
+    pub const DIPLOMACY: Self = Self(6);
+    pub const TRADE: Self = Self(7);
+    pub const OFFER_SHEET: Self = Self(9);
+    pub const DEAL_BOOK: Self = Self(0xe);
+    pub const SEASON_ADVANCE: Self = Self(0x10);
+    pub const TECHNOLOGY_ADVANCES: Self = Self(0x11);
+    pub const NEWSPAPER: Self = Self(0x12);
     pub const fn from_retail(value: i32) -> Self {
         Self(value)
     }

@@ -1,9 +1,10 @@
+#include "JsonArray.h"
+#include "JsonObject.h"
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
-#include "RuntimeSemanticCapture.h"
 
 #include "game/globals/shared_globals.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -47,9 +48,24 @@ private:
     if (g_pSimMgr->turnStateCode != 7) {
       return RuntimeActionResult::Failure("the diplomacy phase did not advance to phase 7");
     }
+    if (CurrentTurnEvent() != kTurnEventDiplomacyMap) {
+      return RuntimeActionResult::Failure("the diplomacy phase did not show the diplomacy map");
+    }
 
-    if (!CaptureVoidOpResult(RunState())) {
-      return RuntimeActionResult::Failure("the void operation result capture is unavailable");
+    JsonObject effect;
+    effect.Set("kind", "show_diplomacy_map");
+    effect.Set("nation", static_cast<int>(g_pSimMgr->activeNationSlot));
+    JsonArray effects;
+    effects.Add(effect.Release());
+
+    JsonObject result;
+    result.Set("kind", "continues");
+    result.Set("from", 6);
+    result.Set("to", 7);
+    result.Set("effects", effects.Release());
+    RunState().SetCapture("result", result.Release());
+    if (!RunState().HasCapture("result")) {
+      return RuntimeActionResult::Failure("the turn outcome capture is unavailable");
     }
     if (!CaptureGameState(RunState(), "after")) {
       return RuntimeActionResult::Failure("the after game-state capture is unavailable");
