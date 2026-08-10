@@ -1,7 +1,6 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeGameStateCapture.h"
-#include "RuntimeSemanticCapture.h"
 #include "RuntimeTestFactory.h"
 #include "RuntimeRun.h"
 #include "flows/EndTurnFlow.h"
@@ -61,7 +60,8 @@ private:
   }
 
   RuntimeActionResult CaptureAfter() {
-    if (!CaptureVoidOpResult(RunState())) {
+    RunState().SetCapture("result", json_value_init_null());
+    if (!RunState().HasCapture("result")) {
       return RuntimeActionResult::Failure("could not capture the void operation result");
     }
 
