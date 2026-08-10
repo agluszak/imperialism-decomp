@@ -45,6 +45,18 @@ and reads them directly before Bevy constructs a window; the retail path is not 
 cargo run -p imperialism-app -- --retail-dir /path/to/Imperialism
 ```
 
+To start from a retail save, also provide the runtime state that the `.imp` file does not store:
+
+```sh
+cargo run -p imperialism-app -- \
+  --retail-dir /path/to/Imperialism \
+  --load-save ../fixtures/retail/beginning_of_game.imp \
+  --game-state CRT_RAND MAP_LCG ZONE_LCG SELECTED_NATION
+```
+
+Use all four values from the same native capture. In particular, the zone-status RNG state is
+process-derived and must not be replaced with a fixture-wide default.
+
 ## Recovered UI catalog
 
 The existing UI generator also emits the deterministic 640x480 launch catalog consumed by Rust:

@@ -10,6 +10,7 @@ const CITY_PRODUCTION_SLOT_COUNT: usize = 16;
 const TRADE_CATEGORY_COUNT: usize = 17;
 const DIPLOMACY_SERIALIZED_SIZE_V62: usize = 5_460;
 const TECH_SERIALIZED_SIZE_V62: usize = 1_914;
+const TECH_PRIORITY_SLOTS_OFFSET_V62: usize = 0;
 const TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62: usize = 0x180;
 const TECH_INDUSTRY_ENABLED_OFFSET_V62: usize = 0x19d;
 const TECH_ADVANCED_IRON_WORKING_OFFSET_V62: usize = 0x1a5;
@@ -78,6 +79,7 @@ pub(crate) struct LegacySimulationPrefix {
     pub previous_mode: i16,
     pub nation_count: i32,
     pub minor_nation_count: i32,
+    pub turn_flow_status_flags: u32,
     pub difficulty: u8,
     pub game_setup: LegacyGameSetup,
     pub persistent_unit_id_counter: i32,
@@ -1407,7 +1409,7 @@ impl LegacySaveV62 {
             MINOR_NATION_COUNT,
             "simulation minor_nation_count",
         )?;
-        stream.read_le_u32()?;
+        let turn_flow_status_flags = stream.read_le_u32()?;
         let difficulty = stream.read_u8()?;
         let game_setup = read_game_setup(&mut stream)?;
         let persistent_unit_id_counter = stream.read_le_i32()?;
@@ -1458,6 +1460,7 @@ impl LegacySaveV62 {
             previous_mode,
             nation_count: nation_count_raw,
             minor_nation_count: minor_nation_count_raw,
+            turn_flow_status_flags,
             difficulty,
             game_setup,
             persistent_unit_id_counter,
@@ -1765,6 +1768,10 @@ impl LegacySaveV62 {
                 economic_turn: i32::from(self.simulation.economic_turn),
                 diplomacy_year_term_raw: self.simulation.diplomacy_year_term_raw,
                 phase: PhaseCode::from_retail(i32::from(self.simulation.turn_state_code)),
+                turn_flow_status_flags: self.simulation.turn_flow_status_flags,
+                quarter_gate_by_decade: self.simulation.phase_state_by_decade[..10]
+                    .try_into()
+                    .expect("ten retail decade-gate bytes"),
                 difficulty: Difficulty::try_from(self.simulation.difficulty).map_err(|_| {
                     LegacySaveError::StateProjection(format!(
                         "invalid difficulty {}",
@@ -1792,6 +1799,7 @@ impl LegacySaveV62 {
             ships: Vec::new(),
             task_forces: Vec::new(),
             missions,
+            news: NewsState::default(),
             pending,
         };
         state.validate_territory_index().map_err(|error| {
@@ -3054,6 +3062,18 @@ fn read_technology_state(
     stream: &mut LegacyStream<'_>,
 ) -> Result<TechnologyState, LegacySaveError> {
     let bytes = stream.read_bytes(TECH_SERIALIZED_SIZE_V62)?;
+    let mut scheduled_unlock_turn_by_technology = [0; TECHNOLOGY_COUNT];
+    for (technology, turn) in scheduled_unlock_turn_by_technology.iter_mut().enumerate() {
+        let offset = TECH_PRIORITY_SLOTS_OFFSET_V62 + technology * std::mem::size_of::<i16>();
+        *turn = i16::from_be_bytes([bytes[offset], bytes[offset + 1]]);
+    }
+    let mut global_unlocks_by_technology = [false; TECHNOLOGY_COUNT];
+    for (technology, unlocked) in global_unlocks_by_technology.iter_mut().enumerate() {
+        *unlocked = retail_boolean(
+            bytes[TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62 + technology],
+            "technology global unlock flag",
+        )?;
+    }
     let status = |nation: usize, technology: usize| {
         let offset = TECH_ORDER_CAP_ROWS_OFFSET_V62 + nation * TECH_ORDER_CAP_ROW_SIZE + technology;
         let value = bytes[offset];
@@ -3077,9 +3097,21 @@ fn read_technology_state(
     }
     let mut military_unit_ability_active_by_nation =
         std::array::from_fn(|_| MilitaryUnitTable::default());
+    let mut research_status_by_nation =
+        [[TechnologyResearchStatus::NotStarted; TECHNOLOGY_COUNT]; MAJOR_NATION_COUNT];
     let mut city_capabilities_by_nation =
         std::array::from_fn(|_| CityTechnologyCapabilities::default());
     for (nation, capabilities) in city_capabilities_by_nation.iter_mut().enumerate() {
+        for (technology, research_status) in
+            research_status_by_nation[nation].iter_mut().enumerate()
+        {
+            *research_status = match status(nation, technology)? {
+                0 => TechnologyResearchStatus::NotStarted,
+                1 => TechnologyResearchStatus::Pending,
+                2 => TechnologyResearchStatus::Researched,
+                _ => unreachable!("technology status was validated above"),
+            };
+        }
         let mut active_by_unit_type = [false; TECH_ABILITY_ACTIVE_ROW_SIZE];
         for (unit_type, active) in active_by_unit_type.iter_mut().enumerate() {
             let offset = TECH_ABILITY_ACTIVE_ROWS_OFFSET_V62
@@ -3149,10 +3181,9 @@ fn read_technology_state(
             bytes[TECH_MARINE_ENGINEERING_OFFSET_V62],
             "technology marine engineering",
         )?,
-        oil_drilling_available: retail_boolean(
-            bytes[TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62 + TECH_OIL_DRILLING_ID],
-            "technology oil drilling availability",
-        )?,
+        scheduled_unlock_turn_by_technology,
+        global_unlocks_by_technology,
+        research_status_by_nation: MajorNationTable::from_array(research_status_by_nation),
         industry_enabled_by_slot,
         military_unit_ability_active_by_nation: MajorNationTable::from_array(
             military_unit_ability_active_by_nation,
@@ -4793,6 +4824,8 @@ mod tests {
         let mut bytes = [0_u8; TECH_SERIALIZED_SIZE_V62];
         bytes[TECH_ADVANCED_IRON_WORKING_OFFSET_V62] = 1;
         bytes[TECH_MARINE_ENGINEERING_OFFSET_V62] = 1;
+        bytes[4 * std::mem::size_of::<i16>()..5 * std::mem::size_of::<i16>()]
+            .copy_from_slice(&17_i16.to_be_bytes());
         bytes[TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62 + TECH_OIL_DRILLING_ID] = 1;
         bytes[TECH_INDUSTRY_ENABLED_OFFSET_V62 + ProductionSlot::OilRefinery as usize] = 1;
         bytes[TECH_ABILITY_ACTIVE_ROWS_OFFSET_V62
@@ -4804,6 +4837,7 @@ mod tests {
         bytes
             [TECH_ORDER_CAP_ROWS_OFFSET_V62 + 3 * TECH_ORDER_CAP_ROW_SIZE + TECH_OIL_DRILLING_ID] =
             2;
+        bytes[TECH_ORDER_CAP_ROWS_OFFSET_V62 + 4 * TECH_ORDER_CAP_ROW_SIZE + 4] = 1;
         bytes[TECH_UNIVERSITY_AVAILABILITY_OFFSET_V62
             + TECH_UNIVERSITY_AVAILABILITY_ROW_SIZE
             + CivilianUnitKind::Driller as usize] = 1;
@@ -4815,7 +4849,12 @@ mod tests {
         let technology = read_technology_state(&mut stream).unwrap();
         assert!(technology.advanced_iron_working);
         assert!(technology.marine_engineering);
-        assert!(technology.oil_drilling_available);
+        assert!(technology.oil_drilling_available());
+        assert_eq!(technology.scheduled_unlock_turn_by_technology[4], 17);
+        assert_eq!(
+            technology.research_status_by_nation[MajorNationId::new(4)][4],
+            TechnologyResearchStatus::Pending
+        );
         assert!(technology.industry_enabled_by_slot[ProductionSlot::OilRefinery as usize]);
         assert!(
             technology.military_unit_ability_active_by_nation[MajorNationId::new(2)]
@@ -5686,7 +5725,14 @@ mod tests {
             }
         );
         assert_eq!(save.market.rows[TradeCommodity::Arms].base_price, 900);
-        assert_eq!(save.technology, TechnologyState::default());
+        let expected_technology = TechnologyState {
+            scheduled_unlock_turn_by_technology: [
+                0, 0, 0, 9, 32, 31, 27, 39, 47, 50, 64, 90, 93, 117, 111, 132, 140, 153, 166, 172,
+                200, 204, 225, 230, 229, 246, 248, 268, 274,
+            ],
+            ..TechnologyState::default()
+        };
+        assert_eq!(save.technology, expected_technology);
         assert_eq!(
             save.diplomacy.standings[NationId::new(0)][NationId::new(0)],
             0x100

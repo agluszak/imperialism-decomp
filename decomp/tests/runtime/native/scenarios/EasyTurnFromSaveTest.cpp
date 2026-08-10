@@ -1,7 +1,8 @@
+#include "JsonArray.h"
+#include "JsonObject.h"
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeGameStateCapture.h"
-#include "RuntimeSemanticCapture.h"
 #include "RuntimeTestFactory.h"
 #include "RuntimeRun.h"
 #include "flows/EndTurnFlow.h"
@@ -40,6 +41,10 @@ protected:
     RT_DO("capture before-state and case", CaptureBefore());
     RT_RUN(endTurn.RejectOffers().ExpectExactlyOneTurn().ToNextStrategicMap(*this));
     RT_REQUIRE_EQ(endTurn.StartingTurn() + 1, endTurn.EndingTurn());
+    RT_REQUIRE(!endTurn.SawTurnAlert());
+    RT_REQUIRE(!endTurn.SawOfferDesk());
+    RT_REQUIRE(endTurn.SawDealBook());
+    RT_REQUIRE(endTurn.SawNewspaper());
     RT_DO("capture after-state and result", CaptureAfter());
     RT_PASS();
 
@@ -61,11 +66,18 @@ private:
   }
 
   RuntimeActionResult CaptureAfter() {
-    if (!CaptureVoidOpResult(RunState())) {
-      return RuntimeActionResult::Failure("could not capture the void operation result");
-    }
+    JsonArray gates;
+    gates.Add("deal_book");
+    gates.Add("newspaper");
+    JsonObject result;
+    result.Set("kind", "completed");
+    result.Set("from_turn", endTurn.StartingTurn());
+    result.Set("to_turn", endTurn.EndingTurn());
+    result.Set("gates", gates.Release());
+    RunState().SetCapture("result", result.Release());
 
-    if (!CaptureGameState(RunState(), "after") || !CaptureGameState(RunState(), "game_state")) {
+    if (!RunState().HasCapture("result") || !CaptureGameState(RunState(), "after") ||
+        !CaptureGameState(RunState(), "game_state")) {
       return RuntimeActionResult::Failure("could not capture after game_state");
     }
     return RuntimeActionResult::Success();

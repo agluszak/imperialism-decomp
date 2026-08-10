@@ -19,7 +19,45 @@ pub struct GameState {
     pub ships: Vec<ShipState>,
     pub task_forces: Vec<TaskForceState>,
     pub missions: Vec<MissionState>,
+    pub news: NewsState,
     pub pending: PendingWorkState,
+}
+
+impl GameState {
+    /// Enters the retail strategic-map view by selecting the active nation's first idle
+    /// civilian and centering the 9-by-7 tile viewport on it.
+    pub fn enter_strategic_map_view(&mut self) {
+        const VIEWPORT_TILE_SPAN: i32 = 9;
+
+        let Some(tile) = self
+            .civilian_units
+            .iter()
+            .find(|unit| {
+                unit.nation == self.turn.active_nation && unit.order == CivilianWorkOrder::Idle
+            })
+            .and_then(|unit| unit.location.tile())
+        else {
+            return;
+        };
+
+        let geometry = self.world.geometry();
+        let (row, column) = geometry.row_column(tile);
+        let mut column = i32::from(column) - VIEWPORT_TILE_SPAN / 2;
+        if self.world.topology() == MapTopology::Bounded {
+            column = column.clamp(1, 0x6e - VIEWPORT_TILE_SPAN);
+        }
+        if column < 0 {
+            column += i32::from(STRATEGIC_MAP_WIDTH);
+        } else if column >= i32::from(STRATEGIC_MAP_WIDTH) {
+            column -= i32::from(STRATEGIC_MAP_WIDTH);
+        }
+        let row = (i32::from(row) - 3).clamp(0, 0x35);
+        self.world.set_view_origin(
+            geometry
+                .tile(row as u16, column as u16)
+                .expect("retail strategic-map viewport origin is inside the map"),
+        );
+    }
 }
 
 /// A port zone and the nation that owned its port tile before scenario setup.
@@ -276,6 +314,10 @@ pub struct TurnState {
     /// This is not the 1815-based display calendar.
     pub diplomacy_year_term_raw: i16,
     pub phase: PhaseCode,
+    /// Persisted turn-flow status bits consumed by the alert and technology phases.
+    pub turn_flow_status_flags: u32,
+    /// Retail's decade-boundary presentation state, indexed by `economic_turn / 40`.
+    pub quarter_gate_by_decade: [u8; 10],
     pub difficulty: Difficulty,
     pub active_nation: NationId,
     pub selected_nation: NationId,
@@ -366,12 +408,25 @@ impl CityTechnologyCapabilities {
     }
 }
 
+pub const TECHNOLOGY_COUNT: usize = 29;
+
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum TechnologyResearchStatus {
+    #[default]
+    NotStarted,
+    Pending,
+    Researched,
+}
+
 /// Global technology milestones and the city capabilities of every major nation.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TechnologyState {
     pub advanced_iron_working: bool,
     pub marine_engineering: bool,
-    pub oil_drilling_available: bool,
+    pub scheduled_unlock_turn_by_technology: [i16; TECHNOLOGY_COUNT],
+    pub global_unlocks_by_technology: [bool; TECHNOLOGY_COUNT],
+    pub research_status_by_nation: MajorNationTable<[TechnologyResearchStatus; TECHNOLOGY_COUNT]>,
     pub industry_enabled_by_slot: [bool; 14],
     pub military_unit_ability_active_by_nation: MajorNationTable<MilitaryUnitTable<bool>>,
     pub city_capabilities_by_nation: MajorNationTable<CityTechnologyCapabilities>,
@@ -382,7 +437,19 @@ impl Default for TechnologyState {
         Self {
             advanced_iron_working: false,
             marine_engineering: false,
-            oil_drilling_available: false,
+            scheduled_unlock_turn_by_technology: [0; TECHNOLOGY_COUNT],
+            global_unlocks_by_technology: [
+                true, true, true, false, false, false, false, false, false, false, false, false,
+                false, false, false, false, false, false, false, false, false, false, false, false,
+                false, false, false, false, false,
+            ],
+            research_status_by_nation: MajorNationTable::from_fn(|_| {
+                let mut status = [TechnologyResearchStatus::NotStarted; TECHNOLOGY_COUNT];
+                status[0] = TechnologyResearchStatus::Researched;
+                status[1] = TechnologyResearchStatus::Researched;
+                status[2] = TechnologyResearchStatus::Researched;
+                status
+            }),
             industry_enabled_by_slot: [
                 true, true, true, true, true, false, false, false, false, false, false, false,
                 false, false,
@@ -443,6 +510,10 @@ impl Default for FortLevelCap {
 }
 
 impl TechnologyState {
+    pub const fn oil_drilling_available(&self) -> bool {
+        self.global_unlocks_by_technology[0x13]
+    }
+
     /// Selects the production-capacity term used by retail's naval-force score.
     pub const fn naval_production_capacity(
         self,
@@ -484,13 +555,15 @@ impl PhaseCode {
     pub const TRADE: Self = Self(7);
     pub const CITY_AND_TRANSPORT: Self = Self(8);
     pub const GREAT_POWER_PRESSURE: Self = Self(0x0b);
+    pub const DEAL_BOOK: Self = Self(0x0c);
     pub const OFFER_SHEET: Self = Self(9);
     pub const MILITARY: Self = Self(10);
     pub const DIPLOMACY_OFFER: Self = Self(0x0d);
-    pub const DEAL_BOOK: Self = Self(0xe);
+    pub const QUARTER_GATE: Self = Self(0x0e);
+    pub const NEWSPAPER: Self = Self(0x0f);
     pub const SEASON_ADVANCE: Self = Self(0x10);
     pub const TECHNOLOGY_ADVANCES: Self = Self(0x11);
-    pub const NEWSPAPER: Self = Self(0x12);
+    pub const RETURN_TO_MAP: Self = Self(0x12);
     pub const COMBAT_MOVES: Self = Self(0x14);
     pub const MILITARY_CLEANUP: Self = Self(0x15);
     pub const ELIMINATION: Self = Self(0x19);
@@ -2371,6 +2444,58 @@ pub struct PendingWorkState {
     pub combat_reports_pending: bool,
     pub newspaper_events: Vec<PendingNewspaperEvent>,
     pub war_transitions: Vec<WarTransition>,
+}
+
+pub const NEWS_TEMPLATE_COUNT: usize = 360;
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct NewsState {
+    pub pages: MajorNationTable<Option<NewsPage>>,
+    pub last_used_turn_by_nation_and_template: MajorNationTable<Vec<i16>>,
+}
+
+impl Default for NewsState {
+    fn default() -> Self {
+        Self {
+            pages: MajorNationTable::default(),
+            last_used_turn_by_nation_and_template: MajorNationTable::from_fn(|_| {
+                vec![0; NEWS_TEMPLATE_COUNT]
+            }),
+        }
+    }
+}
+
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct NewsPage {
+    /// Retail stores the page as `[column][row]`.
+    pub stories: [[Option<NewsStory>; 3]; 3],
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct NewsStory {
+    pub template_index: u16,
+    pub story_id: i16,
+    pub feature: bool,
+    pub arguments: [NewsArgument; 4],
+}
+
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum NewsArgument {
+    #[default]
+    Empty,
+    NationMask {
+        nations: NationTable<bool>,
+    },
+    NationList {
+        nations: NationTable<bool>,
+    },
+    Province {
+        province: ProvinceId,
+    },
+    Zone {
+        ordinal: i16,
+    },
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]

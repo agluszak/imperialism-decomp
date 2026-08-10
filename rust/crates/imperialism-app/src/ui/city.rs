@@ -1914,7 +1914,7 @@ fn open_city_dialog(
                 &spawned,
                 nation,
                 building_name,
-                state.technology.oil_drilling_available,
+                state.technology.oil_drilling_available(),
             ),
             ProductionSlot::FoodProcessing => {
                 bind_food_dialog(&mut ui.commands, catalog, &spawned, nation, building_name)

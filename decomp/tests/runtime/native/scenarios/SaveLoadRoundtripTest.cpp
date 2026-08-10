@@ -57,7 +57,10 @@ bool CapturePersistentGameState(const RuntimeRun& run, CString& persistentState)
   JSON_Object* state = json_value_get_object(value);
   JSON_Object* nations = state != 0 ? json_object_get_object(state, "nations") : 0;
   JSON_Array* majors = nations != 0 ? json_object_get_array(nations, "majors") : 0;
-  if (state == 0 || json_object_remove(state, "turn") != JSONSuccess ||
+  // Newspaper pages and per-template reuse ticks live only for the current session; retail's
+  // TNewsMgr::WriteTo/ReadFrom persist no bytes, so reopening a save starts them empty.
+  if (state == 0 || json_object_remove(state, "news") != JSONSuccess ||
+      json_object_remove(state, "turn") != JSONSuccess ||
       json_object_remove(state, "unit_ids") != JSONSuccess ||
       json_object_remove(state, "rng") != JSONSuccess || majors == 0) {
     json_value_free(value);

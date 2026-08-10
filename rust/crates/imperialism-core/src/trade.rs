@@ -556,6 +556,8 @@ mod tests {
                 economic_turn: 1,
                 diplomacy_year_term_raw: 1914,
                 phase: crate::PhaseCode::STRATEGIC_MAP,
+                turn_flow_status_flags: 0,
+                quarter_gate_by_decade: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                 difficulty: Difficulty::Easy,
                 active_nation: NationId::new(6),
                 selected_nation: NationId::new(6),
@@ -586,6 +588,7 @@ mod tests {
             ships: vec![],
             task_forces: vec![],
             missions: vec![],
+            news: crate::NewsState::default(),
             pending: crate::PendingWorkState::default(),
         }
     }

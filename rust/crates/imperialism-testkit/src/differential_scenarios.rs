@@ -191,6 +191,139 @@ mod scenarios {
         state.advance_turn_step()
     }
 
+    const FIRST_TURN_GREAT_POWER_PRESSURE_PHASE: ScenarioMeta =
+        retail_fixture("first_turn_great_power_pressure_phase");
+
+    fn apply_first_turn_great_power_pressure_phase(
+        state: &mut GameState,
+        (): (),
+    ) -> imperialism_core::AdvanceTurnOutcome {
+        state.advance_turn_step()
+    }
+
+    const FIRST_TURN_DEAL_BOOK_PHASE: ScenarioMeta = retail_fixture("first_turn_deal_book_phase");
+
+    fn apply_first_turn_deal_book_phase(
+        state: &mut GameState,
+        (): (),
+    ) -> imperialism_core::AdvanceTurnOutcome {
+        state.advance_turn_step()
+    }
+
+    const FIRST_TURN_QUARTER_GATE_PHASE: ScenarioMeta =
+        retail_fixture("first_turn_quarter_gate_phase");
+
+    fn apply_first_turn_quarter_gate_phase(
+        state: &mut GameState,
+        (): (),
+    ) -> imperialism_core::AdvanceTurnOutcome {
+        state.advance_turn_step()
+    }
+
+    const FIRST_TURN_SEASON_ADVANCE_PHASE: ScenarioMeta =
+        retail_fixture("first_turn_season_advance_phase");
+
+    fn apply_first_turn_season_advance_phase(
+        state: &mut GameState,
+        (): (),
+    ) -> imperialism_core::AdvanceTurnOutcome {
+        state.advance_turn_step()
+    }
+
+    const FIRST_TURN_TECHNOLOGY_ADVANCES_PHASE: ScenarioMeta =
+        retail_fixture("first_turn_technology_advances_phase");
+
+    fn apply_first_turn_technology_advances_phase(
+        state: &mut GameState,
+        (): (),
+    ) -> imperialism_core::AdvanceTurnOutcome {
+        state.advance_turn_step()
+    }
+
+    const FIRST_TURN_NEWSPAPER_PHASE: ScenarioMeta = retail_fixture("first_turn_newspaper_phase");
+
+    fn apply_first_turn_newspaper_phase(
+        state: &mut GameState,
+        (): (),
+    ) -> imperialism_core::AdvanceTurnOutcome {
+        state.advance_turn_step()
+    }
+
+    const FIRST_TURN_RETURN_TO_MAP_PHASE: ScenarioMeta =
+        retail_fixture("first_turn_return_to_map_phase");
+
+    fn apply_first_turn_return_to_map_phase(
+        state: &mut GameState,
+        (): (),
+    ) -> imperialism_core::AdvanceTurnOutcome {
+        state.advance_turn_step()
+    }
+
+    const EASY_TURN_FROM_SAVE: ScenarioMeta = retail_fixture("easy_turn_from_save");
+
+    #[derive(Debug, Deserialize)]
+    struct EasyTurnFromSaveCase {
+        reject_offers: bool,
+        expect_exactly_one_turn: bool,
+    }
+
+    #[derive(Debug, Deserialize, PartialEq)]
+    #[serde(tag = "kind", rename_all = "snake_case")]
+    enum EasyTurnFromSaveResult {
+        Completed {
+            from_turn: i32,
+            to_turn: i32,
+            gates: Vec<UiGate>,
+        },
+    }
+
+    fn apply_easy_turn_from_save(
+        state: &mut GameState,
+        case: EasyTurnFromSaveCase,
+    ) -> EasyTurnFromSaveResult {
+        assert!(case.reject_offers);
+        assert!(case.expect_exactly_one_turn);
+        let from_turn = state.turn.economic_turn;
+
+        let first = state.finish_player_orders();
+        assert!(matches!(
+            first,
+            AdvanceTurnOutcome::Blocked {
+                block: TurnBlock::Ui {
+                    gate: UiGate::DealBook
+                },
+                ..
+            }
+        ));
+
+        let second = state.resume_after_ui(UiGate::DealBook);
+        assert!(matches!(
+            second,
+            AdvanceTurnOutcome::Blocked {
+                block: TurnBlock::Ui {
+                    gate: UiGate::Newspaper
+                },
+                ..
+            }
+        ));
+
+        let third = state.resume_after_ui(UiGate::Newspaper);
+        assert!(matches!(
+            third,
+            AdvanceTurnOutcome::Blocked {
+                block: TurnBlock::PlayerOrders,
+                ..
+            }
+        ));
+        assert_eq!(state.turn.economic_turn, from_turn + 1);
+
+        EasyTurnFromSaveResult::Completed {
+            from_turn,
+            to_turn: state.turn.economic_turn,
+            gates: vec![UiGate::DealBook, UiGate::Newspaper],
+        }
+    }
+
     const TRANSPORTED_ITEMS_PHASE: ScenarioMeta = retail_fixture("transported_items_phase");
 
     fn apply_transported_items_phase(state: &mut GameState, case: NationCase) {
@@ -488,6 +621,46 @@ mod scenarios {
             first_turn_city_transport_phase,
             FIRST_TURN_CITY_TRANSPORT_PHASE,
             apply_first_turn_city_transport_phase
+        );
+        differential_test!(
+            first_turn_great_power_pressure_phase,
+            FIRST_TURN_GREAT_POWER_PRESSURE_PHASE,
+            apply_first_turn_great_power_pressure_phase
+        );
+        differential_test!(
+            first_turn_deal_book_phase,
+            FIRST_TURN_DEAL_BOOK_PHASE,
+            apply_first_turn_deal_book_phase
+        );
+        differential_test!(
+            first_turn_quarter_gate_phase,
+            FIRST_TURN_QUARTER_GATE_PHASE,
+            apply_first_turn_quarter_gate_phase
+        );
+        differential_test!(
+            first_turn_season_advance_phase,
+            FIRST_TURN_SEASON_ADVANCE_PHASE,
+            apply_first_turn_season_advance_phase
+        );
+        differential_test!(
+            first_turn_technology_advances_phase,
+            FIRST_TURN_TECHNOLOGY_ADVANCES_PHASE,
+            apply_first_turn_technology_advances_phase
+        );
+        differential_test!(
+            first_turn_newspaper_phase,
+            FIRST_TURN_NEWSPAPER_PHASE,
+            apply_first_turn_newspaper_phase
+        );
+        differential_test!(
+            first_turn_return_to_map_phase,
+            FIRST_TURN_RETURN_TO_MAP_PHASE,
+            apply_first_turn_return_to_map_phase
+        );
+        differential_test!(
+            easy_turn_from_save,
+            EASY_TURN_FROM_SAVE,
+            apply_easy_turn_from_save
         );
         differential_test!(
             transported_items_phase,
