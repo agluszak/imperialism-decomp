@@ -58,6 +58,116 @@ node_property_patches:
     tag: rand
     properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
     evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles rand at 12 and calls SetTextAlignmentAndMaybeRefresh(1, 0)
+  - view: Citydlog.rsrc:9200
+    node: 0x06d9
+    tag: name
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on name
+  - view: Citydlog.rsrc:9200
+    node: 0x073f
+    tag: capT
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on capT
+  - view: Citydlog.rsrc:9201
+    node: 0x0673
+    tag: name
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on name
+  - view: Citydlog.rsrc:9201
+    node: 0x06d9
+    tag: capT
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on capT
+  - view: Citydlog.rsrc:9202
+    node: 0x0673
+    tag: name
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on name
+  - view: Citydlog.rsrc:9202
+    node: 0x06d9
+    tag: capT
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on capT
+  - view: Citydlog.rsrc:9203
+    node: 0x08f2
+    tag: name
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on name
+  - view: Citydlog.rsrc:9203
+    node: 0x0958
+    tag: capT
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on capT
+  - view: Citydlog.rsrc:9204
+    node: 0x08f2
+    tag: name
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on name
+  - view: Citydlog.rsrc:9204
+    node: 0x0958
+    tag: capT
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on capT
+  - view: Citydlog.rsrc:9205
+    node: 0x0673
+    tag: name
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on name
+  - view: Citydlog.rsrc:9205
+    node: 0x06d9
+    tag: capT
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on capT
+  - view: Citydlog.rsrc:9206
+    node: 0x0673
+    tag: name
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on name
+  - view: Citydlog.rsrc:9206
+    node: 0x06d9
+    tag: capT
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on capT
+  - view: Armory.rsrc:9208
+    node: 0x2114
+    tag: titl
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 24, alignment: 1}}
+    evidence: TArmoryView::DoStartup at 0x004cee20 installs its 24-point title style on titl
+  - view: Citydlog.rsrc:9209
+    node: 0x07cd
+    tag: name
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 24, alignment: 1}}
+    evidence: TTradeSchoolView::DoStartup at 0x004cdf00 installs its 24-point centered style on name
+  - view: Citydlog.rsrc:9211
+    node: 0x0531
+    tag: name
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on name
+  - view: Citydlog.rsrc:9212
+    node: 0x05fd
+    tag: name
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on name
+  - view: Citydlog.rsrc:9214
+    node: 0x0597
+    tag: name
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on name
+  - view: Citydlog.rsrc:9215
+    node: 0x05fd
+    tag: name
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on name
+  - view: Citydlog.rsrc:9215
+    node: 0x02dc
+    tag: capT
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on capT
+  - view: Citydlog.rsrc:9215
+    node: 0x072f
+    tag: prov
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 0}}
+    evidence: TIndustryView::DoStartup at 0x004cd740 installs its 12-point heading style on prov
   - view: Citydlog.rsrc:9221
     node: 0x03fc
     tag: name

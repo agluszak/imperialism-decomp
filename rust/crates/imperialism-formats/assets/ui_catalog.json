@@ -1245,7 +1245,7 @@
           "text": {
             "alignment": 1,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 24,
             "value": "Armory"
           }
@@ -1437,7 +1437,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -1455,7 +1455,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -1665,7 +1665,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -1683,7 +1683,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -1875,7 +1875,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -1893,7 +1893,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -2192,7 +2192,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -2210,7 +2210,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -2491,7 +2491,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -2509,7 +2509,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -2701,7 +2701,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -2719,7 +2719,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -2911,7 +2911,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -2929,7 +2929,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -3171,10 +3171,10 @@
           },
           "tag": "name",
           "text": {
-            "alignment": 0,
+            "alignment": 1,
             "face_flags": 0,
-            "font_family": 0,
-            "point_size": 12,
+            "font_family": 1,
+            "point_size": 24,
             "value": ""
           }
         },
@@ -3466,7 +3466,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -3650,7 +3650,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -4475,7 +4475,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -4559,7 +4559,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -4677,7 +4677,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
@@ -4731,7 +4731,7 @@
           "text": {
             "alignment": 0,
             "face_flags": 0,
-            "font_family": 0,
+            "font_family": 1,
             "point_size": 12,
             "value": ""
           }
