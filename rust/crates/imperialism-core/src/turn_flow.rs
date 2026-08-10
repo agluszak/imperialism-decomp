@@ -111,6 +111,17 @@ impl GameState {
                     effects: Vec::new(),
                 }
             }
+            crate::PhaseCode::COMBAT_MOVES
+                if self.supports_first_turn_no_combat_movement_phase() =>
+            {
+                self.run_first_turn_no_combat_movement_phase();
+                self.turn.phase = crate::PhaseCode::MILITARY_CLEANUP;
+                AdvanceTurnOutcome::Continues {
+                    from,
+                    to: crate::PhaseCode::MILITARY_CLEANUP,
+                    effects: Vec::new(),
+                }
+            }
             crate::PhaseCode::SEASON_ADVANCE => {
                 self.turn.phase = crate::PhaseCode::TECHNOLOGY_ADVANCES;
                 self.turn.advance_season();

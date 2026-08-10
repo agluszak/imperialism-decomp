@@ -424,6 +424,7 @@ impl PhaseCode {
     pub const TECHNOLOGY_ADVANCES: Self = Self(0x11);
     pub const NEWSPAPER: Self = Self(0x12);
     pub const COMBAT_MOVES: Self = Self(0x14);
+    pub const MILITARY_CLEANUP: Self = Self(0x15);
     pub const fn from_retail(value: i32) -> Self {
         Self(value)
     }
