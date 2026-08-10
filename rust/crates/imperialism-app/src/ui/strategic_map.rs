@@ -88,7 +88,7 @@ pub(crate) fn bind_strategic_base_terrain(
     spawned: &SpawnedView,
     assets: &mut UiAssetResources,
     state: &GameState,
-) {
+) -> Entity {
     let map = spawned
         .require_unique(MAP_TAG)
         .expect("validated strategic-map canvas binding");
@@ -109,6 +109,7 @@ pub(crate) fn bind_strategic_base_terrain(
             river_masks,
         },
     ));
+    map
 }
 
 pub(crate) fn sync_strategic_base_terrain(
@@ -199,6 +200,15 @@ fn compose_strategic_base_terrain(
     river_masks: &[IndexedPicture],
     palette: &DibPalette,
 ) -> Image {
+    let indices = compose_strategic_base_terrain_indices(state, terrain_pictures, river_masks);
+    indexed_viewport_image(&indices, palette)
+}
+
+fn compose_strategic_base_terrain_indices(
+    state: &GameState,
+    terrain_pictures: &[IndexedPicture],
+    river_masks: &[IndexedPicture],
+) -> Vec<u8> {
     let mut indices = vec![0_u8; VIEWPORT_WIDTH * VIEWPORT_HEIGHT];
     let (origin_row, origin_column) = state.world.geometry().row_column(state.world.view_origin());
     let origin_row = i32::from(origin_row);
@@ -227,7 +237,166 @@ fn compose_strategic_base_terrain(
         }
     }
 
+    indices
+}
+
+pub(crate) fn compose_city_site_terrain(
+    state: &GameState,
+    canvas: &StrategicBaseTerrainCanvas,
+    nation: MajorNationId,
+    highlighted_tile: Option<TileId>,
+    palette: &DibPalette,
+) -> Image {
+    let mut indices = compose_strategic_base_terrain_indices(
+        state,
+        &canvas.terrain_pictures,
+        &canvas.river_masks,
+    );
+    if let Some(tile) = highlighted_tile {
+        draw_city_site_selection(state, nation, tile, &mut indices);
+    }
     indexed_viewport_image(&indices, palette)
+}
+
+fn draw_city_site_selection(
+    state: &GameState,
+    nation: MajorNationId,
+    tile: TileId,
+    viewport: &mut [u8],
+) {
+    let (x, y) = strategic_tile_screen_origin(state, tile);
+    draw_frame(viewport, x, y, 0);
+
+    let active_owner = TileOwnerTag::from_nation(nation.nation());
+    let neighbors = state.world.geometry().neighbors(tile).map(|neighbor| {
+        neighbor.filter(|&neighbor| {
+            let neighbor = &state.world[neighbor];
+            neighbor.terrain == TerrainKind::Water || neighbor.owner_nation == Some(active_owner)
+        })
+    });
+    draw_city_site_neighbor_outline(state, neighbors, viewport);
+}
+
+fn draw_frame(viewport: &mut [u8], x: i32, y: i32, color: u8) {
+    for offset in 0..TILE_SIZE {
+        put_viewport_pixel(viewport, x + offset, y, color);
+        put_viewport_pixel(viewport, x + offset, y + TILE_SIZE - 1, color);
+        put_viewport_pixel(viewport, x, y + offset, color);
+        put_viewport_pixel(viewport, x + TILE_SIZE - 1, y + offset, color);
+    }
+}
+
+fn draw_city_site_neighbor_outline(
+    state: &GameState,
+    neighbors: [Option<TileId>; 6],
+    viewport: &mut [u8],
+) {
+    const OUTLINE_COLOR: u8 = 0x20;
+    for (index, neighbor) in neighbors.iter().copied().enumerate() {
+        let Some(neighbor) = neighbor else {
+            continue;
+        };
+        let (x, y) = strategic_tile_screen_origin(state, neighbor);
+        match index {
+            0 => {
+                draw_line(viewport, (x, y), (x + 63, y), OUTLINE_COLOR);
+                draw_line(viewport, (x + 63, y), (x + 63, y + 63), OUTLINE_COLOR);
+                if neighbors[5].is_none() {
+                    draw_line(viewport, (x, y), (x, y + 63), OUTLINE_COLOR);
+                }
+                if neighbors[1].is_none() {
+                    draw_line(viewport, (x + 32, y), (x + 32, y + 63), OUTLINE_COLOR);
+                }
+            }
+            1 => {
+                draw_line(viewport, (x + 32, y), (x + 63, y), OUTLINE_COLOR);
+                draw_line(viewport, (x + 63, y), (x + 63, y + 63), OUTLINE_COLOR);
+                draw_line(viewport, (x + 63, y + 63), (x + 32, y + 63), OUTLINE_COLOR);
+                if neighbors[0].is_none() {
+                    draw_line(viewport, (x, y), (x + 32, y), OUTLINE_COLOR);
+                }
+                if neighbors[2].is_none() {
+                    draw_line(viewport, (x, y + 63), (x + 32, y + 63), OUTLINE_COLOR);
+                }
+            }
+            2 => {
+                draw_line(viewport, (x, y + 63), (x + 63, y + 63), OUTLINE_COLOR);
+                draw_line(viewport, (x + 63, y + 63), (x + 63, y), OUTLINE_COLOR);
+                if neighbors[3].is_none() {
+                    draw_line(viewport, (x, y), (x, y + 63), OUTLINE_COLOR);
+                }
+                if neighbors[1].is_none() {
+                    draw_line(viewport, (x + 32, y), (x + 63, y), OUTLINE_COLOR);
+                }
+            }
+            3 => {
+                draw_line(viewport, (x + 63, y + 63), (x, y + 63), OUTLINE_COLOR);
+                draw_line(viewport, (x, y + 63), (x, y), OUTLINE_COLOR);
+                if neighbors[2].is_none() {
+                    draw_line(viewport, (x + 63, y), (x + 63, y + 63), OUTLINE_COLOR);
+                }
+                if neighbors[4].is_none() {
+                    draw_line(viewport, (x, y), (x + 32, y), OUTLINE_COLOR);
+                }
+            }
+            4 => {
+                draw_line(viewport, (x + 32, y), (x, y), OUTLINE_COLOR);
+                draw_line(viewport, (x, y), (x, y + 63), OUTLINE_COLOR);
+                draw_line(viewport, (x, y + 63), (x + 32, y + 63), OUTLINE_COLOR);
+                if neighbors[5].is_none() {
+                    draw_line(viewport, (x + 32, y), (x + 63, y), OUTLINE_COLOR);
+                }
+                if neighbors[3].is_none() {
+                    draw_line(viewport, (x + 32, y + 63), (x + 63, y + 63), OUTLINE_COLOR);
+                }
+            }
+            5 => {
+                draw_line(viewport, (x, y + 63), (x, y), OUTLINE_COLOR);
+                draw_line(viewport, (x, y), (x + 63, y), OUTLINE_COLOR);
+                if neighbors[0].is_none() {
+                    draw_line(viewport, (x + 63, y), (x + 63, y + 63), OUTLINE_COLOR);
+                }
+                if neighbors[4].is_none() {
+                    draw_line(viewport, (x, y + 63), (x + 32, y + 63), OUTLINE_COLOR);
+                }
+            }
+            _ => unreachable!("strategic tile has six neighbors"),
+        }
+    }
+}
+
+fn strategic_tile_screen_origin(state: &GameState, tile: TileId) -> (i32, i32) {
+    let (origin_row, origin_column) = state.world.geometry().row_column(state.world.view_origin());
+    let (row, column) = state.world.geometry().row_column(tile);
+    let y = (i32::from(row) - i32::from(origin_row)) * TILE_SIZE;
+    let mut x = (i32::from(column) - i32::from(origin_column)) * TILE_SIZE;
+    if row & 1 != 0 {
+        x += TILE_SIZE / 2;
+        if x >= 0x1ae0 {
+            x -= 0x1b00;
+        }
+    }
+    while x < -TILE_SIZE {
+        x += 0x1b00;
+    }
+    (x, y)
+}
+
+fn draw_line(viewport: &mut [u8], start: (i32, i32), end: (i32, i32), color: u8) {
+    let (mut x, mut y) = start;
+    let x_step = (end.0 - x).signum();
+    let y_step = (end.1 - y).signum();
+    while (x, y) != end {
+        put_viewport_pixel(viewport, x, y, color);
+        x += x_step;
+        y += y_step;
+    }
+}
+
+fn put_viewport_pixel(viewport: &mut [u8], x: i32, y: i32, color: u8) {
+    if (0..VIEWPORT_WIDTH as i32).contains(&x) && (0..VIEWPORT_HEIGHT as i32).contains(&y) {
+        viewport[y as usize * VIEWPORT_WIDTH + x as usize] = color;
+    }
 }
 
 fn compose_strategic_base_tile(
