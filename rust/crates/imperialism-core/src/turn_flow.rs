@@ -26,14 +26,8 @@ pub enum TurnBlock {
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum UiGate {
-    DiplomacyMap,
-    OfferSheet,
-    Combat,
-    DiplomacyOffer,
     DealBook,
-    TechnologyAdvance,
     Newspaper,
-    TurnAlert,
 }
 
 /// Ordered presentation work emitted by authoritative turn progression.
@@ -107,24 +101,38 @@ impl GameState {
                     effects: vec![TurnEffect::ShowOfferSheet { nation }],
                 }
             }
-            crate::PhaseCode::OFFER_SHEET if self.supports_first_turn_civilian_phase() => {
-                self.run_civilian_phase();
-                self.turn.phase = crate::PhaseCode::MILITARY;
-                AdvanceTurnOutcome::Continues {
-                    from,
-                    to: crate::PhaseCode::MILITARY,
-                    effects: Vec::new(),
+            crate::PhaseCode::OFFER_SHEET => match self.try_first_turn_civilian_phase() {
+                Some(plan) => {
+                    self.apply_civilian_phase_plan(plan);
+                    self.turn.phase = crate::PhaseCode::MILITARY;
+                    AdvanceTurnOutcome::Continues {
+                        from,
+                        to: crate::PhaseCode::MILITARY,
+                        effects: Vec::new(),
+                    }
                 }
-            }
-            crate::PhaseCode::MILITARY if self.supports_first_turn_military_phase() => {
-                self.run_first_turn_military_phase();
-                self.turn.phase = crate::PhaseCode::COMBAT_MOVES;
-                AdvanceTurnOutcome::Continues {
-                    from,
-                    to: crate::PhaseCode::COMBAT_MOVES,
+                None => AdvanceTurnOutcome::Blocked {
+                    phase: from,
+                    block: TurnBlock::Unsupported { phase: from },
                     effects: Vec::new(),
+                },
+            },
+            crate::PhaseCode::MILITARY => match self.try_first_turn_military_phase() {
+                Some(plan) => {
+                    self.apply_military_phase_plan(plan);
+                    self.turn.phase = crate::PhaseCode::COMBAT_MOVES;
+                    AdvanceTurnOutcome::Continues {
+                        from,
+                        to: crate::PhaseCode::COMBAT_MOVES,
+                        effects: Vec::new(),
+                    }
                 }
-            }
+                None => AdvanceTurnOutcome::Blocked {
+                    phase: from,
+                    block: TurnBlock::Unsupported { phase: from },
+                    effects: Vec::new(),
+                },
+            },
             crate::PhaseCode::COMBAT_MOVES
                 if self.supports_first_turn_no_combat_movement_phase() =>
             {
@@ -136,18 +144,27 @@ impl GameState {
                     effects: Vec::new(),
                 }
             }
-            crate::PhaseCode::MILITARY_CLEANUP
-                if self.supports_first_turn_military_cleanup_phase() =>
-            {
-                self.run_first_turn_military_cleanup_phase();
-                self.turn.phase = crate::PhaseCode::DIPLOMACY_OFFER;
-                AdvanceTurnOutcome::Continues {
-                    from,
-                    to: crate::PhaseCode::DIPLOMACY_OFFER,
-                    effects: Vec::new(),
+            crate::PhaseCode::MILITARY_CLEANUP => {
+                match self.try_first_turn_military_cleanup_phase() {
+                    Some(plan) => {
+                        self.apply_military_cleanup_plan(plan);
+                        self.turn.phase = crate::PhaseCode::DIPLOMACY_OFFER;
+                        AdvanceTurnOutcome::Continues {
+                            from,
+                            to: crate::PhaseCode::DIPLOMACY_OFFER,
+                            effects: Vec::new(),
+                        }
+                    }
+                    None => AdvanceTurnOutcome::Blocked {
+                        phase: from,
+                        block: TurnBlock::Unsupported { phase: from },
+                        effects: Vec::new(),
+                    },
                 }
             }
-            crate::PhaseCode::DIPLOMACY_OFFER if !self.pending.combat_reports_pending => {
+            crate::PhaseCode::DIPLOMACY_OFFER
+                if self.supports_first_turn_diplomacy_offer_phase() =>
+            {
                 self.turn.phase = crate::PhaseCode::ELIMINATION;
                 AdvanceTurnOutcome::Continues {
                     from,
@@ -155,7 +172,7 @@ impl GameState {
                     effects: Vec::new(),
                 }
             }
-            crate::PhaseCode::ELIMINATION if self.supports_no_elimination_phase() => {
+            crate::PhaseCode::ELIMINATION if self.supports_first_turn_no_elimination_phase() => {
                 self.turn.phase = crate::PhaseCode::CITY_AND_TRANSPORT;
                 AdvanceTurnOutcome::Continues {
                     from,
@@ -163,10 +180,7 @@ impl GameState {
                     effects: Vec::new(),
                 }
             }
-            crate::PhaseCode::CITY_AND_TRANSPORT
-                if self.supports_first_turn_city_transport_phase() =>
-            {
-                self.run_first_turn_city_transport_phase();
+            crate::PhaseCode::CITY_AND_TRANSPORT if self.try_first_turn_city_transport_phase() => {
                 self.turn.phase = crate::PhaseCode::GREAT_POWER_PRESSURE;
                 AdvanceTurnOutcome::Continues {
                     from,
@@ -201,7 +215,7 @@ impl GameState {
                     effects: Vec::new(),
                 }
             }
-            crate::PhaseCode::SEASON_ADVANCE => {
+            crate::PhaseCode::SEASON_ADVANCE if self.supports_first_turn_season_advance_phase() => {
                 self.turn.phase = crate::PhaseCode::TECHNOLOGY_ADVANCES;
                 self.turn.turn_flow_status_flags = 0;
                 self.turn.advance_season();
@@ -289,15 +303,6 @@ impl GameState {
         let expected_phase = match gate {
             UiGate::DealBook => crate::PhaseCode::QUARTER_GATE,
             UiGate::Newspaper => crate::PhaseCode::RETURN_TO_MAP,
-            _ => {
-                return AdvanceTurnOutcome::Blocked {
-                    phase: self.turn.phase,
-                    block: TurnBlock::Unsupported {
-                        phase: self.turn.phase,
-                    },
-                    effects: Vec::new(),
-                };
-            }
         };
         if self.turn.phase != expected_phase {
             return AdvanceTurnOutcome::Blocked {
@@ -311,7 +316,27 @@ impl GameState {
         self.advance_until_blocked()
     }
 
-    fn supports_no_elimination_phase(&self) -> bool {
+    fn supports_first_turn_diplomacy_offer_phase(&self) -> bool {
+        self.turn.phase == crate::PhaseCode::DIPLOMACY_OFFER
+            && self.turn.economic_turn == 1
+            && self.turn.difficulty == crate::Difficulty::Easy
+            && self.turn.scenario_map.is_none()
+            && self.turn.active_nation == crate::NationId::new(6)
+            && self.turn.selected_nation == self.turn.active_nation
+            && !self.pending.combat_reports_pending
+    }
+
+    fn supports_first_turn_no_elimination_phase(&self) -> bool {
+        self.turn.phase == crate::PhaseCode::ELIMINATION
+            && self.turn.economic_turn == 1
+            && self.turn.difficulty == crate::Difficulty::Easy
+            && self.turn.scenario_map.is_none()
+            && self.turn.active_nation == crate::NationId::new(6)
+            && self.turn.selected_nation == self.turn.active_nation
+            && self.supports_no_elimination_topology()
+    }
+
+    fn supports_no_elimination_topology(&self) -> bool {
         if MajorNationId::from_nation(self.turn.active_nation).is_none()
             || matches!(
                 self.nations.country_status(self.turn.active_nation),

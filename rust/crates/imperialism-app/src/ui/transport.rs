@@ -519,9 +519,8 @@ fn on_transport_adjust(
     if !screens.iter().any(|screen| screen.nation == action.nation) {
         return;
     }
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session =
+        session.expect("transport control activated without an authoritative game session");
     session
         .0
         .step_transport_allocation(action.nation, action.allocation, action.delta);

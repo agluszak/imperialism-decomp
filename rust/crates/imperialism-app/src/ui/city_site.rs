@@ -171,12 +171,10 @@ fn on_city_site_map_click(
     if !dialog_open.is_empty() {
         return;
     }
-    let Some(session) = session else {
-        return;
-    };
     let Ok(cursor) = maps.get(click.entity) else {
         return;
     };
+    let session = session.expect("city-site map activated without an authoritative game session");
     let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.0, cursor) else {
         return;
     };
@@ -211,12 +209,11 @@ fn on_new_city_activate(
     };
     match *action {
         NewCityAction::Accept => {
-            let Some(mut session) = session else {
-                return;
-            };
             let Ok((_, dialog)) = dialogs.single() else {
                 return;
             };
+            let mut session =
+                session.expect("new-city accept activated without an authoritative game session");
             confirm_capital_site(&mut session.0, dialog.0);
             for (root, _) in &dialogs {
                 commands.entity(root).despawn();

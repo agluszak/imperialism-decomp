@@ -453,10 +453,9 @@ fn on_turn_flow_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let Some(session) = session.as_deref_mut() else {
-        warn!("turn-flow control activated without an authoritative game session");
-        return;
-    };
+    let session = session
+        .as_deref_mut()
+        .expect("turn-flow control activated without an authoritative game session");
     let outcome = match *action {
         TurnFlowAction::FinishPlayerOrders => session.0.finish_player_orders(),
         TurnFlowAction::Resume(gate) => session.0.resume_after_ui(gate),
@@ -480,17 +479,7 @@ fn on_turn_flow_activate(
         } => Some(AppState::Newspaper),
         AdvanceTurnOutcome::Continues { .. }
         | AdvanceTurnOutcome::Blocked {
-            block:
-                TurnBlock::Ui {
-                    gate:
-                        UiGate::DiplomacyMap
-                        | UiGate::OfferSheet
-                        | UiGate::Combat
-                        | UiGate::DiplomacyOffer
-                        | UiGate::TechnologyAdvance
-                        | UiGate::TurnAlert,
-                }
-                | TurnBlock::Unsupported { .. },
+            block: TurnBlock::Unsupported { .. },
             ..
         } => None,
     };

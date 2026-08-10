@@ -1588,9 +1588,7 @@ fn on_city_canvas_click(
     else {
         return;
     };
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session = session.expect("city canvas activated without an authoritative game session");
     let Some(nation) = MajorNationId::from_nation(session.0.turn.active_nation) else {
         return;
     };
@@ -3726,9 +3724,8 @@ fn on_city_expansion_open(
     if dialogs.get(open.dialog).is_err() || !modals.is_empty() {
         return;
     }
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session =
+        session.expect("city expansion control activated without an authoritative game session");
     assert!(
         industry_page(open.slot).is_some(),
         "expansion hotspot belongs to an ordinary industry"
@@ -3802,9 +3799,8 @@ fn on_city_building_change_choice(
     if change_dialogs.get(choice.dialog).is_err() {
         return;
     }
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session =
+        session.expect("city building choice activated without an authoritative game session");
     if choice.slot == ProductionSlot::PowerPlant {
         if choice.accept {
             session.0.set_power_plant_upgrade(choice.nation, true);
@@ -3912,9 +3908,8 @@ fn on_city_amount_bar_click(
     if dialogs.get(bar.dialog).is_err() {
         return;
     }
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session =
+        session.expect("city amount bar activated without an authoritative game session");
     click.propagate(false);
     let x = (((normalized.x + 0.5) * f32::from(INDUSTRY_BAR_WIDTH)).floor() as i16)
         .clamp(0, INDUSTRY_BAR_WIDTH - 1);
@@ -4104,9 +4099,8 @@ fn on_city_order_adjust(
     if dialogs.get(action.dialog).is_err() {
         return;
     }
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session =
+        session.expect("city order control activated without an authoritative game session");
     if let CityOrderId::MilitaryRecruit(category) = action.order
         && let Ok(mut selection) = armory_selections.get_mut(action.dialog)
     {

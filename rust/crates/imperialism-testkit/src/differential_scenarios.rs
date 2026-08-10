@@ -105,159 +105,36 @@ mod scenarios {
         let _ = state.advance_turn_step();
     }
 
+    fn apply_turn_step(state: &mut GameState, (): ()) -> imperialism_core::AdvanceTurnOutcome {
+        state.advance_turn_step()
+    }
+
     const FIRST_TURN_DIPLOMACY_PHASE: ScenarioMeta = retail_fixture("first_turn_diplomacy_phase");
-
-    fn apply_first_turn_diplomacy_phase(
-        state: &mut GameState,
-        (): (),
-    ) -> imperialism_core::AdvanceTurnOutcome {
-        state.advance_turn_step()
-    }
-
     const FIRST_TURN_TRADE_PHASE: ScenarioMeta = retail_fixture("first_turn_trade_phase");
-
-    fn apply_first_turn_trade_phase(
-        state: &mut GameState,
-        (): (),
-    ) -> imperialism_core::AdvanceTurnOutcome {
-        state.advance_turn_step()
-    }
-
     const FIRST_TURN_CIVILIAN_PHASE: ScenarioMeta = retail_fixture("first_turn_civilian_phase");
-
-    fn apply_first_turn_civilian_phase(
-        state: &mut GameState,
-        (): (),
-    ) -> imperialism_core::AdvanceTurnOutcome {
-        state.advance_turn_step()
-    }
-
     const FIRST_TURN_MILITARY_PHASE: ScenarioMeta = retail_fixture("first_turn_military_phase");
-
-    fn apply_first_turn_military_phase(
-        state: &mut GameState,
-        (): (),
-    ) -> imperialism_core::AdvanceTurnOutcome {
-        state.advance_turn_step()
-    }
-
     const FIRST_TURN_COMBAT_MOVEMENT_PHASE: ScenarioMeta =
         retail_fixture("first_turn_combat_movement_phase");
-
-    fn apply_first_turn_combat_movement_phase(
-        state: &mut GameState,
-        (): (),
-    ) -> imperialism_core::AdvanceTurnOutcome {
-        state.advance_turn_step()
-    }
-
     const FIRST_TURN_MILITARY_CLEANUP_PHASE: ScenarioMeta =
         retail_fixture("first_turn_military_cleanup_phase");
-
-    fn apply_first_turn_military_cleanup_phase(
-        state: &mut GameState,
-        (): (),
-    ) -> imperialism_core::AdvanceTurnOutcome {
-        state.advance_turn_step()
-    }
-
     const FIRST_TURN_DIPLOMACY_OFFER_PHASE: ScenarioMeta =
         retail_fixture("first_turn_diplomacy_offer_phase");
-
-    fn apply_first_turn_diplomacy_offer_phase(
-        state: &mut GameState,
-        (): (),
-    ) -> imperialism_core::AdvanceTurnOutcome {
-        state.advance_turn_step()
-    }
-
     const FIRST_TURN_ELIMINATION_PHASE: ScenarioMeta =
         retail_fixture("first_turn_elimination_phase");
-
-    fn apply_first_turn_elimination_phase(
-        state: &mut GameState,
-        (): (),
-    ) -> imperialism_core::AdvanceTurnOutcome {
-        state.advance_turn_step()
-    }
-
     const FIRST_TURN_CITY_TRANSPORT_PHASE: ScenarioMeta =
         retail_fixture("first_turn_city_transport_phase");
-
-    fn apply_first_turn_city_transport_phase(
-        state: &mut GameState,
-        (): (),
-    ) -> imperialism_core::AdvanceTurnOutcome {
-        state.advance_turn_step()
-    }
-
     const FIRST_TURN_GREAT_POWER_PRESSURE_PHASE: ScenarioMeta =
         retail_fixture("first_turn_great_power_pressure_phase");
-
-    fn apply_first_turn_great_power_pressure_phase(
-        state: &mut GameState,
-        (): (),
-    ) -> imperialism_core::AdvanceTurnOutcome {
-        state.advance_turn_step()
-    }
-
     const FIRST_TURN_DEAL_BOOK_PHASE: ScenarioMeta = retail_fixture("first_turn_deal_book_phase");
-
-    fn apply_first_turn_deal_book_phase(
-        state: &mut GameState,
-        (): (),
-    ) -> imperialism_core::AdvanceTurnOutcome {
-        state.advance_turn_step()
-    }
-
     const FIRST_TURN_QUARTER_GATE_PHASE: ScenarioMeta =
         retail_fixture("first_turn_quarter_gate_phase");
-
-    fn apply_first_turn_quarter_gate_phase(
-        state: &mut GameState,
-        (): (),
-    ) -> imperialism_core::AdvanceTurnOutcome {
-        state.advance_turn_step()
-    }
-
     const FIRST_TURN_SEASON_ADVANCE_PHASE: ScenarioMeta =
         retail_fixture("first_turn_season_advance_phase");
-
-    fn apply_first_turn_season_advance_phase(
-        state: &mut GameState,
-        (): (),
-    ) -> imperialism_core::AdvanceTurnOutcome {
-        state.advance_turn_step()
-    }
-
     const FIRST_TURN_TECHNOLOGY_ADVANCES_PHASE: ScenarioMeta =
         retail_fixture("first_turn_technology_advances_phase");
-
-    fn apply_first_turn_technology_advances_phase(
-        state: &mut GameState,
-        (): (),
-    ) -> imperialism_core::AdvanceTurnOutcome {
-        state.advance_turn_step()
-    }
-
     const FIRST_TURN_NEWSPAPER_PHASE: ScenarioMeta = retail_fixture("first_turn_newspaper_phase");
-
-    fn apply_first_turn_newspaper_phase(
-        state: &mut GameState,
-        (): (),
-    ) -> imperialism_core::AdvanceTurnOutcome {
-        state.advance_turn_step()
-    }
-
     const FIRST_TURN_RETURN_TO_MAP_PHASE: ScenarioMeta =
         retail_fixture("first_turn_return_to_map_phase");
-
-    fn apply_first_turn_return_to_map_phase(
-        state: &mut GameState,
-        (): (),
-    ) -> imperialism_core::AdvanceTurnOutcome {
-        state.advance_turn_step()
-    }
 
     const EASY_TURN_FROM_SAVE: ScenarioMeta = retail_fixture("easy_turn_from_save");
 
@@ -580,82 +457,82 @@ mod scenarios {
         differential_test!(
             first_turn_diplomacy_phase,
             FIRST_TURN_DIPLOMACY_PHASE,
-            apply_first_turn_diplomacy_phase
+            apply_turn_step
         );
         differential_test!(
             first_turn_trade_phase,
             FIRST_TURN_TRADE_PHASE,
-            apply_first_turn_trade_phase
+            apply_turn_step
         );
         differential_test!(
             first_turn_civilian_phase,
             FIRST_TURN_CIVILIAN_PHASE,
-            apply_first_turn_civilian_phase
+            apply_turn_step
         );
         differential_test!(
             first_turn_military_phase,
             FIRST_TURN_MILITARY_PHASE,
-            apply_first_turn_military_phase
+            apply_turn_step
         );
         differential_test!(
             first_turn_combat_movement_phase,
             FIRST_TURN_COMBAT_MOVEMENT_PHASE,
-            apply_first_turn_combat_movement_phase
+            apply_turn_step
         );
         differential_test!(
             first_turn_military_cleanup_phase,
             FIRST_TURN_MILITARY_CLEANUP_PHASE,
-            apply_first_turn_military_cleanup_phase
+            apply_turn_step
         );
         differential_test!(
             first_turn_diplomacy_offer_phase,
             FIRST_TURN_DIPLOMACY_OFFER_PHASE,
-            apply_first_turn_diplomacy_offer_phase
+            apply_turn_step
         );
         differential_test!(
             first_turn_elimination_phase,
             FIRST_TURN_ELIMINATION_PHASE,
-            apply_first_turn_elimination_phase
+            apply_turn_step
         );
         differential_test!(
             first_turn_city_transport_phase,
             FIRST_TURN_CITY_TRANSPORT_PHASE,
-            apply_first_turn_city_transport_phase
+            apply_turn_step
         );
         differential_test!(
             first_turn_great_power_pressure_phase,
             FIRST_TURN_GREAT_POWER_PRESSURE_PHASE,
-            apply_first_turn_great_power_pressure_phase
+            apply_turn_step
         );
         differential_test!(
             first_turn_deal_book_phase,
             FIRST_TURN_DEAL_BOOK_PHASE,
-            apply_first_turn_deal_book_phase
+            apply_turn_step
         );
         differential_test!(
             first_turn_quarter_gate_phase,
             FIRST_TURN_QUARTER_GATE_PHASE,
-            apply_first_turn_quarter_gate_phase
+            apply_turn_step
         );
         differential_test!(
             first_turn_season_advance_phase,
             FIRST_TURN_SEASON_ADVANCE_PHASE,
-            apply_first_turn_season_advance_phase
+            apply_turn_step
         );
         differential_test!(
             first_turn_technology_advances_phase,
             FIRST_TURN_TECHNOLOGY_ADVANCES_PHASE,
-            apply_first_turn_technology_advances_phase
+            apply_turn_step
         );
         differential_test!(
             first_turn_newspaper_phase,
             FIRST_TURN_NEWSPAPER_PHASE,
-            apply_first_turn_newspaper_phase
+            apply_turn_step
         );
         differential_test!(
             first_turn_return_to_map_phase,
             FIRST_TURN_RETURN_TO_MAP_PHASE,
-            apply_first_turn_return_to_map_phase
+            apply_turn_step
         );
         differential_test!(
             easy_turn_from_save,

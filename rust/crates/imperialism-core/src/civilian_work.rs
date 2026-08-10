@@ -126,6 +126,7 @@ impl GameState {
             .position(|unit| unit.id == civilian)
             .expect("scheduled civilian work references a present unit");
         match &mut self.civilian_units[index].order {
+            #[allow(clippy::collapsible_match)]
             CivilianWorkOrder::DevelopResource { turns } => {
                 if turns.advance() {
                     self.complete_resource_development(index);
