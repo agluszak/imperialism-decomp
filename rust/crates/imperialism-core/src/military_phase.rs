@@ -129,7 +129,7 @@ impl GameState {
             || NationId::all().any(|nation| {
                 !matches!(
                     self.nations.common(nation),
-                    Some(common) if common.status == CountryStatus::Independent
+                    Some(common) if common.status() == CountryStatus::Independent
                 ) || NationId::all().any(|target| {
                     self.diplomacy.relationships[nation][target] != DiplomaticRelationship::Peace
                 })
@@ -222,7 +222,7 @@ impl GameState {
             }
 
             let mut expected_province_targets = ProvinceTable::default();
-            if major.common.owned_regions.len() != FIRST_TURN_DEFEND_MISSIONS_PER_AI {
+            if major.common.owned_region_count() != FIRST_TURN_DEFEND_MISSIONS_PER_AI {
                 return None;
             }
             for offset in 0..FIRST_TURN_DEFEND_MISSIONS_PER_AI {
@@ -231,7 +231,7 @@ impl GameState {
                 else {
                     return None;
                 };
-                if *province != major.common.owned_regions[offset]
+                if *province != major.common.owned_regions()[offset]
                     || !army.units.is_empty()
                     || expected_province_targets[*province] != AiTargetState::Unmarked
                 {

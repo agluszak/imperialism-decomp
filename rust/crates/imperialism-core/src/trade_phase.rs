@@ -112,7 +112,7 @@ impl GameState {
             let Some(common) = self.nations.common(source) else {
                 return false;
             };
-            if common.status != CountryStatus::Independent
+            if common.status() != CountryStatus::Independent
                 || NationId::all().any(|target| {
                     common.trade_policy_by_nation[target] != TradePolicyScore::NEUTRAL
                         || self.diplomacy.relationships[source][target]
@@ -651,7 +651,7 @@ impl GameState {
                 .as_ref()
                 .expect("supported trade phase has every minor nation")
                 .common
-                .status,
+                .status(),
             CountryStatus::ColonyOf(master) if master == major.nation()
         )
     }
@@ -1350,7 +1350,7 @@ fn resource(commodity: TradeCommodity) -> ResourceKind {
 }
 
 fn preferred_trade_nation(common: &NationCommonState, own_nation: NationId) -> NationId {
-    match common.status {
+    match common.status() {
         CountryStatus::Independent => own_nation,
         CountryStatus::ProtectorateOf(master) | CountryStatus::ColonyOf(master) => master,
     }

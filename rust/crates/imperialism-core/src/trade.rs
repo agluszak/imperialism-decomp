@@ -538,14 +538,14 @@ mod tests {
 
     fn state() -> GameState {
         let majors = crate::MajorNationTable::from_fn(|_nation| MajorNation {
-            common: NationCommonState {
-                display_name: String::new(),
-                status: crate::CountryStatus::Independent,
-                owned_regions: Vec::new(),
-                treasury: 1_000,
-                home_tile: Some(crate::TileId::new(0)),
-                trade_policy_by_nation: crate::NationTable::default(),
-            },
+            common: NationCommonState::from_parts(
+                String::new(),
+                crate::CountryStatus::Independent,
+                Vec::new(),
+                1_000,
+                Some(crate::TileId::new(0)),
+                crate::NationTable::default(),
+            ),
             economy: major(),
             city: city(),
         });

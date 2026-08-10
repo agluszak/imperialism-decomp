@@ -100,14 +100,14 @@ pub(crate) fn great_power_state() -> GreatPowerState {
 /// A present major nation with common state, rule state, and a city.
 pub(crate) fn major_nation() -> MajorNation {
     MajorNation {
-        common: NationCommonState {
-            display_name: String::new(),
-            status: crate::CountryStatus::Independent,
-            owned_regions: Vec::new(),
-            treasury: 1_000,
-            home_tile: Some(TileId::new(0)),
-            trade_policy_by_nation: NationTable::default(),
-        },
+        common: NationCommonState::from_parts(
+            String::new(),
+            crate::CountryStatus::Independent,
+            Vec::new(),
+            1_000,
+            Some(TileId::new(0)),
+            NationTable::default(),
+        ),
         economy: great_power_state(),
         city: city(),
     }

@@ -136,7 +136,7 @@ pub fn create_random_game(
         story_code: 2,
     });
 
-    GameState {
+    let state = GameState {
         turn: TurnState {
             scenario_map: None,
             economic_turn: 0,
@@ -167,7 +167,11 @@ pub fn create_random_game(
         task_forces: Vec::new(),
         missions,
         pending,
-    }
+    };
+    state
+        .validate_territory_index()
+        .expect("random-game setup must build one consistent territory index");
+    state
 }
 
 struct TilePostPassState {
@@ -1134,11 +1138,7 @@ fn build_province_state(
             0,
         )
         .expect("generated province state fits the retail province record");
-        nations
-            .common_mut(owner)
-            .expect("accepted generated province owner is present")
-            .owned_regions
-            .push(province);
+        nations.append_owned_region_during_construction(owner, province);
     }
     provinces
 }
@@ -1912,14 +1912,14 @@ fn choose_foreign_ministers(
 fn minor_nation(nation: MinorNationId) -> MinorNation {
     let first_member = MinorNationId::FIRST + (nation.get() - MinorNationId::FIRST) / 4 * 4;
     MinorNation {
-        common: NationCommonState {
-            display_name: String::new(),
-            status: CountryStatus::Independent,
-            owned_regions: Vec::new(),
-            treasury: 5_000,
-            home_tile: None,
-            trade_policy_by_nation: NationTable::default(),
-        },
+        common: NationCommonState::from_parts(
+            String::new(),
+            CountryStatus::Independent,
+            Vec::new(),
+            5_000,
+            None,
+            NationTable::default(),
+        ),
         consortium_members: std::array::from_fn(|offset| {
             MinorNationId::new(first_member + offset as u8)
         }),
@@ -2366,8 +2366,8 @@ mod tests {
                 })
                 .collect::<Vec<_>>();
             let common = state.nations.common(nation).unwrap();
-            assert_eq!(common.status, CountryStatus::Independent);
-            assert_eq!(common.owned_regions, expected);
+            assert_eq!(common.status(), CountryStatus::Independent);
+            assert_eq!(common.owned_regions(), expected);
         }
 
         assert_eq!(state.turn.phase, crate::PhaseCode::CAPITAL_SELECTION);
