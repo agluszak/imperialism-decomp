@@ -130,6 +130,8 @@ RUNTIME_TEST_FACTORY({case_class}, {factory_name})
 def catalog_entry(test_name: str, factory_name: str, fixture: str | None) -> str:
     # A fixture-backed scenario is a retail oracle by construction: the bytes come from outside
     # this build, which is the whole reason LoadedMapScriptScenario enforces their presence.
+    if fixture == "beginning_of_game.imp":
+        return f'    retail_fixture_case("{test_name}", "{factory_name}"),\n'
     evidence = "retail_fixture_oracle" if fixture else "internal_invariant"
     entry = (
         f"    RuntimeTestSpec(\n"

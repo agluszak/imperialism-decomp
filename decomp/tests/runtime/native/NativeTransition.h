@@ -20,10 +20,14 @@ public:
   // Captures prepared game state as "before" and takes ownership of caseCapture as "case".
   RuntimeActionResult Begin(JSON_Value* caseCapture);
 
-  // Captures result and "after" game state. Overloads cover void, bool, and integer results.
+  // Captures result and "after" game state. Overloads cover void, bool, integer, and JSON
+  // results. Finish(JSON_Value*) takes ownership of result.
   RuntimeActionResult Finish();
   RuntimeActionResult Finish(bool result);
   RuntimeActionResult Finish(int result);
+  RuntimeActionResult Finish(JSON_Value* result);
+
+  RuntimeRun& Run() const;
 
 private:
   RuntimeActionResult CaptureResult(JSON_Value* resultValue);

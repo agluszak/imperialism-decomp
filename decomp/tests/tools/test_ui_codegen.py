@@ -183,10 +183,41 @@ class UiCodegenTests(unittest.TestCase):
                 "furniture_factory",
             ],
         )
+        self.assertEqual(len(city["city_building_actions"]), 37)
+        action_by_picture = {
+            row["picture_id"]: row for row in city["city_building_actions"]
+        }
+        self.assertEqual(
+            action_by_picture[15031],
+            {
+                "slot": "metalworks",
+                "level": 1,
+                "picture_id": 15031,
+                "frame_count": 9,
+                "origin": [492, 352],
+                "frame_size": [22, 9],
+            },
+        )
+        self.assertEqual(action_by_picture[15070]["slot"], "power_plant")
+        self.assertEqual(action_by_picture[15070]["frame_count"], 13)
         clothing = by_id[("Citydlog.rsrc", 9201)]
         clothing_by_tag = {node["tag"]: node for node in clothing["nodes"]}
         self.assertEqual(clothing_by_tag["left"]["behavior"], "activate")
         self.assertEqual(clothing_by_tag["rght"]["behavior"], "activate")
+
+        expansion = by_id[("Citydlog.rsrc", 9221)]
+        expansion_by_tag = {node["tag"]: node for node in expansion["nodes"]}
+        for tag in ("name", "capT", "cost", "warn"):
+            text = expansion_by_tag[tag]["text"]
+            self.assertEqual(
+                (
+                    text["font_family"],
+                    text["face_flags"],
+                    text["point_size"],
+                    text["alignment"],
+                ),
+                (1, 0, 12, 1),
+            )
 
         planet_dialog = by_id[("Linger.rsrc", 954)]
         planet_by_tag = {node["tag"]: node for node in planet_dialog["nodes"]}

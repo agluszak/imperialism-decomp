@@ -41,6 +41,25 @@ RuntimeActionResult RunDiplomacyReset(NativeTransition& transition);
 
 RuntimeActionResult RunFirstTurnAlertPhase(NativeTransition& transition);
 RuntimeActionResult RunFirstTurnDiplomacyPhase(NativeTransition& transition);
+RuntimeActionResult RunFirstTurnTradePhase(NativeTransition& transition);
+RuntimeActionResult RunFirstTurnCivilianPhase(NativeTransition& transition);
+RuntimeActionResult RunFirstTurnMilitaryPhase(NativeTransition& transition);
+RuntimeActionResult RunFirstTurnCombatMovementPhase(NativeTransition& transition);
+RuntimeActionResult RunFirstTurnMilitaryCleanupPhase(NativeTransition& transition);
+RuntimeActionResult RunFirstTurnDiplomacyOfferPhase(NativeTransition& transition);
+RuntimeActionResult RunFirstTurnEliminationPhase(NativeTransition& transition);
+RuntimeActionResult RunFirstTurnCityTransportPhase(NativeTransition& transition);
+
+RuntimeActionResult RunFirstTurnGreatPowerPressurePhase(NativeTransition& transition);
+RuntimeActionResult RunFirstTurnDealBookPhase(NativeTransition& transition);
+RuntimeActionResult RunFirstTurnQuarterGatePhase(NativeTransition& transition);
+RuntimeActionResult RunFirstTurnSeasonAdvancePhase(NativeTransition& transition);
+RuntimeActionResult RunFirstTurnTechnologyAdvancesPhase(NativeTransition& transition);
+RuntimeActionResult RunFirstTurnNewspaperPhase(NativeTransition& transition);
+RuntimeActionResult RunFirstTurnReturnToMapPhase(NativeTransition& transition);
+
+RuntimeActionResult RunNationResourceYieldRebuild(NativeTransition& transition);
+RuntimeActionResult RunAiNationResourceYieldRebuildClampsTargets(NativeTransition& transition);
 
 RuntimeActionResult RunSpecialistRecruitment(NativeTransition& transition);
 RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition);

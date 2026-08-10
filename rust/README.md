@@ -14,9 +14,10 @@ reconstruction in `../decomp/`. Run Rust commands from this directory.
 Native semantic transitions capture `before`, `case`, `after`, and `result` JSON through one shared
 C++ oracle (`native_transition_oracle`). The testkit strictly validates the published oracle name,
 seed, status, evidence kind, required captures, and unknown fields, then compares operation outcomes
-as well as complete `GameState`. Domain integration tests call `compare_native(case, apply)`. Retail
-fixtures live in `../fixtures/retail/`. The Rust game state does not depend on C++ layouts or Bevy ECS
-entities.
+as well as complete `GameState`. Domain integration tests call `compare_native(case, apply)`. Multi-step
+UI flows such as `easy_turn_from_save` stay catalogued scenarios and use `compare_runtime_scenario`.
+Retail fixtures live in `../fixtures/retail/`. The Rust game state does not depend on C++ layouts or
+Bevy ECS entities.
 
 Evidence classifications are retained: `retail_fixture_oracle` means Rust agrees with the current C++
 reconstruction from a retail-derived fixture; it is not direct original-executable equivalence.
@@ -44,6 +45,18 @@ and reads them directly before Bevy constructs a window; the retail path is not 
 ```sh
 cargo run -p imperialism-app -- --retail-dir /path/to/Imperialism
 ```
+
+To start from a retail save, also provide the runtime state that the `.imp` file does not store:
+
+```sh
+cargo run -p imperialism-app -- \
+  --retail-dir /path/to/Imperialism \
+  --load-save ../fixtures/retail/beginning_of_game.imp \
+  --game-state CRT_RAND MAP_LCG ZONE_LCG SELECTED_NATION
+```
+
+Use all four values from the same native capture. In particular, the zone-status RNG state is
+process-derived and must not be replaced with a fixture-wide default.
 
 ## Recovered UI catalog
 

@@ -5,8 +5,8 @@ mod oracle;
 mod runtime_capture;
 
 pub use differential::{
-    assert_game_state_eq, compare_native, compare_native_from_result, run_native_case,
-    run_native_scenario,
+    assert_game_state_eq, compare_native, compare_runtime_scenario, run_native_case_result,
+    run_retail_fixture_result,
 };
 use imperialism_core::{
     Difficulty, MajorNationId, MapTopology, RetailLcg,
@@ -162,7 +162,7 @@ fn difference_at(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_core::generate_random_setup_preview;
+    use imperialism_core::*;
     use serde_json::json;
 
     fn terrain_capture() -> RandomMapTerrainCapture {
@@ -270,6 +270,7 @@ mod tests {
         let preview = generate_random_setup_preview(
             capture.planet_seed.as_bytes(),
             capture.topology.topology(),
+            RetailCrtRng::from_state(1),
         )
         .unwrap();
         assert_eq!(preview.map.tiles().len(), 6_480);

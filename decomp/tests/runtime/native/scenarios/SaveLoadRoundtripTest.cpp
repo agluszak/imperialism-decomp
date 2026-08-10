@@ -55,11 +55,27 @@ bool CapturePersistentGameState(const RuntimeRun& run, CString& persistentState)
     return false;
   }
   JSON_Object* state = json_value_get_object(value);
-  if (state == 0 || json_object_remove(state, "turn") != JSONSuccess ||
+  JSON_Object* nations = state != 0 ? json_object_get_object(state, "nations") : 0;
+  JSON_Array* majors = nations != 0 ? json_object_get_array(nations, "majors") : 0;
+  // Newspaper pages and per-template reuse ticks live only for the current session; retail's
+  // TNewsMgr::WriteTo/ReadFrom persist no bytes, so reopening a save starts them empty.
+  if (state == 0 || json_object_remove(state, "news") != JSONSuccess ||
+      json_object_remove(state, "turn") != JSONSuccess ||
       json_object_remove(state, "unit_ids") != JSONSuccess ||
-      json_object_remove(state, "rng") != JSONSuccess) {
+      json_object_remove(state, "rng") != JSONSuccess || majors == 0) {
     json_value_free(value);
     return false;
+  }
+  // TAutoGreatPower::WriteTo/ReadFrom omit these fort-scoring caches. Loading reconstructs the AI
+  // object without initializing them; phase 0x15 recomputes them later. Keep exact bits in
+  // complete-state differentials while excluding them from this persistence-only comparison.
+  for (size_t index = 0; index < json_array_get_count(majors); ++index) {
+    JSON_Object* major = json_array_get_object(majors, index);
+    JSON_Object* economy = major != 0 ? json_object_get_object(major, "economy") : 0;
+    if (economy == 0 || json_object_remove(economy, "ai_development_pressure") != JSONSuccess) {
+      json_value_free(value);
+      return false;
+    }
   }
   char* serialized = json_serialize_to_string(value);
   json_value_free(value);

@@ -318,6 +318,31 @@ pub(crate) struct UiAssetResources<'w> {
 }
 
 impl UiAssetResources<'_> {
+    pub(crate) fn default_dib_palette(&self) -> &DibPalette {
+        self.retail_assets.assets().default_dib_palette()
+    }
+
+    pub(crate) fn add_image(&mut self, image: Image) -> Handle<Image> {
+        self.images.add(image)
+    }
+
+    pub(crate) fn replace_image(&mut self, handle: &Handle<Image>, image: Image) {
+        *self
+            .images
+            .get_mut(handle)
+            .expect("application-owned image handle remains loaded") = image;
+    }
+
+    pub(crate) fn palette_color(&self, index: u8) -> Color {
+        let [red, green, blue] =
+            self.retail_assets.assets().default_dib_palette()[index].to_array();
+        Color::srgb_u8(red, green, blue)
+    }
+
+    pub(crate) fn string(&self, group: i16, direct_index: i16) -> Result<String, RetailAssetError> {
+        self.retail_assets.assets().string(group, direct_index)
+    }
+
     pub(crate) fn picture(
         &mut self,
         picture_id: PictureId,
@@ -341,6 +366,21 @@ impl UiAssetResources<'_> {
             .get_mut(&handle)
             .expect("picture handle was just resolved against Assets<Image>");
         Ok(f(&mut image))
+    }
+
+    pub(crate) fn transformed_picture(
+        &mut self,
+        picture_id: PictureId,
+        transform: impl FnOnce(&mut Image),
+    ) -> Result<Handle<Image>, UiPictureBindingError> {
+        let handle = self.picture(picture_id)?;
+        let mut image = self
+            .images
+            .get(&handle)
+            .expect("picture handle was just resolved against Assets<Image>")
+            .clone();
+        transform(&mut image);
+        Ok(self.images.add(image))
     }
 
     pub(crate) fn indexed_picture(
@@ -398,6 +438,42 @@ pub(crate) struct UiSpawner<'w, 's> {
 }
 
 impl UiSpawner<'_, '_> {
+    pub(crate) fn picture(
+        &mut self,
+        picture_id: PictureId,
+    ) -> Result<Handle<Image>, UiPictureBindingError> {
+        self.assets.picture(picture_id)
+    }
+
+    pub(crate) fn indexed_picture(
+        &self,
+        picture_id: PictureId,
+    ) -> Result<IndexedPicture, RetailAssetError> {
+        self.assets.indexed_picture(picture_id)
+    }
+
+    pub(crate) fn transformed_picture(
+        &mut self,
+        picture_id: PictureId,
+        transform: impl FnOnce(&mut Image),
+    ) -> Result<Handle<Image>, UiPictureBindingError> {
+        self.assets.transformed_picture(picture_id, transform)
+    }
+
+    pub(crate) fn palette_color(&self, index: u8) -> Color {
+        self.assets.palette_color(index)
+    }
+
+    pub(crate) fn string(&self, group: i16, direct_index: i16) -> Result<String, RetailAssetError> {
+        self.assets.string(group, direct_index)
+    }
+    pub(crate) fn text_style(
+        &mut self,
+        preset: RetailTextStylePreset,
+    ) -> Result<(TextFont, TextLayout, bool), UiTextBindingError> {
+        self.assets.text_style(preset)
+    }
+
     pub(crate) fn spawn(&mut self, view_id: ScopedViewId) -> SpawnedView {
         let view = self
             .catalog

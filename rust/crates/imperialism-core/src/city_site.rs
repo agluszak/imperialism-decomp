@@ -3,8 +3,20 @@
 use crate::{
     Difficulty, GameState, HexDirection, MajorNationId, MapGeometry, NationId, RegionId,
     STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, StrategicMap, TerrainKind, TileFlags, TileId,
-    TileOwnerTag,
+    TileOwnerTag, TownState,
 };
+
+const TERRAIN_FLOW_DIRECTIONS: [[HexDirection; 2]; 9] = [
+    [HexDirection::NorthEast, HexDirection::SouthEast],
+    [HexDirection::NorthEast, HexDirection::SouthWest],
+    [HexDirection::NorthEast, HexDirection::West],
+    [HexDirection::East, HexDirection::SouthWest],
+    [HexDirection::East, HexDirection::West],
+    [HexDirection::East, HexDirection::NorthWest],
+    [HexDirection::SouthEast, HexDirection::West],
+    [HexDirection::SouthEast, HexDirection::NorthWest],
+    [HexDirection::SouthWest, HexDirection::NorthWest],
+];
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum CitySiteError {
@@ -163,7 +175,8 @@ pub fn enter_strategic_map_without_capital_selection(state: &mut GameState, nati
     let home = state
         .nations
         .city(nation)
-        .home_town_tile
+        .home_town
+        .map(TownState::tile)
         .expect("generated Introductory/Easy game has a home town tile");
     bind_home_city_tile(state, nation, home);
     state.turn.phase = crate::PhaseCode::STRATEGIC_MAP;
@@ -172,7 +185,7 @@ pub fn enter_strategic_map_without_capital_selection(state: &mut GameState, nati
 fn bind_home_city_tile(state: &mut GameState, nation: MajorNationId, tile: TileId) {
     let nation_state = state.nations.major_mut(nation);
     nation_state.common.home_tile = Some(tile);
-    nation_state.city.home_town_tile = Some(tile);
+    nation_state.city.home_town = Some(TownState::for_frog_city(tile));
 }
 
 fn flood_fill_region_marker(world: &mut StrategicMap, tile: TileId, owner_nation: TileOwnerTag) {
@@ -210,23 +223,11 @@ fn river_reaches_sea_without_crossing_nation(
     geometry: &MapGeometry,
     start: TileId,
 ) -> bool {
-    const FLOW_DIRECTIONS: [[HexDirection; 2]; 9] = [
-        [HexDirection::NorthEast, HexDirection::SouthEast],
-        [HexDirection::NorthEast, HexDirection::SouthWest],
-        [HexDirection::NorthEast, HexDirection::West],
-        [HexDirection::East, HexDirection::SouthWest],
-        [HexDirection::East, HexDirection::West],
-        [HexDirection::East, HexDirection::NorthWest],
-        [HexDirection::SouthEast, HexDirection::West],
-        [HexDirection::SouthEast, HexDirection::NorthWest],
-        [HexDirection::SouthWest, HexDirection::NorthWest],
-    ];
-
     let start_owner = world[start].owner_nation;
     let Some(flow_type) = world[start].river.and_then(|river| river.flow_type()) else {
         return false;
     };
-    for (attempt, mut direction) in FLOW_DIRECTIONS[flow_type].into_iter().enumerate() {
+    for (attempt, mut direction) in TERRAIN_FLOW_DIRECTIONS[flow_type].into_iter().enumerate() {
         let mut crossed_boundary = false;
         let mut current = start;
 
@@ -251,7 +252,7 @@ fn river_reaches_sea_without_crossing_nation(
             }
 
             let incoming = direction.opposite();
-            let pair = FLOW_DIRECTIONS[next_flow_type];
+            let pair = TERRAIN_FLOW_DIRECTIONS[next_flow_type];
             direction = if pair[0] == incoming {
                 pair[1]
             } else if pair[1] == incoming {
@@ -264,17 +265,61 @@ fn river_reaches_sea_without_crossing_nation(
     false
 }
 
+/// `TraceTerrainFlowToNearestSeaTile` for port-zone creation.
+pub(crate) fn trace_terrain_flow_to_nearest_sea_tile(
+    world: &StrategicMap,
+    start: TileId,
+) -> Option<TileId> {
+    let geometry = world.geometry();
+    let flow_type = world[start].river.and_then(|river| river.flow_type())?;
+
+    for mut direction in TERRAIN_FLOW_DIRECTIONS[flow_type] {
+        let mut current = start;
+        for _ in 0..100 {
+            let Some(next) = geometry.neighbor(current, direction) else {
+                break;
+            };
+            current = next;
+            let tile = &world[current];
+            if tile.terrain == TerrainKind::Water {
+                return Some(current);
+            }
+
+            let Some(next_flow_type) = tile.river.and_then(|river| river.flow_type()) else {
+                break;
+            };
+            let incoming = direction.opposite();
+            let pair = TERRAIN_FLOW_DIRECTIONS[next_flow_type];
+            direction = if pair[0] == incoming {
+                pair[1]
+            } else if pair[1] == incoming {
+                pair[0]
+            } else {
+                break;
+            };
+        }
+    }
+    None
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{
-        Difficulty, MajorNationId, MapTopology, create_random_game,
-        generate_random_setup_preview_with_clock_seed,
-    };
+    use crate::*;
+
+    fn initial_seed_one_preview() -> crate::RandomSetupPreview {
+        let mut sea_zone_marker_crt = RetailCrtRng::from_state(1);
+        let _ = sea_zone_marker_crt.next_rand();
+        generate_random_setup_preview_with_clock_seed(
+            b"Woopnist",
+            MapTopology::Wrapping,
+            1,
+            sea_zone_marker_crt,
+        )
+    }
 
     fn normal_start() -> GameState {
-        let preview =
-            generate_random_setup_preview_with_clock_seed(b"Woopnist", MapTopology::Wrapping, 1);
+        let preview = initial_seed_one_preview();
         create_random_game(&preview, MajorNationId::new(6), Difficulty::Normal, 1)
     }
 
@@ -337,15 +382,15 @@ mod tests {
         assert_eq!(
             state.nations.majors[MajorNationId::new(6)]
                 .city
-                .home_town_tile,
+                .home_town
+                .map(TownState::tile),
             Some(tile)
         );
     }
 
     #[test]
     fn easy_path_binds_frog_city_without_selector() {
-        let preview =
-            generate_random_setup_preview_with_clock_seed(b"Woopnist", MapTopology::Wrapping, 1);
+        let preview = initial_seed_one_preview();
         let mut state = create_random_game(&preview, MajorNationId::new(6), Difficulty::Easy, 1);
         enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6));
         assert_eq!(state.turn.phase, crate::PhaseCode::STRATEGIC_MAP);

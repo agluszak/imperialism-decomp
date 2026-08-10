@@ -273,6 +273,22 @@ class CityBuildingVisuals:
     visuals: tuple[CityBuildingVisual, ...]
 
 
+@dataclass(frozen=True)
+class CityBuildingActionVisual:
+    slot: str
+    level: int
+    picture_id: int
+    frame_count: int
+    origin: tuple[int, int]
+    frame_size: tuple[int, int]
+
+
+@dataclass(frozen=True)
+class CityBuildingActionVisuals:
+    view: UiResourceKey
+    actions: tuple[CityBuildingActionVisual, ...]
+
+
 _GAME_HEADER_CACHE: dict[str, dict[str, str]] = {}
 
 
@@ -594,6 +610,123 @@ def load_city_building_visuals(repo_root: Path) -> CityBuildingVisuals:
     return CityBuildingVisuals(
         view=UiResourceKey.parse(str(section["view"])),
         visuals=tuple(visuals),
+    )
+
+
+def load_city_building_action_visuals(repo_root: Path) -> CityBuildingActionVisuals:
+    data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
+    context = f"{WINDOWS_DELTA_PATH}: city_building_actions"
+    section = _mapping(data.get("city_building_actions"), context)
+    if set(section) != {"view", "evidence", "actions"}:
+        raise ValueError(f"{context}: expected view, evidence, and actions")
+    if not str(section["evidence"]).strip():
+        raise ValueError(f"{context}: evidence is required")
+
+    expected_picture_ids = (
+        15000,
+        15003,
+        15004,
+        15006,
+        15010,
+        15013,
+        15014,
+        15016,
+        15017,
+        15020,
+        15021,
+        15023,
+        15024,
+        15026,
+        15027,
+        15028,
+        15030,
+        15031,
+        15033,
+        15034,
+        15036,
+        15037,
+        15040,
+        15041,
+        15043,
+        15044,
+        15045,
+        15046,
+        15047,
+        15050,
+        15051,
+        15053,
+        15056,
+        15057,
+        15058,
+        15060,
+        15070,
+    )
+    slots_by_group = (
+        "textile_mill",
+        "clothing_factory",
+        "steel_mill",
+        "metalworks",
+        "lumber_mill",
+        "furniture_factory",
+        "oil_refinery",
+        "power_plant",
+    )
+    rows = _sequence(
+        section["actions"], len(expected_picture_ids), f"{context}/actions"
+    )
+    actions: list[CityBuildingActionVisual] = []
+    for index, raw_row in enumerate(rows):
+        row_context = f"{context}/actions[{index}]"
+        row = _mapping(raw_row, row_context)
+        expected_fields = {
+            "slot",
+            "level",
+            "picture_id",
+            "frame_count",
+            "origin",
+            "frame_size",
+        }
+        if set(row) != expected_fields:
+            raise ValueError(f"{row_context}: malformed city building action visual")
+        picture_id = int(row["picture_id"])
+        if picture_id != expected_picture_ids[index]:
+            raise ValueError(
+                f"{row_context}: expected recovered picture id {expected_picture_ids[index]}"
+            )
+        group = (picture_id - 15000) // 10
+        level = (picture_id % 10) // 3 + 1
+        slot = str(row["slot"])
+        if slot != slots_by_group[group] or int(row["level"]) != level:
+            raise ValueError(f"{row_context}: slot or level does not match picture id")
+        frame_count = int(row["frame_count"])
+        if not 0 < frame_count <= 255:
+            raise ValueError(f"{row_context}: frame count must fit a nonzero byte")
+        origin = _sequence(row["origin"], 2, f"{row_context}/origin")
+        frame_size = _sequence(row["frame_size"], 2, f"{row_context}/frame_size")
+        origin_pair = (int(origin[0]), int(origin[1]))
+        frame_size_pair = (int(frame_size[0]), int(frame_size[1]))
+        if min(*origin_pair, *frame_size_pair) < 0 or min(frame_size_pair) == 0:
+            raise ValueError(
+                f"{row_context}: origin must be nonnegative and frame size positive"
+            )
+        if (
+            origin_pair[0] + frame_size_pair[0] > 640
+            or origin_pair[1] + frame_size_pair[1] > 480
+        ):
+            raise ValueError(f"{row_context}: frame falls outside the retail canvas")
+        actions.append(
+            CityBuildingActionVisual(
+                slot=slot,
+                level=level,
+                picture_id=picture_id,
+                frame_count=frame_count,
+                origin=origin_pair,
+                frame_size=frame_size_pair,
+            )
+        )
+    return CityBuildingActionVisuals(
+        view=UiResourceKey.parse(str(section["view"])),
+        actions=tuple(actions),
     )
 
 
@@ -1328,11 +1461,17 @@ def build_rust_ui_catalog(
     recipe_list = list(recipes)
     text_property_patches = load_windows_text_property_patches(repo_root)
     city_buildings = load_city_building_visuals(repo_root)
+    city_building_actions = load_city_building_action_visuals(repo_root)
     catalog_keys = set(resource_backed_catalog_keys(recipe_list))
     if city_buildings.view not in catalog_keys:
         raise ValueError(
             f"{WINDOWS_DELTA_PATH}: city building view "
             f"{city_buildings.view.text()} is not in the Rust catalog"
+        )
+    if city_building_actions.view != city_buildings.view:
+        raise ValueError(
+            f"{WINDOWS_DELTA_PATH}: city building actions must belong to "
+            f"{city_buildings.view.text()}"
         )
     for visual in city_buildings.visuals:
         if visual.dialog not in catalog_keys:
@@ -1380,6 +1519,17 @@ def build_rust_ui_catalog(
                     },
                 }
                 for visual in city_buildings.visuals
+            ]
+            emitted["city_building_actions"] = [
+                {
+                    "slot": action.slot,
+                    "level": action.level,
+                    "picture_id": action.picture_id,
+                    "frame_count": action.frame_count,
+                    "origin": list(action.origin),
+                    "frame_size": list(action.frame_size),
+                }
+                for action in city_building_actions.actions
             ]
         catalog_views.append(emitted)
     return {

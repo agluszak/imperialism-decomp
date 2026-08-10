@@ -53,6 +53,23 @@ class RuntimeTestSpec:
     required_oracles: tuple = ("ui",)
 
 
+BEGINNING_OF_GAME = RuntimeFixtureSpec(
+    "beginning_of_game.imp",
+    "retail_fixture_oracle",
+)
+
+
+def retail_fixture_case(name: str, factory: str) -> RuntimeTestSpec:
+    return RuntimeTestSpec(
+        name,
+        factory,
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=BEGINNING_OF_GAME,
+        required_oracles=(),
+    )
+
+
 TESTS = (
     RuntimeTestSpec(
         "already_present",
@@ -171,8 +188,7 @@ class ScaffoldFixtureTests(ScaffoldBaseTests):
             ),
         )
         catalog = self.catalog_text()
-        self.assertIn('fixture=RuntimeFixtureSpec(\n            "beginning_of_game.imp"', catalog)
-        self.assertIn('"retail_fixture_oracle"', catalog)
+        self.assertIn('retail_fixture_case("replays_a_save", "ReplaysASaveTest")', catalog)
         # The entry must still be valid Python, and still one TESTS tuple.
         ast.parse(catalog)
 

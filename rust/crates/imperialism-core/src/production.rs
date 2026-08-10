@@ -179,6 +179,28 @@ pub struct ShipOrderState {
     pub progress: ProductionProgress,
 }
 
+/// Retail's descriptor-derived Shipyard values, including its separate hull table.
+pub const fn ship_display_stats(ship_type: ShipType) -> [i16; 6] {
+    const STATS: [[i16; 6]; 14] = [
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 25, 0, 2],
+        [0, 0, 5, 40, 0, 4],
+        [3, 5, 10, 35, 4, 0],
+        [6, 6, 20, 65, 3, 0],
+        [0, 0, 5, 35, 0, 8],
+        [0, 0, 0, 25, 0, 4],
+        [3, 7, 20, 30, 7, 0],
+        [5, 8, 55, 50, 5, 0],
+        [10, 10, 60, 70, 6, 0],
+        [0, 0, 25, 45, 0, 16],
+        [6, 9, 50, 40, 8, 0],
+        [20, 13, 70, 115, 7, 0],
+        [18, 13, 55, 90, 9, 0],
+    ];
+
+    STATS[ship_type as usize]
+}
+
 pub const fn ship_type_is_valid_for_order_slot(slot: ShipOrderSlot, ship_type: ShipType) -> bool {
     match slot {
         ShipOrderSlot::MerchantEarlyPrimary => matches!(
@@ -364,6 +386,67 @@ pub const fn civilian_recruitment_spec(kind: CivilianUnitKind) -> RecruitmentOrd
         cash_per_unit,
         workforce: SkillBand::High,
     }
+}
+
+/// `g_anUniversityRequirementIdByRecruitRow`, retained as semantic resource kinds.
+pub const CIVILIAN_RESOURCE_SPECIALTIES: CivilianUnitTable<[Option<ResourceKind>; 4]> =
+    EnumMap::from_array([
+        [
+            Some(ResourceKind::Coal),
+            Some(ResourceKind::Iron),
+            Some(ResourceKind::Gems),
+            Some(ResourceKind::Gold),
+        ],
+        [None; 4],
+        [
+            Some(ResourceKind::Cotton),
+            Some(ResourceKind::Grain),
+            Some(ResourceKind::Fruit),
+            None,
+        ],
+        [Some(ResourceKind::Timber), None, None, None],
+        [None; 4],
+        [
+            Some(ResourceKind::Wool),
+            Some(ResourceKind::Livestock),
+            None,
+            None,
+        ],
+        [Some(ResourceKind::Fish), None, None, None],
+        [None; 4],
+        [Some(ResourceKind::Oil), None, None, None],
+    ]);
+
+/// `g_abUniversityRequirementLevelById` over the semantic resource domain.
+pub const fn resource_development_yield(resource: ResourceKind, level: u8) -> i16 {
+    const YIELDS: [[i16; 4]; ResourceKind::LENGTH] = [
+        [1, 2, 3, 4],
+        [1, 2, 3, 4],
+        [1, 2, 3, 4],
+        [0, 2, 4, 6],
+        [0, 2, 4, 6],
+        [1, 1, 1, 1],
+        [0, 2, 4, 6],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [1, 2, 3, 4],
+        [1, 2, 3, 4],
+        [1, 2, 3, 4],
+        [1, 2, 3, 4],
+        [0, 1, 2, 3],
+        [0, 1, 2, 3],
+    ];
+
+    assert!(level <= 3, "resource development level must be in 0..=3");
+    YIELDS[resource as usize][level as usize]
 }
 
 pub const fn military_recruitment_category(
@@ -583,7 +666,6 @@ fn set_population_growth_quantity(
     true
 }
 
-#[allow(dead_code)]
 fn produce_population_growth(
     progress: &mut ProductionProgress,
     city: &mut CityState,
@@ -640,7 +722,6 @@ fn set_food_processing_quantity(
     true
 }
 
-#[allow(dead_code)]
 fn produce_food_processing(progress: &mut ProductionProgress, city: &mut CityState) {
     city.adjust_stock(ResourceKind::Food, progress.quantity);
     progress.quantity = 0;
@@ -706,7 +787,6 @@ fn set_capacity_quantity(
     true
 }
 
-#[allow(dead_code)]
 fn produce_capacity(
     state: &mut RequestedCityOrderState,
     city: &mut CityState,
@@ -825,7 +905,6 @@ fn set_expansion_quantity(
     true
 }
 
-#[allow(dead_code)]
 fn produce_expansion(
     state: &mut RequestedCityOrderState,
     city: &mut CityState,
@@ -915,10 +994,8 @@ fn set_power_plant_quantity(
     true
 }
 
-#[allow(dead_code)]
 const fn produce_power_plant(_state: &PowerPlantOrderState) {}
 
-#[allow(dead_code)]
 fn restock_power_plant(state: &mut PowerPlantOrderState, city: &mut CityState) -> bool {
     let max_order = power_plant_max_order(state, city);
     let saved_desired_quantity = state.desired_quantity;
@@ -1001,7 +1078,6 @@ fn set_training_quantity(
     true
 }
 
-#[allow(dead_code)]
 fn produce_training(
     level: TrainingLevel,
     progress: &mut ProductionProgress,
@@ -1044,9 +1120,6 @@ fn produce_training(
     }
     progress.quantity = 0;
 }
-
-#[allow(dead_code)]
-const fn restock_training(_progress: &ProductionProgress) {}
 
 #[allow(clippy::too_many_arguments)]
 fn max_recruit_order(
@@ -1265,7 +1338,6 @@ fn set_item_quantity(
     true
 }
 
-#[allow(dead_code)]
 fn produce_item(state: &mut RequestedCityOrderState, city: &mut CityState, spec: ItemOrderSpec) {
     let production = &mut city.production_accum[spec.production_slot];
     *production += state.progress.quantity;
@@ -1284,7 +1356,6 @@ fn produce_item(state: &mut RequestedCityOrderState, city: &mut CityState, spec:
     state.progress.accumulated_value += i32::from(state.progress.quantity);
 }
 
-#[allow(dead_code)]
 fn restock_item(
     state: &mut RequestedCityOrderState,
     city: &mut CityState,
@@ -1304,7 +1375,6 @@ fn restock_item(
     }
 }
 
-#[allow(dead_code)]
 fn retail_region_capacity(owner: &GreatPowerState, owned_region_count: i32) -> i16 {
     let divisor = if owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
         .status()
@@ -1341,7 +1411,7 @@ fn reserve_primary_and_secondary(
     }
 }
 
-fn ship_order_costs(ship_type: ShipType) -> ResourceTable<i16> {
+pub fn ship_order_costs(ship_type: ShipType) -> ResourceTable<i16> {
     const LUMBER: [i16; 14] = [0, 4, 7, 5, 8, 6, 6, 6, 4, 8, 0, 2, 0, 0];
     const FABRIC: [i16; 14] = [0, 2, 3, 2, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0];
     const ARMS: [i16; 14] = [0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18];
@@ -1648,6 +1718,233 @@ impl GameState {
         };
         self.set_city_order_quantity(nation, order, quantity + delta)
     }
+
+    /// Resolves the city's retained production orders and starts its next
+    /// production cycle. This is retail `TCity::EndCityPhase`; unit objects are
+    /// committed after the city borrow is released.
+    pub(crate) fn end_city_phase(&mut self, nation: MajorNationId) {
+        const ITEM_OUTPUTS: [ResourceKind; 9] = [
+            ResourceKind::Fabric,
+            ResourceKind::Lumber,
+            ResourceKind::Paper,
+            ResourceKind::Steel,
+            ResourceKind::Fuel,
+            ResourceKind::Clothing,
+            ResourceKind::Furniture,
+            ResourceKind::Hardware,
+            ResourceKind::Arms,
+        ];
+        const CIVILIAN_KINDS: [CivilianUnitKind; 9] = [
+            CivilianUnitKind::Miner,
+            CivilianUnitKind::Prospector,
+            CivilianUnitKind::Farmer,
+            CivilianUnitKind::Forester,
+            CivilianUnitKind::Engineer,
+            CivilianUnitKind::Rancher,
+            CivilianUnitKind::Fisherman,
+            CivilianUnitKind::Developer,
+            CivilianUnitKind::Driller,
+        ];
+        const EXPANSION_SLOTS: [ProductionSlot; 7] = [
+            ProductionSlot::TextileMill,
+            ProductionSlot::ClothingFactory,
+            ProductionSlot::SteelMill,
+            ProductionSlot::Metalworks,
+            ProductionSlot::LumberMill,
+            ProductionSlot::FurnitureFactory,
+            ProductionSlot::OilRefinery,
+        ];
+
+        let owned_region_count =
+            self.nations
+                .owned_region_count(nation.nation())
+                .expect("city production requires a present major nation") as i32;
+        let mut produced_civilians = CivilianUnitTable::default();
+        {
+            let MajorNation { economy, city, .. } = &mut self.nations.majors[nation];
+            let mut orders = std::mem::take(&mut city.orders);
+
+            city.phase_counter += 1;
+            if matches!(economy.controller, MajorNationController::Computer) {
+                for resource in all_resources() {
+                    city.adjust_stock(resource, city.reserved_by_type[resource]);
+                }
+            }
+            for resource in all_resources() {
+                city.adjust_stock(resource, city.consumed_production_input_by_type[resource]);
+                city.consumed_production_input_by_type[resource] = 0;
+            }
+
+            let previous_production_score = city.rolling_item_production_score;
+            city.rolling_item_production_score = 0;
+            produce_food_processing(&mut orders.food_processing, city);
+            for output in ITEM_OUTPUTS {
+                let state = orders.items[output]
+                    .as_mut()
+                    .expect("item order exists for every retail recipe");
+                produce_item(
+                    state,
+                    city,
+                    item_order_spec(output).expect("item order has a retail recipe"),
+                );
+            }
+            produce_training(
+                TrainingLevel::Medium,
+                &mut orders.training[TrainingLevel::Medium],
+                city,
+                economy,
+            );
+            produce_training(
+                TrainingLevel::High,
+                &mut orders.training[TrainingLevel::High],
+                city,
+                economy,
+            );
+            city.rolling_item_production_score =
+                previous_production_score * 9 / 10 + city.rolling_item_production_score * 10;
+
+            for kind in CIVILIAN_KINDS {
+                let progress = &mut orders.civilian_recruitment[kind];
+                produced_civilians[kind] = progress.quantity;
+                progress.quantity = 0;
+            }
+
+            let transport_spec = transport_capacity_order_spec();
+            produce_capacity(
+                &mut orders.transport_capacity,
+                city,
+                economy,
+                CapacityTarget::Transport,
+                transport_spec.primary,
+                transport_spec.secondary,
+                owned_region_count,
+            );
+            produce_power_plant(&orders.power_plant);
+            for slot in EXPANSION_SLOTS {
+                let spec = expansion_order_spec(slot)
+                    .expect("expansion order has a retail material recipe");
+                produce_expansion(
+                    orders.expansions[slot]
+                        .as_mut()
+                        .expect("expansion order exists for every expandable slot"),
+                    city,
+                    economy,
+                    ExpansionTarget::Production(slot),
+                    spec.primary,
+                    spec.secondary,
+                    owned_region_count,
+                );
+            }
+            produce_population_growth(
+                &mut orders.population_growth,
+                city,
+                economy,
+                owned_region_count,
+            );
+
+            if city.power_plant_upgrade_queued {
+                city.power_plant_upgrade_queued = false;
+                city.production_accum[ProductionSlot::PowerPlant] +=
+                    999 - city.production_orders[ProductionSlot::PowerPlant];
+                city.production_orders[ProductionSlot::PowerPlant] = 999;
+            }
+            for resource in all_resources() {
+                if city.stockpile[resource] > 9_999 {
+                    city.stockpile.set_nonnegative(resource, 9_999);
+                }
+            }
+
+            city.power_available = 0;
+            city.start_production_phase();
+            restock_power_plant(&mut orders.power_plant, city);
+            for output in ITEM_OUTPUTS {
+                let state = orders.items[output]
+                    .as_mut()
+                    .expect("item order exists for every retail recipe");
+                restock_item(
+                    state,
+                    city,
+                    item_order_spec(output).expect("item order has a retail recipe"),
+                );
+            }
+            city.production_accum[ProductionSlot::RegionalPopulation] =
+                retail_region_capacity(economy, owned_region_count);
+            city.production_accum[ProductionSlot::Transport] =
+                city.production_orders[ProductionSlot::Transport];
+            city.orders = orders;
+        }
+
+        for (kind, quantity) in produced_civilians {
+            self.produce_civilian_recruits(nation, kind, quantity);
+        }
+    }
+
+    /// Resolves the Armory and Shipyard orders after potential calculation.
+    pub(crate) fn produce_city_units(&mut self, nation: MajorNationId) {
+        const MILITARY_CATEGORIES: [MilitaryRecruitmentCategory; 8] = [
+            MilitaryRecruitmentCategory::LightInfantry,
+            MilitaryRecruitmentCategory::RegularInfantry,
+            MilitaryRecruitmentCategory::HeavyInfantry,
+            MilitaryRecruitmentCategory::LightCavalry,
+            MilitaryRecruitmentCategory::HeavyCavalry,
+            MilitaryRecruitmentCategory::LightArtillery,
+            MilitaryRecruitmentCategory::HeavyArtillery,
+            MilitaryRecruitmentCategory::Demolitionist,
+        ];
+        const CIVILIAN_KINDS: [CivilianUnitKind; 9] = [
+            CivilianUnitKind::Miner,
+            CivilianUnitKind::Prospector,
+            CivilianUnitKind::Farmer,
+            CivilianUnitKind::Forester,
+            CivilianUnitKind::Engineer,
+            CivilianUnitKind::Rancher,
+            CivilianUnitKind::Fisherman,
+            CivilianUnitKind::Developer,
+            CivilianUnitKind::Driller,
+        ];
+        const SHIP_SLOTS: [ShipOrderSlot; 8] = [
+            ShipOrderSlot::MerchantEarlyPrimary,
+            ShipOrderSlot::MerchantEarlySecondary,
+            ShipOrderSlot::MerchantAdvancedPrimary,
+            ShipOrderSlot::MerchantAdvancedSecondary,
+            ShipOrderSlot::WarshipEarlyPrimary,
+            ShipOrderSlot::WarshipEarlySecondary,
+            ShipOrderSlot::WarshipAdvancedPrimary,
+            ShipOrderSlot::WarshipAdvancedSecondary,
+        ];
+
+        let mut military = Vec::new();
+        let mut civilians = Vec::new();
+        {
+            let city = self.nations.city_mut(nation);
+            for category in MILITARY_CATEGORIES {
+                let order = &mut city.orders.military_recruitment[category];
+                military.push((order.unit_kind, order.progress.quantity));
+                order.progress.quantity = 0;
+            }
+            for kind in CIVILIAN_KINDS {
+                let order = &mut city.orders.civilian_recruitment[kind];
+                civilians.push((kind, order.quantity));
+                order.quantity = 0;
+            }
+            for slot in SHIP_SLOTS {
+                let order = &mut city.orders.ships[slot];
+                let quantity = order.progress.quantity;
+                if order.ship_type != ShipType::NoShip && quantity != 0 {
+                    city.ship_order_count_by_type[order.ship_type] += quantity;
+                    order.progress.quantity = 0;
+                    order.progress.tracking_by_resource = ResourceTable::default();
+                }
+            }
+        }
+
+        for (unit_kind, quantity) in military {
+            self.produce_military_recruits(nation, unit_kind, quantity);
+        }
+        for (unit_kind, quantity) in civilians {
+            self.produce_civilian_recruits(nation, unit_kind, quantity);
+        }
+    }
 }
 
 fn apply_resource_cost(city: &mut CityState, cost: ResourceCost, quantity: i16) {
@@ -1683,7 +1980,7 @@ mod tests {
             low_production: false,
             low_stock: false,
             reserved_by_type: crate::ResourceTable::default(),
-            home_town_tile: Some(crate::TileId::new(1)),
+            home_town: Some(crate::TownState::for_frog_city(crate::TileId::new(1))),
             power_available: 0,
             stockpile: crate::Stockpile::default(),
             production_orders: crate::ProductionTable::default(),

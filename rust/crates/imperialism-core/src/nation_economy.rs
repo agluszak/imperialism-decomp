@@ -1,4 +1,4 @@
-use crate::{CityState, GreatPowerState, ResourceKind, all_resources};
+use crate::*;
 
 const TRANSPORT_NEED_PRIORITY: [ResourceKind; 10] = [
     ResourceKind::Grain,
@@ -15,7 +15,7 @@ const TRANSPORT_NEED_PRIORITY: [ResourceKind; 10] = [
 
 impl GreatPowerState {
     /// Mirrors the inline `TGreatPower::ComputeAvailableDiplomacyBudget` clamp.
-    pub(crate) fn available_diplomacy_budget(&self, treasury: i32) -> i32 {
+    pub fn available_diplomacy_budget(&self, treasury: i32) -> i32 {
         (treasury + self.diplomacy_budget_base / 100).max(0)
     }
 

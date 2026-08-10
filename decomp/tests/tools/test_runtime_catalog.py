@@ -50,7 +50,8 @@ class RuntimeCatalogTests(unittest.TestCase):
         self.assertIsNone(find_test("rolling_stock"))
         self.assertIsNone(find_test("city_item_order_increase"))
         self.assertIsNone(find_test("first_turn_alert_phase"))
-
+        self.assertIsNone(find_test("first_turn_trade_phase"))
+        self.assertIsNone(find_test("nation_resource_yield_rebuild"))
     def test_pr_suite_is_nonempty_and_part_of_full(self) -> None:
         pr_names = {test.name for test in tests_in_suite("pr")}
         full_names = {test.name for test in tests_in_suite("full")}

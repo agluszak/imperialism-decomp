@@ -1,7 +1,10 @@
 #include "NativeCases.h"
+#include "JsonArray.h"
 #include "JsonObject.h"
 
 #include "game/globals/shared_globals.h"
+#include "game/turn_event_codes.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 
 RuntimeActionResult RunFirstTurnAlertPhase(NativeTransition& transition) {
@@ -36,5 +39,20 @@ RuntimeActionResult RunFirstTurnDiplomacyPhase(NativeTransition& transition) {
   if (g_pSimMgr->turnStateCode != 7) {
     return RuntimeActionResult::Failure("the diplomacy phase did not advance to phase 7");
   }
-  return transition.Finish();
+  if ((g_pViewMgr != 0 ? g_pViewMgr->currentTurnEventCode : -1) != kTurnEventDiplomacyMap) {
+    return RuntimeActionResult::Failure("the diplomacy phase did not show the diplomacy map");
+  }
+
+  JsonObject effect;
+  effect.Set("kind", "show_diplomacy_map");
+  effect.Set("nation", static_cast<int>(g_pSimMgr->activeNationSlot));
+  JsonArray effects;
+  effects.Add(effect.Release());
+
+  JsonObject result;
+  result.Set("kind", "continues");
+  result.Set("from", 6);
+  result.Set("to", 7);
+  result.Set("effects", effects.Release());
+  return transition.Finish(result.Release());
 }

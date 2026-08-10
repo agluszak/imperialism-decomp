@@ -74,6 +74,23 @@ class RuntimeTestSpec:
     default_timeout: float = 300.0
 
 
+BEGINNING_OF_GAME = RuntimeFixtureSpec(
+    "beginning_of_game.imp",
+    "retail_fixture_oracle",
+)
+
+
+def retail_fixture_case(name: str, factory: str) -> RuntimeTestSpec:
+    return RuntimeTestSpec(
+        name,
+        factory,
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=BEGINNING_OF_GAME,
+        required_oracles=(),
+    )
+
+
 TESTS = (
     RuntimeTestSpec(
         "boot_managers",
@@ -198,11 +215,8 @@ TESTS = (
         "EasyTurnFromSaveTest",
         ("full",),
         "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
+        fixture=BEGINNING_OF_GAME,
         required_oracles=(),
-        native_snapshots=("game_state",),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -210,9 +224,7 @@ TESTS = (
         "NativeTransitionOracle",
         (),
         "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
+        fixture=BEGINNING_OF_GAME,
         required_oracles=(),
         native_snapshots=("game_state",),
     ),
@@ -326,9 +338,7 @@ TESTS = (
         "LoadSavedGameTest",
         ("full",),
         "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
+        fixture=BEGINNING_OF_GAME,
         required_oracles=("map",),
         native_snapshots=("map_state", "game_state"),
         record_game_flow=True,

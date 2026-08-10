@@ -19,7 +19,45 @@ pub struct GameState {
     pub ships: Vec<ShipState>,
     pub task_forces: Vec<TaskForceState>,
     pub missions: Vec<MissionState>,
+    pub news: NewsState,
     pub pending: PendingWorkState,
+}
+
+impl GameState {
+    /// Enters the retail strategic-map view by selecting the active nation's first idle
+    /// civilian and centering the 9-by-7 tile viewport on it.
+    pub fn enter_strategic_map_view(&mut self) {
+        const VIEWPORT_TILE_SPAN: i32 = 9;
+
+        let Some(tile) = self
+            .civilian_units
+            .iter()
+            .find(|unit| {
+                unit.nation == self.turn.active_nation && unit.order == CivilianWorkOrder::Idle
+            })
+            .and_then(|unit| unit.location.tile())
+        else {
+            return;
+        };
+
+        let geometry = self.world.geometry();
+        let (row, column) = geometry.row_column(tile);
+        let mut column = i32::from(column) - VIEWPORT_TILE_SPAN / 2;
+        if self.world.topology() == MapTopology::Bounded {
+            column = column.clamp(1, 0x6e - VIEWPORT_TILE_SPAN);
+        }
+        if column < 0 {
+            column += i32::from(STRATEGIC_MAP_WIDTH);
+        } else if column >= i32::from(STRATEGIC_MAP_WIDTH) {
+            column -= i32::from(STRATEGIC_MAP_WIDTH);
+        }
+        let row = (i32::from(row) - 3).clamp(0, 0x35);
+        self.world.set_view_origin(
+            geometry
+                .tile(row as u16, column as u16)
+                .expect("retail strategic-map viewport origin is inside the map"),
+        );
+    }
 }
 
 /// A port zone and the nation that owned its port tile before scenario setup.
@@ -57,16 +95,19 @@ impl UnitIdAllocator {
 /// still be absent until their save projection is normalized separately.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Nations {
-    pub(crate) majors: MajorNationTable<MajorNation>,
+    pub(crate) majors: Box<MajorNationTable<MajorNation>>,
     pub(crate) minors: MinorNationTable<Option<MinorNation>>,
 }
 
 impl Nations {
-    pub const fn new(
+    pub fn new(
         majors: MajorNationTable<MajorNation>,
         minors: MinorNationTable<Option<MinorNation>>,
     ) -> Self {
-        Self { majors, minors }
+        Self {
+            majors: Box::new(majors),
+            minors,
+        }
     }
 
     pub fn major(&self, nation: crate::MajorNationId) -> &MajorNation {
@@ -97,6 +138,25 @@ impl Nations {
         self.minors.iter().flatten().count()
     }
 
+    /// Returns the normalized display name used by retail nation-facing UI.
+    pub fn display_name(&self, nation: NationId) -> Option<&str> {
+        self.common(nation)
+            .map(|common| common.display_name.as_str())
+    }
+
+    pub fn country_status(&self, nation: NationId) -> Option<crate::CountryStatus> {
+        self.common(nation).map(NationCommonState::status)
+    }
+
+    pub fn owned_region_count(&self, nation: NationId) -> Option<usize> {
+        self.common(nation)
+            .map(NationCommonState::owned_region_count)
+    }
+
+    pub fn home_tile(&self, nation: NationId) -> Option<TileId> {
+        self.common(nation).and_then(|common| common.home_tile)
+    }
+
     pub(crate) fn common(&self, nation: NationId) -> Option<&NationCommonState> {
         if let Some(nation) = MajorNationId::from_nation(nation) {
             Some(&self.majors[nation].common)
@@ -115,6 +175,46 @@ impl Nations {
                 .as_mut()
                 .map(|nation| &mut nation.common)
         }
+    }
+
+    pub(crate) fn append_owned_region_during_construction(
+        &mut self,
+        nation: NationId,
+        province: ProvinceId,
+    ) {
+        self.common_mut(nation)
+            .expect("constructed province owner must be present")
+            .owned_regions
+            .push(province);
+    }
+
+    pub(crate) fn transfer_owned_region_index(
+        &mut self,
+        old_owner: NationId,
+        new_owner: NationId,
+        province: ProvinceId,
+    ) {
+        let old_position = self
+            .common(old_owner)
+            .expect("owned province requires its owner nation to be present")
+            .owned_regions
+            .iter()
+            .position(|&owned| owned == province)
+            .expect("owned province requires one ordered-index entry");
+        self.common_mut(old_owner)
+            .expect("owned province requires its owner nation to be present")
+            .owned_regions
+            .remove(old_position);
+        self.common_mut(new_owner)
+            .expect("province transfer requires the new owner to be present")
+            .owned_regions
+            .push(province);
+    }
+
+    pub(crate) fn set_country_status(&mut self, nation: NationId, status: crate::CountryStatus) {
+        self.common_mut(nation)
+            .expect("country status requires the nation to be present")
+            .status = status;
     }
 }
 
@@ -148,13 +248,14 @@ impl MajorNation {
         city: CityState,
     ) -> Self {
         Self {
-            common: NationCommonState {
-                status: crate::CountryStatus::Independent,
-                owned_regions: Vec::new(),
+            common: NationCommonState::from_parts(
+                String::new(),
+                crate::CountryStatus::Independent,
+                Vec::new(),
                 treasury,
-                home_tile: None,
-                trade_policy_by_nation: NationTable::default(),
-            },
+                None,
+                NationTable::default(),
+            ),
             economy: GreatPowerState::for_random_start(human, foreign_minister_personality),
             city,
         }
@@ -177,6 +278,31 @@ impl MajorNation {
 pub struct MinorNation {
     pub common: NationCommonState,
     pub consortium_members: [MinorNationId; 4],
+    pub trade: MinorTradeState,
+}
+
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct MinorTradeThresholds {
+    pub primary_manufactured_price: i16,
+    pub secondary_manufactured_price: i16,
+    pub general_offer_price: i16,
+    pub random_offer_price: i16,
+    pub coal_offer_price: i16,
+    pub iron_offer_price: i16,
+    pub oil_offer_price: i16,
+}
+
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct MinorTradeState {
+    pub current_supply: ResourceTable<i16>,
+    pub offers: ResourceTable<i16>,
+    pub grant_deltas: ResourceTable<i16>,
+    pub thresholds: MinorTradeThresholds,
+    pub primary_manufactured_request: Option<TradeCommodity>,
+    pub secondary_manufactured_request: Option<TradeCommodity>,
+    pub primary_request_fulfilled: i16,
+    pub secondary_request_fulfilled: i16,
+    pub independent_resource_counts: ResourceTable<i16>,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -188,19 +314,206 @@ pub struct TurnState {
     /// This is not the 1815-based display calendar.
     pub diplomacy_year_term_raw: i16,
     pub phase: PhaseCode,
+    /// Persisted turn-flow status bits consumed by the alert and technology phases.
+    pub turn_flow_status_flags: u32,
+    /// Retail's decade-boundary presentation state, indexed by `economic_turn / 40`.
+    pub quarter_gate_by_decade: [u8; 10],
     pub difficulty: Difficulty,
     pub active_nation: NationId,
     pub selected_nation: NationId,
 }
 
-/// Global technology flags that currently affect authoritative simulation rules.
+/// Per-nation University capability state used by city production and recruitment.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
+pub struct UniversityTechnologyState {
+    pub available: CivilianUnitTable<bool>,
+    /// Highest unlocked requirement column (0..=3) for each resource.
+    pub requirement_levels: ResourceTable<u8>,
+}
+
+impl<'de> Deserialize<'de> for UniversityTechnologyState {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        #[derive(Deserialize)]
+        struct SerializedUniversityTechnologyState {
+            available: CivilianUnitTable<bool>,
+            requirement_levels: ResourceTable<u8>,
+        }
+
+        let serialized = SerializedUniversityTechnologyState::deserialize(deserializer)?;
+        if serialized
+            .requirement_levels
+            .values()
+            .any(|level| *level > 3)
+        {
+            return Err(serde::de::Error::custom(
+                "university requirement levels must be in 0..=3",
+            ));
+        }
+        Ok(Self {
+            available: serialized.available,
+            requirement_levels: serialized.requirement_levels,
+        })
+    }
+}
+
+impl Default for UniversityTechnologyState {
+    fn default() -> Self {
+        Self {
+            available: CivilianUnitTable::from_array([
+                true, true, true, false, true, false, false, true, false,
+            ]),
+            requirement_levels: ResourceTable::from_array([
+                0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1,
+            ]),
+        }
+    }
+}
+
+/// The technology capabilities consumed by one major nation's city and civilian-order rules.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct CityTechnologyCapabilities {
+    pub advanced_iron_working: bool,
+    pub oil_drilling: bool,
+    pub university: UniversityTechnologyState,
+    pub primary_civilian_distance_terrain: CivilianTerrainAccess,
+    pub secondary_civilian_hills: bool,
+    pub secondary_civilian_swamp: bool,
+    pub fort_level_cap: FortLevelCap,
+}
+
+impl Default for CityTechnologyCapabilities {
+    fn default() -> Self {
+        Self {
+            advanced_iron_working: false,
+            oil_drilling: false,
+            university: UniversityTechnologyState::default(),
+            primary_civilian_distance_terrain: CivilianTerrainAccess::default(),
+            secondary_civilian_hills: false,
+            secondary_civilian_swamp: false,
+            fort_level_cap: FortLevelCap::ONE,
+        }
+    }
+}
+
+impl CityTechnologyCapabilities {
+    pub(crate) const fn secondary_civilian_distance_terrain(self) -> CivilianTerrainAccess {
+        CivilianTerrainAccess {
+            hills: self.secondary_civilian_hills,
+            mountain: self.oil_drilling,
+            swamp: self.secondary_civilian_swamp,
+        }
+    }
+}
+
+pub const TECHNOLOGY_COUNT: usize = 29;
+
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum TechnologyResearchStatus {
+    #[default]
+    NotStarted,
+    Pending,
+    Researched,
+}
+
+/// Global technology milestones and the city capabilities of every major nation.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TechnologyState {
     pub advanced_iron_working: bool,
     pub marine_engineering: bool,
+    pub scheduled_unlock_turn_by_technology: [i16; TECHNOLOGY_COUNT],
+    pub global_unlocks_by_technology: [bool; TECHNOLOGY_COUNT],
+    pub research_status_by_nation: MajorNationTable<[TechnologyResearchStatus; TECHNOLOGY_COUNT]>,
+    pub industry_enabled_by_slot: [bool; 14],
+    pub military_unit_ability_active_by_nation: MajorNationTable<MilitaryUnitTable<bool>>,
+    pub city_capabilities_by_nation: MajorNationTable<CityTechnologyCapabilities>,
+}
+
+impl Default for TechnologyState {
+    fn default() -> Self {
+        Self {
+            advanced_iron_working: false,
+            marine_engineering: false,
+            scheduled_unlock_turn_by_technology: [0; TECHNOLOGY_COUNT],
+            global_unlocks_by_technology: [
+                true, true, true, false, false, false, false, false, false, false, false, false,
+                false, false, false, false, false, false, false, false, false, false, false, false,
+                false, false, false, false, false,
+            ],
+            research_status_by_nation: MajorNationTable::from_fn(|_| {
+                let mut status = [TechnologyResearchStatus::NotStarted; TECHNOLOGY_COUNT];
+                status[0] = TechnologyResearchStatus::Researched;
+                status[1] = TechnologyResearchStatus::Researched;
+                status[2] = TechnologyResearchStatus::Researched;
+                status
+            }),
+            industry_enabled_by_slot: [
+                true, true, true, true, true, false, false, false, false, false, false, false,
+                false, false,
+            ],
+            military_unit_ability_active_by_nation: MajorNationTable::from_fn(|_| {
+                MilitaryUnitTable::from_array([
+                    true, true, true, true, true, true, true, true, false, false, false, false,
+                    false, false, false, false, false, false, false, false, false, false, false,
+                    false, true, false, false, true, false, false,
+                ])
+            }),
+            city_capabilities_by_nation: MajorNationTable::default(),
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct CivilianTerrainAccess {
+    pub hills: bool,
+    pub mountain: bool,
+    pub swamp: bool,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct FortLevelCap(i8);
+
+impl FortLevelCap {
+    pub const ONE: Self = Self(1);
+    pub const TWO: Self = Self(2);
+    pub const THREE: Self = Self(3);
+
+    pub const fn get(self) -> i8 {
+        self.0
+    }
+}
+
+impl<'de> Deserialize<'de> for FortLevelCap {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        match i8::deserialize(deserializer)? {
+            1 => Ok(Self::ONE),
+            2 => Ok(Self::TWO),
+            3 => Ok(Self::THREE),
+            value => Err(serde::de::Error::custom(format!(
+                "fort level cap {value} is outside 1..=3"
+            ))),
+        }
+    }
+}
+
+impl Default for FortLevelCap {
+    fn default() -> Self {
+        Self::ONE
+    }
 }
 
 impl TechnologyState {
+    pub const fn oil_drilling_available(&self) -> bool {
+        self.global_unlocks_by_technology[0x13]
+    }
+
     /// Selects the production-capacity term used by retail's naval-force score.
     pub const fn naval_production_capacity(
         self,
@@ -238,7 +551,22 @@ impl PhaseCode {
     pub const PRE_MAP: Self = Self(3);
     pub const HOME_PLACEMENT: Self = Self(4);
     pub const STRATEGIC_MAP: Self = Self(5);
-    pub const TURN: Self = Self(6);
+    pub const DIPLOMACY: Self = Self(6);
+    pub const TRADE: Self = Self(7);
+    pub const CITY_AND_TRANSPORT: Self = Self(8);
+    pub const GREAT_POWER_PRESSURE: Self = Self(0x0b);
+    pub const DEAL_BOOK: Self = Self(0x0c);
+    pub const OFFER_SHEET: Self = Self(9);
+    pub const MILITARY: Self = Self(10);
+    pub const DIPLOMACY_OFFER: Self = Self(0x0d);
+    pub const QUARTER_GATE: Self = Self(0x0e);
+    pub const NEWSPAPER: Self = Self(0x0f);
+    pub const SEASON_ADVANCE: Self = Self(0x10);
+    pub const TECHNOLOGY_ADVANCES: Self = Self(0x11);
+    pub const RETURN_TO_MAP: Self = Self(0x12);
+    pub const COMBAT_MOVES: Self = Self(0x14);
+    pub const MILITARY_CLEANUP: Self = Self(0x15);
+    pub const ELIMINATION: Self = Self(0x19);
     pub const fn from_retail(value: i32) -> Self {
         Self(value)
     }
@@ -250,6 +578,7 @@ impl PhaseCode {
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct StrategicMap {
     topology: MapTopology,
+    view_origin: TileId,
     tiles: Box<[TileState]>,
 }
 
@@ -261,11 +590,14 @@ impl<'de> Deserialize<'de> for StrategicMap {
         #[derive(Deserialize)]
         struct SerializedStrategicMap {
             topology: MapTopology,
+            view_origin: TileId,
             tiles: Box<[TileState]>,
         }
 
         let map = SerializedStrategicMap::deserialize(deserializer)?;
-        Self::new(map.topology, map.tiles).map_err(serde::de::Error::custom)
+        let mut world = Self::new(map.topology, map.tiles).map_err(serde::de::Error::custom)?;
+        world.view_origin = map.view_origin;
+        Ok(world)
     }
 }
 
@@ -286,13 +618,21 @@ impl StrategicMap {
                 actual: tiles.len(),
             });
         }
-        Ok(Self { topology, tiles })
+        Ok(Self {
+            topology,
+            view_origin: TileId::new(1),
+            tiles,
+        })
     }
 
     /// Accepts tiles derived one-for-one from an already validated generated map.
     pub(crate) fn from_generated_tiles(topology: MapTopology, tiles: Box<[TileState]>) -> Self {
         debug_assert_eq!(tiles.len(), STRATEGIC_TILE_COUNT);
-        Self { topology, tiles }
+        Self {
+            topology,
+            view_origin: TileId::new(1),
+            tiles,
+        }
     }
 
     pub const fn geometry(&self) -> crate::MapGeometry {
@@ -301,6 +641,14 @@ impl StrategicMap {
 
     pub const fn topology(&self) -> MapTopology {
         self.topology
+    }
+
+    pub const fn view_origin(&self) -> TileId {
+        self.view_origin
+    }
+
+    pub fn set_view_origin(&mut self, view_origin: TileId) {
+        self.view_origin = view_origin;
     }
 
     pub fn iter(&self) -> impl ExactSizeIterator<Item = &TileState> {
@@ -325,8 +673,11 @@ impl IndexMut<TileId> for StrategicMap {
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TileState {
     pub terrain: TerrainKind,
+    pub rendering: TileRendering,
+    pub region_tile_subtype: RegionTileSubtype,
     pub owner_nation: Option<TileOwnerTag>,
     pub former_owner_nation: Option<TileOwnerTag>,
+    pub secondary_owner_nation: Option<MajorNationId>,
     pub province: Option<ProvinceId>,
     pub development: TileDevelopment,
     pub edge_resources: [Option<crate::ResourceKind>; 2],
@@ -338,6 +689,121 @@ pub struct TileState {
     pub flags: TileFlags,
     pub region: Option<RegionId>,
     pub river: Option<RiverSegment>,
+}
+
+/// The resolved per-tile picture choices consumed by retail's strategic-map renderer.
+///
+/// These values are stable observable state: retail saves and restores them instead of
+/// rerunning the random picture-assignment pass when a game is loaded.
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize)]
+pub struct TileRendering {
+    pub sprite_variant: u8,
+    pub river_sprite: Option<RiverSprite>,
+    pub transition_mask: u8,
+    pub coast_or_secondary_mask: u8,
+}
+
+impl TileRendering {
+    pub const fn from_retail(
+        sprite_variant: u8,
+        river_sprite: u8,
+        transition_mask: u8,
+        coast_or_secondary_mask: u8,
+    ) -> Option<Self> {
+        if sprite_variant > 0x3f || transition_mask > 0x3f || coast_or_secondary_mask > 0x3f {
+            return None;
+        }
+        let river_sprite = if river_sprite == 0 {
+            None
+        } else {
+            match RiverSprite::from_retail(river_sprite) {
+                Some(sprite) => Some(sprite),
+                None => return None,
+            }
+        };
+        Some(Self {
+            sprite_variant,
+            river_sprite,
+            transition_mask,
+            coast_or_secondary_mask,
+        })
+    }
+}
+
+impl<'de> Deserialize<'de> for TileRendering {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        #[derive(Deserialize)]
+        struct SerializedTileRendering {
+            sprite_variant: u8,
+            river_sprite: Option<RiverSprite>,
+            transition_mask: u8,
+            coast_or_secondary_mask: u8,
+        }
+
+        let rendering = SerializedTileRendering::deserialize(deserializer)?;
+        if rendering.sprite_variant > 0x3f
+            || rendering.transition_mask > 0x3f
+            || rendering.coast_or_secondary_mask > 0x3f
+        {
+            return Err(serde::de::Error::custom(
+                "tile rendering variant and masks must be between 0 and 0x3f",
+            ));
+        }
+        Ok(Self {
+            sprite_variant: rendering.sprite_variant,
+            river_sprite: rendering.river_sprite,
+            transition_mask: rendering.transition_mask,
+            coast_or_secondary_mask: rendering.coast_or_secondary_mask,
+        })
+    }
+}
+
+/// One finalized retail `TTerrainStateRecord::riverSpriteCode` picture choice.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct RiverSprite(u8);
+
+impl RiverSprite {
+    pub const fn from_retail(value: u8) -> Option<Self> {
+        if value >= 0x0b && value <= 0x3a {
+            Some(Self(value))
+        } else {
+            None
+        }
+    }
+
+    pub const fn retail(self) -> u8 {
+        self.0
+    }
+}
+
+impl<'de> Deserialize<'de> for RiverSprite {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let value = u8::deserialize(deserializer)?;
+        Self::from_retail(value)
+            .ok_or_else(|| serde::de::Error::custom("river sprite must be between 0x0b and 0x3a"))
+    }
+}
+
+/// Retail's open numeric tile-profile domain (`TTerrainStateRecord::gateFlag`).
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct RegionTileSubtype(i8);
+
+impl RegionTileSubtype {
+    pub const fn from_retail(value: i8) -> Self {
+        Self(value)
+    }
+
+    pub const fn retail(self) -> i8 {
+        self.0
+    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
@@ -505,8 +971,11 @@ impl Default for TileState {
     fn default() -> Self {
         Self {
             terrain: TerrainKind::Plains,
+            rendering: TileRendering::default(),
+            region_tile_subtype: RegionTileSubtype::default(),
             owner_nation: None,
             former_owner_nation: None,
+            secondary_owner_nation: None,
             province: None,
             development: TileDevelopment::default(),
             edge_resources: [None; 2],
@@ -822,11 +1291,44 @@ impl DiplomacyState {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct NationCommonState {
-    pub status: crate::CountryStatus,
-    pub owned_regions: Vec<ProvinceId>,
+    pub display_name: String,
+    status: crate::CountryStatus,
+    owned_regions: Vec<ProvinceId>,
     pub treasury: i32,
     pub home_tile: Option<TileId>,
     pub trade_policy_by_nation: NationTable<TradePolicyScore>,
+}
+
+impl NationCommonState {
+    pub fn from_parts(
+        display_name: String,
+        status: crate::CountryStatus,
+        owned_regions: Vec<ProvinceId>,
+        treasury: i32,
+        home_tile: Option<TileId>,
+        trade_policy_by_nation: NationTable<TradePolicyScore>,
+    ) -> Self {
+        Self {
+            display_name,
+            status,
+            owned_regions,
+            treasury,
+            home_tile,
+            trade_policy_by_nation,
+        }
+    }
+
+    pub const fn status(&self) -> crate::CountryStatus {
+        self.status
+    }
+
+    pub fn owned_regions(&self) -> &[ProvinceId] {
+        &self.owned_regions
+    }
+
+    pub fn owned_region_count(&self) -> usize {
+        self.owned_regions.len()
+    }
 }
 
 /// A bilateral trade-preference score.
@@ -843,6 +1345,10 @@ impl TradePolicyScore {
 
     pub const fn new(score: i32) -> Self {
         Self(score)
+    }
+
+    pub(crate) const fn retail(self) -> i32 {
+        self.0
     }
 
     pub(crate) const fn decrement_step(self, treasury: i32) -> Self {
@@ -872,6 +1378,51 @@ pub struct DiplomacyGrant {
     pub recurring: bool,
 }
 
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ForeignTradeBid {
+    pub commodity: TradeCommodity,
+    pub amount: i16,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ForeignTradeState {
+    pub interior_bid: Option<ForeignTradeBid>,
+    pub phase_counter: i16,
+    pub refresh_interval: i16,
+    pub requested_ship: ShipType,
+    pub purchase_priority: TradeCommodityTable<i16>,
+    pub preferred_resources: [Option<TradeCommodity>; 4],
+}
+
+impl ForeignTradeState {
+    pub(crate) fn for_random_start(personality: ForeignMinisterPersonality) -> Self {
+        let refresh_interval = match personality {
+            ForeignMinisterPersonality::Arms
+            | ForeignMinisterPersonality::Bill
+            | ForeignMinisterPersonality::Ted => 4,
+            _ => 5,
+        };
+        let requested_ship = match personality {
+            ForeignMinisterPersonality::Arms | ForeignMinisterPersonality::Bill => ShipType::Trader,
+            _ => ShipType::Indiaman,
+        };
+        Self {
+            interior_bid: None,
+            phase_counter: 0,
+            refresh_interval,
+            requested_ship,
+            purchase_priority: TradeCommodityTable::default(),
+            preferred_resources: [None; 4],
+        }
+    }
+}
+
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct AiTradeState {
+    /// Temporary stock synthesized for resources food through fuel during AI bidding.
+    pub temporary_processed_stock: ProcessedTradeCommodityTable<i16>,
+}
+
 /// A proposed diplomatic relationship with one nation.
 ///
 /// The retail save stores these as numeric proposal codes. The core keeps the
@@ -892,9 +1443,11 @@ pub enum DiplomacyPolicy {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct GreatPowerState {
     pub controller: MajorNationController,
-    pub ai_zone_targets: Option<Vec<AiZoneTargetState>>,
+    pub ai_zone_targets: Option<Vec<AiTargetState>>,
+    pub ai_province_targets: Option<ProvinceTable<AiTargetState>>,
     pub foreign_minister_personality: ForeignMinisterPersonality,
     pub foreign_minister_skill_index: i16,
+    pub foreign_trade: ForeignTradeState,
     pub development_grant_by_nation: NationTable<i16>,
     pub defense_minister_skill_index: i16,
     pub capacities: NationCapacities,
@@ -910,6 +1463,11 @@ pub struct GreatPowerState {
     pub unfilled_trade_turns_by_resource: ResourceTable<i16>,
     pub transported_items_by_resource: ResourceTable<i16>,
     pub remembered_trade_offers_by_resource: ResourceTable<i16>,
+    pub deal_book: TradeCommodityTable<Vec<TradeDealBookEntry>>,
+    pub pending_ship: Option<ShipType>,
+    pub interior_civilian: Box<InteriorCivilianState>,
+    pub ai_trade: Option<AiTradeState>,
+    pub ai_development_pressure: Option<AiDevelopmentPressureState>,
     pub aid_allocation_by_minor_nation: MinorNationTable<ResourceTable<i32>>,
     pub budget_pool_base: i32,
     pub budget_pool_delta: i32,
@@ -922,6 +1480,7 @@ pub struct GreatPowerState {
     pub escalation_counter: i16,
     pub pending_commitment_cost: i32,
     pub pressure_counter: i16,
+    pub army_movement_budget: i32,
     pub aid_allocation_total: i32,
     pub colony_boycott_flags: NationTable<u8>,
     pub military_expenses: i32,
@@ -946,8 +1505,13 @@ impl GreatPowerState {
                 MajorNationController::Human => None,
                 MajorNationController::Computer => Some(Vec::new()),
             },
+            ai_province_targets: match controller {
+                MajorNationController::Human => None,
+                MajorNationController::Computer => Some(ProvinceTable::default()),
+            },
             foreign_minister_personality,
             foreign_minister_skill_index: foreign_minister_personality.initial_skill_index(),
+            foreign_trade: ForeignTradeState::for_random_start(foreign_minister_personality),
             development_grant_by_nation: NationTable::default(),
             defense_minister_skill_index: 0,
             capacities: NationCapacities::from_array([0, 0, 0x0f, 0]),
@@ -963,6 +1527,13 @@ impl GreatPowerState {
             unfilled_trade_turns_by_resource: ResourceTable::default(),
             transported_items_by_resource: ResourceTable::default(),
             remembered_trade_offers_by_resource: ResourceTable::default(),
+            deal_book: TradeCommodityTable::default(),
+            pending_ship: None,
+            interior_civilian: Box::default(),
+            ai_trade: (!human).then(AiTradeState::default),
+            // These TAutoGreatPower fields are not initialized at the pre-capital
+            // random-game boundary. They become authoritative during turn setup.
+            ai_development_pressure: None,
             aid_allocation_by_minor_nation: MinorNationTable::default(),
             budget_pool_base: 0,
             budget_pool_delta: 0,
@@ -975,6 +1546,7 @@ impl GreatPowerState {
             escalation_counter: 0,
             pending_commitment_cost: 0,
             pressure_counter: 0,
+            army_movement_budget: 0x0f,
             aid_allocation_total: 0,
             colony_boycott_flags: NationTable::default(),
             military_expenses: 0,
@@ -982,10 +1554,131 @@ impl GreatPowerState {
     }
 }
 
-/// An AI major's current use of one live sea or port-zone context.
+/// Persistent inputs and pending work owned by retail's city interior minister.
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct InteriorCivilianState {
+    pub(crate) pending_recruitment: Option<CivilianUnitKind>,
+    pub(crate) railhead_target: Option<TileId>,
+    pub(crate) resource_order_metrics: ResourceTable<i16>,
+    pub(crate) city_order_demand: AiCityOrderDemand,
+    pub(crate) deferred_labor_shortfall: i16,
+    pub(crate) production_deficit_by_slot: ProductionTable<i16>,
+    pub(crate) temporarily_reserved_ship_arms: i16,
+    pub(crate) railhead_priority_by_resource: ResourceTable<i16>,
+    pub(crate) exterior_need_by_resource: ResourceTable<i16>,
+    pub(crate) historical_need_by_resource: ResourceTable<i16>,
+    pub(crate) civilian_order_demand_by_resource: ResourceTable<i16>,
+    pub(crate) average_development_order_allocation: i32,
+    pub(crate) pending_development_actions: Vec<PendingDevelopmentAction>,
+}
+
+/// Persistent production quantities requested by an automated interior minister.
+///
+/// These are planning inputs for the authoritative [`CityOrders`], not a second
+/// set of city orders. Retail keeps them after an order has been partially
+/// accepted so the next city pass can retry the remaining request.
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct AiCityOrderDemand {
+    pub(crate) training: TrainingOrderTable<i16>,
+    pub(crate) military_recruitment: MilitaryRecruitOrderTable<i16>,
+    pub(crate) civilian_recruitment: CivilianUnitTable<i16>,
+    pub(crate) ships: ShipOrderTable<i16>,
+    pub(crate) transport_capacity: i16,
+    pub(crate) expansions: ProductionTable<i16>,
+    pub(crate) population_growth: i16,
+}
+
+impl AiCityOrderDemand {
+    pub fn from_parts(
+        training: TrainingOrderTable<i16>,
+        military_recruitment: MilitaryRecruitOrderTable<i16>,
+        civilian_recruitment: CivilianUnitTable<i16>,
+        ships: ShipOrderTable<i16>,
+        transport_capacity: i16,
+        expansions: ProductionTable<i16>,
+        population_growth: i16,
+    ) -> Self {
+        Self {
+            training,
+            military_recruitment,
+            civilian_recruitment,
+            ships,
+            transport_capacity,
+            expansions,
+            population_growth,
+        }
+    }
+}
+
+/// One ordered city-development request retained by an AI interior minister.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum PendingDevelopmentAction {
+    Industry { slot: ProductionSlot },
+    LandUnit { unit_type: MilitaryUnitKind },
+}
+
+impl InteriorCivilianState {
+    #[allow(clippy::too_many_arguments)]
+    pub fn from_parts(
+        pending_recruitment: Option<CivilianUnitKind>,
+        railhead_target: Option<TileId>,
+        resource_order_metrics: ResourceTable<i16>,
+        city_order_demand: AiCityOrderDemand,
+        deferred_labor_shortfall: i16,
+        production_deficit_by_slot: ProductionTable<i16>,
+        temporarily_reserved_ship_arms: i16,
+        railhead_priority_by_resource: ResourceTable<i16>,
+        exterior_need_by_resource: ResourceTable<i16>,
+        historical_need_by_resource: ResourceTable<i16>,
+        civilian_order_demand_by_resource: ResourceTable<i16>,
+        average_development_order_allocation: i32,
+        pending_development_actions: Vec<PendingDevelopmentAction>,
+    ) -> Self {
+        Self {
+            pending_recruitment,
+            railhead_target,
+            resource_order_metrics,
+            city_order_demand,
+            deferred_labor_shortfall,
+            production_deficit_by_slot,
+            temporarily_reserved_ship_arms,
+            railhead_priority_by_resource,
+            exterior_need_by_resource,
+            historical_need_by_resource,
+            civilian_order_demand_by_resource,
+            average_development_order_allocation,
+            pending_development_actions,
+        }
+    }
+}
+
+/// Runtime-derived inputs used by an AI major when selecting a fort province.
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct AiDevelopmentPressureState {
+    pub(crate) expansion_pressure_per_compatible_region_bits: u32,
+    pub(crate) average_unit_divergence_per_owned_region_bits: u32,
+    pub(crate) active_mission_pressure_average_bits: u32,
+}
+
+impl AiDevelopmentPressureState {
+    pub(crate) fn expansion_pressure_per_compatible_region(self) -> f32 {
+        f32::from_bits(self.expansion_pressure_per_compatible_region_bits)
+    }
+
+    pub(crate) fn average_unit_divergence_per_owned_region(self) -> f32 {
+        f32::from_bits(self.average_unit_divergence_per_owned_region_bits)
+    }
+
+    pub(crate) fn active_mission_pressure_average(self) -> f32 {
+        f32::from_bits(self.active_mission_pressure_average_bits)
+    }
+}
+
+/// An AI major's current use of one province or live sea/port-zone target.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
-pub enum AiZoneTargetState {
+pub enum AiTargetState {
     #[default]
     Unmarked,
     Candidate,
@@ -1076,6 +1769,34 @@ impl PendingActionStatus {
     }
 }
 
+/// The one city town retained by the currently supported legacy-save projection.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct TownState {
+    pub(crate) tile: TileId,
+    pub(crate) transport_linked: bool,
+    pub(crate) enabled: bool,
+    pub(crate) active: bool,
+}
+
+impl TownState {
+    pub const fn new(tile: TileId, transport_linked: bool, enabled: bool, active: bool) -> Self {
+        Self {
+            tile,
+            transport_linked,
+            enabled,
+            active,
+        }
+    }
+
+    pub(crate) const fn for_frog_city(tile: TileId) -> Self {
+        Self::new(tile, false, true, true)
+    }
+
+    pub const fn tile(self) -> TileId {
+        self.tile
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CityState {
     /// Boxed to keep the dense fixed order tables out of already-large
@@ -1103,7 +1824,7 @@ pub struct CityState {
     pub low_production: bool,
     pub low_stock: bool,
     pub reserved_by_type: ResourceTable<i16>,
-    pub home_town_tile: Option<TileId>,
+    pub home_town: Option<TownState>,
     pub power_available: i16,
     pub stockpile: Stockpile,
     pub production_orders: ProductionTable<i16>,
@@ -1141,7 +1862,7 @@ impl CityState {
             low_production: false,
             low_stock: false,
             reserved_by_type: ResourceTable::default(),
-            home_town_tile: human.then(|| TileId::new(0)),
+            home_town: human.then(|| TownState::for_frog_city(TileId::new(0))),
             // Human Frog City marker sits at tile 0 without PlaceCity. AI
             // capitals are placed later once tile post-passes and frog-city
             // scoring land.
@@ -1276,6 +1997,10 @@ impl PopulationState {
 
     pub const fn baseline_labor(&self) -> LaborPool {
         self.baseline_labor
+    }
+
+    pub const fn production_labor(&self) -> LaborPool {
+        self.production_labor
     }
 
     pub fn predicted_need(&self, resource: ResourceKind) -> i16 {
@@ -1706,6 +2431,8 @@ pub struct MissionState {
     pub state: u8,
     /// Exact IEEE-754 importance-score bits.
     pub importance_bits: u32,
+    /// Whether retail's AI assignment pass is currently holding this mission.
+    pub held: bool,
     /// Open retail mission-status byte; bit zero is consumed by current retail AI logic.
     pub marker: u8,
 }
@@ -1713,8 +2440,62 @@ pub struct MissionState {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct PendingWorkState {
     pub nations: MajorNationTable<NationPendingWork>,
+    /// Whether retail's post-combat map boundary has battle reports to present.
+    pub combat_reports_pending: bool,
     pub newspaper_events: Vec<PendingNewspaperEvent>,
     pub war_transitions: Vec<WarTransition>,
+}
+
+pub const NEWS_TEMPLATE_COUNT: usize = 360;
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct NewsState {
+    pub pages: MajorNationTable<Option<NewsPage>>,
+    pub last_used_turn_by_nation_and_template: MajorNationTable<Vec<i16>>,
+}
+
+impl Default for NewsState {
+    fn default() -> Self {
+        Self {
+            pages: MajorNationTable::default(),
+            last_used_turn_by_nation_and_template: MajorNationTable::from_fn(|_| {
+                vec![0; NEWS_TEMPLATE_COUNT]
+            }),
+        }
+    }
+}
+
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct NewsPage {
+    /// Retail stores the page as `[column][row]`.
+    pub stories: [[Option<NewsStory>; 3]; 3],
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct NewsStory {
+    pub template_index: u16,
+    pub story_id: i16,
+    pub feature: bool,
+    pub arguments: [NewsArgument; 4],
+}
+
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum NewsArgument {
+    #[default]
+    Empty,
+    NationMask {
+        nations: NationTable<bool>,
+    },
+    NationList {
+        nations: NationTable<bool>,
+    },
+    Province {
+        province: ProvinceId,
+    },
+    Zone {
+        ordinal: i16,
+    },
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
@@ -1846,6 +2627,7 @@ mod tests {
             let technology = TechnologyState {
                 advanced_iron_working,
                 marine_engineering,
+                ..Default::default()
             };
             assert_eq!(technology.naval_production_capacity(7, 4), expected);
         }

@@ -1,8 +1,12 @@
 use crate::AppState;
 use crate::ui::catalog::{SpawnedView, UiAssetResources, UiCatalogResource, spawn_view};
+use crate::ui::random_setup::GameSession;
+use crate::ui::strategic_map::{bind_strategic_base_terrain, sync_strategic_base_terrain};
+use bevy::log::warn;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
+use imperialism_core::{AdvanceTurnOutcome, MajorNationId, TurnBlock, UiGate};
 use imperialism_formats::{FourCc, ScopedViewId, TRADE, fourcc};
 
 pub(crate) const TOOLBAR_PARENT_TAGS: &[FourCc] = &[fourcc!("tool"), fourcc!("topB")];
@@ -17,13 +21,17 @@ pub(crate) fn strategic_map_view_id() -> ScopedViewId {
     }
 }
 
-/// Retail's persistent newspaper/flag chrome. It is spawned alongside the strategic
-/// map only: Trade, City, Transport, and Diplomacy each embed their own toolbar
-/// (including their own `end ` control) directly in their own view.
-pub(crate) fn flag_view_id() -> ScopedViewId {
+pub(crate) fn newspaper_view_id() -> ScopedViewId {
     ScopedViewId {
         resource_file: "FlagView.rsrc".to_owned(),
         resource_id: 8451,
+    }
+}
+
+pub(crate) fn deal_book_view_id() -> ScopedViewId {
+    ScopedViewId {
+        resource_file: "FlagView.rsrc".to_owned(),
+        resource_id: 8800,
     }
 }
 
@@ -58,9 +66,39 @@ pub(crate) fn diplomacy_view_id() -> ScopedViewId {
 pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Result<(), String> {
     catalog.require_unique_bindings(
         &strategic_map_view_id(),
-        &[TRADE, fourcc!("tran"), fourcc!("city"), fourcc!("dipl")],
+        &[
+            fourcc!("DLOG"),
+            fourcc!("DONE"),
+            fourcc!("seas"),
+            fourcc!("trea"),
+            TRADE,
+            fourcc!("tran"),
+            fourcc!("city"),
+            fourcc!("dipl"),
+        ],
     )?;
-    catalog.require_unique_bindings(&flag_view_id(), &[fourcc!("end "), fourcc!("quer")])?;
+    catalog.require_unique_bindings(
+        &newspaper_view_id(),
+        &[
+            fourcc!("end "),
+            fourcc!("quer"),
+            fourcc!("date"),
+            fourcc!("spec"),
+        ],
+    )?;
+    catalog.require_unique_bindings(
+        &deal_book_view_id(),
+        &[
+            fourcc!("end "),
+            fourcc!("quer"),
+            fourcc!("tabs"),
+            fourcc!("mark"),
+            fourcc!("seas"),
+            fourcc!("trea"),
+            fourcc!("titL"),
+            fourcc!("rtil"),
+        ],
+    )?;
     for view_id in [
         trade_view_id(),
         city_view_id(),
@@ -98,31 +136,51 @@ fn view_id_for_state(state: AppState) -> Option<ScopedViewId> {
         AppState::City => Some(city_view_id()),
         AppState::Transport => Some(transport_view_id()),
         AppState::Diplomacy => Some(diplomacy_view_id()),
-        AppState::MainMenu | AppState::RandomSetup | AppState::CitySite => None,
+        AppState::MainMenu
+        | AppState::RandomSetup
+        | AppState::CitySite
+        | AppState::DealBook
+        | AppState::Newspaper => None,
     }
 }
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum GameScreenNavAction {
+    StrategicMap,
     Trade,
     Transport,
     City,
     Diplomacy,
 }
 
+#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
+enum TurnFlowAction {
+    FinishPlayerOrders,
+    Resume(UiGate),
+}
+
 pub(crate) struct GameShellPlugin;
 
 impl Plugin for GameShellPlugin {
     fn build(&self, app: &mut App) {
-        app.add_observer(on_game_screen_activate);
-        for state in [
-            AppState::StrategicMap,
-            AppState::Trade,
-            AppState::Transport,
-            AppState::Diplomacy,
-        ] {
-            app.add_systems(OnEnter(state), enter_game_screen);
-        }
+        app.add_observer(on_game_screen_activate)
+            .add_observer(on_turn_flow_activate)
+            .add_systems(
+                OnEnter(AppState::StrategicMap),
+                (enter_strategic_map_view, enter_game_screen).chain(),
+            )
+            .add_systems(OnEnter(AppState::DealBook), enter_turn_flow_screen)
+            .add_systems(OnEnter(AppState::Newspaper), enter_turn_flow_screen)
+            .add_systems(
+                Update,
+                sync_strategic_base_terrain.run_if(in_state(AppState::StrategicMap)),
+            );
+    }
+}
+
+fn enter_strategic_map_view(mut session: Option<ResMut<GameSession>>) {
+    if let Some(session) = session.as_deref_mut() {
+        session.0.enter_strategic_map_view();
     }
 }
 
@@ -134,6 +192,7 @@ fn enter_game_screen(
     catalog: Res<UiCatalogResource>,
     mut assets: UiAssetResources,
     state: Res<State<AppState>>,
+    session: Option<Res<GameSession>>,
 ) {
     let current = *state.get();
     let Some(view_id) = view_id_for_state(current) else {
@@ -144,34 +203,168 @@ fn enter_game_screen(
         .expect("validated game-screen catalog view");
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
     bind_game_screen_nav(&mut commands, &catalog, &spawned);
+    if current == AppState::StrategicMap {
+        let end = spawned
+            .require_unique(fourcc!("DONE"))
+            .expect("validated strategic-map end-turn binding");
+        commands
+            .entity(end)
+            .insert(TurnFlowAction::FinishPlayerOrders)
+            .remove::<InteractionDisabled>();
+        if let Some(session) = session.as_deref() {
+            bind_strategic_base_terrain(&mut commands, &spawned, &mut assets, &session.0);
+        } else {
+            warn!("strategic map opened without an authoritative game session");
+        }
+        project_date_and_treasury(
+            &mut commands,
+            &mut assets,
+            &spawned,
+            session.as_deref(),
+            "strategic map",
+        );
+    }
     commands
         .entity(spawned.root)
         .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
+}
 
-    if current == AppState::StrategicMap {
-        spawn_flag_view_chrome(&mut commands, &catalog, &mut assets, current);
+fn enter_turn_flow_screen(
+    mut commands: Commands,
+    catalog: Res<UiCatalogResource>,
+    mut assets: UiAssetResources,
+    state: Res<State<AppState>>,
+    session: Option<Res<GameSession>>,
+) {
+    let current = *state.get();
+    let view_id = match current {
+        AppState::DealBook => deal_book_view_id(),
+        AppState::Newspaper => newspaper_view_id(),
+        _ => return,
+    };
+    let view = catalog
+        .view(&view_id)
+        .expect("validated turn-flow catalog view");
+    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
+    let end = spawned
+        .require_unique(fourcc!("end "))
+        .expect("validated turn-flow close binding");
+    let gate = match current {
+        AppState::DealBook => UiGate::DealBook,
+        AppState::Newspaper => UiGate::Newspaper,
+        _ => unreachable!(),
+    };
+    commands
+        .entity(end)
+        .insert(TurnFlowAction::Resume(gate))
+        .remove::<InteractionDisabled>();
+    disable_control(&mut commands, &spawned, fourcc!("quer"));
+
+    match current {
+        AppState::DealBook => {
+            disable_control(&mut commands, &spawned, fourcc!("tabs"));
+            disable_control(&mut commands, &spawned, fourcc!("mark"));
+            project_deal_book_chrome(&mut commands, &mut assets, &spawned, session.as_deref());
+        }
+        AppState::Newspaper => {
+            project_newspaper_chrome(&mut commands, &mut assets, &spawned, session.as_deref())
+        }
+        _ => unreachable!(),
+    }
+
+    commands
+        .entity(spawned.root)
+        .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
+}
+
+fn project_deal_book_chrome(
+    commands: &mut Commands,
+    assets: &mut UiAssetResources,
+    spawned: &SpawnedView,
+    session: Option<&GameSession>,
+) {
+    // Retail starts the deal summary on its sold/bought page.
+    let sold = assets
+        .string(0x2740, 0x19)
+        .expect("retail deal-book sold title must load");
+    let bought = assets
+        .string(0x2740, 0x1a)
+        .expect("retail deal-book bought title must load");
+    set_control_text(commands, spawned, fourcc!("titL"), sold);
+    set_control_text(commands, spawned, fourcc!("rtil"), bought);
+    project_date_and_treasury(commands, assets, spawned, session, "deal book");
+}
+
+fn project_date_and_treasury(
+    commands: &mut Commands,
+    assets: &mut UiAssetResources,
+    spawned: &SpawnedView,
+    session: Option<&GameSession>,
+    screen: &str,
+) {
+    let Some(session) = session else {
+        warn!("{screen} opened without an authoritative game session");
+        set_control_text(commands, spawned, fourcc!("seas"), String::new());
+        set_control_text(commands, spawned, fourcc!("trea"), String::new());
+        return;
+    };
+    let state = &session.0;
+    set_control_text(
+        commands,
+        spawned,
+        fourcc!("seas"),
+        format_retail_date(assets, state.turn.economic_turn),
+    );
+    let treasury = MajorNationId::from_nation(state.turn.active_nation)
+        .map(|nation| format_currency(state.nations.major(nation).common().treasury))
+        .unwrap_or_default();
+    set_control_text(commands, spawned, fourcc!("trea"), treasury);
+}
+
+fn project_newspaper_chrome(
+    commands: &mut Commands,
+    assets: &mut UiAssetResources,
+    spawned: &SpawnedView,
+    session: Option<&GameSession>,
+) {
+    let date = session.map_or_else(String::new, |session| {
+        format_retail_date(assets, session.0.turn.economic_turn)
+    });
+    set_control_text(commands, spawned, fourcc!("date"), date);
+    // The catalog carries a false date placeholder here. The quarter-specific
+    // newspaper metric is not authoritative state yet, so do not invent it.
+    set_control_text(commands, spawned, fourcc!("spec"), String::new());
+}
+
+fn format_retail_date(assets: &mut UiAssetResources, economic_turn: i32) -> String {
+    let season = assets
+        .string(10_000, (economic_turn % 4) as i16)
+        .expect("retail season name must load");
+    format!("{season}, {}", 1815 + economic_turn / 4)
+}
+
+fn format_currency(value: i32) -> String {
+    let negative = value < 0;
+    let digits = i64::from(value).abs().to_string();
+    let mut grouped = String::with_capacity(digits.len() + digits.len() / 3);
+    for (index, digit) in digits.chars().enumerate() {
+        if index != 0 && (digits.len() - index).is_multiple_of(3) {
+            grouped.push(',');
+        }
+        grouped.push(digit);
+    }
+    if negative {
+        format!("-${grouped}")
+    } else {
+        format!("${grouped}")
     }
 }
 
-/// Spawns retail's persistent newspaper/flag chrome alongside the strategic map.
-fn spawn_flag_view_chrome(
-    commands: &mut Commands,
-    catalog: &UiCatalogResource,
-    assets: &mut UiAssetResources,
-    current: AppState,
-) {
-    let view_id = flag_view_id();
-    let view = catalog
-        .view(&view_id)
-        .expect("validated flag-view catalog view");
-    let spawned = spawn_view(commands, catalog.catalog(), view, assets);
-    // `end ` is End Turn and `quer` is the help/query hotspot; neither is
-    // implemented yet, so keep both inert rather than leave unbound no-ops.
-    disable_control(commands, &spawned, fourcc!("end "));
-    disable_control(commands, &spawned, fourcc!("quer"));
-    commands
-        .entity(spawned.root)
-        .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
+fn set_control_text(commands: &mut Commands, spawned: &SpawnedView, tag: FourCc, value: String) {
+    let entity = spawned
+        .require_unique(tag)
+        .unwrap_or_else(|error| panic!("validated {tag} text binding: {error}"));
+    commands.entity(entity).insert(Text::new(value));
 }
 
 pub(crate) fn bind_game_screen_nav(
@@ -195,11 +388,13 @@ pub(crate) fn bind_game_screen_nav(
     ] {
         commands.entity(entity).insert(action);
     }
-    // Retail's `end ` hotspot (`kControlTagEnd`) always dispatches End Turn on every
-    // screen that hosts it; it is never a leave-to-map control. End Turn is not
-    // implemented yet, so keep it disabled rather than bind a fake leave-to-map action.
     if spawned.view_id != strategic_map_view_id() {
-        disable_control(commands, spawned, fourcc!("end "));
+        let leave = control_under_parents(catalog, spawned, fourcc!("end "), LEAVE_PARENT_TAGS)
+            .expect("validated game-screen return-to-map binding");
+        commands
+            .entity(leave)
+            .insert(GameScreenNavAction::StrategicMap)
+            .remove::<InteractionDisabled>();
     }
 }
 
@@ -237,6 +432,7 @@ fn on_game_screen_activate(
         return;
     };
     let destination = match *action {
+        GameScreenNavAction::StrategicMap => AppState::StrategicMap,
         GameScreenNavAction::Trade => AppState::Trade,
         GameScreenNavAction::Transport => AppState::Transport,
         GameScreenNavAction::City => AppState::City,
@@ -247,22 +443,83 @@ fn on_game_screen_activate(
     }
 }
 
+fn on_turn_flow_activate(
+    activate: On<Activate>,
+    actions: Query<&TurnFlowAction>,
+    mut session: Option<ResMut<GameSession>>,
+    state: Res<State<AppState>>,
+    mut next_state: ResMut<NextState<AppState>>,
+) {
+    let Ok(action) = actions.get(activate.entity) else {
+        return;
+    };
+    let Some(session) = session.as_deref_mut() else {
+        warn!("turn-flow control activated without an authoritative game session");
+        return;
+    };
+    let outcome = match *action {
+        TurnFlowAction::FinishPlayerOrders => session.0.finish_player_orders(),
+        TurnFlowAction::Resume(gate) => session.0.resume_after_ui(gate),
+    };
+    let destination = match outcome {
+        AdvanceTurnOutcome::Blocked {
+            block: TurnBlock::PlayerOrders,
+            ..
+        } => Some(AppState::StrategicMap),
+        AdvanceTurnOutcome::Blocked {
+            block: TurnBlock::Ui {
+                gate: UiGate::DealBook,
+            },
+            ..
+        } => Some(AppState::DealBook),
+        AdvanceTurnOutcome::Blocked {
+            block: TurnBlock::Ui {
+                gate: UiGate::Newspaper,
+            },
+            ..
+        } => Some(AppState::Newspaper),
+        AdvanceTurnOutcome::Continues { .. }
+        | AdvanceTurnOutcome::Blocked {
+            block:
+                TurnBlock::Ui {
+                    gate:
+                        UiGate::DiplomacyMap
+                        | UiGate::OfferSheet
+                        | UiGate::Combat
+                        | UiGate::DiplomacyOffer
+                        | UiGate::TechnologyAdvance
+                        | UiGate::TurnAlert,
+                }
+                | TurnBlock::Unsupported { .. },
+            ..
+        } => None,
+    };
+    if let Some(destination) = destination.filter(|destination| *destination != *state.get()) {
+        next_state.set(destination);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::ui::catalog::spawn_view_nodes;
     use bevy::ui_widgets::Button as UiButton;
-    use imperialism_formats::{UiBehavior, UiCatalog, fourcc};
+    use imperialism_formats::{
+        LegacyGameStateContext, LegacySaveV62, UiBehavior, UiCatalog, fourcc,
+    };
     use std::collections::HashSet;
 
     const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
+    const BEGINNING_OF_GAME: &[u8] =
+        include_bytes!("../../../../../fixtures/retail/beginning_of_game.imp");
 
     fn catalog() -> UiCatalog {
         serde_json::from_str(CATALOG_JSON).unwrap()
     }
 
     fn register_structure_screens(app: &mut App) {
-        app.add_observer(on_game_screen_activate);
+        app.add_observer(on_game_screen_activate)
+            .add_observer(on_turn_flow_activate);
         for state in [
             AppState::StrategicMap,
             AppState::Trade,
@@ -276,9 +533,6 @@ mod tests {
 
     #[derive(Resource)]
     struct TestSpawned(SpawnedView);
-
-    #[derive(Resource)]
-    struct TestFlagSpawned(SpawnedView);
 
     fn enter_game_screen_structure_only(
         mut commands: Commands,
@@ -298,23 +552,12 @@ mod tests {
         commands
             .entity(spawned.root)
             .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
-
         if current == AppState::StrategicMap {
-            let flag_view_id = flag_view_id();
-            let flag_view = catalog
-                .view(&flag_view_id)
-                .expect("validated flag-view catalog view");
-            let flag_spawned = spawn_view_nodes(
-                &mut commands,
-                catalog.catalog().logical_resolution,
-                flag_view,
-            );
-            disable_control(&mut commands, &flag_spawned, fourcc!("end "));
-            disable_control(&mut commands, &flag_spawned, fourcc!("quer"));
-            commands.insert_resource(TestFlagSpawned(flag_spawned.clone()));
+            let end = spawned.require_unique(fourcc!("DONE")).unwrap();
             commands
-                .entity(flag_spawned.root)
-                .insert((GameScreenRoot(flag_view_id), DespawnOnExit(current)));
+                .entity(end)
+                .insert(TurnFlowAction::FinishPlayerOrders)
+                .remove::<InteractionDisabled>();
         }
     }
 
@@ -331,6 +574,27 @@ mod tests {
         app.update();
         app.update();
         app
+    }
+
+    fn fixture_session() -> GameSession {
+        let save = LegacySaveV62::parse(BEGINNING_OF_GAME).unwrap();
+        let state = save
+            .game_state(LegacyGameStateContext {
+                crt_rand_state: 1,
+                map_generation_lcg: 0,
+                zone_status_lcg: 3_916_827_792,
+                selected_nation: imperialism_core::NationId::new(6),
+            })
+            .unwrap();
+        GameSession(state)
+    }
+
+    fn activate_turn_flow(app: &mut App, action: TurnFlowAction) {
+        let entity = app.world_mut().spawn(action).id();
+        app.world_mut().commands().trigger(Activate { entity });
+        app.world_mut().flush();
+        app.update();
+        app.update();
     }
 
     fn current_roots(app: &mut App) -> HashSet<ScopedViewId> {
@@ -359,11 +623,11 @@ mod tests {
     }
 
     #[test]
-    fn strategic_map_spawns_flag_view_and_combined_map_with_toolbar_navigation() {
+    fn strategic_map_spawns_combined_map_with_toolbar_navigation() {
         let mut app = app_at(AppState::StrategicMap);
         assert_eq!(
             current_roots(&mut app),
-            HashSet::from([strategic_map_view_id(), flag_view_id()])
+            HashSet::from([strategic_map_view_id()])
         );
         for action in [
             GameScreenNavAction::Trade,
@@ -378,44 +642,73 @@ mod tests {
     }
 
     #[test]
-    fn strategic_map_flag_view_disables_end_turn_and_query() {
+    fn strategic_map_done_binds_end_turn() {
         let app = app_at(AppState::StrategicMap);
-        let spawned = app.world().resource::<TestFlagSpawned>().0.clone();
-        for tag in [fourcc!("end "), fourcc!("quer")] {
-            let entity = spawned
-                .require_unique(tag)
-                .unwrap_or_else(|error| panic!("flag view missing {tag}: {error}"));
-            assert!(
-                app.world().get::<InteractionDisabled>(entity).is_some(),
-                "{tag} should be disabled"
-            );
-            assert!(
-                app.world().get::<GameScreenNavAction>(entity).is_none(),
-                "{tag} must not be bound to a nav action"
-            );
-        }
+        let spawned = app.world().resource::<TestSpawned>().0.clone();
+        let end = spawned.require_unique(fourcc!("DONE")).unwrap();
+        assert!(app.world().get::<InteractionDisabled>(end).is_none());
+        assert!(app.world().get::<UiButton>(end).is_some());
+        assert_eq!(
+            app.world().get::<TurnFlowAction>(end),
+            Some(&TurnFlowAction::FinishPlayerOrders)
+        );
     }
 
     #[test]
-    fn end_turn_hotspot_stays_disabled_and_unbound_on_every_screen_that_has_it() {
+    fn strategic_map_entry_centers_the_loaded_view_on_the_first_idle_civilian() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_plugins(bevy::state::app::StatesPlugin)
+            .init_state::<AppState>()
+            .insert_resource(fixture_session())
+            .add_systems(OnEnter(AppState::StrategicMap), enter_strategic_map_view);
+        assert_eq!(
+            app.world().resource::<GameSession>().0.world.view_origin(),
+            imperialism_core::TileId::new(1)
+        );
+
+        app.world_mut()
+            .resource_mut::<NextState<AppState>>()
+            .set(AppState::StrategicMap);
+        app.update();
+        app.update();
+
+        assert_eq!(
+            app.world().resource::<GameSession>().0.world.view_origin(),
+            imperialism_core::TileId::new(1358)
+        );
+    }
+
+    #[test]
+    fn economic_leave_hotspot_returns_to_map() {
         for state in [
             AppState::Trade,
             AppState::City,
             AppState::Transport,
             AppState::Diplomacy,
         ] {
-            let app = app_at(state);
+            let mut app = app_at(state);
             let spawned = app.world().resource::<TestSpawned>().0.clone();
-            let end_turn = spawned
+            let leave = spawned
                 .require_unique(fourcc!("end "))
-                .unwrap_or_else(|error| panic!("{state:?} missing end turn control: {error}"));
+                .unwrap_or_else(|error| panic!("{state:?} missing leave control: {error}"));
             assert!(
-                app.world().get::<InteractionDisabled>(end_turn).is_some(),
+                app.world().get::<InteractionDisabled>(leave).is_none(),
                 "{state:?}"
             );
-            assert!(
-                app.world().get::<GameScreenNavAction>(end_turn).is_none(),
+            assert_eq!(
+                app.world().get::<GameScreenNavAction>(leave),
+                Some(&GameScreenNavAction::StrategicMap),
                 "{state:?}"
+            );
+            activate_nav(&mut app, GameScreenNavAction::StrategicMap);
+            assert_eq!(
+                app.world().resource::<State<AppState>>().get(),
+                &AppState::StrategicMap
+            );
+            assert_eq!(
+                current_roots(&mut app),
+                HashSet::from([strategic_map_view_id()])
             );
         }
     }
@@ -459,6 +752,36 @@ mod tests {
     }
 
     #[test]
+    fn end_turn_closes_retail_gates_and_returns_to_player_orders() {
+        let mut app = app_at(AppState::StrategicMap);
+        app.insert_resource(fixture_session());
+
+        activate_turn_flow(&mut app, TurnFlowAction::FinishPlayerOrders);
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::DealBook
+        );
+
+        activate_turn_flow(&mut app, TurnFlowAction::Resume(UiGate::DealBook));
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::Newspaper
+        );
+
+        activate_turn_flow(&mut app, TurnFlowAction::Resume(UiGate::Newspaper));
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::StrategicMap
+        );
+        let session = app.world().resource::<GameSession>();
+        assert_eq!(session.0.turn.economic_turn, 2);
+        assert_eq!(
+            session.0.turn.phase,
+            imperialism_core::PhaseCode::STRATEGIC_MAP
+        );
+    }
+
+    #[test]
     fn diplomacy_trade_radio_does_not_steal_toolbar_navigation() {
         let mut app = app_at(AppState::Diplomacy);
         let toolbar_trade = nav_entity(&mut app, GameScreenNavAction::Trade);
@@ -498,7 +821,8 @@ mod tests {
         let catalog = catalog();
         for (view_id, min_nodes) in [
             (strategic_map_view_id(), 70usize),
-            (flag_view_id(), 8),
+            (newspaper_view_id(), 8),
+            (deal_book_view_id(), 20),
             (trade_view_id(), 160),
             (city_view_id(), 20),
             (transport_view_id(), 60),

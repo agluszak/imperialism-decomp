@@ -32,6 +32,14 @@ RuntimeActionResult NativeTransition::Finish(int result) {
   return CaptureResult(json_value_init_number(result));
 }
 
+RuntimeActionResult NativeTransition::Finish(JSON_Value* result) {
+  return CaptureResult(result);
+}
+
+RuntimeRun& NativeTransition::Run() const {
+  return run_;
+}
+
 RuntimeActionResult NativeTransition::CaptureResult(JSON_Value* resultValue) {
   if (resultValue == 0) {
     return RuntimeActionResult::Failure("the transition result capture is unavailable");

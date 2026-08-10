@@ -4,16 +4,16 @@ use anyhow::{Context, Result, bail};
 use imperialism_core::GameState;
 use serde::de::DeserializeOwned;
 use std::fmt::Debug;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::process::Command;
 
 use crate::{
-    EvidenceKind, RuntimeResultExpectations, first_serialized_difference, read_runtime_result,
+    EvidenceKind, RuntimeResultExpectations, ValidatedRuntimeResult, decode_runtime_result,
+    first_serialized_difference,
 };
 
 const NATIVE_ORACLE: &str = "native_transition_oracle";
 const NATIVE_CASE_ENV: &str = "IMPERIALISM_NATIVE_CASE";
-const DEFAULT_SEED: u32 = 1;
 const DIFFERENTIAL_CAPTURES: &[&str] = &["before", "case", "after", "result"];
 
 /// Run the shared C++ native transition oracle for `case_name`, apply the matching
@@ -26,39 +26,36 @@ where
     C: DeserializeOwned,
     R: DeserializeOwned + Debug + PartialEq,
 {
-    let result = run_native_case(case_name, DEFAULT_SEED)?;
-    compare_native_from_result(&result, apply)
+    let runtime = run_native_case_result(case_name, DIFFERENTIAL_CAPTURES)?;
+    compare_validated(runtime, apply)
 }
 
-/// Compare against an already-published Python runtime `result.json`.
-pub fn compare_native_from_result<C, R>(
-    result: &Path,
+/// Compare a catalogued retail-fixture runtime scenario (UI / multi-step flows such as
+/// `easy_turn_from_save`) the same way as a native transition case.
+pub fn compare_runtime_scenario<C, R>(
+    name: &str,
     apply: impl FnOnce(&mut GameState, C) -> R,
 ) -> Result<()>
 where
     C: DeserializeOwned,
     R: DeserializeOwned + Debug + PartialEq,
 {
-    let expectations = RuntimeResultExpectations {
-        name: NATIVE_ORACLE,
-        seed: DEFAULT_SEED,
-        evidence_kind: EvidenceKind::RetailFixtureOracle,
-        required_captures: DIFFERENTIAL_CAPTURES,
-    };
-    let runtime = read_runtime_result(result, expectations)
-        .with_context(|| format!("reading runtime result from {}", result.display()))?;
-    let mut actual: GameState = runtime
-        .capture("before")
-        .with_context(|| format!("reading before from {}", result.display()))?;
-    let case: C = runtime
-        .capture("case")
-        .with_context(|| format!("reading case from {}", result.display()))?;
-    let expected: GameState = runtime
-        .capture("after")
-        .with_context(|| format!("reading after from {}", result.display()))?;
-    let expected_result: R = runtime
-        .capture("result")
-        .with_context(|| format!("reading result from {}", result.display()))?;
+    let runtime = run_retail_fixture_result(name, DIFFERENTIAL_CAPTURES)?;
+    compare_validated(runtime, apply)
+}
+
+fn compare_validated<C, R>(
+    runtime: ValidatedRuntimeResult,
+    apply: impl FnOnce(&mut GameState, C) -> R,
+) -> Result<()>
+where
+    C: DeserializeOwned,
+    R: DeserializeOwned + Debug + PartialEq,
+{
+    let mut actual: GameState = runtime.capture("before")?;
+    let case: C = runtime.capture("case")?;
+    let expected: GameState = runtime.capture("after")?;
+    let expected_result: R = runtime.capture("result")?;
 
     let actual_result = apply(&mut actual, case);
     if actual_result != expected_result {
@@ -82,49 +79,66 @@ pub fn assert_game_state_eq(expected: &GameState, actual: &GameState) -> Result<
     }
 }
 
-/// Run one native transition case through the shared oracle and return its result path.
-pub fn run_native_case(case_name: &str, seed: u32) -> Result<PathBuf> {
-    let repository = repository_root()?;
+/// Run one native transition case through the shared oracle and decode stdout JSON.
+pub fn run_native_case_result(
+    case_name: &str,
+    required_captures: &'static [&'static str],
+) -> Result<ValidatedRuntimeResult> {
     let output = Command::new("just")
-        .current_dir(repository.join("decomp"))
+        .current_dir(repository_root()?.join("decomp"))
         .env(NATIVE_CASE_ENV, case_name)
-        .arg("runtime-run")
-        .arg(NATIVE_ORACLE)
-        .arg("--seed")
-        .arg(seed.to_string())
+        .args(["--quiet", "runtime-run", NATIVE_ORACLE, "--seed", "1"])
         .output()
         .context("launching the native transition oracle")?;
-    let stderr = String::from_utf8_lossy(&output.stderr);
+
     if !output.status.success() {
         bail!(
             "native transition case {} failed:\n{}",
             case_name,
-            stderr.trim()
+            String::from_utf8_lossy(&output.stderr).trim()
         );
     }
-    let artifact_dir =
-        artifact_path(&stderr).context("native oracle did not report its artifact directory")?;
-    Ok(artifact_dir.join("result.json"))
+
+    decode_runtime_result(
+        output.stdout.as_slice(),
+        RuntimeResultExpectations {
+            name: NATIVE_ORACLE,
+            seed: 1,
+            evidence_kind: EvidenceKind::RetailFixtureOracle,
+            required_captures,
+        },
+    )
+    .context("decoding native transition oracle result")
 }
 
-/// Run one catalogued native runtime scenario (UI/application tests, not model cases).
-pub fn run_native_scenario(name: &str, seed: u32) -> Result<PathBuf> {
-    let repository = repository_root()?;
+/// Run one catalogued native runtime scenario and decode the published result JSON from stdout.
+pub fn run_retail_fixture_result(
+    name: &str,
+    required_captures: &'static [&'static str],
+) -> Result<ValidatedRuntimeResult> {
     let output = Command::new("just")
-        .current_dir(repository.join("decomp"))
-        .arg("runtime-run")
-        .arg(name)
-        .arg("--seed")
-        .arg(seed.to_string())
+        .current_dir(repository_root()?.join("decomp"))
+        .args(["--quiet", "runtime-run", name, "--seed", "1"])
         .output()
-        .context("launching the native runtime scenario")?;
-    let stderr = String::from_utf8_lossy(&output.stderr);
+        .context("launching native runtime scenario")?;
+
     if !output.status.success() {
-        bail!("native scenario {} failed:\n{}", name, stderr.trim());
+        bail!(
+            "native scenario {name} failed:\n{}",
+            String::from_utf8_lossy(&output.stderr).trim()
+        );
     }
-    let artifact_dir =
-        artifact_path(&stderr).context("native scenario did not report its artifact directory")?;
-    Ok(artifact_dir.join("result.json"))
+
+    decode_runtime_result(
+        output.stdout.as_slice(),
+        RuntimeResultExpectations {
+            name,
+            seed: 1,
+            evidence_kind: EvidenceKind::RetailFixtureOracle,
+            required_captures,
+        },
+    )
+    .context("decoding native runtime result")
 }
 
 fn repository_root() -> Result<&'static Path> {
@@ -132,24 +146,4 @@ fn repository_root() -> Result<&'static Path> {
         .ancestors()
         .nth(3)
         .context("could not locate the repository root")
-}
-
-fn artifact_path(stderr: &str) -> Option<PathBuf> {
-    stderr.lines().rev().find_map(|line| {
-        line.split_whitespace()
-            .find_map(|field| field.strip_prefix("artifacts="))
-            .filter(|value| *value != "none")
-            .map(PathBuf::from)
-    })
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn artifact_path_reads_the_trailing_artifacts_field() {
-        let stderr = "progress\nstatus=passed artifacts=/tmp/run-1\n";
-        assert_eq!(artifact_path(stderr), Some(PathBuf::from("/tmp/run-1")));
-    }
 }
