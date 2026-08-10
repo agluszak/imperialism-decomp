@@ -1,4 +1,5 @@
 use crate::{GameState, TurnState};
+use serde::{Deserialize, Serialize};
 
 impl TurnState {
     /// Mirrors `TSimMgr::AdvanceSeason`.
@@ -9,65 +10,119 @@ impl TurnState {
     /// Mirrors `TSimMgr::InLinearPhase` exactly, including unknown phase codes.
     pub const fn in_linear_phase(self) -> bool {
         self.phase.retail() <= crate::PhaseCode::PRE_MAP.retail()
-            || self.phase.retail() >= crate::PhaseCode::TURN.retail()
+            || self.phase.retail() >= crate::PhaseCode::DIPLOMACY.retail()
     }
 }
 
 /// Why turn progression stopped and requires UI or a future phase port.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
 pub enum TurnBlock {
     PlayerOrders,
-    Unimplemented { phase: i32 },
+    Unimplemented { phase: crate::PhaseCode },
+}
+
+/// Ordered presentation work emitted by authoritative turn progression.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum TurnEffect {
+    ShowDiplomacyMap { nation: crate::MajorNationId },
 }
 
 /// Result of advancing the recovered global turn state machine once.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
 pub enum AdvanceTurnOutcome {
-    Continues { from: i32, to: i32 },
-    Blocked { phase: i32, block: TurnBlock },
+    Continues {
+        from: crate::PhaseCode,
+        to: crate::PhaseCode,
+        effects: Vec<TurnEffect>,
+    },
+    Blocked {
+        phase: crate::PhaseCode,
+        block: TurnBlock,
+        effects: Vec<TurnEffect>,
+    },
 }
 
 impl GameState {
     /// Advance one recoverable turn phase without pretending unported phases completed.
     pub fn advance_turn_step(&mut self) -> AdvanceTurnOutcome {
-        let from = self.turn.phase.retail();
+        let from = self.turn.phase;
         match from {
-            4 => {
+            crate::PhaseCode::HOME_PLACEMENT => {
                 self.turn.phase = crate::PhaseCode::STRATEGIC_MAP;
                 AdvanceTurnOutcome::Blocked {
-                    phase: 5,
+                    phase: crate::PhaseCode::STRATEGIC_MAP,
                     block: TurnBlock::PlayerOrders,
+                    effects: Vec::new(),
                 }
             }
-            5 if self.turn.economic_turn == 1 => {
-                self.turn.phase = crate::PhaseCode::TURN;
-                AdvanceTurnOutcome::Continues { from, to: 6 }
+            crate::PhaseCode::STRATEGIC_MAP if self.turn.economic_turn == 1 => {
+                self.turn.phase = crate::PhaseCode::DIPLOMACY;
+                AdvanceTurnOutcome::Continues {
+                    from,
+                    to: crate::PhaseCode::DIPLOMACY,
+                    effects: Vec::new(),
+                }
             }
-            5 => AdvanceTurnOutcome::Blocked {
-                phase: 5,
-                block: TurnBlock::Unimplemented { phase: 5 },
+            crate::PhaseCode::STRATEGIC_MAP => AdvanceTurnOutcome::Blocked {
+                phase: from,
+                block: TurnBlock::Unimplemented { phase: from },
+                effects: Vec::new(),
             },
-            0x10 => {
-                self.turn.phase = crate::PhaseCode::from_retail(0x11);
-                self.turn.advance_season();
-                AdvanceTurnOutcome::Continues { from, to: 0x11 }
+            crate::PhaseCode::DIPLOMACY if self.supports_first_turn_diplomacy_phase() => {
+                let effects = self.first_turn_diplomacy_effects();
+                self.run_diplomacy_phase();
+                self.turn.phase = crate::PhaseCode::TRADE;
+                AdvanceTurnOutcome::Continues {
+                    from,
+                    to: crate::PhaseCode::TRADE,
+                    effects,
+                }
             }
-            0x12 => AdvanceTurnOutcome::Blocked {
-                phase: 0x12,
-                block: TurnBlock::Unimplemented { phase: 0x12 },
+            crate::PhaseCode::SEASON_ADVANCE => {
+                self.turn.phase = crate::PhaseCode::TECHNOLOGY_ADVANCES;
+                self.turn.advance_season();
+                AdvanceTurnOutcome::Continues {
+                    from,
+                    to: crate::PhaseCode::TECHNOLOGY_ADVANCES,
+                    effects: Vec::new(),
+                }
+            }
+            crate::PhaseCode::NEWSPAPER => AdvanceTurnOutcome::Blocked {
+                phase: from,
+                block: TurnBlock::Unimplemented { phase: from },
+                effects: Vec::new(),
             },
             phase => AdvanceTurnOutcome::Blocked {
                 phase,
                 block: TurnBlock::Unimplemented { phase },
+                effects: Vec::new(),
             },
         }
     }
 
     pub fn advance_until_blocked(&mut self) -> AdvanceTurnOutcome {
+        let mut effects = Vec::new();
         loop {
             match self.advance_turn_step() {
-                AdvanceTurnOutcome::Continues { .. } => continue,
-                blocked => return blocked,
+                AdvanceTurnOutcome::Continues {
+                    effects: step_effects,
+                    ..
+                } => effects.extend(step_effects),
+                AdvanceTurnOutcome::Blocked {
+                    phase,
+                    block,
+                    effects: step_effects,
+                } => {
+                    effects.extend(step_effects);
+                    return AdvanceTurnOutcome::Blocked {
+                        phase,
+                        block,
+                        effects,
+                    };
+                }
             }
         }
     }
@@ -77,25 +132,6 @@ impl GameState {
             self.turn.phase,
             crate::PhaseCode::STRATEGIC_MAP,
             "player orders can finish only at the strategic-map boundary"
-        );
-        self.advance_until_blocked()
-    }
-
-    pub fn resume_after_offer_sheet(&mut self) -> AdvanceTurnOutcome {
-        self.resume_after_phase(9)
-    }
-    pub fn resume_after_deal_book(&mut self) -> AdvanceTurnOutcome {
-        self.resume_after_phase(0xe)
-    }
-    pub fn resume_after_newspaper(&mut self) -> AdvanceTurnOutcome {
-        self.resume_after_phase(0x12)
-    }
-
-    fn resume_after_phase(&mut self, expected: i32) -> AdvanceTurnOutcome {
-        let phase = self.turn.phase.retail();
-        assert_eq!(
-            phase, expected,
-            "turn continuation resumed from the wrong phase"
         );
         self.advance_until_blocked()
     }
@@ -149,7 +185,7 @@ mod tests {
         assert!(!turn.in_linear_phase());
         turn.phase = crate::PhaseCode::PRE_MAP;
         assert!(turn.in_linear_phase());
-        turn.phase = crate::PhaseCode::TURN;
+        turn.phase = crate::PhaseCode::DIPLOMACY;
         assert!(turn.in_linear_phase());
     }
 
@@ -171,8 +207,9 @@ mod tests {
         assert_eq!(
             state.advance_until_blocked(),
             AdvanceTurnOutcome::Blocked {
-                phase: crate::PhaseCode::STRATEGIC_MAP.retail(),
+                phase: crate::PhaseCode::STRATEGIC_MAP,
                 block: TurnBlock::PlayerOrders,
+                effects: Vec::new(),
             }
         );
         assert_eq!(state.turn.phase, crate::PhaseCode::STRATEGIC_MAP);
@@ -186,41 +223,103 @@ mod tests {
 
         assert_eq!(
             state.advance_turn_step(),
-            AdvanceTurnOutcome::Continues { from: 5, to: 6 }
+            AdvanceTurnOutcome::Continues {
+                from: crate::PhaseCode::STRATEGIC_MAP,
+                to: crate::PhaseCode::DIPLOMACY,
+                effects: Vec::new(),
+            }
         );
-        assert_eq!(state.turn.phase, crate::PhaseCode::TURN);
+        assert_eq!(state.turn.phase, crate::PhaseCode::DIPLOMACY);
     }
 
     #[test]
     fn unported_alert_and_newspaper_phases_do_not_advance_state() {
         let mut state = crate::test_support::game_state();
         state.turn.economic_turn = 2;
-        for phase in [5, 0x12] {
-            state.turn.phase = crate::PhaseCode::from_retail(phase);
+        for phase in [crate::PhaseCode::STRATEGIC_MAP, crate::PhaseCode::NEWSPAPER] {
+            state.turn.phase = phase;
             assert_eq!(
                 state.advance_turn_step(),
                 AdvanceTurnOutcome::Blocked {
                     phase,
                     block: TurnBlock::Unimplemented { phase },
+                    effects: Vec::new(),
                 }
             );
-            assert_eq!(state.turn.phase.retail(), phase);
+            assert_eq!(state.turn.phase, phase);
         }
     }
 
     #[test]
-    fn unported_diplomacy_phase_does_not_advance_state() {
+    fn first_turn_diplomacy_phase_advances_to_trade() {
         let mut state = crate::test_support::game_state();
         state.turn.economic_turn = 1;
-        state.turn.phase = crate::PhaseCode::TURN;
+        state.turn.phase = crate::PhaseCode::DIPLOMACY;
+
+        assert_eq!(
+            state.advance_turn_step(),
+            AdvanceTurnOutcome::Continues {
+                from: crate::PhaseCode::DIPLOMACY,
+                to: crate::PhaseCode::TRADE,
+                effects: Vec::new(),
+            }
+        );
+        assert_eq!(state.turn.phase, crate::PhaseCode::TRADE);
+    }
+
+    #[test]
+    fn advance_until_blocked_preserves_the_diplomacy_map_effect() {
+        let mut state = crate::test_support::game_state();
+        state.turn.economic_turn = 1;
+        state.turn.phase = crate::PhaseCode::DIPLOMACY;
+        state.civilian_units.push(crate::CivilianUnitState {
+            id: crate::CivilianUnitId::new(1),
+            nation: crate::NationId::new(0),
+            unit_type: crate::CivilianUnitKind::Miner,
+            location: crate::CivilianLocation::OnMap(crate::TileId::new(0)),
+            order: crate::CivilianWorkOrder::Idle,
+            owner_nation: crate::NationId::new(0),
+            roster_id: 0,
+            registered: false,
+        });
+
+        assert_eq!(
+            state.advance_until_blocked(),
+            AdvanceTurnOutcome::Blocked {
+                phase: crate::PhaseCode::TRADE,
+                block: TurnBlock::Unimplemented {
+                    phase: crate::PhaseCode::TRADE,
+                },
+                effects: vec![TurnEffect::ShowDiplomacyMap {
+                    nation: crate::MajorNationId::new(0),
+                }],
+            }
+        );
+    }
+
+    #[test]
+    fn diplomacy_work_that_needs_ui_does_not_partially_advance_state() {
+        let mut state = crate::test_support::game_state();
+        state.turn.economic_turn = 1;
+        state.turn.phase = crate::PhaseCode::DIPLOMACY;
+        state.pending.nations[crate::MajorNationId::new(6)]
+            .proposals
+            .push(crate::DiplomacyProposal {
+                source: crate::NationId::new(0),
+                policy: crate::DiplomacyPolicy::Alliance,
+            });
+        let before = state.clone();
 
         assert_eq!(
             state.advance_turn_step(),
             AdvanceTurnOutcome::Blocked {
-                phase: 6,
-                block: TurnBlock::Unimplemented { phase: 6 },
+                phase: crate::PhaseCode::DIPLOMACY,
+                block: TurnBlock::Unimplemented {
+                    phase: crate::PhaseCode::DIPLOMACY,
+                },
+                effects: Vec::new(),
             }
         );
-        assert_eq!(state.turn.phase, crate::PhaseCode::TURN);
+        assert_eq!(state, before);
     }
 }

@@ -9,6 +9,7 @@ mod city_site;
 mod civilian_work;
 mod create_random_game;
 mod difficulty;
+mod diplomacy;
 mod ids;
 mod map_geometry;
 mod market;
@@ -89,5 +90,5 @@ pub use tables::{
     PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable,
 };
 pub use territory::{CountryStatus, ProvinceState, ProvinceStateError};
-pub use turn_flow::{AdvanceTurnOutcome, TurnBlock};
+pub use turn_flow::{AdvanceTurnOutcome, TurnBlock, TurnEffect};
 pub use units::{CivilianUnitKind, CivilianUnitTable, MilitaryUnitKind, MilitaryUnitTable};

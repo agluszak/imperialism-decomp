@@ -107,8 +107,11 @@ mod scenarios {
 
     const FIRST_TURN_DIPLOMACY_PHASE: ScenarioMeta = retail_fixture("first_turn_diplomacy_phase");
 
-    fn apply_first_turn_diplomacy_phase(state: &mut GameState, (): ()) {
-        let _ = state.advance_turn_step();
+    fn apply_first_turn_diplomacy_phase(
+        state: &mut GameState,
+        (): (),
+    ) -> imperialism_core::AdvanceTurnOutcome {
+        state.advance_turn_step()
     }
 
     const TRANSPORTED_ITEMS_PHASE: ScenarioMeta = retail_fixture("transported_items_phase");
