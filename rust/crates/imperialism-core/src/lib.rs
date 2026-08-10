@@ -94,6 +94,6 @@ pub use tables::{
     PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable,
 };
 pub use territory::{CountryStatus, ProvinceState, ProvinceStateError};
-pub use trade::TransportAllocation;
+pub use trade::{PlayerTradeOrder, TransportAllocation};
 pub use turn_flow::{AdvanceTurnOutcome, TurnBlock, TurnEffect};
 pub use units::{CivilianUnitKind, CivilianUnitTable, MilitaryUnitKind, MilitaryUnitTable};

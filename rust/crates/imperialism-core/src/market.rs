@@ -53,6 +53,28 @@ impl TradeCommodity {
             _ => None,
         }
     }
+
+    pub const fn resource(self) -> ResourceKind {
+        match self {
+            Self::Cotton => ResourceKind::Cotton,
+            Self::Wool => ResourceKind::Wool,
+            Self::Timber => ResourceKind::Timber,
+            Self::Coal => ResourceKind::Coal,
+            Self::Iron => ResourceKind::Iron,
+            Self::Horses => ResourceKind::Horses,
+            Self::Oil => ResourceKind::Oil,
+            Self::Food => ResourceKind::Food,
+            Self::Fabric => ResourceKind::Fabric,
+            Self::Lumber => ResourceKind::Lumber,
+            Self::Paper => ResourceKind::Paper,
+            Self::Steel => ResourceKind::Steel,
+            Self::Fuel => ResourceKind::Fuel,
+            Self::Clothing => ResourceKind::Clothing,
+            Self::Furniture => ResourceKind::Furniture,
+            Self::Hardware => ResourceKind::Hardware,
+            Self::Arms => ResourceKind::Arms,
+        }
+    }
 }
 
 pub type TradeCommodityTable<T> = EnumMap<TradeCommodity, T>;
@@ -197,7 +219,7 @@ impl TradeMarketState {
     }
 }
 
-fn all_trade_commodities() -> impl ExactSizeIterator<Item = TradeCommodity> {
+pub(crate) fn all_trade_commodities() -> impl ExactSizeIterator<Item = TradeCommodity> {
     (0..TradeCommodity::LENGTH).map(TradeCommodity::from_usize)
 }
 

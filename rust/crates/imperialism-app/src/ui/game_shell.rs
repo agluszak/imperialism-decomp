@@ -104,6 +104,7 @@ fn view_id_for_state(state: AppState) -> Option<ScopedViewId> {
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum GameScreenNavAction {
+    StrategicMap,
     Trade,
     Transport,
     City,
@@ -115,7 +116,7 @@ pub(crate) struct GameShellPlugin;
 impl Plugin for GameShellPlugin {
     fn build(&self, app: &mut App) {
         app.add_observer(on_game_screen_activate);
-        for state in [AppState::StrategicMap, AppState::Trade, AppState::Diplomacy] {
+        for state in [AppState::StrategicMap, AppState::Diplomacy] {
             app.add_systems(OnEnter(state), enter_game_screen);
         }
     }
@@ -190,11 +191,13 @@ pub(crate) fn bind_game_screen_nav(
     ] {
         commands.entity(entity).insert(action);
     }
-    // Retail's `end ` hotspot (`kControlTagEnd`) always dispatches End Turn on every
-    // screen that hosts it; it is never a leave-to-map control. End Turn is not
-    // implemented yet, so keep it disabled rather than bind a fake leave-to-map action.
     if spawned.view_id != strategic_map_view_id() {
-        disable_control(commands, spawned, fourcc!("end "));
+        let leave = control_under_parents(catalog, spawned, fourcc!("end "), LEAVE_PARENT_TAGS)
+            .expect("validated game-screen return-to-map binding");
+        commands
+            .entity(leave)
+            .insert(GameScreenNavAction::StrategicMap)
+            .remove::<InteractionDisabled>();
     }
 }
 
@@ -232,6 +235,7 @@ fn on_game_screen_activate(
         return;
     };
     let destination = match *action {
+        GameScreenNavAction::StrategicMap => AppState::StrategicMap,
         GameScreenNavAction::Trade => AppState::Trade,
         GameScreenNavAction::Transport => AppState::Transport,
         GameScreenNavAction::City => AppState::City,
@@ -392,25 +396,35 @@ mod tests {
     }
 
     #[test]
-    fn end_turn_hotspot_stays_disabled_and_unbound_on_every_screen_that_has_it() {
+    fn economic_leave_hotspot_returns_to_map() {
         for state in [
             AppState::Trade,
             AppState::City,
             AppState::Transport,
             AppState::Diplomacy,
         ] {
-            let app = app_at(state);
+            let mut app = app_at(state);
             let spawned = app.world().resource::<TestSpawned>().0.clone();
-            let end_turn = spawned
+            let leave = spawned
                 .require_unique(fourcc!("end "))
-                .unwrap_or_else(|error| panic!("{state:?} missing end turn control: {error}"));
+                .unwrap_or_else(|error| panic!("{state:?} missing leave control: {error}"));
             assert!(
-                app.world().get::<InteractionDisabled>(end_turn).is_some(),
+                app.world().get::<InteractionDisabled>(leave).is_none(),
                 "{state:?}"
             );
-            assert!(
-                app.world().get::<GameScreenNavAction>(end_turn).is_none(),
+            assert_eq!(
+                app.world().get::<GameScreenNavAction>(leave),
+                Some(&GameScreenNavAction::StrategicMap),
                 "{state:?}"
+            );
+            activate_nav(&mut app, GameScreenNavAction::StrategicMap);
+            assert_eq!(
+                app.world().resource::<State<AppState>>().get(),
+                &AppState::StrategicMap
+            );
+            assert_eq!(
+                current_roots(&mut app),
+                HashSet::from([strategic_map_view_id(), flag_view_id()])
             );
         }
     }
