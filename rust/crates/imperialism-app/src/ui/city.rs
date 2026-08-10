@@ -756,7 +756,6 @@ fn enter_city_screen(
         .expect("validated city-screen catalog view");
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
     bind_game_screen_nav(&mut commands, &catalog, &spawned);
-    disable_control(&mut commands, &spawned, fourcc!("end "));
     let mut root = commands.entity(spawned.root);
     root.insert((
         GameScreenRoot(view_id),

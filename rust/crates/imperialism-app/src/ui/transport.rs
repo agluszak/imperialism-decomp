@@ -1,5 +1,5 @@
 use super::catalog::{SpawnedView, UiAssetResources, UiCatalogResource, spawn_view};
-use super::game_shell::{GameScreenRoot, bind_game_screen_nav, disable_control, transport_view_id};
+use super::game_shell::{GameScreenRoot, bind_game_screen_nav, transport_view_id};
 use super::random_setup::GameSession;
 use crate::AppState;
 use bevy::log::warn;
@@ -266,7 +266,7 @@ fn enter_transport_screen(
     };
     let (font, layout, _) = assets
         .text_style(RetailTextStylePreset {
-            font_family: 0,
+            font_family: 3,
             face_flags: 0,
             point_size: 10,
             alignment: 0,
@@ -298,7 +298,6 @@ fn bind_transport_screen(
     layout: TextLayout,
     colors: TransportColors,
 ) {
-    disable_control(commands, spawned, fourcc!("end "));
     commands
         .entity(spawned.root)
         .insert(TransportScreen { nation });
@@ -777,7 +776,7 @@ mod tests {
     struct TestTransport {
         root: Entity,
         selected: Entity,
-        end_turn: Entity,
+        return_to_map: Entity,
     }
 
     fn fixture_session() -> GameSession {
@@ -818,7 +817,7 @@ mod tests {
         TestTransport {
             root: spawned.root,
             selected: spawned.require_unique(fourcc!("tran")).unwrap(),
-            end_turn: spawned.require_unique(fourcc!("end ")).unwrap(),
+            return_to_map: spawned.require_unique(fourcc!("end ")).unwrap(),
         }
     }
 
@@ -883,8 +882,8 @@ mod tests {
         );
         assert!(
             app.world()
-                .get::<InteractionDisabled>(first.end_turn)
-                .is_some()
+                .get::<InteractionDisabled>(first.return_to_map)
+                .is_none()
         );
         let mut panels = app.world_mut().query::<(&TransportRow, &Visibility)>();
         assert!(

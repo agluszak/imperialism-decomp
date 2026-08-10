@@ -1,4 +1,25 @@
+use crate::market::all_trade_commodities;
 use crate::*;
+
+/// One player order on a Board of Trade commodity row.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum PlayerTradeOrder {
+    None,
+    Buy,
+    Sell(i16),
+}
+
+impl PlayerTradeOrder {
+    fn from_potential(value: i16) -> Self {
+        if value < 0 {
+            Self::Buy
+        } else if value > 0 {
+            Self::Sell(value)
+        } else {
+            Self::None
+        }
+    }
+}
 
 /// One row in retail's transport-allocation ledger.
 ///
@@ -55,15 +76,90 @@ impl GameState {
         self.market.recalculate_prices();
     }
 
-    pub fn place_trade_bid(
+    pub fn player_trade_order(
+        &self,
+        nation: MajorNationId,
+        commodity: TradeCommodity,
+    ) -> PlayerTradeOrder {
+        PlayerTradeOrder::from_potential(
+            self.nations.majors[nation].economy.item_potentials[commodity.resource()],
+        )
+    }
+
+    /// Applies one retail Board of Trade order without settling any trade.
+    pub fn set_player_trade_order(
         &mut self,
         nation: MajorNationId,
-        resource: ResourceKind,
-        amount: i16,
-    ) -> i16 {
+        commodity: TradeCommodity,
+        order: PlayerTradeOrder,
+    ) -> PlayerTradeOrder {
+        assert!(
+            self.nations.majors[nation].economy.controller.is_human(),
+            "player trade order requires a human-controlled major nation"
+        );
+
+        let resource = commodity.resource();
+        let current = self.player_trade_order(nation, commodity);
+        let value = match order {
+            PlayerTradeOrder::None => 0,
+            PlayerTradeOrder::Buy => {
+                if current != PlayerTradeOrder::Buy
+                    && self.nations.majors[nation].economy.capacities.trade_offer <= 0
+                {
+                    return current;
+                }
+                let bid_count = all_trade_commodities()
+                    .filter(|&row| self.player_trade_order(nation, row) == PlayerTradeOrder::Buy)
+                    .count();
+                if current != PlayerTradeOrder::Buy && bid_count >= 4 {
+                    return current;
+                }
+                -1
+            }
+            PlayerTradeOrder::Sell(requested) => {
+                let major = &self.nations.majors[nation];
+                let maximum =
+                    major.city.stockpile[resource].min(major.economy.capacities.trade_offer);
+                if maximum <= 0 {
+                    return current;
+                }
+                requested.clamp(1, maximum)
+            }
+        };
+
         let major = &mut self.nations.majors[nation].economy;
-        major.set_item_potential(resource, amount);
-        major.item_potentials[resource]
+        major.set_item_potential(resource, value);
+        PlayerTradeOrder::from_potential(major.item_potentials[resource])
+    }
+
+    /// Steps one selected Board of Trade offer without re-clamping a recalled order.
+    pub fn step_player_trade_offer(
+        &mut self,
+        nation: MajorNationId,
+        commodity: TradeCommodity,
+        delta: i16,
+    ) -> PlayerTradeOrder {
+        assert!(matches!(delta, -1 | 1), "trade offer step must be -1 or 1");
+        assert!(
+            self.nations.majors[nation].economy.controller.is_human(),
+            "player trade order requires a human-controlled major nation"
+        );
+
+        let PlayerTradeOrder::Sell(quantity) = self.player_trade_order(nation, commodity) else {
+            return self.player_trade_order(nation, commodity);
+        };
+        let resource = commodity.resource();
+        let major = &self.nations.majors[nation];
+        let maximum = major.city.stockpile[resource].min(major.economy.capacities.trade_offer);
+        let next = if delta < 0 && quantity > 1 {
+            quantity - 1
+        } else if delta > 0 && quantity < maximum {
+            quantity + 1
+        } else {
+            quantity
+        };
+        self.nations.majors[nation].economy.item_potentials[resource] = next;
+        PlayerTradeOrder::Sell(next)
     }
 
     pub fn purchase_item(
@@ -245,6 +341,24 @@ impl GameState {
             major.item_potentials[resource] = bid.min(stockpile[resource]);
         }
         major.aid_allocation_by_minor_nation = Default::default();
+    }
+
+    /// Restores the player's Board of Trade ledger and applies its no-merchant branch.
+    pub fn recall_player_trade_orders(&mut self, nation: MajorNationId) {
+        assert!(
+            self.nations.majors[nation].economy.controller.is_human(),
+            "player trade orders require a human-controlled major nation"
+        );
+        self.recall_trade_bids(nation);
+        let major = &mut self.nations.majors[nation].economy;
+        if major.capacities.trade_offer == 0 {
+            for commodity in all_trade_commodities() {
+                let resource = commodity.resource();
+                if major.item_potentials[resource] > 0 {
+                    major.item_potentials[resource] = 0;
+                }
+            }
+        }
     }
 
     /// Resets the retail player trade phase.
@@ -574,25 +688,78 @@ mod tests {
     }
 
     #[test]
-    fn trade_bid_clamps_to_merchant_capacity_and_reports_the_applied_amount() {
+    fn player_trade_orders_preserve_retail_modes_and_limits() {
         let nation = MajorNationId::new(6);
         let mut game = state();
-        let applied = game.place_trade_bid(nation, ResourceKind::Fabric, 9);
+        game.nations.city_mut(nation).stockpile[ResourceKind::Fabric] = 3;
+        game.nations.majors[nation].economy.capacities.trade_offer = 0;
         assert_eq!(
-            game.nations.majors[MajorNationId::new(6)]
-                .economy
-                .item_potentials[ResourceKind::Fabric],
-            4
+            game.set_player_trade_order(nation, TradeCommodity::Cotton, PlayerTradeOrder::Buy),
+            PlayerTradeOrder::None
         );
-        assert_eq!(applied, 4);
+        game.nations.majors[nation].economy.capacities.trade_offer = 4;
+        assert_eq!(
+            game.set_player_trade_order(nation, TradeCommodity::Fabric, PlayerTradeOrder::Sell(9)),
+            PlayerTradeOrder::Sell(3)
+        );
+        assert_eq!(
+            game.set_player_trade_order(nation, TradeCommodity::Fabric, PlayerTradeOrder::Sell(0)),
+            PlayerTradeOrder::Sell(1)
+        );
+
+        game.nations.city_mut(nation).stockpile[ResourceKind::Fabric] = 10;
+        game.nations.majors[nation]
+            .economy
+            .remembered_trade_offers_by_resource[ResourceKind::Fabric] = 10;
+        game.recall_player_trade_orders(nation);
+        assert_eq!(
+            game.step_player_trade_offer(nation, TradeCommodity::Fabric, -1),
+            PlayerTradeOrder::Sell(9)
+        );
+        assert_eq!(
+            game.step_player_trade_offer(nation, TradeCommodity::Fabric, 1),
+            PlayerTradeOrder::Sell(9)
+        );
+        game.nations.majors[nation].economy.capacities.trade_offer = 0;
+        game.recall_player_trade_orders(nation);
+        assert_eq!(
+            game.player_trade_order(nation, TradeCommodity::Fabric),
+            PlayerTradeOrder::None
+        );
+        game.nations.majors[nation].economy.capacities.trade_offer = 4;
+
+        for commodity in [
+            TradeCommodity::Cotton,
+            TradeCommodity::Wool,
+            TradeCommodity::Timber,
+            TradeCommodity::Coal,
+        ] {
+            assert_eq!(
+                game.set_player_trade_order(nation, commodity, PlayerTradeOrder::Buy),
+                PlayerTradeOrder::Buy
+            );
+        }
+        assert_eq!(
+            game.set_player_trade_order(nation, TradeCommodity::Iron, PlayerTradeOrder::Buy),
+            PlayerTradeOrder::None
+        );
+        game.set_player_trade_order(nation, TradeCommodity::Cotton, PlayerTradeOrder::None);
+        assert_eq!(
+            game.set_player_trade_order(nation, TradeCommodity::Iron, PlayerTradeOrder::Buy),
+            PlayerTradeOrder::Buy
+        );
     }
 
     #[test]
     fn remembered_bids_and_purchased_items_commit_as_one_trade_phase() {
         let major_nation = MajorNationId::new(6);
         let mut game = state();
-        game.place_trade_bid(major_nation, ResourceKind::Fabric, -1);
-        game.place_trade_bid(major_nation, ResourceKind::Clothing, -1);
+        game.set_player_trade_order(major_nation, TradeCommodity::Fabric, PlayerTradeOrder::Buy);
+        game.set_player_trade_order(
+            major_nation,
+            TradeCommodity::Clothing,
+            PlayerTradeOrder::Buy,
+        );
         game.remember_trade_bids(major_nation);
         game.purchase_item(major_nation, ResourceKind::Fabric, 3, 7);
         game.purchase_item(major_nation, ResourceKind::Food, -30, 1);
