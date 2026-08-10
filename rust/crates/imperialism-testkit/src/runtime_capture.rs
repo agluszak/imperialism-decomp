@@ -202,10 +202,7 @@ fn validate_runtime_result(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_core::{
-        Difficulty, GameState, MajorNationId, MapTopology, create_random_game,
-        generate_random_setup_preview_with_clock_seed,
-    };
+    use imperialism_core::*;
     use serde_json::json;
 
     #[derive(Debug, Deserialize, Eq, PartialEq)]
@@ -372,8 +369,14 @@ mod tests {
 
     #[test]
     fn rejects_an_unknown_nested_game_state_field() {
-        let preview =
-            generate_random_setup_preview_with_clock_seed(b"Woopnist", MapTopology::Wrapping, 1);
+        let mut sea_zone_marker_crt = RetailCrtRng::from_state(1);
+        let _ = sea_zone_marker_crt.next_rand();
+        let preview = generate_random_setup_preview_with_clock_seed(
+            b"Woopnist",
+            MapTopology::Wrapping,
+            1,
+            sea_zone_marker_crt,
+        );
         let state = create_random_game(&preview, MajorNationId::new(6), Difficulty::Easy, 1);
         let mut capture = serde_json::to_value(&state).unwrap();
         capture["turn"]["oracle_extra"] = json!(true);

@@ -243,6 +243,7 @@ mod tests {
     fn tile(owner_nation: Option<crate::TileOwnerTag>) -> TileState {
         TileState {
             terrain: crate::TerrainKind::Water,
+            rendering: Default::default(),
             region_tile_subtype: Default::default(),
             owner_nation,
             former_owner_nation: owner_nation,

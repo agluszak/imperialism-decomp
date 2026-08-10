@@ -787,6 +787,7 @@ impl LegacyCityState {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyTerrainTile {
     pub terrain_kind: i8,
+    pub sprite_variant: u8,
     pub region_tile_subtype: i8,
     pub river_sprite: u8,
     pub owner_nation: i8,
@@ -794,6 +795,8 @@ pub(crate) struct LegacyTerrainTile {
     pub secondary_owner_nation: i8,
     pub region: i8,
     pub adjacency_bits: u8,
+    pub adjacency_mask_a: u8,
+    pub adjacency_mask_b: u8,
     pub city_or_province_index: i16,
     pub development_classes: i8,
     pub pending_development_visibility: u8,
@@ -805,6 +808,21 @@ pub(crate) struct LegacyTerrainTile {
 
 impl LegacyTerrainTile {
     fn tile_state(self, tile: usize) -> Result<TileState, LegacySaveError> {
+        let rendering = TileRendering::from_retail(
+            self.sprite_variant,
+            self.river_sprite,
+            self.adjacency_mask_a,
+            self.adjacency_mask_b,
+        )
+        .ok_or_else(|| {
+            LegacySaveError::StateProjection(format!(
+                "tile {tile} has invalid rendering state: sprite variant {:#04x}, river sprite {:#04x}, transition mask {:#04x}, secondary mask {:#04x}",
+                self.sprite_variant,
+                self.river_sprite,
+                self.adjacency_mask_a,
+                self.adjacency_mask_b,
+            ))
+        })?;
         Ok(TileState {
             terrain: TerrainKind::from_retail(self.terrain_kind).ok_or_else(|| {
                 LegacySaveError::StateProjection(format!(
@@ -812,6 +830,7 @@ impl LegacyTerrainTile {
                     self.terrain_kind
                 ))
             })?,
+            rendering,
             region_tile_subtype: RegionTileSubtype::from_retail(self.region_tile_subtype),
             owner_nation: optional_tile_owner_tag(self.owner_nation)?,
             former_owner_nation: optional_tile_owner_tag(self.former_owner_nation)?,
@@ -1103,7 +1122,7 @@ pub(crate) struct LegacyProvince {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyMapState {
-    pub initialized_flag: i16,
+    pub view_origin_tile: i16,
     pub search_state_active: u8,
     pub secondary_state: u8,
     pub city_score_total: i32,
@@ -1125,7 +1144,16 @@ impl LegacyMapState {
     }
 
     fn world_state(&self) -> Result<StrategicMap, LegacySaveError> {
-        StrategicMap::new(
+        let view_origin = u16::try_from(self.view_origin_tile)
+            .ok()
+            .and_then(TileId::try_new)
+            .ok_or_else(|| {
+                LegacySaveError::StateProjection(format!(
+                    "map view origin {} is outside the strategic map",
+                    self.view_origin_tile
+                ))
+            })?;
+        let mut world = StrategicMap::new(
             self.topology(),
             self.tiles
                 .iter()
@@ -1134,7 +1162,9 @@ impl LegacyMapState {
                 .map(|(tile, terrain)| terrain.tile_state(tile))
                 .collect::<Result<Vec<_>, _>>()?,
         )
-        .map_err(|error| LegacySaveError::StateProjection(error.to_string()))
+        .map_err(|error| LegacySaveError::StateProjection(error.to_string()))?;
+        world.set_view_origin(view_origin);
+        Ok(world)
     }
 
     fn province_states(&self) -> Result<ProvinceTable<ProvinceState>, LegacySaveError> {
@@ -3140,7 +3170,7 @@ fn retail_boolean(value: u8, context: &'static str) -> Result<bool, LegacySaveEr
 }
 
 fn read_map(stream: &mut LegacyStream<'_>) -> Result<LegacyMapState, StreamError> {
-    let initialized_flag = stream.read_le_i16()?;
+    let view_origin_tile = stream.read_le_i16()?;
     let search_state_active = stream.read_u8()?;
     let secondary_state = stream.read_u8()?;
     let city_score_total = stream.read_le_i32()?;
@@ -3154,7 +3184,7 @@ fn read_map(stream: &mut LegacyStream<'_>) -> Result<LegacyMapState, StreamError
         .collect::<Result<Vec<_>, _>>()?;
     let pending_river_mouth_tile = stream.read_le_i16()?;
     Ok(LegacyMapState {
-        initialized_flag,
+        view_origin_tile,
         search_state_active,
         secondary_state,
         city_score_total,
@@ -4439,6 +4469,7 @@ fn read_terrain_tile(stream: &mut LegacyStream<'_>) -> Result<LegacyTerrainTile,
     let bytes = stream.read_bytes(TERRAIN_TILE_SERIALIZED_SIZE)?;
     Ok(LegacyTerrainTile {
         terrain_kind: bytes[0] as i8,
+        sprite_variant: bytes[1],
         region_tile_subtype: bytes[0x13] as i8,
         river_sprite: bytes[2],
         former_owner_nation: bytes[3] as i8,
@@ -4446,6 +4477,8 @@ fn read_terrain_tile(stream: &mut LegacyStream<'_>) -> Result<LegacyTerrainTile,
         secondary_owner_nation: bytes[0x18] as i8,
         region: bytes[5] as i8,
         adjacency_bits: bytes[6],
+        adjacency_mask_a: bytes[0x0a],
+        adjacency_mask_b: bytes[0x0b],
         development_classes: bytes[0x0c] as i8,
         pending_development_visibility: bytes[0x0d],
         edge_resources: [bytes[0x11] as i8, bytes[0x12] as i8],

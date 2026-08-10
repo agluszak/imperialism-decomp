@@ -1060,13 +1060,36 @@ JSON_Value* CaptureRng() {
 JSON_Value* CaptureWorld() {
   JsonObject object;
   JsonArray tiles;
+  if (g_pGlobalMapState->field6 < 0 || g_pGlobalMapState->field6 >= 0x1950) {
+    FailSemanticCapture("strategic map view origin is outside the map");
+  }
   object.Set("topology",
              g_pGlobalMapState->hexNeighborWrapHorizontally == 0 ? "wrapping" : "bounded");
+  object.Set("view_origin", static_cast<int>(g_pGlobalMapState->field6));
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
     JsonObject tileObject;
     char tileFlags[192];
     tileObject.Set("terrain", TerrainName(static_cast<int>(tile.GetTerrainKind())));
+    if (tile.spriteVariantIndex01 < 0 || tile.spriteVariantIndex01 > 0x3f) {
+      FailSemanticCapture("tile sprite variant is outside the resolved range");
+    }
+    if (tile.riverSpriteCode != 0 && (tile.riverSpriteCode < 0x0b || tile.riverSpriteCode > 0x3a)) {
+      FailSemanticCapture("tile river sprite is outside the resolved range");
+    }
+    if (tile.adjacencyMaskA0a > 0x3f || tile.adjacencyMaskB0b > 0x3f) {
+      FailSemanticCapture("tile rendering mask is outside the six-direction range");
+    }
+    JsonObject rendering;
+    rendering.Set("sprite_variant", static_cast<unsigned int>(tile.spriteVariantIndex01));
+    if (tile.riverSpriteCode == 0) {
+      rendering.SetNull("river_sprite");
+    } else {
+      rendering.Set("river_sprite", static_cast<unsigned int>(tile.riverSpriteCode));
+    }
+    rendering.Set("transition_mask", static_cast<unsigned int>(tile.adjacencyMaskA0a));
+    rendering.Set("coast_or_secondary_mask", static_cast<unsigned int>(tile.adjacencyMaskB0b));
+    tileObject.Set("rendering", rendering.Release());
     ASSERT(tile.ownerNationTag04 >= -1);
     ASSERT(tile.formerOwnerNationTag03 >= -1);
     tileObject.SetOptional("owner_nation", static_cast<int>(tile.ownerNationTag04));

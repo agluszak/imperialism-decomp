@@ -505,6 +505,7 @@ impl PhaseCode {
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct StrategicMap {
     topology: MapTopology,
+    view_origin: TileId,
     tiles: Box<[TileState]>,
 }
 
@@ -516,11 +517,14 @@ impl<'de> Deserialize<'de> for StrategicMap {
         #[derive(Deserialize)]
         struct SerializedStrategicMap {
             topology: MapTopology,
+            view_origin: TileId,
             tiles: Box<[TileState]>,
         }
 
         let map = SerializedStrategicMap::deserialize(deserializer)?;
-        Self::new(map.topology, map.tiles).map_err(serde::de::Error::custom)
+        let mut world = Self::new(map.topology, map.tiles).map_err(serde::de::Error::custom)?;
+        world.view_origin = map.view_origin;
+        Ok(world)
     }
 }
 
@@ -541,13 +545,21 @@ impl StrategicMap {
                 actual: tiles.len(),
             });
         }
-        Ok(Self { topology, tiles })
+        Ok(Self {
+            topology,
+            view_origin: TileId::new(1),
+            tiles,
+        })
     }
 
     /// Accepts tiles derived one-for-one from an already validated generated map.
     pub(crate) fn from_generated_tiles(topology: MapTopology, tiles: Box<[TileState]>) -> Self {
         debug_assert_eq!(tiles.len(), STRATEGIC_TILE_COUNT);
-        Self { topology, tiles }
+        Self {
+            topology,
+            view_origin: TileId::new(1),
+            tiles,
+        }
     }
 
     pub const fn geometry(&self) -> crate::MapGeometry {
@@ -556,6 +568,14 @@ impl StrategicMap {
 
     pub const fn topology(&self) -> MapTopology {
         self.topology
+    }
+
+    pub const fn view_origin(&self) -> TileId {
+        self.view_origin
+    }
+
+    pub fn set_view_origin(&mut self, view_origin: TileId) {
+        self.view_origin = view_origin;
     }
 
     pub fn iter(&self) -> impl ExactSizeIterator<Item = &TileState> {
@@ -580,6 +600,7 @@ impl IndexMut<TileId> for StrategicMap {
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TileState {
     pub terrain: TerrainKind,
+    pub rendering: TileRendering,
     pub region_tile_subtype: RegionTileSubtype,
     pub owner_nation: Option<TileOwnerTag>,
     pub former_owner_nation: Option<TileOwnerTag>,
@@ -595,6 +616,106 @@ pub struct TileState {
     pub flags: TileFlags,
     pub region: Option<RegionId>,
     pub river: Option<RiverSegment>,
+}
+
+/// The resolved per-tile picture choices consumed by retail's strategic-map renderer.
+///
+/// These values are stable observable state: retail saves and restores them instead of
+/// rerunning the random picture-assignment pass when a game is loaded.
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize)]
+pub struct TileRendering {
+    pub sprite_variant: u8,
+    pub river_sprite: Option<RiverSprite>,
+    pub transition_mask: u8,
+    pub coast_or_secondary_mask: u8,
+}
+
+impl TileRendering {
+    pub const fn from_retail(
+        sprite_variant: u8,
+        river_sprite: u8,
+        transition_mask: u8,
+        coast_or_secondary_mask: u8,
+    ) -> Option<Self> {
+        if sprite_variant > 0x3f || transition_mask > 0x3f || coast_or_secondary_mask > 0x3f {
+            return None;
+        }
+        let river_sprite = if river_sprite == 0 {
+            None
+        } else {
+            match RiverSprite::from_retail(river_sprite) {
+                Some(sprite) => Some(sprite),
+                None => return None,
+            }
+        };
+        Some(Self {
+            sprite_variant,
+            river_sprite,
+            transition_mask,
+            coast_or_secondary_mask,
+        })
+    }
+}
+
+impl<'de> Deserialize<'de> for TileRendering {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        #[derive(Deserialize)]
+        struct SerializedTileRendering {
+            sprite_variant: u8,
+            river_sprite: Option<RiverSprite>,
+            transition_mask: u8,
+            coast_or_secondary_mask: u8,
+        }
+
+        let rendering = SerializedTileRendering::deserialize(deserializer)?;
+        if rendering.sprite_variant > 0x3f
+            || rendering.transition_mask > 0x3f
+            || rendering.coast_or_secondary_mask > 0x3f
+        {
+            return Err(serde::de::Error::custom(
+                "tile rendering variant and masks must be between 0 and 0x3f",
+            ));
+        }
+        Ok(Self {
+            sprite_variant: rendering.sprite_variant,
+            river_sprite: rendering.river_sprite,
+            transition_mask: rendering.transition_mask,
+            coast_or_secondary_mask: rendering.coast_or_secondary_mask,
+        })
+    }
+}
+
+/// One finalized retail `TTerrainStateRecord::riverSpriteCode` picture choice.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct RiverSprite(u8);
+
+impl RiverSprite {
+    pub const fn from_retail(value: u8) -> Option<Self> {
+        if value >= 0x0b && value <= 0x3a {
+            Some(Self(value))
+        } else {
+            None
+        }
+    }
+
+    pub const fn retail(self) -> u8 {
+        self.0
+    }
+}
+
+impl<'de> Deserialize<'de> for RiverSprite {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let value = u8::deserialize(deserializer)?;
+        Self::from_retail(value)
+            .ok_or_else(|| serde::de::Error::custom("river sprite must be between 0x0b and 0x3a"))
+    }
 }
 
 /// Retail's open numeric tile-profile domain (`TTerrainStateRecord::gateFlag`).
@@ -777,6 +898,7 @@ impl Default for TileState {
     fn default() -> Self {
         Self {
             terrain: TerrainKind::Plains,
+            rendering: TileRendering::default(),
             region_tile_subtype: RegionTileSubtype::default(),
             owner_nation: None,
             former_owner_nation: None,

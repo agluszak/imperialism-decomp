@@ -5,6 +5,9 @@ use enum_map::{Enum, EnumMap};
 const SCATTERED_SHIPS_IMPORTANCE_BITS: u32 = 981_668_463;
 /// `kMapTileActionStateAnchor`.
 const ACTION_STATE_ANCHOR: i16 = 3;
+const ACTION_STATE_ZONE_CENTER: i16 = -16;
+const ACTION_STATE_ZONE_NORTH_WEST: i16 = -18;
+const ACTION_STATE_ZONE_NORTH_EAST: i16 = -20;
 /// Water-region owner tags are biased by this amount (`label + 0x17`).
 const SEA_OWNER_BIAS: u8 = 0x17;
 
@@ -67,8 +70,9 @@ pub fn create_random_game(
     let mut nations = bootstrap_nations(human_nation, difficulty, foreign_ministers);
     let technology = TechnologyState::default();
     let mut world = StrategicMap::from_generated_tiles(preview.topology, post.tiles);
-    // Runtime-test / Accept entry: map build ends in `srand(runtime_seed)`, then setup
-    // `DoPostCreate` draws one `rand() % 7` for the initial nation when the slot was -1.
+    initialize_sea_zone_map_markers(&mut world, preview.sea_zone_marker_crt);
+    // Fresh-map construction ends by reseeding CRT from the clock. Setup/bootstrap consumes one
+    // draw from that reseeded stream before the first random minor-home selection.
     let mut crt_rand = RetailCrtRng::from_state(runtime_seed);
     let _ = crt_rand.next_rand();
 
@@ -111,6 +115,9 @@ pub fn create_random_game(
     for (index, &subtype) in post.gate_flags.iter().enumerate() {
         world[TileId::new(index as u16)].region_tile_subtype =
             RegionTileSubtype::from_retail(subtype);
+    }
+    if requires_capital_site_selection(difficulty) {
+        initialize_capital_selection_view_origin(&mut world, human_nation);
     }
     let diplomacy = DiplomacyState::for_random_start(human_nation, difficulty, &mut crt_rand);
 
@@ -174,6 +181,84 @@ pub fn create_random_game(
     state
 }
 
+/// `ComputeRepresentativeTileIndexForNation(..., wrapBias = 1)` followed by the
+/// `TCitySiteView` owned-territory clamp and the base `TMapDialog` viewport clamp.
+/// At the Normal+ start boundary the human nation has no home tile, so retail includes
+/// every tile it owns in both the representative and CitySite bounds.
+fn initialize_capital_selection_view_origin(world: &mut StrategicMap, human_nation: MajorNationId) {
+    const VIEWPORT_TILE_SPAN: i32 = 9;
+
+    let owner = TileOwnerTag::from_nation(human_nation.nation());
+    let geometry = world.geometry();
+    let mut column_sum = 0_u32;
+    let mut row_sum = 0_u32;
+    let mut tile_count = 0_u32;
+    let mut west_count = 0_u32;
+    let mut east_count = 0_u32;
+    let mut min_column = i32::MAX;
+    let mut max_column = i32::MIN;
+    let mut min_row = i32::MAX;
+    let mut max_row = i32::MIN;
+
+    for index in 0..TileId::COUNT {
+        let tile = TileId::new(index);
+        if world[tile].owner_nation != Some(owner) {
+            continue;
+        }
+        let (row, column) = geometry.row_column(tile);
+        let row = i32::from(row);
+        let column = i32::from(column);
+        column_sum += column as u32;
+        row_sum += row as u32;
+        tile_count += 1;
+        west_count += u32::from(column < 0x19);
+        east_count += u32::from(column > 0x53);
+        min_column = min_column.min(column);
+        max_column = max_column.max(column);
+        min_row = min_row.min(row);
+        max_row = max_row.max(row);
+    }
+
+    assert_ne!(
+        tile_count, 0,
+        "random-game human nation must own capital-selection territory"
+    );
+    if west_count != 0 && east_count != 0 {
+        column_sum += west_count * u32::from(STRATEGIC_MAP_WIDTH);
+    }
+    let mut column = (column_sum / tile_count) as i32 % i32::from(STRATEGIC_MAP_WIDTH);
+    let mut row = (row_sum / tile_count) as i32;
+
+    if column < min_column - 1 {
+        column = min_column - 1;
+    }
+    if row < min_row - 1 {
+        row = min_row - 1;
+    }
+    if column > max_column + 3 - VIEWPORT_TILE_SPAN {
+        column = max_column + 3 - VIEWPORT_TILE_SPAN;
+    }
+    if row > max_row - 5 {
+        row = max_row - 5;
+    }
+
+    if world.topology() == MapTopology::Bounded {
+        column = column.clamp(1, 0x6e - VIEWPORT_TILE_SPAN);
+    }
+    if column < 0 {
+        column += i32::from(STRATEGIC_MAP_WIDTH);
+    } else if column >= i32::from(STRATEGIC_MAP_WIDTH) {
+        column -= i32::from(STRATEGIC_MAP_WIDTH);
+    }
+    row = row.clamp(0, 0x35);
+
+    world.set_view_origin(
+        geometry
+            .tile(row as u16, column as u16)
+            .expect("capital-selection view origin is inside the strategic map"),
+    );
+}
+
 struct TilePostPassState {
     tiles: Box<[TileState]>,
     gate_flags: Vec<i8>,
@@ -220,7 +305,7 @@ fn apply_tile_post_passes(
         assign_province_fallback_capitals(&mut tiles, &mut gate_flags, geometry, map_lcg);
 
     guarantee_resources(&mut tiles, &mut gate_flags, map_lcg);
-    consume_fresh_map_picture_assignment_rng(&tiles, geometry, map_lcg);
+    assign_fresh_map_pictures(&mut tiles, &gate_flags, geometry, map_lcg);
     TilePostPassState {
         tiles: tiles.into_boxed_slice(),
         gate_flags,
@@ -314,7 +399,8 @@ fn assign_province_fallback_capitals(
 
 /// `TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded` (0x005107e0).
 ///
-/// Neighbor `adjacencyMaskA0a` edits are omitted; they are not part of [`TileState`].
+/// This preview-time call precedes picture assignment, so every neighboring transition mask is
+/// still zero when retail tries to clear it.
 fn initialize_tile_neighbor_connection_mask_if_needed(
     tiles: &mut [TileState],
     gate_flags: &mut [i8],
@@ -868,6 +954,14 @@ fn initialize_world_tile_neighbor_connection_mask_if_needed(
     world[tile].edge_resources = [Some(ResourceKind::Grain), None];
     gate_flags[index] =
         resolve_region_tile_subtype_code_for_state(&world[tile], gate_flags[index], index);
+
+    let geometry = world.geometry();
+    for (direction, neighbor) in HexDirection::ALL.into_iter().zip(geometry.neighbors(tile)) {
+        let Some(neighbor) = neighbor else {
+            continue;
+        };
+        world[neighbor].rendering.transition_mask &= !(1_u8 << direction.opposite() as u8);
+    }
 }
 
 /// Harvest ring from `TMapMgr::PlaceCity` (directions 0..5 via hex-area deltas, 6 = self).
@@ -945,6 +1039,129 @@ fn sea_zone_count(world: &StrategicMap) -> u16 {
         .map(|tag| u16::from(tag - SEA_OWNER_BIAS) + 1)
         .max()
         .unwrap_or(0)
+}
+
+/// Fresh-map `TOcean::InitializeMapActionContextsForNationCountUsingCostField`.
+///
+/// Map construction consumes the current CRT stream to break equal-score sea-zone seed ties,
+/// stamps three negative overlay frames per zone, then reseeds CRT before setup continues.
+fn initialize_sea_zone_map_markers(world: &mut StrategicMap, mut map_build_crt: RetailCrtRng) {
+    let geometry = world.geometry();
+    let costs = build_sea_zone_cost_field(world, geometry);
+
+    for zone in 0..sea_zone_count(world) {
+        let owner = TileOwnerTag::new(
+            SEA_OWNER_BIAS + u8::try_from(zone).expect("fresh-map sea-zone tag fits in one byte"),
+        );
+        let center = select_sea_zone_seed_tile(world, geometry, &costs, owner, &mut map_build_crt);
+        world[center].action = TileAction::try_from_retail(ACTION_STATE_ZONE_CENTER);
+
+        let north_west = geometry
+            .neighbor(center, HexDirection::NorthWest)
+            .expect("fresh-map sea-zone seed is below the north map edge");
+        world[north_west].action = TileAction::try_from_retail(ACTION_STATE_ZONE_NORTH_WEST);
+
+        let north_east = geometry
+            .neighbor(north_west, HexDirection::NorthEast)
+            .expect("fresh-map sea-zone marker is below the north map edge");
+        world[north_east].action = TileAction::try_from_retail(ACTION_STATE_ZONE_NORTH_EAST);
+    }
+}
+
+/// `RelaxMapTileCostFieldByNeighborTerrain` to its fixed point.
+fn build_sea_zone_cost_field(world: &StrategicMap, geometry: MapGeometry) -> Vec<i16> {
+    let mut costs = vec![0_i16; STRATEGIC_TILE_COUNT];
+    loop {
+        let mut changed = 0;
+        for index in 0..STRATEGIC_TILE_COUNT {
+            if costs[index] != 0 {
+                continue;
+            }
+            let tile = TileId::new(index as u16);
+            for neighbor in geometry.neighbors(tile) {
+                let current = costs[index];
+                let Some(neighbor) = neighbor else {
+                    if current == 0 {
+                        costs[index] = -1;
+                        changed += 1;
+                    }
+                    continue;
+                };
+                let neighbor_index = usize::from(neighbor.get());
+                if current == 0 && world[neighbor].owner_nation != world[tile].owner_nation {
+                    costs[index] = -1;
+                    changed += 1;
+                    continue;
+                }
+                let neighbor_cost = costs[neighbor_index];
+                if neighbor_cost > 0 && (current == 0 || neighbor_cost < -current) {
+                    costs[index] = -1 - neighbor_cost;
+                    changed += 1;
+                }
+            }
+        }
+        for cost in &mut costs {
+            if *cost < 0 {
+                *cost = -*cost;
+            }
+        }
+        if changed == 0 {
+            return costs;
+        }
+    }
+}
+
+/// `SelectBestSeedTileForNationFromCostField`.
+fn select_sea_zone_seed_tile(
+    world: &StrategicMap,
+    geometry: MapGeometry,
+    costs: &[i16],
+    owner: TileOwnerTag,
+    crt: &mut RetailCrtRng,
+) -> TileId {
+    let mut best_tile = -1_i32;
+    let mut best_score = -1_i32;
+    let mut equal_best_count = 0_i16;
+
+    // Retail deliberately excludes the final two map rows from seed selection.
+    for index in 0..0x1878_usize {
+        let tile = TileId::new(index as u16);
+        if world[tile].owner_nation != Some(owner) {
+            continue;
+        }
+
+        let mut score = i32::from(costs[index]) * 12;
+        for (direction, neighbor) in HexDirection::ALL.into_iter().zip(geometry.neighbors(tile)) {
+            let Some(neighbor) = neighbor else {
+                continue;
+            };
+            if world[neighbor].owner_nation != Some(owner) {
+                continue;
+            }
+            let neighbor_cost = i32::from(costs[usize::from(neighbor.get())]);
+            score += neighbor_cost * 2;
+            if matches!(direction, HexDirection::East | HexDirection::West) {
+                score += neighbor_cost;
+            }
+        }
+
+        if best_tile == -1 || best_score < score {
+            best_tile = index as i32;
+            best_score = score;
+            equal_best_count = 1;
+        } else if best_score == score {
+            equal_best_count += 1;
+            if crt.next_rand() % i32::from(equal_best_count) == 0 || best_tile < 0xd8 {
+                best_tile = index as i32;
+                best_score = score;
+            }
+        } else if best_tile < 0xd8 {
+            best_tile = index as i32;
+            best_score = score;
+        }
+    }
+
+    TileId::new(u16::try_from(best_tile).expect("fresh-map sea zone has one seed tile"))
 }
 
 /// `TOcean::EnsurePortZoneForTile` side effects needed for Accept missions / tile action state.
@@ -1028,12 +1245,7 @@ fn select_port_sea_tile(
             return Some(candidate);
         }
     }
-    // Fallback: any adjacent water tile (skips the full river-flow tracer).
-    geometry
-        .neighbors(tile)
-        .into_iter()
-        .flatten()
-        .find(|&neighbor| world[neighbor].terrain == TerrainKind::Water)
+    crate::city_site::trace_terrain_flow_to_nearest_sea_tile(world, tile)
 }
 
 /// Province adjacency lists used by the defend-province availability gate.
@@ -1272,6 +1484,7 @@ fn tile_from_generated(tile: GeneratedTerrainTile) -> TileState {
     let owner = tile.owner;
     TileState {
         terrain: tile.terrain,
+        rendering: TileRendering::default(),
         // The final subtype is folded in after all map and capital post-passes.
         region_tile_subtype: RegionTileSubtype::default(),
         owner_nation: owner,
@@ -1543,14 +1756,9 @@ fn place_guaranteed_resource(
 }
 
 /// Fresh-map `TMapMgr::AssignPictToTile` pass after `GuaranteeResources`.
-///
-/// Retail stores the mountain/coast/open-water variants and resolved river sprites in its
-/// presentation-shaped terrain records. Those values are not authoritative game state, but the
-/// pass consumes the shared map LCG. Keep the temporary presentation values just long enough to
-/// preserve later tiles' branch decisions and retain canonical river connection codes on
-/// [`TileState`].
-fn consume_fresh_map_picture_assignment_rng(
-    tiles: &[TileState],
+fn assign_fresh_map_pictures(
+    tiles: &mut [TileState],
+    gate_flags: &[i8],
     geometry: MapGeometry,
     map_lcg: &mut RetailLcg,
 ) {
@@ -1563,17 +1771,33 @@ fn consume_fresh_map_picture_assignment_rng(
     for index in 0..tiles.len() {
         assign_picture_to_tile_for_rng(
             tiles,
+            gate_flags,
             geometry,
             index,
             &mut sprite_variants,
             &mut river_sprite_codes,
             map_lcg,
         );
+        let (transition_mask, coast_or_secondary_mask) =
+            fresh_picture_masks(tiles, gate_flags, geometry, index);
+        assert_eq!(
+            tiles[index].river.is_some(),
+            river_sprite_codes[index] != 0,
+            "fresh-map river must resolve to one picture sprite"
+        );
+        tiles[index].rendering = TileRendering::from_retail(
+            sprite_variants[index],
+            river_sprite_codes[index],
+            transition_mask,
+            coast_or_secondary_mask,
+        )
+        .expect("fresh-map picture assignment must produce valid rendering state");
     }
 }
 
 fn assign_picture_to_tile_for_rng(
     tiles: &[TileState],
+    gate_flags: &[i8],
     geometry: MapGeometry,
     index: usize,
     sprite_variants: &mut [u8],
@@ -1583,6 +1807,30 @@ fn assign_picture_to_tile_for_rng(
     if tiles[index].terrain != TerrainKind::Water {
         if tiles[index].terrain == TerrainKind::Mountain && map_lcg.next_sample_15() & 1 != 0 {
             sprite_variants[index] = 1;
+        }
+
+        if gate_flags[index] == 0x0b {
+            let tile = TileId::new(index as u16);
+            let neighbors = geometry.neighbors(tile);
+            for direction in 0..HexDirection::ALL.len() {
+                let neighbor_has_profile = neighbors[direction]
+                    .is_some_and(|neighbor| gate_flags[usize::from(neighbor.get())] == 0x0b);
+                if !neighbor_has_profile {
+                    continue;
+                }
+                let previous = (direction + HexDirection::ALL.len() - 1) % HexDirection::ALL.len();
+                let next = (direction + 1) % HexDirection::ALL.len();
+                let previous_has_profile = neighbors[previous]
+                    .is_some_and(|neighbor| gate_flags[usize::from(neighbor.get())] == 0x0b);
+                let next_has_profile = neighbors[next]
+                    .is_some_and(|neighbor| gate_flags[usize::from(neighbor.get())] == 0x0b);
+                sprite_variants[index] = match (previous_has_profile, next_has_profile) {
+                    (false, false) => 0,
+                    (true, true) => 1,
+                    (true, false) => 2,
+                    (false, true) => 3,
+                };
+            }
         }
 
         if river_sprite_codes[index] != 0 {
@@ -1655,6 +1903,43 @@ fn assign_picture_to_tile_for_rng(
             1
         };
     }
+}
+
+fn fresh_picture_masks(
+    tiles: &[TileState],
+    gate_flags: &[i8],
+    geometry: MapGeometry,
+    index: usize,
+) -> (u8, u8) {
+    let terrain = tiles[index].terrain;
+    let mut transition_mask = 0;
+    let mut coast_or_secondary_mask = 0;
+    let tile = TileId::new(index as u16);
+    for (direction, neighbor) in geometry.neighbors(tile).into_iter().enumerate() {
+        let Some(neighbor) = neighbor else {
+            continue;
+        };
+        let neighbor = usize::from(neighbor.get());
+        let direction_bit = 1 << direction;
+        if terrain == TerrainKind::Water {
+            if tiles[neighbor].terrain != TerrainKind::Water {
+                coast_or_secondary_mask |= direction_bit;
+            }
+            continue;
+        }
+        if gate_flags[neighbor] == gate_flags[index] {
+            transition_mask |= direction_bit;
+        }
+        match (terrain, tiles[neighbor].terrain) {
+            (TerrainKind::Hills, TerrainKind::Hills) => transition_mask |= direction_bit,
+            (TerrainKind::Hills, TerrainKind::Mountain)
+            | (TerrainKind::Mountain, TerrainKind::Hills) => {
+                coast_or_secondary_mask |= direction_bit;
+            }
+            _ => {}
+        }
+    }
+    (transition_mask, coast_or_secondary_mask)
 }
 
 fn resolve_picture_river_sprite(
@@ -1986,6 +2271,17 @@ fn scenario_city(difficulty: Difficulty, human: bool) -> CityState {
 mod tests {
     use super::*;
 
+    fn initial_seed_one_preview() -> RandomSetupPreview {
+        let mut sea_zone_marker_crt = RetailCrtRng::from_state(1);
+        let _ = sea_zone_marker_crt.next_rand();
+        generate_random_setup_preview_with_clock_seed(
+            b"Woopnist",
+            MapTopology::Wrapping,
+            1,
+            sea_zone_marker_crt,
+        )
+    }
+
     #[test]
     fn picture_assignment_consumes_ordered_mountain_and_river_draws_without_rewriting_rivers() {
         let geometry = MapGeometry::new(MapTopology::Bounded);
@@ -1996,9 +2292,10 @@ mod tests {
         tiles[usize::from(first_river.get())].river = RiverSegment::from_connection_code(4);
         tiles[usize::from(second_river.get())].river = RiverSegment::from_connection_code(3);
         let original_rivers: Vec<_> = tiles.iter().map(|tile| tile.river).collect();
+        let gate_flags = vec![0; STRATEGIC_TILE_COUNT];
 
         let mut rng = RetailLcg::from_state(1);
-        consume_fresh_map_picture_assignment_rng(&tiles, geometry, &mut rng);
+        assign_fresh_map_pictures(&mut tiles, &gate_flags, geometry, &mut rng);
 
         let mut expected_rng = RetailLcg::from_state(1);
         expected_rng.advance(); // mountain variant
@@ -2024,10 +2321,12 @@ mod tests {
         }
         let mut sprite_variants = vec![0; STRATEGIC_TILE_COUNT];
         let mut river_sprite_codes = vec![0; STRATEGIC_TILE_COUNT];
+        let gate_flags = vec![0; STRATEGIC_TILE_COUNT];
         let mut rng = RetailLcg::from_state(3);
 
         assign_picture_to_tile_for_rng(
             &tiles,
+            &gate_flags,
             geometry,
             usize::from(target.get()),
             &mut sprite_variants,
@@ -2055,12 +2354,14 @@ mod tests {
             STRATEGIC_TILE_COUNT
         ];
         let mut river_sprite_codes = vec![0; STRATEGIC_TILE_COUNT];
+        let gate_flags = vec![0; STRATEGIC_TILE_COUNT];
 
         let mut propagated_variants = vec![0; STRATEGIC_TILE_COUNT];
         propagated_variants[usize::from(north_west.get())] = 4;
         let mut propagation_rng = RetailLcg::from_state(5);
         assign_picture_to_tile_for_rng(
             &tiles,
+            &gate_flags,
             geometry,
             usize::from(target.get()),
             &mut propagated_variants,
@@ -2074,6 +2375,7 @@ mod tests {
         let mut isolated_rng = RetailLcg::from_state(50);
         assign_picture_to_tile_for_rng(
             &tiles,
+            &gate_flags,
             geometry,
             usize::from(target.get()),
             &mut isolated_variants,
@@ -2186,8 +2488,7 @@ mod tests {
     #[test]
     fn normal_random_start_marks_only_queued_ai_map_targets() {
         let human_nation = MajorNationId::new(6);
-        let preview =
-            generate_random_setup_preview_with_clock_seed(b"Woopnist", MapTopology::Wrapping, 1);
+        let preview = initial_seed_one_preview();
         let state = create_random_game(&preview, human_nation, Difficulty::Normal, 1);
         let live_zone_count =
             usize::from(sea_zone_count(&state.world)) + state.port_zone_owners.len();
@@ -2270,8 +2571,7 @@ mod tests {
 
     #[test]
     fn creates_a_normal_start_boundary_from_the_retained_preview() {
-        let preview =
-            generate_random_setup_preview_with_clock_seed(b"Woopnist", MapTopology::Wrapping, 1);
+        let preview = initial_seed_one_preview();
         let state = create_random_game(&preview, MajorNationId::new(6), Difficulty::Normal, 1);
 
         assert_eq!(
