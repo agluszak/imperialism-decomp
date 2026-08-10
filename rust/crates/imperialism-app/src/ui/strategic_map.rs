@@ -14,6 +14,9 @@ const VIEWPORT_WIDTH: usize = 512;
 const VIEWPORT_HEIGHT: usize = 448;
 const TILE_SIZE: i32 = 64;
 const VIEWPORT_TILE_SPAN: i32 = 9;
+const TERRAIN_ATLAS_FRAME_COUNT: usize = 51;
+const RIVER_MASK_PICTURE_COUNT: usize = 32;
+const RIVER_MASK_TRANSPARENT_INDEX: u8 = 0x10;
 
 // Source-byte offsets into retail's 51-cell strategic terrain strip.
 const BASE_LAND_OFFSETS: [[u16; 2]; 16] = [
@@ -72,11 +75,12 @@ const SECONDARY_TRANSITION_OFFSETS: [[u16; 2]; 16] = [
     [0, 0],
 ];
 
-/// The bounded first strategic-map layer: retail base terrain and land-transition wedges only.
-/// Coast corners, rivers, borders, improvements, towns, and units intentionally remain absent.
+/// The bounded strategic terrain layer: retail bases, transitions, coast corners, and rivers.
+/// Borders, improvements, towns, and units intentionally remain absent.
 #[derive(Component)]
 pub(crate) struct StrategicBaseTerrainCanvas {
-    pictures: Vec<IndexedPicture>,
+    terrain_pictures: Vec<IndexedPicture>,
+    river_masks: Vec<IndexedPicture>,
 }
 
 pub(crate) fn bind_strategic_base_terrain(
@@ -88,13 +92,22 @@ pub(crate) fn bind_strategic_base_terrain(
     let map = spawned
         .require_unique(MAP_TAG)
         .expect("validated strategic-map canvas binding");
-    let pictures = load_strategic_base_terrain_pictures(assets);
-    let image = compose_strategic_base_terrain(state, &pictures, assets.default_dib_palette());
+    let terrain_pictures = load_strategic_terrain_pictures(assets);
+    let river_masks = load_strategic_river_masks(assets);
+    let image = compose_strategic_base_terrain(
+        state,
+        &terrain_pictures,
+        &river_masks,
+        assets.default_dib_palette(),
+    );
     let image = assets.add_image(image);
     commands.entity(map).insert((
         ImageNode::new(image),
         RelativeCursorPosition::default(),
-        StrategicBaseTerrainCanvas { pictures },
+        StrategicBaseTerrainCanvas {
+            terrain_pictures,
+            river_masks,
+        },
     ));
 }
 
@@ -113,7 +126,8 @@ pub(crate) fn sync_strategic_base_terrain(
     for (canvas, image_node) in &maps {
         let image = compose_strategic_base_terrain(
             &session.0,
-            &canvas.pictures,
+            &canvas.terrain_pictures,
+            &canvas.river_masks,
             retail_assets.assets().default_dib_palette(),
         );
         let Some(mut existing) = images.get_mut(&image_node.image) else {
@@ -123,8 +137,8 @@ pub(crate) fn sync_strategic_base_terrain(
     }
 }
 
-fn load_strategic_base_terrain_pictures(assets: &UiAssetResources) -> Vec<IndexedPicture> {
-    (0..51)
+fn load_strategic_terrain_pictures(assets: &UiAssetResources) -> Vec<IndexedPicture> {
+    (0..TERRAIN_ATLAS_FRAME_COUNT)
         .map(|frame| {
             let picture_id = strategic_terrain_picture_id(frame);
             let picture = assets.indexed_picture(picture_id).unwrap_or_else(|error| {
@@ -134,6 +148,23 @@ fn load_strategic_base_terrain_pictures(assets: &UiAssetResources) -> Vec<Indexe
                 (picture.width, picture.height),
                 (TILE_SIZE as u32, TILE_SIZE as u32),
                 "retail strategic terrain picture {picture_id} must be 64x64"
+            );
+            picture
+        })
+        .collect()
+}
+
+fn load_strategic_river_masks(assets: &UiAssetResources) -> Vec<IndexedPicture> {
+    (0..RIVER_MASK_PICTURE_COUNT)
+        .map(|mask| {
+            let picture_id = river_mask_picture_id(mask);
+            let picture = assets.indexed_picture(picture_id).unwrap_or_else(|error| {
+                panic!("retail strategic river mask {picture_id} must load: {error}")
+            });
+            assert_eq!(
+                (picture.width, picture.height),
+                (TILE_SIZE as u32, TILE_SIZE as u32),
+                "retail strategic river mask {picture_id} must be 64x64"
             );
             picture
         })
@@ -151,9 +182,21 @@ fn strategic_terrain_picture_id(frame: usize) -> PictureId {
     PictureId::new(id)
 }
 
+fn river_mask_picture_id(mask: usize) -> PictureId {
+    let id = match mask {
+        0..=15 => 10_048 + mask as i16,
+        16..=23 => 10_086 + (mask - 16) as i16,
+        24..=29 => 10_042 + (mask - 24) as i16,
+        30..=31 => 10_080 + (mask - 30) as i16,
+        _ => panic!("strategic river mask {mask} is out of range"),
+    };
+    PictureId::new(id)
+}
+
 fn compose_strategic_base_terrain(
     state: &GameState,
-    pictures: &[IndexedPicture],
+    terrain_pictures: &[IndexedPicture],
+    river_masks: &[IndexedPicture],
     palette: &DibPalette,
 ) -> Image {
     let mut indices = vec![0_u8; VIEWPORT_WIDTH * VIEWPORT_HEIGHT];
@@ -178,7 +221,8 @@ fn compose_strategic_base_terrain(
             let Some(tile) = state.world.geometry().tile(row as u16, column as u16) else {
                 continue;
             };
-            let tile_pixels = compose_strategic_base_tile(state, tile, pictures);
+            let tile_pixels =
+                compose_strategic_base_tile(state, tile, terrain_pictures, river_masks);
             copy_clipped_tile(&tile_pixels, screen_x, screen_y, &mut indices);
         }
     }
@@ -189,7 +233,8 @@ fn compose_strategic_base_terrain(
 fn compose_strategic_base_tile(
     state: &GameState,
     tile: TileId,
-    pictures: &[IndexedPicture],
+    terrain_pictures: &[IndexedPicture],
+    river_masks: &[IndexedPicture],
 ) -> Vec<u8> {
     let tile_state = &state.world[tile];
     let center_column = {
@@ -203,7 +248,7 @@ fn compose_strategic_base_tile(
         && ((tile_column == 0 && center_column > 54)
             || (tile_column == STRATEGIC_MAP_WIDTH - 1 && center_column < 54));
     if wrapped_seam {
-        return pictures[frame_for_offset(0xc80)].pixels.clone();
+        return terrain_pictures[frame_for_offset(0xc80)].pixels.clone();
     }
 
     let rendering = tile_state.rendering;
@@ -224,7 +269,9 @@ fn compose_strategic_base_tile(
         };
         BASE_LAND_OFFSETS[subtype][variant]
     };
-    let mut pixels = pictures[frame_for_offset(base_offset)].pixels.clone();
+    let mut pixels = terrain_pictures[frame_for_offset(base_offset)]
+        .pixels
+        .clone();
 
     if tile_state.terrain != TerrainKind::Water {
         let subtype = usize::try_from(tile_state.region_tile_subtype.retail())
@@ -241,11 +288,90 @@ fn compose_strategic_base_tile(
             } else {
                 continue;
             };
-            let source = &pictures[frame_for_offset(transition_offset)].pixels;
+            let source = &terrain_pictures[frame_for_offset(transition_offset)].pixels;
             copy_transition_wedge(direction, source, &mut pixels);
         }
     }
+
+    if tile_state.terrain == TerrainKind::Water && rendering.coast_or_secondary_mask != 0 {
+        compose_water_coast_corners(rendering, terrain_pictures, &mut pixels);
+    } else if let Some(river_sprite) = rendering.river_sprite {
+        compose_river(river_sprite, river_masks, &mut pixels);
+    }
     pixels
+}
+
+fn compose_water_coast_corners(
+    rendering: TileRendering,
+    terrain_pictures: &[IndexedPicture],
+    pixels: &mut [u8],
+) {
+    let adjacency_mask = rendering.coast_or_secondary_mask;
+    let river_sprite = rendering.river_sprite.map(RiverSprite::retail);
+    for corner in 0..6 {
+        let previous_direction = (corner + 5) % 6;
+        let corner_bits = (1 << previous_direction) | (1 << corner);
+        if adjacency_mask & corner_bits == 0 {
+            continue;
+        }
+        let variant = coast_corner_variant(adjacency_mask, corner);
+        if variant == 0 {
+            continue;
+        }
+        let frame = if uses_river_mouth_coast_frame(corner, river_sprite) {
+            let extra_variant = usize::from(
+                variant == 1 && matches!(river_sprite, Some(0x33 | 0x36 | 0x39 | 0x3a)),
+            );
+            usize::from(variant) + 41 + extra_variant * 3
+        } else if rendering.sprite_variant & (1 << corner) != 0 {
+            usize::from(variant) + 32
+        } else {
+            usize::from(variant) + 21
+        };
+        copy_coast_corner(corner, &terrain_pictures[frame].pixels, pixels);
+    }
+}
+
+fn coast_corner_variant(adjacency_mask: u8, corner: usize) -> u8 {
+    // Retail's 64x7 lookup table is this adjacent-bit rule plus one explicit zero entry.
+    if adjacency_mask == 0x05 && corner == 1 {
+        return 0;
+    }
+    let previous_direction = (corner + 5) % 6;
+    let previous = adjacency_mask & (1 << previous_direction) != 0;
+    let current = adjacency_mask & (1 << corner) != 0;
+    match (previous, current) {
+        (false, false) => 0,
+        (true, true) => 1,
+        (false, true) if corner & 1 == 0 => 2,
+        (true, false) if previous_direction & 1 == 0 => 2,
+        _ => 3,
+    }
+}
+
+fn uses_river_mouth_coast_frame(corner: usize, river_sprite: Option<u8>) -> bool {
+    matches!(
+        (corner, river_sprite),
+        (1, Some(0x33 | 0x34))
+            | (2, Some(0x35 | 0x36))
+            | (3, Some(0x36 | 0x37))
+            | (4, Some(0x37 | 0x39))
+            | (5, Some(0x38 | 0x3a))
+    )
+}
+
+fn compose_river(river_sprite: RiverSprite, river_masks: &[IndexedPicture], pixels: &mut [u8]) {
+    let mut normalized = river_sprite.retail();
+    if normalized > 0x1a {
+        normalized -= 0x10;
+    }
+    let mask = usize::from(normalized - 0x0b);
+    let source = &river_masks[mask].pixels;
+    for (&source_pixel, destination_pixel) in source.iter().zip(pixels) {
+        if source_pixel != RIVER_MASK_TRANSPARENT_INDEX {
+            *destination_pixel = source_pixel;
+        }
+    }
 }
 
 fn frame_for_offset(offset: u16) -> usize {
@@ -320,13 +446,67 @@ fn copy_transition_wedge(direction: usize, source: &[u8], destination: &mut [u8]
     }
 }
 
+fn copy_coast_corner(corner: usize, source: &[u8], destination: &mut [u8]) {
+    match corner {
+        0 => {
+            for row in 0x20..0x40 {
+                let half_row = (row - 0x20) / 2;
+                copy_tile_span(source, destination, row, 0x1f - half_row, 2 + half_row * 2);
+            }
+        }
+        1 => {
+            for row in 0x20..0x40 {
+                let first_column = 0x20 + (row - 0x20) / 2;
+                copy_tile_span(source, destination, row, first_column, 0x40 - first_column);
+            }
+        }
+        2 => {
+            for row in 0..0x20 {
+                let mut first_column = 0x30 - (row / 8) * 4;
+                if row & 2 != 0 {
+                    first_column -= 1;
+                }
+                copy_tile_span(source, destination, row, first_column, 0x40 - first_column);
+            }
+        }
+        3 => {
+            for row in 0..0x20 {
+                let first_column = 0x10 + row / 2;
+                let pair_in_group = (row / 2) & 3;
+                let end_column = 0x30 + ((4 - pair_in_group) & 3);
+                copy_tile_span(
+                    source,
+                    destination,
+                    row,
+                    first_column,
+                    end_column - first_column,
+                );
+            }
+        }
+        4 => {
+            for row in 0..0x20 {
+                copy_tile_span(source, destination, row, 0, 0x10 + row / 2);
+            }
+        }
+        5 => {
+            for row in 0x20..0x40 {
+                copy_tile_span(source, destination, row, 0, 0x20 - (row - 0x20) / 2);
+            }
+        }
+        _ => unreachable!("strategic tile has six coast corners"),
+    }
+}
+
 fn copy_tile_span(
     source: &[u8],
     destination: &mut [u8],
-    row: usize,
+    dib_row: usize,
     first_column: usize,
     pixel_count: usize,
 ) {
+    // Retail's atlas and map surface are positive-height DIBs, so its span routines count rows
+    // bottom-up. IndexedPicture normalizes both to top-down order.
+    let row = TILE_SIZE as usize - 1 - dib_row;
     let start = row * TILE_SIZE as usize + first_column;
     destination[start..start + pixel_count].copy_from_slice(&source[start..start + pixel_count]);
 }
