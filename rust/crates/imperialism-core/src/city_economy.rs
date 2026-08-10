@@ -1,4 +1,4 @@
-use crate::{CityState, GreatPowerState, ProductionSlot, ResourceKind, ResourceTable};
+use crate::{CityState, GreatPowerState, CityFacilitySlot, ResourceKind, ResourceTable};
 
 impl CityState {
     /// Mirrors the state effect of `TCity::VerifyStocks`; UI invalidation from
@@ -94,15 +94,15 @@ impl CityState {
     /// boundary that will call this method.
     pub fn refresh_local_summary_flags(&mut self) {
         self.low_stock = self.population.strength >= 2;
-        let mut shortage_count = if self.production_accum[ProductionSlot::LumberMill] > 0 {
+        let mut shortage_count = if self.production_accum[CityFacilitySlot::LumberMill] > 0 {
             2_i16
         } else {
             3_i16
         };
-        if self.production_accum[ProductionSlot::SteelMill] > 0 {
+        if self.production_accum[CityFacilitySlot::SteelMill] > 0 {
             shortage_count -= 1;
         }
-        if self.production_accum[ProductionSlot::TextileMill] > 0 {
+        if self.production_accum[CityFacilitySlot::TextileMill] > 0 {
             shortage_count -= 1;
         }
         self.low_production = shortage_count < 2;
@@ -122,8 +122,8 @@ impl CityState {
 mod tests {
     use super::*;
 
-    fn slot(value: u8) -> ProductionSlot {
-        ProductionSlot::from_index(value).unwrap()
+    fn slot(value: u8) -> CityFacilitySlot {
+        CityFacilitySlot::from_index(value).unwrap()
     }
 
     fn city() -> CityState {

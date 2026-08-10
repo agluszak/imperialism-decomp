@@ -872,28 +872,28 @@ fn trade_advisory_needed(major: &MajorNation, kind: TradeAdvisoryKind) -> bool {
         }
         TradeAdvisoryKind::Textile => {
             stock_and_target(ResourceKind::Cotton) + stock_and_target(ResourceKind::Wool)
-                < building(ProductionSlot::TextileMill) * 2
+                < building(CityFacilitySlot::TextileMill) * 2
         }
         TradeAdvisoryKind::Timber => {
-            stock_and_target(ResourceKind::Timber) < building(ProductionSlot::LumberMill) * 2
+            stock_and_target(ResourceKind::Timber) < building(CityFacilitySlot::LumberMill) * 2
         }
         TradeAdvisoryKind::Coal => {
-            stock_and_target(ResourceKind::Coal) < building(ProductionSlot::SteelMill)
+            stock_and_target(ResourceKind::Coal) < building(CityFacilitySlot::SteelMill)
         }
         TradeAdvisoryKind::Iron => {
-            stock_and_target(ResourceKind::Iron) < building(ProductionSlot::SteelMill)
+            stock_and_target(ResourceKind::Iron) < building(CityFacilitySlot::SteelMill)
         }
         TradeAdvisoryKind::Oil => {
-            stock_and_target(ResourceKind::Oil) < building(ProductionSlot::OilRefinery) * 2
+            stock_and_target(ResourceKind::Oil) < building(CityFacilitySlot::OilRefinery) * 2
         }
         TradeAdvisoryKind::Fabric => {
-            stock_and_target(ResourceKind::Fabric) < building(ProductionSlot::ClothingFactory) * 2
+            stock_and_target(ResourceKind::Fabric) < building(CityFacilitySlot::ClothingFactory) * 2
         }
         TradeAdvisoryKind::Lumber => {
-            stock_and_target(ResourceKind::Lumber) < building(ProductionSlot::FurnitureFactory) * 2
+            stock_and_target(ResourceKind::Lumber) < building(CityFacilitySlot::FurnitureFactory) * 2
         }
         TradeAdvisoryKind::Steel => {
-            stock_and_target(ResourceKind::Steel) < building(ProductionSlot::Metalworks) * 2
+            stock_and_target(ResourceKind::Steel) < building(CityFacilitySlot::Metalworks) * 2
         }
     }
 }

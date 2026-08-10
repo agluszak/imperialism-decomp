@@ -309,44 +309,44 @@ struct ShipyardDialogData {
 
 #[derive(Clone, Copy)]
 struct IndustryPage {
-    slot: ProductionSlot,
+    slot: CityFacilitySlot,
     orders: &'static [CityOrderBinding],
     stocks: &'static [(ResourceKind, FourCc, i16)],
 }
 
-fn industry_page(slot: ProductionSlot) -> Option<IndustryPage> {
+fn industry_page(slot: CityFacilitySlot) -> Option<IndustryPage> {
     let page = match slot {
-        ProductionSlot::TextileMill => IndustryPage {
+        CityFacilitySlot::TextileMill => IndustryPage {
             slot,
             orders: &TEXTILE_ORDERS,
             stocks: &TEXTILE_STOCKS,
         },
-        ProductionSlot::ClothingFactory => IndustryPage {
+        CityFacilitySlot::ClothingFactory => IndustryPage {
             slot,
             orders: &CLOTHING_ORDERS,
             stocks: &CLOTHING_STOCKS,
         },
-        ProductionSlot::SteelMill => IndustryPage {
+        CityFacilitySlot::SteelMill => IndustryPage {
             slot,
             orders: &STEEL_ORDERS,
             stocks: &STEEL_STOCKS,
         },
-        ProductionSlot::Metalworks => IndustryPage {
+        CityFacilitySlot::Metalworks => IndustryPage {
             slot,
             orders: &METALWORKS_ORDERS,
             stocks: &METALWORKS_STOCKS,
         },
-        ProductionSlot::LumberMill => IndustryPage {
+        CityFacilitySlot::LumberMill => IndustryPage {
             slot,
             orders: &LUMBER_ORDERS,
             stocks: &LUMBER_STOCKS,
         },
-        ProductionSlot::FurnitureFactory => IndustryPage {
+        CityFacilitySlot::FurnitureFactory => IndustryPage {
             slot,
             orders: &FURNITURE_ORDERS,
             stocks: &FURNITURE_STOCKS,
         },
-        ProductionSlot::OilRefinery => IndustryPage {
+        CityFacilitySlot::OilRefinery => IndustryPage {
             slot,
             orders: &OIL_ORDERS,
             stocks: &OIL_STOCKS,
@@ -356,24 +356,24 @@ fn industry_page(slot: ProductionSlot) -> Option<IndustryPage> {
     Some(page)
 }
 
-fn dialog_orders(slot: ProductionSlot) -> &'static [CityOrderBinding] {
+fn dialog_orders(slot: CityFacilitySlot) -> &'static [CityOrderBinding] {
     if let Some(page) = industry_page(slot) {
         page.orders
-    } else if slot == ProductionSlot::TradeSchool {
+    } else if slot == CityFacilitySlot::TradeSchool {
         &TRAINING_ORDERS
-    } else if slot == ProductionSlot::University {
+    } else if slot == CityFacilitySlot::University {
         &UNIVERSITY_ORDERS
-    } else if slot == ProductionSlot::Shipyard {
+    } else if slot == CityFacilitySlot::Shipyard {
         &SHIP_ORDERS
-    } else if slot == ProductionSlot::FoodProcessing {
+    } else if slot == CityFacilitySlot::FoodProcessing {
         &FOOD_ORDERS
-    } else if slot == ProductionSlot::PowerPlant {
+    } else if slot == CityFacilitySlot::PowerPlant {
         &POWER_ORDERS
-    } else if slot == ProductionSlot::Transport {
+    } else if slot == CityFacilitySlot::Transport {
         &TRANSPORT_CAPACITY_ORDERS
-    } else if slot == ProductionSlot::RegionalPopulation {
+    } else if slot == CityFacilitySlot::RegionalPopulation {
         &POPULATION_ORDERS
-    } else if slot == ProductionSlot::Armory {
+    } else if slot == CityFacilitySlot::Armory {
         &ARMORY_ORDERS
     } else {
         &[]
@@ -421,23 +421,23 @@ const fn shipyard_button_tag(slot: ShipOrderSlot) -> FourCc {
     }
 }
 
-const fn is_ordinary_industry(slot: ProductionSlot) -> bool {
+const fn is_ordinary_industry(slot: CityFacilitySlot) -> bool {
     matches!(
         slot,
-        ProductionSlot::TextileMill
-            | ProductionSlot::ClothingFactory
-            | ProductionSlot::SteelMill
-            | ProductionSlot::Metalworks
-            | ProductionSlot::LumberMill
-            | ProductionSlot::FurnitureFactory
-            | ProductionSlot::OilRefinery
+        CityFacilitySlot::TextileMill
+            | CityFacilitySlot::ClothingFactory
+            | CityFacilitySlot::SteelMill
+            | CityFacilitySlot::Metalworks
+            | CityFacilitySlot::LumberMill
+            | CityFacilitySlot::FurnitureFactory
+            | CityFacilitySlot::OilRefinery
     )
 }
 
 fn city_building_level(
     state: &GameState,
     nation: MajorNationId,
-    slot: ProductionSlot,
+    slot: CityFacilitySlot,
 ) -> Option<i16> {
     let major = state.nations().major(nation);
     Some(major.city().next_building_type(
@@ -448,21 +448,21 @@ fn city_building_level(
     ))
 }
 
-fn city_is_expanding(city: &CityState, slot: ProductionSlot) -> bool {
+fn city_is_expanding(city: &CityState, slot: CityFacilitySlot) -> bool {
     city.orders.expansions[slot]
         .as_ref()
         .is_some_and(|state| state.progress.quantity > 0)
 }
 
-fn city_building_picture(city: &CityState, slot: ProductionSlot, level: i16) -> Option<PictureId> {
+fn city_building_picture(city: &CityState, slot: CityFacilitySlot, level: i16) -> Option<PictureId> {
     let expanding = city_is_expanding(city, slot);
     let should_draw = level >= 1
         || (is_ordinary_industry(slot) && expanding)
-        || (slot == ProductionSlot::PowerPlant && city.power_plant_upgrade_queued);
+        || (slot == CityFacilitySlot::PowerPlant && city.power_plant_upgrade_queued);
     if !should_draw {
         return None;
     }
-    if slot == ProductionSlot::PowerPlant {
+    if slot == CityFacilitySlot::PowerPlant {
         return Some(PictureId::new(if city.power_plant_upgrade_queued {
             7011
         } else {
@@ -498,11 +498,11 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
     let city = catalog
         .view(&city_view_id())
         .expect("city view was validated above");
-    if city.city_buildings.len() != ProductionSlot::COUNT {
+    if city.city_buildings.len() != CityFacilitySlot::COUNT {
         return Err(format!(
             "Citymain.rsrc:2011 has {} dynamic buildings; expected {}",
             city.city_buildings.len(),
-            ProductionSlot::COUNT
+            CityFacilitySlot::COUNT
         ));
     }
     let dialog = |slot| {
@@ -513,13 +513,13 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
             .ok_or_else(|| format!("Citymain.rsrc:2011 is missing {slot:?}"))
     };
     for slot in [
-        ProductionSlot::TextileMill,
-        ProductionSlot::ClothingFactory,
-        ProductionSlot::SteelMill,
-        ProductionSlot::Metalworks,
-        ProductionSlot::LumberMill,
-        ProductionSlot::FurnitureFactory,
-        ProductionSlot::OilRefinery,
+        CityFacilitySlot::TextileMill,
+        CityFacilitySlot::ClothingFactory,
+        CityFacilitySlot::SteelMill,
+        CityFacilitySlot::Metalworks,
+        CityFacilitySlot::LumberMill,
+        CityFacilitySlot::FurnitureFactory,
+        CityFacilitySlot::OilRefinery,
     ] {
         let page = industry_page(slot).expect("ordinary industry has a page");
         let view_id = dialog(slot)?;
@@ -551,7 +551,7 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
     }
     for (slot, bindings, unique_tags) in [
         (
-            ProductionSlot::TradeSchool,
+            CityFacilitySlot::TradeSchool,
             TRAINING_ORDERS.as_slice(),
             &[
                 fourcc!("WIND"),
@@ -568,7 +568,7 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
             ][..],
         ),
         (
-            ProductionSlot::FoodProcessing,
+            CityFacilitySlot::FoodProcessing,
             FOOD_ORDERS.as_slice(),
             &[
                 fourcc!("WIND"),
@@ -581,7 +581,7 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
             ],
         ),
         (
-            ProductionSlot::PowerPlant,
+            CityFacilitySlot::PowerPlant,
             POWER_ORDERS.as_slice(),
             &[
                 fourcc!("WIND"),
@@ -591,7 +591,7 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
             ],
         ),
         (
-            ProductionSlot::Transport,
+            CityFacilitySlot::Transport,
             TRANSPORT_CAPACITY_ORDERS.as_slice(),
             &[
                 fourcc!("WIND"),
@@ -603,7 +603,7 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
             ],
         ),
         (
-            ProductionSlot::RegionalPopulation,
+            CityFacilitySlot::RegionalPopulation,
             POPULATION_ORDERS.as_slice(),
             &[
                 fourcc!("WIND"),
@@ -630,7 +630,7 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
             }
         }
     }
-    let warehouse = dialog(ProductionSlot::Warehouse)?;
+    let warehouse = dialog(CityFacilitySlot::Warehouse)?;
     catalog.require_unique_bindings(
         warehouse,
         &[
@@ -644,7 +644,7 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
     for &(_, tag) in &WAREHOUSE_STOCKS {
         catalog.require_unique_bindings(warehouse, &[tag])?;
     }
-    let armory = dialog(ProductionSlot::Armory)?;
+    let armory = dialog(CityFacilitySlot::Armory)?;
     catalog.require_unique_bindings(
         armory,
         &[
@@ -671,7 +671,7 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
             catalog.require_control_under(armory, tag, &[binding.tag])?;
         }
     }
-    let shipyard = dialog(ProductionSlot::Shipyard)?;
+    let shipyard = dialog(CityFacilitySlot::Shipyard)?;
     catalog.require_unique_bindings(
         shipyard,
         &[
@@ -695,7 +695,7 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
             catalog.require_control_under(shipyard, tag, &[binding.tag])?;
         }
     }
-    let university = dialog(ProductionSlot::University)?;
+    let university = dialog(CityFacilitySlot::University)?;
     catalog.require_unique_bindings(
         university,
         &[
@@ -852,7 +852,7 @@ fn apply_city_picture_transparency(image: &mut Image, indexed: &IndexedPicture) 
 struct CityBuildingHitRegion {
     origin: IVec2,
     draw_order: u8,
-    slot: ProductionSlot,
+    slot: CityFacilitySlot,
     dialog: ScopedViewId,
     mask: CityBuildingHitMask,
 }
@@ -874,13 +874,13 @@ struct CityDialogsNeedRestore;
 #[derive(Component, Clone, Copy)]
 struct CityBuildingPicture {
     nation: MajorNationId,
-    slot: ProductionSlot,
+    slot: CityFacilitySlot,
 }
 
 #[derive(Component)]
 struct CityBuildingActionAnimation {
     nation: MajorNationId,
-    slot: ProductionSlot,
+    slot: CityFacilitySlot,
     frame_count: u8,
     frame_size: [i32; 2],
     frame: u8,
@@ -890,7 +890,7 @@ struct CityBuildingActionAnimation {
 #[derive(Component, Clone, Copy)]
 struct CityBuildingDialog {
     nation: MajorNationId,
-    slot: ProductionSlot,
+    slot: CityFacilitySlot,
     window: Entity,
 }
 
@@ -916,7 +916,7 @@ struct CityDialogNeedsSync;
 struct CityExpansionOpen {
     dialog: Entity,
     nation: MajorNationId,
-    slot: ProductionSlot,
+    slot: CityFacilitySlot,
 }
 
 #[derive(Component, Clone, Copy)]
@@ -926,7 +926,7 @@ struct CityBuildingChangeDialog;
 struct CityBuildingChangeChoice {
     dialog: Entity,
     nation: MajorNationId,
-    slot: ProductionSlot,
+    slot: CityFacilitySlot,
     accept: bool,
 }
 
@@ -943,7 +943,7 @@ struct CityIndustryAmountBar {
     dialog: Entity,
     nation: MajorNationId,
     order: CityOrderId,
-    slot: ProductionSlot,
+    slot: CityFacilitySlot,
     quantity: Entity,
     fill: Entity,
     maximum: Entity,
@@ -1076,7 +1076,7 @@ enum CityValue {
     AvailableCombinedStockIndicator(ResourceKind, ResourceKind, i16),
     AvailableBudgetIndicator(i32),
     TrainingLaborIndicator(TrainingLevel),
-    BuildingCapacity(ProductionSlot),
+    BuildingCapacity(CityFacilitySlot),
     RegionalCapacity,
     OwnedRegionCount,
     ArmoryUnitKind,
@@ -1111,7 +1111,7 @@ struct RetailNumberTemplate(String);
 #[derive(Component, Clone, Copy)]
 struct CityExpansionIndicator {
     dialog: Entity,
-    slot: ProductionSlot,
+    slot: CityFacilitySlot,
 }
 
 pub(crate) struct CityPlugin;
@@ -1400,8 +1400,8 @@ fn apply_city_action_transparency(
     }
 }
 
-fn city_building_action_enabled(city: &CityState, slot: ProductionSlot) -> bool {
-    if slot == ProductionSlot::PowerPlant {
+fn city_building_action_enabled(city: &CityState, slot: CityFacilitySlot) -> bool {
+    if slot == CityFacilitySlot::PowerPlant {
         !city.power_plant_upgrade_queued && city.orders.power_plant.progress.quantity > 0
     } else {
         assert!(
@@ -1506,7 +1506,7 @@ fn spawn_city_building_actions(
                 frame_size: action.frame_size,
                 frame: 0,
                 timer: Timer::new(
-                    Duration::from_millis(if action.slot == ProductionSlot::PowerPlant {
+                    Duration::from_millis(if action.slot == CityFacilitySlot::PowerPlant {
                         160
                     } else {
                         224
@@ -1612,7 +1612,7 @@ fn on_city_canvas_click(
     if unbuilt_capacity_center {
         let available = !matches!(
             building.slot,
-            ProductionSlot::OilRefinery | ProductionSlot::PowerPlant
+            CityFacilitySlot::OilRefinery | CityFacilitySlot::PowerPlant
         ) || session.0.technology().city_capabilities_by_nation[nation].oil_drilling;
         if available {
             open_city_construction_dialog(&mut ui, &mut session, nation, building.slot);
@@ -1639,19 +1639,19 @@ fn on_city_canvas_click(
     );
 }
 
-fn supports_city_dialog(slot: ProductionSlot) -> bool {
+fn supports_city_dialog(slot: CityFacilitySlot) -> bool {
     industry_page(slot).is_some()
         || matches!(
             slot,
-            ProductionSlot::TradeSchool
-                | ProductionSlot::Armory
-                | ProductionSlot::University
-                | ProductionSlot::Shipyard
-                | ProductionSlot::Warehouse
-                | ProductionSlot::FoodProcessing
-                | ProductionSlot::PowerPlant
-                | ProductionSlot::Transport
-                | ProductionSlot::RegionalPopulation
+            CityFacilitySlot::TradeSchool
+                | CityFacilitySlot::Armory
+                | CityFacilitySlot::University
+                | CityFacilitySlot::Shipyard
+                | CityFacilitySlot::Warehouse
+                | CityFacilitySlot::FoodProcessing
+                | CityFacilitySlot::PowerPlant
+                | CityFacilitySlot::Transport
+                | CityFacilitySlot::RegionalPopulation
         )
 }
 
@@ -1724,7 +1724,7 @@ fn open_city_dialog(
     catalog: &UiCatalogResource,
     state: &GameState,
     nation: MajorNationId,
-    slot: ProductionSlot,
+    slot: CityFacilitySlot,
     view_id: ScopedViewId,
     saved_position: Option<IVec2>,
     z_index: i32,
@@ -1736,11 +1736,11 @@ fn open_city_dialog(
     let building_name = city_string(ui, CITY_BUILDING_STRING_GROUP, slot as i16);
     let capacity_template = city_string(ui, CITY_TEXT_STRING_GROUP, 0x10);
     let province_template = city_string(ui, CITY_TEXT_STRING_GROUP, 0x1d);
-    let armory_title = (slot == ProductionSlot::Armory).then(|| {
+    let armory_title = (slot == CityFacilitySlot::Armory).then(|| {
         ui.string(0x271c, 0x20)
             .expect("validated English retail Armory title")
     });
-    let university_data = (slot == ProductionSlot::University).then(|| {
+    let university_data = (slot == CityFacilitySlot::University).then(|| {
         let (detail_font, _, _) = ui
             .text_style(RetailTextStylePreset {
                 font_family: 3,
@@ -1798,7 +1798,7 @@ fn open_city_dialog(
             warning_color: ui.palette_color(0xcb),
         }
     });
-    let shipyard_data = (slot == ProductionSlot::Shipyard).then(|| {
+    let shipyard_data = (slot == CityFacilitySlot::Shipyard).then(|| {
         let city = state.nations().major(nation).city();
         let material_pictures = SHIPYARD_MATERIALS
             .map(|resource| transparent_picture(ui, PictureId::new(700 + resource as i16)));
@@ -1885,51 +1885,51 @@ fn open_city_dialog(
         );
     } else {
         match slot {
-            ProductionSlot::TradeSchool => {
+            CityFacilitySlot::TradeSchool => {
                 bind_training_dialog(&mut ui.commands, catalog, &spawned, nation, building_name)
             }
-            ProductionSlot::Armory => bind_armory_dialog(
+            CityFacilitySlot::Armory => bind_armory_dialog(
                 &mut ui.commands,
                 catalog,
                 &spawned,
                 nation,
                 armory_title.expect("Armory branch has its retail title"),
             ),
-            ProductionSlot::University => bind_university_dialog(
+            CityFacilitySlot::University => bind_university_dialog(
                 &mut ui.commands,
                 catalog,
                 &spawned,
                 nation,
                 university_data.expect("University branch has retail text and technology"),
             ),
-            ProductionSlot::Shipyard => bind_shipyard_dialog(
+            CityFacilitySlot::Shipyard => bind_shipyard_dialog(
                 &mut ui.commands,
                 catalog,
                 &spawned,
                 nation,
                 shipyard_data.expect("Shipyard branch has retail ship data"),
             ),
-            ProductionSlot::Warehouse => bind_warehouse_dialog(
+            CityFacilitySlot::Warehouse => bind_warehouse_dialog(
                 ui,
                 &spawned,
                 nation,
                 building_name,
                 state.technology().oil_drilling_available(),
             ),
-            ProductionSlot::FoodProcessing => {
+            CityFacilitySlot::FoodProcessing => {
                 bind_food_dialog(&mut ui.commands, catalog, &spawned, nation, building_name)
             }
-            ProductionSlot::PowerPlant => {
+            CityFacilitySlot::PowerPlant => {
                 bind_power_dialog(&mut ui.commands, catalog, &spawned, nation, building_name)
             }
-            ProductionSlot::Transport => bind_transport_capacity_dialog(
+            CityFacilitySlot::Transport => bind_transport_capacity_dialog(
                 &mut ui.commands,
                 catalog,
                 &spawned,
                 nation,
                 building_name,
             ),
-            ProductionSlot::RegionalPopulation => bind_population_dialog(
+            CityFacilitySlot::RegionalPopulation => bind_population_dialog(
                 &mut ui.commands,
                 catalog,
                 &spawned,
@@ -1962,7 +1962,7 @@ fn bind_city_dialog_root(
     commands: &mut Commands,
     spawned: &SpawnedView,
     nation: MajorNationId,
-    slot: ProductionSlot,
+    slot: CityFacilitySlot,
 ) -> Entity {
     let root = spawned.root;
     let window = spawned
@@ -2420,7 +2420,7 @@ fn bind_training_dialog(
     nation: MajorNationId,
     building_name: String,
 ) {
-    let root = bind_city_dialog_root(commands, spawned, nation, ProductionSlot::TradeSchool);
+    let root = bind_city_dialog_root(commands, spawned, nation, CityFacilitySlot::TradeSchool);
     let name = spawned
         .require_unique(fourcc!("name"))
         .expect("validated trade-school name binding");
@@ -2483,7 +2483,7 @@ fn bind_armory_dialog(
     nation: MajorNationId,
     title: String,
 ) {
-    let root = bind_city_dialog_root(commands, spawned, nation, ProductionSlot::Armory);
+    let root = bind_city_dialog_root(commands, spawned, nation, CityFacilitySlot::Armory);
     let title_control = spawned
         .require_unique(fourcc!("titl"))
         .expect("validated Armory title binding");
@@ -2573,7 +2573,7 @@ fn bind_university_dialog(
         normal_color,
         warning_color,
     } = data;
-    let root = bind_city_dialog_root(commands, spawned, nation, ProductionSlot::University);
+    let root = bind_city_dialog_root(commands, spawned, nation, CityFacilitySlot::University);
     commands.entity(root).insert(UniversitySelection {
         kind: CivilianUnitKind::Miner,
     });
@@ -2842,7 +2842,7 @@ fn bind_shipyard_dialog(
         rows[0].is_some(),
         "retail Shipyard row zero always has a current ship"
     );
-    let root = bind_city_dialog_root(commands, spawned, nation, ProductionSlot::Shipyard);
+    let root = bind_city_dialog_root(commands, spawned, nation, CityFacilitySlot::Shipyard);
     commands.entity(root).insert(ShipyardSelection {
         slot: ShipOrderSlot::MerchantEarlyPrimary,
     });
@@ -3099,7 +3099,7 @@ fn bind_warehouse_dialog(
         })
         .expect("retail Warehouse value text style");
     let text_color = ui.palette_color(0);
-    let root = bind_city_dialog_root(&mut ui.commands, spawned, nation, ProductionSlot::Warehouse);
+    let root = bind_city_dialog_root(&mut ui.commands, spawned, nation, CityFacilitySlot::Warehouse);
     let name = spawned
         .require_unique(fourcc!("name"))
         .expect("validated Warehouse name binding");
@@ -3221,7 +3221,7 @@ fn bind_rail_dialog(
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
     nation: MajorNationId,
-    slot: ProductionSlot,
+    slot: CityFacilitySlot,
     building_name: String,
     bindings: &[CityOrderBinding],
     step: i16,
@@ -3260,7 +3260,7 @@ fn bind_food_dialog(
         catalog,
         spawned,
         nation,
-        ProductionSlot::FoodProcessing,
+        CityFacilitySlot::FoodProcessing,
         building_name,
         &FOOD_ORDERS,
         2,
@@ -3309,7 +3309,7 @@ fn bind_power_dialog(
         catalog,
         spawned,
         nation,
-        ProductionSlot::PowerPlant,
+        CityFacilitySlot::PowerPlant,
         building_name,
         &POWER_ORDERS,
         6,
@@ -3334,7 +3334,7 @@ fn bind_transport_capacity_dialog(
         catalog,
         spawned,
         nation,
-        ProductionSlot::Transport,
+        CityFacilitySlot::Transport,
         building_name,
         &TRANSPORT_CAPACITY_ORDERS,
         1,
@@ -3377,7 +3377,7 @@ fn bind_population_dialog(
         catalog,
         spawned,
         nation,
-        ProductionSlot::RegionalPopulation,
+        CityFacilitySlot::RegionalPopulation,
         building_name,
         &POPULATION_ORDERS,
         1,
@@ -3427,14 +3427,14 @@ fn open_city_construction_dialog(
     ui: &mut UiSpawner,
     session: &mut GameSession,
     nation: MajorNationId,
-    slot: ProductionSlot,
+    slot: CityFacilitySlot,
 ) {
     assert!(
         CityState::is_capacity_center(slot),
         "retail construction dialog belongs to a City capacity center"
     );
     let (capacity_value, can_reserve) = match slot {
-        ProductionSlot::PowerPlant => {
+        CityFacilitySlot::PowerPlant => {
             session.0.set_power_plant_upgrade(nation, false);
             let major = session.0.nations().major(nation);
             let can_reserve = major
@@ -3485,7 +3485,7 @@ fn bind_construction_dialog(
     ui: &mut UiSpawner,
     spawned: &SpawnedView,
     nation: MajorNationId,
-    slot: ProductionSlot,
+    slot: CityFacilitySlot,
     capacity_value: &str,
     can_reserve: bool,
 ) {
@@ -3536,7 +3536,7 @@ fn bind_construction_dialog(
     let text2 = spawned
         .require_unique(fourcc!("tex2"))
         .expect("validated construction detail binding");
-    if slot == ProductionSlot::PowerPlant {
+    if slot == CityFacilitySlot::PowerPlant {
         ui.commands
             .entity(text2)
             .entry::<Node>()
@@ -3552,9 +3552,9 @@ fn bind_construction_dialog(
         .require_unique(fourcc!("or  "))
         .expect("validated construction connective binding");
     let connective_left = match slot {
-        ProductionSlot::TextileMill => Some(0x98),
-        ProductionSlot::Metalworks => Some(0xcd),
-        ProductionSlot::LumberMill => Some(0xd0),
+        CityFacilitySlot::TextileMill => Some(0x98),
+        CityFacilitySlot::Metalworks => Some(0xcd),
+        CityFacilitySlot::LumberMill => Some(0xd0),
         _ => None,
     };
     if let Some(left) = connective_left {
@@ -3572,12 +3572,12 @@ fn bind_construction_dialog(
         .require_unique(fourcc!("buck"))
         .expect("validated construction cash binding");
     ui.commands.entity(buck).insert((
-        Text::new(if slot == ProductionSlot::PowerPlant {
+        Text::new(if slot == CityFacilitySlot::PowerPlant {
             format_currency(5_000)
         } else {
             String::new()
         }),
-        if slot == ProductionSlot::PowerPlant {
+        if slot == CityFacilitySlot::PowerPlant {
             Visibility::Visible
         } else {
             Visibility::Hidden
@@ -3590,7 +3590,7 @@ fn bind_construction_dialog(
     let warning_text = city_string(
         ui,
         CITY_TEXT_STRING_GROUP,
-        if slot == ProductionSlot::PowerPlant {
+        if slot == CityFacilitySlot::PowerPlant {
             0x16
         } else {
             0x17
@@ -3637,7 +3637,7 @@ fn bind_expansion_dialog(
     ui: &mut UiSpawner,
     spawned: &SpawnedView,
     nation: MajorNationId,
-    slot: ProductionSlot,
+    slot: CityFacilitySlot,
     building_name: String,
     next_capacity: i16,
     next_level: u8,
@@ -3814,7 +3814,7 @@ fn on_city_building_change_choice(
     let Some(mut session) = session else {
         return;
     };
-    if choice.slot == ProductionSlot::PowerPlant {
+    if choice.slot == CityFacilitySlot::PowerPlant {
         if choice.accept {
             session.0.set_power_plant_upgrade(choice.nation, true);
         }
@@ -4251,12 +4251,12 @@ fn sync_city_values(
         let mut order_views = Vec::new();
         let bindings = dialog_orders(dialog.slot);
         assert!(
-            !bindings.is_empty() || dialog.slot == ProductionSlot::Warehouse,
+            !bindings.is_empty() || dialog.slot == CityFacilitySlot::Warehouse,
             "only the retail Warehouse dialog has no city orders"
         );
         if !matches!(
             dialog.slot,
-            ProductionSlot::Armory | ProductionSlot::University | ProductionSlot::Shipyard
+            CityFacilitySlot::Armory | CityFacilitySlot::University | CityFacilitySlot::Shipyard
         ) {
             for binding in bindings {
                 let view = session.0.city_order_status(dialog.nation, binding.order);
@@ -4449,7 +4449,7 @@ fn sync_city_values(
             }
             CityValue::BuildingCapacity(slot) => city.production_orders[slot],
             CityValue::RegionalCapacity => city.building_type(
-                ProductionSlot::RegionalPopulation,
+                CityFacilitySlot::RegionalPopulation,
                 major.economy(),
                 major.common().owned_region_count() as i32,
             ),
@@ -4874,13 +4874,13 @@ mod tests {
         let view_id = city
             .city_buildings
             .iter()
-            .find(|building| building.slot == ProductionSlot::ClothingFactory)
+            .find(|building| building.slot == CityFacilitySlot::ClothingFactory)
             .unwrap()
             .dialog
             .clone();
         let view = catalog.view(&view_id).unwrap();
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
-        let page = industry_page(ProductionSlot::ClothingFactory).unwrap();
+        let page = industry_page(CityFacilitySlot::ClothingFactory).unwrap();
         bind_industry_dialog(
             &mut commands,
             &catalog,
@@ -4918,7 +4918,7 @@ mod tests {
         let view_id = city
             .city_buildings
             .iter()
-            .find(|building| building.slot == ProductionSlot::TradeSchool)
+            .find(|building| building.slot == CityFacilitySlot::TradeSchool)
             .unwrap()
             .dialog
             .clone();
@@ -4963,7 +4963,7 @@ mod tests {
         let view_id = city
             .city_buildings
             .iter()
-            .find(|building| building.slot == ProductionSlot::University)
+            .find(|building| building.slot == CityFacilitySlot::University)
             .unwrap()
             .dialog
             .clone();
@@ -5088,7 +5088,7 @@ mod tests {
             let city = session.0.nations().major(MajorNationId::new(6)).city();
             assert_eq!(city.stockpile[ResourceKind::Fabric], 8);
             assert_eq!(city.population.strength(), 10);
-            assert_eq!(city.production_accum[ProductionSlot::ClothingFactory], 0);
+            assert_eq!(city.production_accum[CityFacilitySlot::ClothingFactory], 0);
         }
 
         app.world_mut().commands().entity(first.root).despawn();
@@ -5115,7 +5115,7 @@ mod tests {
             let city = session.0.nations().major(MajorNationId::new(6)).city();
             assert_eq!(city.stockpile[ResourceKind::Fabric], 10);
             assert_eq!(city.population.strength(), 12);
-            assert_eq!(city.production_accum[ProductionSlot::ClothingFactory], 1);
+            assert_eq!(city.production_accum[CityFacilitySlot::ClothingFactory], 1);
         }
 
         {
@@ -5132,7 +5132,7 @@ mod tests {
                 .nations()
                 .major(MajorNationId::new(6))
                 .city()
-                .building_window_state(ProductionSlot::ClothingFactory),
+                .building_window_state(CityFacilitySlot::ClothingFactory),
             BuildingWindowState {
                 flag: 1,
                 current: 123,

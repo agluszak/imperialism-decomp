@@ -4,7 +4,6 @@
 mod ai;
 mod calendar;
 mod city;
-mod city_buildings;
 mod city_economy;
 mod city_industry;
 mod city_site;
@@ -28,7 +27,6 @@ mod nations;
 mod news;
 mod pending;
 mod population;
-mod production;
 mod random_map;
 mod random_map_terrain;
 mod random_map_water_merge;
@@ -52,8 +50,18 @@ pub use ai::{
     ForeignMinisterPersonality, InteriorCivilianState, PendingDevelopmentAction,
 };
 pub use calendar::TurnCalendar;
-pub use city::{CityState, Stockpile, TownState};
-pub use city_buildings::{BuildingWindowState, ProductionSlot};
+pub use city::{
+    BuildingWindowState, CIVILIAN_RESOURCE_SPECIALTIES, CityFacilitySlot, CityOrderChange,
+    CityOrderId, CityOrderStatus, CityOrders, CityState, ExpandableFacility, ItemInputs,
+    ItemOrderSpec, ManufacturedItem, MaterialOrderSpec, MilitaryRecruitOrderState,
+    MilitaryRecruitOrderTable, MilitaryRecruitmentCategory, PowerPlantOrderState,
+    ProductionConstraint, ProductionProgress, RecruitmentOrderSpec, RequestedCityOrderState,
+    ResourceCost, ShipOrderSlot, ShipOrderState, ShipOrderTable, Stockpile, TownState,
+    TrainingLevel, TrainingOrderTable, civilian_recruitment_spec, expansion_order_spec,
+    item_order_spec, military_recruitment_category, military_recruitment_spec,
+    resource_development_yield, ship_display_stats, ship_order_costs,
+    ship_type_is_valid_for_order_slot, transport_capacity_order_spec,
+};
 pub use city_site::{
     CapitalSite, CitySiteError, confirm_capital_site,
     enter_strategic_map_without_capital_selection, is_valid_secondary_nation_home_tile_candidate,
@@ -103,7 +111,6 @@ pub use pending::{PendingActionState, PendingActionStatus};
 pub use population::{
     FoodOutcome, LaborPool, PopulationAccumulator, PopulationState, SkillBand, StrikePhase,
 };
-pub use production::*;
 pub use random_map::{
     COARSE_MAP_CELL_COUNT, COARSE_MAP_HEIGHT, COARSE_MAP_WIDTH, EXPANDED_MAP_HEIGHT,
     EXPANDED_MAP_WIDTH, RANDOM_MAP_CLASS_COUNT,

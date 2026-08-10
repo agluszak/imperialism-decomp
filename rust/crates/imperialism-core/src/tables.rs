@@ -1,4 +1,4 @@
-use crate::{MajorNationId, MinorNationId, NationId, ProductionSlot, ProvinceId};
+use crate::{MajorNationId, MinorNationId, NationId, CityFacilitySlot, ProvinceId};
 use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::ops::{Index, IndexMut};
@@ -247,10 +247,10 @@ pub type PendingActionTable<T> = EnumMap<PendingActionKind, T>;
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
-pub struct ProductionTable<T>([T; ProductionSlot::COUNT]);
+pub struct ProductionTable<T>([T; CityFacilitySlot::COUNT]);
 
 impl<T> ProductionTable<T> {
-    pub const fn from_array(values: [T; ProductionSlot::COUNT]) -> Self {
+    pub const fn from_array(values: [T; CityFacilitySlot::COUNT]) -> Self {
         Self(values)
     }
 }
@@ -261,16 +261,16 @@ impl<T: Default> Default for ProductionTable<T> {
     }
 }
 
-impl<T> Index<ProductionSlot> for ProductionTable<T> {
+impl<T> Index<CityFacilitySlot> for ProductionTable<T> {
     type Output = T;
 
-    fn index(&self, slot: ProductionSlot) -> &Self::Output {
+    fn index(&self, slot: CityFacilitySlot) -> &Self::Output {
         &self.0[slot.index()]
     }
 }
 
-impl<T> IndexMut<ProductionSlot> for ProductionTable<T> {
-    fn index_mut(&mut self, slot: ProductionSlot) -> &mut Self::Output {
+impl<T> IndexMut<CityFacilitySlot> for ProductionTable<T> {
+    fn index_mut(&mut self, slot: CityFacilitySlot) -> &mut Self::Output {
         &mut self.0[slot.index()]
     }
 }
@@ -286,8 +286,8 @@ mod tests {
         assert_eq!(nations[NationId::new(6)], 7);
 
         let mut production = ProductionTable::default();
-        production[ProductionSlot::Metalworks] = 11_i16;
-        assert_eq!(production[ProductionSlot::Metalworks], 11);
+        production[CityFacilitySlot::Metalworks] = 11_i16;
+        assert_eq!(production[CityFacilitySlot::Metalworks], 11);
 
         let mut pending = PendingActionTable::default();
         pending[PendingActionKind::UniversityExpansion] = 3_i16;

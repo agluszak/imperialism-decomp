@@ -2354,7 +2354,7 @@ fn interior_civilian_state(
             "major nation {nation} has demand in a fixed null city-order slot"
         )));
     }
-    let mut expansion_demand = [0_i16; ProductionSlot::COUNT];
+    let mut expansion_demand = [0_i16; CityFacilitySlot::COUNT];
     expansion_demand[..7].copy_from_slice(&minister.order_metrics[53..60]);
     let city_order_demand = AiCityOrderDemand::from_parts(
         TrainingOrderTable::from_array(
@@ -2387,7 +2387,7 @@ fn interior_civilian_state(
             let action = match value {
                 0..=29 => MilitaryUnitKind::from_index(value as u8)
                     .map(|unit_type| PendingDevelopmentAction::LandUnit { unit_type }),
-                30..=43 => ProductionSlot::from_index((value - 30) as u8)
+                30..=43 => CityFacilitySlot::from_index((value - 30) as u8)
                     .map(|slot| PendingDevelopmentAction::Industry { slot }),
                 _ => None,
             };
@@ -3976,7 +3976,7 @@ fn read_transport_capacity_order(
         order,
         "product",
         raw.product,
-        ProductionSlot::Transport as i16,
+        CityFacilitySlot::Transport as i16,
     )?;
     require_city_order_value(
         order,
@@ -4808,7 +4808,7 @@ mod tests {
         bytes[4 * std::mem::size_of::<i16>()..5 * std::mem::size_of::<i16>()]
             .copy_from_slice(&17_i16.to_be_bytes());
         bytes[TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62 + TECH_OIL_DRILLING_ID] = 1;
-        bytes[TECH_INDUSTRY_ENABLED_OFFSET_V62 + ProductionSlot::OilRefinery as usize] = 1;
+        bytes[TECH_INDUSTRY_ENABLED_OFFSET_V62 + CityFacilitySlot::OilRefinery as usize] = 1;
         bytes[TECH_ABILITY_ACTIVE_ROWS_OFFSET_V62
             + 2 * TECH_ABILITY_ACTIVE_ROW_SIZE
             + MilitaryUnitKind::SiegeArtillery as usize] = 1;
@@ -4836,7 +4836,7 @@ mod tests {
             technology.research_status_by_nation[MajorNationId::new(4)][4],
             TechnologyResearchStatus::Pending
         );
-        assert!(technology.industry_enabled_by_slot[ProductionSlot::OilRefinery as usize]);
+        assert!(technology.industry_enabled_by_slot[CityFacilitySlot::OilRefinery as usize]);
         assert!(
             technology.military_unit_ability_active_by_nation[MajorNationId::new(2)]
                 [MilitaryUnitKind::SiegeArtillery]
@@ -5342,7 +5342,7 @@ mod tests {
             [0, 4, 0, 4, 0, 5, 0]
         );
         assert!(state.nations().majors().enumerate().all(|(index, nation)| {
-            let mut expansion_demand = [0_i16; ProductionSlot::COUNT];
+            let mut expansion_demand = [0_i16; CityFacilitySlot::COUNT];
             if index < 6 {
                 expansion_demand[..7].copy_from_slice(&[2, 1, 2, 0, 2, 0, 0]);
             }

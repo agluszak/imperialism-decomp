@@ -341,7 +341,7 @@ impl GameState {
         let target = average as i16 + 2;
         let baseline = self.nations.city(nation).population.baseline_labor;
         let capacity =
-            self.nations.city(nation).production_accum[ProductionSlot::RegionalPopulation];
+            self.nations.city(nation).production_accum[CityFacilitySlot::RegionalPopulation];
         let interior = self.nations.majors[nation]
             .economy
             .interior_civilian
@@ -416,7 +416,7 @@ impl GameState {
                 .economy
                 .interior_civilian
                 .production_deficit_by_slot;
-            deficits[ProductionSlot::OilRefinery] = -1;
+            deficits[CityFacilitySlot::OilRefinery] = -1;
         }
         for destination in 0..6 {
             let mut best = destination;
@@ -487,9 +487,9 @@ impl GameState {
 
     fn compute_first_turn_ai_item_demands(&mut self, nation: MajorNationId) {
         let city = self.nations.city(nation);
-        let lumber = city.production_orders[ProductionSlot::LumberMill] + 1;
-        let fabric = city.production_orders[ProductionSlot::TextileMill] + 1;
-        let steel = city.production_orders[ProductionSlot::SteelMill] + 1;
+        let lumber = city.production_orders[CityFacilitySlot::LumberMill] + 1;
+        let fabric = city.production_orders[CityFacilitySlot::TextileMill] + 1;
+        let steel = city.production_orders[CityFacilitySlot::SteelMill] + 1;
         let needs_paper = city.stockpile[ResourceKind::Paper] < 3;
         let metrics = &mut self.nations.majors[nation]
             .economy
@@ -633,9 +633,9 @@ impl GameState {
             let slot = item_order_spec(output).production_slot;
             allocation[slot] += order.progress.quantity;
         }
-        let total = (0..ProductionSlot::COUNT)
+        let total = (0..CityFacilitySlot::COUNT)
             .map(|index| {
-                allocation[ProductionSlot::from_index(index as u8).expect("production slot")]
+                allocation[CityFacilitySlot::from_index(index as u8).expect("production slot")]
             })
             .fold(0_i16, i16::wrapping_add);
         self.nations.majors[nation]
@@ -747,9 +747,9 @@ fn city_orders_are_idle(orders: &CityOrders) -> bool {
 
 fn first_turn_ai_city_demand() -> AiCityOrderDemand {
     let mut demand = AiCityOrderDemand::default();
-    demand.expansions[ProductionSlot::TextileMill] = 2;
-    demand.expansions[ProductionSlot::ClothingFactory] = 1;
-    demand.expansions[ProductionSlot::SteelMill] = 2;
-    demand.expansions[ProductionSlot::LumberMill] = 2;
+    demand.expansions[CityFacilitySlot::TextileMill] = 2;
+    demand.expansions[CityFacilitySlot::ClothingFactory] = 1;
+    demand.expansions[CityFacilitySlot::SteelMill] = 2;
+    demand.expansions[CityFacilitySlot::LumberMill] = 2;
     demand
 }

@@ -485,13 +485,13 @@ impl GameState {
     fn diplomacy_industry_score(&self, nation: MajorNationId) -> i32 {
         let major = &self.nations.majors[nation];
         4 + [
-            ProductionSlot::TextileMill,
-            ProductionSlot::ClothingFactory,
-            ProductionSlot::SteelMill,
-            ProductionSlot::Metalworks,
-            ProductionSlot::LumberMill,
-            ProductionSlot::FurnitureFactory,
-            ProductionSlot::OilRefinery,
+            CityFacilitySlot::TextileMill,
+            CityFacilitySlot::ClothingFactory,
+            CityFacilitySlot::SteelMill,
+            CityFacilitySlot::Metalworks,
+            CityFacilitySlot::LumberMill,
+            CityFacilitySlot::FurnitureFactory,
+            CityFacilitySlot::OilRefinery,
         ]
         .into_iter()
         .map(|slot| i32::from(major.city.production_orders[slot]))
@@ -795,7 +795,7 @@ impl GameState {
             .min(i32::from(city.population.production_labor.low))
             .min(i32::from(city.stockpile[ResourceKind::Arms]))
             .min(army_power / 2);
-        let production = i32::from(city.production_orders[ProductionSlot::Metalworks]);
+        let production = i32::from(city.production_orders[CityFacilitySlot::Metalworks]);
         army_power + reinforcement + production.min(army_power / 4)
     }
 }

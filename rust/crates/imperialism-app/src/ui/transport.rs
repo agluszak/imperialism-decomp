@@ -733,25 +733,25 @@ fn transport_need_limit(major: &MajorNation, allocation: TransportAllocation) ->
         )
     };
     let deficit = if allocation == TransportAllocation::COTTON_AND_WOOL {
-        building(ProductionSlot::TextileMill) * 2
+        building(CityFacilitySlot::TextileMill) * 2
             - city.stockpile[ResourceKind::Cotton]
             - city.stockpile[ResourceKind::Wool]
     } else if allocation == TransportAllocation::TIMBER {
-        building(ProductionSlot::LumberMill) * 2 - city.stockpile[ResourceKind::Timber]
+        building(CityFacilitySlot::LumberMill) * 2 - city.stockpile[ResourceKind::Timber]
     } else if allocation == TransportAllocation::COAL {
-        building(ProductionSlot::SteelMill) - city.stockpile[ResourceKind::Coal]
+        building(CityFacilitySlot::SteelMill) - city.stockpile[ResourceKind::Coal]
     } else if allocation == TransportAllocation::IRON {
-        building(ProductionSlot::SteelMill) - city.stockpile[ResourceKind::Iron]
+        building(CityFacilitySlot::SteelMill) - city.stockpile[ResourceKind::Iron]
     } else if allocation == TransportAllocation::OIL {
-        building(ProductionSlot::OilRefinery) * 2 - city.stockpile[ResourceKind::Oil]
+        building(CityFacilitySlot::OilRefinery) * 2 - city.stockpile[ResourceKind::Oil]
     } else if allocation == TransportAllocation::FABRIC {
-        building(ProductionSlot::ClothingFactory) * 2 - city.stockpile[ResourceKind::Fabric]
+        building(CityFacilitySlot::ClothingFactory) * 2 - city.stockpile[ResourceKind::Fabric]
     } else if allocation == TransportAllocation::LUMBER {
-        building(ProductionSlot::FurnitureFactory) * 2 - city.stockpile[ResourceKind::Lumber]
+        building(CityFacilitySlot::FurnitureFactory) * 2 - city.stockpile[ResourceKind::Lumber]
     } else if allocation == TransportAllocation::STEEL {
-        building(ProductionSlot::Metalworks) * 2 - city.stockpile[ResourceKind::Steel]
+        building(CityFacilitySlot::Metalworks) * 2 - city.stockpile[ResourceKind::Steel]
     } else if allocation == TransportAllocation::FUEL {
-        building(ProductionSlot::PowerPlant) * 2 - city.stockpile[ResourceKind::Fuel]
+        building(CityFacilitySlot::PowerPlant) * 2 - city.stockpile[ResourceKind::Fuel]
     } else if allocation == TransportAllocation::GRAIN {
         city.population.predicted_need(ResourceKind::Grain) - city.stockpile[ResourceKind::Grain]
     } else if allocation == TransportAllocation::FRUIT {
