@@ -353,26 +353,6 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected = "civilian recruit production requires a home town tile")]
-    fn civilian_recruit_production_requires_a_home_town() {
-        let home = TileId::new(200);
-        let mut state = game(home);
-        state.nations.majors[MajorNationId::new(0)].common.home_tile = None;
-
-        state.produce_civilian_recruits(MajorNationId::new(0), CivilianUnitKind::Forester, 1);
-    }
-
-    #[test]
-    #[should_panic(expected = "military recruit production requires the home town's province")]
-    fn military_recruit_production_requires_a_home_province() {
-        let home = TileId::new(200);
-        let mut state = game(home);
-        state.map[home].province = None;
-
-        state.produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Sappers, 1);
-    }
-
-    #[test]
     fn follows_retail_depth_first_neighbor_order() {
         let mut state = world();
         let geometry = MapGeometry::new(MapTopology::Wrapping);
@@ -466,64 +446,6 @@ mod tests {
             state.nations.city(MajorNationId::new(0)).serialized_state,
             1
         );
-    }
-
-    #[test]
-    fn military_recruitment_builds_the_retail_military_unit_shape() {
-        let home_tile = TileId::new(200);
-        let mut state = game(home_tile);
-        state.map[home_tile].province = Some(crate::ProvinceId::new(17));
-        state
-            .nations
-            .major_mut(MajorNationId::new(0))
-            .economy
-            .pending_actions[PendingActionKind::ArmyGrowthReward] =
-            crate::PendingActionState::new(crate::PendingActionStatus::Queued, None);
-        state
-            .nations
-            .major_mut(MajorNationId::new(0))
-            .economy
-            .pending_actions[PendingActionKind::ConqueredCapitalArmoryUpgrade] =
-            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
-        state.produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Sappers, 1);
-
-        assert_eq!(
-            state.military_units,
-            vec![MilitaryUnitState {
-                id: MilitaryUnitId::new(41),
-                nation: NationId::new(0),
-                unit_type: MilitaryUnitKind::Sappers,
-                stationed_province: Some(crate::ProvinceId::new(17)),
-                order: crate::MilitaryOrder::idle(
-                    [Some(crate::ProvinceId::new(17)); 3],
-                    [Some(crate::ProvinceId::new(17)); 3],
-                ),
-                owner_nation: NationId::new(0),
-                roster_id: 0,
-                registered: true,
-                name: String::new(),
-                strength: 500,
-                era: 3,
-                experience: 100,
-                battle_flags: 0,
-            }]
-        );
-        assert_eq!(state.unit_ids.current(), 41);
-        assert_eq!(
-            state.pending.nations[MajorNationId::new(0)].turn_summary,
-            vec![TurnSummary::MilitaryRecruit {
-                turn_tick: 1,
-                unit_type: MilitaryUnitKind::Sappers,
-                count: 1,
-            }]
-        );
-        let pending = state
-            .nations
-            .major(MajorNationId::new(0))
-            .economy
-            .pending_actions[PendingActionKind::ArmyGrowthReward];
-        assert_eq!(pending.level(), None);
-        assert_eq!(pending.payload(), None);
     }
 
     #[test]

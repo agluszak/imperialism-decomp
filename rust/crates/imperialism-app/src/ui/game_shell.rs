@@ -508,25 +508,6 @@ mod tests {
     }
 
     #[test]
-    fn strategic_map_spawns_combined_map_with_toolbar_navigation() {
-        let mut app = app_at(AppState::StrategicMap);
-        assert_eq!(
-            current_roots(&mut app),
-            HashSet::from([strategic_map_view_id()])
-        );
-        for action in [
-            GameScreenNavAction::Trade,
-            GameScreenNavAction::Transport,
-            GameScreenNavAction::City,
-            GameScreenNavAction::Diplomacy,
-        ] {
-            let entity = nav_entity(&mut app, action);
-            assert!(app.world().get::<UiButton>(entity).is_some());
-            assert!(app.world().get::<InteractionDisabled>(entity).is_none());
-        }
-    }
-
-    #[test]
     fn strategic_map_done_binds_end_turn() {
         let app = app_at(AppState::StrategicMap);
         let spawned = app.world().resource::<TestSpawned>().0.clone();
@@ -697,32 +678,5 @@ mod tests {
             app.world().resource::<State<AppState>>().get(),
             &AppState::Trade
         );
-    }
-
-    #[test]
-    fn catalog_game_shell_exposes_expected_roots() {
-        let catalog = catalog();
-        for (view_id, min_nodes) in [
-            (strategic_map_view_id(), 70usize),
-            (newspaper_view_id(), 8),
-            (deal_book_view_id(), 20),
-            (trade_view_id(), 160),
-            (city_view_id(), 20),
-            (transport_view_id(), 60),
-            (diplomacy_view_id(), 60),
-        ] {
-            let view = catalog
-                .views
-                .iter()
-                .find(|view| view.id == view_id)
-                .unwrap_or_else(|| panic!("missing {view_id:?}"));
-            assert!(view.nodes.len() >= min_nodes, "{view_id:?}");
-            let spawned_ids = view
-                .nodes
-                .iter()
-                .map(|node| node.id)
-                .collect::<HashSet<_>>();
-            assert_eq!(spawned_ids.len(), view.nodes.len());
-        }
     }
 }

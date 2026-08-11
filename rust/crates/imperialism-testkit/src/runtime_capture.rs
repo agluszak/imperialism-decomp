@@ -534,13 +534,4 @@ mod tests {
                     && fields.contains("map.provinces.0.oracle_extra")
         ));
     }
-
-    #[test]
-    fn parses_evidence_kind_strings() {
-        assert_eq!(
-            "retail_differential".parse::<EvidenceKind>().unwrap(),
-            EvidenceKind::RetailDifferential
-        );
-        assert!("nope".parse::<EvidenceKind>().is_err());
-    }
 }

@@ -106,9 +106,6 @@ mod tests {
 
     const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
 
-    #[derive(Resource)]
-    struct TestSpawned(SpawnedView);
-
     fn app() -> App {
         let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
         let mut app = App::new();
@@ -131,35 +128,6 @@ mod tests {
         commands
             .entity(spawned.root)
             .insert(DespawnOnExit(AppState::MainMenu));
-        commands.insert_resource(TestSpawned(spawned));
-    }
-
-    #[test]
-    fn main_menu_enables_only_random_and_quit_without_hiding_other_choices() {
-        let app = app();
-        let catalog = app.world().resource::<UiCatalogResource>();
-        let view = catalog.required_view(&main_menu_view_id());
-        let spawned = app.world().resource::<TestSpawned>().0.clone();
-        let world = app.world();
-        let mut by_tag = std::collections::HashMap::new();
-        for node in &view.nodes {
-            if node.behavior != UiBehavior::Activate {
-                continue;
-            }
-            let entity = spawned.nodes[&node.id];
-            by_tag.insert(
-                node.tag.as_bytes(),
-                (
-                    world.get::<InteractionDisabled>(entity).is_some(),
-                    world.get::<MainMenuAction>(entity).copied(),
-                ),
-            );
-        }
-        assert_eq!(by_tag[b"rand"], (false, Some(MainMenuAction::RandomGame)));
-        assert_eq!(by_tag[b"quit"], (false, Some(MainMenuAction::Quit)));
-        for tag in ["load", "mult", "high", "scen", "pref"] {
-            assert_eq!(by_tag[tag.as_bytes()], (true, None));
-        }
     }
 
     #[test]

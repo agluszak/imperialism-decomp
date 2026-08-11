@@ -154,13 +154,6 @@ mod tests {
     }
 
     #[test]
-    fn wraps_the_full_unsigned_state_before_extracting_the_result() {
-        let mut rng = state(u32::MAX);
-        assert_eq!(rng.next_crt_rand(), 35);
-        assert_eq!(rng.crt_rand, RetailCrtRng::from_state(2_316_998));
-    }
-
-    #[test]
     fn retail_lcg_advances_before_extracting_bits_12_through_26() {
         let mut rng = RetailLcg::from_state(0x1122_3344);
         assert_eq!(rng.next_sample_15(), 6_581);

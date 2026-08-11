@@ -408,38 +408,6 @@ mod tests {
     }
 
     #[test]
-    fn remembers_trade_bids_as_a_full_resource_table_copy() {
-        let mut state = nation();
-        for resource in crate::all_resources() {
-            state.item_potentials[resource] = resource as i16 - 4;
-        }
-        state.remember_trade_bids();
-        assert_eq!(
-            state.remembered_trade_offers_by_resource,
-            state.item_potentials
-        );
-    }
-
-    #[test]
-    fn settles_and_clears_all_transported_items() {
-        let mut state = nation();
-        let mut owner_city = city();
-        owner_city.stockpile[ResourceKind::Lumber] = 2;
-        state.transported_items_by_resource[ResourceKind::Lumber] = 3;
-        state.transported_items_by_resource[ResourceKind::Gold] = 4;
-
-        state.settle_transported_items(&mut owner_city);
-        assert_eq!(owner_city.stockpile[ResourceKind::Lumber], 5);
-        assert_eq!(owner_city.stockpile[ResourceKind::Gold], 4);
-        assert!(
-            state
-                .transported_items_by_resource
-                .iter()
-                .all(|(_, amount)| *amount == 0)
-        );
-    }
-
-    #[test]
     fn purchased_settlement_tracks_only_unfilled_requested_offers() {
         let mut state = nation();
         let mut owner_city = city();

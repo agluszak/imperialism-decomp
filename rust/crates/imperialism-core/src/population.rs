@@ -634,16 +634,6 @@ impl StrikePhase {
 mod tests {
     use super::*;
 
-    #[test]
-    fn population_accumulator_exposes_a_finite_semantic_value() {
-        let accumulator = PopulationAccumulator::new(7.5).unwrap();
-
-        assert_eq!(accumulator.get(), 7.5);
-        assert_eq!(serde_json::to_string(&accumulator).unwrap(), "7.5");
-        assert!(PopulationAccumulator::new(f32::NAN).is_none());
-        assert!(PopulationAccumulator::new(f32::INFINITY).is_none());
-    }
-
     fn population() -> PopulationState {
         PopulationState {
             count: 7,

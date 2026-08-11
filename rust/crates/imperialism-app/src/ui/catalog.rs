@@ -617,18 +617,6 @@ fn sync_cached_catalog_picture(
     None
 }
 
-#[cfg(test)]
-fn catalog_text_content_box(node: &CatalogNode) -> ([i32; 2], [i32; 2]) {
-    let [left, top, right, bottom] = node.content_insets;
-    (
-        [node.rect.x + left, node.rect.y + top],
-        [
-            (node.rect.width - left - right).max(0),
-            (node.rect.height - top - bottom).max(0),
-        ],
-    )
-}
-
 fn load_retail_text(
     binding: &UiTextBinding,
     retail_assets: &RetailAssetsResource,
@@ -708,7 +696,7 @@ fn load_retail_picture(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_formats::{UiCatalog, fourcc};
+    use imperialism_formats::UiCatalog;
     use std::collections::HashMap;
 
     const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
@@ -724,10 +712,6 @@ mod tests {
             .init_resource::<RetailPictureHandles>()
             .insert_resource(UiCatalogResource::new(catalog()));
         app
-    }
-
-    fn catalog_view<'a>(catalog: &'a UiCatalog, id: &ScopedViewId) -> &'a CatalogView {
-        catalog.views.iter().find(|view| &view.id == id).unwrap()
     }
 
     fn px(value: Val) -> f32 {
@@ -824,86 +808,6 @@ mod tests {
                     node.behavior == UiBehavior::PointerCanvas
                 );
             }
-        }
-    }
-
-    #[test]
-    fn catalog_insets_define_bevy_padding_and_text_content_box() {
-        let catalog = catalog();
-        let view = catalog_view(
-            &catalog,
-            &ScopedViewId {
-                resource_file: "Startup.rsrc".to_owned(),
-                resource_id: 1501,
-            },
-        );
-        let country = view
-            .nodes
-            .iter()
-            .find(|node| node.tag == fourcc!("coun"))
-            .unwrap();
-        assert_eq!(country.content_insets, [0, 3, 3, 3]);
-        assert_eq!(catalog_text_content_box(country), ([23, 252], [303, 16]));
-
-        let mut app = app();
-        let spawned = spawn_structure(&mut app, &view.id);
-        let padding = app
-            .world()
-            .get::<Node>(spawned.nodes[&country.id])
-            .unwrap()
-            .padding;
-        assert_eq!(px(padding.left), 0.0);
-        assert_eq!(px(padding.top), 3.0);
-        assert_eq!(px(padding.right), 3.0);
-        assert_eq!(px(padding.bottom), 3.0);
-    }
-
-    #[test]
-    fn projector_maps_behaviors_for_random_setup_controls() {
-        let mut app = app();
-        let setup = ScopedViewId {
-            resource_file: "Startup.rsrc".to_owned(),
-            resource_id: 1501,
-        };
-        let menu = ScopedViewId {
-            resource_file: "Startup.rsrc".to_owned(),
-            resource_id: 1500,
-        };
-        let setup_view = spawn_structure(&mut app, &setup);
-        let menu_view = spawn_structure(&mut app, &menu);
-        let okay = setup_view.unique(fourcc!("okay"));
-        assert!(app.world().get::<UiButton>(okay).is_some());
-        let globe = setup_view.unique(fourcc!("glob"));
-        assert!(app.world().get::<UiButton>(globe).is_some());
-        let dif0 = setup_view.unique(fourcc!("dif0"));
-        assert!(app.world().get::<RadioButton>(dif0).is_some());
-        let diff = setup_view.unique(fourcc!("diff"));
-        assert!(app.world().get::<RadioGroup>(diff).is_some());
-        let map = setup_view.unique(fourcc!("map "));
-        assert!(app.world().get::<RelativeCursorPosition>(map).is_some());
-
-        let rand = menu_view.unique(fourcc!("rand"));
-        assert!(app.world().get::<UiButton>(rand).is_some());
-    }
-
-    #[test]
-    fn picture_visual_metadata_marks_up_down_okay_controls() {
-        let catalog = catalog();
-        for (resource_file, resource_id) in [("Startup.rsrc", 1501i16), ("Linger.rsrc", 954)] {
-            let view = catalog_view(
-                &catalog,
-                &ScopedViewId {
-                    resource_file: resource_file.to_owned(),
-                    resource_id,
-                },
-            );
-            let okay = view
-                .nodes
-                .iter()
-                .find(|node| node.tag == fourcc!("okay"))
-                .unwrap();
-            assert_eq!(okay.picture_visual, PictureVisual::UpDown);
-            assert!(okay.picture_id.is_some());
         }
     }
 

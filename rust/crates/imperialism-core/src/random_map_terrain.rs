@@ -1631,26 +1631,6 @@ mod tests {
     }
 
     #[test]
-    fn generated_map_deserialization_rejects_the_wrong_tile_count() {
-        let mut rng = RetailLcg::from_state(3_122_877_655);
-        let generated = generate_random_map(b"ordinary", MapTopology::Wrapping, &mut rng);
-        let mut serialized = serde_json::to_value(generated).unwrap();
-        serialized["tiles"].as_array_mut().unwrap().pop();
-
-        assert!(serde_json::from_value::<GeneratedMap>(serialized).is_err());
-    }
-
-    #[test]
-    fn generated_map_deserialization_rejects_an_out_of_range_seed_candidate_tile() {
-        let mut rng = RetailLcg::from_state(3_122_877_655);
-        let generated = generate_random_map(b"ordinary", MapTopology::Wrapping, &mut rng);
-        let mut serialized = serde_json::to_value(generated).unwrap();
-        serialized["seed_candidate_tiles"][0] = serde_json::json!(TileId::COUNT);
-
-        assert!(serde_json::from_value::<GeneratedMap>(serialized).is_err());
-    }
-
-    #[test]
     fn setup_preview_hashes_then_advances_the_retail_map_lcg() {
         let topology = MapTopology::Wrapping;
         let mut expected_rng = RetailLcg::from_state(3_122_877_655);

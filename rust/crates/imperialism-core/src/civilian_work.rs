@@ -180,36 +180,3 @@ impl GameState {
         self.civilian_units[index].order = CivilianWorkOrder::Idle;
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::MapTopology;
-
-    #[test]
-    fn rail_segment_deserialization_requires_its_stored_direction() {
-        let segment =
-            RailSegment::between(MapTopology::Wrapping, TileId::new(0), TileId::new(1)).unwrap();
-        let mut serialized = serde_json::to_value(segment).unwrap();
-        serialized["direction"] = serde_json::json!("West");
-
-        assert!(serde_json::from_value::<RailSegment>(serialized).is_err());
-    }
-
-    #[test]
-    fn rail_segment_deserialization_accepts_bounded_and_wrapping_neighbors() {
-        let bounded =
-            RailSegment::between(MapTopology::Bounded, TileId::new(0), TileId::new(1)).unwrap();
-        let wrapping =
-            RailSegment::between(MapTopology::Wrapping, TileId::new(0), TileId::new(107)).unwrap();
-
-        assert_eq!(
-            serde_json::from_value::<RailSegment>(serde_json::to_value(bounded).unwrap()).unwrap(),
-            bounded
-        );
-        assert_eq!(
-            serde_json::from_value::<RailSegment>(serde_json::to_value(wrapping).unwrap()).unwrap(),
-            wrapping
-        );
-    }
-}

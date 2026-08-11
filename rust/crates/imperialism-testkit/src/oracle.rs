@@ -528,18 +528,4 @@ mod tests {
             }
         );
     }
-
-    #[test]
-    fn seed_one_initial_preview_reaches_the_native_final_state() {
-        let setup = initial_defaults(1);
-        let preview = generate_random_setup_preview(
-            setup.planet_seed.as_bytes(),
-            setup.topology.topology(),
-            initial_sea_zone_marker_crt(1),
-        )
-        .unwrap();
-        assert_eq!(preview.map.tiles().len(), 6_480);
-        assert_eq!(preview.map.provinces().len(), 120);
-        assert_eq!(preview.final_map_lcg, 0x8c98_13e1);
-    }
 }

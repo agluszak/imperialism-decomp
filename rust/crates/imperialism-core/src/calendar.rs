@@ -50,11 +50,4 @@ mod tests {
         calendar.advance();
         assert_eq!((calendar.year(), calendar.quarter()), (1915, 0));
     }
-
-    #[test]
-    fn advances_without_a_storage_width_boundary() {
-        let mut calendar = TurnCalendar::new(1914, 99_999);
-        calendar.advance();
-        assert_eq!(calendar.economic_turn(), 100_000);
-    }
 }

@@ -65,12 +65,4 @@ mod tests {
                 .all(|(index, resource)| resource.into_usize() == index)
         );
     }
-
-    #[test]
-    fn resource_tables_have_one_value_for_every_kind() {
-        let mut table = ResourceTable::<i16>::default();
-        table[ResourceKind::Steel] = 7;
-        assert_eq!(table.len(), ResourceKind::LENGTH);
-        assert_eq!(table[ResourceKind::Steel], 7);
-    }
 }

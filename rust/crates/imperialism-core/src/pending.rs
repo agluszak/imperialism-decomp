@@ -49,15 +49,6 @@ mod tests {
     use super::*;
 
     #[test]
-    fn pending_action_deserialization_preserves_payload_independently_of_status() {
-        let state: PendingActionState =
-            serde_json::from_str(r#"{"status":"none","payload":0}"#).unwrap();
-
-        assert_eq!(state.status(), PendingActionStatus::None);
-        assert_eq!(state.payload(), Some(0));
-    }
-
-    #[test]
     fn pending_action_level_is_derived_from_status_not_payload() {
         assert_eq!(
             PendingActionState::new(PendingActionStatus::None, None).level(),

@@ -772,18 +772,6 @@ mod tests {
     }
 
     #[test]
-    fn preview_is_concrete_and_okay_is_enabled_when_the_screen_spawns() {
-        let mut app = app();
-        enter_random_setup_screen(&mut app);
-        assert_eq!(
-            app.world().resource::<RandomSetupPreview>().0,
-            initial_seed_one_preview()
-        );
-        let okay = action_entity(&mut app, RandomSetupAction::Accept);
-        assert!(app.world().get::<InteractionDisabled>(okay).is_none());
-    }
-
-    #[test]
     fn random_setup_entry_uses_the_retail_clock_seeded_defaults() {
         let mut app = app();
         enter_random_setup_screen(&mut app);

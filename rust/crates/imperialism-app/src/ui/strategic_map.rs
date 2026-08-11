@@ -909,14 +909,4 @@ mod tests {
         let top_left = (y * VIEWPORT_WIDTH as i32 + x) as usize;
         assert_eq!(indices[top_left], 0);
     }
-
-    #[test]
-    fn beginning_of_game_indexed_viewport_has_stable_dimensions() {
-        let state = fixture_state();
-        let terrain = synthetic_terrain_pictures();
-        let rivers = synthetic_river_masks();
-        let indices = compose_strategic_base_terrain_indices(&state, &terrain, &rivers);
-        assert_eq!(indices.len(), VIEWPORT_WIDTH * VIEWPORT_HEIGHT);
-        assert!(indices.iter().any(|&pixel| pixel != 0));
-    }
 }

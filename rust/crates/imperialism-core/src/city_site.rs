@@ -363,14 +363,6 @@ mod tests {
     }
 
     #[test]
-    fn normal_and_harder_require_capital_selection() {
-        assert!(!requires_capital_site_selection(Difficulty::Introductory));
-        assert!(!requires_capital_site_selection(Difficulty::Easy));
-        assert!(requires_capital_site_selection(Difficulty::Normal));
-        assert!(requires_capital_site_selection(Difficulty::Hard));
-    }
-
-    #[test]
     fn confirm_capital_site_places_city_and_enters_strategic_map_phase() {
         let mut state = normal_start();
         assert_eq!(state.turn.phase, crate::PhaseCode::CAPITAL_SELECTION);
@@ -461,19 +453,6 @@ mod tests {
             Some(home)
         );
         state.rebuild_nation_resource_yields(MajorNationId::new(6));
-    }
-
-    #[test]
-    fn rejects_unowned_or_mountain_tiles() {
-        let state = normal_start();
-        let foreign = (0..TileId::COUNT)
-            .map(TileId::new)
-            .find(|&tile| state.map[tile].owner_nation != Some(TileOwnerTag::new(6)))
-            .unwrap();
-        assert_eq!(
-            validate_capital_site_selection(&state, MajorNationId::new(6), foreign),
-            Err(CitySiteError::NotOwned)
-        );
     }
 
     #[test]

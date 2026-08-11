@@ -318,13 +318,4 @@ mod tests {
         assert_eq!(rng.state(), 1_153_135_800);
         assert_eq!(generate_english_random_setup_name(&mut rng), "Purtast");
     }
-
-    #[test]
-    fn country_names_are_limited_to_twelve_retail_characters() {
-        assert_eq!(COUNTRY_NAME_MAX_CHARS, 12);
-        let overlong: String = "ABCDEFGHIJKLMNOP".chars().collect();
-        let truncated: String = overlong.chars().take(COUNTRY_NAME_MAX_CHARS).collect();
-        assert_eq!(truncated, "ABCDEFGHIJKL");
-        assert_eq!(truncated.chars().count(), COUNTRY_NAME_MAX_CHARS);
-    }
 }

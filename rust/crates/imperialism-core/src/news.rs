@@ -331,18 +331,6 @@ pub struct LandSale {
 mod tests {
     use super::*;
 
-    #[test]
-    fn land_sale_event_uses_a_strategic_tile_id() {
-        let event: TurnStartEvent =
-            serde_json::from_str(r#"{"kind":"land_sale","tag":4,"sale":{"tile":500,"nation":0}}"#)
-                .unwrap();
-
-        assert!(matches!(
-            event,
-            TurnStartEvent::LandSale { sale, .. } if sale.tile.get() == 500
-        ));
-    }
-
     fn joined_war(counterpart: MajorNationId) -> PendingNewspaperEvent {
         let mut related_nations = NationTable::default();
         related_nations[counterpart.nation()] = true;

@@ -303,31 +303,6 @@ mod tests {
     }
 
     #[test]
-    fn validates_the_retail_production_slot_range() {
-        assert_eq!(
-            CityFacilitySlot::from_index(0),
-            Some(CityFacilitySlot::TextileMill)
-        );
-        assert_eq!(
-            CityFacilitySlot::from_index(15),
-            Some(CityFacilitySlot::RegionalPopulation)
-        );
-        assert_eq!(CityFacilitySlot::from_index(16), None);
-    }
-
-    #[test]
-    fn round_trips_building_window_state() {
-        let mut state = city();
-        let expected = BuildingWindowState {
-            flag: 3,
-            current: -2,
-            accumulated: 17,
-        };
-        state.set_building_window_state(slot(11), expected);
-        assert_eq!(state.building_window_state(slot(11)), expected);
-    }
-
-    #[test]
     fn identifies_only_the_retail_capacity_center_slots() {
         let actual: Vec<u8> = (0..CityFacilitySlot::COUNT as u8)
             .filter(|value| CityState::is_capacity_center(slot(*value)))

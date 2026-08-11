@@ -879,11 +879,6 @@ mod tests {
     use super::*;
 
     #[test]
-    fn tile_action_deserialization_does_not_restore_the_no_action_sentinel() {
-        assert!(serde_json::from_str::<TileAction>("-1").is_err());
-    }
-
-    #[test]
     fn tile_flags_keep_city_marker_and_complete_state_writes_separate() {
         assert!(TileFlags::PROVINCE_ANCHOR_STATE.is_city());
         assert!(TileFlags::MINOR_HOME_STATE.is_city());

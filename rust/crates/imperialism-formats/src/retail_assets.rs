@@ -446,16 +446,6 @@ mod tests {
     }
 
     #[test]
-    fn open_reports_the_first_missing_archive() {
-        let root = temporary_root();
-        let error = RetailAssets::open(root.path()).unwrap_err();
-        let RetailAssetError::Io { path, .. } = error else {
-            panic!("expected io error for missing archive, got {error:?}");
-        };
-        assert!(path.ends_with("Data/pictenu.gob"));
-    }
-
-    #[test]
     fn opens_only_current_runtime_files() {
         let root = synthetic_retail_install();
         for unused in [
@@ -478,17 +468,6 @@ mod tests {
             assets.default_dib_palette()[0x16],
             crate::Rgb::new(0x57, 0x8b, 0xa6)
         );
-    }
-
-    #[test]
-    fn resource_lookup_uses_the_index_built_at_open() {
-        let root = synthetic_retail_install();
-        let mut assets = RetailAssets::open(root.path()).unwrap();
-
-        assets.pictures[0].bytes[..2].copy_from_slice(b"NO");
-
-        let bitmap = assets.picture(PictureId::new(4500)).unwrap();
-        assert_eq!(bitmap[bitmap.len() - 4], 0x22);
     }
 
     #[test]

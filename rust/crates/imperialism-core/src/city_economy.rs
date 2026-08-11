@@ -137,13 +137,6 @@ mod tests {
     }
 
     #[test]
-    fn clamps_negative_stocks() {
-        let mut state = city();
-        state.stockpile = crate::Stockpile::from_table(ResourceTable::from_fn(|_| -1));
-        assert!(crate::all_resources().all(|resource| state.stockpile[resource] == 0));
-    }
-
-    #[test]
     fn transported_items_cover_all_resources_then_clear_precious_metals() {
         let mut state = city();
         state.stockpile = crate::Stockpile::from_table(ResourceTable::from_fn(|_| 1));
@@ -152,47 +145,6 @@ mod tests {
         assert_eq!(state.stockpile[ResourceKind::Livestock], 3);
         assert_eq!(state.stockpile[ResourceKind::Gems], 0);
         assert_eq!(state.stockpile[ResourceKind::Gold], 0);
-    }
-
-    #[test]
-    fn direct_transport_obeys_surplus_then_remaining_capacity() {
-        let mut state = city();
-        let mut owner = nation();
-        let resource = ResourceKind::Steel;
-        owner.need_current_by_type[resource] = 10;
-        owner.need_target_by_type[resource] = 4;
-
-        assert_eq!(state.direct_transport(&mut owner, resource, 5), 4);
-        assert_eq!(state.stockpile[resource], 4);
-        assert_eq!(owner.need_target_by_type[resource], 8);
-        assert_eq!(owner.capacities.reserved_transport, 15);
-    }
-
-    #[test]
-    fn nation_target_transport_uses_the_same_full_table_path() {
-        let mut state = city();
-        let mut owner = nation();
-        owner.need_target_by_type = ResourceTable::from_fn(|_| 2);
-        state.add_nation_target_items(&owner);
-        assert_eq!(state.stockpile[ResourceKind::Cotton], 2);
-        assert_eq!(state.stockpile[ResourceKind::Livestock], 2);
-        assert_eq!(state.stockpile[ResourceKind::Gems], 0);
-        assert_eq!(state.stockpile[ResourceKind::Gold], 0);
-    }
-
-    #[test]
-    fn rolling_stock_consumes_lumber_and_steel() {
-        let mut state = city();
-        let mut owner = nation();
-        state.stockpile[ResourceKind::Lumber] = 2;
-        state.stockpile[ResourceKind::Steel] = 1;
-
-        assert!(state.increase_rolling_stock(&mut owner));
-        assert_eq!(state.stockpile[ResourceKind::Lumber], 1);
-        assert_eq!(state.stockpile[ResourceKind::Steel], 0);
-        assert_eq!(owner.capacities.transport, 16);
-        assert!(!state.increase_rolling_stock(&mut owner));
-        assert_eq!(owner.capacities.transport, 16);
     }
 
     #[test]

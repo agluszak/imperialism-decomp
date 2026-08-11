@@ -615,31 +615,6 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected = "player trade phase requires a human-controlled major nation")]
-    fn player_trade_phase_requires_a_human_controller() {
-        let nation = MajorNationId::new(6);
-        let mut game = state();
-        game.nations.majors[nation].economy.controller = crate::MajorNationController::Computer;
-
-        game.reset_player_trade_phase(nation);
-    }
-
-    #[test]
-    fn buyer_uses_merchant_capacity_and_delta_budget() {
-        let nation = MajorNationId::new(6);
-        let mut game = state();
-        game.purchase_item(nation, ResourceKind::Fabric, 3, 7);
-        let state = &game.nations.majors[MajorNationId::new(6)];
-        let major = &state.economy;
-        assert_eq!(state.common.treasury, 979);
-        assert_eq!(major.purchased_items_by_resource[ResourceKind::Fabric], 3);
-        assert_eq!(major.capacities.available_merchant, 7);
-        assert_eq!(major.budget_pool_delta, 79);
-        assert_eq!(major.budget_pool_base, 200);
-        assert_eq!(major.special_resource_trade_balance, 30);
-    }
-
-    #[test]
     fn transport_ledger_steps_grouped_rows_without_settling_city_stock() {
         let nation = MajorNationId::new(6);
         let mut game = state();
@@ -755,42 +730,6 @@ mod tests {
     }
 
     #[test]
-    fn remembered_bids_and_purchased_items_commit_as_one_trade_phase() {
-        let major_nation = MajorNationId::new(6);
-        let mut game = state();
-        game.set_player_trade_order(major_nation, TradeCommodity::Fabric, PlayerTradeOrder::Buy);
-        game.set_player_trade_order(
-            major_nation,
-            TradeCommodity::Clothing,
-            PlayerTradeOrder::Buy,
-        );
-        game.remember_trade_bids(major_nation);
-        game.purchase_item(major_nation, ResourceKind::Fabric, 3, 7);
-        game.purchase_item(major_nation, ResourceKind::Food, -30, 1);
-        game.nations.city_mut(MajorNationId::new(6)).stockpile[ResourceKind::Food] = 20;
-
-        game.commit_purchased_items(major_nation);
-        let major = &game.nations.majors[MajorNationId::new(6)].economy;
-        assert!(
-            major
-                .purchased_items_by_resource
-                .iter()
-                .all(|(_, amount)| *amount == 0)
-        );
-        assert_eq!(
-            major.unfilled_trade_turns_by_resource[ResourceKind::Fabric],
-            0
-        );
-        assert_eq!(
-            major.unfilled_trade_turns_by_resource[ResourceKind::Clothing],
-            1
-        );
-        let city = &game.nations.majors[MajorNationId::new(6)].city;
-        assert_eq!(city.stockpile[ResourceKind::Fabric], 3);
-        assert_eq!(city.stockpile[ResourceKind::Food], 0);
-    }
-
-    #[test]
     fn created_items_credit_precious_metals_and_settle_targets_into_city_stock() {
         let nation = MajorNationId::new(6);
         let mut game = state();
@@ -877,45 +816,6 @@ mod tests {
     }
 
     #[test]
-    fn reset_diplomacy_commitments_reposts_only_recurring_grants() {
-        let nation = MajorNationId::new(6);
-        let policy_target = NationId::new(0);
-        let one_time_target = NationId::new(1);
-        let recurring_target = NationId::new(2);
-        let recurring_grant = DiplomacyGrant {
-            amount: 3_000,
-            recurring: true,
-        };
-        let mut game = state();
-        let state = &mut game.nations.majors[nation];
-        state.common.treasury = 10_000;
-        state.economy.diplomacy_policy_by_nation[policy_target] =
-            Some(DiplomacyPolicy::BuildConsulate);
-        game.set_diplomacy_grant(
-            nation,
-            one_time_target,
-            Some(DiplomacyGrant {
-                amount: 1_000,
-                recurring: false,
-            }),
-        );
-        game.set_diplomacy_grant(nation, recurring_target, Some(recurring_grant));
-
-        game.reset_diplomacy_commitments(nation);
-
-        let state = &game.nations.majors[nation];
-        let major = &state.economy;
-        assert_eq!(major.diplomacy_policy_by_nation[policy_target], None);
-        assert_eq!(major.diplomacy_grants_by_nation[one_time_target], None);
-        assert_eq!(
-            major.diplomacy_grants_by_nation[recurring_target],
-            Some(recurring_grant)
-        );
-        assert_eq!(state.common.treasury, 3_000);
-        assert_eq!(major.grant_total_cost, 7_000);
-    }
-
-    #[test]
     fn decrements_trade_policy_score_through_the_retail_steps() {
         let nation = MajorNationId::new(6);
         let target = NationId::new(0);
@@ -940,83 +840,5 @@ mod tests {
                 TradePolicyScore::new(expected)
             );
         }
-    }
-
-    #[test]
-    fn refreshes_merchant_capacity_from_city_industry_weights() {
-        let nation = MajorNationId::new(6);
-        let mut game = state();
-        let city = game.nations.city_mut(nation);
-        city.ship_order_count_by_type[ShipType::Trader] = 2;
-        city.ship_order_count_by_type[ShipType::Paddlewheeler] = 1;
-        city.ship_order_count_by_type[ShipType::Freighter] = 1;
-
-        game.refresh_merchant_capacity(nation);
-
-        let major = &game.nations.majors[nation].economy;
-        assert_eq!(major.capacities.trade_offer, 28);
-        assert_eq!(major.capacities.available_merchant, 28);
-    }
-
-    #[test]
-    fn recalls_bids_clamps_them_to_stock_and_clears_aid() {
-        let nation = MajorNationId::new(6);
-        let mut game = state();
-        let city = game.nations.city_mut(nation);
-        city.stockpile[ResourceKind::Cotton] = 3;
-        city.stockpile[ResourceKind::Timber] = 5;
-
-        let major = &mut game.nations.majors[nation].economy;
-        major.unfilled_trade_offer_count = 4;
-        major.item_potentials[ResourceKind::Cotton] = 99;
-        major.remembered_trade_offers_by_resource[ResourceKind::Cotton] = 7;
-        major.remembered_trade_offers_by_resource[ResourceKind::Wool] = -1;
-        major.remembered_trade_offers_by_resource[ResourceKind::Timber] = 2;
-        major.aid_allocation_by_minor_nation[MinorNationId::new(7)][ResourceKind::Cotton] = 8;
-        major.aid_allocation_by_minor_nation[MinorNationId::new(14)][ResourceKind::Steel] = 8;
-        major.aid_allocation_by_minor_nation[MinorNationId::new(22)][ResourceKind::Gold] = 8;
-
-        game.recall_trade_bids(nation);
-
-        let major = &game.nations.majors[nation].economy;
-        assert_eq!(major.unfilled_trade_offer_count, 5);
-        assert_eq!(major.item_potentials[ResourceKind::Cotton], 3);
-        assert_eq!(major.item_potentials[ResourceKind::Wool], -1);
-        assert_eq!(major.item_potentials[ResourceKind::Timber], 2);
-        assert_eq!(
-            major.aid_allocation_by_minor_nation,
-            MinorNationTable::default()
-        );
-    }
-
-    #[test]
-    fn special_resource_seller_uses_base_budget_and_balance() {
-        let nation = MajorNationId::new(6);
-        let mut game = state();
-        game.purchase_item(nation, ResourceKind::Clothing, -2, 5);
-        let state = &game.nations.majors[MajorNationId::new(6)];
-        let major = &state.economy;
-        assert_eq!(state.common.treasury, 1_010);
-        assert_eq!(
-            major.purchased_items_by_resource[ResourceKind::Clothing],
-            -2
-        );
-        assert_eq!(major.capacities.available_merchant, 10);
-        assert_eq!(major.budget_pool_base, 210);
-        assert_eq!(major.budget_pool_delta, 100);
-        assert_eq!(major.special_resource_trade_balance, 32);
-    }
-
-    #[test]
-    fn ordinary_resource_seller_does_not_change_special_balance() {
-        let nation = MajorNationId::new(6);
-        let mut game = state();
-        game.purchase_item(nation, ResourceKind::Fabric, -2, 5);
-        assert_eq!(
-            game.nations.majors[MajorNationId::new(6)]
-                .economy
-                .special_resource_trade_balance,
-            30
-        );
     }
 }

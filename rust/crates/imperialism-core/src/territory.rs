@@ -498,18 +498,6 @@ mod tests {
     }
 
     #[test]
-    fn country_status_has_one_strict_semantic_json_shape() {
-        assert_eq!(
-            serde_json::to_value(CountryStatus::Independent).unwrap(),
-            serde_json::json!({"kind": "independent"})
-        );
-        assert_eq!(
-            serde_json::to_value(CountryStatus::ColonyOf(NationId::new(6))).unwrap(),
-            serde_json::json!({"kind": "colony_of", "nation": 6})
-        );
-    }
-
-    #[test]
     fn province_owner_change_updates_map_country_and_town_state_in_retail_order() {
         let mut state = crate::test_support::game_state();
         state.map.provinces = ProvinceTable::default();

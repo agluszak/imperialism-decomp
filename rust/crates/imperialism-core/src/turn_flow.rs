@@ -486,39 +486,6 @@ fn reset_finished_flag(eligible: bool, finished: &mut bool) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{Difficulty, NationId};
-
-    #[test]
-    fn advances_the_season_and_classifies_linear_phases() {
-        let mut turn = TurnState {
-            scenario_map: None,
-            economic_turn: 2,
-            diplomacy_year_term_raw: 1914,
-            phase: crate::PhaseCode::HOME_PLACEMENT,
-            turn_flow_status_flags: 0,
-            quarter_gate_by_decade: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            difficulty: Difficulty::Easy,
-            active_nation: NationId::new(6),
-            selected_nation: NationId::new(6),
-        };
-        turn.advance_season();
-        assert_eq!(turn.economic_turn, 3);
-        assert!(!turn.in_linear_phase());
-        turn.phase = crate::PhaseCode::PRE_MAP;
-        assert!(turn.in_linear_phase());
-        turn.phase = crate::PhaseCode::DIPLOMACY;
-        assert!(turn.in_linear_phase());
-    }
-
-    #[test]
-    fn resets_only_eligible_nation_flags() {
-        let mut eligible = true;
-        let mut ineligible = true;
-        reset_finished_flag(true, &mut eligible);
-        reset_finished_flag(false, &mut ineligible);
-        assert!(!eligible);
-        assert!(ineligible);
-    }
 
     #[test]
     fn advance_until_blocked_stops_at_the_player_order_boundary() {

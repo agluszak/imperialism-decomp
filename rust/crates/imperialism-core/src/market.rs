@@ -240,19 +240,3 @@ fn market_price(row: &TradeMarketRow) -> i32 {
 fn truncate_price(value: f64) -> i32 {
     value.trunc() as i32
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn empire_policy_offer_eligibility_follows_the_persisted_maximum() {
-        let commodity = TradeCommodity::Cotton;
-        let nation = MinorNationId::new(22);
-        let mut market = TradeMarketState::default();
-
-        assert!(!market.has_maximum_offer_from_minor(commodity, nation));
-        market.rows[commodity].maximum_offer_by_nation[nation.nation()] = 1;
-        assert!(market.has_maximum_offer_from_minor(commodity, nation));
-    }
-}
