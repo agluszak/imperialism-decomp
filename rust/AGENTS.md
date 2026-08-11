@@ -49,7 +49,9 @@ the decomp uses them.
   semantic ID constructors infallible unless retail evidence establishes a real domain bound.
 - One retail fact gets one domain field. Example: tile rivers are the saved `riverSpriteCode`
   (`TileRendering.river_sprite`); connection/flow codes are derived from that sprite and must not
-  be stored beside it.
+  be stored beside it. Decode packed retail status/payload pairs into the semantic type while
+  reading the save (`PendingActionState`, `CountryStatus`); do not keep parallel raw arrays and a
+  second validate-then-normalize pass.
 - Use ordinary arithmetic for domain rules. Only use wrapping or fixed-width overflow when retail
   behavior demonstrably depends on that overflow as an observable rule; document that evidence at
   the narrow boundary where it matters.

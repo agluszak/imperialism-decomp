@@ -203,7 +203,8 @@ pub(crate) struct LegacyCountryBase {
     pub identity: String,
     pub alternate_identity: String,
     pub nation_slot: i16,
-    pub encoded_nation_slot: i16,
+    /// Decoded from retail's packed status word at read time.
+    pub status: CountryStatus,
     pub unit_name_ordinal_by_type: [i16; 30],
     pub unit_name_counter: i16,
     pub treasury: i32,
@@ -283,8 +284,7 @@ pub(crate) struct LegacyGreatPowerPrefix {
     pub budget_pool_base: i32,
     pub budget_pool_delta: i32,
     pub aid_allocation_by_minor_nation: [[i32; RESOURCE_KIND_COUNT]; MINOR_NATION_COUNT],
-    pub pending_action_status: [i8; PENDING_ACTION_COUNT],
-    pub pending_action_payload_by_action: [i16; PENDING_ACTION_COUNT],
+    pub pending_actions: PendingActionTable<PendingActionState>,
     pub relationship_lists: Vec<LegacyFixedRecordList>,
     pub minister_presence_mask: u8,
 }
@@ -2203,13 +2203,6 @@ fn great_power_state(
             nation.country.nation_slot
         ))
     })?;
-    for (&status, &payload) in prefix
-        .pending_action_status
-        .iter()
-        .zip(prefix.pending_action_payload_by_action.iter())
-    {
-        validate_pending_action(status, payload)?;
-    }
     Ok(GreatPowerState {
         controller: if prefix.diplomacy_eligible != 0 {
             MajorNationController::Human
@@ -2270,13 +2263,7 @@ fn great_power_state(
         // scenarioInitFlag is constructed as zero and is not part of the save stream.
         scenario_initialized: false,
         turn_finished: post.turn_finished_flag != 0,
-        pending_actions: PendingActionTable::from_fn(|action| {
-            let index = action as usize;
-            normalized_pending_action(
-                prefix.pending_action_status[index],
-                prefix.pending_action_payload_by_action[index],
-            )
-        }),
+        pending_actions: prefix.pending_actions,
         diplomacy_budget_base: post.diplomacy_budget_base,
         escalation_counter: i16::from(post.escalation_counter),
         pending_commitment_cost: post.pending_commitment_cost,
@@ -2378,27 +2365,30 @@ fn interior_civilian_state(
     ))
 }
 
-fn validate_pending_action(status: i8, payload: i16) -> Result<(), LegacySaveError> {
-    match status {
-        0 | 0x32..=0x34 if payload >= -1 => Ok(()),
-        0 | 0x32..=0x34 => Err(LegacySaveError::StateProjection(format!(
+fn pending_action_from_retail(
+    status: i8,
+    payload: i16,
+) -> Result<PendingActionState, LegacySaveError> {
+    if payload < -1 {
+        return Err(LegacySaveError::StateProjection(format!(
             "pending-action payload {payload} is below the -1 sentinel"
-        ))),
-        _ => Err(LegacySaveError::StateProjection(format!(
-            "unsupported pending-action status {status}"
-        ))),
+        )));
     }
-}
-
-fn normalized_pending_action(status: i8, payload: i16) -> PendingActionState {
     let status = match status {
         0 => PendingActionStatus::None,
         0x32 => PendingActionStatus::Queued,
         0x33 => PendingActionStatus::Level3,
         0x34 => PendingActionStatus::Level4,
-        _ => unreachable!("pending action was validated before normalization"),
+        _ => {
+            return Err(LegacySaveError::StateProjection(format!(
+                "unsupported pending-action status {status}"
+            )));
+        }
     };
-    PendingActionState::new(status, (payload != -1).then_some(payload))
+    Ok(PendingActionState::new(
+        status,
+        (payload != -1).then_some(payload),
+    ))
 }
 
 fn diplomacy_grants_from_retail_entries(
@@ -2580,7 +2570,7 @@ fn province_state(
 fn country_common(country: &LegacyCountryBase) -> Result<NationCommonState, LegacySaveError> {
     Ok(NationCommonState::from_parts(
         normalize_nation_display_name(&country.alternate_identity),
-        country_status_from_retail(country.encoded_nation_slot)?,
+        country.status,
         country
             .owned_regions
             .iter()
@@ -3347,7 +3337,7 @@ fn read_country_base(stream: &mut LegacyStream<'_>) -> Result<LegacyCountryBase,
     let identity = lossy_text(&stream.read_mfc_string()?);
     let alternate_identity = lossy_text(&stream.read_mfc_string()?);
     let nation_slot = stream.read_le_i16()?;
-    let encoded_nation_slot = stream.read_le_i16()?;
+    let status = country_status_from_retail(stream.read_le_i16()?)?;
     let unit_name_ordinal_by_type = read_be_short_array(stream)?;
     let unit_name_counter = stream.read_le_i16()?;
     let treasury = stream.read_le_i32()?;
@@ -3379,7 +3369,7 @@ fn read_country_base(stream: &mut LegacyStream<'_>) -> Result<LegacyCountryBase,
         identity,
         alternate_identity,
         nation_slot,
-        encoded_nation_slot,
+        status,
         unit_name_ordinal_by_type,
         unit_name_counter,
         treasury,
@@ -3413,7 +3403,7 @@ fn read_military_unit(stream: &mut LegacyStream<'_>) -> Result<LegacyMilitaryUni
 
 fn read_great_power_prefix(
     stream: &mut LegacyStream<'_>,
-) -> Result<LegacyGreatPowerPrefix, StreamError> {
+) -> Result<LegacyGreatPowerPrefix, LegacySaveError> {
     let diplomacy_eligible = stream.read_u8()?;
     let capacities = read_short_array(stream)?;
     let grant_total_cost = stream.read_le_i32()?;
@@ -3440,7 +3430,17 @@ fn read_great_power_prefix(
     for value in &mut pending_action_status {
         *value = stream.read_i8()?;
     }
-    let pending_action_payload_by_action = read_be_short_array(stream)?;
+    let pending_action_payload_by_action: [i16; PENDING_ACTION_COUNT] =
+        read_be_short_array(stream)?;
+    let mut pending_action_values = [PendingActionState::default(); PENDING_ACTION_COUNT];
+    for (index, slot) in pending_action_values.iter_mut().enumerate() {
+        *slot = pending_action_from_retail(
+            pending_action_status[index],
+            pending_action_payload_by_action[index],
+        )?;
+    }
+    let pending_actions =
+        PendingActionTable::from_fn(|action| pending_action_values[action as usize]);
 
     // These are TSortedByRelationshipList/TSortedPtrList instances, unlike the
     // no-op TSortedList hooks used by object-owning lists elsewhere.
@@ -3467,8 +3467,7 @@ fn read_great_power_prefix(
         budget_pool_base,
         budget_pool_delta,
         aid_allocation_by_minor_nation,
-        pending_action_status,
-        pending_action_payload_by_action,
+        pending_actions,
         relationship_lists,
         minister_presence_mask,
     })
@@ -5559,11 +5558,6 @@ mod tests {
             first_great_power_mut(&mut save).country.owned_regions[0] = owned_region;
             assert!(save.game_state(game_context()).is_err());
         }
-        for encoded_status in [-2, 0, 99, 123, 199, 223] {
-            let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
-            first_great_power_mut(&mut save).country.encoded_nation_slot = encoded_status;
-            assert!(save.game_state(game_context()).is_err());
-        }
 
         let mut mismatched_index = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
         mismatched_index.map.provinces[79].owner_nation = 1;
@@ -5744,7 +5738,7 @@ mod tests {
         assert_eq!(country.identity, "Zimm");
         assert_eq!(country.alternate_identity, "Zimm");
         assert_eq!(country.nation_slot, 0);
-        assert_eq!(country.encoded_nation_slot, -1);
+        assert_eq!(country.status, CountryStatus::Independent);
         assert_eq!(country.treasury, 10_000);
         assert_eq!(country.home_tile, 3_494);
         assert_eq!(country.overlay_anchor_tile, -1);
@@ -6050,8 +6044,8 @@ mod tests {
     fn semantic_projection_preserves_inactive_pending_action_payload() {
         let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
         let prefix = &mut first_great_power_mut(&mut save).prefix;
-        prefix.pending_action_status[0] = 0;
-        prefix.pending_action_payload_by_action[0] = 0;
+        prefix.pending_actions[PendingActionKind::NavyGrowthReward] =
+            PendingActionState::new(PendingActionStatus::None, Some(0));
 
         let state = save.game_state(game_context()).unwrap();
         assert_eq!(
@@ -6068,16 +6062,17 @@ mod tests {
     }
 
     #[test]
-    fn semantic_projection_rejects_pending_action_payload_below_sentinel() {
-        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
-        let prefix = &mut first_great_power_mut(&mut save).prefix;
-        prefix.pending_action_payload_by_action[0] = -2;
-
+    fn pending_action_decode_rejects_payload_below_sentinel() {
         assert!(matches!(
-            save.game_state(game_context()),
+            pending_action_from_retail(0, -2),
             Err(LegacySaveError::StateProjection(message))
                 if message == "pending-action payload -2 is below the -1 sentinel"
         ));
+        assert!(pending_action_from_retail(0x35, 0).is_err());
+        assert_eq!(
+            pending_action_from_retail(0, 0).unwrap(),
+            PendingActionState::new(PendingActionStatus::None, Some(0))
+        );
     }
 
     #[test]
