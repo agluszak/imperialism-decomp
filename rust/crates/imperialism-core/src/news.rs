@@ -1,4 +1,5 @@
 use crate::*;
+use serde::{Deserialize, Serialize};
 
 const NEWS_STORY_IDS: [i16; NEWS_TEMPLATE_COUNT] = [
     -25, -26, -27, -28, -20, -21, -1000, 11, 12, 13, 14, 15, 21, 22, 23, 24, 25, -12, -10, -11, -9,
@@ -156,9 +157,191 @@ impl GameState {
     }
 }
 
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct PendingWorkState {
+    pub nations: MajorNationTable<NationPendingWork>,
+    /// Whether retail's post-combat map boundary has battle reports to present.
+    pub combat_reports_pending: bool,
+    pub newspaper_events: Vec<PendingNewspaperEvent>,
+    pub war_transitions: Vec<WarTransition>,
+}
+
+pub const NEWS_TEMPLATE_COUNT: usize = 360;
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct NewsState {
+    pub pages: MajorNationTable<Option<NewsPage>>,
+    pub last_used_turn_by_nation_and_template: MajorNationTable<Vec<i16>>,
+}
+
+impl Default for NewsState {
+    fn default() -> Self {
+        Self {
+            pages: MajorNationTable::default(),
+            last_used_turn_by_nation_and_template: MajorNationTable::from_fn(|_| {
+                vec![0; NEWS_TEMPLATE_COUNT]
+            }),
+        }
+    }
+}
+
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct NewsPage {
+    /// Retail stores the page as `[column][row]`.
+    pub stories: [[Option<NewsStory>; 3]; 3],
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct NewsStory {
+    pub template_index: u16,
+    pub story_id: i16,
+    pub feature: bool,
+    pub arguments: [NewsArgument; 4],
+}
+
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum NewsArgument {
+    #[default]
+    Empty,
+    NationMask {
+        nations: NationTable<bool>,
+    },
+    NationList {
+        nations: NationTable<bool>,
+    },
+    Province {
+        province: ProvinceId,
+    },
+    Zone {
+        ordinal: i16,
+    },
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum InterNationNewsKind {
+    WarDeclaredBySubject,
+    WarDeclaredAgainstSubject,
+    PeaceTreatyAccepted,
+    JoinEmpireAccepted,
+    AllianceAccepted,
+    NonAggressionPactAccepted,
+    PeaceTreatyRejected,
+    JoinEmpireRejected,
+    AllianceRejected,
+    NonAggressionPactRejected,
+    TradeConsulateEstablished,
+    EmbassyEstablished,
+    MinorEmpireAffiliationChanged,
+    MinorTerritoryRelationshipAffected,
+    PeaceRelationshipPropagated,
+    WarWithIndependentMinor,
+    AllianceRelationshipEstablished,
+    NationJoinedEmpire,
+    NationJoinedWar,
+    NationTransferred,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum PendingNewspaperEvent {
+    InterNation {
+        event: InterNationNewsKind,
+        subject: MajorNationId,
+        related_nations: NationTable<bool>,
+    },
+    Shortage {
+        subject: MajorNationId,
+        affected_nations: NationTable<bool>,
+        resource: crate::ResourceKind,
+    },
+    Miscellaneous {
+        audience: Option<MajorNationId>,
+        story_code: i32,
+    },
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct WarTransition {
+    pub first: NationId,
+    pub second: NationId,
+}
+
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct NationPendingWork {
+    pub turn_events: Vec<DiplomacyNotice>,
+    pub proposals: Vec<DiplomacyProposal>,
+    pub turn_summary: Vec<TurnSummary>,
+    pub turn_start_events: Vec<TurnStartEvent>,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct DiplomacyNotice {
+    pub source: NationId,
+    pub code: i16,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct DiplomacyProposal {
+    pub source: NationId,
+    pub policy: DiplomacyPolicy,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum TurnSummary {
+    MilitaryRecruit {
+        turn_tick: i32,
+        unit_type: MilitaryUnitKind,
+        count: i16,
+    },
+    /// A recovered queue record whose presentation meaning has not yet been
+    /// interpreted by a Rust rule.
+    Retail {
+        turn_tick: i32,
+        order_kind: i16,
+        payload: i16,
+        flags: i16,
+    },
+}
+impl TurnSummary {
+    pub(crate) const fn order_key(self) -> i16 {
+        match self {
+            Self::MilitaryRecruit { .. } => 3,
+            Self::Retail { order_kind, .. } => order_kind,
+        }
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum TurnStartEvent {
+    LandSale { tag: i32, sale: LandSale },
+    Tagged { class: String, tag: i32 },
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct LandSale {
+    pub tile: TileId,
+    pub nation: NationId,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn land_sale_event_uses_a_strategic_tile_id() {
+        let event: TurnStartEvent =
+            serde_json::from_str(r#"{"kind":"land_sale","tag":4,"sale":{"tile":500,"nation":0}}"#)
+                .unwrap();
+
+        assert!(matches!(
+            event,
+            TurnStartEvent::LandSale { sale, .. } if sale.tile.get() == 500
+        ));
+    }
 
     fn joined_war(counterpart: MajorNationId) -> PendingNewspaperEvent {
         let mut related_nations = NationTable::default();

@@ -1,4 +1,3 @@
-use crate::RngState;
 use serde::{Deserialize, Serialize};
 
 const VC5_CRT_RAND_MULTIPLIER: u32 = 214_013;
@@ -86,6 +85,13 @@ pub fn hash_retail_scenario_tag(bytes: &[u8]) -> i32 {
                 .wrapping_add(seed.wrapping_mul(2))
                 .wrapping_add(signed_byte)
         })
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct RngState {
+    pub crt_rand: RetailCrtRng,
+    pub map_generation: RetailLcg,
+    pub zone_status: RetailLcg,
 }
 
 impl RngState {

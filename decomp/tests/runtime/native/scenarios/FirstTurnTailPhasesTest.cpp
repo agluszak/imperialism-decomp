@@ -124,7 +124,9 @@ private:
       JsonObject block;
       if (outcome_ == kUiGate) {
         block.Set("kind", "ui");
-        block.Set("gate", uiGate_);
+        JsonObject request;
+        request.Set("kind", uiGate_);
+        block.Set("request", request.Release());
       } else {
         block.Set("kind", "player_orders");
       }

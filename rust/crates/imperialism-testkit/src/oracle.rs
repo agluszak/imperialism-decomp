@@ -294,7 +294,7 @@ pub fn check_random_game_start(result: &Path, seed: u32) -> Result<()> {
     let expected: GameState = runtime
         .capture("game_state")
         .with_context(|| format!("could not read {}", result.display()))?;
-    let difficulty = expected.turn.difficulty;
+    let difficulty = expected.turn().difficulty;
     if difficulty != Difficulty::Normal
         && difficulty != Difficulty::Hard
         && difficulty != Difficulty::NighOnImpossible
@@ -304,11 +304,11 @@ pub fn check_random_game_start(result: &Path, seed: u32) -> Result<()> {
             difficulty
         );
     }
-    if expected.turn.selected_nation != setup.nation.nation() {
+    if expected.turn().selected_nation != setup.nation.nation() {
         bail!(
             "random-game setup nation {} differs from game-state selected nation {}",
             setup.nation.get(),
-            expected.turn.selected_nation.get()
+            expected.turn().selected_nation.get()
         );
     }
 
@@ -336,11 +336,11 @@ pub fn check_random_game_start(result: &Path, seed: u32) -> Result<()> {
         setup.nation.get(),
         difficulty,
         STRATEGIC_TILE_COUNT,
-        actual.military_units.len(),
-        actual.missions.len(),
-        actual.rng.map_generation.state(),
-        actual.rng.crt_rand.state(),
-        actual.rng.zone_status.state(),
+        actual.military_units().len(),
+        actual.missions().len(),
+        actual.rng().map_generation.state(),
+        actual.rng().crt_rand.state(),
+        actual.rng().zone_status.state(),
     );
     Ok(())
 }
@@ -358,11 +358,11 @@ pub fn check_snapshot(
     println!(
         "{} tiles, {} nations, {} cities, {} military units, {} civilian units, {} missions",
         STRATEGIC_TILE_COUNT,
-        MAJOR_NATION_COUNT + state.nations.minor_count(),
+        MAJOR_NATION_COUNT + state.nations().minor_count(),
         MAJOR_NATION_COUNT,
-        state.military_units.len(),
-        state.civilian_units.len(),
-        state.missions.len()
+        state.military_units().len(),
+        state.civilian_units().len(),
+        state.missions().len()
     );
     if let Some(comparison_path) = comparison {
         let comparison: GameState = read_result(

@@ -1,5 +1,5 @@
 use crate::*;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 const STRIKE_RESOURCES: [ResourceKind; 3] = [
     ResourceKind::Hardware,
@@ -463,9 +463,186 @@ fn transfer_band(source: &mut i16, destination: &mut i16, remaining: &mut i16) {
     *remaining -= moved;
 }
 
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct PopulationState {
+    pub(crate) count: i16,
+    pub(crate) accumulator: PopulationAccumulator,
+    pub(crate) strength: i16,
+    pub(crate) extra: i16,
+    pub(crate) strike_phase: StrikePhase,
+    pub(crate) baseline_labor: LaborPool,
+    pub(crate) production_labor: LaborPool,
+    pub(crate) pending_labor_delta: LaborPool,
+    pub(crate) predicted_need_by_resource: ResourceTable<i16>,
+}
+
+impl PopulationState {
+    #[allow(clippy::too_many_arguments)]
+    pub fn new(
+        count: i16,
+        accumulator: PopulationAccumulator,
+        strength: i16,
+        extra: i16,
+        strike_phase: StrikePhase,
+        baseline_labor: LaborPool,
+        production_labor: LaborPool,
+        pending_labor_delta: LaborPool,
+        predicted_need_by_resource: ResourceTable<i16>,
+    ) -> Self {
+        Self {
+            count,
+            accumulator,
+            strength,
+            extra,
+            strike_phase,
+            baseline_labor,
+            production_labor,
+            pending_labor_delta,
+            predicted_need_by_resource,
+        }
+    }
+
+    /// Builds a fresh population whose baseline and production bands both equal
+    /// `labor`, with no pending reassignment. Mirrors the retail
+    /// `SetPopulation`-time state used when a city first appears.
+    pub(crate) fn from_labor(labor: LaborPool) -> Self {
+        let count = labor.low + labor.medium + labor.high;
+        Self::new(
+            count,
+            PopulationAccumulator::from_count(count),
+            labor.strength(),
+            0,
+            StrikePhase::default(),
+            labor,
+            labor,
+            LaborPool::default(),
+            ResourceTable::default(),
+        )
+    }
+
+    pub const fn count(&self) -> i16 {
+        self.count
+    }
+
+    pub const fn accumulator(&self) -> PopulationAccumulator {
+        self.accumulator
+    }
+
+    pub const fn strength(&self) -> i16 {
+        self.strength
+    }
+
+    pub const fn baseline_labor(&self) -> LaborPool {
+        self.baseline_labor
+    }
+
+    pub const fn production_labor(&self) -> LaborPool {
+        self.production_labor
+    }
+
+    pub fn predicted_need(&self, resource: ResourceKind) -> i16 {
+        self.predicted_need_by_resource[resource]
+    }
+}
+
+/// A finite semantic population total.
+///
+/// The retail save stores its IEEE-754 bits, but core state exposes the value
+/// itself. The retained bits preserve exact arithmetic between rule steps.
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub struct PopulationAccumulator(u32);
+
+impl PopulationAccumulator {
+    pub fn new(value: f32) -> Option<Self> {
+        value.is_finite().then_some(Self(value.to_bits()))
+    }
+
+    #[cfg(test)]
+    pub(crate) fn from_bits(bits: u32) -> Self {
+        Self::new(f32::from_bits(bits)).expect("population accumulator stays finite")
+    }
+
+    pub(crate) fn from_count(count: i16) -> Self {
+        Self(f32::from(count).to_bits())
+    }
+
+    pub fn get(self) -> f32 {
+        f32::from_bits(self.0)
+    }
+    pub(crate) fn remove(&mut self, amount: i16) {
+        self.0 = (self.get() - f32::from(amount)).to_bits();
+    }
+}
+
+impl Serialize for PopulationAccumulator {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        self.get().serialize(serializer)
+    }
+}
+
+impl<'de> Deserialize<'de> for PopulationAccumulator {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let value = f32::deserialize(deserializer)?;
+        Self::new(value)
+            .ok_or_else(|| serde::de::Error::custom("population accumulator must be finite"))
+    }
+}
+
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[repr(u8)]
+pub enum StrikePhase {
+    #[default]
+    Clothing,
+    Furniture,
+    Hardware,
+    Arms,
+}
+
+impl StrikePhase {
+    pub const fn from_retail(value: i16) -> Option<Self> {
+        match value {
+            0 => Some(Self::Clothing),
+            1 => Some(Self::Furniture),
+            2 => Some(Self::Hardware),
+            3 => Some(Self::Arms),
+            _ => None,
+        }
+    }
+    pub const fn retail(self) -> i16 {
+        self as i16
+    }
+    pub(crate) const fn index(self) -> usize {
+        self as usize
+    }
+    pub(crate) const fn next(self) -> Self {
+        match self {
+            Self::Clothing => Self::Furniture,
+            Self::Furniture => Self::Hardware,
+            Self::Hardware => Self::Arms,
+            Self::Arms => Self::Clothing,
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn population_accumulator_exposes_a_finite_semantic_value() {
+        let accumulator = PopulationAccumulator::new(7.5).unwrap();
+
+        assert_eq!(accumulator.get(), 7.5);
+        assert_eq!(serde_json::to_string(&accumulator).unwrap(), "7.5");
+        assert!(PopulationAccumulator::new(f32::NAN).is_none());
+        assert!(PopulationAccumulator::new(f32::INFINITY).is_none());
+    }
 
     fn population() -> PopulationState {
         PopulationState {

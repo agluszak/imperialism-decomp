@@ -50,16 +50,17 @@ private:
       return RuntimeActionResult::Failure("the diplomacy phase did not show the diplomacy map");
     }
 
-    JsonObject effect;
-    effect.Set("kind", "show_diplomacy_map");
-    effect.Set("nation", static_cast<int>(g_pSimMgr->activeNationSlot));
+    JsonObject request;
+    request.Set("kind", "diplomacy_map");
+    request.Set("nation", static_cast<int>(g_pSimMgr->activeNationSlot));
+    JsonObject block;
+    block.Set("kind", "ui");
+    block.Set("request", request.Release());
     JsonArray effects;
-    effects.Add(effect.Release());
-
     JsonObject result;
-    result.Set("kind", "continues");
-    result.Set("from", 6);
-    result.Set("to", 7);
+    result.Set("kind", "blocked");
+    result.Set("phase", 7);
+    result.Set("block", block.Release());
     result.Set("effects", effects.Release());
     return capture.Finish(result.Release());
   }

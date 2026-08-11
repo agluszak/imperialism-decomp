@@ -359,7 +359,7 @@ mod tests {
     fn military_recruit_production_requires_a_home_province() {
         let home = TileId::new(200);
         let mut state = game(home);
-        state.world[home].province = None;
+        state.world.tile_mut(home).province = None;
 
         state.produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Sappers, 1);
     }
@@ -372,8 +372,8 @@ mod tests {
         let first_neighbor = geometry
             .neighbor(start, crate::HexDirection::NorthEast)
             .unwrap();
-        state[start].owner_nation = Some(crate::TileOwnerTag::new(0));
-        state[first_neighbor].owner_nation = Some(crate::TileOwnerTag::new(0));
+        state.tile_mut(start).owner_nation = Some(crate::TileOwnerTag::new(0));
+        state.tile_mut(first_neighbor).owner_nation = Some(crate::TileOwnerTag::new(0));
 
         assert_eq!(
             state.find_reachable_recruit_spawn_tile(&[civilian(1, 0, start)], start, false),
@@ -385,8 +385,8 @@ mod tests {
     fn active_flag_two_is_allowed_only_for_the_retail_unit_type() {
         let mut state = world();
         let start = TileId::new(200);
-        state[start].owner_nation = Some(crate::TileOwnerTag::new(0));
-        state[start].flags = TileFlags::RECRUITMENT_RESERVED;
+        state.tile_mut(start).owner_nation = Some(crate::TileOwnerTag::new(0));
+        state.tile_mut(start).flags = TileFlags::RECRUITMENT_RESERVED;
 
         assert_eq!(
             state.find_reachable_recruit_spawn_tile(&[], start, false),
@@ -402,7 +402,7 @@ mod tests {
     fn occupancy_checks_the_tile_owner_not_an_unrelated_civilian() {
         let mut state = world();
         let start = TileId::new(200);
-        state[start].owner_nation = Some(crate::TileOwnerTag::new(0));
+        state.tile_mut(start).owner_nation = Some(crate::TileOwnerTag::new(0));
 
         assert_eq!(
             state.find_reachable_recruit_spawn_tile(&[civilian(1, 1, start)], start, false),
@@ -418,8 +418,8 @@ mod tests {
             .neighbor(start, crate::HexDirection::NorthEast)
             .unwrap();
         let mut state = game(start);
-        state.world[start].owner_nation = Some(crate::TileOwnerTag::new(0));
-        state.world[first_neighbor].owner_nation = Some(crate::TileOwnerTag::new(0));
+        state.world.tile_mut(start).owner_nation = Some(crate::TileOwnerTag::new(0));
+        state.world.tile_mut(first_neighbor).owner_nation = Some(crate::TileOwnerTag::new(0));
         state.civilian_units.push(civilian(40, 0, start));
         state.produce_civilian_recruits(MajorNationId::new(0), CivilianUnitKind::Forester, 2);
 
@@ -443,7 +443,7 @@ mod tests {
     fn negative_quantity_skips_spawns_but_keeps_retail_tail_effects() {
         let start = TileId::new(200);
         let mut state = game(start);
-        state.world[start].owner_nation = Some(crate::TileOwnerTag::new(0));
+        state.world.tile_mut(start).owner_nation = Some(crate::TileOwnerTag::new(0));
         state.produce_civilian_recruits(MajorNationId::new(0), CivilianUnitKind::Miner, -2);
 
         assert!(state.civilian_units.is_empty());
@@ -464,7 +464,7 @@ mod tests {
     fn military_recruitment_builds_the_retail_military_unit_shape() {
         let home_tile = TileId::new(200);
         let mut state = game(home_tile);
-        state.world[home_tile].province = Some(crate::ProvinceId::new(17));
+        state.world.tile_mut(home_tile).province = Some(crate::ProvinceId::new(17));
         state
             .nations
             .major_mut(MajorNationId::new(0))
@@ -522,7 +522,7 @@ mod tests {
     fn military_recruitment_queues_only_the_first_reached_power_threshold() {
         let home_tile = TileId::new(200);
         let mut state = game(home_tile);
-        state.world[home_tile].province = Some(crate::ProvinceId::new(17));
+        state.world.tile_mut(home_tile).province = Some(crate::ProvinceId::new(17));
         state.military_units = (0..14)
             .map(|index| military_unit(41 + index, 0, MilitaryUnitKind::Skirmishers, 17))
             .collect();
@@ -547,7 +547,7 @@ mod tests {
     fn military_recruitment_uses_pending_status_not_payload_as_the_growth_level() {
         let home_tile = TileId::new(200);
         let mut state = game(home_tile);
-        state.world[home_tile].province = Some(crate::ProvinceId::new(17));
+        state.world.tile_mut(home_tile).province = Some(crate::ProvinceId::new(17));
         state.military_units = (0..14)
             .map(|index| military_unit(41 + index, 0, MilitaryUnitKind::Skirmishers, 17))
             .collect();

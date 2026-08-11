@@ -164,7 +164,7 @@ mod tests {
             state.advance_turn_step(),
             AdvanceTurnOutcome::Blocked {
                 phase: PhaseCode::COMBAT_MOVES,
-                block: TurnBlock::Unsupported {
+                yield_: crate::TurnYield::Unsupported {
                     phase: PhaseCode::COMBAT_MOVES,
                 },
                 effects: Vec::new(),
