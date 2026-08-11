@@ -308,7 +308,18 @@ fn apply_tile_post_passes(
         assign_province_fallback_capitals(&mut tiles, &mut gate_flags, geometry, map_lcg);
 
     guarantee_resources(&mut tiles, &mut gate_flags, map_lcg);
-    assign_fresh_map_pictures(&mut tiles, &gate_flags, geometry, map_lcg);
+    let mut river_connections: Vec<u8> = map
+        .tiles()
+        .iter()
+        .map(|tile| tile.river.map_or(0, RiverSegment::connection_code))
+        .collect();
+    assign_fresh_map_pictures(
+        &mut tiles,
+        &mut river_connections,
+        &gate_flags,
+        geometry,
+        map_lcg,
+    );
     TilePostPassState {
         tiles: tiles.into_boxed_slice(),
         gate_flags,
@@ -848,7 +859,7 @@ fn calculate_city_resources(
             }
             yields[resource] += amount;
         }
-        if state.river.is_some() {
+        if state.river().is_some() {
             yields[ResourceKind::Fish] += 1;
         }
     }
@@ -1503,7 +1514,6 @@ fn tile_from_generated(tile: GeneratedTerrainTile) -> TileState {
         action: None,
         flags: TileFlags::empty(),
         region: None,
-        river: tile.river,
     }
 }
 
@@ -1759,17 +1769,17 @@ fn place_guaranteed_resource(
 }
 
 /// Fresh-map `TMapMgr::AssignPictToTile` pass after `GuaranteeResources`.
+///
+/// `river_connections` carries generation-time connection codes until this pass writes the
+/// authoritative picture sprites onto each tile. Finished tiles keep only those sprites.
 fn assign_fresh_map_pictures(
     tiles: &mut [TileState],
+    river_connections: &mut [u8],
     gate_flags: &[i8],
     geometry: MapGeometry,
     map_lcg: &mut RetailLcg,
 ) {
     let mut sprite_variants = vec![0u8; tiles.len()];
-    let mut river_sprite_codes: Vec<u8> = tiles
-        .iter()
-        .map(|tile| tile.river.map_or(0, RiverSegment::connection_code))
-        .collect();
 
     for index in 0..tiles.len() {
         assign_picture_to_tile_for_rng(
@@ -1778,23 +1788,23 @@ fn assign_fresh_map_pictures(
             geometry,
             index,
             &mut sprite_variants,
-            &mut river_sprite_codes,
+            river_connections,
             map_lcg,
         );
         let (transition_mask, coast_or_secondary_mask) =
             fresh_picture_masks(tiles, gate_flags, geometry, index);
-        assert_eq!(
-            tiles[index].river.is_some(),
-            river_sprite_codes[index] != 0,
-            "fresh-map river must resolve to one picture sprite"
-        );
         tiles[index].rendering = TileRendering::from_retail(
             sprite_variants[index],
-            river_sprite_codes[index],
+            river_connections[index],
             transition_mask,
             coast_or_secondary_mask,
         )
         .expect("fresh-map picture assignment must produce valid rendering state");
+        assert_eq!(
+            tiles[index].river().is_some(),
+            river_connections[index] != 0,
+            "finished river sprite must derive the generation connection"
+        );
     }
 }
 
@@ -2292,21 +2302,31 @@ mod tests {
         tiles[0].terrain = TerrainKind::Mountain;
         let first_river = geometry.tile(10, 10).unwrap();
         let second_river = geometry.neighbor(first_river, HexDirection::East).unwrap();
-        tiles[usize::from(first_river.get())].river = RiverSegment::from_connection_code(4);
-        tiles[usize::from(second_river.get())].river = RiverSegment::from_connection_code(3);
-        let original_rivers: Vec<_> = tiles.iter().map(|tile| tile.river).collect();
+        let mut river_connections = vec![0u8; STRATEGIC_TILE_COUNT];
+        river_connections[usize::from(first_river.get())] = 4;
+        river_connections[usize::from(second_river.get())] = 3;
+        let original_connections = river_connections.clone();
         let gate_flags = vec![0; STRATEGIC_TILE_COUNT];
 
         let mut rng = RetailLcg::from_state(1);
-        assign_fresh_map_pictures(&mut tiles, &gate_flags, geometry, &mut rng);
+        assign_fresh_map_pictures(
+            &mut tiles,
+            &mut river_connections,
+            &gate_flags,
+            geometry,
+            &mut rng,
+        );
 
         let mut expected_rng = RetailLcg::from_state(1);
         expected_rng.advance(); // mountain variant
         expected_rng.advance(); // first river resolves to a set-A or set-B west continuation
         assert_eq!(rng, expected_rng);
         assert_eq!(
-            tiles.iter().map(|tile| tile.river).collect::<Vec<_>>(),
-            original_rivers
+            tiles
+                .iter()
+                .map(|tile| tile.river().map(RiverSegment::connection_code).unwrap_or(0))
+                .collect::<Vec<_>>(),
+            original_connections
         );
     }
 

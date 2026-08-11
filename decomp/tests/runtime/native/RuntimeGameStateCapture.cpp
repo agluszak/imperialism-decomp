@@ -231,53 +231,6 @@ const char* TerrainName(int value) {
   return kTerrainNames[value];
 }
 
-unsigned char RiverConnectionCode(RiverSpriteCodeStorage sprite) {
-  static const unsigned char kFlowConnections[16] = {1, 2, 3, 3, 4, 4, 5, 5,
-                                                     5, 5, 6, 6, 7, 7, 8, 9};
-  if (sprite == 0) {
-    return 0;
-  }
-  if (sprite >= 0x1b && sprite <= 0x2a) {
-    sprite = static_cast<RiverSpriteCodeStorage>(sprite - 0x10);
-  }
-  if (sprite >= 0x0b && sprite <= 0x1a) {
-    return kFlowConnections[sprite - 0x0b];
-  }
-  switch (sprite) {
-  case 0x2b:
-    return 0x0a;
-  case 0x2c:
-  case 0x2d:
-    return 0x0b;
-  case 0x2e:
-    return 0x0c;
-  case 0x2f:
-    return 0x0d;
-  case 0x30:
-  case 0x31:
-    return 0x0e;
-  case 0x32:
-    return 0x0f;
-  case 0x33:
-    return 0x13;
-  case 0x34:
-  case 0x35:
-    return 0x14;
-  case 0x36:
-    return 0x15;
-  case 0x37:
-    return 0x10;
-  case 0x38:
-  case 0x39:
-    return 0x11;
-  case 0x3a:
-    return 0x12;
-  default:
-    FailSemanticCapture("nonzero river sprite has no semantic connection mapping");
-    return 0;
-  }
-}
-
 const char* CivilianWorkOrderName(UnitOrder order) {
   switch (order) {
   case kUnitOrderIdle:
@@ -1325,14 +1278,6 @@ JSON_Value* CaptureWorld() {
     }
     tileObject.SetOptional("secondary_owner_nation",
                            static_cast<int>(tile.secondaryOwnerNationTag18));
-    const unsigned char riverConnection = RiverConnectionCode(tile.riverSpriteCode);
-    if (riverConnection == 0) {
-      tileObject.SetNull("river");
-    } else {
-      JsonObject river;
-      river.Set("connection_code", static_cast<unsigned int>(riverConnection));
-      tileObject.Set("river", river.Release());
-    }
     tiles.Add(tileObject.Release());
   }
   object.Set("tiles", tiles.Release());

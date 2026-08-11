@@ -862,47 +862,8 @@ impl LegacyTerrainTile {
             action: TileAction::try_from_retail(i16::from(self.action_state)),
             flags: TileFlags::from_bits_retain(self.active_flags),
             region: optional_region_id(self.region)?,
-            river: river_segment_from_retail_sprite(self.river_sprite, tile)?,
         })
     }
-}
-
-fn river_segment_from_retail_sprite(
-    mut sprite: u8,
-    tile: usize,
-) -> Result<Option<RiverSegment>, LegacySaveError> {
-    const FLOW_CONNECTIONS: [u8; 16] = [1, 2, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 7, 7, 8, 9];
-
-    if sprite == 0 {
-        return Ok(None);
-    }
-    if (0x1b..=0x2a).contains(&sprite) {
-        sprite -= 0x10;
-    }
-    let connection_code = if (0x0b..=0x1a).contains(&sprite) {
-        FLOW_CONNECTIONS[usize::from(sprite - 0x0b)]
-    } else {
-        match sprite {
-            0x2b => 0x0a,
-            0x2c | 0x2d => 0x0b,
-            0x2e => 0x0c,
-            0x2f => 0x0d,
-            0x30 | 0x31 => 0x0e,
-            0x32 => 0x0f,
-            0x33 => 0x13,
-            0x34 | 0x35 => 0x14,
-            0x36 => 0x15,
-            0x37 => 0x10,
-            0x38 | 0x39 => 0x11,
-            0x3a => 0x12,
-            _ => {
-                return Err(LegacySaveError::StateProjection(format!(
-                    "tile {tile} has invalid river sprite {sprite:#04x}"
-                )));
-            }
-        }
-    };
-    Ok(RiverSegment::from_connection_code(connection_code))
 }
 
 fn optional_region_id(value: i8) -> Result<Option<RegionId>, LegacySaveError> {
@@ -5649,15 +5610,25 @@ mod tests {
             (0x3a, 0x12),
         ] {
             assert_eq!(
-                river_segment_from_retail_sprite(sprite, 7)
-                    .unwrap()
+                RiverSprite::from_retail(sprite)
                     .unwrap()
                     .connection_code(),
                 connection_code
             );
         }
-        assert_eq!(river_segment_from_retail_sprite(0, 7).unwrap(), None);
-        assert!(river_segment_from_retail_sprite(1, 7).is_err());
+        assert!(RiverSprite::from_retail(0).is_none());
+        assert!(RiverSprite::from_retail(1).is_none());
+        let tile = TileRendering::from_retail(0, 0x0b, 0, 0).unwrap();
+        assert_eq!(
+            TileState {
+                rendering: tile,
+                ..TileState::default()
+            }
+            .river()
+            .unwrap()
+            .connection_code(),
+            1
+        );
     }
 
     #[test]

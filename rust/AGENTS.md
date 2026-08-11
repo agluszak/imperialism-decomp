@@ -47,6 +47,9 @@ the decomp uses them.
   format. Do not duplicate a raw value in a widened DTO field and narrow it later; do not add a
   fallible conversion when the source type and branch already prove the destination range. Make
   semantic ID constructors infallible unless retail evidence establishes a real domain bound.
+- One retail fact gets one domain field. Example: tile rivers are the saved `riverSpriteCode`
+  (`TileRendering.river_sprite`); connection/flow codes are derived from that sprite and must not
+  be stored beside it.
 - Use ordinary arithmetic for domain rules. Only use wrapping or fixed-width overflow when retail
   behavior demonstrably depends on that overflow as an observable rule; document that evidence at
   the narrow boundary where it matters.

@@ -94,7 +94,7 @@ pub fn is_valid_secondary_nation_home_tile_candidate(world: &StrategicMap, tile:
     }
 
     if !is_valid
-        && tile_state.river.is_some()
+        && tile_state.river().is_some()
         && river_reaches_sea_without_crossing_nation(world, &geometry, tile)
     {
         is_valid = true;
@@ -224,7 +224,7 @@ fn river_reaches_sea_without_crossing_nation(
     start: TileId,
 ) -> bool {
     let start_owner = world[start].owner_nation;
-    let Some(flow_type) = world[start].river.and_then(|river| river.flow_type()) else {
+    let Some(flow_type) = world[start].river().and_then(|river| river.flow_type()) else {
         return false;
     };
     for (attempt, mut direction) in TERRAIN_FLOW_DIRECTIONS[flow_type].into_iter().enumerate() {
@@ -241,7 +241,7 @@ fn river_reaches_sea_without_crossing_nation(
                 return !crossed_boundary;
             }
 
-            let Some(next_flow_type) = tile.river.and_then(|river| river.flow_type()) else {
+            let Some(next_flow_type) = tile.river().and_then(|river| river.flow_type()) else {
                 break;
             };
             if tile.owner_nation != start_owner {
@@ -271,7 +271,7 @@ pub(crate) fn trace_terrain_flow_to_nearest_sea_tile(
     start: TileId,
 ) -> Option<TileId> {
     let geometry = world.geometry();
-    let flow_type = world[start].river.and_then(|river| river.flow_type())?;
+    let flow_type = world[start].river().and_then(|river| river.flow_type())?;
 
     for mut direction in TERRAIN_FLOW_DIRECTIONS[flow_type] {
         let mut current = start;
@@ -285,7 +285,7 @@ pub(crate) fn trace_terrain_flow_to_nearest_sea_tile(
                 return Some(current);
             }
 
-            let Some(next_flow_type) = tile.river.and_then(|river| river.flow_type()) else {
+            let Some(next_flow_type) = tile.river().and_then(|river| river.flow_type()) else {
                 break;
             };
             let incoming = direction.opposite();
@@ -451,9 +451,9 @@ mod tests {
         let water = geometry.neighbor(south_east, HexDirection::East).unwrap();
         let owner = TileOwnerTag::new(6);
         world[start].owner_nation = Some(owner);
-        world[start].river = crate::RiverSegment::from_connection_code(1);
+        world[start].rendering.river_sprite = crate::RiverSprite::canonical_for_connection(1);
         world[south_east].owner_nation = Some(owner);
-        world[south_east].river = crate::RiverSegment::from_connection_code(6);
+        world[south_east].rendering.river_sprite = crate::RiverSprite::canonical_for_connection(6);
         world[water].terrain = TerrainKind::Water;
 
         assert!(river_reaches_sea_without_crossing_nation(
