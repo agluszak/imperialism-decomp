@@ -18,6 +18,12 @@ into ECS, or introduce a second snapshot-domain model.
 - Port retail behavior, not the recovered C++ class hierarchy, ownership model, MFC types, ABI, or
   incidental control flow.
 
+Keep domain types beside their behavior modules (`game`, `map`, `nations`, `city/`, `diplomacy`,
+`turn_flow`, and so on). City production orders live under `city/`; facility slots are
+`CityFacilitySlot`. Export a curated crate-root surface—do not reintroduce broad `state::*` or
+`production::*` globs or a prelude. In formats, keep retail binary parse separate from `GameState`
+projection. In the app, keep city UI split by retail dialog under `ui/city/`.
+
 Keep retail compatibility concessions at format, import, or oracle boundaries. Do not leak raw offsets,
 weak identifiers, binary-layout constraints, or C++-shaped APIs into the domain model merely because
 the decomp uses them.
