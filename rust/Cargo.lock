@@ -2694,6 +2694,7 @@ dependencies = [
  "anyhow",
  "clap",
  "imperialism-core",
+ "imperialism-formats",
  "serde",
  "serde_ignored",
  "serde_json",

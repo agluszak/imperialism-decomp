@@ -55,7 +55,8 @@ the decomp uses them.
 
 - Preserve capture collection order and semantic IDs. Native transitions compare complete
   `before`/`case`/`after` state, the semantic operation result, and any required ordered non-state
-  effects; do not normalize order.
+  effects; do not normalize order. Model `before`/`after` travel as retail `.imp` saves plus a small
+  ephemeral JSON overlay for session-only fields.
 - Validate published runtime result envelopes strictly: name, seed, status, evidence kind, required
   captures, and unknown capture fields. Model differentials publish under `native_transition_oracle`.
 - Preserve the native oracle's evidence kind. `retail_fixture_oracle` proves agreement with the

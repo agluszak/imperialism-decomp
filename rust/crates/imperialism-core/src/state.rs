@@ -24,6 +24,37 @@ pub struct GameState {
 }
 
 impl GameState {
+    /// Restores session-only fields after projecting a save-backed differential capture.
+    ///
+    /// Retail `.imp` bytes carry the persistable bulk; the native oracle publishes the
+    /// remaining live fields beside the save so complete `GameState` comparison stays exact.
+    pub fn apply_save_backed_ephemeral(
+        &mut self,
+        turn: TurnState,
+        unit_ids: UnitIdAllocator,
+        rng: RngState,
+        news: NewsState,
+        pending: Option<PendingWorkState>,
+        ai_development_pressure: Option<[Option<AiDevelopmentPressureState>; MAJOR_NATION_COUNT]>,
+    ) {
+        self.turn = turn;
+        self.unit_ids = unit_ids;
+        self.rng = rng;
+        self.news = news;
+        if let Some(pending) = pending {
+            self.pending = pending;
+        }
+        if let Some(pressures) = ai_development_pressure {
+            for slot in 0..MAJOR_NATION_COUNT {
+                let nation = MajorNationId::new(slot as u8);
+                self.nations
+                    .major_mut(nation)
+                    .economy
+                    .ai_development_pressure = pressures[slot];
+            }
+        }
+    }
+
     /// Enters the retail strategic-map view by selecting the active nation's first idle
     /// civilian and centering the 9-by-7 tile viewport on it.
     pub fn enter_strategic_map_view(&mut self) {

@@ -42,7 +42,7 @@ class RuntimeCatalogTests(unittest.TestCase):
         assert loaded_turn is not None
         self.assertEqual(oracle.fixture, loaded_turn.fixture)
         self.assertEqual(oracle.evidence_kind, "retail_fixture_oracle")
-        self.assertEqual(oracle.native_snapshots, ("game_state",))
+        self.assertEqual(oracle.native_snapshots, ())
         self.assertEqual(oracle.suites, ())
         self.assertEqual(oracle.required_oracles, ())
         self.assertIn("NativeTransitionOracle()", render_factories())

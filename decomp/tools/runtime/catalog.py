@@ -226,7 +226,6 @@ TESTS = (
         "retail_fixture_oracle",
         fixture=BEGINNING_OF_GAME,
         required_oracles=(),
-        native_snapshots=("game_state",),
     ),
     RuntimeTestSpec(
         "easy_turns_advance_three_times",

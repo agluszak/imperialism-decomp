@@ -12,6 +12,7 @@
 class RuntimeRun;
 
 // Owns before/case/result/after capture for one synchronous native model transition.
+// before/after are save-backed (.imp + ephemeral session fields); case/result stay JSON.
 // Case functions prepare state, describe arguments, and invoke a production method only.
 class NativeTransition {
 public:

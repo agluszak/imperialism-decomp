@@ -3,7 +3,7 @@ use std::collections::BTreeMap;
 use std::fmt;
 use std::fs::File;
 use std::io::Read;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::str::FromStr;
 
 /// Runtime catalog evidence classification. Same strings as
@@ -87,6 +87,7 @@ pub struct ValidatedRuntimeResult {
     pub name: String,
     pub seed: u32,
     pub evidence_kind: EvidenceKind,
+    artifact_dir: Option<PathBuf>,
     captures: BTreeMap<String, serde_json::Value>,
 }
 
@@ -101,6 +102,15 @@ impl ValidatedRuntimeResult {
             .cloned()
             .ok_or_else(|| RuntimeCaptureError::MissingCapture(name.to_owned()))?;
         deserialize_capture(name, capture)
+    }
+
+    /// Directory containing published run artifacts (`result.json`, save-backed `.imp` files).
+    pub fn artifact_dir(&self) -> Result<&Path, RuntimeCaptureError> {
+        self.artifact_dir.as_deref().ok_or_else(|| {
+            RuntimeCaptureError::Invalid(
+                "runtime result is missing summary.artifact_path".to_owned(),
+            )
+        })
     }
 }
 
@@ -133,6 +143,14 @@ struct RawRuntimeResult {
     status: String,
     evidence_kind: Option<EvidenceKind>,
     captures: BTreeMap<String, serde_json::Value>,
+    #[serde(default)]
+    summary: Option<RawRuntimeSummary>,
+}
+
+#[derive(Deserialize)]
+struct RawRuntimeSummary {
+    #[serde(default)]
+    artifact_path: Option<String>,
 }
 
 pub fn read_runtime_result(
@@ -191,10 +209,15 @@ fn validate_runtime_result(
             return Err(RuntimeCaptureError::MissingCapture((*name).to_owned()));
         }
     }
+    let artifact_dir = raw
+        .summary
+        .and_then(|summary| summary.artifact_path)
+        .map(PathBuf::from);
     Ok(ValidatedRuntimeResult {
         name: raw.name,
         seed: raw.seed,
         evidence_kind,
+        artifact_dir,
         captures: raw.captures,
     })
 }

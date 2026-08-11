@@ -94,6 +94,33 @@ def record_failure(result: JsonObject, summary: str) -> None:
         ]
 
 
+def stage_save_backed_captures(run_dir: Path, result: JsonObject) -> None:
+    """Copy native save-backed before/after .imp files next to result.json.
+
+    NativeTransition writes save/rt_native_<name>.imp under the Wine game sandbox.
+    Rust differentials resolve the capture's `save` basename against the run directory.
+    """
+    captures = result.get("captures")
+    if not isinstance(captures, dict):
+        return
+    game_dir = run_dir / "game"
+    for capture_name, payload in captures.items():
+        if not isinstance(payload, dict):
+            continue
+        save_name = payload.get("save")
+        if not isinstance(save_name, str) or not save_name.endswith(".imp"):
+            continue
+        candidates = (
+            game_dir / "Save" / f"rt_native_{capture_name}.imp",
+            game_dir / "save" / f"rt_native_{capture_name}.imp",
+        )
+        source = next((path for path in candidates if path.is_file()), None)
+        if source is None:
+            continue
+        destination = run_dir / save_name
+        destination.write_bytes(source.read_bytes())
+
+
 def _validated_native(config: RunConfig, raw: JsonObject | None) -> NativeResult:
     if raw is None:
         validated: JsonObject = {
@@ -130,6 +157,8 @@ def process_attempt(
     raw = read_json_file(config.run_dir / "result.json")
     native = _validated_native(config, raw)
     result = native.validated
+    if raw is not None:
+        stage_save_backed_captures(config.run_dir, result)
     if raw is None and host.classification is not None:
         result["failure"] = host.classification
     elif result.get("status") == "failed" and not result.get("failure"):

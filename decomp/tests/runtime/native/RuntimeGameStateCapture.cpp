@@ -2879,6 +2879,61 @@ bool CaptureGameState(RuntimeRun& run, const char* name) {
   return true;
 }
 
+bool CaptureSaveBackedGameState(RuntimeRun& run, const char* name) {
+  if (name == 0 || name[0] == '\0' || g_pAssetMgr == 0) {
+    return false;
+  }
+
+  char saveRelative[260];
+  sprintf(saveRelative, "save/rt_native_%s.imp", name);
+  if (g_pAssetMgr->SaveMainDocumentToPathAndMarkSaved(CString(saveRelative)) == 0) {
+    return false;
+  }
+
+  JSON_Value* state = 0;
+  if (!BuildRuntimeGameState(run, &state)) {
+    return false;
+  }
+  JSON_Object* object = json_value_get_object(state);
+  if (object == 0) {
+    json_value_free(state);
+    return false;
+  }
+
+  JsonArray pressures;
+  for (int slot = 0; slot < kMajorNationCount; ++slot) {
+    TGreatPower* nation = g_apNationStates[slot];
+    if (nation == 0) {
+      pressures.AddNull();
+    } else {
+      pressures.Add(CaptureAiDevelopmentPressure(nation));
+    }
+  }
+
+  // Persistable bulk lives in the .imp; keep only session fields Rust cannot recover.
+  const char* bulkKeys[] = {"world",          "provinces", "port_zone_owners", "market",
+                            "technology",     "diplomacy", "nations",          "military_units",
+                            "civilian_units", "ships",     "task_forces",      "missions"};
+  for (int index = 0; index < (int)(sizeof(bulkKeys) / sizeof(bulkKeys[0])); ++index) {
+    json_object_remove(object, bulkKeys[index]);
+  }
+  if (json_object_set_value(object, "ai_development_pressure", pressures.Release()) !=
+      JSONSuccess) {
+    json_value_free(state);
+    return false;
+  }
+
+  char saveName[64];
+  sprintf(saveName, "%s.imp", name);
+
+  JsonObject capture;
+  capture.Set("save", saveName);
+  capture.Set("ephemeral", state);
+
+  run.SetCapture(name, capture.Release());
+  return run.HasCapture(name);
+}
+
 void CaptureRuntimeGameState(RuntimeRun& run) {
   if (!run.RequestsCapture(kRuntimeCaptureGameState) || run.HasCapture("game_state") ||
       run.HasCapture("after")) {
