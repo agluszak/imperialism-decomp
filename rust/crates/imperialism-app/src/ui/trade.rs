@@ -149,62 +149,6 @@ impl TradePictures {
     }
 }
 
-pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Result<(), String> {
-    let view_id = trade_view_id();
-    catalog.require_unique_bindings(
-        &view_id,
-        &[
-            fourcc!("main"),
-            fourcc!("quer"),
-            fourcc!("trea"),
-            fourcc!("mCap"),
-            fourcc!("trad"),
-            fourcc!("curs"),
-            fourcc!("food"),
-            fourcc!("cott"),
-            fourcc!("wool"),
-            fourcc!("timb"),
-            fourcc!("coal"),
-            fourcc!("iron"),
-            fourcc!("oil "),
-            fourcc!("fabr"),
-            fourcc!("lumb"),
-            fourcc!("stee"),
-            fourcc!("rs0 "),
-            fourcc!("rs1 "),
-            fourcc!("rs2 "),
-            fourcc!("rs3 "),
-            fourcc!("rs4 "),
-            fourcc!("rs5 "),
-            fourcc!("rs6 "),
-            fourcc!("ma0 "),
-            fourcc!("ma1 "),
-            fourcc!("ma2 "),
-            fourcc!("ma3 "),
-            fourcc!("ma4 "),
-            fourcc!("ma5 "),
-            fourcc!("gd0 "),
-            fourcc!("gd1 "),
-            fourcc!("gd2 "),
-            fourcc!("gd3 "),
-        ],
-    )?;
-    for row in TRADE_ROWS {
-        for tag in [
-            fourcc!("Sell"),
-            fourcc!("card"),
-            fourcc!("offr"),
-            fourcc!("left"),
-            fourcc!("gree"),
-            fourcc!("rght"),
-            fourcc!("bar "),
-        ] {
-            catalog.require_control_under(&view_id, tag, &[row.tag])?;
-        }
-    }
-    Ok(())
-}
-
 #[derive(Component, Clone, Copy)]
 struct TradeScreen {
     nation: MajorNationId,
@@ -983,15 +927,13 @@ mod tests {
     }
 
     fn fixture_session() -> GameSession {
-        let save = LegacySaveV62::parse(BEGINNING_OF_GAME).unwrap();
-        let state = save
-            .game_state(LegacyGameStateContext {
-                crt_rand_state: 1,
-                map_generation_lcg: 0,
-                zone_status_lcg: 3_916_827_792,
-                selected_nation: NationId::new(6),
-            })
-            .unwrap();
+        let save = LegacySaveV62::parse(BEGINNING_OF_GAME);
+        let state = save.game_state(LegacyGameStateContext {
+            crt_rand_state: 1,
+            map_generation_lcg: 0,
+            zone_status_lcg: 3_916_827_792,
+            selected_nation: NationId::new(6),
+        });
         GameSession(state)
     }
 
@@ -1013,7 +955,7 @@ mod tests {
         catalog: Res<UiCatalogResource>,
         mut session: ResMut<GameSession>,
     ) -> TestTrade {
-        let view = catalog.view(&trade_view_id()).unwrap();
+        let view = catalog.required_view(&trade_view_id());
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
         bind_game_screen_nav(&mut commands, &catalog, &spawned);
         let nation = MajorNationId::from_nation(session.0.turn().active_nation).unwrap();
@@ -1036,17 +978,11 @@ mod tests {
         let fabric_tag = fourcc!("ma1 ");
         TestTrade {
             root: spawned.root,
-            selected: spawned.require_unique(fourcc!("trad")).unwrap(),
-            return_to_map: spawned.require_unique(fourcc!("end ")).unwrap(),
-            fabric_offer: spawned
-                .require_under(&catalog, fabric_tag, fourcc!("offr"))
-                .unwrap(),
-            fabric_left: spawned
-                .require_under(&catalog, fabric_tag, fourcc!("left"))
-                .unwrap(),
-            fabric_right: spawned
-                .require_under(&catalog, fabric_tag, fourcc!("rght"))
-                .unwrap(),
+            selected: spawned.unique(fourcc!("trad")),
+            return_to_map: spawned.unique(fourcc!("end ")),
+            fabric_offer: spawned.under(&catalog, fabric_tag, fourcc!("offr")),
+            fabric_left: spawned.under(&catalog, fabric_tag, fourcc!("left")),
+            fabric_right: spawned.under(&catalog, fabric_tag, fourcc!("rght")),
         }
     }
 
@@ -1112,7 +1048,7 @@ mod tests {
         let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
-            .insert_resource(UiCatalogResource::new(catalog).unwrap())
+            .insert_resource(UiCatalogResource::new(catalog))
             .insert_resource(fixture_session())
             .add_observer(on_trade_activate)
             .add_observer(on_trade_amount_bar_click)

@@ -8,14 +8,10 @@ pub(in crate::ui::city) fn bind_training_dialog(
     building_name: String,
 ) {
     let root = bind_city_dialog_root(commands, spawned, nation, CityFacilitySlot::TradeSchool);
-    let name = spawned
-        .require_unique(fourcc!("name"))
-        .expect("validated trade-school name binding");
+    let name = spawned.unique(fourcc!("name"));
     commands.entity(name).insert(Text::new(building_name));
     for (tag, text) in [(fourcc!("cos1"), "$100"), (fourcc!("cos2"), "$1,000")] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated trade-school cost binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert(Text::new(text));
     }
     bind_city_order_controls(
@@ -50,9 +46,7 @@ pub(in crate::ui::city) fn bind_training_dialog(
             CityValue::TrainingLaborIndicator(TrainingLevel::High),
         ),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated trade-school availability binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             Text::new("X"),
             CityValueBinding {
@@ -71,9 +65,7 @@ pub(in crate::ui::city) fn bind_armory_dialog(
     title: String,
 ) {
     let root = bind_city_dialog_root(commands, spawned, nation, CityFacilitySlot::Armory);
-    let title_control = spawned
-        .require_unique(fourcc!("titl"))
-        .expect("validated Armory title binding");
+    let title_control = spawned.unique(fourcc!("titl"));
     commands.entity(title_control).insert(Text::new(title));
     commands.entity(root).insert(ArmorySelection {
         category: MilitaryRecruitmentCategory::LightInfantry,
@@ -94,9 +86,7 @@ pub(in crate::ui::city) fn bind_armory_dialog(
         let CityOrderId::MilitaryRecruit(category) = binding.order else {
             unreachable!("armory binding has a military recruitment order");
         };
-        let button = spawned
-            .require_unique(armory_button_tag(category))
-            .expect("validated armory row button binding");
+        let button = spawned.unique(armory_button_tag(category));
         let mut button_commands = commands.entity(button);
         button_commands.insert(ArmoryRowChoice {
             dialog: root,
@@ -107,9 +97,7 @@ pub(in crate::ui::city) fn bind_armory_dialog(
         } else {
             button_commands.remove::<Checked>();
         }
-        let quantity = spawned
-            .require_under(catalog, binding.tag, fourcc!("numb"))
-            .expect("validated armory quantity binding");
+        let quantity = spawned.under(catalog, binding.tag, fourcc!("numb"));
         commands.entity(quantity).insert((
             InteractionDisabled,
             CityValueBinding {
@@ -129,9 +117,7 @@ pub(in crate::ui::city) fn bind_armory_dialog(
         (fourcc!("ava2"), CityValue::ArmorySecondaryAvailable),
         (fourcc!("ava3"), CityValue::ArmoryTreasuryAvailable),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated armory detail binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             Text::new(""),
             CityValueBinding {

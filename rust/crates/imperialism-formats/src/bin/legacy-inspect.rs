@@ -1,6 +1,6 @@
 #![forbid(unsafe_code)]
 
-use anyhow::{Context, bail};
+use anyhow::Context;
 use clap::Parser;
 use imperialism_core::NationId;
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
@@ -29,25 +29,20 @@ fn main() -> anyhow::Result<()> {
 
 fn inspect(path: &Path, game_state: Option<&[u32]>) -> anyhow::Result<()> {
     let bytes = fs::read(path).with_context(|| format!("reading {}", path.display()))?;
-    let save = LegacySaveV62::parse(&bytes).context("decoding retail save")?;
+    let save = LegacySaveV62::parse(&bytes);
     let Some(values) = game_state else {
-        let world = save.map_mgr().context("projecting semantic world state")?;
+        let world = save.map_mgr();
         return serde_json::to_writer(std::io::stdout(), &world).context("encoding world state");
     };
-    if values.len() != 4 {
-        bail!("--game-state requires exactly four runtime values");
-    }
-    let game = save
-        .game_state(LegacyGameStateContext {
-            crt_rand_state: values[0],
-            map_generation_lcg: values[1],
-            zone_status_lcg: values[2],
-            selected_nation: u8::try_from(values[3])
-                .ok()
-                .and_then(NationId::try_new)
-                .context("selected nation is outside the nation range")?,
-        })
-        .context("projecting semantic game state")?;
+    let game = save.game_state(LegacyGameStateContext {
+        crt_rand_state: values[0],
+        map_generation_lcg: values[1],
+        zone_status_lcg: values[2],
+        selected_nation: u8::try_from(values[3])
+            .ok()
+            .and_then(NationId::try_new)
+            .context("selected nation is outside the nation range")?,
+    });
     serde_json::to_writer(std::io::stdout(), &game).context("encoding semantic game state")?;
     Ok(())
 }

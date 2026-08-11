@@ -75,9 +75,7 @@ pub(in crate::ui::city) fn bind_construction_dialog(
     let picture = PictureId::new(9250 + i16::from(slot as u8) * 5);
     match ui.picture(picture) {
         Ok(handle) => {
-            let dialog = spawned
-                .require_unique(fourcc!("DLOG"))
-                .expect("validated construction-dialog picture binding");
+            let dialog = spawned.unique(fourcc!("DLOG"));
             ui.commands.entity(dialog).insert(ImageNode::new(handle));
         }
         Err(error) => warn!("could not load construction-dialog picture {picture}: {error}"),
@@ -105,15 +103,11 @@ pub(in crate::ui::city) fn bind_construction_dialog(
         ),
     ];
     for (tag, value) in text {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated construction-dialog text binding");
+        let entity = spawned.unique(tag);
         ui.commands.entity(entity).insert(Text::new(value));
     }
 
-    let text2 = spawned
-        .require_unique(fourcc!("tex2"))
-        .expect("validated construction detail binding");
+    let text2 = spawned.unique(fourcc!("tex2"));
     if slot == CityFacilitySlot::PowerPlant {
         ui.commands
             .entity(text2)
@@ -126,9 +120,7 @@ pub(in crate::ui::city) fn bind_construction_dialog(
             });
     }
 
-    let connective = spawned
-        .require_unique(fourcc!("or  "))
-        .expect("validated construction connective binding");
+    let connective = spawned.unique(fourcc!("or  "));
     let connective_left = match slot {
         CityFacilitySlot::TextileMill => Some(0x98),
         CityFacilitySlot::Metalworks => Some(0xcd),
@@ -146,9 +138,7 @@ pub(in crate::ui::city) fn bind_construction_dialog(
         ui.commands.entity(connective).insert(Visibility::Hidden);
     }
 
-    let buck = spawned
-        .require_unique(fourcc!("buck"))
-        .expect("validated construction cash binding");
+    let buck = spawned.unique(fourcc!("buck"));
     ui.commands.entity(buck).insert((
         Text::new(if slot == CityFacilitySlot::PowerPlant {
             format_currency(5_000)
@@ -162,9 +152,7 @@ pub(in crate::ui::city) fn bind_construction_dialog(
         },
     ));
 
-    let warning = spawned
-        .require_unique(fourcc!("warn"))
-        .expect("validated construction warning binding");
+    let warning = spawned.unique(fourcc!("warn"));
     let warning_text = city_string(
         ui,
         CITY_TEXT_STRING_GROUP,
@@ -185,9 +173,7 @@ pub(in crate::ui::city) fn bind_construction_dialog(
         },
     ));
 
-    let okay = spawned
-        .require_unique(fourcc!("okay"))
-        .expect("validated construction OK binding");
+    let okay = spawned.unique(fourcc!("okay"));
     let mut okay_commands = ui.commands.entity(okay);
     okay_commands.insert(CityBuildingChangeChoice {
         dialog: root,
@@ -199,9 +185,7 @@ pub(in crate::ui::city) fn bind_construction_dialog(
         okay_commands.insert((InteractionDisabled, Visibility::Hidden));
     }
 
-    let cancel = spawned
-        .require_unique(fourcc!("cncl"))
-        .expect("validated construction cancel binding");
+    let cancel = spawned.unique(fourcc!("cncl"));
     ui.commands.entity(cancel).insert(CityBuildingChangeChoice {
         dialog: root,
         nation,
@@ -229,9 +213,7 @@ pub(in crate::ui::city) fn bind_expansion_dialog(
     let picture = PictureId::new(9250 + i16::from(slot as u8) * 5 + i16::from(next_level));
     match ui.picture(picture) {
         Ok(handle) => {
-            let dialog = spawned
-                .require_unique(fourcc!("DLOG"))
-                .expect("validated expansion-dialog picture binding");
+            let dialog = spawned.unique(fourcc!("DLOG"));
             ui.commands.entity(dialog).insert(ImageNode::new(handle));
         }
         Err(error) => warn!("could not load expansion-dialog picture {picture}: {error}"),
@@ -247,15 +229,11 @@ pub(in crate::ui::city) fn bind_expansion_dialog(
         (fourcc!("capT"), capacity),
         (fourcc!("cost"), cost),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated expansion-dialog text binding");
+        let entity = spawned.unique(tag);
         ui.commands.entity(entity).insert(Text::new(text));
     }
 
-    let warning = spawned
-        .require_unique(fourcc!("warn"))
-        .expect("validated expansion warning binding");
+    let warning = spawned.unique(fourcc!("warn"));
     let warning_color = ui.palette_color(0xcb);
     let warning_text = city_string(ui, CITY_TEXT_STRING_GROUP, 0x17);
     ui.commands.entity(warning).insert((
@@ -268,9 +246,7 @@ pub(in crate::ui::city) fn bind_expansion_dialog(
         },
     ));
 
-    let okay = spawned
-        .require_unique(fourcc!("okay"))
-        .expect("validated expansion OK binding");
+    let okay = spawned.unique(fourcc!("okay"));
     let mut okay_commands = ui.commands.entity(okay);
     okay_commands.insert(CityBuildingChangeChoice {
         dialog: root,
@@ -282,9 +258,7 @@ pub(in crate::ui::city) fn bind_expansion_dialog(
         okay_commands.insert((InteractionDisabled, Visibility::Hidden));
     }
 
-    let cancel = spawned
-        .require_unique(fourcc!("cncl"))
-        .expect("validated expansion cancel binding");
+    let cancel = spawned.unique(fourcc!("cncl"));
     ui.commands.entity(cancel).insert(CityBuildingChangeChoice {
         dialog: root,
         nation,

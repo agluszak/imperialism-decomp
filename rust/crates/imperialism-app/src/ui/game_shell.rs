@@ -9,11 +9,6 @@ use bevy::ui_widgets::Activate;
 use imperialism_core::{FlowStop, GameScreen, MajorNationId};
 use imperialism_formats::{FourCc, ScopedViewId, TRADE, fourcc};
 
-pub(crate) const TOOLBAR_PARENT_TAGS: &[FourCc] = &[fourcc!("tool"), fourcc!("topB")];
-/// Retail leave/end controls hang under `tool` or the diplomacy `too3` strip.
-pub(crate) const LEAVE_PARENT_TAGS: &[FourCc] =
-    &[fourcc!("tool"), fourcc!("too2"), fourcc!("too3")];
-
 pub(crate) fn strategic_map_view_id() -> ScopedViewId {
     ScopedViewId {
         resource_file: "MapView.rsrc".to_owned(),
@@ -61,72 +56,6 @@ pub(crate) fn diplomacy_view_id() -> ScopedViewId {
         resource_file: "Diplo.rsrc".to_owned(),
         resource_id: 2008,
     }
-}
-
-pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Result<(), String> {
-    catalog.require_unique_bindings(
-        &strategic_map_view_id(),
-        &[
-            fourcc!("DLOG"),
-            fourcc!("DONE"),
-            fourcc!("seas"),
-            fourcc!("trea"),
-            TRADE,
-            fourcc!("tran"),
-            fourcc!("city"),
-            fourcc!("dipl"),
-        ],
-    )?;
-    catalog.require_unique_bindings(
-        &newspaper_view_id(),
-        &[
-            fourcc!("end "),
-            fourcc!("quer"),
-            fourcc!("date"),
-            fourcc!("spec"),
-        ],
-    )?;
-    catalog.require_unique_bindings(
-        &deal_book_view_id(),
-        &[
-            fourcc!("end "),
-            fourcc!("quer"),
-            fourcc!("tabs"),
-            fourcc!("mark"),
-            fourcc!("seas"),
-            fourcc!("trea"),
-            fourcc!("titL"),
-            fourcc!("rtil"),
-        ],
-    )?;
-    for view_id in [
-        trade_view_id(),
-        city_view_id(),
-        transport_view_id(),
-        diplomacy_view_id(),
-    ] {
-        catalog.require_unique_bindings(&view_id, &[fourcc!("end ")])?;
-    }
-    for view_id in [
-        strategic_map_view_id(),
-        trade_view_id(),
-        city_view_id(),
-        transport_view_id(),
-        diplomacy_view_id(),
-    ] {
-        for tag in [TRADE, fourcc!("tran"), fourcc!("city"), fourcc!("dipl")] {
-            catalog.require_control_under(&view_id, tag, TOOLBAR_PARENT_TAGS)?;
-        }
-    }
-    for view_id in [
-        trade_view_id(),
-        city_view_id(),
-        transport_view_id(),
-        diplomacy_view_id(),
-    ] {
-        catalog.require_control_under(&view_id, fourcc!("end "), LEAVE_PARENT_TAGS)?;
-    }
-    Ok(())
 }
 
 fn view_id_for_state(state: AppState) -> Option<ScopedViewId> {
@@ -366,13 +295,15 @@ pub(crate) fn bind_game_screen_nav(
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
 ) {
-    let trade = required_control_under_parents(catalog, spawned, TRADE, TOOLBAR_PARENT_TAGS);
-    let transport =
-        required_control_under_parents(catalog, spawned, fourcc!("tran"), TOOLBAR_PARENT_TAGS);
-    let city =
-        required_control_under_parents(catalog, spawned, fourcc!("city"), TOOLBAR_PARENT_TAGS);
-    let diplomacy =
-        required_control_under_parents(catalog, spawned, fourcc!("dipl"), TOOLBAR_PARENT_TAGS);
+    let toolbar = if spawned.view_id == strategic_map_view_id() {
+        fourcc!("tool")
+    } else {
+        fourcc!("topB")
+    };
+    let trade = spawned.under(catalog, toolbar, TRADE);
+    let transport = spawned.under(catalog, toolbar, fourcc!("tran"));
+    let city = spawned.under(catalog, toolbar, fourcc!("city"));
+    let diplomacy = spawned.under(catalog, toolbar, fourcc!("dipl"));
     for (entity, action) in [
         (trade, GameScreenNavAction::Trade),
         (transport, GameScreenNavAction::Transport),
@@ -382,8 +313,12 @@ pub(crate) fn bind_game_screen_nav(
         commands.entity(entity).insert(action);
     }
     if spawned.view_id != strategic_map_view_id() {
-        let leave =
-            required_control_under_parents(catalog, spawned, fourcc!("end "), LEAVE_PARENT_TAGS);
+        let toolbar = if spawned.view_id == diplomacy_view_id() {
+            fourcc!("too3")
+        } else {
+            fourcc!("tool")
+        };
+        let leave = spawned.under(catalog, toolbar, fourcc!("end "));
         commands
             .entity(leave)
             .insert(GameScreenNavAction::StrategicMap)
@@ -397,35 +332,6 @@ pub(crate) fn disable_control(commands: &mut Commands, spawned: &SpawnedView, ta
     commands
         .entity(spawned.unique(tag))
         .insert(InteractionDisabled);
-}
-
-/// Resolve an activate control under one of the given ancestor tags.
-fn control_under_parents(
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
-    tag: FourCc,
-    parents: &[FourCc],
-) -> Option<Entity> {
-    for &parent in parents {
-        if let Ok(entity) = spawned.require_under(catalog, parent, tag) {
-            return Some(entity);
-        }
-    }
-    None
-}
-
-fn required_control_under_parents(
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
-    tag: FourCc,
-    parents: &[FourCc],
-) -> Entity {
-    control_under_parents(catalog, spawned, tag, parents).unwrap_or_else(|| {
-        panic!(
-            "required UI binding {}:{} tag {:?} missing under {:?}",
-            spawned.view_id.resource_file, spawned.view_id.resource_id, tag, parents
-        )
-    })
 }
 
 fn on_game_screen_activate(
@@ -534,7 +440,7 @@ mod tests {
             .entity(spawned.root)
             .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
         if current == AppState::StrategicMap {
-            let end = spawned.require_unique(fourcc!("DONE")).unwrap();
+            let end = spawned.unique(fourcc!("DONE"));
             commands
                 .entity(end)
                 .insert(TurnFlowAction::FinishPlayerOrders)
@@ -545,7 +451,7 @@ mod tests {
     fn app_at(state: AppState) -> App {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
-            .insert_resource(UiCatalogResource::new(catalog()).unwrap())
+            .insert_resource(UiCatalogResource::new(catalog()))
             .add_plugins(bevy::state::app::StatesPlugin)
             .init_state::<AppState>();
         register_structure_screens(&mut app);
@@ -558,15 +464,13 @@ mod tests {
     }
 
     fn fixture_session() -> GameSession {
-        let save = LegacySaveV62::parse(BEGINNING_OF_GAME).unwrap();
-        let state = save
-            .game_state(LegacyGameStateContext {
-                crt_rand_state: 1,
-                map_generation_lcg: 0,
-                zone_status_lcg: 3_916_827_792,
-                selected_nation: imperialism_core::NationId::new(6),
-            })
-            .unwrap();
+        let save = LegacySaveV62::parse(BEGINNING_OF_GAME);
+        let state = save.game_state(LegacyGameStateContext {
+            crt_rand_state: 1,
+            map_generation_lcg: 0,
+            zone_status_lcg: 3_916_827_792,
+            selected_nation: imperialism_core::NationId::new(6),
+        });
         GameSession(state)
     }
 
@@ -626,7 +530,7 @@ mod tests {
     fn strategic_map_done_binds_end_turn() {
         let app = app_at(AppState::StrategicMap);
         let spawned = app.world().resource::<TestSpawned>().0.clone();
-        let end = spawned.require_unique(fourcc!("DONE")).unwrap();
+        let end = spawned.unique(fourcc!("DONE"));
         assert!(app.world().get::<InteractionDisabled>(end).is_none());
         assert!(app.world().get::<UiButton>(end).is_some());
         assert_eq!(
@@ -670,9 +574,7 @@ mod tests {
         ] {
             let mut app = app_at(state);
             let spawned = app.world().resource::<TestSpawned>().0.clone();
-            let leave = spawned
-                .require_unique(fourcc!("end "))
-                .unwrap_or_else(|error| panic!("{state:?} missing leave control: {error}"));
+            let leave = spawned.unique(fourcc!("end "));
             assert!(
                 app.world().get::<InteractionDisabled>(leave).is_none(),
                 "{state:?}"
@@ -769,7 +671,7 @@ mod tests {
         let spawned = app.world().resource::<TestSpawned>().0.clone();
         let radio_trad = {
             let catalog = app.world().resource::<UiCatalogResource>();
-            let view = catalog.view(&diplomacy_view_id()).unwrap();
+            let view = catalog.required_view(&diplomacy_view_id());
             view.nodes
                 .iter()
                 .find_map(|node| {

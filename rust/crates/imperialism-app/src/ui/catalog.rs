@@ -10,7 +10,7 @@ use bevy::ui::{Checked, InteractionDisabled, Pressed, RelativeCursorPosition};
 use bevy::ui_widgets::{Button as UiButton, Checkbox, RadioButton, RadioGroup};
 use imperialism_formats::*;
 use imperialism_formats::{UiNode as CatalogNode, UiView as CatalogView};
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 
 #[derive(Resource)]
 pub(crate) struct UiCatalogResource {
@@ -20,8 +20,7 @@ pub(crate) struct UiCatalogResource {
 }
 
 impl UiCatalogResource {
-    pub(crate) fn new(catalog: UiCatalog) -> Result<Self, String> {
-        validate_catalog_structure(&catalog)?;
+    pub(crate) fn new(catalog: UiCatalog) -> Self {
         let by_id = catalog
             .views
             .iter()
@@ -29,169 +28,38 @@ impl UiCatalogResource {
             .map(|(index, view)| (view.id.clone(), index))
             .collect();
         let indexes = catalog.views.iter().map(UiViewIndex::build).collect();
-        Ok(Self {
+        Self {
             catalog,
             by_id,
             indexes,
-        })
+        }
     }
 
     pub(crate) const fn catalog(&self) -> &UiCatalog {
         &self.catalog
     }
 
-    pub(crate) fn view(&self, view_id: &ScopedViewId) -> Option<&CatalogView> {
+    pub(crate) fn required_view(&self, view_id: &ScopedViewId) -> &CatalogView {
         self.by_id
             .get(view_id)
             .map(|&index| &self.catalog.views[index])
+            .unwrap_or_else(|| {
+                panic!(
+                    "required UI view {}:{} is missing",
+                    view_id.resource_file, view_id.resource_id
+                )
+            })
     }
 
-    /// Catalog view guaranteed by [`validate_application_bindings`] / structure checks.
-    pub(crate) fn required_view(&self, view_id: &ScopedViewId) -> &CatalogView {
-        self.view(view_id).unwrap_or_else(|| {
+    fn index(&self, view_id: &ScopedViewId) -> &UiViewIndex {
+        let index = self.by_id.get(view_id).unwrap_or_else(|| {
             panic!(
                 "required UI view {}:{} is missing",
                 view_id.resource_file, view_id.resource_id
             )
-        })
+        });
+        &self.indexes[*index]
     }
-
-    pub(crate) fn index(&self, view_id: &ScopedViewId) -> Option<&UiViewIndex> {
-        self.by_id.get(view_id).map(|&index| &self.indexes[index])
-    }
-
-    pub(crate) fn require_unique_bindings(
-        &self,
-        view_id: &ScopedViewId,
-        tags: &[FourCc],
-    ) -> Result<(), String> {
-        let index = self.index(view_id).ok_or_else(|| {
-            format!(
-                "required UI view {}:{} is missing",
-                view_id.resource_file, view_id.resource_id
-            )
-        })?;
-        for &tag in tags {
-            match index.tagged(tag) {
-                [] => {
-                    return Err(format!(
-                        "required UI binding {}:{} tag {:?} is missing",
-                        view_id.resource_file, view_id.resource_id, tag
-                    ));
-                }
-                [_] => {}
-                matches => {
-                    return Err(format!(
-                        "required UI binding {}:{} tag {:?} is ambiguous ({})",
-                        view_id.resource_file,
-                        view_id.resource_id,
-                        tag,
-                        matches.len()
-                    ));
-                }
-            }
-        }
-        Ok(())
-    }
-
-    pub(crate) fn require_control_under(
-        &self,
-        view_id: &ScopedViewId,
-        tag: FourCc,
-        parent_tags: &[FourCc],
-    ) -> Result<(), String> {
-        let view = self.view(view_id).ok_or_else(|| {
-            format!(
-                "required UI view {}:{} is missing",
-                view_id.resource_file, view_id.resource_id
-            )
-        })?;
-        let index = self.index(view_id).expect("catalog view has an index");
-        let matches = index
-            .tagged(tag)
-            .iter()
-            .copied()
-            .filter(|candidate| {
-                let mut parent = index.node(view, *candidate).and_then(|node| node.parent);
-                while let Some(parent_id) = parent {
-                    let node = index
-                        .node(view, parent_id)
-                        .expect("catalog structure validated parent IDs");
-                    if parent_tags.contains(&node.tag) {
-                        return true;
-                    }
-                    parent = node.parent;
-                }
-                false
-            })
-            .count();
-        match matches {
-            1 => Ok(()),
-            0 => Err(format!(
-                "required UI binding {}:{} tag {:?} is missing under {:?}",
-                view_id.resource_file, view_id.resource_id, tag, parent_tags
-            )),
-            count => Err(format!(
-                "required UI binding {}:{} tag {:?} is ambiguous under {:?} ({count})",
-                view_id.resource_file, view_id.resource_id, tag, parent_tags
-            )),
-        }
-    }
-}
-
-fn validate_catalog_structure(catalog: &UiCatalog) -> Result<(), String> {
-    let mut view_ids = HashSet::with_capacity(catalog.views.len());
-    for view in &catalog.views {
-        if !view_ids.insert(view.id.clone()) {
-            return Err(format!(
-                "duplicate UI view {}:{}",
-                view.id.resource_file, view.id.resource_id
-            ));
-        }
-
-        let mut nodes = HashMap::with_capacity(view.nodes.len());
-        for node in &view.nodes {
-            if nodes.insert(node.id, node).is_some() {
-                return Err(format!(
-                    "UI view {}:{} has duplicate node {:?}",
-                    view.id.resource_file, view.id.resource_id, node.id
-                ));
-            }
-        }
-        let root_count = view
-            .nodes
-            .iter()
-            .filter(|node| node.parent.is_none())
-            .count();
-        if root_count != 1 {
-            return Err(format!(
-                "UI view {}:{} has {root_count} root nodes; expected one",
-                view.id.resource_file, view.id.resource_id
-            ));
-        }
-        for node in &view.nodes {
-            if let Some(parent) = node.parent
-                && !nodes.contains_key(&parent)
-            {
-                return Err(format!(
-                    "UI view {}:{} node {:?} references missing parent {:?}",
-                    view.id.resource_file, view.id.resource_id, node.id, parent
-                ));
-            }
-            let mut ancestors = HashSet::new();
-            let mut parent = node.parent;
-            while let Some(id) = parent {
-                if !ancestors.insert(id) {
-                    return Err(format!(
-                        "UI view {}:{} has a parent cycle at node {:?}",
-                        view.id.resource_file, view.id.resource_id, node.id
-                    ));
-                }
-                parent = nodes[&id].parent;
-            }
-        }
-    }
-    Ok(())
 }
 
 #[derive(Debug, Clone)]
@@ -202,64 +70,39 @@ pub(crate) struct SpawnedView {
     tags: HashMap<FourCc, Vec<Entity>>,
 }
 
-#[derive(Debug, thiserror::Error)]
-pub(crate) enum UiBindError {
-    #[error("UI view {0}:{1} is not in the catalog")]
-    MissingView(String, i16),
-    #[error("tag {0:?} not found in view {1}:{2}")]
-    MissingTag(String, String, i16),
-    #[error("tag {0:?} is ambiguous in view {1}:{2} ({3} matches)")]
-    AmbiguousTag(String, String, i16, usize),
-    #[error("tag {0:?} not found under ancestor {1:?} in view {2}:{3}")]
-    MissingUnder(String, String, String, i16),
-    #[error("tag {0:?} is ambiguous under ancestor {1:?} in view {2}:{3}")]
-    AmbiguousUnder(String, String, String, i16),
-}
-
 impl SpawnedView {
-    pub(crate) fn require_unique(&self, tag: FourCc) -> Result<Entity, UiBindError> {
+    pub(crate) fn unique(&self, tag: FourCc) -> Entity {
         let matches = self.tags.get(&tag).map(Vec::as_slice).unwrap_or(&[]);
         match matches {
-            [] => Err(UiBindError::MissingTag(
-                tag.as_str().to_string(),
-                self.view_id.resource_file.clone(),
+            [] => panic!(
+                "required UI binding {}:{} tag {:?} is missing",
+                self.view_id.resource_file, self.view_id.resource_id, tag
+            ),
+            [entity] => *entity,
+            matches => panic!(
+                "required UI binding {}:{} tag {:?} is ambiguous ({} matches)",
+                self.view_id.resource_file,
                 self.view_id.resource_id,
-            )),
-            [entity] => Ok(*entity),
-            matches => Err(UiBindError::AmbiguousTag(
-                tag.as_str().to_string(),
-                self.view_id.resource_file.clone(),
-                self.view_id.resource_id,
-                matches.len(),
-            )),
+                tag,
+                matches.len()
+            ),
         }
     }
 
-    /// Unique tag binding guaranteed by the screen's `validate_application_bindings`.
-    pub(crate) fn unique(&self, tag: FourCc) -> Entity {
-        self.require_unique(tag)
-            .unwrap_or_else(|error| panic!("{error}"))
-    }
-
-    pub(crate) fn require_under(
+    pub(crate) fn under(
         &self,
         catalog: &UiCatalogResource,
         ancestor_tag: FourCc,
         tag: FourCc,
-    ) -> Result<Entity, UiBindError> {
-        let view = catalog
-            .view(&self.view_id)
-            .ok_or_else(|| missing_view(&self.view_id))?;
-        let index = catalog
-            .index(&self.view_id)
-            .ok_or_else(|| missing_view(&self.view_id))?;
+    ) -> Entity {
+        let view = catalog.required_view(&self.view_id);
+        let index = catalog.index(&self.view_id);
         let ancestors = index.tagged(ancestor_tag);
         if ancestors.is_empty() {
-            return Err(UiBindError::MissingTag(
-                ancestor_tag.as_str().to_string(),
-                view.id.resource_file.clone(),
-                view.id.resource_id,
-            ));
+            panic!(
+                "required UI binding {}:{} ancestor tag {:?} is missing",
+                view.id.resource_file, view.id.resource_id, ancestor_tag
+            );
         }
         let mut matches = Vec::new();
         for candidate in index.tagged(tag) {
@@ -276,36 +119,21 @@ impl SpawnedView {
             }
         }
         match matches.as_slice() {
-            [] => Err(UiBindError::MissingUnder(
-                tag.as_str().to_string(),
-                ancestor_tag.as_str().to_string(),
-                view.id.resource_file.clone(),
+            [] => panic!(
+                "required UI binding {}:{} tag {:?} is missing under ancestor {:?}",
+                view.id.resource_file, view.id.resource_id, tag, ancestor_tag
+            ),
+            [id] => self.nodes[id],
+            matches => panic!(
+                "required UI binding {}:{} tag {:?} is ambiguous under ancestor {:?} ({} matches)",
+                view.id.resource_file,
                 view.id.resource_id,
-            )),
-            [id] => Ok(self.nodes[id]),
-            _ => Err(UiBindError::AmbiguousUnder(
-                tag.as_str().to_string(),
-                ancestor_tag.as_str().to_string(),
-                view.id.resource_file.clone(),
-                view.id.resource_id,
-            )),
+                tag,
+                ancestor_tag,
+                matches.len()
+            ),
         }
     }
-
-    /// Parent-scoped tag binding guaranteed by the screen's `validate_application_bindings`.
-    pub(crate) fn under(
-        &self,
-        catalog: &UiCatalogResource,
-        ancestor_tag: FourCc,
-        tag: FourCc,
-    ) -> Entity {
-        self.require_under(catalog, ancestor_tag, tag)
-            .unwrap_or_else(|error| panic!("{error}"))
-    }
-}
-
-fn missing_view(view_id: &ScopedViewId) -> UiBindError {
-    UiBindError::MissingView(view_id.resource_file.clone(), view_id.resource_id)
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -894,31 +722,8 @@ mod tests {
         app.add_plugins(MinimalPlugins)
             .init_resource::<Assets<Image>>()
             .init_resource::<RetailPictureHandles>()
-            .insert_resource(UiCatalogResource::new(catalog()).unwrap());
+            .insert_resource(UiCatalogResource::new(catalog()));
         app
-    }
-
-    #[test]
-    fn catalog_rejects_duplicate_node_ids_before_spawning() {
-        let mut catalog = catalog();
-        let view = &mut catalog.views[0];
-        view.nodes.push(view.nodes[0].clone());
-
-        assert!(UiCatalogResource::new(catalog).is_err());
-    }
-
-    #[test]
-    fn catalog_rejects_multiple_roots_before_spawning() {
-        let mut catalog = catalog();
-        let view = &mut catalog.views[0];
-        let child = view
-            .nodes
-            .iter_mut()
-            .find(|node| node.parent.is_some())
-            .unwrap();
-        child.parent = None;
-
-        assert!(UiCatalogResource::new(catalog).is_err());
     }
 
     fn catalog_view<'a>(catalog: &'a UiCatalog, id: &ScopedViewId) -> &'a CatalogView {
@@ -1066,41 +871,19 @@ mod tests {
         };
         let setup_view = spawn_structure(&mut app, &setup);
         let menu_view = spawn_structure(&mut app, &menu);
-        let okay = setup_view.require_unique(fourcc!("okay")).unwrap();
+        let okay = setup_view.unique(fourcc!("okay"));
         assert!(app.world().get::<UiButton>(okay).is_some());
-        let globe = setup_view.require_unique(fourcc!("glob")).unwrap();
+        let globe = setup_view.unique(fourcc!("glob"));
         assert!(app.world().get::<UiButton>(globe).is_some());
-        let dif0 = setup_view.require_unique(fourcc!("dif0")).unwrap();
+        let dif0 = setup_view.unique(fourcc!("dif0"));
         assert!(app.world().get::<RadioButton>(dif0).is_some());
-        let diff = setup_view.require_unique(fourcc!("diff")).unwrap();
+        let diff = setup_view.unique(fourcc!("diff"));
         assert!(app.world().get::<RadioGroup>(diff).is_some());
-        let map = setup_view.require_unique(fourcc!("map ")).unwrap();
+        let map = setup_view.unique(fourcc!("map "));
         assert!(app.world().get::<RelativeCursorPosition>(map).is_some());
 
-        let rand = menu_view.require_unique(fourcc!("rand")).unwrap();
+        let rand = menu_view.unique(fourcc!("rand"));
         assert!(app.world().get::<UiButton>(rand).is_some());
-    }
-
-    #[test]
-    fn require_under_distinguishes_duplicate_tags() {
-        let mut app = app();
-        let diplomacy = ScopedViewId {
-            resource_file: "Diplo.rsrc".to_owned(),
-            resource_id: 2008,
-        };
-        let spawned = spawn_structure(&mut app, &diplomacy);
-        let catalog = app.world().resource::<UiCatalogResource>();
-        let toolbar = spawned
-            .require_under(catalog, fourcc!("topB"), fourcc!("trad"))
-            .unwrap();
-        assert!(
-            spawned.require_unique(fourcc!("trad")).is_err(),
-            "trad is ambiguous without an ancestor"
-        );
-        let leave = spawned
-            .require_under(catalog, fourcc!("too3"), fourcc!("end "))
-            .unwrap();
-        assert_ne!(toolbar, leave);
     }
 
     #[test]

@@ -14,7 +14,7 @@ mod retail_resources;
 mod ui_catalog;
 
 pub use color::{DibPalette, Rgb};
-pub use legacy_save::{LegacyGameStateContext, LegacySaveError, LegacySaveV62};
+pub use legacy_save::{LegacyGameStateContext, LegacySaveV62};
 pub use retail_assets::{RetailAssetError, RetailAssets};
 pub use retail_fonts::{
     ResolvedRetailTextStyle, RetailFontFace, RetailTextAlignment, RetailTextStyleError,

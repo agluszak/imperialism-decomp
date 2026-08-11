@@ -67,21 +67,11 @@ pub(in crate::ui::city) fn bind_shipyard_dialog(
         let CityOrderId::Ship(slot) = binding.order else {
             unreachable!("Shipyard binding has a ship order");
         };
-        let button = spawned
-            .require_unique(shipyard_button_tag(slot))
-            .expect("validated Shipyard row button binding");
-        let row = spawned
-            .require_unique(binding.tag)
-            .expect("validated Shipyard quantity-row binding");
-        let minus = spawned
-            .require_under(catalog, binding.tag, fourcc!("minu"))
-            .expect("validated Shipyard decrease binding");
-        let plus = spawned
-            .require_under(catalog, binding.tag, fourcc!("plus"))
-            .expect("validated Shipyard increase binding");
-        let quantity = spawned
-            .require_under(catalog, binding.tag, fourcc!("numb"))
-            .expect("validated Shipyard quantity binding");
+        let button = spawned.unique(shipyard_button_tag(slot));
+        let row = spawned.unique(binding.tag);
+        let minus = spawned.under(catalog, binding.tag, fourcc!("minu"));
+        let plus = spawned.under(catalog, binding.tag, fourcc!("plus"));
+        let quantity = spawned.under(catalog, binding.tag, fourcc!("numb"));
         let visibility = if row_data.is_some() {
             Visibility::Visible
         } else {
@@ -153,9 +143,7 @@ pub(in crate::ui::city) fn bind_shipyard_dialog(
             detail_font.clone(),
         ),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated Shipyard detail binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             Text::new(""),
             font,
@@ -166,30 +154,22 @@ pub(in crate::ui::city) fn bind_shipyard_dialog(
             },
         ));
     }
-    let title = spawned
-        .require_unique(fourcc!("titl"))
-        .expect("validated Shipyard title binding");
+    let title = spawned.unique(fourcc!("titl"));
     commands
         .entity(title)
         .insert((title_font, TextColor(normal_color)));
     for tag in [fourcc!("fix0"), fourcc!("fix1")] {
-        let fixed = spawned
-            .require_unique(tag)
-            .expect("validated Shipyard fixed-label binding");
+        let fixed = spawned.unique(tag);
         commands
             .entity(fixed)
             .insert((detail_font.clone(), TextColor(normal_color)));
     }
-    let picture = spawned
-        .require_unique(fourcc!("spic"))
-        .expect("validated Shipyard detail-picture binding");
+    let picture = spawned.unique(fourcc!("spic"));
     commands
         .entity(picture)
         .insert(ShipyardDetailPicture { dialog: root });
 
-    let dlog = spawned
-        .require_unique(fourcc!("DLOG"))
-        .expect("validated Shipyard drawing surface");
+    let dlog = spawned.unique(fourcc!("DLOG"));
     for index in 0..4 {
         let left = 26.0 + index as f32 * 40.0;
         for top in [152.0, 204.0] {

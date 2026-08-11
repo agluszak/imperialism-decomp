@@ -150,7 +150,7 @@ pub use technology::{
     CityTechnologyCapabilities, CivilianTerrainAccess, FortLevelCap, TECHNOLOGY_COUNT,
     TechnologyResearchStatus, TechnologyState, UniversityTechnologyState,
 };
-pub use territory::{CountryStatus, ProvinceState, ProvinceStateError, TerritoryInvariantError};
+pub use territory::{CountryStatus, ProvinceState, ProvinceStateError};
 pub use trade::{PlayerTradeOrder, TransportAllocation};
 pub use turn_flow::{
     AdvanceTurnOutcome, FlowStop, GameScreen, PhaseCode, ScenarioMapId, TurnEffect, TurnState,

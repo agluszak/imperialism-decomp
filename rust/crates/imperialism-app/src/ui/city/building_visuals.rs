@@ -101,9 +101,7 @@ pub(in crate::ui::city) fn enter_city_screen(
     session: Option<Res<GameSession>>,
 ) {
     let view_id = city_view_id();
-    let view = catalog
-        .view(&view_id)
-        .expect("validated city-screen catalog view");
+    let view = catalog.required_view(&view_id);
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
     bind_game_screen_nav(&mut commands, &catalog, &spawned);
     let mut root = commands.entity(spawned.root);
@@ -179,9 +177,7 @@ pub(in crate::ui::city) fn bind_city_summary_values(
             CityValue::PredictedNeed(ResourceKind::Furniture),
         ),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated city summary binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             CityValueBinding {
                 dialog: None,
@@ -193,9 +189,7 @@ pub(in crate::ui::city) fn bind_city_summary_values(
             TextColor(Color::BLACK),
         ));
     }
-    let treasury = spawned
-        .require_unique(fourcc!("trea"))
-        .expect("validated city treasury binding");
+    let treasury = spawned.unique(fourcc!("trea"));
     commands.entity(treasury).insert(CityValueBinding {
         dialog: None,
         value: CityValue::Treasury,
@@ -211,9 +205,7 @@ pub(in crate::ui::city) fn spawn_city_buildings(
     nation: MajorNationId,
     assets: &mut UiAssetResources,
 ) {
-    let main = spawned
-        .require_unique(fourcc!("main"))
-        .expect("validated city canvas binding");
+    let main = spawned.unique(fourcc!("main"));
     let city = &state.nations().major(nation).city;
     let mut buildings = Vec::new();
     for visual in visuals {

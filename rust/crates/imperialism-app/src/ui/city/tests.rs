@@ -46,20 +46,18 @@ struct TestUniversityDialog {
 }
 
 fn fixture_session() -> GameSession {
-    let save = LegacySaveV62::parse(BEGINNING_OF_GAME).unwrap();
-    let state = save
-        .game_state(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 3_916_827_792,
-            selected_nation: NationId::new(6),
-        })
-        .unwrap();
+    let save = LegacySaveV62::parse(BEGINNING_OF_GAME);
+    let state = save.game_state(LegacyGameStateContext {
+        crt_rand_state: 1,
+        map_generation_lcg: 0,
+        zone_status_lcg: 3_916_827_792,
+        selected_nation: NationId::new(6),
+    });
     GameSession(state)
 }
 
 fn spawn_clothing_dialog(mut commands: Commands, catalog: Res<UiCatalogResource>) -> TestDialog {
-    let city = catalog.view(&city_view_id()).unwrap();
+    let city = catalog.required_view(&city_view_id());
     let view_id = city
         .city_buildings
         .iter()
@@ -67,7 +65,7 @@ fn spawn_clothing_dialog(mut commands: Commands, catalog: Res<UiCatalogResource>
         .unwrap()
         .dialog
         .clone();
-    let view = catalog.view(&view_id).unwrap();
+    let view = catalog.required_view(&view_id);
     let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
     let page = industry_page(CityFacilitySlot::ClothingFactory).unwrap();
     bind_industry_dialog(
@@ -82,20 +80,14 @@ fn spawn_clothing_dialog(mut commands: Commands, catalog: Res<UiCatalogResource>
     );
     TestDialog {
         root: spawned.root,
-        window: spawned.require_unique(fourcc!("WIND")).unwrap(),
-        decrease: spawned
-            .require_under(&catalog, fourcc!("clot"), fourcc!("left"))
-            .unwrap(),
-        increase: spawned
-            .require_under(&catalog, fourcc!("clot"), fourcc!("rght"))
-            .unwrap(),
-        quantity: spawned
-            .require_under(&catalog, fourcc!("clot"), fourcc!("move"))
-            .unwrap(),
-        fabric: spawned.require_unique(fourcc!("fabr")).unwrap(),
-        labor: spawned.require_unique(fourcc!("labV")).unwrap(),
-        capacity: spawned.require_unique(fourcc!("capT")).unwrap(),
-        expansion: spawned.require_unique(fourcc!("flag")).unwrap(),
+        window: spawned.unique(fourcc!("WIND")),
+        decrease: spawned.under(&catalog, fourcc!("clot"), fourcc!("left")),
+        increase: spawned.under(&catalog, fourcc!("clot"), fourcc!("rght")),
+        quantity: spawned.under(&catalog, fourcc!("clot"), fourcc!("move")),
+        fabric: spawned.unique(fourcc!("fabr")),
+        labor: spawned.unique(fourcc!("labV")),
+        capacity: spawned.unique(fourcc!("capT")),
+        expansion: spawned.unique(fourcc!("flag")),
     }
 }
 
@@ -103,7 +95,7 @@ fn spawn_training_dialog(
     mut commands: Commands,
     catalog: Res<UiCatalogResource>,
 ) -> TestTrainingDialog {
-    let city = catalog.view(&city_view_id()).unwrap();
+    let city = catalog.required_view(&city_view_id());
     let view_id = city
         .city_buildings
         .iter()
@@ -111,7 +103,7 @@ fn spawn_training_dialog(
         .unwrap()
         .dialog
         .clone();
-    let view = catalog.view(&view_id).unwrap();
+    let view = catalog.required_view(&view_id);
     let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
     bind_training_dialog(
         &mut commands,
@@ -122,24 +114,12 @@ fn spawn_training_dialog(
     );
     TestTrainingDialog {
         root: spawned.root,
-        medium_decrease: spawned
-            .require_under(&catalog, fourcc!("trai"), fourcc!("left"))
-            .unwrap(),
-        medium_increase: spawned
-            .require_under(&catalog, fourcc!("trai"), fourcc!("rght"))
-            .unwrap(),
-        medium_quantity: spawned
-            .require_under(&catalog, fourcc!("trai"), fourcc!("move"))
-            .unwrap(),
-        high_decrease: spawned
-            .require_under(&catalog, fourcc!("prof"), fourcc!("left"))
-            .unwrap(),
-        high_increase: spawned
-            .require_under(&catalog, fourcc!("prof"), fourcc!("rght"))
-            .unwrap(),
-        high_quantity: spawned
-            .require_under(&catalog, fourcc!("prof"), fourcc!("move"))
-            .unwrap(),
+        medium_decrease: spawned.under(&catalog, fourcc!("trai"), fourcc!("left")),
+        medium_increase: spawned.under(&catalog, fourcc!("trai"), fourcc!("rght")),
+        medium_quantity: spawned.under(&catalog, fourcc!("trai"), fourcc!("move")),
+        high_decrease: spawned.under(&catalog, fourcc!("prof"), fourcc!("left")),
+        high_increase: spawned.under(&catalog, fourcc!("prof"), fourcc!("rght")),
+        high_quantity: spawned.under(&catalog, fourcc!("prof"), fourcc!("move")),
     }
 }
 
@@ -148,7 +128,7 @@ fn spawn_university_dialog(
     catalog: Res<UiCatalogResource>,
     session: Res<GameSession>,
 ) -> TestUniversityDialog {
-    let city = catalog.view(&city_view_id()).unwrap();
+    let city = catalog.required_view(&city_view_id());
     let view_id = city
         .city_buildings
         .iter()
@@ -156,7 +136,7 @@ fn spawn_university_dialog(
         .unwrap()
         .dialog
         .clone();
-    let view = catalog.view(&view_id).unwrap();
+    let view = catalog.required_view(&view_id);
     let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
     let technology =
         session.0.technology().city_capabilities_by_nation[MajorNationId::new(6)].university;
@@ -188,28 +168,16 @@ fn spawn_university_dialog(
     );
     TestUniversityDialog {
         root: spawned.root,
-        miner_button: spawned.require_unique(fourcc!("civ0")).unwrap(),
-        forester_button: spawned.require_unique(fourcc!("civ3")).unwrap(),
-        forester_increase: spawned
-            .require_under(&catalog, fourcc!("clu3"), fourcc!("plus"))
-            .unwrap(),
-        forester_decrease: spawned
-            .require_under(&catalog, fourcc!("clu3"), fourcc!("minu"))
-            .unwrap(),
-        forester_quantity: spawned
-            .require_under(&catalog, fourcc!("clu3"), fourcc!("numb"))
-            .unwrap(),
-        engineer_button: spawned.require_unique(fourcc!("civ4")).unwrap(),
-        engineer_increase: spawned
-            .require_under(&catalog, fourcc!("clu4"), fourcc!("plus"))
-            .unwrap(),
-        engineer_quantity: spawned
-            .require_under(&catalog, fourcc!("clu4"), fourcc!("numb"))
-            .unwrap(),
-        driller_button: spawned.require_unique(fourcc!("civ8")).unwrap(),
-        driller_increase: spawned
-            .require_under(&catalog, fourcc!("clu8"), fourcc!("plus"))
-            .unwrap(),
+        miner_button: spawned.unique(fourcc!("civ0")),
+        forester_button: spawned.unique(fourcc!("civ3")),
+        forester_increase: spawned.under(&catalog, fourcc!("clu3"), fourcc!("plus")),
+        forester_decrease: spawned.under(&catalog, fourcc!("clu3"), fourcc!("minu")),
+        forester_quantity: spawned.under(&catalog, fourcc!("clu3"), fourcc!("numb")),
+        engineer_button: spawned.unique(fourcc!("civ4")),
+        engineer_increase: spawned.under(&catalog, fourcc!("clu4"), fourcc!("plus")),
+        engineer_quantity: spawned.under(&catalog, fourcc!("clu4"), fourcc!("numb")),
+        driller_button: spawned.unique(fourcc!("civ8")),
+        driller_increase: spawned.under(&catalog, fourcc!("clu8"), fourcc!("plus")),
     }
 }
 
@@ -232,7 +200,7 @@ fn clothing_order_round_trips_through_generated_controls_and_reopen() {
     let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
     let mut app = App::new();
     app.add_plugins(MinimalPlugins)
-        .insert_resource(UiCatalogResource::new(catalog).unwrap())
+        .insert_resource(UiCatalogResource::new(catalog))
         .insert_resource(fixture_session())
         .add_observer(on_city_order_adjust)
         .add_systems(Update, sync_city_values);
@@ -335,7 +303,7 @@ fn training_orders_round_trip_through_both_generated_rows() {
     let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
     let mut app = App::new();
     app.add_plugins(MinimalPlugins)
-        .insert_resource(UiCatalogResource::new(catalog).unwrap())
+        .insert_resource(UiCatalogResource::new(catalog))
         .insert_resource(fixture_session())
         .add_observer(on_city_order_adjust)
         .add_systems(Update, sync_city_values);
@@ -408,7 +376,7 @@ fn university_availability_and_orders_round_trip_through_generated_rows() {
 
     let mut app = App::new();
     app.add_plugins(MinimalPlugins)
-        .insert_resource(UiCatalogResource::new(catalog).unwrap())
+        .insert_resource(UiCatalogResource::new(catalog))
         .insert_resource(session)
         .add_observer(on_city_order_adjust)
         .add_observer(on_university_row_selected)

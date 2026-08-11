@@ -238,7 +238,7 @@ pub fn create_random_game(
         story_code: 2,
     });
 
-    let state = GameState {
+    GameState {
         turn: TurnState {
             scenario_map: None,
             economic_turn: 0,
@@ -271,9 +271,5 @@ pub fn create_random_game(
         missions,
         news: NewsState::default(),
         pending,
-    };
-    state
-        .validate_territory_index()
-        .expect("random-game setup must build one consistent territory index");
-    state
+    }
 }

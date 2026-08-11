@@ -36,27 +36,6 @@ pub(crate) fn planet_seed_dialog_view_id() -> ScopedViewId {
     }
 }
 
-pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Result<(), String> {
-    catalog.require_unique_bindings(
-        &random_setup_view_id(),
-        &[
-            OKAY,
-            fourcc!("cncl"),
-            fourcc!("glob"),
-            fourcc!("key "),
-            fourcc!("dif0"),
-            fourcc!("dif1"),
-            fourcc!("dif2"),
-            fourcc!("dif3"),
-            fourcc!("dif4"),
-            fourcc!("hist"),
-            fourcc!("rand"),
-            fourcc!("coun"),
-        ],
-    )?;
-    catalog.require_unique_bindings(&planet_seed_dialog_view_id(), &[fourcc!("plan"), OKAY])
-}
-
 /// Presentation-owned values edited by the random-game setup screen.
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
 pub(crate) struct RandomGameSetup {
@@ -603,7 +582,7 @@ mod tests {
         let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
-            .insert_resource(UiCatalogResource::new(catalog).unwrap())
+            .insert_resource(UiCatalogResource::new(catalog))
             .insert_resource(RandomSetupClockSeed(1))
             .insert_resource(RandomGameNamesResource(test_random_game_names()))
             .add_plugins(bevy::state::app::StatesPlugin)
@@ -634,9 +613,7 @@ mod tests {
 
     fn enter_main_menu_structure_only(mut commands: Commands, catalog: Res<UiCatalogResource>) {
         let view_id = main_menu_view_id();
-        let Some(view) = catalog.view(&view_id) else {
-            return;
-        };
+        let view = catalog.required_view(&view_id);
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
         bind_main_menu_actions(&mut commands, &catalog, &spawned);
         commands
@@ -650,9 +627,7 @@ mod tests {
         setup: Res<RandomGameSetup>,
     ) {
         let view_id = random_setup_view_id();
-        let Some(view) = catalog.view(&view_id) else {
-            return;
-        };
+        let view = catalog.required_view(&view_id);
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
         bind_random_setup_controls(&mut commands, &spawned, &setup);
         random_setup_map::attach_random_setup_meanings(&mut commands, &spawned);
@@ -669,7 +644,7 @@ mod tests {
             .clone();
         let (logical_resolution, view) = {
             let catalog = app.world().resource::<UiCatalogResource>();
-            let view = catalog.view(&planet_seed_dialog_view_id()).unwrap().clone();
+            let view = catalog.required_view(&planet_seed_dialog_view_id()).clone();
             (catalog.catalog().logical_resolution, view)
         };
         let world = app.world_mut();
@@ -683,8 +658,8 @@ mod tests {
             Pickable::default(),
         ));
         world.flush();
-        let plan = spawned.require_unique(fourcc!("plan")).unwrap();
-        let okay = spawned.require_unique(fourcc!("okay")).unwrap();
+        let plan = spawned.unique(fourcc!("plan"));
+        let okay = spawned.unique(fourcc!("okay"));
         let mut commands = world.commands();
         commands.entity(plan).insert((
             PlanetSeedField,

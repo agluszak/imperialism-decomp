@@ -1,7 +1,7 @@
 use crate::{
     AiTargetState, ArmyMissionState, GameState, MajorNationId, MajorNationKind, MajorNationTable,
-    MapMgr, MinorNationId, MissionData, MissionState, NationId, Nations, PROVINCE_COUNT,
-    ProvinceId, ResourceTable, TileId,
+    MapMgr, MinorNationId, MissionData, MissionState, NationId, Nations, ProvinceId, ResourceTable,
+    TileId,
 };
 use serde::{Deserialize, Serialize};
 
@@ -277,36 +277,6 @@ pub enum ProvinceStateError {
     TooManyLinkedTiles { actual: usize },
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
-pub enum TerritoryInvariantError {
-    #[error(
-        "province {province:?} is listed by both nation {first_nation:?} and nation {second_nation:?}"
-    )]
-    ProvinceListedMoreThanOnce {
-        province: ProvinceId,
-        first_nation: NationId,
-        second_nation: NationId,
-    },
-    #[error(
-        "province {province:?} is listed by nation {listed_nation:?}, but its owner is {actual_owner:?}"
-    )]
-    ListedProvinceOwnerMismatch {
-        province: ProvinceId,
-        listed_nation: NationId,
-        actual_owner: Option<NationId>,
-    },
-    #[error("province {province:?} names absent nation {owner:?} as its owner")]
-    ProvinceOwnerNationAbsent {
-        province: ProvinceId,
-        owner: NationId,
-    },
-    #[error("province {province:?} owned by nation {owner:?} is absent from its ordered index")]
-    OwnedProvinceNotListed {
-        province: ProvinceId,
-        owner: NationId,
-    },
-}
-
 impl MapMgr {
     /// The two map-graph branches of retail
     /// `IsNodeTypeLinkUnavailableAndNoActiveMapActionContext`.
@@ -339,8 +309,6 @@ impl MapMgr {
 impl GameState {
     /// Retail `TMapMgr::ChangeProvinceOwner` and its ordered virtual country dispatch.
     pub fn change_province_owner(&mut self, province: ProvinceId, new_owner: NationId) {
-        self.validate_territory_index()
-            .expect("province owner change requires a valid territory index");
         self.nations
             .common(new_owner)
             .expect("province owner change requires the new owner to be present");
@@ -460,9 +428,6 @@ impl GameState {
                 .expect("province owner change requires the destination minor nation")
                 .add_province(province);
         }
-
-        self.validate_territory_index()
-            .expect("province owner change must preserve the territory index");
     }
 
     /// Changes only retail's encoded country-status field.
@@ -471,51 +436,6 @@ impl GameState {
     /// concrete protectorate, colony, or independence operation that invokes it.
     pub fn set_country_status(&mut self, nation: NationId, status: CountryStatus) {
         self.nations.set_country_status(nation, status);
-    }
-
-    /// Checks the duplicated retail province-owner and ordered country-index state.
-    ///
-    /// Validation observes list order but never sorts or otherwise normalizes it.
-    pub fn validate_territory_index(&self) -> Result<(), TerritoryInvariantError> {
-        let mut listed_by = [None; PROVINCE_COUNT];
-        for nation in NationId::all() {
-            let Some(common) = self.nations.common(nation) else {
-                continue;
-            };
-            for &province in common.owned_regions() {
-                let index = usize::from(province.get());
-                if let Some(first_nation) = listed_by[index] {
-                    return Err(TerritoryInvariantError::ProvinceListedMoreThanOnce {
-                        province,
-                        first_nation,
-                        second_nation: nation,
-                    });
-                }
-                let actual_owner = self.map.provinces[province].owner();
-                if actual_owner != Some(nation) {
-                    return Err(TerritoryInvariantError::ListedProvinceOwnerMismatch {
-                        province,
-                        listed_nation: nation,
-                        actual_owner,
-                    });
-                }
-                listed_by[index] = Some(nation);
-            }
-        }
-
-        for (index, listed_owner) in listed_by.into_iter().enumerate() {
-            let province = ProvinceId::new(index as u16);
-            let Some(owner) = self.map.provinces[province].owner() else {
-                continue;
-            };
-            if self.nations.common(owner).is_none() {
-                return Err(TerritoryInvariantError::ProvinceOwnerNationAbsent { province, owner });
-            }
-            if listed_owner.is_none() {
-                return Err(TerritoryInvariantError::OwnedProvinceNotListed { province, owner });
-            }
-        }
-        Ok(())
     }
 
     /// Retail `TMapMgr::DoNationTerritoriesShareRegionClass`.
@@ -727,66 +647,6 @@ mod tests {
     }
 
     #[test]
-    fn territory_index_validation_preserves_valid_order() {
-        let mut state = crate::test_support::game_state();
-        state.map.provinces = ProvinceTable::default();
-        set_owned(&mut state, NationId::new(0), &[9, 2, 7]);
-        for province in [9, 2, 7] {
-            set_province(&mut state, province, Some(0), &[], Some(0));
-        }
-
-        assert_eq!(state.validate_territory_index(), Ok(()));
-        assert_eq!(
-            state
-                .nations
-                .major(crate::MajorNationId::new(0))
-                .common
-                .owned_regions(),
-            [ProvinceId::new(9), ProvinceId::new(2), ProvinceId::new(7)]
-        );
-    }
-
-    #[test]
-    fn territory_index_validation_rejects_missing_duplicate_and_mismatched_entries() {
-        let mut missing = crate::test_support::game_state();
-        missing.map.provinces = ProvinceTable::default();
-        set_province(&mut missing, 4, Some(0), &[], Some(0));
-        assert_eq!(
-            missing.validate_territory_index(),
-            Err(TerritoryInvariantError::OwnedProvinceNotListed {
-                province: ProvinceId::new(4),
-                owner: NationId::new(0),
-            })
-        );
-
-        let mut duplicate = crate::test_support::game_state();
-        duplicate.map.provinces = ProvinceTable::default();
-        set_owned(&mut duplicate, NationId::new(0), &[4, 4]);
-        set_province(&mut duplicate, 4, Some(0), &[], Some(0));
-        assert_eq!(
-            duplicate.validate_territory_index(),
-            Err(TerritoryInvariantError::ProvinceListedMoreThanOnce {
-                province: ProvinceId::new(4),
-                first_nation: NationId::new(0),
-                second_nation: NationId::new(0),
-            })
-        );
-
-        let mut mismatched = crate::test_support::game_state();
-        mismatched.map.provinces = ProvinceTable::default();
-        set_owned(&mut mismatched, NationId::new(0), &[4]);
-        set_province(&mut mismatched, 4, Some(1), &[], Some(0));
-        assert_eq!(
-            mismatched.validate_territory_index(),
-            Err(TerritoryInvariantError::ListedProvinceOwnerMismatch {
-                province: ProvinceId::new(4),
-                listed_nation: NationId::new(0),
-                actual_owner: Some(NationId::new(1)),
-            })
-        );
-    }
-
-    #[test]
     fn province_owner_change_updates_map_country_and_town_state_in_retail_order() {
         let mut state = crate::test_support::game_state();
         state.map.provinces = ProvinceTable::default();
@@ -862,8 +722,6 @@ mod tests {
             .unwrap();
         assert_eq!(moved_town.tile, TileId::new(20));
         assert_eq!(moved_town.owner_nation, NationId::new(1));
-        assert_eq!(state.validate_territory_index(), Ok(()));
-
         state.change_province_owner(ProvinceId::new(9), NationId::new(1));
         assert_eq!(
             state

@@ -39,10 +39,10 @@ the decomp uses them.
   example a strategic base-terrain key of view origin plus visible tile rendering, or city
   session/selection/`Added` change detection), not from broad dirty-marker components or
   `GameSession`-wide full redraws.
-- Validate required UI tags at startup through each screen's `validate_application_bindings`. At
-  spawn/bind time use `SpawnedView::unique` / `SpawnedView::under` and
-  `UiCatalogResource::required_view` — the infallible path after that check. Do not restate the
-  same FourCC lookup as `require_unique(...).expect("validated...")`.
+- Treat the bundled generated UI catalog as trusted repository-owned data after it deserializes.
+  Bind screens directly through `SpawnedView::unique` / `SpawnedView::under` and
+  `UiCatalogResource::required_view`; those infallible lookups panic on a broken catalog just like
+  other programming errors. Do not maintain application-wide or per-screen binding validators.
 - Separate planning from mutation for order UI: use `can_set_city_order_quantity` (or a plan API)
   to decide Accept enablement; do not mutate-and-rollback authoritative state as a probe.
 - Return operation-specific results when callers need them. Keep effects only for ordered
@@ -55,27 +55,27 @@ the decomp uses them.
   restates `FlowStop::Show`. Diplomacy-map and offer-sheet stay as `TurnEffect` on
   `Continues` (phase advances while UI shows); EasyTurn does not gate on them like
   DealBook/Newspaper.
-- External decode or malformed payload errors return `Result`. Legal gameplay rejection returns a
-  typed outcome or narrow domain error the UI can use. Broken internal invariants are prevented by
-  structure where practical and otherwise assert or `expect`; do not thread them through rule APIs.
+- Supported retail saves and bundled repository data are trusted inputs. Parse their established
+  shapes directly and panic or assert when those assumptions are broken; do not build malformed-
+  input validation APIs around them. Truly recoverable external I/O failures may still return
+  `Result`. Legal gameplay rejection returns a typed outcome or narrow domain error the UI can use.
+- Trusted constructors, repository-owned projections, and direct operations establish and preserve
+  their invariants where state is written. Do not wrap them in whole-state `validate_*` scans before
+  or after the work; behavior tests should assert the resulting semantic state directly.
 
 ## Domain types and arithmetic
 
 - Treat recovered C++ widths, signedness, sentinels, and packed fields as format evidence, not as
   default Rust domain types. Choose core types from the game rule they represent.
-- Decode retail packing and sentinel values at format and oracle boundaries. In `imperialism-core`,
-  represent absence with `Option`. Prefer plain `bool` fields until multiple independent flags share
-  one value; only then consider `bitflags`. Do not expose masks, sentinel integers, or raw retail
-  storage entries as domain APIs.
-- Normalize one-based indexes, sentinels, and packed encodings once while reading the retail
-  format. Do not duplicate a raw value in a widened DTO field and narrow it later; do not add a
-  fallible conversion when the source type and branch already prove the destination range. Make
-  semantic ID constructors infallible unless retail evidence establishes a real domain bound.
+- Keep `Legacy*` save structs close to the serialized C++ definitions, including their widths,
+  signedness, sentinels, packing, and list order. Project directly into semantic core types only
+  where the runtime model genuinely differs; assume trusted retail values are valid and do not add
+  checked conversion or validate-then-normalize passes. In `imperialism-core`, represent absence
+  with `Option` and do not expose raw retail storage as a domain API.
 - One retail fact gets one domain field. Example: tile rivers are the saved `riverSpriteCode`
   (`TileRendering.river_sprite`); connection/flow codes are derived from that sprite and must not
-  be stored beside it. Decode packed retail status/payload pairs into the semantic type while
-  reading the save (`PendingActionState`, `CountryStatus`); do not keep parallel raw arrays and a
-  second validate-then-normalize pass.
+  be stored beside it. A raw field may exist in the `Legacy*` representation and its semantic form
+  in `GameState`, but do not add a second normalized legacy DTO or validation pass between them.
 - Use ordinary arithmetic for domain rules. Only use wrapping or fixed-width overflow when retail
   behavior demonstrably depends on that overflow as an observable rule; document that evidence at
   the narrow boundary where it matters.

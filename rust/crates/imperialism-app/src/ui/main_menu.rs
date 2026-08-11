@@ -4,7 +4,7 @@ use bevy::app::AppExit;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
-use imperialism_formats::{ScopedViewId, UiBehavior, fourcc};
+use imperialism_formats::{ScopedViewId, UiBehavior};
 
 const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
 const MAIN_MENU_RESOURCE_ID: i16 = 1500;
@@ -14,10 +14,6 @@ pub(crate) fn main_menu_view_id() -> ScopedViewId {
         resource_file: STARTUP_RESOURCE_FILE.to_owned(),
         resource_id: MAIN_MENU_RESOURCE_ID,
     }
-}
-
-pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Result<(), String> {
-    catalog.require_unique_bindings(&main_menu_view_id(), &[fourcc!("rand"), fourcc!("quit")])
 }
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -118,7 +114,7 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_message::<AppExit>()
-            .insert_resource(UiCatalogResource::new(catalog).unwrap())
+            .insert_resource(UiCatalogResource::new(catalog))
             .add_plugins(bevy::state::app::StatesPlugin)
             .init_state::<AppState>();
         register_main_menu_logic(&mut app);
@@ -129,9 +125,7 @@ mod tests {
 
     fn enter_main_menu_structure_only(mut commands: Commands, catalog: Res<UiCatalogResource>) {
         let view_id = main_menu_view_id();
-        let Some(view) = catalog.view(&view_id) else {
-            return;
-        };
+        let view = catalog.required_view(&view_id);
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
         bind_main_menu_actions(&mut commands, &catalog, &spawned);
         commands
@@ -144,7 +138,7 @@ mod tests {
     fn main_menu_enables_only_random_and_quit_without_hiding_other_choices() {
         let app = app();
         let catalog = app.world().resource::<UiCatalogResource>();
-        let view = catalog.view(&main_menu_view_id()).unwrap();
+        let view = catalog.required_view(&main_menu_view_id());
         let spawned = app.world().resource::<TestSpawned>().0.clone();
         let world = app.world();
         let mut by_tag = std::collections::HashMap::new();

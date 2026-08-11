@@ -809,14 +809,13 @@ mod tests {
     }
 
     fn fixture_state() -> GameState {
-        let save = LegacySaveV62::parse(BEGINNING_OF_GAME).unwrap();
+        let save = LegacySaveV62::parse(BEGINNING_OF_GAME);
         save.game_state(LegacyGameStateContext {
             crt_rand_state: 1,
             map_generation_lcg: 0,
             zone_status_lcg: 3_916_827_792,
             selected_nation: imperialism_core::NationId::new(6),
         })
-        .unwrap()
     }
 
     #[test]

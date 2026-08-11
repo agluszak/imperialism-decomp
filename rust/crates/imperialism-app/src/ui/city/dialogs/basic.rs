@@ -30,9 +30,7 @@ pub(in crate::ui::city) fn bind_warehouse_dialog(
         nation,
         CityFacilitySlot::Warehouse,
     );
-    let name = spawned
-        .require_unique(fourcc!("name"))
-        .expect("validated Warehouse name binding");
+    let name = spawned.unique(fourcc!("name"));
     ui.commands.entity(name).insert((
         Text::new(building_name),
         title_font,
@@ -46,9 +44,7 @@ pub(in crate::ui::city) fn bind_warehouse_dialog(
         } else {
             CityValue::Stock(resource)
         };
-        let control = spawned
-            .require_unique(tag)
-            .expect("validated Warehouse stock binding");
+        let control = spawned.unique(tag);
         ui.commands.entity(control).insert((
             Text::new(""),
             CityValueBinding {
@@ -64,9 +60,7 @@ pub(in crate::ui::city) fn bind_warehouse_dialog(
         (fourcc!("labo"), CityValue::LaborAvailable),
         (fourcc!("powe"), CityValue::PowerAvailable),
     ] {
-        let control = spawned
-            .require_unique(tag)
-            .expect("validated Warehouse city-value binding");
+        let control = spawned.unique(tag);
         ui.commands.entity(control).insert((
             Text::new(""),
             CityValueBinding {
@@ -80,9 +74,7 @@ pub(in crate::ui::city) fn bind_warehouse_dialog(
     }
 
     for tag in [fourcc!("oil "), fourcc!("fuel"), fourcc!("powe")] {
-        let control = spawned
-            .require_unique(tag)
-            .expect("validated Warehouse oil-technology binding");
+        let control = spawned.unique(tag);
         let mut control_commands = ui.commands.entity(control);
         if oil_drilling_available {
             control_commands
@@ -97,9 +89,7 @@ pub(in crate::ui::city) fn bind_warehouse_dialog(
     }
 
     let picture = PictureId::new(9215);
-    let dialog = spawned
-        .require_unique(fourcc!("DLOG"))
-        .expect("validated Warehouse picture binding");
+    let dialog = spawned.unique(fourcc!("DLOG"));
     match ui.picture(picture) {
         Ok(handle) => {
             ui.commands.entity(dialog).insert(ImageNode::new(handle));
@@ -111,9 +101,7 @@ pub(in crate::ui::city) fn bind_warehouse_dialog(
         .entry::<Node>()
         .and_modify(|mut node| node.overflow = Overflow::clip());
     for tag in [fourcc!("WIND"), fourcc!("DLOG")] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated Warehouse bounds binding");
+        let entity = spawned.unique(tag);
         ui.commands
             .entity(entity)
             .entry::<Node>()
@@ -130,9 +118,7 @@ pub(in crate::ui::city) fn bind_warehouse_dialog(
         fourcc!("prod"),
         fourcc!("live"),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated Warehouse shifted-control binding");
+        let entity = spawned.unique(tag);
         ui.commands
             .entity(entity)
             .entry::<Node>()
@@ -157,9 +143,7 @@ pub(in crate::ui::city) fn bind_rail_dialog(
     step: i16,
 ) -> Entity {
     let root = bind_city_dialog_root(commands, spawned, nation, slot);
-    let name_control = spawned
-        .require_unique(fourcc!("name"))
-        .expect("validated city dialog name binding");
+    let name_control = spawned.unique(fourcc!("name"));
     commands
         .entity(name_control)
         .insert(Text::new(building_name));
@@ -214,9 +198,7 @@ pub(in crate::ui::city) fn bind_food_dialog(
             ),
         ),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated food-processing availability binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             Text::new("X"),
             CityValueBinding {
@@ -244,9 +226,7 @@ pub(in crate::ui::city) fn bind_power_dialog(
         &POWER_ORDERS,
         6,
     );
-    let fuel = spawned
-        .require_unique(fourcc!("fuel"))
-        .expect("validated power-plant fuel binding");
+    let fuel = spawned.unique(fourcc!("fuel"));
     commands
         .entity(fuel)
         .insert((Text::new("X"), Visibility::Hidden));
@@ -280,9 +260,7 @@ pub(in crate::ui::city) fn bind_transport_capacity_dialog(
             CityValue::StockIndicator(ResourceKind::Steel, 1),
         ),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated transport-capacity availability binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             Text::new("X"),
             CityValueBinding {
@@ -328,9 +306,7 @@ pub(in crate::ui::city) fn bind_population_dialog(
         (fourcc!("capT"), CityValue::RegionalCapacity),
         (fourcc!("prov"), CityValue::OwnedRegionCount),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated population-growth binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             Text::new(""),
             CityValueBinding {
@@ -339,15 +315,11 @@ pub(in crate::ui::city) fn bind_population_dialog(
             },
         ));
     }
-    let capacity = spawned
-        .require_unique(fourcc!("capT"))
-        .expect("validated population capacity binding");
+    let capacity = spawned.unique(fourcc!("capT"));
     commands
         .entity(capacity)
         .insert(RetailNumberTemplate(capacity_template));
-    let provinces = spawned
-        .require_unique(fourcc!("prov"))
-        .expect("validated population province-count binding");
+    let provinces = spawned.unique(fourcc!("prov"));
     commands
         .entity(provinces)
         .insert(RetailNumberTemplate(province_template));

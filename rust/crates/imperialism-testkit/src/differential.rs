@@ -99,16 +99,13 @@ fn load_save_backed_state(
     let save_path = artifact_dir.join(&capture.save);
     let bytes = fs::read(&save_path)
         .with_context(|| format!("reading save-backed capture {}", save_path.display()))?;
-    let save = LegacySaveV62::parse(&bytes)
-        .with_context(|| format!("parsing save-backed capture {}", save_path.display()))?;
-    let mut state = save
-        .game_state(LegacyGameStateContext {
-            crt_rand_state: capture.ephemeral.rng.crt_rand.state(),
-            map_generation_lcg: capture.ephemeral.rng.map_generation.state(),
-            zone_status_lcg: capture.ephemeral.rng.zone_status.state(),
-            selected_nation: capture.ephemeral.turn.selected_nation,
-        })
-        .with_context(|| format!("projecting save-backed capture {}", save_path.display()))?;
+    let save = LegacySaveV62::parse(&bytes);
+    let mut state = save.game_state(LegacyGameStateContext {
+        crt_rand_state: capture.ephemeral.rng.crt_rand.state(),
+        map_generation_lcg: capture.ephemeral.rng.map_generation.state(),
+        zone_status_lcg: capture.ephemeral.rng.zone_status.state(),
+        selected_nation: capture.ephemeral.turn.selected_nation,
+    });
 
     let pressures = match capture.ephemeral.ai_development_pressure {
         None => None,

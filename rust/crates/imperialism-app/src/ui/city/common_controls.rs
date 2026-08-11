@@ -18,15 +18,9 @@ pub(in crate::ui::city) fn bind_city_order_controls(
     step: i16,
 ) {
     for binding in bindings {
-        let left = spawned
-            .require_under(catalog, binding.tag, decrease_tag)
-            .expect("validated city order decrease binding");
-        let right = spawned
-            .require_under(catalog, binding.tag, increase_tag)
-            .expect("validated city order increase binding");
-        let quantity = spawned
-            .require_under(catalog, binding.tag, quantity_tag)
-            .expect("validated city order quantity binding");
+        let left = spawned.under(catalog, binding.tag, decrease_tag);
+        let right = spawned.under(catalog, binding.tag, increase_tag);
+        let quantity = spawned.under(catalog, binding.tag, quantity_tag);
         commands.entity(left).insert(CityOrderAdjust {
             dialog: root,
             nation,
@@ -59,12 +53,8 @@ pub(in crate::ui::city) fn bind_industry_amount_bars(
     bar_color: Color,
 ) {
     for binding in page.orders {
-        let bar = spawned
-            .require_under(catalog, binding.tag, fourcc!("bar "))
-            .expect("validated industry amount-bar binding");
-        let quantity = spawned
-            .require_under(catalog, binding.tag, fourcc!("move"))
-            .expect("validated industry quantity binding");
+        let bar = spawned.under(catalog, binding.tag, fourcc!("bar "));
+        let quantity = spawned.under(catalog, binding.tag, fourcc!("move"));
         let fill = commands
             .spawn((
                 Node {
@@ -125,13 +115,9 @@ pub(in crate::ui::city) fn bind_industry_dialog(
 ) {
     let root = bind_city_dialog_root(commands, spawned, nation, page.slot);
 
-    let name = spawned
-        .require_unique(fourcc!("name"))
-        .expect("validated industry name binding");
+    let name = spawned.unique(fourcc!("name"));
     commands.entity(name).insert(Text::new(building_name));
-    let capacity = spawned
-        .require_unique(fourcc!("capT"))
-        .expect("validated industry capacity binding");
+    let capacity = spawned.unique(fourcc!("capT"));
     commands.entity(capacity).insert((
         Text::new(""),
         CityValueBinding {
@@ -140,9 +126,7 @@ pub(in crate::ui::city) fn bind_industry_dialog(
         },
         RetailNumberTemplate(capacity_template),
     ));
-    let labor = spawned
-        .require_unique(fourcc!("labV"))
-        .expect("validated industry labor binding");
+    let labor = spawned.unique(fourcc!("labV"));
     commands.entity(labor).insert((
         Text::new("X"),
         CityValueBinding {
@@ -151,9 +135,7 @@ pub(in crate::ui::city) fn bind_industry_dialog(
         },
     ));
     for &(resource, tag, minimum) in page.stocks {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated industry stock binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             Text::new("X"),
             CityValueBinding {
@@ -175,17 +157,13 @@ pub(in crate::ui::city) fn bind_industry_dialog(
         1,
     );
     bind_industry_amount_bars(commands, catalog, spawned, root, nation, page, bar_color);
-    let expansion = spawned
-        .require_unique(fourcc!("expa"))
-        .expect("validated industry expansion binding");
+    let expansion = spawned.unique(fourcc!("expa"));
     commands.entity(expansion).insert(CityExpansionOpen {
         dialog: root,
         nation,
         slot: page.slot,
     });
-    let expansion_indicator = spawned
-        .require_unique(fourcc!("flag"))
-        .expect("validated industry expansion binding");
+    let expansion_indicator = spawned.unique(fourcc!("flag"));
     commands
         .entity(expansion_indicator)
         .insert(CityExpansionIndicator {

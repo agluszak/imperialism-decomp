@@ -10,13 +10,11 @@ use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::Activate;
 use imperialism_core::*;
-use imperialism_formats::{FourCc, OKAY, ScopedViewId, fourcc};
+use imperialism_formats::{OKAY, ScopedViewId, fourcc};
 
 const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
 const CITY_SITE_RESOURCE_ID: i16 = 952;
 const NEW_CITY_RESOURCE_ID: i16 = 953;
-const MAP_TAG: FourCc = fourcc!("DLOG");
-
 pub(crate) fn city_site_view_id() -> ScopedViewId {
     ScopedViewId {
         resource_file: STARTUP_RESOURCE_FILE.to_owned(),
@@ -29,11 +27,6 @@ pub(crate) fn new_city_dialog_view_id() -> ScopedViewId {
         resource_file: STARTUP_RESOURCE_FILE.to_owned(),
         resource_id: NEW_CITY_RESOURCE_ID,
     }
-}
-
-pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Result<(), String> {
-    catalog.require_unique_bindings(&city_site_view_id(), &[fourcc!("canc"), MAP_TAG])?;
-    catalog.require_unique_bindings(&new_city_dialog_view_id(), &[OKAY, fourcc!("cncl")])
 }
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]

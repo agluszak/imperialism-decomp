@@ -34,93 +34,6 @@ const TRADE_POLICY_SCORES: [TradePolicyScore; 7] = [
 ];
 const INFORMATION_BAND_NAMES: [&str; 5] = ["Poor", "Fair", "Good", "Excellent", "Awesome"];
 
-pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Result<(), String> {
-    let view_id = diplomacy_view_id();
-    catalog.require_unique_bindings(
-        &view_id,
-        &[
-            fourcc!("main"),
-            fourcc!("info"),
-            fourcc!("mkey"),
-            fourcc!("gran"),
-            fourcc!("docs"),
-            fourcc!("trty"),
-            fourcc!("scro"),
-            fourcc!("coun"),
-            fourcc!("offr"),
-            fourcc!("shee"),
-            fourcc!("prop"),
-            fourcc!("reje"),
-            fourcc!("acce"),
-            fourcc!("wait"),
-            fourcc!("text"),
-            fourcc!("quer"),
-            fourcc!("ltab"),
-            fourcc!("rtab"),
-            fourcc!("inft"),
-            fourcc!("cout"),
-            fourcc!("trtt"),
-            fourcc!("grat"),
-            fourcc!("trat"),
-            fourcc!("dipl"),
-            fourcc!("trea"),
-        ],
-    )?;
-    catalog.require_unique_bindings(
-        &diplomacy_notice_view_id(),
-        &[
-            fourcc!("WIND"),
-            fourcc!("DLOG"),
-            fourcc!("titl"),
-            fourcc!("okay"),
-            fourcc!("cncl"),
-            fourcc!("coat"),
-            fourcc!("info"),
-        ],
-    )?;
-    for tag in [
-        fourcc!("ovr0"),
-        fourcc!("ovr1"),
-        fourcc!("ovr2"),
-        fourcc!("ovr4"),
-        fourcc!("doc0"),
-        fourcc!("doc1"),
-        fourcc!("doc2"),
-        fourcc!("doc3"),
-        fourcc!("doc4"),
-        fourcc!("doc5"),
-        fourcc!("doc6"),
-        fourcc!("doc7"),
-        fourcc!("scr0"),
-        fourcc!("scr1"),
-        fourcc!("scr2"),
-        fourcc!("scr3"),
-        fourcc!("scr4"),
-        fourcc!("scr5"),
-        fourcc!("scr6"),
-        fourcc!("traa"),
-        fourcc!("trab"),
-        fourcc!("trac"),
-        fourcc!("trad"),
-        fourcc!("trae"),
-        fourcc!("traf"),
-        fourcc!("trag"),
-        fourcc!("link"),
-    ] {
-        let parent = if tag.as_str().starts_with("doc") {
-            fourcc!("docs")
-        } else if tag.as_str().starts_with("scr") {
-            fourcc!("scro")
-        } else if tag.as_str().starts_with("tra") || tag == fourcc!("link") {
-            fourcc!("clus")
-        } else {
-            fourcc!("info")
-        };
-        catalog.require_control_under(&view_id, tag, &[parent])?;
-    }
-    Ok(())
-}
-
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum DiplomacyTopic {
     Information,
@@ -1541,15 +1454,13 @@ mod tests {
     }
 
     fn fixture_session() -> GameSession {
-        let save = LegacySaveV62::parse(BEGINNING_OF_GAME).unwrap();
-        let state = save
-            .game_state(LegacyGameStateContext {
-                crt_rand_state: 1,
-                map_generation_lcg: 0,
-                zone_status_lcg: 3_916_827_792,
-                selected_nation: NationId::new(6),
-            })
-            .unwrap();
+        let save = LegacySaveV62::parse(BEGINNING_OF_GAME);
+        let state = save.game_state(LegacyGameStateContext {
+            crt_rand_state: 1,
+            map_generation_lcg: 0,
+            zone_status_lcg: 3_916_827_792,
+            selected_nation: NationId::new(6),
+        });
         GameSession(state)
     }
 
@@ -1558,7 +1469,7 @@ mod tests {
         catalog: Res<UiCatalogResource>,
         session: Res<GameSession>,
     ) {
-        let view = catalog.view(&diplomacy_view_id()).unwrap();
+        let view = catalog.required_view(&diplomacy_view_id());
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
         bind_game_screen_nav(&mut commands, &catalog, &spawned);
         commands.entity(spawned.root).insert((
@@ -1593,15 +1504,13 @@ mod tests {
         commands.insert_resource(TestDiplomacy {
             root: spawned.root,
             map,
-            selected: spawned
-                .require_under(&catalog, fourcc!("topB"), fourcc!("dipl"))
-                .unwrap(),
-            return_to_map: spawned.require_unique(fourcc!("end ")).unwrap(),
-            query: spawned.require_unique(fourcc!("quer")).unwrap(),
-            grants_topic: spawned.require_unique(fourcc!("grat")).unwrap(),
-            recurring_three_thousand: spawned.require_unique(fourcc!("doc3")).unwrap(),
-            trade_topic: spawned.require_unique(fourcc!("trat")).unwrap(),
-            trade_ten_percent: spawned.require_unique(fourcc!("trab")).unwrap(),
+            selected: spawned.under(&catalog, fourcc!("topB"), fourcc!("dipl")),
+            return_to_map: spawned.unique(fourcc!("end ")),
+            query: spawned.unique(fourcc!("quer")),
+            grants_topic: spawned.unique(fourcc!("grat")),
+            recurring_three_thousand: spawned.unique(fourcc!("doc3")),
+            trade_topic: spawned.unique(fourcc!("trat")),
+            trade_ten_percent: spawned.unique(fourcc!("trab")),
         });
     }
 
@@ -1698,7 +1607,7 @@ mod tests {
         let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
-            .insert_resource(UiCatalogResource::new(catalog).unwrap())
+            .insert_resource(UiCatalogResource::new(catalog))
             .insert_resource(fixture_session())
             .add_plugins(bevy::state::app::StatesPlugin)
             .init_state::<AppState>()

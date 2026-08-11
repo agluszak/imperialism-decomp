@@ -13,7 +13,6 @@ use std::time::Duration;
 
 mod bindings;
 mod building_visuals;
-mod catalog_validation;
 mod common_controls;
 mod components;
 mod dialogs;
@@ -29,8 +28,6 @@ use dialogs::*;
 use input::*;
 use lifecycle::*;
 use values::*;
-
-pub(crate) use catalog_validation::validate_application_bindings;
 
 pub(crate) struct CityPlugin;
 

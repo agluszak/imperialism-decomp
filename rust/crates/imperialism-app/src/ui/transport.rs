@@ -119,44 +119,6 @@ struct TransportColors {
     at_limit: Color,
 }
 
-pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Result<(), String> {
-    let view_id = transport_view_id();
-    catalog.require_unique_bindings(
-        &view_id,
-        &[
-            fourcc!("main"),
-            fourcc!("tota"),
-            fourcc!("curs"),
-            fourcc!("trea"),
-            fourcc!("tran"),
-            fourcc!("fish"),
-            fourcc!("prod"),
-            fourcc!("grai"),
-            fourcc!("timb"),
-            fourcc!("lumb"),
-            fourcc!("furn"),
-            fourcc!("coal"),
-            fourcc!("iron"),
-            fourcc!("stee"),
-            fourcc!("hard"),
-            fourcc!("cott"),
-            fourcc!("fabr"),
-            fourcc!("clot"),
-            fourcc!("oil "),
-            fourcc!("fuel"),
-            fourcc!("hors"),
-            fourcc!("gold"),
-            fourcc!("gems"),
-        ],
-    )?;
-    for row in TRANSPORT_ROWS {
-        for tag in [fourcc!("left"), fourcc!("rght")] {
-            catalog.require_control_under(&view_id, tag, &[row.tag])?;
-        }
-    }
-    Ok(())
-}
-
 #[derive(Component, Clone, Copy)]
 struct TransportScreen {
     nation: MajorNationId,
@@ -767,15 +729,13 @@ mod tests {
     }
 
     fn fixture_session() -> GameSession {
-        let save = LegacySaveV62::parse(BEGINNING_OF_GAME).unwrap();
-        let state = save
-            .game_state(LegacyGameStateContext {
-                crt_rand_state: 1,
-                map_generation_lcg: 0,
-                zone_status_lcg: 3_916_827_792,
-                selected_nation: NationId::new(6),
-            })
-            .unwrap();
+        let save = LegacySaveV62::parse(BEGINNING_OF_GAME);
+        let state = save.game_state(LegacyGameStateContext {
+            crt_rand_state: 1,
+            map_generation_lcg: 0,
+            zone_status_lcg: 3_916_827_792,
+            selected_nation: NationId::new(6),
+        });
         GameSession(state)
     }
 
@@ -784,7 +744,7 @@ mod tests {
         catalog: Res<UiCatalogResource>,
         mut session: ResMut<GameSession>,
     ) -> TestTransport {
-        let view = catalog.view(&transport_view_id()).unwrap();
+        let view = catalog.required_view(&transport_view_id());
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
         let nation = MajorNationId::from_nation(session.0.turn().active_nation).unwrap();
         session.0.rebuild_nation_resource_yields(nation);
@@ -804,8 +764,8 @@ mod tests {
         );
         TestTransport {
             root: spawned.root,
-            selected: spawned.require_unique(fourcc!("tran")).unwrap(),
-            return_to_map: spawned.require_unique(fourcc!("end ")).unwrap(),
+            selected: spawned.unique(fourcc!("tran")),
+            return_to_map: spawned.unique(fourcc!("end ")),
         }
     }
 
@@ -855,7 +815,7 @@ mod tests {
         let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
-            .insert_resource(UiCatalogResource::new(catalog).unwrap())
+            .insert_resource(UiCatalogResource::new(catalog))
             .insert_resource(fixture_session())
             .add_observer(on_transport_adjust)
             .add_systems(Update, (sync_transport_values, sync_transport_cursor));

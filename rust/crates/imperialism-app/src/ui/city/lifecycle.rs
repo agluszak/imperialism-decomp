@@ -325,9 +325,7 @@ pub(in crate::ui::city) fn open_city_dialog(
         }
     }
     if let Some(position) = saved_position {
-        let window = spawned
-            .require_unique(fourcc!("WIND"))
-            .expect("validated city window binding");
+        let window = spawned.unique(fourcc!("WIND"));
         ui.commands
             .entity(window)
             .entry::<Node>()
@@ -348,9 +346,7 @@ pub(in crate::ui::city) fn bind_city_dialog_root(
     slot: CityFacilitySlot,
 ) -> Entity {
     let root = spawned.root;
-    let window = spawned
-        .require_unique(fourcc!("WIND"))
-        .expect("validated city window binding");
+    let window = spawned.unique(fourcc!("WIND"));
     commands.entity(root).insert((
         CityBuildingDialog {
             nation,
@@ -429,8 +425,7 @@ pub(in crate::ui::city) fn restore_city_dialogs(
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("City screen requires an active major nation");
     let buildings = catalog
-        .view(&city_view_id())
-        .expect("validated City screen catalog view")
+        .required_view(&city_view_id())
         .city_buildings
         .clone();
     let city = &session.0.nations().major(nation).city;
@@ -495,8 +490,7 @@ pub(in crate::ui::city) fn leave_city_screen(
         let nation = MajorNationId::from_nation(session.0.turn().active_nation)
             .expect("City screen requires an active major nation");
         let slots = catalog
-            .view(&city_view_id())
-            .expect("validated City screen catalog view")
+            .required_view(&city_view_id())
             .city_buildings
             .iter()
             .map(|building| building.slot)

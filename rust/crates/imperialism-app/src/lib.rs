@@ -60,10 +60,7 @@ pub fn run(retail_assets: RetailAssets, initial_game: Option<GameState>) -> anyh
                 ..default()
             }),
     );
-    let ui_catalog = ui::UiCatalogResource::new(ui_catalog)
-        .expect("compiled UI catalog must be structurally valid");
-    ui::validate_application_bindings(&ui_catalog)
-        .expect("compiled UI catalog must contain every application binding");
+    let ui_catalog = ui::UiCatalogResource::new(ui_catalog);
     app.insert_resource(ui_catalog)
         .insert_resource(RetailAssetsResource::new(retail_assets))
         .insert_resource(RandomGameNamesResource(random_game_names));

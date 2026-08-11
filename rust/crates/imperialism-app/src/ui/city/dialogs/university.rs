@@ -71,21 +71,11 @@ pub(in crate::ui::city) fn bind_university_dialog(
         let CityOrderId::CivilianRecruit(kind) = binding.order else {
             unreachable!("University binding has a civilian recruitment order");
         };
-        let button = spawned
-            .require_unique(university_button_tag(kind))
-            .expect("validated University row button binding");
-        let row = spawned
-            .require_unique(binding.tag)
-            .expect("validated University quantity-row binding");
-        let minus = spawned
-            .require_under(catalog, binding.tag, fourcc!("minu"))
-            .expect("validated University decrease binding");
-        let plus = spawned
-            .require_under(catalog, binding.tag, fourcc!("plus"))
-            .expect("validated University increase binding");
-        let quantity = spawned
-            .require_under(catalog, binding.tag, fourcc!("numb"))
-            .expect("validated University quantity binding");
+        let button = spawned.unique(university_button_tag(kind));
+        let row = spawned.unique(binding.tag);
+        let minus = spawned.under(catalog, binding.tag, fourcc!("minu"));
+        let plus = spawned.under(catalog, binding.tag, fourcc!("plus"));
+        let quantity = spawned.under(catalog, binding.tag, fourcc!("numb"));
         let row_available = available[kind];
         let visibility = if row_available {
             Visibility::Visible
@@ -133,9 +123,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
             },
         ));
     }
-    let dlog = spawned
-        .require_unique(fourcc!("DLOG"))
-        .expect("validated University drawing surface");
+    let dlog = spawned.unique(fourcc!("DLOG"));
     commands.spawn((
         Node {
             position_type: PositionType::Absolute,
@@ -205,9 +193,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
         .into_iter()
         .enumerate()
     {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated University requirement-label binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             Text::new(tier_labels[index].clone()),
             detail_font.clone(),
@@ -254,9 +240,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
         ),
         (fourcc!("trea"), CityValue::Treasury, detail_font.clone()),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated University detail binding");
+        let entity = spawned.unique(tag);
         let mut entity_commands = commands.entity(entity);
         entity_commands.insert((
             Text::new(""),
@@ -282,16 +266,12 @@ pub(in crate::ui::city) fn bind_university_dialog(
             });
         }
     }
-    let title = spawned
-        .require_unique(fourcc!("titl"))
-        .expect("validated University title binding");
+    let title = spawned.unique(fourcc!("titl"));
     commands
         .entity(title)
         .insert((title_font, TextColor(normal_color)));
     for tag in [fourcc!("fix0"), fourcc!("fix1")] {
-        let fixed = spawned
-            .require_unique(tag)
-            .expect("validated University fixed-label binding");
+        let fixed = spawned.unique(tag);
         commands
             .entity(fixed)
             .insert((detail_font.clone(), TextColor(normal_color)));
