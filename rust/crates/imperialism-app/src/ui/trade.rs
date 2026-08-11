@@ -321,9 +321,7 @@ fn enter_trade_screen(
     session: Option<ResMut<GameSession>>,
 ) {
     let view_id = trade_view_id();
-    let view = catalog
-        .view(&view_id)
-        .expect("validated trade-screen catalog view");
+    let view = catalog.required_view(&view_id);
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
     bind_game_screen_nav(&mut commands, &catalog, &spawned);
     commands
@@ -425,15 +423,11 @@ fn bind_trade_screen(
 ) {
     commands.entity(spawned.root).insert(TradeScreen { nation });
     disable_control(commands, spawned, fourcc!("quer"));
-    let selected = spawned
-        .require_unique(fourcc!("trad"))
-        .expect("validated selected trade binding");
+    let selected = spawned.unique(fourcc!("trad"));
     commands
         .entity(selected)
         .insert((Checked, InteractionDisabled));
-    let capacity = spawned
-        .require_unique(fourcc!("mCap"))
-        .expect("validated trade capacity binding");
+    let capacity = spawned.unique(fourcc!("mCap"));
     commands.entity(capacity).insert((
         Text::new(""),
         capacity_font,
@@ -442,9 +436,7 @@ fn bind_trade_screen(
         TradeCapacityCaption { nation },
         InteractionDisabled,
     ));
-    let treasury = spawned
-        .require_unique(fourcc!("trea"))
-        .expect("validated trade treasury binding");
+    let treasury = spawned.unique(fourcc!("trea"));
     commands.entity(treasury).insert((
         Text::new(""),
         treasury_font,
@@ -453,25 +445,19 @@ fn bind_trade_screen(
         TradeTreasuryCaption { nation },
     ));
     for (tag, kind) in TRADE_ADVISORIES {
-        let advisory = spawned
-            .require_unique(tag)
-            .expect("validated trade advisory binding");
+        let advisory = spawned.unique(tag);
         commands
             .entity(advisory)
             .insert(TradeAdvisory { nation, kind });
     }
 
     for binding in TRADE_ROWS {
-        let row = spawned
-            .require_unique(binding.tag)
-            .expect("validated trade row binding");
+        let row = spawned.unique(binding.tag);
         commands.entity(row).insert(TradeRow {
             commodity: binding.commodity,
         });
 
-        let card = spawned
-            .require_under(catalog, binding.tag, fourcc!("card"))
-            .expect("validated trade bid binding");
+        let card = spawned.under(catalog, binding.tag, fourcc!("card"));
         commands.entity(card).insert((
             UiButton,
             ImageNode::new(
@@ -487,9 +473,7 @@ fn bind_trade_screen(
                 pictures: pictures.for_button(binding.commodity, TradeCardKind::Bid),
             },
         ));
-        let offer = spawned
-            .require_under(catalog, binding.tag, fourcc!("offr"))
-            .expect("validated trade offer binding");
+        let offer = spawned.under(catalog, binding.tag, fourcc!("offr"));
         commands.entity(offer).insert((
             UiButton,
             ImageNode::new(
@@ -507,9 +491,7 @@ fn bind_trade_screen(
         ));
 
         for (tag, delta) in [(fourcc!("left"), -1), (fourcc!("rght"), 1)] {
-            let step = spawned
-                .require_under(catalog, binding.tag, tag)
-                .expect("validated trade quantity binding");
+            let step = spawned.under(catalog, binding.tag, tag);
             commands.entity(step).insert(TradeStep {
                 nation,
                 commodity: binding.commodity,
@@ -517,9 +499,7 @@ fn bind_trade_screen(
             });
         }
 
-        let sell = spawned
-            .require_under(catalog, binding.tag, fourcc!("Sell"))
-            .expect("validated trade sell binding");
+        let sell = spawned.under(catalog, binding.tag, fourcc!("Sell"));
         commands.entity(sell).insert((
             Text::new(""),
             row_font.clone(),
@@ -535,16 +515,12 @@ fn bind_trade_screen(
             },
             InteractionDisabled,
         ));
-        let green = spawned
-            .require_under(catalog, binding.tag, fourcc!("gree"))
-            .expect("validated trade gauge track binding");
+        let green = spawned.under(catalog, binding.tag, fourcc!("gree"));
         commands.entity(green).insert(TradeOfferControl {
             nation,
             commodity: binding.commodity,
         });
-        let bar = spawned
-            .require_under(catalog, binding.tag, fourcc!("bar "))
-            .expect("validated trade amount-bar binding");
+        let bar = spawned.under(catalog, binding.tag, fourcc!("bar "));
         commands.entity(bar).insert((
             TradeOfferControl {
                 nation,

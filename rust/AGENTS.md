@@ -33,6 +33,10 @@ the decomp uses them.
   example a strategic base-terrain key of view origin plus visible tile rendering, or city
   session/selection/`Added` change detection), not from broad dirty-marker components or
   `GameSession`-wide full redraws.
+- Validate required UI tags at startup through each screen's `validate_application_bindings`. At
+  spawn/bind time use `SpawnedView::unique` / `SpawnedView::under` and
+  `UiCatalogResource::required_view` — the infallible path after that check. Do not restate the
+  same FourCC lookup as `require_unique(...).expect("validated...")`.
 - Separate planning from mutation for order UI: use `can_set_city_order_quantity` (or a plan API)
   to decide Accept enablement; do not mutate-and-rollback authoritative state as a probe.
 - Return operation-specific results when callers need them. Keep effects only for ordered
@@ -42,7 +46,9 @@ the decomp uses them.
   Turn sequencing belongs in core through `advance_turn_step` / `continue_turn`, not in a Bevy
   schedule. The app-facing stop is [`FlowStop`]; do not ask the UI to restate a gate the phase
   already encodes (`dismiss_blocking_screen`). Do not emit a show-screen effect that merely
-  restates `FlowStop::Show`.
+  restates `FlowStop::Show`. Diplomacy-map and offer-sheet stay as `TurnEffect` on
+  `Continues` (phase advances while UI shows); EasyTurn does not gate on them like
+  DealBook/Newspaper.
 - External decode or malformed payload errors return `Result`. Legal gameplay rejection returns a
   typed outcome or narrow domain error the UI can use. Broken internal invariants are prevented by
   structure where practical and otherwise assert or `expect`; do not thread them through rule APIs.

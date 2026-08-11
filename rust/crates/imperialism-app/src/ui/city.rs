@@ -495,9 +495,7 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
             fourcc!("trea"),
         ],
     )?;
-    let city = catalog
-        .view(&city_view_id())
-        .expect("city view was validated above");
+    let city = catalog.required_view(&city_view_id());
     if city.city_buildings.len() != ProductionSlot::COUNT {
         return Err(format!(
             "Citymain.rsrc:2011 has {} dynamic buildings; expected {}",
@@ -1149,9 +1147,7 @@ fn enter_city_screen(
     session: Option<Res<GameSession>>,
 ) {
     let view_id = city_view_id();
-    let view = catalog
-        .view(&view_id)
-        .expect("validated city-screen catalog view");
+    let view = catalog.required_view(&view_id);
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
     bind_game_screen_nav(&mut commands, &catalog, &spawned);
     let mut root = commands.entity(spawned.root);
@@ -1226,9 +1222,7 @@ fn bind_city_summary_values(
             CityValue::PredictedNeed(ResourceKind::Furniture),
         ),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated city summary binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             CityValueBinding {
                 dialog: None,
@@ -1240,9 +1234,7 @@ fn bind_city_summary_values(
             TextColor(Color::BLACK),
         ));
     }
-    let treasury = spawned
-        .require_unique(fourcc!("trea"))
-        .expect("validated city treasury binding");
+    let treasury = spawned.unique(fourcc!("trea"));
     commands.entity(treasury).insert(CityValueBinding {
         dialog: None,
         value: CityValue::Treasury,
@@ -1258,9 +1250,7 @@ fn spawn_city_buildings(
     nation: MajorNationId,
     assets: &mut UiAssetResources,
 ) {
-    let main = spawned
-        .require_unique(fourcc!("main"))
-        .expect("validated city canvas binding");
+    let main = spawned.unique(fourcc!("main"));
     let city = state.nations.major(nation).city();
     let mut buildings = Vec::new();
     for visual in visuals {
@@ -1928,9 +1918,7 @@ fn open_city_dialog(
         }
     }
     if let Some(position) = saved_position {
-        let window = spawned
-            .require_unique(fourcc!("WIND"))
-            .expect("validated city window binding");
+        let window = spawned.unique(fourcc!("WIND"));
         ui.commands
             .entity(window)
             .entry::<Node>()
@@ -1951,9 +1939,7 @@ fn bind_city_dialog_root(
     slot: ProductionSlot,
 ) -> Entity {
     let root = spawned.root;
-    let window = spawned
-        .require_unique(fourcc!("WIND"))
-        .expect("validated city window binding");
+    let window = spawned.unique(fourcc!("WIND"));
     commands.entity(root).insert((
         CityBuildingDialog {
             nation,
@@ -2031,8 +2017,7 @@ fn restore_city_dialogs(
     let nation = MajorNationId::from_nation(session.0.turn.active_nation)
         .expect("City screen requires an active major nation");
     let buildings = catalog
-        .view(&city_view_id())
-        .expect("validated City screen catalog view")
+        .required_view(&city_view_id())
         .city_buildings
         .clone();
     let city = session.0.nations.major(nation).city();
@@ -2097,8 +2082,7 @@ fn leave_city_screen(
         let nation = MajorNationId::from_nation(session.0.turn.active_nation)
             .expect("City screen requires an active major nation");
         let slots = catalog
-            .view(&city_view_id())
-            .expect("validated City screen catalog view")
+            .required_view(&city_view_id())
             .city_buildings
             .iter()
             .map(|building| building.slot)
@@ -2222,15 +2206,9 @@ fn bind_city_order_controls(
     step: i16,
 ) {
     for binding in bindings {
-        let left = spawned
-            .require_under(catalog, binding.tag, decrease_tag)
-            .expect("validated city order decrease binding");
-        let right = spawned
-            .require_under(catalog, binding.tag, increase_tag)
-            .expect("validated city order increase binding");
-        let quantity = spawned
-            .require_under(catalog, binding.tag, quantity_tag)
-            .expect("validated city order quantity binding");
+        let left = spawned.under(catalog, binding.tag, decrease_tag);
+        let right = spawned.under(catalog, binding.tag, increase_tag);
+        let quantity = spawned.under(catalog, binding.tag, quantity_tag);
         commands.entity(left).insert(CityOrderAdjust {
             dialog: root,
             nation,
@@ -2263,12 +2241,8 @@ fn bind_industry_amount_bars(
     bar_color: Color,
 ) {
     for binding in page.orders {
-        let bar = spawned
-            .require_under(catalog, binding.tag, fourcc!("bar "))
-            .expect("validated industry amount-bar binding");
-        let quantity = spawned
-            .require_under(catalog, binding.tag, fourcc!("move"))
-            .expect("validated industry quantity binding");
+        let bar = spawned.under(catalog, binding.tag, fourcc!("bar "));
+        let quantity = spawned.under(catalog, binding.tag, fourcc!("move"));
         let fill = commands
             .spawn((
                 Node {
@@ -2329,13 +2303,9 @@ fn bind_industry_dialog(
 ) {
     let root = bind_city_dialog_root(commands, spawned, nation, page.slot);
 
-    let name = spawned
-        .require_unique(fourcc!("name"))
-        .expect("validated industry name binding");
+    let name = spawned.unique(fourcc!("name"));
     commands.entity(name).insert(Text::new(building_name));
-    let capacity = spawned
-        .require_unique(fourcc!("capT"))
-        .expect("validated industry capacity binding");
+    let capacity = spawned.unique(fourcc!("capT"));
     commands.entity(capacity).insert((
         Text::new(""),
         CityValueBinding {
@@ -2344,9 +2314,7 @@ fn bind_industry_dialog(
         },
         RetailNumberTemplate(capacity_template),
     ));
-    let labor = spawned
-        .require_unique(fourcc!("labV"))
-        .expect("validated industry labor binding");
+    let labor = spawned.unique(fourcc!("labV"));
     commands.entity(labor).insert((
         Text::new("X"),
         CityValueBinding {
@@ -2355,9 +2323,7 @@ fn bind_industry_dialog(
         },
     ));
     for &(resource, tag, minimum) in page.stocks {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated industry stock binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             Text::new("X"),
             CityValueBinding {
@@ -2379,17 +2345,13 @@ fn bind_industry_dialog(
         1,
     );
     bind_industry_amount_bars(commands, catalog, spawned, root, nation, page, bar_color);
-    let expansion = spawned
-        .require_unique(fourcc!("expa"))
-        .expect("validated industry expansion binding");
+    let expansion = spawned.unique(fourcc!("expa"));
     commands.entity(expansion).insert(CityExpansionOpen {
         dialog: root,
         nation,
         slot: page.slot,
     });
-    let expansion_indicator = spawned
-        .require_unique(fourcc!("flag"))
-        .expect("validated industry expansion binding");
+    let expansion_indicator = spawned.unique(fourcc!("flag"));
     commands
         .entity(expansion_indicator)
         .insert(CityExpansionIndicator {
@@ -2406,14 +2368,10 @@ fn bind_training_dialog(
     building_name: String,
 ) {
     let root = bind_city_dialog_root(commands, spawned, nation, ProductionSlot::TradeSchool);
-    let name = spawned
-        .require_unique(fourcc!("name"))
-        .expect("validated trade-school name binding");
+    let name = spawned.unique(fourcc!("name"));
     commands.entity(name).insert(Text::new(building_name));
     for (tag, text) in [(fourcc!("cos1"), "$100"), (fourcc!("cos2"), "$1,000")] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated trade-school cost binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert(Text::new(text));
     }
     bind_city_order_controls(
@@ -2448,9 +2406,7 @@ fn bind_training_dialog(
             CityValue::TrainingLaborIndicator(TrainingLevel::High),
         ),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated trade-school availability binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             Text::new("X"),
             CityValueBinding {
@@ -2469,9 +2425,7 @@ fn bind_armory_dialog(
     title: String,
 ) {
     let root = bind_city_dialog_root(commands, spawned, nation, ProductionSlot::Armory);
-    let title_control = spawned
-        .require_unique(fourcc!("titl"))
-        .expect("validated Armory title binding");
+    let title_control = spawned.unique(fourcc!("titl"));
     commands.entity(title_control).insert(Text::new(title));
     commands.entity(root).insert(ArmorySelection {
         category: MilitaryRecruitmentCategory::LightInfantry,
@@ -2492,9 +2446,7 @@ fn bind_armory_dialog(
         let CityOrderId::MilitaryRecruit(category) = binding.order else {
             unreachable!("armory binding has a military recruitment order");
         };
-        let button = spawned
-            .require_unique(armory_button_tag(category))
-            .expect("validated armory row button binding");
+        let button = spawned.unique(armory_button_tag(category));
         let mut button_commands = commands.entity(button);
         button_commands.insert(ArmoryRowChoice {
             dialog: root,
@@ -2505,9 +2457,7 @@ fn bind_armory_dialog(
         } else {
             button_commands.remove::<Checked>();
         }
-        let quantity = spawned
-            .require_under(catalog, binding.tag, fourcc!("numb"))
-            .expect("validated armory quantity binding");
+        let quantity = spawned.under(catalog, binding.tag, fourcc!("numb"));
         commands.entity(quantity).insert((
             InteractionDisabled,
             CityValueBinding {
@@ -2527,9 +2477,7 @@ fn bind_armory_dialog(
         (fourcc!("ava2"), CityValue::ArmorySecondaryAvailable),
         (fourcc!("ava3"), CityValue::ArmoryTreasuryAvailable),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated armory detail binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             Text::new(""),
             CityValueBinding {
@@ -2579,21 +2527,11 @@ fn bind_university_dialog(
         let CityOrderId::CivilianRecruit(kind) = binding.order else {
             unreachable!("University binding has a civilian recruitment order");
         };
-        let button = spawned
-            .require_unique(university_button_tag(kind))
-            .expect("validated University row button binding");
-        let row = spawned
-            .require_unique(binding.tag)
-            .expect("validated University quantity-row binding");
-        let minus = spawned
-            .require_under(catalog, binding.tag, fourcc!("minu"))
-            .expect("validated University decrease binding");
-        let plus = spawned
-            .require_under(catalog, binding.tag, fourcc!("plus"))
-            .expect("validated University increase binding");
-        let quantity = spawned
-            .require_under(catalog, binding.tag, fourcc!("numb"))
-            .expect("validated University quantity binding");
+        let button = spawned.unique(university_button_tag(kind));
+        let row = spawned.unique(binding.tag);
+        let minus = spawned.under(catalog, binding.tag, fourcc!("minu"));
+        let plus = spawned.under(catalog, binding.tag, fourcc!("plus"));
+        let quantity = spawned.under(catalog, binding.tag, fourcc!("numb"));
         let row_available = available[kind];
         let visibility = if row_available {
             Visibility::Visible
@@ -2641,9 +2579,7 @@ fn bind_university_dialog(
             },
         ));
     }
-    let dlog = spawned
-        .require_unique(fourcc!("DLOG"))
-        .expect("validated University drawing surface");
+    let dlog = spawned.unique(fourcc!("DLOG"));
     commands.spawn((
         Node {
             position_type: PositionType::Absolute,
@@ -2713,9 +2649,7 @@ fn bind_university_dialog(
         .into_iter()
         .enumerate()
     {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated University requirement-label binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             Text::new(tier_labels[index].clone()),
             detail_font.clone(),
@@ -2762,9 +2696,7 @@ fn bind_university_dialog(
         ),
         (fourcc!("trea"), CityValue::Treasury, detail_font.clone()),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated University detail binding");
+        let entity = spawned.unique(tag);
         let mut entity_commands = commands.entity(entity);
         entity_commands.insert((
             Text::new(""),
@@ -2790,16 +2722,12 @@ fn bind_university_dialog(
             });
         }
     }
-    let title = spawned
-        .require_unique(fourcc!("titl"))
-        .expect("validated University title binding");
+    let title = spawned.unique(fourcc!("titl"));
     commands
         .entity(title)
         .insert((title_font, TextColor(normal_color)));
     for tag in [fourcc!("fix0"), fourcc!("fix1")] {
-        let fixed = spawned
-            .require_unique(tag)
-            .expect("validated University fixed-label binding");
+        let fixed = spawned.unique(tag);
         commands
             .entity(fixed)
             .insert((detail_font.clone(), TextColor(normal_color)));
@@ -2847,21 +2775,11 @@ fn bind_shipyard_dialog(
         let CityOrderId::Ship(slot) = binding.order else {
             unreachable!("Shipyard binding has a ship order");
         };
-        let button = spawned
-            .require_unique(shipyard_button_tag(slot))
-            .expect("validated Shipyard row button binding");
-        let row = spawned
-            .require_unique(binding.tag)
-            .expect("validated Shipyard quantity-row binding");
-        let minus = spawned
-            .require_under(catalog, binding.tag, fourcc!("minu"))
-            .expect("validated Shipyard decrease binding");
-        let plus = spawned
-            .require_under(catalog, binding.tag, fourcc!("plus"))
-            .expect("validated Shipyard increase binding");
-        let quantity = spawned
-            .require_under(catalog, binding.tag, fourcc!("numb"))
-            .expect("validated Shipyard quantity binding");
+        let button = spawned.unique(shipyard_button_tag(slot));
+        let row = spawned.unique(binding.tag);
+        let minus = spawned.under(catalog, binding.tag, fourcc!("minu"));
+        let plus = spawned.under(catalog, binding.tag, fourcc!("plus"));
+        let quantity = spawned.under(catalog, binding.tag, fourcc!("numb"));
         let visibility = if row_data.is_some() {
             Visibility::Visible
         } else {
@@ -2933,9 +2851,7 @@ fn bind_shipyard_dialog(
             detail_font.clone(),
         ),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated Shipyard detail binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             Text::new(""),
             font,
@@ -2946,30 +2862,22 @@ fn bind_shipyard_dialog(
             },
         ));
     }
-    let title = spawned
-        .require_unique(fourcc!("titl"))
-        .expect("validated Shipyard title binding");
+    let title = spawned.unique(fourcc!("titl"));
     commands
         .entity(title)
         .insert((title_font, TextColor(normal_color)));
     for tag in [fourcc!("fix0"), fourcc!("fix1")] {
-        let fixed = spawned
-            .require_unique(tag)
-            .expect("validated Shipyard fixed-label binding");
+        let fixed = spawned.unique(tag);
         commands
             .entity(fixed)
             .insert((detail_font.clone(), TextColor(normal_color)));
     }
-    let picture = spawned
-        .require_unique(fourcc!("spic"))
-        .expect("validated Shipyard detail-picture binding");
+    let picture = spawned.unique(fourcc!("spic"));
     commands
         .entity(picture)
         .insert(ShipyardDetailPicture { dialog: root });
 
-    let dlog = spawned
-        .require_unique(fourcc!("DLOG"))
-        .expect("validated Shipyard drawing surface");
+    let dlog = spawned.unique(fourcc!("DLOG"));
     for index in 0..4 {
         let left = 26.0 + index as f32 * 40.0;
         for top in [152.0, 204.0] {
@@ -3085,9 +2993,7 @@ fn bind_warehouse_dialog(
         .expect("retail Warehouse value text style");
     let text_color = ui.palette_color(0);
     let root = bind_city_dialog_root(&mut ui.commands, spawned, nation, ProductionSlot::Warehouse);
-    let name = spawned
-        .require_unique(fourcc!("name"))
-        .expect("validated Warehouse name binding");
+    let name = spawned.unique(fourcc!("name"));
     ui.commands.entity(name).insert((
         Text::new(building_name),
         title_font,
@@ -3101,9 +3007,7 @@ fn bind_warehouse_dialog(
         } else {
             CityValue::Stock(resource)
         };
-        let control = spawned
-            .require_unique(tag)
-            .expect("validated Warehouse stock binding");
+        let control = spawned.unique(tag);
         ui.commands.entity(control).insert((
             Text::new(""),
             CityValueBinding {
@@ -3119,9 +3023,7 @@ fn bind_warehouse_dialog(
         (fourcc!("labo"), CityValue::LaborAvailable),
         (fourcc!("powe"), CityValue::PowerAvailable),
     ] {
-        let control = spawned
-            .require_unique(tag)
-            .expect("validated Warehouse city-value binding");
+        let control = spawned.unique(tag);
         ui.commands.entity(control).insert((
             Text::new(""),
             CityValueBinding {
@@ -3135,9 +3037,7 @@ fn bind_warehouse_dialog(
     }
 
     for tag in [fourcc!("oil "), fourcc!("fuel"), fourcc!("powe")] {
-        let control = spawned
-            .require_unique(tag)
-            .expect("validated Warehouse oil-technology binding");
+        let control = spawned.unique(tag);
         let mut control_commands = ui.commands.entity(control);
         if oil_drilling_available {
             control_commands
@@ -3152,9 +3052,7 @@ fn bind_warehouse_dialog(
     }
 
     let picture = PictureId::new(9215);
-    let dialog = spawned
-        .require_unique(fourcc!("DLOG"))
-        .expect("validated Warehouse picture binding");
+    let dialog = spawned.unique(fourcc!("DLOG"));
     match ui.picture(picture) {
         Ok(handle) => {
             ui.commands.entity(dialog).insert(ImageNode::new(handle));
@@ -3166,9 +3064,7 @@ fn bind_warehouse_dialog(
         .entry::<Node>()
         .and_modify(|mut node| node.overflow = Overflow::clip());
     for tag in [fourcc!("WIND"), fourcc!("DLOG")] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated Warehouse bounds binding");
+        let entity = spawned.unique(tag);
         ui.commands
             .entity(entity)
             .entry::<Node>()
@@ -3185,9 +3081,7 @@ fn bind_warehouse_dialog(
         fourcc!("prod"),
         fourcc!("live"),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated Warehouse shifted-control binding");
+        let entity = spawned.unique(tag);
         ui.commands
             .entity(entity)
             .entry::<Node>()
@@ -3212,9 +3106,7 @@ fn bind_rail_dialog(
     step: i16,
 ) -> Entity {
     let root = bind_city_dialog_root(commands, spawned, nation, slot);
-    let name_control = spawned
-        .require_unique(fourcc!("name"))
-        .expect("validated city dialog name binding");
+    let name_control = spawned.unique(fourcc!("name"));
     commands
         .entity(name_control)
         .insert(Text::new(building_name));
@@ -3269,9 +3161,7 @@ fn bind_food_dialog(
             ),
         ),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated food-processing availability binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             Text::new("X"),
             CityValueBinding {
@@ -3299,9 +3189,7 @@ fn bind_power_dialog(
         &POWER_ORDERS,
         6,
     );
-    let fuel = spawned
-        .require_unique(fourcc!("fuel"))
-        .expect("validated power-plant fuel binding");
+    let fuel = spawned.unique(fourcc!("fuel"));
     commands
         .entity(fuel)
         .insert((Text::new("X"), Visibility::Hidden));
@@ -3335,9 +3223,7 @@ fn bind_transport_capacity_dialog(
             CityValue::StockIndicator(ResourceKind::Steel, 1),
         ),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated transport-capacity availability binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             Text::new("X"),
             CityValueBinding {
@@ -3383,9 +3269,7 @@ fn bind_population_dialog(
         (fourcc!("capT"), CityValue::RegionalCapacity),
         (fourcc!("prov"), CityValue::OwnedRegionCount),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated population-growth binding");
+        let entity = spawned.unique(tag);
         commands.entity(entity).insert((
             Text::new(""),
             CityValueBinding {
@@ -3394,15 +3278,11 @@ fn bind_population_dialog(
             },
         ));
     }
-    let capacity = spawned
-        .require_unique(fourcc!("capT"))
-        .expect("validated population capacity binding");
+    let capacity = spawned.unique(fourcc!("capT"));
     commands
         .entity(capacity)
         .insert(RetailNumberTemplate(capacity_template));
-    let provinces = spawned
-        .require_unique(fourcc!("prov"))
-        .expect("validated population province-count binding");
+    let provinces = spawned.unique(fourcc!("prov"));
     commands
         .entity(provinces)
         .insert(RetailNumberTemplate(province_template));
@@ -3467,9 +3347,7 @@ fn bind_construction_dialog(
     let picture = PictureId::new(9250 + i16::from(slot as u8) * 5);
     match ui.picture(picture) {
         Ok(handle) => {
-            let dialog = spawned
-                .require_unique(fourcc!("DLOG"))
-                .expect("validated construction-dialog picture binding");
+            let dialog = spawned.unique(fourcc!("DLOG"));
             ui.commands.entity(dialog).insert(ImageNode::new(handle));
         }
         Err(error) => warn!("could not load construction-dialog picture {picture}: {error}"),
@@ -3497,15 +3375,11 @@ fn bind_construction_dialog(
         ),
     ];
     for (tag, value) in text {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated construction-dialog text binding");
+        let entity = spawned.unique(tag);
         ui.commands.entity(entity).insert(Text::new(value));
     }
 
-    let text2 = spawned
-        .require_unique(fourcc!("tex2"))
-        .expect("validated construction detail binding");
+    let text2 = spawned.unique(fourcc!("tex2"));
     if slot == ProductionSlot::PowerPlant {
         ui.commands
             .entity(text2)
@@ -3518,9 +3392,7 @@ fn bind_construction_dialog(
             });
     }
 
-    let connective = spawned
-        .require_unique(fourcc!("or  "))
-        .expect("validated construction connective binding");
+    let connective = spawned.unique(fourcc!("or  "));
     let connective_left = match slot {
         ProductionSlot::TextileMill => Some(0x98),
         ProductionSlot::Metalworks => Some(0xcd),
@@ -3538,9 +3410,7 @@ fn bind_construction_dialog(
         ui.commands.entity(connective).insert(Visibility::Hidden);
     }
 
-    let buck = spawned
-        .require_unique(fourcc!("buck"))
-        .expect("validated construction cash binding");
+    let buck = spawned.unique(fourcc!("buck"));
     ui.commands.entity(buck).insert((
         Text::new(if slot == ProductionSlot::PowerPlant {
             format_currency(5_000)
@@ -3554,9 +3424,7 @@ fn bind_construction_dialog(
         },
     ));
 
-    let warning = spawned
-        .require_unique(fourcc!("warn"))
-        .expect("validated construction warning binding");
+    let warning = spawned.unique(fourcc!("warn"));
     let warning_text = city_string(
         ui,
         CITY_TEXT_STRING_GROUP,
@@ -3577,9 +3445,7 @@ fn bind_construction_dialog(
         },
     ));
 
-    let okay = spawned
-        .require_unique(fourcc!("okay"))
-        .expect("validated construction OK binding");
+    let okay = spawned.unique(fourcc!("okay"));
     let mut okay_commands = ui.commands.entity(okay);
     okay_commands.insert(CityBuildingChangeChoice {
         dialog: root,
@@ -3591,9 +3457,7 @@ fn bind_construction_dialog(
         okay_commands.insert((InteractionDisabled, Visibility::Hidden));
     }
 
-    let cancel = spawned
-        .require_unique(fourcc!("cncl"))
-        .expect("validated construction cancel binding");
+    let cancel = spawned.unique(fourcc!("cncl"));
     ui.commands.entity(cancel).insert(CityBuildingChangeChoice {
         dialog: root,
         nation,
@@ -3621,9 +3485,7 @@ fn bind_expansion_dialog(
     let picture = PictureId::new(9250 + i16::from(slot as u8) * 5 + i16::from(next_level));
     match ui.picture(picture) {
         Ok(handle) => {
-            let dialog = spawned
-                .require_unique(fourcc!("DLOG"))
-                .expect("validated expansion-dialog picture binding");
+            let dialog = spawned.unique(fourcc!("DLOG"));
             ui.commands.entity(dialog).insert(ImageNode::new(handle));
         }
         Err(error) => warn!("could not load expansion-dialog picture {picture}: {error}"),
@@ -3639,15 +3501,11 @@ fn bind_expansion_dialog(
         (fourcc!("capT"), capacity),
         (fourcc!("cost"), cost),
     ] {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated expansion-dialog text binding");
+        let entity = spawned.unique(tag);
         ui.commands.entity(entity).insert(Text::new(text));
     }
 
-    let warning = spawned
-        .require_unique(fourcc!("warn"))
-        .expect("validated expansion warning binding");
+    let warning = spawned.unique(fourcc!("warn"));
     let warning_color = ui.palette_color(0xcb);
     let warning_text = city_string(ui, CITY_TEXT_STRING_GROUP, 0x17);
     ui.commands.entity(warning).insert((
@@ -3660,9 +3518,7 @@ fn bind_expansion_dialog(
         },
     ));
 
-    let okay = spawned
-        .require_unique(fourcc!("okay"))
-        .expect("validated expansion OK binding");
+    let okay = spawned.unique(fourcc!("okay"));
     let mut okay_commands = ui.commands.entity(okay);
     okay_commands.insert(CityBuildingChangeChoice {
         dialog: root,
@@ -3674,9 +3530,7 @@ fn bind_expansion_dialog(
         okay_commands.insert((InteractionDisabled, Visibility::Hidden));
     }
 
-    let cancel = spawned
-        .require_unique(fourcc!("cncl"))
-        .expect("validated expansion cancel binding");
+    let cancel = spawned.unique(fourcc!("cncl"));
     ui.commands.entity(cancel).insert(CityBuildingChangeChoice {
         dialog: root,
         nation,

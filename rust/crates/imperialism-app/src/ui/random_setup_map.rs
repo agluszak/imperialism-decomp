@@ -71,19 +71,13 @@ impl Plugin for MapPreviewPlugin {
 pub(crate) fn attach_random_setup_meanings(commands: &mut Commands, spawned: &SpawnedView) {
     debug_assert_eq!(spawned.view_id, random_setup_view_id());
     // PointerCanvas behavior already adds RelativeCursorPosition for the map.
-    let map = spawned
-        .require_unique(MAP_TAG)
-        .expect("validated random-setup map binding");
+    let map = spawned.unique(MAP_TAG);
     commands
         .entity(map)
         .insert(RandomSetupMapPreview::default());
-    let coat = spawned
-        .require_unique(COAT_TAG)
-        .expect("validated random-setup coat binding");
+    let coat = spawned.unique(COAT_TAG);
     commands.entity(coat).insert(RandomSetupCoat::default());
-    let flag = spawned
-        .require_unique(FLAG_TAG)
-        .expect("validated random-setup flag binding");
+    let flag = spawned.unique(FLAG_TAG);
     commands.entity(flag).insert(RandomSetupFlag::default());
 }
 

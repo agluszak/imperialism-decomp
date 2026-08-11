@@ -46,6 +46,16 @@ impl UiCatalogResource {
             .map(|&index| &self.catalog.views[index])
     }
 
+    /// Catalog view guaranteed by [`validate_application_bindings`] / structure checks.
+    pub(crate) fn required_view(&self, view_id: &ScopedViewId) -> &CatalogView {
+        self.view(view_id).unwrap_or_else(|| {
+            panic!(
+                "required UI view {}:{} is missing",
+                view_id.resource_file, view_id.resource_id
+            )
+        })
+    }
+
     pub(crate) fn index(&self, view_id: &ScopedViewId) -> Option<&UiViewIndex> {
         self.by_id.get(view_id).map(|&index| &self.indexes[index])
     }
@@ -225,6 +235,12 @@ impl SpawnedView {
         }
     }
 
+    /// Unique tag binding guaranteed by the screen's `validate_application_bindings`.
+    pub(crate) fn unique(&self, tag: FourCc) -> Entity {
+        self.require_unique(tag)
+            .unwrap_or_else(|error| panic!("{error}"))
+    }
+
     pub(crate) fn require_under(
         &self,
         catalog: &UiCatalogResource,
@@ -274,6 +290,17 @@ impl SpawnedView {
                 view.id.resource_id,
             )),
         }
+    }
+
+    /// Parent-scoped tag binding guaranteed by the screen's `validate_application_bindings`.
+    pub(crate) fn under(
+        &self,
+        catalog: &UiCatalogResource,
+        ancestor_tag: FourCc,
+        tag: FourCc,
+    ) -> Entity {
+        self.require_under(catalog, ancestor_tag, tag)
+            .unwrap_or_else(|error| panic!("{error}"))
     }
 }
 
@@ -475,10 +502,7 @@ impl UiSpawner<'_, '_> {
     }
 
     pub(crate) fn spawn(&mut self, view_id: ScopedViewId) -> SpawnedView {
-        let view = self
-            .catalog
-            .view(&view_id)
-            .expect("validated UI catalog view");
+        let view = self.catalog.required_view(&view_id);
         spawn_view(
             &mut self.commands,
             self.catalog.catalog(),
@@ -504,9 +528,7 @@ impl UiSpawner<'_, '_> {
         tag: FourCc,
         component: C,
     ) {
-        let entity = spawned
-            .require_unique(tag)
-            .expect("validated UI catalog binding");
+        let entity = spawned.unique(tag);
         self.commands
             .entity(entity)
             .insert(component)

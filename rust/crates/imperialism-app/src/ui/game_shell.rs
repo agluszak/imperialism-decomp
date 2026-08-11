@@ -206,15 +206,11 @@ fn enter_game_screen(
     let Some(view_id) = view_id_for_state(current) else {
         return;
     };
-    let view = catalog
-        .view(&view_id)
-        .expect("validated game-screen catalog view");
+    let view = catalog.required_view(&view_id);
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
     bind_game_screen_nav(&mut commands, &catalog, &spawned);
     if current == AppState::StrategicMap {
-        let end = spawned
-            .require_unique(fourcc!("DONE"))
-            .expect("validated strategic-map end-turn binding");
+        let end = spawned.unique(fourcc!("DONE"));
         commands
             .entity(end)
             .insert(TurnFlowAction::FinishPlayerOrders)
@@ -250,13 +246,9 @@ fn enter_turn_flow_screen(
         AppState::Newspaper => newspaper_view_id(),
         _ => return,
     };
-    let view = catalog
-        .view(&view_id)
-        .expect("validated turn-flow catalog view");
+    let view = catalog.required_view(&view_id);
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
-    let end = spawned
-        .require_unique(fourcc!("end "))
-        .expect("validated turn-flow close binding");
+    let end = spawned.unique(fourcc!("end "));
     commands
         .entity(end)
         .insert(TurnFlowAction::DismissBlockingScreen)
@@ -364,10 +356,9 @@ fn format_currency(value: i32) -> String {
 }
 
 fn set_control_text(commands: &mut Commands, spawned: &SpawnedView, tag: FourCc, value: String) {
-    let entity = spawned
-        .require_unique(tag)
-        .unwrap_or_else(|error| panic!("validated {tag} text binding: {error}"));
-    commands.entity(entity).insert(Text::new(value));
+    commands
+        .entity(spawned.unique(tag))
+        .insert(Text::new(value));
 }
 
 pub(crate) fn bind_game_screen_nav(
@@ -375,14 +366,13 @@ pub(crate) fn bind_game_screen_nav(
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
 ) {
-    let trade = control_under_parents(catalog, spawned, TRADE, TOOLBAR_PARENT_TAGS)
-        .expect("validated game-screen trade binding");
-    let transport = control_under_parents(catalog, spawned, fourcc!("tran"), TOOLBAR_PARENT_TAGS)
-        .expect("validated game-screen transport binding");
-    let city = control_under_parents(catalog, spawned, fourcc!("city"), TOOLBAR_PARENT_TAGS)
-        .expect("validated game-screen city binding");
-    let diplomacy = control_under_parents(catalog, spawned, fourcc!("dipl"), TOOLBAR_PARENT_TAGS)
-        .expect("validated game-screen diplomacy binding");
+    let trade = required_control_under_parents(catalog, spawned, TRADE, TOOLBAR_PARENT_TAGS);
+    let transport =
+        required_control_under_parents(catalog, spawned, fourcc!("tran"), TOOLBAR_PARENT_TAGS);
+    let city =
+        required_control_under_parents(catalog, spawned, fourcc!("city"), TOOLBAR_PARENT_TAGS);
+    let diplomacy =
+        required_control_under_parents(catalog, spawned, fourcc!("dipl"), TOOLBAR_PARENT_TAGS);
     for (entity, action) in [
         (trade, GameScreenNavAction::Trade),
         (transport, GameScreenNavAction::Transport),
@@ -392,8 +382,8 @@ pub(crate) fn bind_game_screen_nav(
         commands.entity(entity).insert(action);
     }
     if spawned.view_id != strategic_map_view_id() {
-        let leave = control_under_parents(catalog, spawned, fourcc!("end "), LEAVE_PARENT_TAGS)
-            .expect("validated game-screen return-to-map binding");
+        let leave =
+            required_control_under_parents(catalog, spawned, fourcc!("end "), LEAVE_PARENT_TAGS);
         commands
             .entity(leave)
             .insert(GameScreenNavAction::StrategicMap)
@@ -404,10 +394,9 @@ pub(crate) fn bind_game_screen_nav(
 /// Marks a catalog-tagged control [`InteractionDisabled`] because its retail behavior
 /// is not implemented yet.
 pub(crate) fn disable_control(commands: &mut Commands, spawned: &SpawnedView, tag: FourCc) {
-    let entity = spawned
-        .require_unique(tag)
-        .expect("validated disabled control binding");
-    commands.entity(entity).insert(InteractionDisabled);
+    commands
+        .entity(spawned.unique(tag))
+        .insert(InteractionDisabled);
 }
 
 /// Resolve an activate control under one of the given ancestor tags.
@@ -423,6 +412,20 @@ fn control_under_parents(
         }
     }
     None
+}
+
+fn required_control_under_parents(
+    catalog: &UiCatalogResource,
+    spawned: &SpawnedView,
+    tag: FourCc,
+    parents: &[FourCc],
+) -> Entity {
+    control_under_parents(catalog, spawned, tag, parents).unwrap_or_else(|| {
+        panic!(
+            "required UI binding {}:{} tag {:?} missing under {:?}",
+            spawned.view_id.resource_file, spawned.view_id.resource_id, tag, parents
+        )
+    })
 }
 
 fn on_game_screen_activate(
@@ -523,9 +526,7 @@ mod tests {
         let Some(view_id) = view_id_for_state(current) else {
             return;
         };
-        let view = catalog
-            .view(&view_id)
-            .expect("validated game-screen catalog view");
+        let view = catalog.required_view(&view_id);
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
         bind_game_screen_nav(&mut commands, &catalog, &spawned);
         commands.insert_resource(TestSpawned(spawned.clone()));

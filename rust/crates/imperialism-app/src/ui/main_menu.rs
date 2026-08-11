@@ -44,9 +44,7 @@ fn enter_main_menu(
     catalog: Res<UiCatalogResource>,
     mut assets: UiAssetResources,
 ) {
-    let view = catalog
-        .view(&main_menu_view_id())
-        .expect("validated main-menu catalog view");
+    let view = catalog.required_view(&main_menu_view_id());
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
     bind_main_menu_actions(&mut commands, &catalog, &spawned);
     commands
@@ -59,9 +57,7 @@ pub(crate) fn bind_main_menu_actions(
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
 ) {
-    let view = catalog
-        .view(&spawned.view_id)
-        .expect("spawned view comes from the validated catalog");
+    let view = catalog.required_view(&spawned.view_id);
     for node in &view.nodes {
         if node.behavior != UiBehavior::Activate {
             continue;

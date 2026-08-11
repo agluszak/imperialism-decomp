@@ -98,9 +98,7 @@ pub(crate) fn bind_strategic_base_terrain(
     assets: &mut UiAssetResources,
     state: &GameState,
 ) -> Entity {
-    let map = spawned
-        .require_unique(MAP_TAG)
-        .expect("validated strategic-map canvas binding");
+    let map = spawned.unique(MAP_TAG);
     let terrain_pictures = load_strategic_terrain_pictures(assets);
     let river_masks = load_strategic_river_masks(assets);
     let image = compose_strategic_base_terrain(

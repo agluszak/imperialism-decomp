@@ -33,6 +33,11 @@ pub enum GameScreen {
 
 /// Ordered presentation work emitted by authoritative turn progression that is not
 /// already expressed by [`FlowStop::Show`].
+///
+/// Diplomacy-map and offer-sheet presentation remain `Continues` effects: retail advances
+/// the phase while showing UI, single-step differentials compare these effects, and the
+/// EasyTurn end-turn path does not gate on them the way DealBook/Newspaper do. Do not
+/// promote them to [`FlowStop::Show`] without changing that oracle contract.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum TurnEffect {
