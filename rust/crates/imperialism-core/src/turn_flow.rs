@@ -248,7 +248,9 @@ impl GameState {
                 self.turn.phase = crate::PhaseCode::OFFER_SHEET;
                 AdvanceTurnOutcome::Blocked {
                     phase: crate::PhaseCode::OFFER_SHEET,
-                    yield_: TurnYield::Ui { request: UiRequest::OfferSheet { nation } },
+                    yield_: TurnYield::Ui {
+                        request: UiRequest::OfferSheet { nation },
+                    },
                     effects: Vec::new(),
                 }
             }
@@ -332,7 +334,9 @@ impl GameState {
                 self.turn.phase = crate::PhaseCode::QUARTER_GATE;
                 AdvanceTurnOutcome::Blocked {
                     phase: crate::PhaseCode::QUARTER_GATE,
-                    yield_: TurnYield::Ui { request: UiRequest::DealBook },
+                    yield_: TurnYield::Ui {
+                        request: UiRequest::DealBook,
+                    },
                     effects: Vec::new(),
                 }
             }
@@ -370,7 +374,9 @@ impl GameState {
                 self.turn.phase = crate::PhaseCode::RETURN_TO_MAP;
                 AdvanceTurnOutcome::Blocked {
                     phase: crate::PhaseCode::RETURN_TO_MAP,
-                    yield_: TurnYield::Ui { request: UiRequest::Newspaper },
+                    yield_: TurnYield::Ui {
+                        request: UiRequest::Newspaper,
+                    },
                     effects: Vec::new(),
                 }
             }
@@ -443,12 +449,15 @@ impl GameState {
                         | crate::PhaseCode::RETURN_TO_MAP
                         | crate::PhaseCode::TRADE
                         | crate::PhaseCode::OFFER_SHEET
-                )
-            {
+                ) {
                 // Phase looks like a UI gate but the port has not installed an expected request.
-                TurnYield::Unsupported { phase: self.turn.phase }
+                TurnYield::Unsupported {
+                    phase: self.turn.phase,
+                }
             } else if expected.is_none() {
-                TurnYield::Unsupported { phase: self.turn.phase }
+                TurnYield::Unsupported {
+                    phase: self.turn.phase,
+                }
             } else {
                 TurnYield::MismatchedUi {
                     closed: request,
@@ -647,9 +656,11 @@ mod tests {
             state.advance_turn_step(),
             AdvanceTurnOutcome::Blocked {
                 phase: crate::PhaseCode::TRADE,
-                yield_: TurnYield::Ui { request: UiRequest::DiplomacyMap {
-                    nation: crate::MajorNationId::new(0),
-                } },
+                yield_: TurnYield::Ui {
+                    request: UiRequest::DiplomacyMap {
+                        nation: crate::MajorNationId::new(0),
+                    }
+                },
                 effects: Vec::new(),
             }
         );
@@ -679,9 +690,11 @@ mod tests {
             state.advance_until_yield(),
             AdvanceTurnOutcome::Blocked {
                 phase: crate::PhaseCode::TRADE,
-                yield_: TurnYield::Ui { request: UiRequest::DiplomacyMap {
-                    nation: crate::MajorNationId::new(0),
-                } },
+                yield_: TurnYield::Ui {
+                    request: UiRequest::DiplomacyMap {
+                        nation: crate::MajorNationId::new(0),
+                    }
+                },
                 effects: Vec::new(),
             }
         );
@@ -723,7 +736,9 @@ mod tests {
             state.advance_turn_step(),
             AdvanceTurnOutcome::Blocked {
                 phase: crate::PhaseCode::DIPLOMACY,
-                yield_: TurnYield::Unsupported { phase: crate::PhaseCode::DIPLOMACY },
+                yield_: TurnYield::Unsupported {
+                    phase: crate::PhaseCode::DIPLOMACY
+                },
                 effects: Vec::new(),
             }
         );

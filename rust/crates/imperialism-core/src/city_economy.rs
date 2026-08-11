@@ -1,4 +1,4 @@
-use crate::{CityState, GreatPowerState, CityFacilitySlot, ResourceKind, ResourceTable};
+use crate::{CityFacilitySlot, CityState, GreatPowerState, ResourceKind, ResourceTable};
 
 impl CityState {
     /// Mirrors the state effect of `TCity::VerifyStocks`; UI invalidation from

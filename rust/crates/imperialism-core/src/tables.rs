@@ -1,4 +1,4 @@
-use crate::{MajorNationId, MinorNationId, NationId, CityFacilitySlot, ProvinceId};
+use crate::{CityFacilitySlot, MajorNationId, MinorNationId, NationId, ProvinceId};
 use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::ops::{Index, IndexMut};

@@ -172,10 +172,12 @@ impl GameState {
         let source = segment.origin();
         let destination = segment.destination();
         let direction = segment.direction();
-        self.world.tile_mut(source)
+        self.world
+            .tile_mut(source)
             .transport_links
             .insert_direction(direction);
-        self.world.tile_mut(destination)
+        self.world
+            .tile_mut(destination)
             .transport_links
             .insert_direction(direction.opposite());
         self.civilian_units[index].order = CivilianWorkOrder::Idle;
