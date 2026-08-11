@@ -989,7 +989,7 @@ pub(super) fn read_country_base(
     let identity = lossy_text(&stream.read_mfc_string()?);
     let alternate_identity = lossy_text(&stream.read_mfc_string()?);
     let nation_slot = stream.read_le_i16()?;
-    let encoded_nation_slot = stream.read_le_i16()?;
+    let status = super::project::country_status_from_retail(stream.read_le_i16()?)?;
     let unit_name_ordinal_by_type = read_be_short_array(stream)?;
     let unit_name_counter = stream.read_le_i16()?;
     let treasury = stream.read_le_i32()?;
@@ -1021,7 +1021,7 @@ pub(super) fn read_country_base(
         identity,
         alternate_identity,
         nation_slot,
-        encoded_nation_slot,
+        status,
         unit_name_ordinal_by_type,
         unit_name_counter,
         treasury,
@@ -1057,7 +1057,7 @@ pub(super) fn read_military_unit(
 
 pub(super) fn read_great_power_prefix(
     stream: &mut LegacyStream<'_>,
-) -> Result<LegacyGreatPowerPrefix, StreamError> {
+) -> Result<LegacyGreatPowerPrefix, LegacySaveError> {
     let diplomacy_eligible = stream.read_u8()?;
     let capacities = read_short_array(stream)?;
     let grant_total_cost = stream.read_le_i32()?;
@@ -1084,7 +1084,17 @@ pub(super) fn read_great_power_prefix(
     for value in &mut pending_action_status {
         *value = stream.read_i8()?;
     }
-    let pending_action_payload_by_action = read_be_short_array(stream)?;
+    let pending_action_payload_by_action: [i16; PENDING_ACTION_COUNT] =
+        read_be_short_array(stream)?;
+    let mut pending_action_values = [PendingActionState::default(); PENDING_ACTION_COUNT];
+    for (index, slot) in pending_action_values.iter_mut().enumerate() {
+        *slot = super::project::pending_action_from_retail(
+            pending_action_status[index],
+            pending_action_payload_by_action[index],
+        )?;
+    }
+    let pending_actions =
+        PendingActionTable::from_fn(|action| pending_action_values[action as usize]);
 
     // These are TSortedByRelationshipList/TSortedPtrList instances, unlike the
     // no-op TSortedList hooks used by object-owning lists elsewhere.
@@ -1111,8 +1121,7 @@ pub(super) fn read_great_power_prefix(
         budget_pool_base,
         budget_pool_delta,
         aid_allocation_by_minor_nation,
-        pending_action_status,
-        pending_action_payload_by_action,
+        pending_actions,
         relationship_lists,
         minister_presence_mask,
     })

@@ -256,7 +256,6 @@ mod tests {
             action: None,
             flags: TileFlags::empty(),
             region: None,
-            river: None,
         }
     }
 

@@ -18,21 +18,31 @@ fn picture_assignment_consumes_ordered_mountain_and_river_draws_without_rewritin
     tiles[0].terrain = TerrainKind::Mountain;
     let first_river = geometry.tile(10, 10).unwrap();
     let second_river = geometry.neighbor(first_river, HexDirection::East).unwrap();
-    tiles[usize::from(first_river.get())].river = RiverSegment::from_connection_code(4);
-    tiles[usize::from(second_river.get())].river = RiverSegment::from_connection_code(3);
-    let original_rivers: Vec<_> = tiles.iter().map(|tile| tile.river).collect();
+    let mut river_connections = vec![0u8; STRATEGIC_TILE_COUNT];
+    river_connections[usize::from(first_river.get())] = 4;
+    river_connections[usize::from(second_river.get())] = 3;
+    let original_connections = river_connections.clone();
     let gate_flags = vec![0; STRATEGIC_TILE_COUNT];
 
     let mut rng = RetailLcg::from_state(1);
-    assign_fresh_map_pictures(&mut tiles, &gate_flags, geometry, &mut rng);
+    assign_fresh_map_pictures(
+        &mut tiles,
+        &mut river_connections,
+        &gate_flags,
+        geometry,
+        &mut rng,
+    );
 
     let mut expected_rng = RetailLcg::from_state(1);
     expected_rng.advance(); // mountain variant
     expected_rng.advance(); // first river resolves to a set-A or set-B west continuation
     assert_eq!(rng, expected_rng);
     assert_eq!(
-        tiles.iter().map(|tile| tile.river).collect::<Vec<_>>(),
-        original_rivers
+        tiles
+            .iter()
+            .map(|tile| tile.river().map(RiverSegment::connection_code).unwrap_or(0))
+            .collect::<Vec<_>>(),
+        original_connections
     );
 }
 

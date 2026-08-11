@@ -75,12 +75,21 @@ const SECONDARY_TRANSITION_OFFSETS: [[u16; 2]; 16] = [
     [0, 0],
 ];
 
+/// Facts that change the base-terrain bitmap. Session-wide Bevy change detection is broader.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+struct StrategicBaseTerrainKey {
+    view_origin: TileId,
+    topology: MapTopology,
+    visible_tiles: u64,
+}
+
 /// The bounded strategic terrain layer: retail bases, transitions, coast corners, and rivers.
 /// Borders, improvements, towns, and units intentionally remain absent.
 #[derive(Component)]
 pub(crate) struct StrategicBaseTerrainCanvas {
     terrain_pictures: Vec<IndexedPicture>,
     river_masks: Vec<IndexedPicture>,
+    composed: Option<StrategicBaseTerrainKey>,
 }
 
 pub(crate) fn bind_strategic_base_terrain(
@@ -89,9 +98,7 @@ pub(crate) fn bind_strategic_base_terrain(
     assets: &mut UiAssetResources,
     state: &GameState,
 ) -> Entity {
-    let map = spawned
-        .require_unique(MAP_TAG)
-        .expect("validated strategic-map canvas binding");
+    let map = spawned.unique(MAP_TAG);
     let terrain_pictures = load_strategic_terrain_pictures(assets);
     let river_masks = load_strategic_river_masks(assets);
     let image = compose_strategic_base_terrain(
@@ -101,12 +108,14 @@ pub(crate) fn bind_strategic_base_terrain(
         assets.default_dib_palette(),
     );
     let image = assets.add_image(image);
+    let composed = Some(strategic_base_terrain_key(state));
     commands.entity(map).insert((
         ImageNode::new(image),
         RelativeCursorPosition::default(),
         StrategicBaseTerrainCanvas {
             terrain_pictures,
             river_masks,
+            composed,
         },
     ));
     map
@@ -116,15 +125,16 @@ pub(crate) fn sync_strategic_base_terrain(
     session: Option<Res<GameSession>>,
     retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
-    maps: Query<(&StrategicBaseTerrainCanvas, &ImageNode)>,
+    mut maps: Query<(&mut StrategicBaseTerrainCanvas, &ImageNode)>,
 ) {
     let Some(session) = session else {
         return;
     };
-    if !session.is_changed() {
-        return;
-    }
-    for (canvas, image_node) in &maps {
+    let key = strategic_base_terrain_key(&session.0);
+    for (mut canvas, image_node) in &mut maps {
+        if canvas.composed == Some(key) {
+            continue;
+        }
         let image = compose_strategic_base_terrain(
             &session.0,
             &canvas.terrain_pictures,
@@ -135,6 +145,7 @@ pub(crate) fn sync_strategic_base_terrain(
             continue;
         };
         *existing = image;
+        canvas.composed = Some(key);
     }
 }
 
@@ -204,13 +215,39 @@ fn compose_strategic_base_terrain(
     indexed_viewport_image(&indices, palette)
 }
 
-fn compose_strategic_base_terrain_indices(
-    state: &GameState,
-    terrain_pictures: &[IndexedPicture],
-    river_masks: &[IndexedPicture],
-) -> Vec<u8> {
-    let mut indices = vec![0_u8; VIEWPORT_WIDTH * VIEWPORT_HEIGHT];
-    let (origin_row, origin_column) = state.world().geometry().row_column(state.world().view_origin());
+fn strategic_base_terrain_key(state: &GameState) -> StrategicBaseTerrainKey {
+    use std::hash::{Hash, Hasher};
+
+    let mut hasher = std::collections::hash_map::DefaultHasher::new();
+    for_each_visible_strategic_tile(state, |tile, _screen_x, _screen_y| {
+        let tile_state = &state.world()[tile];
+        tile.get().hash(&mut hasher);
+        tile_state.terrain.hash(&mut hasher);
+        tile_state.region_tile_subtype.retail().hash(&mut hasher);
+        tile_state.rendering.sprite_variant.hash(&mut hasher);
+        tile_state
+            .rendering
+            .river_sprite
+            .map(RiverSprite::retail)
+            .hash(&mut hasher);
+        tile_state.rendering.transition_mask.hash(&mut hasher);
+        tile_state
+            .rendering
+            .coast_or_secondary_mask
+            .hash(&mut hasher);
+    });
+    StrategicBaseTerrainKey {
+        view_origin: state.world().view_origin(),
+        topology: state.world().topology(),
+        visible_tiles: hasher.finish(),
+    }
+}
+
+fn for_each_visible_strategic_tile(state: &GameState, mut visit: impl FnMut(TileId, i32, i32)) {
+    let (origin_row, origin_column) = state
+        .world()
+        .geometry()
+        .row_column(state.world().view_origin());
     let origin_row = i32::from(origin_row);
     let origin_column = i32::from(origin_column);
 
@@ -231,12 +268,21 @@ fn compose_strategic_base_terrain_indices(
             let Some(tile) = state.world().geometry().tile(row as u16, column as u16) else {
                 continue;
             };
-            let tile_pixels =
-                compose_strategic_base_tile(state, tile, terrain_pictures, river_masks);
-            copy_clipped_tile(&tile_pixels, screen_x, screen_y, &mut indices);
+            visit(tile, screen_x, screen_y);
         }
     }
+}
 
+fn compose_strategic_base_terrain_indices(
+    state: &GameState,
+    terrain_pictures: &[IndexedPicture],
+    river_masks: &[IndexedPicture],
+) -> Vec<u8> {
+    let mut indices = vec![0_u8; VIEWPORT_WIDTH * VIEWPORT_HEIGHT];
+    for_each_visible_strategic_tile(state, |tile, screen_x, screen_y| {
+        let tile_pixels = compose_strategic_base_tile(state, tile, terrain_pictures, river_masks);
+        copy_clipped_tile(&tile_pixels, screen_x, screen_y, &mut indices);
+    });
     indices
 }
 
@@ -366,7 +412,10 @@ fn draw_city_site_neighbor_outline(
 }
 
 fn strategic_tile_screen_origin(state: &GameState, tile: TileId) -> (i32, i32) {
-    let (origin_row, origin_column) = state.world().geometry().row_column(state.world().view_origin());
+    let (origin_row, origin_column) = state
+        .world()
+        .geometry()
+        .row_column(state.world().view_origin());
     let (row, column) = state.world().geometry().row_column(tile);
     let y = (i32::from(row) - i32::from(origin_row)) * TILE_SIZE;
     let mut x = (i32::from(column) - i32::from(origin_column)) * TILE_SIZE;
@@ -407,7 +456,10 @@ fn compose_strategic_base_tile(
 ) -> Vec<u8> {
     let tile_state = &state.world()[tile];
     let center_column = {
-        let (_, origin_column) = state.world().geometry().row_column(state.world().view_origin());
+        let (_, origin_column) = state
+            .world()
+            .geometry()
+            .row_column(state.world().view_origin());
         (i32::from(origin_column) + VIEWPORT_TILE_SPAN / 2)
             .rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
     };
@@ -706,7 +758,10 @@ fn strategic_tile_at_position(state: &GameState, normalized: Vec2) -> Option<Til
     if !(0..VIEWPORT_WIDTH as i32).contains(&x) || !(0..VIEWPORT_HEIGHT as i32).contains(&y) {
         return None;
     }
-    let (origin_row, origin_column) = state.world().geometry().row_column(state.world().view_origin());
+    let (origin_row, origin_column) = state
+        .world()
+        .geometry()
+        .row_column(state.world().view_origin());
     let row = i32::from(origin_row) + y / TILE_SIZE;
     if !(0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&row) {
         return None;
@@ -801,7 +856,8 @@ mod tests {
         let mut state = fixture_state();
         let origin = state.world().view_origin();
         state.tile_mut(origin).terrain = TerrainKind::Water;
-        state.tile_mut(origin).rendering = TileRendering::from_retail(0, 0, 0, 0b0000_0011).unwrap();
+        state.tile_mut(origin).rendering =
+            TileRendering::from_retail(0, 0, 0, 0b0000_0011).unwrap();
 
         let pixels = compose_strategic_base_tile(&state, origin, &terrain, &rivers);
         let base_ink = frame_for_offset(BASE_WATER_OFFSETS[0]) as u8;

@@ -32,11 +32,29 @@ the decomp uses them.
 
 - Prefer direct typed methods on `GameState`. Do not introduce a universal `GameCommand`, command
   bus, event-sourcing layer, or event for every private helper.
+- Core owns rules and queries; the app owns presentation decisions. Expose queries such as
+  `first_idle_civilian_tile` and pure helpers such as `viewport_origin_centered_on`; do not put
+  "enter screen X" methods on `GameState`. When retail persists a view field, keep the field, but
+  let the app choose when to write it. Refresh projected UI from the facts it displays (for
+  example a strategic base-terrain key of view origin plus visible tile rendering, or city
+  session/selection/`Added` change detection), not from broad dirty-marker components or
+  `GameSession`-wide full redraws.
+- Validate required UI tags at startup through each screen's `validate_application_bindings`. At
+  spawn/bind time use `SpawnedView::unique` / `SpawnedView::under` and
+  `UiCatalogResource::required_view` — the infallible path after that check. Do not restate the
+  same FourCC lookup as `require_unique(...).expect("validated...")`.
+- Separate planning from mutation for order UI: use `can_set_city_order_quantity` (or a plan API)
+  to decide Accept enablement; do not mutate-and-rollback authoritative state as a probe.
 - Return operation-specific results when callers need them. Keep effects only for ordered
   observables absent from authoritative state, such as notifications, sounds, modal prompts, or
   acknowledgement requests. Do not emit effects that merely restate state mutations.
-- Keep app flow `input → one core operation → state/results/effects → UI projection`. Turn sequencing
-  belongs in core through `advance_turn_step` / `advance_until_yield`, not in a Bevy schedule.
+- Keep app flow `input → one core operation → FlowStop / results / effects → UI projection`.
+  Turn sequencing belongs in core through `advance_turn_step` / `continue_turn`, not in a Bevy
+  schedule. The app-facing stop is [`FlowStop`]; do not ask the UI to restate a gate the phase
+  already encodes (`dismiss_blocking_screen`). Do not emit a show-screen effect that merely
+  restates `FlowStop::Show`. Diplomacy-map and offer-sheet stay as `TurnEffect` on
+  `Continues` (phase advances while UI shows); EasyTurn does not gate on them like
+  DealBook/Newspaper.
 - External decode or malformed payload errors return `Result`. Legal gameplay rejection returns a
   typed outcome or narrow domain error the UI can use. Broken internal invariants are prevented by
   structure where practical and otherwise assert or `expect`; do not thread them through rule APIs.
@@ -53,6 +71,11 @@ the decomp uses them.
   format. Do not duplicate a raw value in a widened DTO field and narrow it later; do not add a
   fallible conversion when the source type and branch already prove the destination range. Make
   semantic ID constructors infallible unless retail evidence establishes a real domain bound.
+- One retail fact gets one domain field. Example: tile rivers are the saved `riverSpriteCode`
+  (`TileRendering.river_sprite`); connection/flow codes are derived from that sprite and must not
+  be stored beside it. Decode packed retail status/payload pairs into the semantic type while
+  reading the save (`PendingActionState`, `CountryStatus`); do not keep parallel raw arrays and a
+  second validate-then-normalize pass.
 - Use ordinary arithmetic for domain rules. Only use wrapping or fixed-width overflow when retail
   behavior demonstrably depends on that overflow as an observable rule; document that evidence at
   the narrow boundary where it matters.

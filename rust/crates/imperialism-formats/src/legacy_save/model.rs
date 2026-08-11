@@ -129,7 +129,8 @@ pub(crate) struct LegacyCountryBase {
     pub identity: String,
     pub alternate_identity: String,
     pub nation_slot: i16,
-    pub encoded_nation_slot: i16,
+    /// Decoded from retail's packed status word at read time.
+    pub status: CountryStatus,
     pub unit_name_ordinal_by_type: [i16; 30],
     pub unit_name_counter: i16,
     pub treasury: i32,
@@ -158,8 +159,7 @@ pub(crate) struct LegacyGreatPowerPrefix {
     pub budget_pool_base: i32,
     pub budget_pool_delta: i32,
     pub aid_allocation_by_minor_nation: [[i32; RESOURCE_KIND_COUNT]; MINOR_NATION_COUNT],
-    pub pending_action_status: [i8; PENDING_ACTION_COUNT],
-    pub pending_action_payload_by_action: [i16; PENDING_ACTION_COUNT],
+    pub pending_actions: PendingActionTable<PendingActionState>,
     pub relationship_lists: Vec<LegacyFixedRecordList>,
     pub minister_presence_mask: u8,
 }

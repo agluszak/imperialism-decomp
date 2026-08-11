@@ -88,6 +88,27 @@ impl StrategicMap {
         self.view_origin = view_origin;
     }
 
+    /// Retail 9-by-7 strategic-map viewport origin centered on `tile`.
+    pub fn viewport_origin_centered_on(&self, tile: TileId) -> TileId {
+        const VIEWPORT_TILE_SPAN: i32 = 9;
+
+        let geometry = self.geometry();
+        let (row, column) = geometry.row_column(tile);
+        let mut column = i32::from(column) - VIEWPORT_TILE_SPAN / 2;
+        if self.topology() == MapTopology::Bounded {
+            column = column.clamp(1, 0x6e - VIEWPORT_TILE_SPAN);
+        }
+        if column < 0 {
+            column += i32::from(STRATEGIC_MAP_WIDTH);
+        } else if column >= i32::from(STRATEGIC_MAP_WIDTH) {
+            column -= i32::from(STRATEGIC_MAP_WIDTH);
+        }
+        let row = (i32::from(row) - 3).clamp(0, 0x35);
+        geometry
+            .tile(row as u16, column as u16)
+            .expect("retail strategic-map viewport origin is inside the map")
+    }
+
     pub fn iter(&self) -> impl ExactSizeIterator<Item = &TileState> {
         self.tiles.iter()
     }
@@ -126,7 +147,19 @@ pub struct TileState {
     pub action: Option<TileAction>,
     pub flags: TileFlags,
     pub region: Option<RegionId>,
-    pub river: Option<RiverSegment>,
+}
+
+impl TileState {
+    /// River connectivity derived from the saved river picture sprite.
+    ///
+    /// Retail stores one `riverSpriteCode` per tile. Connection/flow semantics are a pure
+    /// function of that sprite; do not persist a second river field beside it.
+    pub const fn river(self) -> Option<RiverSegment> {
+        match self.rendering.river_sprite {
+            Some(sprite) => Some(sprite.segment()),
+            None => None,
+        }
+    }
 }
 
 /// The resolved per-tile picture choices consumed by retail's strategic-map renderer.
@@ -200,6 +233,8 @@ impl<'de> Deserialize<'de> for TileRendering {
 }
 
 /// One finalized retail `TTerrainStateRecord::riverSpriteCode` picture choice.
+///
+/// This is the sole authoritative river fact on a finished tile. Connectivity is derived.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
 pub struct RiverSprite(u8);
@@ -213,8 +248,73 @@ impl RiverSprite {
         }
     }
 
+    /// Canonical picture sprite for a generation-time connection code (`1..=0x15`).
+    ///
+    /// Map generation works in connection space until `AssignPictToTile` picks a concrete
+    /// picture; tests and provisional stamps use the first retail sprite that maps to the code.
+    pub const fn canonical_for_connection(connection_code: u8) -> Option<Self> {
+        let retail = match connection_code {
+            1 => 0x0b,
+            2 => 0x0c,
+            3 => 0x0d,
+            4 => 0x0f,
+            5 => 0x11,
+            6 => 0x15,
+            7 => 0x17,
+            8 => 0x19,
+            9 => 0x1a,
+            0x0a => 0x2b,
+            0x0b => 0x2c,
+            0x0c => 0x2e,
+            0x0d => 0x2f,
+            0x0e => 0x30,
+            0x0f => 0x32,
+            0x10 => 0x37,
+            0x11 => 0x38,
+            0x12 => 0x3a,
+            0x13 => 0x33,
+            0x14 => 0x34,
+            0x15 => 0x36,
+            _ => return None,
+        };
+        Self::from_retail(retail)
+    }
+
     pub const fn retail(self) -> u8 {
         self.0
+    }
+
+    /// Retail `RiverConnectionCode` mapping from a saved picture sprite.
+    pub const fn connection_code(self) -> u8 {
+        const FLOW_CONNECTIONS: [u8; 16] = [1, 2, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 7, 7, 8, 9];
+        let mut sprite = self.0;
+        if sprite >= 0x1b && sprite <= 0x2a {
+            sprite -= 0x10;
+        }
+        if sprite >= 0x0b && sprite <= 0x1a {
+            return FLOW_CONNECTIONS[(sprite - 0x0b) as usize];
+        }
+        match sprite {
+            0x2b => 0x0a,
+            0x2c | 0x2d => 0x0b,
+            0x2e => 0x0c,
+            0x2f => 0x0d,
+            0x30 | 0x31 => 0x0e,
+            0x32 => 0x0f,
+            0x33 => 0x13,
+            0x34 | 0x35 => 0x14,
+            0x36 => 0x15,
+            0x37 => 0x10,
+            0x38 | 0x39 => 0x11,
+            0x3a => 0x12,
+            _ => panic!("RiverSprite invariant broken: no connection mapping"),
+        }
+    }
+
+    pub const fn segment(self) -> RiverSegment {
+        RiverSegment {
+            connection_code: self.connection_code(),
+        }
     }
 }
 
@@ -422,7 +522,6 @@ impl Default for TileState {
             action: None,
             flags: TileFlags::empty(),
             region: None,
-            river: None,
         }
     }
 }
@@ -553,5 +652,45 @@ mod tests {
         assert_eq!(RiverSegment::from_connection_code(0), None);
         assert!(serde_json::from_str::<RiverSegment>(r#"{"connection_code":0}"#).is_err());
         assert!(serde_json::from_str::<RiverSegment>(r#"{"connection_code":22}"#).is_err());
+    }
+
+    #[test]
+    fn river_sprite_is_the_sole_tile_river_fact() {
+        for (sprite, connection_code) in [
+            (0x0b, 1),
+            (0x0d, 3),
+            (0x0e, 3),
+            (0x1a, 9),
+            (0x1b, 1),
+            (0x2a, 9),
+            (0x2b, 0x0a),
+            (0x2c, 0x0b),
+            (0x2d, 0x0b),
+            (0x32, 0x0f),
+            (0x33, 0x13),
+            (0x37, 0x10),
+            (0x38, 0x11),
+            (0x39, 0x11),
+            (0x3a, 0x12),
+        ] {
+            let sprite = RiverSprite::from_retail(sprite).unwrap();
+            assert_eq!(sprite.connection_code(), connection_code);
+            assert_eq!(sprite.segment().connection_code(), connection_code);
+            let tile = TileState {
+                rendering: TileRendering {
+                    river_sprite: Some(sprite),
+                    ..TileRendering::default()
+                },
+                ..TileState::default()
+            };
+            assert_eq!(tile.river().unwrap().connection_code(), connection_code);
+        }
+        assert_eq!(TileState::default().river(), None);
+        assert_eq!(
+            RiverSprite::canonical_for_connection(4)
+                .unwrap()
+                .connection_code(),
+            4
+        );
     }
 }

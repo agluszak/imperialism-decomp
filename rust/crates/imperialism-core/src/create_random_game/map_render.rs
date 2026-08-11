@@ -20,7 +20,6 @@ pub(super) fn tile_from_generated(tile: GeneratedTerrainTile) -> TileState {
         action: None,
         flags: TileFlags::empty(),
         region: None,
-        river: tile.river,
     }
 }
 /// `TMapMgr::UpdateStrategicMapTileIconVariantState` (0x00511610).
@@ -282,17 +281,17 @@ pub(super) fn place_guaranteed_resource(
     gate_flags[index] = resolve_region_tile_subtype_code(tiles, gate_flags, index);
 }
 /// Fresh-map `TMapMgr::AssignPictToTile` pass after `GuaranteeResources`.
+///
+/// `river_connections` carries generation-time connection codes until this pass writes the
+/// authoritative picture sprites onto each tile. Finished tiles keep only those sprites.
 pub(super) fn assign_fresh_map_pictures(
     tiles: &mut [TileState],
+    river_connections: &mut [u8],
     gate_flags: &[i8],
     geometry: MapGeometry,
     map_lcg: &mut RetailLcg,
 ) {
     let mut sprite_variants = vec![0u8; tiles.len()];
-    let mut river_sprite_codes: Vec<u8> = tiles
-        .iter()
-        .map(|tile| tile.river.map_or(0, RiverSegment::connection_code))
-        .collect();
 
     for index in 0..tiles.len() {
         assign_picture_to_tile_for_rng(
@@ -301,23 +300,23 @@ pub(super) fn assign_fresh_map_pictures(
             geometry,
             index,
             &mut sprite_variants,
-            &mut river_sprite_codes,
+            river_connections,
             map_lcg,
         );
         let (transition_mask, coast_or_secondary_mask) =
             fresh_picture_masks(tiles, gate_flags, geometry, index);
-        assert_eq!(
-            tiles[index].river.is_some(),
-            river_sprite_codes[index] != 0,
-            "fresh-map river must resolve to one picture sprite"
-        );
         tiles[index].rendering = TileRendering::from_retail(
             sprite_variants[index],
-            river_sprite_codes[index],
+            river_connections[index],
             transition_mask,
             coast_or_secondary_mask,
         )
         .expect("fresh-map picture assignment must produce valid rendering state");
+        assert_eq!(
+            tiles[index].river().is_some(),
+            river_connections[index] != 0,
+            "finished river sprite must derive the generation connection"
+        );
     }
 }
 pub(super) fn assign_picture_to_tile_for_rng(

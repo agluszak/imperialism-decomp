@@ -58,7 +58,8 @@ pub(in crate::ui::city) fn on_city_canvas_click(
         let available = !matches!(
             building.slot,
             CityFacilitySlot::OilRefinery | CityFacilitySlot::PowerPlant
-        ) || session.0.technology().city_capabilities_by_nation[nation].oil_drilling;
+        ) || session.0.technology().city_capabilities_by_nation[nation]
+            .oil_drilling;
         if available {
             open_city_construction_dialog(&mut ui, &mut session, nation, building.slot);
             for (entity, _, _) in &dialogs {

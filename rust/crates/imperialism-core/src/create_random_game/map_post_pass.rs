@@ -125,7 +125,18 @@ pub(super) fn apply_tile_post_passes(
         assign_province_fallback_capitals(&mut tiles, &mut gate_flags, geometry, map_lcg);
 
     guarantee_resources(&mut tiles, &mut gate_flags, map_lcg);
-    assign_fresh_map_pictures(&mut tiles, &gate_flags, geometry, map_lcg);
+    let mut river_connections: Vec<u8> = map
+        .tiles()
+        .iter()
+        .map(|tile| tile.river.map_or(0, RiverSegment::connection_code))
+        .collect();
+    assign_fresh_map_pictures(
+        &mut tiles,
+        &mut river_connections,
+        &gate_flags,
+        geometry,
+        map_lcg,
+    );
     TilePostPassState {
         tiles: tiles.into_boxed_slice(),
         gate_flags,

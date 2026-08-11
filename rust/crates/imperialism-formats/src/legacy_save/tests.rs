@@ -938,11 +938,6 @@ fn semantic_projection_rejects_malformed_territory_inputs() {
         first_great_power_mut(&mut save).country.owned_regions[0] = owned_region;
         assert!(save.game_state(game_context()).is_err());
     }
-    for encoded_status in [-2, 0, 99, 123, 199, 223] {
-        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
-        first_great_power_mut(&mut save).country.encoded_nation_slot = encoded_status;
-        assert!(save.game_state(game_context()).is_err());
-    }
 
     let mut mismatched_index = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
     mismatched_index.map.provinces[79].owner_nation = 1;
@@ -989,15 +984,12 @@ fn retail_river_sprites_project_to_canonical_connection_codes() {
         (0x3a, 0x12),
     ] {
         assert_eq!(
-            river_segment_from_retail_sprite(sprite, 7)
-                .unwrap()
-                .unwrap()
-                .connection_code(),
+            RiverSprite::from_retail(sprite).unwrap().connection_code(),
             connection_code
         );
     }
-    assert_eq!(river_segment_from_retail_sprite(0, 7).unwrap(), None);
-    assert!(river_segment_from_retail_sprite(1, 7).is_err());
+    assert_eq!(RiverSprite::from_retail(0), None);
+    assert_eq!(RiverSprite::from_retail(1), None);
 }
 
 #[test]
@@ -1115,7 +1107,7 @@ fn parses_the_retail_beginning_of_game_prefix() {
     assert_eq!(country.identity, "Zimm");
     assert_eq!(country.alternate_identity, "Zimm");
     assert_eq!(country.nation_slot, 0);
-    assert_eq!(country.encoded_nation_slot, -1);
+    assert_eq!(country.status, CountryStatus::Independent);
     assert_eq!(country.treasury, 10_000);
     assert_eq!(country.home_tile, 3_494);
     assert_eq!(country.overlay_anchor_tile, -1);
@@ -1425,8 +1417,8 @@ fn semantic_projection_rejects_unit_id_counter_overflow() {
 fn semantic_projection_preserves_inactive_pending_action_payload() {
     let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
     let prefix = &mut first_great_power_mut(&mut save).prefix;
-    prefix.pending_action_status[0] = 0;
-    prefix.pending_action_payload_by_action[0] = 0;
+    prefix.pending_actions[PendingActionKind::NavyGrowthReward] =
+        PendingActionState::new(PendingActionStatus::None, Some(0));
 
     let state = save.game_state(game_context()).unwrap();
     assert_eq!(
@@ -1443,16 +1435,17 @@ fn semantic_projection_preserves_inactive_pending_action_payload() {
 }
 
 #[test]
-fn semantic_projection_rejects_pending_action_payload_below_sentinel() {
-    let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
-    let prefix = &mut first_great_power_mut(&mut save).prefix;
-    prefix.pending_action_payload_by_action[0] = -2;
-
+fn pending_action_decode_rejects_payload_below_sentinel() {
     assert!(matches!(
-        save.game_state(game_context()),
+        pending_action_from_retail(0, -2),
         Err(LegacySaveError::StateProjection(message))
             if message == "pending-action payload -2 is below the -1 sentinel"
     ));
+    assert!(pending_action_from_retail(0x35, 0).is_err());
+    assert_eq!(
+        pending_action_from_retail(0, 0).unwrap(),
+        PendingActionState::new(PendingActionStatus::None, Some(0))
+    );
 }
 
 #[test]

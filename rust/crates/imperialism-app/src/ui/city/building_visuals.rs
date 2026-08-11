@@ -68,7 +68,10 @@ impl CityBuildingHitMask {
     }
 }
 
-pub(in crate::ui::city) fn apply_city_picture_transparency(image: &mut Image, indexed: &IndexedPicture) {
+pub(in crate::ui::city) fn apply_city_picture_transparency(
+    image: &mut Image,
+    indexed: &IndexedPicture,
+) {
     let width = image.width() as usize;
     let height = image.height() as usize;
     let Some(pixels) = image.data.as_mut() else {
@@ -293,7 +296,10 @@ pub(in crate::ui::city) fn spawn_city_buildings(
     spawn_city_building_actions(commands, main, actions, state, nation, assets);
 }
 
-pub(in crate::ui::city) fn apply_palette_index_transparency(image: &mut Image, indexed: &IndexedPicture) -> bool {
+pub(in crate::ui::city) fn apply_palette_index_transparency(
+    image: &mut Image,
+    indexed: &IndexedPicture,
+) -> bool {
     let width = image.width() as usize;
     let height = image.height() as usize;
     let Some(pixels) = image.data.as_mut() else {
@@ -343,7 +349,10 @@ pub(in crate::ui::city) fn apply_city_action_transparency(
     }
 }
 
-pub(in crate::ui::city) fn city_building_action_enabled(city: &CityState, slot: CityFacilitySlot) -> bool {
+pub(in crate::ui::city) fn city_building_action_enabled(
+    city: &CityState,
+    slot: CityFacilitySlot,
+) -> bool {
     if slot == CityFacilitySlot::PowerPlant {
         !city.power_plant_upgrade_queued && city.orders.power_plant.progress.quantity > 0
     } else {
@@ -499,7 +508,10 @@ pub(in crate::ui::city) fn animate_city_building_actions(
     }
 }
 
-pub(in crate::ui::city) fn transparent_picture(ui: &mut UiSpawner, picture_id: PictureId) -> Handle<Image> {
+pub(in crate::ui::city) fn transparent_picture(
+    ui: &mut UiSpawner,
+    picture_id: PictureId,
+) -> Handle<Image> {
     let indexed = ui
         .indexed_picture(picture_id)
         .expect("retail City detail picture must have indexed pixels");

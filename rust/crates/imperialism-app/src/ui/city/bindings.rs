@@ -125,7 +125,8 @@ pub(in crate::ui::city) const SHIPYARD_MATERIALS: [ResourceKind; 6] = [
     ResourceKind::Coal,
     ResourceKind::Fuel,
 ];
-pub(in crate::ui::city) const SHIPYARD_OVERLAY_LEFT: [f32; 8] = [4.0, 4.0, 3.0, 2.0, 4.0, 4.0, 3.0, 2.0];
+pub(in crate::ui::city) const SHIPYARD_OVERLAY_LEFT: [f32; 8] =
+    [4.0, 4.0, 3.0, 2.0, 4.0, 4.0, 3.0, 2.0];
 pub(in crate::ui::city) const SHIPYARD_STAT_ORIGINS: [(f32, f32); 6] = [
     (28.0, 86.0),
     (28.0, 102.0),
@@ -142,10 +143,11 @@ pub(in crate::ui::city) const POWER_ORDERS: [CityOrderBinding; 1] = [CityOrderBi
     order: CityOrderId::PowerPlant,
     tag: fourcc!("powe"),
 }];
-pub(in crate::ui::city) const TRANSPORT_CAPACITY_ORDERS: [CityOrderBinding; 1] = [CityOrderBinding {
-    order: CityOrderId::TransportCapacity,
-    tag: fourcc!("rail"),
-}];
+pub(in crate::ui::city) const TRANSPORT_CAPACITY_ORDERS: [CityOrderBinding; 1] =
+    [CityOrderBinding {
+        order: CityOrderId::TransportCapacity,
+        tag: fourcc!("rail"),
+    }];
 pub(in crate::ui::city) const POPULATION_ORDERS: [CityOrderBinding; 1] = [CityOrderBinding {
     order: CityOrderId::PopulationGrowth,
     tag: fourcc!("popu"),
@@ -201,7 +203,8 @@ pub(in crate::ui::city) const LUMBER_STOCKS: [(ResourceKind, FourCc, i16); 1] =
     [(ResourceKind::Timber, fourcc!("timb"), 2)];
 pub(in crate::ui::city) const FURNITURE_STOCKS: [(ResourceKind, FourCc, i16); 1] =
     [(ResourceKind::Lumber, fourcc!("lumb"), 2)];
-pub(in crate::ui::city) const OIL_STOCKS: [(ResourceKind, FourCc, i16); 1] = [(ResourceKind::Oil, fourcc!("oil "), 2)];
+pub(in crate::ui::city) const OIL_STOCKS: [(ResourceKind, FourCc, i16); 1] =
+    [(ResourceKind::Oil, fourcc!("oil "), 2)];
 pub(in crate::ui::city) const WAREHOUSE_STOCKS: [(ResourceKind, FourCc); 20] = [
     (ResourceKind::Cotton, fourcc!("cott")),
     (ResourceKind::Wool, fourcc!("wool")),
@@ -304,7 +307,9 @@ pub(in crate::ui::city) fn dialog_orders(slot: CityFacilitySlot) -> &'static [Ci
     }
 }
 
-pub(in crate::ui::city) const fn armory_button_tag(category: MilitaryRecruitmentCategory) -> FourCc {
+pub(in crate::ui::city) const fn armory_button_tag(
+    category: MilitaryRecruitmentCategory,
+) -> FourCc {
     match category {
         MilitaryRecruitmentCategory::LightInfantry => fourcc!("civ0"),
         MilitaryRecruitmentCategory::RegularInfantry => fourcc!("civ1"),
@@ -378,7 +383,11 @@ pub(in crate::ui::city) fn city_is_expanding(city: &CityState, slot: CityFacilit
         .is_some_and(|state| state.progress.quantity > 0)
 }
 
-pub(in crate::ui::city) fn city_building_picture(city: &CityState, slot: CityFacilitySlot, level: i16) -> Option<PictureId> {
+pub(in crate::ui::city) fn city_building_picture(
+    city: &CityState,
+    slot: CityFacilitySlot,
+    level: i16,
+) -> Option<PictureId> {
     let expanding = city_is_expanding(city, slot);
     let should_draw = level >= 1
         || (is_ordinary_industry(slot) && expanding)
@@ -400,7 +409,11 @@ pub(in crate::ui::city) fn city_building_picture(city: &CityState, slot: CityFac
     ))
 }
 
-pub(in crate::ui::city) fn city_string(ui: &UiSpawner, group: i16, zero_based_index: i16) -> String {
+pub(in crate::ui::city) fn city_string(
+    ui: &UiSpawner,
+    group: i16,
+    zero_based_index: i16,
+) -> String {
     ui.string(group, zero_based_index + 1)
         .expect("validated English retail City string")
 }

@@ -283,6 +283,22 @@ impl GameState {
         }
     }
 
+    /// Returns whether `quantity` would be accepted without mutating authoritative state.
+    ///
+    /// City UI uses this to enable Accept; do not probe by calling
+    /// [`Self::set_city_order_quantity`] and rolling the quantity back.
+    pub fn can_set_city_order_quantity(
+        &self,
+        nation: MajorNationId,
+        order: CityOrderId,
+        quantity: i16,
+    ) -> bool {
+        let mut scratch = self.clone();
+        scratch
+            .set_city_order_quantity(nation, order, quantity)
+            .applied()
+    }
+
     /// Applies an absolute retail city-order quantity. Legal rejection is an
     /// explicit [`CityOrderChange::Rejected`]; the remembered limiting constraint may
     /// still be refreshed by either outcome.

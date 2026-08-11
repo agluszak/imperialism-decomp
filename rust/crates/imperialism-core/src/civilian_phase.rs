@@ -104,7 +104,7 @@ impl GameState {
                 current[resource] = current[resource].wrapping_add(contribution);
             }
 
-            if tile.river.is_some() && level == 2 {
+            if tile.river().is_some() && level == 2 {
                 current[ResourceKind::Fish] = current[ResourceKind::Fish].wrapping_add(1);
             }
             if let Some(province) = tile.province
@@ -713,7 +713,7 @@ impl GameState {
                 return true;
             }
         }
-        self.world[tile].river.is_some()
+        self.world[tile].river().is_some()
             && river_reaches_sea_without_crossing_nation(&self.world, tile)
     }
 
@@ -726,7 +726,7 @@ impl GameState {
         }) {
             return true;
         }
-        self.world[tile].river.is_some()
+        self.world[tile].river().is_some()
             && river_reaches_sea_without_crossing_nation(&self.world, tile)
     }
 }
@@ -820,7 +820,7 @@ fn river_reaches_sea_without_crossing_nation(world: &StrategicMap, start: TileId
 
     let geometry = world.geometry();
     let start_owner = world[start].owner_nation;
-    let flow_type = match world[start].river.and_then(|river| river.flow_type()) {
+    let flow_type = match world[start].river().and_then(|river| river.flow_type()) {
         Some(flow_type) => flow_type,
         None => return false,
     };
@@ -836,7 +836,7 @@ fn river_reaches_sea_without_crossing_nation(world: &StrategicMap, start: TileId
             if tile.terrain == TerrainKind::Water {
                 return !crossed_boundary;
             }
-            let Some(next_flow_type) = tile.river.and_then(|river| river.flow_type()) else {
+            let Some(next_flow_type) = tile.river().and_then(|river| river.flow_type()) else {
                 break;
             };
             if tile.owner_nation != start_owner {

@@ -74,9 +74,7 @@ fn enter_city_site(
     mut assets: UiAssetResources,
     session: Res<GameSession>,
 ) {
-    let view = catalog
-        .view(&city_site_view_id())
-        .expect("validated city-site catalog view");
+    let view = catalog.required_view(&city_site_view_id());
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
     bind_city_site_controls(&mut commands, &spawned);
     let map = bind_strategic_base_terrain(&mut commands, &spawned, &mut assets, &session.0);
@@ -138,9 +136,7 @@ fn highlights_city_site_candidate(state: &GameState, nation: MajorNationId, tile
 }
 
 fn bind_city_site_controls(commands: &mut Commands, spawned: &crate::ui::catalog::SpawnedView) {
-    let cancel = spawned
-        .require_unique(fourcc!("canc"))
-        .expect("validated city-site cancel binding");
+    let cancel = spawned.unique(fourcc!("canc"));
     commands.entity(cancel).insert(CitySiteAction::Cancel);
 }
 

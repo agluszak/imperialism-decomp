@@ -52,7 +52,7 @@ enum EasyTurnFromSaveResult {
     Completed {
         from_turn: i32,
         to_turn: i32,
-        gates: Vec<UiGate>,
+        screens: Vec<GameScreen>,
     },
 }
 
@@ -64,44 +64,32 @@ fn easy_turn_from_save() {
         |state, case: EasyTurnFromSaveCase| {
             assert!(case.reject_offers);
             assert!(case.expect_exactly_one_turn);
-            let from_turn = state.turn.economic_turn;
+            let from_turn = state.turn().economic_turn;
 
             let first = state.finish_player_orders();
-            assert!(matches!(
+            assert_eq!(
                 first,
-                AdvanceTurnOutcome::Blocked {
-                    block: TurnBlock::Ui {
-                        gate: UiGate::DealBook
-                    },
-                    ..
+                FlowStop::Show {
+                    screen: GameScreen::DealBook
                 }
-            ));
+            );
 
-            let second = state.resume_after_ui(UiGate::DealBook);
-            assert!(matches!(
+            let second = state.dismiss_blocking_screen();
+            assert_eq!(
                 second,
-                AdvanceTurnOutcome::Blocked {
-                    block: TurnBlock::Ui {
-                        gate: UiGate::Newspaper
-                    },
-                    ..
+                FlowStop::Show {
+                    screen: GameScreen::Newspaper
                 }
-            ));
+            );
 
-            let third = state.resume_after_ui(UiGate::Newspaper);
-            assert!(matches!(
-                third,
-                AdvanceTurnOutcome::Blocked {
-                    block: TurnBlock::PlayerOrders,
-                    ..
-                }
-            ));
-            assert_eq!(state.turn.economic_turn, from_turn + 1);
+            let third = state.dismiss_blocking_screen();
+            assert_eq!(third, FlowStop::PlayerOrders);
+            assert_eq!(state.turn().economic_turn, from_turn + 1);
 
             EasyTurnFromSaveResult::Completed {
                 from_turn,
-                to_turn: state.turn.economic_turn,
-                gates: vec![UiGate::DealBook, UiGate::Newspaper],
+                to_turn: state.turn().economic_turn,
+                screens: vec![GameScreen::DealBook, GameScreen::Newspaper],
             }
         },
     )

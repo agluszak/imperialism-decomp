@@ -274,9 +274,7 @@ fn enter_diplomacy_screen(
     session: Option<Res<GameSession>>,
 ) {
     let view_id = diplomacy_view_id();
-    let view = catalog
-        .view(&view_id)
-        .expect("validated diplomacy-screen catalog view");
+    let view = catalog.required_view(&view_id);
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
     bind_game_screen_nav(&mut commands, &catalog, &spawned);
     commands
@@ -388,9 +386,7 @@ fn bind_diplomacy_screen(
         trade_row: 0,
     });
 
-    let selected = spawned
-        .require_under(catalog, fourcc!("topB"), fourcc!("dipl"))
-        .expect("validated selected diplomacy binding");
+    let selected = spawned.under(catalog, fourcc!("topB"), fourcc!("dipl"));
     commands
         .entity(selected)
         .insert((Checked, InteractionDisabled));
@@ -410,9 +406,7 @@ fn bind_diplomacy_screen(
         (fourcc!("grat"), DiplomacyTopic::Grants),
         (fourcc!("trat"), DiplomacyTopic::Trade),
     ] {
-        let control = spawned
-            .require_unique(tag)
-            .expect("validated diplomacy topic binding");
+        let control = spawned.unique(tag);
         commands
             .entity(control)
             .insert(DiplomacyTopicControl(topic))
@@ -435,9 +429,7 @@ fn bind_diplomacy_screen(
     .into_iter()
     .enumerate()
     {
-        let control = spawned
-            .require_unique(tag)
-            .expect("validated diplomacy grant binding");
+        let control = spawned.unique(tag);
         commands.entity(control).insert(DiplomacyGrantControl {
             row: index / 2,
             recurring: index % 2 != 0,
@@ -488,9 +480,7 @@ fn bind_diplomacy_screen(
                 &[fourcc!("main"), fourcc!("trad"), fourcc!("clus"), tag],
             )
         } else {
-            spawned
-                .require_unique(tag)
-                .expect("validated unsupported diplomacy control")
+            spawned.unique(tag)
         };
         commands.entity(control).insert(InteractionDisabled);
     }
@@ -507,9 +497,7 @@ fn bind_diplomacy_screen(
         (fourcc!("scr5"), true),
         (fourcc!("scr6"), false),
     ] {
-        let control = spawned
-            .require_unique(tag)
-            .expect("validated diplomacy default selection");
+        let control = spawned.unique(tag);
         if checked {
             commands.entity(control).insert(Checked);
         } else {
@@ -529,9 +517,7 @@ fn bind_diplomacy_screen(
         ))
         .remove::<Checked>();
 
-    let main = spawned
-        .require_unique(fourcc!("main"))
-        .expect("validated diplomacy map binding");
+    let main = spawned.unique(fourcc!("main"));
     let map = commands
         .spawn((
             Node {
@@ -555,15 +541,11 @@ fn bind_diplomacy_screen(
     spawn_diplomacy_map_labels(commands, map, &styles, icon_atlas);
     spawn_diplomacy_panel_text(commands, catalog, spawned, &styles);
 
-    let treasury = spawned
-        .require_unique(fourcc!("trea"))
-        .expect("validated diplomacy treasury binding");
+    let treasury = spawned.unique(fourcc!("trea"));
     commands
         .entity(treasury)
         .insert((Text::new(""), DiplomacyTreasury));
-    let left = spawned
-        .require_unique(fourcc!("ltab"))
-        .expect("validated diplomacy left bracket binding");
+    let left = spawned.unique(fourcc!("ltab"));
     commands.entity(left).insert((
         ImageNode::new(pictures.information.clone()),
         DiplomacyTopicBracket {
@@ -571,9 +553,7 @@ fn bind_diplomacy_screen(
             pictures: pictures.clone(),
         },
     ));
-    let right = spawned
-        .require_unique(fourcc!("rtab"))
-        .expect("validated diplomacy right bracket binding");
+    let right = spawned.unique(fourcc!("rtab"));
     commands.entity(right).insert((
         ImageNode::new(pictures.information.clone()),
         DiplomacyTopicBracket {
@@ -927,9 +907,7 @@ fn require_direct_path(
     spawned: &SpawnedView,
     tags: &[FourCc],
 ) -> Entity {
-    let view = catalog
-        .view(&spawned.view_id)
-        .expect("spawned diplomacy view remains cataloged");
+    let view = catalog.required_view(&spawned.view_id);
     let mut parent = None;
     for (depth, &tag) in tags.iter().enumerate() {
         let mut matches = view
@@ -1087,9 +1065,7 @@ fn open_diplomacy_rejection_notice(request: On<OpenDiplomacyRejectionNotice>, mu
     ui.commands
         .entity(spawned.root)
         .insert(DespawnOnExit(AppState::Diplomacy));
-    let title = spawned
-        .require_unique(fourcc!("titl"))
-        .expect("validated diplomacy notice title");
+    let title = spawned.unique(fourcc!("titl"));
     let (title_font, title_layout, _) = ui
         .text_style(RetailTextStylePreset {
             font_family: 1,
@@ -1104,9 +1080,7 @@ fn open_diplomacy_rejection_notice(request: On<OpenDiplomacyRejectionNotice>, mu
         title_layout,
         notice_color,
     ));
-    let body = spawned
-        .require_unique(fourcc!("info"))
-        .expect("validated diplomacy notice body");
+    let body = spawned.unique(fourcc!("info"));
     let (body_font, body_layout, _) = ui
         .text_style(RetailTextStylePreset {
             font_family: 1,
@@ -1121,23 +1095,17 @@ fn open_diplomacy_rejection_notice(request: On<OpenDiplomacyRejectionNotice>, mu
         body_layout,
         notice_color,
     ));
-    let coat = spawned
-        .require_unique(fourcc!("coat"))
-        .expect("validated diplomacy notice coat");
+    let coat = spawned.unique(fourcc!("coat"));
     let coat_picture = PictureId::new(9500 + i16::from(request.source.get()));
     if let Ok(image) = ui.picture(coat_picture) {
         ui.commands.entity(coat).insert(ImageNode::new(image));
     }
-    let okay = spawned
-        .require_unique(fourcc!("okay"))
-        .expect("validated diplomacy notice confirmation");
+    let okay = spawned.unique(fourcc!("okay"));
     ui.commands
         .entity(okay)
         .insert(DiplomacyNoticeClose(spawned.root))
         .remove::<InteractionDisabled>();
-    let cancel = spawned
-        .require_unique(fourcc!("cncl"))
-        .expect("validated diplomacy notice cancel control");
+    let cancel = spawned.unique(fourcc!("cncl"));
     ui.commands.entity(cancel).insert(Visibility::Hidden);
 }
 
@@ -1498,9 +1466,13 @@ fn representative_tile_for_nation(state: &GameState, nation: NationId) -> Option
     }
 
     if tile_count == 0 {
-        return (state.nations().owned_region_count(nation).unwrap_or_default() > 0)
-            .then_some(fallback)
-            .flatten();
+        return (state
+            .nations()
+            .owned_region_count(nation)
+            .unwrap_or_default()
+            > 0)
+        .then_some(fallback)
+        .flatten();
     }
     if west_count != 0 && east_count != 0 {
         column_sum += west_count * u32::from(STRATEGIC_MAP_WIDTH);

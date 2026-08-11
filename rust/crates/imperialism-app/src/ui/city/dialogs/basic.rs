@@ -24,7 +24,12 @@ pub(in crate::ui::city) fn bind_warehouse_dialog(
         })
         .expect("retail Warehouse value text style");
     let text_color = ui.palette_color(0);
-    let root = bind_city_dialog_root(&mut ui.commands, spawned, nation, CityFacilitySlot::Warehouse);
+    let root = bind_city_dialog_root(
+        &mut ui.commands,
+        spawned,
+        nation,
+        CityFacilitySlot::Warehouse,
+    );
     let name = spawned
         .require_unique(fourcc!("name"))
         .expect("validated Warehouse name binding");

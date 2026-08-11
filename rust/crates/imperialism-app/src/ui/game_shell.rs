@@ -6,7 +6,7 @@ use bevy::log::warn;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
-use imperialism_core::{AdvanceTurnOutcome, MajorNationId, TurnYield, UiRequest};
+use imperialism_core::{FlowStop, GameScreen, MajorNationId};
 use imperialism_formats::{FourCc, ScopedViewId, TRADE, fourcc};
 
 pub(crate) const TOOLBAR_PARENT_TAGS: &[FourCc] = &[fourcc!("tool"), fourcc!("topB")];
@@ -156,7 +156,7 @@ enum GameScreenNavAction {
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum TurnFlowAction {
     FinishPlayerOrders,
-    Resume(UiRequest),
+    DismissBlockingScreen,
 }
 
 pub(crate) struct GameShellPlugin;
@@ -179,9 +179,17 @@ impl Plugin for GameShellPlugin {
 }
 
 fn enter_strategic_map_view(mut session: Option<ResMut<GameSession>>) {
-    if let Some(session) = session.as_deref_mut() {
-        session.0.enter_strategic_map_view();
-    }
+    let Some(session) = session.as_deref_mut() else {
+        return;
+    };
+    let Some(tile) = session
+        .0
+        .first_idle_civilian_tile(session.0.turn().active_nation)
+    else {
+        return;
+    };
+    let origin = session.0.world().viewport_origin_centered_on(tile);
+    session.0.world_mut().set_view_origin(origin);
 }
 
 #[derive(Component, Clone, Debug, Eq, PartialEq)]
@@ -198,15 +206,11 @@ fn enter_game_screen(
     let Some(view_id) = view_id_for_state(current) else {
         return;
     };
-    let view = catalog
-        .view(&view_id)
-        .expect("validated game-screen catalog view");
+    let view = catalog.required_view(&view_id);
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
     bind_game_screen_nav(&mut commands, &catalog, &spawned);
     if current == AppState::StrategicMap {
-        let end = spawned
-            .require_unique(fourcc!("DONE"))
-            .expect("validated strategic-map end-turn binding");
+        let end = spawned.unique(fourcc!("DONE"));
         commands
             .entity(end)
             .insert(TurnFlowAction::FinishPlayerOrders)
@@ -242,21 +246,12 @@ fn enter_turn_flow_screen(
         AppState::Newspaper => newspaper_view_id(),
         _ => return,
     };
-    let view = catalog
-        .view(&view_id)
-        .expect("validated turn-flow catalog view");
+    let view = catalog.required_view(&view_id);
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
-    let end = spawned
-        .require_unique(fourcc!("end "))
-        .expect("validated turn-flow close binding");
-    let gate = match current {
-        AppState::DealBook => UiRequest::DealBook,
-        AppState::Newspaper => UiRequest::Newspaper,
-        _ => unreachable!(),
-    };
+    let end = spawned.unique(fourcc!("end "));
     commands
         .entity(end)
-        .insert(TurnFlowAction::Resume(gate))
+        .insert(TurnFlowAction::DismissBlockingScreen)
         .remove::<InteractionDisabled>();
     disable_control(&mut commands, &spawned, fourcc!("quer"));
 
@@ -361,10 +356,9 @@ fn format_currency(value: i32) -> String {
 }
 
 fn set_control_text(commands: &mut Commands, spawned: &SpawnedView, tag: FourCc, value: String) {
-    let entity = spawned
-        .require_unique(tag)
-        .unwrap_or_else(|error| panic!("validated {tag} text binding: {error}"));
-    commands.entity(entity).insert(Text::new(value));
+    commands
+        .entity(spawned.unique(tag))
+        .insert(Text::new(value));
 }
 
 pub(crate) fn bind_game_screen_nav(
@@ -372,14 +366,13 @@ pub(crate) fn bind_game_screen_nav(
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
 ) {
-    let trade = control_under_parents(catalog, spawned, TRADE, TOOLBAR_PARENT_TAGS)
-        .expect("validated game-screen trade binding");
-    let transport = control_under_parents(catalog, spawned, fourcc!("tran"), TOOLBAR_PARENT_TAGS)
-        .expect("validated game-screen transport binding");
-    let city = control_under_parents(catalog, spawned, fourcc!("city"), TOOLBAR_PARENT_TAGS)
-        .expect("validated game-screen city binding");
-    let diplomacy = control_under_parents(catalog, spawned, fourcc!("dipl"), TOOLBAR_PARENT_TAGS)
-        .expect("validated game-screen diplomacy binding");
+    let trade = required_control_under_parents(catalog, spawned, TRADE, TOOLBAR_PARENT_TAGS);
+    let transport =
+        required_control_under_parents(catalog, spawned, fourcc!("tran"), TOOLBAR_PARENT_TAGS);
+    let city =
+        required_control_under_parents(catalog, spawned, fourcc!("city"), TOOLBAR_PARENT_TAGS);
+    let diplomacy =
+        required_control_under_parents(catalog, spawned, fourcc!("dipl"), TOOLBAR_PARENT_TAGS);
     for (entity, action) in [
         (trade, GameScreenNavAction::Trade),
         (transport, GameScreenNavAction::Transport),
@@ -389,8 +382,8 @@ pub(crate) fn bind_game_screen_nav(
         commands.entity(entity).insert(action);
     }
     if spawned.view_id != strategic_map_view_id() {
-        let leave = control_under_parents(catalog, spawned, fourcc!("end "), LEAVE_PARENT_TAGS)
-            .expect("validated game-screen return-to-map binding");
+        let leave =
+            required_control_under_parents(catalog, spawned, fourcc!("end "), LEAVE_PARENT_TAGS);
         commands
             .entity(leave)
             .insert(GameScreenNavAction::StrategicMap)
@@ -401,10 +394,9 @@ pub(crate) fn bind_game_screen_nav(
 /// Marks a catalog-tagged control [`InteractionDisabled`] because its retail behavior
 /// is not implemented yet.
 pub(crate) fn disable_control(commands: &mut Commands, spawned: &SpawnedView, tag: FourCc) {
-    let entity = spawned
-        .require_unique(tag)
-        .expect("validated disabled control binding");
-    commands.entity(entity).insert(InteractionDisabled);
+    commands
+        .entity(spawned.unique(tag))
+        .insert(InteractionDisabled);
 }
 
 /// Resolve an activate control under one of the given ancestor tags.
@@ -422,36 +414,29 @@ fn control_under_parents(
     None
 }
 
+fn required_control_under_parents(
+    catalog: &UiCatalogResource,
+    spawned: &SpawnedView,
+    tag: FourCc,
+    parents: &[FourCc],
+) -> Entity {
+    control_under_parents(catalog, spawned, tag, parents).unwrap_or_else(|| {
+        panic!(
+            "required UI binding {}:{} tag {:?} missing under {:?}",
+            spawned.view_id.resource_file, spawned.view_id.resource_id, tag, parents
+        )
+    })
+}
+
 fn on_game_screen_activate(
     activate: On<Activate>,
     actions: Query<&GameScreenNavAction>,
-    session: Option<ResMut<GameSession>>,
     state: Res<State<AppState>>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    if *action == GameScreenNavAction::StrategicMap
-        && let Some(mut session) = session
-        && let Some(request) = session.0.pending_ui_request()
-    {
-        match request {
-            UiRequest::DiplomacyMap { .. } if *state.get() == AppState::Diplomacy => {
-                let outcome = session.0.resume_after_ui(request);
-                let _effects = outcome.effects();
-                apply_turn_yield_destination(&outcome, &state, &mut next_state);
-                return;
-            }
-            UiRequest::OfferSheet { .. } if *state.get() == AppState::Trade => {
-                let outcome = session.0.resume_after_ui(request);
-                let _effects = outcome.effects();
-                apply_turn_yield_destination(&outcome, &state, &mut next_state);
-                return;
-            }
-            _ => {}
-        }
-    }
     let destination = match *action {
         GameScreenNavAction::StrategicMap => AppState::StrategicMap,
         GameScreenNavAction::Trade => AppState::Trade,
@@ -460,47 +445,6 @@ fn on_game_screen_activate(
         GameScreenNavAction::Diplomacy => AppState::Diplomacy,
     };
     if destination != *state.get() {
-        next_state.set(destination);
-    }
-}
-
-fn apply_turn_yield_destination(
-    outcome: &AdvanceTurnOutcome,
-    state: &State<AppState>,
-    next_state: &mut NextState<AppState>,
-) {
-    let destination = match outcome {
-        AdvanceTurnOutcome::Blocked {
-            yield_: TurnYield::PlayerOrders,
-            ..
-        } => Some(AppState::StrategicMap),
-        AdvanceTurnOutcome::Blocked {
-            yield_: TurnYield::Ui {
-                request: UiRequest::DealBook,
-            },
-            ..
-        } => Some(AppState::DealBook),
-        AdvanceTurnOutcome::Blocked {
-            yield_: TurnYield::Ui {
-                request: UiRequest::Newspaper,
-            },
-            ..
-        } => Some(AppState::Newspaper),
-        AdvanceTurnOutcome::Blocked {
-            yield_: TurnYield::Ui {
-                request: UiRequest::DiplomacyMap { .. },
-            },
-            ..
-        } => Some(AppState::Diplomacy),
-        AdvanceTurnOutcome::Blocked {
-            yield_: TurnYield::Ui {
-                request: UiRequest::OfferSheet { .. },
-            },
-            ..
-        } => Some(AppState::Trade),
-        _ => None,
-    };
-    if let Some(destination) = destination.filter(|destination| *destination != *state.get()) {
         next_state.set(destination);
     }
 }
@@ -515,15 +459,27 @@ fn on_turn_flow_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let session = session
-        .as_deref_mut()
-        .expect("turn-flow control activated without an authoritative game session");
-    let outcome = match *action {
-        TurnFlowAction::FinishPlayerOrders => session.0.finish_player_orders(),
-        TurnFlowAction::Resume(gate) => session.0.resume_after_ui(gate),
+    let Some(session) = session.as_deref_mut() else {
+        warn!("turn-flow control activated without an authoritative game session");
+        return;
     };
-    let _effects = outcome.effects();
-    apply_turn_yield_destination(&outcome, &state, &mut next_state);
+    let stop = match *action {
+        TurnFlowAction::FinishPlayerOrders => session.0.finish_player_orders(),
+        TurnFlowAction::DismissBlockingScreen => session.0.dismiss_blocking_screen(),
+    };
+    let destination = match stop {
+        FlowStop::PlayerOrders => Some(AppState::StrategicMap),
+        FlowStop::Show {
+            screen: GameScreen::DealBook,
+        } => Some(AppState::DealBook),
+        FlowStop::Show {
+            screen: GameScreen::Newspaper,
+        } => Some(AppState::Newspaper),
+        FlowStop::Unimplemented { .. } => None,
+    };
+    if let Some(destination) = destination.filter(|destination| *destination != *state.get()) {
+        next_state.set(destination);
+    }
 }
 
 #[cfg(test)]
@@ -570,9 +526,7 @@ mod tests {
         let Some(view_id) = view_id_for_state(current) else {
             return;
         };
-        let view = catalog
-            .view(&view_id)
-            .expect("validated game-screen catalog view");
+        let view = catalog.required_view(&view_id);
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
         bind_game_screen_nav(&mut commands, &catalog, &spawned);
         commands.insert_resource(TestSpawned(spawned.clone()));
@@ -690,7 +644,11 @@ mod tests {
             .insert_resource(fixture_session())
             .add_systems(OnEnter(AppState::StrategicMap), enter_strategic_map_view);
         assert_eq!(
-            app.world().resource::<GameSession>().0.world().view_origin(),
+            app.world()
+                .resource::<GameSession>()
+                .0
+                .world()
+                .view_origin(),
             imperialism_core::TileId::new(1)
         );
 
@@ -701,7 +659,11 @@ mod tests {
         app.update();
 
         assert_eq!(
-            app.world().resource::<GameSession>().0.world().view_origin(),
+            app.world()
+                .resource::<GameSession>()
+                .0
+                .world()
+                .view_origin(),
             imperialism_core::TileId::new(1358)
         );
     }
@@ -784,31 +746,18 @@ mod tests {
         app.insert_resource(fixture_session());
 
         activate_turn_flow(&mut app, TurnFlowAction::FinishPlayerOrders);
-        // First-turn yields may stop at diplomacy-map or offer-sheet before the deal book.
-        loop {
-            let current = *app.world().resource::<State<AppState>>().get();
-            let request = app
-                .world()
-                .resource::<GameSession>()
-                .0
-                .pending_ui_request();
-            match (current, request) {
-                (AppState::DealBook, Some(UiRequest::DealBook)) => break,
-                (AppState::Diplomacy, Some(request @ UiRequest::DiplomacyMap { .. }))
-                | (AppState::Trade, Some(request @ UiRequest::OfferSheet { .. })) => {
-                    activate_turn_flow(&mut app, TurnFlowAction::Resume(request));
-                }
-                other => panic!("unexpected turn-flow yield state: {other:?}"),
-            }
-        }
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::DealBook
+        );
 
-        activate_turn_flow(&mut app, TurnFlowAction::Resume(UiRequest::DealBook));
+        activate_turn_flow(&mut app, TurnFlowAction::DismissBlockingScreen);
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::Newspaper
         );
 
-        activate_turn_flow(&mut app, TurnFlowAction::Resume(UiRequest::Newspaper));
+        activate_turn_flow(&mut app, TurnFlowAction::DismissBlockingScreen);
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::StrategicMap

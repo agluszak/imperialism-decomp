@@ -359,7 +359,6 @@ impl LegacyTerrainTile {
             action: TileAction::try_from_retail(i16::from(self.action_state)),
             flags: TileFlags::from_bits_retain(self.active_flags),
             region: optional_region_id(self.region)?,
-            river: river_segment_from_retail_sprite(self.river_sprite, tile)?,
         })
     }
 }
@@ -1080,13 +1079,6 @@ pub(super) fn great_power_state(
             nation.country.nation_slot
         ))
     })?;
-    for (&status, &payload) in prefix
-        .pending_action_status
-        .iter()
-        .zip(prefix.pending_action_payload_by_action.iter())
-    {
-        validate_pending_action(status, payload)?;
-    }
     Ok(GreatPowerState {
         controller: if prefix.diplomacy_eligible != 0 {
             MajorNationController::Human
@@ -1147,13 +1139,7 @@ pub(super) fn great_power_state(
         // scenarioInitFlag is constructed as zero and is not part of the save stream.
         scenario_initialized: false,
         turn_finished: post.turn_finished_flag != 0,
-        pending_actions: PendingActionTable::from_fn(|action| {
-            let index = action as usize;
-            normalized_pending_action(
-                prefix.pending_action_status[index],
-                prefix.pending_action_payload_by_action[index],
-            )
-        }),
+        pending_actions: prefix.pending_actions,
         diplomacy_budget_base: post.diplomacy_budget_base,
         escalation_counter: i16::from(post.escalation_counter),
         pending_commitment_cost: post.pending_commitment_cost,
@@ -1255,27 +1241,30 @@ pub(super) fn interior_civilian_state(
     ))
 }
 
-pub(super) fn validate_pending_action(status: i8, payload: i16) -> Result<(), LegacySaveError> {
-    match status {
-        0 | 0x32..=0x34 if payload >= -1 => Ok(()),
-        0 | 0x32..=0x34 => Err(LegacySaveError::StateProjection(format!(
+pub(super) fn pending_action_from_retail(
+    status: i8,
+    payload: i16,
+) -> Result<PendingActionState, LegacySaveError> {
+    if payload < -1 {
+        return Err(LegacySaveError::StateProjection(format!(
             "pending-action payload {payload} is below the -1 sentinel"
-        ))),
-        _ => Err(LegacySaveError::StateProjection(format!(
-            "unsupported pending-action status {status}"
-        ))),
+        )));
     }
-}
-
-pub(super) fn normalized_pending_action(status: i8, payload: i16) -> PendingActionState {
     let status = match status {
         0 => PendingActionStatus::None,
         0x32 => PendingActionStatus::Queued,
         0x33 => PendingActionStatus::Level3,
         0x34 => PendingActionStatus::Level4,
-        _ => unreachable!("pending action was validated before normalization"),
+        _ => {
+            return Err(LegacySaveError::StateProjection(format!(
+                "unsupported pending-action status {status}"
+            )));
+        }
     };
-    PendingActionState::new(status, (payload != -1).then_some(payload))
+    Ok(PendingActionState::new(
+        status,
+        (payload != -1).then_some(payload),
+    ))
 }
 
 pub(super) fn diplomacy_grants_from_retail_entries(
@@ -1459,7 +1448,7 @@ pub(super) fn country_common(
 ) -> Result<NationCommonState, LegacySaveError> {
     Ok(NationCommonState::from_parts(
         normalize_nation_display_name(&country.alternate_identity),
-        country_status_from_retail(country.encoded_nation_slot)?,
+        country.status,
         country
             .owned_regions
             .iter()

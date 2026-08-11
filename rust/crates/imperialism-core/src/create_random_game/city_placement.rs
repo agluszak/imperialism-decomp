@@ -418,7 +418,7 @@ pub(super) fn calculate_city_resources(
             }
             yields[resource] += amount;
         }
-        if state.river.is_some() {
+        if state.river().is_some() {
             yields[ResourceKind::Fish] += 1;
         }
     }

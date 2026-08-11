@@ -247,9 +247,7 @@ fn enter_transport_screen(
     session: Option<ResMut<GameSession>>,
 ) {
     let view_id = transport_view_id();
-    let view = catalog
-        .view(&view_id)
-        .expect("validated transport-screen catalog view");
+    let view = catalog.required_view(&view_id);
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
     bind_game_screen_nav(&mut commands, &catalog, &spawned);
     commands
@@ -302,16 +300,12 @@ fn bind_transport_screen(
     commands
         .entity(spawned.root)
         .insert(TransportScreen { nation });
-    let selected = spawned
-        .require_unique(fourcc!("tran"))
-        .expect("validated selected transport binding");
+    let selected = spawned.unique(fourcc!("tran"));
     commands
         .entity(selected)
         .insert((Checked, InteractionDisabled));
     for (index, binding) in TRANSPORT_ROWS.into_iter().enumerate() {
-        let row = spawned
-            .require_unique(binding.tag)
-            .expect("validated transport row binding");
+        let row = spawned.unique(binding.tag);
         commands.entity(row).insert((
             TransportRow {
                 nation,
@@ -320,12 +314,8 @@ fn bind_transport_screen(
             },
             RelativeCursorPosition::default(),
         ));
-        let left = spawned
-            .require_under(catalog, binding.tag, fourcc!("left"))
-            .expect("validated transport decrease binding");
-        let right = spawned
-            .require_under(catalog, binding.tag, fourcc!("rght"))
-            .expect("validated transport increase binding");
+        let left = spawned.under(catalog, binding.tag, fourcc!("left"));
+        let right = spawned.under(catalog, binding.tag, fourcc!("rght"));
         commands.entity(left).insert(TransportAdjust {
             nation,
             allocation: binding.allocation,
@@ -432,9 +422,7 @@ fn bind_transport_screen(
         }
     }
 
-    let total = spawned
-        .require_unique(fourcc!("tota"))
-        .expect("validated transport capacity binding");
+    let total = spawned.unique(fourcc!("tota"));
     spawn_transport_track(commands, total, 0x5d, colors.empty);
     commands.spawn((
         Node {
@@ -473,9 +461,7 @@ fn bind_transport_screen(
         ChildOf(total),
         TransportCapacityCaption { nation },
     ));
-    let cursor = spawned
-        .require_unique(fourcc!("curs"))
-        .expect("validated transport cursor binding");
+    let cursor = spawned.unique(fourcc!("curs"));
     commands.entity(cursor).insert((
         Text::new(""),
         font,
@@ -483,9 +469,7 @@ fn bind_transport_screen(
         TextColor(Color::BLACK),
         TransportCursor { nation },
     ));
-    let treasury = spawned
-        .require_unique(fourcc!("trea"))
-        .expect("validated transport treasury binding");
+    let treasury = spawned.unique(fourcc!("trea"));
     commands
         .entity(treasury)
         .insert(TransportTreasury { nation });
@@ -559,7 +543,12 @@ fn sync_transport_values(
             });
             text.0 = format!("{target}  /  {current}");
         } else if let Some(caption) = capacity {
-            let capacities = session.0.nations().major(caption.nation).economy().capacities;
+            let capacities = session
+                .0
+                .nations()
+                .major(caption.nation)
+                .economy()
+                .capacities;
             text.0 = format!(
                 "{}  /  {}",
                 capacities.reserved_transport, capacities.transport

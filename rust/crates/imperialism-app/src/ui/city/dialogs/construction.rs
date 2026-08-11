@@ -39,32 +39,20 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
                 is_ordinary_industry(slot),
                 "non-power capacity center has a retail expansion order"
             );
-            let (next_capacity, needed, original_quantity) = {
+            let (next_capacity, needed) = {
                 let major = session.0.nations().major(nation);
                 let city = major.city();
                 let owned_regions = major.common().owned_region_count() as i32;
                 let current = city.building_type(slot, major.economy(), owned_regions);
                 let next_capacity =
                     city.max_building_capacity(slot, major.economy(), owned_regions);
-                let original_quantity = city.orders.expansions[slot]
-                    .as_ref()
-                    .expect("ordinary capacity center has a retail expansion order")
-                    .progress
-                    .quantity;
-                (next_capacity, next_capacity - current, original_quantity)
+                (next_capacity, next_capacity - current)
             };
             let order = CityOrderId::Expansion(
                 ExpandableFacility::try_from_slot(slot)
                     .expect("ordinary capacity center is expandable"),
             );
-            let can_reserve = session.0.set_city_order_quantity(nation, order, needed).applied();
-            assert!(
-                session
-                    .0
-                    .set_city_order_quantity(nation, order, original_quantity)
-                    .applied(),
-                "retail construction probe must restore its original quantity"
-            );
+            let can_reserve = session.0.can_set_city_order_quantity(nation, order, needed);
             (next_capacity.to_string(), can_reserve)
         }
     };
@@ -321,7 +309,7 @@ pub(in crate::ui::city) fn on_city_expansion_open(
     if dialogs.get(open.dialog).is_err() || !modals.is_empty() {
         return;
     }
-    let mut session =
+    let session =
         session.expect("city expansion control activated without an authoritative game session");
     assert!(
         industry_page(open.slot).is_some(),
@@ -340,31 +328,11 @@ pub(in crate::ui::city) fn on_city_expansion_open(
         )
     };
     let order = CityOrderId::Expansion(
-        ExpandableFacility::try_from_slot(open.slot)
-            .expect("ordinary industry is expandable"),
+        ExpandableFacility::try_from_slot(open.slot).expect("ordinary industry is expandable"),
     );
-    let original_quantity = session
-        .0
-        .nations()
-        .major(open.nation)
-        .city()
-        .orders
-        .expansions[open.slot]
-        .as_ref()
-        .expect("ordinary industry has an expansion order")
-        .progress
-        .quantity;
     let can_reserve = session
         .0
-        .set_city_order_quantity(open.nation, order, needed)
-        .applied();
-    assert!(
-        session
-            .0
-            .set_city_order_quantity(open.nation, order, original_quantity)
-            .applied(),
-        "retail expansion probe must restore its original quantity"
-    );
+        .can_set_city_order_quantity(open.nation, order, needed);
     let spawned = ui.spawn_modal(expansion_dialog_view_id());
     let building_name = city_string(&ui, CITY_BUILDING_STRING_GROUP, open.slot as i16);
     bind_expansion_dialog(
@@ -423,7 +391,7 @@ pub(in crate::ui::city) fn on_city_building_change_choice(
             let _ = session
                 .0
                 .set_city_order_quantity(choice.nation, order, needed)
-                    .applied();
+                .applied();
         } else {
             let quantity = session
                 .0

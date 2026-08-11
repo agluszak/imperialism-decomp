@@ -252,7 +252,8 @@ pub(in crate::ui::city) fn on_city_order_adjust(
     }
     if !session
         .0
-        .adjust_city_order(action.nation, action.order, action.delta).applied()
+        .adjust_city_order(action.nation, action.order, action.delta)
+        .applied()
     {
         return;
     }
