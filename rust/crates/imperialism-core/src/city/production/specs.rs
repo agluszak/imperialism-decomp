@@ -2,7 +2,7 @@
 
 use super::*;
 use crate::*;
-use enum_map::{Enum, EnumMap};
+use enum_map::EnumMap;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct RecruitmentOrderSpec {

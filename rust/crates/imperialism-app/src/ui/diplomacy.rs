@@ -983,7 +983,7 @@ fn on_diplomacy_map_click(
     };
     let mut session =
         session.expect("diplomacy map activated without an authoritative game session");
-    let Some(target) = session.0.world()[tile]
+    let Some(target) = session.0.map[tile]
         .owner_nation
         .and_then(TileOwnerTag::nation)
     else {
@@ -1190,12 +1190,12 @@ fn sync_diplomacy_controls(
     }
     let major = session.0.nations().major(screen.source);
     for mut text in &mut treasury {
-        text.0 = format_currency(major.common().treasury);
+        text.0 = format_currency(major.common.treasury);
     }
     for mut text in &mut grant_totals {
         text.0 = format!(
             "Promised Grants: {}",
-            format_currency(major.economy().grant_total_cost)
+            format_currency(major.economy.grant_total_cost)
         );
     }
 }
@@ -1263,7 +1263,7 @@ fn sync_diplomacy_information(
             *visibility = Visibility::Hidden;
             continue;
         }
-        let (row, column) = state.world().geometry().row_column(anchor);
+        let (row, column) = state.map.geometry().row_column(anchor);
         let is_major = MajorNationId::from_nation(label.nation).is_some();
         let offset = f32::from(if is_major == label.shadow { 1_u8 } else { 0 });
         node.left = Val::Px(f32::from(column) * 5.0 - 45.0 + offset);
@@ -1288,11 +1288,10 @@ fn sync_diplomacy_information(
             DiplomacyNationIconKind::Order => {
                 let atlas_offset = match screen.topic {
                     DiplomacyTopic::Information => None,
-                    DiplomacyTopic::Grants => major.economy().diplomacy_grants_by_nation
-                        [icon.nation]
+                    DiplomacyTopic::Grants => major.economy.diplomacy_grants_by_nation[icon.nation]
                         .and_then(diplomacy_grant_icon_offset),
                     DiplomacyTopic::Trade => {
-                        let policy = major.common().trade_policy_by_nation[icon.nation];
+                        let policy = major.common.trade_policy_by_nation[icon.nation];
                         TRADE_POLICY_SCORES
                             .iter()
                             .position(|candidate| *candidate == policy)
@@ -1314,7 +1313,7 @@ fn sync_diplomacy_information(
             *visibility = Visibility::Hidden;
             continue;
         };
-        let (row, column) = state.world().geometry().row_column(anchor);
+        let (row, column) = state.map.geometry().row_column(anchor);
         node.left = Val::Px(f32::from(column) * 5.0 - 8.0);
         node.top = Val::Px(f32::from(row) * 5.0 + top_offset);
         image.rect = Some(Rect::new(
@@ -1343,7 +1342,7 @@ fn render_diplomacy_map(
             continue;
         }
         let pixels =
-            compose_owner_preview_indices(|tile| session.0.world()[tile].owner_nation, selection.0);
+            compose_owner_preview_indices(|tile| session.0.map[tile].owner_nation, selection.0);
         let image = preview_image_from_indices(&pixels, assets.default_dib_palette());
         let handle = if let Some(handle) = &picture.image {
             assets.replace_image(handle, image);
@@ -1425,9 +1424,9 @@ fn representative_tile_for_nation(state: &GameState, nation: NationId) -> Option
     let home_region_class = state
         .nations()
         .home_tile(nation)
-        .and_then(|tile| state.world()[tile].province)
-        .and_then(|province| state.provinces()[province].region_class());
-    let geometry = state.world().geometry();
+        .and_then(|tile| state.map[tile].province)
+        .and_then(|province| state.map.provinces[province].region_class);
+    let geometry = state.map.geometry();
     let mut column_sum = 0_u32;
     let mut row_sum = 0_u32;
     let mut tile_count = 0_u32;
@@ -1437,18 +1436,14 @@ fn representative_tile_for_nation(state: &GameState, nation: NationId) -> Option
 
     for index in 0..TileId::COUNT {
         let tile = TileId::new(index);
-        if state.world()[tile]
-            .owner_nation
-            .and_then(TileOwnerTag::nation)
-            != Some(nation)
-        {
+        if state.map[tile].owner_nation.and_then(TileOwnerTag::nation) != Some(nation) {
             continue;
         }
         fallback = Some(tile);
         if let Some(home_region_class) = home_region_class
-            && state.world()[tile]
+            && state.map[tile]
                 .province
-                .and_then(|province| state.provinces()[province].region_class())
+                .and_then(|province| state.map.provinces[province].region_class)
                 != Some(home_region_class)
         {
             continue;
@@ -1622,7 +1617,8 @@ mod tests {
             let session = app.world().resource::<GameSession>();
             let (tile_index, _) = session
                 .0
-                .world()
+                .map
+                .tiles
                 .iter()
                 .enumerate()
                 .find(|(index, tile)| {
@@ -1632,7 +1628,7 @@ mod tests {
                 .expect("fixture nation 2 has territory on an odd map row");
             session
                 .0
-                .world()
+                .map
                 .geometry()
                 .row_column(TileId::new(tile_index as u16))
         };
@@ -1804,11 +1800,11 @@ mod tests {
             let session = app.world().resource::<GameSession>();
             let major = session.0.nations().major(source);
             assert_eq!(
-                major.economy().diplomacy_grants_by_nation[target],
+                major.economy.diplomacy_grants_by_nation[target],
                 Some(expected)
             );
-            assert_eq!(major.economy().grant_total_cost, 3_000);
-            assert_eq!(major.common().treasury, 7_000);
+            assert_eq!(major.economy.grant_total_cost, 3_000);
+            assert_eq!(major.common.treasury, 7_000);
         }
         assert_eq!(treasury_text(&mut app), "$7,000");
         assert_eq!(grant_total_text(&mut app), "Promised Grants: $3,000");
@@ -1827,12 +1823,12 @@ mod tests {
             let session = app.world().resource::<GameSession>();
             let major = session.0.nations().major(source);
             assert_eq!(
-                major.common().trade_policy_by_nation[target],
+                major.common.trade_policy_by_nation[target],
                 TradePolicyScore::new(90)
             );
-            assert_eq!(major.common().treasury, 7_000);
+            assert_eq!(major.common.treasury, 7_000);
             assert_eq!(
-                major.economy().diplomacy_grants_by_nation[target],
+                major.economy.diplomacy_grants_by_nation[target],
                 Some(expected)
             );
         }
@@ -1860,7 +1856,7 @@ mod tests {
                 .0
                 .nations()
                 .major(source)
-                .economy()
+                .economy
                 .diplomacy_grants_by_nation[target],
             Some(expected)
         );
@@ -1869,7 +1865,7 @@ mod tests {
                 .0
                 .nations()
                 .major(source)
-                .common()
+                .common
                 .trade_policy_by_nation[target],
             TradePolicyScore::new(90)
         );

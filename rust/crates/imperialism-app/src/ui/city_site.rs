@@ -126,13 +126,13 @@ fn sync_city_site_hover(
 }
 
 fn highlights_city_site_candidate(state: &GameState, nation: MajorNationId, tile: TileId) -> bool {
-    let tile_state = state.world()[tile];
+    let tile_state = state.map[tile];
     tile_state.owner_nation == Some(TileOwnerTag::from_nation(nation.nation()))
         && !matches!(
             tile_state.terrain,
             TerrainKind::Hills | TerrainKind::Mountain | TerrainKind::Swamp
         )
-        && is_valid_secondary_nation_home_tile_candidate(state.world(), tile)
+        && is_valid_secondary_nation_home_tile_candidate(&state.map, tile)
 }
 
 fn bind_city_site_controls(commands: &mut Commands, spawned: &crate::ui::catalog::SpawnedView) {

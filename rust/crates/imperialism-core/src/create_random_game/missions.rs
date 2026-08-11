@@ -1,8 +1,9 @@
 use super::*;
 
 /// Province adjacency lists used by the defend-province availability gate.
-pub(super) fn build_province_adjacency(world: &StrategicMap) -> Vec<Vec<ProvinceId>> {
+pub(super) fn build_province_adjacency(world: &MapMgr) -> Vec<Vec<ProvinceId>> {
     let province_count = world
+        .tiles
         .iter()
         .filter_map(|tile| {
             tile.province
@@ -12,7 +13,7 @@ pub(super) fn build_province_adjacency(world: &StrategicMap) -> Vec<Vec<Province
         .unwrap_or(0);
     let mut adjacency = vec![Vec::new(); province_count];
     let geometry = world.geometry();
-    for (index, tile) in world.iter().enumerate() {
+    for (index, tile) in world.tiles.iter().enumerate() {
         let Some(province) = tile.province else {
             continue;
         };
@@ -35,13 +36,48 @@ pub(super) fn build_province_adjacency(world: &StrategicMap) -> Vec<Vec<Province
     }
     adjacency
 }
+
+fn build_province_adjacency_anchors(
+    world: &MapMgr,
+    province: ProvinceId,
+    adjacency: &[ProvinceId],
+) -> Vec<TileId> {
+    let mut anchors = vec![None; adjacency.len()];
+    let geometry = world.geometry();
+    for (index, tile) in world.tiles.iter().enumerate() {
+        if tile.province != Some(province) {
+            continue;
+        }
+        for neighbor in geometry
+            .neighbors(TileId::new(index as u16))
+            .into_iter()
+            .flatten()
+        {
+            let Some(neighbor_province) = world[neighbor].province else {
+                continue;
+            };
+            if let Some(position) = adjacency
+                .iter()
+                .position(|&adjacent| adjacent == neighbor_province)
+                && anchors[position].is_none()
+            {
+                anchors[position] = Some(neighbor);
+            }
+        }
+    }
+    anchors
+        .into_iter()
+        .map(|anchor| anchor.expect("generated adjacency retains its anchor tile"))
+        .collect()
+}
 /// Materializes the fixed province table and each country's ordered region list.
 /// Generated province IDs are already compact and are visited in ascending retail
 /// table order, matching the append order used by map setup.
 pub(super) fn build_province_state(
     map: &GeneratedMap,
-    world: &StrategicMap,
+    world: &MapMgr,
     province_capitals: &[Option<TileId>],
+    resource_presence_masks: &[i8],
     nations: &mut Nations,
 ) -> ProvinceTable<ProvinceState> {
     let adjacency = build_province_adjacency(world);
@@ -59,17 +95,48 @@ pub(super) fn build_province_state(
                     .contains(TileFlags::PROVINCE_CAPITAL_FORTIFICATION)
             })
             .into();
+        let linked_tiles = world
+            .tiles
+            .iter()
+            .enumerate()
+            .filter_map(|(tile, state)| {
+                (state.terrain != TerrainKind::Water && state.province == Some(province))
+                    .then_some(TileId::new(tile as u16))
+            })
+            .collect::<Vec<_>>();
+        let last_turn_tick = if linked_tiles.iter().any(|&tile| {
+            world[tile].flags.contains(TileFlags::PROVINCE_ANCHOR_STATE)
+                && world[tile].region.is_some()
+        }) {
+            0
+        } else {
+            999
+        };
+        let adjacency_anchor_tiles =
+            build_province_adjacency_anchors(world, province, &adjacency[index]);
+        let (primary_neighbor_tile, secondary_neighbor_tile) = world.province_neighbor_links(
+            province,
+            province_capitals[index].expect("generated province has a fallback capital"),
+        );
         provinces[province] = ProvinceState::new(
             Some(owner),
             Some(owner),
             0,
             adjacency[index].clone(),
-            Some(generated.terrain.retail() as u8),
+            adjacency_anchor_tiles,
+            Some(generated.region_class),
             fort_level,
             province_capitals[index],
+            last_turn_tick,
+            Some(secondary_neighbor_tile),
+            Some(primary_neighbor_tile),
+            linked_tiles,
             ResourceTable::default(),
             MajorNationTable::default(),
             0,
+            false,
+            resource_presence_masks[index],
+            String::new(),
         )
         .expect("generated province state fits the retail province record");
         nations.append_owned_region_during_construction(owner, province);
@@ -84,7 +151,7 @@ pub(super) fn build_province_state(
 pub(super) fn province_mission_available(
     province: ProvinceId,
     nation: TileOwnerTag,
-    world: &StrategicMap,
+    world: &MapMgr,
     province_capitals: &[Option<TileId>],
     adjacency: &[Vec<ProvinceId>],
 ) -> bool {
@@ -111,7 +178,7 @@ pub(super) fn province_mission_available(
 }
 /// `TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates`.
 pub(super) fn queue_map_action_missions_for_port_zone_candidates(
-    world: &StrategicMap,
+    world: &MapMgr,
     province_capitals: &[Option<TileId>],
     adjacency: &[Vec<ProvinceId>],
     ports: &PortZoneTable,
@@ -138,7 +205,7 @@ pub(super) fn queue_map_action_missions_for_port_zone_candidates(
         ));
     }
 
-    let Some(port) = ports.find_first_port_for_nation(nation.nation()) else {
+    let Some(port) = ports.find_first_port_for_nation(world, nation.nation()) else {
         return missions;
     };
     let Some(sea_or_neighbor) = port.primary_neighbor else {

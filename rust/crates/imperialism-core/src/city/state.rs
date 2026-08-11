@@ -1,31 +1,39 @@
 use crate::*;
 use serde::{Deserialize, Serialize};
 
-/// The one city town retained by the currently supported legacy-save projection.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+/// One retail `TTown` marker from its owning great power's ordered town list.
+///
+/// A great power has one [`CityState`] and any number of towns. The first town
+/// is the city's home marker after save load; the city does not own a duplicate
+/// copy of that marker.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TownState {
-    pub(crate) tile: TileId,
-    pub(crate) transport_linked: bool,
-    pub(crate) enabled: bool,
-    pub(crate) active: bool,
+    pub name: String,
+    pub tile: TileId,
+    pub created_turn: i16,
+    pub owner_nation: NationId,
+    pub resource_yield_by_type: ResourceTable<i16>,
+    pub transport_linked: bool,
+    /// Retail's verbatim one-byte `enabledFlag`.
+    pub enabled: u8,
+    /// Persisted verbatim because older states may contain a noncanonical true byte.
+    pub has_adjacent_city: u8,
+    pub active: bool,
 }
 
 impl TownState {
-    pub const fn new(tile: TileId, transport_linked: bool, enabled: bool, active: bool) -> Self {
+    pub(crate) fn for_frog_city(tile: TileId, owner_nation: NationId) -> Self {
         Self {
+            name: "FrogCity".to_owned(),
             tile,
-            transport_linked,
-            enabled,
-            active,
+            created_turn: 0,
+            owner_nation,
+            resource_yield_by_type: ResourceTable::default(),
+            transport_linked: false,
+            enabled: 1,
+            has_adjacent_city: 0,
+            active: true,
         }
-    }
-
-    pub(crate) const fn for_frog_city(tile: TileId) -> Self {
-        Self::new(tile, false, true, true)
-    }
-
-    pub const fn tile(self) -> TileId {
-        self.tile
     }
 }
 
@@ -56,7 +64,6 @@ pub struct CityState {
     pub low_production: bool,
     pub low_stock: bool,
     pub reserved_by_type: ResourceTable<i16>,
-    pub home_town: Option<TownState>,
     pub power_available: i16,
     pub stockpile: Stockpile,
     pub production_orders: ProductionTable<i16>,
@@ -78,7 +85,7 @@ impl CityState {
         stockpile: ResourceTable<i16>,
         production: ProductionTable<i16>,
         labor: LaborPool,
-        human: bool,
+        _human: bool,
     ) -> Self {
         Self {
             orders: Box::default(),
@@ -94,10 +101,6 @@ impl CityState {
             low_production: false,
             low_stock: false,
             reserved_by_type: ResourceTable::default(),
-            home_town: human.then(|| TownState::for_frog_city(TileId::new(0))),
-            // Human Frog City marker sits at tile 0 without PlaceCity. AI
-            // capitals are placed later once tile post-passes and frog-city
-            // scoring land.
             power_available: 0,
             stockpile: Stockpile::from_table(stockpile),
             production_orders: production.clone(),

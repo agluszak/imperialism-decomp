@@ -796,8 +796,8 @@ pub(super) fn read_technology_state(
 
 pub(super) fn read_map(stream: &mut LegacyStream<'_>) -> Result<LegacyMapState, StreamError> {
     let view_origin_tile = stream.read_le_i16()?;
-    let search_state_active = stream.read_u8()?;
-    let secondary_state = stream.read_u8()?;
+    let map_data_ready = stream.read_u8()?;
+    let recruit_search_active = stream.read_u8()?;
     let city_score_total = stream.read_le_i32()?;
     let scenario_tag = lossy_text(&stream.read_mfc_string()?);
     let no_horizontal_wrap = stream.read_u8()?;
@@ -810,8 +810,8 @@ pub(super) fn read_map(stream: &mut LegacyStream<'_>) -> Result<LegacyMapState, 
     let pending_river_mouth_tile = stream.read_le_i16()?;
     Ok(LegacyMapState {
         view_origin_tile,
-        search_state_active,
-        secondary_state,
+        map_data_ready,
+        recruit_search_active,
         city_score_total,
         scenario_tag,
         no_horizontal_wrap,
@@ -943,7 +943,7 @@ pub(super) fn read_task_force(
     let target_ordinal = stream.read_le_i16()?;
     let location_ordinal = stream.read_le_i16()?;
     let nation = stream.read_le_i16()?;
-    stream.skip(1)?;
+    let defeated = stream.read_u8()?;
     let ingot_tile = stream.read_le_i16()?;
     let child_count = bounded_u32(
         u32::from(stream.read_le_u16()?),
@@ -959,6 +959,7 @@ pub(super) fn read_task_force(
         target_ordinal,
         location_ordinal,
         nation,
+        defeated,
         ingot_tile,
         ships,
     })
@@ -2111,21 +2112,28 @@ pub(super) fn read_terrain_tile(
     Ok(LegacyTerrainTile {
         terrain_kind: bytes[0] as i8,
         sprite_variant: bytes[1],
-        region_tile_subtype: bytes[0x13] as i8,
         river_sprite: bytes[2],
         former_owner_nation: bytes[3] as i8,
         owner_nation: bytes[4] as i8,
         secondary_owner_nation: bytes[0x18] as i8,
+        owner_border_mask: bytes[7],
+        city_border_mask: bytes[8],
+        water_adjacency_mask: bytes[9],
         region: bytes[5] as i8,
         adjacency_bits: bytes[6],
         adjacency_mask_a: bytes[0x0a],
         adjacency_mask_b: bytes[0x0b],
         development_classes: bytes[0x0c] as i8,
         pending_development_visibility: bytes[0x0d],
+        recruit_search_visited: bytes[0x0e],
+        per_tile_visited: bytes[0x0f] as i8,
+        marker_slot_index: bytes[0x10] as i8,
         edge_resources: [bytes[0x11] as i8, bytes[0x12] as i8],
-        city_or_province_index: i16::from_le_bytes(bytes[0x14..0x16].try_into().unwrap()),
+        gate: bytes[0x13] as i8,
+        city_record_index: i16::from_le_bytes(bytes[0x14..0x16].try_into().unwrap()),
         action_state: bytes[0x16] as i8,
         rail_flags: bytes[0x17],
+        tile_action_ordinal: i16::from_le_bytes(bytes[0x1a..0x1c].try_into().unwrap()),
         active_flags: u16::from_le_bytes(bytes[0x1c..0x1e].try_into().unwrap()),
     })
 }
@@ -2145,12 +2153,25 @@ pub(super) fn read_province(stream: &mut LegacyStream<'_>) -> Result<LegacyProvi
             let offset = 0x0a + index * 2;
             i16::from_le_bytes(bytes[offset..offset + 2].try_into().unwrap())
         }),
+        adjacent_region_anchor_tiles: std::array::from_fn(|index| {
+            let offset = 0x22 + index * 2;
+            i16::from_le_bytes(bytes[offset..offset + 2].try_into().unwrap())
+        }),
+        linked_region_count: bytes[0x3a] as i8,
+        secondary_neighbor_tile: i16::from_le_bytes(bytes[0x3e..0x40].try_into().unwrap()),
+        primary_neighbor_tile: i16::from_le_bytes(bytes[0x40..0x42].try_into().unwrap()),
+        linked_tile_indices: std::array::from_fn(|index| {
+            let offset = 0x42 + index * 2;
+            i16::from_le_bytes(bytes[offset..offset + 2].try_into().unwrap())
+        }),
         resource_development_by_type: std::array::from_fn(|index| {
             let offset = 0x82 + index * 2;
             i16::from_le_bytes(bytes[offset..offset + 2].try_into().unwrap())
         }),
         city_score: i32::from_le_bytes(bytes[0x9c..0xa0].try_into().unwrap()),
+        navy_order_reachable: bytes[0xa0],
         explored_by_nation_mask: bytes[0xa1],
+        resource_presence_mask: bytes[0xa2] as i8,
         region_class: bytes[0xa3] as i8,
         name,
     })

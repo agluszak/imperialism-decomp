@@ -91,7 +91,8 @@ impl GameState {
                 .iter()
                 .any(Option::is_some)
             || self
-                .world
+                .map
+                .tiles
                 .iter()
                 .any(|tile| tile.secondary_owner_nation.is_some())
             || self.nations.minors.iter().any(Option::is_none)
@@ -297,9 +298,9 @@ impl GameState {
         let mut independent = ResourceTable::default();
         supply[ResourceKind::Food] = 2;
 
-        for tile in self.world.iter() {
+        for tile in &self.map.tiles {
             if tile.owner_nation.and_then(TileOwnerTag::nation) != Some(nation.nation())
-                || tile.region_tile_subtype.retail() == 0xf
+                || tile.gate == 0xf
             {
                 continue;
             }

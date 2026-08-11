@@ -1,5 +1,5 @@
 use crate::*;
-use enum_map::{Enum, EnumMap};
+use enum_map::EnumMap;
 
 mod city_placement;
 mod map_post_pass;
@@ -22,6 +22,8 @@ const SCATTERED_SHIPS_IMPORTANCE_BITS: u32 = 981_668_463;
 
 /// `kMapTileActionStateAnchor`.
 const ACTION_STATE_ANCHOR: i16 = 3;
+
+const ACTION_STATE_PORT_ZONE_MARKER: i16 = -14;
 
 const ACTION_STATE_ZONE_CENTER: i16 = -16;
 
@@ -69,29 +71,68 @@ const SCENARIO_FORCED_PRODUCTION: ProductionTable<i16> =
 const LOW_DIFFICULTY_HUMAN_PRODUCTION: ProductionTable<i16> =
     ProductionTable::from_array([2, 1, 2, 1, 2, 1, 0, 999, 999, 999, 999, 0, 0, 999, 999, 0]);
 
+/// Localized retail strings consumed while an accepted random map becomes a game.
+///
+/// Nation names are the localized `0x2715` table in slot order. Province entries start
+/// with the first name assigned by `GenerateProvinceNames`; each nation's separate
+/// capital-city name is not part of this operation. Zone templates and fallback names
+/// retain their direct C++ table order.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct RandomGameNames {
+    pub localized_nation_names: NationTable<String>,
+    pub province_names_by_nation: NationTable<Vec<String>>,
+    pub zone_headline_templates: Vec<String>,
+    pub fallback_ocean_names: Vec<String>,
+}
+
 /// Builds the Normal start-boundary [`GameState`] from the retained preview.
 ///
 /// Retail Accept does not regenerate the map. It commits setup options and rebuilds
 /// nation/city state on top of the preview already produced by the setup screen.
 /// The returned state matches the capital-selection-ready boundary for Normal+
 /// (`phase_code = 2`, human capital not yet placed).
-///
-/// Random-map display-name generation and localized-name selection are separate
-/// setup operations that are not yet ported. Nation display names therefore remain
-/// empty here rather than inventing values at this construction boundary.
 pub fn create_random_game(
     preview: &RandomSetupPreview,
     human_nation: MajorNationId,
     difficulty: Difficulty,
+    country_name: &str,
+    localized_names: bool,
     runtime_seed: u32,
+    names: &RandomGameNames,
 ) -> GameState {
     let mut map_lcg = RetailLcg::from_state(preview.final_map_lcg);
     let mut post = apply_tile_post_passes(&preview.map, preview.topology, &mut map_lcg);
     let foreign_ministers = choose_foreign_ministers(&preview.map, human_nation);
-    let mut nations = bootstrap_nations(human_nation, difficulty, foreign_ministers);
-    let technology = TechnologyState::default();
-    let mut world = StrategicMap::from_generated_tiles(preview.topology, post.tiles);
-    initialize_sea_zone_map_markers(&mut world, preview.sea_zone_marker_crt);
+    let mut nations = bootstrap_nations(
+        &preview.map,
+        human_nation,
+        difficulty,
+        foreign_ministers,
+        country_name,
+        localized_names.then_some(&names.localized_nation_names),
+    );
+    let technology = TechnologyState::for_random_start(runtime_seed);
+    let mut world = MapMgr::new(preview.topology, post.tiles)
+        .expect("generated map has the retail strategic tile count");
+    for (index, generated) in preview.map.provinces().iter().enumerate() {
+        world.provinces[ProvinceId::new(index as u16)].region_class = Some(generated.region_class);
+    }
+    world.map_data_ready = true;
+    world.recruit_search_active = true;
+    world.scenario_tag = preview.scenario_tag.clone();
+    world.pending_river_mouth_tile = post.pending_river_mouth_tile;
+    // Fresh-map BuildOrLoadGlobalMapStateForSession runs this mode-0 cache pass
+    // once, in tile order, immediately after its final AssignPictToTile pass.
+    for index in 0..TileId::COUNT {
+        world.update_tile_neighbor_border_influence_counters(TileId::new(index), 0);
+    }
+    let mut ocean_zones = initialize_sea_zone_map_markers(&mut world, preview.sea_zone_marker_crt);
+    initialize_sea_zone_neighbors(&mut ocean_zones, &world, &preview.map.ocean_zone_links);
+    generate_base_zone_status_codes(
+        &mut ocean_zones,
+        preview.scenario_tag.as_bytes(),
+        runtime_seed,
+    );
     // Fresh-map construction ends by reseeding CRT from the clock. Setup/bootstrap consumes one
     // draw from that reseeded stream before the first random minor-home selection.
     let mut crt_rand = RetailCrtRng::from_state(runtime_seed);
@@ -103,28 +144,28 @@ pub fn create_random_game(
     let mut mission_queues: MajorNationTable<Vec<MissionState>> =
         MajorNationTable::from_fn(|_| Vec::new());
 
-    // Accept bootstrap (`RebuildPrimaryNationStateForSlot` 6→0): AI majors PlaceCity +
-    // `QueueMapActionMissionsForPortZoneCandidates`; human Normal+ only attaches Frog City.
-    place_ai_frog_cities(
+    // Accept bootstrap (`RebuildPrimaryNationStateForSlot` 6→0): every AI major and the
+    // Introductory/Easy human place Frog City. Human Normal+ keeps the tile-0 marker until the
+    // capital-selection screen confirms a site.
+    place_initial_frog_cities(
         &mut world,
-        &mut post.gate_flags,
         &mut post.province_capitals,
         &mut nations,
         human_nation,
         &technology,
         &mut port_zones,
         &mut mission_queues,
+        difficulty,
     );
 
     let mut military_units = Vec::new();
     let mut unit_ids = UnitIdAllocator::default();
     // `TMinor::IMinor` snapshots these map resource counts before choosing and
     // resetting each minor's home tile.
-    initialize_minor_trade_state(&world, &post.gate_flags, &mut nations);
+    initialize_minor_trade_state(&world, &mut nations);
     // `RebuildSecondaryNationStateForSlot` for minors 7..22.
     bootstrap_minors(
         &mut world,
-        &mut post.gate_flags,
         &mut post.province_capitals,
         &mut nations,
         &mut crt_rand,
@@ -133,28 +174,60 @@ pub fn create_random_game(
         difficulty,
         &mut port_zones,
     );
-    for (index, &subtype) in post.gate_flags.iter().enumerate() {
-        world
-            .tile_mut(TileId::new(index as u16))
-            .region_tile_subtype = RegionTileSubtype::from_retail(subtype);
-    }
     if requires_capital_site_selection(difficulty) {
+        world.seed_valid_city_site_candidate_tiles_for_nation(human_nation);
         initialize_capital_selection_view_origin(&mut world, human_nation);
     }
     let diplomacy = DiplomacyState::for_random_start(human_nation, difficulty, &mut crt_rand);
 
     initialize_ai_targets(&mut nations, &mission_queues, port_zones.next_ordinal);
-    let port_zone_owners = port_zones
-        .ports
-        .iter()
-        .map(|port| PortZoneOwner {
-            zone: port.ordinal,
-            former_owner: port.former_owner,
-        })
-        .collect();
+    let mut port_status_rng = RetailLcg::from_state(runtime_seed);
+    for port in port_zones.ports.iter().rev() {
+        debug_assert_eq!(usize::from(port.ordinal.get()), ocean_zones.len());
+        if let Some(neighbor) = port.primary_neighbor {
+            let neighbor = &mut ocean_zones[usize::from(neighbor.get())];
+            let neighbor = match neighbor {
+                ZoneKind::Zone(zone) => zone,
+                ZoneKind::PortZone(port) => &mut port.zone,
+            };
+            if !neighbor.primary_neighbors.contains(&port.ordinal) {
+                neighbor.primary_neighbors.push(port.ordinal);
+            }
+        }
+        ocean_zones.push(ZoneKind::PortZone(PortZone {
+            zone: Zone {
+                display_name: String::new(),
+                status_code: Some(20 + (port_status_rng.next_sample_15() & 3) as i16),
+                target_tile: Some(port.sea_tile),
+                seed_owner: Some(port.seed_owner),
+                active_tile: port.active_tile,
+                primary_neighbors: port.primary_neighbor.into_iter().collect(),
+                secondary_neighbors: Vec::new(),
+            },
+            port_tile: port.port_tile,
+        }));
+    }
+    let mut ocean = Ocean {
+        zones: ocean_zones,
+        routes: preview.map.ocean_routes.clone(),
+    };
     let missions = flatten_mission_queues(&mut mission_queues);
-    let provinces =
-        build_province_state(&preview.map, &world, &post.province_capitals, &mut nations);
+    let mut provinces = build_province_state(
+        &preview.map,
+        &world,
+        &post.province_capitals,
+        &post.province_resource_presence_masks,
+        &mut nations,
+    );
+    generate_province_names(&mut provinces, names);
+    world.provinces = provinces;
+    generate_zone_display_names(
+        &mut ocean.zones,
+        &world,
+        preview.scenario_tag.as_bytes(),
+        runtime_seed,
+        names,
+    );
     let mut pending = PendingWorkState::default();
     pending.queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
         audience: None,
@@ -178,9 +251,8 @@ pub fn create_random_game(
             selected_nation: human_nation.nation(),
         },
         unit_ids,
-        world,
-        provinces,
-        port_zone_owners,
+        map: world,
+        ocean,
         rng: RngState {
             crt_rand,
             map_generation: RetailLcg::from_state(map_lcg.state()),

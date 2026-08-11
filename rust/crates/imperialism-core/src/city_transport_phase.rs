@@ -81,13 +81,13 @@ impl GameState {
             } else {
                 MajorNationController::Computer
             };
-            let city = major.city();
-            let economy = major.economy();
+            let city = &major.city;
+            let economy = &major.economy;
             let interior = economy.interior_civilian.as_ref();
 
-            major.common().status() == CountryStatus::Independent
+            major.common.status() == CountryStatus::Independent
                 && economy.controller == expected_controller
-                && city.home_town.is_some()
+                && !major.towns.is_empty()
                 && city.population.count == 7
                 && city.population.baseline_labor == LaborPool::new(4, 2, 1)
                 && city.population.strength == 12
@@ -115,8 +115,8 @@ impl GameState {
                     matches!(
                         economy.pending_ship,
                         Some(ShipType::Trader | ShipType::Indiaman)
-                    ) && interior.city_order_demand == first_turn_ai_city_demand()
-                        && major.common().treasury >= -20_000
+                    ) && interior.city_order_demand == crate::ai::initial_ai_city_order_demand()
+                        && major.common.treasury >= -20_000
                 }
         })
     }
@@ -222,6 +222,7 @@ impl GameState {
             common,
             economy,
             city,
+            ..
         } = &mut self.nations.majors[nation];
         let mut remaining = requested;
         if flags & 8 == 0 {
@@ -746,13 +747,4 @@ fn city_orders_are_idle(orders: &CityOrders) -> bool {
                 .is_some_and(|order| order.progress.quantity == 0)
         })
         && orders.population_growth.quantity == 0
-}
-
-fn first_turn_ai_city_demand() -> AiCityOrderDemand {
-    let mut demand = AiCityOrderDemand::default();
-    demand.expansions[CityFacilitySlot::TextileMill] = 2;
-    demand.expansions[CityFacilitySlot::ClothingFactory] = 1;
-    demand.expansions[CityFacilitySlot::SteelMill] = 2;
-    demand.expansions[CityFacilitySlot::LumberMill] = 2;
-    demand
 }

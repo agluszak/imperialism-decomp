@@ -7,7 +7,10 @@
 //! - `MergeSmallCityRegionsAndCompactIds` (0x0052d750)
 
 use crate::random_map_terrain::GeneratedTerrainTileScratch;
-use crate::{HexDirection, MapGeometry, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, TileId};
+use crate::{
+    HexDirection, MapGeometry, OceanRoute, OceanZoneId, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH,
+    TileId,
+};
 
 const WATER: i8 = 5;
 const SEA_OWNER_BIAS: i32 = 0x17;
@@ -31,6 +34,12 @@ struct SeaSegment {
     y1: i16,
     region_a: u8,
     region_b: u8,
+}
+
+pub(crate) struct WaterMergeResult {
+    pub(crate) region_count: i32,
+    pub(crate) routes: Vec<OceanRoute>,
+    pub(crate) zone_links: Vec<[OceanZoneId; 2]>,
 }
 
 impl Seapoint {
@@ -84,14 +93,18 @@ impl SeaSegment {
 
 /// Compact undersized water regions and rewrite `owner_nation` tags to the compacted id space.
 ///
-/// Returns the post-merge city-region count (`cityRegionCount2a4`).
+/// Returns the post-merge city-region count and retained `TOcean` route records.
 pub(crate) fn merge_small_water_regions(
     tiles: &mut [GeneratedTerrainTileScratch],
     geometry: MapGeometry,
-) -> i32 {
+) -> WaterMergeResult {
     let mut region_count = city_region_count(tiles);
     if region_count <= 0 {
-        return 0;
+        return WaterMergeResult {
+            region_count: 0,
+            routes: Vec::new(),
+            zone_links: Vec::new(),
+        };
     }
     let quads = build_city_region_border_overlay_segments(tiles, geometry);
     let mut links = build_overlay_span_records_from_quad_border_links(quads);
@@ -109,7 +122,36 @@ pub(crate) fn merge_small_water_regions(
     loop {
         region -= 1;
         if region < 0 {
-            return region_count;
+            let links = links
+                .into_iter()
+                .flatten()
+                .filter(|link| {
+                    link.region_a != link.region_b && (link.x0 != link.x1 || link.y0 != link.y1)
+                })
+                .collect::<Vec<_>>();
+            let routes = links
+                .iter()
+                .map(|link| OceanRoute {
+                    start_column: i32::from(link.x0),
+                    start_row: i32::from(link.y0),
+                    end_column: i32::from(link.x1),
+                    end_row: i32::from(link.y1),
+                })
+                .collect();
+            let zone_links = links
+                .iter()
+                .map(|link| {
+                    [
+                        OceanZoneId::new(u16::from(link.region_a)),
+                        OceanZoneId::new(u16::from(link.region_b)),
+                    ]
+                })
+                .collect();
+            return WaterMergeResult {
+                region_count,
+                routes,
+                zone_links,
+            };
         }
         let region_byte = region as u8;
 
@@ -546,7 +588,7 @@ mod tests {
         assert_eq!(before, 2);
         let after =
             merge_small_water_regions(&mut tiles, MapGeometry::new(crate::MapTopology::Wrapping));
-        assert_eq!(after, 1);
+        assert_eq!(after.region_count, 1);
         assert_eq!(water_region_id(&tiles[10 * width + 40]), 0);
         assert_eq!(water_region_id(&tiles[10 * width + 20]), 0);
     }

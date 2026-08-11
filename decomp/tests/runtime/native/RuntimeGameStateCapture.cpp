@@ -62,6 +62,7 @@
 #include "game/nation/TMinor.h"
 #include "game/nation/TTurnStartEvent.h"
 #include "game/navy/TNavyMgr.h"
+#include "game/navy/TOcean.h"
 #include "game/navy/TShip.h"
 #include "game/navy/TTaskForce.h"
 #include "game/tactical_ui/TTechMgr.h"
@@ -925,33 +926,126 @@ JSON_Value* CaptureAiProvinceTargets(TGreatPower* nation) {
   return targets.Release();
 }
 
-JSON_Value* CapturePortZoneOwners() {
-  const int liveCount = ValidateLiveZoneContextCount();
-  JsonArray owners;
-  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
-    if (zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-      continue;
-    }
-    TPortZone* port = static_cast<TPortZone*>(zone);
-    const int ordinal = static_cast<int>(port->contextOrdinal14);
-    if (ordinal < 0 || ordinal >= liveCount) {
-      FailSemanticCapture("port-zone ordinal is outside the live context range");
-    }
-    const int tile = static_cast<int>(port->portTileIndex48);
-    if (tile < 0 || tile >= 0x1950) {
-      FailSemanticCapture("port-zone tile is outside the strategic map");
-    }
-    const int formerOwner =
-        static_cast<int>(g_pGlobalMapState->terrainStateTable[tile].formerOwnerNationTag03);
-    if (formerOwner < 0 || formerOwner >= kNationSlotCount) {
-      FailSemanticCapture("port-zone former owner is outside the nation range");
-    }
-    JsonObject owner;
-    owner.Set("zone", ordinal);
-    owner.Set("former_owner", formerOwner);
-    owners.Add(owner.Release());
+int RequiredZoneOrdinal(TZone* zone, int liveCount) {
+  if (zone == 0) {
+    FailSemanticCapture("ocean neighbor contains a null zone");
   }
-  return owners.Release();
+  const int ordinal = static_cast<int>(zone->contextOrdinal14);
+  if (ordinal < 0 || ordinal >= liveCount || FindMapActionContextByNodeId((short)ordinal) != zone) {
+    FailSemanticCapture("ocean neighbor is outside the live ordinal table");
+  }
+  return ordinal;
+}
+
+JSON_Value* CaptureZone(TZone* zone, int liveCount) {
+  JsonObject object;
+  JsonArray primaryNeighbors;
+  JsonArray secondaryNeighbors;
+
+  object.Set("display_name", static_cast<LPCSTR>(zone->displayName));
+  object.SetOptional("status_code", static_cast<int>(zone->statusCode04));
+  const int targetTile = zone->tileOrTerrainId0c;
+  if (targetTile < -1 || targetTile >= 0x1950) {
+    FailSemanticCapture("ocean target tile is outside the strategic map");
+  }
+  object.SetOptional("target_tile", targetTile);
+  const int seedOwner = static_cast<int>(zone->seedNationId12);
+  if (seedOwner < -1 || seedOwner > 0xff) {
+    FailSemanticCapture("ocean seed owner is outside the tile-owner range");
+  }
+  object.SetOptional("seed_owner", seedOwner);
+  const int activeTile = static_cast<int>(zone->activeTileIndex20);
+  if (activeTile < -1 || activeTile >= 0x1950) {
+    FailSemanticCapture("ocean active tile is outside the strategic map");
+  }
+  object.SetOptional("active_tile", activeTile);
+
+  const int primaryCount = zone->primaryNeighbors.Count();
+  if (primaryCount < 0 || primaryCount > liveCount) {
+    FailSemanticCapture("ocean primary-neighbor count is outside the live zone range");
+  }
+  for (int index = 0; index < primaryCount; ++index) {
+    primaryNeighbors.Add(RequiredZoneOrdinal(zone->primaryNeighbors.GetAt(index), liveCount));
+  }
+  object.Set("primary_neighbors", primaryNeighbors.Release());
+
+  const int secondaryCount = zone->secondaryNeighbors.Count();
+  if (secondaryCount < 0 || secondaryCount > 0x180) {
+    FailSemanticCapture("ocean secondary-neighbor count is outside the province range");
+  }
+  for (int secondaryIndex = 0; secondaryIndex < secondaryCount; ++secondaryIndex) {
+    Province* province = zone->secondaryNeighbors.Data()[secondaryIndex];
+    if (province == 0) {
+      FailSemanticCapture("ocean secondary-neighbor list contains a null province");
+    }
+    const int provinceIndex = static_cast<int>(province->GetIndex());
+    if (provinceIndex < 0 || provinceIndex >= 0x180 ||
+        &g_pGlobalMapState->cityScoreTable[provinceIndex] != province) {
+      FailSemanticCapture("ocean secondary neighbor is outside the province table");
+    }
+    secondaryNeighbors.Add(provinceIndex);
+  }
+  object.Set("secondary_neighbors", secondaryNeighbors.Release());
+  return object.Release();
+}
+
+JSON_Value* CaptureOcean() {
+  if (g_pActiveMapOrderContext == 0) {
+    FailSemanticCapture("ocean manager is unavailable");
+  }
+  const int liveCount = ValidateLiveZoneContextCount();
+  TZone* orderedZones[0x70];
+  memset(orderedZones, 0, sizeof(orderedZones));
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+    orderedZones[RequiredZoneOrdinal(zone, liveCount)] = zone;
+  }
+
+  JsonObject ocean;
+  JsonArray zones;
+  for (int ordinal = 0; ordinal < liveCount; ++ordinal) {
+    TZone* zone = orderedZones[ordinal];
+    if (zone == 0) {
+      FailSemanticCapture("ocean ordinal table contains a hole");
+    }
+    JsonObject entry;
+    if (zone->IsKindOf(RUNTIME_CLASS(TPortZone)) != 0) {
+      TPortZone* port = static_cast<TPortZone*>(zone);
+      const int portTile = static_cast<int>(port->portTileIndex48);
+      if (portTile < 0 || portTile >= 0x1950) {
+        FailSemanticCapture("port-zone tile is outside the strategic map");
+      }
+      const int formerOwner =
+          static_cast<int>(g_pGlobalMapState->terrainStateTable[portTile].formerOwnerNationTag03);
+      if (formerOwner < 0 || formerOwner >= kNationSlotCount) {
+        FailSemanticCapture("port-zone former owner is outside the nation range");
+      }
+      JsonObject portObject;
+      portObject.Set("zone", CaptureZone(port, liveCount));
+      portObject.Set("port_tile", portTile);
+      entry.Set("PortZone", portObject.Release());
+    } else {
+      entry.Set("Zone", CaptureZone(zone, liveCount));
+    }
+    zones.Add(entry.Release());
+  }
+  ocean.Set("zones", zones.Release());
+
+  const int routeCount = static_cast<int>(g_pActiveMapOrderContext->routeNodeCount);
+  if (routeCount < 0 || (routeCount != 0 && g_pActiveMapOrderContext->routeSegments == 0)) {
+    FailSemanticCapture("ocean route table is invalid");
+  }
+  JsonArray routes;
+  for (int routeIndex = 0; routeIndex < routeCount; ++routeIndex) {
+    const CRect& route = g_pActiveMapOrderContext->routeSegments[routeIndex];
+    JsonObject routeObject;
+    routeObject.Set("start_column", static_cast<int>(route.left));
+    routeObject.Set("start_row", static_cast<int>(route.top));
+    routeObject.Set("end_column", static_cast<int>(route.right));
+    routeObject.Set("end_row", static_cast<int>(route.bottom));
+    routes.Add(routeObject.Release());
+  }
+  ocean.Set("routes", routes.Release());
+  return ocean.Release();
 }
 
 const char* PendingActionStatusName(signed char status) {
@@ -1220,7 +1314,9 @@ JSON_Value* CaptureRng() {
   return object.Release();
 }
 
-JSON_Value* CaptureWorld() {
+JSON_Value* CaptureProvinces();
+
+JSON_Value* CaptureMap() {
   JsonObject object;
   JsonArray tiles;
   if (g_pGlobalMapState->field6 < 0 || g_pGlobalMapState->field6 >= 0x1950) {
@@ -1229,6 +1325,16 @@ JSON_Value* CaptureWorld() {
   object.Set("topology",
              g_pGlobalMapState->hexNeighborWrapHorizontally == 0 ? "wrapping" : "bounded");
   object.Set("view_origin", static_cast<int>(g_pGlobalMapState->field6));
+  if (g_pGlobalMapState->field8 > 1) {
+    FailSemanticCapture("strategic map data-ready flag is not boolean");
+  }
+  object.Set("map_data_ready", g_pGlobalMapState->field8 != 0);
+  if (g_pGlobalMapState->field9 > 1) {
+    FailSemanticCapture("strategic map recruit-search flag is not boolean");
+  }
+  object.Set("recruit_search_active", g_pGlobalMapState->field9 != 0);
+  object.Set("city_score_total", g_pGlobalMapState->cityScoreTotal);
+  object.Set("scenario_tag", static_cast<LPCSTR>(g_pGlobalMapState->scenarioTagText));
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
     JsonObject tileObject;
@@ -1257,6 +1363,14 @@ JSON_Value* CaptureWorld() {
     ASSERT(tile.formerOwnerNationTag03 >= -1);
     tileObject.SetOptional("owner_nation", static_cast<int>(tile.ownerNationTag04));
     tileObject.SetOptional("former_owner_nation", static_cast<int>(tile.formerOwnerNationTag03));
+    tileObject.Set("owner_border_mask", static_cast<unsigned int>(tile.ownerBorderMask07));
+    tileObject.Set("city_border_mask", static_cast<unsigned int>(tile.cityBorderMask08));
+    tileObject.Set("water_adjacency_mask", static_cast<unsigned int>(tile.waterAdjacencyMask09));
+    tileObject.Set("recruit_search_visited",
+                   static_cast<unsigned int>(tile.recruitSearchVisited0e));
+    tileObject.Set("per_tile_visited", static_cast<int>(tile.perTileVisitedFlag0f));
+    tileObject.Set("marker_slot_index", static_cast<int>(tile.markerSlotIndex10));
+    tileObject.Set("tile_action_ordinal", static_cast<int>(tile.tileActionOrdinal1a));
     tileObject.SetOptional("province", static_cast<int>(tile.cityRecordIndex));
     tileObject.Set("development", CaptureTileDevelopment(tile));
     tileObject.Set("edge_resources", CaptureOptionalResourceArray(tile.resourceTypeByEdge, 2));
@@ -1271,7 +1385,7 @@ JSON_Value* CaptureWorld() {
     tileObject.Set("flags", CaptureTileFlags(tile.activeFlags1c, tileFlags));
     ASSERT(tile.regionSubtypeTag05 >= -1);
     tileObject.SetOptional("region", static_cast<int>(tile.regionSubtypeTag05));
-    tileObject.Set("region_tile_subtype", static_cast<int>(tile.gateFlag));
+    tileObject.Set("gate", static_cast<int>(tile.gateFlag));
     if (tile.secondaryOwnerNationTag18 < -1 ||
         tile.secondaryOwnerNationTag18 >= kMajorNationCount) {
       FailSemanticCapture("tile secondary owner is outside the major-nation range");
@@ -1281,6 +1395,13 @@ JSON_Value* CaptureWorld() {
     tiles.Add(tileObject.Release());
   }
   object.Set("tiles", tiles.Release());
+  object.Set("provinces", CaptureProvinces());
+  if (g_pGlobalMapState->pendingRiverMouthTile < -1 ||
+      g_pGlobalMapState->pendingRiverMouthTile >= 0x1950) {
+    FailSemanticCapture("pending river-mouth tile is outside the strategic map");
+  }
+  object.SetOptional("pending_river_mouth_tile",
+                     static_cast<int>(g_pGlobalMapState->pendingRiverMouthTile));
   return object.Release();
 }
 
@@ -1311,9 +1432,23 @@ JSON_Value* CaptureProvinces() {
     if (province.cityTileIndex04 < -1 || province.cityTileIndex04 >= 0x1950) {
       FailSemanticCapture("province city tile is outside the strategic map");
     }
+    const int linkedTileCount = static_cast<int>(province.linkedRegionCount);
+    if (linkedTileCount < 0 || linkedTileCount > 0x20) {
+      FailSemanticCapture("province linked-tile count is outside the retail record range");
+    }
+    if (province.secondaryNeighborTileIndex3e < -1 ||
+        province.secondaryNeighborTileIndex3e >= 0x1950 ||
+        province.primaryNeighborTileIndex40 < -1 || province.primaryNeighborTileIndex40 >= 0x1950) {
+      FailSemanticCapture("province neighbor tile is outside the strategic map");
+    }
+    if (province.navyOrderReachableA0 > 1) {
+      FailSemanticCapture("province navy-order reachability flag is not boolean");
+    }
 
     JsonObject object;
     JsonArray adjacency;
+    JsonArray adjacencyAnchorTiles;
+    JsonArray linkedTiles;
     object.SetOptional("owner", static_cast<int>(province.ownerNationCode00));
     object.SetOptional("former_owner", static_cast<int>(province.formerOwnerNationCode01));
     object.Set("development_stage", static_cast<int>(province.developmentStage));
@@ -1323,11 +1458,30 @@ JSON_Value* CaptureProvinces() {
         FailSemanticCapture("active province adjacency ID is outside the province table");
       }
       adjacency.Add(adjacentProvince);
+      const int anchorTile = static_cast<int>(province.adjacentRegionAnchorTiles22[neighborIndex]);
+      if (anchorTile < 0 || anchorTile >= 0x1950) {
+        FailSemanticCapture("active province adjacency anchor is outside the strategic map");
+      }
+      adjacencyAnchorTiles.Add(anchorTile);
     }
     object.Set("adjacency", adjacency.Release());
+    object.Set("adjacency_anchor_tiles", adjacencyAnchorTiles.Release());
     object.SetOptional("region_class", static_cast<int>(province.regionClassA3));
     object.Set("fort_level", static_cast<int>(province.fortLevel03));
     object.SetOptional("city_tile", static_cast<int>(province.cityTileIndex04));
+    object.Set("last_turn_tick", static_cast<int>(province.lastTurnTick));
+    object.SetOptional("secondary_neighbor_tile",
+                       static_cast<int>(province.secondaryNeighborTileIndex3e));
+    object.SetOptional("primary_neighbor_tile",
+                       static_cast<int>(province.primaryNeighborTileIndex40));
+    for (int linkedTileIndex = 0; linkedTileIndex < linkedTileCount; ++linkedTileIndex) {
+      const int linkedTile = static_cast<int>(province.linkedTileIndices42[linkedTileIndex]);
+      if (linkedTile < 0 || linkedTile >= 0x1950) {
+        FailSemanticCapture("active province linked tile is outside the strategic map");
+      }
+      linkedTiles.Add(linkedTile);
+    }
+    object.Set("linked_tiles", linkedTiles.Release());
     short resourceDevelopmentByType[kResourceKindCount];
     memset(resourceDevelopmentByType, 0, sizeof(resourceDevelopmentByType));
     for (int resource = kResourceFood; resource < kResourceManufacturedEnd; ++resource) {
@@ -1341,6 +1495,9 @@ JSON_Value* CaptureProvinces() {
     }
     object.Set("explored_by_majors", exploredByMajors.Release());
     object.Set("city_score", province.cityScoreValue);
+    object.Set("navy_order_reachable", province.navyOrderReachableA0 != 0);
+    object.Set("resource_presence_mask", static_cast<int>(province.resourcePresenceMaskA2));
+    object.Set("name", static_cast<LPCSTR>(province.cityNameA4));
     provinces.Add(object.Release());
   }
   return provinces.Release();
@@ -1699,7 +1856,55 @@ JSON_Value* CaptureNationCommon(TCountry* country) {
   return common.Release();
 }
 
-JSON_Value* CaptureCity(int slot);
+JSON_Value* CaptureCity(TCity* city);
+
+JSON_Value* CaptureTowns(TGreatPower* nation) {
+  if (nation->townMarkerList == 0) {
+    FailSemanticCapture("major nation has no town marker list");
+  }
+  JsonArray towns;
+  const int townCount = nation->townMarkerList->GetCount();
+  if (townCount < 0) {
+    FailSemanticCapture("major nation has a negative town count");
+  }
+  for (int townOrdinal = 1; townOrdinal <= townCount; ++townOrdinal) {
+    TTown* town = static_cast<TTown*>(nation->townMarkerList->GetEntryByOrdinal(townOrdinal));
+    if (town == 0) {
+      FailSemanticCapture("major nation town list contains a null entry");
+    }
+    if (memchr(town->name, '\0', sizeof(town->name)) == 0) {
+      FailSemanticCapture("major nation town name is not terminated");
+    }
+    if (town->tileIndex < 0 || town->tileIndex >= 0x1950) {
+      FailSemanticCapture("major nation town tile is outside the strategic map");
+    }
+    if (town->ownerNation < 0 || town->ownerNation >= kNationSlotCount) {
+      FailSemanticCapture("major nation town owner is outside the nation range");
+    }
+    unsigned char transportLinked = 0;
+    unsigned char hasAdjacentCity = 0;
+    unsigned char active = 0;
+    memcpy(&transportLinked, &town->transportLinked, 1);
+    memcpy(&hasAdjacentCity, &town->hasAdjacentCity, 1);
+    memcpy(&active, &town->activeFlag, 1);
+    if (transportLinked > 1 || active > 1) {
+      FailSemanticCapture("major nation town boolean state is not canonical");
+    }
+
+    JsonObject object;
+    object.Set("name", town->name);
+    object.Set("tile", static_cast<int>(town->tileIndex));
+    object.Set("created_turn", static_cast<int>(town->createdTurnTick));
+    object.Set("owner_nation", static_cast<int>(town->ownerNation));
+    object.Set("resource_yield_by_type", CaptureResourceTable(town->resourceYieldByType));
+    object.Set("transport_linked", transportLinked != 0);
+    object.Set("enabled", static_cast<unsigned int>(static_cast<unsigned char>(town->enabledFlag)));
+    object.Set("has_adjacent_city", static_cast<unsigned int>(hasAdjacentCity));
+    object.Set("active", active != 0);
+    towns.Add(object.Release());
+  }
+  return towns.Release();
+}
 
 JSON_Value* CaptureMajorNationAggregate(int slot) {
   TCountry* country = g_apTerrainTypeDescriptorTable[slot];
@@ -1712,9 +1917,12 @@ JSON_Value* CaptureMajorNationAggregate(int slot) {
   }
 
   JsonObject object;
+  object.Set("kind", nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0 ? "auto_great_power"
+                                                                           : "great_power");
   object.Set("common", CaptureNationCommon(country));
   object.Set("economy", CaptureMajorNation(nation));
-  object.Set("city", CaptureCity(slot));
+  object.Set("city", CaptureCity(nation->city));
+  object.Set("towns", CaptureTowns(nation));
   return object.Release();
 }
 
@@ -2096,9 +2304,7 @@ JSON_Value* CaptureCityOrders(TCity* city) {
   return orders.Release();
 }
 
-JSON_Value* CaptureCity(int slot) {
-  TGreatPower* nation = g_apNationStates[slot];
-  TCity* city = nation != 0 ? nation->city : 0;
+JSON_Value* CaptureCity(TCity* city) {
   if (city == 0) {
     return JsonNullValue();
   }
@@ -2118,43 +2324,6 @@ JSON_Value* CaptureCity(int slot) {
   object.Set("low_production", city->lowProductionFlag7c != 0 ? true : false);
   object.Set("low_stock", city->lowStockFlag7d != 0 ? true : false);
   object.Set("reserved_by_type", CaptureResourceTable(city->reservedByType7e));
-  if (nation->townMarkerList == 0) {
-    FailSemanticCapture("major nation has no town marker list");
-  }
-  const int townCount = nation->townMarkerList->GetCount();
-  if (townCount > 1) {
-    FailSemanticCapture("semantic capture supports at most one major-nation town");
-  }
-  if (city->homeTownMarkerB0 == 0) {
-    if (townCount != 0) {
-      FailSemanticCapture("major nation town is not bound as the city home town");
-    }
-    object.SetNull("home_town");
-  } else {
-    if (townCount != 1 || nation->townMarkerList->GetEntryByOrdinal(1) != city->homeTownMarkerB0) {
-      FailSemanticCapture("city home town does not match the supported town-list entry");
-    }
-    TTown* town = city->homeTownMarkerB0;
-    if (town->tileIndex < 0 || town->tileIndex >= 0x1950) {
-      FailSemanticCapture("city home town tile is outside the strategic map");
-    }
-    if (town->enabledFlag < 0 || town->enabledFlag > 1) {
-      FailSemanticCapture("city home town enabled flag is not boolean");
-    }
-    unsigned char transportLinked = 0;
-    unsigned char active = 0;
-    memcpy(&transportLinked, &town->transportLinked, 1);
-    memcpy(&active, &town->activeFlag, 1);
-    if (transportLinked > 1 || active > 1) {
-      FailSemanticCapture("city home town state flag is not boolean");
-    }
-    JsonObject homeTown;
-    homeTown.Set("tile", static_cast<int>(town->tileIndex));
-    homeTown.Set("transport_linked", transportLinked != 0);
-    homeTown.Set("enabled", town->enabledFlag != 0);
-    homeTown.Set("active", active != 0);
-    object.Set("home_town", homeTown.Release());
-  }
   object.Set("power_available", static_cast<int>(city->powerAvailableB4));
   object.Set("stockpile", CaptureResourceTable(&city->cityStockCottonB6));
   object.Set("production_orders", CaptureShortArray(city->productionOrderTable1dc, 0x10));
@@ -2425,6 +2594,9 @@ JSON_Value* CaptureTaskForces() {
     object.Set("location", RuntimeRequiredZoneIndex(force->location));
     object.Set("nation", static_cast<int>(force->nation));
     object.Set("ship_counts", CaptureShortArray(force->shipCountsByToolbarSlot, 4));
+    unsigned char defeated = 0;
+    memcpy(&defeated, &force->defeated, 1);
+    object.Set("defeated", defeated != 0);
     object.Set("ingot_tile", static_cast<int>(force->ingotTileIndex));
     object.SetOptional("flagship", RuntimeShipIndex(force->flagship));
     object.Set("ships", CaptureSelectedShips(force->shipList));
@@ -2793,9 +2965,8 @@ bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state) {
   JsonObject object;
   object.Set("turn", CaptureTurn(run));
   object.Set("unit_ids", g_pSimMgr->field_64);
-  object.Set("world", CaptureWorld());
-  object.Set("provinces", CaptureProvinces());
-  object.Set("port_zone_owners", CapturePortZoneOwners());
+  object.Set("map", CaptureMap());
+  object.Set("ocean", CaptureOcean());
   object.Set("rng", CaptureRng());
   object.Set("market", CaptureMarket());
   object.Set("technology", CaptureTechnology());
@@ -2856,9 +3027,9 @@ bool CaptureSaveBackedGameState(RuntimeRun& run, const char* name) {
   }
 
   // Persistable bulk lives in the .imp; keep only session fields Rust cannot recover.
-  const char* bulkKeys[] = {"world",          "provinces", "port_zone_owners", "market",
-                            "technology",     "diplomacy", "nations",          "military_units",
-                            "civilian_units", "ships",     "task_forces",      "missions"};
+  const char* bulkKeys[] = {"map",       "ocean",       "market",         "technology",
+                            "diplomacy", "nations",     "military_units", "civilian_units",
+                            "ships",     "task_forces", "missions"};
   for (int index = 0; index < (int)(sizeof(bulkKeys) / sizeof(bulkKeys[0])); ++index) {
     json_object_remove(object, bulkKeys[index]);
   }

@@ -72,6 +72,14 @@ pub enum PendingDevelopmentAction {
 }
 
 impl InteriorCivilianState {
+    pub(crate) fn for_random_start(human: bool) -> Self {
+        let mut state = Self::default();
+        if !human {
+            state.city_order_demand = initial_ai_city_order_demand();
+        }
+        state
+    }
+
     #[allow(clippy::too_many_arguments)]
     pub fn from_parts(
         pending_recruitment: Option<CivilianUnitKind>,
@@ -104,6 +112,16 @@ impl InteriorCivilianState {
             pending_development_actions,
         }
     }
+}
+
+/// Demand retained after `TCityInteriorMinister::MakeNewCity` binds an AI Frog City.
+pub(crate) fn initial_ai_city_order_demand() -> AiCityOrderDemand {
+    let mut demand = AiCityOrderDemand::default();
+    demand.expansions[CityFacilitySlot::TextileMill] = 2;
+    demand.expansions[CityFacilitySlot::ClothingFactory] = 1;
+    demand.expansions[CityFacilitySlot::SteelMill] = 2;
+    demand.expansions[CityFacilitySlot::LumberMill] = 2;
+    demand
 }
 
 /// Runtime-derived inputs used by an AI major when selecting a fort province.

@@ -1,22 +1,23 @@
 use super::*;
 
-/// Special-purpose Accept-time port-zone table (no full `TZone` graph).
+/// Temporary Accept-time port allocation state before the entries join [`Ocean::zones`].
 ///
 /// Sea-zone ordinals are `water_owner - 0x17`. Port zones allocate the next ordinals in
 /// creation order. `ports` is newest-first so `FindFirstPortZone*` walks match retail's
 /// `g_pMapActionContextListHead`/`prev18` chain.
 pub(super) struct PortZoneTable {
     pub(super) next_ordinal: u16,
-    pub(super) ports: Vec<PortZone>,
+    pub(super) ports: Vec<PendingPortZone>,
 }
 #[derive(Clone, Copy, Debug)]
-pub(super) struct PortZone {
+pub(super) struct PendingPortZone {
     pub(super) ordinal: OceanZoneId,
     pub(super) port_tile: TileId,
     pub(super) sea_tile: TileId,
+    pub(super) active_tile: Option<TileId>,
+    pub(super) seed_owner: TileOwnerTag,
     /// `primaryNeighbors[0]` ordinal (sea zone or another port).
     pub(super) primary_neighbor: Option<OceanZoneId>,
-    pub(super) former_owner: NationId,
 }
 impl PortZoneTable {
     pub(super) fn new(sea_zone_count: u16) -> Self {
@@ -26,18 +27,28 @@ impl PortZoneTable {
         }
     }
 
-    pub(super) fn find_port_by_tile(&self, tile: TileId) -> Option<&PortZone> {
-        self.ports
-            .iter()
-            .find(|port| port.port_tile == tile || port.sea_tile == tile)
+    pub(super) fn find_port_by_tile(&self, tile: TileId) -> Option<&PendingPortZone> {
+        self.ports.iter().find(|port| {
+            port.port_tile == tile || port.sea_tile == tile || port.active_tile == Some(tile)
+        })
     }
 
-    pub(super) fn find_first_port_for_nation(&self, nation: NationId) -> Option<&PortZone> {
-        self.ports.iter().find(|port| port.former_owner == nation)
+    pub(super) fn find_first_port_for_nation(
+        &self,
+        world: &MapMgr,
+        nation: NationId,
+    ) -> Option<&PendingPortZone> {
+        self.ports.iter().find(|port| {
+            world[port.port_tile]
+                .former_owner_nation
+                .and_then(TileOwnerTag::nation)
+                == Some(nation)
+        })
     }
 }
-pub(super) fn sea_zone_count(world: &StrategicMap) -> u16 {
+pub(super) fn sea_zone_count(world: &MapMgr) -> u16 {
     world
+        .tiles
         .iter()
         .filter(|tile| tile.terrain == TerrainKind::Water)
         .filter_map(|tile| tile.owner_nation)
@@ -52,34 +63,275 @@ pub(super) fn sea_zone_count(world: &StrategicMap) -> u16 {
 /// Map construction consumes the current CRT stream to break equal-score sea-zone seed ties,
 /// stamps three negative overlay frames per zone, then reseeds CRT before setup continues.
 pub(super) fn initialize_sea_zone_map_markers(
-    world: &mut StrategicMap,
+    world: &mut MapMgr,
     mut map_build_crt: RetailCrtRng,
-) {
+) -> Vec<ZoneKind> {
     let geometry = world.geometry();
     let costs = build_sea_zone_cost_field(world, geometry);
+    let mut zones = Vec::with_capacity(usize::from(sea_zone_count(world)));
 
     for zone in 0..sea_zone_count(world) {
         let owner = TileOwnerTag::new(
             SEA_OWNER_BIAS + u8::try_from(zone).expect("fresh-map sea-zone tag fits in one byte"),
         );
         let center = select_sea_zone_seed_tile(world, geometry, &costs, owner, &mut map_build_crt);
-        world.tile_mut(center).action = TileAction::try_from_retail(ACTION_STATE_ZONE_CENTER);
+        world[center].action = TileAction::try_from_retail(ACTION_STATE_ZONE_CENTER);
 
         let north_west = geometry
             .neighbor(center, HexDirection::NorthWest)
             .expect("fresh-map sea-zone seed is below the north map edge");
-        world.tile_mut(north_west).action =
-            TileAction::try_from_retail(ACTION_STATE_ZONE_NORTH_WEST);
+        world[north_west].action = TileAction::try_from_retail(ACTION_STATE_ZONE_NORTH_WEST);
 
         let north_east = geometry
             .neighbor(north_west, HexDirection::NorthEast)
             .expect("fresh-map sea-zone marker is below the north map edge");
-        world.tile_mut(north_east).action =
-            TileAction::try_from_retail(ACTION_STATE_ZONE_NORTH_EAST);
+        world[north_east].action = TileAction::try_from_retail(ACTION_STATE_ZONE_NORTH_EAST);
+        zones.push(ZoneKind::Zone(Zone {
+            display_name: String::new(),
+            status_code: None,
+            target_tile: Some(center),
+            seed_owner: Some(owner),
+            active_tile: Some(north_east),
+            primary_neighbors: Vec::new(),
+            secondary_neighbors: Vec::new(),
+        }));
+    }
+    zones
+}
+
+pub(super) fn initialize_sea_zone_neighbors(
+    zones: &mut [ZoneKind],
+    world: &MapMgr,
+    links: &[[OceanZoneId; 2]],
+) {
+    for &[left, right] in links {
+        for (source, neighbor) in [(left, right), (right, left)] {
+            let ZoneKind::Zone(zone) = &mut zones[usize::from(source.get())] else {
+                unreachable!("water-region links only name base zones")
+            };
+            if !zone.primary_neighbors.contains(&neighbor) {
+                zone.primary_neighbors.push(neighbor);
+            }
+        }
+    }
+
+    let geometry = world.geometry();
+    for tile_index in 0..TileId::COUNT {
+        let tile = TileId::new(tile_index);
+        let Some(owner) = world[tile]
+            .owner_nation
+            .map(TileOwnerTag::get)
+            .filter(|&owner| owner >= SEA_OWNER_BIAS)
+        else {
+            continue;
+        };
+        let ordinal = usize::from(owner - SEA_OWNER_BIAS);
+        let ZoneKind::Zone(zone) = &mut zones[ordinal] else {
+            unreachable!("water owner tags name base zones")
+        };
+        for neighbor in geometry.neighbors(tile).into_iter().flatten() {
+            if let Some(province) = world[neighbor].province
+                && !zone.secondary_neighbors.contains(&province)
+            {
+                zone.secondary_neighbors.push(province);
+            }
+        }
     }
 }
+
+/// Fresh-map `RegenerateAllMapActionContextStatusCodes` status and RNG work.
+///
+/// Contexts are walked newest-first. This first map-construction pass consumes the shared-LCG
+/// name draws too because they determine every following zone's status code; a later final pass
+/// rebuilds display names after province names exist.
+pub(super) fn generate_base_zone_status_codes(
+    zones: &mut [ZoneKind],
+    scenario_tag: &[u8],
+    runtime_seed: u32,
+) {
+    let tag_seed = hash_retail_scenario_tag(scenario_tag);
+    let mut rng = RetailLcg::from_state(if tag_seed == 0 {
+        runtime_seed
+    } else {
+        tag_seed as u32
+    });
+    let mut used_cities = [false; PROVINCE_COUNT];
+    let mut localized_name_cursor_initialized = false;
+
+    for ordinal in (0..zones.len()).rev() {
+        let category = base_zone_status_category(zones, ordinal);
+        let status_code = i16::try_from((rng.next_sample_15() & 3) + category * 4)
+            .expect("zone status code fits in a short");
+
+        let ZoneKind::Zone(zone) = &zones[ordinal] else {
+            unreachable!("base-zone status generation runs before ports exist")
+        };
+        let selected_city = if zone.secondary_neighbors.is_empty() {
+            None
+        } else {
+            let index =
+                usize::try_from(rng.next_sample_15() % zone.secondary_neighbors.len() as u32)
+                    .expect("zone secondary-neighbor index fits usize");
+            Some(zone.secondary_neighbors[index])
+        };
+        let needs_fallback_name = match selected_city {
+            Some(city) if !used_cities[usize::from(city.get())] => {
+                used_cities[usize::from(city.get())] = true;
+                false
+            }
+            _ => true,
+        };
+
+        if needs_fallback_name && !localized_name_cursor_initialized {
+            rng.advance();
+            rng.advance();
+            localized_name_cursor_initialized = true;
+        }
+
+        let ZoneKind::Zone(zone) = &mut zones[ordinal] else {
+            unreachable!("base-zone status generation runs before ports exist")
+        };
+        zone.status_code = Some(status_code);
+    }
+}
+
+/// Localized `TMapMgr::GenerateProvinceNames` assignment in fixed province-table order.
+pub(super) fn generate_province_names(
+    provinces: &mut ProvinceTable<ProvinceState>,
+    names: &RandomGameNames,
+) {
+    let mut next_ordinal = [0_usize; NATION_COUNT];
+    for province_id in (0..ProvinceId::COUNT).map(ProvinceId::new) {
+        let province = &mut provinces[province_id];
+        if province.linked_tiles.is_empty() {
+            continue;
+        }
+        let owner = province
+            .owner()
+            .expect("a populated fresh-map province has an owner");
+        let ordinal = &mut next_ordinal[usize::from(owner.get())];
+        province.name = names.province_names_by_nation[owner]
+            .get(*ordinal)
+            .expect("retail province-name table covers every generated province")
+            .clone();
+        *ordinal += 1;
+    }
+}
+
+/// Final `RegenerateAllMapActionContextStatusCodes` display-name pass.
+///
+/// Every status is already set at this point: base-zone statuses were created with the map,
+/// while port statuses were created with their port. Retail nevertheless reseeds from the
+/// scenario tag, resets the used-city and fallback-name cursors, and rebuilds every headline.
+pub(super) fn generate_zone_display_names(
+    zones: &mut [ZoneKind],
+    world: &MapMgr,
+    scenario_tag: &[u8],
+    runtime_seed: u32,
+    names: &RandomGameNames,
+) {
+    let tag_seed = hash_retail_scenario_tag(scenario_tag);
+    let mut rng = RetailLcg::from_state(if tag_seed == 0 {
+        runtime_seed
+    } else {
+        tag_seed as u32
+    });
+    let mut used_cities = [false; PROVINCE_COUNT];
+    let mut fallback_cursor = None;
+    let mut fallback_step = 0;
+
+    for ordinal in (0..zones.len()).rev() {
+        let raw_name = match &zones[ordinal] {
+            ZoneKind::PortZone(port) => {
+                let province = world[port.port_tile]
+                    .province
+                    .expect("a fresh port zone belongs to one province");
+                world.provinces[province].name.clone()
+            }
+            ZoneKind::Zone(zone) => {
+                let selected_city = if zone.secondary_neighbors.is_empty() {
+                    None
+                } else {
+                    let index = usize::try_from(
+                        rng.next_sample_15() % zone.secondary_neighbors.len() as u32,
+                    )
+                    .expect("zone secondary-neighbor index fits usize");
+                    Some(zone.secondary_neighbors[index])
+                };
+                match selected_city {
+                    Some(province) if !used_cities[usize::from(province.get())] => {
+                        used_cities[usize::from(province.get())] = true;
+                        world.provinces[province].name.clone()
+                    }
+                    _ => {
+                        let cursor = *fallback_cursor.get_or_insert_with(|| {
+                            let cursor = usize::try_from(rng.next_sample_15() % 0x25)
+                                .expect("fallback ocean-name cursor fits usize");
+                            const STEPS: [usize; 4] = [1, 7, 0xb, 0x17];
+                            fallback_step = STEPS[usize::try_from(rng.next_sample_15() % 4)
+                                .expect("fallback ocean-name step index fits usize")];
+                            cursor
+                        });
+                        let name = names
+                            .fallback_ocean_names
+                            .get(cursor)
+                            .expect("retail fallback ocean-name table has 37 entries")
+                            .clone();
+                        fallback_cursor = Some((cursor + fallback_step) % 0x25);
+                        name
+                    }
+                }
+            }
+        };
+
+        let zone = match &mut zones[ordinal] {
+            ZoneKind::Zone(zone) => zone,
+            ZoneKind::PortZone(port) => &mut port.zone,
+        };
+        let status = usize::try_from(
+            zone.status_code
+                .expect("fresh map-action context has a status code"),
+        )
+        .expect("fresh map-action context status is nonnegative");
+        let template = names
+            .zone_headline_templates
+            .get(status)
+            .expect("retail zone-headline table covers every status code");
+        zone.display_name = template.replace("[1]", &raw_name);
+    }
+}
+
+fn base_zone_status_category(zones: &[ZoneKind], ordinal: usize) -> u32 {
+    let ZoneKind::Zone(zone) = &zones[ordinal] else {
+        unreachable!("base-zone status generation runs before ports exist")
+    };
+    let mut category = zone.primary_neighbors.len() as u32;
+    if category == 2 {
+        let first = usize::from(zone.primary_neighbors[0].get());
+        let second = zone.primary_neighbors[1];
+        let ZoneKind::Zone(first) = &zones[first] else {
+            unreachable!("base-zone links name base zones before ports exist")
+        };
+        if first.primary_neighbors.contains(&second) {
+            category = 1;
+        }
+    }
+    if category > 5 {
+        category = 4;
+    } else if category > 3 {
+        category = 3;
+    }
+    if zone.secondary_neighbors.is_empty() {
+        4
+    } else if category == 4 {
+        3
+    } else {
+        category
+    }
+}
+
 /// `RelaxMapTileCostFieldByNeighborTerrain` to its fixed point.
-pub(super) fn build_sea_zone_cost_field(world: &StrategicMap, geometry: MapGeometry) -> Vec<i16> {
+pub(super) fn build_sea_zone_cost_field(world: &MapMgr, geometry: MapGeometry) -> Vec<i16> {
     let mut costs = vec![0_i16; STRATEGIC_TILE_COUNT];
     loop {
         let mut changed = 0;
@@ -122,7 +374,7 @@ pub(super) fn build_sea_zone_cost_field(world: &StrategicMap, geometry: MapGeome
 }
 /// `SelectBestSeedTileForNationFromCostField`.
 pub(super) fn select_sea_zone_seed_tile(
-    world: &StrategicMap,
+    world: &MapMgr,
     geometry: MapGeometry,
     costs: &[i16],
     owner: TileOwnerTag,
@@ -174,7 +426,7 @@ pub(super) fn select_sea_zone_seed_tile(
 }
 /// `TOcean::EnsurePortZoneForTile` side effects needed for Accept missions / tile action state.
 pub(super) fn ensure_port_zone_for_tile(
-    world: &mut StrategicMap,
+    world: &mut MapMgr,
     ports: &mut PortZoneTable,
     tile: TileId,
 ) {
@@ -184,19 +436,25 @@ pub(super) fn ensure_port_zone_for_tile(
     if ports.find_port_by_tile(tile).is_some() {
         return;
     }
-    let Some(owner) = world[tile].owner_nation.and_then(TileOwnerTag::nation) else {
+    let Some(seed_owner) = world[tile].owner_nation else {
+        return;
+    };
+    let Some(owner) = seed_owner.nation() else {
         return;
     };
     let nation_seed = owner.get();
-    let former_owner = world[tile]
-        .former_owner_nation
-        .and_then(TileOwnerTag::nation)
-        .unwrap_or(owner);
+
+    // TPortZone first resolves its inherited TZone target from the owning
+    // nation's home-region class and leaves this overlay marker in place even
+    // after EnsurePortZoneForTile replaces the zone's target with a sea tile.
+    let representative = world
+        .representative_tile_index_for_nation(owner, Some(tile), false)
+        .expect("port owner has representative home-region territory");
+    world[representative].action = TileAction::try_from_retail(ACTION_STATE_PORT_ZONE_MARKER);
 
     let geometry = world.geometry();
-    let Some(best_sea) = select_port_sea_tile(world, geometry, tile, nation_seed) else {
-        return;
-    };
+    let best_sea = select_port_sea_tile(world, geometry, tile, nation_seed)
+        .expect("port zone requires a reachable sea tile");
 
     let primary_neighbor = if world[best_sea]
         .action
@@ -213,20 +471,117 @@ pub(super) fn ensure_port_zone_for_tile(
 
     let ordinal = OceanZoneId::new(ports.next_ordinal);
     ports.next_ordinal += 1;
+    world[best_sea].action = TileAction::try_from_retail(ACTION_STATE_ANCHOR);
+    let active_tile = find_nearest_active_port_zone_tile(world, ports, best_sea, primary_neighbor);
     ports.ports.insert(
         0,
-        PortZone {
+        PendingPortZone {
             ordinal,
             port_tile: tile,
             sea_tile: best_sea,
+            active_tile,
+            seed_owner,
             primary_neighbor,
-            former_owner,
         },
     );
-    world.tile_mut(best_sea).action = TileAction::try_from_retail(ACTION_STATE_ANCHOR);
+}
+
+fn find_nearest_active_port_zone_tile(
+    world: &MapMgr,
+    ports: &PortZoneTable,
+    origin: TileId,
+    primary_neighbor: Option<OceanZoneId>,
+) -> Option<TileId> {
+    let geometry = world.geometry();
+    let (row, column) = geometry.row_column(origin);
+    let mut row = i32::from(row);
+    let mut column = i32::from(column);
+    let mut ring = 0_i32;
+    let mut direction = 5_i32;
+    let mut step_in_ring = 1_i32;
+
+    advance_spiral(
+        &mut row,
+        &mut column,
+        &mut ring,
+        &mut direction,
+        &mut step_in_ring,
+        world.topology,
+    );
+    while ring < 10 {
+        if (0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&row)
+            && (0..i32::from(STRATEGIC_MAP_WIDTH)).contains(&column)
+        {
+            let candidate = geometry
+                .tile(row as u16, column as u16)
+                .expect("checked spiral coordinates are on the strategic map");
+            let candidate_context = if world[candidate]
+                .action
+                .is_some_and(|action| matches!(action.retail(), ACTION_STATE_ANCHOR | 14))
+            {
+                ports.find_port_by_tile(candidate).map(|port| port.ordinal)
+            } else {
+                world[candidate]
+                    .owner_nation
+                    .map(TileOwnerTag::get)
+                    .filter(|&tag| tag >= SEA_OWNER_BIAS)
+                    .map(|tag| OceanZoneId::new(u16::from(tag - SEA_OWNER_BIAS)))
+            };
+            if candidate_context == primary_neighbor && world[candidate].action.is_none() {
+                return Some(candidate);
+            }
+        }
+        advance_spiral(
+            &mut row,
+            &mut column,
+            &mut ring,
+            &mut direction,
+            &mut step_in_ring,
+            world.topology,
+        );
+    }
+    None
+}
+
+fn advance_spiral(
+    row: &mut i32,
+    column: &mut i32,
+    ring: &mut i32,
+    direction: &mut i32,
+    step_in_ring: &mut i32,
+    topology: MapTopology,
+) {
+    *step_in_ring += 1;
+    if *ring <= *step_in_ring {
+        *direction += 1;
+        *step_in_ring = 0;
+        if *direction > 5 {
+            *ring += 1;
+            *direction = 0;
+            step_row_column(row, column, 4, topology);
+        }
+    }
+    step_row_column(row, column, *direction, topology);
+}
+
+fn step_row_column(row: &mut i32, column: &mut i32, direction: i32, topology: MapTopology) {
+    let odd_row = *row & 1 != 0;
+    if direction == 4 || (direction > 2 && !odd_row) {
+        *column -= 1;
+    } else if direction == 1 || (direction < 3 && odd_row) {
+        *column += 1;
+    }
+    if topology == MapTopology::Wrapping {
+        *column = column.rem_euclid(i32::from(STRATEGIC_MAP_WIDTH));
+    }
+    if matches!(direction, 5 | 0) {
+        *row -= 1;
+    } else if matches!(direction, 3 | 2) {
+        *row += 1;
+    }
 }
 pub(super) fn select_port_sea_tile(
-    world: &StrategicMap,
+    world: &MapMgr,
     geometry: MapGeometry,
     tile: TileId,
     nation_seed: u8,

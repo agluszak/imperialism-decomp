@@ -6,6 +6,28 @@
 
 use crate::*;
 
+pub(crate) fn random_game_names() -> RandomGameNames {
+    let mut localized_nation_names = NationTable::default();
+    let mut province_names_by_nation = NationTable::default();
+    for nation in NationId::all() {
+        localized_nation_names[nation] = format!("N{}", nation.get());
+        let count = if MajorNationId::from_nation(nation).is_some() {
+            8
+        } else {
+            4
+        };
+        province_names_by_nation[nation] = (0..count)
+            .map(|ordinal| format!("N{}P{}", nation.get(), ordinal + 1))
+            .collect();
+    }
+    RandomGameNames {
+        localized_nation_names,
+        province_names_by_nation,
+        zone_headline_templates: (0..24).map(|status| format!("S{status} [1]")).collect(),
+        fallback_ocean_names: (0..37).map(|index| format!("Ocean{index}")).collect(),
+    }
+}
+
 /// A minimal city with a small three-band population and no stock.
 pub(crate) fn city() -> CityState {
     CityState {
@@ -22,7 +44,6 @@ pub(crate) fn city() -> CityState {
         low_production: false,
         low_stock: false,
         reserved_by_type: ResourceTable::default(),
-        home_town: Some(TownState::for_frog_city(TileId::new(1))),
         power_available: 0,
         stockpile: crate::Stockpile::default(),
         production_orders: ProductionTable::default(),
@@ -100,16 +121,18 @@ pub(crate) fn great_power_state() -> GreatPowerState {
 /// A present major nation with common state, rule state, and a city.
 pub(crate) fn major_nation() -> MajorNation {
     MajorNation {
+        kind: MajorNationKind::GreatPower,
         common: NationCommonState::from_parts(
             String::new(),
             crate::CountryStatus::Independent,
             Vec::new(),
             1_000,
-            Some(TileId::new(0)),
+            Some(TileId::new(1)),
             NationTable::default(),
         ),
         economy: great_power_state(),
         city: city(),
+        towns: vec![TownState::for_frog_city(TileId::new(1), NationId::new(0))],
     }
 }
 
@@ -129,13 +152,12 @@ pub(crate) fn game_state() -> GameState {
             selected_nation: NationId::new(0),
         },
         unit_ids: crate::UnitIdAllocator::default(),
-        world: StrategicMap::new(
+        map: MapMgr::new(
             crate::MapTopology::Bounded,
             vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
         )
         .unwrap(),
-        provinces: crate::ProvinceTable::default(),
-        port_zone_owners: Vec::new(),
+        ocean: Ocean::default(),
         rng: RngState {
             crt_rand: RetailCrtRng::from_state(1),
             map_generation: RetailLcg::from_state(1),

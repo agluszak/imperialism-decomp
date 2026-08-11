@@ -48,10 +48,10 @@ pub(in crate::ui::city) fn on_city_canvas_click(
     let unbuilt_capacity_center = {
         let major = session.0.nations().major(nation);
         CityState::is_capacity_center(building.slot)
-            && major.city().building_type(
+            && major.city.building_type(
                 building.slot,
-                major.economy(),
-                major.common().owned_region_count() as i32,
+                &major.economy,
+                major.common.owned_region_count() as i32,
             ) == 0
     };
     if unbuilt_capacity_center {
@@ -182,7 +182,7 @@ pub(in crate::ui::city) fn open_city_dialog(
         }
     });
     let shipyard_data = (slot == CityFacilitySlot::Shipyard).then(|| {
-        let city = state.nations().major(nation).city();
+        let city = &state.nations().major(nation).city;
         let material_pictures = SHIPYARD_MATERIALS
             .map(|resource| transparent_picture(ui, PictureId::new(700 + resource as i16)));
         let (detail_font, _, _) = ui
@@ -433,7 +433,7 @@ pub(in crate::ui::city) fn restore_city_dialogs(
         .expect("validated City screen catalog view")
         .city_buildings
         .clone();
-    let city = session.0.nations().major(nation).city();
+    let city = &session.0.nations().major(nation).city;
     let mut next_z = dialogs.iter().map(|(_, z)| z.0).max().unwrap_or(0) + 1;
     for building in buildings {
         if !supports_city_dialog(building.slot) {

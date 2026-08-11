@@ -242,6 +242,9 @@ pub enum PendingActionKind {
     CouncilLeadMonument,
     ConquestMonumentArmory,
 }
+impl PendingActionKind {
+    pub const LENGTH: usize = enum_map::enum_len::<Self>();
+}
 pub const PENDING_ACTION_COUNT: usize = PendingActionKind::LENGTH;
 pub type PendingActionTable<T> = EnumMap<PendingActionKind, T>;
 

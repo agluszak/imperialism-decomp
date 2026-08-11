@@ -105,7 +105,9 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
       return kRuntimeFlowRunning;
     }
     CaptureRuntimeMapGeneration(scenario.RunState());
-    CaptureRandomGameSetup(scenario.RunState(), RandomSetup().View());
+    if (!scenario.RunState().RequestsCapture(kRuntimeCaptureGameState)) {
+      CaptureRandomGameSetup(scenario.RunState(), RandomSetup().View());
+    }
     phase = kSettingCountryName;
     scenario.EnterFlowPhase("setting_country_name", "wait_for_event_0x05dd");
     scenario.ContinueAfterAction();
@@ -113,7 +115,9 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
   }
   if (phase == kCapturingRegeneratedPlanet) {
     CaptureRuntimeMapGeneration(scenario.RunState());
-    CaptureRandomGameSetup(scenario.RunState(), RandomSetup().View());
+    if (!scenario.RunState().RequestsCapture(kRuntimeCaptureGameState)) {
+      CaptureRandomGameSetup(scenario.RunState(), RandomSetup().View());
+    }
     phase = kSettingCountryName;
     scenario.EnterFlowPhase("setting_country_name", "wait_for_event_0x05dd");
     scenario.ContinueAfterAction();
@@ -142,6 +146,10 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
     return kRuntimeFlowRunning;
   }
   if (phase == kActivatingOkay) {
+    // A game-state boundary needs the setup values that StartGame is about to commit,
+    // after the scripted country and difficulty edits. Map-generation-only scenarios
+    // retain the earlier setup-screen capture paired with their generated preview.
+    CaptureRandomGameSetup(scenario.RunState(), RandomSetup().View());
     RuntimeActionResult accepted = RandomSetup().Accept();
     if (!accepted.Succeeded()) {
       scenario.FailScenario(accepted.FailureMessage());

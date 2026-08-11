@@ -369,10 +369,10 @@ pub(in crate::ui::city) fn city_building_level(
     slot: CityFacilitySlot,
 ) -> Option<i16> {
     let major = state.nations().major(nation);
-    Some(major.city().next_building_type(
+    Some(major.city.next_building_type(
         slot,
-        major.economy(),
-        major.common().owned_region_count() as i32,
+        &major.economy,
+        major.common.owned_region_count() as i32,
         state.technology().city_capabilities_by_nation[nation].advanced_iron_working,
     ))
 }

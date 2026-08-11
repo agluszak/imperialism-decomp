@@ -19,10 +19,10 @@ enum PlannedCivilianAssignment {
     },
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Debug)]
 struct AutomatedCivilianPlan {
     nation: MajorNationId,
-    town_transport_linked: bool,
+    town_transport_linked: Vec<bool>,
     refresh_city_summary: bool,
     railhead_target: Option<TileId>,
     gold_priority: i16,
@@ -43,31 +43,29 @@ impl GameState {
     /// the rebuilt supply are reduced through the same reserved-capacity seam
     /// used by player allocation.
     pub fn rebuild_nation_resource_yields(&mut self, nation: MajorNationId) {
-        let town = self.nations.majors[nation]
-            .city
-            .home_town
-            .expect("resource-yield rebuild requires the nation's home town");
-        let (_, town_transport_linked) = self
-            .transport_influence(nation, town)
-            .expect("the nation's home town must remain on owned territory");
+        let (_transport_influence, town_transport_linked) = self
+            .transport_influence(nation)
+            .expect("resource-yield rebuild requires the nation's home town marker");
 
         let mut influence = vec![0_u8; STRATEGIC_TILE_COUNT];
-        if town_transport_linked {
-            let level = u8::from(town.enabled) + 1;
+        let major = &self.nations.majors[nation];
+        for (town, &linked) in major.towns.iter().zip(&town_transport_linked) {
+            if !linked {
+                continue;
+            }
+            let level = u8::from(town.enabled != 0) + 1;
             influence[usize::from(town.tile.get())] = level;
             let owner = Some(TileOwnerTag::from_nation(nation.nation()));
             for neighbor in self
-                .world
+                .map
                 .geometry()
                 .neighbors(town.tile)
                 .into_iter()
                 .flatten()
             {
-                let tile = &self.world[neighbor];
+                let tile = &self.map[neighbor];
                 let entry = &mut influence[usize::from(neighbor.get())];
-                if (tile.owner_nation == owner || tile.region_tile_subtype.retail() == 0)
-                    && *entry < level
-                {
+                if (tile.owner_nation == owner || tile.gate == 0) && *entry < level {
                     *entry = level;
                 }
             }
@@ -79,8 +77,8 @@ impl GameState {
                 continue;
             }
             let tile_id = TileId::new(index as u16);
-            let tile = &self.world[tile_id];
-            if tile.region_tile_subtype.retail() == 0 {
+            let tile = &self.map[tile_id];
+            if tile.gate == 0 {
                 if level == 2 {
                     current[ResourceKind::Fish] = current[ResourceKind::Fish].wrapping_add(1);
                 }
@@ -108,25 +106,22 @@ impl GameState {
                 current[ResourceKind::Fish] = current[ResourceKind::Fish].wrapping_add(1);
             }
             if let Some(province) = tile.province
-                && self.provinces[province].city_tile() == Some(tile_id)
+                && self.map.provinces[province].city_tile() == Some(tile_id)
             {
                 for index in ResourceKind::Food as u8..=ResourceKind::Arms as u8 {
                     let resource = ResourceKind::from_index(index)
                         .expect("the manufactured resource range is semantic");
                     current[resource] = current[resource].wrapping_add(
-                        self.provinces[province].resource_development_by_type()[resource],
+                        self.map.provinces[province].resource_development_by_type()[resource],
                     );
                 }
             }
         }
 
         let major = &mut self.nations.majors[nation];
-        major
-            .city
-            .home_town
-            .as_mut()
-            .expect("resource-yield rebuild retains the home town")
-            .transport_linked = town_transport_linked;
+        for (town, linked) in major.towns.iter_mut().zip(town_transport_linked) {
+            town.transport_linked = linked;
+        }
         major.economy.need_current_by_type = current;
         for resource in all_resources() {
             if major.economy.need_current_by_type[resource]
@@ -137,7 +132,7 @@ impl GameState {
                     .update_need_target(resource, major.economy.need_current_by_type[resource]);
             }
         }
-        if !major.economy.controller.is_human() {
+        if major.kind == MajorNationKind::AutoGreatPower {
             let fish = major.economy.need_current_by_type[ResourceKind::Fish];
             major.economy.need_current_by_type[ResourceKind::Fish] = 0;
             major.economy.need_current_by_type[ResourceKind::Livestock] =
@@ -155,12 +150,14 @@ impl GameState {
         for plan in plan.automated {
             {
                 let major = self.nations.major_mut(plan.nation);
-                let town = major
-                    .city
-                    .home_town
-                    .as_mut()
-                    .expect("the preflight requires one home town");
-                town.transport_linked = plan.town_transport_linked;
+                assert_eq!(
+                    major.towns.len(),
+                    plan.town_transport_linked.len(),
+                    "civilian preflight preserves the ordered town list"
+                );
+                for (town, linked) in major.towns.iter_mut().zip(plan.town_transport_linked) {
+                    town.transport_linked = linked;
+                }
                 major.economy.interior_civilian.railhead_target = plan.railhead_target;
                 major
                     .economy
@@ -206,7 +203,7 @@ impl GameState {
             || self.turn.difficulty != Difficulty::Easy
             || self.turn.scenario_map.is_some()
             || self.turn.selected_nation != self.turn.active_nation
-            || self.world.topology() != MapTopology::Wrapping
+            || self.map.topology != MapTopology::Wrapping
             // Sea reachability consults active type-3/4 naval orders. With no
             // ships, its runtime nation mask is exactly empty.
             || !self.ships.is_empty()
@@ -251,9 +248,10 @@ impl GameState {
             let nation = MajorNationId::new(slot);
             let major = self.nations.major(nation);
             let interior = &major.economy.interior_civilian;
+            let home_town = major.towns.first();
             if major.economy.controller.is_human() != (nation == active)
-                || major.city.home_town.is_none()
-                || major.common.home_tile != major.city.home_town.map(TownState::tile)
+                || home_town.is_none()
+                || major.common.home_tile != home_town.map(|town| town.tile)
                 || count_by_nation[nation] != 2
                 || engineer_by_nation[nation].is_none()
                 || interior.pending_recruitment.is_some()
@@ -287,16 +285,16 @@ impl GameState {
         engineer_index: usize,
     ) -> Option<AutomatedCivilianPlan> {
         let major = self.nations.major(nation);
-        let town = major.city.home_town?;
+        let home_tile = major.common.home_tile?;
+        let home_town = major.towns.iter().position(|town| town.tile == home_tile)?;
         let owned_tiles = self.owned_tiles(nation);
-        if owned_tiles.is_empty() || !owned_tiles.contains(&town.tile) {
+        if owned_tiles.is_empty() || !owned_tiles.contains(&home_tile) {
             return None;
         }
 
-        let (transport_influence, town_transport_linked) =
-            self.transport_influence(nation, town)?;
+        let (transport_influence, town_transport_linked) = self.transport_influence(nation)?;
         // Otherwise `SeekLostTowns` selects a separate continuation branch.
-        if !town_transport_linked {
+        if !town_transport_linked[home_town] {
             return None;
         }
 
@@ -310,8 +308,8 @@ impl GameState {
         let secondary_terrain = technology.secondary_civilian_distance_terrain();
         let secondary_distance =
             self.distance_map(nation, &owned_tiles, secondary_terrain, |tile| {
-                self.world[tile].region.is_none()
-                    && terrain_is_allowed(self.world[tile].terrain, secondary_terrain)
+                self.map[tile].region.is_none()
+                    && terrain_is_allowed(self.map[tile].terrain, secondary_terrain)
                     && self.has_reachable_sea_outside_beginning_turn_mask(tile)
             });
 
@@ -330,7 +328,7 @@ impl GameState {
         if let Some(target) = railhead_target {
             let (source, destination) =
                 self.trace_supported_rail_segment(target, &primary_distance, &secondary_distance)?;
-            let segment = RailSegment::between(self.world.topology(), source, destination)?;
+            let segment = RailSegment::between(self.map.topology, source, destination)?;
             return Some(AutomatedCivilianPlan {
                 nation,
                 town_transport_linked,
@@ -363,48 +361,78 @@ impl GameState {
         let owner = Some(TileOwnerTag::from_nation(nation.nation()));
         (0..STRATEGIC_TILE_COUNT)
             .map(|index| TileId::new(index as u16))
-            .filter(|tile| self.world[*tile].owner_nation == owner)
+            .filter(|tile| self.map[*tile].owner_nation == owner)
             .collect()
     }
 
-    /// `TGreatPower::BuildTransportLinkedInfluenceMap` for the one-town state
-    /// admitted by the legacy projection.
-    fn transport_influence(
-        &self,
-        nation: MajorNationId,
-        town: TownState,
-    ) -> Option<(Vec<u8>, bool)> {
-        if self.world[town.tile].owner_nation != Some(TileOwnerTag::from_nation(nation.nation())) {
-            return None;
-        }
-
-        let unblocked_port =
-            town.enabled && self.has_reachable_sea_outside_beginning_turn_mask(town.tile);
+    /// Retail `TGreatPower::BuildTransportLinkedInfluenceMap` over the complete
+    /// ordered `townMarkerList`.
+    fn transport_influence(&self, nation: MajorNationId) -> Option<(Vec<u8>, Vec<bool>)> {
+        let major = self.nations.major(nation);
+        let home_tile = major.common.home_tile?;
+        let home_town = major.towns.iter().position(|town| town.tile == home_tile)?;
+        let unblocked_ports = major
+            .towns
+            .iter()
+            .map(|town| {
+                town.enabled != 0 && self.has_reachable_sea_outside_beginning_turn_mask(town.tile)
+            })
+            .collect::<Vec<_>>();
         let mut influence = vec![0_u8; STRATEGIC_TILE_COUNT];
-        if !unblocked_port || town.active {
-            self.mark_transport_component(nation, town.tile, &mut influence);
+
+        let mut home_linked = unblocked_ports[home_town];
+        if !home_linked {
+            self.mark_transport_component(nation, home_tile, &mut influence);
+            for (town, &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
+                if influence[usize::from(town.tile.get())] != 0 && unblocked_port {
+                    home_linked = true;
+                    break;
+                }
+            }
         }
 
-        let linked =
-            !((influence[usize::from(town.tile.get())] == 0 || !town.active) && !unblocked_port);
-        if unblocked_port {
-            influence[usize::from(town.tile.get())] = 1;
+        for (town, &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
+            if unblocked_port
+                && home_linked
+                && town.active
+                && influence[usize::from(town.tile.get())] == 0
+            {
+                self.mark_transport_component(nation, town.tile, &mut influence);
+            }
+        }
+
+        let linked = major
+            .towns
+            .iter()
+            .zip(&unblocked_ports)
+            .map(|(town, &unblocked_port)| {
+                !((influence[usize::from(town.tile.get())] == 0 || !town.active)
+                    && (!unblocked_port || !home_linked))
+            })
+            .collect::<Vec<_>>();
+
+        if home_linked {
+            for (town, &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
+                if unblocked_port {
+                    influence[usize::from(town.tile.get())] = 1;
+                }
+            }
         }
         Some((influence, linked))
     }
 
     fn mark_transport_component(&self, nation: MajorNationId, start: TileId, influence: &mut [u8]) {
         let owner = Some(TileOwnerTag::from_nation(nation.nation()));
-        let geometry = self.world.geometry();
+        let geometry = self.map.geometry();
         let mut pending = vec![start];
         while let Some(tile) = pending.pop() {
             let index = usize::from(tile.get());
-            if influence[index] != 0 || self.world[tile].owner_nation != owner {
+            if influence[index] != 0 {
                 continue;
             }
             influence[index] = 1;
             for direction in HexDirection::ALL.into_iter().rev() {
-                if !self.world[tile]
+                if !self.map[tile]
                     .transport_links
                     .contains(TileTransportLinks::for_direction(direction))
                 {
@@ -412,7 +440,7 @@ impl GameState {
                 }
                 if let Some(neighbor) = geometry.neighbor(tile, direction)
                     && influence[usize::from(neighbor.get())] == 0
-                    && self.world[neighbor].owner_nation == owner
+                    && self.map[neighbor].owner_nation == owner
                 {
                     pending.push(neighbor);
                 }
@@ -437,13 +465,13 @@ impl GameState {
             }
         }
 
-        let geometry = self.world.geometry();
+        let geometry = self.map.geometry();
         loop {
             let mut changed = false;
             for &tile in owned_tiles {
                 let index = usize::from(tile.get());
                 if distance[index] != 0
-                    || !terrain_is_allowed(self.world[tile].terrain, terrain_access)
+                    || !terrain_is_allowed(self.map[tile].terrain, terrain_access)
                 {
                     continue;
                 }
@@ -477,17 +505,17 @@ impl GameState {
         secondary_distance: &[u8],
         priorities: &ResourceTable<i16>,
     ) -> Option<(Option<TileId>, bool)> {
-        let geometry = self.world.geometry();
+        let geometry = self.map.geometry();
         let mut candidates = Vec::new();
         for &tile in owned_tiles {
             let index = usize::from(tile.get());
-            if self.world[tile].region.is_some()
+            if self.map[tile].region.is_some()
                 || !((primary_distance[index] > 0 && primary_distance[index] < 9)
                     || self.can_build_port_at(tile)
                     || (secondary_distance[index] > 2 && secondary_distance[index] < 6))
                 || HexDirection::ALL.into_iter().any(|direction| {
                     geometry.neighbor(tile, direction).is_some_and(|neighbor| {
-                        self.world[neighbor].flags.bits() & TRANSPORT_NODE_FLAG != 0
+                        self.map[neighbor].flags.bits() & TRANSPORT_NODE_FLAG != 0
                     })
                 })
             {
@@ -532,8 +560,8 @@ impl GameState {
         town: TileId,
     ) -> Option<ResourceTable<i16>> {
         let owner = Some(TileOwnerTag::from_nation(nation.nation()));
-        let town_region = self.world[town].region;
-        let geometry = self.world.geometry();
+        let town_region = self.map[town].region;
+        let geometry = self.map.geometry();
         let mut yields = ResourceTable::<i16>::default();
 
         for harvest_tile in HexDirection::ALL
@@ -541,7 +569,7 @@ impl GameState {
             .filter_map(|direction| geometry.neighbor(town, direction))
             .chain(std::iter::once(town))
         {
-            let tile = &self.world[harvest_tile];
+            let tile = &self.map[harvest_tile];
             if tile.owner_nation != owner || (tile.region != town_region && tile.region.is_some()) {
                 continue;
             }
@@ -571,13 +599,13 @@ impl GameState {
             // They do not enter this phase's candidate predicate or score, but
             // retaining them keeps the transient town calculation complete.
             if let Some(province) = tile.province
-                && self.provinces[province].city_tile() == Some(harvest_tile)
+                && self.map.provinces[province].city_tile() == Some(harvest_tile)
             {
                 for index in ResourceKind::Food as u8..=ResourceKind::Arms as u8 {
                     let resource = ResourceKind::from_index(index)
                         .expect("the manufactured resource range is semantic");
                     yields[resource] = yields[resource].wrapping_add(
-                        self.provinces[province].resource_development_by_type()[resource],
+                        self.map.provinces[province].resource_development_by_type()[resource],
                     );
                 }
             }
@@ -608,7 +636,7 @@ impl GameState {
         }
 
         let (source, previous) = self.trace_descending_gradient(target, primary_distance)?;
-        let source_flags = self.world[source].flags.bits();
+        let source_flags = self.map[source].flags.bits();
         if source_flags & DEPOT_SOURCE_FLAG != 0 && source_flags & TRANSPORT_NODE_FLAG == 0 {
             // Retail selects `BuildDepot` at this source.
             return None;
@@ -621,7 +649,7 @@ impl GameState {
         start: TileId,
         distance: &[u8],
     ) -> Option<(TileId, TileId)> {
-        let geometry = self.world.geometry();
+        let geometry = self.map.geometry();
         let mut current = start;
         let mut previous = start;
         let mut score = distance[usize::from(current.get())];
@@ -666,7 +694,7 @@ impl GameState {
         let mut best = None;
         let mut best_score = -1.0_f32;
         for &province_id in major.common.owned_regions() {
-            let province = &self.provinces[province_id];
+            let province = &self.map.provinces[province_id];
             if province.owner() != Some(nation.nation()) || province.fort_level() >= fort_cap {
                 continue;
             }
@@ -675,7 +703,9 @@ impl GameState {
                 let same_owner = province
                     .adjacency()
                     .iter()
-                    .filter(|adjacent| self.provinces[**adjacent].owner() == Some(nation.nation()))
+                    .filter(|adjacent| {
+                        self.map.provinces[**adjacent].owner() == Some(nation.nation())
+                    })
                     .count();
                 city_score *= same_owner as f32 / province.adjacency().len() as f32 - (-1.0_f32);
             }
@@ -687,13 +717,13 @@ impl GameState {
         }
 
         let province_id = best?;
-        let province = &self.provinces[province_id];
+        let province = &self.map.provinces[province_id];
         let fort_level = usize::try_from(province.fort_level()).ok()?;
         let cost = *FORT_BUILD_COST.get(fort_level)?;
         let destination = province.city_tile()?;
         if major.common.treasury < cost
-            || self.world[destination].province != Some(province_id)
-            || self.world[destination].owner_nation
+            || self.map[destination].province != Some(province_id)
+            || self.map[destination].owner_nation
                 != Some(TileOwnerTag::from_nation(nation.nation()))
             || self.civilian_units.iter().enumerate().any(|(index, unit)| {
                 index != engineer_index && unit.location == CivilianLocation::OnMap(destination)
@@ -705,29 +735,83 @@ impl GameState {
     }
 
     fn has_reachable_sea_outside_beginning_turn_mask(&self, tile: TileId) -> bool {
+        let origin_nation = self.map[tile]
+            .owner_nation
+            .and_then(TileOwnerTag::nation)
+            .expect("a town marker must remain on nation-owned territory");
         for direction in HexDirection::ALL {
             let neighbor = civilian_sea_scan_neighbor(tile, direction);
-            if self.world[neighbor].terrain == TerrainKind::Water {
-                // The phase guard proves the naval-order mask is empty. Tile
-                // action 3 is a sea-context anchor, not a type-3 ship order.
-                return true;
+            if self.map[neighbor].terrain == TerrainKind::Water {
+                return self.sea_zone_allows_port_access(neighbor, origin_nation);
             }
         }
-        self.world[tile].river().is_some()
-            && river_reaches_sea_without_crossing_nation(&self.world, tile)
+        if self.map[tile].river().is_none()
+            || !river_reaches_sea_without_crossing_nation(&self.map, tile)
+        {
+            return false;
+        }
+        let sea_tile = trace_terrain_flow_to_nearest_sea_tile(&self.map, tile)
+            .expect("a boundary-safe retail terrain flow must terminate at sea");
+        self.sea_zone_allows_port_access(sea_tile, origin_nation)
+    }
+
+    /// `TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask`.
+    fn sea_zone_allows_port_access(&self, sea_tile: TileId, origin_nation: NationId) -> bool {
+        const SEA_OWNER_BIAS: u8 = 0x17;
+
+        let owner = self.map[sea_tile]
+            .owner_nation
+            .expect("reachable sea tile must name its ocean context")
+            .get();
+        let zone = OceanZoneId::new(u16::from(
+            owner
+                .checked_sub(SEA_OWNER_BIAS)
+                .expect("sea owner tag must name a base ocean zone"),
+        ));
+        let mut active_nations = 0_u32;
+        for ship in &self.ships {
+            if ship.location != zone {
+                continue;
+            }
+            let Some(task_force) = ship.task_force else {
+                continue;
+            };
+            let task_force = &self.task_forces
+                [usize::try_from(task_force.get()).expect("task-force ordinal fits this process")];
+            if !task_force.defeated && matches!(task_force.order, 3 | 4) {
+                active_nations |= 1_u32 << ship.nation.get();
+            }
+        }
+
+        let origin_bit = 1_u32 << origin_nation.get();
+        if active_nations & origin_bit != 0 {
+            return true;
+        }
+        for candidate in (0..MajorNationId::COUNT).map(NationId::new) {
+            if active_nations & (1_u32 << candidate.get()) == 0 {
+                continue;
+            }
+            if self.diplomacy.relationships[candidate][origin_nation] == DiplomaticRelationship::War
+                && self.diplomacy.relationship_turns[candidate][origin_nation]
+                    .is_none_or(|turn| i32::from(turn) != self.turn.economic_turn)
+            {
+                return false;
+            }
+        }
+        true
     }
 
     fn can_build_port_at(&self, tile: TileId) -> bool {
         if !matches!(
-            self.world[tile].terrain,
+            self.map[tile].terrain,
             TerrainKind::Mountain | TerrainKind::Hills
         ) && HexDirection::ALL.into_iter().any(|direction| {
-            self.world[civilian_sea_scan_neighbor(tile, direction)].terrain == TerrainKind::Water
+            self.map[civilian_sea_scan_neighbor(tile, direction)].terrain == TerrainKind::Water
         }) {
             return true;
         }
-        self.world[tile].river().is_some()
-            && river_reaches_sea_without_crossing_nation(&self.world, tile)
+        self.map[tile].river().is_some()
+            && river_reaches_sea_without_crossing_nation(&self.map, tile)
     }
 }
 
@@ -805,7 +889,7 @@ fn civilian_sea_scan_neighbor(tile: TileId, direction: HexDirection) -> TileId {
     TileId::new(u16::try_from(index).expect("retail sea scan produced a valid tile"))
 }
 
-fn river_reaches_sea_without_crossing_nation(world: &StrategicMap, start: TileId) -> bool {
+fn river_reaches_sea_without_crossing_nation(world: &MapMgr, start: TileId) -> bool {
     const FLOW_DIRECTIONS: [[HexDirection; 2]; 9] = [
         [HexDirection::NorthEast, HexDirection::SouthEast],
         [HexDirection::NorthEast, HexDirection::SouthWest],
@@ -857,4 +941,155 @@ fn river_reaches_sea_without_crossing_nation(world: &StrategicMap, start: TileId
         }
     }
     false
+}
+
+/// Retail `TraceTerrainFlowToNearestSeaTile`; unlike the boundary check above,
+/// this walk ignores ownership and returns the sea context selected by flow variant order.
+fn trace_terrain_flow_to_nearest_sea_tile(world: &MapMgr, start: TileId) -> Option<TileId> {
+    const FLOW_DIRECTIONS: [[HexDirection; 2]; 9] = [
+        [HexDirection::NorthEast, HexDirection::SouthEast],
+        [HexDirection::NorthEast, HexDirection::SouthWest],
+        [HexDirection::NorthEast, HexDirection::West],
+        [HexDirection::East, HexDirection::SouthWest],
+        [HexDirection::East, HexDirection::West],
+        [HexDirection::East, HexDirection::NorthWest],
+        [HexDirection::SouthEast, HexDirection::West],
+        [HexDirection::SouthEast, HexDirection::NorthWest],
+        [HexDirection::SouthWest, HexDirection::NorthWest],
+    ];
+
+    let geometry = world.geometry();
+    let flow_type = world[start].river().and_then(RiverSegment::flow_type)?;
+    for mut direction in FLOW_DIRECTIONS[flow_type] {
+        let mut current = start;
+        for _ in 0..100 {
+            let Some(next) = geometry.neighbor(current, direction) else {
+                break;
+            };
+            current = next;
+            if world[current].terrain == TerrainKind::Water {
+                return Some(current);
+            }
+            let Some(next_flow_type) = world[current].river().and_then(RiverSegment::flow_type)
+            else {
+                break;
+            };
+            let incoming = direction.opposite();
+            let pair = FLOW_DIRECTIONS[next_flow_type];
+            direction = if pair[0] == incoming {
+                pair[1]
+            } else if pair[1] == incoming {
+                pair[0]
+            } else {
+                break;
+            };
+        }
+    }
+    None
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn transport_rebuild_updates_every_town_in_retail_list_order() {
+        let mut state = crate::test_support::game_state();
+        let nation = MajorNationId::new(0);
+        let home = TileId::new(100);
+        let second = state
+            .map
+            .geometry()
+            .neighbor(home, HexDirection::East)
+            .unwrap();
+        let owner = Some(TileOwnerTag::from_nation(nation.nation()));
+        state.map[home].owner_nation = owner;
+        state.map[second].owner_nation = owner;
+        state.map[home]
+            .transport_links
+            .insert(TileTransportLinks::for_direction(HexDirection::East));
+        state.map[second]
+            .transport_links
+            .insert(TileTransportLinks::for_direction(HexDirection::West));
+
+        let major = &mut state.nations.majors[nation];
+        major.common.home_tile = Some(home);
+        major.towns = vec![
+            TownState::for_frog_city(home, nation.nation()),
+            TownState {
+                name: "Altown".to_owned(),
+                tile: second,
+                created_turn: 2,
+                owner_nation: nation.nation(),
+                resource_yield_by_type: ResourceTable::default(),
+                transport_linked: false,
+                enabled: 1,
+                has_adjacent_city: 0,
+                active: true,
+            },
+        ];
+
+        state.rebuild_nation_resource_yields(nation);
+
+        assert_eq!(
+            state.nations.majors[nation]
+                .towns
+                .iter()
+                .map(|town| town.transport_linked)
+                .collect::<Vec<_>>(),
+            [true, true]
+        );
+    }
+
+    #[test]
+    fn port_access_obeys_active_type_three_and_four_war_orders() {
+        let mut state = crate::test_support::game_state();
+        let home = TileId::new(2_210);
+        let origin = NationId::new(6);
+        state.map[home].owner_nation = Some(TileOwnerTag::from_nation(origin));
+        for direction in HexDirection::ALL {
+            let neighbor = civilian_sea_scan_neighbor(home, direction);
+            state.map[neighbor].terrain = TerrainKind::Plains;
+        }
+        let sea = civilian_sea_scan_neighbor(home, HexDirection::NorthEast);
+        state.map[sea].terrain = TerrainKind::Water;
+        state.map[sea].owner_nation = Some(TileOwnerTag::new(0x17));
+
+        state.turn.economic_turn = 10;
+        let hostile = NationId::new(0);
+        state.diplomacy.relationships[hostile][origin] = DiplomaticRelationship::War;
+        state.diplomacy.relationship_turns[hostile][origin] = Some(9);
+        state.task_forces.push(TaskForceState {
+            aggression: 1,
+            order: 3,
+            target: TaskForceTarget::None,
+            location: OceanZoneId::new(0),
+            nation: hostile,
+            ship_counts: [0; 4],
+            defeated: false,
+            ingot_tile: -1,
+            flagship: None,
+            ships: Vec::new(),
+        });
+        state.ships.push(ShipState {
+            ship_type: ShipType::Frigate,
+            location: OceanZoneId::new(0),
+            task_force: Some(TaskForceId::new(0)),
+            aggression: 1,
+            nation: hostile,
+            name: String::new(),
+            strength: 1,
+            experience: 0,
+            selection: 0,
+        });
+
+        assert!(!state.has_reachable_sea_outside_beginning_turn_mask(home));
+
+        state.diplomacy.relationship_turns[hostile][origin] = Some(10);
+        assert!(state.has_reachable_sea_outside_beginning_turn_mask(home));
+
+        state.diplomacy.relationship_turns[hostile][origin] = Some(9);
+        state.task_forces[0].defeated = true;
+        assert!(state.has_reachable_sea_outside_beginning_turn_mask(home));
+    }
 }

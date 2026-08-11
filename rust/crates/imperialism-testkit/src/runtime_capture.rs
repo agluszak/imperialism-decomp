@@ -305,6 +305,28 @@ mod tests {
         value: i32,
     }
 
+    fn test_random_game_names() -> RandomGameNames {
+        let mut localized_nation_names = NationTable::default();
+        let mut province_names_by_nation = NationTable::default();
+        for nation in NationId::all() {
+            localized_nation_names[nation] = format!("N{}", nation.get());
+            let count = if MajorNationId::from_nation(nation).is_some() {
+                8
+            } else {
+                4
+            };
+            province_names_by_nation[nation] = (0..count)
+                .map(|ordinal| format!("N{}P{}", nation.get(), ordinal + 1))
+                .collect();
+        }
+        RandomGameNames {
+            localized_nation_names,
+            province_names_by_nation,
+            zone_headline_templates: (0..24).map(|status| format!("S{status} [1]")).collect(),
+            fallback_ocean_names: (0..37).map(|index| format!("Ocean{index}")).collect(),
+        }
+    }
+
     fn passed_result() -> serde_json::Value {
         json!({
             "name": "probe",
@@ -476,11 +498,19 @@ mod tests {
             1,
             sea_zone_marker_crt,
         );
-        let state = create_random_game(&preview, MajorNationId::new(6), Difficulty::Easy, 1);
+        let state = create_random_game(
+            &preview,
+            MajorNationId::new(6),
+            Difficulty::Easy,
+            "Testland",
+            true,
+            1,
+            &test_random_game_names(),
+        );
         let mut capture = serde_json::to_value(&state).unwrap();
         capture["turn"]["oracle_extra"] = json!(true);
         capture["diplomacy"]["oracle_extra"] = json!(true);
-        capture["provinces"][0]["oracle_extra"] = json!(true);
+        capture["map"]["provinces"][0]["oracle_extra"] = json!(true);
         let input = json!({
             "name": "probe",
             "seed": 1,
@@ -501,7 +531,7 @@ mod tests {
             RuntimeCaptureError::UnknownCaptureFields { fields, .. }
                 if fields.contains("turn.oracle_extra")
                     && fields.contains("diplomacy.oracle_extra")
-                    && fields.contains("provinces.0.oracle_extra")
+                    && fields.contains("map.provinces.0.oracle_extra")
         ));
     }
 

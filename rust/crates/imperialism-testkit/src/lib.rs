@@ -78,11 +78,11 @@ pub struct Difference {
     pub reimplementation: Option<serde_json::Value>,
 }
 
-/// The initial or explicitly regenerated controls and preview seed from the
-/// random-game setup screen, before the flow edits its scripted country or
-/// difficulty controls.
+/// The controls paired with a random-game setup boundary.
 ///
-/// The native runtime emits this directly as its `random_game_setup` capture.
+/// Map-generation scenarios capture the initial or explicitly regenerated preview
+/// before scripted edits. Game-start scenarios capture the accepted controls after
+/// those edits and immediately before retail commits them.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RandomGameSetupCapture {
     pub planet_seed: String,

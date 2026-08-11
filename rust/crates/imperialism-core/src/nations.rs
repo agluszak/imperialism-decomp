@@ -99,29 +99,6 @@ impl Nations {
             .push(province);
     }
 
-    pub(crate) fn transfer_owned_region_index(
-        &mut self,
-        old_owner: NationId,
-        new_owner: NationId,
-        province: ProvinceId,
-    ) {
-        let old_position = self
-            .common(old_owner)
-            .expect("owned province requires its owner nation to be present")
-            .owned_regions
-            .iter()
-            .position(|&owned| owned == province)
-            .expect("owned province requires one ordered-index entry");
-        self.common_mut(old_owner)
-            .expect("owned province requires its owner nation to be present")
-            .owned_regions
-            .remove(old_position);
-        self.common_mut(new_owner)
-            .expect("province transfer requires the new owner to be present")
-            .owned_regions
-            .push(province);
-    }
-
     pub(crate) fn set_country_status(&mut self, nation: NationId, status: crate::CountryStatus) {
         self.common_mut(nation)
             .expect("country status requires the nation to be present")
@@ -129,59 +106,105 @@ impl Nations {
     }
 }
 
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum MajorNationKind {
+    GreatPower,
+    AutoGreatPower,
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MajorNation {
-    pub(crate) common: NationCommonState,
-    pub(crate) economy: GreatPowerState,
-    pub(crate) city: CityState,
+    pub kind: MajorNationKind,
+    pub common: NationCommonState,
+    pub economy: GreatPowerState,
+    pub city: CityState,
+    /// Retail `TGreatPower::townMarkerList`, in its observable list order.
+    pub towns: Vec<TownState>,
 }
 
 impl MajorNation {
-    pub const fn from_parts(
-        common: NationCommonState,
-        economy: GreatPowerState,
-        city: CityState,
-    ) -> Self {
-        Self {
-            common,
-            economy,
-            city,
-        }
-    }
-
     /// Builds a random-game start major nation from the resolved starting
     /// `treasury`, whether the slot is the `human` player, and its scenario
-    /// `city`. Homes are unset until capital selection places them.
+    /// `city`. Normal+ human homes remain unset until capital selection places them;
+    /// Introductory/Easy and AI homes are placed during random-game construction.
     pub(crate) fn for_random_start(
+        nation: MajorNationId,
         treasury: i32,
         human: bool,
+        difficulty: Difficulty,
         foreign_minister_personality: ForeignMinisterPersonality,
         city: CityState,
+        display_name: String,
     ) -> Self {
+        let mut town = TownState::for_frog_city(TileId::new(0), nation.nation());
+        if human {
+            town.name = "Frog City".to_owned();
+        }
         Self {
+            kind: if human {
+                MajorNationKind::GreatPower
+            } else {
+                MajorNationKind::AutoGreatPower
+            },
             common: NationCommonState::from_parts(
-                String::new(),
+                display_name,
                 crate::CountryStatus::Independent,
                 Vec::new(),
                 treasury,
                 None,
                 NationTable::default(),
             ),
-            economy: GreatPowerState::for_random_start(human, foreign_minister_personality),
+            economy: GreatPowerState::for_random_start(
+                human,
+                difficulty,
+                foreign_minister_personality,
+            ),
             city,
+            towns: vec![town],
         }
     }
 
-    pub const fn common(&self) -> &NationCommonState {
-        &self.common
+    /// Retail `TGreatPower::LoseProvince` after any `TAutoGreatPower`
+    /// pre-dispatch work has run.
+    pub(crate) fn lose_province(
+        &mut self,
+        nation: MajorNationId,
+        province: ProvinceId,
+        map: &MapMgr,
+        civilian_units: &mut Vec<CivilianUnitState>,
+        military_units: &mut Vec<MilitaryUnitState>,
+    ) {
+        self.common.lose_province(province);
+
+        let nation = nation.nation();
+        civilian_units.retain(|unit| {
+            unit.nation != nation
+                || unit
+                    .location
+                    .tile()
+                    .is_none_or(|tile| map[tile].province != Some(province))
+        });
+
+        // The second `KillUnitsIn` pass frees entries whose detached order has
+        // already cleared its location. Rust does not yet model the preceding
+        // army-order-to-unit linkage, but the saved off-map state is direct.
+        military_units.retain(|unit| unit.nation != nation || unit.stationed_province.is_some());
     }
 
-    pub const fn economy(&self) -> &GreatPowerState {
-        &self.economy
-    }
-
-    pub const fn city(&self) -> &CityState {
-        &self.city
+    /// Retail `TGreatPower::AddProvince`.
+    pub(crate) fn add_province(&mut self, province: ProvinceId) {
+        self.common.add_province(province);
+        if self.common.owned_regions.len() >= 9
+            && self.economy.pending_actions[PendingActionKind::ConqueredCapitalArmoryUpgrade]
+                .status()
+                .has_reached(PendingActionStatus::Level3)
+            && !self.economy.pending_actions[PendingActionKind::ConquestMonumentArmory]
+                .status()
+                .has_reached(PendingActionStatus::Level3)
+        {
+            self.economy.pending_actions[PendingActionKind::ConquestMonumentArmory].queue(-1);
+        }
     }
 }
 
@@ -190,6 +213,94 @@ pub struct MinorNation {
     pub common: NationCommonState,
     pub consortium_members: [MinorNationId; 4],
     pub trade: MinorTradeState,
+}
+
+impl MinorNation {
+    /// Retail `TMinor::LoseProvince`.
+    pub(crate) fn lose_province(
+        &mut self,
+        province: ProvinceId,
+        map: &mut MapMgr,
+        major_nations: &MajorNationTable<MajorNation>,
+        diplomacy: &DiplomacyState,
+        civilian_units: &mut Vec<CivilianUnitState>,
+    ) {
+        self.common.lose_province(province);
+        let new_owner = map.provinces[province]
+            .owner()
+            .expect("lost province requires its newly assigned owner");
+        let linked_tiles = map.provinces[province].linked_tiles.clone();
+
+        for &tile in &linked_tiles {
+            map[tile].secondary_owner_nation = None;
+        }
+
+        // `KillEnemyCiviliansIn`: developers at war are sent home; the other
+        // enemy civilian orders are freed. The following deport pass then acts
+        // on every remaining foreign major, matching includeAllPolicyTargets=1.
+        for &tile in &linked_tiles {
+            let mut index = 0;
+            while index < civilian_units.len() {
+                let unit = &civilian_units[index];
+                let Some(owner) = MajorNationId::from_nation(unit.owner_nation) else {
+                    index += 1;
+                    continue;
+                };
+                if unit.location.tile() != Some(tile)
+                    || unit.owner_nation == new_owner
+                    || diplomacy.relationships[new_owner][unit.owner_nation]
+                        != DiplomaticRelationship::War
+                {
+                    index += 1;
+                    continue;
+                }
+                if unit.unit_type == CivilianUnitKind::Developer {
+                    civilian_units[index].location = CivilianLocation::OnMap(
+                        major_nations[owner]
+                            .common
+                            .home_tile
+                            .expect("foreign developer requires its owner's home town"),
+                    );
+                    index += 1;
+                } else {
+                    civilian_units.remove(index);
+                }
+            }
+        }
+
+        for &tile in &linked_tiles {
+            let mut index = 0;
+            while index < civilian_units.len() {
+                let unit = &civilian_units[index];
+                let Some(owner) = MajorNationId::from_nation(unit.owner_nation) else {
+                    index += 1;
+                    continue;
+                };
+                if unit.location.tile() != Some(tile) || unit.owner_nation == new_owner {
+                    index += 1;
+                    continue;
+                }
+                let home = major_nations[owner]
+                    .common
+                    .home_tile
+                    .expect("deported civilian requires its owner's home town");
+                if let Some(destination) =
+                    map.find_reachable_recruit_spawn_tile(civilian_units, home, false)
+                {
+                    civilian_units[index].order = CivilianWorkOrder::Idle;
+                    civilian_units[index].location = CivilianLocation::OnMap(destination);
+                    index += 1;
+                } else {
+                    civilian_units.remove(index);
+                }
+            }
+        }
+    }
+
+    /// Retail `TMinor::AddProvince`.
+    pub(crate) fn add_province(&mut self, province: ProvinceId) {
+        self.common.add_province(province);
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -231,6 +342,19 @@ impl NationCommonState {
 
     pub fn owned_region_count(&self) -> usize {
         self.owned_regions.len()
+    }
+
+    fn lose_province(&mut self, province: ProvinceId) {
+        let position = self
+            .owned_regions
+            .iter()
+            .position(|&owned| owned == province)
+            .expect("owned province requires one ordered-index entry");
+        self.owned_regions.remove(position);
+    }
+
+    fn add_province(&mut self, province: ProvinceId) {
+        self.owned_regions.push(province);
     }
 }
 

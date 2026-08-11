@@ -188,8 +188,8 @@ fn enter_strategic_map_view(mut session: Option<ResMut<GameSession>>) {
     else {
         return;
     };
-    let origin = session.0.world().viewport_origin_centered_on(tile);
-    session.0.world_mut().set_view_origin(origin);
+    let origin = session.0.map.viewport_origin_centered_on(tile);
+    session.0.map.view_origin = origin;
 }
 
 #[derive(Component, Clone, Debug, Eq, PartialEq)]
@@ -311,7 +311,7 @@ fn project_date_and_treasury(
         format_retail_date(assets, state.turn().economic_turn),
     );
     let treasury = MajorNationId::from_nation(state.turn().active_nation)
-        .map(|nation| format_currency(state.nations().major(nation).common().treasury))
+        .map(|nation| format_currency(state.nations().major(nation).common.treasury))
         .unwrap_or_default();
     set_control_text(commands, spawned, fourcc!("trea"), treasury);
 }
@@ -644,11 +644,7 @@ mod tests {
             .insert_resource(fixture_session())
             .add_systems(OnEnter(AppState::StrategicMap), enter_strategic_map_view);
         assert_eq!(
-            app.world()
-                .resource::<GameSession>()
-                .0
-                .world()
-                .view_origin(),
+            app.world().resource::<GameSession>().0.map.view_origin,
             imperialism_core::TileId::new(1)
         );
 
@@ -659,11 +655,7 @@ mod tests {
         app.update();
 
         assert_eq!(
-            app.world()
-                .resource::<GameSession>()
-                .0
-                .world()
-                .view_origin(),
+            app.world().resource::<GameSession>().0.map.view_origin,
             imperialism_core::TileId::new(1358)
         );
     }

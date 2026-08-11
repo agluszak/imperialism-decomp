@@ -69,6 +69,7 @@ pub struct TaskForceState {
     pub location: OceanZoneId,
     pub nation: NationId,
     pub ship_counts: [i16; 4],
+    pub defeated: bool,
     pub ingot_tile: i16,
     pub flagship: Option<ShipId>,
     pub ships: Vec<SelectedShip>,

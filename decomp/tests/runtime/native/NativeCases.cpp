@@ -48,6 +48,7 @@ RuntimeActionResult RunFirstTurnReturnToMapPhase(NativeTransition& transition);
 
 RuntimeActionResult RunNationResourceYieldRebuild(NativeTransition& transition);
 RuntimeActionResult RunAiNationResourceYieldRebuildClampsTargets(NativeTransition& transition);
+RuntimeActionResult RunNationResourceYieldRebuildMultipleTowns(NativeTransition& transition);
 
 RuntimeActionResult RunSpecialistRecruitment(NativeTransition& transition);
 RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition);
@@ -99,6 +100,8 @@ const NativeCase kCases[] = {
     {"nation_resource_yield_rebuild", RunNationResourceYieldRebuild},
     {"ai_nation_resource_yield_rebuild_clamps_targets",
      RunAiNationResourceYieldRebuildClampsTargets},
+    {"nation_resource_yield_rebuild_multiple_towns",
+     RunNationResourceYieldRebuildMultipleTowns},
     {"specialist_recruitment", RunSpecialistRecruitment},
     {"military_maintenance", RunMilitaryMaintenance},
     {"completed_rail_section", RunCompletedRailSection},

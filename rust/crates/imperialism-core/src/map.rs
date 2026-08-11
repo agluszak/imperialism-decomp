@@ -1,91 +1,105 @@
 use crate::*;
 use serde::{Deserialize, Deserializer, Serialize};
-use std::ops::Index;
+use std::ops::{Index, IndexMut};
 
-/// A port zone and the nation that owned its port tile before scenario setup.
+/// Retail's authoritative `TMapMgr` state without its MFC/ABI scaffolding.
 ///
-/// The owning [`GameState`] vector preserves retail's newest-to-oldest port
-/// chain order.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct PortZoneOwner {
-    pub zone: OceanZoneId,
-    pub former_owner: NationId,
-}
-
+/// The terrain and province tables deliberately live together: retail map
+/// operations update both tables as one object, while each country's ordered
+/// province list remains a separate, observable index.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
-pub struct StrategicMap {
-    topology: MapTopology,
-    view_origin: TileId,
-    tiles: Box<[TileState]>,
+pub struct MapMgr {
+    pub topology: MapTopology,
+    pub view_origin: TileId,
+    pub map_data_ready: bool,
+    pub recruit_search_active: bool,
+    pub city_score_total: i32,
+    pub scenario_tag: String,
+    pub tiles: Box<[TileState]>,
+    pub provinces: ProvinceTable<ProvinceState>,
+    pub pending_river_mouth_tile: Option<TileId>,
 }
 
-impl<'de> Deserialize<'de> for StrategicMap {
+impl<'de> Deserialize<'de> for MapMgr {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: serde::Deserializer<'de>,
     {
         #[derive(Deserialize)]
-        struct SerializedStrategicMap {
+        struct SerializedMapMgr {
             topology: MapTopology,
             view_origin: TileId,
+            map_data_ready: bool,
+            recruit_search_active: bool,
+            city_score_total: i32,
+            scenario_tag: String,
             tiles: Box<[TileState]>,
+            provinces: ProvinceTable<ProvinceState>,
+            #[serde(deserialize_with = "deserialize_required_option")]
+            pending_river_mouth_tile: Option<TileId>,
         }
 
-        let map = SerializedStrategicMap::deserialize(deserializer)?;
-        let mut world = Self::new(map.topology, map.tiles).map_err(serde::de::Error::custom)?;
-        world.view_origin = map.view_origin;
-        Ok(world)
+        let map = SerializedMapMgr::deserialize(deserializer)?;
+        let mut manager = Self::from_parts(map.topology, map.tiles, map.provinces)
+            .map_err(serde::de::Error::custom)?;
+        manager.view_origin = map.view_origin;
+        manager.map_data_ready = map.map_data_ready;
+        manager.recruit_search_active = map.recruit_search_active;
+        manager.city_score_total = map.city_score_total;
+        manager.scenario_tag = map.scenario_tag;
+        manager.pending_river_mouth_tile = map.pending_river_mouth_tile;
+        Ok(manager)
     }
+}
+
+fn deserialize_required_option<'de, D, T>(deserializer: D) -> Result<Option<T>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+    T: Deserialize<'de>,
+{
+    Option::<T>::deserialize(deserializer)
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 #[error("strategic map has {actual} tiles; expected {STRATEGIC_TILE_COUNT}")]
-pub struct StrategicMapSizeError {
+pub struct MapMgrSizeError {
     pub actual: usize,
 }
 
-impl StrategicMap {
+impl MapMgr {
     pub fn new(
         topology: MapTopology,
         tiles: impl Into<Box<[TileState]>>,
-    ) -> Result<Self, StrategicMapSizeError> {
+    ) -> Result<Self, MapMgrSizeError> {
+        Self::from_parts(topology, tiles, ProvinceTable::default())
+    }
+
+    pub fn from_parts(
+        topology: MapTopology,
+        tiles: impl Into<Box<[TileState]>>,
+        provinces: ProvinceTable<ProvinceState>,
+    ) -> Result<Self, MapMgrSizeError> {
         let tiles = tiles.into();
         if tiles.len() != STRATEGIC_TILE_COUNT {
-            return Err(StrategicMapSizeError {
+            return Err(MapMgrSizeError {
                 actual: tiles.len(),
             });
         }
         Ok(Self {
             topology,
             view_origin: TileId::new(1),
+            map_data_ready: false,
+            recruit_search_active: false,
+            city_score_total: 0,
+            scenario_tag: String::new(),
             tiles,
+            provinces,
+            pending_river_mouth_tile: None,
         })
-    }
-
-    /// Accepts tiles derived one-for-one from an already validated generated map.
-    pub(crate) fn from_generated_tiles(topology: MapTopology, tiles: Box<[TileState]>) -> Self {
-        debug_assert_eq!(tiles.len(), STRATEGIC_TILE_COUNT);
-        Self {
-            topology,
-            view_origin: TileId::new(1),
-            tiles,
-        }
     }
 
     pub const fn geometry(&self) -> crate::MapGeometry {
         crate::MapGeometry::new(self.topology)
-    }
-
-    pub const fn topology(&self) -> MapTopology {
-        self.topology
-    }
-
-    pub const fn view_origin(&self) -> TileId {
-        self.view_origin
-    }
-
-    pub fn set_view_origin(&mut self, view_origin: TileId) {
-        self.view_origin = view_origin;
     }
 
     /// Retail 9-by-7 strategic-map viewport origin centered on `tile`.
@@ -95,7 +109,7 @@ impl StrategicMap {
         let geometry = self.geometry();
         let (row, column) = geometry.row_column(tile);
         let mut column = i32::from(column) - VIEWPORT_TILE_SPAN / 2;
-        if self.topology() == MapTopology::Bounded {
+        if self.topology == MapTopology::Bounded {
             column = column.clamp(1, 0x6e - VIEWPORT_TILE_SPAN);
         }
         if column < 0 {
@@ -109,12 +123,289 @@ impl StrategicMap {
             .expect("retail strategic-map viewport origin is inside the map")
     }
 
-    pub fn iter(&self) -> impl ExactSizeIterator<Item = &TileState> {
-        self.tiles.iter()
+    /// Retail `ComputeRepresentativeTileIndexForNationWithWrapBias`.
+    #[allow(clippy::manual_checked_ops)] // Retail guards both integer divisions with tileCount != 0.
+    pub(crate) fn representative_tile_index_for_nation(
+        &self,
+        nation: NationId,
+        home_tile: Option<TileId>,
+        wrap_bias: bool,
+    ) -> Option<TileId> {
+        let owner = TileOwnerTag::from_nation(nation);
+        let home_region_class = home_tile.map(|home| {
+            let province = self[home]
+                .province
+                .expect("a nation's home tile belongs to a province");
+            self.provinces[province]
+                .region_class
+                .expect("a home province has a generated region class")
+        });
+        let mut column_sum = 0_u32;
+        let mut row_sum = 0_u32;
+        let mut tile_count = 0_u32;
+        let mut west_count = 0_u32;
+        let mut east_count = 0_u32;
+
+        for index in 0..TileId::COUNT {
+            let tile = TileId::new(index);
+            if self[tile].owner_nation != Some(owner) {
+                continue;
+            }
+            if let Some(home_region_class) = home_region_class {
+                let province = self[tile]
+                    .province
+                    .expect("nation-owned terrain belongs to a province");
+                if self.provinces[province].region_class != Some(home_region_class) {
+                    continue;
+                }
+            }
+            let (row, column) = self.geometry().row_column(tile);
+            west_count += u32::from(column < 0x19);
+            east_count += u32::from(column > 0x53);
+            column_sum += u32::from(column);
+            row_sum += u32::from(row);
+            tile_count += 1;
+        }
+
+        if west_count != 0 && east_count != 0 {
+            if wrap_bias {
+                column_sum += west_count * u32::from(STRATEGIC_MAP_WIDTH);
+            } else {
+                column_sum = 0;
+                row_sum = 0;
+                tile_count = 0;
+                for index in 0..TileId::COUNT {
+                    let tile = TileId::new(index);
+                    if self[tile].owner_nation != Some(owner) {
+                        continue;
+                    }
+                    let (row, mut column) = self.geometry().row_column(tile);
+                    if column < 0x36 && west_count < east_count {
+                        column = 0x6b;
+                    }
+                    if column > 0x36 && east_count < west_count {
+                        column = 0;
+                    }
+                    column_sum += u32::from(column);
+                    row_sum += u32::from(row);
+                    tile_count += 1;
+                }
+            }
+        }
+
+        if tile_count != 0 {
+            let column = column_sum / tile_count % u32::from(STRATEGIC_MAP_WIDTH);
+            let row = row_sum / tile_count;
+            return self.geometry().tile(row as u16, column as u16);
+        }
+
+        self.tiles
+            .iter()
+            .rposition(|tile| tile.owner_nation == Some(owner))
+            .map(|index| TileId::new(index as u16))
+    }
+
+    /// Retail `UpdateTilePrimaryAndSecondaryNeighborLinksByPriority`.
+    pub(crate) fn province_neighbor_links(
+        &self,
+        province: ProvinceId,
+        city_tile: TileId,
+    ) -> (TileId, TileId) {
+        const PRIORITY: [i16; 8] = [10, 4, 7, 6, 8, 0, 9, 5];
+
+        let neighbors = self.geometry().neighbors(city_tile);
+        let mut primary = None;
+        let mut primary_priority = 1_i16;
+        for (direction, neighbor) in neighbors.iter().copied().enumerate() {
+            let Some(neighbor) = neighbor else {
+                continue;
+            };
+            let tile = &self[neighbor];
+            let priority = PRIORITY[tile.terrain as usize];
+            if tile.province == Some(province) && primary_priority < priority {
+                primary = Some((direction, neighbor));
+                primary_priority = priority;
+            }
+        }
+        let (primary_direction, primary) =
+            primary.expect("province capital requires one same-province neighbor");
+
+        let mut secondary = None;
+        let mut secondary_priority = -1_i16;
+        for (direction, neighbor) in neighbors.iter().copied().enumerate() {
+            let Some(neighbor) = neighbor else {
+                continue;
+            };
+            if direction == primary_direction {
+                continue;
+            }
+            let tile = &self[neighbor];
+            let mut priority = PRIORITY[tile.terrain as usize];
+            if tile.province == Some(province) {
+                priority += 0x14;
+            }
+            if secondary_priority < priority {
+                secondary = Some(neighbor);
+                secondary_priority = priority;
+            }
+        }
+        (
+            primary,
+            secondary.expect("province capital requires a second map neighbor"),
+        )
+    }
+
+    /// Retail `TMapMgr::SetOwner`.
+    ///
+    /// The owner-border cache is rebuilt for the changed tile and its six
+    /// neighbors. A town marker on a port/city tile moves between the two
+    /// great powers' ordered town lists before province-level country dispatch.
+    pub fn set_owner(&mut self, nations: &mut Nations, tile: TileId, new_owner: NationId) {
+        let old_owner = self[tile].owner_nation;
+        let new_owner_tag = Some(TileOwnerTag::from_nation(new_owner));
+        if old_owner == new_owner_tag {
+            return;
+        }
+
+        self[tile].owner_nation = new_owner_tag;
+        self[tile].owner_border_mask = 0;
+        self.update_tile_neighbor_border_influence_counters(tile, 2);
+
+        let neighbors = self.geometry().neighbors(tile);
+        for neighbor in neighbors.into_iter().flatten() {
+            self[neighbor].owner_border_mask = 0;
+            self.update_tile_neighbor_border_influence_counters(neighbor, 2);
+        }
+
+        if self[tile].flags.bits() & 0x14 == 0 {
+            return;
+        }
+        let Some(old_owner) = old_owner.and_then(TileOwnerTag::nation) else {
+            return;
+        };
+        let Some(old_owner) = MajorNationId::from_nation(old_owner) else {
+            return;
+        };
+        let Some(town_position) = nations.majors[old_owner]
+            .towns
+            .iter()
+            .position(|town| town.tile == tile)
+        else {
+            return;
+        };
+
+        let mut town = nations.majors[old_owner].towns.remove(town_position);
+        town.owner_nation = new_owner;
+        let new_owner = MajorNationId::from_nation(new_owner)
+            .expect("town-bearing tile transfer requires a great-power destination");
+        nations.majors[new_owner].towns.push(town);
+    }
+
+    /// Retail `TMapMgr::UpdateTileNeighborBorderInfluenceCounters`.
+    ///
+    /// This is deliberately additive. Fresh-map construction calls mode 0 on
+    /// zeroed records, while `SetOwner` clears only the owner-border byte before
+    /// calling mode 2 and leaves the other two caches untouched.
+    pub(crate) fn update_tile_neighbor_border_influence_counters(
+        &mut self,
+        tile: TileId,
+        mode: i16,
+    ) {
+        const DIRECTION_BITS: [u8; 6] = [1, 2, 4, 8, 16, 32];
+        const NEXT_DIRECTION: [usize; 6] = [1, 2, 3, 4, 5, 0];
+
+        let neighbors = self.geometry().neighbors(tile);
+        let terrain = self[tile].terrain;
+        let owner = self[tile].owner_nation;
+        let province = self[tile].province;
+        let mut owner_border_mask = self[tile].owner_border_mask;
+        let mut city_border_mask = self[tile].city_border_mask;
+        let mut water_adjacency_mask = self[tile].water_adjacency_mask;
+
+        for (direction, neighbor) in neighbors.iter().copied().enumerate() {
+            let Some(neighbor) = neighbor else {
+                owner_border_mask = owner_border_mask.wrapping_add(DIRECTION_BITS[direction]);
+                continue;
+            };
+            if terrain == TerrainKind::Water {
+                if mode == 0
+                    && self[neighbor].terrain == TerrainKind::Water
+                    && self[neighbor].owner_nation != owner
+                {
+                    owner_border_mask = owner_border_mask.wrapping_add(DIRECTION_BITS[direction]);
+                }
+            } else if self[neighbor].terrain == TerrainKind::Water {
+                water_adjacency_mask = water_adjacency_mask.wrapping_add(DIRECTION_BITS[direction]);
+            } else {
+                if self[neighbor].owner_nation != owner {
+                    owner_border_mask = owner_border_mask.wrapping_add(DIRECTION_BITS[direction]);
+                }
+                if mode != 2 && self[neighbor].province != province {
+                    city_border_mask = city_border_mask.wrapping_add(DIRECTION_BITS[direction]);
+                }
+            }
+        }
+
+        if terrain == TerrainKind::Water {
+            for direction in 0..6 {
+                let (Some(neighbor_a), Some(neighbor_b)) =
+                    (neighbors[direction], neighbors[NEXT_DIRECTION[direction]])
+                else {
+                    continue;
+                };
+                if self[neighbor_a].terrain != TerrainKind::Water
+                    && self[neighbor_b].terrain != TerrainKind::Water
+                {
+                    if self[neighbor_a].owner_nation != self[neighbor_b].owner_nation {
+                        owner_border_mask =
+                            owner_border_mask.wrapping_add(DIRECTION_BITS[direction]);
+                    }
+                    if mode != 2 && self[neighbor_a].province != self[neighbor_b].province {
+                        city_border_mask = city_border_mask.wrapping_add(DIRECTION_BITS[direction]);
+                    }
+                }
+            }
+        }
+
+        if mode != 2
+            && city_border_mask & 2 != 0
+            && city_border_mask & 1 != 0
+            && let (Some(east), Some(north_east)) = (neighbors[1], neighbors[0])
+            && self[east].province != self[north_east].province
+        {
+            city_border_mask = city_border_mask.wrapping_add(0x40);
+        }
+        if mode != 2
+            && city_border_mask & 2 != 0
+            && city_border_mask & 4 != 0
+            && let (Some(east), Some(south_east)) = (neighbors[1], neighbors[2])
+            && self[east].province != self[south_east].province
+        {
+            city_border_mask = city_border_mask.wrapping_add(0x80);
+        }
+
+        if owner_border_mask & 2 != 0
+            && owner_border_mask & 1 != 0
+            && let (Some(east), Some(north_east)) = (neighbors[1], neighbors[0])
+            && self[east].owner_nation != self[north_east].owner_nation
+        {
+            owner_border_mask = owner_border_mask.wrapping_add(0x40);
+        }
+        if owner_border_mask & 2 != 0
+            && owner_border_mask & 4 != 0
+            && let (Some(east), Some(south_east)) = (neighbors[1], neighbors[2])
+            && self[east].owner_nation != self[south_east].owner_nation
+        {
+            owner_border_mask = owner_border_mask.wrapping_add(0x80);
+        }
+
+        self[tile].owner_border_mask = owner_border_mask;
+        self[tile].city_border_mask = city_border_mask;
+        self[tile].water_adjacency_mask = water_adjacency_mask;
     }
 }
 
-impl Index<TileId> for StrategicMap {
+impl Index<TileId> for MapMgr {
     type Output = TileState;
 
     fn index(&self, index: TileId) -> &Self::Output {
@@ -122,9 +413,8 @@ impl Index<TileId> for StrategicMap {
     }
 }
 
-impl StrategicMap {
-    /// Mutable tile access for authoritative map operations inside core.
-    pub(crate) fn tile_mut(&mut self, index: TileId) -> &mut TileState {
+impl IndexMut<TileId> for MapMgr {
+    fn index_mut(&mut self, index: TileId) -> &mut Self::Output {
         &mut self.tiles[usize::from(index.get())]
     }
 }
@@ -133,11 +423,23 @@ impl StrategicMap {
 pub struct TileState {
     pub terrain: TerrainKind,
     pub rendering: TileRendering,
-    pub region_tile_subtype: RegionTileSubtype,
     pub owner_nation: Option<TileOwnerTag>,
     pub former_owner_nation: Option<TileOwnerTag>,
     pub secondary_owner_nation: Option<MajorNationId>,
+    pub owner_border_mask: u8,
+    pub city_border_mask: u8,
+    pub water_adjacency_mask: u8,
     pub province: Option<ProvinceId>,
+    /// Retail `TTerrainStateRecord::gateFlag`.
+    pub gate: i8,
+    /// Retail `TTerrainStateRecord::recruitSearchVisited0e`.
+    pub recruit_search_visited: u8,
+    /// Retail `TTerrainStateRecord::perTileVisitedFlag0f`.
+    pub per_tile_visited: i8,
+    /// Retail `TTerrainStateRecord::markerSlotIndex10`.
+    pub marker_slot_index: i8,
+    /// Retail `TTerrainStateRecord::tileActionOrdinal1a`.
+    pub tile_action_ordinal: i16,
     pub development: TileDevelopment,
     pub edge_resources: [Option<crate::ResourceKind>; 2],
     /// Completed directional transport links from this tile.
@@ -329,21 +631,6 @@ impl<'de> Deserialize<'de> for RiverSprite {
     }
 }
 
-/// Retail's open numeric tile-profile domain (`TTerrainStateRecord::gateFlag`).
-#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct RegionTileSubtype(i8);
-
-impl RegionTileSubtype {
-    pub const fn from_retail(value: i8) -> Self {
-        Self(value)
-    }
-
-    pub const fn retail(self) -> i8 {
-        self.0
-    }
-}
-
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 #[repr(u8)]
 #[serde(rename_all = "snake_case")]
@@ -510,11 +797,18 @@ impl Default for TileState {
         Self {
             terrain: TerrainKind::Plains,
             rendering: TileRendering::default(),
-            region_tile_subtype: RegionTileSubtype::default(),
             owner_nation: None,
             former_owner_nation: None,
             secondary_owner_nation: None,
+            owner_border_mask: 0,
+            city_border_mask: 0,
+            water_adjacency_mask: 0,
             province: None,
+            gate: 0,
+            recruit_search_visited: 0,
+            per_tile_visited: 0,
+            marker_slot_index: -1,
+            tile_action_ordinal: -1,
             development: TileDevelopment::default(),
             edge_resources: [None; 2],
             transport_links: TileTransportLinks::default(),

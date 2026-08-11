@@ -9,12 +9,12 @@ resolver = "2"
 
 [workspace.package]
 edition = "2024"
-rust-version = "1.95"
+rust-version = "1.97.1"
 
 [workspace.dependencies]
 anyhow = "1"
 bitflags = { version = "2", features = ["serde"] }
-bevy = { version = "=0.19.0", default-features = false, features = [
+bevy = { version = "0.19", default-features = false, features = [
     # Prefer official collections over hand-picking every crate, but omit
     # default_platform extras (wayland/gilrs/udev) we do not need here.
     "default_app",
@@ -29,10 +29,12 @@ bevy = { version = "=0.19.0", default-features = false, features = [
     "picking",
     "2d_bevy_render",
     "bmp",
+    "dynamic_linking",
+    "debug"
 ] }
 clap = { version = "4", features = ["derive"] }
-enum-map = { version = "2.7", features = ["serde"] }
-pelite = { version = "0.10.0", default-features = false, features = ["std"] }
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
+enum-map = { version = "3", features = ["serde"] }
+pelite = { version = "0.10", default-features = false, features = ["std"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
 thiserror = "2"

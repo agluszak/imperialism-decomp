@@ -1,25 +1,52 @@
 use super::*;
 
 pub(super) fn bootstrap_nations(
+    map: &GeneratedMap,
     human_nation: MajorNationId,
     difficulty: Difficulty,
     foreign_ministers: MajorNationTable<ForeignMinisterPersonality>,
+    country_name: &str,
+    localized_nation_names: Option<&NationTable<String>>,
 ) -> Nations {
     Nations::new(
         MajorNationTable::from_fn(|nation| {
+            let owned_region_count = map
+                .provinces()
+                .iter()
+                .filter(|province| province.owner.nation() == Some(nation.nation()))
+                .count();
             major_nation(
+                nation,
                 difficulty,
                 nation == human_nation,
                 foreign_ministers[nation],
+                owned_region_count,
+                if nation == human_nation {
+                    country_name.to_owned()
+                } else {
+                    localized_nation_names
+                        .map(|names| names[nation.nation()].clone())
+                        .unwrap_or_default()
+                },
             )
         }),
-        MinorNationTable::from_fn(|nation| Some(minor_nation(nation))),
+        MinorNationTable::from_fn(|nation| {
+            Some(minor_nation(
+                nation,
+                localized_nation_names
+                    .map(|names| names[nation.nation()].clone())
+                    .unwrap_or_default(),
+            ))
+        }),
     )
 }
 pub(super) fn major_nation(
+    nation: MajorNationId,
     difficulty: Difficulty,
     human: bool,
     foreign_minister: ForeignMinisterPersonality,
+    owned_region_count: usize,
+    display_name: String,
 ) -> MajorNation {
     let treasury = if human {
         STARTING_TREASURY_BY_DIFFICULTY[difficulty]
@@ -34,10 +61,13 @@ pub(super) fn major_nation(
         Difficulty::Normal
     };
     MajorNation::for_random_start(
+        nation,
         treasury,
         human,
+        difficulty,
         foreign_minister,
-        scenario_city(preset_difficulty, human),
+        scenario_city(preset_difficulty, human, owned_region_count),
+        display_name,
     )
 }
 /// `TMapMgr::ChooseNationSetupProfilesForOpenSlots` followed by the foreign-minister
@@ -68,7 +98,7 @@ pub(super) fn choose_foreign_ministers(
 
     let mut region_class_by_nation = [None; NATION_COUNT];
     for province in map.provinces() {
-        region_class_by_nation[usize::from(province.owner.get())] = Some(province.terrain);
+        region_class_by_nation[usize::from(province.owner.get())] = Some(province.region_class);
     }
 
     let major_count = usize::from(MajorNationId::COUNT);
@@ -115,11 +145,11 @@ pub(super) fn choose_foreign_ministers(
         }
     })
 }
-pub(super) fn minor_nation(nation: MinorNationId) -> MinorNation {
+pub(super) fn minor_nation(nation: MinorNationId, display_name: String) -> MinorNation {
     let first_member = MinorNationId::FIRST + (nation.get() - MinorNationId::FIRST) / 4 * 4;
     MinorNation {
         common: NationCommonState::from_parts(
-            String::new(),
+            display_name,
             CountryStatus::Independent,
             Vec::new(),
             5_000,
@@ -172,19 +202,15 @@ pub(super) const fn minor_trade_thresholds(
         oil_offer_price,
     }
 }
-pub(super) fn initialize_minor_trade_state(
-    world: &StrategicMap,
-    tile_subtypes: &[i8],
-    nations: &mut Nations,
-) {
+pub(super) fn initialize_minor_trade_state(world: &MapMgr, nations: &mut Nations) {
     for nation in (MinorNationId::FIRST..NationId::COUNT).map(MinorNationId::new) {
         let Some(minor) = nations.minors[nation].as_mut() else {
             continue;
         };
         let owner = TileOwnerTag::from_nation(nation.nation());
         let mut counts = ResourceTable::default();
-        for (index, tile) in world.iter().enumerate() {
-            if tile.owner_nation != Some(owner) || tile_subtypes[index] == 0xf {
+        for tile in &world.tiles {
+            if tile.owner_nation != Some(owner) || tile.gate == 0xf {
                 continue;
             }
             for resource in tile.edge_resources.into_iter().flatten() {
@@ -196,7 +222,11 @@ pub(super) fn initialize_minor_trade_state(
         minor.trade.independent_resource_counts = counts;
     }
 }
-pub(super) fn scenario_city(difficulty: Difficulty, human: bool) -> CityState {
+pub(super) fn scenario_city(
+    difficulty: Difficulty,
+    human: bool,
+    owned_region_count: usize,
+) -> CityState {
     // Intro (preset 0) uses SetPopulation(2, 3, 2); every other level uses (4, 2, 1).
     let labor = if difficulty == Difficulty::Introductory {
         LaborPool::new(2, 3, 2)
@@ -208,10 +238,16 @@ pub(super) fn scenario_city(difficulty: Difficulty, human: bool) -> CityState {
     } else {
         SCENARIO_FORCED_PRODUCTION
     };
-    CityState::for_random_start(
+    let mut city = CityState::for_random_start(
         CITY_STOCK_PRESET_BY_DIFFICULTY[difficulty],
         production,
         labor,
         human,
-    )
+    );
+    // Fresh `TCity::ICity` derives this capacity after `TCountry` has assembled its
+    // ordered owned-region list. Pending action 9 starts below the upgraded threshold,
+    // so the initial divisor is four regions per capacity point.
+    city.production_accum[CityFacilitySlot::RegionalPopulation] =
+        (owned_region_count / 4).max(1) as i16;
+    city
 }

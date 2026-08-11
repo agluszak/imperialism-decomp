@@ -5,9 +5,8 @@ use serde::{Deserialize, Serialize};
 pub struct GameState {
     pub(crate) turn: TurnState,
     pub(crate) unit_ids: UnitIdAllocator,
-    pub(crate) world: StrategicMap,
-    pub(crate) provinces: ProvinceTable<ProvinceState>,
-    pub(crate) port_zone_owners: Vec<PortZoneOwner>,
+    pub map: MapMgr,
+    pub ocean: Ocean,
     pub(crate) rng: RngState,
     pub(crate) market: TradeMarketState,
     pub(crate) technology: TechnologyState,
@@ -30,9 +29,8 @@ pub struct GameState {
 pub struct GameStateParts {
     pub turn: TurnState,
     pub unit_ids: UnitIdAllocator,
-    pub world: StrategicMap,
-    pub provinces: ProvinceTable<ProvinceState>,
-    pub port_zone_owners: Vec<PortZoneOwner>,
+    pub map: MapMgr,
+    pub ocean: Ocean,
     pub rng: RngState,
     pub market: TradeMarketState,
     pub technology: TechnologyState,
@@ -56,9 +54,8 @@ impl GameState {
         Self {
             turn: parts.turn,
             unit_ids: parts.unit_ids,
-            world: parts.world,
-            provinces: parts.provinces,
-            port_zone_owners: parts.port_zone_owners,
+            map: parts.map,
+            ocean: parts.ocean,
             rng: parts.rng,
             market: parts.market,
             technology: parts.technology,
@@ -111,26 +108,6 @@ impl GameState {
 
     pub const fn unit_ids(&self) -> &UnitIdAllocator {
         &self.unit_ids
-    }
-
-    pub const fn world(&self) -> &StrategicMap {
-        &self.world
-    }
-
-    pub fn tile_mut(&mut self, index: TileId) -> &mut TileState {
-        self.world.tile_mut(index)
-    }
-
-    pub fn world_mut(&mut self) -> &mut StrategicMap {
-        &mut self.world
-    }
-
-    pub const fn provinces(&self) -> &ProvinceTable<ProvinceState> {
-        &self.provinces
-    }
-
-    pub const fn port_zone_owners(&self) -> &Vec<PortZoneOwner> {
-        &self.port_zone_owners
     }
 
     pub const fn rng(&self) -> &RngState {

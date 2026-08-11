@@ -31,6 +31,8 @@ pub enum TradeCommodity {
 }
 
 impl TradeCommodity {
+    pub const LENGTH: usize = enum_map::enum_len::<Self>();
+
     pub const fn from_retail(value: i16) -> Option<Self> {
         match value {
             0 => Some(Self::Cotton),

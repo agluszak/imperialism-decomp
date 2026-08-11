@@ -25,6 +25,7 @@ mod military_phase;
 mod nation_economy;
 mod nations;
 mod news;
+mod ocean;
 mod pending;
 mod population;
 mod random_map;
@@ -69,7 +70,7 @@ pub use city_site::{
     validate_capital_site_selection,
 };
 pub use civilian_work::{CivilianWorkOrder, RailSegment, TurnsRemaining};
-pub use create_random_game::create_random_game;
+pub use create_random_game::{RandomGameNames, create_random_game};
 pub use difficulty::Difficulty;
 pub use diplomacy::{
     DiplomacyGrant, DiplomacyPolicy, DiplomacyState, DiplomaticCongressState,
@@ -82,9 +83,8 @@ pub use ids::{
     ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,
 };
 pub use map::{
-    DevelopmentLevel, PortZoneOwner, RegionId, RegionTileSubtype, RiverSegment, RiverSprite,
-    StrategicMap, StrategicMapSizeError, TerrainKind, TileAction, TileDevelopment, TileFlags,
-    TileRendering, TileState, TileTransportLinks,
+    DevelopmentLevel, MapMgr, MapMgrSizeError, RegionId, RiverSegment, RiverSprite, TerrainKind,
+    TileAction, TileDevelopment, TileFlags, TileRendering, TileState, TileTransportLinks,
 };
 pub use map_geometry::{
     HexDirection, MapGeometry, MapTopology, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH,
@@ -101,12 +101,15 @@ pub use military::{
 pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,
 };
-pub use nations::{MajorNation, MajorNationController, MinorNation, NationCommonState, Nations};
+pub use nations::{
+    MajorNation, MajorNationController, MajorNationKind, MinorNation, NationCommonState, Nations,
+};
 pub use news::{
     DiplomacyNotice, DiplomacyProposal, InterNationNewsKind, LandSale, NEWS_TEMPLATE_COUNT,
     NationPendingWork, NewsArgument, NewsPage, NewsState, NewsStory, PendingNewspaperEvent,
     PendingWorkState, TurnStartEvent, TurnSummary, WarTransition,
 };
+pub use ocean::{Ocean, OceanRoute, PortZone, Zone, ZoneKind};
 pub use pending::{PendingActionState, PendingActionStatus};
 pub use population::{
     FoodOutcome, LaborPool, PopulationAccumulator, PopulationState, SkillBand, StrikePhase,

@@ -5,7 +5,7 @@ mod ui;
 use bevy::input_focus::tab_navigation::TabNavigationPlugin;
 use bevy::prelude::*;
 use bevy::window::WindowPlugin;
-use imperialism_core::GameState;
+use imperialism_core::{GameState, RandomGameNames};
 use imperialism_formats::{RetailAssets, UiCatalog};
 
 const COMPILED_UI_CATALOG: &str = include_str!("../../imperialism-formats/assets/ui_catalog.json");
@@ -38,7 +38,11 @@ impl RetailAssetsResource {
     }
 }
 
-pub fn run(retail_assets: RetailAssets, initial_game: Option<GameState>) {
+#[derive(Resource)]
+pub(crate) struct RandomGameNamesResource(pub(crate) RandomGameNames);
+
+pub fn run(retail_assets: RetailAssets, initial_game: Option<GameState>) -> anyhow::Result<()> {
+    let random_game_names = retail_assets.random_game_names()?;
     let ui_catalog = serde_json::from_str::<UiCatalog>(COMPILED_UI_CATALOG)
         .expect("the compiled UI catalog must deserialize");
 
@@ -61,7 +65,8 @@ pub fn run(retail_assets: RetailAssets, initial_game: Option<GameState>) {
     ui::validate_application_bindings(&ui_catalog)
         .expect("compiled UI catalog must contain every application binding");
     app.insert_resource(ui_catalog)
-        .insert_resource(RetailAssetsResource::new(retail_assets));
+        .insert_resource(RetailAssetsResource::new(retail_assets))
+        .insert_resource(RandomGameNamesResource(random_game_names));
     if let Some(game) = initial_game {
         assert_eq!(
             game.turn().phase(),
@@ -88,4 +93,5 @@ pub fn run(retail_assets: RetailAssets, initial_game: Option<GameState>) {
     ));
     app.world_mut().spawn(Camera2d);
     app.run();
+    Ok(())
 }

@@ -5,7 +5,7 @@ use super::*;
 /// At the Normal+ start boundary the human nation has no home tile, so retail includes
 /// every tile it owns in both the representative and CitySite bounds.
 pub(super) fn initialize_capital_selection_view_origin(
-    world: &mut StrategicMap,
+    world: &mut MapMgr,
     human_nation: MajorNationId,
 ) {
     const VIEWPORT_TILE_SPAN: i32 = 9;
@@ -64,7 +64,7 @@ pub(super) fn initialize_capital_selection_view_origin(
         row = max_row - 5;
     }
 
-    if world.topology() == MapTopology::Bounded {
+    if world.topology == MapTopology::Bounded {
         column = column.clamp(1, 0x6e - VIEWPORT_TILE_SPAN);
     }
     if column < 0 {
@@ -74,16 +74,15 @@ pub(super) fn initialize_capital_selection_view_origin(
     }
     row = row.clamp(0, 0x35);
 
-    world.set_view_origin(
-        geometry
-            .tile(row as u16, column as u16)
-            .expect("capital-selection view origin is inside the strategic map"),
-    );
+    world.view_origin = geometry
+        .tile(row as u16, column as u16)
+        .expect("capital-selection view origin is inside the strategic map");
 }
 pub(super) struct TilePostPassState {
     pub(super) tiles: Box<[TileState]>,
-    pub(super) gate_flags: Vec<i8>,
     pub(super) province_capitals: Vec<Option<TileId>>,
+    pub(super) province_resource_presence_masks: Vec<i8>,
+    pub(super) pending_river_mouth_tile: Option<TileId>,
 }
 /// Preview-time tile post-passes from `TMapMgr::BuildOrLoadGlobalMapStateForSession`:
 /// icon-variant/edge-resource stamping, former-owner snapshot, province fallback capitals,
@@ -100,55 +99,66 @@ pub(super) fn apply_tile_post_passes(
         .copied()
         .map(tile_from_generated)
         .collect();
-    let mut gate_flags: Vec<i8> = map
-        .tiles()
-        .iter()
-        .map(|tile| {
-            tile.gate
-                .map_or(-1, crate::random_map_terrain::GenerationGate::code)
-        })
-        .collect();
-
     for index in 0..tiles.len() {
-        update_strategic_map_tile_icon_variant_state(
-            &mut tiles,
-            &mut gate_flags,
-            geometry,
-            index,
-            map_lcg,
-        );
+        update_strategic_map_tile_icon_variant_state(&mut tiles, geometry, index, map_lcg);
     }
+
+    // RebuildTileOwnerNeighborCachesAndFallbackAssignments snapshots this byte before its
+    // fallback-capital normalization and before GuaranteeResources mutate tile resources.
+    let province_resource_presence_masks = build_province_resource_presence_masks(&tiles);
 
     // Retail runs this between icon variants and GuaranteeResources; it advances the map
     // LCG once per occupied province and records its fallback capital.
-    let province_capitals =
-        assign_province_fallback_capitals(&mut tiles, &mut gate_flags, geometry, map_lcg);
+    let province_capitals = assign_province_fallback_capitals(&mut tiles, geometry, map_lcg);
 
-    guarantee_resources(&mut tiles, &mut gate_flags, map_lcg);
+    guarantee_resources(&mut tiles, map_lcg);
     let mut river_connections: Vec<u8> = map
         .tiles()
         .iter()
         .map(|tile| tile.river.map_or(0, RiverSegment::connection_code))
         .collect();
-    assign_fresh_map_pictures(
-        &mut tiles,
-        &mut river_connections,
-        &gate_flags,
-        geometry,
-        map_lcg,
-    );
+    let pending_river_mouth_tile =
+        assign_fresh_map_pictures(&mut tiles, &mut river_connections, geometry, map_lcg);
     TilePostPassState {
         tiles: tiles.into_boxed_slice(),
-        gate_flags,
         province_capitals,
+        province_resource_presence_masks,
+        pending_river_mouth_tile,
     }
+}
+
+fn build_province_resource_presence_masks(tiles: &[TileState]) -> Vec<i8> {
+    let province_count = tiles
+        .iter()
+        .filter_map(|tile| {
+            tile.province
+                .map(|province| usize::from(province.get()) + 1)
+        })
+        .max()
+        .unwrap_or(0);
+    let mut masks = vec![0_u8; province_count];
+    for tile in tiles {
+        if tile.terrain == TerrainKind::Water {
+            continue;
+        }
+        let Some(province) = tile.province else {
+            continue;
+        };
+        let mask = &mut masks[usize::from(province.get())];
+        for resource in tile.edge_resources.into_iter().flatten() {
+            let resource = resource as u8;
+            if resource < 8 {
+                *mask |= 1 << resource;
+            }
+        }
+    }
+    masks.into_iter().map(|mask| mask as i8).collect()
 }
 /// Capital-tile pick + stamp from `TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments`
 /// (0x0050f860). Adjacent-province bookkeeping and transport-mask side effects that are not
 /// represented on [`TileState`] are omitted.
 pub(super) fn assign_province_fallback_capitals(
     tiles: &mut [TileState],
-    gate_flags: &mut [i8],
     geometry: MapGeometry,
     map_lcg: &mut RetailLcg,
 ) -> Vec<Option<TileId>> {
@@ -220,7 +230,7 @@ pub(super) fn assign_province_fallback_capitals(
             }
         };
 
-        initialize_tile_neighbor_connection_mask_if_needed(tiles, gate_flags, chosen);
+        initialize_tile_neighbor_connection_mask_if_needed(tiles, chosen);
         tiles[chosen].flags = TileFlags::PROVINCE_ANCHOR_STATE;
         province_capitals[province_index] = Some(TileId::new(chosen as u16));
     }
@@ -232,13 +242,12 @@ pub(super) fn assign_province_fallback_capitals(
 /// still zero when retail tries to clear it.
 pub(super) fn initialize_tile_neighbor_connection_mask_if_needed(
     tiles: &mut [TileState],
-    gate_flags: &mut [i8],
     index: usize,
 ) {
-    if gate_flags[index] == 1 {
+    if tiles[index].gate == 1 {
         return;
     }
     tiles[index].terrain = TerrainKind::Plains;
     tiles[index].edge_resources = [Some(ResourceKind::Grain), None];
-    gate_flags[index] = resolve_region_tile_subtype_code(tiles, gate_flags, index);
+    tiles[index].gate = resolve_region_tile_subtype_code(&tiles[index], index);
 }

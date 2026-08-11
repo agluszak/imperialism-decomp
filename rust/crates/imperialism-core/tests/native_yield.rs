@@ -32,3 +32,15 @@ fn ai_nation_resource_yield_rebuild_clamps_targets() {
     )
     .unwrap();
 }
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn nation_resource_yield_rebuild_multiple_towns() {
+    compare_native(
+        "nation_resource_yield_rebuild_multiple_towns",
+        |state, case: NationCase| {
+            state.rebuild_nation_resource_yields(case.nation);
+        },
+    )
+    .unwrap();
+}

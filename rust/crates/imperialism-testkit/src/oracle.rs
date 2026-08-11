@@ -2,6 +2,7 @@
 
 use anyhow::{Context, Result, bail};
 use imperialism_core::*;
+use imperialism_formats::RetailAssets;
 use std::path::Path;
 
 use crate::{
@@ -311,6 +312,13 @@ pub fn check_random_game_start(result: &Path, seed: u32) -> Result<()> {
             expected.turn().selected_nation.get()
         );
     }
+    if difficulty != setup.difficulty {
+        bail!(
+            "accepted setup difficulty {:?} differs from game-state difficulty {:?}",
+            setup.difficulty,
+            difficulty
+        );
+    }
 
     let preview = generate_random_setup_preview(
         setup.planet_seed.as_bytes(),
@@ -323,9 +331,20 @@ pub fn check_random_game_start(result: &Path, seed: u32) -> Result<()> {
             setup.planet_seed
         )
     })?;
-    // RandomSetupFlow captures the stable generated preview before it selects the scenario's
-    // requested difficulty. The constructed game state is the authoritative accepted setting.
-    let actual = create_random_game(&preview, setup.nation, difficulty, runtime.seed);
+    let retail_assets = RetailAssets::open(runtime.artifact_dir()?.join("game"))
+        .context("opening the runtime scenario's retail assets")?;
+    let names = retail_assets
+        .random_game_names()
+        .context("loading localized random-game names")?;
+    let actual = create_random_game(
+        &preview,
+        setup.nation,
+        difficulty,
+        &setup.country_name,
+        setup.localized_names,
+        runtime.seed,
+        &names,
+    );
 
     assert_game_state_eq(&expected, &actual)?;
 

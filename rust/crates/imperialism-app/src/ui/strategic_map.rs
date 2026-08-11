@@ -220,10 +220,10 @@ fn strategic_base_terrain_key(state: &GameState) -> StrategicBaseTerrainKey {
 
     let mut hasher = std::collections::hash_map::DefaultHasher::new();
     for_each_visible_strategic_tile(state, |tile, _screen_x, _screen_y| {
-        let tile_state = &state.world()[tile];
+        let tile_state = &state.map[tile];
         tile.get().hash(&mut hasher);
         tile_state.terrain.hash(&mut hasher);
-        tile_state.region_tile_subtype.retail().hash(&mut hasher);
+        tile_state.gate.hash(&mut hasher);
         tile_state.rendering.sprite_variant.hash(&mut hasher);
         tile_state
             .rendering
@@ -237,17 +237,14 @@ fn strategic_base_terrain_key(state: &GameState) -> StrategicBaseTerrainKey {
             .hash(&mut hasher);
     });
     StrategicBaseTerrainKey {
-        view_origin: state.world().view_origin(),
-        topology: state.world().topology(),
+        view_origin: state.map.view_origin,
+        topology: state.map.topology,
         visible_tiles: hasher.finish(),
     }
 }
 
 fn for_each_visible_strategic_tile(state: &GameState, mut visit: impl FnMut(TileId, i32, i32)) {
-    let (origin_row, origin_column) = state
-        .world()
-        .geometry()
-        .row_column(state.world().view_origin());
+    let (origin_row, origin_column) = state.map.geometry().row_column(state.map.view_origin);
     let origin_row = i32::from(origin_row);
     let origin_column = i32::from(origin_column);
 
@@ -265,7 +262,7 @@ fn for_each_visible_strategic_tile(state: &GameState, mut visit: impl FnMut(Tile
                 continue;
             }
             let column = normalize_map_column(unwrapped_column);
-            let Some(tile) = state.world().geometry().tile(row as u16, column as u16) else {
+            let Some(tile) = state.map.geometry().tile(row as u16, column as u16) else {
                 continue;
             };
             visit(tile, screen_x, screen_y);
@@ -314,9 +311,9 @@ fn draw_city_site_selection(
     draw_frame(viewport, x, y, 0);
 
     let active_owner = TileOwnerTag::from_nation(nation.nation());
-    let neighbors = state.world().geometry().neighbors(tile).map(|neighbor| {
+    let neighbors = state.map.geometry().neighbors(tile).map(|neighbor| {
         neighbor.filter(|&neighbor| {
-            let neighbor = &state.world()[neighbor];
+            let neighbor = &state.map[neighbor];
             neighbor.terrain == TerrainKind::Water || neighbor.owner_nation == Some(active_owner)
         })
     });
@@ -412,11 +409,8 @@ fn draw_city_site_neighbor_outline(
 }
 
 fn strategic_tile_screen_origin(state: &GameState, tile: TileId) -> (i32, i32) {
-    let (origin_row, origin_column) = state
-        .world()
-        .geometry()
-        .row_column(state.world().view_origin());
-    let (row, column) = state.world().geometry().row_column(tile);
+    let (origin_row, origin_column) = state.map.geometry().row_column(state.map.view_origin);
+    let (row, column) = state.map.geometry().row_column(tile);
     let y = (i32::from(row) - i32::from(origin_row)) * TILE_SIZE;
     let mut x = (i32::from(column) - i32::from(origin_column)) * TILE_SIZE;
     if row & 1 != 0 {
@@ -454,18 +448,15 @@ fn compose_strategic_base_tile(
     terrain_pictures: &[IndexedPicture],
     river_masks: &[IndexedPicture],
 ) -> Vec<u8> {
-    let tile_state = &state.world()[tile];
+    let tile_state = &state.map[tile];
     let center_column = {
-        let (_, origin_column) = state
-            .world()
-            .geometry()
-            .row_column(state.world().view_origin());
+        let (_, origin_column) = state.map.geometry().row_column(state.map.view_origin);
         (i32::from(origin_column) + VIEWPORT_TILE_SPAN / 2)
             .rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
     };
-    let (_, tile_column) = state.world().geometry().row_column(tile);
+    let (_, tile_column) = state.map.geometry().row_column(tile);
     // Retail's stored flag is inverted: this seam substitution belongs to Rust's bounded map.
-    let wrapped_seam = state.world().topology() == MapTopology::Bounded
+    let wrapped_seam = state.map.topology == MapTopology::Bounded
         && ((tile_column == 0 && center_column > 54)
             || (tile_column == STRATEGIC_MAP_WIDTH - 1 && center_column < 54));
     if wrapped_seam {
@@ -481,7 +472,7 @@ fn compose_strategic_base_tile(
         };
         BASE_WATER_OFFSETS[variant]
     } else {
-        let subtype = usize::try_from(tile_state.region_tile_subtype.retail())
+        let subtype = usize::try_from(tile_state.gate)
             .expect("rendered land tile subtype must not be negative");
         let variant = if tile_state.terrain == TerrainKind::Mountain {
             usize::from(rendering.sprite_variant)
@@ -495,7 +486,7 @@ fn compose_strategic_base_tile(
         .clone();
 
     if tile_state.terrain != TerrainKind::Water {
-        let subtype = usize::try_from(tile_state.region_tile_subtype.retail())
+        let subtype = usize::try_from(tile_state.gate)
             .expect("rendered land tile subtype must not be negative");
         let variant = usize::from(rendering.sprite_variant);
         for direction in 0..6 {
@@ -758,10 +749,7 @@ fn strategic_tile_at_position(state: &GameState, normalized: Vec2) -> Option<Til
     if !(0..VIEWPORT_WIDTH as i32).contains(&x) || !(0..VIEWPORT_HEIGHT as i32).contains(&y) {
         return None;
     }
-    let (origin_row, origin_column) = state
-        .world()
-        .geometry()
-        .row_column(state.world().view_origin());
+    let (origin_row, origin_column) = state.map.geometry().row_column(state.map.view_origin);
     let row = i32::from(origin_row) + y / TILE_SIZE;
     if !(0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&row) {
         return None;
@@ -773,7 +761,7 @@ fn strategic_tile_at_position(state: &GameState, normalized: Vec2) -> Option<Til
         absolute_x / TILE_SIZE
     };
     let column = normalize_map_column(column);
-    state.world().geometry().tile(row as u16, column as u16)
+    state.map.geometry().tile(row as u16, column as u16)
 }
 
 pub(crate) fn strategic_base_terrain_tile_at_cursor(
@@ -790,8 +778,7 @@ pub(crate) fn strategic_base_terrain_tile_at_cursor(
 mod tests {
     use super::*;
     use imperialism_core::{
-        MapTopology, RegionTileSubtype, STRATEGIC_TILE_COUNT, TerrainKind, TileOwnerTag,
-        TileRendering, TileState,
+        MapTopology, STRATEGIC_TILE_COUNT, TerrainKind, TileOwnerTag, TileRendering, TileState,
     };
     use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 
@@ -854,10 +841,9 @@ mod tests {
         let terrain = synthetic_terrain_pictures();
         let rivers = synthetic_river_masks();
         let mut state = fixture_state();
-        let origin = state.world().view_origin();
-        state.tile_mut(origin).terrain = TerrainKind::Water;
-        state.tile_mut(origin).rendering =
-            TileRendering::from_retail(0, 0, 0, 0b0000_0011).unwrap();
+        let origin = state.map.view_origin;
+        state.map[origin].terrain = TerrainKind::Water;
+        state.map[origin].rendering = TileRendering::from_retail(0, 0, 0, 0b0000_0011).unwrap();
 
         let pixels = compose_strategic_base_tile(&state, origin, &terrain, &rivers);
         let base_ink = frame_for_offset(BASE_WATER_OFFSETS[0]) as u8;
@@ -870,10 +856,10 @@ mod tests {
         let terrain = synthetic_terrain_pictures();
         let rivers = synthetic_river_masks();
         let mut state = fixture_state();
-        let origin = state.world().view_origin();
-        state.tile_mut(origin).terrain = TerrainKind::Plains;
-        state.tile_mut(origin).region_tile_subtype = RegionTileSubtype::from_retail(0);
-        state.tile_mut(origin).rendering = TileRendering::from_retail(0, 0x0b, 0, 0).unwrap();
+        let origin = state.map.view_origin;
+        state.map[origin].terrain = TerrainKind::Plains;
+        state.map[origin].gate = 0;
+        state.map[origin].rendering = TileRendering::from_retail(0, 0x0b, 0, 0).unwrap();
 
         let pixels = compose_strategic_base_tile(&state, origin, &terrain, &rivers);
         assert!(pixels.iter().all(|&pixel| pixel == 0x80));
@@ -886,11 +872,11 @@ mod tests {
         let mut state = fixture_state();
         // Force bounded topology and a center column past 54 so column 0 is a seam.
         let tiles = vec![TileState::default(); STRATEGIC_TILE_COUNT];
-        let mut world = StrategicMap::new(MapTopology::Bounded, tiles).unwrap();
+        let mut world = MapMgr::new(MapTopology::Bounded, tiles).unwrap();
         let origin = world.geometry().tile(10, 51).unwrap();
-        world.set_view_origin(origin);
+        world.view_origin = origin;
         let seam = world.geometry().tile(10, 0).unwrap();
-        *state.world_mut() = world;
+        state.map = world;
 
         let pixels = compose_strategic_base_tile(&state, seam, &terrain, &rivers);
         assert!(
@@ -905,13 +891,13 @@ mod tests {
         let mut state = fixture_state();
         let nation = MajorNationId::new(6);
         let owner = TileOwnerTag::from_nation(nation.nation());
-        let origin = state.world().view_origin();
-        state.tile_mut(origin).owner_nation = Some(owner);
-        state.tile_mut(origin).terrain = TerrainKind::Plains;
-        let neighbors = state.world().geometry().neighbors(origin);
+        let origin = state.map.view_origin;
+        state.map[origin].owner_nation = Some(owner);
+        state.map[origin].terrain = TerrainKind::Plains;
+        let neighbors = state.map.geometry().neighbors(origin);
         for neighbor in neighbors.into_iter().flatten() {
-            state.tile_mut(neighbor).owner_nation = Some(owner);
-            state.tile_mut(neighbor).terrain = TerrainKind::Plains;
+            state.map[neighbor].owner_nation = Some(owner);
+            state.map[neighbor].terrain = TerrainKind::Plains;
         }
 
         let terrain = synthetic_terrain_pictures();

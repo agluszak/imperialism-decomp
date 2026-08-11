@@ -2,8 +2,8 @@
 use crate::random_map::trace_coarse_random_map;
 use crate::random_map::{CoarseMap, generate_coarse_random_map};
 use crate::{
-    EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, MapGeometry, MapTopology, ProvinceId,
-    RANDOM_MAP_CLASS_COUNT, RetailCrtRng, RetailLcg, RiverSegment, TerrainKind, TileId,
+    EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, MapGeometry, MapTopology, OceanRoute, OceanZoneId,
+    ProvinceId, RANDOM_MAP_CLASS_COUNT, RetailCrtRng, RetailLcg, RiverSegment, TerrainKind, TileId,
     TileOwnerTag, hash_retail_scenario_tag,
 };
 use serde::{Deserialize, Deserializer, Serialize};
@@ -151,7 +151,7 @@ impl GenerationGate {
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct GeneratedProvince {
     pub owner: TileOwnerTag,
-    pub terrain: TerrainKind,
+    pub region_class: u8,
 }
 
 /// The final terrain map used to create a game. The supplied [`RetailLcg`] has
@@ -161,6 +161,8 @@ pub struct GeneratedMap {
     tiles: Box<[GeneratedTerrainTile]>,
     provinces: Box<[GeneratedProvince]>,
     seed_candidate_tiles: [TileId; RANDOM_MAP_CLASS_COUNT],
+    pub(crate) ocean_routes: Vec<OceanRoute>,
+    pub(crate) ocean_zone_links: Vec<[OceanZoneId; 2]>,
 }
 
 impl GeneratedMap {
@@ -168,6 +170,8 @@ impl GeneratedMap {
         tiles: Box<[GeneratedTerrainTile]>,
         provinces: Box<[GeneratedProvince]>,
         seed_candidate_tiles: [TileId; RANDOM_MAP_CLASS_COUNT],
+        ocean_routes: Vec<OceanRoute>,
+        ocean_zone_links: Vec<[OceanZoneId; 2]>,
     ) -> Self {
         assert_eq!(
             tiles.len(),
@@ -178,6 +182,8 @@ impl GeneratedMap {
             tiles,
             provinces,
             seed_candidate_tiles,
+            ocean_routes,
+            ocean_zone_links,
         }
     }
 
@@ -208,6 +214,8 @@ impl<'de> Deserialize<'de> for GeneratedMap {
             tiles: Box<[GeneratedTerrainTile]>,
             provinces: Box<[GeneratedProvince]>,
             seed_candidate_tiles: [TileId; RANDOM_MAP_CLASS_COUNT],
+            ocean_routes: Vec<OceanRoute>,
+            ocean_zone_links: Vec<[OceanZoneId; 2]>,
         }
 
         let map = SerializedGeneratedMap::deserialize(deserializer)?;
@@ -222,6 +230,8 @@ impl<'de> Deserialize<'de> for GeneratedMap {
             map.tiles,
             map.provinces,
             map.seed_candidate_tiles,
+            map.ocean_routes,
+            map.ocean_zone_links,
         ))
     }
 }
@@ -234,6 +244,8 @@ impl<'de> Deserialize<'de> for GeneratedMap {
 /// therefore preserve both retail RNG results without regenerating the preview.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RandomSetupPreview {
+    /// Retail `TMapMgr::scenarioTagText`, retained exactly from the accepted setup seed.
+    pub scenario_tag: String,
     /// The topology used for the retained map. Accept must not be able to
     /// commit a different topology than the one it previews.
     pub topology: MapTopology,
@@ -347,6 +359,8 @@ fn generate_random_setup_preview_from_lcg(
 ) -> RandomSetupPreview {
     let map = generate_random_map(seed, topology, rng);
     RandomSetupPreview {
+        scenario_tag: String::from_utf8(seed.to_vec())
+            .expect("random setup seed text is valid UTF-8"),
         topology,
         map,
         final_map_lcg: rng.state(),
@@ -470,8 +484,18 @@ fn generate_random_map_impl(
             .map(|_| summarize_stage(&tiles, rng.state()));
         // `AssignOrCompactCityRegionIdsAndRebuildBorders(0)` tail: border quads → span
         // links → MergeSmallCityRegionsAndCompactIds. No LCG draws.
-        let _city_region_count =
+        let water_merge =
             crate::random_map_water_merge::merge_small_water_regions(&mut tiles, geometry);
+        debug_assert_eq!(
+            water_merge.region_count,
+            tiles
+                .iter()
+                .filter(|tile| tile.terrain_kind == WATER)
+                .map(|tile| i32::from(tile.owner_nation as u8) - 0x17)
+                .max()
+                .unwrap_or(-1)
+                + 1
+        );
         apply_scenario_keyword_override(&mut tiles, scenario_tag, rng);
         #[cfg(feature = "differential-trace")]
         let after_keyword = attempts
@@ -505,11 +529,13 @@ fn generate_random_map_impl(
                             u8::try_from(province.owner_nation)
                                 .expect("accepted province owner is nonnegative"),
                         ),
-                        terrain: TerrainKind::from_retail(province.region_class)
-                            .expect("accepted province class is terrain"),
+                        region_class: u8::try_from(province.region_class)
+                            .expect("accepted province region class is nonnegative"),
                     })
                     .collect(),
                 seed_candidate_tiles,
+                water_merge.routes,
+                water_merge.zone_links,
             );
         }
     }
@@ -1585,7 +1611,23 @@ mod tests {
         );
         // Includes post-merge water owner tags from AssignOrCompactCityRegionIdsAndRebuildBorders.
         assert_eq!(final_tile_hash(generated.tiles()), 0xdf9d_e868);
+        assert!(!generated.ocean_routes.is_empty());
+        assert!(generated.ocean_routes.iter().all(|route| {
+            route.start_column != route.end_column || route.start_row != route.end_row
+        }));
         assert_eq!(rng.state(), 0x46a4_5026);
+    }
+
+    #[test]
+    fn generated_map_preserves_region_classes_outside_the_terrain_domain() {
+        let mut rng = RetailLcg::from_state(9);
+        let generated = generate_random_map(b"ordinary", MapTopology::Wrapping, &mut rng);
+        assert!(
+            generated
+                .provinces()
+                .iter()
+                .any(|province| province.region_class > TerrainKind::Farmland as u8)
+        );
     }
 
     #[test]

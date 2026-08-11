@@ -129,9 +129,9 @@ impl GameState {
     /// remembered limiting constraint. Does not mutate authoritative state.
     pub fn city_order_status(&self, nation: MajorNationId, order: CityOrderId) -> CityOrderStatus {
         let major = self.nations.major(nation);
-        let city = major.city();
-        let owner = major.economy();
-        let treasury = major.common().treasury;
+        let city = &major.city;
+        let owner = &major.economy;
+        let treasury = major.common.treasury;
         // Compute maxima against temporary order copies so projection cannot
         // refresh the remembered limiting constraint.
         match order {

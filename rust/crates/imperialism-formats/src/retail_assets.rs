@@ -1,6 +1,7 @@
 use crate::color::DibPalette;
 use crate::retail_resources::*;
 use crate::{PictureId, RetailFontFace};
+use imperialism_core::{MajorNationId, NationId, NationTable, RandomGameNames};
 use pelite::pe32::{Pe, PeFile};
 use pelite::resources::{FindError, Name};
 use std::collections::BTreeMap;
@@ -96,6 +97,49 @@ impl RetailAssets {
                 direct_index,
             })?;
         decode_string_table_entry(&self.strings.path, block, slot)
+    }
+
+    /// Materializes the localized STR# inputs used by random-game province and ocean naming.
+    pub fn random_game_names(&self) -> Result<RandomGameNames, RetailAssetError> {
+        let mut localized_nation_names = NationTable::default();
+        for nation in NationId::all() {
+            // `TSimMgr::GetString(0x2715, nationSlot)` adds one before direct lookup.
+            localized_nation_names[nation] = self.string(0x2715, i16::from(nation.get()) + 1)?;
+        }
+
+        let mut province_names_by_nation: NationTable<Vec<String>> = NationTable::default();
+        for nation in NationId::all() {
+            let name_count = if MajorNationId::from_nation(nation).is_some() {
+                8
+            } else {
+                4
+            };
+            for ordinal in 1..=name_count {
+                // `TSimMgr::GetString(group, offset)` adds one before the direct resource lookup.
+                province_names_by_nation[nation].push(self.string(
+                    8000 + i16::from(nation.get()),
+                    i16::try_from(ordinal + 1).expect("province-name ordinal fits i16"),
+                )?);
+            }
+        }
+
+        let mut zone_headline_templates = Vec::with_capacity(24);
+        for status_code in 0..24 {
+            // `TSimMgr::GetString(0x275a, statusCode)` performs this same +1 conversion.
+            zone_headline_templates.push(self.string(0x275a, status_code + 1)?);
+        }
+        let mut fallback_ocean_names = Vec::with_capacity(37);
+        for cache_id in 0..37 {
+            // The localized fallback cursor is a zero-based `GetString(0x275b, cacheId)` offset.
+            fallback_ocean_names.push(self.string(0x275b, cache_id + 1)?);
+        }
+
+        Ok(RandomGameNames {
+            localized_nation_names,
+            province_names_by_nation,
+            zone_headline_templates,
+            fallback_ocean_names,
+        })
     }
 
     fn picture_resource(&self, picture_id: PictureId) -> Result<(&Path, &[u8]), RetailAssetError> {
@@ -457,6 +501,19 @@ mod tests {
         let assets = RetailAssets::open(&root).unwrap();
 
         assert_eq!(assets.string(0x2719, 1).unwrap(), "Textile Mill");
+        let names = assets.random_game_names().unwrap();
+        assert_eq!(names.localized_nation_names[NationId::new(0)], "Zimm");
+        assert_eq!(names.localized_nation_names[NationId::new(22)], "Sindel");
+        assert_eq!(
+            names.province_names_by_nation[NationId::new(0)][0],
+            "Bergen"
+        );
+        assert_eq!(
+            names.province_names_by_nation[NationId::new(22)][0],
+            "Vershire"
+        );
+        assert_eq!(names.zone_headline_templates[0], "[1] Lake");
+        assert_eq!(names.fallback_ocean_names[0], "Red");
         assert!(
             assets
                 .picture(PictureId::new(4500))

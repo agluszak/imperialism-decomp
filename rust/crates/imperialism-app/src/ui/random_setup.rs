@@ -1,8 +1,8 @@
-use crate::AppState;
 use crate::ui::catalog::{
     ModalDialog, SpawnedView, UiAssetResources, UiCatalogResource, UiSpawner, spawn_view,
 };
 use crate::ui::random_setup_map;
+use crate::{AppState, RandomGameNamesResource};
 use bevy::ecs::system::SystemParam;
 use bevy::input::ButtonState;
 use bevy::input::keyboard::KeyboardInput;
@@ -327,6 +327,7 @@ struct RandomSetupActivation<'w, 's> {
     clock_seed: Res<'w, RandomSetupClockSeed>,
     setup: ResMut<'w, RandomGameSetup>,
     preview: ResMut<'w, RandomSetupPreview>,
+    names: Res<'w, RandomGameNamesResource>,
     next_state: ResMut<'w, NextState<AppState>>,
     commands: Commands<'w, 's>,
 }
@@ -343,6 +344,7 @@ fn on_random_setup_activate(activate: On<Activate>, mut random_setup: RandomSetu
             accept_random_setup(
                 &random_setup.setup,
                 &random_setup.preview,
+                &random_setup.names.0,
                 &mut random_setup.commands,
                 &mut random_setup.next_state,
             );
@@ -422,18 +424,23 @@ fn on_country_name_edited(
     }
 }
 
-/// Country display name and localized-names policy are deliberately omitted: retail
-/// stores them on `TCountry` / `TSimMgr` fields outside the semantic `GameState`
-/// capture. Keep editing them in the setup UI only until those fields exist in
-/// authoritative state — do not silently feed them into game construction.
 fn accept_random_setup(
     setup: &RandomGameSetup,
     preview: &RandomSetupPreview,
+    names: &RandomGameNames,
     commands: &mut Commands,
     next_state: &mut NextState<AppState>,
 ) {
     // Live play still uses a fixed Accept CRT seed until wall-clock CRT wiring lands.
-    let mut session = create_random_game(&preview.0, setup.nation, setup.difficulty, 1);
+    let mut session = create_random_game(
+        &preview.0,
+        setup.nation,
+        setup.difficulty,
+        &setup.country_name,
+        setup.name_mode == NationNameMode::Historical,
+        1,
+        names,
+    );
     if requires_capital_site_selection(setup.difficulty) {
         commands.insert_resource(GameSession(session));
         next_state.set(AppState::CitySite);
@@ -570,12 +577,35 @@ mod tests {
 
     const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
 
+    fn test_random_game_names() -> RandomGameNames {
+        let mut localized_nation_names = NationTable::default();
+        let mut province_names_by_nation = NationTable::default();
+        for nation in NationId::all() {
+            localized_nation_names[nation] = format!("N{}", nation.get());
+            let count = if MajorNationId::from_nation(nation).is_some() {
+                8
+            } else {
+                4
+            };
+            province_names_by_nation[nation] = (0..count)
+                .map(|ordinal| format!("N{}P{}", nation.get(), ordinal + 1))
+                .collect();
+        }
+        RandomGameNames {
+            localized_nation_names,
+            province_names_by_nation,
+            zone_headline_templates: (0..24).map(|status| format!("S{status} [1]")).collect(),
+            fallback_ocean_names: (0..37).map(|index| format!("Ocean{index}")).collect(),
+        }
+    }
+
     fn app() -> App {
         let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .insert_resource(UiCatalogResource::new(catalog).unwrap())
             .insert_resource(RandomSetupClockSeed(1))
+            .insert_resource(RandomGameNamesResource(test_random_game_names()))
             .add_plugins(bevy::state::app::StatesPlugin)
             .init_state::<AppState>()
             .add_plugins(ButtonPlugin)
@@ -760,7 +790,7 @@ mod tests {
                 .0
                 .nations()
                 .major(MajorNationId::new(6))
-                .common()
+                .common
                 .home_tile,
             None
         );

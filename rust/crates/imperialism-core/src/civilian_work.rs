@@ -154,7 +154,7 @@ impl GameState {
             CivilianUnitKind::Miner | CivilianUnitKind::Driller
         );
 
-        let tile_state = self.world.tile_mut(tile);
+        let tile_state = &mut self.map[tile];
         if uses_extractive_development {
             tile_state.development.extractive.advance();
             tile_state.development.resource_visible_to_majors = MajorNationTable::from_fn(|_| true);
@@ -173,12 +173,8 @@ impl GameState {
         let source = segment.origin();
         let destination = segment.destination();
         let direction = segment.direction();
-        self.world
-            .tile_mut(source)
-            .transport_links
-            .insert_direction(direction);
-        self.world
-            .tile_mut(destination)
+        self.map[source].transport_links.insert_direction(direction);
+        self.map[destination]
             .transport_links
             .insert_direction(direction.opposite());
         self.civilian_units[index].order = CivilianWorkOrder::Idle;

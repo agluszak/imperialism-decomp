@@ -5,13 +5,19 @@ pub(super) fn tile_from_generated(tile: GeneratedTerrainTile) -> TileState {
     TileState {
         terrain: tile.terrain,
         rendering: TileRendering::default(),
-        // The final subtype is folded in after all map and capital post-passes.
-        region_tile_subtype: RegionTileSubtype::default(),
         owner_nation: owner,
         // Retail stamps former owners from the generation owners before Accept.
         former_owner_nation: owner,
         secondary_owner_nation: None,
+        owner_border_mask: 0,
+        city_border_mask: 0,
+        water_adjacency_mask: 0,
         province: tile.province,
+        gate: tile.gate.map_or(-1, |gate| gate.code()),
+        recruit_search_visited: 0,
+        per_tile_visited: 0,
+        marker_slot_index: -1,
+        tile_action_ordinal: -1,
         development: Default::default(),
         edge_resources: [None, None],
         transport_links: Default::default(),
@@ -25,7 +31,6 @@ pub(super) fn tile_from_generated(tile: GeneratedTerrainTile) -> TileState {
 /// `TMapMgr::UpdateStrategicMapTileIconVariantState` (0x00511610).
 pub(super) fn update_strategic_map_tile_icon_variant_state(
     tiles: &mut [TileState],
-    gate_flags: &mut [i8],
     geometry: MapGeometry,
     index: usize,
     map_lcg: &mut RetailLcg,
@@ -129,21 +134,10 @@ pub(super) fn update_strategic_map_tile_icon_variant_state(
             }
         }
     }
-    gate_flags[index] = resolve_region_tile_subtype_code(tiles, gate_flags, index);
+    tiles[index].gate = resolve_region_tile_subtype_code(&tiles[index], index);
 }
 /// `TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex` (0x00514210).
-pub(super) fn resolve_region_tile_subtype_code(
-    tiles: &[TileState],
-    gate_flags: &[i8],
-    index: usize,
-) -> i8 {
-    resolve_region_tile_subtype_code_for_state(&tiles[index], gate_flags[index], index)
-}
-pub(super) fn resolve_region_tile_subtype_code_for_state(
-    tile: &TileState,
-    gate_flag: i8,
-    index: usize,
-) -> i8 {
+pub(super) fn resolve_region_tile_subtype_code(tile: &TileState, index: usize) -> i8 {
     let edge0 = tile.edge_resources[0];
     match tile.terrain {
         TerrainKind::Plains => match edge0 {
@@ -154,18 +148,18 @@ pub(super) fn resolve_region_tile_subtype_code_for_state(
             _ => 1,
         },
         TerrainKind::Forest => {
-            if gate_flag == -1 {
+            if tile.gate == -1 {
                 0xd
             } else {
-                gate_flag
+                tile.gate
             }
         }
         TerrainKind::Hills => i8::from(edge0 != Some(ResourceKind::Wool)) + 7,
         TerrainKind::Mountain => 9,
         TerrainKind::Swamp => 0xa,
         TerrainKind::Desert => {
-            if gate_flag != -1 {
-                gate_flag
+            if tile.gate != -1 {
+                tile.gate
             } else {
                 let row = index / usize::from(STRATEGIC_MAP_WIDTH);
                 if !(0xf..=0x2d).contains(&row) {
@@ -180,11 +174,7 @@ pub(super) fn resolve_region_tile_subtype_code_for_state(
     }
 }
 /// `TMapMgr::GuaranteeResources` (0x00511a70).
-pub(super) fn guarantee_resources(
-    tiles: &mut [TileState],
-    gate_flags: &mut [i8],
-    map_lcg: &mut RetailLcg,
-) {
+pub(super) fn guarantee_resources(tiles: &mut [TileState], map_lcg: &mut RetailLcg) {
     for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
         let owner = TileOwnerTag::from_nation(nation.nation());
         let linked: Vec<usize> = tiles
@@ -206,16 +196,16 @@ pub(super) fn guarantee_resources(
         }
 
         if resource_tally[ResourceKind::Coal] == 0 {
-            place_guaranteed_resource(tiles, gate_flags, &linked, map_lcg, ResourceKind::Coal);
+            place_guaranteed_resource(tiles, &linked, map_lcg, ResourceKind::Coal);
         }
         if resource_tally[ResourceKind::Iron] == 0 {
             let index = if let Some(index) = linked.iter().copied().find(|&index| {
-                matches!(gate_flags[index], 8 | 9) && tiles[index].edge_resources[0].is_none()
+                matches!(tiles[index].gate, 8 | 9) && tiles[index].edge_resources[0].is_none()
             }) {
                 tiles[index].edge_resources[0] = Some(ResourceKind::Iron);
-                if gate_flags[index] == 9 {
+                if tiles[index].gate == 9 {
                     tiles[index].edge_resources[1] = None;
-                    gate_flags[index] = resolve_region_tile_subtype_code(tiles, gate_flags, index);
+                    tiles[index].gate = resolve_region_tile_subtype_code(&tiles[index], index);
                     continue;
                 }
                 index
@@ -226,7 +216,7 @@ pub(super) fn guarantee_resources(
                     loop {
                         let sample = map_lcg.next_sample_15();
                         picked = (sample as usize) % linked.len();
-                        gate_flag = gate_flags[linked[picked]];
+                        gate_flag = tiles[linked[picked]].gate;
                         if gate_flag != 8 {
                             break;
                         }
@@ -236,24 +226,23 @@ pub(super) fn guarantee_resources(
                     }
                 }
                 let index = linked[picked];
-                gate_flags[index] = 8;
+                tiles[index].gate = 8;
                 tiles[index].edge_resources[0] = Some(ResourceKind::Iron);
                 index
             };
             tiles[index].edge_resources[1] = None;
-            gate_flags[index] = resolve_region_tile_subtype_code(tiles, gate_flags, index);
+            tiles[index].gate = resolve_region_tile_subtype_code(&tiles[index], index);
         }
     }
 }
 pub(super) fn place_guaranteed_resource(
     tiles: &mut [TileState],
-    gate_flags: &mut [i8],
     linked: &[usize],
     map_lcg: &mut RetailLcg,
     resource: ResourceKind,
 ) {
     let index = if let Some(index) = linked.iter().copied().find(|&index| {
-        matches!(gate_flags[index], 8 | 9) && tiles[index].edge_resources[0].is_none()
+        matches!(tiles[index].gate, 8 | 9) && tiles[index].edge_resources[0].is_none()
     }) {
         tiles[index].edge_resources[0] = Some(resource);
         index
@@ -263,22 +252,22 @@ pub(super) fn place_guaranteed_resource(
             loop {
                 let sample = map_lcg.next_sample_15();
                 picked = (sample as usize) % linked.len();
-                let gate_flag = gate_flags[linked[picked]];
+                let gate_flag = tiles[linked[picked]].gate;
                 if gate_flag != 8 {
                     break;
                 }
             }
-            if gate_flags[linked[picked]] != 9 {
+            if tiles[linked[picked]].gate != 9 {
                 break;
             }
         }
         let index = linked[picked];
-        gate_flags[index] = 8;
+        tiles[index].gate = 8;
         tiles[index].edge_resources[0] = Some(resource);
         index
     };
     tiles[index].edge_resources[1] = None;
-    gate_flags[index] = resolve_region_tile_subtype_code(tiles, gate_flags, index);
+    tiles[index].gate = resolve_region_tile_subtype_code(&tiles[index], index);
 }
 /// Fresh-map `TMapMgr::AssignPictToTile` pass after `GuaranteeResources`.
 ///
@@ -287,24 +276,26 @@ pub(super) fn place_guaranteed_resource(
 pub(super) fn assign_fresh_map_pictures(
     tiles: &mut [TileState],
     river_connections: &mut [u8],
-    gate_flags: &[i8],
     geometry: MapGeometry,
     map_lcg: &mut RetailLcg,
-) {
+) -> Option<TileId> {
     let mut sprite_variants = vec![0u8; tiles.len()];
+    let mut pending_river_mouth_tile = None;
 
     for index in 0..tiles.len() {
-        assign_picture_to_tile_for_rng(
+        let selected_pending_tile = assign_picture_to_tile_for_rng(
             tiles,
-            gate_flags,
             geometry,
             index,
             &mut sprite_variants,
             river_connections,
             map_lcg,
         );
+        if selected_pending_tile && pending_river_mouth_tile.is_none() {
+            pending_river_mouth_tile = Some(TileId::new(index as u16));
+        }
         let (transition_mask, coast_or_secondary_mask) =
-            fresh_picture_masks(tiles, gate_flags, geometry, index);
+            fresh_picture_masks(tiles, geometry, index);
         tiles[index].rendering = TileRendering::from_retail(
             sprite_variants[index],
             river_connections[index],
@@ -318,36 +309,36 @@ pub(super) fn assign_fresh_map_pictures(
             "finished river sprite must derive the generation connection"
         );
     }
+    pending_river_mouth_tile
 }
 pub(super) fn assign_picture_to_tile_for_rng(
     tiles: &[TileState],
-    gate_flags: &[i8],
     geometry: MapGeometry,
     index: usize,
     sprite_variants: &mut [u8],
     river_sprite_codes: &mut [u8],
     map_lcg: &mut RetailLcg,
-) {
+) -> bool {
     if tiles[index].terrain != TerrainKind::Water {
         if tiles[index].terrain == TerrainKind::Mountain && map_lcg.next_sample_15() & 1 != 0 {
             sprite_variants[index] = 1;
         }
 
-        if gate_flags[index] == 0x0b {
+        if tiles[index].gate == 0x0b {
             let tile = TileId::new(index as u16);
             let neighbors = geometry.neighbors(tile);
             for direction in 0..HexDirection::ALL.len() {
                 let neighbor_has_profile = neighbors[direction]
-                    .is_some_and(|neighbor| gate_flags[usize::from(neighbor.get())] == 0x0b);
+                    .is_some_and(|neighbor| tiles[usize::from(neighbor.get())].gate == 0x0b);
                 if !neighbor_has_profile {
                     continue;
                 }
                 let previous = (direction + HexDirection::ALL.len() - 1) % HexDirection::ALL.len();
                 let next = (direction + 1) % HexDirection::ALL.len();
                 let previous_has_profile = neighbors[previous]
-                    .is_some_and(|neighbor| gate_flags[usize::from(neighbor.get())] == 0x0b);
+                    .is_some_and(|neighbor| tiles[usize::from(neighbor.get())].gate == 0x0b);
                 let next_has_profile = neighbors[next]
-                    .is_some_and(|neighbor| gate_flags[usize::from(neighbor.get())] == 0x0b);
+                    .is_some_and(|neighbor| tiles[usize::from(neighbor.get())].gate == 0x0b);
                 sprite_variants[index] = match (previous_has_profile, next_has_profile) {
                     (false, false) => 0,
                     (true, true) => 1,
@@ -364,7 +355,7 @@ pub(super) fn assign_picture_to_tile_for_rng(
                 river_sprite_codes[index] -= 0x10;
             }
         }
-        return;
+        return false;
     }
 
     let tile = TileId::new(index as u16);
@@ -386,15 +377,15 @@ pub(super) fn assign_picture_to_tile_for_rng(
             river_sprite_codes[index] =
                 resolve_picture_river_sprite(tiles, index, river_sprite_codes, map_lcg);
         }
-        return;
+        return false;
     }
 
     let west = neighbors[HexDirection::West as usize].map(|tile| usize::from(tile.get()));
     let Some(west) = west else {
-        return;
+        return false;
     };
     if sprite_variants[west] != 0 {
-        return;
+        return false;
     }
 
     let north_west =
@@ -407,12 +398,13 @@ pub(super) fn assign_picture_to_tile_for_rng(
     if north_west_variant == 0 && north_east_variant == 0 {
         if map_lcg.next_sample_15() % 100 <= 3 {
             sprite_variants[index] = (map_lcg.next_sample_15() & 3) as u8 + 1;
+            return true;
         }
-        return;
+        return false;
     }
 
     if map_lcg.next_sample_15() % 100 > 7 {
-        return;
+        return false;
     }
     if north_west_variant != 0 {
         sprite_variants[index] = if north_west_variant < 4 {
@@ -427,10 +419,10 @@ pub(super) fn assign_picture_to_tile_for_rng(
             1
         };
     }
+    false
 }
 pub(super) fn fresh_picture_masks(
     tiles: &[TileState],
-    gate_flags: &[i8],
     geometry: MapGeometry,
     index: usize,
 ) -> (u8, u8) {
@@ -450,7 +442,7 @@ pub(super) fn fresh_picture_masks(
             }
             continue;
         }
-        if gate_flags[neighbor] == gate_flags[index] {
+        if tiles[neighbor].gate == tiles[index].gate {
             transition_mask |= direction_bit;
         }
         match (terrain, tiles[neighbor].terrain) {

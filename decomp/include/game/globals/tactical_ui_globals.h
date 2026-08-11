@@ -38,8 +38,9 @@ extern int g_nTacticalUnitSpriteCellHeight_006A549C;
 
 extern char g_nForceTacticalBattleViewFlag_006A4758;
 
-// 26 (start, end) capability-priority range pairs (see the .cpp note).
-extern short g_anCapabilityPriorityRangePairs[53];
+// 26 (start, end) capability-priority range pairs followed by two padding shorts.
+// Retail anchors the loop cursor at element 1, pair 0's end.
+extern short g_anCapabilityPriorityRangeData_0066ABA4[54];
 
 extern "C" const char s_SourcePathUTacViews_00699FF4[];
 

@@ -116,12 +116,20 @@ impl GreatPowerState {
     /// eligible before capital selection.
     pub(crate) fn for_random_start(
         human: bool,
+        difficulty: Difficulty,
         foreign_minister_personality: ForeignMinisterPersonality,
     ) -> Self {
         let controller = if human {
             MajorNationController::Human
         } else {
             MajorNationController::Computer
+        };
+        let (diplomacy_budget_base, escalation_counter) = match difficulty {
+            Difficulty::Introductory => (100_000, 8),
+            Difficulty::Easy => (50_000, 10),
+            Difficulty::Normal => (20_000, 12),
+            Difficulty::Hard => (10_000, 15),
+            Difficulty::NighOnImpossible => (1_000, 19),
         };
         Self {
             controller,
@@ -153,7 +161,7 @@ impl GreatPowerState {
             remembered_trade_offers_by_resource: ResourceTable::default(),
             deal_book: TradeCommodityTable::default(),
             pending_ship: None,
-            interior_civilian: Box::default(),
+            interior_civilian: Box::new(InteriorCivilianState::for_random_start(human)),
             ai_trade: (!human).then(AiTradeState::default),
             // These TAutoGreatPower fields are not initialized at the pre-capital
             // random-game boundary. They become authoritative during turn setup.
@@ -166,8 +174,8 @@ impl GreatPowerState {
             scenario_initialized: false,
             turn_finished: true,
             pending_actions: PendingActionTable::default(),
-            diplomacy_budget_base: 20_000,
-            escalation_counter: 0,
+            diplomacy_budget_base,
+            escalation_counter,
             pending_commitment_cost: 0,
             pressure_counter: 0,
             army_movement_budget: 0x0f,

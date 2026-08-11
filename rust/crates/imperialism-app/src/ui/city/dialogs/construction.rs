@@ -29,8 +29,8 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
             session.0.set_power_plant_upgrade(nation, false);
             let major = session.0.nations().major(nation);
             let can_reserve = major
-                .economy()
-                .available_diplomacy_budget(major.common().treasury)
+                .economy
+                .available_diplomacy_budget(major.common.treasury)
                 >= 5_000;
             (city_string(ui, CITY_TEXT_STRING_GROUP, 0x15), can_reserve)
         }
@@ -41,11 +41,10 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
             );
             let (next_capacity, needed) = {
                 let major = session.0.nations().major(nation);
-                let city = major.city();
-                let owned_regions = major.common().owned_region_count() as i32;
-                let current = city.building_type(slot, major.economy(), owned_regions);
-                let next_capacity =
-                    city.max_building_capacity(slot, major.economy(), owned_regions);
+                let city = &major.city;
+                let owned_regions = major.common.owned_region_count() as i32;
+                let current = city.building_type(slot, &major.economy, owned_regions);
+                let next_capacity = city.max_building_capacity(slot, &major.economy, owned_regions);
                 (next_capacity, next_capacity - current)
             };
             let order = CityOrderId::Expansion(
@@ -317,14 +316,14 @@ pub(in crate::ui::city) fn on_city_expansion_open(
     );
     let (next_capacity, needed, next_level) = {
         let major = session.0.nations().major(open.nation);
-        let city = major.city();
-        let owned_regions = major.common().owned_region_count() as i32;
-        let current = city.building_type(open.slot, major.economy(), owned_regions);
-        let next_capacity = city.max_building_capacity(open.slot, major.economy(), owned_regions);
+        let city = &major.city;
+        let owned_regions = major.common.owned_region_count() as i32;
+        let current = city.building_type(open.slot, &major.economy, owned_regions);
+        let next_capacity = city.max_building_capacity(open.slot, &major.economy, owned_regions);
         (
             next_capacity,
             next_capacity - current,
-            city.next_building_level(open.slot, major.economy(), owned_regions),
+            city.next_building_level(open.slot, &major.economy, owned_regions),
         )
     };
     let order = CityOrderId::Expansion(
@@ -383,10 +382,10 @@ pub(in crate::ui::city) fn on_city_building_change_choice(
         if choice.accept {
             let needed = {
                 let major = session.0.nations().major(choice.nation);
-                let city = major.city();
-                let owned_regions = major.common().owned_region_count() as i32;
-                city.max_building_capacity(choice.slot, major.economy(), owned_regions)
-                    - city.building_type(choice.slot, major.economy(), owned_regions)
+                let city = &major.city;
+                let owned_regions = major.common.owned_region_count() as i32;
+                city.max_building_capacity(choice.slot, &major.economy, owned_regions)
+                    - city.building_type(choice.slot, &major.economy, owned_regions)
             };
             let _ = session
                 .0
@@ -397,7 +396,7 @@ pub(in crate::ui::city) fn on_city_building_change_choice(
                 .0
                 .nations()
                 .major(choice.nation)
-                .city()
+                .city
                 .orders
                 .expansions[choice.slot]
                 .as_ref()

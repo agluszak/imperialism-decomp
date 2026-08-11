@@ -2606,13 +2606,14 @@ const unsigned int g_tradeCommodityRowTagTable[17] = {
 // GLOBAL: IMPERIALISM 0x006a58c8
 COLORREF g_defaultDropShadowTextColor = 0;
 // 26 (start, end) capability-priority range pairs walked by
-// TTechMgr::GenerateRandomCapabilityPrioritySlots. The reccmp symbol points at pair 0's END
-// value; pair 0's START value (1) lives one short earlier and is read via cursor[-1].
-// GLOBAL: IMPERIALISM 0x0066aba6
-short g_anCapabilityPriorityRangePairs[53] = {
-    5,  6,  10, 6,  10, 6,  10, 6,  10, 11, 15, 11, 15, 16, 20, 21, 25, 21,
-    25, 26, 30, 26, 30, 31, 35, 31, 35, 36, 40, 41, 45, 41, 45, 46, 50, 51,
-    55, 56, 60, 56, 60, 56, 60, 61, 65, 61, 65, 66, 70, 66, 70, 0,  0};
+// TTechMgr::GenerateRandomCapabilityPrioritySlots, followed by two padding shorts. Retail's
+// end-anchored range symbol is at element 1 (0x0066aba6); pair 0's start at element 0 is read
+// through cursor[-1].
+// GLOBAL: IMPERIALISM 0x0066aba4
+short g_anCapabilityPriorityRangeData_0066ABA4[54] = {
+    1,  5,  6,  10, 6,  10, 6,  10, 6,  10, 11, 15, 11, 15, 16, 20, 21, 25,
+    21, 25, 26, 30, 26, 30, 31, 35, 31, 35, 36, 40, 41, 45, 41, 45, 46, 50,
+    51, 55, 56, 60, 56, 60, 56, 60, 61, 65, 61, 65, 66, 70, 66, 70, 0,  0};
 // GLOBAL: IMPERIALISM 0x006a601c
 int DAT_006a601c = 0;
 

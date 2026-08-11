@@ -26,7 +26,7 @@ pub(in crate::ui::city) fn on_city_amount_bar_click(
     click.propagate(false);
     let x = (((normalized.x + 0.5) * f32::from(INDUSTRY_BAR_WIDTH)).floor() as i16)
         .clamp(0, INDUSTRY_BAR_WIDTH - 1);
-    let city = session.0.nations().major(bar.nation).city();
+    let city = &session.0.nations().major(bar.nation).city;
     let capacity = city.production_orders[bar.slot];
     let previous = match bar.order {
         CityOrderId::Item(output) => {

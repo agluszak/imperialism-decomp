@@ -214,7 +214,7 @@ pub(in crate::ui::city) fn spawn_city_buildings(
     let main = spawned
         .require_unique(fourcc!("main"))
         .expect("validated city canvas binding");
-    let city = state.nations().major(nation).city();
+    let city = &state.nations().major(nation).city;
     let mut buildings = Vec::new();
     for visual in visuals {
         let Some(level) = city_building_level(state, nation, visual.slot) else {
@@ -498,7 +498,7 @@ pub(in crate::ui::city) fn animate_city_building_actions(
                 left + action.frame_size[0] as f32,
                 action.frame_size[1] as f32,
             ));
-            let city = session.0.nations().major(action.nation).city();
+            let city = &session.0.nations().major(action.nation).city;
             *visibility = if city_building_action_enabled(city, action.slot) {
                 Visibility::Visible
             } else {
@@ -538,7 +538,7 @@ pub(in crate::ui::city) fn sync_city_building_pictures(
             *visibility = Visibility::Hidden;
             continue;
         };
-        let city = session.0.nations().major(building.nation).city();
+        let city = &session.0.nations().major(building.nation).city;
         let Some(picture) = city_building_picture(city, building.slot, level) else {
             *visibility = Visibility::Hidden;
             continue;

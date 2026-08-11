@@ -118,3 +118,69 @@ RuntimeActionResult RunAiNationResourceYieldRebuildClampsTargets(NativeTransitio
   }
   return transition.Finish();
 }
+
+RuntimeActionResult RunNationResourceYieldRebuildMultipleTowns(NativeTransition& transition) {
+  const NationSlot nationSlot = 0;
+  TGreatPower* nation = g_apNationStates[nationSlot];
+  if (nation == 0 || nation->city == 0 || nation->city->homeTownMarkerB0 == 0 ||
+      nation->townMarkerList == 0 || nation->townMarkerList->GetCount() != 1 ||
+      g_pGlobalMapState == 0 || g_pGlobalMapState->terrainStateTable == 0) {
+    return RuntimeActionResult::Failure(
+        "the loaded fixture has no supported one-town nation zero");
+  }
+
+  TTown* homeTown = nation->city->homeTownMarkerB0;
+  if (nation->townMarkerList->GetEntryByOrdinal(1) != homeTown ||
+      nation->homeTileIndex != homeTown->tileIndex || homeTown->ownerNation != nationSlot) {
+    return RuntimeActionResult::Failure("the home town is not the first ordered town marker");
+  }
+
+  homeTown->enabledFlag = 0;
+  homeTown->activeFlag = true;
+  homeTown->transportLinked = false;
+
+  char* linkedTiles = 0;
+  nation->BuildTransportLinkedInfluenceMap(&linkedTiles);
+  if (linkedTiles == 0) {
+    return RuntimeActionResult::Failure("the transport influence map was not returned");
+  }
+
+  StrategicTileIndex outpostTile = -1;
+  for (int tile = 0; tile < 0x1950; ++tile) {
+    if (linkedTiles[tile] == 0 &&
+        static_cast<short>(g_pGlobalMapState->terrainStateTable[tile].ownerNationTag04) ==
+            nationSlot) {
+      outpostTile = static_cast<StrategicTileIndex>(tile);
+      break;
+    }
+  }
+  delete[] linkedTiles;
+  if (outpostTile == -1) {
+    return RuntimeActionResult::Failure(
+        "the loaded fixture has no disconnected owned tile for a second town");
+  }
+
+  TTown* outpost = new TTown();
+  outpost->ITown("Outpost", outpostTile, 0, nationSlot);
+  outpost->hasAdjacentCity = false;
+  outpost->transportLinked = true;
+  nation->townMarkerList->AddTail(outpost);
+
+  JsonObject caseCapture;
+  caseCapture.Set("nation", static_cast<int>(nationSlot));
+
+  RuntimeActionResult started = transition.Begin(caseCapture.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  nation->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+  if (nation->townMarkerList->GetCount() != 2 ||
+      nation->townMarkerList->GetEntryByOrdinal(1) != homeTown ||
+      nation->townMarkerList->GetEntryByOrdinal(2) != outpost || !homeTown->transportLinked ||
+      outpost->transportLinked) {
+    return RuntimeActionResult::Failure(
+        "the multi-town yield rebuild did not preserve order and linked-state contrast");
+  }
+  return transition.Finish();
+}

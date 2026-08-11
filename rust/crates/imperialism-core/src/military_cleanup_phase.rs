@@ -37,7 +37,7 @@ impl GameState {
     pub(crate) fn apply_military_cleanup_plan(&mut self, plan: MilitaryCleanupPlan) {
         for slot in 0..ProvinceId::COUNT {
             let province = ProvinceId::new(slot);
-            self.provinces[province].set_city_score(plan.city_scores[province]);
+            self.map.provinces[province].set_city_score(plan.city_scores[province]);
         }
         for slot in 0..MajorNationId::COUNT {
             let nation = MajorNationId::new(slot);
@@ -94,7 +94,7 @@ impl GameState {
         let city_scores = self.first_turn_heatmap_plan()?;
         if (0..ProvinceId::COUNT).any(|slot| {
             let province = ProvinceId::new(slot);
-            self.provinces[province].city_score() != city_scores[province]
+            self.map.provinces[province].city_score() != city_scores[province]
         }) || !self.first_turn_cleanup_units_are_supported()
         {
             return None;
@@ -178,13 +178,27 @@ impl GameState {
     }
 
     fn first_turn_port_zones_are_supported(&self) -> bool {
-        if self.port_zone_owners.len() != NationId::COUNT as usize {
+        if self
+            .ocean
+            .zones
+            .iter()
+            .filter(|zone| matches!(zone, ZoneKind::PortZone(_)))
+            .count()
+            != NationId::COUNT as usize
+        {
             return false;
         }
-        self.port_zone_owners
+        self.ocean
+            .zones
             .iter()
             .enumerate()
-            .all(|(index, port)| {
+            .rev()
+            .filter_map(|(ordinal, zone)| match zone {
+                ZoneKind::PortZone(port) => Some((ordinal, port)),
+                ZoneKind::Zone(_) => None,
+            })
+            .enumerate()
+            .all(|(index, (ordinal, port))| {
                 let (owner, zone) = if index < MinorNationId::COUNT as usize {
                     (
                         NationId::new(NationId::COUNT - 1 - index as u8),
@@ -194,15 +208,18 @@ impl GameState {
                     let major = index - MinorNationId::COUNT as usize;
                     (NationId::new(major as u8), 66 - major as u16)
                 };
-                port.former_owner == owner
-                    && port.zone == OceanZoneId::new(zone)
+                self.map[port.port_tile]
+                    .former_owner_nation
+                    .and_then(TileOwnerTag::nation)
+                    == Some(owner)
+                    && OceanZoneId::new(ordinal as u16) == OceanZoneId::new(zone)
                     && self.first_turn_primary_sea_zone(owner)
                         == Some(OceanZoneId::new(FIRST_TURN_PRIMARY_SEA_ZONE_BY_PORT[index]))
                     && self
                         .nations
                         .common(owner)
                         .and_then(|common| common.home_tile)
-                        .and_then(|home| self.world[home].owner_nation)
+                        .and_then(|home| self.map[home].owner_nation)
                         .and_then(TileOwnerTag::nation)
                         == Some(owner)
             })
@@ -220,7 +237,7 @@ impl GameState {
                 let MissionData::DefendProvince { province, .. } = mission.data else {
                     return false;
                 };
-                if self.provinces[province].owner() != Some(nation) {
+                if self.map.provinces[province].owner() != Some(nation) {
                     return false;
                 }
             }
@@ -361,15 +378,15 @@ impl GameState {
         let common = &self.nations.majors[nation].common;
         if common
             .home_tile
-            .is_some_and(|home| self.world[home].province == Some(province))
+            .is_some_and(|home| self.map[home].province == Some(province))
         {
             return true;
         }
-        self.provinces[province]
+        self.map.provinces[province]
             .adjacency()
             .iter()
             .any(|&adjacent| {
-                self.provinces[adjacent].owner().is_some_and(|owner| {
+                self.map.provinces[adjacent].owner().is_some_and(|owner| {
                     owner.get() < MajorNationId::COUNT && owner != nation.nation()
                 })
             })
@@ -451,7 +468,7 @@ impl GameState {
                     mission.state = if self.nations.majors[nation]
                         .common
                         .home_tile
-                        .is_some_and(|home| self.world[home].province == Some(*province))
+                        .is_some_and(|home| self.map[home].province == Some(*province))
                     {
                         0
                     } else {
@@ -508,13 +525,13 @@ impl GameState {
         province: ProvinceId,
         city_scores: &ProvinceTable<i32>,
     ) -> f32 {
-        let state = &self.provinces[province];
+        let state = &self.map.provinces[province];
         let mut importance = city_scores[province] as f32;
         if !state.adjacency().is_empty() {
             let owned = state
                 .adjacency()
                 .iter()
-                .filter(|&&adjacent| self.provinces[adjacent].owner() == Some(nation.nation()))
+                .filter(|&&adjacent| self.map.provinces[adjacent].owner() == Some(nation.nation()))
                 .count();
             importance = ((owned as f64 / state.adjacency().len() as f64 - f64::from(-1.0_f32))
                 * f64::from(importance)) as f32;
@@ -538,7 +555,7 @@ impl GameState {
         }
 
         let scale = pressure.expansion_pressure_per_compatible_region() + average;
-        let profile = if self.provinces[province].fort_level() < 1 {
+        let profile = if self.map.provinces[province].fort_level() < 1 {
             UNIT_PROFILE_BASELINE
         } else {
             UNIT_PROFILE_FORTIFIED
@@ -561,18 +578,18 @@ impl GameState {
         zone: OceanZoneId,
         city_scores: &ProvinceTable<i32>,
     ) -> Option<f32> {
-        let geometry = self.world.geometry();
+        let geometry = self.map.geometry();
         let owner_tag = WATER_OWNER_TAG_BASE.checked_add(zone.get().try_into().ok()?)?;
         let mut seen = ProvinceTable::<bool>::default();
         for tile_index in 0..TileId::COUNT {
             let tile = TileId::new(tile_index);
-            if self.world[tile].terrain != TerrainKind::Water
-                || self.world[tile].owner_nation.map(TileOwnerTag::get) != Some(owner_tag)
+            if self.map[tile].terrain != TerrainKind::Water
+                || self.map[tile].owner_nation.map(TileOwnerTag::get) != Some(owner_tag)
             {
                 continue;
             }
             for neighbor in geometry.neighbors(tile).into_iter().flatten() {
-                if let Some(province) = self.world[neighbor].province {
+                if let Some(province) = self.map[neighbor].province {
                     seen[province] = true;
                 }
             }
@@ -590,11 +607,17 @@ impl GameState {
             return None;
         }
         let mut score = (sum / count) as f32;
-        for port in &self.port_zone_owners {
-            if self.first_turn_primary_sea_zone(port.former_owner)? != zone {
+        for port in self.ocean.zones.iter().filter_map(|zone| match zone {
+            ZoneKind::PortZone(port) => Some(port),
+            ZoneKind::Zone(_) => None,
+        }) {
+            let former_owner = self.map[port.port_tile]
+                .former_owner_nation
+                .and_then(TileOwnerTag::nation)?;
+            if self.first_turn_primary_sea_zone(former_owner)? != zone {
                 continue;
             }
-            let multiplier = if port.former_owner == nation.nation() {
+            let multiplier = if former_owner == nation.nation() {
                 1.5_f64
             } else {
                 1.25_f64
@@ -606,26 +629,26 @@ impl GameState {
 
     fn first_turn_primary_sea_zone(&self, nation: NationId) -> Option<OceanZoneId> {
         let home = self.nations.common(nation)?.home_tile?;
-        let geometry = self.world.geometry();
+        let geometry = self.map.geometry();
         for offset in 0..6_u16 {
             let direction = HexDirection::ALL[usize::from((home.get() + offset) % 6)];
             let Some(candidate) = geometry.neighbor(home, direction) else {
                 continue;
             };
-            if self.world[candidate].terrain != TerrainKind::Water {
+            if self.map[candidate].terrain != TerrainKind::Water {
                 continue;
             }
             let qualifies = geometry
                 .neighbors(candidate)
                 .into_iter()
                 .flatten()
-                .all(|neighbor| match self.world[neighbor].owner_nation {
+                .all(|neighbor| match self.map[neighbor].owner_nation {
                     Some(owner) if owner.get() >= NationId::COUNT => true,
                     Some(owner) => owner.nation() == Some(nation),
                     None => false,
                 });
             if qualifies {
-                return ocean_zone_from_water_owner(self.world[candidate].owner_nation?);
+                return ocean_zone_from_water_owner(self.map[candidate].owner_nation?);
             }
         }
 
@@ -633,10 +656,10 @@ impl GameState {
         // retail's terrain-flow fallback therefore resolves that same context.
         let mut fallback = None;
         for neighbor in geometry.neighbors(home).into_iter().flatten() {
-            if self.world[neighbor].terrain != TerrainKind::Water {
+            if self.map[neighbor].terrain != TerrainKind::Water {
                 continue;
             }
-            let zone = ocean_zone_from_water_owner(self.world[neighbor].owner_nation?)?;
+            let zone = ocean_zone_from_water_owner(self.map[neighbor].owner_nation?)?;
             if fallback.is_some_and(|existing| existing != zone) {
                 return None;
             }

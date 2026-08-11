@@ -230,10 +230,7 @@ pub(super) fn navy_mission_state(
 }
 
 impl LegacyCityState {
-    pub(super) fn city_state(
-        &self,
-        home_town: Option<TownState>,
-    ) -> Result<CityState, LegacySaveError> {
+    pub(super) fn city_state(&self) -> Result<CityState, LegacySaveError> {
         if !self.tasks.is_empty() {
             return Err(LegacySaveError::StateProjection(
                 "semantic projection of city tasks is not implemented".into(),
@@ -276,7 +273,6 @@ impl LegacyCityState {
             low_production: self.low_production != 0,
             low_stock: self.low_stock != 0,
             reserved_by_type: ResourceTable::from_array(self.reserved_by_type),
-            home_town,
             power_available: self.power_available,
             stockpile: Stockpile::from_table(ResourceTable::from_array(self.stockpile)),
             production_orders: ProductionTable::from_array(self.production_orders),
@@ -330,11 +326,18 @@ impl LegacyTerrainTile {
                 ))
             })?,
             rendering,
-            region_tile_subtype: RegionTileSubtype::from_retail(self.region_tile_subtype),
             owner_nation: optional_tile_owner_tag(self.owner_nation)?,
             former_owner_nation: optional_tile_owner_tag(self.former_owner_nation)?,
             secondary_owner_nation: optional_major_nation_id(self.secondary_owner_nation, tile)?,
-            province: optional_province_id(self.city_or_province_index)?,
+            owner_border_mask: self.owner_border_mask,
+            city_border_mask: self.city_border_mask,
+            water_adjacency_mask: self.water_adjacency_mask,
+            province: optional_province_id(self.city_record_index)?,
+            gate: self.gate,
+            recruit_search_visited: self.recruit_search_visited,
+            per_tile_visited: self.per_tile_visited,
+            marker_slot_index: self.marker_slot_index,
+            tile_action_ordinal: self.tile_action_ordinal,
             development: TileDevelopment {
                 surface: DevelopmentLevel::new((self.development_classes as u8) & 0x0f),
                 extractive: DevelopmentLevel::new((self.development_classes as u8) >> 4),
@@ -372,7 +375,7 @@ impl LegacyMapState {
         }
     }
 
-    fn world_state(&self) -> Result<StrategicMap, LegacySaveError> {
+    fn map_mgr(&self) -> Result<MapMgr, LegacySaveError> {
         let view_origin = u16::try_from(self.view_origin_tile)
             .ok()
             .and_then(TileId::try_new)
@@ -382,7 +385,7 @@ impl LegacyMapState {
                     self.view_origin_tile
                 ))
             })?;
-        let mut world = StrategicMap::new(
+        let mut map = MapMgr::from_parts(
             self.topology(),
             self.tiles
                 .iter()
@@ -390,10 +393,17 @@ impl LegacyMapState {
                 .enumerate()
                 .map(|(tile, terrain)| terrain.tile_state(tile))
                 .collect::<Result<Vec<_>, _>>()?,
+            self.province_states()?,
         )
         .map_err(|error| LegacySaveError::StateProjection(error.to_string()))?;
-        world.set_view_origin(view_origin);
-        Ok(world)
+        map.view_origin = view_origin;
+        map.map_data_ready = retail_boolean(self.map_data_ready, "map-data-ready flag")?;
+        map.recruit_search_active =
+            retail_boolean(self.recruit_search_active, "map recruit-search-active flag")?;
+        map.city_score_total = self.city_score_total;
+        map.scenario_tag.clone_from(&self.scenario_tag);
+        map.pending_river_mouth_tile = optional_tile_id(i32::from(self.pending_river_mouth_tile))?;
+        Ok(map)
     }
 
     fn province_states(&self) -> Result<ProvinceTable<ProvinceState>, LegacySaveError> {
@@ -417,9 +427,9 @@ impl LegacyMapState {
 }
 
 impl LegacySaveV62 {
-    /// Projects the decoded strategic map into the semantic world state.
-    pub fn world_state(&self) -> Result<StrategicMap, LegacySaveError> {
-        self.map.world_state()
+    /// Projects the decoded strategic-map manager into semantic state.
+    pub fn map_mgr(&self) -> Result<MapMgr, LegacySaveError> {
+        self.map.map_mgr()
     }
 
     /// Projects the fully decoded save directly into live semantic state.
@@ -447,8 +457,9 @@ impl LegacySaveV62 {
             combat_reports_pending: self.army_report_count != 0,
             ..PendingWorkState::default()
         };
-        let live_ocean_context_count = validate_ocean_contexts(&self.ocean)?;
-        let port_zone_owners = port_zone_owners(&self.ocean, &self.map)?;
+        let map = self.map.map_mgr()?;
+        let ocean = ocean_state(&self.ocean, &map)?;
+        let live_ocean_context_count = ocean.zones.len();
         let mut majors = Vec::with_capacity(MAJOR_NATION_COUNT);
         for slot in 0..MAJOR_NATION_COUNT {
             let major_id = MajorNationId::new(slot as u8);
@@ -464,30 +475,44 @@ impl LegacySaveV62 {
             let city = great_power.city.as_ref().ok_or_else(|| {
                 LegacySaveError::StateProjection(format!("major nation slot {slot} has no city"))
             })?;
-            if great_power.post_city.towns.len() > 1 {
-                return Err(LegacySaveError::StateProjection(format!(
-                    "major nation slot {slot} has {} towns; semantic projection supports one city",
-                    great_power.post_city.towns.len()
-                )));
-            }
-            let home_town = great_power
+            let towns = great_power
                 .post_city
                 .towns
-                .first()
+                .iter()
                 .map(|town| {
-                    Ok::<TownState, LegacySaveError>(TownState::new(
-                        optional_tile_id(i32::from(town.tile_index))?.ok_or_else(|| {
+                    let tile = optional_tile_id(i32::from(town.tile_index))?.ok_or_else(|| {
+                        LegacySaveError::StateProjection(format!(
+                            "major nation slot {slot} town has no tile"
+                        ))
+                    })?;
+                    let owner_nation = u8::try_from(town.owner_nation)
+                        .ok()
+                        .and_then(NationId::try_new)
+                        .ok_or_else(|| {
                             LegacySaveError::StateProjection(format!(
-                                "major nation slot {slot} town has no tile"
+                                "major nation slot {slot} town owner {} is out of range",
+                                town.owner_nation
                             ))
-                        })?,
-                        retail_boolean(town.transport_linked, "town transport-linked flag")?,
-                        retail_boolean(town.enabled, "town enabled flag")?,
-                        retail_boolean(town.active, "town active flag")?,
-                    ))
+                        })?;
+                    Ok::<TownState, LegacySaveError>(TownState {
+                        name: town.name.clone(),
+                        tile,
+                        created_turn: town.created_turn,
+                        owner_nation,
+                        resource_yield_by_type: ResourceTable::from_array(
+                            town.resource_yield_by_type,
+                        ),
+                        transport_linked: retail_boolean(
+                            town.transport_linked,
+                            "town transport-linked flag",
+                        )?,
+                        enabled: town.enabled,
+                        has_adjacent_city: town.has_adjacent_city,
+                        active: retail_boolean(town.active, "town active flag")?,
+                    })
                 })
-                .transpose()?;
-            let city = city.city_state(home_town)?;
+                .collect::<Result<Vec<_>, _>>()?;
+            let city = city.city_state()?;
             let foreign_minister_personality = foreign_minister_personality(
                 nation,
                 self.simulation.game_setup.foreign_minister_policy_ids[slot],
@@ -513,9 +538,13 @@ impl LegacySaveV62 {
                     ),
                     LegacyMajorNationState::Other(_) => (None, None, None, None),
                 };
-            majors.push(MajorNation::from_parts(
-                country_common(&great_power.country)?,
-                great_power_state(
+            majors.push(MajorNation {
+                kind: match nation {
+                    LegacyMajorNationState::Auto(_) => MajorNationKind::AutoGreatPower,
+                    LegacyMajorNationState::Other(_) => MajorNationKind::GreatPower,
+                },
+                common: country_common(&great_power.country)?,
+                economy: great_power_state(
                     great_power,
                     foreign_minister_personality,
                     ai_zone_targets,
@@ -524,7 +553,8 @@ impl LegacySaveV62 {
                     ai_development_pressure,
                 )?,
                 city,
-            ));
+                towns,
+            });
             military_units.extend(great_power.country.military_unit_states(nation_id)?);
             civilian_units.extend(
                 great_power
@@ -617,9 +647,8 @@ impl LegacySaveV62 {
                 context.selected_nation,
             ),
             unit_ids: UnitIdAllocator::from_retail(persistent_unit_id_counter),
-            world: self.map.world_state()?,
-            provinces: self.map.province_states()?,
-            port_zone_owners,
+            map,
+            ocean,
             rng: RngState {
                 crt_rand: RetailCrtRng::from_state(context.crt_rand_state),
                 map_generation: RetailLcg::from_state(context.map_generation_lcg),
@@ -875,34 +904,206 @@ pub(super) fn ai_province_targets(
     Ok(targets)
 }
 
-pub(super) fn port_zone_owners(
+pub(super) fn ocean_state(
     ocean: &LegacyOceanState,
-    map: &LegacyMapState,
-) -> Result<Vec<PortZoneOwner>, LegacySaveError> {
-    ocean
-        .port_zones
-        .iter()
-        .rev()
-        .map(|context| {
-            let port_tile = required_state(
-                optional_tile_id(i32::from(required_state(
-                    context.port_tile_index,
-                    "port-zone tile index",
-                )?))?,
-                "port-zone tile",
-            )?;
-            let former_owner = nation_id_from_retail_i16(i16::from(
-                map.tiles[usize::from(port_tile.get())].former_owner_nation,
-            ))?;
-            Ok(PortZoneOwner {
-                zone: required_state(
-                    optional_ocean_zone_id(context.context_ordinal)?,
-                    "port-zone context ordinal",
-                )?,
-                former_owner,
+    map: &MapMgr,
+) -> Result<Ocean, LegacySaveError> {
+    let live_count = validate_ocean_contexts(ocean)?;
+    let mut zones = vec![None; live_count];
+
+    for context in &ocean.zones {
+        let ordinal = usize::try_from(context.context_ordinal)
+            .expect("validated ocean context ordinal is nonnegative");
+        zones[ordinal] = Some(ZoneKind::Zone(zone_state(context)?));
+    }
+    for context in &ocean.port_zones {
+        let ordinal = usize::try_from(context.context_ordinal)
+            .expect("validated ocean context ordinal is nonnegative");
+        let port_tile = required_state(
+            optional_tile_id(i32::from(required_state(
+                context.port_tile_index,
+                "port-zone tile index",
+            )?))?,
+            "port-zone tile",
+        )?;
+        map[port_tile]
+            .former_owner_nation
+            .and_then(TileOwnerTag::nation)
+            .ok_or_else(|| {
+                LegacySaveError::StateProjection(format!(
+                    "missing port-zone {ordinal} former owner"
+                ))
+            })?;
+        zones[ordinal] = Some(ZoneKind::PortZone(PortZone {
+            zone: zone_state(context)?,
+            port_tile,
+        }));
+    }
+
+    let zones = zones
+        .into_iter()
+        .enumerate()
+        .map(|(ordinal, zone)| {
+            zone.ok_or_else(|| {
+                LegacySaveError::StateProjection(format!(
+                    "ocean context ordinal {ordinal} is absent"
+                ))
             })
         })
-        .collect()
+        .collect::<Result<Vec<_>, _>>()?;
+    let routes = ocean
+        .route_segments
+        .iter()
+        .map(
+            |&[start_row, start_column, end_row, end_column]| OceanRoute {
+                start_column,
+                start_row,
+                end_column,
+                end_row,
+            },
+        )
+        .collect();
+    let mut ocean = Ocean { zones, routes };
+    rebuild_ocean_neighbors(&mut ocean, map)?;
+    Ok(ocean)
+}
+
+fn zone_state(context: &LegacyZone) -> Result<Zone, LegacySaveError> {
+    let seed_owner = match context.seed_nation_id {
+        -1 => None,
+        value => Some(TileOwnerTag::new(u8::try_from(value).map_err(|_| {
+            LegacySaveError::StateProjection(format!("zone seed owner tag {value} is invalid"))
+        })?)),
+    };
+    Ok(Zone {
+        display_name: context.display_name.clone(),
+        status_code: (context.status_code != -1).then_some(context.status_code),
+        target_tile: optional_tile_id(context.tile_or_terrain_id)?,
+        seed_owner,
+        active_tile: optional_tile_id(i32::from(context.active_tile_index))?,
+        primary_neighbors: Vec::new(),
+        secondary_neighbors: Vec::new(),
+    })
+}
+
+fn rebuild_ocean_neighbors(ocean: &mut Ocean, map: &MapMgr) -> Result<(), LegacySaveError> {
+    for zone in &mut ocean.zones {
+        let zone = match zone {
+            ZoneKind::Zone(zone) => zone,
+            ZoneKind::PortZone(port) => &mut port.zone,
+        };
+        zone.primary_neighbors.clear();
+        zone.secondary_neighbors.clear();
+    }
+
+    let geometry = map.geometry();
+    for tile_index in 0..TileId::COUNT {
+        let tile = TileId::new(tile_index);
+        let Some(zone_index) = ocean_zone_for_tile(ocean, map, tile) else {
+            continue;
+        };
+        if matches!(ocean.zones[zone_index], ZoneKind::PortZone(_)) {
+            let has_primary = match &ocean.zones[zone_index] {
+                ZoneKind::PortZone(port) => !port.zone.primary_neighbors.is_empty(),
+                ZoneKind::Zone(_) => unreachable!(),
+            };
+            if has_primary {
+                continue;
+            }
+            let target_tile = match &ocean.zones[zone_index] {
+                ZoneKind::PortZone(port) => port.zone.target_tile,
+                ZoneKind::Zone(_) => unreachable!(),
+            }
+            .ok_or_else(|| {
+                LegacySaveError::StateProjection(format!(
+                    "port-zone {zone_index} has no target tile"
+                ))
+            })?;
+            let owner = map[target_tile]
+                .owner_nation
+                .map(TileOwnerTag::get)
+                .filter(|&owner| owner >= 0x17)
+                .ok_or_else(|| {
+                    LegacySaveError::StateProjection(format!(
+                        "port-zone {zone_index} target tile {} has no base ocean zone",
+                        target_tile.get()
+                    ))
+                })?;
+            let base_index = usize::from(owner - 0x17);
+            if !matches!(ocean.zones.get(base_index), Some(ZoneKind::Zone(_))) {
+                return Err(LegacySaveError::StateProjection(format!(
+                    "port-zone {zone_index} target tile {} names missing base ocean zone {base_index}",
+                    target_tile.get()
+                )));
+            }
+            let port_id = OceanZoneId::new(zone_index as u16);
+            let base_id = OceanZoneId::new(base_index as u16);
+            let ZoneKind::PortZone(port) = &mut ocean.zones[zone_index] else {
+                unreachable!()
+            };
+            port.zone.primary_neighbors.push(base_id);
+            let ZoneKind::Zone(base) = &mut ocean.zones[base_index] else {
+                unreachable!()
+            };
+            base.primary_neighbors.push(port_id);
+            continue;
+        }
+
+        for neighbor in geometry.neighbors(tile).into_iter().flatten() {
+            if let Some(province) = map[neighbor].province {
+                let ZoneKind::Zone(zone) = &mut ocean.zones[zone_index] else {
+                    unreachable!()
+                };
+                if !zone.secondary_neighbors.contains(&province) {
+                    zone.secondary_neighbors.push(province);
+                }
+                continue;
+            }
+            let Some(candidate) = ocean_zone_for_tile(ocean, map, neighbor) else {
+                continue;
+            };
+            if candidate == zone_index || matches!(ocean.zones[candidate], ZoneKind::PortZone(_)) {
+                continue;
+            }
+            let candidate = OceanZoneId::new(candidate as u16);
+            let ZoneKind::Zone(zone) = &mut ocean.zones[zone_index] else {
+                unreachable!()
+            };
+            if !zone.primary_neighbors.contains(&candidate) {
+                zone.primary_neighbors.push(candidate);
+            }
+        }
+    }
+    Ok(())
+}
+
+fn ocean_zone_for_tile(ocean: &Ocean, map: &MapMgr, tile: TileId) -> Option<usize> {
+    if map[tile]
+        .action
+        .is_some_and(|action| matches!(action.retail(), 3 | 14))
+    {
+        return ocean
+            .zones
+            .iter()
+            .enumerate()
+            .rev()
+            .find_map(|(ordinal, zone)| match zone {
+                ZoneKind::PortZone(port)
+                    if port.port_tile == tile
+                        || port.zone.target_tile == Some(tile)
+                        || port.zone.active_tile == Some(tile) =>
+                {
+                    Some(ordinal)
+                }
+                _ => None,
+            });
+    }
+    let ordinal = map[tile]
+        .owner_nation
+        .map(TileOwnerTag::get)?
+        .checked_sub(0x17)?;
+    let ordinal = usize::from(ordinal);
+    matches!(ocean.zones.get(ordinal), Some(ZoneKind::Zone(_))).then_some(ordinal)
 }
 
 pub(super) fn foreign_minister_personality(
@@ -1382,6 +1583,38 @@ pub(super) fn province_state(
                 })
         })
         .collect::<Result<Vec<_>, _>>()?;
+    let adjacency_anchor_tiles = province.adjacent_region_anchor_tiles[..count]
+        .iter()
+        .copied()
+        .map(|value| {
+            optional_tile_id(i32::from(value))?.ok_or_else(|| {
+                LegacySaveError::StateProjection(format!(
+                    "province {index} adjacency anchor tile is absent"
+                ))
+            })
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    let linked_count = usize::try_from(province.linked_region_count).map_err(|_| {
+        LegacySaveError::StateProjection(format!(
+            "province {index} has negative linked-tile count {}",
+            province.linked_region_count
+        ))
+    })?;
+    if linked_count > province.linked_tile_indices.len() {
+        return Err(LegacySaveError::StateProjection(format!(
+            "province {index} has linked-tile count {linked_count}; maximum is {}",
+            province.linked_tile_indices.len()
+        )));
+    }
+    let linked_tiles = province.linked_tile_indices[..linked_count]
+        .iter()
+        .copied()
+        .map(|value| {
+            optional_tile_id(i32::from(value))?.ok_or_else(|| {
+                LegacySaveError::StateProjection(format!("province {index} linked tile is absent"))
+            })
+        })
+        .collect::<Result<Vec<_>, _>>()?;
 
     let optional_owner = |value: i8, field: &str| {
         if value == -1 {
@@ -1431,12 +1664,23 @@ pub(super) fn province_state(
         optional_owner(province.former_owner_nation, "former-owner")?,
         province.development_stage,
         adjacency,
+        adjacency_anchor_tiles,
         region_class,
         province.fort_level,
         optional_tile_id(i32::from(province.city_tile))?,
+        province.last_turn_tick,
+        optional_tile_id(i32::from(province.secondary_neighbor_tile))?,
+        optional_tile_id(i32::from(province.primary_neighbor_tile))?,
+        linked_tiles,
         resource_development_by_type,
         explored_by_majors,
         province.city_score,
+        retail_boolean(
+            province.navy_order_reachable,
+            "province navy-order reachable flag",
+        )?,
+        province.resource_presence_mask,
+        province.name.clone(),
     )
     .map_err(|error| {
         LegacySaveError::StateProjection(format!("province {index} is invalid: {error}"))

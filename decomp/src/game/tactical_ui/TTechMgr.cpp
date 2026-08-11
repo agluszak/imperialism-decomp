@@ -170,10 +170,10 @@ void TTechMgr::GenerateRandomCapabilityPrioritySlots() {
 
   short* pnOutputSlotCursor = &prioritySlots04[3];
   int nSelectedSlotCount = 3;
-  // Pair i is (cursor[-1], cursor[0]); the reccmp symbol anchors pair 0's END, so pair 0's
-  // START is read one short before the array.
-  for (short* pnRangePairCursor = &g_anCapabilityPriorityRangePairs[0];
-       pnRangePairCursor < &g_anCapabilityPriorityRangePairs[52]; pnRangePairCursor += 2) {
+  // Pair i is (cursor[-1], cursor[0]); the retail cursor anchors pair 0's END at element 1,
+  // so pair 0's START is read one short before it.
+  for (short* pnRangePairCursor = &g_anCapabilityPriorityRangeData_0066ABA4[1];
+       pnRangePairCursor < &g_anCapabilityPriorityRangeData_0066ABA4[53]; pnRangePairCursor += 2) {
     short nRangeStartGroup = pnRangePairCursor[-1];
     short nRangeEndGroup = *pnRangePairCursor;
     int nRangeSpan =

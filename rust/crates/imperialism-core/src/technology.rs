@@ -88,6 +88,35 @@ impl CityTechnologyCapabilities {
 
 pub const TECHNOLOGY_COUNT: usize = 29;
 
+const RANDOM_START_PRIORITY_RANGES: [(i16, i16); TECHNOLOGY_COUNT - 3] = [
+    (1, 5),
+    (6, 10),
+    (6, 10),
+    (6, 10),
+    (6, 10),
+    (11, 15),
+    (11, 15),
+    (16, 20),
+    (21, 25),
+    (21, 25),
+    (26, 30),
+    (26, 30),
+    (31, 35),
+    (31, 35),
+    (36, 40),
+    (41, 45),
+    (41, 45),
+    (46, 50),
+    (51, 55),
+    (56, 60),
+    (56, 60),
+    (56, 60),
+    (61, 65),
+    (61, 65),
+    (66, 70),
+    (66, 70),
+];
+
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum TechnologyResearchStatus {
@@ -188,6 +217,24 @@ impl Default for FortLevelCap {
 }
 
 impl TechnologyState {
+    pub(crate) fn for_random_start(seed: u32) -> Self {
+        let mut state = Self::default();
+        let mut rng = RetailLcg::from_state(seed);
+        for (offset, &(start_group, end_group)) in RANDOM_START_PRIORITY_RANGES.iter().enumerate() {
+            let technology = offset + 3;
+            let range_start = start_group * 4;
+            let range_span = (end_group - start_group) * 4 + 1;
+            loop {
+                let candidate = (rng.next_sample_15() % range_span as u32) as i16 + range_start;
+                if !state.scheduled_unlock_turn_by_technology[..technology].contains(&candidate) {
+                    state.scheduled_unlock_turn_by_technology[technology] = candidate;
+                    break;
+                }
+            }
+        }
+        state
+    }
+
     pub const fn oil_drilling_available(&self) -> bool {
         self.global_unlocks_by_technology[0x13]
     }
@@ -211,6 +258,17 @@ impl TechnologyState {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn random_start_schedule_matches_the_native_seed_one_table() {
+        assert_eq!(
+            TechnologyState::for_random_start(1).scheduled_unlock_turn_by_technology,
+            [
+                0, 0, 0, 19, 40, 38, 34, 28, 48, 47, 68, 99, 89, 114, 115, 140, 136, 155, 164, 169,
+                192, 210, 228, 237, 240, 252, 249, 273, 279,
+            ]
+        );
+    }
 
     #[test]
     fn naval_production_capacity_follows_the_technology_priority_order() {

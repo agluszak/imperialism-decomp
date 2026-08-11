@@ -274,7 +274,7 @@ fn clothing_order_round_trips_through_generated_controls_and_reopen() {
     );
     {
         let session = app.world().resource::<GameSession>();
-        let city = session.0.nations().major(MajorNationId::new(6)).city();
+        let city = &session.0.nations().major(MajorNationId::new(6)).city;
         assert_eq!(city.stockpile[ResourceKind::Fabric], 8);
         assert_eq!(city.population.strength(), 10);
         assert_eq!(city.production_accum[CityFacilitySlot::ClothingFactory], 0);
@@ -301,7 +301,7 @@ fn clothing_order_round_trips_through_generated_controls_and_reopen() {
     );
     {
         let session = app.world().resource::<GameSession>();
-        let city = session.0.nations().major(MajorNationId::new(6)).city();
+        let city = &session.0.nations().major(MajorNationId::new(6)).city;
         assert_eq!(city.stockpile[ResourceKind::Fabric], 10);
         assert_eq!(city.population.strength(), 12);
         assert_eq!(city.production_accum[CityFacilitySlot::ClothingFactory], 1);
@@ -320,7 +320,7 @@ fn clothing_order_round_trips_through_generated_controls_and_reopen() {
             .0
             .nations()
             .major(MajorNationId::new(6))
-            .city()
+            .city
             .building_window_state(CityFacilitySlot::ClothingFactory),
         BuildingWindowState {
             flag: 1,
@@ -355,9 +355,9 @@ fn training_orders_round_trip_through_both_generated_rows() {
     {
         let session = app.world().resource::<GameSession>();
         let major = session.0.nations().major(MajorNationId::new(6));
-        let city = major.city();
+        let city = &major.city;
         assert_eq!(city.stockpile[ResourceKind::Paper], 5);
-        assert_eq!(major.common().treasury, 8_900);
+        assert_eq!(major.common.treasury, 8_900);
         assert_eq!(city.population.production_labor(), LaborPool::new(3, 1, 1));
         assert_eq!(city.population.strength(), 9);
     }
@@ -383,9 +383,9 @@ fn training_orders_round_trip_through_both_generated_rows() {
     {
         let session = app.world().resource::<GameSession>();
         let major = session.0.nations().major(MajorNationId::new(6));
-        let city = major.city();
+        let city = &major.city;
         assert_eq!(city.stockpile[ResourceKind::Paper], 8);
-        assert_eq!(major.common().treasury, 10_000);
+        assert_eq!(major.common.treasury, 10_000);
         assert_eq!(city.population.production_labor(), LaborPool::new(4, 2, 1));
         assert_eq!(city.population.strength(), 12);
     }
@@ -460,7 +460,7 @@ fn university_availability_and_orders_round_trip_through_generated_rows() {
             .0
             .nations()
             .major(nation)
-            .city()
+            .city
             .orders
             .civilian_recruitment[CivilianUnitKind::Forester]
             .quantity,

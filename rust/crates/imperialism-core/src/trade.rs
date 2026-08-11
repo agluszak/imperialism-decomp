@@ -198,6 +198,7 @@ impl GameState {
             common,
             economy: major,
             city,
+            ..
         } = &mut self.nations.majors[nation];
 
         common.treasury += i32::from(major.need_target_by_type[ResourceKind::Gems]) * 500;
@@ -537,7 +538,8 @@ mod tests {
     }
 
     fn state() -> GameState {
-        let majors = crate::MajorNationTable::from_fn(|_nation| MajorNation {
+        let majors = crate::MajorNationTable::from_fn(|nation| MajorNation {
+            kind: MajorNationKind::GreatPower,
             common: NationCommonState::from_parts(
                 String::new(),
                 crate::CountryStatus::Independent,
@@ -548,6 +550,10 @@ mod tests {
             ),
             economy: major(),
             city: city(),
+            towns: vec![crate::TownState::for_frog_city(
+                crate::TileId::new(0),
+                nation.nation(),
+            )],
         });
         let mut diplomacy_rng = RetailCrtRng::from_state(1);
         GameState {
@@ -563,13 +569,12 @@ mod tests {
                 selected_nation: NationId::new(6),
             },
             unit_ids: crate::UnitIdAllocator::default(),
-            world: StrategicMap::new(
+            map: MapMgr::new(
                 crate::MapTopology::Bounded,
                 vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
             )
             .unwrap(),
-            provinces: crate::ProvinceTable::default(),
-            port_zone_owners: Vec::new(),
+            ocean: Ocean::default(),
             rng: RngState {
                 crt_rand: RetailCrtRng::from_state(1),
                 map_generation: RetailLcg::from_state(1),
@@ -595,7 +600,6 @@ mod tests {
 
     fn city() -> CityState {
         CityState {
-            home_town: Some(crate::TownState::for_frog_city(crate::TileId::new(0))),
             population: PopulationState {
                 count: 0,
                 accumulator: crate::PopulationAccumulator::from_bits(0),

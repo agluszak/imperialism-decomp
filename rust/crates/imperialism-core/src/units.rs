@@ -20,6 +20,10 @@ pub enum CivilianUnitKind {
     Driller,
 }
 
+impl CivilianUnitKind {
+    pub const LENGTH: usize = enum_map::enum_len::<Self>();
+}
+
 pub type CivilianUnitTable<T> = EnumMap<CivilianUnitKind, T>;
 
 /// Dense retail-index array form used by the C++ `game_state` capture.
@@ -131,6 +135,8 @@ where
 }
 
 impl MilitaryUnitKind {
+    pub const LENGTH: usize = enum_map::enum_len::<Self>();
+
     pub fn from_index(index: u8) -> Option<Self> {
         let index = usize::from(index);
         (index < Self::LENGTH).then(|| Self::from_usize(index))

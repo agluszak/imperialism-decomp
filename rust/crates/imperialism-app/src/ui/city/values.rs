@@ -126,7 +126,7 @@ pub(in crate::ui::city) fn sync_city_values(
             }
         };
         let major = session.0.nations().major(nation);
-        let city = major.city();
+        let city = &major.city;
         let labor = city.population.baseline_labor();
         let labor_available = city.population.strength();
         let armory_order =
@@ -165,7 +165,7 @@ pub(in crate::ui::city) fn sync_city_values(
                     production.high.min(labor_available / 4) < 1
                 }
                 UniversityWarningKind::Treasury => {
-                    major.common().treasury < i32::from(spec.cash_per_unit)
+                    major.common.treasury < i32::from(spec.cash_per_unit)
                 }
             };
             color.0 = if insufficient {
@@ -195,7 +195,7 @@ pub(in crate::ui::city) fn sync_city_values(
             }
             CityValue::PredictedNeed(resource) => city.population.predicted_need(resource),
             CityValue::Treasury => {
-                text.0 = format_currency(major.common().treasury);
+                text.0 = format_currency(major.common.treasury);
                 continue;
             }
             CityValue::OrderQuantity(order) => {
@@ -253,8 +253,8 @@ pub(in crate::ui::city) fn sync_city_values(
             CityValue::AvailableBudgetIndicator(minimum) => {
                 text.0 = "X".to_owned();
                 *visibility = if major
-                    .economy()
-                    .available_diplomacy_budget(major.common().treasury)
+                    .economy
+                    .available_diplomacy_budget(major.common.treasury)
                     >= minimum
                 {
                     Visibility::Visible
@@ -280,10 +280,10 @@ pub(in crate::ui::city) fn sync_city_values(
             CityValue::BuildingCapacity(slot) => city.production_orders[slot],
             CityValue::RegionalCapacity => city.building_type(
                 CityFacilitySlot::RegionalPopulation,
-                major.economy(),
-                major.common().owned_region_count() as i32,
+                &major.economy,
+                major.common.owned_region_count() as i32,
             ),
-            CityValue::OwnedRegionCount => major.common().owned_region_count() as i16,
+            CityValue::OwnedRegionCount => major.common.owned_region_count() as i16,
             CityValue::ArmoryUnitKind => {
                 let Some(order) = armory_order else {
                     continue;
@@ -348,7 +348,7 @@ pub(in crate::ui::city) fn sync_city_values(
                 city.stockpile[secondary.resource]
             }
             CityValue::ArmoryTreasuryAvailable => {
-                text.0 = format_currency(major.common().treasury);
+                text.0 = format_currency(major.common.treasury);
                 continue;
             }
             CityValue::UniversityUnitName => {
@@ -555,7 +555,7 @@ pub(in crate::ui::city) fn sync_city_values(
             else {
                 continue;
             };
-            let stock = session.0.nations().major(*nation).city().stockpile[material.resource];
+            let stock = session.0.nations().major(*nation).city.stockpile[material.resource];
             text.0 = if binding.available {
                 stock.to_string()
             } else {
@@ -591,7 +591,7 @@ pub(in crate::ui::city) fn sync_city_values(
         let Some((_, view)) = order_views.iter().find(|(order, _)| *order == bar.order) else {
             continue;
         };
-        let capacity = session.0.nations().major(*nation).city().production_orders[bar.slot];
+        let capacity = session.0.nations().major(*nation).city.production_orders[bar.slot];
         let scale = |quantity: i16| {
             if capacity > 0 {
                 (i32::from(quantity) * i32::from(INDUSTRY_BAR_WIDTH) / i32::from(capacity))
@@ -619,7 +619,7 @@ pub(in crate::ui::city) fn sync_city_values(
         else {
             continue;
         };
-        let city = session.0.nations().major(*nation).city();
+        let city = &session.0.nations().major(*nation).city;
         *visibility = if city_is_expanding(city, indicator.slot) {
             Visibility::Visible
         } else {

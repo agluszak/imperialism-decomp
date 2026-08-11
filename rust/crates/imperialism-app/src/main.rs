@@ -48,6 +48,5 @@ fn main() -> anyhow::Result<()> {
         (None, None) => None,
         _ => unreachable!("clap enforces the paired load-save and game-state arguments"),
     };
-    imperialism_app::run(assets, initial_game);
-    Ok(())
+    imperialism_app::run(assets, initial_game)
 }

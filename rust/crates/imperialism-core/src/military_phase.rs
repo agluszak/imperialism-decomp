@@ -70,7 +70,7 @@ impl GameState {
         // `TMapMgr::RecomputeTileStrategicScoreHeatmap` runs before nation work.
         for slot in 0..ProvinceId::COUNT {
             let province = ProvinceId::new(slot);
-            self.provinces[province].set_city_score(plan.city_scores[province]);
+            self.map.provinces[province].set_city_score(plan.city_scores[province]);
         }
 
         // `TCountry::GrowMilitia` visits all 23 countries here. Economic turn one does not
@@ -103,7 +103,7 @@ impl GameState {
         // `TNavyMgr::PrepareToCarryOutAllOrders(1)` then clears exploration bits. Empty ship
         // and task-force collections make the remaining preparation and execution calls no-ops.
         for slot in 0..ProvinceId::COUNT {
-            self.provinces[ProvinceId::new(slot)].clear_explored_by_majors();
+            self.map.provinces[ProvinceId::new(slot)].clear_explored_by_majors();
         }
     }
 
@@ -115,10 +115,16 @@ impl GameState {
             || self.turn.scenario_map.is_some()
             || self.turn.selected_nation != self.turn.active_nation
             || human.get() != FIRST_TURN_AI_COUNT as u8
-            || self.world.topology() != MapTopology::Wrapping
+            || self.map.topology != MapTopology::Wrapping
             || !self.ships.is_empty()
             || !self.task_forces.is_empty()
-            || self.port_zone_owners.len() != usize::from(NationId::COUNT)
+            || self
+                .ocean
+                .zones
+                .iter()
+                .filter(|zone| matches!(zone, ZoneKind::PortZone(_)))
+                .count()
+                != usize::from(NationId::COUNT)
             || NationId::all().any(|nation| {
                 !matches!(
                     self.nations.common(nation),
@@ -127,7 +133,7 @@ impl GameState {
                     self.diplomacy.relationships[nation][target] != DiplomaticRelationship::Peace
                 })
             })
-            || self.world.iter().any(|tile| {
+            || self.map.tiles.iter().any(|tile| {
                 tile.development.extractive.get() > 3 || tile.development.surface.get() > 3
             })
         {
@@ -136,9 +142,19 @@ impl GameState {
 
         for nation in NationId::all() {
             if self
-                .port_zone_owners
+                .ocean
+                .zones
                 .iter()
-                .filter(|entry| entry.former_owner == nation)
+                .filter_map(|zone| match zone {
+                    ZoneKind::PortZone(port) => Some(port),
+                    ZoneKind::Zone(_) => None,
+                })
+                .filter(|port| {
+                    self.map[port.port_tile]
+                        .former_owner_nation
+                        .and_then(TileOwnerTag::nation)
+                        == Some(nation)
+                })
                 .count()
                 != 1
             {
@@ -148,11 +164,14 @@ impl GameState {
         for slot in 0..MajorNationId::COUNT {
             let nation = MajorNationId::new(slot);
             let expected_zone = OceanZoneId::new(FIRST_PORT_ZONE_BY_MAJOR[usize::from(slot)]);
-            if !self
-                .port_zone_owners
-                .iter()
-                .any(|entry| entry.former_owner == nation.nation() && entry.zone == expected_zone)
-            {
+            if !self.ocean.zones.iter().enumerate().any(|(ordinal, zone)| {
+                matches!(zone, ZoneKind::PortZone(port)
+                    if self.map[port.port_tile]
+                        .former_owner_nation
+                        .and_then(TileOwnerTag::nation)
+                        == Some(nation.nation())
+                        && OceanZoneId::new(ordinal as u16) == expected_zone)
+            }) {
                 return None;
             }
         }
@@ -317,7 +336,7 @@ impl GameState {
         weights[ResourceKind::Gold] = 200;
 
         let mut base_scores = ProvinceTable::from_array([200_i32; PROVINCE_COUNT]);
-        for tile in self.world.iter() {
+        for tile in &self.map.tiles {
             let Some(province) = tile.province else {
                 continue;
             };
@@ -336,15 +355,15 @@ impl GameState {
 
         for slot in 0..ProvinceId::COUNT {
             let province = ProvinceId::new(slot);
-            let stage_bonus =
-                (i32::from(self.provinces[province].development_stage()) + 3).checked_mul(1_000)?;
+            let stage_bonus = (i32::from(self.map.provinces[province].development_stage()) + 3)
+                .checked_mul(1_000)?;
             base_scores[province] = base_scores[province].checked_add(stage_bonus)?;
         }
 
         for nation in NationId::all() {
             let common = self.nations.common(nation)?;
             let capital = common.home_tile?;
-            let province = self.world[capital].province?;
+            let province = self.map[capital].province?;
             let bonus = if MajorNationId::from_nation(nation).is_some() {
                 10_000
             } else {
@@ -357,7 +376,7 @@ impl GameState {
         for slot in 0..ProvinceId::COUNT {
             let province = ProvinceId::new(slot);
             let mut score = base_scores[province];
-            for &adjacent in self.provinces[province].adjacency().iter().rev() {
+            for &adjacent in self.map.provinces[province].adjacency().iter().rev() {
                 score = (base_scores[adjacent] as f32 * HEATMAP_NEIGHBOR_DIFFUSION + score as f32)
                     as i32;
             }
