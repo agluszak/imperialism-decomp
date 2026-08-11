@@ -572,8 +572,7 @@ mod tests {
             map: MapMgr::new(
                 crate::MapTopology::Bounded,
                 vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
-            )
-            .unwrap(),
+            ),
             ocean: Ocean::default(),
             rng: RngState {
                 crt_rand: RetailCrtRng::from_state(1),

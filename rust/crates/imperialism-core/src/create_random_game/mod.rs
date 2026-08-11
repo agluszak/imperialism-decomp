@@ -112,8 +112,7 @@ pub fn create_random_game(
         localized_names.then_some(&names.localized_nation_names),
     );
     let technology = TechnologyState::for_random_start(runtime_seed);
-    let mut world = MapMgr::new(preview.topology, post.tiles)
-        .expect("generated map has the retail strategic tile count");
+    let mut world = MapMgr::new(preview.topology, post.tiles);
     for (index, generated) in preview.map.provinces().iter().enumerate() {
         world.provinces[ProvinceId::new(index as u16)].region_class = Some(generated.region_class);
     }

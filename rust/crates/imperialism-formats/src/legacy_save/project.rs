@@ -116,7 +116,7 @@ fn normalize_nation_display_name(raw: &str) -> String {
 }
 
 impl LegacyCountryBase {
-    pub(super) fn military_unit_states(&self, nation: NationId) -> Vec<MilitaryUnitState> {
+    fn military_unit_states(&self, nation: NationId) -> Vec<MilitaryUnitState> {
         self.military_units
             .iter()
             .map(|unit| {
@@ -185,7 +185,7 @@ impl LegacyGreatPowerPostCity {
 }
 
 impl LegacyMission {
-    pub(super) fn mission_state(
+    fn mission_state(
         &self,
         nation: NationId,
         military_units: &[LegacyMilitaryUnit],
@@ -422,7 +422,7 @@ impl LegacyCityOrders {
 }
 
 impl LegacyCityState {
-    pub(super) fn city_state(&self) -> CityState {
+    fn city_state(&self) -> CityState {
         assert!(
             self.tasks.is_empty(),
             "semantic projection of city tasks is not implemented"
@@ -485,7 +485,7 @@ impl LegacyCityState {
 }
 
 impl LegacyTerrainTile {
-    fn tile_state(self) -> TileState {
+    fn tile_state(&self) -> TileState {
         let rendering = TileRendering::from_retail(
             self.sprite_variant,
             self.river_sprite,
@@ -543,12 +543,10 @@ impl LegacyMapState {
             self.topology(),
             self.tiles
                 .iter()
-                .copied()
                 .map(LegacyTerrainTile::tile_state)
                 .collect::<Vec<_>>(),
             self.province_states(),
-        )
-        .expect("retail strategic map has its fixed tile count");
+        );
         map.view_origin = view_origin;
         map.map_data_ready = self.map_data_ready != 0;
         map.recruit_search_active = self.recruit_search_active != 0;
@@ -710,11 +708,6 @@ fn technology_state(technology: &LegacyTechnologyState) -> TechnologyState {
 }
 
 impl LegacySaveV62 {
-    /// Projects the decoded strategic-map manager into semantic state.
-    pub fn map_mgr(&self) -> MapMgr {
-        self.map.map_mgr()
-    }
-
     /// Projects the fully decoded save directly into live semantic state.
     /// Runtime-only RNG and selection state must be supplied by the process that loaded
     /// the save because the retail stream does not contain them.
@@ -737,15 +730,10 @@ impl LegacySaveV62 {
         let map = self.map.map_mgr();
         let ocean = ocean_state(&self.ocean, &map);
         let live_ocean_context_count = ocean.zones.len();
-        let mut majors = Vec::with_capacity(MAJOR_NATION_COUNT);
-        for slot in 0..MAJOR_NATION_COUNT {
+        let majors = MajorNationTable::from_array(std::array::from_fn(|slot| {
             let major_id = MajorNationId::new(slot as u8);
             let nation_id = major_id.nation();
-            let nation = self
-                .major_nations
-                .iter()
-                .find(|nation| nation.great_power().country.nation_slot == slot as i16)
-                .expect("retail save has every major nation");
+            let nation = &self.major_nations[slot];
             let great_power = nation.great_power();
             let city = great_power
                 .city
@@ -790,7 +778,7 @@ impl LegacySaveV62 {
                     ),
                     LegacyMajorNationState::Other(_) => (None, None, None, None),
                 };
-            majors.push(MajorNation {
+            let major = MajorNation {
                 kind: match nation {
                     LegacyMajorNationState::Auto(_) => MajorNationKind::AutoGreatPower,
                     LegacyMajorNationState::Other(_) => MajorNationKind::GreatPower,
@@ -806,7 +794,7 @@ impl LegacySaveV62 {
                 ),
                 city,
                 towns,
-            });
+            };
             military_units.extend(great_power.country.military_unit_states(nation_id));
             civilian_units.extend(
                 great_power
@@ -820,34 +808,23 @@ impl LegacySaveV62 {
                     );
                 }
             }
-            let lists = &great_power.prefix.relationship_lists;
-            pending.nations[major_id].turn_events = diplomacy_notices(&lists[0]);
-            pending.nations[major_id].proposals = diplomacy_proposals(&lists[1]);
-        }
-        let mut majors = majors.into_iter();
-        let majors = MajorNationTable::from_array(std::array::from_fn(|_| {
-            majors.next().expect("retail save has every major nation")
+            pending.nations[major_id].turn_events =
+                diplomacy_notices(&great_power.prefix.turn_event_queue);
+            pending.nations[major_id].proposals =
+                diplomacy_proposals(&great_power.prefix.proposal_queue);
+            major
         }));
-        for slot in MAJOR_NATION_COUNT..NATION_COUNT {
-            let minor_id = MinorNationId::new(slot as u8);
-            if let Some(nation) = self
-                .minor_nations
-                .iter()
-                .find(|nation| nation.country.nation_slot == slot as i16)
-            {
-                minors[minor_id] = Some(MinorNation {
-                    common: country_common(&nation.country),
-                    consortium_members: nation
-                        .diplomacy_save_fields
-                        .map(minor_nation_id_from_retail_i16),
-                    trade: minor_trade_state(nation),
-                });
-                military_units.extend(
-                    nation
-                        .country
-                        .military_unit_states(NationId::new(slot as u8)),
-                );
-            }
+        for nation in &self.minor_nations {
+            let nation_id = NationId::new(nation.country.nation_slot as u8);
+            let minor_id = MinorNationId::new(nation_id.get());
+            minors[minor_id] = Some(MinorNation {
+                common: country_common(&nation.country),
+                consortium_members: nation
+                    .diplomacy_save_fields
+                    .map(minor_nation_id_from_retail_i16),
+                trade: minor_trade_state(nation),
+            });
+            military_units.extend(nation.country.military_unit_states(nation_id));
         }
 
         // The retail load path restores this counter before deserializing units.
@@ -896,14 +873,14 @@ impl LegacySaveV62 {
     }
 }
 
-pub(super) fn diplomacy_notices(list: &LegacyFixedRecordList) -> Vec<DiplomacyNotice> {
+fn diplomacy_notices(list: &LegacyFixedRecordList) -> Vec<DiplomacyNotice> {
     relationship_records(list)
         .into_iter()
         .map(|(code, source)| DiplomacyNotice { source, code })
         .collect()
 }
 
-pub(super) fn diplomacy_proposals(list: &LegacyFixedRecordList) -> Vec<DiplomacyProposal> {
+fn diplomacy_proposals(list: &LegacyFixedRecordList) -> Vec<DiplomacyProposal> {
     relationship_records(list)
         .into_iter()
         .map(|(entry, source)| DiplomacyProposal {
@@ -913,7 +890,7 @@ pub(super) fn diplomacy_proposals(list: &LegacyFixedRecordList) -> Vec<Diplomacy
         .collect()
 }
 
-pub(super) fn relationship_records(list: &LegacyFixedRecordList) -> Vec<(i16, NationId)> {
+fn relationship_records(list: &LegacyFixedRecordList) -> Vec<(i16, NationId)> {
     let mut records = list
         .records
         .iter()
@@ -927,20 +904,13 @@ pub(super) fn relationship_records(list: &LegacyFixedRecordList) -> Vec<(i16, Na
     records
 }
 
-pub(super) fn deal_book_state(
-    lists: &[LegacyFixedRecordList],
+fn deal_book_state(
+    lists: &[LegacyFixedRecordList; TRADE_CATEGORY_COUNT],
 ) -> TradeCommodityTable<Vec<TradeDealBookEntry>> {
-    let deal_lists = &lists[2..];
-    let mut deal_book = TradeCommodityTable::default();
-    for (commodity_index, list) in deal_lists.iter().enumerate() {
-        let commodity = TradeCommodity::from_retail(commodity_index as i16)
-            .expect("the deal-book list count equals the trade-commodity count");
-        deal_book[commodity] = deal_book_entries(list);
-    }
-    deal_book
+    TradeCommodityTable::from_array(lists.each_ref().map(deal_book_entries))
 }
 
-pub(super) fn deal_book_entries(list: &LegacyFixedRecordList) -> Vec<TradeDealBookEntry> {
+fn deal_book_entries(list: &LegacyFixedRecordList) -> Vec<TradeDealBookEntry> {
     let mut entries = list
         .records
         .iter()
@@ -965,36 +935,28 @@ pub(super) fn deal_book_entries(list: &LegacyFixedRecordList) -> Vec<TradeDealBo
     entries
 }
 
-pub(super) fn ai_zone_targets(
-    flags: &[u8; AI_ZONE_TARGET_CAPACITY],
-    live_count: usize,
-) -> Vec<AiTargetState> {
+fn ai_zone_targets(flags: &[u8; AI_ZONE_TARGET_CAPACITY], live_count: usize) -> Vec<AiTargetState> {
     flags[..live_count]
         .iter()
-        .map(|value| match value {
-            0 => AiTargetState::Unmarked,
-            1 => AiTargetState::Candidate,
-            2 => AiTargetState::MissionQueued,
-            value => panic!("unrecovered AI ocean target state {value}"),
-        })
+        .copied()
+        .map(ai_target_state)
         .collect()
 }
 
-pub(super) fn ai_province_targets(flags: &[u8; PROVINCE_COUNT]) -> ProvinceTable<AiTargetState> {
-    let mut targets = ProvinceTable::default();
-    for (index, &value) in flags.iter().enumerate() {
-        let province = ProvinceId::new(index as u16);
-        targets[province] = match value {
-            0 => AiTargetState::Unmarked,
-            1 => AiTargetState::Candidate,
-            2 => AiTargetState::MissionQueued,
-            value => panic!("unrecovered AI province target state {value}"),
-        };
-    }
-    targets
+fn ai_province_targets(flags: &[u8; PROVINCE_COUNT]) -> ProvinceTable<AiTargetState> {
+    ProvinceTable::from_array(std::array::from_fn(|index| ai_target_state(flags[index])))
 }
 
-pub(super) fn ocean_state(ocean: &LegacyOceanState, map: &MapMgr) -> Ocean {
+fn ai_target_state(value: u8) -> AiTargetState {
+    match value {
+        0 => AiTargetState::Unmarked,
+        1 => AiTargetState::Candidate,
+        2 => AiTargetState::MissionQueued,
+        _ => panic!("unrecovered AI target state {value}"),
+    }
+}
+
+fn ocean_state(ocean: &LegacyOceanState, map: &MapMgr) -> Ocean {
     let live_count = ocean.zones.len() + ocean.port_zones.len();
     let mut zones = vec![None; live_count];
 
@@ -1050,15 +1012,6 @@ fn zone_state(context: &LegacyZone) -> Zone {
 }
 
 fn rebuild_ocean_neighbors(ocean: &mut Ocean, map: &MapMgr) {
-    for zone in &mut ocean.zones {
-        let zone = match zone {
-            ZoneKind::Zone(zone) => zone,
-            ZoneKind::PortZone(port) => &mut port.zone,
-        };
-        zone.primary_neighbors.clear();
-        zone.secondary_neighbors.clear();
-    }
-
     let geometry = map.geometry();
     for tile_index in 0..TileId::COUNT {
         let tile = TileId::new(tile_index);
@@ -1153,7 +1106,7 @@ fn ocean_zone_for_tile(ocean: &Ocean, map: &MapMgr, tile: TileId) -> Option<usiz
     matches!(ocean.zones.get(ordinal), Some(ZoneKind::Zone(_))).then_some(ordinal)
 }
 
-pub(super) fn foreign_minister_personality(
+fn foreign_minister_personality(
     nation: &LegacyMajorNationState,
     setup_policy_id: i16,
 ) -> ForeignMinisterPersonality {
@@ -1171,18 +1124,18 @@ pub(super) fn foreign_minister_personality(
     }
 }
 
-pub(super) fn trade_commodity_from_retail(value: i16) -> TradeCommodity {
+fn trade_commodity_from_retail(value: i16) -> TradeCommodity {
     TradeCommodity::from_retail(value).expect("retail trade commodity")
 }
 
-pub(super) fn optional_trade_commodity_from_retail(value: i16) -> Option<TradeCommodity> {
+fn optional_trade_commodity_from_retail(value: i16) -> Option<TradeCommodity> {
     if value == -10 {
         return None;
     }
     Some(trade_commodity_from_retail(value))
 }
 
-pub(super) fn foreign_trade_state(minister: &LegacyForeignMinisterState) -> ForeignTradeState {
+fn foreign_trade_state(minister: &LegacyForeignMinisterState) -> ForeignTradeState {
     let interior_bid =
         optional_trade_commodity_from_retail(minister.scalar_fields[0]).map(|commodity| {
             ForeignTradeBid {
@@ -1208,7 +1161,7 @@ pub(super) fn foreign_trade_state(minister: &LegacyForeignMinisterState) -> Fore
     }
 }
 
-pub(super) fn pending_ship(minister: &LegacyInteriorMinisterState) -> Option<ShipType> {
+fn pending_ship(minister: &LegacyInteriorMinisterState) -> Option<ShipType> {
     match minister.order_scalars[1] {
         0 => None,
         1 => Some(ShipType::Trader),
@@ -1217,7 +1170,7 @@ pub(super) fn pending_ship(minister: &LegacyInteriorMinisterState) -> Option<Shi
     }
 }
 
-pub(super) fn minor_trade_state(nation: &LegacyMinorState) -> MinorTradeState {
+fn minor_trade_state(nation: &LegacyMinorState) -> MinorTradeState {
     MinorTradeState {
         current_supply: ResourceTable::from_array(nation.need_current_by_type),
         offers: ResourceTable::from_array(nation.trade_offers_by_resource),
@@ -1243,7 +1196,7 @@ pub(super) fn minor_trade_state(nation: &LegacyMinorState) -> MinorTradeState {
     }
 }
 
-pub(super) fn great_power_state(
+fn great_power_state(
     nation: &LegacyGreatPowerState,
     foreign_minister_personality: ForeignMinisterPersonality,
     ai_zone_targets: Option<Vec<AiTargetState>>,
@@ -1306,7 +1259,7 @@ pub(super) fn great_power_state(
         remembered_trade_offers_by_resource: ResourceTable::from_array(
             prefix.remembered_trade_offers_by_resource,
         ),
-        deal_book: deal_book_state(&prefix.relationship_lists),
+        deal_book: deal_book_state(&prefix.diplomacy_tracked_slots),
         pending_ship: pending_ship(interior_minister),
         interior_civilian: Box::new(interior_civilian_state(interior_minister)),
         ai_trade,
@@ -1340,9 +1293,7 @@ pub(super) fn great_power_state(
     }
 }
 
-pub(super) fn interior_civilian_state(
-    minister: &LegacyInteriorMinisterState,
-) -> InteriorCivilianState {
+fn interior_civilian_state(minister: &LegacyInteriorMinisterState) -> InteriorCivilianState {
     let pending_recruitment = match minister.order_scalars[3] {
         -1 => None,
         value => Some(
@@ -1404,7 +1355,7 @@ pub(super) fn interior_civilian_state(
     )
 }
 
-pub(super) fn pending_action_from_retail(status: i8, payload: i16) -> PendingActionState {
+fn pending_action_from_retail(status: i8, payload: i16) -> PendingActionState {
     let status = match status {
         0 => PendingActionStatus::None,
         0x32 => PendingActionStatus::Queued,
@@ -1415,37 +1366,31 @@ pub(super) fn pending_action_from_retail(status: i8, payload: i16) -> PendingAct
     PendingActionState::new(status, (payload != -1).then_some(payload))
 }
 
-pub(super) fn diplomacy_grants_from_retail_entries(
+fn diplomacy_grants_from_retail_entries(
     entries: [i16; NATION_COUNT],
 ) -> NationTable<Option<DiplomacyGrant>> {
-    let mut grants = NationTable::default();
-    for (target, entry) in entries.into_iter().enumerate() {
-        grants[NationId::new(target as u8)] = if entry == -1 {
+    NationTable::from_array(entries.map(|entry| {
+        if entry == -1 {
             None
         } else {
             Some(DiplomacyGrant {
                 amount: i32::from(entry & 0x3fff),
                 recurring: entry & 0x4000 != 0,
             })
-        };
-    }
-    grants
+        }
+    }))
 }
 
-pub(super) fn diplomacy_policies_from_retail_entries(
+fn diplomacy_policies_from_retail_entries(
     entries: [i16; NATION_COUNT],
 ) -> NationTable<Option<DiplomacyPolicy>> {
-    let mut policies = NationTable::default();
-    for (target, entry) in entries.into_iter().enumerate() {
-        policies[NationId::new(target as u8)] = match entry {
-            -1 => None,
-            _ => Some(diplomacy_policy_from_retail(entry)),
-        };
-    }
-    policies
+    NationTable::from_array(entries.map(|entry| match entry {
+        -1 => None,
+        _ => Some(diplomacy_policy_from_retail(entry)),
+    }))
 }
 
-pub(super) fn diplomacy_policy_from_retail(entry: i16) -> DiplomacyPolicy {
+fn diplomacy_policy_from_retail(entry: i16) -> DiplomacyPolicy {
     match entry {
         0x12d => DiplomacyPolicy::JoinEmpire,
         0x12e => DiplomacyPolicy::Alliance,
@@ -1468,11 +1413,11 @@ pub(super) fn country_status_from_retail(value: i16) -> CountryStatus {
     }
 }
 
-pub(super) fn owned_region_id_from_retail(value: i32) -> ProvinceId {
+fn owned_region_id_from_retail(value: i32) -> ProvinceId {
     ProvinceId::new(value as u16)
 }
 
-pub(super) fn province_state(province: &LegacyProvince) -> ProvinceState {
+fn province_state(province: &LegacyProvince) -> ProvinceState {
     let count = province.adjacent_region_count as usize;
     let adjacency = province.adjacent_region_ids[..count]
         .iter()
@@ -1538,10 +1483,9 @@ pub(super) fn province_state(province: &LegacyProvince) -> ProvinceState {
         province.resource_presence_mask,
         province.name.clone(),
     )
-    .expect("retail province fits semantic province state")
 }
 
-pub(super) fn country_common(country: &LegacyCountryBase) -> NationCommonState {
+fn country_common(country: &LegacyCountryBase) -> NationCommonState {
     NationCommonState::from_parts(
         normalize_nation_display_name(&country.alternate_identity),
         country_status_from_retail(country.encoded_country_status),

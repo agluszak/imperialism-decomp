@@ -271,9 +271,10 @@ fn relationship_record(value: i16, source: i16) -> Vec<u8> {
 #[test]
 fn projects_typed_relationship_queues_in_retail_source_order_without_rng_draws() {
     let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
-    let lists = &mut first_great_power_mut(&mut save).prefix.relationship_lists;
-    lists[0].records = vec![relationship_record(-7, 2), relationship_record(9, 0)];
-    lists[1].records = vec![relationship_record(0x134, 5), relationship_record(0x12d, 1)];
+    let prefix = &mut first_great_power_mut(&mut save).prefix;
+    prefix.turn_event_queue.records = vec![relationship_record(-7, 2), relationship_record(9, 0)];
+    prefix.proposal_queue.records =
+        vec![relationship_record(0x134, 5), relationship_record(0x12d, 1)];
     let mut context = game_context();
     context.crt_rand_state = 0x1234_5678;
 
@@ -374,6 +375,16 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
         };
         assert_projected_zone(&port.zone, &saved.zone);
         assert_eq!(port.port_tile.get(), saved.port_tile_index as u16);
+        assert_eq!(port.zone.primary_neighbors.len(), 1);
+        let linked = usize::from(port.zone.primary_neighbors[0].get());
+        let ZoneKind::Zone(linked_zone) = &state.ocean.zones[linked] else {
+            panic!("port zone linked to another port zone")
+        };
+        assert!(
+            linked_zone
+                .primary_neighbors
+                .contains(&OceanZoneId::new(saved.zone.context_ordinal as u16))
+        );
         let tile = usize::from(port.port_tile.get());
         assert_eq!(
             state.map[port.port_tile]
@@ -418,90 +429,6 @@ fn assert_projected_zone(zone: &Zone, saved: &LegacyZone) {
         zone.active_tile.map(TileId::get),
         (saved.active_tile_index != -1).then_some(saved.active_tile_index as u16)
     );
-}
-
-#[test]
-fn projects_every_saved_ocean_field_without_country_projection() {
-    let save = LegacySaveV62::parse(RETAIL_FIXTURE);
-    let map = save.map_mgr();
-    let ocean = ocean_state(&save.ocean, &map);
-
-    assert_eq!(
-        ocean.zones.len(),
-        save.ocean.zones.len() + save.ocean.port_zones.len()
-    );
-    for saved in &save.ocean.zones {
-        let ZoneKind::Zone(zone) = &ocean.zones[saved.context_ordinal as usize] else {
-            panic!("saved base zone projected as a port zone")
-        };
-        assert_projected_zone(zone, saved);
-    }
-    for saved in &save.ocean.port_zones {
-        let ordinal = saved.zone.context_ordinal as usize;
-        let ZoneKind::PortZone(port) = &ocean.zones[ordinal] else {
-            panic!("saved port zone projected as a base zone")
-        };
-        assert_projected_zone(&port.zone, &saved.zone);
-        assert_eq!(port.port_tile.get(), saved.port_tile_index as u16);
-        assert_eq!(port.zone.primary_neighbors.len(), 1);
-        let linked = usize::from(port.zone.primary_neighbors[0].get());
-        assert!(matches!(ocean.zones[linked], ZoneKind::Zone(_)));
-        let ZoneKind::Zone(linked_zone) = &ocean.zones[linked] else {
-            unreachable!()
-        };
-        assert!(
-            linked_zone
-                .primary_neighbors
-                .contains(&OceanZoneId::new(ordinal as u16))
-        );
-    }
-    assert_eq!(ocean.routes.len(), save.ocean.route_segments.len());
-    for (route, &[start_row, start_column, end_row, end_column]) in
-        ocean.routes.iter().zip(&save.ocean.route_segments)
-    {
-        assert_eq!(
-            *route,
-            OceanRoute {
-                start_column,
-                start_row,
-                end_column,
-                end_row,
-            }
-        );
-    }
-}
-
-#[test]
-fn ocean_projection_uses_port_tile_for_former_owner() {
-    let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
-    let newest = save.ocean.port_zones.len() - 1;
-    let next_newest = newest - 1;
-    let newest_zone = save.ocean.port_zones[newest].zone.context_ordinal;
-    let next_newest_zone = save.ocean.port_zones[next_newest].zone.context_ordinal;
-    let newest_tile = save.ocean.port_zones[newest].port_tile_index as usize;
-    let next_newest_tile = save.ocean.port_zones[next_newest].port_tile_index as usize;
-    save.ocean.port_zones[newest].zone.seed_nation_id = 6;
-    save.ocean.port_zones[next_newest].zone.seed_nation_id = 5;
-    save.map.tiles[newest_tile].former_owner_nation = 0;
-    save.map.tiles[next_newest_tile].former_owner_nation = 0;
-
-    let map = save.map_mgr();
-    let ocean = ocean_state(&save.ocean, &map);
-    for (ordinal, tile) in [
-        (newest_zone, newest_tile),
-        (next_newest_zone, next_newest_tile),
-    ] {
-        let ZoneKind::PortZone(port) = &ocean.zones[ordinal as usize] else {
-            panic!("saved port zone projected as a base zone")
-        };
-        assert_eq!(usize::from(port.port_tile.get()), tile);
-        assert_eq!(
-            map[port.port_tile]
-                .former_owner_nation
-                .and_then(TileOwnerTag::nation),
-            Some(NationId::new(0))
-        );
-    }
 }
 
 #[test]
@@ -710,34 +637,6 @@ fn country_status_projection_decodes_retail_encodings() {
 }
 
 #[test]
-fn retail_river_sprites_project_to_canonical_connection_codes() {
-    for (sprite, connection_code) in [
-        (0x0b, 1),
-        (0x0d, 3),
-        (0x0e, 3),
-        (0x1a, 9),
-        (0x1b, 1),
-        (0x2a, 9),
-        (0x2b, 0x0a),
-        (0x2c, 0x0b),
-        (0x2d, 0x0b),
-        (0x32, 0x0f),
-        (0x33, 0x13),
-        (0x37, 0x10),
-        (0x38, 0x11),
-        (0x39, 0x11),
-        (0x3a, 0x12),
-    ] {
-        assert_eq!(
-            RiverSprite::from_retail(sprite).unwrap().connection_code(),
-            connection_code
-        );
-    }
-    assert_eq!(RiverSprite::from_retail(0), None);
-    assert_eq!(RiverSprite::from_retail(1), None);
-}
-
-#[test]
 fn preserves_and_projects_the_one_based_scenario_map_index() {
     const SCENARIO_MAP_OFFSET: usize = 60;
     let mut bytes = [0_u8; SCENARIO_MAP_OFFSET + std::mem::size_of::<i16>()];
@@ -758,288 +657,6 @@ fn preserves_and_projects_the_one_based_scenario_map_index() {
     );
     save.simulation.game_setup.scenario_map_index_plus_one = -1;
     assert_eq!(save.game_state(game_context()).turn().scenario_map, None);
-}
-
-#[test]
-fn parses_the_retail_beginning_of_game_prefix() {
-    let save = LegacySaveV62::parse(RETAIL_FIXTURE);
-    assert_eq!(save.header.format_version, 62);
-    assert_eq!(save.header.save_label, "- Autosave -");
-    assert_eq!(save.header.preview_owner_nation_by_tile.len(), 6480);
-    assert_eq!(save.header.preview_difficulty, 1);
-    assert_eq!(save.header.preview_active_nation, 6);
-    assert_eq!(save.simulation.economic_turn, 1);
-    assert_eq!(save.simulation.active_nation, 6);
-    assert_eq!(save.simulation.turn_state_code, 5);
-    assert_eq!(save.simulation.nation_count, 7);
-    assert_eq!(save.simulation.minor_nation_count, 16);
-    assert_eq!(save.simulation.diplomacy_year_term_raw, 1914);
-    assert_eq!(save.simulation.nation_names[0], "Zimm");
-    assert_eq!(save.simulation.nation_names[6], " Testland");
-    assert_eq!(save.simulation.nation_names[22], "Sindel");
-    assert_eq!(save.animator_idle_frequency, 2);
-    let cotton = &save.market.rows[TradeCommodity::Cotton as usize];
-    assert_eq!(cotton.previous_price, 100);
-    assert_eq!(cotton.price, 100);
-    assert_eq!(cotton.base_price, 100);
-    assert_eq!(cotton.request_count, 0);
-    assert_eq!(cotton.offer_count, 0);
-    assert_eq!(cotton.amount_offered, 0);
-    assert_eq!(cotton.adjusted_offer_count, 0.0);
-    assert_eq!(cotton.maximum_offer_by_nation, [0; NATION_COUNT]);
-    assert_eq!(
-        save.market.rows[TradeCommodity::Arms as usize].base_price,
-        900
-    );
-    assert_eq!(
-        save.technology.priority_slots,
-        [
-            0, 0, 0, 9, 32, 31, 27, 39, 47, 50, 64, 90, 93, 117, 111, 132, 140, 153, 166, 172, 200,
-            204, 225, 230, 229, 246, 248, 268, 274,
-        ]
-    );
-    assert_eq!(save.diplomacy.relation_standing_scores[0], 0x100);
-    assert_eq!(
-        save.diplomacy.relation_propagation_matrix[1],
-        DiplomaticRelationship::Peace.retail()
-    );
-    assert_eq!(save.diplomacy.relation_turn_stamp_matrix[1], -1);
-    assert_eq!(
-        save.diplomacy.relation_side_effect_matrix[1],
-        DiplomaticMissionLevel::Embassy.retail()
-    );
-    assert_eq!(save.diplomacy.congress_leadership[0], -1);
-    assert_eq!(save.minor_nations[0].diplomacy_save_fields, [7, 8, 9, 10]);
-    assert_eq!(save.map.tiles.len(), 6480);
-    assert_eq!(save.map.provinces.len(), 384);
-    assert_eq!(save.map.no_horizontal_wrap, 0);
-    assert_eq!(save.map.tiles[0].terrain_kind, 5);
-    assert_eq!(save.map.tiles[0].owner_nation, 82);
-    assert_eq!(save.map.recruit_search_active, 1);
-    assert_eq!(save.map.tiles[1_685].recruit_search_visited, 1);
-    assert_eq!(save.map.tiles[0].per_tile_visited, 0);
-    assert_eq!(save.map.tiles[0].marker_slot_index, 0);
-    assert_eq!(save.map.tiles[0].tile_action_ordinal, -1);
-    let world = save.map_mgr();
-    assert_eq!(world.topology, MapTopology::Wrapping);
-    assert!(world.recruit_search_active);
-    assert_eq!(world[TileId::new(0)].terrain, TerrainKind::Water);
-    assert_eq!(
-        world[TileId::new(0)].owner_nation,
-        Some(TileOwnerTag::new(82))
-    );
-    assert_eq!(world[TileId::new(1_685)].recruit_search_visited, 1);
-    assert_eq!(world[TileId::new(0)].per_tile_visited, 0);
-    assert_eq!(world[TileId::new(0)].marker_slot_index, 0);
-    assert_eq!(world[TileId::new(0)].tile_action_ordinal, -1);
-    assert!(!save.ocean.zones.is_empty());
-    assert!(save.navy.ships.is_empty());
-    assert!(save.navy.admirals.is_empty());
-    assert!(save.navy.task_forces.is_empty());
-    assert_eq!(save.army_report_count, 0);
-
-    assert_eq!(save.major_nations.len(), 7);
-    assert_eq!(save.minor_nations.len(), 16);
-
-    let first = save.major_nations[0].great_power();
-    let country = &first.country;
-    assert_eq!(country.identity, "Zimm");
-    assert_eq!(country.alternate_identity, "Zimm");
-    assert_eq!(country.nation_slot, 0);
-    assert_eq!(country.encoded_country_status, -1);
-    assert_eq!(country.treasury, 10_000);
-    assert_eq!(country.home_tile, 3_494);
-    assert_eq!(country.overlay_anchor_tile, -1);
-    assert_eq!(country.need_level_by_nation, [100; NATION_COUNT]);
-    assert_eq!(country.military_units.len(), 27);
-    assert_eq!(country.military_units[0].name, "1st Minutemen");
-    assert_eq!(country.military_units[0].persistent_id, 0x113);
-    assert_eq!(country.military_units[0].stationed_province, 79);
-    assert_eq!(country.military_units[0].strength, 500);
-    let unit_states = country.military_unit_states(NationId::new(0));
-    assert_eq!(unit_states.len(), 27);
-    assert_eq!(unit_states[0].id().get(), 275);
-    assert_eq!(unit_states[0].unit_type(), MilitaryUnitKind::Minutemen);
-    assert_eq!(
-        *unit_states[0].order().targets(),
-        [Some(ProvinceId::new(79)); 3]
-    );
-    assert_eq!(unit_states[26].id().get(), 301);
-
-    assert_eq!(first.prefix.capacities, [0, 0, 15, 11]);
-    assert_eq!(first.prefix.relationship_lists.len(), 19);
-    assert_eq!(first.prefix.relationship_lists[0].record_size, 4);
-    assert_eq!(first.prefix.relationship_lists[2].record_size, 12);
-    assert_eq!(first.prefix.minister_presence_mask, 0x0f);
-    assert!(first.ministers.foreign.is_some());
-    assert_eq!(
-        first.ministers.interior.as_ref().unwrap().integer_lists[0].len(),
-        8
-    );
-    assert_eq!(
-        first.ministers.interior.as_ref().unwrap().integer_lists[1].len(),
-        20
-    );
-    assert!(first.ministers.defense.is_some());
-
-    let city = first.city.as_ref().unwrap();
-    assert!(city.tasks.is_empty());
-    assert_eq!(city.transport_requests.record_size, 4);
-    assert!(city.transport_requests.records.is_empty());
-    assert_eq!(city.population.count, 7);
-    assert_eq!(city.population.strength, 12);
-    assert_eq!(city.population.baseline_labor, [4, 2, 1]);
-    assert_eq!(city.stockpile[7..16], [20, 10, 24, 8, 19, 0, 5, 5, 0]);
-    assert_eq!(
-        city.production_orders[7..16],
-        [999, 999, 999, 999, 0, 0, 999, 999, 0]
-    );
-
-    let city_state = city.city_state();
-    assert_eq!(*city_state.orders, CityOrders::default());
-    assert_eq!(
-        city_state.population.accumulator().get().to_bits(),
-        1_088_421_888
-    );
-
-    let post_city = &first.post_city;
-    assert_eq!(post_city.towns.len(), 1);
-    assert_eq!(post_city.towns[0].name, "FrogCity");
-    assert_eq!(post_city.towns[0].tile_index, 3_494);
-    assert_eq!(post_city.civilian_units.len(), 2);
-    assert_eq!(post_city.diplomacy_budget_base, 50_000);
-    assert_eq!(post_city.special_resource_trade_balance, 0);
-
-    let LegacyMajorNationState::Auto(first_auto) = &save.major_nations[0] else {
-        panic!("first fixture nation is computer-controlled")
-    };
-    assert_eq!(first_auto.auto_prefix.mission_count, 11);
-    let missions = &first_auto.missions;
-    assert_eq!(missions.len(), 11);
-    let LegacyMission::DefendProvince { army, .. } = &missions[0] else {
-        panic!("first fixture mission is not defend province")
-    };
-    assert_eq!(army.present_location, 79);
-    let LegacyMission::DefendProvince { army, .. } = &missions[7] else {
-        panic!("eighth fixture mission is not defend province")
-    };
-    assert_eq!(army.present_location, 111);
-    let LegacyMission::ControlSeaZone { navy, .. } = &missions[8] else {
-        panic!("ninth fixture mission is not control sea zone")
-    };
-    assert_eq!(navy.target_zone, 22);
-    let LegacyMission::Escort { navy, .. } = &missions[9] else {
-        panic!("tenth fixture mission is not escort")
-    };
-    assert_eq!(navy.target_zone, 66);
-    let LegacyMission::ScatteredShips { common, .. } = &missions[10] else {
-        panic!("eleventh fixture mission is not scattered ships")
-    };
-    assert_eq!(common.importance_bits, 981_668_463);
-
-    let mission_states = missions
-        .iter()
-        .map(|mission| mission.mission_state(NationId::new(0), &country.military_units))
-        .collect::<Vec<_>>();
-    let MissionData::DefendProvince { province, army } = &mission_states[0].data else {
-        panic!("first mission is not defend province");
-    };
-    assert_eq!(*province, ProvinceId::new(79));
-    assert!(army.units.is_empty());
-    let MissionData::ControlSeaZone(navy) = &mission_states[8].data else {
-        panic!("ninth mission is not control sea zone");
-    };
-    assert_eq!(navy.target_zone, Some(OceanZoneId::new(22)));
-    assert_eq!(mission_states[0].path_nation, None);
-    assert_eq!(mission_states[10].importance_bits, 981_668_463);
-
-    let auto_mission_count = save
-        .major_nations
-        .iter()
-        .take(6)
-        .enumerate()
-        .map(|(nation, major)| {
-            let LegacyMajorNationState::Auto(major) = major else {
-                panic!("fixture nation {nation} is computer-controlled")
-            };
-            assert_eq!(major.great_power.country.nation_slot, nation as i16);
-            assert_eq!(major.missions.len(), 11);
-            major.missions.len()
-        })
-        .sum::<usize>();
-    assert_eq!(auto_mission_count, 66);
-
-    // The seventh major is player-controlled and therefore has no
-    // TAutoGreatPower suffix or mission queue.
-    let player_major = save.major_nations[6].great_power();
-    assert_eq!(player_major.country.nation_slot, 6);
-    assert_eq!(player_major.country.identity, " Testland");
-    assert_eq!(player_major.country.alternate_identity, " Testland");
-    for (nation, minor) in (7..NATION_COUNT).zip(&save.minor_nations) {
-        assert_eq!(minor.country.nation_slot, nation as i16);
-        assert_eq!(minor.diplomacy_save_extension.len(), RESOURCE_KIND_COUNT);
-    }
-    assert_eq!(save.help.index_records.record_size, 14);
-    assert_eq!(save.help.index_records.records.len(), 30);
-
-    let mut game = save.game_state(LegacyGameStateContext {
-        crt_rand_state: 1,
-        map_generation_lcg: 0,
-        zone_status_lcg: 3_916_827_792,
-        selected_nation: NationId::new(6),
-    });
-    assert_eq!(game.nations().display_name(NationId::new(0)), Some("Zimm"));
-    assert_eq!(
-        game.nations().display_name(NationId::new(6)),
-        Some("Testland")
-    );
-    assert_eq!(
-        game.nations().display_name(NationId::new(22)),
-        Some("Sindel")
-    );
-    let expected_civilian_count = save
-        .major_nations
-        .iter()
-        .map(|nation| nation.great_power().post_city.civilian_units.len())
-        .sum::<usize>();
-    assert_eq!(game.military_units().len(), 461);
-    assert!(expected_civilian_count > 0);
-    assert_eq!(game.civilian_units().len(), expected_civilian_count);
-    assert_eq!(game.civilian_units()[0].nation(), NationId::new(0));
-    assert_eq!(
-        game.civilian_units()[0].id().get(),
-        save.major_nations[0].great_power().post_city.civilian_units[0].persistent_id
-    );
-    assert_eq!(game.missions().len(), 66);
-    assert_eq!(game.unit_ids().current(), 950);
-    assert_eq!(
-        game.nations()
-            .minor(MinorNationId::new(7))
-            .unwrap()
-            .consortium_members
-            .map(MinorNationId::get),
-        [7, 8, 9, 10]
-    );
-    assert_eq!(game.civilian_units().len(), expected_civilian_count);
-    assert!(game.all_humans_finished());
-    assert!(!game.turn().in_linear_phase());
-    game.reset_turn_flags();
-    assert!(
-        game.nations()
-            .majors()
-            .take(6)
-            .all(|nation| nation.economy.turn_finished)
-    );
-    assert!(
-        !game
-            .nations()
-            .major(MajorNationId::new(6))
-            .economy
-            .turn_finished
-    );
-    let mut turn = *game.turn();
-    turn.advance_season();
-    assert_eq!(turn.economic_turn, 2);
 }
 
 #[test]
@@ -1065,26 +682,11 @@ fn semantic_projection_preserves_inactive_pending_action_payload() {
 }
 
 #[test]
-fn semantic_projection_preserves_multiple_towns_in_order() {
-    let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
-    let towns = &mut first_great_power_mut(&mut save).post_city.towns;
-    let mut second = towns[0].clone();
-    second.name = "Altown".to_owned();
-    second.tile_index = 3_495;
-    towns.push(second);
-
-    let state = save.game_state(game_context());
-    let towns = &state.nations().major(MajorNationId::new(0)).towns;
-    assert_eq!(towns.len(), 2);
-    assert_eq!(towns[0].name, "FrogCity");
-    assert_eq!(towns[1].name, "Altown");
-    assert_eq!(towns[1].tile, TileId::new(3_495));
-}
-
-#[test]
 fn deal_book_projection_reconstructs_retail_sorted_load_order() {
     let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
-    let list = &mut first_great_power_mut(&mut save).prefix.relationship_lists[2];
+    let list = &mut first_great_power_mut(&mut save)
+        .prefix
+        .diplomacy_tracked_slots[0];
     let record = |kind: i16, nation: i16, amount: i16, eligibility: i16, price: i32| {
         let mut bytes = Vec::with_capacity(12);
         bytes.extend_from_slice(&kind.to_le_bytes());

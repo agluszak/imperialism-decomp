@@ -12,17 +12,17 @@ use model::{
     LegacyTechnologyState, LegacyTradeMarketState,
 };
 
-pub(super) const SAVE_LABEL_LENGTH: usize = 0x20;
-pub(super) const ACTIVE_NATION_NAME_LENGTH: usize = 0x20;
-pub(super) const RESOURCE_KIND_COUNT: usize = 23;
-pub(super) const CITY_PRODUCTION_SLOT_COUNT: usize = 16;
-pub(super) const TRADE_CATEGORY_COUNT: usize = 17;
-pub(super) const TERRAIN_TILE_SERIALIZED_SIZE: usize = 0x24;
-pub(super) const PROVINCE_COUNT: usize = 0x180;
-pub(super) const PROVINCE_FIXED_SERIALIZED_SIZE: usize = 0xa4;
-pub(super) const AI_ZONE_TARGET_CAPACITY: usize = 0x70;
+const SAVE_LABEL_LENGTH: usize = 0x20;
+const ACTIVE_NATION_NAME_LENGTH: usize = 0x20;
+const RESOURCE_KIND_COUNT: usize = 23;
+const CITY_PRODUCTION_SLOT_COUNT: usize = 16;
+const TRADE_CATEGORY_COUNT: usize = 17;
+const TERRAIN_TILE_SERIALIZED_SIZE: usize = 0x24;
+const PROVINCE_COUNT: usize = 0x180;
+const PROVINCE_FIXED_SERIALIZED_SIZE: usize = 0xa4;
+const AI_ZONE_TARGET_CAPACITY: usize = 0x70;
 
-#[derive(Clone, Debug, PartialEq)]
+#[allow(dead_code)]
 pub struct LegacySaveV62 {
     header: LegacySaveHeader,
     simulation: LegacySimulationPrefix,

@@ -482,8 +482,7 @@ mod tests {
         let mut world = MapMgr::new(
             MapTopology::Bounded,
             vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
-        )
-        .unwrap();
+        );
         for index in 0..TileId::COUNT {
             world[TileId::new(index)].owner_nation = Some(owner);
         }
@@ -506,8 +505,7 @@ mod tests {
         let mut world = MapMgr::new(
             MapTopology::Bounded,
             vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
-        )
-        .unwrap();
+        );
         let geometry = world.geometry();
         let start = geometry.tile(10, 10).unwrap();
         let south_east = geometry.neighbor(start, HexDirection::SouthEast).unwrap();

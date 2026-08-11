@@ -21,7 +21,7 @@ pub struct GameState {
     pub(crate) pending: PendingWorkState,
 }
 
-/// Construction-only parameter object for assembling a validated [`GameState`].
+/// Construction-only parameter object for assembling [`GameState`].
 ///
 /// Formats loaders consume this immediately. It is not a second long-lived game
 /// representation and must not be serialized or retained beside `GameState`.
@@ -47,9 +47,6 @@ pub struct GameStateParts {
 
 impl GameState {
     /// Assembles authoritative state from loader-built parts.
-    ///
-    /// Callers must already have normalized retail values; territory-index
-    /// validation remains the caller's responsibility after construction.
     pub fn from_parts(parts: GameStateParts) -> Self {
         Self {
             turn: parts.turn,

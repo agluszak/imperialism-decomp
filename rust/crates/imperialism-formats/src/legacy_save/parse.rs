@@ -37,14 +37,14 @@ impl LegacySaveV62 {
         let difficulty = stream.read_u8();
         let game_setup = read_game_setup(&mut stream);
         let persistent_unit_id_counter = stream.read_le_i32();
-        let nation_availability = stream.read_bytes(NATION_COUNT).try_into().unwrap();
+        let nation_availability = stream.read_array();
         let saved_multiplayer_role = stream.read_le_i32();
         let preference_slot_10 = stream.read_le_i16();
         let selected_asset_set = stream.read_le_i16();
         let diplomacy_year_term_raw = stream.read_le_i16();
-        let phase_state_by_decade = stream.read_bytes(12).try_into().unwrap();
+        let phase_state_by_decade = stream.read_array();
         let nation_names = (0..NATION_COUNT)
-            .map(|_| lossy_text(&stream.read_mfc_string()))
+            .map(|_| stream.read_mfc_string())
             .collect();
         let simulation = LegacySimulationPrefix {
             language_code,
@@ -78,7 +78,9 @@ impl LegacySaveV62 {
         let navy = read_navy(&mut stream);
         let army_report_count = skip_army_reports(&mut stream);
 
-        let mut archive = LegacyMfcArchiveState::default();
+        // MFC shares one class/object index space across all mission queues;
+        // index zero is the null pointer.
+        let mut archive = vec![None];
         let mut major_nations = Vec::new();
         for nation in 0..MAJOR_NATION_COUNT {
             if simulation.nation_availability[nation] == 0 {
@@ -128,10 +130,9 @@ fn read_great_power_record(
     foreign_policy_id: i16,
 ) -> LegacyGreatPowerState {
     let country = read_country_base(stream);
-    let prefix = read_great_power_prefix(stream);
-    let ministers =
-        read_great_power_ministers(stream, prefix.minister_presence_mask, foreign_policy_id);
-    let city = (prefix.minister_presence_mask & 8 != 0).then(|| read_city(stream));
+    let (prefix, minister_presence_mask) = read_great_power_prefix(stream);
+    let ministers = read_great_power_ministers(stream, minister_presence_mask, foreign_policy_id);
+    let city = (minister_presence_mask & 8 != 0).then(|| read_city(stream));
     let post_city = read_great_power_post_city(stream);
     LegacyGreatPowerState {
         country,
@@ -145,11 +146,11 @@ fn read_great_power_record(
 fn read_auto_great_power_record(
     stream: &mut LegacyStream<'_>,
     foreign_policy_id: i16,
-    archive: &mut LegacyMfcArchiveState,
+    archive: &mut Vec<Option<String>>,
 ) -> LegacyAutoGreatPowerState {
     let great_power = read_great_power_record(stream, foreign_policy_id);
-    let auto_prefix = read_auto_great_power_prefix(stream);
-    let missions = (0..auto_prefix.mission_count)
+    let (auto_prefix, mission_count) = read_auto_great_power_prefix(stream);
+    let missions = (0..mission_count)
         .map(|_| read_mfc_mission(stream, archive))
         .collect();
     LegacyAutoGreatPowerState {
@@ -180,7 +181,7 @@ fn read_help_manager(stream: &mut LegacyStream<'_>) -> LegacyHelpState {
     }
 }
 
-pub(super) fn read_trade_market(stream: &mut LegacyStream<'_>) -> LegacyTradeMarketState {
+fn read_trade_market(stream: &mut LegacyStream<'_>) -> LegacyTradeMarketState {
     LegacyTradeMarketState {
         rows: std::array::from_fn(|_| read_trade_market_row(stream)),
         history: std::array::from_fn(|_| read_fixed_record_list(stream)),
@@ -193,7 +194,7 @@ pub(super) fn read_trade_market_row(stream: &mut LegacyStream<'_>) -> LegacyTrad
         price: stream.read_le_i16(),
         request_count: stream.read_le_i16(),
         offer_count: stream.read_le_i16(),
-        adjusted_offer_count: f64::from_le_bytes(stream.read_bytes(8).try_into().unwrap()),
+        adjusted_offer_count: f64::from_le_bytes(stream.read_array()),
         amount_offered: stream.read_le_i16(),
         base_price: stream.read_le_i16(),
         current_offer_by_nation: read_be_short_array(stream),
@@ -226,24 +227,16 @@ pub(super) fn read_technology_state(stream: &mut LegacyStream<'_>) -> LegacyTech
         }),
         tech_selector: stream.read_le_i16(),
         active_zone_index: stream.read_le_i16(),
-        per_technology_unlock_flags: stream.read_bytes(TECHNOLOGY_COUNT).try_into().unwrap(),
-        resource_type_enabled: stream.read_bytes(14).try_into().unwrap(),
-        init_flags_1ab: stream.read_bytes(30).try_into().unwrap(),
-        init_flags_1c9: stream.read_bytes(9).try_into().unwrap(),
+        per_technology_unlock_flags: stream.read_array(),
+        resource_type_enabled: stream.read_array(),
+        init_flags_1ab: stream.read_array(),
+        init_flags_1c9: stream.read_array(),
         active_prerequisite_pair: read_short_array(stream),
         nation_capability_slots: std::array::from_fn(|_| read_be_short_array(stream)),
-        research_status_by_nation: std::array::from_fn(|_| {
-            stream.read_bytes(TECHNOLOGY_COUNT).try_into().unwrap()
-        }),
-        selected_resource_type_by_nation: std::array::from_fn(|_| {
-            stream.read_bytes(14).try_into().unwrap()
-        }),
-        ability_active_by_nation: std::array::from_fn(|_| {
-            stream.read_bytes(30).try_into().unwrap()
-        }),
-        university_recruitment_availability: std::array::from_fn(|_| {
-            stream.read_bytes(9).try_into().unwrap()
-        }),
+        research_status_by_nation: std::array::from_fn(|_| stream.read_array()),
+        selected_resource_type_by_nation: std::array::from_fn(|_| stream.read_array()),
+        ability_active_by_nation: std::array::from_fn(|_| stream.read_array()),
+        university_recruitment_availability: std::array::from_fn(|_| stream.read_array()),
         completion_year_offsets: std::array::from_fn(|_| read_be_short_array(stream)),
         capability_value_by_nation_and_resource: std::array::from_fn(|_| {
             read_be_short_array(stream)
@@ -252,64 +245,58 @@ pub(super) fn read_technology_state(stream: &mut LegacyStream<'_>) -> LegacyTech
     }
 }
 
-pub(super) fn read_map(stream: &mut LegacyStream<'_>) -> LegacyMapState {
-    let view_origin_tile = stream.read_le_i16();
-    let map_data_ready = stream.read_u8();
-    let recruit_search_active = stream.read_u8();
-    let city_score_total = stream.read_le_i32();
-    let scenario_tag = lossy_text(&stream.read_mfc_string());
-    let no_horizontal_wrap = stream.read_u8();
-    let tiles = (0..STRATEGIC_TILE_COUNT)
-        .map(|_| read_terrain_tile(stream))
-        .collect();
-    let provinces = (0..super::PROVINCE_COUNT)
-        .map(|_| read_province(stream))
-        .collect();
-    let pending_river_mouth_tile = stream.read_le_i16();
+fn read_map(stream: &mut LegacyStream<'_>) -> LegacyMapState {
     LegacyMapState {
-        view_origin_tile,
-        map_data_ready,
-        recruit_search_active,
-        city_score_total,
-        scenario_tag,
-        no_horizontal_wrap,
-        tiles,
-        provinces,
-        pending_river_mouth_tile,
+        view_origin_tile: stream.read_le_i16(),
+        map_data_ready: stream.read_u8(),
+        recruit_search_active: stream.read_u8(),
+        city_score_total: stream.read_le_i32(),
+        scenario_tag: stream.read_mfc_string(),
+        no_horizontal_wrap: stream.read_u8(),
+        tiles: (0..STRATEGIC_TILE_COUNT)
+            .map(|_| read_terrain_tile(stream))
+            .collect(),
+        provinces: (0..super::PROVINCE_COUNT)
+            .map(|_| read_province(stream))
+            .collect(),
+        pending_river_mouth_tile: stream.read_le_i16(),
     }
 }
 
-pub(super) fn read_ocean(stream: &mut LegacyStream<'_>) -> LegacyOceanState {
-    let zone_count = stream.read_le_u16();
-    let zones = (0..zone_count).map(|_| read_zone(stream)).collect();
-    let port_zone_count = stream.read_le_u16();
-    let port_zones = (0..port_zone_count)
-        .map(|_| LegacyPortZone {
-            zone: read_zone(stream),
-            port_tile_index: stream.read_le_i16(),
-        })
-        .collect();
-    let route_count = stream.read_le_u16();
-    let route_segments = (0..route_count)
-        .map(|_| {
-            [
-                stream.read_le_i32(),
-                stream.read_le_i32(),
-                stream.read_le_i32(),
-                stream.read_le_i32(),
-            ]
-        })
-        .collect();
+fn read_ocean(stream: &mut LegacyStream<'_>) -> LegacyOceanState {
     LegacyOceanState {
-        zones,
-        port_zones,
-        route_segments,
+        zones: {
+            let count = stream.read_le_u16();
+            (0..count).map(|_| read_zone(stream)).collect()
+        },
+        port_zones: {
+            let count = stream.read_le_u16();
+            (0..count)
+                .map(|_| LegacyPortZone {
+                    zone: read_zone(stream),
+                    port_tile_index: stream.read_le_i16(),
+                })
+                .collect()
+        },
+        route_segments: {
+            let count = stream.read_le_u16();
+            (0..count)
+                .map(|_| {
+                    [
+                        stream.read_le_i32(),
+                        stream.read_le_i32(),
+                        stream.read_le_i32(),
+                        stream.read_le_i32(),
+                    ]
+                })
+                .collect()
+        },
     }
 }
 
-pub(super) fn read_zone(stream: &mut LegacyStream<'_>) -> LegacyZone {
+fn read_zone(stream: &mut LegacyStream<'_>) -> LegacyZone {
     LegacyZone {
-        display_name: lossy_text(&stream.read_mfc_string()),
+        display_name: stream.read_mfc_string(),
         status_code: stream.read_le_i16(),
         tile_or_terrain_id: stream.read_le_i32(),
         seed_nation_id: stream.read_le_i16(),
@@ -318,7 +305,7 @@ pub(super) fn read_zone(stream: &mut LegacyStream<'_>) -> LegacyZone {
     }
 }
 
-pub(super) fn read_navy(stream: &mut LegacyStream<'_>) -> LegacyNavyState {
+fn read_navy(stream: &mut LegacyStream<'_>) -> LegacyNavyState {
     let ship_count = stream.read_le_u16();
     let mut ships: Vec<_> = (0..ship_count).map(|_| read_ship(stream)).collect();
     // TSortedList inserts each deserialized ship at the head.
@@ -341,7 +328,7 @@ fn read_ship(stream: &mut LegacyStream<'_>) -> LegacyShip {
         ship_type: stream.read_le_i16(),
         aggression: stream.read_le_i32(),
         nation: stream.read_le_i16(),
-        name: lossy_text(&stream.read_mfc_string()),
+        name: stream.read_mfc_string(),
         strength: stream.read_le_i16(),
         selection: stream.read_le_i32(),
         experience: stream.read_le_i16(),
@@ -352,33 +339,27 @@ fn read_ship(stream: &mut LegacyStream<'_>) -> LegacyShip {
 fn read_admiral(stream: &mut LegacyStream<'_>) -> LegacyAdmiral {
     LegacyAdmiral {
         nation: stream.read_le_i16(),
-        name: lossy_text(&stream.read_mfc_string()),
+        name: stream.read_mfc_string(),
         experience: stream.read_le_i16(),
         ship_index: stream.read_le_i16(),
     }
 }
 
 fn read_task_force(stream: &mut LegacyStream<'_>) -> LegacyTaskForce {
-    let aggression = stream.read_le_i32();
-    let order = stream.read_le_i32();
-    let target_ordinal = stream.read_le_i16();
-    let location_ordinal = stream.read_le_i16();
-    let nation = stream.read_le_i16();
-    let defeated = stream.read_u8();
-    let ingot_tile = stream.read_le_i16();
-    let child_count = stream.read_le_u16();
-    let ships = (0..child_count)
-        .map(|_| [stream.read_le_i16(), stream.read_le_i16()])
-        .collect();
     LegacyTaskForce {
-        aggression,
-        order,
-        target_ordinal,
-        location_ordinal,
-        nation,
-        defeated,
-        ingot_tile,
-        ships,
+        aggression: stream.read_le_i32(),
+        order: stream.read_le_i32(),
+        target_ordinal: stream.read_le_i16(),
+        location_ordinal: stream.read_le_i16(),
+        nation: stream.read_le_i16(),
+        defeated: stream.read_u8(),
+        ingot_tile: stream.read_le_i16(),
+        ships: {
+            let count = stream.read_le_u16();
+            (0..count)
+                .map(|_| [stream.read_le_i16(), stream.read_le_i16()])
+                .collect()
+        },
     }
 }
 
@@ -395,43 +376,28 @@ fn skip_army_reports(stream: &mut LegacyStream<'_>) -> u16 {
     report_count
 }
 
-pub(super) fn read_country_base(stream: &mut LegacyStream<'_>) -> LegacyCountryBase {
-    let identity = lossy_text(&stream.read_mfc_string());
-    let alternate_identity = lossy_text(&stream.read_mfc_string());
-    let nation_slot = stream.read_le_i16();
-    let encoded_country_status = stream.read_le_i16();
-    let unit_name_ordinal_by_type = read_be_short_array(stream);
-    let unit_name_counter = stream.read_le_i16();
-    let treasury = stream.read_le_i32();
-    let home_tile = stream.read_le_i32();
-    let overlay_anchor_tile = stream.read_le_i32();
-    let need_level_by_nation = read_be_short_array(stream);
-
-    // TSortedList::ReadFrom is a retail no-op; the count follows immediately.
-    let military_unit_count = stream.read_le_u32();
-    let military_units = (0..military_unit_count)
-        .map(|_| read_military_unit(stream))
-        .collect();
-
-    // TLongintList::NoOpReadFrom is likewise a no-op.
-    let owned_region_count = stream.read_le_u32();
-    let owned_regions = (0..owned_region_count)
-        .map(|_| stream.read_le_i32())
-        .collect();
-
+fn read_country_base(stream: &mut LegacyStream<'_>) -> LegacyCountryBase {
     LegacyCountryBase {
-        identity,
-        alternate_identity,
-        nation_slot,
-        encoded_country_status,
-        unit_name_ordinal_by_type,
-        unit_name_counter,
-        treasury,
-        home_tile,
-        overlay_anchor_tile,
-        need_level_by_nation,
-        military_units,
-        owned_regions,
+        identity: stream.read_mfc_string(),
+        alternate_identity: stream.read_mfc_string(),
+        nation_slot: stream.read_le_i16(),
+        encoded_country_status: stream.read_le_i16(),
+        unit_name_ordinal_by_type: read_be_short_array(stream),
+        unit_name_counter: stream.read_le_i16(),
+        treasury: stream.read_le_i32(),
+        home_tile: stream.read_le_i32(),
+        overlay_anchor_tile: stream.read_le_i32(),
+        need_level_by_nation: read_be_short_array(stream),
+        military_units: {
+            // TSortedList::ReadFrom is a retail no-op; the count follows immediately.
+            let count = stream.read_le_u32();
+            (0..count).map(|_| read_military_unit(stream)).collect()
+        },
+        owned_regions: {
+            // TLongintList::NoOpReadFrom is likewise a no-op.
+            let count = stream.read_le_u32();
+            (0..count).map(|_| stream.read_le_i32()).collect()
+        },
     }
 }
 
@@ -445,7 +411,7 @@ fn read_military_unit(stream: &mut LegacyStream<'_>) -> LegacyMilitaryUnit {
         registered: stream.read_u8(),
         order: stream.read_le_i32(),
         persistent_id: stream.read_le_i32(),
-        name: lossy_text(&stream.read_mfc_string()),
+        name: stream.read_mfc_string(),
         order_target_tiles: read_be_short_array(stream),
         order_target_mirrors: read_be_short_array(stream),
         strength: stream.read_le_i16(),
@@ -455,53 +421,35 @@ fn read_military_unit(stream: &mut LegacyStream<'_>) -> LegacyMilitaryUnit {
     }
 }
 
-pub(super) fn read_great_power_prefix(stream: &mut LegacyStream<'_>) -> LegacyGreatPowerPrefix {
-    let diplomacy_eligible = stream.read_u8();
-    let capacities = read_short_array(stream);
-    let grant_total_cost = stream.read_le_i32();
-    let unfilled_trade_offer_count = stream.read_le_i16();
-    let diplomacy_policy_by_nation = read_be_short_array(stream);
-    let diplomacy_grant_by_nation = read_be_short_array(stream);
-    let need_current_by_type = read_be_short_array(stream);
-    let need_target_by_type = read_be_short_array(stream);
-    let relation_delta_current = read_be_short_array(stream);
-    let purchased_items_by_resource = read_be_short_array(stream);
-    let item_potentials = read_be_short_array(stream);
-    let unfilled_trade_turns_by_resource = read_be_short_array(stream);
-    let transported_items_by_resource = read_be_short_array(stream);
-    let remembered_trade_offers_by_resource = read_be_short_array(stream);
-    let budget_pool_base = stream.read_le_i32();
-    let budget_pool_delta = stream.read_le_i32();
-    let aid_allocation_by_minor_nation =
-        std::array::from_fn(|_| std::array::from_fn(|_| stream.read_be_i32()));
-    let pending_action_status = std::array::from_fn(|_| stream.read_i8());
-    let pending_action_payload_by_action = read_be_short_array(stream);
-    let relationship_lists = (0..19).map(|_| read_fixed_record_list(stream)).collect();
+fn read_great_power_prefix(stream: &mut LegacyStream<'_>) -> (LegacyGreatPowerPrefix, u8) {
+    let prefix = LegacyGreatPowerPrefix {
+        diplomacy_eligible: stream.read_u8(),
+        capacities: read_short_array(stream),
+        grant_total_cost: stream.read_le_i32(),
+        unfilled_trade_offer_count: stream.read_le_i16(),
+        diplomacy_policy_by_nation: read_be_short_array(stream),
+        diplomacy_grant_by_nation: read_be_short_array(stream),
+        need_current_by_type: read_be_short_array(stream),
+        need_target_by_type: read_be_short_array(stream),
+        relation_delta_current: read_be_short_array(stream),
+        purchased_items_by_resource: read_be_short_array(stream),
+        item_potentials: read_be_short_array(stream),
+        unfilled_trade_turns_by_resource: read_be_short_array(stream),
+        transported_items_by_resource: read_be_short_array(stream),
+        remembered_trade_offers_by_resource: read_be_short_array(stream),
+        budget_pool_base: stream.read_le_i32(),
+        budget_pool_delta: stream.read_le_i32(),
+        aid_allocation_by_minor_nation: std::array::from_fn(|_| {
+            std::array::from_fn(|_| stream.read_be_i32())
+        }),
+        pending_action_status: std::array::from_fn(|_| stream.read_i8()),
+        pending_action_payload_by_action: read_be_short_array(stream),
+        turn_event_queue: read_fixed_record_list(stream),
+        proposal_queue: read_fixed_record_list(stream),
+        diplomacy_tracked_slots: std::array::from_fn(|_| read_fixed_record_list(stream)),
+    };
     let minister_presence_mask = stream.read_u8();
-
-    LegacyGreatPowerPrefix {
-        diplomacy_eligible,
-        capacities,
-        grant_total_cost,
-        unfilled_trade_offer_count,
-        diplomacy_policy_by_nation,
-        diplomacy_grant_by_nation,
-        need_current_by_type,
-        need_target_by_type,
-        relation_delta_current,
-        purchased_items_by_resource,
-        item_potentials,
-        unfilled_trade_turns_by_resource,
-        transported_items_by_resource,
-        remembered_trade_offers_by_resource,
-        budget_pool_base,
-        budget_pool_delta,
-        aid_allocation_by_minor_nation,
-        pending_action_status,
-        pending_action_payload_by_action,
-        relationship_lists,
-        minister_presence_mask,
-    }
+    (prefix, minister_presence_mask)
 }
 
 fn read_fixed_record_list(stream: &mut LegacyStream<'_>) -> LegacyFixedRecordList {
@@ -538,7 +486,7 @@ fn read_foreign_minister(
         purchase_priority_by_resource: read_be_short_array(stream),
         preferred_resource_slots: read_be_short_array(stream),
         status_flag: stream.read_u8(),
-        trade_partner_enabled: stream.read_bytes(7).try_into().unwrap(),
+        trade_partner_enabled: stream.read_array(),
         development_grant_by_nation: read_be_short_array(stream),
         bill_order_flag: (foreign_policy_id == 4).then(|| stream.read_u8()),
     }
@@ -575,78 +523,50 @@ fn read_longint_list(stream: &mut LegacyStream<'_>) -> Vec<i32> {
     (0..count).map(|_| stream.read_le_i32()).collect()
 }
 
-pub(super) fn read_city(stream: &mut LegacyStream<'_>) -> LegacyCityState {
-    let power_plant_upgrade_queued = stream.read_u8();
-    let low_production = stream.read_u8();
-    let low_stock = stream.read_u8();
-    let production_flags = stream
-        .read_bytes(CITY_PRODUCTION_SLOT_COUNT)
-        .try_into()
-        .unwrap();
-    let food_substitution_count = stream.read_le_i16();
-    let starvation_population_loss = stream.read_le_i16();
-    let serialized_state = stream.read_le_i16();
-    let phase_counter = stream.read_le_i16();
-    let power_available = stream.read_le_i16();
-    let military_recruit_count_by_kind = read_be_short_array(stream);
-    let civilian_recruit_count_by_kind = read_be_short_array(stream);
-    let order_count_by_type = read_be_short_array(stream);
-    let stockpile = read_be_short_array(stream);
-    let production_orders = read_be_short_array(stream);
-    let production_accum = read_be_short_array(stream);
-    let unmet_resource_retries = read_be_short_array(stream);
-    let reserved_by_type = read_be_short_array(stream);
-    let production_current = read_be_short_array(stream);
-    let production_progress = read_be_short_array(stream);
-    let consumed_production_input_by_type = read_be_short_array(stream);
-    let rolling_item_production_score = stream.read_le_i32();
-    let population = read_population(stream);
-    let orders = read_city_orders(stream);
-
-    // TTaskList's inherited TSortedList stream hook is a no-op.
-    let task_count = stream.read_le_u32();
-    let tasks = (0..task_count)
-        .map(|_| {
-            let kind = stream.read_u8();
-            let payload_size = if kind == 1 { 8 } else { 12 };
-            LegacyCityTask {
-                kind,
-                payload: stream.read_bytes(payload_size).to_vec(),
-            }
-        })
-        .collect();
-    let transport_requests = read_fixed_record_list(stream);
-
+fn read_city(stream: &mut LegacyStream<'_>) -> LegacyCityState {
     LegacyCityState {
-        power_plant_upgrade_queued,
-        low_production,
-        low_stock,
-        production_flags,
-        food_substitution_count,
-        starvation_population_loss,
-        serialized_state,
-        phase_counter,
-        power_available,
-        military_recruit_count_by_kind,
-        civilian_recruit_count_by_kind,
-        order_count_by_type,
-        stockpile,
-        production_orders,
-        production_accum,
-        unmet_resource_retries,
-        reserved_by_type,
-        production_current,
-        production_progress,
-        consumed_production_input_by_type,
-        rolling_item_production_score,
-        population,
-        orders,
-        tasks,
-        transport_requests,
+        power_plant_upgrade_queued: stream.read_u8(),
+        low_production: stream.read_u8(),
+        low_stock: stream.read_u8(),
+        production_flags: stream.read_array(),
+        food_substitution_count: stream.read_le_i16(),
+        starvation_population_loss: stream.read_le_i16(),
+        serialized_state: stream.read_le_i16(),
+        phase_counter: stream.read_le_i16(),
+        power_available: stream.read_le_i16(),
+        military_recruit_count_by_kind: read_be_short_array(stream),
+        civilian_recruit_count_by_kind: read_be_short_array(stream),
+        order_count_by_type: read_be_short_array(stream),
+        stockpile: read_be_short_array(stream),
+        production_orders: read_be_short_array(stream),
+        production_accum: read_be_short_array(stream),
+        unmet_resource_retries: read_be_short_array(stream),
+        reserved_by_type: read_be_short_array(stream),
+        production_current: read_be_short_array(stream),
+        production_progress: read_be_short_array(stream),
+        consumed_production_input_by_type: read_be_short_array(stream),
+        rolling_item_production_score: stream.read_le_i32(),
+        population: read_population(stream),
+        orders: read_city_orders(stream),
+        tasks: {
+            // TTaskList's inherited TSortedList stream hook is a no-op.
+            let count = stream.read_le_u32();
+            (0..count)
+                .map(|_| {
+                    let kind = stream.read_u8();
+                    let payload_size = if kind == 1 { 8 } else { 12 };
+                    LegacyCityTask {
+                        kind,
+                        payload: stream.read_bytes(payload_size).to_vec(),
+                    }
+                })
+                .collect()
+        },
+        transport_requests: read_fixed_record_list(stream),
     }
 }
 
-pub(super) fn read_city_orders(stream: &mut LegacyStream<'_>) -> LegacyCityOrders {
+fn read_city_orders(stream: &mut LegacyStream<'_>) -> LegacyCityOrders {
     // ICity constructs these 47 concrete orders in this exact pointer-list order.
     LegacyCityOrders {
         food_processing: read_production_order(stream),
@@ -662,7 +582,7 @@ pub(super) fn read_city_orders(stream: &mut LegacyStream<'_>) -> LegacyCityOrder
     }
 }
 
-pub(super) fn read_production_order(stream: &mut LegacyStream<'_>) -> LegacyProductionOrder {
+fn read_production_order(stream: &mut LegacyStream<'_>) -> LegacyProductionOrder {
     // TProductionOrder::ReadFrom reads the saved constructor value and then
     // overwrites the same field with the authoritative serialized value below.
     stream.skip(2);
@@ -732,7 +652,7 @@ fn read_great_power_post_city(stream: &mut LegacyStream<'_>) -> LegacyGreatPower
     let civilian_units = (0..civilian_count)
         .map(|_| read_civilian_unit(stream))
         .collect();
-    let candidate_nation_flags = stream.read_bytes(NATION_COUNT).try_into().unwrap();
+    let candidate_nation_flags = stream.read_array();
     let diplomacy_budget_base = stream.read_le_i32();
     let escalation_counter = stream.read_i8();
     let pending_commitment_cost = stream.read_le_i32();
@@ -746,7 +666,7 @@ fn read_great_power_post_city(stream: &mut LegacyStream<'_>) -> LegacyGreatPower
 
     let special_resource_trade_balance = stream.read_le_i32();
     let aid_allocation_total = stream.read_le_i32();
-    let colony_boycott_flags = stream.read_bytes(NATION_COUNT).try_into().unwrap();
+    let colony_boycott_flags = stream.read_array();
     let military_expenses = stream.read_le_i32();
     LegacyGreatPowerPostCity {
         towns,
@@ -794,43 +714,44 @@ fn read_civilian_unit(stream: &mut LegacyStream<'_>) -> LegacyCivilianUnit {
     }
 }
 
-fn read_auto_great_power_prefix(stream: &mut LegacyStream<'_>) -> LegacyAutoGreatPowerPrefix {
-    LegacyAutoGreatPowerPrefix {
+fn read_auto_great_power_prefix(
+    stream: &mut LegacyStream<'_>,
+) -> (LegacyAutoGreatPowerPrefix, u32) {
+    let prefix = LegacyAutoGreatPowerPrefix {
         action_metric_by_quarter: read_be_short_array(stream),
-        map_node_state_flags: stream.read_bytes(0x180).try_into().unwrap(),
-        port_zone_state_flags: stream.read_bytes(0x70).try_into().unwrap(),
-        mission_count: stream.read_le_u32(),
-    }
+        map_node_state_flags: stream.read_array(),
+        port_zone_state_flags: stream.read_array(),
+    };
+    let mission_count = stream.read_le_u32();
+    (prefix, mission_count)
 }
 
 fn read_mfc_mission(
     stream: &mut LegacyStream<'_>,
-    archive: &mut LegacyMfcArchiveState,
+    archive: &mut Vec<Option<String>>,
 ) -> LegacyMission {
     const NEW_CLASS_TAG: u16 = 0xffff;
     const CLASS_TAG: u16 = 0x8000;
     const BIG_TAG: u16 = 0x7fff;
-    const BIG_CLASS_TAG: u32 = 0x8000_0000;
 
     let word_tag = stream.read_le_u16();
-    let object_tag = if word_tag == BIG_TAG {
-        stream.read_le_u32()
-    } else {
-        (u32::from(word_tag & CLASS_TAG) << 16) | u32::from(word_tag & !CLASS_TAG)
-    };
     let class = if word_tag == NEW_CLASS_TAG {
         stream.skip(2);
         let name_length = usize::from(stream.read_le_u16());
         let name = lossy_text(stream.read_bytes(name_length));
-        archive.entries.push(Some(name.clone()));
+        archive.push(Some(name.clone()));
         name
     } else {
-        let class_index = (object_tag & !BIG_CLASS_TAG) as usize;
-        archive.entries[class_index].clone().unwrap()
+        let class_index = if word_tag == BIG_TAG {
+            (stream.read_le_u32() & 0x7fff_ffff) as usize
+        } else {
+            usize::from(word_tag & !CLASS_TAG)
+        };
+        archive[class_index].clone().unwrap()
     };
 
     // ReadObject reserves the object index before invoking Serialize, allowing cycles.
-    archive.entries.push(None);
+    archive.push(None);
     read_mission_payload(stream, &class)
 }
 
@@ -955,45 +876,45 @@ fn read_terrain_tile(stream: &mut LegacyStream<'_>) -> LegacyTerrainTile {
         marker_slot_index: bytes[0x10] as i8,
         edge_resources: [bytes[0x11] as i8, bytes[0x12] as i8],
         gate: bytes[0x13] as i8,
-        city_record_index: i16::from_le_bytes(bytes[0x14..0x16].try_into().unwrap()),
+        city_record_index: le_i16_at(bytes, 0x14),
         action_state: bytes[0x16] as i8,
         rail_flags: bytes[0x17],
-        tile_action_ordinal: i16::from_le_bytes(bytes[0x1a..0x1c].try_into().unwrap()),
-        active_flags: u16::from_le_bytes(bytes[0x1c..0x1e].try_into().unwrap()),
+        tile_action_ordinal: le_i16_at(bytes, 0x1a),
+        active_flags: le_u16_at(bytes, 0x1c),
     }
 }
 
 fn read_province(stream: &mut LegacyStream<'_>) -> LegacyProvince {
     let bytes = stream.read_bytes(PROVINCE_FIXED_SERIALIZED_SIZE);
-    let name = lossy_text(&stream.read_mfc_string());
+    let name = stream.read_mfc_string();
     LegacyProvince {
         owner_nation: bytes[0] as i8,
         former_owner_nation: bytes[1] as i8,
         development_stage: bytes[2] as i8,
         fort_level: bytes[3] as i8,
-        city_tile: i16::from_le_bytes(bytes[4..6].try_into().unwrap()),
-        last_turn_tick: i16::from_le_bytes(bytes[6..8].try_into().unwrap()),
+        city_tile: le_i16_at(bytes, 4),
+        last_turn_tick: le_i16_at(bytes, 6),
         adjacent_region_count: bytes[8] as i8,
         adjacent_region_ids: std::array::from_fn(|index| {
             let offset = 0x0a + index * 2;
-            i16::from_le_bytes(bytes[offset..offset + 2].try_into().unwrap())
+            le_i16_at(bytes, offset)
         }),
         adjacent_region_anchor_tiles: std::array::from_fn(|index| {
             let offset = 0x22 + index * 2;
-            i16::from_le_bytes(bytes[offset..offset + 2].try_into().unwrap())
+            le_i16_at(bytes, offset)
         }),
         linked_region_count: bytes[0x3a] as i8,
-        secondary_neighbor_tile: i16::from_le_bytes(bytes[0x3e..0x40].try_into().unwrap()),
-        primary_neighbor_tile: i16::from_le_bytes(bytes[0x40..0x42].try_into().unwrap()),
+        secondary_neighbor_tile: le_i16_at(bytes, 0x3e),
+        primary_neighbor_tile: le_i16_at(bytes, 0x40),
         linked_tile_indices: std::array::from_fn(|index| {
             let offset = 0x42 + index * 2;
-            i16::from_le_bytes(bytes[offset..offset + 2].try_into().unwrap())
+            le_i16_at(bytes, offset)
         }),
         resource_development_by_type: std::array::from_fn(|index| {
             let offset = 0x82 + index * 2;
-            i16::from_le_bytes(bytes[offset..offset + 2].try_into().unwrap())
+            le_i16_at(bytes, offset)
         }),
-        city_score: i32::from_le_bytes(bytes[0x9c..0xa0].try_into().unwrap()),
+        city_score: le_i32_at(bytes, 0x9c),
         navy_order_reachable: bytes[0xa0],
         explored_by_nation_mask: bytes[0xa1],
         resource_presence_mask: bytes[0xa2] as i8,
@@ -1027,12 +948,29 @@ fn read_short_array<const N: usize>(stream: &mut LegacyStream<'_>) -> [i16; N] {
     std::array::from_fn(|_| stream.read_le_i16())
 }
 
+fn le_i16_at(bytes: &[u8], offset: usize) -> i16 {
+    i16::from_le_bytes([bytes[offset], bytes[offset + 1]])
+}
+
+fn le_u16_at(bytes: &[u8], offset: usize) -> u16 {
+    u16::from_le_bytes([bytes[offset], bytes[offset + 1]])
+}
+
+fn le_i32_at(bytes: &[u8], offset: usize) -> i32 {
+    i32::from_le_bytes([
+        bytes[offset],
+        bytes[offset + 1],
+        bytes[offset + 2],
+        bytes[offset + 3],
+    ])
+}
+
 fn read_be_short_array<const N: usize>(stream: &mut LegacyStream<'_>) -> [i16; N] {
     std::array::from_fn(|_| stream.read_be_i16())
 }
 
 fn read_be_u32_array<const N: usize>(stream: &mut LegacyStream<'_>) -> [u32; N] {
-    std::array::from_fn(|_| u32::from_be_bytes(stream.read_bytes(4).try_into().unwrap()))
+    std::array::from_fn(|_| u32::from_be_bytes(stream.read_array()))
 }
 
 fn fixed_text(bytes: &[u8]) -> String {

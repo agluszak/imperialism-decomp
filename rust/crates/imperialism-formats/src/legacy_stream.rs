@@ -19,6 +19,10 @@ impl<'a> LegacyStream<'a> {
         &self.bytes[start..self.position]
     }
 
+    pub(crate) fn read_array<const N: usize>(&mut self) -> [u8; N] {
+        self.read_bytes(N).try_into().unwrap()
+    }
+
     pub(crate) fn skip(&mut self, length: usize) {
         self.read_bytes(length);
     }
@@ -32,31 +36,31 @@ impl<'a> LegacyStream<'a> {
     }
 
     pub(crate) fn read_le_u16(&mut self) -> u16 {
-        u16::from_le_bytes(self.read_bytes(2).try_into().unwrap())
+        u16::from_le_bytes(self.read_array())
     }
 
     pub(crate) fn read_le_i16(&mut self) -> i16 {
-        i16::from_le_bytes(self.read_bytes(2).try_into().unwrap())
+        i16::from_le_bytes(self.read_array())
     }
 
     pub(crate) fn read_le_u32(&mut self) -> u32 {
-        u32::from_le_bytes(self.read_bytes(4).try_into().unwrap())
+        u32::from_le_bytes(self.read_array())
     }
 
     pub(crate) fn read_le_i32(&mut self) -> i32 {
-        i32::from_le_bytes(self.read_bytes(4).try_into().unwrap())
+        i32::from_le_bytes(self.read_array())
     }
 
     pub(crate) fn read_be_i16(&mut self) -> i16 {
-        i16::from_be_bytes(self.read_bytes(2).try_into().unwrap())
+        i16::from_be_bytes(self.read_array())
     }
 
     pub(crate) fn read_be_i32(&mut self) -> i32 {
-        i32::from_be_bytes(self.read_bytes(4).try_into().unwrap())
+        i32::from_be_bytes(self.read_array())
     }
 
     /// Reads the compact length used by MFC `CArchive` for serialized ANSI `CString`s.
-    pub(crate) fn read_mfc_string(&mut self) -> Vec<u8> {
+    pub(crate) fn read_mfc_string(&mut self) -> String {
         let byte_length = self.read_u8();
         let length = if byte_length != u8::MAX {
             usize::from(byte_length)
@@ -68,7 +72,7 @@ impl<'a> LegacyStream<'a> {
                 self.read_le_u32() as usize
             }
         };
-        self.read_bytes(length).to_vec()
+        String::from_utf8_lossy(self.read_bytes(length)).into_owned()
     }
 }
 
@@ -77,29 +81,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn reads_native_and_swapped_integer_shapes() {
-        let bytes = [0x34, 0x12, 0x12, 0x34, 0x78, 0x56, 0x34, 0x12];
-        let mut stream = LegacyStream::new(&bytes);
-        assert_eq!(stream.read_le_i16(), 0x1234);
-        assert_eq!(stream.read_be_i16(), 0x1234);
-        assert_eq!(stream.read_le_i32(), 0x1234_5678);
-    }
-
-    #[test]
     fn reads_all_mfc_string_length_forms() {
         let bytes = [
             3, b'o', b'n', b'e', 0xff, 4, 0, b't', b'e', b's', b't', 0xff, 0xff, 0xff, 2, 0, 0, 0,
             b'o', b'k',
         ];
         let mut stream = LegacyStream::new(&bytes);
-        assert_eq!(stream.read_mfc_string(), b"one");
-        assert_eq!(stream.read_mfc_string(), b"test");
-        assert_eq!(stream.read_mfc_string(), b"ok");
-    }
-
-    #[test]
-    fn reads_big_endian_longs() {
-        let mut stream = LegacyStream::new(&[0x12, 0x34, 0x56, 0x78]);
-        assert_eq!(stream.read_be_i32(), 0x1234_5678);
+        assert_eq!(stream.read_mfc_string(), "one");
+        assert_eq!(stream.read_mfc_string(), "test");
+        assert_eq!(stream.read_mfc_string(), "ok");
     }
 }

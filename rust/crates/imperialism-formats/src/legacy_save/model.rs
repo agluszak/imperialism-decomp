@@ -1,7 +1,8 @@
+#![allow(dead_code)]
+
 use super::*;
 use imperialism_core::*;
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacySaveHeader {
     pub format_version: u32,
     pub saved_session_slot: i32,
@@ -14,7 +15,6 @@ pub(crate) struct LegacySaveHeader {
     pub preview_active_nation_name: String,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyGameSetup {
     pub multiplayer_game_active: u8,
     pub nation_control_modes: [i16; 7],
@@ -26,7 +26,6 @@ pub(crate) struct LegacyGameSetup {
     pub scenario_map_index_plus_one: i16,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacySimulationPrefix {
     pub language_code: u32,
     pub economic_turn: i16,
@@ -50,7 +49,6 @@ pub(crate) struct LegacySimulationPrefix {
     pub nation_names: Vec<String>,
 }
 
-#[derive(Clone, Debug, PartialEq)]
 pub(crate) struct LegacyTradeMarketRow {
     pub previous_price: i16,
     pub price: i16,
@@ -64,13 +62,11 @@ pub(crate) struct LegacyTradeMarketRow {
     pub maximum_offer_by_nation: [i16; NATION_COUNT],
 }
 
-#[derive(Clone, Debug, PartialEq)]
 pub(crate) struct LegacyTradeMarketState {
     pub rows: [LegacyTradeMarketRow; TRADE_CATEGORY_COUNT],
     pub history: [LegacyFixedRecordList; TRADE_CATEGORY_COUNT],
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyDiplomacyState {
     pub relation_standing_scores: [i16; NATION_COUNT * NATION_COUNT],
     pub relation_propagation_matrix: [i16; NATION_COUNT * NATION_COUNT],
@@ -85,7 +81,6 @@ pub(crate) struct LegacyDiplomacyState {
     pub special_relation_target_slots: [i16; MINOR_NATION_COUNT],
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyTechnologyState {
     pub priority_slots: [i16; TECHNOLOGY_COUNT],
     pub initial_capability_value_by_nation_and_resource:
@@ -107,7 +102,6 @@ pub(crate) struct LegacyTechnologyState {
     pub marker: i16,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyZone {
     pub display_name: String,
     pub status_code: i16,
@@ -117,20 +111,17 @@ pub(crate) struct LegacyZone {
     pub context_ordinal: i16,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyPortZone {
     pub zone: LegacyZone,
     pub port_tile_index: i16,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyOceanState {
     pub zones: Vec<LegacyZone>,
     pub port_zones: Vec<LegacyPortZone>,
     pub route_segments: Vec<[i32; 4]>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyShip {
     pub ship_type: i16,
     pub aggression: i32,
@@ -142,7 +133,6 @@ pub(crate) struct LegacyShip {
     pub zone_ordinal: i16,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyAdmiral {
     pub nation: i16,
     pub name: String,
@@ -150,7 +140,6 @@ pub(crate) struct LegacyAdmiral {
     pub ship_index: i16,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyTaskForce {
     pub aggression: i32,
     pub order: i32,
@@ -162,7 +151,6 @@ pub(crate) struct LegacyTaskForce {
     pub ships: Vec<[i16; 2]>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyNavyState {
     /// Head-first runtime order, matching canonical snapshot IDs.
     pub ships: Vec<LegacyShip>,
@@ -170,7 +158,6 @@ pub(crate) struct LegacyNavyState {
     pub task_forces: Vec<LegacyTaskForce>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyMilitaryUnit {
     pub unit_type: i16,
     pub stationed_province: i16,
@@ -189,7 +176,6 @@ pub(crate) struct LegacyMilitaryUnit {
     pub battle_flags: i16,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyCountryBase {
     pub identity: String,
     pub alternate_identity: String,
@@ -204,7 +190,6 @@ pub(crate) struct LegacyCountryBase {
     pub military_units: Vec<LegacyMilitaryUnit>,
     pub owned_regions: Vec<i32>,
 }
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyGreatPowerPrefix {
     pub diplomacy_eligible: u8,
     pub capacities: [i16; 4],
@@ -225,17 +210,16 @@ pub(crate) struct LegacyGreatPowerPrefix {
     pub aid_allocation_by_minor_nation: [[i32; RESOURCE_KIND_COUNT]; MINOR_NATION_COUNT],
     pub pending_action_status: [i8; PENDING_ACTION_COUNT],
     pub pending_action_payload_by_action: [i16; PENDING_ACTION_COUNT],
-    pub relationship_lists: Vec<LegacyFixedRecordList>,
-    pub minister_presence_mask: u8,
+    pub turn_event_queue: LegacyFixedRecordList,
+    pub proposal_queue: LegacyFixedRecordList,
+    pub diplomacy_tracked_slots: [LegacyFixedRecordList; TRADE_CATEGORY_COUNT],
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyFixedRecordList {
     pub record_size: u16,
     pub records: Vec<Vec<u8>>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyPopulationState {
     pub count: i16,
     pub strength: i16,
@@ -248,13 +232,11 @@ pub(crate) struct LegacyPopulationState {
     pub pending_labor_delta: [i16; 3],
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyCityTask {
     pub kind: u8,
     pub payload: Vec<u8>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyCityState {
     pub power_plant_upgrade_queued: u8,
     pub low_production: u8,
@@ -283,7 +265,6 @@ pub(crate) struct LegacyCityState {
     pub transport_requests: LegacyFixedRecordList,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyProductionOrder {
     pub resource_type_index: i16,
     pub quantity: i16,
@@ -292,7 +273,6 @@ pub(crate) struct LegacyProductionOrder {
     pub accumulated_value: i32,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyItemOrder {
     pub order: LegacyProductionOrder,
     pub requested_quantity: i16,
@@ -301,7 +281,6 @@ pub(crate) struct LegacyItemOrder {
     pub production_slot: i16,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyUnitOrder {
     pub order: LegacyProductionOrder,
     pub primary_input_resource_id: i16,
@@ -313,13 +292,11 @@ pub(crate) struct LegacyUnitOrder {
     pub specialist_mode: u8,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyPowerPlantOrder {
     pub order: LegacyProductionOrder,
     pub desired_quantity: i16,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyCityOrders {
     pub food_processing: LegacyProductionOrder,
     pub items: [LegacyItemOrder; 9],
@@ -333,7 +310,6 @@ pub(crate) struct LegacyCityOrders {
     pub population_growth: LegacyProductionOrder,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyForeignMinisterState {
     pub skill_index: i16,
     pub scalar_fields: [i16; 7],
@@ -345,7 +321,6 @@ pub(crate) struct LegacyForeignMinisterState {
     pub bill_order_flag: Option<u8>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyInteriorMinisterState {
     pub skill_index: i16,
     pub scalar_prefix: [i16; 4],
@@ -360,7 +335,6 @@ pub(crate) struct LegacyInteriorMinisterState {
     pub civilian_order_demand_by_resource: [i16; RESOURCE_KIND_COUNT],
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyDefenseMinisterState {
     pub skill_index: i16,
     pub scalar_fields: [i16; 2],
@@ -369,14 +343,12 @@ pub(crate) struct LegacyDefenseMinisterState {
     pub thresholds: [i16; 4],
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyGreatPowerMinisters {
     pub foreign: Option<LegacyForeignMinisterState>,
     pub interior: Option<LegacyInteriorMinisterState>,
     pub defense: Option<LegacyDefenseMinisterState>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyTown {
     pub name: String,
     pub tile_index: i16,
@@ -390,7 +362,6 @@ pub(crate) struct LegacyTown {
     pub active: u8,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyCivilianUnit {
     pub unit_type: i16,
     pub tile_index: i16,
@@ -403,7 +374,6 @@ pub(crate) struct LegacyCivilianUnit {
     pub remaining_turns: i16,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyGreatPowerPostCity {
     pub towns: Vec<LegacyTown>,
     pub civilian_units: Vec<LegacyCivilianUnit>,
@@ -419,15 +389,12 @@ pub(crate) struct LegacyGreatPowerPostCity {
     pub colony_boycott_flags: [u8; NATION_COUNT],
     pub military_expenses: i32,
 }
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyAutoGreatPowerPrefix {
     pub action_metric_by_quarter: [i16; 6],
     pub map_node_state_flags: [u8; 0x180],
     pub port_zone_state_flags: [u8; 0x70],
-    pub mission_count: u32,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyGreatPowerState {
     pub country: LegacyCountryBase,
     pub prefix: LegacyGreatPowerPrefix,
@@ -436,14 +403,12 @@ pub(crate) struct LegacyGreatPowerState {
     pub post_city: LegacyGreatPowerPostCity,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyAutoGreatPowerState {
     pub great_power: LegacyGreatPowerState,
     pub auto_prefix: LegacyAutoGreatPowerPrefix,
     pub missions: Vec<LegacyMission>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyMinorState {
     pub country: LegacyCountryBase,
     pub need_current_by_type: [i16; RESOURCE_KIND_COUNT],
@@ -455,7 +420,6 @@ pub(crate) struct LegacyMinorState {
     pub diplomacy_save_extension: [i16; RESOURCE_KIND_COUNT],
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) enum LegacyMajorNationState {
     Auto(Box<LegacyAutoGreatPowerState>),
     Other(Box<LegacyGreatPowerState>),
@@ -470,32 +434,12 @@ impl LegacyMajorNationState {
     }
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyHelpState {
     pub index_records: LegacyFixedRecordList,
     pub civilian_completion_counters: [i16; 5],
     pub help_index_ready: i16,
 }
 
-/// Persistent pointer/class map owned by the surrounding MFC `CArchive`.
-///
-/// MFC allocates entries from one shared index space: null occupies index zero,
-/// and every newly encountered runtime class and object consumes the next index.
-/// The state must therefore survive across all nation mission queues in one save.
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub(crate) struct LegacyMfcArchiveState {
-    pub(super) entries: Vec<Option<String>>,
-}
-
-impl Default for LegacyMfcArchiveState {
-    fn default() -> Self {
-        Self {
-            entries: vec![None],
-        }
-    }
-}
-
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyArmyMission {
     pub present_location: i16,
     pub required_equipage_bits: [u32; 5],
@@ -503,7 +447,6 @@ pub(crate) struct LegacyArmyMission {
     pub unit_ordinals: Vec<i16>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyNavyMission {
     pub target_zone: i16,
     pub resolved_port_zone: i16,
@@ -513,7 +456,6 @@ pub(crate) struct LegacyNavyMission {
     pub state: i32,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyMissionCommon {
     pub source_nation: i16,
     pub state: u8,
@@ -523,7 +465,6 @@ pub(crate) struct LegacyMissionCommon {
     pub marker: u8,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) enum LegacyMission {
     DefendProvince {
         common: LegacyMissionCommon,
@@ -564,7 +505,6 @@ pub(crate) enum LegacyMission {
         blockade_port_zone: i16,
     },
 }
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyTerrainTile {
     pub terrain_kind: i8,
     pub sprite_variant: u8,
@@ -592,7 +532,6 @@ pub(crate) struct LegacyTerrainTile {
     pub tile_action_ordinal: i16,
     pub active_flags: u16,
 }
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyProvince {
     pub owner_nation: i8,
     pub former_owner_nation: i8,
@@ -616,7 +555,6 @@ pub(crate) struct LegacyProvince {
     pub name: String,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyMapState {
     pub view_origin_tile: i16,
     pub map_data_ready: u8,

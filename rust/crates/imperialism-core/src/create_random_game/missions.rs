@@ -137,8 +137,7 @@ pub(super) fn build_province_state(
             false,
             resource_presence_masks[index],
             String::new(),
-        )
-        .expect("generated province state fits the retail province record");
+        );
         nations.append_owned_region_during_construction(owner, province);
     }
     provinces

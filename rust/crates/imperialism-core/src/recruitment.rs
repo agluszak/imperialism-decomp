@@ -279,7 +279,7 @@ mod tests {
     }
 
     fn world() -> MapMgr {
-        MapMgr::new(MapTopology::Wrapping, vec![tile(None); 108 * 60]).unwrap()
+        MapMgr::new(MapTopology::Wrapping, vec![tile(None); 108 * 60])
     }
 
     fn city() -> CityState {

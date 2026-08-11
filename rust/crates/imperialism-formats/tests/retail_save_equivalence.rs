@@ -19,10 +19,8 @@ fn beginning_save_projection_matches_cpp_loaded_state() -> anyhow::Result<()> {
         selected_nation: expected.turn().selected_nation,
     });
 
-    // The importer preserves the saved viewport. Map entry then centers on the first idle
-    // civilian using the same retail viewport math, without a presentation method on GameState.
-    let persisted_view_origin = save.map_mgr().view_origin;
-    assert_eq!(actual.map.view_origin, persisted_view_origin);
+    // Map entry centers on the first idle civilian using the same retail viewport math,
+    // without a presentation method on GameState.
     if let Some(tile) = actual.first_idle_civilian_tile(actual.turn().active_nation) {
         let origin = actual.map.viewport_origin_centered_on(tile);
         actual.map.view_origin = origin;

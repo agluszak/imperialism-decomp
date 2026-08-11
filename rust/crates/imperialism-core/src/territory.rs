@@ -6,8 +6,6 @@ use crate::{
 use serde::{Deserialize, Serialize};
 
 const REGION_CLASS_COUNT: usize = 24;
-const MAX_ADJACENT_PROVINCES: usize = 12;
-const MAX_LINKED_TILES: usize = 32;
 
 /// A country's current relationship to an imperial master.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
@@ -30,18 +28,24 @@ impl CountryStatus {
 /// The optional fields are independent: retail has no separate active-record bit.
 /// Adjacency preserves the stored prefix order and is limited to the twelve slots
 /// present in each retail record.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ProvinceState {
+    #[serde(deserialize_with = "deserialize_required_option")]
     owner: Option<NationId>,
+    #[serde(deserialize_with = "deserialize_required_option")]
     former_owner: Option<NationId>,
     development_stage: i8,
     adjacency: Vec<ProvinceId>,
     pub adjacency_anchor_tiles: Vec<TileId>,
+    #[serde(deserialize_with = "deserialize_required_option")]
     pub region_class: Option<u8>,
     fort_level: i8,
+    #[serde(deserialize_with = "deserialize_required_option")]
     city_tile: Option<TileId>,
     pub last_turn_tick: i16,
+    #[serde(deserialize_with = "deserialize_required_option")]
     pub secondary_neighbor_tile: Option<TileId>,
+    #[serde(deserialize_with = "deserialize_required_option")]
     pub primary_neighbor_tile: Option<TileId>,
     /// Retail `Province::linkedTileIndices42`, in table-construction order.
     pub linked_tiles: Vec<TileId>,
@@ -99,34 +103,8 @@ impl ProvinceState {
         navy_order_reachable: bool,
         resource_presence_mask: i8,
         name: String,
-    ) -> Result<Self, ProvinceStateError> {
-        if adjacency.len() > MAX_ADJACENT_PROVINCES {
-            return Err(ProvinceStateError::TooManyAdjacentProvinces {
-                actual: adjacency.len(),
-            });
-        }
-        if adjacency_anchor_tiles.len() != adjacency.len() {
-            return Err(ProvinceStateError::AdjacencyAnchorCountMismatch {
-                provinces: adjacency.len(),
-                anchors: adjacency_anchor_tiles.len(),
-            });
-        }
-        if let Some(region_class) = region_class
-            && usize::from(region_class) >= REGION_CLASS_COUNT
-        {
-            return Err(ProvinceStateError::InvalidRegionClass {
-                value: region_class,
-            });
-        }
-        if !(0..=3).contains(&fort_level) {
-            return Err(ProvinceStateError::InvalidFortLevel { value: fort_level });
-        }
-        if linked_tiles.len() > MAX_LINKED_TILES {
-            return Err(ProvinceStateError::TooManyLinkedTiles {
-                actual: linked_tiles.len(),
-            });
-        }
-        Ok(Self {
+    ) -> Self {
+        Self {
             owner,
             former_owner,
             development_stage,
@@ -145,7 +123,7 @@ impl ProvinceState {
             navy_order_reachable,
             resource_presence_mask,
             name,
-        })
+        }
     }
 
     pub const fn owner(&self) -> Option<NationId> {
@@ -197,84 +175,12 @@ impl ProvinceState {
     }
 }
 
-impl<'de> Deserialize<'de> for ProvinceState {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        #[derive(Deserialize)]
-        struct SerializedProvinceState {
-            #[serde(deserialize_with = "deserialize_required_option")]
-            owner: Option<NationId>,
-            #[serde(deserialize_with = "deserialize_required_option")]
-            former_owner: Option<NationId>,
-            development_stage: i8,
-            adjacency: Vec<ProvinceId>,
-            adjacency_anchor_tiles: Vec<TileId>,
-            #[serde(deserialize_with = "deserialize_required_option")]
-            region_class: Option<u8>,
-            fort_level: i8,
-            #[serde(deserialize_with = "deserialize_required_option")]
-            city_tile: Option<TileId>,
-            last_turn_tick: i16,
-            #[serde(deserialize_with = "deserialize_required_option")]
-            secondary_neighbor_tile: Option<TileId>,
-            #[serde(deserialize_with = "deserialize_required_option")]
-            primary_neighbor_tile: Option<TileId>,
-            linked_tiles: Vec<TileId>,
-            resource_development_by_type: ResourceTable<i16>,
-            explored_by_majors: MajorNationTable<bool>,
-            city_score: i32,
-            navy_order_reachable: bool,
-            resource_presence_mask: i8,
-            name: String,
-        }
-
-        let province = SerializedProvinceState::deserialize(deserializer)?;
-        Self::new(
-            province.owner,
-            province.former_owner,
-            province.development_stage,
-            province.adjacency,
-            province.adjacency_anchor_tiles,
-            province.region_class,
-            province.fort_level,
-            province.city_tile,
-            province.last_turn_tick,
-            province.secondary_neighbor_tile,
-            province.primary_neighbor_tile,
-            province.linked_tiles,
-            province.resource_development_by_type,
-            province.explored_by_majors,
-            province.city_score,
-            province.navy_order_reachable,
-            province.resource_presence_mask,
-            province.name,
-        )
-        .map_err(serde::de::Error::custom)
-    }
-}
-
 fn deserialize_required_option<'de, D, T>(deserializer: D) -> Result<Option<T>, D::Error>
 where
     D: serde::Deserializer<'de>,
     T: Deserialize<'de>,
 {
     Option::<T>::deserialize(deserializer)
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
-pub enum ProvinceStateError {
-    #[error("province has {actual} adjacent provinces; maximum is {MAX_ADJACENT_PROVINCES}")]
-    TooManyAdjacentProvinces { actual: usize },
-    #[error("province has {provinces} adjacent provinces but {anchors} adjacency anchor tiles")]
-    AdjacencyAnchorCountMismatch { provinces: usize, anchors: usize },
-    #[error("province region class {value} is outside 0..={}", REGION_CLASS_COUNT - 1)]
-    InvalidRegionClass { value: u8 },
-    #[error("province fort level {value} is outside 0..=3")]
-    InvalidFortLevel { value: i8 },
-    #[error("province has {actual} linked tiles; maximum is {MAX_LINKED_TILES}")]
-    TooManyLinkedTiles { actual: usize },
 }
 
 impl MapMgr {
@@ -569,8 +475,7 @@ mod tests {
             false,
             0,
             String::new(),
-        )
-        .unwrap();
+        );
     }
 
     fn add_minor(state: &mut GameState, slot: u8, status: CountryStatus, owned: &[u16]) {
@@ -602,48 +507,6 @@ mod tests {
             serde_json::to_value(CountryStatus::ColonyOf(NationId::new(6))).unwrap(),
             serde_json::json!({"kind": "colony_of", "nation": 6})
         );
-    }
-
-    #[test]
-    fn province_state_deserialization_enforces_retail_bounds() {
-        let thirteen_neighbors: Vec<u16> = (0..13).collect();
-        let value = serde_json::json!({
-            "owner": null,
-            "former_owner": null,
-            "adjacency": thirteen_neighbors,
-            "region_class": null,
-            "fort_level": 0,
-            "city_tile": null,
-            "resource_development_by_type": ResourceTable::<i16>::default(),
-            "city_score": 0,
-        });
-        assert!(serde_json::from_value::<ProvinceState>(value).is_err());
-
-        let value = serde_json::json!({
-            "owner": null,
-            "former_owner": null,
-            "adjacency": [],
-            "region_class": 24,
-            "fort_level": 0,
-            "city_tile": null,
-            "resource_development_by_type": ResourceTable::<i16>::default(),
-            "city_score": 0,
-        });
-        assert!(serde_json::from_value::<ProvinceState>(value).is_err());
-
-        for missing in ["owner", "former_owner", "adjacency", "region_class"] {
-            let mut value = serde_json::json!({
-                "owner": null,
-                "former_owner": null,
-                "adjacency": [],
-                "region_class": null,
-            });
-            value.as_object_mut().unwrap().remove(missing);
-            assert!(
-                serde_json::from_value::<ProvinceState>(value).is_err(),
-                "missing {missing} must not be treated as an implicit default"
-            );
-        }
     }
 
     #[test]

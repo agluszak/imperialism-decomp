@@ -871,7 +871,7 @@ mod tests {
         let mut state = fixture_state();
         // Force bounded topology and a center column past 54 so column 0 is a seam.
         let tiles = vec![TileState::default(); STRATEGIC_TILE_COUNT];
-        let mut world = MapMgr::new(MapTopology::Bounded, tiles).unwrap();
+        let mut world = MapMgr::new(MapTopology::Bounded, tiles);
         let origin = world.geometry().tile(10, 51).unwrap();
         world.view_origin = origin;
         let seam = world.geometry().tile(10, 0).unwrap();

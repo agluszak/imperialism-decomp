@@ -150,8 +150,7 @@ fn reanchoring_resets_the_old_tile_and_only_clears_sibling_city_markers() {
             };
             STRATEGIC_TILE_COUNT
         ],
-    )
-    .unwrap();
+    );
     for tile in [old_tile, new_tile, sibling] {
         world[tile].province = Some(province);
     }
@@ -183,8 +182,7 @@ fn minor_home_garrison_preserves_the_base_state_and_marks_the_capital() {
             };
             STRATEGIC_TILE_COUNT
         ],
-    )
-    .unwrap();
+    );
     world[tile].province = Some(province);
     let mut capitals = vec![None];
 

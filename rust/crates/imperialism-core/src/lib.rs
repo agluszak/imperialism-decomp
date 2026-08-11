@@ -83,8 +83,8 @@ pub use ids::{
     ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,
 };
 pub use map::{
-    DevelopmentLevel, MapMgr, MapMgrSizeError, RegionId, RiverSegment, RiverSprite, TerrainKind,
-    TileAction, TileDevelopment, TileFlags, TileRendering, TileState, TileTransportLinks,
+    DevelopmentLevel, MapMgr, RegionId, RiverSegment, RiverSprite, TerrainKind, TileAction,
+    TileDevelopment, TileFlags, TileRendering, TileState, TileTransportLinks,
 };
 pub use map_geometry::{
     HexDirection, MapGeometry, MapTopology, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH,
@@ -150,7 +150,7 @@ pub use technology::{
     CityTechnologyCapabilities, CivilianTerrainAccess, FortLevelCap, TECHNOLOGY_COUNT,
     TechnologyResearchStatus, TechnologyState, UniversityTechnologyState,
 };
-pub use territory::{CountryStatus, ProvinceState, ProvinceStateError};
+pub use territory::{CountryStatus, ProvinceState};
 pub use trade::{PlayerTradeOrder, TransportAllocation};
 pub use turn_flow::{
     AdvanceTurnOutcome, FlowStop, GameScreen, PhaseCode, ScenarioMapId, TurnEffect, TurnState,

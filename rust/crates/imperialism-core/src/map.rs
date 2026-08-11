@@ -7,7 +7,7 @@ use std::ops::{Index, IndexMut};
 /// The terrain and province tables deliberately live together: retail map
 /// operations update both tables as one object, while each country's ordered
 /// province list remains a separate, observable index.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MapMgr {
     pub topology: MapTopology,
     pub view_origin: TileId,
@@ -15,41 +15,25 @@ pub struct MapMgr {
     pub recruit_search_active: bool,
     pub city_score_total: i32,
     pub scenario_tag: String,
+    #[serde(deserialize_with = "deserialize_strategic_tiles")]
     pub tiles: Box<[TileState]>,
     pub provinces: ProvinceTable<ProvinceState>,
+    #[serde(deserialize_with = "deserialize_required_option")]
     pub pending_river_mouth_tile: Option<TileId>,
 }
 
-impl<'de> Deserialize<'de> for MapMgr {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        #[derive(Deserialize)]
-        struct SerializedMapMgr {
-            topology: MapTopology,
-            view_origin: TileId,
-            map_data_ready: bool,
-            recruit_search_active: bool,
-            city_score_total: i32,
-            scenario_tag: String,
-            tiles: Box<[TileState]>,
-            provinces: ProvinceTable<ProvinceState>,
-            #[serde(deserialize_with = "deserialize_required_option")]
-            pending_river_mouth_tile: Option<TileId>,
-        }
-
-        let map = SerializedMapMgr::deserialize(deserializer)?;
-        let mut manager = Self::from_parts(map.topology, map.tiles, map.provinces)
-            .map_err(serde::de::Error::custom)?;
-        manager.view_origin = map.view_origin;
-        manager.map_data_ready = map.map_data_ready;
-        manager.recruit_search_active = map.recruit_search_active;
-        manager.city_score_total = map.city_score_total;
-        manager.scenario_tag = map.scenario_tag;
-        manager.pending_river_mouth_tile = map.pending_river_mouth_tile;
-        Ok(manager)
+fn deserialize_strategic_tiles<'de, D>(deserializer: D) -> Result<Box<[TileState]>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let tiles = Box::<[TileState]>::deserialize(deserializer)?;
+    if tiles.len() != STRATEGIC_TILE_COUNT {
+        return Err(serde::de::Error::custom(format!(
+            "strategic map has {} tiles; expected {STRATEGIC_TILE_COUNT}",
+            tiles.len()
+        )));
     }
+    Ok(tiles)
 }
 
 fn deserialize_required_option<'de, D, T>(deserializer: D) -> Result<Option<T>, D::Error>
@@ -60,17 +44,8 @@ where
     Option::<T>::deserialize(deserializer)
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
-#[error("strategic map has {actual} tiles; expected {STRATEGIC_TILE_COUNT}")]
-pub struct MapMgrSizeError {
-    pub actual: usize,
-}
-
 impl MapMgr {
-    pub fn new(
-        topology: MapTopology,
-        tiles: impl Into<Box<[TileState]>>,
-    ) -> Result<Self, MapMgrSizeError> {
+    pub fn new(topology: MapTopology, tiles: impl Into<Box<[TileState]>>) -> Self {
         Self::from_parts(topology, tiles, ProvinceTable::default())
     }
 
@@ -78,14 +53,14 @@ impl MapMgr {
         topology: MapTopology,
         tiles: impl Into<Box<[TileState]>>,
         provinces: ProvinceTable<ProvinceState>,
-    ) -> Result<Self, MapMgrSizeError> {
+    ) -> Self {
         let tiles = tiles.into();
-        if tiles.len() != STRATEGIC_TILE_COUNT {
-            return Err(MapMgrSizeError {
-                actual: tiles.len(),
-            });
-        }
-        Ok(Self {
+        assert_eq!(
+            tiles.len(),
+            STRATEGIC_TILE_COUNT,
+            "strategic map must have the retail fixed tile count"
+        );
+        Self {
             topology,
             view_origin: TileId::new(1),
             map_data_ready: false,
@@ -95,7 +70,7 @@ impl MapMgr {
             tiles,
             provinces,
             pending_river_mouth_tile: None,
-        })
+        }
     }
 
     pub const fn geometry(&self) -> crate::MapGeometry {
