@@ -2,9 +2,9 @@
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
 #include "JsonObject.h"
+#include "RuntimeDifferentialCapture.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
-#include "RuntimeSemanticCapture.h"
 
 #include "game/city/TCity.h"
 #include "game/globals/shared_globals.h"
@@ -61,23 +61,17 @@ private:
     nation->aidAllocationMatrix[0] = 17;
     nation->aidAllocationMatrix[aidAllocationCount - 1] = -9;
 
-    if (!CaptureGameState(RunState(), "before")) {
-      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
-    }
-
     JsonObject caseCapture;
     caseCapture.Set("nation", static_cast<int>(nationSlot));
-    RunState().SetCapture("case", caseCapture.Release());
+
+    RuntimeDifferentialCapture capture(RunState());
+    RuntimeActionResult started = capture.Begin(caseCapture.Release());
+    if (!started.Succeeded()) {
+      return started;
+    }
 
     nation->RecallTradeBids();
-    if (!CaptureVoidOpResult(RunState())) {
-      return RuntimeActionResult::Failure("the void operation result capture is unavailable");
-    }
-
-    if (!CaptureGameState(RunState(), "after")) {
-      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
-    }
-    return RuntimeActionResult::Success();
+    return capture.Finish();
   }
 };
 

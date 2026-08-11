@@ -2,9 +2,9 @@
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
 #include "JsonObject.h"
+#include "RuntimeDifferentialCapture.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
-#include "RuntimeSemanticCapture.h"
 
 #include "game/globals/shared_globals.h"
 #include "game/nation/TGreatPower.h"
@@ -37,24 +37,18 @@ private:
     nation->needLevelByNation[targetNationSlot] = 75;
     nation->treasuryValue10 = 10001;
 
-    if (!CaptureGameState(RunState(), "before")) {
-      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
-    }
-
     JsonObject caseCapture;
     caseCapture.Set("source", static_cast<int>(sourceNationSlot));
     caseCapture.Set("target", static_cast<int>(targetNationSlot));
-    RunState().SetCapture("case", caseCapture.Release());
+
+    RuntimeDifferentialCapture capture(RunState());
+    RuntimeActionResult started = capture.Begin(caseCapture.Release());
+    if (!started.Succeeded()) {
+      return started;
+    }
 
     nation->DecrementNeedLevelByNationStep(targetNationSlot);
-    if (!CaptureVoidOpResult(RunState())) {
-      return RuntimeActionResult::Failure("the void operation result capture is unavailable");
-    }
-
-    if (!CaptureGameState(RunState(), "after")) {
-      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
-    }
-    return RuntimeActionResult::Success();
+    return capture.Finish();
   }
 };
 

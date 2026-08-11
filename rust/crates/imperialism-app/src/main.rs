@@ -39,9 +39,9 @@ fn main() -> anyhow::Result<()> {
                 selected_nation: selected,
             })?;
             anyhow::ensure!(
-                game.turn.phase == imperialism_core::PhaseCode::STRATEGIC_MAP,
+                game.turn().phase() == imperialism_core::PhaseCode::STRATEGIC_MAP,
                 "loaded save is in unsupported phase {:?}; only strategic-map saves can start the app",
-                game.turn.phase
+                game.turn().phase()
             );
             Some(game)
         }

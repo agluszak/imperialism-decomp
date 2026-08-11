@@ -1,8 +1,9 @@
 #![forbid(unsafe_code)]
 #![allow(clippy::large_enum_variant)]
 
+mod ai;
 mod calendar;
-mod city_buildings;
+mod city;
 mod city_economy;
 mod city_industry;
 mod city_site;
@@ -13,16 +14,19 @@ mod combat_movement_phase;
 mod create_random_game;
 mod difficulty;
 mod diplomacy;
+mod game;
 mod ids;
+mod map;
 mod map_geometry;
 mod market;
 mod military;
 mod military_cleanup_phase;
 mod military_phase;
 mod nation_economy;
+mod nations;
 mod news;
+mod pending;
 mod population;
-mod production;
 mod random_map;
 mod random_map_terrain;
 mod random_map_water_merge;
@@ -30,8 +34,8 @@ mod random_setup_name;
 mod recruitment;
 mod resources;
 mod rng;
-mod state;
 mod tables;
+mod technology;
 mod territory;
 #[cfg(test)]
 pub(crate) mod test_support;
@@ -41,8 +45,23 @@ mod turn_flow;
 mod turn_tail;
 mod units;
 
+pub use ai::{
+    AiCityOrderDemand, AiDevelopmentPressureState, AiTargetState, AiTradeState,
+    ForeignMinisterPersonality, InteriorCivilianState, PendingDevelopmentAction,
+};
 pub use calendar::TurnCalendar;
-pub use city_buildings::{BuildingWindowState, ProductionSlot};
+pub use city::{
+    BuildingWindowState, CIVILIAN_RESOURCE_SPECIALTIES, CityFacilitySlot, CityOrderChange,
+    CityOrderId, CityOrderStatus, CityOrders, CityState, ExpandableFacility, ItemInputs,
+    ItemOrderSpec, ManufacturedItem, MaterialOrderSpec, MilitaryRecruitOrderState,
+    MilitaryRecruitOrderTable, MilitaryRecruitmentCategory, PowerPlantOrderState,
+    ProductionConstraint, ProductionProgress, RecruitmentOrderSpec, RequestedCityOrderState,
+    ResourceCost, ShipOrderSlot, ShipOrderState, ShipOrderTable, Stockpile, TownState,
+    TrainingLevel, TrainingOrderTable, civilian_recruitment_spec, expansion_order_spec,
+    item_order_spec, military_recruitment_category, military_recruitment_spec,
+    resource_development_yield, ship_display_stats, ship_order_costs,
+    ship_type_is_valid_for_order_slot, transport_capacity_order_spec,
+};
 pub use city_site::{
     CapitalSite, CitySiteError, confirm_capital_site,
     enter_strategic_map_without_capital_selection, is_valid_secondary_nation_home_tile_candidate,
@@ -52,10 +71,20 @@ pub use city_site::{
 pub use civilian_work::{CivilianWorkOrder, RailSegment, TurnsRemaining};
 pub use create_random_game::create_random_game;
 pub use difficulty::Difficulty;
-pub use diplomacy::{PlayerDiplomacyOrderResult, PlayerDiplomacyRejection};
+pub use diplomacy::{
+    DiplomacyGrant, DiplomacyPolicy, DiplomacyState, DiplomaticCongressState,
+    DiplomaticMissionLevel, DiplomaticRelationship, PlayerDiplomacyOrderResult,
+    PlayerDiplomacyRejection, TradePolicyScore,
+};
+pub use game::{GameState, GameStateParts};
 pub use ids::{
     CivilianUnitId, MajorNationId, MilitaryUnitId, MinorNationId, NationId, OceanZoneId,
     ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,
+};
+pub use map::{
+    DevelopmentLevel, PortZoneOwner, RegionId, RegionTileSubtype, RiverSegment, RiverSprite,
+    StrategicMap, StrategicMapSizeError, TerrainKind, TileAction, TileDevelopment, TileFlags,
+    TileRendering, TileState, TileTransportLinks,
 };
 pub use map_geometry::{
     HexDirection, MapGeometry, MapTopology, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH,
@@ -65,8 +94,23 @@ pub use market::{
     DealBookEntryKind, ProcessedTradeCommodity, ProcessedTradeCommodityTable, TradeCommodity,
     TradeCommodityTable, TradeDealBookEntry, TradeMarketRow, TradeMarketState,
 };
-pub use population::{FoodOutcome, LaborPool, SkillBand};
-pub use production::*;
+pub use military::{
+    ArmyMissionState, AttackMissionState, MissionData, MissionState, NavyMissionState,
+    SelectedShip, ShipState, TaskForceState, TaskForceTarget,
+};
+pub use nation_economy::{
+    ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,
+};
+pub use nations::{MajorNation, MajorNationController, MinorNation, NationCommonState, Nations};
+pub use news::{
+    DiplomacyNotice, DiplomacyProposal, InterNationNewsKind, LandSale, NEWS_TEMPLATE_COUNT,
+    NationPendingWork, NewsArgument, NewsPage, NewsState, NewsStory, PendingNewspaperEvent,
+    PendingWorkState, TurnStartEvent, TurnSummary, WarTransition,
+};
+pub use pending::{PendingActionState, PendingActionStatus};
+pub use population::{
+    FoodOutcome, LaborPool, PopulationAccumulator, PopulationState, SkillBand, StrikePhase,
+};
 pub use random_map::{
     COARSE_MAP_CELL_COUNT, COARSE_MAP_HEIGHT, COARSE_MAP_WIDTH, EXPANDED_MAP_HEIGHT,
     EXPANDED_MAP_WIDTH, RANDOM_MAP_CLASS_COUNT,
@@ -93,14 +137,22 @@ pub mod differential_trace {
 }
 pub(crate) use resources::all_resources;
 pub use resources::{ResourceKind, ResourceTable};
-pub use rng::{RetailCrtRng, RetailLcg, hash_retail_scenario_tag};
-pub use state::*;
+pub use rng::{RetailCrtRng, RetailLcg, RngState, hash_retail_scenario_tag};
 pub use tables::{
     MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNationTable, MinorNationTable, NATION_COUNT,
     NationCapacities, NationTable, PENDING_ACTION_COUNT, PROVINCE_COUNT, PendingActionKind,
     PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable,
 };
+pub use technology::{
+    CityTechnologyCapabilities, CivilianTerrainAccess, FortLevelCap, TECHNOLOGY_COUNT,
+    TechnologyResearchStatus, TechnologyState, UniversityTechnologyState,
+};
 pub use territory::{CountryStatus, ProvinceState, ProvinceStateError, TerritoryInvariantError};
 pub use trade::{PlayerTradeOrder, TransportAllocation};
-pub use turn_flow::{AdvanceTurnOutcome, TurnBlock, TurnEffect, UiGate};
-pub use units::{CivilianUnitKind, CivilianUnitTable, MilitaryUnitKind, MilitaryUnitTable};
+pub use turn_flow::{
+    AdvanceTurnOutcome, PhaseCode, ScenarioMapId, TurnEffect, TurnState, TurnYield, UiRequest,
+};
+pub use units::{
+    CivilianLocation, CivilianUnitKind, CivilianUnitState, CivilianUnitTable, MilitaryOrder,
+    MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState, MilitaryUnitTable, UnitIdAllocator,
+};

@@ -18,7 +18,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_combined_map,
     validate_checkpoint,
 )
-from tools.runtime.differential import (
+from tools.runtime.retail_checkpoint_differential import (
     _normalize_value,
     first_divergence,
     load_scenario,
@@ -185,7 +185,7 @@ class DifferentialRunTests(unittest.TestCase):
     def make_scenario(self, root: Path):
         fixture = root / "beginning_of_game.imp"
         fixture.write_bytes(b"fixture")
-        with patch("tools.runtime.differential.FIXTURE_DIR", root):
+        with patch("tools.runtime.retail_checkpoint_differential.FIXTURE_DIR", root):
             return load_scenario("load_save_to_map")
 
     def run_with_session(self, root: Path, session_type: type[FakeDifferentialSession]):
@@ -220,15 +220,15 @@ class DifferentialRunTests(unittest.TestCase):
             return {"event": session.current_event, "payload": session.current_payload}
 
         patches = (
-            patch("tools.runtime.differential.GdbSession", session_type),
-            patch("tools.runtime.differential.initialize_wine_prefix", side_effect=initialize),
-            patch("tools.runtime.differential.prefix_environment", return_value={}),
-            patch("tools.runtime.differential.windows_path", return_value="C:\\fixture.imp"),
-            patch("tools.runtime.differential.prepare_game_sandbox", side_effect=prepare),
-            patch("tools.runtime.differential.virtual_display", side_effect=display),
-            patch("tools.runtime.differential.shut_down_wine_prefix"),
-            patch("tools.runtime.differential.direct_call_target_after", return_value=0x1234),
-            patch("tools.runtime.differential._capture_fields", side_effect=capture),
+            patch("tools.runtime.retail_checkpoint_differential.GdbSession", session_type),
+            patch("tools.runtime.retail_checkpoint_differential.initialize_wine_prefix", side_effect=initialize),
+            patch("tools.runtime.retail_checkpoint_differential.prefix_environment", return_value={}),
+            patch("tools.runtime.retail_checkpoint_differential.windows_path", return_value="C:\\fixture.imp"),
+            patch("tools.runtime.retail_checkpoint_differential.prepare_game_sandbox", side_effect=prepare),
+            patch("tools.runtime.retail_checkpoint_differential.virtual_display", side_effect=display),
+            patch("tools.runtime.retail_checkpoint_differential.shut_down_wine_prefix"),
+            patch("tools.runtime.retail_checkpoint_differential.direct_call_target_after", return_value=0x1234),
+            patch("tools.runtime.retail_checkpoint_differential._capture_fields", side_effect=capture),
         )
         return scenario, executable, run_dir, patches
 

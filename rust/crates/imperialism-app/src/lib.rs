@@ -64,7 +64,7 @@ pub fn run(retail_assets: RetailAssets, initial_game: Option<GameState>) {
         .insert_resource(RetailAssetsResource::new(retail_assets));
     if let Some(game) = initial_game {
         assert_eq!(
-            game.turn.phase,
+            game.turn().phase(),
             imperialism_core::PhaseCode::STRATEGIC_MAP,
             "Bevy may only start from a strategic-map core phase"
         );

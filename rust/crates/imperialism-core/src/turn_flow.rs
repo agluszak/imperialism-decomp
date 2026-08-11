@@ -1,5 +1,99 @@
-use crate::{CountryStatus, GameState, MajorNationId, MinorNationId, NationId, TurnState};
+use crate::{CountryStatus, Difficulty, GameState, MajorNationId, MinorNationId, NationId};
 use serde::{Deserialize, Serialize};
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct TurnState {
+    pub scenario_map: Option<ScenarioMapId>,
+    pub economic_turn: i32,
+    /// Raw persisted `TSimMgr` term consumed by diplomacy scaling.
+    ///
+    /// This is not the 1815-based display calendar.
+    pub diplomacy_year_term_raw: i16,
+    pub(crate) phase: PhaseCode,
+    /// Persisted turn-flow status bits consumed by the alert and technology phases.
+    pub turn_flow_status_flags: u32,
+    /// Retail's decade-boundary presentation state, indexed by `economic_turn / 40`.
+    pub quarter_gate_by_decade: [u8; 10],
+    pub difficulty: Difficulty,
+    pub active_nation: NationId,
+    pub selected_nation: NationId,
+}
+
+impl TurnState {
+    #[allow(clippy::too_many_arguments)]
+    pub const fn new(
+        scenario_map: Option<ScenarioMapId>,
+        economic_turn: i32,
+        diplomacy_year_term_raw: i16,
+        phase: PhaseCode,
+        turn_flow_status_flags: u32,
+        quarter_gate_by_decade: [u8; 10],
+        difficulty: Difficulty,
+        active_nation: NationId,
+        selected_nation: NationId,
+    ) -> Self {
+        Self {
+            scenario_map,
+            economic_turn,
+            diplomacy_year_term_raw,
+            phase,
+            turn_flow_status_flags,
+            quarter_gate_by_decade,
+            difficulty,
+            active_nation,
+            selected_nation,
+        }
+    }
+
+    pub const fn phase(self) -> PhaseCode {
+        self.phase
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct ScenarioMapId(u16);
+impl ScenarioMapId {
+    pub const fn new(index: u16) -> Self {
+        Self(index)
+    }
+
+    pub const fn index(self) -> u16 {
+        self.0
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct PhaseCode(i32);
+impl PhaseCode {
+    pub const CAPITAL_SELECTION: Self = Self(2);
+    pub const PRE_MAP: Self = Self(3);
+    pub const HOME_PLACEMENT: Self = Self(4);
+    pub const STRATEGIC_MAP: Self = Self(5);
+    pub const DIPLOMACY: Self = Self(6);
+    pub const TRADE: Self = Self(7);
+    pub const CITY_AND_TRANSPORT: Self = Self(8);
+    pub const GREAT_POWER_PRESSURE: Self = Self(0x0b);
+    pub const DEAL_BOOK: Self = Self(0x0c);
+    pub const OFFER_SHEET: Self = Self(9);
+    pub const MILITARY: Self = Self(10);
+    pub const DIPLOMACY_OFFER: Self = Self(0x0d);
+    pub const QUARTER_GATE: Self = Self(0x0e);
+    pub const NEWSPAPER: Self = Self(0x0f);
+    pub const SEASON_ADVANCE: Self = Self(0x10);
+    pub const TECHNOLOGY_ADVANCES: Self = Self(0x11);
+    pub const RETURN_TO_MAP: Self = Self(0x12);
+    pub const COMBAT_MOVES: Self = Self(0x14);
+    pub const MILITARY_CLEANUP: Self = Self(0x15);
+    pub const ELIMINATION: Self = Self(0x19);
+    pub const fn from_retail(value: i32) -> Self {
+        Self(value)
+    }
+    pub const fn retail(self) -> i32 {
+        self.0
+    }
+}
 
 impl TurnState {
     /// Mirrors `TSimMgr::AdvanceSeason`.
@@ -14,28 +108,62 @@ impl TurnState {
     }
 }
 
-/// Why turn progression stopped and requires UI or a future phase port.
+/// Why turn progression stopped and requires player orders, UI, or a future phase port.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
-pub enum TurnBlock {
+pub enum TurnYield {
     PlayerOrders,
-    Ui { gate: UiGate },
-    Unsupported { phase: crate::PhaseCode },
+    Ui {
+        request: UiRequest,
+    },
+    /// `resume_after_ui` closed a request that does not match the current gate.
+    MismatchedUi {
+        closed: UiRequest,
+        expected: Option<UiRequest>,
+    },
+    Unsupported {
+        phase: crate::PhaseCode,
+    },
 }
 
+/// Blocking presentation work that must be acknowledged before turn progression continues.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(rename_all = "snake_case")]
-pub enum UiGate {
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum UiRequest {
+    DiplomacyMap { nation: crate::MajorNationId },
+    OfferSheet { nation: crate::MajorNationId },
+    Combat,
+    DiplomacyOffer,
     DealBook,
+    TechnologyAdvance,
     Newspaper,
+    TurnAlert,
 }
 
-/// Ordered presentation work emitted by authoritative turn progression.
+impl UiRequest {
+    /// Compares request kinds, ignoring nation payloads used only for presentation.
+    pub const fn same_kind(self, other: Self) -> bool {
+        matches!(
+            (self, other),
+            (Self::DiplomacyMap { .. }, Self::DiplomacyMap { .. })
+                | (Self::OfferSheet { .. }, Self::OfferSheet { .. })
+                | (Self::Combat, Self::Combat)
+                | (Self::DiplomacyOffer, Self::DiplomacyOffer)
+                | (Self::DealBook, Self::DealBook)
+                | (Self::TechnologyAdvance, Self::TechnologyAdvance)
+                | (Self::Newspaper, Self::Newspaper)
+                | (Self::TurnAlert, Self::TurnAlert)
+        )
+    }
+}
+
+/// Non-blocking observables emitted by turn progression.
+///
+/// Blocking screens are [`TurnYield::Ui`], not effects.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum TurnEffect {
-    ShowDiplomacyMap { nation: crate::MajorNationId },
-    ShowOfferSheet { nation: crate::MajorNationId },
+    // Reserved for sounds/notifications once callers drain them. Blocking UI is a yield.
 }
 
 /// Result of advancing the recovered global turn state machine once.
@@ -49,9 +177,25 @@ pub enum AdvanceTurnOutcome {
     },
     Blocked {
         phase: crate::PhaseCode,
-        block: TurnBlock,
+        #[serde(rename = "block")]
+        yield_: TurnYield,
         effects: Vec<TurnEffect>,
     },
+}
+
+impl AdvanceTurnOutcome {
+    pub fn yield_reason(&self) -> Option<TurnYield> {
+        match self {
+            Self::Blocked { yield_, .. } => Some(*yield_),
+            Self::Continues { .. } => None,
+        }
+    }
+
+    pub fn effects(&self) -> &[TurnEffect] {
+        match self {
+            Self::Continues { effects, .. } | Self::Blocked { effects, .. } => effects,
+        }
+    }
 }
 
 impl GameState {
@@ -63,7 +207,7 @@ impl GameState {
                 self.turn.phase = crate::PhaseCode::STRATEGIC_MAP;
                 AdvanceTurnOutcome::Blocked {
                     phase: crate::PhaseCode::STRATEGIC_MAP,
-                    block: TurnBlock::PlayerOrders,
+                    yield_: TurnYield::PlayerOrders,
                     effects: Vec::new(),
                 }
             }
@@ -77,17 +221,24 @@ impl GameState {
             }
             crate::PhaseCode::STRATEGIC_MAP => AdvanceTurnOutcome::Blocked {
                 phase: from,
-                block: TurnBlock::Unsupported { phase: from },
+                yield_: TurnYield::Unsupported { phase: from },
                 effects: Vec::new(),
             },
             crate::PhaseCode::DIPLOMACY if self.supports_first_turn_diplomacy_phase() => {
-                let effects = self.first_turn_diplomacy_effects();
+                let ui = self.first_turn_diplomacy_ui_request();
                 self.run_diplomacy_phase();
                 self.turn.phase = crate::PhaseCode::TRADE;
-                AdvanceTurnOutcome::Continues {
-                    from,
-                    to: crate::PhaseCode::TRADE,
-                    effects,
+                match ui {
+                    Some(request) => AdvanceTurnOutcome::Blocked {
+                        phase: crate::PhaseCode::TRADE,
+                        yield_: TurnYield::Ui { request },
+                        effects: Vec::new(),
+                    },
+                    None => AdvanceTurnOutcome::Continues {
+                        from,
+                        to: crate::PhaseCode::TRADE,
+                        effects: Vec::new(),
+                    },
                 }
             }
             crate::PhaseCode::TRADE if self.supports_first_turn_trade_phase() => {
@@ -95,10 +246,12 @@ impl GameState {
                     .expect("the supported trade phase has an active major nation");
                 self.run_trade_phase();
                 self.turn.phase = crate::PhaseCode::OFFER_SHEET;
-                AdvanceTurnOutcome::Continues {
-                    from,
-                    to: crate::PhaseCode::OFFER_SHEET,
-                    effects: vec![TurnEffect::ShowOfferSheet { nation }],
+                AdvanceTurnOutcome::Blocked {
+                    phase: crate::PhaseCode::OFFER_SHEET,
+                    yield_: TurnYield::Ui {
+                        request: UiRequest::OfferSheet { nation },
+                    },
+                    effects: Vec::new(),
                 }
             }
             crate::PhaseCode::OFFER_SHEET => match self.try_first_turn_civilian_phase() {
@@ -113,7 +266,7 @@ impl GameState {
                 }
                 None => AdvanceTurnOutcome::Blocked {
                     phase: from,
-                    block: TurnBlock::Unsupported { phase: from },
+                    yield_: TurnYield::Unsupported { phase: from },
                     effects: Vec::new(),
                 },
             },
@@ -129,7 +282,7 @@ impl GameState {
                 }
                 None => AdvanceTurnOutcome::Blocked {
                     phase: from,
-                    block: TurnBlock::Unsupported { phase: from },
+                    yield_: TurnYield::Unsupported { phase: from },
                     effects: Vec::new(),
                 },
             },
@@ -157,7 +310,7 @@ impl GameState {
                     }
                     None => AdvanceTurnOutcome::Blocked {
                         phase: from,
-                        block: TurnBlock::Unsupported { phase: from },
+                        yield_: TurnYield::Unsupported { phase: from },
                         effects: Vec::new(),
                     },
                 }
@@ -201,8 +354,8 @@ impl GameState {
                 self.turn.phase = crate::PhaseCode::QUARTER_GATE;
                 AdvanceTurnOutcome::Blocked {
                     phase: crate::PhaseCode::QUARTER_GATE,
-                    block: TurnBlock::Ui {
-                        gate: UiGate::DealBook,
+                    yield_: TurnYield::Ui {
+                        request: UiRequest::DealBook,
                     },
                     effects: Vec::new(),
                 }
@@ -241,8 +394,8 @@ impl GameState {
                 self.turn.phase = crate::PhaseCode::RETURN_TO_MAP;
                 AdvanceTurnOutcome::Blocked {
                     phase: crate::PhaseCode::RETURN_TO_MAP,
-                    block: TurnBlock::Ui {
-                        gate: UiGate::Newspaper,
+                    yield_: TurnYield::Ui {
+                        request: UiRequest::Newspaper,
                     },
                     effects: Vec::new(),
                 }
@@ -252,19 +405,20 @@ impl GameState {
                 self.turn.phase = crate::PhaseCode::STRATEGIC_MAP;
                 AdvanceTurnOutcome::Blocked {
                     phase: crate::PhaseCode::STRATEGIC_MAP,
-                    block: TurnBlock::PlayerOrders,
+                    yield_: TurnYield::PlayerOrders,
                     effects: Vec::new(),
                 }
             }
             phase => AdvanceTurnOutcome::Blocked {
                 phase,
-                block: TurnBlock::Unsupported { phase },
+                yield_: TurnYield::Unsupported { phase },
                 effects: Vec::new(),
             },
         }
     }
 
-    pub fn advance_until_blocked(&mut self) -> AdvanceTurnOutcome {
+    /// Advance until player orders, a UI request, or an unsupported phase.
+    pub fn advance_until_yield(&mut self) -> AdvanceTurnOutcome {
         let mut effects = Vec::new();
         loop {
             match self.advance_turn_step() {
@@ -274,18 +428,23 @@ impl GameState {
                 } => effects.extend(step_effects),
                 AdvanceTurnOutcome::Blocked {
                     phase,
-                    block,
+                    yield_,
                     effects: step_effects,
                 } => {
                     effects.extend(step_effects);
                     return AdvanceTurnOutcome::Blocked {
                         phase,
-                        block,
+                        yield_,
                         effects,
                     };
                 }
             }
         }
+    }
+
+    /// Compatibility alias for [`Self::advance_until_yield`].
+    pub fn advance_until_blocked(&mut self) -> AdvanceTurnOutcome {
+        self.advance_until_yield()
     }
 
     pub fn finish_player_orders(&mut self) -> AdvanceTurnOutcome {
@@ -294,26 +453,60 @@ impl GameState {
             crate::PhaseCode::STRATEGIC_MAP,
             "player orders can finish only at the strategic-map boundary"
         );
-        self.advance_until_blocked()
+        self.advance_until_yield()
     }
 
     /// Continue from a retail screen that owns the current turn-state gate.
     /// A mismatched close command is rejected without mutating authoritative state.
-    pub fn resume_after_ui(&mut self, gate: UiGate) -> AdvanceTurnOutcome {
-        let expected_phase = match gate {
-            UiGate::DealBook => crate::PhaseCode::QUARTER_GATE,
-            UiGate::Newspaper => crate::PhaseCode::RETURN_TO_MAP,
-        };
-        if self.turn.phase != expected_phase {
+    pub fn resume_after_ui(&mut self, request: UiRequest) -> AdvanceTurnOutcome {
+        let expected = self.expected_ui_request();
+        let matches = expected.is_some_and(|expected| expected.same_kind(request));
+        if !matches {
+            let yield_ = if expected.is_none()
+                && matches!(
+                    self.turn.phase,
+                    crate::PhaseCode::QUARTER_GATE
+                        | crate::PhaseCode::RETURN_TO_MAP
+                        | crate::PhaseCode::TRADE
+                        | crate::PhaseCode::OFFER_SHEET
+                ) {
+                // Phase looks like a UI gate but the port has not installed an expected request.
+                TurnYield::Unsupported {
+                    phase: self.turn.phase,
+                }
+            } else if expected.is_none() {
+                TurnYield::Unsupported {
+                    phase: self.turn.phase,
+                }
+            } else {
+                TurnYield::MismatchedUi {
+                    closed: request,
+                    expected,
+                }
+            };
             return AdvanceTurnOutcome::Blocked {
                 phase: self.turn.phase,
-                block: TurnBlock::Unsupported {
-                    phase: self.turn.phase,
-                },
+                yield_,
                 effects: Vec::new(),
             };
         }
-        self.advance_until_blocked()
+        self.advance_until_yield()
+    }
+
+    fn expected_ui_request(&self) -> Option<UiRequest> {
+        let active = crate::MajorNationId::from_nation(self.turn.active_nation);
+        match self.turn.phase {
+            crate::PhaseCode::TRADE => active.map(|nation| UiRequest::DiplomacyMap { nation }),
+            crate::PhaseCode::OFFER_SHEET => active.map(|nation| UiRequest::OfferSheet { nation }),
+            crate::PhaseCode::QUARTER_GATE => Some(UiRequest::DealBook),
+            crate::PhaseCode::RETURN_TO_MAP => Some(UiRequest::Newspaper),
+            _ => None,
+        }
+    }
+
+    /// UI request that currently owns turn progression, if any.
+    pub fn pending_ui_request(&self) -> Option<UiRequest> {
+        self.expected_ui_request()
     }
 
     fn supports_first_turn_diplomacy_offer_phase(&self) -> bool {
@@ -430,15 +623,15 @@ mod tests {
     }
 
     #[test]
-    fn advance_until_blocked_stops_at_the_player_order_boundary() {
+    fn advance_until_yield_stops_at_the_player_order_boundary() {
         let mut state = crate::test_support::game_state();
         state.turn.phase = crate::PhaseCode::HOME_PLACEMENT;
 
         assert_eq!(
-            state.advance_until_blocked(),
+            state.advance_until_yield(),
             AdvanceTurnOutcome::Blocked {
                 phase: crate::PhaseCode::STRATEGIC_MAP,
-                block: TurnBlock::PlayerOrders,
+                yield_: TurnYield::PlayerOrders,
                 effects: Vec::new(),
             }
         );
@@ -472,7 +665,7 @@ mod tests {
                 state.advance_turn_step(),
                 AdvanceTurnOutcome::Blocked {
                     phase,
-                    block: TurnBlock::Unsupported { phase },
+                    yield_: TurnYield::Unsupported { phase },
                     effects: Vec::new(),
                 }
             );
@@ -481,27 +674,13 @@ mod tests {
     }
 
     #[test]
-    fn first_turn_diplomacy_phase_advances_to_trade() {
+    fn first_turn_diplomacy_phase_yields_the_diplomacy_map() {
         let mut state = crate::test_support::game_state();
         state.turn.economic_turn = 1;
         state.turn.phase = crate::PhaseCode::DIPLOMACY;
-
-        assert_eq!(
-            state.advance_turn_step(),
-            AdvanceTurnOutcome::Continues {
-                from: crate::PhaseCode::DIPLOMACY,
-                to: crate::PhaseCode::TRADE,
-                effects: Vec::new(),
-            }
-        );
-        assert_eq!(state.turn.phase, crate::PhaseCode::TRADE);
-    }
-
-    #[test]
-    fn advance_until_blocked_preserves_the_diplomacy_map_effect() {
-        let mut state = crate::test_support::game_state();
-        state.turn.economic_turn = 1;
-        state.turn.phase = crate::PhaseCode::DIPLOMACY;
+        state.nations.majors[crate::MajorNationId::new(0)]
+            .economy
+            .controller = crate::MajorNationController::Human;
         state.civilian_units.push(crate::CivilianUnitState {
             id: crate::CivilianUnitId::new(1),
             nation: crate::NationId::new(0),
@@ -514,17 +693,70 @@ mod tests {
         });
 
         assert_eq!(
-            state.advance_until_blocked(),
+            state.advance_turn_step(),
             AdvanceTurnOutcome::Blocked {
                 phase: crate::PhaseCode::TRADE,
-                block: TurnBlock::Unsupported {
-                    phase: crate::PhaseCode::TRADE,
+                yield_: TurnYield::Ui {
+                    request: UiRequest::DiplomacyMap {
+                        nation: crate::MajorNationId::new(0),
+                    }
                 },
-                effects: vec![TurnEffect::ShowDiplomacyMap {
-                    nation: crate::MajorNationId::new(0),
-                }],
+                effects: Vec::new(),
             }
         );
+        assert_eq!(state.turn.phase, crate::PhaseCode::TRADE);
+    }
+
+    #[test]
+    fn advance_until_yield_stops_at_the_diplomacy_map() {
+        let mut state = crate::test_support::game_state();
+        state.turn.economic_turn = 1;
+        state.turn.phase = crate::PhaseCode::DIPLOMACY;
+        state.nations.majors[crate::MajorNationId::new(0)]
+            .economy
+            .controller = crate::MajorNationController::Human;
+        state.civilian_units.push(crate::CivilianUnitState {
+            id: crate::CivilianUnitId::new(1),
+            nation: crate::NationId::new(0),
+            unit_type: crate::CivilianUnitKind::Miner,
+            location: crate::CivilianLocation::OnMap(crate::TileId::new(0)),
+            order: crate::CivilianWorkOrder::Idle,
+            owner_nation: crate::NationId::new(0),
+            roster_id: 0,
+            registered: false,
+        });
+
+        assert_eq!(
+            state.advance_until_yield(),
+            AdvanceTurnOutcome::Blocked {
+                phase: crate::PhaseCode::TRADE,
+                yield_: TurnYield::Ui {
+                    request: UiRequest::DiplomacyMap {
+                        nation: crate::MajorNationId::new(0),
+                    }
+                },
+                effects: Vec::new(),
+            }
+        );
+    }
+
+    #[test]
+    fn mismatched_ui_resume_is_distinct_from_unsupported() {
+        let mut state = crate::test_support::game_state();
+        state.turn.phase = crate::PhaseCode::QUARTER_GATE;
+
+        assert_eq!(
+            state.resume_after_ui(UiRequest::Newspaper),
+            AdvanceTurnOutcome::Blocked {
+                phase: crate::PhaseCode::QUARTER_GATE,
+                yield_: TurnYield::MismatchedUi {
+                    closed: UiRequest::Newspaper,
+                    expected: Some(UiRequest::DealBook),
+                },
+                effects: Vec::new(),
+            }
+        );
+        assert_eq!(state.turn.phase, crate::PhaseCode::QUARTER_GATE);
     }
 
     #[test]
@@ -544,8 +776,8 @@ mod tests {
             state.advance_turn_step(),
             AdvanceTurnOutcome::Blocked {
                 phase: crate::PhaseCode::DIPLOMACY,
-                block: TurnBlock::Unsupported {
-                    phase: crate::PhaseCode::DIPLOMACY,
+                yield_: TurnYield::Unsupported {
+                    phase: crate::PhaseCode::DIPLOMACY
                 },
                 effects: Vec::new(),
             }

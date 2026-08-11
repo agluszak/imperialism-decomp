@@ -1,4 +1,8 @@
-"""Compare a native recomp checkpoint with a narrow retail GDB observation."""
+"""Compare a native recomp checkpoint with a narrow retail GDB observation.
+
+This is the retail-vs-recomp GDB checkpoint runner. It is separate from the
+C++→Rust process-isolated differential in the Rust testkit.
+"""
 
 from __future__ import annotations
 
@@ -9,8 +13,6 @@ import os
 from pathlib import Path
 import shutil
 import time
-
-import yaml
 
 from tools.runtime.checkpoints import (
     SCHEMAS,
@@ -36,7 +38,6 @@ from tools.runtime.wine import (
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BUILD_DIR = REPO_ROOT / "build-msvc500"
-SCENARIO_DIR = REPO_ROOT / "tests/runtime/scenarios"
 FIXTURE_DIR = REPO_ROOT.parent / "fixtures" / "retail"
 RESULT_DIR = BUILD_DIR / "differential-results"
 
@@ -101,101 +102,112 @@ class Trace:
     records: list[dict]
 
 
-def load_scenario(name: str) -> Scenario:
-    path = SCENARIO_DIR / f"{name}.yml"
-    if not path.is_file():
-        raise SystemExit(f"unknown differential scenario {name!r}: missing {path}")
-    parsed = yaml.safe_load(path.read_text(encoding="utf-8"))
-    if not isinstance(parsed, dict):
-        raise SystemExit(f"invalid differential scenario in {path}")
-    fixture_name = parsed.get("start", {}).get("fixture")
-    fixture_root = Path(os.environ.get("IMPERIALISM_SAVE_FIXTURES", FIXTURE_DIR))
-    fixture = fixture_root / fixture_name
-    if not fixture.is_file():
-        raise SystemExit(f"missing differential fixture {fixture}")
-    probes = []
-    for entry in parsed.get("probes", []):
-        fields = {}
-        for field_name, field_value in entry.get("capture", {}).items():
-            if isinstance(field_value, str):
-                fields[field_name] = FieldCapture(field_value)
-            else:
-                fields[field_name] = FieldCapture(
-                    expression=str(field_value["expression"]),
-                    normalize=str(field_value.get("normalize", "int")),
-                )
-        probes.append(
-            Probe(
-                probe_id=entry["id"],
-                original_address=int(entry["original_address"], 0)
-                if isinstance(entry["original_address"], str)
-                else int(entry["original_address"]),
-                fields=fields,
-            )
-        )
-    stop = parsed.get("stop", {})
-    schema = SCHEMAS.get(stop.get("checkpoint_id"))
-    if schema is None:
-        raise SystemExit(f"unknown differential checkpoint in {path}")
-    if parsed.get("action_id") != schema.action_id:
-        raise SystemExit(
-            f"checkpoint {schema.checkpoint_id!r} requires action {schema.action_id!r}"
-        )
-    if parsed.get("native_test") != schema.native_test:
-        raise SystemExit(
-            f"checkpoint {schema.checkpoint_id!r} requires native test {schema.native_test!r}"
-        )
-    checkpoint_fields = {}
-    for field_name, field_value in stop.get("capture", {}).items():
-        if isinstance(field_value, str):
-            checkpoint_fields[field_name] = FieldCapture(field_value)
-        else:
-            checkpoint_fields[field_name] = FieldCapture(
-                expression=str(field_value["expression"]),
-                normalize=str(field_value.get("normalize", "int")),
-            )
-    deferred = parsed.get("start", {}).get("defer_shell_command_until", {})
-    replay = deferred.get("after_probe", {})
-    rewrite = deferred.get("rewrite_event", {})
+def _load_save_to_map_scenario(fixture: Path) -> Scenario:
+    """Embedded retail-vs-recomp GDB checkpoint scenario."""
+    production_orders = {
+            "production_order_00": FieldCapture('*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1dc)', 's16'),
+            "production_order_01": FieldCapture('*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1de)', 's16'),
+            "production_order_02": FieldCapture('*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1e0)', 's16'),
+            "production_order_03": FieldCapture('*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1e2)', 's16'),
+            "production_order_04": FieldCapture('*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1e4)', 's16'),
+            "production_order_05": FieldCapture('*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1e6)', 's16'),
+            "production_order_06": FieldCapture('*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1e8)', 's16'),
+            "production_order_07": FieldCapture('*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1ea)', 's16'),
+            "production_order_08": FieldCapture('*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1ec)', 's16'),
+            "production_order_09": FieldCapture('*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1ee)', 's16'),
+            "production_order_10": FieldCapture('*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1f0)', 's16'),
+            "production_order_11": FieldCapture('*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1f2)', 's16'),
+            "production_order_12": FieldCapture('*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1f4)', 's16'),
+            "production_order_13": FieldCapture('*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1f6)', 's16'),
+            "production_order_14": FieldCapture('*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1f8)', 's16'),
+            "production_order_15": FieldCapture('*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1fa)', 's16'),
+    }
+    production_flags = {
+            "production_flag_00": FieldCapture('*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x21c)', 'int'),
+            "production_flag_01": FieldCapture('*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x21d)', 'int'),
+            "production_flag_02": FieldCapture('*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x21e)', 'int'),
+            "production_flag_03": FieldCapture('*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x21f)', 'int'),
+            "production_flag_04": FieldCapture('*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x220)', 'int'),
+            "production_flag_05": FieldCapture('*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x221)', 'int'),
+            "production_flag_06": FieldCapture('*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x222)', 'int'),
+            "production_flag_07": FieldCapture('*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x223)', 'int'),
+            "production_flag_08": FieldCapture('*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x224)', 'int'),
+            "production_flag_09": FieldCapture('*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x225)', 'int'),
+            "production_flag_10": FieldCapture('*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x226)', 'int'),
+            "production_flag_11": FieldCapture('*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x227)', 'int'),
+            "production_flag_12": FieldCapture('*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x228)', 'int'),
+            "production_flag_13": FieldCapture('*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x229)', 'int'),
+            "production_flag_14": FieldCapture('*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x22a)', 'int'),
+            "production_flag_15": FieldCapture('*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x22b)', 'int'),
+    }
+    checkpoint_fields = {
+            "turn_event": FieldCapture('*(short*)(*(unsigned int*)0x006a21bc + 4)', 'u16'),
+            "combined_map_view_present": FieldCapture('*(unsigned int*)(*(unsigned int*)0x006a21bc + 0xf0)', 'bool'),
+            "active_nation": FieldCapture('*(short*)(*(unsigned int*)0x006a20f8 + 0x2e)', 's16'),
+            "economic_turn": FieldCapture('*(short*)(*(unsigned int*)0x006a20f8 + 0x2c)', 's16'),
+            "map_present": FieldCapture('*(unsigned int*)0x006a43d4', 'bool'),
+            "map_wrap": FieldCapture('*(char*)(*(unsigned int*)0x006a43d4 + 0x20)', 'int'),
+            "city_present": FieldCapture('*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894)', 'bool'),
+    }
+    checkpoint_fields.update(production_orders)
+    checkpoint_fields.update(production_flags)
     return Scenario(
-        name=str(parsed.get("name", name)),
-        native_test=str(parsed["native_test"]),
-        action_id=str(parsed["action_id"]),
+        name="load_save_to_map",
+        native_test="load_saved_game",
+        action_id="combined_map.enter",
         fixture=fixture,
-        probes=tuple(probes),
+        probes=(
+            Probe(
+                probe_id="turn_event.dispatch",
+                original_address=0x005d7240,
+                fields={
+                    "event": FieldCapture("*(short*)($esp+4)", "u16"),
+                    "payload": FieldCapture("*(int*)($esp+8)", "u32"),
+                },
+            ),
+        ),
         terminal_checkpoint=Checkpoint(
-            probe=str(stop["probe"]),
-            field=str(stop["field"]),
-            equals=int(stop["equals"], 0)
-            if isinstance(stop["equals"], str)
-            else int(stop["equals"]),
-            checkpoint_id=str(stop["checkpoint_id"]),
+            probe="turn_event.dispatch",
+            field="event",
+            equals=0x07dd,
+            checkpoint_id="combined_map.ready",
             fields=checkpoint_fields,
         ),
-        timeout_seconds=float(parsed.get("timeout_seconds", 90)),
+        timeout_seconds=90.0,
         start_action=DeferredShellAction(
-            owner_address=int(deferred["owner_address"], 0),
-            after_call_to=int(deferred["after_call_to"], 0),
-            replay_after=ProbeWait(
-                probe=str(replay["probe"]),
-                field=str(replay["field"]),
-                equals=int(replay["equals"], 0)
-                if isinstance(replay["equals"], str)
-                else int(replay["equals"]),
-            ),
-            rewrite_probe=str(rewrite["probe"]),
-            rewrite_field=str(rewrite["field"]),
-            rewrite_from=int(rewrite["from"], 0)
-            if isinstance(rewrite["from"], str)
-            else int(rewrite["from"]),
-            rewrite_to=int(rewrite["to"], 0)
-            if isinstance(rewrite["to"], str)
-            else int(rewrite["to"]),
-            rewrite_expression=str(rewrite["expression"]),
-            rewrite_action_id=str(rewrite["action_id"]),
+            owner_address=0x00412dc0,
+            after_call_to=0x00415760,
+            replay_after=ProbeWait(probe="turn_event.dispatch", field="event", equals=0x11f8),
+            rewrite_probe="turn_event.dispatch",
+            rewrite_field="event",
+            rewrite_from=0x11f8,
+            rewrite_to=0x05dc,
+            rewrite_expression="*(short*)($esp+4)",
+            rewrite_action_id="opening_cinematic.skip_to_main_menu",
         ),
     )
 
+
+def load_scenario(name: str) -> Scenario:
+    if name != "load_save_to_map":
+        raise SystemExit(f"unknown retail checkpoint differential scenario {name!r}")
+    fixture_root = Path(os.environ.get("IMPERIALISM_SAVE_FIXTURES", FIXTURE_DIR))
+    fixture = fixture_root / "beginning_of_game.imp"
+    if not fixture.is_file():
+        raise SystemExit(f"missing differential fixture {fixture}")
+    scenario = _load_save_to_map_scenario(fixture)
+    schema = SCHEMAS.get(scenario.terminal_checkpoint.checkpoint_id)
+    if schema is None:
+        raise SystemExit("unknown differential checkpoint combined_map.ready")
+    if scenario.action_id != schema.action_id:
+        raise SystemExit(
+            f"checkpoint {schema.checkpoint_id!r} requires action {schema.action_id!r}"
+        )
+    if scenario.native_test != schema.native_test:
+        raise SystemExit(
+            f"checkpoint {schema.checkpoint_id!r} requires native test {schema.native_test!r}"
+        )
+    return scenario
 
 def first_divergence(original: list[dict], recomp: list[dict]) -> dict | None:
     def key(record: dict) -> tuple[str, int]:

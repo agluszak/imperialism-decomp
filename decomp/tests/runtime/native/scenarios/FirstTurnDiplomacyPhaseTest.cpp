@@ -3,13 +3,13 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "RuntimeDifferentialCapture.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
 
 #include "game/globals/shared_globals.h"
+#include "game/turn_event_codes.h"
 #include "game/ui_screens/TSimMgr.h"
-
-#include "parson.h"
 
 namespace {
 
@@ -35,13 +35,11 @@ private:
     // Phase 5 has no first-turn alert work. Put the fixture at the exact phase-6 operation
     // boundary so this scenario observes only diplomacy application and replies.
     g_pSimMgr->turnStateCode = 6;
-    if (!CaptureGameState(RunState(), "before")) {
-      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
-    }
 
-    RunState().SetCapture("case", json_value_init_null());
-    if (!RunState().HasCapture("case")) {
-      return RuntimeActionResult::Failure("the void case capture is unavailable");
+    RuntimeDifferentialCapture capture(RunState());
+    RuntimeActionResult started = capture.Begin(JsonNullValue());
+    if (!started.Succeeded()) {
+      return started;
     }
 
     g_pSimMgr->AdvanceGlobalTurnStateMachine();
@@ -52,25 +50,19 @@ private:
       return RuntimeActionResult::Failure("the diplomacy phase did not show the diplomacy map");
     }
 
-    JsonObject effect;
-    effect.Set("kind", "show_diplomacy_map");
-    effect.Set("nation", static_cast<int>(g_pSimMgr->activeNationSlot));
+    JsonObject request;
+    request.Set("kind", "diplomacy_map");
+    request.Set("nation", static_cast<int>(g_pSimMgr->activeNationSlot));
+    JsonObject block;
+    block.Set("kind", "ui");
+    block.Set("request", request.Release());
     JsonArray effects;
-    effects.Add(effect.Release());
-
     JsonObject result;
-    result.Set("kind", "continues");
-    result.Set("from", 6);
-    result.Set("to", 7);
+    result.Set("kind", "blocked");
+    result.Set("phase", 7);
+    result.Set("block", block.Release());
     result.Set("effects", effects.Release());
-    RunState().SetCapture("result", result.Release());
-    if (!RunState().HasCapture("result")) {
-      return RuntimeActionResult::Failure("the turn outcome capture is unavailable");
-    }
-    if (!CaptureGameState(RunState(), "after")) {
-      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
-    }
-    return RuntimeActionResult::Success();
+    return capture.Finish(result.Release());
   }
 };
 

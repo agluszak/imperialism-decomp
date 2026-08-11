@@ -250,7 +250,7 @@ impl GameState {
             .expect("province transfer requires a current owner");
         let tile_owner = Some(TileOwnerTag::from_nation(new_owner));
         for index in 0..TileId::COUNT {
-            let tile = &mut self.world[TileId::new(index)];
+            let tile = self.world.tile_mut(TileId::new(index));
             if tile.province == Some(province) {
                 tile.owner_nation = tile_owner;
             }
@@ -587,12 +587,12 @@ mod tests {
         set_owned(&mut state, NationId::new(1), &[9]);
         set_province(&mut state, 9, Some(1), &[], Some(0));
         for tile in [20, 21] {
-            state.world[TileId::new(tile)].province = Some(ProvinceId::new(2));
-            state.world[TileId::new(tile)].owner_nation =
+            state.world.tile_mut(TileId::new(tile)).province = Some(ProvinceId::new(2));
+            state.world.tile_mut(TileId::new(tile)).owner_nation =
                 Some(TileOwnerTag::from_nation(NationId::new(0)));
         }
-        state.world[TileId::new(22)].province = Some(ProvinceId::new(5));
-        state.world[TileId::new(22)].owner_nation =
+        state.world.tile_mut(TileId::new(22)).province = Some(ProvinceId::new(5));
+        state.world.tile_mut(TileId::new(22)).owner_nation =
             Some(TileOwnerTag::from_nation(NationId::new(0)));
 
         state.transfer_province(ProvinceId::new(2), NationId::new(1));

@@ -27,7 +27,7 @@ JSON_Value* BuildEasyTurnCaseJson() {
 }
 
 // One Easy end-turn from a retail save already on the strategic map. Captures
-// before/case/after/result for the Rust differential; game_state mirrors after.
+// before/case/after/result for the Rust differential.
 class EasyTurnFromSaveTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -76,8 +76,7 @@ private:
     result.Set("gates", gates.Release());
     RunState().SetCapture("result", result.Release());
 
-    if (!RunState().HasCapture("result") || !CaptureGameState(RunState(), "after") ||
-        !CaptureGameState(RunState(), "game_state")) {
+    if (!RunState().HasCapture("result") || !CaptureGameState(RunState(), "after")) {
       return RuntimeActionResult::Failure("could not capture after game_state");
     }
     return RuntimeActionResult::Success();

@@ -1,6 +1,7 @@
 #include "JsonArray.h"
 #include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
+#include "RuntimeDifferentialCapture.h"
 #include "RuntimeRun.h"
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
@@ -49,12 +50,10 @@ private:
       return RuntimeActionResult::Failure("the trade phase did not begin from the diplomacy map");
     }
 
-    if (!CaptureGameState(RunState(), "before")) {
-      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
-    }
-    RunState().SetCapture("case", json_value_init_null());
-    if (!RunState().HasCapture("case")) {
-      return RuntimeActionResult::Failure("the void case capture is unavailable");
+    RuntimeDifferentialCapture capture(RunState());
+    RuntimeActionResult started = capture.Begin(json_value_init_null());
+    if (!started.Succeeded()) {
+      return started;
     }
 
     g_pSimMgr->AdvanceGlobalTurnStateMachine();
@@ -86,24 +85,19 @@ private:
       return RuntimeActionResult::Failure("the beginning-save trade deals did not finish");
     }
 
-    JsonObject effect;
-    effect.Set("kind", "show_offer_sheet");
-    effect.Set("nation", static_cast<int>(g_pSimMgr->activeNationSlot));
+    JsonObject request;
+    request.Set("kind", "offer_sheet");
+    request.Set("nation", static_cast<int>(g_pSimMgr->activeNationSlot));
+    JsonObject block;
+    block.Set("kind", "ui");
+    block.Set("request", request.Release());
     JsonArray effects;
-    effects.Add(effect.Release());
     JsonObject result;
-    result.Set("kind", "continues");
-    result.Set("from", 7);
-    result.Set("to", 9);
+    result.Set("kind", "blocked");
+    result.Set("phase", 9);
+    result.Set("block", block.Release());
     result.Set("effects", effects.Release());
-    RunState().SetCapture("result", result.Release());
-    if (!RunState().HasCapture("result")) {
-      return RuntimeActionResult::Failure("the turn outcome capture is unavailable");
-    }
-    if (!CaptureGameState(RunState(), "after")) {
-      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
-    }
-    return RuntimeActionResult::Success();
+    return capture.Finish(result.Release());
   }
 };
 

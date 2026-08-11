@@ -1,3 +1,4 @@
+use crate::*;
 use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Serialize};
 
@@ -141,5 +142,260 @@ impl MilitaryUnitKind {
 
     pub(crate) fn arms_required(self) -> i32 {
         ARMS_BY_MILITARY_UNIT[self]
+    }
+}
+
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct UnitIdAllocator(i32);
+impl UnitIdAllocator {
+    pub const fn from_retail(value: i32) -> Self {
+        Self(value)
+    }
+    pub const fn current(self) -> i32 {
+        self.0
+    }
+    pub(crate) fn next_civilian(&mut self) -> CivilianUnitId {
+        self.0 += 1;
+        CivilianUnitId::new(self.0)
+    }
+    pub(crate) fn next_military(&mut self) -> MilitaryUnitId {
+        self.0 += 1;
+        MilitaryUnitId::new(self.0)
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct MilitaryUnitState {
+    pub(crate) id: MilitaryUnitId,
+    pub(crate) nation: NationId,
+    pub(crate) unit_type: MilitaryUnitKind,
+    pub(crate) stationed_province: Option<ProvinceId>,
+    pub(crate) order: MilitaryOrder,
+    pub(crate) owner_nation: NationId,
+    pub(crate) roster_id: i16,
+    pub(crate) registered: bool,
+    pub(crate) name: String,
+    pub(crate) strength: i16,
+    pub(crate) era: i16,
+    pub(crate) experience: i16,
+    pub(crate) battle_flags: i16,
+}
+
+impl MilitaryUnitState {
+    #[allow(clippy::too_many_arguments)]
+    pub fn new(
+        id: MilitaryUnitId,
+        nation: NationId,
+        unit_type: MilitaryUnitKind,
+        stationed_province: Option<ProvinceId>,
+        order: MilitaryOrder,
+        owner_nation: NationId,
+        roster_id: i16,
+        registered: bool,
+        name: String,
+        strength: i16,
+        era: i16,
+        experience: i16,
+        battle_flags: i16,
+    ) -> Self {
+        Self {
+            id,
+            nation,
+            unit_type,
+            stationed_province,
+            order,
+            owner_nation,
+            roster_id,
+            registered,
+            name,
+            strength,
+            era,
+            experience,
+            battle_flags,
+        }
+    }
+
+    pub const fn id(&self) -> MilitaryUnitId {
+        self.id
+    }
+
+    pub const fn nation(&self) -> NationId {
+        self.nation
+    }
+
+    pub const fn unit_type(&self) -> MilitaryUnitKind {
+        self.unit_type
+    }
+
+    pub const fn order(&self) -> &MilitaryOrder {
+        &self.order
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum MilitaryOrder {
+    Idle {
+        targets: [Option<ProvinceId>; 3],
+        target_mirrors: [Option<ProvinceId>; 3],
+    },
+    Retail {
+        code: MilitaryOrderCode,
+        target: Option<ProvinceId>,
+        targets: [Option<ProvinceId>; 3],
+        target_mirrors: [Option<ProvinceId>; 3],
+    },
+}
+
+impl MilitaryOrder {
+    pub const fn idle(
+        targets: [Option<ProvinceId>; 3],
+        target_mirrors: [Option<ProvinceId>; 3],
+    ) -> Self {
+        Self::Idle {
+            targets,
+            target_mirrors,
+        }
+    }
+
+    pub const fn retail(
+        code: MilitaryOrderCode,
+        target: Option<ProvinceId>,
+        targets: [Option<ProvinceId>; 3],
+        target_mirrors: [Option<ProvinceId>; 3],
+    ) -> Self {
+        Self::Retail {
+            code,
+            target,
+            targets,
+            target_mirrors,
+        }
+    }
+
+    pub const fn targets(&self) -> &[Option<ProvinceId>; 3] {
+        match self {
+            Self::Idle { targets, .. } | Self::Retail { targets, .. } => targets,
+        }
+    }
+
+    pub const fn target_mirrors(&self) -> &[Option<ProvinceId>; 3] {
+        match self {
+            Self::Idle { target_mirrors, .. } | Self::Retail { target_mirrors, .. } => {
+                target_mirrors
+            }
+        }
+    }
+}
+
+/// An unrecovered retail military order discriminator retained only inside an
+/// otherwise data-carrying order.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct MilitaryOrderCode(i32);
+impl MilitaryOrderCode {
+    pub const fn from_retail(value: i32) -> Self {
+        Self(value)
+    }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+pub struct CivilianUnitState {
+    pub(crate) id: CivilianUnitId,
+    pub(crate) nation: NationId,
+    pub(crate) unit_type: CivilianUnitKind,
+    pub(crate) location: CivilianLocation,
+    pub(crate) order: CivilianWorkOrder,
+    pub(crate) owner_nation: NationId,
+    pub(crate) roster_id: i16,
+    pub(crate) registered: bool,
+}
+
+impl<'de> Deserialize<'de> for CivilianUnitState {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        #[derive(Deserialize)]
+        struct SerializedCivilianUnit {
+            id: CivilianUnitId,
+            nation: NationId,
+            unit_type: CivilianUnitKind,
+            location: CivilianLocation,
+            order: CivilianWorkOrder,
+            owner_nation: NationId,
+            roster_id: i16,
+            registered: bool,
+        }
+
+        let unit = SerializedCivilianUnit::deserialize(deserializer)?;
+        Self::new(
+            unit.id,
+            unit.nation,
+            unit.unit_type,
+            unit.location,
+            unit.order,
+            unit.owner_nation,
+            unit.roster_id,
+            unit.registered,
+        )
+        .ok_or_else(|| serde::de::Error::custom("civilian order is inconsistent with location"))
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub enum CivilianLocation {
+    OnMap(TileId),
+    OffMap,
+}
+impl CivilianLocation {
+    pub(crate) const fn tile(self) -> Option<TileId> {
+        match self {
+            Self::OnMap(tile) => Some(tile),
+            Self::OffMap => None,
+        }
+    }
+}
+
+impl CivilianUnitState {
+    #[allow(clippy::too_many_arguments)]
+    pub fn new(
+        id: CivilianUnitId,
+        nation: NationId,
+        unit_type: CivilianUnitKind,
+        location: CivilianLocation,
+        order: CivilianWorkOrder,
+        owner_nation: NationId,
+        roster_id: i16,
+        registered: bool,
+    ) -> Option<Self> {
+        let valid_location = match order {
+            CivilianWorkOrder::Idle
+            | CivilianWorkOrder::Sleep
+            | CivilianWorkOrder::Redeploy { .. } => true,
+            CivilianWorkOrder::LayRail { segment, .. } => {
+                location.tile() == Some(segment.destination())
+            }
+            _ => location.tile().is_some(),
+        };
+        valid_location.then_some(Self {
+            id,
+            nation,
+            unit_type,
+            location,
+            order,
+            owner_nation,
+            roster_id,
+            registered,
+        })
+    }
+    pub const fn id(&self) -> CivilianUnitId {
+        self.id
+    }
+    pub const fn nation(&self) -> NationId {
+        self.nation
+    }
+    pub const fn location(&self) -> CivilianLocation {
+        self.location
     }
 }

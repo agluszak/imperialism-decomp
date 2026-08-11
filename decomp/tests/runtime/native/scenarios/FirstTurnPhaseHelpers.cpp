@@ -70,7 +70,9 @@ RuntimeActionResult CaptureTurnStepBlockedAfter(RuntimeRun& run, int phase, cons
   JsonObject block;
   block.Set("kind", blockKind);
   if (uiGate != 0) {
-    block.Set("gate", uiGate);
+    JsonObject request;
+    request.Set("kind", uiGate);
+    block.Set("request", request.Release());
   }
   result.Set("block", block.Release());
   result.Set("effects", effects.Release());

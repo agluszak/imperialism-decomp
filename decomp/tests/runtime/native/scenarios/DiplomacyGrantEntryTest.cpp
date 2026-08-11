@@ -2,9 +2,9 @@
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
 #include "JsonObject.h"
+#include "RuntimeDifferentialCapture.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
-#include "RuntimeSemanticCapture.h"
 
 #include "game/globals/shared_globals.h"
 #include "game/nation/TGreatPower.h"
@@ -34,26 +34,19 @@ private:
       return RuntimeActionResult::Failure("the loaded player cannot make the grant-target check");
     }
 
-    if (!CaptureGameState(RunState(), "before")) {
-      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
-    }
-
     JsonObject caseCapture;
     caseCapture.Set("nation", static_cast<int>(activeNationSlot));
     caseCapture.Set("target", static_cast<int>(targetNationSlot));
     caseCapture.Set("amount", static_cast<int>(grantAmount));
-    RunState().SetCapture("case", caseCapture.Release());
 
-    const bool accepted =
-        nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNationSlot, grantAmount);
-    if (!CaptureBooleanOpResult(RunState(), accepted)) {
-      return RuntimeActionResult::Failure("the diplomacy grant result capture is unavailable");
+    RuntimeDifferentialCapture capture(RunState());
+    RuntimeActionResult started = capture.Begin(caseCapture.Release());
+    if (!started.Succeeded()) {
+      return started;
     }
 
-    if (!CaptureGameState(RunState(), "after")) {
-      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
-    }
-    return RuntimeActionResult::Success();
+    return capture.Finish(
+        nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNationSlot, grantAmount));
   }
 };
 
