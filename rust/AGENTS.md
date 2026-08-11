@@ -29,8 +29,11 @@ the decomp uses them.
 - Return operation-specific results when callers need them. Keep effects only for ordered
   observables absent from authoritative state, such as notifications, sounds, modal prompts, or
   acknowledgement requests. Do not emit effects that merely restate state mutations.
-- Keep app flow `input → one core operation → state/results/effects → UI projection`. Turn sequencing
-  belongs in core through `advance_turn_step` / `advance_until_blocked`, not in a Bevy schedule.
+- Keep app flow `input → one core operation → FlowStop / results / effects → UI projection`.
+  Turn sequencing belongs in core through `advance_turn_step` / `continue_turn`, not in a Bevy
+  schedule. The app-facing stop is [`FlowStop`]; do not ask the UI to restate a gate the phase
+  already encodes (`dismiss_blocking_screen`). Do not emit a show-screen effect that merely
+  restates `FlowStop::Show`.
 - External decode or malformed payload errors return `Result`. Legal gameplay rejection returns a
   typed outcome or narrow domain error the UI can use. Broken internal invariants are prevented by
   structure where practical and otherwise assert or `expect`; do not thread them through rule APIs.

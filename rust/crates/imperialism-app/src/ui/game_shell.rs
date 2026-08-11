@@ -6,7 +6,7 @@ use bevy::log::warn;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
-use imperialism_core::{AdvanceTurnOutcome, MajorNationId, TurnBlock, UiGate};
+use imperialism_core::{FlowStop, GameScreen, MajorNationId};
 use imperialism_formats::{FourCc, ScopedViewId, TRADE, fourcc};
 
 pub(crate) const TOOLBAR_PARENT_TAGS: &[FourCc] = &[fourcc!("tool"), fourcc!("topB")];
@@ -156,7 +156,7 @@ enum GameScreenNavAction {
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum TurnFlowAction {
     FinishPlayerOrders,
-    Resume(UiGate),
+    DismissBlockingScreen,
 }
 
 pub(crate) struct GameShellPlugin;
@@ -249,14 +249,9 @@ fn enter_turn_flow_screen(
     let end = spawned
         .require_unique(fourcc!("end "))
         .expect("validated turn-flow close binding");
-    let gate = match current {
-        AppState::DealBook => UiGate::DealBook,
-        AppState::Newspaper => UiGate::Newspaper,
-        _ => unreachable!(),
-    };
     commands
         .entity(end)
-        .insert(TurnFlowAction::Resume(gate))
+        .insert(TurnFlowAction::DismissBlockingScreen)
         .remove::<InteractionDisabled>();
     disable_control(&mut commands, &spawned, fourcc!("quer"));
 
@@ -457,42 +452,19 @@ fn on_turn_flow_activate(
         warn!("turn-flow control activated without an authoritative game session");
         return;
     };
-    let outcome = match *action {
+    let stop = match *action {
         TurnFlowAction::FinishPlayerOrders => session.0.finish_player_orders(),
-        TurnFlowAction::Resume(gate) => session.0.resume_after_ui(gate),
+        TurnFlowAction::DismissBlockingScreen => session.0.dismiss_blocking_screen(),
     };
-    let destination = match outcome {
-        AdvanceTurnOutcome::Blocked {
-            block: TurnBlock::PlayerOrders,
-            ..
-        } => Some(AppState::StrategicMap),
-        AdvanceTurnOutcome::Blocked {
-            block: TurnBlock::Ui {
-                gate: UiGate::DealBook,
-            },
-            ..
+    let destination = match stop {
+        FlowStop::PlayerOrders => Some(AppState::StrategicMap),
+        FlowStop::Show {
+            screen: GameScreen::DealBook,
         } => Some(AppState::DealBook),
-        AdvanceTurnOutcome::Blocked {
-            block: TurnBlock::Ui {
-                gate: UiGate::Newspaper,
-            },
-            ..
+        FlowStop::Show {
+            screen: GameScreen::Newspaper,
         } => Some(AppState::Newspaper),
-        AdvanceTurnOutcome::Continues { .. }
-        | AdvanceTurnOutcome::Blocked {
-            block:
-                TurnBlock::Ui {
-                    gate:
-                        UiGate::DiplomacyMap
-                        | UiGate::OfferSheet
-                        | UiGate::Combat
-                        | UiGate::DiplomacyOffer
-                        | UiGate::TechnologyAdvance
-                        | UiGate::TurnAlert,
-                }
-                | TurnBlock::Unsupported { .. },
-            ..
-        } => None,
+        FlowStop::Unimplemented { .. } => None,
     };
     if let Some(destination) = destination.filter(|destination| *destination != *state.get()) {
         next_state.set(destination);
@@ -762,13 +734,13 @@ mod tests {
             &AppState::DealBook
         );
 
-        activate_turn_flow(&mut app, TurnFlowAction::Resume(UiGate::DealBook));
+        activate_turn_flow(&mut app, TurnFlowAction::DismissBlockingScreen);
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::Newspaper
         );
 
-        activate_turn_flow(&mut app, TurnFlowAction::Resume(UiGate::Newspaper));
+        activate_turn_flow(&mut app, TurnFlowAction::DismissBlockingScreen);
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::StrategicMap

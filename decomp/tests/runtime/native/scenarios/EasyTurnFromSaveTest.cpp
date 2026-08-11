@@ -66,14 +66,14 @@ private:
   }
 
   RuntimeActionResult CaptureAfter() {
-    JsonArray gates;
-    gates.Add("deal_book");
-    gates.Add("newspaper");
+    JsonArray screens;
+    screens.Add("deal_book");
+    screens.Add("newspaper");
     JsonObject result;
     result.Set("kind", "completed");
     result.Set("from_turn", endTurn.StartingTurn());
     result.Set("to_turn", endTurn.EndingTurn());
-    result.Set("gates", gates.Release());
+    result.Set("screens", screens.Release());
     RunState().SetCapture("result", result.Release());
 
     if (!RunState().HasCapture("result") || !CaptureGameState(RunState(), "after")) {
