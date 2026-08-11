@@ -1,4 +1,3 @@
-
 use super::*;
 use crate::ui::catalog::spawn_view_nodes;
 use bevy::ecs::system::RunSystemOnce;

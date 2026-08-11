@@ -53,8 +53,8 @@ protected:
 
 private:
   RuntimeActionResult CaptureBefore() {
-    if (!CaptureGameState(RunState(), "before")) {
-      return RuntimeActionResult::Failure("could not capture before game_state");
+    if (!CaptureSaveBackedGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("could not capture before save-backed state");
     }
 
     JSON_Value* caseValue = BuildEasyTurnCaseJson();
@@ -76,8 +76,8 @@ private:
     result.Set("screens", screens.Release());
     RunState().SetCapture("result", result.Release());
 
-    if (!RunState().HasCapture("result") || !CaptureGameState(RunState(), "after")) {
-      return RuntimeActionResult::Failure("could not capture after game_state");
+    if (!RunState().HasCapture("result") || !CaptureSaveBackedGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("could not capture after save-backed state");
     }
     return RuntimeActionResult::Success();
   }

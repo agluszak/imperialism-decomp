@@ -91,6 +91,7 @@ pub struct ValidatedRuntimeResult {
     pub name: String,
     pub seed: u32,
     pub evidence_kind: EvidenceKind,
+    artifact_dir: Option<PathBuf>,
     captures: BTreeMap<String, serde_json::Value>,
 }
 
@@ -105,6 +106,15 @@ impl ValidatedRuntimeResult {
             .cloned()
             .ok_or_else(|| RuntimeCaptureError::MissingCapture(name.to_owned()))?;
         deserialize_capture(name, capture)
+    }
+
+    /// Directory containing published run artifacts (`result.json`, save-backed `.imp` files).
+    pub fn artifact_dir(&self) -> Result<&Path, RuntimeCaptureError> {
+        self.artifact_dir.as_deref().ok_or_else(|| {
+            RuntimeCaptureError::Invalid(
+                "runtime result is missing summary.artifact_path".to_owned(),
+            )
+        })
     }
 }
 
@@ -139,6 +149,14 @@ struct RawRuntimeResult {
     captures_path: String,
     #[serde(default)]
     captures_sha256: Option<String>,
+    #[serde(default)]
+    summary: Option<RawRuntimeSummary>,
+}
+
+#[derive(Deserialize)]
+struct RawRuntimeSummary {
+    #[serde(default)]
+    artifact_path: Option<String>,
 }
 
 pub fn read_runtime_result(
@@ -179,6 +197,8 @@ pub fn decode_runtime_result(
         captures: Option<BTreeMap<String, serde_json::Value>>,
         #[serde(default)]
         captures_sha256: Option<String>,
+        #[serde(default)]
+        summary: Option<RawRuntimeSummary>,
     }
     let inline: InlineRuntimeResult =
         serde_json::from_reader(reader).map_err(RuntimeCaptureError::Json)?;
@@ -194,6 +214,7 @@ pub fn decode_runtime_result(
         evidence_kind: inline.evidence_kind,
         captures_path: inline.captures_path.unwrap_or_default(),
         captures_sha256: inline.captures_sha256,
+        summary: inline.summary,
     };
     validate_runtime_result(raw, captures, expectations)
 }
@@ -260,10 +281,15 @@ fn validate_runtime_result(
             return Err(RuntimeCaptureError::MissingCapture((*name).to_owned()));
         }
     }
+    let artifact_dir = raw
+        .summary
+        .and_then(|summary| summary.artifact_path)
+        .map(PathBuf::from);
     Ok(ValidatedRuntimeResult {
         name: raw.name,
         seed: raw.seed,
         evidence_kind,
+        artifact_dir,
         captures,
     })
 }

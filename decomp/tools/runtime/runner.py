@@ -101,6 +101,32 @@ def record_failure(result: JsonObject, summary: str) -> None:
         ]
 
 
+def stage_save_backed_captures(run_dir: Path, captures: JsonObject) -> None:
+    """Copy native save-backed before/after .imp files next to result.json.
+
+    NativeTransition writes save/rt_native_<name>.imp under the Wine game sandbox.
+    Rust differentials resolve the capture's `save` basename against the run directory.
+    """
+    if not isinstance(captures, dict):
+        return
+    game_dir = run_dir / "game"
+    for capture_name, payload in captures.items():
+        if not isinstance(payload, dict):
+            continue
+        save_name = payload.get("save")
+        if not isinstance(save_name, str) or not save_name.endswith(".imp"):
+            continue
+        candidates = (
+            game_dir / "Save" / f"rt_native_{capture_name}.imp",
+            game_dir / "save" / f"rt_native_{capture_name}.imp",
+        )
+        source = next((path for path in candidates if path.is_file()), None)
+        if source is None:
+            continue
+        destination = run_dir / save_name
+        destination.write_bytes(source.read_bytes())
+
+
 def _failure_envelope(
     config: RunConfig, failure: str, *, invalid_native_result: JsonObject | None = None
 ) -> JsonObject:
@@ -160,6 +186,8 @@ def process_attempt(
             captures = load_captures(result, config.run_dir / "result.json")
         except ValueError:
             captures = {}
+        else:
+            stage_save_backed_captures(config.run_dir, captures)
     oracle_view = {**result, "captures": captures}
 
     oracle_results: list[OracleResult] = []

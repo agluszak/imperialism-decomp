@@ -82,17 +82,20 @@ the decomp uses them.
 
 ## Differential fidelity
 
-- Preserve capture collection order and semantic IDs. Differential scenarios compare complete
+- Preserve capture collection order and semantic IDs. Native transitions compare complete
   `before`/`case`/`after` state, the semantic operation result, and any required ordered non-state
-  effects; do not normalize order.
+  effects; do not normalize order. Model `before`/`after` travel as retail `.imp` saves plus a small
+  ephemeral JSON overlay for session-only fields.
 - Validate published runtime result envelopes strictly: name, seed, status, evidence kind, required
-  captures, and unknown capture fields.
-- Preserve the native scenario's evidence kind. `retail_fixture_oracle` proves agreement with the
+  captures, and unknown capture fields. Model differentials publish under `native_transition_oracle`.
+- Preserve the native oracle's evidence kind. `retail_fixture_oracle` proves agreement with the
   reconstructed C++ executable from a retail-derived fixture; only `retail_differential` certifies
   that behavior against the original executable.
 - Advance turns only through `advance_turn_step`. Unported alert, acknowledgement, and phase work
   stops at the current phase; do not mutate to the next phase before its authoritative work and
   effects exist.
+- Add a differential by writing one C++ case function plus table row and one Rust integration test
+  beside the domain; do not add Python catalog entries for ordinary model transitions.
 
 ## Collection order and identities
 
