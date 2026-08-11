@@ -30,8 +30,9 @@ the decomp uses them.
   `first_idle_civilian_tile` and pure helpers such as `viewport_origin_centered_on`; do not put
   "enter screen X" methods on `GameState`. When retail persists a view field, keep the field, but
   let the app choose when to write it. Refresh projected UI from the facts it displays (for
-  example a strategic base-terrain key of view origin plus visible tile rendering), not from
-  broad `GameSession` dirty markers that force full redraws.
+  example a strategic base-terrain key of view origin plus visible tile rendering, or city
+  session/selection/`Added` change detection), not from broad dirty-marker components or
+  `GameSession`-wide full redraws.
 - Separate planning from mutation for order UI: use `can_set_city_order_quantity` (or a plan API)
   to decide Accept enablement; do not mutate-and-rollback authoritative state as a probe.
 - Return operation-specific results when callers need them. Keep effects only for ordered

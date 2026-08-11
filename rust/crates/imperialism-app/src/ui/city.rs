@@ -866,9 +866,6 @@ struct CityCanvas {
 struct CityScreenRoot;
 
 #[derive(Component)]
-struct CityScreenNeedsSync;
-
-#[derive(Component)]
 struct CityDialogsNeedRestore;
 
 #[derive(Component, Clone, Copy)]
@@ -908,9 +905,6 @@ struct CityDialogCaption {
 struct CityDialogClose {
     dialog: Entity,
 }
-
-#[derive(Component)]
-struct CityDialogNeedsSync;
 
 #[derive(Component, Clone, Copy)]
 struct CityExpansionOpen {
@@ -1164,7 +1158,6 @@ fn enter_city_screen(
     root.insert((
         GameScreenRoot(view_id),
         CityScreenRoot,
-        CityScreenNeedsSync,
         CityDialogsNeedRestore,
         DespawnOnExit(AppState::City),
     ));
@@ -1561,7 +1554,6 @@ fn on_city_canvas_click(
     click: On<Pointer<Click>>,
     canvases: Query<(&RelativeCursorPosition, &CityCanvas)>,
     dialogs: Query<(Entity, &CityBuildingDialog, &GlobalZIndex)>,
-    screen_roots: Query<Entity, With<CityScreenRoot>>,
     modal_dialogs: Query<(), With<ModalDialog>>,
     session: Option<ResMut<GameSession>>,
     catalog: Res<UiCatalogResource>,
@@ -1616,12 +1608,6 @@ fn on_city_canvas_click(
         ) || session.0.technology.city_capabilities_by_nation[nation].oil_drilling;
         if available {
             open_city_construction_dialog(&mut ui, &mut session, nation, building.slot);
-            for (entity, _, _) in &dialogs {
-                ui.commands.entity(entity).insert(CityDialogNeedsSync);
-            }
-            for root in &screen_roots {
-                ui.commands.entity(root).insert(CityScreenNeedsSync);
-            }
             return;
         }
     }
@@ -1974,7 +1960,6 @@ fn bind_city_dialog_root(
             slot,
             window,
         },
-        CityDialogNeedsSync,
         GlobalZIndex(19),
         Pickable::IGNORE,
     ));
@@ -3704,7 +3689,6 @@ fn on_city_expansion_open(
     activate: On<Activate>,
     openers: Query<&CityExpansionOpen>,
     dialogs: Query<Entity, With<CityBuildingDialog>>,
-    screen_roots: Query<Entity, With<CityScreenRoot>>,
     modals: Query<(), With<ModalDialog>>,
     session: Option<Res<GameSession>>,
     mut ui: UiSpawner,
@@ -3750,12 +3734,6 @@ fn on_city_expansion_open(
         next_level,
         can_reserve,
     );
-    for dialog in &dialogs {
-        ui.commands.entity(dialog).insert(CityDialogNeedsSync);
-    }
-    for root in &screen_roots {
-        ui.commands.entity(root).insert(CityScreenNeedsSync);
-    }
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -3763,8 +3741,6 @@ fn on_city_building_change_choice(
     activate: On<Activate>,
     choices: Query<&CityBuildingChangeChoice>,
     change_dialogs: Query<(), With<CityBuildingChangeDialog>>,
-    dialogs: Query<Entity, With<CityBuildingDialog>>,
-    screen_roots: Query<Entity, With<CityScreenRoot>>,
     session: Option<ResMut<GameSession>>,
     mut commands: Commands,
 ) {
@@ -3813,21 +3789,14 @@ fn on_city_building_change_choice(
     }
 
     commands.entity(choice.dialog).despawn();
-    for dialog in &dialogs {
-        commands.entity(dialog).insert(CityDialogNeedsSync);
-    }
-    for root in &screen_roots {
-        commands.entity(root).insert(CityScreenNeedsSync);
-    }
 }
 
 fn sync_city_building_pictures(
-    screens: Query<(), With<CityScreenNeedsSync>>,
     session: Res<GameSession>,
     mut assets: UiAssetResources,
     mut buildings: Query<(&CityBuildingPicture, &mut ImageNode, &mut Visibility)>,
 ) {
-    if screens.is_empty() {
+    if !session.is_changed() {
         return;
     }
     for (building, mut image, mut visibility) in &mut buildings {
@@ -3867,10 +3836,8 @@ fn on_city_amount_bar_click(
     mut click: On<Pointer<Click>>,
     bars: Query<(&RelativeCursorPosition, &CityIndustryAmountBar)>,
     modals: Query<(), With<ModalDialog>>,
-    dialogs: Query<Entity, With<CityBuildingDialog>>,
-    screen_roots: Query<Entity, With<CityScreenRoot>>,
+    dialogs: Query<(), With<CityBuildingDialog>>,
     session: Option<ResMut<GameSession>>,
-    mut commands: Commands,
 ) {
     if !modals.is_empty() {
         return;
@@ -3914,19 +3881,12 @@ fn on_city_amount_bar_click(
     if quantity == 0 && x != 0 && previous == 0 {
         quantity = 1;
     }
-    if !session
-        .0
-        .set_city_order_quantity(bar.nation, bar.order, quantity)
-        || quantity == previous
-    {
+    if quantity == previous {
         return;
     }
-    for dialog in &dialogs {
-        commands.entity(dialog).insert(CityDialogNeedsSync);
-    }
-    for root in &screen_roots {
-        commands.entity(root).insert(CityScreenNeedsSync);
-    }
+    let _ = session
+        .0
+        .set_city_order_quantity(bar.nation, bar.order, quantity);
 }
 
 fn on_armory_row_selected(
@@ -3960,7 +3920,6 @@ fn on_armory_row_selected(
             commands.entity(entity).remove::<Checked>();
         }
     }
-    commands.entity(row.dialog).insert(CityDialogNeedsSync);
 }
 
 fn select_university_row(
@@ -3985,7 +3944,6 @@ fn select_university_row(
             commands.entity(entity).remove::<Checked>();
         }
     }
-    commands.entity(dialog).insert(CityDialogNeedsSync);
 }
 
 fn on_university_row_selected(
@@ -4032,7 +3990,6 @@ fn select_shipyard_row(
             commands.entity(entity).remove::<Checked>();
         }
     }
-    commands.entity(dialog).insert(CityDialogNeedsSync);
 }
 
 fn on_shipyard_row_selected(
@@ -4063,7 +4020,6 @@ fn on_city_order_adjust(
     university_rows: Query<(Entity, &UniversityRowChoice, Has<Checked>)>,
     mut shipyard_selections: Query<&mut ShipyardSelection>,
     shipyard_rows: Query<(Entity, &ShipyardRowChoice, Has<Checked>)>,
-    screen_roots: Query<Entity, With<CityScreenRoot>>,
     session: Option<ResMut<GameSession>>,
     mut commands: Commands,
 ) {
@@ -4083,7 +4039,6 @@ fn on_city_order_adjust(
         && let Ok(mut selection) = armory_selections.get_mut(action.dialog)
     {
         selection.category = category;
-        commands.entity(action.dialog).insert(CityDialogNeedsSync);
         for (entity, row, checked) in &armory_rows {
             if row.dialog != action.dialog {
                 continue;
@@ -4114,32 +4069,24 @@ fn on_city_order_adjust(
             &mut commands,
         );
     }
-    if !session
+    let _ = session
         .0
-        .adjust_city_order(action.nation, action.order, action.delta)
-    {
-        return;
-    }
-    for dialog in &dialogs {
-        commands.entity(dialog).insert(CityDialogNeedsSync);
-    }
-    for root in &screen_roots {
-        commands.entity(root).insert(CityScreenNeedsSync);
-    }
+        .adjust_city_order(action.nation, action.order, action.delta);
 }
 
 #[allow(clippy::too_many_arguments, clippy::type_complexity)]
 fn sync_city_values(
-    mut commands: Commands,
     mut session: ResMut<GameSession>,
-    screens: Query<Entity, With<CityScreenNeedsSync>>,
-    dialogs: Query<
-        (Entity, &CityBuildingDialog, Option<&ArmorySelection>),
-        With<CityDialogNeedsSync>,
-    >,
-    university_selections: Query<&UniversitySelection>,
+    screens: Query<(), With<CityScreenRoot>>,
+    added_screens: Query<(), Added<CityScreenRoot>>,
+    dialogs: Query<(
+        Entity,
+        Ref<CityBuildingDialog>,
+        Option<Ref<ArmorySelection>>,
+    )>,
+    university_selections: Query<Ref<UniversitySelection>>,
     university_rows: Query<&UniversityRowChoice>,
-    shipyard_selections: Query<&ShipyardSelection>,
+    shipyard_selections: Query<Ref<ShipyardSelection>>,
     shipyard_rows: Query<&ShipyardRowChoice>,
     mut values: Query<
         (
@@ -4202,7 +4149,21 @@ fn sync_city_values(
     if screens.is_empty() && dialogs.is_empty() {
         return;
     }
-
+    let selection_or_dialog_changed = dialogs.iter().any(|(_, dialog, armory)| {
+        dialog.is_added()
+            || armory
+                .as_ref()
+                .is_some_and(|selection| selection.is_changed())
+    }) || university_selections
+        .iter()
+        .any(|selection| selection.is_changed())
+        || shipyard_selections
+            .iter()
+            .any(|selection| selection.is_changed());
+    if !session.is_changed() && added_screens.is_empty() && !selection_or_dialog_changed {
+        return;
+    }
+    // Order refresh mutates limiting constraints; do not re-dirty GameSession or sync loops.
     let screen_nation = MajorNationId::from_nation(session.0.turn.active_nation);
     let mut dialog_states = Vec::new();
     for (root, dialog, armory_selection) in &dialogs {
@@ -4217,7 +4178,10 @@ fn sync_city_values(
             ProductionSlot::Armory | ProductionSlot::University | ProductionSlot::Shipyard
         ) {
             for binding in bindings {
-                let view = session.0.refresh_city_order(dialog.nation, binding.order);
+                let view = session
+                    .bypass_change_detection()
+                    .0
+                    .refresh_city_order(dialog.nation, binding.order);
                 order_views.push((binding.order, view));
             }
         }
@@ -4753,12 +4717,6 @@ fn sync_city_values(
         } else {
             Visibility::Hidden
         };
-    }
-    for root in &screens {
-        commands.entity(root).remove::<CityScreenNeedsSync>();
-    }
-    for (root, _, _) in &dialogs {
-        commands.entity(root).remove::<CityDialogNeedsSync>();
     }
 }
 
