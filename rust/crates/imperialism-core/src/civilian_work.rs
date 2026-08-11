@@ -125,6 +125,7 @@ impl GameState {
             .iter()
             .position(|unit| unit.id == civilian)
             .expect("scheduled civilian work references a present unit");
+        #[allow(clippy::collapsible_match)] // match-guard form cannot mutably borrow `turns`
         match &mut self.civilian_units[index].order {
             CivilianWorkOrder::DevelopResource { turns } => {
                 if turns.advance() {
