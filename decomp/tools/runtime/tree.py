@@ -156,6 +156,17 @@ def main(argv: list[str] | None = None) -> int:
     print(f"# status={result.get('status')} phase={phase}")
 
     captures = result.get("captures")
+    if not isinstance(captures, dict):
+        captures_path = result.get("captures_path")
+        if isinstance(captures_path, str) and captures_path:
+            from tools.runtime.protocol import load_captures
+
+            try:
+                captures = load_captures(result, result_path)
+            except ValueError:
+                captures = {}
+        else:
+            captures = {}
     ui_tree = captures.get("ui_tree") if isinstance(captures, dict) else None
     if not isinstance(ui_tree, dict):
         ui_tree = {}

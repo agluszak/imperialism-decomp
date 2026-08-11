@@ -120,7 +120,7 @@ class RuntimeProtocolTests(unittest.TestCase):
             "name": name,
             "seed": seed,
             "status": "passed",
-            "captures": {},
+            "captures_path": "captures.json",
             **overrides,
         }
 
@@ -160,25 +160,17 @@ class RuntimeProtocolTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "status"):
             validate_result(self.result(status="expected_failure"), "boot_managers", 1)
 
-    def test_captures_must_be_an_object(self) -> None:
-        with self.assertRaisesRegex(ValueError, "captures"):
-            validate_result(self.result(captures=[]), "boot_managers", 1)
+    def test_captures_path_must_be_a_string(self) -> None:
+        with self.assertRaisesRegex(ValueError, "captures_path"):
+            validate_result(self.result(captures_path=[]), "boot_managers", 1)
+
+    def test_embedded_captures_are_rejected(self) -> None:
+        with self.assertRaisesRegex(ValueError, "must not embed captures"):
+            validate_result(self.result(captures={}), "boot_managers", 1)
 
     def test_capture_payloads_are_not_validated_by_python(self) -> None:
-        captures = {
-            "game_state": {"new_rust_field": ["owned", {"semantic": True}]},
-            "coarse_map_generation": {"unmodeled": "payload"},
-            "random_map_terrain": {"unmodeled": "payload"},
-            "random_game_setup": {"unmodeled": "payload"},
-            "map_state": {"unmodeled": "payload"},
-            "serialization_roundtrip": {"unmodeled": "payload"},
-            "ui_tree": {
-                "snapshots": [],
-                "current": None,
-                "capital_confirmation": None,
-            },
-        }
-        validate_result(self.result(captures=captures), "boot_managers", 1)
+        # Capture payloads live in the sidecar; the control envelope only names the path.
+        validate_result(self.result(captures_path="captures.json"), "boot_managers", 1)
 
     def test_native_registry_knows_the_random_setup_capture(self) -> None:
         self.assertIn("kRuntimeCaptureRandomGameSetup", render_registry())

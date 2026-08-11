@@ -1,7 +1,4 @@
-#include "JsonArray.h"
-#include "JsonObject.h"
-#include "RuntimeGameStateCapture.h"
-#include "RuntimeDifferentialCapture.h"
+#include "FirstTurnPhaseHelpers.h"
 #include "RuntimeRun.h"
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
@@ -13,8 +10,6 @@
 #include "game/nation/TMinor.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_screens/TSimMgr.h"
-
-#include "parson.h"
 
 namespace {
 
@@ -63,19 +58,13 @@ protected:
 
 private:
   RuntimeActionResult AdvanceEliminationPhaseOnce() {
-    if (g_pSimMgr == 0 || g_pMapContextActionManager == 0 || g_pSimMgr->economicTurn != 1 ||
-        g_pSimMgr->turnStateCode != 5) {
+    if (g_pMapContextActionManager == 0) {
       return RuntimeActionResult::Failure("the loaded fixture is not at first-turn phase 5");
     }
-
-    g_pSimMgr->turnStateCode = 6;
     const int expectedPhases[] = {7, 9, 10, 0x14, 0x15, 0x0d, 0x19};
-    for (int index = 0; index < 7; ++index) {
-      g_pSimMgr->AdvanceGlobalTurnStateMachine();
-      if (g_pSimMgr->turnStateCode != expectedPhases[index]) {
-        return RuntimeActionResult::Failure(
-            "the prerequisite turn phases did not reach elimination");
-      }
+    RuntimeActionResult advanced = AdvanceFirstTurnToPhase(expectedPhases, 7, 0x19);
+    if (!advanced.Succeeded()) {
+      return advanced;
     }
     if (CurrentTurnEvent() != kTurnEventOfferSheet || !OfferScreen::IsCurrent()) {
       return RuntimeActionResult::Failure(
@@ -97,10 +86,9 @@ private:
           g_apSecondaryNationStateSlots[beforeMinorSlot];
     }
 
-    RuntimeDifferentialCapture capture(RunState());
-    RuntimeActionResult started = capture.Begin(json_value_init_null());
-    if (!started.Succeeded()) {
-      return started;
+    RuntimeActionResult before = CaptureTurnStepBefore(RunState());
+    if (!before.Succeeded()) {
+      return before;
     }
 
     g_pSimMgr->AdvanceGlobalTurnStateMachine();
@@ -126,14 +114,7 @@ private:
         return RuntimeActionResult::Failure("elimination replaced a surviving minor nation");
       }
     }
-
-    JsonArray effects;
-    JsonObject result;
-    result.Set("kind", "continues");
-    result.Set("from", 0x19);
-    result.Set("to", 8);
-    result.Set("effects", effects.Release());
-    return capture.Finish(result.Release());
+    return CaptureTurnStepContinuesAfter(RunState(), 0x19, 8);
   }
 };
 

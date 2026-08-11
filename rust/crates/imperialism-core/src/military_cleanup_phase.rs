@@ -18,7 +18,7 @@ const NAVY_ESCORT_PROFILE: [i16; 4] = [40, 30, 30, 0];
 const MISSION_DISTANCE_WEIGHTS: [f32; 2] = [1.0, 0.8];
 
 #[derive(Debug)]
-struct MilitaryCleanupPlan {
+pub(crate) struct MilitaryCleanupPlan {
     city_scores: ProvinceTable<i32>,
     pressure: MajorNationTable<Option<AiDevelopmentPressureState>>,
     missions: Vec<MissionState>,
@@ -27,20 +27,14 @@ struct MilitaryCleanupPlan {
 }
 
 impl GameState {
-    /// Whether phase `0x15` is the recovered Easy beginning-save cleanup pass.
-    pub(crate) fn supports_first_turn_military_cleanup_phase(&self) -> bool {
-        self.first_turn_military_cleanup_plan().is_some()
+    /// Builds the recovered Easy beginning-save cleanup plan, or `None` for unrecovered branches.
+    pub(crate) fn try_first_turn_military_cleanup_phase(&self) -> Option<MilitaryCleanupPlan> {
+        self.first_turn_military_cleanup_plan()
     }
 
-    /// Runs the recovered Easy beginning-save cleanup pass.
-    ///
-    /// Phase advancement remains the turn driver's responsibility. The complete
-    /// cleanup plan is validated before authoritative state is changed.
-    pub(crate) fn run_first_turn_military_cleanup_phase(&mut self) {
-        let plan = self
-            .first_turn_military_cleanup_plan()
-            .expect("first-turn military cleanup contains an unrecovered branch");
-
+    /// Applies a previously validated cleanup plan. Phase advancement remains the turn driver's
+    /// responsibility.
+    pub(crate) fn apply_military_cleanup_plan(&mut self, plan: MilitaryCleanupPlan) {
         for slot in 0..ProvinceId::COUNT {
             let province = ProvinceId::new(slot);
             self.provinces[province].set_city_score(plan.city_scores[province]);

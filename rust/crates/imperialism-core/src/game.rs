@@ -86,6 +86,14 @@ impl GameState {
         &self.world
     }
 
+    pub fn tile_mut(&mut self, index: TileId) -> &mut TileState {
+        self.world.tile_mut(index)
+    }
+
+    pub fn world_mut(&mut self) -> &mut StrategicMap {
+        &mut self.world
+    }
+
     pub const fn provinces(&self) -> &ProvinceTable<ProvinceState> {
         &self.provinces
     }

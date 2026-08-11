@@ -21,9 +21,8 @@ pub(in crate::ui::city) fn on_city_amount_bar_click(
     if dialogs.get(bar.dialog).is_err() {
         return;
     }
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session =
+        session.expect("city amount bar activated without an authoritative game session");
     click.propagate(false);
     let x = (((normalized.x + 0.5) * f32::from(INDUSTRY_BAR_WIDTH)).floor() as i16)
         .clamp(0, INDUSTRY_BAR_WIDTH - 1);
@@ -214,9 +213,8 @@ pub(in crate::ui::city) fn on_city_order_adjust(
     if dialogs.get(action.dialog).is_err() {
         return;
     }
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session =
+        session.expect("city order control activated without an authoritative game session");
     if let CityOrderId::MilitaryRecruit(category) = action.order
         && let Ok(mut selection) = armory_selections.get_mut(action.dialog)
     {

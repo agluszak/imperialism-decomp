@@ -730,3 +730,152 @@ pub(crate) fn strategic_base_terrain_tile_at_cursor(
         .filter(|_| cursor.cursor_over())
         .and_then(|position| strategic_tile_at_position(state, position))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use imperialism_core::{
+        MapTopology, RegionTileSubtype, STRATEGIC_TILE_COUNT, TerrainKind, TileOwnerTag,
+        TileRendering, TileState,
+    };
+    use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
+
+    const BEGINNING_OF_GAME: &[u8] =
+        include_bytes!("../../../../../fixtures/retail/beginning_of_game.imp");
+
+    fn solid_frame(index: u8) -> IndexedPicture {
+        IndexedPicture {
+            width: TILE_SIZE as u32,
+            height: TILE_SIZE as u32,
+            pixels: vec![index; (TILE_SIZE * TILE_SIZE) as usize],
+        }
+    }
+
+    fn synthetic_terrain_pictures() -> Vec<IndexedPicture> {
+        (0..51).map(|index| solid_frame(index as u8)).collect()
+    }
+
+    fn synthetic_river_masks() -> Vec<IndexedPicture> {
+        (0..32)
+            .map(|index| IndexedPicture {
+                width: TILE_SIZE as u32,
+                height: TILE_SIZE as u32,
+                // Non-transparent river ink uses a distinct high index.
+                pixels: vec![0x80 | index as u8; (TILE_SIZE * TILE_SIZE) as usize],
+            })
+            .collect()
+    }
+
+    fn fixture_state() -> GameState {
+        let save = LegacySaveV62::parse(BEGINNING_OF_GAME).unwrap();
+        save.game_state(LegacyGameStateContext {
+            crt_rand_state: 1,
+            map_generation_lcg: 0,
+            zone_status_lcg: 3_916_827_792,
+            selected_nation: imperialism_core::NationId::new(6),
+        })
+        .unwrap()
+    }
+
+    #[test]
+    fn coast_corner_variant_matches_the_adjacent_bit_rule() {
+        assert_eq!(coast_corner_variant(0x05, 1), 0);
+        // Corner 0 needs bits 5 and 0 both set for the joined-corner variant.
+        assert_eq!(coast_corner_variant(0b0010_0001, 0), 1);
+        assert_eq!(coast_corner_variant(0b0000_0001, 0), 2);
+        assert_eq!(coast_corner_variant(0b0010_0000, 0), 3);
+    }
+
+    #[test]
+    fn river_mouth_coast_frames_follow_corner_and_sprite_pairs() {
+        assert!(uses_river_mouth_coast_frame(1, Some(0x33)));
+        assert!(uses_river_mouth_coast_frame(4, Some(0x39)));
+        assert!(!uses_river_mouth_coast_frame(1, Some(0x35)));
+        assert!(!uses_river_mouth_coast_frame(0, Some(0x33)));
+    }
+
+    #[test]
+    fn water_coast_corners_pull_distinct_frame_inks() {
+        let terrain = synthetic_terrain_pictures();
+        let rivers = synthetic_river_masks();
+        let mut state = fixture_state();
+        let origin = state.world().view_origin();
+        state.tile_mut(origin).terrain = TerrainKind::Water;
+        state.tile_mut(origin).rendering = TileRendering::from_retail(0, 0, 0, 0b0000_0011).unwrap();
+
+        let pixels = compose_strategic_base_tile(&state, origin, &terrain, &rivers);
+        let base_ink = frame_for_offset(BASE_WATER_OFFSETS[0]) as u8;
+        assert!(pixels.contains(&base_ink));
+        assert!(pixels.iter().any(|&pixel| pixel >= 22));
+    }
+
+    #[test]
+    fn river_masks_replace_opaque_destination_indexes() {
+        let terrain = synthetic_terrain_pictures();
+        let rivers = synthetic_river_masks();
+        let mut state = fixture_state();
+        let origin = state.world().view_origin();
+        state.tile_mut(origin).terrain = TerrainKind::Plains;
+        state.tile_mut(origin).region_tile_subtype = RegionTileSubtype::from_retail(0);
+        state.tile_mut(origin).rendering = TileRendering::from_retail(0, 0x0b, 0, 0).unwrap();
+
+        let pixels = compose_strategic_base_tile(&state, origin, &terrain, &rivers);
+        assert!(pixels.iter().all(|&pixel| pixel == 0x80));
+    }
+
+    #[test]
+    fn bounded_seam_tiles_use_the_dedicated_seam_frame() {
+        let terrain = synthetic_terrain_pictures();
+        let rivers = synthetic_river_masks();
+        let mut state = fixture_state();
+        // Force bounded topology and a center column past 54 so column 0 is a seam.
+        let tiles = vec![TileState::default(); STRATEGIC_TILE_COUNT];
+        let mut world = StrategicMap::new(MapTopology::Bounded, tiles).unwrap();
+        let origin = world.geometry().tile(10, 51).unwrap();
+        world.set_view_origin(origin);
+        let seam = world.geometry().tile(10, 0).unwrap();
+        *state.world_mut() = world;
+
+        let pixels = compose_strategic_base_tile(&state, seam, &terrain, &rivers);
+        assert!(
+            pixels
+                .iter()
+                .all(|&pixel| pixel == frame_for_offset(0xc80) as u8)
+        );
+    }
+
+    #[test]
+    fn city_site_selection_draws_black_frame_and_neighbor_outline() {
+        let mut state = fixture_state();
+        let nation = MajorNationId::new(6);
+        let owner = TileOwnerTag::from_nation(nation.nation());
+        let origin = state.world().view_origin();
+        state.tile_mut(origin).owner_nation = Some(owner);
+        state.tile_mut(origin).terrain = TerrainKind::Plains;
+        let neighbors = state.world().geometry().neighbors(origin);
+        for neighbor in neighbors.into_iter().flatten() {
+            state.tile_mut(neighbor).owner_nation = Some(owner);
+            state.tile_mut(neighbor).terrain = TerrainKind::Plains;
+        }
+
+        let terrain = synthetic_terrain_pictures();
+        let rivers = synthetic_river_masks();
+        let mut indices = compose_strategic_base_terrain_indices(&state, &terrain, &rivers);
+        let before = indices.clone();
+        draw_city_site_selection(&state, nation, origin, &mut indices);
+        assert_ne!(indices, before);
+        let (x, y) = strategic_tile_screen_origin(&state, origin);
+        let top_left = (y * VIEWPORT_WIDTH as i32 + x) as usize;
+        assert_eq!(indices[top_left], 0);
+    }
+
+    #[test]
+    fn beginning_of_game_indexed_viewport_has_stable_dimensions() {
+        let state = fixture_state();
+        let terrain = synthetic_terrain_pictures();
+        let rivers = synthetic_river_masks();
+        let indices = compose_strategic_base_terrain_indices(&state, &terrain, &rivers);
+        assert_eq!(indices.len(), VIEWPORT_WIDTH * VIEWPORT_HEIGHT);
+        assert!(indices.iter().any(|&pixel| pixel != 0));
+    }
+}

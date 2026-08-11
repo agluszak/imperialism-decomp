@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+from pathlib import Path
 
 
 VOLATILE_KEYS = {
@@ -41,7 +42,22 @@ def normalized_observation(result: dict) -> dict:
 
 
 def _section(result: dict, keys: tuple[str, ...]) -> dict:
+    from tools.runtime.protocol import load_captures
+
     captures = result.get("captures")
+    if not isinstance(captures, dict):
+        captures_path = result.get("captures_path")
+        if isinstance(captures_path, str) and captures_path:
+            try:
+                # Published envelopes carry an absolute captures_path after host enrichment.
+                envelope = Path(captures_path)
+                captures = load_captures(
+                    result, envelope if envelope.is_absolute() else Path(".")
+                )
+            except (ValueError, OSError):
+                captures = {}
+        else:
+            captures = {}
     if not isinstance(captures, dict):
         return {}
     return {key: captures[key] for key in keys if key in captures}

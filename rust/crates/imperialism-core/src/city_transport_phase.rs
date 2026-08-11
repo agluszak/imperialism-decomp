@@ -41,7 +41,15 @@ const SHIP_SLOTS: [ShipOrderSlot; 8] = [
 const EXPANSION_SLOTS: [ExpandableFacility; 7] = ExpandableFacility::ALL;
 
 impl GameState {
-    pub(crate) fn supports_first_turn_city_transport_phase(&self) -> bool {
+    pub(crate) fn try_first_turn_city_transport_phase(&mut self) -> bool {
+        if !self.first_turn_city_transport_is_supported() {
+            return false;
+        }
+        self.apply_first_turn_city_transport_phase();
+        true
+    }
+
+    fn first_turn_city_transport_is_supported(&self) -> bool {
         let player = MajorNationId::new(6);
         if self.turn.phase != PhaseCode::CITY_AND_TRANSPORT
             || self.turn.economic_turn != 1
@@ -113,12 +121,7 @@ impl GameState {
         })
     }
 
-    pub(crate) fn run_first_turn_city_transport_phase(&mut self) {
-        assert!(
-            self.supports_first_turn_city_transport_phase(),
-            "city-and-transport phase contains an unrecovered branch"
-        );
-
+    fn apply_first_turn_city_transport_phase(&mut self) {
         for index in (0..MajorNationId::COUNT).rev() {
             let nation = MajorNationId::new(index);
             if self.nations.major(nation).economy.controller.is_human() {

@@ -321,9 +321,8 @@ pub(in crate::ui::city) fn on_city_expansion_open(
     if dialogs.get(open.dialog).is_err() || !modals.is_empty() {
         return;
     }
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session =
+        session.expect("city expansion control activated without an authoritative game session");
     assert!(
         industry_page(open.slot).is_some(),
         "expansion hotspot belongs to an ordinary industry"
@@ -402,9 +401,8 @@ pub(in crate::ui::city) fn on_city_building_change_choice(
     if change_dialogs.get(choice.dialog).is_err() {
         return;
     }
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session =
+        session.expect("city building choice activated without an authoritative game session");
     if choice.slot == CityFacilitySlot::PowerPlant {
         if choice.accept {
             session.0.set_power_plant_upgrade(choice.nation, true);

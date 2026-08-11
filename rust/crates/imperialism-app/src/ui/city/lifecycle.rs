@@ -35,9 +35,7 @@ pub(in crate::ui::city) fn on_city_canvas_click(
     else {
         return;
     };
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session = session.expect("city canvas activated without an authoritative game session");
     let Some(nation) = MajorNationId::from_nation(session.0.turn().active_nation) else {
         return;
     };

@@ -1003,9 +1003,8 @@ fn on_diplomacy_map_click(
     let Some(tile) = tile_at_diplomacy_position(normalized) else {
         return;
     };
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session =
+        session.expect("diplomacy map activated without an authoritative game session");
     let Some(target) = session.0.world()[tile]
         .owner_nation
         .and_then(TileOwnerTag::nation)

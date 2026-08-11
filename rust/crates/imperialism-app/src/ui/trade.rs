@@ -635,9 +635,9 @@ fn on_trade_activate(
         if disabled || !screens.iter().any(|screen| screen.nation == card.nation) {
             return;
         }
-        let Some(session) = session.as_mut() else {
-            return;
-        };
+        let session = session
+            .as_mut()
+            .expect("trade control activated without an authoritative game session");
         let current = session.0.player_trade_order(card.nation, card.commodity);
         let order = match (card.kind, current) {
             (TradeCardKind::Bid, PlayerTradeOrder::Buy)
@@ -656,9 +656,8 @@ fn on_trade_activate(
     if disabled || !screens.iter().any(|screen| screen.nation == step.nation) {
         return;
     }
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session =
+        session.expect("trade control activated without an authoritative game session");
     if matches!(
         session.0.player_trade_order(step.nation, step.commodity),
         PlayerTradeOrder::Sell(_)
@@ -688,9 +687,8 @@ fn on_trade_amount_bar_click(
     let Some(normalized) = cursor.normalized.filter(|_| cursor.cursor_over()) else {
         return;
     };
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session =
+        session.expect("trade amount bar activated without an authoritative game session");
     if !matches!(
         session.0.player_trade_order(bar.nation, bar.commodity),
         PlayerTradeOrder::Sell(_)
