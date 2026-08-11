@@ -5610,9 +5610,7 @@ mod tests {
             (0x3a, 0x12),
         ] {
             assert_eq!(
-                RiverSprite::from_retail(sprite)
-                    .unwrap()
-                    .connection_code(),
+                RiverSprite::from_retail(sprite).unwrap().connection_code(),
                 connection_code
             );
         }
