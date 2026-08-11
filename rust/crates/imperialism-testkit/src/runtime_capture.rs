@@ -1,6 +1,8 @@
 use serde::Deserialize;
+use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
 use std::fmt;
+use std::fs;
 use std::fs::File;
 use std::io::Read;
 use std::path::{Path, PathBuf};
@@ -69,6 +71,8 @@ pub enum RuntimeCaptureError {
     Invalid(String),
     #[error("runtime result contains no {0} capture")]
     MissingCapture(String),
+    #[error("captures checksum mismatch: expected {expected}, actual {actual}")]
+    ChecksumMismatch { expected: String, actual: String },
 }
 
 /// Expectations for a published Python runtime result (`result.json`), not the
@@ -142,7 +146,9 @@ struct RawRuntimeResult {
     seed: u32,
     status: String,
     evidence_kind: Option<EvidenceKind>,
-    captures: BTreeMap<String, serde_json::Value>,
+    captures_path: String,
+    #[serde(default)]
+    captures_sha256: Option<String>,
     #[serde(default)]
     summary: Option<RawRuntimeSummary>,
 }
@@ -157,21 +163,87 @@ pub fn read_runtime_result(
     path: impl AsRef<Path>,
     expectations: RuntimeResultExpectations<'_>,
 ) -> Result<ValidatedRuntimeResult, RuntimeCaptureError> {
+    let path = path.as_ref();
     let file = File::open(path).map_err(RuntimeCaptureError::Io)?;
-    decode_runtime_result(file, expectations)
+    let raw: RawRuntimeResult = serde_json::from_reader(file).map_err(RuntimeCaptureError::Json)?;
+    let captures_path = resolve_captures_path(path, &raw.captures_path);
+    let captures_bytes = fs::read(&captures_path).map_err(RuntimeCaptureError::Io)?;
+    if let Some(expected) = raw.captures_sha256.as_deref() {
+        let actual = hex_sha256(&captures_bytes);
+        if !expected.eq_ignore_ascii_case(&actual) {
+            return Err(RuntimeCaptureError::ChecksumMismatch {
+                expected: expected.to_owned(),
+                actual,
+            });
+        }
+    }
+    let captures: BTreeMap<String, serde_json::Value> =
+        serde_json::from_slice(&captures_bytes).map_err(RuntimeCaptureError::Json)?;
+    validate_runtime_result(raw, captures, expectations)
 }
 
+/// Decode a published envelope whose captures are already inlined for unit tests.
 pub fn decode_runtime_result(
     reader: impl Read,
     expectations: RuntimeResultExpectations<'_>,
 ) -> Result<ValidatedRuntimeResult, RuntimeCaptureError> {
-    let raw: RawRuntimeResult =
+    #[derive(Deserialize)]
+    struct InlineRuntimeResult {
+        name: String,
+        seed: u32,
+        status: String,
+        evidence_kind: Option<EvidenceKind>,
+        captures_path: Option<String>,
+        captures: Option<BTreeMap<String, serde_json::Value>>,
+        #[serde(default)]
+        captures_sha256: Option<String>,
+        #[serde(default)]
+        summary: Option<RawRuntimeSummary>,
+    }
+    let inline: InlineRuntimeResult =
         serde_json::from_reader(reader).map_err(RuntimeCaptureError::Json)?;
-    validate_runtime_result(raw, expectations)
+    let captures = inline.captures.ok_or_else(|| {
+        RuntimeCaptureError::Invalid(
+            "decode_runtime_result requires inline captures for in-memory envelopes".to_owned(),
+        )
+    })?;
+    let raw = RawRuntimeResult {
+        name: inline.name,
+        seed: inline.seed,
+        status: inline.status,
+        evidence_kind: inline.evidence_kind,
+        captures_path: inline.captures_path.unwrap_or_default(),
+        captures_sha256: inline.captures_sha256,
+        summary: inline.summary,
+    };
+    validate_runtime_result(raw, captures, expectations)
+}
+
+fn resolve_captures_path(envelope_path: &Path, captures_path: &str) -> PathBuf {
+    let path = PathBuf::from(captures_path);
+    if path.is_absolute() {
+        path
+    } else {
+        envelope_path
+            .parent()
+            .unwrap_or_else(|| Path::new("."))
+            .join(path)
+    }
+}
+
+fn hex_sha256(bytes: &[u8]) -> String {
+    let digest = Sha256::digest(bytes);
+    let mut hex = String::with_capacity(digest.len() * 2);
+    for byte in digest {
+        use std::fmt::Write as _;
+        let _ = write!(hex, "{byte:02x}");
+    }
+    hex
 }
 
 fn validate_runtime_result(
     raw: RawRuntimeResult,
+    captures: BTreeMap<String, serde_json::Value>,
     expectations: RuntimeResultExpectations<'_>,
 ) -> Result<ValidatedRuntimeResult, RuntimeCaptureError> {
     if raw.name != expectations.name {
@@ -205,7 +277,7 @@ fn validate_runtime_result(
         )));
     }
     for name in expectations.required_captures {
-        if !raw.captures.contains_key(*name) {
+        if !captures.contains_key(*name) {
             return Err(RuntimeCaptureError::MissingCapture((*name).to_owned()));
         }
     }
@@ -218,7 +290,7 @@ fn validate_runtime_result(
         seed: raw.seed,
         evidence_kind,
         artifact_dir,
-        captures: raw.captures,
+        captures,
     })
 }
 
@@ -239,6 +311,7 @@ mod tests {
             "seed": 1,
             "status": "passed",
             "evidence_kind": "retail_fixture_oracle",
+            "captures_path": "captures.json",
             "captures": {"probe": {"value": 7}, "before": {}, "case": {}, "after": {}},
             "host": {"ignored": true},
             "summary": {"ignored": true},
@@ -270,7 +343,7 @@ mod tests {
     #[test]
     fn rejects_native_result_without_evidence_kind() {
         let input =
-            br#"{"name":"probe","seed":1,"status":"passed","captures":{"probe":{"value":7}}}"#;
+            br#"{"name":"probe","seed":1,"status":"passed","captures_path":"captures.json","captures":{"probe":{"value":7}}}"#;
         let error = decode_runtime_result(&input[..], expectations()).unwrap_err();
         assert!(error.to_string().contains("evidence_kind"));
     }
@@ -307,6 +380,7 @@ mod tests {
             "seed": 1,
             "status": "failed",
             "evidence_kind": "retail_fixture_oracle",
+            "captures_path": "captures.json",
             "captures": {"probe": {"value": 7}},
         });
         assert!(
@@ -356,6 +430,7 @@ mod tests {
             "seed": 1,
             "status": "passed",
             "evidence_kind": "retail_fixture_oracle",
+            "captures_path": "captures.json",
             "captures": {"probe": {"value": "wrong"}},
         });
         let result = decode_runtime_result(
@@ -375,6 +450,7 @@ mod tests {
             "seed": 1,
             "status": "passed",
             "evidence_kind": "retail_fixture_oracle",
+            "captures_path": "captures.json",
             "captures": {"probe": {"value": 7, "extra_oracle_field": true}},
         });
         let result = decode_runtime_result(
@@ -410,6 +486,7 @@ mod tests {
             "seed": 1,
             "status": "passed",
             "evidence_kind": "retail_fixture_oracle",
+            "captures_path": "captures.json",
             "captures": {"probe": capture},
         });
         let result = decode_runtime_result(

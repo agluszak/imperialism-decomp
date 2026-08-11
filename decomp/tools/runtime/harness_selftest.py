@@ -9,7 +9,7 @@ import subprocess
 import time
 
 from tools.runtime.catalog import RuntimeTestSpec, apply_expected_failure
-from tools.runtime.protocol import read_json_file, validate_result
+from tools.runtime.protocol import read_json_file, validate_result, write_empty_captures_sidecar
 
 
 def _windows_path(path: Path) -> str:
@@ -47,11 +47,14 @@ def run_harness_selftest(
     duration = time.monotonic() - started
     raw = read_json_file(native_result_path)
     if raw is None:
+        captures_path = write_empty_captures_sidecar(
+            result_dir, f"{spec.name}.captures.json"
+        )
         result = {
             "name": spec.name,
             "seed": seed,
             "status": "failed",
-            "captures": {},
+            "captures_path": str((result_dir / captures_path).resolve()),
             "failure": (
                 "native harness self-test produced no result; "
                 f"exit={completed.returncode} stderr={completed.stderr.strip()}"
@@ -61,15 +64,22 @@ def run_harness_selftest(
         try:
             validate_result(raw, spec.name, seed)
         except ValueError as error:
+            captures_path = write_empty_captures_sidecar(
+                result_dir, f"{spec.name}.captures.json"
+            )
             result = {
                 "name": spec.name,
                 "seed": seed,
                 "status": "failed",
-                "captures": {},
+                "captures_path": str((result_dir / captures_path).resolve()),
                 "failure": f"invalid native harness self-test result: {error}",
             }
         else:
             result = dict(raw)
+            if not Path(str(result.get("captures_path", ""))).is_absolute():
+                result["captures_path"] = str(
+                    (native_result_path.parent / str(result["captures_path"])).resolve()
+                )
     if result.get("status") == "failed" and not result.get("failure"):
         result["failure"] = "native harness self-test failed"
     if completed.returncode != 0 and result.get("status") == "passed":

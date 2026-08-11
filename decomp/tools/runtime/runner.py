@@ -30,7 +30,14 @@ from tools.runtime.models import (
 )
 from tools.runtime.oracles.map import evaluate_map_oracle
 from tools.runtime.oracles.ui import evaluate_ui_oracle
-from tools.runtime.protocol import read_json_file, validate_published_result, validate_result
+from tools.runtime.protocol import (
+    attach_captures_checksum,
+    load_captures,
+    read_json_file,
+    validate_published_result,
+    validate_result,
+    write_empty_captures_sidecar,
+)
 from tools.runtime.session import execute_run
 
 
@@ -94,13 +101,12 @@ def record_failure(result: JsonObject, summary: str) -> None:
         ]
 
 
-def stage_save_backed_captures(run_dir: Path, result: JsonObject) -> None:
+def stage_save_backed_captures(run_dir: Path, captures: JsonObject) -> None:
     """Copy native save-backed before/after .imp files next to result.json.
 
     NativeTransition writes save/rt_native_<name>.imp under the Wine game sandbox.
     Rust differentials resolve the capture's `save` basename against the run directory.
     """
-    captures = result.get("captures")
     if not isinstance(captures, dict):
         return
     game_dir = run_dir / "game"
@@ -121,28 +127,36 @@ def stage_save_backed_captures(run_dir: Path, result: JsonObject) -> None:
         destination.write_bytes(source.read_bytes())
 
 
+def _failure_envelope(
+    config: RunConfig, failure: str, *, invalid_native_result: JsonObject | None = None
+) -> JsonObject:
+    captures_path = write_empty_captures_sidecar(config.run_dir)
+    result: JsonObject = {
+        "name": config.name,
+        "seed": config.seed,
+        "status": "failed",
+        "captures_path": captures_path,
+        "failure": failure,
+    }
+    if invalid_native_result is not None:
+        result["invalid_native_result"] = invalid_native_result
+    return result
+
+
 def _validated_native(config: RunConfig, raw: JsonObject | None) -> NativeResult:
     if raw is None:
-        validated: JsonObject = {
-            "name": config.name,
-            "seed": config.seed,
-            "status": "failed",
-            "captures": {},
-            "failure": "missing result file",
-        }
+        validated = _failure_envelope(config, "missing result file")
     else:
         validated = copy.deepcopy(raw)
         try:
             validate_result(validated, config.name, config.seed)
-        except ValueError as error:
-            validated = {
-                "name": config.name,
-                "seed": config.seed,
-                "status": "failed",
-                "captures": {},
-                "failure": f"invalid native result: {error}",
-                "invalid_native_result": raw,
-            }
+            attach_captures_checksum(validated, config.run_dir / "result.json")
+        except (ValueError, OSError) as error:
+            validated = _failure_envelope(
+                config,
+                f"invalid native result: {error}",
+                invalid_native_result=raw,
+            )
     return NativeResult(raw=raw, validated=validated)
 
 
@@ -157,8 +171,6 @@ def process_attempt(
     raw = read_json_file(config.run_dir / "result.json")
     native = _validated_native(config, raw)
     result = native.validated
-    if raw is not None:
-        stage_save_backed_captures(config.run_dir, result)
     if raw is None and host.classification is not None:
         result["failure"] = host.classification
     elif result.get("status") == "failed" and not result.get("failure"):
@@ -166,10 +178,22 @@ def process_attempt(
         # cause in the host-side result rather than growing the oracle protocol again.
         result["failure"] = host.classification or "native runtime reported failure"
 
+    # Oracles read the captures sidecar. Keep the heavy semantic JSON out of the
+    # control-channel envelope so publication stays proportional to metadata size.
+    captures: JsonObject = {}
+    if raw is not None and isinstance(result.get("captures_path"), str):
+        try:
+            captures = load_captures(result, config.run_dir / "result.json")
+        except ValueError:
+            captures = {}
+        else:
+            stage_save_backed_captures(config.run_dir, captures)
+    oracle_view = {**result, "captures": captures}
+
     oracle_results: list[OracleResult] = []
     evaluators = (
-        ("ui", lambda: dependencies.ui_oracle(result)),
-        ("map", lambda: dependencies.map_oracle(result, config.name, config.seed)),
+        ("ui", lambda: dependencies.ui_oracle(oracle_view)),
+        ("map", lambda: dependencies.map_oracle(oracle_view, config.name, config.seed)),
     )
     for oracle_name, evaluator in evaluators:
         try:
@@ -320,11 +344,13 @@ class RuntimeRunner:
             return None, None, None
         fixture = self.fixture_dir / fixture_name
         if not fixture.is_file():
+            sidecar = f"{request.name}.captures.json"
+            captures_path = write_empty_captures_sidecar(self.result_dir, sidecar)
             result: JsonObject = {
                 "name": request.name,
                 "seed": request.seed,
                 "status": "failed" if request.require_fixtures else "skipped",
-                "captures": {},
+                "captures_path": str((self.result_dir / captures_path).resolve()),
                 "failure": (
                     f"missing local save fixture {fixture}; place a retail-derived "
                     "save there to enable this test"
@@ -336,11 +362,13 @@ class RuntimeRunner:
         try:
             metadata = self.dependencies.fixture_validator(fixture)
         except ValueError as error:
+            sidecar = f"{request.name}.captures.json"
+            captures_path = write_empty_captures_sidecar(self.result_dir, sidecar)
             result = {
                 "name": request.name,
                 "seed": request.seed,
                 "status": "failed",
-                "captures": {},
+                "captures_path": str((self.result_dir / captures_path).resolve()),
                 "failure": str(error),
             }
             return fixture, None, self._publish_without_attempt(result, 1)
@@ -443,6 +471,9 @@ class RuntimeRunner:
                 "expectation_outcome"
             )
             result["summary"]["primary_failure"] = result.get("failure")
+        captures_path = result.get("captures_path")
+        if isinstance(captures_path, str) and captures_path and not Path(captures_path).is_absolute():
+            result["captures_path"] = str((primary.run_dir / captures_path).resolve())
         validate_published_result(result, request.name, request.seed)
         serialized = json.dumps(result, indent=2, sort_keys=True) + "\n"
         (run_dir / "result.json").write_text(serialized, encoding="utf-8")

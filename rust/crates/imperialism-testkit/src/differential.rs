@@ -14,8 +14,8 @@ use std::path::Path;
 use std::process::Command;
 
 use crate::{
-    EvidenceKind, RuntimeResultExpectations, ValidatedRuntimeResult, decode_runtime_result,
-    first_serialized_difference,
+    EvidenceKind, RuntimeResultExpectations, ValidatedRuntimeResult, first_serialized_difference,
+    read_runtime_result,
 };
 
 const NATIVE_ORACLE: &str = "native_transition_oracle";
@@ -196,8 +196,13 @@ fn run_runtime_result(
         bail!("native scenario {scenario} failed:\n{detail}");
     }
 
-    decode_runtime_result(
-        output.stdout.as_slice(),
+    let result_path = repository_root()?
+        .join("decomp")
+        .join("build-runtime-tests")
+        .join("runtime-results")
+        .join(format!("{scenario}.json"));
+    read_runtime_result(
+        &result_path,
         RuntimeResultExpectations {
             name: scenario,
             seed: 1,
@@ -207,9 +212,12 @@ fn run_runtime_result(
     )
     .with_context(|| {
         if native_case.is_some() {
-            "decoding native transition oracle result".to_owned()
+            format!(
+                "reading native transition oracle result {}",
+                result_path.display()
+            )
         } else {
-            "decoding native runtime result".to_owned()
+            format!("reading native runtime result {}", result_path.display())
         }
     })
 }

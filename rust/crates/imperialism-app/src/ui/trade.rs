@@ -334,7 +334,7 @@ fn enter_trade_screen(
         warn!("trade screen opened without an authoritative game session");
         return;
     };
-    let Some(nation) = MajorNationId::from_nation(session.0.turn.active_nation) else {
+    let Some(nation) = MajorNationId::from_nation(session.0.turn().active_nation) else {
         warn!("trade screen active nation is not a major nation");
         return;
     };
@@ -635,9 +635,9 @@ fn on_trade_activate(
         if disabled || !screens.iter().any(|screen| screen.nation == card.nation) {
             return;
         }
-        let Some(session) = session.as_mut() else {
-            return;
-        };
+        let session = session
+            .as_mut()
+            .expect("trade control activated without an authoritative game session");
         let current = session.0.player_trade_order(card.nation, card.commodity);
         let order = match (card.kind, current) {
             (TradeCardKind::Bid, PlayerTradeOrder::Buy)
@@ -656,9 +656,8 @@ fn on_trade_activate(
     if disabled || !screens.iter().any(|screen| screen.nation == step.nation) {
         return;
     }
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session =
+        session.expect("trade control activated without an authoritative game session");
     if matches!(
         session.0.player_trade_order(step.nation, step.commodity),
         PlayerTradeOrder::Sell(_)
@@ -688,9 +687,8 @@ fn on_trade_amount_bar_click(
     let Some(normalized) = cursor.normalized.filter(|_| cursor.cursor_over()) else {
         return;
     };
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session =
+        session.expect("trade amount bar activated without an authoritative game session");
     if !matches!(
         session.0.player_trade_order(bar.nation, bar.commodity),
         PlayerTradeOrder::Sell(_)
@@ -700,7 +698,7 @@ fn on_trade_amount_bar_click(
     click.propagate(false);
     let capacity = session
         .0
-        .nations
+        .nations()
         .major(bar.nation)
         .economy()
         .capacities
@@ -742,7 +740,7 @@ fn sync_trade_controls(
     }
 
     for (entity, card, mut image, mut node) in &mut cards {
-        let major = session.0.nations.major(card.nation);
+        let major = session.0.nations().major(card.nation);
         let capacity = major.economy().capacities.trade_offer;
         let stock = major.city().stockpile[card.commodity.resource()];
         let order = session.0.player_trade_order(card.nation, card.commodity);
@@ -779,7 +777,7 @@ fn sync_trade_controls(
     }
 
     for (entity, step) in &steps {
-        let major = session.0.nations.major(step.nation);
+        let major = session.0.nations().major(step.nation);
         let order = session.0.player_trade_order(step.nation, step.commodity);
         let quantity = match order {
             PlayerTradeOrder::Sell(quantity) => quantity,
@@ -794,7 +792,7 @@ fn sync_trade_controls(
     for (entity, control) in &offer_controls {
         let capacity = session
             .0
-            .nations
+            .nations()
             .major(control.nation)
             .economy()
             .capacities
@@ -819,7 +817,7 @@ fn sync_trade_gauges(session: Res<GameSession>, mut gauges: Query<(&TradeGauge, 
     for (gauge, mut node) in &mut gauges {
         let capacity = session
             .0
-            .nations
+            .nations()
             .major(gauge.nation)
             .economy()
             .capacities
@@ -838,7 +836,7 @@ fn sync_trade_advisories(
 ) {
     for (advisory, mut visibility) in &mut advisories {
         *visibility =
-            if trade_advisory_needed(session.0.nations.major(advisory.nation), advisory.kind) {
+            if trade_advisory_needed(session.0.nations().major(advisory.nation), advisory.kind) {
                 Visibility::Visible
             } else {
                 Visibility::Hidden
@@ -872,28 +870,28 @@ fn trade_advisory_needed(major: &MajorNation, kind: TradeAdvisoryKind) -> bool {
         }
         TradeAdvisoryKind::Textile => {
             stock_and_target(ResourceKind::Cotton) + stock_and_target(ResourceKind::Wool)
-                < building(ProductionSlot::TextileMill) * 2
+                < building(CityFacilitySlot::TextileMill) * 2
         }
         TradeAdvisoryKind::Timber => {
-            stock_and_target(ResourceKind::Timber) < building(ProductionSlot::LumberMill) * 2
+            stock_and_target(ResourceKind::Timber) < building(CityFacilitySlot::LumberMill) * 2
         }
         TradeAdvisoryKind::Coal => {
-            stock_and_target(ResourceKind::Coal) < building(ProductionSlot::SteelMill)
+            stock_and_target(ResourceKind::Coal) < building(CityFacilitySlot::SteelMill)
         }
         TradeAdvisoryKind::Iron => {
-            stock_and_target(ResourceKind::Iron) < building(ProductionSlot::SteelMill)
+            stock_and_target(ResourceKind::Iron) < building(CityFacilitySlot::SteelMill)
         }
         TradeAdvisoryKind::Oil => {
-            stock_and_target(ResourceKind::Oil) < building(ProductionSlot::OilRefinery) * 2
+            stock_and_target(ResourceKind::Oil) < building(CityFacilitySlot::OilRefinery) * 2
         }
         TradeAdvisoryKind::Fabric => {
-            stock_and_target(ResourceKind::Fabric) < building(ProductionSlot::ClothingFactory) * 2
+            stock_and_target(ResourceKind::Fabric) < building(CityFacilitySlot::ClothingFactory) * 2
         }
         TradeAdvisoryKind::Lumber => {
-            stock_and_target(ResourceKind::Lumber) < building(ProductionSlot::FurnitureFactory) * 2
+            stock_and_target(ResourceKind::Lumber) < building(CityFacilitySlot::FurnitureFactory) * 2
         }
         TradeAdvisoryKind::Steel => {
-            stock_and_target(ResourceKind::Steel) < building(ProductionSlot::Metalworks) * 2
+            stock_and_target(ResourceKind::Steel) < building(CityFacilitySlot::Metalworks) * 2
         }
     }
 }
@@ -920,9 +918,9 @@ fn sync_trade_captions(
                 _ => String::new(),
             };
         } else if let Some(caption) = price {
-            text.0 = format_currency(session.0.market.rows[caption.commodity].price);
+            text.0 = format_currency(session.0.market().rows[caption.commodity].price);
         } else if let Some(caption) = stock {
-            let stock = session.0.nations.major(caption.nation).city().stockpile
+            let stock = session.0.nations().major(caption.nation).city().stockpile
                 [caption.commodity.resource()];
             text.0 = if stock == 0 {
                 "--".to_owned()
@@ -932,14 +930,14 @@ fn sync_trade_captions(
         } else if let Some(caption) = capacity {
             text.0 = session
                 .0
-                .nations
+                .nations()
                 .major(caption.nation)
                 .economy()
                 .capacities
                 .trade_offer
                 .to_string();
         } else if let Some(caption) = treasury {
-            text.0 = format_currency(session.0.nations.major(caption.nation).common().treasury);
+            text.0 = format_currency(session.0.nations().major(caption.nation).common().treasury);
         }
     }
 }
@@ -1041,7 +1039,7 @@ mod tests {
         let view = catalog.view(&trade_view_id()).unwrap();
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
         bind_game_screen_nav(&mut commands, &catalog, &spawned);
-        let nation = MajorNationId::from_nation(session.0.turn.active_nation).unwrap();
+        let nation = MajorNationId::from_nation(session.0.turn().active_nation).unwrap();
         session.0.recall_player_trade_orders(nation);
         bind_trade_screen(
             &mut commands,
@@ -1172,13 +1170,13 @@ mod tests {
         let nation = MajorNationId::new(6);
         let (stock_before, treasury_before) = {
             let session = app.world().resource::<GameSession>();
-            let major = session.0.nations.major(nation);
+            let major = session.0.nations().major(nation);
             (major.city().stockpile, major.common().treasury)
         };
         activate(&mut app, first.fabric_offer);
         {
             let session = app.world().resource::<GameSession>();
-            let major = session.0.nations.major(nation);
+            let major = session.0.nations().major(nation);
             assert_eq!(
                 session.0.player_trade_order(nation, TradeCommodity::Fabric),
                 PlayerTradeOrder::Sell(4)
@@ -1215,7 +1213,7 @@ mod tests {
             app.world()
                 .resource::<GameSession>()
                 .0
-                .nations
+                .nations()
                 .major(nation)
                 .economy()
                 .remembered_trade_offers_by_resource[ResourceKind::Fabric],

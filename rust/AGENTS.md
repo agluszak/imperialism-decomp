@@ -18,6 +18,12 @@ into ECS, or introduce a second snapshot-domain model.
 - Port retail behavior, not the recovered C++ class hierarchy, ownership model, MFC types, ABI, or
   incidental control flow.
 
+Keep domain types beside their behavior modules (`game`, `map`, `nations`, `city/`, `diplomacy`,
+`turn_flow`, and so on). City production orders live under `city/`; facility slots are
+`CityFacilitySlot`. Export a curated crate-root surface—do not reintroduce broad `state::*` or
+`production::*` globs or a prelude. In formats, keep retail binary parse separate from `GameState`
+projection. In the app, keep city UI split by retail dialog under `ui/city/`.
+
 Keep retail compatibility concessions at format, import, or oracle boundaries. Do not leak raw offsets,
 weak identifiers, binary-layout constraints, or C++-shaped APIs into the domain model merely because
 the decomp uses them.
@@ -30,7 +36,7 @@ the decomp uses them.
   observables absent from authoritative state, such as notifications, sounds, modal prompts, or
   acknowledgement requests. Do not emit effects that merely restate state mutations.
 - Keep app flow `input → one core operation → state/results/effects → UI projection`. Turn sequencing
-  belongs in core through `advance_turn_step` / `advance_until_blocked`, not in a Bevy schedule.
+  belongs in core through `advance_turn_step` / `advance_until_yield`, not in a Bevy schedule.
 - External decode or malformed payload errors return `Result`. Legal gameplay rejection returns a
   typed outcome or narrow domain error the UI can use. Broken internal invariants are prevented by
   structure where practical and otherwise assert or `expect`; do not thread them through rule APIs.
