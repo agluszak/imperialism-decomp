@@ -84,31 +84,7 @@ pub fn run_native_case_result(
     case_name: &str,
     required_captures: &'static [&'static str],
 ) -> Result<ValidatedRuntimeResult> {
-    let output = Command::new("just")
-        .current_dir(repository_root()?.join("decomp"))
-        .env(NATIVE_CASE_ENV, case_name)
-        .args(["--quiet", "runtime-run", NATIVE_ORACLE, "--seed", "1"])
-        .output()
-        .context("launching the native transition oracle")?;
-
-    if !output.status.success() {
-        bail!(
-            "native transition case {} failed:\n{}",
-            case_name,
-            String::from_utf8_lossy(&output.stderr).trim()
-        );
-    }
-
-    decode_runtime_result(
-        output.stdout.as_slice(),
-        RuntimeResultExpectations {
-            name: NATIVE_ORACLE,
-            seed: 1,
-            evidence_kind: EvidenceKind::RetailFixtureOracle,
-            required_captures,
-        },
-    )
-    .context("decoding native transition oracle result")
+    run_runtime_result(NATIVE_ORACLE, Some(case_name), required_captures)
 }
 
 /// Run one catalogued native runtime scenario and decode the published result JSON from stdout.
@@ -116,29 +92,54 @@ pub fn run_retail_fixture_result(
     name: &str,
     required_captures: &'static [&'static str],
 ) -> Result<ValidatedRuntimeResult> {
-    let output = Command::new("just")
+    run_runtime_result(name, None, required_captures)
+}
+
+fn run_runtime_result(
+    scenario: &str,
+    native_case: Option<&str>,
+    required_captures: &'static [&'static str],
+) -> Result<ValidatedRuntimeResult> {
+    let mut command = Command::new("just");
+    command
         .current_dir(repository_root()?.join("decomp"))
-        .args(["--quiet", "runtime-run", name, "--seed", "1"])
-        .output()
-        .context("launching native runtime scenario")?;
+        .args(["--quiet", "runtime-run", scenario, "--seed", "1"]);
+    if let Some(case_name) = native_case {
+        command.env(NATIVE_CASE_ENV, case_name);
+    }
+
+    let output = command.output().with_context(|| {
+        if native_case.is_some() {
+            "launching the native transition oracle".to_owned()
+        } else {
+            "launching native runtime scenario".to_owned()
+        }
+    })?;
 
     if !output.status.success() {
-        bail!(
-            "native scenario {name} failed:\n{}",
-            String::from_utf8_lossy(&output.stderr).trim()
-        );
+        let detail = String::from_utf8_lossy(&output.stderr).trim().to_owned();
+        if let Some(case_name) = native_case {
+            bail!("native transition case {case_name} failed:\n{detail}");
+        }
+        bail!("native scenario {scenario} failed:\n{detail}");
     }
 
     decode_runtime_result(
         output.stdout.as_slice(),
         RuntimeResultExpectations {
-            name,
+            name: scenario,
             seed: 1,
             evidence_kind: EvidenceKind::RetailFixtureOracle,
             required_captures,
         },
     )
-    .context("decoding native runtime result")
+    .with_context(|| {
+        if native_case.is_some() {
+            "decoding native transition oracle result".to_owned()
+        } else {
+            "decoding native runtime result".to_owned()
+        }
+    })
 }
 
 fn repository_root() -> Result<&'static Path> {

@@ -1,4 +1,4 @@
-#include "NativeCases.h"
+#include "NativeTransition.h"
 #include "JsonObject.h"
 
 #include "game/diplomacy_domain_types.h"
