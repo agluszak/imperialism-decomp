@@ -26,6 +26,12 @@ the decomp uses them.
 
 - Prefer direct typed methods on `GameState`. Do not introduce a universal `GameCommand`, command
   bus, event-sourcing layer, or event for every private helper.
+- Core owns rules and queries; the app owns presentation decisions. Expose queries such as
+  `first_idle_civilian_tile` and pure helpers such as `viewport_origin_centered_on`; do not put
+  "enter screen X" methods on `GameState`. When retail persists a view field, keep the field, but
+  let the app choose when to write it.
+- Separate planning from mutation for order UI: use `can_set_city_order_quantity` (or a plan API)
+  to decide Accept enablement; do not mutate-and-rollback authoritative state as a probe.
 - Return operation-specific results when callers need them. Keep effects only for ordered
   observables absent from authoritative state, such as notifications, sounds, modal prompts, or
   acknowledgement requests. Do not emit effects that merely restate state mutations.

@@ -1469,6 +1469,92 @@ fn set_ship_quantity(state: &mut ShipOrderState, city: &mut CityState, quantity:
     true
 }
 
+fn city_order_quantity_accepted(
+    orders: &mut CityOrders,
+    city: &mut CityState,
+    owner: &GreatPowerState,
+    treasury: &mut i32,
+    order: CityOrderId,
+    quantity: i16,
+) -> bool {
+    match order {
+        CityOrderId::Item(output) => {
+            let spec = item_order_spec(output).expect("item order has a retail recipe");
+            let state = orders.items[output]
+                .as_mut()
+                .expect("item order exists for every retail item recipe");
+            set_item_quantity(state, city, spec, quantity)
+        }
+        CityOrderId::CivilianRecruit(kind) => {
+            let spec = civilian_recruitment_spec(kind);
+            set_recruit_quantity(
+                &mut orders.civilian_recruitment[kind],
+                spec.primary,
+                spec.secondary,
+                spec.cash_per_unit,
+                spec.workforce,
+                city,
+                owner,
+                treasury,
+                quantity,
+            )
+        }
+        CityOrderId::MilitaryRecruit(category) => {
+            let state = &mut orders.military_recruitment[category];
+            let spec = military_recruitment_spec(state.unit_kind)
+                .expect("military order has a recruitable retail unit recipe");
+            set_recruit_quantity(
+                &mut state.progress,
+                spec.primary,
+                spec.secondary,
+                spec.cash_per_unit,
+                spec.workforce,
+                city,
+                owner,
+                treasury,
+                quantity,
+            )
+        }
+        CityOrderId::Ship(track) => set_ship_quantity(&mut orders.ships[track], city, quantity),
+        CityOrderId::Training(level) => set_training_quantity(
+            level,
+            &mut orders.training[level],
+            city,
+            owner,
+            treasury,
+            quantity,
+        ),
+        CityOrderId::Expansion(slot) => {
+            let spec =
+                expansion_order_spec(slot).expect("expansion order has a retail material recipe");
+            let state = orders.expansions[slot]
+                .as_mut()
+                .expect("expansion order exists for every expandable production slot");
+            set_expansion_quantity(state, city, spec.primary, spec.secondary, quantity)
+        }
+        CityOrderId::FoodProcessing => {
+            set_food_processing_quantity(&mut orders.food_processing, city, quantity)
+        }
+        CityOrderId::PowerPlant => {
+            set_power_plant_quantity(&mut orders.power_plant, city, quantity)
+        }
+        CityOrderId::TransportCapacity => {
+            let spec = transport_capacity_order_spec();
+            set_capacity_quantity(
+                &mut orders.transport_capacity,
+                city,
+                spec.primary,
+                spec.secondary,
+                spec.production_slot,
+                quantity,
+            )
+        }
+        CityOrderId::PopulationGrowth => {
+            set_population_growth_quantity(&mut orders.population_growth, city, quantity)
+        }
+    }
+}
+
 impl GameState {
     fn with_city_orders<R>(
         &mut self,
@@ -1591,6 +1677,31 @@ impl GameState {
         })
     }
 
+    /// Returns whether `quantity` would be accepted without mutating authoritative state.
+    ///
+    /// City UI uses this to enable Accept; do not probe by calling
+    /// [`Self::set_city_order_quantity`] and rolling the quantity back.
+    pub fn can_set_city_order_quantity(
+        &self,
+        nation: MajorNationId,
+        order: CityOrderId,
+        quantity: i16,
+    ) -> bool {
+        let major = self.nations.major(nation);
+        let mut orders = (*major.city().orders).clone();
+        let mut city = major.city().clone();
+        let economy = major.economy().clone();
+        let mut treasury = major.common().treasury;
+        city_order_quantity_accepted(
+            &mut orders,
+            &mut city,
+            &economy,
+            &mut treasury,
+            order,
+            quantity,
+        )
+    }
+
     /// Applies an absolute retail city-order quantity. Legal rejection is the
     /// observed boolean return, while the remembered limiting constraint may
     /// still be refreshed by the rejected call.
@@ -1600,81 +1711,8 @@ impl GameState {
         order: CityOrderId,
         quantity: i16,
     ) -> bool {
-        self.with_city_orders(nation, |orders, city, owner, treasury| match order {
-            CityOrderId::Item(output) => {
-                let spec = item_order_spec(output).expect("item order has a retail recipe");
-                let state = orders.items[output]
-                    .as_mut()
-                    .expect("item order exists for every retail item recipe");
-                set_item_quantity(state, city, spec, quantity)
-            }
-            CityOrderId::CivilianRecruit(kind) => {
-                let spec = civilian_recruitment_spec(kind);
-                set_recruit_quantity(
-                    &mut orders.civilian_recruitment[kind],
-                    spec.primary,
-                    spec.secondary,
-                    spec.cash_per_unit,
-                    spec.workforce,
-                    city,
-                    owner,
-                    treasury,
-                    quantity,
-                )
-            }
-            CityOrderId::MilitaryRecruit(category) => {
-                let state = &mut orders.military_recruitment[category];
-                let spec = military_recruitment_spec(state.unit_kind)
-                    .expect("military order has a recruitable retail unit recipe");
-                set_recruit_quantity(
-                    &mut state.progress,
-                    spec.primary,
-                    spec.secondary,
-                    spec.cash_per_unit,
-                    spec.workforce,
-                    city,
-                    owner,
-                    treasury,
-                    quantity,
-                )
-            }
-            CityOrderId::Ship(track) => set_ship_quantity(&mut orders.ships[track], city, quantity),
-            CityOrderId::Training(level) => set_training_quantity(
-                level,
-                &mut orders.training[level],
-                city,
-                owner,
-                treasury,
-                quantity,
-            ),
-            CityOrderId::Expansion(slot) => {
-                let spec = expansion_order_spec(slot)
-                    .expect("expansion order has a retail material recipe");
-                let state = orders.expansions[slot]
-                    .as_mut()
-                    .expect("expansion order exists for every expandable production slot");
-                set_expansion_quantity(state, city, spec.primary, spec.secondary, quantity)
-            }
-            CityOrderId::FoodProcessing => {
-                set_food_processing_quantity(&mut orders.food_processing, city, quantity)
-            }
-            CityOrderId::PowerPlant => {
-                set_power_plant_quantity(&mut orders.power_plant, city, quantity)
-            }
-            CityOrderId::TransportCapacity => {
-                let spec = transport_capacity_order_spec();
-                set_capacity_quantity(
-                    &mut orders.transport_capacity,
-                    city,
-                    spec.primary,
-                    spec.secondary,
-                    spec.production_slot,
-                    quantity,
-                )
-            }
-            CityOrderId::PopulationGrowth => {
-                set_population_growth_quantity(&mut orders.population_growth, city, quantity)
-            }
+        self.with_city_orders(nation, |orders, city, owner, treasury| {
+            city_order_quantity_accepted(orders, city, owner, treasury, order, quantity)
         })
     }
 

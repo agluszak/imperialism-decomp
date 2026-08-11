@@ -179,9 +179,17 @@ impl Plugin for GameShellPlugin {
 }
 
 fn enter_strategic_map_view(mut session: Option<ResMut<GameSession>>) {
-    if let Some(session) = session.as_deref_mut() {
-        session.0.enter_strategic_map_view();
-    }
+    let Some(session) = session.as_deref_mut() else {
+        return;
+    };
+    let Some(tile) = session
+        .0
+        .first_idle_civilian_tile(session.0.turn.active_nation)
+    else {
+        return;
+    };
+    let origin = session.0.world.viewport_origin_centered_on(tile);
+    session.0.world.set_view_origin(origin);
 }
 
 #[derive(Component, Clone, Debug, Eq, PartialEq)]

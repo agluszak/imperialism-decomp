@@ -3448,28 +3448,17 @@ fn open_city_construction_dialog(
                 is_ordinary_industry(slot),
                 "non-power capacity center has a retail expansion order"
             );
-            let (next_capacity, needed, original_quantity) = {
+            let (next_capacity, needed) = {
                 let major = session.0.nations.major(nation);
                 let city = major.city();
                 let owned_regions = major.common().owned_region_count() as i32;
                 let current = city.building_type(slot, major.economy(), owned_regions);
                 let next_capacity =
                     city.max_building_capacity(slot, major.economy(), owned_regions);
-                let original_quantity = city.orders.expansions[slot]
-                    .as_ref()
-                    .expect("ordinary capacity center has a retail expansion order")
-                    .progress
-                    .quantity;
-                (next_capacity, next_capacity - current, original_quantity)
+                (next_capacity, next_capacity - current)
             };
             let order = CityOrderId::Expansion(slot);
-            let can_reserve = session.0.set_city_order_quantity(nation, order, needed);
-            assert!(
-                session
-                    .0
-                    .set_city_order_quantity(nation, order, original_quantity),
-                "retail construction probe must restore its original quantity"
-            );
+            let can_reserve = session.0.can_set_city_order_quantity(nation, order, needed);
             (next_capacity.to_string(), can_reserve)
         }
     };
@@ -3717,7 +3706,7 @@ fn on_city_expansion_open(
     dialogs: Query<Entity, With<CityBuildingDialog>>,
     screen_roots: Query<Entity, With<CityScreenRoot>>,
     modals: Query<(), With<ModalDialog>>,
-    session: Option<ResMut<GameSession>>,
+    session: Option<Res<GameSession>>,
     mut ui: UiSpawner,
 ) {
     let Ok(open) = openers.get(activate.entity) else {
@@ -3726,7 +3715,7 @@ fn on_city_expansion_open(
     if dialogs.get(open.dialog).is_err() || !modals.is_empty() {
         return;
     }
-    let Some(mut session) = session else {
+    let Some(session) = session else {
         return;
     };
     assert!(
@@ -3746,26 +3735,9 @@ fn on_city_expansion_open(
         )
     };
     let order = CityOrderId::Expansion(open.slot);
-    let original_quantity = session
-        .0
-        .nations
-        .major(open.nation)
-        .city()
-        .orders
-        .expansions[open.slot]
-        .as_ref()
-        .expect("ordinary industry has an expansion order")
-        .progress
-        .quantity;
     let can_reserve = session
         .0
-        .set_city_order_quantity(open.nation, order, needed);
-    assert!(
-        session
-            .0
-            .set_city_order_quantity(open.nation, order, original_quantity),
-        "retail expansion probe must restore its original quantity"
-    );
+        .can_set_city_order_quantity(open.nation, order, needed);
     let spawned = ui.spawn_modal(expansion_dialog_view_id());
     let building_name = city_string(&ui, CITY_BUILDING_STRING_GROUP, open.slot as i16);
     bind_expansion_dialog(

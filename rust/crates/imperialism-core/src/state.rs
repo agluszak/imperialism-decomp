@@ -24,39 +24,12 @@ pub struct GameState {
 }
 
 impl GameState {
-    /// Enters the retail strategic-map view by selecting the active nation's first idle
-    /// civilian and centering the 9-by-7 tile viewport on it.
-    pub fn enter_strategic_map_view(&mut self) {
-        const VIEWPORT_TILE_SPAN: i32 = 9;
-
-        let Some(tile) = self
-            .civilian_units
+    /// First idle civilian belonging to `nation`, in unit-list order.
+    pub fn first_idle_civilian_tile(&self, nation: NationId) -> Option<TileId> {
+        self.civilian_units
             .iter()
-            .find(|unit| {
-                unit.nation == self.turn.active_nation && unit.order == CivilianWorkOrder::Idle
-            })
+            .find(|unit| unit.nation == nation && unit.order == CivilianWorkOrder::Idle)
             .and_then(|unit| unit.location.tile())
-        else {
-            return;
-        };
-
-        let geometry = self.world.geometry();
-        let (row, column) = geometry.row_column(tile);
-        let mut column = i32::from(column) - VIEWPORT_TILE_SPAN / 2;
-        if self.world.topology() == MapTopology::Bounded {
-            column = column.clamp(1, 0x6e - VIEWPORT_TILE_SPAN);
-        }
-        if column < 0 {
-            column += i32::from(STRATEGIC_MAP_WIDTH);
-        } else if column >= i32::from(STRATEGIC_MAP_WIDTH) {
-            column -= i32::from(STRATEGIC_MAP_WIDTH);
-        }
-        let row = (i32::from(row) - 3).clamp(0, 0x35);
-        self.world.set_view_origin(
-            geometry
-                .tile(row as u16, column as u16)
-                .expect("retail strategic-map viewport origin is inside the map"),
-        );
     }
 }
 
@@ -649,6 +622,27 @@ impl StrategicMap {
 
     pub fn set_view_origin(&mut self, view_origin: TileId) {
         self.view_origin = view_origin;
+    }
+
+    /// Retail 9-by-7 strategic-map viewport origin centered on `tile`.
+    pub fn viewport_origin_centered_on(&self, tile: TileId) -> TileId {
+        const VIEWPORT_TILE_SPAN: i32 = 9;
+
+        let geometry = self.geometry();
+        let (row, column) = geometry.row_column(tile);
+        let mut column = i32::from(column) - VIEWPORT_TILE_SPAN / 2;
+        if self.topology() == MapTopology::Bounded {
+            column = column.clamp(1, 0x6e - VIEWPORT_TILE_SPAN);
+        }
+        if column < 0 {
+            column += i32::from(STRATEGIC_MAP_WIDTH);
+        } else if column >= i32::from(STRATEGIC_MAP_WIDTH) {
+            column -= i32::from(STRATEGIC_MAP_WIDTH);
+        }
+        let row = (i32::from(row) - 3).clamp(0, 0x35);
+        geometry
+            .tile(row as u16, column as u16)
+            .expect("retail strategic-map viewport origin is inside the map")
     }
 
     pub fn iter(&self) -> impl ExactSizeIterator<Item = &TileState> {
