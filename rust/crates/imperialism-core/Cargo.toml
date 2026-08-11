@@ -16,4 +16,5 @@ serde.workspace = true
 thiserror.workspace = true
 
 [dev-dependencies]
+imperialism-testkit = { path = "../imperialism-testkit" }
 serde_json.workspace = true

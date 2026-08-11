@@ -2714,6 +2714,7 @@ version = "0.1.0"
 dependencies = [
  "bitflags 2.13.1",
  "enum-map",
+ "imperialism-testkit",
  "serde",
  "serde_json",
  "thiserror 2.0.19",
@@ -2741,6 +2742,7 @@ dependencies = [
  "anyhow",
  "clap",
  "imperialism-core",
+ "imperialism-formats",
  "serde",
  "serde_ignored",
  "serde_json",
