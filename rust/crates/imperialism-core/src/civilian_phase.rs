@@ -30,7 +30,7 @@ struct AutomatedCivilianPlan {
 }
 
 #[derive(Debug)]
-struct CivilianPhasePlan {
+pub(crate) struct CivilianPhasePlan {
     automated: Vec<AutomatedCivilianPlan>,
 }
 
@@ -145,21 +145,13 @@ impl GameState {
         }
     }
 
-    /// Whether phase nine is the recovered Easy beginning-save civilian pass.
-    pub(crate) fn supports_first_turn_civilian_phase(&self) -> bool {
-        self.first_turn_civilian_plan().is_some()
+    /// Builds the recovered Easy beginning-save civilian plan, or `None` for unrecovered branches.
+    pub(crate) fn try_first_turn_civilian_phase(&self) -> Option<CivilianPhasePlan> {
+        self.first_turn_civilian_plan()
     }
 
-    /// Runs retail's six automated interior ministers after the human offer sheet.
-    ///
-    /// The dispatcher owns the phase-nine to phase-ten transition. Planning is
-    /// completed for every automated nation before any authoritative state is
-    /// changed, so an unrecovered branch cannot leave a partial phase result.
-    pub(crate) fn run_civilian_phase(&mut self) {
-        let plan = self
-            .first_turn_civilian_plan()
-            .expect("first-turn civilian phase contains an unrecovered branch");
-
+    /// Applies a previously validated civilian plan. The dispatcher owns phase advancement.
+    pub(crate) fn apply_civilian_phase_plan(&mut self, plan: CivilianPhasePlan) {
         for plan in plan.automated {
             {
                 let major = self.nations.major_mut(plan.nation);

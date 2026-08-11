@@ -76,6 +76,32 @@ void RecordMissingCapture(RuntimeRun& run, const char* assertionId, const char* 
   run.RecordAssertion(assertionId, failure, true);
 }
 
+// Sidecar next to the control-channel result.json. The host and Rust resolve this relative
+// basename against the result file's directory, so Wine path translation stays out of the
+// capture payload.
+bool BuildCapturesSidecarPath(const char* resultPath, char* capturesPath, unsigned long size) {
+  if (resultPath == 0 || capturesPath == 0 || size == 0) {
+    return false;
+  }
+  const char* slash = strrchr(resultPath, '\\');
+  const char* forward = strrchr(resultPath, '/');
+  if (forward != 0 && (slash == 0 || forward > slash)) {
+    slash = forward;
+  }
+  unsigned long directoryLength = slash != 0 ? static_cast<unsigned long>(slash - resultPath + 1)
+                                             : 0;
+  const char* fileName = "captures.json";
+  unsigned long fileNameLength = static_cast<unsigned long>(strlen(fileName));
+  if (directoryLength + fileNameLength + 1 > size) {
+    return false;
+  }
+  if (directoryLength != 0) {
+    memcpy(capturesPath, resultPath, directoryLength);
+  }
+  memcpy(capturesPath + directoryLength, fileName, fileNameLength + 1);
+  return true;
+}
+
 } // namespace
 
 bool WriteRuntimeResult(RuntimeRun& run, const char* status) {
@@ -124,16 +150,23 @@ bool WriteRuntimeResult(RuntimeRun& run, const char* status) {
     }
   }
 
-  JSON_Value* rootValue = json_value_init_object();
-  JSON_Object* root = rootValue != 0 ? json_value_get_object(rootValue) : 0;
   JSON_Value* captures =
       CopyValue(run.Captures() != 0 ? json_object_get_wrapping_value(run.Captures()) : 0);
-  if (root == 0 || captures == 0 ||
-      json_object_set_string(root, "name", run.TestName()) != JSONSuccess ||
+  char capturesPath[MAX_PATH];
+  if (captures == 0 ||
+      !BuildCapturesSidecarPath(run.ResultPath(), capturesPath, sizeof(capturesPath)) ||
+      !WriteJsonValueAtomically(capturesPath, captures)) {
+    json_value_free(captures);
+    return false;
+  }
+  json_value_free(captures);
+
+  JSON_Value* rootValue = json_value_init_object();
+  JSON_Object* root = rootValue != 0 ? json_value_get_object(rootValue) : 0;
+  if (root == 0 || json_object_set_string(root, "name", run.TestName()) != JSONSuccess ||
       json_object_set_number(root, "seed", run.Seed()) != JSONSuccess ||
       json_object_set_string(root, "status", resultStatus) != JSONSuccess ||
-      !SetOwnedValue(root, "captures", captures)) {
-    json_value_free(captures);
+      json_object_set_string(root, "captures_path", "captures.json") != JSONSuccess) {
     json_value_free(rootValue);
     return false;
   }

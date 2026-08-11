@@ -749,16 +749,16 @@ mod tests {
             }
         );
         let session = app.world().resource::<GameSession>();
-        assert_eq!(session.0.turn.difficulty, Difficulty::Hard);
-        assert_eq!(session.0.turn.selected_nation, NationId::new(6));
+        assert_eq!(session.0.turn().difficulty, Difficulty::Hard);
+        assert_eq!(session.0.turn().selected_nation, NationId::new(6));
         assert_eq!(
-            session.0.turn.phase,
+            session.0.turn().phase(),
             imperialism_core::PhaseCode::CAPITAL_SELECTION
         );
         assert_eq!(
             session
                 .0
-                .nations
+                .nations()
                 .major(MajorNationId::new(6))
                 .common()
                 .home_tile,

@@ -1,4 +1,182 @@
 use crate::*;
+use serde::{Deserialize, Serialize};
+
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct MinorTradeThresholds {
+    pub primary_manufactured_price: i16,
+    pub secondary_manufactured_price: i16,
+    pub general_offer_price: i16,
+    pub random_offer_price: i16,
+    pub coal_offer_price: i16,
+    pub iron_offer_price: i16,
+    pub oil_offer_price: i16,
+}
+
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct MinorTradeState {
+    pub current_supply: ResourceTable<i16>,
+    pub offers: ResourceTable<i16>,
+    pub grant_deltas: ResourceTable<i16>,
+    pub thresholds: MinorTradeThresholds,
+    pub primary_manufactured_request: Option<TradeCommodity>,
+    pub secondary_manufactured_request: Option<TradeCommodity>,
+    pub primary_request_fulfilled: i16,
+    pub secondary_request_fulfilled: i16,
+    pub independent_resource_counts: ResourceTable<i16>,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ForeignTradeBid {
+    pub commodity: TradeCommodity,
+    pub amount: i16,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ForeignTradeState {
+    pub interior_bid: Option<ForeignTradeBid>,
+    pub phase_counter: i16,
+    pub refresh_interval: i16,
+    pub requested_ship: ShipType,
+    pub purchase_priority: TradeCommodityTable<i16>,
+    pub preferred_resources: [Option<TradeCommodity>; 4],
+}
+
+impl ForeignTradeState {
+    pub(crate) fn for_random_start(personality: ForeignMinisterPersonality) -> Self {
+        let refresh_interval = match personality {
+            ForeignMinisterPersonality::Arms
+            | ForeignMinisterPersonality::Bill
+            | ForeignMinisterPersonality::Ted => 4,
+            _ => 5,
+        };
+        let requested_ship = match personality {
+            ForeignMinisterPersonality::Arms | ForeignMinisterPersonality::Bill => ShipType::Trader,
+            _ => ShipType::Indiaman,
+        };
+        Self {
+            interior_bid: None,
+            phase_counter: 0,
+            refresh_interval,
+            requested_ship,
+            purchase_priority: TradeCommodityTable::default(),
+            preferred_resources: [None; 4],
+        }
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct GreatPowerState {
+    pub controller: MajorNationController,
+    pub ai_zone_targets: Option<Vec<AiTargetState>>,
+    pub ai_province_targets: Option<ProvinceTable<AiTargetState>>,
+    pub foreign_minister_personality: ForeignMinisterPersonality,
+    pub foreign_minister_skill_index: i16,
+    pub foreign_trade: ForeignTradeState,
+    pub development_grant_by_nation: NationTable<i16>,
+    pub defense_minister_skill_index: i16,
+    pub capacities: NationCapacities,
+    pub grant_total_cost: i32,
+    pub unfilled_trade_offer_count: i16,
+    pub diplomacy_policy_by_nation: NationTable<Option<DiplomacyPolicy>>,
+    pub diplomacy_grants_by_nation: NationTable<Option<DiplomacyGrant>>,
+    pub need_current_by_type: ResourceTable<i16>,
+    pub need_target_by_type: ResourceTable<i16>,
+    pub relation_delta_current: ResourceTable<i16>,
+    pub purchased_items_by_resource: ResourceTable<i16>,
+    pub item_potentials: ResourceTable<i16>,
+    pub unfilled_trade_turns_by_resource: ResourceTable<i16>,
+    pub transported_items_by_resource: ResourceTable<i16>,
+    pub remembered_trade_offers_by_resource: ResourceTable<i16>,
+    pub deal_book: TradeCommodityTable<Vec<TradeDealBookEntry>>,
+    pub pending_ship: Option<ShipType>,
+    pub interior_civilian: Box<InteriorCivilianState>,
+    pub ai_trade: Option<AiTradeState>,
+    pub ai_development_pressure: Option<AiDevelopmentPressureState>,
+    pub aid_allocation_by_minor_nation: MinorNationTable<ResourceTable<i32>>,
+    pub budget_pool_base: i32,
+    pub budget_pool_delta: i32,
+    pub special_resource_trade_balance: i32,
+    pub candidate_nation_flags: NationTable<u8>,
+    pub scenario_initialized: bool,
+    pub turn_finished: bool,
+    pub pending_actions: PendingActionTable<PendingActionState>,
+    pub diplomacy_budget_base: i32,
+    pub escalation_counter: i16,
+    pub pending_commitment_cost: i32,
+    pub pressure_counter: i16,
+    pub army_movement_budget: i32,
+    pub aid_allocation_total: i32,
+    pub colony_boycott_flags: NationTable<u8>,
+    pub military_expenses: i32,
+}
+
+impl GreatPowerState {
+    /// The post-`IGreatPower`/`IAutoGreatPower` construction state a major nation
+    /// carries at the random-game start boundary. Only the human is diplomacy
+    /// eligible before capital selection.
+    pub(crate) fn for_random_start(
+        human: bool,
+        foreign_minister_personality: ForeignMinisterPersonality,
+    ) -> Self {
+        let controller = if human {
+            MajorNationController::Human
+        } else {
+            MajorNationController::Computer
+        };
+        Self {
+            controller,
+            ai_zone_targets: match controller {
+                MajorNationController::Human => None,
+                MajorNationController::Computer => Some(Vec::new()),
+            },
+            ai_province_targets: match controller {
+                MajorNationController::Human => None,
+                MajorNationController::Computer => Some(ProvinceTable::default()),
+            },
+            foreign_minister_personality,
+            foreign_minister_skill_index: foreign_minister_personality.initial_skill_index(),
+            foreign_trade: ForeignTradeState::for_random_start(foreign_minister_personality),
+            development_grant_by_nation: NationTable::default(),
+            defense_minister_skill_index: 0,
+            capacities: NationCapacities::from_array([0, 0, 0x0f, 0]),
+            grant_total_cost: 0,
+            unfilled_trade_offer_count: 0,
+            diplomacy_policy_by_nation: NationTable::default(),
+            diplomacy_grants_by_nation: NationTable::default(),
+            need_current_by_type: ResourceTable::default(),
+            need_target_by_type: ResourceTable::default(),
+            relation_delta_current: ResourceTable::default(),
+            purchased_items_by_resource: ResourceTable::default(),
+            item_potentials: ResourceTable::default(),
+            unfilled_trade_turns_by_resource: ResourceTable::default(),
+            transported_items_by_resource: ResourceTable::default(),
+            remembered_trade_offers_by_resource: ResourceTable::default(),
+            deal_book: TradeCommodityTable::default(),
+            pending_ship: None,
+            interior_civilian: Box::default(),
+            ai_trade: (!human).then(AiTradeState::default),
+            // These TAutoGreatPower fields are not initialized at the pre-capital
+            // random-game boundary. They become authoritative during turn setup.
+            ai_development_pressure: None,
+            aid_allocation_by_minor_nation: MinorNationTable::default(),
+            budget_pool_base: 0,
+            budget_pool_delta: 0,
+            special_resource_trade_balance: 0,
+            candidate_nation_flags: NationTable::default(),
+            scenario_initialized: false,
+            turn_finished: true,
+            pending_actions: PendingActionTable::default(),
+            diplomacy_budget_base: 20_000,
+            escalation_counter: 0,
+            pending_commitment_cost: 0,
+            pressure_counter: 0,
+            army_movement_budget: 0x0f,
+            aid_allocation_total: 0,
+            colony_boycott_flags: NationTable::default(),
+            military_expenses: 0,
+        }
+    }
+}
 
 const TRANSPORT_NEED_PRIORITY: [ResourceKind; 10] = [
     ResourceKind::Grain,

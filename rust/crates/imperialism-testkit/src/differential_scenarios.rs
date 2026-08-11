@@ -6,7 +6,7 @@
 
 use crate::differential;
 use imperialism_core::*;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 macro_rules! differential_test {
     ($name:ident, |$state:ident, _: $case_ty:ty| $body:block) => {
@@ -74,7 +74,7 @@ struct DirectTransportCase {
 #[derive(Deserialize)]
 struct CityItemOrderCase {
     nation: MajorNationId,
-    output: ResourceKind,
+    output: ManufacturedItem,
     quantity: i16,
 }
 
@@ -236,7 +236,7 @@ differential_test!(first_turn_return_to_map_phase, |state, _: ()| {
 differential_test!(easy_turn_from_save, |state, case: EasyTurnFromSaveCase| {
     assert!(case.reject_offers);
     assert!(case.expect_exactly_one_turn);
-    let from_turn = state.turn.economic_turn;
+    let from_turn = state.turn().economic_turn;
 
     let first = state.finish_player_orders();
     assert_eq!(
@@ -256,11 +256,11 @@ differential_test!(easy_turn_from_save, |state, case: EasyTurnFromSaveCase| {
 
     let third = state.dismiss_blocking_screen();
     assert_eq!(third, FlowStop::PlayerOrders);
-    assert_eq!(state.turn.economic_turn, from_turn + 1);
+    assert_eq!(state.turn().economic_turn, from_turn + 1);
 
     EasyTurnFromSaveResult::Completed {
         from_turn,
-        to_turn: state.turn.economic_turn,
+        to_turn: state.turn().economic_turn,
         screens: vec![GameScreen::DealBook, GameScreen::Newspaper],
     }
 });
@@ -305,14 +305,18 @@ differential_test!(merchant_marine, |state, case: NationCase| {
 differential_test!(
     city_item_order_increase,
     |state, case: CityItemOrderCase| {
-        state.set_city_order_quantity(case.nation, CityOrderId::Item(case.output), case.quantity)
+        state
+            .set_city_order_quantity(case.nation, CityOrderId::Item(case.output), case.quantity)
+            .applied()
     }
 );
 
 differential_test!(
     city_item_order_decrease,
     |state, case: CityItemOrderCase| {
-        state.set_city_order_quantity(case.nation, CityOrderId::Item(case.output), case.quantity)
+        state
+            .set_city_order_quantity(case.nation, CityOrderId::Item(case.output), case.quantity)
+            .applied()
     }
 );
 

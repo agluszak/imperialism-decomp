@@ -285,10 +285,10 @@ fn enter_diplomacy_screen(
         warn!("diplomacy screen opened without an authoritative game session");
         return;
     };
-    let Some(source) = MajorNationId::from_nation(session.0.turn.active_nation) else {
+    let Some(source) = MajorNationId::from_nation(session.0.turn().active_nation) else {
         warn!(
             "diplomacy screen opened for non-major nation {:?}",
-            session.0.turn.active_nation
+            session.0.turn().active_nation
         );
         return;
     };
@@ -981,10 +981,9 @@ fn on_diplomacy_map_click(
     let Some(tile) = tile_at_diplomacy_position(normalized) else {
         return;
     };
-    let Some(mut session) = session else {
-        return;
-    };
-    let Some(target) = session.0.world[tile]
+    let mut session =
+        session.expect("diplomacy map activated without an authoritative game session");
+    let Some(target) = session.0.world()[tile]
         .owner_nation
         .and_then(TileOwnerTag::nation)
     else {
@@ -1189,7 +1188,7 @@ fn sync_diplomacy_controls(
             selection.0 = screen.framed_nation;
         }
     }
-    let major = session.0.nations.major(screen.source);
+    let major = session.0.nations().major(screen.source);
     for mut text in &mut treasury {
         text.0 = format_currency(major.common().treasury);
     }
@@ -1248,7 +1247,7 @@ fn sync_diplomacy_information(
     for (major, mut text) in &mut map_key_names {
         text.0.clear();
         text.0
-            .push_str(state.nations.display_name(major.0.nation()).unwrap_or(""));
+            .push_str(state.nations().display_name(major.0.nation()).unwrap_or(""));
     }
 
     for (label, mut text, mut node, mut visibility) in &mut labels {
@@ -1256,7 +1255,7 @@ fn sync_diplomacy_information(
             *visibility = Visibility::Hidden;
             continue;
         };
-        let Some(display_name) = state.nations.display_name(label.nation) else {
+        let Some(display_name) = state.nations().display_name(label.nation) else {
             *visibility = Visibility::Hidden;
             continue;
         };
@@ -1264,7 +1263,7 @@ fn sync_diplomacy_information(
             *visibility = Visibility::Hidden;
             continue;
         }
-        let (row, column) = state.world.geometry().row_column(anchor);
+        let (row, column) = state.world().geometry().row_column(anchor);
         let is_major = MajorNationId::from_nation(label.nation).is_some();
         let offset = f32::from(if is_major == label.shadow { 1_u8 } else { 0 });
         node.left = Val::Px(f32::from(column) * 5.0 - 45.0 + offset);
@@ -1274,17 +1273,17 @@ fn sync_diplomacy_information(
         *visibility = Visibility::Visible;
     }
 
-    let major = state.nations.major(screen.source);
+    let major = state.nations().major(screen.source);
     for (icon, mut image, mut node, mut visibility) in &mut icons {
         let (anchor, atlas_offset, top_offset) = match icon.kind {
             DiplomacyNationIconKind::Compatibility => {
-                let level = state.diplomacy.mission_levels[screen.framed_nation][icon.nation];
+                let level = state.diplomacy().mission_levels[screen.framed_nation][icon.nation];
                 let atlas_offset = match (screen.topic, level) {
                     (DiplomacyTopic::Information, _) | (_, DiplomaticMissionLevel::None) => None,
                     (_, DiplomaticMissionLevel::TradeConsulate) => Some(0x170),
                     (_, DiplomaticMissionLevel::Embassy) => Some(0x180),
                 };
-                (state.nations.home_tile(icon.nation), atlas_offset, -8.0)
+                (state.nations().home_tile(icon.nation), atlas_offset, -8.0)
             }
             DiplomacyNationIconKind::Order => {
                 let atlas_offset = match screen.topic {
@@ -1315,7 +1314,7 @@ fn sync_diplomacy_information(
             *visibility = Visibility::Hidden;
             continue;
         };
-        let (row, column) = state.world.geometry().row_column(anchor);
+        let (row, column) = state.world().geometry().row_column(anchor);
         node.left = Val::Px(f32::from(column) * 5.0 - 8.0);
         node.top = Val::Px(f32::from(row) * 5.0 + top_offset);
         image.rect = Some(Rect::new(
@@ -1344,7 +1343,7 @@ fn render_diplomacy_map(
             continue;
         }
         let pixels =
-            compose_owner_preview_indices(|tile| session.0.world[tile].owner_nation, selection.0);
+            compose_owner_preview_indices(|tile| session.0.world()[tile].owner_nation, selection.0);
         let image = preview_image_from_indices(&pixels, assets.default_dib_palette());
         let handle = if let Some(handle) = &picture.image {
             assets.replace_image(handle, image);
@@ -1369,23 +1368,23 @@ fn diplomacy_information(
     nation: NationId,
 ) -> (String, [String; 3], [String; 3]) {
     let name = state
-        .nations
+        .nations()
         .display_name(nation)
         .unwrap_or_default()
         .to_owned();
     let mut labels = ["Provinces:".to_owned(), String::new(), String::new()];
     let mut values = [
         state
-            .nations
+            .nations()
             .owned_region_count(nation)
             .unwrap_or_default()
             .to_string(),
         String::new(),
         String::new(),
     ];
-    match state.nations.country_status(nation) {
+    match state.nations().country_status(nation) {
         Some(CountryStatus::ColonyOf(master)) => {
-            let master = state.nations.display_name(master).unwrap_or_default();
+            let master = state.nations().display_name(master).unwrap_or_default();
             labels[1] = format!("Colony of {master}");
         }
         Some(CountryStatus::ProtectorateOf(_)) => labels[1] = "Anarchy".to_owned(),
@@ -1405,7 +1404,7 @@ fn diplomacy_information(
                 labels[2] = "Trading Nation:".to_owned();
                 values[2] = state
                     .favorite_trade_partner(minor)
-                    .and_then(|partner| state.nations.display_name(partner.nation()))
+                    .and_then(|partner| state.nations().display_name(partner.nation()))
                     .unwrap_or("None")
                     .to_owned();
             }
@@ -1424,11 +1423,11 @@ fn diplomacy_grant_icon_offset(grant: DiplomacyGrant) -> Option<usize> {
 
 fn representative_tile_for_nation(state: &GameState, nation: NationId) -> Option<TileId> {
     let home_region_class = state
-        .nations
+        .nations()
         .home_tile(nation)
-        .and_then(|tile| state.world[tile].province)
-        .and_then(|province| state.provinces[province].region_class());
-    let geometry = state.world.geometry();
+        .and_then(|tile| state.world()[tile].province)
+        .and_then(|province| state.provinces()[province].region_class());
+    let geometry = state.world().geometry();
     let mut column_sum = 0_u32;
     let mut row_sum = 0_u32;
     let mut tile_count = 0_u32;
@@ -1438,7 +1437,7 @@ fn representative_tile_for_nation(state: &GameState, nation: NationId) -> Option
 
     for index in 0..TileId::COUNT {
         let tile = TileId::new(index);
-        if state.world[tile]
+        if state.world()[tile]
             .owner_nation
             .and_then(TileOwnerTag::nation)
             != Some(nation)
@@ -1447,9 +1446,9 @@ fn representative_tile_for_nation(state: &GameState, nation: NationId) -> Option
         }
         fallback = Some(tile);
         if let Some(home_region_class) = home_region_class
-            && state.world[tile]
+            && state.world()[tile]
                 .province
-                .and_then(|province| state.provinces[province].region_class())
+                .and_then(|province| state.provinces()[province].region_class())
                 != Some(home_region_class)
         {
             continue;
@@ -1467,9 +1466,13 @@ fn representative_tile_for_nation(state: &GameState, nation: NationId) -> Option
     }
 
     if tile_count == 0 {
-        return (state.nations.owned_region_count(nation).unwrap_or_default() > 0)
-            .then_some(fallback)
-            .flatten();
+        return (state
+            .nations()
+            .owned_region_count(nation)
+            .unwrap_or_default()
+            > 0)
+        .then_some(fallback)
+        .flatten();
     }
     if west_count != 0 && east_count != 0 {
         column_sum += west_count * u32::from(STRATEGIC_MAP_WIDTH);
@@ -1567,7 +1570,7 @@ mod tests {
             GameScreenRoot(diplomacy_view_id()),
             DespawnOnExit(AppState::Diplomacy),
         ));
-        let source = MajorNationId::from_nation(session.0.turn.active_nation).unwrap();
+        let source = MajorNationId::from_nation(session.0.turn().active_nation).unwrap();
         let map = bind_diplomacy_screen(
             &mut commands,
             &catalog,
@@ -1619,7 +1622,7 @@ mod tests {
             let session = app.world().resource::<GameSession>();
             let (tile_index, _) = session
                 .0
-                .world
+                .world()
                 .iter()
                 .enumerate()
                 .find(|(index, tile)| {
@@ -1629,7 +1632,7 @@ mod tests {
                 .expect("fixture nation 2 has territory on an odd map row");
             session
                 .0
-                .world
+                .world()
                 .geometry()
                 .row_column(TileId::new(tile_index as u16))
         };
@@ -1752,7 +1755,7 @@ mod tests {
                         world
                             .resource::<GameSession>()
                             .0
-                            .nations
+                            .nations()
                             .display_name(major.nation())
                             .unwrap()
                             .to_owned();
@@ -1771,7 +1774,7 @@ mod tests {
             .world()
             .resource::<GameSession>()
             .0
-            .nations
+            .nations()
             .display_name(NationId::new(2))
             .unwrap()
             .to_owned();
@@ -1799,7 +1802,7 @@ mod tests {
         };
         {
             let session = app.world().resource::<GameSession>();
-            let major = session.0.nations.major(source);
+            let major = session.0.nations().major(source);
             assert_eq!(
                 major.economy().diplomacy_grants_by_nation[target],
                 Some(expected)
@@ -1822,7 +1825,7 @@ mod tests {
         click_nation_two(&mut app, first.map);
         {
             let session = app.world().resource::<GameSession>();
-            let major = session.0.nations.major(source);
+            let major = session.0.nations().major(source);
             assert_eq!(
                 major.common().trade_policy_by_nation[target],
                 TradePolicyScore::new(90)
@@ -1855,7 +1858,7 @@ mod tests {
         assert_eq!(
             session
                 .0
-                .nations
+                .nations()
                 .major(source)
                 .economy()
                 .diplomacy_grants_by_nation[target],
@@ -1864,7 +1867,7 @@ mod tests {
         assert_eq!(
             session
                 .0
-                .nations
+                .nations()
                 .major(source)
                 .common()
                 .trade_policy_by_nation[target],

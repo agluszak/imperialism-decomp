@@ -206,7 +206,7 @@ pub struct UiNode {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct CityBuildingVisual {
-    pub slot: ProductionSlot,
+    pub slot: CityFacilitySlot,
     pub origin: [i32; 2],
     pub draw_order: u8,
     pub dialog: ScopedViewId,
@@ -215,7 +215,7 @@ pub struct CityBuildingVisual {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct CityBuildingActionVisual {
-    pub slot: ProductionSlot,
+    pub slot: CityFacilitySlot,
     pub level: u8,
     pub picture_id: PictureId,
     pub frame_count: u8,

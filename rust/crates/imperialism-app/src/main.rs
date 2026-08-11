@@ -32,14 +32,18 @@ fn main() -> anyhow::Result<()> {
                 .ok()
                 .and_then(NationId::try_new)
                 .context("selected nation is outside the retail nation range")?;
-            Some(
-                LegacySaveV62::parse(&bytes)?.game_state(LegacyGameStateContext {
-                    crt_rand_state: context[0],
-                    map_generation_lcg: context[1],
-                    zone_status_lcg: context[2],
-                    selected_nation: selected,
-                })?,
-            )
+            let game = LegacySaveV62::parse(&bytes)?.game_state(LegacyGameStateContext {
+                crt_rand_state: context[0],
+                map_generation_lcg: context[1],
+                zone_status_lcg: context[2],
+                selected_nation: selected,
+            })?;
+            anyhow::ensure!(
+                game.turn().phase() == imperialism_core::PhaseCode::STRATEGIC_MAP,
+                "loaded save is in unsupported phase {:?}; only strategic-map saves can start the app",
+                game.turn().phase()
+            );
+            Some(game)
         }
         (None, None) => None,
         _ => unreachable!("clap enforces the paired load-save and game-state arguments"),

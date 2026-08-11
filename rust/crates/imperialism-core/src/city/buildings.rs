@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[repr(u8)]
 #[serde(rename_all = "snake_case")]
-pub enum ProductionSlot {
+pub enum CityFacilitySlot {
     TextileMill,
     ClothingFactory,
     SteelMill,
@@ -25,7 +25,7 @@ pub enum ProductionSlot {
     RegionalPopulation,
 }
 
-impl ProductionSlot {
+impl CityFacilitySlot {
     pub const COUNT: usize = 16;
 
     pub const fn from_index(value: u8) -> Option<Self> {
@@ -63,13 +63,17 @@ pub struct BuildingWindowState {
 }
 
 impl CityState {
-    pub fn set_building_window_state(&mut self, slot: ProductionSlot, state: BuildingWindowState) {
+    pub fn set_building_window_state(
+        &mut self,
+        slot: CityFacilitySlot,
+        state: BuildingWindowState,
+    ) {
         self.production_flags[slot] = state.flag;
         self.production_current[slot] = state.current;
         self.production_progress[slot] = state.accumulated;
     }
 
-    pub fn building_window_state(&self, slot: ProductionSlot) -> BuildingWindowState {
+    pub fn building_window_state(&self, slot: CityFacilitySlot) -> BuildingWindowState {
         BuildingWindowState {
             flag: self.production_flags[slot],
             current: self.production_current[slot],
@@ -77,44 +81,44 @@ impl CityState {
         }
     }
 
-    pub const fn is_capacity_center(slot: ProductionSlot) -> bool {
+    pub const fn is_capacity_center(slot: CityFacilitySlot) -> bool {
         matches!(
             slot,
-            ProductionSlot::TextileMill
-                | ProductionSlot::ClothingFactory
-                | ProductionSlot::SteelMill
-                | ProductionSlot::Metalworks
-                | ProductionSlot::LumberMill
-                | ProductionSlot::FurnitureFactory
-                | ProductionSlot::OilRefinery
-                | ProductionSlot::PowerPlant
+            CityFacilitySlot::TextileMill
+                | CityFacilitySlot::ClothingFactory
+                | CityFacilitySlot::SteelMill
+                | CityFacilitySlot::Metalworks
+                | CityFacilitySlot::LumberMill
+                | CityFacilitySlot::FurnitureFactory
+                | CityFacilitySlot::OilRefinery
+                | CityFacilitySlot::PowerPlant
         )
     }
 
     pub fn max_building_capacity(
         &self,
-        slot: ProductionSlot,
+        slot: CityFacilitySlot,
         owner: &GreatPowerState,
         owned_region_count: i32,
     ) -> i16 {
-        if slot == ProductionSlot::RegionalPopulation {
+        if slot == CityFacilitySlot::RegionalPopulation {
             return region_capacity(owner, owned_region_count);
         }
 
         let capacity = self.production_orders[slot];
         match slot {
-            ProductionSlot::TextileMill
-            | ProductionSlot::SteelMill
-            | ProductionSlot::LumberMill
-            | ProductionSlot::OilRefinery => match capacity {
+            CityFacilitySlot::TextileMill
+            | CityFacilitySlot::SteelMill
+            | CityFacilitySlot::LumberMill
+            | CityFacilitySlot::OilRefinery => match capacity {
                 0 => 2,
                 2 => 4,
                 4 => 8,
                 _ => capacity + 8,
             },
-            ProductionSlot::ClothingFactory
-            | ProductionSlot::Metalworks
-            | ProductionSlot::FurnitureFactory => match capacity {
+            CityFacilitySlot::ClothingFactory
+            | CityFacilitySlot::Metalworks
+            | CityFacilitySlot::FurnitureFactory => match capacity {
                 0 => 1,
                 1 => 2,
                 2 => 4,
@@ -126,16 +130,16 @@ impl CityState {
 
     pub fn next_building_level(
         &self,
-        slot: ProductionSlot,
+        slot: CityFacilitySlot,
         owner: &GreatPowerState,
         owned_region_count: i32,
     ) -> u8 {
         let capacity = self.max_building_capacity(slot, owner, owned_region_count);
         if matches!(
             slot,
-            ProductionSlot::ClothingFactory
-                | ProductionSlot::Metalworks
-                | ProductionSlot::FurnitureFactory
+            CityFacilitySlot::ClothingFactory
+                | CityFacilitySlot::Metalworks
+                | CityFacilitySlot::FurnitureFactory
         ) {
             if capacity < 4 {
                 1
@@ -155,11 +159,11 @@ impl CityState {
 
     pub fn building_type(
         &self,
-        slot: ProductionSlot,
+        slot: CityFacilitySlot,
         owner: &GreatPowerState,
         owned_region_count: i32,
     ) -> i16 {
-        if slot == ProductionSlot::RegionalPopulation {
+        if slot == CityFacilitySlot::RegionalPopulation {
             region_capacity(owner, owned_region_count)
         } else {
             self.production_orders[slot]
@@ -168,7 +172,7 @@ impl CityState {
 
     pub fn next_building_type(
         &self,
-        slot: ProductionSlot,
+        slot: CityFacilitySlot,
         owner: &GreatPowerState,
         owned_region_count: i32,
         active_nation_has_technology_15: bool,
@@ -176,9 +180,9 @@ impl CityState {
         let building_type = self.building_type(slot, owner, owned_region_count);
         let status = &owner.pending_actions;
         match slot {
-            ProductionSlot::TextileMill
-            | ProductionSlot::SteelMill
-            | ProductionSlot::LumberMill => {
+            CityFacilitySlot::TextileMill
+            | CityFacilitySlot::SteelMill
+            | CityFacilitySlot::LumberMill => {
                 if building_type == 0 {
                     0
                 } else if building_type < 16 {
@@ -187,9 +191,9 @@ impl CityState {
                     i16::from(building_type >= 32) + 2
                 }
             }
-            ProductionSlot::ClothingFactory
-            | ProductionSlot::Metalworks
-            | ProductionSlot::FurnitureFactory => {
+            CityFacilitySlot::ClothingFactory
+            | CityFacilitySlot::Metalworks
+            | CityFacilitySlot::FurnitureFactory => {
                 if building_type == 0 {
                     0
                 } else if building_type < 8 {
@@ -198,11 +202,11 @@ impl CityState {
                     i16::from(building_type >= 16) + 2
                 }
             }
-            ProductionSlot::OilRefinery | ProductionSlot::PowerPlant => {
+            CityFacilitySlot::OilRefinery | CityFacilitySlot::PowerPlant => {
                 i16::from(building_type != 0)
             }
-            ProductionSlot::Shipyard => i16::from(active_nation_has_technology_15) + 1,
-            ProductionSlot::Armory => {
+            CityFacilitySlot::Shipyard => i16::from(active_nation_has_technology_15) + 1,
+            CityFacilitySlot::Armory => {
                 if status[PendingActionKind::ConquestMonumentArmory].status()
                     == crate::PendingActionStatus::Level3
                 {
@@ -214,7 +218,7 @@ impl CityState {
                     ) + 1
                 }
             }
-            ProductionSlot::University => {
+            CityFacilitySlot::University => {
                 if status[PendingActionKind::UniversityExpansion].status()
                     < crate::PendingActionStatus::Level3
                 {
@@ -226,14 +230,14 @@ impl CityState {
                     ) + 2
                 }
             }
-            ProductionSlot::Transport => {
+            CityFacilitySlot::Transport => {
                 i16::from(
                     status[PendingActionKind::RailyardExpansion]
                         .status()
                         .has_reached(crate::PendingActionStatus::Level3),
                 ) + 1
             }
-            ProductionSlot::RegionalPopulation => {
+            CityFacilitySlot::RegionalPopulation => {
                 i16::from(
                     status[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
                         .status()
@@ -260,7 +264,7 @@ impl GameState {
     pub fn set_city_building_window_state(
         &mut self,
         nation: MajorNationId,
-        slot: ProductionSlot,
+        slot: CityFacilitySlot,
         state: BuildingWindowState,
     ) {
         self.nations
@@ -286,8 +290,8 @@ fn region_capacity(owner: &GreatPowerState, owned_region_count: i32) -> i16 {
 mod tests {
     use super::*;
 
-    fn slot(value: u8) -> ProductionSlot {
-        ProductionSlot::from_index(value).unwrap()
+    fn slot(value: u8) -> CityFacilitySlot {
+        CityFacilitySlot::from_index(value).unwrap()
     }
 
     fn city() -> CityState {
@@ -301,14 +305,14 @@ mod tests {
     #[test]
     fn validates_the_retail_production_slot_range() {
         assert_eq!(
-            ProductionSlot::from_index(0),
-            Some(ProductionSlot::TextileMill)
+            CityFacilitySlot::from_index(0),
+            Some(CityFacilitySlot::TextileMill)
         );
         assert_eq!(
-            ProductionSlot::from_index(15),
-            Some(ProductionSlot::RegionalPopulation)
+            CityFacilitySlot::from_index(15),
+            Some(CityFacilitySlot::RegionalPopulation)
         );
-        assert_eq!(ProductionSlot::from_index(16), None);
+        assert_eq!(CityFacilitySlot::from_index(16), None);
     }
 
     #[test]
@@ -325,7 +329,7 @@ mod tests {
 
     #[test]
     fn identifies_only_the_retail_capacity_center_slots() {
-        let actual: Vec<u8> = (0..ProductionSlot::COUNT as u8)
+        let actual: Vec<u8> = (0..CityFacilitySlot::COUNT as u8)
             .filter(|value| CityState::is_capacity_center(slot(*value)))
             .collect();
         assert_eq!(actual, vec![0, 1, 2, 3, 4, 5, 6, 11]);

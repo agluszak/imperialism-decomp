@@ -271,15 +271,35 @@ int main(int argc, char** argv) {
   JSON_Value* rootValue = json_value_init_object();
   JSON_Object* root = rootValue != 0 ? json_value_get_object(rootValue) : 0;
   JSON_Value* capturesValue = json_value_init_object();
-  JSON_Object* captures = capturesValue != 0 ? json_value_get_object(capturesValue) : 0;
-  bool resultBuilt = root != 0 && captures != 0 &&
+  char capturesPath[MAX_PATH];
+  bool resultBuilt = root != 0 && capturesValue != 0 &&
                      json_object_set_string(root, "name", testName) == JSONSuccess &&
                      json_object_set_number(root, "seed", seed) == JSONSuccess &&
-                     json_object_set_string(root, "status", status) == JSONSuccess;
-  if (resultBuilt && json_object_set_value(root, "captures", capturesValue) == JSONSuccess) {
-    capturesValue = 0;
-  } else {
-    resultBuilt = false;
+                     json_object_set_string(root, "status", status) == JSONSuccess &&
+                     json_object_set_string(root, "captures_path", "captures.json") ==
+                         JSONSuccess;
+  if (resultBuilt) {
+    const char* slash = strrchr(resultPath, '\\');
+    const char* forward = strrchr(resultPath, '/');
+    if (forward != 0 && (slash == 0 || forward > slash)) {
+      slash = forward;
+    }
+    unsigned long directoryLength =
+        slash != 0 ? static_cast<unsigned long>(slash - resultPath + 1) : 0;
+    if (directoryLength + 14 >= sizeof(capturesPath)) {
+      resultBuilt = false;
+    } else {
+      if (directoryLength != 0) {
+        memcpy(capturesPath, resultPath, directoryLength);
+      }
+      memcpy(capturesPath + directoryLength, "captures.json", 14);
+      char* capturesJson = json_serialize_to_string_pretty(capturesValue);
+      resultBuilt = capturesJson != 0 &&
+                    WriteRuntimeBytesAtomically(
+                        capturesPath, capturesJson,
+                        static_cast<unsigned long>(strlen(capturesJson)));
+      json_free_serialized_string(capturesJson);
+    }
   }
   char* resultJson = resultBuilt ? json_serialize_to_string_pretty(rootValue) : 0;
   bool wrote = resultJson != 0 &&

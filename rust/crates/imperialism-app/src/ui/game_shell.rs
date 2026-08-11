@@ -184,12 +184,12 @@ fn enter_strategic_map_view(mut session: Option<ResMut<GameSession>>) {
     };
     let Some(tile) = session
         .0
-        .first_idle_civilian_tile(session.0.turn.active_nation)
+        .first_idle_civilian_tile(session.0.turn().active_nation)
     else {
         return;
     };
-    let origin = session.0.world.viewport_origin_centered_on(tile);
-    session.0.world.set_view_origin(origin);
+    let origin = session.0.world().viewport_origin_centered_on(tile);
+    session.0.world_mut().set_view_origin(origin);
 }
 
 #[derive(Component, Clone, Debug, Eq, PartialEq)]
@@ -308,10 +308,10 @@ fn project_date_and_treasury(
         commands,
         spawned,
         fourcc!("seas"),
-        format_retail_date(assets, state.turn.economic_turn),
+        format_retail_date(assets, state.turn().economic_turn),
     );
-    let treasury = MajorNationId::from_nation(state.turn.active_nation)
-        .map(|nation| format_currency(state.nations.major(nation).common().treasury))
+    let treasury = MajorNationId::from_nation(state.turn().active_nation)
+        .map(|nation| format_currency(state.nations().major(nation).common().treasury))
         .unwrap_or_default();
     set_control_text(commands, spawned, fourcc!("trea"), treasury);
 }
@@ -323,7 +323,7 @@ fn project_newspaper_chrome(
     session: Option<&GameSession>,
 ) {
     let date = session.map_or_else(String::new, |session| {
-        format_retail_date(assets, session.0.turn.economic_turn)
+        format_retail_date(assets, session.0.turn().economic_turn)
     });
     set_control_text(commands, spawned, fourcc!("date"), date);
     // The catalog carries a false date placeholder here. The quarter-specific
@@ -644,7 +644,11 @@ mod tests {
             .insert_resource(fixture_session())
             .add_systems(OnEnter(AppState::StrategicMap), enter_strategic_map_view);
         assert_eq!(
-            app.world().resource::<GameSession>().0.world.view_origin(),
+            app.world()
+                .resource::<GameSession>()
+                .0
+                .world()
+                .view_origin(),
             imperialism_core::TileId::new(1)
         );
 
@@ -655,7 +659,11 @@ mod tests {
         app.update();
 
         assert_eq!(
-            app.world().resource::<GameSession>().0.world.view_origin(),
+            app.world()
+                .resource::<GameSession>()
+                .0
+                .world()
+                .view_origin(),
             imperialism_core::TileId::new(1358)
         );
     }
@@ -755,9 +763,9 @@ mod tests {
             &AppState::StrategicMap
         );
         let session = app.world().resource::<GameSession>();
-        assert_eq!(session.0.turn.economic_turn, 2);
+        assert_eq!(session.0.turn().economic_turn, 2);
         assert_eq!(
-            session.0.turn.phase,
+            session.0.turn().phase(),
             imperialism_core::PhaseCode::STRATEGIC_MAP
         );
     }

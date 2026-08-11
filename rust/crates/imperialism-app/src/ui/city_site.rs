@@ -99,7 +99,7 @@ fn sync_city_site_hover(
     if !dialog_open.is_empty() {
         return;
     }
-    let Some(nation) = MajorNationId::from_nation(session.0.turn.active_nation) else {
+    let Some(nation) = MajorNationId::from_nation(session.0.turn().active_nation) else {
         return;
     };
     for (canvas, cursor, image_node, mut hover) in &mut maps {
@@ -126,13 +126,13 @@ fn sync_city_site_hover(
 }
 
 fn highlights_city_site_candidate(state: &GameState, nation: MajorNationId, tile: TileId) -> bool {
-    let tile_state = &state.world[tile];
+    let tile_state = state.world()[tile];
     tile_state.owner_nation == Some(TileOwnerTag::from_nation(nation.nation()))
         && !matches!(
             tile_state.terrain,
             TerrainKind::Hills | TerrainKind::Mountain | TerrainKind::Swamp
         )
-        && is_valid_secondary_nation_home_tile_candidate(&state.world, tile)
+        && is_valid_secondary_nation_home_tile_candidate(state.world(), tile)
 }
 
 fn bind_city_site_controls(commands: &mut Commands, spawned: &crate::ui::catalog::SpawnedView) {
@@ -167,16 +167,14 @@ fn on_city_site_map_click(
     if !dialog_open.is_empty() {
         return;
     }
-    let Some(session) = session else {
-        return;
-    };
     let Ok(cursor) = maps.get(click.entity) else {
         return;
     };
+    let session = session.expect("city-site map activated without an authoritative game session");
     let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.0, cursor) else {
         return;
     };
-    let Some(nation) = MajorNationId::from_nation(session.0.turn.active_nation) else {
+    let Some(nation) = MajorNationId::from_nation(session.0.turn().active_nation) else {
         return;
     };
     let Ok(site) = validate_capital_site_selection(&session.0, nation, tile) else {
@@ -207,12 +205,11 @@ fn on_new_city_activate(
     };
     match *action {
         NewCityAction::Accept => {
-            let Some(mut session) = session else {
-                return;
-            };
             let Ok((_, dialog)) = dialogs.single() else {
                 return;
             };
+            let mut session =
+                session.expect("new-city accept activated without an authoritative game session");
             confirm_capital_site(&mut session.0, dialog.0);
             for (root, _) in &dialogs {
                 commands.entity(root).despawn();

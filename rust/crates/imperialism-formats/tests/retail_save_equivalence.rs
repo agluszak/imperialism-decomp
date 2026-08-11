@@ -13,21 +13,21 @@ fn beginning_save_projection_matches_cpp_loaded_state() -> anyhow::Result<()> {
 
     let save = LegacySaveV62::parse(BEGINNING_OF_GAME)?;
     let mut actual = save.game_state(LegacyGameStateContext {
-        crt_rand_state: expected.rng.crt_rand.state(),
-        map_generation_lcg: expected.rng.map_generation.state(),
-        zone_status_lcg: expected.rng.zone_status.state(),
-        selected_nation: expected.turn.selected_nation,
+        crt_rand_state: expected.rng().crt_rand.state(),
+        map_generation_lcg: expected.rng().map_generation.state(),
+        zone_status_lcg: expected.rng().zone_status.state(),
+        selected_nation: expected.turn().selected_nation,
     })?;
 
     // The importer preserves the saved viewport. Map entry then centers on the first idle
     // civilian using the same retail viewport math, without a presentation method on GameState.
     let persisted_view_origin = save.world_state()?.view_origin();
-    assert_eq!(actual.world.view_origin(), persisted_view_origin);
-    if let Some(tile) = actual.first_idle_civilian_tile(actual.turn.active_nation) {
-        let origin = actual.world.viewport_origin_centered_on(tile);
-        actual.world.set_view_origin(origin);
+    assert_eq!(actual.world().view_origin(), persisted_view_origin);
+    if let Some(tile) = actual.first_idle_civilian_tile(actual.turn().active_nation) {
+        let origin = actual.world().viewport_origin_centered_on(tile);
+        actual.world_mut().set_view_origin(origin);
     }
-    assert_eq!(actual.world.view_origin(), expected.world.view_origin());
+    assert_eq!(actual.world().view_origin(), expected.world().view_origin());
 
     assert_game_state_eq(&expected, &actual)
 }

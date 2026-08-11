@@ -258,7 +258,7 @@ fn enter_transport_screen(
         warn!("transport screen opened without an authoritative game session");
         return;
     };
-    let Some(nation) = MajorNationId::from_nation(session.0.turn.active_nation) else {
+    let Some(nation) = MajorNationId::from_nation(session.0.turn().active_nation) else {
         warn!("transport screen active nation is not a major nation");
         return;
     };
@@ -503,9 +503,8 @@ fn on_transport_adjust(
     if !screens.iter().any(|screen| screen.nation == action.nation) {
         return;
     }
-    let Some(mut session) = session else {
-        return;
-    };
+    let mut session =
+        session.expect("transport control activated without an authoritative game session");
     session
         .0
         .step_transport_allocation(action.nation, action.allocation, action.delta);
@@ -535,7 +534,7 @@ fn sync_transport_values(
 ) {
     for (mut text, row, capacity, money, treasury) in &mut texts {
         if let Some(caption) = row {
-            let economy = session.0.nations.major(caption.nation).economy();
+            let economy = session.0.nations().major(caption.nation).economy();
             let target = allocation_amount(caption.allocation, |resource| {
                 economy.need_target_by_type[resource]
             });
@@ -544,7 +543,12 @@ fn sync_transport_values(
             });
             text.0 = format!("{target}  /  {current}");
         } else if let Some(caption) = capacity {
-            let capacities = session.0.nations.major(caption.nation).economy().capacities;
+            let capacities = session
+                .0
+                .nations()
+                .major(caption.nation)
+                .economy()
+                .capacities;
             text.0 = format!(
                 "{}  /  {}",
                 capacities.reserved_transport, capacities.transport
@@ -552,7 +556,7 @@ fn sync_transport_values(
         } else if let Some(caption) = money {
             let target = session
                 .0
-                .nations
+                .nations()
                 .major(caption.nation)
                 .economy()
                 .need_target_by_type[caption.resource];
@@ -560,12 +564,12 @@ fn sync_transport_values(
         } else if let Some(binding) = treasury {
             text.0 = format!(
                 "${}",
-                session.0.nations.major(binding.nation).common().treasury
+                session.0.nations().major(binding.nation).common().treasury
             );
         }
     }
     for (row, mut visibility) in &mut panels {
-        let economy = session.0.nations.major(row.nation).economy();
+        let economy = session.0.nations().major(row.nation).economy();
         let current = allocation_amount(row.allocation, |resource| {
             economy.need_current_by_type[resource]
         });
@@ -576,7 +580,7 @@ fn sync_transport_values(
         };
     }
     for (gauge, mut node, mut color) in &mut gauges {
-        let economy = session.0.nations.major(gauge.nation).economy();
+        let economy = session.0.nations().major(gauge.nation).economy();
         let (value, total) = match gauge.kind {
             TransportGaugeKind::Allocation(allocation) => (
                 allocation_amount(allocation, |resource| economy.need_target_by_type[resource]),
@@ -597,7 +601,7 @@ fn sync_transport_values(
         };
     }
     for (strip, mut visibility, mut color) in &mut limits {
-        let major = session.0.nations.major(strip.nation);
+        let major = session.0.nations().major(strip.nation);
         let Some(limit) = transport_need_limit(major, strip.allocation) else {
             *visibility = Visibility::Hidden;
             continue;
@@ -613,7 +617,7 @@ fn sync_transport_values(
         };
     }
     for (entity, action, disabled) in &actions {
-        let economy = session.0.nations.major(action.nation).economy();
+        let economy = session.0.nations().major(action.nation).economy();
         let current = allocation_amount(action.allocation, |resource| {
             economy.need_current_by_type[resource]
         });
@@ -643,7 +647,7 @@ fn sync_transport_cursor(
     mut cursors: Query<(&TransportCursor, &mut Text)>,
 ) {
     for (cursor, mut text) in &mut cursors {
-        let major = session.0.nations.major(cursor.nation);
+        let major = session.0.nations().major(cursor.nation);
         let economy = major.economy();
         let Some((row, _)) = rows
             .iter()
@@ -717,25 +721,25 @@ fn transport_need_limit(major: &MajorNation, allocation: TransportAllocation) ->
         )
     };
     let deficit = if allocation == TransportAllocation::COTTON_AND_WOOL {
-        building(ProductionSlot::TextileMill) * 2
+        building(CityFacilitySlot::TextileMill) * 2
             - city.stockpile[ResourceKind::Cotton]
             - city.stockpile[ResourceKind::Wool]
     } else if allocation == TransportAllocation::TIMBER {
-        building(ProductionSlot::LumberMill) * 2 - city.stockpile[ResourceKind::Timber]
+        building(CityFacilitySlot::LumberMill) * 2 - city.stockpile[ResourceKind::Timber]
     } else if allocation == TransportAllocation::COAL {
-        building(ProductionSlot::SteelMill) - city.stockpile[ResourceKind::Coal]
+        building(CityFacilitySlot::SteelMill) - city.stockpile[ResourceKind::Coal]
     } else if allocation == TransportAllocation::IRON {
-        building(ProductionSlot::SteelMill) - city.stockpile[ResourceKind::Iron]
+        building(CityFacilitySlot::SteelMill) - city.stockpile[ResourceKind::Iron]
     } else if allocation == TransportAllocation::OIL {
-        building(ProductionSlot::OilRefinery) * 2 - city.stockpile[ResourceKind::Oil]
+        building(CityFacilitySlot::OilRefinery) * 2 - city.stockpile[ResourceKind::Oil]
     } else if allocation == TransportAllocation::FABRIC {
-        building(ProductionSlot::ClothingFactory) * 2 - city.stockpile[ResourceKind::Fabric]
+        building(CityFacilitySlot::ClothingFactory) * 2 - city.stockpile[ResourceKind::Fabric]
     } else if allocation == TransportAllocation::LUMBER {
-        building(ProductionSlot::FurnitureFactory) * 2 - city.stockpile[ResourceKind::Lumber]
+        building(CityFacilitySlot::FurnitureFactory) * 2 - city.stockpile[ResourceKind::Lumber]
     } else if allocation == TransportAllocation::STEEL {
-        building(ProductionSlot::Metalworks) * 2 - city.stockpile[ResourceKind::Steel]
+        building(CityFacilitySlot::Metalworks) * 2 - city.stockpile[ResourceKind::Steel]
     } else if allocation == TransportAllocation::FUEL {
-        building(ProductionSlot::PowerPlant) * 2 - city.stockpile[ResourceKind::Fuel]
+        building(CityFacilitySlot::PowerPlant) * 2 - city.stockpile[ResourceKind::Fuel]
     } else if allocation == TransportAllocation::GRAIN {
         city.population.predicted_need(ResourceKind::Grain) - city.stockpile[ResourceKind::Grain]
     } else if allocation == TransportAllocation::FRUIT {
@@ -787,7 +791,7 @@ mod tests {
     ) -> TestTransport {
         let view = catalog.view(&transport_view_id()).unwrap();
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
-        let nation = MajorNationId::from_nation(session.0.turn.active_nation).unwrap();
+        let nation = MajorNationId::from_nation(session.0.turn().active_nation).unwrap();
         session.0.rebuild_nation_resource_yields(nation);
         bind_transport_screen(
             &mut commands,
@@ -817,7 +821,7 @@ mod tests {
     }
 
     fn amount(state: &GameState, nation: MajorNationId, allocation: TransportAllocation) -> i16 {
-        let economy = state.nations.major(nation).economy();
+        let economy = state.nations().major(nation).economy();
         allocation_amount(allocation, |resource| economy.need_target_by_type[resource])
     }
 
@@ -883,7 +887,7 @@ mod tests {
         let nation = MajorNationId::new(6);
         let (allocation, decrease) = {
             let session = app.world().resource::<GameSession>();
-            let economy = session.0.nations.major(nation).economy();
+            let economy = session.0.nations().major(nation).economy();
             let allocation = TRANSPORT_ROWS
                 .iter()
                 .map(|row| row.allocation)
@@ -907,7 +911,7 @@ mod tests {
         };
         let (before_target, before_reserved, city_before) = {
             let session = app.world().resource::<GameSession>();
-            let major = session.0.nations.major(nation);
+            let major = session.0.nations().major(nation);
             (
                 amount(&session.0, nation, allocation),
                 major.economy().capacities.reserved_transport,
@@ -918,7 +922,7 @@ mod tests {
         activate(&mut app, decrease);
         let current = {
             let session = app.world().resource::<GameSession>();
-            let major = session.0.nations.major(nation);
+            let major = session.0.nations().major(nation);
             assert_eq!(amount(&session.0, nation, allocation), before_target - 1);
             assert_eq!(
                 major.economy().capacities.reserved_transport,
@@ -937,7 +941,7 @@ mod tests {
             .world()
             .resource::<GameSession>()
             .0
-            .nations
+            .nations()
             .major(nation)
             .economy()
             .capacities

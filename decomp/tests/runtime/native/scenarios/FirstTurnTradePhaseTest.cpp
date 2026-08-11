@@ -85,15 +85,17 @@ private:
       return RuntimeActionResult::Failure("the beginning-save trade deals did not finish");
     }
 
-    JsonObject effect;
-    effect.Set("kind", "show_offer_sheet");
-    effect.Set("nation", static_cast<int>(g_pSimMgr->activeNationSlot));
+    JsonObject request;
+    request.Set("kind", "offer_sheet");
+    request.Set("nation", static_cast<int>(g_pSimMgr->activeNationSlot));
+    JsonObject block;
+    block.Set("kind", "ui");
+    block.Set("request", request.Release());
     JsonArray effects;
-    effects.Add(effect.Release());
     JsonObject result;
-    result.Set("kind", "continues");
-    result.Set("from", 7);
-    result.Set("to", 9);
+    result.Set("kind", "blocked");
+    result.Set("phase", 9);
+    result.Set("block", block.Release());
     result.Set("effects", effects.Release());
     return capture.Finish(result.Release());
   }

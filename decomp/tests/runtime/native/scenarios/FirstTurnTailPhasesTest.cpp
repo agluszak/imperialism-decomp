@@ -1,7 +1,4 @@
-#include "JsonArray.h"
-#include "JsonObject.h"
-#include "RuntimeGameStateCapture.h"
-#include "RuntimeDifferentialCapture.h"
+#include "FirstTurnPhaseHelpers.h"
 #include "RuntimeRun.h"
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
@@ -14,7 +11,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_screens/TSimMgr.h"
 
-#include "parson.h"
 
 namespace {
 
@@ -72,34 +68,21 @@ protected:
 
 private:
   RuntimeActionResult AdvanceTailPhaseOnce() {
-    if (g_pSimMgr == 0 || g_pSimMgr->economicTurn != 1 || g_pSimMgr->turnStateCode != 5) {
-      return RuntimeActionResult::Failure("the loaded fixture is not at first-turn phase 5");
-    }
-
-    g_pSimMgr->turnStateCode = 6;
     const int prerequisitePhases[] = {7,    9,    10,   0x14, 0x15, 0x0d, 0x19, 8,
                                       0x0b, 0x0c, 0x0e, 0x10, 0x11, 0x0f, 0x12};
-    bool reached = false;
-    for (int index = 0; index < 15; ++index) {
-      g_pSimMgr->AdvanceGlobalTurnStateMachine();
-      if (g_pSimMgr->turnStateCode != prerequisitePhases[index]) {
-        return RuntimeActionResult::Failure(
-            "the prerequisite turn phases did not reach the requested tail phase");
-      }
-      if (g_pSimMgr->turnStateCode == fromPhase_) {
-        reached = true;
-        break;
-      }
+    RuntimeActionResult advanced =
+        AdvanceFirstTurnToPhase(prerequisitePhases, 15, fromPhase_);
+    if (!advanced.Succeeded()) {
+      return advanced;
     }
-    if (!reached || !HasPresentation(beforePresentation_)) {
+    if (!HasPresentation(beforePresentation_)) {
       return RuntimeActionResult::Failure(
           "the requested tail phase began with the wrong presentation state");
     }
 
-    RuntimeDifferentialCapture capture(RunState());
-    RuntimeActionResult started = capture.Begin(json_value_init_null());
-    if (!started.Succeeded()) {
-      return started;
+    RuntimeActionResult before = CaptureTurnStepBefore(RunState());
+    if (!before.Succeeded()) {
+      return before;
     }
     MarkScriptStep("tail phase before state captured");
 
@@ -112,28 +95,16 @@ private:
     }
     MarkScriptStep("tail phase dispatched");
 
-    JsonArray effects;
-    JsonObject result;
+    RuntimeActionResult after;
     if (outcome_ == kContinues) {
-      result.Set("kind", "continues");
-      result.Set("from", fromPhase_);
-      result.Set("to", toPhase_);
+      after = CaptureTurnStepContinuesAfter(RunState(), fromPhase_, toPhase_);
+    } else if (outcome_ == kUiGate) {
+      after = CaptureTurnStepBlockedAfter(RunState(), toPhase_, "ui", uiGate_);
     } else {
-      result.Set("kind", "blocked");
-      result.Set("phase", toPhase_);
-      JsonObject block;
-      if (outcome_ == kUiGate) {
-        block.Set("kind", "ui");
-        block.Set("gate", uiGate_);
-      } else {
-        block.Set("kind", "player_orders");
-      }
-      result.Set("block", block.Release());
+      after = CaptureTurnStepBlockedAfter(RunState(), toPhase_, "player_orders", 0);
     }
-    result.Set("effects", effects.Release());
-    RuntimeActionResult finished = capture.Finish(result.Release());
-    if (!finished.Succeeded()) {
-      return finished;
+    if (!after.Succeeded()) {
+      return after;
     }
     if (!DiscardScheduledTurnAdvances(RunState().MainWindowHandle())) {
       return RuntimeActionResult::Failure(

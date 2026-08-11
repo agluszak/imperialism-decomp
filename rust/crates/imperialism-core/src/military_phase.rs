@@ -52,28 +52,21 @@ struct PlannedControlZoneResolution {
 }
 
 #[derive(Debug)]
-struct MilitaryPhasePlan {
+pub(crate) struct MilitaryPhasePlan {
     city_scores: ProvinceTable<i32>,
     control_zone_by_nation: MajorNationTable<Option<PlannedControlZoneResolution>>,
     human: MajorNationId,
 }
 
 impl GameState {
-    /// Whether phase ten is the recovered Easy beginning-save military pass.
-    pub(crate) fn supports_first_turn_military_phase(&self) -> bool {
-        self.first_turn_military_plan().is_some()
+    /// Builds the recovered Easy beginning-save military plan, or `None` for unrecovered branches.
+    pub(crate) fn try_first_turn_military_phase(&self) -> Option<MilitaryPhasePlan> {
+        self.first_turn_military_plan()
     }
 
-    /// Runs retail's first-turn heatmap, upkeep, movement, cleanup, and navy preparation.
-    ///
-    /// Phase advancement remains the turn driver's responsibility. The complete plan is
-    /// validated before any authoritative state changes, so an unrecovered AI or navy branch
-    /// cannot leave a partial military phase behind.
-    pub(crate) fn run_first_turn_military_phase(&mut self) {
-        let plan = self
-            .first_turn_military_plan()
-            .expect("first-turn military phase contains an unrecovered branch");
-
+    /// Applies a previously validated military plan. Phase advancement remains the turn driver's
+    /// responsibility.
+    pub(crate) fn apply_military_phase_plan(&mut self, plan: MilitaryPhasePlan) {
         // `TMapMgr::RecomputeTileStrategicScoreHeatmap` runs before nation work.
         for slot in 0..ProvinceId::COUNT {
             let province = ProvinceId::new(slot);

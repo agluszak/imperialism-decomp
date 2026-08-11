@@ -18,7 +18,7 @@ const NAVY_ESCORT_PROFILE: [i16; 4] = [40, 30, 30, 0];
 const MISSION_DISTANCE_WEIGHTS: [f32; 2] = [1.0, 0.8];
 
 #[derive(Debug)]
-struct MilitaryCleanupPlan {
+pub(crate) struct MilitaryCleanupPlan {
     city_scores: ProvinceTable<i32>,
     pressure: MajorNationTable<Option<AiDevelopmentPressureState>>,
     missions: Vec<MissionState>,
@@ -27,20 +27,14 @@ struct MilitaryCleanupPlan {
 }
 
 impl GameState {
-    /// Whether phase `0x15` is the recovered Easy beginning-save cleanup pass.
-    pub(crate) fn supports_first_turn_military_cleanup_phase(&self) -> bool {
-        self.first_turn_military_cleanup_plan().is_some()
+    /// Builds the recovered Easy beginning-save cleanup plan, or `None` for unrecovered branches.
+    pub(crate) fn try_first_turn_military_cleanup_phase(&self) -> Option<MilitaryCleanupPlan> {
+        self.first_turn_military_cleanup_plan()
     }
 
-    /// Runs the recovered Easy beginning-save cleanup pass.
-    ///
-    /// Phase advancement remains the turn driver's responsibility. The complete
-    /// cleanup plan is validated before authoritative state is changed.
-    pub(crate) fn run_first_turn_military_cleanup_phase(&mut self) {
-        let plan = self
-            .first_turn_military_cleanup_plan()
-            .expect("first-turn military cleanup contains an unrecovered branch");
-
+    /// Applies a previously validated cleanup plan. Phase advancement remains the turn driver's
+    /// responsibility.
+    pub(crate) fn apply_military_cleanup_plan(&mut self, plan: MilitaryCleanupPlan) {
         for slot in 0..ProvinceId::COUNT {
             let province = ProvinceId::new(slot);
             self.provinces[province].set_city_score(plan.city_scores[province]);
@@ -824,7 +818,7 @@ impl GameState {
 
         for class in 0..4_i8 {
             let slot = (1..14_u8).rev().find_map(|index| {
-                let production = ProductionSlot::from_index(index)?;
+                let production = CityFacilitySlot::from_index(index)?;
                 (self.technology.industry_enabled_by_slot[usize::from(index)]
                     && first_turn_industry_class(production) == Some(class))
                 .then_some(production)
@@ -882,11 +876,11 @@ impl GameState {
         Some((arms * price(TradeCommodity::Arms) + horse_cost + base + bias) as f32)
     }
 
-    fn first_turn_industry_action_cost(&self, slot: ProductionSlot) -> Option<i32> {
+    fn first_turn_industry_action_cost(&self, slot: CityFacilitySlot) -> Option<i32> {
         let price = |commodity| self.market.rows[commodity].price;
         let weights = match slot {
-            ProductionSlot::Metalworks => [0, 2, 5, 0, 2, 0],
-            ProductionSlot::LumberMill => [0, 3, 8, 0, 5, 0],
+            CityFacilitySlot::Metalworks => [0, 2, 5, 0, 2, 0],
+            CityFacilitySlot::LumberMill => [0, 3, 8, 0, 5, 0],
             _ => return None,
         };
         Some(
@@ -922,20 +916,20 @@ fn first_turn_unit_attributes(unit: MilitaryUnitKind) -> Option<[i16; 6]> {
     }
 }
 
-fn first_turn_industry_class(slot: ProductionSlot) -> Option<i8> {
+fn first_turn_industry_class(slot: CityFacilitySlot) -> Option<i8> {
     match slot {
-        ProductionSlot::Metalworks | ProductionSlot::PowerPlant => Some(1),
-        ProductionSlot::LumberMill | ProductionSlot::TradeSchool => Some(0),
-        ProductionSlot::Shipyard | ProductionSlot::Warehouse => Some(2),
-        ProductionSlot::Armory | ProductionSlot::FoodProcessing => Some(3),
+        CityFacilitySlot::Metalworks | CityFacilitySlot::PowerPlant => Some(1),
+        CityFacilitySlot::LumberMill | CityFacilitySlot::TradeSchool => Some(0),
+        CityFacilitySlot::Shipyard | CityFacilitySlot::Warehouse => Some(2),
+        CityFacilitySlot::Armory | CityFacilitySlot::FoodProcessing => Some(3),
         _ => None,
     }
 }
 
-fn first_turn_industry_normalized_costs(slot: ProductionSlot) -> Option<[i32; 4]> {
+fn first_turn_industry_normalized_costs(slot: CityFacilitySlot) -> Option<[i32; 4]> {
     match slot {
-        ProductionSlot::Metalworks => Some([51, 56, 100, 50]),
-        ProductionSlot::LumberMill => Some([148, 143, 75, 125]),
+        CityFacilitySlot::Metalworks => Some([51, 56, 100, 50]),
+        CityFacilitySlot::LumberMill => Some([148, 143, 75, 125]),
         _ => None,
     }
 }

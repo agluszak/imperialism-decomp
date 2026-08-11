@@ -59,6 +59,11 @@ impl GameState {
 
     pub(crate) fn supports_first_turn_deal_book_phase(&self) -> bool {
         self.turn.phase == PhaseCode::DEAL_BOOK
+            && self.turn.economic_turn == 1
+            && self.turn.difficulty == Difficulty::Easy
+            && self.turn.scenario_map.is_none()
+            && self.turn.active_nation == NationId::new(6)
+            && self.turn.selected_nation == self.turn.active_nation
             && MajorNationId::from_nation(self.turn.active_nation).is_some()
             && !matches!(
                 self.nations.country_status(self.turn.active_nation),
@@ -69,6 +74,11 @@ impl GameState {
 
     pub(crate) fn supports_first_turn_quarter_gate_phase(&self) -> bool {
         if self.turn.phase != PhaseCode::QUARTER_GATE
+            || self.turn.economic_turn != 1
+            || self.turn.difficulty != Difficulty::Easy
+            || self.turn.scenario_map.is_some()
+            || self.turn.active_nation != NationId::new(6)
+            || self.turn.selected_nation != self.turn.active_nation
             || self.diplomacy.last_processed_nation.is_some()
         {
             return false;
@@ -82,8 +92,22 @@ impl GameState {
             == Some(&0)
     }
 
+    pub(crate) fn supports_first_turn_season_advance_phase(&self) -> bool {
+        self.turn.phase == PhaseCode::SEASON_ADVANCE
+            && self.turn.economic_turn == 1
+            && self.turn.difficulty == Difficulty::Easy
+            && self.turn.scenario_map.is_none()
+            && self.turn.active_nation == NationId::new(6)
+            && self.turn.selected_nation == self.turn.active_nation
+    }
+
     pub(crate) fn supports_first_turn_technology_phase(&self) -> bool {
         self.turn.phase == PhaseCode::TECHNOLOGY_ADVANCES
+            && self.turn.economic_turn == 2
+            && self.turn.difficulty == Difficulty::Easy
+            && self.turn.scenario_map.is_none()
+            && self.turn.active_nation == NationId::new(6)
+            && self.turn.selected_nation == self.turn.active_nation
             && self
                 .technology
                 .scheduled_unlock_turn_by_technology
@@ -99,6 +123,11 @@ impl GameState {
 
     pub(crate) fn supports_first_turn_map_return_phase(&self) -> bool {
         self.turn.phase == PhaseCode::RETURN_TO_MAP
+            && self.turn.economic_turn == 2
+            && self.turn.difficulty == Difficulty::Easy
+            && self.turn.scenario_map.is_none()
+            && self.turn.active_nation == NationId::new(6)
+            && self.turn.selected_nation == self.turn.active_nation
             && MajorNationId::from_nation(self.turn.active_nation).is_some()
             && self.pending.nations.iter().all(|pending| {
                 pending.turn_events.is_empty() && pending.turn_start_events.is_empty()

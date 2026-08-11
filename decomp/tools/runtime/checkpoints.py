@@ -97,7 +97,21 @@ def normalize_native_combined_map(result: Mapping[str, Any]) -> dict[str, Any]:
     """Reduce a native driver result to the stable combined-map schema."""
     if result.get("status") != "passed":
         raise ValueError(f"native driver did not pass: {result.get('status')!r}")
-    captures = _require_mapping(result.get("captures"), "native captures")
+    captures = result.get("captures")
+    if not isinstance(captures, Mapping):
+        captures_path = result.get("captures_path")
+        if isinstance(captures_path, str) and captures_path:
+            from pathlib import Path
+
+            from tools.runtime.protocol import load_captures
+
+            captures = load_captures(
+                dict(result),
+                Path(captures_path) if Path(captures_path).is_absolute() else Path("."),
+            )
+        else:
+            captures = None
+    captures = _require_mapping(captures, "native captures")
     map_state = _require_mapping(captures.get("map_state"), "native map_state")
     root_class = map_state.get("root_class")
     if root_class != "TMapUberPicture":
