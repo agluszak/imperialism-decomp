@@ -8,7 +8,6 @@ pub(in crate::ui::city) fn on_city_canvas_click(
     click: On<Pointer<Click>>,
     canvases: Query<(&RelativeCursorPosition, &CityCanvas)>,
     dialogs: Query<(Entity, &CityBuildingDialog, &GlobalZIndex)>,
-    screen_roots: Query<Entity, With<CityScreenRoot>>,
     modal_dialogs: Query<(), With<ModalDialog>>,
     session: Option<ResMut<GameSession>>,
     catalog: Res<UiCatalogResource>,
@@ -62,12 +61,6 @@ pub(in crate::ui::city) fn on_city_canvas_click(
             .oil_drilling;
         if available {
             open_city_construction_dialog(&mut ui, &mut session, nation, building.slot);
-            for (entity, _, _) in &dialogs {
-                ui.commands.entity(entity).insert(CityDialogNeedsSync);
-            }
-            for root in &screen_roots {
-                ui.commands.entity(root).insert(CityScreenNeedsSync);
-            }
             return;
         }
     }
@@ -353,7 +346,6 @@ pub(in crate::ui::city) fn bind_city_dialog_root(
             slot,
             window,
         },
-        CityDialogNeedsSync,
         GlobalZIndex(19),
         Pickable::IGNORE,
     ));
@@ -407,7 +399,7 @@ pub(in crate::ui::city) fn bind_city_dialog_root(
 }
 
 pub(in crate::ui::city) fn restore_city_dialogs(
-    roots: Query<Entity, With<CityDialogsNeedRestore>>,
+    roots: Query<Entity, Added<CityScreenRoot>>,
     session: Option<Res<GameSession>>,
     catalog: Res<UiCatalogResource>,
     dialogs: Query<(&CityBuildingDialog, &GlobalZIndex)>,
@@ -417,9 +409,6 @@ pub(in crate::ui::city) fn restore_city_dialogs(
         return;
     }
     let Some(session) = session else {
-        for root in &roots {
-            ui.commands.entity(root).remove::<CityDialogsNeedRestore>();
-        }
         return;
     };
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
@@ -460,9 +449,6 @@ pub(in crate::ui::city) fn restore_city_dialogs(
         next_z += 1;
     }
     assert!(next_z <= 20, "modeless City dialogs remain below modals");
-    for root in &roots {
-        ui.commands.entity(root).remove::<CityDialogsNeedRestore>();
-    }
 }
 
 pub(in crate::ui::city) fn node_position(node: &Node) -> (f32, f32) {

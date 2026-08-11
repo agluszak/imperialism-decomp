@@ -271,9 +271,8 @@ pub(in crate::ui::city) fn on_city_expansion_open(
     activate: On<Activate>,
     openers: Query<&CityExpansionOpen>,
     dialogs: Query<Entity, With<CityBuildingDialog>>,
-    screen_roots: Query<Entity, With<CityScreenRoot>>,
     modals: Query<(), With<ModalDialog>>,
-    session: Option<ResMut<GameSession>>,
+    session: Option<Res<GameSession>>,
     mut ui: UiSpawner,
 ) {
     let Ok(open) = openers.get(activate.entity) else {
@@ -318,12 +317,6 @@ pub(in crate::ui::city) fn on_city_expansion_open(
         next_level,
         can_reserve,
     );
-    for dialog in &dialogs {
-        ui.commands.entity(dialog).insert(CityDialogNeedsSync);
-    }
-    for root in &screen_roots {
-        ui.commands.entity(root).insert(CityScreenNeedsSync);
-    }
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -331,8 +324,6 @@ pub(in crate::ui::city) fn on_city_building_change_choice(
     activate: On<Activate>,
     choices: Query<&CityBuildingChangeChoice>,
     change_dialogs: Query<(), With<CityBuildingChangeDialog>>,
-    dialogs: Query<Entity, With<CityBuildingDialog>>,
-    screen_roots: Query<Entity, With<CityScreenRoot>>,
     session: Option<ResMut<GameSession>>,
     mut commands: Commands,
 ) {
@@ -384,10 +375,4 @@ pub(in crate::ui::city) fn on_city_building_change_choice(
     }
 
     commands.entity(choice.dialog).despawn();
-    for dialog in &dialogs {
-        commands.entity(dialog).insert(CityDialogNeedsSync);
-    }
-    for root in &screen_roots {
-        commands.entity(root).insert(CityScreenNeedsSync);
-    }
 }

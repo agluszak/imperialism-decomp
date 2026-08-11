@@ -18,7 +18,6 @@ mod components;
 mod dialogs;
 mod input;
 mod lifecycle;
-mod values;
 
 use bindings::*;
 use building_visuals::*;
@@ -27,7 +26,6 @@ use components::*;
 use dialogs::*;
 use input::*;
 use lifecycle::*;
-use values::*;
 
 pub(crate) struct CityPlugin;
 
@@ -43,8 +41,13 @@ impl Plugin for CityPlugin {
                 Update,
                 (
                     restore_city_dialogs,
-                    sync_city_building_pictures,
-                    sync_city_values,
+                    sync_city_screen,
+                    sync_industry_dialog,
+                    sync_basic_dialog,
+                    sync_training_dialog,
+                    sync_armory_dialog,
+                    sync_university_dialog,
+                    sync_shipyard_dialog,
                 )
                     .chain()
                     .run_if(in_state(AppState::City)),

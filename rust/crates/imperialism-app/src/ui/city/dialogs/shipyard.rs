@@ -26,6 +26,25 @@ pub(in crate::ui::city) struct ShipyardDialogData {
     pub(in crate::ui::city) warning_color: Color,
 }
 
+#[derive(Clone, Copy)]
+struct ShipyardMaterialControls {
+    pictures: [Entity; 2],
+    required: Entity,
+    available: Entity,
+}
+
+#[derive(Component)]
+pub(in crate::ui::city) struct ShipyardDialogControls {
+    orders: Vec<CityOrderControl>,
+    name: Entity,
+    description: Entity,
+    picture: Entity,
+    materials: [ShipyardMaterialControls; 4],
+    stats: [Entity; 6],
+    normal_color: Color,
+    warning_color: Color,
+}
+
 pub(in crate::ui::city) fn bind_shipyard_dialog(
     commands: &mut Commands,
     catalog: &UiCatalogResource,
@@ -51,7 +70,7 @@ pub(in crate::ui::city) fn bind_shipyard_dialog(
     commands.entity(root).insert(ShipyardSelection {
         slot: ShipOrderSlot::MerchantEarlyPrimary,
     });
-    bind_city_order_controls(
+    let orders = bind_city_order_controls(
         commands,
         catalog,
         spawned,
@@ -129,31 +148,17 @@ pub(in crate::ui::city) fn bind_shipyard_dialog(
             InteractionDisabled,
             detail_font.clone(),
             TextColor(normal_color),
-            CityValueBinding {
-                dialog: Some(root),
-                value: CityValue::ShipyardOrderQuantity(slot),
-            },
         ));
     }
-    for (tag, value, font) in [
-        (fourcc!("snam"), CityValue::ShipyardName, name_font),
-        (
-            fourcc!("desc"),
-            CityValue::ShipyardDescription,
-            detail_font.clone(),
-        ),
-    ] {
+    let bind_text = |commands: &mut Commands, tag, font: TextFont| {
         let entity = spawned.unique(tag);
-        commands.entity(entity).insert((
-            Text::new(""),
-            font,
-            TextColor(normal_color),
-            CityValueBinding {
-                dialog: Some(root),
-                value,
-            },
-        ));
-    }
+        commands
+            .entity(entity)
+            .insert((Text::new(""), font, TextColor(normal_color)));
+        entity
+    };
+    let name = bind_text(commands, fourcc!("snam"), name_font);
+    let description = bind_text(commands, fourcc!("desc"), detail_font.clone());
     let title = spawned.unique(fourcc!("titl"));
     commands
         .entity(title)
@@ -165,97 +170,227 @@ pub(in crate::ui::city) fn bind_shipyard_dialog(
             .insert((detail_font.clone(), TextColor(normal_color)));
     }
     let picture = spawned.unique(fourcc!("spic"));
-    commands
-        .entity(picture)
-        .insert(ShipyardDetailPicture { dialog: root });
 
     let dlog = spawned.unique(fourcc!("DLOG"));
-    for index in 0..4 {
+    let materials = std::array::from_fn(|index| {
         let left = 26.0 + index as f32 * 40.0;
-        for top in [152.0, 204.0] {
-            commands.spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(left),
-                    top: Val::Px(top),
-                    width: Val::Px(32.0),
-                    height: Val::Px(24.0),
-                    ..default()
-                },
-                ImageNode::default(),
-                ShipyardMaterialPicture {
-                    dialog: root,
-                    index,
-                },
-                Visibility::Hidden,
-                Pickable::IGNORE,
-                ZIndex(1),
-                ChildOf(dlog),
-                Name::new(format!("shipyard-material-icon-{index}-{top}")),
-            ));
+        let pictures = [152.0, 204.0].map(|top| {
+            commands
+                .spawn((
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: Val::Px(left),
+                        top: Val::Px(top),
+                        width: Val::Px(32.0),
+                        height: Val::Px(24.0),
+                        ..default()
+                    },
+                    ImageNode::default(),
+                    Visibility::Hidden,
+                    Pickable::IGNORE,
+                    ZIndex(1),
+                    ChildOf(dlog),
+                    Name::new(format!("shipyard-material-icon-{index}-{top}")),
+                ))
+                .id()
+        });
+        let [required, available] = [(false, 168.0), (true, 220.0)].map(|(available, top)| {
+            commands
+                .spawn((
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: Val::Px(58.0 + index as f32 * 40.0),
+                        top: Val::Px(top),
+                        width: Val::Px(24.0),
+                        height: Val::Px(16.0),
+                        ..default()
+                    },
+                    Text::new(""),
+                    detail_font.clone(),
+                    TextLayout::justify(Justify::Left),
+                    TextColor(normal_color),
+                    Visibility::Hidden,
+                    Pickable::IGNORE,
+                    ZIndex(1),
+                    ChildOf(dlog),
+                    Name::new(format!("shipyard-material-value-{index}-{available}")),
+                ))
+                .id()
+        });
+        ShipyardMaterialControls {
+            pictures,
+            required,
+            available,
         }
-        for (available, top) in [(false, 168.0), (true, 220.0)] {
-            commands.spawn((
+    });
+    let stats = std::array::from_fn(|index| {
+        let (left, baseline) = SHIPYARD_STAT_ORIGINS[index];
+        commands.spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: Val::Px(left),
+                top: Val::Px(baseline - 10.0),
+                width: Val::Px(60.0),
+                height: Val::Px(14.0),
+                ..default()
+            },
+            Text::new(stat_labels[index].clone()),
+            detail_font.clone(),
+            TextLayout::justify(Justify::Left),
+            TextColor(normal_color),
+            Pickable::IGNORE,
+            ZIndex(1),
+            ChildOf(dlog),
+            Name::new(format!("shipyard-stat-{index}-false")),
+        ));
+        commands
+            .spawn((
                 Node {
                     position_type: PositionType::Absolute,
-                    left: Val::Px(58.0 + index as f32 * 40.0),
-                    top: Val::Px(top),
-                    width: Val::Px(24.0),
-                    height: Val::Px(16.0),
+                    left: Val::Px(left + 60.0),
+                    top: Val::Px(baseline - 10.0),
+                    width: Val::Px(28.0),
+                    height: Val::Px(14.0),
                     ..default()
                 },
                 Text::new(""),
                 detail_font.clone(),
                 TextLayout::justify(Justify::Left),
                 TextColor(normal_color),
-                ShipyardMaterialAmount {
-                    dialog: root,
-                    index,
-                    available,
-                    normal_color,
-                    warning_color,
-                },
-                Visibility::Hidden,
                 Pickable::IGNORE,
                 ZIndex(1),
                 ChildOf(dlog),
-                Name::new(format!("shipyard-material-value-{index}-{available}")),
-            ));
+                Name::new(format!("shipyard-stat-{index}-true")),
+            ))
+            .id()
+    });
+    commands.entity(root).insert(ShipyardDialogControls {
+        orders,
+        name,
+        description,
+        picture,
+        materials,
+        stats,
+        normal_color,
+        warning_color,
+    });
+}
+
+#[allow(clippy::too_many_arguments)]
+pub(in crate::ui::city) fn sync_shipyard_dialog(
+    session: Res<GameSession>,
+    dialogs: Query<(
+        Entity,
+        &ShipyardDialogControls,
+        Ref<CityBuildingDialog>,
+        Ref<ShipyardSelection>,
+    )>,
+    rows: Query<&ShipyardRowChoice>,
+    mut texts: Query<&mut Text>,
+    mut text_colors: Query<&mut TextColor>,
+    mut images: Query<&mut ImageNode>,
+    mut visibilities: Query<&mut Visibility>,
+) {
+    for (root, controls, dialog, selection) in &dialogs {
+        if !session.is_changed()
+            && !dialog.is_added()
+            && !selection.is_added()
+            && !selection.is_changed()
+        {
+            continue;
         }
-    }
-    for (index, ((left, baseline), label)) in SHIPYARD_STAT_ORIGINS
-        .into_iter()
-        .zip(stat_labels)
-        .enumerate()
-    {
-        for (value, text, x, width) in [
-            (false, label, left, 60.0),
-            (true, String::new(), left + 60.0, 28.0),
-        ] {
-            let mut entity = commands.spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(x),
-                    top: Val::Px(baseline - 10.0),
-                    width: Val::Px(width),
-                    height: Val::Px(14.0),
-                    ..default()
-                },
-                Text::new(text),
-                detail_font.clone(),
-                TextLayout::justify(Justify::Left),
-                TextColor(normal_color),
-                Pickable::IGNORE,
-                ZIndex(1),
-                ChildOf(dlog),
-                Name::new(format!("shipyard-stat-{index}-{value}")),
-            ));
-            if value {
-                entity.insert(ShipyardStatValue {
-                    dialog: root,
-                    index,
-                });
+        let major = session.0.nations().major(dialog.nation);
+        let city = &major.city;
+        for control in &controls.orders {
+            let CityOrderId::Ship(slot) = control.order else {
+                unreachable!("Shipyard control has a ship order");
+            };
+            texts
+                .get_mut(control.quantity)
+                .expect("Shipyard order quantity has text")
+                .0 = city.orders.ships[slot].progress.quantity.to_string();
+        }
+
+        let row = rows
+            .iter()
+            .find(|row| row.dialog == root && row.slot == selection.slot)
+            .expect("Shipyard selection has a bound retail row");
+        texts
+            .get_mut(controls.name)
+            .expect("Shipyard name has text")
+            .0
+            .clone_from(&row.ship_name);
+        texts
+            .get_mut(controls.description)
+            .expect("Shipyard description has text")
+            .0
+            .clone_from(&row.description);
+        images
+            .get_mut(controls.picture)
+            .expect("Shipyard detail picture has an image")
+            .image
+            .clone_from(&row.picture);
+        *visibilities
+            .get_mut(controls.picture)
+            .expect("Shipyard detail picture has visibility") = Visibility::Visible;
+
+        for (index, material_controls) in controls.materials.iter().enumerate() {
+            let material = row.materials.get(index);
+            for entity in material_controls.pictures {
+                if let Some(material) = material {
+                    images
+                        .get_mut(entity)
+                        .expect("Shipyard material picture has an image")
+                        .image
+                        .clone_from(&material.picture);
+                }
+                *visibilities
+                    .get_mut(entity)
+                    .expect("Shipyard material picture has visibility") = if material.is_some() {
+                    Visibility::Visible
+                } else {
+                    Visibility::Hidden
+                };
             }
+            for entity in [material_controls.required, material_controls.available] {
+                *visibilities
+                    .get_mut(entity)
+                    .expect("Shipyard material amount has visibility") = if material.is_some() {
+                    Visibility::Visible
+                } else {
+                    Visibility::Hidden
+                };
+            }
+            let Some(material) = material else {
+                continue;
+            };
+            let stock = city.stockpile[material.resource];
+            texts
+                .get_mut(material_controls.required)
+                .expect("Shipyard required material has text")
+                .0 = material.required.to_string();
+            texts
+                .get_mut(material_controls.available)
+                .expect("Shipyard available material has text")
+                .0 = stock.to_string();
+            text_colors
+                .get_mut(material_controls.required)
+                .expect("Shipyard required material has a text color")
+                .0 = controls.normal_color;
+            text_colors
+                .get_mut(material_controls.available)
+                .expect("Shipyard available material has a text color")
+                .0 = if stock < material.required {
+                controls.warning_color
+            } else {
+                controls.normal_color
+            };
+        }
+        for (index, entity) in controls.stats.iter().copied().enumerate() {
+            texts.get_mut(entity).expect("Shipyard stat has text").0 = row.stats[index].to_string();
+            *visibilities
+                .get_mut(entity)
+                .expect("Shipyard stat has visibility") = Visibility::Visible;
         }
     }
 }

@@ -203,7 +203,7 @@ fn clothing_order_round_trips_through_generated_controls_and_reopen() {
         .insert_resource(UiCatalogResource::new(catalog))
         .insert_resource(fixture_session())
         .add_observer(on_city_order_adjust)
-        .add_systems(Update, sync_city_values);
+        .add_systems(Update, sync_industry_dialog);
 
     let first = app
         .world_mut()
@@ -306,7 +306,7 @@ fn training_orders_round_trip_through_both_generated_rows() {
         .insert_resource(UiCatalogResource::new(catalog))
         .insert_resource(fixture_session())
         .add_observer(on_city_order_adjust)
-        .add_systems(Update, sync_city_values);
+        .add_systems(Update, sync_training_dialog);
 
     let first = app
         .world_mut()
@@ -380,7 +380,7 @@ fn university_availability_and_orders_round_trip_through_generated_rows() {
         .insert_resource(session)
         .add_observer(on_city_order_adjust)
         .add_observer(on_university_row_selected)
-        .add_systems(Update, sync_city_values);
+        .add_systems(Update, sync_university_dialog);
 
     let first = app
         .world_mut()

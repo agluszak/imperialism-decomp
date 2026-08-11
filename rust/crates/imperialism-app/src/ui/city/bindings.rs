@@ -283,30 +283,6 @@ pub(in crate::ui::city) fn industry_page(slot: CityFacilitySlot) -> Option<Indus
     Some(page)
 }
 
-pub(in crate::ui::city) fn dialog_orders(slot: CityFacilitySlot) -> &'static [CityOrderBinding] {
-    if let Some(page) = industry_page(slot) {
-        page.orders
-    } else if slot == CityFacilitySlot::TradeSchool {
-        &TRAINING_ORDERS
-    } else if slot == CityFacilitySlot::University {
-        &UNIVERSITY_ORDERS
-    } else if slot == CityFacilitySlot::Shipyard {
-        &SHIP_ORDERS
-    } else if slot == CityFacilitySlot::FoodProcessing {
-        &FOOD_ORDERS
-    } else if slot == CityFacilitySlot::PowerPlant {
-        &POWER_ORDERS
-    } else if slot == CityFacilitySlot::Transport {
-        &TRANSPORT_CAPACITY_ORDERS
-    } else if slot == CityFacilitySlot::RegionalPopulation {
-        &POPULATION_ORDERS
-    } else if slot == CityFacilitySlot::Armory {
-        &ARMORY_ORDERS
-    } else {
-        &[]
-    }
-}
-
 pub(in crate::ui::city) const fn armory_button_tag(
     category: MilitaryRecruitmentCategory,
 ) -> FourCc {

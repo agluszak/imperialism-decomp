@@ -3,6 +3,22 @@ use super::*;
 pub(in crate::ui::city) const CITY_WIDTH: f32 = 640.0;
 pub(in crate::ui::city) const CITY_HEIGHT: f32 = 480.0;
 
+#[derive(Component)]
+pub(in crate::ui::city) struct CityScreenControls {
+    labor_low: Entity,
+    labor_medium: Entity,
+    labor_high: Entity,
+    labor_available: Entity,
+    power_available: Entity,
+    predicted_grain: Entity,
+    predicted_fruit: Entity,
+    predicted_livestock: Entity,
+    predicted_hardware: Entity,
+    predicted_clothing: Entity,
+    predicted_furniture: Entity,
+    treasury: Entity,
+}
+
 #[derive(Clone)]
 pub(in crate::ui::city) struct CityBuildingHitMask {
     pub(in crate::ui::city) width: i32,
@@ -108,8 +124,6 @@ pub(in crate::ui::city) fn enter_city_screen(
     root.insert((
         GameScreenRoot(view_id),
         CityScreenRoot,
-        CityScreenNeedsSync,
-        CityDialogsNeedRestore,
         DespawnOnExit(AppState::City),
     ));
 
@@ -121,7 +135,8 @@ pub(in crate::ui::city) fn enter_city_screen(
         warn!("city screen active nation is not a major nation");
         return;
     };
-    bind_city_summary_values(&mut commands, &spawned, &mut assets);
+    let controls = bind_city_summary_values(&mut commands, &spawned, &mut assets);
+    commands.entity(spawned.root).insert(controls);
     spawn_city_buildings(
         &mut commands,
         &spawned,
@@ -137,7 +152,7 @@ pub(in crate::ui::city) fn bind_city_summary_values(
     commands: &mut Commands,
     spawned: &crate::ui::catalog::SpawnedView,
     assets: &mut UiAssetResources,
-) {
+) -> CityScreenControls {
     let (font, layout, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
@@ -146,54 +161,30 @@ pub(in crate::ui::city) fn bind_city_summary_values(
             alignment: 1,
         })
         .expect("retail city placard text style");
-    for (tag, value) in [
-        (fourcc!("untr"), CityValue::LaborLow),
-        (fourcc!("trai"), CityValue::LaborMedium),
-        (fourcc!("prof"), CityValue::LaborHigh),
-        (fourcc!("labP"), CityValue::LaborAvailable),
-        (fourcc!("powe"), CityValue::PowerAvailable),
-        (
-            fourcc!("grai"),
-            CityValue::PredictedNeed(ResourceKind::Grain),
-        ),
-        (
-            fourcc!("prod"),
-            CityValue::PredictedNeed(ResourceKind::Fruit),
-        ),
-        (
-            fourcc!("meat"),
-            CityValue::PredictedNeed(ResourceKind::Livestock),
-        ),
-        (
-            fourcc!("hard"),
-            CityValue::PredictedNeed(ResourceKind::Hardware),
-        ),
-        (
-            fourcc!("clot"),
-            CityValue::PredictedNeed(ResourceKind::Clothing),
-        ),
-        (
-            fourcc!("furn"),
-            CityValue::PredictedNeed(ResourceKind::Furniture),
-        ),
-    ] {
+    let bind_text = |commands: &mut Commands, tag| {
         let entity = spawned.unique(tag);
         commands.entity(entity).insert((
-            CityValueBinding {
-                dialog: None,
-                value,
-            },
             Text::new(""),
             font.clone(),
             layout,
             TextColor(Color::BLACK),
         ));
+        entity
+    };
+    CityScreenControls {
+        labor_low: bind_text(commands, fourcc!("untr")),
+        labor_medium: bind_text(commands, fourcc!("trai")),
+        labor_high: bind_text(commands, fourcc!("prof")),
+        labor_available: bind_text(commands, fourcc!("labP")),
+        power_available: bind_text(commands, fourcc!("powe")),
+        predicted_grain: bind_text(commands, fourcc!("grai")),
+        predicted_fruit: bind_text(commands, fourcc!("prod")),
+        predicted_livestock: bind_text(commands, fourcc!("meat")),
+        predicted_hardware: bind_text(commands, fourcc!("hard")),
+        predicted_clothing: bind_text(commands, fourcc!("clot")),
+        predicted_furniture: bind_text(commands, fourcc!("furn")),
+        treasury: spawned.unique(fourcc!("trea")),
     }
-    let treasury = spawned.unique(fourcc!("trea"));
-    commands.entity(treasury).insert(CityValueBinding {
-        dialog: None,
-        value: CityValue::Treasury,
-    });
 }
 
 pub(in crate::ui::city) fn spawn_city_buildings(
@@ -516,13 +507,70 @@ pub(in crate::ui::city) fn transparent_picture(
     .expect("retail City detail picture must load")
 }
 
-pub(in crate::ui::city) fn sync_city_building_pictures(
-    screens: Query<(), With<CityScreenNeedsSync>>,
+pub(in crate::ui::city) fn sync_city_screen(
     session: Res<GameSession>,
+    screens: Query<(&CityScreenControls, Ref<CityScreenRoot>)>,
+    mut texts: Query<&mut Text>,
     mut assets: UiAssetResources,
     mut buildings: Query<(&CityBuildingPicture, &mut ImageNode, &mut Visibility)>,
 ) {
-    if screens.is_empty() {
+    let mut refresh_buildings = false;
+    for (controls, root) in &screens {
+        if !session.is_changed() && !root.is_added() {
+            continue;
+        }
+        refresh_buildings = true;
+        let Some(nation) = MajorNationId::from_nation(session.0.turn().active_nation) else {
+            warn!("city screen active nation is not a major nation");
+            continue;
+        };
+        let major = session.0.nations().major(nation);
+        let city = &major.city;
+        let labor = city.population.baseline_labor();
+        let values = [
+            (controls.labor_low, labor.low),
+            (controls.labor_medium, labor.medium),
+            (controls.labor_high, labor.high),
+            (controls.labor_available, city.population.strength()),
+            (controls.power_available, city.power_available),
+            (
+                controls.predicted_grain,
+                city.population.predicted_need(ResourceKind::Grain),
+            ),
+            (
+                controls.predicted_fruit,
+                city.population.predicted_need(ResourceKind::Fruit),
+            ),
+            (
+                controls.predicted_livestock,
+                city.population.predicted_need(ResourceKind::Livestock),
+            ),
+            (
+                controls.predicted_hardware,
+                city.population.predicted_need(ResourceKind::Hardware),
+            ),
+            (
+                controls.predicted_clothing,
+                city.population.predicted_need(ResourceKind::Clothing),
+            ),
+            (
+                controls.predicted_furniture,
+                city.population.predicted_need(ResourceKind::Furniture),
+            ),
+        ];
+        for (entity, value) in values {
+            texts
+                .get_mut(entity)
+                .expect("city summary control has text")
+                .0 = value.to_string();
+        }
+        texts
+            .get_mut(controls.treasury)
+            .expect("city treasury control has text")
+            .0 = format_currency(major.common.treasury);
+    }
+
+    if !refresh_buildings {
         return;
     }
     for (building, mut image, mut visibility) in &mut buildings {

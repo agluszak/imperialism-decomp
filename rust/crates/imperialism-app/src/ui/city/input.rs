@@ -4,10 +4,8 @@ pub(in crate::ui::city) fn on_city_amount_bar_click(
     mut click: On<Pointer<Click>>,
     bars: Query<(&RelativeCursorPosition, &CityIndustryAmountBar)>,
     modals: Query<(), With<ModalDialog>>,
-    dialogs: Query<Entity, With<CityBuildingDialog>>,
-    screen_roots: Query<Entity, With<CityScreenRoot>>,
+    dialogs: Query<(), With<CityBuildingDialog>>,
     session: Option<ResMut<GameSession>>,
-    mut commands: Commands,
 ) {
     if !modals.is_empty() {
         return;
@@ -50,20 +48,9 @@ pub(in crate::ui::city) fn on_city_amount_bar_click(
     if quantity == 0 && x != 0 && previous == 0 {
         quantity = 1;
     }
-    if !session
+    let _ = session
         .0
-        .set_city_order_quantity(bar.nation, bar.order, quantity)
-        .applied()
-        || quantity == previous
-    {
-        return;
-    }
-    for dialog in &dialogs {
-        commands.entity(dialog).insert(CityDialogNeedsSync);
-    }
-    for root in &screen_roots {
-        commands.entity(root).insert(CityScreenNeedsSync);
-    }
+        .set_city_order_quantity(bar.nation, bar.order, quantity);
 }
 
 pub(in crate::ui::city) fn on_armory_row_selected(
@@ -97,7 +84,6 @@ pub(in crate::ui::city) fn on_armory_row_selected(
             commands.entity(entity).remove::<Checked>();
         }
     }
-    commands.entity(row.dialog).insert(CityDialogNeedsSync);
 }
 
 pub(in crate::ui::city) fn select_university_row(
@@ -122,7 +108,6 @@ pub(in crate::ui::city) fn select_university_row(
             commands.entity(entity).remove::<Checked>();
         }
     }
-    commands.entity(dialog).insert(CityDialogNeedsSync);
 }
 
 pub(in crate::ui::city) fn on_university_row_selected(
@@ -169,7 +154,6 @@ pub(in crate::ui::city) fn select_shipyard_row(
             commands.entity(entity).remove::<Checked>();
         }
     }
-    commands.entity(dialog).insert(CityDialogNeedsSync);
 }
 
 pub(in crate::ui::city) fn on_shipyard_row_selected(
@@ -193,14 +177,13 @@ pub(in crate::ui::city) fn on_city_order_adjust(
     activate: On<Activate>,
     actions: Query<&CityOrderAdjust>,
     modals: Query<(), With<ModalDialog>>,
-    dialogs: Query<Entity, With<CityBuildingDialog>>,
+    dialogs: Query<(), With<CityBuildingDialog>>,
     mut armory_selections: Query<&mut ArmorySelection>,
     armory_rows: Query<(Entity, &ArmoryRowChoice, Has<Checked>)>,
     mut university_selections: Query<&mut UniversitySelection>,
     university_rows: Query<(Entity, &UniversityRowChoice, Has<Checked>)>,
     mut shipyard_selections: Query<&mut ShipyardSelection>,
     shipyard_rows: Query<(Entity, &ShipyardRowChoice, Has<Checked>)>,
-    screen_roots: Query<Entity, With<CityScreenRoot>>,
     session: Option<ResMut<GameSession>>,
     mut commands: Commands,
 ) {
@@ -219,7 +202,6 @@ pub(in crate::ui::city) fn on_city_order_adjust(
         && let Ok(mut selection) = armory_selections.get_mut(action.dialog)
     {
         selection.category = category;
-        commands.entity(action.dialog).insert(CityDialogNeedsSync);
         for (entity, row, checked) in &armory_rows {
             if row.dialog != action.dialog {
                 continue;
@@ -250,17 +232,7 @@ pub(in crate::ui::city) fn on_city_order_adjust(
             &mut commands,
         );
     }
-    if !session
+    let _ = session
         .0
-        .adjust_city_order(action.nation, action.order, action.delta)
-        .applied()
-    {
-        return;
-    }
-    for dialog in &dialogs {
-        commands.entity(dialog).insert(CityDialogNeedsSync);
-    }
-    for root in &screen_roots {
-        commands.entity(root).insert(CityScreenNeedsSync);
-    }
+        .adjust_city_order(action.nation, action.order, action.delta);
 }
