@@ -146,6 +146,10 @@ class UiTextPayload:
     point_size: int
     style_ref: int
     theme: int
+    color_index: int | None = None
+    shadow_color_index: int | None = None
+    shadow_offset: tuple[int, int] = (0, 0)
+    center_vertically: bool = False
 
 
 @dataclass(frozen=True)
@@ -1397,31 +1401,6 @@ def _rust_picture_visual(node: UiSemanticNode) -> str:
     return "static"
 
 
-def _rust_scene_fields(family: UiSemanticFamily) -> dict[str, object]:
-    fields: dict[str, object] = {}
-    if family.content_insets is not None and any(family.content_insets):
-        fields["content_insets"] = family.content_insets
-    if family.picture_id is not None:
-        fields["picture_id"] = family.picture_id
-    if family.text is not None:
-        text: dict[str, object] = {
-            "value": family.text.value or "",
-            "font_family": family.text.mode,
-            "face_flags": family.text.flags,
-            "point_size": family.text.point_size,
-            "alignment": family.text.theme,
-        }
-        max_chars = (
-            family.max_chars
-            if family.max_chars is None or family.max_chars >= 0
-            else None
-        )
-        if max_chars is not None:
-            text["max_chars"] = max_chars
-        fields["text"] = text
-    return fields
-
-
 def _case_for_resource(
     recipes: Iterable[UiFactoryRecipe], key: UiResourceKey
 ) -> tuple[UiFactoryRecipe, UiCaseRecipe]:
@@ -1452,87 +1431,85 @@ def resource_backed_scene_keys(
     return sorted(keys, key=lambda item: (item.resource_file, item.view_id))
 
 
-def _python_node_id(node_id: str) -> int | str:
-    try:
-        return int(node_id, 0)
-    except ValueError:
-        return node_id
-
-
-def _emit_scene_nodes(
-    key: UiResourceKey | None, semantic_view: UiSemanticView
-) -> list[dict[str, object]]:
-    roots = [node for node in semantic_view.nodes if node.parent_id is None]
-    if len(roots) != 1:
-        context = key.text() if key is not None else semantic_view.name
-        raise ValueError(f"{context}: expected one semantic root")
-    nodes: list[dict[str, object]] = []
-    for node in semantic_view.nodes:
-        x, y, width, height = node.geometry
-        behavior = _rust_widget_behavior(key, node)
-        picture_visual = _rust_picture_visual(node)
-        emitted: dict[str, object] = {
-            "id": _python_node_id(node.node_id),
-            "tag": node.tag,
-            "rect": {"x": x, "y": y, "width": width, "height": height},
-        }
-        if node.parent_id is not None:
-            emitted["parent"] = _python_node_id(node.parent_id)
-        if behavior != "passive":
-            emitted["behavior"] = behavior
-        if picture_visual != "static":
-            emitted["picture_visual"] = picture_visual
-        if bool(node.state) and behavior in ("checkbox", "toggle", "radio_button"):
-            emitted["checked"] = True
-        if behavior != "passive" and (not node.enabled or not node.input_gate):
-            emitted["disabled"] = True
-        emitted.update(_rust_scene_fields(node.family))
-        nodes.append(emitted)
-    return nodes
-
-
-def _emit_diplomacy_map_key_names(
+def apply_diplomacy_map_key_names(
     key: UiResourceKey,
     semantic_view: UiSemanticView,
     names: DiplomacyMapKeyNames,
-) -> list[dict[str, object]]:
+) -> UiSemanticView:
     if key != names.view:
-        return []
-    nodes_by_id = {int(node.node_id, 16): node for node in semantic_view.nodes}
-    parent = nodes_by_id.get(names.parent_id)
+        return semantic_view
+    parent_id = f"0x{names.parent_id:04x}"
+    nodes_by_id = {node.node_id: node for node in semantic_view.nodes}
+    parent = nodes_by_id.get(parent_id)
     if parent is None or parent.tag != names.parent_tag:
         raise ValueError(
             f"{WINDOWS_DELTA_PATH}: {key.text()} has no "
             f"{names.parent_tag} parent at 0x{names.parent_id:04x}"
         )
-    emitted: list[dict[str, object]] = []
-    occupied_ids = set(nodes_by_id)
+    text = names.text
+    additions: list[UiSemanticNode] = []
     for child in names.children:
-        if child.node_id in occupied_ids:
+        node_id = f"0x{child.node_id:08x}"
+        if node_id in nodes_by_id:
             raise ValueError(
-                f"{WINDOWS_DELTA_PATH}: {key.text()} duplicate model node "
-                f"0x{child.node_id:08x}"
+                f"{WINDOWS_DELTA_PATH}: {key.text()} duplicate semantic node {node_id}"
             )
-        occupied_ids.add(child.node_id)
-        x, y, width, height = child.rect
-        emitted.append(
-            {
-                "id": child.node_id,
-                "parent": names.parent_id,
-                "tag": child.tag,
-                "rect": {"x": x, "y": y, "width": width, "height": height},
-                "text": {"value": "", **names.text},
-            }
+        nodes_by_id[node_id] = parent
+        additions.append(
+            UiSemanticNode(
+                node_id=node_id,
+                type_code="stat",
+                tag=child.tag,
+                class_name="TStaticText",
+                parent_id=parent_id,
+                geometry=child.rect,
+                state=1,
+                enabled=1,
+                input_gate=1,
+                child_hit_test=1,
+                control_value=0,
+                family=UiSemanticFamily(
+                    text=UiTextPayload(
+                        resource_id=0,
+                        resource_index=-1,
+                        value="",
+                        source=names.evidence,
+                        mode=int(text["font_family"]),
+                        flags=int(text["face_flags"]),
+                        point_size=int(text["point_size"]),
+                        style_ref=0,
+                        theme=int(text["alignment"]),
+                        color_index=int(text["color_index"]),
+                        shadow_color_index=int(text["shadow_color_index"]),
+                        shadow_offset=tuple(int(value) for value in text["shadow_offset"]),
+                        center_vertically=bool(text["center_vertically"]),
+                    )
+                ),
+                source=f"Windows: {names.evidence}",
+                confidence="high",
+            )
         )
-    return emitted
+    parent_index = semantic_view.nodes.index(parent)
+    return replace(
+        semantic_view,
+        nodes=(
+            semantic_view.nodes[: parent_index + 1]
+            + tuple(additions)
+            + semantic_view.nodes[parent_index + 1 :]
+        ),
+    )
 
 
-def build_rust_ui_model(
+def _rust_ui_semantic_views(
     repo_root: Path,
     recipes: Iterable[UiFactoryRecipe],
     views: dict[UiResourceKey, dict],
     text_resources: TextResources,
-) -> dict[str, object]:
+) -> tuple[
+    list[tuple[UiResourceKey | str, UiSemanticView]],
+    CityBuildingVisuals,
+    CityBuildingActionVisuals,
+]:
     recipe_list = list(recipes)
     text_property_patches = load_windows_text_property_patches(repo_root)
     diplomacy_map_key_names = load_diplomacy_map_key_names(repo_root)
@@ -1569,7 +1546,7 @@ def build_rust_ui_model(
                 f"{WINDOWS_DELTA_PATH}: city building {visual.slot} dialog "
                 "does not match the recovered factory case"
             )
-    scene_views: list[dict[str, object]] = []
+    scene_views: list[tuple[UiResourceKey | str, UiSemanticView]] = []
     for key in sorted(scene_keys, key=lambda item: (item.resource_file, item.view_id)):
         raw_view = views.get(key)
         if raw_view is None:
@@ -1580,44 +1557,10 @@ def build_rust_ui_model(
         semantic_view = apply_windows_text_property_patches(
             key, semantic_view, text_property_patches
         )
-        nodes = _emit_scene_nodes(key, semantic_view)
-        nodes.extend(
-            _emit_diplomacy_map_key_names(
-                key, semantic_view, diplomacy_map_key_names
-            )
+        semantic_view = apply_diplomacy_map_key_names(
+            key, semantic_view, diplomacy_map_key_names
         )
-        emitted: dict[str, object] = {
-            "id": {
-                "resource_file": key.resource_file,
-                "resource_id": key.view_id,
-            },
-            "nodes": nodes,
-        }
-        if key == city_buildings.view:
-            emitted["city_buildings"] = [
-                {
-                    "slot": visual.slot,
-                    "origin": list(visual.origin),
-                    "draw_order": visual.draw_order,
-                    "dialog": {
-                        "resource_file": visual.dialog.resource_file,
-                        "resource_id": visual.dialog.view_id,
-                    },
-                }
-                for visual in city_buildings.visuals
-            ]
-            emitted["city_building_actions"] = [
-                {
-                    "slot": action.slot,
-                    "level": action.level,
-                    "picture_id": action.picture_id,
-                    "frame_count": action.frame_count,
-                    "origin": list(action.origin),
-                    "frame_size": list(action.frame_size),
-                }
-                for action in city_building_actions.actions
-            ]
-        scene_views.append(emitted)
+        scene_views.append((key, semantic_view))
     windows_views = load_windows_views(repo_root)
     emitted_windows: set[str] = set()
     for recipe in recipe_list:
@@ -1629,48 +1572,9 @@ def build_rust_ui_model(
                 raise ValueError(
                     f"{WINDOWS_VIEW_PATH}: missing Windows view {case.windows_view!r}"
                 )
-            scene_views.append(
-                {
-                    "id": {"windows_view": case.windows_view},
-                    "nodes": _emit_scene_nodes(None, semantic_view),
-                }
-            )
+            scene_views.append((case.windows_view, semantic_view))
             emitted_windows.add(case.windows_view)
-    return {
-        "logical_resolution": [640, 480],
-        "views": scene_views,
-    }
-
-
-def validate_rust_ui_coverage(
-    recipes: Iterable[UiFactoryRecipe],
-    model: dict[str, object] | None = None,
-) -> list[str]:
-    """Every concrete factory case is emitted into the native Rust UI."""
-
-    errors: list[str] = []
-    emitted_views: set[str] = set()
-    if model is not None:
-        for view in model.get("views", []):
-            view_id = view["id"]
-            if "resource_file" in view_id:
-                emitted_views.add(f"{view_id['resource_file']}:{view_id['resource_id']}")
-            else:
-                emitted_views.add(str(view_id["windows_view"]))
-    for recipe in recipes:
-        for case in recipe.cases:
-            if case.resource is None:
-                if case.windows_view is None:
-                    continue
-                if model is not None and case.windows_view not in emitted_views:
-                    errors.append(
-                        f"windows view {case.windows_view!r} missing from native Rust UI"
-                    )
-                continue
-            key = case.resource.text()
-            if model is not None and key not in emitted_views:
-                errors.append(f"{key}: resource-backed factory case missing from native Rust UI")
-    return errors
+    return scene_views, city_buildings, city_building_actions
 
 
 def report_unsupported_ui_roles(
@@ -1733,8 +1637,8 @@ def _rust_enum_variant(value: str) -> str:
     return "".join(part.capitalize() for part in value.split("_"))
 
 
-def _rust_has_shipped_font(text: dict[str, object]) -> bool:
-    return int(text["font_family"]) in (1, 2, 3)
+def _rust_has_shipped_font(text: UiTextPayload) -> bool:
+    return text.mode in (1, 2, 3)
 
 
 def _indent(lines: Iterable[str], spaces: int) -> list[str]:
@@ -1743,19 +1647,19 @@ def _indent(lines: Iterable[str], spaces: int) -> list[str]:
 
 
 def _render_bsn_node(
-    node: dict[str, object],
-    children_by_parent: dict[object, list[dict[str, object]]],
+    key: UiResourceKey | None,
+    node: UiSemanticNode,
+    children_by_parent: dict[str | None, list[UiSemanticNode]],
 ) -> list[str]:
-    rect = node["rect"]
-    insets = node.get("content_insets", [0, 0, 0, 0])
-    text = node.get("text")
+    x, y, width, height = node.geometry
+    insets = node.family.content_insets or (0, 0, 0, 0)
+    text = node.family.text
     render_text_style = text is not None and _rust_has_shipped_font(text)
     lines = [
         "(",
         (
-            f"    retail_node(fourcc!({_rust_string(str(node['tag']))}), "
-            f"{int(rect['x'])}, {int(rect['y'])}, "
-            f"{int(rect['width'])}, {int(rect['height'])})"
+            f"    retail_node(fourcc!({_rust_string(node.tag)}), "
+            f"{x}, {y}, {width}, {height})"
         ),
     ]
     if any(int(value) for value in insets):
@@ -1771,7 +1675,7 @@ def _render_bsn_node(
                 "    }",
             ]
         )
-    behavior = node.get("behavior", "passive")
+    behavior = _rust_widget_behavior(key, node)
     lines.extend(
         {
             "activate": ["    Button"],
@@ -1782,15 +1686,17 @@ def _render_bsn_node(
             "pointer_canvas": ["    RelativeCursorPosition"],
         }.get(str(behavior), [])
     )
-    if node.get("checked", False):
+    if bool(node.state) and behavior in ("checkbox", "toggle", "radio_button"):
         lines.append("    Checked")
-    if node.get("disabled", False):
+    if behavior != "passive" and (not node.enabled or not node.input_gate):
         lines.append("    InteractionDisabled")
 
     if text is not None:
-        value = _rust_string(str(text.get("value", "")))
+        value = _rust_string(text.value or "")
         if behavior == "text_edit":
-            max_chars = text.get("max_chars")
+            max_chars = node.family.max_chars
+            if max_chars is not None and max_chars < 0:
+                max_chars = None
             max_expr = "None" if max_chars is None else f"Some({max_chars})"
             lines.append(f"    retail_editable_text({value}, {max_expr})")
         else:
@@ -1798,30 +1704,27 @@ def _render_bsn_node(
         if render_text_style:
             lines.append(
                 "    retail_text_style("
-                f"{text['font_family']}, {text['face_flags']}, "
-                f"{text['point_size']}, {text['alignment']})"
+                f"{text.mode}, {text.flags}, {text.point_size}, {text.theme})"
             )
-        color = text.get("color_index")
-        if color is None:
+        if text.color_index is None:
             lines.append("    TextColor(Color::BLACK)")
         else:
-            lines.append(f"    retail_text_color({color})")
-        if text.get("shadow_color_index") is not None:
-            offset = text.get("shadow_offset", [0, 0])
+            lines.append(f"    retail_text_color({text.color_index})")
+        if text.shadow_color_index is not None:
             lines.append(
-                f"    retail_text_shadow({text['shadow_color_index']}, "
-                f"{int(offset[0])}, {int(offset[1])})"
+                f"    retail_text_shadow({text.shadow_color_index}, "
+                f"{text.shadow_offset[0]}, {text.shadow_offset[1]})"
             )
-        if render_text_style and text.get("center_vertically", False):
+        if render_text_style and text.center_vertically:
             lines.append(
                 "    retail_centered_text_padding("
-                f"{text['font_family']}, {text['face_flags']}, {text['point_size']}, "
-                f"{int(rect['height'])}, {int(insets[1])})"
+                f"{text.mode}, {text.flags}, {text.point_size}, "
+                f"{height}, {insets[1]})"
             )
 
-    picture_id = node.get("picture_id")
+    picture_id = node.family.picture_id
     if picture_id is not None:
-        visual = node.get("picture_visual", "static")
+        visual = _rust_picture_visual(node)
         idle_id = int(picture_id)
         active_id = idle_id
         if visual == "up_down":
@@ -1834,11 +1737,11 @@ def _render_bsn_node(
         else:
             lines.append(f"    retail_picture_swap({idle_id}, {active_id})")
 
-    children = children_by_parent.get(node["id"], [])
+    children = children_by_parent.get(node.node_id, [])
     if children:
         lines.append("    Children [")
         for child in children:
-            rendered = _render_bsn_node(child, children_by_parent)
+            rendered = _render_bsn_node(key, child, children_by_parent)
             rendered[-1] += ","
             lines.extend(_indent(rendered, 8))
         lines.append("    ]")
@@ -1852,7 +1755,9 @@ def render_rust_ui(
     views: dict[UiResourceKey, dict],
     text_resources: TextResources,
 ) -> str:
-    model = build_rust_ui_model(repo_root, recipes, views, text_resources)
+    scene_views, city_buildings, city_building_actions = _rust_ui_semantic_views(
+        repo_root, recipes, views, text_resources
+    )
     lines = [
         "// @generated by tools.ui_codegen. Do not edit by hand.",
         "#![allow(dead_code, clippy::identity_op)]",
@@ -1868,52 +1773,47 @@ def render_rust_ui(
         "pub const LOGICAL_RESOLUTION: [u32; 2] = [640, 480];",
         "",
     ]
-    city = next(
-        view
-        for view in model["views"]
-        if view["id"] == {"resource_file": "Citymain.rsrc", "resource_id": 2011}
-    )
     lines.extend(["pub const CITY_BUILDINGS: &[CityBuildingVisual] = &["])
-    for visual in city["city_buildings"]:
+    for visual in city_buildings.visuals:
         lines.extend(
             [
                 "    CityBuildingVisual {",
-                f"        slot: CityFacilitySlot::{_rust_enum_variant(visual['slot'])},",
-                f"        origin: [{visual['origin'][0]}, {visual['origin'][1]}],",
-                f"        draw_order: {visual['draw_order']},",
+                f"        slot: CityFacilitySlot::{_rust_enum_variant(visual.slot)},",
+                f"        origin: [{visual.origin[0]}, {visual.origin[1]}],",
+                f"        draw_order: {visual.draw_order},",
                 "    },",
             ]
         )
     lines.extend(["];", "", "pub const CITY_BUILDING_ACTIONS: &[CityBuildingActionVisual] = &["])
-    for action in city["city_building_actions"]:
+    for action in city_building_actions.actions:
         lines.extend(
             [
                 "    CityBuildingActionVisual {",
-                f"        slot: CityFacilitySlot::{_rust_enum_variant(action['slot'])},",
-                f"        level: {action['level']},",
-                f"        picture_id: PictureId::new({action['picture_id']}),",
-                f"        frame_count: {action['frame_count']},",
-                f"        origin: [{action['origin'][0]}, {action['origin'][1]}],",
-                f"        frame_size: [{action['frame_size'][0]}, {action['frame_size'][1]}],",
+                f"        slot: CityFacilitySlot::{_rust_enum_variant(action.slot)},",
+                f"        level: {action.level},",
+                f"        picture_id: PictureId::new({action.picture_id}),",
+                f"        frame_count: {action.frame_count},",
+                f"        origin: [{action.origin[0]}, {action.origin[1]}],",
+                f"        frame_size: [{action.frame_size[0]}, {action.frame_size[1]}],",
                 "    },",
             ]
         )
     lines.extend(["];", ""])
-    for view in model["views"]:
-        view_id = view["id"]
-        if "resource_file" in view_id:
-            function = _rust_function_name(
-                view_id["resource_file"], view_id["resource_id"]
-            )
-            view_name = _rust_string(
-                f"{view_id['resource_file']}:{view_id['resource_id']}"
-            )
+    for view_id, semantic_view in scene_views:
+        if isinstance(view_id, UiResourceKey):
+            function = _rust_function_name(view_id.resource_file, view_id.view_id)
+            view_name = _rust_string(view_id.text())
+            key = view_id
         else:
-            function = str(view_id["windows_view"])
+            function = view_id
             view_name = _rust_string(function)
-        children_by_parent: dict[object, list[dict[str, object]]] = {}
-        for node in view["nodes"]:
-            children_by_parent.setdefault(node.get("parent"), []).append(node)
+            key = None
+        children_by_parent: dict[str | None, list[UiSemanticNode]] = {}
+        for node in semantic_view.nodes:
+            children_by_parent.setdefault(node.parent_id, []).append(node)
+        roots = children_by_parent.get(None, [])
+        if len(roots) != 1:
+            raise ValueError(f"{semantic_view.view_id}: expected one semantic root")
         lines.extend(
             [
                 "#[rustfmt::skip]",
@@ -1923,8 +1823,8 @@ def render_rust_ui(
                 "        Children [",
             ]
         )
-        for node in children_by_parent.get(None, []):
-            rendered = _render_bsn_node(node, children_by_parent)
+        for node in roots:
+            rendered = _render_bsn_node(key, node, children_by_parent)
             rendered[-1] += ","
             lines.extend(_indent(rendered, 12))
         lines.extend(["        ]", "    }", "}", ""])
@@ -2571,15 +2471,6 @@ def main() -> int:
         path = write_rust_ui(
             repo_root, recipes, views, text_resources
         )
-        model = build_rust_ui_model(
-            repo_root, recipes, views, text_resources
-        )
-        coverage = validate_rust_ui_coverage(recipes, model)
-        if coverage:
-            print("native Rust UI coverage failed:")
-            for error in coverage:
-                print(f"  - {error}")
-            return 1
         print(f"Wrote native Bevy UI scenes to {path}")
         return 0
     if args.report_unsupported_roles:
@@ -2603,19 +2494,18 @@ def main() -> int:
                 "run with --write-rust-ui"
             )
             return 1
-        model = build_rust_ui_model(
-            repo_root, recipes, views, text_resources
+        scene_count = len(
+            {
+                case.resource if case.resource is not None else case.windows_view
+                for recipe in recipes
+                for case in recipe.cases
+                if case.resource is not None or case.windows_view is not None
+            }
         )
-        coverage = validate_rust_ui_coverage(recipes, model)
-        if coverage:
-            print("UI codegen check failed: native Rust UI coverage:")
-            for error in coverage:
-                print(f"  - {error}")
-            return 1
         print(
             f"UI codegen check passed: {len(recipes)} functions, "
             f"{sum(len(recipe.cases) for recipe in recipes)} cases, "
-            f"{len(model['views'])} native Bevy scenes"
+            f"{scene_count} native Bevy scenes"
         )
         return 0
     output_dir = resolve_repo_path(repo_root, args.gen_dir)

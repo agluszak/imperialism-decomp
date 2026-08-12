@@ -60,7 +60,6 @@ pub fn retail_picture(id: i16) -> impl Scene {
 
 pub fn retail_picture_swap(idle: i16, active: i16) -> impl Scene {
     bsn! {
-        retail_picture(idle)
         template(move |context| {
             let idle = load_template_picture(context, PictureId::new(idle))?;
             let active = match load_template_picture(context, PictureId::new(active)) {
@@ -70,7 +69,11 @@ pub fn retail_picture_swap(idle: i16, active: i16) -> impl Scene {
                     idle.clone()
                 }
             };
-            Ok(RetailPictureSwap { idle, active })
+            context.entity.insert(RetailPictureSwap {
+                idle: idle.clone(),
+                active,
+            });
+            Ok(ImageNode::new(idle))
         })
     }
 }
@@ -91,13 +94,10 @@ pub fn retail_text_style(
     let underline = style.underline.then(|| bsn! { Underline });
     bsn! {
         template(move |context| {
-            let mut font = TextFont::from_font_size(style.logical_pixel_height as f32)
-                .with_font(load_template_font(context, style.face))
-                .with_font_smoothing(FontSmoothing::None);
-            if style.italic {
-                font.style = FontStyle::Italic;
-            }
-            Ok(font)
+            Ok(retail_text_components(
+                style,
+                load_template_font(context, style.face),
+            ).0)
         })
         TextLayout::justify(match style.alignment {
             RetailTextAlignment::Left => Justify::Left,
@@ -271,27 +271,13 @@ impl RetailUiAssets<'_> {
         preset: RetailTextStylePreset,
     ) -> Result<(TextFont, TextLayout, bool), RetailTextError> {
         let style = resolve_retail_text_style(preset)?;
-        let bytes = self.retail_assets.assets().font_bytes(style.face);
-        let handle = match self.font_handles.0.get(&style.face) {
-            Some(handle) => handle.clone(),
-            None => {
-                let handle = self.fonts.add(Font::from_bytes(bytes.to_vec()));
-                self.font_handles.0.insert(style.face, handle.clone());
-                handle
-            }
-        };
-        let mut font = TextFont::from_font_size(style.logical_pixel_height as f32)
-            .with_font(handle)
-            .with_font_smoothing(FontSmoothing::None);
-        if style.italic {
-            font.style = FontStyle::Italic;
-        }
-        let justify = match style.alignment {
-            RetailTextAlignment::Left => Justify::Left,
-            RetailTextAlignment::Center => Justify::Center,
-            RetailTextAlignment::Right => Justify::Right,
-        };
-        Ok((font, TextLayout::justify(justify), style.underline))
+        let handle = load_retail_font(
+            style.face,
+            &self.retail_assets,
+            &mut self.fonts,
+            &mut self.font_handles,
+        );
+        Ok(retail_text_components(style, handle))
     }
 }
 
@@ -357,43 +343,66 @@ fn load_template_picture(
     context: &mut TemplateContext,
     picture_id: PictureId,
 ) -> bevy::ecs::error::Result<Handle<Image>> {
-    if let Some(handle) = context
-        .resource::<RetailPictureHandles>()
-        .0
-        .get(&picture_id)
-    {
-        return Ok(handle.clone());
-    }
-    let bytes = context
-        .resource::<RetailAssetsResource>()
-        .assets()
-        .picture(picture_id)?;
-    let image = decode_retail_picture(picture_id, &bytes)?;
-    let handle = context.resource_mut::<Assets<Image>>().add(image);
-    context
-        .resource_mut::<RetailPictureHandles>()
-        .0
-        .insert(picture_id, handle.clone());
-    Ok(handle)
+    Ok(context.entity.world_scope(|world| {
+        world.resource_scope(|world, mut handles: Mut<RetailPictureHandles>| {
+            world.resource_scope(|world, mut images: Mut<Assets<Image>>| {
+                load_retail_picture(
+                    picture_id,
+                    world.resource::<RetailAssetsResource>(),
+                    &mut images,
+                    &mut handles,
+                )
+            })
+        })
+    })?)
 }
 
 fn load_template_font(context: &mut TemplateContext, face: RetailFontFace) -> Handle<Font> {
-    if let Some(handle) = context.resource::<RetailFontHandles>().0.get(&face) {
+    context.entity.world_scope(|world| {
+        world.resource_scope(|world, mut handles: Mut<RetailFontHandles>| {
+            world.resource_scope(|world, mut fonts: Mut<Assets<Font>>| {
+                load_retail_font(
+                    face,
+                    world.resource::<RetailAssetsResource>(),
+                    &mut fonts,
+                    &mut handles,
+                )
+            })
+        })
+    })
+}
+
+fn load_retail_font(
+    face: RetailFontFace,
+    retail_assets: &RetailAssetsResource,
+    fonts: &mut Assets<Font>,
+    font_handles: &mut RetailFontHandles,
+) -> Handle<Font> {
+    if let Some(handle) = font_handles.0.get(&face) {
         return handle.clone();
     }
-    let bytes = context
-        .resource::<RetailAssetsResource>()
-        .assets()
-        .font_bytes(face)
-        .to_vec();
-    let handle = context
-        .resource_mut::<Assets<Font>>()
-        .add(Font::from_bytes(bytes));
-    context
-        .resource_mut::<RetailFontHandles>()
-        .0
-        .insert(face, handle.clone());
+    let bytes = retail_assets.assets().font_bytes(face).to_vec();
+    let handle = fonts.add(Font::from_bytes(bytes));
+    font_handles.0.insert(face, handle.clone());
     handle
+}
+
+fn retail_text_components(
+    style: ResolvedRetailTextStyle,
+    handle: Handle<Font>,
+) -> (TextFont, TextLayout, bool) {
+    let mut font = TextFont::from_font_size(style.logical_pixel_height as f32)
+        .with_font(handle)
+        .with_font_smoothing(FontSmoothing::None);
+    if style.italic {
+        font.style = FontStyle::Italic;
+    }
+    let justify = match style.alignment {
+        RetailTextAlignment::Left => Justify::Left,
+        RetailTextAlignment::Center => Justify::Center,
+        RetailTextAlignment::Right => Justify::Right,
+    };
+    (font, TextLayout::justify(justify), style.underline)
 }
 
 fn template_palette_color(context: &TemplateContext, index: u8) -> Color {

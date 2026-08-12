@@ -260,60 +260,12 @@ fn bind_transport_controls(
         } else {
             0x5d
         };
-        spawn_transport_track(commands, row, track_left, colors.empty);
-        commands.spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: Val::Px(track_left as f32),
-                top: Val::Px(0x0d as f32),
-                width: Val::Px(0.0),
-                height: Val::Px(4.0),
-                ..default()
-            },
-            BackgroundColor(colors.allocation),
-            ZIndex(1),
-            Pickable::IGNORE,
-            ChildOf(row),
-            TransportDisplay::Gauge {
-                kind: TransportGaugeKind::Allocation(binding.allocation),
-                normal_color: colors.allocation,
-                full_color: colors.allocation,
-            },
-        ));
-        commands.spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: Val::Px((track_left - 1) as f32),
-                top: Val::Px(0x12 as f32),
-                width: Val::Px(0x73 as f32),
-                height: Val::Px(2.0),
-                ..default()
-            },
-            BackgroundColor(colors.below_limit),
-            Pickable::IGNORE,
-            ChildOf(row),
-            TransportDisplay::Limit {
-                allocation: binding.allocation,
-                below_color: colors.below_limit,
-                reached_color: colors.at_limit,
-            },
-        ));
-        commands.spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: Val::Px(0x98 as f32),
-                top: Val::Px(0x12 as f32),
-                width: Val::Px(0x46 as f32),
-                height: Val::Px(0x0b as f32),
-                ..default()
-            },
-            Text::new(""),
+        commands.entity(row).apply_scene(transport_row_overlay(
+            binding.allocation,
+            track_left,
             font.clone(),
             layout,
-            TextColor(Color::BLACK),
-            Pickable::IGNORE,
-            ChildOf(row),
-            TransportDisplay::RowCaption(binding.allocation),
+            colors,
         ));
         if let Some((resource, unit_value)) = if binding.allocation == TransportAllocation::GOLD {
             Some((ResourceKind::Gold, 200))
@@ -322,67 +274,19 @@ fn bind_transport_controls(
         } else {
             None
         } {
-            commands.spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(0x32 as f32),
-                    top: Val::Px(0x14 as f32),
-                    width: Val::Px(0x3c as f32),
-                    height: Val::Px(0x0b as f32),
-                    ..default()
-                },
-                Text::new(""),
+            commands.entity(row).apply_scene(transport_money_overlay(
+                resource,
+                unit_value,
                 font.clone(),
                 layout,
-                TextColor(Color::BLACK),
-                Pickable::IGNORE,
-                ChildOf(row),
-                TransportDisplay::Money {
-                    resource,
-                    unit_value,
-                },
             ));
         }
     }
 
     let total = find_descendant(root, fourcc!("tota"), children, tags);
-    spawn_transport_track(commands, total, 0x5d, colors.empty);
-    commands.spawn((
-        Node {
-            position_type: PositionType::Absolute,
-            left: Val::Px(0x5d as f32),
-            top: Val::Px(0x0d as f32),
-            width: Val::Px(0.0),
-            height: Val::Px(4.0),
-            ..default()
-        },
-        BackgroundColor(colors.below_limit),
-        ZIndex(1),
-        Pickable::IGNORE,
-        ChildOf(total),
-        TransportDisplay::Gauge {
-            kind: TransportGaugeKind::Capacity,
-            normal_color: colors.below_limit,
-            full_color: colors.at_limit,
-        },
-    ));
-    commands.spawn((
-        Node {
-            position_type: PositionType::Absolute,
-            left: Val::Px(0xa2 as f32),
-            top: Val::Px(0x14 as f32),
-            width: Val::Px(0x3c as f32),
-            height: Val::Px(0x0b as f32),
-            ..default()
-        },
-        Text::new(""),
-        font.clone(),
-        layout,
-        TextColor(Color::BLACK),
-        Pickable::IGNORE,
-        ChildOf(total),
-        TransportDisplay::CapacityCaption,
-    ));
+    commands
+        .entity(total)
+        .apply_scene(transport_capacity_overlay(font.clone(), layout, colors));
     let cursor = find_descendant(root, fourcc!("curs"), children, tags);
     commands.entity(cursor).insert((
         Text::new(""),
@@ -395,20 +299,154 @@ fn bind_transport_controls(
     commands.entity(treasury).insert(TransportDisplay::Treasury);
 }
 
-fn spawn_transport_track(commands: &mut Commands, parent: Entity, left: i32, color: Color) {
-    commands.spawn((
+fn transport_track(left: i32, color: Color) -> impl Scene {
+    bsn! {
         Node {
             position_type: PositionType::Absolute,
-            left: Val::Px(left as f32),
-            top: Val::Px(0x0d as f32),
-            width: Val::Px(0x71 as f32),
-            height: Val::Px(4.0),
-            ..default()
-        },
-        BackgroundColor(color),
-        Pickable::IGNORE,
-        ChildOf(parent),
-    ));
+            left: px(left),
+            top: px(0x0d),
+            width: px(0x71),
+            height: px(4),
+        }
+        BackgroundColor(color)
+        Pickable::IGNORE
+    }
+}
+
+fn transport_row_overlay(
+    allocation: TransportAllocation,
+    track_left: i32,
+    font: TextFont,
+    layout: TextLayout,
+    colors: TransportColors,
+) -> impl Scene {
+    bsn! {
+        Children [
+            (transport_track(track_left, colors.empty)),
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(track_left),
+                    top: px(0x0d),
+                    width: px(0),
+                    height: px(4),
+                }
+                BackgroundColor({colors.allocation})
+                ZIndex(1)
+                Pickable::IGNORE
+                template(move |_context| Ok(TransportDisplay::Gauge {
+                    kind: TransportGaugeKind::Allocation(allocation),
+                    normal_color: colors.allocation,
+                    full_color: colors.allocation,
+                }))
+            ),
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(track_left - 1),
+                    top: px(0x12),
+                    width: px(0x73),
+                    height: px(2),
+                }
+                BackgroundColor({colors.below_limit})
+                Pickable::IGNORE
+                template(move |_context| Ok(TransportDisplay::Limit {
+                    allocation,
+                    below_color: colors.below_limit,
+                    reached_color: colors.at_limit,
+                }))
+            ),
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(0x98),
+                    top: px(0x12),
+                    width: px(0x46),
+                    height: px(0x0b),
+                }
+                Text("")
+                template(move |_context| Ok(font.clone()))
+                template(move |_context| Ok(layout))
+                TextColor(Color::BLACK)
+                Pickable::IGNORE
+                template(move |_context| Ok(TransportDisplay::RowCaption(allocation)))
+            ),
+        ]
+    }
+}
+
+fn transport_money_overlay(
+    resource: ResourceKind,
+    unit_value: i32,
+    font: TextFont,
+    layout: TextLayout,
+) -> impl Scene {
+    bsn! {
+        Children [
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(0x32),
+                    top: px(0x14),
+                    width: px(0x3c),
+                    height: px(0x0b),
+                }
+                Text("")
+                template(move |_context| Ok(font.clone()))
+                template(move |_context| Ok(layout))
+                TextColor(Color::BLACK)
+                Pickable::IGNORE
+                template(move |_context| Ok(TransportDisplay::Money {
+                    resource,
+                    unit_value,
+                }))
+            ),
+        ]
+    }
+}
+
+fn transport_capacity_overlay(
+    font: TextFont,
+    layout: TextLayout,
+    colors: TransportColors,
+) -> impl Scene {
+    bsn! {
+        Children [
+            (transport_track(0x5d, colors.empty)),
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(0x5d),
+                    top: px(0x0d),
+                    width: px(0),
+                    height: px(4),
+                }
+                BackgroundColor({colors.below_limit})
+                ZIndex(1)
+                Pickable::IGNORE
+                template(move |_context| Ok(TransportDisplay::Gauge {
+                    kind: TransportGaugeKind::Capacity,
+                    normal_color: colors.below_limit,
+                    full_color: colors.at_limit,
+                }))
+            ),
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(0xa2),
+                    top: px(0x14),
+                    width: px(0x3c),
+                    height: px(0x0b),
+                }
+                Text("")
+                template(move |_context| Ok(font.clone()))
+                template(move |_context| Ok(layout))
+                TextColor(Color::BLACK)
+                Pickable::IGNORE
+                template(move |_context| Ok(TransportDisplay::CapacityCaption))
+            ),
+        ]
+    }
 }
 
 fn on_transport_adjust(

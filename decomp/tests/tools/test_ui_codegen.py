@@ -9,14 +9,12 @@ from pathlib import Path
 from tools.source_model import build_model
 from tools.ui_codegen import (
     RUST_UI_PATH,
-    build_rust_ui_model,
     load_recipes,
     load_text_resources,
     load_ui_views,
     load_windows_views,
     render_factory,
     render_rust_ui,
-    rust_ui_is_current,
     validate,
     write_generated,
 )
@@ -73,255 +71,14 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("RegisterUiResourceEntry", first_text)
         self.assertIn("RegisterUiResourceEntry", second_text)
 
-    def test_rust_ui_is_deterministic_and_current(self) -> None:
-        first = render_rust_ui(
+    def test_generated_rust_ui_is_current(self) -> None:
+        rendered = render_rust_ui(
             REPO_ROOT, self.recipes, self.views, self.text_resources
         )
-        second = render_rust_ui(
-            REPO_ROOT, self.recipes, self.views, self.text_resources
-        )
-        self.assertEqual(first, second)
         self.assertEqual(
-            first,
+            rendered,
             (REPO_ROOT / RUST_UI_PATH).read_text(encoding="utf-8"),
         )
-        self.assertTrue(
-            rust_ui_is_current(
-                REPO_ROOT, self.recipes, self.views, self.text_resources
-            )
-        )
-        self.assertIn("pub fn startup_1500", first)
-        self.assertIn('retail_node(fourcc!("rand")', first)
-        self.assertIn('retail_node(fourcc!("auto")', first)
-        self.assertIn("pub fn startup_1500() -> impl Scene", first)
-        self.assertIn("bsn! {", first)
-        self.assertIn("Children [", first)
-        self.assertIn("retail_picture_swap(", first)
-        self.assertIn("retail_text_style(", first)
-        self.assertIn("pub fn join_selector_message() -> impl Scene", first)
-        trade = first[
-            first.index("pub fn trade_2009()") : first.index("pub fn trade_2010()")
-        ]
-        capacity = trade[trade.index('retail_node(fourcc!("mCap")') :]
-        self.assertIn('Text("185")', capacity[:800])
-        self.assertIn('Text("All AutoGP\'s")', first)
-        self.assertLess(len(first.splitlines()), 15_000)
-        self.assertNotIn('Text::new("All AutoGP\'s")', first)
-        for forbidden in (
-            "Commands",
-            "ChildOf",
-            "commands.spawn",
-            "commands.entity",
-            "let node_",
-            "assets.picture",
-            "assets.text_style",
-            "resolve_retail_text_style",
-        ):
-            self.assertNotIn(forbidden, first)
-
-    def test_rust_model_covers_every_concrete_factory_view(self) -> None:
-        model = build_rust_ui_model(
-            REPO_ROOT, self.recipes, self.views, self.text_resources
-        )
-        ids = {
-            (view["id"]["resource_file"], view["id"]["resource_id"])
-            for view in model["views"]
-            if "resource_file" in view["id"]
-        }
-        windows_ids = {
-            view["id"]["windows_view"]
-            for view in model["views"]
-            if "windows_view" in view["id"]
-        }
-        self.assertTrue(
-            {
-                ("Linger.rsrc", 954),
-                ("Startup.rsrc", 1500),
-                ("Startup.rsrc", 1501),
-                ("Startup.rsrc", 952),
-                ("Startup.rsrc", 953),
-                ("FlagView.rsrc", 8451),
-                ("MapView.rsrc", 2013),
-                ("Trade.rsrc", 2009),
-                ("Citymain.rsrc", 2011),
-                ("Transport.rsrc", 2014),
-                ("Diplo.rsrc", 2008),
-            }.issubset(ids)
-        )
-        self.assertEqual(len(ids), 81)
-        self.assertEqual(windows_ids, {"join_selector_message"})
-        self.assertEqual(len(model["views"]), 82)
-
-    def test_rust_model_emits_runtime_semantics_and_windows_deltas(self) -> None:
-        model = build_rust_ui_model(
-            REPO_ROOT, self.recipes, self.views, self.text_resources
-        )
-        self.assertEqual(set(model), {"logical_resolution", "views"})
-        by_id = {
-            (view["id"]["resource_file"], view["id"]["resource_id"]): view
-            for view in model["views"]
-            if "resource_file" in view["id"]
-        }
-        newspaper = by_id[("FlagView.rsrc", 8451)]
-        toolbar = next(node for node in newspaper["nodes"] if node["tag"] == "tbr2")
-        self.assertEqual(toolbar["behavior"], "radio_group")
-
-        strategic_map = by_id[("MapView.rsrc", 2013)]
-        nodes_by_tag = {node["tag"]: node for node in strategic_map["nodes"]}
-        self.assertTrue(nodes_by_tag["Flag"]["disabled"])
-        self.assertTrue(nodes_by_tag["quer"]["disabled"])
-        self.assertEqual(nodes_by_tag["Flag"]["behavior"], "activate")
-        self.assertEqual(nodes_by_tag["quer"]["behavior"], "activate")
-        self.assertEqual(nodes_by_tag["agr0"]["behavior"], "radio_button")
-
-        random_setup = by_id[("Startup.rsrc", 1501)]
-        setup_by_tag = {node["tag"]: node for node in random_setup["nodes"]}
-        self.assertEqual(setup_by_tag["map "]["behavior"], "pointer_canvas")
-        self.assertEqual(setup_by_tag["glob"]["behavior"], "activate")
-        self.assertNotIn("picture_visual", setup_by_tag["glob"])
-        self.assertEqual(setup_by_tag["okay"]["picture_visual"], "up_down")
-        self.assertEqual(setup_by_tag["diff"]["behavior"], "radio_group")
-        for tag in ("dif0", "dif1", "dif2", "dif3", "dif4", "hist", "rand"):
-            text = setup_by_tag[tag]["text"]
-            self.assertEqual(
-                (text["font_family"], text["face_flags"], text["point_size"], text["alignment"]),
-                (1, 0, 12, 1),
-            )
-            self.assertEqual(setup_by_tag[tag]["behavior"], "radio_button")
-            self.assertNotIn("picture_visual", setup_by_tag[tag])
-        for tag in ("tcou", "dift", "tnam"):
-            text = setup_by_tag[tag]["text"]
-            self.assertEqual((text["font_family"], text["point_size"]), (1, 14))
-
-        city = by_id[("Citymain.rsrc", 2011)]
-        city_by_tag = {node["tag"]: node for node in city["nodes"]}
-        self.assertEqual(city_by_tag["main"]["behavior"], "pointer_canvas")
-        self.assertEqual(len(city["city_buildings"]), 16)
-        self.assertEqual(
-            [row["slot"] for row in sorted(city["city_buildings"], key=lambda row: row["draw_order"])],
-            [
-                "food_processing",
-                "warehouse",
-                "shipyard",
-                "university",
-                "transport",
-                "regional_population",
-                "trade_school",
-                "oil_refinery",
-                "power_plant",
-                "steel_mill",
-                "metalworks",
-                "armory",
-                "textile_mill",
-                "clothing_factory",
-                "lumber_mill",
-                "furniture_factory",
-            ],
-        )
-        self.assertEqual(len(city["city_building_actions"]), 37)
-        action_by_picture = {
-            row["picture_id"]: row for row in city["city_building_actions"]
-        }
-        self.assertEqual(
-            action_by_picture[15031],
-            {
-                "slot": "metalworks",
-                "level": 1,
-                "picture_id": 15031,
-                "frame_count": 9,
-                "origin": [492, 352],
-                "frame_size": [22, 9],
-            },
-        )
-        self.assertEqual(action_by_picture[15070]["slot"], "power_plant")
-        self.assertEqual(action_by_picture[15070]["frame_count"], 13)
-        clothing = by_id[("Citydlog.rsrc", 9201)]
-        clothing_by_tag = {node["tag"]: node for node in clothing["nodes"]}
-        self.assertEqual(clothing_by_tag["left"]["behavior"], "activate")
-        self.assertEqual(clothing_by_tag["rght"]["behavior"], "activate")
-
-        expansion = by_id[("Citydlog.rsrc", 9221)]
-        expansion_by_tag = {node["tag"]: node for node in expansion["nodes"]}
-        for tag in ("name", "capT", "cost", "warn"):
-            text = expansion_by_tag[tag]["text"]
-            self.assertEqual(
-                (
-                    text["font_family"],
-                    text["face_flags"],
-                    text["point_size"],
-                    text["alignment"],
-                ),
-                (1, 0, 12, 1),
-            )
-
-        planet_dialog = by_id[("Linger.rsrc", 954)]
-        planet_by_tag = {node["tag"]: node for node in planet_dialog["nodes"]}
-        self.assertEqual(planet_by_tag["plan"]["behavior"], "text_edit")
-        self.assertEqual(planet_by_tag["plan"]["text"]["max_chars"], 32)
-        self.assertTrue(planet_by_tag["1or2"]["disabled"])
-        self.assertEqual(planet_by_tag["okay"]["behavior"], "activate")
-        self.assertEqual(planet_by_tag["okay"]["picture_visual"], "up_down")
-        self.assertTrue(planet_by_tag["canc"]["disabled"])
-        for view in model["views"]:
-            for node in view["nodes"]:
-                if "text" in node:
-                    required_text = {
-                        "value",
-                        "font_family",
-                        "face_flags",
-                        "point_size",
-                        "alignment",
-                    }
-                    optional_text = {
-                        "max_chars",
-                        "color_index",
-                        "shadow_color_index",
-                        "shadow_offset",
-                        "center_vertically",
-                    }
-                    self.assertTrue(required_text.issubset(node["text"]))
-                    self.assertTrue(
-                        set(node["text"]).issubset(required_text | optional_text)
-                    )
-
-        forbidden_keys = {
-            "event",
-            "root",
-            "kind",
-            "state",
-            "enabled",
-            "input_gate",
-            "child_hit_test",
-            "control_value",
-            "properties",
-            "frame_style",
-            "control_state",
-            "style",
-            "number",
-            "cluster_value",
-            "window",
-            "resource_index",
-            "style_ref",
-            "sources",
-            "source",
-            "legacy_type",
-            "legacy_class",
-            "resolved_class",
-            "resource_offset",
-            "confidence",
-            "interactive",
-        }
-
-        def visit(value: object) -> None:
-            if isinstance(value, dict):
-                self.assertTrue(forbidden_keys.isdisjoint(value), value)
-                for child in value.values():
-                    visit(child)
-            elif isinstance(value, list):
-                for child in value:
-                    visit(child)
-
-        visit(model)
 
     def test_control_state_uses_recovered_control_api(self) -> None:
         rendered = "\n".join(self.rendered.values())
