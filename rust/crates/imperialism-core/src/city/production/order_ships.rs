@@ -24,11 +24,12 @@ pub(crate) fn ship_max_order(state: &ShipOrderState, city: &CityState) -> i16 {
 
 pub(crate) fn set_ship_quantity(
     state: &mut ShipOrderState,
-    city: &mut CityState,
+    stockpile: &mut Stockpile,
+    maximum: i16,
     quantity: i16,
 ) -> bool {
     let delta = quantity - state.progress.quantity;
-    if quantity > ship_max_order(state, city) || quantity < 0 {
+    if quantity > maximum || quantity < 0 {
         return false;
     }
     state.progress.quantity = quantity;
@@ -41,7 +42,7 @@ pub(crate) fn set_ship_quantity(
         ResourceKind::Coal,
         ResourceKind::Fuel,
     ] {
-        city.adjust_stock(resource, -(costs[resource] * delta));
+        stockpile.credit(resource, -(costs[resource] * delta));
     }
     true
 }

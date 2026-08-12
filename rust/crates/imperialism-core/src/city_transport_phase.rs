@@ -329,12 +329,9 @@ impl GameState {
             }
         }
         let maximum = self
-            .refresh_city_order(nation, CityOrderId::Ship(slot))
+            .city_order_limit(nation, CityOrderId::Ship(slot))
             .maximum;
-        assert!(
-            self.set_city_order_quantity(nation, CityOrderId::Ship(slot), maximum.min(1))
-                .applied()
-        );
+        assert!(self.set_city_order_quantity(nation, CityOrderId::Ship(slot), maximum.min(1)));
     }
 
     fn rebalance_first_turn_ai_labor(&mut self, nation: MajorNationId) -> i16 {
@@ -363,13 +360,10 @@ impl GameState {
                 .city_order_demand
                 .training[level];
             let maximum = self
-                .refresh_city_order(nation, CityOrderId::Training(level))
+                .city_order_limit(nation, CityOrderId::Training(level))
                 .maximum;
             let accepted = requested.min(maximum);
-            assert!(
-                self.set_city_order_quantity(nation, CityOrderId::Training(level), accepted)
-                    .applied()
-            );
+            assert!(self.set_city_order_quantity(nation, CityOrderId::Training(level), accepted));
             self.nations.majors[nation]
                 .economy
                 .interior_civilian
@@ -382,16 +376,13 @@ impl GameState {
             .city_order_demand
             .population_growth;
         let maximum = self
-            .refresh_city_order(nation, CityOrderId::PopulationGrowth)
+            .city_order_limit(nation, CityOrderId::PopulationGrowth)
             .maximum;
-        assert!(
-            self.set_city_order_quantity(
-                nation,
-                CityOrderId::PopulationGrowth,
-                requested.min(maximum),
-            )
-            .applied()
-        );
+        assert!(self.set_city_order_quantity(
+            nation,
+            CityOrderId::PopulationGrowth,
+            requested.min(maximum),
+        ));
         self.nations.majors[nation]
             .economy
             .interior_civilian
@@ -467,17 +458,18 @@ impl GameState {
             if requested == 0 {
                 continue;
             }
-            let spec = expansion_order_spec(facility);
-            self.request_first_turn_ai_resource(nation, spec.primary, requested, 7);
-            self.request_first_turn_ai_resource(nation, spec.secondary, requested, 7);
+            let (primary, secondary) = EXPANSION_INPUTS;
+            self.request_first_turn_ai_resource(nation, primary, requested, 7);
+            self.request_first_turn_ai_resource(nation, secondary, requested, 7);
             let maximum = self
-                .refresh_city_order(nation, CityOrderId::Expansion(facility))
+                .city_order_limit(nation, CityOrderId::Expansion(facility))
                 .maximum;
             let accepted = requested.min(maximum);
-            assert!(
-                self.set_city_order_quantity(nation, CityOrderId::Expansion(facility), accepted)
-                    .applied()
-            );
+            assert!(self.set_city_order_quantity(
+                nation,
+                CityOrderId::Expansion(facility),
+                accepted
+            ));
             let interior = self.nations.majors[nation]
                 .economy
                 .interior_civilian
@@ -536,13 +528,10 @@ impl GameState {
             .interior_civilian
             .resource_order_metrics[ResourceKind::Food];
         let maximum = self
-            .refresh_city_order(nation, CityOrderId::FoodProcessing)
+            .city_order_limit(nation, CityOrderId::FoodProcessing)
             .maximum;
         let accepted = requested.min(maximum);
-        assert!(
-            self.set_city_order_quantity(nation, CityOrderId::FoodProcessing, accepted)
-                .applied()
-        );
+        assert!(self.set_city_order_quantity(nation, CityOrderId::FoodProcessing, accepted));
         let metric = &mut self.nations.majors[nation]
             .economy
             .interior_civilian
@@ -589,18 +578,15 @@ impl GameState {
             }
         }
 
-        let view = self.refresh_city_order(nation, CityOrderId::Item(output));
-        let accepted = requested.min(view.maximum);
-        if accepted < requested && view.limiting_constraint == ProductionConstraint::Capacity {
+        let limit = self.city_order_limit(nation, CityOrderId::Item(output));
+        let accepted = requested.min(limit.maximum);
+        if accepted < requested && limit.constraint == ProductionConstraint::Capacity {
             self.nations.majors[nation]
                 .economy
                 .interior_civilian
                 .production_deficit_by_slot[spec.production_slot] += requested - accepted;
         }
-        assert!(
-            self.set_city_order_quantity(nation, CityOrderId::Item(output), accepted)
-                .applied()
-        );
+        assert!(self.set_city_order_quantity(nation, CityOrderId::Item(output), accepted));
         let metric = &mut self.nations.majors[nation]
             .economy
             .interior_civilian
@@ -631,9 +617,7 @@ impl GameState {
     fn rebuild_first_turn_ai_allocation_average(&mut self, nation: MajorNationId) {
         let mut allocation = ProductionTable::<i16>::default();
         for output in ITEM_OUTPUTS {
-            let order = self.nations.city(nation).orders.items[output.resource()]
-                .as_ref()
-                .expect("retail item order");
+            let order = &self.nations.city(nation).orders.items[output];
             let slot = item_order_spec(output).production_slot;
             allocation[slot] += order.progress.quantity;
         }
@@ -722,11 +706,9 @@ impl GameState {
 
 fn city_orders_are_idle(orders: &CityOrders) -> bool {
     orders.food_processing.quantity == 0
-        && ITEM_OUTPUTS.into_iter().all(|item| {
-            orders.items[item.resource()]
-                .as_ref()
-                .is_some_and(|order| order.progress.quantity == 0)
-        })
+        && ITEM_OUTPUTS
+            .into_iter()
+            .all(|item| orders.items[item].progress.quantity == 0)
         && [TrainingLevel::Medium, TrainingLevel::High]
             .into_iter()
             .all(|level| orders.training[level].quantity == 0)
@@ -741,10 +723,8 @@ fn city_orders_are_idle(orders: &CityOrders) -> bool {
             .all(|slot| orders.ships[slot].progress.quantity == 0)
         && orders.transport_capacity.progress.quantity == 0
         && orders.power_plant.progress.quantity == 0
-        && EXPANSION_SLOTS.into_iter().all(|facility| {
-            orders.expansions[facility.slot()]
-                .as_ref()
-                .is_some_and(|order| order.progress.quantity == 0)
-        })
+        && EXPANSION_SLOTS
+            .into_iter()
+            .all(|facility| orders.expansions[facility].progress.quantity == 0)
         && orders.population_growth.quantity == 0
 }

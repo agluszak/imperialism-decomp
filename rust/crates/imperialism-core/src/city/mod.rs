@@ -6,14 +6,13 @@ mod state;
 
 pub use buildings::{BuildingWindowState, CityFacilitySlot};
 pub use production::{
-    CIVILIAN_RESOURCE_SPECIALTIES, CityOrderChange, CityOrderId, CityOrderStatus, CityOrders,
-    ExpandableFacility, ItemInputs, ItemOrderSpec, ManufacturedItem, MaterialOrderSpec,
-    MilitaryRecruitOrderState, MilitaryRecruitOrderTable, MilitaryRecruitmentCategory,
-    PowerPlantOrderState, ProductionConstraint, ProductionProgress, RecruitmentOrderSpec,
-    RequestedCityOrderState, ResourceCost, ShipOrderSlot, ShipOrderState, ShipOrderTable,
-    TrainingLevel, TrainingOrderTable, civilian_recruitment_spec, expansion_order_spec,
-    item_order_spec, military_recruitment_category, military_recruitment_spec,
-    resource_development_yield, ship_display_stats, ship_order_costs,
-    ship_type_is_valid_for_order_slot, transport_capacity_order_spec,
+    CIVILIAN_RESOURCE_SPECIALTIES, CityOrderId, CityOrderStatus, CityOrders, ExpandableFacility,
+    ExpansionOrderTable, ItemOrderTable, ManufacturedItem, MilitaryRecruitOrderState,
+    MilitaryRecruitOrderTable, MilitaryRecruitmentCategory, OrderLimit, PowerPlantOrderState,
+    ProductionConstraint, ProductionProgress, RecruitmentOrderSpec, RequestedCityOrderState,
+    ResourceCost, ShipOrderSlot, ShipOrderState, ShipOrderTable, TrainingLevel, TrainingOrderTable,
+    civilian_recruitment_spec, military_recruitment_spec, resource_development_yield,
+    ship_display_stats, ship_order_costs,
 };
+pub(crate) use production::{EXPANSION_INPUTS, ItemInputs, item_order_spec};
 pub use state::{CityState, Stockpile, TownState};

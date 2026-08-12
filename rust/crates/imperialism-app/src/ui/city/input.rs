@@ -20,13 +20,7 @@ pub(in crate::ui::city) fn on_city_amount_bar_click(
     let city = &session.0.nations().major(nation).city;
     let capacity = city.production_orders[bar.slot];
     let previous = match bar.order {
-        CityOrderId::Item(output) => {
-            city.orders.items[output.resource()]
-                .as_ref()
-                .expect("industry amount bar has a retail item order")
-                .progress
-                .quantity
-        }
+        CityOrderId::Item(output) => city.orders.items[output].progress.quantity,
         _ => unreachable!("industry amount bar has an item order"),
     };
     let mut quantity = if capacity > 0
