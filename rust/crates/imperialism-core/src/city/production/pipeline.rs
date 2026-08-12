@@ -7,7 +7,7 @@ impl GameState {
     /// Resolves the city's retained production orders and starts its next
     /// production cycle. This is retail `TCity::EndCityPhase`; unit objects are
     /// committed after the city borrow is released.
-    pub(crate) fn end_city_phase(&mut self, nation: MajorNationId) {
+    pub fn end_city_phase(&mut self, nation: MajorNationId) {
         const ITEM_OUTPUTS: [ManufacturedItem; 9] = ManufacturedItem::ALL;
         const CIVILIAN_KINDS: [CivilianUnitKind; 9] = [
             CivilianUnitKind::Miner,
@@ -162,7 +162,7 @@ impl GameState {
     }
 
     /// Resolves the Armory and Shipyard orders after potential calculation.
-    pub(crate) fn produce_city_units(&mut self, nation: MajorNationId) {
+    pub fn produce_city_units(&mut self, nation: MajorNationId) {
         const MILITARY_CATEGORIES: [MilitaryRecruitmentCategory; 8] = [
             MilitaryRecruitmentCategory::LightInfantry,
             MilitaryRecruitmentCategory::RegularInfantry,

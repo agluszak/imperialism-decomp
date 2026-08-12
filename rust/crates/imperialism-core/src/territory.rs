@@ -158,16 +158,8 @@ impl ProvinceState {
         &self.explored_by_majors
     }
 
-    pub(crate) fn clear_explored_by_majors(&mut self) {
-        self.explored_by_majors = MajorNationTable::default();
-    }
-
     pub const fn city_score(&self) -> i32 {
         self.city_score
-    }
-
-    pub(crate) fn set_city_score(&mut self, value: i32) {
-        self.city_score = value;
     }
 
     fn set_owner(&mut self, new_owner: NationId) {

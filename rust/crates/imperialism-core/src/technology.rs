@@ -76,16 +76,6 @@ impl Default for CityTechnologyCapabilities {
     }
 }
 
-impl CityTechnologyCapabilities {
-    pub(crate) const fn secondary_civilian_distance_terrain(self) -> CivilianTerrainAccess {
-        CivilianTerrainAccess {
-            hills: self.secondary_civilian_hills,
-            mountain: self.oil_drilling,
-            swamp: self.secondary_civilian_swamp,
-        }
-    }
-}
-
 pub const TECHNOLOGY_COUNT: usize = 29;
 
 const RANDOM_START_PRIORITY_RANGES: [(i16, i16); TECHNOLOGY_COUNT - 3] = [

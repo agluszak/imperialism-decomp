@@ -39,7 +39,11 @@ def run_test(
         require_fixtures=getattr(args, "require_fixtures", False),
     )
     outcome = RuntimeRunner(
-        BUILD_DIR / "runtime-results", fixture_directory(), dependencies
+        Path(os.environ["IMPERIALISM_RUNTIME_RESULT_DIR"])
+        if os.environ.get("IMPERIALISM_RUNTIME_RESULT_DIR")
+        else BUILD_DIR / "runtime-results",
+        fixture_directory(),
+        dependencies,
     ).run(request)
     serialized = json.dumps(outcome.result, indent=2, sort_keys=True) + "\n"
     print(serialized, end="")

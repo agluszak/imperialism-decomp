@@ -3,6 +3,7 @@ use super::*;
 #[derive(Component)]
 pub(in crate::ui::city) struct CityBuildingDialog {
     pub(in crate::ui::city) slot: CityFacilitySlot,
+    window: Entity,
     saved_position: Option<IVec2>,
 }
 
@@ -103,6 +104,7 @@ pub(in crate::ui::city) fn open_city_dialog(
     commands.entity(root).insert((
         CityBuildingDialog {
             slot,
+            window: Entity::PLACEHOLDER,
             saved_position,
         },
         GlobalZIndex(z_index),
@@ -166,15 +168,16 @@ pub(in crate::ui::city) fn bind_city_dialog_root(
 
 pub(in crate::ui::city) fn bind_city_dialogs(
     mut commands: Commands,
-    dialogs: Query<(Entity, &CityBuildingDialog), Added<CityBuildingDialog>>,
+    mut dialogs: Query<(Entity, &mut CityBuildingDialog), Added<CityBuildingDialog>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    for (root, dialog) in &dialogs {
+    for (root, mut dialog) in &mut dialogs {
+        let window = find_descendant(root, fourcc!("WIND"), &children, &tags);
+        dialog.window = window;
         if let Some(position) = dialog.saved_position {
-            let window = find_descendant(root, fourcc!("WIND"), &children, &tags);
             commands
                 .entity(window)
                 .entry::<Node>()
@@ -286,8 +289,6 @@ pub(in crate::ui::city) fn leave_city_screen(
     mut session: ResMut<GameSession>,
     dialogs: Query<(Entity, &CityBuildingDialog)>,
     windows: Query<&Node>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
 ) {
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("City screen requires an active major nation");
@@ -295,11 +296,10 @@ pub(in crate::ui::city) fn leave_city_screen(
         let slot = CityFacilitySlot::from_index(index as u8)
             .expect("City facility index is in the fixed slot range");
         let open = dialogs.iter().find(|(_, dialog)| dialog.slot == slot);
-        let state = if let Some((root, _)) = open {
-            let window = find_descendant(root, fourcc!("WIND"), &children, &tags);
+        let state = if let Some((_, dialog)) = open {
             let (left, top) = node_position(
                 windows
-                    .get(window)
+                    .get(dialog.window)
                     .expect("open City dialog has its generated window"),
             );
             BuildingWindowState {

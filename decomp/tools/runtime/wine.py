@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from contextlib import contextmanager
 import os
 from pathlib import Path
 import fcntl
@@ -239,6 +240,15 @@ def worktree_prefix() -> Path:
     them can kill another's game with `wineserver -k`.
     """
     return BUILD_DIR / "wineprefix"
+
+
+@contextmanager
+def wine_run_lock():
+    """Serialize Wine launches that share this worktree's prefix."""
+    BUILD_DIR.mkdir(parents=True, exist_ok=True)
+    with (BUILD_DIR / "wine-run.lock").open("a+b") as lock:
+        fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+        yield
 
 
 def _clone_tree(source: Path, destination: Path) -> None:

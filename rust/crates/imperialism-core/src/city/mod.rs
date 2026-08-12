@@ -14,5 +14,4 @@ pub use production::{
     civilian_recruitment_spec, military_recruitment_spec, resource_development_yield,
     ship_display_stats, ship_order_costs,
 };
-pub(crate) use production::{EXPANSION_INPUTS, ItemInputs, item_order_spec};
 pub use state::{CityState, Stockpile, TownState};

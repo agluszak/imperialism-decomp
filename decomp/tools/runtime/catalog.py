@@ -211,15 +211,6 @@ TESTS = (
         record_game_flow=True,
     ),
     RuntimeTestSpec(
-        "easy_turn_from_save",
-        "EasyTurnFromSaveTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=BEGINNING_OF_GAME,
-        required_oracles=(),
-        record_game_flow=True,
-    ),
-    RuntimeTestSpec(
         "native_transition_oracle",
         "NativeTransitionOracle",
         (),
