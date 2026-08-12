@@ -119,37 +119,31 @@ struct PlanetSeedAccept;
 
 pub(crate) struct RandomSetupPlugin;
 
-pub(crate) fn register_random_setup_logic(app: &mut App) {
-    app.init_resource::<RandomSetupClockSeed>()
-        .init_resource::<RandomGameSetup>()
-        .init_resource::<RandomSetupPreview>()
-        .add_systems(
-            Update,
-            (
-                sync_difficulty_checked,
-                sync_localized_names_checked,
-                sync_country_name_from_setup,
-            )
-                .run_if(in_state(AppState::RandomSetup)),
-        )
-        .add_observer(on_random_setup_activate)
-        .add_observer(on_difficulty_selected)
-        .add_observer(on_localized_names_selected)
-        .add_observer(on_country_name_edited)
-        .add_observer(on_planet_seed_accept)
-        .add_observer(on_planet_seed_enter);
-}
-
 impl Plugin for RandomSetupPlugin {
     fn build(&self, app: &mut App) {
-        register_random_setup_logic(app);
-        // Asset-backed dialog open stays off the headless structure-only test path.
-        app.add_observer(on_open_planet_seed);
-        app.add_systems(
-            OnEnter(AppState::RandomSetup),
-            (enter_random_setup, bind_random_setup).chain(),
-        )
-        .add_systems(Update, bind_planet_seed_dialog);
+        app.init_resource::<RandomSetupClockSeed>()
+            .init_resource::<RandomGameSetup>()
+            .init_resource::<RandomSetupPreview>()
+            .add_systems(
+                Update,
+                (
+                    sync_difficulty_checked,
+                    sync_localized_names_checked,
+                    sync_country_name_from_setup,
+                )
+                    .run_if(in_state(AppState::RandomSetup)),
+            )
+            .add_observer(on_random_setup_activate)
+            .add_observer(on_difficulty_selected)
+            .add_observer(on_localized_names_selected)
+            .add_observer(on_country_name_edited)
+            .add_observer(on_planet_seed_accept)
+            .add_observer(on_planet_seed_enter)
+            .add_systems(
+                OnEnter(AppState::RandomSetup),
+                (enter_random_setup, bind_random_setup).chain(),
+            )
+            .add_systems(Update, bind_planet_seed_dialog);
     }
 }
 
@@ -331,24 +325,9 @@ fn on_random_setup_activate(activate: On<Activate>, mut random_setup: RandomSetu
             );
         }
         RandomSetupAction::OpenPlanetSeed => {
-            // Handled by [`on_open_planet_seed`].
+            open_planet_seed_dialog(&mut random_setup.commands);
         }
     }
-}
-
-fn on_open_planet_seed(
-    activate: On<Activate>,
-    actions: Query<&RandomSetupAction>,
-    dialog_open: Query<(), With<ModalDialog>>,
-    mut commands: Commands,
-) {
-    let Ok(RandomSetupAction::OpenPlanetSeed) = actions.get(activate.entity).copied() else {
-        return;
-    };
-    if !dialog_open.is_empty() {
-        return;
-    }
-    open_planet_seed_dialog(&mut commands);
 }
 
 fn on_difficulty_selected(

@@ -380,54 +380,77 @@ fn bind_trade_controls(
             TradeDisplay::Offer(binding.commodity),
             RelativeCursorPosition::default(),
         ));
-        commands.spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: Val::Px(0.0),
-                top: Val::Px(0.0),
-                width: Val::Px(0.0),
-                height: Val::Px(7.0),
-                ..default()
-            },
-            BackgroundColor(gauge_color),
-            Pickable::IGNORE,
-            ChildOf(bar),
-            TradeDisplay::Gauge(binding.commodity),
-        ));
-        commands.spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: Val::Px(200.0),
-                top: Val::Px(-2.0),
-                width: Val::Px(38.0),
-                height: Val::Px(14.0),
-                ..default()
-            },
-            Text::new(""),
+        commands
+            .entity(bar)
+            .apply_scene(trade_gauge_overlay(binding.commodity, gauge_color));
+        commands.entity(row).apply_scene(trade_row_overlay(
+            binding.commodity,
             row_font.clone(),
             row_layout,
-            TextColor(row_color),
-            Pickable::IGNORE,
-            ChildOf(row),
-            TradeDisplay::Price(binding.commodity),
+            row_color,
         ));
-        commands.spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: Val::Px(282.0),
-                top: Val::Px(-2.0),
-                width: Val::Px(18.0),
-                height: Val::Px(14.0),
-                ..default()
-            },
-            Text::new(""),
-            row_font.clone(),
-            row_layout,
-            TextColor(row_color),
-            Pickable::IGNORE,
-            ChildOf(row),
-            TradeDisplay::Stock(binding.commodity),
-        ));
+    }
+}
+
+fn trade_gauge_overlay(commodity: TradeCommodity, color: Color) -> impl Scene {
+    bsn! {
+        Children [
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(0),
+                    top: px(0),
+                    width: px(0),
+                    height: px(7),
+                }
+                BackgroundColor(color)
+                Pickable::IGNORE
+                template(move |_context| Ok(TradeDisplay::Gauge(commodity)))
+            ),
+        ]
+    }
+}
+
+fn trade_row_overlay(
+    commodity: TradeCommodity,
+    font: TextFont,
+    layout: TextLayout,
+    color: Color,
+) -> impl Scene {
+    let price_font = font.clone();
+    bsn! {
+        Children [
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(200),
+                    top: px(-2),
+                    width: px(38),
+                    height: px(14),
+                }
+                Text("")
+                template(move |_context| Ok(price_font.clone()))
+                template(move |_context| Ok(layout))
+                TextColor(color)
+                Pickable::IGNORE
+                template(move |_context| Ok(TradeDisplay::Price(commodity)))
+            ),
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(282),
+                    top: px(-2),
+                    width: px(18),
+                    height: px(14),
+                }
+                Text("")
+                template(move |_context| Ok(font.clone()))
+                template(move |_context| Ok(layout))
+                TextColor(color)
+                Pickable::IGNORE
+                template(move |_context| Ok(TradeDisplay::Stock(commodity)))
+            ),
+        ]
     }
 }
 

@@ -50,6 +50,13 @@ impl Plugin for CityPlugin {
                 restore_city_dialogs,
                 bind_building_change_dialogs,
                 bind_city_dialogs,
+            )
+                .chain()
+                .run_if(in_state(AppState::City)),
+        )
+        .add_systems(
+            Update,
+            (
                 sync_city_screen,
                 sync_industry_dialog,
                 sync_warehouse_dialog,
@@ -62,7 +69,6 @@ impl Plugin for CityPlugin {
                 sync_university_dialog,
                 sync_shipyard_dialog,
             )
-                .chain()
                 .run_if(in_state(AppState::City)),
         )
         .add_observer(on_city_dialog_pressed.run_if(in_state(AppState::City)))

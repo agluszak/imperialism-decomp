@@ -62,19 +62,14 @@ struct DiplomacyScreen {
 }
 
 #[derive(Component, Clone, Copy)]
-struct DiplomacyTopicControl(DiplomacyTopic);
-
-#[derive(Component, Clone, Copy)]
 struct DiplomacyPanel(DiplomacyTopic);
 
 #[derive(Component, Clone, Copy)]
-struct DiplomacyGrantControl {
-    row: usize,
-    recurring: bool,
+enum DiplomacyAction {
+    Topic(DiplomacyTopic),
+    Grant { row: usize, recurring: bool },
+    Trade(usize),
 }
-
-#[derive(Component, Clone, Copy)]
-struct DiplomacyTradeControl(usize);
 
 #[derive(Component)]
 struct DiplomacyMapPicture;
@@ -332,7 +327,7 @@ fn bind_diplomacy_controls(
         let control = find_descendant(root, tag, children, tags);
         commands
             .entity(control)
-            .insert(DiplomacyTopicControl(topic))
+            .insert(DiplomacyAction::Topic(topic))
             .remove::<InteractionDisabled>();
     }
     for tag in [fourcc!("trtt"), fourcc!("cout")] {
@@ -355,7 +350,7 @@ fn bind_diplomacy_controls(
     .enumerate()
     {
         let control = find_descendant(root, tag, children, tags);
-        commands.entity(control).insert(DiplomacyGrantControl {
+        commands.entity(control).insert(DiplomacyAction::Grant {
             row: index / 2,
             recurring: index % 2 != 0,
         });
@@ -375,7 +370,7 @@ fn bind_diplomacy_controls(
         let control = find_descendant(trade_cluster, tag, children, tags);
         commands
             .entity(control)
-            .insert(DiplomacyTradeControl(index));
+            .insert(DiplomacyAction::Trade(index));
     }
 
     for tag in [
@@ -784,46 +779,44 @@ fn spawn_shadowed_text(
 
 fn on_diplomacy_activate(
     activate: On<Activate>,
-    topics: Query<&DiplomacyTopicControl>,
-    grants: Query<&DiplomacyGrantControl>,
-    trade: Query<&DiplomacyTradeControl>,
+    actions: Query<&DiplomacyAction>,
     mut screens: Query<&mut DiplomacyScreen>,
     session: Res<GameSession>,
 ) {
-    let topic = topics.get(activate.entity).ok();
-    let grant = grants.get(activate.entity).ok();
-    let trade = trade.get(activate.entity).ok();
-    if topic.is_none() && grant.is_none() && trade.is_none() {
+    let Ok(action) = actions.get(activate.entity) else {
         return;
-    }
+    };
     let mut screen = screens
         .single_mut()
         .expect("Diplomacy control has one open Diplomacy screen");
-    if let Some(topic) = topic {
-        if screen.topic == topic.0 {
-            return;
-        }
-        screen.topic = topic.0;
-        screen.framed_nation = MajorNationId::from_nation(session.0.turn().active_nation)
-            .expect("Diplomacy screen requires an active major nation")
-            .nation();
-        match topic.0 {
-            DiplomacyTopic::Information => {}
-            DiplomacyTopic::Grants => {
-                screen.grant_row = 0;
-                screen.recurring_grant = false;
+    match *action {
+        DiplomacyAction::Topic(topic) => {
+            if screen.topic == topic {
+                return;
             }
-            DiplomacyTopic::Trade => screen.trade_row = 0,
+            screen.topic = topic;
+            screen.framed_nation = MajorNationId::from_nation(session.0.turn().active_nation)
+                .expect("Diplomacy screen requires an active major nation")
+                .nation();
+            match topic {
+                DiplomacyTopic::Information => {}
+                DiplomacyTopic::Grants => {
+                    screen.grant_row = 0;
+                    screen.recurring_grant = false;
+                }
+                DiplomacyTopic::Trade => screen.trade_row = 0,
+            }
         }
-    } else if let Some(grant) = grant {
-        if screen.grant_row != grant.row || screen.recurring_grant != grant.recurring {
-            screen.grant_row = grant.row;
-            screen.recurring_grant = grant.recurring;
+        DiplomacyAction::Grant { row, recurring } => {
+            if screen.grant_row != row || screen.recurring_grant != recurring {
+                screen.grant_row = row;
+                screen.recurring_grant = recurring;
+            }
         }
-    } else if let Some(trade) = trade
-        && screen.trade_row != trade.0
-    {
-        screen.trade_row = trade.0;
+        DiplomacyAction::Trade(row) if screen.trade_row != row => {
+            screen.trade_row = row;
+        }
+        DiplomacyAction::Trade(_) => {}
     }
 }
 
@@ -1016,8 +1009,7 @@ fn sync_diplomacy_controls(
     session: Res<GameSession>,
     screens: Query<Ref<DiplomacyScreen>>,
     mut panels: Query<(&DiplomacyPanel, &mut Node)>,
-    grant_controls: Query<(Entity, &DiplomacyGrantControl, Option<&Checked>)>,
-    trade_controls: Query<(Entity, &DiplomacyTradeControl, Option<&Checked>)>,
+    controls: Query<(Entity, &DiplomacyAction, Option<&Checked>)>,
     mut brackets: Query<(&DiplomacyTopicBracket, &mut ImageNode, &mut Visibility)>,
     mut treasury: Query<&mut Text, With<DiplomacyTreasury>>,
     mut grant_totals: Query<&mut Text, (With<DiplomacyGrantTotal>, Without<DiplomacyTreasury>)>,
@@ -1035,23 +1027,19 @@ fn sync_diplomacy_controls(
             PANEL_OFFSCREEN_TOP
         });
     }
-    for (entity, control, checked) in &grant_controls {
-        set_checked(
-            &mut commands,
-            entity,
-            checked.is_some(),
-            screen.topic == DiplomacyTopic::Grants
-                && control.row == screen.grant_row
-                && control.recurring == screen.recurring_grant,
-        );
-    }
-    for (entity, control, checked) in &trade_controls {
-        set_checked(
-            &mut commands,
-            entity,
-            checked.is_some(),
-            screen.topic == DiplomacyTopic::Trade && control.0 == screen.trade_row,
-        );
+    for (entity, action, checked) in &controls {
+        let selected = match *action {
+            DiplomacyAction::Grant { row, recurring } => {
+                screen.topic == DiplomacyTopic::Grants
+                    && row == screen.grant_row
+                    && recurring == screen.recurring_grant
+            }
+            DiplomacyAction::Trade(row) => {
+                screen.topic == DiplomacyTopic::Trade && row == screen.trade_row
+            }
+            DiplomacyAction::Topic(_) => continue,
+        };
+        set_checked(&mut commands, entity, checked.is_some(), selected);
     }
     for (bracket, mut image, mut visibility) in &mut brackets {
         let visible = bracket.left == (screen.topic == DiplomacyTopic::Information);
