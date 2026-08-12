@@ -260,6 +260,23 @@ class UiTextPropertyPatch:
 
 
 @dataclass(frozen=True)
+class DiplomacyMapKeyName:
+    node_id: int
+    tag: str
+    rect: tuple[int, int, int, int]
+
+
+@dataclass(frozen=True)
+class DiplomacyMapKeyNames:
+    view: UiResourceKey
+    parent_id: int
+    parent_tag: str
+    evidence: str
+    text: dict[str, object]
+    children: tuple[DiplomacyMapKeyName, ...]
+
+
+@dataclass(frozen=True)
 class CityBuildingVisual:
     slot: str
     origin: tuple[int, int]
@@ -547,6 +564,35 @@ def load_windows_text_property_patches(repo_root: Path) -> tuple[UiTextPropertyP
                 int(patch.node_id, 16),
             ),
         )
+    )
+
+
+def load_diplomacy_map_key_names(repo_root: Path) -> DiplomacyMapKeyNames:
+    data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
+    section = data["diplomacy_map_key_names"]
+    parent = section["parent"]
+    children = tuple(
+        DiplomacyMapKeyName(
+            node_id=int(row["node"]),
+            tag=_fourcc(row["tag"], "diplomacy_map_key_names/tag"),
+            rect=tuple(int(value) for value in row["rect"]),
+        )
+        for row in section["children"]
+    )
+    if any(
+        child.node_id != int.from_bytes(child.tag.encode("ascii"), "big")
+        for child in children
+    ):
+        raise ValueError("diplomacy map-key node ids must equal their FourCC tags")
+    if len({child.tag for child in children}) != len(children):
+        raise ValueError("diplomacy map-key tags must be unique")
+    return DiplomacyMapKeyNames(
+        view=UiResourceKey.parse(str(section["view"])),
+        parent_id=int(parent["node"]),
+        parent_tag=_fourcc(parent["tag"], "diplomacy_map_key_names/parent/tag"),
+        evidence=str(section["evidence"]),
+        text=dict(section["text"]),
+        children=children,
     )
 
 
@@ -1452,6 +1498,42 @@ def _emit_catalog_view_nodes(
     return nodes
 
 
+def _emit_diplomacy_map_key_names(
+    key: UiResourceKey,
+    semantic_view: UiSemanticView,
+    names: DiplomacyMapKeyNames,
+) -> list[dict[str, object]]:
+    if key != names.view:
+        return []
+    nodes_by_id = {int(node.node_id, 16): node for node in semantic_view.nodes}
+    parent = nodes_by_id.get(names.parent_id)
+    if parent is None or parent.tag != names.parent_tag:
+        raise ValueError(
+            f"{WINDOWS_DELTA_PATH}: {key.text()} has no "
+            f"{names.parent_tag} parent at 0x{names.parent_id:04x}"
+        )
+    emitted: list[dict[str, object]] = []
+    occupied_ids = set(nodes_by_id)
+    for child in names.children:
+        if child.node_id in occupied_ids:
+            raise ValueError(
+                f"{WINDOWS_DELTA_PATH}: {key.text()} duplicate catalog node "
+                f"0x{child.node_id:08x}"
+            )
+        occupied_ids.add(child.node_id)
+        x, y, width, height = child.rect
+        emitted.append(
+            {
+                "id": child.node_id,
+                "parent": names.parent_id,
+                "tag": child.tag,
+                "rect": {"x": x, "y": y, "width": width, "height": height},
+                "text": {"value": "", **names.text},
+            }
+        )
+    return emitted
+
+
 def build_rust_ui_catalog(
     repo_root: Path,
     recipes: Iterable[UiFactoryRecipe],
@@ -1460,9 +1542,15 @@ def build_rust_ui_catalog(
 ) -> dict[str, object]:
     recipe_list = list(recipes)
     text_property_patches = load_windows_text_property_patches(repo_root)
+    diplomacy_map_key_names = load_diplomacy_map_key_names(repo_root)
     city_buildings = load_city_building_visuals(repo_root)
     city_building_actions = load_city_building_action_visuals(repo_root)
     catalog_keys = set(resource_backed_catalog_keys(recipe_list))
+    if diplomacy_map_key_names.view not in catalog_keys:
+        raise ValueError(
+            f"{WINDOWS_DELTA_PATH}: diplomacy map-key view "
+            f"{diplomacy_map_key_names.view.text()} is not in the Rust catalog"
+        )
     if city_buildings.view not in catalog_keys:
         raise ValueError(
             f"{WINDOWS_DELTA_PATH}: city building view "
@@ -1500,6 +1588,11 @@ def build_rust_ui_catalog(
             key, semantic_view, text_property_patches
         )
         nodes = _emit_catalog_view_nodes(key, semantic_view)
+        nodes.extend(
+            _emit_diplomacy_map_key_names(
+                key, semantic_view, diplomacy_map_key_names
+            )
+        )
         emitted: dict[str, object] = {
             "id": {
                 "resource_file": key.resource_file,

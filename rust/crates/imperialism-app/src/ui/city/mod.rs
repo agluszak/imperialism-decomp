@@ -1,4 +1,5 @@
 use super::catalog::*;
+use super::format_currency;
 use super::game_shell::*;
 use super::random_setup::GameSession;
 use crate::*;
@@ -41,7 +42,11 @@ impl Plugin for CityPlugin {
                     restore_city_dialogs,
                     sync_city_screen,
                     sync_industry_dialog,
-                    sync_basic_dialog,
+                    sync_warehouse_dialog,
+                    sync_food_dialog,
+                    sync_power_dialog,
+                    sync_transport_capacity_dialog,
+                    sync_population_dialog,
                     sync_training_dialog,
                     sync_armory_dialog,
                     sync_university_dialog,
@@ -50,17 +55,20 @@ impl Plugin for CityPlugin {
                     .chain()
                     .run_if(in_state(AppState::City)),
             )
-            .add_observer(on_city_dialog_pressed)
-            .add_observer(on_city_dialog_dragged)
-            .add_observer(on_city_dialog_close)
-            .add_observer(on_city_canvas_click)
-            .add_observer(on_armory_row_selected)
-            .add_observer(on_university_row_selected)
-            .add_observer(on_shipyard_row_selected)
-            .add_observer(on_city_amount_bar_click)
-            .add_observer(on_city_expansion_open)
-            .add_observer(on_city_building_change_choice)
-            .add_observer(on_city_order_adjust);
+            .add_observer(on_city_dialog_pressed.run_if(in_state(AppState::City)))
+            .add_observer(on_city_dialog_dragged.run_if(in_state(AppState::City)))
+            .add_observer(on_city_dialog_close.run_if(in_state(AppState::City)))
+            .add_observer(on_city_canvas_click.run_if(in_state(AppState::City)))
+            .add_observer(on_armory_row_selected.run_if(in_state(AppState::City)))
+            .add_observer(on_university_row_selected.run_if(in_state(AppState::City)))
+            .add_observer(on_shipyard_row_selected.run_if(in_state(AppState::City)))
+            .add_observer(on_armory_order_selected.run_if(in_state(AppState::City)))
+            .add_observer(on_university_order_selected.run_if(in_state(AppState::City)))
+            .add_observer(on_shipyard_order_selected.run_if(in_state(AppState::City)))
+            .add_observer(on_city_amount_bar_click.run_if(in_state(AppState::City)))
+            .add_observer(on_city_expansion_open.run_if(in_state(AppState::City)))
+            .add_observer(on_city_building_change_choice.run_if(in_state(AppState::City)))
+            .add_observer(on_city_order_adjust.run_if(in_state(AppState::City)));
     }
 }
 

@@ -177,6 +177,14 @@ pub struct UiTextBinding {
     pub point_size: i32,
     pub alignment: i32,
     pub max_chars: Option<usize>,
+    #[serde(default)]
+    pub color_index: Option<u8>,
+    #[serde(default)]
+    pub shadow_color_index: Option<u8>,
+    #[serde(default)]
+    pub shadow_offset: [i32; 2],
+    #[serde(default)]
+    pub center_vertically: bool,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]

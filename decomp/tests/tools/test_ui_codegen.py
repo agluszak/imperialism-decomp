@@ -158,6 +158,49 @@ class UiCodegenTests(unittest.TestCase):
             text = setup_by_tag[tag]["text"]
             self.assertEqual((text["font_family"], text["point_size"]), (1, 14))
 
+        diplomacy = by_id[("Diplo.rsrc", 2008)]
+        diplomacy_names = [
+            node for node in diplomacy["nodes"] if node["tag"].startswith("nam")
+        ]
+        self.assertEqual(
+            [(node["tag"], node["id"], node["parent"]) for node in diplomacy_names],
+            [
+                (f"nam{index}", int.from_bytes(f"nam{index}".encode(), "big"), 0x0141)
+                for index in range(7)
+            ],
+        )
+        self.assertEqual(
+            [node["rect"] for node in diplomacy_names],
+            [
+                {"x": x, "y": y, "width": 70, "height": 25}
+                for x, y in (
+                    (44, 19),
+                    (44, 44),
+                    (44, 68),
+                    (44, 93),
+                    (153, 19),
+                    (153, 44),
+                    (153, 68),
+                )
+            ],
+        )
+        for node in diplomacy_names:
+            self.assertEqual(
+                node["text"],
+                {
+                    "value": "",
+                    "font_family": 3,
+                    "face_flags": 0,
+                    "point_size": 10,
+                    "alignment": 0,
+                    "color_index": 0xD2,
+                    "shadow_color_index": 0x13,
+                    "shadow_offset": [1, 1],
+                    "center_vertically": True,
+                },
+            )
+        self.assertNotIn("node_nam0", self.rendered[0x004295A0])
+
         city = by_id[("Citymain.rsrc", 2011)]
         city_by_tag = {node["tag"]: node for node in city["nodes"]}
         self.assertEqual(city_by_tag["main"]["behavior"], "pointer_canvas")
@@ -230,16 +273,23 @@ class UiCodegenTests(unittest.TestCase):
         for view in catalog["views"]:
             for node in view["nodes"]:
                 if "text" in node:
-                    self.assertEqual(
-                        set(node["text"]),
-                        {
-                            "value",
-                            "font_family",
-                            "face_flags",
-                            "point_size",
-                            "alignment",
-                        }
-                        | ({"max_chars"} if "max_chars" in node["text"] else set()),
+                    required_text = {
+                        "value",
+                        "font_family",
+                        "face_flags",
+                        "point_size",
+                        "alignment",
+                    }
+                    optional_text = {
+                        "max_chars",
+                        "color_index",
+                        "shadow_color_index",
+                        "shadow_offset",
+                        "center_vertically",
+                    }
+                    self.assertTrue(required_text.issubset(node["text"]))
+                    self.assertTrue(
+                        set(node["text"]).issubset(required_text | optional_text)
                     )
 
         forbidden_keys = {

@@ -7512,6 +7512,181 @@
             "point_size": 9,
             "value": "$55,555"
           }
+        },
+        {
+          "id": 1851878704,
+          "parent": 321,
+          "rect": {
+            "height": 25,
+            "width": 70,
+            "x": 44,
+            "y": 19
+          },
+          "tag": "nam0",
+          "text": {
+            "alignment": 0,
+            "center_vertically": true,
+            "color_index": 210,
+            "face_flags": 0,
+            "font_family": 3,
+            "point_size": 10,
+            "shadow_color_index": 19,
+            "shadow_offset": [
+              1,
+              1
+            ],
+            "value": ""
+          }
+        },
+        {
+          "id": 1851878705,
+          "parent": 321,
+          "rect": {
+            "height": 25,
+            "width": 70,
+            "x": 44,
+            "y": 44
+          },
+          "tag": "nam1",
+          "text": {
+            "alignment": 0,
+            "center_vertically": true,
+            "color_index": 210,
+            "face_flags": 0,
+            "font_family": 3,
+            "point_size": 10,
+            "shadow_color_index": 19,
+            "shadow_offset": [
+              1,
+              1
+            ],
+            "value": ""
+          }
+        },
+        {
+          "id": 1851878706,
+          "parent": 321,
+          "rect": {
+            "height": 25,
+            "width": 70,
+            "x": 44,
+            "y": 68
+          },
+          "tag": "nam2",
+          "text": {
+            "alignment": 0,
+            "center_vertically": true,
+            "color_index": 210,
+            "face_flags": 0,
+            "font_family": 3,
+            "point_size": 10,
+            "shadow_color_index": 19,
+            "shadow_offset": [
+              1,
+              1
+            ],
+            "value": ""
+          }
+        },
+        {
+          "id": 1851878707,
+          "parent": 321,
+          "rect": {
+            "height": 25,
+            "width": 70,
+            "x": 44,
+            "y": 93
+          },
+          "tag": "nam3",
+          "text": {
+            "alignment": 0,
+            "center_vertically": true,
+            "color_index": 210,
+            "face_flags": 0,
+            "font_family": 3,
+            "point_size": 10,
+            "shadow_color_index": 19,
+            "shadow_offset": [
+              1,
+              1
+            ],
+            "value": ""
+          }
+        },
+        {
+          "id": 1851878708,
+          "parent": 321,
+          "rect": {
+            "height": 25,
+            "width": 70,
+            "x": 153,
+            "y": 19
+          },
+          "tag": "nam4",
+          "text": {
+            "alignment": 0,
+            "center_vertically": true,
+            "color_index": 210,
+            "face_flags": 0,
+            "font_family": 3,
+            "point_size": 10,
+            "shadow_color_index": 19,
+            "shadow_offset": [
+              1,
+              1
+            ],
+            "value": ""
+          }
+        },
+        {
+          "id": 1851878709,
+          "parent": 321,
+          "rect": {
+            "height": 25,
+            "width": 70,
+            "x": 153,
+            "y": 44
+          },
+          "tag": "nam5",
+          "text": {
+            "alignment": 0,
+            "center_vertically": true,
+            "color_index": 210,
+            "face_flags": 0,
+            "font_family": 3,
+            "point_size": 10,
+            "shadow_color_index": 19,
+            "shadow_offset": [
+              1,
+              1
+            ],
+            "value": ""
+          }
+        },
+        {
+          "id": 1851878710,
+          "parent": 321,
+          "rect": {
+            "height": 25,
+            "width": 70,
+            "x": 153,
+            "y": 68
+          },
+          "tag": "nam6",
+          "text": {
+            "alignment": 0,
+            "center_vertically": true,
+            "color_index": 210,
+            "face_flags": 0,
+            "font_family": 3,
+            "point_size": 10,
+            "shadow_color_index": 19,
+            "shadow_offset": [
+              1,
+              1
+            ],
+            "value": ""
+          }
         }
       ]
     },

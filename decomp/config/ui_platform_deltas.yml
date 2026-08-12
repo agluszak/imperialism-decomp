@@ -189,6 +189,25 @@ node_property_patches:
     properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
     evidence: TBuildingExpansionView::StuffValues at 0x004ce5a0 installs style family 1 face 0 point 12 and alignment 1 on warn
 
+# TMapKey::DoPostCreate creates these seven TDeluxeText controls at runtime on
+# Windows. They belong in the Rust presentation catalog, but not in the
+# generated C++ resource factory that constructs the underlying Mac tree.
+diplomacy_map_key_names:
+  view: Diplo.rsrc:2008
+  parent: {node: 0x0141, tag: mkey}
+  evidence: TMapKey::DoPostCreate at 0x004fcac0 creates nam0 through nam6 under mkey from the recovered legend coordinate tables
+  text:
+    {font_family: 3, face_flags: 0, point_size: 10, alignment: 0, color_index: 0xd2,
+     shadow_color_index: 0x13, shadow_offset: [1, 1], center_vertically: true}
+  children:
+    - {node: 0x6e616d30, tag: nam0, rect: [44, 19, 70, 25]}
+    - {node: 0x6e616d31, tag: nam1, rect: [44, 44, 70, 25]}
+    - {node: 0x6e616d32, tag: nam2, rect: [44, 68, 70, 25]}
+    - {node: 0x6e616d33, tag: nam3, rect: [44, 93, 70, 25]}
+    - {node: 0x6e616d34, tag: nam4, rect: [153, 19, 70, 25]}
+    - {node: 0x6e616d35, tag: nam5, rect: [153, 44, 70, 25]}
+    - {node: 0x6e616d36, tag: nam6, rect: [153, 68, 70, 25]}
+
 # TCityProductionView draws and hit-tests these buildings dynamically rather
 # than constructing sixteen resource-backed child controls. Keep this one
 # recovered table attached to Citymain instead of creating a general scene DSL.

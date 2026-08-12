@@ -4,7 +4,7 @@ use bevy::app::AppExit;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
-use imperialism_formats::{ScopedViewId, UiBehavior};
+use imperialism_formats::{ScopedViewId, fourcc};
 
 const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
 const MAIN_MENU_RESOURCE_ID: i16 = 1500;
@@ -42,41 +42,21 @@ fn enter_main_menu(
 ) {
     let view = catalog.required_view(&main_menu_view_id());
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
-    bind_main_menu_actions(&mut commands, &catalog, &spawned);
+    bind_main_menu_actions(&mut commands, &spawned);
     commands
         .entity(spawned.root)
         .insert(DespawnOnExit(AppState::MainMenu));
 }
 
-pub(crate) fn bind_main_menu_actions(
-    commands: &mut Commands,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
-) {
-    let view = catalog.required_view(&spawned.view_id);
-    for node in &view.nodes {
-        if node.behavior != UiBehavior::Activate {
-            continue;
-        }
-        let entity = spawned.nodes[&node.id];
-        match node.tag {
-            tag if tag == imperialism_formats::fourcc!("rand") => {
-                commands
-                    .entity(entity)
-                    .insert(MainMenuAction::RandomGame)
-                    .remove::<InteractionDisabled>();
-            }
-            tag if tag == imperialism_formats::fourcc!("quit") => {
-                commands
-                    .entity(entity)
-                    .insert(MainMenuAction::Quit)
-                    .remove::<InteractionDisabled>();
-            }
-            _ => {
-                // Retain visible but unavailable Specialized menu choices.
-                commands.entity(entity).insert(InteractionDisabled);
-            }
-        }
+pub(crate) fn bind_main_menu_actions(commands: &mut Commands, spawned: &SpawnedView) {
+    for (tag, action) in [
+        (fourcc!("rand"), MainMenuAction::RandomGame),
+        (fourcc!("quit"), MainMenuAction::Quit),
+    ] {
+        commands
+            .entity(spawned.unique(tag))
+            .insert(action)
+            .remove::<InteractionDisabled>();
     }
 }
 
@@ -124,7 +104,7 @@ mod tests {
         let view_id = main_menu_view_id();
         let view = catalog.required_view(&view_id);
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
-        bind_main_menu_actions(&mut commands, &catalog, &spawned);
+        bind_main_menu_actions(&mut commands, &spawned);
         commands
             .entity(spawned.root)
             .insert(DespawnOnExit(AppState::MainMenu));

@@ -1,5 +1,6 @@
 use super::catalog::{SpawnedView, UiAssetResources, UiCatalogResource, spawn_view};
-use super::game_shell::{GameScreenRoot, bind_game_screen_nav, transport_view_id};
+use super::format_currency;
+use super::game_shell::{bind_game_screen_nav, transport_view_id};
 use super::random_setup::GameSession;
 use crate::AppState;
 use bevy::picking::hover::Hovered;
@@ -123,36 +124,10 @@ struct TransportColors {
 struct TransportScreen;
 
 #[derive(Component, Clone, Copy)]
-struct TransportRow {
-    label: &'static str,
-    allocation: TransportAllocation,
-}
-
-#[derive(Component, Clone, Copy)]
 struct TransportAdjust {
     allocation: TransportAllocation,
     delta: i16,
 }
-
-#[derive(Component, Clone, Copy)]
-struct TransportRowCaption {
-    allocation: TransportAllocation,
-}
-
-#[derive(Component)]
-struct TransportCapacityCaption;
-
-#[derive(Component, Clone, Copy)]
-struct TransportMoneyCaption {
-    resource: ResourceKind,
-    unit_value: i32,
-}
-
-#[derive(Component)]
-struct TransportTreasury;
-
-#[derive(Component)]
-struct TransportCursor;
 
 #[derive(Clone, Copy)]
 enum TransportGaugeKind {
@@ -161,17 +136,29 @@ enum TransportGaugeKind {
 }
 
 #[derive(Component, Clone, Copy)]
-struct TransportGauge {
-    kind: TransportGaugeKind,
-    normal_color: Color,
-    full_color: Color,
-}
-
-#[derive(Component, Clone, Copy)]
-struct TransportLimitStrip {
-    allocation: TransportAllocation,
-    below_color: Color,
-    reached_color: Color,
+enum TransportDisplay {
+    Row {
+        label: &'static str,
+        allocation: TransportAllocation,
+    },
+    RowCaption(TransportAllocation),
+    CapacityCaption,
+    Money {
+        resource: ResourceKind,
+        unit_value: i32,
+    },
+    Treasury,
+    Cursor,
+    Gauge {
+        kind: TransportGaugeKind,
+        normal_color: Color,
+        full_color: Color,
+    },
+    Limit {
+        allocation: TransportAllocation,
+        below_color: Color,
+        reached_color: Color,
+    },
 }
 
 pub(crate) struct TransportPlugin;
@@ -200,7 +187,7 @@ fn enter_transport_screen(
     bind_game_screen_nav(&mut commands, &catalog, &spawned);
     commands
         .entity(spawned.root)
-        .insert((GameScreenRoot(view_id), DespawnOnExit(AppState::Transport)));
+        .insert(DespawnOnExit(AppState::Transport));
 
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Transport screen requires an active major nation");
@@ -238,7 +225,7 @@ fn bind_transport_screen(
     for (index, binding) in TRANSPORT_ROWS.into_iter().enumerate() {
         let row = spawned.unique(binding.tag);
         commands.entity(row).insert((
-            TransportRow {
+            TransportDisplay::Row {
                 label: binding.label,
                 allocation: binding.allocation,
             },
@@ -273,7 +260,7 @@ fn bind_transport_screen(
             ZIndex(1),
             Pickable::IGNORE,
             ChildOf(row),
-            TransportGauge {
+            TransportDisplay::Gauge {
                 kind: TransportGaugeKind::Allocation(binding.allocation),
                 normal_color: colors.allocation,
                 full_color: colors.allocation,
@@ -291,7 +278,7 @@ fn bind_transport_screen(
             BackgroundColor(colors.below_limit),
             Pickable::IGNORE,
             ChildOf(row),
-            TransportLimitStrip {
+            TransportDisplay::Limit {
                 allocation: binding.allocation,
                 below_color: colors.below_limit,
                 reached_color: colors.at_limit,
@@ -312,9 +299,7 @@ fn bind_transport_screen(
             TextColor(Color::BLACK),
             Pickable::IGNORE,
             ChildOf(row),
-            TransportRowCaption {
-                allocation: binding.allocation,
-            },
+            TransportDisplay::RowCaption(binding.allocation),
         ));
         if let Some((resource, unit_value)) = if binding.allocation == TransportAllocation::GOLD {
             Some((ResourceKind::Gold, 200))
@@ -338,7 +323,7 @@ fn bind_transport_screen(
                 TextColor(Color::BLACK),
                 Pickable::IGNORE,
                 ChildOf(row),
-                TransportMoneyCaption {
+                TransportDisplay::Money {
                     resource,
                     unit_value,
                 },
@@ -361,7 +346,7 @@ fn bind_transport_screen(
         ZIndex(1),
         Pickable::IGNORE,
         ChildOf(total),
-        TransportGauge {
+        TransportDisplay::Gauge {
             kind: TransportGaugeKind::Capacity,
             normal_color: colors.below_limit,
             full_color: colors.at_limit,
@@ -382,7 +367,7 @@ fn bind_transport_screen(
         TextColor(Color::BLACK),
         Pickable::IGNORE,
         ChildOf(total),
-        TransportCapacityCaption,
+        TransportDisplay::CapacityCaption,
     ));
     let cursor = spawned.unique(fourcc!("curs"));
     commands.entity(cursor).insert((
@@ -390,10 +375,10 @@ fn bind_transport_screen(
         font,
         layout,
         TextColor(Color::BLACK),
-        TransportCursor,
+        TransportDisplay::Cursor,
     ));
     let treasury = spawned.unique(fourcc!("trea"));
-    commands.entity(treasury).insert(TransportTreasury);
+    commands.entity(treasury).insert(TransportDisplay::Treasury);
 }
 
 fn spawn_transport_track(commands: &mut Commands, parent: Entity, left: i32, color: Color) {
@@ -427,27 +412,18 @@ fn on_transport_adjust(
         .step_transport_allocation(nation, action.allocation, action.delta);
 }
 
-#[allow(clippy::too_many_arguments, clippy::type_complexity)]
+#[allow(clippy::type_complexity)]
 fn sync_transport_values(
     mut commands: Commands,
     session: Res<GameSession>,
     screens: Query<(), Added<TransportScreen>>,
-    mut texts: Query<(
-        &mut Text,
-        Option<&TransportRowCaption>,
-        Option<&TransportCapacityCaption>,
-        Option<&TransportMoneyCaption>,
-        Option<&TransportTreasury>,
+    mut displays: Query<(
+        &TransportDisplay,
+        Option<&mut Text>,
+        &mut Node,
+        &mut Visibility,
+        Option<&mut BackgroundColor>,
     )>,
-    mut panels: Query<(&TransportRow, &mut Visibility), Without<TransportLimitStrip>>,
-    mut gauges: Query<
-        (&TransportGauge, &mut Node, &mut BackgroundColor),
-        Without<TransportLimitStrip>,
-    >,
-    mut limits: Query<
-        (&TransportLimitStrip, &mut Visibility, &mut BackgroundColor),
-        Without<TransportGauge>,
-    >,
     actions: Query<(Entity, &TransportAdjust, Has<InteractionDisabled>)>,
 ) {
     if !session.is_changed() && screens.is_empty() {
@@ -457,72 +433,92 @@ fn sync_transport_values(
         .expect("Transport screen requires an active major nation");
     let major = session.0.nations().major(nation);
     let economy = &major.economy;
-    for (mut text, row, capacity, money, treasury) in &mut texts {
-        if let Some(caption) = row {
-            let target = allocation_amount(caption.allocation, |resource| {
-                economy.need_target_by_type[resource]
-            });
-            let current = allocation_amount(caption.allocation, |resource| {
-                economy.need_current_by_type[resource]
-            });
-            text.0 = format!("{target}  /  {current}");
-        } else if capacity.is_some() {
-            let capacities = economy.capacities;
-            text.0 = format!(
-                "{}  /  {}",
-                capacities.reserved_transport, capacities.transport
-            );
-        } else if let Some(caption) = money {
-            let target = economy.need_target_by_type[caption.resource];
-            text.0 = format!("${}", i32::from(target) * caption.unit_value);
-        } else if treasury.is_some() {
-            text.0 = format!("${}", major.common.treasury);
-        }
-    }
-    for (row, mut visibility) in &mut panels {
-        let current = allocation_amount(row.allocation, |resource| {
-            economy.need_current_by_type[resource]
-        });
-        *visibility = if current == 0 {
-            Visibility::Hidden
-        } else {
-            Visibility::Visible
-        };
-    }
-    for (gauge, mut node, mut color) in &mut gauges {
-        let (value, total) = match gauge.kind {
-            TransportGaugeKind::Allocation(allocation) => (
-                allocation_amount(allocation, |resource| economy.need_target_by_type[resource]),
-                allocation_amount(allocation, |resource| {
+    for (display, text, mut node, mut visibility, color) in &mut displays {
+        match *display {
+            TransportDisplay::Row { allocation, .. } => {
+                let current = allocation_amount(allocation, |resource| {
                     economy.need_current_by_type[resource]
-                }),
-            ),
-            TransportGaugeKind::Capacity => (
-                economy.capacities.reserved_transport,
-                economy.capacities.transport,
-            ),
-        };
-        node.width = Val::Px(transport_gauge_width(value, total));
-        color.0 = if value == total {
-            gauge.full_color
-        } else {
-            gauge.normal_color
-        };
-    }
-    for (strip, mut visibility, mut color) in &mut limits {
-        let Some(limit) = transport_need_limit(major, strip.allocation) else {
-            *visibility = Visibility::Hidden;
-            continue;
-        };
-        let target = allocation_amount(strip.allocation, |resource| {
-            major.economy.need_target_by_type[resource]
-        });
-        *visibility = Visibility::Visible;
-        color.0 = if target < limit {
-            strip.below_color
-        } else {
-            strip.reached_color
-        };
+                });
+                *visibility = if current == 0 {
+                    Visibility::Hidden
+                } else {
+                    Visibility::Visible
+                };
+            }
+            TransportDisplay::RowCaption(allocation) => {
+                let target =
+                    allocation_amount(allocation, |resource| economy.need_target_by_type[resource]);
+                let current = allocation_amount(allocation, |resource| {
+                    economy.need_current_by_type[resource]
+                });
+                text.expect("Transport row caption has text").0 = format!("{target}  /  {current}");
+            }
+            TransportDisplay::CapacityCaption => {
+                let capacities = economy.capacities;
+                text.expect("Transport capacity caption has text").0 = format!(
+                    "{}  /  {}",
+                    capacities.reserved_transport, capacities.transport
+                );
+            }
+            TransportDisplay::Money {
+                resource,
+                unit_value,
+            } => {
+                let target = economy.need_target_by_type[resource];
+                text.expect("Transport money caption has text").0 =
+                    format_currency(i32::from(target) * unit_value);
+            }
+            TransportDisplay::Treasury => {
+                text.expect("Transport treasury caption has text").0 =
+                    format_currency(major.common.treasury);
+            }
+            TransportDisplay::Cursor => {}
+            TransportDisplay::Gauge {
+                kind,
+                normal_color,
+                full_color,
+            } => {
+                let (value, total) = match kind {
+                    TransportGaugeKind::Allocation(allocation) => (
+                        allocation_amount(allocation, |resource| {
+                            economy.need_target_by_type[resource]
+                        }),
+                        allocation_amount(allocation, |resource| {
+                            economy.need_current_by_type[resource]
+                        }),
+                    ),
+                    TransportGaugeKind::Capacity => (
+                        economy.capacities.reserved_transport,
+                        economy.capacities.transport,
+                    ),
+                };
+                node.width = Val::Px(transport_gauge_width(value, total));
+                color.expect("Transport gauge has a color").0 = if value == total {
+                    full_color
+                } else {
+                    normal_color
+                };
+            }
+            TransportDisplay::Limit {
+                allocation,
+                below_color,
+                reached_color,
+            } => {
+                let Some(limit) = transport_need_limit(major, allocation) else {
+                    *visibility = Visibility::Hidden;
+                    continue;
+                };
+                let target = allocation_amount(allocation, |resource| {
+                    major.economy.need_target_by_type[resource]
+                });
+                *visibility = Visibility::Visible;
+                color.expect("Transport limit has a color").0 = if target < limit {
+                    below_color
+                } else {
+                    reached_color
+                };
+            }
+        }
     }
     for (entity, action, disabled) in &actions {
         let current = allocation_amount(action.allocation, |resource| {
@@ -551,9 +547,9 @@ fn sync_transport_values(
 fn sync_transport_cursor(
     session: Res<GameSession>,
     screens: Query<(), Added<TransportScreen>>,
-    changed_rows: Query<(), (With<TransportRow>, Changed<Hovered>)>,
-    rows: Query<(&TransportRow, &Hovered)>,
-    mut cursors: Query<&mut Text, With<TransportCursor>>,
+    changed_rows: Query<(), (With<TransportDisplay>, Changed<Hovered>)>,
+    rows: Query<(&TransportDisplay, &Hovered)>,
+    mut displays: Query<(&TransportDisplay, &mut Text)>,
 ) {
     if !session.is_changed() && screens.is_empty() && changed_rows.is_empty() {
         return;
@@ -561,20 +557,27 @@ fn sync_transport_cursor(
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Transport screen requires an active major nation");
     let major = session.0.nations().major(nation);
-    for mut text in &mut cursors {
+    for (display, mut text) in &mut displays {
+        if !matches!(display, TransportDisplay::Cursor) {
+            continue;
+        }
         let economy = &major.economy;
-        let Some((row, _)) = rows.iter().find(|(_, hovered)| hovered.get()) else {
+        let Some((label, allocation)) = rows.iter().find_map(|(display, hovered)| {
+            let TransportDisplay::Row { label, allocation } = *display else {
+                return None;
+            };
+            hovered.get().then_some((label, allocation))
+        }) else {
             text.0 = format!(
                 "Transport: {} of {} allocated",
                 economy.capacities.reserved_transport, economy.capacities.transport
             );
             continue;
         };
-        let stock = allocation_amount(row.allocation, |resource| major.city.stockpile[resource]);
-        let target = allocation_amount(row.allocation, |resource| {
-            economy.need_target_by_type[resource]
-        });
-        let current = allocation_amount(row.allocation, |resource| {
+        let stock = allocation_amount(allocation, |resource| major.city.stockpile[resource]);
+        let target =
+            allocation_amount(allocation, |resource| economy.need_target_by_type[resource]);
+        let current = allocation_amount(allocation, |resource| {
             economy.need_current_by_type[resource]
         });
         let supply_headroom = (current - target).max(0);
@@ -590,11 +593,11 @@ fn sync_transport_cursor(
             std::cmp::Ordering::Equal => "supply and capacity",
             std::cmp::Ordering::Greater => "capacity",
         };
-        let city_need = transport_need_limit(major, row.allocation)
+        let city_need = transport_need_limit(major, allocation)
             .map_or_else(|| "".to_owned(), |need| format!("; city need {need}"));
         text.0 = format!(
             "{}: city {stock}; allocated {target}; supply {current}; +{limit} max ({limiting}){city_need}",
-            row.label,
+            label,
         );
     }
 }
@@ -700,6 +703,9 @@ mod tests {
     ) -> TestTransport {
         let view = catalog.required_view(&transport_view_id());
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
+        commands
+            .entity(spawned.unique(fourcc!("trea")))
+            .insert(Text::new(""));
         let nation = MajorNationId::from_nation(session.0.turn().active_nation).unwrap();
         session.0.rebuild_nation_resource_yields(nation);
         bind_transport_screen(
@@ -734,10 +740,12 @@ mod tests {
     }
 
     fn caption(app: &mut App, allocation: TransportAllocation) -> String {
-        let mut query = app.world_mut().query::<(&TransportRowCaption, &Text)>();
+        let mut query = app.world_mut().query::<(&TransportDisplay, &Text)>();
         query
             .iter(app.world())
-            .find(|(caption, _)| caption.allocation == allocation)
+            .find(|(display, _)| {
+                matches!(display, TransportDisplay::RowCaption(found) if *found == allocation)
+            })
             .unwrap()
             .1
             .0
@@ -745,17 +753,29 @@ mod tests {
     }
 
     fn capacity_caption(app: &mut App) -> String {
-        let mut query = app
-            .world_mut()
-            .query::<(&TransportCapacityCaption, &Text)>();
-        query.single(app.world()).unwrap().1.0.clone()
+        let mut query = app.world_mut().query::<(&TransportDisplay, &Text)>();
+        query
+            .iter(app.world())
+            .find(|(display, _)| matches!(display, TransportDisplay::CapacityCaption))
+            .unwrap()
+            .1
+            .0
+            .clone()
     }
 
     fn capacity_gauge_width(app: &mut App) -> f32 {
-        let mut query = app.world_mut().query::<(&TransportGauge, &Node)>();
+        let mut query = app.world_mut().query::<(&TransportDisplay, &Node)>();
         let (_, node) = query
             .iter(app.world())
-            .find(|(gauge, _)| matches!(gauge.kind, TransportGaugeKind::Capacity))
+            .find(|(display, _)| {
+                matches!(
+                    display,
+                    TransportDisplay::Gauge {
+                        kind: TransportGaugeKind::Capacity,
+                        ..
+                    }
+                )
+            })
             .unwrap();
         match node.width {
             Val::Px(width) => width,
@@ -786,11 +806,14 @@ mod tests {
                 .get::<InteractionDisabled>(first.return_to_map)
                 .is_none()
         );
-        let mut panels = app.world_mut().query::<(&TransportRow, &Visibility)>();
+        let mut panels = app.world_mut().query::<(&TransportDisplay, &Visibility)>();
         assert!(
             panels
                 .iter(app.world())
-                .any(|(_, visibility)| *visibility == Visibility::Hidden)
+                .any(
+                    |(display, visibility)| matches!(display, TransportDisplay::Row { .. })
+                        && *visibility == Visibility::Hidden
+                )
         );
         let nation = MajorNationId::new(6);
         let (allocation, decrease) = {

@@ -1,5 +1,6 @@
 use super::catalog::{SpawnedView, UiAssetResources, UiCatalogResource, spawn_view};
-use super::game_shell::{GameScreenRoot, bind_game_screen_nav, disable_control, trade_view_id};
+use super::format_currency;
+use super::game_shell::{bind_game_screen_nav, disable_control, trade_view_id};
 use super::random_setup::GameSession;
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
@@ -218,7 +219,7 @@ fn enter_trade_screen(
     bind_game_screen_nav(&mut commands, &catalog, &spawned);
     commands
         .entity(spawned.root)
-        .insert((GameScreenRoot(view_id), DespawnOnExit(AppState::Trade)));
+        .insert(DespawnOnExit(AppState::Trade));
 
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Trade active nation is a major nation");
@@ -232,22 +233,6 @@ fn enter_trade_screen(
             alignment: -1,
         })
         .expect("retail trade row text style");
-    let (capacity_font, capacity_layout, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 10,
-            alignment: 1,
-        })
-        .expect("retail trade merchant-capacity text style");
-    let (treasury_font, treasury_layout, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
-        .expect("retail trade treasury text style");
     let pictures = TradePictures {
         bid_active: assets
             .picture(PictureId::new(2111))
@@ -281,10 +266,6 @@ fn enter_trade_screen(
         row_font,
         row_layout,
         assets.palette_color(0x13),
-        capacity_font,
-        capacity_layout,
-        treasury_font,
-        treasury_layout,
         pictures,
         assets.palette_color(0x37),
     );
@@ -298,10 +279,6 @@ fn bind_trade_screen(
     row_font: TextFont,
     row_layout: TextLayout,
     row_color: Color,
-    capacity_font: TextFont,
-    capacity_layout: TextLayout,
-    treasury_font: TextFont,
-    treasury_layout: TextLayout,
     pictures: TradePictures,
     gauge_color: Color,
 ) {
@@ -312,22 +289,11 @@ fn bind_trade_screen(
         .entity(selected)
         .insert((Checked, InteractionDisabled));
     let capacity = spawned.unique(fourcc!("mCap"));
-    commands.entity(capacity).insert((
-        Text::new(""),
-        capacity_font,
-        capacity_layout,
-        TextColor(Color::BLACK),
-        TradeDisplay::Capacity,
-        InteractionDisabled,
-    ));
+    commands
+        .entity(capacity)
+        .insert((TradeDisplay::Capacity, InteractionDisabled));
     let treasury = spawned.unique(fourcc!("trea"));
-    commands.entity(treasury).insert((
-        Text::new(""),
-        treasury_font,
-        treasury_layout,
-        TextColor(Color::BLACK),
-        TradeDisplay::Treasury,
-    ));
+    commands.entity(treasury).insert(TradeDisplay::Treasury);
     for (tag, kind) in TRADE_ADVISORIES {
         let advisory = spawned.unique(tag);
         commands
@@ -384,14 +350,9 @@ fn bind_trade_screen(
         }
 
         let sell = spawned.under(catalog, binding.tag, fourcc!("Sell"));
-        commands.entity(sell).insert((
-            Text::new(""),
-            row_font.clone(),
-            row_layout,
-            TextColor(row_color),
-            TradeDisplay::Sell(binding.commodity),
-            InteractionDisabled,
-        ));
+        commands
+            .entity(sell)
+            .insert(TradeDisplay::Sell(binding.commodity));
         let green = spawned.under(catalog, binding.tag, fourcc!("gree"));
         commands
             .entity(green)
@@ -765,23 +726,6 @@ fn trade_gauge_width(quantity: i16, capacity: i16) -> f32 {
     }
 }
 
-fn format_currency(value: i32) -> String {
-    let negative = value < 0;
-    let digits = i64::from(value).abs().to_string();
-    let mut grouped = String::with_capacity(digits.len() + digits.len() / 3);
-    for (index, digit) in digits.chars().enumerate() {
-        if index != 0 && (digits.len() - index).is_multiple_of(3) {
-            grouped.push(',');
-        }
-        grouped.push(digit);
-    }
-    if negative {
-        format!("-${grouped}")
-    } else {
-        format!("${grouped}")
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -833,6 +777,17 @@ mod tests {
     ) -> TestTrade {
         let view = catalog.required_view(&trade_view_id());
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
+        commands
+            .entity(spawned.unique(fourcc!("mCap")))
+            .insert(Text::new(""));
+        commands
+            .entity(spawned.unique(fourcc!("trea")))
+            .insert(Text::new(""));
+        for binding in TRADE_ROWS {
+            commands
+                .entity(spawned.under(&catalog, binding.tag, fourcc!("Sell")))
+                .insert(Text::new(""));
+        }
         bind_game_screen_nav(&mut commands, &catalog, &spawned);
         let nation = MajorNationId::from_nation(session.0.turn().active_nation).unwrap();
         session.0.recall_player_trade_orders(nation);
@@ -843,10 +798,6 @@ mod tests {
             TextFont::default(),
             TextLayout::default(),
             Color::BLACK,
-            TextFont::default(),
-            TextLayout::default(),
-            TextFont::default(),
-            TextLayout::default(),
             test_pictures(),
             Color::BLACK,
         );

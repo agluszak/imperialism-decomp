@@ -615,7 +615,7 @@ mod tests {
         let view_id = main_menu_view_id();
         let view = catalog.required_view(&view_id);
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
-        bind_main_menu_actions(&mut commands, &catalog, &spawned);
+        bind_main_menu_actions(&mut commands, &spawned);
         commands
             .entity(spawned.root)
             .insert(DespawnOnExit(AppState::MainMenu));

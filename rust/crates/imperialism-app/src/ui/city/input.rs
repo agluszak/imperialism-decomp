@@ -46,91 +46,14 @@ pub(in crate::ui::city) fn on_city_amount_bar_click(
         .set_city_order_quantity(nation, bar.order, quantity);
 }
 
-pub(in crate::ui::city) fn on_armory_row_selected(
-    change: On<ValueChange<bool>>,
-    rows: Query<&ArmoryRowChoice>,
-    mut selections: Query<&mut ArmorySelection>,
-) {
-    if !change.value {
-        return;
-    }
-    let Ok(row) = rows.get(change.source) else {
-        return;
-    };
-    selections
-        .single_mut()
-        .expect("Armory row has one open Armory dialog")
-        .category = row.category;
-}
-
-pub(in crate::ui::city) fn on_university_row_selected(
-    change: On<ValueChange<bool>>,
-    rows: Query<&UniversityRowChoice>,
-    mut selections: Query<&mut UniversitySelection>,
-) {
-    if !change.value {
-        return;
-    }
-    let Ok(row) = rows.get(change.source) else {
-        return;
-    };
-    selections
-        .single_mut()
-        .expect("University row has one open University dialog")
-        .kind = row.kind;
-}
-
-pub(in crate::ui::city) fn on_shipyard_row_selected(
-    change: On<ValueChange<bool>>,
-    rows: Query<&ShipyardRowChoice>,
-    mut selections: Query<&mut ShipyardSelection>,
-) {
-    if !change.value {
-        return;
-    }
-    let Ok(row) = rows.get(change.source) else {
-        return;
-    };
-    selections
-        .single_mut()
-        .expect("Shipyard row has one open Shipyard dialog")
-        .slot = row.slot;
-}
-
 pub(in crate::ui::city) fn on_city_order_adjust(
     activate: On<Activate>,
     actions: Query<&CityOrderAdjust>,
-    mut armory_selections: Query<&mut ArmorySelection>,
-    mut university_selections: Query<&mut UniversitySelection>,
-    mut shipyard_selections: Query<&mut ShipyardSelection>,
     mut session: ResMut<GameSession>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-
-    match action.order {
-        CityOrderId::MilitaryRecruit(category) => {
-            armory_selections
-                .single_mut()
-                .expect("Armory order has one open Armory dialog")
-                .category = category;
-        }
-        CityOrderId::CivilianRecruit(kind) => {
-            university_selections
-                .single_mut()
-                .expect("University order has one open University dialog")
-                .kind = kind;
-        }
-        CityOrderId::Ship(slot) => {
-            shipyard_selections
-                .single_mut()
-                .expect("Shipyard order has one open Shipyard dialog")
-                .slot = slot;
-        }
-        _ => {}
-    }
-
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("City screen requires an active major nation");
     let _ = session

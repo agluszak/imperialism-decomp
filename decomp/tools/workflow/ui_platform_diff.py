@@ -16,6 +16,7 @@ from tools.ui_codegen import (
     apply_case_windows_overrides,
     load_city_building_action_visuals,
     load_city_building_visuals,
+    load_diplomacy_map_key_names,
     load_recipes,
     load_text_resources,
     load_ui_views,
@@ -35,6 +36,7 @@ def _load_delta_config(repo_root: Path) -> dict:
         "class_substitutions",
         "functional_parity_cases",
         "node_property_patches",
+        "diplomacy_map_key_names",
         "city_buildings",
         "city_building_actions",
     }
@@ -72,6 +74,7 @@ def _semantic_snapshot(node) -> dict:
 
 def build_report(repo_root: Path) -> tuple[dict, list[str]]:
     config = _load_delta_config(repo_root)
+    diplomacy_map_key_names = load_diplomacy_map_key_names(repo_root)
     load_city_building_visuals(repo_root)
     load_city_building_action_visuals(repo_root)
     recipes = load_recipes(repo_root)
@@ -106,6 +109,7 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
         "expected_windows_field_override": 0,
         "expected_windows_class_substitution": 0,
         "windows_only_nodes": 0,
+        "diplomacy_map_key_names": len(diplomacy_map_key_names.children),
         "unexplained_deltas": 0,
     }
 
@@ -295,6 +299,23 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
             "declared_deltas": DELTA_CONFIG_PATH,
         },
         "summary": summary,
+        "diplomacy_map_key_names": {
+            "view": diplomacy_map_key_names.view.text(),
+            "parent": {
+                "node": f"0x{diplomacy_map_key_names.parent_id:04x}",
+                "tag": diplomacy_map_key_names.parent_tag,
+            },
+            "evidence": diplomacy_map_key_names.evidence,
+            "text": diplomacy_map_key_names.text,
+            "children": [
+                {
+                    "node": f"0x{child.node_id:08x}",
+                    "tag": child.tag,
+                    "rect": child.rect,
+                }
+                for child in diplomacy_map_key_names.children
+            ],
+        },
         "functions": functions,
     }
     return report, errors

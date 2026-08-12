@@ -92,9 +92,8 @@ fn sync_city_site_hover(
     if !dialog_open.is_empty() {
         return;
     }
-    let Some(nation) = MajorNationId::from_nation(session.0.turn().active_nation) else {
-        return;
-    };
+    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+        .expect("City-site screen requires an active major nation");
     for (canvas, cursor, image_node, mut hover) in &mut maps {
         let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.0, cursor) else {
             continue;
@@ -166,9 +165,8 @@ fn on_city_site_map_click(
     let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.0, cursor) else {
         return;
     };
-    let Some(nation) = MajorNationId::from_nation(session.0.turn().active_nation) else {
-        return;
-    };
+    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+        .expect("City-site screen requires an active major nation");
     let Ok(site) = validate_capital_site_selection(&session.0, nation, tile) else {
         return;
     };

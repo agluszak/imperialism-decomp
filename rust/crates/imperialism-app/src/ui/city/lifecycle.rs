@@ -3,6 +3,7 @@ use super::*;
 #[derive(Component)]
 pub(in crate::ui::city) struct CityBuildingDialog {
     pub(in crate::ui::city) slot: CityFacilitySlot,
+    window: Entity,
 }
 
 #[derive(Component)]
@@ -70,15 +71,7 @@ pub(in crate::ui::city) fn on_city_canvas_click(
         }
     }
     let z_index = dialogs.iter().map(|(_, z)| z.0).max().unwrap_or(0) + 1;
-    open_city_dialog(
-        &mut ui,
-        &catalog,
-        &session.0,
-        building.slot,
-        building.dialog.clone(),
-        None,
-        z_index,
-    );
+    open_city_dialog(&mut ui, &catalog, &session.0, building.slot, None, z_index);
 }
 
 pub(in crate::ui::city) fn open_city_dialog(
@@ -86,68 +79,37 @@ pub(in crate::ui::city) fn open_city_dialog(
     catalog: &UiCatalogResource,
     state: &GameState,
     slot: CityFacilitySlot,
-    view_id: ScopedViewId,
     saved_position: Option<IVec2>,
     z_index: i32,
 ) {
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
-        .expect("City screen requires an active major nation");
-    let building_name = city_string(ui, CITY_BUILDING_STRING_GROUP, slot as i16);
-    let capacity_template = city_string(ui, CITY_TEXT_STRING_GROUP, 0x10);
-    let province_template = city_string(ui, CITY_TEXT_STRING_GROUP, 0x1d);
+    let view_id = catalog
+        .required_view(&city_view_id())
+        .city_buildings
+        .iter()
+        .find(|building| building.slot == slot)
+        .expect("City building has a generated dialog")
+        .dialog
+        .clone();
     let spawned = ui.spawn(view_id);
     if let Some(page) = industry_page(slot) {
-        let bar_color = ui.palette_color(0x16);
-        bind_industry_dialog(
-            &mut ui.commands,
-            catalog,
-            &spawned,
-            page,
-            building_name,
-            capacity_template,
-            bar_color,
-        );
+        configure_industry_dialog(ui, catalog, &spawned, page);
     } else {
         match slot {
-            CityFacilitySlot::TradeSchool => {
-                bind_training_dialog(&mut ui.commands, catalog, &spawned, building_name)
-            }
-            CityFacilitySlot::Armory => {
-                let title = ui
-                    .string(0x271c, 0x20)
-                    .expect("retail English Armory title");
-                bind_armory_dialog(&mut ui.commands, catalog, &spawned, title);
-            }
+            CityFacilitySlot::TradeSchool => configure_training_dialog(ui, catalog, &spawned),
+            CityFacilitySlot::Armory => configure_armory_dialog(ui, catalog, &spawned),
             CityFacilitySlot::University => {
-                let data = university_dialog_data(ui, state, nation);
-                bind_university_dialog(&mut ui.commands, catalog, &spawned, data);
+                configure_university_dialog(ui, catalog, &spawned, state)
             }
-            CityFacilitySlot::Shipyard => {
-                bind_shipyard_dialog(ui, catalog, &spawned, state, nation)
-            }
-            CityFacilitySlot::Warehouse => bind_warehouse_dialog(
-                ui,
-                &spawned,
-                building_name,
-                state.technology().oil_drilling_available(),
-            ),
-            CityFacilitySlot::FoodProcessing => {
-                bind_food_dialog(&mut ui.commands, catalog, &spawned, building_name)
-            }
-            CityFacilitySlot::PowerPlant => {
-                bind_power_dialog(&mut ui.commands, catalog, &spawned, building_name)
-            }
+            CityFacilitySlot::Shipyard => configure_shipyard_dialog(ui, catalog, &spawned, state),
+            CityFacilitySlot::Warehouse => configure_warehouse_dialog(ui, &spawned, state),
+            CityFacilitySlot::FoodProcessing => configure_food_dialog(ui, catalog, &spawned),
+            CityFacilitySlot::PowerPlant => configure_power_dialog(ui, catalog, &spawned),
             CityFacilitySlot::Transport => {
-                bind_transport_capacity_dialog(&mut ui.commands, catalog, &spawned, building_name)
+                configure_transport_capacity_dialog(ui, catalog, &spawned)
             }
-            CityFacilitySlot::RegionalPopulation => bind_population_dialog(
-                &mut ui.commands,
-                catalog,
-                &spawned,
-                building_name,
-                capacity_template,
-                province_template,
-            ),
+            CityFacilitySlot::RegionalPopulation => {
+                configure_population_dialog(ui, catalog, &spawned)
+            }
             _ => unreachable!("catalog City building has no dialog binder"),
         }
     }
@@ -163,7 +125,7 @@ pub(in crate::ui::city) fn open_city_dialog(
     }
     ui.commands
         .entity(spawned.root)
-        .insert((GlobalZIndex(z_index), spawned));
+        .insert(GlobalZIndex(z_index));
 }
 
 pub(in crate::ui::city) fn bind_city_dialog_root(
@@ -175,7 +137,7 @@ pub(in crate::ui::city) fn bind_city_dialog_root(
     let window = spawned.unique(fourcc!("WIND"));
     commands
         .entity(root)
-        .insert((CityBuildingDialog { slot }, Pickable::IGNORE));
+        .insert((CityBuildingDialog { slot, window }, Pickable::IGNORE));
     commands.entity(window).insert(Pickable::default());
     commands.entity(window).with_children(|parent| {
         parent.spawn((
@@ -236,8 +198,10 @@ pub(in crate::ui::city) fn restore_city_dialogs(
         .expect("City screen requires an active major nation");
     let city = &session.0.nations().major(nation).city;
     let mut next_z = 1;
-    for building in &catalog.required_view(&city_view_id()).city_buildings {
-        let state = city.building_window_state(building.slot);
+    for index in 0..CityFacilitySlot::COUNT {
+        let slot = CityFacilitySlot::from_index(index as u8)
+            .expect("City facility index is in the fixed slot range");
+        let state = city.building_window_state(slot);
         if state.flag == 0 {
             continue;
         }
@@ -245,8 +209,7 @@ pub(in crate::ui::city) fn restore_city_dialogs(
             &mut ui,
             &catalog,
             &session.0,
-            building.slot,
-            building.dialog.clone(),
+            slot,
             Some(IVec2::new(
                 i32::from(state.current),
                 i32::from(state.accumulated),
@@ -270,20 +233,19 @@ pub(in crate::ui::city) fn node_position(node: &Node) -> (f32, f32) {
 pub(in crate::ui::city) fn leave_city_screen(
     mut commands: Commands,
     mut session: ResMut<GameSession>,
-    catalog: Res<UiCatalogResource>,
-    dialogs: Query<(Entity, &CityBuildingDialog, &SpawnedView)>,
+    dialogs: Query<(Entity, &CityBuildingDialog)>,
     windows: Query<&Node>,
 ) {
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("City screen requires an active major nation");
-    for building in &catalog.required_view(&city_view_id()).city_buildings {
-        let open = dialogs
-            .iter()
-            .find(|(_, dialog, _)| dialog.slot == building.slot);
-        let state = if let Some((_, _, spawned)) = open {
+    for index in 0..CityFacilitySlot::COUNT {
+        let slot = CityFacilitySlot::from_index(index as u8)
+            .expect("City facility index is in the fixed slot range");
+        let open = dialogs.iter().find(|(_, dialog)| dialog.slot == slot);
+        let state = if let Some((_, dialog)) = open {
             let (left, top) = node_position(
                 windows
-                    .get(spawned.unique(fourcc!("WIND")))
+                    .get(dialog.window)
                     .expect("open City dialog has its generated window"),
             );
             BuildingWindowState {
@@ -302,9 +264,9 @@ pub(in crate::ui::city) fn leave_city_screen(
         };
         session
             .0
-            .set_city_building_window_state(nation, building.slot, state);
+            .set_city_building_window_state(nation, slot, state);
     }
-    for (root, _, _) in &dialogs {
+    for (root, _) in &dialogs {
         commands.entity(root).despawn();
     }
 }

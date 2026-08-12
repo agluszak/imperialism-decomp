@@ -1,13 +1,54 @@
 use super::*;
 
+struct TrainingOrderControl {
+    level: TrainingLevel,
+    quantity: Entity,
+}
+
 #[derive(Component)]
-pub(in crate::ui::city) struct ArmorySelection {
-    pub(in crate::ui::city) category: MilitaryRecruitmentCategory,
+pub(in crate::ui::city) struct TrainingView {
+    orders: Vec<TrainingOrderControl>,
+    paper_one: Entity,
+    paper_two: Entity,
+    money_one: Entity,
+    money_two: Entity,
+    untrained_available: Entity,
+    trained_available: Entity,
+}
+
+struct ArmoryOrderControl {
+    category: MilitaryRecruitmentCategory,
+    button: Entity,
+    quantity: Entity,
+}
+
+#[derive(Component)]
+pub(in crate::ui::city) struct ArmoryView {
+    category: MilitaryRecruitmentCategory,
+    orders: Vec<ArmoryOrderControl>,
+    unit: Entity,
+    workforce_cost: Entity,
+    primary_cost: Entity,
+    secondary_cost: Entity,
+    cash_cost: Entity,
+    workforce_available: Entity,
+    primary_available: Entity,
+    secondary_available: Entity,
+    treasury: Entity,
 }
 
 #[derive(Component)]
 pub(in crate::ui::city) struct ArmoryRowChoice {
     pub(in crate::ui::city) category: MilitaryRecruitmentCategory,
+}
+
+pub(in crate::ui::city) fn configure_training_dialog(
+    ui: &mut UiSpawner,
+    catalog: &UiCatalogResource,
+    spawned: &SpawnedView,
+) {
+    let building_name = city_building_name(ui, CityFacilitySlot::TradeSchool);
+    bind_training_dialog(&mut ui.commands, catalog, spawned, building_name);
 }
 
 pub(in crate::ui::city) fn bind_training_dialog(
@@ -16,109 +57,183 @@ pub(in crate::ui::city) fn bind_training_dialog(
     spawned: &SpawnedView,
     building_name: String,
 ) {
-    bind_city_dialog_root(commands, spawned, CityFacilitySlot::TradeSchool);
+    let root = bind_city_dialog_root(commands, spawned, CityFacilitySlot::TradeSchool);
     let name = spawned.unique(fourcc!("name"));
     commands.entity(name).insert(Text::new(building_name));
     for (tag, text) in [(fourcc!("cos1"), "$100"), (fourcc!("cos2"), "$1,000")] {
         let entity = spawned.unique(tag);
         commands.entity(entity).insert(Text::new(text));
     }
-    bind_city_order_controls(
-        commands,
-        catalog,
-        spawned,
-        &TRAINING_ORDERS,
-        fourcc!("left"),
-        fourcc!("rght"),
-        fourcc!("move"),
-        1,
-    );
-    for tag in [
-        fourcc!("pap1"),
-        fourcc!("pap2"),
-        fourcc!("mon1"),
-        fourcc!("mon2"),
-        fourcc!("untV"),
-        fourcc!("traV"),
+    let mut orders = Vec::with_capacity(TRAINING_ORDERS.len());
+    for binding in TRAINING_ORDERS {
+        let CityOrderId::Training(level) = binding.order else {
+            unreachable!("Trade School control has a training order");
+        };
+        let quantity = bind_city_order_control(
+            commands,
+            catalog,
+            spawned,
+            binding,
+            fourcc!("left"),
+            fourcc!("rght"),
+            fourcc!("move"),
+            1,
+        );
+        orders.push(TrainingOrderControl { level, quantity });
+    }
+    let paper_one = spawned.unique(fourcc!("pap1"));
+    let paper_two = spawned.unique(fourcc!("pap2"));
+    let money_one = spawned.unique(fourcc!("mon1"));
+    let money_two = spawned.unique(fourcc!("mon2"));
+    let untrained_available = spawned.unique(fourcc!("untV"));
+    let trained_available = spawned.unique(fourcc!("traV"));
+    for entity in [
+        paper_one,
+        paper_two,
+        money_one,
+        money_two,
+        untrained_available,
+        trained_available,
     ] {
-        let entity = spawned.unique(tag);
         commands.entity(entity).insert(Text::new("X"));
     }
+    commands.entity(root).insert(TrainingView {
+        orders,
+        paper_one,
+        paper_two,
+        money_one,
+        money_two,
+        untrained_available,
+        trained_available,
+    });
 }
 
-pub(in crate::ui::city) fn bind_armory_dialog(
-    commands: &mut Commands,
+pub(in crate::ui::city) fn configure_armory_dialog(
+    ui: &mut UiSpawner,
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
-    title: String,
 ) {
+    let title = ui
+        .string(0x271c, 0x20)
+        .expect("retail English Armory title");
+    let commands = &mut ui.commands;
     let root = bind_city_dialog_root(commands, spawned, CityFacilitySlot::Armory);
     let title_control = spawned.unique(fourcc!("titl"));
     commands.entity(title_control).insert(Text::new(title));
-    commands.entity(root).insert(ArmorySelection {
-        category: MilitaryRecruitmentCategory::LightInfantry,
-    });
-    bind_city_order_controls(
-        commands,
-        catalog,
-        spawned,
-        &ARMORY_ORDERS,
-        fourcc!("minu"),
-        fourcc!("plus"),
-        fourcc!("numb"),
-        1,
-    );
-    for binding in &ARMORY_ORDERS {
+    let mut orders = Vec::with_capacity(ARMORY_ORDERS.len());
+    for binding in ARMORY_ORDERS {
         let CityOrderId::MilitaryRecruit(category) = binding.order else {
             unreachable!("armory binding has a military recruitment order");
         };
+        let quantity = bind_city_order_control(
+            commands,
+            catalog,
+            spawned,
+            binding,
+            fourcc!("minu"),
+            fourcc!("plus"),
+            fourcc!("numb"),
+            1,
+        );
         let button = spawned.unique(armory_button_tag(category));
         commands.entity(button).insert(ArmoryRowChoice { category });
-        let quantity = spawned.under(catalog, binding.tag, fourcc!("numb"));
         commands.entity(quantity).insert(InteractionDisabled);
+        orders.push(ArmoryOrderControl {
+            category,
+            button,
+            quantity,
+        });
     }
-    for tag in [
-        fourcc!("unit"),
-        fourcc!("cos0"),
-        fourcc!("cos1"),
-        fourcc!("cos2"),
-        fourcc!("cos3"),
-        fourcc!("ava0"),
-        fourcc!("ava1"),
-        fourcc!("ava2"),
-        fourcc!("ava3"),
+    let unit = spawned.unique(fourcc!("unit"));
+    let workforce_cost = spawned.unique(fourcc!("cos0"));
+    let primary_cost = spawned.unique(fourcc!("cos1"));
+    let secondary_cost = spawned.unique(fourcc!("cos2"));
+    let cash_cost = spawned.unique(fourcc!("cos3"));
+    let workforce_available = spawned.unique(fourcc!("ava0"));
+    let primary_available = spawned.unique(fourcc!("ava1"));
+    let secondary_available = spawned.unique(fourcc!("ava2"));
+    let treasury = spawned.unique(fourcc!("ava3"));
+    for entity in [
+        unit,
+        workforce_cost,
+        primary_cost,
+        secondary_cost,
+        cash_cost,
+        workforce_available,
+        primary_available,
+        secondary_available,
+        treasury,
     ] {
-        let entity = spawned.unique(tag);
         commands.entity(entity).insert(Text::new(""));
     }
+    commands.entity(root).insert(ArmoryView {
+        category: MilitaryRecruitmentCategory::LightInfantry,
+        orders,
+        unit,
+        workforce_cost,
+        primary_cost,
+        secondary_cost,
+        cash_cost,
+        workforce_available,
+        primary_available,
+        secondary_available,
+        treasury,
+    });
+}
+
+pub(in crate::ui::city) fn on_armory_row_selected(
+    change: On<ValueChange<bool>>,
+    rows: Query<&ArmoryRowChoice>,
+    mut views: Query<&mut ArmoryView>,
+) {
+    if !change.value {
+        return;
+    }
+    let Ok(row) = rows.get(change.source) else {
+        return;
+    };
+    views
+        .single_mut()
+        .expect("Armory row has one open Armory dialog")
+        .category = row.category;
+}
+
+pub(in crate::ui::city) fn on_armory_order_selected(
+    activate: On<Activate>,
+    actions: Query<&CityOrderAdjust>,
+    mut views: Query<&mut ArmoryView>,
+) {
+    let Ok(action) = actions.get(activate.entity) else {
+        return;
+    };
+    let CityOrderId::MilitaryRecruit(category) = action.order else {
+        return;
+    };
+    views
+        .single_mut()
+        .expect("Armory order has one open Armory dialog")
+        .category = category;
 }
 
 pub(in crate::ui::city) fn sync_training_dialog(
     session: Res<GameSession>,
-    catalog: Res<UiCatalogResource>,
-    dialogs: Query<(&SpawnedView, Ref<CityBuildingDialog>)>,
+    dialogs: Query<Ref<TrainingView>>,
     mut texts: Query<&mut Text>,
     mut visibilities: Query<&mut Visibility>,
 ) {
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("City active nation is a major nation");
-    for (spawned, dialog) in &dialogs {
-        if dialog.slot != CityFacilitySlot::TradeSchool {
-            continue;
-        }
-        if !session.is_changed() && !dialog.is_added() {
+    for view in &dialogs {
+        if !session.is_changed() && !view.is_added() {
             continue;
         }
         let major = session.0.nations().major(nation);
         let city = &major.city;
-        for binding in &TRAINING_ORDERS {
-            let CityOrderId::Training(level) = binding.order else {
-                unreachable!("Trade School control has a training order");
-            };
+        for order in &view.orders {
             texts
-                .get_mut(spawned.under(&catalog, binding.tag, fourcc!("move")))
+                .get_mut(order.quantity)
                 .expect("Trade School order quantity has text")
-                .0 = city.orders.training[level].quantity.to_string();
+                .0 = city.orders.training[order.level].quantity.to_string();
         }
 
         let production = city.population.production_labor();
@@ -126,16 +241,19 @@ pub(in crate::ui::city) fn sync_training_dialog(
         let budget = major
             .economy
             .available_diplomacy_budget(major.common.treasury);
-        for (tag, visible) in [
-            (fourcc!("pap1"), city.stockpile[ResourceKind::Paper] >= 1),
-            (fourcc!("pap2"), city.stockpile[ResourceKind::Paper] >= 2),
-            (fourcc!("mon1"), budget >= 100),
-            (fourcc!("mon2"), budget >= 1_000),
-            (fourcc!("untV"), production.low.min(strength) != 0),
-            (fourcc!("traV"), production.medium.min(strength / 2) != 0),
+        for (entity, visible) in [
+            (view.paper_one, city.stockpile[ResourceKind::Paper] >= 1),
+            (view.paper_two, city.stockpile[ResourceKind::Paper] >= 2),
+            (view.money_one, budget >= 100),
+            (view.money_two, budget >= 1_000),
+            (view.untrained_available, production.low.min(strength) != 0),
+            (
+                view.trained_available,
+                production.medium.min(strength / 2) != 0,
+            ),
         ] {
             *visibilities
-                .get_mut(spawned.unique(tag))
+                .get_mut(entity)
                 .expect("Trade School indicator has visibility") = if visible {
                 Visibility::Visible
             } else {
@@ -148,50 +266,36 @@ pub(in crate::ui::city) fn sync_training_dialog(
 pub(in crate::ui::city) fn sync_armory_dialog(
     mut commands: Commands,
     session: Res<GameSession>,
-    catalog: Res<UiCatalogResource>,
-    dialogs: Query<(&SpawnedView, Ref<ArmorySelection>)>,
-    rows: Query<(&ArmoryRowChoice, Has<Checked>)>,
+    dialogs: Query<Ref<ArmoryView>>,
     mut texts: Query<&mut Text>,
     mut visibilities: Query<&mut Visibility>,
 ) {
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("City active nation is a major nation");
-    for (spawned, selection) in &dialogs {
-        if !session.is_changed() && !selection.is_changed() {
+    for view in &dialogs {
+        if !session.is_changed() && !view.is_changed() {
             continue;
         }
-        for binding in ARMORY_ORDERS {
-            let CityOrderId::MilitaryRecruit(category) = binding.order else {
-                unreachable!("Armory binding has a military recruitment order");
-            };
-            let button = spawned.unique(armory_button_tag(category));
-            let (_, checked) = rows
-                .get(button)
-                .expect("Armory button has its retail row choice");
-            if checked != (category == selection.category) {
-                if checked {
-                    commands.entity(button).remove::<Checked>();
-                } else {
-                    commands.entity(button).insert(Checked);
-                }
+        for order in &view.orders {
+            if order.category == view.category {
+                commands.entity(order.button).insert(Checked);
+            } else {
+                commands.entity(order.button).remove::<Checked>();
             }
         }
         let major = session.0.nations().major(nation);
         let city = &major.city;
-        for binding in &ARMORY_ORDERS {
-            let CityOrderId::MilitaryRecruit(category) = binding.order else {
-                unreachable!("Armory control has a military recruitment order");
-            };
+        for order in &view.orders {
             texts
-                .get_mut(spawned.under(&catalog, binding.tag, fourcc!("numb")))
+                .get_mut(order.quantity)
                 .expect("Armory order quantity has text")
-                .0 = city.orders.military_recruitment[category]
+                .0 = city.orders.military_recruitment[order.category]
                 .progress
                 .quantity
                 .to_string();
         }
 
-        let order = &city.orders.military_recruitment[selection.category];
+        let order = &city.orders.military_recruitment[view.category];
         let spec = military_recruitment_spec(order.unit_kind)
             .expect("Armory row has a recruitable retail unit recipe");
         let production = city.population.production_labor();
@@ -201,34 +305,38 @@ pub(in crate::ui::city) fn sync_armory_dialog(
             SkillBand::Medium => (production.medium, 2),
             SkillBand::High => (production.high, 4),
         };
-        for (tag, value) in [
-            (fourcc!("cos0"), 1),
-            (fourcc!("cos1"), spec.primary.per_unit()),
-            (fourcc!("ava0"), workforce.min(strength / strength_divisor)),
-            (fourcc!("ava1"), city.stockpile[spec.primary.resource]),
+        for (entity, value) in [
+            (view.workforce_cost, 1),
+            (view.primary_cost, spec.primary.per_unit()),
+            (
+                view.workforce_available,
+                workforce.min(strength / strength_divisor),
+            ),
+            (
+                view.primary_available,
+                city.stockpile[spec.primary.resource],
+            ),
         ] {
             texts
-                .get_mut(spawned.unique(tag))
+                .get_mut(entity)
                 .expect("Armory numeric control has text")
                 .0 = value.to_string();
         }
         texts
-            .get_mut(spawned.unique(fourcc!("unit")))
+            .get_mut(view.unit)
             .expect("Armory unit control has text")
             .0 = format!("{:?}", order.unit_kind);
         texts
-            .get_mut(spawned.unique(fourcc!("cos3")))
+            .get_mut(view.cash_cost)
             .expect("Armory cash cost has text")
             .0 = format_currency(i32::from(spec.cash_per_unit));
         texts
-            .get_mut(spawned.unique(fourcc!("ava3")))
+            .get_mut(view.treasury)
             .expect("Armory treasury has text")
             .0 = format_currency(major.common.treasury);
 
-        let secondary_cost_entity = spawned.unique(fourcc!("cos2"));
-        let secondary_available_entity = spawned.unique(fourcc!("ava2"));
         let [mut secondary_cost, mut secondary_available] = texts
-            .get_many_mut([secondary_cost_entity, secondary_available_entity])
+            .get_many_mut([view.secondary_cost, view.secondary_available])
             .expect("Armory secondary controls have text");
         let secondary_visible = if let Some(secondary) = spec.secondary {
             secondary_cost.0 = secondary.per_unit().to_string();
@@ -239,7 +347,7 @@ pub(in crate::ui::city) fn sync_armory_dialog(
             secondary_available.0.clear();
             false
         };
-        for entity in [secondary_cost_entity, secondary_available_entity] {
+        for entity in [view.secondary_cost, view.secondary_available] {
             *visibilities
                 .get_mut(entity)
                 .expect("Armory secondary control has visibility") = if secondary_visible {

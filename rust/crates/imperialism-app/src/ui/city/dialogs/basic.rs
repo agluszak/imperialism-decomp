@@ -1,17 +1,58 @@
 use super::*;
 
-#[derive(Component)]
-pub(in crate::ui::city) struct PopulationDialogTemplates {
-    capacity_template: String,
-    province_template: String,
+struct WarehouseStockControl {
+    resource: ResourceKind,
+    entity: Entity,
 }
 
-pub(in crate::ui::city) fn bind_warehouse_dialog(
+#[derive(Component)]
+pub(in crate::ui::city) struct WarehouseView {
+    stocks: Vec<WarehouseStockControl>,
+    labor: Entity,
+    power: Entity,
+}
+
+#[derive(Component)]
+pub(in crate::ui::city) struct FoodProcessingView {
+    quantity: Entity,
+    labor: Entity,
+    grain: Entity,
+    fruit: Entity,
+    fish_and_livestock: Entity,
+}
+
+#[derive(Component)]
+pub(in crate::ui::city) struct PowerPlantView {
+    quantity: Entity,
+}
+
+#[derive(Component)]
+pub(in crate::ui::city) struct TransportCapacityView {
+    quantity: Entity,
+    labor: Entity,
+    lumber: Entity,
+    steel: Entity,
+}
+
+#[derive(Component)]
+pub(in crate::ui::city) struct PopulationView {
+    capacity_template: String,
+    province_template: String,
+    quantity: Entity,
+    food: Entity,
+    clothing: Entity,
+    furniture: Entity,
+    capacity: Entity,
+    provinces: Entity,
+}
+
+pub(in crate::ui::city) fn configure_warehouse_dialog(
     ui: &mut UiSpawner,
     spawned: &SpawnedView,
-    building_name: String,
-    oil_drilling_available: bool,
+    state: &GameState,
 ) {
+    let building_name = city_building_name(ui, CityFacilitySlot::Warehouse);
+    let oil_drilling_available = state.technology().oil_drilling_available();
     let (title_font, title_layout, _) = ui
         .text_style(RetailTextStylePreset {
             font_family: 1,
@@ -29,7 +70,7 @@ pub(in crate::ui::city) fn bind_warehouse_dialog(
         })
         .expect("retail Warehouse value text style");
     let text_color = ui.palette_color(0);
-    bind_city_dialog_root(&mut ui.commands, spawned, CityFacilitySlot::Warehouse);
+    let root = bind_city_dialog_root(&mut ui.commands, spawned, CityFacilitySlot::Warehouse);
     let name = spawned.unique(fourcc!("name"));
     ui.commands.entity(name).insert((
         Text::new(building_name),
@@ -38,7 +79,8 @@ pub(in crate::ui::city) fn bind_warehouse_dialog(
         TextColor(text_color),
     ));
 
-    for &(_, tag) in &WAREHOUSE_STOCKS {
+    let mut stocks = Vec::with_capacity(WAREHOUSE_STOCKS.len());
+    for &(resource, tag) in &WAREHOUSE_STOCKS {
         let control = spawned.unique(tag);
         ui.commands.entity(control).insert((
             Text::new(""),
@@ -46,6 +88,10 @@ pub(in crate::ui::city) fn bind_warehouse_dialog(
             value_layout,
             TextColor(text_color),
         ));
+        stocks.push(WarehouseStockControl {
+            resource,
+            entity: control,
+        });
     }
     let labor = spawned.unique(fourcc!("labo"));
     let power = spawned.unique(fourcc!("powe"));
@@ -57,6 +103,11 @@ pub(in crate::ui::city) fn bind_warehouse_dialog(
             TextColor(text_color),
         ));
     }
+    ui.commands.entity(root).insert(WarehouseView {
+        stocks,
+        labor,
+        power,
+    });
     for tag in [fourcc!("oil "), fourcc!("fuel"), fourcc!("powe")] {
         let control = spawned.unique(tag);
         let mut control_commands = ui.commands.entity(control);
@@ -123,33 +174,32 @@ pub(in crate::ui::city) fn bind_rail_dialog(
     building_name: String,
     binding: CityOrderBinding,
     step: i16,
-) {
+) -> Entity {
     bind_city_dialog_root(commands, spawned, slot);
     let name_control = spawned.unique(fourcc!("name"));
     commands
         .entity(name_control)
         .insert(Text::new(building_name));
-    let left = spawned.under(catalog, binding.tag, fourcc!("left"));
-    let right = spawned.under(catalog, binding.tag, fourcc!("rght"));
-    commands.entity(left).insert(CityOrderAdjust {
-        order: binding.order,
-        delta: -step,
-    });
-    commands.entity(right).insert(CityOrderAdjust {
-        order: binding.order,
-        delta: step,
-    });
-    let quantity = spawned.under(catalog, binding.tag, fourcc!("move"));
-    commands.entity(quantity).insert(Text::new(""));
+    bind_city_order_control(
+        commands,
+        catalog,
+        spawned,
+        binding,
+        fourcc!("left"),
+        fourcc!("rght"),
+        fourcc!("move"),
+        step,
+    )
 }
 
-pub(in crate::ui::city) fn bind_food_dialog(
-    commands: &mut Commands,
+pub(in crate::ui::city) fn configure_food_dialog(
+    ui: &mut UiSpawner,
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
-    building_name: String,
 ) {
-    bind_rail_dialog(
+    let building_name = city_building_name(ui, CityFacilitySlot::FoodProcessing);
+    let commands = &mut ui.commands;
+    let quantity = bind_rail_dialog(
         commands,
         catalog,
         spawned,
@@ -165,15 +215,23 @@ pub(in crate::ui::city) fn bind_food_dialog(
     for entity in [labor, grain, fruit, fish_and_livestock] {
         commands.entity(entity).insert(Text::new("X"));
     }
+    commands.entity(spawned.root).insert(FoodProcessingView {
+        quantity,
+        labor,
+        grain,
+        fruit,
+        fish_and_livestock,
+    });
 }
 
-pub(in crate::ui::city) fn bind_power_dialog(
-    commands: &mut Commands,
+pub(in crate::ui::city) fn configure_power_dialog(
+    ui: &mut UiSpawner,
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
-    building_name: String,
 ) {
-    bind_rail_dialog(
+    let building_name = city_building_name(ui, CityFacilitySlot::PowerPlant);
+    let commands = &mut ui.commands;
+    let quantity = bind_rail_dialog(
         commands,
         catalog,
         spawned,
@@ -182,19 +240,23 @@ pub(in crate::ui::city) fn bind_power_dialog(
         POWER_ORDER,
         6,
     );
+    commands
+        .entity(spawned.root)
+        .insert(PowerPlantView { quantity });
     let fuel = spawned.unique(fourcc!("fuel"));
     commands
         .entity(fuel)
         .insert((Text::new("X"), Visibility::Hidden));
 }
 
-pub(in crate::ui::city) fn bind_transport_capacity_dialog(
-    commands: &mut Commands,
+pub(in crate::ui::city) fn configure_transport_capacity_dialog(
+    ui: &mut UiSpawner,
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
-    building_name: String,
 ) {
-    bind_rail_dialog(
+    let building_name = city_building_name(ui, CityFacilitySlot::Transport);
+    let commands = &mut ui.commands;
+    let quantity = bind_rail_dialog(
         commands,
         catalog,
         spawned,
@@ -209,17 +271,24 @@ pub(in crate::ui::city) fn bind_transport_capacity_dialog(
     for entity in [labor, lumber, steel] {
         commands.entity(entity).insert(Text::new("X"));
     }
+    commands.entity(spawned.root).insert(TransportCapacityView {
+        quantity,
+        labor,
+        lumber,
+        steel,
+    });
 }
 
-pub(in crate::ui::city) fn bind_population_dialog(
-    commands: &mut Commands,
+pub(in crate::ui::city) fn configure_population_dialog(
+    ui: &mut UiSpawner,
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
-    building_name: String,
-    capacity_template: String,
-    province_template: String,
 ) {
-    bind_rail_dialog(
+    let building_name = city_building_name(ui, CityFacilitySlot::RegionalPopulation);
+    let capacity_template = city_string(ui, CITY_TEXT_STRING_GROUP, 0x10);
+    let province_template = city_string(ui, CITY_TEXT_STRING_GROUP, 0x1d);
+    let commands = &mut ui.commands;
+    let quantity = bind_rail_dialog(
         commands,
         catalog,
         spawned,
@@ -239,176 +308,193 @@ pub(in crate::ui::city) fn bind_population_dialog(
     for entity in [capacity, provinces] {
         commands.entity(entity).insert(Text::new(""));
     }
-    commands
-        .entity(spawned.root)
-        .insert(PopulationDialogTemplates {
-            capacity_template,
-            province_template,
-        });
+    commands.entity(spawned.root).insert(PopulationView {
+        capacity_template,
+        province_template,
+        quantity,
+        food,
+        clothing,
+        furniture,
+        capacity,
+        provinces,
+    });
 }
 
-pub(in crate::ui::city) fn sync_basic_dialog(
+pub(in crate::ui::city) fn sync_warehouse_dialog(
     session: Res<GameSession>,
-    catalog: Res<UiCatalogResource>,
-    dialogs: Query<(
-        &SpawnedView,
-        Ref<CityBuildingDialog>,
-        Option<&PopulationDialogTemplates>,
-    )>,
+    dialogs: Query<Ref<WarehouseView>>,
+    mut texts: Query<&mut Text>,
+) {
+    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+        .expect("City active nation is a major nation");
+    for view in &dialogs {
+        if !session.is_changed() && !view.is_added() {
+            continue;
+        }
+        let city = &session.0.nations().major(nation).city;
+        for stock in &view.stocks {
+            let value = if stock.resource == ResourceKind::Livestock {
+                city.stockpile[ResourceKind::Fish] + city.stockpile[ResourceKind::Livestock]
+            } else {
+                city.stockpile[stock.resource]
+            };
+            texts
+                .get_mut(stock.entity)
+                .expect("Warehouse stock control belongs to its dialog")
+                .0 = value.to_string();
+        }
+        texts
+            .get_mut(view.labor)
+            .expect("Warehouse labor control belongs to its dialog")
+            .0 = city.population.strength().to_string();
+        texts
+            .get_mut(view.power)
+            .expect("Warehouse power control belongs to its dialog")
+            .0 = city.power_available.to_string();
+    }
+}
+
+pub(in crate::ui::city) fn sync_food_dialog(
+    session: Res<GameSession>,
+    dialogs: Query<Ref<FoodProcessingView>>,
     mut texts: Query<&mut Text>,
     mut visibilities: Query<&mut Visibility>,
 ) {
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("City active nation is a major nation");
-    for (spawned, dialog, templates) in &dialogs {
-        if !session.is_changed() && !dialog.is_added() {
+    for view in &dialogs {
+        if !session.is_changed() && !view.is_added() {
+            continue;
+        }
+        let city = &session.0.nations().major(nation).city;
+        let status = session.0.city_order_status(nation, FOOD_ORDER.order);
+        texts
+            .get_mut(view.quantity)
+            .expect("Food Processing order control belongs to its dialog")
+            .0 = status.quantity.to_string();
+        for (entity, visible) in [
+            (view.labor, city.population.strength() >= 2),
+            (view.grain, city.stockpile[ResourceKind::Grain] >= 2),
+            (view.fruit, city.stockpile[ResourceKind::Fruit] >= 1),
+            (
+                view.fish_and_livestock,
+                city.stockpile[ResourceKind::Fish] + city.stockpile[ResourceKind::Livestock] >= 1,
+            ),
+        ] {
+            *visibilities
+                .get_mut(entity)
+                .expect("Food Processing indicator belongs to its dialog") = if visible {
+                Visibility::Visible
+            } else {
+                Visibility::Hidden
+            };
+        }
+    }
+}
+
+pub(in crate::ui::city) fn sync_power_dialog(
+    session: Res<GameSession>,
+    dialogs: Query<Ref<PowerPlantView>>,
+    mut texts: Query<&mut Text>,
+) {
+    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+        .expect("City active nation is a major nation");
+    for view in &dialogs {
+        if !session.is_changed() && !view.is_added() {
+            continue;
+        }
+        let status = session.0.city_order_status(nation, POWER_ORDER.order);
+        texts
+            .get_mut(view.quantity)
+            .expect("Power Plant order control belongs to its dialog")
+            .0 = status.quantity.to_string();
+    }
+}
+
+pub(in crate::ui::city) fn sync_transport_capacity_dialog(
+    session: Res<GameSession>,
+    dialogs: Query<Ref<TransportCapacityView>>,
+    mut texts: Query<&mut Text>,
+    mut visibilities: Query<&mut Visibility>,
+) {
+    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+        .expect("City active nation is a major nation");
+    for view in &dialogs {
+        if !session.is_changed() && !view.is_added() {
+            continue;
+        }
+        let city = &session.0.nations().major(nation).city;
+        let status = session
+            .0
+            .city_order_status(nation, TRANSPORT_CAPACITY_ORDER.order);
+        texts
+            .get_mut(view.quantity)
+            .expect("Transport order control belongs to its dialog")
+            .0 = status.quantity.to_string();
+        for (entity, visible) in [
+            (view.labor, city.population.strength() >= 2),
+            (view.lumber, city.stockpile[ResourceKind::Lumber] < 1),
+            (view.steel, city.stockpile[ResourceKind::Steel] < 1),
+        ] {
+            *visibilities
+                .get_mut(entity)
+                .expect("Transport indicator belongs to its dialog") = if visible {
+                Visibility::Visible
+            } else {
+                Visibility::Hidden
+            };
+        }
+    }
+}
+
+pub(in crate::ui::city) fn sync_population_dialog(
+    session: Res<GameSession>,
+    dialogs: Query<Ref<PopulationView>>,
+    mut texts: Query<&mut Text>,
+    mut visibilities: Query<&mut Visibility>,
+) {
+    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+        .expect("City active nation is a major nation");
+    for view in &dialogs {
+        if !session.is_changed() && !view.is_added() {
             continue;
         }
         let major = session.0.nations().major(nation);
         let city = &major.city;
-        match dialog.slot {
-            CityFacilitySlot::Warehouse => {
-                for &(resource, tag) in &WAREHOUSE_STOCKS {
-                    let value = if resource == ResourceKind::Livestock {
-                        city.stockpile[ResourceKind::Fish] + city.stockpile[ResourceKind::Livestock]
-                    } else {
-                        city.stockpile[resource]
-                    };
-                    texts
-                        .get_mut(spawned.unique(tag))
-                        .expect("Warehouse stock control belongs to its dialog")
-                        .0 = value.to_string();
-                }
-                texts
-                    .get_mut(spawned.unique(fourcc!("labo")))
-                    .expect("Warehouse labor control belongs to its dialog")
-                    .0 = city.population.strength().to_string();
-                texts
-                    .get_mut(spawned.unique(fourcc!("powe")))
-                    .expect("Warehouse power control belongs to its dialog")
-                    .0 = city.power_available.to_string();
-            }
-            CityFacilitySlot::FoodProcessing => {
-                let status = session.0.city_order_status(nation, FOOD_ORDER.order);
-                texts
-                    .get_mut(spawned.under(&catalog, FOOD_ORDER.tag, fourcc!("move")))
-                    .expect("Food Processing order control belongs to its dialog")
-                    .0 = status.quantity.to_string();
-                *visibilities
-                    .get_mut(spawned.unique(fourcc!("labV")))
-                    .expect("Food Processing labor indicator belongs to its dialog") =
-                    if city.population.strength() >= 2 {
-                        Visibility::Visible
-                    } else {
-                        Visibility::Hidden
-                    };
-                *visibilities
-                    .get_mut(spawned.unique(fourcc!("grai")))
-                    .expect("Food Processing grain indicator belongs to its dialog") =
-                    if city.stockpile[ResourceKind::Grain] >= 2 {
-                        Visibility::Visible
-                    } else {
-                        Visibility::Hidden
-                    };
-                *visibilities
-                    .get_mut(spawned.unique(fourcc!("prod")))
-                    .expect("Food Processing fruit indicator belongs to its dialog") =
-                    if city.stockpile[ResourceKind::Fruit] >= 1 {
-                        Visibility::Visible
-                    } else {
-                        Visibility::Hidden
-                    };
-                *visibilities
-                    .get_mut(spawned.unique(fourcc!("fish")))
-                    .expect("Food Processing livestock indicator belongs to its dialog") =
-                    if city.stockpile[ResourceKind::Fish] + city.stockpile[ResourceKind::Livestock]
-                        >= 1
-                    {
-                        Visibility::Visible
-                    } else {
-                        Visibility::Hidden
-                    };
-            }
-            CityFacilitySlot::PowerPlant => {
-                let status = session.0.city_order_status(nation, POWER_ORDER.order);
-                texts
-                    .get_mut(spawned.under(&catalog, POWER_ORDER.tag, fourcc!("move")))
-                    .expect("Power Plant order control belongs to its dialog")
-                    .0 = status.quantity.to_string();
-            }
-            CityFacilitySlot::Transport => {
-                let status = session
-                    .0
-                    .city_order_status(nation, TRANSPORT_CAPACITY_ORDER.order);
-                texts
-                    .get_mut(spawned.under(&catalog, TRANSPORT_CAPACITY_ORDER.tag, fourcc!("move")))
-                    .expect("Transport order control belongs to its dialog")
-                    .0 = status.quantity.to_string();
-                *visibilities
-                    .get_mut(spawned.unique(fourcc!("labV")))
-                    .expect("Transport labor indicator belongs to its dialog") =
-                    if city.population.strength() >= 2 {
-                        Visibility::Visible
-                    } else {
-                        Visibility::Hidden
-                    };
-                *visibilities
-                    .get_mut(spawned.unique(fourcc!("lumb")))
-                    .expect("Transport lumber indicator belongs to its dialog") =
-                    if city.stockpile[ResourceKind::Lumber] < 1 {
-                        Visibility::Visible
-                    } else {
-                        Visibility::Hidden
-                    };
-                *visibilities
-                    .get_mut(spawned.unique(fourcc!("stee")))
-                    .expect("Transport steel indicator belongs to its dialog") =
-                    if city.stockpile[ResourceKind::Steel] < 1 {
-                        Visibility::Visible
-                    } else {
-                        Visibility::Hidden
-                    };
-            }
-            CityFacilitySlot::RegionalPopulation => {
-                let status = session.0.city_order_status(nation, POPULATION_ORDER.order);
-                texts
-                    .get_mut(spawned.under(&catalog, POPULATION_ORDER.tag, fourcc!("move")))
-                    .expect("Population order control belongs to its dialog")
-                    .0 = status.quantity.to_string();
-                for (tag, resource) in [
-                    (fourcc!("food"), ResourceKind::Food),
-                    (fourcc!("clot"), ResourceKind::Clothing),
-                    (fourcc!("furn"), ResourceKind::Furniture),
-                ] {
-                    *visibilities
-                        .get_mut(spawned.unique(tag))
-                        .expect("Population stock indicator belongs to its dialog") =
-                        if city.stockpile[resource] >= 1 {
-                            Visibility::Visible
-                        } else {
-                            Visibility::Hidden
-                        };
-                }
-                let templates = templates.expect("Population dialog has number templates");
-                let owned_regions = major.common.owned_region_count();
-                let capacity = format_retail_number(
-                    &templates.capacity_template,
-                    city.building_type(
-                        CityFacilitySlot::RegionalPopulation,
-                        &major.economy,
-                        owned_regions as i32,
-                    ),
-                );
-                texts
-                    .get_mut(spawned.unique(fourcc!("capT")))
-                    .expect("Population capacity control belongs to its dialog")
-                    .0 = capacity;
-                texts
-                    .get_mut(spawned.unique(fourcc!("prov")))
-                    .expect("Population province control belongs to its dialog")
-                    .0 = format_retail_number(&templates.province_template, owned_regions as i16);
-            }
-            _ => continue,
+        let status = session.0.city_order_status(nation, POPULATION_ORDER.order);
+        texts
+            .get_mut(view.quantity)
+            .expect("Population order control belongs to its dialog")
+            .0 = status.quantity.to_string();
+        for (entity, resource) in [
+            (view.food, ResourceKind::Food),
+            (view.clothing, ResourceKind::Clothing),
+            (view.furniture, ResourceKind::Furniture),
+        ] {
+            *visibilities
+                .get_mut(entity)
+                .expect("Population stock indicator belongs to its dialog") =
+                if city.stockpile[resource] >= 1 {
+                    Visibility::Visible
+                } else {
+                    Visibility::Hidden
+                };
         }
+        let owned_regions = major.common.owned_region_count();
+        texts
+            .get_mut(view.capacity)
+            .expect("Population capacity control belongs to its dialog")
+            .0 = format_retail_number(
+            &view.capacity_template,
+            city.building_type(
+                CityFacilitySlot::RegionalPopulation,
+                &major.economy,
+                owned_regions as i32,
+            ),
+        );
+        texts
+            .get_mut(view.provinces)
+            .expect("Population province control belongs to its dialog")
+            .0 = format_retail_number(&view.province_template, owned_regions as i16);
     }
 }

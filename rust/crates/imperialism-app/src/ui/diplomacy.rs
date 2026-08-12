@@ -1,7 +1,8 @@
 use super::catalog::{
     ModalDialog, SpawnedView, UiAssetResources, UiCatalogResource, UiSpawner, spawn_view,
 };
-use super::game_shell::{GameScreenRoot, bind_game_screen_nav, diplomacy_view_id, disable_control};
+use super::format_currency;
+use super::game_shell::{bind_game_screen_nav, diplomacy_view_id, disable_control};
 use super::random_setup::GameSession;
 use super::random_setup_map::{compose_owner_preview_indices, preview_image_from_indices};
 use crate::AppState;
@@ -32,6 +33,15 @@ const TRADE_POLICY_SCORES: [TradePolicyScore; 7] = [
     TradePolicyScore::BOYCOTT,
 ];
 const INFORMATION_BAND_NAMES: [&str; 5] = ["Poor", "Fair", "Good", "Excellent", "Awesome"];
+const DIPLOMACY_MAP_KEY_MAJOR_NAME_TAGS: [FourCc; 7] = [
+    fourcc!("nam0"),
+    fourcc!("nam1"),
+    fourcc!("nam2"),
+    fourcc!("nam3"),
+    fourcc!("nam4"),
+    fourcc!("nam5"),
+    fourcc!("nam6"),
+];
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum DiplomacyTopic {
@@ -65,15 +75,7 @@ struct DiplomacyGrantControl {
 struct DiplomacyTradeControl(usize);
 
 #[derive(Component)]
-struct DiplomacyMapHit;
-
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-struct DiplomacyMapSelection(NationId);
-
-#[derive(Component, Default)]
-struct DiplomacyMapPicture {
-    image: Option<Handle<Image>>,
-}
+struct DiplomacyMapPicture;
 
 #[derive(Component)]
 struct DiplomacyTreasury;
@@ -188,7 +190,7 @@ fn enter_diplomacy_screen(
     bind_game_screen_nav(&mut commands, &catalog, &spawned);
     commands
         .entity(spawned.root)
-        .insert((GameScreenRoot(view_id), DespawnOnExit(AppState::Diplomacy)));
+        .insert(DespawnOnExit(AppState::Diplomacy));
 
     let source = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
@@ -430,9 +432,7 @@ fn bind_diplomacy_screen(
             BackgroundColor(Color::NONE),
             UiButton,
             RelativeCursorPosition::default(),
-            DiplomacyMapHit,
-            DiplomacyMapSelection(source.nation()),
-            DiplomacyMapPicture::default(),
+            DiplomacyMapPicture,
             ZIndex(1),
             ChildOf(main),
         ))
@@ -441,25 +441,17 @@ fn bind_diplomacy_screen(
     spawn_diplomacy_panel_text(commands, catalog, spawned, &styles);
 
     let treasury = spawned.unique(fourcc!("trea"));
-    commands
-        .entity(treasury)
-        .insert((Text::new(""), DiplomacyTreasury));
+    commands.entity(treasury).insert(DiplomacyTreasury);
     let left = spawned.unique(fourcc!("ltab"));
-    commands.entity(left).insert((
-        ImageNode::new(pictures.information.clone()),
-        DiplomacyTopicBracket {
-            left: true,
-            pictures: pictures.clone(),
-        },
-    ));
+    commands.entity(left).insert(DiplomacyTopicBracket {
+        left: true,
+        pictures: pictures.clone(),
+    });
     let right = spawned.unique(fourcc!("rtab"));
-    commands.entity(right).insert((
-        ImageNode::new(pictures.information.clone()),
-        DiplomacyTopicBracket {
-            left: false,
-            pictures,
-        },
-    ));
+    commands.entity(right).insert(DiplomacyTopicBracket {
+        left: false,
+        pictures,
+    });
     map
 }
 
@@ -606,7 +598,6 @@ fn spawn_diplomacy_panel_text(
         spawned,
         &[fourcc!("main"), fourcc!("info"), fourcc!("mkey")],
     );
-    let key_layout = styles.key_layout.with_justify(Justify::Center);
     let key_label_layout = styles.key_layout.with_justify(Justify::Left);
     spawn_shadowed_text(
         commands,
@@ -632,41 +623,13 @@ fn spawn_diplomacy_panel_text(
         styles.foreground,
         styles.shadow,
     );
-    for (major, (left, top)) in (0..MajorNationId::COUNT).map(MajorNationId::new).zip([
-        (44.0, 19.0),
-        (44.0, 44.0),
-        (44.0, 68.0),
-        (44.0, 93.0),
-        (153.0, 19.0),
-        (153.0, 44.0),
-        (153.0, 68.0),
-    ]) {
-        let names = spawn_shadowed_text(
-            commands,
-            map_key,
-            "",
-            left,
-            top,
-            70.0,
-            &styles.key_font,
-            &key_layout,
-            styles.foreground,
-            styles.shadow,
-        );
-        for (offset, entity) in names.into_iter().enumerate() {
-            let offset = offset as f32;
-            commands.entity(entity).insert((
-                DiplomacyMapKeyMajorName(major),
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(left + offset),
-                    top: Val::Px(top + offset),
-                    width: Val::Px(70.0),
-                    height: Val::Px(25.0),
-                    ..default()
-                },
-            ));
-        }
+    for (major, tag) in (0..MajorNationId::COUNT)
+        .map(MajorNationId::new)
+        .zip(DIPLOMACY_MAP_KEY_MAJOR_NAME_TAGS)
+    {
+        commands
+            .entity(spawned.unique(tag))
+            .insert(DiplomacyMapKeyMajorName(major));
     }
 
     let grants = require_direct_path(catalog, spawned, &[fourcc!("main"), fourcc!("gran")]);
@@ -872,7 +835,7 @@ fn on_diplomacy_activate(
 
 fn on_diplomacy_map_click(
     click: On<Pointer<Click>>,
-    maps: Query<(&RelativeCursorPosition, &DiplomacyMapHit)>,
+    maps: Query<&RelativeCursorPosition, With<DiplomacyMapPicture>>,
     modals: Query<(), With<ModalDialog>>,
     mut screens: Query<&mut DiplomacyScreen>,
     mut session: ResMut<GameSession>,
@@ -881,7 +844,7 @@ fn on_diplomacy_map_click(
     if !modals.is_empty() {
         return;
     }
-    let Ok((cursor, _)) = maps.get(click.entity) else {
+    let Ok(cursor) = maps.get(click.entity) else {
         return;
     };
     if !cursor.cursor_over() {
@@ -1047,7 +1010,6 @@ fn sync_diplomacy_controls(
     grant_controls: Query<(Entity, &DiplomacyGrantControl, Option<&Checked>)>,
     trade_controls: Query<(Entity, &DiplomacyTradeControl, Option<&Checked>)>,
     mut brackets: Query<(&DiplomacyTopicBracket, &mut ImageNode, &mut Visibility)>,
-    mut selections: Query<&mut DiplomacyMapSelection>,
     mut treasury: Query<&mut Text, With<DiplomacyTreasury>>,
     mut grant_totals: Query<&mut Text, (With<DiplomacyGrantTotal>, Without<DiplomacyTreasury>)>,
 ) {
@@ -1094,12 +1056,6 @@ fn sync_diplomacy_controls(
             DiplomacyTopic::Grants => bracket.pictures.grants.clone(),
             DiplomacyTopic::Trade => bracket.pictures.trade.clone(),
         };
-    }
-    let mut selection = selections
-        .single_mut()
-        .expect("Diplomacy screen has one map selection");
-    if selection.0 != screen.framed_nation {
-        selection.0 = screen.framed_nation;
     }
     let source = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
@@ -1250,34 +1206,25 @@ fn render_diplomacy_map(
     mut commands: Commands,
     session: Res<GameSession>,
     mut assets: UiAssetResources,
-    mut maps: Query<(
-        Entity,
-        Ref<DiplomacyMapSelection>,
-        &mut DiplomacyMapPicture,
-        Option<&mut ImageNode>,
-    )>,
+    screens: Query<Ref<DiplomacyScreen>>,
+    maps: Query<(Entity, Option<&ImageNode>), With<DiplomacyMapPicture>>,
 ) {
-    let (entity, selection, mut picture, image_node) = maps
-        .single_mut()
-        .expect("Diplomacy screen has one map picture");
-    if !session.is_changed() && !selection.is_added() && !selection.is_changed() {
+    let screen = screens
+        .single()
+        .expect("Diplomacy state has one Diplomacy screen");
+    if !session.is_changed() && !screen.is_added() && !screen.is_changed() {
         return;
     }
-    let pixels =
-        compose_owner_preview_indices(|tile| session.0.map[tile].owner_nation, selection.0);
+    let (entity, image_node) = maps.single().expect("Diplomacy screen has one map picture");
+    let pixels = compose_owner_preview_indices(
+        |tile| session.0.map[tile].owner_nation,
+        screen.framed_nation,
+    );
     let image = preview_image_from_indices(&pixels, assets.default_dib_palette());
-    let handle = if let Some(handle) = &picture.image {
-        assets.replace_image(handle, image);
-        handle.clone()
+    if let Some(image_node) = image_node {
+        assets.replace_image(&image_node.image, image);
     } else {
         let handle = assets.add_image(image);
-        picture.image = Some(handle.clone());
-        handle
-    };
-    if let Some(mut image_node) = image_node {
-        image_node.image = handle;
-        image_node.rect = None;
-    } else {
         commands.entity(entity).insert(ImageNode::new(handle));
     }
 }
@@ -1415,23 +1362,6 @@ fn set_checked(
     }
 }
 
-fn format_currency(value: i32) -> String {
-    let negative = value < 0;
-    let digits = i64::from(value).abs().to_string();
-    let mut grouped = String::with_capacity(digits.len() + digits.len() / 3);
-    for (index, digit) in digits.chars().enumerate() {
-        if index != 0 && (digits.len() - index).is_multiple_of(3) {
-            grouped.push(',');
-        }
-        grouped.push(digit);
-    }
-    if negative {
-        format!("-${grouped}")
-    } else {
-        format!("${grouped}")
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1479,10 +1409,15 @@ mod tests {
         let view = catalog.required_view(&diplomacy_view_id());
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
         bind_game_screen_nav(&mut commands, &catalog, &spawned);
-        commands.entity(spawned.root).insert((
-            GameScreenRoot(diplomacy_view_id()),
-            DespawnOnExit(AppState::Diplomacy),
-        ));
+        commands
+            .entity(spawned.root)
+            .insert(DespawnOnExit(AppState::Diplomacy));
+        commands
+            .entity(spawned.unique(fourcc!("trea")))
+            .insert(Text::new(""));
+        for tag in DIPLOMACY_MAP_KEY_MAJOR_NAME_TAGS {
+            commands.entity(spawned.unique(tag)).insert(Text::new(""));
+        }
         let source = MajorNationId::from_nation(session.0.turn().active_nation).unwrap();
         let map = bind_diplomacy_screen(
             &mut commands,
@@ -1670,18 +1605,13 @@ mod tests {
                             .nations()
                             .display_name(major.nation())
                             .unwrap()
-                            .to_owned();
-                        2
+                            .to_owned()
                     ]
                 );
             }
         }
 
         click_nation_two(&mut app, first.map);
-        assert_eq!(
-            app.world().get::<DiplomacyMapSelection>(first.map),
-            Some(&DiplomacyMapSelection(NationId::new(2)))
-        );
         let target_name = app
             .world()
             .resource::<GameSession>()

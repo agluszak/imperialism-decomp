@@ -393,20 +393,3 @@ pub(in crate::ui::city) fn format_retail_value(template: &str, value: &str) -> S
 pub(in crate::ui::city) fn format_retail_number(template: &str, value: i16) -> String {
     format_retail_value(template, &value.to_string())
 }
-
-pub(in crate::ui::city) fn format_currency(value: i32) -> String {
-    let negative = value < 0;
-    let digits = i64::from(value).abs().to_string();
-    let mut grouped = String::with_capacity(digits.len() + digits.len() / 3);
-    for (index, digit) in digits.chars().enumerate() {
-        if index != 0 && (digits.len() - index).is_multiple_of(3) {
-            grouped.push(',');
-        }
-        grouped.push(digit);
-    }
-    if negative {
-        format!("-${grouped}")
-    } else {
-        format!("${grouped}")
-    }
-}

@@ -62,7 +62,7 @@ impl UiCatalogResource {
     }
 }
 
-#[derive(Component, Debug, Clone)]
+#[derive(Debug, Clone)]
 pub(crate) struct SpawnedView {
     pub root: Entity,
     pub view_id: ScopedViewId,
@@ -189,9 +189,7 @@ impl UiAssetResources<'_> {
     }
 
     pub(crate) fn palette_color(&self, index: u8) -> Color {
-        let [red, green, blue] =
-            self.retail_assets.assets().default_dib_palette()[index].to_array();
-        Color::srgb_u8(red, green, blue)
+        retail_palette_color(&self.retail_assets, index)
     }
 
     pub(crate) fn string(&self, group: i16, direct_index: i16) -> Result<String, RetailAssetError> {
@@ -421,6 +419,22 @@ pub(crate) fn spawn_view_nodes(
 
 fn spawn_node(commands: &mut Commands, node: &CatalogNode) -> Entity {
     let [inset_left, inset_top, inset_right, inset_bottom] = node.content_insets;
+    let centered_text_inset = node
+        .text
+        .as_ref()
+        .filter(|text| text.center_vertically)
+        .map(|text| {
+            let height = resolve_retail_text_style(RetailTextStylePreset {
+                font_family: text.font_family,
+                face_flags: text.face_flags,
+                point_size: text.point_size,
+                alignment: text.alignment,
+            })
+            .expect("bundled catalog text style must resolve")
+            .logical_pixel_height;
+            (node.rect.height - height).max(0) / 2
+        })
+        .unwrap_or(0);
     let mut entity = commands.spawn((
         Node {
             position_type: PositionType::Absolute,
@@ -430,7 +444,7 @@ fn spawn_node(commands: &mut Commands, node: &CatalogNode) -> Entity {
             height: Val::Px(node.rect.height as f32),
             padding: UiRect {
                 left: Val::Px(inset_left as f32),
-                top: Val::Px(inset_top as f32),
+                top: Val::Px((inset_top + centered_text_inset) as f32),
                 right: Val::Px(inset_right as f32),
                 bottom: Val::Px(inset_bottom as f32),
             },
@@ -495,6 +509,16 @@ fn bind_view_assets(
     for node in &view.nodes {
         let entity = spawned.nodes[&node.id];
         if let Some(binding) = node.text.as_ref() {
+            let color = binding.color_index.map_or(Color::BLACK, |index| {
+                retail_palette_color(&pictures.retail_assets, index)
+            });
+            let shadow = binding.shadow_color_index.map(|index| TextShadow {
+                offset: Vec2::new(
+                    binding.shadow_offset[0] as f32,
+                    binding.shadow_offset[1] as f32,
+                ),
+                color: retail_palette_color(&pictures.retail_assets, index),
+            });
             match load_retail_text(
                 binding,
                 &pictures.retail_assets,
@@ -511,7 +535,7 @@ fn bind_view_assets(
                             editable,
                             font,
                             layout,
-                            TextColor(Color::BLACK),
+                            TextColor(color),
                             TextCursorStyle::default(),
                             EditableTextFilter::new(|character| !character.is_control()),
                         ));
@@ -524,11 +548,14 @@ fn bind_view_assets(
                             Text::new(binding.value.clone()),
                             font,
                             layout,
-                            TextColor(Color::BLACK),
+                            TextColor(color),
                         ));
                         if underline {
                             entity.insert(Underline);
                         }
+                    }
+                    if let Some(shadow) = shadow {
+                        commands.entity(entity).insert(shadow);
                     }
                 }
                 Err(error) => {
@@ -564,6 +591,11 @@ fn bind_view_assets(
             }
         }
     }
+}
+
+fn retail_palette_color(retail_assets: &RetailAssetsResource, index: u8) -> Color {
+    let [red, green, blue] = retail_assets.assets().default_dib_palette()[index].to_array();
+    Color::srgb_u8(red, green, blue)
 }
 
 fn sync_catalog_picture_visuals(

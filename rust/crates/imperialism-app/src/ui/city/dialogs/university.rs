@@ -1,16 +1,8 @@
 use super::*;
 
 #[derive(Component)]
-pub(in crate::ui::city) struct UniversitySelection {
-    pub(in crate::ui::city) kind: CivilianUnitKind,
-}
-
-#[derive(Component)]
 pub(in crate::ui::city) struct UniversityRowChoice {
     pub(in crate::ui::city) kind: CivilianUnitKind,
-    pub(in crate::ui::city) unit_name: String,
-    pub(in crate::ui::city) description: String,
-    pub(in crate::ui::city) preview: Handle<Image>,
 }
 
 pub(in crate::ui::city) struct UniversityRowText {
@@ -37,10 +29,29 @@ struct UniversityRequirementControls {
     values: [Entity; 3],
 }
 
+struct UniversityRow {
+    unit_name: String,
+    description: String,
+    preview: Handle<Image>,
+    button: Entity,
+    quantity: Entity,
+}
+
 #[derive(Component)]
-pub(in crate::ui::city) struct UniversityDialogControls {
+pub(in crate::ui::city) struct UniversityView {
+    pub(in crate::ui::city) kind: CivilianUnitKind,
+    rows: CivilianUnitTable<Option<UniversityRow>>,
+    unit_name: Entity,
+    description: Entity,
+    labor_cost: Entity,
+    material_cost: Entity,
+    cash_cost: Entity,
+    labor_available: Entity,
+    material_available: Entity,
+    treasury: Entity,
     preview: Entity,
     requirements: [UniversityRequirementControls; 4],
+    tier_labels: [Entity; 3],
     normal_color: Color,
     warning_color: Color,
 }
@@ -59,11 +70,14 @@ pub(in crate::ui::city) const fn university_preview_picture(kind: CivilianUnitKi
     }
 }
 
-pub(in crate::ui::city) fn university_dialog_data(
+pub(in crate::ui::city) fn configure_university_dialog(
     ui: &mut UiSpawner,
+    catalog: &UiCatalogResource,
+    spawned: &SpawnedView,
     state: &GameState,
-    nation: MajorNationId,
-) -> UniversityDialogData {
+) {
+    let nation = MajorNationId::from_nation(state.turn().active_nation)
+        .expect("City active nation is a major nation");
     let (detail_font, _, _) = ui
         .text_style(RetailTextStylePreset {
             font_family: 3,
@@ -88,7 +102,7 @@ pub(in crate::ui::city) fn university_dialog_data(
             alignment: 1,
         })
         .expect("retail University unit-name fallback text style");
-    UniversityDialogData {
+    let data = UniversityDialogData {
         available: state.technology().city_capabilities_by_nation[nation]
             .university
             .available,
@@ -116,7 +130,8 @@ pub(in crate::ui::city) fn university_dialog_data(
         detail_font,
         normal_color: ui.palette_color(0xd2),
         warning_color: ui.palette_color(0xcb),
-    }
+    };
+    bind_university_dialog(&mut ui.commands, catalog, spawned, data);
 }
 
 pub(in crate::ui::city) fn bind_university_dialog(
@@ -137,19 +152,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
         warning_color,
     } = data;
     let root = bind_city_dialog_root(commands, spawned, CityFacilitySlot::University);
-    commands.entity(root).insert(UniversitySelection {
-        kind: CivilianUnitKind::Miner,
-    });
-    bind_city_order_controls(
-        commands,
-        catalog,
-        spawned,
-        &UNIVERSITY_ORDERS,
-        fourcc!("minu"),
-        fourcc!("plus"),
-        fourcc!("numb"),
-        1,
-    );
+    let mut rows_by_kind = CivilianUnitTable::default();
     for (binding, row_text) in UNIVERSITY_ORDERS.iter().zip(rows) {
         let CityOrderId::CivilianRecruit(kind) = binding.order else {
             unreachable!("University binding has a civilian recruitment order");
@@ -159,6 +162,14 @@ pub(in crate::ui::city) fn bind_university_dialog(
         let minus = spawned.under(catalog, binding.tag, fourcc!("minu"));
         let plus = spawned.under(catalog, binding.tag, fourcc!("plus"));
         let quantity = spawned.under(catalog, binding.tag, fourcc!("numb"));
+        commands.entity(minus).insert(CityOrderAdjust {
+            order: binding.order,
+            delta: -1,
+        });
+        commands.entity(plus).insert(CityOrderAdjust {
+            order: binding.order,
+            delta: 1,
+        });
         let row_available = available[kind];
         let visibility = if row_available {
             Visibility::Visible
@@ -167,15 +178,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
         };
         {
             let mut button_commands = commands.entity(button);
-            button_commands.insert((
-                UniversityRowChoice {
-                    kind,
-                    unit_name: row_text.unit_name,
-                    description: row_text.description,
-                    preview: row_text.preview,
-                },
-                visibility,
-            ));
+            button_commands.insert((UniversityRowChoice { kind }, visibility));
             if row_available {
                 button_commands.remove::<InteractionDisabled>();
             } else {
@@ -191,10 +194,18 @@ pub(in crate::ui::city) fn bind_university_dialog(
             }
         }
         commands.entity(quantity).insert((
+            Text::new(""),
             InteractionDisabled,
             detail_font.clone(),
             TextColor(normal_color),
         ));
+        rows_by_kind[kind] = Some(UniversityRow {
+            unit_name: row_text.unit_name,
+            description: row_text.description,
+            preview: row_text.preview,
+            button,
+            quantity,
+        });
     }
     let dlog = spawned.unique(fourcc!("DLOG"));
     let preview = commands
@@ -263,9 +274,12 @@ pub(in crate::ui::city) fn bind_university_dialog(
         });
         UniversityRequirementControls { icon, values }
     });
-    for (index, text) in tier_label_texts.into_iter().enumerate() {
-        let tag = [fourcc!("fix2"), fourcc!("fix3"), fourcc!("fix4")][index];
-        let entity = spawned.unique(tag);
+    let tier_labels = [
+        spawned.unique(fourcc!("fix2")),
+        spawned.unique(fourcc!("fix3")),
+        spawned.unique(fourcc!("fix4")),
+    ];
+    for (entity, text) in tier_labels.into_iter().zip(tier_label_texts) {
         commands.entity(entity).insert((
             Text::new(text),
             detail_font.clone(),
@@ -279,9 +293,18 @@ pub(in crate::ui::city) fn bind_university_dialog(
         commands
             .entity(entity)
             .insert((Text::new(""), font, TextColor(normal_color)));
+        entity
     };
-    style_text(commands, fourcc!("unit"), unit_font);
-    for tag in [
+    let unit_name = style_text(commands, fourcc!("unit"), unit_font);
+    let [
+        description,
+        labor_cost,
+        material_cost,
+        cash_cost,
+        labor_available,
+        material_available,
+        treasury,
+    ] = [
         fourcc!("desc"),
         fourcc!("cexp"),
         fourcc!("cpap"),
@@ -289,9 +312,8 @@ pub(in crate::ui::city) fn bind_university_dialog(
         fourcc!("aexp"),
         fourcc!("apap"),
         fourcc!("trea"),
-    ] {
-        style_text(commands, tag, detail_font.clone());
-    }
+    ]
+    .map(|tag| style_text(commands, tag, detail_font.clone()));
     let title = spawned.unique(fourcc!("titl"));
     commands
         .entity(title)
@@ -302,25 +324,63 @@ pub(in crate::ui::city) fn bind_university_dialog(
             .entity(fixed)
             .insert((detail_font.clone(), TextColor(normal_color)));
     }
-    commands.entity(root).insert(UniversityDialogControls {
+    commands.entity(root).insert(UniversityView {
+        kind: CivilianUnitKind::Miner,
+        rows: rows_by_kind,
+        unit_name,
+        description,
+        labor_cost,
+        material_cost,
+        cash_cost,
+        labor_available,
+        material_available,
+        treasury,
         preview,
         requirements,
+        tier_labels,
         normal_color,
         warning_color,
     });
 }
 
-#[allow(clippy::too_many_arguments)]
+pub(in crate::ui::city) fn on_university_row_selected(
+    change: On<ValueChange<bool>>,
+    rows: Query<&UniversityRowChoice>,
+    mut views: Query<&mut UniversityView>,
+) {
+    if !change.value {
+        return;
+    }
+    let Ok(row) = rows.get(change.source) else {
+        return;
+    };
+    views
+        .single_mut()
+        .expect("University row has one open University dialog")
+        .kind = row.kind;
+}
+
+pub(in crate::ui::city) fn on_university_order_selected(
+    activate: On<Activate>,
+    actions: Query<&CityOrderAdjust>,
+    mut views: Query<&mut UniversityView>,
+) {
+    let Ok(action) = actions.get(activate.entity) else {
+        return;
+    };
+    let CityOrderId::CivilianRecruit(kind) = action.order else {
+        return;
+    };
+    views
+        .single_mut()
+        .expect("University order has one open University dialog")
+        .kind = kind;
+}
+
 pub(in crate::ui::city) fn sync_university_dialog(
     mut commands: Commands,
     session: Res<GameSession>,
-    catalog: Res<UiCatalogResource>,
-    dialogs: Query<(
-        &SpawnedView,
-        &UniversityDialogControls,
-        Ref<UniversitySelection>,
-    )>,
-    rows: Query<(&UniversityRowChoice, Has<Checked>)>,
+    dialogs: Query<Ref<UniversityView>>,
     mut texts: Query<&mut Text>,
     mut text_colors: Query<&mut TextColor>,
     mut images: Query<&mut ImageNode>,
@@ -328,8 +388,8 @@ pub(in crate::ui::city) fn sync_university_dialog(
 ) {
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("City screen requires an active major nation");
-    for (spawned, controls, selection) in &dialogs {
-        if !session.is_changed() && !selection.is_changed() {
+    for view in &dialogs {
+        if !session.is_changed() && !view.is_changed() {
             continue;
         }
         let major = session.0.nations().major(nation);
@@ -338,95 +398,89 @@ pub(in crate::ui::city) fn sync_university_dialog(
             let CityOrderId::CivilianRecruit(kind) = binding.order else {
                 unreachable!("University control has a civilian recruitment order");
             };
+            let row = view.rows[kind]
+                .as_ref()
+                .expect("University order has a retained row");
             texts
-                .get_mut(spawned.under(&catalog, binding.tag, fourcc!("numb")))
+                .get_mut(row.quantity)
                 .expect("University order quantity has text")
                 .0 = city.orders.civilian_recruitment[kind].quantity.to_string();
-        }
-
-        for binding in UNIVERSITY_ORDERS {
-            let CityOrderId::CivilianRecruit(kind) = binding.order else {
-                unreachable!("University binding has a civilian recruitment order");
-            };
-            let button = spawned.unique(university_button_tag(kind));
-            let (_, checked) = rows
-                .get(button)
-                .expect("University button has its retail row data");
-            if checked != (kind == selection.kind) {
-                if checked {
-                    commands.entity(button).remove::<Checked>();
-                } else {
-                    commands.entity(button).insert(Checked);
-                }
+            if kind == view.kind {
+                commands.entity(row.button).insert(Checked);
+            } else {
+                commands.entity(row.button).remove::<Checked>();
             }
         }
-        let (row, _) = rows
-            .get(spawned.unique(university_button_tag(selection.kind)))
+        let row = view.rows[view.kind]
+            .as_ref()
             .expect("University selection has a bound retail row");
         texts
-            .get_mut(spawned.unique(fourcc!("unit")))
+            .get_mut(view.unit_name)
             .expect("University unit name has text")
             .0
             .clone_from(&row.unit_name);
         texts
-            .get_mut(spawned.unique(fourcc!("desc")))
+            .get_mut(view.description)
             .expect("University description has text")
             .0
             .clone_from(&row.description);
         images
-            .get_mut(controls.preview)
+            .get_mut(view.preview)
             .expect("University preview has an image")
             .image
             .clone_from(&row.preview);
 
-        let spec = civilian_recruitment_spec(selection.kind);
+        let spec = civilian_recruitment_spec(view.kind);
         let production = city.population.production_labor();
         let workforce_available = production.high.min(city.population.strength() / 4);
-        for (tag, value) in [
-            (fourcc!("cexp"), 1),
-            (fourcc!("cpap"), spec.primary.per_unit()),
-            (fourcc!("aexp"), workforce_available),
-            (fourcc!("apap"), city.stockpile[spec.primary.resource]),
+        for (entity, value) in [
+            (view.labor_cost, 1),
+            (view.material_cost, spec.primary.per_unit()),
+            (view.labor_available, workforce_available),
+            (
+                view.material_available,
+                city.stockpile[spec.primary.resource],
+            ),
         ] {
             texts
-                .get_mut(spawned.unique(tag))
+                .get_mut(entity)
                 .expect("University numeric control has text")
                 .0 = value.to_string();
         }
         texts
-            .get_mut(spawned.unique(fourcc!("cash")))
+            .get_mut(view.cash_cost)
             .expect("University cash cost has text")
             .0 = format_currency(i32::from(spec.cash_per_unit));
         texts
-            .get_mut(spawned.unique(fourcc!("trea")))
+            .get_mut(view.treasury)
             .expect("University treasury has text")
             .0 = format_currency(major.common.treasury);
-        for (tag, insufficient) in [
+        for (entity, insufficient) in [
             (
-                fourcc!("apap"),
+                view.material_available,
                 city.stockpile[spec.primary.resource] < spec.primary.per_unit(),
             ),
-            (fourcc!("aexp"), workforce_available < 1),
+            (view.labor_available, workforce_available < 1),
             (
-                fourcc!("trea"),
+                view.treasury,
                 major.common.treasury < i32::from(spec.cash_per_unit),
             ),
         ] {
             text_colors
-                .get_mut(spawned.unique(tag))
+                .get_mut(entity)
                 .expect("University available value has a text color")
                 .0 = if insufficient {
-                controls.warning_color
+                view.warning_color
             } else {
-                controls.normal_color
+                view.normal_color
             };
         }
 
-        let specialties = CIVILIAN_RESOURCE_SPECIALTIES[selection.kind];
+        let specialties = CIVILIAN_RESOURCE_SPECIALTIES[view.kind];
         let levels = &session.0.technology().city_capabilities_by_nation[nation]
             .university
             .requirement_levels;
-        for (row_index, requirement) in controls.requirements.iter().enumerate() {
+        for (row_index, requirement) in view.requirements.iter().enumerate() {
             let resource = specialties[row_index];
             if let Some(resource) = resource {
                 let source_left = f32::from(resource as u8) * 20.0;
@@ -475,12 +529,9 @@ pub(in crate::ui::city) fn sync_university_dialog(
             .map(|resource| levels[*resource])
             .max()
             .unwrap_or(0);
-        for (index, tag) in [fourcc!("fix2"), fourcc!("fix3"), fourcc!("fix4")]
-            .into_iter()
-            .enumerate()
-        {
+        for (index, entity) in view.tier_labels.into_iter().enumerate() {
             *visibilities
-                .get_mut(spawned.unique(tag))
+                .get_mut(entity)
                 .expect("University tier label has visibility") = if (index as u8) < maximum {
                 Visibility::Visible
             } else {

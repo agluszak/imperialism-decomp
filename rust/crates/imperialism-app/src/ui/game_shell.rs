@@ -1,5 +1,6 @@
 use crate::AppState;
 use crate::ui::catalog::{SpawnedView, UiAssetResources, UiCatalogResource, spawn_view};
+use crate::ui::format_currency;
 use crate::ui::random_setup::GameSession;
 use crate::ui::strategic_map::{bind_strategic_base_terrain, sync_strategic_base_terrain};
 use bevy::prelude::*;
@@ -123,9 +124,6 @@ fn enter_strategic_map_view(mut session: ResMut<GameSession>) {
     session.0.map.view_origin = origin;
 }
 
-#[derive(Component, Clone, Debug, Eq, PartialEq)]
-pub(crate) struct GameScreenRoot(pub(crate) ScopedViewId);
-
 fn enter_game_screen(
     mut commands: Commands,
     catalog: Res<UiCatalogResource>,
@@ -149,9 +147,7 @@ fn enter_game_screen(
         bind_strategic_base_terrain(&mut commands, &spawned, &mut assets, &session.0);
         project_date_and_treasury(&mut commands, &mut assets, &spawned, &session);
     }
-    commands
-        .entity(spawned.root)
-        .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
+    commands.entity(spawned.root).insert(DespawnOnExit(current));
 }
 
 fn enter_turn_flow_screen(
@@ -188,9 +184,7 @@ fn enter_turn_flow_screen(
         _ => unreachable!(),
     }
 
-    commands
-        .entity(spawned.root)
-        .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
+    commands.entity(spawned.root).insert(DespawnOnExit(current));
 }
 
 fn project_deal_book_chrome(
@@ -224,9 +218,9 @@ fn project_date_and_treasury(
         fourcc!("seas"),
         format_retail_date(assets, state.turn().economic_turn),
     );
-    let treasury = MajorNationId::from_nation(state.turn().active_nation)
-        .map(|nation| format_currency(state.nations().major(nation).common.treasury))
-        .unwrap_or_default();
+    let nation = MajorNationId::from_nation(state.turn().active_nation)
+        .expect("Game screen requires an active major nation");
+    let treasury = format_currency(state.nations().major(nation).common.treasury);
     set_control_text(commands, spawned, fourcc!("trea"), treasury);
 }
 
@@ -248,23 +242,6 @@ fn format_retail_date(assets: &mut UiAssetResources, economic_turn: i32) -> Stri
         .string(10_000, (economic_turn % 4) as i16)
         .expect("retail season name must load");
     format!("{season}, {}", 1815 + economic_turn / 4)
-}
-
-fn format_currency(value: i32) -> String {
-    let negative = value < 0;
-    let digits = i64::from(value).abs().to_string();
-    let mut grouped = String::with_capacity(digits.len() + digits.len() / 3);
-    for (index, digit) in digits.chars().enumerate() {
-        if index != 0 && (digits.len() - index).is_multiple_of(3) {
-            grouped.push(',');
-        }
-        grouped.push(digit);
-    }
-    if negative {
-        format!("-${grouped}")
-    } else {
-        format!("${grouped}")
-    }
 }
 
 fn set_control_text(commands: &mut Commands, spawned: &SpawnedView, tag: FourCc, value: String) {
@@ -375,7 +352,6 @@ mod tests {
     use imperialism_formats::{
         LegacyGameStateContext, LegacySaveV62, UiBehavior, UiCatalog, fourcc,
     };
-    use std::collections::HashSet;
 
     const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
     const BEGINNING_OF_GAME: &[u8] =
@@ -415,9 +391,7 @@ mod tests {
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
         bind_game_screen_nav(&mut commands, &catalog, &spawned);
         commands.insert_resource(TestSpawned(spawned.clone()));
-        commands
-            .entity(spawned.root)
-            .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
+        commands.entity(spawned.root).insert(DespawnOnExit(current));
         if current == AppState::StrategicMap {
             let end = spawned.unique(fourcc!("DONE"));
             commands
@@ -460,15 +434,6 @@ mod tests {
         app.world_mut().flush();
         app.update();
         app.update();
-    }
-
-    fn current_roots(app: &mut App) -> HashSet<ScopedViewId> {
-        let world = app.world_mut();
-        world
-            .query::<&GameScreenRoot>()
-            .iter(world)
-            .map(|root| root.0.clone())
-            .collect()
     }
 
     fn nav_entity(app: &mut App, action: GameScreenNavAction) -> Entity {
@@ -550,10 +515,6 @@ mod tests {
                 app.world().resource::<State<AppState>>().get(),
                 &AppState::StrategicMap
             );
-            assert_eq!(
-                current_roots(&mut app),
-                HashSet::from([strategic_map_view_id()])
-            );
         }
     }
 
@@ -565,33 +526,20 @@ mod tests {
             app.world().resource::<State<AppState>>().get(),
             &AppState::Trade
         );
-        assert_eq!(current_roots(&mut app), HashSet::from([trade_view_id()]));
-
         activate_nav(&mut app, GameScreenNavAction::City);
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::City
         );
-        assert_eq!(current_roots(&mut app), HashSet::from([city_view_id()]));
-
         activate_nav(&mut app, GameScreenNavAction::Transport);
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::Transport
         );
-        assert_eq!(
-            current_roots(&mut app),
-            HashSet::from([transport_view_id()])
-        );
-
         activate_nav(&mut app, GameScreenNavAction::Diplomacy);
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::Diplomacy
-        );
-        assert_eq!(
-            current_roots(&mut app),
-            HashSet::from([diplomacy_view_id()])
         );
     }
 

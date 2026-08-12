@@ -22,6 +22,23 @@ pub(crate) use random_setup_map::MapPreviewPlugin;
 pub(crate) use trade::TradePlugin;
 pub(crate) use transport::TransportPlugin;
 
+pub(in crate::ui) fn format_currency(value: i32) -> String {
+    let negative = value < 0;
+    let digits = i64::from(value).abs().to_string();
+    let mut grouped = String::with_capacity(digits.len() + digits.len() / 3);
+    for (index, digit) in digits.chars().enumerate() {
+        if index != 0 && (digits.len() - index).is_multiple_of(3) {
+            grouped.push(',');
+        }
+        grouped.push(digit);
+    }
+    if negative {
+        format!("-${grouped}")
+    } else {
+        format!("${grouped}")
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use imperialism_formats::UiCatalog;

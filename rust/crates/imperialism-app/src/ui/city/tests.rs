@@ -77,7 +77,7 @@ fn spawn_clothing_dialog(mut commands: Commands, catalog: Res<UiCatalogResource>
         "Capacity: [1: number]".to_owned(),
         Color::WHITE,
     );
-    let dialog = TestDialog {
+    TestDialog {
         root: spawned.root,
         window: spawned.unique(fourcc!("WIND")),
         decrease: spawned.under(&catalog, fourcc!("clot"), fourcc!("left")),
@@ -87,9 +87,7 @@ fn spawn_clothing_dialog(mut commands: Commands, catalog: Res<UiCatalogResource>
         labor: spawned.unique(fourcc!("labV")),
         capacity: spawned.unique(fourcc!("capT")),
         expansion: spawned.unique(fourcc!("flag")),
-    };
-    commands.entity(dialog.root).insert(spawned);
-    dialog
+    }
 }
 
 fn spawn_training_dialog(
@@ -107,7 +105,7 @@ fn spawn_training_dialog(
     let view = catalog.required_view(&view_id);
     let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
     bind_training_dialog(&mut commands, &catalog, &spawned, "Trade School".to_owned());
-    let dialog = TestTrainingDialog {
+    TestTrainingDialog {
         root: spawned.root,
         medium_decrease: spawned.under(&catalog, fourcc!("trai"), fourcc!("left")),
         medium_increase: spawned.under(&catalog, fourcc!("trai"), fourcc!("rght")),
@@ -115,9 +113,7 @@ fn spawn_training_dialog(
         high_decrease: spawned.under(&catalog, fourcc!("prof"), fourcc!("left")),
         high_increase: spawned.under(&catalog, fourcc!("prof"), fourcc!("rght")),
         high_quantity: spawned.under(&catalog, fourcc!("prof"), fourcc!("move")),
-    };
-    commands.entity(dialog.root).insert(spawned);
-    dialog
+    }
 }
 
 fn spawn_university_dialog(
@@ -162,7 +158,7 @@ fn spawn_university_dialog(
             warning_color: Color::BLACK,
         },
     );
-    let dialog = TestUniversityDialog {
+    TestUniversityDialog {
         root: spawned.root,
         miner_button: spawned.unique(fourcc!("civ0")),
         forester_button: spawned.unique(fourcc!("civ3")),
@@ -174,9 +170,7 @@ fn spawn_university_dialog(
         engineer_quantity: spawned.under(&catalog, fourcc!("clu4"), fourcc!("numb")),
         driller_button: spawned.unique(fourcc!("civ8")),
         driller_increase: spawned.under(&catalog, fourcc!("clu8"), fourcc!("plus")),
-    };
-    commands.entity(dialog.root).insert(spawned);
-    dialog
+    }
 }
 
 fn order_quantity(app: &mut App, order: CityOrderId) -> i16 {
@@ -377,6 +371,7 @@ fn university_availability_and_orders_round_trip_through_generated_rows() {
         .insert_resource(UiCatalogResource::new(catalog))
         .insert_resource(session)
         .add_observer(on_city_order_adjust)
+        .add_observer(on_university_order_selected)
         .add_observer(on_university_row_selected)
         .add_systems(Update, sync_university_dialog);
 
@@ -409,10 +404,7 @@ fn university_availability_and_orders_round_trip_through_generated_rows() {
 
     activate(&mut app, first.forester_increase);
     assert_eq!(
-        app.world()
-            .get::<UniversitySelection>(first.root)
-            .unwrap()
-            .kind,
+        app.world().get::<UniversityView>(first.root).unwrap().kind,
         CivilianUnitKind::Forester
     );
     assert!(app.world().get::<Checked>(first.forester_button).is_some());
@@ -435,10 +427,7 @@ fn university_availability_and_orders_round_trip_through_generated_rows() {
 
     activate(&mut app, first.engineer_increase);
     assert_eq!(
-        app.world()
-            .get::<UniversitySelection>(first.root)
-            .unwrap()
-            .kind,
+        app.world().get::<UniversityView>(first.root).unwrap().kind,
         CivilianUnitKind::Engineer,
         "a rejected adjustment still selects its University row"
     );
@@ -451,10 +440,7 @@ fn university_availability_and_orders_round_trip_through_generated_rows() {
 
     activate(&mut app, first.forester_decrease);
     assert_eq!(
-        app.world()
-            .get::<UniversitySelection>(first.root)
-            .unwrap()
-            .kind,
+        app.world().get::<UniversityView>(first.root).unwrap().kind,
         CivilianUnitKind::Forester
     );
     assert_eq!(
