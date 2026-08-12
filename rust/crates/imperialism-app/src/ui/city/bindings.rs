@@ -135,23 +135,22 @@ pub(in crate::ui::city) const SHIPYARD_STAT_ORIGINS: [(f32, f32); 6] = [
     (120.0, 102.0),
     (120.0, 118.0),
 ];
-pub(in crate::ui::city) const FOOD_ORDERS: [CityOrderBinding; 1] = [CityOrderBinding {
+pub(in crate::ui::city) const FOOD_ORDER: CityOrderBinding = CityOrderBinding {
     order: CityOrderId::FoodProcessing,
     tag: fourcc!("food"),
-}];
-pub(in crate::ui::city) const POWER_ORDERS: [CityOrderBinding; 1] = [CityOrderBinding {
+};
+pub(in crate::ui::city) const POWER_ORDER: CityOrderBinding = CityOrderBinding {
     order: CityOrderId::PowerPlant,
     tag: fourcc!("powe"),
-}];
-pub(in crate::ui::city) const TRANSPORT_CAPACITY_ORDERS: [CityOrderBinding; 1] =
-    [CityOrderBinding {
-        order: CityOrderId::TransportCapacity,
-        tag: fourcc!("rail"),
-    }];
-pub(in crate::ui::city) const POPULATION_ORDERS: [CityOrderBinding; 1] = [CityOrderBinding {
+};
+pub(in crate::ui::city) const TRANSPORT_CAPACITY_ORDER: CityOrderBinding = CityOrderBinding {
+    order: CityOrderId::TransportCapacity,
+    tag: fourcc!("rail"),
+};
+pub(in crate::ui::city) const POPULATION_ORDER: CityOrderBinding = CityOrderBinding {
     order: CityOrderId::PopulationGrowth,
     tag: fourcc!("popu"),
-}];
+};
 pub(in crate::ui::city) const ARMORY_ORDERS: [CityOrderBinding; 8] = [
     CityOrderBinding {
         order: CityOrderId::MilitaryRecruit(MilitaryRecruitmentCategory::LightInfantry),
@@ -326,31 +325,18 @@ pub(in crate::ui::city) const fn shipyard_button_tag(slot: ShipOrderSlot) -> Fou
     }
 }
 
-pub(in crate::ui::city) const fn is_ordinary_industry(slot: CityFacilitySlot) -> bool {
-    matches!(
-        slot,
-        CityFacilitySlot::TextileMill
-            | CityFacilitySlot::ClothingFactory
-            | CityFacilitySlot::SteelMill
-            | CityFacilitySlot::Metalworks
-            | CityFacilitySlot::LumberMill
-            | CityFacilitySlot::FurnitureFactory
-            | CityFacilitySlot::OilRefinery
-    )
-}
-
 pub(in crate::ui::city) fn city_building_level(
     state: &GameState,
     nation: MajorNationId,
     slot: CityFacilitySlot,
-) -> Option<i16> {
+) -> i16 {
     let major = state.nations().major(nation);
-    Some(major.city.next_building_type(
+    major.city.next_building_type(
         slot,
         &major.economy,
         major.common.owned_region_count() as i32,
         state.technology().city_capabilities_by_nation[nation].advanced_iron_working,
-    ))
+    )
 }
 
 pub(in crate::ui::city) fn city_is_expanding(city: &CityState, slot: CityFacilitySlot) -> bool {
@@ -366,7 +352,7 @@ pub(in crate::ui::city) fn city_building_picture(
 ) -> Option<PictureId> {
     let expanding = city_is_expanding(city, slot);
     let should_draw = level >= 1
-        || (is_ordinary_industry(slot) && expanding)
+        || (ExpandableFacility::try_from_slot(slot).is_some() && expanding)
         || (slot == CityFacilitySlot::PowerPlant && city.power_plant_upgrade_queued);
     if !should_draw {
         return None;
@@ -391,5 +377,36 @@ pub(in crate::ui::city) fn city_string(
     zero_based_index: i16,
 ) -> String {
     ui.string(group, zero_based_index + 1)
-        .expect("validated English retail City string")
+        .expect("retail English City string")
+}
+
+pub(in crate::ui::city) fn format_retail_value(template: &str, value: &str) -> String {
+    if template.contains("[1: number]") {
+        template.replace("[1: number]", value)
+    } else if template.contains("[1:number]") {
+        template.replace("[1:number]", value)
+    } else {
+        panic!("retail City number template has no first-number token");
+    }
+}
+
+pub(in crate::ui::city) fn format_retail_number(template: &str, value: i16) -> String {
+    format_retail_value(template, &value.to_string())
+}
+
+pub(in crate::ui::city) fn format_currency(value: i32) -> String {
+    let negative = value < 0;
+    let digits = i64::from(value).abs().to_string();
+    let mut grouped = String::with_capacity(digits.len() + digits.len() / 3);
+    for (index, digit) in digits.chars().enumerate() {
+        if index != 0 && (digits.len() - index).is_multiple_of(3) {
+            grouped.push(',');
+        }
+        grouped.push(digit);
+    }
+    if negative {
+        format!("-${grouped}")
+    } else {
+        format!("${grouped}")
+    }
 }

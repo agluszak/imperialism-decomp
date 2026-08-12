@@ -1,5 +1,16 @@
 use super::*;
 
+#[derive(Component)]
+pub(in crate::ui::city) struct CityExpansionOpen {
+    pub(in crate::ui::city) slot: CityFacilitySlot,
+}
+
+#[derive(Component)]
+pub(in crate::ui::city) struct CityBuildingChangeChoice {
+    pub(in crate::ui::city) slot: CityFacilitySlot,
+    pub(in crate::ui::city) accept: bool,
+}
+
 pub(in crate::ui::city) fn construction_dialog_view_id() -> ScopedViewId {
     ScopedViewId {
         resource_file: "Citydlog.rsrc".to_owned(),
@@ -17,13 +28,10 @@ pub(in crate::ui::city) fn expansion_dialog_view_id() -> ScopedViewId {
 pub(in crate::ui::city) fn open_city_construction_dialog(
     ui: &mut UiSpawner,
     session: &mut GameSession,
-    nation: MajorNationId,
     slot: CityFacilitySlot,
 ) {
-    assert!(
-        CityState::is_capacity_center(slot),
-        "retail construction dialog belongs to a City capacity center"
-    );
+    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+        .expect("City screen requires an active major nation");
     let (capacity_value, can_reserve) = match slot {
         CityFacilitySlot::PowerPlant => {
             session.0.set_power_plant_upgrade(nation, false);
@@ -35,10 +43,6 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
             (city_string(ui, CITY_TEXT_STRING_GROUP, 0x15), can_reserve)
         }
         _ => {
-            assert!(
-                is_ordinary_industry(slot),
-                "non-power capacity center has a retail expansion order"
-            );
             let (next_capacity, needed) = {
                 let major = session.0.nations().major(nation);
                 let city = &major.city;
@@ -56,21 +60,19 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
         }
     };
     let spawned = ui.spawn_modal(construction_dialog_view_id());
-    bind_construction_dialog(ui, &spawned, nation, slot, &capacity_value, can_reserve);
+    bind_construction_dialog(ui, &spawned, slot, &capacity_value, can_reserve);
 }
 
 pub(in crate::ui::city) fn bind_construction_dialog(
     ui: &mut UiSpawner,
     spawned: &SpawnedView,
-    nation: MajorNationId,
     slot: CityFacilitySlot,
     capacity_value: &str,
     can_reserve: bool,
 ) {
-    let root = spawned.root;
     ui.commands
-        .entity(root)
-        .insert((CityBuildingChangeDialog, DespawnOnExit(AppState::City)));
+        .entity(spawned.root)
+        .insert(DespawnOnExit(AppState::City));
 
     let picture = PictureId::new(9250 + i16::from(slot as u8) * 5);
     match ui.picture(picture) {
@@ -90,7 +92,7 @@ pub(in crate::ui::city) fn bind_construction_dialog(
         (
             fourcc!("tex1"),
             ui.string(text_group, 1)
-                .expect("validated English retail construction headline"),
+                .expect("retail English construction headline"),
         ),
         (
             fourcc!("name"),
@@ -175,40 +177,30 @@ pub(in crate::ui::city) fn bind_construction_dialog(
 
     let okay = spawned.unique(fourcc!("okay"));
     let mut okay_commands = ui.commands.entity(okay);
-    okay_commands.insert(CityBuildingChangeChoice {
-        dialog: root,
-        nation,
-        slot,
-        accept: true,
-    });
+    okay_commands.insert(CityBuildingChangeChoice { slot, accept: true });
     if !can_reserve {
         okay_commands.insert((InteractionDisabled, Visibility::Hidden));
     }
 
     let cancel = spawned.unique(fourcc!("cncl"));
     ui.commands.entity(cancel).insert(CityBuildingChangeChoice {
-        dialog: root,
-        nation,
         slot,
         accept: false,
     });
 }
 
-#[allow(clippy::too_many_arguments)]
 pub(in crate::ui::city) fn bind_expansion_dialog(
     ui: &mut UiSpawner,
     spawned: &SpawnedView,
-    nation: MajorNationId,
     slot: CityFacilitySlot,
     building_name: String,
     next_capacity: i16,
     next_level: u8,
     can_reserve: bool,
 ) {
-    let root = spawned.root;
     ui.commands
-        .entity(root)
-        .insert((CityBuildingChangeDialog, DespawnOnExit(AppState::City)));
+        .entity(spawned.root)
+        .insert(DespawnOnExit(AppState::City));
 
     let picture = PictureId::new(9250 + i16::from(slot as u8) * 5 + i16::from(next_level));
     match ui.picture(picture) {
@@ -248,20 +240,13 @@ pub(in crate::ui::city) fn bind_expansion_dialog(
 
     let okay = spawned.unique(fourcc!("okay"));
     let mut okay_commands = ui.commands.entity(okay);
-    okay_commands.insert(CityBuildingChangeChoice {
-        dialog: root,
-        nation,
-        slot,
-        accept: true,
-    });
+    okay_commands.insert(CityBuildingChangeChoice { slot, accept: true });
     if !can_reserve {
         okay_commands.insert((InteractionDisabled, Visibility::Hidden));
     }
 
     let cancel = spawned.unique(fourcc!("cncl"));
     ui.commands.entity(cancel).insert(CityBuildingChangeChoice {
-        dialog: root,
-        nation,
         slot,
         accept: false,
     });
@@ -270,25 +255,16 @@ pub(in crate::ui::city) fn bind_expansion_dialog(
 pub(in crate::ui::city) fn on_city_expansion_open(
     activate: On<Activate>,
     openers: Query<&CityExpansionOpen>,
-    dialogs: Query<Entity, With<CityBuildingDialog>>,
-    modals: Query<(), With<ModalDialog>>,
-    session: Option<Res<GameSession>>,
+    session: Res<GameSession>,
     mut ui: UiSpawner,
 ) {
     let Ok(open) = openers.get(activate.entity) else {
         return;
     };
-    if dialogs.get(open.dialog).is_err() || !modals.is_empty() {
-        return;
-    }
-    let session =
-        session.expect("city expansion control activated without an authoritative game session");
-    assert!(
-        industry_page(open.slot).is_some(),
-        "expansion hotspot belongs to an ordinary industry"
-    );
+    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+        .expect("City screen requires an active major nation");
     let (next_capacity, needed, next_level) = {
-        let major = session.0.nations().major(open.nation);
+        let major = session.0.nations().major(nation);
         let city = &major.city;
         let owned_regions = major.common.owned_region_count() as i32;
         let current = city.building_type(open.slot, &major.economy, owned_regions);
@@ -302,15 +278,12 @@ pub(in crate::ui::city) fn on_city_expansion_open(
     let order = CityOrderId::Expansion(
         ExpandableFacility::try_from_slot(open.slot).expect("ordinary industry is expandable"),
     );
-    let can_reserve = session
-        .0
-        .can_set_city_order_quantity(open.nation, order, needed);
+    let can_reserve = session.0.can_set_city_order_quantity(nation, order, needed);
     let spawned = ui.spawn_modal(expansion_dialog_view_id());
     let building_name = city_string(&ui, CITY_BUILDING_STRING_GROUP, open.slot as i16);
     bind_expansion_dialog(
         &mut ui,
         &spawned,
-        open.nation,
         open.slot,
         building_name,
         next_capacity,
@@ -319,60 +292,42 @@ pub(in crate::ui::city) fn on_city_expansion_open(
     );
 }
 
-#[allow(clippy::too_many_arguments)]
 pub(in crate::ui::city) fn on_city_building_change_choice(
     activate: On<Activate>,
     choices: Query<&CityBuildingChangeChoice>,
-    change_dialogs: Query<(), With<CityBuildingChangeDialog>>,
-    session: Option<ResMut<GameSession>>,
+    parents: Query<&ChildOf>,
+    mut session: ResMut<GameSession>,
     mut commands: Commands,
 ) {
     let Ok(choice) = choices.get(activate.entity) else {
         return;
     };
-    if change_dialogs.get(choice.dialog).is_err() {
-        return;
-    }
-    let mut session =
-        session.expect("city building choice activated without an authoritative game session");
+    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+        .expect("City screen requires an active major nation");
     if choice.slot == CityFacilitySlot::PowerPlant {
         if choice.accept {
-            session.0.set_power_plant_upgrade(choice.nation, true);
+            session.0.set_power_plant_upgrade(nation, true);
         }
     } else {
         let order = CityOrderId::Expansion(
             ExpandableFacility::try_from_slot(choice.slot)
                 .expect("ordinary industry is expandable"),
         );
-        if choice.accept {
-            let needed = {
-                let major = session.0.nations().major(choice.nation);
-                let city = &major.city;
-                let owned_regions = major.common.owned_region_count() as i32;
-                city.max_building_capacity(choice.slot, &major.economy, owned_regions)
-                    - city.building_type(choice.slot, &major.economy, owned_regions)
-            };
-            let _ = session
-                .0
-                .set_city_order_quantity(choice.nation, order, needed)
-                .applied();
+        let quantity = if choice.accept {
+            let major = session.0.nations().major(nation);
+            let city = &major.city;
+            let owned_regions = major.common.owned_region_count() as i32;
+            city.max_building_capacity(choice.slot, &major.economy, owned_regions)
+                - city.building_type(choice.slot, &major.economy, owned_regions)
         } else {
-            let quantity = session
-                .0
-                .nations()
-                .major(choice.nation)
-                .city
-                .orders
-                .expansions[choice.slot]
-                .as_ref()
-                .expect("ordinary industry has an expansion order")
-                .progress
-                .quantity;
-            if quantity > 0 {
-                let _ = session.0.set_city_order_quantity(choice.nation, order, 0);
-            }
-        }
+            0
+        };
+        let _ = session.0.set_city_order_quantity(nation, order, quantity);
     }
 
-    commands.entity(choice.dialog).despawn();
+    let mut dialog = activate.entity;
+    while let Ok(parent) = parents.get(dialog) {
+        dialog = parent.parent();
+    }
+    commands.entity(dialog).despawn();
 }

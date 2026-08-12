@@ -1,25 +1,38 @@
 use super::*;
 
+pub(in crate::ui::city) struct CityBuildingHitRegion {
+    pub(in crate::ui::city) origin: IVec2,
+    pub(in crate::ui::city) draw_order: u8,
+    pub(in crate::ui::city) slot: CityFacilitySlot,
+    pub(in crate::ui::city) dialog: ScopedViewId,
+    pub(in crate::ui::city) mask: CityBuildingHitMask,
+}
+
+#[derive(Component)]
+pub(in crate::ui::city) struct CityCanvas {
+    pub(in crate::ui::city) buildings: Vec<CityBuildingHitRegion>,
+}
+
+#[derive(Component)]
+pub(in crate::ui::city) struct CityScreenRoot;
+
+#[derive(Component)]
+pub(in crate::ui::city) struct CityBuildingPicture {
+    pub(in crate::ui::city) slot: CityFacilitySlot,
+}
+
+#[derive(Component)]
+pub(in crate::ui::city) struct CityBuildingActionAnimation {
+    pub(in crate::ui::city) slot: CityFacilitySlot,
+    pub(in crate::ui::city) frame_count: u8,
+    pub(in crate::ui::city) frame_size: [i32; 2],
+    pub(in crate::ui::city) frame: u8,
+    pub(in crate::ui::city) timer: Timer,
+}
+
 pub(in crate::ui::city) const CITY_WIDTH: f32 = 640.0;
 pub(in crate::ui::city) const CITY_HEIGHT: f32 = 480.0;
 
-#[derive(Component)]
-pub(in crate::ui::city) struct CityScreenControls {
-    labor_low: Entity,
-    labor_medium: Entity,
-    labor_high: Entity,
-    labor_available: Entity,
-    power_available: Entity,
-    predicted_grain: Entity,
-    predicted_fruit: Entity,
-    predicted_livestock: Entity,
-    predicted_hardware: Entity,
-    predicted_clothing: Entity,
-    predicted_furniture: Entity,
-    treasury: Entity,
-}
-
-#[derive(Clone)]
 pub(in crate::ui::city) struct CityBuildingHitMask {
     pub(in crate::ui::city) width: i32,
     pub(in crate::ui::city) height: i32,
@@ -114,29 +127,16 @@ pub(in crate::ui::city) fn enter_city_screen(
     mut commands: Commands,
     catalog: Res<UiCatalogResource>,
     mut assets: UiAssetResources,
-    session: Option<Res<GameSession>>,
+    session: Res<GameSession>,
 ) {
     let view_id = city_view_id();
     let view = catalog.required_view(&view_id);
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
     bind_game_screen_nav(&mut commands, &catalog, &spawned);
-    let mut root = commands.entity(spawned.root);
-    root.insert((
-        GameScreenRoot(view_id),
-        CityScreenRoot,
-        DespawnOnExit(AppState::City),
-    ));
 
-    let Some(session) = session else {
-        warn!("city screen opened without an authoritative game session");
-        return;
-    };
-    let Some(nation) = MajorNationId::from_nation(session.0.turn().active_nation) else {
-        warn!("city screen active nation is not a major nation");
-        return;
-    };
-    let controls = bind_city_summary_values(&mut commands, &spawned, &mut assets);
-    commands.entity(spawned.root).insert(controls);
+    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+        .expect("City active nation is a major nation");
+    bind_city_summary_values(&mut commands, &spawned, &mut assets);
     spawn_city_buildings(
         &mut commands,
         &spawned,
@@ -146,13 +146,20 @@ pub(in crate::ui::city) fn enter_city_screen(
         nation,
         &mut assets,
     );
+    let root = spawned.root;
+    commands.entity(root).insert((
+        GameScreenRoot(view_id),
+        CityScreenRoot,
+        spawned,
+        DespawnOnExit(AppState::City),
+    ));
 }
 
 pub(in crate::ui::city) fn bind_city_summary_values(
     commands: &mut Commands,
-    spawned: &crate::ui::catalog::SpawnedView,
+    spawned: &SpawnedView,
     assets: &mut UiAssetResources,
-) -> CityScreenControls {
+) {
     let (font, layout, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
@@ -169,21 +176,21 @@ pub(in crate::ui::city) fn bind_city_summary_values(
             layout,
             TextColor(Color::BLACK),
         ));
-        entity
     };
-    CityScreenControls {
-        labor_low: bind_text(commands, fourcc!("untr")),
-        labor_medium: bind_text(commands, fourcc!("trai")),
-        labor_high: bind_text(commands, fourcc!("prof")),
-        labor_available: bind_text(commands, fourcc!("labP")),
-        power_available: bind_text(commands, fourcc!("powe")),
-        predicted_grain: bind_text(commands, fourcc!("grai")),
-        predicted_fruit: bind_text(commands, fourcc!("prod")),
-        predicted_livestock: bind_text(commands, fourcc!("meat")),
-        predicted_hardware: bind_text(commands, fourcc!("hard")),
-        predicted_clothing: bind_text(commands, fourcc!("clot")),
-        predicted_furniture: bind_text(commands, fourcc!("furn")),
-        treasury: spawned.unique(fourcc!("trea")),
+    for tag in [
+        fourcc!("untr"),
+        fourcc!("trai"),
+        fourcc!("prof"),
+        fourcc!("labP"),
+        fourcc!("powe"),
+        fourcc!("grai"),
+        fourcc!("prod"),
+        fourcc!("meat"),
+        fourcc!("hard"),
+        fourcc!("clot"),
+        fourcc!("furn"),
+    ] {
+        bind_text(commands, tag);
     }
 }
 
@@ -197,12 +204,9 @@ pub(in crate::ui::city) fn spawn_city_buildings(
     assets: &mut UiAssetResources,
 ) {
     let main = spawned.unique(fourcc!("main"));
-    let city = &state.nations().major(nation).city;
     let mut buildings = Vec::new();
     for visual in visuals {
-        let Some(level) = city_building_level(state, nation, visual.slot) else {
-            continue;
-        };
+        let level = city_building_level(state, nation, visual.slot);
         let offset = i16::from(visual.slot as u8);
         let mask_picture = PictureId::new(7100 + level * 16 + offset);
         let mask = match assets.indexed_picture(mask_picture) {
@@ -218,32 +222,6 @@ pub(in crate::ui::city) fn spawn_city_buildings(
                 continue;
             }
         };
-        let mut image = ImageNode::default();
-        let mut visibility = Visibility::Hidden;
-        if let Some(picture) = city_building_picture(city, visual.slot, level) {
-            match assets.indexed_picture(picture) {
-                Ok(indexed_picture) => {
-                    if let Err(error) = assets.with_picture_image_mut(picture, |image| {
-                        apply_city_picture_transparency(image, &indexed_picture);
-                    }) {
-                        warn!("could not decode city building picture {picture}: {error}");
-                    } else {
-                        match assets.picture(picture) {
-                            Ok(handle) => {
-                                image.image = handle;
-                                visibility = Visibility::Visible;
-                            }
-                            Err(error) => {
-                                warn!("could not load city building picture {picture}: {error}");
-                            }
-                        }
-                    }
-                }
-                Err(error) => {
-                    warn!("could not decode indexed city building picture {picture}: {error}");
-                }
-            }
-        }
         commands.spawn((
             Node {
                 position_type: PositionType::Absolute,
@@ -253,12 +231,9 @@ pub(in crate::ui::city) fn spawn_city_buildings(
                 height: Val::Px(mask.height as f32),
                 ..default()
             },
-            image,
-            visibility,
-            CityBuildingPicture {
-                nation,
-                slot: visual.slot,
-            },
+            ImageNode::default(),
+            Visibility::Hidden,
+            CityBuildingPicture { slot: visual.slot },
             ZIndex(visual.draw_order as i32),
             Pickable::IGNORE,
             ChildOf(main),
@@ -340,7 +315,7 @@ pub(in crate::ui::city) fn city_building_action_enabled(
         !city.power_plant_upgrade_queued && city.orders.power_plant.progress.quantity > 0
     } else {
         assert!(
-            is_ordinary_industry(slot),
+            industry_page(slot).is_some(),
             "generated city action belongs to a supported retail building"
         );
         !city_is_expanding(city, slot) && city.production_accum[slot] < city.production_orders[slot]
@@ -357,9 +332,7 @@ pub(in crate::ui::city) fn spawn_city_building_actions(
 ) {
     let active_actions: Vec<_> = actions
         .iter()
-        .filter(|action| {
-            city_building_level(state, nation, action.slot) == Some(i16::from(action.level))
-        })
+        .filter(|action| city_building_level(state, nation, action.slot) == i16::from(action.level))
         .collect();
     for (draw_order, action) in active_actions.iter().enumerate() {
         let indexed = match assets.indexed_picture(action.picture_id) {
@@ -435,7 +408,6 @@ pub(in crate::ui::city) fn spawn_city_building_actions(
                 ..default()
             },
             CityBuildingActionAnimation {
-                nation,
                 slot: action.slot,
                 frame_count: action.frame_count,
                 frame_size: action.frame_size,
@@ -467,6 +439,8 @@ pub(in crate::ui::city) fn animate_city_building_actions(
         &mut Visibility,
     )>,
 ) {
+    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+        .expect("City active nation is a major nation");
     for (mut action, mut image, mut visibility) in &mut actions {
         action.timer.tick(time.delta());
         let advanced = action.timer.times_finished_this_tick();
@@ -481,7 +455,7 @@ pub(in crate::ui::city) fn animate_city_building_actions(
                 left + action.frame_size[0] as f32,
                 action.frame_size[1] as f32,
             ));
-            let city = &session.0.nations().major(action.nation).city;
+            let city = &session.0.nations().major(nation).city;
             *visibility = if city_building_action_enabled(city, action.slot) {
                 Visibility::Visible
             } else {
@@ -509,63 +483,61 @@ pub(in crate::ui::city) fn transparent_picture(
 
 pub(in crate::ui::city) fn sync_city_screen(
     session: Res<GameSession>,
-    screens: Query<(&CityScreenControls, Ref<CityScreenRoot>)>,
+    screens: Query<(&SpawnedView, Ref<CityScreenRoot>)>,
     mut texts: Query<&mut Text>,
     mut assets: UiAssetResources,
     mut buildings: Query<(&CityBuildingPicture, &mut ImageNode, &mut Visibility)>,
 ) {
     let mut refresh_buildings = false;
-    for (controls, root) in &screens {
+    for (spawned, root) in &screens {
         if !session.is_changed() && !root.is_added() {
             continue;
         }
         refresh_buildings = true;
-        let Some(nation) = MajorNationId::from_nation(session.0.turn().active_nation) else {
-            warn!("city screen active nation is not a major nation");
-            continue;
-        };
+        let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+            .expect("City active nation is a major nation");
         let major = session.0.nations().major(nation);
         let city = &major.city;
         let labor = city.population.baseline_labor();
         let values = [
-            (controls.labor_low, labor.low),
-            (controls.labor_medium, labor.medium),
-            (controls.labor_high, labor.high),
-            (controls.labor_available, city.population.strength()),
-            (controls.power_available, city.power_available),
+            (fourcc!("untr"), labor.low),
+            (fourcc!("trai"), labor.medium),
+            (fourcc!("prof"), labor.high),
+            (fourcc!("labP"), city.population.strength()),
+            (fourcc!("powe"), city.power_available),
             (
-                controls.predicted_grain,
+                fourcc!("grai"),
                 city.population.predicted_need(ResourceKind::Grain),
             ),
             (
-                controls.predicted_fruit,
+                fourcc!("prod"),
                 city.population.predicted_need(ResourceKind::Fruit),
             ),
             (
-                controls.predicted_livestock,
+                fourcc!("meat"),
                 city.population.predicted_need(ResourceKind::Livestock),
             ),
             (
-                controls.predicted_hardware,
+                fourcc!("hard"),
                 city.population.predicted_need(ResourceKind::Hardware),
             ),
             (
-                controls.predicted_clothing,
+                fourcc!("clot"),
                 city.population.predicted_need(ResourceKind::Clothing),
             ),
             (
-                controls.predicted_furniture,
+                fourcc!("furn"),
                 city.population.predicted_need(ResourceKind::Furniture),
             ),
         ];
-        for (entity, value) in values {
+        for (tag, value) in values {
             texts
-                .get_mut(entity)
+                .get_mut(spawned.unique(tag))
                 .expect("city summary control has text")
                 .0 = value.to_string();
         }
         texts
-            .get_mut(controls.treasury)
+            .get_mut(spawned.unique(fourcc!("trea")))
             .expect("city treasury control has text")
             .0 = format_currency(major.common.treasury);
     }
@@ -573,12 +545,11 @@ pub(in crate::ui::city) fn sync_city_screen(
     if !refresh_buildings {
         return;
     }
+    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+        .expect("City active nation is a major nation");
     for (building, mut image, mut visibility) in &mut buildings {
-        let Some(level) = city_building_level(&session.0, building.nation, building.slot) else {
-            *visibility = Visibility::Hidden;
-            continue;
-        };
-        let city = &session.0.nations().major(building.nation).city;
+        let level = city_building_level(&session.0, nation, building.slot);
+        let city = &session.0.nations().major(nation).city;
         let Some(picture) = city_building_picture(city, building.slot, level) else {
             *visibility = Visibility::Hidden;
             continue;

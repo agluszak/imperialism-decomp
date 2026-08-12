@@ -62,7 +62,7 @@ impl UiCatalogResource {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Component, Debug, Clone)]
 pub(crate) struct SpawnedView {
     pub root: Entity,
     pub view_id: ScopedViewId,

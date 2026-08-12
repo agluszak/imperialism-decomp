@@ -72,13 +72,12 @@ fn spawn_clothing_dialog(mut commands: Commands, catalog: Res<UiCatalogResource>
         &mut commands,
         &catalog,
         &spawned,
-        MajorNationId::new(6),
         page,
         "Clothing Factory".to_owned(),
         "Capacity: [1: number]".to_owned(),
         Color::WHITE,
     );
-    TestDialog {
+    let dialog = TestDialog {
         root: spawned.root,
         window: spawned.unique(fourcc!("WIND")),
         decrease: spawned.under(&catalog, fourcc!("clot"), fourcc!("left")),
@@ -88,7 +87,9 @@ fn spawn_clothing_dialog(mut commands: Commands, catalog: Res<UiCatalogResource>
         labor: spawned.unique(fourcc!("labV")),
         capacity: spawned.unique(fourcc!("capT")),
         expansion: spawned.unique(fourcc!("flag")),
-    }
+    };
+    commands.entity(dialog.root).insert(spawned);
+    dialog
 }
 
 fn spawn_training_dialog(
@@ -105,14 +106,8 @@ fn spawn_training_dialog(
         .clone();
     let view = catalog.required_view(&view_id);
     let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
-    bind_training_dialog(
-        &mut commands,
-        &catalog,
-        &spawned,
-        MajorNationId::new(6),
-        "Trade School".to_owned(),
-    );
-    TestTrainingDialog {
+    bind_training_dialog(&mut commands, &catalog, &spawned, "Trade School".to_owned());
+    let dialog = TestTrainingDialog {
         root: spawned.root,
         medium_decrease: spawned.under(&catalog, fourcc!("trai"), fourcc!("left")),
         medium_increase: spawned.under(&catalog, fourcc!("trai"), fourcc!("rght")),
@@ -120,7 +115,9 @@ fn spawn_training_dialog(
         high_decrease: spawned.under(&catalog, fourcc!("prof"), fourcc!("left")),
         high_increase: spawned.under(&catalog, fourcc!("prof"), fourcc!("rght")),
         high_quantity: spawned.under(&catalog, fourcc!("prof"), fourcc!("move")),
-    }
+    };
+    commands.entity(dialog.root).insert(spawned);
+    dialog
 }
 
 fn spawn_university_dialog(
@@ -144,7 +141,6 @@ fn spawn_university_dialog(
         &mut commands,
         &catalog,
         &spawned,
-        MajorNationId::new(6),
         UniversityDialogData {
             available: technology.available,
             rows: UNIVERSITY_ORDERS.map(|binding| {
@@ -166,7 +162,7 @@ fn spawn_university_dialog(
             warning_color: Color::BLACK,
         },
     );
-    TestUniversityDialog {
+    let dialog = TestUniversityDialog {
         root: spawned.root,
         miner_button: spawned.unique(fourcc!("civ0")),
         forester_button: spawned.unique(fourcc!("civ3")),
@@ -178,7 +174,9 @@ fn spawn_university_dialog(
         engineer_quantity: spawned.under(&catalog, fourcc!("clu4"), fourcc!("numb")),
         driller_button: spawned.unique(fourcc!("civ8")),
         driller_increase: spawned.under(&catalog, fourcc!("clu8"), fourcc!("plus")),
-    }
+    };
+    commands.entity(dialog.root).insert(spawned);
+    dialog
 }
 
 fn order_quantity(app: &mut App, order: CityOrderId) -> i16 {
