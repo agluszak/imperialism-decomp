@@ -29,7 +29,6 @@ impl GameState {
         let mut produced_civilians = CivilianUnitTable::default();
         {
             let MajorNation { economy, city, .. } = &mut self.nations.majors[nation];
-            let mut orders = std::mem::take(&mut city.orders);
 
             city.phase_counter += 1;
             if matches!(economy.controller, MajorNationController::Computer) {
@@ -44,65 +43,73 @@ impl GameState {
 
             let previous_production_score = city.rolling_item_production_score;
             city.rolling_item_production_score = 0;
-            produce_food_processing(&mut orders.food_processing, city);
-            for output in ITEM_OUTPUTS {
-                let state = orders.items[output.resource()]
-                    .as_mut()
-                    .expect("item order exists for every retail recipe");
-                produce_item(state, city, item_order_spec(output));
-            }
-            produce_training(
-                TrainingLevel::Medium,
-                &mut orders.training[TrainingLevel::Medium],
-                city,
-                economy,
-            );
-            produce_training(
-                TrainingLevel::High,
-                &mut orders.training[TrainingLevel::High],
-                city,
-                economy,
-            );
-            city.rolling_item_production_score =
-                previous_production_score * 9 / 10 + city.rolling_item_production_score * 10;
-
-            for kind in CIVILIAN_KINDS {
-                let progress = &mut orders.civilian_recruitment[kind];
-                produced_civilians[kind] = progress.quantity;
-                progress.quantity = 0;
-            }
-
-            let transport_spec = transport_capacity_order_spec();
-            produce_capacity(
-                &mut orders.transport_capacity,
-                city,
-                economy,
-                CapacityTarget::Transport,
-                transport_spec.primary,
-                transport_spec.secondary,
-                owned_region_count,
-            );
-            produce_power_plant(&orders.power_plant);
-            for facility in EXPANSION_SLOTS {
-                let spec = expansion_order_spec(facility);
-                produce_expansion(
-                    orders.expansions[facility.slot()]
-                        .as_mut()
-                        .expect("expansion order exists for every expandable slot"),
-                    city,
+            {
+                let CityState {
+                    orders,
+                    stockpile,
+                    population,
+                    production_accum,
+                    production_orders,
+                    rolling_item_production_score,
+                    ..
+                } = city;
+                produce_food_processing(&mut orders.food_processing, stockpile);
+                for output in ITEM_OUTPUTS {
+                    produce_item(
+                        &mut orders.items[output],
+                        stockpile,
+                        production_accum,
+                        rolling_item_production_score,
+                        item_order_spec(output),
+                    );
+                }
+                produce_training(
+                    TrainingLevel::Medium,
+                    &mut orders.training[TrainingLevel::Medium],
+                    population,
                     economy,
-                    ExpansionTarget::Production(facility.slot()),
-                    spec.primary,
-                    spec.secondary,
+                );
+                produce_training(
+                    TrainingLevel::High,
+                    &mut orders.training[TrainingLevel::High],
+                    population,
+                    economy,
+                );
+                *rolling_item_production_score =
+                    previous_production_score * 9 / 10 + *rolling_item_production_score * 10;
+
+                for kind in CIVILIAN_KINDS {
+                    let progress = &mut orders.civilian_recruitment[kind];
+                    produced_civilians[kind] = progress.quantity;
+                    progress.quantity = 0;
+                }
+
+                let (transport_primary, transport_secondary) = TRANSPORT_CAPACITY_INPUTS;
+                produce_transport_capacity(
+                    &mut orders.transport_capacity,
+                    economy,
+                    transport_primary,
+                    transport_secondary,
+                );
+                for facility in EXPANSION_SLOTS {
+                    let (primary, secondary) = EXPANSION_INPUTS;
+                    produce_expansion(
+                        &mut orders.expansions[facility],
+                        production_orders,
+                        production_accum,
+                        facility,
+                        primary,
+                        secondary,
+                    );
+                }
+                produce_population_growth(
+                    &mut orders.population_growth,
+                    population,
+                    production_accum,
+                    economy,
                     owned_region_count,
                 );
             }
-            produce_population_growth(
-                &mut orders.population_growth,
-                city,
-                economy,
-                owned_region_count,
-            );
 
             if city.power_plant_upgrade_queued {
                 city.power_plant_upgrade_queued = false;
@@ -118,18 +125,35 @@ impl GameState {
 
             city.power_available = 0;
             city.start_production_phase();
-            restock_power_plant(&mut orders.power_plant, city);
-            for output in ITEM_OUTPUTS {
-                let state = orders.items[output.resource()]
-                    .as_mut()
-                    .expect("item order exists for every retail recipe");
-                restock_item(state, city, item_order_spec(output));
+            {
+                let CityState {
+                    orders,
+                    stockpile,
+                    population,
+                    production_accum,
+                    power_available,
+                    ..
+                } = city;
+                restock_power_plant(
+                    &mut orders.power_plant,
+                    stockpile,
+                    population,
+                    power_available,
+                );
+                for output in ITEM_OUTPUTS {
+                    restock_item(
+                        &mut orders.items[output],
+                        stockpile,
+                        population,
+                        production_accum,
+                        item_order_spec(output),
+                    );
+                }
             }
             city.production_accum[CityFacilitySlot::RegionalPopulation] =
                 retail_region_capacity(economy, owned_region_count);
             city.production_accum[CityFacilitySlot::Transport] =
                 city.production_orders[CityFacilitySlot::Transport];
-            city.orders = orders;
         }
 
         for (kind, quantity) in produced_civilians {
@@ -205,12 +229,6 @@ impl GameState {
     }
 }
 
-pub(crate) fn apply_resource_cost(city: &mut CityState, cost: ResourceCost, quantity: i16) {
-    let change = cost.per_unit() * quantity;
-    city.adjust_stock(cost.resource, -change);
-}
-
-#[allow(dead_code)]
 pub(crate) fn set_pending_action(
     owner: &mut GreatPowerState,
     action: PendingActionKind,

@@ -3,13 +3,13 @@
 use super::*;
 use crate::*;
 
-pub(crate) fn training_max_order(
+pub(crate) fn training_limit(
     level: TrainingLevel,
-    progress: &mut ProductionProgress,
+    progress: &ProductionProgress,
     city: &CityState,
     owner: &GreatPowerState,
     treasury: i32,
-) -> i16 {
+) -> OrderLimit {
     let production = &city.population.production_labor;
     let (paper_per_unit, cash_per_unit, workforce_limit) = match level {
         TrainingLevel::Medium => (1_i16, 100_i32, production.low.min(city.population.strength)),
@@ -32,32 +32,37 @@ pub(crate) fn training_max_order(
     };
     let paper_limit = city.stockpile[ResourceKind::Paper] / paper_per_unit;
 
-    progress.limiting_constraint = ProductionConstraint::Workforce;
+    let mut constraint = ProductionConstraint::Workforce;
     let mut limit = workforce_limit;
     if cash_limit < limit {
-        progress.limiting_constraint = ProductionConstraint::Treasury;
+        constraint = ProductionConstraint::Treasury;
         limit = cash_limit;
     }
     if paper_limit < limit {
-        progress.limiting_constraint = ProductionConstraint::Resources;
+        constraint = ProductionConstraint::Resources;
         limit = paper_limit;
     }
     if i32::from(progress.quantity) + i32::from(limit) > 99 {
         limit = 99 - progress.quantity;
     }
-    progress.quantity + limit
+    OrderLimit {
+        maximum: progress.quantity + limit,
+        constraint,
+    }
 }
 
 pub(crate) fn set_training_quantity(
     level: TrainingLevel,
     progress: &mut ProductionProgress,
-    city: &mut CityState,
-    owner: &GreatPowerState,
+    stockpile: &mut Stockpile,
+    population: &mut PopulationState,
     treasury: &mut i32,
+    limit: OrderLimit,
     quantity: i16,
 ) -> bool {
     let delta = quantity - progress.quantity;
-    if quantity > training_max_order(level, progress, city, owner, *treasury) || quantity < 0 {
+    progress.limiting_constraint = limit.constraint;
+    if quantity > limit.maximum || quantity < 0 {
         return false;
     }
     progress.quantity = quantity;
@@ -66,22 +71,22 @@ pub(crate) fn set_training_quantity(
         TrainingLevel::Medium => (delta, i32::from(delta) * 100),
         TrainingLevel::High => (delta * 2, i32::from(delta) * 1_000),
     };
-    city.adjust_stock(ResourceKind::Paper, -paper_change);
+    stockpile.credit(ResourceKind::Paper, -paper_change);
     *treasury -= cash_change;
-    city.population.make_unavailable(level.input_band(), delta);
+    population.make_unavailable(level.input_band(), delta);
     true
 }
 
 pub(crate) fn produce_training(
     level: TrainingLevel,
     progress: &mut ProductionProgress,
-    city: &mut CityState,
+    population: &mut PopulationState,
     owner: &mut GreatPowerState,
 ) {
     if progress.quantity == 0 {
         return;
     }
-    let baseline = &mut city.population.baseline_labor;
+    let baseline = &mut population.baseline_labor;
 
     match level {
         TrainingLevel::Medium => {

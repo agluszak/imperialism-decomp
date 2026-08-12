@@ -3,25 +3,41 @@
 use super::*;
 use crate::*;
 
-pub(crate) fn item_max_order(
-    state: &mut RequestedCityOrderState,
+pub(crate) fn item_limit(
+    state: &RequestedCityOrderState,
     city: &CityState,
     spec: ItemOrderSpec,
-) -> i16 {
-    let workforce_limit = city.population.strength / 2 + state.progress.quantity;
-    let production_limit = city.production_accum[spec.production_slot] + state.progress.quantity;
+) -> OrderLimit {
+    item_limit_from_fields(
+        state,
+        &city.stockpile,
+        &city.population,
+        &city.production_accum,
+        spec,
+    )
+}
+
+pub(crate) fn item_limit_from_fields(
+    state: &RequestedCityOrderState,
+    stockpile: &Stockpile,
+    population: &PopulationState,
+    production_accum: &ProductionTable<i16>,
+    spec: ItemOrderSpec,
+) -> OrderLimit {
+    let workforce_limit = population.strength / 2 + state.progress.quantity;
+    let production_limit = production_accum[spec.production_slot] + state.progress.quantity;
     let resource_limit = match spec.inputs {
         ItemInputs::Double(primary) => {
             let index = primary;
-            (state.progress.tracking_by_resource[index] + city.stockpile[index]) / 2
+            (state.progress.tracking_by_resource[index] + stockpile[index]) / 2
         }
         ItemInputs::Both(primary, secondary) => {
             let primary_index = primary;
             let secondary_index = secondary;
             let primary_limit =
-                state.progress.tracking_by_resource[primary_index] + city.stockpile[primary_index];
-            let secondary_limit = state.progress.tracking_by_resource[secondary_index]
-                + city.stockpile[secondary_index];
+                state.progress.tracking_by_resource[primary_index] + stockpile[primary_index];
+            let secondary_limit =
+                state.progress.tracking_by_resource[secondary_index] + stockpile[secondary_index];
             primary_limit.min(secondary_limit)
         }
         ItemInputs::Either(primary, secondary) => {
@@ -29,33 +45,40 @@ pub(crate) fn item_max_order(
             let secondary_index = secondary;
             (state.progress.tracking_by_resource[secondary_index]
                 + state.progress.tracking_by_resource[primary_index]
-                + city.stockpile[secondary_index]
-                + city.stockpile[primary_index])
+                + stockpile[secondary_index]
+                + stockpile[primary_index])
                 / 2
         }
     };
 
-    state.progress.limiting_constraint = ProductionConstraint::Capacity;
+    let mut constraint = ProductionConstraint::Capacity;
     let mut limit = production_limit;
     if workforce_limit < limit {
-        state.progress.limiting_constraint = ProductionConstraint::Workforce;
+        constraint = ProductionConstraint::Workforce;
         limit = workforce_limit;
     }
     if resource_limit < limit {
-        state.progress.limiting_constraint = ProductionConstraint::Resources;
+        constraint = ProductionConstraint::Resources;
         limit = resource_limit;
     }
-    limit
+    OrderLimit {
+        maximum: limit,
+        constraint,
+    }
 }
 
 pub(crate) fn set_item_quantity(
     state: &mut RequestedCityOrderState,
-    city: &mut CityState,
+    stockpile: &mut Stockpile,
+    population: &mut PopulationState,
+    production_accum: &mut ProductionTable<i16>,
     spec: ItemOrderSpec,
+    limit: OrderLimit,
     quantity: i16,
 ) -> bool {
     let delta = quantity - state.progress.quantity;
-    if quantity > item_max_order(state, city, spec) || quantity < 0 {
+    state.progress.limiting_constraint = limit.constraint;
+    if quantity > limit.maximum || quantity < 0 {
         return false;
     }
 
@@ -64,7 +87,7 @@ pub(crate) fn set_item_quantity(
     match spec.inputs {
         ItemInputs::Double(primary) => {
             reserve_primary_and_secondary(
-                city,
+                stockpile,
                 &mut state.progress.tracking_by_resource,
                 primary,
                 None,
@@ -73,7 +96,7 @@ pub(crate) fn set_item_quantity(
         }
         ItemInputs::Both(primary, secondary) => {
             reserve_primary_and_secondary(
-                city,
+                stockpile,
                 &mut state.progress.tracking_by_resource,
                 primary,
                 Some(secondary),
@@ -88,12 +111,12 @@ pub(crate) fn set_item_quantity(
                 (release, release)
             };
             let primary_available = if delta > 0 {
-                city.stockpile[primary]
+                stockpile[primary]
             } else {
                 state.progress.tracking_by_resource[primary]
             };
             let secondary_available = if delta > 0 {
-                city.stockpile[secondary]
+                stockpile[secondary]
             } else {
                 state.progress.tracking_by_resource[secondary]
             };
@@ -112,13 +135,13 @@ pub(crate) fn set_item_quantity(
                 secondary_change = -secondary_change;
             }
             apply_tracked_input_change(
-                city,
+                stockpile,
                 &mut state.progress.tracking_by_resource,
                 primary,
                 primary_change,
             );
             apply_tracked_input_change(
-                city,
+                stockpile,
                 &mut state.progress.tracking_by_resource,
                 secondary,
                 secondary_change,
@@ -127,22 +150,24 @@ pub(crate) fn set_item_quantity(
     }
 
     let workforce_change = delta * 2;
-    city.population.strength -= workforce_change;
+    population.strength -= workforce_change;
     state.progress.reserved_workforce += workforce_change;
-    let production = &mut city.production_accum[spec.production_slot];
+    let production = &mut production_accum[spec.production_slot];
     *production -= delta;
     true
 }
 
 pub(crate) fn produce_item(
     state: &mut RequestedCityOrderState,
-    city: &mut CityState,
+    stockpile: &mut Stockpile,
+    production_accum: &mut ProductionTable<i16>,
+    rolling_item_production_score: &mut i32,
     spec: ItemOrderSpec,
 ) {
-    let production = &mut city.production_accum[spec.production_slot];
+    let production = &mut production_accum[spec.production_slot];
     *production += state.progress.quantity;
-    city.adjust_stock(spec.output, state.progress.quantity);
-    city.rolling_item_production_score += i32::from(state.progress.quantity);
+    stockpile.credit(spec.output, state.progress.quantity);
+    *rolling_item_production_score += i32::from(state.progress.quantity);
     match spec.inputs {
         ItemInputs::Double(primary) => {
             state.progress.tracking_by_resource[primary] = 0;
@@ -158,42 +183,61 @@ pub(crate) fn produce_item(
 
 pub(crate) fn restock_item(
     state: &mut RequestedCityOrderState,
-    city: &mut CityState,
+    stockpile: &mut Stockpile,
+    population: &mut PopulationState,
+    production_accum: &mut ProductionTable<i16>,
     spec: ItemOrderSpec,
 ) -> bool {
-    let max_order = item_max_order(state, city, spec);
+    let limit = item_limit_from_fields(state, stockpile, population, production_accum, spec);
+    state.progress.limiting_constraint = limit.constraint;
     let saved_requested_quantity = state.requested_quantity;
     state.progress.quantity = 0;
-    if max_order < saved_requested_quantity
+    if limit.maximum < saved_requested_quantity
         && state.progress.limiting_constraint == ProductionConstraint::Resources
     {
-        let accepted = set_item_quantity(state, city, spec, max_order);
+        let accepted = set_item_quantity(
+            state,
+            stockpile,
+            population,
+            production_accum,
+            spec,
+            limit,
+            limit.maximum,
+        );
         state.requested_quantity = saved_requested_quantity;
         accepted
     } else {
-        set_item_quantity(state, city, spec, saved_requested_quantity)
+        set_item_quantity(
+            state,
+            stockpile,
+            population,
+            production_accum,
+            spec,
+            limit,
+            saved_requested_quantity,
+        )
     }
 }
 
 pub(crate) fn apply_tracked_input_change(
-    city: &mut CityState,
+    stockpile: &mut Stockpile,
     tracking: &mut ResourceTable<i16>,
     resource: ResourceKind,
     change: i16,
 ) {
-    city.adjust_stock(resource, -change);
+    stockpile.credit(resource, -change);
     tracking[resource] += change;
 }
 
 pub(crate) fn reserve_primary_and_secondary(
-    city: &mut CityState,
+    stockpile: &mut Stockpile,
     tracking: &mut ResourceTable<i16>,
     primary: ResourceKind,
     secondary: Option<ResourceKind>,
     change: i16,
 ) {
-    apply_tracked_input_change(city, tracking, primary, change);
+    apply_tracked_input_change(stockpile, tracking, primary, change);
     if let Some(secondary) = secondary {
-        apply_tracked_input_change(city, tracking, secondary, change);
+        apply_tracked_input_change(stockpile, tracking, secondary, change);
     }
 }

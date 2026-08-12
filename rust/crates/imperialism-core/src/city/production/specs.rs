@@ -12,30 +12,12 @@ pub struct RecruitmentOrderSpec {
     pub workforce: SkillBand,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct MaterialOrderSpec {
-    pub primary: ResourceKind,
-    pub secondary: ResourceKind,
-    pub production_slot: CityFacilitySlot,
-}
+pub(crate) const TRANSPORT_CAPACITY_INPUTS: (ResourceKind, ResourceKind) =
+    (ResourceKind::Lumber, ResourceKind::Steel);
+pub(crate) const EXPANSION_INPUTS: (ResourceKind, ResourceKind) =
+    (ResourceKind::Lumber, ResourceKind::Steel);
 
-pub const fn transport_capacity_order_spec() -> MaterialOrderSpec {
-    MaterialOrderSpec {
-        primary: ResourceKind::Lumber,
-        secondary: ResourceKind::Steel,
-        production_slot: CityFacilitySlot::Transport,
-    }
-}
-
-pub const fn expansion_order_spec(_target: ExpandableFacility) -> MaterialOrderSpec {
-    MaterialOrderSpec {
-        primary: ResourceKind::Lumber,
-        secondary: ResourceKind::Steel,
-        production_slot: CityFacilitySlot::Transport,
-    }
-}
-
-pub const fn item_order_spec(output: ManufacturedItem) -> ItemOrderSpec {
+pub(crate) const fn item_order_spec(output: ManufacturedItem) -> ItemOrderSpec {
     let (inputs, production_slot) = match output {
         ManufacturedItem::Fabric => (
             ItemInputs::Either(ResourceKind::Wool, ResourceKind::Cotton),
@@ -156,43 +138,6 @@ pub const fn resource_development_yield(resource: ResourceKind, level: u8) -> i1
 
     assert!(level <= 3, "resource development level must be in 0..=3");
     YIELDS[resource as usize][level as usize]
-}
-
-pub const fn military_recruitment_category(
-    unit_kind: MilitaryUnitKind,
-) -> Option<MilitaryRecruitmentCategory> {
-    match unit_kind {
-        MilitaryUnitKind::Skirmishers
-        | MilitaryUnitKind::Sharpshooters
-        | MilitaryUnitKind::Rangers => Some(MilitaryRecruitmentCategory::LightInfantry),
-        MilitaryUnitKind::Regulars
-        | MilitaryUnitKind::RifleInfantry
-        | MilitaryUnitKind::Infantry => Some(MilitaryRecruitmentCategory::RegularInfantry),
-        MilitaryUnitKind::Grenadiers
-        | MilitaryUnitKind::Guards
-        | MilitaryUnitKind::MachineGunners => Some(MilitaryRecruitmentCategory::HeavyInfantry),
-        MilitaryUnitKind::Hussars
-        | MilitaryUnitKind::Scouts
-        | MilitaryUnitKind::MechanizedInfantry => Some(MilitaryRecruitmentCategory::LightCavalry),
-        MilitaryUnitKind::Cuirassiers
-        | MilitaryUnitKind::CarbineCavalry
-        | MilitaryUnitKind::Armor => Some(MilitaryRecruitmentCategory::HeavyCavalry),
-        MilitaryUnitKind::LightArtillery
-        | MilitaryUnitKind::FieldArtillery
-        | MilitaryUnitKind::MobileArtillery => Some(MilitaryRecruitmentCategory::LightArtillery),
-        MilitaryUnitKind::Artillery
-        | MilitaryUnitKind::SiegeArtillery
-        | MilitaryUnitKind::RailroadGuns => Some(MilitaryRecruitmentCategory::HeavyArtillery),
-        MilitaryUnitKind::Sappers
-        | MilitaryUnitKind::CombatEngineers
-        | MilitaryUnitKind::Saboteurs => Some(MilitaryRecruitmentCategory::Demolitionist),
-        MilitaryUnitKind::Minutemen
-        | MilitaryUnitKind::Militia
-        | MilitaryUnitKind::Conscripts
-        | MilitaryUnitKind::GeneralEra1
-        | MilitaryUnitKind::GeneralEra2
-        | MilitaryUnitKind::GeneralEra3 => None,
-    }
 }
 
 pub const fn military_recruitment_spec(

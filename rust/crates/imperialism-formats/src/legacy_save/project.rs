@@ -372,18 +372,8 @@ fn ship_type_from_retail(value: i16) -> ShipType {
 
 impl LegacyCityOrders {
     fn city_orders(&self) -> CityOrders {
-        let mut items = ResourceTable::default();
-        for (item, order) in ManufacturedItem::ALL.into_iter().zip(&self.items) {
-            items[item.resource()] = Some(requested_city_order(order));
-        }
-
-        let mut expansions = ProductionTable::default();
-        for (facility, order) in ExpandableFacility::ALL.into_iter().zip(&self.expansions) {
-            expansions[facility.slot()] = Some(requested_city_order(order));
-        }
-
         CityOrders {
-            items,
+            items: ItemOrderTable::from_array(self.items.each_ref().map(requested_city_order)),
             civilian_recruitment: CivilianUnitTable::from_array(std::array::from_fn(|index| {
                 production_progress(&self.civilian_recruitment[index].order)
             })),
@@ -409,7 +399,9 @@ impl LegacyCityOrders {
             training: TrainingOrderTable::from_array(
                 self.training.each_ref().map(production_progress),
             ),
-            expansions,
+            expansions: ExpansionOrderTable::from_array(
+                self.expansions.each_ref().map(requested_city_order),
+            ),
             food_processing: production_progress(&self.food_processing),
             power_plant: PowerPlantOrderState {
                 progress: production_progress(&self.power_plant.order),

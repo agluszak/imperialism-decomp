@@ -340,9 +340,8 @@ pub(in crate::ui::city) fn city_building_level(
 }
 
 pub(in crate::ui::city) fn city_is_expanding(city: &CityState, slot: CityFacilitySlot) -> bool {
-    city.orders.expansions[slot]
-        .as_ref()
-        .is_some_and(|state| state.progress.quantity > 0)
+    ExpandableFacility::try_from_slot(slot)
+        .is_some_and(|facility| city.orders.expansions[facility].progress.quantity > 0)
 }
 
 pub(in crate::ui::city) fn city_building_picture(

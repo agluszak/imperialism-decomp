@@ -13,6 +13,12 @@ pub enum ProductionConstraint {
     Treasury,
 }
 
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct OrderLimit {
+    pub maximum: i16,
+    pub constraint: ProductionConstraint,
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ProductionProgress {
     pub quantity: i16,
@@ -35,53 +41,17 @@ impl Default for ProductionProgress {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum ItemInputs {
+pub(crate) enum ItemInputs {
     Double(ResourceKind),
     Both(ResourceKind, ResourceKind),
     Either(ResourceKind, ResourceKind),
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct ItemOrderSpec {
+pub(crate) struct ItemOrderSpec {
     pub output: ResourceKind,
     pub inputs: ItemInputs,
     pub production_slot: CityFacilitySlot,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-#[allow(dead_code)]
-pub(crate) enum CapacityTarget {
-    Production(CityFacilitySlot),
-    Transport,
-    RegionalPopulation,
-}
-
-#[allow(dead_code)]
-impl CapacityTarget {
-    pub const fn slot(self) -> CityFacilitySlot {
-        match self {
-            Self::Production(slot) => slot,
-            Self::Transport => CityFacilitySlot::Transport,
-            Self::RegionalPopulation => CityFacilitySlot::RegionalPopulation,
-        }
-    }
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-#[allow(dead_code)]
-pub(crate) enum ExpansionTarget {
-    Production(CityFacilitySlot),
-    RegionalPopulation,
-}
-
-#[allow(dead_code)]
-impl ExpansionTarget {
-    pub const fn slot(self) -> CityFacilitySlot {
-        match self {
-            Self::Production(slot) => slot,
-            Self::RegionalPopulation => CityFacilitySlot::RegionalPopulation,
-        }
-    }
 }
 
 /// Mutable state shared by ordinary item, capacity, and expansion orders.
@@ -201,68 +171,24 @@ pub const fn ship_display_stats(ship_type: ShipType) -> [i16; 6] {
     STATS[ship_type as usize]
 }
 
-pub const fn ship_type_is_valid_for_order_slot(slot: ShipOrderSlot, ship_type: ShipType) -> bool {
-    match slot {
-        ShipOrderSlot::MerchantEarlyPrimary => matches!(
-            ship_type,
-            ShipType::NoShip | ShipType::Trader | ShipType::Paddlewheeler
-        ),
-        ShipOrderSlot::MerchantEarlySecondary => {
-            matches!(
-                ship_type,
-                ShipType::NoShip | ShipType::Indiaman | ShipType::Clipper
-            )
-        }
-        ShipOrderSlot::MerchantAdvancedPrimary => {
-            matches!(
-                ship_type,
-                ShipType::NoShip | ShipType::Paddlewheeler | ShipType::Freighter
-            )
-        }
-        ShipOrderSlot::MerchantAdvancedSecondary => {
-            matches!(ship_type, ShipType::NoShip | ShipType::Clipper)
-        }
-        ShipOrderSlot::WarshipEarlyPrimary => {
-            matches!(ship_type, ShipType::NoShip | ShipType::Frigate)
-        }
-        ShipOrderSlot::WarshipEarlySecondary => {
-            matches!(ship_type, ShipType::NoShip | ShipType::ShipOfTheLine)
-        }
-        ShipOrderSlot::WarshipAdvancedPrimary => matches!(
-            ship_type,
-            ShipType::NoShip
-                | ShipType::Raider
-                | ShipType::ArmoredCruiser
-                | ShipType::Battlecruiser
-        ),
-        ShipOrderSlot::WarshipAdvancedSecondary => matches!(
-            ship_type,
-            ShipType::NoShip
-                | ShipType::Ironclad
-                | ShipType::AdvancedIronclad
-                | ShipType::Dreadnought
-        ),
-    }
-}
-
 /// The one authoritative mutable order set for a city. Collection keys are
 /// semantic retail identities; the private 61-pointer constructor layout is
 /// decoded only at the format and C++ capture boundaries.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CityOrders {
-    pub items: ResourceTable<Option<RequestedCityOrderState>>,
+    pub items: ItemOrderTable<RequestedCityOrderState>,
     pub civilian_recruitment: CivilianUnitTable<ProductionProgress>,
     pub military_recruitment: MilitaryRecruitOrderTable<MilitaryRecruitOrderState>,
     pub ships: ShipOrderTable<ShipOrderState>,
     pub training: TrainingOrderTable<ProductionProgress>,
-    pub expansions: ProductionTable<Option<RequestedCityOrderState>>,
+    pub expansions: ExpansionOrderTable<RequestedCityOrderState>,
     pub food_processing: ProductionProgress,
     pub power_plant: PowerPlantOrderState,
     pub transport_capacity: RequestedCityOrderState,
     pub population_growth: ProductionProgress,
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ManufacturedItem {
     Fabric,
@@ -319,7 +245,9 @@ impl ManufacturedItem {
     }
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+pub type ItemOrderTable<T> = EnumMap<ManufacturedItem, T>;
+
+#[derive(Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ExpandableFacility {
     TextileMill,
@@ -330,6 +258,8 @@ pub enum ExpandableFacility {
     FurnitureFactory,
     OilRefinery,
 }
+
+pub type ExpansionOrderTable<T> = EnumMap<ExpandableFacility, T>;
 
 impl ExpandableFacility {
     pub const ALL: [Self; 7] = [
@@ -391,26 +321,6 @@ pub struct CityOrderStatus {
     pub limiting_constraint: ProductionConstraint,
 }
 
-/// Result of an explicit city-order quantity change.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(tag = "kind", rename_all = "snake_case")]
-pub enum CityOrderChange {
-    Applied(CityOrderStatus),
-    Rejected(CityOrderStatus),
-}
-
-impl CityOrderChange {
-    pub const fn status(self) -> CityOrderStatus {
-        match self {
-            Self::Applied(status) | Self::Rejected(status) => status,
-        }
-    }
-
-    pub const fn applied(self) -> bool {
-        matches!(self, Self::Applied(_))
-    }
-}
-
 pub(crate) fn military_order(unit_kind: MilitaryUnitKind) -> MilitaryRecruitOrderState {
     MilitaryRecruitOrderState {
         unit_kind,
@@ -420,11 +330,6 @@ pub(crate) fn military_order(unit_kind: MilitaryUnitKind) -> MilitaryRecruitOrde
 
 impl Default for CityOrders {
     fn default() -> Self {
-        let mut items = ResourceTable::default();
-        for output in ManufacturedItem::ALL {
-            items[output.resource()] = Some(RequestedCityOrderState::default());
-        }
-
         let military_recruitment = MilitaryRecruitOrderTable::from_array([
             military_order(MilitaryUnitKind::Skirmishers),
             military_order(MilitaryUnitKind::Regulars),
@@ -447,18 +352,13 @@ impl Default for CityOrders {
             ShipOrderState::new(ShipType::NoShip),
         ]);
 
-        let mut expansions = ProductionTable::default();
-        for facility in ExpandableFacility::ALL {
-            expansions[facility.slot()] = Some(RequestedCityOrderState::default());
-        }
-
         Self {
-            items,
+            items: ItemOrderTable::default(),
             civilian_recruitment: CivilianUnitTable::default(),
             military_recruitment,
             ships,
             training: TrainingOrderTable::default(),
-            expansions,
+            expansions: ExpansionOrderTable::default(),
             food_processing: ProductionProgress::default(),
             power_plant: PowerPlantOrderState::default(),
             transport_capacity: RequestedCityOrderState::default(),
