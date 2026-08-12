@@ -2,7 +2,6 @@ use crate::AppState;
 use crate::ui::catalog::{SpawnedView, UiAssetResources, UiCatalogResource, spawn_view};
 use crate::ui::random_setup::GameSession;
 use crate::ui::strategic_map::{bind_strategic_base_terrain, sync_strategic_base_terrain};
-use bevy::log::warn;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
@@ -93,7 +92,13 @@ pub(crate) struct GameShellPlugin;
 impl Plugin for GameShellPlugin {
     fn build(&self, app: &mut App) {
         app.add_observer(on_game_screen_activate)
-            .add_observer(on_turn_flow_activate)
+            .add_observer(
+                on_turn_flow_activate.run_if(
+                    in_state(AppState::StrategicMap)
+                        .or_else(in_state(AppState::DealBook))
+                        .or_else(in_state(AppState::Newspaper)),
+                ),
+            )
             .add_systems(
                 OnEnter(AppState::StrategicMap),
                 (enter_strategic_map_view, enter_game_screen).chain(),
@@ -107,10 +112,7 @@ impl Plugin for GameShellPlugin {
     }
 }
 
-fn enter_strategic_map_view(mut session: Option<ResMut<GameSession>>) {
-    let Some(session) = session.as_deref_mut() else {
-        return;
-    };
+fn enter_strategic_map_view(mut session: ResMut<GameSession>) {
     let Some(tile) = session
         .0
         .first_idle_civilian_tile(session.0.turn().active_nation)
@@ -129,7 +131,7 @@ fn enter_game_screen(
     catalog: Res<UiCatalogResource>,
     mut assets: UiAssetResources,
     state: Res<State<AppState>>,
-    session: Option<Res<GameSession>>,
+    session: Res<GameSession>,
 ) {
     let current = *state.get();
     let Some(view_id) = view_id_for_state(current) else {
@@ -144,18 +146,8 @@ fn enter_game_screen(
             .entity(end)
             .insert(TurnFlowAction::FinishPlayerOrders)
             .remove::<InteractionDisabled>();
-        if let Some(session) = session.as_deref() {
-            bind_strategic_base_terrain(&mut commands, &spawned, &mut assets, &session.0);
-        } else {
-            warn!("strategic map opened without an authoritative game session");
-        }
-        project_date_and_treasury(
-            &mut commands,
-            &mut assets,
-            &spawned,
-            session.as_deref(),
-            "strategic map",
-        );
+        bind_strategic_base_terrain(&mut commands, &spawned, &mut assets, &session.0);
+        project_date_and_treasury(&mut commands, &mut assets, &spawned, &session);
     }
     commands
         .entity(spawned.root)
@@ -167,7 +159,7 @@ fn enter_turn_flow_screen(
     catalog: Res<UiCatalogResource>,
     mut assets: UiAssetResources,
     state: Res<State<AppState>>,
-    session: Option<Res<GameSession>>,
+    session: Res<GameSession>,
 ) {
     let current = *state.get();
     let view_id = match current {
@@ -188,10 +180,10 @@ fn enter_turn_flow_screen(
         AppState::DealBook => {
             disable_control(&mut commands, &spawned, fourcc!("tabs"));
             disable_control(&mut commands, &spawned, fourcc!("mark"));
-            project_deal_book_chrome(&mut commands, &mut assets, &spawned, session.as_deref());
+            project_deal_book_chrome(&mut commands, &mut assets, &spawned, &session);
         }
         AppState::Newspaper => {
-            project_newspaper_chrome(&mut commands, &mut assets, &spawned, session.as_deref())
+            project_newspaper_chrome(&mut commands, &mut assets, &spawned, &session)
         }
         _ => unreachable!(),
     }
@@ -205,7 +197,7 @@ fn project_deal_book_chrome(
     commands: &mut Commands,
     assets: &mut UiAssetResources,
     spawned: &SpawnedView,
-    session: Option<&GameSession>,
+    session: &GameSession,
 ) {
     // Retail starts the deal summary on its sold/bought page.
     let sold = assets
@@ -216,22 +208,15 @@ fn project_deal_book_chrome(
         .expect("retail deal-book bought title must load");
     set_control_text(commands, spawned, fourcc!("titL"), sold);
     set_control_text(commands, spawned, fourcc!("rtil"), bought);
-    project_date_and_treasury(commands, assets, spawned, session, "deal book");
+    project_date_and_treasury(commands, assets, spawned, session);
 }
 
 fn project_date_and_treasury(
     commands: &mut Commands,
     assets: &mut UiAssetResources,
     spawned: &SpawnedView,
-    session: Option<&GameSession>,
-    screen: &str,
+    session: &GameSession,
 ) {
-    let Some(session) = session else {
-        warn!("{screen} opened without an authoritative game session");
-        set_control_text(commands, spawned, fourcc!("seas"), String::new());
-        set_control_text(commands, spawned, fourcc!("trea"), String::new());
-        return;
-    };
     let state = &session.0;
     set_control_text(
         commands,
@@ -249,11 +234,9 @@ fn project_newspaper_chrome(
     commands: &mut Commands,
     assets: &mut UiAssetResources,
     spawned: &SpawnedView,
-    session: Option<&GameSession>,
+    session: &GameSession,
 ) {
-    let date = session.map_or_else(String::new, |session| {
-        format_retail_date(assets, session.0.turn().economic_turn)
-    });
+    let date = format_retail_date(assets, session.0.turn().economic_turn);
     set_control_text(commands, spawned, fourcc!("date"), date);
     // The catalog carries a false date placeholder here. The quarter-specific
     // newspaper metric is not authoritative state yet, so do not invent it.
@@ -358,15 +341,11 @@ fn on_game_screen_activate(
 fn on_turn_flow_activate(
     activate: On<Activate>,
     actions: Query<&TurnFlowAction>,
-    mut session: Option<ResMut<GameSession>>,
+    mut session: ResMut<GameSession>,
     state: Res<State<AppState>>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
-    let Some(session) = session.as_deref_mut() else {
-        warn!("turn-flow control activated without an authoritative game session");
         return;
     };
     let stop = match *action {
@@ -452,6 +431,7 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .insert_resource(UiCatalogResource::new(catalog()))
+            .insert_resource(fixture_session())
             .add_plugins(bevy::state::app::StatesPlugin)
             .init_state::<AppState>();
         register_structure_screens(&mut app);
@@ -618,7 +598,6 @@ mod tests {
     #[test]
     fn end_turn_closes_retail_gates_and_returns_to_player_orders() {
         let mut app = app_at(AppState::StrategicMap);
-        app.insert_resource(fixture_session());
 
         activate_turn_flow(&mut app, TurnFlowAction::FinishPlayerOrders);
         assert_eq!(

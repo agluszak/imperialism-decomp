@@ -55,9 +55,9 @@ impl Plugin for CitySitePlugin {
                 Update,
                 sync_city_site_hover.run_if(in_state(AppState::CitySite)),
             )
-            .add_observer(on_city_site_activate)
-            .add_observer(on_city_site_map_click)
-            .add_observer(on_new_city_activate);
+            .add_observer(on_city_site_activate.run_if(in_state(AppState::CitySite)))
+            .add_observer(on_city_site_map_click.run_if(in_state(AppState::CitySite)))
+            .add_observer(on_new_city_activate.run_if(in_state(AppState::CitySite)));
     }
 }
 
@@ -153,7 +153,7 @@ fn on_city_site_activate(
 fn on_city_site_map_click(
     click: On<Pointer<Click>>,
     dialog_open: Query<(), With<ModalDialog>>,
-    session: Option<Res<GameSession>>,
+    session: Res<GameSession>,
     maps: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
     mut ui: UiSpawner,
 ) {
@@ -163,7 +163,6 @@ fn on_city_site_map_click(
     let Ok(cursor) = maps.get(click.entity) else {
         return;
     };
-    let session = session.expect("city-site map activated without an authoritative game session");
     let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.0, cursor) else {
         return;
     };
@@ -189,7 +188,7 @@ fn on_new_city_activate(
     activate: On<Activate>,
     actions: Query<&NewCityAction>,
     dialogs: Query<(Entity, &NewCityDialogRoot)>,
-    session: Option<ResMut<GameSession>>,
+    mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
 ) {
@@ -201,8 +200,6 @@ fn on_new_city_activate(
             let Ok((_, dialog)) = dialogs.single() else {
                 return;
             };
-            let mut session =
-                session.expect("new-city accept activated without an authoritative game session");
             confirm_capital_site(&mut session.0, dialog.0);
             for (root, _) in &dialogs {
                 commands.entity(root).despawn();

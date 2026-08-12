@@ -122,14 +122,11 @@ pub(crate) fn bind_strategic_base_terrain(
 }
 
 pub(crate) fn sync_strategic_base_terrain(
-    session: Option<Res<GameSession>>,
+    session: Res<GameSession>,
     retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
     mut maps: Query<(&mut StrategicBaseTerrainCanvas, &ImageNode)>,
 ) {
-    let Some(session) = session else {
-        return;
-    };
     let key = strategic_base_terrain_key(&session.0);
     for (mut canvas, image_node) in &mut maps {
         if canvas.composed == Some(key) {
