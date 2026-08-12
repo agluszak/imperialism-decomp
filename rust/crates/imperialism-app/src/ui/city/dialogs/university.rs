@@ -71,14 +71,16 @@ pub(in crate::ui::city) const fn university_preview_picture(kind: CivilianUnitKi
 }
 
 pub(in crate::ui::city) fn configure_university_dialog(
-    ui: &mut UiSpawner,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    commands: &mut Commands,
+    assets: &mut UiAssetResources,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     state: &GameState,
 ) {
     let nation = MajorNationId::from_nation(state.turn().active_nation)
         .expect("City active nation is a major nation");
-    let (detail_font, _, _) = ui
+    let (detail_font, _, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -86,7 +88,7 @@ pub(in crate::ui::city) fn configure_university_dialog(
             alignment: -2,
         })
         .expect("retail University detail text style");
-    let (title_font, _, _) = ui
+    let (title_font, _, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -94,7 +96,7 @@ pub(in crate::ui::city) fn configure_university_dialog(
             alignment: 1,
         })
         .expect("retail University title fallback text style");
-    let (unit_font, _, _) = ui
+    let (unit_font, _, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -111,33 +113,38 @@ pub(in crate::ui::city) fn configure_university_dialog(
                 unreachable!("University binding has a civilian recruitment order");
             };
             UniversityRowText {
-                unit_name: ui
+                unit_name: assets
                     .string(0x2718, i16::from(kind as u8) + 1)
                     .expect("retail civilian name"),
-                description: ui
+                description: assets
                     .string(0x2751, i16::from(kind as u8))
                     .expect("retail civilian description"),
-                preview: transparent_picture(ui, PictureId::new(university_preview_picture(kind))),
+                preview: transparent_picture(
+                    assets,
+                    PictureId::new(university_preview_picture(kind)),
+                ),
             }
         }),
-        resource_icons: transparent_picture(ui, PictureId::new(750)),
+        resource_icons: transparent_picture(assets, PictureId::new(750)),
         tier_labels: std::array::from_fn(|level| {
-            ui.string(0x2723, 0x0e + level as i16)
+            assets
+                .string(0x2723, 0x0e + level as i16)
                 .expect("retail University tier label")
         }),
         title_font,
         unit_font,
         detail_font,
-        normal_color: ui.palette_color(0xd2),
-        warning_color: ui.palette_color(0xcb),
+        normal_color: assets.palette_color(0xd2),
+        warning_color: assets.palette_color(0xcb),
     };
-    bind_university_dialog(&mut ui.commands, catalog, spawned, data);
+    bind_university_dialog(commands, root, children, tags, data);
 }
 
 pub(in crate::ui::city) fn bind_university_dialog(
     commands: &mut Commands,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     data: UniversityDialogData,
 ) {
     let UniversityDialogData {
@@ -151,17 +158,17 @@ pub(in crate::ui::city) fn bind_university_dialog(
         normal_color,
         warning_color,
     } = data;
-    let root = bind_city_dialog_root(commands, spawned, CityFacilitySlot::University);
+    bind_city_dialog_root(commands, root, children, tags, CityFacilitySlot::University);
     let mut rows_by_kind = CivilianUnitTable::default();
     for (binding, row_text) in UNIVERSITY_ORDERS.iter().zip(rows) {
         let CityOrderId::CivilianRecruit(kind) = binding.order else {
             unreachable!("University binding has a civilian recruitment order");
         };
-        let button = spawned.unique(university_button_tag(kind));
-        let row = spawned.unique(binding.tag);
-        let minus = spawned.under(catalog, binding.tag, fourcc!("minu"));
-        let plus = spawned.under(catalog, binding.tag, fourcc!("plus"));
-        let quantity = spawned.under(catalog, binding.tag, fourcc!("numb"));
+        let button = find_descendant(root, university_button_tag(kind), children, tags);
+        let row = find_descendant(root, binding.tag, children, tags);
+        let minus = find_child_or_descendant(row, fourcc!("minu"), children, tags);
+        let plus = find_child_or_descendant(row, fourcc!("plus"), children, tags);
+        let quantity = find_child_or_descendant(row, fourcc!("numb"), children, tags);
         commands.entity(minus).insert(CityOrderAdjust {
             order: binding.order,
             delta: -1,
@@ -207,7 +214,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
             quantity,
         });
     }
-    let dlog = spawned.unique(fourcc!("DLOG"));
+    let dlog = find_descendant(root, fourcc!("DLOG"), children, tags);
     let preview = commands
         .spawn((
             Node {
@@ -275,9 +282,9 @@ pub(in crate::ui::city) fn bind_university_dialog(
         UniversityRequirementControls { icon, values }
     });
     let tier_labels = [
-        spawned.unique(fourcc!("fix2")),
-        spawned.unique(fourcc!("fix3")),
-        spawned.unique(fourcc!("fix4")),
+        find_descendant(root, fourcc!("fix2"), children, tags),
+        find_descendant(root, fourcc!("fix3"), children, tags),
+        find_descendant(root, fourcc!("fix4"), children, tags),
     ];
     for (entity, text) in tier_labels.into_iter().zip(tier_label_texts) {
         commands.entity(entity).insert((
@@ -289,7 +296,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
         ));
     }
     let style_text = |commands: &mut Commands, tag, font: TextFont| {
-        let entity = spawned.unique(tag);
+        let entity = find_descendant(root, tag, children, tags);
         commands
             .entity(entity)
             .insert((Text::new(""), font, TextColor(normal_color)));
@@ -314,12 +321,12 @@ pub(in crate::ui::city) fn bind_university_dialog(
         fourcc!("trea"),
     ]
     .map(|tag| style_text(commands, tag, detail_font.clone()));
-    let title = spawned.unique(fourcc!("titl"));
+    let title = find_descendant(root, fourcc!("titl"), children, tags);
     commands
         .entity(title)
         .insert((title_font, TextColor(normal_color)));
     for tag in [fourcc!("fix0"), fourcc!("fix1")] {
-        let fixed = spawned.unique(tag);
+        let fixed = find_descendant(root, tag, children, tags);
         commands
             .entity(fixed)
             .insert((detail_font.clone(), TextColor(normal_color)));

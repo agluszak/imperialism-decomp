@@ -47,17 +47,19 @@ pub(in crate::ui::city) struct ShipyardView {
 }
 
 pub(in crate::ui::city) fn configure_shipyard_dialog(
-    ui: &mut UiSpawner,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    commands: &mut Commands,
+    assets: &mut UiAssetResources,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     state: &GameState,
 ) {
     let nation = MajorNationId::from_nation(state.turn().active_nation)
         .expect("City active nation is a major nation");
     let city = &state.nations().major(nation).city;
     let material_pictures = SHIPYARD_MATERIALS
-        .map(|resource| transparent_picture(ui, PictureId::new(700 + resource as i16)));
-    let (detail_font, _, _) = ui
+        .map(|resource| transparent_picture(assets, PictureId::new(700 + resource as i16)));
+    let (detail_font, _, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -65,7 +67,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             alignment: -2,
         })
         .expect("retail Shipyard detail text style");
-    let (title_font, _, _) = ui
+    let (title_font, _, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -73,7 +75,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             alignment: 1,
         })
         .expect("retail Shipyard title text style");
-    let (name_font, _, _) = ui
+    let (name_font, _, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -96,13 +98,13 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             slot,
             Some(ShipyardRowData {
                 ship_type,
-                ship_name: ui
+                ship_name: assets
                     .string(0x2716, ship_type as i16 + 1)
                     .expect("retail ship name"),
-                description: ui
+                description: assets
                     .string(0x2752, ship_type as i16)
                     .expect("retail ship description"),
-                picture: ui
+                picture: assets
                     .picture(PictureId::new(9834 + ship_type as i16))
                     .expect("retail Shipyard detail picture"),
                 materials: SHIPYARD_MATERIALS
@@ -121,20 +123,19 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             }),
         )
     });
-    let queue_icons = transparent_picture(ui, PictureId::new(9807));
+    let queue_icons = transparent_picture(assets, PictureId::new(9807));
     let stat_labels: [String; 6] =
-        std::array::from_fn(|index| city_string(ui, 0x2736, 0x10 + index as i16));
-    let normal_color = ui.palette_color(0xd2);
-    let warning_color = ui.palette_color(0xcb);
-    let commands = &mut ui.commands;
-    let root = bind_city_dialog_root(commands, spawned, CityFacilitySlot::Shipyard);
+        std::array::from_fn(|index| city_string(assets, 0x2736, 0x10 + index as i16));
+    let normal_color = assets.palette_color(0xd2);
+    let warning_color = assets.palette_color(0xcb);
+    bind_city_dialog_root(commands, root, children, tags, CityFacilitySlot::Shipyard);
     let rows = ShipOrderTable::from_array(prepared_rows.map(|(index, slot, details)| {
         let binding = &SHIP_ORDERS[index];
-        let button = spawned.unique(shipyard_button_tag(slot));
-        let row = spawned.unique(binding.tag);
-        let minus = spawned.under(catalog, binding.tag, fourcc!("minu"));
-        let plus = spawned.under(catalog, binding.tag, fourcc!("plus"));
-        let quantity = spawned.under(catalog, binding.tag, fourcc!("numb"));
+        let button = find_descendant(root, shipyard_button_tag(slot), children, tags);
+        let row = find_descendant(root, binding.tag, children, tags);
+        let minus = find_child_or_descendant(row, fourcc!("minu"), children, tags);
+        let plus = find_child_or_descendant(row, fourcc!("plus"), children, tags);
+        let quantity = find_child_or_descendant(row, fourcc!("numb"), children, tags);
         commands.entity(minus).insert(CityOrderAdjust {
             order: binding.order,
             delta: -1,
@@ -196,7 +197,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
         }
     }));
     let style_text = |commands: &mut Commands, tag, font: TextFont| {
-        let entity = spawned.unique(tag);
+        let entity = find_descendant(root, tag, children, tags);
         commands
             .entity(entity)
             .insert((Text::new(""), font, TextColor(normal_color)));
@@ -204,18 +205,18 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
     };
     let ship_name = style_text(commands, fourcc!("snam"), name_font);
     let description = style_text(commands, fourcc!("desc"), detail_font.clone());
-    let picture = spawned.unique(fourcc!("spic"));
-    let title = spawned.unique(fourcc!("titl"));
+    let picture = find_descendant(root, fourcc!("spic"), children, tags);
+    let title = find_descendant(root, fourcc!("titl"), children, tags);
     commands
         .entity(title)
         .insert((title_font, TextColor(normal_color)));
     for tag in [fourcc!("fix0"), fourcc!("fix1")] {
-        let fixed = spawned.unique(tag);
+        let fixed = find_descendant(root, tag, children, tags);
         commands
             .entity(fixed)
             .insert((detail_font.clone(), TextColor(normal_color)));
     }
-    let dlog = spawned.unique(fourcc!("DLOG"));
+    let dlog = find_descendant(root, fourcc!("DLOG"), children, tags);
     let materials = std::array::from_fn(|index| {
         let left = 26.0 + index as f32 * 40.0;
         let pictures = [152.0, 204.0].map(|top| {

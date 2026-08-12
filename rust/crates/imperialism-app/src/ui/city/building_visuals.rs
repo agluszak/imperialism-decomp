@@ -1,5 +1,20 @@
 use super::*;
 
+pub(crate) struct CityBuildingVisual {
+    pub(crate) slot: CityFacilitySlot,
+    pub(crate) origin: [i32; 2],
+    pub(crate) draw_order: u8,
+}
+
+pub(crate) struct CityBuildingActionVisual {
+    pub(crate) slot: CityFacilitySlot,
+    pub(crate) level: u8,
+    pub(crate) picture_id: PictureId,
+    pub(crate) frame_count: u8,
+    pub(crate) origin: [i32; 2],
+    pub(crate) frame_size: [i32; 2],
+}
+
 pub(in crate::ui::city) struct CityBuildingHitRegion {
     pub(in crate::ui::city) origin: IVec2,
     pub(in crate::ui::city) slot: CityFacilitySlot,
@@ -24,6 +39,9 @@ pub(in crate::ui::city) struct CityScreenRoot {
     summary: CitySummaryControls,
     buildings: Vec<(Entity, CityFacilitySlot)>,
 }
+
+#[derive(Component)]
+pub(in crate::ui::city) struct CitySceneRoot;
 
 #[derive(Component)]
 pub(in crate::ui::city) struct CityBuildingActionAnimation {
@@ -127,39 +145,54 @@ pub(in crate::ui::city) fn apply_city_picture_transparency(
     }
 }
 
-pub(in crate::ui::city) fn enter_city_screen(
+pub(in crate::ui::city) fn enter_city_screen(mut commands: Commands, mut assets: UiAssetResources) {
+    let root = generated::citymain_2011(&mut commands, &mut assets);
+    commands
+        .entity(root)
+        .insert((CitySceneRoot, DespawnOnExit(AppState::City)));
+}
+
+pub(in crate::ui::city) fn bind_city_screen(
     mut commands: Commands,
-    catalog: Res<UiCatalogResource>,
+    root: Single<Entity, Added<CitySceneRoot>>,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
     mut assets: UiAssetResources,
     session: Res<GameSession>,
 ) {
-    let view_id = city_view_id();
-    let view = catalog.required_view(&view_id);
-    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
-    bind_game_screen_nav(&mut commands, &catalog, &spawned);
+    bind_native_game_screen_nav(
+        &mut commands,
+        *root,
+        &children,
+        &tags,
+        fourcc!("topB"),
+        Some(fourcc!("tool")),
+    );
 
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("City active nation is a major nation");
-    let summary = bind_city_summary_values(&mut commands, &spawned, &mut assets);
+    let summary = bind_city_summary_values(&mut commands, *root, &children, &tags, &mut assets);
     let buildings = spawn_city_buildings(
         &mut commands,
-        &spawned,
-        &view.city_buildings,
-        &view.city_building_actions,
+        *root,
+        &children,
+        &tags,
+        generated::CITY_BUILDINGS,
+        generated::CITY_BUILDING_ACTIONS,
         &session.0,
         nation,
         &mut assets,
     );
-    let root = spawned.root;
-    commands.entity(root).insert((
-        CityScreenRoot { summary, buildings },
-        DespawnOnExit(AppState::City),
-    ));
+    commands
+        .entity(*root)
+        .insert(CityScreenRoot { summary, buildings });
 }
 
 fn bind_city_summary_values(
     commands: &mut Commands,
-    spawned: &SpawnedView,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     assets: &mut UiAssetResources,
 ) -> CitySummaryControls {
     let (font, layout, _) = assets
@@ -171,7 +204,7 @@ fn bind_city_summary_values(
         })
         .expect("retail city placard text style");
     let bind_text = |commands: &mut Commands, tag| {
-        let entity = spawned.unique(tag);
+        let entity = find_descendant(root, tag, children, tags);
         commands.entity(entity).insert((
             Text::new(""),
             font.clone(),
@@ -194,20 +227,23 @@ fn bind_city_summary_values(
             (fourcc!("furn"), ResourceKind::Furniture),
         ]
         .map(|(tag, resource)| (bind_text(commands, tag), resource)),
-        treasury: spawned.unique(fourcc!("trea")),
+        treasury: find_descendant(root, fourcc!("trea"), children, tags),
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 pub(in crate::ui::city) fn spawn_city_buildings(
     commands: &mut Commands,
-    spawned: &SpawnedView,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     visuals: &[CityBuildingVisual],
     actions: &[CityBuildingActionVisual],
     state: &GameState,
     nation: MajorNationId,
     assets: &mut UiAssetResources,
 ) -> Vec<(Entity, CityFacilitySlot)> {
-    let main = spawned.unique(fourcc!("main"));
+    let main = find_descendant(root, fourcc!("main"), children, tags);
     let mut hit_regions = Vec::new();
     let mut buildings = Vec::new();
     for visual in visuals {
@@ -481,19 +517,20 @@ pub(in crate::ui::city) fn animate_city_building_actions(
 }
 
 pub(in crate::ui::city) fn transparent_picture(
-    ui: &mut UiSpawner,
+    assets: &mut UiAssetResources,
     picture_id: PictureId,
 ) -> Handle<Image> {
-    let indexed = ui
+    let indexed = assets
         .indexed_picture(picture_id)
         .expect("retail City detail picture must have indexed pixels");
-    ui.transformed_picture(picture_id, |image| {
-        assert!(
-            apply_palette_index_transparency(image, &indexed),
-            "retail City detail picture dimensions must match its decoded image"
-        );
-    })
-    .expect("retail City detail picture must load")
+    assets
+        .transformed_picture(picture_id, |image| {
+            assert!(
+                apply_palette_index_transparency(image, &indexed),
+                "retail City detail picture dimensions must match its decoded image"
+            );
+        })
+        .expect("retail City detail picture must load")
 }
 
 pub(in crate::ui::city) fn sync_city_screen(

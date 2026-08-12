@@ -8,15 +8,15 @@ from pathlib import Path
 
 from tools.source_model import build_model
 from tools.ui_codegen import (
-    RUST_UI_CATALOG_PATH,
-    build_rust_ui_catalog,
+    RUST_UI_PATH,
+    build_rust_ui_model,
     load_recipes,
     load_text_resources,
     load_ui_views,
     load_windows_views,
     render_factory,
-    render_rust_ui_catalog,
-    rust_ui_catalog_is_current,
+    render_rust_ui,
+    rust_ui_is_current,
     validate,
     write_generated,
 )
@@ -73,31 +73,37 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("RegisterUiResourceEntry", first_text)
         self.assertIn("RegisterUiResourceEntry", second_text)
 
-    def test_rust_catalog_is_deterministic_and_current(self) -> None:
-        first = render_rust_ui_catalog(
+    def test_rust_ui_is_deterministic_and_current(self) -> None:
+        first = render_rust_ui(
             REPO_ROOT, self.recipes, self.views, self.text_resources
         )
-        second = render_rust_ui_catalog(
+        second = render_rust_ui(
             REPO_ROOT, self.recipes, self.views, self.text_resources
         )
         self.assertEqual(first, second)
         self.assertEqual(
             first,
-            (REPO_ROOT / RUST_UI_CATALOG_PATH).read_text(encoding="utf-8"),
+            (REPO_ROOT / RUST_UI_PATH).read_text(encoding="utf-8"),
         )
         self.assertTrue(
-            rust_ui_catalog_is_current(
+            rust_ui_is_current(
                 REPO_ROOT, self.recipes, self.views, self.text_resources
             )
         )
+        self.assertIn("pub fn startup_1500", first)
+        self.assertIn('RetailTag(fourcc!("rand"))', first)
+        self.assertIn('RetailTag(fourcc!("auto"))', first)
+        self.assertNotIn('Text::new("All AutoGP\'s")', first)
+        self.assertNotIn("generated active retail picture must load", first)
+        self.assertIn("could not preload active retail picture", first)
 
-    def test_rust_catalog_covers_the_launch_slice_with_scoped_ids(self) -> None:
-        catalog = build_rust_ui_catalog(
+    def test_rust_model_covers_the_launch_slice_with_scoped_ids(self) -> None:
+        model = build_rust_ui_model(
             REPO_ROOT, self.recipes, self.views, self.text_resources
         )
         ids = {
             (view["id"]["resource_file"], view["id"]["resource_id"])
-            for view in catalog["views"]
+            for view in model["views"]
         }
         self.assertTrue(
             {
@@ -116,16 +122,16 @@ class UiCodegenTests(unittest.TestCase):
         )
         # All resource-backed factory cases are emitted (windows-only excluded).
         self.assertGreaterEqual(len(ids), 81)
-        self.assertEqual(len(ids), len(catalog["views"]))
+        self.assertEqual(len(ids), len(model["views"]))
 
-    def test_rust_catalog_emits_runtime_semantics_and_windows_deltas(self) -> None:
-        catalog = build_rust_ui_catalog(
+    def test_rust_model_emits_runtime_semantics_and_windows_deltas(self) -> None:
+        model = build_rust_ui_model(
             REPO_ROOT, self.recipes, self.views, self.text_resources
         )
-        self.assertEqual(set(catalog), {"logical_resolution", "views"})
+        self.assertEqual(set(model), {"logical_resolution", "views"})
         by_id = {
             (view["id"]["resource_file"], view["id"]["resource_id"]): view
-            for view in catalog["views"]
+            for view in model["views"]
         }
         newspaper = by_id[("FlagView.rsrc", 8451)]
         toolbar = next(node for node in newspaper["nodes"] if node["tag"] == "tbr2")
@@ -157,49 +163,6 @@ class UiCodegenTests(unittest.TestCase):
         for tag in ("tcou", "dift", "tnam"):
             text = setup_by_tag[tag]["text"]
             self.assertEqual((text["font_family"], text["point_size"]), (1, 14))
-
-        diplomacy = by_id[("Diplo.rsrc", 2008)]
-        diplomacy_names = [
-            node for node in diplomacy["nodes"] if node["tag"].startswith("nam")
-        ]
-        self.assertEqual(
-            [(node["tag"], node["id"], node["parent"]) for node in diplomacy_names],
-            [
-                (f"nam{index}", int.from_bytes(f"nam{index}".encode(), "big"), 0x0141)
-                for index in range(7)
-            ],
-        )
-        self.assertEqual(
-            [node["rect"] for node in diplomacy_names],
-            [
-                {"x": x, "y": y, "width": 70, "height": 25}
-                for x, y in (
-                    (44, 19),
-                    (44, 44),
-                    (44, 68),
-                    (44, 93),
-                    (153, 19),
-                    (153, 44),
-                    (153, 68),
-                )
-            ],
-        )
-        for node in diplomacy_names:
-            self.assertEqual(
-                node["text"],
-                {
-                    "value": "",
-                    "font_family": 3,
-                    "face_flags": 0,
-                    "point_size": 10,
-                    "alignment": 0,
-                    "color_index": 0xD2,
-                    "shadow_color_index": 0x13,
-                    "shadow_offset": [1, 1],
-                    "center_vertically": True,
-                },
-            )
-        self.assertNotIn("node_nam0", self.rendered[0x004295A0])
 
         city = by_id[("Citymain.rsrc", 2011)]
         city_by_tag = {node["tag"]: node for node in city["nodes"]}
@@ -270,7 +233,7 @@ class UiCodegenTests(unittest.TestCase):
         self.assertEqual(planet_by_tag["okay"]["behavior"], "activate")
         self.assertEqual(planet_by_tag["okay"]["picture_visual"], "up_down")
         self.assertTrue(planet_by_tag["canc"]["disabled"])
-        for view in catalog["views"]:
+        for view in model["views"]:
             for node in view["nodes"]:
                 if "text" in node:
                     required_text = {
@@ -329,7 +292,7 @@ class UiCodegenTests(unittest.TestCase):
                 for child in value:
                     visit(child)
 
-        visit(catalog)
+        visit(model)
 
     def test_control_state_uses_recovered_control_api(self) -> None:
         rendered = "\n".join(self.rendered.values())

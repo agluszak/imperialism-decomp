@@ -3,7 +3,7 @@ use super::*;
 #[derive(Component)]
 pub(in crate::ui::city) struct CityBuildingDialog {
     pub(in crate::ui::city) slot: CityFacilitySlot,
-    window: Entity,
+    saved_position: Option<IVec2>,
 }
 
 #[derive(Component)]
@@ -21,8 +21,8 @@ pub(in crate::ui::city) fn on_city_canvas_click(
     canvases: Query<(&RelativeCursorPosition, &CityCanvas)>,
     dialogs: Query<(&CityBuildingDialog, &GlobalZIndex)>,
     mut session: ResMut<GameSession>,
-    catalog: Res<UiCatalogResource>,
-    mut ui: UiSpawner,
+    mut commands: Commands,
+    mut assets: UiAssetResources,
 ) {
     let Ok((cursor, canvas)) = canvases.get(click.entity) else {
         return;
@@ -66,78 +66,57 @@ pub(in crate::ui::city) fn on_city_canvas_click(
         ) || session.0.technology().city_capabilities_by_nation[nation]
             .oil_drilling;
         if available {
-            open_city_construction_dialog(&mut ui, &mut session, building.slot);
+            open_city_construction_dialog(&mut commands, &mut assets, &mut session, building.slot);
             return;
         }
     }
     let z_index = dialogs.iter().map(|(_, z)| z.0).max().unwrap_or(0) + 1;
-    open_city_dialog(&mut ui, &catalog, &session.0, building.slot, None, z_index);
+    open_city_dialog(&mut commands, &mut assets, building.slot, None, z_index);
 }
 
 pub(in crate::ui::city) fn open_city_dialog(
-    ui: &mut UiSpawner,
-    catalog: &UiCatalogResource,
-    state: &GameState,
+    commands: &mut Commands,
+    assets: &mut UiAssetResources,
     slot: CityFacilitySlot,
     saved_position: Option<IVec2>,
     z_index: i32,
 ) {
-    let view_id = catalog
-        .required_view(&city_view_id())
-        .city_buildings
-        .iter()
-        .find(|building| building.slot == slot)
-        .expect("City building has a generated dialog")
-        .dialog
-        .clone();
-    let spawned = ui.spawn(view_id);
-    if let Some(page) = industry_page(slot) {
-        configure_industry_dialog(ui, catalog, &spawned, page);
-    } else {
-        match slot {
-            CityFacilitySlot::TradeSchool => configure_training_dialog(ui, catalog, &spawned),
-            CityFacilitySlot::Armory => configure_armory_dialog(ui, catalog, &spawned),
-            CityFacilitySlot::University => {
-                configure_university_dialog(ui, catalog, &spawned, state)
-            }
-            CityFacilitySlot::Shipyard => configure_shipyard_dialog(ui, catalog, &spawned, state),
-            CityFacilitySlot::Warehouse => configure_warehouse_dialog(ui, &spawned, state),
-            CityFacilitySlot::FoodProcessing => configure_food_dialog(ui, catalog, &spawned),
-            CityFacilitySlot::PowerPlant => configure_power_dialog(ui, catalog, &spawned),
-            CityFacilitySlot::Transport => {
-                configure_transport_capacity_dialog(ui, catalog, &spawned)
-            }
-            CityFacilitySlot::RegionalPopulation => {
-                configure_population_dialog(ui, catalog, &spawned)
-            }
-            _ => unreachable!("catalog City building has no dialog binder"),
-        }
-    }
-    if let Some(position) = saved_position {
-        let window = spawned.unique(fourcc!("WIND"));
-        ui.commands
-            .entity(window)
-            .entry::<Node>()
-            .and_modify(move |mut node| {
-                node.left = px(position.x as f32);
-                node.top = px(position.y as f32);
-            });
-    }
-    ui.commands
-        .entity(spawned.root)
-        .insert(GlobalZIndex(z_index));
+    let root = match slot {
+        CityFacilitySlot::TextileMill => generated::citydlog_9200(commands, assets),
+        CityFacilitySlot::ClothingFactory => generated::citydlog_9201(commands, assets),
+        CityFacilitySlot::SteelMill => generated::citydlog_9202(commands, assets),
+        CityFacilitySlot::Metalworks => generated::citydlog_9203(commands, assets),
+        CityFacilitySlot::LumberMill => generated::citydlog_9204(commands, assets),
+        CityFacilitySlot::FurnitureFactory => generated::citydlog_9205(commands, assets),
+        CityFacilitySlot::OilRefinery => generated::citydlog_9206(commands, assets),
+        CityFacilitySlot::Shipyard => generated::shipyard_9207(commands, assets),
+        CityFacilitySlot::Armory => generated::armory_9208(commands, assets),
+        CityFacilitySlot::TradeSchool => generated::citydlog_9209(commands, assets),
+        CityFacilitySlot::University => generated::univ_9210(commands, assets),
+        CityFacilitySlot::PowerPlant => generated::citydlog_9211(commands, assets),
+        CityFacilitySlot::FoodProcessing => generated::citydlog_9212(commands, assets),
+        CityFacilitySlot::Warehouse => generated::citydlog_9213(commands, assets),
+        CityFacilitySlot::Transport => generated::citydlog_9214(commands, assets),
+        CityFacilitySlot::RegionalPopulation => generated::citydlog_9215(commands, assets),
+    };
+    commands.entity(root).insert((
+        CityBuildingDialog {
+            slot,
+            saved_position,
+        },
+        GlobalZIndex(z_index),
+        Pickable::IGNORE,
+    ));
 }
 
 pub(in crate::ui::city) fn bind_city_dialog_root(
     commands: &mut Commands,
-    spawned: &SpawnedView,
-    slot: CityFacilitySlot,
-) -> Entity {
-    let root = spawned.root;
-    let window = spawned.unique(fourcc!("WIND"));
-    commands
-        .entity(root)
-        .insert((CityBuildingDialog { slot, window }, Pickable::IGNORE));
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
+    _slot: CityFacilitySlot,
+) {
+    let window = find_descendant(root, fourcc!("WIND"), children, tags);
     commands.entity(window).insert(Pickable::default());
     commands.entity(window).with_children(|parent| {
         parent.spawn((
@@ -182,14 +161,88 @@ pub(in crate::ui::city) fn bind_city_dialog_root(
                 Pickable::IGNORE,
             ));
     });
-    root
+}
+
+pub(in crate::ui::city) fn bind_city_dialogs(
+    mut commands: Commands,
+    dialogs: Query<(Entity, &CityBuildingDialog), Added<CityBuildingDialog>>,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
+    mut assets: UiAssetResources,
+    session: Res<GameSession>,
+) {
+    for (root, dialog) in &dialogs {
+        if let Some(position) = dialog.saved_position {
+            let window = find_descendant(root, fourcc!("WIND"), &children, &tags);
+            commands
+                .entity(window)
+                .entry::<Node>()
+                .and_modify(move |mut node| {
+                    node.left = px(position.x as f32);
+                    node.top = px(position.y as f32);
+                });
+        }
+        if let Some(page) = industry_page(dialog.slot) {
+            configure_industry_dialog(&mut commands, &mut assets, root, &children, &tags, page);
+            continue;
+        }
+        match dialog.slot {
+            CityFacilitySlot::TradeSchool => {
+                configure_training_dialog(&mut commands, &assets, root, &children, &tags)
+            }
+            CityFacilitySlot::Armory => {
+                configure_armory_dialog(&mut commands, &assets, root, &children, &tags)
+            }
+            CityFacilitySlot::University => configure_university_dialog(
+                &mut commands,
+                &mut assets,
+                root,
+                &children,
+                &tags,
+                &session.0,
+            ),
+            CityFacilitySlot::Shipyard => configure_shipyard_dialog(
+                &mut commands,
+                &mut assets,
+                root,
+                &children,
+                &tags,
+                &session.0,
+            ),
+            CityFacilitySlot::Warehouse => configure_warehouse_dialog(
+                &mut commands,
+                &mut assets,
+                root,
+                &children,
+                &tags,
+                &session.0,
+            ),
+            CityFacilitySlot::FoodProcessing => {
+                configure_food_dialog(&mut commands, &mut assets, root, &children, &tags)
+            }
+            CityFacilitySlot::PowerPlant => {
+                configure_power_dialog(&mut commands, &mut assets, root, &children, &tags)
+            }
+            CityFacilitySlot::Transport => configure_transport_capacity_dialog(
+                &mut commands,
+                &mut assets,
+                root,
+                &children,
+                &tags,
+            ),
+            CityFacilitySlot::RegionalPopulation => {
+                configure_population_dialog(&mut commands, &mut assets, root, &children, &tags)
+            }
+            _ => unreachable!("City building has no dialog binder"),
+        }
+    }
 }
 
 pub(in crate::ui::city) fn restore_city_dialogs(
     roots: Query<(), Added<CityScreenRoot>>,
     session: Res<GameSession>,
-    catalog: Res<UiCatalogResource>,
-    mut ui: UiSpawner,
+    mut commands: Commands,
+    mut assets: UiAssetResources,
 ) {
     if roots.is_empty() {
         return;
@@ -206,9 +259,8 @@ pub(in crate::ui::city) fn restore_city_dialogs(
             continue;
         }
         open_city_dialog(
-            &mut ui,
-            &catalog,
-            &session.0,
+            &mut commands,
+            &mut assets,
             slot,
             Some(IVec2::new(
                 i32::from(state.current),
@@ -235,6 +287,8 @@ pub(in crate::ui::city) fn leave_city_screen(
     mut session: ResMut<GameSession>,
     dialogs: Query<(Entity, &CityBuildingDialog)>,
     windows: Query<&Node>,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
 ) {
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("City screen requires an active major nation");
@@ -242,10 +296,11 @@ pub(in crate::ui::city) fn leave_city_screen(
         let slot = CityFacilitySlot::from_index(index as u8)
             .expect("City facility index is in the fixed slot range");
         let open = dialogs.iter().find(|(_, dialog)| dialog.slot == slot);
-        let state = if let Some((_, dialog)) = open {
+        let state = if let Some((root, _)) = open {
+            let window = find_descendant(root, fourcc!("WIND"), &children, &tags);
             let (left, top) = node_position(
                 windows
-                    .get(dialog.window)
+                    .get(window)
                     .expect("open City dialog has its generated window"),
             );
             BuildingWindowState {

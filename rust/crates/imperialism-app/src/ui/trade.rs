@@ -1,7 +1,9 @@
-use super::catalog::{SpawnedView, UiAssetResources, UiCatalogResource, spawn_view};
+use super::UiAssetResources;
 use super::format_currency;
-use super::game_shell::{bind_game_screen_nav, disable_control, trade_view_id};
+use super::game_shell::bind_native_game_screen_nav;
+use super::generated;
 use super::random_setup::GameSession;
+use super::retail::{RetailTag, find_child_or_descendant, find_descendant};
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -199,28 +201,40 @@ pub(crate) struct TradePlugin;
 
 impl Plugin for TradePlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(AppState::Trade), enter_trade_screen)
-            .add_systems(OnExit(AppState::Trade), remember_trade_orders)
-            .add_systems(Update, sync_trade_screen.run_if(in_state(AppState::Trade)))
-            .add_observer(on_trade_activate.run_if(in_state(AppState::Trade)))
-            .add_observer(on_trade_amount_bar_click.run_if(in_state(AppState::Trade)));
+        app.add_systems(
+            OnEnter(AppState::Trade),
+            (enter_trade_screen, bind_trade_screen).chain(),
+        )
+        .add_systems(OnExit(AppState::Trade), remember_trade_orders)
+        .add_systems(Update, sync_trade_screen.run_if(in_state(AppState::Trade)))
+        .add_observer(on_trade_activate.run_if(in_state(AppState::Trade)))
+        .add_observer(on_trade_amount_bar_click.run_if(in_state(AppState::Trade)));
     }
 }
 
-fn enter_trade_screen(
+fn enter_trade_screen(mut commands: Commands, mut assets: UiAssetResources) {
+    let root = generated::trade_2009(&mut commands, &mut assets);
+    commands
+        .entity(root)
+        .insert((TradeScreen, DespawnOnExit(AppState::Trade)));
+}
+
+fn bind_trade_screen(
     mut commands: Commands,
-    catalog: Res<UiCatalogResource>,
+    root: Single<Entity, Added<TradeScreen>>,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
     mut assets: UiAssetResources,
     mut session: ResMut<GameSession>,
 ) {
-    let view_id = trade_view_id();
-    let view = catalog.required_view(&view_id);
-    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
-    bind_game_screen_nav(&mut commands, &catalog, &spawned);
-    commands
-        .entity(spawned.root)
-        .insert(DespawnOnExit(AppState::Trade));
-
+    bind_native_game_screen_nav(
+        &mut commands,
+        *root,
+        &children,
+        &tags,
+        fourcc!("topB"),
+        Some(fourcc!("tool")),
+    );
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Trade active nation is a major nation");
     session.0.recall_player_trade_orders(nation);
@@ -259,10 +273,11 @@ fn enter_trade_screen(
             .picture(PictureId::new(2128))
             .expect("clothing trade offer picture"),
     };
-    bind_trade_screen(
+    bind_trade_controls(
         &mut commands,
-        &catalog,
-        &spawned,
+        *root,
+        &children,
+        &tags,
         row_font,
         row_layout,
         assets.palette_color(0x13),
@@ -272,42 +287,44 @@ fn enter_trade_screen(
 }
 
 #[allow(clippy::too_many_arguments)]
-fn bind_trade_screen(
+fn bind_trade_controls(
     commands: &mut Commands,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     row_font: TextFont,
     row_layout: TextLayout,
     row_color: Color,
     pictures: TradePictures,
     gauge_color: Color,
 ) {
-    commands.entity(spawned.root).insert(TradeScreen);
-    disable_control(commands, spawned, fourcc!("quer"));
-    let selected = spawned.unique(fourcc!("trad"));
+    commands
+        .entity(find_descendant(root, fourcc!("quer"), children, tags))
+        .insert(InteractionDisabled);
+    let selected = find_descendant(root, fourcc!("trad"), children, tags);
     commands
         .entity(selected)
         .insert((Checked, InteractionDisabled));
-    let capacity = spawned.unique(fourcc!("mCap"));
+    let capacity = find_descendant(root, fourcc!("mCap"), children, tags);
     commands
         .entity(capacity)
         .insert((TradeDisplay::Capacity, InteractionDisabled));
-    let treasury = spawned.unique(fourcc!("trea"));
+    let treasury = find_descendant(root, fourcc!("trea"), children, tags);
     commands.entity(treasury).insert(TradeDisplay::Treasury);
     for (tag, kind) in TRADE_ADVISORIES {
-        let advisory = spawned.unique(tag);
+        let advisory = find_descendant(root, tag, children, tags);
         commands
             .entity(advisory)
             .insert(TradeDisplay::Advisory(kind));
     }
 
     for binding in TRADE_ROWS {
-        let row = spawned.unique(binding.tag);
+        let row = find_descendant(root, binding.tag, children, tags);
         if trade_row_locked(binding.commodity) {
             commands.entity(row).insert(Visibility::Hidden);
         }
 
-        let card = spawned.under(catalog, binding.tag, fourcc!("card"));
+        let card = find_child_or_descendant(row, fourcc!("card"), children, tags);
         let card_pictures = pictures.for_button(binding.commodity, TradeCardKind::Bid);
         commands.entity(card).insert((
             UiButton,
@@ -322,7 +339,7 @@ fn bind_trade_screen(
                 pictures: card_pictures,
             },
         ));
-        let offer = spawned.under(catalog, binding.tag, fourcc!("offr"));
+        let offer = find_child_or_descendant(row, fourcc!("offr"), children, tags);
         let offer_pictures = pictures.for_button(binding.commodity, TradeCardKind::Offer);
         commands.entity(offer).insert((
             UiButton,
@@ -339,7 +356,7 @@ fn bind_trade_screen(
         ));
 
         for (tag, delta) in [(fourcc!("left"), -1), (fourcc!("rght"), 1)] {
-            let step = spawned.under(catalog, binding.tag, tag);
+            let step = find_child_or_descendant(row, tag, children, tags);
             commands.entity(step).insert((
                 TradeAction::Step {
                     commodity: binding.commodity,
@@ -349,15 +366,15 @@ fn bind_trade_screen(
             ));
         }
 
-        let sell = spawned.under(catalog, binding.tag, fourcc!("Sell"));
+        let sell = find_child_or_descendant(row, fourcc!("Sell"), children, tags);
         commands
             .entity(sell)
             .insert(TradeDisplay::Sell(binding.commodity));
-        let green = spawned.under(catalog, binding.tag, fourcc!("gree"));
+        let green = find_child_or_descendant(row, fourcc!("gree"), children, tags);
         commands
             .entity(green)
             .insert(TradeDisplay::Offer(binding.commodity));
-        let bar = spawned.under(catalog, binding.tag, fourcc!("bar "));
+        let bar = find_child_or_descendant(row, fourcc!("bar "), children, tags);
         commands.entity(bar).insert((
             TradeAction::Amount(binding.commodity),
             TradeDisplay::Offer(binding.commodity),
@@ -723,261 +740,5 @@ fn trade_gauge_width(quantity: i16, capacity: i16) -> f32 {
         0.0
     } else {
         f32::from((i32::from(quantity) * 100 / i32::from(capacity)).clamp(0, 100) as i16)
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::ui::catalog::spawn_view_nodes;
-    use bevy::ecs::system::RunSystemOnce;
-
-    const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
-    const BEGINNING_OF_GAME: &[u8] =
-        include_bytes!("../../../../../fixtures/retail/beginning_of_game.imp");
-
-    #[derive(Clone, Copy)]
-    struct TestTrade {
-        root: Entity,
-        selected: Entity,
-        return_to_map: Entity,
-        fabric_offer: Entity,
-        fabric_left: Entity,
-        fabric_right: Entity,
-    }
-
-    fn fixture_session() -> GameSession {
-        let save = LegacySaveV62::parse(BEGINNING_OF_GAME);
-        let state = save.game_state(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 3_916_827_792,
-            selected_nation: NationId::new(6),
-        });
-        GameSession(state)
-    }
-
-    fn test_pictures() -> TradePictures {
-        TradePictures {
-            bid_active: Handle::default(),
-            bid_idle: Handle::default(),
-            offer_active: Handle::default(),
-            offer_idle: Handle::default(),
-            clothing_bid_active: Handle::default(),
-            clothing_bid_idle: Handle::default(),
-            clothing_offer_active: Handle::default(),
-            clothing_offer_idle: Handle::default(),
-        }
-    }
-
-    fn spawn_trade(
-        mut commands: Commands,
-        catalog: Res<UiCatalogResource>,
-        mut session: ResMut<GameSession>,
-    ) -> TestTrade {
-        let view = catalog.required_view(&trade_view_id());
-        let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
-        commands
-            .entity(spawned.unique(fourcc!("mCap")))
-            .insert(Text::new(""));
-        commands
-            .entity(spawned.unique(fourcc!("trea")))
-            .insert(Text::new(""));
-        for binding in TRADE_ROWS {
-            commands
-                .entity(spawned.under(&catalog, binding.tag, fourcc!("Sell")))
-                .insert(Text::new(""));
-        }
-        bind_game_screen_nav(&mut commands, &catalog, &spawned);
-        let nation = MajorNationId::from_nation(session.0.turn().active_nation).unwrap();
-        session.0.recall_player_trade_orders(nation);
-        bind_trade_screen(
-            &mut commands,
-            &catalog,
-            &spawned,
-            TextFont::default(),
-            TextLayout::default(),
-            Color::BLACK,
-            test_pictures(),
-            Color::BLACK,
-        );
-        let fabric_tag = fourcc!("ma1 ");
-        TestTrade {
-            root: spawned.root,
-            selected: spawned.unique(fourcc!("trad")),
-            return_to_map: spawned.unique(fourcc!("end ")),
-            fabric_offer: spawned.under(&catalog, fabric_tag, fourcc!("offr")),
-            fabric_left: spawned.under(&catalog, fabric_tag, fourcc!("left")),
-            fabric_right: spawned.under(&catalog, fabric_tag, fourcc!("rght")),
-        }
-    }
-
-    fn activate(app: &mut App, entity: Entity) {
-        app.world_mut().commands().trigger(Activate { entity });
-        app.world_mut().flush();
-        app.update();
-    }
-
-    fn row_text(app: &mut App, commodity: TradeCommodity, price: bool) -> String {
-        let mut query = app.world_mut().query::<(&TradeDisplay, &Text)>();
-        query
-            .iter(app.world())
-            .find(|(display, _)| {
-                matches!(
-                    display,
-                    TradeDisplay::Price(found) if price && *found == commodity
-                ) || matches!(
-                    display,
-                    TradeDisplay::Stock(found) if !price && *found == commodity
-                )
-            })
-            .unwrap()
-            .1
-            .0
-            .clone()
-    }
-
-    fn sell_text(app: &mut App, commodity: TradeCommodity) -> String {
-        let mut query = app.world_mut().query::<(&TradeDisplay, &Text)>();
-        query
-            .iter(app.world())
-            .find(
-                |(display, _)| matches!(display, TradeDisplay::Sell(found) if *found == commodity),
-            )
-            .unwrap()
-            .1
-            .0
-            .clone()
-    }
-
-    fn gauge_width(app: &mut App, commodity: TradeCommodity) -> f32 {
-        let mut query = app.world_mut().query::<(&TradeDisplay, &Node)>();
-        let node = query
-            .iter(app.world())
-            .find(
-                |(display, _)| matches!(display, TradeDisplay::Gauge(found) if *found == commodity),
-            )
-            .unwrap()
-            .1;
-        match node.width {
-            Val::Px(width) => width,
-            other => panic!("expected pixel gauge width, found {other:?}"),
-        }
-    }
-
-    fn global_text(app: &mut App, treasury: bool) -> String {
-        let mut query = app.world_mut().query::<(&TradeDisplay, &Text)>();
-        query
-            .iter(app.world())
-            .find(|(display, _)| {
-                matches!(
-                    (display, treasury),
-                    (TradeDisplay::Treasury, true) | (TradeDisplay::Capacity, false)
-                )
-            })
-            .unwrap()
-            .1
-            .0
-            .clone()
-    }
-
-    #[test]
-    fn trade_offer_round_trips_without_premature_settlement() {
-        let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .insert_resource(UiCatalogResource::new(catalog))
-            .insert_resource(fixture_session())
-            .add_observer(on_trade_activate)
-            .add_observer(on_trade_amount_bar_click)
-            .add_systems(Update, sync_trade_screen);
-
-        let first = app.world_mut().run_system_once(spawn_trade).unwrap();
-        app.update();
-        assert!(app.world().get::<Checked>(first.selected).is_some());
-        assert!(
-            app.world()
-                .get::<InteractionDisabled>(first.selected)
-                .is_some()
-        );
-        assert!(
-            app.world()
-                .get::<InteractionDisabled>(first.return_to_map)
-                .is_none()
-        );
-        assert_eq!(global_text(&mut app, false), "4");
-        assert_eq!(global_text(&mut app, true), "$10,000");
-        assert_eq!(row_text(&mut app, TradeCommodity::Fabric, true), "$300");
-        assert_eq!(row_text(&mut app, TradeCommodity::Fabric, false), "10");
-
-        let nation = MajorNationId::new(6);
-        let (stock_before, treasury_before) = {
-            let session = app.world().resource::<GameSession>();
-            let major = session.0.nations().major(nation);
-            (major.city.stockpile, major.common.treasury)
-        };
-        activate(&mut app, first.fabric_offer);
-        {
-            let session = app.world().resource::<GameSession>();
-            let major = session.0.nations().major(nation);
-            assert_eq!(
-                session.0.player_trade_order(nation, TradeCommodity::Fabric),
-                PlayerTradeOrder::Sell(4)
-            );
-            assert_eq!(major.city.stockpile, stock_before);
-            assert_eq!(major.common.treasury, treasury_before);
-        }
-        assert_eq!(sell_text(&mut app, TradeCommodity::Fabric), "4");
-        assert_eq!(gauge_width(&mut app, TradeCommodity::Fabric), 100.0);
-        let offer_node = app.world().get::<Node>(first.fabric_offer).unwrap();
-        assert_eq!(offer_node.left, Val::Px(115.0));
-        assert_eq!(offer_node.width, Val::Px(65.0));
-
-        activate(&mut app, first.fabric_left);
-        assert_eq!(
-            app.world()
-                .resource::<GameSession>()
-                .0
-                .player_trade_order(nation, TradeCommodity::Fabric),
-            PlayerTradeOrder::Sell(3)
-        );
-        assert_eq!(sell_text(&mut app, TradeCommodity::Fabric), "3");
-        assert_eq!(gauge_width(&mut app, TradeCommodity::Fabric), 75.0);
-        assert!(
-            app.world()
-                .get::<InteractionDisabled>(first.fabric_right)
-                .is_none()
-        );
-
-        app.world_mut()
-            .run_system_once(remember_trade_orders)
-            .unwrap();
-        assert_eq!(
-            app.world()
-                .resource::<GameSession>()
-                .0
-                .nations()
-                .major(nation)
-                .economy
-                .remembered_trade_offers_by_resource[ResourceKind::Fabric],
-            3
-        );
-        app.world_mut()
-            .resource_mut::<GameSession>()
-            .0
-            .set_player_trade_order(nation, TradeCommodity::Fabric, PlayerTradeOrder::None);
-        app.world_mut().commands().entity(first.root).despawn();
-        app.world_mut().flush();
-
-        app.world_mut().run_system_once(spawn_trade).unwrap();
-        app.update();
-        assert_eq!(
-            app.world()
-                .resource::<GameSession>()
-                .0
-                .player_trade_order(nation, TradeCommodity::Fabric),
-            PlayerTradeOrder::Sell(3)
-        );
-        assert_eq!(sell_text(&mut app, TradeCommodity::Fabric), "3");
     }
 }

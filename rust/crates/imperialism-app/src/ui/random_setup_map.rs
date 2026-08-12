@@ -1,5 +1,6 @@
-use super::catalog::{SpawnedView, UiAssetResources};
-use super::random_setup::{RandomGameSetup, RandomSetupPreview, random_setup_view_id};
+use super::UiAssetResources;
+use super::random_setup::{RandomGameSetup, RandomSetupPreview};
+use super::retail::{RetailTag, find_descendant};
 use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
@@ -64,16 +65,20 @@ impl Plugin for MapPreviewPlugin {
 }
 
 /// Attach map/coat/flag screen meanings once when random-setup is created.
-pub(crate) fn attach_random_setup_meanings(commands: &mut Commands, spawned: &SpawnedView) {
-    debug_assert_eq!(spawned.view_id, random_setup_view_id());
+pub(crate) fn attach_random_setup_meanings(
+    commands: &mut Commands,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
+) {
     // PointerCanvas behavior already adds RelativeCursorPosition for the map.
-    let map = spawned.unique(MAP_TAG);
+    let map = find_descendant(root, MAP_TAG, children, tags);
     commands
         .entity(map)
         .insert(RandomSetupMapPreview::default());
-    let coat = spawned.unique(COAT_TAG);
+    let coat = find_descendant(root, COAT_TAG, children, tags);
     commands.entity(coat).insert(RandomSetupCoat::default());
-    let flag = spawned.unique(FLAG_TAG);
+    let flag = find_descendant(root, FLAG_TAG, children, tags);
     commands.entity(flag).insert(RandomSetupFlag::default());
 }
 

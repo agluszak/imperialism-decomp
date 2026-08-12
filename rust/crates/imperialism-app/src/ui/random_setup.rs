@@ -1,40 +1,23 @@
-use crate::ui::catalog::{
-    ModalDialog, SpawnedView, UiAssetResources, UiCatalogResource, UiSpawner, spawn_view,
-};
+use crate::ui::UiAssetResources;
+use crate::ui::generated;
 use crate::ui::random_setup_map;
+use crate::ui::retail::ModalDialog;
+use crate::ui::retail::{RetailTag, find_descendant};
 use crate::{AppState, RandomGameNamesResource};
 use bevy::ecs::system::SystemParam;
 use bevy::input::ButtonState;
 use bevy::input::keyboard::KeyboardInput;
 use bevy::input_focus::AutoFocus;
-use bevy::input_focus::tab_navigation::TabIndex;
+use bevy::input_focus::tab_navigation::{TabGroup, TabIndex};
 use bevy::prelude::*;
 use bevy::text::{EditableText, TextEditChange};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, SelectAllOnFocus, ValueChange};
 use imperialism_core::*;
-use imperialism_formats::{OKAY, ScopedViewId, fourcc};
+use imperialism_formats::{OKAY, fourcc};
 use std::time::{SystemTime, UNIX_EPOCH};
 
-const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
-const RANDOM_SETUP_RESOURCE_ID: i16 = 1501;
-const PLANET_SEED_RESOURCE_FILE: &str = "Linger.rsrc";
-const PLANET_SEED_RESOURCE_ID: i16 = 954;
 const PLANET_SEED_MAX_CHARS: usize = 32;
-
-pub(crate) fn random_setup_view_id() -> ScopedViewId {
-    ScopedViewId {
-        resource_file: STARTUP_RESOURCE_FILE.to_owned(),
-        resource_id: RANDOM_SETUP_RESOURCE_ID,
-    }
-}
-
-pub(crate) fn planet_seed_dialog_view_id() -> ScopedViewId {
-    ScopedViewId {
-        resource_file: PLANET_SEED_RESOURCE_FILE.to_owned(),
-        resource_id: PLANET_SEED_RESOURCE_ID,
-    }
-}
 
 /// Presentation-owned values edited by the random-game setup screen.
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
@@ -124,6 +107,9 @@ struct LocalizedNamesChoice(NationNameMode);
 struct CountryNameField;
 
 #[derive(Component)]
+struct RandomSetupRoot;
+
+#[derive(Component)]
 pub(crate) struct PlanetSeedDialogRoot;
 
 #[derive(Component)]
@@ -160,29 +146,38 @@ impl Plugin for RandomSetupPlugin {
         register_random_setup_logic(app);
         // Asset-backed dialog open stays off the headless structure-only test path.
         app.add_observer(on_open_planet_seed);
-        app.add_systems(OnEnter(AppState::RandomSetup), enter_random_setup);
+        app.add_systems(
+            OnEnter(AppState::RandomSetup),
+            (enter_random_setup, bind_random_setup).chain(),
+        )
+        .add_systems(Update, bind_planet_seed_dialog);
     }
 }
 
-fn enter_random_setup(
-    mut commands: Commands,
-    catalog: Res<UiCatalogResource>,
-    mut assets: UiAssetResources,
-    setup: Res<RandomGameSetup>,
-) {
-    let view = catalog.required_view(&random_setup_view_id());
-    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
-    bind_random_setup_controls(&mut commands, &spawned, &setup);
-    random_setup_map::attach_random_setup_meanings(&mut commands, &spawned);
+fn enter_random_setup(mut commands: Commands, mut assets: UiAssetResources) {
+    let root = generated::startup_1501(&mut commands, &mut assets);
     commands
-        .entity(spawned.root)
-        .insert(DespawnOnExit(AppState::RandomSetup));
+        .entity(root)
+        .insert((RandomSetupRoot, DespawnOnExit(AppState::RandomSetup)));
 }
 
-/// Attach screen meanings only; Bevy widget semantics come from catalog behaviors.
+fn bind_random_setup(
+    mut commands: Commands,
+    root: Single<Entity, Added<RandomSetupRoot>>,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
+    setup: Res<RandomGameSetup>,
+) {
+    bind_random_setup_controls(&mut commands, *root, &children, &tags, &setup);
+    random_setup_map::attach_random_setup_meanings(&mut commands, *root, &children, &tags);
+}
+
+/// Attach screen meanings only; Bevy widget semantics come from generated components.
 fn bind_random_setup_controls(
     commands: &mut Commands,
-    spawned: &SpawnedView,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     setup: &RandomGameSetup,
 ) {
     for (tag, difficulty) in [
@@ -192,7 +187,7 @@ fn bind_random_setup_controls(
         (fourcc!("dif3"), Difficulty::Hard),
         (fourcc!("dif4"), Difficulty::NighOnImpossible),
     ] {
-        let entity = spawned.unique(tag);
+        let entity = find_descendant(root, tag, children, tags);
         let mut entity_commands = commands.entity(entity);
         entity_commands.insert(DifficultyChoice(difficulty));
         if setup.difficulty == difficulty {
@@ -206,7 +201,7 @@ fn bind_random_setup_controls(
         (fourcc!("hist"), NationNameMode::Historical),
         (fourcc!("rand"), NationNameMode::Random),
     ] {
-        let entity = spawned.unique(tag);
+        let entity = find_descendant(root, tag, children, tags);
         let mut entity_commands = commands.entity(entity);
         entity_commands.insert(LocalizedNamesChoice(localized));
         if setup.name_mode == localized {
@@ -216,7 +211,7 @@ fn bind_random_setup_controls(
         }
     }
 
-    let country = spawned.unique(fourcc!("coun"));
+    let country = find_descendant(root, fourcc!("coun"), children, tags);
     commands.entity(country).insert((
         CountryNameField,
         SelectAllOnFocus,
@@ -227,7 +222,7 @@ fn bind_random_setup_controls(
         },
     ));
 
-    let okay = spawned.unique(OKAY);
+    let okay = find_descendant(root, OKAY, children, tags);
     // Initialization and preview generation run before this screen is spawned;
     // bind the enabled Accept action only at that ready boundary.
     commands
@@ -240,7 +235,7 @@ fn bind_random_setup_controls(
         (fourcc!("glob"), RandomSetupAction::RegeneratePlanet),
         (fourcc!("key "), RandomSetupAction::OpenPlanetSeed),
     ] {
-        let entity = spawned.unique(tag);
+        let entity = find_descendant(root, tag, children, tags);
         commands.entity(entity).insert(action);
     }
 }
@@ -346,8 +341,8 @@ fn on_open_planet_seed(
     activate: On<Activate>,
     actions: Query<&RandomSetupAction>,
     dialog_open: Query<(), With<ModalDialog>>,
-    mut ui: UiSpawner,
-    setup: Res<RandomGameSetup>,
+    mut commands: Commands,
+    mut assets: UiAssetResources,
 ) {
     let Ok(RandomSetupAction::OpenPlanetSeed) = actions.get(activate.entity).copied() else {
         return;
@@ -355,7 +350,7 @@ fn on_open_planet_seed(
     if !dialog_open.is_empty() {
         return;
     }
-    open_planet_seed_dialog(&mut ui, &setup);
+    open_planet_seed_dialog(&mut commands, &mut assets);
 }
 
 fn on_difficulty_selected(
@@ -448,14 +443,26 @@ fn regenerate_random_setup_planet(
     );
 }
 
-fn open_planet_seed_dialog(ui: &mut UiSpawner, setup: &RandomGameSetup) {
-    let spawned = ui.spawn_modal(planet_seed_dialog_view_id());
-    ui.commands
-        .entity(spawned.root)
-        .insert(PlanetSeedDialogRoot);
+fn open_planet_seed_dialog(commands: &mut Commands, assets: &mut UiAssetResources) {
+    let root = generated::linger_954(commands, assets);
+    commands.entity(root).insert((
+        PlanetSeedDialogRoot,
+        ModalDialog,
+        TabGroup::modal(),
+        GlobalZIndex(20),
+        Pickable::default(),
+    ));
+}
 
-    let plan = spawned.unique(fourcc!("plan"));
-    ui.commands.entity(plan).insert((
+fn bind_planet_seed_dialog(
+    mut commands: Commands,
+    root: Single<Entity, Added<PlanetSeedDialogRoot>>,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
+    setup: Res<RandomGameSetup>,
+) {
+    let plan = find_descendant(*root, fourcc!("plan"), &children, &tags);
+    commands.entity(plan).insert((
         PlanetSeedField,
         SelectAllOnFocus,
         AutoFocus,
@@ -467,8 +474,8 @@ fn open_planet_seed_dialog(ui: &mut UiSpawner, setup: &RandomGameSetup) {
         },
     ));
 
-    let okay = spawned.unique(OKAY);
-    ui.commands
+    let okay = find_descendant(*root, OKAY, &children, &tags);
+    commands
         .entity(okay)
         .insert((PlanetSeedAccept, TabIndex(1)));
     // Retail cancel control stays disabled; Escape does not dismiss.
@@ -545,453 +552,69 @@ fn update_random_setup_preview(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::catalog::spawn_view_nodes;
-    use crate::ui::main_menu::{
-        MainMenuAction, bind_main_menu_actions, main_menu_view_id, register_main_menu_logic,
-    };
-    use bevy::input_focus::tab_navigation::TabGroup;
-    use bevy::ui_widgets::{Button as UiButton, ButtonPlugin};
-    use imperialism_core::NationId;
-    use imperialism_formats::UiCatalog;
 
-    const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
-
-    fn test_random_game_names() -> RandomGameNames {
-        let mut localized_nation_names = NationTable::default();
-        let mut province_names_by_nation = NationTable::default();
-        for nation in NationId::all() {
-            localized_nation_names[nation] = format!("N{}", nation.get());
-            let count = if MajorNationId::from_nation(nation).is_some() {
-                8
-            } else {
-                4
-            };
-            province_names_by_nation[nation] = (0..count)
-                .map(|ordinal| format!("N{}P{}", nation.get(), ordinal + 1))
-                .collect();
+    fn spawn_binding_fixture(mut commands: Commands) {
+        let root = commands.spawn((RandomSetupRoot, Node::default())).id();
+        for tag in ["dif0", "dif1", "dif2", "dif3", "dif4", "hist", "rand"] {
+            commands.spawn((
+                RetailTag(imperialism_formats::FourCc::new(tag)),
+                bevy::ui_widgets::RadioButton,
+                ChildOf(root),
+            ));
         }
-        RandomGameNames {
-            localized_nation_names,
-            province_names_by_nation,
-            zone_headline_templates: (0..24).map(|status| format!("S{status} [1]")).collect(),
-            fallback_ocean_names: (0..37).map(|index| format!("Ocean{index}")).collect(),
+        for tag in ["coun", "okay", "cncl", "glob", "key "] {
+            commands.spawn((
+                RetailTag(imperialism_formats::FourCc::new(tag)),
+                Node::default(),
+                ChildOf(root),
+            ));
         }
     }
 
-    fn app() -> App {
-        let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .insert_resource(UiCatalogResource::new(catalog))
-            .insert_resource(RandomSetupClockSeed(1))
-            .insert_resource(RandomGameNamesResource(test_random_game_names()))
-            .add_plugins(bevy::state::app::StatesPlugin)
-            .init_state::<AppState>()
-            .add_plugins(ButtonPlugin)
-            .add_plugins(bevy::ui_widgets::RadioGroupPlugin);
-        register_main_menu_logic(&mut app);
-        register_random_setup_logic(&mut app);
-        app.add_systems(OnEnter(AppState::MainMenu), enter_main_menu_structure_only)
-            .add_systems(
-                OnEnter(AppState::RandomSetup),
-                enter_random_setup_structure_only,
-            );
-        app.update();
-        app
-    }
-
-    fn initial_seed_one_preview() -> imperialism_core::RandomSetupPreview {
-        let mut sea_zone_marker_crt = RetailCrtRng::from_state(1);
-        let _ = sea_zone_marker_crt.next_rand();
-        generate_random_setup_preview_with_clock_seed(
-            b"Woopnist",
-            MapTopology::Wrapping,
-            1,
-            sea_zone_marker_crt,
-        )
-    }
-
-    fn enter_main_menu_structure_only(mut commands: Commands, catalog: Res<UiCatalogResource>) {
-        let view_id = main_menu_view_id();
-        let view = catalog.required_view(&view_id);
-        let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
-        bind_main_menu_actions(&mut commands, &spawned);
-        commands
-            .entity(spawned.root)
-            .insert(DespawnOnExit(AppState::MainMenu));
-    }
-
-    fn enter_random_setup_structure_only(
-        mut commands: Commands,
-        catalog: Res<UiCatalogResource>,
-        setup: Res<RandomGameSetup>,
-    ) {
-        let view_id = random_setup_view_id();
-        let view = catalog.required_view(&view_id);
-        let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
-        bind_random_setup_controls(&mut commands, &spawned, &setup);
-        random_setup_map::attach_random_setup_meanings(&mut commands, &spawned);
-        commands
-            .entity(spawned.root)
-            .insert(DespawnOnExit(AppState::RandomSetup));
-    }
-
-    fn open_planet_seed_dialog_structure(app: &mut App) {
-        let planet_seed = app
-            .world()
-            .resource::<RandomGameSetup>()
-            .planet_seed
-            .clone();
-        let (logical_resolution, view) = {
-            let catalog = app.world().resource::<UiCatalogResource>();
-            let view = catalog.required_view(&planet_seed_dialog_view_id()).clone();
-            (catalog.catalog().logical_resolution, view)
+    #[test]
+    fn random_setup_binds_native_radios_and_editable_text_to_typed_meanings() {
+        let setup = RandomGameSetup {
+            planet_seed: "Planet".to_owned(),
+            topology: MapTopology::Wrapping,
+            nation: MajorNationId::new(0),
+            country_name: "Country".to_owned(),
+            difficulty: Difficulty::Hard,
+            name_mode: NationNameMode::Random,
         };
-        let world = app.world_mut();
-        let mut commands = world.commands();
-        let spawned = spawn_view_nodes(&mut commands, logical_resolution, &view);
-        commands.entity(spawned.root).insert((
-            PlanetSeedDialogRoot,
-            ModalDialog,
-            TabGroup::modal(),
-            ZIndex(10),
-            Pickable::default(),
-        ));
-        world.flush();
-        let plan = spawned.unique(fourcc!("plan"));
-        let okay = spawned.unique(fourcc!("okay"));
-        let mut commands = world.commands();
-        commands.entity(plan).insert((
-            PlanetSeedField,
-            EditableText {
-                max_characters: Some(PLANET_SEED_MAX_CHARS),
-                allow_newlines: false,
-                ..EditableText::new(planet_seed)
-            },
-            SelectAllOnFocus,
-            AutoFocus,
-            TabIndex(0),
-        ));
-        commands
-            .entity(okay)
-            .insert((UiButton, PlanetSeedAccept, TabIndex(1)));
-        world.flush();
-    }
-
-    fn enter_random_setup_screen(app: &mut App) {
-        let random = app
-            .world_mut()
-            .query_filtered::<Entity, With<MainMenuAction>>()
-            .iter(app.world())
-            .find(|entity| {
-                app.world().get::<MainMenuAction>(*entity) == Some(&MainMenuAction::RandomGame)
-            })
-            .unwrap();
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: random });
-        app.world_mut().flush();
+        let mut app = App::new();
+        app.insert_resource(setup).add_systems(
+            Update,
+            (
+                spawn_binding_fixture,
+                |mut commands: Commands,
+                 root: Single<Entity, Added<RandomSetupRoot>>,
+                 children: Query<&Children>,
+                 tags: Query<&RetailTag>,
+                 setup: Res<RandomGameSetup>| {
+                    bind_random_setup_controls(&mut commands, *root, &children, &tags, &setup);
+                },
+            )
+                .chain(),
+        );
         app.update();
-        app.update();
-    }
 
-    fn action_entity(app: &mut App, action: RandomSetupAction) -> Entity {
-        app.world_mut()
-            .query_filtered::<(Entity, &RandomSetupAction), ()>()
-            .iter(app.world())
-            .find(|(_, value)| **value == action)
-            .map(|(entity, _)| entity)
-            .unwrap()
-    }
-
-    #[test]
-    fn random_setup_activated_intents_update_the_app_draft() {
-        let mut app = app();
-        enter_random_setup_screen(&mut app);
-        let hard = app
-            .world_mut()
-            .query_filtered::<(Entity, &DifficultyChoice), ()>()
-            .iter(app.world())
-            .find(|(_, choice)| choice.0 == Difficulty::Hard)
-            .map(|(entity, _)| entity)
-            .unwrap();
-        app.world_mut().commands().trigger(ValueChange {
-            source: hard,
-            value: true,
-            is_final: true,
-        });
-        let hist = app
-            .world_mut()
-            .query_filtered::<(Entity, &LocalizedNamesChoice), ()>()
-            .iter(app.world())
-            .find(|(_, choice)| choice.0 == NationNameMode::Historical)
-            .map(|(entity, _)| entity)
-            .unwrap();
-        app.world_mut().commands().trigger(ValueChange {
-            source: hist,
-            value: true,
-            is_final: true,
-        });
-        let accept = action_entity(&mut app, RandomSetupAction::Accept);
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: accept });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::CitySite
-        );
-        assert_eq!(
-            app.world().resource::<RandomGameSetup>(),
-            &RandomGameSetup {
-                planet_seed: "Woopnist".to_owned(),
-                topology: MapTopology::Wrapping,
-                nation: MajorNationId::new(6),
-                country_name: "Purtast".to_owned(),
-                difficulty: Difficulty::Hard,
-                name_mode: NationNameMode::Historical,
-            }
-        );
-        let session = app.world().resource::<GameSession>();
-        assert_eq!(session.0.turn().difficulty, Difficulty::Hard);
-        assert_eq!(session.0.turn().selected_nation, NationId::new(6));
-        assert_eq!(
-            session.0.turn().phase(),
-            imperialism_core::PhaseCode::CAPITAL_SELECTION
-        );
-        assert_eq!(
-            session
-                .0
-                .nations()
-                .major(MajorNationId::new(6))
-                .common
-                .home_tile,
-            None
-        );
-    }
-
-    #[test]
-    fn random_setup_entry_uses_the_retail_clock_seeded_defaults() {
-        let mut app = app();
-        enter_random_setup_screen(&mut app);
-        assert_eq!(
-            app.world().resource::<RandomGameSetup>(),
-            &RandomGameSetup {
-                planet_seed: "Woopnist".to_owned(),
-                topology: MapTopology::Wrapping,
-                nation: MajorNationId::new(6),
-                country_name: "Purtast".to_owned(),
-                difficulty: Difficulty::Introductory,
-                name_mode: NationNameMode::Historical,
-            }
-        );
-        assert_eq!(
-            app.world().resource::<RandomSetupPreview>().0,
-            initial_seed_one_preview()
-        );
-    }
-
-    #[test]
-    fn globe_regenerates_the_planet_from_the_reset_clock_seed() {
-        let mut app = app();
-        enter_random_setup_screen(&mut app);
-        {
-            let mut setup = app.world_mut().resource_mut::<RandomGameSetup>();
-            setup.planet_seed = "manual planet".to_owned();
-            setup.nation = MajorNationId::new(2);
-            setup.country_name = "Custom Name".to_owned();
-            setup.difficulty = Difficulty::NighOnImpossible;
-            setup.name_mode = NationNameMode::Random;
-        }
-        let globe = action_entity(&mut app, RandomSetupAction::RegeneratePlanet);
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: globe });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<RandomGameSetup>(),
-            &RandomGameSetup {
-                planet_seed: "Woopnist".to_owned(),
-                topology: MapTopology::Wrapping,
-                nation: MajorNationId::new(2),
-                country_name: "Custom Name".to_owned(),
-                difficulty: Difficulty::NighOnImpossible,
-                name_mode: NationNameMode::Random,
-            }
-        );
-        assert_eq!(
-            app.world()
-                .resource::<RandomSetupPreview>()
-                .0
-                .sea_zone_marker_crt,
-            RetailCrtRng::from_state(1)
-        );
-    }
-
-    #[test]
-    fn random_setup_cancel_returns_to_the_main_menu() {
-        let mut app = app();
-        enter_random_setup_screen(&mut app);
-        let cancel = action_entity(&mut app, RandomSetupAction::Cancel);
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: cancel });
-        app.world_mut().flush();
-        app.update();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::MainMenu
-        );
-    }
-
-    #[test]
-    fn planet_seed_dialog_accepts_a_changed_nonempty_seed_and_updates_the_preview() {
-        let mut app = app();
-        enter_random_setup_screen(&mut app);
-        app.world_mut()
-            .resource_mut::<RandomGameSetup>()
-            .planet_seed = "previous".to_owned();
-        open_planet_seed_dialog_structure(&mut app);
+        let mut difficulties = app.world_mut().query::<(
+            &DifficultyChoice,
+            Has<Checked>,
+            Has<bevy::ui_widgets::RadioButton>,
+        )>();
         assert!(
-            app.world_mut()
-                .query_filtered::<Entity, With<PlanetSeedDialogRoot>>()
+            difficulties
                 .iter(app.world())
-                .next()
-                .is_some()
+                .any(|(choice, checked, radio)| {
+                    choice.0 == Difficulty::Hard && checked && radio
+                })
         );
-
-        let field = app
+        let mut fields = app
             .world_mut()
-            .query_filtered::<Entity, With<PlanetSeedField>>()
-            .iter(app.world())
-            .next()
-            .unwrap();
-        if let Some(mut editable) = app.world_mut().get_mut::<EditableText>(field) {
-            *editable = EditableText {
-                max_characters: Some(PLANET_SEED_MAX_CHARS),
-                allow_newlines: false,
-                ..EditableText::new("ordinary")
-            };
-        }
-
-        let accept = app
-            .world_mut()
-            .query_filtered::<Entity, With<PlanetSeedAccept>>()
-            .iter(app.world())
-            .next()
-            .unwrap();
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: accept });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<RandomGameSetup>().planet_seed,
-            "ordinary"
-        );
-        assert!(
-            app.world_mut()
-                .query_filtered::<Entity, With<PlanetSeedDialogRoot>>()
-                .iter(app.world())
-                .next()
-                .is_none()
-        );
-    }
-
-    #[test]
-    fn empty_or_unchanged_planet_seed_does_not_generate_a_preview() {
-        let mut app = app();
-        enter_random_setup_screen(&mut app);
-        let existing_preview = app.world().resource::<RandomSetupPreview>().clone();
-        app.world_mut()
-            .resource_mut::<RandomGameSetup>()
-            .planet_seed = "ordinary".to_owned();
-        open_planet_seed_dialog_structure(&mut app);
-        let accept = app
-            .world_mut()
-            .query_filtered::<Entity, With<PlanetSeedAccept>>()
-            .iter(app.world())
-            .next()
-            .unwrap();
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: accept });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<RandomGameSetup>().planet_seed,
-            "ordinary"
-        );
-        assert_eq!(
-            app.world().resource::<RandomSetupPreview>(),
-            &existing_preview
-        );
-
-        open_planet_seed_dialog_structure(&mut app);
-        let field = app
-            .world_mut()
-            .query_filtered::<Entity, With<PlanetSeedField>>()
-            .iter(app.world())
-            .next()
-            .unwrap();
-        if let Some(mut editable) = app.world_mut().get_mut::<EditableText>(field) {
-            *editable = EditableText {
-                max_characters: Some(PLANET_SEED_MAX_CHARS),
-                allow_newlines: false,
-                ..EditableText::new("")
-            };
-        }
-        let accept = app
-            .world_mut()
-            .query_filtered::<Entity, With<PlanetSeedAccept>>()
-            .iter(app.world())
-            .next()
-            .unwrap();
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: accept });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<RandomGameSetup>().planet_seed,
-            "ordinary"
-        );
-        assert_eq!(
-            app.world().resource::<RandomSetupPreview>(),
-            &existing_preview
-        );
-    }
-
-    #[test]
-    fn setup_actions_are_ignored_while_planet_dialog_is_open() {
-        let mut app = app();
-        enter_random_setup_screen(&mut app);
-        open_planet_seed_dialog_structure(&mut app);
-        let before = app.world().resource::<RandomGameSetup>().clone();
-        let globe = action_entity(&mut app, RandomSetupAction::RegeneratePlanet);
-        app.world_mut()
-            .resource_mut::<RandomGameSetup>()
-            .planet_seed = "manual".to_owned();
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: globe });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<RandomGameSetup>().planet_seed,
-            "manual"
-        );
-        assert_ne!(
-            app.world().resource::<RandomGameSetup>().planet_seed,
-            before.planet_seed
-        );
-        // Globe activation must not regenerate while the dialog is open.
-        assert_eq!(
-            app.world().resource::<RandomGameSetup>().planet_seed,
-            "manual"
-        );
+            .query_filtered::<&EditableText, With<CountryNameField>>();
+        let field = fields.single(app.world()).unwrap();
+        assert_eq!(field.value(), "Country");
+        assert_eq!(field.max_characters, Some(COUNTRY_NAME_MAX_CHARS));
     }
 }

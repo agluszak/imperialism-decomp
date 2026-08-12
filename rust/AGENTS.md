@@ -39,10 +39,10 @@ the decomp uses them.
   example a strategic base-terrain key of view origin plus visible tile rendering, or city
   session/selection/`Added` change detection), not from broad dirty-marker components or
   `GameSession`-wide full redraws.
-- Treat the bundled generated UI catalog as trusted repository-owned data after it deserializes.
-  Bind screens directly through `SpawnedView::unique` / `SpawnedView::under` and
-  `UiCatalogResource::required_view`; those infallible lookups panic on a broken catalog just like
-  other programming errors. Do not maintain application-wide or per-screen binding validators.
+- Recovered resource evidence is compiled into native Bevy scenes. Use `RetailTag` only to bind
+  generated retail controls to typed application behavior immediately after spawning. After that,
+  `Entity` and `ChildOf` are the only runtime identity and hierarchy. Do not introduce another
+  generic UI representation, node index, registry, or loader.
 - Separate planning from mutation for order UI: use `can_set_city_order_quantity` (or a plan API)
   to decide Accept enablement; do not mutate-and-rollback authoritative state as a probe.
 - Return operation-specific results when callers need them. Keep effects only for ordered
@@ -128,7 +128,7 @@ the decomp uses them.
   semantic Rust type. Model retail save-format distinctions only when retail evidence requires them.
 
 Load the `port-behavior` skill for cross-implementation gameplay work. Load `ui-recovery` for the
-View IR/catalog/Bevy hierarchy pipeline. Do not create generic Rust or Bevy skills without a repeated,
+View IR/native Bevy hierarchy pipeline. Do not create generic Rust or Bevy skills without a repeated,
 project-specific workflow that justifies them.
 
 ## Commands

@@ -11,22 +11,25 @@ pub(in crate::ui::city) struct CityBuildingChangeChoice {
     pub(in crate::ui::city) accept: bool,
 }
 
-pub(in crate::ui::city) fn construction_dialog_view_id() -> ScopedViewId {
-    ScopedViewId {
-        resource_file: "Citydlog.rsrc".to_owned(),
-        resource_id: 9220,
-    }
+#[derive(Component)]
+pub(in crate::ui::city) struct ConstructionDialog {
+    slot: CityFacilitySlot,
+    capacity_value: String,
+    can_reserve: bool,
 }
 
-pub(in crate::ui::city) fn expansion_dialog_view_id() -> ScopedViewId {
-    ScopedViewId {
-        resource_file: "Citydlog.rsrc".to_owned(),
-        resource_id: 9221,
-    }
+#[derive(Component)]
+pub(in crate::ui::city) struct ExpansionDialog {
+    slot: CityFacilitySlot,
+    building_name: String,
+    next_capacity: i16,
+    next_level: u8,
+    can_reserve: bool,
 }
 
 pub(in crate::ui::city) fn open_city_construction_dialog(
-    ui: &mut UiSpawner,
+    commands: &mut Commands,
+    assets: &mut UiAssetResources,
     session: &mut GameSession,
     slot: CityFacilitySlot,
 ) {
@@ -40,7 +43,10 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
                 .economy
                 .available_diplomacy_budget(major.common.treasury)
                 >= 5_000;
-            (city_string(ui, CITY_TEXT_STRING_GROUP, 0x15), can_reserve)
+            (
+                city_string(assets, CITY_TEXT_STRING_GROUP, 0x15),
+                can_reserve,
+            )
         }
         _ => {
             let (next_capacity, needed) = {
@@ -59,70 +65,82 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
             (next_capacity.to_string(), can_reserve)
         }
     };
-    let spawned = ui.spawn_modal(construction_dialog_view_id());
-    bind_construction_dialog(ui, &spawned, slot, &capacity_value, can_reserve);
+    let root = generated::citydlog_9220(commands, assets);
+    commands.entity(root).insert((
+        ConstructionDialog {
+            slot,
+            capacity_value,
+            can_reserve,
+        },
+        ModalDialog,
+        TabGroup::modal(),
+        GlobalZIndex(20),
+        Pickable::default(),
+        DespawnOnExit(AppState::City),
+    ));
 }
 
+#[allow(clippy::too_many_arguments)]
 pub(in crate::ui::city) fn bind_construction_dialog(
-    ui: &mut UiSpawner,
-    spawned: &SpawnedView,
+    commands: &mut Commands,
+    assets: &mut UiAssetResources,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     slot: CityFacilitySlot,
     capacity_value: &str,
     can_reserve: bool,
 ) {
-    ui.commands
-        .entity(spawned.root)
-        .insert(DespawnOnExit(AppState::City));
-
     let picture = PictureId::new(9250 + i16::from(slot as u8) * 5);
-    match ui.picture(picture) {
+    match assets.picture(picture) {
         Ok(handle) => {
-            let dialog = spawned.unique(fourcc!("DLOG"));
-            ui.commands.entity(dialog).insert(ImageNode::new(handle));
+            let dialog = find_descendant(root, fourcc!("DLOG"), children, tags);
+            commands.entity(dialog).insert(ImageNode::new(handle));
         }
         Err(error) => warn!("could not load construction-dialog picture {picture}: {error}"),
     }
 
     let capacity = format_retail_value(
-        &city_string(ui, CITY_TEXT_STRING_GROUP, 0x10),
+        &city_string(assets, CITY_TEXT_STRING_GROUP, 0x10),
         capacity_value,
     );
     let text_group = 0x2422 + i16::from(slot as u8);
     let text = [
         (
             fourcc!("tex1"),
-            ui.string(text_group, 1)
+            assets
+                .string(text_group, 1)
                 .expect("retail English construction headline"),
         ),
         (
             fourcc!("name"),
-            city_string(ui, CITY_BUILDING_STRING_GROUP, slot as i16),
+            city_string(assets, CITY_BUILDING_STRING_GROUP, slot as i16),
         ),
         (fourcc!("capT"), capacity),
         (
             fourcc!("cost"),
-            city_string(ui, CITY_TEXT_STRING_GROUP, 0x14),
+            city_string(assets, CITY_TEXT_STRING_GROUP, 0x14),
         ),
     ];
     for (tag, value) in text {
-        let entity = spawned.unique(tag);
-        ui.commands.entity(entity).insert(Text::new(value));
+        let entity = find_descendant(root, tag, children, tags);
+        commands.entity(entity).insert(Text::new(value));
     }
 
-    let text2 = spawned.unique(fourcc!("tex2"));
+    let text2 = find_descendant(root, fourcc!("tex2"), children, tags);
     if slot == CityFacilitySlot::PowerPlant {
-        ui.commands
+        commands
             .entity(text2)
             .entry::<Node>()
             .and_modify(|mut node| {
                 let Val::Px(top) = node.top else {
-                    panic!("catalog construction detail has fixed retail coordinates");
+                    panic!("generated construction detail has fixed retail coordinates");
                 };
                 node.top = px(top + 5.0);
             });
     }
 
-    let connective = spawned.unique(fourcc!("or  "));
+    let connective = find_descendant(root, fourcc!("or  "), children, tags);
     let connective_left = match slot {
         CityFacilitySlot::TextileMill => Some(0x98),
         CityFacilitySlot::Metalworks => Some(0xcd),
@@ -130,18 +148,18 @@ pub(in crate::ui::city) fn bind_construction_dialog(
         _ => None,
     };
     if let Some(left) = connective_left {
-        let connective_text = city_string(ui, CITY_TEXT_STRING_GROUP, 0x11);
-        let mut connective_commands = ui.commands.entity(connective);
+        let connective_text = city_string(assets, CITY_TEXT_STRING_GROUP, 0x11);
+        let mut connective_commands = commands.entity(connective);
         connective_commands.insert((Text::new(connective_text), Visibility::Visible));
         connective_commands
             .entry::<Node>()
             .and_modify(move |mut node| node.left = px(left as f32));
     } else {
-        ui.commands.entity(connective).insert(Visibility::Hidden);
+        commands.entity(connective).insert(Visibility::Hidden);
     }
 
-    let buck = spawned.unique(fourcc!("buck"));
-    ui.commands.entity(buck).insert((
+    let buck = find_descendant(root, fourcc!("buck"), children, tags);
+    commands.entity(buck).insert((
         Text::new(if slot == CityFacilitySlot::PowerPlant {
             format_currency(5_000)
         } else {
@@ -154,9 +172,9 @@ pub(in crate::ui::city) fn bind_construction_dialog(
         },
     ));
 
-    let warning = spawned.unique(fourcc!("warn"));
+    let warning = find_descendant(root, fourcc!("warn"), children, tags);
     let warning_text = city_string(
-        ui,
+        assets,
         CITY_TEXT_STRING_GROUP,
         if slot == CityFacilitySlot::PowerPlant {
             0x16
@@ -164,8 +182,8 @@ pub(in crate::ui::city) fn bind_construction_dialog(
             0x17
         },
     );
-    let warning_color = ui.palette_color(0xcb);
-    ui.commands.entity(warning).insert((
+    let warning_color = assets.palette_color(0xcb);
+    commands.entity(warning).insert((
         Text::new(warning_text),
         TextColor(warning_color),
         if can_reserve {
@@ -175,60 +193,60 @@ pub(in crate::ui::city) fn bind_construction_dialog(
         },
     ));
 
-    let okay = spawned.unique(fourcc!("okay"));
-    let mut okay_commands = ui.commands.entity(okay);
+    let okay = find_descendant(root, fourcc!("okay"), children, tags);
+    let mut okay_commands = commands.entity(okay);
     okay_commands.insert(CityBuildingChangeChoice { slot, accept: true });
     if !can_reserve {
         okay_commands.insert((InteractionDisabled, Visibility::Hidden));
     }
 
-    let cancel = spawned.unique(fourcc!("cncl"));
-    ui.commands.entity(cancel).insert(CityBuildingChangeChoice {
+    let cancel = find_descendant(root, fourcc!("cncl"), children, tags);
+    commands.entity(cancel).insert(CityBuildingChangeChoice {
         slot,
         accept: false,
     });
 }
 
+#[allow(clippy::too_many_arguments)]
 pub(in crate::ui::city) fn bind_expansion_dialog(
-    ui: &mut UiSpawner,
-    spawned: &SpawnedView,
+    commands: &mut Commands,
+    assets: &mut UiAssetResources,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     slot: CityFacilitySlot,
     building_name: String,
     next_capacity: i16,
     next_level: u8,
     can_reserve: bool,
 ) {
-    ui.commands
-        .entity(spawned.root)
-        .insert(DespawnOnExit(AppState::City));
-
     let picture = PictureId::new(9250 + i16::from(slot as u8) * 5 + i16::from(next_level));
-    match ui.picture(picture) {
+    match assets.picture(picture) {
         Ok(handle) => {
-            let dialog = spawned.unique(fourcc!("DLOG"));
-            ui.commands.entity(dialog).insert(ImageNode::new(handle));
+            let dialog = find_descendant(root, fourcc!("DLOG"), children, tags);
+            commands.entity(dialog).insert(ImageNode::new(handle));
         }
         Err(error) => warn!("could not load expansion-dialog picture {picture}: {error}"),
     }
 
     let capacity = format_retail_number(
-        &city_string(ui, CITY_TEXT_STRING_GROUP, 0x10),
+        &city_string(assets, CITY_TEXT_STRING_GROUP, 0x10),
         next_capacity,
     );
-    let cost = city_string(ui, CITY_TEXT_STRING_GROUP, 0x14);
+    let cost = city_string(assets, CITY_TEXT_STRING_GROUP, 0x14);
     for (tag, text) in [
         (fourcc!("name"), building_name),
         (fourcc!("capT"), capacity),
         (fourcc!("cost"), cost),
     ] {
-        let entity = spawned.unique(tag);
-        ui.commands.entity(entity).insert(Text::new(text));
+        let entity = find_descendant(root, tag, children, tags);
+        commands.entity(entity).insert(Text::new(text));
     }
 
-    let warning = spawned.unique(fourcc!("warn"));
-    let warning_color = ui.palette_color(0xcb);
-    let warning_text = city_string(ui, CITY_TEXT_STRING_GROUP, 0x17);
-    ui.commands.entity(warning).insert((
+    let warning = find_descendant(root, fourcc!("warn"), children, tags);
+    let warning_color = assets.palette_color(0xcb);
+    let warning_text = city_string(assets, CITY_TEXT_STRING_GROUP, 0x17);
+    commands.entity(warning).insert((
         Text::new(warning_text),
         TextColor(warning_color),
         if can_reserve {
@@ -238,15 +256,15 @@ pub(in crate::ui::city) fn bind_expansion_dialog(
         },
     ));
 
-    let okay = spawned.unique(fourcc!("okay"));
-    let mut okay_commands = ui.commands.entity(okay);
+    let okay = find_descendant(root, fourcc!("okay"), children, tags);
+    let mut okay_commands = commands.entity(okay);
     okay_commands.insert(CityBuildingChangeChoice { slot, accept: true });
     if !can_reserve {
         okay_commands.insert((InteractionDisabled, Visibility::Hidden));
     }
 
-    let cancel = spawned.unique(fourcc!("cncl"));
-    ui.commands.entity(cancel).insert(CityBuildingChangeChoice {
+    let cancel = find_descendant(root, fourcc!("cncl"), children, tags);
+    commands.entity(cancel).insert(CityBuildingChangeChoice {
         slot,
         accept: false,
     });
@@ -256,7 +274,8 @@ pub(in crate::ui::city) fn on_city_expansion_open(
     activate: On<Activate>,
     openers: Query<&CityExpansionOpen>,
     session: Res<GameSession>,
-    mut ui: UiSpawner,
+    mut commands: Commands,
+    mut assets: UiAssetResources,
 ) {
     let Ok(open) = openers.get(activate.entity) else {
         return;
@@ -279,17 +298,58 @@ pub(in crate::ui::city) fn on_city_expansion_open(
         ExpandableFacility::try_from_slot(open.slot).expect("ordinary industry is expandable"),
     );
     let can_reserve = session.0.can_set_city_order_quantity(nation, order, needed);
-    let spawned = ui.spawn_modal(expansion_dialog_view_id());
-    let building_name = city_string(&ui, CITY_BUILDING_STRING_GROUP, open.slot as i16);
-    bind_expansion_dialog(
-        &mut ui,
-        &spawned,
-        open.slot,
-        building_name,
-        next_capacity,
-        next_level,
-        can_reserve,
-    );
+    let root = generated::citydlog_9221(&mut commands, &mut assets);
+    let building_name = city_string(&assets, CITY_BUILDING_STRING_GROUP, open.slot as i16);
+    commands.entity(root).insert((
+        ExpansionDialog {
+            slot: open.slot,
+            building_name,
+            next_capacity,
+            next_level,
+            can_reserve,
+        },
+        ModalDialog,
+        TabGroup::modal(),
+        GlobalZIndex(20),
+        Pickable::default(),
+        DespawnOnExit(AppState::City),
+    ));
+}
+
+pub(in crate::ui::city) fn bind_building_change_dialogs(
+    mut commands: Commands,
+    constructions: Query<(Entity, &ConstructionDialog), Added<ConstructionDialog>>,
+    expansions: Query<(Entity, &ExpansionDialog), Added<ExpansionDialog>>,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
+    mut assets: UiAssetResources,
+) {
+    for (root, dialog) in &constructions {
+        bind_construction_dialog(
+            &mut commands,
+            &mut assets,
+            root,
+            &children,
+            &tags,
+            dialog.slot,
+            &dialog.capacity_value,
+            dialog.can_reserve,
+        );
+    }
+    for (root, dialog) in &expansions {
+        bind_expansion_dialog(
+            &mut commands,
+            &mut assets,
+            root,
+            &children,
+            &tags,
+            dialog.slot,
+            dialog.building_name.clone(),
+            dialog.next_capacity,
+            dialog.next_level,
+            dialog.can_reserve,
+        );
+    }
 }
 
 pub(in crate::ui::city) fn on_city_building_change_choice(

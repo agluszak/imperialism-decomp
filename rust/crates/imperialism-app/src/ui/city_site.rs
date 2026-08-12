@@ -1,33 +1,20 @@
-use crate::ui::catalog::{ModalDialog, UiAssetResources, UiCatalogResource, UiSpawner, spawn_view};
+use crate::ui::UiAssetResources;
+use crate::ui::generated;
 use crate::ui::random_setup::GameSession;
+use crate::ui::retail::ModalDialog;
+use crate::ui::retail::{RetailTag, find_descendant};
 use crate::ui::strategic_map::{
     StrategicBaseTerrainCanvas, bind_strategic_base_terrain, compose_city_site_terrain,
     strategic_base_terrain_tile_at_cursor,
 };
 use crate::{AppState, RetailAssetsResource};
+use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::Activate;
 use imperialism_core::*;
-use imperialism_formats::{OKAY, ScopedViewId, fourcc};
-
-const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
-const CITY_SITE_RESOURCE_ID: i16 = 952;
-const NEW_CITY_RESOURCE_ID: i16 = 953;
-pub(crate) fn city_site_view_id() -> ScopedViewId {
-    ScopedViewId {
-        resource_file: STARTUP_RESOURCE_FILE.to_owned(),
-        resource_id: CITY_SITE_RESOURCE_ID,
-    }
-}
-
-pub(crate) fn new_city_dialog_view_id() -> ScopedViewId {
-    ScopedViewId {
-        resource_file: STARTUP_RESOURCE_FILE.to_owned(),
-        resource_id: NEW_CITY_RESOURCE_ID,
-    }
-}
+use imperialism_formats::{OKAY, fourcc};
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum CitySiteAction {
@@ -40,6 +27,9 @@ struct NewCityDialogRoot(CapitalSite);
 #[derive(Component, Default)]
 struct CitySiteHover(Option<TileId>);
 
+#[derive(Component)]
+struct CitySiteRoot;
+
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum NewCityAction {
     Accept,
@@ -50,31 +40,45 @@ pub(crate) struct CitySitePlugin;
 
 impl Plugin for CitySitePlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(AppState::CitySite), enter_city_site)
-            .add_systems(
-                Update,
-                sync_city_site_hover.run_if(in_state(AppState::CitySite)),
-            )
-            .add_observer(on_city_site_activate.run_if(in_state(AppState::CitySite)))
-            .add_observer(on_city_site_map_click.run_if(in_state(AppState::CitySite)))
-            .add_observer(on_new_city_activate.run_if(in_state(AppState::CitySite)));
+        app.add_systems(
+            OnEnter(AppState::CitySite),
+            (enter_city_site, bind_city_site).chain(),
+        )
+        .add_systems(
+            Update,
+            (bind_new_city_dialog, sync_city_site_hover).run_if(in_state(AppState::CitySite)),
+        )
+        .add_observer(on_city_site_activate.run_if(in_state(AppState::CitySite)))
+        .add_observer(on_city_site_map_click.run_if(in_state(AppState::CitySite)))
+        .add_observer(on_new_city_activate.run_if(in_state(AppState::CitySite)));
     }
 }
 
-fn enter_city_site(
+fn enter_city_site(mut commands: Commands, mut assets: UiAssetResources) {
+    let root = generated::startup_952(&mut commands, &mut assets);
+    commands
+        .entity(root)
+        .insert((CitySiteRoot, DespawnOnExit(AppState::CitySite)));
+}
+
+fn bind_city_site(
     mut commands: Commands,
-    catalog: Res<UiCatalogResource>,
+    root: Single<Entity, Added<CitySiteRoot>>,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
     mut assets: UiAssetResources,
     session: Res<GameSession>,
 ) {
-    let view = catalog.required_view(&city_site_view_id());
-    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
-    bind_city_site_controls(&mut commands, &spawned);
-    let map = bind_strategic_base_terrain(&mut commands, &spawned, &mut assets, &session.0);
+    bind_city_site_controls(&mut commands, *root, &children, &tags);
+    let map = bind_strategic_base_terrain(
+        &mut commands,
+        *root,
+        &children,
+        &tags,
+        &mut assets,
+        &session.0,
+    );
     commands.entity(map).insert(CitySiteHover::default());
-    commands
-        .entity(spawned.root)
-        .insert(DespawnOnExit(AppState::CitySite));
 }
 
 fn sync_city_site_hover(
@@ -127,8 +131,13 @@ fn highlights_city_site_candidate(state: &GameState, nation: MajorNationId, tile
         && is_valid_secondary_nation_home_tile_candidate(&state.map, tile)
 }
 
-fn bind_city_site_controls(commands: &mut Commands, spawned: &crate::ui::catalog::SpawnedView) {
-    let cancel = spawned.unique(fourcc!("canc"));
+fn bind_city_site_controls(
+    commands: &mut Commands,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
+) {
+    let cancel = find_descendant(root, fourcc!("canc"), children, tags);
     commands.entity(cancel).insert(CitySiteAction::Cancel);
 }
 
@@ -154,7 +163,8 @@ fn on_city_site_map_click(
     dialog_open: Query<(), With<ModalDialog>>,
     session: Res<GameSession>,
     maps: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
-    mut ui: UiSpawner,
+    mut commands: Commands,
+    mut assets: UiAssetResources,
 ) {
     if !dialog_open.is_empty() {
         return;
@@ -170,16 +180,36 @@ fn on_city_site_map_click(
     let Ok(site) = validate_capital_site_selection(&session.0, nation, tile) else {
         return;
     };
-    open_new_city_dialog(&mut ui, site);
+    open_new_city_dialog(&mut commands, &mut assets, site);
 }
 
-fn open_new_city_dialog(ui: &mut UiSpawner, site: CapitalSite) {
-    let spawned = ui.spawn_modal(new_city_dialog_view_id());
-    ui.commands
-        .entity(spawned.root)
-        .insert(NewCityDialogRoot(site));
-    ui.attach(&spawned, OKAY, NewCityAction::Accept);
-    ui.attach(&spawned, fourcc!("cncl"), NewCityAction::Cancel);
+fn open_new_city_dialog(commands: &mut Commands, assets: &mut UiAssetResources, site: CapitalSite) {
+    let root = generated::startup_953(commands, assets);
+    commands.entity(root).insert((
+        NewCityDialogRoot(site),
+        ModalDialog,
+        TabGroup::modal(),
+        GlobalZIndex(20),
+        Pickable::default(),
+    ));
+}
+
+fn bind_new_city_dialog(
+    mut commands: Commands,
+    root: Single<Entity, Added<NewCityDialogRoot>>,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
+) {
+    for (tag, action) in [
+        (OKAY, NewCityAction::Accept),
+        (fourcc!("cncl"), NewCityAction::Cancel),
+    ] {
+        let entity = find_descendant(*root, tag, &children, &tags);
+        commands
+            .entity(entity)
+            .insert(action)
+            .remove::<bevy::ui::InteractionDisabled>();
+    }
 }
 
 fn on_new_city_activate(

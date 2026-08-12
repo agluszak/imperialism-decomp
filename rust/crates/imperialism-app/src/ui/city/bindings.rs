@@ -372,11 +372,12 @@ pub(in crate::ui::city) fn city_building_picture(
 }
 
 pub(in crate::ui::city) fn city_string(
-    ui: &UiSpawner,
+    assets: &UiAssetResources,
     group: i16,
     zero_based_index: i16,
 ) -> String {
-    ui.string(group, zero_based_index + 1)
+    assets
+        .string(group, zero_based_index + 1)
         .expect("retail English City string")
 }
 

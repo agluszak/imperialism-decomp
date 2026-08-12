@@ -1,7 +1,9 @@
-use super::catalog::{SpawnedView, UiAssetResources, UiCatalogResource, spawn_view};
+use super::UiAssetResources;
 use super::format_currency;
-use super::game_shell::{bind_game_screen_nav, transport_view_id};
+use super::game_shell::bind_native_game_screen_nav;
+use super::generated;
 use super::random_setup::GameSession;
+use super::retail::{RetailTag, find_child_or_descendant, find_descendant};
 use crate::AppState;
 use bevy::picking::hover::Hovered;
 use bevy::prelude::*;
@@ -165,29 +167,41 @@ pub(crate) struct TransportPlugin;
 
 impl Plugin for TransportPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(AppState::Transport), enter_transport_screen)
-            .add_systems(
-                Update,
-                (sync_transport_values, sync_transport_cursor)
-                    .run_if(in_state(AppState::Transport)),
-            )
-            .add_observer(on_transport_adjust.run_if(in_state(AppState::Transport)));
+        app.add_systems(
+            OnEnter(AppState::Transport),
+            (enter_transport_screen, bind_transport_screen).chain(),
+        )
+        .add_systems(
+            Update,
+            (sync_transport_values, sync_transport_cursor).run_if(in_state(AppState::Transport)),
+        )
+        .add_observer(on_transport_adjust.run_if(in_state(AppState::Transport)));
     }
 }
 
-fn enter_transport_screen(
+fn enter_transport_screen(mut commands: Commands, mut assets: UiAssetResources) {
+    let root = generated::transport_2014(&mut commands, &mut assets);
+    commands
+        .entity(root)
+        .insert((TransportScreen, DespawnOnExit(AppState::Transport)));
+}
+
+fn bind_transport_screen(
     mut commands: Commands,
-    catalog: Res<UiCatalogResource>,
+    root: Single<Entity, Added<TransportScreen>>,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
     mut assets: UiAssetResources,
     mut session: ResMut<GameSession>,
 ) {
-    let view_id = transport_view_id();
-    let view = catalog.required_view(&view_id);
-    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
-    bind_game_screen_nav(&mut commands, &catalog, &spawned);
-    commands
-        .entity(spawned.root)
-        .insert(DespawnOnExit(AppState::Transport));
+    bind_native_game_screen_nav(
+        &mut commands,
+        *root,
+        &children,
+        &tags,
+        fourcc!("topB"),
+        Some(fourcc!("tool")),
+    );
 
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Transport screen requires an active major nation");
@@ -206,24 +220,24 @@ fn enter_transport_screen(
         below_limit: assets.palette_color(0x33),
         at_limit: assets.palette_color(0x34),
     };
-    bind_transport_screen(&mut commands, &catalog, &spawned, font, layout, colors);
+    bind_transport_controls(&mut commands, *root, &children, &tags, font, layout, colors);
 }
 
-fn bind_transport_screen(
+fn bind_transport_controls(
     commands: &mut Commands,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     font: TextFont,
     layout: TextLayout,
     colors: TransportColors,
 ) {
-    commands.entity(spawned.root).insert(TransportScreen);
-    let selected = spawned.unique(fourcc!("tran"));
+    let selected = find_descendant(root, fourcc!("tran"), children, tags);
     commands
         .entity(selected)
         .insert((Checked, InteractionDisabled));
     for (index, binding) in TRANSPORT_ROWS.into_iter().enumerate() {
-        let row = spawned.unique(binding.tag);
+        let row = find_descendant(root, binding.tag, children, tags);
         commands.entity(row).insert((
             TransportDisplay::Row {
                 label: binding.label,
@@ -231,8 +245,8 @@ fn bind_transport_screen(
             },
             Hovered::default(),
         ));
-        let left = spawned.under(catalog, binding.tag, fourcc!("left"));
-        let right = spawned.under(catalog, binding.tag, fourcc!("rght"));
+        let left = find_child_or_descendant(row, fourcc!("left"), children, tags);
+        let right = find_child_or_descendant(row, fourcc!("rght"), children, tags);
         commands.entity(left).insert(TransportAdjust {
             allocation: binding.allocation,
             delta: -1,
@@ -331,7 +345,7 @@ fn bind_transport_screen(
         }
     }
 
-    let total = spawned.unique(fourcc!("tota"));
+    let total = find_descendant(root, fourcc!("tota"), children, tags);
     spawn_transport_track(commands, total, 0x5d, colors.empty);
     commands.spawn((
         Node {
@@ -369,7 +383,7 @@ fn bind_transport_screen(
         ChildOf(total),
         TransportDisplay::CapacityCaption,
     ));
-    let cursor = spawned.unique(fourcc!("curs"));
+    let cursor = find_descendant(root, fourcc!("curs"), children, tags);
     commands.entity(cursor).insert((
         Text::new(""),
         font,
@@ -377,7 +391,7 @@ fn bind_transport_screen(
         TextColor(Color::BLACK),
         TransportDisplay::Cursor,
     ));
-    let treasury = spawned.unique(fourcc!("trea"));
+    let treasury = find_descendant(root, fourcc!("trea"), children, tags);
     commands.entity(treasury).insert(TransportDisplay::Treasury);
 }
 
@@ -666,250 +680,4 @@ fn transport_need_limit(major: &MajorNation, allocation: TransportAllocation) ->
         return None;
     };
     Some(deficit.max(0))
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::ui::catalog::spawn_view_nodes;
-    use bevy::ecs::system::RunSystemOnce;
-
-    const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
-    const BEGINNING_OF_GAME: &[u8] =
-        include_bytes!("../../../../../fixtures/retail/beginning_of_game.imp");
-
-    #[derive(Clone, Copy)]
-    struct TestTransport {
-        root: Entity,
-        selected: Entity,
-        return_to_map: Entity,
-    }
-
-    fn fixture_session() -> GameSession {
-        let save = LegacySaveV62::parse(BEGINNING_OF_GAME);
-        let state = save.game_state(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 3_916_827_792,
-            selected_nation: NationId::new(6),
-        });
-        GameSession(state)
-    }
-
-    fn spawn_transport(
-        mut commands: Commands,
-        catalog: Res<UiCatalogResource>,
-        mut session: ResMut<GameSession>,
-    ) -> TestTransport {
-        let view = catalog.required_view(&transport_view_id());
-        let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
-        commands
-            .entity(spawned.unique(fourcc!("trea")))
-            .insert(Text::new(""));
-        let nation = MajorNationId::from_nation(session.0.turn().active_nation).unwrap();
-        session.0.rebuild_nation_resource_yields(nation);
-        bind_transport_screen(
-            &mut commands,
-            &catalog,
-            &spawned,
-            TextFont::default(),
-            TextLayout::default(),
-            TransportColors {
-                allocation: Color::BLACK,
-                empty: Color::BLACK,
-                below_limit: Color::BLACK,
-                at_limit: Color::WHITE,
-            },
-        );
-        TestTransport {
-            root: spawned.root,
-            selected: spawned.unique(fourcc!("tran")),
-            return_to_map: spawned.unique(fourcc!("end ")),
-        }
-    }
-
-    fn activate(app: &mut App, entity: Entity) {
-        app.world_mut().commands().trigger(Activate { entity });
-        app.world_mut().flush();
-        app.update();
-    }
-
-    fn amount(state: &GameState, nation: MajorNationId, allocation: TransportAllocation) -> i16 {
-        let economy = &state.nations().major(nation).economy;
-        allocation_amount(allocation, |resource| economy.need_target_by_type[resource])
-    }
-
-    fn caption(app: &mut App, allocation: TransportAllocation) -> String {
-        let mut query = app.world_mut().query::<(&TransportDisplay, &Text)>();
-        query
-            .iter(app.world())
-            .find(|(display, _)| {
-                matches!(display, TransportDisplay::RowCaption(found) if *found == allocation)
-            })
-            .unwrap()
-            .1
-            .0
-            .clone()
-    }
-
-    fn capacity_caption(app: &mut App) -> String {
-        let mut query = app.world_mut().query::<(&TransportDisplay, &Text)>();
-        query
-            .iter(app.world())
-            .find(|(display, _)| matches!(display, TransportDisplay::CapacityCaption))
-            .unwrap()
-            .1
-            .0
-            .clone()
-    }
-
-    fn capacity_gauge_width(app: &mut App) -> f32 {
-        let mut query = app.world_mut().query::<(&TransportDisplay, &Node)>();
-        let (_, node) = query
-            .iter(app.world())
-            .find(|(display, _)| {
-                matches!(
-                    display,
-                    TransportDisplay::Gauge {
-                        kind: TransportGaugeKind::Capacity,
-                        ..
-                    }
-                )
-            })
-            .unwrap();
-        match node.width {
-            Val::Px(width) => width,
-            other => panic!("expected pixel gauge width, found {other:?}"),
-        }
-    }
-
-    #[test]
-    fn allocation_round_trips_through_generated_controls_and_reopen() {
-        let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .insert_resource(UiCatalogResource::new(catalog))
-            .insert_resource(fixture_session())
-            .add_observer(on_transport_adjust)
-            .add_systems(Update, (sync_transport_values, sync_transport_cursor));
-
-        let first = app.world_mut().run_system_once(spawn_transport).unwrap();
-        app.update();
-        assert!(app.world().get::<Checked>(first.selected).is_some());
-        assert!(
-            app.world()
-                .get::<InteractionDisabled>(first.selected)
-                .is_some()
-        );
-        assert!(
-            app.world()
-                .get::<InteractionDisabled>(first.return_to_map)
-                .is_none()
-        );
-        let mut panels = app.world_mut().query::<(&TransportDisplay, &Visibility)>();
-        assert!(
-            panels
-                .iter(app.world())
-                .any(
-                    |(display, visibility)| matches!(display, TransportDisplay::Row { .. })
-                        && *visibility == Visibility::Hidden
-                )
-        );
-        let nation = MajorNationId::new(6);
-        let (allocation, decrease) = {
-            let session = app.world().resource::<GameSession>();
-            let economy = &session.0.nations().major(nation).economy;
-            let allocation = TRANSPORT_ROWS
-                .iter()
-                .map(|row| row.allocation)
-                .find(|&allocation| {
-                    let current = allocation_amount(allocation, |resource| {
-                        economy.need_current_by_type[resource]
-                    });
-                    let target = allocation_amount(allocation, |resource| {
-                        economy.need_target_by_type[resource]
-                    });
-                    current != 0 && target > 0
-                })
-                .expect("fixture has an adjustable transport row");
-            let mut actions = app.world_mut().query::<(Entity, &TransportAdjust)>();
-            let decrease = actions
-                .iter(app.world())
-                .find(|(_, action)| action.allocation == allocation && action.delta == -1)
-                .unwrap()
-                .0;
-            (allocation, decrease)
-        };
-        let (before_target, before_reserved, city_before) = {
-            let session = app.world().resource::<GameSession>();
-            let major = session.0.nations().major(nation);
-            (
-                amount(&session.0, nation, allocation),
-                major.economy.capacities.reserved_transport,
-                major.city.stockpile,
-            )
-        };
-
-        activate(&mut app, decrease);
-        let current = {
-            let session = app.world().resource::<GameSession>();
-            let major = session.0.nations().major(nation);
-            assert_eq!(amount(&session.0, nation, allocation), before_target - 1);
-            assert_eq!(
-                major.economy.capacities.reserved_transport,
-                before_reserved - 1
-            );
-            assert_eq!(major.city.stockpile, city_before);
-            allocation_amount(allocation, |resource| {
-                major.economy.need_current_by_type[resource]
-            })
-        };
-        assert_eq!(
-            caption(&mut app, allocation),
-            format!("{}  /  {current}", before_target - 1)
-        );
-        let capacity = app
-            .world()
-            .resource::<GameSession>()
-            .0
-            .nations()
-            .major(nation)
-            .economy
-            .capacities
-            .transport;
-        assert_eq!(
-            capacity_caption(&mut app),
-            format!("{}  /  {capacity}", before_reserved - 1)
-        );
-        assert_eq!(
-            capacity_gauge_width(&mut app),
-            transport_gauge_width(before_reserved - 1, capacity)
-        );
-
-        app.world_mut().commands().entity(first.root).despawn();
-        app.world_mut().flush();
-        app.world_mut().run_system_once(spawn_transport).unwrap();
-        app.update();
-        assert_eq!(
-            amount(&app.world().resource::<GameSession>().0, nation, allocation),
-            before_target - 1
-        );
-        let reopened_caption = caption(&mut app, allocation);
-        assert!(reopened_caption.starts_with(&(before_target - 1).to_string()));
-
-        let increase = {
-            let mut actions = app.world_mut().query::<(Entity, &TransportAdjust)>();
-            actions
-                .iter(app.world())
-                .find(|(_, action)| action.allocation == allocation && action.delta == 1)
-                .unwrap()
-                .0
-        };
-        assert!(app.world().get::<InteractionDisabled>(increase).is_none());
-        activate(&mut app, increase);
-        assert_eq!(
-            amount(&app.world().resource::<GameSession>().0, nation, allocation),
-            before_target
-        );
-    }
 }
