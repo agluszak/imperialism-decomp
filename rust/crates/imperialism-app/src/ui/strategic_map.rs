@@ -16,8 +16,24 @@ const VIEWPORT_HEIGHT: usize = 448;
 const TILE_SIZE: i32 = 64;
 const VIEWPORT_TILE_SPAN: i32 = 9;
 const TERRAIN_ATLAS_FRAME_COUNT: usize = 51;
-const RIVER_MASK_PICTURE_COUNT: usize = 32;
+const RIVER_MASK_PICTURE_COUNT: usize = 36;
 const RIVER_MASK_TRANSPARENT_INDEX: u8 = 0x10;
+const CITY_BORDER_PALETTE: u8 = 0x13;
+const MINOR_NATION_BORDER_PALETTE: u8 = 0x0a;
+const MAJOR_NATION_BORDER_PALETTES: [u8; MajorNationId::COUNT as usize] =
+    [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
+const RESOURCE_ICON_WIDTH: i32 = 0x14;
+const RESOURCE_ICON_HEIGHT: i32 = 0x18;
+const RESOURCE_OVERLAY_WIDTH: i32 = 0x26;
+const RESOURCE_OVERLAY_HEIGHT: i32 = 0x1a;
+const RESOURCE_OVERLAY_SOURCE_X: [i16; 28] = [
+    0, 798, 114, 228, 342, -114, 684, -114, -114, -114, -114, -114, -114, -114, -114, -114, -114,
+    0, 0, -114, 798, 570, 456, 0, 0, 0, 0, 0,
+];
+const IMPROVEMENT_ATLAS_BASE_OFFSET: u16 = 0x6c0;
+const IMPROVEMENT_PICTURE_IDS: [i16; 15] = [
+    550, 551, 552, 553, 554, 555, 556, 557, 560, 561, 562, 10_104, 10_105, 578, 579,
+];
 
 // Source-byte offsets into retail's 51-cell strategic terrain strip.
 const BASE_LAND_OFFSETS: [[u16; 2]; 16] = [
@@ -76,21 +92,33 @@ const SECONDARY_TRANSITION_OFFSETS: [[u16; 2]; 16] = [
     [0, 0],
 ];
 
-/// Facts that change the base-terrain bitmap. Session-wide Bevy change detection is broader.
+/// Facts that change the composed strategic-map bitmap. Session-wide Bevy change detection is broader.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-struct StrategicBaseTerrainKey {
+struct StrategicMapComposeKey {
     view_origin: TileId,
     topology: MapTopology,
+    active_nation: NationId,
     visible_tiles: u64,
 }
 
-/// The bounded strategic terrain layer: retail bases, transitions, coast corners, and rivers.
-/// Borders, improvements, towns, and units intentionally remain absent.
+/// The bounded strategic map: retail bases, transitions, rivers, borders, and static infrastructure.
 #[derive(Component)]
 pub(crate) struct StrategicBaseTerrainCanvas {
     terrain_pictures: Vec<IndexedPicture>,
     river_masks: Vec<IndexedPicture>,
-    composed: Option<StrategicBaseTerrainKey>,
+    improvement_pictures: Vec<IndexedPicture>,
+    resource_icons: IndexedPicture,
+    resource_overlays: IndexedPicture,
+    composed: Option<StrategicMapComposeKey>,
+}
+
+#[derive(Clone, Copy)]
+struct StrategicMapSprites<'a> {
+    terrain: &'a [IndexedPicture],
+    river_masks: &'a [IndexedPicture],
+    improvements: &'a [IndexedPicture],
+    resource_icons: &'a IndexedPicture,
+    resource_overlays: &'a IndexedPicture,
 }
 
 pub(crate) fn bind_strategic_base_terrain(
@@ -104,24 +132,37 @@ pub(crate) fn bind_strategic_base_terrain(
     let map = find_descendant(root, MAP_TAG, children, tags);
     let terrain_pictures = load_strategic_terrain_pictures(assets);
     let river_masks = load_strategic_river_masks(assets);
-    let image = compose_strategic_base_terrain(
-        state,
-        &terrain_pictures,
-        &river_masks,
-        assets.default_dib_palette(),
-    );
+    let improvement_pictures = load_strategic_improvement_pictures(assets);
+    let resource_icons = load_picture(assets, 750);
+    let resource_overlays = load_picture(assets, 751);
+    let canvas = StrategicBaseTerrainCanvas {
+        terrain_pictures,
+        river_masks,
+        improvement_pictures,
+        resource_icons,
+        resource_overlays,
+        composed: Some(strategic_map_compose_key(state)),
+    };
+    let image = compose_strategic_map(state, canvas.sprites(), assets.default_dib_palette());
     let image = assets.add_image(image);
-    let composed = Some(strategic_base_terrain_key(state));
     commands.entity(map).insert((
         ImageNode::new(image),
         RelativeCursorPosition::default(),
-        StrategicBaseTerrainCanvas {
-            terrain_pictures,
-            river_masks,
-            composed,
-        },
+        canvas,
     ));
     map
+}
+
+impl StrategicBaseTerrainCanvas {
+    fn sprites(&self) -> StrategicMapSprites<'_> {
+        StrategicMapSprites {
+            terrain: &self.terrain_pictures,
+            river_masks: &self.river_masks,
+            improvements: &self.improvement_pictures,
+            resource_icons: &self.resource_icons,
+            resource_overlays: &self.resource_overlays,
+        }
+    }
 }
 
 pub(crate) fn sync_strategic_base_terrain(
@@ -130,15 +171,14 @@ pub(crate) fn sync_strategic_base_terrain(
     mut images: ResMut<Assets<Image>>,
     mut maps: Query<(&mut StrategicBaseTerrainCanvas, &ImageNode)>,
 ) {
-    let key = strategic_base_terrain_key(&session.0);
+    let key = strategic_map_compose_key(&session.0);
     for (mut canvas, image_node) in &mut maps {
         if canvas.composed == Some(key) {
             continue;
         }
-        let image = compose_strategic_base_terrain(
+        let image = compose_strategic_map(
             &session.0,
-            &canvas.terrain_pictures,
-            &canvas.river_masks,
+            canvas.sprites(),
             retail_assets.assets().default_dib_palette(),
         );
         let Some(mut existing) = images.get_mut(&image_node.image) else {
@@ -194,52 +234,108 @@ fn strategic_terrain_picture_id(frame: usize) -> PictureId {
     PictureId::new(id)
 }
 
+fn load_strategic_improvement_pictures(assets: &RetailUiAssets) -> Vec<IndexedPicture> {
+    IMPROVEMENT_PICTURE_IDS
+        .iter()
+        .map(|&id| load_tile_picture(assets, id))
+        .collect()
+}
+
+fn load_picture(assets: &RetailUiAssets, id: i16) -> IndexedPicture {
+    let picture_id = PictureId::new(id);
+    assets.indexed_picture(picture_id).unwrap_or_else(|error| {
+        panic!("retail strategic map picture {picture_id} must load: {error}")
+    })
+}
+
+fn load_tile_picture(assets: &RetailUiAssets, id: i16) -> IndexedPicture {
+    let picture = load_picture(assets, id);
+    assert_eq!(
+        (picture.width, picture.height),
+        (TILE_SIZE as u32, TILE_SIZE as u32),
+        "retail strategic map picture {id} must be 64x64"
+    );
+    picture
+}
+
 fn river_mask_picture_id(mask: usize) -> PictureId {
     let id = match mask {
         0..=15 => 10_048 + mask as i16,
         16..=23 => 10_086 + (mask - 16) as i16,
         24..=29 => 10_042 + (mask - 24) as i16,
-        30..=31 => 10_080 + (mask - 30) as i16,
+        30..=35 => 10_080 + (mask - 30) as i16,
         _ => panic!("strategic river mask {mask} is out of range"),
     };
     PictureId::new(id)
 }
 
-fn compose_strategic_base_terrain(
+fn compose_strategic_map(
     state: &GameState,
-    terrain_pictures: &[IndexedPicture],
-    river_masks: &[IndexedPicture],
+    sprites: StrategicMapSprites<'_>,
     palette: &DibPalette,
 ) -> Image {
-    let indices = compose_strategic_base_terrain_indices(state, terrain_pictures, river_masks);
+    let indices = compose_strategic_map_indices(state, sprites);
     indexed_viewport_image(&indices, palette)
 }
 
-fn strategic_base_terrain_key(state: &GameState) -> StrategicBaseTerrainKey {
-    use std::hash::{Hash, Hasher};
+fn strategic_map_compose_key(state: &GameState) -> StrategicMapComposeKey {
+    use std::hash::Hasher;
 
     let mut hasher = std::collections::hash_map::DefaultHasher::new();
     for_each_visible_strategic_tile(state, |tile, _screen_x, _screen_y| {
-        let tile_state = &state.map[tile];
-        tile.get().hash(&mut hasher);
-        tile_state.terrain.hash(&mut hasher);
-        tile_state.gate.hash(&mut hasher);
-        tile_state.rendering.sprite_variant.hash(&mut hasher);
-        tile_state
-            .rendering
-            .river_sprite
-            .map(RiverSprite::retail)
-            .hash(&mut hasher);
-        tile_state.rendering.transition_mask.hash(&mut hasher);
-        tile_state
-            .rendering
-            .coast_or_secondary_mask
-            .hash(&mut hasher);
+        hash_visible_tile_facts(state, tile, &mut hasher);
     });
-    StrategicBaseTerrainKey {
+    StrategicMapComposeKey {
         view_origin: state.map.view_origin,
         topology: state.map.topology,
+        active_nation: state.turn().active_nation,
         visible_tiles: hasher.finish(),
+    }
+}
+
+fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl std::hash::Hasher) {
+    use std::hash::Hash;
+
+    let tile_state = &state.map[tile];
+    tile.get().hash(hasher);
+    tile_state.terrain.hash(hasher);
+    tile_state.gate.hash(hasher);
+    tile_state.rendering.sprite_variant.hash(hasher);
+    tile_state
+        .rendering
+        .river_sprite
+        .map(RiverSprite::retail)
+        .hash(hasher);
+    tile_state.rendering.transition_mask.hash(hasher);
+    tile_state.rendering.coast_or_secondary_mask.hash(hasher);
+    tile_state.owner_nation.hash(hasher);
+    tile_state.former_owner_nation.hash(hasher);
+    tile_state.owner_border_mask.hash(hasher);
+    tile_state.city_border_mask.hash(hasher);
+    tile_state.flags.bits().hash(hasher);
+    tile_state.transport_links.bits().hash(hasher);
+    tile_state.pending_rail_links.bits().hash(hasher);
+    tile_state.development.surface.get().hash(hasher);
+    tile_state.development.extractive.get().hash(hasher);
+    for nation in 0..MajorNationId::COUNT {
+        tile_state.development.resource_visible_to_majors[MajorNationId::new(nation)].hash(hasher);
+    }
+    tile_state.edge_resources.hash(hasher);
+    town_transport_linked(state, tile).hash(hasher);
+    if let Some(province) = tile_state.province {
+        let province = &state.map.provinces[province];
+        province.development_stage().hash(hasher);
+        province.fort_level().hash(hasher);
+    }
+    for neighbor in state.map.geometry().neighbors(tile) {
+        let Some(neighbor) = neighbor else {
+            false.hash(hasher);
+            continue;
+        };
+        true.hash(hasher);
+        let neighbor = &state.map[neighbor];
+        neighbor.owner_nation.hash(hasher);
+        neighbor.terrain.hash(hasher);
     }
 }
 
@@ -270,14 +366,10 @@ fn for_each_visible_strategic_tile(state: &GameState, mut visit: impl FnMut(Tile
     }
 }
 
-fn compose_strategic_base_terrain_indices(
-    state: &GameState,
-    terrain_pictures: &[IndexedPicture],
-    river_masks: &[IndexedPicture],
-) -> Vec<u8> {
+fn compose_strategic_map_indices(state: &GameState, sprites: StrategicMapSprites<'_>) -> Vec<u8> {
     let mut indices = vec![0_u8; VIEWPORT_WIDTH * VIEWPORT_HEIGHT];
     for_each_visible_strategic_tile(state, |tile, screen_x, screen_y| {
-        let tile_pixels = compose_strategic_base_tile(state, tile, terrain_pictures, river_masks);
+        let tile_pixels = compose_strategic_tile(state, tile, sprites);
         copy_clipped_tile(&tile_pixels, screen_x, screen_y, &mut indices);
     });
     indices
@@ -290,11 +382,7 @@ pub(crate) fn compose_city_site_terrain(
     highlighted_tile: Option<TileId>,
     palette: &DibPalette,
 ) -> Image {
-    let mut indices = compose_strategic_base_terrain_indices(
-        state,
-        &canvas.terrain_pictures,
-        &canvas.river_masks,
-    );
+    let mut indices = compose_strategic_map_indices(state, canvas.sprites());
     if let Some(tile) = highlighted_tile {
         draw_city_site_selection(state, nation, tile, &mut indices);
     }
@@ -442,6 +530,36 @@ fn put_viewport_pixel(viewport: &mut [u8], x: i32, y: i32, color: u8) {
     }
 }
 
+fn compose_strategic_tile(
+    state: &GameState,
+    tile: TileId,
+    sprites: StrategicMapSprites<'_>,
+) -> Vec<u8> {
+    let tile_state = &state.map[tile];
+    let center_column = {
+        let (_, origin_column) = state.map.geometry().row_column(state.map.view_origin);
+        (i32::from(origin_column) + VIEWPORT_TILE_SPAN / 2)
+            .rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
+    };
+    let (_, tile_column) = state.map.geometry().row_column(tile);
+    // Retail's stored flag is inverted: this seam substitution belongs to Rust's bounded map.
+    let wrapped_seam = state.map.topology == MapTopology::Bounded
+        && ((tile_column == 0 && center_column > 54)
+            || (tile_column == STRATEGIC_MAP_WIDTH - 1 && center_column < 54));
+    let mut pixels = if wrapped_seam {
+        sprites.terrain[frame_for_offset(0xc80)].pixels.clone()
+    } else {
+        compose_strategic_base_tile(state, tile, sprites.terrain, sprites.river_masks)
+    };
+
+    if !wrapped_seam {
+        compose_strategic_borders(state, tile, &mut pixels);
+    }
+    compose_strategic_railways(tile_state, sprites.river_masks, &mut pixels);
+    compose_strategic_improvements(state, tile, sprites, &mut pixels);
+    pixels
+}
+
 fn compose_strategic_base_tile(
     state: &GameState,
     tile: TileId,
@@ -578,11 +696,838 @@ fn compose_river(river_sprite: RiverSprite, river_masks: &[IndexedPicture], pixe
         normalized -= 0x10;
     }
     let mask = usize::from(normalized - 0x0b);
-    let source = &river_masks[mask].pixels;
+    apply_tile_mask(&river_masks[mask].pixels, pixels);
+}
+
+fn apply_tile_mask(source: &[u8], pixels: &mut [u8]) {
     for (&source_pixel, destination_pixel) in source.iter().zip(pixels) {
         if source_pixel != RIVER_MASK_TRANSPARENT_INDEX {
             *destination_pixel = source_pixel;
         }
+    }
+}
+
+fn compose_strategic_railways(
+    tile_state: &TileState,
+    river_masks: &[IndexedPicture],
+    pixels: &mut [u8],
+) {
+    if tile_state.transport_links.is_empty() && tile_state.pending_rail_links.is_empty() {
+        return;
+    }
+    for direction in 0..6 {
+        let direction_bit = 1 << direction;
+        let mask = if tile_state.transport_links.bits() & direction_bit != 0 {
+            0x18 + direction
+        } else if tile_state.pending_rail_links.bits() & direction_bit != 0 {
+            0x1e + direction
+        } else {
+            continue;
+        };
+        apply_tile_mask(&river_masks[mask].pixels, pixels);
+    }
+}
+
+fn compose_strategic_improvements(
+    state: &GameState,
+    tile: TileId,
+    sprites: StrategicMapSprites<'_>,
+    pixels: &mut [u8],
+) {
+    let tile_state = &state.map[tile];
+    let flags = tile_state.flags.bits();
+    let city_or_town = flags & 3 != 0 && tile_state.gate != 0;
+
+    if city_or_town && let Some(offset) = city_marker_offset(state, tile) {
+        blit_improvement_sprite(sprites.improvements, offset, pixels);
+    }
+
+    if flags & 0x14 != 0
+        && flags & 1 == 0
+        && let Some(offset) = transport_marker_offset(flags, town_transport_linked(state, tile))
+    {
+        blit_improvement_sprite(sprites.improvements, offset, pixels);
+    }
+
+    if !city_or_town {
+        compose_strategic_resource_indicators(state, tile, sprites, pixels);
+    } else if let Some(offset) = fort_marker_offset(state, tile) {
+        blit_improvement_sprite(sprites.improvements, offset, pixels);
+    }
+}
+
+fn city_marker_offset(state: &GameState, tile: TileId) -> Option<u16> {
+    let tile_state = &state.map[tile];
+    let flags = tile_state.flags.bits();
+    let minor_sprites = tile_state
+        .former_owner_nation
+        .is_some_and(|owner| owner.get() >= MajorNationId::COUNT);
+    if !minor_sprites {
+        if flags & 1 != 0 {
+            return Some(0x6c0);
+        }
+        if flags & 2 != 0 {
+            let stage = tile_state
+                .province
+                .map(|province| state.map.provinces[province].development_stage())
+                .unwrap_or(0);
+            return match stage {
+                0 => Some(0x700),
+                1 => Some(0x740),
+                2 => Some(0x780),
+                _ => None,
+            };
+        }
+        return None;
+    }
+    if flags & 1 != 0 {
+        Some(0x9c0)
+    } else if flags & 2 != 0 {
+        Some(0x980)
+    } else {
+        None
+    }
+}
+
+fn transport_marker_offset(flags: u16, linked: bool) -> Option<u16> {
+    if flags & 4 != 0 {
+        if flags & 0x10 != 0 {
+            Some(if linked { 0x840 } else { 0xa40 })
+        } else {
+            Some(if linked { 0x880 } else { 0xa00 })
+        }
+    } else if flags & 0x10 != 0 {
+        Some(if linked { 0x7c0 } else { 0x800 })
+    } else {
+        None
+    }
+}
+
+fn fort_marker_offset(state: &GameState, tile: TileId) -> Option<u16> {
+    let fort_level = state.map[tile]
+        .province
+        .map(|province| state.map.provinces[province].fort_level())
+        .unwrap_or(0);
+    if fort_level == 0 {
+        return None;
+    }
+    Some(((fort_level - 1 + 0x23) as u16) << 6)
+}
+
+fn town_transport_linked(state: &GameState, tile: TileId) -> bool {
+    let Some(owner) = state.map[tile].owner_nation.and_then(TileOwnerTag::nation) else {
+        return true;
+    };
+    let Some(major) = MajorNationId::from_nation(owner) else {
+        return true;
+    };
+    state
+        .nations()
+        .major(major)
+        .towns
+        .iter()
+        .find(|town| town.tile == tile)
+        .map(|town| town.transport_linked)
+        .unwrap_or(true)
+}
+
+fn blit_improvement_sprite(pictures: &[IndexedPicture], offset: u16, pixels: &mut [u8]) {
+    let index = usize::from((offset - IMPROVEMENT_ATLAS_BASE_OFFSET) / TILE_SIZE as u16);
+    blit_indexed(&pictures[index], 0, 0, TILE_SIZE, TILE_SIZE, pixels, 0, 0);
+}
+
+fn compose_strategic_resource_indicators(
+    state: &GameState,
+    tile: TileId,
+    sprites: StrategicMapSprites<'_>,
+    pixels: &mut [u8],
+) {
+    let tile_state = &state.map[tile];
+    let surface = tile_state.development.surface.get();
+    let extractive = tile_state.development.extractive.get();
+    let first = tile_state.edge_resources[0];
+    let second = tile_state.edge_resources[1];
+
+    if let Some(resource) = first.filter(resource_is_prospectable) {
+        if extractive != 0 {
+            blit_resource_overlay(
+                sprites.resource_overlays,
+                resource,
+                extractive,
+                2,
+                2,
+                pixels,
+            );
+        } else if resource_visible_to_active_nation(state, tile) {
+            blit_resource_icon(sprites.resource_icons, resource, 0, 0, pixels);
+        }
+    } else if surface != 0
+        && let Some(resource) = first
+    {
+        blit_resource_overlay(
+            sprites.resource_overlays,
+            resource,
+            surface,
+            0x1b,
+            2,
+            pixels,
+        );
+    }
+
+    if let Some(resource) = second.filter(resource_is_prospectable) {
+        if extractive != 0 {
+            blit_resource_overlay(
+                sprites.resource_overlays,
+                resource,
+                extractive,
+                2,
+                0x1c,
+                pixels,
+            );
+        } else if resource_visible_to_active_nation(state, tile) {
+            blit_resource_icon(sprites.resource_icons, resource, 0, 0x1c, pixels);
+        }
+    }
+
+    if second == Some(ResourceKind::Livestock)
+        && matches!(first, Some(ResourceKind::Coal | ResourceKind::Iron))
+        && surface != 0
+    {
+        blit_resource_overlay(
+            sprites.resource_overlays,
+            ResourceKind::Livestock,
+            surface,
+            0x1b,
+            0x1c,
+            pixels,
+        );
+    }
+}
+
+fn resource_is_prospectable(resource: &ResourceKind) -> bool {
+    matches!(
+        resource,
+        ResourceKind::Coal
+            | ResourceKind::Iron
+            | ResourceKind::Oil
+            | ResourceKind::Gems
+            | ResourceKind::Gold
+    )
+}
+
+fn resource_visible_to_active_nation(state: &GameState, tile: TileId) -> bool {
+    MajorNationId::from_nation(state.turn().active_nation)
+        .is_some_and(|nation| state.map[tile].development.resource_visible_to_majors[nation])
+}
+
+fn blit_resource_icon(
+    atlas: &IndexedPicture,
+    resource: ResourceKind,
+    dest_x: i32,
+    dest_y: i32,
+    pixels: &mut [u8],
+) {
+    blit_indexed(
+        atlas,
+        i32::from(resource as u8) * RESOURCE_ICON_WIDTH,
+        0,
+        RESOURCE_ICON_WIDTH,
+        RESOURCE_ICON_HEIGHT,
+        pixels,
+        dest_x,
+        dest_y,
+    );
+}
+
+fn blit_resource_overlay(
+    atlas: &IndexedPicture,
+    resource: ResourceKind,
+    level: u8,
+    dest_x: i32,
+    dest_y: i32,
+    pixels: &mut [u8],
+) {
+    if level == 0 {
+        return;
+    }
+    let source_base = RESOURCE_OVERLAY_SOURCE_X[resource as usize];
+    if source_base < 0 {
+        return;
+    }
+    let source_x =
+        i32::from(source_base) - RESOURCE_OVERLAY_WIDTH + i32::from(level) * RESOURCE_OVERLAY_WIDTH;
+    blit_indexed(
+        atlas,
+        source_x,
+        0,
+        RESOURCE_OVERLAY_WIDTH,
+        RESOURCE_OVERLAY_HEIGHT,
+        pixels,
+        dest_x,
+        dest_y,
+    );
+}
+
+#[allow(clippy::too_many_arguments)]
+fn blit_indexed(
+    source: &IndexedPicture,
+    src_x: i32,
+    src_y: i32,
+    width: i32,
+    height: i32,
+    destination: &mut [u8],
+    dest_x: i32,
+    dest_y: i32,
+) {
+    let source_width = source.width as i32;
+    let source_height = source.height as i32;
+    for row in 0..height {
+        let destination_y = dest_y + row;
+        let source_row = src_y + row;
+        if !(0..TILE_SIZE).contains(&destination_y) || !(0..source_height).contains(&source_row) {
+            continue;
+        }
+        for column in 0..width {
+            let destination_x = dest_x + column;
+            let source_column = src_x + column;
+            if !(0..TILE_SIZE).contains(&destination_x)
+                || !(0..source_width).contains(&source_column)
+            {
+                continue;
+            }
+            let pixel =
+                source.pixels[source_row as usize * source.width as usize + source_column as usize];
+            if pixel != RIVER_MASK_TRANSPARENT_INDEX {
+                destination[destination_y as usize * TILE_SIZE as usize + destination_x as usize] =
+                    pixel;
+            }
+        }
+    }
+}
+
+fn compose_strategic_borders(state: &GameState, tile: TileId, pixels: &mut [u8]) {
+    let tile_state = &state.map[tile];
+    if tile_state.owner_border_mask != 0 {
+        if tile_state.terrain != TerrainKind::Water {
+            draw_nation_border_segments(state, tile, pixels);
+        } else if tile_state.rendering.coast_or_secondary_mask != 0 {
+            draw_sea_zone_borders(state, tile, pixels);
+        }
+    }
+    if tile_state.terrain != TerrainKind::Water && tile_state.city_border_mask != 0 {
+        draw_city_border_segments(state, tile, pixels);
+    }
+}
+
+fn draw_nation_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8]) {
+    let mask = state.map[tile].owner_border_mask;
+    let owner = border_palette(state.map[tile].owner_nation);
+    let neighbors = state.map.geometry().neighbors(tile);
+    let direction1 = mask & 2 != 0;
+
+    if direction1 {
+        let east = neighbor_palette(state, neighbors[HexDirection::East as usize]);
+        if mask & 1 == 0 {
+            draw_border(pixels, 2, owner, east);
+        } else {
+            draw_border(pixels, 1, owner, east);
+            if mask & 0x40 != 0 {
+                let north_east =
+                    neighbor_palette(state, neighbors[HexDirection::NorthEast as usize]);
+                draw_border(pixels, 3, owner, north_east);
+            }
+        }
+        if mask & 4 == 0 {
+            draw_border(pixels, 6, owner, east);
+        } else {
+            let south_east = neighbor_palette(state, neighbors[HexDirection::SouthEast as usize]);
+            draw_border(pixels, 7, owner, south_east);
+            if mask & 0x80 != 0 {
+                draw_border(pixels, 5, owner, south_east);
+            }
+        }
+    }
+
+    if mask & 1 != 0 {
+        let north_east = neighbor_palette(state, neighbors[HexDirection::NorthEast as usize]);
+        draw_border(pixels, 0, owner, north_east);
+        if !direction1 {
+            draw_border(pixels, 3, owner, north_east);
+        }
+    }
+    if mask & 4 != 0 {
+        let south_east = neighbor_palette(state, neighbors[HexDirection::SouthEast as usize]);
+        draw_border(pixels, 9, owner, south_east);
+        if !direction1 {
+            draw_border(pixels, 5, owner, south_east);
+        }
+    }
+
+    if state.map[tile].terrain == TerrainKind::Water {
+        return;
+    }
+    if neighbor_is_water(state, neighbors[HexDirection::NorthEast as usize])
+        && mask & 0x20 != 0
+        && !direction1
+    {
+        let north_west = neighbor_palette(state, neighbors[HexDirection::NorthWest as usize]);
+        draw_border(pixels, 0, owner, north_west);
+        draw_border(pixels, 3, owner, north_west);
+    }
+    if neighbor_is_water(state, neighbors[HexDirection::SouthEast as usize])
+        && mask & 8 != 0
+        && !direction1
+    {
+        let south_west = neighbor_palette(state, neighbors[HexDirection::SouthWest as usize]);
+        draw_border(pixels, 5, owner, south_west);
+        draw_border(pixels, 9, owner, south_west);
+    }
+}
+
+fn draw_city_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8]) {
+    let mask = state.map[tile].city_border_mask;
+    let neighbors = state.map.geometry().neighbors(tile);
+    let direction1 = mask & 2 != 0;
+
+    if direction1 {
+        if mask & 1 == 0 {
+            draw_guide_pattern(pixels, 2, 0, CITY_BORDER_PALETTE, 1);
+        } else {
+            draw_guide_pattern(pixels, 1, 0, CITY_BORDER_PALETTE, 1);
+            if mask & 0x40 != 0 {
+                draw_guide_pattern(pixels, 3, 0, CITY_BORDER_PALETTE, 1);
+            }
+        }
+        if mask & 4 == 0 {
+            draw_guide_pattern(pixels, 6, 0, CITY_BORDER_PALETTE, 1);
+        } else {
+            draw_guide_pattern(pixels, 7, 0, CITY_BORDER_PALETTE, 1);
+            if mask & 0x80 != 0 {
+                draw_guide_pattern(pixels, 5, 0, CITY_BORDER_PALETTE, 1);
+            }
+        }
+    }
+
+    if mask & 1 != 0 {
+        draw_guide_pattern(pixels, 0, 0, CITY_BORDER_PALETTE, 1);
+        if !direction1 {
+            draw_guide_pattern(pixels, 3, 0, CITY_BORDER_PALETTE, 1);
+        }
+    }
+    if mask & 4 != 0 {
+        draw_guide_pattern(pixels, 9, 0, CITY_BORDER_PALETTE, 1);
+        if !direction1 {
+            draw_guide_pattern(pixels, 5, 0, CITY_BORDER_PALETTE, 1);
+        }
+    }
+
+    if state.map[tile].terrain == TerrainKind::Water {
+        return;
+    }
+    if neighbor_is_water(state, neighbors[HexDirection::NorthEast as usize])
+        && mask & 0x20 != 0
+        && !direction1
+    {
+        draw_guide_pattern(pixels, 0, 0, CITY_BORDER_PALETTE, 1);
+        draw_guide_pattern(pixels, 3, 0, CITY_BORDER_PALETTE, 1);
+    }
+    if neighbor_is_water(state, neighbors[HexDirection::SouthEast as usize])
+        && mask & 8 != 0
+        && !direction1
+    {
+        draw_guide_pattern(pixels, 5, 0, CITY_BORDER_PALETTE, 1);
+        draw_guide_pattern(pixels, 9, 0, CITY_BORDER_PALETTE, 1);
+    }
+}
+
+fn draw_sea_zone_borders(state: &GameState, tile: TileId, pixels: &mut [u8]) {
+    let neighbors = state.map.geometry().neighbors(tile);
+    let pairs = [
+        (HexDirection::SouthWest, HexDirection::SouthEast),
+        (HexDirection::SouthEast, HexDirection::East),
+        (HexDirection::West, HexDirection::SouthWest),
+        (HexDirection::NorthWest, HexDirection::NorthEast),
+        (HexDirection::NorthEast, HexDirection::East),
+        (HexDirection::West, HexDirection::NorthWest),
+    ];
+    for (index, (first, second)) in pairs.into_iter().enumerate() {
+        if !land_tiles_have_different_owners(
+            state,
+            neighbors[first as usize],
+            neighbors[second as usize],
+        ) {
+            continue;
+        }
+        let first_color = neighbor_palette(state, neighbors[first as usize]);
+        let second_color = neighbor_palette(state, neighbors[second as usize]);
+        match index {
+            0 => {
+                stroke_guide(pixels, (0x16, 0x40), &[(0x16, 0x38)], first_color, 2);
+                stroke_guide(pixels, (0x1a, 0x40), &[(0x1a, 0x38)], second_color, 2);
+                stroke_guide(
+                    pixels,
+                    (0x18, 0x40),
+                    &[(0x18, 0x38)],
+                    CITY_BORDER_PALETTE,
+                    1,
+                );
+            }
+            1 => {
+                stroke_guide(
+                    pixels,
+                    (0x36, 0x40),
+                    &[(0x36, 0x36), (0x31, 0x2e)],
+                    first_color,
+                    2,
+                );
+                stroke_guide(
+                    pixels,
+                    (0x39, 0x40),
+                    &[(0x39, 0x36), (0x34, 0x2a)],
+                    second_color,
+                    2,
+                );
+                stroke_guide(
+                    pixels,
+                    (0x38, 0x40),
+                    &[(0x38, 0x36), (0x33, 0x2c)],
+                    CITY_BORDER_PALETTE,
+                    1,
+                );
+            }
+            2 => {
+                stroke_guide(pixels, (0x16, 0x40), &[(0x16, 0x38)], first_color, 2);
+                stroke_guide(pixels, (0x19, 0x40), &[(0x19, 0x38)], second_color, 2);
+                stroke_guide(
+                    pixels,
+                    (0x18, 0x40),
+                    &[(0x18, 0x38)],
+                    CITY_BORDER_PALETTE,
+                    1,
+                );
+            }
+            3 => {
+                stroke_guide(pixels, (0x16, 0), &[(0x16, 8)], first_color, 2);
+                stroke_guide(pixels, (0x1a, 0), &[(0x1a, 8)], second_color, 2);
+                stroke_guide(pixels, (0x18, 0), &[(0x18, 8)], CITY_BORDER_PALETTE, 1);
+            }
+            4 => {
+                stroke_guide(pixels, (0x36, 0), &[(0x36, 8)], first_color, 2);
+                stroke_guide(pixels, (0x3a, 0), &[(0x3a, 8)], second_color, 2);
+                stroke_guide(pixels, (0x38, 0), &[(0x38, 8)], CITY_BORDER_PALETTE, 1);
+            }
+            5 => {
+                stroke_guide(pixels, (0x16, 0), &[(0x16, 8)], first_color, 2);
+                stroke_guide(pixels, (0x1a, 0), &[(0x1a, 8)], second_color, 2);
+                stroke_guide(pixels, (0x18, 0), &[(0x18, 8)], CITY_BORDER_PALETTE, 1);
+            }
+            _ => {}
+        }
+    }
+}
+
+fn land_tiles_have_different_owners(
+    state: &GameState,
+    first: Option<TileId>,
+    second: Option<TileId>,
+) -> bool {
+    let Some(first) = first else {
+        return false;
+    };
+    let Some(second) = second else {
+        return false;
+    };
+    let first = &state.map[first];
+    let second = &state.map[second];
+    first.terrain != TerrainKind::Water
+        && second.terrain != TerrainKind::Water
+        && first.owner_nation != second.owner_nation
+}
+
+fn neighbor_is_water(state: &GameState, neighbor: Option<TileId>) -> bool {
+    neighbor.is_some_and(|neighbor| state.map[neighbor].terrain == TerrainKind::Water)
+}
+
+fn neighbor_palette(state: &GameState, neighbor: Option<TileId>) -> u8 {
+    border_palette(neighbor.and_then(|neighbor| state.map[neighbor].owner_nation))
+}
+
+fn border_palette(owner: Option<TileOwnerTag>) -> u8 {
+    owner
+        .and_then(TileOwnerTag::nation)
+        .and_then(MajorNationId::from_nation)
+        .map(|nation| MAJOR_NATION_BORDER_PALETTES[usize::from(nation.get())])
+        .unwrap_or(MINOR_NATION_BORDER_PALETTE)
+}
+
+fn draw_border(pixels: &mut [u8], relation: u8, nation_a: u8, nation_b: u8) {
+    draw_guide_pattern(pixels, relation, 1, nation_a, 2);
+    draw_guide_pattern(pixels, relation, 2, nation_b, 2);
+}
+
+fn draw_guide_pattern(pixels: &mut [u8], relation: u8, variant: i32, color: u8, pen: i32) {
+    match relation {
+        0 => draw_guide_set_a(pixels, variant, color, pen),
+        1 => draw_guide_set_b(pixels, variant, color, pen),
+        2 => draw_guide_set_c(pixels, variant, color, pen),
+        3 => draw_guide_set_d(pixels, variant, color, pen),
+        4 => draw_guide_set_tile(pixels, variant, color, pen),
+        5 => draw_guide_set_e(pixels, variant, color, pen),
+        6 => draw_guide_set_f(pixels, variant, color, pen),
+        7 => draw_guide_set_g(pixels, variant, color, pen),
+        8 => draw_guide_set_h(pixels, variant, color, pen),
+        9 => draw_guide_set_i(pixels, variant, color, pen),
+        _ => {}
+    }
+}
+
+fn draw_guide_set_a(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+    if variant == 0 {
+        stroke_guide(
+            pixels,
+            (0x18, 0),
+            &[(0x20, 9), (0x26, 6), (0x2c, 8)],
+            color,
+            pen,
+        );
+        return;
+    }
+    if variant == 1 {
+        stroke_guide(
+            pixels,
+            (0x16, 0),
+            &[(0x1e, 10), (0x26, 8), (0x2c, 10)],
+            color,
+            pen,
+        );
+        return;
+    }
+    if variant == 2 {
+        stroke_guide(
+            pixels,
+            (0x1a, 0),
+            &[(0x22, 6), (0x26, 4), (0x2c, 6)],
+            color,
+            pen,
+        );
+    }
+}
+
+fn draw_guide_set_b(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+    if variant == 0 {
+        stroke_guide(
+            pixels,
+            (0x2c, 8),
+            &[(0x36, 0xd), (0x34, 0x14), (0x3a, 0x19), (0x38, 0x20)],
+            color,
+            pen,
+        );
+        return;
+    }
+    if variant == 1 {
+        stroke_guide(
+            pixels,
+            (0x2c, 10),
+            &[(0x34, 0xf), (0x31, 0x14), (0x38, 0x19), (0x36, 0x20)],
+            color,
+            pen,
+        );
+        return;
+    }
+    if variant == 2 {
+        stroke_guide(
+            pixels,
+            (0x2c, 6),
+            &[(0x37, 0xb), (0x36, 0x13), (0x3c, 0x19), (0x3a, 0x20)],
+            color,
+            pen,
+        );
+    }
+}
+
+fn draw_guide_set_c(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+    let (x1, x2, x3) = if variant == 1 {
+        (0x36, 0x34, 0x38)
+    } else if variant == 2 {
+        (0x3a, 0x38, 0x3c)
+    } else {
+        (0x38, 0x36, 0x3a)
+    };
+    stroke_guide(
+        pixels,
+        (x1, 0),
+        &[(x2, 9), (x3, 0x12), (x2, 0x19), (x1, 0x20)],
+        color,
+        pen,
+    );
+}
+
+fn draw_guide_set_d(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+    if variant == 1 {
+        stroke_guide(pixels, (0x2c, 10), &[(0x39, 0)], color, pen);
+        return;
+    }
+    if variant == 2 {
+        stroke_guide(pixels, (0x2c, 5), &[(0x37, -3)], color, pen);
+        return;
+    }
+    stroke_guide(pixels, (0x2c, 8), &[(0x38, 0)], color, pen);
+}
+
+fn draw_guide_set_tile(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+    draw_guide_set_b(pixels, variant, color, pen);
+    draw_guide_set_d(pixels, variant, color, pen);
+}
+
+fn draw_guide_set_e(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+    if variant == 1 {
+        stroke_guide(pixels, (0x2c, 0x36), &[(0x39, 0x3e)], color, pen);
+        return;
+    }
+    if variant == 2 {
+        stroke_guide(pixels, (0x2c, 0x3a), &[(0x3a, 0x42)], color, pen);
+        return;
+    }
+    stroke_guide(pixels, (0x2c, 0x38), &[(0x39, 0x40)], color, pen);
+}
+
+fn draw_guide_set_f(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+    let (x1, x2, x3) = if variant == 1 {
+        (0x36, 0x34, 0x38)
+    } else if variant == 2 {
+        (0x3a, 0x38, 0x3c)
+    } else {
+        (0x38, 0x36, 0x3a)
+    };
+    stroke_guide(
+        pixels,
+        (x1, 0x20),
+        &[(x2, 0x29), (x3, 0x32), (x2, 0x39), (x1, 0x40)],
+        color,
+        pen,
+    );
+}
+
+fn draw_guide_set_g(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+    if variant == 0 {
+        stroke_guide(
+            pixels,
+            (0x2c, 0x38),
+            &[(0x36, 0x33), (0x34, 0x2c), (0x3a, 0x27), (0x38, 0x20)],
+            color,
+            pen,
+        );
+        return;
+    }
+    if variant == 1 {
+        stroke_guide(
+            pixels,
+            (0x2c, 0x36),
+            &[(0x34, 0x31), (0x30, 0x2c), (0x37, 0x27), (0x36, 0x20)],
+            color,
+            pen,
+        );
+        return;
+    }
+    if variant == 2 {
+        stroke_guide(
+            pixels,
+            (0x2c, 0x3a),
+            &[(0x37, 0x35), (0x36, 0x2d), (0x3c, 0x27), (0x3a, 0x20)],
+            color,
+            pen,
+        );
+    }
+}
+
+fn draw_guide_set_h(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+    draw_guide_set_g(pixels, variant, color, pen);
+    draw_guide_set_e(pixels, variant, color, pen);
+}
+
+fn draw_guide_set_i(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+    if variant == 0 {
+        stroke_guide(
+            pixels,
+            (0x18, 0x40),
+            &[(0x1a, 0x3b), (0x24, 0x36), (0x2a, 0x38), (0x2c, 0x38)],
+            color,
+            pen,
+        );
+        return;
+    }
+    if variant == 1 {
+        stroke_guide(
+            pixels,
+            (0x16, 0x3f),
+            &[(0x18, 0x39), (0x24, 0x33), (0x2a, 0x36), (0x2c, 0x36)],
+            color,
+            pen,
+        );
+        return;
+    }
+    if variant == 2 {
+        stroke_guide(
+            pixels,
+            (0x1a, 0x40),
+            &[(0x1c, 0x3b), (0x24, 0x38), (0x2a, 0x3a), (0x2c, 0x3a)],
+            color,
+            pen,
+        );
+    }
+}
+
+fn stroke_guide(pixels: &mut [u8], origin: (i32, i32), points: &[(i32, i32)], color: u8, pen: i32) {
+    let mut x = origin.0;
+    let mut y = origin.1;
+    for &(next_x, next_y) in points {
+        draw_pen_line(pixels, (x, y), (next_x, next_y), color, pen);
+        x = next_x;
+        y = next_y;
+    }
+}
+
+fn draw_pen_line(pixels: &mut [u8], start: (i32, i32), end: (i32, i32), color: u8, pen: i32) {
+    let offset = pen / 2;
+    let x0 = start.0 + offset;
+    let y0 = start.1 + offset;
+    let x1 = end.0 + offset;
+    let y1 = end.1 + offset;
+    let dx = (x1 - x0).abs();
+    let dy = (y1 - y0).abs();
+    let sx = (x1 - x0).signum();
+    let sy = (y1 - y0).signum();
+    let mut err = dx - dy;
+    let mut x = x0;
+    let mut y = y0;
+    loop {
+        if x == x1 && y == y1 {
+            break;
+        }
+        stamp_pen(pixels, x, y, color, pen);
+        let twice_err = err * 2;
+        if twice_err > -dy {
+            err -= dy;
+            x += sx;
+        }
+        if twice_err < dx {
+            err += dx;
+            y += sy;
+        }
+    }
+}
+
+fn stamp_pen(pixels: &mut [u8], x: i32, y: i32, color: u8, pen: i32) {
+    for row in 0..pen {
+        for column in 0..pen {
+            put_tile_pixel(pixels, x + column, y + row, color);
+        }
+    }
+}
+
+fn put_tile_pixel(pixels: &mut [u8], x: i32, y: i32, color: u8) {
+    if (0..TILE_SIZE).contains(&x) && (0..TILE_SIZE).contains(&y) {
+        pixels[y as usize * TILE_SIZE as usize + x as usize] = color;
     }
 }
 
@@ -798,7 +1743,7 @@ mod tests {
     }
 
     fn synthetic_river_masks() -> Vec<IndexedPicture> {
-        (0..32)
+        (0..RIVER_MASK_PICTURE_COUNT)
             .map(|index| IndexedPicture {
                 width: TILE_SIZE as u32,
                 height: TILE_SIZE as u32,
@@ -806,6 +1751,64 @@ mod tests {
                 pixels: vec![0x80 | index as u8; (TILE_SIZE * TILE_SIZE) as usize],
             })
             .collect()
+    }
+
+    fn synthetic_improvement_pictures() -> Vec<IndexedPicture> {
+        (0..IMPROVEMENT_PICTURE_IDS.len())
+            .map(|index| solid_frame(0x90 + index as u8))
+            .collect()
+    }
+
+    fn synthetic_resource_icons() -> IndexedPicture {
+        let width = (ResourceKind::LENGTH as i32 * RESOURCE_ICON_WIDTH) as u32;
+        IndexedPicture {
+            width,
+            height: RESOURCE_ICON_HEIGHT as u32,
+            pixels: (0..width as usize * RESOURCE_ICON_HEIGHT as usize)
+                .map(|index| 0xa0 + (index as u8 % ResourceKind::LENGTH as u8))
+                .collect(),
+        }
+    }
+
+    fn synthetic_resource_overlays() -> IndexedPicture {
+        let width = 24 * RESOURCE_OVERLAY_WIDTH as u32;
+        IndexedPicture {
+            width,
+            height: RESOURCE_OVERLAY_HEIGHT as u32,
+            pixels: vec![0xb0; width as usize * RESOURCE_OVERLAY_HEIGHT as usize],
+        }
+    }
+
+    fn synthetic_sprites() -> (
+        Vec<IndexedPicture>,
+        Vec<IndexedPicture>,
+        Vec<IndexedPicture>,
+        IndexedPicture,
+        IndexedPicture,
+    ) {
+        (
+            synthetic_terrain_pictures(),
+            synthetic_river_masks(),
+            synthetic_improvement_pictures(),
+            synthetic_resource_icons(),
+            synthetic_resource_overlays(),
+        )
+    }
+
+    fn sprites_from<'a>(
+        terrain: &'a [IndexedPicture],
+        rivers: &'a [IndexedPicture],
+        improvements: &'a [IndexedPicture],
+        icons: &'a IndexedPicture,
+        overlays: &'a IndexedPicture,
+    ) -> StrategicMapSprites<'a> {
+        StrategicMapSprites {
+            terrain,
+            river_masks: rivers,
+            improvements,
+            resource_icons: icons,
+            resource_overlays: overlays,
+        }
     }
 
     fn fixture_state() -> GameState {
@@ -899,14 +1902,142 @@ mod tests {
             state.map[neighbor].terrain = TerrainKind::Plains;
         }
 
-        let terrain = synthetic_terrain_pictures();
-        let rivers = synthetic_river_masks();
-        let mut indices = compose_strategic_base_terrain_indices(&state, &terrain, &rivers);
+        let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
+        let mut indices = compose_strategic_map_indices(
+            &state,
+            sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
+        );
         let before = indices.clone();
         draw_city_site_selection(&state, nation, origin, &mut indices);
         assert_ne!(indices, before);
         let (x, y) = strategic_tile_screen_origin(&state, origin);
         let top_left = (y * VIEWPORT_WIDTH as i32 + x) as usize;
         assert_eq!(indices[top_left], 0);
+    }
+
+    #[test]
+    fn city_marker_offsets_follow_former_owner_and_development_stage() {
+        let mut state = fixture_state();
+        let origin = state.map.view_origin;
+        state.map[origin].flags = TileFlags::from_bits_retain(1);
+        state.map[origin].former_owner_nation = Some(TileOwnerTag::from_nation(NationId::new(6)));
+        assert_eq!(city_marker_offset(&state, origin), Some(0x6c0));
+
+        state.map[origin].flags = TileFlags::from_bits_retain(2);
+        state.map[origin].province = Some(ProvinceId::new(0));
+        assert_eq!(city_marker_offset(&state, origin), Some(0x700));
+
+        state.map[origin].former_owner_nation = Some(TileOwnerTag::new(8));
+        state.map[origin].flags = TileFlags::from_bits_retain(1);
+        assert_eq!(city_marker_offset(&state, origin), Some(0x9c0));
+        state.map[origin].flags = TileFlags::from_bits_retain(2);
+        assert_eq!(city_marker_offset(&state, origin), Some(0x980));
+    }
+
+    #[test]
+    fn transport_marker_offsets_encode_port_depot_and_link_state() {
+        assert_eq!(transport_marker_offset(0x10, true), Some(0x7c0));
+        assert_eq!(transport_marker_offset(0x10, false), Some(0x800));
+        assert_eq!(transport_marker_offset(0x14, true), Some(0x840));
+        assert_eq!(transport_marker_offset(0x14, false), Some(0xa40));
+        assert_eq!(transport_marker_offset(4, true), Some(0x880));
+        assert_eq!(transport_marker_offset(4, false), Some(0xa00));
+        assert_eq!(transport_marker_offset(0, true), None);
+    }
+
+    #[test]
+    fn completed_rails_use_the_later_mask_family_than_pending_rails() {
+        let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
+        let mut state = fixture_state();
+        let origin = state.map.view_origin;
+        state.map[origin].terrain = TerrainKind::Plains;
+        state.map[origin].gate = 0;
+        state.map[origin].rendering = TileRendering::default();
+        state.map[origin].transport_links = TileTransportLinks::EAST;
+        state.map[origin].pending_rail_links = TileTransportLinks::empty();
+        state.map[origin].flags = TileFlags::empty();
+        state.map[origin].edge_resources = [None, None];
+
+        let completed = compose_strategic_tile(
+            &state,
+            origin,
+            sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
+        );
+        assert!(completed.contains(&(0x80 | 0x19)));
+
+        state.map[origin].transport_links = TileTransportLinks::empty();
+        state.map[origin].pending_rail_links = TileTransportLinks::EAST;
+        let pending = compose_strategic_tile(
+            &state,
+            origin,
+            sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
+        );
+        assert!(pending.contains(&(0x80 | 0x1f)));
+    }
+
+    #[test]
+    fn prospectable_resources_use_extractive_overlay_or_undeveloped_icon() {
+        let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
+        let mut state = fixture_state();
+        let origin = state.map.view_origin;
+        let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
+        state.map[origin].terrain = TerrainKind::Hills;
+        state.map[origin].gate = 2;
+        state.map[origin].flags = TileFlags::empty();
+        state.map[origin].edge_resources = [Some(ResourceKind::Coal), None];
+        state.map[origin].development.extractive = DevelopmentLevel::ZERO;
+        state.map[origin].development.surface = DevelopmentLevel::ZERO;
+        state.map[origin].development.resource_visible_to_majors[nation] = true;
+
+        let undeveloped = compose_strategic_tile(
+            &state,
+            origin,
+            sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
+        );
+        assert!(
+            undeveloped
+                .iter()
+                .any(|&pixel| (0xa0..0xb0).contains(&pixel))
+        );
+
+        state.map[origin].development.extractive = DevelopmentLevel::new(1);
+        let developed = compose_strategic_tile(
+            &state,
+            origin,
+            sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
+        );
+        assert!(developed.contains(&0xb0));
+    }
+
+    #[test]
+    fn city_tiles_blit_the_capital_improvement_ink() {
+        let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
+        let mut state = fixture_state();
+        let origin = state.map.view_origin;
+        state.map[origin].terrain = TerrainKind::Plains;
+        state.map[origin].gate = 1;
+        state.map[origin].flags = TileFlags::from_bits_retain(1);
+        state.map[origin].former_owner_nation = Some(TileOwnerTag::from_nation(NationId::new(6)));
+        state.map[origin].edge_resources = [None, None];
+
+        let pixels = compose_strategic_tile(
+            &state,
+            origin,
+            sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
+        );
+        assert!(pixels.contains(&0x90));
+    }
+
+    #[test]
+    fn nation_borders_use_the_owner_palette() {
+        let mut pixels = vec![1_u8; (TILE_SIZE * TILE_SIZE) as usize];
+        draw_border(
+            &mut pixels,
+            0,
+            MAJOR_NATION_BORDER_PALETTES[6],
+            MINOR_NATION_BORDER_PALETTE,
+        );
+        assert!(pixels.contains(&MAJOR_NATION_BORDER_PALETTES[6]));
+        assert!(pixels.contains(&MINOR_NATION_BORDER_PALETTE));
     }
 }
