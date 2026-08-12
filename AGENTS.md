@@ -1,81 +1,72 @@
-# Imperialism repository guide
+# Imperialism Rust workspace
 
-This repository has two implementations of **Imperialism (1997)**:
+This is an independent Cargo workspace. Follow `../AGENTS.md` first; this file contains only
+Rust-specific invariants.
 
-- `decomp/`: the retail-faithful C++ reconstruction and executable oracle.
-- `rust/`: the new Rust implementation.
+## Architecture
 
-Retail `Imperialism.exe`, its behavior, and its real data/file/network formats are the ground truth.
-Follow the nearest scoped `AGENTS.md` and run tools from that subproject.
+Keep the existing four-crate split:
 
-## Simplicity is a requirement
+- `imperialism-core`: authoritative deterministic game state, rules, and typed domain IDs. No Bevy.
+- `imperialism-formats`: retail file decoding/import and retail representation quirks.
+- `imperialism-app`: Bevy presentation, input, audio, and lifecycle.
+- `imperialism-testkit`: process-isolated C++ oracle and semantic comparison support.
 
-Write the smallest clear solution that satisfies the current task and retail behavior. This project
-has no external users to preserve compatibility for and no reason to design for hypothetical ones.
+Do not split the core into subsystem crates or introduce another authoritative state model without a
+concrete need.
 
-- Prefer changing an existing path over adding a parallel path.
-- Prefer concrete code over abstraction. Do not add a trait/interface/base class, factory, builder,
-  registry, plugin system, protocol layer, wrapper, feature flag, configuration mode, generator, or
-  generic framework unless a concrete current need makes the direct solution inadequate.
-- One implementation or one caller is not evidence that a general abstraction is needed. A little
-  duplication is often cheaper than the wrong abstraction; refactor when a real repeated shape exists.
-- Do not turn a one-off command, script, conversion, or investigation into permanent tooling unless it
-  is genuinely recurring.
-- Do not implement adjacent improvements merely because they are possible. Finish the requested
-  behavior; record genuinely useful follow-up work in Beads.
-- Delete obsolete code, tests, docs, formats, and tooling when replacing them. Fewer moving parts are
-  better.
-- Reuse the mechanisms already present before inventing another layer.
+Port retail behavior, not the recovered C++ architecture. C++ class hierarchy, ownership, ABI,
+integer storage widths, sentinels, offsets, and control flow are evidence, not Rust design. Keep
+retail-layout ugliness at format/import/oracle boundaries unless it is itself observable game
+semantics.
 
-When choosing between a direct special-purpose implementation and a more flexible design for imagined
-future requirements, choose the direct implementation.
+## Domain model
 
-## Port primary behavior first
+- Keep gameplay state and rules in `imperialism-core`. Prefer direct typed operations and queries over
+  command buses, event-sourcing layers, generic validators, or framework-like indirection.
+- Core owns deterministic sequencing and mutation. The app owns presentation decisions and projects
+  core state into Bevy; ECS is not the gameplay database.
+- Keep one authoritative representation for each fact and derive secondary facts. Prefer semantic
+  Rust types, typed IDs, and `Option` over raw retail storage conventions.
+- Return ordinary values or narrow typed outcomes. Represent effects only for ordered observable
+  output not already present in state, such as sounds, notifications, or modal/acknowledgement work.
+  Do not emit events that merely restate mutations.
+- Preserve retail iteration order, collection identity, RNG state, and other observable semantics.
+  Do not sort or normalize state merely to make comparison easier.
+- Treat supported retail files and repository-owned fixtures as trusted inputs. Use `Result` for
+  genuinely recoverable I/O/decoding failures, typed outcomes for legal gameplay rejection, and
+  assertions/`expect` for broken internal invariants. Do not repeatedly validate whole state around
+  ordinary operations.
+- Use ordinary Rust arithmetic and widths unless retail-visible overflow or storage width is proven
+  to matter to behavior.
 
-The purpose of this repository is to recover and run Imperialism, not to maximize test count or build
-support infrastructure. Spend feature work on production code that extends an executable gameplay,
-format, or UI path.
+## Bevy UI
 
-- Port the retail operation and connect it to its real caller before expanding adjacent helpers.
-- Keep rules in production code. Do not leave faithful implementations reachable only from tests.
-- Test the smallest meaningful behavior boundary, preferably through the existing retail differential
-  and complete semantic state comparison. A focused success case and a materially different edge or
-  reversal are usually enough.
-- Do not add Rust unit tests for obvious constructors, getters, constant tables, serde spelling, simple
-  matches, or private plumbing unless they protect a demonstrated bug or ambiguous retail behavior.
-- Do not build test frameworks, generators, fixtures, adapters, or diagnostic commands merely to make
-  testing more convenient. Extend existing tooling only when the current vertical slice cannot be
-  verified without it.
-- Do not delay primary logic to pursue exhaustive test matrices, coverage targets, warning cleanup, or
-  speculative malformed-input cases. Validate risks in proportion to their retail relevance.
-- In internal Rust crates, use wildcard imports where they keep rule code direct. If a Clippy lint
-  consistently demands boilerplate or a less faithful shape without finding a concrete defect, allow
-  it at the narrowest useful scope instead of churning the implementation.
-- A passing helper test does not make disconnected code complete. Completion means the recovered logic
-  is authoritative state and is invoked by the intended production path.
+Use Bevy directly. Recovered UI should become native Bevy/BSN hierarchy, with handwritten code limited
+to behavior wiring and small reusable helpers. Do not add a parallel generic UI tree, node registry,
+loader, catalog, or imperative scene abstraction beside Bevy entities.
 
-When time or scope forces a choice, implement more of the real retail path and keep only the tests
-needed to prove that path.
+Generated UI is generated: change the recovery evidence or generator, then regenerate it. Use the
+`ui-recovery` skill for that workflow.
 
-## Compatibility
+## Retail fidelity
 
-The only compatibility target is retail Imperialism. Repository-owned APIs and formats may be broken
-freely: update all current producers, consumers, fixtures, and tests together and delete the old form.
+Prefer recovered C++ source and the existing process oracle when retail semantics are uncertain. Use
+Ghidra or `reccmp` only for deliberate reverse-engineering work, not routine Rust development.
 
-Do **not** add compatibility shims, deprecated aliases, legacy modes, dual readers/writers, V1/V2
-protocol forks, version negotiation, migrations, or fallback paths for our own previous designs.
-Version something only when retail itself has distinct versions or two forms must actually coexist now.
+When a change claims retail behavior, compare the complete relevant semantic state, operation result,
+and ordered non-state effects. Extend the existing oracle only when it cannot observe the required
+fact; do not create another protocol or harness for convenience. Use the `port-behavior` skill for
+cross-implementation gameplay work.
 
-The Rust implementation may use the C++ reconstruction as an external process oracle, but must not
-link to it or reproduce accidental C++/MFC/ABI structure. `fixtures/retail/` is retail evidence, not a
-generic shared-code namespace.
+## Commands
 
-## Work hygiene
+Run from `rust/`:
 
-- Use Beads for durable task state and follow-ups; run `bd prime` when context is missing.
-- Preserve unrelated working-tree changes. Never use blanket stash/reset/restore/clean operations to
-  escape a failure.
-- Keep commits and diffs scoped. Push or open a PR only when requested.
-- Do not weaken checks or rewrite policy baselines merely to make them green.
-- Put standing invariants in the nearest `AGENTS.md`, repeatable procedures in skills, and durable
-  evidence in focused docs. Do not add worklogs or checked-in agent plans.
+```sh
+cargo fmt --all -- --check
+cargo clippy --workspace --all-targets -- -D warnings
+cargo test --workspace
+```
+
+Use the narrowest useful test while iterating, then run all three before committing.
