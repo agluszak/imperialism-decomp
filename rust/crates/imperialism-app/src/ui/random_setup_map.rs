@@ -1,4 +1,4 @@
-use super::UiAssetResources;
+use super::RetailUiAssets;
 use super::random_setup::{RandomGameSetup, RandomSetupPreview};
 use super::retail::{RetailTag, find_descendant};
 use crate::RetailAssetsResource;
@@ -84,7 +84,7 @@ pub(crate) fn attach_random_setup_meanings(
 
 fn sync_random_setup_coat(
     setup: Res<RandomGameSetup>,
-    mut pictures: UiAssetResources,
+    mut pictures: RetailUiAssets,
     mut coats: Query<(&mut RandomSetupCoat, &mut ImageNode)>,
 ) {
     let added = coats.iter_mut().any(|(coat, _)| coat.is_added());
@@ -118,7 +118,7 @@ fn coat_picture_id(nation: MajorNationId) -> PictureId {
 fn sync_random_setup_flag(
     mut commands: Commands,
     setup: Res<RandomGameSetup>,
-    mut pictures: UiAssetResources,
+    mut pictures: RetailUiAssets,
     mut flags: Query<(Entity, &mut RandomSetupFlag, Option<&mut ImageNode>)>,
     mut atlas_transparency_applied: Local<bool>,
 ) {

@@ -39,10 +39,12 @@ the decomp uses them.
   example a strategic base-terrain key of view origin plus visible tile rendering, or city
   session/selection/`Added` change detection), not from broad dirty-marker components or
   `GameSession`-wide full redraws.
-- Recovered resource evidence is compiled into native Bevy scenes. Use `RetailTag` only to bind
-  generated retail controls to typed application behavior immediately after spawning. After that,
-  `Entity` and `ChildOf` are the only runtime identity and hierarchy. Do not introduce another
-  generic UI representation, node index, registry, or loader.
+- Recovered resource evidence is compiled into code-defined BSN scenes containing native Bevy
+  components. Keep repeated geometry and retail asset access in the small handwritten scene helpers;
+  generated code should remain declarative and callers should use `Commands::spawn_scene`. Use
+  `RetailTag` only to bind generated retail controls to typed application behavior immediately after
+  spawning. After that, `Entity` and `ChildOf` are the only runtime identity and hierarchy. Do not
+  introduce another generic UI representation, node index, registry, imperative spawner, or loader.
 - Separate planning from mutation for order UI: use `can_set_city_order_quantity` (or a plan API)
   to decide Accept enablement; do not mutate-and-rollback authoritative state as a probe.
 - Return operation-specific results when callers need them. Keep effects only for ordered

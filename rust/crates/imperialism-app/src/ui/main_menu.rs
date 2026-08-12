@@ -1,5 +1,4 @@
 use crate::AppState;
-use crate::ui::UiAssetResources;
 use crate::ui::generated;
 use crate::ui::retail::{RetailTag, find_descendant};
 use bevy::app::AppExit;
@@ -33,8 +32,8 @@ pub(crate) fn register_main_menu_logic(app: &mut App) {
     app.add_observer(on_main_menu_activate);
 }
 
-fn enter_main_menu(mut commands: Commands, mut assets: UiAssetResources) {
-    let root = generated::startup_1500(&mut commands, &mut assets);
+fn enter_main_menu(mut commands: Commands) {
+    let root = commands.spawn_scene(generated::startup_1500()).id();
     commands
         .entity(root)
         .insert((MainMenuRoot, DespawnOnExit(AppState::MainMenu)));

@@ -19,7 +19,7 @@ pub(crate) use main_menu::MainMenuPlugin;
 pub(crate) use random_setup::GameSession;
 pub(crate) use random_setup::RandomSetupPlugin;
 pub(crate) use random_setup_map::MapPreviewPlugin;
-pub(crate) use retail::{RetailUiAssets as UiAssetResources, RetailUiPlugin};
+pub(crate) use retail::{RetailUiAssets, RetailUiPlugin};
 pub(crate) use trade::TradePlugin;
 pub(crate) use transport::TransportPlugin;
 

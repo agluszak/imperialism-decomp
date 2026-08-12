@@ -44,7 +44,7 @@ pub(in crate::ui::city) struct ArmoryRowChoice {
 
 pub(in crate::ui::city) fn configure_training_dialog(
     commands: &mut Commands,
-    assets: &UiAssetResources,
+    assets: &RetailUiAssets,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
@@ -120,7 +120,7 @@ pub(in crate::ui::city) fn bind_training_dialog(
 
 pub(in crate::ui::city) fn configure_armory_dialog(
     commands: &mut Commands,
-    assets: &UiAssetResources,
+    assets: &RetailUiAssets,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,

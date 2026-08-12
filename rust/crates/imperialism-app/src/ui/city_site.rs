@@ -1,4 +1,4 @@
-use crate::ui::UiAssetResources;
+use crate::ui::RetailUiAssets;
 use crate::ui::generated;
 use crate::ui::random_setup::GameSession;
 use crate::ui::retail::ModalDialog;
@@ -54,8 +54,8 @@ impl Plugin for CitySitePlugin {
     }
 }
 
-fn enter_city_site(mut commands: Commands, mut assets: UiAssetResources) {
-    let root = generated::startup_952(&mut commands, &mut assets);
+fn enter_city_site(mut commands: Commands) {
+    let root = commands.spawn_scene(generated::startup_952()).id();
     commands
         .entity(root)
         .insert((CitySiteRoot, DespawnOnExit(AppState::CitySite)));
@@ -66,7 +66,7 @@ fn bind_city_site(
     root: Single<Entity, Added<CitySiteRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    mut assets: UiAssetResources,
+    mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
     bind_city_site_controls(&mut commands, *root, &children, &tags);
@@ -164,7 +164,6 @@ fn on_city_site_map_click(
     session: Res<GameSession>,
     maps: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
     mut commands: Commands,
-    mut assets: UiAssetResources,
 ) {
     if !dialog_open.is_empty() {
         return;
@@ -180,11 +179,11 @@ fn on_city_site_map_click(
     let Ok(site) = validate_capital_site_selection(&session.0, nation, tile) else {
         return;
     };
-    open_new_city_dialog(&mut commands, &mut assets, site);
+    open_new_city_dialog(&mut commands, site);
 }
 
-fn open_new_city_dialog(commands: &mut Commands, assets: &mut UiAssetResources, site: CapitalSite) {
-    let root = generated::startup_953(commands, assets);
+fn open_new_city_dialog(commands: &mut Commands, site: CapitalSite) {
+    let root = commands.spawn_scene(generated::startup_953()).id();
     commands.entity(root).insert((
         NewCityDialogRoot(site),
         ModalDialog,

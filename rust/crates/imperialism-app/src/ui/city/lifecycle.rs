@@ -22,7 +22,7 @@ pub(in crate::ui::city) fn on_city_canvas_click(
     dialogs: Query<(&CityBuildingDialog, &GlobalZIndex)>,
     mut session: ResMut<GameSession>,
     mut commands: Commands,
-    mut assets: UiAssetResources,
+    mut assets: RetailUiAssets,
 ) {
     let Ok((cursor, canvas)) = canvases.get(click.entity) else {
         return;
@@ -71,33 +71,34 @@ pub(in crate::ui::city) fn on_city_canvas_click(
         }
     }
     let z_index = dialogs.iter().map(|(_, z)| z.0).max().unwrap_or(0) + 1;
-    open_city_dialog(&mut commands, &mut assets, building.slot, None, z_index);
+    open_city_dialog(&mut commands, building.slot, None, z_index);
 }
 
 pub(in crate::ui::city) fn open_city_dialog(
     commands: &mut Commands,
-    assets: &mut UiAssetResources,
     slot: CityFacilitySlot,
     saved_position: Option<IVec2>,
     z_index: i32,
 ) {
     let root = match slot {
-        CityFacilitySlot::TextileMill => generated::citydlog_9200(commands, assets),
-        CityFacilitySlot::ClothingFactory => generated::citydlog_9201(commands, assets),
-        CityFacilitySlot::SteelMill => generated::citydlog_9202(commands, assets),
-        CityFacilitySlot::Metalworks => generated::citydlog_9203(commands, assets),
-        CityFacilitySlot::LumberMill => generated::citydlog_9204(commands, assets),
-        CityFacilitySlot::FurnitureFactory => generated::citydlog_9205(commands, assets),
-        CityFacilitySlot::OilRefinery => generated::citydlog_9206(commands, assets),
-        CityFacilitySlot::Shipyard => generated::shipyard_9207(commands, assets),
-        CityFacilitySlot::Armory => generated::armory_9208(commands, assets),
-        CityFacilitySlot::TradeSchool => generated::citydlog_9209(commands, assets),
-        CityFacilitySlot::University => generated::univ_9210(commands, assets),
-        CityFacilitySlot::PowerPlant => generated::citydlog_9211(commands, assets),
-        CityFacilitySlot::FoodProcessing => generated::citydlog_9212(commands, assets),
-        CityFacilitySlot::Warehouse => generated::citydlog_9213(commands, assets),
-        CityFacilitySlot::Transport => generated::citydlog_9214(commands, assets),
-        CityFacilitySlot::RegionalPopulation => generated::citydlog_9215(commands, assets),
+        CityFacilitySlot::TextileMill => commands.spawn_scene(generated::citydlog_9200()).id(),
+        CityFacilitySlot::ClothingFactory => commands.spawn_scene(generated::citydlog_9201()).id(),
+        CityFacilitySlot::SteelMill => commands.spawn_scene(generated::citydlog_9202()).id(),
+        CityFacilitySlot::Metalworks => commands.spawn_scene(generated::citydlog_9203()).id(),
+        CityFacilitySlot::LumberMill => commands.spawn_scene(generated::citydlog_9204()).id(),
+        CityFacilitySlot::FurnitureFactory => commands.spawn_scene(generated::citydlog_9205()).id(),
+        CityFacilitySlot::OilRefinery => commands.spawn_scene(generated::citydlog_9206()).id(),
+        CityFacilitySlot::Shipyard => commands.spawn_scene(generated::shipyard_9207()).id(),
+        CityFacilitySlot::Armory => commands.spawn_scene(generated::armory_9208()).id(),
+        CityFacilitySlot::TradeSchool => commands.spawn_scene(generated::citydlog_9209()).id(),
+        CityFacilitySlot::University => commands.spawn_scene(generated::univ_9210()).id(),
+        CityFacilitySlot::PowerPlant => commands.spawn_scene(generated::citydlog_9211()).id(),
+        CityFacilitySlot::FoodProcessing => commands.spawn_scene(generated::citydlog_9212()).id(),
+        CityFacilitySlot::Warehouse => commands.spawn_scene(generated::citydlog_9213()).id(),
+        CityFacilitySlot::Transport => commands.spawn_scene(generated::citydlog_9214()).id(),
+        CityFacilitySlot::RegionalPopulation => {
+            commands.spawn_scene(generated::citydlog_9215()).id()
+        }
     };
     commands.entity(root).insert((
         CityBuildingDialog {
@@ -168,7 +169,7 @@ pub(in crate::ui::city) fn bind_city_dialogs(
     dialogs: Query<(Entity, &CityBuildingDialog), Added<CityBuildingDialog>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    mut assets: UiAssetResources,
+    mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
     for (root, dialog) in &dialogs {
@@ -242,7 +243,6 @@ pub(in crate::ui::city) fn restore_city_dialogs(
     roots: Query<(), Added<CityScreenRoot>>,
     session: Res<GameSession>,
     mut commands: Commands,
-    mut assets: UiAssetResources,
 ) {
     if roots.is_empty() {
         return;
@@ -260,7 +260,6 @@ pub(in crate::ui::city) fn restore_city_dialogs(
         }
         open_city_dialog(
             &mut commands,
-            &mut assets,
             slot,
             Some(IVec2::new(
                 i32::from(state.current),

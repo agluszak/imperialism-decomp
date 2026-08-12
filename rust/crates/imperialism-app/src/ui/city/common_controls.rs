@@ -41,7 +41,7 @@ pub(in crate::ui::city) struct IndustryView {
 }
 
 pub(in crate::ui::city) fn city_building_name(
-    assets: &UiAssetResources,
+    assets: &RetailUiAssets,
     slot: CityFacilitySlot,
 ) -> String {
     city_string(assets, CITY_BUILDING_STRING_GROUP, slot as i16)
@@ -49,7 +49,7 @@ pub(in crate::ui::city) fn city_building_name(
 
 pub(in crate::ui::city) fn configure_industry_dialog(
     commands: &mut Commands,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
@@ -83,9 +83,9 @@ pub(in crate::ui::city) fn bind_city_order_control(
     step: i16,
 ) -> Entity {
     let row = find_descendant(root, binding.tag, children, tags);
-    let left = find_child_or_descendant(row, decrease_tag, children, tags);
-    let right = find_child_or_descendant(row, increase_tag, children, tags);
-    let quantity = find_child_or_descendant(row, quantity_tag, children, tags);
+    let left = find_descendant(row, decrease_tag, children, tags);
+    let right = find_descendant(row, increase_tag, children, tags);
+    let quantity = find_descendant(row, quantity_tag, children, tags);
     commands.entity(left).insert(CityOrderAdjust {
         order: binding.order,
         delta: -step,
@@ -120,7 +120,7 @@ fn bind_industry_amount_bars(
             1,
         );
         let row = find_descendant(root, binding.tag, children, tags);
-        let bar = find_child_or_descendant(row, fourcc!("bar "), children, tags);
+        let bar = find_descendant(row, fourcc!("bar "), children, tags);
         let fill = commands
             .spawn((
                 Node {

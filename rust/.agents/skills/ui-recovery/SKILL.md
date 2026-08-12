@@ -13,12 +13,16 @@ Run Rust work from `rust/` and generator work from `../decomp/`.
    hand-author a parallel Bevy screen description.
 3. Run the decomp UI generator check and regenerate the checked-in native Rust source through its
    explicit sibling output path.
-4. Emit native Bevy components and `ChildOf` directly in `imperialism-app`; invoke one direct typed
-   core operation rather than mutating
+4. Emit code-defined BSN containing native Bevy components and `Children` in `imperialism-app`.
+   Reuse the small handwritten retail scene functions/templates for geometry, pictures, and fonts;
+   do not generate commands, asset-cache access, resource-node locals, or a generic scene component.
+   Spawn the concrete generated function with `Commands::spawn_scene`; invoke one direct typed core
+   operation rather than mutating
    authoritative state in ECS. Do not invent a universal `GameCommand` layer for UI wiring. Project
    returned state, results, and required non-state effects.
 5. Preserve the fixed logical canvas, retail hierarchy and coordinates, deterministic tag/event
-   mapping, resource-file-scoped IDs, and nearest-neighbor presentation rules.
+   mapping, and nearest-neighbor presentation rules. Resource offsets and symbolic node IDs remain
+   recovery evidence used to reconstruct the tree; do not emit them as runtime identity.
 6. Add focused generator and Bevy behavior tests. Use a runtime/differential check when
    asserting live retail behavior rather than static resource structure.
 

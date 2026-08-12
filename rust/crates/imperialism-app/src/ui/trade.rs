@@ -1,9 +1,9 @@
-use super::UiAssetResources;
+use super::RetailUiAssets;
 use super::format_currency;
 use super::game_shell::bind_native_game_screen_nav;
 use super::generated;
 use super::random_setup::GameSession;
-use super::retail::{RetailTag, find_child_or_descendant, find_descendant};
+use super::retail::{RetailTag, find_descendant};
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -212,8 +212,8 @@ impl Plugin for TradePlugin {
     }
 }
 
-fn enter_trade_screen(mut commands: Commands, mut assets: UiAssetResources) {
-    let root = generated::trade_2009(&mut commands, &mut assets);
+fn enter_trade_screen(mut commands: Commands) {
+    let root = commands.spawn_scene(generated::trade_2009()).id();
     commands
         .entity(root)
         .insert((TradeScreen, DespawnOnExit(AppState::Trade)));
@@ -224,7 +224,7 @@ fn bind_trade_screen(
     root: Single<Entity, Added<TradeScreen>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    mut assets: UiAssetResources,
+    mut assets: RetailUiAssets,
     mut session: ResMut<GameSession>,
 ) {
     bind_native_game_screen_nav(
@@ -324,7 +324,7 @@ fn bind_trade_controls(
             commands.entity(row).insert(Visibility::Hidden);
         }
 
-        let card = find_child_or_descendant(row, fourcc!("card"), children, tags);
+        let card = find_descendant(row, fourcc!("card"), children, tags);
         let card_pictures = pictures.for_button(binding.commodity, TradeCardKind::Bid);
         commands.entity(card).insert((
             UiButton,
@@ -339,7 +339,7 @@ fn bind_trade_controls(
                 pictures: card_pictures,
             },
         ));
-        let offer = find_child_or_descendant(row, fourcc!("offr"), children, tags);
+        let offer = find_descendant(row, fourcc!("offr"), children, tags);
         let offer_pictures = pictures.for_button(binding.commodity, TradeCardKind::Offer);
         commands.entity(offer).insert((
             UiButton,
@@ -356,7 +356,7 @@ fn bind_trade_controls(
         ));
 
         for (tag, delta) in [(fourcc!("left"), -1), (fourcc!("rght"), 1)] {
-            let step = find_child_or_descendant(row, tag, children, tags);
+            let step = find_descendant(row, tag, children, tags);
             commands.entity(step).insert((
                 TradeAction::Step {
                     commodity: binding.commodity,
@@ -366,15 +366,15 @@ fn bind_trade_controls(
             ));
         }
 
-        let sell = find_child_or_descendant(row, fourcc!("Sell"), children, tags);
+        let sell = find_descendant(row, fourcc!("Sell"), children, tags);
         commands
             .entity(sell)
             .insert(TradeDisplay::Sell(binding.commodity));
-        let green = find_child_or_descendant(row, fourcc!("gree"), children, tags);
+        let green = find_descendant(row, fourcc!("gree"), children, tags);
         commands
             .entity(green)
             .insert(TradeDisplay::Offer(binding.commodity));
-        let bar = find_child_or_descendant(row, fourcc!("bar "), children, tags);
+        let bar = find_descendant(row, fourcc!("bar "), children, tags);
         commands.entity(bar).insert((
             TradeAction::Amount(binding.commodity),
             TradeDisplay::Offer(binding.commodity),

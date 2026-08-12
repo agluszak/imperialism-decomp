@@ -1,4 +1,4 @@
-use super::UiAssetResources;
+use super::RetailUiAssets;
 use super::random_setup::GameSession;
 use super::retail::{RetailTag, find_descendant};
 use crate::RetailAssetsResource;
@@ -98,7 +98,7 @@ pub(crate) fn bind_strategic_base_terrain(
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
     state: &GameState,
 ) -> Entity {
     let map = find_descendant(root, MAP_TAG, children, tags);
@@ -149,7 +149,7 @@ pub(crate) fn sync_strategic_base_terrain(
     }
 }
 
-fn load_strategic_terrain_pictures(assets: &UiAssetResources) -> Vec<IndexedPicture> {
+fn load_strategic_terrain_pictures(assets: &RetailUiAssets) -> Vec<IndexedPicture> {
     (0..TERRAIN_ATLAS_FRAME_COUNT)
         .map(|frame| {
             let picture_id = strategic_terrain_picture_id(frame);
@@ -166,7 +166,7 @@ fn load_strategic_terrain_pictures(assets: &UiAssetResources) -> Vec<IndexedPict
         .collect()
 }
 
-fn load_strategic_river_masks(assets: &UiAssetResources) -> Vec<IndexedPicture> {
+fn load_strategic_river_masks(assets: &RetailUiAssets) -> Vec<IndexedPicture> {
     (0..RIVER_MASK_PICTURE_COUNT)
         .map(|mask| {
             let picture_id = river_mask_picture_id(mask);
