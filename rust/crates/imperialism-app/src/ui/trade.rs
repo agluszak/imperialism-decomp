@@ -326,33 +326,14 @@ fn bind_trade_controls(
 
         let card = find_descendant(row, fourcc!("card"), children, tags);
         let card_pictures = pictures.for_button(binding.commodity, TradeCardKind::Bid);
-        commands.entity(card).insert((
-            UiButton,
-            ImageNode::new(card_pictures.idle.clone()),
-            TradeAction::Card {
-                commodity: binding.commodity,
-                kind: TradeCardKind::Bid,
-            },
-            TradeDisplay::Card {
-                commodity: binding.commodity,
-                kind: TradeCardKind::Bid,
-                pictures: card_pictures,
-            },
-        ));
         let offer = find_descendant(row, fourcc!("offr"), children, tags);
         let offer_pictures = pictures.for_button(binding.commodity, TradeCardKind::Offer);
-        commands.entity(offer).insert((
-            UiButton,
-            ImageNode::new(offer_pictures.idle.clone()),
-            TradeAction::Card {
-                commodity: binding.commodity,
-                kind: TradeCardKind::Offer,
-            },
-            TradeDisplay::Card {
-                commodity: binding.commodity,
-                kind: TradeCardKind::Offer,
-                pictures: offer_pictures,
-            },
+        commands.entity(card).despawn();
+        commands.entity(offer).despawn();
+        commands.entity(row).apply_scene(trade_order_controls(
+            binding.commodity,
+            card_pictures,
+            offer_pictures,
         ));
 
         for (tag, delta) in [(fourcc!("left"), -1), (fourcc!("rght"), 1)] {
@@ -389,6 +370,59 @@ fn bind_trade_controls(
             row_layout,
             row_color,
         ));
+    }
+}
+
+fn trade_order_controls(
+    commodity: TradeCommodity,
+    bid: TradeCardPictures,
+    offer: TradeCardPictures,
+) -> impl Scene {
+    let bid_image = bid.idle.clone();
+    let offer_image = offer.idle.clone();
+    bsn! {
+        Children [
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(82),
+                    top: px(0),
+                    width: px(17),
+                    height: px(20),
+                }
+                UiButton
+                template(move |_context| Ok(ImageNode::new(bid_image.clone())))
+                template(move |_context| Ok(TradeAction::Card {
+                    commodity,
+                    kind: TradeCardKind::Bid,
+                }))
+                template(move |_context| Ok(TradeDisplay::Card {
+                    commodity,
+                    kind: TradeCardKind::Bid,
+                    pictures: bid.clone(),
+                }))
+            ),
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(163),
+                    top: px(0),
+                    width: px(17),
+                    height: px(20),
+                }
+                UiButton
+                template(move |_context| Ok(ImageNode::new(offer_image.clone())))
+                template(move |_context| Ok(TradeAction::Card {
+                    commodity,
+                    kind: TradeCardKind::Offer,
+                }))
+                template(move |_context| Ok(TradeDisplay::Card {
+                    commodity,
+                    kind: TradeCardKind::Offer,
+                    pictures: offer.clone(),
+                }))
+            ),
+        ]
     }
 }
 
@@ -602,15 +636,18 @@ fn sync_trade_screen(
                 node.left = Val::Px(left);
                 node.width = Val::Px(width);
                 node.height = Val::Px(20.0);
-                let visible = !trade_row_locked(*commodity)
-                    && match kind {
-                        TradeCardKind::Bid => active || (capacity > 0 && bid_count < 4),
-                        TradeCardKind::Offer => {
-                            capacity > 0
-                                && (active || major.city.stockpile[commodity.resource()] > 0)
-                        }
-                    };
-                set_trade_control(&mut commands, entity, visible);
+                match kind {
+                    TradeCardKind::Bid => {
+                        let enabled = !trade_row_locked(*commodity) && (active || bid_count < 4);
+                        set_trade_interaction(&mut commands, entity, enabled);
+                    }
+                    TradeCardKind::Offer => {
+                        let visible = capacity > 0
+                            && !trade_row_locked(*commodity)
+                            && (active || major.city.stockpile[commodity.resource()] > 0);
+                        set_trade_control(&mut commands, entity, visible);
+                    }
+                }
             }
             TradeDisplay::Step(commodity) => {
                 let quantity = match session.0.player_trade_order(nation, *commodity) {
@@ -747,6 +784,15 @@ fn set_trade_control(commands: &mut Commands, entity: Entity, visible: bool) {
         Visibility::Hidden
     });
     if visible {
+        commands.entity(entity).remove::<InteractionDisabled>();
+    } else {
+        commands.entity(entity).insert(InteractionDisabled);
+    }
+}
+
+fn set_trade_interaction(commands: &mut Commands, entity: Entity, enabled: bool) {
+    commands.entity(entity).insert(Visibility::Visible);
+    if enabled {
         commands.entity(entity).remove::<InteractionDisabled>();
     } else {
         commands.entity(entity).insert(InteractionDisabled);

@@ -31,6 +31,17 @@ pub struct TransportAllocation {
     secondary: Option<ResourceKind>,
 }
 
+/// The authoritative values displayed by one retail transport-ledger row.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct TransportRowStatus {
+    pub allocated: i16,
+    pub available: i16,
+    pub limit: Option<i16>,
+    pub adjustable: bool,
+    pub can_decrease: bool,
+    pub can_increase: bool,
+}
+
 impl TransportAllocation {
     pub const COTTON_AND_WOOL: Self = Self::pair(ResourceKind::Cotton, ResourceKind::Wool);
     pub const TIMBER: Self = Self::single(ResourceKind::Timber);
@@ -103,11 +114,6 @@ impl GameState {
         let value = match order {
             PlayerTradeOrder::None => 0,
             PlayerTradeOrder::Buy => {
-                if current != PlayerTradeOrder::Buy
-                    && self.nations.majors[nation].economy.capacities.trade_offer <= 0
-                {
-                    return current;
-                }
                 let bid_count = all_trade_commodities()
                     .filter(|&row| self.player_trade_order(nation, row) == PlayerTradeOrder::Buy)
                     .count();
@@ -283,6 +289,28 @@ impl GameState {
             major.update_need_target(allocation.primary, new_target);
         }
         true
+    }
+
+    pub fn transport_row_status(
+        &self,
+        nation: MajorNationId,
+        allocation: TransportAllocation,
+    ) -> TransportRowStatus {
+        let major = &self.nations.majors[nation];
+        let economy = &major.economy;
+        let available = transport_allocation_total(&economy.need_current_by_type, allocation);
+        let allocated = transport_allocation_total(&economy.need_target_by_type, allocation);
+        let adjustable = available != 0;
+        TransportRowStatus {
+            allocated,
+            available,
+            limit: transport_row_limit(major, allocation),
+            adjustable,
+            can_decrease: adjustable && allocated > 0,
+            can_increase: adjustable
+                && allocated < available
+                && economy.capacities.reserved_transport != economy.capacities.transport,
+        }
     }
 
     /// Spends one lumber and one steel to add one transport-capacity unit.
@@ -481,6 +509,49 @@ fn transport_allocation_total(
     amounts[primary] + secondary.map_or(0, |resource| amounts[resource])
 }
 
+fn transport_row_limit(major: &MajorNation, allocation: TransportAllocation) -> Option<i16> {
+    let city = &major.city;
+    let building = |slot| {
+        city.building_type(
+            slot,
+            &major.economy,
+            major.common.owned_region_count() as i32,
+        )
+    };
+    let deficit = if allocation == TransportAllocation::COTTON_AND_WOOL {
+        building(CityFacilitySlot::TextileMill) * 2
+            - city.stockpile[ResourceKind::Cotton]
+            - city.stockpile[ResourceKind::Wool]
+    } else if allocation == TransportAllocation::TIMBER {
+        building(CityFacilitySlot::LumberMill) * 2 - city.stockpile[ResourceKind::Timber]
+    } else if allocation == TransportAllocation::COAL {
+        building(CityFacilitySlot::SteelMill) - city.stockpile[ResourceKind::Coal]
+    } else if allocation == TransportAllocation::IRON {
+        building(CityFacilitySlot::SteelMill) - city.stockpile[ResourceKind::Iron]
+    } else if allocation == TransportAllocation::OIL {
+        building(CityFacilitySlot::OilRefinery) * 2 - city.stockpile[ResourceKind::Oil]
+    } else if allocation == TransportAllocation::FABRIC {
+        building(CityFacilitySlot::ClothingFactory) * 2 - city.stockpile[ResourceKind::Fabric]
+    } else if allocation == TransportAllocation::LUMBER {
+        building(CityFacilitySlot::FurnitureFactory) * 2 - city.stockpile[ResourceKind::Lumber]
+    } else if allocation == TransportAllocation::STEEL {
+        building(CityFacilitySlot::Metalworks) * 2 - city.stockpile[ResourceKind::Steel]
+    } else if allocation == TransportAllocation::FUEL {
+        building(CityFacilitySlot::PowerPlant) * 2 - city.stockpile[ResourceKind::Fuel]
+    } else if allocation == TransportAllocation::GRAIN {
+        city.population.predicted_need(ResourceKind::Grain) - city.stockpile[ResourceKind::Grain]
+    } else if allocation == TransportAllocation::FRUIT {
+        city.population.predicted_need(ResourceKind::Fruit) - city.stockpile[ResourceKind::Fruit]
+    } else if allocation == TransportAllocation::FISH_AND_LIVESTOCK {
+        city.population.predicted_need(ResourceKind::Livestock)
+            - city.stockpile[ResourceKind::Fish]
+            - city.stockpile[ResourceKind::Livestock]
+    } else {
+        return None;
+    };
+    Some(deficit.max(0))
+}
+
 fn split_transport_allocation(
     major: &mut GreatPowerState,
     primary: ResourceKind,
@@ -626,6 +697,13 @@ mod tests {
         major.need_current_by_type[ResourceKind::Fish] = 1;
         major.need_current_by_type[ResourceKind::Livestock] = 2;
 
+        let status = game.transport_row_status(nation, TransportAllocation::COTTON_AND_WOOL);
+        assert_eq!(status.allocated, 0);
+        assert_eq!(status.available, 4);
+        assert!(status.adjustable);
+        assert!(!status.can_decrease);
+        assert!(status.can_increase);
+
         // Equal prices prioritize wool in the recovered ledger.
         assert!(game.step_transport_allocation(nation, TransportAllocation::COTTON_AND_WOOL, 1));
         let major = &game.nations.majors[nation].economy;
@@ -637,6 +715,9 @@ mod tests {
         let major = &game.nations.majors[nation].economy;
         assert_eq!(major.need_target_by_type[ResourceKind::Cotton], 2);
         assert_eq!(major.need_target_by_type[ResourceKind::Wool], 0);
+        let status = game.transport_row_status(nation, TransportAllocation::COTTON_AND_WOOL);
+        assert_eq!(status.allocated, 2);
+        assert!(status.can_decrease);
 
         assert!(game.step_transport_allocation(nation, TransportAllocation::FISH_AND_LIVESTOCK, 1));
         assert!(game.step_transport_allocation(nation, TransportAllocation::FISH_AND_LIVESTOCK, 1));
@@ -674,8 +755,9 @@ mod tests {
         game.nations.majors[nation].economy.capacities.trade_offer = 0;
         assert_eq!(
             game.set_player_trade_order(nation, TradeCommodity::Cotton, PlayerTradeOrder::Buy),
-            PlayerTradeOrder::None
+            PlayerTradeOrder::Buy
         );
+        game.set_player_trade_order(nation, TradeCommodity::Cotton, PlayerTradeOrder::None);
         game.nations.majors[nation].economy.capacities.trade_offer = 4;
         assert_eq!(
             game.set_player_trade_order(nation, TradeCommodity::Fabric, PlayerTradeOrder::Sell(9)),

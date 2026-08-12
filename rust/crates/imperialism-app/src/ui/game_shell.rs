@@ -7,7 +7,8 @@ use crate::ui::retail::{RetailTag, find_descendant};
 use crate::ui::strategic_map::{bind_strategic_base_terrain, sync_strategic_base_terrain};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::Activate;
+use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::window::PrimaryWindow;
 use imperialism_core::{FlowStop, GameScreen, MajorNationId};
 use imperialism_formats::{FourCc, TRADE, fourcc};
 
@@ -63,9 +64,58 @@ impl Plugin for GameShellPlugin {
             )
             .add_systems(
                 Update,
-                sync_strategic_base_terrain.run_if(in_state(AppState::StrategicMap)),
+                (scroll_strategic_map, sync_strategic_base_terrain)
+                    .chain()
+                    .run_if(in_state(AppState::StrategicMap)),
             );
     }
+}
+
+fn scroll_strategic_map(
+    time: Res<Time>,
+    mut last_scroll_tick: Local<Option<u128>>,
+    window: Single<&Window, With<PrimaryWindow>>,
+    mut session: ResMut<GameSession>,
+) {
+    let Some(cursor) = window.cursor_position() else {
+        return;
+    };
+    let edge_mask = strategic_edge_scroll_mask(cursor, Vec2::new(window.width(), window.height()));
+    if edge_mask == 0 {
+        return;
+    }
+    let tick16 = time.elapsed().as_millis() / 16;
+    if last_scroll_tick.is_some_and(|last| last + 3 >= tick16) {
+        return;
+    }
+    *last_scroll_tick = Some(tick16);
+    session.0.map.scroll_viewport(edge_mask);
+}
+
+fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> u8 {
+    const EDGE_PIXELS: f32 = 4.0;
+    const EDGE_UP: u8 = 0x01;
+    const EDGE_DOWN: u8 = 0x02;
+    const EDGE_RIGHT: u8 = 0x04;
+    const EDGE_LEFT: u8 = 0x08;
+
+    let x = position.x;
+    let y = position.y;
+    if x <= -200.0 || y <= -200.0 || x >= dialog_size.x + 200.0 || y >= dialog_size.y + 200.0 {
+        return 0;
+    }
+    let mut edge_mask = 0;
+    if x <= EDGE_PIXELS {
+        edge_mask |= EDGE_LEFT;
+    } else if x >= dialog_size.x - EDGE_PIXELS {
+        edge_mask |= EDGE_RIGHT;
+    }
+    if y <= EDGE_PIXELS {
+        edge_mask |= EDGE_UP;
+    } else if y >= dialog_size.y - EDGE_PIXELS {
+        edge_mask |= EDGE_DOWN;
+    }
+    edge_mask
 }
 
 fn enter_strategic_map_view(mut session: ResMut<GameSession>) {
@@ -105,7 +155,7 @@ fn bind_strategic_map(
     let end = find_descendant(*root, fourcc!("DONE"), &children, &tags);
     commands
         .entity(end)
-        .insert(TurnFlowAction::FinishPlayerOrders)
+        .insert((TurnFlowAction::FinishPlayerOrders, ActivateOnPress))
         .remove::<InteractionDisabled>();
     bind_strategic_base_terrain(
         &mut commands,
@@ -292,7 +342,7 @@ pub(crate) fn bind_native_game_screen_nav(
         let leave = find_descendant(toolbar, fourcc!("end "), children, tags);
         commands
             .entity(leave)
-            .insert(GameScreenNavAction::StrategicMap)
+            .insert((GameScreenNavAction::StrategicMap, ActivateOnPress))
             .remove::<InteractionDisabled>();
     }
 }
@@ -358,5 +408,55 @@ fn on_turn_flow_activate(
     };
     if let Some(destination) = destination.filter(|destination| *destination != *state.get()) {
         next_state.set(destination);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn strategic_scroll_uses_retail_dialog_edges_not_map_child_edges() {
+        let dialog = Vec2::new(640.0, 480.0);
+        assert_eq!(strategic_edge_scroll_mask(Vec2::new(5.0, 5.0), dialog), 0);
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(4.0, 240.0), dialog),
+            0x08
+        );
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(636.0, 240.0), dialog),
+            0x04
+        );
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(320.0, 4.0), dialog),
+            0x01
+        );
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(320.0, 476.0), dialog),
+            0x02
+        );
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(-199.0, -199.0), dialog),
+            0x09
+        );
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(-200.0, 240.0), dialog),
+            0
+        );
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(840.0, 240.0), dialog),
+            0
+        );
+
+        // The map child ends at x=517 beneath the right toolbar. Retail tests
+        // the enclosing 640-pixel dialog, so toolbar hover is not an edge.
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(520.0, 120.0), dialog),
+            0
+        );
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(620.0, 120.0), dialog),
+            0
+        );
     }
 }

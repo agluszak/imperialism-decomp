@@ -488,22 +488,17 @@ fn sync_transport_values(
     for (display, text, mut node, mut visibility, color) in &mut displays {
         match *display {
             TransportDisplay::Row { allocation, .. } => {
-                let current = allocation_amount(allocation, |resource| {
-                    economy.need_current_by_type[resource]
-                });
-                *visibility = if current == 0 {
-                    Visibility::Hidden
-                } else {
+                let status = session.0.transport_row_status(nation, allocation);
+                *visibility = if status.adjustable {
                     Visibility::Visible
+                } else {
+                    Visibility::Hidden
                 };
             }
             TransportDisplay::RowCaption(allocation) => {
-                let target =
-                    allocation_amount(allocation, |resource| economy.need_target_by_type[resource]);
-                let current = allocation_amount(allocation, |resource| {
-                    economy.need_current_by_type[resource]
-                });
-                text.expect("Transport row caption has text").0 = format!("{target}  /  {current}");
+                let status = session.0.transport_row_status(nation, allocation);
+                text.expect("Transport row caption has text").0 =
+                    format!("{}  /  {}", status.allocated, status.available);
             }
             TransportDisplay::CapacityCaption => {
                 let capacities = economy.capacities;
@@ -531,14 +526,10 @@ fn sync_transport_values(
                 full_color,
             } => {
                 let (value, total) = match kind {
-                    TransportGaugeKind::Allocation(allocation) => (
-                        allocation_amount(allocation, |resource| {
-                            economy.need_target_by_type[resource]
-                        }),
-                        allocation_amount(allocation, |resource| {
-                            economy.need_current_by_type[resource]
-                        }),
-                    ),
+                    TransportGaugeKind::Allocation(allocation) => {
+                        let status = session.0.transport_row_status(nation, allocation);
+                        (status.allocated, status.available)
+                    }
                     TransportGaugeKind::Capacity => (
                         economy.capacities.reserved_transport,
                         economy.capacities.transport,
@@ -556,15 +547,13 @@ fn sync_transport_values(
                 below_color,
                 reached_color,
             } => {
-                let Some(limit) = transport_need_limit(major, allocation) else {
+                let status = session.0.transport_row_status(nation, allocation);
+                let Some(limit) = status.limit else {
                     *visibility = Visibility::Hidden;
                     continue;
                 };
-                let target = allocation_amount(allocation, |resource| {
-                    major.economy.need_target_by_type[resource]
-                });
                 *visibility = Visibility::Visible;
-                color.expect("Transport limit has a color").0 = if target < limit {
+                color.expect("Transport limit has a color").0 = if status.allocated < limit {
                     below_color
                 } else {
                     reached_color
@@ -573,19 +562,12 @@ fn sync_transport_values(
         }
     }
     for (entity, action, disabled) in &actions {
-        let current = allocation_amount(action.allocation, |resource| {
-            economy.need_current_by_type[resource]
-        });
-        let target = allocation_amount(action.allocation, |resource| {
-            economy.need_target_by_type[resource]
-        });
-        let enabled = current != 0
-            && if action.delta < 0 {
-                target > 0
-            } else {
-                target < current
-                    && economy.capacities.reserved_transport != economy.capacities.transport
-            };
+        let status = session.0.transport_row_status(nation, action.allocation);
+        let enabled = if action.delta < 0 {
+            status.can_decrease
+        } else {
+            status.can_increase
+        };
         if enabled == disabled {
             if enabled {
                 commands.entity(entity).remove::<InteractionDisabled>();
@@ -627,12 +609,8 @@ fn sync_transport_cursor(
             continue;
         };
         let stock = allocation_amount(allocation, |resource| major.city.stockpile[resource]);
-        let target =
-            allocation_amount(allocation, |resource| economy.need_target_by_type[resource]);
-        let current = allocation_amount(allocation, |resource| {
-            economy.need_current_by_type[resource]
-        });
-        let supply_headroom = (current - target).max(0);
+        let status = session.0.transport_row_status(nation, allocation);
+        let supply_headroom = (status.available - status.allocated).max(0);
         let capacity_headroom =
             if economy.capacities.reserved_transport <= economy.capacities.transport {
                 economy.capacities.transport - economy.capacities.reserved_transport
@@ -645,11 +623,12 @@ fn sync_transport_cursor(
             std::cmp::Ordering::Equal => "supply and capacity",
             std::cmp::Ordering::Greater => "capacity",
         };
-        let city_need = transport_need_limit(major, allocation)
+        let city_need = status
+            .limit
             .map_or_else(|| "".to_owned(), |need| format!("; city need {need}"));
         text.0 = format!(
-            "{}: city {stock}; allocated {target}; supply {current}; +{limit} max ({limiting}){city_need}",
-            label,
+            "{}: city {stock}; allocated {}; supply {}; +{limit} max ({limiting}){city_need}",
+            label, status.allocated, status.available,
         );
     }
 }
@@ -675,47 +654,4 @@ fn transport_gauge_width(value: i16, total: i16) -> f32 {
         value * (pixels_per_unit + 1.0)
     };
     width.clamp(0.0, 113.0).trunc()
-}
-
-fn transport_need_limit(major: &MajorNation, allocation: TransportAllocation) -> Option<i16> {
-    let city = &major.city;
-    let building = |slot| {
-        city.building_type(
-            slot,
-            &major.economy,
-            major.common.owned_region_count() as i32,
-        )
-    };
-    let deficit = if allocation == TransportAllocation::COTTON_AND_WOOL {
-        building(CityFacilitySlot::TextileMill) * 2
-            - city.stockpile[ResourceKind::Cotton]
-            - city.stockpile[ResourceKind::Wool]
-    } else if allocation == TransportAllocation::TIMBER {
-        building(CityFacilitySlot::LumberMill) * 2 - city.stockpile[ResourceKind::Timber]
-    } else if allocation == TransportAllocation::COAL {
-        building(CityFacilitySlot::SteelMill) - city.stockpile[ResourceKind::Coal]
-    } else if allocation == TransportAllocation::IRON {
-        building(CityFacilitySlot::SteelMill) - city.stockpile[ResourceKind::Iron]
-    } else if allocation == TransportAllocation::OIL {
-        building(CityFacilitySlot::OilRefinery) * 2 - city.stockpile[ResourceKind::Oil]
-    } else if allocation == TransportAllocation::FABRIC {
-        building(CityFacilitySlot::ClothingFactory) * 2 - city.stockpile[ResourceKind::Fabric]
-    } else if allocation == TransportAllocation::LUMBER {
-        building(CityFacilitySlot::FurnitureFactory) * 2 - city.stockpile[ResourceKind::Lumber]
-    } else if allocation == TransportAllocation::STEEL {
-        building(CityFacilitySlot::Metalworks) * 2 - city.stockpile[ResourceKind::Steel]
-    } else if allocation == TransportAllocation::FUEL {
-        building(CityFacilitySlot::PowerPlant) * 2 - city.stockpile[ResourceKind::Fuel]
-    } else if allocation == TransportAllocation::GRAIN {
-        city.population.predicted_need(ResourceKind::Grain) - city.stockpile[ResourceKind::Grain]
-    } else if allocation == TransportAllocation::FRUIT {
-        city.population.predicted_need(ResourceKind::Fruit) - city.stockpile[ResourceKind::Fruit]
-    } else if allocation == TransportAllocation::FISH_AND_LIVESTOCK {
-        city.population.predicted_need(ResourceKind::Livestock)
-            - city.stockpile[ResourceKind::Fish]
-            - city.stockpile[ResourceKind::Livestock]
-    } else {
-        return None;
-    };
-    Some(deficit.max(0))
 }
