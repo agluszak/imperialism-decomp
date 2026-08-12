@@ -26,6 +26,7 @@ bevy = { version = "0.19", default-features = false, features = [
     "ui_api",
     "ui_bevy_render",
     "bevy_ui_widgets",
+    "scene",
     "picking",
     "2d_bevy_render",
     "bmp",

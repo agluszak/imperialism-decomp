@@ -48,7 +48,7 @@ pub(in crate::ui::city) struct ShipyardView {
 
 pub(in crate::ui::city) fn configure_shipyard_dialog(
     commands: &mut Commands,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
@@ -133,9 +133,9 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
         let binding = &SHIP_ORDERS[index];
         let button = find_descendant(root, shipyard_button_tag(slot), children, tags);
         let row = find_descendant(root, binding.tag, children, tags);
-        let minus = find_child_or_descendant(row, fourcc!("minu"), children, tags);
-        let plus = find_child_or_descendant(row, fourcc!("plus"), children, tags);
-        let quantity = find_child_or_descendant(row, fourcc!("numb"), children, tags);
+        let minus = find_descendant(row, fourcc!("minu"), children, tags);
+        let plus = find_descendant(row, fourcc!("plus"), children, tags);
+        let quantity = find_descendant(row, fourcc!("numb"), children, tags);
         commands.entity(minus).insert(CityOrderAdjust {
             order: binding.order,
             delta: -1,

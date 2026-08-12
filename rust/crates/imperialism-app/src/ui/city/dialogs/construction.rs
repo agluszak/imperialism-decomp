@@ -29,7 +29,7 @@ pub(in crate::ui::city) struct ExpansionDialog {
 
 pub(in crate::ui::city) fn open_city_construction_dialog(
     commands: &mut Commands,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
     session: &mut GameSession,
     slot: CityFacilitySlot,
 ) {
@@ -65,7 +65,7 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
             (next_capacity.to_string(), can_reserve)
         }
     };
-    let root = generated::citydlog_9220(commands, assets);
+    let root = commands.spawn_scene(generated::citydlog_9220()).id();
     commands.entity(root).insert((
         ConstructionDialog {
             slot,
@@ -83,7 +83,7 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
 #[allow(clippy::too_many_arguments)]
 pub(in crate::ui::city) fn bind_construction_dialog(
     commands: &mut Commands,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
@@ -210,7 +210,7 @@ pub(in crate::ui::city) fn bind_construction_dialog(
 #[allow(clippy::too_many_arguments)]
 pub(in crate::ui::city) fn bind_expansion_dialog(
     commands: &mut Commands,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
@@ -275,7 +275,7 @@ pub(in crate::ui::city) fn on_city_expansion_open(
     openers: Query<&CityExpansionOpen>,
     session: Res<GameSession>,
     mut commands: Commands,
-    mut assets: UiAssetResources,
+    assets: RetailUiAssets,
 ) {
     let Ok(open) = openers.get(activate.entity) else {
         return;
@@ -298,7 +298,7 @@ pub(in crate::ui::city) fn on_city_expansion_open(
         ExpandableFacility::try_from_slot(open.slot).expect("ordinary industry is expandable"),
     );
     let can_reserve = session.0.can_set_city_order_quantity(nation, order, needed);
-    let root = generated::citydlog_9221(&mut commands, &mut assets);
+    let root = commands.spawn_scene(generated::citydlog_9221()).id();
     let building_name = city_string(&assets, CITY_BUILDING_STRING_GROUP, open.slot as i16);
     commands.entity(root).insert((
         ExpansionDialog {
@@ -322,7 +322,7 @@ pub(in crate::ui::city) fn bind_building_change_dialogs(
     expansions: Query<(Entity, &ExpansionDialog), Added<ExpansionDialog>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    mut assets: UiAssetResources,
+    mut assets: RetailUiAssets,
 ) {
     for (root, dialog) in &constructions {
         bind_construction_dialog(

@@ -48,7 +48,7 @@ pub(in crate::ui::city) struct PopulationView {
 
 pub(in crate::ui::city) fn configure_warehouse_dialog(
     commands: &mut Commands,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
@@ -200,7 +200,7 @@ pub(in crate::ui::city) fn bind_rail_dialog(
 
 pub(in crate::ui::city) fn configure_food_dialog(
     commands: &mut Commands,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
@@ -234,7 +234,7 @@ pub(in crate::ui::city) fn configure_food_dialog(
 
 pub(in crate::ui::city) fn configure_power_dialog(
     commands: &mut Commands,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
@@ -259,7 +259,7 @@ pub(in crate::ui::city) fn configure_power_dialog(
 
 pub(in crate::ui::city) fn configure_transport_capacity_dialog(
     commands: &mut Commands,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
@@ -291,7 +291,7 @@ pub(in crate::ui::city) fn configure_transport_capacity_dialog(
 
 pub(in crate::ui::city) fn configure_population_dialog(
     commands: &mut Commands,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,

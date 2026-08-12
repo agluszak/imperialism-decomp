@@ -1,9 +1,9 @@
-use super::UiAssetResources;
+use super::RetailUiAssets;
 use super::format_currency;
 use super::game_shell::bind_native_game_screen_nav;
 use super::generated;
 use super::random_setup::GameSession;
-use super::retail::{RetailTag, find_child_or_descendant, find_descendant};
+use super::retail::{RetailTag, find_descendant};
 use crate::AppState;
 use bevy::picking::hover::Hovered;
 use bevy::prelude::*;
@@ -179,8 +179,8 @@ impl Plugin for TransportPlugin {
     }
 }
 
-fn enter_transport_screen(mut commands: Commands, mut assets: UiAssetResources) {
-    let root = generated::transport_2014(&mut commands, &mut assets);
+fn enter_transport_screen(mut commands: Commands) {
+    let root = commands.spawn_scene(generated::transport_2014()).id();
     commands
         .entity(root)
         .insert((TransportScreen, DespawnOnExit(AppState::Transport)));
@@ -191,7 +191,7 @@ fn bind_transport_screen(
     root: Single<Entity, Added<TransportScreen>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    mut assets: UiAssetResources,
+    mut assets: RetailUiAssets,
     mut session: ResMut<GameSession>,
 ) {
     bind_native_game_screen_nav(
@@ -245,8 +245,8 @@ fn bind_transport_controls(
             },
             Hovered::default(),
         ));
-        let left = find_child_or_descendant(row, fourcc!("left"), children, tags);
-        let right = find_child_or_descendant(row, fourcc!("rght"), children, tags);
+        let left = find_descendant(row, fourcc!("left"), children, tags);
+        let right = find_descendant(row, fourcc!("rght"), children, tags);
         commands.entity(left).insert(TransportAdjust {
             allocation: binding.allocation,
             delta: -1,

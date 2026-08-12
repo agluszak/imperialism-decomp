@@ -1,9 +1,9 @@
 use crate::AppState;
-use crate::ui::UiAssetResources;
+use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
 use crate::ui::generated;
 use crate::ui::random_setup::GameSession;
-use crate::ui::retail::{RetailTag, find_child_or_descendant, find_descendant};
+use crate::ui::retail::{RetailTag, find_descendant};
 use crate::ui::strategic_map::{bind_strategic_base_terrain, sync_strategic_base_terrain};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -79,8 +79,8 @@ fn enter_strategic_map_view(mut session: ResMut<GameSession>) {
     session.0.map.view_origin = origin;
 }
 
-fn spawn_strategic_map(mut commands: Commands, mut assets: UiAssetResources) {
-    let root = generated::mapview_2013(&mut commands, &mut assets);
+fn spawn_strategic_map(mut commands: Commands) {
+    let root = commands.spawn_scene(generated::mapview_2013()).id();
     commands
         .entity(root)
         .insert((StrategicMapRoot, DespawnOnExit(AppState::StrategicMap)));
@@ -91,7 +91,7 @@ fn bind_strategic_map(
     root: Single<Entity, Added<StrategicMapRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    mut assets: UiAssetResources,
+    mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
     bind_native_game_screen_nav(
@@ -125,15 +125,15 @@ fn bind_strategic_map(
     );
 }
 
-fn spawn_deal_book(mut commands: Commands, mut assets: UiAssetResources) {
-    let root = generated::flagview_8800(&mut commands, &mut assets);
+fn spawn_deal_book(mut commands: Commands) {
+    let root = commands.spawn_scene(generated::flagview_8800()).id();
     commands
         .entity(root)
         .insert((TurnFlowRoot, DespawnOnExit(AppState::DealBook)));
 }
 
-fn spawn_newspaper(mut commands: Commands, mut assets: UiAssetResources) {
-    let root = generated::flagview_8451(&mut commands, &mut assets);
+fn spawn_newspaper(mut commands: Commands) {
+    let root = commands.spawn_scene(generated::flagview_8451()).id();
     commands
         .entity(root)
         .insert((TurnFlowRoot, DespawnOnExit(AppState::Newspaper)));
@@ -144,7 +144,7 @@ fn bind_turn_flow_screen(
     root: Single<Entity, Added<TurnFlowRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    mut assets: UiAssetResources,
+    mut assets: RetailUiAssets,
     state: Res<State<AppState>>,
     session: Res<GameSession>,
 ) {
@@ -183,7 +183,7 @@ fn bind_turn_flow_screen(
 
 fn project_deal_book_chrome(
     commands: &mut Commands,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
@@ -203,7 +203,7 @@ fn project_deal_book_chrome(
 
 fn project_date_and_treasury(
     commands: &mut Commands,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
@@ -226,7 +226,7 @@ fn project_date_and_treasury(
 
 fn project_newspaper_chrome(
     commands: &mut Commands,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
@@ -246,7 +246,7 @@ fn project_newspaper_chrome(
     );
 }
 
-fn format_retail_date(assets: &mut UiAssetResources, economic_turn: i32) -> String {
+fn format_retail_date(assets: &mut RetailUiAssets, economic_turn: i32) -> String {
     let season = assets
         .string(10_000, (economic_turn % 4) as i16)
         .expect("retail season name must load");
@@ -275,10 +275,10 @@ pub(crate) fn bind_native_game_screen_nav(
     leave_toolbar_tag: Option<FourCc>,
 ) {
     let toolbar = find_descendant(root, toolbar_tag, children, tags);
-    let trade = find_child_or_descendant(toolbar, TRADE, children, tags);
-    let transport = find_child_or_descendant(toolbar, fourcc!("tran"), children, tags);
-    let city = find_child_or_descendant(toolbar, fourcc!("city"), children, tags);
-    let diplomacy = find_child_or_descendant(toolbar, fourcc!("dipl"), children, tags);
+    let trade = find_descendant(toolbar, TRADE, children, tags);
+    let transport = find_descendant(toolbar, fourcc!("tran"), children, tags);
+    let city = find_descendant(toolbar, fourcc!("city"), children, tags);
+    let diplomacy = find_descendant(toolbar, fourcc!("dipl"), children, tags);
     for (entity, action) in [
         (trade, GameScreenNavAction::Trade),
         (transport, GameScreenNavAction::Transport),
@@ -289,7 +289,7 @@ pub(crate) fn bind_native_game_screen_nav(
     }
     if let Some(leave_toolbar_tag) = leave_toolbar_tag {
         let toolbar = find_descendant(root, leave_toolbar_tag, children, tags);
-        let leave = find_child_or_descendant(toolbar, fourcc!("end "), children, tags);
+        let leave = find_descendant(toolbar, fourcc!("end "), children, tags);
         commands
             .entity(leave)
             .insert(GameScreenNavAction::StrategicMap)

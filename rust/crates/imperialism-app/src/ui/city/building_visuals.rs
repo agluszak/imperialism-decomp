@@ -145,8 +145,8 @@ pub(in crate::ui::city) fn apply_city_picture_transparency(
     }
 }
 
-pub(in crate::ui::city) fn enter_city_screen(mut commands: Commands, mut assets: UiAssetResources) {
-    let root = generated::citymain_2011(&mut commands, &mut assets);
+pub(in crate::ui::city) fn enter_city_screen(mut commands: Commands) {
+    let root = commands.spawn_scene(generated::citymain_2011()).id();
     commands
         .entity(root)
         .insert((CitySceneRoot, DespawnOnExit(AppState::City)));
@@ -157,7 +157,7 @@ pub(in crate::ui::city) fn bind_city_screen(
     root: Single<Entity, Added<CitySceneRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    mut assets: UiAssetResources,
+    mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
     bind_native_game_screen_nav(
@@ -193,7 +193,7 @@ fn bind_city_summary_values(
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
 ) -> CitySummaryControls {
     let (font, layout, _) = assets
         .text_style(RetailTextStylePreset {
@@ -241,7 +241,7 @@ pub(in crate::ui::city) fn spawn_city_buildings(
     actions: &[CityBuildingActionVisual],
     state: &GameState,
     nation: MajorNationId,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
 ) -> Vec<(Entity, CityFacilitySlot)> {
     let main = find_descendant(root, fourcc!("main"), children, tags);
     let mut hit_regions = Vec::new();
@@ -379,7 +379,7 @@ pub(in crate::ui::city) fn spawn_city_building_actions(
     actions: &[CityBuildingActionVisual],
     state: &GameState,
     nation: MajorNationId,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
 ) {
     let active_actions: Vec<_> = actions
         .iter()
@@ -517,7 +517,7 @@ pub(in crate::ui::city) fn animate_city_building_actions(
 }
 
 pub(in crate::ui::city) fn transparent_picture(
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
     picture_id: PictureId,
 ) -> Handle<Image> {
     let indexed = assets
@@ -537,7 +537,7 @@ pub(in crate::ui::city) fn sync_city_screen(
     session: Res<GameSession>,
     screens: Query<Ref<CityScreenRoot>>,
     mut texts: Query<&mut Text>,
-    mut assets: UiAssetResources,
+    mut assets: RetailUiAssets,
     mut pictures: Query<(&mut ImageNode, &mut Visibility)>,
 ) {
     for root in &screens {

@@ -95,18 +95,6 @@ class UiResourceKey:
         return f"{self.resource_file}:{self.view_id}"
 
 
-# Resource-backed or windows-only factory cases that cannot yet be emitted into the
-# native Rust UI. Keys are UiResourceKey.text() or windows_view names.
-RUST_CATALOG_EXCLUSIONS: dict[str, str] = {
-    # Symbolic node ids ("window", "dialog", ...) are not resource offsets, and the
-    # native Rust UI resource node offset is a u32 offset taken from Mac View IR.
-    "join_selector_message": (
-        "Windows-only semantic view uses symbolic node ids; "
-        "model resource node offset requires resource offsets"
-    ),
-}
-
-
 @dataclass(frozen=True)
 class UiCaseRecipe:
     event: int
@@ -1341,8 +1329,8 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
 
     The generator is the one place where recovered type/class evidence decides
     whether a static-text-looking control is a radio, a picture is an activate
-    button, or a canvas takes pointer input. The native Rust UI carries the
-    resolved behavior enum, not those C++ class details.
+    button, or a canvas takes pointer input. The generated BSN carries the
+    resulting native Bevy component, not those C++ class details.
     """
 
     class_name = node.class_name.casefold()
@@ -1453,36 +1441,43 @@ def _case_for_resource(
 def resource_backed_scene_keys(
     recipes: Iterable[UiFactoryRecipe],
 ) -> list[UiResourceKey]:
-    """Every factory case with a Mac resource, excluding explicitly rejected keys."""
+    """Every factory case backed by a committed Mac resource."""
 
     keys = {
         case.resource
         for recipe in recipes
         for case in recipe.cases
-        if case.resource is not None and case.resource.text() not in RUST_CATALOG_EXCLUSIONS
+        if case.resource is not None
     }
     return sorted(keys, key=lambda item: (item.resource_file, item.view_id))
 
 
+def _python_node_id(node_id: str) -> int | str:
+    try:
+        return int(node_id, 0)
+    except ValueError:
+        return node_id
+
+
 def _emit_scene_nodes(
-    key: UiResourceKey, semantic_view: UiSemanticView
+    key: UiResourceKey | None, semantic_view: UiSemanticView
 ) -> list[dict[str, object]]:
     roots = [node for node in semantic_view.nodes if node.parent_id is None]
     if len(roots) != 1:
-        raise ValueError(f"{key.text()}: expected one semantic root")
+        context = key.text() if key is not None else semantic_view.name
+        raise ValueError(f"{context}: expected one semantic root")
     nodes: list[dict[str, object]] = []
     for node in semantic_view.nodes:
-        offset = int(node.node_id, 16)
         x, y, width, height = node.geometry
         behavior = _rust_widget_behavior(key, node)
         picture_visual = _rust_picture_visual(node)
         emitted: dict[str, object] = {
-            "id": offset,
+            "id": _python_node_id(node.node_id),
             "tag": node.tag,
             "rect": {"x": x, "y": y, "width": width, "height": height},
         }
         if node.parent_id is not None:
-            emitted["parent"] = int(node.parent_id, 16)
+            emitted["parent"] = _python_node_id(node.parent_id)
         if behavior != "passive":
             emitted["behavior"] = behavior
         if picture_visual != "static":
@@ -1623,6 +1618,24 @@ def build_rust_ui_model(
                 for action in city_building_actions.actions
             ]
         scene_views.append(emitted)
+    windows_views = load_windows_views(repo_root)
+    emitted_windows: set[str] = set()
+    for recipe in recipe_list:
+        for case in recipe.cases:
+            if case.windows_view is None or case.windows_view in emitted_windows:
+                continue
+            semantic_view = windows_views.get(case.windows_view)
+            if semantic_view is None:
+                raise ValueError(
+                    f"{WINDOWS_VIEW_PATH}: missing Windows view {case.windows_view!r}"
+                )
+            scene_views.append(
+                {
+                    "id": {"windows_view": case.windows_view},
+                    "nodes": _emit_scene_nodes(None, semantic_view),
+                }
+            )
+            emitted_windows.add(case.windows_view)
     return {
         "logical_resolution": [640, 480],
         "views": scene_views,
@@ -1633,33 +1646,30 @@ def validate_rust_ui_coverage(
     recipes: Iterable[UiFactoryRecipe],
     model: dict[str, object] | None = None,
 ) -> list[str]:
-    """Every resource-backed factory case is emitted_views or explicitly excluded."""
+    """Every concrete factory case is emitted into the native Rust UI."""
 
     errors: list[str] = []
     emitted_views: set[str] = set()
     if model is not None:
         for view in model.get("views", []):
             view_id = view["id"]
-            emitted_views.add(f"{view_id['resource_file']}:{view_id['resource_id']}")
+            if "resource_file" in view_id:
+                emitted_views.add(f"{view_id['resource_file']}:{view_id['resource_id']}")
+            else:
+                emitted_views.add(str(view_id["windows_view"]))
     for recipe in recipes:
         for case in recipe.cases:
             if case.resource is None:
                 if case.windows_view is None:
                     continue
-                if case.windows_view not in RUST_CATALOG_EXCLUSIONS:
+                if model is not None and case.windows_view not in emitted_views:
                     errors.append(
-                        f"windows view {case.windows_view!r} is neither emitted_views "
-                        "nor listed in RUST_CATALOG_EXCLUSIONS"
+                        f"windows view {case.windows_view!r} missing from native Rust UI"
                     )
                 continue
             key = case.resource.text()
-            if key in RUST_CATALOG_EXCLUSIONS:
-                continue
             if model is not None and key not in emitted_views:
                 errors.append(f"{key}: resource-backed factory case missing from native Rust UI")
-    for key, reason in sorted(RUST_CATALOG_EXCLUSIONS.items()):
-        if not reason.strip():
-            errors.append(f"exclusion {key!r} is missing a reason")
     return errors
 
 
@@ -1701,8 +1711,6 @@ def report_unsupported_ui_roles(
         if unsupported:
             lines.append(f"{key.text()} event=0x{case.event:04x}")
             lines.extend(unsupported)
-    for key, reason in sorted(RUST_CATALOG_EXCLUSIONS.items()):
-        lines.append(f"excluded {key}: {reason}")
     return lines
 
 
@@ -1721,10 +1729,6 @@ def _rust_function_name(resource_file: str, resource_id: int) -> str:
     return f"{stem}_{resource_id}"
 
 
-def _rust_node_name(node_id: int) -> str:
-    return f"node_{node_id:08x}"
-
-
 def _rust_enum_variant(value: str) -> str:
     return "".join(part.capitalize() for part in value.split("_"))
 
@@ -1733,134 +1737,87 @@ def _rust_has_shipped_font(text: dict[str, object]) -> bool:
     return int(text["font_family"]) in (1, 2, 3)
 
 
-def _render_native_node(view: dict[str, object], node: dict[str, object]) -> list[str]:
-    node_id = int(node["id"])
-    name = _rust_node_name(node_id)
-    parent_id = node.get("parent")
-    parent = "root" if parent_id is None else _rust_node_name(int(parent_id))
+def _indent(lines: Iterable[str], spaces: int) -> list[str]:
+    prefix = " " * spaces
+    return [prefix + line if line else "" for line in lines]
+
+
+def _render_bsn_node(
+    node: dict[str, object],
+    children_by_parent: dict[object, list[dict[str, object]]],
+) -> list[str]:
     rect = node["rect"]
     insets = node.get("content_insets", [0, 0, 0, 0])
-    top = int(insets[1])
     text = node.get("text")
-    render_text = text is not None and _rust_has_shipped_font(text)
-    prefix: list[str] = []
-    if render_text and text.get("center_vertically", False):
-        prefix.extend(
+    render_text_style = text is not None and _rust_has_shipped_font(text)
+    lines = [
+        "(",
+        (
+            f"    retail_node(fourcc!({_rust_string(str(node['tag']))}), "
+            f"{int(rect['x'])}, {int(rect['y'])}, "
+            f"{int(rect['width'])}, {int(rect['height'])})"
+        ),
+    ]
+    if any(int(value) for value in insets):
+        lines.extend(
             [
-                f"    let {name}_text_height = resolve_retail_text_style(RetailTextStylePreset {{",
-                f"        font_family: {text['font_family']},",
-                f"        face_flags: {text['face_flags']},",
-                f"        point_size: {text['point_size']},",
-                f"        alignment: {text['alignment']},",
-                "    })",
-                '    .expect("generated retail text style must resolve")',
-                "    .logical_pixel_height;",
+                "    Node {",
+                "        padding: UiRect {",
+                f"            left: px({int(insets[0])}),",
+                f"            top: px({int(insets[1])}),",
+                f"            right: px({int(insets[2])}),",
+                f"            bottom: px({int(insets[3])}),",
+                "        },",
+                "    }",
             ]
         )
-        top_expr = f"{top} + ({int(rect['height'])} - {name}_text_height).max(0) / 2"
-    else:
-        top_expr = str(top)
-    extra_components: list[str] = []
     behavior = node.get("behavior", "passive")
-    extra_components.extend(
+    lines.extend(
         {
-            "activate": ["Button"],
-            "checkbox": ["Checkbox"],
-            "toggle": ["Checkbox"],
-            "radio_group": ["RadioGroup"],
-            "radio_button": ["RadioButton"],
-            "pointer_canvas": ["RelativeCursorPosition::default()"],
+            "activate": ["    Button"],
+            "checkbox": ["    Checkbox"],
+            "toggle": ["    Checkbox"],
+            "radio_group": ["    RadioGroup"],
+            "radio_button": ["    RadioButton"],
+            "pointer_canvas": ["    RelativeCursorPosition"],
         }.get(str(behavior), [])
     )
     if node.get("checked", False):
-        extra_components.append("Checked")
+        lines.append("    Checked")
     if node.get("disabled", False):
-        extra_components.append("InteractionDisabled")
-    lines = prefix + [
-        f"    let {name} = commands",
-        "        .spawn((",
-        "            Node {",
-        "                position_type: PositionType::Absolute,",
-        f"                left: Val::Px({int(rect['x'])}.0),",
-        f"                top: Val::Px({int(rect['y'])}.0),",
-        f"                width: Val::Px({int(rect['width'])}.0),",
-        f"                height: Val::Px({int(rect['height'])}.0),",
-        "                padding: UiRect {",
-        f"                    left: Val::Px({int(insets[0])}.0),",
-        f"                    top: Val::Px(({top_expr}) as f32),",
-        f"                    right: Val::Px({int(insets[2])}.0),",
-        f"                    bottom: Val::Px({int(insets[3])}.0),",
-        "                },",
-        "                ..default()",
-        "            },",
-        f"            RetailTag(fourcc!({_rust_string(str(node['tag']))})),",
-    ]
-    lines.extend(f"            {component}," for component in extra_components)
-    lines.extend([f"            ChildOf({parent}),", "        ))", "        .id();"])
+        lines.append("    InteractionDisabled")
 
-    if render_text:
-        lines.extend(
-            [
-                f"    let ({name}_font, {name}_layout, {name}_underline) = assets",
-                "        .text_style(RetailTextStylePreset {",
-                f"            font_family: {text['font_family']},",
-                f"            face_flags: {text['face_flags']},",
-                f"            point_size: {text['point_size']},",
-                f"            alignment: {text['alignment']},",
-                "        })",
-                '        .expect("generated retail text style must load");',
-                f"    let mut {name}_commands = commands.entity({name});",
-            ]
-        )
-        color = text.get("color_index")
-        color_expr = "Color::BLACK" if color is None else f"assets.palette_color({color})"
+    if text is not None:
         value = _rust_string(str(text.get("value", "")))
         if behavior == "text_edit":
             max_chars = text.get("max_chars")
             max_expr = "None" if max_chars is None else f"Some({max_chars})"
-            lines.extend(
-                [
-                    f"    let mut {name}_text = EditableText::new({value});",
-                    f"    {name}_text.allow_newlines = false;",
-                    f"    {name}_text.max_characters = {max_expr};",
-                    f"    {name}_commands.insert((",
-                    f"        {name}_text,",
-                    f"        {name}_font,",
-                    f"        {name}_layout,",
-                    f"        TextColor({color_expr}),",
-                    "        TextCursorStyle::default(),",
-                    "        EditableTextFilter::new(|character| !character.is_control()),",
-                    "    ));",
-                ]
-            )
+            lines.append(f"    retail_editable_text({value}, {max_expr})")
         else:
-            lines.extend(
-                [
-                    f"    {name}_commands.insert((",
-                    f"        Text::new({value}),",
-                    f"        {name}_font,",
-                    f"        {name}_layout,",
-                    f"        TextColor({color_expr}),",
-                    "    ));",
-                ]
+            lines.append(f"    Text({value})")
+        if render_text_style:
+            lines.append(
+                "    retail_text_style("
+                f"{text['font_family']}, {text['face_flags']}, "
+                f"{text['point_size']}, {text['alignment']})"
             )
+        color = text.get("color_index")
+        if color is None:
+            lines.append("    TextColor(Color::BLACK)")
+        else:
+            lines.append(f"    retail_text_color({color})")
         if text.get("shadow_color_index") is not None:
             offset = text.get("shadow_offset", [0, 0])
-            lines.extend(
-                [
-                    f"    {name}_commands.insert(TextShadow {{",
-                    f"        offset: Vec2::new({int(offset[0])}.0, {int(offset[1])}.0),",
-                    f"        color: assets.palette_color({text['shadow_color_index']}),",
-                    "    });",
-                ]
+            lines.append(
+                f"    retail_text_shadow({text['shadow_color_index']}, "
+                f"{int(offset[0])}, {int(offset[1])})"
             )
-        lines.extend(
-            [
-                f"    if {name}_underline {{",
-                f"        {name}_commands.insert(Underline);",
-                "    }",
-            ]
-        )
+        if render_text_style and text.get("center_vertically", False):
+            lines.append(
+                "    retail_centered_text_padding("
+                f"{text['font_family']}, {text['face_flags']}, {text['point_size']}, "
+                f"{int(rect['height'])}, {int(insets[1])})"
+            )
 
     picture_id = node.get("picture_id")
     if picture_id is not None:
@@ -1872,30 +1829,20 @@ def _render_native_node(view: dict[str, object], node: dict[str, object]) -> lis
         elif visual == "czech_box":
             idle_id &= ~1
             active_id = int(picture_id) | 1
-        lines.extend(
-            [
-                f"    let {name}_idle = assets",
-                f"        .picture(PictureId::new({idle_id}))",
-                '        .expect("generated retail picture must load");',
-                f"    commands.entity({name}).insert(ImageNode::new({name}_idle.clone()));",
-            ]
-        )
-        if visual != "static":
-            lines.extend(
-                [
-                    f"    match assets.picture(PictureId::new({active_id})) {{",
-                    f"        Ok({name}_active) => {{",
-                    f"            commands.entity({name}).insert(RetailPictureSwap {{",
-                    f"                idle: {name}_idle,",
-                    f"                active: {name}_active,",
-                    "            });",
-                    "        }",
-                    "        Err(error) => bevy::log::warn!(",
-                    f'            "could not preload active retail picture {active_id} for {view["id"]["resource_file"]}:{view["id"]["resource_id"]} node {node_id}: {{error}}"',
-                    "        ),",
-                    "    }",
-                ]
-            )
+        if visual == "static":
+            lines.append(f"    retail_picture({idle_id})")
+        else:
+            lines.append(f"    retail_picture_swap({idle_id}, {active_id})")
+
+    children = children_by_parent.get(node["id"], [])
+    if children:
+        lines.append("    Children [")
+        for child in children:
+            rendered = _render_bsn_node(child, children_by_parent)
+            rendered[-1] += ","
+            lines.extend(_indent(rendered, 8))
+        lines.append("    ]")
+    lines.append(")")
     return lines
 
 
@@ -1908,17 +1855,15 @@ def render_rust_ui(
     model = build_rust_ui_model(repo_root, recipes, views, text_resources)
     lines = [
         "// @generated by tools.ui_codegen. Do not edit by hand.",
-        "#![allow(dead_code, unused_variables, clippy::identity_op)]",
+        "#![allow(dead_code, clippy::identity_op)]",
         "",
         "use super::city::{CityBuildingActionVisual, CityBuildingVisual};",
-        "use super::retail::RetailUiAssets;",
-        "use super::retail::{RetailPictureSwap, RetailTag};",
+        "use super::retail::*;",
         "use bevy::prelude::*;",
-        "use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};",
         "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};",
         "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup};",
         "use imperialism_core::CityFacilitySlot;",
-        "use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc, resolve_retail_text_style};",
+        "use imperialism_formats::{PictureId, fourcc};",
         "",
         "pub const LOGICAL_RESOLUTION: [u32; 2] = [640, 480];",
         "",
@@ -1956,33 +1901,33 @@ def render_rust_ui(
     lines.extend(["];", ""])
     for view in model["views"]:
         view_id = view["id"]
-        function = _rust_function_name(view_id["resource_file"], view_id["resource_id"])
-        view_name = _rust_string(
-            f"{view_id['resource_file']}:{view_id['resource_id']}"
-        )
+        if "resource_file" in view_id:
+            function = _rust_function_name(
+                view_id["resource_file"], view_id["resource_id"]
+            )
+            view_name = _rust_string(
+                f"{view_id['resource_file']}:{view_id['resource_id']}"
+            )
+        else:
+            function = str(view_id["windows_view"])
+            view_name = _rust_string(function)
+        children_by_parent: dict[object, list[dict[str, object]]] = {}
+        for node in view["nodes"]:
+            children_by_parent.setdefault(node.get("parent"), []).append(node)
         lines.extend(
             [
                 "#[rustfmt::skip]",
-                f"pub fn {function}(commands: &mut Commands, assets: &mut RetailUiAssets) -> Entity {{",
-                "    let root = commands",
-                "        .spawn((",
-                "            Node {",
-                "                position_type: PositionType::Absolute,",
-                "                left: Val::Px(0.0),",
-                "                top: Val::Px(0.0),",
-                "                width: Val::Px(LOGICAL_RESOLUTION[0] as f32),",
-                "                height: Val::Px(LOGICAL_RESOLUTION[1] as f32),",
-                "                ..default()",
-                "            },",
-                f"            Name::new({view_name}),",
-                "            Pickable::default(),",
-                "        ))",
-                "        .id();",
+                f"pub fn {function}() -> impl Scene {{",
+                "    bsn! {",
+                f"        retail_view({view_name})",
+                "        Children [",
             ]
         )
-        for node in view["nodes"]:
-            lines.extend(_render_native_node(view, node))
-        lines.extend(["    root", "}", ""])
+        for node in children_by_parent.get(None, []):
+            rendered = _render_bsn_node(node, children_by_parent)
+            rendered[-1] += ","
+            lines.extend(_indent(rendered, 12))
+        lines.extend(["        ]", "    }", "}", ""])
     return "\n".join(lines)
 
 

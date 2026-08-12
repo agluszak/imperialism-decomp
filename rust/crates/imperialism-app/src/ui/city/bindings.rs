@@ -372,7 +372,7 @@ pub(in crate::ui::city) fn city_building_picture(
 }
 
 pub(in crate::ui::city) fn city_string(
-    assets: &UiAssetResources,
+    assets: &RetailUiAssets,
     group: i16,
     zero_based_index: i16,
 ) -> String {

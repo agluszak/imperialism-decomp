@@ -68,6 +68,8 @@ The existing UI generator emits deterministic native Bevy scenes into `imperiali
 ```
 
 The generated source is compiled from the committed Mac View IR plus declared Windows deltas. It
-spawns `Node`, `ChildOf`, native widget, text, and image components directly. `RetailTag` is used
-only while binding recovered controls to typed screen behavior; `Entity` and `ChildOf` are the
-runtime identity and hierarchy. Do not add another generic UI representation or loader.
+describes `Node`, `Children`, native widget, text, and image components with code-defined BSN;
+handwritten retail scene helpers centralize repeated geometry and asset-backed templates. Callers
+spawn each concrete scene with `Commands::spawn_scene`. `RetailTag` is used only while binding
+recovered controls to typed screen behavior; `Entity` and `ChildOf` are the runtime identity and
+hierarchy. Do not add another generic UI representation, generated imperative spawner, or loader.

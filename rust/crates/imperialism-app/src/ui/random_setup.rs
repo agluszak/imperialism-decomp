@@ -1,4 +1,3 @@
-use crate::ui::UiAssetResources;
 use crate::ui::generated;
 use crate::ui::random_setup_map;
 use crate::ui::retail::ModalDialog;
@@ -154,8 +153,8 @@ impl Plugin for RandomSetupPlugin {
     }
 }
 
-fn enter_random_setup(mut commands: Commands, mut assets: UiAssetResources) {
-    let root = generated::startup_1501(&mut commands, &mut assets);
+fn enter_random_setup(mut commands: Commands) {
+    let root = commands.spawn_scene(generated::startup_1501()).id();
     commands
         .entity(root)
         .insert((RandomSetupRoot, DespawnOnExit(AppState::RandomSetup)));
@@ -332,7 +331,7 @@ fn on_random_setup_activate(activate: On<Activate>, mut random_setup: RandomSetu
             );
         }
         RandomSetupAction::OpenPlanetSeed => {
-            // Handled by [`on_open_planet_seed`], which needs picture/font assets.
+            // Handled by [`on_open_planet_seed`].
         }
     }
 }
@@ -342,7 +341,6 @@ fn on_open_planet_seed(
     actions: Query<&RandomSetupAction>,
     dialog_open: Query<(), With<ModalDialog>>,
     mut commands: Commands,
-    mut assets: UiAssetResources,
 ) {
     let Ok(RandomSetupAction::OpenPlanetSeed) = actions.get(activate.entity).copied() else {
         return;
@@ -350,7 +348,7 @@ fn on_open_planet_seed(
     if !dialog_open.is_empty() {
         return;
     }
-    open_planet_seed_dialog(&mut commands, &mut assets);
+    open_planet_seed_dialog(&mut commands);
 }
 
 fn on_difficulty_selected(
@@ -443,8 +441,8 @@ fn regenerate_random_setup_planet(
     );
 }
 
-fn open_planet_seed_dialog(commands: &mut Commands, assets: &mut UiAssetResources) {
-    let root = generated::linger_954(commands, assets);
+fn open_planet_seed_dialog(commands: &mut Commands) {
+    let root = commands.spawn_scene(generated::linger_954()).id();
     commands.entity(root).insert((
         PlanetSeedDialogRoot,
         ModalDialog,

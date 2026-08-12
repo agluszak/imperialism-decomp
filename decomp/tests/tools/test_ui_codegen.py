@@ -91,19 +91,47 @@ class UiCodegenTests(unittest.TestCase):
             )
         )
         self.assertIn("pub fn startup_1500", first)
-        self.assertIn('RetailTag(fourcc!("rand"))', first)
-        self.assertIn('RetailTag(fourcc!("auto"))', first)
+        self.assertIn('retail_node(fourcc!("rand")', first)
+        self.assertIn('retail_node(fourcc!("auto")', first)
+        self.assertIn("pub fn startup_1500() -> impl Scene", first)
+        self.assertIn("bsn! {", first)
+        self.assertIn("Children [", first)
+        self.assertIn("retail_picture_swap(", first)
+        self.assertIn("retail_text_style(", first)
+        self.assertIn("pub fn join_selector_message() -> impl Scene", first)
+        trade = first[
+            first.index("pub fn trade_2009()") : first.index("pub fn trade_2010()")
+        ]
+        capacity = trade[trade.index('retail_node(fourcc!("mCap")') :]
+        self.assertIn('Text("185")', capacity[:800])
+        self.assertIn('Text("All AutoGP\'s")', first)
+        self.assertLess(len(first.splitlines()), 15_000)
         self.assertNotIn('Text::new("All AutoGP\'s")', first)
-        self.assertNotIn("generated active retail picture must load", first)
-        self.assertIn("could not preload active retail picture", first)
+        for forbidden in (
+            "Commands",
+            "ChildOf",
+            "commands.spawn",
+            "commands.entity",
+            "let node_",
+            "assets.picture",
+            "assets.text_style",
+            "resolve_retail_text_style",
+        ):
+            self.assertNotIn(forbidden, first)
 
-    def test_rust_model_covers_the_launch_slice_with_scoped_ids(self) -> None:
+    def test_rust_model_covers_every_concrete_factory_view(self) -> None:
         model = build_rust_ui_model(
             REPO_ROOT, self.recipes, self.views, self.text_resources
         )
         ids = {
             (view["id"]["resource_file"], view["id"]["resource_id"])
             for view in model["views"]
+            if "resource_file" in view["id"]
+        }
+        windows_ids = {
+            view["id"]["windows_view"]
+            for view in model["views"]
+            if "windows_view" in view["id"]
         }
         self.assertTrue(
             {
@@ -120,9 +148,9 @@ class UiCodegenTests(unittest.TestCase):
                 ("Diplo.rsrc", 2008),
             }.issubset(ids)
         )
-        # All resource-backed factory cases are emitted (windows-only excluded).
-        self.assertGreaterEqual(len(ids), 81)
-        self.assertEqual(len(ids), len(model["views"]))
+        self.assertEqual(len(ids), 81)
+        self.assertEqual(windows_ids, {"join_selector_message"})
+        self.assertEqual(len(model["views"]), 82)
 
     def test_rust_model_emits_runtime_semantics_and_windows_deltas(self) -> None:
         model = build_rust_ui_model(
@@ -132,6 +160,7 @@ class UiCodegenTests(unittest.TestCase):
         by_id = {
             (view["id"]["resource_file"], view["id"]["resource_id"]): view
             for view in model["views"]
+            if "resource_file" in view["id"]
         }
         newspaper = by_id[("FlagView.rsrc", 8451)]
         toolbar = next(node for node in newspaper["nodes"] if node["tag"] == "tbr2")

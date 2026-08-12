@@ -72,7 +72,7 @@ pub(in crate::ui::city) const fn university_preview_picture(kind: CivilianUnitKi
 
 pub(in crate::ui::city) fn configure_university_dialog(
     commands: &mut Commands,
-    assets: &mut UiAssetResources,
+    assets: &mut RetailUiAssets,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
@@ -166,9 +166,9 @@ pub(in crate::ui::city) fn bind_university_dialog(
         };
         let button = find_descendant(root, university_button_tag(kind), children, tags);
         let row = find_descendant(root, binding.tag, children, tags);
-        let minus = find_child_or_descendant(row, fourcc!("minu"), children, tags);
-        let plus = find_child_or_descendant(row, fourcc!("plus"), children, tags);
-        let quantity = find_child_or_descendant(row, fourcc!("numb"), children, tags);
+        let minus = find_descendant(row, fourcc!("minu"), children, tags);
+        let plus = find_descendant(row, fourcc!("plus"), children, tags);
+        let quantity = find_descendant(row, fourcc!("numb"), children, tags);
         commands.entity(minus).insert(CityOrderAdjust {
             order: binding.order,
             delta: -1,
