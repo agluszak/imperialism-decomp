@@ -19,16 +19,7 @@ class UiPlatformDiffTests(unittest.TestCase):
         self.assertEqual(self.report["summary"]["functions"], 17)
         self.assertEqual(self.report["summary"]["cases"], 82)
         self.assertEqual(self.report["summary"]["nodes"], 1729)
-        self.assertEqual(self.report["summary"]["diplomacy_map_key_names"], 7)
         self.assertEqual(self.report["summary"]["unexplained_deltas"], 0)
-
-        names = self.report["diplomacy_map_key_names"]
-        self.assertEqual(names["view"], "Diplo.rsrc:2008")
-        self.assertEqual(names["parent"], {"node": "0x0141", "tag": "mkey"})
-        self.assertEqual(
-            [child["tag"] for child in names["children"]],
-            [f"nam{index}" for index in range(7)],
-        )
 
     def test_declared_toolbar_class_substitution_is_explicit(self) -> None:
         node = self.report["functions"]["0x00430c50"]["cases"]["0x2260"]["nodes"][

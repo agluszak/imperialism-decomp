@@ -1,20 +1,15 @@
 use crate::AppState;
-use crate::ui::catalog::{SpawnedView, UiAssetResources, UiCatalogResource, spawn_view};
+use crate::ui::UiAssetResources;
+use crate::ui::generated;
+use crate::ui::retail::{RetailTag, find_descendant};
 use bevy::app::AppExit;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
-use imperialism_formats::{ScopedViewId, fourcc};
+use imperialism_formats::fourcc;
 
-const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
-const MAIN_MENU_RESOURCE_ID: i16 = 1500;
-
-pub(crate) fn main_menu_view_id() -> ScopedViewId {
-    ScopedViewId {
-        resource_file: STARTUP_RESOURCE_FILE.to_owned(),
-        resource_id: MAIN_MENU_RESOURCE_ID,
-    }
-}
+#[derive(Component)]
+struct MainMenuRoot;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum MainMenuAction {
@@ -27,7 +22,10 @@ pub(crate) struct MainMenuPlugin;
 impl Plugin for MainMenuPlugin {
     fn build(&self, app: &mut App) {
         register_main_menu_logic(app);
-        app.add_systems(OnEnter(AppState::MainMenu), enter_main_menu);
+        app.add_systems(
+            OnEnter(AppState::MainMenu),
+            (enter_main_menu, bind_main_menu_actions).chain(),
+        );
     }
 }
 
@@ -35,26 +33,26 @@ pub(crate) fn register_main_menu_logic(app: &mut App) {
     app.add_observer(on_main_menu_activate);
 }
 
-fn enter_main_menu(
-    mut commands: Commands,
-    catalog: Res<UiCatalogResource>,
-    mut assets: UiAssetResources,
-) {
-    let view = catalog.required_view(&main_menu_view_id());
-    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
-    bind_main_menu_actions(&mut commands, &spawned);
+fn enter_main_menu(mut commands: Commands, mut assets: UiAssetResources) {
+    let root = generated::startup_1500(&mut commands, &mut assets);
     commands
-        .entity(spawned.root)
-        .insert(DespawnOnExit(AppState::MainMenu));
+        .entity(root)
+        .insert((MainMenuRoot, DespawnOnExit(AppState::MainMenu)));
 }
 
-pub(crate) fn bind_main_menu_actions(commands: &mut Commands, spawned: &SpawnedView) {
+fn bind_main_menu_actions(
+    mut commands: Commands,
+    root: Single<Entity, Added<MainMenuRoot>>,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
+) {
     for (tag, action) in [
         (fourcc!("rand"), MainMenuAction::RandomGame),
         (fourcc!("quit"), MainMenuAction::Quit),
     ] {
+        let entity = find_descendant(*root, tag, &children, &tags);
         commands
-            .entity(spawned.unique(tag))
+            .entity(entity)
             .insert(action)
             .remove::<InteractionDisabled>();
     }
@@ -80,34 +78,27 @@ fn on_main_menu_activate(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::catalog::spawn_view_nodes;
     use bevy::ecs::message::Messages;
-    use imperialism_formats::UiCatalog;
-
-    const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
 
     fn app() -> App {
-        let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_message::<AppExit>()
-            .insert_resource(UiCatalogResource::new(catalog))
             .add_plugins(bevy::state::app::StatesPlugin)
             .init_state::<AppState>();
         register_main_menu_logic(&mut app);
-        app.add_systems(OnEnter(AppState::MainMenu), enter_main_menu_structure_only);
+        app.add_systems(
+            OnEnter(AppState::MainMenu),
+            (spawn_test_main_menu, bind_main_menu_actions).chain(),
+        );
         app.update();
         app
     }
 
-    fn enter_main_menu_structure_only(mut commands: Commands, catalog: Res<UiCatalogResource>) {
-        let view_id = main_menu_view_id();
-        let view = catalog.required_view(&view_id);
-        let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
-        bind_main_menu_actions(&mut commands, &spawned);
-        commands
-            .entity(spawned.root)
-            .insert(DespawnOnExit(AppState::MainMenu));
+    fn spawn_test_main_menu(mut commands: Commands) {
+        let root = commands.spawn((MainMenuRoot, Node::default())).id();
+        commands.spawn((RetailTag(fourcc!("rand")), Node::default(), ChildOf(root)));
+        commands.spawn((RetailTag(fourcc!("quit")), Node::default(), ChildOf(root)));
     }
 
     #[test]

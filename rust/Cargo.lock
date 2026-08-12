@@ -2714,7 +2714,6 @@ dependencies = [
  "clap",
  "imperialism-core",
  "imperialism-formats",
- "serde_json",
  "thiserror 2.0.19",
 ]
 

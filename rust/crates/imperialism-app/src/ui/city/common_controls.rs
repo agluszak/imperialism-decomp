@@ -40,23 +40,29 @@ pub(in crate::ui::city) struct IndustryView {
     expansion: Entity,
 }
 
-pub(in crate::ui::city) fn city_building_name(ui: &UiSpawner, slot: CityFacilitySlot) -> String {
-    city_string(ui, CITY_BUILDING_STRING_GROUP, slot as i16)
+pub(in crate::ui::city) fn city_building_name(
+    assets: &UiAssetResources,
+    slot: CityFacilitySlot,
+) -> String {
+    city_string(assets, CITY_BUILDING_STRING_GROUP, slot as i16)
 }
 
 pub(in crate::ui::city) fn configure_industry_dialog(
-    ui: &mut UiSpawner,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    commands: &mut Commands,
+    assets: &mut UiAssetResources,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     page: IndustryPage,
 ) {
-    let building_name = city_building_name(ui, page.slot);
-    let capacity_template = city_string(ui, CITY_TEXT_STRING_GROUP, 0x10);
-    let bar_color = ui.palette_color(0x16);
+    let building_name = city_building_name(assets, page.slot);
+    let capacity_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x10);
+    let bar_color = assets.palette_color(0x16);
     bind_industry_dialog(
-        &mut ui.commands,
-        catalog,
-        spawned,
+        commands,
+        root,
+        children,
+        tags,
         page,
         building_name,
         capacity_template,
@@ -67,17 +73,19 @@ pub(in crate::ui::city) fn configure_industry_dialog(
 #[allow(clippy::too_many_arguments)]
 pub(in crate::ui::city) fn bind_city_order_control(
     commands: &mut Commands,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     binding: CityOrderBinding,
     decrease_tag: FourCc,
     increase_tag: FourCc,
     quantity_tag: FourCc,
     step: i16,
 ) -> Entity {
-    let left = spawned.under(catalog, binding.tag, decrease_tag);
-    let right = spawned.under(catalog, binding.tag, increase_tag);
-    let quantity = spawned.under(catalog, binding.tag, quantity_tag);
+    let row = find_descendant(root, binding.tag, children, tags);
+    let left = find_child_or_descendant(row, decrease_tag, children, tags);
+    let right = find_child_or_descendant(row, increase_tag, children, tags);
+    let quantity = find_child_or_descendant(row, quantity_tag, children, tags);
     commands.entity(left).insert(CityOrderAdjust {
         order: binding.order,
         delta: -step,
@@ -92,8 +100,9 @@ pub(in crate::ui::city) fn bind_city_order_control(
 
 fn bind_industry_amount_bars(
     commands: &mut Commands,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     page: IndustryPage,
     bar_color: Color,
 ) -> Vec<IndustryAmountBarControl> {
@@ -101,15 +110,17 @@ fn bind_industry_amount_bars(
     for binding in page.orders {
         let quantity = bind_city_order_control(
             commands,
-            catalog,
-            spawned,
+            root,
+            children,
+            tags,
             *binding,
             fourcc!("left"),
             fourcc!("rght"),
             fourcc!("move"),
             1,
         );
-        let bar = spawned.under(catalog, binding.tag, fourcc!("bar "));
+        let row = find_descendant(root, binding.tag, children, tags);
+        let bar = find_child_or_descendant(row, fourcc!("bar "), children, tags);
         let fill = commands
             .spawn((
                 Node {
@@ -159,26 +170,28 @@ fn bind_industry_amount_bars(
     controls
 }
 
+#[allow(clippy::too_many_arguments)]
 pub(in crate::ui::city) fn bind_industry_dialog(
     commands: &mut Commands,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     page: IndustryPage,
     building_name: String,
     capacity_template: String,
     bar_color: Color,
 ) {
-    let root = bind_city_dialog_root(commands, spawned, page.slot);
+    bind_city_dialog_root(commands, root, children, tags, page.slot);
 
-    let name = spawned.unique(fourcc!("name"));
+    let name = find_descendant(root, fourcc!("name"), children, tags);
     commands.entity(name).insert(Text::new(building_name));
-    let capacity = spawned.unique(fourcc!("capT"));
+    let capacity = find_descendant(root, fourcc!("capT"), children, tags);
     commands.entity(capacity).insert(Text::new(""));
-    let labor = spawned.unique(fourcc!("labV"));
+    let labor = find_descendant(root, fourcc!("labV"), children, tags);
     commands.entity(labor).insert(Text::new("X"));
     let mut stocks = Vec::with_capacity(page.stocks.len());
     for &(resource, tag, minimum) in page.stocks {
-        let entity = spawned.unique(tag);
+        let entity = find_descendant(root, tag, children, tags);
         commands.entity(entity).insert(Text::new("X"));
         stocks.push(IndustryStockControl {
             resource,
@@ -186,12 +199,12 @@ pub(in crate::ui::city) fn bind_industry_dialog(
             entity,
         });
     }
-    let amount_bars = bind_industry_amount_bars(commands, catalog, spawned, page, bar_color);
-    let expansion_action = spawned.unique(fourcc!("expa"));
+    let amount_bars = bind_industry_amount_bars(commands, root, children, tags, page, bar_color);
+    let expansion_action = find_descendant(root, fourcc!("expa"), children, tags);
     commands
         .entity(expansion_action)
         .insert(CityExpansionOpen { slot: page.slot });
-    let expansion = spawned.unique(fourcc!("flag"));
+    let expansion = find_descendant(root, fourcc!("flag"), children, tags);
     commands.entity(root).insert(IndustryView {
         slot: page.slot,
         capacity_template,

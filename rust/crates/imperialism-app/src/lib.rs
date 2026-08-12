@@ -6,9 +6,7 @@ use bevy::input_focus::tab_navigation::TabNavigationPlugin;
 use bevy::prelude::*;
 use bevy::window::WindowPlugin;
 use imperialism_core::{GameState, RandomGameNames};
-use imperialism_formats::{RetailAssets, UiCatalog};
-
-const COMPILED_UI_CATALOG: &str = include_str!("../../imperialism-formats/assets/ui_catalog.json");
+use imperialism_formats::RetailAssets;
 
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, PartialEq, States)]
 pub(crate) enum AppState {
@@ -43,10 +41,7 @@ pub(crate) struct RandomGameNamesResource(pub(crate) RandomGameNames);
 
 pub fn run(retail_assets: RetailAssets, initial_game: Option<GameState>) -> anyhow::Result<()> {
     let random_game_names = retail_assets.random_game_names()?;
-    let ui_catalog = serde_json::from_str::<UiCatalog>(COMPILED_UI_CATALOG)
-        .expect("the compiled UI catalog must deserialize");
-
-    let logical_resolution = ui_catalog.logical_resolution;
+    let logical_resolution = ui::generated::LOGICAL_RESOLUTION;
     let mut app = App::new();
     app.insert_resource(ClearColor(Color::BLACK)).add_plugins(
         DefaultPlugins
@@ -60,9 +55,7 @@ pub fn run(retail_assets: RetailAssets, initial_game: Option<GameState>) -> anyh
                 ..default()
             }),
     );
-    let ui_catalog = ui::UiCatalogResource::new(ui_catalog);
-    app.insert_resource(ui_catalog)
-        .insert_resource(RetailAssetsResource::new(retail_assets))
+    app.insert_resource(RetailAssetsResource::new(retail_assets))
         .insert_resource(RandomGameNamesResource(random_game_names));
     if let Some(game) = initial_game {
         assert_eq!(
@@ -77,7 +70,7 @@ pub fn run(retail_assets: RetailAssets, initial_game: Option<GameState>) -> anyh
     }
     app.add_plugins((
         TabNavigationPlugin,
-        ui::UiCatalogPlugin,
+        ui::RetailUiPlugin,
         ui::MainMenuPlugin,
         ui::RandomSetupPlugin,
         ui::MapPreviewPlugin,

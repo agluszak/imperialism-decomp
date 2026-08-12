@@ -43,25 +43,34 @@ pub(in crate::ui::city) struct ArmoryRowChoice {
 }
 
 pub(in crate::ui::city) fn configure_training_dialog(
-    ui: &mut UiSpawner,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    commands: &mut Commands,
+    assets: &UiAssetResources,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
 ) {
-    let building_name = city_building_name(ui, CityFacilitySlot::TradeSchool);
-    bind_training_dialog(&mut ui.commands, catalog, spawned, building_name);
+    let building_name = city_building_name(assets, CityFacilitySlot::TradeSchool);
+    bind_training_dialog(commands, root, children, tags, building_name);
 }
 
 pub(in crate::ui::city) fn bind_training_dialog(
     commands: &mut Commands,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     building_name: String,
 ) {
-    let root = bind_city_dialog_root(commands, spawned, CityFacilitySlot::TradeSchool);
-    let name = spawned.unique(fourcc!("name"));
+    bind_city_dialog_root(
+        commands,
+        root,
+        children,
+        tags,
+        CityFacilitySlot::TradeSchool,
+    );
+    let name = find_descendant(root, fourcc!("name"), children, tags);
     commands.entity(name).insert(Text::new(building_name));
     for (tag, text) in [(fourcc!("cos1"), "$100"), (fourcc!("cos2"), "$1,000")] {
-        let entity = spawned.unique(tag);
+        let entity = find_descendant(root, tag, children, tags);
         commands.entity(entity).insert(Text::new(text));
     }
     let mut orders = Vec::with_capacity(TRAINING_ORDERS.len());
@@ -71,8 +80,9 @@ pub(in crate::ui::city) fn bind_training_dialog(
         };
         let quantity = bind_city_order_control(
             commands,
-            catalog,
-            spawned,
+            root,
+            children,
+            tags,
             binding,
             fourcc!("left"),
             fourcc!("rght"),
@@ -81,12 +91,12 @@ pub(in crate::ui::city) fn bind_training_dialog(
         );
         orders.push(TrainingOrderControl { level, quantity });
     }
-    let paper_one = spawned.unique(fourcc!("pap1"));
-    let paper_two = spawned.unique(fourcc!("pap2"));
-    let money_one = spawned.unique(fourcc!("mon1"));
-    let money_two = spawned.unique(fourcc!("mon2"));
-    let untrained_available = spawned.unique(fourcc!("untV"));
-    let trained_available = spawned.unique(fourcc!("traV"));
+    let paper_one = find_descendant(root, fourcc!("pap1"), children, tags);
+    let paper_two = find_descendant(root, fourcc!("pap2"), children, tags);
+    let money_one = find_descendant(root, fourcc!("mon1"), children, tags);
+    let money_two = find_descendant(root, fourcc!("mon2"), children, tags);
+    let untrained_available = find_descendant(root, fourcc!("untV"), children, tags);
+    let trained_available = find_descendant(root, fourcc!("traV"), children, tags);
     for entity in [
         paper_one,
         paper_two,
@@ -109,16 +119,17 @@ pub(in crate::ui::city) fn bind_training_dialog(
 }
 
 pub(in crate::ui::city) fn configure_armory_dialog(
-    ui: &mut UiSpawner,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    commands: &mut Commands,
+    assets: &UiAssetResources,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
 ) {
-    let title = ui
+    let title = assets
         .string(0x271c, 0x20)
         .expect("retail English Armory title");
-    let commands = &mut ui.commands;
-    let root = bind_city_dialog_root(commands, spawned, CityFacilitySlot::Armory);
-    let title_control = spawned.unique(fourcc!("titl"));
+    bind_city_dialog_root(commands, root, children, tags, CityFacilitySlot::Armory);
+    let title_control = find_descendant(root, fourcc!("titl"), children, tags);
     commands.entity(title_control).insert(Text::new(title));
     let mut orders = Vec::with_capacity(ARMORY_ORDERS.len());
     for binding in ARMORY_ORDERS {
@@ -127,15 +138,16 @@ pub(in crate::ui::city) fn configure_armory_dialog(
         };
         let quantity = bind_city_order_control(
             commands,
-            catalog,
-            spawned,
+            root,
+            children,
+            tags,
             binding,
             fourcc!("minu"),
             fourcc!("plus"),
             fourcc!("numb"),
             1,
         );
-        let button = spawned.unique(armory_button_tag(category));
+        let button = find_descendant(root, armory_button_tag(category), children, tags);
         commands.entity(button).insert(ArmoryRowChoice { category });
         commands.entity(quantity).insert(InteractionDisabled);
         orders.push(ArmoryOrderControl {
@@ -144,15 +156,15 @@ pub(in crate::ui::city) fn configure_armory_dialog(
             quantity,
         });
     }
-    let unit = spawned.unique(fourcc!("unit"));
-    let workforce_cost = spawned.unique(fourcc!("cos0"));
-    let primary_cost = spawned.unique(fourcc!("cos1"));
-    let secondary_cost = spawned.unique(fourcc!("cos2"));
-    let cash_cost = spawned.unique(fourcc!("cos3"));
-    let workforce_available = spawned.unique(fourcc!("ava0"));
-    let primary_available = spawned.unique(fourcc!("ava1"));
-    let secondary_available = spawned.unique(fourcc!("ava2"));
-    let treasury = spawned.unique(fourcc!("ava3"));
+    let unit = find_descendant(root, fourcc!("unit"), children, tags);
+    let workforce_cost = find_descendant(root, fourcc!("cos0"), children, tags);
+    let primary_cost = find_descendant(root, fourcc!("cos1"), children, tags);
+    let secondary_cost = find_descendant(root, fourcc!("cos2"), children, tags);
+    let cash_cost = find_descendant(root, fourcc!("cos3"), children, tags);
+    let workforce_available = find_descendant(root, fourcc!("ava0"), children, tags);
+    let primary_available = find_descendant(root, fourcc!("ava1"), children, tags);
+    let secondary_available = find_descendant(root, fourcc!("ava2"), children, tags);
+    let treasury = find_descendant(root, fourcc!("ava3"), children, tags);
     for entity in [
         unit,
         workforce_cost,

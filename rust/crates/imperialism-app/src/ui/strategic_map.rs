@@ -1,5 +1,6 @@
-use super::catalog::{SpawnedView, UiAssetResources};
+use super::UiAssetResources;
 use super::random_setup::GameSession;
+use super::retail::{RetailTag, find_descendant};
 use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
@@ -94,11 +95,13 @@ pub(crate) struct StrategicBaseTerrainCanvas {
 
 pub(crate) fn bind_strategic_base_terrain(
     commands: &mut Commands,
-    spawned: &SpawnedView,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     assets: &mut UiAssetResources,
     state: &GameState,
 ) -> Entity {
-    let map = spawned.unique(MAP_TAG);
+    let map = find_descendant(root, MAP_TAG, children, tags);
     let terrain_pictures = load_strategic_terrain_pictures(assets);
     let river_masks = load_strategic_river_masks(assets);
     let image = compose_strategic_base_terrain(

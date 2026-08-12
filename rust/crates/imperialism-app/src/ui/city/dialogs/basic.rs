@@ -47,13 +47,16 @@ pub(in crate::ui::city) struct PopulationView {
 }
 
 pub(in crate::ui::city) fn configure_warehouse_dialog(
-    ui: &mut UiSpawner,
-    spawned: &SpawnedView,
+    commands: &mut Commands,
+    assets: &mut UiAssetResources,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     state: &GameState,
 ) {
-    let building_name = city_building_name(ui, CityFacilitySlot::Warehouse);
+    let building_name = city_building_name(assets, CityFacilitySlot::Warehouse);
     let oil_drilling_available = state.technology().oil_drilling_available();
-    let (title_font, title_layout, _) = ui
+    let (title_font, title_layout, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -61,7 +64,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
             alignment: 1,
         })
         .expect("retail Warehouse title text style");
-    let (value_font, value_layout, _) = ui
+    let (value_font, value_layout, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -69,10 +72,10 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
             alignment: 1,
         })
         .expect("retail Warehouse value text style");
-    let text_color = ui.palette_color(0);
-    let root = bind_city_dialog_root(&mut ui.commands, spawned, CityFacilitySlot::Warehouse);
-    let name = spawned.unique(fourcc!("name"));
-    ui.commands.entity(name).insert((
+    let text_color = assets.palette_color(0);
+    bind_city_dialog_root(commands, root, children, tags, CityFacilitySlot::Warehouse);
+    let name = find_descendant(root, fourcc!("name"), children, tags);
+    commands.entity(name).insert((
         Text::new(building_name),
         title_font,
         title_layout,
@@ -81,8 +84,8 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
 
     let mut stocks = Vec::with_capacity(WAREHOUSE_STOCKS.len());
     for &(resource, tag) in &WAREHOUSE_STOCKS {
-        let control = spawned.unique(tag);
-        ui.commands.entity(control).insert((
+        let control = find_descendant(root, tag, children, tags);
+        commands.entity(control).insert((
             Text::new(""),
             value_font.clone(),
             value_layout,
@@ -93,24 +96,24 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
             entity: control,
         });
     }
-    let labor = spawned.unique(fourcc!("labo"));
-    let power = spawned.unique(fourcc!("powe"));
+    let labor = find_descendant(root, fourcc!("labo"), children, tags);
+    let power = find_descendant(root, fourcc!("powe"), children, tags);
     for control in [labor, power] {
-        ui.commands.entity(control).insert((
+        commands.entity(control).insert((
             Text::new(""),
             value_font.clone(),
             value_layout,
             TextColor(text_color),
         ));
     }
-    ui.commands.entity(root).insert(WarehouseView {
+    commands.entity(root).insert(WarehouseView {
         stocks,
         labor,
         power,
     });
     for tag in [fourcc!("oil "), fourcc!("fuel"), fourcc!("powe")] {
-        let control = spawned.unique(tag);
-        let mut control_commands = ui.commands.entity(control);
+        let control = find_descendant(root, tag, children, tags);
+        let mut control_commands = commands.entity(control);
         if oil_drilling_available {
             control_commands
                 .insert(Visibility::Visible)
@@ -124,20 +127,20 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
     }
 
     let picture = PictureId::new(9215);
-    let dialog = spawned.unique(fourcc!("DLOG"));
-    match ui.picture(picture) {
+    let dialog = find_descendant(root, fourcc!("DLOG"), children, tags);
+    match assets.picture(picture) {
         Ok(handle) => {
-            ui.commands.entity(dialog).insert(ImageNode::new(handle));
+            commands.entity(dialog).insert(ImageNode::new(handle));
         }
         Err(error) => warn!("could not load Warehouse picture {picture}: {error}"),
     }
-    ui.commands
+    commands
         .entity(dialog)
         .entry::<Node>()
         .and_modify(|mut node| node.overflow = Overflow::clip());
     for tag in [fourcc!("WIND"), fourcc!("DLOG")] {
-        let entity = spawned.unique(tag);
-        ui.commands
+        let entity = find_descendant(root, tag, children, tags);
+        commands
             .entity(entity)
             .entry::<Node>()
             .and_modify(|mut node| {
@@ -153,37 +156,40 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
         fourcc!("prod"),
         fourcc!("live"),
     ] {
-        let entity = spawned.unique(tag);
-        ui.commands
+        let entity = find_descendant(root, tag, children, tags);
+        commands
             .entity(entity)
             .entry::<Node>()
             .and_modify(|mut node| {
                 let Val::Px(top) = node.top else {
-                    panic!("catalog Warehouse control has fixed retail coordinates");
+                    panic!("generated Warehouse control has fixed retail coordinates");
                 };
                 node.top = px(top + 176.0);
             });
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 pub(in crate::ui::city) fn bind_rail_dialog(
     commands: &mut Commands,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
     slot: CityFacilitySlot,
     building_name: String,
     binding: CityOrderBinding,
     step: i16,
 ) -> Entity {
-    bind_city_dialog_root(commands, spawned, slot);
-    let name_control = spawned.unique(fourcc!("name"));
+    bind_city_dialog_root(commands, root, children, tags, slot);
+    let name_control = find_descendant(root, fourcc!("name"), children, tags);
     commands
         .entity(name_control)
         .insert(Text::new(building_name));
     bind_city_order_control(
         commands,
-        catalog,
-        spawned,
+        root,
+        children,
+        tags,
         binding,
         fourcc!("left"),
         fourcc!("rght"),
@@ -193,29 +199,31 @@ pub(in crate::ui::city) fn bind_rail_dialog(
 }
 
 pub(in crate::ui::city) fn configure_food_dialog(
-    ui: &mut UiSpawner,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    commands: &mut Commands,
+    assets: &mut UiAssetResources,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
 ) {
-    let building_name = city_building_name(ui, CityFacilitySlot::FoodProcessing);
-    let commands = &mut ui.commands;
+    let building_name = city_building_name(assets, CityFacilitySlot::FoodProcessing);
     let quantity = bind_rail_dialog(
         commands,
-        catalog,
-        spawned,
+        root,
+        children,
+        tags,
         CityFacilitySlot::FoodProcessing,
         building_name,
         FOOD_ORDER,
         2,
     );
-    let labor = spawned.unique(fourcc!("labV"));
-    let grain = spawned.unique(fourcc!("grai"));
-    let fruit = spawned.unique(fourcc!("prod"));
-    let fish_and_livestock = spawned.unique(fourcc!("fish"));
+    let labor = find_descendant(root, fourcc!("labV"), children, tags);
+    let grain = find_descendant(root, fourcc!("grai"), children, tags);
+    let fruit = find_descendant(root, fourcc!("prod"), children, tags);
+    let fish_and_livestock = find_descendant(root, fourcc!("fish"), children, tags);
     for entity in [labor, grain, fruit, fish_and_livestock] {
         commands.entity(entity).insert(Text::new("X"));
     }
-    commands.entity(spawned.root).insert(FoodProcessingView {
+    commands.entity(root).insert(FoodProcessingView {
         quantity,
         labor,
         grain,
@@ -225,53 +233,55 @@ pub(in crate::ui::city) fn configure_food_dialog(
 }
 
 pub(in crate::ui::city) fn configure_power_dialog(
-    ui: &mut UiSpawner,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    commands: &mut Commands,
+    assets: &mut UiAssetResources,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
 ) {
-    let building_name = city_building_name(ui, CityFacilitySlot::PowerPlant);
-    let commands = &mut ui.commands;
+    let building_name = city_building_name(assets, CityFacilitySlot::PowerPlant);
     let quantity = bind_rail_dialog(
         commands,
-        catalog,
-        spawned,
+        root,
+        children,
+        tags,
         CityFacilitySlot::PowerPlant,
         building_name,
         POWER_ORDER,
         6,
     );
-    commands
-        .entity(spawned.root)
-        .insert(PowerPlantView { quantity });
-    let fuel = spawned.unique(fourcc!("fuel"));
+    commands.entity(root).insert(PowerPlantView { quantity });
+    let fuel = find_descendant(root, fourcc!("fuel"), children, tags);
     commands
         .entity(fuel)
         .insert((Text::new("X"), Visibility::Hidden));
 }
 
 pub(in crate::ui::city) fn configure_transport_capacity_dialog(
-    ui: &mut UiSpawner,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    commands: &mut Commands,
+    assets: &mut UiAssetResources,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
 ) {
-    let building_name = city_building_name(ui, CityFacilitySlot::Transport);
-    let commands = &mut ui.commands;
+    let building_name = city_building_name(assets, CityFacilitySlot::Transport);
     let quantity = bind_rail_dialog(
         commands,
-        catalog,
-        spawned,
+        root,
+        children,
+        tags,
         CityFacilitySlot::Transport,
         building_name,
         TRANSPORT_CAPACITY_ORDER,
         1,
     );
-    let labor = spawned.unique(fourcc!("labV"));
-    let lumber = spawned.unique(fourcc!("lumb"));
-    let steel = spawned.unique(fourcc!("stee"));
+    let labor = find_descendant(root, fourcc!("labV"), children, tags);
+    let lumber = find_descendant(root, fourcc!("lumb"), children, tags);
+    let steel = find_descendant(root, fourcc!("stee"), children, tags);
     for entity in [labor, lumber, steel] {
         commands.entity(entity).insert(Text::new("X"));
     }
-    commands.entity(spawned.root).insert(TransportCapacityView {
+    commands.entity(root).insert(TransportCapacityView {
         quantity,
         labor,
         lumber,
@@ -280,35 +290,37 @@ pub(in crate::ui::city) fn configure_transport_capacity_dialog(
 }
 
 pub(in crate::ui::city) fn configure_population_dialog(
-    ui: &mut UiSpawner,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
+    commands: &mut Commands,
+    assets: &mut UiAssetResources,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
 ) {
-    let building_name = city_building_name(ui, CityFacilitySlot::RegionalPopulation);
-    let capacity_template = city_string(ui, CITY_TEXT_STRING_GROUP, 0x10);
-    let province_template = city_string(ui, CITY_TEXT_STRING_GROUP, 0x1d);
-    let commands = &mut ui.commands;
+    let building_name = city_building_name(assets, CityFacilitySlot::RegionalPopulation);
+    let capacity_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x10);
+    let province_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x1d);
     let quantity = bind_rail_dialog(
         commands,
-        catalog,
-        spawned,
+        root,
+        children,
+        tags,
         CityFacilitySlot::RegionalPopulation,
         building_name,
         POPULATION_ORDER,
         1,
     );
-    let food = spawned.unique(fourcc!("food"));
-    let clothing = spawned.unique(fourcc!("clot"));
-    let furniture = spawned.unique(fourcc!("furn"));
-    let capacity = spawned.unique(fourcc!("capT"));
-    let provinces = spawned.unique(fourcc!("prov"));
+    let food = find_descendant(root, fourcc!("food"), children, tags);
+    let clothing = find_descendant(root, fourcc!("clot"), children, tags);
+    let furniture = find_descendant(root, fourcc!("furn"), children, tags);
+    let capacity = find_descendant(root, fourcc!("capT"), children, tags);
+    let provinces = find_descendant(root, fourcc!("prov"), children, tags);
     for entity in [food, clothing, furniture] {
         commands.entity(entity).insert(Text::new("X"));
     }
     for entity in [capacity, provinces] {
         commands.entity(entity).insert(Text::new(""));
     }
-    commands.entity(spawned.root).insert(PopulationView {
+    commands.entity(root).insert(PopulationView {
         capacity_template,
         province_template,
         quantity,

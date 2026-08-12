@@ -11,7 +11,7 @@ mod legacy_stream;
 mod retail_assets;
 mod retail_fonts;
 mod retail_resources;
-mod ui_catalog;
+mod retail_ui;
 
 pub use color::{DibPalette, Rgb};
 pub use legacy_save::{LegacyGameStateContext, LegacySaveV62};
@@ -21,4 +21,4 @@ pub use retail_fonts::{
     RetailTextStylePreset, resolve_retail_text_style,
 };
 pub use retail_resources::IndexedPicture;
-pub use ui_catalog::*;
+pub use retail_ui::{FourCc, OKAY, PictureId, TRADE};

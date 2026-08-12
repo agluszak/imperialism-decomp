@@ -58,16 +58,16 @@ cargo run -p imperialism-app -- \
 Use all four values from the same native capture. In particular, the zone-status RNG state is
 process-derived and must not be replaced with a fixture-wide default.
 
-## Recovered UI catalog
+## Recovered native UI
 
-The existing UI generator also emits the deterministic 640x480 launch catalog consumed by Rust:
+The existing UI generator emits deterministic native Bevy scenes into `imperialism-app`:
 
 ```sh
 (cd ../decomp && uv run python -m tools.ui_codegen --check)
-(cd ../decomp && uv run python -m tools.ui_codegen --write-rust-catalog)
+(cd ../decomp && uv run python -m tools.ui_codegen --write-rust-ui)
 ```
 
-The catalog is generated from the committed Mac View IR plus declared Windows deltas. Resource IDs
-remain scoped by resource file, and each node carries its runtime rectangle, parent, tag, state,
-interactivity, and text/style bindings. Do not hand-write a second screen description in the Bevy
-crate.
+The generated source is compiled from the committed Mac View IR plus declared Windows deltas. It
+spawns `Node`, `ChildOf`, native widget, text, and image components directly. `RetailTag` is used
+only while binding recovered controls to typed screen behavior; `Entity` and `ChildOf` are the
+runtime identity and hierarchy. Do not add another generic UI representation or loader.

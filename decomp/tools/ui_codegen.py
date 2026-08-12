@@ -31,9 +31,7 @@ STRINGS_PATH = "vendor/macos_codewarrior/evidence/resources/strings.csv"
 TEXT_RESOURCES_PATH = "vendor/macos_codewarrior/evidence/resources/text_resources.json"
 WINDOWS_VIEW_PATH = "config/ui_factory_windows_views.yml"
 WINDOWS_DELTA_PATH = "config/ui_platform_deltas.yml"
-RUST_UI_CATALOG_PATH = (
-    "../rust/crates/imperialism-formats/assets/ui_catalog.json"
-)
+RUST_UI_PATH = "../rust/crates/imperialism-app/src/ui/generated.rs"
 
 DEFAULT_CLASSES = {
     "view": "TView",
@@ -98,13 +96,13 @@ class UiResourceKey:
 
 
 # Resource-backed or windows-only factory cases that cannot yet be emitted into the
-# Rust catalog. Keys are UiResourceKey.text() or windows_view names.
+# native Rust UI. Keys are UiResourceKey.text() or windows_view names.
 RUST_CATALOG_EXCLUSIONS: dict[str, str] = {
     # Symbolic node ids ("window", "dialog", ...) are not resource offsets, and the
-    # Rust catalog UiNodeId is a u32 offset taken from Mac View IR.
+    # native Rust UI resource node offset is a u32 offset taken from Mac View IR.
     "join_selector_message": (
         "Windows-only semantic view uses symbolic node ids; "
-        "catalog UiNodeId requires resource offsets"
+        "model resource node offset requires resource offsets"
     ),
 }
 
@@ -116,11 +114,11 @@ class UiCaseRecipe:
     windows_view: str | None
     rejected: str
     evidence: str
-    windows_overrides: tuple["UiNodeOverride", ...]
+    windows_overrides: tuple["WindowsNodeOverride", ...]
 
 
 @dataclass(frozen=True)
-class UiNodeOverride:
+class WindowsNodeOverride:
     node_id: str
     enabled: int | None
     control_value: int | None
@@ -379,7 +377,7 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
             windows_view = str(windows_view_raw) if windows_view_raw else None
             rejected = str(case_row.get("rejected", ""))
             evidence = str(case_row.get("evidence", ""))
-            overrides: list[UiNodeOverride] = []
+            overrides: list[WindowsNodeOverride] = []
             raw_overrides = _mapping(
                 case_row.get("windows_overrides", {}),
                 f"{MANIFEST_PATH}: 0x{address:08x}/0x{event:x}/windows_overrides",
@@ -447,7 +445,7 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
                 if enabled is not None and enabled not in (0, 1):
                     raise ValueError(f"{override_context}: enabled must be 0 or 1")
                 overrides.append(
-                    UiNodeOverride(
+                    WindowsNodeOverride(
                         f"0x{int(raw_node_id):04x}",
                         enabled,
                         control_value,
@@ -1343,7 +1341,7 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
 
     The generator is the one place where recovered type/class evidence decides
     whether a static-text-looking control is a radio, a picture is an activate
-    button, or a canvas takes pointer input. The Rust catalog carries the
+    button, or a canvas takes pointer input. The native Rust UI carries the
     resolved behavior enum, not those C++ class details.
     """
 
@@ -1411,7 +1409,7 @@ def _rust_picture_visual(node: UiSemanticNode) -> str:
     return "static"
 
 
-def _rust_catalog_runtime_fields(family: UiSemanticFamily) -> dict[str, object]:
+def _rust_scene_fields(family: UiSemanticFamily) -> dict[str, object]:
     fields: dict[str, object] = {}
     if family.content_insets is not None and any(family.content_insets):
         fields["content_insets"] = family.content_insets
@@ -1436,7 +1434,7 @@ def _rust_catalog_runtime_fields(family: UiSemanticFamily) -> dict[str, object]:
     return fields
 
 
-def _catalog_case_for_resource(
+def _case_for_resource(
     recipes: Iterable[UiFactoryRecipe], key: UiResourceKey
 ) -> tuple[UiFactoryRecipe, UiCaseRecipe]:
     matches = [
@@ -1452,7 +1450,7 @@ def _catalog_case_for_resource(
     return matches[0]
 
 
-def resource_backed_catalog_keys(
+def resource_backed_scene_keys(
     recipes: Iterable[UiFactoryRecipe],
 ) -> list[UiResourceKey]:
     """Every factory case with a Mac resource, excluding explicitly rejected keys."""
@@ -1466,7 +1464,7 @@ def resource_backed_catalog_keys(
     return sorted(keys, key=lambda item: (item.resource_file, item.view_id))
 
 
-def _emit_catalog_view_nodes(
+def _emit_scene_nodes(
     key: UiResourceKey, semantic_view: UiSemanticView
 ) -> list[dict[str, object]]:
     roots = [node for node in semantic_view.nodes if node.parent_id is None]
@@ -1493,7 +1491,7 @@ def _emit_catalog_view_nodes(
             emitted["checked"] = True
         if behavior != "passive" and (not node.enabled or not node.input_gate):
             emitted["disabled"] = True
-        emitted.update(_rust_catalog_runtime_fields(node.family))
+        emitted.update(_rust_scene_fields(node.family))
         nodes.append(emitted)
     return nodes
 
@@ -1517,7 +1515,7 @@ def _emit_diplomacy_map_key_names(
     for child in names.children:
         if child.node_id in occupied_ids:
             raise ValueError(
-                f"{WINDOWS_DELTA_PATH}: {key.text()} duplicate catalog node "
+                f"{WINDOWS_DELTA_PATH}: {key.text()} duplicate model node "
                 f"0x{child.node_id:08x}"
             )
         occupied_ids.add(child.node_id)
@@ -1534,7 +1532,7 @@ def _emit_diplomacy_map_key_names(
     return emitted
 
 
-def build_rust_ui_catalog(
+def build_rust_ui_model(
     repo_root: Path,
     recipes: Iterable[UiFactoryRecipe],
     views: dict[UiResourceKey, dict],
@@ -1545,16 +1543,16 @@ def build_rust_ui_catalog(
     diplomacy_map_key_names = load_diplomacy_map_key_names(repo_root)
     city_buildings = load_city_building_visuals(repo_root)
     city_building_actions = load_city_building_action_visuals(repo_root)
-    catalog_keys = set(resource_backed_catalog_keys(recipe_list))
-    if diplomacy_map_key_names.view not in catalog_keys:
+    scene_keys = set(resource_backed_scene_keys(recipe_list))
+    if diplomacy_map_key_names.view not in scene_keys:
         raise ValueError(
             f"{WINDOWS_DELTA_PATH}: diplomacy map-key view "
-            f"{diplomacy_map_key_names.view.text()} is not in the Rust catalog"
+            f"{diplomacy_map_key_names.view.text()} is not in the native Rust UI"
         )
-    if city_buildings.view not in catalog_keys:
+    if city_buildings.view not in scene_keys:
         raise ValueError(
             f"{WINDOWS_DELTA_PATH}: city building view "
-            f"{city_buildings.view.text()} is not in the Rust catalog"
+            f"{city_buildings.view.text()} is not in the native Rust UI"
         )
     if city_building_actions.view != city_buildings.view:
         raise ValueError(
@@ -1562,32 +1560,32 @@ def build_rust_ui_catalog(
             f"{city_buildings.view.text()}"
         )
     for visual in city_buildings.visuals:
-        if visual.dialog not in catalog_keys:
+        if visual.dialog not in scene_keys:
             raise ValueError(
                 f"{WINDOWS_DELTA_PATH}: city building dialog "
-                f"{visual.dialog.text()} is not in the Rust catalog"
+                f"{visual.dialog.text()} is not in the native Rust UI"
             )
     for index, visual in enumerate(city_buildings.visuals):
         expected_dialogs = [
-            key for key in catalog_keys if key.view_id == 9200 + index
+            key for key in scene_keys if key.view_id == 9200 + index
         ]
         if len(expected_dialogs) != 1 or visual.dialog != expected_dialogs[0]:
             raise ValueError(
                 f"{WINDOWS_DELTA_PATH}: city building {visual.slot} dialog "
                 "does not match the recovered factory case"
             )
-    catalog_views: list[dict[str, object]] = []
-    for key in sorted(catalog_keys, key=lambda item: (item.resource_file, item.view_id)):
+    scene_views: list[dict[str, object]] = []
+    for key in sorted(scene_keys, key=lambda item: (item.resource_file, item.view_id)):
         raw_view = views.get(key)
         if raw_view is None:
             raise ValueError(f"{key.text()}: missing committed Mac View IR")
-        recipe, case = _catalog_case_for_resource(recipe_list, key)
+        recipe, case = _case_for_resource(recipe_list, key)
         semantic_view = normalize_resource_view(key, raw_view, text_resources)
         semantic_view = apply_case_windows_overrides(recipe, case, semantic_view)
         semantic_view = apply_windows_text_property_patches(
             key, semantic_view, text_property_patches
         )
-        nodes = _emit_catalog_view_nodes(key, semantic_view)
+        nodes = _emit_scene_nodes(key, semantic_view)
         nodes.extend(
             _emit_diplomacy_map_key_names(
                 key, semantic_view, diplomacy_map_key_names
@@ -1624,25 +1622,25 @@ def build_rust_ui_catalog(
                 }
                 for action in city_building_actions.actions
             ]
-        catalog_views.append(emitted)
+        scene_views.append(emitted)
     return {
         "logical_resolution": [640, 480],
-        "views": catalog_views,
+        "views": scene_views,
     }
 
 
-def validate_rust_catalog_coverage(
+def validate_rust_ui_coverage(
     recipes: Iterable[UiFactoryRecipe],
-    catalog: dict[str, object] | None = None,
+    model: dict[str, object] | None = None,
 ) -> list[str]:
-    """Every resource-backed factory case is catalogued or explicitly excluded."""
+    """Every resource-backed factory case is emitted_views or explicitly excluded."""
 
     errors: list[str] = []
-    catalogued: set[str] = set()
-    if catalog is not None:
-        for view in catalog.get("views", []):
+    emitted_views: set[str] = set()
+    if model is not None:
+        for view in model.get("views", []):
             view_id = view["id"]
-            catalogued.add(f"{view_id['resource_file']}:{view_id['resource_id']}")
+            emitted_views.add(f"{view_id['resource_file']}:{view_id['resource_id']}")
     for recipe in recipes:
         for case in recipe.cases:
             if case.resource is None:
@@ -1650,22 +1648,22 @@ def validate_rust_catalog_coverage(
                     continue
                 if case.windows_view not in RUST_CATALOG_EXCLUSIONS:
                     errors.append(
-                        f"windows view {case.windows_view!r} is neither catalogued "
+                        f"windows view {case.windows_view!r} is neither emitted_views "
                         "nor listed in RUST_CATALOG_EXCLUSIONS"
                     )
                 continue
             key = case.resource.text()
             if key in RUST_CATALOG_EXCLUSIONS:
                 continue
-            if catalog is not None and key not in catalogued:
-                errors.append(f"{key}: resource-backed factory case missing from Rust catalog")
+            if model is not None and key not in emitted_views:
+                errors.append(f"{key}: resource-backed factory case missing from native Rust UI")
     for key, reason in sorted(RUST_CATALOG_EXCLUSIONS.items()):
         if not reason.strip():
             errors.append(f"exclusion {key!r} is missing a reason")
     return errors
 
 
-def report_unsupported_catalog_roles(
+def report_unsupported_ui_roles(
     repo_root: Path,
     recipes: Iterable[UiFactoryRecipe],
     views: dict[UiResourceKey, dict],
@@ -1676,12 +1674,12 @@ def report_unsupported_catalog_roles(
     recipe_list = list(recipes)
     text_property_patches = load_windows_text_property_patches(repo_root)
     lines: list[str] = []
-    for key in resource_backed_catalog_keys(recipe_list):
+    for key in resource_backed_scene_keys(recipe_list):
         raw_view = views.get(key)
         if raw_view is None:
             lines.append(f"{key.text()}: missing Mac View IR")
             continue
-        recipe, case = _catalog_case_for_resource(recipe_list, key)
+        recipe, case = _case_for_resource(recipe_list, key)
         semantic_view = normalize_resource_view(key, raw_view, text_resources)
         semantic_view = apply_case_windows_overrides(recipe, case, semantic_view)
         semantic_view = apply_windows_text_property_patches(
@@ -1708,38 +1706,308 @@ def report_unsupported_catalog_roles(
     return lines
 
 
-def render_rust_ui_catalog(
+def _rust_string(value: str) -> str:
+    rendered = json.dumps(value, ensure_ascii=False)
+    return re.sub(
+        r"\\u([0-9a-fA-F]{4})",
+        lambda match: f"\\u{{{match.group(1)}}}",
+        rendered,
+    )
+
+
+def _rust_function_name(resource_file: str, resource_id: int) -> str:
+    stem = resource_file.removesuffix(".rsrc").casefold()
+    stem = re.sub(r"[^a-z0-9]+", "_", stem).strip("_")
+    return f"{stem}_{resource_id}"
+
+
+def _rust_node_name(node_id: int) -> str:
+    return f"node_{node_id:08x}"
+
+
+def _rust_enum_variant(value: str) -> str:
+    return "".join(part.capitalize() for part in value.split("_"))
+
+
+def _rust_has_shipped_font(text: dict[str, object]) -> bool:
+    return int(text["font_family"]) in (1, 2, 3)
+
+
+def _render_native_node(view: dict[str, object], node: dict[str, object]) -> list[str]:
+    node_id = int(node["id"])
+    name = _rust_node_name(node_id)
+    parent_id = node.get("parent")
+    parent = "root" if parent_id is None else _rust_node_name(int(parent_id))
+    rect = node["rect"]
+    insets = node.get("content_insets", [0, 0, 0, 0])
+    top = int(insets[1])
+    text = node.get("text")
+    render_text = text is not None and _rust_has_shipped_font(text)
+    prefix: list[str] = []
+    if render_text and text.get("center_vertically", False):
+        prefix.extend(
+            [
+                f"    let {name}_text_height = resolve_retail_text_style(RetailTextStylePreset {{",
+                f"        font_family: {text['font_family']},",
+                f"        face_flags: {text['face_flags']},",
+                f"        point_size: {text['point_size']},",
+                f"        alignment: {text['alignment']},",
+                "    })",
+                '    .expect("generated retail text style must resolve")',
+                "    .logical_pixel_height;",
+            ]
+        )
+        top_expr = f"{top} + ({int(rect['height'])} - {name}_text_height).max(0) / 2"
+    else:
+        top_expr = str(top)
+    extra_components: list[str] = []
+    behavior = node.get("behavior", "passive")
+    extra_components.extend(
+        {
+            "activate": ["Button"],
+            "checkbox": ["Checkbox"],
+            "toggle": ["Checkbox"],
+            "radio_group": ["RadioGroup"],
+            "radio_button": ["RadioButton"],
+            "pointer_canvas": ["RelativeCursorPosition::default()"],
+        }.get(str(behavior), [])
+    )
+    if node.get("checked", False):
+        extra_components.append("Checked")
+    if node.get("disabled", False):
+        extra_components.append("InteractionDisabled")
+    lines = prefix + [
+        f"    let {name} = commands",
+        "        .spawn((",
+        "            Node {",
+        "                position_type: PositionType::Absolute,",
+        f"                left: Val::Px({int(rect['x'])}.0),",
+        f"                top: Val::Px({int(rect['y'])}.0),",
+        f"                width: Val::Px({int(rect['width'])}.0),",
+        f"                height: Val::Px({int(rect['height'])}.0),",
+        "                padding: UiRect {",
+        f"                    left: Val::Px({int(insets[0])}.0),",
+        f"                    top: Val::Px(({top_expr}) as f32),",
+        f"                    right: Val::Px({int(insets[2])}.0),",
+        f"                    bottom: Val::Px({int(insets[3])}.0),",
+        "                },",
+        "                ..default()",
+        "            },",
+        f"            RetailTag(fourcc!({_rust_string(str(node['tag']))})),",
+    ]
+    lines.extend(f"            {component}," for component in extra_components)
+    lines.extend([f"            ChildOf({parent}),", "        ))", "        .id();"])
+
+    if render_text:
+        lines.extend(
+            [
+                f"    let ({name}_font, {name}_layout, {name}_underline) = assets",
+                "        .text_style(RetailTextStylePreset {",
+                f"            font_family: {text['font_family']},",
+                f"            face_flags: {text['face_flags']},",
+                f"            point_size: {text['point_size']},",
+                f"            alignment: {text['alignment']},",
+                "        })",
+                '        .expect("generated retail text style must load");',
+                f"    let mut {name}_commands = commands.entity({name});",
+            ]
+        )
+        color = text.get("color_index")
+        color_expr = "Color::BLACK" if color is None else f"assets.palette_color({color})"
+        value = _rust_string(str(text.get("value", "")))
+        if behavior == "text_edit":
+            max_chars = text.get("max_chars")
+            max_expr = "None" if max_chars is None else f"Some({max_chars})"
+            lines.extend(
+                [
+                    f"    let mut {name}_text = EditableText::new({value});",
+                    f"    {name}_text.allow_newlines = false;",
+                    f"    {name}_text.max_characters = {max_expr};",
+                    f"    {name}_commands.insert((",
+                    f"        {name}_text,",
+                    f"        {name}_font,",
+                    f"        {name}_layout,",
+                    f"        TextColor({color_expr}),",
+                    "        TextCursorStyle::default(),",
+                    "        EditableTextFilter::new(|character| !character.is_control()),",
+                    "    ));",
+                ]
+            )
+        else:
+            lines.extend(
+                [
+                    f"    {name}_commands.insert((",
+                    f"        Text::new({value}),",
+                    f"        {name}_font,",
+                    f"        {name}_layout,",
+                    f"        TextColor({color_expr}),",
+                    "    ));",
+                ]
+            )
+        if text.get("shadow_color_index") is not None:
+            offset = text.get("shadow_offset", [0, 0])
+            lines.extend(
+                [
+                    f"    {name}_commands.insert(TextShadow {{",
+                    f"        offset: Vec2::new({int(offset[0])}.0, {int(offset[1])}.0),",
+                    f"        color: assets.palette_color({text['shadow_color_index']}),",
+                    "    });",
+                ]
+            )
+        lines.extend(
+            [
+                f"    if {name}_underline {{",
+                f"        {name}_commands.insert(Underline);",
+                "    }",
+            ]
+        )
+
+    picture_id = node.get("picture_id")
+    if picture_id is not None:
+        visual = node.get("picture_visual", "static")
+        idle_id = int(picture_id)
+        active_id = idle_id
+        if visual == "up_down":
+            active_id += 1
+        elif visual == "czech_box":
+            idle_id &= ~1
+            active_id = int(picture_id) | 1
+        lines.extend(
+            [
+                f"    let {name}_idle = assets",
+                f"        .picture(PictureId::new({idle_id}))",
+                '        .expect("generated retail picture must load");',
+                f"    commands.entity({name}).insert(ImageNode::new({name}_idle.clone()));",
+            ]
+        )
+        if visual != "static":
+            lines.extend(
+                [
+                    f"    match assets.picture(PictureId::new({active_id})) {{",
+                    f"        Ok({name}_active) => {{",
+                    f"            commands.entity({name}).insert(RetailPictureSwap {{",
+                    f"                idle: {name}_idle,",
+                    f"                active: {name}_active,",
+                    "            });",
+                    "        }",
+                    "        Err(error) => bevy::log::warn!(",
+                    f'            "could not preload active retail picture {active_id} for {view["id"]["resource_file"]}:{view["id"]["resource_id"]} node {node_id}: {{error}}"',
+                    "        ),",
+                    "    }",
+                ]
+            )
+    return lines
+
+
+def render_rust_ui(
     repo_root: Path,
     recipes: Iterable[UiFactoryRecipe],
     views: dict[UiResourceKey, dict],
     text_resources: TextResources,
 ) -> str:
-    catalog = build_rust_ui_catalog(repo_root, recipes, views, text_resources)
-    return json.dumps(catalog, indent=2, sort_keys=True) + "\n"
+    model = build_rust_ui_model(repo_root, recipes, views, text_resources)
+    lines = [
+        "// @generated by tools.ui_codegen. Do not edit by hand.",
+        "#![allow(dead_code, unused_variables, clippy::identity_op)]",
+        "",
+        "use super::city::{CityBuildingActionVisual, CityBuildingVisual};",
+        "use super::retail::RetailUiAssets;",
+        "use super::retail::{RetailPictureSwap, RetailTag};",
+        "use bevy::prelude::*;",
+        "use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};",
+        "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};",
+        "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup};",
+        "use imperialism_core::CityFacilitySlot;",
+        "use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc, resolve_retail_text_style};",
+        "",
+        "pub const LOGICAL_RESOLUTION: [u32; 2] = [640, 480];",
+        "",
+    ]
+    city = next(
+        view
+        for view in model["views"]
+        if view["id"] == {"resource_file": "Citymain.rsrc", "resource_id": 2011}
+    )
+    lines.extend(["pub const CITY_BUILDINGS: &[CityBuildingVisual] = &["])
+    for visual in city["city_buildings"]:
+        lines.extend(
+            [
+                "    CityBuildingVisual {",
+                f"        slot: CityFacilitySlot::{_rust_enum_variant(visual['slot'])},",
+                f"        origin: [{visual['origin'][0]}, {visual['origin'][1]}],",
+                f"        draw_order: {visual['draw_order']},",
+                "    },",
+            ]
+        )
+    lines.extend(["];", "", "pub const CITY_BUILDING_ACTIONS: &[CityBuildingActionVisual] = &["])
+    for action in city["city_building_actions"]:
+        lines.extend(
+            [
+                "    CityBuildingActionVisual {",
+                f"        slot: CityFacilitySlot::{_rust_enum_variant(action['slot'])},",
+                f"        level: {action['level']},",
+                f"        picture_id: PictureId::new({action['picture_id']}),",
+                f"        frame_count: {action['frame_count']},",
+                f"        origin: [{action['origin'][0]}, {action['origin'][1]}],",
+                f"        frame_size: [{action['frame_size'][0]}, {action['frame_size'][1]}],",
+                "    },",
+            ]
+        )
+    lines.extend(["];", ""])
+    for view in model["views"]:
+        view_id = view["id"]
+        function = _rust_function_name(view_id["resource_file"], view_id["resource_id"])
+        view_name = _rust_string(
+            f"{view_id['resource_file']}:{view_id['resource_id']}"
+        )
+        lines.extend(
+            [
+                "#[rustfmt::skip]",
+                f"pub fn {function}(commands: &mut Commands, assets: &mut RetailUiAssets) -> Entity {{",
+                "    let root = commands",
+                "        .spawn((",
+                "            Node {",
+                "                position_type: PositionType::Absolute,",
+                "                left: Val::Px(0.0),",
+                "                top: Val::Px(0.0),",
+                "                width: Val::Px(LOGICAL_RESOLUTION[0] as f32),",
+                "                height: Val::Px(LOGICAL_RESOLUTION[1] as f32),",
+                "                ..default()",
+                "            },",
+                f"            Name::new({view_name}),",
+                "            Pickable::default(),",
+                "        ))",
+                "        .id();",
+            ]
+        )
+        for node in view["nodes"]:
+            lines.extend(_render_native_node(view, node))
+        lines.extend(["    root", "}", ""])
+    return "\n".join(lines)
 
 
-def write_rust_ui_catalog(
+def write_rust_ui(
     repo_root: Path,
     recipes: Iterable[UiFactoryRecipe],
     views: dict[UiResourceKey, dict],
     text_resources: TextResources,
 ) -> Path:
-    path = repo_root / RUST_UI_CATALOG_PATH
+    path = repo_root / RUST_UI_PATH
     path.parent.mkdir(parents=True, exist_ok=True)
     _write_if_changed(
-        path, render_rust_ui_catalog(repo_root, recipes, views, text_resources)
+        path, render_rust_ui(repo_root, recipes, views, text_resources)
     )
     return path
 
 
-def rust_ui_catalog_is_current(
+def rust_ui_is_current(
     repo_root: Path,
     recipes: Iterable[UiFactoryRecipe],
     views: dict[UiResourceKey, dict],
     text_resources: TextResources,
 ) -> bool:
-    path = repo_root / RUST_UI_CATALOG_PATH
-    return path.is_file() and path.read_text(encoding="utf-8") == render_rust_ui_catalog(
+    path = repo_root / RUST_UI_PATH
+    return path.is_file() and path.read_text(encoding="utf-8") == render_rust_ui(
         repo_root, recipes, views, text_resources
     )
 
@@ -2228,14 +2496,14 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
     parser.add_argument(
-        "--write-rust-catalog",
+        "--write-rust-ui",
         action="store_true",
-        help=f"write the normalized Rust UI catalog to {RUST_UI_CATALOG_PATH}",
+        help=f"write native Bevy UI scenes to {RUST_UI_PATH}",
     )
     parser.add_argument(
         "--report-unsupported-roles",
         action="store_true",
-        help="print specialized visuals and deferred behaviors by catalog view",
+        help="print specialized visuals and deferred behaviors by model view",
     )
     parser.add_argument("--gen-dir", default="build-msvc500/generated/ui")
     parser.add_argument("--function", help="Generate only one factory address")
@@ -2354,23 +2622,23 @@ def main() -> int:
     if args.triage_map:
         _print_source_map_triage(repo_root, args.gen_dir, args.triage_map)
         return 0
-    if args.write_rust_catalog:
-        path = write_rust_ui_catalog(
+    if args.write_rust_ui:
+        path = write_rust_ui(
             repo_root, recipes, views, text_resources
         )
-        catalog = build_rust_ui_catalog(
+        model = build_rust_ui_model(
             repo_root, recipes, views, text_resources
         )
-        coverage = validate_rust_catalog_coverage(recipes, catalog)
+        coverage = validate_rust_ui_coverage(recipes, model)
         if coverage:
-            print("Rust catalog coverage failed:")
+            print("native Rust UI coverage failed:")
             for error in coverage:
                 print(f"  - {error}")
             return 1
-        print(f"Wrote normalized Rust UI catalog to {path}")
+        print(f"Wrote native Bevy UI scenes to {path}")
         return 0
     if args.report_unsupported_roles:
-        for line in report_unsupported_catalog_roles(
+        for line in report_unsupported_ui_roles(
             repo_root, recipes, views, text_resources
         ):
             print(line)
@@ -2382,27 +2650,27 @@ def main() -> int:
         if not selected:
             raise SystemExit(f"No UI factory at 0x{address:08x}")
     if args.check:
-        if not rust_ui_catalog_is_current(
+        if not rust_ui_is_current(
             repo_root, recipes, views, text_resources
         ):
             print(
-                f"UI codegen check failed: {RUST_UI_CATALOG_PATH} is stale; "
-                "run with --write-rust-catalog"
+                f"UI codegen check failed: {RUST_UI_PATH} is stale; "
+                "run with --write-rust-ui"
             )
             return 1
-        catalog = build_rust_ui_catalog(
+        model = build_rust_ui_model(
             repo_root, recipes, views, text_resources
         )
-        coverage = validate_rust_catalog_coverage(recipes, catalog)
+        coverage = validate_rust_ui_coverage(recipes, model)
         if coverage:
-            print("UI codegen check failed: Rust catalog coverage:")
+            print("UI codegen check failed: native Rust UI coverage:")
             for error in coverage:
                 print(f"  - {error}")
             return 1
         print(
             f"UI codegen check passed: {len(recipes)} functions, "
             f"{sum(len(recipe.cases) for recipe in recipes)} cases, "
-            f"{len(catalog['views'])} Rust catalog views"
+            f"{len(model['views'])} native Bevy scenes"
         )
         return 0
     output_dir = resolve_repo_path(repo_root, args.gen_dir)
