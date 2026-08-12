@@ -150,7 +150,7 @@ pub use technology::{
     TechnologyResearchStatus, TechnologyState, UniversityTechnologyState,
 };
 pub use territory::{CountryStatus, ProvinceState};
-pub use trade::{PlayerTradeOrder, TransportAllocation};
+pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};
 pub use turn_flow::{
     AdvanceTurnOutcome, FlowStop, GameScreen, PhaseCode, ScenarioMapId, TurnEffect, TurnState,
 };
