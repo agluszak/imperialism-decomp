@@ -106,20 +106,20 @@ pub fn run(
                 ..default()
             }),
     );
-    app.insert_resource(RetailAssetsResource::new(retail_assets))
-        .insert_resource(RandomGameNamesResource(random_game_names))
-        .insert_resource(ui::SaveDirectory(save_directory));
     if let Some(game) = initial_game {
         assert_eq!(
             game.turn().phase(),
             imperialism_core::PhaseCode::STRATEGIC_MAP,
             "Bevy may only start from a strategic-map core phase"
         );
-        app.insert_resource(ui::GameSession { game })
+        app.insert_resource(ui::GameSession::from_assets(game, &retail_assets))
             .insert_state(AppState::StrategicMap);
     } else {
         app.init_state::<AppState>();
     }
+    app.insert_resource(RetailAssetsResource::new(retail_assets))
+        .insert_resource(RandomGameNamesResource(random_game_names))
+        .insert_resource(ui::SaveDirectory(save_directory));
     add_game_plugins(&mut app);
     app.world_mut()
         .spawn((Camera2d, Msaa::Off, UiAntiAlias::Off));

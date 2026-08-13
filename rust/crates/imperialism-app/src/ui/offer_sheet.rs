@@ -4,7 +4,7 @@ use super::generated;
 use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, get_string};
 use super::retail::{ModalDialog, RetailTag, RetailUiAssets, find_descendant};
 use super::session::{GameSession, apply_turn_stop};
-use crate::{AppState, RetailAssetsResource};
+use crate::AppState;
 use bevy::input_focus::AutoFocus;
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
@@ -293,7 +293,7 @@ fn on_offer_sheet_activate(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
-    retail: Res<RetailAssetsResource>,
+    assets: RetailUiAssets,
 ) {
     if !notices.is_empty() {
         return;
@@ -313,25 +313,21 @@ fn on_offer_sheet_activate(
             else {
                 spawn_offer_quantity_error(
                     &mut commands,
-                    retail.get_string(OFFER_STRING_GROUP, 0x10),
+                    get_string(&assets, OFFER_STRING_GROUP, 0x10),
                 );
                 return;
             };
             if amount < 0 || amount > screen.posed_amount {
                 spawn_offer_quantity_error(
                     &mut commands,
-                    retail.get_string(OFFER_STRING_GROUP, 0x10),
+                    get_string(&assets, OFFER_STRING_GROUP, 0x10),
                 );
                 return;
             }
             amount
         }
     };
-    match session.game.answer_trade_offer(
-        amount,
-        stop_buying,
-        retail.assets().news_table().story_ids(),
-    ) {
+    match session.game.answer_trade_offer(amount, stop_buying) {
         TurnStop::TradeOffer(_) => {}
         stop => apply_turn_stop(stop, &mut next_state),
     }
