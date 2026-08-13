@@ -45,6 +45,9 @@ RuntimeActionResult RunIssuedRailSection(NativeTransition& transition);
 RuntimeActionResult RunCompletedResourceDevelopment(NativeTransition& transition);
 RuntimeActionResult RunOwnedRegionDevelopment(NativeTransition& transition);
 RuntimeActionResult RunCityAndTransportPhase(NativeTransition& transition);
+RuntimeActionResult RunCiviliansPhase(NativeTransition& transition);
+RuntimeActionResult RunProvinceLossWithStationedUnit(NativeTransition& transition);
+RuntimeActionResult RunProvinceOwnerOceanContext(NativeTransition& transition);
 
 RuntimeActionResult RunCheckTechnologyAdvances(NativeTransition& transition);
 RuntimeActionResult RunCheckTechnologyAdvancesAiPurchase(NativeTransition& transition);
@@ -88,6 +91,9 @@ const NativeCase kCases[] = {
     {"completed_resource_development", RunCompletedResourceDevelopment},
     {"owned_region_development", RunOwnedRegionDevelopment},
     {"city_and_transport_phase", RunCityAndTransportPhase},
+    {"civilians_phase", RunCiviliansPhase},
+    {"province_loss_with_stationed_unit", RunProvinceLossWithStationedUnit},
+    {"province_owner_ocean_context", RunProvinceOwnerOceanContext},
     {"check_technology_advances", RunCheckTechnologyAdvances},
     {"check_technology_advances_ai_purchase", RunCheckTechnologyAdvancesAiPurchase},
     {"construct_newspaper_page", RunConstructNewspaperPage},

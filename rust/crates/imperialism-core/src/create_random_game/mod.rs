@@ -156,6 +156,7 @@ pub fn create_random_game(
         human_nation,
         &technology,
         &mut port_zones,
+        &ocean_zones,
         &mut mission_queues,
         difficulty,
     );

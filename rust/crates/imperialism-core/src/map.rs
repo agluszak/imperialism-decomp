@@ -706,8 +706,10 @@ bitflags::bitflags! {
         /// Set by `ResetTileToBaseTransportFlag`; consumers use this as the base-transport test.
         const BASE_TRANSPORT = 1 << 0;
         const RECRUITMENT_RESERVED = 1 << 1;
+        const PORT = 1 << 2;
         /// Set by `SetProvinceCapitalTileFlagBit08`, which also advances the province fort level.
         const PROVINCE_CAPITAL_FORTIFICATION = 1 << 3;
+        const DEPOT = 1 << 4;
         /// The city marker bit tested independently by map and unit consumers.
         const CITY_MARKER = 1 << 5;
 

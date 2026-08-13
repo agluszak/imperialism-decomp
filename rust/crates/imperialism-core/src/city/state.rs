@@ -22,6 +22,25 @@ pub struct TownState {
 }
 
 impl TownState {
+    pub(crate) fn constructed(
+        tile: TileId,
+        owner_nation: NationId,
+        enabled: u8,
+        created_turn: i16,
+    ) -> Self {
+        Self {
+            name: String::new(),
+            tile,
+            created_turn,
+            owner_nation,
+            resource_yield_by_type: ResourceTable::default(),
+            transport_linked: false,
+            enabled,
+            has_adjacent_city: 0,
+            active: enabled == 0,
+        }
+    }
+
     pub(crate) fn for_frog_city(tile: TileId, owner_nation: NationId) -> Self {
         Self {
             name: "FrogCity".to_owned(),

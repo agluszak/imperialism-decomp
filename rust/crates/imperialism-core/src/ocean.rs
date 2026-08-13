@@ -17,6 +17,29 @@ pub enum ZoneKind {
     PortZone(PortZone),
 }
 
+impl ZoneKind {
+    pub fn zone(&self) -> &Zone {
+        match self {
+            Self::Zone(zone) => zone,
+            Self::PortZone(port) => &port.zone,
+        }
+    }
+}
+
+impl Ocean {
+    /// Retail `TOcean::FindMapActionContextContainingNodeByIndex`.
+    pub fn context_containing_province(&self, province: ProvinceId) -> Option<OceanZoneId> {
+        self.zones.iter().enumerate().find_map(|(ordinal, zone)| {
+            zone.zone()
+                .secondary_neighbors
+                .contains(&province)
+                .then_some(OceanZoneId::new(
+                    u16::try_from(ordinal).expect("ocean zone ordinal fits a zone id"),
+                ))
+        })
+    }
+}
+
 /// The saved semantic state shared by `TZone` and `TPortZone`.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Zone {

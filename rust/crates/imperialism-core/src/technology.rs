@@ -292,17 +292,21 @@ impl GameState {
         }
     }
 
-    /// Opening/end-turn tail: advance the season, run technology unlocks, and
-    /// apply non-interactive pending research. Consumes the active human nation's
-    /// first pending unlock, matching `ConsumeFirstPendingAbilityUnlock` before
-    /// `ShowAbilityStatusReport`.
+    /// Opening/end-turn tail after season advance: technology unlocks, then the
+    /// interactive consume for the active eligible nation.
     pub fn begin_technology_and_newspaper_tail(&mut self) -> Option<u8> {
-        self.turn.advance_season();
-        self.turn.phase = PhaseCode::TECHNOLOGY_ADVANCES;
+        self.turn.phase = PhaseCode::SEASON_ADVANCE;
+        self.start_next_phase()
+    }
+
+    pub(crate) fn apply_technology_advances_phase(&mut self) {
         self.check_technology_advances();
         // FIXME: retail ORs `turnFlowStatusFlags` with `0x40` when `marker262` is
         // unchanged (map toolbar new-tech chrome). `marker262` is not modeled.
         self.consume_non_interactive_technology_unlocks();
+    }
+
+    pub(crate) fn consume_opening_technology_unlock(&mut self) -> Option<u8> {
         let nation = MajorNationId::from_nation(self.turn.active_nation)?;
         // FIXME: retail consume-one is active nation + cooldown < 1 + terrain-eligible,
         // not diplomacy eligibility. Same on a normal single-player opening turn.

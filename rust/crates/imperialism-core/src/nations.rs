@@ -174,10 +174,13 @@ impl MajorNation {
         map: &MapMgr,
         civilian_units: &mut Vec<CivilianUnitState>,
         military_units: &mut Vec<MilitaryUnitState>,
+        missions: &mut Vec<MissionState>,
     ) {
         self.common.lose_province(province);
 
         let nation = nation.nation();
+        // `KillUnitsIn` first pass: tracked civilian orders whose tile is in the lost
+        // province. Military `tileIndex06` is a province id and is not used here.
         civilian_units.retain(|unit| {
             unit.nation != nation
                 || unit
@@ -186,10 +189,23 @@ impl MajorNation {
                     .is_none_or(|tile| map[tile].province != Some(province))
         });
 
-        // The second `KillUnitsIn` pass frees entries whose detached order has
-        // already cleared its location. Rust does not yet model the preceding
-        // army-order-to-unit linkage, but the saved off-map state is direct.
+        // Second pass frees already-detached military units (`tileIndex06 == -1`).
+        // Units still stationed in the lost province stay on the map.
         military_units.retain(|unit| unit.nation != nation || unit.stationed_province.is_some());
+        let remaining: Vec<_> = military_units.iter().map(|unit| unit.id).collect();
+        for mission in missions.iter_mut() {
+            if mission.nation != nation {
+                continue;
+            }
+            let army = match &mut mission.data {
+                MissionData::DefendProvince { army, .. } => army,
+                MissionData::AttackProvince(attack) => &mut attack.army,
+                MissionData::Invade { attack, .. } => &mut attack.army,
+                _ => continue,
+            };
+            army.units
+                .retain(|id| remaining.iter().any(|present| present == id));
+        }
     }
 
     /// Retail `TGreatPower::AddProvince`.

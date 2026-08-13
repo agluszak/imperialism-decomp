@@ -127,6 +127,52 @@ impl GameState {
             );
         }
     }
+
+    /// Retail `TSimMgr::StartNextPhase` as a compact loop: keep applying one
+    /// `AdvanceGlobalTurnStateMachine` case while that case would post another
+    /// command-100 continue.
+    pub fn start_next_phase(&mut self) -> Option<u8> {
+        while self.advance_phase() {}
+        if self.turn.phase == PhaseCode::TECHNOLOGY_ADVANCES {
+            self.consume_opening_technology_unlock()
+        } else {
+            None
+        }
+    }
+
+    /// One `TSimMgr::AdvanceGlobalTurnStateMachine` case. `true` means retail
+    /// would post `StartNextPhase` and continue immediately.
+    pub fn advance_phase(&mut self) -> bool {
+        match self.turn.phase {
+            PhaseCode::CAPITAL_SELECTION => {
+                self.turn.phase = PhaseCode::SEASON_ADVANCE;
+                true
+            }
+            PhaseCode::SEASON_ADVANCE => {
+                self.turn.phase = PhaseCode::TECHNOLOGY_ADVANCES;
+                self.turn.advance_season();
+                true
+            }
+            PhaseCode::TECHNOLOGY_ADVANCES => {
+                // Retail writes newspaper (0xf) first, then maybe continues.
+                // Opening-turn consumers stop on the technology UI, so this
+                // case keeps `TECHNOLOGY_ADVANCES` and does the tech work here.
+                self.apply_technology_advances_phase();
+                false
+            }
+            PhaseCode::CITY_AND_TRANSPORT => {
+                self.turn.phase = PhaseCode::GREAT_POWER_PRESSURE;
+                self.do_city_and_transport();
+                true
+            }
+            PhaseCode::OFFER_SHEET => {
+                self.turn.phase = PhaseCode::MILITARY;
+                self.do_civilians();
+                true
+            }
+            _ => false,
+        }
+    }
 }
 
 fn reset_finished_flag(eligible: bool, finished: &mut bool) {
@@ -159,5 +205,23 @@ mod tests {
         state.nations.majors[nation].economy.diplomacy_eligible = true;
         state.reset_turn_flags();
         assert!(!state.nations.majors[nation].economy.turn_finished);
+    }
+
+    #[test]
+    fn start_next_phase_from_capital_selection_advances_season_and_stops_on_technology() {
+        let mut state = game_state();
+        state.turn.phase = crate::PhaseCode::CAPITAL_SELECTION;
+        state.turn.economic_turn = 0;
+        state.start_next_phase();
+        assert_eq!(state.turn.phase, crate::PhaseCode::TECHNOLOGY_ADVANCES);
+        assert_eq!(state.turn.economic_turn, 1);
+    }
+
+    #[test]
+    fn city_and_transport_phase_case_runs_the_retail_operation_and_continues() {
+        let mut state = game_state();
+        state.turn.phase = crate::PhaseCode::CITY_AND_TRANSPORT;
+        assert!(state.advance_phase());
+        assert_eq!(state.turn.phase, crate::PhaseCode::GREAT_POWER_PRESSURE);
     }
 }

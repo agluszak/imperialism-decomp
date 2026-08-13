@@ -30,7 +30,7 @@ impl GameState {
     pub fn do_city_and_transport(&mut self) {
         for index in (0..MajorNationId::COUNT).rev() {
             let nation = MajorNationId::new(index);
-            if !self.city_and_transport_nation_is_eligible(nation) {
+            if !self.nation_eligible_for_optional_phase(nation) {
                 continue;
             }
             self.fill_interior_minister_orders(nation);
@@ -41,7 +41,7 @@ impl GameState {
         }
     }
 
-    fn city_and_transport_nation_is_eligible(&self, nation: MajorNationId) -> bool {
+    pub(crate) fn nation_eligible_for_optional_phase(&self, nation: MajorNationId) -> bool {
         !matches!(
             self.nations.major(nation).common.status(),
             CountryStatus::ProtectorateOf(_)
