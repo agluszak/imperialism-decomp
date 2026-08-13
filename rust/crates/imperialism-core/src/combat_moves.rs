@@ -55,12 +55,11 @@ impl GameState {
 
     fn form_stacks(&mut self, chains: &mut StationedChains) -> Vec<ArmyStack> {
         let mut stacks = Vec::new();
-        for tile_index in 0..PROVINCE_COUNT {
+        for (tile_index, mut unit_index) in chains.head.iter().copied().enumerate() {
             let province = ProvinceId::new(tile_index as u16);
             let mut previous_target: Option<i16> = Some(-1);
             let mut previous_owner: Option<NationId> = None;
             let mut current_stack: Option<usize> = None;
-            let mut unit_index = chains.head[tile_index];
             while let Some(index) = unit_index {
                 let next = chains.next[index];
                 let target = order_target_index(&self.military_units[index].order);
@@ -89,7 +88,7 @@ impl GameState {
                 } else {
                     let existing = stacks
                         .iter()
-                        .position(|stack| stack.dest == dest && stack.owner == owner);
+                        .position(|stack: &ArmyStack| stack.dest == dest && stack.owner == owner);
                     let stack_index = if let Some(existing) = existing {
                         existing
                     } else {
@@ -160,8 +159,7 @@ impl GameState {
         let cached_owner = owner_cache[dest_index];
         let mut our_units = Vec::new();
         for &index in &stack.units {
-            if order_target_index(&self.military_units[index].order) == i16::from(stack.dest.get())
-            {
+            if order_target_index(&self.military_units[index].order) == stack.dest.get() as i16 {
                 our_units.insert(0, index);
             }
         }
@@ -237,9 +235,8 @@ impl GameState {
 
     fn normalized_owner_cache(&self) -> [i16; PROVINCE_COUNT] {
         let mut cache = [-1_i16; PROVINCE_COUNT];
-        for index in 0..PROVINCE_COUNT {
-            let province = ProvinceId::new(index as u16);
-            cache[index] = self.normalized_province_owner(province);
+        for (index, owner) in cache.iter_mut().enumerate() {
+            *owner = self.normalized_province_owner(ProvinceId::new(index as u16));
         }
         cache
     }
@@ -268,8 +265,8 @@ impl GameState {
     }
 
     fn finalize_military_units_without_ui(&mut self, owner_cache: &[i16; PROVINCE_COUNT]) {
-        for tile in 0..STRATEGIC_TILE_COUNT {
-            self.map.tiles[tile].per_tile_visited = 0;
+        for tile in &mut self.map.tiles {
+            tile.per_tile_visited = 0;
         }
         for unit in &mut self.military_units {
             if unit.strength > 0 && unit.stationed_province.is_some() && unit.order.code() != 2 {
@@ -281,9 +278,8 @@ impl GameState {
     }
 
     fn apply_ownership_changes(&mut self, owner_cache: &[i16; PROVINCE_COUNT]) {
-        for index in 0..PROVINCE_COUNT {
+        for (index, &cached) in owner_cache.iter().enumerate() {
             let province = ProvinceId::new(index as u16);
-            let cached = owner_cache[index];
             let Some(current) = self.map.provinces[province].owner() else {
                 continue;
             };
@@ -311,8 +307,8 @@ impl StationedChains {
             prev: vec![None; units.len()],
             next: vec![None; units.len()],
         };
-        for index in 0..units.len() {
-            chains.link(units, index, units[index].stationed_province);
+        for (index, unit) in units.iter().enumerate() {
+            chains.link(units, index, unit.stationed_province);
         }
         chains
     }
@@ -374,9 +370,7 @@ impl StationedChains {
 fn order_target_index(order: &MilitaryOrder) -> i16 {
     match *order {
         MilitaryOrder::Idle { .. } => -1,
-        MilitaryOrder::Retail { target, .. } => {
-            target.map_or(-1, |province| i16::from(province.get()))
-        }
+        MilitaryOrder::Retail { target, .. } => target.map_or(-1, |province| province.get() as i16),
     }
 }
 

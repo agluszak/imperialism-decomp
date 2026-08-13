@@ -84,27 +84,25 @@ impl GameState {
         let oil_drilling = self.technology.oil_drilling_available();
 
         let mut region_scores = [0_i32; PROVINCE_COUNT];
-        for index in 0..PROVINCE_COUNT {
+        for (index, score) in region_scores.iter_mut().enumerate() {
             let province = ProvinceId::new(index as u16);
-            let mut score = 200;
+            *score = 200;
             for &tile in &self.map.provinces[province].linked_tiles {
                 for resource in self.map[tile].edge_resources.iter().flatten() {
                     if *resource == ResourceKind::Oil && !oil_drilling {
                         continue;
                     }
-                    score += i32::from(heatmap_requirement_level(
+                    *score += i32::from(heatmap_requirement_level(
                         *resource as usize,
                         self.map[tile].development.packed_byte(),
                     )) * resource_weights[*resource as usize];
                 }
             }
-            region_scores[index] = score;
         }
 
-        for index in 0..PROVINCE_COUNT {
+        for (index, score) in region_scores.iter_mut().enumerate() {
             let province = ProvinceId::new(index as u16);
-            region_scores[index] +=
-                i32::from(self.map.provinces[province].development_stage() + 3) * 1000;
+            *score += i32::from(self.map.provinces[province].development_stage() + 3) * 1000;
         }
 
         for slot in 0..NationId::COUNT {
@@ -122,9 +120,9 @@ impl GameState {
             };
         }
 
-        for index in 0..PROVINCE_COUNT {
+        for (index, region_score) in region_scores.iter().enumerate() {
             let province = ProvinceId::new(index as u16);
-            let mut city_score = region_scores[index];
+            let mut city_score = *region_score;
             for &adjacent in self.map.provinces[province].adjacency().iter().rev() {
                 city_score = (region_scores[usize::from(adjacent.get())] as f32
                     * HEATMAP_NEIGHBOR_DIFFUSION
@@ -133,10 +131,13 @@ impl GameState {
             self.map.provinces[province].set_city_score(city_score);
         }
 
-        let mut total = 0;
-        for index in 0..PROVINCE_COUNT {
-            total += self.map.provinces[ProvinceId::new(index as u16)].city_score();
-        }
+        let total: i32 = self
+            .map
+            .provinces
+            .as_array()
+            .iter()
+            .map(ProvinceState::city_score)
+            .sum();
         self.map.city_score_total = total / PROVINCE_COUNT as i32;
     }
 
@@ -267,11 +268,8 @@ mod tests {
     fn heatmap_on_an_empty_map_is_the_undeveloped_mean() {
         let mut state = game_state();
         state.recompute_tile_strategic_score_heatmap();
-        for index in 0..PROVINCE_COUNT {
-            assert_eq!(
-                state.map.provinces[ProvinceId::new(index as u16)].city_score(),
-                3200
-            );
+        for province in state.map.provinces.as_array() {
+            assert_eq!(province.city_score(), 3200);
         }
         assert_eq!(state.map.city_score_total, 3200);
     }
