@@ -910,7 +910,7 @@ mod tests {
             NationId::new(0),
             crate::MilitaryUnitKind::Minutemen,
             None,
-            crate::MilitaryOrder::detach_from_map(),
+            crate::MilitaryOrder::idle([None; 3], [None; 3]),
             NationId::new(0),
             0,
             true,

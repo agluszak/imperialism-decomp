@@ -899,7 +899,7 @@ mod tests {
 
     fn push_civilian(
         state: &mut GameState,
-        id: u16,
+        id: i32,
         kind: CivilianUnitKind,
         tile: TileId,
         order: CivilianWorkOrder,
@@ -925,6 +925,7 @@ mod tests {
         let tile = TileId::new(50);
         state.map[tile].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
         state.map[tile].terrain = TerrainKind::Plains;
+        state.map[TileId::new(1)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
         push_civilian(
             &mut state,
             1,

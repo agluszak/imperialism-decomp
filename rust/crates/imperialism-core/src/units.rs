@@ -312,11 +312,6 @@ impl MilitaryOrder {
         }
     }
 
-    /// `TMilitaryUnit::MoveTo(-1)` plus `ClearPath`.
-    pub(crate) fn detach_from_map() -> Self {
-        Self::idle([None; 3], [None; 3])
-    }
-
     pub const fn retail(
         code: MilitaryOrderCode,
         target: Option<ProvinceId>,

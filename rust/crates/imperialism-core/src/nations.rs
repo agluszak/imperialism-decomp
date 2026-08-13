@@ -174,7 +174,7 @@ impl MajorNation {
         map: &MapMgr,
         civilian_units: &mut Vec<CivilianUnitState>,
         military_units: &mut Vec<MilitaryUnitState>,
-        missions: &mut Vec<MissionState>,
+        missions: &mut [MissionState],
     ) {
         self.common.lose_province(province);
 

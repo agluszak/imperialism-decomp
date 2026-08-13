@@ -184,7 +184,7 @@ fn reset_finished_flag(eligible: bool, finished: &mut bool) {
 #[cfg(test)]
 mod tests {
     use crate::test_support::game_state;
-    use crate::{MajorNationController, MajorNationId};
+    use crate::{MajorNationController, MajorNationId, NationId, TileId, TileOwnerTag};
 
     #[test]
     fn reset_turn_flags_follows_diplomacy_eligibility_not_controller() {
@@ -220,6 +220,17 @@ mod tests {
     #[test]
     fn city_and_transport_phase_case_runs_the_retail_operation_and_continues() {
         let mut state = game_state();
+        for index in 0..MajorNationId::COUNT {
+            let tile = TileId::new(index as u16 + 1);
+            let major = &mut state.nations.majors[MajorNationId::new(index)];
+            major.towns[0].tile = tile;
+            major.common.home_tile = Some(tile);
+        }
+        for index in 0..MajorNationId::COUNT {
+            let tile = TileId::new(index as u16 + 1);
+            state.map[tile].owner_nation =
+                Some(TileOwnerTag::from_nation(NationId::new(index)));
+        }
         state.turn.phase = crate::PhaseCode::CITY_AND_TRANSPORT;
         assert!(state.advance_phase());
         assert_eq!(state.turn.phase, crate::PhaseCode::GREAT_POWER_PRESSURE);
