@@ -4,10 +4,8 @@ use crate::legacy_stream::LegacyWriter;
 use imperialism_core::*;
 
 impl LegacySaveV62 {
-    pub(super) fn has_navy(&self) -> bool {
-        !self.navy.ships.is_empty()
-            || !self.navy.admirals.is_empty()
-            || !self.navy.task_forces.is_empty()
+    pub(super) fn has_task_forces(&self) -> bool {
+        !self.navy.task_forces.is_empty()
     }
 
     pub(super) fn has_city_tasks(&self) -> bool {

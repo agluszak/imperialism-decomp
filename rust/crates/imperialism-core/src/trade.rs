@@ -666,11 +666,13 @@ mod tests {
             military_units: vec![],
             civilian_units: vec![],
             ships: vec![],
+            admirals: vec![],
             task_forces: vec![],
             missions: vec![],
             news: crate::NewsState::default(),
             pending: crate::PendingWorkState::default(),
             continuation: crate::turn_flow::TurnContinuation::None,
+            pending_land_battle: None,
         }
     }
 

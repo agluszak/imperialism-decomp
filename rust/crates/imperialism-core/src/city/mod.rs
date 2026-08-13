@@ -14,5 +14,7 @@ pub use production::{
     TrainingOrderTable, civilian_recruitment_spec, military_recruitment_spec,
     resource_development_yield, ship_display_stats, ship_order_costs,
 };
-pub(crate) use production::{EXPANSION_INPUTS, ItemInputs, ship_stock_cap};
+pub(crate) use production::{
+    EXPANSION_INPUTS, ItemInputs, ship_creates_navy_object, ship_stock_cap,
+};
 pub use state::{CityState, Stockpile, TownState};

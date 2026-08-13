@@ -710,6 +710,7 @@ bitflags::bitflags! {
         const PORT = 1 << 2;
         /// Set by `SetProvinceCapitalTileFlagBit08`, which also advances the province fort level.
         const PROVINCE_CAPITAL_FORTIFICATION = 1 << 3;
+        const DEPOT = 1 << 4;
         /// The city marker bit tested independently by map and unit consumers.
         const CITY_MARKER = 1 << 5;
 
@@ -907,6 +908,13 @@ impl Default for TileDevelopment {
             extractive: DevelopmentLevel::ZERO,
             resource_visible_to_majors: MajorNationTable::default(),
         }
+    }
+}
+
+impl TileDevelopment {
+    /// Retail `TTerrainStateRecord::developmentClassNibbles0c` as a whole signed byte.
+    pub(crate) fn packed_byte(self) -> i8 {
+        ((self.extractive.get() << 4) | self.surface.get()) as i8
     }
 }
 

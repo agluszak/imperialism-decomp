@@ -156,6 +156,7 @@ pub fn create_random_game(
         human_nation,
         &technology,
         &mut port_zones,
+        &ocean_zones,
         &mut mission_queues,
         difficulty,
     );
@@ -273,10 +274,12 @@ pub fn create_random_game(
         military_units,
         civilian_units: Vec::new(),
         ships: Vec::new(),
+        admirals: Vec::new(),
         task_forces: Vec::new(),
         missions,
         news: NewsState::default(),
         pending,
         continuation: crate::turn_flow::TurnContinuation::None,
+        pending_land_battle: None,
     }
 }

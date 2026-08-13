@@ -73,3 +73,51 @@ fn diplomacy_phase_applies_grant_and_consulate() {
     )
     .unwrap();
 }
+
+#[derive(Debug, Deserialize)]
+struct PlayerDiplomacyPolicyCase {
+    source: MajorNationId,
+    target: NationId,
+    policy: DiplomacyPolicy,
+    confirm_entanglements: bool,
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn player_diplomacy_policy_posts_consulate() {
+    compare_native(
+        "player_diplomacy_policy_posts_consulate",
+        |state, case: PlayerDiplomacyPolicyCase| {
+            matches!(
+                state.toggle_player_diplomacy_policy(
+                    case.source,
+                    case.target,
+                    case.policy,
+                    case.confirm_entanglements,
+                ),
+                PlayerDiplomacyOrderResult::Applied
+            )
+        },
+    )
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn player_diplomacy_policy_rejects_consulate_on_major() {
+    compare_native(
+        "player_diplomacy_policy_rejects_consulate_on_major",
+        |state, case: PlayerDiplomacyPolicyCase| {
+            matches!(
+                state.toggle_player_diplomacy_policy(
+                    case.source,
+                    case.target,
+                    case.policy,
+                    case.confirm_entanglements,
+                ),
+                PlayerDiplomacyOrderResult::Applied
+            )
+        },
+    )
+    .unwrap();
+}

@@ -17,6 +17,7 @@ pub struct GameState {
     pub(crate) military_units: Vec<MilitaryUnitState>,
     pub(crate) civilian_units: Vec<CivilianUnitState>,
     pub(crate) ships: Vec<ShipState>,
+    pub(crate) admirals: Vec<AdmiralState>,
     pub(crate) task_forces: Vec<TaskForceState>,
     pub(crate) missions: Vec<MissionState>,
     pub(crate) news: NewsState,
@@ -24,6 +25,9 @@ pub struct GameState {
     /// Live interruptible-phase resume state. Not written to `.imp`.
     #[serde(default)]
     pub(crate) continuation: crate::turn_flow::TurnContinuation,
+    /// Land battle created by combat movement. Not part of `.imp`.
+    #[serde(skip)]
+    pub(crate) pending_land_battle: Option<crate::PendingLandBattle>,
 }
 
 /// Construction-only parameter object for assembling [`GameState`].
@@ -45,6 +49,7 @@ pub struct GameStateParts {
     pub military_units: Vec<MilitaryUnitState>,
     pub civilian_units: Vec<CivilianUnitState>,
     pub ships: Vec<ShipState>,
+    pub admirals: Vec<AdmiralState>,
     pub task_forces: Vec<TaskForceState>,
     pub missions: Vec<MissionState>,
     pub news: NewsState,
@@ -69,11 +74,13 @@ impl GameState {
             military_units: parts.military_units,
             civilian_units: parts.civilian_units,
             ships: parts.ships,
+            admirals: parts.admirals,
             task_forces: parts.task_forces,
             missions: parts.missions,
             news: parts.news,
             pending: parts.pending,
             continuation: parts.continuation,
+            pending_land_battle: None,
         }
     }
 
@@ -123,6 +130,10 @@ impl GameState {
 
     pub fn ships(&self) -> &[ShipState] {
         &self.ships
+    }
+
+    pub fn admirals(&self) -> &[AdmiralState] {
+        &self.admirals
     }
 
     pub fn task_forces(&self) -> &[TaskForceState] {

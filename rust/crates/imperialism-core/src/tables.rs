@@ -33,6 +33,14 @@ pub enum ShipType {
     Battlecruiser,
 }
 
+impl ShipType {
+    pub const LENGTH: usize = enum_map::enum_len::<Self>();
+
+    pub fn from_index(index: u8) -> Option<Self> {
+        (usize::from(index) < Self::LENGTH).then(|| Self::from_usize(usize::from(index)))
+    }
+}
+
 pub type ShipTypeTable<T> = EnumMap<ShipType, T>;
 
 /// Fixed capacities maintained for every major nation.

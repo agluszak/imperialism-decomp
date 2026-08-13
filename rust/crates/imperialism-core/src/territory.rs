@@ -146,6 +146,10 @@ impl ProvinceState {
         self.fort_level
     }
 
+    pub(crate) fn add_fort_level(&mut self) {
+        self.fort_level = self.fort_level.wrapping_add(1);
+    }
+
     pub const fn city_tile(&self) -> Option<TileId> {
         self.city_tile
     }
@@ -170,6 +174,10 @@ impl ProvinceState {
         self.city_score
     }
 
+    pub(crate) fn set_city_score(&mut self, city_score: i32) {
+        self.city_score = city_score;
+    }
+
     fn set_owner(&mut self, new_owner: NationId) {
         self.owner = Some(new_owner);
     }
@@ -184,17 +192,9 @@ where
 }
 
 impl MapMgr {
-    /// The two map-graph branches of retail
+    /// Direct and second-degree branches of retail
     /// `IsNodeTypeLinkUnavailableAndNoActiveMapActionContext`.
-    ///
-    /// Rust has no authoritative active map-action context yet, so a node with
-    /// neither recovered graph link is treated as unavailable.
-    fn province_node_has_nation_link_without_active_context(
-        &self,
-        province: ProvinceId,
-        nation: MajorNationId,
-    ) -> bool {
-        let nation = nation.nation();
+    fn province_has_nation_graph_link(&self, province: ProvinceId, nation: NationId) -> bool {
         let record = &self.provinces[province];
         if record
             .adjacency
@@ -213,6 +213,18 @@ impl MapMgr {
 }
 
 impl GameState {
+    /// Retail `IsNodeTypeLinkUnavailableAndNoActiveMapActionContext`, inverted to
+    /// "available": graph link or an ocean context that lists the province.
+    pub(crate) fn province_mission_node_available(
+        &self,
+        province: ProvinceId,
+        nation: MajorNationId,
+    ) -> bool {
+        self.map
+            .province_has_nation_graph_link(province, nation.nation())
+            || self.ocean.context_containing_province(province).is_some()
+    }
+
     /// Retail `TMapMgr::ChangeProvinceOwner` and its ordered virtual country dispatch.
     pub fn change_province_owner(&mut self, province: ProvinceId, new_owner: NationId) {
         self.nations
@@ -254,6 +266,7 @@ impl GameState {
                 &self.map,
                 &mut self.civilian_units,
                 &mut self.military_units,
+                &mut self.missions,
             );
         } else {
             let old_owner = MinorNationId::new(old_owner.get());
@@ -273,9 +286,7 @@ impl GameState {
         if let Some(new_owner) = MajorNationId::from_nation(new_owner) {
             self.nations.majors[new_owner].add_province(province);
             if self.nations.majors[new_owner].kind == MajorNationKind::AutoGreatPower {
-                let available = self
-                    .map
-                    .province_node_has_nation_link_without_active_context(province, new_owner);
+                let available = self.province_mission_node_available(province, new_owner);
                 let targets = self.nations.majors[new_owner]
                     .economy
                     .ai_province_targets
@@ -784,5 +795,144 @@ mod tests {
         assert!(state.are_nations_border_linked(NationId::new(0), NationId::new(1)));
         assert!(state.are_nations_border_linked(NationId::new(0), NationId::new(3)));
         assert!(!state.are_nations_border_linked(NationId::new(0), NationId::new(4)));
+    }
+
+    #[test]
+    fn isolated_province_is_unavailable_without_an_ocean_context() {
+        let mut state = crate::test_support::game_state();
+        state.map.provinces = ProvinceTable::default();
+        set_owned(&mut state, NationId::new(0), &[2]);
+        set_province(&mut state, 2, Some(0), &[], Some(0));
+        state.map.provinces[ProvinceId::new(2)].linked_tiles = vec![TileId::new(20)];
+        state.map[TileId::new(20)].province = Some(ProvinceId::new(2));
+        state.map[TileId::new(20)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
+        set_owned(&mut state, NationId::new(1), &[10]);
+        set_province(&mut state, 10, Some(1), &[], Some(0));
+        let destination = &mut state.nations.majors[MajorNationId::new(1)];
+        destination.kind = MajorNationKind::AutoGreatPower;
+        destination.economy.ai_province_targets = Some(ProvinceTable::default());
+
+        state.change_province_owner(ProvinceId::new(2), NationId::new(1));
+        assert_eq!(
+            state.nations.majors[MajorNationId::new(1)]
+                .economy
+                .ai_province_targets
+                .as_ref()
+                .unwrap()[ProvinceId::new(2)],
+            AiTargetState::Unmarked
+        );
+        assert!(state.missions.is_empty());
+    }
+
+    #[test]
+    fn isolated_province_is_available_when_an_ocean_context_contains_it() {
+        let mut state = crate::test_support::game_state();
+        state.map.provinces = ProvinceTable::default();
+        set_owned(&mut state, NationId::new(0), &[2]);
+        set_province(&mut state, 2, Some(0), &[], Some(0));
+        state.map.provinces[ProvinceId::new(2)].linked_tiles = vec![TileId::new(20)];
+        state.map[TileId::new(20)].province = Some(ProvinceId::new(2));
+        state.map[TileId::new(20)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
+        set_owned(&mut state, NationId::new(1), &[10]);
+        set_province(&mut state, 10, Some(1), &[], Some(0));
+        let destination = &mut state.nations.majors[MajorNationId::new(1)];
+        destination.kind = MajorNationKind::AutoGreatPower;
+        destination.economy.ai_province_targets = Some(ProvinceTable::default());
+        state.ocean.zones.push(crate::ZoneKind::Zone(crate::Zone {
+            display_name: String::new(),
+            status_code: None,
+            target_tile: None,
+            seed_owner: None,
+            active_tile: None,
+            primary_neighbors: Vec::new(),
+            secondary_neighbors: vec![ProvinceId::new(2)],
+        }));
+
+        state.change_province_owner(ProvinceId::new(2), NationId::new(1));
+        assert_eq!(
+            state.nations.majors[MajorNationId::new(1)]
+                .economy
+                .ai_province_targets
+                .as_ref()
+                .unwrap()[ProvinceId::new(2)],
+            AiTargetState::MissionQueued
+        );
+        assert!(matches!(
+            &state.missions[..],
+            [MissionState {
+                nation,
+                data: MissionData::DefendProvince { province, .. },
+                ..
+            }] if *nation == NationId::new(1) && *province == ProvinceId::new(2)
+        ));
+    }
+
+    #[test]
+    fn lose_province_kills_civilians_and_off_map_units_but_keeps_stationed_military() {
+        let mut state = crate::test_support::game_state();
+        state.map.provinces = ProvinceTable::default();
+        set_owned(&mut state, NationId::new(0), &[5, 2]);
+        set_province(&mut state, 5, Some(0), &[], Some(0));
+        set_province(&mut state, 2, Some(0), &[], Some(0));
+        set_owned(&mut state, NationId::new(1), &[9]);
+        set_province(&mut state, 9, Some(1), &[], Some(0));
+        state.map.provinces[ProvinceId::new(2)].linked_tiles = vec![TileId::new(20)];
+        state.map[TileId::new(20)].province = Some(ProvinceId::new(2));
+        state.map[TileId::new(20)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
+        state.civilian_units.push(
+            crate::CivilianUnitState::new(
+                crate::CivilianUnitId::new(1),
+                NationId::new(0),
+                crate::CivilianUnitKind::Miner,
+                crate::CivilianLocation::OnMap(TileId::new(20)),
+                crate::CivilianWorkOrder::Idle,
+                NationId::new(0),
+                0,
+                false,
+            )
+            .unwrap(),
+        );
+        let stationed = crate::MilitaryUnitId::new(1);
+        let detached = crate::MilitaryUnitId::new(2);
+        state.military_units.push(crate::MilitaryUnitState::new(
+            stationed,
+            NationId::new(0),
+            crate::MilitaryUnitKind::Minutemen,
+            Some(ProvinceId::new(2)),
+            crate::MilitaryOrder::idle([None; 3], [None; 3]),
+            NationId::new(0),
+            0,
+            true,
+            String::new(),
+            500,
+            0,
+            0,
+            0,
+        ));
+        state.military_units.push(crate::MilitaryUnitState::new(
+            detached,
+            NationId::new(0),
+            crate::MilitaryUnitKind::Minutemen,
+            None,
+            crate::MilitaryOrder::idle([None; 3], [None; 3]),
+            NationId::new(0),
+            0,
+            true,
+            String::new(),
+            500,
+            0,
+            0,
+            0,
+        ));
+
+        state.change_province_owner(ProvinceId::new(2), NationId::new(1));
+
+        assert!(state.civilian_units.is_empty());
+        assert_eq!(state.military_units.len(), 1);
+        assert_eq!(state.military_units[0].id(), stationed);
+        assert_eq!(
+            state.military_units[0].stationed_province(),
+            Some(ProvinceId::new(2))
+        );
     }
 }

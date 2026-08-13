@@ -11,6 +11,7 @@ mod city_site;
 mod city_transport_phase;
 mod civilian_phase;
 mod civilian_work;
+mod combat_moves;
 mod create_random_game;
 mod deal_book;
 mod difficulty;
@@ -22,6 +23,8 @@ mod map;
 mod map_geometry;
 mod market;
 mod military;
+mod military_cleanup;
+mod military_phase;
 mod nation_economy;
 mod nations;
 mod news;
@@ -69,6 +72,7 @@ pub use city_site::{
     validate_capital_site_selection,
 };
 pub use civilian_work::{CivilianWorkOrder, RailOrderRejection, RailSegment, TurnsRemaining};
+pub use combat_moves::PendingLandBattle;
 pub use create_random_game::{RandomGameNames, create_random_game};
 pub use deal_book::{
     DealBookAidLine, DealBookBidRow, DealBookCategory, DealBookCategoryRow, DealBookDealLine,
@@ -99,8 +103,8 @@ pub use market::{
     TradeCommodityTable, TradeDealBookEntry, TradeMarketRow, TradeMarketState,
 };
 pub use military::{
-    ArmyMissionState, AttackMissionState, MissionData, MissionState, NavyMissionState,
-    SelectedShip, ShipState, TaskForceState, TaskForceTarget,
+    AdmiralState, ArmyMissionState, AttackMissionState, MissionData, MissionState,
+    NavyMissionState, SelectedShip, ShipState, TaskForceState, TaskForceTarget,
 };
 pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,

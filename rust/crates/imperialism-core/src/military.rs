@@ -85,6 +85,31 @@ impl GameState {
         common.treasury -= charge;
     }
 
+    /// Prepends a ship the way `TShip::TShip` prepends `g_pNavyPrimaryOrderListHead`.
+    pub(crate) fn insert_ship_at_head(&mut self, ship: ShipState) {
+        self.bump_ship_ids();
+        self.ships.insert(0, ship);
+    }
+
+    fn bump_ship_ids(&mut self) {
+        for admiral in &mut self.admirals {
+            if let Some(ship) = &mut admiral.ship {
+                *ship = ShipId::new(ship.get() + 1);
+            }
+        }
+        for force in &mut self.task_forces {
+            if let Some(flagship) = &mut force.flagship {
+                *flagship = ShipId::new(flagship.get() + 1);
+            }
+            for selected in &mut force.ships {
+                selected.ship = ShipId::new(selected.ship.get() + 1);
+            }
+        }
+        for mission in &mut self.missions {
+            bump_mission_ship_ids(&mut mission.data);
+        }
+    }
+
     /// `TGreatPower::IsCapitolThreatened` for both land (mode 0) and navy (mode 1).
     pub(crate) fn is_capitol_threatened(&self, nation: MajorNationId) -> bool {
         self.land_capitol_threatened(nation) || self.navy_capitol_threatened(nation)
@@ -461,6 +486,31 @@ fn navy_priority_contribution(_ship: &ShipState, _category: i32) -> i32 {
     0
 }
 
+fn bump_mission_ship_ids(data: &mut MissionData) {
+    match data {
+        MissionData::ControlSeaZone(navy)
+        | MissionData::Escort(navy)
+        | MissionData::ScatteredShips(navy)
+        | MissionData::Beachhead(navy) => bump_navy_mission_ship_ids(navy),
+        MissionData::BlockadePort { navy, .. } => bump_navy_mission_ship_ids(navy),
+        MissionData::Invade { beachhead, .. } => {
+            if let Some(navy) = beachhead {
+                bump_navy_mission_ship_ids(navy);
+            }
+        }
+        MissionData::AttackProvince(_) | MissionData::DefendProvince { .. } => {}
+    }
+}
+
+fn bump_navy_mission_ship_ids(navy: &mut NavyMissionState) {
+    if let Some(ship) = &mut navy.selected_ship {
+        *ship = ShipId::new(ship.get() + 1);
+    }
+    for selected in &mut navy.ships {
+        selected.ship = ShipId::new(selected.ship.get() + 1);
+    }
+}
+
 /// A ship in primary-list order. Ship and task-force references are snapshot-local
 /// ordinals because retail does not persist a stable identity for either collection.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -474,6 +524,15 @@ pub struct ShipState {
     pub strength: i16,
     pub experience: i16,
     pub selection: i32,
+}
+
+/// A navy secondary-order node (`TAdmiral`) in head-first list order.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct AdmiralState {
+    pub nation: NationId,
+    pub name: String,
+    pub experience: i16,
+    pub ship: Option<ShipId>,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]

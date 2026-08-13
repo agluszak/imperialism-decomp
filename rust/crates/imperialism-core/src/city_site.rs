@@ -180,7 +180,7 @@ pub fn place_city(world: &mut MapMgr, tile: TileId, owner_nation: TileOwnerTag) 
     flood_fill_region_marker(world, tile, owner_nation);
 }
 
-/// Confirm the New City dialog: `PlaceCity`, then enter the opening-turn tail.
+/// Confirm the New City dialog: `PlaceCity`, then the opening-turn tail.
 ///
 /// Retail follows with `StartNextPhase()` through season advance, technology, and
 /// the newspaper.
@@ -189,12 +189,11 @@ pub fn confirm_capital_site(state: &mut GameState, site: CapitalSite) -> crate::
     let owner = TileOwnerTag::from_nation(site.nation().nation());
     place_city(&mut state.map, tile, owner);
     bind_home_city_tile(state, site.nation(), tile);
-    state.turn.phase = crate::PhaseCode::SEASON_ADVANCE;
     state.advance_turn()
 }
 
 /// Introductory/Easy path: no city-site selector; bind the frog-city marker and
-/// enter the opening-turn tail.
+/// enter the opening-turn tail through the same phase dispatcher.
 pub fn enter_strategic_map_without_capital_selection(
     state: &mut GameState,
     nation: MajorNationId,
@@ -207,7 +206,6 @@ pub fn enter_strategic_map_without_capital_selection(
         .map(|town| town.tile)
         .expect("generated Introductory/Easy game has a home town tile");
     bind_home_city_tile(state, nation, home);
-    state.turn.phase = crate::PhaseCode::SEASON_ADVANCE;
     state.advance_turn()
 }
 
@@ -239,7 +237,7 @@ fn flood_fill_region_marker(world: &mut MapMgr, tile: TileId, owner_nation: Tile
     }
 }
 
-fn next_region_marker(world: &MapMgr) -> RegionId {
+pub(crate) fn next_region_marker(world: &MapMgr) -> RegionId {
     // Retail `g_nNextRegionMarkerId` starts at 1, not 0.
     let max = world
         .tiles

@@ -29,3 +29,12 @@ fn city_and_transport_phase() {
     })
     .unwrap();
 }
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn navy_growth_pending() {
+    compare_native("navy_growth_pending", |state, _: EmptyCase| {
+        state.do_city_and_transport();
+    })
+    .unwrap();
+}

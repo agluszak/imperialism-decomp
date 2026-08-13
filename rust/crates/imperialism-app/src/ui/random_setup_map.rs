@@ -242,6 +242,14 @@ pub(crate) fn compose_owner_preview_indices(
     owner_at: impl Fn(TileId) -> Option<TileOwnerTag>,
     selected_nation: NationId,
 ) -> Vec<u8> {
+    compose_owner_preview_indices_with_fill(owner_at, selected_nation, nation_owner_palette)
+}
+
+pub(crate) fn compose_owner_preview_indices_with_fill(
+    owner_at: impl Fn(TileId) -> Option<TileOwnerTag>,
+    selected_nation: NationId,
+    fill: impl Fn(NationId) -> u8,
+) -> Vec<u8> {
     let mut pixels = vec![OFF_MAP_PALETTE; PREVIEW_PIXEL_COUNT];
     let mut pixel_owners = vec![None; PREVIEW_PIXEL_COUNT];
     // TMapPreviewView always requests bounded neighbors, even if the selected
@@ -270,7 +278,7 @@ pub(crate) fn compose_owner_preview_indices(
         } else {
             PreviewOwner::Border
         };
-        write_preview_pixel(&mut pixels, &mut pixel_owners, py, px, tag);
+        write_preview_pixel(&mut pixels, &mut pixel_owners, py, px, tag, &fill);
 
         if odd_row {
             let tag = if self_tag == neighbor_tags[5] {
@@ -278,7 +286,7 @@ pub(crate) fn compose_owner_preview_indices(
             } else {
                 PreviewOwner::Border
             };
-            write_preview_pixel(&mut pixels, &mut pixel_owners, py, px + 1, tag);
+            write_preview_pixel(&mut pixels, &mut pixel_owners, py, px + 1, tag, &fill);
             let tag = if self_tag == neighbor_tags[0]
                 || (self_tag == neighbor_tags[1] && self_tag == neighbor_tags[5])
             {
@@ -286,20 +294,20 @@ pub(crate) fn compose_owner_preview_indices(
             } else {
                 PreviewOwner::Border
             };
-            write_preview_pixel(&mut pixels, &mut pixel_owners, py, px + 2, tag);
+            write_preview_pixel(&mut pixels, &mut pixel_owners, py, px + 2, tag, &fill);
         } else {
             let tag = if self_tag == neighbor_tags[0] || self_tag == neighbor_tags[5] {
                 self_tag
             } else {
                 PreviewOwner::Border
             };
-            write_preview_pixel(&mut pixels, &mut pixel_owners, py, px + 1, tag);
+            write_preview_pixel(&mut pixels, &mut pixel_owners, py, px + 1, tag, &fill);
             let tag = if self_tag == neighbor_tags[0] {
                 self_tag
             } else {
                 PreviewOwner::Border
             };
-            write_preview_pixel(&mut pixels, &mut pixel_owners, py, px + 2, tag);
+            write_preview_pixel(&mut pixels, &mut pixel_owners, py, px + 2, tag, &fill);
         }
 
         let tag = if self_tag == neighbor_tags[4] {
@@ -307,12 +315,40 @@ pub(crate) fn compose_owner_preview_indices(
         } else {
             PreviewOwner::Border
         };
-        write_preview_pixel(&mut pixels, &mut pixel_owners, py + 1, px, tag);
-        write_preview_pixel(&mut pixels, &mut pixel_owners, py + 2, px, tag);
-        write_preview_pixel(&mut pixels, &mut pixel_owners, py + 1, px + 1, self_tag);
-        write_preview_pixel(&mut pixels, &mut pixel_owners, py + 2, px + 1, self_tag);
-        write_preview_pixel(&mut pixels, &mut pixel_owners, py + 1, px + 2, self_tag);
-        write_preview_pixel(&mut pixels, &mut pixel_owners, py + 2, px + 2, self_tag);
+        write_preview_pixel(&mut pixels, &mut pixel_owners, py + 1, px, tag, &fill);
+        write_preview_pixel(&mut pixels, &mut pixel_owners, py + 2, px, tag, &fill);
+        write_preview_pixel(
+            &mut pixels,
+            &mut pixel_owners,
+            py + 1,
+            px + 1,
+            self_tag,
+            &fill,
+        );
+        write_preview_pixel(
+            &mut pixels,
+            &mut pixel_owners,
+            py + 2,
+            px + 1,
+            self_tag,
+            &fill,
+        );
+        write_preview_pixel(
+            &mut pixels,
+            &mut pixel_owners,
+            py + 1,
+            px + 2,
+            self_tag,
+            &fill,
+        );
+        write_preview_pixel(
+            &mut pixels,
+            &mut pixel_owners,
+            py + 2,
+            px + 2,
+            self_tag,
+            &fill,
+        );
     }
 
     enhance_preview_selection(&mut pixels, &pixel_owners, selected_nation);
@@ -346,17 +382,21 @@ fn owner_tag(
     }
 }
 
-fn preview_palette(owner: PreviewOwner) -> u8 {
+fn preview_palette(owner: PreviewOwner, fill: &impl Fn(NationId) -> u8) -> u8 {
     match owner {
         PreviewOwner::Border => 0,
         PreviewOwner::Unowned => OFF_MAP_PALETTE,
         PreviewOwner::Tagged(tag) => match tag.nation() {
-            Some(nation) => match MajorNationId::from_nation(nation) {
-                Some(major) => major_nation_palette(major),
-                None => 0x0b,
-            },
+            Some(nation) => fill(nation),
             None => OFF_MAP_PALETTE,
         },
+    }
+}
+
+fn nation_owner_palette(nation: NationId) -> u8 {
+    match MajorNationId::from_nation(nation) {
+        Some(major) => major_nation_palette(major),
+        None => 0x0b,
     }
 }
 
@@ -366,13 +406,14 @@ fn write_preview_pixel(
     row: usize,
     column: usize,
     owner: PreviewOwner,
+    fill: &impl Fn(NationId) -> u8,
 ) {
     // The native 324-byte row stride lets the final odd-row hex write x=324,
     // which becomes x=0 on the next visible row. Keep that linear behavior;
     // only the one write past the allocated final row is not visible here.
     let index = row * PREVIEW_WIDTH + column;
     if let Some(pixel) = pixels.get_mut(index) {
-        *pixel = preview_palette(owner);
+        *pixel = preview_palette(owner, fill);
         pixel_owners[index] = match owner {
             PreviewOwner::Tagged(tag) => tag.nation(),
             PreviewOwner::Border | PreviewOwner::Unowned => None,

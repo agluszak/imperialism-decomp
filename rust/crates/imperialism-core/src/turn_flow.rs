@@ -251,6 +251,9 @@ impl GameState {
         loop {
             match self.turn.phase() {
                 PhaseCode::STRATEGIC_MAP => return TurnStop::PlayerOrders,
+                PhaseCode::CAPITAL_SELECTION => {
+                    self.turn.phase = PhaseCode::SEASON_ADVANCE;
+                }
                 PhaseCode::DIPLOMACY => match self.continuation {
                     TurnContinuation::DiplomacyOffer { .. } => {
                         return TurnStop::DiplomacyOffer(
@@ -279,6 +282,24 @@ impl GameState {
                             self.turn.phase = PhaseCode::OFFER_SHEET;
                         }
                     }
+                }
+                PhaseCode::OFFER_SHEET => {
+                    self.turn.phase = PhaseCode::MILITARY;
+                    self.do_civilians();
+                }
+                PhaseCode::MILITARY => {
+                    self.turn.phase = PhaseCode::COMBAT_MOVES;
+                    self.do_military();
+                }
+                PhaseCode::COMBAT_MOVES => {
+                    self.turn.phase = PhaseCode::MILITARY_CLEANUP;
+                    if self.do_combat_moves().is_some() {
+                        return TurnStop::Unimplemented(PhaseCode::COMBAT_MOVES);
+                    }
+                }
+                PhaseCode::MILITARY_CLEANUP => {
+                    self.turn.phase = PhaseCode::DIPLOMACY_OFFER;
+                    self.do_military_cleanup();
                 }
                 PhaseCode::CITY_AND_TRANSPORT => {
                     self.do_city_and_transport();
@@ -334,8 +355,7 @@ impl GameState {
     }
 
     fn run_technology_advances(&mut self) -> Option<TurnStop> {
-        self.check_technology_advances();
-        self.consume_non_interactive_technology_unlocks();
+        self.apply_technology_advances_phase();
         let tech_id = self.consume_interactive_technology_unlock()?;
         self.continuation = TurnContinuation::TechnologyReport(tech_id);
         Some(TurnStop::TechnologyAdvance(tech_id))
@@ -371,8 +391,8 @@ fn reset_finished_flag(eligible: bool, finished: &mut bool) {
 mod tests {
     use crate::test_support::game_state;
     use crate::{
-        DiplomacyPolicy, DiplomaticRelationship, MajorNationController, MajorNationId,
-        TradeProgress,
+        DiplomacyPolicy, DiplomaticRelationship, MajorNationController, MajorNationId, NationId,
+        TileId, TileOwnerTag, TradeProgress,
     };
 
     #[test]
@@ -444,19 +464,19 @@ mod tests {
     }
 
     #[test]
-    fn completing_trade_stops_at_unimplemented_offer_sheet_without_restarting() {
+    fn completing_trade_leaves_the_offer_sheet_and_continues_the_turn() {
         let mut state = game_state();
         state.turn.phase = crate::PhaseCode::TRADE;
         let mut stop = state.advance_turn();
         while let crate::TurnStop::TradeOffer(_) = stop {
             stop = state.answer_trade_offer(0, false);
         }
-        assert_eq!(
-            stop,
-            crate::TurnStop::Unimplemented(crate::PhaseCode::OFFER_SHEET)
-        );
-        assert_eq!(state.turn.phase(), crate::PhaseCode::OFFER_SHEET);
         assert!(state.pending_trade_offer().is_none());
+        assert_ne!(state.turn.phase(), crate::PhaseCode::TRADE);
+        assert!(
+            matches!(stop, crate::TurnStop::Unimplemented(_)),
+            "unexpected stop {stop:?}"
+        );
     }
 
     #[test]
@@ -468,5 +488,43 @@ mod tests {
         let encoded = serde_json::to_vec(&state).expect("serialize");
         let restored: crate::GameState = serde_json::from_slice(&encoded).expect("deserialize");
         assert_eq!(restored.pending_trade_offer(), state.pending_trade_offer());
+    }
+
+    #[test]
+    fn capital_selection_advances_season_and_stops_on_technology_or_newspaper() {
+        let mut state = game_state();
+        state.turn.phase = crate::PhaseCode::CAPITAL_SELECTION;
+        state.turn.economic_turn = 0;
+        let stop = state.advance_turn();
+        assert!(
+            matches!(
+                stop,
+                crate::TurnStop::TechnologyAdvance(_) | crate::TurnStop::Newspaper
+            ),
+            "unexpected stop {stop:?}"
+        );
+        assert_eq!(state.turn.economic_turn, 1);
+    }
+
+    #[test]
+    fn city_and_transport_phase_runs_and_continues_past_pressure() {
+        let mut state = game_state();
+        for index in 0..MajorNationId::COUNT {
+            let tile = TileId::new(index as u16 + 1);
+            let major = &mut state.nations.majors[MajorNationId::new(index)];
+            major.towns[0].tile = tile;
+            major.common.home_tile = Some(tile);
+        }
+        for index in 0..MajorNationId::COUNT {
+            let tile = TileId::new(index as u16 + 1);
+            state.map[tile].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(index)));
+        }
+        state.turn.phase = crate::PhaseCode::CITY_AND_TRANSPORT;
+        let stop = state.advance_turn();
+        assert_ne!(state.turn.phase(), crate::PhaseCode::CITY_AND_TRANSPORT);
+        assert!(
+            matches!(stop, crate::TurnStop::Unimplemented(_)),
+            "unexpected stop {stop:?}"
+        );
     }
 }
