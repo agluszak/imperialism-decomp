@@ -54,9 +54,12 @@ impl Plugin for OfferSheetPlugin {
         )
         .add_systems(
             Update,
-            (pose_offer_sheet, bind_offer_sheet_notice)
-                .chain()
-                .run_if(in_state(AppState::OfferSheet)),
+            pose_offer_sheet
+                .run_if(in_state(AppState::OfferSheet).and_then(resource_changed::<GameSession>)),
+        )
+        .add_systems(
+            Update,
+            bind_offer_sheet_notice.run_if(in_state(AppState::OfferSheet)),
         )
         .add_observer(on_offer_sheet_activate.run_if(in_state(AppState::OfferSheet)));
     }
@@ -157,7 +160,6 @@ fn bind_offer_sheet_controls(
 fn pose_offer_sheet(
     mut commands: Commands,
     root: Option<Single<Entity, With<OfferSheetRoot>>>,
-    added: Query<(), Added<OfferSheetRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut amounts: Query<&mut EditableText, With<PurchaseAmountField>>,
@@ -167,9 +169,6 @@ fn pose_offer_sheet(
     let Some(root) = root else {
         return;
     };
-    if added.is_empty() && !session.is_changed() {
-        return;
-    }
     let offer = session
         .game
         .pending_trade_offer()

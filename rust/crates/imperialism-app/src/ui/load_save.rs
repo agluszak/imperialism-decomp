@@ -20,9 +20,9 @@ use imperialism_core::{GameState, NationId, PhaseCode, TileId, TileOwnerTag};
 use imperialism_formats::{
     FourCc, LegacyGameStateContext, LoadGameError, NUMBERED_SAVE_SLOT_COUNT, OverwritePolicy,
     PictureId, RetailAssets, SAVE_LABEL_MAX_CHARS, SaveDirectoryListing, SaveFileError,
-    SaveHeaderInfo, SaveSlot, fourcc, list_save_slots, load_game_from_bytes, load_game_from_path,
-    normalize_save_label, peek_save_header, peek_save_preview_owners, retail_save_path,
-    write_game_state, write_save_file,
+    SaveHeaderInfo, SaveSlot, fourcc, list_save_slots, load_game_from_bytes, normalize_save_label,
+    peek_save_header, peek_save_preview_owners, retail_save_path, write_game_state,
+    write_save_file,
 };
 use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -1213,7 +1213,7 @@ fn on_flag_menu_prompt_activate(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_formats::LegacySaveV62;
+    use imperialism_formats::{LegacySaveV62, load_game_from_path};
 
     const BEGINNING_OF_GAME: &[u8] =
         include_bytes!("../../../../../fixtures/retail/beginning_of_game.imp");

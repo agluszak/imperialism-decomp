@@ -494,9 +494,10 @@ fn on_preference_slider_change(
     }
 }
 
+#[allow(clippy::type_complexity)]
 fn sync_preference_slider_visuals(
     sliders: Query<
-        (Entity, &SliderValue, &SliderRange, &Node),
+        (Entity, &SliderValue, &SliderRange),
         (With<PreferenceSlider>, Changed<SliderValue>),
     >,
     children: Query<&Children>,
@@ -504,20 +505,25 @@ fn sync_preference_slider_visuals(
     mut images: Query<&mut Node, Without<PreferenceSliderLayer>>,
     mut off_labels: Query<&mut Visibility, With<PreferenceSliderOffLabel>>,
 ) {
-    for (slider, value, range, node) in &sliders {
+    for (slider, value, range) in &sliders {
         let Ok(kids) = children.get(slider) else {
             continue;
         };
-        let height = match node.height {
-            Val::Px(height) => height as i16,
-            _ => 91,
+        let (height, width) = match images.get(slider) {
+            Ok(node) => (
+                match node.height {
+                    Val::Px(height) => height as i16,
+                    _ => 91,
+                },
+                match node.width {
+                    Val::Px(width) => width,
+                    _ => 102.0,
+                },
+            ),
+            Err(_) => (91, 102.0),
         };
         let split = slider_split_from_value(value.0 as i16, height, range.end() as i16);
         let fill = slider_fill_height(split);
-        let width = match node.width {
-            Val::Px(width) => width,
-            _ => 102.0,
-        };
         for child in kids.iter() {
             if let Ok(mut visibility) = off_labels.get_mut(child) {
                 *visibility = if split < SLIDER_SPLIT_PAD {

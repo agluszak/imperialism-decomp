@@ -712,21 +712,20 @@ fn bind_diplomacy_controls(
     commands.entity(shee).insert(DiplomacyOfferSheet);
     commands.entity(wait).insert(DiplomacyOfferWait);
     let offer_layout = styles.row_layout.with_justify(Justify::Center);
-    commands
-        .entity(spawn_shadowed_text(
-            commands,
-            prop,
-            "",
-            0.0,
-            12.0,
-            291.0,
-            &styles.row_font,
-            &offer_layout,
-            styles.row_line_height,
-            styles.foreground,
-            styles.shadow,
-        ))
-        .insert(DiplomacyOfferText);
+    let entity = spawn_shadowed_text(
+        commands,
+        prop,
+        "",
+        0.0,
+        12.0,
+        291.0,
+        &styles.row_font,
+        &offer_layout,
+        styles.row_line_height,
+        styles.foreground,
+        styles.shadow,
+    );
+    commands.entity(entity).insert(DiplomacyOfferText);
 
     let treasury = find_descendant(root, fourcc!("trea"), children, tags);
     commands.entity(treasury).insert(DiplomacyTreasury);
@@ -750,20 +749,21 @@ fn spawn_diplomacy_map_labels(
     icon_atlas: Handle<Image>,
 ) {
     for nation in NationId::all() {
+        let entity = spawn_shadowed_text(
+            commands,
+            map,
+            "",
+            -45.0,
+            -20.0,
+            90.0,
+            &styles.map_font,
+            &styles.map_layout,
+            styles.map_line_height,
+            styles.foreground,
+            styles.shadow,
+        );
         commands
-            .entity(spawn_shadowed_text(
-                commands,
-                map,
-                "",
-                -45.0,
-                -20.0,
-                90.0,
-                &styles.map_font,
-                &styles.map_layout,
-                styles.map_line_height,
-                styles.foreground,
-                styles.shadow,
-            ))
+            .entity(entity)
             .insert((DiplomacyNationLabel { nation }, Visibility::Hidden));
         for kind in [
             DiplomacyNationIconKind::Compatibility,
@@ -825,51 +825,54 @@ fn spawn_diplomacy_panel_text(
         styles.foreground,
         styles.shadow,
     );
+    let entity = spawn_shadowed_text(
+        commands,
+        information,
+        "",
+        110.0,
+        13.0,
+        120.0,
+        &styles.title_font,
+        &styles.title_layout,
+        styles.title_line_height,
+        styles.foreground,
+        styles.shadow,
+    );
     commands
-        .entity(spawn_shadowed_text(
+        .entity(entity)
+        .insert(DiplomacyInfoText(DiplomacyInfoField::Name));
+    for (row, top) in [54.0, 71.0, 88.0].into_iter().enumerate() {
+        let entity = spawn_shadowed_text(
+            commands,
+            information,
+            "",
+            15.0,
+            top,
+            95.0,
+            &styles.row_font,
+            &styles.row_layout,
+            styles.row_line_height,
+            styles.foreground,
+            styles.shadow,
+        );
+        commands
+            .entity(entity)
+            .insert(DiplomacyInfoText(DiplomacyInfoField::Label(row as u8)));
+        let entity = spawn_shadowed_text(
             commands,
             information,
             "",
             110.0,
-            13.0,
+            top,
             120.0,
-            &styles.title_font,
-            &styles.title_layout,
-            styles.title_line_height,
+            &styles.row_font,
+            &styles.row_layout,
+            styles.row_line_height,
             styles.foreground,
             styles.shadow,
-        ))
-        .insert(DiplomacyInfoText(DiplomacyInfoField::Name));
-    for (row, top) in [54.0, 71.0, 88.0].into_iter().enumerate() {
+        );
         commands
-            .entity(spawn_shadowed_text(
-                commands,
-                information,
-                "",
-                15.0,
-                top,
-                95.0,
-                &styles.row_font,
-                &styles.row_layout,
-                styles.row_line_height,
-                styles.foreground,
-                styles.shadow,
-            ))
-            .insert(DiplomacyInfoText(DiplomacyInfoField::Label(row as u8)));
-        commands
-            .entity(spawn_shadowed_text(
-                commands,
-                information,
-                "",
-                110.0,
-                top,
-                120.0,
-                &styles.row_font,
-                &styles.row_layout,
-                styles.row_line_height,
-                styles.foreground,
-                styles.shadow,
-            ))
+            .entity(entity)
             .insert(DiplomacyInfoText(DiplomacyInfoField::Value(row as u8)));
     }
 
@@ -957,21 +960,20 @@ fn spawn_diplomacy_panel_text(
             styles.shadow,
         );
     }
-    commands
-        .entity(spawn_shadowed_text(
-            commands,
-            grants,
-            "",
-            15.0,
-            37.0,
-            180.0,
-            &styles.row_font,
-            &styles.row_layout,
-            styles.row_line_height,
-            styles.foreground,
-            styles.shadow,
-        ))
-        .insert(DiplomacyGrantTotal);
+    let entity = spawn_shadowed_text(
+        commands,
+        grants,
+        "",
+        15.0,
+        37.0,
+        180.0,
+        &styles.row_font,
+        &styles.row_layout,
+        styles.row_line_height,
+        styles.foreground,
+        styles.shadow,
+    );
+    commands.entity(entity).insert(DiplomacyGrantTotal);
 
     for (text, left, top, title) in [
         ("Trade Policies", 15.0, 13.0, true),
@@ -1057,53 +1059,56 @@ fn spawn_diplomacy_panel_text(
     }
 
     let council_title_layout = styles.title_layout.with_justify(Justify::Center);
+    let entity = spawn_shadowed_text(
+        commands,
+        council,
+        "",
+        0.0,
+        36.0,
+        518.0,
+        &styles.title_font,
+        &council_title_layout,
+        styles.title_line_height,
+        styles.foreground,
+        styles.shadow,
+    );
     commands
-        .entity(spawn_shadowed_text(
-            commands,
-            council,
-            "",
-            0.0,
-            36.0,
-            518.0,
-            &styles.title_font,
-            &council_title_layout,
-            styles.title_line_height,
-            styles.foreground,
-            styles.shadow,
-        ))
+        .entity(entity)
         .insert((DiplomacyCouncilText(0), Visibility::Inherited));
     let council_label_layout = styles.row_layout.with_justify(Justify::Right);
     for row in 0..3_u8 {
         let top = 60.0 + f32::from(row) * 16.0;
+        let entity = spawn_shadowed_text(
+            commands,
+            council,
+            "",
+            0.0,
+            top,
+            259.0,
+            &styles.row_font,
+            &council_label_layout,
+            styles.row_line_height,
+            styles.foreground,
+            styles.shadow,
+        );
         commands
-            .entity(spawn_shadowed_text(
-                commands,
-                council,
-                "",
-                0.0,
-                top,
-                259.0,
-                &styles.row_font,
-                &council_label_layout,
-                styles.row_line_height,
-                styles.foreground,
-                styles.shadow,
-            ))
+            .entity(entity)
             .insert((DiplomacyCouncilText(1 + row * 2), Visibility::Inherited));
+        let entity = spawn_shadowed_text(
+            commands,
+            council,
+            "",
+            263.0,
+            top,
+            100.0,
+            &styles.row_font,
+            &styles.row_layout,
+            styles.row_line_height,
+            styles.foreground,
+            styles.shadow,
+        );
         commands
-            .entity(spawn_shadowed_text(
-                commands,
-                council,
-                "",
-                263.0,
-                top,
-                100.0,
-                &styles.row_font,
-                &styles.row_layout,
-                styles.row_line_height,
-                styles.foreground,
-                styles.shadow,
-            ))
+            .entity(entity)
             .insert((DiplomacyCouncilText(2 + row * 2), Visibility::Inherited));
     }
 }
