@@ -309,7 +309,7 @@ impl GameState {
         }
     }
 
-    pub(super) fn set_enemy(&mut self, nation: MajorNationId, target: NationId) {
+    pub(crate) fn set_enemy(&mut self, nation: MajorNationId, target: NationId) {
         if self.has_active_candidates(nation) {
             let others: Vec<_> = NationId::all()
                 .filter(|&other| other != nation.nation() && !self.at_war(other, nation.nation()))

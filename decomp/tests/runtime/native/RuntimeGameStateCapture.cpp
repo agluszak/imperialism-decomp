@@ -1126,6 +1126,7 @@ JSON_Value* CaptureTurn(const RuntimeRun& run) {
   object.Set("difficulty", DifficultyName(g_pSimMgr->difficultyLevel));
   object.Set("active_nation", g_pSimMgr->activeNationSlot);
   object.Set("selected_nation", run.SelectedNationSlot());
+  object.Set("last_turn_alert_tick", g_lastTurnAlertTick_006a31c0);
   return object.Release();
 }
 

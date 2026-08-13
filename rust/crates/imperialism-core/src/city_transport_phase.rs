@@ -370,7 +370,7 @@ impl GameState {
     }
 
     /// `TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage`.
-    fn compile_great_power_relationship_delta_lines(&mut self, nation: MajorNationId) {
+    pub(crate) fn compile_great_power_relationship_delta_lines(&mut self, nation: MajorNationId) {
         let pressure = i32::from(self.nations.major(nation).economy.pressure_counter);
         let threshold = COMPILE_THRESHOLD_BY_DIFFICULTY[self.turn.difficulty as usize];
         if threshold > pressure {
