@@ -7,19 +7,19 @@ impl GameState {
         for row in 0..7 {
             let commodity = TradeCommodity::from_retail(row).expect("raw commodity");
             self.pair_deals(phase, commodity, 0..7, 0..7);
-            self.pair_deals(phase, commodity, 7..NATION_COUNT as u8, 0..7);
+            self.pair_deals(phase, commodity, 7..NATION_COUNT, 0..7);
         }
         for row in 7..0x0d {
             let commodity = TradeCommodity::from_retail(row).expect("processed commodity");
             self.pair_deals(phase, commodity, 0..7, 0..7);
             if row == 7 {
-                self.pair_deals(phase, commodity, 7..NATION_COUNT as u8, 0..7);
+                self.pair_deals(phase, commodity, 7..NATION_COUNT, 0..7);
             }
         }
         for row in 0x0d..0x11 {
             let commodity = TradeCommodity::from_retail(row).expect("manufactured commodity");
             self.pair_deals(phase, commodity, 0..7, 0..7);
-            self.pair_deals(phase, commodity, 0..7, 7..NATION_COUNT as u8);
+            self.pair_deals(phase, commodity, 0..7, 7..NATION_COUNT);
         }
     }
 
@@ -27,8 +27,8 @@ impl GameState {
         &mut self,
         phase: &mut TradePhase,
         commodity: TradeCommodity,
-        sellers: std::ops::Range<u8>,
-        buyers: std::ops::Range<u8>,
+        sellers: std::ops::Range<usize>,
+        buyers: std::ops::Range<usize>,
     ) {
         for seller_slot in sellers {
             let seller = NationId::new(seller_slot);
@@ -137,7 +137,7 @@ impl GameState {
             return None;
         }
 
-        let minor = MinorNationId::new(buyer.get());
+        let minor = MinorNationId::from_nation(buyer).expect("minor buyer");
         if self.minor_still_buying(minor, commodity.resource()) {
             self.set_deal_results(buyer, seller, amount, price, commodity, true, phase);
         }
@@ -148,7 +148,7 @@ impl GameState {
         if let Some(major) = MajorNationId::from_nation(nation) {
             self.nations.majors[major].economy.amount_unsold(resource)
         } else {
-            let minor = MinorNationId::new(nation.get());
+            let minor = MinorNationId::from_nation(nation).expect("minor seller");
             self.nations.minors[minor]
                 .as_ref()
                 .map(|state| {
@@ -259,7 +259,7 @@ impl GameState {
             return;
         }
 
-        let minor = MinorNationId::new(nation.get());
+        let minor = MinorNationId::from_nation(nation).expect("minor nation");
         self.purchase_minor_item(minor, resource, amount, price, phase);
     }
 
@@ -304,12 +304,11 @@ impl GameState {
 
         let need_current = state.trade.current_supply[resource];
         let mut grants = Vec::new();
-        for slot in 0..MajorNationId::COUNT {
-            let link = phase.status_by_major[minor][resource][usize::from(slot)];
+        for major in MajorNationId::all() {
+            let link = phase.status_by_major[minor][resource][major];
             if link == 0 {
                 continue;
             }
-            let major = MajorNationId::new(slot);
             let standing = self.diplomacy.standings[minor.nation()][major.nation()];
             let neg_delta = -i32::from(amount);
             let int_factor = if i32::from(link) < neg_delta {
@@ -359,8 +358,7 @@ impl GameState {
     }
 
     pub(super) fn end_trade_offers(&mut self) {
-        for slot in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(slot);
+        for nation in MajorNationId::all() {
             self.clear_trade_offers(nation);
         }
         for commodity in all_trade_commodities() {

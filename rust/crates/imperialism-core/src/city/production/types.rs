@@ -237,22 +237,23 @@ pub struct ShipOrderState {
 }
 
 /// Retail `TNavyOrderResourceDescriptor::StockCap`.
-pub(crate) const fn ship_stock_cap(ship_type: ShipType) -> i16 {
-    const CAPS: [i16; 14] = [
+pub(crate) fn ship_stock_cap(ship_type: ShipType) -> i16 {
+    const CAPS: ShipTypeTable<i16> = ShipTypeTable::from_array([
         0, 600, 1000, 900, 1700, 900, 600, 700, 1200, 1800, 1200, 1000, 2800, 2200,
-    ];
-    CAPS[ship_type as usize]
+    ]);
+    CAPS[ship_type]
 }
 
 /// Retail toolbar bucket ≥ 0. Merchants are -1 and `CreateNavy` returns no ship.
-pub(crate) const fn ship_creates_navy_object(ship_type: ShipType) -> bool {
-    const TOOLBAR: [i16; 14] = [-1, -1, -1, 1, 0, -1, -1, 2, 3, 0, -1, 1, 3, 2];
-    TOOLBAR[ship_type as usize] >= 0
+pub(crate) fn ship_creates_navy_object(ship_type: ShipType) -> bool {
+    const TOOLBAR: ShipTypeTable<i16> =
+        ShipTypeTable::from_array([-1, -1, -1, 1, 0, -1, -1, 2, 3, 0, -1, 1, 3, 2]);
+    TOOLBAR[ship_type] >= 0
 }
 
 /// Retail's descriptor-derived Shipyard values, including its separate hull table.
-pub const fn ship_display_stats(ship_type: ShipType) -> [i16; 6] {
-    const STATS: [[i16; 6]; 14] = [
+pub fn ship_display_stats(ship_type: ShipType) -> [i16; 6] {
+    const STATS: ShipTypeTable<[i16; 6]> = ShipTypeTable::from_array([
         [0, 0, 0, 0, 0, 0],
         [0, 0, 0, 25, 0, 2],
         [0, 0, 5, 40, 0, 4],
@@ -267,9 +268,9 @@ pub const fn ship_display_stats(ship_type: ShipType) -> [i16; 6] {
         [6, 9, 50, 40, 8, 0],
         [20, 13, 70, 115, 7, 0],
         [18, 13, 55, 90, 9, 0],
-    ];
+    ]);
 
-    STATS[ship_type as usize]
+    STATS[ship_type]
 }
 
 /// The one authoritative mutable order set for a city. Collection keys are

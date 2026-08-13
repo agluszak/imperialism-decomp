@@ -96,21 +96,22 @@ pub(super) fn choose_foreign_ministers(
         ForeignMinisterPersonality::Bill,
     ];
 
-    let mut region_class_by_nation = [None; NATION_COUNT];
+    let mut region_class_by_nation = NationTable::from_fn(|_| None);
     for province in map.provinces() {
-        region_class_by_nation[usize::from(province.owner.get())] = Some(province.region_class);
+        if let Some(nation) = province.owner.nation() {
+            region_class_by_nation[nation] = Some(province.region_class);
+        }
     }
 
-    let major_count = usize::from(MajorNationId::COUNT);
     let isolation_by_major = MajorNationTable::from_fn(|nation| {
-        let class = region_class_by_nation[usize::from(nation.get())]
+        let class = region_class_by_nation[nation.nation()]
             .expect("accepted random maps assign a region class to every major nation");
-        if (0..major_count).any(|other| {
-            other != usize::from(nation.get()) && region_class_by_nation[other] == Some(class)
-        }) {
+        if MajorNationId::all()
+            .any(|other| other != nation && region_class_by_nation[other.nation()] == Some(class))
+        {
             0
-        } else if (major_count..NATION_COUNT)
-            .any(|other| region_class_by_nation[other] == Some(class))
+        } else if MinorNationId::all()
+            .any(|other| region_class_by_nation[other.nation()] == Some(class))
         {
             1
         } else {
@@ -119,16 +120,14 @@ pub(super) fn choose_foreign_ministers(
     });
 
     let mut profile_by_major = MajorNationTable::from_fn(|_| None);
-    for &profile in PROFILE_ORDER.iter().take(major_count - 1) {
+    for &profile in PROFILE_ORDER.iter().take(MajorNationId::COUNT - 1) {
         let nation = PREFERRED_ISOLATION_BY_PROFILE[profile]
             .iter()
             .find_map(|&isolation| {
-                (0..major_count).find_map(|slot| {
-                    let nation = MajorNationId::new(slot as u8);
-                    (nation != human_nation
-                        && profile_by_major[nation].is_none()
-                        && isolation_by_major[nation] == isolation)
-                        .then_some(nation)
+                MajorNationId::all().find(|nation| {
+                    *nation != human_nation
+                        && profile_by_major[*nation].is_none()
+                        && isolation_by_major[*nation] == isolation
                 })
             })
             .expect("each generated-map AI profile has an eligible open nation slot");
@@ -146,7 +145,7 @@ pub(super) fn choose_foreign_ministers(
     })
 }
 pub(super) fn minor_nation(nation: MinorNationId, display_name: String) -> MinorNation {
-    let first_member = MinorNationId::FIRST + (nation.get() - MinorNationId::FIRST) / 4 * 4;
+    let first_member = MinorNationId::FIRST + (nation.index() - MinorNationId::FIRST) / 4 * 4;
     MinorNation {
         common: NationCommonState::from_parts(
             display_name,
@@ -157,7 +156,7 @@ pub(super) fn minor_nation(nation: MinorNationId, display_name: String) -> Minor
             NationTable::default(),
         ),
         consortium_members: std::array::from_fn(|offset| {
-            MinorNationId::new(first_member + offset as u8)
+            MinorNationId::new(first_member + offset as usize)
         }),
         trade: MinorTradeState {
             thresholds: MINOR_TRADE_THRESHOLDS[nation.table_index()],
@@ -203,7 +202,7 @@ pub(super) const fn minor_trade_thresholds(
     }
 }
 pub(super) fn initialize_minor_trade_state(world: &MapMgr, nations: &mut Nations) {
-    for nation in (MinorNationId::FIRST..NationId::COUNT).map(MinorNationId::new) {
+    for nation in MinorNationId::all() {
         let Some(minor) = nations.minors[nation].as_mut() else {
             continue;
         };

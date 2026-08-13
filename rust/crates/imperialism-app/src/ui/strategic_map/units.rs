@@ -497,13 +497,13 @@ fn fleet_atlas_picture_id(state: &GameState) -> PictureId {
         .expect("strategic map requires an active major nation");
     let status = &state.technology().research_status_by_nation[nation];
     let mut variant = 0_i16;
-    if status[0x0f] == TechnologyResearchStatus::Researched {
+    if status[TechnologyId::new(0x0f)] == TechnologyResearchStatus::Researched {
         variant = 1;
     }
-    if status[0x18] == TechnologyResearchStatus::Researched {
+    if status[TechnologyId::new(0x18)] == TechnologyResearchStatus::Researched {
         variant = 2;
     }
-    PictureId::new(FLEET_ATLAS_PICTURE_BASE + i16::from(nation.get()) + variant * 7)
+    PictureId::new(FLEET_ATLAS_PICTURE_BASE + nation.index() as i16 + variant * 7)
 }
 
 fn visible_strategic_units(state: &GameState) -> Vec<VisibleStrategicUnit> {
@@ -660,7 +660,7 @@ fn civilian_sprite_class(kind: CivilianUnitKind) -> u8 {
 
 fn civilian_tile_is_visible(owner: Option<TileOwnerTag>, active: NationId) -> bool {
     match owner {
-        Some(owner) if owner.get() >= MajorNationId::COUNT => true,
+        Some(owner) if owner.is_minor_nation() => true,
         Some(owner) => owner.nation() == Some(active),
         None => false,
     }
@@ -683,9 +683,12 @@ fn army_count_bucket(displayed: u16) -> u8 {
 }
 
 fn owner_flag_slot(owner: Option<TileOwnerTag>) -> u8 {
-    match owner {
-        Some(owner) if owner.get() < MajorNationId::COUNT => owner.get(),
-        _ => MajorNationId::COUNT,
+    match owner
+        .and_then(TileOwnerTag::nation)
+        .and_then(MajorNationId::from_nation)
+    {
+        Some(major) => major.index() as u8,
+        None => MajorNationId::COUNT as u8,
     }
 }
 
@@ -938,8 +941,7 @@ mod tests {
             "opening save should show capital army badges"
         );
 
-        let naval_tile = (0..TileId::COUNT)
-            .map(TileId::new)
+        let naval_tile = TileId::all()
             .find(|&tile| {
                 state.map()[tile].terrain == TerrainKind::Water
                     && naval_action_frame(state.map()[tile].action).is_some()

@@ -19,8 +19,7 @@ pub(super) fn capital_selection_view_origin(world: &MapMgr, human_nation: MajorN
     let mut min_row = i32::MAX;
     let mut max_row = i32::MIN;
 
-    for index in 0..TileId::COUNT {
-        let tile = TileId::new(index);
+    for tile in TileId::all() {
         if world[tile].owner_nation != Some(owner) {
             continue;
         }
@@ -127,10 +126,7 @@ pub(super) fn apply_tile_post_passes(
 fn build_province_resource_presence_masks(tiles: &[TileState]) -> Vec<i8> {
     let province_count = tiles
         .iter()
-        .filter_map(|tile| {
-            tile.province
-                .map(|province| usize::from(province.get()) + 1)
-        })
+        .filter_map(|tile| tile.province.map(|province| province.index() + 1))
         .max()
         .unwrap_or(0);
     let mut masks = vec![0_u8; province_count];
@@ -141,7 +137,7 @@ fn build_province_resource_presence_masks(tiles: &[TileState]) -> Vec<i8> {
         let Some(province) = tile.province else {
             continue;
         };
-        let mask = &mut masks[usize::from(province.get())];
+        let mask = &mut masks[province.index()];
         for resource in tile.edge_resources.into_iter().flatten() {
             let resource = resource as u8;
             if resource < 8 {
@@ -161,10 +157,7 @@ pub(super) fn assign_province_fallback_capitals(
 ) -> Vec<Option<TileId>> {
     let province_count = tiles
         .iter()
-        .filter_map(|tile| {
-            tile.province
-                .map(|province| usize::from(province.get()) + 1)
-        })
+        .filter_map(|tile| tile.province.map(|province| province.index() + 1))
         .max()
         .unwrap_or(0);
     let mut linked_by_province: Vec<Vec<usize>> = vec![Vec::new(); province_count];
@@ -176,7 +169,7 @@ pub(super) fn assign_province_fallback_capitals(
         let Some(province) = tile.province else {
             continue;
         };
-        linked_by_province[usize::from(province.get())].push(index);
+        linked_by_province[province.index()].push(index);
     }
 
     for (province_index, linked) in linked_by_province.iter().enumerate() {
@@ -186,19 +179,18 @@ pub(super) fn assign_province_fallback_capitals(
 
         let mut interior = Vec::new();
         for &tile_index in linked {
-            let tile_id = TileId::new(tile_index as u16);
-            let has_foreign_neighbor =
-                geometry
-                    .neighbors(tile_id)
-                    .into_iter()
-                    .flatten()
-                    .any(|neighbor| {
-                        let neighbor_tile = &tiles[usize::from(neighbor.get())];
-                        match neighbor_tile.province {
-                            Some(province) => usize::from(province.get()) != province_index,
-                            None => false,
-                        }
-                    });
+            let tile_id = TileId::new(tile_index as usize);
+            let has_foreign_neighbor = geometry
+                .neighbors(tile_id)
+                .into_iter()
+                .filter_map(|(_, tile)| tile)
+                .any(|neighbor| {
+                    let neighbor_tile = &tiles[neighbor.index()];
+                    match neighbor_tile.province {
+                        Some(province) => province.index() != province_index,
+                        None => false,
+                    }
+                });
             if !has_foreign_neighbor {
                 interior.push(tile_index);
             }
@@ -229,7 +221,7 @@ pub(super) fn assign_province_fallback_capitals(
 
         initialize_tile_neighbor_connection_mask_if_needed(tiles, chosen);
         tiles[chosen].flags = TileFlags::PROVINCE_ANCHOR_STATE;
-        province_capitals[province_index] = Some(TileId::new(chosen as u16));
+        province_capitals[province_index] = Some(TileId::new(chosen as usize));
     }
     province_capitals
 }

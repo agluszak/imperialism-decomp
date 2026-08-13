@@ -16,11 +16,11 @@ fn optional_tile_owner_tag(value: i8) -> Option<TileOwnerTag> {
 }
 
 fn optional_major_nation_id(value: i8) -> Option<MajorNationId> {
-    (value != -1).then(|| MajorNationId::new(value as u8))
+    (value != -1).then(|| MajorNationId::new(value as usize))
 }
 
 fn optional_province_id(value: i16) -> Option<ProvinceId> {
-    (value != -1).then(|| ProvinceId::new(value as u16))
+    (value != -1).then(|| ProvinceId::new(value as usize))
 }
 
 fn optional_province_array(values: [i16; 3]) -> [Option<ProvinceId>; 3] {
@@ -28,7 +28,7 @@ fn optional_province_array(values: [i16; 3]) -> [Option<ProvinceId>; 3] {
 }
 
 fn optional_ocean_zone_id(value: i16) -> Option<OceanZoneId> {
-    (value != -1).then(|| OceanZoneId::new(value as u16))
+    (value != -1).then(|| OceanZoneId::new(value as usize))
 }
 
 fn optional_nation_id(value: i16) -> Option<NationId> {
@@ -36,7 +36,7 @@ fn optional_nation_id(value: i16) -> Option<NationId> {
 }
 
 fn optional_tile_id(value: i32) -> Option<TileId> {
-    (value != -1).then(|| TileId::new(value as u16))
+    (value != -1).then(|| TileId::new(value as usize))
 }
 
 fn civilian_work_order(
@@ -94,11 +94,11 @@ fn civilian_work_order(
 }
 
 fn nation_id_from_retail_i16(value: i16) -> NationId {
-    NationId::new(value as u8)
+    NationId::new(value as usize)
 }
 
 fn minor_nation_id_from_retail_i16(value: i16) -> MinorNationId {
-    MinorNationId::new(value as u8)
+    MinorNationId::new(value as usize)
 }
 
 /// Mirrors the live, language-table-loaded `NormalizeRuntimeCredentialNameToken`
@@ -333,7 +333,8 @@ fn ship_states(navy: &LegacyNavyState) -> Vec<ShipState> {
             ship_type: ShipType::from_index(ship.ship_type as u8)
                 .expect("retail ship type is in the descriptor table"),
             location: OceanZoneId::new(
-                u16::try_from(ship.zone_ordinal).expect("retail ship zone ordinal is non-negative"),
+                usize::try_from(ship.zone_ordinal)
+                    .expect("retail ship zone ordinal is non-negative"),
             ),
             task_force: None,
             aggression: ship.aggression,
@@ -354,7 +355,7 @@ fn admiral_states(navy: &LegacyNavyState, ship_count: usize) -> Vec<AdmiralState
             name: admiral.name.clone(),
             experience: admiral.experience,
             ship: (admiral.ship_index >= 0 && (admiral.ship_index as usize) < ship_count)
-                .then(|| ShipId::new(admiral.ship_index as u32)),
+                .then(|| ShipId::new(admiral.ship_index as usize)),
         })
         .collect()
 }
@@ -546,7 +547,7 @@ impl LegacyTerrainTile {
                 surface: DevelopmentLevel::new((self.development_classes as u8) & 0x0f),
                 extractive: DevelopmentLevel::new((self.development_classes as u8) >> 4),
                 resource_visible_to_majors: MajorNationTable::from_fn(|nation| {
-                    self.pending_development_visibility & (1 << nation.get()) != 0
+                    self.pending_development_visibility & (1 << nation.index()) != 0
                 }),
             },
             edge_resources: [
@@ -628,7 +629,7 @@ fn nation_pair_table<T: Copy>(
 }
 
 fn optional_major_nation_from_i16(value: i16) -> Option<MajorNationId> {
-    (value != -1).then(|| MajorNationId::new(value as u8))
+    (value != -1).then(|| MajorNationId::new(value as usize))
 }
 
 fn diplomacy_state(diplomacy: &LegacyDiplomacyState) -> DiplomacyState {
@@ -724,14 +725,16 @@ fn technology_state(technology: &LegacyTechnologyState) -> TechnologyState {
             != 0,
         marine_engineering: technology.resource_type_enabled[CityFacilitySlot::PowerPlant as usize]
             != 0,
-        scheduled_unlock_turn_by_technology: technology.priority_slots,
-        global_unlocks_by_technology: technology
-            .per_technology_unlock_flags
-            .map(|value| value != 0),
+        scheduled_unlock_turn_by_technology: TechnologyTable::from_array(technology.priority_slots),
+        global_unlocks_by_technology: TechnologyTable::from_array(
+            technology
+                .per_technology_unlock_flags
+                .map(|value| value != 0),
+        ),
         research_status_by_nation: MajorNationTable::from_array(
             technology
                 .research_status_by_nation
-                .map(|row| row.map(technology_research_status)),
+                .map(|row| TechnologyTable::from_array(row.map(technology_research_status))),
         ),
         industry_enabled_by_slot: technology.resource_type_enabled.map(|value| value != 0),
         military_unit_ability_active_by_nation: MajorNationTable::from_array(
@@ -766,11 +769,11 @@ impl LegacySaveV62 {
             ..PendingWorkState::default()
         };
         let map = self.map.map_mgr();
-        let map_view_origin = TileId::new(self.map.view_origin_tile as u16);
+        let map_view_origin = TileId::new(self.map.view_origin_tile as usize);
         let ocean = ocean_state(&self.ocean, &map);
         let live_ocean_context_count = ocean.zones.len();
         let majors = MajorNationTable::from_array(std::array::from_fn(|slot| {
-            let major_id = MajorNationId::new(slot as u8);
+            let major_id = MajorNationId::new(slot as usize);
             let nation_id = major_id.nation();
             let nation = &self.major_nations[slot];
             let great_power = nation.great_power();
@@ -787,7 +790,7 @@ impl LegacySaveV62 {
                     tile: optional_tile_id(i32::from(town.tile_index))
                         .expect("retail town has a tile"),
                     created_turn: town.created_turn,
-                    owner_nation: NationId::new(town.owner_nation as u8),
+                    owner_nation: NationId::new(town.owner_nation as usize),
                     resource_yield_by_type: ResourceTable::from_array(town.resource_yield_by_type),
                     transport_linked: town.transport_linked != 0,
                     enabled: town.enabled,
@@ -851,8 +854,8 @@ impl LegacySaveV62 {
             major
         }));
         for nation in &self.minor_nations {
-            let nation_id = NationId::new(nation.country.nation_slot as u8);
-            let minor_id = MinorNationId::new(nation_id.get());
+            let nation_id = NationId::new(nation.country.nation_slot as usize);
+            let minor_id = MinorNationId::from_nation(nation_id).expect("minor save nation");
             minors[minor_id] = Some(MinorNation {
                 common: country_common(&nation.country),
                 consortium_members: nation
@@ -1056,8 +1059,7 @@ fn zone_state(context: &LegacyZone) -> Zone {
 
 fn rebuild_ocean_neighbors(ocean: &mut Ocean, map: &MapMgr) {
     let geometry = map.geometry();
-    for tile_index in 0..TileId::COUNT {
-        let tile = TileId::new(tile_index);
+    for tile in TileId::all() {
         let Some(zone_index) = ocean_zone_for_tile(ocean, map, tile) else {
             continue;
         };
@@ -1080,8 +1082,8 @@ fn rebuild_ocean_neighbors(ocean: &mut Ocean, map: &MapMgr) {
                 .filter(|&owner| owner >= 0x17)
                 .expect("retail port-zone target tile has a base ocean zone");
             let base_index = usize::from(owner - 0x17);
-            let port_id = OceanZoneId::new(zone_index as u16);
-            let base_id = OceanZoneId::new(base_index as u16);
+            let port_id = OceanZoneId::new(zone_index as usize);
+            let base_id = OceanZoneId::new(base_index as usize);
             let ZoneKind::PortZone(port) = &mut ocean.zones[zone_index] else {
                 unreachable!()
             };
@@ -1093,7 +1095,11 @@ fn rebuild_ocean_neighbors(ocean: &mut Ocean, map: &MapMgr) {
             continue;
         }
 
-        for neighbor in geometry.neighbors(tile).into_iter().flatten() {
+        for neighbor in geometry
+            .neighbors(tile)
+            .into_iter()
+            .filter_map(|(_, tile)| tile)
+        {
             if let Some(province) = map[neighbor].province {
                 let ZoneKind::Zone(zone) = &mut ocean.zones[zone_index] else {
                     unreachable!()
@@ -1109,7 +1115,7 @@ fn rebuild_ocean_neighbors(ocean: &mut Ocean, map: &MapMgr) {
             if candidate == zone_index || matches!(ocean.zones[candidate], ZoneKind::PortZone(_)) {
                 continue;
             }
-            let candidate = OceanZoneId::new(candidate as u16);
+            let candidate = OceanZoneId::new(candidate as usize);
             let ZoneKind::Zone(zone) = &mut ocean.zones[zone_index] else {
                 unreachable!()
             };
@@ -1348,7 +1354,7 @@ fn interior_civilian_state(minister: &LegacyInteriorMinisterState) -> InteriorCi
     };
     let resource_order_metrics =
         ResourceTable::from_array(std::array::from_fn(|index| minister.order_metrics[index]));
-    let mut expansion_demand = [0_i16; CityFacilitySlot::COUNT];
+    let mut expansion_demand = [0_i16; CityFacilitySlot::LENGTH];
     expansion_demand[..7].copy_from_slice(&minister.order_metrics[53..60]);
     let city_order_demand = AiCityOrderDemand::from_parts(
         TrainingOrderTable::from_array(std::array::from_fn(|index| {
@@ -1452,14 +1458,14 @@ fn diplomacy_policy_from_retail(entry: i16) -> DiplomacyPolicy {
 pub(super) fn country_status_from_retail(value: i16) -> CountryStatus {
     match value {
         -1 => CountryStatus::Independent,
-        100..=122 => CountryStatus::ProtectorateOf(NationId::new((value - 100) as u8)),
-        200..=222 => CountryStatus::ColonyOf(NationId::new((value - 200) as u8)),
+        100..=122 => CountryStatus::ProtectorateOf(NationId::new((value - 100) as usize)),
+        200..=222 => CountryStatus::ColonyOf(NationId::new((value - 200) as usize)),
         _ => panic!("unrecovered encoded nation status {value}"),
     }
 }
 
 fn owned_region_id_from_retail(value: i32) -> ProvinceId {
-    ProvinceId::new(value as u16)
+    ProvinceId::new(value as usize)
 }
 
 fn province_state(province: &LegacyProvince) -> ProvinceState {
@@ -1467,7 +1473,7 @@ fn province_state(province: &LegacyProvince) -> ProvinceState {
     let adjacency = province.adjacent_region_ids[..count]
         .iter()
         .copied()
-        .map(|value| ProvinceId::new(value as u16))
+        .map(|value| ProvinceId::new(value as usize))
         .collect();
     let adjacency_anchor_tiles = province.adjacent_region_anchor_tiles[..count]
         .iter()
@@ -1487,7 +1493,7 @@ fn province_state(province: &LegacyProvince) -> ProvinceState {
         if value == -1 {
             return None;
         }
-        Some(NationId::new(value as u8))
+        Some(NationId::new(value as usize))
     };
     let region_class = match province.region_class {
         -1 => None,
@@ -1505,7 +1511,7 @@ fn province_state(province: &LegacyProvince) -> ProvinceState {
         resource_development_by_type[resource] = amount;
     }
     let explored_by_majors = MajorNationTable::from_fn(|nation| {
-        province.explored_by_nation_mask & (1 << nation.get()) != 0
+        province.explored_by_nation_mask & (1 << nation.index()) != 0
     });
 
     ProvinceState::new(

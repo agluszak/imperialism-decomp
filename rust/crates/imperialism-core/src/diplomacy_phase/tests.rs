@@ -2,11 +2,11 @@ use super::*;
 use crate::test_support::{game_state, major_nation};
 
 fn major(id: u8) -> MajorNationId {
-    MajorNationId::new(id)
+    MajorNationId::new(usize::from(id))
 }
 
 fn nation(id: u8) -> NationId {
-    NationId::new(id)
+    NationId::new(usize::from(id))
 }
 
 fn independent_minor(id: u8) -> MinorNation {
@@ -19,7 +19,7 @@ fn independent_minor(id: u8) -> MinorNation {
             None,
             NationTable::default(),
         ),
-        consortium_members: [MinorNationId::new(id); 4],
+        consortium_members: [MinorNationId::new(usize::from(id)); 4],
         trade: MinorTradeState::default(),
     }
 }
@@ -407,7 +407,11 @@ fn province(owner: NationId, adjacency: &[u16], linked: &[u16]) -> ProvinceState
         Some(owner),
         Some(owner),
         0,
-        adjacency.iter().copied().map(ProvinceId::new).collect(),
+        adjacency
+            .iter()
+            .copied()
+            .map(|province| ProvinceId::new(usize::from(province)))
+            .collect(),
         vec![TileId::new(0); adjacency.len()],
         None,
         0,
@@ -415,7 +419,11 @@ fn province(owner: NationId, adjacency: &[u16], linked: &[u16]) -> ProvinceState
         0,
         None,
         None,
-        linked.iter().copied().map(TileId::new).collect(),
+        linked
+            .iter()
+            .copied()
+            .map(|tile| TileId::new(usize::from(tile)))
+            .collect(),
         ResourceTable::default(),
         MajorNationTable::default(),
         0,

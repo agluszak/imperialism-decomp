@@ -791,10 +791,7 @@ fn spawn_diplomacy_panel_text(
         styles.foreground,
         styles.shadow,
     );
-    for (major, tag) in (0..MajorNationId::COUNT)
-        .map(MajorNationId::new)
-        .zip(DIPLOMACY_MAP_KEY_MAJOR_NAME_TAGS)
-    {
+    for (major, tag) in MajorNationId::all().zip(DIPLOMACY_MAP_KEY_MAJOR_NAME_TAGS) {
         commands
             .entity(find_descendant(root, tag, children, tags))
             .insert((DiplomacyMapKeyMajorName(major), Visibility::Inherited));
@@ -1271,7 +1268,7 @@ fn bind_diplomacy_notice(
     let coat = find_descendant(root, fourcc!("coat"), &children, &tags);
     let source = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
-    let coat_picture = PictureId::new(9500 + i16::from(source.get()));
+    let coat_picture = PictureId::new(9500 + source.index() as i16);
     if let Ok(image) = assets.picture(coat_picture) {
         commands.entity(coat).insert(ImageNode::new(image));
     }
@@ -1352,7 +1349,7 @@ fn bind_diplomacy_entanglement_notice(
     let coat = find_descendant(root, fourcc!("coat"), &children, &tags);
     let source = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
-    let coat_picture = PictureId::new(9500 + i16::from(source.get()));
+    let coat_picture = PictureId::new(9500 + source.index() as i16);
     if let Ok(image) = assets.picture(coat_picture) {
         commands.entity(coat).insert(ImageNode::new(image));
     }
@@ -1429,7 +1426,7 @@ fn diplomacy_entanglement_body(
     };
     let intro = fill_brackets(&get_string(assets, 0x275d, intro_index), &[target_name]);
     let mut names = String::new();
-    for major in (0..MajorNationId::COUNT).map(MajorNationId::new) {
+    for major in MajorNationId::all() {
         if state.diplomacy().relationships[target][major.nation()] != DiplomaticRelationship::War {
             continue;
         }
@@ -1870,7 +1867,7 @@ fn diplomacy_information(
                     [usize::from(state.diplomacy_industry_band(major))]
                 .to_owned();
             } else {
-                let minor = MinorNationId::new(nation.get());
+                let minor = MinorNationId::from_nation(nation).expect("minor diplomacy nation");
                 labels[1] = "Most Favored".to_owned();
                 labels[2] = "Trading Nation:".to_owned();
                 values[2] = state
@@ -1983,8 +1980,7 @@ fn representative_tile_for_nation(state: &GameState, nation: NationId) -> Option
     let mut east_count = 0_u32;
     let mut fallback = None;
 
-    for index in 0..TileId::COUNT {
-        let tile = TileId::new(index);
+    for tile in TileId::all() {
         if state.map()[tile]
             .owner_nation
             .and_then(TileOwnerTag::nation)
@@ -2028,7 +2024,7 @@ fn representative_tile_for_nation(state: &GameState, nation: NationId) -> Option
     let column = (column_sum / tile_count) % u32::from(STRATEGIC_MAP_WIDTH);
     let row = row_sum / tile_count;
     Some(TileId::new(
-        (row * u32::from(STRATEGIC_MAP_WIDTH) + column) as u16,
+        (row * u32::from(STRATEGIC_MAP_WIDTH) + column) as usize,
     ))
 }
 

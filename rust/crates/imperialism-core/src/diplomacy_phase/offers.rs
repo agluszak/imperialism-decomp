@@ -145,12 +145,14 @@ impl GameState {
 
     pub(super) fn reply_to_diplomacy_offers_from(
         &mut self,
-        start_nation: u8,
+        start_nation: MajorNationId,
         start_index: usize,
     ) -> DiplomacyPhaseResult {
-        for nation_index in start_nation..MajorNationId::COUNT {
-            let nation = MajorNationId::new(nation_index);
-            let first = if nation_index == start_nation {
+        for nation in MajorNationId::all() {
+            if nation.index() < start_nation.index() {
+                continue;
+            }
+            let first = if nation == start_nation {
                 start_index
             } else {
                 0

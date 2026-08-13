@@ -455,8 +455,8 @@ impl GameState {
                 story_id: id as i16,
                 feature: true,
                 arguments: [
-                    nation_mask_arg(1 << nation.get()),
-                    nation_mask_arg(1 << other.get()),
+                    nation_mask_arg(1 << nation.index()),
+                    nation_mask_arg(1 << other.index()),
                     NewsArgument::Empty,
                     NewsArgument::Empty,
                 ],
@@ -477,7 +477,7 @@ fn create_event_stories(
     column: &mut usize,
     row: &mut usize,
 ) {
-    let nation_slot = i32::from(nation.get());
+    let nation_slot = nation.index() as i32;
     let mut ordinal = 0;
     let mut code = 0;
     while code <= 0x18 {
@@ -535,7 +535,7 @@ fn create_event_stories(
             }
             Some((index, event)) => {
                 let mask = event_mask(event);
-                if mask == 1 << nation.get() {
+                if mask == 1 << nation.index() {
                     ordinal = 0;
                     code += 1;
                     continue;
@@ -664,11 +664,11 @@ fn event_code(event: &PendingNewspaperEvent) -> i32 {
 fn event_subject(event: &PendingNewspaperEvent) -> i32 {
     match event {
         PendingNewspaperEvent::InterNation { subject, .. }
-        | PendingNewspaperEvent::Shortage { subject, .. } => i32::from(subject.get()),
+        | PendingNewspaperEvent::Shortage { subject, .. } => subject.index() as i32,
         PendingNewspaperEvent::Miscellaneous {
             audience: Some(nation),
             ..
-        } => i32::from(nation.get()),
+        } => nation.index() as i32,
         PendingNewspaperEvent::Miscellaneous { audience: None, .. } => 999,
     }
 }
@@ -703,7 +703,7 @@ fn nations_to_bits(nations: &NationTable<bool>) -> i32 {
     let mut bits = 0;
     for nation in NationId::all() {
         if nations[nation] {
-            bits |= 1 << nation.get();
+            bits |= 1 << nation.index();
         }
     }
     bits
@@ -712,7 +712,7 @@ fn nations_to_bits(nations: &NationTable<bool>) -> i32 {
 fn bits_to_nations(bits: i32) -> NationTable<bool> {
     let mut nations = NationTable::default();
     for nation in NationId::all() {
-        nations[nation] = bits & (1 << nation.get()) != 0;
+        nations[nation] = bits & (1 << nation.index()) != 0;
     }
     nations
 }
@@ -765,7 +765,7 @@ fn advance_page_cursor(column: &mut usize, row: &mut usize) {
 
 fn random_other_major(rng: &mut RngState, nation: MajorNationId) -> MajorNationId {
     loop {
-        let other = MajorNationId::new((rng.next_crt_rand() % 7) as u8);
+        let other = MajorNationId::new((rng.next_crt_rand() % 7) as usize);
         if other != nation {
             return other;
         }

@@ -1252,7 +1252,7 @@ fn fill_brackets(template: &str, args: &[&str]) -> String {
 }
 
 fn flag_rect(nation: NationId) -> Rect {
-    let left = f32::from(nation.get()) * ICON_WIDTH;
+    let left = nation.index() as f32 * ICON_WIDTH;
     Rect::new(left, 0.0, left + ICON_WIDTH, ICON_HEIGHT)
 }
 

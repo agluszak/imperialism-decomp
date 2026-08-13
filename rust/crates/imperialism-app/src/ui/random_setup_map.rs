@@ -10,7 +10,9 @@ use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
-use imperialism_core::{MajorNationId, MapGeometry, MapTopology, NationId, TileId, TileOwnerTag};
+use imperialism_core::{
+    HexDirection, MajorNationId, MapGeometry, MapTopology, NationId, TileId, TileOwnerTag,
+};
 use imperialism_formats::{DibPalette, FourCc, PictureId, Rgb, fourcc};
 
 const MAP_TAG: FourCc = fourcc!("map ");
@@ -26,7 +28,7 @@ const PREVIEW_HEIGHT: usize = 180;
 const PREVIEW_PIXEL_COUNT: usize = PREVIEW_WIDTH * PREVIEW_HEIGHT;
 const OFF_MAP_PALETTE: u8 = 0x10;
 const SELECTED_EDGE_PALETTE: u8 = 0x13;
-const MAJOR_NATION_PALETTES: [u8; MajorNationId::COUNT as usize] =
+const MAJOR_NATION_PALETTES: [u8; MajorNationId::COUNT] =
     [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
 
 /// The retail 8-bit map surface retained for both display and click sampling.
@@ -112,7 +114,7 @@ fn sync_random_setup_coat(
 }
 
 fn coat_picture_id(nation: MajorNationId) -> PictureId {
-    PictureId::new(FIRST_MAJOR_NATION_COAT_PICTURE + i16::from(nation.get()))
+    PictureId::new(FIRST_MAJOR_NATION_COAT_PICTURE + nation.index() as i16)
 }
 
 fn sync_random_setup_flag(
@@ -153,7 +155,7 @@ fn sync_random_setup_flag(
         if flag.nation == Some(setup.nation) {
             continue;
         }
-        let left = f32::from(setup.nation.get()) * FLAG_WIDTH as f32;
+        let left = setup.nation.index() as f32 * FLAG_WIDTH as f32;
         let rect = Rect::new(left, 0.0, left + FLAG_WIDTH as f32, FLAG_HEIGHT as f32);
         if let Some(mut image_node) = image_node {
             image_node.image = handle.clone();
@@ -256,53 +258,52 @@ pub(crate) fn compose_owner_preview_indices_with_fill(
     // setup topology wraps horizontally.
     let geometry = MapGeometry::new(MapTopology::Bounded);
 
-    for tile_index in 0..TileId::COUNT {
-        let tile_id = TileId::new(tile_index);
+    for tile_id in TileId::all() {
         let (row, column) = geometry.row_column(tile_id);
         let odd_row = row & 1 != 0;
         let px = 3 * usize::from(column) + usize::from(odd_row);
         let py = 3 * usize::from(row);
         let neighbor_tags = geometry
             .neighbors(tile_id)
-            .map(|neighbor| owner_tag(&owner_at, neighbor));
+            .map(|_, neighbor| owner_tag(&owner_at, neighbor));
         let self_tag = owner_tag(&owner_at, Some(tile_id));
+        let north_west = neighbor_tags[HexDirection::NorthWest];
+        let west = neighbor_tags[HexDirection::West];
+        let north_east = neighbor_tags[HexDirection::NorthEast];
+        let east = neighbor_tags[HexDirection::East];
 
-        let tag = if self_tag == neighbor_tags[5] {
+        let tag = if self_tag == north_west {
             self_tag
-        } else if (odd_row && neighbor_tags[5] == neighbor_tags[4])
-            || (!odd_row
-                && neighbor_tags[5] == neighbor_tags[0]
-                && neighbor_tags[4] == neighbor_tags[0])
+        } else if (odd_row && north_west == west)
+            || (!odd_row && north_west == north_east && west == north_east)
         {
-            neighbor_tags[5]
+            north_west
         } else {
             PreviewOwner::Border
         };
         write_preview_pixel(&mut pixels, &mut pixel_owners, py, px, tag, &fill);
 
         if odd_row {
-            let tag = if self_tag == neighbor_tags[5] {
+            let tag = if self_tag == north_west {
                 self_tag
             } else {
                 PreviewOwner::Border
             };
             write_preview_pixel(&mut pixels, &mut pixel_owners, py, px + 1, tag, &fill);
-            let tag = if self_tag == neighbor_tags[0]
-                || (self_tag == neighbor_tags[1] && self_tag == neighbor_tags[5])
-            {
+            let tag = if self_tag == north_east || (self_tag == east && self_tag == north_west) {
                 self_tag
             } else {
                 PreviewOwner::Border
             };
             write_preview_pixel(&mut pixels, &mut pixel_owners, py, px + 2, tag, &fill);
         } else {
-            let tag = if self_tag == neighbor_tags[0] || self_tag == neighbor_tags[5] {
+            let tag = if self_tag == north_east || self_tag == north_west {
                 self_tag
             } else {
                 PreviewOwner::Border
             };
             write_preview_pixel(&mut pixels, &mut pixel_owners, py, px + 1, tag, &fill);
-            let tag = if self_tag == neighbor_tags[0] {
+            let tag = if self_tag == north_east {
                 self_tag
             } else {
                 PreviewOwner::Border
@@ -310,7 +311,7 @@ pub(crate) fn compose_owner_preview_indices_with_fill(
             write_preview_pixel(&mut pixels, &mut pixel_owners, py, px + 2, tag, &fill);
         }
 
-        let tag = if self_tag == neighbor_tags[4] {
+        let tag = if self_tag == west {
             self_tag
         } else {
             PreviewOwner::Border
@@ -359,10 +360,7 @@ fn compose_preview_indices(
     tiles: &[imperialism_core::GeneratedTerrainTile],
     selected_nation: MajorNationId,
 ) -> Vec<u8> {
-    compose_owner_preview_indices(
-        |tile| tiles[usize::from(tile.get())].owner,
-        selected_nation.nation(),
-    )
+    compose_owner_preview_indices(|tile| tiles[tile.index()].owner, selected_nation.nation())
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -450,7 +448,7 @@ fn is_selection_maskable(palette: u8) -> bool {
 }
 
 fn major_nation_palette(nation: MajorNationId) -> u8 {
-    MAJOR_NATION_PALETTES[usize::from(nation.get())]
+    MAJOR_NATION_PALETTES[nation.index()]
 }
 
 fn nation_at_preview_position(
@@ -475,7 +473,7 @@ fn nation_for_palette(palette: u8) -> Option<MajorNationId> {
     MAJOR_NATION_PALETTES
         .iter()
         .position(|candidate| *candidate == palette)
-        .map(|nation| MajorNationId::new(nation as u8))
+        .map(|nation| MajorNationId::new(nation as usize))
 }
 
 pub(crate) fn preview_image_from_indices(palette_indices: &[u8], palette: &DibPalette) -> Image {

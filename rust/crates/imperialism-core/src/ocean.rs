@@ -34,9 +34,7 @@ impl Ocean {
             zone.zone()
                 .secondary_neighbors
                 .contains(&province)
-                .then_some(OceanZoneId::new(
-                    u16::try_from(ordinal).expect("ocean zone ordinal fits a zone id"),
-                ))
+                .then_some(OceanZoneId::new(ordinal))
         })
     }
 }
@@ -84,7 +82,7 @@ impl GameState {
                     .former_owner_nation
                     .and_then(TileOwnerTag::nation)
                     == Some(nation))
-                .then(|| OceanZoneId::new(index as u16))
+                .then(|| OceanZoneId::new(index as usize))
             })
     }
 
@@ -131,18 +129,18 @@ impl GameState {
             )
         }) {
             self.port_zone_index_for_tile(best_sea)
-                .map(|index| OceanZoneId::new(index as u16))
+                .map(|index| OceanZoneId::new(index as usize))
         } else {
             self.map[best_sea]
                 .owner_nation
                 .map(TileOwnerTag::get)
                 .filter(|&tag| tag >= SEA_OWNER_BIAS)
-                .map(|tag| OceanZoneId::new(u16::from(tag - SEA_OWNER_BIAS)))
+                .map(|tag| OceanZoneId::new(usize::from(tag - SEA_OWNER_BIAS)))
         };
 
-        let ordinal = OceanZoneId::new(self.ocean.zones.len() as u16);
+        let ordinal = OceanZoneId::new(self.ocean.zones.len() as usize);
         if let Some(linked) = linked {
-            let linked_index = usize::from(linked.get());
+            let linked_index = linked.index();
             if linked_index < self.ocean.zones.len() {
                 let neighbor = match &mut self.ocean.zones[linked_index] {
                     ZoneKind::Zone(zone) => &mut zone.primary_neighbors,
@@ -187,15 +185,14 @@ impl GameState {
             port_tile: tile,
         }));
 
-        for index in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(index);
+        for nation in MajorNationId::all() {
             if let Some(targets) = self
                 .nations
                 .major_mut(nation)
                 .economy
                 .ai_zone_targets
                 .as_mut()
-                && targets.len() == usize::from(ordinal.get())
+                && targets.len() == ordinal.index()
             {
                 targets.push(AiTargetState::Unmarked);
             }
@@ -228,7 +225,7 @@ fn select_live_port_sea_tile(
 ) -> Option<TileId> {
     const SEA_OWNER_BIAS: u8 = 0x17;
 
-    let tile_index = usize::from(tile.get());
+    let tile_index = tile.index();
     for offset in 0..6 {
         let direction = HexDirection::ALL[(tile_index + offset) % 6];
         let Some(candidate) = geometry.neighbor(tile, direction) else {
@@ -302,14 +299,14 @@ fn find_nearest_active_sea_context_tile(
                         (port.port_tile == candidate
                             || port.zone.target_tile == Some(candidate)
                             || port.zone.active_tile == Some(candidate))
-                        .then(|| OceanZoneId::new(index as u16))
+                        .then(|| OceanZoneId::new(index as usize))
                     })
             } else {
                 world[candidate]
                     .owner_nation
                     .map(TileOwnerTag::get)
                     .filter(|&tag| tag >= SEA_OWNER_BIAS)
-                    .map(|tag| OceanZoneId::new(u16::from(tag - SEA_OWNER_BIAS)))
+                    .map(|tag| OceanZoneId::new(usize::from(tag - SEA_OWNER_BIAS)))
             };
             if candidate_context == expected && world[candidate].action.is_none() {
                 return Some(candidate);

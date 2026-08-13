@@ -1,4 +1,5 @@
 use crate::TileId;
+use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Serialize};
 
 pub const STRATEGIC_MAP_WIDTH: u16 = 108;
@@ -19,7 +20,7 @@ impl MapTopology {
     }
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, PartialEq, Serialize)]
 #[repr(u8)]
 pub enum HexDirection {
     NorthEast = 0,
@@ -39,6 +40,28 @@ impl HexDirection {
         Self::West,
         Self::NorthWest,
     ];
+
+    pub(crate) const fn wrapping_next(self) -> Self {
+        match self {
+            Self::NorthEast => Self::East,
+            Self::East => Self::SouthEast,
+            Self::SouthEast => Self::SouthWest,
+            Self::SouthWest => Self::West,
+            Self::West => Self::NorthWest,
+            Self::NorthWest => Self::NorthEast,
+        }
+    }
+
+    pub(crate) const fn wrapping_prev(self) -> Self {
+        match self {
+            Self::NorthEast => Self::NorthWest,
+            Self::East => Self::NorthEast,
+            Self::SouthEast => Self::East,
+            Self::SouthWest => Self::SouthEast,
+            Self::West => Self::SouthWest,
+            Self::NorthWest => Self::West,
+        }
+    }
 
     pub(crate) const fn opposite(self) -> Self {
         match self {
@@ -71,13 +94,14 @@ impl MapGeometry {
             return None;
         }
         Some(TileId::from_index_unchecked(
-            row * STRATEGIC_MAP_WIDTH + column,
+            usize::from(row) * usize::from(STRATEGIC_MAP_WIDTH) + usize::from(column),
         ))
     }
 
     pub const fn row_column(self, tile: TileId) -> (u16, u16) {
-        let index = tile.get();
-        (index / STRATEGIC_MAP_WIDTH, index % STRATEGIC_MAP_WIDTH)
+        let index = tile.index();
+        let width = STRATEGIC_MAP_WIDTH as usize;
+        ((index / width) as u16, (index % width) as u16)
     }
 
     pub fn neighbor(self, tile: TileId, direction: HexDirection) -> Option<TileId> {
@@ -110,8 +134,8 @@ impl MapGeometry {
             .find(|&direction| self.neighbor(source, direction) == Some(destination))
     }
 
-    pub fn neighbors(self, tile: TileId) -> [Option<TileId>; 6] {
-        HexDirection::ALL.map(|direction| self.neighbor(tile, direction))
+    pub fn neighbors(self, tile: TileId) -> EnumMap<HexDirection, Option<TileId>> {
+        EnumMap::from_array(HexDirection::ALL.map(|direction| self.neighbor(tile, direction)))
     }
 }
 
@@ -123,7 +147,7 @@ mod tests {
     fn round_trips_retail_tile_coordinates() {
         let geometry = MapGeometry::new(MapTopology::Wrapping);
         let last = geometry.tile(59, 107).unwrap();
-        assert_eq!(last.get(), 6479);
+        assert_eq!(last.index(), 6479);
         assert_eq!(geometry.row_column(last), (59, 107));
     }
 

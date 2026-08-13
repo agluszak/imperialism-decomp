@@ -4,7 +4,7 @@ use crate::random_map::{CoarseMap, generate_coarse_random_map};
 use crate::{
     EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, MapGeometry, MapTopology, OceanRoute, OceanZoneId,
     ProvinceId, RANDOM_MAP_CLASS_COUNT, RetailCrtRng, RetailLcg, RiverSegment, TerrainKind, TileId,
-    TileOwnerTag, hash_retail_scenario_tag,
+    TileOwnerTag, TileTable, hash_retail_scenario_tag,
 };
 use serde::{Deserialize, Deserializer, Serialize};
 
@@ -158,7 +158,7 @@ pub struct GeneratedProvince {
 /// advanced through every rejected attempt when this value is returned.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct GeneratedMap {
-    tiles: Box<[GeneratedTerrainTile]>,
+    tiles: TileTable<GeneratedTerrainTile>,
     provinces: Box<[GeneratedProvince]>,
     seed_candidate_tiles: [TileId; RANDOM_MAP_CLASS_COUNT],
     pub(crate) ocean_routes: Vec<OceanRoute>,
@@ -179,7 +179,7 @@ impl GeneratedMap {
             "accepted generated maps have the strategic tile count"
         );
         Self {
-            tiles,
+            tiles: TileTable::from_boxed_slice(tiles),
             provinces,
             seed_candidate_tiles,
             ocean_routes,
@@ -188,11 +188,11 @@ impl GeneratedMap {
     }
 
     pub fn tile(&self, tile: TileId) -> GeneratedTerrainTile {
-        self.tiles[usize::from(tile.get())]
+        self.tiles[tile]
     }
 
     pub fn tiles(&self) -> &[GeneratedTerrainTile] {
-        &self.tiles
+        self.tiles.as_slice()
     }
 
     pub fn provinces(&self) -> &[GeneratedProvince] {
@@ -515,7 +515,7 @@ fn generate_random_map_impl(
                 after_keyword: after_keyword.expect("trace collection summarizes scenario keyword"),
                 map_lcg_after_validation: rng.state(),
                 rotation_column,
-                seed_candidate_tiles: seed_candidate_tiles.map(|tile| i32::from(tile.get())),
+                seed_candidate_tiles: seed_candidate_tiles.map(|tile| tile.index() as i32),
                 accepted,
             });
         }
@@ -1069,7 +1069,7 @@ fn normalize_generated_tile(tile: GeneratedTerrainTileScratch) -> GeneratedTerra
         gate: (tile.gate_flag != -1).then_some(GenerationGate(tile.gate_flag)),
         province: u16::try_from(tile.province_index)
             .ok()
-            .and_then(ProvinceId::try_new),
+            .and_then(|value| ProvinceId::try_new(usize::from(value))),
     }
 }
 
@@ -1389,8 +1389,8 @@ fn validate_seed_candidates(
             }
             if has_candidate {
                 let slot = &mut candidates[class as usize];
-                if slot.get() == 0 || rng.next_sample_15() % 5 == 3 {
-                    *slot = TileId::new(neighbor as u16);
+                if slot.index() == 0 || rng.next_sample_15() % 5 == 3 {
+                    *slot = TileId::new(neighbor as usize);
                 }
                 break;
             }
@@ -1409,8 +1409,8 @@ fn keyword_matches(text: &[u8], keyword: &[u8]) -> bool {
 fn full_neighbor(geometry: MapGeometry, tile: usize, direction: usize) -> Option<usize> {
     let direction = crate::HexDirection::ALL[direction];
     geometry
-        .neighbor(TileId::new(tile as u16), direction)
-        .map(|tile| usize::from(tile.get()))
+        .neighbor(TileId::new(tile as usize), direction)
+        .map(|tile| tile.index())
 }
 
 fn coarse_class(coarse: &CoarseMap, index: i32) -> i16 {
@@ -1463,7 +1463,7 @@ mod tests {
         tiles.iter().fold(0x811c_9dc5, |hash, tile| {
             let province = tile
                 .province
-                .map_or(-1, |province| province.get() as i16)
+                .map_or(-1, |province| province.index() as i16)
                 .to_le_bytes();
             [
                 tile.terrain.retail() as u8,

@@ -2,8 +2,8 @@
 use crate::{CivilianUnitId, MilitaryUnitId};
 use crate::{
     CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, GameState, MajorNationId, MapMgr,
-    MilitaryUnitKind, MilitaryUnitState, NationId, PendingActionKind, STRATEGIC_TILE_COUNT,
-    TileFlags, TileId, TileOwnerTag, TurnSummary,
+    MilitaryUnitKind, MilitaryUnitState, NationId, PendingActionKind, TileFlags, TileId,
+    TileOwnerTag, TileTable, TurnSummary,
 };
 
 impl MapMgr {
@@ -15,16 +15,15 @@ impl MapMgr {
     ) -> Option<TileId> {
         let owner = self[start].owner_nation;
         let geometry = self.geometry();
-        let mut visited = vec![false; STRATEGIC_TILE_COUNT];
+        let mut visited = TileTable::from_fn(|_| false);
         let mut pending = vec![start];
 
         while let Some(tile_id) = pending.pop() {
-            let index = usize::from(tile_id.get());
             let tile = &self[tile_id];
-            if visited[index] {
+            if visited[tile_id] {
                 continue;
             }
-            visited[index] = true;
+            visited[tile_id] = true;
             if tile.owner_nation != owner {
                 continue;
             }
@@ -39,8 +38,13 @@ impl MapMgr {
                 return Some(tile_id);
             }
 
-            for neighbor in geometry.neighbors(tile_id).iter().rev().flatten() {
-                pending.push(*neighbor);
+            for neighbor in geometry
+                .neighbors(tile_id)
+                .into_iter()
+                .rev()
+                .filter_map(|(_, tile)| tile)
+            {
+                pending.push(neighbor);
             }
         }
         None
@@ -99,7 +103,7 @@ impl GameState {
                 };
                 let insert_at = self
                     .civilian_units
-                    .partition_point(|existing| existing.nation.get() <= nation_id.get());
+                    .partition_point(|existing| existing.nation <= nation_id);
                 self.civilian_units.insert(insert_at, unit);
             }
         }
@@ -164,7 +168,7 @@ impl GameState {
                 };
                 let insert_at = self
                     .military_units
-                    .partition_point(|existing| existing.nation.get() <= nation_id.get());
+                    .partition_point(|existing| existing.nation <= nation_id);
                 self.military_units.insert(insert_at, unit);
 
                 let pending = self.nations.majors[nation].economy.pending_actions
@@ -269,11 +273,11 @@ mod tests {
     fn civilian(id: i32, nation: u8, tile: TileId) -> CivilianUnitState {
         CivilianUnitState {
             id: CivilianUnitId::new(id),
-            nation: NationId::new(nation),
+            nation: NationId::new(usize::from(nation)),
             unit_type: CivilianUnitKind::Miner,
             location: crate::CivilianLocation::OnMap(tile),
             order: CivilianWorkOrder::Idle,
-            owner_nation: NationId::new(nation),
+            owner_nation: NationId::new(usize::from(nation)),
             roster_id: 0,
             registered: false,
             next_on_tile: None,
@@ -322,6 +326,12 @@ mod tests {
         state
     }
 
+    fn province_id(province: i16) -> Option<crate::ProvinceId> {
+        u16::try_from(province)
+            .ok()
+            .and_then(|province| crate::ProvinceId::try_new(usize::from(province)))
+    }
+
     fn military_unit(
         id: i32,
         nation: u8,
@@ -330,20 +340,14 @@ mod tests {
     ) -> MilitaryUnitState {
         MilitaryUnitState {
             id: MilitaryUnitId::new(id),
-            nation: NationId::new(nation),
+            nation: NationId::new(usize::from(nation)),
             unit_type,
-            stationed_province: u16::try_from(province)
-                .ok()
-                .and_then(crate::ProvinceId::try_new),
+            stationed_province: province_id(province),
             order: crate::MilitaryOrder::idle(
-                [u16::try_from(province)
-                    .ok()
-                    .and_then(crate::ProvinceId::try_new); 3],
-                [u16::try_from(province)
-                    .ok()
-                    .and_then(crate::ProvinceId::try_new); 3],
+                [province_id(province); 3],
+                [province_id(province); 3],
             ),
-            owner_nation: NationId::new(nation),
+            owner_nation: NationId::new(usize::from(nation)),
             roster_id: 0,
             registered: true,
             name: String::new(),

@@ -58,7 +58,27 @@ semantics.
   assertions/`expect` for broken internal invariants. Do not repeatedly validate whole state around
   ordinary operations.
 - Use ordinary Rust arithmetic and widths unless retail-visible overflow or storage width is proven
-  to matter to behavior.
+  to matter to behavior. In the semantic model:
+
+```text
+identity / index / ordinal     usize (`NationId`, `TileId`, `ProvinceId`, …)
+ordinary arithmetic            usually i32
+retail short with wrap         i16 (`Stockpile`, other wrapping quantities)
+persistent retail identity     its real type (military/civilian unit IDs are i32)
+encoded byte / bitfield        u8/u16 (`TileOwnerTag`, packed rendering, river sprites)
+enum category                  enum + `EnumMap`
+absence                        `Option<T>`, never -1
+```
+
+  Integer widths from the 1997 representation belong at the formats/capture boundary unless the
+  width itself affects game behavior. Index tables by the ID type (`NationTable`, `TileTable`,
+  `TechnologyTable`, `EnumMap`). Do not keep a parallel `get()` that returns the same ordinal, and
+  do not reconstruct IDs from raw integers in core loops when `Id::all()` or table `enumerate()`
+  already yields them. An `as usize` in ordinary gameplay code is a sign the value should have been
+  an ID, table key, or `Option` already.
+
+  Do not add conversion traits, `TryFrom` everywhere, or generic typed-index machinery. Eliminate
+  the conversions.
 - Do not clone `GameState` to answer a query.
 - Separate planning from mutation for order UI: compare the needed quantity against
   `city_order_limit`; do not mutate-and-rollback authoritative state as a probe.

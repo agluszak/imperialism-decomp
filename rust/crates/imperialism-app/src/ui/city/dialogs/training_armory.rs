@@ -523,7 +523,7 @@ mod tests {
     #[test]
     fn beginning_armory_rows_use_the_retail_unit_picture_sequence() {
         let selected_nation = peek_save_header(BEGINNING_OF_GAME)
-            .and_then(|header| NationId::try_new(header.active_nation))
+            .and_then(|header| NationId::try_new(usize::from(header.active_nation)))
             .unwrap();
         let state = LegacySaveV62::parse(BEGINNING_OF_GAME).game_state(LegacyGameStateContext {
             crt_rand_state: 1,

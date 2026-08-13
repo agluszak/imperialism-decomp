@@ -263,7 +263,7 @@ pub(in crate::ui::city) fn restore_city_dialogs(
     let nation = city_active_nation(&session);
     let city = &session.0.nations().major(nation).city;
     let mut next_z = 1;
-    for index in 0..CityFacilitySlot::COUNT {
+    for index in 0..CityFacilitySlot::LENGTH {
         let slot = CityFacilitySlot::from_index(index as u8)
             .expect("City facility index is in the fixed slot range");
         let state = city.building_windows[slot];
@@ -298,7 +298,7 @@ pub(in crate::ui::city) fn leave_city_screen(
     windows: Query<(&CityDialogWindow, &Node)>,
 ) {
     let nation = city_active_nation(&session);
-    for index in 0..CityFacilitySlot::COUNT {
+    for index in 0..CityFacilitySlot::LENGTH {
         let slot = CityFacilitySlot::from_index(index as u8)
             .expect("City facility index is in the fixed slot range");
         let window = windows.iter().find(|(w, _)| w.0 == slot).map(|(_, node)| {

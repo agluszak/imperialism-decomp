@@ -220,7 +220,7 @@ fn city_site_selection_draws_black_frame_and_neighbor_outline() {
         map[origin].owner_nation = Some(owner);
         map[origin].terrain = TerrainKind::Plains;
         let neighbors = map.geometry().neighbors(origin);
-        for neighbor in neighbors.into_iter().flatten() {
+        for neighbor in neighbors.into_iter().filter_map(|(_, tile)| tile) {
             map[neighbor].owner_nation = Some(owner);
             map[neighbor].terrain = TerrainKind::Plains;
         }

@@ -224,8 +224,7 @@ impl GameState {
                     continue;
                 }
                 let mut lines = Vec::new();
-                for slot in MinorNationId::FIRST..NationId::COUNT {
-                    let minor = MinorNationId::new(slot);
+                for minor in MinorNationId::all() {
                     if self.nations.minor(minor).is_none() {
                         continue;
                     }
@@ -274,8 +273,7 @@ impl GameState {
         let player = current[nation.nation()];
         let player_participated = player != 0;
         let mut offers = Vec::new();
-        for slot in (0..NationId::COUNT).rev() {
-            let other = NationId::new(slot);
+        for other in NationId::all().rev() {
             if current[other] <= 0 {
                 continue;
             }
@@ -472,11 +470,11 @@ mod tests {
     use crate::test_support::game_state;
 
     fn nation(slot: u8) -> NationId {
-        NationId::new(slot)
+        NationId::new(usize::from(slot))
     }
 
     fn major(slot: u8) -> MajorNationId {
-        MajorNationId::new(slot)
+        MajorNationId::new(usize::from(slot))
     }
 
     fn entry(
@@ -669,7 +667,7 @@ mod tests {
             category
                 .offers
                 .iter()
-                .map(|row| (row.nation.get(), row.amount))
+                .map(|row| (row.nation.index(), row.amount))
                 .collect::<Vec<_>>(),
             vec![(22, 1), (3, 4)]
         );
@@ -677,7 +675,7 @@ mod tests {
             category
                 .bids
                 .iter()
-                .map(|row| row.nation.get())
+                .map(|row| row.nation.index())
                 .collect::<Vec<_>>(),
             vec![0, 5]
         );

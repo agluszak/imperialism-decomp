@@ -68,7 +68,7 @@ impl GameState {
         &mut self,
         first: NationId,
         second: NationId,
-        start: u8,
+        start: usize,
     ) -> DiplomacyPhaseResult {
         if MajorNationId::from_nation(second).is_none() {
             if start == 0
@@ -177,7 +177,7 @@ impl GameState {
         minor: NationId,
         attacker: NationId,
     ) {
-        let mut beatable = [false; MAJOR_NATION_COUNT];
+        let mut beatable = MajorNationTable::default();
         let mut all_beatable = true;
         for other in majors() {
             if !all_beatable {
@@ -199,14 +199,14 @@ impl GameState {
             if self.war_number(nation) > score {
                 all_beatable = false;
             } else {
-                beatable[usize::from(other.get())] = true;
+                beatable[other] = true;
             }
         }
         if !all_beatable {
             return;
         }
         for other in majors() {
-            if beatable[usize::from(other.get())] {
+            if beatable[other] {
                 self.queue_war(nation.nation(), other.nation(), Some(minor));
             }
         }
@@ -356,7 +356,7 @@ impl GameState {
         let Some(targets) = self.nations.majors[nation].economy.ai_zone_targets.as_mut() else {
             return;
         };
-        let index = usize::from(zone.get());
+        let index = zone.index();
         if let Some(entry) = targets.get_mut(index) {
             *entry = flag;
         }

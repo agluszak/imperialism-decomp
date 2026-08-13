@@ -440,7 +440,7 @@ mod tests {
         for index in 0..2 {
             state.nations.append_owned_region_during_construction(
                 NationId::new(index),
-                crate::ProvinceId::new(index as u16),
+                crate::ProvinceId::new(index as usize),
             );
         }
         state.nations.majors[MajorNationId::new(1)].kind = crate::MajorNationKind::AutoGreatPower;
@@ -516,15 +516,15 @@ mod tests {
     #[test]
     fn city_and_transport_phase_runs_and_continues_past_pressure() {
         let mut state = game_state();
-        for index in 0..MajorNationId::COUNT {
-            let tile = TileId::new(index as u16 + 1);
-            let major = &mut state.nations.majors[MajorNationId::new(index)];
+        for nation in MajorNationId::all() {
+            let tile = TileId::new(nation.index() + 1);
+            let major = &mut state.nations.majors[nation];
             major.towns[0].tile = tile;
             major.common.home_tile = Some(tile);
         }
-        for index in 0..MajorNationId::COUNT {
-            let tile = TileId::new(index as u16 + 1);
-            state.map[tile].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(index)));
+        for nation in MajorNationId::all() {
+            let tile = TileId::new(nation.index() + 1);
+            state.map[tile].owner_nation = Some(TileOwnerTag::from_nation(nation.nation()));
         }
         state.turn.phase = crate::PhaseCode::CITY_AND_TRANSPORT;
         let stop = state.advance_turn();

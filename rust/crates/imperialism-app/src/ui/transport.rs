@@ -906,14 +906,14 @@ mod tests {
         let mut localized_nation_names = NationTable::default();
         let mut province_names_by_nation = NationTable::default();
         for nation in NationId::all() {
-            localized_nation_names[nation] = format!("N{}", nation.get());
+            localized_nation_names[nation] = format!("N{}", nation.index());
             let count = if MajorNationId::from_nation(nation).is_some() {
                 8
             } else {
                 4
             };
             province_names_by_nation[nation] = (0..count)
-                .map(|ordinal| format!("N{}P{}", nation.get(), ordinal + 1))
+                .map(|ordinal| format!("N{}P{}", nation.index(), ordinal + 1))
                 .collect();
         }
         RandomGameNames {

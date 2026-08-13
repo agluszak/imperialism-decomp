@@ -269,7 +269,7 @@ impl GameState {
                 &mut self.missions,
             );
         } else {
-            let old_owner = MinorNationId::new(old_owner.get());
+            let old_owner = MinorNationId::from_nation(old_owner).expect("minor province owner");
             let Nations { majors, minors } = &mut self.nations;
             minors[old_owner]
                 .as_mut()
@@ -306,9 +306,7 @@ impl GameState {
                             || {
                                 self.missions
                                     .iter()
-                                    .position(|mission| {
-                                        mission.nation.get() > new_owner.nation().get()
-                                    })
+                                    .position(|mission| mission.nation > new_owner.nation())
                                     .unwrap_or(self.missions.len())
                             },
                             |position| position + 1,
@@ -340,7 +338,7 @@ impl GameState {
                 }
             }
         } else {
-            self.nations.minors[MinorNationId::new(new_owner.get())]
+            self.nations.minors[MinorNationId::from_nation(new_owner).expect("destination minor")]
                 .as_mut()
                 .expect("province owner change requires the destination minor nation")
                 .add_province(province);
@@ -370,8 +368,7 @@ impl GameState {
             .common(nation_a)
             .expect("territory comparison requires nation A to be present");
         self.mark_owned_region_classes(nation_a_common.owned_regions(), &mut region_class_seen);
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = MinorNationId::new(slot);
+        for minor in MinorNationId::all() {
             if let Some(common) = self.nations.common(minor.nation())
                 && common.status().is_colony_of(nation_a)
             {
@@ -386,8 +383,7 @@ impl GameState {
         if self.any_owned_region_class_seen(nation_b_common.owned_regions(), &region_class_seen) {
             return true;
         }
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = MinorNationId::new(slot);
+        for minor in MinorNationId::all() {
             if let Some(common) = self.nations.common(minor.nation())
                 && common.status().is_colony_of(nation_b)
                 && self.any_owned_region_class_seen(common.owned_regions(), &region_class_seen)
@@ -453,7 +449,11 @@ mod tests {
         *state.nations.common_mut(nation).unwrap() = crate::NationCommonState::from_parts(
             common.display_name,
             status,
-            provinces.iter().copied().map(ProvinceId::new).collect(),
+            provinces
+                .iter()
+                .copied()
+                .map(|province| ProvinceId::new(usize::from(province)))
+                .collect(),
             common.treasury,
             common.home_tile,
             common.trade_policy_by_nation,
@@ -467,11 +467,15 @@ mod tests {
         adjacency: &[u16],
         region_class: Option<u8>,
     ) {
-        state.map.provinces[ProvinceId::new(province)] = ProvinceState::new(
-            owner.map(NationId::new),
-            owner.map(NationId::new),
+        state.map.provinces[ProvinceId::new(usize::from(province))] = ProvinceState::new(
+            owner.map(|nation| NationId::new(usize::from(nation))),
+            owner.map(|nation| NationId::new(usize::from(nation))),
             0,
-            adjacency.iter().copied().map(ProvinceId::new).collect(),
+            adjacency
+                .iter()
+                .copied()
+                .map(|province| ProvinceId::new(usize::from(province)))
+                .collect(),
             vec![TileId::new(0); adjacency.len()],
             region_class,
             0,
@@ -490,14 +494,18 @@ mod tests {
     }
 
     fn add_minor(state: &mut GameState, slot: u8, status: CountryStatus, owned: &[u16]) {
-        let minor = MinorNationId::new(slot);
+        let minor = MinorNationId::new(usize::from(slot));
         state.nations.minors[minor] = Some(MinorNation {
             common: {
                 let template = &state.nations.majors[crate::MajorNationId::new(0)].common;
                 crate::NationCommonState::from_parts(
                     template.display_name.clone(),
                     status,
-                    owned.iter().copied().map(ProvinceId::new).collect(),
+                    owned
+                        .iter()
+                        .copied()
+                        .map(|province| ProvinceId::new(usize::from(province)))
+                        .collect(),
                     template.treasury,
                     template.home_tile,
                     template.trade_policy_by_nation.clone(),

@@ -35,7 +35,7 @@ fn main() -> anyhow::Result<()> {
                 .with_context(|| format!("failed to read retail save {}", path.display()))?;
             let selected = u8::try_from(context[3])
                 .ok()
-                .and_then(NationId::try_new)
+                .and_then(|value| NationId::try_new(usize::from(value)))
                 .context("selected nation is outside the retail nation range")?;
             let game = LegacySaveV62::parse(&bytes).game_state(LegacyGameStateContext {
                 crt_rand_state: context[0],

@@ -165,7 +165,7 @@ pub fn check_random_setup(result: &Path, seed: u32) -> Result<()> {
         "random-game setup matched: seed={:?} topology={} nation={} country={:?} difficulty={:?} localized_names={} tiles={} provinces={} final={:08x}",
         setup.planet_seed,
         setup.topology.retail_byte(),
-        setup.nation.get(),
+        setup.nation.index(),
         setup.country_name,
         setup.difficulty,
         setup.localized_names,
@@ -183,7 +183,7 @@ fn captured_seed_candidate_tiles(
     for (index, &raw_candidate) in raw_candidates.iter().enumerate() {
         candidates[index] = u16::try_from(raw_candidate)
             .ok()
-            .and_then(TileId::try_new)
+            .and_then(|value| TileId::try_new(usize::from(value)))
             .with_context(|| {
                 format!(
                     "accepted terrain capture seed candidate {index} is not a strategic tile: {raw_candidate}"
@@ -269,7 +269,7 @@ pub fn check_random_setup_initial(result: &Path, seed: u32) -> Result<()> {
         clock_seed,
         setup.planet_seed,
         setup.topology.retail_byte(),
-        setup.nation.get(),
+        setup.nation.index(),
         setup.country_name,
         setup.difficulty,
         setup.localized_names,
@@ -308,8 +308,8 @@ pub fn check_random_game_start(result: &Path, seed: u32) -> Result<()> {
     if expected.turn().selected_nation != setup.nation.nation() {
         bail!(
             "random-game setup nation {} differs from game-state selected nation {}",
-            setup.nation.get(),
-            expected.turn().selected_nation.get()
+            setup.nation.index(),
+            expected.turn().selected_nation.index()
         );
     }
     if difficulty != setup.difficulty {
@@ -352,7 +352,7 @@ pub fn check_random_game_start(result: &Path, seed: u32) -> Result<()> {
         "random-game start boundary matched: seed={:?} topology={} nation={} difficulty={:?} tiles={} units={} missions={} map_lcg={:#x} crt={:#x} zone={:#x}",
         setup.planet_seed,
         setup.topology.retail_byte(),
-        setup.nation.get(),
+        setup.nation.index(),
         difficulty,
         STRATEGIC_TILE_COUNT,
         actual.military_units().len(),
@@ -439,7 +439,7 @@ fn read_result(
 
 fn initial_defaults(clock_seed: u32) -> RandomGameSetupCapture {
     let mut crt_rng = RetailCrtRng::from_state(clock_seed);
-    let nation = MajorNationId::new((crt_rng.next_rand() % i32::from(MajorNationId::COUNT)) as u8);
+    let nation = MajorNationId::new((crt_rng.next_rand() as usize) % MajorNationId::COUNT);
 
     let mut name_rng = RetailLcg::from_state(clock_seed);
     let planet_seed = generate_english_random_setup_name(&mut name_rng);
@@ -482,8 +482,8 @@ fn validate_setup(
     if actual.nation != expected.nation {
         bail!(
             "initial nation {} differs from retail default {}",
-            actual.nation.get(),
-            expected.nation.get()
+            actual.nation.index(),
+            expected.nation.index()
         );
     }
     if actual.country_name != expected.country_name {

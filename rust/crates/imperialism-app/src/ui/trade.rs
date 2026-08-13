@@ -931,7 +931,7 @@ mod tests {
 
     fn fixture_state() -> GameState {
         let selected_nation = peek_save_header(BEGINNING_OF_GAME)
-            .and_then(|header| NationId::try_new(header.active_nation))
+            .and_then(|header| NationId::try_new(usize::from(header.active_nation)))
             .unwrap();
         let mut state =
             LegacySaveV62::parse(BEGINNING_OF_GAME).game_state(LegacyGameStateContext {

@@ -1,4 +1,5 @@
 use crate::*;
+use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Deserializer, Serialize};
 use std::ops::{Index, IndexMut};
 
@@ -14,8 +15,7 @@ pub struct MapMgr {
     pub recruit_search_active: bool,
     pub city_score_total: i32,
     pub scenario_tag: String,
-    #[serde(deserialize_with = "deserialize_strategic_tiles")]
-    pub tiles: Box<[TileState]>,
+    pub tiles: TileTable<TileState>,
     pub provinces: ProvinceTable<ProvinceState>,
     #[serde(deserialize_with = "deserialize_required_option")]
     pub pending_river_mouth_tile: Option<TileId>,
@@ -28,20 +28,6 @@ fn next_region_marker_id_after_load() -> i32 {
     1
 }
 
-fn deserialize_strategic_tiles<'de, D>(deserializer: D) -> Result<Box<[TileState]>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let tiles = Box::<[TileState]>::deserialize(deserializer)?;
-    if tiles.len() != STRATEGIC_TILE_COUNT {
-        return Err(serde::de::Error::custom(format!(
-            "strategic map has {} tiles; expected {STRATEGIC_TILE_COUNT}",
-            tiles.len()
-        )));
-    }
-    Ok(tiles)
-}
-
 fn deserialize_required_option<'de, D, T>(deserializer: D) -> Result<Option<T>, D::Error>
 where
     D: serde::Deserializer<'de>,
@@ -51,28 +37,22 @@ where
 }
 
 impl MapMgr {
-    pub fn new(topology: MapTopology, tiles: impl Into<Box<[TileState]>>) -> Self {
+    pub fn new(topology: MapTopology, tiles: impl Into<TileTable<TileState>>) -> Self {
         Self::from_parts(topology, tiles, ProvinceTable::default())
     }
 
     pub fn from_parts(
         topology: MapTopology,
-        tiles: impl Into<Box<[TileState]>>,
+        tiles: impl Into<TileTable<TileState>>,
         provinces: ProvinceTable<ProvinceState>,
     ) -> Self {
-        let tiles = tiles.into();
-        assert_eq!(
-            tiles.len(),
-            STRATEGIC_TILE_COUNT,
-            "strategic map must have the retail fixed tile count"
-        );
         Self {
             topology,
             map_data_ready: false,
             recruit_search_active: false,
             city_score_total: 0,
             scenario_tag: String::new(),
-            tiles,
+            tiles: tiles.into(),
             provinces,
             pending_river_mouth_tile: None,
             next_region_marker_id: next_region_marker_id_after_load(),
@@ -171,8 +151,7 @@ impl MapMgr {
         let mut west_count = 0_u32;
         let mut east_count = 0_u32;
 
-        for index in 0..TileId::COUNT {
-            let tile = TileId::new(index);
+        for tile in TileId::all() {
             if self[tile].owner_nation != Some(owner) {
                 continue;
             }
@@ -199,8 +178,7 @@ impl MapMgr {
                 column_sum = 0;
                 row_sum = 0;
                 tile_count = 0;
-                for index in 0..TileId::COUNT {
-                    let tile = TileId::new(index);
+                for tile in TileId::all() {
                     if self[tile].owner_nation != Some(owner) {
                         continue;
                     }
@@ -225,9 +203,10 @@ impl MapMgr {
         }
 
         self.tiles
-            .iter()
-            .rposition(|tile| tile.owner_nation == Some(owner))
-            .map(|index| TileId::new(index as u16))
+            .enumerate()
+            .rev()
+            .find(|(_, tile)| tile.owner_nation == Some(owner))
+            .map(|(tile, _)| tile)
     }
 
     /// Retail `UpdateTilePrimaryAndSecondaryNeighborLinksByPriority`.
@@ -236,17 +215,17 @@ impl MapMgr {
         province: ProvinceId,
         city_tile: TileId,
     ) -> (TileId, TileId) {
-        const PRIORITY: [i16; 8] = [10, 4, 7, 6, 8, 0, 9, 5];
+        const PRIORITY: EnumMap<TerrainKind, i16> = EnumMap::from_array([10, 4, 7, 6, 8, 0, 9, 5]);
 
         let neighbors = self.geometry().neighbors(city_tile);
         let mut primary = None;
         let mut primary_priority = 1_i16;
-        for (direction, neighbor) in neighbors.iter().copied().enumerate() {
+        for (direction, neighbor) in neighbors {
             let Some(neighbor) = neighbor else {
                 continue;
             };
             let tile = &self[neighbor];
-            let priority = PRIORITY[tile.terrain as usize];
+            let priority = PRIORITY[tile.terrain];
             if tile.province == Some(province) && primary_priority < priority {
                 primary = Some((direction, neighbor));
                 primary_priority = priority;
@@ -257,7 +236,7 @@ impl MapMgr {
 
         let mut secondary = None;
         let mut secondary_priority = -1_i16;
-        for (direction, neighbor) in neighbors.iter().copied().enumerate() {
+        for (direction, neighbor) in neighbors {
             let Some(neighbor) = neighbor else {
                 continue;
             };
@@ -265,7 +244,7 @@ impl MapMgr {
                 continue;
             }
             let tile = &self[neighbor];
-            let mut priority = PRIORITY[tile.terrain as usize];
+            let mut priority = PRIORITY[tile.terrain];
             if tile.province == Some(province) {
                 priority += 0x14;
             }
@@ -297,7 +276,7 @@ impl MapMgr {
         self.update_tile_neighbor_border_influence_counters(tile, 2);
 
         let neighbors = self.geometry().neighbors(tile);
-        for neighbor in neighbors.into_iter().flatten() {
+        for neighbor in neighbors.into_iter().filter_map(|(_, tile)| tile) {
             self[neighbor].owner_border_mask = 0;
             self.update_tile_neighbor_border_influence_counters(neighbor, 2);
         }
@@ -336,8 +315,7 @@ impl MapMgr {
         tile: TileId,
         mode: i16,
     ) {
-        const DIRECTION_BITS: [u8; 6] = [1, 2, 4, 8, 16, 32];
-        const NEXT_DIRECTION: [usize; 6] = [1, 2, 3, 4, 5, 0];
+        const DIRECTION_BITS: EnumMap<HexDirection, u8> = EnumMap::from_array([1, 2, 4, 8, 16, 32]);
 
         let neighbors = self.geometry().neighbors(tile);
         let terrain = self[tile].terrain;
@@ -347,7 +325,7 @@ impl MapMgr {
         let mut city_border_mask = self[tile].city_border_mask;
         let mut water_adjacency_mask = self[tile].water_adjacency_mask;
 
-        for (direction, neighbor) in neighbors.iter().copied().enumerate() {
+        for (direction, neighbor) in neighbors {
             let Some(neighbor) = neighbor else {
                 owner_border_mask = owner_border_mask.wrapping_add(DIRECTION_BITS[direction]);
                 continue;
@@ -372,9 +350,9 @@ impl MapMgr {
         }
 
         if terrain == TerrainKind::Water {
-            for direction in 0..6 {
+            for direction in HexDirection::ALL {
                 let (Some(neighbor_a), Some(neighbor_b)) =
-                    (neighbors[direction], neighbors[NEXT_DIRECTION[direction]])
+                    (neighbors[direction], neighbors[direction.wrapping_next()])
                 else {
                     continue;
                 };
@@ -395,7 +373,10 @@ impl MapMgr {
         if mode != 2
             && city_border_mask & 2 != 0
             && city_border_mask & 1 != 0
-            && let (Some(east), Some(north_east)) = (neighbors[1], neighbors[0])
+            && let (Some(east), Some(north_east)) = (
+                neighbors[HexDirection::East],
+                neighbors[HexDirection::NorthEast],
+            )
             && self[east].province != self[north_east].province
         {
             city_border_mask = city_border_mask.wrapping_add(0x40);
@@ -403,7 +384,10 @@ impl MapMgr {
         if mode != 2
             && city_border_mask & 2 != 0
             && city_border_mask & 4 != 0
-            && let (Some(east), Some(south_east)) = (neighbors[1], neighbors[2])
+            && let (Some(east), Some(south_east)) = (
+                neighbors[HexDirection::East],
+                neighbors[HexDirection::SouthEast],
+            )
             && self[east].province != self[south_east].province
         {
             city_border_mask = city_border_mask.wrapping_add(0x80);
@@ -411,14 +395,20 @@ impl MapMgr {
 
         if owner_border_mask & 2 != 0
             && owner_border_mask & 1 != 0
-            && let (Some(east), Some(north_east)) = (neighbors[1], neighbors[0])
+            && let (Some(east), Some(north_east)) = (
+                neighbors[HexDirection::East],
+                neighbors[HexDirection::NorthEast],
+            )
             && self[east].owner_nation != self[north_east].owner_nation
         {
             owner_border_mask = owner_border_mask.wrapping_add(0x40);
         }
         if owner_border_mask & 2 != 0
             && owner_border_mask & 4 != 0
-            && let (Some(east), Some(south_east)) = (neighbors[1], neighbors[2])
+            && let (Some(east), Some(south_east)) = (
+                neighbors[HexDirection::East],
+                neighbors[HexDirection::SouthEast],
+            )
             && self[east].owner_nation != self[south_east].owner_nation
         {
             owner_border_mask = owner_border_mask.wrapping_add(0x80);
@@ -434,13 +424,13 @@ impl Index<TileId> for MapMgr {
     type Output = TileState;
 
     fn index(&self, index: TileId) -> &Self::Output {
-        &self.tiles[usize::from(index.get())]
+        &self.tiles[index]
     }
 }
 
 impl IndexMut<TileId> for MapMgr {
     fn index_mut(&mut self, index: TileId) -> &mut Self::Output {
-        &mut self.tiles[usize::from(index.get())]
+        &mut self.tiles[index]
     }
 }
 
@@ -656,7 +646,7 @@ impl<'de> Deserialize<'de> for RiverSprite {
     }
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, PartialEq, Serialize)]
 #[repr(u8)]
 #[serde(rename_all = "snake_case")]
 pub enum TerrainKind {

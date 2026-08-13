@@ -19,8 +19,8 @@ fn picture_assignment_consumes_ordered_mountain_and_river_draws_without_rewritin
     let first_river = geometry.tile(10, 10).unwrap();
     let second_river = geometry.neighbor(first_river, HexDirection::East).unwrap();
     let mut river_connections = vec![0u8; STRATEGIC_TILE_COUNT];
-    river_connections[usize::from(first_river.get())] = 4;
-    river_connections[usize::from(second_river.get())] = 3;
+    river_connections[first_river.index()] = 4;
+    river_connections[second_river.index()] = 3;
     let original_connections = river_connections.clone();
     let mut rng = RetailLcg::from_state(1);
     assign_fresh_map_pictures(&mut tiles, &mut river_connections, geometry, &mut rng);
@@ -48,7 +48,7 @@ fn picture_assignment_draws_in_direction_order_for_each_land_edge_on_water() {
     }
     for direction in [HexDirection::NorthEast, HexDirection::SouthWest] {
         let neighbor = geometry.neighbor(target, direction).unwrap();
-        tiles[usize::from(neighbor.get())].terrain = TerrainKind::Plains;
+        tiles[neighbor.index()].terrain = TerrainKind::Plains;
     }
     let mut sprite_variants = vec![0; STRATEGIC_TILE_COUNT];
     let mut river_sprite_codes = vec![0; STRATEGIC_TILE_COUNT];
@@ -57,7 +57,7 @@ fn picture_assignment_draws_in_direction_order_for_each_land_edge_on_water() {
     assign_picture_to_tile_for_rng(
         &tiles,
         geometry,
-        usize::from(target.get()),
+        target.index(),
         &mut sprite_variants,
         &mut river_sprite_codes,
         &mut rng,
@@ -65,7 +65,7 @@ fn picture_assignment_draws_in_direction_order_for_each_land_edge_on_water() {
 
     assert_eq!(rng.state(), 0x7ed3_5321);
     assert_eq!(
-        sprite_variants[usize::from(target.get())],
+        sprite_variants[target.index()],
         1 << HexDirection::SouthWest as u8
     );
 }
@@ -84,31 +84,31 @@ fn open_water_variant_draws_depend_on_already_processed_northern_tiles() {
     ];
     let mut river_sprite_codes = vec![0; STRATEGIC_TILE_COUNT];
     let mut propagated_variants = vec![0; STRATEGIC_TILE_COUNT];
-    propagated_variants[usize::from(north_west.get())] = 4;
+    propagated_variants[north_west.index()] = 4;
     let mut propagation_rng = RetailLcg::from_state(5);
     assign_picture_to_tile_for_rng(
         &tiles,
         geometry,
-        usize::from(target.get()),
+        target.index(),
         &mut propagated_variants,
         &mut river_sprite_codes,
         &mut propagation_rng,
     );
     assert_eq!(propagation_rng.state(), 0x06c3_870a);
-    assert_eq!(propagated_variants[usize::from(target.get())], 1);
+    assert_eq!(propagated_variants[target.index()], 1);
 
     let mut isolated_variants = vec![0; STRATEGIC_TILE_COUNT];
     let mut isolated_rng = RetailLcg::from_state(50);
     assign_picture_to_tile_for_rng(
         &tiles,
         geometry,
-        usize::from(target.get()),
+        target.index(),
         &mut isolated_variants,
         &mut river_sprite_codes,
         &mut isolated_rng,
     );
     assert_eq!(isolated_rng.state(), 0xd73b_4ad8);
-    assert_eq!(isolated_variants[usize::from(target.get())], 1);
+    assert_eq!(isolated_variants[target.index()], 1);
 }
 
 #[test]
@@ -121,7 +121,7 @@ fn fallback_capital_stamps_the_province_anchor_state() {
         };
         STRATEGIC_TILE_COUNT
     ];
-    tiles[usize::from(tile.get())].province = Some(ProvinceId::new(0));
+    tiles[tile.index()].province = Some(ProvinceId::new(0));
     let capitals = assign_province_fallback_capitals(
         &mut tiles,
         MapGeometry::new(MapTopology::Bounded),
@@ -129,10 +129,7 @@ fn fallback_capital_stamps_the_province_anchor_state() {
     );
 
     assert_eq!(capitals, vec![Some(tile)]);
-    assert_eq!(
-        tiles[usize::from(tile.get())].flags,
-        TileFlags::PROVINCE_ANCHOR_STATE
-    );
+    assert_eq!(tiles[tile.index()].flags, TileFlags::PROVINCE_ANCHOR_STATE);
 }
 
 #[test]
@@ -301,7 +298,7 @@ fn normal_random_start_marks_only_queued_ai_map_targets() {
         "port zones preserve their ordinal positions"
     );
 
-    for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
+    for nation in MajorNationId::all() {
         let economy = &state.nations.majors[nation].economy;
         assert_eq!(economy.army_movement_budget, 15);
         if nation == human_nation {
@@ -342,7 +339,7 @@ fn normal_random_start_marks_only_queued_ai_map_targets() {
                             _ => None,
                         })
                         .expect("an Escort mission resolves the nation's first port");
-                    let port_zone = OceanZoneId::new(ordinal as u16);
+                    let port_zone = OceanZoneId::new(ordinal as usize);
                     assert_eq!(navy.target_zone, Some(port_zone));
                     assert_eq!(navy.resolved_port_zone, Some(port_zone));
                     navy.target_zone
@@ -350,7 +347,7 @@ fn normal_random_start_marks_only_queued_ai_map_targets() {
                 _ => None,
             };
             if let Some(target) = target {
-                expected[usize::from(target.get())] = AiTargetState::MissionQueued;
+                expected[target.index()] = AiTargetState::MissionQueued;
                 queued_navy_target_count += 1;
             }
         }
@@ -373,7 +370,7 @@ fn normal_random_start_marks_only_queued_ai_map_targets() {
         );
         assert!(!actual.contains(&AiTargetState::Candidate));
     }
-    for province in (0..ProvinceId::COUNT).map(ProvinceId::new) {
+    for province in ProvinceId::all() {
         assert_eq!(state.map.provinces[province].development_stage(), 0);
         assert_eq!(
             state.map.provinces[province].explored_by_majors(),
@@ -487,7 +484,7 @@ fn creates_a_normal_start_boundary_from_the_retained_preview() {
 
     let expected_adjacency = build_province_adjacency(&state.map);
     for (index, generated) in preview.map.provinces().iter().enumerate() {
-        let province = ProvinceId::new(index as u16);
+        let province = ProvinceId::new(index as usize);
         let owner = generated.owner.nation().unwrap();
         assert_eq!(state.map.provinces[province].owner(), Some(owner));
         assert_eq!(state.map.provinces[province].former_owner(), Some(owner));
@@ -502,7 +499,7 @@ fn creates_a_normal_start_boundary_from_the_retained_preview() {
     }
     for index in preview.map.provinces().len()..crate::PROVINCE_COUNT {
         assert_eq!(
-            state.map.provinces[ProvinceId::new(index as u16)],
+            state.map.provinces[ProvinceId::new(index as usize)],
             ProvinceState::default()
         );
     }
@@ -525,7 +522,7 @@ fn creates_a_normal_start_boundary_from_the_retained_preview() {
             .iter()
             .enumerate()
             .filter_map(|(index, province)| {
-                (province.owner.nation() == Some(nation)).then_some(ProvinceId::new(index as u16))
+                (province.owner.nation() == Some(nation)).then_some(ProvinceId::new(index as usize))
             })
             .collect::<Vec<_>>();
         let common = state.nations.common(nation).unwrap();
@@ -543,11 +540,8 @@ fn creates_a_normal_start_boundary_from_the_retained_preview() {
     let city_site_candidates = state
         .map
         .tiles
-        .iter()
         .enumerate()
-        .filter_map(|(index, tile)| {
-            (tile.recruit_search_visited == 0).then_some(TileId::new(index as u16))
-        })
+        .filter_map(|(tile, state)| (state.recruit_search_visited == 0).then_some(tile))
         .collect::<Vec<_>>();
     assert_eq!(
         city_site_candidates,
@@ -689,7 +683,7 @@ fn creates_a_normal_start_boundary_from_the_retained_preview() {
         state
             .military_units
             .iter()
-            .all(|unit| unit.nation().get() >= MinorNationId::FIRST),
+            .all(|unit| MinorNationId::from_nation(unit.nation()).is_some()),
         "pre-capital military units are minor-owned only"
     );
     assert!(
@@ -733,7 +727,7 @@ fn creates_a_normal_start_boundary_from_the_retained_preview() {
         state
             .missions
             .iter()
-            .all(|mission| mission.nation.get() != 6),
+            .all(|mission| mission.nation != NationId::new(6)),
         "human Normal+ majors do not receive Accept mission queues"
     );
     assert_eq!(

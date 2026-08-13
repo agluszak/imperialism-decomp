@@ -1,12 +1,12 @@
-use crate::{CityFacilitySlot, MajorNationId, MinorNationId, NationId, ProvinceId};
+use crate::{CityFacilitySlot, MajorNationId, MinorNationId, NationId, ProvinceId, TileId};
 use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::ops::{Index, IndexMut};
 
-pub const NATION_COUNT: usize = NationId::COUNT as usize;
-pub const MAJOR_NATION_COUNT: usize = MajorNationId::COUNT as usize;
-pub const MINOR_NATION_COUNT: usize = MinorNationId::COUNT as usize;
-pub const PROVINCE_COUNT: usize = ProvinceId::COUNT as usize;
+pub const NATION_COUNT: usize = NationId::COUNT;
+pub const MAJOR_NATION_COUNT: usize = MajorNationId::COUNT;
+pub const MINOR_NATION_COUNT: usize = MinorNationId::COUNT;
+pub const PROVINCE_COUNT: usize = ProvinceId::COUNT;
 
 /// The fourteen entries in the retail shipyard descriptor table.
 ///
@@ -72,8 +72,26 @@ impl<T> NationTable<T> {
         Self(values)
     }
 
+    pub fn from_fn(mut function: impl FnMut(NationId) -> T) -> Self {
+        Self(std::array::from_fn(|index| function(NationId::new(index))))
+    }
+
     pub const fn as_array(&self) -> &[T; NATION_COUNT] {
         &self.0
+    }
+
+    pub fn enumerate(&self) -> impl Iterator<Item = (NationId, &T)> {
+        self.0
+            .iter()
+            .enumerate()
+            .map(|(index, value)| (NationId::new(index), value))
+    }
+
+    pub fn enumerate_mut(&mut self) -> impl Iterator<Item = (NationId, &mut T)> {
+        self.0
+            .iter_mut()
+            .enumerate()
+            .map(|(index, value)| (NationId::new(index), value))
     }
 }
 
@@ -87,13 +105,13 @@ impl<T> Index<NationId> for NationTable<T> {
     type Output = T;
 
     fn index(&self, nation: NationId) -> &Self::Output {
-        &self.0[usize::from(nation.get())]
+        &self.0[nation.index()]
     }
 }
 
 impl<T> IndexMut<NationId> for NationTable<T> {
     fn index_mut(&mut self, nation: NationId) -> &mut Self::Output {
-        &mut self.0[usize::from(nation.get())]
+        &mut self.0[nation.index()]
     }
 }
 
@@ -108,12 +126,26 @@ impl<T> MajorNationTable<T> {
 
     pub fn from_fn(mut function: impl FnMut(MajorNationId) -> T) -> Self {
         Self(std::array::from_fn(|index| {
-            function(MajorNationId::new(index as u8))
+            function(MajorNationId::new(index))
         }))
     }
 
     pub const fn as_array(&self) -> &[T; MAJOR_NATION_COUNT] {
         &self.0
+    }
+
+    pub fn enumerate(&self) -> impl Iterator<Item = (MajorNationId, &T)> {
+        self.0
+            .iter()
+            .enumerate()
+            .map(|(index, value)| (MajorNationId::new(index), value))
+    }
+
+    pub fn enumerate_mut(&mut self) -> impl Iterator<Item = (MajorNationId, &mut T)> {
+        self.0
+            .iter_mut()
+            .enumerate()
+            .map(|(index, value)| (MajorNationId::new(index), value))
     }
 
     pub(crate) fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
@@ -129,13 +161,13 @@ impl<T> Index<MajorNationId> for MajorNationTable<T> {
     type Output = T;
 
     fn index(&self, nation: MajorNationId) -> &Self::Output {
-        &self.0[usize::from(nation.get())]
+        &self.0[nation.index()]
     }
 }
 
 impl<T> IndexMut<MajorNationId> for MajorNationTable<T> {
     fn index_mut(&mut self, nation: MajorNationId) -> &mut Self::Output {
-        &mut self.0[usize::from(nation.get())]
+        &mut self.0[nation.index()]
     }
 }
 
@@ -156,7 +188,7 @@ impl<T> MinorNationTable<T> {
 
     pub(crate) fn from_fn(mut function: impl FnMut(MinorNationId) -> T) -> Self {
         Self(std::array::from_fn(|index| {
-            function(MinorNationId::new(MinorNationId::FIRST + index as u8))
+            function(MinorNationId::new(MinorNationId::FIRST + index))
         }))
     }
 
@@ -198,8 +230,22 @@ impl<T> ProvinceTable<T> {
         Self(Box::new(values))
     }
 
+    pub fn from_fn(mut function: impl FnMut(ProvinceId) -> T) -> Self {
+        Self::from_array(std::array::from_fn(|index| {
+            function(ProvinceId::new(index))
+        }))
+    }
+
     pub fn as_array(&self) -> &[T; PROVINCE_COUNT] {
         &self.0
+    }
+
+    pub(crate) fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
+        self.0.iter()
+    }
+
+    pub(crate) fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = &mut T> {
+        self.0.iter_mut()
     }
 }
 
@@ -213,13 +259,13 @@ impl<T> Index<ProvinceId> for ProvinceTable<T> {
     type Output = T;
 
     fn index(&self, province: ProvinceId) -> &Self::Output {
-        &self.0[usize::from(province.get())]
+        &self.0[province.index()]
     }
 }
 
 impl<T> IndexMut<ProvinceId> for ProvinceTable<T> {
     fn index_mut(&mut self, province: ProvinceId) -> &mut Self::Output {
-        &mut self.0[usize::from(province.get())]
+        &mut self.0[province.index()]
     }
 }
 
@@ -243,6 +289,139 @@ impl<'de, T: Deserialize<'de>> Deserialize<'de> for ProvinceTable<T> {
             serde::de::Error::invalid_length(actual, &"exactly 384 province entries")
         })?;
         Ok(Self::from_array(values))
+    }
+}
+
+/// Fixed values stored in retail strategic-tile order.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct TileTable<T>(Box<[T; TileId::COUNT]>);
+
+impl<T> TileTable<T> {
+    pub fn from_vec(values: Vec<T>) -> Self {
+        Self::from_boxed_slice(values.into_boxed_slice())
+    }
+
+    pub fn from_boxed_slice(values: Box<[T]>) -> Self {
+        let actual = values.len();
+        let values: Box<[T; TileId::COUNT]> = values.try_into().unwrap_or_else(|_| {
+            panic!(
+                "strategic map must have {} tiles, got {actual}",
+                TileId::COUNT
+            )
+        });
+        Self(values)
+    }
+
+    pub fn from_fn(function: impl FnMut(TileId) -> T) -> Self {
+        Self::from_vec(TileId::all().map(function).collect())
+    }
+
+    pub fn iter(&self) -> std::slice::Iter<'_, T> {
+        self.0.iter()
+    }
+
+    pub fn iter_mut(&mut self) -> std::slice::IterMut<'_, T> {
+        self.0.iter_mut()
+    }
+
+    pub fn len(&self) -> usize {
+        self.0.len()
+    }
+
+    pub fn as_slice(&self) -> &[T] {
+        self.0.as_slice()
+    }
+
+    pub fn enumerate(&self) -> impl DoubleEndedIterator<Item = (TileId, &T)> + ExactSizeIterator {
+        self.0
+            .iter()
+            .enumerate()
+            .map(|(index, value)| (TileId::from_index_unchecked(index), value))
+    }
+
+    pub fn enumerate_mut(
+        &mut self,
+    ) -> impl DoubleEndedIterator<Item = (TileId, &mut T)> + ExactSizeIterator {
+        self.0
+            .iter_mut()
+            .enumerate()
+            .map(|(index, value)| (TileId::from_index_unchecked(index), value))
+    }
+}
+
+impl<T> From<Vec<T>> for TileTable<T> {
+    fn from(values: Vec<T>) -> Self {
+        Self::from_vec(values)
+    }
+}
+
+impl<T> From<Box<[T]>> for TileTable<T> {
+    fn from(values: Box<[T]>) -> Self {
+        Self::from_boxed_slice(values)
+    }
+}
+
+impl<T: Default> Default for TileTable<T> {
+    fn default() -> Self {
+        Self::from_fn(|_| T::default())
+    }
+}
+
+impl<T> Index<TileId> for TileTable<T> {
+    type Output = T;
+
+    fn index(&self, tile: TileId) -> &Self::Output {
+        &self.0[tile.index()]
+    }
+}
+
+impl<T> IndexMut<TileId> for TileTable<T> {
+    fn index_mut(&mut self, tile: TileId) -> &mut Self::Output {
+        &mut self.0[tile.index()]
+    }
+}
+
+impl<'a, T> IntoIterator for &'a TileTable<T> {
+    type Item = &'a T;
+    type IntoIter = std::slice::Iter<'a, T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.iter()
+    }
+}
+
+impl<'a, T> IntoIterator for &'a mut TileTable<T> {
+    type Item = &'a mut T;
+    type IntoIter = std::slice::IterMut<'a, T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.iter_mut()
+    }
+}
+
+impl<T: Serialize> Serialize for TileTable<T> {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.collect_seq(self.0.iter())
+    }
+}
+
+impl<'de, T: Deserialize<'de>> Deserialize<'de> for TileTable<T> {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let values = Vec::<T>::deserialize(deserializer)?;
+        let actual = values.len();
+        if actual != TileId::COUNT {
+            return Err(serde::de::Error::invalid_length(
+                actual,
+                &"exactly 6480 strategic tile entries",
+            ));
+        }
+        Ok(Self::from_vec(values))
     }
 }
 
@@ -272,39 +451,7 @@ impl PendingActionKind {
 pub const PENDING_ACTION_COUNT: usize = PendingActionKind::LENGTH;
 pub type PendingActionTable<T> = EnumMap<PendingActionKind, T>;
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct ProductionTable<T>([T; CityFacilitySlot::COUNT]);
-
-impl<T> ProductionTable<T> {
-    pub const fn from_array(values: [T; CityFacilitySlot::COUNT]) -> Self {
-        Self(values)
-    }
-
-    pub const fn as_array(&self) -> &[T; CityFacilitySlot::COUNT] {
-        &self.0
-    }
-}
-
-impl<T: Default> Default for ProductionTable<T> {
-    fn default() -> Self {
-        Self(std::array::from_fn(|_| T::default()))
-    }
-}
-
-impl<T> Index<CityFacilitySlot> for ProductionTable<T> {
-    type Output = T;
-
-    fn index(&self, slot: CityFacilitySlot) -> &Self::Output {
-        &self.0[slot.index()]
-    }
-}
-
-impl<T> IndexMut<CityFacilitySlot> for ProductionTable<T> {
-    fn index_mut(&mut self, slot: CityFacilitySlot) -> &mut Self::Output {
-        &mut self.0[slot.index()]
-    }
-}
+pub type ProductionTable<T> = EnumMap<CityFacilitySlot, T>;
 
 #[cfg(test)]
 mod tests {

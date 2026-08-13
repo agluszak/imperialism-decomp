@@ -145,7 +145,7 @@ impl RetailAssets {
         let mut localized_nation_names = NationTable::default();
         for nation in NationId::all() {
             // `TSimMgr::GetString(0x2715, nationSlot)` adds one before direct lookup.
-            localized_nation_names[nation] = self.string(0x2715, i16::from(nation.get()) + 1)?;
+            localized_nation_names[nation] = self.string(0x2715, nation.index() as i16 + 1)?;
         }
 
         let mut province_names_by_nation: NationTable<Vec<String>> = NationTable::default();
@@ -158,7 +158,7 @@ impl RetailAssets {
             for ordinal in 1..=name_count {
                 // `TSimMgr::GetString(group, offset)` adds one before the direct resource lookup.
                 province_names_by_nation[nation].push(self.string(
-                    8000 + i16::from(nation.get()),
+                    8000 + nation.index() as i16,
                     i16::try_from(ordinal + 1).expect("province-name ordinal fits i16"),
                 )?);
             }

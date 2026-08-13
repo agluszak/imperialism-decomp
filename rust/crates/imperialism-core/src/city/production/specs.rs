@@ -67,8 +67,8 @@ pub const CIVILIAN_RESOURCE_SPECIALTIES: CivilianUnitTable<[Option<ResourceKind>
     ]);
 
 /// `g_abUniversityRequirementLevelById` over the semantic resource domain.
-pub const fn resource_development_yield(resource: ResourceKind, level: u8) -> i16 {
-    const YIELDS: [[i16; 4]; ResourceKind::LENGTH] = [
+pub fn resource_development_yield(resource: ResourceKind, level: u8) -> i16 {
+    const YIELDS: ResourceTable<[i16; 4]> = EnumMap::from_array([
         [1, 2, 3, 4],
         [1, 2, 3, 4],
         [1, 2, 3, 4],
@@ -92,10 +92,10 @@ pub const fn resource_development_yield(resource: ResourceKind, level: u8) -> i1
         [1, 2, 3, 4],
         [0, 1, 2, 3],
         [0, 1, 2, 3],
-    ];
+    ]);
 
     assert!(level <= 3, "resource development level must be in 0..=3");
-    YIELDS[resource as usize][level as usize]
+    YIELDS[resource][level as usize]
 }
 
 pub const fn military_recruitment_spec(
@@ -157,21 +157,26 @@ pub const fn military_recruitment_spec(
     })
 }
 
-pub const fn ship_order_costs(ship_type: ShipType) -> ShipMaterials {
-    const LUMBER: [i16; 14] = [0, 4, 7, 5, 8, 6, 6, 6, 4, 8, 0, 2, 0, 0];
-    const FABRIC: [i16; 14] = [0, 2, 3, 2, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0];
-    const ARMS: [i16; 14] = [0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18];
-    const STEEL: [i16; 14] = [0, 0, 0, 0, 0, 2, 0, 0, 4, 10, 8, 6, 30, 22];
-    const COAL: [i16; 14] = [0, 0, 0, 0, 0, 10, 0, 10, 10, 20, 20, 20, 0, 0];
-    const FUEL: [i16; 14] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 20];
+pub fn ship_order_costs(ship_type: ShipType) -> ShipMaterials {
+    const LUMBER: ShipTypeTable<i16> =
+        ShipTypeTable::from_array([0, 4, 7, 5, 8, 6, 6, 6, 4, 8, 0, 2, 0, 0]);
+    const FABRIC: ShipTypeTable<i16> =
+        ShipTypeTable::from_array([0, 2, 3, 2, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0]);
+    const ARMS: ShipTypeTable<i16> =
+        ShipTypeTable::from_array([0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18]);
+    const STEEL: ShipTypeTable<i16> =
+        ShipTypeTable::from_array([0, 0, 0, 0, 0, 2, 0, 0, 4, 10, 8, 6, 30, 22]);
+    const COAL: ShipTypeTable<i16> =
+        ShipTypeTable::from_array([0, 0, 0, 0, 0, 10, 0, 10, 10, 20, 20, 20, 0, 0]);
+    const FUEL: ShipTypeTable<i16> =
+        ShipTypeTable::from_array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 20]);
 
-    let index = ship_type as usize;
     ShipMaterials {
-        lumber: LUMBER[index],
-        fabric: FABRIC[index],
-        arms: ARMS[index],
-        steel: STEEL[index],
-        coal: COAL[index],
-        fuel: FUEL[index],
+        lumber: LUMBER[ship_type],
+        fabric: FABRIC[ship_type],
+        arms: ARMS[ship_type],
+        steel: STEEL[ship_type],
+        coal: COAL[ship_type],
+        fuel: FUEL[ship_type],
     }
 }

@@ -10,6 +10,7 @@ bevy.workspace = true
 clap.workspace = true
 imperialism-core = { path = "../imperialism-core" }
 imperialism-formats = { path = "../imperialism-formats" }
+enum-map.workspace = true
 thiserror.workspace = true
 
 [dev-dependencies]

@@ -121,8 +121,8 @@ impl GameState {
     /// Turn-machine case `0x0b`: update every live great power from slot 6 down to 0.
     pub fn do_great_power_pressure_phase(&mut self) -> bool {
         let mut lost = false;
-        for index in (0..MajorNationId::COUNT).rev() {
-            if self.update_great_power_pressure(MajorNationId::new(index)) {
+        for nation in MajorNationId::all().rev() {
+            if self.update_great_power_pressure(nation) {
                 lost = true;
             }
         }
@@ -145,8 +145,7 @@ impl GameState {
             outcome = EliminationOutcome::PlayerEliminated;
         }
 
-        let empty_majors: Vec<_> = (0..MajorNationId::COUNT)
-            .map(MajorNationId::new)
+        let empty_majors: Vec<_> = MajorNationId::all()
             .filter(|&nation| {
                 self.nations.majors[nation]
                     .common
@@ -158,15 +157,14 @@ impl GameState {
             self.remove_nation_slot(nation.nation());
         }
 
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let empty = self.nations.minors[MinorNationId::new(slot)]
+        for minor in MinorNationId::all() {
+            let empty = self.nations.minors[minor]
                 .as_ref()
                 .is_some_and(|nation| nation.common.owned_regions().is_empty());
             if !empty {
                 continue;
             }
-            for index in 0..MajorNationId::COUNT {
-                let nation = MajorNationId::new(index);
+            for nation in MajorNationId::all() {
                 if self.event_eligible(nation.nation()) {
                     self.new_status_for(nation, NationId::new(0), 100);
                 }
@@ -177,8 +175,7 @@ impl GameState {
             return outcome;
         }
 
-        let eligible = (0..MajorNationId::COUNT)
-            .map(MajorNationId::new)
+        let eligible = MajorNationId::all()
             .filter(|&nation| self.event_eligible(nation.nation()))
             .count();
         if eligible == 1 && self.event_eligible(self.turn.active_nation) {
@@ -224,8 +221,7 @@ impl GameState {
     /// Turn-machine case `0x12` reset work, then the strategic map.
     pub fn return_to_map(&mut self) {
         self.turn.phase = PhaseCode::STRATEGIC_MAP;
-        for index in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(index);
+        for nation in MajorNationId::all() {
             if !self.event_eligible(nation.nation()) {
                 continue;
             }
@@ -329,8 +325,7 @@ impl GameState {
     }
 
     fn remove_nation_slot(&mut self, removed: NationId) {
-        for index in 0..MajorNationId::COUNT {
-            let peer = MajorNationId::new(index);
+        for peer in MajorNationId::all() {
             if peer.nation() == removed || !self.event_eligible(peer.nation()) {
                 continue;
             }
@@ -498,10 +493,10 @@ mod tests {
     #[test]
     fn elimination_continues_when_every_great_power_still_holds_land() {
         let mut state = game_state();
-        for index in 0..MajorNationId::COUNT {
+        for nation in MajorNationId::all() {
             state.nations.append_owned_region_during_construction(
-                MajorNationId::new(index).nation(),
-                ProvinceId::new(index as u16),
+                nation.nation(),
+                ProvinceId::new(nation.index()),
             );
         }
         assert_eq!(state.do_elimination_phase(), EliminationOutcome::Continue);

@@ -13,8 +13,7 @@ impl GameState {
             }
         }
         self.recompute_tile_strategic_score_heatmap();
-        for index in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(index);
+        for nation in MajorNationId::all() {
             if !self.nation_is_eligible_for_optional_phase(nation.nation()) {
                 continue;
             }

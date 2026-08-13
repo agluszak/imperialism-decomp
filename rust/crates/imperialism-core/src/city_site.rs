@@ -1,9 +1,10 @@
 //! Capital-site selection (`TCitySiteView`) and `TMapMgr::PlaceCity` for random-game start.
 
 use crate::{
-    Difficulty, GameState, HexDirection, MajorNationId, MapGeometry, MapMgr, NationId,
+    Difficulty, GameState, HexDirection, MajorNationId, MapGeometry, MapMgr, MapTopology,
     STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, TerrainKind, TileFlags, TileId, TileOwnerTag,
 };
+use enum_map::EnumMap;
 
 const TERRAIN_FLOW_DIRECTIONS: [[HexDirection; 2]; 9] = [
     [HexDirection::NorthEast, HexDirection::SouthEast],
@@ -66,8 +67,7 @@ impl MapMgr {
     ) {
         let owner = TileOwnerTag::from_nation(nation.nation());
         self.recruit_search_active = true;
-        for index in 0..TileId::COUNT {
-            let tile = TileId::new(index);
+        for tile in TileId::all() {
             let is_candidate = {
                 let state = &self[tile];
                 state.owner_nation == Some(owner)
@@ -128,28 +128,28 @@ pub fn is_valid_secondary_nation_home_tile_candidate(world: &MapMgr, tile: TileI
 /// This one retail predicate always uses the 217-wide doubled-column wrap and
 /// vertical clamp, independent of the session map-topology flag.
 fn home_site_scan_neighbor(tile: TileId, direction: HexDirection) -> TileId {
-    const COLUMN_X2_DELTAS: [i32; 6] = [1, 2, 1, -1, -2, -1];
-    const ROW_DELTAS: [i32; 6] = [-1, 0, 1, 1, 0, -1];
+    const COLUMN_X2_DELTAS: EnumMap<HexDirection, i32> = EnumMap::from_array([1, 2, 1, -1, -2, -1]);
+    const ROW_DELTAS: EnumMap<HexDirection, i32> = EnumMap::from_array([-1, 0, 1, 1, 0, -1]);
     const RASTER_WIDTH: i32 = STRATEGIC_MAP_WIDTH as i32 * 2;
 
-    let row = i32::from(tile.get() / STRATEGIC_MAP_WIDTH);
-    let column = i32::from(tile.get() % STRATEGIC_MAP_WIDTH);
-    let index = direction as usize;
-    let mut column_x2 = row % 2 + column * 2 + COLUMN_X2_DELTAS[index];
-    let row = (row + ROW_DELTAS[index]).clamp(0, i32::from(STRATEGIC_MAP_HEIGHT) - 1);
+    let (row, column) = MapGeometry::new(MapTopology::Wrapping).row_column(tile);
+    let row = i32::from(row);
+    let column = i32::from(column);
+    let mut column_x2 = row % 2 + column * 2 + COLUMN_X2_DELTAS[direction];
+    let row = (row + ROW_DELTAS[direction]).clamp(0, i32::from(STRATEGIC_MAP_HEIGHT) - 1);
     if column_x2 >= RASTER_WIDTH {
         column_x2 -= RASTER_WIDTH + 1;
     } else if column_x2 < 0 {
         column_x2 += RASTER_WIDTH;
     }
     let tile = column_x2 / 2 + row * i32::from(STRATEGIC_MAP_WIDTH);
-    TileId::new(u16::try_from(tile).expect("retail home-site scan produced a valid tile"))
+    TileId::new(usize::try_from(tile).expect("retail home-site scan produced a valid tile"))
 }
 
 fn home_site_neighbor_conflicts(owner: Option<TileOwnerTag>, home: Option<TileOwnerTag>) -> bool {
     match owner {
         None => home.is_some(),
-        Some(owner) => owner.get() < NationId::COUNT && Some(owner) != home,
+        Some(owner) => owner.is_claimed_nation() && Some(owner) != home,
     }
 }
 
@@ -225,7 +225,11 @@ fn flood_fill_region_marker(world: &mut MapMgr, tile: TileId, owner_nation: Tile
     let geometry = world.geometry();
     let marker = world.allocate_region_marker();
     world[tile].region = Some(marker);
-    for neighbor in geometry.neighbors(tile).into_iter().flatten() {
+    for neighbor in geometry
+        .neighbors(tile)
+        .into_iter()
+        .filter_map(|(_, tile)| tile)
+    {
         let neighbor_state = &mut world[neighbor];
         if neighbor_state.owner_nation != Some(owner_nation) {
             continue;
@@ -362,8 +366,7 @@ mod tests {
             None
         );
 
-        let tile = (0..TileId::COUNT)
-            .map(TileId::new)
+        let tile = TileId::all()
             .find(|&tile| {
                 let t = &state.map[tile];
                 t.owner_nation == Some(TileOwnerTag::new(6))
@@ -376,7 +379,7 @@ mod tests {
         let sea = geometry
             .neighbors(tile)
             .into_iter()
-            .flatten()
+            .filter_map(|(_, tile)| tile)
             .next()
             .expect("interior tiles still have neighbors on a wrapping map");
         state.map[sea].terrain = TerrainKind::Water;
@@ -461,8 +464,8 @@ mod tests {
             MapTopology::Bounded,
             vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
         );
-        for index in 0..TileId::COUNT {
-            world[TileId::new(index)].owner_nation = Some(owner);
+        for tile in TileId::all() {
+            world[tile].owner_nation = Some(owner);
         }
         let candidate = TileId::new(0);
         let wrapped_sea = TileId::new(107);

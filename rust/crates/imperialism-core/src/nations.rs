@@ -72,7 +72,7 @@ impl Nations {
         if let Some(nation) = MajorNationId::from_nation(nation) {
             Some(&self.majors[nation].common)
         } else {
-            self.minors[MinorNationId::new(nation.get())]
+            self.minors[MinorNationId::from_nation(nation).expect("minor nation ID")]
                 .as_ref()
                 .map(|nation| &nation.common)
         }
@@ -82,7 +82,7 @@ impl Nations {
         if let Some(nation) = MajorNationId::from_nation(nation) {
             Some(&mut self.majors[nation].common)
         } else {
-            self.minors[MinorNationId::new(nation.get())]
+            self.minors[MinorNationId::from_nation(nation).expect("minor nation ID")]
                 .as_mut()
                 .map(|nation| &mut nation.common)
         }

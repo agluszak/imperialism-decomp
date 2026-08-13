@@ -1,4 +1,5 @@
 use crate::*;
+use enum_map::EnumMap;
 
 /// A recovered civilian work-order kind.
 #[derive(Clone, Debug, serde::Deserialize, Eq, PartialEq, serde::Serialize)]
@@ -188,14 +189,17 @@ impl GameState {
     }
 
     /// Neighbor tiles `DimByEngineering` would leave undimmed for a rail click.
-    pub fn rail_construction_destinations(&self, unit: CivilianUnitId) -> [Option<TileId>; 6] {
+    pub fn rail_construction_destinations(
+        &self,
+        unit: CivilianUnitId,
+    ) -> EnumMap<HexDirection, Option<TileId>> {
         let index = self.civilian_index(unit);
         let Some(origin) = self.civilian_units[index].location.tile() else {
-            return [None; 6];
+            return EnumMap::default();
         };
         MapGeometry::new(MapTopology::Bounded)
             .neighbors(origin)
-            .map(|destination| {
+            .map(|_, destination| {
                 destination.filter(|&destination| {
                     self.rail_construction_target(index, destination).is_ok()
                 })
@@ -269,8 +273,7 @@ impl GameState {
     pub fn do_civilians(&mut self) {
         self.rebuild_civilian_tile_chains();
         self.resolve_civilian_disputes();
-        for index in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(index);
+        for nation in MajorNationId::all() {
             if !self.civilian_nation_is_eligible(nation) {
                 continue;
             }
@@ -417,7 +420,7 @@ impl GameState {
 
     fn resolve_civilian_disputes(&mut self) {
         for tile_index in 0..STRATEGIC_TILE_COUNT {
-            let tile = TileId::new(tile_index as u16);
+            let tile = TileId::new(tile_index as usize);
             let on_tile = self.civilians_on_tile_chain(tile);
             if on_tile.len() < 2 {
                 continue;
@@ -487,9 +490,7 @@ impl GameState {
             .into_iter()
             .flatten()
             .map(|resource| {
-                if (resource as u8) < ResourceKind::Grain as u8 {
-                    let commodity = TradeCommodity::from_retail(i16::from(resource as u8))
-                        .expect("manufactured-range resources have market rows");
+                if let Some(commodity) = TradeCommodity::from_resource(resource) {
                     self.market.rows[commodity].price * 20
                 } else if resource == ResourceKind::Gems {
                     10_000
@@ -666,7 +667,7 @@ impl GameState {
             .geometry()
             .neighbors(tile)
             .into_iter()
-            .flatten()
+            .filter_map(|(_, tile)| tile)
             .collect();
         for neighbor in neighbors {
             if self.map[neighbor].owner_nation != owner || self.map[neighbor].region.is_some() {
@@ -705,14 +706,14 @@ impl GameState {
         for unit in &mut self.civilian_units {
             unit.next_on_tile = None;
         }
-        let mut heads = vec![None; STRATEGIC_TILE_COUNT];
+        let mut heads = TileTable::from_fn(|_| None);
         for index in 0..self.civilian_units.len() {
             let Some(tile) = self.civilian_units[index].location.tile() else {
                 continue;
             };
             let id = self.civilian_units[index].id;
-            self.civilian_units[index].next_on_tile = heads[usize::from(tile.get())];
-            heads[usize::from(tile.get())] = Some(id);
+            self.civilian_units[index].next_on_tile = heads[tile];
+            heads[tile] = Some(id);
         }
     }
 
@@ -783,10 +784,11 @@ impl GameState {
 
 const LAND_SALE_TAG: i32 = 0x6c61_6e64;
 
-const CIVILIAN_SORT_PRIORITY: [i16; CivilianUnitKind::LENGTH] = [2, 0, 4, 3, 1, 5, 0, 0, 0];
+const CIVILIAN_SORT_PRIORITY: CivilianUnitTable<i16> =
+    CivilianUnitTable::from_array([2, 0, 4, 3, 1, 5, 0, 0, 0]);
 
 fn civilian_sort_priority(kind: CivilianUnitKind) -> i16 {
-    CIVILIAN_SORT_PRIORITY[kind as usize]
+    CIVILIAN_SORT_PRIORITY[kind]
 }
 
 fn idle_selectable(order: &CivilianWorkOrder) -> bool {
@@ -1113,10 +1115,7 @@ mod tests {
         );
         state.map[port_tile].flags.insert(TileFlags::BASE_TRANSPORT);
         let sea_tile = geometry
-            .neighbor(
-                port_tile,
-                HexDirection::ALL[usize::from(port_tile.get()) % 6],
-            )
+            .neighbor(port_tile, HexDirection::ALL[port_tile.index() % 6])
             .expect("port tile has a bounded neighbor");
         state.map[sea_tile].terrain = TerrainKind::Water;
         state.map[sea_tile].owner_nation = Some(TileOwnerTag::new(0x17));

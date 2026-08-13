@@ -22,8 +22,7 @@ pub(super) fn place_initial_frog_cities(
     difficulty: Difficulty,
 ) {
     let province_adjacency = build_province_adjacency(world);
-    for slot in (0..MajorNationId::COUNT).rev() {
-        let nation = MajorNationId::new(slot);
+    for nation in MajorNationId::all().rev() {
         if nation == human_nation && requires_capital_site_selection(difficulty) {
             continue;
         }
@@ -80,7 +79,7 @@ pub(super) fn bootstrap_minors(
     difficulty: Difficulty,
     port_zones: &mut PortZoneTable,
 ) {
-    for minor_id in (MinorNationId::FIRST..NationId::COUNT).map(MinorNationId::new) {
+    for minor_id in MinorNationId::all() {
         let owner = TileOwnerTag::from_nation(minor_id.nation());
         let Some(home) = select_minor_home_tile(world, owner, crt) else {
             continue;
@@ -138,9 +137,9 @@ pub(super) fn select_minor_home_tile(
             continue;
         }
         if tile.flags.has_base_transport() {
-            selected = Some(TileId::new(index as u16));
+            selected = Some(TileId::new(index as usize));
         }
-        let tile_id = TileId::new(index as u16);
+        let tile_id = TileId::new(index as usize);
         if is_valid_secondary_nation_home_tile_candidate(world, tile_id) {
             candidates.push(tile_id);
         }
@@ -176,7 +175,7 @@ pub(super) fn owned_province_ids(
             continue;
         };
         if world[capital].owner_nation == Some(owner) {
-            owned.push(ProvinceId::new(province_index as u16));
+            owned.push(ProvinceId::new(province_index as usize));
         }
     }
     owned
@@ -197,7 +196,7 @@ pub(super) fn spawn_initial_militia_for_minor(
     let nation = minor_id.nation();
     let set_garrison_orders = matches!(difficulty, Difficulty::Introductory | Difficulty::Easy);
     for &province in owned_provinces {
-        let capital = province_capitals[usize::from(province.get())];
+        let capital = province_capitals[province.index()];
         if let Some(capital) = capital
             && world[capital].flags.has_base_transport()
         {
@@ -343,7 +342,7 @@ pub(super) fn select_best_secondary_home_tile(
     let mut best_score: i32 = -1;
     let mut best_tile: Option<TileId> = None;
     for index in 0..STRATEGIC_TILE_COUNT {
-        let tile = TileId::new(index as u16);
+        let tile = TileId::new(index as usize);
         let state = &world[tile];
         if state.owner_nation != Some(owner) {
             continue;
@@ -403,8 +402,8 @@ pub(super) fn calculate_city_resources(
     for tile in geometry
         .neighbors(home)
         .into_iter()
-        .chain(std::iter::once(Some(home)))
-        .flatten()
+        .filter_map(|(_, tile)| tile)
+        .chain(std::iter::once(home))
     {
         let state = &world[tile];
         if state.owner_nation != Some(owner) && state.terrain != TerrainKind::Water {
@@ -464,14 +463,14 @@ pub(super) fn place_ai_capital(
     tile: TileId,
     nation: MajorNationId,
 ) {
-    let index = usize::from(tile.get());
+    let index = tile.index();
     set_region_tile_subtype_and_refresh_neighbor_flags(world, province_capitals, tile);
     let owner = TileOwnerTag::from_nation(nation.nation());
     place_city(world, tile, owner);
 
     let origin_marker = world[tile].region;
     for neighbor in place_city_harvest_tiles(index).into_iter().flatten() {
-        let neighbor = TileId::new(neighbor as u16);
+        let neighbor = TileId::new(neighbor as usize);
         if world[neighbor].region != origin_marker {
             continue;
         }
@@ -499,20 +498,20 @@ pub(super) fn set_region_tile_subtype_and_refresh_neighbor_flags(
     let Some(province) = world[new_tile].province else {
         return;
     };
-    let province_index = usize::from(province.get());
+    let province_index = province.index();
     if let Some(old_tile) = province_capitals[province_index] {
-        let old_index = usize::from(old_tile.get());
+        let old_index = old_tile.index();
         world[old_tile].flags = TileFlags::empty();
         world[old_tile].edge_resources[0] = Some(ResourceKind::Grain);
         world[old_tile].gate = resolve_region_tile_subtype_code(&world[old_tile], old_index);
     }
-    let new_index = usize::from(new_tile.get());
+    let new_index = new_tile.index();
     world[new_tile].flags = TileFlags::PROVINCE_ANCHOR_STATE;
     province_capitals[province_index] = Some(new_tile);
     world[new_tile].gate = resolve_region_tile_subtype_code(&world[new_tile], new_index);
 
     for index in 0..STRATEGIC_TILE_COUNT {
-        let tile_id = TileId::new(index as u16);
+        let tile_id = TileId::new(index as usize);
         if tile_id != new_tile && world[tile_id].province == Some(province) {
             world[tile_id].flags.clear_city_marker();
         }
@@ -522,7 +521,7 @@ pub(super) fn initialize_world_tile_neighbor_connection_mask_if_needed(
     world: &mut MapMgr,
     tile: TileId,
 ) {
-    let index = usize::from(tile.get());
+    let index = tile.index();
     if world[tile].gate == 1 {
         return;
     }
@@ -531,7 +530,7 @@ pub(super) fn initialize_world_tile_neighbor_connection_mask_if_needed(
     world[tile].gate = resolve_region_tile_subtype_code(&world[tile], index);
 
     let geometry = world.geometry();
-    for (direction, neighbor) in HexDirection::ALL.into_iter().zip(geometry.neighbors(tile)) {
+    for (direction, neighbor) in geometry.neighbors(tile) {
         let Some(neighbor) = neighbor else {
             continue;
         };

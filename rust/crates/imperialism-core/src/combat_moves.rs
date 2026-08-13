@@ -27,7 +27,7 @@ struct ArmyStack {
 }
 
 struct StationedChains {
-    head: [Option<usize>; PROVINCE_COUNT],
+    head: ProvinceTable<Option<usize>>,
     prev: Vec<Option<usize>>,
     next: Vec<Option<usize>>,
 }
@@ -55,16 +55,16 @@ impl GameState {
 
     fn form_stacks(&mut self, chains: &mut StationedChains) -> Vec<ArmyStack> {
         let mut stacks = Vec::new();
-        for (tile_index, mut unit_index) in chains.head.iter().copied().enumerate() {
-            let province = ProvinceId::new(tile_index as u16);
-            let mut previous_target: Option<i16> = Some(-1);
+        for province in ProvinceId::all() {
+            let mut unit_index = chains.head[province];
+            let mut previous_target: Option<ProvinceId> = None;
             let mut previous_owner: Option<NationId> = None;
             let mut current_stack: Option<usize> = None;
             while let Some(index) = unit_index {
                 let next = chains.next[index];
-                let target = order_target_index(&self.military_units[index].order);
+                let target = self.military_units[index].order.target();
                 let owner = self.military_units[index].owner_nation;
-                if target == -1 {
+                let Some(dest) = target else {
                     let strength = self.military_units[index].strength;
                     self.military_units[index].strength = if strength < 0x191 {
                         strength + 100
@@ -74,15 +74,14 @@ impl GameState {
                     if let Some(major) = MajorNationId::from_nation(owner)
                         && !self.nations.majors[major].economy.diplomacy_eligible
                     {
-                        set_unit_order(&mut self.military_units[index], UNIT_ORDER_SLEEP, -1);
+                        set_unit_order(&mut self.military_units[index], UNIT_ORDER_SLEEP, None);
                     }
                     unit_index = next;
                     continue;
-                }
+                };
 
-                let dest = ProvinceId::new(target as u16);
                 let reuse = current_stack
-                    .filter(|_| previous_target == Some(target) && previous_owner == Some(owner));
+                    .filter(|_| previous_target == Some(dest) && previous_owner == Some(owner));
                 let stack_index = if let Some(stack_index) = reuse {
                     stack_index
                 } else {
@@ -104,7 +103,7 @@ impl GameState {
                         );
                         0
                     };
-                    previous_target = Some(target);
+                    previous_target = Some(dest);
                     previous_owner = Some(owner);
                     stack_index
                 };
@@ -134,11 +133,10 @@ impl GameState {
         &mut self,
         chains: &mut StationedChains,
         stacks: Vec<ArmyStack>,
-        owner_cache: &mut [i16; PROVINCE_COUNT],
+        owner_cache: &mut ProvinceTable<Option<NationId>>,
     ) -> Option<PendingLandBattle> {
         for stack in stacks {
-            let dest_index = usize::from(stack.dest.get());
-            if owner_cache[dest_index] == i16::from(stack.owner.get()) {
+            if owner_cache[stack.dest] == Some(stack.owner) {
                 self.apply_uncontested_stack(chains, &stack);
                 continue;
             }
@@ -153,13 +151,12 @@ impl GameState {
         &mut self,
         chains: &mut StationedChains,
         stack: &ArmyStack,
-        owner_cache: &mut [i16; PROVINCE_COUNT],
+        owner_cache: &mut ProvinceTable<Option<NationId>>,
     ) -> Option<PendingLandBattle> {
-        let dest_index = usize::from(stack.dest.get());
-        let cached_owner = owner_cache[dest_index];
+        let cached_owner = owner_cache[stack.dest];
         let mut our_units = Vec::new();
         for &index in &stack.units {
-            if order_target_index(&self.military_units[index].order) == stack.dest.get() as i16 {
+            if self.military_units[index].order.target() == Some(stack.dest) {
                 our_units.insert(0, index);
             }
         }
@@ -168,22 +165,25 @@ impl GameState {
         }
 
         let mut enemy_units = Vec::new();
-        let mut garrison = chains.head[dest_index];
+        let mut garrison = chains.head[stack.dest];
         while let Some(index) = garrison {
             enemy_units.insert(0, index);
             garrison = chains.next[index];
         }
 
+        let Some(cached_owner) = cached_owner else {
+            self.relocate_stack_to_source(chains, stack, &our_units);
+            return None;
+        };
         if !self.nation_pair_war_stamp_out_of_date(stack.owner, cached_owner) {
             self.relocate_stack_to_source(chains, stack, &our_units);
             return None;
         }
         if !enemy_units.is_empty() {
-            let defender = NationId::new(cached_owner as u8);
             return Some(PendingLandBattle {
                 province: stack.dest,
                 attacker_nation: stack.owner,
-                defender_nation: defender,
+                defender_nation: cached_owner,
                 attacker_units: our_units
                     .iter()
                     .map(|&index| self.military_units[index].id)
@@ -196,7 +196,7 @@ impl GameState {
         }
 
         self.apply_uncontested_indices(chains, &our_units);
-        owner_cache[dest_index] = i16::from(stack.owner.get());
+        owner_cache[stack.dest] = Some(stack.owner);
         None
     }
 
@@ -206,9 +206,12 @@ impl GameState {
 
     fn apply_uncontested_indices(&mut self, chains: &mut StationedChains, units: &[usize]) {
         for &index in units {
-            let dest = order_target_index(&self.military_units[index].order);
-            self.move_unit_to(chains, index, ProvinceId::new(dest as u16));
-            set_unit_order(&mut self.military_units[index], UNIT_ORDER_IDLE, -1);
+            let dest = self.military_units[index]
+                .order
+                .target()
+                .expect("uncontested move requires a province target");
+            self.move_unit_to(chains, index, dest);
+            set_unit_order(&mut self.military_units[index], UNIT_ORDER_IDLE, None);
         }
     }
 
@@ -219,7 +222,7 @@ impl GameState {
         units: &[usize],
     ) {
         for &index in units {
-            set_unit_order(&mut self.military_units[index], UNIT_ORDER_IDLE, -1);
+            set_unit_order(&mut self.military_units[index], UNIT_ORDER_IDLE, None);
             if self.military_units[index].stationed_province != Some(stack.source) {
                 self.move_unit_to(chains, index, stack.source);
             }
@@ -233,28 +236,19 @@ impl GameState {
         clear_order_target(&mut self.military_units[index]);
     }
 
-    fn normalized_owner_cache(&self) -> [i16; PROVINCE_COUNT] {
-        let mut cache = [-1_i16; PROVINCE_COUNT];
-        for (index, owner) in cache.iter_mut().enumerate() {
-            *owner = self.normalized_province_owner(ProvinceId::new(index as u16));
-        }
-        cache
+    fn normalized_owner_cache(&self) -> ProvinceTable<Option<NationId>> {
+        ProvinceTable::from_fn(|province| self.normalized_province_owner(province))
     }
 
-    fn normalized_province_owner(&self, province: ProvinceId) -> i16 {
-        let Some(owner) = self.map.provinces[province].owner() else {
-            return -1;
-        };
+    fn normalized_province_owner(&self, province: ProvinceId) -> Option<NationId> {
+        let owner = self.map.provinces[province].owner()?;
         match self.nations.country_status(owner) {
-            Some(CountryStatus::ColonyOf(master)) => i16::from(master.get()),
-            _ => i16::from(owner.get()),
+            Some(CountryStatus::ColonyOf(master)) => Some(master),
+            _ => Some(owner),
         }
     }
 
-    fn nation_pair_war_stamp_out_of_date(&self, source: NationId, target: i16) -> bool {
-        let Some(target) = NationId::try_new(target as u8) else {
-            return false;
-        };
+    fn nation_pair_war_stamp_out_of_date(&self, source: NationId, target: NationId) -> bool {
         if self.nations.common(source).is_none() || self.nations.common(target).is_none() {
             return false;
         }
@@ -264,38 +258,40 @@ impl GameState {
         self.diplomacy.relationship_turns[source][target] != Some(self.turn.economic_turn as i16)
     }
 
-    fn finalize_military_units_without_ui(&mut self, owner_cache: &[i16; PROVINCE_COUNT]) {
+    fn finalize_military_units_without_ui(
+        &mut self,
+        owner_cache: &ProvinceTable<Option<NationId>>,
+    ) {
         for tile in &mut self.map.tiles {
             tile.per_tile_visited = 0;
         }
         for unit in &mut self.military_units {
             if unit.strength > 0 && unit.stationed_province.is_some() && unit.order.code() != 2 {
-                let target = order_target_index(&unit.order);
+                let target = unit.order.target();
                 set_unit_order(unit, UNIT_ORDER_IDLE, target);
             }
         }
         self.apply_ownership_changes(owner_cache);
     }
 
-    fn apply_ownership_changes(&mut self, owner_cache: &[i16; PROVINCE_COUNT]) {
-        for (index, &cached) in owner_cache.iter().enumerate() {
-            let province = ProvinceId::new(index as u16);
+    fn apply_ownership_changes(&mut self, owner_cache: &ProvinceTable<Option<NationId>>) {
+        for province in ProvinceId::all() {
+            let Some(cached) = owner_cache[province] else {
+                continue;
+            };
             let Some(current) = self.map.provinces[province].owner() else {
                 continue;
             };
-            if cached == i16::from(current.get()) {
+            if cached == current {
                 continue;
             }
-            let Some(new_owner) = NationId::try_new(cached as u8) else {
-                continue;
-            };
             if matches!(
                 self.nations.country_status(current),
-                Some(CountryStatus::ColonyOf(master)) if master == new_owner
+                Some(CountryStatus::ColonyOf(master)) if master == cached
             ) {
                 continue;
             }
-            self.change_province_owner(province, new_owner);
+            self.change_province_owner(province, cached);
         }
     }
 }
@@ -303,7 +299,7 @@ impl GameState {
 impl StationedChains {
     fn from_units(units: &[MilitaryUnitState]) -> Self {
         let mut chains = Self {
-            head: [None; PROVINCE_COUNT],
+            head: ProvinceTable::default(),
             prev: vec![None; units.len()],
             next: vec![None; units.len()],
         };
@@ -317,9 +313,8 @@ impl StationedChains {
         let Some(province) = province else {
             return;
         };
-        let slot = usize::from(province.get());
         if self.prev[index].is_none() {
-            self.head[slot] = self.next[index];
+            self.head[province] = self.next[index];
         } else if let Some(prev) = self.prev[index] {
             self.next[prev] = self.next[index];
         }
@@ -334,10 +329,9 @@ impl StationedChains {
         let Some(province) = province else {
             return;
         };
-        let slot = usize::from(province.get());
         let priority = tactical_category(units[index].unit_type);
-        let Some(head) = self.head[slot] else {
-            self.head[slot] = Some(index);
+        let Some(head) = self.head[province] else {
+            self.head[province] = Some(index);
             self.prev[index] = None;
             self.next[index] = None;
             return;
@@ -359,7 +353,7 @@ impl StationedChains {
                 self.prev[after] = Some(index);
             }
         } else {
-            self.head[slot] = Some(index);
+            self.head[province] = Some(index);
             self.prev[head] = Some(index);
             self.prev[index] = None;
             self.next[index] = Some(head);
@@ -367,17 +361,9 @@ impl StationedChains {
     }
 }
 
-fn order_target_index(order: &MilitaryOrder) -> i16 {
-    match *order {
-        MilitaryOrder::Idle { .. } => -1,
-        MilitaryOrder::Retail { target, .. } => target.map_or(-1, |province| province.get() as i16),
-    }
-}
-
-fn set_unit_order(unit: &mut MilitaryUnitState, code: i32, target: i16) {
+fn set_unit_order(unit: &mut MilitaryUnitState, code: i32, target: Option<ProvinceId>) {
     let targets = *unit.order.targets();
     let mirrors = *unit.order.target_mirrors();
-    let target = ProvinceId::try_new(target as u16).filter(|_| target >= 0);
     unit.order = if code == UNIT_ORDER_IDLE && target.is_none() {
         MilitaryOrder::idle(targets, mirrors)
     } else {
@@ -392,7 +378,7 @@ fn set_unit_order(unit: &mut MilitaryUnitState, code: i32, target: i16) {
 
 fn clear_order_target(unit: &mut MilitaryUnitState) {
     let code = unit.order.code();
-    set_unit_order(unit, code, -1);
+    set_unit_order(unit, code, None);
 }
 
 fn sort_stacks_descending(stacks: &mut [ArmyStack], rng: &mut RngState) {
@@ -460,7 +446,7 @@ mod tests {
     use super::*;
     use crate::test_support::game_state;
 
-    fn seed_province(state: &mut GameState, province: u16, owner: u8, adjacency: &[u16]) {
+    fn seed_province(state: &mut GameState, province: usize, owner: usize, adjacency: &[usize]) {
         state.map.provinces[ProvinceId::new(province)] = ProvinceState::new(
             Some(NationId::new(owner)),
             Some(NationId::new(owner)),
@@ -485,10 +471,10 @@ mod tests {
 
     fn push_unit(
         state: &mut GameState,
-        nation: u8,
-        province: u16,
+        nation: usize,
+        province: usize,
         kind: MilitaryUnitKind,
-        dest: Option<u16>,
+        dest: Option<usize>,
     ) -> MilitaryUnitId {
         let id = state.unit_ids.next_military();
         let province = ProvinceId::new(province);

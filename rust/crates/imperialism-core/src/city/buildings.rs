@@ -1,10 +1,11 @@
 use crate::*;
+use enum_map::Enum;
 use serde::{Deserialize, Serialize};
 
 /// A fixed building position on the city production screen.
-///
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-#[repr(u8)]
+#[derive(
+    Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
 #[serde(rename_all = "snake_case")]
 pub enum CityFacilitySlot {
     TextileMill,
@@ -26,32 +27,10 @@ pub enum CityFacilitySlot {
 }
 
 impl CityFacilitySlot {
-    pub const COUNT: usize = 16;
+    pub const LENGTH: usize = enum_map::enum_len::<Self>();
 
-    pub const fn from_index(value: u8) -> Option<Self> {
-        match value {
-            0 => Some(Self::TextileMill),
-            1 => Some(Self::ClothingFactory),
-            2 => Some(Self::SteelMill),
-            3 => Some(Self::Metalworks),
-            4 => Some(Self::LumberMill),
-            5 => Some(Self::FurnitureFactory),
-            6 => Some(Self::OilRefinery),
-            7 => Some(Self::Shipyard),
-            8 => Some(Self::Armory),
-            9 => Some(Self::TradeSchool),
-            10 => Some(Self::University),
-            11 => Some(Self::PowerPlant),
-            12 => Some(Self::FoodProcessing),
-            13 => Some(Self::Warehouse),
-            14 => Some(Self::Transport),
-            15 => Some(Self::RegionalPopulation),
-            _ => None,
-        }
-    }
-
-    pub(crate) const fn index(self) -> usize {
-        self as usize
+    pub fn from_index(value: u8) -> Option<Self> {
+        (usize::from(value) < Self::LENGTH).then(|| Self::from_usize(usize::from(value)))
     }
 }
 
@@ -284,7 +263,7 @@ mod tests {
 
     #[test]
     fn identifies_only_the_retail_capacity_center_slots() {
-        let actual: Vec<u8> = (0..CityFacilitySlot::COUNT as u8)
+        let actual: Vec<u8> = (0..CityFacilitySlot::LENGTH as u8)
             .filter(|value| CityState::is_capacity_center(slot(*value)))
             .collect();
         assert_eq!(actual, vec![0, 1, 2, 3, 4, 5, 6, 11]);

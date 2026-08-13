@@ -116,8 +116,8 @@ pub fn create_random_game(
     );
     let technology = TechnologyState::for_random_start(runtime_seed);
     let mut world = MapMgr::new(preview.topology, post.tiles);
-    for (index, generated) in preview.map.provinces().iter().enumerate() {
-        world.provinces[ProvinceId::new(index as u16)].region_class = Some(generated.region_class);
+    for (province, generated) in world.provinces.iter_mut().zip(preview.map.provinces()) {
+        province.region_class = Some(generated.region_class);
     }
     world.map_data_ready = true;
     world.recruit_search_active = true;
@@ -125,8 +125,8 @@ pub fn create_random_game(
     world.pending_river_mouth_tile = post.pending_river_mouth_tile;
     // Fresh-map BuildOrLoadGlobalMapStateForSession runs this mode-0 cache pass
     // once, in tile order, immediately after its final AssignPictToTile pass.
-    for index in 0..TileId::COUNT {
-        world.update_tile_neighbor_border_influence_counters(TileId::new(index), 0);
+    for tile in TileId::all() {
+        world.update_tile_neighbor_border_influence_counters(tile, 0);
     }
     let mut ocean_zones = initialize_sea_zone_map_markers(&mut world, preview.sea_zone_marker_crt);
     initialize_sea_zone_neighbors(&mut ocean_zones, &world, &preview.map.ocean_zone_links);
@@ -188,9 +188,9 @@ pub fn create_random_game(
     initialize_ai_targets(&mut nations, &mission_queues, port_zones.next_ordinal);
     let mut port_status_rng = RetailLcg::from_state(runtime_seed);
     for port in port_zones.ports.iter().rev() {
-        debug_assert_eq!(usize::from(port.ordinal.get()), ocean_zones.len());
+        debug_assert_eq!(port.ordinal.index(), ocean_zones.len());
         if let Some(neighbor) = port.primary_neighbor {
-            let neighbor = &mut ocean_zones[usize::from(neighbor.get())];
+            let neighbor = &mut ocean_zones[neighbor.index()];
             let neighbor = match neighbor {
                 ZoneKind::Zone(zone) => zone,
                 ZoneKind::PortZone(port) => &mut port.zone,

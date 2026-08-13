@@ -43,12 +43,12 @@ pub(super) fn update_strategic_map_tile_icon_variant_state(
         .is_some();
     match terrain {
         TerrainKind::Water => {
-            let tile_id = TileId::new(index as u16);
+            let tile_id = TileId::new(index as usize);
             let found_land = geometry
                 .neighbors(tile_id)
                 .into_iter()
-                .flatten()
-                .any(|neighbor| tiles[usize::from(neighbor.get())].terrain != TerrainKind::Water);
+                .filter_map(|(_, tile)| tile)
+                .any(|neighbor| tiles[neighbor.index()].terrain != TerrainKind::Water);
             if found_land {
                 tiles[index].edge_resources[0] = Some(ResourceKind::Fish);
             }
@@ -175,7 +175,7 @@ pub(super) fn resolve_region_tile_subtype_code(tile: &TileState, index: usize) -
 }
 /// `TMapMgr::GuaranteeResources` (0x00511a70).
 pub(super) fn guarantee_resources(tiles: &mut [TileState], map_lcg: &mut RetailLcg) {
-    for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
+    for nation in MajorNationId::all() {
         let owner = TileOwnerTag::from_nation(nation.nation());
         let linked: Vec<usize> = tiles
             .iter()
@@ -292,7 +292,7 @@ pub(super) fn assign_fresh_map_pictures(
             map_lcg,
         );
         if selected_pending_tile && pending_river_mouth_tile.is_none() {
-            pending_river_mouth_tile = Some(TileId::new(index as u16));
+            pending_river_mouth_tile = Some(TileId::new(index as usize));
         }
         let (transition_mask, coast_or_secondary_mask) =
             fresh_picture_masks(tiles, geometry, index);
@@ -325,20 +325,18 @@ pub(super) fn assign_picture_to_tile_for_rng(
         }
 
         if tiles[index].gate == 0x0b {
-            let tile = TileId::new(index as u16);
+            let tile = TileId::new(index as usize);
             let neighbors = geometry.neighbors(tile);
-            for direction in 0..HexDirection::ALL.len() {
+            for direction in HexDirection::ALL {
                 let neighbor_has_profile = neighbors[direction]
-                    .is_some_and(|neighbor| tiles[usize::from(neighbor.get())].gate == 0x0b);
+                    .is_some_and(|neighbor| tiles[neighbor.index()].gate == 0x0b);
                 if !neighbor_has_profile {
                     continue;
                 }
-                let previous = (direction + HexDirection::ALL.len() - 1) % HexDirection::ALL.len();
-                let next = (direction + 1) % HexDirection::ALL.len();
-                let previous_has_profile = neighbors[previous]
-                    .is_some_and(|neighbor| tiles[usize::from(neighbor.get())].gate == 0x0b);
-                let next_has_profile = neighbors[next]
-                    .is_some_and(|neighbor| tiles[usize::from(neighbor.get())].gate == 0x0b);
+                let previous_has_profile = neighbors[direction.wrapping_prev()]
+                    .is_some_and(|neighbor| tiles[neighbor.index()].gate == 0x0b);
+                let next_has_profile = neighbors[direction.wrapping_next()]
+                    .is_some_and(|neighbor| tiles[neighbor.index()].gate == 0x0b);
                 sprite_variants[index] = match (previous_has_profile, next_has_profile) {
                     (false, false) => 0,
                     (true, true) => 1,
@@ -358,13 +356,11 @@ pub(super) fn assign_picture_to_tile_for_rng(
         return false;
     }
 
-    let tile = TileId::new(index as u16);
+    let tile = TileId::new(index as usize);
     let neighbors = geometry.neighbors(tile);
     let mut has_land_neighbor = false;
-    for (direction, neighbor) in HexDirection::ALL.into_iter().zip(neighbors) {
-        if neighbor.is_some_and(|neighbor| {
-            tiles[usize::from(neighbor.get())].terrain != TerrainKind::Water
-        }) {
+    for (direction, neighbor) in neighbors {
+        if neighbor.is_some_and(|neighbor| tiles[neighbor.index()].terrain != TerrainKind::Water) {
             has_land_neighbor = true;
             if map_lcg.next_sample_15() & 1 != 0 {
                 sprite_variants[index] |= 1 << direction as u8;
@@ -380,7 +376,7 @@ pub(super) fn assign_picture_to_tile_for_rng(
         return false;
     }
 
-    let west = neighbors[HexDirection::West as usize].map(|tile| usize::from(tile.get()));
+    let west = neighbors[HexDirection::West].map(|tile| tile.index());
     let Some(west) = west else {
         return false;
     };
@@ -388,10 +384,8 @@ pub(super) fn assign_picture_to_tile_for_rng(
         return false;
     }
 
-    let north_west =
-        neighbors[HexDirection::NorthWest as usize].map(|tile| usize::from(tile.get()));
-    let north_east =
-        neighbors[HexDirection::NorthEast as usize].map(|tile| usize::from(tile.get()));
+    let north_west = neighbors[HexDirection::NorthWest].map(|tile| tile.index());
+    let north_east = neighbors[HexDirection::NorthEast].map(|tile| tile.index());
     let north_west_variant = north_west.map_or(0, |neighbor| sprite_variants[neighbor]);
     let north_east_variant = north_east.map_or(0, |neighbor| sprite_variants[neighbor]);
 
@@ -429,13 +423,13 @@ pub(super) fn fresh_picture_masks(
     let terrain = tiles[index].terrain;
     let mut transition_mask = 0;
     let mut coast_or_secondary_mask = 0;
-    let tile = TileId::new(index as u16);
-    for (direction, neighbor) in geometry.neighbors(tile).into_iter().enumerate() {
+    let tile = TileId::new(index as usize);
+    for (direction, neighbor) in geometry.neighbors(tile) {
         let Some(neighbor) = neighbor else {
             continue;
         };
-        let neighbor = usize::from(neighbor.get());
-        let direction_bit = 1 << direction;
+        let neighbor = neighbor.index();
+        let direction_bit = 1 << direction as u8;
         if terrain == TerrainKind::Water {
             if tiles[neighbor].terrain != TerrainKind::Water {
                 coast_or_secondary_mask |= direction_bit;

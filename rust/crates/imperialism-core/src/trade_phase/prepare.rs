@@ -4,8 +4,7 @@ use crate::*;
 
 impl GameState {
     pub(super) fn run_nation_update_passes(&mut self, phase: &mut TradePhase) {
-        for slot in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(slot);
+        for nation in MajorNationId::all() {
             if !self.major_is_trade_eligible(nation) {
                 continue;
             }
@@ -16,15 +15,13 @@ impl GameState {
             }
         }
 
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = MinorNationId::new(slot);
+        for minor in MinorNationId::all() {
             if self.nations.minors[minor].is_some() {
                 self.initialize_minor_trade_status(minor, phase);
             }
         }
 
-        for slot in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(slot);
+        for nation in MajorNationId::all() {
             if !self.major_is_trade_eligible(nation) {
                 continue;
             }
@@ -81,8 +78,7 @@ impl GameState {
         phase.status_by_major[minor] = ResourceTable::default();
 
         let owner = TileOwnerTag::from_nation(minor.nation());
-        for index in 0..STRATEGIC_TILE_COUNT {
-            let tile = &self.map[TileId::new(index as u16)];
+        for (_, tile) in self.map.tiles.enumerate() {
             if tile.owner_nation != Some(owner) {
                 continue;
             }
@@ -90,8 +86,7 @@ impl GameState {
                 for resource in tile.edge_resources.into_iter().flatten() {
                     let yield_level = resource_capability_level(tile, resource);
                     phase.recurring_grant[minor][resource] += yield_level;
-                    phase.status_by_major[minor][resource][usize::from(great_power.get())] +=
-                        yield_level;
+                    phase.status_by_major[minor][resource][great_power] += yield_level;
                     if let Some(state) = self.nations.minors[minor].as_mut() {
                         state.trade.current_supply[resource] += yield_level;
                     }
@@ -110,10 +105,9 @@ impl GameState {
         }
 
         let mut aid = Vec::new();
-        for slot in 0..MajorNationId::COUNT {
-            let major = MajorNationId::new(slot);
+        for major in MajorNationId::all() {
             for (resource, scale) in [(ResourceKind::Gold, 200), (ResourceKind::Gems, 500)] {
-                let yield_level = phase.status_by_major[minor][resource][usize::from(slot)];
+                let yield_level = phase.status_by_major[minor][resource][major];
                 if yield_level != 0 {
                     let standing = self.diplomacy.standings[minor.nation()][major.nation()];
                     aid.push((

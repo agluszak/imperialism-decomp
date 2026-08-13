@@ -78,8 +78,8 @@ fn fill_technology_advance(
         .entity(find_descendant(root, fourcc!("main"), children, tags))
         .insert(ImageNode::new(picture));
 
-    let status = super::hover_help::get_string(assets, 0x2712, i16::from(tech_id.get()));
-    let prefix = super::hover_help::get_string(assets, 0x274e, i16::from(tech_id.get()) - 1);
+    let status = super::hover_help::get_string(assets, 0x2712, tech_id.index() as i16);
+    let prefix = super::hover_help::get_string(assets, 0x274e, tech_id.index() as i16 - 1);
     commands
         .entity(find_descendant(root, fourcc!("text"), children, tags))
         .insert(Text::new(format!("{status}\n\n{prefix}")));

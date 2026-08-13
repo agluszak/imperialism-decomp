@@ -7,6 +7,7 @@ use bevy::image::ImageSampler;
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
+use enum_map::EnumMap;
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -255,7 +256,7 @@ fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl st
     use std::hash::Hash;
 
     let tile_state = state.map()[tile];
-    tile.get().hash(hasher);
+    tile.hash(hasher);
     tile_state.terrain.hash(hasher);
     tile_state.gate.hash(hasher);
     tile_state.rendering.sprite_variant.hash(hasher);
@@ -275,8 +276,8 @@ fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl st
     tile_state.pending_rail_links.bits().hash(hasher);
     tile_state.development.surface.get().hash(hasher);
     tile_state.development.extractive.get().hash(hasher);
-    for nation in 0..MajorNationId::COUNT {
-        tile_state.development.resource_visible_to_majors[MajorNationId::new(nation)].hash(hasher);
+    for nation in MajorNationId::all() {
+        tile_state.development.resource_visible_to_majors[nation].hash(hasher);
     }
     tile_state.edge_resources.hash(hasher);
     town_transport_linked(state, tile).hash(hasher);
@@ -285,7 +286,7 @@ fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl st
         province.development_stage().hash(hasher);
         province.fort_level().hash(hasher);
     }
-    for neighbor in state.map().geometry().neighbors(tile) {
+    for (_, neighbor) in state.map().geometry().neighbors(tile) {
         let Some(neighbor) = neighbor else {
             false.hash(hasher);
             continue;
@@ -363,7 +364,7 @@ pub(super) fn draw_city_site_selection(
     draw_frame(viewport, x, y, 0);
 
     let active_owner = TileOwnerTag::from_nation(nation.nation());
-    let neighbors = state.map().geometry().neighbors(tile).map(|neighbor| {
+    let neighbors = state.map().geometry().neighbors(tile).map(|_, neighbor| {
         neighbor.filter(|&neighbor| {
             let neighbor = state.map()[neighbor];
             neighbor.terrain == TerrainKind::Water || neighbor.owner_nation == Some(active_owner)
@@ -397,79 +398,78 @@ fn draw_frame(viewport: &mut [u8], x: i32, y: i32, color: u8) {
 
 fn draw_city_site_neighbor_outline(
     state: &GameState,
-    neighbors: [Option<TileId>; 6],
+    neighbors: EnumMap<HexDirection, Option<TileId>>,
     viewport: &mut [u8],
 ) {
     const OUTLINE_COLOR: u8 = 0x20;
-    for (index, neighbor) in neighbors.iter().copied().enumerate() {
+    for (direction, neighbor) in neighbors {
         let Some(neighbor) = neighbor else {
             continue;
         };
         let (x, y) = strategic_tile_screen_origin(state, neighbor);
-        match index {
-            0 => {
+        match direction {
+            HexDirection::NorthEast => {
                 draw_line(viewport, (x, y), (x + 63, y), OUTLINE_COLOR);
                 draw_line(viewport, (x + 63, y), (x + 63, y + 63), OUTLINE_COLOR);
-                if neighbors[5].is_none() {
+                if neighbors[HexDirection::NorthWest].is_none() {
                     draw_line(viewport, (x, y), (x, y + 63), OUTLINE_COLOR);
                 }
-                if neighbors[1].is_none() {
+                if neighbors[HexDirection::East].is_none() {
                     draw_line(viewport, (x + 32, y), (x + 32, y + 63), OUTLINE_COLOR);
                 }
             }
-            1 => {
+            HexDirection::East => {
                 draw_line(viewport, (x + 32, y), (x + 63, y), OUTLINE_COLOR);
                 draw_line(viewport, (x + 63, y), (x + 63, y + 63), OUTLINE_COLOR);
                 draw_line(viewport, (x + 63, y + 63), (x + 32, y + 63), OUTLINE_COLOR);
-                if neighbors[0].is_none() {
+                if neighbors[HexDirection::NorthEast].is_none() {
                     draw_line(viewport, (x, y), (x + 32, y), OUTLINE_COLOR);
                 }
-                if neighbors[2].is_none() {
+                if neighbors[HexDirection::SouthEast].is_none() {
                     draw_line(viewport, (x, y + 63), (x + 32, y + 63), OUTLINE_COLOR);
                 }
             }
-            2 => {
+            HexDirection::SouthEast => {
                 draw_line(viewport, (x, y + 63), (x + 63, y + 63), OUTLINE_COLOR);
                 draw_line(viewport, (x + 63, y + 63), (x + 63, y), OUTLINE_COLOR);
-                if neighbors[3].is_none() {
+                if neighbors[HexDirection::SouthWest].is_none() {
                     draw_line(viewport, (x, y), (x, y + 63), OUTLINE_COLOR);
                 }
-                if neighbors[1].is_none() {
+                if neighbors[HexDirection::East].is_none() {
                     draw_line(viewport, (x + 32, y), (x + 63, y), OUTLINE_COLOR);
                 }
             }
-            3 => {
+            HexDirection::SouthWest => {
                 draw_line(viewport, (x + 63, y + 63), (x, y + 63), OUTLINE_COLOR);
                 draw_line(viewport, (x, y + 63), (x, y), OUTLINE_COLOR);
-                if neighbors[2].is_none() {
+                if neighbors[HexDirection::SouthEast].is_none() {
                     draw_line(viewport, (x + 63, y), (x + 63, y + 63), OUTLINE_COLOR);
                 }
-                if neighbors[4].is_none() {
+                if neighbors[HexDirection::West].is_none() {
                     draw_line(viewport, (x, y), (x + 32, y), OUTLINE_COLOR);
                 }
             }
-            4 => {
+            HexDirection::West => {
                 draw_line(viewport, (x + 32, y), (x, y), OUTLINE_COLOR);
                 draw_line(viewport, (x, y), (x, y + 63), OUTLINE_COLOR);
                 draw_line(viewport, (x, y + 63), (x + 32, y + 63), OUTLINE_COLOR);
-                if neighbors[5].is_none() {
+                if neighbors[HexDirection::NorthWest].is_none() {
                     draw_line(viewport, (x + 32, y), (x + 63, y), OUTLINE_COLOR);
                 }
-                if neighbors[3].is_none() {
+                if neighbors[HexDirection::SouthWest].is_none() {
                     draw_line(viewport, (x + 32, y + 63), (x + 63, y + 63), OUTLINE_COLOR);
                 }
             }
-            5 => {
+            HexDirection::NorthWest => {
                 draw_line(viewport, (x, y + 63), (x, y), OUTLINE_COLOR);
                 draw_line(viewport, (x, y), (x + 63, y), OUTLINE_COLOR);
-                if neighbors[0].is_none() {
+                if neighbors[HexDirection::NorthEast].is_none() {
                     draw_line(viewport, (x + 63, y), (x + 63, y + 63), OUTLINE_COLOR);
                 }
-                if neighbors[4].is_none() {
+                if neighbors[HexDirection::West].is_none() {
                     draw_line(viewport, (x, y + 63), (x + 32, y + 63), OUTLINE_COLOR);
                 }
             }
-            _ => unreachable!("strategic tile has six neighbors"),
         }
     }
 }

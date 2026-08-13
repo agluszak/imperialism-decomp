@@ -94,15 +94,15 @@ impl GameState {
     fn bump_ship_ids(&mut self) {
         for admiral in &mut self.admirals {
             if let Some(ship) = &mut admiral.ship {
-                *ship = ShipId::new(ship.get() + 1);
+                *ship = ShipId::new(ship.index() + 1);
             }
         }
         for force in &mut self.task_forces {
             if let Some(flagship) = &mut force.flagship {
-                *flagship = ShipId::new(flagship.get() + 1);
+                *flagship = ShipId::new(flagship.index() + 1);
             }
             for selected in &mut force.ships {
-                selected.ship = ShipId::new(selected.ship.get() + 1);
+                selected.ship = ShipId::new(selected.ship.index() + 1);
             }
         }
         for mission in &mut self.missions {
@@ -126,7 +126,7 @@ impl GameState {
         let Some(port) = self.first_port_zone_for_nation(nation.nation()) else {
             return false;
         };
-        let neighbors = match &self.ocean.zones[usize::from(port.get())] {
+        let neighbors = match &self.ocean.zones[port.index()] {
             ZoneKind::PortZone(port) => &port.zone.primary_neighbors,
             ZoneKind::Zone(zone) => &zone.primary_neighbors,
         };
@@ -158,11 +158,9 @@ impl GameState {
             return 0.0;
         };
         let mut scores = ActionClassScores::default();
-        let mut budget: [i32; MAJOR_NATION_COUNT] = std::array::from_fn(|index| {
-            self.invasion_capacity(MajorNationId::new(index as u8).nation(), province)
-        });
-        for index in 0..ProvinceId::COUNT {
-            let candidate = ProvinceId::new(index);
+        let mut budget =
+            MajorNationTable::from_fn(|major| self.invasion_capacity(major.nation(), province));
+        for candidate in ProvinceId::all() {
             let Some(candidate_owner) = self.map.provinces[candidate].owner() else {
                 continue;
             };
@@ -189,15 +187,13 @@ impl GameState {
                         );
                     }
                 }
-            } else if budget[usize::from(candidate_major.get())] > 0
-                && self.province_has_port(candidate)
-            {
+            } else if budget[candidate_major] > 0 && self.province_has_port(candidate) {
                 for unit in self.units_stationed_in(candidate) {
                     if unit.unit_type.is_militia_category() {
                         continue;
                     }
                     let cost = unit.unit_type.arms_carried();
-                    let remaining = &mut budget[usize::from(candidate_major.get())];
+                    let remaining = &mut budget[candidate_major];
                     if cost < *remaining {
                         accumulate_unit_priority(
                             unit,
@@ -235,7 +231,7 @@ impl GameState {
                     && force.target == TaskForceTarget::Province(province)
             })
             .flat_map(|force| force.ships.iter())
-            .filter_map(|selected| self.ships.get(selected.ship.get() as usize))
+            .filter_map(|selected| self.ships.get(selected.ship.index()))
             .map(|ship| {
                 if ship.strength > 0 {
                     NAVY_ARMS_BY_SHIP_TYPE[ship.ship_type]
@@ -316,10 +312,10 @@ fn bump_mission_ship_ids(data: &mut MissionData) {
 
 fn bump_navy_mission_ship_ids(navy: &mut NavyMissionState) {
     if let Some(ship) = &mut navy.selected_ship {
-        *ship = ShipId::new(ship.get() + 1);
+        *ship = ShipId::new(ship.index() + 1);
     }
     for selected in &mut navy.ships {
-        selected.ship = ShipId::new(selected.ship.get() + 1);
+        selected.ship = ShipId::new(selected.ship.index() + 1);
     }
 }
 

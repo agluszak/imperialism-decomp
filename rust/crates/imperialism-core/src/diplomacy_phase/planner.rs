@@ -12,7 +12,9 @@ impl GameState {
         if self.turn.planning_quarter() == 0 && !self.manufactured_offers_exhausted(nation) {
             let ranked = self.ranked_independents(nation.nation(), false);
             for &minor in ranked.iter().rev() {
-                let favorite = self.favorite_trade_partner(MinorNationId::new(minor.get()));
+                let favorite = self.favorite_trade_partner(
+                    MinorNationId::from_nation(minor).expect("ranked independent is a minor"),
+                );
                 let standing = self.diplomacy.standings[nation.nation()][minor];
                 let trade = self.nations.majors[nation].common.trade_policy_by_nation[minor];
                 if favorite != Some(nation) && standing > 0x31 && trade != TradePolicyScore::BOYCOTT
@@ -54,8 +56,7 @@ impl GameState {
             }
         }
 
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = NationId::new(slot);
+        for minor in MinorNationId::all().map(MinorNationId::nation) {
             let trade = self.nations.majors[nation].common.trade_policy_by_nation[minor];
             if self.diplomacy.mission_levels[nation.nation()][minor] != DiplomaticMissionLevel::None
                 && trade.get() > 0x5f
@@ -67,8 +68,7 @@ impl GameState {
         }
 
         if self.nations.majors[nation].common.treasury < 0 {
-            for slot in MinorNationId::FIRST..NationId::COUNT {
-                let minor = NationId::new(slot);
+            for minor in MinorNationId::all().map(MinorNationId::nation) {
                 if self.nations.majors[nation].common.trade_policy_by_nation[minor].get() < 0x4b {
                     self.set_one_trade(nation.nation(), minor, TradePolicyScore::new(0x4b));
                 }
@@ -77,8 +77,7 @@ impl GameState {
     }
 
     pub(super) fn do_propose_treaties(&mut self, nation: MajorNationId) {
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = NationId::new(slot);
+        for minor in MinorNationId::all().map(MinorNationId::nation) {
             if self.diplomacy.mission_levels[nation.nation()][minor]
                 != DiplomaticMissionLevel::Embassy
             {
@@ -157,9 +156,9 @@ impl GameState {
     }
 
     pub(super) fn goods_match_shipping(&mut self, nation: MajorNationId) {
-        let has_colony = (MinorNationId::FIRST..NationId::COUNT).any(|slot| {
+        let has_colony = MinorNationId::all().any(|minor| {
             self.nations
-                .common(NationId::new(slot))
+                .common(minor.nation())
                 .is_some_and(|common| common.status() == CountryStatus::ColonyOf(nation.nation()))
         });
         for target in majors() {

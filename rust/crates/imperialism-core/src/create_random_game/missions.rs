@@ -5,23 +5,20 @@ pub(super) fn build_province_adjacency(world: &MapMgr) -> Vec<Vec<ProvinceId>> {
     let province_count = world
         .tiles
         .iter()
-        .filter_map(|tile| {
-            tile.province
-                .map(|province| usize::from(province.get()) + 1)
-        })
+        .filter_map(|tile| tile.province.map(|province| province.index() + 1))
         .max()
         .unwrap_or(0);
     let mut adjacency = vec![Vec::new(); province_count];
     let geometry = world.geometry();
-    for (index, tile) in world.tiles.iter().enumerate() {
+    for (tile_id, tile) in world.tiles.enumerate() {
         let Some(province) = tile.province else {
             continue;
         };
-        let province_index = usize::from(province.get());
+        let province_index = province.index();
         for neighbor in geometry
-            .neighbors(TileId::new(index as u16))
+            .neighbors(tile_id)
             .into_iter()
-            .flatten()
+            .filter_map(|(_, tile)| tile)
         {
             let Some(neighbor_province) = world[neighbor].province else {
                 continue;
@@ -44,14 +41,14 @@ fn build_province_adjacency_anchors(
 ) -> Vec<TileId> {
     let mut anchors = vec![None; adjacency.len()];
     let geometry = world.geometry();
-    for (index, tile) in world.tiles.iter().enumerate() {
+    for (tile_id, tile) in world.tiles.enumerate() {
         if tile.province != Some(province) {
             continue;
         }
         for neighbor in geometry
-            .neighbors(TileId::new(index as u16))
+            .neighbors(tile_id)
             .into_iter()
-            .flatten()
+            .filter_map(|(_, tile)| tile)
         {
             let Some(neighbor_province) = world[neighbor].province else {
                 continue;
@@ -83,7 +80,7 @@ pub(super) fn build_province_state(
     let adjacency = build_province_adjacency(world);
     let mut provinces = ProvinceTable::default();
     for (index, generated) in map.provinces().iter().enumerate() {
-        let province = ProvinceId::new(index as u16);
+        let province = ProvinceId::new(index as usize);
         let owner = generated
             .owner
             .nation()
@@ -101,7 +98,7 @@ pub(super) fn build_province_state(
             .enumerate()
             .filter_map(|(tile, state)| {
                 (state.terrain != TerrainKind::Water && state.province == Some(province))
-                    .then_some(TileId::new(tile as u16))
+                    .then_some(TileId::new(tile as usize))
             })
             .collect::<Vec<_>>();
         let last_turn_tick = if linked_tiles.iter().any(|&tile| {
@@ -151,10 +148,10 @@ pub(super) fn province_mission_available(
     adjacency: &[Vec<ProvinceId>],
     zones: &[ZoneKind],
 ) -> bool {
-    let province_usize = usize::from(province.get());
+    let province_usize = province.index();
     let neighbors = &adjacency[province_usize];
     for &adjacent in neighbors {
-        let Some(capital) = province_capitals[usize::from(adjacent.get())] else {
+        let Some(capital) = province_capitals[adjacent.index()] else {
             continue;
         };
         if world[capital].owner_nation == Some(nation) {
@@ -165,7 +162,7 @@ pub(super) fn province_mission_available(
     // itself has neighbors is available.
     if !neighbors.is_empty() {
         for &adjacent in neighbors {
-            if !adjacency[usize::from(adjacent.get())].is_empty() {
+            if !adjacency[adjacent.index()].is_empty() {
                 return true;
             }
         }
@@ -235,7 +232,7 @@ pub(super) fn initialize_ai_targets(
     mission_queues: &MajorNationTable<Vec<MissionState>>,
     live_zone_count: u16,
 ) {
-    for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
+    for nation in MajorNationId::all() {
         let economy = &mut nations.major_mut(nation).economy;
         let Some(zone_targets) = economy.ai_zone_targets.as_mut() else {
             continue;
@@ -247,7 +244,7 @@ pub(super) fn initialize_ai_targets(
                 _ => None,
             };
             if let Some(target) = target {
-                zone_targets[usize::from(target.get())] = AiTargetState::MissionQueued;
+                zone_targets[target.index()] = AiTargetState::MissionQueued;
             }
             if let MissionData::DefendProvince { province, .. } = &mission.data {
                 economy
@@ -292,7 +289,7 @@ pub(super) fn flatten_mission_queues(
     queues: &mut MajorNationTable<Vec<MissionState>>,
 ) -> Vec<MissionState> {
     let mut missions = Vec::new();
-    for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
+    for nation in MajorNationId::all() {
         missions.append(&mut queues[nation]);
     }
     missions

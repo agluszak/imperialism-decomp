@@ -53,7 +53,7 @@ impl GameState {
     /// processed and may return [`DiplomacyPhaseResult::WarJoin`].
     pub fn do_diplomacy(&mut self) -> DiplomacyPhaseResult {
         self.apply_diplomacy_inter_nation_states();
-        let result = self.reply_to_diplomacy_offers_from(0, 0);
+        let result = self.reply_to_diplomacy_offers_from(MajorNationId::new(0), 0);
         self.record_diplomacy_result(result)
     }
 
@@ -67,7 +67,7 @@ impl GameState {
         };
         self.continuation = crate::turn_flow::TurnContinuation::None;
         self.apply_human_offer_decision(nation, usize::from(index), accept);
-        let result = self.reply_to_diplomacy_offers_from(nation.get(), usize::from(index) + 1);
+        let result = self.reply_to_diplomacy_offers_from(nation, usize::from(index) + 1);
         self.record_diplomacy_result(result)
     }
 
@@ -101,8 +101,7 @@ impl GameState {
     }
 
     fn apply_diplomacy_inter_nation_states(&mut self) {
-        for index in (0..MajorNationId::COUNT).rev() {
-            let nation = MajorNationId::new(index);
+        for nation in MajorNationId::all().rev() {
             if self.is_auto(nation) {
                 self.set_ai_diplomacy_policies(nation);
             }
@@ -246,14 +245,13 @@ impl GameState {
         source: NationId,
         majors_only: bool,
     ) -> Vec<NationId> {
-        let range = if majors_only {
-            0..MajorNationId::COUNT
+        let candidates: Vec<NationId> = if majors_only {
+            MajorNationId::all().map(MajorNationId::nation).collect()
         } else {
-            MinorNationId::FIRST..NationId::COUNT
+            MinorNationId::all().map(MinorNationId::nation).collect()
         };
         let mut ranked = Vec::new();
-        for slot in range {
-            let nation = NationId::new(slot);
+        for nation in candidates {
             if nation == source || !self.nation_is_present(nation) || !self.is_independent(nation) {
                 continue;
             }
@@ -282,8 +280,7 @@ impl GameState {
                 any = true;
             }
         }
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = NationId::new(slot);
+        for minor in MinorNationId::all().map(MinorNationId::nation) {
             if self.nations.majors[nation].economy.candidate_nation_flags[minor] == 0 {
                 continue;
             }
@@ -320,8 +317,7 @@ impl GameState {
         } else {
             TradePolicyScore::NEUTRAL
         };
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = NationId::new(slot);
+        for minor in MinorNationId::all().map(MinorNationId::nation) {
             if self
                 .nations
                 .common(minor)
@@ -368,14 +364,15 @@ impl GameState {
     }
 
     pub(super) fn in_consortium_with(&self, minor: NationId, source: NationId) -> bool {
-        self.nations.minors[MinorNationId::new(minor.get())]
-            .as_ref()
-            .is_some_and(|nation| {
-                nation
-                    .consortium_members
-                    .iter()
-                    .any(|member| member.nation() == source)
-            })
+        self.nations.minors
+            [MinorNationId::from_nation(minor).expect("consortium member is a minor")]
+        .as_ref()
+        .is_some_and(|nation| {
+            nation
+                .consortium_members
+                .iter()
+                .any(|member| member.nation() == source)
+        })
     }
 
     pub(super) fn nation_is_present(&self, nation: NationId) -> bool {
@@ -391,7 +388,7 @@ impl GameState {
             &mut self.rng,
             &mut self.pending.nations[nation].proposals,
             proposal,
-            |entry| i16::from(entry.source.get()),
+            |entry| entry.source.index() as i16,
         );
     }
 
@@ -400,13 +397,13 @@ impl GameState {
             &mut self.rng,
             &mut self.pending.nations[nation].turn_events,
             notice,
-            |entry| i16::from(entry.source.get()),
+            |entry| entry.source.index() as i16,
         );
     }
 }
 
 pub(super) fn majors() -> impl Iterator<Item = MajorNationId> {
-    (0..MajorNationId::COUNT).map(MajorNationId::new)
+    MajorNationId::all()
 }
 
 pub(super) fn at_least_one(score: f32) -> f32 {

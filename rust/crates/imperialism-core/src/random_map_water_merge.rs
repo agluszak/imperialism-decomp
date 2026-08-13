@@ -142,8 +142,8 @@ pub(crate) fn merge_small_water_regions(
                 .iter()
                 .map(|link| {
                     [
-                        OceanZoneId::new(u16::from(link.region_a)),
-                        OceanZoneId::new(u16::from(link.region_b)),
+                        OceanZoneId::new(usize::from(link.region_a)),
+                        OceanZoneId::new(usize::from(link.region_b)),
                     ]
                 })
                 .collect();
@@ -196,12 +196,12 @@ pub(crate) fn merge_small_water_regions(
                     if water_region_id(tile) != region {
                         continue;
                     }
-                    let tile_id = TileId::new(tile_idx as u16);
+                    let tile_id = TileId::new(tile_idx as usize);
                     for direction in HexDirection::ALL {
                         let Some(neighbor) = geometry.neighbor(tile_id, direction) else {
                             continue;
                         };
-                        let neighbor_region = water_region_id(&tiles[usize::from(neighbor.get())]);
+                        let neighbor_region = water_region_id(&tiles[neighbor.index()]);
                         if neighbor_region >= 0 && neighbor_region != region {
                             merge_target = Some(neighbor_region as usize);
                             break 'tiles;
@@ -289,12 +289,13 @@ fn hex_neighbor(geometry: MapGeometry, tile_index: i32, direction: usize) -> i32
     if tile_index < 0 {
         return -1;
     }
-    let Some(neighbor) =
-        geometry.neighbor(TileId::new(tile_index as u16), HexDirection::ALL[direction])
-    else {
+    let Some(neighbor) = geometry.neighbor(
+        TileId::new(tile_index as usize),
+        HexDirection::ALL[direction],
+    ) else {
         return -1;
     };
-    i32::from(neighbor.get())
+    neighbor.index() as i32
 }
 
 fn overlay_coord_from_tile_side(tile_index: i32, side: i32) -> i32 {

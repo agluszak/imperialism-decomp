@@ -28,8 +28,7 @@ const COMPILE_THRESHOLD_BY_DIFFICULTY: [i32; 5] = [5, 5, 5, 5, 5];
 impl GameState {
     /// Retail `TSimMgr::DoCityAndTransport`.
     pub fn do_city_and_transport(&mut self) {
-        for index in (0..MajorNationId::COUNT).rev() {
-            let nation = MajorNationId::new(index);
+        for nation in MajorNationId::all().rev() {
             if !self.nation_eligible_for_optional_phase(nation) {
                 continue;
             }
@@ -154,19 +153,18 @@ impl GameState {
         };
         let insert_at = self
             .military_units
-            .partition_point(|existing| existing.nation.get() <= nation_id.get());
+            .partition_point(|existing| existing.nation <= nation_id);
         self.military_units.insert(insert_at, unit);
         self.announce_later(nation, 3, unit_kind as i16, 1);
     }
 
     fn needs_overseas_developer(&self, nation: MajorNationId) -> bool {
         let nation_id = nation.nation();
-        for slot in 7..NationId::COUNT {
-            let minor_id = NationId::new(slot);
-            if self.diplomacy.standings[nation_id][minor_id] <= 0xa9 {
+        for minor in MinorNationId::all() {
+            if self.diplomacy.standings[nation_id][minor.nation()] <= 0xa9 {
                 continue;
             }
-            if let Some(common) = self.nations.common(minor_id)
+            if let Some(common) = self.nations.common(minor.nation())
                 && matches!(
                     common.status(),
                     CountryStatus::ProtectorateOf(master) if master == nation_id
@@ -207,7 +205,7 @@ impl GameState {
         };
         let insert_at = self
             .civilian_units
-            .partition_point(|existing| existing.nation.get() <= nation_id.get());
+            .partition_point(|existing| existing.nation <= nation_id);
         self.civilian_units.insert(insert_at, unit);
     }
 
@@ -356,11 +354,11 @@ impl GameState {
             if pending_stage == 2 {
                 self.nations.majors[nation].economy.pending_actions
                     [PendingActionKind::TownDevelopment]
-                    .queue(province_id.get() as i16);
+                    .queue(province_id.index() as i16);
             } else if pending_stage == 1 {
                 self.nations.majors[nation].economy.pending_actions
                     [PendingActionKind::VillageDevelopment]
-                    .queue(province_id.get() as i16);
+                    .queue(province_id.index() as i16);
                 if self.nations.majors[nation].economy.pending_actions
                     [PendingActionKind::RailyardExpansion]
                     .status()

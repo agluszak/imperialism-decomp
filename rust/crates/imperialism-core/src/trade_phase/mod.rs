@@ -70,7 +70,7 @@ pub(super) struct RankedDeal {
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub(super) struct TradePhase {
     pub(super) recurring_grant: MinorNationTable<ResourceTable<i16>>,
-    pub(super) status_by_major: MinorNationTable<ResourceTable<[i16; MAJOR_NATION_COUNT]>>,
+    pub(super) status_by_major: MinorNationTable<ResourceTable<MajorNationTable<i16>>>,
     pub(super) deals: TradeCommodityTable<Vec<RankedDeal>>,
     pub(super) arms_basic_split: i16,
     pub(super) arms_advanced_split: i16,
@@ -234,8 +234,7 @@ impl GameState {
     }
 
     fn initialize_deal_books(&mut self) {
-        for slot in (0..MajorNationId::COUNT).rev() {
-            let nation = MajorNationId::new(slot);
+        for nation in MajorNationId::all().rev() {
             self.nations.majors[nation].economy.deal_book = TradeCommodityTable::default();
         }
     }
@@ -332,7 +331,7 @@ impl GameState {
     }
 
     fn random_eligible_peer(&mut self, nation: MajorNationId) -> Option<MajorNationId> {
-        let candidate = MajorNationId::new((self.rng.next_crt_rand() % 7) as u8);
+        let candidate = MajorNationId::new((self.rng.next_crt_rand() % 7) as usize);
         (self.major_is_trade_eligible(candidate)
             && !self.nations_at_war(candidate.nation(), nation.nation())
             && candidate != nation)
@@ -539,15 +538,15 @@ pub(super) fn compare_deals(a: &RankedDeal, b: &RankedDeal) -> i16 {
         -(b.price * i32::from(b.standing))
     };
     if score_a == score_b {
-        score_a = (i32::from(a.offer_amount) * i32::from(a.buyer.get())
+        score_a = (i32::from(a.offer_amount) * a.buyer.index() as i32
             + a.price
-            + i32::from(a.seller.get()) * i32::from(a.standing)
+            + a.seller.index() as i32 * i32::from(a.standing)
             + i32::from(a.category as u8))
             % 7;
         score_b = (i32::from(b.category as u8)
-            + i32::from(b.offer_amount) * i32::from(b.buyer.get())
+            + i32::from(b.offer_amount) * b.buyer.index() as i32
             + b.price
-            + i32::from(b.seller.get()) * i32::from(b.standing))
+            + b.seller.index() as i32 * i32::from(b.standing))
             % 7;
     }
     if score_a <= score_b { -1 } else { 1 }
@@ -558,7 +557,7 @@ pub(super) fn compare_by_nation(
     b: &TradeDealBookEntry,
     rng: &mut RngState,
 ) -> i16 {
-    compare_relationship(i16::from(a.nation.get()), i16::from(b.nation.get()), rng)
+    compare_relationship(a.nation.index() as i16, b.nation.index() as i16, rng)
 }
 
 pub(super) fn compare_relationship(a_key: i16, b_key: i16, rng: &mut RngState) -> i16 {
@@ -596,8 +595,7 @@ mod tests {
         let mut state = game_state();
         let buyer = MajorNationId::new(0);
         let seller = MajorNationId::new(1);
-        for slot in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(slot);
+        for nation in MajorNationId::all() {
             seed_merchant_capacity(&mut state.nations.majors[nation].city);
             state.nations.majors[nation].city.stockpile[ResourceKind::Clothing] = 10;
             state.nations.majors[nation].city.stockpile[ResourceKind::Timber] = 12;

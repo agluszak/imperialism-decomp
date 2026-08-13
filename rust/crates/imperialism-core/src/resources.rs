@@ -36,7 +36,20 @@ pub type ResourceTable<T> = EnumMap<ResourceKind, T>;
 
 impl ResourceKind {
     pub const LENGTH: usize = enum_map::enum_len::<Self>();
-    pub const PURCHASED_COUNT: usize = Self::Grain as usize;
+
+    /// Manufactured and processed resources from food through arms.
+    pub const FOOD_THROUGH_ARMS: [Self; 10] = [
+        Self::Food,
+        Self::Fabric,
+        Self::Lumber,
+        Self::Paper,
+        Self::Steel,
+        Self::Fuel,
+        Self::Clothing,
+        Self::Furniture,
+        Self::Hardware,
+        Self::Arms,
+    ];
 
     pub fn from_index(index: u8) -> Option<Self> {
         (usize::from(index) < Self::LENGTH).then(|| Self::from_usize(usize::from(index)))
