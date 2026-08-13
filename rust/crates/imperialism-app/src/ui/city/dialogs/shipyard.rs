@@ -416,7 +416,7 @@ pub(in crate::ui::city) fn sync_shipyard_details(
         return;
     }
     let nation = city_active_nation(&session);
-    let city = &session.0.nations().major(nation).city;
+    let city = &session.game.nations().major(nation).city;
     let row = rows
         .iter()
         .find(|row| row.slot == selection.slot)

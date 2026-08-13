@@ -50,7 +50,7 @@ fn bind_technology_advance(
 ) {
     let root = *root;
     let tech_id = session
-        .0
+        .game
         .current_technology_report()
         .expect("technology screen requires a core technology continuation");
     bind_game_status_display(&mut commands, &mut assets, root, &children, &tags, &session);
@@ -93,7 +93,7 @@ fn on_technology_advance_activate(
     mut next_state: ResMut<NextState<AppState>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    root: Query<Entity, With<TechnologyAdvanceRoot>>,
+    root: Option<Single<Entity, With<TechnologyAdvanceRoot>>>,
     mut assets: RetailUiAssets,
     retail: Res<RetailAssetsResource>,
     mut commands: Commands,
@@ -102,14 +102,14 @@ fn on_technology_advance_activate(
         return;
     }
     match session
-        .0
+        .game
         .acknowledge_technology_report(retail.assets().news_table().story_ids())
     {
         TurnStop::TechnologyAdvance(tech_id) => {
-            let Ok(root) = root.single() else {
+            let Some(root) = root else {
                 return;
             };
-            fill_technology_advance(&mut commands, &mut assets, root, &children, &tags, tech_id);
+            fill_technology_advance(&mut commands, &mut assets, *root, &children, &tags, tech_id);
         }
         stop => apply_turn_stop(stop, &mut next_state),
     }

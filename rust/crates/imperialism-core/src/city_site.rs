@@ -539,7 +539,7 @@ mod tests {
             1,
             &crate::test_support::random_game_names(),
         );
-        enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6));
+        enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6), &[]);
         assert_opening_civilians(&state, MajorNationId::new(6), 5);
         for slot in 0..MajorNationId::COUNT {
             let nation = MajorNationId::new(slot);

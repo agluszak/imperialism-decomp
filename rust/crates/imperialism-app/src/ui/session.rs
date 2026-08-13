@@ -5,7 +5,9 @@ use crate::AppState;
 
 /// Authoritative in-memory game owned by the running Bevy app.
 #[derive(Resource, Debug, PartialEq)]
-pub(crate) struct GameSession(pub(crate) GameState);
+pub(crate) struct GameSession {
+    pub(crate) game: GameState,
+}
 
 /// Maps one core turn stop onto the matching Bevy screen.
 pub(crate) fn apply_turn_stop(stop: TurnStop, next_state: &mut NextState<AppState>) {

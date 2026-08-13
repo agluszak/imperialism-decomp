@@ -265,7 +265,7 @@ pub(crate) fn commit_loaded_game(
 ) -> Result<(GameSession, AppState), LoadGameError> {
     let game = loaded?;
     let destination = loaded_game_destination(&game);
-    Ok((GameSession(game), destination))
+    Ok((GameSession { game }, destination))
 }
 
 fn loaded_game_destination(game: &GameState) -> AppState {
@@ -544,9 +544,9 @@ fn sync_load_save_preview(
             let Some(session) = session else {
                 return;
             };
-            let selected = session.0.turn().active_nation;
+            let selected = session.game.turn().active_nation;
             let pixels =
-                satellite_preview_indices(|tile| session.0.map()[tile].owner_nation, selected);
+                satellite_preview_indices(|tile| session.game.map()[tile].owner_nation, selected);
             apply_satellite_preview(&mut commands, &mut assets, entity, image_node, &pixels);
         }
         LoadSavePreviewKey::Slot(slot) => {
@@ -739,7 +739,7 @@ fn confirm_or_apply(
                 commands,
                 save_dir,
                 slot,
-                session.map(|session| &session.0),
+                session.map(|session| &session.game),
                 next_state,
                 screen_state,
                 None,
@@ -765,7 +765,7 @@ fn confirm_or_apply(
                 commands,
                 save_dir,
                 slot,
-                &session.0,
+                &session.game,
                 &label,
                 returning,
                 next_state,
@@ -941,7 +941,7 @@ fn on_load_save_notice_activate(
                 &mut commands,
                 &save_dir.0,
                 slot,
-                session.as_deref().map(|session| &session.0),
+                session.as_deref().map(|session| &session.game),
                 &mut next_state,
                 *state.get(),
                 Some(&*assets),
@@ -1249,14 +1249,16 @@ mod tests {
             OverwritePolicy::CreateNew,
         )
         .unwrap();
-        let session = GameSession(original.clone());
+        let session = GameSession {
+            game: original.clone(),
+        };
         let result = commit_loaded_game(load_slot(
             dir.path(),
             SaveSlot::Numbered(0),
             runtime_context_for_load(Some(&original), original.turn().selected_nation),
         ));
         assert!(result.is_err());
-        assert_eq!(session.0, original);
+        assert_eq!(session.game, original);
     }
 
     #[test]
@@ -1270,7 +1272,7 @@ mod tests {
             runtime_context_for_load(Some(&original), original.turn().selected_nation),
         ))
         .unwrap();
-        assert_eq!(session.0, original);
+        assert_eq!(session.game, original);
         assert_eq!(destination, AppState::StrategicMap);
     }
 

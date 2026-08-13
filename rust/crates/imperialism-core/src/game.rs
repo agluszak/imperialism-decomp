@@ -165,10 +165,10 @@ impl GameState {
     }
 
     /// Applies the retail map edge-scroll mask to the strategic viewport.
-    pub fn scroll_map_viewport(&mut self, edge_mask: u8) -> bool {
+    pub fn scroll_map_viewport(&mut self, edges: MapEdges) -> bool {
         let next = self
             .map
-            .scrolled_viewport_origin(self.map_view_origin, edge_mask);
+            .scrolled_viewport_origin(self.map_view_origin, edges);
         if next == self.map_view_origin {
             return false;
         }

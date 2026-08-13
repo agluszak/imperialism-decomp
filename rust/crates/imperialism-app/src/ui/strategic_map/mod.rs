@@ -122,12 +122,12 @@ pub(crate) fn sync_strategic_base_terrain(
     )>,
 ) {
     for (mut canvas, image_node, selected) in &mut maps {
-        let key = strategic_map_compose_key(&session.0, selected.0);
+        let key = strategic_map_compose_key(&session.game, selected.0);
         if canvas.composed == Some(key) {
             continue;
         }
         let image = compose_strategic_map(
-            &session.0,
+            &session.game,
             canvas.sprites(),
             retail_assets.assets().default_dib_palette(),
             selected.0,

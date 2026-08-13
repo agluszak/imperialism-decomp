@@ -241,9 +241,9 @@ fn bind_trade_screen(
         fourcc!("topB"),
         Some(fourcc!("tool")),
     );
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Trade active nation is a major nation");
-    session.0.recall_player_trade_orders(nation);
+    session.game.recall_player_trade_orders(nation);
     bind_game_status_display(
         &mut commands,
         &mut assets,
@@ -298,7 +298,7 @@ fn bind_trade_screen(
         assets.palette_color(0x13),
         pictures,
         assets.palette_color(0x37),
-        session.0.technology().oil_drilling_available(),
+        session.game.technology().oil_drilling_available(),
     );
 }
 
@@ -490,9 +490,9 @@ fn trade_row_overlay(
 }
 
 fn remember_trade_orders(mut session: ResMut<GameSession>) {
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Trade active nation is a major nation");
-    session.0.remember_trade_bids(nation);
+    session.game.remember_trade_bids(nation);
 }
 
 fn on_trade_activate(
@@ -506,25 +506,29 @@ fn on_trade_activate(
     if disabled {
         return;
     }
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Trade active nation is a major nation");
     match *action {
         TradeAction::Card { commodity, kind } => {
-            let current = session.0.player_trade_order(nation, commodity);
+            let current = session.game.player_trade_order(nation, commodity);
             let order = match (kind, current) {
                 (TradeCardKind::Bid, PlayerTradeOrder::Buy)
                 | (TradeCardKind::Offer, PlayerTradeOrder::Sell(_)) => PlayerTradeOrder::None,
                 (TradeCardKind::Bid, _) => PlayerTradeOrder::Buy,
                 (TradeCardKind::Offer, _) => PlayerTradeOrder::Sell(i16::MAX),
             };
-            session.0.set_player_trade_order(nation, commodity, order);
+            session
+                .game
+                .set_player_trade_order(nation, commodity, order);
         }
         TradeAction::Step { commodity, delta } => {
             if matches!(
-                session.0.player_trade_order(nation, commodity),
+                session.game.player_trade_order(nation, commodity),
                 PlayerTradeOrder::Sell(_)
             ) {
-                session.0.step_player_trade_offer(nation, commodity, delta);
+                session
+                    .game
+                    .step_player_trade_offer(nation, commodity, delta);
             }
         }
         TradeAction::Amount(_) => {}
@@ -552,17 +556,17 @@ fn on_trade_amount_bar_click(
     let Some(normalized) = cursor.normalized.filter(|_| cursor.cursor_over()) else {
         return;
     };
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Trade active nation is a major nation");
     if !matches!(
-        session.0.player_trade_order(nation, commodity),
+        session.game.player_trade_order(nation, commodity),
         PlayerTradeOrder::Sell(_)
     ) {
         return;
     }
     click.propagate(false);
     let capacity = session
-        .0
+        .game
         .nations()
         .major(nation)
         .economy
@@ -574,13 +578,13 @@ fn on_trade_amount_bar_click(
     let x = (((normalized.x + 0.5) * 100.0).floor() as i16).clamp(0, 99);
     if x == 0 {
         session
-            .0
+            .game
             .set_player_trade_order(nation, commodity, PlayerTradeOrder::None);
         return;
     }
     let quantity = i32::from(x) * i32::from(capacity) / 100 + 1;
     session
-        .0
+        .game
         .set_player_trade_order(nation, commodity, PlayerTradeOrder::Sell(quantity as i16));
 }
 
@@ -592,20 +596,20 @@ fn sync_trade_text(
     if !session.is_changed() && roots.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Trade active nation is a major nation");
-    let major = session.0.nations().major(nation);
+    let major = session.game.nations().major(nation);
     let capacity = major.economy.capacities.trade_offer;
     for (display, mut text) in &mut texts {
         match *display {
             TradeDisplay::Sell(commodity) => {
-                text.0 = match session.0.player_trade_order(nation, commodity) {
+                text.0 = match session.game.player_trade_order(nation, commodity) {
                     PlayerTradeOrder::Sell(quantity) => quantity.to_string(),
                     _ => String::new(),
                 };
             }
             TradeDisplay::Price(commodity) => {
-                text.0 = format_currency(session.0.market().rows[commodity].price);
+                text.0 = format_currency(session.game.market().rows[commodity].price);
             }
             TradeDisplay::Stock(commodity) => {
                 let stock = major.city.stockpile[commodity.resource()];
@@ -631,10 +635,10 @@ fn sync_trade_visual(
     if !session.is_changed() && roots.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Trade active nation is a major nation");
     let capacity = session
-        .0
+        .game
         .nations()
         .major(nation)
         .economy
@@ -649,7 +653,7 @@ fn sync_trade_visual(
         else {
             continue;
         };
-        let order = session.0.player_trade_order(nation, *commodity);
+        let order = session.game.player_trade_order(nation, *commodity);
         let active = match kind {
             TradeCardKind::Bid => order == PlayerTradeOrder::Buy,
             TradeCardKind::Offer => matches!(order, PlayerTradeOrder::Sell(_)),
@@ -673,7 +677,7 @@ fn sync_trade_visual(
         let TradeDisplay::Gauge(commodity) = *display else {
             continue;
         };
-        let quantity = match session.0.player_trade_order(nation, commodity) {
+        let quantity = match session.game.player_trade_order(nation, commodity) {
             PlayerTradeOrder::Sell(quantity) => quantity,
             _ => 0,
         };
@@ -691,14 +695,16 @@ fn sync_trade_presence(
     if !session.is_changed() && roots.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Trade active nation is a major nation");
-    let major = session.0.nations().major(nation);
+    let major = session.game.nations().major(nation);
     let capacity = major.economy.capacities.trade_offer;
-    let advanced_trade_unlocked = session.0.technology().oil_drilling_available();
+    let advanced_trade_unlocked = session.game.technology().oil_drilling_available();
     let bid_count = TRADE_ROWS
         .iter()
-        .filter(|row| session.0.player_trade_order(nation, row.commodity) == PlayerTradeOrder::Buy)
+        .filter(|row| {
+            session.game.player_trade_order(nation, row.commodity) == PlayerTradeOrder::Buy
+        })
         .count();
 
     for (entity, display) in &displays {
@@ -711,7 +717,7 @@ fn sync_trade_presence(
             TradeDisplay::Card {
                 commodity, kind, ..
             } => {
-                let order = session.0.player_trade_order(nation, commodity);
+                let order = session.game.player_trade_order(nation, commodity);
                 let active = match kind {
                     TradeCardKind::Bid => order == PlayerTradeOrder::Buy,
                     TradeCardKind::Offer => matches!(order, PlayerTradeOrder::Sell(_)),
@@ -731,7 +737,7 @@ fn sync_trade_presence(
                 }
             }
             TradeDisplay::Step(commodity) => {
-                let quantity = match session.0.player_trade_order(nation, commodity) {
+                let quantity = match session.game.player_trade_order(nation, commodity) {
                     PlayerTradeOrder::Sell(quantity) => quantity,
                     _ => 0,
                 };
@@ -744,7 +750,7 @@ fn sync_trade_presence(
                 let visible = capacity > 0
                     && trade_row_available(advanced_trade_unlocked, commodity)
                     && matches!(
-                        session.0.player_trade_order(nation, commodity),
+                        session.game.player_trade_order(nation, commodity),
                         PlayerTradeOrder::Sell(quantity) if quantity > 0
                     );
                 commands.entity(entity).insert(if visible {
@@ -757,7 +763,7 @@ fn sync_trade_presence(
                 let visible = capacity > 0
                     && trade_row_available(advanced_trade_unlocked, commodity)
                     && matches!(
-                        session.0.player_trade_order(nation, commodity),
+                        session.game.player_trade_order(nation, commodity),
                         PlayerTradeOrder::Sell(quantity) if quantity > 0
                     );
                 commands.entity(entity).insert(if visible {
@@ -784,9 +790,8 @@ fn sync_trade_presence(
 fn trade_advisory_needed(major: &MajorNation, kind: TradeAdvisoryKind) -> bool {
     let city = &major.city;
     let economy = &major.economy;
-    let building = |slot| {
-        i32::from(city.building_type(slot, economy, major.common.owned_region_count() as i32))
-    };
+    let building =
+        |slot| i32::from(city.building_type(slot, economy, major.common.owned_region_count()));
     let stock_and_target = |resource| {
         i32::from(city.stockpile[resource]) + i32::from(economy.need_target_by_type[resource])
     };
@@ -1061,7 +1066,7 @@ mod tests {
             ButtonPlugin,
         ))
         .insert_state(AppState::Trade)
-        .insert_resource(GameSession(state))
+        .insert_resource(GameSession { game: state })
         .add_systems(
             Update,
             (bind_test_trade, sync_trade_visual, sync_trade_presence).chain(),
@@ -1109,7 +1114,7 @@ mod tests {
         assert_eq!(
             app.world()
                 .resource::<GameSession>()
-                .0
+                .game
                 .player_trade_order(nation, commodity),
             PlayerTradeOrder::Buy
         );
@@ -1156,7 +1161,7 @@ mod tests {
         let PlayerTradeOrder::Sell(quantity) = app
             .world()
             .resource::<GameSession>()
-            .0
+            .game
             .player_trade_order(nation, commodity)
         else {
             panic!("clicking the offer card must create a sell order");
@@ -1179,7 +1184,7 @@ mod tests {
         assert_eq!(
             app.world()
                 .resource::<GameSession>()
-                .0
+                .game
                 .player_trade_order(nation, commodity),
             PlayerTradeOrder::Sell(quantity - 1)
         );
