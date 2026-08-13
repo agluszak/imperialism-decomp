@@ -1629,7 +1629,27 @@ fn sync_diplomacy_information(
             _ => map_key.owner.clone(),
         };
     }
-    sync_council_text(state, &assets, &mut council_text);
+    let council = council_panel_text(state, &assets);
+    for (field, mut text, mut visibility) in &mut council_text {
+        match field.0 {
+            0 => {
+                text.0.clone_from(&council.title);
+                *visibility = Visibility::Visible;
+            }
+            index => {
+                let row = usize::from((index - 1) / 2);
+                let is_value = index % 2 == 0;
+                if let Some(rows) = &council.rows {
+                    text.0
+                        .clone_from(if is_value { &rows[row].1 } else { &rows[row].0 });
+                    *visibility = Visibility::Visible;
+                } else {
+                    text.0.clear();
+                    *visibility = Visibility::Hidden;
+                }
+            }
+        }
+    }
 
     for (label, mut text, mut node, mut visibility) in &mut labels {
         let Some(anchor) = representative_tile_for_nation(state, label.nation) else {
@@ -1722,18 +1742,17 @@ fn sync_diplomacy_information(
                 let show = mode == 2
                     && framed_major.is_some_and(|major| {
                         state.nations().major(major).economy.colony_boycott_flags[icon.nation] != 0
+                    })
+                    && !framed_trade.is_some_and(|common| {
+                        common.trade_policy_by_nation[icon.nation] == TradePolicyScore::BOYCOTT
                     });
-                let atlas_offset = if !show {
-                    None
-                } else if framed_trade.is_some_and(|common| {
-                    common.trade_policy_by_nation[icon.nation] == TradePolicyScore::BOYCOTT
-                }) {
-                    None
-                } else {
+                let atlas_offset = if show {
                     offset_overlay = framed_trade.is_some_and(|common| {
                         common.trade_policy_by_nation[icon.nation] != TradePolicyScore::NEUTRAL
                     });
                     Some(0xc0)
+                } else {
+                    None
                 };
                 (
                     representative_tile_for_nation(state, icon.nation),
@@ -1895,29 +1914,18 @@ fn diplomacy_relationship_fill(state: &GameState, framed: NationId, nation: Nati
     }
 }
 
-fn sync_council_text(
-    state: &GameState,
-    assets: &RetailUiAssets,
-    council_text: &mut Query<
-        (&DiplomacyCouncilText, &mut Text, &mut Visibility),
-        (
-            Without<DiplomacyInfoText>,
-            Without<DiplomacyNationLabel>,
-            Without<DiplomacyMapKeyMajorName>,
-        ),
-    >,
-) {
+struct CouncilPanelText {
+    title: String,
+    rows: Option<[(String, String); 3]>,
+}
+
+fn council_panel_text(state: &GameState, assets: &RetailUiAssets) -> CouncilPanelText {
     let congress = &state.diplomacy().congress;
-    let in_session = congress.chairman.is_some();
-    let title = if in_session {
+    if let (Some(chairman), Some(counterpart)) = (congress.chairman, congress.counterpart) {
         let decade = (state.turn().economic_turn / 4) / 10 * 10 + 1815;
-        fill_brackets(&get_string(assets, 0x2733, 0x35), &[&decade.to_string()])
-    } else {
-        get_string(assets, 0x2733, 0x34)
-    };
-    let rows =
-        if let (Some(chairman), Some(counterpart)) = (congress.chairman, congress.counterpart) {
-            [
+        CouncilPanelText {
+            title: fill_brackets(&get_string(assets, 0x2733, 0x35), &[&decade.to_string()]),
+            rows: Some([
                 (
                     format!(
                         "{}:",
@@ -1942,35 +1950,15 @@ fn sync_council_text(
                     get_string(assets, 0x2733, 0x36),
                     congress.neutral_support.to_string(),
                 ),
-            ]
-        } else {
-            Default::default()
-        };
-    for (field, mut text, mut visibility) in council_text.iter_mut() {
-        match field.0 {
-            0 => {
-                text.0 = title.clone();
-                *visibility = Visibility::Visible;
-            }
-            index => {
-                let row = usize::from((index - 1) / 2);
-                let is_value = index % 2 == 0;
-                if in_session {
-                    text.0 = if is_value {
-                        rows[row].1.clone()
-                    } else {
-                        rows[row].0.clone()
-                    };
-                    *visibility = Visibility::Visible;
-                } else {
-                    text.0.clear();
-                    *visibility = Visibility::Hidden;
-                }
-            }
+            ]),
+        }
+    } else {
+        CouncilPanelText {
+            title: get_string(assets, 0x2733, 0x34),
+            rows: None,
         }
     }
 }
-
 fn representative_tile_for_nation(state: &GameState, nation: NationId) -> Option<TileId> {
     let home_region_class = state
         .nations()
