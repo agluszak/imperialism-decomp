@@ -14,6 +14,7 @@ mod create_random_game;
 mod deal_book;
 mod difficulty;
 mod diplomacy;
+mod diplomacy_phase;
 mod game;
 mod ids;
 mod map;
@@ -73,9 +74,9 @@ pub use deal_book::{
 };
 pub use difficulty::Difficulty;
 pub use diplomacy::{
-    DiplomacyGrant, DiplomacyPolicy, DiplomacyState, DiplomaticCongressState,
-    DiplomaticMissionLevel, DiplomaticRelationship, PlayerDiplomacyOrderResult,
-    PlayerDiplomacyRejection, TradePolicyScore,
+    DiplomacyGrant, DiplomacyOfferPrompt, DiplomacyPhaseResult, DiplomacyPolicy, DiplomacyState,
+    DiplomaticCongressState, DiplomaticMissionLevel, DiplomaticRelationship,
+    PlayerDiplomacyOrderResult, PlayerDiplomacyRejection, TradePolicyScore,
 };
 pub use game::{GameState, GameStateParts};
 pub use ids::{

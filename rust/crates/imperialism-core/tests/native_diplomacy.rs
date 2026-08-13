@@ -63,3 +63,13 @@ fn aid_allocation() {
     })
     .unwrap();
 }
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn diplomacy_phase_applies_grant_and_consulate() {
+    compare_native(
+        "diplomacy_phase_applies_grant_and_consulate",
+        |state, (): ()| state.do_diplomacy(),
+    )
+    .unwrap();
+}

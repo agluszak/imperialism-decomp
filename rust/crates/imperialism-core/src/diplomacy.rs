@@ -284,6 +284,20 @@ pub enum DiplomacyPolicy {
 }
 
 impl DiplomacyPolicy {
+    pub const fn try_from_retail(value: i16) -> Option<Self> {
+        match value {
+            0x12d => Some(Self::JoinEmpire),
+            0x12e => Some(Self::Alliance),
+            0x12f => Some(Self::NonAggressionPact),
+            0x130 => Some(Self::PeaceTreaty),
+            0x131 => Some(Self::DeclareWar),
+            0x132 => Some(Self::JoinEmpireWithWarEntanglements),
+            0x133 => Some(Self::BuildConsulate),
+            0x134 => Some(Self::BuildEmbassy),
+            _ => None,
+        }
+    }
+
     pub const fn retail(self) -> i16 {
         match self {
             Self::JoinEmpire => 0x12d,
@@ -296,6 +310,26 @@ impl DiplomacyPolicy {
             Self::BuildEmbassy => 0x134,
         }
     }
+}
+
+/// Outcome of one diplomacy-resolution pass.
+///
+/// Retail stops in the reply loop for a human offer dialog. War-join prompts
+/// belong to the later queued-war command, not this pass.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum DiplomacyPhaseResult {
+    Resolved,
+    Offer(DiplomacyOfferPrompt),
+}
+
+/// One human offer that retail would pose as a diplomacy-offer dialog.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct DiplomacyOfferPrompt {
+    pub nation: MajorNationId,
+    pub index: u8,
+    pub source: NationId,
+    pub policy: DiplomacyPolicy,
 }
 
 const PLAYER_DIPLOMACY_GRANT_AMOUNTS: [i32; 4] = [1_000, 3_000, 5_000, 10_000];
@@ -489,7 +523,7 @@ impl GameState {
         selected
     }
 
-    fn major_is_event_eligible(&self, nation: MajorNationId) -> bool {
+    pub(crate) fn major_is_event_eligible(&self, nation: MajorNationId) -> bool {
         !matches!(
             self.nations.majors[nation].common.status(),
             CountryStatus::ProtectorateOf(_)

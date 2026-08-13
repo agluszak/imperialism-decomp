@@ -10,6 +10,125 @@ impl PendingWorkState {
     }
 }
 
+impl GameState {
+    /// `TNewsMgr::AddTreatyEvent` for a single-player pass.
+    pub(crate) fn add_treaty_event(
+        &mut self,
+        event: InterNationNewsKind,
+        nation_a: NationId,
+        nation_b: NationId,
+    ) {
+        let code = event.retail();
+        if code >= InterNationNewsKind::NonAggressionPactAccepted.retail() && code < 0x16 {
+            self.concatenate_treaty(event, nation_a, nation_b);
+            return;
+        }
+
+        if self.treaty_event_already_queued(event, nation_a, nation_b) {
+            return;
+        }
+
+        if let Some(subject) = MajorNationId::from_nation(nation_a) {
+            self.pending
+                .queue_newspaper_event(inter_nation_event(event, subject, nation_b));
+        }
+        if MajorNationId::from_nation(nation_b).is_some()
+            && code > InterNationNewsKind::WarDeclaredAgainstSubject.retail()
+            && code < InterNationNewsKind::WarWithIndependentMinor.retail()
+        {
+            let subject = MajorNationId::from_nation(nation_b).expect("checked major");
+            self.pending
+                .queue_newspaper_event(inter_nation_event(event, subject, nation_a));
+        }
+    }
+
+    fn concatenate_treaty(
+        &mut self,
+        event: InterNationNewsKind,
+        nation_a: NationId,
+        nation_b: NationId,
+    ) {
+        let mut nation_a_handled = MajorNationId::from_nation(nation_a).is_none();
+        let mut nation_b_handled = MajorNationId::from_nation(nation_b).is_none();
+        let code = event.retail();
+        if (code >= InterNationNewsKind::PeaceTreatyRejected.retail()
+            && code <= InterNationNewsKind::NonAggressionPactRejected.retail())
+            || event == InterNationNewsKind::TradeConsulateEstablished
+            || event == InterNationNewsKind::EmbassyEstablished
+        {
+            nation_b_handled = true;
+        }
+
+        for pending in &mut self.pending.newspaper_events {
+            let PendingNewspaperEvent::InterNation {
+                event: queued,
+                subject,
+                related_nations,
+            } = pending
+            else {
+                continue;
+            };
+            if *queued != event {
+                continue;
+            }
+            if !nation_a_handled && subject.nation() == nation_a {
+                related_nations[nation_b] = true;
+                nation_a_handled = true;
+            }
+            if !nation_b_handled && subject.nation() == nation_b {
+                related_nations[nation_a] = true;
+                nation_b_handled = true;
+            }
+        }
+
+        if !nation_a_handled {
+            let subject = MajorNationId::from_nation(nation_a).expect("major subject");
+            self.pending
+                .queue_newspaper_event(inter_nation_event(event, subject, nation_b));
+        }
+        if !nation_b_handled {
+            let subject = MajorNationId::from_nation(nation_b).expect("major subject");
+            self.pending
+                .queue_newspaper_event(inter_nation_event(event, subject, nation_a));
+        }
+    }
+
+    fn treaty_event_already_queued(
+        &self,
+        event: InterNationNewsKind,
+        nation_a: NationId,
+        nation_b: NationId,
+    ) -> bool {
+        self.pending.newspaper_events.iter().any(|pending| {
+            let PendingNewspaperEvent::InterNation {
+                event: queued,
+                subject,
+                related_nations,
+            } = pending
+            else {
+                return false;
+            };
+            *queued == event
+                && ((subject.nation() == nation_a && related_nations[nation_b])
+                    || (subject.nation() == nation_b && related_nations[nation_a]))
+        })
+    }
+}
+
+fn inter_nation_event(
+    event: InterNationNewsKind,
+    subject: MajorNationId,
+    related: NationId,
+) -> PendingNewspaperEvent {
+    let mut related_nations = NationTable::default();
+    related_nations[related] = true;
+    PendingNewspaperEvent::InterNation {
+        event,
+        subject,
+        related_nations,
+    }
+}
+
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct PendingWorkState {
     pub nations: MajorNationTable<NationPendingWork>,
@@ -94,6 +213,33 @@ pub enum InterNationNewsKind {
     NationJoinedEmpire,
     NationJoinedWar,
     NationTransferred,
+}
+
+impl InterNationNewsKind {
+    pub(crate) const fn retail(self) -> i32 {
+        match self {
+            Self::WarDeclaredBySubject => 0x00,
+            Self::WarDeclaredAgainstSubject => 0x01,
+            Self::PeaceTreatyAccepted => 0x02,
+            Self::JoinEmpireAccepted => 0x03,
+            Self::AllianceAccepted => 0x04,
+            Self::NonAggressionPactAccepted => 0x05,
+            Self::PeaceTreatyRejected => 0x07,
+            Self::JoinEmpireRejected => 0x09,
+            Self::AllianceRejected => 0x0b,
+            Self::NonAggressionPactRejected => 0x0d,
+            Self::TradeConsulateEstablished => 0x12,
+            Self::EmbassyEstablished => 0x14,
+            Self::MinorEmpireAffiliationChanged => 0x16,
+            Self::MinorTerritoryRelationshipAffected => 0x17,
+            Self::PeaceRelationshipPropagated => 0x18,
+            Self::WarWithIndependentMinor => 0x19,
+            Self::AllianceRelationshipEstablished => 0x1a,
+            Self::NationJoinedEmpire => 0x1b,
+            Self::NationJoinedWar => 0x1c,
+            Self::NationTransferred => 0x1d,
+        }
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
