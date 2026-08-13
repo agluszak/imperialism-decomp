@@ -48,9 +48,7 @@ pub(crate) fn city() -> CityState {
         stockpile: crate::Stockpile::default(),
         production_orders: ProductionTable::default(),
         production_accum: ProductionTable::default(),
-        production_flags: ProductionTable::default(),
-        production_current: ProductionTable::default(),
-        production_progress: ProductionTable::default(),
+        building_windows: ProductionTable::default(),
         population_growth_penalty_ticks: 0,
         unmet_resource_retries: ResourceTable::default(),
         consumed_production_input_by_type: ResourceTable::default(),
@@ -153,6 +151,7 @@ pub(crate) fn game_state() -> GameState {
             crate::MapTopology::Bounded,
             vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
         ),
+        map_view_origin: TileId::new(1),
         ocean: Ocean::default(),
         rng: RngState {
             crt_rand: RetailCrtRng::from_state(1),

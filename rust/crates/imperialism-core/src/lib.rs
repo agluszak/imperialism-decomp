@@ -49,8 +49,8 @@ pub use ai::{
 };
 pub use calendar::TurnCalendar;
 pub use city::{
-    BuildingWindowState, CIVILIAN_RESOURCE_SPECIALTIES, CityFacilitySlot, CityOrderId, CityOrders,
-    CityState, ExpandableFacility, ExpansionOrderTable, ItemOrderTable, ManufacturedItem,
+    CIVILIAN_RESOURCE_SPECIALTIES, CityFacilitySlot, CityOrderId, CityOrders, CityState,
+    CityWindowPosition, ExpandableFacility, ExpansionOrderTable, ItemOrderTable, ManufacturedItem,
     MilitaryRecruitOrderState, MilitaryRecruitOrderTable, MilitaryRecruitmentCategory, OrderLimit,
     PowerPlantOrderState, ProductionConstraint, ProductionProgress, RecruitmentOrderSpec,
     RequestedCityOrderState, ResourceCost, ShipMaterials, ShipOrderSlot, ShipOrderState,

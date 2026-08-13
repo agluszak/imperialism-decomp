@@ -4,10 +4,7 @@ use super::*;
 /// `TCitySiteView` owned-territory clamp and the base `TMapDialog` viewport clamp.
 /// At the Normal+ start boundary the human nation has no home tile, so retail includes
 /// every tile it owns in both the representative and CitySite bounds.
-pub(super) fn initialize_capital_selection_view_origin(
-    world: &mut MapMgr,
-    human_nation: MajorNationId,
-) {
+pub(super) fn capital_selection_view_origin(world: &MapMgr, human_nation: MajorNationId) -> TileId {
     const VIEWPORT_TILE_SPAN: i32 = 9;
 
     let owner = TileOwnerTag::from_nation(human_nation.nation());
@@ -74,9 +71,9 @@ pub(super) fn initialize_capital_selection_view_origin(
     }
     row = row.clamp(0, 0x35);
 
-    world.view_origin = geometry
+    geometry
         .tile(row as u16, column as u16)
-        .expect("capital-selection view origin is inside the strategic map");
+        .expect("capital-selection view origin is inside the strategic map")
 }
 pub(super) struct TilePostPassState {
     pub(super) tiles: Box<[TileState]>,

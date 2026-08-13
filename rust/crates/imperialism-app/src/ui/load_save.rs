@@ -190,7 +190,7 @@ pub(crate) fn load_slot(directory: &Path, slot: SaveSlot) -> Result<GameState, L
     let bytes = std::fs::read(&path)?;
     let selected_nation = peek_save_header(&bytes)
         .and_then(|header| NationId::try_new(header.active_nation))
-        .unwrap_or(NationId::new(0));
+        .ok_or(LoadGameError::Truncated)?;
     load_game_from_bytes(
         &bytes,
         LegacyGameStateContext {
@@ -518,9 +518,11 @@ fn sync_load_save_preview(
             let Some(owners) = peek_save_preview_owners(&bytes) else {
                 return;
             };
-            let selected = peek_save_header(&bytes)
-                .and_then(|header| NationId::try_new(header.active_nation))
-                .unwrap_or(NationId::new(0));
+            let Some(selected) =
+                peek_save_header(&bytes).and_then(|header| NationId::try_new(header.active_nation))
+            else {
+                return;
+            };
             let pixels = satellite_preview_indices(
                 |tile| owners.get(usize::from(tile.get())).copied().flatten(),
                 selected,
@@ -983,7 +985,7 @@ mod tests {
     fn fixture_state() -> GameState {
         let selected_nation = peek_save_header(BEGINNING_OF_GAME)
             .and_then(|header| NationId::try_new(header.active_nation))
-            .unwrap_or(NationId::new(0));
+            .expect("beginning-of-game fixture names a nation in range");
         LegacySaveV62::parse(BEGINNING_OF_GAME).game_state(LegacyGameStateContext {
             crt_rand_state: 1,
             map_generation_lcg: 0,

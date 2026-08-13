@@ -131,7 +131,7 @@ fn water_coast_corners_pull_distinct_frame_inks() {
     let terrain = synthetic_terrain_pictures();
     let rivers = synthetic_river_masks();
     let mut state = fixture_state();
-    let origin = state.map().view_origin;
+    let origin = state.map_view_origin();
     state.map_mut()[origin].terrain = TerrainKind::Water;
     state.map_mut()[origin].rendering = TileRendering::from_retail(0, 0, 0, 0b0000_0011).unwrap();
 
@@ -146,7 +146,7 @@ fn river_masks_replace_opaque_destination_indexes() {
     let terrain = synthetic_terrain_pictures();
     let rivers = synthetic_river_masks();
     let mut state = fixture_state();
-    let origin = state.map().view_origin;
+    let origin = state.map_view_origin();
     state.map_mut()[origin].terrain = TerrainKind::Plains;
     state.map_mut()[origin].gate = 0;
     state.map_mut()[origin].rendering = TileRendering::from_retail(0, 0x0b, 0, 0).unwrap();
@@ -162,11 +162,11 @@ fn bounded_seam_tiles_use_the_dedicated_seam_frame() {
     let mut state = fixture_state();
     // Force bounded topology and a center column past 54 so column 0 is a seam.
     let tiles = vec![TileState::default(); STRATEGIC_TILE_COUNT];
-    let mut world = MapMgr::new(MapTopology::Bounded, tiles);
+    let world = MapMgr::new(MapTopology::Bounded, tiles);
     let origin = world.geometry().tile(10, 51).unwrap();
-    world.view_origin = origin;
     let seam = world.geometry().tile(10, 0).unwrap();
     *state.map_mut() = world;
+    state.set_map_view_origin(origin);
 
     let pixels = compose_strategic_base_tile(&state, seam, &terrain, &rivers);
     assert!(
@@ -181,7 +181,7 @@ fn city_site_selection_draws_black_frame_and_neighbor_outline() {
     let mut state = fixture_state();
     let nation = MajorNationId::new(6);
     let owner = TileOwnerTag::from_nation(nation.nation());
-    let origin = state.map().view_origin;
+    let origin = state.map_view_origin();
     state.map_mut()[origin].owner_nation = Some(owner);
     state.map_mut()[origin].terrain = TerrainKind::Plains;
     let neighbors = state.map().geometry().neighbors(origin);
@@ -206,7 +206,7 @@ fn city_site_selection_draws_black_frame_and_neighbor_outline() {
 #[test]
 fn city_marker_offsets_follow_former_owner_and_development_stage() {
     let mut state = fixture_state();
-    let origin = state.map().view_origin;
+    let origin = state.map_view_origin();
     state.map_mut()[origin].flags = TileFlags::from_bits_retain(1);
     state.map_mut()[origin].former_owner_nation = Some(TileOwnerTag::from_nation(NationId::new(6)));
     assert_eq!(city_marker_offset(&state, origin), Some(0x6c0));
@@ -237,7 +237,7 @@ fn transport_marker_offsets_encode_port_depot_and_link_state() {
 fn completed_rails_use_the_later_mask_family_than_pending_rails() {
     let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
     let mut state = fixture_state();
-    let origin = state.map().view_origin;
+    let origin = state.map_view_origin();
     state.map_mut()[origin].terrain = TerrainKind::Plains;
     state.map_mut()[origin].gate = 0;
     state.map_mut()[origin].rendering = TileRendering::default();
@@ -267,7 +267,7 @@ fn completed_rails_use_the_later_mask_family_than_pending_rails() {
 fn prospectable_resources_use_extractive_overlay_or_undeveloped_icon() {
     let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
     let mut state = fixture_state();
-    let origin = state.map().view_origin;
+    let origin = state.map_view_origin();
     let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
     state.map_mut()[origin].terrain = TerrainKind::Hills;
     state.map_mut()[origin].gate = 2;
@@ -303,7 +303,7 @@ fn prospectable_resources_use_extractive_overlay_or_undeveloped_icon() {
 fn city_tiles_blit_the_capital_improvement_ink() {
     let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
     let mut state = fixture_state();
-    let origin = state.map().view_origin;
+    let origin = state.map_view_origin();
     state.map_mut()[origin].terrain = TerrainKind::Plains;
     state.map_mut()[origin].gate = 1;
     state.map_mut()[origin].flags = TileFlags::from_bits_retain(1);

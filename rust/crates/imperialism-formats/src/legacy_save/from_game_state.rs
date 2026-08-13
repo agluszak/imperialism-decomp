@@ -138,7 +138,7 @@ impl LegacySaveV62 {
             market: market_dto(state.market()),
             diplomacy: diplomacy_dto(state.diplomacy()),
             technology: technology_dto(state.technology()),
-            map: map_dto(state.map()),
+            map: map_dto(state.map(), state.map_view_origin()),
             ocean: ocean_dto(state.ocean()),
             navy: LegacyNavyState {
                 ships: Vec::new(),
@@ -441,11 +441,13 @@ fn ministers_dto(economy: &GreatPowerState) -> LegacyGreatPowerMinisters {
 
 fn city_dto(city: &CityState) -> LegacyCityState {
     let orders = &city.orders;
+    let (production_flags, production_current, production_progress) =
+        city_windows_to_retail(&city.building_windows);
     LegacyCityState {
         power_plant_upgrade_queued: u8::from(city.power_plant_upgrade_queued),
         low_production: u8::from(city.low_production),
         low_stock: u8::from(city.low_stock),
-        production_flags: *city.production_flags.as_array(),
+        production_flags,
         food_substitution_count: city.food_substitution_count,
         starvation_population_loss: city.starvation_population_loss,
         serialized_state: city.serialized_state,
@@ -459,8 +461,8 @@ fn city_dto(city: &CityState) -> LegacyCityState {
         production_accum: *city.production_accum.as_array(),
         unmet_resource_retries: resource_i16(&city.unmet_resource_retries),
         reserved_by_type: resource_i16(&city.reserved_by_type),
-        production_current: *city.production_current.as_array(),
-        production_progress: *city.production_progress.as_array(),
+        production_current,
+        production_progress,
         consumed_production_input_by_type: resource_i16(&city.consumed_production_input_by_type),
         rolling_item_production_score: city.rolling_item_production_score,
         population: LegacyPopulationState {
@@ -817,9 +819,9 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
     }
 }
 
-fn map_dto(map: &MapMgr) -> LegacyMapState {
+fn map_dto(map: &MapMgr, view_origin: TileId) -> LegacyMapState {
     LegacyMapState {
-        view_origin_tile: map.view_origin.get() as i16,
+        view_origin_tile: view_origin.get() as i16,
         map_data_ready: u8::from(map.map_data_ready),
         recruit_search_active: u8::from(map.recruit_search_active),
         city_score_total: map.city_score_total,

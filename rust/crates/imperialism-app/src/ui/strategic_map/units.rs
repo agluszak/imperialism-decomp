@@ -485,7 +485,7 @@ fn strategic_unit_project_key(state: &GameState) -> StrategicUnitProjectKey {
         unit.hash(&mut hasher);
     }
     StrategicUnitProjectKey {
-        view_origin: state.map().view_origin,
+        view_origin: state.map_view_origin(),
         active_nation: state.turn().active_nation,
         fleet_atlas: fleet_atlas_picture_id(state).get(),
         visible: hasher.finish(),
@@ -897,7 +897,7 @@ mod tests {
             assert!(x + TILE_SIZE > 0);
         });
         assert!(!seen.is_empty());
-        let (origin_row, _) = state.map().geometry().row_column(state.map().view_origin);
+        let (origin_row, _) = state.map().geometry().row_column(state.map_view_origin());
         let outside = state
             .map()
             .geometry()

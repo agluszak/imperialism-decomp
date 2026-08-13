@@ -243,7 +243,7 @@ fn strategic_map_compose_key(
         hash_visible_tile_facts(state, tile, &mut hasher);
     });
     StrategicMapComposeKey {
-        view_origin: state.map().view_origin,
+        view_origin: state.map_view_origin(),
         topology: state.map().topology,
         active_nation: state.turn().active_nation,
         selected_engineer,
@@ -301,7 +301,7 @@ pub(super) fn for_each_visible_strategic_tile(
     state: &GameState,
     mut visit: impl FnMut(TileId, i32, i32),
 ) {
-    let (origin_row, origin_column) = state.map().geometry().row_column(state.map().view_origin);
+    let (origin_row, origin_column) = state.map().geometry().row_column(state.map_view_origin());
     let origin_row = i32::from(origin_row);
     let origin_column = i32::from(origin_column);
 
@@ -475,7 +475,7 @@ fn draw_city_site_neighbor_outline(
 }
 
 pub(super) fn strategic_tile_screen_origin(state: &GameState, tile: TileId) -> (i32, i32) {
-    let (origin_row, origin_column) = state.map().geometry().row_column(state.map().view_origin);
+    let (origin_row, origin_column) = state.map().geometry().row_column(state.map_view_origin());
     let (row, column) = state.map().geometry().row_column(tile);
     let y = (i32::from(row) - i32::from(origin_row)) * TILE_SIZE;
     let mut x = (i32::from(column) - i32::from(origin_column)) * TILE_SIZE;
@@ -515,7 +515,7 @@ pub(super) fn compose_strategic_tile(
 ) -> Vec<u8> {
     let tile_state = state.map()[tile];
     let center_column = {
-        let (_, origin_column) = state.map().geometry().row_column(state.map().view_origin);
+        let (_, origin_column) = state.map().geometry().row_column(state.map_view_origin());
         (i32::from(origin_column) + VIEWPORT_TILE_SPAN / 2)
             .rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
     };
@@ -588,7 +588,7 @@ fn strategic_tile_at_position(state: &GameState, normalized: Vec2) -> Option<Til
     if !(0..VIEWPORT_WIDTH as i32).contains(&x) || !(0..VIEWPORT_HEIGHT as i32).contains(&y) {
         return None;
     }
-    let (origin_row, origin_column) = state.map().geometry().row_column(state.map().view_origin);
+    let (origin_row, origin_column) = state.map().geometry().row_column(state.map_view_origin());
     let row = i32::from(origin_row) + y / TILE_SIZE;
     if !(0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&row) {
         return None;

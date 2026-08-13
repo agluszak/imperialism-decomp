@@ -6,6 +6,8 @@ pub struct GameState {
     pub(crate) turn: TurnState,
     pub(crate) unit_ids: UnitIdAllocator,
     pub(crate) map: MapMgr,
+    /// Persisted strategic-map viewport origin. Retail saves this with the map blob.
+    pub(crate) map_view_origin: TileId,
     pub(crate) ocean: Ocean,
     pub(crate) rng: RngState,
     pub(crate) market: TradeMarketState,
@@ -33,6 +35,7 @@ pub struct GameStateParts {
     pub turn: TurnState,
     pub unit_ids: UnitIdAllocator,
     pub map: MapMgr,
+    pub map_view_origin: TileId,
     pub ocean: Ocean,
     pub rng: RngState,
     pub market: TradeMarketState,
@@ -55,6 +58,7 @@ impl GameState {
             turn: parts.turn,
             unit_ids: parts.unit_ids,
             map: parts.map,
+            map_view_origin: parts.map_view_origin,
             ocean: parts.ocean,
             rng: parts.rng,
             market: parts.market,
@@ -144,22 +148,33 @@ impl GameState {
         &mut self.map
     }
 
+    pub const fn map_view_origin(&self) -> TileId {
+        self.map_view_origin
+    }
+
     pub const fn ocean(&self) -> &Ocean {
         &self.ocean
     }
 
     /// Applies the retail map edge-scroll mask to the strategic viewport.
     pub fn scroll_map_viewport(&mut self, edge_mask: u8) -> bool {
-        self.map.scroll_viewport(edge_mask)
+        let next = self
+            .map
+            .scrolled_viewport_origin(self.map_view_origin, edge_mask);
+        if next == self.map_view_origin {
+            return false;
+        }
+        self.map_view_origin = next;
+        true
     }
 
     pub fn set_map_view_origin(&mut self, origin: TileId) {
-        self.map.view_origin = origin;
+        self.map_view_origin = origin;
     }
 
     /// Centers the strategic viewport on `tile` using retail 9-by-7 origin math.
     pub fn center_map_on(&mut self, tile: TileId) {
-        self.map.view_origin = self.map.viewport_origin_centered_on(tile);
+        self.map_view_origin = self.map.viewport_origin_centered_on(tile);
     }
 
     /// Sets whether a civilian unit kind is unlocked in the nation's University.

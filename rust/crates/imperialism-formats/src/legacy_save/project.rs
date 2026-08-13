@@ -459,9 +459,11 @@ impl LegacyCityState {
             stockpile: Stockpile::from_table(ResourceTable::from_array(self.stockpile)),
             production_orders: ProductionTable::from_array(self.production_orders),
             production_accum: ProductionTable::from_array(self.production_accum),
-            production_flags: ProductionTable::from_array(self.production_flags),
-            production_current: ProductionTable::from_array(self.production_current),
-            production_progress: ProductionTable::from_array(self.production_progress),
+            building_windows: city_windows_from_retail(
+                self.production_flags,
+                self.production_current,
+                self.production_progress,
+            ),
             // This constructed cache is not persisted by TCity::ReadFrom.
             population_growth_penalty_ticks: 0,
             unmet_resource_retries: ResourceTable::from_array(self.unmet_resource_retries),
@@ -537,7 +539,6 @@ impl LegacyMapState {
     }
 
     fn map_mgr(&self) -> MapMgr {
-        let view_origin = TileId::new(self.view_origin_tile as u16);
         let mut map = MapMgr::from_parts(
             self.topology(),
             self.tiles
@@ -546,7 +547,6 @@ impl LegacyMapState {
                 .collect::<Vec<_>>(),
             self.province_states(),
         );
-        map.view_origin = view_origin;
         map.map_data_ready = self.map_data_ready != 0;
         map.recruit_search_active = self.recruit_search_active != 0;
         map.city_score_total = self.city_score_total;
@@ -730,6 +730,7 @@ impl LegacySaveV62 {
             ..PendingWorkState::default()
         };
         let map = self.map.map_mgr();
+        let map_view_origin = TileId::new(self.map.view_origin_tile as u16);
         let ocean = ocean_state(&self.ocean, &map);
         let live_ocean_context_count = ocean.zones.len();
         let majors = MajorNationTable::from_array(std::array::from_fn(|slot| {
@@ -851,6 +852,7 @@ impl LegacySaveV62 {
             ),
             unit_ids: UnitIdAllocator::from_retail(persistent_unit_id_counter),
             map,
+            map_view_origin,
             ocean,
             rng: RngState {
                 crt_rand: RetailCrtRng::from_state(context.crt_rand_state),

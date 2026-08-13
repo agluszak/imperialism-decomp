@@ -647,6 +647,7 @@ mod tests {
                 crate::MapTopology::Bounded,
                 vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
             ),
+            map_view_origin: TileId::new(1),
             ocean: Ocean::default(),
             rng: RngState {
                 crt_rand: RetailCrtRng::from_state(1),

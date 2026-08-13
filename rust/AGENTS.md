@@ -43,6 +43,9 @@ semantics.
   core state into Bevy; ECS is not the gameplay database.
 - Keep one authoritative representation for each fact and derive secondary facts. Prefer semantic
   Rust types, typed IDs, and `Option` over raw retail storage conventions.
+- Persisted city-dialog origins and the strategic viewport origin are saved session state, not
+  production or terrain. Model them as `Option<CityWindowPosition>` and `map_view_origin`; keep the
+  retail field triples at the formats boundary.
 - Return ordinary values or narrow typed outcomes. Represent effects only for ordered observable
   output not already present in state, such as sounds, notifications, or modal/acknowledgement work.
   Do not emit events that merely restate mutations.

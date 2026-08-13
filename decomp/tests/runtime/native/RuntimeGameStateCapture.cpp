@@ -1321,12 +1321,8 @@ JSON_Value* CaptureProvinces();
 JSON_Value* CaptureMap() {
   JsonObject object;
   JsonArray tiles;
-  if (g_pGlobalMapState->field6 < 0 || g_pGlobalMapState->field6 >= 0x1950) {
-    FailSemanticCapture("strategic map view origin is outside the map");
-  }
   object.Set("topology",
              g_pGlobalMapState->hexNeighborWrapHorizontally == 0 ? "wrapping" : "bounded");
-  object.Set("view_origin", static_cast<int>(g_pGlobalMapState->field6));
   if (g_pGlobalMapState->field8 > 1) {
     FailSemanticCapture("strategic map data-ready flag is not boolean");
   }
@@ -2301,6 +2297,21 @@ JSON_Value* CaptureCityOrders(TCity* city) {
   return orders.Release();
 }
 
+JSON_Value* CaptureCityBuildingWindows(TCity* city) {
+  JsonArray windows;
+  for (int slot = 0; slot < 0x10; ++slot) {
+    if (city->productionFlags21c[slot] == 0) {
+      windows.AddNull();
+    } else {
+      JsonObject position;
+      position.Set("left", static_cast<int>(city->production22c[slot]));
+      position.Set("top", static_cast<int>(city->production24c[slot]));
+      windows.Add(position.Release());
+    }
+  }
+  return windows.Release();
+}
+
 JSON_Value* CaptureCity(TCity* city) {
   if (city == 0) {
     return JsonNullValue();
@@ -2325,9 +2336,7 @@ JSON_Value* CaptureCity(TCity* city) {
   object.Set("stockpile", CaptureResourceTable(&city->cityStockCottonB6));
   object.Set("production_orders", CaptureShortArray(city->productionOrderTable1dc, 0x10));
   object.Set("production_accum", CaptureShortArray(city->productionAccum1fc, 0x10));
-  object.Set("production_flags", CaptureUnsignedByteArray(city->productionFlags21c, 0x10));
-  object.Set("production_current", CaptureShortArray(city->production22c, 0x10));
-  object.Set("production_progress", CaptureShortArray(city->production24c, 0x10));
+  object.Set("building_windows", CaptureCityBuildingWindows(city));
   object.Set("population_growth_penalty_ticks",
              static_cast<int>(city->populationGrowthPenaltyTicks26c));
   object.Set("unmet_resource_retries", CaptureResourceTable(city->unmetResourceRetryCount278));
@@ -2963,6 +2972,10 @@ bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("turn", CaptureTurn(run));
   object.Set("unit_ids", g_pSimMgr->field_64);
   object.Set("map", CaptureMap());
+  if (g_pGlobalMapState->field6 < 0 || g_pGlobalMapState->field6 >= 0x1950) {
+    FailSemanticCapture("strategic map view origin is outside the map");
+  }
+  object.Set("map_view_origin", static_cast<int>(g_pGlobalMapState->field6));
   object.Set("ocean", CaptureOcean());
   object.Set("rng", CaptureRng());
   object.Set("market", CaptureMarket());
