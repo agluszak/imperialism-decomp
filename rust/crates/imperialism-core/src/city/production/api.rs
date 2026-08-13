@@ -74,9 +74,7 @@ impl GameState {
             }
             CityOrderId::Ship(track) => city.orders.ships[track].progress.quantity,
             CityOrderId::Training(level) => city.orders.training[level].quantity,
-            CityOrderId::Expansion(facility) => {
-                city.orders.expansions[facility].progress.quantity
-            }
+            CityOrderId::Expansion(facility) => city.orders.expansions[facility].progress.quantity,
             CityOrderId::FoodProcessing => city.orders.food_processing.quantity,
             CityOrderId::PowerPlant => city.orders.power_plant.progress.quantity,
             CityOrderId::TransportCapacity => city.orders.transport_capacity.progress.quantity,

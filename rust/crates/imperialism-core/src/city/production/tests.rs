@@ -265,14 +265,8 @@ fn produce_restores_capacity_creates_output_and_clears_reservations() {
     assert_eq!(state.production_accum[CityFacilitySlot::SteelMill], 10);
     assert_eq!(state.stockpile[ResourceKind::Steel], 1);
     assert_eq!(state.rolling_item_production_score, 1);
-    assert_eq!(
-        production.tracking_by_resource[ResourceKind::Iron],
-        0
-    );
-    assert_eq!(
-        production.tracking_by_resource[ResourceKind::Coal],
-        0
-    );
+    assert_eq!(production.tracking_by_resource[ResourceKind::Iron], 0);
+    assert_eq!(production.tracking_by_resource[ResourceKind::Coal], 0);
     assert_eq!(production.accumulated_value, 1);
 }
 
@@ -319,26 +313,14 @@ fn either_inputs_shift_shortfalls_and_reverse_the_tracked_split() {
     assert!(set_item_quantity(&mut production, &mut state, fabric, 3));
     assert_eq!(state.stockpile[ResourceKind::Wool], 0);
     assert_eq!(state.stockpile[ResourceKind::Cotton], 5);
-    assert_eq!(
-        production.tracking_by_resource[ResourceKind::Wool],
-        1
-    );
-    assert_eq!(
-        production.tracking_by_resource[ResourceKind::Cotton],
-        5
-    );
+    assert_eq!(production.tracking_by_resource[ResourceKind::Wool], 1);
+    assert_eq!(production.tracking_by_resource[ResourceKind::Cotton], 5);
 
     assert!(set_item_quantity(&mut production, &mut state, fabric, 1));
     assert_eq!(state.stockpile[ResourceKind::Wool], 1);
     assert_eq!(state.stockpile[ResourceKind::Cotton], 8);
-    assert_eq!(
-        production.tracking_by_resource[ResourceKind::Wool],
-        0
-    );
-    assert_eq!(
-        production.tracking_by_resource[ResourceKind::Cotton],
-        2
-    );
+    assert_eq!(production.tracking_by_resource[ResourceKind::Wool], 0);
+    assert_eq!(production.tracking_by_resource[ResourceKind::Cotton], 2);
     assert_eq!(state.population.strength, 18);
     assert_eq!(state.production_accum[CityFacilitySlot::TextileMill], 9);
 
@@ -349,10 +331,7 @@ fn either_inputs_shift_shortfalls_and_reverse_the_tracked_split() {
         &mut state.rolling_item_production_score,
         fabric,
     );
-    assert_eq!(
-        production.tracking_by_resource[ResourceKind::Cotton],
-        0
-    );
+    assert_eq!(production.tracking_by_resource[ResourceKind::Cotton], 0);
 }
 
 #[test]
@@ -368,14 +347,8 @@ fn either_inputs_shift_a_secondary_shortfall_to_the_primary_input() {
     assert!(set_item_quantity(&mut production, &mut state, fabric, 3));
     assert_eq!(state.stockpile[ResourceKind::Wool], 5);
     assert_eq!(state.stockpile[ResourceKind::Cotton], 0);
-    assert_eq!(
-        production.tracking_by_resource[ResourceKind::Wool],
-        5
-    );
-    assert_eq!(
-        production.tracking_by_resource[ResourceKind::Cotton],
-        1
-    );
+    assert_eq!(production.tracking_by_resource[ResourceKind::Wool], 5);
+    assert_eq!(production.tracking_by_resource[ResourceKind::Cotton], 1);
 }
 
 #[test]
@@ -435,7 +408,7 @@ fn food_processing_produces_canned_food_and_clears_the_order() {
     let mut state = city();
     let mut production = ProductionProgress {
         quantity: 4,
-        ..ProductionProgress::default()
+        limiting_constraint: ProductionConstraint::Resources,
     };
     produce_food_processing(&mut production, &mut state.stockpile);
     assert_eq!(state.stockpile[ResourceKind::Food], 4);
@@ -505,7 +478,6 @@ fn population_growth_produces_low_skill_population_and_refreshes_capacity() {
     let mut production = ProductionProgress {
         quantity: 2,
         limiting_constraint: ProductionConstraint::Resources,
-        ..ProductionProgress::default()
     };
     owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
         crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
@@ -627,7 +599,7 @@ fn power_plant_limit_counts_each_fuel_unit_as_six_power() {
     let production = PowerPlantOrderState {
         progress: ProductionProgress {
             quantity: 5,
-            ..ProductionProgress::default()
+            limiting_constraint: ProductionConstraint::Resources,
         },
         desired_quantity: 0,
     };
@@ -662,7 +634,7 @@ fn power_plant_rejects_a_reduction_that_exceeds_available_strength() {
     let mut production = PowerPlantOrderState {
         progress: ProductionProgress {
             quantity: 6,
-            ..ProductionProgress::default()
+            limiting_constraint: ProductionConstraint::Resources,
         },
         desired_quantity: 6,
     };
@@ -817,7 +789,7 @@ fn training_production_promotes_the_requested_baseline_workers() {
     let mut owner = nation();
     let mut medium = ProductionProgress {
         quantity: 2,
-        ..ProductionProgress::default()
+        limiting_constraint: ProductionConstraint::Resources,
     };
 
     produce_training(
@@ -835,7 +807,7 @@ fn training_production_promotes_the_requested_baseline_workers() {
     state.population.baseline_labor.high = 29;
     let mut high = ProductionProgress {
         quantity: 1,
-        ..ProductionProgress::default()
+        limiting_constraint: ProductionConstraint::Resources,
     };
     produce_training(
         TrainingLevel::High,
@@ -863,7 +835,7 @@ fn high_training_preserves_the_retail_pending_action_threshold_order() {
     state.population.baseline_labor.high = 29;
     let mut production = ProductionProgress {
         quantity: 1,
-        ..ProductionProgress::default()
+        limiting_constraint: ProductionConstraint::Resources,
     };
 
     produce_training(

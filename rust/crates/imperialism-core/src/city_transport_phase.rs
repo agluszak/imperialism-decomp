@@ -73,12 +73,8 @@ impl GameState {
         let animal_need = summary[ResourceKind::Livestock];
         let fish = self.request_ai_resource(nation, ResourceKind::Fish, animal_need, 1);
         if fish < animal_need {
-            let livestock = self.request_ai_resource(
-                nation,
-                ResourceKind::Livestock,
-                animal_need,
-                7,
-            );
+            let livestock =
+                self.request_ai_resource(nation, ResourceKind::Livestock, animal_need, 7);
             unfilled += animal_need - fish - livestock;
         }
 
@@ -458,12 +454,7 @@ impl GameState {
                 let stock = self.nations.city(nation).stockpile[ResourceKind::Cotton]
                     + self.nations.city(nation).stockpile[ResourceKind::Wool];
                 if stock < material_need {
-                    self.request_ai_resource(
-                        nation,
-                        ResourceKind::Wool,
-                        material_need - stock,
-                        7,
-                    );
+                    self.request_ai_resource(nation, ResourceKind::Wool, material_need - stock, 7);
                 }
             }
         }

@@ -473,7 +473,9 @@ pub(in crate::ui::city) fn sync_population_dialog(
         }
         let major = session.0.nations().major(nation);
         let city = &major.city;
-        let quantity = session.0.city_order_quantity(nation, POPULATION_ORDER.order);
+        let quantity = session
+            .0
+            .city_order_quantity(nation, POPULATION_ORDER.order);
         texts
             .get_mut(view.quantity)
             .expect("Population order control belongs to its dialog")

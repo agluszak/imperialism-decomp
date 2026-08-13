@@ -95,10 +95,7 @@ pub(crate) fn set_food_processing_quantity(
     if livestock < half_delta {
         stockpile[ResourceKind::Livestock] = 0;
         stockpile.verify_stocks();
-        stockpile.wrapping_add(
-            ResourceKind::Fish,
-            (half_delta - livestock).wrapping_neg(),
-        );
+        stockpile.wrapping_add(ResourceKind::Fish, (half_delta - livestock).wrapping_neg());
     } else {
         stockpile.wrapping_add(ResourceKind::Livestock, half_delta.wrapping_neg());
     }
@@ -122,7 +119,8 @@ pub(crate) fn transport_capacity_limit(
     let workforce_limit = city.population.strength / 2 + state.progress.quantity;
     let production_limit =
         city.production_accum[CityFacilitySlot::Transport] + state.progress.quantity;
-    let resource_limit = (state.tracking_by_resource[primary_input] + city.stockpile[primary_input])
+    let resource_limit = (state.tracking_by_resource[primary_input]
+        + city.stockpile[primary_input])
         .min(state.tracking_by_resource[secondary_input] + city.stockpile[secondary_input]);
 
     let mut constraint = ProductionConstraint::Capacity;

@@ -238,8 +238,8 @@ impl GameState {
     }
 
     fn queue_navy_growth_pending(&mut self, nation: MajorNationId) {
-        let pending = self.nations.major(nation).economy.pending_actions
-            [PendingActionKind::NavyGrowthReward];
+        let pending =
+            self.nations.major(nation).economy.pending_actions[PendingActionKind::NavyGrowthReward];
         if pending.status() == crate::PendingActionStatus::Queued {
             return;
         }
