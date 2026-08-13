@@ -132,7 +132,12 @@ fn run_native_case_result(
     case_name: &str,
     required_captures: &'static [&'static str],
 ) -> Result<RuntimeRun> {
-    run_runtime_result(NATIVE_ORACLE, Some(case_name), required_captures)
+    run_runtime_result(
+        NATIVE_ORACLE,
+        Some(case_name),
+        EvidenceKind::RetailFixtureOracle,
+        required_captures,
+    )
 }
 
 /// Run one catalogued native runtime scenario into a unique output directory.
@@ -143,7 +148,20 @@ pub fn run_retail_fixture_result(
     name: &str,
     required_captures: &'static [&'static str],
 ) -> Result<RuntimeRun> {
-    run_runtime_result(name, None, required_captures)
+    run_runtime_result(
+        name,
+        None,
+        EvidenceKind::RetailFixtureOracle,
+        required_captures,
+    )
+}
+
+/// Run a catalogued self-consistency scenario such as random-map generation.
+pub fn run_self_consistency_result(
+    name: &str,
+    required_captures: &'static [&'static str],
+) -> Result<RuntimeRun> {
+    run_runtime_result(name, None, EvidenceKind::SelfConsistency, required_captures)
 }
 
 /// One native runtime invocation and the unique output directory it wrote.
@@ -165,6 +183,7 @@ impl RuntimeRun {
 fn run_runtime_result(
     scenario: &str,
     native_case: Option<&str>,
+    evidence_kind: EvidenceKind,
     required_captures: &'static [&'static str],
 ) -> Result<RuntimeRun> {
     let output_dir = tempfile::Builder::new()
@@ -202,7 +221,7 @@ fn run_runtime_result(
         RuntimeResultExpectations {
             name: scenario,
             seed: 1,
-            evidence_kind: EvidenceKind::RetailFixtureOracle,
+            evidence_kind,
             required_captures,
         },
     )
