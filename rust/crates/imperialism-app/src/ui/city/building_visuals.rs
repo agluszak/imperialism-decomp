@@ -793,21 +793,26 @@ mod tests {
             .major(MajorNationId::from_nation(selected_nation).unwrap())
             .city;
         let quantity = city.orders.population_growth.quantity;
-        assert!(
+        assert_eq!(city.population.count(), 7);
+        assert_eq!(quantity, 0);
+        assert_eq!(
             city.population
-                .predicted_need_after_refresh(ResourceKind::Grain, quantity)
-                > 0
+                .predicted_need_after_refresh(ResourceKind::Grain, quantity),
+            4
         );
-        assert!(
+        assert_eq!(
             city.population
-                .predicted_need_after_refresh(ResourceKind::Fruit, quantity)
-                > 0
+                .predicted_need_after_refresh(ResourceKind::Fruit, quantity),
+            2
         );
-        assert!(
+        assert_eq!(
             city.population
-                .predicted_need_after_refresh(ResourceKind::Livestock, quantity)
-                > 0
+                .predicted_need_after_refresh(ResourceKind::Livestock, quantity),
+            1
         );
+        assert_eq!(city.population.predicted_need(ResourceKind::Grain), 0);
+        assert_eq!(city.population.predicted_need(ResourceKind::Fruit), 0);
+        assert_eq!(city.population.predicted_need(ResourceKind::Livestock), 0);
         assert_eq!(
             city.population
                 .predicted_need_after_refresh(ResourceKind::Hardware, quantity),
