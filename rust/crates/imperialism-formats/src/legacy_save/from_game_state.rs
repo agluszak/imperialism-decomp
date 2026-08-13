@@ -287,7 +287,7 @@ fn great_power_prefix_dto(
     pending: &NationPendingWork,
 ) -> LegacyGreatPowerPrefix {
     LegacyGreatPowerPrefix {
-        diplomacy_eligible: u8::from(matches!(economy.controller, MajorNationController::Human)),
+        diplomacy_eligible: u8::from(economy.diplomacy_eligible),
         capacities: [
             economy.capacities.available_merchant,
             economy.capacities.trade_offer,

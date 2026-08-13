@@ -224,8 +224,8 @@ impl GameState {
         self.news.pages = MajorNationTable::default();
         let active = MajorNationId::from_nation(self.turn.active_nation);
         for nation in MajorNationId::all() {
-            let human = self.nations.major(nation).economy.controller.is_human();
-            if human || active == Some(nation) {
+            let eligible = self.nations.major(nation).economy.diplomacy_eligible;
+            if eligible || active == Some(nation) {
                 let page = self.create_newspaper(nation, story_ids);
                 if page.stories.iter().flatten().any(Option::is_some) {
                     self.news.pages[nation] = Some(page);

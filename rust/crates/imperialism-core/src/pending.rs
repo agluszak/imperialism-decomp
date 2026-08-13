@@ -18,7 +18,7 @@ impl PendingActionState {
     }
     pub(crate) fn queue(&mut self, payload: i16) {
         self.status = PendingActionStatus::Queued;
-        self.payload = Some(payload);
+        self.payload = (payload != -1).then_some(payload);
     }
     pub(crate) const fn level(self) -> Option<i16> {
         match self.status {

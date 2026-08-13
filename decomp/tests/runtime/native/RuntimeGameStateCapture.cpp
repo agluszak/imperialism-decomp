@@ -1734,7 +1734,9 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
     FailSemanticCapture("major nation has no defense minister");
   }
   JsonObject object;
-  object.Set("controller", nation->diplomacyEligibilityA0 != 0 ? "Human" : "Computer");
+  object.Set("controller",
+             nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0 ? "Computer" : "Human");
+  object.Set("diplomacy_eligible", nation->diplomacyEligibilityA0 != 0);
   object.Set("ai_zone_targets", CaptureAiZoneTargets(nation));
   object.Set("ai_province_targets", CaptureAiProvinceTargets(nation));
   object.Set("foreign_minister_personality",

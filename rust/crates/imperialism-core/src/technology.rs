@@ -275,7 +275,7 @@ impl GameState {
                 if !self.nation_slot_eligible_for_event_processing(nation) {
                     continue;
                 }
-                if self.nations.major(nation).economy.controller.is_human() {
+                if self.nations.major(nation).economy.diplomacy_eligible {
                     continue;
                 }
                 if self.technology.research_status_by_nation[nation][tech_id]
@@ -305,8 +305,8 @@ impl GameState {
         self.consume_non_interactive_technology_unlocks();
         let nation = MajorNationId::from_nation(self.turn.active_nation)?;
         // FIXME: retail consume-one is active nation + cooldown < 1 + terrain-eligible,
-        // not `is_human()`. Same on a normal single-player opening turn.
-        if self.nations.major(nation).economy.controller.is_human()
+        // not diplomacy eligibility. Same on a normal single-player opening turn.
+        if self.nations.major(nation).economy.diplomacy_eligible
             && self.nation_slot_eligible_for_event_processing(nation)
         {
             self.acknowledge_technology_unlock(nation)
@@ -334,9 +334,9 @@ impl GameState {
         let active = MajorNationId::from_nation(self.turn.active_nation);
         for nation in MajorNationId::all() {
             // FIXME: retail skips the drain when the slot is active, cooldown < 1, and
-            // terrain-eligible — not when the controller is human.
+            // terrain-eligible — not when diplomacyEligibilityA0 is set.
             let interactive = active == Some(nation)
-                && self.nations.major(nation).economy.controller.is_human()
+                && self.nations.major(nation).economy.diplomacy_eligible
                 && self.nation_slot_eligible_for_event_processing(nation);
             if interactive {
                 continue;
@@ -366,7 +366,7 @@ impl GameState {
 
         let difficulty = self.turn.difficulty as u8;
         let era_offset =
-            if difficulty >= 3 && !self.nations.major(nation).economy.controller.is_human() {
+            if difficulty >= 3 && !self.nations.major(nation).economy.diplomacy_eligible {
                 i16::from(difficulty) - 2
             } else {
                 0
@@ -599,6 +599,7 @@ mod tests {
         let mut state = crate::test_support::game_state();
         let ai = MajorNationId::new(1);
         state.nations.major_mut(ai).economy.controller = MajorNationController::Computer;
+        state.nations.major_mut(ai).economy.diplomacy_eligible = false;
         state.nations.major_mut(ai).common.treasury = 50_000;
         state.technology.global_unlocks_by_technology[3] = true;
         state.check_technology_advances();

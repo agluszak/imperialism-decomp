@@ -337,8 +337,8 @@ impl GameState {
         grant: DiplomacyGrant,
     ) -> PlayerDiplomacyOrderResult {
         assert!(
-            self.nations.majors[source].economy.controller.is_human(),
-            "player diplomacy orders require a human major nation"
+            self.nations.majors[source].economy.diplomacy_eligible,
+            "player diplomacy orders require a diplomacy-eligible major nation"
         );
         assert!(
             PLAYER_DIPLOMACY_GRANT_AMOUNTS.contains(&grant.amount),
@@ -387,8 +387,8 @@ impl GameState {
         policy: TradePolicyScore,
     ) -> PlayerDiplomacyOrderResult {
         assert!(
-            self.nations.majors[source].economy.controller.is_human(),
-            "player diplomacy orders require a human major nation"
+            self.nations.majors[source].economy.diplomacy_eligible,
+            "player diplomacy orders require a diplomacy-eligible major nation"
         );
         assert!(
             PLAYER_TRADE_POLICY_SCORES.contains(&policy),

@@ -296,7 +296,7 @@ pub(super) fn push_military_unit(
     ));
 }
 /// `TCountry::NameUnits` for non-general land units (English STR# 0x2717 / 0x275f).
-pub(super) fn name_units_for_nation(
+pub(crate) fn name_units_for_nation(
     military_units: &mut [MilitaryUnitState],
     nation: NationId,
     name_ordinals: &mut [i16],
@@ -437,6 +437,23 @@ pub(crate) fn resource_capability_level(tile: &TileState, resource: ResourceKind
         packed & 0x0f
     };
     resource_development_yield(resource, index.min(3))
+}
+
+/// `TMapMgr::FindResourceCapabilityRequirementLevel` for one terrain-record edge.
+///
+/// Unlike [`resource_capability_level`], this does not mask the low nibble when the
+/// resource uses the packed development byte as a whole.
+pub(crate) fn resource_capability_requirement_level(tile: &TileState, edge: usize) -> i32 {
+    let Some(resource) = tile.edge_resources[edge] else {
+        return 0;
+    };
+    let packed = (tile.development.extractive.get() << 4) | tile.development.surface.get();
+    let index = if RESOURCE_USES_HIGH_NIBBLE[resource as usize] != 0 {
+        packed >> 4
+    } else {
+        packed
+    };
+    i32::from(resource_development_yield(resource, index.min(3)))
 }
 /// Accept-time AI `PlaceCity`: province capital rewrite, flags, flood-fill, farmland nibble.
 pub(super) fn place_ai_capital(

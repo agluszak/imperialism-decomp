@@ -248,7 +248,7 @@ impl GameState {
     }
 
     fn is_human(&self, nation: MajorNationId) -> bool {
-        self.nations.majors[nation].economy.controller.is_human()
+        self.nations.majors[nation].economy.diplomacy_eligible
     }
 
     fn city_stock(&self, nation: MajorNationId, resource: ResourceKind) -> i16 {

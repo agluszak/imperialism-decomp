@@ -73,6 +73,8 @@ impl ForeignTradeState {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct GreatPowerState {
     pub controller: MajorNationController,
+    /// Retail `TGreatPower::diplomacyEligibilityA0`. Independent of [`Self::controller`].
+    pub diplomacy_eligible: bool,
     pub ai_zone_targets: Option<Vec<AiTargetState>>,
     pub ai_province_targets: Option<ProvinceTable<AiTargetState>>,
     pub foreign_minister_personality: ForeignMinisterPersonality,
@@ -136,6 +138,7 @@ impl GreatPowerState {
         };
         Self {
             controller,
+            diplomacy_eligible: human,
             ai_zone_targets: match controller {
                 MajorNationController::Human => None,
                 MajorNationController::Computer => Some(Vec::new()),
