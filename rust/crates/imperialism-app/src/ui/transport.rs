@@ -448,7 +448,6 @@ fn spawn_transport_arrow(
             ImageNode::new(idle.clone()),
             RetailPictureSwap { idle, active },
             TransportAdjust { allocation, delta },
-            DespawnOnExit(AppState::Transport),
             ZIndex(2),
             ChildOf(row),
         ))
@@ -470,7 +469,6 @@ fn transport_track(left: i32, color: Color, allocation: Option<TransportAllocati
             height: px(4),
         }
         BackgroundColor(color)
-        DespawnOnExit::<AppState>(AppState::Transport)
         Pickable::IGNORE
         {display}
     }
@@ -496,7 +494,6 @@ fn transport_row_overlay(
                     height: px(4),
                 }
                 BackgroundColor({colors.allocation})
-                DespawnOnExit::<AppState>(AppState::Transport)
                 ZIndex(1)
                 Pickable::IGNORE
                 template(move |_context| Ok(TransportDisplay::Gauge {
@@ -514,7 +511,6 @@ fn transport_row_overlay(
                     height: px(2),
                 }
                 BackgroundColor({colors.below_limit})
-                DespawnOnExit::<AppState>(AppState::Transport)
                 Pickable::IGNORE
                 template(move |_context| Ok(TransportDisplay::Limit {
                     allocation,
@@ -535,7 +531,6 @@ fn transport_row_overlay(
                 template(move |_context| Ok(layout))
                 template(move |_context| Ok(line_height))
                 TextColor(Color::BLACK)
-                DespawnOnExit::<AppState>(AppState::Transport)
                 Pickable::IGNORE
                 template(move |_context| Ok(TransportDisplay::RowCaption(allocation)))
             ),
@@ -565,7 +560,6 @@ fn transport_money_overlay(
                 template(move |_context| Ok(layout))
                 template(move |_context| Ok(line_height))
                 TextColor(Color::BLACK)
-                DespawnOnExit::<AppState>(AppState::Transport)
                 Pickable::IGNORE
                 template(move |_context| Ok(TransportDisplay::Money {
                     resource,
@@ -594,7 +588,6 @@ fn transport_capacity_overlay(
                     height: px(4),
                 }
                 BackgroundColor({colors.below_limit})
-                DespawnOnExit::<AppState>(AppState::Transport)
                 ZIndex(1)
                 Pickable::IGNORE
                 template(move |_context| Ok(TransportDisplay::Gauge {
@@ -616,7 +609,6 @@ fn transport_capacity_overlay(
                 template(move |_context| Ok(layout))
                 template(move |_context| Ok(line_height))
                 TextColor(Color::BLACK)
-                DespawnOnExit::<AppState>(AppState::Transport)
                 Pickable::IGNORE
                 template(move |_context| Ok(TransportDisplay::CapacityCaption))
             ),

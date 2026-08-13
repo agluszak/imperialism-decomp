@@ -82,11 +82,15 @@ loader, catalog, or imperative scene abstraction beside Bevy entities.
 Generated UI is generated: change the recovery evidence or generator, then regenerate it. Use the
 `ui-recovery` skill for that workflow.
 
-City UI puts presentation meaning on the actual entities (`IndustryCapacity`,
-`CityOrderQuantity`, `TradeDisplay`, and so on) and projects `GameSession` through narrow
-queries. Do not store widget entity handles in a parallel object graph, and do not replace
-that with generated binding structs, a registry, a second scene model, or another
-abstraction layer.
+Put presentation meaning on the actual entities (`IndustryCapacity`,
+`CityOrderQuantity`, `TradeDisplay`, `DealBookHost`, and so on) and project
+`GameSession` through narrow queries. Do not store widget entity handles in a
+parallel object graph, and do not replace that with generated binding structs, a
+registry, a second scene model, or another abstraction layer. Screen-owned
+presentation lives on the screen entity; application-level facts such as
+`SaveDirectory` stay resources. `DespawnOnExit` belongs on state-scope roots and
+independently spawned top-level windows/modals; children inherit lifetime from
+their parent.
 
 ## Retail fidelity
 

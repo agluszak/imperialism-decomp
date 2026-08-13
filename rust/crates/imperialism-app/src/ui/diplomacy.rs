@@ -116,9 +116,6 @@ struct DiplomacyMapKeyMajorName(MajorNationId);
 struct DiplomacyGrantTotal;
 
 #[derive(Component)]
-struct DiplomacyNoticeClose(Entity);
-
-#[derive(Component)]
 struct DiplomacyNotice(PlayerDiplomacyRejection);
 
 #[derive(Clone, Copy, Debug, Event)]
@@ -954,13 +951,21 @@ fn tile_at_diplomacy_position(normalized: Vec2) -> Option<TileId> {
 
 fn on_diplomacy_notice_activate(
     activate: On<Activate>,
-    closes: Query<&DiplomacyNoticeClose>,
+    parents: Query<&ChildOf>,
+    notices: Query<(), With<DiplomacyNotice>>,
     mut commands: Commands,
 ) {
-    let close = closes
-        .get(activate.entity)
-        .expect("diplomacy notice Activate is bound on DiplomacyNoticeClose");
-    commands.entity(close.0).despawn();
+    let mut entity = activate.entity;
+    loop {
+        if notices.contains(entity) {
+            commands.entity(entity).despawn();
+            return;
+        }
+        entity = parents
+            .get(entity)
+            .expect("diplomacy notice close belongs to its dialog")
+            .parent();
+    }
 }
 
 fn open_diplomacy_rejection_notice(
@@ -1030,7 +1035,6 @@ fn bind_diplomacy_notice(
     let okay = find_descendant(root, fourcc!("okay"), &children, &tags);
     commands
         .entity(okay)
-        .insert(DiplomacyNoticeClose(root))
         .remove::<InteractionDisabled>()
         .observe(on_diplomacy_notice_activate);
     let cancel = find_descendant(root, fourcc!("cncl"), &children, &tags);
