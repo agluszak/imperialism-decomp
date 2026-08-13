@@ -396,6 +396,9 @@ void SeedHumanTradeOrders(TGreatPower* nation, bool buyClothing) {
 }
 
 void DrainRankedDealsWithHumanAutoAccept() {
+  // Synthetic settlement drain: human buyers Accept at the posed amount instead of
+  // TGreatPower::ReplyToTradeOffer / ShowOfferSheet. This tests ranked-deal
+  // settlement, not the complete retail DoTrade interaction.
   TTradeMgr* tradeManager = g_pTradeMgr;
   tradeManager->categoryRows[0].dealEntryOrdinal = 1;
   tradeManager->categoryRows[0].dealCategoryOrderIndex = 0;
@@ -485,6 +488,8 @@ void FinishTradeOffersWithoutPhaseAdvance() {
 }
 
 void ExecuteDoTradeWithoutPhaseAdvance() {
+  // Market prepare + auto-accept drain + EndTradeOffers, without StartNextPhase.
+  // Not a complete retail TSimMgr::DoTrade: humans never see the Offer Sheet.
   for (int nationSlot = 6; nationSlot >= 0; --nationSlot) {
     if (g_apNationStates[nationSlot] != 0) {
       g_apNationStates[nationSlot]->InitializeDealBook();

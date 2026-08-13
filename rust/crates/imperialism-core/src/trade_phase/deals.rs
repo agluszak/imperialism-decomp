@@ -107,25 +107,41 @@ impl GameState {
         (f64::from(price) * f64::from(inverse) * 0.01) as i32
     }
 
-    pub(super) fn resolve_deals(&mut self, phase: &mut TradePhase) {
-        for &row in &DEAL_CATEGORY_ORDER {
-            let commodity = TradeCommodity::from_retail(i16::from(row)).expect("deal commodity");
-            for index in 0..phase.deals[commodity].len() {
-                let deal = &phase.deals[commodity][index];
-                let buyer = deal.buyer;
-                let seller = deal.seller;
-                let price = deal.price as i16;
-                let mut transfer = self.amount_unsold(seller, commodity.resource());
-                if let Some(seller_major) = MajorNationId::from_nation(seller)
-                    && MajorNationId::from_nation(buyer).is_none()
-                {
-                    transfer = transfer.min(self.available_merchant(seller_major));
+    pub(super) fn settle_or_block_trade_offer(
+        &mut self,
+        phase: &mut TradePhase,
+        buyer: NationId,
+        seller: NationId,
+        amount: i16,
+        price: i16,
+        commodity: TradeCommodity,
+    ) -> Option<PendingTradeOffer> {
+        if let Some(major) = MajorNationId::from_nation(buyer) {
+            if self.nations.majors[major]
+                .economy
+                .is_still_buying(commodity.resource())
+            {
+                if self.is_human(major) {
+                    return Some(PendingTradeOffer {
+                        buyer,
+                        seller,
+                        amount,
+                        price,
+                        commodity,
+                    });
                 }
-                if transfer > 0 {
-                    self.reply_to_trade_offer(buyer, seller, transfer, price, commodity, phase);
-                }
+                self.ai_reply_to_trade_offer(major, seller, amount, price, commodity, phase);
+            } else {
+                self.add_to_deal_book(major, DealBookEntryKind::Offer, seller, 0, commodity, 0);
             }
+            return None;
         }
+
+        let minor = MinorNationId::new(buyer.get());
+        if self.minor_still_buying(minor, commodity.resource()) {
+            self.set_deal_results(buyer, seller, amount, price, commodity, true, phase);
+        }
+        None
     }
 
     pub(super) fn amount_unsold(&self, nation: NationId, resource: ResourceKind) -> i16 {
@@ -140,37 +156,6 @@ impl GameState {
                         .max(0)
                 })
                 .unwrap_or(0)
-        }
-    }
-
-    pub(super) fn reply_to_trade_offer(
-        &mut self,
-        buyer: NationId,
-        seller: NationId,
-        amount: i16,
-        price: i16,
-        commodity: TradeCommodity,
-        phase: &mut TradePhase,
-    ) {
-        if let Some(major) = MajorNationId::from_nation(buyer) {
-            if self.nations.majors[major]
-                .economy
-                .is_still_buying(commodity.resource())
-            {
-                if self.is_human(major) {
-                    self.set_deal_results(buyer, seller, amount, price, commodity, false, phase);
-                } else {
-                    self.ai_reply_to_trade_offer(major, seller, amount, price, commodity, phase);
-                }
-            } else {
-                self.add_to_deal_book(major, DealBookEntryKind::Offer, seller, 0, commodity, 0);
-            }
-            return;
-        }
-
-        let minor = MinorNationId::new(buyer.get());
-        if self.minor_still_buying(minor, commodity.resource()) {
-            self.set_deal_results(buyer, seller, amount, price, commodity, true, phase);
         }
     }
 

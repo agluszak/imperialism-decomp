@@ -1,4 +1,4 @@
-//! Retail `TSimMgr::DoTrade` as one domain operation.
+//! Retail `TSimMgr::DoTrade` as a resumable trade-phase continuation.
 
 mod ai_bids;
 mod ai_replies;
@@ -39,6 +39,24 @@ pub(super) const PROCESSED_NEED: [ResourceKind; 5] = [
     ResourceKind::Steel,
 ];
 
+/// One Offer Sheet interruption from `TGreatPower::ReplyToTradeOffer`.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct PendingTradeOffer {
+    pub buyer: NationId,
+    pub seller: NationId,
+    pub amount: i16,
+    pub price: i16,
+    pub commodity: TradeCommodity,
+}
+
+/// Progress of `TTradeMgr::StartDeals` / `NextTradeDeal`.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum TradeProgress {
+    Offer(PendingTradeOffer),
+    Complete,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(super) struct RankedDeal {
     pub(super) buyer: NationId,
     pub(super) seller: NationId,
@@ -48,6 +66,7 @@ pub(super) struct RankedDeal {
     pub(super) category: TradeCommodity,
 }
 
+#[derive(Clone, Debug, PartialEq)]
 pub(super) struct TradePhase {
     pub(super) recurring_grant: MinorNationTable<ResourceTable<i16>>,
     pub(super) status_by_major: MinorNationTable<ResourceTable<[i16; MAJOR_NATION_COUNT]>>,
@@ -68,13 +87,46 @@ impl TradePhase {
     }
 }
 
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct TradeSession {
+    phase: TradePhase,
+    category_index: usize,
+    entry_ordinal: usize,
+    pending: Option<PendingTradeOffer>,
+}
+
+impl TradeSession {
+    fn skip_empty_categories(&mut self) {
+        while self.category_index <= 0x10 {
+            if !self.phase.deals[deal_commodity(self.category_index)].is_empty() {
+                break;
+            }
+            self.category_index += 1;
+        }
+    }
+
+    fn advance_deal_cursor(&mut self) {
+        let size = self.phase.deals[deal_commodity(self.category_index)].len();
+        self.entry_ordinal += 1;
+        if self.entry_ordinal > size {
+            self.category_index += 1;
+            self.skip_empty_categories();
+            self.entry_ordinal = 1;
+        }
+    }
+}
+
+fn deal_commodity(category_index: usize) -> TradeCommodity {
+    TradeCommodity::from_retail(i16::from(DEAL_CATEGORY_ORDER[category_index]))
+        .expect("deal commodity")
+}
+
 impl GameState {
-    /// Resolves one complete retail trade phase (`TSimMgr::DoTrade`).
+    /// Starts retail `TSimMgr::DoTrade` through `TTradeMgr::StartDeals`.
     ///
-    /// Human Board of Trade orders are consumed from remembered bids. Offer-sheet
-    /// UI is treated as Accept at the posed amount. The following civilian phase
-    /// is not started.
-    pub fn do_trade(&mut self) {
+    /// Human buyers still in the market return [`TradeProgress::Offer`] instead of
+    /// settling. The following civilian phase is not started.
+    pub fn begin_trade_phase(&mut self) -> TradeProgress {
         let mut phase = TradePhase::new();
         self.initialize_deal_books();
         self.reset_market_rows();
@@ -83,8 +135,97 @@ impl GameState {
         self.tally_major_trade_bids();
         self.market.recalculate_prices();
         self.calculate_deal_order(&mut phase);
-        self.resolve_deals(&mut phase);
-        self.end_trade_offers();
+        let mut session = TradeSession {
+            phase,
+            category_index: 0,
+            entry_ordinal: 1,
+            pending: None,
+        };
+        session.skip_empty_categories();
+        let progress = self.continue_trade_deals(&mut session);
+        if matches!(progress, TradeProgress::Offer(_)) {
+            self.trade_session = Some(session);
+        }
+        progress
+    }
+
+    /// Applies the player's Offer Sheet answer and resumes `TTradeMgr::NextTradeDeal`.
+    ///
+    /// `amount` is the purchased quantity (`0` rejects). `stop_buying` is the `nomo`
+    /// checkbox and becomes `SetDealResults` shortfall.
+    pub fn reply_to_trade_offer(&mut self, amount: i16, stop_buying: bool) -> TradeProgress {
+        let mut session = self
+            .trade_session
+            .take()
+            .expect("Offer Sheet reply requires an active trade session");
+        let pending = session
+            .pending
+            .take()
+            .expect("Offer Sheet reply requires a pending trade offer");
+        self.set_deal_results(
+            pending.buyer,
+            pending.seller,
+            amount,
+            pending.price,
+            pending.commodity,
+            stop_buying,
+            &mut session.phase,
+        );
+        let progress = self.continue_trade_deals(&mut session);
+        if matches!(progress, TradeProgress::Offer(_)) {
+            self.trade_session = Some(session);
+        }
+        progress
+    }
+
+    pub fn pending_trade_offer(&self) -> Option<PendingTradeOffer> {
+        self.trade_session
+            .as_ref()
+            .and_then(|session| session.pending)
+    }
+
+    fn continue_trade_deals(&mut self, session: &mut TradeSession) -> TradeProgress {
+        let mut blocked = false;
+        loop {
+            if session.category_index > 0x10 {
+                break;
+            }
+            let commodity = deal_commodity(session.category_index);
+            let deal = session.phase.deals[commodity][session.entry_ordinal - 1];
+            let mut transfer = self.amount_unsold(deal.seller, commodity.resource());
+            if let Some(seller_major) = MajorNationId::from_nation(deal.seller)
+                && MajorNationId::from_nation(deal.buyer).is_none()
+            {
+                transfer = transfer.min(self.available_merchant(seller_major));
+            }
+            if transfer > 0 {
+                blocked = self
+                    .settle_or_block_trade_offer(
+                        &mut session.phase,
+                        deal.buyer,
+                        deal.seller,
+                        transfer,
+                        deal.price as i16,
+                        commodity,
+                    )
+                    .inspect(|offer| session.pending = Some(*offer))
+                    .is_some();
+            }
+            session.advance_deal_cursor();
+            if blocked {
+                break;
+            }
+        }
+        if blocked {
+            TradeProgress::Offer(
+                session
+                    .pending
+                    .expect("a blocked trade deal leaves a pending offer"),
+            )
+        } else {
+            self.end_trade_offers();
+            TradeProgress::Complete
+        }
     }
 
     fn initialize_deal_books(&mut self) {
@@ -433,4 +574,98 @@ pub(super) fn compare_index_and_rank(a: &(i16, i16), b: &(i16, i16)) -> i16 {
 
 pub(super) fn compare_by_price(a: &(i16, i16), b: &(i16, i16)) -> i16 {
     if a.1 <= b.1 { -1 } else { 1 }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::test_support::game_state;
+
+    fn seed_merchant_capacity(city: &mut CityState) {
+        city.ship_order_count_by_type[ShipType::Trader] = 2;
+        city.ship_order_count_by_type[ShipType::Paddlewheeler] = 1;
+        city.ship_order_count_by_type[ShipType::Freighter] = 1;
+    }
+
+    fn human_clothing_offer_state() -> GameState {
+        let mut state = game_state();
+        let buyer = MajorNationId::new(0);
+        let seller = MajorNationId::new(1);
+        for slot in 0..MajorNationId::COUNT {
+            let nation = MajorNationId::new(slot);
+            seed_merchant_capacity(&mut state.nations.majors[nation].city);
+            state.nations.majors[nation].city.stockpile[ResourceKind::Clothing] = 10;
+            state.nations.majors[nation].city.stockpile[ResourceKind::Timber] = 12;
+            state.nations.majors[nation].common.treasury = 20_000;
+        }
+        state.nations.majors[buyer]
+            .economy
+            .remembered_trade_offers_by_resource[ResourceKind::Clothing] = -1;
+        state.nations.majors[buyer]
+            .economy
+            .remembered_trade_offers_by_resource[ResourceKind::Timber] = 5;
+        state.nations.majors[seller]
+            .economy
+            .remembered_trade_offers_by_resource[ResourceKind::Clothing] = 4;
+        state
+    }
+
+    #[test]
+    fn begin_trade_phase_interrupts_for_a_human_buyer() {
+        let mut state = human_clothing_offer_state();
+        let progress = state.begin_trade_phase();
+        let TradeProgress::Offer(offer) = progress else {
+            panic!("human buyer must be interrupted by the Offer Sheet, got {progress:?}");
+        };
+        assert_eq!(offer.buyer, NationId::new(0));
+        assert_eq!(offer.seller, NationId::new(1));
+        assert_eq!(offer.commodity, TradeCommodity::Clothing);
+        assert!(offer.amount > 0);
+        assert_eq!(state.pending_trade_offer(), Some(offer));
+        assert_eq!(
+            state.nations.majors[MajorNationId::new(0)]
+                .economy
+                .purchased_items_by_resource[ResourceKind::Clothing],
+            0
+        );
+    }
+
+    #[test]
+    fn rejecting_a_human_offer_resumes_and_can_complete() {
+        let mut state = human_clothing_offer_state();
+        let TradeProgress::Offer(_) = state.begin_trade_phase() else {
+            panic!("expected a pending human offer");
+        };
+        assert_eq!(
+            state.reply_to_trade_offer(0, false),
+            TradeProgress::Complete
+        );
+        assert_eq!(state.pending_trade_offer(), None);
+        assert!(state.trade_session.is_none());
+        assert_eq!(
+            state.nations.majors[MajorNationId::new(0)]
+                .economy
+                .purchased_items_by_resource[ResourceKind::Clothing],
+            0
+        );
+    }
+
+    #[test]
+    fn accepting_the_posed_amount_settles_then_completes() {
+        let mut state = human_clothing_offer_state();
+        let TradeProgress::Offer(offer) = state.begin_trade_phase() else {
+            panic!("expected a pending human offer");
+        };
+        assert_eq!(
+            state.reply_to_trade_offer(offer.amount, false),
+            TradeProgress::Complete
+        );
+        assert_eq!(state.pending_trade_offer(), None);
+        assert_eq!(
+            state.nations.majors[MajorNationId::new(0)]
+                .economy
+                .purchased_items_by_resource[ResourceKind::Clothing],
+            offer.amount
+        );
+    }
 }
