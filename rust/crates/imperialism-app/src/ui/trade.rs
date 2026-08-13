@@ -913,6 +913,7 @@ fn trade_gauge_width(quantity: i16, capacity: i16) -> f32 {
 mod tests {
     use super::*;
     use bevy::asset::AssetPlugin;
+    use bevy::scene::ScenePlugin;
     use bevy::state::app::StatesPlugin;
     use imperialism_formats::{LegacyGameStateContext, LegacySaveV62, peek_save_header};
 
@@ -1016,14 +1017,19 @@ mod tests {
             })
             .expect("the beginning-of-game fixture has a multi-unit trade offer");
         let mut app = App::new();
-        app.add_plugins((MinimalPlugins, AssetPlugin::default(), StatesPlugin))
-            .insert_state(AppState::Trade)
-            .insert_resource(GameSession(state))
-            .add_systems(
-                Update,
-                (bind_test_trade, sync_trade_visual, sync_trade_presence).chain(),
-            )
-            .add_observer(on_trade_activate);
+        app.add_plugins((
+            MinimalPlugins,
+            AssetPlugin::default(),
+            ScenePlugin,
+            StatesPlugin,
+        ))
+        .insert_state(AppState::Trade)
+        .insert_resource(GameSession(state))
+        .add_systems(
+            Update,
+            (bind_test_trade, sync_trade_visual, sync_trade_presence).chain(),
+        )
+        .add_observer(on_trade_activate);
         spawn_trade_hierarchy(app.world_mut());
         app.update();
 

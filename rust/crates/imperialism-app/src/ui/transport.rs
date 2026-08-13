@@ -891,6 +891,7 @@ fn transport_gauge_width(value: i16, total: i16) -> f32 {
 mod tests {
     use super::*;
     use bevy::asset::AssetPlugin;
+    use bevy::scene::ScenePlugin;
 
     #[derive(Component)]
     struct TestTransportRoot;
@@ -1012,7 +1013,7 @@ mod tests {
         let before = state.transport_row_status(nation, binding.allocation);
 
         let mut app = App::new();
-        app.add_plugins((MinimalPlugins, AssetPlugin::default()))
+        app.add_plugins((MinimalPlugins, AssetPlugin::default(), ScenePlugin))
             .insert_resource(GameSession(state))
             .add_systems(
                 Update,

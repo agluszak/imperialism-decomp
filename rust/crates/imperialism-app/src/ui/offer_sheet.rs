@@ -443,12 +443,34 @@ mod tests {
         let selected_nation = peek_save_header(BEGINNING_OF_GAME)
             .and_then(|header| NationId::try_new(header.active_nation))
             .unwrap_or(NationId::new(0));
-        LegacySaveV62::parse(BEGINNING_OF_GAME).game_state(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 0,
-            selected_nation,
-        })
+        let mut parts =
+            LegacySaveV62::parse(BEGINNING_OF_GAME).game_state_parts(LegacyGameStateContext {
+                crt_rand_state: 1,
+                map_generation_lcg: 0,
+                zone_status_lcg: 0,
+                selected_nation,
+            });
+        let buyer = MajorNationId::from_nation(selected_nation).expect("active nation is a major");
+        let seller = MajorNationId::new(if buyer.get() == 0 { 1 } else { 0 });
+        let majors = MajorNationTable::from_fn(|nation| {
+            let mut major = parts.nations.major(nation).clone();
+            major.city.ship_order_count_by_type[ShipType::Trader] = 2;
+            major.city.ship_order_count_by_type[ShipType::Paddlewheeler] = 1;
+            major.city.ship_order_count_by_type[ShipType::Freighter] = 1;
+            major.city.stockpile[ResourceKind::Clothing] = 10;
+            major.city.stockpile[ResourceKind::Timber] = 12;
+            major.common.treasury = 20_000;
+            if nation == buyer {
+                major.economy.remembered_trade_offers_by_resource[ResourceKind::Clothing] = -1;
+                major.economy.remembered_trade_offers_by_resource[ResourceKind::Timber] = 5;
+            }
+            if nation == seller {
+                major.economy.remembered_trade_offers_by_resource[ResourceKind::Clothing] = 4;
+            }
+            major
+        });
+        parts.nations = Nations::new(majors, MinorNationTable::default());
+        GameState::from_parts(parts)
     }
 
     fn test_app(state: GameState) -> App {

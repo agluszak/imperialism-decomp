@@ -392,7 +392,7 @@ mod tests {
     use crate::test_support::game_state;
     use crate::{
         DiplomacyPolicy, DiplomaticRelationship, MajorNationController, MajorNationId, NationId,
-        TileId, TileOwnerTag, TradeProgress,
+        ResourceKind, ShipType, TileId, TileOwnerTag, TradeProgress,
     };
 
     #[test]
@@ -489,8 +489,28 @@ mod tests {
     #[test]
     fn semantic_state_round_trips_a_trade_continuation() {
         let mut state = game_state();
+        let buyer = MajorNationId::new(0);
+        let seller = MajorNationId::new(1);
+        for slot in 0..MajorNationId::COUNT {
+            let nation = MajorNationId::new(slot);
+            state.nations.majors[nation].city.ship_order_count_by_type[ShipType::Trader] = 2;
+            state.nations.majors[nation].city.ship_order_count_by_type[ShipType::Paddlewheeler] = 1;
+            state.nations.majors[nation].city.ship_order_count_by_type[ShipType::Freighter] = 1;
+            state.nations.majors[nation].city.stockpile[ResourceKind::Clothing] = 10;
+            state.nations.majors[nation].city.stockpile[ResourceKind::Timber] = 12;
+            state.nations.majors[nation].common.treasury = 20_000;
+        }
+        state.nations.majors[buyer]
+            .economy
+            .remembered_trade_offers_by_resource[ResourceKind::Clothing] = -1;
+        state.nations.majors[buyer]
+            .economy
+            .remembered_trade_offers_by_resource[ResourceKind::Timber] = 5;
+        state.nations.majors[seller]
+            .economy
+            .remembered_trade_offers_by_resource[ResourceKind::Clothing] = 4;
         let TradeProgress::Offer(_) = state.begin_trade_phase() else {
-            panic!("game_state fixture must produce a pending trade offer");
+            panic!("game_state clothing-offer fixture must produce a pending trade offer");
         };
         let encoded = serde_json::to_vec(&state).expect("serialize");
         let restored: crate::GameState = serde_json::from_slice(&encoded).expect("deserialize");
