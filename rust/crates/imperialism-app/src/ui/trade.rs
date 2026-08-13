@@ -350,7 +350,7 @@ fn bind_trade_controls(
         let offer_pictures = pictures.for_button(binding.commodity, TradeCardKind::Offer);
         commands.entity(card).insert((
             UiButton,
-            ImageNode::new(card_pictures.idle.clone()),
+            trade_card_image(card_pictures.idle.clone()),
             TradeAction::Card {
                 commodity: binding.commodity,
                 kind: TradeCardKind::Bid,
@@ -363,7 +363,7 @@ fn bind_trade_controls(
         ));
         commands.entity(offer).insert((
             UiButton,
-            ImageNode::new(offer_pictures.idle.clone()),
+            trade_card_image(offer_pictures.idle.clone()),
             TradeAction::Card {
                 commodity: binding.commodity,
                 kind: TradeCardKind::Offer,
@@ -407,8 +407,11 @@ fn bind_trade_controls(
             .spawn((
                 Node {
                     position_type: PositionType::Absolute,
-                    width: percent(100),
-                    height: percent(100),
+                    left: px(0),
+                    top: px(0),
+                    width: px(0),
+                    height: px(0),
+                    overflow: Overflow::visible(),
                     ..default()
                 },
                 Pickable::IGNORE,
@@ -663,6 +666,7 @@ fn sync_trade_visual(
         } else {
             pictures.idle.clone()
         };
+        image.image_mode = NodeImageMode::Stretch;
         let (left, width) = match (kind, active) {
             (TradeCardKind::Bid, false) => (82.0, 17.0),
             (TradeCardKind::Bid, true) => (82.0, 65.0),
@@ -729,9 +733,12 @@ fn sync_trade_presence(
                         set_trade_interaction(&mut commands, entity, enabled);
                     }
                     TradeCardKind::Offer => {
-                        let visible = capacity > 0
-                            && trade_row_available(advanced_trade_unlocked, commodity)
-                            && (active || major.city.stockpile[commodity.resource()] > 0);
+                        let visible = trade_offer_tab_visible(
+                            trade_row_available(advanced_trade_unlocked, commodity),
+                            capacity,
+                            active,
+                            major.city.stockpile[commodity.resource()],
+                        );
                         set_trade_control(&mut commands, entity, visible);
                     }
                 }
@@ -876,6 +883,22 @@ fn set_trade_row_visible(commands: &mut Commands, entity: Entity, visible: bool)
 
 const fn trade_row_available(advanced_trade_unlocked: bool, commodity: TradeCommodity) -> bool {
     advanced_trade_unlocked || !matches!(commodity, TradeCommodity::Oil | TradeCommodity::Fuel)
+}
+
+fn trade_card_image(image: Handle<Image>) -> ImageNode {
+    ImageNode::new(image).with_mode(NodeImageMode::Stretch)
+}
+
+/// Idle `offr` tabs stay shown when merchant capacity is 0: C++ skips
+/// `SetTradeOfferSecondaryBitmap` and leaves the DoPostCreate-enabled control.
+/// With capacity, C++ hides the tab unless the row is selling or has stockpile.
+const fn trade_offer_tab_visible(
+    row_available: bool,
+    capacity: i16,
+    active: bool,
+    stockpile: i16,
+) -> bool {
+    row_available && (capacity == 0 || active || stockpile > 0)
 }
 
 fn trade_gauge_width(quantity: i16, capacity: i16) -> f32 {
@@ -1066,6 +1089,14 @@ mod tests {
                 _ => None,
             })
             .expect("the generated offer card is enabled");
+        assert_eq!(
+            app.world().get::<Visibility>(card),
+            Some(&Visibility::Visible)
+        );
+        let offer_node = app.world().get::<Node>(card).unwrap();
+        assert_eq!(offer_node.left, Val::Px(163.0));
+        assert_eq!(offer_node.width, Val::Px(17.0));
+        assert_eq!(offer_node.height, Val::Px(20.0));
         let row = app.world().get::<ChildOf>(card).unwrap().parent();
         for tag in [
             fourcc!("card"),
@@ -1123,5 +1154,14 @@ mod tests {
                 .player_trade_order(nation, commodity),
             PlayerTradeOrder::Sell(quantity - 1)
         );
+    }
+
+    #[test]
+    fn idle_offer_tabs_follow_retail_capacity_and_stockpile_gates() {
+        assert!(trade_offer_tab_visible(true, 0, false, 0));
+        assert!(!trade_offer_tab_visible(true, 4, false, 0));
+        assert!(trade_offer_tab_visible(true, 4, false, 2));
+        assert!(trade_offer_tab_visible(true, 4, true, 0));
+        assert!(!trade_offer_tab_visible(false, 4, false, 2));
     }
 }
