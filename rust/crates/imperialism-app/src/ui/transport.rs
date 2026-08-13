@@ -233,6 +233,7 @@ fn bind_transport_screen(
     );
 }
 
+#[allow(clippy::too_many_arguments)]
 fn bind_transport_controls(
     commands: &mut Commands,
     root: Entity,
