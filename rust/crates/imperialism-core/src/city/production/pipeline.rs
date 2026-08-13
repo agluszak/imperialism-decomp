@@ -8,10 +8,10 @@ impl GameState {
     /// production cycle. This is retail `TCity::EndCityPhase`; unit objects are
     /// committed after the city borrow is released.
     pub fn end_city_phase(&mut self, nation: MajorNationId) {
-        let owned_region_count =
-            self.nations
-                .owned_region_count(nation.nation())
-                .expect("city production requires a present major nation") as i32;
+        let owned_region_count = self
+            .nations
+            .owned_region_count(nation.nation())
+            .expect("city production requires a present major nation");
         let mut produced_civilians = CivilianUnitTable::default();
         {
             let MajorNation { economy, city, .. } = &mut self.nations.majors[nation];

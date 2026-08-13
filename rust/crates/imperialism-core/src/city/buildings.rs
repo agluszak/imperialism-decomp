@@ -26,32 +26,51 @@ pub enum CityFacilitySlot {
 }
 
 impl CityFacilitySlot {
-    pub const COUNT: usize = 16;
+    pub const ALL: [Self; 16] = [
+        Self::TextileMill,
+        Self::ClothingFactory,
+        Self::SteelMill,
+        Self::Metalworks,
+        Self::LumberMill,
+        Self::FurnitureFactory,
+        Self::OilRefinery,
+        Self::Shipyard,
+        Self::Armory,
+        Self::TradeSchool,
+        Self::University,
+        Self::PowerPlant,
+        Self::FoodProcessing,
+        Self::Warehouse,
+        Self::Transport,
+        Self::RegionalPopulation,
+    ];
+    pub const COUNT: usize = Self::ALL.len();
 
     pub const fn from_index(value: u8) -> Option<Self> {
-        match value {
-            0 => Some(Self::TextileMill),
-            1 => Some(Self::ClothingFactory),
-            2 => Some(Self::SteelMill),
-            3 => Some(Self::Metalworks),
-            4 => Some(Self::LumberMill),
-            5 => Some(Self::FurnitureFactory),
-            6 => Some(Self::OilRefinery),
-            7 => Some(Self::Shipyard),
-            8 => Some(Self::Armory),
-            9 => Some(Self::TradeSchool),
-            10 => Some(Self::University),
-            11 => Some(Self::PowerPlant),
-            12 => Some(Self::FoodProcessing),
-            13 => Some(Self::Warehouse),
-            14 => Some(Self::Transport),
-            15 => Some(Self::RegionalPopulation),
-            _ => None,
+        let index = value as usize;
+        if index < Self::ALL.len() {
+            Some(Self::ALL[index])
+        } else {
+            None
         }
     }
 
     pub(crate) const fn index(self) -> usize {
         self as usize
+    }
+
+    pub const fn is_capacity_center(self) -> bool {
+        matches!(
+            self,
+            Self::TextileMill
+                | Self::ClothingFactory
+                | Self::SteelMill
+                | Self::Metalworks
+                | Self::LumberMill
+                | Self::FurnitureFactory
+                | Self::OilRefinery
+                | Self::PowerPlant
+        )
     }
 }
 
@@ -63,25 +82,11 @@ pub struct CityWindowPosition {
 }
 
 impl CityState {
-    pub const fn is_capacity_center(slot: CityFacilitySlot) -> bool {
-        matches!(
-            slot,
-            CityFacilitySlot::TextileMill
-                | CityFacilitySlot::ClothingFactory
-                | CityFacilitySlot::SteelMill
-                | CityFacilitySlot::Metalworks
-                | CityFacilitySlot::LumberMill
-                | CityFacilitySlot::FurnitureFactory
-                | CityFacilitySlot::OilRefinery
-                | CityFacilitySlot::PowerPlant
-        )
-    }
-
     pub fn max_building_capacity(
         &self,
         slot: CityFacilitySlot,
         owner: &GreatPowerState,
-        owned_region_count: i32,
+        owned_region_count: usize,
     ) -> i16 {
         if slot == CityFacilitySlot::RegionalPopulation {
             return region_capacity(owner, owned_region_count);
@@ -114,7 +119,7 @@ impl CityState {
         &self,
         slot: CityFacilitySlot,
         owner: &GreatPowerState,
-        owned_region_count: i32,
+        owned_region_count: usize,
     ) -> u8 {
         let capacity = self.max_building_capacity(slot, owner, owned_region_count);
         if matches!(
@@ -143,7 +148,7 @@ impl CityState {
         &self,
         slot: CityFacilitySlot,
         owner: &GreatPowerState,
-        owned_region_count: i32,
+        owned_region_count: usize,
     ) -> i16 {
         if slot == CityFacilitySlot::RegionalPopulation {
             region_capacity(owner, owned_region_count)
@@ -156,7 +161,7 @@ impl CityState {
         &self,
         slot: CityFacilitySlot,
         owner: &GreatPowerState,
-        owned_region_count: i32,
+        owned_region_count: usize,
         active_nation_has_technology_15: bool,
     ) -> i16 {
         let building_type = self.building_type(slot, owner, owned_region_count);
@@ -253,7 +258,7 @@ impl GameState {
     }
 }
 
-fn region_capacity(owner: &GreatPowerState, owned_region_count: i32) -> i16 {
+fn region_capacity(owner: &GreatPowerState, owned_region_count: usize) -> i16 {
     let divisor = if owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
         .status()
         .has_reached(crate::PendingActionStatus::Level3)
@@ -284,10 +289,23 @@ mod tests {
 
     #[test]
     fn identifies_only_the_retail_capacity_center_slots() {
-        let actual: Vec<u8> = (0..CityFacilitySlot::COUNT as u8)
-            .filter(|value| CityState::is_capacity_center(slot(*value)))
+        let actual: Vec<CityFacilitySlot> = CityFacilitySlot::ALL
+            .into_iter()
+            .filter(|slot| slot.is_capacity_center())
             .collect();
-        assert_eq!(actual, vec![0, 1, 2, 3, 4, 5, 6, 11]);
+        assert_eq!(
+            actual,
+            [
+                CityFacilitySlot::TextileMill,
+                CityFacilitySlot::ClothingFactory,
+                CityFacilitySlot::SteelMill,
+                CityFacilitySlot::Metalworks,
+                CityFacilitySlot::LumberMill,
+                CityFacilitySlot::FurnitureFactory,
+                CityFacilitySlot::OilRefinery,
+                CityFacilitySlot::PowerPlant,
+            ]
+        );
     }
 
     #[test]

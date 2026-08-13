@@ -1,7 +1,7 @@
 use super::GameSession;
 use super::RetailUiAssets;
 use super::format_currency;
-use super::game_shell::{bind_native_game_screen_nav, project_date_and_treasury};
+use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::{RetailTag, find_descendant};
 use crate::AppState;
@@ -193,10 +193,10 @@ fn bind_transport_screen(
         Some(fourcc!("tool")),
     );
 
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Transport screen requires an active major nation");
-    session.0.rebuild_nation_resource_yields(nation);
-    project_date_and_treasury(
+    session.game.rebuild_nation_resource_yields(nation);
+    bind_game_status_display(
         &mut commands,
         &mut assets,
         *root,
@@ -275,7 +275,7 @@ fn bind_transport_screen(
             .entity(row)
             .insert(TransportHoverText(transport_hover_text(
                 &assets,
-                &session.0,
+                &session.game,
                 nation,
                 binding.allocation,
             )));
@@ -570,10 +570,10 @@ fn on_transport_arrow_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Transport screen requires an active major nation");
     session
-        .0
+        .game
         .step_transport_allocation(nation, action.allocation, action.delta);
 }
 
@@ -585,14 +585,14 @@ fn sync_transport_text(
     if !session.is_changed() && screens.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Transport screen requires an active major nation");
-    let major = session.0.nations().major(nation);
+    let major = session.game.nations().major(nation);
     let economy = &major.economy;
     for (display, mut text) in &mut texts {
         match *display {
             TransportDisplay::RowCaption(allocation) => {
-                let status = session.0.transport_row_status(nation, allocation);
+                let status = session.game.transport_row_status(nation, allocation);
                 text.0 = format!("{}  /  {}", status.allocated, status.available);
             }
             TransportDisplay::CapacityCaption => {
@@ -630,9 +630,9 @@ fn sync_transport_visual(
     if !session.is_changed() && screens.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Transport screen requires an active major nation");
-    let economy = &session.0.nations().major(nation).economy;
+    let economy = &session.game.nations().major(nation).economy;
     for (display, mut node, mut visibility, mut color) in &mut displays {
         match *display {
             TransportDisplay::Gauge {
@@ -642,7 +642,7 @@ fn sync_transport_visual(
             } => {
                 let (value, total) = match kind {
                     TransportGaugeKind::Allocation(allocation) => {
-                        let status = session.0.transport_row_status(nation, allocation);
+                        let status = session.game.transport_row_status(nation, allocation);
                         *visibility = if status.adjustable {
                             Visibility::Visible
                         } else {
@@ -667,7 +667,7 @@ fn sync_transport_visual(
                 below_color,
                 reached_color,
             } => {
-                let status = session.0.transport_row_status(nation, allocation);
+                let status = session.game.transport_row_status(nation, allocation);
                 if !status.adjustable {
                     *visibility = Visibility::Hidden;
                     continue;
@@ -703,7 +703,7 @@ fn sync_transport_presence(
     if !session.is_changed() && screens.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Transport screen requires an active major nation");
     for (entity, display, mut visibility, disabled) in &mut rows {
         let allocation = match *display {
@@ -717,7 +717,7 @@ fn sync_transport_presence(
             },
             _ => continue,
         };
-        let status = session.0.transport_row_status(nation, allocation);
+        let status = session.game.transport_row_status(nation, allocation);
         *visibility = if status.adjustable {
             Visibility::Visible
         } else {
@@ -732,7 +732,7 @@ fn sync_transport_presence(
         }
     }
     for (entity, action, disabled) in &actions {
-        let status = session.0.transport_row_status(nation, action.allocation);
+        let status = session.game.transport_row_status(nation, action.allocation);
         let enabled = if action.delta < 0 {
             status.can_decrease
         } else {
@@ -800,8 +800,7 @@ fn transport_hover_text(
     }
 
     let stock = allocation_amount(allocation, |resource| city.stockpile[resource]);
-    let building =
-        |slot| city.building_type(slot, economy, major.common.owned_region_count() as i32);
+    let building = |slot| city.building_type(slot, economy, major.common.owned_region_count());
     let needed = if allocation == TransportAllocation::COTTON_AND_WOOL {
         Some(building(CityFacilitySlot::TextileMill) * 2)
     } else if allocation == TransportAllocation::TIMBER {
@@ -1085,7 +1084,7 @@ mod tests {
             ScenePlugin,
             ButtonPlugin,
         ))
-        .insert_resource(GameSession(state))
+        .insert_resource(GameSession { game: state })
         .add_systems(
             Update,
             (
@@ -1134,7 +1133,7 @@ mod tests {
         let after = app
             .world()
             .resource::<GameSession>()
-            .0
+            .game
             .transport_row_status(nation, binding.allocation);
         assert_eq!(after.allocated, before.allocated + 1);
         let (gauge, visibility, color) = app
@@ -1175,7 +1174,7 @@ mod tests {
         let restored = app
             .world()
             .resource::<GameSession>()
-            .0
+            .game
             .transport_row_status(nation, binding.allocation);
         assert_eq!(restored.allocated, before.allocated);
         let caption = app

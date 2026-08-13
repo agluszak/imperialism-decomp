@@ -33,12 +33,12 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
     session: &mut GameSession,
     slot: CityFacilitySlot,
 ) {
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("City screen requires an active major nation");
     let (capacity_value, can_reserve) = match slot {
         CityFacilitySlot::PowerPlant => {
-            session.0.set_power_plant_upgrade(nation, false);
-            let major = session.0.nations().major(nation);
+            session.game.set_power_plant_upgrade(nation, false);
+            let major = session.game.nations().major(nation);
             let can_reserve = major
                 .economy
                 .available_diplomacy_budget(major.common.treasury)
@@ -50,9 +50,9 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
         }
         _ => {
             let (next_capacity, needed) = {
-                let major = session.0.nations().major(nation);
+                let major = session.game.nations().major(nation);
                 let city = &major.city;
-                let owned_regions = major.common.owned_region_count() as i32;
+                let owned_regions = major.common.owned_region_count();
                 let current = city.building_type(slot, &major.economy, owned_regions);
                 let next_capacity = city.max_building_capacity(slot, &major.economy, owned_regions);
                 (next_capacity, next_capacity - current)
@@ -61,7 +61,7 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
                 ExpandableFacility::try_from_slot(slot)
                     .expect("ordinary capacity center is expandable"),
             );
-            let can_reserve = needed <= session.0.city_order_limit(nation, order).maximum;
+            let can_reserve = needed <= session.game.city_order_limit(nation, order).maximum;
             (next_capacity.to_string(), can_reserve)
         }
     };
@@ -280,12 +280,12 @@ pub(in crate::ui::city) fn on_city_expansion_open(
     let Ok(open) = openers.get(activate.entity) else {
         return;
     };
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("City screen requires an active major nation");
     let (next_capacity, needed, next_level) = {
-        let major = session.0.nations().major(nation);
+        let major = session.game.nations().major(nation);
         let city = &major.city;
-        let owned_regions = major.common.owned_region_count() as i32;
+        let owned_regions = major.common.owned_region_count();
         let current = city.building_type(open.slot, &major.economy, owned_regions);
         let next_capacity = city.max_building_capacity(open.slot, &major.economy, owned_regions);
         (
@@ -297,7 +297,7 @@ pub(in crate::ui::city) fn on_city_expansion_open(
     let order = CityOrderId::Expansion(
         ExpandableFacility::try_from_slot(open.slot).expect("ordinary industry is expandable"),
     );
-    let can_reserve = needed <= session.0.city_order_limit(nation, order).maximum;
+    let can_reserve = needed <= session.game.city_order_limit(nation, order).maximum;
     let root = commands.spawn_scene(generated::citydlog_9221()).id();
     let building_name = city_string(&assets, CITY_BUILDING_STRING_GROUP, open.slot as i16);
     commands.entity(root).insert((
@@ -362,11 +362,11 @@ pub(in crate::ui::city) fn on_city_building_change_choice(
     let Ok(choice) = choices.get(activate.entity) else {
         return;
     };
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("City screen requires an active major nation");
     if choice.slot == CityFacilitySlot::PowerPlant {
         if choice.accept {
-            session.0.set_power_plant_upgrade(nation, true);
+            session.game.set_power_plant_upgrade(nation, true);
         }
     } else {
         let order = CityOrderId::Expansion(
@@ -374,15 +374,17 @@ pub(in crate::ui::city) fn on_city_building_change_choice(
                 .expect("ordinary industry is expandable"),
         );
         let quantity = if choice.accept {
-            let major = session.0.nations().major(nation);
+            let major = session.game.nations().major(nation);
             let city = &major.city;
-            let owned_regions = major.common.owned_region_count() as i32;
+            let owned_regions = major.common.owned_region_count();
             city.max_building_capacity(choice.slot, &major.economy, owned_regions)
                 - city.building_type(choice.slot, &major.economy, owned_regions)
         } else {
             0
         };
-        let _ = session.0.set_city_order_quantity(nation, order, quantity);
+        session
+            .game
+            .set_city_order_quantity(nation, order, quantity);
     }
 
     let mut dialog = activate.entity;
