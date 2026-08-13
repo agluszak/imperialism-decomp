@@ -20,7 +20,7 @@ pub(crate) fn training_limit(
         ),
     };
 
-    let cash_limit = if !owner.controller.is_human() {
+    let cash_limit = if !owner.diplomacy_eligible {
         workforce_limit
     } else {
         let affordable = (treasury + owner.diplomacy_budget_base / 100).max(0) / cash_per_unit;

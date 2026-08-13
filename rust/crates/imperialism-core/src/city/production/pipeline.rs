@@ -18,7 +18,7 @@ impl GameState {
 
             city.phase_counter += 1;
             city.stockpile.verify_stocks();
-            if matches!(economy.controller, MajorNationController::Computer) {
+            if !economy.diplomacy_eligible {
                 for resource in all_resources() {
                     city.stockpile
                         .wrapping_add(resource, city.reserved_by_type[resource]);
@@ -198,7 +198,7 @@ impl GameState {
                     0,
                     ShipState {
                         ship_type,
-                        location: location.unwrap_or(OceanZoneId::new(0)),
+                        location,
                         task_force: None,
                         aggression: 1,
                         nation: nation_id,
@@ -220,8 +220,13 @@ impl GameState {
         self.queue_navy_growth_pending(nation);
     }
 
-    fn port_zone_for_city_home(&self, nation: MajorNationId) -> Option<OceanZoneId> {
-        let home = self.nations.major(nation).common.home_tile?;
+    fn port_zone_for_city_home(&self, nation: MajorNationId) -> OceanZoneId {
+        let home = self
+            .nations
+            .major(nation)
+            .common
+            .home_tile
+            .expect("a city that launches a warship has a home tile");
         self.ocean
             .zones
             .iter()
@@ -235,6 +240,7 @@ impl GameState {
                     || port.zone.target_tile == Some(home))
                 .then(|| OceanZoneId::new(index as u16))
             })
+            .expect("a city that launches a warship has a port zone for its home tile")
     }
 
     fn queue_navy_growth_pending(&mut self, nation: MajorNationId) {
@@ -289,4 +295,44 @@ pub(crate) fn set_pending_action(
     payload: i16,
 ) {
     owner.pending_actions[action].queue(payload);
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn empty_zone() -> Zone {
+        Zone {
+            display_name: String::new(),
+            status_code: None,
+            target_tile: None,
+            seed_owner: None,
+            active_tile: None,
+            primary_neighbors: Vec::new(),
+            secondary_neighbors: Vec::new(),
+        }
+    }
+
+    #[test]
+    fn launched_warship_uses_the_home_port_zone_not_zone_zero() {
+        let mut state = crate::test_support::game_state();
+        let home = TileId::new(1);
+        state.ocean.zones = vec![
+            ZoneKind::Zone(empty_zone()),
+            ZoneKind::PortZone(PortZone {
+                zone: empty_zone(),
+                port_tile: home,
+            }),
+        ];
+        let nation = MajorNationId::new(0);
+        state.nations.city_mut(nation).orders.ships[ShipOrderSlot::WarshipEarlyPrimary]
+            .progress
+            .quantity = 1;
+
+        state.produce_city_units(nation);
+
+        assert_eq!(state.ships.len(), 1);
+        assert_eq!(state.ships[0].ship_type, ShipType::Frigate);
+        assert_eq!(state.ships[0].location, OceanZoneId::new(1));
+    }
 }

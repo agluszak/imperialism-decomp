@@ -7,7 +7,7 @@ pub(super) const MINOR_NATION_BORDER_PALETTE: u8 = 0x0a;
 pub(super) const MAJOR_NATION_BORDER_PALETTES: [u8; MajorNationId::COUNT as usize] =
     [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
 pub(super) fn compose_strategic_borders(state: &GameState, tile: TileId, pixels: &mut [u8]) {
-    let tile_state = &state.map[tile];
+    let tile_state = state.map()[tile];
     if tile_state.owner_border_mask != 0 {
         if tile_state.terrain != TerrainKind::Water {
             draw_nation_border_segments(state, tile, pixels);
@@ -21,9 +21,9 @@ pub(super) fn compose_strategic_borders(state: &GameState, tile: TileId, pixels:
 }
 
 fn draw_nation_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8]) {
-    let mask = state.map[tile].owner_border_mask;
-    let owner = border_palette(state.map[tile].owner_nation);
-    let neighbors = state.map.geometry().neighbors(tile);
+    let mask = state.map()[tile].owner_border_mask;
+    let owner = border_palette(state.map()[tile].owner_nation);
+    let neighbors = state.map().geometry().neighbors(tile);
     let direction1 = mask & 2 != 0;
 
     if direction1 {
@@ -64,7 +64,7 @@ fn draw_nation_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8
         }
     }
 
-    if state.map[tile].terrain == TerrainKind::Water {
+    if state.map()[tile].terrain == TerrainKind::Water {
         return;
     }
     if neighbor_is_water(state, neighbors[HexDirection::NorthEast as usize])
@@ -86,8 +86,8 @@ fn draw_nation_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8
 }
 
 fn draw_city_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8]) {
-    let mask = state.map[tile].city_border_mask;
-    let neighbors = state.map.geometry().neighbors(tile);
+    let mask = state.map()[tile].city_border_mask;
+    let neighbors = state.map().geometry().neighbors(tile);
     let direction1 = mask & 2 != 0;
 
     if direction1 {
@@ -122,7 +122,7 @@ fn draw_city_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8])
         }
     }
 
-    if state.map[tile].terrain == TerrainKind::Water {
+    if state.map()[tile].terrain == TerrainKind::Water {
         return;
     }
     if neighbor_is_water(state, neighbors[HexDirection::NorthEast as usize])
@@ -142,7 +142,7 @@ fn draw_city_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8])
 }
 
 fn draw_sea_zone_borders(state: &GameState, tile: TileId, pixels: &mut [u8]) {
-    let neighbors = state.map.geometry().neighbors(tile);
+    let neighbors = state.map().geometry().neighbors(tile);
     let pairs = [
         (HexDirection::SouthWest, HexDirection::SouthEast),
         (HexDirection::SouthEast, HexDirection::East),
@@ -238,19 +238,19 @@ fn land_tiles_have_different_owners(
     let Some(second) = second else {
         return false;
     };
-    let first = &state.map[first];
-    let second = &state.map[second];
+    let first = state.map()[first];
+    let second = state.map()[second];
     first.terrain != TerrainKind::Water
         && second.terrain != TerrainKind::Water
         && first.owner_nation != second.owner_nation
 }
 
 fn neighbor_is_water(state: &GameState, neighbor: Option<TileId>) -> bool {
-    neighbor.is_some_and(|neighbor| state.map[neighbor].terrain == TerrainKind::Water)
+    neighbor.is_some_and(|neighbor| state.map()[neighbor].terrain == TerrainKind::Water)
 }
 
 fn neighbor_palette(state: &GameState, neighbor: Option<TileId>) -> u8 {
-    border_palette(neighbor.and_then(|neighbor| state.map[neighbor].owner_nation))
+    border_palette(neighbor.and_then(|neighbor| state.map()[neighbor].owner_nation))
 }
 
 fn border_palette(owner: Option<TileOwnerTag>) -> u8 {

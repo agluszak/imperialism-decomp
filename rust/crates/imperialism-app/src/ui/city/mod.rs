@@ -1,7 +1,7 @@
+use super::GameSession;
 use super::format_currency;
-use super::game_shell::bind_native_game_screen_nav;
+use super::game_shell::{bind_native_game_screen_nav, project_date_and_treasury};
 use super::generated;
-use super::random_setup::GameSession;
 use super::retail::{ModalDialog, RetailUiAssets};
 use super::retail::{RetailTag, find_descendant};
 use crate::*;
@@ -59,6 +59,7 @@ impl Plugin for CityPlugin {
             Update,
             (
                 sync_city_summary,
+                sync_city_hover_title,
                 sync_city_buildings,
                 sync_city_order_quantities,
                 sync_industry_texts,

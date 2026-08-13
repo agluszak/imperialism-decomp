@@ -1,8 +1,8 @@
+use super::GameSession;
 use super::RetailUiAssets;
 use super::format_currency;
 use super::game_shell::project_date_and_treasury;
 use super::generated;
-use super::random_setup::GameSession;
 use super::retail::{RetailTag, find_descendant};
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
@@ -77,6 +77,9 @@ struct DealBookFonts {
 #[derive(Component)]
 struct DealBookRoot;
 
+#[derive(Resource)]
+pub(crate) struct DealBookReturn(pub(crate) AppState);
+
 #[derive(Component)]
 struct DealBookScreen {
     mode: DealBookMode,
@@ -103,8 +106,8 @@ impl Plugin for DealBookPlugin {
             OnEnter(AppState::DealBook),
             (spawn_deal_book, bind_deal_book).chain(),
         )
-        .add_observer(on_deal_book_activate)
-        .add_observer(on_deal_book_tabs_click)
+        .add_observer(on_deal_book_activate.run_if(in_state(AppState::DealBook)))
+        .add_observer(on_deal_book_tabs_click.run_if(in_state(AppState::DealBook)))
         .add_systems(
             Update,
             (hover_deal_book_tabs, sync_deal_book)
@@ -272,13 +275,20 @@ fn on_deal_book_activate(
     actions: Query<&DealBookAction>,
     mut screens: Query<&mut DealBookScreen>,
     session: Res<GameSession>,
+    return_state: Option<Res<DealBookReturn>>,
     mut next_state: ResMut<NextState<AppState>>,
+    mut commands: Commands,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
     if *action == DealBookAction::Close {
-        next_state.set(AppState::StrategicMap);
+        next_state.set(
+            return_state
+                .as_deref()
+                .map_or(AppState::StrategicMap, |state| state.0),
+        );
+        commands.remove_resource::<DealBookReturn>();
         return;
     }
     let Ok(mut screen) = screens.single_mut() else {

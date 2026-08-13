@@ -1,4 +1,4 @@
-#include "NativeTransition.h"
+#include "NativeCases.h"
 #include "JsonObject.h"
 
 #include "game/city/TCity.h"
@@ -8,21 +8,15 @@
 #include "game/military_domain_types.h"
 #include "game/nation/TGreatPower.h"
 #include "game/navy/TShip.h"
-#include "game/ui_screens/TSimMgr.h"
 
 RuntimeActionResult RunSpecialistRecruitment(NativeTransition& transition) {
-  const short nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0 || nation->city == 0 || nation->militaryUnitList44 == 0 ||
-      nation->turnSummaryQueue == 0) {
-    return RuntimeActionResult::Failure("the loaded player has no recruitment state");
-  }
+  TGreatPower* nation = ActiveNation();
 
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(nationSlot));
-  operation.Set("unit_kind", "sappers");
-  operation.Set("quantity", 1);
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(ActiveNationSlot()));
+  args.Set("unit_kind", "sappers");
+  args.Set("quantity", 1);
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -35,14 +29,9 @@ RuntimeActionResult RunSpecialistRecruitment(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition) {
-  const NationSlot nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
+  const NationSlot nationSlot = ActiveNationSlot();
+  TGreatPower* nation = ActiveNation();
   const NationSlot foreignNationSlot = nationSlot == 0 ? 1 : 0;
-  TGreatPower* foreignNation = g_apNationStates[foreignNationSlot];
-  if (nation == 0 || foreignNation == 0 || nation->militaryUnitList44 == 0 ||
-      foreignNation->militaryUnitList44 == 0 || g_pMapActionContextListHead == 0) {
-    return RuntimeActionResult::Failure("the loaded game has no major-nation military state");
-  }
 
   while (nation->militaryUnitList44->GetCount() != 0) {
     TMilitaryUnit* unit =
@@ -74,9 +63,9 @@ RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition) {
   nation->treasuryValue10 = 10000;
   nation->militaryExpenses960 = 0;
 
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(nationSlot));
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(nationSlot));
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }

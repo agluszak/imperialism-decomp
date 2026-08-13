@@ -1,5 +1,11 @@
 use crate::*;
+use enum_map::Enum;
 use serde::{Deserialize, Deserializer, Serialize};
+
+const TECH_ITEM_PURCHASE_COST: [i32; TECHNOLOGY_COUNT] = [
+    0, 0, 1000, 1000, 1500, 1500, 1500, 1500, 3000, 3000, 3000, 6000, 7000, 10000, 12000, 12000,
+    12000, 12000, 12000, 25000, 20000, 40000, 40000, 40000, 40000, 100000, 120000, 150000, 150000,
+];
 
 /// Per-nation University capability state used by city production and recruitment.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
@@ -245,6 +251,300 @@ impl TechnologyState {
     }
 }
 
+impl GameState {
+    /// Mirrors `TTechMgr::CheckForAdvances`.
+    #[allow(clippy::needless_range_loop)]
+    pub fn check_technology_advances(&mut self) {
+        let economic_turn = self.turn.economic_turn;
+        for tech_id in 3..TECHNOLOGY_COUNT {
+            if !self.technology.global_unlocks_by_technology[tech_id] {
+                if i32::from(self.technology.scheduled_unlock_turn_by_technology[tech_id])
+                    == economic_turn
+                {
+                    apply_city_order_capability_unlock(&mut self.technology, tech_id);
+                    self.pending
+                        .queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
+                            audience: None,
+                            story_code: tech_id as i32,
+                        });
+                }
+                continue;
+            }
+
+            for nation in MajorNationId::all() {
+                if !self.nation_slot_eligible_for_event_processing(nation) {
+                    continue;
+                }
+                if self.nations.major(nation).economy.diplomacy_eligible {
+                    continue;
+                }
+                if self.technology.research_status_by_nation[nation][tech_id]
+                    == TechnologyResearchStatus::Researched
+                {
+                    continue;
+                }
+                self.nations.major_mut(nation).common.treasury -= TECH_ITEM_PURCHASE_COST[tech_id];
+                self.technology.research_status_by_nation[nation][tech_id] =
+                    TechnologyResearchStatus::Pending;
+                // FIXME: retail also stamps `capRowsE4a6.completionYearOffsetByTechId`
+                // to `economicTurn / 4`. That field is not in the semantic model.
+            }
+        }
+    }
+
+    /// Opening/end-turn tail: advance the season, run technology unlocks, and
+    /// apply non-interactive pending research. Consumes the active human nation's
+    /// first pending unlock, matching `ConsumeFirstPendingAbilityUnlock` before
+    /// `ShowAbilityStatusReport`.
+    pub fn begin_technology_and_newspaper_tail(&mut self) -> Option<u8> {
+        self.turn.advance_season();
+        self.turn.phase = PhaseCode::TECHNOLOGY_ADVANCES;
+        self.check_technology_advances();
+        // FIXME: retail ORs `turnFlowStatusFlags` with `0x40` when `marker262` is
+        // unchanged (map toolbar new-tech chrome). `marker262` is not modeled.
+        self.consume_non_interactive_technology_unlocks();
+        let nation = MajorNationId::from_nation(self.turn.active_nation)?;
+        // FIXME: retail consume-one is active nation + cooldown < 1 + terrain-eligible,
+        // not diplomacy eligibility. Same on a normal single-player opening turn.
+        if self.nations.major(nation).economy.diplomacy_eligible
+            && self.nation_slot_eligible_for_event_processing(nation)
+        {
+            self.acknowledge_technology_unlock(nation)
+        } else {
+            None
+        }
+    }
+
+    pub fn first_pending_technology_unlock(&self, nation: NationId) -> Option<u8> {
+        let nation = MajorNationId::from_nation(nation)?;
+        self.technology.research_status_by_nation[nation]
+            .iter()
+            .position(|status| *status == TechnologyResearchStatus::Pending)
+            .map(|tech_id| tech_id as u8)
+    }
+
+    /// Mirrors `TTechMgr::ConsumeFirstPendingAbilityUnlock` for one nation.
+    pub fn acknowledge_technology_unlock(&mut self, nation: MajorNationId) -> Option<u8> {
+        let tech_id = self.first_pending_technology_unlock(nation.nation())?;
+        self.apply_ability_unlock(usize::from(tech_id), nation);
+        Some(tech_id)
+    }
+
+    fn consume_non_interactive_technology_unlocks(&mut self) {
+        let active = MajorNationId::from_nation(self.turn.active_nation);
+        for nation in MajorNationId::all() {
+            // FIXME: retail skips the drain when the slot is active, cooldown < 1, and
+            // terrain-eligible — not when diplomacyEligibilityA0 is set.
+            let interactive = active == Some(nation)
+                && self.nations.major(nation).economy.diplomacy_eligible
+                && self.nation_slot_eligible_for_event_processing(nation);
+            if interactive {
+                continue;
+            }
+            while self.acknowledge_technology_unlock(nation).is_some() {}
+        }
+    }
+
+    fn nation_slot_eligible_for_event_processing(&self, nation: MajorNationId) -> bool {
+        !matches!(
+            self.nations.major(nation).common.status(),
+            CountryStatus::ProtectorateOf(_)
+        )
+    }
+
+    fn apply_ability_unlock(&mut self, tech_id: usize, nation: MajorNationId) {
+        // FIXME: `HandleAbilityUnlock` also upgrades developed-tile civilian class,
+        // navy/score `UpdateSelectionAndRecalculateScores`, unit-order cost profiles,
+        // and `TMilitaryUnit::Upgrade()`. First turn usually has nothing Pending.
+        if self.technology.research_status_by_nation[nation][tech_id]
+            == TechnologyResearchStatus::Researched
+        {
+            return;
+        }
+        self.technology.research_status_by_nation[nation][tech_id] =
+            TechnologyResearchStatus::Researched;
+
+        let difficulty = self.turn.difficulty as u8;
+        let era_offset =
+            if difficulty >= 3 && !self.nations.major(nation).economy.diplomacy_eligible {
+                i16::from(difficulty) - 2
+            } else {
+                0
+            };
+
+        match tech_id {
+            3 => self.set_requirement_level(nation, 0, 1),
+            2 => self.set_requirement_level(nation, 0x11, 1),
+            5 => {
+                self.set_requirement_level(nation, 3, 2);
+                self.set_requirement_level(nation, 4, 2);
+                self.set_requirement_level(nation, 0x16, 2);
+                self.set_requirement_level(nation, 0x15, 2);
+            }
+            6 => {
+                self.set_requirement_level(nation, 2, 1);
+                self.set_university_available(nation, 3, true);
+            }
+            0xa => {
+                self.set_requirement_level(nation, 0x12, 2);
+                self.set_requirement_level(nation, 0x11, 2);
+            }
+            7 => {
+                self.set_requirement_level(nation, 0x14, 1);
+                self.set_requirement_level(nation, 1, 1);
+                self.set_university_available(nation, 5, true);
+            }
+            8 => {
+                self.set_requirement_level(nation, 0, 2);
+                self.set_requirement_level(nation, 1, 2);
+            }
+            0xc => self.set_requirement_level(nation, 2, 2),
+            0x11 => self.set_requirement_level(nation, 0x11, 3),
+            0x12 => self.set_requirement_level(nation, 0x12, 3),
+            0x14 => self.set_requirement_level(nation, 0x14, 2),
+            0xb => {
+                self.activate_military_ability(nation, 0xc);
+                self.activate_military_ability(nation, 9);
+                self.activate_military_ability(nation, 0x19);
+                self.activate_military_ability(nation, 0x1c);
+            }
+            0x10 => {
+                self.set_requirement_level(nation, 0, 3);
+                self.set_requirement_level(nation, 1, 3);
+            }
+            0xd => {
+                self.activate_military_ability(nation, 0xe);
+                self.activate_military_ability(nation, 0xf);
+                self.add_era_arms(nation, era_offset, 10);
+            }
+            0x17 => {
+                self.set_requirement_level(nation, 3, 3);
+                self.set_requirement_level(nation, 4, 3);
+                self.set_requirement_level(nation, 0x16, 3);
+                self.set_requirement_level(nation, 0x15, 3);
+                self.set_requirement_level(nation, 2, 3);
+                self.activate_military_ability(nation, 0x1a);
+            }
+            0x13 => {
+                self.set_requirement_level(nation, 6, 1);
+                self.set_university_available(nation, 8, true);
+            }
+            0xe => {
+                self.activate_military_ability(nation, 8);
+                self.activate_military_ability(nation, 0xd);
+                self.activate_military_ability(nation, 0xa);
+                self.activate_military_ability(nation, 0xb);
+                self.add_era_arms(nation, era_offset, 10);
+            }
+            0x1a => {
+                self.set_requirement_level(nation, 6, 2);
+                self.set_requirement_level(nation, 0x14, 3);
+            }
+            0x16 => {
+                self.activate_military_ability(nation, 0x16);
+                self.activate_military_ability(nation, 0x17);
+                self.add_era_arms(nation, era_offset, 20);
+            }
+            0x1c => {
+                self.set_requirement_level(nation, 6, 3);
+                self.activate_military_ability(nation, 0x14);
+                self.activate_military_ability(nation, 0x15);
+            }
+            0x19 => {
+                self.activate_military_ability(nation, 0x10);
+                self.activate_military_ability(nation, 0x11);
+                self.activate_military_ability(nation, 0x12);
+                self.activate_military_ability(nation, 0x13);
+                self.activate_military_ability(nation, 0x1d);
+                self.add_era_arms(nation, era_offset, 20);
+            }
+            _ => {}
+        }
+        sync_city_capabilities_from_research(&mut self.technology, nation);
+    }
+
+    fn set_requirement_level(&mut self, nation: MajorNationId, resource: usize, level: u8) {
+        let resource = ResourceKind::from_index(resource as u8)
+            .expect("technology unlock uses a retail resource index");
+        self.technology.city_capabilities_by_nation[nation]
+            .university
+            .requirement_levels[resource] = level;
+    }
+
+    fn set_university_available(&mut self, nation: MajorNationId, kind: usize, available: bool) {
+        let kind = CivilianUnitKind::from_usize(kind);
+        self.technology.city_capabilities_by_nation[nation]
+            .university
+            .available[kind] = available;
+    }
+
+    fn activate_military_ability(&mut self, nation: MajorNationId, ability: usize) {
+        let kind = MilitaryUnitKind::from_usize(ability);
+        self.technology.military_unit_ability_active_by_nation[nation][kind] = true;
+    }
+
+    fn add_era_arms(&mut self, nation: MajorNationId, era_offset: i16, scale: i16) {
+        if era_offset == 0 {
+            return;
+        }
+        self.nations
+            .city_mut(nation)
+            .stockpile
+            .wrapping_add_and_verify(ResourceKind::Arms, era_offset * scale);
+    }
+}
+
+fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id: usize) {
+    // FIXME: retail also writes `marker262`, `techSelectorShort1d2` / `activeZoneIndex1d4`,
+    // and `activePrerequisitePair264` (techs 0xb / 0x16).
+    technology.global_unlocks_by_technology[tech_id] = true;
+    match tech_id {
+        9 => {
+            technology.industry_enabled_by_slot[7] = true;
+            technology.industry_enabled_by_slot[5] = true;
+        }
+        4 => technology.industry_enabled_by_slot[6] = true,
+        0xf => {
+            technology.industry_enabled_by_slot[8] = true;
+            technology.advanced_iron_working = true;
+        }
+        0x15 => technology.industry_enabled_by_slot[9] = true,
+        0x18 => {
+            technology.industry_enabled_by_slot[0xb] = true;
+            technology.industry_enabled_by_slot[0xa] = true;
+            technology.marine_engineering = true;
+        }
+        0x1b => {
+            technology.industry_enabled_by_slot[0xc] = true;
+            technology.industry_enabled_by_slot[0xd] = true;
+        }
+        _ => {}
+    }
+}
+
+fn sync_city_capabilities_from_research(technology: &mut TechnologyState, nation: MajorNationId) {
+    let status = technology.research_status_by_nation[nation];
+    let researched = |tech_id: usize| status[tech_id] == TechnologyResearchStatus::Researched;
+    let started = |tech_id: usize| status[tech_id] != TechnologyResearchStatus::NotStarted;
+    let capabilities = &mut technology.city_capabilities_by_nation[nation];
+    capabilities.advanced_iron_working = researched(0x0f);
+    capabilities.oil_drilling = researched(0x13);
+    capabilities.primary_civilian_distance_terrain = CivilianTerrainAccess {
+        hills: researched(12),
+        swamp: researched(6),
+        mountain: researched(23),
+    };
+    capabilities.secondary_civilian_hills = researched(11);
+    capabilities.secondary_civilian_swamp = researched(5);
+    capabilities.fort_level_cap = if started(0x16) {
+        FortLevelCap::THREE
+    } else if started(0x0b) {
+        FortLevelCap::TWO
+    } else {
+        FortLevelCap::ONE
+    };
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -275,5 +575,43 @@ mod tests {
             };
             assert_eq!(technology.naval_production_capacity(7, 4), expected);
         }
+    }
+
+    #[test]
+    fn check_for_advances_unlocks_a_scheduled_technology_and_queues_news() {
+        let mut state = crate::test_support::game_state();
+        state.technology.scheduled_unlock_turn_by_technology[4] = 1;
+        state.check_technology_advances();
+
+        assert!(state.technology.global_unlocks_by_technology[4]);
+        assert!(state.technology.industry_enabled_by_slot[6]);
+        assert_eq!(
+            state.pending.newspaper_events,
+            [PendingNewspaperEvent::Miscellaneous {
+                audience: None,
+                story_code: 4,
+            }]
+        );
+    }
+
+    #[test]
+    fn check_for_advances_charges_ai_nations_for_already_unlocked_technology() {
+        let mut state = crate::test_support::game_state();
+        let ai = MajorNationId::new(1);
+        state.nations.major_mut(ai).economy.controller = MajorNationController::Computer;
+        state.nations.major_mut(ai).economy.diplomacy_eligible = false;
+        state.nations.major_mut(ai).common.treasury = 50_000;
+        state.technology.global_unlocks_by_technology[3] = true;
+        state.check_technology_advances();
+
+        assert_eq!(state.nations.major(ai).common.treasury, 49_000);
+        assert_eq!(
+            state.technology.research_status_by_nation[ai][3],
+            TechnologyResearchStatus::Pending
+        );
+        assert_eq!(
+            state.technology.research_status_by_nation[MajorNationId::new(0)][3],
+            TechnologyResearchStatus::NotStarted
+        );
     }
 }

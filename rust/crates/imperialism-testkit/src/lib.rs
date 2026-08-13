@@ -4,10 +4,7 @@ mod differential;
 mod oracle;
 mod runtime_capture;
 
-pub use differential::{
-    RuntimeRun, assert_game_state_eq, compare_native, run_retail_fixture_result,
-    run_self_consistency_result,
-};
+pub use differential::{assert_game_state_eq, compare_native};
 use imperialism_core::{
     Difficulty, MajorNationId, MapTopology, RetailLcg,
     differential_trace::{
@@ -19,8 +16,9 @@ pub use oracle::{
     check_snapshot, check_terrain,
 };
 pub use runtime_capture::{
-    EvidenceKind, RuntimeCaptureError, RuntimeResultExpectations, ValidatedRuntimeResult,
-    decode_runtime_result, read_runtime_result,
+    EvidenceKind, RuntimeCaptureError, RuntimeResultExpectations, RuntimeRun,
+    ValidatedRuntimeResult, decode_runtime_result, read_runtime_result, run_retail_fixture_result,
+    run_self_consistency_result,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;

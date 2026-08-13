@@ -39,6 +39,9 @@ pub struct ForeignTradeState {
     pub requested_ship: ShipType,
     pub purchase_priority: TradeCommodityTable<i16>,
     pub preferred_resources: [Option<TradeCommodity>; 4],
+    pub capability_flag_14: i16,
+    pub capability_flag_16: i16,
+    pub trade_partner_enabled: [u8; 7],
 }
 
 impl ForeignTradeState {
@@ -60,6 +63,9 @@ impl ForeignTradeState {
             requested_ship,
             purchase_priority: TradeCommodityTable::default(),
             preferred_resources: [None; 4],
+            capability_flag_14: 0,
+            capability_flag_16: 0,
+            trade_partner_enabled: [1; 7],
         }
     }
 }
@@ -67,6 +73,8 @@ impl ForeignTradeState {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct GreatPowerState {
     pub controller: MajorNationController,
+    /// Retail `TGreatPower::diplomacyEligibilityA0`. Independent of [`Self::controller`].
+    pub diplomacy_eligible: bool,
     pub ai_zone_targets: Option<Vec<AiTargetState>>,
     pub ai_province_targets: Option<ProvinceTable<AiTargetState>>,
     pub foreign_minister_personality: ForeignMinisterPersonality,
@@ -91,22 +99,21 @@ pub struct GreatPowerState {
     pub pending_ship: Option<ShipType>,
     pub interior_civilian: Box<InteriorCivilianState>,
     pub ai_trade: Option<AiTradeState>,
-    pub ai_development_pressure: Option<AiDevelopmentPressureState>,
     pub aid_allocation_by_minor_nation: MinorNationTable<ResourceTable<i32>>,
     pub budget_pool_base: i32,
     pub budget_pool_delta: i32,
     pub special_resource_trade_balance: i32,
-    pub candidate_nation_flags: NationTable<u8>,
     pub scenario_initialized: bool,
     pub turn_finished: bool,
     pub pending_actions: PendingActionTable<PendingActionState>,
+    pub candidate_nation_flags: NationTable<u8>,
+    pub colony_boycott_flags: NationTable<u8>,
     pub diplomacy_budget_base: i32,
     pub escalation_counter: i16,
     pub pending_commitment_cost: i32,
     pub pressure_counter: i16,
     pub army_movement_budget: i32,
     pub aid_allocation_total: i32,
-    pub colony_boycott_flags: NationTable<u8>,
     pub military_expenses: i32,
 }
 
@@ -133,6 +140,7 @@ impl GreatPowerState {
         };
         Self {
             controller,
+            diplomacy_eligible: human,
             ai_zone_targets: match controller {
                 MajorNationController::Human => None,
                 MajorNationController::Computer => Some(Vec::new()),
@@ -163,24 +171,21 @@ impl GreatPowerState {
             pending_ship: None,
             interior_civilian: Box::new(InteriorCivilianState::for_random_start(human)),
             ai_trade: (!human).then(AiTradeState::default),
-            // These TAutoGreatPower fields are not initialized at the pre-capital
-            // random-game boundary. They become authoritative during turn setup.
-            ai_development_pressure: None,
             aid_allocation_by_minor_nation: MinorNationTable::default(),
             budget_pool_base: 0,
             budget_pool_delta: 0,
             special_resource_trade_balance: 0,
-            candidate_nation_flags: NationTable::default(),
             scenario_initialized: false,
             turn_finished: true,
             pending_actions: PendingActionTable::default(),
+            candidate_nation_flags: NationTable::default(),
+            colony_boycott_flags: NationTable::default(),
             diplomacy_budget_base,
             escalation_counter,
             pending_commitment_cost: 0,
             pressure_counter: 0,
             army_movement_budget: 0x0f,
             aid_allocation_total: 0,
-            colony_boycott_flags: NationTable::default(),
             military_expenses: 0,
         }
     }

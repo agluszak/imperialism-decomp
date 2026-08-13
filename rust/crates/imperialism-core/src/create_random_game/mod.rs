@@ -11,6 +11,9 @@ mod sea_zones;
 mod tests;
 
 use city_placement::*;
+pub(crate) use city_placement::{
+    name_units_for_nation, resource_capability_level, resource_capability_requirement_level,
+};
 use map_post_pass::*;
 use map_render::*;
 use missions::*;
@@ -173,10 +176,12 @@ pub fn create_random_game(
         difficulty,
         &mut port_zones,
     );
-    if requires_capital_site_selection(difficulty) {
+    let map_view_origin = if requires_capital_site_selection(difficulty) {
         world.seed_valid_city_site_candidate_tiles_for_nation(human_nation);
-        initialize_capital_selection_view_origin(&mut world, human_nation);
-    }
+        capital_selection_view_origin(&world, human_nation)
+    } else {
+        TileId::new(1)
+    };
     let diplomacy = DiplomacyState::for_random_start(human_nation, difficulty, &mut crt_rand);
 
     initialize_ai_targets(&mut nations, &mission_queues, port_zones.next_ordinal);
@@ -251,6 +256,7 @@ pub fn create_random_game(
         },
         unit_ids,
         map: world,
+        map_view_origin,
         ocean,
         rng: RngState {
             crt_rand,
@@ -270,5 +276,6 @@ pub fn create_random_game(
         missions,
         news: NewsState::default(),
         pending,
+        trade_session: None,
     }
 }

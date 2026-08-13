@@ -459,9 +459,11 @@ impl LegacyCityState {
             stockpile: Stockpile::from_table(ResourceTable::from_array(self.stockpile)),
             production_orders: ProductionTable::from_array(self.production_orders),
             production_accum: ProductionTable::from_array(self.production_accum),
-            production_flags: ProductionTable::from_array(self.production_flags),
-            production_current: ProductionTable::from_array(self.production_current),
-            production_progress: ProductionTable::from_array(self.production_progress),
+            building_windows: city_windows_from_retail(
+                self.production_flags,
+                self.production_current,
+                self.production_progress,
+            ),
             // This constructed cache is not persisted by TCity::ReadFrom.
             population_growth_penalty_ticks: 0,
             unmet_resource_retries: ResourceTable::from_array(self.unmet_resource_retries),
@@ -537,7 +539,6 @@ impl LegacyMapState {
     }
 
     fn map_mgr(&self) -> MapMgr {
-        let view_origin = TileId::new(self.view_origin_tile as u16);
         let mut map = MapMgr::from_parts(
             self.topology(),
             self.tiles
@@ -546,7 +547,6 @@ impl LegacyMapState {
                 .collect::<Vec<_>>(),
             self.province_states(),
         );
-        map.view_origin = view_origin;
         map.map_data_ready = self.map_data_ready != 0;
         map.recruit_search_active = self.recruit_search_active != 0;
         map.city_score_total = self.city_score_total;
@@ -575,6 +575,9 @@ fn trade_market_state(market: &LegacyTradeMarketState) -> TradeMarketState {
                 amount_offered: i32::from(row.amount_offered),
                 adjusted_offer_count: row.adjusted_offer_count,
                 current_offer_by_nation: NationTable::from_array(row.current_offer_by_nation),
+                accumulated_offer_by_nation: NationTable::from_array(
+                    row.accumulated_offer_by_nation,
+                ),
                 maximum_offer_by_nation: NationTable::from_array(row.maximum_offer_by_nation),
             }
         })),
@@ -708,10 +711,9 @@ fn technology_state(technology: &LegacyTechnologyState) -> TechnologyState {
 }
 
 impl LegacySaveV62 {
-    /// Projects the fully decoded save directly into live semantic state.
-    /// Runtime-only RNG and selection state must be supplied by the process that loaded
-    /// the save because the retail stream does not contain them.
-    pub fn game_state(&self, context: LegacyGameStateContext) -> GameState {
+    /// Projects persistable save fields into construction parts. Runtime-only RNG and
+    /// selection state must be supplied because the retail stream does not contain them.
+    pub fn game_state_parts(&self, context: LegacyGameStateContext) -> GameStateParts {
         assert!(
             self.navy.ships.is_empty()
                 && self.navy.admirals.is_empty()
@@ -728,6 +730,7 @@ impl LegacySaveV62 {
             ..PendingWorkState::default()
         };
         let map = self.map.map_mgr();
+        let map_view_origin = TileId::new(self.map.view_origin_tile as u16);
         let ocean = ocean_state(&self.ocean, &map);
         let live_ocean_context_count = ocean.zones.len();
         let majors = MajorNationTable::from_array(std::array::from_fn(|slot| {
@@ -761,23 +764,21 @@ impl LegacySaveV62 {
                 nation,
                 self.simulation.game_setup.foreign_minister_policy_ids[slot],
             );
-            let (ai_zone_targets, ai_province_targets, ai_trade, ai_development_pressure) =
-                match nation {
-                    LegacyMajorNationState::Auto(auto) => (
-                        Some(ai_zone_targets(
-                            &auto.auto_prefix.port_zone_state_flags,
-                            live_ocean_context_count,
-                        )),
-                        Some(ai_province_targets(&auto.auto_prefix.map_node_state_flags)),
-                        Some(AiTradeState {
-                            temporary_processed_stock: ProcessedTradeCommodityTable::from_array(
-                                auto.auto_prefix.action_metric_by_quarter,
-                            ),
-                        }),
-                        Some(AiDevelopmentPressureState::default()),
-                    ),
-                    LegacyMajorNationState::Other(_) => (None, None, None, None),
-                };
+            let (ai_zone_targets, ai_province_targets, ai_trade) = match nation {
+                LegacyMajorNationState::Auto(auto) => (
+                    Some(ai_zone_targets(
+                        &auto.auto_prefix.port_zone_state_flags,
+                        live_ocean_context_count,
+                    )),
+                    Some(ai_province_targets(&auto.auto_prefix.map_node_state_flags)),
+                    Some(AiTradeState {
+                        temporary_processed_stock: ProcessedTradeCommodityTable::from_array(
+                            auto.auto_prefix.action_metric_by_quarter,
+                        ),
+                    }),
+                ),
+                LegacyMajorNationState::Other(_) => (None, None, None),
+            };
             let major = MajorNation {
                 kind: match nation {
                     LegacyMajorNationState::Auto(_) => MajorNationKind::AutoGreatPower,
@@ -790,7 +791,6 @@ impl LegacySaveV62 {
                     ai_zone_targets,
                     ai_province_targets,
                     ai_trade,
-                    ai_development_pressure,
                 ),
                 city,
                 towns,
@@ -834,7 +834,7 @@ impl LegacySaveV62 {
         let persistent_unit_id_counter =
             self.simulation.persistent_unit_id_counter + loaded_unit_count;
 
-        GameState::from_parts(GameStateParts {
+        GameStateParts {
             turn: TurnState::new(
                 (self.simulation.game_setup.scenario_map_index_plus_one > 0).then(|| {
                     ScenarioMapId::new(
@@ -852,6 +852,7 @@ impl LegacySaveV62 {
             ),
             unit_ids: UnitIdAllocator::from_retail(persistent_unit_id_counter),
             map,
+            map_view_origin,
             ocean,
             rng: RngState {
                 crt_rand: RetailCrtRng::from_state(context.crt_rand_state),
@@ -869,7 +870,11 @@ impl LegacySaveV62 {
             missions,
             news: NewsState::default(),
             pending,
-        })
+        }
+    }
+
+    pub fn game_state(&self, context: LegacyGameStateContext) -> GameState {
+        GameState::from_parts(self.game_state_parts(context))
     }
 }
 
@@ -1158,6 +1163,9 @@ fn foreign_trade_state(minister: &LegacyForeignMinisterState) -> ForeignTradeSta
         requested_ship,
         purchase_priority: TradeCommodityTable::from_array(minister.purchase_priority_by_resource),
         preferred_resources,
+        capability_flag_14: minister.scalar_fields[2],
+        capability_flag_16: minister.scalar_fields[3],
+        trade_partner_enabled: minister.trade_partner_enabled,
     }
 }
 
@@ -1202,7 +1210,6 @@ fn great_power_state(
     ai_zone_targets: Option<Vec<AiTargetState>>,
     ai_province_targets: Option<ProvinceTable<AiTargetState>>,
     ai_trade: Option<AiTradeState>,
-    ai_development_pressure: Option<AiDevelopmentPressureState>,
 ) -> GreatPowerState {
     let prefix = &nation.prefix;
     let post = &nation.post_city;
@@ -1222,11 +1229,12 @@ fn great_power_state(
         .as_ref()
         .expect("retail great power has an interior minister");
     GreatPowerState {
-        controller: if prefix.diplomacy_eligible != 0 {
-            MajorNationController::Human
-        } else {
+        controller: if ai_zone_targets.is_some() {
             MajorNationController::Computer
+        } else {
+            MajorNationController::Human
         },
+        diplomacy_eligible: prefix.diplomacy_eligible != 0,
         ai_zone_targets,
         ai_province_targets,
         foreign_minister_personality,
@@ -1263,7 +1271,6 @@ fn great_power_state(
         pending_ship: pending_ship(interior_minister),
         interior_civilian: Box::new(interior_civilian_state(interior_minister)),
         ai_trade,
-        ai_development_pressure,
         aid_allocation_by_minor_nation: MinorNationTable::from_array(
             prefix
                 .aid_allocation_by_minor_nation
@@ -1272,7 +1279,6 @@ fn great_power_state(
         budget_pool_base: prefix.budget_pool_base,
         budget_pool_delta: prefix.budget_pool_delta,
         special_resource_trade_balance: post.special_resource_trade_balance,
-        candidate_nation_flags: NationTable::from_array(post.candidate_nation_flags),
         // scenarioInitFlag is constructed as zero and is not part of the save stream.
         scenario_initialized: false,
         turn_finished: post.turn_finished_flag != 0,
@@ -1282,13 +1288,14 @@ fn great_power_state(
                 prefix.pending_action_payload_by_action[action],
             )
         })),
+        candidate_nation_flags: NationTable::from_array(post.candidate_nation_flags),
+        colony_boycott_flags: NationTable::from_array(post.colony_boycott_flags),
         diplomacy_budget_base: post.diplomacy_budget_base,
         escalation_counter: i16::from(post.escalation_counter),
         pending_commitment_cost: post.pending_commitment_cost,
         pressure_counter: i16::from(post.pressure_counter),
         army_movement_budget: post.army_movement_budget,
         aid_allocation_total: post.aid_allocation_total,
-        colony_boycott_flags: NationTable::from_array(post.colony_boycott_flags),
         military_expenses: post.military_expenses,
     }
 }

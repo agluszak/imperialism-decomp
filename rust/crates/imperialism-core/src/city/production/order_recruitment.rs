@@ -34,7 +34,7 @@ pub(crate) fn recruit_limit(
         constraint = ProductionConstraint::Resources;
         limit = secondary_limit;
     }
-    if spec.cash_per_unit != 0 && owner.controller.is_human() {
+    if spec.cash_per_unit != 0 && owner.diplomacy_eligible {
         let affordable =
             (owner.available_diplomacy_budget(treasury) / i32::from(spec.cash_per_unit)).max(0);
         if affordable < i32::from(limit) {

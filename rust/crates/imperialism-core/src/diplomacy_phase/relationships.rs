@@ -18,7 +18,7 @@ impl GameState {
         }
     }
 
-    pub(super) fn set_relationship(&mut self, source: NationId, target: NationId, standing: i16) {
+    pub(crate) fn set_relationship(&mut self, source: NationId, target: NationId, standing: i16) {
         if standing == self.diplomacy.standings[source][target] {
             return;
         }

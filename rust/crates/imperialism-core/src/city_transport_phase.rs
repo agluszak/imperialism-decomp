@@ -1,26 +1,42 @@
 //! City and transport resolution (`TSimMgr::DoCityAndTransport`).
 
+use crate::create_random_game::{name_units_for_nation, resource_capability_requirement_level};
 use crate::*;
 
+const COMPILE_DELTA_RESOURCE_ORDER: [ResourceKind; 17] = [
+    ResourceKind::Hardware,
+    ResourceKind::Furniture,
+    ResourceKind::Clothing,
+    ResourceKind::Arms,
+    ResourceKind::Fuel,
+    ResourceKind::Fabric,
+    ResourceKind::Paper,
+    ResourceKind::Lumber,
+    ResourceKind::Steel,
+    ResourceKind::Oil,
+    ResourceKind::Coal,
+    ResourceKind::Iron,
+    ResourceKind::Horses,
+    ResourceKind::Cotton,
+    ResourceKind::Wool,
+    ResourceKind::Timber,
+    ResourceKind::Food,
+];
+
+const COMPILE_THRESHOLD_BY_DIFFICULTY: [i32; 5] = [5, 5, 5, 5, 5];
+
 impl GameState {
+    /// Retail `TSimMgr::DoCityAndTransport`.
     pub fn do_city_and_transport(&mut self) {
         for index in (0..MajorNationId::COUNT).rev() {
             let nation = MajorNationId::new(index);
             if !self.city_and_transport_nation_is_eligible(nation) {
                 continue;
             }
-            if self.nations.major(nation).economy.controller.is_human() {
-                self.nations.city_mut(nation).refresh_local_summary_flags();
-                self.produce_city_units(nation);
-                self.rebuild_nation_resource_yields(nation);
-                self.add_created_items(nation);
-                self.end_city_phase(nation);
-            } else {
-                self.fill_interior_minister_orders(nation);
-                self.nations.city_mut(nation).refresh_local_summary_flags();
-                self.produce_city_units(nation);
-                self.rebuild_nation_resource_yields(nation);
-            }
+            self.fill_interior_minister_orders(nation);
+            self.calculate_potentials(nation);
+            self.execute_nation_pending_action_state_machine(nation);
+            self.refresh_great_power_relation_panels_and_dispatch_delta_summary(nation);
             self.refresh_merchant_capacity(nation);
         }
     }
@@ -32,7 +48,11 @@ impl GameState {
         )
     }
 
+    /// `TGreatPower::FillInteriorMinisterOrders` / `TAutoGreatPower` override.
     fn fill_interior_minister_orders(&mut self, nation: MajorNationId) {
+        if self.nations.major(nation).kind != MajorNationKind::AutoGreatPower {
+            return;
+        }
         for resource in all_resources() {
             self.nations.majors[nation]
                 .economy
@@ -56,530 +76,478 @@ impl GameState {
         self.determine_ai_trade_bid(nation);
     }
 
-    fn rebalance_ai_transport(&mut self, nation: MajorNationId) {
-        let summary = {
-            let city = self.nations.city_mut(nation);
-            let population_order = city.orders.population_growth.quantity;
-            *city.refresh_unreserved_city_needs(population_order)
-        };
-
-        let mut unfilled = 0_i16;
-        for resource in [ResourceKind::Grain, ResourceKind::Fruit] {
-            let requested = summary[resource];
-            let allocated = self.request_ai_resource(nation, resource, requested, 7);
-            unfilled += requested - allocated;
-        }
-
-        let animal_need = summary[ResourceKind::Livestock];
-        let fish = self.request_ai_resource(nation, ResourceKind::Fish, animal_need, 1);
-        if fish < animal_need {
-            let livestock =
-                self.request_ai_resource(nation, ResourceKind::Livestock, animal_need, 7);
-            unfilled += animal_need - fish - livestock;
-        }
-
-        for resource in [
-            ResourceKind::Grain,
-            ResourceKind::Fruit,
-            ResourceKind::Livestock,
-            ResourceKind::Fish,
-        ] {
-            if unfilled == 0 {
-                break;
-            }
-            unfilled -= self.request_ai_resource(nation, resource, unfilled, 9);
-        }
-
-        let gold = self.nations.majors[nation].economy.need_current_by_type[ResourceKind::Gold];
-        self.request_ai_resource(nation, ResourceKind::Gold, gold, 1);
-        for index in ResourceKind::Food as u8..=ResourceKind::Arms as u8 {
-            let resource = ResourceKind::from_index(index).expect("manufactured resource index");
-            let current = self.nations.majors[nation].economy.need_current_by_type[resource];
-            self.request_ai_resource(nation, resource, summary[resource] + current, 1);
-        }
+    fn calculate_potentials(&mut self, nation: MajorNationId) {
+        self.nations.city_mut(nation).refresh_local_summary_flags();
     }
 
-    fn request_ai_resource(
-        &mut self,
-        nation: MajorNationId,
-        resource: ResourceKind,
-        requested: i16,
-        flags: i16,
-    ) -> i16 {
-        let MajorNation {
-            common,
-            economy,
-            city,
-            ..
-        } = &mut self.nations.majors[nation];
-        let mut remaining = requested;
-        if flags & 8 == 0 {
-            if city.stockpile[resource] >= requested {
-                return requested;
-            }
-            remaining = requested - city.stockpile[resource];
+    /// `TGreatPower::ExecuteNationPendingActionStateMachine`.
+    fn execute_nation_pending_action_state_machine(&mut self, nation: MajorNationId) {
+        self.produce_city_units(nation);
+
+        let army_queued = self.nations.major(nation).economy.pending_actions
+            [PendingActionKind::ArmyGrowthReward]
+            .status()
+            == PendingActionStatus::Queued;
+        if army_queued {
+            self.spawn_pending_army_growth_unit(nation);
         }
 
-        let available_capacity =
-            economy.capacities.transport - economy.capacities.reserved_transport;
-        let current_target = economy.need_target_by_type[resource];
-        let available_supply =
-            (economy.need_current_by_type[resource] - current_target).min(remaining);
-        let mut unavailable_supply = 0_i16;
-        if available_supply > available_capacity {
-            unavailable_supply = available_supply - available_capacity;
-            if flags & 1 != 0 {
-                economy
-                    .interior_civilian
-                    .city_order_demand
-                    .transport_capacity += unavailable_supply;
-            }
-            economy.update_need_target(resource, current_target + available_capacity);
-            if resource == ResourceKind::Gold {
-                common.treasury += i32::from(available_capacity) * 200;
-            } else if resource == ResourceKind::Gems {
-                common.treasury += i32::from(available_capacity) * 500;
-            } else {
-                city.adjust_stock(resource, available_capacity);
-            }
-            remaining -= available_capacity;
-        } else {
-            economy.update_need_target(resource, current_target + available_supply);
-            if resource == ResourceKind::Gold {
-                // Retail's short branch uses the Gems value here.
-                common.treasury += i32::from(available_supply) * 500;
-            } else {
-                city.adjust_stock(resource, available_supply);
-            }
-            remaining -= available_supply;
+        // NavyGrowthReward creates a named ship, bumps the active-zone ship counter, and
+        // constructs a TAdmiral. Admirals and active_zone_index are not in GameState, so
+        // this branch is not seeded by the city/transport differentials.
+
+        let overseas = self.nations.major(nation).economy.pending_actions
+            [PendingActionKind::OverseasDeveloperReward]
+            .status();
+        if overseas < PendingActionStatus::Level3 && self.needs_overseas_developer(nation) {
+            self.spawn_pending_overseas_developer(nation);
+            self.nations.majors[nation].economy.pending_actions
+                [PendingActionKind::OverseasDeveloperReward]
+                .queue(-1);
         }
 
-        if remaining != 0 && flags & 2 != 0 {
-            let shortfall = remaining - unavailable_supply;
-            if shortfall > 0 {
-                economy.interior_civilian.resource_order_metrics[resource] += shortfall;
-            }
+        let monument_queued = self.nations.major(nation).economy.pending_actions
+            [PendingActionKind::ColonyMonumentMerchantCapacity]
+            .status()
+            == PendingActionStatus::Queued;
+        if monument_queued {
+            let count =
+                &mut self.nations.city_mut(nation).ship_order_count_by_type[ShipType::Clipper];
+            *count = count.wrapping_add(2);
+            self.announce_later(nation, 1, 6, 2);
         }
-        requested - remaining
+
+        self.name_units(nation);
     }
 
-    fn clear_ai_city_orders(&mut self, nation: MajorNationId) {
-        self.set_city_order_quantity(nation, CityOrderId::FoodProcessing, 0);
-        for output in ManufacturedItem::ALL {
-            self.set_city_order_quantity(nation, CityOrderId::Item(output), 0);
-        }
-        for level in TrainingLevel::ALL {
-            self.set_city_order_quantity(nation, CityOrderId::Training(level), 0);
-        }
-        for category in MilitaryRecruitmentCategory::ALL {
-            self.set_city_order_quantity(nation, CityOrderId::MilitaryRecruit(category), 0);
-        }
-        for kind in CivilianUnitKind::ALL {
-            self.set_city_order_quantity(nation, CityOrderId::CivilianRecruit(kind), 0);
-        }
-        for slot in ShipOrderSlot::ALL {
-            self.set_city_order_quantity(nation, CityOrderId::Ship(slot), 0);
-        }
-        self.set_city_order_quantity(nation, CityOrderId::TransportCapacity, 0);
-        self.set_city_order_quantity(nation, CityOrderId::PowerPlant, 0);
-        for facility in ExpandableFacility::ALL {
-            self.set_city_order_quantity(nation, CityOrderId::Expansion(facility), 0);
-        }
-        self.set_city_order_quantity(nation, CityOrderId::PopulationGrowth, 0);
+    fn spawn_pending_army_growth_unit(&mut self, nation: MajorNationId) {
+        let nation_id = nation.nation();
+        let home = self
+            .nations
+            .major(nation)
+            .common
+            .home_tile
+            .expect("army-growth pending requires a home tile");
+        let province = self.map[home]
+            .province
+            .expect("army-growth pending requires the home tile's province");
+        let unit_kind = MilitaryUnitKind::GeneralEra1;
+        let id = self.unit_ids.next_military();
+        let unit = MilitaryUnitState {
+            id,
+            nation: nation_id,
+            unit_type: unit_kind,
+            stationed_province: Some(province),
+            order: crate::MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
+            owner_nation: nation_id,
+            roster_id: 0,
+            registered: true,
+            name: String::new(),
+            strength: 500,
+            era: unit_kind.spawn_era(),
+            experience: 0,
+            battle_flags: 0,
+        };
+        let insert_at = self
+            .military_units
+            .partition_point(|existing| existing.nation.get() <= nation_id.get());
+        self.military_units.insert(insert_at, unit);
+        self.announce_later(nation, 3, unit_kind as i16, 1);
     }
 
-    fn process_ai_pending_ship(&mut self, nation: MajorNationId) {
-        let reserved_arms = {
-            let interior = self.nations.majors[nation]
-                .economy
-                .interior_civilian
-                .as_mut();
-            std::mem::take(&mut interior.temporarily_reserved_ship_arms)
-        };
-        self.nations
-            .city_mut(nation)
-            .adjust_stock(ResourceKind::Arms, reserved_arms);
+    fn needs_overseas_developer(&self, nation: MajorNationId) -> bool {
+        let nation_id = nation.nation();
+        for slot in 7..NationId::COUNT {
+            let minor_id = NationId::new(slot);
+            if self.diplomacy.standings[nation_id][minor_id] <= 0xa9 {
+                continue;
+            }
+            if let Some(common) = self.nations.common(minor_id)
+                && matches!(
+                    common.status(),
+                    CountryStatus::ProtectorateOf(master) if master == nation_id
+                )
+            {
+                continue;
+            }
+            return true;
+        }
+        false
+    }
 
-        let Some(ship_type) = self.nations.majors[nation].economy.pending_ship.take() else {
-            return;
-        };
-        let Some(slot) = ShipOrderSlot::ALL
-            .into_iter()
-            .find(|&slot| self.nations.city(nation).orders.ships[slot].ship_type == ship_type)
+    fn spawn_pending_overseas_developer(&mut self, nation: MajorNationId) {
+        let nation_id = nation.nation();
+        let home = self
+            .nations
+            .major(nation)
+            .common
+            .home_tile
+            .expect("overseas-developer pending requires a home tile");
+        let Some(tile) =
+            self.map
+                .find_reachable_recruit_spawn_tile(&self.civilian_units, home, false)
         else {
             return;
         };
-        let costs = ship_order_costs(ship_type);
-        for (resource, amount) in costs.iter() {
-            if amount != 0 {
-                self.request_ai_resource(nation, resource, amount, 7);
-            }
-        }
-        let maximum = self
-            .city_order_limit(nation, CityOrderId::Ship(slot))
-            .maximum;
-        assert!(self.set_city_order_quantity(nation, CityOrderId::Ship(slot), maximum.min(1)));
+        let id = self.unit_ids.next_civilian();
+        let unit = CivilianUnitState {
+            id,
+            nation: nation_id,
+            unit_type: CivilianUnitKind::Developer,
+            location: crate::CivilianLocation::OnMap(tile),
+            order: CivilianWorkOrder::Idle,
+            owner_nation: nation_id,
+            roster_id: 0,
+            registered: false,
+        };
+        let insert_at = self
+            .civilian_units
+            .partition_point(|existing| existing.nation.get() <= nation_id.get());
+        self.civilian_units.insert(insert_at, unit);
     }
 
-    fn rebalance_ai_labor(&mut self, nation: MajorNationId) -> i16 {
-        let average = self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .average_development_order_allocation;
-        let target = average as i16 + 2;
-        let baseline = self.nations.city(nation).population.baseline_labor;
-        let capacity =
-            self.nations.city(nation).production_accum[CityFacilitySlot::RegionalPopulation];
-        let interior = self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .as_mut();
-        debug_assert_eq!(interior.deferred_labor_shortfall, 0);
-        interior.city_order_demand.training[TrainingLevel::Medium] =
-            (target - baseline.medium).clamp(0, capacity);
-        let remaining = capacity - interior.city_order_demand.training[TrainingLevel::Medium];
-        interior.city_order_demand.population_growth = (target - baseline.low).clamp(0, remaining);
+    fn name_units(&mut self, nation: MajorNationId) {
+        let mut name_ordinals = [0_i16; MilitaryUnitKind::LENGTH];
+        let mut next_roster_id = 1;
+        name_units_for_nation(
+            &mut self.military_units,
+            nation.nation(),
+            &mut name_ordinals,
+            &mut next_roster_id,
+        );
+    }
 
-        for level in TrainingLevel::ALL {
-            let requested = self.nations.majors[nation]
-                .economy
-                .interior_civilian
-                .city_order_demand
-                .training[level];
-            let maximum = self
-                .city_order_limit(nation, CityOrderId::Training(level))
-                .maximum;
-            let accepted = requested.min(maximum);
-            assert!(self.set_city_order_quantity(nation, CityOrderId::Training(level), accepted));
-            self.nations.majors[nation]
-                .economy
-                .interior_civilian
-                .city_order_demand
-                .training[level] = 0;
-        }
-        let requested = self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .city_order_demand
-            .population_growth;
-        let maximum = self
-            .city_order_limit(nation, CityOrderId::PopulationGrowth)
-            .maximum;
-        assert!(self.set_city_order_quantity(
-            nation,
-            CityOrderId::PopulationGrowth,
-            requested.min(maximum),
-        ));
-        self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .city_order_demand
-            .population_growth = 0;
-
-        let city = self.nations.city_mut(nation);
-        let clothing = city.stockpile[ResourceKind::Clothing].min(2);
-        let furniture = city.stockpile[ResourceKind::Furniture].min(2);
-        city.adjust_stock(ResourceKind::Clothing, -clothing);
-        city.consumed_production_input_by_type[ResourceKind::Clothing] = clothing;
-        city.adjust_stock(ResourceKind::Furniture, -furniture);
-        city.consumed_production_input_by_type[ResourceKind::Furniture] = furniture;
-        if furniture == 0 && city.stockpile[ResourceKind::Lumber] > 1 {
-            city.adjust_stock(ResourceKind::Lumber, -2);
-            2
-        } else {
-            0
+    /// `TGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary`
+    /// and the `TAutoGreatPower` override.
+    fn refresh_great_power_relation_panels_and_dispatch_delta_summary(
+        &mut self,
+        nation: MajorNationId,
+    ) {
+        self.rebuild_nation_resource_yields(nation);
+        self.advance_owned_region_development_counters_and_handle_events(nation);
+        if self.nations.major(nation).kind == MajorNationKind::GreatPower {
+            self.add_created_items(nation);
+            self.compile_great_power_relationship_delta_lines(nation);
+            self.end_city_phase(nation);
         }
     }
 
-    fn choose_ai_expansion(&mut self, nation: MajorNationId) {
-        let mut priority = [0_usize, 1, 2, 3, 4, 5, 6];
-        {
-            let deficits = &mut self.nations.majors[nation]
-                .economy
-                .interior_civilian
-                .production_deficit_by_slot;
-            deficits[CityFacilitySlot::OilRefinery] = -1;
-        }
-        for destination in 0..6 {
-            let mut best = destination;
-            for candidate in destination + 1..7 {
-                let deficits = &self.nations.majors[nation]
-                    .economy
-                    .interior_civilian
-                    .production_deficit_by_slot;
-                let candidate_score = deficits[ExpandableFacility::ALL[priority[candidate]].slot()];
-                let best_score = deficits[ExpandableFacility::ALL[priority[best]].slot()];
-                if candidate_score > best_score
-                    || (candidate_score == best_score && self.rng.next_crt_rand() & 1 != 0)
-                {
-                    best = candidate;
-                }
-            }
-            priority.swap(destination, best);
-        }
+    /// Retail `TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents`.
+    pub fn advance_owned_region_development_counters_and_handle_events(
+        &mut self,
+        nation: MajorNationId,
+    ) {
+        let home_tile = self.nations.major(nation).common.home_tile;
+        let owned: Vec<ProvinceId> = self.nations.major(nation).common.owned_regions().to_vec();
+        let economic_turn = self.turn.economic_turn;
+        let oil_drilling = self.technology.oil_drilling_available();
+        let clothing_limit = building_type_limit(
+            self.nations.city(nation).production_orders[CityFacilitySlot::ClothingFactory],
+        );
+        let furniture_limit = building_type_limit(
+            self.nations.city(nation).production_orders[CityFacilitySlot::FurnitureFactory],
+        );
+        let steel_limit = building_type_limit(
+            self.nations.city(nation).production_orders[CityFacilitySlot::Metalworks],
+        );
 
-        let best_facility = ExpandableFacility::ALL[priority[0]];
-        if self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .production_deficit_by_slot[best_facility.slot()]
-            == 0
-            && self.turn.economic_turn & 1 != 0
-        {
-            // Every supported building ratio is 0/0. VC5's unordered x87
-            // comparison takes the primary member of the selected pair.
-            let selected = ExpandableFacility::ALL[(self.rng.next_crt_rand() % 3) as usize];
-            self.nations.majors[nation]
-                .economy
-                .interior_civilian
-                .city_order_demand
-                .expansions[selected.slot()] = 1;
-        }
-
-        for facility in ExpandableFacility::ALL {
-            let requested = self.nations.majors[nation]
-                .economy
-                .interior_civilian
-                .city_order_demand
-                .expansions[facility.slot()];
-            if requested == 0 {
+        for province_id in owned {
+            let city_tile = self.map.provinces[province_id].city_tile();
+            if city_tile == home_tile {
                 continue;
             }
-            let (primary, secondary) = EXPANSION_INPUTS;
-            self.request_ai_resource(nation, primary, requested, 7);
-            self.request_ai_resource(nation, secondary, requested, 7);
-            let maximum = self
-                .city_order_limit(nation, CityOrderId::Expansion(facility))
-                .maximum;
-            let accepted = requested.min(maximum);
-            assert!(self.set_city_order_quantity(
-                nation,
-                CityOrderId::Expansion(facility),
-                accepted
-            ));
-            let interior = self.nations.majors[nation]
-                .economy
-                .interior_civilian
-                .as_mut();
-            interior.city_order_demand.expansions[facility.slot()] -= accepted;
-            if interior.city_order_demand.expansions[facility.slot()] < 2 {
-                interior.production_deficit_by_slot[facility.slot()] = 0;
+
+            let last_turn_tick = self.map.provinces[province_id].last_turn_tick;
+            let turn_delta = economic_turn.wrapping_sub(i32::from(last_turn_tick)) as u32;
+            if turn_delta <= 4 {
+                continue;
             }
-        }
-    }
 
-    fn compute_ai_item_demands(&mut self, nation: MajorNationId) {
-        let city = self.nations.city(nation);
-        let lumber = city.production_orders[CityFacilitySlot::LumberMill] + 1;
-        let fabric = city.production_orders[CityFacilitySlot::TextileMill] + 1;
-        let steel = city.production_orders[CityFacilitySlot::SteelMill] + 1;
-        let needs_paper = city.stockpile[ResourceKind::Paper] < 3;
-        let metrics = &mut self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .resource_order_metrics;
-        metrics[ResourceKind::Lumber] = lumber;
-        metrics[ResourceKind::Fabric] = fabric;
-        metrics[ResourceKind::Steel] = steel;
-        if needs_paper && metrics[ResourceKind::Paper] == 0 {
-            metrics[ResourceKind::Paper] = 1;
-        }
-    }
-
-    fn issue_ai_item_orders(&mut self, nation: MajorNationId) {
-        for output in [
-            ManufacturedItem::Clothing,
-            ManufacturedItem::Furniture,
-            ManufacturedItem::Arms,
-            ManufacturedItem::Hardware,
-        ] {
-            self.issue_ai_item_order(nation, output);
-        }
-        self.issue_ai_food_order(nation);
-        self.issue_ai_item_order(nation, ManufacturedItem::Paper);
-        if self.nations.city(nation).stockpile[ResourceKind::Lumber]
-            < self.nations.city(nation).stockpile[ResourceKind::Steel]
-        {
-            self.issue_ai_item_order(nation, ManufacturedItem::Lumber);
-            self.issue_ai_item_order(nation, ManufacturedItem::Steel);
-        } else {
-            self.issue_ai_item_order(nation, ManufacturedItem::Steel);
-            self.issue_ai_item_order(nation, ManufacturedItem::Lumber);
-        }
-        self.issue_ai_item_order(nation, ManufacturedItem::Fabric);
-    }
-
-    fn issue_ai_food_order(&mut self, nation: MajorNationId) {
-        let requested = self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .resource_order_metrics[ResourceKind::Food];
-        let maximum = self
-            .city_order_limit(nation, CityOrderId::FoodProcessing)
-            .maximum;
-        let accepted = requested.min(maximum);
-        assert!(self.set_city_order_quantity(nation, CityOrderId::FoodProcessing, accepted));
-        let metric = &mut self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .resource_order_metrics[ResourceKind::Food];
-        *metric = (*metric - accepted).max(0);
-    }
-
-    fn issue_ai_item_order(&mut self, nation: MajorNationId, output: ManufacturedItem) {
-        let resource = output.resource();
-        let mut requested = self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .resource_order_metrics[resource];
-        let facility = output.facility();
-        let production_limit = self.nations.city(nation).production_orders[facility] * 2 + 2;
-        requested = requested.min(production_limit);
-        self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .resource_order_metrics[resource] = requested;
-
-        match output.inputs() {
-            ItemInputs::Double(primary) => {
-                self.request_ai_resource(nation, primary, requested * 2, 7);
+            let linked_tiles = self.map.provinces[province_id].linked_tiles.clone();
+            let mut resource_sums = ResourceTable::<i32>::default();
+            for tile in linked_tiles {
+                let tile_state = &self.map[tile];
+                for edge in 0..2 {
+                    if let Some(resource) = tile_state.edge_resources[edge] {
+                        resource_sums[resource] +=
+                            resource_capability_requirement_level(tile_state, edge);
+                    }
+                }
             }
-            ItemInputs::Both(primary, secondary) => {
-                self.request_ai_resource(nation, primary, requested, 7);
-                self.request_ai_resource(nation, secondary, requested, 7);
+
+            let mut pending_stage: i8 = 0;
+            let current_stage = self.map.provinces[province_id].development_stage();
+            {
+                let development =
+                    self.map.provinces[province_id].resource_development_by_type_mut();
+
+                if turn_delta & 1 == 0 {
+                    let cotton_wool =
+                        resource_sums[ResourceKind::Cotton] + resource_sums[ResourceKind::Wool];
+                    if cotton_wool != 0
+                        && i32::from(development[ResourceKind::Fabric]) < clothing_limit
+                        && i32::from(development[ResourceKind::Fabric]) < cotton_wool / 2
+                    {
+                        pending_stage = 1;
+                        development[ResourceKind::Fabric] += 1;
+                    }
+                    if resource_sums[ResourceKind::Timber] != 0
+                        && i32::from(development[ResourceKind::Lumber]) < furniture_limit
+                        && i32::from(development[ResourceKind::Lumber])
+                            < resource_sums[ResourceKind::Timber] / 2
+                    {
+                        pending_stage = 1;
+                        development[ResourceKind::Lumber] += 1;
+                    }
+                    if resource_sums[ResourceKind::Coal] != 0
+                        && i32::from(development[ResourceKind::Steel]) < steel_limit
+                        && i32::from(development[ResourceKind::Steel])
+                            < resource_sums[ResourceKind::Coal] / 2
+                    {
+                        pending_stage = 1;
+                        development[ResourceKind::Steel] += 1;
+                    }
+                    if resource_sums[ResourceKind::Oil] != 0
+                        && oil_drilling
+                        && i32::from(development[ResourceKind::Fuel])
+                            < resource_sums[ResourceKind::Oil] / 2
+                    {
+                        pending_stage = 1;
+                        development[ResourceKind::Fuel] += 1;
+                    }
+                }
+
+                if turn_delta > 9 && turn_delta & 1 != 0 {
+                    if development[ResourceKind::Fabric] != 0
+                        && i32::from(development[ResourceKind::Clothing])
+                            < i32::from(development[ResourceKind::Fabric]) / 2
+                    {
+                        pending_stage = 2;
+                        development[ResourceKind::Clothing] += 1;
+                    }
+                    if development[ResourceKind::Lumber] != 0
+                        && i32::from(development[ResourceKind::Furniture])
+                            < i32::from(development[ResourceKind::Lumber]) / 2
+                    {
+                        pending_stage = 2;
+                        development[ResourceKind::Furniture] += 1;
+                    }
+                    if development[ResourceKind::Steel] != 0
+                        && i32::from(development[ResourceKind::Hardware])
+                            < i32::from(development[ResourceKind::Steel]) / 2
+                    {
+                        pending_stage = 2;
+                        development[ResourceKind::Hardware] += 1;
+                    }
+                }
             }
-            ItemInputs::Either(_, _) => {
-                let material_need = requested * 2;
-                self.request_ai_resource(nation, ResourceKind::Cotton, material_need, 7);
-                let stock = self.nations.city(nation).stockpile[ResourceKind::Cotton]
-                    + self.nations.city(nation).stockpile[ResourceKind::Wool];
-                if stock < material_need {
-                    self.request_ai_resource(nation, ResourceKind::Wool, material_need - stock, 7);
+
+            if current_stage < pending_stage {
+                self.map.provinces[province_id].set_development_stage(pending_stage);
+            } else {
+                pending_stage = 0;
+            }
+
+            if pending_stage == 2 {
+                self.nations.majors[nation].economy.pending_actions
+                    [PendingActionKind::TownDevelopment]
+                    .queue(province_id.get() as i16);
+            } else if pending_stage == 1 {
+                self.nations.majors[nation].economy.pending_actions
+                    [PendingActionKind::VillageDevelopment]
+                    .queue(province_id.get() as i16);
+                if self.nations.majors[nation].economy.pending_actions
+                    [PendingActionKind::RailyardExpansion]
+                    .status()
+                    < PendingActionStatus::Level3
+                {
+                    self.nations.majors[nation].economy.pending_actions
+                        [PendingActionKind::RailyardExpansion]
+                        .queue(-1);
                 }
             }
         }
-
-        let limit = self.city_order_limit(nation, CityOrderId::Item(output));
-        let accepted = requested.min(limit.maximum);
-        if accepted < requested && limit.constraint == ProductionConstraint::Capacity {
-            self.nations.majors[nation]
-                .economy
-                .interior_civilian
-                .production_deficit_by_slot[facility] += requested - accepted;
-        }
-        assert!(self.set_city_order_quantity(nation, CityOrderId::Item(output), accepted));
-        let metric = &mut self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .resource_order_metrics[resource];
-        *metric = (*metric - accepted).max(0);
     }
 
-    fn fill_ai_transport_capacity(&mut self, nation: MajorNationId) {
-        let horses = self.nations.city(nation).stockpile[ResourceKind::Horses];
-        if horses < 5 {
-            self.request_ai_resource(nation, ResourceKind::Horses, 5 - horses, 8);
+    /// `TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage`.
+    fn compile_great_power_relationship_delta_lines(&mut self, nation: MajorNationId) {
+        let pressure = i32::from(self.nations.major(nation).economy.pressure_counter);
+        let threshold = COMPILE_THRESHOLD_BY_DIFFICULTY[self.turn.difficulty as usize];
+        if threshold > pressure {
+            return;
         }
 
-        let mut remaining = self.nations.majors[nation].economy.capacities.transport
-            - self.nations.majors[nation]
-                .economy
-                .capacities
-                .reserved_transport;
-        let mut previous = -1_i16;
-        while remaining > 0 && previous != remaining {
-            previous = remaining;
-            for resource in all_resources() {
-                remaining -= self.request_ai_resource(nation, resource, 1, 8);
+        let mut interaction_score = 0_i32;
+        let treasury = self.nations.major(nation).common.treasury;
+        for resource in COMPILE_DELTA_RESOURCE_ORDER {
+            if interaction_score + treasury >= 0 {
+                break;
             }
-        }
-    }
-
-    fn rebuild_ai_allocation_average(&mut self, nation: MajorNationId) {
-        let mut allocation = ProductionTable::<i16>::default();
-        for output in ManufacturedItem::ALL {
-            let order = &self.nations.city(nation).orders.items[output];
-            allocation[output.facility()] += order.progress.quantity;
-        }
-        let total = (0..CityFacilitySlot::COUNT)
-            .map(|index| {
-                allocation[CityFacilitySlot::from_index(index as u8).expect("production slot")]
-            })
-            .fold(0_i16, i16::wrapping_add);
-        self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .average_development_order_allocation = i32::from(total / 20);
-    }
-
-    fn determine_ai_trade_bid(&mut self, nation: MajorNationId) {
-        let cotton = self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .resource_order_metrics[ResourceKind::Cotton];
-        let wool = self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .resource_order_metrics[ResourceKind::Wool];
-        if cotton != 0 || wool != 0 {
-            let delta = i16::from(self.rng.next_crt_rand() % 100 >= 75);
-            self.nations.majors[nation]
-                .economy
-                .foreign_trade
-                .purchase_priority[TradeCommodity::Cotton] += delta;
-        }
-        for index in ResourceKind::Timber as u8..=ResourceKind::Oil as u8 {
-            let resource = ResourceKind::from_index(index).expect("raw trade resource");
-            let delta = self.nations.majors[nation]
-                .economy
-                .interior_civilian
-                .resource_order_metrics[resource];
-            if delta != 0 {
-                let commodity = TradeCommodity::from_retail(i16::from(index))
-                    .expect("raw resource has a trade row");
-                self.nations.majors[nation]
-                    .economy
-                    .foreign_trade
-                    .purchase_priority[commodity] += delta;
+            let stock = self.nations.city(nation).stockpile[resource];
+            if stock <= 0 {
+                continue;
             }
+            self.nations.city_mut(nation).stockpile[resource] = 0;
+            self.nations.city_mut(nation).stockpile.verify_stocks();
+            let Some(commodity) = TradeCommodity::from_retail(resource as i16) else {
+                continue;
+            };
+            let price = self.market.rows[commodity].price;
+            interaction_score =
+                (interaction_score as f32 - (price * i32::from(stock)) as f32 * -0.25) as i32;
         }
+        self.nations.majors[nation].common.treasury += interaction_score;
+    }
 
-        let food = {
-            let major = &self.nations.majors[nation];
-            major
-                .city
-                .forecast_population_food(&major.economy.need_target_by_type)
-        };
-        let bid = if food.substitution_count != 0 || food.starvation_count != 0 {
-            Some(ForeignTradeBid {
-                commodity: TradeCommodity::Food,
-                amount: food.substitution_count + food.starvation_count,
-            })
+    fn announce_later(&mut self, nation: MajorNationId, order_kind: i16, payload: i16, flags: i16) {
+        if self.nations.major(nation).kind == MajorNationKind::AutoGreatPower {
+            return;
+        }
+        let turn_tick = self.turn.economic_turn;
+        let record = if order_kind == 3 {
+            TurnSummary::MilitaryRecruit {
+                turn_tick,
+                unit_type: MilitaryUnitKind::from_index(payload as u8)
+                    .expect("pending army-growth announce payload is a military unit kind"),
+                count: flags,
+            }
         } else {
-            let city = self.nations.city(nation);
-            if city.stockpile[ResourceKind::Steel] == 0 {
-                Some(ForeignTradeBid {
-                    commodity: TradeCommodity::Steel,
-                    amount: 4,
-                })
-            } else if city.stockpile[ResourceKind::Lumber] == 0 {
-                Some(ForeignTradeBid {
-                    commodity: TradeCommodity::Lumber,
-                    amount: 4,
-                })
-            } else {
-                let need = city.population.count / 2;
-                (city.stockpile[ResourceKind::Food] < need).then(|| ForeignTradeBid {
-                    commodity: TradeCommodity::Food,
-                    amount: (city.population.count - city.stockpile[ResourceKind::Food]).min(6),
-                })
+            TurnSummary::Retail {
+                turn_tick,
+                order_kind,
+                payload,
+                flags,
             }
         };
-        if let Some(bid) = bid {
-            self.nations.majors[nation]
-                .economy
-                .foreign_trade
-                .interior_bid = Some(bid);
-        }
+        crate::recruitment::insert_turn_summary(
+            &mut self.rng,
+            &mut self.pending.nations[nation].turn_summary,
+            record,
+        );
+    }
+}
+
+fn building_type_limit(production: i16) -> i32 {
+    i32::from(production) / 4
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::test_support::game_state;
+
+    fn seed_owned_province(
+        state: &mut GameState,
+        nation: MajorNationId,
+        province: ProvinceId,
+        city_tile: TileId,
+        linked: TileId,
+        last_turn_tick: i16,
+    ) {
+        state
+            .nations
+            .append_owned_region_during_construction(nation.nation(), province);
+        let mut development = ResourceTable::default();
+        development[ResourceKind::Fabric] = 0;
+        state.map.provinces[province] = ProvinceState::new(
+            Some(nation.nation()),
+            Some(nation.nation()),
+            0,
+            Vec::new(),
+            Vec::new(),
+            Some(0),
+            0,
+            Some(city_tile),
+            last_turn_tick,
+            None,
+            None,
+            vec![linked],
+            development,
+            MajorNationTable::default(),
+            0,
+            false,
+            0,
+            String::new(),
+        );
+        state.map[linked].province = Some(province);
+        state.map[linked].edge_resources = [Some(ResourceKind::Cotton), None];
+        state.map[linked].development.surface = crate::DevelopmentLevel::new(3);
+    }
+
+    #[test]
+    fn owned_region_development_skips_the_capital_and_leaves_last_turn_tick() {
+        let mut state = game_state();
+        let nation = MajorNationId::new(0);
+        let home = TileId::new(1);
+        state.nations.majors[nation].common.home_tile = Some(home);
+        state.turn.economic_turn = 10;
+        state.nations.city_mut(nation).production_orders[CityFacilitySlot::ClothingFactory] = 4;
+
+        let capital = ProvinceId::new(0);
+        let other = ProvinceId::new(1);
+        seed_owned_province(&mut state, nation, capital, home, TileId::new(20), 0);
+        seed_owned_province(
+            &mut state,
+            nation,
+            other,
+            TileId::new(50),
+            TileId::new(21),
+            4,
+        );
+
+        state.advance_owned_region_development_counters_and_handle_events(nation);
+
+        assert_eq!(state.map.provinces[capital].last_turn_tick, 0);
+        assert_eq!(
+            state.map.provinces[capital].resource_development_by_type()[ResourceKind::Fabric],
+            0
+        );
+        assert_eq!(state.map.provinces[other].last_turn_tick, 4);
+        assert_eq!(
+            state.map.provinces[other].resource_development_by_type()[ResourceKind::Fabric],
+            1
+        );
+        assert_eq!(state.map.provinces[other].development_stage(), 1);
+        let village = state.nations.majors[nation].economy.pending_actions
+            [PendingActionKind::VillageDevelopment];
+        assert_eq!(village.status(), PendingActionStatus::Queued);
+        assert_eq!(village.payload(), Some(1));
+        let railyard = state.nations.majors[nation].economy.pending_actions
+            [PendingActionKind::RailyardExpansion];
+        assert_eq!(railyard.status(), PendingActionStatus::Queued);
+        assert_eq!(railyard.payload(), None);
+    }
+
+    #[test]
+    fn owned_region_development_odd_delta_advances_stage_two() {
+        let mut state = game_state();
+        let nation = MajorNationId::new(0);
+        let home = TileId::new(1);
+        state.nations.majors[nation].common.home_tile = Some(home);
+        state.turn.economic_turn = 20;
+
+        let other = ProvinceId::new(1);
+        seed_owned_province(
+            &mut state,
+            nation,
+            other,
+            TileId::new(50),
+            TileId::new(21),
+            9,
+        );
+        state.map.provinces[other].resource_development_by_type_mut()[ResourceKind::Fabric] = 2;
+
+        state.advance_owned_region_development_counters_and_handle_events(nation);
+
+        assert_eq!(state.map.provinces[other].last_turn_tick, 9);
+        assert_eq!(
+            state.map.provinces[other].resource_development_by_type()[ResourceKind::Clothing],
+            1
+        );
+        assert_eq!(state.map.provinces[other].development_stage(), 2);
+        let town = state.nations.majors[nation].economy.pending_actions
+            [PendingActionKind::TownDevelopment];
+        assert_eq!(town.status(), PendingActionStatus::Queued);
+        assert_eq!(town.payload(), Some(1));
     }
 }

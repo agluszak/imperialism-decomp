@@ -1,8 +1,8 @@
+use super::GameSession;
 use super::RetailUiAssets;
 use super::format_currency;
 use super::game_shell::bind_native_game_screen_nav;
 use super::generated;
-use super::random_setup::GameSession;
 use super::retail::{RetailTag, find_descendant};
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
@@ -305,9 +305,6 @@ fn bind_trade_controls(
     pictures: TradePictures,
     gauge_color: Color,
 ) {
-    commands
-        .entity(find_descendant(root, fourcc!("quer"), children, tags))
-        .insert(InteractionDisabled);
     let selected = find_descendant(root, fourcc!("trad"), children, tags);
     commands
         .entity(selected)
@@ -636,7 +633,7 @@ fn sync_trade_visual(
     session: Res<GameSession>,
     roots: Query<(), Added<TradeScreen>>,
     mut cards: Query<(&TradeDisplay, &mut ImageNode, &mut Node)>,
-    mut gauges: Query<(&TradeDisplay, &mut Node), With<BackgroundColor>>,
+    mut gauges: Query<(&TradeDisplay, &mut Node), Without<ImageNode>>,
 ) {
     if !session.is_changed() && roots.is_empty() {
         return;

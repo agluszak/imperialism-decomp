@@ -1321,12 +1321,8 @@ JSON_Value* CaptureProvinces();
 JSON_Value* CaptureMap() {
   JsonObject object;
   JsonArray tiles;
-  if (g_pGlobalMapState->field6 < 0 || g_pGlobalMapState->field6 >= 0x1950) {
-    FailSemanticCapture("strategic map view origin is outside the map");
-  }
   object.Set("topology",
              g_pGlobalMapState->hexNeighborWrapHorizontally == 0 ? "wrapping" : "bounded");
-  object.Set("view_origin", static_cast<int>(g_pGlobalMapState->field6));
   if (g_pGlobalMapState->field8 > 1) {
     FailSemanticCapture("strategic map data-ready flag is not boolean");
   }
@@ -1733,27 +1729,14 @@ JSON_Value* CaptureAiTradeState(TGreatPower* nation) {
   return state.Release();
 }
 
-JSON_Value* CaptureAiDevelopmentPressure(TGreatPower* nation) {
-  if (nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0 || g_pSimMgr->economicTurn <= 0) {
-    return JsonNullValue();
-  }
-  TAutoGreatPower* automaticNation = static_cast<TAutoGreatPower*>(nation);
-  JsonObject state;
-  state.Set("expansion_pressure_per_compatible_region_bits",
-            FloatBits(automaticNation->expansionPressurePerCompatibleRegionB64));
-  state.Set("average_unit_divergence_per_owned_region_bits",
-            FloatBits(automaticNation->averageUnitDivergencePerOwnedRegionB68));
-  state.Set("active_mission_pressure_average_bits",
-            FloatBits(automaticNation->activeMissionPressureAverageB6c));
-  return state.Release();
-}
-
 JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   if (nation->defenseMinister == 0) {
     FailSemanticCapture("major nation has no defense minister");
   }
   JsonObject object;
-  object.Set("controller", nation->diplomacyEligibilityA0 != 0 ? "Human" : "Computer");
+  object.Set("controller",
+             nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0 ? "Computer" : "Human");
+  object.Set("diplomacy_eligible", nation->diplomacyEligibilityA0 != 0);
   object.Set("ai_zone_targets", CaptureAiZoneTargets(nation));
   object.Set("ai_province_targets", CaptureAiProvinceTargets(nation));
   object.Set("foreign_minister_personality",
@@ -1765,7 +1748,6 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   object.Set("pending_ship", CapturePendingShip(nation));
   object.Set("interior_civilian", CaptureInteriorCivilianState(nation));
   object.Set("ai_trade", CaptureAiTradeState(nation));
-  object.Set("ai_development_pressure", CaptureAiDevelopmentPressure(nation));
   object.Set(
       "development_grant_by_nation",
       CaptureShortArray(nation->foreignMinister->developmentGrantByNation50, kNationSlotCount));
@@ -1794,8 +1776,6 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   object.Set("budget_pool_base", nation->budgetPoolBase);
   object.Set("budget_pool_delta", nation->budgetPoolDelta);
   object.Set("special_resource_trade_balance", nation->field910);
-  object.Set("candidate_nation_flags",
-             CaptureUnsignedByteArray(nation->candidateNationFlags, kNationSlotCount));
   object.Set("scenario_initialized", nation->scenarioInitFlag != 0 ? true : false);
   object.Set("turn_finished", nation->field904 != 0 ? true : false);
   object.Set("pending_actions",
@@ -1806,8 +1786,6 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   object.Set("pressure_counter", static_cast<int>(nation->pressureCounter));
   object.Set("army_movement_budget", nation->field900);
   object.Set("aid_allocation_total", nation->aidAllocationTotal);
-  object.Set("colony_boycott_flags",
-             CaptureUnsignedByteArray(nation->colonyBoycottFlags, kNationSlotCount));
   object.Set("military_expenses", nation->militaryExpenses960);
   return object.Release();
 }
@@ -2321,6 +2299,21 @@ JSON_Value* CaptureCityOrders(TCity* city) {
   return orders.Release();
 }
 
+JSON_Value* CaptureCityBuildingWindows(TCity* city) {
+  JsonArray windows;
+  for (int slot = 0; slot < 0x10; ++slot) {
+    if (city->productionFlags21c[slot] == 0) {
+      windows.AddNull();
+    } else {
+      JsonObject position;
+      position.Set("left", static_cast<int>(city->production22c[slot]));
+      position.Set("top", static_cast<int>(city->production24c[slot]));
+      windows.Add(position.Release());
+    }
+  }
+  return windows.Release();
+}
+
 JSON_Value* CaptureCity(TCity* city) {
   if (city == 0) {
     return JsonNullValue();
@@ -2345,9 +2338,7 @@ JSON_Value* CaptureCity(TCity* city) {
   object.Set("stockpile", CaptureResourceTable(&city->cityStockCottonB6));
   object.Set("production_orders", CaptureShortArray(city->productionOrderTable1dc, 0x10));
   object.Set("production_accum", CaptureShortArray(city->productionAccum1fc, 0x10));
-  object.Set("production_flags", CaptureUnsignedByteArray(city->productionFlags21c, 0x10));
-  object.Set("production_current", CaptureShortArray(city->production22c, 0x10));
-  object.Set("production_progress", CaptureShortArray(city->production24c, 0x10));
+  object.Set("building_windows", CaptureCityBuildingWindows(city));
   object.Set("population_growth_penalty_ticks",
              static_cast<int>(city->populationGrowthPenaltyTicks26c));
   object.Set("unmet_resource_retries", CaptureResourceTable(city->unmetResourceRetryCount278));
@@ -2983,6 +2974,10 @@ bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("turn", CaptureTurn(run));
   object.Set("unit_ids", g_pSimMgr->field_64);
   object.Set("map", CaptureMap());
+  if (g_pGlobalMapState->field6 < 0 || g_pGlobalMapState->field6 >= 0x1950) {
+    FailSemanticCapture("strategic map view origin is outside the map");
+  }
+  object.Set("map_view_origin", static_cast<int>(g_pGlobalMapState->field6));
   object.Set("ocean", CaptureOcean());
   object.Set("rng", CaptureRng());
   object.Set("market", CaptureMarket());
@@ -3012,6 +3007,21 @@ bool CaptureGameState(RuntimeRun& run, const char* name) {
   return true;
 }
 
+bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
+  if (state == 0 || g_pSimMgr == 0) {
+    return false;
+  }
+
+  JsonObject object;
+  object.Set("turn", CaptureTurn(run));
+  object.Set("unit_ids", g_pSimMgr->field_64);
+  object.Set("rng", CaptureRng());
+  object.Set("news", CaptureNews());
+  object.Set("pending", CapturePending());
+  *state = object.Release();
+  return true;
+}
+
 bool CaptureSaveBackedGameState(RuntimeRun& run, const char* name) {
   if (name == 0 || name[0] == '\0' || g_pAssetMgr == 0) {
     return false;
@@ -3023,36 +3033,8 @@ bool CaptureSaveBackedGameState(RuntimeRun& run, const char* name) {
     return false;
   }
 
-  JSON_Value* state = 0;
-  if (!BuildRuntimeGameState(run, &state)) {
-    return false;
-  }
-  JSON_Object* object = json_value_get_object(state);
-  if (object == 0) {
-    json_value_free(state);
-    return false;
-  }
-
-  JsonArray pressures;
-  for (int slot = 0; slot < kMajorNationCount; ++slot) {
-    TGreatPower* nation = g_apNationStates[slot];
-    if (nation == 0) {
-      pressures.AddNull();
-    } else {
-      pressures.Add(CaptureAiDevelopmentPressure(nation));
-    }
-  }
-
-  // Persistable bulk lives in the .imp; keep only session fields Rust cannot recover.
-  const char* bulkKeys[] = {"map",       "ocean",       "market",         "technology",
-                            "diplomacy", "nations",     "military_units", "civilian_units",
-                            "ships",     "task_forces", "missions"};
-  for (int index = 0; index < (int)(sizeof(bulkKeys) / sizeof(bulkKeys[0])); ++index) {
-    json_object_remove(object, bulkKeys[index]);
-  }
-  if (json_object_set_value(object, "ai_development_pressure", pressures.Release()) !=
-      JSONSuccess) {
-    json_value_free(state);
+  JSON_Value* ephemeral = 0;
+  if (!BuildRuntimeEphemeralState(run, &ephemeral)) {
     return false;
   }
 
@@ -3061,8 +3043,7 @@ bool CaptureSaveBackedGameState(RuntimeRun& run, const char* name) {
 
   JsonObject capture;
   capture.Set("save", saveName);
-  capture.Set("ephemeral", state);
-
+  capture.Set("ephemeral", ephemeral);
   run.SetCapture(name, capture.Release());
   return run.HasCapture(name);
 }

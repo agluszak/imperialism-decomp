@@ -26,5 +26,9 @@ Run Rust work from `rust/` and generator work from `../decomp/`.
 6. Add focused generator and Bevy behavior tests. Use a runtime/differential check when
    asserting live retail behavior rather than static resource structure.
 
+Every screen-local top-level scene must be state-scoped with `DespawnOnExit`; descendants inherit
+lifetime through `ChildOf`. Explicit close may despawn early but must not be the sole cleanup path.
+`ModalDialog` is only a marker and does not clean anything up.
+
 If source evidence is incomplete, keep the gap explicit. Do not guess geometry, hierarchy, state, or
 event semantics to make the UI look plausible.

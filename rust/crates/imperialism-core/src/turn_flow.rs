@@ -132,7 +132,7 @@ impl GameState {
     pub fn reset_turn_flags(&mut self) {
         for major in self.nations.majors.iter_mut() {
             reset_finished_flag(
-                major.economy.controller.is_human(),
+                major.economy.diplomacy_eligible,
                 &mut major.economy.turn_finished,
             );
         }
@@ -142,5 +142,32 @@ impl GameState {
 fn reset_finished_flag(eligible: bool, finished: &mut bool) {
     if eligible {
         *finished = false;
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::test_support::game_state;
+    use crate::{MajorNationController, MajorNationId};
+
+    #[test]
+    fn reset_turn_flags_follows_diplomacy_eligibility_not_controller() {
+        let mut state = game_state();
+        let nation = MajorNationId::new(0);
+        {
+            let economy = &mut state.nations.majors[nation].economy;
+            economy.controller = MajorNationController::Human;
+            economy.diplomacy_eligible = false;
+            economy.turn_finished = true;
+        }
+        state.reset_turn_flags();
+        assert!(
+            state.nations.majors[nation].economy.turn_finished,
+            "ineligible nations keep their finished flag"
+        );
+
+        state.nations.majors[nation].economy.diplomacy_eligible = true;
+        state.reset_turn_flags();
+        assert!(!state.nations.majors[nation].economy.turn_finished);
     }
 }

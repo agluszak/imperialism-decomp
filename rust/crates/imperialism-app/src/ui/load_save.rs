@@ -1,6 +1,6 @@
 use crate::AppState;
+use crate::ui::GameSession;
 use crate::ui::generated;
-use crate::ui::random_setup::GameSession;
 use crate::ui::random_setup_map::{compose_owner_preview_indices, preview_image_from_indices};
 use crate::ui::retail::{
     ModalDialog, RetailPictureSwap, RetailTag, RetailUiAssets, find_descendant,
@@ -190,7 +190,7 @@ pub(crate) fn load_slot(directory: &Path, slot: SaveSlot) -> Result<GameState, L
     let bytes = std::fs::read(&path)?;
     let selected_nation = peek_save_header(&bytes)
         .and_then(|header| NationId::try_new(header.active_nation))
-        .unwrap_or(NationId::new(0));
+        .ok_or(LoadGameError::Truncated)?;
     load_game_from_bytes(
         &bytes,
         LegacyGameStateContext {
@@ -507,7 +507,7 @@ fn sync_load_save_preview(
             };
             let selected = session.0.turn().active_nation;
             let pixels =
-                satellite_preview_indices(|tile| session.0.map[tile].owner_nation, selected);
+                satellite_preview_indices(|tile| session.0.map()[tile].owner_nation, selected);
             apply_satellite_preview(&mut commands, &mut assets, entity, image_node, &pixels);
         }
         LoadSavePreviewKey::Slot(slot) => {
@@ -518,9 +518,11 @@ fn sync_load_save_preview(
             let Some(owners) = peek_save_preview_owners(&bytes) else {
                 return;
             };
-            let selected = peek_save_header(&bytes)
-                .and_then(|header| NationId::try_new(header.active_nation))
-                .unwrap_or(NationId::new(0));
+            let Some(selected) =
+                peek_save_header(&bytes).and_then(|header| NationId::try_new(header.active_nation))
+            else {
+                return;
+            };
             let pixels = satellite_preview_indices(
                 |tile| owners.get(usize::from(tile.get())).copied().flatten(),
                 selected,
@@ -983,7 +985,7 @@ mod tests {
     fn fixture_state() -> GameState {
         let selected_nation = peek_save_header(BEGINNING_OF_GAME)
             .and_then(|header| NationId::try_new(header.active_nation))
-            .unwrap_or(NationId::new(0));
+            .expect("beginning-of-game fixture names a nation in range");
         LegacySaveV62::parse(BEGINNING_OF_GAME).game_state(LegacyGameStateContext {
             crt_rand_state: 1,
             map_generation_lcg: 0,
@@ -1224,7 +1226,10 @@ mod tests {
         let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(0))).unwrap();
         let owners = peek_save_preview_owners(&bytes).expect("written save has preview tiles");
         for (index, owner) in owners.iter().enumerate() {
-            assert_eq!(*owner, original.map[TileId::new(index as u16)].owner_nation);
+            assert_eq!(
+                *owner,
+                original.map()[TileId::new(index as u16)].owner_nation
+            );
         }
         let pixels = satellite_preview_indices(
             |tile| owners.get(usize::from(tile.get())).copied().flatten(),

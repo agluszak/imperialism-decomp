@@ -1,4 +1,4 @@
-#include "NativeTransition.h"
+#include "NativeCases.h"
 #include "JsonObject.h"
 
 #include "game/diplomacy_domain_types.h"
@@ -6,7 +6,6 @@
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
 #include "game/resource_domain_types.h"
-#include "game/ui_screens/TSimMgr.h"
 
 namespace {
 
@@ -17,18 +16,14 @@ short OtherMajorNation(short activeNationSlot, int offset) {
 } // namespace
 
 RuntimeActionResult RunAidAllocation(NativeTransition& transition) {
-  const NationSlot nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0) {
-    return RuntimeActionResult::Failure("the loaded player has no major-nation state");
-  }
+  TGreatPower* nation = ActiveNation();
 
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(nationSlot));
-  operation.Set("minor_nation", static_cast<int>(kMinorNationFirstSlot));
-  operation.Set("resource", "steel");
-  operation.Set("amount", 37);
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(ActiveNationSlot()));
+  args.Set("minor_nation", static_cast<int>(kMinorNationFirstSlot));
+  args.Set("resource", "steel");
+  args.Set("amount", 37);
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -38,19 +33,16 @@ RuntimeActionResult RunAidAllocation(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunDiplomacyGrantEntry(NativeTransition& transition) {
-  const short activeNationSlot = g_pSimMgr->GetActiveNationId();
+  const short activeNationSlot = ActiveNationSlot();
   const short targetNationSlot = 0;
   const short grantAmount = 10000;
-  TGreatPower* nation = g_apNationStates[activeNationSlot];
-  if (nation == 0 || activeNationSlot == targetNationSlot) {
-    return RuntimeActionResult::Failure("the loaded player cannot make the grant-target check");
-  }
+  TGreatPower* nation = ActiveNation();
 
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(activeNationSlot));
-  operation.Set("target", static_cast<int>(targetNationSlot));
-  operation.Set("amount", static_cast<int>(grantAmount));
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(activeNationSlot));
+  args.Set("target", static_cast<int>(targetNationSlot));
+  args.Set("amount", static_cast<int>(grantAmount));
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -61,11 +53,8 @@ RuntimeActionResult RunDiplomacyGrantEntry(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunDiplomacyReset(NativeTransition& transition) {
-  const short activeNationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[activeNationSlot];
-  if (nation == 0) {
-    return RuntimeActionResult::Failure("the loaded player has no major-nation state");
-  }
+  const short activeNationSlot = ActiveNationSlot();
+  TGreatPower* nation = ActiveNation();
 
   const short policyTarget = OtherMajorNation(activeNationSlot, 1);
   const short oneTimeGrantTarget = OtherMajorNation(activeNationSlot, 2);
@@ -76,22 +65,17 @@ RuntimeActionResult RunDiplomacyReset(NativeTransition& transition) {
   const short recurringGrantEntry = static_cast<short>(recurringGrant | kRecurringGrantFlag);
 
   for (short targetNation = 0; targetNation < kNationSlotCount; ++targetNation) {
-    if (!nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNation, -1)) {
-      return RuntimeActionResult::Failure("retail rejected clearing a diplomacy grant");
-    }
+    nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNation, -1);
   }
 
   nation->diplomacyPolicyByNation[policyTarget] = kDiplomacyProposalBuildConsulate;
+  nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(oneTimeGrantTarget, oneTimeGrant);
+  nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(recurringGrantTarget,
+                                                           recurringGrantEntry);
 
-  if (!nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(oneTimeGrantTarget, oneTimeGrant) ||
-      !nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(recurringGrantTarget,
-                                                                recurringGrantEntry)) {
-    return RuntimeActionResult::Failure("retail rejected the seeded diplomacy grants");
-  }
-
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(activeNationSlot));
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(activeNationSlot));
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }

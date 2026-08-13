@@ -1,8 +1,8 @@
+use super::GameSession;
 use super::RetailUiAssets;
 use super::format_currency;
 use super::game_shell::bind_native_game_screen_nav;
 use super::generated;
-use super::random_setup::GameSession;
 use super::random_setup_map::{compose_owner_preview_indices, preview_image_from_indices};
 use super::retail::ModalDialog;
 use super::retail::{RetailTag, find_child, find_descendant};
@@ -151,7 +151,6 @@ struct DiplomacyBracketPictures {
     treaties: Handle<Image>,
     grants: Handle<Image>,
     trade: Handle<Image>,
-    offers: Handle<Image>,
 }
 
 #[derive(Component, Clone)]
@@ -224,9 +223,6 @@ fn bind_diplomacy_screen(
         trade: assets
             .picture(PictureId::new(5005))
             .expect("retail diplomacy trade bracket must load"),
-        offers: assets
-            .picture(PictureId::new(5007))
-            .expect("retail diplomacy offers bracket must load"),
     };
     let (title_font, title_layout, title_line_height, _) = assets
         .text_style(RetailTextStylePreset {
@@ -319,9 +315,6 @@ fn bind_diplomacy_controls(
     commands
         .entity(selected)
         .insert((Checked, InteractionDisabled));
-    commands
-        .entity(find_descendant(root, fourcc!("quer"), children, tags))
-        .insert(InteractionDisabled);
 
     let main = find_descendant(root, fourcc!("main"), children, tags);
     let information = find_child(main, fourcc!("info"), children, tags);
@@ -895,7 +888,7 @@ fn on_diplomacy_map_click(
     let Some(tile) = tile_at_diplomacy_position(normalized) else {
         return;
     };
-    let Some(target) = session.0.map[tile]
+    let Some(target) = session.0.map()[tile]
         .owner_nation
         .and_then(TileOwnerTag::nation)
     else {
@@ -1113,14 +1106,19 @@ fn sync_diplomacy_controls(
         } else {
             Visibility::Hidden
         };
-        image.image = match screen.topic {
-            DiplomacyTopic::Information => bracket.pictures.information.clone(),
-            DiplomacyTopic::Treaties => bracket.pictures.treaties.clone(),
-            DiplomacyTopic::Grants => bracket.pictures.grants.clone(),
-            DiplomacyTopic::Trade => bracket.pictures.trade.clone(),
-            DiplomacyTopic::Council => bracket.pictures.council.clone(),
-            DiplomacyTopic::Offers => bracket.pictures.offers.clone(),
+        let picture = match screen.topic {
+            DiplomacyTopic::Information => &bracket.pictures.information,
+            DiplomacyTopic::Treaties => &bracket.pictures.treaties,
+            DiplomacyTopic::Grants => &bracket.pictures.grants,
+            DiplomacyTopic::Trade => &bracket.pictures.trade,
+            DiplomacyTopic::Council => &bracket.pictures.council,
+            // The Offers topic has no bound control until its behavior is ported.
+            DiplomacyTopic::Offers => {
+                *visibility = Visibility::Hidden;
+                continue;
+            }
         };
+        image.image = picture.clone();
     }
     let source = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
@@ -1156,6 +1154,7 @@ fn sync_diplomacy_information(
         (
             Without<DiplomacyNationIcon>,
             Without<DiplomacyMapKeyMajorName>,
+            Without<DiplomacyInfoText>,
         ),
     >,
     mut icons: Query<
@@ -1202,7 +1201,7 @@ fn sync_diplomacy_information(
             *visibility = Visibility::Hidden;
             continue;
         }
-        let (row, column) = state.map.geometry().row_column(anchor);
+        let (row, column) = state.map().geometry().row_column(anchor);
         let is_major = MajorNationId::from_nation(label.nation).is_some();
         let offset = f32::from(if is_major == label.shadow { 1_u8 } else { 0 });
         node.left = Val::Px(f32::from(column) * 5.0 - 45.0 + offset);
@@ -1258,7 +1257,7 @@ fn sync_diplomacy_information(
             *visibility = Visibility::Hidden;
             continue;
         };
-        let (row, column) = state.map.geometry().row_column(anchor);
+        let (row, column) = state.map().geometry().row_column(anchor);
         node.left = Val::Px(f32::from(column) * 5.0 - 8.0);
         node.top = Val::Px(f32::from(row) * 5.0 + top_offset);
         image.rect = Some(Rect::new(
@@ -1286,7 +1285,7 @@ fn render_diplomacy_map(
     }
     let (entity, image_node) = maps.single().expect("Diplomacy screen has one map picture");
     let pixels = compose_owner_preview_indices(
-        |tile| session.0.map[tile].owner_nation,
+        |tile| session.0.map()[tile].owner_nation,
         screen.framed_nation,
     );
     let image = preview_image_from_indices(&pixels, assets.default_dib_palette());
@@ -1360,9 +1359,9 @@ fn representative_tile_for_nation(state: &GameState, nation: NationId) -> Option
     let home_region_class = state
         .nations()
         .home_tile(nation)
-        .and_then(|tile| state.map[tile].province)
-        .and_then(|province| state.map.provinces[province].region_class);
-    let geometry = state.map.geometry();
+        .and_then(|tile| state.map()[tile].province)
+        .and_then(|province| state.map().provinces[province].region_class);
+    let geometry = state.map().geometry();
     let mut column_sum = 0_u32;
     let mut row_sum = 0_u32;
     let mut tile_count = 0_u32;
@@ -1372,14 +1371,18 @@ fn representative_tile_for_nation(state: &GameState, nation: NationId) -> Option
 
     for index in 0..TileId::COUNT {
         let tile = TileId::new(index);
-        if state.map[tile].owner_nation.and_then(TileOwnerTag::nation) != Some(nation) {
+        if state.map()[tile]
+            .owner_nation
+            .and_then(TileOwnerTag::nation)
+            != Some(nation)
+        {
             continue;
         }
         fallback = Some(tile);
         if let Some(home_region_class) = home_region_class
-            && state.map[tile]
+            && state.map()[tile]
                 .province
-                .and_then(|province| state.map.provinces[province].region_class)
+                .and_then(|province| state.map().provinces[province].region_class)
                 != Some(home_region_class)
         {
             continue;

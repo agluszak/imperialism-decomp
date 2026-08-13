@@ -77,6 +77,20 @@ def run_one(args: argparse.Namespace) -> int:
     return run_test(args)
 
 
+def add_native_oracle_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("case")
+    parser.add_argument("--timeout", type=float)
+    parser.add_argument("--seed", type=int, default=1)
+
+
+def run_native_oracle(args: argparse.Namespace) -> int:
+    from tools.runtime.native_oracle import run_native_transition
+
+    return run_native_transition(
+        args.case, seed=args.seed, timeout_seconds=args.timeout
+    )
+
+
 def list_tests(_: argparse.Namespace) -> int:
     for test in TESTS:
         fixture = f" fixture={test.fixture.filename}" if test.fixture else ""
@@ -289,6 +303,11 @@ def build_parser() -> argparse.ArgumentParser:
     run = commands.add_parser("run", help="run one instrumented semantic test")
     add_run_arguments(run)
     run.set_defaults(func=run_one)
+    native_oracle = commands.add_parser(
+        "native-oracle", help="run one native model transition without RuntimeRunner"
+    )
+    add_native_oracle_arguments(native_oracle)
+    native_oracle.set_defaults(func=run_native_oracle)
     listing = commands.add_parser("list", help="list registered runtime tests")
     listing.set_defaults(func=list_tests)
     suite = commands.add_parser("suite", help="run a catalog suite")
@@ -391,6 +410,7 @@ def main(argv: list[str] | None = None) -> int:
     arguments = list(sys.argv[1:] if argv is None else argv)
     if arguments and arguments[0] not in {
         "run",
+        "native-oracle",
         "list",
         "suite",
         "determinism",

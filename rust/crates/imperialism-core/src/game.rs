@@ -5,8 +5,10 @@ use serde::{Deserialize, Serialize};
 pub struct GameState {
     pub(crate) turn: TurnState,
     pub(crate) unit_ids: UnitIdAllocator,
-    pub map: MapMgr,
-    pub ocean: Ocean,
+    pub(crate) map: MapMgr,
+    /// Persisted strategic-map viewport origin. Retail saves this with the map blob.
+    pub(crate) map_view_origin: TileId,
+    pub(crate) ocean: Ocean,
     pub(crate) rng: RngState,
     pub(crate) market: TradeMarketState,
     pub(crate) technology: TechnologyState,
@@ -19,6 +21,9 @@ pub struct GameState {
     pub(crate) missions: Vec<MissionState>,
     pub(crate) news: NewsState,
     pub(crate) pending: PendingWorkState,
+    /// Live `TTradeMgr` deal cursor and pending Offer Sheet. Not part of `.imp`.
+    #[serde(skip)]
+    pub(crate) trade_session: Option<crate::trade_phase::TradeSession>,
 }
 
 /// Construction-only parameter object for assembling [`GameState`].
@@ -30,6 +35,7 @@ pub struct GameStateParts {
     pub turn: TurnState,
     pub unit_ids: UnitIdAllocator,
     pub map: MapMgr,
+    pub map_view_origin: TileId,
     pub ocean: Ocean,
     pub rng: RngState,
     pub market: TradeMarketState,
@@ -52,6 +58,7 @@ impl GameState {
             turn: parts.turn,
             unit_ids: parts.unit_ids,
             map: parts.map,
+            map_view_origin: parts.map_view_origin,
             ocean: parts.ocean,
             rng: parts.rng,
             market: parts.market,
@@ -65,33 +72,7 @@ impl GameState {
             missions: parts.missions,
             news: parts.news,
             pending: parts.pending,
-        }
-    }
-
-    /// Restores session-only fields after projecting a save-backed differential capture.
-    ///
-    /// Retail `.imp` bytes carry the persistable bulk; the native oracle publishes the
-    /// remaining live fields beside the save so complete `GameState` comparison stays exact.
-    pub fn apply_save_backed_ephemeral(
-        &mut self,
-        turn: TurnState,
-        unit_ids: UnitIdAllocator,
-        rng: RngState,
-        news: NewsState,
-        pending: PendingWorkState,
-        ai_development_pressure: [Option<AiDevelopmentPressureState>; MAJOR_NATION_COUNT],
-    ) {
-        self.turn = turn;
-        self.unit_ids = unit_ids;
-        self.rng = rng;
-        self.news = news;
-        self.pending = pending;
-        for (slot, pressure) in ai_development_pressure.into_iter().enumerate() {
-            let nation = MajorNationId::new(slot as u8);
-            self.nations
-                .major_mut(nation)
-                .economy
-                .ai_development_pressure = pressure;
+            trade_session: None,
         }
     }
 
@@ -157,6 +138,43 @@ impl GameState {
 
     pub const fn pending(&self) -> &PendingWorkState {
         &self.pending
+    }
+
+    pub const fn map(&self) -> &MapMgr {
+        &self.map
+    }
+
+    pub fn map_mut(&mut self) -> &mut MapMgr {
+        &mut self.map
+    }
+
+    pub const fn map_view_origin(&self) -> TileId {
+        self.map_view_origin
+    }
+
+    pub const fn ocean(&self) -> &Ocean {
+        &self.ocean
+    }
+
+    /// Applies the retail map edge-scroll mask to the strategic viewport.
+    pub fn scroll_map_viewport(&mut self, edge_mask: u8) -> bool {
+        let next = self
+            .map
+            .scrolled_viewport_origin(self.map_view_origin, edge_mask);
+        if next == self.map_view_origin {
+            return false;
+        }
+        self.map_view_origin = next;
+        true
+    }
+
+    pub fn set_map_view_origin(&mut self, origin: TileId) {
+        self.map_view_origin = origin;
+    }
+
+    /// Centers the strategic viewport on `tile` using retail 9-by-7 origin math.
+    pub fn center_map_on(&mut self, tile: TileId) {
+        self.map_view_origin = self.map.viewport_origin_centered_on(tile);
     }
 
     /// Sets whether a civilian unit kind is unlocked in the nation's University.

@@ -363,8 +363,9 @@ pub enum MajorNationController {
     Human,
     Computer,
 }
+
 impl MajorNationController {
-    pub(crate) const fn is_human(self) -> bool {
+    pub const fn is_human(self) -> bool {
         matches!(self, Self::Human)
     }
 }

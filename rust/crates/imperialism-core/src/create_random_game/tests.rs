@@ -625,11 +625,19 @@ fn creates_a_normal_start_boundary_from_the_retained_preview() {
     let human = &state.nations.majors[MajorNationId::new(6)];
     assert_eq!(human.common.treasury, 10_000);
     assert_eq!(human.common.home_tile, None);
-    assert!(human.economy.controller.is_human());
+    assert!(matches!(
+        human.economy.controller,
+        crate::MajorNationController::Human
+    ));
+    assert!(human.economy.diplomacy_eligible);
 
     let ai = &state.nations.majors[MajorNationId::new(0)];
     assert_eq!(ai.common.treasury, 10_000);
-    assert!(!ai.economy.controller.is_human());
+    assert!(!matches!(
+        ai.economy.controller,
+        crate::MajorNationController::Human
+    ));
+    assert!(!ai.economy.diplomacy_eligible);
     assert!(ai.common.home_tile.is_some(), "AI majors place a capital");
     assert_eq!(
         state.nations.majors[MajorNationId::new(0)]

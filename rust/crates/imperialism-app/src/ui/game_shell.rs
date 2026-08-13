@@ -1,10 +1,11 @@
 use crate::AppState;
+use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
 use crate::ui::generated;
 use crate::ui::load_save::OpenFlagMenu;
-use crate::ui::random_setup::GameSession;
-use crate::ui::retail::{RetailTag, find_descendant};
+use crate::ui::query_floater::bind_query_floater_control;
+use crate::ui::retail::{RetailPictureSwap, RetailTag, find_descendant};
 use crate::ui::strategic_map::{
     SelectedEngineer, StrategicBaseTerrainCanvas, bind_strategic_base_terrain,
     strategic_base_terrain_tile_at_cursor, sync_strategic_base_terrain, sync_strategic_units,
@@ -15,7 +16,7 @@ use bevy::ui::{InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
 use imperialism_core::{MajorNationId, RailOrderRejection};
-use imperialism_formats::{FourCc, TRADE, fourcc};
+use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
 
 #[derive(Component)]
 struct StrategicMapRoot;
@@ -77,7 +78,7 @@ fn scroll_strategic_map(
         return;
     }
     *last_scroll_tick = Some(tick16);
-    session.0.map.scroll_viewport(edge_mask);
+    session.0.scroll_map_viewport(edge_mask);
 }
 
 fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> u8 {
@@ -113,8 +114,7 @@ fn enter_strategic_map_view(mut session: ResMut<GameSession>) {
     else {
         return;
     };
-    let origin = session.0.map.viewport_origin_centered_on(tile);
-    session.0.map.view_origin = origin;
+    session.0.center_map_on(tile);
 }
 
 fn spawn_strategic_map(mut commands: Commands) {
@@ -140,6 +140,7 @@ fn bind_strategic_map(
         fourcc!("tool"),
         None,
     );
+    bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &children, &tags);
     disable_native_control(&mut commands, *root, &children, &tags, fourcc!("DONE"));
     let flag = find_descendant(*root, fourcc!("Flag"), &children, &tags);
     commands
@@ -164,6 +165,34 @@ fn bind_strategic_map(
     );
 }
 
+fn bind_strategic_map_management_pictures(
+    commands: &mut Commands,
+    assets: &mut RetailUiAssets,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
+) {
+    let toolbar = find_descendant(root, fourcc!("tool"), children, tags);
+    for (tag, idle_id) in [
+        (fourcc!("dipl"), 0x24d9),
+        (fourcc!("trad"), 0x24db),
+        (fourcc!("city"), 0x24dd),
+        (fourcc!("tran"), 0x24df),
+    ] {
+        let entity = find_descendant(toolbar, tag, children, tags);
+        let idle = assets
+            .picture(PictureId::new(idle_id))
+            .expect("retail strategic management button must load");
+        let active = assets
+            .picture(PictureId::new(idle_id + 1))
+            .expect("retail strategic management pressed button must load");
+        commands.entity(entity).insert((
+            ImageNode::new(idle.clone()),
+            RetailPictureSwap { idle, active },
+        ));
+    }
+}
+
 pub(crate) fn project_date_and_treasury(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
@@ -173,6 +202,16 @@ pub(crate) fn project_date_and_treasury(
     session: &GameSession,
 ) {
     let state = &session.0;
+    let (font, layout, line_height, _) = assets
+        .text_style(imperialism_formats::RetailTextStylePreset {
+            font_family: 1,
+            face_flags: 0,
+            point_size: 12,
+            alignment: 1,
+        })
+        .expect("retail game-status text style");
+    let text_color = assets.palette_color(0);
+    let shadow_color = assets.palette_color(0x28);
     set_control_text(
         commands,
         root,
@@ -180,11 +219,28 @@ pub(crate) fn project_date_and_treasury(
         tags,
         fourcc!("seas"),
         format_retail_date(assets, state.turn().economic_turn),
+        font.clone(),
+        layout,
+        line_height,
+        text_color,
+        shadow_color,
     );
     let nation = MajorNationId::from_nation(state.turn().active_nation)
         .expect("Game screen requires an active major nation");
     let treasury = format_currency(state.nations().major(nation).common.treasury);
-    set_control_text(commands, root, children, tags, fourcc!("trea"), treasury);
+    set_control_text(
+        commands,
+        root,
+        children,
+        tags,
+        fourcc!("trea"),
+        treasury,
+        font,
+        layout,
+        line_height,
+        text_color,
+        shadow_color,
+    );
 }
 
 fn format_retail_date(assets: &mut RetailUiAssets, economic_turn: i32) -> String {
@@ -194,6 +250,7 @@ fn format_retail_date(assets: &mut RetailUiAssets, economic_turn: i32) -> String
     format!("{season}, {}", 1815 + economic_turn / 4)
 }
 
+#[allow(clippy::too_many_arguments)]
 fn set_control_text(
     commands: &mut Commands,
     root: Entity,
@@ -201,10 +258,25 @@ fn set_control_text(
     tags: &Query<&RetailTag>,
     tag: FourCc,
     value: String,
+    font: TextFont,
+    layout: TextLayout,
+    line_height: bevy::text::LineHeight,
+    text_color: Color,
+    shadow_color: Color,
 ) {
     commands
         .entity(find_descendant(root, tag, children, tags))
-        .insert(Text::new(value));
+        .insert((
+            Text::new(value),
+            font,
+            layout,
+            line_height,
+            TextColor(text_color),
+            TextShadow {
+                offset: Vec2::new(-1.0, -1.0),
+                color: shadow_color,
+            },
+        ));
 }
 
 pub(crate) fn bind_native_game_screen_nav(
@@ -215,6 +287,7 @@ pub(crate) fn bind_native_game_screen_nav(
     toolbar_tag: FourCc,
     leave_toolbar_tag: Option<FourCc>,
 ) {
+    bind_query_floater_control(commands, root, children, tags);
     let toolbar = find_descendant(root, toolbar_tag, children, tags);
     let trade = find_descendant(toolbar, TRADE, children, tags);
     let transport = find_descendant(toolbar, fourcc!("tran"), children, tags);

@@ -1,20 +1,13 @@
-#include "NativeTransition.h"
+#include "NativeCases.h"
 #include "JsonObject.h"
 
 #include "game/city/TCity.h"
 #include "game/city_ui/TCityInteriorMinister.h"
-#include "game/globals/shared_globals.h"
 #include "game/nation/TGreatPower.h"
 #include "game/resource_domain_types.h"
-#include "game/ui_screens/TSimMgr.h"
 
 RuntimeActionResult RunDirectTransport(NativeTransition& transition) {
-  const short nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0 || nation->city == 0) {
-    return RuntimeActionResult::Failure("the loaded player has no city-and-transport state");
-  }
-
+  TGreatPower* nation = ActiveNation();
   TCity* city = nation->city;
   int resource;
   for (resource = 0; resource < kResourceKindCount; ++resource) {
@@ -29,11 +22,11 @@ RuntimeActionResult RunDirectTransport(NativeTransition& transition) {
   nation->reservedTransportCapacity = 11;
   city->CityStockByType(kResourceSteel) = 2;
 
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(nationSlot));
-  operation.Set("resource", "steel");
-  operation.Set("requested", 9);
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(ActiveNationSlot()));
+  args.Set("resource", "steel");
+  args.Set("requested", 9);
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -43,15 +36,11 @@ RuntimeActionResult RunDirectTransport(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunTransportNeedAllocation(NativeTransition& transition) {
-  const short nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0 || nation->interiorMinister == 0) {
-    return RuntimeActionResult::Failure("the loaded player has no interior minister");
-  }
+  TGreatPower* nation = ActiveNation();
 
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(nationSlot));
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(ActiveNationSlot()));
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -61,12 +50,7 @@ RuntimeActionResult RunTransportNeedAllocation(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunTransportedItemsPhase(NativeTransition& transition) {
-  const short nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0 || nation->city == 0) {
-    return RuntimeActionResult::Failure("the loaded player has no city-and-transport state");
-  }
-
+  TGreatPower* nation = ActiveNation();
   TCity* city = nation->city;
   int resource;
   for (resource = 0; resource < kResourceKindCount; ++resource) {
@@ -79,9 +63,9 @@ RuntimeActionResult RunTransportedItemsPhase(NativeTransition& transition) {
   nation->transportedItemsByResource[kResourceWool] = -7;
   nation->transportedItemsByResource[kResourceGold] = 4;
 
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(nationSlot));
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(ActiveNationSlot()));
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -91,20 +75,15 @@ RuntimeActionResult RunTransportedItemsPhase(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunRollingStockSuccess(NativeTransition& transition) {
-  const short nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0 || nation->city == 0) {
-    return RuntimeActionResult::Failure("the loaded player has no city-and-transport state");
-  }
-
+  TGreatPower* nation = ActiveNation();
   TCity* city = nation->city;
   city->CityStockByType(kResourceLumber) = 1;
   city->CityStockByType(kResourceSteel) = 1;
   nation->transportCapacity = 15;
 
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(nationSlot));
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(ActiveNationSlot()));
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -114,20 +93,15 @@ RuntimeActionResult RunRollingStockSuccess(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunRollingStockInsufficient(NativeTransition& transition) {
-  const short nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0 || nation->city == 0) {
-    return RuntimeActionResult::Failure("the loaded player has no city-and-transport state");
-  }
-
+  TGreatPower* nation = ActiveNation();
   TCity* city = nation->city;
   city->CityStockByType(kResourceLumber) = 0;
   city->CityStockByType(kResourceSteel) = 1;
   nation->transportCapacity = 15;
 
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(nationSlot));
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(ActiveNationSlot()));
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -137,20 +111,15 @@ RuntimeActionResult RunRollingStockInsufficient(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunMerchantMarine(NativeTransition& transition) {
-  const short nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0 || nation->city == 0) {
-    return RuntimeActionResult::Failure("the loaded player has no city-and-merchant state");
-  }
-
+  TGreatPower* nation = ActiveNation();
   TCity* city = nation->city;
   city->CityStockByType(kResourceLumber) = 3;
   city->CityStockByType(kResourceFabric) = 1;
   nation->merchantCapacity = 15;
 
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(nationSlot));
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(ActiveNationSlot()));
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }

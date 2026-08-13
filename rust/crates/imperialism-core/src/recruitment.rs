@@ -196,7 +196,7 @@ impl GameState {
     }
 }
 
-fn insert_turn_summary(
+pub(crate) fn insert_turn_summary(
     rng: &mut crate::RngState,
     queue: &mut Vec<TurnSummary>,
     record: TurnSummary,
