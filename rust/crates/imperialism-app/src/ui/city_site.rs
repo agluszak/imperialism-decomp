@@ -92,17 +92,16 @@ fn enter_city_site(mut commands: Commands) {
 
 fn bind_city_site(
     mut commands: Commands,
-    root: Option<Single<Entity, (With<CitySiteRoot>, Without<CitySiteWired>)>>,
+    roots: Query<Entity, (With<CitySiteRoot>, Without<CitySiteWired>)>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    let Some(root) = root else {
+    let Ok(root) = roots.single() else {
         return;
     };
-    let root = *root;
     if !scene_has_children(root, &children) {
         return;
     }
@@ -185,16 +184,15 @@ fn open_city_site_intro(commands: &mut Commands) {
 
 fn bind_city_site_intro(
     mut commands: Commands,
-    root: Option<Single<Entity, (With<CitySiteIntro>, Without<CitySiteWired>)>>,
+    roots: Query<Entity, (With<CitySiteIntro>, Without<CitySiteWired>)>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    let Some(root) = root else {
+    let Ok(root) = roots.single() else {
         return;
     };
-    let root = *root;
     if !scene_has_children(root, &children) {
         return;
     }
@@ -360,19 +358,16 @@ fn open_city_site_notice(commands: &mut Commands, body: String) {
 
 fn bind_new_city_dialog(
     mut commands: Commands,
-    root: Option<
-        Single<(Entity, &NewCityDialogRoot), (With<NewCityDialogRoot>, Without<CitySiteWired>)>,
-    >,
+    dialogs: Query<(Entity, &NewCityDialogRoot), Without<CitySiteWired>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    let Some(root) = root else {
+    let Ok((root, dialog)) = dialogs.single() else {
         return;
     };
-    let (root, dialog) = *root;
     if !scene_has_children(root, &children) {
         return;
     }
@@ -545,18 +540,15 @@ fn new_city_extra_height(visible: i16) -> i32 {
 
 fn bind_city_site_notice(
     mut commands: Commands,
-    notice: Option<
-        Single<(Entity, &CitySiteNotice), (With<CitySiteNotice>, Without<CitySiteWired>)>,
-    >,
+    notices: Query<(Entity, &CitySiteNotice), Without<CitySiteWired>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    let Some(notice) = notice else {
+    let Ok((root, notice)) = notices.single() else {
         return;
     };
-    let (root, notice) = notice.into_inner();
     if !scene_has_children(root, &children) {
         return;
     }
