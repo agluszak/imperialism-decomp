@@ -305,9 +305,6 @@ fn bind_trade_controls(
     pictures: TradePictures,
     gauge_color: Color,
 ) {
-    commands
-        .entity(find_descendant(root, fourcc!("quer"), children, tags))
-        .insert(InteractionDisabled);
     let selected = find_descendant(root, fourcc!("trad"), children, tags);
     commands
         .entity(selected)
@@ -636,7 +633,7 @@ fn sync_trade_visual(
     session: Res<GameSession>,
     roots: Query<(), Added<TradeScreen>>,
     mut cards: Query<(&TradeDisplay, &mut ImageNode, &mut Node)>,
-    mut gauges: Query<(&TradeDisplay, &mut Node), With<BackgroundColor>>,
+    mut gauges: Query<(&TradeDisplay, &mut Node), Without<ImageNode>>,
 ) {
     if !session.is_changed() && roots.is_empty() {
         return;

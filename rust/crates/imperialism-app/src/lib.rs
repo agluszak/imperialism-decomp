@@ -81,6 +81,7 @@ pub fn run(
     app.add_plugins((
         TabNavigationPlugin,
         ui::RetailUiPlugin,
+        ui::QueryFloaterPlugin,
         ui::MainMenuPlugin,
         ui::LoadSavePlugin,
         ui::RandomSetupPlugin,

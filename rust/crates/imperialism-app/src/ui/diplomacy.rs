@@ -319,9 +319,6 @@ fn bind_diplomacy_controls(
     commands
         .entity(selected)
         .insert((Checked, InteractionDisabled));
-    commands
-        .entity(find_descendant(root, fourcc!("quer"), children, tags))
-        .insert(InteractionDisabled);
 
     let main = find_descendant(root, fourcc!("main"), children, tags);
     let information = find_child(main, fourcc!("info"), children, tags);

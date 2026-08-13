@@ -4,6 +4,7 @@ use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
 use crate::ui::generated;
 use crate::ui::load_save::OpenFlagMenu;
+use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailTag, find_descendant};
 use crate::ui::strategic_map::{
     SelectedEngineer, StrategicBaseTerrainCanvas, bind_strategic_base_terrain,
@@ -214,6 +215,7 @@ pub(crate) fn bind_native_game_screen_nav(
     toolbar_tag: FourCc,
     leave_toolbar_tag: Option<FourCc>,
 ) {
+    bind_query_floater_control(commands, root, children, tags);
     let toolbar = find_descendant(root, toolbar_tag, children, tags);
     let trade = find_descendant(toolbar, TRADE, children, tags);
     let transport = find_descendant(toolbar, fourcc!("tran"), children, tags);
