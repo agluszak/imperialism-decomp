@@ -7,11 +7,17 @@
 
 #include "NativeTransition.h"
 
+class TGreatPower;
+
 struct NativeCase {
   const char* name;
   RuntimeActionResult (*run)(NativeTransition&);
 };
 
 const NativeCase* FindNativeCase(const char* name);
+
+// Trusted beginning_of_game.imp helpers. Null is a fixture bug, not a recoverable failure.
+TGreatPower* ActiveNation();
+short ActiveNationSlot();
 
 #endif

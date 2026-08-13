@@ -711,10 +711,9 @@ fn technology_state(technology: &LegacyTechnologyState) -> TechnologyState {
 }
 
 impl LegacySaveV62 {
-    /// Projects the fully decoded save directly into live semantic state.
-    /// Runtime-only RNG and selection state must be supplied by the process that loaded
-    /// the save because the retail stream does not contain them.
-    pub fn game_state(&self, context: LegacyGameStateContext) -> GameState {
+    /// Projects persistable save fields into construction parts. Runtime-only RNG and
+    /// selection state must be supplied because the retail stream does not contain them.
+    pub fn game_state_parts(&self, context: LegacyGameStateContext) -> GameStateParts {
         assert!(
             self.navy.ships.is_empty()
                 && self.navy.admirals.is_empty()
@@ -834,7 +833,7 @@ impl LegacySaveV62 {
         let persistent_unit_id_counter =
             self.simulation.persistent_unit_id_counter + loaded_unit_count;
 
-        GameState::from_parts(GameStateParts {
+        GameStateParts {
             turn: TurnState::new(
                 (self.simulation.game_setup.scenario_map_index_plus_one > 0).then(|| {
                     ScenarioMapId::new(
@@ -869,7 +868,11 @@ impl LegacySaveV62 {
             missions,
             news: NewsState::default(),
             pending,
-        })
+        }
+    }
+
+    pub fn game_state(&self, context: LegacyGameStateContext) -> GameState {
+        GameState::from_parts(self.game_state_parts(context))
     }
 }
 

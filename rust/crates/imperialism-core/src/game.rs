@@ -72,26 +72,6 @@ impl GameState {
         }
     }
 
-    /// Restores session-only fields after projecting a save-backed differential capture.
-    ///
-    /// Retail `.imp` bytes carry the persistable bulk; the native oracle publishes the
-    /// remaining live fields beside the save so complete `GameState` comparison stays exact.
-    #[cfg(feature = "differential-trace")]
-    pub fn apply_save_backed_ephemeral(
-        &mut self,
-        turn: TurnState,
-        unit_ids: UnitIdAllocator,
-        rng: RngState,
-        news: NewsState,
-        pending: PendingWorkState,
-    ) {
-        self.turn = turn;
-        self.unit_ids = unit_ids;
-        self.rng = rng;
-        self.news = news;
-        self.pending = pending;
-    }
-
     pub const fn turn(&self) -> &TurnState {
         &self.turn
     }

@@ -2992,6 +2992,21 @@ bool CaptureGameState(RuntimeRun& run, const char* name) {
   return true;
 }
 
+bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
+  if (state == 0 || g_pSimMgr == 0) {
+    return false;
+  }
+
+  JsonObject object;
+  object.Set("turn", CaptureTurn(run));
+  object.Set("unit_ids", g_pSimMgr->field_64);
+  object.Set("rng", CaptureRng());
+  object.Set("news", CaptureNews());
+  object.Set("pending", CapturePending());
+  *state = object.Release();
+  return true;
+}
+
 bool CaptureSaveBackedGameState(RuntimeRun& run, const char* name) {
   if (name == 0 || name[0] == '\0' || g_pAssetMgr == 0) {
     return false;
@@ -3003,22 +3018,9 @@ bool CaptureSaveBackedGameState(RuntimeRun& run, const char* name) {
     return false;
   }
 
-  JSON_Value* state = 0;
-  if (!BuildRuntimeGameState(run, &state)) {
+  JSON_Value* ephemeral = 0;
+  if (!BuildRuntimeEphemeralState(run, &ephemeral)) {
     return false;
-  }
-  JSON_Object* object = json_value_get_object(state);
-  if (object == 0) {
-    json_value_free(state);
-    return false;
-  }
-
-  // Persistable bulk lives in the .imp; keep only session fields Rust cannot recover.
-  const char* bulkKeys[] = {"map",       "ocean",       "market",         "technology",
-                            "diplomacy", "nations",     "military_units", "civilian_units",
-                            "ships",     "task_forces", "missions"};
-  for (int index = 0; index < (int)(sizeof(bulkKeys) / sizeof(bulkKeys[0])); ++index) {
-    json_object_remove(object, bulkKeys[index]);
   }
 
   char saveName[64];
@@ -3026,8 +3028,7 @@ bool CaptureSaveBackedGameState(RuntimeRun& run, const char* name) {
 
   JsonObject capture;
   capture.Set("save", saveName);
-  capture.Set("ephemeral", state);
-
+  capture.Set("ephemeral", ephemeral);
   run.SetCapture(name, capture.Release());
   return run.HasCapture(name);
 }
