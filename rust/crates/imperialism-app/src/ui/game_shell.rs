@@ -2,6 +2,7 @@ use crate::AppState;
 use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
 use crate::ui::generated;
+use crate::ui::load_save::OpenFlagMenu;
 use crate::ui::random_setup::GameSession;
 use crate::ui::retail::{RetailTag, find_descendant};
 use crate::ui::strategic_map::{bind_strategic_base_terrain, sync_strategic_base_terrain};
@@ -106,6 +107,11 @@ fn bind_strategic_map(
     commands
         .entity(end)
         .insert(TurnFlowAction::FinishPlayerOrders)
+        .remove::<InteractionDisabled>();
+    let flag = find_descendant(*root, fourcc!("Flag"), &children, &tags);
+    commands
+        .entity(flag)
+        .insert(OpenFlagMenu)
         .remove::<InteractionDisabled>();
     bind_strategic_base_terrain(
         &mut commands,

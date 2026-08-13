@@ -10,6 +10,8 @@ use std::path::PathBuf;
 struct Args {
     #[arg(long)]
     retail_dir: PathBuf,
+    #[arg(long)]
+    save_dir: Option<PathBuf>,
     #[arg(long, requires = "game_state")]
     load_save: Option<PathBuf>,
     #[arg(
@@ -23,6 +25,9 @@ struct Args {
 
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
+    let save_directory = args
+        .save_dir
+        .unwrap_or_else(|| args.retail_dir.join("Save"));
     let assets = RetailAssets::open(args.retail_dir)?;
     let initial_game = match (args.load_save, args.game_state) {
         (Some(path), Some(context)) => {
@@ -48,5 +53,5 @@ fn main() -> anyhow::Result<()> {
         (None, None) => None,
         _ => unreachable!("clap enforces the paired load-save and game-state arguments"),
     };
-    imperialism_app::run(assets, initial_game)
+    imperialism_app::run(assets, initial_game, save_directory)
 }

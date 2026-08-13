@@ -2772,6 +2772,7 @@ dependencies = [
  "clap",
  "imperialism-core",
  "imperialism-formats",
+ "tempfile",
  "thiserror 2.0.19",
 ]
 
@@ -2792,6 +2793,7 @@ name = "imperialism-formats"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "enum-map",
  "imperialism-core",
  "imperialism-testkit",
  "pelite",

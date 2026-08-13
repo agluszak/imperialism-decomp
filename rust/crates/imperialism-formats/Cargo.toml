@@ -6,6 +6,7 @@ rust-version.workspace = true
 
 [dependencies]
 imperialism-core = { path = "../imperialism-core" }
+enum-map.workspace = true
 pelite.workspace = true
 serde.workspace = true
 thiserror.workspace = true

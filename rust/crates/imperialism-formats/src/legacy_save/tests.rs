@@ -721,3 +721,31 @@ fn deal_book_projection_reconstructs_retail_sorted_load_order() {
         ]
     );
 }
+
+#[test]
+fn fixture_dto_write_round_trips_projected_game_state() {
+    let original = LegacySaveV62::parse(RETAIL_FIXTURE).game_state(game_context());
+    let bytes = LegacySaveV62::parse(RETAIL_FIXTURE).to_bytes();
+    let round_tripped = LegacySaveV62::parse(&bytes).game_state(game_context());
+    assert_eq!(round_tripped, original);
+}
+
+#[test]
+fn game_state_write_round_trips_semantically_through_the_parser() {
+    let original = LegacySaveV62::parse(RETAIL_FIXTURE).game_state(game_context());
+    let bytes = LegacySaveV62::from_game_state(&original, "- Autosave -", 0).to_bytes();
+    let round_tripped =
+        load_game_from_bytes(&bytes, game_context()).expect("rust-written save loads");
+    assert_eq!(round_tripped, original);
+}
+
+#[test]
+fn failed_load_leaves_an_existing_game_state_untouched() {
+    let original = LegacySaveV62::parse(RETAIL_FIXTURE).game_state(game_context());
+    let mut current = original.clone();
+    let error = load_game_from_bytes(b"not a save file!!", game_context()).unwrap_err();
+    assert!(matches!(error, LoadGameError::InvalidMagic));
+    assert_eq!(current, original);
+    current = original.clone();
+    assert_eq!(current, original);
+}

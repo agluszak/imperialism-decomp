@@ -540,6 +540,22 @@ impl PopulationState {
         self.production_labor
     }
 
+    pub const fn extra(&self) -> i16 {
+        self.extra
+    }
+
+    pub const fn strike_phase(&self) -> StrikePhase {
+        self.strike_phase
+    }
+
+    pub const fn pending_labor_delta(&self) -> LaborPool {
+        self.pending_labor_delta
+    }
+
+    pub const fn predicted_need_by_resource(&self) -> &ResourceTable<i16> {
+        &self.predicted_need_by_resource
+    }
+
     pub fn predicted_need(&self, resource: ResourceKind) -> i16 {
         self.predicted_need_by_resource[resource]
     }
@@ -569,6 +585,11 @@ impl PopulationAccumulator {
     pub fn get(self) -> f32 {
         f32::from_bits(self.0)
     }
+
+    pub const fn to_bits(self) -> u32 {
+        self.0
+    }
+
     pub(crate) fn remove(&mut self, amount: i16) {
         self.0 = (self.get() - f32::from(amount)).to_bits();
     }

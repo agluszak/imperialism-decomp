@@ -1,6 +1,9 @@
+mod from_game_state;
 mod model;
 mod parse;
 mod project;
+mod slots;
+mod write;
 
 #[cfg(test)]
 mod tests;
@@ -21,6 +24,13 @@ const TERRAIN_TILE_SERIALIZED_SIZE: usize = 0x24;
 const PROVINCE_COUNT: usize = 0x180;
 const PROVINCE_FIXED_SERIALIZED_SIZE: usize = 0xa4;
 const AI_ZONE_TARGET_CAPACITY: usize = 0x70;
+
+pub use slots::{
+    LoadGameError, NUMBERED_SAVE_SLOT_COUNT, OverwritePolicy, SAVE_FORMAT_VERSION,
+    SAVE_LABEL_MAX_CHARS, SAVE_MAGIC, SaveDirectoryListing, SaveFileError, SaveHeaderInfo,
+    SaveSlot, list_save_slots, load_game_from_bytes, load_game_from_path, normalize_save_label,
+    peek_save_header, retail_save_path, write_game_state, write_save_file,
+};
 
 #[allow(dead_code)]
 pub struct LegacySaveV62 {
