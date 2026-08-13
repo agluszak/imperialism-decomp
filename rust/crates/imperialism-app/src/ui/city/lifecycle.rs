@@ -52,28 +52,16 @@ pub(in crate::ui::city) fn on_city_canvas_click(
     {
         return;
     }
-    let unbuilt_capacity_center = {
-        let major = session.0.nations().major(nation);
-        CityState::is_capacity_center(building.slot)
-            && major.city.building_type(
-                building.slot,
-                &major.economy,
-                major.common.owned_region_count() as i32,
-            ) == 0
-    };
-    if unbuilt_capacity_center {
-        let available = !matches!(
-            building.slot,
-            CityFacilitySlot::OilRefinery | CityFacilitySlot::PowerPlant
-        ) || session.0.technology().city_capabilities_by_nation[nation]
-            .oil_drilling;
-        if available {
+    match city_building_click(&session.0, nation, building.slot) {
+        Some(CityBuildingClick::Construction) => {
             open_city_construction_dialog(&mut commands, &mut assets, &mut session, building.slot);
-            return;
         }
+        Some(CityBuildingClick::Production) => {
+            let z_index = dialogs.iter().map(|(_, z)| z.0).max().unwrap_or(0) + 1;
+            open_city_dialog(&mut commands, building.slot, None, z_index);
+        }
+        None => {}
     }
-    let z_index = dialogs.iter().map(|(_, z)| z.0).max().unwrap_or(0) + 1;
-    open_city_dialog(&mut commands, building.slot, None, z_index);
 }
 
 pub(in crate::ui::city) fn open_city_dialog(
