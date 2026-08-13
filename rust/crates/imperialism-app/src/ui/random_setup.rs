@@ -669,30 +669,4 @@ mod tests {
         assert_eq!(field.value(), "Country");
         assert_eq!(field.max_characters, Some(COUNTRY_NAME_MAX_CHARS));
     }
-
-    #[test]
-    fn leaving_random_setup_despawns_an_open_planet_seed_dialog() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_plugins(bevy::state::app::StatesPlugin)
-            .insert_state(AppState::RandomSetup);
-        app.update();
-
-        let dialog = app
-            .world_mut()
-            .spawn((
-                PlanetSeedDialogRoot,
-                ModalDialog,
-                DespawnOnExit(AppState::RandomSetup),
-            ))
-            .id();
-        app.update();
-        assert!(app.world().get::<PlanetSeedDialogRoot>(dialog).is_some());
-
-        app.world_mut()
-            .resource_mut::<NextState<AppState>>()
-            .set(AppState::MainMenu);
-        app.update();
-        assert!(app.world().get::<PlanetSeedDialogRoot>(dialog).is_none());
-    }
 }

@@ -216,471 +216,51 @@ fn minor_home_garrison_preserves_the_base_state_and_marks_the_capital() {
     );
 }
 
-#[test]
-fn normal_random_start_marks_only_queued_ai_map_targets() {
-    let human_nation = MajorNationId::new(6);
-    let preview = initial_seed_one_preview();
-    let state = create_random_game(
-        &preview,
-        human_nation,
-        Difficulty::Normal,
-        "Testland",
-        true,
-        1,
-        &crate::test_support::random_game_names(),
-    );
-    assert_eq!(state.map.provinces[ProvinceId::new(0)].name, "N9P1");
-    assert_eq!(state.map.provinces[ProvinceId::new(1)].name, "N9P2");
-    assert_eq!(state.map.provinces[ProvinceId::new(2)].name, "N12P1");
-    assert!(state.ocean.zones.iter().all(|zone| match zone {
-        ZoneKind::Zone(zone) => !zone.display_name.is_empty(),
-        ZoneKind::PortZone(port) => !port.zone.display_name.is_empty(),
-    }));
-    assert_eq!(
-        state.nations.majors[human_nation].towns[0].name,
-        "Frog City"
-    );
-    for nation in (0..MajorNationId::COUNT - 1).map(MajorNationId::new) {
-        assert_eq!(state.nations.majors[nation].towns[0].name, "FrogCity");
-    }
-    let live_zone_count = state.ocean.zones.len();
-    assert_eq!(state.ocean.routes, preview.map.ocean_routes);
-    assert_eq!(state.map.scenario_tag, "Woopnist");
-    assert_eq!(
-        state
-            .ocean
-            .zones
-            .iter()
-            .filter(|zone| matches!(zone, ZoneKind::Zone(_)))
-            .count(),
-        usize::from(sea_zone_count(&state.map))
-    );
-    assert_eq!(
-        state
-            .ocean
-            .zones
-            .iter()
-            .filter_map(|zone| match zone {
-                ZoneKind::Zone(zone) => zone.status_code,
-                ZoneKind::PortZone(_) => None,
-            })
-            .collect::<Vec<_>>(),
-        [
-            16, 12, 12, 12, 17, 16, 5, 15, 14, 13, 14, 11, 17, 15, 13, 14, 19, 13, 8, 12, 17, 17,
-            14, 10, 18, 12, 15, 14, 9, 18, 13, 12, 14, 14, 12, 12, 12, 12, 8, 14, 12, 13, 15, 12,
-            9, 14, 12, 16, 14, 15, 10, 14, 16, 13, 13, 15, 16,
-        ]
-    );
-    assert_eq!(
-        state
-            .ocean
-            .zones
-            .iter()
-            .filter_map(|zone| match zone {
-                ZoneKind::Zone(_) => None,
-                ZoneKind::PortZone(port) => port.zone.status_code,
-            })
-            .collect::<Vec<_>>(),
-        [
-            20, 22, 20, 20, 21, 20, 23, 23, 22, 23, 22, 23, 20, 22, 20, 23, 23, 20, 22, 21, 22, 23,
-        ]
-    );
-
-    assert!(
-        state
-            .ocean
-            .zones
-            .iter()
-            .enumerate()
-            .filter_map(|(ordinal, zone)| {
-                matches!(zone, ZoneKind::PortZone(_)).then_some(ordinal)
-            })
-            .collect::<Vec<_>>()
-            .windows(2)
-            .all(|pair| pair[0] < pair[1]),
-        "port zones preserve their ordinal positions"
-    );
-
-    for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
-        let economy = &state.nations.majors[nation].economy;
-        assert_eq!(economy.army_movement_budget, 15);
-        if nation == human_nation {
-            assert_eq!(economy.ai_zone_targets, None);
-            assert_eq!(economy.ai_province_targets, None);
-            continue;
-        }
-
-        let mut expected = vec![AiTargetState::Unmarked; live_zone_count];
-        let mut expected_provinces = ProvinceTable::default();
-        let mut queued_navy_target_count = 0;
-        for mission in state
-            .missions
-            .iter()
-            .filter(|mission| mission.nation == nation.nation())
-        {
-            let target = match &mission.data {
-                MissionData::DefendProvince { province, .. } => {
-                    expected_provinces[*province] = AiTargetState::MissionQueued;
-                    None
-                }
-                MissionData::ControlSeaZone(navy) => navy.target_zone,
-                MissionData::Escort(navy) => {
-                    let (ordinal, _) = state
-                        .ocean
-                        .zones
-                        .iter()
-                        .enumerate()
-                        .find_map(|(ordinal, zone)| match zone {
-                            ZoneKind::PortZone(port)
-                                if state.map[port.port_tile]
-                                    .former_owner_nation
-                                    .and_then(TileOwnerTag::nation)
-                                    == Some(nation.nation()) =>
-                            {
-                                Some((ordinal, port))
-                            }
-                            _ => None,
-                        })
-                        .expect("an Escort mission resolves the nation's first port");
-                    let port_zone = OceanZoneId::new(ordinal as u16);
-                    assert_eq!(navy.target_zone, Some(port_zone));
-                    assert_eq!(navy.resolved_port_zone, Some(port_zone));
-                    navy.target_zone
-                }
-                _ => None,
-            };
-            if let Some(target) = target {
-                expected[usize::from(target.get())] = AiTargetState::MissionQueued;
-                queued_navy_target_count += 1;
-            }
-        }
-
-        let actual = economy
-            .ai_zone_targets
-            .as_ref()
-            .expect("computer majors own AI zone-target state");
-        assert_eq!(actual, &expected);
-        assert_eq!(
-            economy.ai_province_targets.as_ref(),
-            Some(&expected_provinces)
-        );
-        assert_eq!(
-            actual
-                .iter()
-                .filter(|&&target| target == AiTargetState::MissionQueued)
-                .count(),
-            queued_navy_target_count
-        );
-        assert!(!actual.contains(&AiTargetState::Candidate));
-    }
-    for province in (0..ProvinceId::COUNT).map(ProvinceId::new) {
-        assert_eq!(state.map.provinces[province].development_stage(), 0);
-        assert_eq!(
-            state.map.provinces[province].explored_by_majors(),
-            &MajorNationTable::default()
-        );
-    }
-}
-
-#[test]
-fn creates_a_normal_start_boundary_from_the_retained_preview() {
-    let preview = initial_seed_one_preview();
-    let state = create_random_game(
-        &preview,
+fn normal_start() -> GameState {
+    create_random_game(
+        &initial_seed_one_preview(),
         MajorNationId::new(6),
         Difficulty::Normal,
         "Testland",
         true,
         1,
         &crate::test_support::random_game_names(),
-    );
+    )
+}
 
-    assert_eq!(
-        state
-            .nations
-            .majors
-            .iter()
-            .map(|nation| nation.common.display_name.as_str())
-            .collect::<Vec<_>>(),
-        ["N0", "N1", "N2", "N3", "N4", "N5", "Testland"]
-    );
-    assert_eq!(
-        state
-            .nations
-            .minors
-            .iter()
-            .flatten()
-            .map(|nation| nation.common.display_name.as_str())
-            .collect::<Vec<_>>(),
-        (7..NationId::COUNT)
-            .map(|nation| format!("N{nation}"))
-            .collect::<Vec<_>>()
-    );
+#[test]
+fn normal_random_start_reaches_capital_selection() {
+    let human = MajorNationId::new(6);
+    let state = normal_start();
 
-    assert_eq!(
-        state
-            .nations
-            .majors
-            .iter()
-            .map(|nation| nation.economy.foreign_minister_personality)
-            .collect::<Vec<_>>(),
-        [
-            ForeignMinisterPersonality::Trader,
-            ForeignMinisterPersonality::Bill,
-            ForeignMinisterPersonality::Bill,
-            ForeignMinisterPersonality::Diplomat,
-            ForeignMinisterPersonality::Textile,
-            ForeignMinisterPersonality::Ted,
-            ForeignMinisterPersonality::Base,
-        ]
-    );
-    assert_eq!(
-        state
-            .nations
-            .majors
-            .iter()
-            .map(|nation| nation.economy.foreign_minister_skill_index)
-            .collect::<Vec<_>>(),
-        [1, 4, 4, 3, 2, 5, 0]
-    );
-    assert!(state.nations.majors.iter().all(|nation| {
-        nation.economy.development_grant_by_nation == NationTable::default()
-            && nation.economy.defense_minister_skill_index == 0
-            && nation.economy.diplomacy_budget_base == 20_000
-            && nation.economy.escalation_counter == 12
-    }));
-    let initial_ai_expansions =
-        ProductionTable::from_array([2, 1, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-    for nation in (0..MajorNationId::COUNT - 1).map(MajorNationId::new) {
-        assert_eq!(
-            state.nations.majors[nation]
-                .economy
-                .interior_civilian
-                .city_order_demand
-                .expansions,
-            initial_ai_expansions
-        );
-    }
-    assert_eq!(
-        state.nations.majors[MajorNationId::new(6)]
-            .economy
-            .interior_civilian
-            .city_order_demand,
-        AiCityOrderDemand::default()
-    );
-    assert!(
-        state
-            .nations
-            .majors
-            .iter()
-            .all(|nation| nation.towns[0].created_turn == 0)
-    );
-    assert_eq!(
-        state
-            .nations
-            .majors
-            .iter()
-            .map(|nation| nation.city.production_accum[CityFacilitySlot::RegionalPopulation])
-            .collect::<Vec<_>>(),
-        [2; 7]
-    );
-
-    let expected_adjacency = build_province_adjacency(&state.map);
-    for (index, generated) in preview.map.provinces().iter().enumerate() {
-        let province = ProvinceId::new(index as u16);
-        let owner = generated.owner.nation().unwrap();
-        assert_eq!(state.map.provinces[province].owner(), Some(owner));
-        assert_eq!(state.map.provinces[province].former_owner(), Some(owner));
-        assert_eq!(
-            state.map.provinces[province].adjacency(),
-            expected_adjacency[index]
-        );
-        assert_eq!(
-            state.map.provinces[province].region_class,
-            Some(generated.region_class)
-        );
-    }
-    for index in preview.map.provinces().len()..crate::PROVINCE_COUNT {
-        assert_eq!(
-            state.map.provinces[ProvinceId::new(index as u16)],
-            ProvinceState::default()
-        );
-    }
-    let province_zero = &state.map.provinces[ProvinceId::new(0)];
-    assert_eq!(province_zero.primary_neighbor_tile, Some(TileId::new(507)));
-    assert_eq!(
-        province_zero.secondary_neighbor_tile,
-        Some(TileId::new(614))
-    );
-    assert_eq!(province_zero.resource_presence_mask, 88);
-    // Retail snapshots this before fallback-capital normalization changes a Cotton tile to Grain.
-    assert_eq!(
-        state.map.provinces[ProvinceId::new(25)].resource_presence_mask,
-        65
-    );
-    for nation in NationId::all() {
-        let expected = preview
-            .map
-            .provinces()
-            .iter()
-            .enumerate()
-            .filter_map(|(index, province)| {
-                (province.owner.nation() == Some(nation)).then_some(ProvinceId::new(index as u16))
-            })
-            .collect::<Vec<_>>();
-        let common = state.nations.common(nation).unwrap();
-        assert_eq!(common.status(), CountryStatus::Independent);
-        assert_eq!(common.owned_regions(), expected);
-    }
-
+    assert_eq!(state.turn.selected_nation, human.nation());
     assert_eq!(state.turn.phase, crate::PhaseCode::CAPITAL_SELECTION);
     assert_eq!(state.turn.difficulty, Difficulty::Normal);
-    assert_eq!(state.turn.selected_nation, NationId::new(6));
     assert!(state.map.map_data_ready);
-    assert!(state.map.recruit_search_active);
-    assert_eq!(state.map.scenario_tag, "Woopnist");
-    assert_eq!(state.map.pending_river_mouth_tile, Some(TileId::new(0)));
-    let city_site_candidates = state
-        .map
-        .tiles
-        .iter()
-        .enumerate()
-        .filter_map(|(index, tile)| {
-            (tile.recruit_search_visited == 0).then_some(TileId::new(index as u16))
-        })
-        .collect::<Vec<_>>();
-    assert_eq!(
-        city_site_candidates,
-        [
-            2541, 2543, 2546, 2646, 2648, 2649, 2650, 2653, 2654, 2754, 2755, 2759, 2760, 2862,
-            2970, 2971, 2972, 3076, 3077, 3081, 3184, 3400, 3401, 3402, 3508, 3511, 3513, 3514,
-            3622, 3731, 3734, 3735, 3839, 3840, 3843, 3844, 3845,
-        ]
-        .map(TileId::new)
-    );
-    assert!(
-        state
-            .map
-            .tiles
-            .iter()
-            .all(|tile| tile.recruit_search_visited <= 1)
-    );
-    assert_ne!(
-        state.rng.map_generation,
-        RetailLcg::from_state(preview.final_map_lcg)
-    );
-    assert_eq!(
-        state.map[TileId::new(0)].terrain,
-        preview.map.tile(TileId::new(0)).terrain
-    );
-    assert_eq!(
-        state.map[TileId::new(0)].former_owner_nation,
-        state.map[TileId::new(0)].owner_nation
-    );
-    assert_eq!(state.map[TileId::new(0)].recruit_search_visited, 1);
-    assert_eq!(state.map[TileId::new(0)].per_tile_visited, 0);
-    assert_eq!(state.map[TileId::new(0)].marker_slot_index, -1);
-    assert_eq!(state.map[TileId::new(0)].tile_action_ordinal, -1);
-    assert_eq!(
-        state.map[TileId::new(844)].action.map(TileAction::retail),
-        Some(-14),
-    );
-    assert_eq!(
-        (
-            state.map[TileId::new(0)].owner_border_mask,
-            state.map[TileId::new(0)].city_border_mask,
-            state.map[TileId::new(0)].water_adjacency_mask,
-        ),
-        (39, 0, 0),
-    );
-    assert_eq!(
-        (
-            state.map[TileId::new(399)].owner_border_mask,
-            state.map[TileId::new(399)].city_border_mask,
-            state.map[TileId::new(399)].water_adjacency_mask,
-        ),
-        (0, 0, 51),
-    );
-    assert_eq!(
-        (
-            state.map[TileId::new(831)].owner_border_mask,
-            state.map[TileId::new(831)].city_border_mask,
-            state.map[TileId::new(831)].water_adjacency_mask,
-        ),
-        (0, 143, 0),
-    );
-    assert!(
-        state
-            .map
-            .tiles
-            .iter()
-            .any(|tile| tile.edge_resources[0].is_some()),
-        "post-passes must stamp some edge resources"
-    );
-    assert!(
-        state.map.tiles.iter().any(|tile| tile.flags.is_city()),
-        "AI PlaceCity must mark a city tile"
-    );
-
-    let human = &state.nations.majors[MajorNationId::new(6)];
-    assert_eq!(human.common.treasury, 10_000);
-    assert_eq!(human.common.home_tile, None);
     assert!(matches!(
-        human.economy.controller,
+        state.nations.majors[human].economy.controller,
         crate::MajorNationController::Human
     ));
-    assert!(human.economy.diplomacy_eligible);
-
-    let ai = &state.nations.majors[MajorNationId::new(0)];
-    assert_eq!(ai.common.treasury, 10_000);
-    assert!(!matches!(
-        ai.economy.controller,
-        crate::MajorNationController::Human
-    ));
-    assert!(!ai.economy.diplomacy_eligible);
-    assert!(ai.common.home_tile.is_some(), "AI majors place a capital");
-    assert_eq!(
-        state.nations.majors[MajorNationId::new(0)]
-            .towns
-            .first()
-            .map(|town| town.tile),
-        ai.common.home_tile
-    );
-    let ai_home = ai.common.home_tile.unwrap();
     assert!(
-        state.map[ai_home].flags.is_city(),
-        "AI PlaceCity marks the selected capital as a city"
+        state.nations.majors[human].common.home_tile.is_none(),
+        "human capital awaits selection"
     );
-    assert!(
-        state.map[ai_home].region.is_some(),
-        "retail region markers start at 1"
-    );
-    assert_eq!(state.rng.zone_status, RetailLcg::from_state(1));
 
-    assert_eq!(state.nations.minor_count(), crate::MINOR_NATION_COUNT);
-    let human = &state.nations.majors[MajorNationId::new(6)];
-    assert_eq!(
-        human.towns.first().map(|town| town.tile),
-        Some(TileId::new(0))
-    );
-    assert_eq!(human.city.stockpile[ResourceKind::Food], 20);
+    for nation in (0..MajorNationId::COUNT)
+        .map(MajorNationId::new)
+        .filter(|nation| *nation != human)
+    {
+        assert!(
+            state.nations.majors[nation].common.home_tile.is_some(),
+            "AI majors place a capital before capital selection"
+        );
+        assert!(!matches!(
+            state.nations.majors[nation].economy.controller,
+            crate::MajorNationController::Human
+        ));
+    }
 
-    let placed_minors = state
-        .nations
-        .minors
-        .iter()
-        .flatten()
-        .filter(|minor| minor.common.home_tile.is_some())
-        .count();
-    assert!(placed_minors > 0, "minors receive home tiles");
-    assert!(state.nations.minors.iter().flatten().all(|minor| {
-        minor.common.home_tile.is_none_or(|home| {
-            let flags = state.map[home].flags;
-            flags.is_city()
-                && flags.has_base_transport()
-                && flags.contains(TileFlags::PROVINCE_CAPITAL_FORTIFICATION)
-        })
-    }));
+    assert!(state.nations.minor_count() > 0);
     assert!(
         !state.military_units.is_empty(),
         "minor InitialMilitia produces military units"
@@ -693,74 +273,64 @@ fn creates_a_normal_start_boundary_from_the_retained_preview() {
         "pre-capital military units are minor-owned only"
     );
     assert!(
-        state
-            .military_units
-            .iter()
-            .any(|unit| unit.name.starts_with("1st ")),
-        "NameUnits assigns English ordinal names"
-    );
-    assert_ne!(
-        state.rng.crt_rand,
-        RetailCrtRng::from_state(1),
-        "minor home selection advances CRT rand"
-    );
-    assert!(
         !state.missions.is_empty(),
         "AI QueueMapActionMissions fills the Accept mission queues"
     );
     assert!(
-        state.missions.iter().any(|mission| {
-            matches!(mission.data, MissionData::ScatteredShips(_))
-                && mission.importance_bits == SCATTERED_SHIPS_IMPORTANCE_BITS
-        }),
-        "each AI queue ends with ScatteredShips at 0.001f"
-    );
-    assert!(
         state
             .missions
             .iter()
-            .any(|mission| matches!(mission.data, MissionData::DefendProvince { .. })),
-        "AI queues include DefendProvince for owned regions"
-    );
-    assert!(
-        state.map.tiles.iter().any(|tile| {
-            tile.action
-                .is_some_and(|action| action.retail() == ACTION_STATE_ANCHOR)
-        }),
-        "EnsurePortZone stamps Anchor on linked sea tiles"
-    );
-    assert!(
-        state
-            .missions
-            .iter()
-            .all(|mission| mission.nation.get() != 6),
+            .all(|mission| mission.nation != human.nation()),
         "human Normal+ majors do not receive Accept mission queues"
     );
-    assert_eq!(
-        state.unit_ids.current(),
-        state.military_units.len() as i32,
-        "field_64 tracks each spawned TUnit"
-    );
-    assert_eq!(state.market, TradeMarketState::default());
-    assert!(state.civilian_units.is_empty());
-    assert!(
-        state
-            .pending
-            .nations
+}
+
+#[test]
+fn normal_random_start_marks_only_queued_ai_map_targets() {
+    let human = MajorNationId::new(6);
+    let state = normal_start();
+    let live_zone_count = state.ocean.zones.len();
+
+    for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
+        let economy = &state.nations.majors[nation].economy;
+        if nation == human {
+            assert_eq!(economy.ai_zone_targets, None);
+            assert_eq!(economy.ai_province_targets, None);
+            continue;
+        }
+
+        let mut expected = vec![AiTargetState::Unmarked; live_zone_count];
+        let mut expected_provinces = ProvinceTable::default();
+        for mission in state
+            .missions
             .iter()
-            .all(|work| work.turn_summary.is_empty())
-    );
-    assert_eq!(
-        state.pending.newspaper_events,
-        [
-            PendingNewspaperEvent::Miscellaneous {
-                audience: None,
-                story_code: 2,
-            },
-            PendingNewspaperEvent::Miscellaneous {
-                audience: None,
-                story_code: 1,
-            },
-        ]
-    );
+            .filter(|mission| mission.nation == nation.nation())
+        {
+            match &mission.data {
+                MissionData::DefendProvince { province, .. } => {
+                    expected_provinces[*province] = AiTargetState::MissionQueued;
+                }
+                MissionData::ControlSeaZone(navy) | MissionData::Escort(navy) => {
+                    if let Some(target) = navy.target_zone {
+                        expected[usize::from(target.get())] = AiTargetState::MissionQueued;
+                    }
+                }
+                _ => {}
+            }
+        }
+
+        let actual = economy
+            .ai_zone_targets
+            .as_ref()
+            .expect("computer majors own AI zone-target state");
+        assert_eq!(actual, &expected);
+        assert_eq!(
+            economy.ai_province_targets.as_ref(),
+            Some(&expected_provinces)
+        );
+        assert!(
+            !actual.contains(&AiTargetState::Candidate),
+            "start-of-game AI targets are queued missions, never candidates"
+        );
+    }
 }

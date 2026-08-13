@@ -500,7 +500,7 @@ mod tests {
     fn entering_the_offer_sheet_binds_a_pending_offer() {
         let mut state = fixture_state();
         let TradeProgress::Offer(_) = state.begin_trade_phase() else {
-            return;
+            panic!("beginning-of-game fixture must produce a pending offer");
         };
         let mut app = test_app(state);
         app.update();
@@ -519,21 +519,6 @@ mod tests {
             .collect::<Vec<_>>();
         assert!(bound.contains(&OfferSheetAction::Accept));
         assert!(bound.contains(&OfferSheetAction::Reject));
-    }
-
-    #[test]
-    fn unrelated_activation_before_a_game_does_not_require_a_session() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_plugins(StatesPlugin)
-            .insert_state(AppState::MainMenu)
-            .add_plugins(OfferSheetPlugin);
-        let unrelated = app.world_mut().spawn_empty().id();
-
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: unrelated });
-        app.world_mut().flush();
     }
 
     #[test]

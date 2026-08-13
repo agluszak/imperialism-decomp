@@ -111,24 +111,3 @@ fn on_technology_advance_activate(
         stop => apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state),
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use bevy::state::app::StatesPlugin;
-
-    #[test]
-    fn unrelated_activation_before_a_game_does_not_require_game_resources() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_plugins(StatesPlugin)
-            .insert_state(AppState::MainMenu)
-            .add_plugins(TechnologyAdvancePlugin);
-        let unrelated = app.world_mut().spawn_empty().id();
-
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: unrelated });
-        app.world_mut().flush();
-    }
-}

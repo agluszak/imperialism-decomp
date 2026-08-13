@@ -490,7 +490,7 @@ mod tests {
     fn semantic_state_round_trips_a_trade_continuation() {
         let mut state = game_state();
         let TradeProgress::Offer(_) = state.begin_trade_phase() else {
-            return;
+            panic!("game_state fixture must produce a pending trade offer");
         };
         let encoded = serde_json::to_vec(&state).expect("serialize");
         let restored: crate::GameState = serde_json::from_slice(&encoded).expect("deserialize");
