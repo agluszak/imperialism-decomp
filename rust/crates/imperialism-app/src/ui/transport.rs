@@ -1,15 +1,15 @@
 use super::GameSession;
 use super::RetailUiAssets;
 use super::format_currency;
-use super::game_shell::bind_native_game_screen_nav;
+use super::game_shell::{bind_native_game_screen_nav, project_date_and_treasury};
 use super::generated;
-use super::retail::{RetailPictureSwap, RetailTag, find_descendant};
+use super::retail::{RetailTag, find_descendant};
 use crate::AppState;
-use bevy::picking::events::{Pointer, Press};
 use bevy::picking::hover::Hovered;
 use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled};
+use bevy::ui_widgets::Activate;
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -104,14 +104,6 @@ struct TransportColors {
     at_limit: Color,
 }
 
-#[derive(Clone)]
-struct TransportArrowPictures {
-    left_idle: Handle<Image>,
-    left_active: Handle<Image>,
-    right_idle: Handle<Image>,
-    right_active: Handle<Image>,
-}
-
 #[derive(Component)]
 struct TransportScreen;
 
@@ -204,6 +196,14 @@ fn bind_transport_screen(
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Transport screen requires an active major nation");
     session.0.rebuild_nation_resource_yields(nation);
+    project_date_and_treasury(
+        &mut commands,
+        &mut assets,
+        *root,
+        &children,
+        &tags,
+        &session,
+    );
     let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
@@ -231,16 +231,17 @@ fn bind_transport_screen(
                 title_line_height,
                 TextColor(title_color),
                 TextShadow {
-                    offset: Vec2::new(-1.0, -1.0),
+                    offset: Vec2::ONE,
                     color: title_shadow,
                 },
             ));
     }
     let colors = TransportColors {
-        allocation: assets.palette_color(0x3a),
-        empty: assets.palette_color(0x3b),
-        below_limit: assets.palette_color(0x33),
-        at_limit: assets.palette_color(0x34),
+        // TTransportPicture passes these color codes through TViewMgr::GetColor.
+        allocation: assets.palette_color(0xc6),
+        empty: assets.palette_color(0x27),
+        below_limit: assets.palette_color(0x2d),
+        at_limit: assets.palette_color(0x18),
     };
     let (cursor_font, cursor_layout, cursor_line_height, _) = assets
         .text_style(RetailTextStylePreset {
@@ -257,34 +258,6 @@ fn bind_transport_screen(
         assets.palette_color(0x28),
         assets.palette_color(0),
     );
-    let left_arrows = TransportArrowPictures {
-        left_idle: assets
-            .picture(PictureId::new(4020))
-            .expect("left transport arrow"),
-        left_active: assets
-            .picture(PictureId::new(4021))
-            .expect("active left transport arrow"),
-        right_idle: assets
-            .picture(PictureId::new(4021))
-            .expect("right transport arrow"),
-        right_active: assets
-            .picture(PictureId::new(4022))
-            .expect("active right transport arrow"),
-    };
-    let right_arrows = TransportArrowPictures {
-        left_idle: assets
-            .picture(PictureId::new(4022))
-            .expect("left transport arrow"),
-        left_active: assets
-            .picture(PictureId::new(4023))
-            .expect("active left transport arrow"),
-        right_idle: assets
-            .picture(PictureId::new(4023))
-            .expect("right transport arrow"),
-        right_active: assets
-            .picture(PictureId::new(4024))
-            .expect("active right transport arrow"),
-    };
     bind_transport_controls(
         &mut commands,
         *root,
@@ -294,8 +267,6 @@ fn bind_transport_screen(
         layout,
         line_height,
         cursor_style,
-        left_arrows,
-        right_arrows,
         colors,
     );
     for binding in TRANSPORT_ROWS {
@@ -321,8 +292,6 @@ fn bind_transport_controls(
     layout: TextLayout,
     line_height: LineHeight,
     cursor_style: (TextFont, TextLayout, LineHeight, Color, Color),
-    left_arrows: TransportArrowPictures,
-    right_arrows: TransportArrowPictures,
     colors: TransportColors,
 ) {
     let selected = find_descendant(root, fourcc!("tran"), children, tags);
@@ -337,49 +306,44 @@ fn bind_transport_controls(
         ));
         let left = find_descendant(row, fourcc!("left"), children, tags);
         let right = find_descendant(row, fourcc!("rght"), children, tags);
-        commands.entity(left).insert(Visibility::Hidden);
-        commands.entity(right).insert(Visibility::Hidden);
-        let arrows = if index < LEFT_TRANSPORT_ROW_COUNT {
-            left_arrows.clone()
-        } else {
-            right_arrows.clone()
-        };
-        let (left_x, right_x) = if index < LEFT_TRANSPORT_ROW_COUNT {
-            (85, 211)
-        } else {
-            (81, 207)
-        };
-        spawn_transport_arrow(
-            commands,
-            row,
-            binding.allocation,
-            -1,
-            left_x,
-            arrows.left_idle,
-            arrows.left_active,
-        );
-        spawn_transport_arrow(
-            commands,
-            row,
-            binding.allocation,
-            1,
-            right_x,
-            arrows.right_idle,
-            arrows.right_active,
-        );
+        commands
+            .entity(left)
+            .insert(TransportAdjust {
+                allocation: binding.allocation,
+                delta: -1,
+            })
+            .observe(on_transport_arrow_activate);
+        commands
+            .entity(right)
+            .insert(TransportAdjust {
+                allocation: binding.allocation,
+                delta: 1,
+            })
+            .observe(on_transport_arrow_activate);
         let track_left = if index < LEFT_TRANSPORT_ROW_COUNT {
             0x61
         } else {
             0x5d
         };
-        commands.entity(row).apply_scene(transport_row_overlay(
-            binding.allocation,
-            track_left,
-            font.clone(),
-            layout,
-            line_height,
-            colors,
-        ));
+        commands
+            .spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    width: percent(100),
+                    height: percent(100),
+                    ..default()
+                },
+                Pickable::IGNORE,
+                ChildOf(row),
+            ))
+            .apply_scene(transport_row_overlay(
+                binding.allocation,
+                track_left,
+                font.clone(),
+                layout,
+                line_height,
+                colors,
+            ));
         if let Some((resource, unit_value)) = if binding.allocation == TransportAllocation::GOLD {
             Some((ResourceKind::Gold, 200))
         } else if binding.allocation == TransportAllocation::GEMS {
@@ -387,13 +351,24 @@ fn bind_transport_controls(
         } else {
             None
         } {
-            commands.entity(row).apply_scene(transport_money_overlay(
-                resource,
-                unit_value,
-                font.clone(),
-                layout,
-                line_height,
-            ));
+            commands
+                .spawn((
+                    Node {
+                        position_type: PositionType::Absolute,
+                        width: percent(100),
+                        height: percent(100),
+                        ..default()
+                    },
+                    Pickable::IGNORE,
+                    ChildOf(row),
+                ))
+                .apply_scene(transport_money_overlay(
+                    resource,
+                    unit_value,
+                    font.clone(),
+                    layout,
+                    line_height,
+                ));
         }
     }
 
@@ -416,42 +391,13 @@ fn bind_transport_controls(
         cursor_line_height,
         TextColor(cursor_color),
         TextShadow {
-            offset: Vec2::new(-1.0, -1.0),
+            offset: Vec2::ONE,
             color: cursor_shadow,
         },
         TransportCursor,
     ));
     let treasury = find_descendant(root, fourcc!("trea"), children, tags);
     commands.entity(treasury).insert(TransportDisplay::Treasury);
-}
-
-fn spawn_transport_arrow(
-    commands: &mut Commands,
-    row: Entity,
-    allocation: TransportAllocation,
-    delta: i16,
-    left: i32,
-    idle: Handle<Image>,
-    active: Handle<Image>,
-) {
-    commands
-        .spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: px(left),
-                top: px(8),
-                width: px(11),
-                height: px(12),
-                ..default()
-            },
-            Button,
-            ImageNode::new(idle.clone()),
-            RetailPictureSwap { idle, active },
-            TransportAdjust { allocation, delta },
-            ZIndex(2),
-            ChildOf(row),
-        ))
-        .observe(on_transport_arrow_press);
 }
 
 fn transport_track(left: i32, color: Color, allocation: Option<TransportAllocation>) -> impl Scene {
@@ -616,12 +562,12 @@ fn transport_capacity_overlay(
     }
 }
 
-fn on_transport_arrow_press(
-    press: On<Pointer<Press>>,
+fn on_transport_arrow_activate(
+    activate: On<Activate>,
     actions: Query<&TransportAdjust, Without<InteractionDisabled>>,
     mut session: ResMut<GameSession>,
 ) {
-    let Ok(action) = actions.get(press.entity) else {
+    let Ok(action) = actions.get(activate.entity) else {
         return;
     };
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
@@ -939,4 +885,313 @@ fn transport_gauge_width(value: i16, total: i16) -> f32 {
         value * (pixels_per_unit + 1.0)
     };
     width.clamp(0.0, 113.0).trunc()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use bevy::asset::AssetPlugin;
+    use bevy::camera::NormalizedRenderTarget;
+    use bevy::picking::backend::HitData;
+    use bevy::picking::pointer::{Location, PointerId};
+    use bevy::scene::ScenePlugin;
+    use bevy::ui::Pressed;
+    use bevy::ui_widgets::{Button as UiButton, ButtonPlugin};
+    use std::time::Duration;
+
+    #[derive(Component)]
+    struct TestTransportRoot;
+
+    fn random_game_names() -> RandomGameNames {
+        let mut localized_nation_names = NationTable::default();
+        let mut province_names_by_nation = NationTable::default();
+        for nation in NationId::all() {
+            localized_nation_names[nation] = format!("N{}", nation.get());
+            let count = if MajorNationId::from_nation(nation).is_some() {
+                8
+            } else {
+                4
+            };
+            province_names_by_nation[nation] = (0..count)
+                .map(|ordinal| format!("N{}P{}", nation.get(), ordinal + 1))
+                .collect();
+        }
+        RandomGameNames {
+            localized_nation_names,
+            province_names_by_nation,
+            zone_headline_templates: (0..24).map(|status| format!("S{status} [1]")).collect(),
+            fallback_ocean_names: (0..37).map(|index| format!("Ocean{index}")).collect(),
+        }
+    }
+
+    fn fixture_state() -> GameState {
+        let nation = MajorNationId::new(6);
+        let mut sea_zone_marker_crt = RetailCrtRng::from_state(1);
+        let _ = sea_zone_marker_crt.next_rand();
+        let preview = generate_random_setup_preview_with_clock_seed(
+            b"Woopnist",
+            MapTopology::Wrapping,
+            1,
+            sea_zone_marker_crt,
+        );
+        let mut state = create_random_game(
+            &preview,
+            nation,
+            Difficulty::Easy,
+            "Testland",
+            true,
+            1,
+            &random_game_names(),
+        );
+        state.rebuild_nation_resource_yields(nation);
+        state
+    }
+
+    fn spawn_transport_hierarchy(world: &mut World) {
+        let root = world
+            .spawn((TestTransportRoot, TransportScreen, Node::default()))
+            .id();
+        for tag in [
+            fourcc!("tran"),
+            fourcc!("tota"),
+            fourcc!("curs"),
+            fourcc!("trea"),
+        ] {
+            world.spawn((RetailTag(tag), Node::default(), ChildOf(root)));
+        }
+        for binding in TRANSPORT_ROWS {
+            let row = world
+                .spawn((RetailTag(binding.tag), Node::default(), ChildOf(root)))
+                .id();
+            world.spawn((
+                RetailTag(fourcc!("left")),
+                UiButton,
+                Node::default(),
+                ChildOf(row),
+            ));
+            world.spawn((
+                RetailTag(fourcc!("rght")),
+                UiButton,
+                Node::default(),
+                ChildOf(row),
+            ));
+        }
+    }
+
+    fn bind_test_transport(
+        mut commands: Commands,
+        root: Single<Entity, Added<TestTransportRoot>>,
+        children: Query<&Children>,
+        tags: Query<&RetailTag>,
+    ) {
+        bind_transport_controls(
+            &mut commands,
+            *root,
+            &children,
+            &tags,
+            TextFont::default(),
+            TextLayout::default(),
+            LineHeight::default(),
+            (
+                TextFont::default(),
+                TextLayout::default(),
+                LineHeight::default(),
+                Color::WHITE,
+                Color::BLACK,
+            ),
+            TransportColors {
+                allocation: Color::WHITE,
+                empty: Color::BLACK,
+                below_limit: Color::WHITE,
+                at_limit: Color::BLACK,
+            },
+        );
+    }
+
+    fn click_button(app: &mut App, entity: Entity) {
+        let location = Location {
+            target: NormalizedRenderTarget::None {
+                width: 640,
+                height: 480,
+            },
+            position: Vec2::ZERO,
+        };
+        let hit = HitData {
+            camera: Entity::PLACEHOLDER,
+            depth: 0.0,
+            position: None,
+            normal: None,
+            extra: None,
+        };
+        app.world_mut().commands().trigger(Pointer::new(
+            PointerId::Mouse,
+            location.clone(),
+            Press {
+                button: PointerButton::Primary,
+                hit: hit.clone(),
+                count: 1,
+            },
+            entity,
+        ));
+        app.world_mut().flush();
+        app.world_mut().flush();
+        assert!(app.world().get::<Pressed>(entity).is_some());
+        app.world_mut().commands().trigger(Pointer::new(
+            PointerId::Mouse,
+            location.clone(),
+            Click {
+                button: PointerButton::Primary,
+                hit: hit.clone(),
+                duration: Duration::ZERO,
+                count: 1,
+            },
+            entity,
+        ));
+        app.world_mut().flush();
+        app.world_mut().flush();
+        app.world_mut().commands().trigger(Pointer::new(
+            PointerId::Mouse,
+            location,
+            Release {
+                button: PointerButton::Primary,
+                hit,
+            },
+            entity,
+        ));
+        app.world_mut().flush();
+        app.world_mut().flush();
+        app.update();
+        assert!(app.world().get::<Pressed>(entity).is_none());
+    }
+
+    #[test]
+    fn clicking_generated_arrows_updates_allocation_and_caption() {
+        let state = fixture_state();
+        let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
+        let binding = TRANSPORT_ROWS
+            .into_iter()
+            .find(|binding| {
+                state
+                    .transport_row_status(nation, binding.allocation)
+                    .can_increase
+            })
+            .expect("retail beginning-of-game fixture has an adjustable transport row");
+        let before = state.transport_row_status(nation, binding.allocation);
+
+        let mut app = App::new();
+        app.add_plugins((
+            MinimalPlugins,
+            AssetPlugin::default(),
+            ScenePlugin,
+            ButtonPlugin,
+        ))
+        .insert_resource(GameSession(state))
+        .add_systems(
+            Update,
+            (
+                bind_test_transport,
+                sync_transport_text,
+                sync_transport_visual,
+                sync_transport_presence,
+            )
+                .chain(),
+        );
+        spawn_transport_hierarchy(app.world_mut());
+        app.update();
+
+        let row = app
+            .world_mut()
+            .query::<(Entity, &RetailTag)>()
+            .iter(app.world())
+            .find_map(|(entity, tag)| (tag.0 == binding.tag).then_some(entity))
+            .unwrap();
+        let mut arrows = app
+            .world_mut()
+            .query::<(Entity, &RetailTag, &ChildOf)>()
+            .iter(app.world())
+            .filter_map(|(entity, tag, parent)| (parent.parent() == row).then_some((tag.0, entity)))
+            .collect::<Vec<_>>();
+        let left = arrows
+            .iter()
+            .find_map(|(tag, entity)| (*tag == fourcc!("left")).then_some(*entity))
+            .unwrap();
+        let right = arrows
+            .drain(..)
+            .find_map(|(tag, entity)| (tag == fourcc!("rght")).then_some(entity))
+            .unwrap();
+        assert_eq!(app.world().get::<TransportAdjust>(left).unwrap().delta, -1);
+        assert_eq!(app.world().get::<TransportAdjust>(right).unwrap().delta, 1);
+        assert_eq!(
+            app.world_mut()
+                .query::<&TransportAdjust>()
+                .iter(app.world())
+                .count(),
+            TRANSPORT_ROWS.len() * 2
+        );
+
+        click_button(&mut app, right);
+
+        let after = app
+            .world()
+            .resource::<GameSession>()
+            .0
+            .transport_row_status(nation, binding.allocation);
+        assert_eq!(after.allocated, before.allocated + 1);
+        let (gauge, visibility, color) = app
+            .world_mut()
+            .query::<(&TransportDisplay, &Node, &Visibility, &BackgroundColor)>()
+            .iter(app.world())
+            .find_map(|(display, node, visibility, color)| match display {
+                TransportDisplay::Gauge {
+                    kind: TransportGaugeKind::Allocation(allocation),
+                    ..
+                } if *allocation == binding.allocation => Some((node, visibility, color)),
+                _ => None,
+            })
+            .unwrap();
+        assert_eq!(
+            gauge.width,
+            Val::Px(transport_gauge_width(after.allocated, after.available))
+        );
+        assert_eq!(*visibility, Visibility::Visible);
+        assert_eq!(color.0, Color::WHITE);
+        let caption = app
+            .world_mut()
+            .query::<(&TransportDisplay, &Text)>()
+            .iter(app.world())
+            .find_map(|(display, text)| match display {
+                TransportDisplay::RowCaption(allocation) if *allocation == binding.allocation => {
+                    Some(text.0.clone())
+                }
+                _ => None,
+            })
+            .unwrap();
+        assert_eq!(
+            caption,
+            format!("{}  /  {}", after.allocated, after.available)
+        );
+
+        click_button(&mut app, left);
+        let restored = app
+            .world()
+            .resource::<GameSession>()
+            .0
+            .transport_row_status(nation, binding.allocation);
+        assert_eq!(restored.allocated, before.allocated);
+        let caption = app
+            .world_mut()
+            .query::<(&TransportDisplay, &Text)>()
+            .iter(app.world())
+            .find_map(|(display, text)| match display {
+                TransportDisplay::RowCaption(allocation) if *allocation == binding.allocation => {
+                    Some(text.0.clone())
+                }
+                _ => None,
+            })
+            .unwrap();
+        assert_eq!(
+            caption,
+            format!("{}  /  {}", restored.allocated, restored.available)
+        );
+    }
 }

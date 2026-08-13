@@ -202,16 +202,26 @@ pub(crate) fn project_date_and_treasury(
     session: &GameSession,
 ) {
     let state = &session.0;
-    let (font, layout, line_height, _) = assets
+    let (season_font, season_layout, season_line_height, _) = assets
+        .text_style(imperialism_formats::RetailTextStylePreset {
+            font_family: 1,
+            face_flags: 0,
+            point_size: 12,
+            alignment: -2,
+        })
+        .expect("retail season status text style");
+    let (treasury_font, treasury_layout, treasury_line_height, _) = assets
         .text_style(imperialism_formats::RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
             point_size: 12,
             alignment: 1,
         })
-        .expect("retail game-status text style");
-    let text_color = assets.palette_color(0);
-    let shadow_color = assets.palette_color(0x28);
+        .expect("retail treasury status text style");
+    // Retail draws the nominal text first, then its offset "shadow" copy over it.
+    // Bevy draws shadows behind text, so use the retail shadow as the visible face.
+    let text_color = assets.palette_color(0x28);
+    let shadow_color = assets.palette_color(0);
     set_control_text(
         commands,
         root,
@@ -219,9 +229,9 @@ pub(crate) fn project_date_and_treasury(
         tags,
         fourcc!("seas"),
         format_retail_date(assets, state.turn().economic_turn),
-        font.clone(),
-        layout,
-        line_height,
+        season_font,
+        season_layout,
+        season_line_height,
         text_color,
         shadow_color,
     );
@@ -235,9 +245,9 @@ pub(crate) fn project_date_and_treasury(
         tags,
         fourcc!("trea"),
         treasury,
-        font,
-        layout,
-        line_height,
+        treasury_font,
+        treasury_layout,
+        treasury_line_height,
         text_color,
         shadow_color,
     );
@@ -273,7 +283,7 @@ fn set_control_text(
             line_height,
             TextColor(text_color),
             TextShadow {
-                offset: Vec2::new(-1.0, -1.0),
+                offset: Vec2::ONE,
                 color: shadow_color,
             },
         ));

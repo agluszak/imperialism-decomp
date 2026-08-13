@@ -27,7 +27,7 @@ impl Plugin for NewspaperPlugin {
             OnEnter(AppState::Newspaper),
             (spawn_newspaper, bind_newspaper).chain(),
         )
-        .add_observer(on_newspaper_activate);
+        .add_observer(on_newspaper_activate.run_if(in_state(AppState::Newspaper)));
     }
 }
 
@@ -347,4 +347,25 @@ fn on_newspaper_activate(
     }
     session.0.finish_newspaper_phase();
     next_state.set(AppState::StrategicMap);
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use bevy::state::app::StatesPlugin;
+
+    #[test]
+    fn unrelated_activation_before_a_game_does_not_require_a_session() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_plugins(StatesPlugin)
+            .insert_state(AppState::MainMenu)
+            .add_plugins(NewspaperPlugin);
+        let unrelated = app.world_mut().spawn_empty().id();
+
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: unrelated });
+        app.world_mut().flush();
+    }
 }
