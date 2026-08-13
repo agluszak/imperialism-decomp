@@ -91,12 +91,10 @@ pub struct GreatPowerState {
     pub pending_ship: Option<ShipType>,
     pub interior_civilian: Box<InteriorCivilianState>,
     pub ai_trade: Option<AiTradeState>,
-    pub ai_development_pressure: Option<AiDevelopmentPressureState>,
     pub aid_allocation_by_minor_nation: MinorNationTable<ResourceTable<i32>>,
     pub budget_pool_base: i32,
     pub budget_pool_delta: i32,
     pub special_resource_trade_balance: i32,
-    pub candidate_nation_flags: NationTable<u8>,
     pub scenario_initialized: bool,
     pub turn_finished: bool,
     pub pending_actions: PendingActionTable<PendingActionState>,
@@ -106,7 +104,6 @@ pub struct GreatPowerState {
     pub pressure_counter: i16,
     pub army_movement_budget: i32,
     pub aid_allocation_total: i32,
-    pub colony_boycott_flags: NationTable<u8>,
     pub military_expenses: i32,
 }
 
@@ -163,14 +160,10 @@ impl GreatPowerState {
             pending_ship: None,
             interior_civilian: Box::new(InteriorCivilianState::for_random_start(human)),
             ai_trade: (!human).then(AiTradeState::default),
-            // These TAutoGreatPower fields are not initialized at the pre-capital
-            // random-game boundary. They become authoritative during turn setup.
-            ai_development_pressure: None,
             aid_allocation_by_minor_nation: MinorNationTable::default(),
             budget_pool_base: 0,
             budget_pool_delta: 0,
             special_resource_trade_balance: 0,
-            candidate_nation_flags: NationTable::default(),
             scenario_initialized: false,
             turn_finished: true,
             pending_actions: PendingActionTable::default(),
@@ -180,7 +173,6 @@ impl GreatPowerState {
             pressure_counter: 0,
             army_movement_budget: 0x0f,
             aid_allocation_total: 0,
-            colony_boycott_flags: NationTable::default(),
             military_expenses: 0,
         }
     }

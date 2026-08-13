@@ -1,5 +1,5 @@
+use super::GameSession;
 use super::RetailUiAssets;
-use super::random_setup::GameSession;
 use super::retail::{RetailTag, find_descendant};
 use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
@@ -243,8 +243,8 @@ fn strategic_map_compose_key(
         hash_visible_tile_facts(state, tile, &mut hasher);
     });
     StrategicMapComposeKey {
-        view_origin: state.map.view_origin,
-        topology: state.map.topology,
+        view_origin: state.map().view_origin,
+        topology: state.map().topology,
         active_nation: state.turn().active_nation,
         selected_engineer,
         visible_tiles: hasher.finish(),
@@ -254,7 +254,7 @@ fn strategic_map_compose_key(
 fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl std::hash::Hasher) {
     use std::hash::Hash;
 
-    let tile_state = &state.map[tile];
+    let tile_state = state.map()[tile];
     tile.get().hash(hasher);
     tile_state.terrain.hash(hasher);
     tile_state.gate.hash(hasher);
@@ -281,17 +281,17 @@ fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl st
     tile_state.edge_resources.hash(hasher);
     town_transport_linked(state, tile).hash(hasher);
     if let Some(province) = tile_state.province {
-        let province = &state.map.provinces[province];
+        let province = &state.map().provinces[province];
         province.development_stage().hash(hasher);
         province.fort_level().hash(hasher);
     }
-    for neighbor in state.map.geometry().neighbors(tile) {
+    for neighbor in state.map().geometry().neighbors(tile) {
         let Some(neighbor) = neighbor else {
             false.hash(hasher);
             continue;
         };
         true.hash(hasher);
-        let neighbor = &state.map[neighbor];
+        let neighbor = state.map()[neighbor];
         neighbor.owner_nation.hash(hasher);
         neighbor.terrain.hash(hasher);
     }
@@ -301,7 +301,7 @@ pub(super) fn for_each_visible_strategic_tile(
     state: &GameState,
     mut visit: impl FnMut(TileId, i32, i32),
 ) {
-    let (origin_row, origin_column) = state.map.geometry().row_column(state.map.view_origin);
+    let (origin_row, origin_column) = state.map().geometry().row_column(state.map().view_origin);
     let origin_row = i32::from(origin_row);
     let origin_column = i32::from(origin_column);
 
@@ -319,7 +319,7 @@ pub(super) fn for_each_visible_strategic_tile(
                 continue;
             }
             let column = normalize_map_column(unwrapped_column);
-            let Some(tile) = state.map.geometry().tile(row as u16, column as u16) else {
+            let Some(tile) = state.map().geometry().tile(row as u16, column as u16) else {
                 continue;
             };
             visit(tile, screen_x, screen_y);
@@ -363,9 +363,9 @@ pub(super) fn draw_city_site_selection(
     draw_frame(viewport, x, y, 0);
 
     let active_owner = TileOwnerTag::from_nation(nation.nation());
-    let neighbors = state.map.geometry().neighbors(tile).map(|neighbor| {
+    let neighbors = state.map().geometry().neighbors(tile).map(|neighbor| {
         neighbor.filter(|&neighbor| {
-            let neighbor = &state.map[neighbor];
+            let neighbor = state.map()[neighbor];
             neighbor.terrain == TerrainKind::Water || neighbor.owner_nation == Some(active_owner)
         })
     });
@@ -475,8 +475,8 @@ fn draw_city_site_neighbor_outline(
 }
 
 pub(super) fn strategic_tile_screen_origin(state: &GameState, tile: TileId) -> (i32, i32) {
-    let (origin_row, origin_column) = state.map.geometry().row_column(state.map.view_origin);
-    let (row, column) = state.map.geometry().row_column(tile);
+    let (origin_row, origin_column) = state.map().geometry().row_column(state.map().view_origin);
+    let (row, column) = state.map().geometry().row_column(tile);
     let y = (i32::from(row) - i32::from(origin_row)) * TILE_SIZE;
     let mut x = (i32::from(column) - i32::from(origin_column)) * TILE_SIZE;
     if row & 1 != 0 {
@@ -513,15 +513,15 @@ pub(super) fn compose_strategic_tile(
     tile: TileId,
     sprites: StrategicMapSprites<'_>,
 ) -> Vec<u8> {
-    let tile_state = &state.map[tile];
+    let tile_state = state.map()[tile];
     let center_column = {
-        let (_, origin_column) = state.map.geometry().row_column(state.map.view_origin);
+        let (_, origin_column) = state.map().geometry().row_column(state.map().view_origin);
         (i32::from(origin_column) + VIEWPORT_TILE_SPAN / 2)
             .rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
     };
-    let (_, tile_column) = state.map.geometry().row_column(tile);
+    let (_, tile_column) = state.map().geometry().row_column(tile);
     // Retail's stored flag is inverted: this seam substitution belongs to Rust's bounded map.
-    let wrapped_seam = state.map.topology == MapTopology::Bounded
+    let wrapped_seam = state.map().topology == MapTopology::Bounded
         && ((tile_column == 0 && center_column > 54)
             || (tile_column == STRATEGIC_MAP_WIDTH - 1 && center_column < 54));
     let mut pixels = if wrapped_seam {
@@ -533,7 +533,7 @@ pub(super) fn compose_strategic_tile(
     if !wrapped_seam {
         compose_strategic_borders(state, tile, &mut pixels);
     }
-    compose_strategic_railways(tile_state, sprites.river_masks, &mut pixels);
+    compose_strategic_railways(&tile_state, sprites.river_masks, &mut pixels);
     compose_strategic_improvements(state, tile, sprites, &mut pixels);
     pixels
 }
@@ -588,7 +588,7 @@ fn strategic_tile_at_position(state: &GameState, normalized: Vec2) -> Option<Til
     if !(0..VIEWPORT_WIDTH as i32).contains(&x) || !(0..VIEWPORT_HEIGHT as i32).contains(&y) {
         return None;
     }
-    let (origin_row, origin_column) = state.map.geometry().row_column(state.map.view_origin);
+    let (origin_row, origin_column) = state.map().geometry().row_column(state.map().view_origin);
     let row = i32::from(origin_row) + y / TILE_SIZE;
     if !(0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&row) {
         return None;
@@ -600,7 +600,7 @@ fn strategic_tile_at_position(state: &GameState, normalized: Vec2) -> Option<Til
         absolute_x / TILE_SIZE
     };
     let column = normalize_map_column(column);
-    state.map.geometry().tile(row as u16, column as u16)
+    state.map().geometry().tile(row as u16, column as u16)
 }
 
 pub(crate) fn strategic_base_terrain_tile_at_cursor(

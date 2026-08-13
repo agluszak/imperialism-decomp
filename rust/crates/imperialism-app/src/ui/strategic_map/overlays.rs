@@ -43,7 +43,7 @@ pub(super) fn compose_strategic_improvements(
     sprites: StrategicMapSprites<'_>,
     pixels: &mut [u8],
 ) {
-    let tile_state = &state.map[tile];
+    let tile_state = state.map()[tile];
     let flags = tile_state.flags.bits();
     let city_or_town = flags & 3 != 0 && tile_state.gate != 0;
 
@@ -66,7 +66,7 @@ pub(super) fn compose_strategic_improvements(
 }
 
 pub(super) fn city_marker_offset(state: &GameState, tile: TileId) -> Option<u16> {
-    let tile_state = &state.map[tile];
+    let tile_state = state.map()[tile];
     let flags = tile_state.flags.bits();
     let minor_sprites = tile_state
         .former_owner_nation
@@ -78,7 +78,7 @@ pub(super) fn city_marker_offset(state: &GameState, tile: TileId) -> Option<u16>
         if flags & 2 != 0 {
             let stage = tile_state
                 .province
-                .map(|province| state.map.provinces[province].development_stage())
+                .map(|province| state.map().provinces[province].development_stage())
                 .unwrap_or(0);
             return match stage {
                 0 => Some(0x700),
@@ -113,9 +113,9 @@ pub(super) fn transport_marker_offset(flags: u16, linked: bool) -> Option<u16> {
 }
 
 fn fort_marker_offset(state: &GameState, tile: TileId) -> Option<u16> {
-    let fort_level = state.map[tile]
+    let fort_level = state.map()[tile]
         .province
-        .map(|province| state.map.provinces[province].fort_level())
+        .map(|province| state.map().provinces[province].fort_level())
         .unwrap_or(0);
     if fort_level == 0 {
         return None;
@@ -124,7 +124,10 @@ fn fort_marker_offset(state: &GameState, tile: TileId) -> Option<u16> {
 }
 
 pub(super) fn town_transport_linked(state: &GameState, tile: TileId) -> bool {
-    let Some(owner) = state.map[tile].owner_nation.and_then(TileOwnerTag::nation) else {
+    let Some(owner) = state.map()[tile]
+        .owner_nation
+        .and_then(TileOwnerTag::nation)
+    else {
         return true;
     };
     let Some(major) = MajorNationId::from_nation(owner) else {
@@ -151,7 +154,7 @@ fn compose_strategic_resource_indicators(
     sprites: StrategicMapSprites<'_>,
     pixels: &mut [u8],
 ) {
-    let tile_state = &state.map[tile];
+    let tile_state = state.map()[tile];
     let surface = tile_state.development.surface.get();
     let extractive = tile_state.development.extractive.get();
     let first = tile_state.edge_resources[0];
@@ -226,7 +229,7 @@ fn resource_is_prospectable(resource: &ResourceKind) -> bool {
 
 fn resource_visible_to_active_nation(state: &GameState, tile: TileId) -> bool {
     MajorNationId::from_nation(state.turn().active_nation)
-        .is_some_and(|nation| state.map[tile].development.resource_visible_to_majors[nation])
+        .is_some_and(|nation| state.map()[tile].development.resource_visible_to_majors[nation])
 }
 
 fn blit_resource_icon(

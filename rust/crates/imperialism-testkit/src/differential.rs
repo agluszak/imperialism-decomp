@@ -2,8 +2,7 @@
 
 use anyhow::{Context, Result, bail};
 use imperialism_core::{
-    AiDevelopmentPressureState, GameState, MAJOR_NATION_COUNT, NewsState, PendingWorkState,
-    RngState, TurnState, UnitIdAllocator,
+    GameState, NewsState, PendingWorkState, RngState, TurnState, UnitIdAllocator,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 use serde::Deserialize;
@@ -35,7 +34,6 @@ struct EphemeralGameState {
     rng: RngState,
     news: NewsState,
     pending: PendingWorkState,
-    ai_development_pressure: Vec<Option<AiDevelopmentPressureState>>,
 }
 
 /// Run the shared C++ native transition oracle for `case_name`, apply the matching
@@ -91,24 +89,12 @@ fn load_save_backed_state(
         selected_nation: capture.ephemeral.turn.selected_nation,
     });
 
-    let pressures = capture.ephemeral.ai_development_pressure;
-    if pressures.len() != MAJOR_NATION_COUNT {
-        bail!(
-            "{capture_name} ai_development_pressure length {}, expected {MAJOR_NATION_COUNT}",
-            pressures.len()
-        );
-    }
-    let mut fixed = [None; MAJOR_NATION_COUNT];
-    for (slot, pressure) in pressures.into_iter().enumerate() {
-        fixed[slot] = pressure;
-    }
     state.apply_save_backed_ephemeral(
         capture.ephemeral.turn,
         capture.ephemeral.unit_ids,
         capture.ephemeral.rng,
         capture.ephemeral.news,
         capture.ephemeral.pending,
-        fixed,
     );
     Ok(state)
 }

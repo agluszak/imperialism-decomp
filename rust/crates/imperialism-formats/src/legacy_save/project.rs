@@ -761,23 +761,21 @@ impl LegacySaveV62 {
                 nation,
                 self.simulation.game_setup.foreign_minister_policy_ids[slot],
             );
-            let (ai_zone_targets, ai_province_targets, ai_trade, ai_development_pressure) =
-                match nation {
-                    LegacyMajorNationState::Auto(auto) => (
-                        Some(ai_zone_targets(
-                            &auto.auto_prefix.port_zone_state_flags,
-                            live_ocean_context_count,
-                        )),
-                        Some(ai_province_targets(&auto.auto_prefix.map_node_state_flags)),
-                        Some(AiTradeState {
-                            temporary_processed_stock: ProcessedTradeCommodityTable::from_array(
-                                auto.auto_prefix.action_metric_by_quarter,
-                            ),
-                        }),
-                        Some(AiDevelopmentPressureState::default()),
-                    ),
-                    LegacyMajorNationState::Other(_) => (None, None, None, None),
-                };
+            let (ai_zone_targets, ai_province_targets, ai_trade) = match nation {
+                LegacyMajorNationState::Auto(auto) => (
+                    Some(ai_zone_targets(
+                        &auto.auto_prefix.port_zone_state_flags,
+                        live_ocean_context_count,
+                    )),
+                    Some(ai_province_targets(&auto.auto_prefix.map_node_state_flags)),
+                    Some(AiTradeState {
+                        temporary_processed_stock: ProcessedTradeCommodityTable::from_array(
+                            auto.auto_prefix.action_metric_by_quarter,
+                        ),
+                    }),
+                ),
+                LegacyMajorNationState::Other(_) => (None, None, None),
+            };
             let major = MajorNation {
                 kind: match nation {
                     LegacyMajorNationState::Auto(_) => MajorNationKind::AutoGreatPower,
@@ -790,7 +788,6 @@ impl LegacySaveV62 {
                     ai_zone_targets,
                     ai_province_targets,
                     ai_trade,
-                    ai_development_pressure,
                 ),
                 city,
                 towns,
@@ -1202,7 +1199,6 @@ fn great_power_state(
     ai_zone_targets: Option<Vec<AiTargetState>>,
     ai_province_targets: Option<ProvinceTable<AiTargetState>>,
     ai_trade: Option<AiTradeState>,
-    ai_development_pressure: Option<AiDevelopmentPressureState>,
 ) -> GreatPowerState {
     let prefix = &nation.prefix;
     let post = &nation.post_city;
@@ -1263,7 +1259,6 @@ fn great_power_state(
         pending_ship: pending_ship(interior_minister),
         interior_civilian: Box::new(interior_civilian_state(interior_minister)),
         ai_trade,
-        ai_development_pressure,
         aid_allocation_by_minor_nation: MinorNationTable::from_array(
             prefix
                 .aid_allocation_by_minor_nation
@@ -1272,7 +1267,6 @@ fn great_power_state(
         budget_pool_base: prefix.budget_pool_base,
         budget_pool_delta: prefix.budget_pool_delta,
         special_resource_trade_balance: post.special_resource_trade_balance,
-        candidate_nation_flags: NationTable::from_array(post.candidate_nation_flags),
         // scenarioInitFlag is constructed as zero and is not part of the save stream.
         scenario_initialized: false,
         turn_finished: post.turn_finished_flag != 0,
@@ -1288,7 +1282,6 @@ fn great_power_state(
         pressure_counter: i16::from(post.pressure_counter),
         army_movement_budget: post.army_movement_budget,
         aid_allocation_total: post.aid_allocation_total,
-        colony_boycott_flags: NationTable::from_array(post.colony_boycott_flags),
         military_expenses: post.military_expenses,
     }
 }
