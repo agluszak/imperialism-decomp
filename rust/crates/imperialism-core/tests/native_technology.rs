@@ -1,6 +1,5 @@
 //! Native transition differentials for technology advances.
 
-use imperialism_core::*;
 use imperialism_testkit::compare_native;
 use serde::Deserialize;
 

@@ -535,7 +535,6 @@ fn sync_city_capabilities_from_research(technology: &mut TechnologyState, nation
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_support::game_state;
 
     #[test]
     fn random_start_schedule_matches_the_native_seed_one_table() {

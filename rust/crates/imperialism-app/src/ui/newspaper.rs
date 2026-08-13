@@ -177,7 +177,7 @@ fn fill_newspaper_stories(
                     y,
                     headline,
                     feature_font.clone(),
-                    feature_layout.clone(),
+                    feature_layout,
                     feature_line,
                 );
             } else {
@@ -188,7 +188,7 @@ fn fill_newspaper_stories(
                     y,
                     headline,
                     event_font.clone(),
-                    event_layout.clone(),
+                    event_layout,
                     event_line,
                 );
             }
@@ -199,7 +199,7 @@ fn fill_newspaper_stories(
                 y,
                 body,
                 body_font.clone(),
-                body_layout.clone(),
+                body_layout,
                 body_line,
             );
         }

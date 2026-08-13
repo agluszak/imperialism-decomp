@@ -399,13 +399,13 @@ fn load_named_table(root: &Path, name: &str) -> Result<Vec<u8>, RetailAssetError
         if !path.exists() {
             continue;
         }
-        if let Ok(archive) = ResourceArchive::read(root, exe) {
-            if let Some(bytes) = archive.find(
+        if let Ok(archive) = ResourceArchive::read(root, exe)
+            && let Some(bytes) = archive.find(
                 ResourceName::Text("TABLE".to_owned()),
                 ResourceName::Text(name.to_owned()),
-            ) {
-                return Ok(bytes.to_vec());
-            }
+            )
+        {
+            return Ok(bytes.to_vec());
         }
     }
     for relative in [name, &format!("Data/{name}")] {
