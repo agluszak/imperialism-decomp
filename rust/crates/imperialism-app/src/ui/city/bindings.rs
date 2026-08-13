@@ -500,4 +500,38 @@ mod tests {
             Some(CityBuildingClick::Production)
         );
     }
+
+    const BEGINNING_OF_GAME: &[u8] =
+        include_bytes!("../../../../../../fixtures/retail/beginning_of_game.imp");
+
+    #[test]
+    fn beginning_of_game_does_not_open_unbuilt_oil_or_power() {
+        let selected_nation = peek_save_header(BEGINNING_OF_GAME)
+            .and_then(|header| NationId::try_new(header.active_nation))
+            .unwrap();
+        let state = LegacySaveV62::parse(BEGINNING_OF_GAME).game_state(LegacyGameStateContext {
+            crt_rand_state: 1,
+            map_generation_lcg: 0,
+            zone_status_lcg: 0,
+            selected_nation,
+        });
+        let nation = MajorNationId::from_nation(selected_nation).unwrap();
+        assert_eq!(
+            city_building_click(&state, nation, CityFacilitySlot::OilRefinery),
+            None
+        );
+        assert_eq!(
+            city_building_click(&state, nation, CityFacilitySlot::PowerPlant),
+            None
+        );
+        assert!(!city_oil_industry_unlocked(
+            &state,
+            nation,
+            CityFacilitySlot::OilRefinery
+        ));
+        assert_eq!(
+            city_building_click(&state, nation, CityFacilitySlot::TextileMill),
+            Some(CityBuildingClick::Production)
+        );
+    }
 }
