@@ -396,8 +396,7 @@ mod tests {
             .controller = MajorNationController::Computer;
         state.nations.majors[MajorNationId::new(1)]
             .economy
-            .diplomacy_policy_by_nation[crate::NationId::new(0)] =
-            Some(crate::DiplomacyPolicy::Alliance);
+            .diplomacy_policy_by_nation[crate::NationId::new(0)] = Some(DiplomacyPolicy::Alliance);
 
         let crate::TurnStop::DiplomacyOffer(prompt) = state.finish_player_orders() else {
             panic!("expected a diplomacy offer stop");
@@ -414,7 +413,7 @@ mod tests {
         );
         assert_eq!(
             state.diplomacy.relationships[crate::NationId::new(0)][crate::NationId::new(1)],
-            crate::DiplomaticRelationship::Alliance
+            DiplomaticRelationship::Alliance
         );
     }
 
