@@ -7,7 +7,7 @@ use super::super::retail::{RetailTag, find_descendant};
 use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
-use bevy::picking::events::{Click, Drag, Pointer, Press};
+use bevy::picking::events::{Click, Drag, DragEnd, Pointer, Press};
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
@@ -76,7 +76,8 @@ pub(crate) fn bind_minimap(
             ))
             .observe(on_minimap_press)
             .observe(on_minimap_drag)
-            .observe(on_minimap_click);
+            .observe(on_minimap_click)
+            .observe(on_minimap_drag_end);
     });
 }
 
@@ -160,20 +161,65 @@ fn on_minimap_drag(
 fn on_minimap_click(
     click: On<Pointer<Click>>,
     mut session: ResMut<GameSession>,
-    mut minimaps: Query<(&RelativeCursorPosition, &mut MiniMap)>,
+    mut images: ResMut<Assets<Image>>,
+    retail_assets: Res<RetailAssetsResource>,
+    mut minimaps: Query<(&RelativeCursorPosition, &mut MiniMap, &ImageNode)>,
 ) {
     if click.event.button != PointerButton::Primary {
         return;
     }
-    let Ok((cursor, mut minimap)) = minimaps.get_mut(click.entity) else {
+    let Ok((cursor, mut minimap, image_node)) = minimaps.get_mut(click.entity) else {
         return;
     };
-    let Some(pixel) = cursor_pixel(cursor).or(minimap.drag_pixel) else {
+    commit_minimap_track(
+        cursor,
+        &mut minimap,
+        image_node,
+        &mut session,
+        &mut images,
+        retail_assets.assets().default_dib_palette(),
+    );
+}
+
+fn on_minimap_drag_end(
+    drag_end: On<Pointer<DragEnd>>,
+    mut session: ResMut<GameSession>,
+    mut images: ResMut<Assets<Image>>,
+    retail_assets: Res<RetailAssetsResource>,
+    mut minimaps: Query<(&RelativeCursorPosition, &mut MiniMap, &ImageNode)>,
+) {
+    if drag_end.event.button != PointerButton::Primary {
+        return;
+    }
+    let Ok((cursor, mut minimap, image_node)) = minimaps.get_mut(drag_end.entity) else {
         return;
     };
+    commit_minimap_track(
+        cursor,
+        &mut minimap,
+        image_node,
+        &mut session,
+        &mut images,
+        retail_assets.assets().default_dib_palette(),
+    );
+}
+
+fn commit_minimap_track(
+    cursor: &RelativeCursorPosition,
+    minimap: &mut MiniMap,
+    image_node: &ImageNode,
+    session: &mut GameSession,
+    images: &mut Assets<Image>,
+    palette: &DibPalette,
+) {
+    let Some(drag_pixel) = minimap.drag_pixel else {
+        return;
+    };
+    let pixel = cursor_pixel_unclamped(cursor).unwrap_or(drag_pixel);
     let (column, row) = minimap_release_cell(pixel, minimap.scroll_column, minimap.scroll_row);
     session.0.set_map_viewport_upper_left(column, row);
     minimap.drag_pixel = None;
+    write_minimap(minimap, image_node, images, &session.0, palette, None);
 }
 
 fn write_minimap(
@@ -194,14 +240,20 @@ fn write_minimap(
 }
 
 fn cursor_pixel(cursor: &RelativeCursorPosition) -> Option<(i32, i32)> {
-    let position = cursor.normalized.filter(|_| cursor.cursor_over())?;
-    let x = ((position.x + 0.5) * FRAME_WIDTH as f32).floor() as i32;
-    let y = ((position.y + 0.5) * FRAME_HEIGHT as f32).floor() as i32;
+    let (x, y) = cursor_pixel_unclamped(cursor).filter(|_| cursor.cursor_over())?;
     if (0..FRAME_WIDTH).contains(&x) && (0..FRAME_HEIGHT).contains(&y) {
         Some((x, y))
     } else {
         None
     }
+}
+
+fn cursor_pixel_unclamped(cursor: &RelativeCursorPosition) -> Option<(i32, i32)> {
+    let position = cursor.normalized?;
+    Some((
+        ((position.x + 0.5) * FRAME_WIDTH as f32).floor() as i32,
+        ((position.y + 0.5) * FRAME_HEIGHT as f32).floor() as i32,
+    ))
 }
 
 pub(super) fn compose_minimap(
@@ -585,6 +637,44 @@ mod tests {
     }
 
     #[test]
+    fn interior_compose_draws_the_white_viewport_rect() {
+        let mut state = fixture_state();
+        state.set_map_view_origin(TileId::new(20 * 108 + 40));
+        let palette = nation_preview_palette();
+        let (image, window) = compose_minimap(&state, &palette, None);
+        assert_eq!(viewport_marker(window, None), (47, 24));
+        let pixels = image
+            .data
+            .as_ref()
+            .expect("composed minimap keeps CPU pixels");
+        let sample = |x: i32, y: i32| {
+            let start = ((y * FRAME_WIDTH + x) as usize) * 4;
+            [
+                pixels[start],
+                pixels[start + 1],
+                pixels[start + 2],
+                pixels[start + 3],
+            ]
+        };
+        assert_eq!(sample(47, 24), WHITE_RGBA);
+        assert_eq!(sample(47 + MARKER_WIDTH * 2, 24), WHITE_RGBA);
+        assert_eq!(sample(47, 24 + MARKER_HEIGHT * 2), WHITE_RGBA);
+        assert_eq!(
+            sample(47 + MARKER_WIDTH * 2, 24 + MARKER_HEIGHT * 2),
+            WHITE_RGBA
+        );
+        assert_ne!(sample(48, 25), WHITE_RGBA);
+
+        let (column, row) = minimap_release_cell((60, 40), window.source_column, window.source_row);
+        state.set_map_viewport_upper_left(column, row);
+        let window = minimap_window(state.map_view_origin());
+        assert_eq!(
+            viewport_marker(window, None).0,
+            FRAME_WIDTH / 2 - MARKER_WIDTH
+        );
+    }
+
+    #[test]
     fn click_converts_through_scroll_and_marker_half_size() {
         assert_eq!(minimap_release_cell((60, 40), 16, 7), (42, 23));
         assert_eq!(minimap_release_cell((0, 0), 0, 0), (104, 0));
@@ -645,5 +735,46 @@ mod tests {
         let (mx, my) = viewport_marker(window, None);
         assert!((0..FRAME_WIDTH).contains(&(mx + MARKER_WIDTH * 2)));
         assert!((0..FRAME_HEIGHT).contains(&(my + MARKER_HEIGHT * 2)) || my < 0);
+        let (image, window) = compose_minimap(&state, &nation_preview_palette(), None);
+        let (mx, my) = viewport_marker(window, None);
+        let pixels = image
+            .data
+            .as_ref()
+            .expect("composed minimap keeps CPU pixels");
+        let sample = |x: i32, y: i32| {
+            let start = ((y * FRAME_WIDTH + x) as usize) * 4;
+            [
+                pixels[start],
+                pixels[start + 1],
+                pixels[start + 2],
+                pixels[start + 3],
+            ]
+        };
+        let marker_x = mx.clamp(0, FRAME_WIDTH - 1);
+        let marker_y = my.clamp(0, FRAME_HEIGHT - 1);
+        assert_eq!(sample(marker_x, marker_y), WHITE_RGBA);
+        assert_eq!(
+            sample(
+                (mx + MARKER_WIDTH * 2).clamp(0, FRAME_WIDTH - 1),
+                (my + MARKER_HEIGHT * 2).clamp(0, FRAME_HEIGHT - 1)
+            ),
+            WHITE_RGBA
+        );
+    }
+
+    fn nation_preview_palette() -> DibPalette {
+        let mut palette = DibPalette::default();
+        for index in 0..=255_u8 {
+            palette[index] = Rgb::new(index, index / 2, 255 - index);
+        }
+        palette[view_mgr_color(0x32)] = Rgb::new(0x1a, 0x2c, 0x4a);
+        palette[view_mgr_color(0x3e)] = Rgb::new(0x57, 0x8b, 0xa6);
+        palette[view_mgr_color(1)] = Rgb::new(0xc4, 0x3a, 0x2a);
+        palette[view_mgr_color(2)] = Rgb::new(0x2a, 0x6e, 0xc4);
+        palette[view_mgr_color(3)] = Rgb::new(0xc4, 0x8a, 0x2a);
+        palette[view_mgr_color(4)] = Rgb::new(0xc4, 0xc4, 0x2a);
+        palette[view_mgr_color(5)] = Rgb::new(0x8b, 0x3a, 0x8b);
+        palette[view_mgr_color(6)] = Rgb::new(0x2a, 0xc4, 0xa6);
+        palette
     }
 }
