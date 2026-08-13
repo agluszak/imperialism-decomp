@@ -18,7 +18,7 @@ impl GameState {
 
             city.phase_counter += 1;
             city.stockpile.verify_stocks();
-            if matches!(economy.controller, MajorNationController::Computer) {
+            if !economy.diplomacy_eligible {
                 for resource in all_resources() {
                     city.stockpile
                         .wrapping_add(resource, city.reserved_by_type[resource]);

@@ -70,6 +70,7 @@ pub(crate) fn city() -> CityState {
 pub(crate) fn great_power_state() -> GreatPowerState {
     GreatPowerState {
         controller: crate::MajorNationController::Human,
+        diplomacy_eligible: true,
         ai_zone_targets: None,
         ai_province_targets: None,
         foreign_minister_personality: crate::ForeignMinisterPersonality::Base,

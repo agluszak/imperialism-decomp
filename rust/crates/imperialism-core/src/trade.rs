@@ -105,8 +105,8 @@ impl GameState {
         order: PlayerTradeOrder,
     ) -> PlayerTradeOrder {
         assert!(
-            self.nations.majors[nation].economy.controller.is_human(),
-            "player trade order requires a human-controlled major nation"
+            self.nations.majors[nation].economy.diplomacy_eligible,
+            "player trade order requires a diplomacy-eligible major nation"
         );
 
         let resource = commodity.resource();
@@ -147,8 +147,8 @@ impl GameState {
     ) -> PlayerTradeOrder {
         assert!(matches!(delta, -1 | 1), "trade offer step must be -1 or 1");
         assert!(
-            self.nations.majors[nation].economy.controller.is_human(),
-            "player trade order requires a human-controlled major nation"
+            self.nations.majors[nation].economy.diplomacy_eligible,
+            "player trade order requires a diplomacy-eligible major nation"
         );
 
         let PlayerTradeOrder::Sell(quantity) = self.player_trade_order(nation, commodity) else {
@@ -378,8 +378,8 @@ impl GameState {
     /// Restores the player's Board of Trade ledger and applies its no-merchant branch.
     pub fn recall_player_trade_orders(&mut self, nation: MajorNationId) {
         assert!(
-            self.nations.majors[nation].economy.controller.is_human(),
-            "player trade orders require a human-controlled major nation"
+            self.nations.majors[nation].economy.diplomacy_eligible,
+            "player trade orders require a diplomacy-eligible major nation"
         );
         self.recall_trade_bids(nation);
         let major = &mut self.nations.majors[nation].economy;
@@ -399,8 +399,8 @@ impl GameState {
     /// Calling the player implementation for one is an internal phase-dispatch bug.
     pub fn reset_player_trade_phase(&mut self, nation: MajorNationId) {
         assert!(
-            self.nations.majors[nation].economy.controller.is_human(),
-            "player trade phase requires a human-controlled major nation"
+            self.nations.majors[nation].economy.diplomacy_eligible,
+            "player trade phase requires a diplomacy-eligible major nation"
         );
 
         self.refresh_merchant_capacity(nation);

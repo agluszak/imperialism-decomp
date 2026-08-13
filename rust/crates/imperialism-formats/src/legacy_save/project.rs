@@ -1229,11 +1229,12 @@ fn great_power_state(
         .as_ref()
         .expect("retail great power has an interior minister");
     GreatPowerState {
-        controller: if prefix.diplomacy_eligible != 0 {
-            MajorNationController::Human
-        } else {
+        controller: if ai_zone_targets.is_some() {
             MajorNationController::Computer
+        } else {
+            MajorNationController::Human
         },
+        diplomacy_eligible: prefix.diplomacy_eligible != 0,
         ai_zone_targets,
         ai_province_targets,
         foreign_minister_personality,

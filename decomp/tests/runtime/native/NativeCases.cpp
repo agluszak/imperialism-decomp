@@ -43,6 +43,8 @@ RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition);
 RuntimeActionResult RunCompletedRailSection(NativeTransition& transition);
 RuntimeActionResult RunIssuedRailSection(NativeTransition& transition);
 RuntimeActionResult RunCompletedResourceDevelopment(NativeTransition& transition);
+RuntimeActionResult RunOwnedRegionDevelopment(NativeTransition& transition);
+RuntimeActionResult RunCityAndTransportPhase(NativeTransition& transition);
 
 namespace {
 
@@ -79,6 +81,8 @@ const NativeCase kCases[] = {
     {"completed_rail_section", RunCompletedRailSection},
     {"issued_rail_section", RunIssuedRailSection},
     {"completed_resource_development", RunCompletedResourceDevelopment},
+    {"owned_region_development", RunOwnedRegionDevelopment},
+    {"city_and_transport_phase", RunCityAndTransportPhase},
 };
 
 } // namespace

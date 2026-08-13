@@ -154,6 +154,14 @@ impl ProvinceState {
         &self.resource_development_by_type
     }
 
+    pub(crate) fn resource_development_by_type_mut(&mut self) -> &mut ResourceTable<i16> {
+        &mut self.resource_development_by_type
+    }
+
+    pub(crate) fn set_development_stage(&mut self, stage: i8) {
+        self.development_stage = stage;
+    }
+
     pub const fn explored_by_majors(&self) -> &MajorNationTable<bool> {
         &self.explored_by_majors
     }
@@ -643,7 +651,7 @@ mod tests {
             .economy
             .pending_actions[crate::PendingActionKind::ConquestMonumentArmory];
         assert_eq!(reward.status(), crate::PendingActionStatus::Queued);
-        assert_eq!(reward.payload(), Some(-1));
+        assert_eq!(reward.payload(), None);
         assert_eq!(
             state.nations.majors[MajorNationId::new(1)]
                 .economy
