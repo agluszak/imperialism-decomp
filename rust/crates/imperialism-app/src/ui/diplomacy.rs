@@ -1386,10 +1386,10 @@ fn sync_diplomacy_map_cursor(
         request_turn_event_cursor(&mut requested, DIPLOMACY_IDLE_CURSOR);
         return;
     };
-    let source = MajorNationId::from_nation(session.0.turn().active_nation)
+    let source = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     let Some(target) = tile_at_diplomacy_position(normalized).and_then(|tile| {
-        session.0.map()[tile]
+        session.game.map()[tile]
             .owner_nation
             .and_then(TileOwnerTag::nation)
     }) else {
@@ -1401,7 +1401,7 @@ fn sync_diplomacy_map_cursor(
         action = DiplomacyMapAction::SelectedNation;
     }
     let valid = session
-        .0
+        .game
         .player_diplomacy_map_action_is_valid(source, target, action);
     request_turn_event_cursor(
         &mut requested,
