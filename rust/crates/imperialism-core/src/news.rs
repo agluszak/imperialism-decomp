@@ -18,8 +18,7 @@ impl GameState {
         nation_a: NationId,
         nation_b: NationId,
     ) {
-        let code = event.retail();
-        if code >= InterNationNewsKind::NonAggressionPactAccepted.retail() && code < 0x16 {
+        if event.concatenates_into_existing_story() {
             self.concatenate_treaty(event, nation_a, nation_b);
             return;
         }
@@ -32,10 +31,7 @@ impl GameState {
             self.pending
                 .queue_newspaper_event(inter_nation_event(event, subject, nation_b));
         }
-        if MajorNationId::from_nation(nation_b).is_some()
-            && code > InterNationNewsKind::WarDeclaredAgainstSubject.retail()
-            && code < InterNationNewsKind::WarWithIndependentMinor.retail()
-        {
+        if MajorNationId::from_nation(nation_b).is_some() && event.also_queues_for_second_major() {
             let subject = MajorNationId::from_nation(nation_b).expect("checked major");
             self.pending
                 .queue_newspaper_event(inter_nation_event(event, subject, nation_a));
@@ -50,12 +46,7 @@ impl GameState {
     ) {
         let mut nation_a_handled = MajorNationId::from_nation(nation_a).is_none();
         let mut nation_b_handled = MajorNationId::from_nation(nation_b).is_none();
-        let code = event.retail();
-        if (code >= InterNationNewsKind::PeaceTreatyRejected.retail()
-            && code <= InterNationNewsKind::NonAggressionPactRejected.retail())
-            || event == InterNationNewsKind::TradeConsulateEstablished
-            || event == InterNationNewsKind::EmbassyEstablished
-        {
+        if event.concatenate_skips_second_major() {
             nation_b_handled = true;
         }
 
@@ -216,6 +207,8 @@ pub enum InterNationNewsKind {
 }
 
 impl InterNationNewsKind {
+    /// Retail `InterNationEventKind` codes. Kept for save/oracle mapping.
+    #[allow(dead_code)]
     pub(crate) const fn retail(self) -> i32 {
         match self {
             Self::WarDeclaredBySubject => 0x00,
@@ -239,6 +232,54 @@ impl InterNationNewsKind {
             Self::NationJoinedWar => 0x1c,
             Self::NationTransferred => 0x1d,
         }
+    }
+
+    /// `AddTreatyEvent` concatenates these into an existing story (`eventKind >= 0x05 && < 0x16`).
+    pub(crate) const fn concatenates_into_existing_story(self) -> bool {
+        matches!(
+            self,
+            Self::NonAggressionPactAccepted
+                | Self::PeaceTreatyRejected
+                | Self::JoinEmpireRejected
+                | Self::AllianceRejected
+                | Self::NonAggressionPactRejected
+                | Self::TradeConsulateEstablished
+                | Self::EmbassyEstablished
+        )
+    }
+
+    /// After queuing the first great-power subject, also queue a swapped copy when
+    /// the other party is a great power (`eventKind > 0x01 && < 0x19`).
+    pub(crate) const fn also_queues_for_second_major(self) -> bool {
+        matches!(
+            self,
+            Self::PeaceTreatyAccepted
+                | Self::JoinEmpireAccepted
+                | Self::AllianceAccepted
+                | Self::NonAggressionPactAccepted
+                | Self::PeaceTreatyRejected
+                | Self::JoinEmpireRejected
+                | Self::AllianceRejected
+                | Self::NonAggressionPactRejected
+                | Self::TradeConsulateEstablished
+                | Self::EmbassyEstablished
+                | Self::MinorEmpireAffiliationChanged
+                | Self::MinorTerritoryRelationshipAffected
+                | Self::PeaceRelationshipPropagated
+        )
+    }
+
+    /// `ConcatenateTreaty` does not add the second great power as its own subject.
+    pub(crate) const fn concatenate_skips_second_major(self) -> bool {
+        matches!(
+            self,
+            Self::PeaceTreatyRejected
+                | Self::JoinEmpireRejected
+                | Self::AllianceRejected
+                | Self::NonAggressionPactRejected
+                | Self::TradeConsulateEstablished
+                | Self::EmbassyEstablished
+        )
     }
 }
 

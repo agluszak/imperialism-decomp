@@ -121,18 +121,18 @@ impl GameState {
     }
 
     fn local_support_score(&self, province: ProvinceId) -> f32 {
-        let mut vector = [0.0_f32; 5];
+        let mut scores = ActionClassScores::default();
         for unit in self.units_stationed_in(province) {
-            accumulate_unit_priority(unit, &mut vector, 1.0, PROVINCE_UNIT_ORDER_WEIGHT);
+            accumulate_unit_priority(unit, &mut scores, 1.0, PROVINCE_UNIT_ORDER_WEIGHT);
         }
-        normalize_priority_vector(&vector, &TACTICAL_COMPOSITION[0])
+        scores.similarity(TACTICAL_COMPOSITION.baseline)
     }
 
     fn cross_nation_support_score(&self, province: ProvinceId) -> f32 {
         let Some(owner) = self.map.provinces[province].owner() else {
             return 0.0;
         };
-        let mut vector = [0.0_f32; 5];
+        let mut scores = ActionClassScores::default();
         let mut budget: [i32; MAJOR_NATION_COUNT] = std::array::from_fn(|index| {
             self.invasion_capacity(MajorNationId::new(index as u8).nation(), province)
         });
@@ -158,7 +158,7 @@ impl GameState {
                     if !unit.unit_type.is_militia_category() {
                         accumulate_unit_priority(
                             unit,
-                            &mut vector,
+                            &mut scores,
                             1.0,
                             PROVINCE_UNIT_ORDER_WEIGHT,
                         );
@@ -176,7 +176,7 @@ impl GameState {
                     if cost < *remaining {
                         accumulate_unit_priority(
                             unit,
-                            &mut vector,
+                            &mut scores,
                             1.0,
                             PROVINCE_UNIT_ORDER_WEIGHT,
                         );
@@ -185,12 +185,14 @@ impl GameState {
                 }
             }
         }
+        // IsCapitolThreatened inverts the fort/open-field row sense used by the
+        // tactical projection scorer: fort present uses the open-field profile.
         let profile = if self.map.provinces[province].fort_level() > 0 {
-            &TACTICAL_COMPOSITION[2]
+            TACTICAL_COMPOSITION.open_field
         } else {
-            &TACTICAL_COMPOSITION[1]
+            TACTICAL_COMPOSITION.fort_siege
         };
-        normalize_priority_vector(&vector, profile)
+        scores.similarity(profile)
     }
 
     fn units_stationed_in(&self, province: ProvinceId) -> impl Iterator<Item = &MilitaryUnitState> {
@@ -272,87 +274,187 @@ impl GameState {
 }
 
 const PROVINCE_UNIT_ORDER_WEIGHT: f32 = 33.0;
-const TACTICAL_COMPOSITION: [[i16; 5]; 4] = [
-    [40, 27, 0, 17, 16],
-    [27, 36, 0, 17, 20],
-    [26, 31, 20, 23, 0],
-    [40, 22, 0, 38, 0],
-];
+
+/// Five action-class weights (`requiredEquipageByClass` / `GetAttribute(0..4)`).
+/// Classes follow the tactical AI class table: infantry, cavalry, artillery,
+/// armor, and support (sappers, engineers, generals).
+#[derive(Clone, Copy, Default)]
+struct ActionClassWeights {
+    infantry: i16,
+    cavalry: i16,
+    artillery: i16,
+    armor: i16,
+    support: i16,
+}
+
+impl ActionClassWeights {
+    const fn new(infantry: i16, cavalry: i16, artillery: i16, armor: i16, support: i16) -> Self {
+        Self {
+            infantry,
+            cavalry,
+            artillery,
+            armor,
+            support,
+        }
+    }
+}
+
+/// Retail `g_awTacticalCompositionReferenceProfiles_00697870` rows 0–2.
+/// Row 3 is unattributed and unused by `IsCapitolThreatened`.
+struct TacticalCompositions {
+    baseline: ActionClassWeights,
+    fort_siege: ActionClassWeights,
+    open_field: ActionClassWeights,
+}
+
+const TACTICAL_COMPOSITION: TacticalCompositions = TacticalCompositions {
+    baseline: ActionClassWeights::new(40, 27, 0, 17, 16),
+    fort_siege: ActionClassWeights::new(27, 36, 0, 17, 20),
+    open_field: ActionClassWeights::new(26, 31, 20, 23, 0),
+};
+
 const NAVY_DISTRIBUTION_PROFILE: [i16; 4] = [40, 40, 20, 0];
-const UNIT_TYPE_STATS: [[i16; 7]; 30] = [
-    [0x0026, 0x0014, 0x0001, 0x0001, 0x000a, 0x0000, 0x003c],
-    [0x0032, 0x0019, 0x0001, 0x0001, 0x0023, 0x004b, 0x006e],
-    [0x004b, 0x001e, 0x0001, 0x0001, 0x000a, 0x0000, 0x0078],
-    [0x005e, 0x002d, 0x0001, 0x0001, 0x000a, 0x0000, 0x009a],
-    [0x0023, 0x0028, 0x0001, 0x0001, 0x0046, 0x0032, 0x0094],
-    [0x0028, 0x005a, 0x0001, 0x0001, 0x003c, 0x0000, 0x00ce],
-    [0x000a, 0x0091, 0x001e, 0x0032, 0x0005, 0x0000, 0x00d2],
-    [0x001e, 0x0014, 0x003c, 0x0046, 0x0005, 0x0000, 0x0104],
-    [0x005c, 0x0030, 0x0001, 0x0001, 0x0021, 0x0000, 0x00b4],
-    [0x0082, 0x0046, 0x0001, 0x0001, 0x006e, 0x0087, 0x019a],
-    [0x00dc, 0x0050, 0x0001, 0x0001, 0x0021, 0x0000, 0x01b8],
-    [0x00fa, 0x0064, 0x0001, 0x0001, 0x0021, 0x0000, 0x0208],
-    [0x004d, 0x0064, 0x0001, 0x0001, 0x00dc, 0x006e, 0x01e0],
-    [0x007d, 0x00c8, 0x0001, 0x0001, 0x00b9, 0x0000, 0x0258],
-    [0x0016, 0x00fa, 0x006e, 0x00f0, 0x000a, 0x0000, 0x028a],
-    [0x006e, 0x0021, 0x00b9, 0x0113, 0x000a, 0x0000, 0x0348],
-    [0x00ff, 0x0082, 0x0001, 0x0001, 0x005f, 0x0000, 0x02a8],
-    [0x015e, 0x00be, 0x0001, 0x0001, 0x0140, 0x00f0, 0x0708],
-    [0x0258, 0x00dc, 0x0001, 0x0001, 0x0064, 0x0000, 0x075c],
-    [0x02a3, 0x010e, 0x0001, 0x0001, 0x0064, 0x0000, 0x07bc],
-    [0x015e, 0x00fa, 0x0001, 0x0001, 0x02bc, 0x0000, 0x07b4],
-    [0x02bc, 0x0352, 0x0001, 0x0001, 0x0226, 0x0000, 0x0fc8],
-    [0x0064, 0x0226, 0x01f4, 0x028a, 0x0096, 0x0000, 0x0b2c],
-    [0x0258, 0x00a0, 0x0271, 0x03c0, 0x0028, 0x0000, 0x0e44],
-    [0x000d, 0x000a, 0x009b, 0x0001, 0x000a, 0x0000, 0x00c1],
-    [0x0030, 0x0020, 0x01c2, 0x0001, 0x001e, 0x0000, 0x0208],
-    [0x00f0, 0x0078, 0x04b0, 0x0001, 0x0050, 0x0000, 0x05a0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-];
-const UNIT_STAT_DIVISORS: [i16; 6] = [150, 150, 65, 75, 100, 250];
+
+/// Per-unit-type `GetAttribute` record (`g_UnitTypeStatTable_0066EB88`).
+/// The seventh retail short is unused (divisor 0) and omitted.
+#[derive(Clone, Copy)]
+struct UnitTypeStats {
+    infantry: i16,
+    cavalry: i16,
+    artillery: i16,
+    armor: i16,
+    support: i16,
+    dampen: i16,
+}
+
+impl UnitTypeStats {
+    const fn new(
+        infantry: i16,
+        cavalry: i16,
+        artillery: i16,
+        armor: i16,
+        support: i16,
+        dampen: i16,
+    ) -> Self {
+        Self {
+            infantry,
+            cavalry,
+            artillery,
+            armor,
+            support,
+            dampen,
+        }
+    }
+
+    fn attributes(self) -> ScaledUnitStats {
+        ScaledUnitStats {
+            infantry: scale_attribute(self.infantry, 150),
+            cavalry: scale_attribute(self.cavalry, 150),
+            artillery: scale_attribute(self.artillery, 65),
+            armor: scale_attribute(self.armor, 75),
+            support: scale_attribute(self.support, 100),
+            dampen: scale_attribute(self.dampen, 250),
+        }
+    }
+}
+
+#[derive(Clone, Copy)]
+struct ScaledUnitStats {
+    infantry: i16,
+    cavalry: i16,
+    artillery: i16,
+    armor: i16,
+    support: i16,
+    dampen: i16,
+}
+
+const fn scale_attribute(raw: i16, divisor: i16) -> i16 {
+    (raw * 100) / divisor
+}
+
+const UNIT_TYPE_STATS: MilitaryUnitTable<UnitTypeStats> = MilitaryUnitTable::from_array([
+    UnitTypeStats::new(0x0026, 0x0014, 0x0001, 0x0001, 0x000a, 0x0000),
+    UnitTypeStats::new(0x0032, 0x0019, 0x0001, 0x0001, 0x0023, 0x004b),
+    UnitTypeStats::new(0x004b, 0x001e, 0x0001, 0x0001, 0x000a, 0x0000),
+    UnitTypeStats::new(0x005e, 0x002d, 0x0001, 0x0001, 0x000a, 0x0000),
+    UnitTypeStats::new(0x0023, 0x0028, 0x0001, 0x0001, 0x0046, 0x0032),
+    UnitTypeStats::new(0x0028, 0x005a, 0x0001, 0x0001, 0x003c, 0x0000),
+    UnitTypeStats::new(0x000a, 0x0091, 0x001e, 0x0032, 0x0005, 0x0000),
+    UnitTypeStats::new(0x001e, 0x0014, 0x003c, 0x0046, 0x0005, 0x0000),
+    UnitTypeStats::new(0x005c, 0x0030, 0x0001, 0x0001, 0x0021, 0x0000),
+    UnitTypeStats::new(0x0082, 0x0046, 0x0001, 0x0001, 0x006e, 0x0087),
+    UnitTypeStats::new(0x00dc, 0x0050, 0x0001, 0x0001, 0x0021, 0x0000),
+    UnitTypeStats::new(0x00fa, 0x0064, 0x0001, 0x0001, 0x0021, 0x0000),
+    UnitTypeStats::new(0x004d, 0x0064, 0x0001, 0x0001, 0x00dc, 0x006e),
+    UnitTypeStats::new(0x007d, 0x00c8, 0x0001, 0x0001, 0x00b9, 0x0000),
+    UnitTypeStats::new(0x0016, 0x00fa, 0x006e, 0x00f0, 0x000a, 0x0000),
+    UnitTypeStats::new(0x006e, 0x0021, 0x00b9, 0x0113, 0x000a, 0x0000),
+    UnitTypeStats::new(0x00ff, 0x0082, 0x0001, 0x0001, 0x005f, 0x0000),
+    UnitTypeStats::new(0x015e, 0x00be, 0x0001, 0x0001, 0x0140, 0x00f0),
+    UnitTypeStats::new(0x0258, 0x00dc, 0x0001, 0x0001, 0x0064, 0x0000),
+    UnitTypeStats::new(0x02a3, 0x010e, 0x0001, 0x0001, 0x0064, 0x0000),
+    UnitTypeStats::new(0x015e, 0x00fa, 0x0001, 0x0001, 0x02bc, 0x0000),
+    UnitTypeStats::new(0x02bc, 0x0352, 0x0001, 0x0001, 0x0226, 0x0000),
+    UnitTypeStats::new(0x0064, 0x0226, 0x01f4, 0x028a, 0x0096, 0x0000),
+    UnitTypeStats::new(0x0258, 0x00a0, 0x0271, 0x03c0, 0x0028, 0x0000),
+    UnitTypeStats::new(0x000d, 0x000a, 0x009b, 0x0001, 0x000a, 0x0000),
+    UnitTypeStats::new(0x0030, 0x0020, 0x01c2, 0x0001, 0x001e, 0x0000),
+    UnitTypeStats::new(0x00f0, 0x0078, 0x04b0, 0x0001, 0x0050, 0x0000),
+    UnitTypeStats::new(0, 0, 0, 0, 0, 0),
+    UnitTypeStats::new(0, 0, 0, 0, 0, 0),
+    UnitTypeStats::new(0, 0, 0, 0, 0, 0),
+]);
+
+impl MilitaryUnitKind {
+    fn stats(self) -> UnitTypeStats {
+        UNIT_TYPE_STATS[self]
+    }
+}
+
+#[derive(Clone, Copy, Default)]
+struct ActionClassScores {
+    infantry: f32,
+    cavalry: f32,
+    artillery: f32,
+    armor: f32,
+    support: f32,
+}
+
+impl ActionClassScores {
+    fn similarity(self, profile: ActionClassWeights) -> f32 {
+        let sum = self.infantry + self.cavalry + self.artillery + self.armor + self.support;
+        if sum == 0.0 {
+            return 0.0;
+        }
+        let accum = class_diff(self.infantry, profile.infantry, sum)
+            + class_diff(self.cavalry, profile.cavalry, sum)
+            + class_diff(self.artillery, profile.artillery, sum)
+            + class_diff(self.armor, profile.armor, sum)
+            + class_diff(self.support, profile.support, sum);
+        sum * (1.0 - accum * 0.5)
+    }
+}
+
+fn class_diff(component: f32, target: i16, sum: f32) -> f32 {
+    (component / sum - f32::from(target) * 0.01).abs()
+}
 
 fn accumulate_unit_priority(
     unit: &MilitaryUnitState,
-    vector: &mut [f32; 5],
+    scores: &mut ActionClassScores,
     mut scale: f32,
     weight: f32,
 ) {
+    let stats = unit.unit_type().stats().attributes();
     let quality = unit.experience();
-    let stat5 = unit_attribute(unit.unit_type(), 5);
     let strength = unit.strength();
-    let dampen = 1.0 - f32::from(stat5) * weight * -0.0001;
+    let dampen = 1.0 - f32::from(stats.dampen) * weight * -0.0001;
     scale *= f32::from(strength) * 0.002 * (1.0 - f32::from(quality / 100) * -0.1);
-    vector[0] -= f32::from(strength)
-        * -0.002
-        * f32::from(unit_attribute(unit.unit_type(), 0))
-        * scale
-        * dampen;
-    vector[1] += f32::from(unit_attribute(unit.unit_type(), 1)) * scale * dampen;
-    vector[2] += f32::from(unit_attribute(unit.unit_type(), 2)) * scale;
-    vector[3] += f32::from(unit_attribute(unit.unit_type(), 3)) * scale;
-    vector[4] += f32::from(unit_attribute(unit.unit_type(), 4)) * scale * dampen;
-}
-
-fn unit_attribute(unit_type: MilitaryUnitKind, stat: usize) -> i16 {
-    (UNIT_TYPE_STATS[unit_type as usize][stat] * 100) / UNIT_STAT_DIVISORS[stat]
-}
-
-fn normalize_priority_vector(vector: &[f32; 5], profile: &[i16; 5]) -> f32 {
-    let sum: f32 = vector.iter().sum();
-    if sum == 0.0 {
-        return 0.0;
-    }
-    let mut accum = 0.0;
-    for (component, &target) in vector.iter().zip(profile) {
-        let mut diff = *component / sum - f32::from(target) * 0.01;
-        if diff <= 0.0 {
-            diff = -diff;
-        }
-        accum += diff;
-    }
-    sum * (1.0 - accum * 0.5)
+    scores.infantry += f32::from(strength) * 0.002 * f32::from(stats.infantry) * scale * dampen;
+    scores.cavalry += f32::from(stats.cavalry) * scale * dampen;
+    scores.artillery += f32::from(stats.artillery) * scale;
+    scores.armor += f32::from(stats.armor) * scale;
+    scores.support += f32::from(stats.support) * scale * dampen;
 }
 
 fn navy_priority_contribution(_ship: &ShipState, _category: i32) -> i32 {
