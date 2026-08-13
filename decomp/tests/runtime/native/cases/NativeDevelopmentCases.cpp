@@ -233,7 +233,7 @@ RuntimeActionResult RunCompletedResourceDevelopment(NativeTransition& transition
 }
 
 RuntimeActionResult RunCiviliansPhase(NativeTransition& transition) {
-  const NationSlot nationSlot = g_pSimMgr->GetActiveNationId();
+  const NationSlot nationSlot = ActiveNationSlot();
   TGreatPower* nation = g_apNationStates[nationSlot];
   if (nation == 0 || nation->trackedObjectList == 0 || g_pGlobalMapState == 0 ||
       g_pGlobalMapState->terrainStateTable == 0) {

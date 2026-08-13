@@ -6,6 +6,7 @@
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
 #include "game/resource_domain_types.h"
+#include "game/ui_screens/TSimMgr.h"
 
 namespace {
 
@@ -115,9 +116,9 @@ RuntimeActionResult RunDiplomacyPhase(NativeTransition& transition) {
   }
 
   g_pDiplomacyTurnStateManager->ApplyDiplomacyInterNationStatesForTurn();
-  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
-    if (g_apNationStates[nationSlot] != 0) {
-      g_apNationStates[nationSlot]->ReplyToDiplomacyOffers();
+  for (int replyNationSlot = 0; replyNationSlot < kMajorNationCount; ++replyNationSlot) {
+    if (g_apNationStates[replyNationSlot] != 0) {
+      g_apNationStates[replyNationSlot]->ReplyToDiplomacyOffers();
     }
   }
 

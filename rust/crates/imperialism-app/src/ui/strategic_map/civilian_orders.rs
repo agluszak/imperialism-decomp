@@ -1,5 +1,5 @@
 use crate::AppState;
-use crate::ui::random_setup::GameSession;
+use crate::ui::GameSession;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
