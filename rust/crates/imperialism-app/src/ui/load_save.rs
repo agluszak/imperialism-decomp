@@ -1,11 +1,15 @@
 use crate::AppState;
 use crate::RetailAssetsResource;
 use crate::ui::GameSession;
+use crate::ui::credits::CreditsReturn;
 use crate::ui::generated;
+use crate::ui::hover_help::get_string;
+use crate::ui::preferences::PreferencesReturn;
 use crate::ui::random_setup_map::{compose_owner_preview_indices, preview_image_from_indices};
 use crate::ui::retail::{
     ModalDialog, RetailPictureSwap, RetailTag, RetailUiAssets, find_descendant,
 };
+use bevy::app::AppExit;
 use bevy::input_focus::AutoFocus;
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
@@ -146,6 +150,29 @@ enum FlagMenuAction {
     Save,
     Load,
     Cancel,
+    NewGame,
+    Preferences,
+    Credits,
+    Quit,
+}
+
+/// `TFlagOptionsPicture` new-game/quit confirmation, posed before the window dismisses.
+#[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
+enum FlagMenuPending {
+    NewGame,
+    Quit,
+}
+
+#[derive(Component)]
+struct FlagMenuPrompt {
+    kind: FlagMenuPending,
+    body: String,
+}
+
+#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
+enum FlagMenuPromptAction {
+    Accept,
+    Dismiss,
 }
 
 pub(crate) struct LoadSavePlugin;
@@ -173,7 +200,12 @@ impl Plugin for LoadSavePlugin {
             )
             .add_systems(
                 Update,
-                bind_flag_menu.run_if(in_state(AppState::StrategicMap)),
+                (
+                    bind_flag_menu,
+                    spawn_flag_menu_prompt,
+                    bind_flag_menu_prompt,
+                )
+                    .run_if(in_state(AppState::StrategicMap)),
             );
     }
 }
@@ -184,7 +216,8 @@ pub(crate) fn register_load_save_logic(app: &mut App) {
             .run_if(in_state(AppState::LoadGame).or_else(in_state(AppState::SaveGame))),
     )
     .add_observer(on_open_flag_menu.run_if(in_state(AppState::StrategicMap)))
-    .add_observer(on_flag_menu_activate.run_if(in_state(AppState::StrategicMap)));
+    .add_observer(on_flag_menu_activate.run_if(in_state(AppState::StrategicMap)))
+    .add_observer(on_flag_menu_prompt_activate.run_if(in_state(AppState::StrategicMap)));
 }
 
 pub(crate) fn load_slot(
@@ -979,34 +1012,49 @@ fn bind_flag_menu(
     root: Single<Entity, Added<FlagMenuRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    assets: Res<RetailAssetsResource>,
+    mut assets: RetailUiAssets,
 ) {
     let root = *root;
     for (index, tag) in FLAG_LABEL_TAGS.iter().copied().enumerate() {
         let entity = find_descendant(root, tag, &children, &tags);
-        if let Ok(label) = assets.string(FLAG_MENU_STRING_GROUP, index as i16) {
-            commands.entity(entity).insert(Text::new(label));
-        }
+        let (font, layout, line_height, _) = assets
+            .text_style(imperialism_formats::RetailTextStylePreset {
+                font_family: 1,
+                face_flags: 0,
+                point_size: if index == 0 { 12 } else { 14 },
+                alignment: if index > 1 { -2 } else { 1 },
+            })
+            .expect("retail flag-menu label style");
+        let (text_palette, shadow_palette) = if index == 0 {
+            (0x5c, 0x28)
+        } else {
+            (0x28, 0xd2)
+        };
+        commands.entity(entity).insert((
+            Text::new(get_string(&assets, FLAG_MENU_STRING_GROUP, index as i16)),
+            font,
+            layout,
+            line_height,
+            TextColor(assets.palette_color(text_palette)),
+            TextShadow {
+                offset: Vec2::ONE,
+                color: assets.palette_color(shadow_palette),
+            },
+        ));
     }
     for (tag, action) in [
         (fourcc!("save"), FlagMenuAction::Save),
         (fourcc!("load"), FlagMenuAction::Load),
         (fourcc!("cncl"), FlagMenuAction::Cancel),
+        (fourcc!("newg"), FlagMenuAction::NewGame),
+        (fourcc!("pref"), FlagMenuAction::Preferences),
+        (fourcc!("cred"), FlagMenuAction::Credits),
+        (fourcc!("quit"), FlagMenuAction::Quit),
     ] {
         commands
             .entity(find_descendant(root, tag, &children, &tags))
             .insert(action)
             .remove::<InteractionDisabled>();
-    }
-    for tag in [
-        fourcc!("newg"),
-        fourcc!("pref"),
-        fourcc!("cred"),
-        fourcc!("quit"),
-    ] {
-        commands
-            .entity(find_descendant(root, tag, &children, &tags))
-            .insert(InteractionDisabled);
     }
 }
 
@@ -1014,9 +1062,13 @@ fn on_flag_menu_activate(
     activate: On<Activate>,
     actions: Query<&FlagMenuAction>,
     menus: Query<Entity, With<FlagMenuRoot>>,
+    prompts: Query<(), With<FlagMenuPrompt>>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
 ) {
+    if !prompts.is_empty() {
+        return;
+    }
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
@@ -1033,6 +1085,127 @@ fn on_flag_menu_activate(
         FlagMenuAction::Load => {
             commands.insert_resource(LoadSaveReturn(AppState::StrategicMap));
             next_state.set(AppState::LoadGame);
+        }
+        FlagMenuAction::Preferences => {
+            commands.insert_resource(PreferencesReturn(AppState::StrategicMap));
+            next_state.set(AppState::Preferences);
+        }
+        FlagMenuAction::Credits => {
+            commands.insert_resource(CreditsReturn(AppState::StrategicMap));
+            next_state.set(AppState::Credits);
+        }
+        FlagMenuAction::NewGame => {
+            commands.insert_resource(FlagMenuPending::NewGame);
+        }
+        FlagMenuAction::Quit => {
+            commands.insert_resource(FlagMenuPending::Quit);
+        }
+    }
+}
+
+fn spawn_flag_menu_prompt(
+    pending: Option<Res<FlagMenuPending>>,
+    existing: Query<(), With<FlagMenuPrompt>>,
+    assets: RetailUiAssets,
+    mut commands: Commands,
+) {
+    let Some(pending) = pending.as_deref().copied() else {
+        return;
+    };
+    if !existing.is_empty() {
+        return;
+    }
+    // `TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted` for single-player.
+    let index = match pending {
+        FlagMenuPending::NewGame => 0x2b,
+        FlagMenuPending::Quit => 0x2a,
+    };
+    let body = assets
+        .string(0x2737, index)
+        .expect("retail flag-menu confirm string");
+    let root = commands.spawn_scene(generated::linger_2020()).id();
+    commands.entity(root).insert((
+        FlagMenuPrompt {
+            kind: pending,
+            body,
+        },
+        ModalDialog,
+        TabGroup::modal(),
+        GlobalZIndex(21),
+        Pickable::default(),
+        DespawnOnExit(AppState::StrategicMap),
+    ));
+}
+
+fn bind_flag_menu_prompt(
+    mut commands: Commands,
+    prompt: Single<(Entity, &FlagMenuPrompt), Added<FlagMenuPrompt>>,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
+    mut assets: RetailUiAssets,
+) {
+    let (root, prompt) = prompt.into_inner();
+    let body = find_descendant(root, fourcc!("info"), &children, &tags);
+    let (body_font, body_layout, body_line_height, _) = assets
+        .text_style(imperialism_formats::RetailTextStylePreset {
+            font_family: 1,
+            face_flags: 0,
+            point_size: 12,
+            alignment: 0,
+        })
+        .expect("retail flag-menu prompt body style");
+    commands.entity(body).insert((
+        Text::new(prompt.body.clone()),
+        body_font,
+        body_layout,
+        body_line_height,
+        TextColor(assets.palette_color(0)),
+    ));
+    commands
+        .entity(find_descendant(root, fourcc!("okay"), &children, &tags))
+        .insert(FlagMenuPromptAction::Accept)
+        .remove::<InteractionDisabled>();
+    commands
+        .entity(find_descendant(root, fourcc!("cncl"), &children, &tags))
+        .insert(FlagMenuPromptAction::Dismiss)
+        .remove::<InteractionDisabled>();
+}
+
+fn on_flag_menu_prompt_activate(
+    activate: On<Activate>,
+    actions: Query<&FlagMenuPromptAction>,
+    prompts: Query<(Entity, &FlagMenuPrompt)>,
+    menus: Query<Entity, With<FlagMenuRoot>>,
+    mut next_state: ResMut<NextState<AppState>>,
+    mut exit: MessageWriter<AppExit>,
+    mut commands: Commands,
+) {
+    let Ok(action) = actions.get(activate.entity) else {
+        return;
+    };
+    let Ok((prompt_entity, prompt)) = prompts.single() else {
+        return;
+    };
+    match *action {
+        FlagMenuPromptAction::Dismiss => {
+            commands.entity(prompt_entity).despawn();
+            commands.remove_resource::<FlagMenuPending>();
+        }
+        FlagMenuPromptAction::Accept => {
+            commands.entity(prompt_entity).despawn();
+            commands.remove_resource::<FlagMenuPending>();
+            for entity in &menus {
+                commands.entity(entity).despawn();
+            }
+            match prompt.kind {
+                FlagMenuPending::NewGame => {
+                    commands.remove_resource::<GameSession>();
+                    next_state.set(AppState::MainMenu);
+                }
+                FlagMenuPending::Quit => {
+                    exit.write(AppExit::Success);
+                }
+            }
         }
     }
 }
@@ -1061,6 +1234,7 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_plugins(bevy::state::app::StatesPlugin)
+            .add_message::<AppExit>()
             .insert_state(initial)
             .init_resource::<LoadSaveReturn>();
         register_load_save_logic(&mut app);
@@ -1133,6 +1307,40 @@ mod tests {
             FlagMenuAction::Cancel,
             ChildOf(root),
         ));
+        commands.spawn((
+            RetailTag(fourcc!("newg")),
+            FlagMenuAction::NewGame,
+            ChildOf(root),
+        ));
+        commands.spawn((
+            RetailTag(fourcc!("pref")),
+            FlagMenuAction::Preferences,
+            ChildOf(root),
+        ));
+        commands.spawn((
+            RetailTag(fourcc!("cred")),
+            FlagMenuAction::Credits,
+            ChildOf(root),
+        ));
+        commands.spawn((
+            RetailTag(fourcc!("quit")),
+            FlagMenuAction::Quit,
+            ChildOf(root),
+        ));
+    }
+
+    fn spawn_test_flag_prompt(mut commands: Commands, kind: FlagMenuPending) {
+        let root = commands
+            .spawn((
+                FlagMenuPrompt {
+                    kind,
+                    body: String::new(),
+                },
+                Node::default(),
+            ))
+            .id();
+        commands.spawn((FlagMenuPromptAction::Accept, ChildOf(root)));
+        commands.spawn((FlagMenuPromptAction::Dismiss, ChildOf(root)));
     }
 
     #[test]
@@ -1236,6 +1444,244 @@ mod tests {
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::LoadGame
+        );
+    }
+
+    #[test]
+    fn flag_cancel_dismisses_the_menu() {
+        let mut app = test_app(AppState::StrategicMap);
+        app.add_systems(Startup, spawn_test_flag_menu);
+        app.update();
+
+        let cancel = app
+            .world_mut()
+            .query_filtered::<Entity, With<FlagMenuAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::Cancel)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: cancel });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::StrategicMap
+        );
+        assert!(
+            app.world_mut()
+                .query_filtered::<Entity, With<FlagMenuRoot>>()
+                .iter(app.world())
+                .next()
+                .is_none()
+        );
+    }
+
+    #[test]
+    fn flag_preferences_enter_preferences() {
+        let mut app = test_app(AppState::StrategicMap);
+        app.add_systems(Startup, spawn_test_flag_menu);
+        app.update();
+
+        let pref = app
+            .world_mut()
+            .query_filtered::<Entity, With<FlagMenuAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::Preferences)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: pref });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::Preferences
+        );
+        assert_eq!(
+            app.world().resource::<PreferencesReturn>().0,
+            AppState::StrategicMap
+        );
+    }
+
+    #[test]
+    fn flag_credits_enter_credits() {
+        let mut app = test_app(AppState::StrategicMap);
+        app.add_systems(Startup, spawn_test_flag_menu);
+        app.update();
+
+        let cred = app
+            .world_mut()
+            .query_filtered::<Entity, With<FlagMenuAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::Credits)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: cred });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::Credits
+        );
+        assert_eq!(
+            app.world().resource::<CreditsReturn>().0,
+            AppState::StrategicMap
+        );
+    }
+
+    #[test]
+    fn flag_new_game_and_quit_wait_for_the_confirm_prompt() {
+        let mut app = test_app(AppState::StrategicMap);
+        app.add_systems(Startup, spawn_test_flag_menu);
+        app.update();
+
+        let new_game = app
+            .world_mut()
+            .query_filtered::<Entity, With<FlagMenuAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::NewGame)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: new_game });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::StrategicMap
+        );
+        assert_eq!(
+            *app.world().resource::<FlagMenuPending>(),
+            FlagMenuPending::NewGame
+        );
+
+        let quit = app
+            .world_mut()
+            .query_filtered::<Entity, With<FlagMenuAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::Quit)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: quit });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            *app.world().resource::<FlagMenuPending>(),
+            FlagMenuPending::Quit
+        );
+    }
+
+    #[test]
+    fn accepting_new_game_drops_the_session_and_returns_to_the_main_menu() {
+        let mut app = test_app(AppState::StrategicMap);
+        app.insert_resource(GameSession {
+            game: fixture_state(),
+        });
+        app.add_systems(Startup, spawn_test_flag_menu);
+        app.add_systems(Startup, |commands: Commands| {
+            spawn_test_flag_prompt(commands, FlagMenuPending::NewGame)
+        });
+        app.update();
+
+        let accept = app
+            .world_mut()
+            .query_filtered::<Entity, With<FlagMenuPromptAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<FlagMenuPromptAction>(*entity)
+                    == Some(&FlagMenuPromptAction::Accept)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: accept });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::MainMenu
+        );
+        assert!(app.world().get_resource::<GameSession>().is_none());
+    }
+
+    #[test]
+    fn accepting_quit_posts_app_exit() {
+        let mut app = test_app(AppState::StrategicMap);
+        app.add_systems(Startup, |commands: Commands| {
+            spawn_test_flag_prompt(commands, FlagMenuPending::Quit)
+        });
+        app.update();
+
+        let accept = app
+            .world_mut()
+            .query_filtered::<Entity, With<FlagMenuPromptAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<FlagMenuPromptAction>(*entity)
+                    == Some(&FlagMenuPromptAction::Accept)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: accept });
+        app.world_mut().flush();
+        app.update();
+        let exits = app
+            .world_mut()
+            .resource_mut::<bevy::ecs::message::Messages<AppExit>>()
+            .drain()
+            .collect::<Vec<_>>();
+        assert_eq!(exits, vec![AppExit::Success]);
+    }
+
+    #[test]
+    fn dismissing_new_game_keeps_the_flag_menu_open() {
+        let mut app = test_app(AppState::StrategicMap);
+        app.add_systems(Startup, spawn_test_flag_menu);
+        app.add_systems(Startup, |commands: Commands| {
+            spawn_test_flag_prompt(commands, FlagMenuPending::NewGame)
+        });
+        app.insert_resource(FlagMenuPending::NewGame);
+        app.update();
+
+        let dismiss = app
+            .world_mut()
+            .query_filtered::<Entity, With<FlagMenuPromptAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<FlagMenuPromptAction>(*entity)
+                    == Some(&FlagMenuPromptAction::Dismiss)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: dismiss });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::StrategicMap
+        );
+        assert!(app.world().get_resource::<FlagMenuPending>().is_none());
+        assert!(
+            app.world_mut()
+                .query_filtered::<Entity, With<FlagMenuRoot>>()
+                .iter(app.world())
+                .next()
+                .is_some()
         );
     }
 

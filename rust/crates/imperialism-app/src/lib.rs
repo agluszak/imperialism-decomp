@@ -26,6 +26,8 @@ pub(crate) enum AppState {
     OfferSheet,
     TechnologyAdvance,
     Newspaper,
+    Credits,
+    Preferences,
 }
 
 #[derive(Resource)]
@@ -76,7 +78,12 @@ fn add_game_plugins(app: &mut App) {
         ui::DealBookPlugin,
         ui::OfferSheetPlugin,
     ))
-    .add_plugins((ui::TechnologyAdvancePlugin, ui::NewspaperPlugin));
+    .add_plugins((
+        ui::TechnologyAdvancePlugin,
+        ui::NewspaperPlugin,
+        ui::CreditsPlugin,
+        ui::PreferencesPlugin,
+    ));
 }
 
 pub fn run(
@@ -156,6 +163,8 @@ mod tests {
             AppState::OfferSheet,
             AppState::TechnologyAdvance,
             AppState::Newspaper,
+            AppState::Credits,
+            AppState::Preferences,
         ] {
             initialize_schedule(&mut app, OnEnter(state));
             initialize_schedule(&mut app, OnExit(state));
