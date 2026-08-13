@@ -105,6 +105,9 @@ fn project_newspaper_date(assets: &RetailUiAssets, economic_turn: i32) -> String
 }
 
 fn newspaper_spec_text(assets: &RetailUiAssets, state: &GameState) -> String {
+    // FIXME: `TNewspaperView::StuffValues` switches on `economicTurn % 4`: 0 escalation,
+    // 1 `GetMarketChange()`, 2/3 comparative-power rows. Only season 0 is implemented.
+    // The opening paper is turn 1 after `AdvanceSeason`, so retail shows market change.
     if state.turn().economic_turn % 4 != 0 {
         return String::new();
     }

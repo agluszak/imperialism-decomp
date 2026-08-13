@@ -436,9 +436,9 @@ fn create_event_stories(
         }
     }
 
-    // Phase 5 (one random army/map-context story) is omitted: opening-turn
-    // construction has no battle-report records, and the C++ path consumes CRT
-    // rand when that list is non-empty.
+    // FIXME: `CreateEventStories` phase 5 picks one army/map-context report with
+    // CRT `rand()` when `mapContextActionRecordList04` is non-empty. Skipping it
+    // drops that story and desyncs later-turn filler RNG. Opening-turn lists are empty.
 
     for pass in 0..2 {
         if *row > 2 {

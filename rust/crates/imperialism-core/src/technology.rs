@@ -286,6 +286,8 @@ impl GameState {
                 self.nations.major_mut(nation).common.treasury -= TECH_ITEM_PURCHASE_COST[tech_id];
                 self.technology.research_status_by_nation[nation][tech_id] =
                     TechnologyResearchStatus::Pending;
+                // FIXME: retail also stamps `capRowsE4a6.completionYearOffsetByTechId`
+                // to `economicTurn / 4`. That field is not in the semantic model.
             }
         }
     }
@@ -298,8 +300,12 @@ impl GameState {
         self.turn.advance_season();
         self.turn.phase = PhaseCode::TECHNOLOGY_ADVANCES;
         self.check_technology_advances();
+        // FIXME: retail ORs `turnFlowStatusFlags` with `0x40` when `marker262` is
+        // unchanged (map toolbar new-tech chrome). `marker262` is not modeled.
         self.consume_non_interactive_technology_unlocks();
         let nation = MajorNationId::from_nation(self.turn.active_nation)?;
+        // FIXME: retail consume-one is active nation + cooldown < 1 + terrain-eligible,
+        // not `is_human()`. Same on a normal single-player opening turn.
         if self.nations.major(nation).economy.controller.is_human()
             && self.nation_slot_eligible_for_event_processing(nation)
         {
@@ -327,6 +333,8 @@ impl GameState {
     fn consume_non_interactive_technology_unlocks(&mut self) {
         let active = MajorNationId::from_nation(self.turn.active_nation);
         for nation in MajorNationId::all() {
+            // FIXME: retail skips the drain when the slot is active, cooldown < 1, and
+            // terrain-eligible — not when the controller is human.
             let interactive = active == Some(nation)
                 && self.nations.major(nation).economy.controller.is_human()
                 && self.nation_slot_eligible_for_event_processing(nation);
@@ -345,6 +353,9 @@ impl GameState {
     }
 
     fn apply_ability_unlock(&mut self, tech_id: usize, nation: MajorNationId) {
+        // FIXME: `HandleAbilityUnlock` also upgrades developed-tile civilian class,
+        // navy/score `UpdateSelectionAndRecalculateScores`, unit-order cost profiles,
+        // and `TMilitaryUnit::Upgrade()`. First turn usually has nothing Pending.
         if self.technology.research_status_by_nation[nation][tech_id]
             == TechnologyResearchStatus::Researched
         {
@@ -484,6 +495,8 @@ impl GameState {
 }
 
 fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id: usize) {
+    // FIXME: retail also writes `marker262`, `techSelectorShort1d2` / `activeZoneIndex1d4`,
+    // and `activePrerequisitePair264` (techs 0xb / 0x16).
     technology.global_unlocks_by_technology[tech_id] = true;
     match tech_id {
         9 => {
