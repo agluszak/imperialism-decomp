@@ -2040,4 +2040,39 @@ mod tests {
         assert!(pixels.contains(&MAJOR_NATION_BORDER_PALETTES[6]));
         assert!(pixels.contains(&MINOR_NATION_BORDER_PALETTE));
     }
+
+    #[test]
+    fn beginning_of_game_viewport_paints_settlements_borders_and_resources() {
+        let mut state = fixture_state();
+        if let Some(tile) = state.first_idle_civilian_tile(state.turn().active_nation) {
+            state.map.view_origin = state.map.viewport_origin_centered_on(tile);
+        }
+
+        let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
+        let indices = compose_strategic_map_indices(
+            &state,
+            sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
+        );
+        assert!(
+            (0x90..=0x93)
+                .chain(0x9c..=0x9d)
+                .any(|ink| indices.contains(&ink)),
+            "town and capital markers should copy atlas66c improvement ink"
+        );
+        assert!(
+            indices.contains(&0x98),
+            "the opening capital fort should copy atlas66c fort ink"
+        );
+        assert!(
+            indices.contains(&CITY_BORDER_PALETTE)
+                || MAJOR_NATION_BORDER_PALETTES
+                    .iter()
+                    .any(|palette| indices.contains(palette)),
+            "ownership borders should copy nation or city palette ink"
+        );
+        assert!(
+            indices.iter().any(|&pixel| (0xa0..0xb1).contains(&pixel)),
+            "visible resource indicators should copy picture 750/751 ink"
+        );
+    }
 }
