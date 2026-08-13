@@ -12,7 +12,8 @@ mod tests;
 
 use city_placement::*;
 pub(crate) use city_placement::{
-    name_units_for_nation, resource_capability_level, resource_capability_requirement_level,
+    calculate_city_resources, name_units_for_nation, resource_capability_level,
+    resource_capability_requirement_level,
 };
 use map_post_pass::*;
 use map_render::*;
