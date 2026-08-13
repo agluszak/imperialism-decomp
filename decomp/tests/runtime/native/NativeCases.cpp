@@ -59,8 +59,11 @@ RuntimeActionResult RunProvinceOwnerOceanContext(NativeTransition& transition);
 
 RuntimeActionResult RunCheckTechnologyAdvances(NativeTransition& transition);
 RuntimeActionResult RunCheckTechnologyAdvancesAiPurchase(NativeTransition& transition);
+RuntimeActionResult RunTechnologyTurnStop(NativeTransition& transition);
 RuntimeActionResult RunConstructNewspaperPage(NativeTransition& transition);
 RuntimeActionResult RunConstructNewspaperPageMiscEvent(NativeTransition& transition);
+RuntimeActionResult RunNewspaperTurnStop(NativeTransition& transition);
+RuntimeActionResult RunTradeTurnStop(NativeTransition& transition);
 
 RuntimeActionResult RunGreatPowerPressureHumanDebt(NativeTransition& transition);
 RuntimeActionResult RunGreatPowerPressureAiNoop(NativeTransition& transition);
@@ -71,7 +74,7 @@ RuntimeActionResult RunQuarterGateOffDecade(NativeTransition& transition);
 RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transition);
 RuntimeActionResult RunEliminationPhaseWithLandedGreatPowers(NativeTransition& transition);
 RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition);
-RuntimeActionResult RunPeacefulWholeTurn(NativeTransition& transition);
+RuntimeActionResult RunDealBookTurnStop(NativeTransition& transition);
 
 namespace {
 
@@ -124,8 +127,11 @@ const NativeCase kCases[] = {
     {"province_owner_ocean_context", RunProvinceOwnerOceanContext},
     {"check_technology_advances", RunCheckTechnologyAdvances},
     {"check_technology_advances_ai_purchase", RunCheckTechnologyAdvancesAiPurchase},
+    {"turn_stop_technology", RunTechnologyTurnStop},
     {"construct_newspaper_page", RunConstructNewspaperPage},
     {"construct_newspaper_page_misc_event", RunConstructNewspaperPageMiscEvent},
+    {"turn_stop_newspaper", RunNewspaperTurnStop},
+    {"turn_stop_trade", RunTradeTurnStop},
     {"great_power_pressure_human_debt", RunGreatPowerPressureHumanDebt},
     {"great_power_pressure_ai_noop", RunGreatPowerPressureAiNoop},
     {"season_advance_clears_status_flags", RunSeasonAdvanceClearsStatusFlags},
@@ -135,7 +141,7 @@ const NativeCase kCases[] = {
     {"return_to_map_clears_notice_queues", RunReturnToMapClearsNoticeQueues},
     {"elimination_phase_with_landed_great_powers", RunEliminationPhaseWithLandedGreatPowers},
     {"opening_civilian_grant", RunOpeningCivilianGrant},
-    {"peaceful_whole_turn", RunPeacefulWholeTurn},
+    {"turn_stop_deal_book", RunDealBookTurnStop},
 };
 
 } // namespace

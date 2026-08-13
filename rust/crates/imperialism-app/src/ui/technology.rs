@@ -101,10 +101,14 @@ fn on_technology_advance_activate(
         return;
     }
     match session.game.acknowledge_technology_report() {
-        TurnStop::TechnologyAdvance(tech_id) => {
+        TurnStop::TechnologyAdvance => {
             let Some(root) = root else {
                 return;
             };
+            let tech_id = session
+                .game
+                .current_technology_report()
+                .expect("technology stop requires a current report");
             fill_technology_advance(&mut commands, &mut assets, *root, &children, &tags, tech_id);
         }
         stop => apply_turn_stop(stop, &mut next_state),

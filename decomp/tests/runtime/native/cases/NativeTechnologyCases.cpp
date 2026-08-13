@@ -1,5 +1,6 @@
 #include "NativeTransition.h"
 #include "JsonObject.h"
+#include "RuntimeRun.h"
 
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_ui_globals.h"
@@ -70,4 +71,35 @@ RuntimeActionResult RunCheckTechnologyAdvancesAiPurchase(NativeTransition& trans
   }
   g_pTechMgr->CheckForAdvances();
   return transition.Finish();
+}
+
+RuntimeActionResult RunTechnologyTurnStop(NativeTransition& transition) {
+  if (g_pTechMgr == 0 || g_pSimMgr == 0) {
+    return RuntimeActionResult::Failure("technology state is unavailable");
+  }
+
+  const int technologyId = 3;
+  ClearScheduledUnlocksExcept(-1, 1);
+  const short activeNationSlot = g_pSimMgr->GetActiveNationId();
+  g_pTechMgr->orderCapRows277[activeNationSlot].techStatusByTechId[technologyId] = 1;
+  g_pSimMgr->turnStateCode = 0x11;
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+  g_pSimMgr->AdvanceGlobalTurnStateMachine();
+  RuntimeActionResult finished =
+      transition.Finish(json_value_init_string("technology_advance"));
+  if (!finished.Succeeded()) {
+    return finished;
+  }
+
+  JsonObject continuation;
+  continuation.Set("TechnologyReport", technologyId);
+  if (json_object_dotset_value(transition.Run().Captures(), "after.ephemeral.continuation",
+                               continuation.Release()) != JSONSuccess) {
+    return RuntimeActionResult::Failure("technology continuation capture failed");
+  }
+  return finished;
 }

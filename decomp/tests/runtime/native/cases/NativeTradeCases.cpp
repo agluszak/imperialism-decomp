@@ -5,8 +5,12 @@
 #include "game/city/TCity.h"
 #include "game/city_ui/TCountry.h"
 #include "game/globals/shared_globals.h"
+#include "game/globals/gfx_globals.h"
 #include "game/nation/TGreatPower.h"
 #include "game/resource_domain_types.h"
+#include "game/trade_ui/TOfferDeskPicture.h"
+#include "game/gfx/TDisplayMgr.h"
+#include "game/ui_tags_common.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TDealList.h"
 #include "game/ui_widgets/TTradeMgr.h"
@@ -503,14 +507,56 @@ RuntimeActionResult RunTradePhaseCase(NativeTransition& transition, bool buyClot
 
 } // namespace
 
-void RunTradeWithoutUi() {
-  ExecuteDoTradeWithoutPhaseAdvance();
-}
-
 RuntimeActionResult RunTradePhase(NativeTransition& transition) {
   return RunTradePhaseCase(transition, true);
 }
 
 RuntimeActionResult RunTradePhaseSellOnly(NativeTransition& transition) {
   return RunTradePhaseCase(transition, false);
+}
+
+RuntimeActionResult RunTradeTurnStop(NativeTransition& transition) {
+  if (g_pTradeMgr == 0 || g_pSimMgr == 0 || g_pDisplayMgr == 0) {
+    return RuntimeActionResult::Failure("trade turn state is unavailable");
+  }
+  TGreatPower* nation = ActiveNation();
+  if (nation == 0 || nation->city == 0 || nation->diplomacyEligibilityA0 == 0) {
+    return RuntimeActionResult::Failure("the active nation cannot receive trade offers");
+  }
+  for (int slot = 0; slot < kMajorNationCount; ++slot) {
+    TGreatPower* major = g_apNationStates[slot];
+    if (major == 0 || major->city == 0) {
+      continue;
+    }
+    SeedMerchantCapacity(major->city);
+    SeedTradeableStocks(major);
+  }
+  SeedHumanTradeOrders(nation, true);
+  g_pSimMgr->turnStateCode = 7;
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+  g_pSimMgr->AdvanceGlobalTurnStateMachine();
+
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
+  TOfferDeskPicture* sheet = activeDialog == 0
+                                 ? 0
+                                 : static_cast<TOfferDeskPicture*>(
+                                       activeDialog->ResolveControlByTag(kControlTagMain));
+  if (sheet == 0 || sheet->respondingNationSlot < 0) {
+    return RuntimeActionResult::Failure("trade phase did not pose an Offer Sheet");
+  }
+  JsonObject result;
+  result.Set("stop", "trade_offer");
+  result.Set("phase", g_pSimMgr->turnStateCode);
+  result.Set("category_index", g_pTradeMgr->categoryRows[0].dealCategoryOrderIndex);
+  result.Set("entry_ordinal", g_pTradeMgr->categoryRows[0].dealEntryOrdinal);
+  result.Set("buyer", sheet->respondingNationSlot);
+  result.Set("seller", sheet->offeringNationSlot);
+  result.Set("amount", sheet->proposedAmount);
+  result.Set("price", sheet->maxAmount);
+  result.Set("commodity", sheet->commodityType);
+  return transition.Finish(result.Release());
 }

@@ -21,19 +21,13 @@ impl GameSession {
 pub(crate) fn apply_turn_stop(stop: TurnStop, next_state: &mut NextState<AppState>) {
     match stop {
         TurnStop::PlayerOrders => next_state.set(AppState::StrategicMap),
-        TurnStop::TradeOffer(_) => next_state.set(AppState::OfferSheet),
+        TurnStop::TradeOffer => next_state.set(AppState::OfferSheet),
         TurnStop::DealBook => next_state.set(AppState::DealBook),
-        TurnStop::TechnologyAdvance(_) => next_state.set(AppState::TechnologyAdvance),
+        TurnStop::TechnologyAdvance => next_state.set(AppState::TechnologyAdvance),
         TurnStop::Newspaper => next_state.set(AppState::Newspaper),
-        TurnStop::DiplomacyOffer(_) | TurnStop::DiplomacyWarJoin(_) => {
+        TurnStop::DiplomacyOffer | TurnStop::DiplomacyWarJoin => {
             next_state.set(AppState::Diplomacy)
         }
         TurnStop::LandBattle => panic!("land battle screen is not wired yet"),
-        TurnStop::DecadeCinematic => panic!("decade cinematic screen is not wired yet"),
-        TurnStop::PlayerEliminated => panic!("player-eliminated screen is not wired yet"),
-        TurnStop::Victory => panic!("victory screen is not wired yet"),
-        TurnStop::Unimplemented(phase) => {
-            panic!("core turn stopped at unimplemented phase {phase:?}")
-        }
     }
 }

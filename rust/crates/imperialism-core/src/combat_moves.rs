@@ -595,7 +595,7 @@ mod tests {
             defender_units: vec![defender],
         };
         assert_eq!(state.advance_turn(), crate::TurnStop::LandBattle);
-        assert_eq!(state.turn.phase(), crate::PhaseCode::COMBAT_MOVES);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::MILITARY_CLEANUP);
         assert_eq!(state.pending_land_battle(), Some(&expected));
         let encoded = serde_json::to_vec(&state).expect("serialize");
         let restored: GameState = serde_json::from_slice(&encoded).expect("deserialize");

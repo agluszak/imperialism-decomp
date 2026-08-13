@@ -1164,14 +1164,22 @@ fn on_diplomacy_offer_activate(
         session.game.answer_current_diplomacy_war_join(accept)
     };
     match stop {
-        TurnStop::DiplomacyOffer(prompt) => {
+        TurnStop::DiplomacyOffer => {
+            let prompt = session
+                .game
+                .current_diplomacy_offer()
+                .expect("diplomacy stop requires a current offer");
             let mut screen = screens
                 .single_mut()
                 .expect("Diplomacy offer answer has one open Diplomacy screen");
             screen.topic = DiplomacyTopic::Offers;
             screen.framed_nation = prompt.source;
         }
-        TurnStop::DiplomacyWarJoin(prompt) => {
+        TurnStop::DiplomacyWarJoin => {
+            let prompt = session
+                .game
+                .current_diplomacy_war_join()
+                .expect("diplomacy stop requires a current war-join prompt");
             let mut screen = screens
                 .single_mut()
                 .expect("Diplomacy war-join answer has one open Diplomacy screen");

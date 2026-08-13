@@ -1,55 +1,104 @@
-//! Save-backed native differential for one composed peaceful turn.
+//! Native interruption-boundary differentials for the outer turn state machine.
 
-use imperialism_core::*;
-use imperialism_testkit::compare_native;
+use imperialism_core::{GameState, TurnStop};
+use imperialism_testkit::{
+    assert_game_state_eq, compare_native, first_serialized_difference, load_save_backed_state,
+    run_native,
+};
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
-struct PeacefulWholeTurnCase {
+struct NewspaperCase {
     story_ids: Vec<i32>,
 }
 
-fn finish_peaceful_turn(state: &mut GameState, news_story_ids: &[i32]) {
-    // Native news capture omits the Rust-only template table. Install it for
-    // `start_newspaper_phase`, then drop it so the after-state matches.
-    state.set_news_story_ids(news_story_ids);
-    let mut stop = state.finish_player_orders();
-    loop {
-        match stop {
-            TurnStop::DiplomacyOffer(_) => {
-                stop = state.answer_current_diplomacy_offer(false);
-            }
-            TurnStop::DiplomacyWarJoin(_) => {
-                stop = state.answer_current_diplomacy_war_join(false);
-            }
-            TurnStop::TradeOffer(offer) => {
-                stop = state.answer_trade_offer(offer.amount, false);
-            }
-            TurnStop::DealBook => break,
-            other => panic!("unexpected stop before Deal Book: {other:?}"),
-        }
-    }
-    assert_eq!(state.turn().phase(), PhaseCode::DEAL_BOOK);
-
-    stop = state.close_turn_deal_book();
-    while let TurnStop::TechnologyAdvance(_) = stop {
-        stop = state.acknowledge_technology_report();
-    }
-    assert_eq!(stop, TurnStop::Newspaper);
-    assert_eq!(state.turn().phase(), PhaseCode::NEWSPAPER);
-    assert_eq!(state.close_newspaper(), TurnStop::PlayerOrders);
-    assert_eq!(state.turn().phase(), PhaseCode::STRATEGIC_MAP);
-    state.set_news_story_ids(&[]);
+#[derive(Debug, Deserialize, Eq, PartialEq)]
+struct TradeBoundaryResult {
+    stop: String,
+    phase: i32,
+    category_index: usize,
+    entry_ordinal: usize,
+    buyer: u8,
+    seller: u8,
+    amount: i16,
+    price: i16,
+    commodity: i16,
 }
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
-fn peaceful_whole_turn() {
-    compare_native(
-        "peaceful_whole_turn",
-        |state, case: PeacefulWholeTurnCase| {
-            finish_peaceful_turn(state, &case.story_ids);
-        },
-    )
+fn deal_book_dispatch_precedes_the_quarter_gate() {
+    compare_native("turn_stop_deal_book", |state, (): ()| {
+        stop_name(state.advance_turn())
+    })
     .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn newspaper_dispatch_precedes_return_to_map() {
+    let native = run_native::<NewspaperCase, String>("turn_stop_newspaper").unwrap();
+    let mut actual = load_save_backed_state(native.before).unwrap();
+    let mut expected = load_save_backed_state(native.after).unwrap();
+    actual.set_news_story_ids(&native.case.story_ids);
+    expected.set_news_story_ids(&native.case.story_ids);
+    assert_eq!(stop_name(actual.advance_turn()), native.result);
+    assert_game_state_eq(&expected, &actual).unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn technology_report_dispatch_precedes_newspaper() {
+    compare_native("turn_stop_technology", |state, (): ()| {
+        stop_name(state.advance_turn())
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn trade_offer_dispatch_precedes_the_offer_sheet_phase() {
+    let native = run_native::<(), TradeBoundaryResult>("turn_stop_trade").unwrap();
+    let mut actual = load_save_backed_state(native.before).unwrap();
+    let expected = load_save_backed_state(native.after).unwrap();
+
+    assert_eq!(actual.advance_turn(), TurnStop::TradeOffer);
+    let pending = actual
+        .pending_trade_offer()
+        .expect("trade stop requires a pending offer");
+    let continuation = serde_json::to_value(&actual).unwrap()["continuation"]["Trade"].clone();
+    let result = TradeBoundaryResult {
+        stop: "trade_offer".to_owned(),
+        phase: actual.turn().phase().retail(),
+        category_index: continuation["category_index"].as_u64().unwrap() as usize,
+        entry_ordinal: continuation["entry_ordinal"].as_u64().unwrap() as usize,
+        buyer: pending.buyer.get(),
+        seller: pending.seller.get(),
+        amount: pending.amount,
+        price: pending.price,
+        commodity: pending.commodity.resource() as i16,
+    };
+    assert_eq!(result, native.result);
+    assert_state_except_continuation(&expected, &actual);
+}
+
+fn assert_state_except_continuation(expected: &GameState, actual: &GameState) {
+    let mut expected = serde_json::to_value(expected).unwrap();
+    let mut actual = serde_json::to_value(actual).unwrap();
+    expected.as_object_mut().unwrap().remove("continuation");
+    actual.as_object_mut().unwrap().remove("continuation");
+    assert_eq!(
+        first_serialized_difference(&expected, &actual).unwrap(),
+        None
+    );
+}
+
+fn stop_name(stop: TurnStop) -> String {
+    match stop {
+        TurnStop::Newspaper => "newspaper",
+        TurnStop::DealBook => "deal_book",
+        TurnStop::TechnologyAdvance => "technology_advance",
+        _ => panic!("unexpected turn stop {stop:?}"),
+    }
+    .to_owned()
 }
