@@ -1733,21 +1733,6 @@ JSON_Value* CaptureAiTradeState(TGreatPower* nation) {
   return state.Release();
 }
 
-JSON_Value* CaptureAiDevelopmentPressure(TGreatPower* nation) {
-  if (nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0 || g_pSimMgr->economicTurn <= 0) {
-    return JsonNullValue();
-  }
-  TAutoGreatPower* automaticNation = static_cast<TAutoGreatPower*>(nation);
-  JsonObject state;
-  state.Set("expansion_pressure_per_compatible_region_bits",
-            FloatBits(automaticNation->expansionPressurePerCompatibleRegionB64));
-  state.Set("average_unit_divergence_per_owned_region_bits",
-            FloatBits(automaticNation->averageUnitDivergencePerOwnedRegionB68));
-  state.Set("active_mission_pressure_average_bits",
-            FloatBits(automaticNation->activeMissionPressureAverageB6c));
-  return state.Release();
-}
-
 JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   if (nation->defenseMinister == 0) {
     FailSemanticCapture("major nation has no defense minister");
@@ -1765,7 +1750,6 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   object.Set("pending_ship", CapturePendingShip(nation));
   object.Set("interior_civilian", CaptureInteriorCivilianState(nation));
   object.Set("ai_trade", CaptureAiTradeState(nation));
-  object.Set("ai_development_pressure", CaptureAiDevelopmentPressure(nation));
   object.Set(
       "development_grant_by_nation",
       CaptureShortArray(nation->foreignMinister->developmentGrantByNation50, kNationSlotCount));
@@ -1794,8 +1778,6 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   object.Set("budget_pool_base", nation->budgetPoolBase);
   object.Set("budget_pool_delta", nation->budgetPoolDelta);
   object.Set("special_resource_trade_balance", nation->field910);
-  object.Set("candidate_nation_flags",
-             CaptureUnsignedByteArray(nation->candidateNationFlags, kNationSlotCount));
   object.Set("scenario_initialized", nation->scenarioInitFlag != 0 ? true : false);
   object.Set("turn_finished", nation->field904 != 0 ? true : false);
   object.Set("pending_actions",
@@ -1806,8 +1788,6 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   object.Set("pressure_counter", static_cast<int>(nation->pressureCounter));
   object.Set("army_movement_budget", nation->field900);
   object.Set("aid_allocation_total", nation->aidAllocationTotal);
-  object.Set("colony_boycott_flags",
-             CaptureUnsignedByteArray(nation->colonyBoycottFlags, kNationSlotCount));
   object.Set("military_expenses", nation->militaryExpenses960);
   return object.Release();
 }
@@ -3033,27 +3013,12 @@ bool CaptureSaveBackedGameState(RuntimeRun& run, const char* name) {
     return false;
   }
 
-  JsonArray pressures;
-  for (int slot = 0; slot < kMajorNationCount; ++slot) {
-    TGreatPower* nation = g_apNationStates[slot];
-    if (nation == 0) {
-      pressures.AddNull();
-    } else {
-      pressures.Add(CaptureAiDevelopmentPressure(nation));
-    }
-  }
-
   // Persistable bulk lives in the .imp; keep only session fields Rust cannot recover.
   const char* bulkKeys[] = {"map",       "ocean",       "market",         "technology",
                             "diplomacy", "nations",     "military_units", "civilian_units",
                             "ships",     "task_forces", "missions"};
   for (int index = 0; index < (int)(sizeof(bulkKeys) / sizeof(bulkKeys[0])); ++index) {
     json_object_remove(object, bulkKeys[index]);
-  }
-  if (json_object_set_value(object, "ai_development_pressure", pressures.Release()) !=
-      JSONSuccess) {
-    json_value_free(state);
-    return false;
   }
 
   char saveName[64];
