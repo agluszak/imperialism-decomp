@@ -39,6 +39,9 @@ pub struct ForeignTradeState {
     pub requested_ship: ShipType,
     pub purchase_priority: TradeCommodityTable<i16>,
     pub preferred_resources: [Option<TradeCommodity>; 4],
+    pub capability_flag_14: i16,
+    pub capability_flag_16: i16,
+    pub trade_partner_enabled: [u8; 7],
 }
 
 impl ForeignTradeState {
@@ -60,6 +63,9 @@ impl ForeignTradeState {
             requested_ship,
             purchase_priority: TradeCommodityTable::default(),
             preferred_resources: [None; 4],
+            capability_flag_14: 0,
+            capability_flag_16: 0,
+            trade_partner_enabled: [1; 7],
         }
     }
 }

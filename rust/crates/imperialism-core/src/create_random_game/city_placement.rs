@@ -425,7 +425,7 @@ pub(super) fn calculate_city_resources(
     }
     yields
 }
-pub(super) fn resource_capability_level(tile: &TileState, resource: ResourceKind) -> i16 {
+pub(crate) fn resource_capability_level(tile: &TileState, resource: ResourceKind) -> i16 {
     if !tile.edge_resources.contains(&Some(resource)) {
         return 0;
     }

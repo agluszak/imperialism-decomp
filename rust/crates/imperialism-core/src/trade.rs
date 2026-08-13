@@ -668,6 +668,7 @@ mod tests {
             missions: vec![],
             news: crate::NewsState::default(),
             pending: crate::PendingWorkState::default(),
+            trade_session: None,
         }
     }
 
