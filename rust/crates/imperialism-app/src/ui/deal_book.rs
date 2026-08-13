@@ -4,7 +4,8 @@ use super::format_currency;
 use super::game_shell::project_date_and_treasury;
 use super::generated;
 use super::retail::{RetailTag, find_descendant};
-use crate::AppState;
+use super::session::apply_turn_stop;
+use crate::{AppState, RetailAssetsResource};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
@@ -296,7 +297,23 @@ fn on_deal_book_close(
     _activate: On<Activate>,
     return_state: Option<Res<DealBookReturn>>,
     mut next_state: ResMut<NextState<AppState>>,
+    session: Option<ResMut<GameSession>>,
+    retail: Option<Res<RetailAssetsResource>>,
 ) {
+    if let Some(mut session) = session
+        && session.0.turn().phase() == PhaseCode::DEAL_BOOK
+    {
+        let stop = session.0.close_deal_book();
+        apply_turn_stop(
+            stop,
+            &mut session.0,
+            retail
+                .expect("Deal Book close during the turn phase requires retail assets")
+                .assets(),
+            &mut next_state,
+        );
+        return;
+    }
     next_state.set(
         return_state
             .as_deref()

@@ -18,13 +18,14 @@ pub(crate) fn apply_turn_stop(
     match stop {
         TurnStop::PlayerOrders => next_state.set(AppState::StrategicMap),
         TurnStop::TradeOffer(_) => next_state.set(AppState::OfferSheet),
+        TurnStop::DealBook => next_state.set(AppState::DealBook),
         TurnStop::TechnologyAdvance(_) => next_state.set(AppState::TechnologyAdvance),
         TurnStop::Newspaper => {
             session.start_newspaper_phase(assets.news_table().story_ids());
             next_state.set(AppState::Newspaper);
         }
         TurnStop::DiplomacyOffer(_) | TurnStop::DiplomacyWarJoin(_) => {
-            panic!("diplomacy interrupt screens are not wired yet")
+            next_state.set(AppState::Diplomacy)
         }
         TurnStop::Unimplemented(phase) => {
             panic!("core turn stopped at unimplemented phase {phase:?}")
