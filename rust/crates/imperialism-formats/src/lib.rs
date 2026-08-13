@@ -21,7 +21,7 @@ pub use legacy_save::{
     load_game_from_path, normalize_save_label, peek_save_header, peek_save_preview_owners,
     retail_save_path, write_game_state, write_save_file,
 };
-pub use retail_assets::{RetailAssetError, RetailAssets};
+pub use retail_assets::{NewsTable, RetailAssetError, RetailAssets};
 pub use retail_fonts::{
     ResolvedRetailTextStyle, RetailFontCellMetrics, RetailFontFace, RetailFontMetricsError,
     RetailTextAlignment, RetailTextStyleError, RetailTextStylePreset,

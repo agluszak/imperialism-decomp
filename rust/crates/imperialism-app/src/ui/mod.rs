@@ -7,10 +7,12 @@ pub(crate) mod generated;
 mod hover_help;
 pub(crate) mod load_save;
 mod main_menu;
+mod newspaper;
 mod random_setup;
 mod random_setup_map;
 mod retail;
 mod strategic_map;
+mod technology;
 mod trade;
 mod transport;
 
@@ -21,10 +23,12 @@ pub(crate) use diplomacy::DiplomacyPlugin;
 pub(crate) use game_shell::GameShellPlugin;
 pub(crate) use load_save::{LoadSavePlugin, SaveDirectory};
 pub(crate) use main_menu::MainMenuPlugin;
+pub(crate) use newspaper::NewspaperPlugin;
 pub(crate) use random_setup::GameSession;
 pub(crate) use random_setup::RandomSetupPlugin;
 pub(crate) use random_setup_map::MapPreviewPlugin;
 pub(crate) use retail::{RetailUiAssets, RetailUiPlugin};
+pub(crate) use technology::TechnologyAdvancePlugin;
 pub(crate) use trade::TradePlugin;
 pub(crate) use transport::TransportPlugin;
 

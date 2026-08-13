@@ -5,7 +5,8 @@ use crate::ui::hover_help::{
 use crate::ui::random_setup_map;
 use crate::ui::retail::ModalDialog;
 use crate::ui::retail::{RetailTag, RetailUiAssets, find_descendant};
-use crate::{AppState, RandomGameNamesResource};
+use crate::ui::technology::TechnologyAdvance;
+use crate::{AppState, RandomGameNamesResource, RetailAssetsResource};
 use bevy::ecs::system::SystemParam;
 use bevy::input::ButtonState;
 use bevy::input::keyboard::KeyboardInput;
@@ -373,6 +374,7 @@ struct RandomSetupActivation<'w, 's> {
     setup: ResMut<'w, RandomGameSetup>,
     preview: ResMut<'w, RandomSetupPreview>,
     names: Res<'w, RandomGameNamesResource>,
+    retail: Res<'w, RetailAssetsResource>,
     next_state: ResMut<'w, NextState<AppState>>,
     commands: Commands<'w, 's>,
 }
@@ -391,6 +393,7 @@ fn on_random_setup_activate(activate: On<Activate>, mut random_setup: RandomSetu
                 &random_setup.setup,
                 &random_setup.preview,
                 &random_setup.names.0,
+                random_setup.retail.assets(),
                 &mut random_setup.commands,
                 &mut random_setup.next_state,
             );
@@ -458,6 +461,7 @@ fn accept_random_setup(
     setup: &RandomGameSetup,
     preview: &RandomSetupPreview,
     names: &RandomGameNames,
+    assets: &imperialism_formats::RetailAssets,
     commands: &mut Commands,
     next_state: &mut NextState<AppState>,
 ) {
@@ -475,9 +479,16 @@ fn accept_random_setup(
         commands.insert_resource(GameSession(session));
         next_state.set(AppState::CitySite);
     } else {
-        enter_strategic_map_without_capital_selection(&mut session, setup.nation);
-        commands.insert_resource(GameSession(session));
-        next_state.set(AppState::StrategicMap);
+        let tech_id = enter_strategic_map_without_capital_selection(&mut session, setup.nation);
+        if let Some(tech_id) = tech_id {
+            commands.insert_resource(TechnologyAdvance(tech_id));
+            commands.insert_resource(GameSession(session));
+            next_state.set(AppState::TechnologyAdvance);
+        } else {
+            session.start_newspaper_phase(assets.news_table().story_ids());
+            commands.insert_resource(GameSession(session));
+            next_state.set(AppState::Newspaper);
+        }
     }
 }
 

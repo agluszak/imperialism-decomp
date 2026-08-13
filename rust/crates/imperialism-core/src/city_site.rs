@@ -180,21 +180,25 @@ pub fn place_city(world: &mut MapMgr, tile: TileId, owner_nation: TileOwnerTag) 
     flood_fill_region_marker(world, tile, owner_nation);
 }
 
-/// Confirm the New City dialog: `PlaceCity` then advance into the strategic-map phase.
+/// Confirm the New City dialog: `PlaceCity`, then enter the opening-turn tail.
 ///
-/// Retail follows with `StartNextPhase()` (phase 2 → naming/AI homes → strategic map event).
-/// This port applies the human capital binding and lands on phase `5`, the strategic-map
-/// display phase after `case 4`.
-pub fn confirm_capital_site(state: &mut GameState, site: CapitalSite) {
+/// Retail follows with `StartNextPhase()` through season advance, technology, and
+/// the newspaper. This port applies the human capital binding and lands on
+/// `TECHNOLOGY_ADVANCES` after `AdvanceSeason` / `CheckForAdvances`.
+pub fn confirm_capital_site(state: &mut GameState, site: CapitalSite) -> Option<u8> {
     let tile = site.tile();
     let owner = TileOwnerTag::from_nation(site.nation().nation());
     place_city(&mut state.map, tile, owner);
     bind_home_city_tile(state, site.nation(), tile);
-    state.turn.phase = crate::PhaseCode::STRATEGIC_MAP;
+    state.begin_technology_and_newspaper_tail()
 }
 
-/// Introductory/Easy path: no city-site selector; bind the frog-city marker and enter the map.
-pub fn enter_strategic_map_without_capital_selection(state: &mut GameState, nation: MajorNationId) {
+/// Introductory/Easy path: no city-site selector; bind the frog-city marker and
+/// enter the opening-turn tail.
+pub fn enter_strategic_map_without_capital_selection(
+    state: &mut GameState,
+    nation: MajorNationId,
+) -> Option<u8> {
     let home = state
         .nations
         .major(nation)
@@ -203,7 +207,7 @@ pub fn enter_strategic_map_without_capital_selection(state: &mut GameState, nati
         .map(|town| town.tile)
         .expect("generated Introductory/Easy game has a home town tile");
     bind_home_city_tile(state, nation, home);
-    state.turn.phase = crate::PhaseCode::STRATEGIC_MAP;
+    state.begin_technology_and_newspaper_tail()
 }
 
 fn bind_home_city_tile(state: &mut GameState, nation: MajorNationId, tile: TileId) {
@@ -363,7 +367,7 @@ mod tests {
     }
 
     #[test]
-    fn confirm_capital_site_places_city_and_enters_strategic_map_phase() {
+    fn confirm_capital_site_places_city_and_enters_technology_advances_phase() {
         let mut state = normal_start();
         assert_eq!(state.turn.phase, crate::PhaseCode::CAPITAL_SELECTION);
         assert_eq!(
@@ -399,7 +403,8 @@ mod tests {
         let site = validate_capital_site_selection(&state, MajorNationId::new(6), tile).unwrap();
         confirm_capital_site(&mut state, site);
 
-        assert_eq!(state.turn.phase, crate::PhaseCode::STRATEGIC_MAP);
+        assert_eq!(state.turn.phase, crate::PhaseCode::TECHNOLOGY_ADVANCES);
+        assert_eq!(state.turn.economic_turn, 1);
         assert_eq!(
             state.nations.majors[MajorNationId::new(6)].towns[0].name,
             "FrogCity"
@@ -447,7 +452,8 @@ mod tests {
         assert_eq!(state.map[home].owner_nation, Some(TileOwnerTag::new(6)));
         assert!(state.map[home].flags.is_city());
         enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6));
-        assert_eq!(state.turn.phase, crate::PhaseCode::STRATEGIC_MAP);
+        assert_eq!(state.turn.phase, crate::PhaseCode::TECHNOLOGY_ADVANCES);
+        assert_eq!(state.turn.economic_turn, 1);
         assert_eq!(
             state.nations.majors[MajorNationId::new(6)].common.home_tile,
             Some(home)

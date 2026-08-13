@@ -38,6 +38,11 @@ RuntimeActionResult RunCompletedRailSection(NativeTransition& transition);
 RuntimeActionResult RunIssuedRailSection(NativeTransition& transition);
 RuntimeActionResult RunCompletedResourceDevelopment(NativeTransition& transition);
 
+RuntimeActionResult RunCheckTechnologyAdvances(NativeTransition& transition);
+RuntimeActionResult RunCheckTechnologyAdvancesAiPurchase(NativeTransition& transition);
+RuntimeActionResult RunConstructNewspaperPage(NativeTransition& transition);
+RuntimeActionResult RunConstructNewspaperPageMiscEvent(NativeTransition& transition);
+
 namespace {
 
 const NativeCase kCases[] = {
@@ -71,6 +76,10 @@ const NativeCase kCases[] = {
     {"completed_rail_section", RunCompletedRailSection},
     {"issued_rail_section", RunIssuedRailSection},
     {"completed_resource_development", RunCompletedResourceDevelopment},
+    {"check_technology_advances", RunCheckTechnologyAdvances},
+    {"check_technology_advances_ai_purchase", RunCheckTechnologyAdvancesAiPurchase},
+    {"construct_newspaper_page", RunConstructNewspaperPage},
+    {"construct_newspaper_page_misc_event", RunConstructNewspaperPageMiscEvent},
 };
 
 } // namespace

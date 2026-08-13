@@ -1,7 +1,9 @@
 use crate::color::DibPalette;
 use crate::retail_resources::*;
 use crate::{PictureId, RetailFontFace};
-use imperialism_core::{MajorNationId, NationId, NationTable, RandomGameNames};
+use imperialism_core::{
+    MajorNationId, NEWS_TEMPLATE_COUNT, NationId, NationTable, RandomGameNames,
+};
 use pelite::pe32::{Pe, PeFile};
 use pelite::resources::{FindError, Name};
 use std::collections::BTreeMap;
@@ -20,6 +22,10 @@ const PICTURE_ARCHIVE_PATHS: [&str; 4] = [
     "Data/pictwv0.gob",
     "Data/pictuniv.gob",
 ];
+const NEWS_TAB_NAME: &str = "news.tab";
+const NEWS_TEX_NAME: &str = "news.tex";
+const NEWS_ROW_BYTES: usize = 24;
+const IMPERIALISM_EXE_NAMES: [&str; 2] = ["Imperialism.exe", "IMPERIALISM.EXE"];
 
 /// Direct access to the retail files needed by the current application.
 ///
@@ -31,6 +37,35 @@ pub struct RetailAssets {
     strings: ResourceArchive,
     fonts: RetailFonts,
     default_dib_palette: DibPalette,
+    news: NewsTable,
+}
+
+/// Decoded `news.tab` / `news.tex` pair used to build and render newspaper pages.
+#[derive(Clone, Debug)]
+pub struct NewsTable {
+    story_ids: Vec<i32>,
+    headlines: Vec<String>,
+    bodies: Vec<String>,
+}
+
+impl NewsTable {
+    pub fn story_ids(&self) -> &[i32] {
+        &self.story_ids
+    }
+
+    pub fn headline(&self, template_index: u16) -> &str {
+        self.headlines
+            .get(usize::from(template_index))
+            .map(String::as_str)
+            .unwrap_or("")
+    }
+
+    pub fn body(&self, template_index: u16) -> &str {
+        self.bodies
+            .get(usize::from(template_index))
+            .map(String::as_str)
+            .unwrap_or("")
+    }
 }
 
 impl RetailAssets {
@@ -55,13 +90,19 @@ impl RetailAssets {
         };
         let strings = ResourceArchive::read(&root, STRINGS_ARCHIVE_PATH)?;
         let fonts = RetailFonts::read(&root)?;
+        let news = load_news_table(&root)?;
 
         Ok(Self {
             pictures,
             strings,
             fonts,
             default_dib_palette,
+            news,
         })
+    }
+
+    pub const fn news_table(&self) -> &NewsTable {
+        &self.news
     }
 
     /// Resolves a retail picture using name-before-numeric and library-slot precedence.
@@ -338,6 +379,90 @@ pub enum RetailAssetError {
     StringNotFound { group: i16, direct_index: i16 },
     #[error("Data/pictenu.gob has no English BITMAP resource 950.BMP")]
     DefaultDibPaletteNotFound,
+    #[error("news.tab / news.tex are unavailable as a TABLE resource or Data file")]
+    NewsTableNotFound,
+    #[error("{}: news.tab does not contain 360 rows", path.display())]
+    NewsTableSize { path: PathBuf },
+    #[error("{}: news.tab row {row} text range is outside news.tex", path.display())]
+    NewsTextRange { path: PathBuf, row: usize },
+}
+
+fn load_news_table(root: &Path) -> Result<NewsTable, RetailAssetError> {
+    let tab = load_named_table(root, NEWS_TAB_NAME)?;
+    let tex = load_named_table(root, NEWS_TEX_NAME)?;
+    parse_news_table(root, &tab, &tex)
+}
+
+fn load_named_table(root: &Path, name: &str) -> Result<Vec<u8>, RetailAssetError> {
+    for exe in IMPERIALISM_EXE_NAMES {
+        let path = root.join(exe);
+        if !path.exists() {
+            continue;
+        }
+        if let Ok(archive) = ResourceArchive::read(root, exe) {
+            if let Some(bytes) = archive.find(
+                ResourceName::Text("TABLE".to_owned()),
+                ResourceName::Text(name.to_owned()),
+            ) {
+                return Ok(bytes.to_vec());
+            }
+        }
+    }
+    for relative in [name, &format!("Data/{name}")] {
+        let path = root.join(relative);
+        if path.exists() {
+            return read_file(&path);
+        }
+    }
+    Err(RetailAssetError::NewsTableNotFound)
+}
+
+fn parse_news_table(root: &Path, tab: &[u8], tex: &[u8]) -> Result<NewsTable, RetailAssetError> {
+    let path = root.join(NEWS_TAB_NAME);
+    if tab.len() != NEWS_TEMPLATE_COUNT * NEWS_ROW_BYTES {
+        return Err(RetailAssetError::NewsTableSize { path });
+    }
+    let mut story_ids = Vec::with_capacity(NEWS_TEMPLATE_COUNT);
+    let mut headlines = Vec::with_capacity(NEWS_TEMPLATE_COUNT);
+    let mut bodies = Vec::with_capacity(NEWS_TEMPLATE_COUNT);
+    for (row, record) in tab.chunks_exact(NEWS_ROW_BYTES).enumerate() {
+        let story_id = i32::from_be_bytes(record[0..4].try_into().expect("news.tab story id"));
+        let headline = news_tex_slice(&path, row, tex, record[4..12].try_into().unwrap())?;
+        let body = news_tex_slice(&path, row, tex, record[12..20].try_into().unwrap())?;
+        story_ids.push(story_id);
+        headlines.push(headline);
+        bodies.push(body);
+    }
+    Ok(NewsTable {
+        story_ids,
+        headlines,
+        bodies,
+    })
+}
+
+fn news_tex_slice(
+    path: &Path,
+    row: usize,
+    tex: &[u8],
+    fields: [u8; 8],
+) -> Result<String, RetailAssetError> {
+    let offset = i32::from_be_bytes(fields[0..4].try_into().expect("news.tex offset"));
+    let length = i32::from_be_bytes(fields[4..8].try_into().expect("news.tex length"));
+    if offset < 0 || length < 0 {
+        return Err(RetailAssetError::NewsTextRange {
+            path: path.to_owned(),
+            row,
+        });
+    }
+    let start = offset as usize;
+    let end = start.saturating_add(length as usize);
+    let bytes = tex
+        .get(start..end)
+        .ok_or_else(|| RetailAssetError::NewsTextRange {
+            path: path.to_owned(),
+            row,
+        })?;
+    Ok(bytes.iter().map(|&byte| char::from(byte)).collect())
 }
 
 fn read_font(root: &Path, relative: &str) -> Result<Vec<u8>, RetailAssetError> {
@@ -551,6 +676,12 @@ mod tests {
         for relative in ["Data/Antqua.ttf", "Data/Antquab.ttf", "Data/WeBeBd__.ttf"] {
             write_retail_file(root.path(), relative, b"not a font");
         }
+        write_retail_file(
+            root.path(),
+            "Data/news.tab",
+            &vec![0; NEWS_TEMPLATE_COUNT * NEWS_ROW_BYTES],
+        );
+        write_retail_file(root.path(), "Data/news.tex", b"");
         root
     }
 
