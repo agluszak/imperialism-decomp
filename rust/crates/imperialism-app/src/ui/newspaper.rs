@@ -1,7 +1,7 @@
 use super::generated;
 use super::hover_help::get_string;
-use super::session::GameSession;
 use super::retail::{RetailTag, RetailUiAssets, find_descendant};
+use super::session::GameSession;
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
 use bevy::text::LineHeight;

@@ -1,8 +1,8 @@
 use super::game_shell::project_date_and_treasury;
 use super::generated;
 use super::newspaper::enter_newspaper;
-use super::session::GameSession;
 use super::retail::{RetailTag, RetailUiAssets, find_descendant};
+use super::session::GameSession;
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
