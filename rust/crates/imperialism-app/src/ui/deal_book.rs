@@ -4,7 +4,9 @@ use super::format_currency;
 use super::game_shell::project_date_and_treasury;
 use super::generated;
 use super::retail::{RetailTag, find_descendant};
+use super::session::apply_turn_stop;
 use crate::AppState;
+use crate::RetailAssetsResource;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
@@ -295,13 +297,18 @@ fn clear_deal_book_return(mut commands: Commands) {
 fn on_deal_book_close(
     _activate: On<Activate>,
     return_state: Option<Res<DealBookReturn>>,
+    mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
+    retail: Res<RetailAssetsResource>,
 ) {
-    next_state.set(
-        return_state
-            .as_deref()
-            .map_or(AppState::StrategicMap, |state| state.0),
-    );
+    if let Some(return_state) = return_state.as_deref() {
+        next_state.set(return_state.0);
+        return;
+    }
+    let stop = session
+        .0
+        .close_turn_deal_book(retail.assets().news_table().story_ids());
+    apply_turn_stop(stop, &mut next_state);
 }
 
 fn on_deal_book_history(_activate: On<Activate>, mut screens: Query<&mut DealBookScreen>) {

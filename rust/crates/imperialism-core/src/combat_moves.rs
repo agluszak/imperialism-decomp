@@ -36,13 +36,13 @@ impl GameState {
     /// Retail `TArmyMgr::DoCombatMoves` for a non-client host.
     ///
     /// Identical orders produce identical movement and battle-creation state.
-    /// The first would-be tactical battle is stored instead of opening UI.
+    /// The first would-be tactical battle is returned for the turn driver to store
+    /// as [`crate::TurnContinuation::LandBattle`].
     pub fn do_combat_moves(&mut self) -> Option<PendingLandBattle> {
         let mut chains = StationedChains::from_units(&self.military_units);
         let stacks = self.form_stacks(&mut chains);
         let mut owner_cache = self.normalized_owner_cache();
         let battle = self.resolve_next_move(&mut chains, stacks, &mut owner_cache);
-        self.pending_land_battle = battle.clone();
         if battle.is_none() {
             self.finalize_military_units_without_ui(&owner_cache);
         }
@@ -50,7 +50,10 @@ impl GameState {
     }
 
     pub fn pending_land_battle(&self) -> Option<&PendingLandBattle> {
-        self.pending_land_battle.as_ref()
+        match &self.continuation {
+            crate::turn_flow::TurnContinuation::LandBattle(battle) => Some(battle),
+            _ => None,
+        }
     }
 
     fn form_stacks(&mut self, chains: &mut StationedChains) -> Vec<ArmyStack> {
@@ -567,6 +570,40 @@ mod tests {
         assert_eq!(
             state.military_units[1].stationed_province,
             Some(ProvinceId::new(2))
+        );
+        assert!(state.pending_land_battle().is_none());
+    }
+
+    #[test]
+    fn combat_moves_phase_keeps_the_battle_in_continuation() {
+        let mut state = game_state();
+        state.turn.economic_turn = 3;
+        state.turn.phase = crate::PhaseCode::COMBAT_MOVES;
+        seed_province(&mut state, 1, 0, &[2]);
+        seed_province(&mut state, 2, 1, &[1]);
+        let attacker = push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
+        let defender = push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);
+        state.diplomacy.relationships[NationId::new(0)][NationId::new(1)] =
+            DiplomaticRelationship::War;
+        state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
+            DiplomaticRelationship::War;
+        let expected = PendingLandBattle {
+            province: ProvinceId::new(2),
+            attacker_nation: NationId::new(0),
+            defender_nation: NationId::new(1),
+            attacker_units: vec![attacker],
+            defender_units: vec![defender],
+        };
+        assert_eq!(state.advance_turn(&[]), crate::TurnStop::LandBattle);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::COMBAT_MOVES);
+        assert_eq!(state.pending_land_battle(), Some(&expected));
+        let encoded = serde_json::to_vec(&state).expect("serialize");
+        let restored: GameState = serde_json::from_slice(&encoded).expect("deserialize");
+        assert_eq!(restored.pending_land_battle(), Some(&expected));
+        assert_eq!(state.advance_turn(&[]), crate::TurnStop::LandBattle);
+        assert_eq!(
+            state.military_units[0].stationed_province,
+            Some(ProvinceId::new(1))
         );
     }
 }

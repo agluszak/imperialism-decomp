@@ -101,14 +101,17 @@ fn on_technology_advance_activate(
     if actions.get(activate.entity).is_err() {
         return;
     }
-    match session.0.acknowledge_technology_report() {
+    match session
+        .0
+        .acknowledge_technology_report(retail.assets().news_table().story_ids())
+    {
         TurnStop::TechnologyAdvance(tech_id) => {
             let Ok(root) = root.single() else {
                 return;
             };
             fill_technology_advance(&mut commands, &mut assets, root, &children, &tags, tech_id);
         }
-        stop => apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state),
+        stop => apply_turn_stop(stop, &mut next_state),
     }
 }
 

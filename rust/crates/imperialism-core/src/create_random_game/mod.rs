@@ -280,6 +280,5 @@ pub fn create_random_game(
         news: NewsState::default(),
         pending,
         continuation: crate::turn_flow::TurnContinuation::None,
-        pending_land_battle: None,
     }
 }

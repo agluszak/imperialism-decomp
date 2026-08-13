@@ -329,9 +329,13 @@ fn on_offer_sheet_activate(
             amount
         }
     };
-    match session.0.answer_trade_offer(amount, stop_buying) {
+    match session.0.answer_trade_offer(
+        amount,
+        stop_buying,
+        retail.assets().news_table().story_ids(),
+    ) {
         TurnStop::TradeOffer(_) => {}
-        stop => apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state),
+        stop => apply_turn_stop(stop, &mut next_state),
     }
 }
 

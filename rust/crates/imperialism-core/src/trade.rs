@@ -672,7 +672,6 @@ mod tests {
             news: crate::NewsState::default(),
             pending: crate::PendingWorkState::default(),
             continuation: crate::turn_flow::TurnContinuation::None,
-            pending_land_battle: None,
         }
     }
 
