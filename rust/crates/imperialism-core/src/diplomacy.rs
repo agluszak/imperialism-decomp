@@ -370,15 +370,92 @@ pub enum PlayerDiplomacyOrderResult {
     Applied,
     SelectedNation,
     Rejected(PlayerDiplomacyRejection),
+    NeedsEntanglementConfirmation,
 }
 
+/// Retail `proposalArrayMode` values written by
+/// `ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode` and the grant-funds
+/// failure path, then shown through string group `0x2754` at index `mode - 1`.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum PlayerDiplomacyRejection {
-    TargetIsNotIndependent,
     EmbassyRequired,
+    AlreadyAtWar,
+    AllianceRequiresGreatPower,
+    PeaceRequiresOngoingWar,
+    AlreadyDeclaringWar,
     TradeConsulateRequired,
     AlliedNationCannotBeBoycotted,
+    ConsulateAlreadyPresent,
+    EmbassyRequiresConsulate,
+    EmbassyAlreadyPresent,
+    TargetIsColony,
+    TargetIsNotIndependent,
+    NonAggressionPactRequiresMinor,
+    AlreadyHaveNonAggressionPact,
+    AlreadyAllied,
+    JoinEmpireRequiresMinor,
+    InsufficientEmbassyFunds,
+    InsufficientConsulateFunds,
     InsufficientGrantFunds,
+}
+
+impl PlayerDiplomacyRejection {
+    pub const fn proposal_mode(self) -> i16 {
+        match self {
+            Self::EmbassyRequired => 1,
+            Self::AlreadyAtWar => 2,
+            Self::AllianceRequiresGreatPower => 3,
+            Self::PeaceRequiresOngoingWar => 5,
+            Self::AlreadyDeclaringWar => 6,
+            Self::TradeConsulateRequired => 7,
+            Self::AlliedNationCannotBeBoycotted => 8,
+            Self::ConsulateAlreadyPresent => 9,
+            Self::EmbassyRequiresConsulate => 0xa,
+            Self::EmbassyAlreadyPresent => 0xb,
+            Self::TargetIsColony => 0xc,
+            Self::TargetIsNotIndependent => 0xd,
+            Self::NonAggressionPactRequiresMinor => 0xf,
+            Self::AlreadyHaveNonAggressionPact => 0x10,
+            Self::AlreadyAllied => 0x11,
+            Self::JoinEmpireRequiresMinor => 0x12,
+            Self::InsufficientEmbassyFunds => 0x15,
+            Self::InsufficientConsulateFunds => 0x16,
+            Self::InsufficientGrantFunds => 0x17,
+        }
+    }
+}
+
+#[derive(Clone, Copy)]
+enum PlayerDiplomacyAction {
+    JoinEmpire,
+    Alliance,
+    NonAggressionPact,
+    PeaceTreaty,
+    DeclareWar,
+    Grant,
+    TradeSubsidy,
+    Boycott,
+    BuildConsulate,
+    BuildEmbassy,
+}
+
+impl DiplomacyPolicy {
+    const fn player_action(self) -> Option<PlayerDiplomacyAction> {
+        match self {
+            Self::JoinEmpire => Some(PlayerDiplomacyAction::JoinEmpire),
+            Self::Alliance => Some(PlayerDiplomacyAction::Alliance),
+            Self::NonAggressionPact => Some(PlayerDiplomacyAction::NonAggressionPact),
+            Self::PeaceTreaty => Some(PlayerDiplomacyAction::PeaceTreaty),
+            Self::DeclareWar => Some(PlayerDiplomacyAction::DeclareWar),
+            Self::BuildConsulate => Some(PlayerDiplomacyAction::BuildConsulate),
+            Self::BuildEmbassy => Some(PlayerDiplomacyAction::BuildEmbassy),
+            Self::JoinEmpireWithWarEntanglements => None,
+        }
+    }
+
+    const fn requires_entanglement_check(self) -> bool {
+        matches!(self, Self::JoinEmpire | Self::Alliance)
+    }
 }
 
 impl GameState {
@@ -414,24 +491,16 @@ impl GameState {
             return PlayerDiplomacyOrderResult::Applied;
         }
 
-        let target_state = self
-            .nations
-            .common(target)
-            .expect("player diplomacy target must be present");
-        if target_state.status() != CountryStatus::Independent {
-            return PlayerDiplomacyOrderResult::Rejected(
-                PlayerDiplomacyRejection::TargetIsNotIndependent,
-            );
-        }
-        if self.diplomacy.mission_levels[source.nation()][target] != DiplomaticMissionLevel::Embassy
+        if let Err(rejection) =
+            self.validate_player_diplomacy_action(source, target, PlayerDiplomacyAction::Grant)
         {
-            return PlayerDiplomacyOrderResult::Rejected(PlayerDiplomacyRejection::EmbassyRequired);
+            return self.reject_player_diplomacy(rejection);
         }
 
         if self.set_diplomacy_grant(source, target, Some(grant)) {
             PlayerDiplomacyOrderResult::Applied
         } else {
-            PlayerDiplomacyOrderResult::Rejected(PlayerDiplomacyRejection::InsufficientGrantFunds)
+            self.reject_player_diplomacy(PlayerDiplomacyRejection::InsufficientGrantFunds)
         }
     }
 
@@ -453,25 +522,13 @@ impl GameState {
         if source.nation() == target {
             return PlayerDiplomacyOrderResult::SelectedNation;
         }
-        let target_state = self
-            .nations
-            .common(target)
-            .expect("player diplomacy target must be present");
-        if target_state.status() != CountryStatus::Independent {
-            return PlayerDiplomacyOrderResult::Rejected(
-                PlayerDiplomacyRejection::TargetIsNotIndependent,
-            );
-        }
-        let rejection = if policy == TradePolicyScore::BOYCOTT {
-            (self.diplomacy.relationships[source.nation()][target]
-                == DiplomaticRelationship::Alliance)
-                .then_some(PlayerDiplomacyRejection::AlliedNationCannotBeBoycotted)
+        let action = if policy == TradePolicyScore::BOYCOTT {
+            PlayerDiplomacyAction::Boycott
         } else {
-            (self.diplomacy.mission_levels[source.nation()][target] == DiplomaticMissionLevel::None)
-                .then_some(PlayerDiplomacyRejection::TradeConsulateRequired)
+            PlayerDiplomacyAction::TradeSubsidy
         };
-        if let Some(rejection) = rejection {
-            return PlayerDiplomacyOrderResult::Rejected(rejection);
+        if let Err(rejection) = self.validate_player_diplomacy_action(source, target, action) {
+            return self.reject_player_diplomacy(rejection);
         }
 
         let current = self.nations.majors[source].common.trade_policy_by_nation[target];
@@ -482,6 +539,288 @@ impl GameState {
         };
         self.set_trade_policy(source, target, next);
         PlayerDiplomacyOrderResult::Applied
+    }
+
+    /// Toggles one treaty selected on the player diplomacy map.
+    ///
+    /// Matching a posted policy retracts it, including the consulate/embassy
+    /// treasury refund. Alliance and join-empire inherit the target's wars only
+    /// after `confirm_entanglements`.
+    pub fn toggle_player_diplomacy_policy(
+        &mut self,
+        source: MajorNationId,
+        target: NationId,
+        policy: DiplomacyPolicy,
+        confirm_entanglements: bool,
+    ) -> PlayerDiplomacyOrderResult {
+        assert!(
+            self.nations.majors[source].economy.diplomacy_eligible,
+            "player diplomacy orders require a diplomacy-eligible major nation"
+        );
+        let action = policy
+            .player_action()
+            .expect("player diplomacy map posts one of the seven treaty actions");
+        if source.nation() == target {
+            return PlayerDiplomacyOrderResult::SelectedNation;
+        }
+
+        if self.nations.majors[source]
+            .economy
+            .diplomacy_policy_by_nation[target]
+            == Some(policy)
+        {
+            self.clear_player_diplomacy_policy(source, target);
+            return PlayerDiplomacyOrderResult::Applied;
+        }
+
+        if let Err(rejection) = self.validate_player_diplomacy_action(source, target, action) {
+            return self.reject_player_diplomacy(rejection);
+        }
+        if policy.requires_entanglement_check()
+            && !confirm_entanglements
+            && self.has_alliance_guard(target, source.nation())
+        {
+            return PlayerDiplomacyOrderResult::NeedsEntanglementConfirmation;
+        }
+
+        let _ = self.apply_player_diplomacy_policy(source, target, policy);
+        PlayerDiplomacyOrderResult::Applied
+    }
+
+    /// Toggles the colony-boycott flag for a foreign nation that the player does
+    /// not itself control.
+    pub fn toggle_player_colony_boycott(
+        &mut self,
+        source: MajorNationId,
+        target: NationId,
+    ) -> PlayerDiplomacyOrderResult {
+        assert!(
+            self.nations.majors[source].economy.diplomacy_eligible,
+            "player diplomacy orders require a diplomacy-eligible major nation"
+        );
+        if source.nation() == target {
+            return PlayerDiplomacyOrderResult::SelectedNation;
+        }
+        if self.owner_slot(target) == source.nation() {
+            return PlayerDiplomacyOrderResult::Applied;
+        }
+        let enabled = self.nations.majors[source].economy.colony_boycott_flags[target] == 0;
+        self.set_colony_boycott(source, target, enabled);
+        PlayerDiplomacyOrderResult::Applied
+    }
+
+    /// Retail standing-score classifier used by the diplomacy relationship overlay.
+    pub fn diplomacy_relationship_notch(&self, source: NationId, target: NationId) -> u8 {
+        let standing = self.diplomacy.standings[source][target];
+        if standing <= 0x14 {
+            0
+        } else if standing <= 0x31 {
+            1
+        } else if standing <= 0x4f {
+            2
+        } else if standing <= 0x64 {
+            3
+        } else if standing <= 0x87 {
+            4
+        } else if standing <= 0xaa {
+            5
+        } else if standing <= 0xcd {
+            6
+        } else if standing <= 0xf0 {
+            7
+        } else {
+            8
+        }
+    }
+
+    fn reject_player_diplomacy(
+        &mut self,
+        rejection: PlayerDiplomacyRejection,
+    ) -> PlayerDiplomacyOrderResult {
+        self.diplomacy.proposal_mode_raw = rejection.proposal_mode();
+        PlayerDiplomacyOrderResult::Rejected(rejection)
+    }
+
+    fn validate_player_diplomacy_action(
+        &self,
+        source: MajorNationId,
+        target: NationId,
+        action: PlayerDiplomacyAction,
+    ) -> Result<(), PlayerDiplomacyRejection> {
+        let source_nation = source.nation();
+        match self.status_of(target) {
+            CountryStatus::ColonyOf(_) => {
+                return Err(PlayerDiplomacyRejection::TargetIsColony);
+            }
+            CountryStatus::ProtectorateOf(_) => {
+                return Err(PlayerDiplomacyRejection::TargetIsNotIndependent);
+            }
+            CountryStatus::Independent => {}
+        }
+
+        let mission = self.diplomacy.mission_levels[source_nation][target];
+        let relationship = self.diplomacy.relationships[source_nation][target];
+        let at_war = relationship == DiplomaticRelationship::War;
+        let treasury = self.nations.majors[source].common.treasury;
+        match action {
+            PlayerDiplomacyAction::JoinEmpire => {
+                if mission != DiplomaticMissionLevel::Embassy {
+                    return Err(PlayerDiplomacyRejection::EmbassyRequired);
+                }
+                if at_war {
+                    return Err(PlayerDiplomacyRejection::AlreadyAtWar);
+                }
+                if MajorNationId::from_nation(target).is_some() {
+                    return Err(PlayerDiplomacyRejection::JoinEmpireRequiresMinor);
+                }
+            }
+            PlayerDiplomacyAction::Alliance => {
+                if MajorNationId::from_nation(target).is_none() {
+                    return Err(PlayerDiplomacyRejection::AllianceRequiresGreatPower);
+                }
+                if at_war {
+                    return Err(PlayerDiplomacyRejection::AlreadyAtWar);
+                }
+                if relationship == DiplomaticRelationship::Alliance {
+                    return Err(PlayerDiplomacyRejection::AlreadyAllied);
+                }
+            }
+            PlayerDiplomacyAction::NonAggressionPact => {
+                if mission != DiplomaticMissionLevel::Embassy {
+                    return Err(PlayerDiplomacyRejection::EmbassyRequired);
+                }
+                if at_war {
+                    return Err(PlayerDiplomacyRejection::AlreadyAtWar);
+                }
+                if relationship == DiplomaticRelationship::NonAggressionPact {
+                    return Err(PlayerDiplomacyRejection::AlreadyHaveNonAggressionPact);
+                }
+                if MajorNationId::from_nation(target).is_some() {
+                    return Err(PlayerDiplomacyRejection::NonAggressionPactRequiresMinor);
+                }
+            }
+            PlayerDiplomacyAction::PeaceTreaty => {
+                if !self.war_stamp_stale(source_nation, target) {
+                    return Err(PlayerDiplomacyRejection::PeaceRequiresOngoingWar);
+                }
+            }
+            PlayerDiplomacyAction::DeclareWar => {
+                if at_war {
+                    return Err(PlayerDiplomacyRejection::AlreadyDeclaringWar);
+                }
+            }
+            PlayerDiplomacyAction::Grant => {
+                if mission != DiplomaticMissionLevel::Embassy {
+                    return Err(PlayerDiplomacyRejection::EmbassyRequired);
+                }
+            }
+            PlayerDiplomacyAction::TradeSubsidy => {
+                if mission == DiplomaticMissionLevel::None {
+                    return Err(PlayerDiplomacyRejection::TradeConsulateRequired);
+                }
+            }
+            PlayerDiplomacyAction::Boycott => {
+                if relationship == DiplomaticRelationship::Alliance {
+                    return Err(PlayerDiplomacyRejection::AlliedNationCannotBeBoycotted);
+                }
+            }
+            PlayerDiplomacyAction::BuildConsulate => {
+                if mission != DiplomaticMissionLevel::None {
+                    return Err(PlayerDiplomacyRejection::ConsulateAlreadyPresent);
+                }
+                if at_war {
+                    return Err(PlayerDiplomacyRejection::AlreadyAtWar);
+                }
+                if treasury < 500 {
+                    return Err(PlayerDiplomacyRejection::InsufficientConsulateFunds);
+                }
+            }
+            PlayerDiplomacyAction::BuildEmbassy => {
+                if mission == DiplomaticMissionLevel::None {
+                    return Err(PlayerDiplomacyRejection::EmbassyRequiresConsulate);
+                }
+                if mission == DiplomaticMissionLevel::Embassy {
+                    return Err(PlayerDiplomacyRejection::EmbassyAlreadyPresent);
+                }
+                if at_war {
+                    return Err(PlayerDiplomacyRejection::AlreadyAtWar);
+                }
+                if treasury < 5000 {
+                    return Err(PlayerDiplomacyRejection::InsufficientEmbassyFunds);
+                }
+            }
+        }
+        Ok(())
+    }
+
+    fn clear_player_diplomacy_policy(&mut self, source: MajorNationId, target: NationId) {
+        let previous = self.nations.majors[source]
+            .economy
+            .diplomacy_policy_by_nation[target];
+        match previous {
+            Some(DiplomacyPolicy::BuildConsulate) => {
+                self.nations.majors[source].common.treasury += 500;
+            }
+            Some(DiplomacyPolicy::BuildEmbassy) => {
+                self.nations.majors[source].common.treasury += 5000;
+            }
+            _ => {}
+        }
+        self.nations.majors[source]
+            .economy
+            .diplomacy_policy_by_nation[target] = None;
+    }
+
+    /// `TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks` while the
+    /// diplomacy map is open (`TSimMgr::mode != 6`), so declare-war does not
+    /// queue a war transition.
+    fn apply_player_diplomacy_policy(
+        &mut self,
+        source: MajorNationId,
+        target: NationId,
+        policy: DiplomacyPolicy,
+    ) -> bool {
+        let embassy = self.diplomacy.mission_levels[source.nation()][target]
+            == DiplomaticMissionLevel::Embassy;
+        let mut apply = true;
+        match policy {
+            DiplomacyPolicy::JoinEmpire
+            | DiplomacyPolicy::Alliance
+            | DiplomacyPolicy::NonAggressionPact
+                if !embassy =>
+            {
+                apply = false;
+            }
+            DiplomacyPolicy::DeclareWar => {
+                if self.diplomacy.relationships[target][source.nation()]
+                    == DiplomaticRelationship::Alliance
+                {
+                    self.apply_peace_relationship(source.nation(), target, true);
+                }
+                if self.nations.majors[source].economy.diplomacy_eligible {
+                    let _ = self.set_diplomacy_grant(source, target, None);
+                }
+            }
+            DiplomacyPolicy::BuildConsulate => {
+                apply = self.can_afford_diplomacy(source, 500);
+                if apply {
+                    self.nations.majors[source].common.treasury -= 500;
+                }
+            }
+            DiplomacyPolicy::BuildEmbassy => {
+                apply = self.can_afford_diplomacy(source, 5000);
+                if apply {
+                    self.nations.majors[source].common.treasury -= 5000;
+                }
+            }
+            _ => {}
+        }
+        if apply {
+            self.nations.majors[source]
+                .economy
+                .diplomacy_policy_by_nation[target] = Some(policy);
+        }
+        apply
     }
 
     /// Retail nation information panel military classification.
