@@ -62,7 +62,11 @@ fn add_game_plugins(app: &mut App) {
         ui::DealBookPlugin,
         ui::OfferSheetPlugin,
     ))
-    .add_plugins((ui::TechnologyAdvancePlugin, ui::NewspaperPlugin));
+    .add_plugins((
+        ui::CursorPlugin,
+        ui::TechnologyAdvancePlugin,
+        ui::NewspaperPlugin,
+    ));
 }
 
 pub fn run(
