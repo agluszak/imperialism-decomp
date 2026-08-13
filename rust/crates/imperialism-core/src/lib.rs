@@ -96,8 +96,8 @@ pub use market::{
     TradeCommodityTable, TradeDealBookEntry, TradeMarketRow, TradeMarketState,
 };
 pub use military::{
-    ArmyMissionState, AttackMissionState, MissionData, MissionState, NavyMissionState,
-    SelectedShip, ShipState, TaskForceState, TaskForceTarget,
+    AdmiralState, ArmyMissionState, AttackMissionState, MissionData, MissionState,
+    NavyMissionState, SelectedShip, ShipState, TaskForceState, TaskForceTarget,
 };
 pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,

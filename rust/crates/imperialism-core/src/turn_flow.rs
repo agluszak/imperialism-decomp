@@ -228,8 +228,7 @@ mod tests {
         }
         for index in 0..MajorNationId::COUNT {
             let tile = TileId::new(index as u16 + 1);
-            state.map[tile].owner_nation =
-                Some(TileOwnerTag::from_nation(NationId::new(index)));
+            state.map[tile].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(index)));
         }
         state.turn.phase = crate::PhaseCode::CITY_AND_TRANSPORT;
         assert!(state.advance_phase());

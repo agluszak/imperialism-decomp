@@ -665,6 +665,7 @@ mod tests {
             military_units: vec![],
             civilian_units: vec![],
             ships: vec![],
+            admirals: vec![],
             task_forces: vec![],
             missions: vec![],
             news: crate::NewsState::default(),

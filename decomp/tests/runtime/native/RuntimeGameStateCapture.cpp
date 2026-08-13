@@ -61,10 +61,12 @@
 #include "game/nation/TLandSaleEvent.h"
 #include "game/nation/TMinor.h"
 #include "game/nation/TTurnStartEvent.h"
+#include "game/navy/TAdmiral.h"
 #include "game/navy/TNavyMgr.h"
 #include "game/navy/TOcean.h"
 #include "game/navy/TShip.h"
 #include "game/navy/TTaskForce.h"
+#include "game/globals/navy_globals.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_core/CIterator.h"
 #include "game/ui_core/TLanguageMgr.h"
@@ -831,6 +833,7 @@ JSON_Value* CaptureTechnology() {
   technology.Set("military_unit_ability_active_by_nation",
                  militaryUnitAbilityActiveByNation.Release());
   technology.Set("city_capabilities_by_nation", cityCapabilitiesByNation.Release());
+  technology.Set("navy_growth_ship_type", ShipTypeName(g_pTechMgr->activeZoneIndex1d4));
   return technology.Release();
 }
 
@@ -2570,6 +2573,20 @@ JSON_Value* CaptureShips() {
   return ships.Release();
 }
 
+JSON_Value* CaptureAdmirals() {
+  JsonArray admirals;
+  for (TAdmiral* admiral = g_pNavySecondaryOrderListHead; admiral != 0; admiral = admiral->next) {
+    JsonObject object;
+    ASSERT(admiral->nationSlot >= 0 && admiral->nationSlot < kNationSlotCount);
+    object.Set("nation", static_cast<int>(admiral->nationSlot));
+    object.Set("name", static_cast<LPCSTR>(admiral->displayName));
+    object.Set("experience", static_cast<int>(admiral->experiencePoints));
+    object.SetOptional("ship", RuntimeShipIndex(admiral->assignedShip));
+    admirals.Add(object.Release());
+  }
+  return admirals.Release();
+}
+
 JSON_Value* CaptureTaskForceTarget(const TTaskForce* force) {
   JsonObject object;
   if (force->target == 0) {
@@ -2987,6 +3004,7 @@ bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("military_units", CaptureMilitaryUnits());
   object.Set("civilian_units", CaptureCivilianUnits());
   object.Set("ships", CaptureShips());
+  object.Set("admirals", CaptureAdmirals());
   object.Set("task_forces", CaptureTaskForces());
   object.Set("missions", CaptureMissions());
   object.Set("pending", CapturePending());

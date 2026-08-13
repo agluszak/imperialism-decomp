@@ -92,9 +92,13 @@ impl GameState {
             self.spawn_pending_army_growth_unit(nation);
         }
 
-        // NavyGrowthReward creates a named ship, bumps the active-zone ship counter, and
-        // constructs a TAdmiral. Admirals and active_zone_index are not in GameState, so
-        // this branch is not seeded by the city/transport differentials.
+        let navy_queued = self.nations.major(nation).economy.pending_actions
+            [PendingActionKind::NavyGrowthReward]
+            .status()
+            == PendingActionStatus::Queued;
+        if navy_queued {
+            self.spawn_pending_navy_growth_unit(nation);
+        }
 
         let overseas = self.nations.major(nation).economy.pending_actions
             [PendingActionKind::OverseasDeveloperReward]
@@ -404,26 +408,66 @@ impl GameState {
             return;
         }
         let turn_tick = self.turn.economic_turn;
-        let record = if order_kind == 3 {
-            TurnSummary::MilitaryRecruit {
-                turn_tick,
-                unit_type: MilitaryUnitKind::from_index(payload as u8)
-                    .expect("pending army-growth announce payload is a military unit kind"),
-                count: flags,
-            }
-        } else {
-            TurnSummary::Retail {
-                turn_tick,
-                order_kind,
-                payload,
-                flags,
-            }
-        };
+        let record =
+            if order_kind == 3 && payload >= 0 && (payload as usize) < MilitaryUnitKind::LENGTH {
+                TurnSummary::MilitaryRecruit {
+                    turn_tick,
+                    unit_type: MilitaryUnitKind::from_index(payload as u8)
+                        .expect("pending army-growth announce payload is a military unit kind"),
+                    count: flags,
+                }
+            } else {
+                TurnSummary::Retail {
+                    turn_tick,
+                    order_kind,
+                    payload,
+                    flags,
+                }
+            };
         crate::recruitment::insert_turn_summary(
             &mut self.rng,
             &mut self.pending.nations[nation].turn_summary,
             record,
         );
+    }
+
+    /// `CreateNavyPrimaryOrderNodeAndAssignDisplayName` plus `TAdmiral` assign.
+    fn spawn_pending_navy_growth_unit(&mut self, nation: MajorNationId) {
+        let nation_id = nation.nation();
+        let ship_type = self.technology.navy_growth_ship_type;
+        if crate::city::ship_creates_navy_object(ship_type) {
+            let location = self
+                .first_port_zone_for_nation(nation_id)
+                .expect("navy-growth pending requires a port zone for the nation");
+            self.insert_ship_at_head(ShipState {
+                ship_type,
+                location,
+                task_force: None,
+                aggression: 1,
+                nation: nation_id,
+                name: String::new(),
+                strength: crate::city::ship_stock_cap(ship_type),
+                experience: 0,
+                selection: 0,
+            });
+        }
+
+        let count = &mut self.nations.city_mut(nation).ship_order_count_by_type[ship_type];
+        *count = count.wrapping_add(1);
+
+        let ship = crate::city::ship_creates_navy_object(ship_type).then_some(ShipId::new(0));
+        self.admirals.insert(
+            0,
+            AdmiralState {
+                nation: nation_id,
+                name: String::new(),
+                experience: 0,
+                ship,
+            },
+        );
+
+        self.announce_later(nation, 3, 0x2508, 1);
+        self.announce_later(nation, 0, ship_type as i16, 1);
     }
 }
 
@@ -549,5 +593,91 @@ mod tests {
             [PendingActionKind::TownDevelopment];
         assert_eq!(town.status(), PendingActionStatus::Queued);
         assert_eq!(town.payload(), Some(1));
+    }
+
+    fn empty_zone() -> Zone {
+        Zone {
+            display_name: String::new(),
+            status_code: None,
+            target_tile: None,
+            seed_owner: None,
+            active_tile: None,
+            primary_neighbors: Vec::new(),
+            secondary_neighbors: Vec::new(),
+        }
+    }
+
+    #[test]
+    fn navy_growth_pending_creates_a_ship_of_the_line_and_an_admiral() {
+        let mut state = game_state();
+        let nation = MajorNationId::new(0);
+        let home = TileId::new(1);
+        state.nations.majors[nation].common.home_tile = Some(home);
+        state.map[home].former_owner_nation = Some(TileOwnerTag::from_nation(nation.nation()));
+        state.ocean.zones = vec![
+            ZoneKind::Zone(empty_zone()),
+            ZoneKind::PortZone(PortZone {
+                zone: empty_zone(),
+                port_tile: home,
+            }),
+        ];
+        state.nations.majors[nation].economy.pending_actions[PendingActionKind::NavyGrowthReward]
+            .queue(-1);
+
+        state.execute_nation_pending_action_state_machine(nation);
+
+        assert_eq!(state.ships.len(), 1);
+        assert_eq!(state.ships[0].ship_type, ShipType::ShipOfTheLine);
+        assert_eq!(state.ships[0].location, OceanZoneId::new(1));
+        assert_eq!(state.ships[0].nation, nation.nation());
+        assert_eq!(state.ships[0].strength, 1700);
+        assert_eq!(
+            state.nations.city(nation).ship_order_count_by_type[ShipType::ShipOfTheLine],
+            1
+        );
+        assert_eq!(state.admirals.len(), 1);
+        assert_eq!(state.admirals[0].nation, nation.nation());
+        assert_eq!(state.admirals[0].ship, Some(ShipId::new(0)));
+        assert_eq!(
+            state.pending.nations[nation].turn_summary,
+            [
+                TurnSummary::Retail {
+                    turn_tick: 1,
+                    order_kind: 0,
+                    payload: ShipType::ShipOfTheLine as i16,
+                    flags: 1,
+                },
+                TurnSummary::Retail {
+                    turn_tick: 1,
+                    order_kind: 3,
+                    payload: 0x2508,
+                    flags: 1,
+                },
+            ]
+        );
+    }
+
+    #[test]
+    fn navy_growth_pending_uses_the_unlocked_ironclad_hull() {
+        let mut state = game_state();
+        let nation = MajorNationId::new(0);
+        let home = TileId::new(1);
+        state.nations.majors[nation].common.home_tile = Some(home);
+        state.map[home].former_owner_nation = Some(TileOwnerTag::from_nation(nation.nation()));
+        state.ocean.zones = vec![ZoneKind::PortZone(PortZone {
+            zone: empty_zone(),
+            port_tile: home,
+        })];
+        state.technology.navy_growth_ship_type = ShipType::Ironclad;
+        state.nations.majors[nation].economy.pending_actions[PendingActionKind::NavyGrowthReward]
+            .queue(-1);
+
+        state.execute_nation_pending_action_state_machine(nation);
+
+        assert_eq!(state.ships[0].ship_type, ShipType::Ironclad);
+        assert_eq!(
+            state.nations.city(nation).ship_order_count_by_type[ShipType::Ironclad],
+            1
+        );
     }
 }

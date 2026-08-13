@@ -273,6 +273,7 @@ pub fn create_random_game(
         military_units,
         civilian_units: Vec::new(),
         ships: Vec::new(),
+        admirals: Vec::new(),
         task_forces: Vec::new(),
         missions,
         news: NewsState::default(),

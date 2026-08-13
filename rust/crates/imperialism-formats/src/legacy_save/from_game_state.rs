@@ -140,11 +140,7 @@ impl LegacySaveV62 {
             technology: technology_dto(state.technology()),
             map: map_dto(state.map(), state.map_view_origin()),
             ocean: ocean_dto(state.ocean()),
-            navy: LegacyNavyState {
-                ships: Vec::new(),
-                admirals: Vec::new(),
-                task_forces: Vec::new(),
-            },
+            navy: navy_dto(state),
             army_report_count: u16::from(state.pending().combat_reports_pending),
             major_nations,
             minor_nations,
@@ -697,6 +693,43 @@ fn army_dto(
     }
 }
 
+fn navy_dto(state: &GameState) -> LegacyNavyState {
+    let ships: Vec<LegacyShip> = state
+        .ships()
+        .iter()
+        .map(|ship| LegacyShip {
+            ship_type: ship.ship_type as i16,
+            aggression: ship.aggression,
+            nation: i16::from(ship.nation.get()),
+            name: ship.name.clone(),
+            strength: ship.strength,
+            selection: ship.selection,
+            experience: ship.experience,
+            zone_ordinal: i16::try_from(ship.location.get())
+                .expect("ship zone ordinal fits a save short"),
+        })
+        .collect();
+    let ship_count = i16::try_from(ships.len()).expect("ship count fits a save short");
+    let admirals = state
+        .admirals()
+        .iter()
+        .map(|admiral| LegacyAdmiral {
+            nation: i16::from(admiral.nation.get()),
+            name: admiral.name.clone(),
+            experience: admiral.experience,
+            ship_index: admiral
+                .ship
+                .map(|id| i16::try_from(id.get()).expect("admiral ship index fits a save short"))
+                .unwrap_or(ship_count),
+        })
+        .collect();
+    LegacyNavyState {
+        ships,
+        admirals,
+        task_forces: Vec::new(),
+    }
+}
+
 fn navy_mission_dto(navy: &NavyMissionState) -> LegacyNavyMission {
     LegacyNavyMission {
         target_zone: option_i16(navy.target_zone.map(OceanZoneId::get)),
@@ -802,7 +835,7 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
         initial_capability_value_by_nation_and_resource: [[0; RESOURCE_KIND_COUNT];
             MAJOR_NATION_COUNT],
         tech_selector: 0,
-        active_zone_index: 0,
+        active_zone_index: technology.navy_growth_ship_type as i16,
         per_technology_unlock_flags: technology.global_unlocks_by_technology.map(u8::from),
         resource_type_enabled: technology.industry_enabled_by_slot.map(u8::from),
         init_flags_1ab: [0; 30],

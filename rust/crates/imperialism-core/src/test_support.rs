@@ -173,6 +173,7 @@ pub(crate) fn game_state() -> GameState {
         military_units: Vec::new(),
         civilian_units: Vec::new(),
         ships: Vec::new(),
+        admirals: Vec::new(),
         task_forces: Vec::new(),
         missions: Vec::new(),
         news: crate::NewsState::default(),
