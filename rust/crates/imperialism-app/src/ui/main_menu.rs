@@ -3,6 +3,7 @@ use crate::ui::generated;
 use crate::ui::hover_help::{
     HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, get_string,
 };
+use crate::ui::load_save::LoadSaveReturn;
 use crate::ui::retail::{RetailTag, RetailUiAssets, find_descendant};
 use bevy::app::AppExit;
 use bevy::prelude::*;
@@ -16,6 +17,7 @@ struct MainMenuRoot;
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum MainMenuAction {
     RandomGame,
+    LoadGame,
     Quit,
 }
 
@@ -50,6 +52,7 @@ fn bind_main_menu_actions(
 ) {
     for (tag, action) in [
         (fourcc!("rand"), MainMenuAction::RandomGame),
+        (fourcc!("load"), MainMenuAction::LoadGame),
         (fourcc!("quit"), MainMenuAction::Quit),
     ] {
         let entity = find_descendant(*root, tag, &children, &tags);
@@ -102,12 +105,17 @@ fn on_main_menu_activate(
     actions: Query<&MainMenuAction>,
     mut next_state: ResMut<NextState<AppState>>,
     mut exit: MessageWriter<AppExit>,
+    mut commands: Commands,
 ) {
     let action = actions
         .get(activate.entity)
         .expect("main-menu Activate is bound on a MainMenuAction control");
     match *action {
         MainMenuAction::RandomGame => next_state.set(AppState::RandomSetup),
+        MainMenuAction::LoadGame => {
+            commands.insert_resource(LoadSaveReturn(AppState::MainMenu));
+            next_state.set(AppState::LoadGame);
+        }
         MainMenuAction::Quit => {
             exit.write(AppExit::Success);
         }
@@ -136,6 +144,7 @@ mod tests {
     fn spawn_test_main_menu(mut commands: Commands) {
         let root = commands.spawn((MainMenuRoot, Node::default())).id();
         commands.spawn((RetailTag(fourcc!("rand")), Node::default(), ChildOf(root)));
+        commands.spawn((RetailTag(fourcc!("load")), Node::default(), ChildOf(root)));
         commands.spawn((RetailTag(fourcc!("quit")), Node::default(), ChildOf(root)));
     }
 
@@ -158,6 +167,29 @@ mod tests {
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::RandomSetup
+        );
+
+        app.world_mut()
+            .resource_mut::<NextState<AppState>>()
+            .set(AppState::MainMenu);
+        app.update();
+
+        let load = app
+            .world_mut()
+            .query_filtered::<Entity, With<MainMenuAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<MainMenuAction>(*entity) == Some(&MainMenuAction::LoadGame)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: load });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::LoadGame
         );
 
         app.world_mut()

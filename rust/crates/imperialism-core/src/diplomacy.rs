@@ -231,7 +231,11 @@ impl TradePolicyScore {
         Self(score)
     }
 
-    pub(crate) const fn retail(self) -> i32 {
+    pub const fn get(self) -> i32 {
+        self.0
+    }
+
+    pub const fn retail(self) -> i32 {
         self.0
     }
 
@@ -277,6 +281,21 @@ pub enum DiplomacyPolicy {
     JoinEmpireWithWarEntanglements,
     BuildConsulate,
     BuildEmbassy,
+}
+
+impl DiplomacyPolicy {
+    pub const fn retail(self) -> i16 {
+        match self {
+            Self::JoinEmpire => 0x12d,
+            Self::Alliance => 0x12e,
+            Self::NonAggressionPact => 0x12f,
+            Self::PeaceTreaty => 0x130,
+            Self::DeclareWar => 0x131,
+            Self::JoinEmpireWithWarEntanglements => 0x132,
+            Self::BuildConsulate => 0x133,
+            Self::BuildEmbassy => 0x134,
+        }
+    }
 }
 
 const PLAYER_DIPLOMACY_GRANT_AMOUNTS: [i32; 4] = [1_000, 3_000, 5_000, 10_000];

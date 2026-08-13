@@ -76,6 +76,91 @@ impl<'a> LegacyStream<'a> {
     }
 }
 
+pub(crate) struct LegacyWriter {
+    bytes: Vec<u8>,
+}
+
+impl LegacyWriter {
+    pub(crate) fn new() -> Self {
+        Self { bytes: Vec::new() }
+    }
+
+    pub(crate) fn into_bytes(self) -> Vec<u8> {
+        self.bytes
+    }
+
+    pub(crate) fn write_bytes(&mut self, bytes: &[u8]) {
+        self.bytes.extend_from_slice(bytes);
+    }
+
+    pub(crate) fn write_zeros(&mut self, length: usize) {
+        self.bytes.resize(self.bytes.len() + length, 0);
+    }
+
+    pub(crate) fn write_u8(&mut self, value: u8) {
+        self.bytes.push(value);
+    }
+
+    pub(crate) fn write_i8(&mut self, value: i8) {
+        self.write_u8(value as u8);
+    }
+
+    pub(crate) fn write_le_u16(&mut self, value: u16) {
+        self.write_bytes(&value.to_le_bytes());
+    }
+
+    pub(crate) fn write_le_i16(&mut self, value: i16) {
+        self.write_bytes(&value.to_le_bytes());
+    }
+
+    pub(crate) fn write_le_u32(&mut self, value: u32) {
+        self.write_bytes(&value.to_le_bytes());
+    }
+
+    pub(crate) fn write_le_i32(&mut self, value: i32) {
+        self.write_bytes(&value.to_le_bytes());
+    }
+
+    pub(crate) fn write_be_i16(&mut self, value: i16) {
+        self.write_bytes(&value.to_be_bytes());
+    }
+
+    pub(crate) fn write_be_i32(&mut self, value: i32) {
+        self.write_bytes(&value.to_be_bytes());
+    }
+
+    pub(crate) fn write_be_u32(&mut self, value: u32) {
+        self.write_bytes(&value.to_be_bytes());
+    }
+
+    pub(crate) fn write_f64_le(&mut self, value: f64) {
+        self.write_bytes(&value.to_le_bytes());
+    }
+
+    pub(crate) fn write_fixed_text(&mut self, text: &str, length: usize) {
+        let mut bytes = vec![0; length];
+        let encoded = text.as_bytes();
+        let copy = encoded.len().min(length);
+        bytes[..copy].copy_from_slice(&encoded[..copy]);
+        self.write_bytes(&bytes);
+    }
+
+    pub(crate) fn write_mfc_string(&mut self, text: &str) {
+        let bytes = text.as_bytes();
+        if bytes.len() < usize::from(u8::MAX) {
+            self.write_u8(bytes.len() as u8);
+        } else if bytes.len() < usize::from(u16::MAX) {
+            self.write_u8(u8::MAX);
+            self.write_le_u16(bytes.len() as u16);
+        } else {
+            self.write_u8(u8::MAX);
+            self.write_le_u16(u16::MAX);
+            self.write_le_u32(bytes.len() as u32);
+        }
+        self.write_bytes(bytes);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -86,6 +171,19 @@ mod tests {
             3, b'o', b'n', b'e', 0xff, 4, 0, b't', b'e', b's', b't', 0xff, 0xff, 0xff, 2, 0, 0, 0,
             b'o', b'k',
         ];
+        let mut stream = LegacyStream::new(&bytes);
+        assert_eq!(stream.read_mfc_string(), "one");
+        assert_eq!(stream.read_mfc_string(), "test");
+        assert_eq!(stream.read_mfc_string(), "ok");
+    }
+
+    #[test]
+    fn writes_all_mfc_string_length_forms() {
+        let mut writer = LegacyWriter::new();
+        writer.write_mfc_string("one");
+        writer.write_mfc_string("test");
+        writer.write_mfc_string("ok");
+        let bytes = writer.into_bytes();
         let mut stream = LegacyStream::new(&bytes);
         assert_eq!(stream.read_mfc_string(), "one");
         assert_eq!(stream.read_mfc_string(), "test");

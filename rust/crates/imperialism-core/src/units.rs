@@ -257,8 +257,32 @@ impl MilitaryUnitState {
         self.owner_nation
     }
 
+    pub const fn roster_id(&self) -> i16 {
+        self.roster_id
+    }
+
     pub const fn registered(&self) -> bool {
         self.registered
+    }
+
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub const fn strength(&self) -> i16 {
+        self.strength
+    }
+
+    pub const fn era(&self) -> i16 {
+        self.era
+    }
+
+    pub const fn experience(&self) -> i16 {
+        self.experience
+    }
+
+    pub const fn battle_flags(&self) -> i16 {
+        self.battle_flags
     }
 }
 
@@ -315,6 +339,20 @@ impl MilitaryOrder {
             }
         }
     }
+
+    pub const fn target(&self) -> Option<ProvinceId> {
+        match *self {
+            Self::Idle { .. } => None,
+            Self::Retail { target, .. } => target,
+        }
+    }
+
+    pub const fn code(&self) -> i32 {
+        match *self {
+            Self::Idle { .. } => 0,
+            Self::Retail { code, .. } => code.get(),
+        }
+    }
 }
 
 /// An unrecovered retail military order discriminator retained only inside an
@@ -325,6 +363,10 @@ pub struct MilitaryOrderCode(i32);
 impl MilitaryOrderCode {
     pub const fn from_retail(value: i32) -> Self {
         Self(value)
+    }
+
+    pub const fn get(self) -> i32 {
+        self.0
     }
 }
 
@@ -430,12 +472,19 @@ impl CivilianUnitState {
     pub const fn unit_type(&self) -> CivilianUnitKind {
         self.unit_type
     }
+
     pub const fn order(&self) -> &CivilianWorkOrder {
         &self.order
     }
+
     pub const fn owner_nation(&self) -> NationId {
         self.owner_nation
     }
+
+    pub const fn roster_id(&self) -> i16 {
+        self.roster_id
+    }
+
     pub const fn registered(&self) -> bool {
         self.registered
     }

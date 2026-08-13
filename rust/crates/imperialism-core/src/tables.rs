@@ -63,6 +63,10 @@ impl<T> NationTable<T> {
     pub const fn from_array(values: [T; NATION_COUNT]) -> Self {
         Self(values)
     }
+
+    pub const fn as_array(&self) -> &[T; NATION_COUNT] {
+        &self.0
+    }
 }
 
 impl<T: Default> Default for NationTable<T> {
@@ -98,6 +102,10 @@ impl<T> MajorNationTable<T> {
         Self(std::array::from_fn(|index| {
             function(MajorNationId::new(index as u8))
         }))
+    }
+
+    pub const fn as_array(&self) -> &[T; MAJOR_NATION_COUNT] {
+        &self.0
     }
 
     pub(crate) fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
@@ -147,6 +155,10 @@ impl<T> MinorNationTable<T> {
     pub(crate) fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
         self.0.iter()
     }
+
+    pub const fn as_array(&self) -> &[T; MINOR_NATION_COUNT] {
+        &self.0
+    }
 }
 
 impl<T: Default> Default for MinorNationTable<T> {
@@ -176,6 +188,10 @@ pub struct ProvinceTable<T>(Box<[T; PROVINCE_COUNT]>);
 impl<T> ProvinceTable<T> {
     pub fn from_array(values: [T; PROVINCE_COUNT]) -> Self {
         Self(Box::new(values))
+    }
+
+    pub fn as_array(&self) -> &[T; PROVINCE_COUNT] {
+        &self.0
     }
 }
 
@@ -255,6 +271,10 @@ pub struct ProductionTable<T>([T; CityFacilitySlot::COUNT]);
 impl<T> ProductionTable<T> {
     pub const fn from_array(values: [T; CityFacilitySlot::COUNT]) -> Self {
         Self(values)
+    }
+
+    pub const fn as_array(&self) -> &[T; CityFacilitySlot::COUNT] {
+        &self.0
     }
 }
 

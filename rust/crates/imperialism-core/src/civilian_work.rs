@@ -53,6 +53,10 @@ impl TurnsRemaining {
     pub const fn try_new(value: i16) -> Option<Self> {
         if value > 0 { Some(Self(value)) } else { None }
     }
+
+    pub const fn get(self) -> i16 {
+        self.0
+    }
     fn advance(&mut self) -> bool {
         self.0 -= 1;
         self.0 == 0
