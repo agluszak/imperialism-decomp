@@ -8,7 +8,7 @@ mod write;
 #[cfg(test)]
 mod tests;
 
-use imperialism_core::NationId;
+use imperialism_core::{CityWindowPosition, NationId, ProductionTable};
 use model::{
     LegacyDiplomacyState, LegacyHelpState, LegacyMajorNationState, LegacyMapState,
     LegacyMinorState, LegacyNavyState, LegacyOceanState, LegacySaveHeader, LegacySimulationPrefix,
@@ -57,4 +57,37 @@ pub struct LegacyGameStateContext {
     pub map_generation_lcg: u32,
     pub zone_status_lcg: u32,
     pub selected_nation: NationId,
+}
+
+fn city_windows_from_retail(
+    flags: [u8; CITY_PRODUCTION_SLOT_COUNT],
+    left: [i16; CITY_PRODUCTION_SLOT_COUNT],
+    top: [i16; CITY_PRODUCTION_SLOT_COUNT],
+) -> ProductionTable<Option<CityWindowPosition>> {
+    ProductionTable::from_array(std::array::from_fn(|index| {
+        (flags[index] != 0).then_some(CityWindowPosition {
+            left: left[index],
+            top: top[index],
+        })
+    }))
+}
+
+fn city_windows_to_retail(
+    windows: &ProductionTable<Option<CityWindowPosition>>,
+) -> (
+    [u8; CITY_PRODUCTION_SLOT_COUNT],
+    [i16; CITY_PRODUCTION_SLOT_COUNT],
+    [i16; CITY_PRODUCTION_SLOT_COUNT],
+) {
+    let mut flags = [0_u8; CITY_PRODUCTION_SLOT_COUNT];
+    let mut left = [0_i16; CITY_PRODUCTION_SLOT_COUNT];
+    let mut top = [0_i16; CITY_PRODUCTION_SLOT_COUNT];
+    for (index, window) in windows.as_array().iter().enumerate() {
+        if let Some(position) = window {
+            flags[index] = 1;
+            left[index] = position.left;
+            top[index] = position.top;
+        }
+    }
+    (flags, left, top)
 }

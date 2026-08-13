@@ -55,32 +55,14 @@ impl CityFacilitySlot {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct BuildingWindowState {
-    pub flag: u8,
-    pub current: i16,
-    pub accumulated: i16,
+/// Client origin of an open city-screen building dialog.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct CityWindowPosition {
+    pub left: i16,
+    pub top: i16,
 }
 
 impl CityState {
-    pub fn set_building_window_state(
-        &mut self,
-        slot: CityFacilitySlot,
-        state: BuildingWindowState,
-    ) {
-        self.production_flags[slot] = state.flag;
-        self.production_current[slot] = state.current;
-        self.production_progress[slot] = state.accumulated;
-    }
-
-    pub fn building_window_state(&self, slot: CityFacilitySlot) -> BuildingWindowState {
-        BuildingWindowState {
-            flag: self.production_flags[slot],
-            current: self.production_current[slot],
-            accumulated: self.production_progress[slot],
-        }
-    }
-
     pub const fn is_capacity_center(slot: CityFacilitySlot) -> bool {
         matches!(
             slot,
@@ -260,16 +242,14 @@ impl CityState {
 }
 
 impl GameState {
-    /// Records the retail building-window presence and client origin for one city.
-    pub fn set_city_building_window_state(
+    /// Records whether a city-screen building dialog is open and where it sits.
+    pub fn set_city_building_window(
         &mut self,
         nation: MajorNationId,
         slot: CityFacilitySlot,
-        state: BuildingWindowState,
+        window: Option<CityWindowPosition>,
     ) {
-        self.nations
-            .city_mut(nation)
-            .set_building_window_state(slot, state);
+        self.nations.city_mut(nation).building_windows[slot] = window;
     }
 }
 

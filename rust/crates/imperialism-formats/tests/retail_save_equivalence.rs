@@ -23,7 +23,7 @@ fn beginning_save_projection_matches_cpp_loaded_state() -> anyhow::Result<()> {
     if let Some(tile) = actual.first_idle_civilian_tile(actual.turn().active_nation) {
         actual.center_map_on(tile);
     }
-    assert_eq!(actual.map().view_origin, expected.map().view_origin);
+    assert_eq!(actual.map_view_origin(), expected.map_view_origin());
 
     assert_game_state_eq(&expected, &actual)
 }
