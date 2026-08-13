@@ -1,4 +1,4 @@
-#include "NativeTransition.h"
+#include "NativeCases.h"
 #include "JsonObject.h"
 
 #include "game/civilian_domain_types.h"
@@ -7,7 +7,6 @@
 #include "game/military/TCivUnit.h"
 #include "game/nation/TGreatPower.h"
 #include "game/strategic_terrain.h"
-#include "game/ui_screens/TSimMgr.h"
 #include "game/unit_domain_types.h"
 
 namespace {
@@ -89,12 +88,7 @@ bool FindUnoccupiedTile(StrategicTileIndex* tileIndex) {
 } // namespace
 
 RuntimeActionResult RunCompletedRailSection(NativeTransition& transition) {
-  const NationSlot nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0 || nation->trackedObjectList == 0 || g_pGlobalMapState == 0 ||
-      g_pGlobalMapState->terrainStateTable == 0) {
-    return RuntimeActionResult::Failure("the loaded game has no civilian rail state");
-  }
+  const NationSlot nationSlot = ActiveNationSlot();
 
   StrategicTileIndex sourceTile = -1;
   StrategicTileIndex destinationTile = -1;
@@ -110,9 +104,9 @@ RuntimeActionResult RunCompletedRailSection(NativeTransition& transition) {
   civilian->MoveTo(destinationTile);
   civilian->remainingTurns24 = 1;
 
-  JsonObject operation;
-  operation.Set("civilian", civilian->persistentUnitId20);
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("civilian", civilian->persistentUnitId20);
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -122,12 +116,8 @@ RuntimeActionResult RunCompletedRailSection(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunIssuedRailSection(NativeTransition& transition) {
-  const NationSlot nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0 || nation->trackedObjectList == 0 || g_pGlobalMapState == 0 ||
-      g_pGlobalMapState->terrainStateTable == 0) {
-    return RuntimeActionResult::Failure("the loaded game has no civilian rail state");
-  }
+  const NationSlot nationSlot = ActiveNationSlot();
+  TGreatPower* nation = ActiveNation();
 
   StrategicTileIndex sourceTile = -1;
   StrategicTileIndex destinationTile = -1;
@@ -141,10 +131,10 @@ RuntimeActionResult RunIssuedRailSection(NativeTransition& transition) {
     nation->treasuryValue10 = 10000;
   }
 
-  JsonObject operation;
-  operation.Set("civilian", civilian->persistentUnitId20);
-  operation.Set("destination", static_cast<int>(destinationTile));
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("civilian", civilian->persistentUnitId20);
+  args.Set("destination", static_cast<int>(destinationTile));
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -162,12 +152,7 @@ RuntimeActionResult RunIssuedRailSection(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunCompletedResourceDevelopment(NativeTransition& transition) {
-  const NationSlot nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0 || nation->trackedObjectList == 0 || g_pGlobalMapState == 0 ||
-      g_pGlobalMapState->terrainStateTable == 0) {
-    return RuntimeActionResult::Failure("the loaded game has no civilian development state");
-  }
+  const NationSlot nationSlot = ActiveNationSlot();
 
   StrategicTileIndex extractiveTile = -1;
   if (!FindUnoccupiedTile(&extractiveTile)) {
@@ -196,10 +181,10 @@ RuntimeActionResult RunCompletedResourceDevelopment(NativeTransition& transition
   surfaceWorker->SetOrders(kUnitOrderDevelopResource, surfaceTile);
   surfaceWorker->remainingTurns24 = 1;
 
-  JsonObject operation;
-  operation.Set("extractive_worker", extractiveWorker->persistentUnitId20);
-  operation.Set("surface_worker", surfaceWorker->persistentUnitId20);
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("extractive_worker", extractiveWorker->persistentUnitId20);
+  args.Set("surface_worker", surfaceWorker->persistentUnitId20);
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }

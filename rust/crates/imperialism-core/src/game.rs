@@ -68,33 +68,6 @@ impl GameState {
         }
     }
 
-    /// Restores session-only fields after projecting a save-backed differential capture.
-    ///
-    /// Retail `.imp` bytes carry the persistable bulk; the native oracle publishes the
-    /// remaining live fields beside the save so complete `GameState` comparison stays exact.
-    pub fn apply_save_backed_ephemeral(
-        &mut self,
-        turn: TurnState,
-        unit_ids: UnitIdAllocator,
-        rng: RngState,
-        news: NewsState,
-        pending: PendingWorkState,
-        ai_development_pressure: [Option<AiDevelopmentPressureState>; MAJOR_NATION_COUNT],
-    ) {
-        self.turn = turn;
-        self.unit_ids = unit_ids;
-        self.rng = rng;
-        self.news = news;
-        self.pending = pending;
-        for (slot, pressure) in ai_development_pressure.into_iter().enumerate() {
-            let nation = MajorNationId::new(slot as u8);
-            self.nations
-                .major_mut(nation)
-                .economy
-                .ai_development_pressure = pressure;
-        }
-    }
-
     pub const fn turn(&self) -> &TurnState {
         &self.turn
     }
@@ -177,5 +150,12 @@ impl GameState {
             .iter()
             .find(|unit| unit.nation == nation && unit.order == CivilianWorkOrder::Idle)
             .and_then(|unit| unit.location.tile())
+    }
+}
+
+impl GameStateParts {
+    /// Construction-time access to a major nation while assembling live state.
+    pub fn major_mut(&mut self, nation: MajorNationId) -> &mut MajorNation {
+        self.nations.major_mut(nation)
     }
 }

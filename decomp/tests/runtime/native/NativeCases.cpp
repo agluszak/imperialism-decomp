@@ -1,5 +1,9 @@
 #include "NativeCases.h"
 
+#include "game/globals/shared_globals.h"
+#include "game/nation/TGreatPower.h"
+#include "game/ui_screens/TSimMgr.h"
+
 #include <string.h>
 
 RuntimeActionResult RunCityItemOrderIncrease(NativeTransition& transition);
@@ -85,4 +89,12 @@ const NativeCase* FindNativeCase(const char* name) {
     }
   }
   return 0;
+}
+
+TGreatPower* ActiveNation() {
+  return g_apNationStates[g_pSimMgr->GetActiveNationId()];
+}
+
+short ActiveNationSlot() {
+  return g_pSimMgr->GetActiveNationId();
 }

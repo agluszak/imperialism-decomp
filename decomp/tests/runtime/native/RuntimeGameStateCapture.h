@@ -12,6 +12,9 @@ class RuntimeRun;
 // Builds the same semantic object deserialized by imperialism_core::GameState.
 // The caller owns the returned JSON value on success.
 bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state);
+// Runtime-only overlay for save-backed differentials: turn, unit_ids, rng, news,
+// pending, and per-major AI development pressure. The caller owns the value on success.
+bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state);
 // Snapshot the live game into a named capture (for example "before" / "after").
 bool CaptureGameState(RuntimeRun& run, const char* name);
 // Save-backed before/after transport: writes save/rt_native_<name>.imp and publishes

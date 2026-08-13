@@ -2,8 +2,8 @@
 
 use anyhow::{Context, Result, bail};
 use imperialism_core::{
-    AiDevelopmentPressureState, GameState, MAJOR_NATION_COUNT, NewsState, PendingWorkState,
-    RngState, TurnState, UnitIdAllocator,
+    AiDevelopmentPressureState, GameState, MAJOR_NATION_COUNT, MajorNationId, NewsState,
+    PendingWorkState, RngState, TurnState, UnitIdAllocator,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 use serde::Deserialize;
@@ -13,14 +13,10 @@ use std::fs;
 use std::path::Path;
 use std::process::Command;
 
-use crate::{
-    EvidenceKind, RuntimeCaptureError, RuntimeResultExpectations, ValidatedRuntimeResult,
-    first_serialized_difference, read_runtime_result,
-};
+use crate::first_serialized_difference;
+use crate::runtime_capture::repository_root;
 
-const NATIVE_ORACLE: &str = "native_transition_oracle";
-const NATIVE_CASE_ENV: &str = "IMPERIALISM_NATIVE_CASE";
-const DIFFERENTIAL_CAPTURES: &[&str] = &["before", "case", "after", "result"];
+const NATIVE_ORACLE_JUST: &str = "native-oracle";
 
 #[derive(Debug, Deserialize)]
 struct SaveBackedCapture {
@@ -38,6 +34,20 @@ struct EphemeralGameState {
     ai_development_pressure: Vec<Option<AiDevelopmentPressureState>>,
 }
 
+/// Save bytes plus the runtime-only overlay the `.imp` does not store.
+pub struct SaveBackedState {
+    save: Vec<u8>,
+    ephemeral: EphemeralGameState,
+}
+
+/// One native transition: prepared before/after saves, case arguments, and result.
+pub struct NativeCaptures<C, R> {
+    pub before: SaveBackedState,
+    pub case: C,
+    pub result: R,
+    pub after: SaveBackedState,
+}
+
 /// Run the shared C++ native transition oracle for `case_name`, apply the matching
 /// Rust operation to the captured `before` state, and compare result plus post-state.
 pub fn compare_native<C, R>(
@@ -48,69 +58,99 @@ where
     C: DeserializeOwned,
     R: DeserializeOwned + Debug + PartialEq,
 {
-    let run = run_native_case_result(case_name, DIFFERENTIAL_CAPTURES)?;
-    compare_validated(&run.result, apply)
-}
-
-fn compare_validated<C, R>(
-    runtime: &ValidatedRuntimeResult,
-    apply: impl FnOnce(&mut GameState, C) -> R,
-) -> Result<()>
-where
-    C: DeserializeOwned,
-    R: DeserializeOwned + Debug + PartialEq,
-{
-    let mut actual = load_save_backed_state(runtime, "before")?;
-    let case: C = runtime.capture("case")?;
-    let expected = load_save_backed_state(runtime, "after")?;
-    let expected_result: R = runtime.capture("result")?;
-
-    let actual_result = apply(&mut actual, case);
-    if actual_result != expected_result {
-        bail!("operation result differs: C++ {expected_result:?}, Rust {actual_result:?}");
+    let native = run_native(case_name)?;
+    let mut actual = load_save_backed_state(native.before)?;
+    let expected = load_save_backed_state(native.after)?;
+    let result = apply(&mut actual, native.case);
+    if result != native.result {
+        bail!(
+            "operation result differs: C++ {:?}, Rust {result:?}",
+            native.result
+        );
     }
     assert_game_state_eq(&expected, &actual)
 }
 
-fn load_save_backed_state(
-    runtime: &ValidatedRuntimeResult,
-    capture_name: &str,
-) -> Result<GameState> {
-    let capture: SaveBackedCapture = runtime.capture(capture_name)?;
-    let artifact_dir = runtime
-        .artifact_dir()
-        .with_context(|| format!("resolving save-backed {capture_name} capture"))?;
-    let save_path = artifact_dir.join(&capture.save);
-    let bytes = fs::read(&save_path)
-        .with_context(|| format!("reading save-backed capture {}", save_path.display()))?;
-    let save = LegacySaveV62::parse(&bytes);
-    let mut state = save.game_state(LegacyGameStateContext {
+pub fn run_native<C, R>(case_name: &str) -> Result<NativeCaptures<C, R>>
+where
+    C: DeserializeOwned,
+    R: DeserializeOwned,
+{
+    let output_dir = tempfile::Builder::new()
+        .prefix("imperialism-native-")
+        .tempdir()
+        .context("creating a unique native result directory")?;
+    let output = Command::new("just")
+        .current_dir(repository_root()?.join("decomp"))
+        .args(["--quiet", NATIVE_ORACLE_JUST, case_name, "--seed", "1"])
+        .env("IMPERIALISM_RUNTIME_RESULT_DIR", output_dir.path())
+        .output()
+        .context("launching the native transition oracle")?;
+    if !output.status.success() {
+        let detail = String::from_utf8_lossy(&output.stderr).trim().to_owned();
+        bail!("native transition case {case_name} failed:\n{detail}");
+    }
+
+    let result_path = output_dir.path().join("result.json");
+    let result_json: serde_json::Value = serde_json::from_slice(
+        &fs::read(&result_path)
+            .with_context(|| format!("reading native result {}", result_path.display()))?,
+    )
+    .with_context(|| format!("parsing native result {}", result_path.display()))?;
+    let status = result_json.get("status").and_then(|value| value.as_str());
+    if status != Some("passed") {
+        bail!(
+            "native transition case {case_name} status {}",
+            status.unwrap_or("missing")
+        );
+    }
+
+    let captures_name = result_json
+        .get("captures_path")
+        .and_then(|value| value.as_str())
+        .unwrap_or("captures.json");
+    let captures_path = output_dir.path().join(captures_name);
+    let captures: serde_json::Value = serde_json::from_slice(
+        &fs::read(&captures_path)
+            .with_context(|| format!("reading native captures {}", captures_path.display()))?,
+    )
+    .with_context(|| format!("parsing native captures {}", captures_path.display()))?;
+
+    Ok(NativeCaptures {
+        before: read_save_backed_capture(output_dir.path(), &captures, "before")?,
+        case: read_capture(&captures, "case")?,
+        result: read_capture(&captures, "result")?,
+        after: read_save_backed_capture(output_dir.path(), &captures, "after")?,
+    })
+}
+
+pub fn load_save_backed_state(capture: SaveBackedState) -> Result<GameState> {
+    let save = LegacySaveV62::parse(&capture.save);
+    let mut parts = save.game_state_parts(LegacyGameStateContext {
         crt_rand_state: capture.ephemeral.rng.crt_rand.state(),
         map_generation_lcg: capture.ephemeral.rng.map_generation.state(),
         zone_status_lcg: capture.ephemeral.rng.zone_status.state(),
         selected_nation: capture.ephemeral.turn.selected_nation,
     });
-
+    parts.turn = capture.ephemeral.turn;
+    parts.unit_ids = capture.ephemeral.unit_ids;
+    parts.rng = capture.ephemeral.rng;
+    parts.news = capture.ephemeral.news;
+    parts.pending = capture.ephemeral.pending;
     let pressures = capture.ephemeral.ai_development_pressure;
     if pressures.len() != MAJOR_NATION_COUNT {
         bail!(
-            "{capture_name} ai_development_pressure length {}, expected {MAJOR_NATION_COUNT}",
+            "ai_development_pressure length {}, expected {MAJOR_NATION_COUNT}",
             pressures.len()
         );
     }
-    let mut fixed = [None; MAJOR_NATION_COUNT];
     for (slot, pressure) in pressures.into_iter().enumerate() {
-        fixed[slot] = pressure;
+        parts
+            .major_mut(MajorNationId::new(slot as u8))
+            .economy
+            .ai_development_pressure = pressure;
     }
-    state.apply_save_backed_ephemeral(
-        capture.ephemeral.turn,
-        capture.ephemeral.unit_ids,
-        capture.ephemeral.rng,
-        capture.ephemeral.news,
-        capture.ephemeral.pending,
-        fixed,
-    );
-    Ok(state)
+    Ok(GameState::from_parts(parts))
 }
 
 pub fn assert_game_state_eq(expected: &GameState, actual: &GameState) -> Result<()> {
@@ -128,119 +168,24 @@ pub fn assert_game_state_eq(expected: &GameState, actual: &GameState) -> Result<
     }
 }
 
-fn run_native_case_result(
-    case_name: &str,
-    required_captures: &'static [&'static str],
-) -> Result<RuntimeRun> {
-    run_runtime_result(
-        NATIVE_ORACLE,
-        Some(case_name),
-        EvidenceKind::RetailFixtureOracle,
-        required_captures,
-    )
+fn read_capture<T: DeserializeOwned>(captures: &serde_json::Value, name: &str) -> Result<T> {
+    let value = captures
+        .get(name)
+        .with_context(|| format!("native captures.json is missing {name}"))?;
+    serde_json::from_value(value.clone()).with_context(|| format!("decoding native {name} capture"))
 }
 
-/// Run one catalogued native runtime scenario into a unique output directory.
-///
-/// The returned run keeps that directory alive so save-backed artifacts remain
-/// readable until the caller is finished.
-pub fn run_retail_fixture_result(
+fn read_save_backed_capture(
+    run_dir: &Path,
+    captures: &serde_json::Value,
     name: &str,
-    required_captures: &'static [&'static str],
-) -> Result<RuntimeRun> {
-    run_runtime_result(
-        name,
-        None,
-        EvidenceKind::RetailFixtureOracle,
-        required_captures,
-    )
-}
-
-/// Run a catalogued self-consistency scenario such as random-map generation.
-pub fn run_self_consistency_result(
-    name: &str,
-    required_captures: &'static [&'static str],
-) -> Result<RuntimeRun> {
-    run_runtime_result(name, None, EvidenceKind::SelfConsistency, required_captures)
-}
-
-/// One native runtime invocation and the unique output directory it wrote.
-pub struct RuntimeRun {
-    result: ValidatedRuntimeResult,
-    _output_dir: tempfile::TempDir,
-}
-
-impl RuntimeRun {
-    pub fn capture<T: DeserializeOwned>(&self, name: &str) -> Result<T, RuntimeCaptureError> {
-        self.result.capture(name)
-    }
-
-    pub fn artifact_dir(&self) -> Result<&Path, RuntimeCaptureError> {
-        self.result.artifact_dir()
-    }
-}
-
-fn run_runtime_result(
-    scenario: &str,
-    native_case: Option<&str>,
-    evidence_kind: EvidenceKind,
-    required_captures: &'static [&'static str],
-) -> Result<RuntimeRun> {
-    let output_dir = tempfile::Builder::new()
-        .prefix("imperialism-runtime-")
-        .tempdir()
-        .context("creating a unique native result directory")?;
-    let mut command = Command::new("just");
-    command
-        .current_dir(repository_root()?.join("decomp"))
-        .args(["--quiet", "runtime-run", scenario, "--seed", "1"])
-        .env("IMPERIALISM_RUNTIME_RESULT_DIR", output_dir.path());
-    if let Some(case_name) = native_case {
-        command.env(NATIVE_CASE_ENV, case_name);
-    }
-
-    let output = command.output().with_context(|| {
-        if native_case.is_some() {
-            "launching the native transition oracle".to_owned()
-        } else {
-            "launching native runtime scenario".to_owned()
-        }
-    })?;
-
-    if !output.status.success() {
-        let detail = String::from_utf8_lossy(&output.stderr).trim().to_owned();
-        if let Some(case_name) = native_case {
-            bail!("native transition case {case_name} failed:\n{detail}");
-        }
-        bail!("native scenario {scenario} failed:\n{detail}");
-    }
-
-    let result_path = output_dir.path().join(format!("{scenario}.json"));
-    let result = read_runtime_result(
-        &result_path,
-        RuntimeResultExpectations {
-            name: scenario,
-            seed: 1,
-            evidence_kind,
-            required_captures,
-        },
-    )
-    .with_context(|| {
-        if native_case.is_some() {
-            format!("reading native transition result {}", result_path.display())
-        } else {
-            format!("reading native runtime result {}", result_path.display())
-        }
-    })?;
-    Ok(RuntimeRun {
-        result,
-        _output_dir: output_dir,
+) -> Result<SaveBackedState> {
+    let capture: SaveBackedCapture = read_capture(captures, name)?;
+    let save_path = run_dir.join(&capture.save);
+    let save = fs::read(&save_path)
+        .with_context(|| format!("reading save-backed capture {}", save_path.display()))?;
+    Ok(SaveBackedState {
+        save,
+        ephemeral: capture.ephemeral,
     })
-}
-
-fn repository_root() -> Result<&'static Path> {
-    Path::new(env!("CARGO_MANIFEST_DIR"))
-        .ancestors()
-        .nth(3)
-        .context("could not locate the repository root")
 }

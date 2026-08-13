@@ -36,10 +36,10 @@ def validate_result(result: dict[str, Any], expected_name: str, expected_seed: i
 def validate_published_result(
     result: dict[str, Any], expected_name: str, expected_seed: int
 ) -> None:
-    """Validate the final published result consumed by Rust differentials.
+    """Validate the final published result for generic runtime-capture tests.
 
-    This is the native envelope plus catalog `evidence_kind`. Pre-enrichment
-    `native-result.json` files are deliberately not accepted here.
+    This is the native envelope plus catalog `evidence_kind`. Native transition
+    differentials read result.json / captures.json directly and do not use this.
     """
     _validate_envelope(
         result,

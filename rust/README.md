@@ -13,9 +13,10 @@ reconstruction in `../decomp/`. Run Rust commands from this directory.
 
 Native semantic transitions capture save-backed `before`/`after` (`.imp` plus ephemeral session
 fields), with JSON `case`/`result`, through the C++ `native_transition_oracle` scenario. Domain
-integration tests call `compare_native(case, apply)`, which runs that case into a unique output
-directory and compares against that run's result. Retail fixtures live in `../fixtures/retail/`.
-The Rust game state does not depend on C++ layouts or Bevy ECS entities.
+integration tests call `compare_native(case, apply)`, which launches `just native-oracle` into a
+unique output directory and compares against that run's native `result.json` / `captures.json`.
+Retail fixtures live in `../fixtures/retail/`. The Rust game state does not depend on C++ layouts or
+Bevy ECS entities.
 
 Evidence classifications are retained: `retail_fixture_oracle` means Rust agrees with the current C++
 reconstruction from a retail-derived fixture; it is not direct original-executable equivalence.
@@ -29,7 +30,7 @@ cargo test --workspace
 cargo clippy --workspace --all-targets -- -D warnings
 ```
 
-Native-oracle differential tests are ignored by default (they need Wine/`just runtime-run`):
+Native-oracle differential tests are ignored by default (they need Wine/`just native-oracle`):
 
 ```sh
 cargo test -p imperialism-core -- --ignored
