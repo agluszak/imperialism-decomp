@@ -176,8 +176,7 @@ impl Plugin for DiplomacyPlugin {
         )
         .add_observer(on_diplomacy_activate.run_if(in_state(AppState::Diplomacy)))
         .add_observer(on_diplomacy_map_click.run_if(in_state(AppState::Diplomacy)))
-        .add_observer(open_diplomacy_rejection_notice.run_if(in_state(AppState::Diplomacy)))
-        .add_observer(on_diplomacy_notice_activate);
+        .add_observer(open_diplomacy_rejection_notice.run_if(in_state(AppState::Diplomacy)));
     }
 }
 
@@ -935,9 +934,9 @@ fn on_diplomacy_notice_activate(
     closes: Query<&DiplomacyNoticeClose>,
     mut commands: Commands,
 ) {
-    let Ok(close) = closes.get(activate.entity) else {
-        return;
-    };
+    let close = closes
+        .get(activate.entity)
+        .expect("diplomacy notice Activate is bound on DiplomacyNoticeClose");
     commands.entity(close.0).despawn();
 }
 
@@ -1007,7 +1006,8 @@ fn bind_diplomacy_notice(
     commands
         .entity(okay)
         .insert(DiplomacyNoticeClose(root))
-        .remove::<InteractionDisabled>();
+        .remove::<InteractionDisabled>()
+        .observe(on_diplomacy_notice_activate);
     let cancel = find_descendant(root, fourcc!("cncl"), &children, &tags);
     commands.entity(cancel).insert(Visibility::Hidden);
 }

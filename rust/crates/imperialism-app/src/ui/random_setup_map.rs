@@ -59,8 +59,7 @@ impl Plugin for MapPreviewPlugin {
             )
                 .chain()
                 .run_if(in_state(crate::AppState::RandomSetup)),
-        )
-        .add_observer(on_map_preview_click);
+        );
     }
 }
 
@@ -75,7 +74,8 @@ pub(crate) fn attach_random_setup_meanings(
     let map = find_descendant(root, MAP_TAG, children, tags);
     commands
         .entity(map)
-        .insert(RandomSetupMapPreview::default());
+        .insert(RandomSetupMapPreview::default())
+        .observe(on_map_preview_click);
     let coat = find_descendant(root, COAT_TAG, children, tags);
     commands.entity(coat).insert(RandomSetupCoat::default());
     let flag = find_descendant(root, FLAG_TAG, children, tags);
@@ -221,9 +221,9 @@ fn on_map_preview_click(
     mut setup: ResMut<RandomGameSetup>,
     maps: Query<(&RelativeCursorPosition, &RandomSetupMapPreview)>,
 ) {
-    let Ok((cursor, map_preview)) = maps.get(click.entity) else {
-        return;
-    };
+    let (cursor, map_preview) = maps
+        .get(click.entity)
+        .expect("map preview click is bound on RandomSetupMapPreview");
     if !cursor.cursor_over() {
         return;
     }
