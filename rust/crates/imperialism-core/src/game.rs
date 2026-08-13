@@ -204,4 +204,11 @@ impl GameState {
             .find(|unit| unit.nation == nation && unit.order == CivilianWorkOrder::Idle)
             .and_then(|unit| unit.location.tile())
     }
+
+    /// Map-entry camera from `TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick`.
+    pub fn center_map_on_first_idle_civilian(&mut self) {
+        if let Some(tile) = self.first_idle_civilian_tile(self.turn.active_nation) {
+            self.center_map_on(tile);
+        }
+    }
 }

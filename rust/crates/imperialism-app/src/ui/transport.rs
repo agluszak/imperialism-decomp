@@ -1,7 +1,7 @@
 use super::GameSession;
 use super::RetailUiAssets;
 use super::format_currency;
-use super::game_shell::{bind_native_game_screen_nav, project_date_and_treasury};
+use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::{RetailTag, find_descendant};
 use crate::AppState;
@@ -196,7 +196,7 @@ fn bind_transport_screen(
     let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Transport screen requires an active major nation");
     session.game.rebuild_nation_resource_yields(nation);
-    project_date_and_treasury(
+    bind_game_status_display(
         &mut commands,
         &mut assets,
         *root,

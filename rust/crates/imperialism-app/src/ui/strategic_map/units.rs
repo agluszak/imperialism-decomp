@@ -912,10 +912,13 @@ mod tests {
     #[test]
     fn beginning_of_game_projects_civilians_armies_and_fleets() {
         let mut state = fixture_state();
-        let civilian_tile = state
-            .first_idle_civilian_tile(state.turn().active_nation)
-            .expect("opening save has an idle civilian");
-        state.center_map_on(civilian_tile);
+        state.center_map_on_first_idle_civilian();
+        assert!(
+            state
+                .first_idle_civilian_tile(state.turn().active_nation)
+                .is_some(),
+            "opening save has an idle civilian"
+        );
         assert!(
             visible_strategic_units(&state)
                 .iter()

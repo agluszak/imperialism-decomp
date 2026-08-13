@@ -235,11 +235,15 @@ fn on_new_city_activate(
             let Ok((_, dialog)) = dialogs.single() else {
                 return;
             };
-            let stop = confirm_capital_site(&mut session.game, dialog.0);
+            let stop = confirm_capital_site(
+                &mut session.game,
+                dialog.0,
+                retail.assets().news_table().story_ids(),
+            );
             for (root, _) in &dialogs {
                 commands.entity(root).despawn();
             }
-            apply_turn_stop(stop, &mut session.game, retail.assets(), &mut next_state);
+            apply_turn_stop(stop, &mut next_state);
         }
         NewCityAction::Cancel => {
             for (root, _) in &dialogs {

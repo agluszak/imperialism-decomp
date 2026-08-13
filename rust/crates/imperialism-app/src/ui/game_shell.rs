@@ -1,4 +1,5 @@
 use crate::AppState;
+use crate::RetailAssetsResource;
 use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
@@ -16,6 +17,12 @@ use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
 use imperialism_core::{MajorNationId, MapEdges};
 use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
+
+#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
+enum GameStatusDisplay {
+    Date,
+    Treasury,
+}
 
 #[derive(Component)]
 struct StrategicMapRoot;
@@ -45,11 +52,14 @@ impl Plugin for GameShellPlugin {
         )
         .add_systems(
             Update,
+            project_game_status_display.run_if(resource_exists::<GameSession>),
+        )
+        .add_systems(
+            Update,
             (
                 scroll_strategic_map,
                 sync_strategic_base_terrain,
                 sync_strategic_units,
-                sync_strategic_map_treasury,
             )
                 .chain()
                 .run_if(in_state(AppState::StrategicMap)),
@@ -101,13 +111,7 @@ fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> MapEdges {
 }
 
 fn enter_strategic_map_view(mut session: ResMut<GameSession>) {
-    let Some(tile) = session
-        .game
-        .first_idle_civilian_tile(session.game.turn().active_nation)
-    else {
-        return;
-    };
-    session.game.center_map_on(tile);
+    session.game.center_map_on_first_idle_civilian();
 }
 
 fn spawn_strategic_map(mut commands: Commands) {
@@ -148,7 +152,7 @@ fn bind_strategic_map(
         &mut assets,
         &session.game,
     );
-    project_date_and_treasury(
+    bind_game_status_display(
         &mut commands,
         &mut assets,
         *root,
@@ -186,7 +190,7 @@ fn bind_strategic_map_management_pictures(
     }
 }
 
-pub(crate) fn project_date_and_treasury(
+pub(crate) fn bind_game_status_display(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
@@ -215,12 +219,13 @@ pub(crate) fn project_date_and_treasury(
     // Bevy draws shadows behind text, so use the retail shadow as the visible face.
     let text_color = assets.palette_color(0x28);
     let shadow_color = assets.palette_color(0);
-    set_control_text(
+    bind_status_text(
         commands,
         root,
         children,
         tags,
         fourcc!("seas"),
+        GameStatusDisplay::Date,
         format_retail_date(assets, state.turn().economic_turn),
         season_font,
         season_layout,
@@ -231,12 +236,13 @@ pub(crate) fn project_date_and_treasury(
     let nation = MajorNationId::from_nation(state.turn().active_nation)
         .expect("Game screen requires an active major nation");
     let treasury = format_currency(state.nations().major(nation).common.treasury);
-    set_control_text(
+    bind_status_text(
         commands,
         root,
         children,
         tags,
         fourcc!("trea"),
+        GameStatusDisplay::Treasury,
         treasury,
         treasury_font,
         treasury_layout,
@@ -246,20 +252,47 @@ pub(crate) fn project_date_and_treasury(
     );
 }
 
-fn format_retail_date(assets: &mut RetailUiAssets, economic_turn: i32) -> String {
+fn format_retail_date(assets: &RetailUiAssets, economic_turn: i32) -> String {
     let season = assets
         .string(10_000, (economic_turn % 4) as i16)
         .expect("retail season name must load");
     format!("{season}, {}", 1815 + economic_turn / 4)
 }
 
+fn project_game_status_display(
+    session: Res<GameSession>,
+    retail: Res<RetailAssetsResource>,
+    mut displays: Query<(&GameStatusDisplay, &mut Text)>,
+) {
+    if !session.is_changed() {
+        return;
+    }
+    let state = &session.game;
+    let nation = MajorNationId::from_nation(state.turn().active_nation)
+        .expect("Game screen requires an active major nation");
+    let date = {
+        let season = retail
+            .string(10_000, (state.turn().economic_turn % 4) as i16)
+            .expect("retail season name must load");
+        format!("{season}, {}", 1815 + state.turn().economic_turn / 4)
+    };
+    let treasury = format_currency(state.nations().major(nation).common.treasury);
+    for (kind, mut text) in &mut displays {
+        text.0 = match kind {
+            GameStatusDisplay::Date => date.clone(),
+            GameStatusDisplay::Treasury => treasury.clone(),
+        };
+    }
+}
+
 #[allow(clippy::too_many_arguments)]
-fn set_control_text(
+fn bind_status_text(
     commands: &mut Commands,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
     tag: FourCc,
+    kind: GameStatusDisplay,
     value: String,
     font: TextFont,
     layout: TextLayout,
@@ -270,6 +303,7 @@ fn set_control_text(
     commands
         .entity(find_descendant(root, tag, children, tags))
         .insert((
+            kind,
             Text::new(value),
             font,
             layout,
@@ -330,30 +364,6 @@ fn disable_native_control(
     commands
         .entity(find_descendant(root, tag, children, tags))
         .insert(InteractionDisabled);
-}
-
-fn sync_strategic_map_treasury(
-    session: Res<GameSession>,
-    mut commands: Commands,
-    root: Option<Single<Entity, With<StrategicMapRoot>>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
-    mut assets: RetailUiAssets,
-) {
-    if !session.is_changed() {
-        return;
-    }
-    let Some(root) = root else {
-        return;
-    };
-    project_date_and_treasury(
-        &mut commands,
-        &mut assets,
-        *root,
-        &children,
-        &tags,
-        &session,
-    );
 }
 
 fn on_game_screen_activate(

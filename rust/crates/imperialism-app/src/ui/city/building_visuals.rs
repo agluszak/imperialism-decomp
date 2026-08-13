@@ -175,7 +175,7 @@ pub(in crate::ui::city) fn bind_city_screen(
     );
 
     let nation = city_active_nation(&session);
-    project_date_and_treasury(
+    bind_game_status_display(
         &mut commands,
         &mut assets,
         *root,
@@ -641,7 +641,7 @@ pub(in crate::ui::city) fn sync_city_summary(
 pub(in crate::ui::city) fn sync_city_hover_title(
     canvas: Option<Single<(&RelativeCursorPosition, &CityCanvas)>>,
     mut titles: Query<&mut Text, With<CityHoverTitle>>,
-    assets: RetailUiAssets,
+    assets: Res<RetailAssetsResource>,
 ) {
     let Some((cursor, canvas)) = canvas.map(Single::into_inner) else {
         return;

@@ -1,7 +1,7 @@
 use super::GameSession;
 use super::RetailUiAssets;
 use super::format_currency;
-use super::game_shell::{bind_native_game_screen_nav, project_date_and_treasury};
+use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::hover_help::get_string;
 use super::random_setup_map::{
@@ -11,6 +11,7 @@ use super::random_setup_map::{
 use super::retail::ModalDialog;
 use super::retail::{RetailTag, find_child, find_descendant};
 use crate::AppState;
+use crate::RetailAssetsResource;
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::math::Rect;
 use bevy::picking::events::{Click, Pointer};
@@ -277,7 +278,7 @@ fn bind_diplomacy_screen(
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    project_date_and_treasury(
+    bind_game_status_display(
         &mut commands,
         &mut assets,
         *root,
@@ -1565,7 +1566,7 @@ fn sync_diplomacy_controls(
 fn sync_diplomacy_information(
     session: Res<GameSession>,
     screens: Query<Ref<DiplomacyScreen>>,
-    assets: RetailUiAssets,
+    assets: Res<RetailAssetsResource>,
     mut information: Query<
         (&DiplomacyInfoText, &mut Text),
         (
@@ -1928,12 +1929,12 @@ struct CouncilPanelText {
     rows: Option<[(String, String); 3]>,
 }
 
-fn council_panel_text(state: &GameState, assets: &RetailUiAssets) -> CouncilPanelText {
+fn council_panel_text(state: &GameState, assets: &RetailAssetsResource) -> CouncilPanelText {
     let congress = &state.diplomacy().congress;
     if let (Some(chairman), Some(counterpart)) = (congress.chairman, congress.counterpart) {
         let decade = (state.turn().economic_turn / 4) / 10 * 10 + 1815;
         CouncilPanelText {
-            title: fill_brackets(&get_string(assets, 0x2733, 0x35), &[&decade.to_string()]),
+            title: fill_brackets(&assets.get_string(0x2733, 0x35), &[&decade.to_string()]),
             rows: Some([
                 (
                     format!(
@@ -1956,14 +1957,14 @@ fn council_panel_text(state: &GameState, assets: &RetailUiAssets) -> CouncilPane
                     congress.counterpart_support.to_string(),
                 ),
                 (
-                    get_string(assets, 0x2733, 0x36),
+                    assets.get_string(0x2733, 0x36),
                     congress.neutral_support.to_string(),
                 ),
             ]),
         }
     } else {
         CouncilPanelText {
-            title: get_string(assets, 0x2733, 0x34),
+            title: assets.get_string(0x2733, 0x34),
             rows: None,
         }
     }
