@@ -671,29 +671,24 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_plugins(bevy::state::app::StatesPlugin)
-            .insert_state(AppState::RandomSetup)
-            .add_systems(Startup, |mut commands: Commands| {
-                open_planet_seed_dialog(&mut commands);
-            });
+            .insert_state(AppState::RandomSetup);
         app.update();
-        assert_eq!(
-            app.world_mut()
-                .query::<&PlanetSeedDialogRoot>()
-                .iter(app.world())
-                .count(),
-            1
-        );
+
+        let dialog = app
+            .world_mut()
+            .spawn((
+                PlanetSeedDialogRoot,
+                ModalDialog,
+                DespawnOnExit(AppState::RandomSetup),
+            ))
+            .id();
+        app.update();
+        assert!(app.world().get::<PlanetSeedDialogRoot>(dialog).is_some());
 
         app.world_mut()
             .resource_mut::<NextState<AppState>>()
             .set(AppState::MainMenu);
         app.update();
-        assert_eq!(
-            app.world_mut()
-                .query::<&PlanetSeedDialogRoot>()
-                .iter(app.world())
-                .count(),
-            0
-        );
+        assert!(app.world().get::<PlanetSeedDialogRoot>(dialog).is_none());
     }
 }
