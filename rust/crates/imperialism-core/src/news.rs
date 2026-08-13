@@ -135,6 +135,10 @@ pub const NEWS_TEMPLATE_COUNT: usize = 360;
 pub struct NewsState {
     pub pages: MajorNationTable<Option<NewsPage>>,
     pub last_used_turn_by_nation_and_template: MajorNationTable<Vec<i16>>,
+    /// `news.tab` story template ids. Installed from retail assets for a live
+    /// session; not stored in `.imp`.
+    #[serde(default)]
+    pub story_ids: Vec<i32>,
 }
 
 impl Default for NewsState {
@@ -144,6 +148,7 @@ impl Default for NewsState {
             last_used_turn_by_nation_and_template: MajorNationTable::from_fn(|_| {
                 vec![0; NEWS_TEMPLATE_COUNT]
             }),
+            story_ids: Vec::new(),
         }
     }
 }
@@ -367,10 +372,13 @@ pub struct LandSale {
 
 impl GameState {
     /// Mirrors turn-machine case `0xf` after `StartNewsPhase`: build pages, then
-    /// drop the consumed event queue.
-    pub fn start_newspaper_phase(&mut self, story_ids: &[i32]) {
+    /// drop the consumed event queue. The turn driver calls this before returning
+    /// [`crate::TurnStop::Newspaper`].
+    pub fn start_newspaper_phase(&mut self) {
         self.turn.phase = PhaseCode::NEWSPAPER;
-        self.construct_newspaper_pages(story_ids);
+        let story_ids = std::mem::take(&mut self.news.story_ids);
+        self.construct_newspaper_pages(&story_ids);
+        self.news.story_ids = story_ids;
     }
 
     pub fn finish_newspaper_phase(&mut self) {
@@ -838,7 +846,8 @@ mod tests {
                 audience: None,
                 story_code: 3,
             });
-        state.start_newspaper_phase(&filler_table());
+        state.set_news_story_ids(&filler_table());
+        state.start_newspaper_phase();
         assert_eq!(state.turn.phase, PhaseCode::NEWSPAPER);
         assert!(state.pending.newspaper_events.is_empty());
         assert!(state.news.pages[MajorNationId::new(0)].is_some());

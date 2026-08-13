@@ -1,10 +1,15 @@
 use crate::AppState;
+use crate::RetailAssetsResource;
 use crate::ui::GameSession;
+use crate::ui::credits::CreditsReturn;
 use crate::ui::generated;
+use crate::ui::hover_help::get_string;
+use crate::ui::preferences::PreferencesReturn;
 use crate::ui::random_setup_map::{compose_owner_preview_indices, preview_image_from_indices};
 use crate::ui::retail::{
     ModalDialog, RetailPictureSwap, RetailTag, RetailUiAssets, find_descendant,
 };
+use bevy::app::AppExit;
 use bevy::input_focus::AutoFocus;
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
@@ -14,9 +19,10 @@ use bevy::ui_widgets::{Activate, SelectAllOnFocus};
 use imperialism_core::{GameState, NationId, PhaseCode, TileId, TileOwnerTag};
 use imperialism_formats::{
     FourCc, LegacyGameStateContext, LoadGameError, NUMBERED_SAVE_SLOT_COUNT, OverwritePolicy,
-    PictureId, SAVE_LABEL_MAX_CHARS, SaveDirectoryListing, SaveFileError, SaveHeaderInfo, SaveSlot,
-    fourcc, list_save_slots, load_game_from_bytes, normalize_save_label, peek_save_header,
-    peek_save_preview_owners, retail_save_path, write_game_state, write_save_file,
+    PictureId, RetailAssets, SAVE_LABEL_MAX_CHARS, SaveDirectoryListing, SaveFileError,
+    SaveHeaderInfo, SaveSlot, fourcc, list_save_slots, load_game_from_bytes, normalize_save_label,
+    peek_save_header, peek_save_preview_owners, retail_save_path, write_game_state,
+    write_save_file,
 };
 use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -145,6 +151,29 @@ enum FlagMenuAction {
     Save,
     Load,
     Cancel,
+    NewGame,
+    Preferences,
+    Credits,
+    Quit,
+}
+
+/// `TFlagOptionsPicture` new-game/quit confirmation, posed before the window dismisses.
+#[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
+enum FlagMenuPending {
+    NewGame,
+    Quit,
+}
+
+#[derive(Component)]
+struct FlagMenuPrompt {
+    kind: FlagMenuPending,
+    body: String,
+}
+
+#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
+enum FlagMenuPromptAction {
+    Accept,
+    Dismiss,
 }
 
 pub(crate) struct LoadSavePlugin;
@@ -172,7 +201,12 @@ impl Plugin for LoadSavePlugin {
             )
             .add_systems(
                 Update,
-                bind_flag_menu.run_if(in_state(AppState::StrategicMap)),
+                (
+                    bind_flag_menu,
+                    spawn_flag_menu_prompt,
+                    bind_flag_menu_prompt,
+                )
+                    .run_if(in_state(AppState::StrategicMap)),
             );
     }
 }
@@ -183,7 +217,8 @@ pub(crate) fn register_load_save_logic(app: &mut App) {
             .run_if(in_state(AppState::LoadGame).or_else(in_state(AppState::SaveGame))),
     )
     .add_observer(on_open_flag_menu.run_if(in_state(AppState::StrategicMap)))
-    .add_observer(on_flag_menu_activate.run_if(in_state(AppState::StrategicMap)));
+    .add_observer(on_flag_menu_activate.run_if(in_state(AppState::StrategicMap)))
+    .add_observer(on_flag_menu_prompt_activate.run_if(in_state(AppState::StrategicMap)));
 }
 
 pub(crate) fn load_slot(
@@ -264,7 +299,7 @@ pub(crate) fn commit_loaded_game(
 ) -> Result<(GameSession, AppState), LoadGameError> {
     let game = loaded?;
     let destination = loaded_game_destination(&game);
-    Ok((GameSession(game), destination))
+    Ok((GameSession { game }, destination))
 }
 
 fn loaded_game_destination(game: &GameState) -> AppState {
@@ -543,9 +578,9 @@ fn sync_load_save_preview(
             let Some(session) = session else {
                 return;
             };
-            let selected = session.0.turn().active_nation;
+            let selected = session.game.turn().active_nation;
             let pixels =
-                satellite_preview_indices(|tile| session.0.map()[tile].owner_nation, selected);
+                satellite_preview_indices(|tile| session.game.map()[tile].owner_nation, selected);
             apply_satellite_preview(&mut commands, &mut assets, entity, image_node, &pixels);
         }
         LoadSavePreviewKey::Slot(slot) => {
@@ -585,6 +620,7 @@ fn on_load_save_activate(
     state: Res<State<AppState>>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
+    retail: Option<Res<RetailAssetsResource>>,
 ) {
     if !notices.is_empty() {
         return;
@@ -621,6 +657,9 @@ fn on_load_save_activate(
             let Some(save_dir) = save_dir else {
                 return;
             };
+            let Some(retail) = retail.as_deref() else {
+                return;
+            };
             confirm_or_apply(
                 &mut commands,
                 &root,
@@ -631,6 +670,7 @@ fn on_load_save_activate(
                 returning.0,
                 *state.get(),
                 &mut next_state,
+                retail.assets(),
             );
         }
     }
@@ -707,6 +747,7 @@ fn confirm_or_apply(
     returning: AppState,
     screen_state: AppState,
     next_state: &mut NextState<AppState>,
+    retail: &RetailAssets,
 ) {
     let Some(slot) = root.selected else {
         if root.mode == LoadSaveMode::Save {
@@ -738,10 +779,11 @@ fn confirm_or_apply(
                 commands,
                 save_dir,
                 slot,
-                session.map(|session| &session.0),
+                session.map(|session| &session.game),
                 next_state,
                 screen_state,
                 None,
+                retail,
             );
         }
         LoadSaveMode::Save => {
@@ -764,7 +806,7 @@ fn confirm_or_apply(
                 commands,
                 save_dir,
                 slot,
-                &session.0,
+                &session.game,
                 &label,
                 returning,
                 next_state,
@@ -782,7 +824,8 @@ fn apply_load(
     existing: Option<&GameState>,
     next_state: &mut NextState<AppState>,
     screen_state: AppState,
-    assets: Option<&RetailUiAssets>,
+    assets: Option<&RetailAssetsResource>,
+    retail: &RetailAssets,
 ) {
     if !retail_save_path(save_dir, slot).is_file() {
         return;
@@ -802,8 +845,8 @@ fn apply_load(
         }
     };
     match commit_loaded_game(load_slot(save_dir, slot, runtime)) {
-        Ok((session, destination)) => {
-            commands.insert_resource(session);
+        Ok((GameSession { game }, destination)) => {
+            commands.insert_resource(GameSession::from_assets(game, retail));
             next_state.set(destination);
         }
         Err(error) => spawn_notice(
@@ -839,7 +882,7 @@ fn apply_save(
     }
 }
 
-fn load_error_text(assets: &RetailUiAssets, error: &LoadGameError) -> String {
+fn load_error_text(assets: &RetailAssetsResource, error: &LoadGameError) -> String {
     let retail = match error {
         LoadGameError::InvalidMagic | LoadGameError::Truncated => assets.string(0x2737, 7).ok(),
         LoadGameError::UnsupportedVersion(_) => assets.string(0x2737, 8).ok(),
@@ -919,7 +962,7 @@ fn on_load_save_notice_activate(
     mut next_state: ResMut<NextState<AppState>>,
     state: Res<State<AppState>>,
     mut commands: Commands,
-    assets: RetailUiAssets,
+    assets: Res<RetailAssetsResource>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
@@ -940,10 +983,11 @@ fn on_load_save_notice_activate(
                 &mut commands,
                 &save_dir.0,
                 slot,
-                session.as_deref().map(|session| &session.0),
+                session.as_deref().map(|session| &session.game),
                 &mut next_state,
                 *state.get(),
-                Some(&assets),
+                Some(&*assets),
+                assets.assets(),
             );
         }
         (LoadSaveNoticeAction::Accept, _) | (LoadSaveNoticeAction::Dismiss, _) => {
@@ -978,34 +1022,49 @@ fn bind_flag_menu(
     root: Single<Entity, Added<FlagMenuRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    assets: RetailUiAssets,
+    mut assets: RetailUiAssets,
 ) {
     let root = *root;
     for (index, tag) in FLAG_LABEL_TAGS.iter().copied().enumerate() {
         let entity = find_descendant(root, tag, &children, &tags);
-        if let Ok(label) = assets.string(FLAG_MENU_STRING_GROUP, index as i16) {
-            commands.entity(entity).insert(Text::new(label));
-        }
+        let (font, layout, line_height, _) = assets
+            .text_style(imperialism_formats::RetailTextStylePreset {
+                font_family: 1,
+                face_flags: 0,
+                point_size: if index == 0 { 12 } else { 14 },
+                alignment: if index > 1 { -2 } else { 1 },
+            })
+            .expect("retail flag-menu label style");
+        let (text_palette, shadow_palette) = if index == 0 {
+            (0x5c, 0x28)
+        } else {
+            (0x28, 0xd2)
+        };
+        commands.entity(entity).insert((
+            Text::new(get_string(&assets, FLAG_MENU_STRING_GROUP, index as i16)),
+            font,
+            layout,
+            line_height,
+            TextColor(assets.palette_color(text_palette)),
+            TextShadow {
+                offset: Vec2::ONE,
+                color: assets.palette_color(shadow_palette),
+            },
+        ));
     }
     for (tag, action) in [
         (fourcc!("save"), FlagMenuAction::Save),
         (fourcc!("load"), FlagMenuAction::Load),
         (fourcc!("cncl"), FlagMenuAction::Cancel),
+        (fourcc!("newg"), FlagMenuAction::NewGame),
+        (fourcc!("pref"), FlagMenuAction::Preferences),
+        (fourcc!("cred"), FlagMenuAction::Credits),
+        (fourcc!("quit"), FlagMenuAction::Quit),
     ] {
         commands
             .entity(find_descendant(root, tag, &children, &tags))
             .insert(action)
             .remove::<InteractionDisabled>();
-    }
-    for tag in [
-        fourcc!("newg"),
-        fourcc!("pref"),
-        fourcc!("cred"),
-        fourcc!("quit"),
-    ] {
-        commands
-            .entity(find_descendant(root, tag, &children, &tags))
-            .insert(InteractionDisabled);
     }
 }
 
@@ -1013,9 +1072,13 @@ fn on_flag_menu_activate(
     activate: On<Activate>,
     actions: Query<&FlagMenuAction>,
     menus: Query<Entity, With<FlagMenuRoot>>,
+    prompts: Query<(), With<FlagMenuPrompt>>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
 ) {
+    if !prompts.is_empty() {
+        return;
+    }
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
@@ -1033,13 +1096,134 @@ fn on_flag_menu_activate(
             commands.insert_resource(LoadSaveReturn(AppState::StrategicMap));
             next_state.set(AppState::LoadGame);
         }
+        FlagMenuAction::Preferences => {
+            commands.insert_resource(PreferencesReturn(AppState::StrategicMap));
+            next_state.set(AppState::Preferences);
+        }
+        FlagMenuAction::Credits => {
+            commands.insert_resource(CreditsReturn(AppState::StrategicMap));
+            next_state.set(AppState::Credits);
+        }
+        FlagMenuAction::NewGame => {
+            commands.insert_resource(FlagMenuPending::NewGame);
+        }
+        FlagMenuAction::Quit => {
+            commands.insert_resource(FlagMenuPending::Quit);
+        }
+    }
+}
+
+fn spawn_flag_menu_prompt(
+    pending: Option<Res<FlagMenuPending>>,
+    existing: Query<(), With<FlagMenuPrompt>>,
+    assets: RetailUiAssets,
+    mut commands: Commands,
+) {
+    let Some(pending) = pending.as_deref().copied() else {
+        return;
+    };
+    if !existing.is_empty() {
+        return;
+    }
+    // `TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted` for single-player.
+    let index = match pending {
+        FlagMenuPending::NewGame => 0x2b,
+        FlagMenuPending::Quit => 0x2a,
+    };
+    let body = assets
+        .string(0x2737, index)
+        .expect("retail flag-menu confirm string");
+    let root = commands.spawn_scene(generated::linger_2020()).id();
+    commands.entity(root).insert((
+        FlagMenuPrompt {
+            kind: pending,
+            body,
+        },
+        ModalDialog,
+        TabGroup::modal(),
+        GlobalZIndex(21),
+        Pickable::default(),
+        DespawnOnExit(AppState::StrategicMap),
+    ));
+}
+
+fn bind_flag_menu_prompt(
+    mut commands: Commands,
+    prompt: Single<(Entity, &FlagMenuPrompt), Added<FlagMenuPrompt>>,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
+    mut assets: RetailUiAssets,
+) {
+    let (root, prompt) = prompt.into_inner();
+    let body = find_descendant(root, fourcc!("info"), &children, &tags);
+    let (body_font, body_layout, body_line_height, _) = assets
+        .text_style(imperialism_formats::RetailTextStylePreset {
+            font_family: 1,
+            face_flags: 0,
+            point_size: 12,
+            alignment: 0,
+        })
+        .expect("retail flag-menu prompt body style");
+    commands.entity(body).insert((
+        Text::new(prompt.body.clone()),
+        body_font,
+        body_layout,
+        body_line_height,
+        TextColor(assets.palette_color(0)),
+    ));
+    commands
+        .entity(find_descendant(root, fourcc!("okay"), &children, &tags))
+        .insert(FlagMenuPromptAction::Accept)
+        .remove::<InteractionDisabled>();
+    commands
+        .entity(find_descendant(root, fourcc!("cncl"), &children, &tags))
+        .insert(FlagMenuPromptAction::Dismiss)
+        .remove::<InteractionDisabled>();
+}
+
+fn on_flag_menu_prompt_activate(
+    activate: On<Activate>,
+    actions: Query<&FlagMenuPromptAction>,
+    prompts: Query<(Entity, &FlagMenuPrompt)>,
+    menus: Query<Entity, With<FlagMenuRoot>>,
+    mut next_state: ResMut<NextState<AppState>>,
+    mut exit: MessageWriter<AppExit>,
+    mut commands: Commands,
+) {
+    let Ok(action) = actions.get(activate.entity) else {
+        return;
+    };
+    let Ok((prompt_entity, prompt)) = prompts.single() else {
+        return;
+    };
+    match *action {
+        FlagMenuPromptAction::Dismiss => {
+            commands.entity(prompt_entity).despawn();
+            commands.remove_resource::<FlagMenuPending>();
+        }
+        FlagMenuPromptAction::Accept => {
+            commands.entity(prompt_entity).despawn();
+            commands.remove_resource::<FlagMenuPending>();
+            for entity in &menus {
+                commands.entity(entity).despawn();
+            }
+            match prompt.kind {
+                FlagMenuPending::NewGame => {
+                    commands.remove_resource::<GameSession>();
+                    next_state.set(AppState::MainMenu);
+                }
+                FlagMenuPending::Quit => {
+                    exit.write(AppExit::Success);
+                }
+            }
+        }
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_formats::{LegacySaveV62, write_save_file};
+    use imperialism_formats::LegacySaveV62;
 
     const BEGINNING_OF_GAME: &[u8] =
         include_bytes!("../../../../../fixtures/retail/beginning_of_game.imp");
@@ -1060,6 +1244,7 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_plugins(bevy::state::app::StatesPlugin)
+            .add_message::<AppExit>()
             .insert_state(initial)
             .init_resource::<LoadSaveReturn>();
         register_load_save_logic(&mut app);
@@ -1132,6 +1317,40 @@ mod tests {
             FlagMenuAction::Cancel,
             ChildOf(root),
         ));
+        commands.spawn((
+            RetailTag(fourcc!("newg")),
+            FlagMenuAction::NewGame,
+            ChildOf(root),
+        ));
+        commands.spawn((
+            RetailTag(fourcc!("pref")),
+            FlagMenuAction::Preferences,
+            ChildOf(root),
+        ));
+        commands.spawn((
+            RetailTag(fourcc!("cred")),
+            FlagMenuAction::Credits,
+            ChildOf(root),
+        ));
+        commands.spawn((
+            RetailTag(fourcc!("quit")),
+            FlagMenuAction::Quit,
+            ChildOf(root),
+        ));
+    }
+
+    fn spawn_test_flag_prompt(mut commands: Commands, kind: FlagMenuPending) {
+        let root = commands
+            .spawn((
+                FlagMenuPrompt {
+                    kind,
+                    body: String::new(),
+                },
+                Node::default(),
+            ))
+            .id();
+        commands.spawn((FlagMenuPromptAction::Accept, ChildOf(root)));
+        commands.spawn((FlagMenuPromptAction::Dismiss, ChildOf(root)));
     }
 
     #[test]
@@ -1239,23 +1458,241 @@ mod tests {
     }
 
     #[test]
-    fn failed_load_does_not_replace_the_current_session() {
-        let original = fixture_state();
-        let dir = tempfile::tempdir().unwrap();
-        write_save_file(
-            retail_save_path(dir.path(), SaveSlot::Numbered(0)),
-            b"not a retail save",
-            OverwritePolicy::CreateNew,
-        )
-        .unwrap();
-        let session = GameSession(original.clone());
-        let result = commit_loaded_game(load_slot(
-            dir.path(),
-            SaveSlot::Numbered(0),
-            runtime_context_for_load(Some(&original), original.turn().selected_nation),
-        ));
-        assert!(result.is_err());
-        assert_eq!(session.0, original);
+    fn flag_cancel_dismisses_the_menu() {
+        let mut app = test_app(AppState::StrategicMap);
+        app.add_systems(Startup, spawn_test_flag_menu);
+        app.update();
+
+        let cancel = app
+            .world_mut()
+            .query_filtered::<Entity, With<FlagMenuAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::Cancel)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: cancel });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::StrategicMap
+        );
+        assert!(
+            app.world_mut()
+                .query_filtered::<Entity, With<FlagMenuRoot>>()
+                .iter(app.world())
+                .next()
+                .is_none()
+        );
+    }
+
+    #[test]
+    fn flag_preferences_enter_preferences() {
+        let mut app = test_app(AppState::StrategicMap);
+        app.add_systems(Startup, spawn_test_flag_menu);
+        app.update();
+
+        let pref = app
+            .world_mut()
+            .query_filtered::<Entity, With<FlagMenuAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::Preferences)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: pref });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::Preferences
+        );
+        assert_eq!(
+            app.world().resource::<PreferencesReturn>().0,
+            AppState::StrategicMap
+        );
+    }
+
+    #[test]
+    fn flag_credits_enter_credits() {
+        let mut app = test_app(AppState::StrategicMap);
+        app.add_systems(Startup, spawn_test_flag_menu);
+        app.update();
+
+        let cred = app
+            .world_mut()
+            .query_filtered::<Entity, With<FlagMenuAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::Credits)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: cred });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::Credits
+        );
+        assert_eq!(
+            app.world().resource::<CreditsReturn>().0,
+            AppState::StrategicMap
+        );
+    }
+
+    #[test]
+    fn flag_new_game_and_quit_wait_for_the_confirm_prompt() {
+        let mut app = test_app(AppState::StrategicMap);
+        app.add_systems(Startup, spawn_test_flag_menu);
+        app.update();
+
+        let new_game = app
+            .world_mut()
+            .query_filtered::<Entity, With<FlagMenuAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::NewGame)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: new_game });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::StrategicMap
+        );
+        assert_eq!(
+            *app.world().resource::<FlagMenuPending>(),
+            FlagMenuPending::NewGame
+        );
+
+        let quit = app
+            .world_mut()
+            .query_filtered::<Entity, With<FlagMenuAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::Quit)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: quit });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            *app.world().resource::<FlagMenuPending>(),
+            FlagMenuPending::Quit
+        );
+    }
+
+    #[test]
+    fn accepting_new_game_drops_the_session_and_returns_to_the_main_menu() {
+        let mut app = test_app(AppState::StrategicMap);
+        app.insert_resource(GameSession {
+            game: fixture_state(),
+        });
+        app.add_systems(Startup, spawn_test_flag_menu);
+        app.add_systems(Startup, |commands: Commands| {
+            spawn_test_flag_prompt(commands, FlagMenuPending::NewGame)
+        });
+        app.update();
+
+        let accept = app
+            .world_mut()
+            .query_filtered::<Entity, With<FlagMenuPromptAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<FlagMenuPromptAction>(*entity)
+                    == Some(&FlagMenuPromptAction::Accept)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: accept });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::MainMenu
+        );
+        assert!(app.world().get_resource::<GameSession>().is_none());
+    }
+
+    #[test]
+    fn accepting_quit_posts_app_exit() {
+        let mut app = test_app(AppState::StrategicMap);
+        app.add_systems(Startup, |commands: Commands| {
+            spawn_test_flag_prompt(commands, FlagMenuPending::Quit)
+        });
+        app.update();
+
+        let accept = app
+            .world_mut()
+            .query_filtered::<Entity, With<FlagMenuPromptAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<FlagMenuPromptAction>(*entity)
+                    == Some(&FlagMenuPromptAction::Accept)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: accept });
+        app.world_mut().flush();
+        app.update();
+        let exits = app
+            .world_mut()
+            .resource_mut::<bevy::ecs::message::Messages<AppExit>>()
+            .drain()
+            .collect::<Vec<_>>();
+        assert_eq!(exits, vec![AppExit::Success]);
+    }
+
+    #[test]
+    fn dismissing_new_game_keeps_the_flag_menu_open() {
+        let mut app = test_app(AppState::StrategicMap);
+        app.add_systems(Startup, spawn_test_flag_menu);
+        app.add_systems(Startup, |commands: Commands| {
+            spawn_test_flag_prompt(commands, FlagMenuPending::NewGame)
+        });
+        app.insert_resource(FlagMenuPending::NewGame);
+        app.update();
+
+        let dismiss = app
+            .world_mut()
+            .query_filtered::<Entity, With<FlagMenuPromptAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<FlagMenuPromptAction>(*entity)
+                    == Some(&FlagMenuPromptAction::Dismiss)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: dismiss });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::StrategicMap
+        );
+        assert!(app.world().get_resource::<FlagMenuPending>().is_none());
+        assert!(
+            app.world_mut()
+                .query_filtered::<Entity, With<FlagMenuRoot>>()
+                .iter(app.world())
+                .next()
+                .is_some()
+        );
     }
 
     #[test]
@@ -1269,7 +1706,7 @@ mod tests {
             runtime_context_for_load(Some(&original), original.turn().selected_nation),
         ))
         .unwrap();
-        assert_eq!(session.0, original);
+        assert_eq!(session.game, original);
         assert_eq!(destination, AppState::StrategicMap);
     }
 
@@ -1318,41 +1755,44 @@ mod tests {
     }
 
     #[test]
-    fn in_game_load_reuses_the_live_session_rng() {
-        let original = fixture_state();
-        let runtime = runtime_context_for_load(Some(&original), original.turn().selected_nation);
-        assert_eq!(runtime.crt_rand_state, original.rng().crt_rand.state());
-        assert_eq!(
-            runtime.map_generation_lcg,
-            original.rng().map_generation.state()
-        );
-        assert_eq!(runtime.zone_status_lcg, original.rng().zone_status.state());
-    }
-
-    #[test]
-    fn load_uses_caller_rng_because_imp_does_not_persist_it() {
+    fn in_game_load_inherits_the_live_session_rng() {
         let original = fixture_state();
         let dir = tempfile::tempdir().unwrap();
         save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "England").unwrap();
-        let runtime = LegacyGameStateContext {
-            crt_rand_state: 0x1234_5678,
-            map_generation_lcg: 0x1111_2222,
-            zone_status_lcg: 0x3333_4444,
-            selected_nation: original.turn().selected_nation,
-        };
-        let loaded = load_slot(dir.path(), SaveSlot::Numbered(0), runtime).unwrap();
-        assert_eq!(loaded.rng().crt_rand.state(), runtime.crt_rand_state);
-        assert_eq!(
-            loaded.rng().map_generation.state(),
-            runtime.map_generation_lcg
-        );
-        assert_eq!(loaded.rng().zone_status.state(), runtime.zone_status_lcg);
-        assert_ne!(loaded.rng(), original.rng());
+        let loaded = load_slot(
+            dir.path(),
+            SaveSlot::Numbered(0),
+            runtime_context_for_load(Some(&original), original.turn().selected_nation),
+        )
+        .unwrap();
+        assert_eq!(loaded.rng(), original.rng());
     }
 
     #[test]
-    fn main_menu_load_leaves_the_map_lcg_at_bss_zero() {
-        let runtime = runtime_context_for_load(None, NationId::new(0));
-        assert_eq!(runtime.map_generation_lcg, 0);
+    fn main_menu_load_uses_retail_startup_rng_context() {
+        let original = fixture_state();
+        let dir = tempfile::tempdir().unwrap();
+        save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "England").unwrap();
+        let loaded = load_slot(
+            dir.path(),
+            SaveSlot::Numbered(0),
+            runtime_context_for_load(None, original.turn().selected_nation),
+        )
+        .unwrap();
+        assert_eq!(
+            loaded.rng().map_generation.state(),
+            0,
+            "main-menu load leaves the map LCG at its BSS-zero startup value"
+        );
+        assert_ne!(
+            loaded.rng().crt_rand,
+            original.rng().crt_rand,
+            ".imp does not persist CRT rand; a main-menu load uses the clock-seeded stream"
+        );
+        assert_ne!(
+            loaded.rng().zone_status,
+            original.rng().zone_status,
+            ".imp does not persist the zone LCG; a main-menu load uses the tick-derived stream"
+        );
     }
 }

@@ -1,5 +1,5 @@
 use super::borders::{
-    CITY_BORDER_PALETTE, MAJOR_NATION_BORDER_PALETTES, MINOR_NATION_BORDER_PALETTE, draw_border,
+    CITY_BORDER_PALETTE, MAJOR_NATION_BORDER_PALETTES, compose_strategic_borders,
 };
 use super::overlays::{
     IMPROVEMENT_PICTURE_IDS, RESOURCE_ICON_HEIGHT, RESOURCE_ICON_WIDTH, RESOURCE_OVERLAY_HEIGHT,
@@ -11,8 +11,8 @@ use super::terrain::{
 };
 use super::*;
 use imperialism_core::{
-    GameState, GameStateParts, MapMgr, MapTopology, STRATEGIC_TILE_COUNT, TerrainKind, TileId,
-    TileOwnerTag, TileRendering, TileState,
+    GameState, GameStateParts, MapMgr, MapTopology, NationId, STRATEGIC_TILE_COUNT, TerrainKind,
+    TileId, TileOwnerTag, TileRendering, TileState,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 
@@ -373,23 +373,31 @@ fn city_tiles_blit_the_capital_improvement_ink() {
 
 #[test]
 fn nation_borders_use_the_owner_palette() {
+    let mut fixture = MapFixture::new();
+    let origin = fixture.origin;
+    fixture.edit(|map, origin| {
+        map[origin].terrain = TerrainKind::Plains;
+        map[origin].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(6)));
+        map[origin].owner_border_mask = 1;
+        map[origin].city_border_mask = 0;
+    });
+
     let mut pixels = vec![1_u8; (TILE_SIZE * TILE_SIZE) as usize];
-    draw_border(
-        &mut pixels,
-        0,
-        MAJOR_NATION_BORDER_PALETTES[6],
-        MINOR_NATION_BORDER_PALETTE,
+    compose_strategic_borders(&fixture.state(), origin, &mut pixels);
+    assert!(
+        pixels.contains(&MAJOR_NATION_BORDER_PALETTES[6]),
+        "major nation 6 must stroke with retail palette 0x2e"
     );
-    assert!(pixels.contains(&MAJOR_NATION_BORDER_PALETTES[6]));
-    assert!(pixels.contains(&MINOR_NATION_BORDER_PALETTE));
+    assert!(
+        !pixels.contains(&MAJOR_NATION_BORDER_PALETTES[0]),
+        "a nation-6 border must not use another major's palette"
+    );
 }
 
 #[test]
 fn beginning_of_game_viewport_paints_settlements_borders_and_resources() {
     let mut state = fixture_state();
-    if let Some(tile) = state.first_idle_civilian_tile(state.turn().active_nation) {
-        state.center_map_on(tile);
-    }
+    state.center_map_on_first_idle_civilian();
 
     let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
     let indices = compose_strategic_map_indices(

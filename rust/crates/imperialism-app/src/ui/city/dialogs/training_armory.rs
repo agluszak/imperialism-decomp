@@ -336,7 +336,7 @@ pub(in crate::ui::city) fn sync_training_dialog(
         return;
     }
     let nation = city_active_nation(&session);
-    let major = session.0.nations().major(nation);
+    let major = session.game.nations().major(nation);
     let city = &major.city;
     let production = city.population.production_labor();
     let strength = city.population.strength();
@@ -395,7 +395,7 @@ pub(in crate::ui::city) fn sync_armory_details(
         return;
     }
     let nation = city_active_nation(&session);
-    let major = session.0.nations().major(nation);
+    let major = session.game.nations().major(nation);
     let city = &major.city;
     let order = &city.orders.military_recruitment[selection.category];
     let spec = military_recruitment_spec(order.unit_kind)

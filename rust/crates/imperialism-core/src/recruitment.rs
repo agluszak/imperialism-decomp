@@ -1,31 +1,31 @@
+use crate::{
+    CivilianLocation, CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, Difficulty,
+    GameState, MajorNationId, MapMgr, MilitaryUnitKind, MilitaryUnitState, NationId,
+    PendingActionKind, ShipType, TileFlags, TileId, TileOwnerTag, TurnSummary,
+};
 #[cfg(test)]
 use crate::{CivilianUnitId, MilitaryUnitId};
-use crate::{
-    CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, GameState, MajorNationId, MapMgr,
-    MilitaryUnitKind, MilitaryUnitState, NationId, PendingActionKind, STRATEGIC_TILE_COUNT,
-    TileFlags, TileId, TileOwnerTag, TurnSummary,
-};
 
 impl MapMgr {
     pub fn find_reachable_recruit_spawn_tile(
-        &self,
+        &mut self,
         civilians: &[CivilianUnitState],
         start: TileId,
         allow_active_flag_2: bool,
     ) -> Option<TileId> {
         let owner = self[start].owner_nation;
         let geometry = self.geometry();
-        let mut visited = vec![false; STRATEGIC_TILE_COUNT];
+        for index in 0..TileId::COUNT {
+            self[TileId::new(index)].recruit_search_visited = 0;
+        }
         let mut pending = vec![start];
 
         while let Some(tile_id) = pending.pop() {
-            let index = usize::from(tile_id.get());
-            let tile = &self[tile_id];
-            if visited[index] {
+            if self[tile_id].recruit_search_visited != 0 {
                 continue;
             }
-            visited[index] = true;
-            if tile.owner_nation != owner {
+            self[tile_id].recruit_search_visited = 1;
+            if self[tile_id].owner_nation != owner {
                 continue;
             }
 
@@ -34,7 +34,10 @@ impl MapMgr {
                     && Some(civilian.owner_nation) == owner.and_then(TileOwnerTag::nation)
             });
             if !occupied
-                && (!tile.flags.contains(TileFlags::RECRUITMENT_RESERVED) || allow_active_flag_2)
+                && (!self[tile_id]
+                    .flags
+                    .contains(TileFlags::RECRUITMENT_RESERVED)
+                    || allow_active_flag_2)
             {
                 return Some(tile_id);
             }
@@ -85,22 +88,7 @@ impl GameState {
                 ) else {
                     continue;
                 };
-                let id = self.unit_ids.next_civilian();
-                let unit = CivilianUnitState {
-                    id,
-                    nation: nation_id,
-                    unit_type: unit_kind,
-                    location: crate::CivilianLocation::OnMap(tile),
-                    order: CivilianWorkOrder::Idle,
-                    owner_nation: nation_id,
-                    roster_id: 0,
-                    registered: false,
-                    next_on_tile: None,
-                };
-                let insert_at = self
-                    .civilian_units
-                    .partition_point(|existing| existing.nation.get() <= nation_id.get());
-                self.civilian_units.insert(insert_at, unit);
+                self.insert_idle_civilian(nation_id, unit_kind, CivilianLocation::OnMap(tile));
             }
         }
 
@@ -108,6 +96,79 @@ impl GameState {
             let city = self.nations.city_mut(nation);
             city.serialized_state += 1;
         }
+    }
+
+    /// Opening-turn civilian grant from `TGreatPower::SetHomeCityTileAndDisplayName`.
+    pub(crate) fn grant_opening_civilians(&mut self) {
+        if self.turn.scenario_map.is_some() {
+            return;
+        }
+        for index in 0..MajorNationId::COUNT {
+            self.grant_opening_civilians_for_nation(MajorNationId::new(index));
+        }
+    }
+
+    /// One nation's prospector/engineer pair, plus the Introductory human extras.
+    pub fn grant_opening_civilians_for_nation(&mut self, nation: MajorNationId) {
+        if self.nations.major(nation).common.home_tile.is_none() {
+            return;
+        }
+        self.spawn_opening_civilian(nation, CivilianUnitKind::Prospector, false);
+        self.spawn_opening_civilian(nation, CivilianUnitKind::Engineer, true);
+        self.nations.city_mut(nation).ship_order_count_by_type[ShipType::Trader] += 2;
+        if self.turn.difficulty == Difficulty::Introductory
+            && self.nations.major(nation).economy.diplomacy_eligible
+        {
+            self.nations.city_mut(nation).ship_order_count_by_type[ShipType::Trader] += 6;
+            self.spawn_opening_civilian(nation, CivilianUnitKind::Prospector, false);
+            self.spawn_opening_civilian(nation, CivilianUnitKind::Miner, false);
+            self.spawn_opening_civilian(nation, CivilianUnitKind::Farmer, false);
+        }
+    }
+
+    fn spawn_opening_civilian(
+        &mut self,
+        nation: MajorNationId,
+        kind: CivilianUnitKind,
+        allow_reserved: bool,
+    ) {
+        let nation_id = nation.nation();
+        let home = self
+            .nations
+            .major(nation)
+            .common
+            .home_tile
+            .expect("opening civilians require a home town tile");
+        let location = self
+            .map
+            .find_reachable_recruit_spawn_tile(&self.civilian_units, home, allow_reserved)
+            .map(CivilianLocation::OnMap)
+            .unwrap_or(CivilianLocation::OffMap);
+        self.insert_idle_civilian(nation_id, kind, location);
+    }
+
+    fn insert_idle_civilian(
+        &mut self,
+        nation_id: NationId,
+        kind: CivilianUnitKind,
+        location: CivilianLocation,
+    ) {
+        let id = self.unit_ids.next_civilian();
+        let unit = CivilianUnitState {
+            id,
+            nation: nation_id,
+            unit_type: kind,
+            location,
+            order: CivilianWorkOrder::Idle,
+            owner_nation: nation_id,
+            roster_id: 0,
+            registered: false,
+            next_on_tile: None,
+        };
+        let insert_at = self
+            .civilian_units
+            .partition_point(|existing| existing.nation.get() <= nation_id.get());
+        self.civilian_units.insert(insert_at, unit);
     }
 
     pub fn produce_military_recruits(

@@ -1,9 +1,10 @@
 use super::GameSession;
 use super::RetailUiAssets;
 use super::format_currency;
-use super::game_shell::project_date_and_treasury;
+use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::retail::{RetailTag, find_descendant};
+use super::session::apply_turn_stop;
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -142,7 +143,7 @@ fn bind_deal_book(
     session: Res<GameSession>,
 ) {
     let root = *root;
-    let oil_drilling = session.0.technology().oil_drilling_available();
+    let oil_drilling = session.game.technology().oil_drilling_available();
     let tab_base = if oil_drilling {
         TAB_STRIP_BASE + 1
     } else {
@@ -232,7 +233,7 @@ fn bind_deal_book(
     commands
         .entity(find_descendant(root, fourcc!("quer"), &children, &tags))
         .insert(InteractionDisabled);
-    project_date_and_treasury(&mut commands, &mut assets, root, &children, &tags, &session);
+    bind_game_status_display(&mut commands, &mut assets, root, &children, &tags, &session);
     commands
         .entity(find_descendant(root, fourcc!("mark"), &children, &tags))
         .insert((DealBookHistory, ActivateOnPress))
@@ -295,8 +296,14 @@ fn clear_deal_book_return(mut commands: Commands) {
 fn on_deal_book_close(
     _activate: On<Activate>,
     return_state: Option<Res<DealBookReturn>>,
+    mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
+    if session.game.turn().phase() == PhaseCode::DEAL_BOOK {
+        let stop = session.game.close_turn_deal_book();
+        apply_turn_stop(stop, &mut next_state);
+        return;
+    }
     next_state.set(
         return_state
             .as_deref()
@@ -338,12 +345,12 @@ fn on_deal_book_page(
 }
 
 fn deal_book_last_page(screen: &DealBookScreen, session: &GameSession) -> u16 {
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Deal Book requires an active major nation");
     match screen.mode {
-        DealBookMode::History => session.0.deal_book_history(nation).last_page_index(),
+        DealBookMode::History => session.game.deal_book_history(nation).last_page_index(),
         DealBookMode::Category { commodity, .. } => session
-            .0
+            .game
             .deal_book_category(nation, commodity)
             .last_page_index(),
     }
@@ -375,23 +382,23 @@ fn on_deal_book_tabs_click(
 }
 
 fn hover_deal_book_tabs(
-    screens: Query<&DealBookScreen>,
-    tabs: Query<&RelativeCursorPosition, With<DealBookTabs>>,
+    screen: Option<Single<&DealBookScreen>>,
+    tabs: Option<Single<&RelativeCursorPosition, With<DealBookTabs>>>,
     mut highlights: Query<(&mut Node, &mut ImageNode, &mut Visibility), With<DealBookTabHighlight>>,
 ) {
-    let Ok(screen) = screens.single() else {
+    let Some(screen) = screen else {
         return;
     };
-    let Ok(cursor) = tabs.single() else {
+    let Some(cursor) = tabs else {
         return;
     };
-    let row = tab_row(cursor, screen.oil_drilling).or(match screen.mode {
-        DealBookMode::History => None,
-        DealBookMode::Category { tab, .. } => Some(tab),
-    });
     let Ok((mut node, mut image, mut visibility)) = highlights.single_mut() else {
         return;
     };
+    let row = tab_row(*cursor, screen.oil_drilling).or(match screen.mode {
+        DealBookMode::History => None,
+        DealBookMode::Category { tab, .. } => Some(tab),
+    });
     let Some(row) = row else {
         *visibility = Visibility::Hidden;
         return;
@@ -418,36 +425,36 @@ fn sync_deal_book(
     mut commands: Commands,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
-    screens: Query<&DealBookScreen, Changed<DealBookScreen>>,
+    screen: Option<Single<&DealBookScreen, Changed<DealBookScreen>>>,
     children: Query<&Children>,
     hosts: Query<(Entity, &DealBookHost)>,
     titles: Query<(Entity, &DealBookTitle)>,
-    background: Query<Entity, With<DealBookBackground>>,
-    history: Query<Entity, With<DealBookHistory>>,
+    background: Option<Single<Entity, With<DealBookBackground>>>,
+    history: Option<Single<Entity, With<DealBookHistory>>>,
     page_buttons: Query<(Entity, &DealBookPageButton)>,
     mut nodes: Query<&mut Node>,
     mut texts: Query<&mut Text>,
     mut pictures: Query<&mut ImageNode>,
     mut visibilities: Query<&mut Visibility>,
 ) {
-    let Ok(screen) = screens.single() else {
+    let Some(screen) = screen else {
         return;
     };
-    let Ok(background) = background.single() else {
+    let Some(&background) = background.as_deref() else {
         return;
     };
-    let Ok(history) = history.single() else {
+    let Some(&history) = history.as_deref() else {
         return;
     };
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Deal Book requires an active major nation");
     let last_page = match screen.mode {
         DealBookMode::History => project_history(
             &mut commands,
             &mut assets,
-            &session.0,
+            &session.game,
             nation,
-            screen,
+            *screen,
             &hosts,
             &titles,
             background,
@@ -461,10 +468,10 @@ fn sync_deal_book(
         DealBookMode::Category { commodity, .. } => project_category(
             &mut commands,
             &mut assets,
-            &session.0,
+            &session.game,
             nation,
             commodity,
-            screen,
+            *screen,
             &hosts,
             &titles,
             background,
