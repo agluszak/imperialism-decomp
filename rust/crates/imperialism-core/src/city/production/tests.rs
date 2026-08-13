@@ -6,16 +6,16 @@ use crate::*;
 fn set_item_quantity(
     order: &mut RequestedCityOrderState,
     city: &mut CityState,
-    spec: ItemOrderSpec,
+    item: ManufacturedItem,
     quantity: i16,
 ) -> bool {
-    let limit = item_limit(order, city, spec);
+    let limit = item_limit(order, city, item);
     super::set_item_quantity(
         order,
         &mut city.stockpile,
         &mut city.population,
         &mut city.production_accum,
-        spec,
+        item,
         limit,
         quantity,
     )
@@ -130,42 +130,9 @@ fn slot(value: u8) -> CityFacilitySlot {
 }
 
 fn city() -> CityState {
-    CityState {
-        orders: Box::default(),
-        power_plant_upgrade_queued: false,
-        food_substitution_count: 0,
-        starvation_population_loss: 0,
-        serialized_state: 0,
-        phase_counter: 0,
-        military_recruit_count_by_kind: crate::MilitaryUnitTable::default(),
-        civilian_recruit_count_by_kind: crate::CivilianUnitTable::default(),
-        ship_order_count_by_type: crate::ShipTypeTable::default(),
-        rolling_item_production_score: 0,
-        low_production: false,
-        low_stock: false,
-        reserved_by_type: crate::ResourceTable::default(),
-        power_available: 0,
-        stockpile: crate::Stockpile::default(),
-        production_orders: crate::ProductionTable::default(),
-        production_accum: crate::ProductionTable::default(),
-        production_flags: crate::ProductionTable::default(),
-        production_current: crate::ProductionTable::default(),
-        production_progress: crate::ProductionTable::default(),
-        population_growth_penalty_ticks: 0,
-        unmet_resource_retries: crate::ResourceTable::default(),
-        consumed_production_input_by_type: crate::ResourceTable::default(),
-        population: PopulationState {
-            count: 7,
-            accumulator: crate::PopulationAccumulator::from_bits(7.0_f32.to_bits()),
-            strength: 10,
-            extra: 0,
-            strike_phase: crate::StrikePhase::default(),
-            baseline_labor: LaborPool::new(4, 2, 1),
-            production_labor: LaborPool::new(4, 2, 1),
-            pending_labor_delta: LaborPool::default(),
-            predicted_need_by_resource: crate::ResourceTable::default(),
-        },
-    }
+    let mut city = crate::test_support::city();
+    city.population.strength = 10;
+    city
 }
 
 fn nation() -> GreatPowerState {
@@ -180,7 +147,7 @@ fn item_state() -> RequestedCityOrderState {
 fn max_order_records_capacity_workforce_and_resource_constraints() {
     let mut state = city();
     let production = item_state();
-    let lumber = item_order_spec(ManufacturedItem::Lumber);
+    let lumber = ManufacturedItem::Lumber;
     state.production_accum[CityFacilitySlot::LumberMill] = 4;
     state.stockpile[ResourceKind::Timber] = 20;
     assert_eq!(
@@ -211,7 +178,7 @@ fn max_order_records_capacity_workforce_and_resource_constraints() {
     );
 
     let two_input = item_state();
-    let steel = item_order_spec(ManufacturedItem::Steel);
+    let steel = ManufacturedItem::Steel;
     state.production_accum[CityFacilitySlot::SteelMill] = 20;
     state.stockpile[ResourceKind::Iron] = 9;
     state.stockpile[ResourceKind::Coal] = 3;
@@ -240,9 +207,8 @@ fn game_state_adjusts_the_authoritative_steel_order_and_releases_it() {
     let steel = &city.orders.items[ManufacturedItem::Steel];
     assert_eq!(steel.progress.quantity, 1);
     assert_eq!(steel.requested_quantity, 1);
-    assert_eq!(steel.progress.tracking_by_resource[ResourceKind::Iron], 1);
-    assert_eq!(steel.progress.tracking_by_resource[ResourceKind::Coal], 1);
-    assert_eq!(steel.progress.reserved_workforce, 2);
+    assert_eq!(steel.tracking_by_resource[ResourceKind::Iron], 1);
+    assert_eq!(steel.tracking_by_resource[ResourceKind::Coal], 1);
     assert_eq!(city.stockpile[ResourceKind::Iron], 0);
     assert_eq!(city.stockpile[ResourceKind::Coal], 0);
     assert_eq!(city.population.strength, 10);
@@ -253,9 +219,8 @@ fn game_state_adjusts_the_authoritative_steel_order_and_releases_it() {
     let steel = &city.orders.items[ManufacturedItem::Steel];
     assert_eq!(steel.progress.quantity, 0);
     assert_eq!(steel.requested_quantity, 0);
-    assert_eq!(steel.progress.tracking_by_resource[ResourceKind::Iron], 0);
-    assert_eq!(steel.progress.tracking_by_resource[ResourceKind::Coal], 0);
-    assert_eq!(steel.progress.reserved_workforce, 0);
+    assert_eq!(steel.tracking_by_resource[ResourceKind::Iron], 0);
+    assert_eq!(steel.tracking_by_resource[ResourceKind::Coal], 0);
     assert_eq!(city.stockpile[ResourceKind::Iron], 1);
     assert_eq!(city.stockpile[ResourceKind::Coal], 1);
     assert_eq!(city.population.strength, 12);
@@ -266,7 +231,7 @@ fn game_state_adjusts_the_authoritative_steel_order_and_releases_it() {
 fn rejected_quantity_keeps_reservations_unchanged() {
     let mut state = city();
     let mut production = item_state();
-    let lumber = item_order_spec(ManufacturedItem::Lumber);
+    let lumber = ManufacturedItem::Lumber;
     state.production_accum[CityFacilitySlot::LumberMill] = 1;
     state.stockpile[ResourceKind::Timber] = 20;
     assert!(!set_item_quantity(&mut production, &mut state, lumber, 2));
@@ -284,7 +249,7 @@ fn rejected_quantity_keeps_reservations_unchanged() {
 fn produce_restores_capacity_creates_output_and_clears_reservations() {
     let mut state = city();
     let mut production = item_state();
-    let steel = item_order_spec(ManufacturedItem::Steel);
+    let steel = ManufacturedItem::Steel;
     state.production_accum[CityFacilitySlot::SteelMill] = 10;
     state.stockpile[ResourceKind::Iron] = 5;
     state.stockpile[ResourceKind::Coal] = 4;
@@ -301,22 +266,21 @@ fn produce_restores_capacity_creates_output_and_clears_reservations() {
     assert_eq!(state.stockpile[ResourceKind::Steel], 1);
     assert_eq!(state.rolling_item_production_score, 1);
     assert_eq!(
-        production.progress.tracking_by_resource[ResourceKind::Iron],
+        production.tracking_by_resource[ResourceKind::Iron],
         0
     );
     assert_eq!(
-        production.progress.tracking_by_resource[ResourceKind::Coal],
+        production.tracking_by_resource[ResourceKind::Coal],
         0
     );
-    assert_eq!(production.progress.reserved_workforce, 0);
-    assert_eq!(production.progress.accumulated_value, 1);
+    assert_eq!(production.accumulated_value, 1);
 }
 
 #[test]
 fn resource_limited_restock_preserves_the_requested_quantity() {
     let mut state = city();
     let mut production = item_state();
-    let lumber = item_order_spec(ManufacturedItem::Lumber);
+    let lumber = ManufacturedItem::Lumber;
     production.progress.quantity = 5;
     production.requested_quantity = 5;
     state.population.strength = 20;
@@ -345,7 +309,7 @@ fn resource_limited_restock_preserves_the_requested_quantity() {
 fn either_inputs_shift_shortfalls_and_reverse_the_tracked_split() {
     let mut state = city();
     let mut production = item_state();
-    let fabric = item_order_spec(ManufacturedItem::Fabric);
+    let fabric = ManufacturedItem::Fabric;
     state.population.strength = 20;
     state.production_accum[CityFacilitySlot::TextileMill] = 10;
     state.stockpile[ResourceKind::Wool] = 1;
@@ -356,11 +320,11 @@ fn either_inputs_shift_shortfalls_and_reverse_the_tracked_split() {
     assert_eq!(state.stockpile[ResourceKind::Wool], 0);
     assert_eq!(state.stockpile[ResourceKind::Cotton], 5);
     assert_eq!(
-        production.progress.tracking_by_resource[ResourceKind::Wool],
+        production.tracking_by_resource[ResourceKind::Wool],
         1
     );
     assert_eq!(
-        production.progress.tracking_by_resource[ResourceKind::Cotton],
+        production.tracking_by_resource[ResourceKind::Cotton],
         5
     );
 
@@ -368,15 +332,14 @@ fn either_inputs_shift_shortfalls_and_reverse_the_tracked_split() {
     assert_eq!(state.stockpile[ResourceKind::Wool], 1);
     assert_eq!(state.stockpile[ResourceKind::Cotton], 8);
     assert_eq!(
-        production.progress.tracking_by_resource[ResourceKind::Wool],
+        production.tracking_by_resource[ResourceKind::Wool],
         0
     );
     assert_eq!(
-        production.progress.tracking_by_resource[ResourceKind::Cotton],
+        production.tracking_by_resource[ResourceKind::Cotton],
         2
     );
     assert_eq!(state.population.strength, 18);
-    assert_eq!(production.progress.reserved_workforce, 2);
     assert_eq!(state.production_accum[CityFacilitySlot::TextileMill], 9);
 
     produce_item(
@@ -387,17 +350,16 @@ fn either_inputs_shift_shortfalls_and_reverse_the_tracked_split() {
         fabric,
     );
     assert_eq!(
-        production.progress.tracking_by_resource[ResourceKind::Cotton],
+        production.tracking_by_resource[ResourceKind::Cotton],
         0
     );
-    assert_eq!(production.progress.reserved_workforce, 0);
 }
 
 #[test]
 fn either_inputs_shift_a_secondary_shortfall_to_the_primary_input() {
     let mut state = city();
     let mut production = item_state();
-    let fabric = item_order_spec(ManufacturedItem::Fabric);
+    let fabric = ManufacturedItem::Fabric;
     state.population.strength = 20;
     state.production_accum[CityFacilitySlot::TextileMill] = 10;
     state.stockpile[ResourceKind::Wool] = 10;
@@ -407,11 +369,11 @@ fn either_inputs_shift_a_secondary_shortfall_to_the_primary_input() {
     assert_eq!(state.stockpile[ResourceKind::Wool], 5);
     assert_eq!(state.stockpile[ResourceKind::Cotton], 0);
     assert_eq!(
-        production.progress.tracking_by_resource[ResourceKind::Wool],
+        production.tracking_by_resource[ResourceKind::Wool],
         5
     );
     assert_eq!(
-        production.progress.tracking_by_resource[ResourceKind::Cotton],
+        production.tracking_by_resource[ResourceKind::Cotton],
         1
     );
 }
@@ -473,13 +435,11 @@ fn food_processing_produces_canned_food_and_clears_the_order() {
     let mut state = city();
     let mut production = ProductionProgress {
         quantity: 4,
-        reserved_workforce: 7,
         ..ProductionProgress::default()
     };
     produce_food_processing(&mut production, &mut state.stockpile);
     assert_eq!(state.stockpile[ResourceKind::Food], 4);
     assert_eq!(production.quantity, 0);
-    assert_eq!(production.reserved_workforce, 0);
 }
 
 #[test]
@@ -580,9 +540,8 @@ fn capacity_order_transport_target_increases_the_nation_capacity() {
     let mut production = capacity_order();
     production.progress.quantity = 3;
     production.requested_quantity = 3;
-    production.progress.reserved_workforce = 6;
-    production.progress.tracking_by_resource[ResourceKind::Lumber] = 3;
-    production.progress.tracking_by_resource[ResourceKind::Steel] = 3;
+    production.tracking_by_resource[ResourceKind::Lumber] = 3;
+    production.tracking_by_resource[ResourceKind::Steel] = 3;
     owner.capacities.transport = 4;
 
     produce_transport_capacity(
@@ -593,7 +552,6 @@ fn capacity_order_transport_target_increases_the_nation_capacity() {
     );
     assert_eq!(owner.capacities.transport, 7);
     assert_eq!(production.progress.quantity, 0);
-    assert_eq!(production.progress.reserved_workforce, 0);
 }
 
 #[test]
@@ -624,7 +582,6 @@ fn expansion_order_reserves_only_its_two_material_inputs() {
     assert_eq!(state.stockpile[ResourceKind::Steel], 0);
     assert_eq!(state.population.strength, 10);
     assert_eq!(state.production_accum[slot(14)], 9);
-    assert_eq!(production.progress.reserved_workforce, 0);
 
     assert!(set_expansion_quantity(
         &mut production,
@@ -638,16 +595,15 @@ fn expansion_order_reserves_only_its_two_material_inputs() {
 }
 
 #[test]
-fn expansion_production_keeps_the_unused_inherited_workforce_field() {
+fn expansion_production_increases_facility_capacity() {
     let mut state = city();
     let mut production = expansion_order();
     state.production_orders[slot(2)] = 4;
     state.production_accum[slot(2)] = 7;
     production.progress.quantity = 2;
     production.requested_quantity = 2;
-    production.progress.reserved_workforce = 9;
-    production.progress.tracking_by_resource[ResourceKind::Lumber] = 2;
-    production.progress.tracking_by_resource[ResourceKind::Steel] = 2;
+    production.tracking_by_resource[ResourceKind::Lumber] = 2;
+    production.tracking_by_resource[ResourceKind::Steel] = 2;
 
     produce_expansion(
         &mut production,
@@ -661,15 +617,8 @@ fn expansion_production_keeps_the_unused_inherited_workforce_field() {
     assert_eq!(state.production_accum[slot(2)], 9);
     assert_eq!(production.progress.quantity, 0);
     assert_eq!(production.requested_quantity, 0);
-    assert_eq!(production.progress.reserved_workforce, 9);
-    assert_eq!(
-        production.progress.tracking_by_resource[ResourceKind::Lumber],
-        0
-    );
-    assert_eq!(
-        production.progress.tracking_by_resource[ResourceKind::Steel],
-        0
-    );
+    assert_eq!(production.tracking_by_resource[ResourceKind::Lumber], 0);
+    assert_eq!(production.tracking_by_resource[ResourceKind::Steel], 0);
 }
 
 #[test]

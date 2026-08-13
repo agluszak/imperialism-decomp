@@ -37,9 +37,9 @@ pub(crate) fn set_population_growth_quantity(
         return false;
     }
     progress.quantity = quantity;
-    stockpile.credit(ResourceKind::Furniture, -delta);
-    stockpile.credit(ResourceKind::Clothing, -delta);
-    stockpile.credit(ResourceKind::Food, -delta);
+    stockpile.wrapping_add_and_verify(ResourceKind::Furniture, delta.wrapping_neg());
+    stockpile.wrapping_add_and_verify(ResourceKind::Clothing, delta.wrapping_neg());
+    stockpile.wrapping_add_and_verify(ResourceKind::Food, delta.wrapping_neg());
     production_accum[CityFacilitySlot::RegionalPopulation] -= delta;
     true
 }
@@ -87,19 +87,22 @@ pub(crate) fn set_food_processing_quantity(
     progress.quantity = quantity;
 
     let half_delta = (quantity - previous_quantity) / 2;
-    stockpile.credit(ResourceKind::Grain, half_delta * -2);
-    stockpile.credit(ResourceKind::Fruit, -half_delta);
+    stockpile.wrapping_add_and_verify(ResourceKind::Grain, (half_delta * 2).wrapping_neg());
+    stockpile.wrapping_add_and_verify(ResourceKind::Fruit, half_delta.wrapping_neg());
     population.strength -= half_delta * 2;
 
-    let livestock_index = ResourceKind::Livestock;
-    let livestock = stockpile[livestock_index];
+    let livestock = stockpile[ResourceKind::Livestock];
     if livestock < half_delta {
-        stockpile.set_nonnegative(livestock_index, 0);
-        let fish_change = half_delta - livestock;
-        stockpile.credit(ResourceKind::Fish, -fish_change);
+        stockpile[ResourceKind::Livestock] = 0;
+        stockpile.verify_stocks();
+        stockpile.wrapping_add(
+            ResourceKind::Fish,
+            (half_delta - livestock).wrapping_neg(),
+        );
     } else {
-        stockpile.credit(ResourceKind::Livestock, -half_delta);
+        stockpile.wrapping_add(ResourceKind::Livestock, half_delta.wrapping_neg());
     }
+    stockpile.verify_stocks();
     true
 }
 
@@ -107,9 +110,8 @@ pub(crate) fn produce_food_processing(
     progress: &mut ProductionProgress,
     stockpile: &mut Stockpile,
 ) {
-    stockpile.credit(ResourceKind::Food, progress.quantity);
+    stockpile.wrapping_add_and_verify(ResourceKind::Food, progress.quantity);
     progress.quantity = 0;
-    progress.reserved_workforce = 0;
 }
 
 pub(crate) fn transport_capacity_limit(
@@ -120,10 +122,8 @@ pub(crate) fn transport_capacity_limit(
     let workforce_limit = city.population.strength / 2 + state.progress.quantity;
     let production_limit =
         city.production_accum[CityFacilitySlot::Transport] + state.progress.quantity;
-    let resource_limit =
-        (state.progress.tracking_by_resource[primary_input] + city.stockpile[primary_input]).min(
-            state.progress.tracking_by_resource[secondary_input] + city.stockpile[secondary_input],
-        );
+    let resource_limit = (state.tracking_by_resource[primary_input] + city.stockpile[primary_input])
+        .min(state.tracking_by_resource[secondary_input] + city.stockpile[secondary_input]);
 
     let mut constraint = ProductionConstraint::Capacity;
     let mut limit = production_limit;
@@ -160,14 +160,13 @@ pub(crate) fn set_transport_capacity_quantity(
     state.requested_quantity = quantity;
     reserve_primary_and_secondary(
         stockpile,
-        &mut state.progress.tracking_by_resource,
+        &mut state.tracking_by_resource,
         primary_input,
         Some(secondary_input),
         delta,
     );
     let workforce_change = delta * 2;
     population.strength -= workforce_change;
-    state.progress.reserved_workforce += workforce_change;
     let production = &mut production_accum[CityFacilitySlot::Transport];
     *production -= delta;
     true
@@ -187,9 +186,8 @@ pub(crate) fn produce_transport_capacity(
 
     state.requested_quantity = 0;
     state.progress.quantity = 0;
-    state.progress.tracking_by_resource[primary_input] = 0;
-    state.progress.tracking_by_resource[secondary_input] = 0;
-    state.progress.reserved_workforce = 0;
+    state.tracking_by_resource[primary_input] = 0;
+    state.tracking_by_resource[secondary_input] = 0;
 }
 
 pub(crate) fn expansion_max_order(
@@ -198,8 +196,8 @@ pub(crate) fn expansion_max_order(
     primary_input: ResourceKind,
     secondary_input: ResourceKind,
 ) -> i16 {
-    (state.progress.tracking_by_resource[primary_input] + city.stockpile[primary_input])
-        .min(state.progress.tracking_by_resource[secondary_input] + city.stockpile[secondary_input])
+    (state.tracking_by_resource[primary_input] + city.stockpile[primary_input])
+        .min(state.tracking_by_resource[secondary_input] + city.stockpile[secondary_input])
 }
 
 pub(crate) fn set_expansion_quantity(
@@ -219,7 +217,7 @@ pub(crate) fn set_expansion_quantity(
     state.requested_quantity = quantity;
     reserve_primary_and_secondary(
         stockpile,
-        &mut state.progress.tracking_by_resource,
+        &mut state.tracking_by_resource,
         primary_input,
         Some(secondary_input),
         delta,
@@ -248,8 +246,8 @@ pub(crate) fn produce_expansion(
 
     state.requested_quantity = 0;
     state.progress.quantity = 0;
-    state.progress.tracking_by_resource[primary_input] = 0;
-    state.progress.tracking_by_resource[secondary_input] = 0;
+    state.tracking_by_resource[primary_input] = 0;
+    state.tracking_by_resource[secondary_input] = 0;
 }
 
 pub(crate) fn power_plant_max_order(state: &PowerPlantOrderState, city: &CityState) -> i16 {
@@ -276,7 +274,7 @@ pub(crate) fn set_power_plant_quantity(
     }
 
     state.desired_quantity = quantity;
-    stockpile.credit(ResourceKind::Fuel, -(delta / 6));
+    stockpile.wrapping_add_and_verify(ResourceKind::Fuel, -(delta / 6));
     let previous_power = population.extra;
     *power_available = quantity;
     population.extra = quantity;

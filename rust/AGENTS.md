@@ -47,6 +47,8 @@ semantics.
 - Use ordinary Rust arithmetic and widths unless retail-visible overflow or storage width is proven
   to matter to behavior.
 - Do not clone `GameState` to answer a query.
+- Separate planning from mutation for order UI: compare the needed quantity against
+  `city_order_limit`; do not mutate-and-rollback authoritative state as a probe.
 
 ## Production completeness
 

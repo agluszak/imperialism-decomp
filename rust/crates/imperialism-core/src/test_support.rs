@@ -31,7 +31,7 @@ pub(crate) fn random_game_names() -> RandomGameNames {
 /// A minimal city with a small three-band population and no stock.
 pub(crate) fn city() -> CityState {
     CityState {
-        orders: Box::default(),
+        orders: CityOrders::default(),
         power_plant_upgrade_queued: false,
         food_substitution_count: 0,
         starvation_population_loss: 0,

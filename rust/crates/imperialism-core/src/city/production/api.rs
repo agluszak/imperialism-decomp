@@ -13,7 +13,7 @@ impl GameState {
         match order {
             CityOrderId::Item(output) => {
                 let state = &city.orders.items[output];
-                item_limit(state, city, item_order_spec(output))
+                item_limit(state, city, output)
             }
             CityOrderId::CivilianRecruit(kind) => recruit_limit(
                 &city.orders.civilian_recruitment[kind],
@@ -63,80 +63,25 @@ impl GameState {
         }
     }
 
-    /// Projects the current quantity and request beside the pure retail limit.
-    pub fn city_order_status(&self, nation: MajorNationId, order: CityOrderId) -> CityOrderStatus {
+    /// Current ordered quantity for a city production row.
+    pub fn city_order_quantity(&self, nation: MajorNationId, order: CityOrderId) -> i16 {
         let city = self.nations.city(nation);
-        let (quantity, requested_quantity) = match order {
-            CityOrderId::Item(output) => {
-                let state = &city.orders.items[output];
-                (state.progress.quantity, state.requested_quantity)
-            }
-            CityOrderId::CivilianRecruit(kind) => {
-                let quantity = city.orders.civilian_recruitment[kind].quantity;
-                (quantity, quantity)
-            }
+        match order {
+            CityOrderId::Item(output) => city.orders.items[output].progress.quantity,
+            CityOrderId::CivilianRecruit(kind) => city.orders.civilian_recruitment[kind].quantity,
             CityOrderId::MilitaryRecruit(category) => {
-                let quantity = city.orders.military_recruitment[category].progress.quantity;
-                (quantity, quantity)
+                city.orders.military_recruitment[category].progress.quantity
             }
-            CityOrderId::Ship(track) => {
-                let quantity = city.orders.ships[track].progress.quantity;
-                (quantity, quantity)
-            }
-            CityOrderId::Training(level) => {
-                let quantity = city.orders.training[level].quantity;
-                (quantity, quantity)
-            }
+            CityOrderId::Ship(track) => city.orders.ships[track].progress.quantity,
+            CityOrderId::Training(level) => city.orders.training[level].quantity,
             CityOrderId::Expansion(facility) => {
-                let state = &city.orders.expansions[facility];
-                (state.progress.quantity, state.requested_quantity)
+                city.orders.expansions[facility].progress.quantity
             }
-            CityOrderId::FoodProcessing => {
-                let quantity = city.orders.food_processing.quantity;
-                (quantity, quantity)
-            }
-            CityOrderId::PowerPlant => (
-                city.orders.power_plant.progress.quantity,
-                city.orders.power_plant.desired_quantity,
-            ),
-            CityOrderId::TransportCapacity => (
-                city.orders.transport_capacity.progress.quantity,
-                city.orders.transport_capacity.requested_quantity,
-            ),
-            CityOrderId::PopulationGrowth => {
-                let quantity = city.orders.population_growth.quantity;
-                (quantity, quantity)
-            }
-        };
-        let limit = self.city_order_limit(nation, order);
-        CityOrderStatus {
-            quantity,
-            requested_quantity,
-            maximum: limit.maximum,
-            limiting_constraint: limit.constraint,
+            CityOrderId::FoodProcessing => city.orders.food_processing.quantity,
+            CityOrderId::PowerPlant => city.orders.power_plant.progress.quantity,
+            CityOrderId::TransportCapacity => city.orders.transport_capacity.progress.quantity,
+            CityOrderId::PopulationGrowth => city.orders.population_growth.quantity,
         }
-    }
-
-    /// Returns whether `quantity` would be accepted without mutating authoritative state.
-    pub fn can_set_city_order_quantity(
-        &self,
-        nation: MajorNationId,
-        order: CityOrderId,
-        mut quantity: i16,
-    ) -> bool {
-        if order == CityOrderId::FoodProcessing && quantity & 1 != 0 {
-            quantity += 1;
-        }
-        let limit = self.city_order_limit(nation, order);
-        if quantity < 0 || quantity > limit.maximum {
-            return false;
-        }
-        if order == CityOrderId::PowerPlant {
-            let city = self.nations.city(nation);
-            let delta = quantity - city.orders.power_plant.progress.quantity;
-            return i32::from(city.population.strength) >= -i32::from(delta);
-        }
-        true
     }
 
     /// Applies an absolute retail city-order quantity and reports whether retail accepted it.
@@ -164,7 +109,7 @@ impl GameState {
                     stockpile,
                     population,
                     production_accum,
-                    item_order_spec(output),
+                    output,
                     limit,
                     quantity,
                 )
@@ -256,7 +201,7 @@ impl GameState {
         order: CityOrderId,
         delta: i16,
     ) -> bool {
-        let quantity = self.city_order_status(nation, order).quantity;
+        let quantity = self.city_order_quantity(nation, order);
         self.set_city_order_quantity(nation, order, quantity + delta)
     }
 }
