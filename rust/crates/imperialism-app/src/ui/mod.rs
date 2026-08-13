@@ -3,6 +3,7 @@ mod city_site;
 mod diplomacy;
 mod game_shell;
 pub(crate) mod generated;
+mod hover_help;
 mod main_menu;
 mod random_setup;
 mod random_setup_map;

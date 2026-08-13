@@ -1,7 +1,10 @@
 use crate::ui::generated;
+use crate::ui::hover_help::{
+    HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, ui_string,
+};
 use crate::ui::random_setup_map;
 use crate::ui::retail::ModalDialog;
-use crate::ui::retail::{RetailTag, find_descendant};
+use crate::ui::retail::{RetailTag, RetailUiAssets, find_descendant};
 use crate::{AppState, RandomGameNamesResource};
 use bevy::ecs::system::SystemParam;
 use bevy::input::ButtonState;
@@ -160,9 +163,11 @@ fn bind_random_setup(
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     setup: Res<RandomGameSetup>,
+    mut assets: RetailUiAssets,
 ) {
     bind_random_setup_controls(&mut commands, *root, &children, &tags, &setup);
     random_setup_map::attach_random_setup_meanings(&mut commands, *root, &children, &tags);
+    bind_random_setup_hover_help(&mut commands, *root, &children, &tags, &mut assets);
 }
 
 /// Attach screen meanings only; Bevy widget semantics come from generated components.
@@ -231,6 +236,39 @@ fn bind_random_setup_controls(
         let entity = find_descendant(root, tag, children, tags);
         commands.entity(entity).insert(action);
     }
+}
+
+fn bind_random_setup_hover_help(
+    commands: &mut Commands,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
+    assets: &mut RetailUiAssets,
+) {
+    let bar = find_descendant(root, fourcc!("hot!"), children, tags);
+    bind_hover_help_bar(commands, assets, bar, HoverHelpBarStyle::RANDOM_SETUP);
+    let cancel = ui_string(assets, 0x2737, 0x14);
+    bind_hover_help_texts(
+        commands,
+        root,
+        children,
+        tags,
+        [
+            (fourcc!("main"), String::new()),
+            (fourcc!("key "), String::new()),
+            (fourcc!("stuf"), String::new()),
+            (fourcc!("name"), ui_string(assets, 0x2758, 0x1e)),
+            (fourcc!("glob"), ui_string(assets, 0x2737, 0x13)),
+            (fourcc!("canc"), cancel.clone()),
+            (fourcc!("cncl"), cancel),
+            (OKAY, ui_string(assets, 0x2737, 0x15)),
+            (fourcc!("map "), ui_string(assets, 0x2758, 0x13)),
+            (fourcc!("diff"), ui_string(assets, 0x2737, 0x17)),
+            (fourcc!("coun"), ui_string(assets, 0x2737, 0x1a)),
+            (fourcc!("flag"), ui_string(assets, 0x2737, 0x1b)),
+            (fourcc!("coat"), ui_string(assets, 0x2737, 0x1c)),
+        ],
+    );
 }
 
 fn sync_difficulty_checked(
