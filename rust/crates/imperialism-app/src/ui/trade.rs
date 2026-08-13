@@ -996,9 +996,7 @@ mod tests {
     }
 
     fn activate(app: &mut App, entity: Entity) {
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity });
+        app.world_mut().commands().trigger(Activate { entity });
         app.world_mut().flush();
         app.update();
     }

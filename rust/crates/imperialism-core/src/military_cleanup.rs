@@ -52,10 +52,13 @@ mod tests {
 
         let eligible = MajorNationId::new(0);
         let ineligible = MajorNationId::new(1);
-        state.nations.majors[eligible].economy.purchased_items_by_resource[ResourceKind::Food] = 5;
+        state.nations.majors[eligible]
+            .economy
+            .purchased_items_by_resource[ResourceKind::Food] = 5;
         state.nations.majors[eligible].city.stockpile[ResourceKind::Food] = 1;
-        state.nations.majors[ineligible].economy.purchased_items_by_resource[ResourceKind::Food] =
-            7;
+        state.nations.majors[ineligible]
+            .economy
+            .purchased_items_by_resource[ResourceKind::Food] = 7;
         state.nations.majors[ineligible].city.stockpile[ResourceKind::Food] = 2;
         state.set_country_status(
             ineligible.nation(),
