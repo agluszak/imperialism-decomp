@@ -440,7 +440,7 @@ mod tests {
         for index in 0..2 {
             state.nations.append_owned_region_during_construction(
                 NationId::new(index),
-                crate::ProvinceId::new(index as usize),
+                crate::ProvinceId::new(index),
             );
         }
         state.nations.majors[MajorNationId::new(1)].kind = crate::MajorNationKind::AutoGreatPower;

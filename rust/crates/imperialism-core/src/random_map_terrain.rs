@@ -1390,7 +1390,7 @@ fn validate_seed_candidates(
             if has_candidate {
                 let slot = &mut candidates[class as usize];
                 if slot.index() == 0 || rng.next_sample_15() % 5 == 3 {
-                    *slot = TileId::new(neighbor as usize);
+                    *slot = TileId::new(neighbor);
                 }
                 break;
             }
@@ -1409,7 +1409,7 @@ fn keyword_matches(text: &[u8], keyword: &[u8]) -> bool {
 fn full_neighbor(geometry: MapGeometry, tile: usize, direction: usize) -> Option<usize> {
     let direction = crate::HexDirection::ALL[direction];
     geometry
-        .neighbor(TileId::new(tile as usize), direction)
+        .neighbor(TileId::new(tile), direction)
         .map(|tile| tile.index())
 }
 

@@ -1301,10 +1301,7 @@ mod tests {
         let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(0))).unwrap();
         let owners = peek_save_preview_owners(&bytes).expect("written save has preview tiles");
         for (index, owner) in owners.iter().enumerate() {
-            assert_eq!(
-                *owner,
-                original.map()[TileId::new(index as usize)].owner_nation
-            );
+            assert_eq!(*owner, original.map()[TileId::new(index)].owner_nation);
         }
         let pixels = satellite_preview_indices(
             |tile| owners.get(tile.index()).copied().flatten(),

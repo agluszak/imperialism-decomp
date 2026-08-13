@@ -339,7 +339,7 @@ fn normal_random_start_marks_only_queued_ai_map_targets() {
                             _ => None,
                         })
                         .expect("an Escort mission resolves the nation's first port");
-                    let port_zone = OceanZoneId::new(ordinal as usize);
+                    let port_zone = OceanZoneId::new(ordinal);
                     assert_eq!(navy.target_zone, Some(port_zone));
                     assert_eq!(navy.resolved_port_zone, Some(port_zone));
                     navy.target_zone
@@ -484,7 +484,7 @@ fn creates_a_normal_start_boundary_from_the_retained_preview() {
 
     let expected_adjacency = build_province_adjacency(&state.map);
     for (index, generated) in preview.map.provinces().iter().enumerate() {
-        let province = ProvinceId::new(index as usize);
+        let province = ProvinceId::new(index);
         let owner = generated.owner.nation().unwrap();
         assert_eq!(state.map.provinces[province].owner(), Some(owner));
         assert_eq!(state.map.provinces[province].former_owner(), Some(owner));
@@ -499,7 +499,7 @@ fn creates_a_normal_start_boundary_from_the_retained_preview() {
     }
     for index in preview.map.provinces().len()..crate::PROVINCE_COUNT {
         assert_eq!(
-            state.map.provinces[ProvinceId::new(index as usize)],
+            state.map.provinces[ProvinceId::new(index)],
             ProvinceState::default()
         );
     }
@@ -522,7 +522,7 @@ fn creates_a_normal_start_boundary_from_the_retained_preview() {
             .iter()
             .enumerate()
             .filter_map(|(index, province)| {
-                (province.owner.nation() == Some(nation)).then_some(ProvinceId::new(index as usize))
+                (province.owner.nation() == Some(nation)).then_some(ProvinceId::new(index))
             })
             .collect::<Vec<_>>();
         let common = state.nations.common(nation).unwrap();

@@ -345,7 +345,7 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
         .zip(expected_provinces)
         .enumerate()
     {
-        let major = state.nations().major(MajorNationId::new(slot as usize));
+        let major = state.nations().major(MajorNationId::new(slot));
         let targets = major.economy.ai_zone_targets.as_ref().unwrap();
         assert_eq!(targets.len(), 83);
         let mut expected_targets = vec![AiTargetState::Unmarked; 83];
@@ -616,7 +616,7 @@ fn retail_projection_preserves_country_and_province_semantics() {
 
     for province in 120..PROVINCE_COUNT {
         assert_eq!(
-            state.map().provinces[ProvinceId::new(province as usize)],
+            state.map().provinces[ProvinceId::new(province)],
             ProvinceState::default()
         );
     }

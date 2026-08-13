@@ -155,9 +155,7 @@ pub(super) fn minor_nation(nation: MinorNationId, display_name: String) -> Minor
             None,
             NationTable::default(),
         ),
-        consortium_members: std::array::from_fn(|offset| {
-            MinorNationId::new(first_member + offset as usize)
-        }),
+        consortium_members: std::array::from_fn(|offset| MinorNationId::new(first_member + offset)),
         trade: MinorTradeState {
             thresholds: MINOR_TRADE_THRESHOLDS[nation.table_index()],
             ..MinorTradeState::default()

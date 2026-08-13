@@ -473,7 +473,7 @@ fn nation_for_palette(palette: u8) -> Option<MajorNationId> {
     MAJOR_NATION_PALETTES
         .iter()
         .position(|candidate| *candidate == palette)
-        .map(|nation| MajorNationId::new(nation as usize))
+        .map(MajorNationId::new)
 }
 
 pub(crate) fn preview_image_from_indices(palette_indices: &[u8], palette: &DibPalette) -> Image {

@@ -240,10 +240,6 @@ impl<T> ProvinceTable<T> {
         &self.0
     }
 
-    pub(crate) fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
-        self.0.iter()
-    }
-
     pub(crate) fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = &mut T> {
         self.0.iter_mut()
     }
@@ -326,6 +322,10 @@ impl<T> TileTable<T> {
 
     pub fn len(&self) -> usize {
         self.0.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.0.is_empty()
     }
 
     pub fn as_slice(&self) -> &[T] {

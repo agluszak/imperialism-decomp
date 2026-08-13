@@ -137,9 +137,9 @@ pub(super) fn select_minor_home_tile(
             continue;
         }
         if tile.flags.has_base_transport() {
-            selected = Some(TileId::new(index as usize));
+            selected = Some(TileId::new(index));
         }
-        let tile_id = TileId::new(index as usize);
+        let tile_id = TileId::new(index);
         if is_valid_secondary_nation_home_tile_candidate(world, tile_id) {
             candidates.push(tile_id);
         }
@@ -175,7 +175,7 @@ pub(super) fn owned_province_ids(
             continue;
         };
         if world[capital].owner_nation == Some(owner) {
-            owned.push(ProvinceId::new(province_index as usize));
+            owned.push(ProvinceId::new(province_index));
         }
     }
     owned
@@ -342,7 +342,7 @@ pub(super) fn select_best_secondary_home_tile(
     let mut best_score: i32 = -1;
     let mut best_tile: Option<TileId> = None;
     for index in 0..STRATEGIC_TILE_COUNT {
-        let tile = TileId::new(index as usize);
+        let tile = TileId::new(index);
         let state = &world[tile];
         if state.owner_nation != Some(owner) {
             continue;
@@ -470,7 +470,7 @@ pub(super) fn place_ai_capital(
 
     let origin_marker = world[tile].region;
     for neighbor in place_city_harvest_tiles(index).into_iter().flatten() {
-        let neighbor = TileId::new(neighbor as usize);
+        let neighbor = TileId::new(neighbor);
         if world[neighbor].region != origin_marker {
             continue;
         }
@@ -511,7 +511,7 @@ pub(super) fn set_region_tile_subtype_and_refresh_neighbor_flags(
     world[new_tile].gate = resolve_region_tile_subtype_code(&world[new_tile], new_index);
 
     for index in 0..STRATEGIC_TILE_COUNT {
-        let tile_id = TileId::new(index as usize);
+        let tile_id = TileId::new(index);
         if tile_id != new_tile && world[tile_id].province == Some(province) {
             world[tile_id].flags.clear_city_marker();
         }

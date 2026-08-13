@@ -80,7 +80,7 @@ pub(super) fn build_province_state(
     let adjacency = build_province_adjacency(world);
     let mut provinces = ProvinceTable::default();
     for (index, generated) in map.provinces().iter().enumerate() {
-        let province = ProvinceId::new(index as usize);
+        let province = ProvinceId::new(index);
         let owner = generated
             .owner
             .nation()
@@ -98,7 +98,7 @@ pub(super) fn build_province_state(
             .enumerate()
             .filter_map(|(tile, state)| {
                 (state.terrain != TerrainKind::Water && state.province == Some(province))
-                    .then_some(TileId::new(tile as usize))
+                    .then_some(TileId::new(tile))
             })
             .collect::<Vec<_>>();
         let last_turn_tick = if linked_tiles.iter().any(|&tile| {

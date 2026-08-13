@@ -389,7 +389,7 @@ pub(super) fn select_sea_zone_seed_tile(
 
     // Retail deliberately excludes the final two map rows from seed selection.
     for index in 0..0x1878_usize {
-        let tile = TileId::new(index as usize);
+        let tile = TileId::new(index);
         if world[tile].owner_nation != Some(owner) {
             continue;
         }

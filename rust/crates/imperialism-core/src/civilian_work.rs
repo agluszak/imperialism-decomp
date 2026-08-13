@@ -420,7 +420,7 @@ impl GameState {
 
     fn resolve_civilian_disputes(&mut self) {
         for tile_index in 0..STRATEGIC_TILE_COUNT {
-            let tile = TileId::new(tile_index as usize);
+            let tile = TileId::new(tile_index);
             let on_tile = self.civilians_on_tile_chain(tile);
             if on_tile.len() < 2 {
                 continue;

@@ -612,7 +612,7 @@ impl GameState {
             }
         }
         for index in 0..STRATEGIC_TILE_COUNT {
-            let tile = TileId::new(index as usize);
+            let tile = TileId::new(index);
             if self.map[tile].secondary_owner_nation == Some(nation) {
                 candidates.push(tile);
             }

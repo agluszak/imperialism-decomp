@@ -82,7 +82,7 @@ impl GameState {
                     .former_owner_nation
                     .and_then(TileOwnerTag::nation)
                     == Some(nation))
-                .then(|| OceanZoneId::new(index as usize))
+                .then(|| OceanZoneId::new(index))
             })
     }
 
@@ -129,7 +129,7 @@ impl GameState {
             )
         }) {
             self.port_zone_index_for_tile(best_sea)
-                .map(|index| OceanZoneId::new(index as usize))
+                .map(OceanZoneId::new)
         } else {
             self.map[best_sea]
                 .owner_nation
@@ -138,7 +138,7 @@ impl GameState {
                 .map(|tag| OceanZoneId::new(usize::from(tag - SEA_OWNER_BIAS)))
         };
 
-        let ordinal = OceanZoneId::new(self.ocean.zones.len() as usize);
+        let ordinal = OceanZoneId::new(self.ocean.zones.len());
         if let Some(linked) = linked {
             let linked_index = linked.index();
             if linked_index < self.ocean.zones.len() {
@@ -299,7 +299,7 @@ fn find_nearest_active_sea_context_tile(
                         (port.port_tile == candidate
                             || port.zone.target_tile == Some(candidate)
                             || port.zone.active_tile == Some(candidate))
-                        .then(|| OceanZoneId::new(index as usize))
+                        .then(|| OceanZoneId::new(index))
                     })
             } else {
                 world[candidate]

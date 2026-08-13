@@ -43,7 +43,7 @@ pub(super) fn update_strategic_map_tile_icon_variant_state(
         .is_some();
     match terrain {
         TerrainKind::Water => {
-            let tile_id = TileId::new(index as usize);
+            let tile_id = TileId::new(index);
             let found_land = geometry
                 .neighbors(tile_id)
                 .into_iter()
@@ -292,7 +292,7 @@ pub(super) fn assign_fresh_map_pictures(
             map_lcg,
         );
         if selected_pending_tile && pending_river_mouth_tile.is_none() {
-            pending_river_mouth_tile = Some(TileId::new(index as usize));
+            pending_river_mouth_tile = Some(TileId::new(index));
         }
         let (transition_mask, coast_or_secondary_mask) =
             fresh_picture_masks(tiles, geometry, index);
@@ -325,7 +325,7 @@ pub(super) fn assign_picture_to_tile_for_rng(
         }
 
         if tiles[index].gate == 0x0b {
-            let tile = TileId::new(index as usize);
+            let tile = TileId::new(index);
             let neighbors = geometry.neighbors(tile);
             for direction in HexDirection::ALL {
                 let neighbor_has_profile = neighbors[direction]
@@ -356,7 +356,7 @@ pub(super) fn assign_picture_to_tile_for_rng(
         return false;
     }
 
-    let tile = TileId::new(index as usize);
+    let tile = TileId::new(index);
     let neighbors = geometry.neighbors(tile);
     let mut has_land_neighbor = false;
     for (direction, neighbor) in neighbors {
@@ -423,7 +423,7 @@ pub(super) fn fresh_picture_masks(
     let terrain = tiles[index].terrain;
     let mut transition_mask = 0;
     let mut coast_or_secondary_mask = 0;
-    let tile = TileId::new(index as usize);
+    let tile = TileId::new(index);
     for (direction, neighbor) in geometry.neighbors(tile) {
         let Some(neighbor) = neighbor else {
             continue;

@@ -16,7 +16,7 @@ impl LegacySaveV62 {
         let mut minor_nations = Vec::new();
 
         for slot in 0..MAJOR_NATION_COUNT {
-            let major_id = MajorNationId::new(slot as usize);
+            let major_id = MajorNationId::new(slot);
             let nation = state.nations().major(major_id);
             nation_availability[slot] = 1;
             nation_names[slot] = nation.common.display_name.clone();
@@ -57,7 +57,7 @@ impl LegacySaveV62 {
         }
 
         for index in 0..MINOR_NATION_COUNT {
-            let minor_id = MinorNationId::new(MajorNationId::COUNT + index as usize);
+            let minor_id = MinorNationId::new(MajorNationId::COUNT + index);
             let Some(minor) = state.nations().minor(minor_id) else {
                 continue;
             };
@@ -316,7 +316,7 @@ fn great_power_prefix_dto(
         budget_pool_base: economy.budget_pool_base,
         budget_pool_delta: economy.budget_pool_delta,
         aid_allocation_by_minor_nation: std::array::from_fn(|index| {
-            let id = MinorNationId::new(MajorNationId::COUNT + index as usize);
+            let id = MinorNationId::new(MajorNationId::COUNT + index);
             resource_i32(&economy.aid_allocation_by_minor_nation[id])
         }),
         pending_action_status: std::array::from_fn(|index| {
@@ -595,7 +595,7 @@ fn auto_prefix_dto(economy: &GreatPowerState) -> LegacyAutoGreatPowerPrefix {
     let mut map_node_state_flags = [0_u8; super::PROVINCE_COUNT];
     if let Some(targets) = &economy.ai_province_targets {
         for (index, flag) in map_node_state_flags.iter_mut().enumerate() {
-            *flag = ai_target_to_retail(targets[ProvinceId::new(index as usize)]);
+            *flag = ai_target_to_retail(targets[ProvinceId::new(index)]);
         }
     }
     let mut port_zone_state_flags = [0_u8; AI_ZONE_TARGET_CAPACITY];
@@ -842,7 +842,7 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
         per_technology_unlock_flags: technology
             .global_unlocks_by_technology
             .as_array()
-            .map(|flag| u8::from(flag)),
+            .map(u8::from),
         resource_type_enabled: technology.industry_enabled_by_slot.map(u8::from),
         init_flags_1ab: [0; 30],
         init_flags_1c9: [0; 9],
@@ -875,7 +875,7 @@ fn map_dto(map: &MapMgr, view_origin: TileId) -> LegacyMapState {
 fn tile_dto(tile: &TileState) -> LegacyTerrainTile {
     let mut visibility = 0_u8;
     for slot in 0..MAJOR_NATION_COUNT {
-        if tile.development.resource_visible_to_majors[MajorNationId::new(slot as usize)] {
+        if tile.development.resource_visible_to_majors[MajorNationId::new(slot)] {
             visibility |= 1 << slot;
         }
     }
@@ -941,7 +941,7 @@ fn province_dto(province: &ProvinceState) -> LegacyProvince {
     });
     let mut explored_by_nation_mask = 0_u8;
     for slot in 0..MAJOR_NATION_COUNT {
-        if province.explored_by_majors()[MajorNationId::new(slot as usize)] {
+        if province.explored_by_majors()[MajorNationId::new(slot)] {
             explored_by_nation_mask |= 1 << slot;
         }
     }
@@ -1235,8 +1235,8 @@ fn flatten_nation_pairs<T: Copy, U: Copy>(
     map: impl Fn(T) -> U,
 ) -> [U; NATION_COUNT * NATION_COUNT] {
     std::array::from_fn(|index| {
-        let source = NationId::new((index / NATION_COUNT) as usize);
-        let target = NationId::new((index % NATION_COUNT) as usize);
+        let source = NationId::new(index / NATION_COUNT);
+        let target = NationId::new(index % NATION_COUNT);
         map(table[source][target])
     })
 }

@@ -196,7 +196,7 @@ pub(crate) fn merge_small_water_regions(
                     if water_region_id(tile) != region {
                         continue;
                     }
-                    let tile_id = TileId::new(tile_idx as usize);
+                    let tile_id = TileId::new(tile_idx);
                     for direction in HexDirection::ALL {
                         let Some(neighbor) = geometry.neighbor(tile_id, direction) else {
                             continue;

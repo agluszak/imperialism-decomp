@@ -179,7 +179,7 @@ pub(super) fn assign_province_fallback_capitals(
 
         let mut interior = Vec::new();
         for &tile_index in linked {
-            let tile_id = TileId::new(tile_index as usize);
+            let tile_id = TileId::new(tile_index);
             let has_foreign_neighbor = geometry
                 .neighbors(tile_id)
                 .into_iter()
@@ -221,7 +221,7 @@ pub(super) fn assign_province_fallback_capitals(
 
         initialize_tile_neighbor_connection_mask_if_needed(tiles, chosen);
         tiles[chosen].flags = TileFlags::PROVINCE_ANCHOR_STATE;
-        province_capitals[province_index] = Some(TileId::new(chosen as usize));
+        province_capitals[province_index] = Some(TileId::new(chosen));
     }
     province_capitals
 }

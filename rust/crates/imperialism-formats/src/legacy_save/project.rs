@@ -773,7 +773,7 @@ impl LegacySaveV62 {
         let ocean = ocean_state(&self.ocean, &map);
         let live_ocean_context_count = ocean.zones.len();
         let majors = MajorNationTable::from_array(std::array::from_fn(|slot| {
-            let major_id = MajorNationId::new(slot as usize);
+            let major_id = MajorNationId::new(slot);
             let nation_id = major_id.nation();
             let nation = &self.major_nations[slot];
             let great_power = nation.great_power();
@@ -1082,7 +1082,7 @@ fn rebuild_ocean_neighbors(ocean: &mut Ocean, map: &MapMgr) {
                 .filter(|&owner| owner >= 0x17)
                 .expect("retail port-zone target tile has a base ocean zone");
             let base_index = usize::from(owner - 0x17);
-            let port_id = OceanZoneId::new(zone_index as usize);
+            let port_id = OceanZoneId::new(zone_index);
             let base_id = OceanZoneId::new(base_index as usize);
             let ZoneKind::PortZone(port) = &mut ocean.zones[zone_index] else {
                 unreachable!()
@@ -1115,7 +1115,7 @@ fn rebuild_ocean_neighbors(ocean: &mut Ocean, map: &MapMgr) {
             if candidate == zone_index || matches!(ocean.zones[candidate], ZoneKind::PortZone(_)) {
                 continue;
             }
-            let candidate = OceanZoneId::new(candidate as usize);
+            let candidate = OceanZoneId::new(candidate);
             let ZoneKind::Zone(zone) = &mut ocean.zones[zone_index] else {
                 unreachable!()
             };
