@@ -8,20 +8,6 @@ impl GameState {
     /// production cycle. This is retail `TCity::EndCityPhase`; unit objects are
     /// committed after the city borrow is released.
     pub fn end_city_phase(&mut self, nation: MajorNationId) {
-        const ITEM_OUTPUTS: [ManufacturedItem; 9] = ManufacturedItem::ALL;
-        const CIVILIAN_KINDS: [CivilianUnitKind; 9] = [
-            CivilianUnitKind::Miner,
-            CivilianUnitKind::Prospector,
-            CivilianUnitKind::Farmer,
-            CivilianUnitKind::Forester,
-            CivilianUnitKind::Engineer,
-            CivilianUnitKind::Rancher,
-            CivilianUnitKind::Fisherman,
-            CivilianUnitKind::Developer,
-            CivilianUnitKind::Driller,
-        ];
-        const EXPANSION_SLOTS: [ExpandableFacility; 7] = ExpandableFacility::ALL;
-
         let owned_region_count =
             self.nations
                 .owned_region_count(nation.nation())
@@ -31,13 +17,17 @@ impl GameState {
             let MajorNation { economy, city, .. } = &mut self.nations.majors[nation];
 
             city.phase_counter += 1;
+            city.stockpile.verify_stocks();
             if matches!(economy.controller, MajorNationController::Computer) {
                 for resource in all_resources() {
-                    city.adjust_stock(resource, city.reserved_by_type[resource]);
+                    city.stockpile
+                        .wrapping_add(resource, city.reserved_by_type[resource]);
                 }
             }
+            city.stockpile.verify_stocks();
             for resource in all_resources() {
-                city.adjust_stock(resource, city.consumed_production_input_by_type[resource]);
+                city.stockpile
+                    .wrapping_add(resource, city.consumed_production_input_by_type[resource]);
                 city.consumed_production_input_by_type[resource] = 0;
             }
 
@@ -54,31 +44,22 @@ impl GameState {
                     ..
                 } = city;
                 produce_food_processing(&mut orders.food_processing, stockpile);
-                for output in ITEM_OUTPUTS {
+                for output in ManufacturedItem::ALL {
                     produce_item(
                         &mut orders.items[output],
                         stockpile,
                         production_accum,
                         rolling_item_production_score,
-                        item_order_spec(output),
+                        output,
                     );
                 }
-                produce_training(
-                    TrainingLevel::Medium,
-                    &mut orders.training[TrainingLevel::Medium],
-                    population,
-                    economy,
-                );
-                produce_training(
-                    TrainingLevel::High,
-                    &mut orders.training[TrainingLevel::High],
-                    population,
-                    economy,
-                );
+                for level in TrainingLevel::ALL {
+                    produce_training(level, &mut orders.training[level], population, economy);
+                }
                 *rolling_item_production_score =
                     previous_production_score * 9 / 10 + *rolling_item_production_score * 10;
 
-                for kind in CIVILIAN_KINDS {
+                for kind in CivilianUnitKind::ALL {
                     let progress = &mut orders.civilian_recruitment[kind];
                     produced_civilians[kind] = progress.quantity;
                     progress.quantity = 0;
@@ -91,7 +72,7 @@ impl GameState {
                     transport_primary,
                     transport_secondary,
                 );
-                for facility in EXPANSION_SLOTS {
+                for facility in ExpandableFacility::ALL {
                     let (primary, secondary) = EXPANSION_INPUTS;
                     produce_expansion(
                         &mut orders.expansions[facility],
@@ -119,7 +100,7 @@ impl GameState {
             }
             for resource in all_resources() {
                 if city.stockpile[resource] > 9_999 {
-                    city.stockpile.set_nonnegative(resource, 9_999);
+                    city.stockpile[resource] = 9_999;
                 }
             }
 
@@ -140,13 +121,13 @@ impl GameState {
                     population,
                     power_available,
                 );
-                for output in ITEM_OUTPUTS {
+                for output in ManufacturedItem::ALL {
                     restock_item(
                         &mut orders.items[output],
                         stockpile,
                         population,
                         production_accum,
-                        item_order_spec(output),
+                        output,
                     );
                 }
             }
@@ -163,68 +144,141 @@ impl GameState {
 
     /// Resolves the Armory and Shipyard orders after potential calculation.
     pub fn produce_city_units(&mut self, nation: MajorNationId) {
-        const MILITARY_CATEGORIES: [MilitaryRecruitmentCategory; 8] = [
-            MilitaryRecruitmentCategory::LightInfantry,
-            MilitaryRecruitmentCategory::RegularInfantry,
-            MilitaryRecruitmentCategory::HeavyInfantry,
-            MilitaryRecruitmentCategory::LightCavalry,
-            MilitaryRecruitmentCategory::HeavyCavalry,
-            MilitaryRecruitmentCategory::LightArtillery,
-            MilitaryRecruitmentCategory::HeavyArtillery,
-            MilitaryRecruitmentCategory::Demolitionist,
-        ];
-        const CIVILIAN_KINDS: [CivilianUnitKind; 9] = [
-            CivilianUnitKind::Miner,
-            CivilianUnitKind::Prospector,
-            CivilianUnitKind::Farmer,
-            CivilianUnitKind::Forester,
-            CivilianUnitKind::Engineer,
-            CivilianUnitKind::Rancher,
-            CivilianUnitKind::Fisherman,
-            CivilianUnitKind::Developer,
-            CivilianUnitKind::Driller,
-        ];
-        const SHIP_SLOTS: [ShipOrderSlot; 8] = [
-            ShipOrderSlot::MerchantEarlyPrimary,
-            ShipOrderSlot::MerchantEarlySecondary,
-            ShipOrderSlot::MerchantAdvancedPrimary,
-            ShipOrderSlot::MerchantAdvancedSecondary,
-            ShipOrderSlot::WarshipEarlyPrimary,
-            ShipOrderSlot::WarshipEarlySecondary,
-            ShipOrderSlot::WarshipAdvancedPrimary,
-            ShipOrderSlot::WarshipAdvancedSecondary,
-        ];
-
-        let mut military = Vec::new();
-        let mut civilians = Vec::new();
+        let mut military_kinds = [MilitaryUnitKind::Skirmishers; 8];
+        let mut military_qty = [0_i16; 8];
+        let mut civilian_qty = CivilianUnitTable::default();
         {
             let city = self.nations.city_mut(nation);
-            for category in MILITARY_CATEGORIES {
+            for (index, category) in MilitaryRecruitmentCategory::ALL.into_iter().enumerate() {
                 let order = &mut city.orders.military_recruitment[category];
-                military.push((order.unit_kind, order.progress.quantity));
+                military_kinds[index] = order.unit_kind;
+                military_qty[index] = order.progress.quantity;
                 order.progress.quantity = 0;
             }
-            for kind in CIVILIAN_KINDS {
+            for kind in CivilianUnitKind::ALL {
                 let order = &mut city.orders.civilian_recruitment[kind];
-                civilians.push((kind, order.quantity));
+                civilian_qty[kind] = order.quantity;
                 order.quantity = 0;
-            }
-            for slot in SHIP_SLOTS {
-                let order = &mut city.orders.ships[slot];
-                let quantity = order.progress.quantity;
-                if order.ship_type != ShipType::NoShip && quantity != 0 {
-                    city.ship_order_count_by_type[order.ship_type] += quantity;
-                    order.progress.quantity = 0;
-                    order.progress.tracking_by_resource = ResourceTable::default();
-                }
             }
         }
 
-        for (unit_kind, quantity) in military {
+        for (unit_kind, quantity) in military_kinds.into_iter().zip(military_qty) {
             self.produce_military_recruits(nation, unit_kind, quantity);
         }
-        for (unit_kind, quantity) in civilians {
+        for (unit_kind, quantity) in civilian_qty {
             self.produce_civilian_recruits(nation, unit_kind, quantity);
+        }
+        for slot in ShipOrderSlot::ALL {
+            self.produce_ship_order(nation, slot);
+        }
+    }
+
+    /// Retail `TShipOrder::LaunchShip`: bump the type counter, create navy
+    /// objects for warships, clear the order, then queue navy-growth pending.
+    fn produce_ship_order(&mut self, nation: MajorNationId, slot: ShipOrderSlot) {
+        let (ship_type, quantity) = {
+            let order = &self.nations.city(nation).orders.ships[slot];
+            (order.ship_type, order.progress.quantity)
+        };
+        if ship_type == ShipType::NoShip || quantity == 0 {
+            return;
+        }
+
+        {
+            let count = &mut self.nations.city_mut(nation).ship_order_count_by_type[ship_type];
+            *count = count.wrapping_add(quantity);
+        }
+
+        if ship_creates_navy_object(ship_type) {
+            let location = self.port_zone_for_city_home(nation);
+            let nation_id = nation.nation();
+            let strength = ship_stock_cap(ship_type);
+            for _ in 0..quantity {
+                self.ships.insert(
+                    0,
+                    ShipState {
+                        ship_type,
+                        location: location.unwrap_or(OceanZoneId::new(0)),
+                        task_force: None,
+                        aggression: 1,
+                        nation: nation_id,
+                        name: String::new(),
+                        strength,
+                        experience: 0,
+                        selection: 0,
+                    },
+                );
+            }
+        }
+
+        {
+            let order = &mut self.nations.city_mut(nation).orders.ships[slot];
+            order.progress.quantity = 0;
+            order.materials = ShipMaterials::default();
+        }
+
+        self.queue_navy_growth_pending(nation);
+    }
+
+    fn port_zone_for_city_home(&self, nation: MajorNationId) -> Option<OceanZoneId> {
+        let home = self.nations.major(nation).common.home_tile?;
+        self.ocean
+            .zones
+            .iter()
+            .enumerate()
+            .find_map(|(index, kind)| {
+                let ZoneKind::PortZone(port) = kind else {
+                    return None;
+                };
+                (port.port_tile == home
+                    || port.zone.active_tile == Some(home)
+                    || port.zone.target_tile == Some(home))
+                .then(|| OceanZoneId::new(index as u16))
+            })
+    }
+
+    fn queue_navy_growth_pending(&mut self, nation: MajorNationId) {
+        let pending =
+            self.nations.major(nation).economy.pending_actions[PendingActionKind::NavyGrowthReward];
+        if pending.status() == crate::PendingActionStatus::Queued {
+            return;
+        }
+        let nation_id = nation.nation();
+        let arms: i32 = self
+            .ships
+            .iter()
+            .filter(|ship| ship.nation == nation_id)
+            .map(|ship| i32::from(ship_order_costs(ship.ship_type).arms))
+            .sum();
+        if arms < 25 {
+            return;
+        }
+        let desired = match pending.status() {
+            crate::PendingActionStatus::None | crate::PendingActionStatus::Level3 => 0,
+            crate::PendingActionStatus::Level4 => 1,
+            crate::PendingActionStatus::Queued => return,
+        };
+        let payload = if arms < 50 {
+            (desired == 0).then_some(1)
+        } else if arms < 100 {
+            (desired < 2).then_some(2)
+        } else if arms < 200 {
+            (desired < 3).then_some(3)
+        } else if arms < 300 {
+            (desired < 4).then_some(4)
+        } else if arms < 400 {
+            (desired < 5).then_some(5)
+        } else if arms < 500 {
+            (desired < 6).then_some(6)
+        } else {
+            None
+        };
+        if let Some(payload) = payload {
+            set_pending_action(
+                &mut self.nations.majors[nation].economy,
+                PendingActionKind::NavyGrowthReward,
+                payload,
+            );
         }
     }
 }

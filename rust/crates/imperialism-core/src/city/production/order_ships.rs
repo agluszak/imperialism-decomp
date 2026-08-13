@@ -6,15 +6,7 @@ use crate::*;
 pub(crate) fn ship_max_order(state: &ShipOrderState, city: &CityState) -> i16 {
     let costs = ship_order_costs(state.ship_type);
     let mut limit = 10_000_i16;
-    for resource in [
-        ResourceKind::Lumber,
-        ResourceKind::Fabric,
-        ResourceKind::Arms,
-        ResourceKind::Steel,
-        ResourceKind::Coal,
-        ResourceKind::Fuel,
-    ] {
-        let cost = costs[resource];
+    for (resource, cost) in costs.iter() {
         if cost != 0 {
             limit = limit.min(city.stockpile[resource] / cost);
         }
@@ -34,15 +26,8 @@ pub(crate) fn set_ship_quantity(
     }
     state.progress.quantity = quantity;
     let costs = ship_order_costs(state.ship_type);
-    for resource in [
-        ResourceKind::Lumber,
-        ResourceKind::Fabric,
-        ResourceKind::Arms,
-        ResourceKind::Steel,
-        ResourceKind::Coal,
-        ResourceKind::Fuel,
-    ] {
-        stockpile.credit(resource, -(costs[resource] * delta));
+    for (resource, cost) in costs.iter() {
+        stockpile.wrapping_add_and_verify(resource, -(cost * delta));
     }
     true
 }

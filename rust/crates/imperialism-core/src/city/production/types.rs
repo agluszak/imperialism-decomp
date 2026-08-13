@@ -19,23 +19,17 @@ pub struct OrderLimit {
     pub constraint: ProductionConstraint,
 }
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ProductionProgress {
     pub quantity: i16,
-    pub tracking_by_resource: ResourceTable<i16>,
-    pub reserved_workforce: i16,
     pub limiting_constraint: ProductionConstraint,
-    pub accumulated_value: i32,
 }
 
 impl Default for ProductionProgress {
     fn default() -> Self {
         Self {
             quantity: 0,
-            tracking_by_resource: ResourceTable::default(),
-            reserved_workforce: 0,
             limiting_constraint: ProductionConstraint::Resources,
-            accumulated_value: 0,
         }
     }
 }
@@ -47,13 +41,6 @@ pub(crate) enum ItemInputs {
     Either(ResourceKind, ResourceKind),
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) struct ItemOrderSpec {
-    pub output: ResourceKind,
-    pub inputs: ItemInputs,
-    pub production_slot: CityFacilitySlot,
-}
-
 /// Mutable state shared by ordinary item, capacity, and expansion orders.
 /// Their recipes and targets are fixed retail definitions and are not copied
 /// into every city snapshot.
@@ -61,6 +48,8 @@ pub(crate) struct ItemOrderSpec {
 pub struct RequestedCityOrderState {
     pub progress: ProductionProgress,
     pub requested_quantity: i16,
+    pub tracking_by_resource: ResourceTable<i16>,
+    pub accumulated_value: i32,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
@@ -77,6 +66,8 @@ pub enum TrainingLevel {
 }
 
 impl TrainingLevel {
+    pub const ALL: [Self; 2] = [Self::Medium, Self::High];
+
     pub(crate) const fn input_band(self) -> SkillBand {
         match self {
             Self::Medium => SkillBand::Low,
@@ -118,6 +109,19 @@ pub enum MilitaryRecruitmentCategory {
     Demolitionist,
 }
 
+impl MilitaryRecruitmentCategory {
+    pub const ALL: [Self; 8] = [
+        Self::LightInfantry,
+        Self::RegularInfantry,
+        Self::HeavyInfantry,
+        Self::LightCavalry,
+        Self::HeavyCavalry,
+        Self::LightArtillery,
+        Self::HeavyArtillery,
+        Self::Demolitionist,
+    ];
+}
+
 pub type MilitaryRecruitOrderTable<T> = EnumMap<MilitaryRecruitmentCategory, T>;
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -141,12 +145,109 @@ pub enum ShipOrderSlot {
     WarshipAdvancedSecondary,
 }
 
+impl ShipOrderSlot {
+    pub const ALL: [Self; 8] = [
+        Self::MerchantEarlyPrimary,
+        Self::MerchantEarlySecondary,
+        Self::MerchantAdvancedPrimary,
+        Self::MerchantAdvancedSecondary,
+        Self::WarshipEarlyPrimary,
+        Self::WarshipEarlySecondary,
+        Self::WarshipAdvancedPrimary,
+        Self::WarshipAdvancedSecondary,
+    ];
+}
+
 pub type ShipOrderTable<T> = EnumMap<ShipOrderSlot, T>;
+
+/// The six resources retail spends on a ship order.
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ShipMaterials {
+    pub lumber: i16,
+    pub fabric: i16,
+    pub arms: i16,
+    pub steel: i16,
+    pub coal: i16,
+    pub fuel: i16,
+}
+
+impl ShipMaterials {
+    pub const RESOURCES: [ResourceKind; 6] = [
+        ResourceKind::Lumber,
+        ResourceKind::Fabric,
+        ResourceKind::Arms,
+        ResourceKind::Steel,
+        ResourceKind::Coal,
+        ResourceKind::Fuel,
+    ];
+
+    pub const fn get(self, resource: ResourceKind) -> i16 {
+        match resource {
+            ResourceKind::Lumber => self.lumber,
+            ResourceKind::Fabric => self.fabric,
+            ResourceKind::Arms => self.arms,
+            ResourceKind::Steel => self.steel,
+            ResourceKind::Coal => self.coal,
+            ResourceKind::Fuel => self.fuel,
+            _ => 0,
+        }
+    }
+
+    pub fn iter(self) -> impl Iterator<Item = (ResourceKind, i16)> {
+        Self::RESOURCES
+            .into_iter()
+            .map(move |resource| (resource, self.get(resource)))
+    }
+}
+
+impl std::ops::Index<ResourceKind> for ShipMaterials {
+    type Output = i16;
+    fn index(&self, resource: ResourceKind) -> &Self::Output {
+        match resource {
+            ResourceKind::Lumber => &self.lumber,
+            ResourceKind::Fabric => &self.fabric,
+            ResourceKind::Arms => &self.arms,
+            ResourceKind::Steel => &self.steel,
+            ResourceKind::Coal => &self.coal,
+            ResourceKind::Fuel => &self.fuel,
+            _ => panic!("ship materials do not include {resource:?}"),
+        }
+    }
+}
+
+impl std::ops::IndexMut<ResourceKind> for ShipMaterials {
+    fn index_mut(&mut self, resource: ResourceKind) -> &mut Self::Output {
+        match resource {
+            ResourceKind::Lumber => &mut self.lumber,
+            ResourceKind::Fabric => &mut self.fabric,
+            ResourceKind::Arms => &mut self.arms,
+            ResourceKind::Steel => &mut self.steel,
+            ResourceKind::Coal => &mut self.coal,
+            ResourceKind::Fuel => &mut self.fuel,
+            _ => panic!("ship materials do not include {resource:?}"),
+        }
+    }
+}
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ShipOrderState {
     pub ship_type: ShipType,
     pub progress: ProductionProgress,
+    pub materials: ShipMaterials,
+}
+
+/// Retail `TNavyOrderResourceDescriptor::StockCap`.
+pub(crate) const fn ship_stock_cap(ship_type: ShipType) -> i16 {
+    const CAPS: [i16; 14] = [
+        0, 600, 1000, 900, 1700, 900, 600, 700, 1200, 1800, 1200, 1000, 2800, 2200,
+    ];
+    CAPS[ship_type as usize]
+}
+
+/// Retail toolbar bucket ≥ 0. Merchants are -1 and `CreateNavy` returns no ship.
+pub(crate) const fn ship_creates_navy_object(ship_type: ShipType) -> bool {
+    const TOOLBAR: [i16; 14] = [-1, -1, -1, 1, 0, -1, -1, 2, 3, 0, -1, 1, 3, 2];
+    TOOLBAR[ship_type as usize] >= 0
 }
 
 /// Retail's descriptor-derived Shipyard values, including its separate hull table.
@@ -226,6 +327,30 @@ impl ManufacturedItem {
             Self::Furniture => ResourceKind::Furniture,
             Self::Hardware => ResourceKind::Hardware,
             Self::Arms => ResourceKind::Arms,
+        }
+    }
+
+    pub const fn facility(self) -> CityFacilitySlot {
+        match self {
+            Self::Fabric => CityFacilitySlot::TextileMill,
+            Self::Lumber | Self::Paper => CityFacilitySlot::LumberMill,
+            Self::Steel => CityFacilitySlot::SteelMill,
+            Self::Fuel => CityFacilitySlot::OilRefinery,
+            Self::Clothing => CityFacilitySlot::ClothingFactory,
+            Self::Furniture => CityFacilitySlot::FurnitureFactory,
+            Self::Hardware | Self::Arms => CityFacilitySlot::Metalworks,
+        }
+    }
+
+    pub(crate) const fn inputs(self) -> ItemInputs {
+        match self {
+            Self::Fabric => ItemInputs::Either(ResourceKind::Wool, ResourceKind::Cotton),
+            Self::Lumber | Self::Paper => ItemInputs::Double(ResourceKind::Timber),
+            Self::Steel => ItemInputs::Both(ResourceKind::Iron, ResourceKind::Coal),
+            Self::Fuel => ItemInputs::Double(ResourceKind::Oil),
+            Self::Clothing => ItemInputs::Double(ResourceKind::Fabric),
+            Self::Furniture => ItemInputs::Double(ResourceKind::Lumber),
+            Self::Hardware | Self::Arms => ItemInputs::Double(ResourceKind::Steel),
         }
     }
 
@@ -313,14 +438,6 @@ pub enum CityOrderId {
     PopulationGrowth,
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct CityOrderStatus {
-    pub quantity: i16,
-    pub requested_quantity: i16,
-    pub maximum: i16,
-    pub limiting_constraint: ProductionConstraint,
-}
-
 pub(crate) fn military_order(unit_kind: MilitaryUnitKind) -> MilitaryRecruitOrderState {
     MilitaryRecruitOrderState {
         unit_kind,
@@ -373,10 +490,15 @@ impl ShipOrderState {
             ship_type,
             progress: ProductionProgress {
                 quantity: 0,
-                tracking_by_resource: ResourceTable::from_array([0; ResourceKind::LENGTH]),
-                reserved_workforce: 0,
                 limiting_constraint: ProductionConstraint::Resources,
-                accumulated_value: 0,
+            },
+            materials: ShipMaterials {
+                lumber: 0,
+                fabric: 0,
+                arms: 0,
+                steel: 0,
+                coal: 0,
+                fuel: 0,
             },
         }
     }

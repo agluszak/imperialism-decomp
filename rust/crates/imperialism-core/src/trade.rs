@@ -208,13 +208,16 @@ impl GameState {
         } = &mut self.nations.majors[nation];
 
         common.treasury += i32::from(major.need_target_by_type[ResourceKind::Gems]) * 500;
-        city.stockpile.set_nonnegative(ResourceKind::Gems, 0);
+        city.stockpile[ResourceKind::Gems] = 0;
+        city.stockpile.verify_stocks();
 
         common.treasury += i32::from(major.need_target_by_type[ResourceKind::Gold]) * 200;
-        city.stockpile.set_nonnegative(ResourceKind::Gold, 0);
+        city.stockpile[ResourceKind::Gold] = 0;
+        city.stockpile.verify_stocks();
 
         for resource in all_resources() {
-            city.adjust_stock(resource, major.need_target_by_type[resource]);
+            city.stockpile
+                .wrapping_add_and_verify(resource, major.need_target_by_type[resource]);
         }
     }
 
@@ -823,10 +826,10 @@ mod tests {
         major.need_target_by_type[ResourceKind::Gold] = 4;
 
         let city = game.nations.city_mut(MajorNationId::new(6));
-        city.stockpile.set_nonnegative(ResourceKind::Cotton, -5);
+        city.stockpile[ResourceKind::Cotton] = -5;
         city.stockpile[ResourceKind::Food] = 3;
         city.stockpile[ResourceKind::Fabric] = 5;
-        city.stockpile.set_nonnegative(ResourceKind::Steel, -1);
+        city.stockpile[ResourceKind::Steel] = -1;
         city.stockpile[ResourceKind::Gems] = 99;
         city.stockpile[ResourceKind::Gold] = 99;
 

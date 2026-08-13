@@ -7,6 +7,7 @@ mod city;
 mod city_economy;
 mod city_industry;
 mod city_site;
+mod city_transport_phase;
 mod civilian_phase;
 mod civilian_work;
 mod create_random_game;
@@ -46,15 +47,16 @@ pub use ai::{
 };
 pub use calendar::TurnCalendar;
 pub use city::{
-    BuildingWindowState, CIVILIAN_RESOURCE_SPECIALTIES, CityFacilitySlot, CityOrderId,
-    CityOrderStatus, CityOrders, CityState, ExpandableFacility, ExpansionOrderTable,
-    ItemOrderTable, ManufacturedItem, MilitaryRecruitOrderState, MilitaryRecruitOrderTable,
-    MilitaryRecruitmentCategory, OrderLimit, PowerPlantOrderState, ProductionConstraint,
-    ProductionProgress, RecruitmentOrderSpec, RequestedCityOrderState, ResourceCost, ShipOrderSlot,
-    ShipOrderState, ShipOrderTable, Stockpile, TownState, TrainingLevel, TrainingOrderTable,
+    BuildingWindowState, CIVILIAN_RESOURCE_SPECIALTIES, CityFacilitySlot, CityOrderId, CityOrders,
+    CityState, ExpandableFacility, ExpansionOrderTable, ItemOrderTable, ManufacturedItem,
+    MilitaryRecruitOrderState, MilitaryRecruitOrderTable, MilitaryRecruitmentCategory, OrderLimit,
+    PowerPlantOrderState, ProductionConstraint, ProductionProgress, RecruitmentOrderSpec,
+    RequestedCityOrderState, ResourceCost, ShipMaterials, ShipOrderSlot, ShipOrderState,
+    ShipOrderTable, Stockpile, TownState, TrainingLevel, TrainingOrderTable,
     civilian_recruitment_spec, military_recruitment_spec, resource_development_yield,
     ship_display_stats, ship_order_costs,
 };
+pub(crate) use city::{EXPANSION_INPUTS, ItemInputs};
 pub use city_site::{
     CapitalSite, CitySiteError, confirm_capital_site,
     enter_strategic_map_without_capital_selection, is_valid_secondary_nation_home_tile_candidate,

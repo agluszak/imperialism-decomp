@@ -71,7 +71,7 @@ pub(crate) fn set_training_quantity(
         TrainingLevel::Medium => (delta, i32::from(delta) * 100),
         TrainingLevel::High => (delta * 2, i32::from(delta) * 1_000),
     };
-    stockpile.credit(ResourceKind::Paper, -paper_change);
+    stockpile.wrapping_add_and_verify(ResourceKind::Paper, paper_change.wrapping_neg());
     *treasury -= cash_change;
     population.make_unavailable(level.input_band(), delta);
     true
