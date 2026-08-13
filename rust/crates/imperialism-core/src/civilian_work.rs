@@ -1057,7 +1057,7 @@ mod tests {
             0,
             Vec::new(),
             Vec::new(),
-            None,
+            Some(0),
             0,
             Some(capital),
             0,
@@ -1113,6 +1113,15 @@ mod tests {
             CivilianWorkOrder::BuildPort { turns: one_turn() },
             nation,
         );
+        state.map[port_tile].flags.insert(TileFlags::BASE_TRANSPORT);
+        let sea_tile = geometry
+            .neighbor(
+                port_tile,
+                HexDirection::ALL[usize::from(port_tile.get()) % 6],
+            )
+            .expect("port tile has a bounded neighbor");
+        state.map[sea_tile].terrain = TerrainKind::Water;
+        state.map[sea_tile].owner_nation = Some(TileOwnerTag::new(0x17));
         civilian_on(
             &mut state,
             7,
@@ -1142,6 +1151,15 @@ mod tests {
             },
             nation,
         );
+
+        let province = Some(ProvinceId::new(0));
+        state.map[TileId::new(1)].province = province;
+        state.map[capital].province = province;
+        for unit in &state.civilian_units {
+            if let Some(tile) = unit.location.tile() {
+                state.map[tile].province = province;
+            }
+        }
 
         state.do_civilians();
 
@@ -1178,7 +1196,20 @@ mod tests {
                 .iter()
                 .any(|town| town.tile == port_tile && town.enabled == 1 && !town.active)
         );
-        assert!(state.ocean.zones.is_empty());
+        assert!(
+            matches!(
+                &state.ocean.zones[..],
+                [ZoneKind::PortZone(port)] if port.port_tile == port_tile
+                    && port.zone.target_tile == Some(sea_tile)
+            ),
+            "port completion should create a live port zone, got {:?}",
+            state.ocean.zones
+        );
+        assert_eq!(
+            state.map[sea_tile].action,
+            TileAction::try_from_retail(3),
+            "EnsurePortZone stamps Anchor on the chosen sea tile"
+        );
         assert!(
             state
                 .civilian_units

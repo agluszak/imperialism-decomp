@@ -7,6 +7,7 @@
 #include "game/military/TCivUnit.h"
 #include "game/nation/TGreatPower.h"
 #include "game/strategic_terrain.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/unit_domain_types.h"
 
 namespace {
@@ -119,6 +120,32 @@ bool FindOwnedConstructionTile(NationSlot nationSlot, unsigned short requiredFla
     }
     *tileIndex = candidate;
     return true;
+  }
+  return false;
+}
+
+bool FindOwnedCoastalConstructionTile(NationSlot nationSlot, unsigned short forbiddenFlags,
+                                      StrategicTileIndex* tileIndex) {
+  for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
+    const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[candidate];
+    if (tile.firstCivilianOrder20 != 0 || tile.ownerNationTag04 != nationSlot) {
+      continue;
+    }
+    if ((tile.activeFlags1c & forbiddenFlags) != 0) {
+      continue;
+    }
+    for (int direction = 0; direction < 6; ++direction) {
+      StrategicTileIndex neighbor =
+          g_pGlobalMapState->GetNeighborTileID(candidate, static_cast<short>(direction));
+      if (neighbor == -1) {
+        continue;
+      }
+      if (g_pGlobalMapState->terrainStateTable[neighbor].GetTerrainKind() ==
+          kStrategicTerrainWater) {
+        *tileIndex = candidate;
+        return true;
+      }
+    }
   }
   return false;
 }
@@ -316,9 +343,14 @@ RuntimeActionResult RunCiviliansPhase(NativeTransition& transition) {
   depotEngineer->remainingTurns24 = 1;
 
   StrategicTileIndex portTile = -1;
-  if (!FindOwnedConstructionTile(nationSlot, 1, 0x30, &portTile)) {
-    return RuntimeActionResult::Failure("the loaded map has no owned port construction tile");
+  if (!FindOwnedCoastalConstructionTile(nationSlot, 0x30, &portTile)) {
+    return RuntimeActionResult::Failure(
+        "the loaded map has no owned coastal port construction tile");
   }
+  // beginning_of_game.imp has no owned BASE_TRANSPORT tiles that are not cities.
+  // Ordinary port orders run on a connected coastal tile; stamp that flag so
+  // EnsurePortZoneForTile takes the live path instead of the early-out.
+  g_pGlobalMapState->terrainStateTable[portTile].activeFlags1c |= 1;
   TCivUnit* portEngineer = new TCivUnit();
   portEngineer->ICivUnit(kCivilianUnitEngineer, portTile, nationSlot);
   portEngineer->SetOrders(kUnitOrderBuildPort, portTile);
