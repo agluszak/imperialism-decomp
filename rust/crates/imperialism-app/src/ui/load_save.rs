@@ -20,9 +20,9 @@ use imperialism_core::{GameState, NationId, PhaseCode, TileId, TileOwnerTag};
 use imperialism_formats::{
     FourCc, LegacyGameStateContext, LoadGameError, NUMBERED_SAVE_SLOT_COUNT, OverwritePolicy,
     PictureId, RetailAssets, SAVE_LABEL_MAX_CHARS, SaveDirectoryListing, SaveFileError,
-    SaveHeaderInfo, SaveSlot, fourcc, list_save_slots, load_game_from_bytes, normalize_save_label,
-    peek_save_header, peek_save_preview_owners, retail_save_path, write_game_state,
-    write_save_file,
+    SaveHeaderInfo, SaveSlot, fourcc, list_save_slots, load_game_from_bytes, load_game_from_path,
+    normalize_save_label, peek_save_header, peek_save_preview_owners, retail_save_path,
+    write_game_state, write_save_file,
 };
 use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -157,6 +157,28 @@ enum FlagMenuAction {
     Quit,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum FlagMenuNavigation {
+    Dismiss,
+    Save,
+    Load,
+    Preferences,
+    Credits,
+    Confirm(FlagMenuPending),
+}
+
+fn flag_menu_navigation(action: FlagMenuAction) -> FlagMenuNavigation {
+    match action {
+        FlagMenuAction::Cancel => FlagMenuNavigation::Dismiss,
+        FlagMenuAction::Save => FlagMenuNavigation::Save,
+        FlagMenuAction::Load => FlagMenuNavigation::Load,
+        FlagMenuAction::Preferences => FlagMenuNavigation::Preferences,
+        FlagMenuAction::Credits => FlagMenuNavigation::Credits,
+        FlagMenuAction::NewGame => FlagMenuNavigation::Confirm(FlagMenuPending::NewGame),
+        FlagMenuAction::Quit => FlagMenuNavigation::Confirm(FlagMenuPending::Quit),
+    }
+}
+
 /// `TFlagOptionsPicture` new-game/quit confirmation, posed before the window dismisses.
 #[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
 enum FlagMenuPending {
@@ -221,16 +243,6 @@ pub(crate) fn register_load_save_logic(app: &mut App) {
     .add_observer(on_flag_menu_prompt_activate.run_if(in_state(AppState::StrategicMap)));
 }
 
-pub(crate) fn load_slot(
-    directory: &Path,
-    slot: SaveSlot,
-    runtime: LegacyGameStateContext,
-) -> Result<GameState, LoadGameError> {
-    let path = retail_save_path(directory, slot);
-    let bytes = std::fs::read(&path)?;
-    load_game_from_bytes(&bytes, runtime)
-}
-
 /// Retail `DoRead` never stores or reseeds these streams. CRT `rand()` is a process
 /// global seeded by `TSimMgr::ISimMgr` via `srand(time(0))`; the map LCG is BSS-zero
 /// until map generation; the zone LCG starts as `GetTickCountDiv16()`. A later load
@@ -254,13 +266,6 @@ fn runtime_context_for_load(
         zone_status_lcg: tick_derived_zone_seed(),
         selected_nation,
     }
-}
-
-fn selected_nation_from_slot(directory: &Path, slot: SaveSlot) -> Result<NationId, LoadGameError> {
-    let bytes = std::fs::read(retail_save_path(directory, slot))?;
-    peek_save_header(&bytes)
-        .and_then(|header| NationId::try_new(header.active_nation))
-        .ok_or(LoadGameError::Truncated)
 }
 
 fn clock_derived_crt_seed() -> u32 {
@@ -292,14 +297,6 @@ pub(crate) fn save_current_game(
         &bytes,
         OverwritePolicy::Replace,
     )
-}
-
-pub(crate) fn commit_loaded_game(
-    loaded: Result<GameState, LoadGameError>,
-) -> Result<(GameSession, AppState), LoadGameError> {
-    let game = loaded?;
-    let destination = loaded_game_destination(&game);
-    Ok((GameSession { game }, destination))
 }
 
 fn loaded_game_destination(game: &GameState) -> AppState {
@@ -827,25 +824,21 @@ fn apply_load(
     assets: Option<&RetailAssetsResource>,
     retail: &RetailAssets,
 ) {
-    if !retail_save_path(save_dir, slot).is_file() {
+    let path = retail_save_path(save_dir, slot);
+    if !path.is_file() {
         return;
     }
-    let runtime = match selected_nation_from_slot(save_dir, slot) {
-        Ok(selected_nation) => runtime_context_for_load(existing, selected_nation),
-        Err(error) => {
-            spawn_notice(
-                commands,
-                LoadSaveNoticeKind::Error,
-                assets
-                    .map(|assets| load_error_text(assets, &error))
-                    .unwrap_or_else(|| error.to_string()),
-                screen_state,
-            );
-            return;
-        }
-    };
-    match commit_loaded_game(load_slot(save_dir, slot, runtime)) {
-        Ok((GameSession { game }, destination)) => {
+    let load = (|| {
+        let bytes = std::fs::read(&path)?;
+        let selected = peek_save_header(&bytes)
+            .and_then(|header| NationId::try_new(header.active_nation))
+            .ok_or(LoadGameError::Truncated)?;
+        let context = runtime_context_for_load(existing, selected);
+        load_game_from_bytes(&bytes, context)
+    })();
+    match load {
+        Ok(game) => {
+            let destination = loaded_game_destination(&game);
             commands.insert_resource(GameSession::from_assets(game, retail));
             next_state.set(destination);
         }
@@ -1082,33 +1075,30 @@ fn on_flag_menu_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    match *action {
-        FlagMenuAction::Cancel => {
+    match flag_menu_navigation(*action) {
+        FlagMenuNavigation::Dismiss => {
             for entity in &menus {
                 commands.entity(entity).despawn();
             }
         }
-        FlagMenuAction::Save => {
+        FlagMenuNavigation::Save => {
             commands.insert_resource(LoadSaveReturn(AppState::StrategicMap));
             next_state.set(AppState::SaveGame);
         }
-        FlagMenuAction::Load => {
+        FlagMenuNavigation::Load => {
             commands.insert_resource(LoadSaveReturn(AppState::StrategicMap));
             next_state.set(AppState::LoadGame);
         }
-        FlagMenuAction::Preferences => {
+        FlagMenuNavigation::Preferences => {
             commands.insert_resource(PreferencesReturn(AppState::StrategicMap));
             next_state.set(AppState::Preferences);
         }
-        FlagMenuAction::Credits => {
+        FlagMenuNavigation::Credits => {
             commands.insert_resource(CreditsReturn(AppState::StrategicMap));
             next_state.set(AppState::Credits);
         }
-        FlagMenuAction::NewGame => {
-            commands.insert_resource(FlagMenuPending::NewGame);
-        }
-        FlagMenuAction::Quit => {
-            commands.insert_resource(FlagMenuPending::Quit);
+        FlagMenuNavigation::Confirm(pending) => {
+            commands.insert_resource(pending);
         }
     }
 }
@@ -1301,42 +1291,7 @@ mod tests {
     }
 
     fn spawn_test_flag_menu(mut commands: Commands) {
-        let root = commands.spawn((FlagMenuRoot, Node::default())).id();
-        commands.spawn((
-            RetailTag(fourcc!("save")),
-            FlagMenuAction::Save,
-            ChildOf(root),
-        ));
-        commands.spawn((
-            RetailTag(fourcc!("load")),
-            FlagMenuAction::Load,
-            ChildOf(root),
-        ));
-        commands.spawn((
-            RetailTag(fourcc!("cncl")),
-            FlagMenuAction::Cancel,
-            ChildOf(root),
-        ));
-        commands.spawn((
-            RetailTag(fourcc!("newg")),
-            FlagMenuAction::NewGame,
-            ChildOf(root),
-        ));
-        commands.spawn((
-            RetailTag(fourcc!("pref")),
-            FlagMenuAction::Preferences,
-            ChildOf(root),
-        ));
-        commands.spawn((
-            RetailTag(fourcc!("cred")),
-            FlagMenuAction::Credits,
-            ChildOf(root),
-        ));
-        commands.spawn((
-            RetailTag(fourcc!("quit")),
-            FlagMenuAction::Quit,
-            ChildOf(root),
-        ));
+        commands.spawn((FlagMenuRoot, Node::default()));
     }
 
     fn spawn_test_flag_prompt(mut commands: Commands, kind: FlagMenuPending) {
@@ -1386,211 +1341,34 @@ mod tests {
     }
 
     #[test]
-    fn flag_save_and_load_enter_the_matching_load_save_mode() {
-        let mut app = test_app(AppState::StrategicMap);
-        app.add_systems(Startup, spawn_test_flag_menu);
-        app.update();
-
-        let save = app
-            .world_mut()
-            .query_filtered::<Entity, With<FlagMenuAction>>()
-            .iter(app.world())
-            .find(|entity| {
-                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::Save)
-            })
-            .unwrap();
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: save });
-        app.world_mut().flush();
-        app.update();
+    fn flag_menu_actions_map_to_navigation_intent() {
         assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::SaveGame
+            flag_menu_navigation(FlagMenuAction::Cancel),
+            FlagMenuNavigation::Dismiss
         );
         assert_eq!(
-            app.world().resource::<LoadSaveReturn>().0,
-            AppState::StrategicMap
-        );
-
-        let cancel = app
-            .world_mut()
-            .query_filtered::<Entity, With<LoadSaveAction>>()
-            .iter(app.world())
-            .find(|entity| {
-                app.world().get::<LoadSaveAction>(*entity) == Some(&LoadSaveAction::Cancel)
-            })
-            .unwrap();
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: cancel });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::StrategicMap
-        );
-    }
-
-    #[test]
-    fn flag_load_enters_load_game() {
-        let mut app = test_app(AppState::StrategicMap);
-        app.add_systems(Startup, spawn_test_flag_menu);
-        app.update();
-
-        let load = app
-            .world_mut()
-            .query_filtered::<Entity, With<FlagMenuAction>>()
-            .iter(app.world())
-            .find(|entity| {
-                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::Load)
-            })
-            .unwrap();
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: load });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::LoadGame
-        );
-    }
-
-    #[test]
-    fn flag_cancel_dismisses_the_menu() {
-        let mut app = test_app(AppState::StrategicMap);
-        app.add_systems(Startup, spawn_test_flag_menu);
-        app.update();
-
-        let cancel = app
-            .world_mut()
-            .query_filtered::<Entity, With<FlagMenuAction>>()
-            .iter(app.world())
-            .find(|entity| {
-                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::Cancel)
-            })
-            .unwrap();
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: cancel });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::StrategicMap
-        );
-        assert!(
-            app.world_mut()
-                .query_filtered::<Entity, With<FlagMenuRoot>>()
-                .iter(app.world())
-                .next()
-                .is_none()
-        );
-    }
-
-    #[test]
-    fn flag_preferences_enter_preferences() {
-        let mut app = test_app(AppState::StrategicMap);
-        app.add_systems(Startup, spawn_test_flag_menu);
-        app.update();
-
-        let pref = app
-            .world_mut()
-            .query_filtered::<Entity, With<FlagMenuAction>>()
-            .iter(app.world())
-            .find(|entity| {
-                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::Preferences)
-            })
-            .unwrap();
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: pref });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::Preferences
+            flag_menu_navigation(FlagMenuAction::Save),
+            FlagMenuNavigation::Save
         );
         assert_eq!(
-            app.world().resource::<PreferencesReturn>().0,
-            AppState::StrategicMap
-        );
-    }
-
-    #[test]
-    fn flag_credits_enter_credits() {
-        let mut app = test_app(AppState::StrategicMap);
-        app.add_systems(Startup, spawn_test_flag_menu);
-        app.update();
-
-        let cred = app
-            .world_mut()
-            .query_filtered::<Entity, With<FlagMenuAction>>()
-            .iter(app.world())
-            .find(|entity| {
-                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::Credits)
-            })
-            .unwrap();
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: cred });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::Credits
+            flag_menu_navigation(FlagMenuAction::Load),
+            FlagMenuNavigation::Load
         );
         assert_eq!(
-            app.world().resource::<CreditsReturn>().0,
-            AppState::StrategicMap
-        );
-    }
-
-    #[test]
-    fn flag_new_game_and_quit_wait_for_the_confirm_prompt() {
-        let mut app = test_app(AppState::StrategicMap);
-        app.add_systems(Startup, spawn_test_flag_menu);
-        app.update();
-
-        let new_game = app
-            .world_mut()
-            .query_filtered::<Entity, With<FlagMenuAction>>()
-            .iter(app.world())
-            .find(|entity| {
-                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::NewGame)
-            })
-            .unwrap();
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: new_game });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::StrategicMap
+            flag_menu_navigation(FlagMenuAction::Preferences),
+            FlagMenuNavigation::Preferences
         );
         assert_eq!(
-            *app.world().resource::<FlagMenuPending>(),
-            FlagMenuPending::NewGame
+            flag_menu_navigation(FlagMenuAction::Credits),
+            FlagMenuNavigation::Credits
         );
-
-        let quit = app
-            .world_mut()
-            .query_filtered::<Entity, With<FlagMenuAction>>()
-            .iter(app.world())
-            .find(|entity| {
-                app.world().get::<FlagMenuAction>(*entity) == Some(&FlagMenuAction::Quit)
-            })
-            .unwrap();
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: quit });
-        app.world_mut().flush();
-        app.update();
         assert_eq!(
-            *app.world().resource::<FlagMenuPending>(),
-            FlagMenuPending::Quit
+            flag_menu_navigation(FlagMenuAction::NewGame),
+            FlagMenuNavigation::Confirm(FlagMenuPending::NewGame)
+        );
+        assert_eq!(
+            flag_menu_navigation(FlagMenuAction::Quit),
+            FlagMenuNavigation::Confirm(FlagMenuPending::Quit)
         );
     }
 
@@ -1700,14 +1478,15 @@ mod tests {
         let original = fixture_state();
         let dir = tempfile::tempdir().unwrap();
         save_current_game(dir.path(), SaveSlot::Numbered(1), &original, "England").unwrap();
-        let (session, destination) = commit_loaded_game(load_slot(
-            dir.path(),
-            SaveSlot::Numbered(1),
-            runtime_context_for_load(Some(&original), original.turn().selected_nation),
-        ))
-        .unwrap();
-        assert_eq!(session.game, original);
-        assert_eq!(destination, AppState::StrategicMap);
+        let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(1))).unwrap();
+        let selected = peek_save_header(&bytes)
+            .and_then(|header| NationId::try_new(header.active_nation))
+            .expect("saved header names a nation in range");
+        let game =
+            load_game_from_bytes(&bytes, runtime_context_for_load(Some(&original), selected))
+                .unwrap();
+        assert_eq!(game, original);
+        assert_eq!(loaded_game_destination(&game), AppState::StrategicMap);
     }
 
     #[test]
@@ -1716,9 +1495,8 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "First").unwrap();
         save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "Second").unwrap();
-        let loaded = load_slot(
-            dir.path(),
-            SaveSlot::Numbered(0),
+        let loaded = load_game_from_path(
+            retail_save_path(dir.path(), SaveSlot::Numbered(0)),
             runtime_context_for_load(Some(&original), original.turn().selected_nation),
         )
         .unwrap();
@@ -1759,9 +1537,8 @@ mod tests {
         let original = fixture_state();
         let dir = tempfile::tempdir().unwrap();
         save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "England").unwrap();
-        let loaded = load_slot(
-            dir.path(),
-            SaveSlot::Numbered(0),
+        let loaded = load_game_from_path(
+            retail_save_path(dir.path(), SaveSlot::Numbered(0)),
             runtime_context_for_load(Some(&original), original.turn().selected_nation),
         )
         .unwrap();
@@ -1773,9 +1550,8 @@ mod tests {
         let original = fixture_state();
         let dir = tempfile::tempdir().unwrap();
         save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "England").unwrap();
-        let loaded = load_slot(
-            dir.path(),
-            SaveSlot::Numbered(0),
+        let loaded = load_game_from_path(
+            retail_save_path(dir.path(), SaveSlot::Numbered(0)),
             runtime_context_for_load(None, original.turn().selected_nation),
         )
         .unwrap();

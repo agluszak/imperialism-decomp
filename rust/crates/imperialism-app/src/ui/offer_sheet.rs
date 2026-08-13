@@ -20,12 +20,6 @@ const OFFER_STRING_GROUP: i16 = 0x2740;
 #[derive(Component)]
 struct OfferSheetRoot;
 
-#[derive(Component)]
-struct OfferSheetScreen {
-    posed: Option<PendingTradeOffer>,
-    posed_amount: i16,
-}
-
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum OfferSheetAction {
     Accept,
@@ -75,10 +69,7 @@ fn enter_offer_sheet_phase(session: Res<GameSession>) {
     );
 }
 
-fn spawn_offer_sheet(mut commands: Commands, session: Res<GameSession>) {
-    if session.game.pending_trade_offer().is_none() {
-        return;
-    }
+fn spawn_offer_sheet(mut commands: Commands) {
     let root = commands.spawn_scene(generated::flagview_8500()).id();
     commands
         .entity(root)
@@ -161,37 +152,32 @@ fn bind_offer_sheet_controls(
             ..EditableText::new(offer.amount.to_string())
         },
     ));
-    commands.entity(root).insert(OfferSheetScreen {
-        posed: None,
-        posed_amount: offer.amount,
-    });
 }
 
 fn pose_offer_sheet(
     mut commands: Commands,
-    screen: Option<Single<(Entity, &mut OfferSheetScreen), With<OfferSheetRoot>>>,
+    root: Option<Single<Entity, With<OfferSheetRoot>>>,
+    added: Query<(), Added<OfferSheetRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut amounts: Query<&mut EditableText, With<PurchaseAmountField>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    let Some(offer) = session.game.pending_trade_offer() else {
+    let Some(root) = root else {
         return;
     };
-    let Some(screen) = screen else {
-        return;
-    };
-    let (root, mut screen) = screen.into_inner();
-    if screen.posed == Some(offer) {
+    if added.is_empty() && !session.is_changed() {
         return;
     }
-    screen.posed = Some(offer);
-    screen.posed_amount = offer.amount;
+    let offer = session
+        .game
+        .pending_trade_offer()
+        .expect("OfferSheet requires pending trade offer");
     apply_offer_sheet_pose(
         &mut commands,
         &mut assets,
-        root,
+        *root,
         &children,
         &tags,
         &mut amounts,
@@ -286,7 +272,6 @@ fn set_text(commands: &mut Commands, entity: Entity, value: String) {
 fn on_offer_sheet_activate(
     activate: On<Activate>,
     actions: Query<&OfferSheetAction>,
-    screen: Option<Single<&OfferSheetScreen>>,
     amount: Option<Single<&EditableText, With<PurchaseAmountField>>>,
     stop_buying: Option<Single<Has<Checked>, With<StopBuyingToggle>>>,
     notices: Query<(), With<OfferSheetNotice>>,
@@ -301,9 +286,10 @@ fn on_offer_sheet_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let Some(screen) = screen else {
-        return;
-    };
+    let offer = session
+        .game
+        .pending_trade_offer()
+        .expect("OfferSheet requires pending trade offer");
     let stop_buying = stop_buying.is_some_and(|flag| *flag);
     let amount = match action {
         OfferSheetAction::Reject => 0,
@@ -317,7 +303,7 @@ fn on_offer_sheet_activate(
                 );
                 return;
             };
-            if amount < 0 || amount > screen.posed_amount {
+            if amount < 0 || amount > offer.amount {
                 spawn_offer_quantity_error(
                     &mut commands,
                     get_string(&assets, OFFER_STRING_GROUP, 0x10),
@@ -486,10 +472,7 @@ mod tests {
         app
     }
 
-    fn spawn_test_offer_sheet(mut commands: Commands, session: Res<GameSession>) {
-        if session.game.pending_trade_offer().is_none() {
-            return;
-        }
+    fn spawn_test_offer_sheet(mut commands: Commands) {
         let root = commands
             .spawn((
                 OfferSheetRoot,

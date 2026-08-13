@@ -11,8 +11,11 @@ use crate::AppState;
 use bevy::picking::hover::DirectlyHovered;
 use bevy::prelude::*;
 use bevy::reflect::Is;
-use bevy::ui::{Checked, InteractionDisabled, Pressed, RelativeCursorPosition};
-use bevy::ui_widgets::{Activate, Button, Checkbox};
+use bevy::ui::{Checked, InteractionDisabled};
+use bevy::ui_widgets::{
+    Activate, Button, Checkbox, Slider, SliderOrientation, SliderPrecision, SliderRange,
+    SliderValue, TrackClick, ValueChange, slider_self_update,
+};
 use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc};
 
 /// `g_anGamePreferenceIndexByRow`: which `preferenceValues` slot each opta..opte row displays.
@@ -75,12 +78,9 @@ enum PreferencesAction {
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 struct PreferenceRow(usize);
 
-/// `TTwoPicSlider` split and the preference slot Okay writes after the checkboxes.
+/// Preference slot Okay writes after the checkboxes.
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 struct PreferenceSlider {
-    split_position: i16,
-    height: i16,
-    scale: i16,
     slot: usize,
 }
 
@@ -103,9 +103,7 @@ impl Plugin for PreferencesPlugin {
             )
             .add_systems(
                 Update,
-                (track_preference_sliders, sync_preference_slider_visuals)
-                    .chain()
-                    .run_if(in_state(AppState::Preferences)),
+                sync_preference_slider_visuals.run_if(in_state(AppState::Preferences)),
             )
             .add_observer(
                 on_preference_checked::<Add, Checked>.run_if(in_state(AppState::Preferences)),
@@ -113,6 +111,7 @@ impl Plugin for PreferencesPlugin {
             .add_observer(
                 on_preference_checked::<Remove, Checked>.run_if(in_state(AppState::Preferences)),
             )
+            .add_observer(on_preference_slider_change.run_if(in_state(AppState::Preferences)))
             .add_observer(on_preferences_activate.run_if(in_state(AppState::Preferences)));
     }
 }
@@ -315,16 +314,18 @@ fn bind_volume_slider(
     commands
         .entity(slider)
         .insert((
-            PreferenceSlider {
-                split_position: split,
-                height,
-                scale,
-                slot,
+            Slider {
+                track_click: TrackClick::Snap,
+                orientation: SliderOrientation::Vertical,
             },
+            SliderValue(f32::from(value)),
+            SliderRange::new(0.0, f32::from(scale)),
+            SliderPrecision(0),
+            PreferenceSlider { slot },
             HoverHelpText(hover),
             DirectlyHovered::default(),
-            RelativeCursorPosition::default(),
         ))
+        .observe(slider_self_update)
         .remove::<InteractionDisabled>();
     spawn_slider_layers(commands, slider, upper, lower, split, height, width);
     let (off_font, off_layout, off_line_height, _) = assets
@@ -476,79 +477,50 @@ fn slider_split_from_value(value: i16, height: i16, scale: i16) -> i16 {
     }
 }
 
-fn slider_value_from_split(split: i16, height: i16, scale: i16) -> i16 {
-    let span = height - SLIDER_SPLIT_PAD;
-    if span <= 0 {
-        return 0;
-    }
-    let adjusted = if split < SLIDER_SPLIT_PAD {
-        0
-    } else {
-        split - SLIDER_SPLIT_PAD
-    };
-    adjusted * scale / span
-}
-
 fn slider_fill_height(split: i16) -> i16 {
     if split < SLIDER_SPLIT_PAD { 0 } else { split }
 }
 
-fn clamp_slider_input(height: i16, y: i32) -> i16 {
-    let mut requested = y;
-    if i32::from(height) <= requested {
-        requested = i32::from(height);
-    }
-    if requested < 1 {
-        requested = 0;
-    }
-    height - requested as i16
-}
-
-fn track_preference_sliders(
-    mut sliders: Query<(&RelativeCursorPosition, &mut PreferenceSlider, Has<Pressed>)>,
+fn on_preference_slider_change(
+    change: On<ValueChange<f32>>,
+    sliders: Query<&PreferenceSlider>,
     mut prefs: ResMut<GamePreferences>,
 ) {
-    for (cursor, mut slider, pressed) in &mut sliders {
-        if !pressed {
-            continue;
-        }
-        let Some(normalized) = cursor.normalized.filter(|_| cursor.cursor_over()) else {
-            continue;
-        };
-        let y = ((normalized.y + 0.5) * f32::from(slider.height)).floor() as i32;
-        let next = clamp_slider_input(slider.height, y);
-        if slider.split_position == next {
-            continue;
-        }
-        slider.split_position = next;
-        if slider.slot == 3 {
-            prefs.values[3] = slider_value_from_split(next, slider.height, slider.scale);
-        }
+    let Ok(slider) = sliders.get(change.source) else {
+        return;
+    };
+    if slider.slot == 3 {
+        prefs.values[3] = change.value as i16;
     }
 }
 
 fn sync_preference_slider_visuals(
-    sliders: Query<(Entity, &PreferenceSlider), Changed<PreferenceSlider>>,
+    sliders: Query<
+        (Entity, &SliderValue, &SliderRange, &Node),
+        (With<PreferenceSlider>, Changed<SliderValue>),
+    >,
     children: Query<&Children>,
     mut layers: Query<(&PreferenceSliderLayer, &mut Node)>,
     mut images: Query<&mut Node, Without<PreferenceSliderLayer>>,
     mut off_labels: Query<&mut Visibility, With<PreferenceSliderOffLabel>>,
 ) {
-    for (slider, state) in &sliders {
+    for (slider, value, range, node) in &sliders {
         let Ok(kids) = children.get(slider) else {
             continue;
         };
-        let fill = slider_fill_height(state.split_position);
-        let width = match images.get(slider) {
-            Ok(node) => match node.width {
-                Val::Px(width) => width,
-                _ => 102.0,
-            },
-            Err(_) => 102.0,
+        let height = match node.height {
+            Val::Px(height) => height as i16,
+            _ => 91,
+        };
+        let split = slider_split_from_value(value.0 as i16, height, range.end() as i16);
+        let fill = slider_fill_height(split);
+        let width = match node.width {
+            Val::Px(width) => width,
+            _ => 102.0,
         };
         for child in kids.iter() {
             if let Ok(mut visibility) = off_labels.get_mut(child) {
-                *visibility = if state.split_position < SLIDER_SPLIT_PAD {
+                *visibility = if split < SLIDER_SPLIT_PAD {
                     Visibility::Inherited
                 } else {
                     Visibility::Hidden
@@ -558,15 +530,15 @@ fn sync_preference_slider_visuals(
                 continue;
             };
             if layer.lower {
-                *node = slider_clip_node(f32::from(state.height - fill), f32::from(fill), width);
+                *node = slider_clip_node(f32::from(height - fill), f32::from(fill), width);
                 if let Ok(image_kids) = children.get(child)
                     && let Some(image) = image_kids.iter().next()
                     && let Ok(mut image_node) = images.get_mut(image)
                 {
-                    image_node.top = Val::Px(f32::from(fill - state.height));
+                    image_node.top = Val::Px(f32::from(fill - height));
                 }
             } else {
-                *node = slider_clip_node(0.0, f32::from(state.height - fill), width);
+                *node = slider_clip_node(0.0, f32::from(height - fill), width);
             }
         }
     }
@@ -594,7 +566,7 @@ fn on_preferences_activate(
     activate: On<Activate>,
     actions: Query<&PreferencesAction>,
     rows: Query<(&PreferenceRow, Has<Checked>)>,
-    sliders: Query<&PreferenceSlider>,
+    sliders: Query<(&PreferenceSlider, &SliderValue)>,
     mut prefs: ResMut<GamePreferences>,
     returning: Res<PreferencesReturn>,
     mut next_state: ResMut<NextState<AppState>>,
@@ -609,9 +581,8 @@ fn on_preferences_activate(
             for (row, checked) in &rows {
                 prefs.values[row.0] = i16::from(checked);
             }
-            for slider in &sliders {
-                prefs.values[slider.slot] =
-                    slider_value_from_split(slider.split_position, slider.height, slider.scale);
+            for (slider, value) in &sliders {
+                prefs.values[slider.slot] = value.0 as i16;
             }
             next_state.set(returning.0);
         }
@@ -626,13 +597,7 @@ mod tests {
     fn slider_split_matches_retail_padding() {
         assert_eq!(slider_split_from_value(0, 91, 100), 0);
         assert_eq!(slider_split_from_value(100, 91, 100), 91);
-        assert_eq!(
-            slider_value_from_split(slider_split_from_value(0xff, 91, 0xff), 91, 0xff),
-            0xff
-        );
-        assert_eq!(clamp_slider_input(91, 0), 91);
-        assert_eq!(clamp_slider_input(91, 91), 0);
-        assert_eq!(clamp_slider_input(91, -4), 91);
+        assert_eq!(slider_split_from_value(0xff, 91, 0xff), 91);
     }
 
     #[test]
@@ -649,21 +614,13 @@ mod tests {
             .spawn((PreferenceRow(2), Checked, ChildOf(root)));
         app.world_mut().spawn((PreferenceRow(3), ChildOf(root)));
         app.world_mut().spawn((
-            PreferenceSlider {
-                split_position: 50,
-                height: 91,
-                scale: 100,
-                slot: 2,
-            },
+            PreferenceSlider { slot: 2 },
+            SliderValue(50.0),
             ChildOf(root),
         ));
         app.world_mut().spawn((
-            PreferenceSlider {
-                split_position: 0,
-                height: 91,
-                scale: 0xff,
-                slot: 3,
-            },
+            PreferenceSlider { slot: 3 },
+            SliderValue(0.0),
             ChildOf(root),
         ));
         let okay = app
@@ -682,7 +639,7 @@ mod tests {
             &AppState::StrategicMap
         );
         let prefs = app.world().resource::<GamePreferences>();
-        assert_eq!(prefs.values[2], slider_value_from_split(50, 91, 100));
+        assert_eq!(prefs.values[2], 50);
         assert_eq!(prefs.values[3], 0);
     }
 }
