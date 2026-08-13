@@ -42,6 +42,9 @@ pub(in crate::ui::city) enum CitySummary {
 }
 
 #[derive(Component)]
+pub(in crate::ui::city) struct CityHoverTitle;
+
+#[derive(Component)]
 pub(in crate::ui::city) struct CityBuildingSprite(CityFacilitySlot);
 
 #[derive(Component)]
@@ -158,6 +161,7 @@ pub(in crate::ui::city) fn bind_city_screen(
     root: Single<Entity, Added<CitySceneRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
+    mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
@@ -171,7 +175,23 @@ pub(in crate::ui::city) fn bind_city_screen(
     );
 
     let nation = city_active_nation(&session);
-    bind_city_summary_values(&mut commands, *root, &children, &tags, &mut assets);
+    project_date_and_treasury(
+        &mut commands,
+        &mut assets,
+        *root,
+        &children,
+        &tags,
+        &session,
+    );
+    bind_city_summary_values(
+        &mut commands,
+        *root,
+        &children,
+        &tags,
+        &mut nodes,
+        &mut assets,
+    );
+    bind_city_hover_title(&mut commands, *root, &children, &tags, &mut assets);
     spawn_city_buildings(
         &mut commands,
         *root,
@@ -191,24 +211,38 @@ fn bind_city_summary_values(
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
+    nodes: &mut Query<&mut Node>,
     assets: &mut RetailUiAssets,
 ) {
     let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset {
-            font_family: 3,
+            font_family: 0,
             face_flags: 0,
-            point_size: 9,
+            point_size: 10,
             alignment: 1,
         })
         .expect("retail city placard text style");
-    let bind_text = |commands: &mut Commands, tag, marker| {
+    let text_color = assets.palette_color(0x28);
+    let shadow_color = assets.palette_color(0);
+    let mut bind_text = |commands: &mut Commands, tag, marker| {
         let entity = find_descendant(root, tag, children, tags);
+        let mut node = nodes
+            .get_mut(entity)
+            .expect("retail city placard has a native node");
+        let Val::Px(height) = node.height else {
+            unreachable!("retail city placard height is fixed in pixels");
+        };
+        node.padding.top = px((height - 10.0).max(0.0));
         commands.entity(entity).insert((
             Text::new(""),
             font.clone(),
             layout,
             line_height,
-            TextColor(Color::BLACK),
+            TextColor(text_color),
+            TextShadow {
+                offset: Vec2::ONE,
+                color: shadow_color,
+            },
             marker,
         ));
     };
@@ -239,7 +273,40 @@ fn bind_city_summary_values(
     ] {
         bind_text(commands, tag, CitySummary::Need(resource));
     }
-    bind_text(commands, fourcc!("trea"), CitySummary::Treasury);
+    commands
+        .entity(find_descendant(root, fourcc!("trea"), children, tags))
+        .insert(CitySummary::Treasury);
+}
+
+fn bind_city_hover_title(
+    commands: &mut Commands,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
+    assets: &mut RetailUiAssets,
+) {
+    let (font, layout, line_height, _) = assets
+        .text_style(RetailTextStylePreset {
+            font_family: 0,
+            face_flags: 0,
+            point_size: 12,
+            alignment: 1,
+        })
+        .expect("retail city cursor-panel text style");
+    commands
+        .entity(find_descendant(root, fourcc!("curs"), children, tags))
+        .insert((
+            Text::new(""),
+            font,
+            layout,
+            line_height,
+            TextColor(assets.palette_color(0x28)),
+            TextShadow {
+                offset: Vec2::ONE,
+                color: assets.palette_color(0),
+            },
+            CityHoverTitle,
+        ));
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -543,7 +610,7 @@ pub(in crate::ui::city) fn transparent_picture(
 pub(in crate::ui::city) fn sync_city_summary(
     session: Res<GameSession>,
     added: Query<(), Added<CitySummary>>,
-    mut texts: Query<(&CitySummary, &mut Text)>,
+    mut texts: Query<(&CitySummary, &mut Text, &mut Visibility)>,
 ) {
     if !session.is_changed() && added.is_empty() {
         return;
@@ -552,8 +619,8 @@ pub(in crate::ui::city) fn sync_city_summary(
     let major = session.0.nations().major(nation);
     let city = &major.city;
     let labor = city.population.baseline_labor();
-    for (summary, mut text) in &mut texts {
-        text.0 = match *summary {
+    for (summary, mut text, mut visibility) in &mut texts {
+        let value = match *summary {
             CitySummary::Labor(SkillBand::Low) => labor.low.to_string(),
             CitySummary::Labor(SkillBand::Medium) => labor.medium.to_string(),
             CitySummary::Labor(SkillBand::High) => labor.high.to_string(),
@@ -562,6 +629,46 @@ pub(in crate::ui::city) fn sync_city_summary(
             CitySummary::Need(resource) => city.population.predicted_need(resource).to_string(),
             CitySummary::Treasury => format_currency(major.common.treasury),
         };
+        *visibility = if !matches!(summary, CitySummary::Treasury) && value == "0" {
+            Visibility::Hidden
+        } else {
+            Visibility::Visible
+        };
+        text.0 = value;
+    }
+}
+
+pub(in crate::ui::city) fn sync_city_hover_title(
+    canvases: Query<(&RelativeCursorPosition, &CityCanvas)>,
+    mut titles: Query<&mut Text, With<CityHoverTitle>>,
+    assets: RetailUiAssets,
+) {
+    let Ok((cursor, canvas)) = canvases.single() else {
+        return;
+    };
+    let hovered = cursor
+        .normalized
+        .filter(|_| cursor.cursor_over())
+        .map(|normalized| {
+            IVec2::new(
+                ((normalized.x + 0.5) * CITY_WIDTH).floor() as i32,
+                ((normalized.y + 0.5) * CITY_HEIGHT).floor() as i32,
+            )
+        })
+        .and_then(|point| {
+            canvas
+                .buildings
+                .iter()
+                .rev()
+                .find(|building| building.mask.contains(point - building.origin))
+        });
+    let text = hovered.map_or_else(String::new, |building| {
+        assets
+            .string(0x2719, building.slot as i16)
+            .expect("retail city building name must load")
+    });
+    for mut title in &mut titles {
+        title.0.clone_from(&text);
     }
 }
 
