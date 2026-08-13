@@ -248,10 +248,6 @@ bool FindHostileRedeploy(TMilitaryUnit** outUnit, short* outDest, short* outDefe
 
 } // namespace
 
-JSON_Value* CombatMovesWithoutBattleUi() {
-  return ResolveCombatMovesWithoutBattleUi();
-}
-
 RuntimeActionResult RunSpecialistRecruitment(NativeTransition& transition) {
   TGreatPower* nation = ActiveNation();
 

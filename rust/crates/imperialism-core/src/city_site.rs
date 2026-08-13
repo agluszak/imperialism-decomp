@@ -452,11 +452,17 @@ mod tests {
         }
 
         let site = validate_capital_site_selection(&state, MajorNationId::new(6), tile).unwrap();
-        confirm_capital_site(&mut state, site);
+        let mut story_ids = vec![1; 360];
+        story_ids[0] = -1003;
+        state.set_news_story_ids(&story_ids);
+        let stop = confirm_capital_site(&mut state, site);
 
         assert!(matches!(
-            state.turn.phase,
-            crate::PhaseCode::TECHNOLOGY_ADVANCES | crate::PhaseCode::NEWSPAPER
+            (stop, state.turn.phase),
+            (
+                crate::TurnStop::TechnologyAdvance,
+                crate::PhaseCode::NEWSPAPER
+            ) | (crate::TurnStop::Newspaper, crate::PhaseCode::RETURN_TO_MAP)
         ));
         assert_eq!(state.turn.economic_turn, 1);
         assert_eq!(
@@ -507,10 +513,16 @@ mod tests {
         );
         assert_eq!(state.map[home].owner_nation, Some(TileOwnerTag::new(6)));
         assert!(state.map[home].flags.is_city());
-        enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6));
+        let mut story_ids = vec![1; 360];
+        story_ids[0] = -1003;
+        state.set_news_story_ids(&story_ids);
+        let stop = enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6));
         assert!(matches!(
-            state.turn.phase,
-            crate::PhaseCode::TECHNOLOGY_ADVANCES | crate::PhaseCode::NEWSPAPER
+            (stop, state.turn.phase),
+            (
+                crate::TurnStop::TechnologyAdvance,
+                crate::PhaseCode::NEWSPAPER
+            ) | (crate::TurnStop::Newspaper, crate::PhaseCode::RETURN_TO_MAP)
         ));
         assert_eq!(state.turn.economic_turn, 1);
         assert_eq!(

@@ -371,18 +371,12 @@ pub struct LandSale {
 }
 
 impl GameState {
-    /// Mirrors turn-machine case `0xf` after `StartNewsPhase`: build pages, then
-    /// drop the consumed event queue. The turn driver calls this before returning
-    /// [`crate::TurnStop::Newspaper`].
+    /// Mirrors `TNewsMgr::StartNewsPhase`: build pages, then drop the consumed
+    /// event queue. The turn driver owns the surrounding phase transition.
     pub fn start_newspaper_phase(&mut self) {
-        self.turn.phase = PhaseCode::NEWSPAPER;
         let story_ids = std::mem::take(&mut self.news.story_ids);
         self.construct_newspaper_pages(&story_ids);
         self.news.story_ids = story_ids;
-    }
-
-    pub fn finish_newspaper_phase(&mut self) {
-        self.return_to_map();
     }
 
     /// Mirrors `TNewsMgr::StartNewsPhase` page construction without loading `news.tab`.
@@ -838,8 +832,9 @@ mod tests {
     }
 
     #[test]
-    fn start_newspaper_phase_clears_the_consumed_event_queue() {
+    fn newspaper_construction_does_not_own_the_turn_phase() {
         let mut state = game_state();
+        state.turn.phase = PhaseCode::RETURN_TO_MAP;
         state
             .pending
             .queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
@@ -848,7 +843,7 @@ mod tests {
             });
         state.set_news_story_ids(&filler_table());
         state.start_newspaper_phase();
-        assert_eq!(state.turn.phase, PhaseCode::NEWSPAPER);
+        assert_eq!(state.turn.phase, PhaseCode::RETURN_TO_MAP);
         assert!(state.pending.newspaper_events.is_empty());
         assert!(state.news.pages[MajorNationId::new(0)].is_some());
     }

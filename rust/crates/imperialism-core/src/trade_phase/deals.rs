@@ -18,8 +18,7 @@ impl GameState {
         }
         for row in 0x0d..0x11 {
             let commodity = TradeCommodity::from_retail(row).expect("manufactured commodity");
-            self.pair_deals(phase, commodity, 0..7, 0..7);
-            self.pair_deals(phase, commodity, 0..7, 7..NATION_COUNT as u8);
+            self.pair_deals(phase, commodity, 0..7, 0..NATION_COUNT as u8);
         }
     }
 

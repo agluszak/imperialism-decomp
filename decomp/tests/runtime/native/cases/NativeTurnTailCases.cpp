@@ -299,3 +299,17 @@ RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition) {
 
   return transition.Finish();
 }
+
+RuntimeActionResult RunDealBookTurnStop(NativeTransition& transition) {
+  if (g_pSimMgr == 0) {
+    return RuntimeActionResult::Failure("turn state is unavailable");
+  }
+  g_pSimMgr->turnStateCode = 0xc;
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+  g_pSimMgr->AdvanceGlobalTurnStateMachine();
+  return transition.Finish(json_value_init_string("deal_book"));
+}

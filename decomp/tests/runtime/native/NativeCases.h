@@ -20,10 +20,4 @@ const NativeCase* FindNativeCase(const char* name);
 TGreatPower* ActiveNation();
 short ActiveNationSlot();
 
-void RunTradeWithoutUi();
-JSON_Value* CombatMovesWithoutBattleUi();
-
-class JsonArray;
-RuntimeActionResult LoadNewsStoryIds(JsonArray* ids);
-
 #endif

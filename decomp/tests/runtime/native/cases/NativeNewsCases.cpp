@@ -9,6 +9,7 @@
 #include "game/globals/ui_core_globals.h"
 #include "game/ui_core/TLanguageMgr.h"
 #include "game/ui_screens/TNewsMgr.h"
+#include "game/ui_screens/TSimMgr.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -42,8 +43,6 @@ void WriteSyntheticNewsTab(int eventStoryId) {
   }
   fclose(file);
 }
-
-} // namespace
 
 RuntimeActionResult LoadNewsStoryIds(JsonArray* ids) {
   if (g_pAssetMgr == 0 || g_pLanguageMgr == 0) {
@@ -80,8 +79,6 @@ RuntimeActionResult LoadNewsStoryIds(JsonArray* ids) {
   return RuntimeActionResult::Success();
 }
 
-namespace {
-
 RuntimeActionResult RunNewspaperConstruction(NativeTransition& transition, bool queueMiscEvent) {
   if (g_pNewsMgr == 0 || g_pNewsMgr->sharedEventRecordQueue == 0) {
     return RuntimeActionResult::Failure("newspaper state is unavailable");
@@ -116,4 +113,26 @@ RuntimeActionResult RunConstructNewspaperPage(NativeTransition& transition) {
 
 RuntimeActionResult RunConstructNewspaperPageMiscEvent(NativeTransition& transition) {
   return RunNewspaperConstruction(transition, true);
+}
+
+RuntimeActionResult RunNewspaperTurnStop(NativeTransition& transition) {
+  if (g_pSimMgr == 0) {
+    return RuntimeActionResult::Failure("turn state is unavailable");
+  }
+
+  JsonArray storyIds;
+  RuntimeActionResult loaded = LoadNewsStoryIds(&storyIds);
+  if (!loaded.Succeeded()) {
+    return loaded;
+  }
+  g_pSimMgr->turnStateCode = 0xf;
+
+  JsonObject operation;
+  operation.Set("story_ids", storyIds.Release());
+  RuntimeActionResult started = transition.Begin(operation.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+  g_pSimMgr->AdvanceGlobalTurnStateMachine();
+  return transition.Finish(json_value_init_string("newspaper"));
 }

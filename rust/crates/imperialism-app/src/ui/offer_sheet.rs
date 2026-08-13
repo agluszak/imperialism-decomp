@@ -328,7 +328,7 @@ fn on_offer_sheet_activate(
         }
     };
     match session.game.answer_trade_offer(amount, stop_buying) {
-        TurnStop::TradeOffer(_) => {}
+        TurnStop::TradeOffer => {}
         stop => apply_turn_stop(stop, &mut next_state),
     }
 }
