@@ -642,6 +642,7 @@ pub(in crate::ui::city) fn sync_city_hover_title(
     canvas: Option<Single<(&RelativeCursorPosition, &CityCanvas)>>,
     mut titles: Query<&mut Text, With<CityHoverTitle>>,
     assets: Res<RetailAssetsResource>,
+    session: Res<GameSession>,
 ) {
     let Some((cursor, canvas)) = canvas.map(Single::into_inner) else {
         return;
@@ -662,13 +663,18 @@ pub(in crate::ui::city) fn sync_city_hover_title(
                 .rev()
                 .find(|building| building.mask.contains(point - building.origin))
         });
+    let nation = city_active_nation(&session);
     let text = hovered.map_or_else(String::new, |building| {
-        assets
-            .string(
-                CITY_BUILDING_STRING_GROUP,
-                city_string_index(building.slot as i16),
-            )
-            .expect("retail English City string")
+        if city_oil_industry_unlocked(&session.game, nation, building.slot) {
+            assets
+                .string(
+                    CITY_BUILDING_STRING_GROUP,
+                    city_string_index(building.slot as i16),
+                )
+                .expect("retail English City string")
+        } else {
+            String::new()
+        }
     });
     for mut title in &mut titles {
         title.0.clone_from(&text);
