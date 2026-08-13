@@ -114,6 +114,18 @@ tests only for non-obvious arithmetic. Do not reconstruct private setter plumbin
 not freeze reservation, progress, or constraint field writes that a higher-level test already
 covers. Retail binary-format tests stay field-detailed because the representation is the contract.
 
+A test should normally survive only if it pins recovered retail/C++ behavior that is not obvious
+from the Rust type declaration, exercises a meaningful branch or interaction, checks a
+serialization boundary against independently specified bytes, compares against the native oracle,
+or protects a historical bug. Do not keep tests whose sole purpose is inserting a component and
+reading it back, echoing a helper argument, restating an enum discriminant, verifying Bevy
+lifecycle machinery, asserting that an untouched local is unchanged, or round-tripping our writer
+through our reader. Do not keep giant white-box snapshots of incidental initialization values when
+the native oracle already compares complete state. A missing fixture is a test failure: do not
+`return` early because setup was not what the test expected. UI tests that assert our behavior
+should trigger typed `Activate` (or other domain events) rather than reconstructing Bevy pointer
+machinery.
+
 ## Commands
 
 Run from `rust/`:

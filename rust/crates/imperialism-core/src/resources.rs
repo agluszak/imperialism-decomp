@@ -46,23 +46,3 @@ impl ResourceKind {
 pub(crate) fn all_resources() -> impl ExactSizeIterator<Item = ResourceKind> {
     (0..ResourceKind::LENGTH).map(ResourceKind::from_usize)
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn preserves_the_retail_resource_table_order() {
-        assert_eq!(ResourceKind::Cotton.into_usize(), 0);
-        assert_eq!(ResourceKind::Food.into_usize(), 7);
-        assert_eq!(ResourceKind::Arms.into_usize(), 16);
-        assert_eq!(ResourceKind::Grain.into_usize(), 17);
-        assert_eq!(ResourceKind::Gold.into_usize(), 22);
-        assert_eq!(ResourceKind::LENGTH, 23);
-        assert!(
-            all_resources()
-                .enumerate()
-                .all(|(index, resource)| resource.into_usize() == index)
-        );
-    }
-}

@@ -445,12 +445,34 @@ mod tests {
         let selected_nation = peek_save_header(BEGINNING_OF_GAME)
             .and_then(|header| NationId::try_new(header.active_nation))
             .unwrap_or(NationId::new(0));
-        LegacySaveV62::parse(BEGINNING_OF_GAME).game_state(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 0,
-            selected_nation,
-        })
+        let mut parts =
+            LegacySaveV62::parse(BEGINNING_OF_GAME).game_state_parts(LegacyGameStateContext {
+                crt_rand_state: 1,
+                map_generation_lcg: 0,
+                zone_status_lcg: 0,
+                selected_nation,
+            });
+        let buyer = MajorNationId::from_nation(selected_nation).expect("active nation is a major");
+        let seller = MajorNationId::new(if buyer.get() == 0 { 1 } else { 0 });
+        let majors = MajorNationTable::from_fn(|nation| {
+            let mut major = parts.nations.major(nation).clone();
+            major.city.ship_order_count_by_type[ShipType::Trader] = 2;
+            major.city.ship_order_count_by_type[ShipType::Paddlewheeler] = 1;
+            major.city.ship_order_count_by_type[ShipType::Freighter] = 1;
+            major.city.stockpile[ResourceKind::Clothing] = 10;
+            major.city.stockpile[ResourceKind::Timber] = 12;
+            major.common.treasury = 20_000;
+            if nation == buyer {
+                major.economy.remembered_trade_offers_by_resource[ResourceKind::Clothing] = -1;
+                major.economy.remembered_trade_offers_by_resource[ResourceKind::Timber] = 5;
+            }
+            if nation == seller {
+                major.economy.remembered_trade_offers_by_resource[ResourceKind::Clothing] = 4;
+            }
+            major
+        });
+        parts.nations = Nations::new(majors, MinorNationTable::default());
+        GameState::from_parts(parts)
     }
 
     fn test_app(state: GameState) -> App {
@@ -502,7 +524,7 @@ mod tests {
     fn entering_the_offer_sheet_binds_a_pending_offer() {
         let mut state = fixture_state();
         let TradeProgress::Offer(_) = state.begin_trade_phase() else {
-            return;
+            panic!("beginning-of-game fixture must produce a pending offer");
         };
         let mut app = test_app(state);
         app.update();
@@ -521,21 +543,6 @@ mod tests {
             .collect::<Vec<_>>();
         assert!(bound.contains(&OfferSheetAction::Accept));
         assert!(bound.contains(&OfferSheetAction::Reject));
-    }
-
-    #[test]
-    fn unrelated_activation_before_a_game_does_not_require_a_session() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_plugins(StatesPlugin)
-            .insert_state(AppState::MainMenu)
-            .add_plugins(OfferSheetPlugin);
-        let unrelated = app.world_mut().spawn_empty().id();
-
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: unrelated });
-        app.world_mut().flush();
     }
 
     #[test]
