@@ -108,7 +108,7 @@ struct SlotPresentation {
     info: String,
 }
 
-#[derive(Resource, Clone, Debug, Eq, PartialEq)]
+#[derive(Component, Clone, Debug, Eq, PartialEq)]
 struct LoadSavePresentation {
     slots: [Option<SlotPresentation>; NUMBERED_SAVE_SLOT_COUNT as usize],
     autosave: Option<SlotPresentation>,
@@ -307,7 +307,7 @@ fn bind_load_save(
             &tags,
         ))
         .insert(LoadSaveMapPreview::default());
-    commands.insert_resource(presentation);
+    commands.entity(root_entity).insert(presentation);
 }
 
 fn bind_load_save_actions(
@@ -537,11 +537,10 @@ fn on_load_save_activate(
     activate: On<Activate>,
     actions: Query<&LoadSaveAction>,
     notices: Query<(), With<LoadSaveNotice>>,
-    mut roots: Query<&mut LoadSaveRoot>,
+    mut roots: Query<(&mut LoadSaveRoot, Option<&LoadSavePresentation>)>,
     names: Query<&EditableText, With<SaveNameField>>,
     mut texts: Query<&mut Text>,
     info: Query<Entity, With<LoadSaveInfo>>,
-    presentation: Option<Res<LoadSavePresentation>>,
     save_dir: Option<Res<SaveDirectory>>,
     returning: Res<LoadSaveReturn>,
     session: Option<Res<GameSession>>,
@@ -555,7 +554,7 @@ fn on_load_save_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let Ok(mut root) = roots.single_mut() else {
+    let Ok((mut root, presentation)) = roots.single_mut() else {
         return;
     };
     match *action {
@@ -567,7 +566,7 @@ fn on_load_save_activate(
             &mut root,
             activate.entity,
             slot,
-            presentation.as_deref(),
+            presentation,
             &mut texts,
             info.single().ok(),
         ),
@@ -576,7 +575,7 @@ fn on_load_save_activate(
             &mut root,
             activate.entity,
             SaveSlot::Autosave,
-            presentation.as_deref(),
+            presentation,
             &mut texts,
             info.single().ok(),
         ),
@@ -588,7 +587,7 @@ fn on_load_save_activate(
                 &mut commands,
                 &root,
                 &names,
-                presentation.as_deref(),
+                presentation,
                 &save_dir.0,
                 session.as_deref(),
                 returning.0,
