@@ -88,7 +88,7 @@ impl GameState {
         nation: MajorNationId,
         order: CityOrderId,
         quantity: i16,
-    ) -> bool {
+    ) -> CityOrderUpdate {
         let limit = self.city_order_limit(nation, order);
         let MajorNation { common, city, .. } = self.nations.major_mut(nation);
         let CityState {
@@ -99,7 +99,7 @@ impl GameState {
             power_available,
             ..
         } = city;
-        match order {
+        let accepted = match order {
             CityOrderId::Item(output) => {
                 let state = &mut orders.items[output];
                 set_item_quantity(
@@ -189,6 +189,11 @@ impl GameState {
                 limit,
                 quantity,
             ),
+        };
+        if accepted {
+            CityOrderUpdate::Applied
+        } else {
+            CityOrderUpdate::Rejected(limit)
         }
     }
 
@@ -198,7 +203,7 @@ impl GameState {
         nation: MajorNationId,
         order: CityOrderId,
         delta: i16,
-    ) -> bool {
+    ) -> CityOrderUpdate {
         let quantity = self.city_order_quantity(nation, order);
         self.set_city_order_quantity(nation, order, quantity + delta)
     }

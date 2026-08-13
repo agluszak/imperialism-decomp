@@ -40,7 +40,9 @@ semantics.
 - `GameState` map and ocean are crate-private. Inspect with `map()` / `ocean()`; change the viewport
   through named methods such as `scroll_map_viewport` and `center_map_on`.
 - Core owns the turn sequence: `finish_player_orders`, the answer methods, and `advance_turn`.
-  `AppState` is screen routing. Do not chain phases in the app.
+  `AppState` is screen routing. Do not chain phases in the app. Pass newspaper story IDs into the
+  turn driver as immutable rule data; core constructs newspaper pages before returning
+  `TurnStop::Newspaper`.
 - Core owns deterministic sequencing and mutation. The app owns presentation decisions and projects
   core state into Bevy; ECS is not the gameplay database.
 - Keep one authoritative representation for each fact and derive secondary facts. Prefer semantic
@@ -85,14 +87,16 @@ Generated UI is generated: change the recovery evidence or generator, then regen
 `ui-recovery` skill for that workflow.
 
 Put presentation meaning on the actual entities (`IndustryCapacity`,
-`CityOrderQuantity`, `TradeDisplay`, `DealBookHost`, and so on) and project
-`GameSession` through narrow queries. Do not store widget entity handles in a
-parallel object graph, and do not replace that with generated binding structs, a
-registry, a second scene model, or another abstraction layer. Screen-owned
-presentation lives on the screen entity; application-level facts such as
-`SaveDirectory` stay resources. `DespawnOnExit` belongs on state-scope roots and
-independently spawned top-level windows/modals; children inherit lifetime from
-their parent.
+`CityOrderQuantity`, `TradeDisplay`, `DealBookHost`, `GameStatusDisplay`,
+and so on) and project `GameSession` through narrow queries. Do not store
+widget entity handles in a parallel object graph, and do not replace that
+with generated binding structs, a registry, a second scene model, or another
+abstraction layer. Screen-owned presentation lives on the screen entity;
+application-level facts such as `SaveDirectory` stay resources. `DespawnOnExit`
+belongs on state-scope roots and independently spawned top-level windows/modals;
+children inherit lifetime from their parent. Use `Res<RetailAssetsResource>` for
+string and palette lookups; `RetailUiAssets` is for loading or mutating Bevy
+fonts and images.
 
 ## Retail fidelity
 

@@ -42,6 +42,15 @@ impl HoverHelpBarStyle {
         text_palette: 0xd2,
         shadow_palette: 0x28,
     };
+
+    /// `TGamePreferencesPicture::DoPostCreate` restyles `curs` through
+    /// `InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67)`: 12pt, text palette `0x28`,
+    /// shadow palette `0`.
+    pub(crate) const PREFERENCES: Self = Self {
+        point_size: 12,
+        text_palette: 0x28,
+        shadow_palette: 0,
+    };
 }
 
 pub(crate) fn register_hover_help(app: &mut App) {
