@@ -299,11 +299,10 @@ impl GameState {
 
     fn evaluate_resources(&mut self, nation: MajorNationId, tile: TileId) -> i16 {
         let order_quantity = self.nations.city(nation).orders.population_growth.quantity;
-        let summary = self
+        let summary = *self
             .nations
             .city_mut(nation)
-            .refresh_unreserved_city_needs(order_quantity)
-            .clone();
+            .refresh_unreserved_city_needs(order_quantity);
         let yields = self.projected_town_yield(nation, tile);
         let interior = &self.nations.majors[nation].economy.interior_civilian;
         let need_current = &self.nations.majors[nation].economy.need_current_by_type;
@@ -520,6 +519,7 @@ impl GameState {
         let mut average = pressure
             .map(|state| f32::from_bits(state.average_unit_divergence_per_owned_region_bits))
             .unwrap_or(0.0);
+        #[allow(clippy::neg_cmp_op_on_partial_ord)]
         if !(average > 0.0) {
             average = 1.0;
         }
@@ -1054,8 +1054,8 @@ fn insert_scored_candidate(
     rng: &mut RngState,
 ) {
     let mut insertion = None;
-    for index in 0..scores.len() {
-        if score > scores[index] || (score == scores[index] && rng.next_crt_rand() & 1 != 0) {
+    for (index, &current) in scores.iter().enumerate() {
+        if score > current || (score == current && rng.next_crt_rand() & 1 != 0) {
             insertion = Some(index);
             break;
         }

@@ -1015,6 +1015,7 @@ mod tests {
         let redeploy_tile = geometry.tile(6, 12).unwrap();
         let develop_tile = geometry.tile(7, 10).unwrap();
         let nation = NationId::new(0);
+        state.map[TileId::new(1)].owner_nation = Some(TileOwnerTag::from_nation(nation));
 
         state.map.provinces[ProvinceId::new(0)] = ProvinceState::new(
             Some(nation),
