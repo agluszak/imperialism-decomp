@@ -1,7 +1,7 @@
 use super::GameSession;
 use super::RetailUiAssets;
 use super::format_currency;
-use super::game_shell::{bind_native_game_screen_nav, project_date_and_treasury};
+use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::hover_help::get_string;
 use super::random_setup_map::{
@@ -11,7 +11,8 @@ use super::random_setup_map::{
 use super::retail::ModalDialog;
 use super::retail::{RetailTag, find_child, find_descendant};
 use super::session::apply_turn_stop;
-use crate::{AppState, RetailAssetsResource};
+use crate::AppState;
+use crate::RetailAssetsResource;
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::math::Rect;
 use bevy::picking::events::{Click, Pointer};
@@ -266,7 +267,7 @@ impl Plugin for DiplomacyPlugin {
 
 fn enter_diplomacy_screen(mut commands: Commands, session: Res<GameSession>) {
     let root = commands.spawn_scene(generated::diplo_2008()).id();
-    let source = MajorNationId::from_nation(session.0.turn().active_nation)
+    let source = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     let mut screen = DiplomacyScreen {
         framed_nation: source.nation(),
@@ -278,7 +279,7 @@ fn enter_diplomacy_screen(mut commands: Commands, session: Res<GameSession>) {
         overlay: 0,
         colony_boycott: false,
     };
-    if let Some(framed) = diplomacy_interrupt_frame(&session.0) {
+    if let Some(framed) = diplomacy_interrupt_frame(&session.game) {
         screen.topic = DiplomacyTopic::Offers;
         screen.framed_nation = framed;
     }
@@ -295,7 +296,7 @@ fn bind_diplomacy_screen(
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    project_date_and_treasury(
+    bind_game_status_display(
         &mut commands,
         &mut assets,
         *root,
@@ -403,7 +404,7 @@ fn bind_diplomacy_controls(
     assets: &mut RetailUiAssets,
     session: &GameSession,
 ) -> Entity {
-    if !diplomacy_interrupt(&session.0) {
+    if !diplomacy_interrupt(&session.game) {
         bind_native_game_screen_nav(
             commands,
             root,
@@ -1098,14 +1099,14 @@ fn on_diplomacy_activate(
         .expect("Diplomacy control has one open Diplomacy screen");
     match *action {
         DiplomacyAction::Topic(topic) => {
-            if diplomacy_interrupt(&session.0) {
+            if diplomacy_interrupt(&session.game) {
                 return;
             }
             if screen.topic == topic {
                 return;
             }
             screen.topic = topic;
-            screen.framed_nation = MajorNationId::from_nation(session.0.turn().active_nation)
+            screen.framed_nation = MajorNationId::from_nation(session.game.turn().active_nation)
                 .expect("Diplomacy screen requires an active major nation")
                 .nation();
             match topic {
@@ -1155,13 +1156,18 @@ fn on_diplomacy_offer_activate(
         DiplomacyAction::RejectOffer => false,
         _ => return,
     };
-    if !diplomacy_interrupt(&session.0) {
+    if !diplomacy_interrupt(&session.game) {
         return;
     }
-    let stop = if session.0.current_diplomacy_offer().is_some() {
-        session.0.answer_current_diplomacy_offer(accept)
+    let news_story_ids = retail.assets().news_table().story_ids();
+    let stop = if session.game.current_diplomacy_offer().is_some() {
+        session
+            .game
+            .answer_current_diplomacy_offer(accept, news_story_ids)
     } else {
-        session.0.answer_current_diplomacy_war_join(accept)
+        session
+            .game
+            .answer_current_diplomacy_war_join(accept, news_story_ids)
     };
     match stop {
         TurnStop::DiplomacyOffer(prompt) => {
@@ -1178,7 +1184,7 @@ fn on_diplomacy_offer_activate(
             screen.topic = DiplomacyTopic::Offers;
             screen.framed_nation = prompt.target;
         }
-        stop => apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state),
+        stop => apply_turn_stop(stop, &mut next_state),
     }
 }
 
@@ -1205,7 +1211,7 @@ fn on_diplomacy_map_click(
     let Some(tile) = tile_at_diplomacy_position(normalized) else {
         return;
     };
-    let Some(target) = session.0.map()[tile]
+    let Some(target) = session.game.map()[tile]
         .owner_nation
         .and_then(TileOwnerTag::nation)
     else {
@@ -1214,7 +1220,7 @@ fn on_diplomacy_map_click(
     let mut screen = screens
         .single_mut()
         .expect("Diplomacy map has one open Diplomacy screen");
-    let source = MajorNationId::from_nation(session.0.turn().active_nation)
+    let source = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     let rejection = match screen.topic {
         DiplomacyTopic::Information => {
@@ -1229,7 +1235,7 @@ fn on_diplomacy_map_click(
                 return;
             };
             match session
-                .0
+                .game
                 .toggle_player_diplomacy_policy(source, target, policy, false)
             {
                 PlayerDiplomacyOrderResult::NeedsEntanglementConfirmation => {
@@ -1240,7 +1246,7 @@ fn on_diplomacy_map_click(
             }
         }
         DiplomacyTopic::Grants => {
-            player_diplomacy_rejection(session.0.toggle_player_diplomacy_grant(
+            player_diplomacy_rejection(session.game.toggle_player_diplomacy_grant(
                 source,
                 target,
                 DiplomacyGrant {
@@ -1251,9 +1257,11 @@ fn on_diplomacy_map_click(
         }
         DiplomacyTopic::Trade => {
             if screen.colony_boycott {
-                player_diplomacy_rejection(session.0.toggle_player_colony_boycott(source, target))
+                player_diplomacy_rejection(
+                    session.game.toggle_player_colony_boycott(source, target),
+                )
             } else {
-                player_diplomacy_rejection(session.0.toggle_player_trade_policy(
+                player_diplomacy_rejection(session.game.toggle_player_trade_policy(
                     source,
                     target,
                     TRADE_POLICY_SCORES[screen.trade_row],
@@ -1366,7 +1374,7 @@ fn bind_diplomacy_notice(
         notice_color,
     ));
     let coat = find_descendant(root, fourcc!("coat"), &children, &tags);
-    let source = MajorNationId::from_nation(session.0.turn().active_nation)
+    let source = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     let coat_picture = PictureId::new(9500 + i16::from(source.get()));
     if let Ok(image) = assets.picture(coat_picture) {
@@ -1436,7 +1444,7 @@ fn bind_diplomacy_entanglement_notice(
         .expect("retail diplomacy entanglement body style");
     commands.entity(body).insert((
         Text::new(diplomacy_entanglement_body(
-            &session.0,
+            &session.game,
             &assets,
             notice.target,
             notice.policy,
@@ -1447,7 +1455,7 @@ fn bind_diplomacy_entanglement_notice(
         notice_color,
     ));
     let coat = find_descendant(root, fourcc!("coat"), &children, &tags);
-    let source = MajorNationId::from_nation(session.0.turn().active_nation)
+    let source = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     let coat_picture = PictureId::new(9500 + i16::from(source.get()));
     if let Ok(image) = assets.picture(coat_picture) {
@@ -1501,11 +1509,11 @@ fn on_diplomacy_entanglement_activate(
     if !matches!(*action, DiplomacyEntanglementAction::Confirm) {
         return;
     }
-    let source = MajorNationId::from_nation(session.0.turn().active_nation)
+    let source = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     if let Some(rejection) = player_diplomacy_rejection(
         session
-            .0
+            .game
             .toggle_player_diplomacy_policy(source, target, policy, true),
     ) {
         commands.trigger(OpenDiplomacyRejectionNotice { rejection });
@@ -1761,9 +1769,9 @@ fn sync_diplomacy_controls(
         };
         image.image = picture.clone();
     }
-    let source = MajorNationId::from_nation(session.0.turn().active_nation)
+    let source = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
-    let major = session.0.nations().major(source);
+    let major = session.game.nations().major(source);
     for mut text in &mut treasury {
         text.0 = format_currency(major.common.treasury);
     }
@@ -1792,7 +1800,7 @@ fn sync_diplomacy_offer_sheet(
     if !session.is_changed() && !screen.is_added() && !screen.is_changed() {
         return;
     }
-    let message = diplomacy_offer_message(&session.0, &assets);
+    let message = diplomacy_offer_message(&session.game, &assets);
     let posing = message.is_some();
     for mut visibility in &mut sheets {
         *visibility = if posing {
@@ -1828,7 +1836,7 @@ fn sync_diplomacy_offer_sheet(
 fn sync_diplomacy_information(
     session: Res<GameSession>,
     screens: Query<Ref<DiplomacyScreen>>,
-    assets: RetailUiAssets,
+    assets: Res<RetailAssetsResource>,
     mut information: Query<
         (&DiplomacyInfoText, &mut Text),
         (
@@ -1847,6 +1855,7 @@ fn sync_diplomacy_information(
         (
             Without<DiplomacyInfoText>,
             Without<DiplomacyNationLabel>,
+            Without<DiplomacyNationIcon>,
             Without<DiplomacyMapKeyMajorName>,
         ),
     >,
@@ -1875,7 +1884,7 @@ fn sync_diplomacy_information(
     if !session.is_changed() && !screen.is_added() && !screen.is_changed() {
         return;
     }
-    let state = &session.0;
+    let state = &session.game;
     let (name, labels_by_row, values_by_row) = diplomacy_information(state, screen.framed_nation);
     for (field, mut text) in &mut information {
         text.0 = match field.0 {
@@ -2061,17 +2070,14 @@ fn render_diplomacy_map(
     mut commands: Commands,
     session: Res<GameSession>,
     mut assets: RetailUiAssets,
-    screens: Query<Ref<DiplomacyScreen>>,
-    maps: Query<(Entity, Option<&ImageNode>), With<DiplomacyMapPicture>>,
+    screen: Single<Ref<DiplomacyScreen>>,
+    map: Single<(Entity, Option<&ImageNode>), With<DiplomacyMapPicture>>,
 ) {
-    let screen = screens
-        .single()
-        .expect("Diplomacy state has one Diplomacy screen");
     if !session.is_changed() && !screen.is_added() && !screen.is_changed() {
         return;
     }
-    let (entity, image_node) = maps.single().expect("Diplomacy screen has one map picture");
-    let state = &session.0;
+    let (entity, image_node) = map.into_inner();
+    let state = &session.game;
     let framed = screen.framed_nation;
     let pixels = match screen.interaction_mode() {
         1 => compose_owner_preview_indices_with_fill(
@@ -2193,12 +2199,12 @@ struct CouncilPanelText {
     rows: Option<[(String, String); 3]>,
 }
 
-fn council_panel_text(state: &GameState, assets: &RetailUiAssets) -> CouncilPanelText {
+fn council_panel_text(state: &GameState, assets: &RetailAssetsResource) -> CouncilPanelText {
     let congress = &state.diplomacy().congress;
     if let (Some(chairman), Some(counterpart)) = (congress.chairman, congress.counterpart) {
         let decade = (state.turn().economic_turn / 4) / 10 * 10 + 1815;
         CouncilPanelText {
-            title: fill_brackets(&get_string(assets, 0x2733, 0x35), &[&decade.to_string()]),
+            title: fill_brackets(&assets.get_string(0x2733, 0x35), &[&decade.to_string()]),
             rows: Some([
                 (
                     format!(
@@ -2221,14 +2227,14 @@ fn council_panel_text(state: &GameState, assets: &RetailUiAssets) -> CouncilPane
                     congress.counterpart_support.to_string(),
                 ),
                 (
-                    get_string(assets, 0x2733, 0x36),
+                    assets.get_string(0x2733, 0x36),
                     congress.neutral_support.to_string(),
                 ),
             ]),
         }
     } else {
         CouncilPanelText {
-            title: get_string(assets, 0x2733, 0x34),
+            title: assets.get_string(0x2733, 0x34),
             rows: None,
         }
     }

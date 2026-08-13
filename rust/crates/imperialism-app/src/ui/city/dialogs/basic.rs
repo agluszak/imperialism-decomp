@@ -330,7 +330,11 @@ pub(in crate::ui::city) fn sync_warehouse_dialog(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let city = &session.0.nations().major(city_active_nation(&session)).city;
+    let city = &session
+        .game
+        .nations()
+        .major(city_active_nation(&session))
+        .city;
     for (display, mut text) in &mut displays {
         text.0 = match *display {
             WarehouseDisplay::Stock(resource) => {
@@ -355,7 +359,11 @@ pub(in crate::ui::city) fn sync_food_dialog(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let city = &session.0.nations().major(city_active_nation(&session)).city;
+    let city = &session
+        .game
+        .nations()
+        .major(city_active_nation(&session))
+        .city;
     for (indicator, mut visibility) in &mut indicators {
         let visible = match indicator {
             FoodIndicator::Labor => city.population.strength() >= 2,
@@ -381,7 +389,11 @@ pub(in crate::ui::city) fn sync_transport_capacity_dialog(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let city = &session.0.nations().major(city_active_nation(&session)).city;
+    let city = &session
+        .game
+        .nations()
+        .major(city_active_nation(&session))
+        .city;
     for (indicator, mut visibility) in &mut indicators {
         let visible = match indicator {
             TransportCapacityIndicator::Labor => city.population.strength() >= 2,
@@ -406,7 +418,7 @@ pub(in crate::ui::city) fn sync_population_dialog(
         return;
     }
     let nation = city_active_nation(&session);
-    let major = session.0.nations().major(nation);
+    let major = session.game.nations().major(nation);
     let city = &major.city;
     for (PopulationGood(resource), mut visibility) in &mut goods {
         *visibility = if city.stockpile[*resource] >= 1 {
@@ -419,7 +431,7 @@ pub(in crate::ui::city) fn sync_population_dialog(
     let building = city.building_type(
         CityFacilitySlot::RegionalPopulation,
         &major.economy,
-        owned_regions as i32,
+        owned_regions,
     );
     for (text_kind, mut text) in &mut texts {
         text.0 = match text_kind {

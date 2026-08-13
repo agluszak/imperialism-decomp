@@ -70,6 +70,7 @@ RuntimeActionResult RunDiplomacyOfferGate(NativeTransition& transition);
 RuntimeActionResult RunQuarterGateOffDecade(NativeTransition& transition);
 RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transition);
 RuntimeActionResult RunEliminationPhaseWithLandedGreatPowers(NativeTransition& transition);
+RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition);
 RuntimeActionResult RunPeacefulWholeTurn(NativeTransition& transition);
 
 namespace {
@@ -133,6 +134,7 @@ const NativeCase kCases[] = {
     {"quarter_gate_off_decade", RunQuarterGateOffDecade},
     {"return_to_map_clears_notice_queues", RunReturnToMapClearsNoticeQueues},
     {"elimination_phase_with_landed_great_powers", RunEliminationPhaseWithLandedGreatPowers},
+    {"opening_civilian_grant", RunOpeningCivilianGrant},
     {"peaceful_whole_turn", RunPeacefulWholeTurn},
 };
 

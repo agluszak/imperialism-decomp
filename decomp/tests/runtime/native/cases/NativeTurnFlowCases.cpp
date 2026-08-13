@@ -1,4 +1,5 @@
 #include "NativeCases.h"
+#include "JsonArray.h"
 #include "JsonObject.h"
 #include "parson.h"
 
@@ -16,6 +17,7 @@
 #include "game/nation/TMinor.h"
 #include "game/navy/TShip.h"
 #include "game/tactical_ui/TTechMgr.h"
+#include "game/ui_screens/TNewsMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_screens/turn_flow_cooldown.h"
 
@@ -213,11 +215,18 @@ void ReturnToMap() {
 
 RuntimeActionResult RunPeacefulWholeTurn(NativeTransition& transition) {
   if (g_pSimMgr == 0 || g_pDiplomacyTurnStateManager == 0 || g_pTradeMgr == 0 ||
-      g_pMapContextActionManager == 0 || g_pTechMgr == 0) {
+      g_pMapContextActionManager == 0 || g_pTechMgr == 0 || g_pNewsMgr == 0) {
     return RuntimeActionResult::Failure("the loaded game is missing turn-flow managers");
   }
 
-  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  JsonArray storyIds;
+  RuntimeActionResult loaded = LoadNewsStoryIds(&storyIds);
+  if (!loaded.Succeeded()) {
+    return loaded;
+  }
+  JsonObject operation;
+  operation.Set("story_ids", storyIds.Release());
+  RuntimeActionResult started = transition.Begin(operation.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -263,6 +272,7 @@ RuntimeActionResult RunPeacefulWholeTurn(NativeTransition& transition) {
   RunQuarterGateAndSeason();
   g_pTechMgr->CheckForAdvances();
   ConsumeTechnologyUnlocks();
+  g_pNewsMgr->StartNewsPhase();
   ReturnToMap();
   return transition.Finish();
 }

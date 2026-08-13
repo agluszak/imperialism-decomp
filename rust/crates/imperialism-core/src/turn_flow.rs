@@ -160,45 +160,58 @@ impl TurnState {
 
 impl GameState {
     /// Ends player orders on the strategic map and runs the turn until the next stop.
-    pub fn finish_player_orders(&mut self) -> TurnStop {
+    pub fn finish_player_orders(&mut self, news_story_ids: &[i32]) -> TurnStop {
         assert_eq!(self.turn.phase(), PhaseCode::STRATEGIC_MAP);
         self.turn.phase = PhaseCode::DIPLOMACY;
-        self.advance_turn()
+        self.advance_turn(news_story_ids)
     }
 
     /// Accepts or rejects the diplomacy offer stored in the current continuation.
-    pub fn answer_current_diplomacy_offer(&mut self, accept: bool) -> TurnStop {
+    pub fn answer_current_diplomacy_offer(
+        &mut self,
+        accept: bool,
+        news_story_ids: &[i32],
+    ) -> TurnStop {
         let result = self.resolve_diplomacy_offer(accept);
         if let Some(stop) = self.stop_from_diplomacy(result) {
             return stop;
         }
         self.turn.phase = PhaseCode::TRADE;
-        self.advance_turn()
+        self.advance_turn(news_story_ids)
     }
 
     /// Accepts or rejects the war-join dialog stored in the current continuation.
-    pub fn answer_current_diplomacy_war_join(&mut self, accept: bool) -> TurnStop {
+    pub fn answer_current_diplomacy_war_join(
+        &mut self,
+        accept: bool,
+        news_story_ids: &[i32],
+    ) -> TurnStop {
         let result = self.resolve_diplomacy_war_join(accept);
         if let Some(stop) = self.stop_from_diplomacy(result) {
             return stop;
         }
         self.turn.phase = PhaseCode::TRADE;
-        self.advance_turn()
+        self.advance_turn(news_story_ids)
     }
 
     /// Applies the Offer Sheet decision and resumes ranked trade deals.
-    pub fn answer_trade_offer(&mut self, quantity: i16, stop_buying: bool) -> TurnStop {
+    pub fn answer_trade_offer(
+        &mut self,
+        quantity: i16,
+        stop_buying: bool,
+        news_story_ids: &[i32],
+    ) -> TurnStop {
         match self.reply_to_trade_offer(quantity, stop_buying) {
             TradeProgress::Offer(offer) => TurnStop::TradeOffer(offer),
             TradeProgress::Complete => {
                 self.turn.phase = PhaseCode::OFFER_SHEET;
-                self.advance_turn()
+                self.advance_turn(news_story_ids)
             }
         }
     }
 
     /// Dismisses the technology report and continues the turn.
-    pub fn acknowledge_technology_report(&mut self) -> TurnStop {
+    pub fn acknowledge_technology_report(&mut self, news_story_ids: &[i32]) -> TurnStop {
         assert!(
             matches!(self.continuation, TurnContinuation::TechnologyReport(_)),
             "technology report answer requires an active technology continuation"
@@ -209,14 +222,14 @@ impl GameState {
             return TurnStop::TechnologyAdvance(tech_id);
         }
         self.turn.phase = PhaseCode::NEWSPAPER;
-        self.advance_turn()
+        self.advance_turn(news_story_ids)
     }
 
     /// Dismisses the Deal Book and continues through quarter gate to the next stop.
-    pub fn close_deal_book(&mut self) -> TurnStop {
+    pub fn close_deal_book(&mut self, news_story_ids: &[i32]) -> TurnStop {
         assert_eq!(self.turn.phase(), PhaseCode::DEAL_BOOK);
         self.turn.phase = PhaseCode::QUARTER_GATE;
-        self.advance_turn()
+        self.advance_turn(news_story_ids)
     }
 
     /// Dismisses the newspaper and returns to player orders.
@@ -255,11 +268,12 @@ impl GameState {
         }
     }
 
-    pub(crate) fn advance_turn(&mut self) -> TurnStop {
+    pub(crate) fn advance_turn(&mut self, news_story_ids: &[i32]) -> TurnStop {
         loop {
             match self.turn.phase() {
                 PhaseCode::STRATEGIC_MAP => return TurnStop::PlayerOrders,
                 PhaseCode::CAPITAL_SELECTION => {
+                    self.grant_opening_civilians();
                     self.turn.phase = PhaseCode::SEASON_ADVANCE;
                 }
                 PhaseCode::DIPLOMACY => match self.continuation {
@@ -346,7 +360,10 @@ impl GameState {
                     }
                     self.turn.phase = PhaseCode::NEWSPAPER;
                 }
-                PhaseCode::NEWSPAPER => return TurnStop::Newspaper,
+                PhaseCode::NEWSPAPER => {
+                    self.start_newspaper_phase(news_story_ids);
+                    return TurnStop::Newspaper;
+                }
                 PhaseCode::RETURN_TO_MAP => {
                     self.return_to_map();
                 }
@@ -442,19 +459,19 @@ mod tests {
 
     fn auto_accept_trade_and_reject_diplomacy(state: &mut crate::GameState) -> crate::TurnStop {
         let mut stop = match state.turn.phase() {
-            crate::PhaseCode::STRATEGIC_MAP => state.finish_player_orders(),
-            _ => state.advance_turn(),
+            crate::PhaseCode::STRATEGIC_MAP => state.finish_player_orders(&[]),
+            _ => state.advance_turn(&[]),
         };
         loop {
             match stop {
                 crate::TurnStop::DiplomacyOffer(_) => {
-                    stop = state.answer_current_diplomacy_offer(false);
+                    stop = state.answer_current_diplomacy_offer(false, &[]);
                 }
                 crate::TurnStop::DiplomacyWarJoin(_) => {
-                    stop = state.answer_current_diplomacy_war_join(false);
+                    stop = state.answer_current_diplomacy_war_join(false, &[]);
                 }
                 crate::TurnStop::TradeOffer(offer) => {
-                    stop = state.answer_trade_offer(offer.amount, false);
+                    stop = state.answer_trade_offer(offer.amount, false, &[]);
                 }
                 crate::TurnStop::DealBook
                 | crate::TurnStop::TechnologyAdvance(_)
@@ -492,11 +509,11 @@ mod tests {
             .economy
             .diplomacy_policy_by_nation[crate::NationId::new(0)] = Some(DiplomacyPolicy::Alliance);
 
-        let crate::TurnStop::DiplomacyOffer(prompt) = state.finish_player_orders() else {
+        let crate::TurnStop::DiplomacyOffer(prompt) = state.finish_player_orders(&[]) else {
             panic!("expected a diplomacy offer stop");
         };
         assert_eq!(state.current_diplomacy_offer(), Some(prompt));
-        let stop = state.answer_current_diplomacy_offer(true);
+        let stop = state.answer_current_diplomacy_offer(true, &[]);
         assert!(state.current_diplomacy_offer().is_none());
         assert!(
             matches!(
@@ -541,7 +558,7 @@ mod tests {
         let mut state = game_state();
         state.turn.phase = crate::PhaseCode::CAPITAL_SELECTION;
         state.turn.economic_turn = 0;
-        let stop = state.advance_turn();
+        let stop = state.advance_turn(&[]);
         assert!(
             matches!(
                 stop,
@@ -557,7 +574,7 @@ mod tests {
         let mut state = game_state();
         land_every_major(&mut state);
         state.turn.phase = crate::PhaseCode::CITY_AND_TRANSPORT;
-        let stop = state.advance_turn();
+        let stop = state.advance_turn(&[]);
         assert_eq!(stop, crate::TurnStop::DealBook);
         assert_eq!(state.turn.phase(), crate::PhaseCode::DEAL_BOOK);
     }
@@ -571,14 +588,32 @@ mod tests {
             crate::TurnStop::DealBook
         );
         let start_turn = state.turn.economic_turn;
-        let mut stop = state.close_deal_book();
+        let mut stop = state.close_deal_book(&[]);
         while let crate::TurnStop::TechnologyAdvance(_) = stop {
-            stop = state.acknowledge_technology_report();
+            stop = state.acknowledge_technology_report(&[]);
         }
         assert_eq!(stop, crate::TurnStop::Newspaper);
         assert_eq!(state.turn.phase(), crate::PhaseCode::NEWSPAPER);
         assert_eq!(state.turn.economic_turn, start_turn + 1);
         assert_eq!(state.close_newspaper(), crate::TurnStop::PlayerOrders);
         assert_eq!(state.turn.phase(), crate::PhaseCode::STRATEGIC_MAP);
+    }
+
+    #[test]
+    fn newspaper_stop_constructs_pages_before_returning() {
+        let mut state = game_state();
+        state.turn.phase = crate::PhaseCode::NEWSPAPER;
+        state
+            .pending
+            .queue_newspaper_event(crate::PendingNewspaperEvent::Miscellaneous {
+                audience: None,
+                story_code: 3,
+            });
+        let mut story_ids = vec![1; crate::NEWS_TEMPLATE_COUNT];
+        story_ids[0] = -1003;
+        let stop = state.advance_turn(&story_ids);
+        assert_eq!(stop, crate::TurnStop::Newspaper);
+        assert!(state.pending.newspaper_events.is_empty());
+        assert!(state.news.pages[MajorNationId::new(0)].is_some());
     }
 }
