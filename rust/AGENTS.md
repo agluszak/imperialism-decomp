@@ -16,7 +16,7 @@ Crate count follows actual ownership. Do not split the core into subsystem crate
 another authoritative state model without a concrete need.
 
 Keep domain types beside their behavior modules (`game`, `map`, `nations`, `city/`, `diplomacy`,
-`turn_flow`, `ai/`, and so on). City production orders live under `city/`; facility slots are
+`turn_flow`, `turn_tail`, `ai/`, and so on). City production orders live under `city/`; facility slots are
 `CityFacilitySlot`. The AI interior minister that fills city/transport orders lives in
 `ai/interior.rs`; `city_transport_phase.rs` keeps the retail `DoCityAndTransport` sequence.
 Export a curated crate-root surface—do not reintroduce broad `state::*` or

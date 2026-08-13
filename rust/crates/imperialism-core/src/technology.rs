@@ -297,8 +297,7 @@ impl GameState {
     /// first pending unlock, matching `ConsumeFirstPendingAbilityUnlock` before
     /// `ShowAbilityStatusReport`.
     pub fn begin_technology_and_newspaper_tail(&mut self) -> Option<u8> {
-        self.turn.advance_season();
-        self.turn.phase = PhaseCode::TECHNOLOGY_ADVANCES;
+        self.advance_season_phase();
         self.check_technology_advances();
         // FIXME: retail ORs `turnFlowStatusFlags` with `0x40` when `marker262` is
         // unchanged (map toolbar new-tech chrome). `marker262` is not modeled.

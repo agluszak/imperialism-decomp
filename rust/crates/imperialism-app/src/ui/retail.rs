@@ -9,6 +9,9 @@ use bevy::text::{EditableText, EditableTextFilter, LineHeight, TextCursorStyle};
 use bevy::ui::{Checked, Pressed};
 use imperialism_formats::*;
 use std::collections::HashMap;
+use std::fs;
+
+const WINE_SYSTEM_FONT_PATH: &str = "/usr/share/wine/fonts/system.ttf";
 
 /// Provenance tag recovered from the retail View resource.
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -173,6 +176,8 @@ pub enum RetailTextError {
     Metrics(#[from] RetailFontMetricsError),
     #[error(transparent)]
     Assets(#[from] RetailAssetError),
+    #[error("Windows System font is unavailable at {WINE_SYSTEM_FONT_PATH}: {0}")]
+    SystemFont(#[source] std::io::Error),
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -398,13 +403,18 @@ fn load_retail_font(
     retail_assets: &RetailAssetsResource,
     fonts: &mut Assets<Font>,
     font_handles: &mut RetailFontHandles,
-) -> Result<CachedRetailFont, RetailFontMetricsError> {
+) -> Result<CachedRetailFont, RetailTextError> {
     if let Some(cached) = font_handles.0.get(&face) {
         return Ok(cached.clone());
     }
-    let bytes = retail_assets.assets().font_bytes(face);
-    let metrics = decode_retail_font_cell_metrics(face, bytes)?;
-    let handle = fonts.add(Font::from_bytes(bytes.to_vec()));
+    let bytes = match face {
+        RetailFontFace::System => {
+            fs::read(WINE_SYSTEM_FONT_PATH).map_err(RetailTextError::SystemFont)?
+        }
+        _ => retail_assets.assets().font_bytes(face).to_vec(),
+    };
+    let metrics = decode_retail_font_cell_metrics(face, &bytes)?;
+    let handle = fonts.add(Font::from_bytes(bytes));
     let cached = CachedRetailFont { handle, metrics };
     font_handles.0.insert(face, cached.clone());
     Ok(cached)
@@ -417,7 +427,10 @@ fn retail_text_components(
     let mut text_font =
         TextFont::from_font_size(font.metrics.em_pixel_size(style.logical_pixel_height) as f32)
             .with_font(font.handle)
-            .with_font_smoothing(FontSmoothing::AntiAliased);
+            .with_font_smoothing(match style.face {
+                RetailFontFace::System => FontSmoothing::None,
+                _ => FontSmoothing::AntiAliased,
+            });
     if style.italic {
         text_font.style = FontStyle::Italic;
     }

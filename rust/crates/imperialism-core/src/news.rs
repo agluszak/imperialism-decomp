@@ -374,7 +374,7 @@ impl GameState {
     }
 
     pub fn finish_newspaper_phase(&mut self) {
-        self.turn.phase = PhaseCode::STRATEGIC_MAP;
+        self.return_to_map();
     }
 
     /// Mirrors `TNewsMgr::StartNewsPhase` page construction without loading `news.tab`.

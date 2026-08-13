@@ -4,14 +4,16 @@ const BOOK_ANTIQUA_HEIGHTS: [i32; 25] = [
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum RetailFontFace {
+    System,
     BelweBold,
     BookAntiquaRegular,
     BookAntiquaBold,
 }
 
 impl RetailFontFace {
-    pub(crate) const fn relative_path(self) -> &'static str {
+    pub(crate) fn relative_path(self) -> &'static str {
         match self {
+            Self::System => unreachable!("the Windows System font is supplied by the platform"),
             Self::BelweBold => "Data/WeBeBd__.ttf",
             Self::BookAntiquaRegular => "Data/Antqua.ttf",
             Self::BookAntiquaBold => "Data/Antquab.ttf",
@@ -68,10 +70,11 @@ pub fn resolve_retail_text_style(
     };
     let logical_pixel_height = retail_logical_font_height(preset.font_family, preset.point_size)?;
     let face = match effective_family {
+        0 => RetailFontFace::System,
         1 => RetailFontFace::BelweBold,
         2 | 3 if preset.face_flags & 1 != 0 => RetailFontFace::BookAntiquaBold,
         2 | 3 => RetailFontFace::BookAntiquaRegular,
-        0 | 4 => {
+        4 => {
             return Err(RetailTextStyleError::UnresolvedFontFamily {
                 requested_family: preset.font_family,
                 effective_family,
@@ -221,16 +224,19 @@ mod tests {
     }
 
     #[test]
-    fn defaults_zero_size_and_coerces_out_of_range_family_to_unresolved_system() {
+    fn resolves_system_family_and_rejects_unavailable_small_fonts() {
         assert_eq!(retail_logical_font_height(0, 0).unwrap(), 15);
         assert_eq!(retail_logical_font_height(4, 12).unwrap(), 15);
         assert_eq!(retail_logical_font_height(21, 12).unwrap(), 15);
-        let error = resolve_retail_text_style(preset(21, 0, 0, 0)).unwrap_err();
         assert_eq!(
-            error,
+            resolve_retail_text_style(preset(21, 0, 0, 0)).unwrap().face,
+            RetailFontFace::System
+        );
+        assert_eq!(
+            resolve_retail_text_style(preset(4, 0, 12, 0)).unwrap_err(),
             RetailTextStyleError::UnresolvedFontFamily {
-                requested_family: 21,
-                effective_family: 0,
+                requested_family: 4,
+                effective_family: 4,
             }
         );
         assert_eq!(

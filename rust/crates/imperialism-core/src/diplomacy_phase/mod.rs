@@ -326,7 +326,7 @@ impl GameState {
         self.diplomacy.relationships[source][target] == DiplomaticRelationship::War
     }
 
-    pub(super) fn is_auto(&self, nation: MajorNationId) -> bool {
+    pub(crate) fn is_auto(&self, nation: MajorNationId) -> bool {
         self.nations.majors[nation].kind == MajorNationKind::AutoGreatPower
     }
 
@@ -336,7 +336,7 @@ impl GameState {
             .is_some_and(|common| common.status() == CountryStatus::Independent)
     }
 
-    pub(super) fn status_of(&self, nation: NationId) -> CountryStatus {
+    pub(crate) fn status_of(&self, nation: NationId) -> CountryStatus {
         self.nations
             .common(nation)
             .map(|common| common.status())
@@ -350,7 +350,7 @@ impl GameState {
         }
     }
 
-    pub(super) fn event_eligible(&self, nation: NationId) -> bool {
+    pub(crate) fn event_eligible(&self, nation: NationId) -> bool {
         if !self.nation_is_present(nation) {
             return false;
         }
