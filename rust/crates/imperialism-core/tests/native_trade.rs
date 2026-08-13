@@ -134,3 +134,21 @@ fn trade_policy_set() {
     })
     .unwrap();
 }
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn trade_phase() {
+    compare_native("trade_phase", |state, (): ()| {
+        state.do_trade();
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn trade_phase_sell_only() {
+    compare_native("trade_phase_sell_only", |state, (): ()| {
+        state.do_trade();
+    })
+    .unwrap();
+}

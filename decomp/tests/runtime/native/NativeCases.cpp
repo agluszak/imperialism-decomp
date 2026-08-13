@@ -22,6 +22,8 @@ RuntimeActionResult RunTradeCapacityRefresh(NativeTransition& transition);
 RuntimeActionResult RunTradeMarketPrice(NativeTransition& transition);
 RuntimeActionResult RunTradePolicySet(NativeTransition& transition);
 RuntimeActionResult RunTradePolicyStep(NativeTransition& transition);
+RuntimeActionResult RunTradePhase(NativeTransition& transition);
+RuntimeActionResult RunTradePhaseSellOnly(NativeTransition& transition);
 
 RuntimeActionResult RunAidAllocation(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyGrantEntry(NativeTransition& transition);
@@ -58,6 +60,8 @@ const NativeCase kCases[] = {
     {"trade_market_price", RunTradeMarketPrice},
     {"trade_policy_set", RunTradePolicySet},
     {"trade_policy_step", RunTradePolicyStep},
+    {"trade_phase", RunTradePhase},
+    {"trade_phase_sell_only", RunTradePhaseSellOnly},
     {"aid_allocation", RunAidAllocation},
     {"diplomacy_grant_entry_updates_treasury", RunDiplomacyGrantEntry},
     {"diplomacy_reset_preserves_recurring_grants", RunDiplomacyReset},

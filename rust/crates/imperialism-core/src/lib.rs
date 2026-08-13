@@ -39,6 +39,7 @@ mod territory;
 #[cfg(test)]
 pub(crate) mod test_support;
 mod trade;
+mod trade_phase;
 mod turn_flow;
 mod units;
 

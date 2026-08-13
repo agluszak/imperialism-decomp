@@ -97,6 +97,20 @@ pub enum ProcessedTradeCommodity {
 
 pub type ProcessedTradeCommodityTable<T> = EnumMap<ProcessedTradeCommodity, T>;
 
+impl ProcessedTradeCommodity {
+    pub(crate) const fn from_resource(resource: ResourceKind) -> Option<Self> {
+        match resource {
+            ResourceKind::Food => Some(Self::Food),
+            ResourceKind::Fabric => Some(Self::Fabric),
+            ResourceKind::Lumber => Some(Self::Lumber),
+            ResourceKind::Paper => Some(Self::Paper),
+            ResourceKind::Steel => Some(Self::Steel),
+            ResourceKind::Fuel => Some(Self::Fuel),
+            _ => None,
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum DealBookEntryKind {
@@ -123,6 +137,7 @@ pub struct TradeMarketRow {
     pub amount_offered: i32,
     pub adjusted_offer_count: f64,
     pub current_offer_by_nation: NationTable<i16>,
+    pub accumulated_offer_by_nation: NationTable<i16>,
     pub maximum_offer_by_nation: NationTable<i16>,
 }
 
@@ -137,6 +152,7 @@ impl TradeMarketRow {
             amount_offered: 0,
             adjusted_offer_count: 0.0,
             current_offer_by_nation: NationTable::from_array([0; NATION_COUNT]),
+            accumulated_offer_by_nation: NationTable::from_array([0; NATION_COUNT]),
             maximum_offer_by_nation: NationTable::from_array([0; NATION_COUNT]),
         }
     }

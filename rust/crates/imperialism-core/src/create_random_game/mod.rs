@@ -10,6 +10,7 @@ mod sea_zones;
 #[cfg(test)]
 mod tests;
 
+pub(crate) use city_placement::resource_capability_level;
 use city_placement::*;
 use map_post_pass::*;
 use map_render::*;
