@@ -180,6 +180,11 @@ impl GameState {
         self.map_view_origin = origin;
     }
 
+    /// Retail mini-map `SetUpperLeft`: commit a toolbar-minimap click as the viewport origin.
+    pub fn set_map_viewport_upper_left(&mut self, column: i32, row: i32) {
+        self.map_view_origin = self.map.viewport_origin_from_upper_left(column, row);
+    }
+
     /// Centers the strategic viewport on `tile` using retail 9-by-7 origin math.
     pub fn center_map_on(&mut self, tile: TileId) {
         self.map_view_origin = self.map.viewport_origin_centered_on(tile);
