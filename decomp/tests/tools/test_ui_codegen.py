@@ -80,6 +80,22 @@ class UiCodegenTests(unittest.TestCase):
             (REPO_ROOT / RUST_UI_PATH).read_text(encoding="utf-8"),
         )
 
+    def test_armory_unit_name_uses_the_windows_runtime_style(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        armory = rendered[
+            rendered.index("pub fn armory_9208()") : rendered.index(
+                "pub fn citydlog_9200()"
+            )
+        ]
+        unit = armory[
+            armory.index('retail_node(fourcc!("unit")') : armory.index(
+                'retail_node(fourcc!("sele")'
+            )
+        ]
+        self.assertIn("retail_text_style(1, 0, 12, 1)", unit)
+
     def test_control_state_uses_recovered_control_api(self) -> None:
         rendered = "\n".join(self.rendered.values())
         self.assertNotIn("SetControlStateFlagAndMaybeRefresh", rendered)

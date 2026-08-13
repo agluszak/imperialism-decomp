@@ -6,12 +6,14 @@ use crate::AppState;
 
 /// Authoritative in-memory game owned by the running Bevy app.
 #[derive(Resource, Debug, PartialEq)]
-pub(crate) struct GameSession(pub(crate) GameState);
+pub(crate) struct GameSession {
+    pub(crate) game: GameState,
+}
 
 impl GameSession {
     pub(crate) fn from_assets(mut game: GameState, assets: &RetailAssets) -> Self {
         game.set_news_story_ids(assets.news_table().story_ids());
-        Self(game)
+        Self { game }
     }
 }
 

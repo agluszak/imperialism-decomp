@@ -88,14 +88,16 @@ Generated UI is generated: change the recovery evidence or generator, then regen
 `ui-recovery` skill for that workflow.
 
 Put presentation meaning on the actual entities (`IndustryCapacity`,
-`CityOrderQuantity`, `TradeDisplay`, `DealBookHost`, and so on) and project
-`GameSession` through narrow queries. Do not store widget entity handles in a
-parallel object graph, and do not replace that with generated binding structs, a
-registry, a second scene model, or another abstraction layer. Screen-owned
-presentation lives on the screen entity; application-level facts such as
-`SaveDirectory` stay resources. `DespawnOnExit` belongs on state-scope roots and
-independently spawned top-level windows/modals; children inherit lifetime from
-their parent.
+`CityOrderQuantity`, `TradeDisplay`, `DealBookHost`, `GameStatusDisplay`,
+and so on) and project `GameSession` through narrow queries. Do not store
+widget entity handles in a parallel object graph, and do not replace that
+with generated binding structs, a registry, a second scene model, or another
+abstraction layer. Screen-owned presentation lives on the screen entity;
+application-level facts such as `SaveDirectory` stay resources. `DespawnOnExit`
+belongs on state-scope roots and independently spawned top-level windows/modals;
+children inherit lifetime from their parent. Use `Res<RetailAssetsResource>` for
+string and palette lookups; `RetailUiAssets` is for loading or mutating Bevy
+fonts and images.
 
 ## Retail fidelity
 

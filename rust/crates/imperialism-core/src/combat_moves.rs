@@ -268,7 +268,7 @@ impl GameState {
     }
 
     fn finalize_military_units_without_ui(&mut self, owner_cache: &[i16; PROVINCE_COUNT]) {
-        for tile in &mut self.map.tiles {
+        for tile in self.map.tiles.iter_mut() {
             tile.per_tile_visited = 0;
         }
         for unit in &mut self.military_units {

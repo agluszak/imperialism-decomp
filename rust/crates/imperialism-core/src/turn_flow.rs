@@ -265,6 +265,7 @@ impl GameState {
             match self.turn.phase() {
                 PhaseCode::STRATEGIC_MAP => return TurnStop::PlayerOrders,
                 PhaseCode::CAPITAL_SELECTION => {
+                    self.grant_opening_civilians();
                     self.turn.phase = PhaseCode::SEASON_ADVANCE;
                 }
                 PhaseCode::DIPLOMACY => match self.continuation {
@@ -594,5 +595,24 @@ mod tests {
         } else {
             assert_eq!(state.turn.phase(), crate::PhaseCode::TECHNOLOGY_ADVANCES);
         }
+    }
+
+    #[test]
+    fn newspaper_stop_constructs_pages_before_returning() {
+        let mut state = game_state();
+        state.turn.phase = crate::PhaseCode::NEWSPAPER;
+        state
+            .pending
+            .queue_newspaper_event(crate::PendingNewspaperEvent::Miscellaneous {
+                audience: None,
+                story_code: 3,
+            });
+        let mut story_ids = vec![1; crate::NEWS_TEMPLATE_COUNT];
+        story_ids[0] = -1003;
+        state.set_news_story_ids(&story_ids);
+        let stop = state.advance_turn();
+        assert_eq!(stop, crate::TurnStop::Newspaper);
+        assert!(state.pending.newspaper_events.is_empty());
+        assert!(state.news.pages[MajorNationId::new(0)].is_some());
     }
 }

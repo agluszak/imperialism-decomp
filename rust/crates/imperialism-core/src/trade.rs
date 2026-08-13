@@ -514,13 +514,8 @@ fn transport_allocation_total(
 
 fn transport_row_limit(major: &MajorNation, allocation: TransportAllocation) -> Option<i16> {
     let city = &major.city;
-    let building = |slot| {
-        city.building_type(
-            slot,
-            &major.economy,
-            major.common.owned_region_count() as i32,
-        )
-    };
+    let building =
+        |slot| city.building_type(slot, &major.economy, major.common.owned_region_count());
     let deficit = if allocation == TransportAllocation::COTTON_AND_WOOL {
         building(CityFacilitySlot::TextileMill) * 2
             - city.stockpile[ResourceKind::Cotton]

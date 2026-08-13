@@ -479,7 +479,7 @@ fn accept_random_setup(
         commands.insert_resource(session);
         next_state.set(AppState::CitySite);
     } else {
-        let stop = enter_strategic_map_without_capital_selection(&mut session.0, setup.nation);
+        let stop = enter_strategic_map_without_capital_selection(&mut session.game, setup.nation);
         apply_turn_stop(stop, next_state);
         commands.insert_resource(session);
     }

@@ -408,7 +408,7 @@ pub fn armory_9208() -> impl Scene {
                             (
                                 retail_node(fourcc!("unit"), 28, 60, 150, 19)
                                 Text("")
-                                retail_text_style(3, 1, 9, 1)
+                                retail_text_style(1, 0, 12, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (

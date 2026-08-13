@@ -372,7 +372,8 @@ pub struct LandSale {
 
 impl GameState {
     /// Mirrors turn-machine case `0xf` after `StartNewsPhase`: build pages, then
-    /// drop the consumed event queue.
+    /// drop the consumed event queue. The turn driver calls this before returning
+    /// [`crate::TurnStop::Newspaper`].
     pub fn start_newspaper_phase(&mut self) {
         self.turn.phase = PhaseCode::NEWSPAPER;
         let story_ids = std::mem::take(&mut self.news.story_ids);

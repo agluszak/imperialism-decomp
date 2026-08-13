@@ -266,7 +266,7 @@ pub(crate) fn commit_loaded_game(
 ) -> Result<(GameSession, AppState), LoadGameError> {
     let game = loaded?;
     let destination = loaded_game_destination(&game);
-    Ok((GameSession(game), destination))
+    Ok((GameSession { game }, destination))
 }
 
 fn loaded_game_destination(game: &GameState) -> AppState {
@@ -545,9 +545,9 @@ fn sync_load_save_preview(
             let Some(session) = session else {
                 return;
             };
-            let selected = session.0.turn().active_nation;
+            let selected = session.game.turn().active_nation;
             let pixels =
-                satellite_preview_indices(|tile| session.0.map()[tile].owner_nation, selected);
+                satellite_preview_indices(|tile| session.game.map()[tile].owner_nation, selected);
             apply_satellite_preview(&mut commands, &mut assets, entity, image_node, &pixels);
         }
         LoadSavePreviewKey::Slot(slot) => {
@@ -746,7 +746,7 @@ fn confirm_or_apply(
                 commands,
                 save_dir,
                 slot,
-                session.map(|session| &session.0),
+                session.map(|session| &session.game),
                 next_state,
                 screen_state,
                 None,
@@ -773,7 +773,7 @@ fn confirm_or_apply(
                 commands,
                 save_dir,
                 slot,
-                &session.0,
+                &session.game,
                 &label,
                 returning,
                 next_state,
@@ -791,7 +791,7 @@ fn apply_load(
     existing: Option<&GameState>,
     next_state: &mut NextState<AppState>,
     screen_state: AppState,
-    assets: Option<&RetailUiAssets>,
+    assets: Option<&RetailAssetsResource>,
     retail: &RetailAssets,
 ) {
     if !retail_save_path(save_dir, slot).is_file() {
@@ -812,7 +812,7 @@ fn apply_load(
         }
     };
     match commit_loaded_game(load_slot(save_dir, slot, runtime)) {
-        Ok((GameSession(game), destination)) => {
+        Ok((GameSession { game }, destination)) => {
             commands.insert_resource(GameSession::from_assets(game, retail));
             next_state.set(destination);
         }
@@ -849,7 +849,7 @@ fn apply_save(
     }
 }
 
-fn load_error_text(assets: &RetailUiAssets, error: &LoadGameError) -> String {
+fn load_error_text(assets: &RetailAssetsResource, error: &LoadGameError) -> String {
     let retail = match error {
         LoadGameError::InvalidMagic | LoadGameError::Truncated => assets.string(0x2737, 7).ok(),
         LoadGameError::UnsupportedVersion(_) => assets.string(0x2737, 8).ok(),
@@ -929,7 +929,7 @@ fn on_load_save_notice_activate(
     mut next_state: ResMut<NextState<AppState>>,
     state: Res<State<AppState>>,
     mut commands: Commands,
-    assets: RetailUiAssets,
+    assets: Res<RetailAssetsResource>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
@@ -950,10 +950,10 @@ fn on_load_save_notice_activate(
                 &mut commands,
                 &save_dir.0,
                 slot,
-                session.as_deref().map(|session| &session.0),
+                session.as_deref().map(|session| &session.game),
                 &mut next_state,
                 *state.get(),
-                Some(&assets),
+                Some(&*assets),
                 assets.assets(),
             );
         }
@@ -989,7 +989,7 @@ fn bind_flag_menu(
     root: Single<Entity, Added<FlagMenuRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    assets: RetailUiAssets,
+    assets: Res<RetailAssetsResource>,
 ) {
     let root = *root;
     for (index, tag) in FLAG_LABEL_TAGS.iter().copied().enumerate() {
@@ -1259,14 +1259,16 @@ mod tests {
             OverwritePolicy::CreateNew,
         )
         .unwrap();
-        let session = GameSession(original.clone());
+        let session = GameSession {
+            game: original.clone(),
+        };
         let result = commit_loaded_game(load_slot(
             dir.path(),
             SaveSlot::Numbered(0),
             runtime_context_for_load(Some(&original), original.turn().selected_nation),
         ));
         assert!(result.is_err());
-        assert_eq!(session.0, original);
+        assert_eq!(session.game, original);
     }
 
     #[test]
@@ -1280,7 +1282,7 @@ mod tests {
             runtime_context_for_load(Some(&original), original.turn().selected_nation),
         ))
         .unwrap();
-        assert_eq!(session.0, original);
+        assert_eq!(session.game, original);
         assert_eq!(destination, AppState::StrategicMap);
     }
 
