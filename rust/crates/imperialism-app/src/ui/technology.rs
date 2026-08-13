@@ -85,6 +85,7 @@ fn fill_technology_advance(
         .insert(Text::new(format!("{status}\n\n{prefix}")));
 }
 
+#[allow(clippy::too_many_arguments)]
 fn on_technology_advance_activate(
     activate: On<Activate>,
     actions: Query<&TechnologyAdvanceAction>,
