@@ -139,31 +139,38 @@ pub(crate) struct LoadSavePlugin;
 impl Plugin for LoadSavePlugin {
     fn build(&self, app: &mut App) {
         register_load_save_logic(app);
-        app.init_resource::<LoadSaveReturn>().add_systems(
-            OnEnter(AppState::LoadGame),
-            (enter_load_save, bind_load_save).chain(),
-        );
-        app.add_systems(
-            OnEnter(AppState::SaveGame),
-            (enter_load_save, bind_load_save).chain(),
-        );
-        app.add_systems(
-            Update,
-            bind_load_save_notice
-                .run_if(in_state(AppState::LoadGame).or_else(in_state(AppState::SaveGame))),
-        );
-        app.add_systems(
-            Update,
-            bind_flag_menu.run_if(in_state(AppState::StrategicMap)),
-        );
+        app.init_resource::<LoadSaveReturn>()
+            .add_observer(
+                on_load_save_notice_activate
+                    .run_if(in_state(AppState::LoadGame).or_else(in_state(AppState::SaveGame))),
+            )
+            .add_systems(
+                OnEnter(AppState::LoadGame),
+                (enter_load_save, bind_load_save).chain(),
+            )
+            .add_systems(
+                OnEnter(AppState::SaveGame),
+                (enter_load_save, bind_load_save).chain(),
+            )
+            .add_systems(
+                Update,
+                bind_load_save_notice
+                    .run_if(in_state(AppState::LoadGame).or_else(in_state(AppState::SaveGame))),
+            )
+            .add_systems(
+                Update,
+                bind_flag_menu.run_if(in_state(AppState::StrategicMap)),
+            );
     }
 }
 
 pub(crate) fn register_load_save_logic(app: &mut App) {
-    app.add_observer(on_load_save_activate)
-        .add_observer(on_load_save_notice_activate)
-        .add_observer(on_open_flag_menu.run_if(in_state(AppState::StrategicMap)))
-        .add_observer(on_flag_menu_activate.run_if(in_state(AppState::StrategicMap)));
+    app.add_observer(
+        on_load_save_activate
+            .run_if(in_state(AppState::LoadGame).or_else(in_state(AppState::SaveGame))),
+    )
+    .add_observer(on_open_flag_menu.run_if(in_state(AppState::StrategicMap)))
+    .add_observer(on_flag_menu_activate.run_if(in_state(AppState::StrategicMap)));
 }
 
 pub(crate) fn load_slot(directory: &Path, slot: SaveSlot) -> Result<GameState, LoadGameError> {
@@ -740,6 +747,7 @@ fn bind_load_save_notice(
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn on_load_save_notice_activate(
     activate: On<Activate>,
     actions: Query<&LoadSaveNoticeAction>,
@@ -874,11 +882,14 @@ mod tests {
         include_bytes!("../../../../../fixtures/retail/beginning_of_game.imp");
 
     fn fixture_state() -> GameState {
+        let selected_nation = peek_save_header(BEGINNING_OF_GAME)
+            .and_then(|header| NationId::try_new(header.active_nation))
+            .unwrap_or(NationId::new(0));
         LegacySaveV62::parse(BEGINNING_OF_GAME).game_state(LegacyGameStateContext {
             crt_rand_state: 1,
             map_generation_lcg: 0,
-            zone_status_lcg: 3_916_827_792,
-            selected_nation: NationId::new(6),
+            zone_status_lcg: 0,
+            selected_nation,
         })
     }
 
@@ -886,7 +897,8 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_plugins(bevy::state::app::StatesPlugin)
-            .insert_state(initial);
+            .insert_state(initial)
+            .init_resource::<LoadSaveReturn>();
         register_load_save_logic(&mut app);
         app.add_systems(
             OnEnter(AppState::LoadGame),

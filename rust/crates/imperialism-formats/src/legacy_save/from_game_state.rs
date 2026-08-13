@@ -890,12 +890,11 @@ fn province_dto(province: &ProvinceState) -> LegacyProvince {
     for (index, tile) in province.linked_tiles.iter().enumerate() {
         linked_tile_indices[index] = tile.get() as i16;
     }
-    let mut resource_development_by_type = [0_i16; 10];
-    for offset in 0..10 {
+    let resource_development_by_type = std::array::from_fn(|offset| {
         let resource = ResourceKind::from_index((ResourceKind::Food as usize + offset) as u8)
             .expect("province resource-development table spans food through arms");
-        resource_development_by_type[offset] = province.resource_development_by_type()[resource];
-    }
+        province.resource_development_by_type()[resource]
+    });
     let mut explored_by_nation_mask = 0_u8;
     for slot in 0..MAJOR_NATION_COUNT {
         if province.explored_by_majors()[MajorNationId::new(slot as u8)] {
