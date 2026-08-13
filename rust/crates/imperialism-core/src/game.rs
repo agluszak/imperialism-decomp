@@ -145,10 +145,6 @@ impl GameState {
         &self.map
     }
 
-    pub(crate) fn map_mut(&mut self) -> &mut MapMgr {
-        &mut self.map
-    }
-
     pub const fn map_view_origin(&self) -> TileId {
         self.map_view_origin
     }
