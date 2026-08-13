@@ -672,6 +672,7 @@ mod tests {
             news: crate::NewsState::default(),
             pending: crate::PendingWorkState::default(),
             trade_session: None,
+            pending_land_battle: None,
         }
     }
 

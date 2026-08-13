@@ -101,3 +101,42 @@ fn civilians_phase() {
     })
     .unwrap();
 }
+
+#[derive(Debug, Deserialize)]
+struct EmptyCase {}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn military_phase() {
+    compare_native("military_phase", |state, _: EmptyCase| {
+        state.do_military();
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn combat_moves_uncontested() {
+    compare_native("combat_moves_uncontested", |state, _: EmptyCase| {
+        state.do_combat_moves()
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn combat_moves_creates_battle() {
+    compare_native("combat_moves_creates_battle", |state, _: EmptyCase| {
+        state.do_combat_moves()
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn military_cleanup() {
+    compare_native("military_cleanup", |state, _: EmptyCase| {
+        state.do_military_cleanup();
+    })
+    .unwrap();
+}

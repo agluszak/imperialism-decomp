@@ -126,3 +126,59 @@ RuntimeActionResult RunDiplomacyPhase(NativeTransition& transition) {
   result.Set("kind", "resolved");
   return transition.Finish(result.Release());
 }
+
+bool TogglePlayerDiplomacyPolicy(TGreatPower* nation, short targetNationSlot, short policyCode,
+                                 eDipAction action) {
+  if (nation->diplomacyPolicyByNation[targetNationSlot] == policyCode) {
+    return nation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(targetNationSlot, -1);
+  }
+  if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
+          nation->nationSlot, targetNationSlot, action)) {
+    return false;
+  }
+  return nation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(targetNationSlot, policyCode);
+}
+
+RuntimeActionResult RunPlayerDiplomacyPolicyPostConsulate(NativeTransition& transition) {
+  const short sourceNationSlot = ActiveNationSlot();
+  const short targetNationSlot = kMinorNationFirstSlot;
+  TGreatPower* nation = ActiveNation();
+  if (nation == 0 || g_apTerrainTypeDescriptorTable[targetNationSlot] == 0) {
+    return RuntimeActionResult::Failure("the loaded fixture has no first minor nation");
+  }
+
+  JsonObject args;
+  args.Set("source", static_cast<int>(sourceNationSlot));
+  args.Set("target", static_cast<int>(targetNationSlot));
+  args.Set("policy", "build_consulate");
+  args.Set("confirm_entanglements", false);
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  return transition.Finish(TogglePlayerDiplomacyPolicy(
+      nation, targetNationSlot, kDiplomacyProposalBuildConsulate, kDipActionBuildConsulate));
+}
+
+RuntimeActionResult RunPlayerDiplomacyPolicyRejectConsulateOnMajor(NativeTransition& transition) {
+  const short sourceNationSlot = ActiveNationSlot();
+  const short targetNationSlot = OtherMajorNation(sourceNationSlot, 1);
+  TGreatPower* nation = ActiveNation();
+  if (nation == 0 || g_apTerrainTypeDescriptorTable[targetNationSlot] == 0) {
+    return RuntimeActionResult::Failure("the loaded fixture has no other great power");
+  }
+
+  JsonObject args;
+  args.Set("source", static_cast<int>(sourceNationSlot));
+  args.Set("target", static_cast<int>(targetNationSlot));
+  args.Set("policy", "build_consulate");
+  args.Set("confirm_entanglements", false);
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  return transition.Finish(TogglePlayerDiplomacyPolicy(
+      nation, targetNationSlot, kDiplomacyProposalBuildConsulate, kDipActionBuildConsulate));
+}

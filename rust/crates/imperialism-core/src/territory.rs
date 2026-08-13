@@ -174,6 +174,10 @@ impl ProvinceState {
         self.city_score
     }
 
+    pub(crate) fn set_city_score(&mut self, city_score: i32) {
+        self.city_score = city_score;
+    }
+
     fn set_owner(&mut self, new_owner: NationId) {
         self.owner = Some(new_owner);
     }

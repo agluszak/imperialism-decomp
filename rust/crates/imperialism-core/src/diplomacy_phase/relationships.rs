@@ -201,7 +201,7 @@ impl GameState {
         }
     }
 
-    pub(super) fn apply_peace_relationship(
+    pub(crate) fn apply_peace_relationship(
         &mut self,
         source: NationId,
         target: NationId,
