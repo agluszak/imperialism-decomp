@@ -71,8 +71,11 @@ loader, catalog, or imperative scene abstraction beside Bevy entities.
 Generated UI is generated: change the recovery evidence or generator, then regenerate it. Use the
 `ui-recovery` skill for that workflow.
 
-City dialogs store concrete entity handles and update only their own controls. Do not replace that
-with generated binding structs, a registry, a second scene model, or another abstraction layer.
+City UI puts presentation meaning on the actual entities (`IndustryCapacity`,
+`CityOrderQuantity`, `TradeDisplay`, and so on) and projects `GameSession` through narrow
+queries. Do not store widget entity handles in a parallel object graph, and do not replace
+that with generated binding structs, a registry, a second scene model, or another
+abstraction layer.
 
 ## Retail fidelity
 
