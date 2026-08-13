@@ -510,20 +510,12 @@ impl GameState {
     }
 
     fn best_fort_province(&self, nation: MajorNationId) -> Option<ProvinceId> {
-        if self.nations.major(nation).economy.controller.is_human() {
+        if self.nations.major(nation).economy.diplomacy_eligible {
             return None;
         }
-        let pressure = self.nations.major(nation).economy.ai_development_pressure;
-        let mut average = pressure
-            .map(|state| f32::from_bits(state.average_unit_divergence_per_owned_region_bits))
-            .unwrap_or(0.0);
-        #[allow(clippy::neg_cmp_op_on_partial_ord)]
-        if !(average > 0.0) {
-            average = 1.0;
-        }
-        let expansion = pressure
-            .map(|state| f32::from_bits(state.expansion_pressure_per_compatible_region_bits))
-            .unwrap_or(0.0);
+        let average = 1.0_f32;
+        let expansion = 0.0_f32;
+        let at_war = self.nation_has_war(nation.nation());
         let cap = self.technology.city_capabilities_by_nation[nation]
             .fort_level_cap
             .get();
@@ -537,6 +529,9 @@ impl GameState {
             let mut development_pressure = average;
             if self.province_is_compatible(province, nation) {
                 development_pressure = expansion + average;
+                if at_war {
+                    development_pressure += self.cross_nation_support_score(province) * 0.8;
+                }
             }
             let mut city_score = record.city_score() as f32;
             if !record.adjacency().is_empty() {
@@ -944,23 +939,9 @@ impl GameState {
     }
 
     fn owner_civilian_on_tile(&self, tile: TileId, nation: MajorNationId) -> Option<usize> {
-        self.civilian_units
-            .iter()
-            .enumerate()
-            .rev()
-            .find_map(|(index, unit)| {
-                (unit.location.tile() == Some(tile) && unit.owner_nation == nation.nation())
-                    .then_some(index)
-            })
-    }
-
-    fn chain_head_on_tile(&self, tile: TileId) -> Option<usize> {
-        self.civilian_units
-            .iter()
-            .enumerate()
-            .rev()
-            .find(|(_, unit)| unit.location.tile() == Some(tile))
-            .map(|(index, _)| index)
+        self.civilians_on_tile_chain(tile)
+            .into_iter()
+            .find(|&index| self.civilian_units[index].owner_nation == nation.nation())
     }
 
     fn nation_has_war(&self, nation: NationId) -> bool {

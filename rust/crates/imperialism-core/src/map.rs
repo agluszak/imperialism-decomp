@@ -19,6 +19,13 @@ pub struct MapMgr {
     pub provinces: ProvinceTable<ProvinceState>,
     #[serde(deserialize_with = "deserialize_required_option")]
     pub pending_river_mouth_tile: Option<TileId>,
+    /// Retail `g_nNextRegionMarkerId`. Not saved; a freshly loaded process starts at 1.
+    #[serde(skip_serializing, default = "next_region_marker_id_after_load")]
+    pub(crate) next_region_marker_id: i32,
+}
+
+fn next_region_marker_id_after_load() -> i32 {
+    1
 }
 
 fn deserialize_strategic_tiles<'de, D>(deserializer: D) -> Result<Box<[TileState]>, D::Error>
@@ -68,7 +75,16 @@ impl MapMgr {
             tiles,
             provinces,
             pending_river_mouth_tile: None,
+            next_region_marker_id: next_region_marker_id_after_load(),
         }
+    }
+
+    /// `TMapMgr::FloodFillTileRegionMarker` consumes `g_nNextRegionMarkerId` and then
+    /// stores `(short)id + 1`. The start tile is stamped with the low 8 bits.
+    pub(crate) fn allocate_region_marker(&mut self) -> RegionId {
+        let marker = RegionId::new(self.next_region_marker_id as u8);
+        self.next_region_marker_id = i32::from(self.next_region_marker_id as i16) + 1;
+        marker
     }
 
     pub const fn geometry(&self) -> crate::MapGeometry {

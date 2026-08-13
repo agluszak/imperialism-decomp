@@ -199,6 +199,7 @@ impl GameState {
             owner_nation: nation_id,
             roster_id: 0,
             registered: false,
+            next_on_tile: None,
         };
         let insert_at = self
             .civilian_units

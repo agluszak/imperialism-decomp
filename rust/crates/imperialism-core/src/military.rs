@@ -128,7 +128,7 @@ impl GameState {
         scores.similarity(TACTICAL_COMPOSITION.baseline)
     }
 
-    fn cross_nation_support_score(&self, province: ProvinceId) -> f32 {
+    pub(crate) fn cross_nation_support_score(&self, province: ProvinceId) -> f32 {
         let Some(owner) = self.map.provinces[province].owner() else {
             return 0.0;
         };

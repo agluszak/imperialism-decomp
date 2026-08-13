@@ -391,6 +391,9 @@ pub struct CivilianUnitState {
     pub(crate) owner_nation: NationId,
     pub(crate) roster_id: i16,
     pub(crate) registered: bool,
+    /// Per-tile prepend chain (`nextAtLocation14`). Tracked-list order stays in `civilian_units`.
+    #[serde(skip)]
+    pub(crate) next_on_tile: Option<CivilianUnitId>,
 }
 
 impl<'de> Deserialize<'de> for CivilianUnitState {
@@ -469,6 +472,7 @@ impl CivilianUnitState {
             owner_nation,
             roster_id,
             registered,
+            next_on_tile: None,
         })
     }
     pub const fn id(&self) -> CivilianUnitId {

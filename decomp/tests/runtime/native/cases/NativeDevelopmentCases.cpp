@@ -104,6 +104,25 @@ bool FindUnoccupiedProvinceTile(StrategicTileIndex* tileIndex) {
   return false;
 }
 
+bool FindOwnedConstructionTile(NationSlot nationSlot, unsigned short requiredFlags,
+                               unsigned short forbiddenFlags, StrategicTileIndex* tileIndex) {
+  for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
+    const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[candidate];
+    if (tile.firstCivilianOrder20 != 0 || tile.ownerNationTag04 != nationSlot) {
+      continue;
+    }
+    if ((tile.activeFlags1c & requiredFlags) != requiredFlags) {
+      continue;
+    }
+    if ((tile.activeFlags1c & forbiddenFlags) != 0) {
+      continue;
+    }
+    *tileIndex = candidate;
+    return true;
+  }
+  return false;
+}
+
 } // namespace
 
 RuntimeActionResult RunCompletedRailSection(NativeTransition& transition) {
@@ -286,6 +305,24 @@ RuntimeActionResult RunCiviliansPhase(NativeTransition& transition) {
   traveler->ICivUnit(kCivilianUnitRancher, redeployTile, nationSlot);
   traveler->SetOrders(kUnitOrderRedeploy, redeployTile);
   traveler->remainingTurns24 = 1;
+
+  StrategicTileIndex depotTile = -1;
+  if (!FindOwnedConstructionTile(nationSlot, 0, 0x24, &depotTile)) {
+    return RuntimeActionResult::Failure("the loaded map has no owned depot construction tile");
+  }
+  TCivUnit* depotEngineer = new TCivUnit();
+  depotEngineer->ICivUnit(kCivilianUnitEngineer, depotTile, nationSlot);
+  depotEngineer->SetOrders(kUnitOrderBuildDepot, depotTile);
+  depotEngineer->remainingTurns24 = 1;
+
+  StrategicTileIndex portTile = -1;
+  if (!FindOwnedConstructionTile(nationSlot, 1, 0x30, &portTile)) {
+    return RuntimeActionResult::Failure("the loaded map has no owned port construction tile");
+  }
+  TCivUnit* portEngineer = new TCivUnit();
+  portEngineer->ICivUnit(kCivilianUnitEngineer, portTile, nationSlot);
+  portEngineer->SetOrders(kUnitOrderBuildPort, portTile);
+  portEngineer->remainingTurns24 = 1;
 
   RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {

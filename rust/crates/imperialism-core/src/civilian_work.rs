@@ -179,11 +179,11 @@ impl GameState {
             .pending_rail_links
             .insert_direction(segment.direction().opposite());
         let unit = &mut self.civilian_units[index];
-        unit.location = CivilianLocation::OnMap(segment.destination());
         unit.order = CivilianWorkOrder::LayRail {
             segment,
             turns: TurnsRemaining::try_new(RAIL_TURNS).expect("rail construction lasts one turn"),
         };
+        self.move_civilian_to(index, segment.destination());
         Ok(())
     }
 
@@ -267,6 +267,7 @@ impl GameState {
 
     /// Retail `TSimMgr::DoCivilians`.
     pub fn do_civilians(&mut self) {
+        self.rebuild_civilian_tile_chains();
         self.resolve_civilian_disputes();
         for index in 0..MajorNationId::COUNT {
             let nation = MajorNationId::new(index);
@@ -417,14 +418,7 @@ impl GameState {
     fn resolve_civilian_disputes(&mut self) {
         for tile_index in 0..STRATEGIC_TILE_COUNT {
             let tile = TileId::new(tile_index as u16);
-            let on_tile: Vec<usize> = self
-                .civilian_units
-                .iter()
-                .enumerate()
-                .rev()
-                .filter(|(_, unit)| unit.location.tile() == Some(tile))
-                .map(|(index, _)| index)
-                .collect();
+            let on_tile = self.civilians_on_tile_chain(tile);
             if on_tile.len() < 2 {
                 continue;
             }
@@ -471,7 +465,7 @@ impl GameState {
                 self.civilian_units[loser].order = CivilianWorkOrder::Idle;
                 if let Some(major) = MajorNationId::from_nation(loser_nation) {
                     self.nations.major_mut(major).common.treasury += refund;
-                    if self.nations.major(major).economy.controller.is_human() {
+                    if self.nations.major(major).economy.diplomacy_eligible {
                         self.pending.nations[major].turn_start_events.push(
                             TurnStartEvent::LandSale {
                                 tag: LAND_SALE_TAG,
@@ -620,7 +614,7 @@ impl GameState {
             self.push_new_town(tile, nation, 0);
             self.flood_fill_region_marker(tile, nation);
         }
-        if !self.nations.major(nation).economy.controller.is_human() {
+        if !self.nations.major(nation).economy.diplomacy_eligible {
             self.nations.major_mut(nation).common.treasury -= 2_000;
         }
         self.map[tile].flags.insert(TileFlags::DEPOT);
@@ -635,10 +629,11 @@ impl GameState {
             self.push_new_town(tile, nation, 1);
             self.flood_fill_region_marker(tile, nation);
         }
-        if !self.nations.major(nation).economy.controller.is_human() {
+        if !self.nations.major(nation).economy.diplomacy_eligible {
             self.nations.major_mut(nation).common.treasury -= 3_000;
         }
         self.map[tile].flags.insert(TileFlags::PORT);
+        self.ensure_port_zone_for_tile(tile);
     }
 
     fn push_new_town(&mut self, tile: TileId, nation: MajorNationId, enabled: u8) {
@@ -664,7 +659,7 @@ impl GameState {
     }
 
     fn flood_fill_region_marker(&mut self, tile: TileId, nation: MajorNationId) {
-        let marker = next_region_marker(&self.map);
+        let marker = self.map.allocate_region_marker();
         let owner = Some(TileOwnerTag::from_nation(nation.nation()));
         self.map[tile].region = Some(marker);
         self.stamp_region_last_turn_tick(tile);
@@ -700,7 +695,87 @@ impl GameState {
     }
 
     pub(crate) fn move_civilian_to(&mut self, index: usize, tile: TileId) {
+        let id = self.civilian_units[index].id;
+        if let Some(old) = self.civilian_units[index].location.tile() {
+            self.unlink_civilian_from_tile_chain(id, old);
+        }
         self.civilian_units[index].location = CivilianLocation::OnMap(tile);
+        self.prepend_civilian_to_tile_chain(index, tile);
+    }
+
+    fn rebuild_civilian_tile_chains(&mut self) {
+        for unit in &mut self.civilian_units {
+            unit.next_on_tile = None;
+        }
+        let mut heads = vec![None; STRATEGIC_TILE_COUNT];
+        for index in 0..self.civilian_units.len() {
+            let Some(tile) = self.civilian_units[index].location.tile() else {
+                continue;
+            };
+            let id = self.civilian_units[index].id;
+            self.civilian_units[index].next_on_tile = heads[usize::from(tile.get())];
+            heads[usize::from(tile.get())] = Some(id);
+        }
+    }
+
+    fn unlink_civilian_from_tile_chain(&mut self, id: CivilianUnitId, tile: TileId) {
+        let next = self
+            .civilian_index_of(id)
+            .and_then(|index| self.civilian_units[index].next_on_tile);
+        if let Some(prev) = self.civilian_units.iter().position(|unit| {
+            unit.location.tile() == Some(tile) && unit.id != id && unit.next_on_tile == Some(id)
+        }) {
+            self.civilian_units[prev].next_on_tile = next;
+        }
+        if let Some(index) = self.civilian_index_of(id) {
+            self.civilian_units[index].next_on_tile = None;
+        }
+    }
+
+    fn prepend_civilian_to_tile_chain(&mut self, index: usize, tile: TileId) {
+        let head = self
+            .chain_head_on_tile(tile)
+            .filter(|&head| head != index)
+            .map(|head| self.civilian_units[head].id);
+        self.civilian_units[index].next_on_tile = head;
+    }
+
+    fn civilian_index_of(&self, id: CivilianUnitId) -> Option<usize> {
+        self.civilian_units.iter().position(|unit| unit.id == id)
+    }
+
+    pub(crate) fn chain_head_on_tile(&self, tile: TileId) -> Option<usize> {
+        let on_tile: Vec<usize> = self
+            .civilian_units
+            .iter()
+            .enumerate()
+            .filter(|(_, unit)| unit.location.tile() == Some(tile))
+            .map(|(index, _)| index)
+            .collect();
+        let pointed: Vec<CivilianUnitId> = on_tile
+            .iter()
+            .filter_map(|&index| self.civilian_units[index].next_on_tile)
+            .collect();
+        on_tile.into_iter().find(|&index| {
+            !pointed
+                .iter()
+                .any(|&id| id == self.civilian_units[index].id)
+        })
+    }
+
+    pub(crate) fn civilians_on_tile_chain(&self, tile: TileId) -> Vec<usize> {
+        let mut chain = Vec::new();
+        let mut current = self.chain_head_on_tile(tile);
+        while let Some(index) = current {
+            if chain.contains(&index) {
+                break;
+            }
+            chain.push(index);
+            current = self.civilian_units[index]
+                .next_on_tile
+                .and_then(|id| self.civilian_index_of(id));
+        }
+        chain
     }
 
     pub(crate) fn set_civilian_work_order(&mut self, index: usize, order: CivilianWorkOrder) {
@@ -714,17 +789,6 @@ const CIVILIAN_SORT_PRIORITY: [i16; CivilianUnitKind::LENGTH] = [2, 0, 4, 3, 1, 
 
 fn civilian_sort_priority(kind: CivilianUnitKind) -> i16 {
     CIVILIAN_SORT_PRIORITY[kind as usize]
-}
-
-fn next_region_marker(world: &MapMgr) -> RegionId {
-    let max = world
-        .tiles
-        .iter()
-        .filter_map(|tile| tile.region)
-        .map(RegionId::get)
-        .max()
-        .unwrap_or(0);
-    RegionId::new(max + 1)
 }
 
 fn idle_selectable(order: &CivilianWorkOrder) -> bool {
