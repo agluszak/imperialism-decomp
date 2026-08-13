@@ -154,7 +154,7 @@ fn bind_deal_book(
             )
         }),
     };
-    let (body, body_layout, _) = assets
+    let (body, body_layout, _, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -162,7 +162,7 @@ fn bind_deal_book(
             alignment: -1,
         })
         .expect("retail deal-book body text style");
-    let (heading, heading_layout, _) = assets
+    let (heading, heading_layout, _, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
