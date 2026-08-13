@@ -78,24 +78,20 @@ impl GameState {
         unit_ids: UnitIdAllocator,
         rng: RngState,
         news: NewsState,
-        pending: Option<PendingWorkState>,
-        ai_development_pressure: Option<[Option<AiDevelopmentPressureState>; MAJOR_NATION_COUNT]>,
+        pending: PendingWorkState,
+        ai_development_pressure: [Option<AiDevelopmentPressureState>; MAJOR_NATION_COUNT],
     ) {
         self.turn = turn;
         self.unit_ids = unit_ids;
         self.rng = rng;
         self.news = news;
-        if let Some(pending) = pending {
-            self.pending = pending;
-        }
-        if let Some(pressures) = ai_development_pressure {
-            for (slot, pressure) in pressures.into_iter().enumerate() {
-                let nation = MajorNationId::new(slot as u8);
-                self.nations
-                    .major_mut(nation)
-                    .economy
-                    .ai_development_pressure = pressure;
-            }
+        self.pending = pending;
+        for (slot, pressure) in ai_development_pressure.into_iter().enumerate() {
+            let nation = MajorNationId::new(slot as u8);
+            self.nations
+                .major_mut(nation)
+                .economy
+                .ai_development_pressure = pressure;
         }
     }
 
