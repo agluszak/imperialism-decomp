@@ -165,10 +165,10 @@ impl GameState {
     }
 
     /// Applies the retail map edge-scroll mask to the strategic viewport.
-    pub fn scroll_map_viewport(&mut self, edge_mask: u8) -> bool {
+    pub fn scroll_map_viewport(&mut self, edges: MapEdges) -> bool {
         let next = self
             .map
-            .scrolled_viewport_origin(self.map_view_origin, edge_mask);
+            .scrolled_viewport_origin(self.map_view_origin, edges);
         if next == self.map_view_origin {
             return false;
         }
@@ -208,5 +208,12 @@ impl GameState {
             .iter()
             .find(|unit| unit.nation == nation && unit.order == CivilianWorkOrder::Idle)
             .and_then(|unit| unit.location.tile())
+    }
+
+    /// Map-entry camera from `TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick`.
+    pub fn center_map_on_first_idle_civilian(&mut self) {
+        if let Some(tile) = self.first_idle_civilian_tile(self.turn.active_nation) {
+            self.center_map_on(tile);
+        }
     }
 }

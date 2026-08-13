@@ -97,7 +97,7 @@ pub(crate) fn sync_minimap(
             &mut minimap,
             image_node,
             &mut images,
-            &session.0,
+            &session.game,
             palette,
             drag_pixel,
         );
@@ -125,7 +125,7 @@ fn on_minimap_press(
         &mut minimap,
         image_node,
         &mut images,
-        &session.0,
+        &session.game,
         retail_assets.assets().default_dib_palette(),
         Some(pixel),
     );
@@ -152,7 +152,7 @@ fn on_minimap_drag(
         &mut minimap,
         image_node,
         &mut images,
-        &session.0,
+        &session.game,
         retail_assets.assets().default_dib_palette(),
         Some(pixel),
     );
@@ -217,9 +217,9 @@ fn commit_minimap_track(
     };
     let pixel = cursor_pixel_unclamped(cursor).unwrap_or(drag_pixel);
     let (column, row) = minimap_release_cell(pixel, minimap.scroll_column, minimap.scroll_row);
-    session.0.set_map_viewport_upper_left(column, row);
+    session.game.set_map_viewport_upper_left(column, row);
     minimap.drag_pixel = None;
-    write_minimap(minimap, image_node, images, &session.0, palette, None);
+    write_minimap(minimap, image_node, images, &session.game, palette, None);
 }
 
 fn write_minimap(

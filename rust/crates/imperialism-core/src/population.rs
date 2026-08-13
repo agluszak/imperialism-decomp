@@ -81,7 +81,11 @@ pub enum SkillBand {
 
 impl SkillBand {
     const fn weight(self) -> i16 {
-        self as i16
+        match self {
+            Self::Low => 1,
+            Self::Medium => 2,
+            Self::High => 4,
+        }
     }
 }
 

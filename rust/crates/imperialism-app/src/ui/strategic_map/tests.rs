@@ -387,9 +387,7 @@ fn nation_borders_use_the_owner_palette() {
 #[test]
 fn beginning_of_game_viewport_paints_settlements_borders_and_resources() {
     let mut state = fixture_state();
-    if let Some(tile) = state.first_idle_civilian_tile(state.turn().active_nation) {
-        state.center_map_on(tile);
-    }
+    state.center_map_on_first_idle_civilian();
 
     let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
     let indices = compose_strategic_map_indices(

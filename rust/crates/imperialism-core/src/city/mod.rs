@@ -6,7 +6,7 @@ mod state;
 
 pub use buildings::{CityFacilitySlot, CityWindowPosition};
 pub use production::{
-    CIVILIAN_RESOURCE_SPECIALTIES, CityOrderId, CityOrders, ExpandableFacility,
+    CIVILIAN_RESOURCE_SPECIALTIES, CityOrderId, CityOrderUpdate, CityOrders, ExpandableFacility,
     ExpansionOrderTable, ItemOrderTable, ManufacturedItem, MilitaryRecruitOrderState,
     MilitaryRecruitOrderTable, MilitaryRecruitmentCategory, OrderLimit, PowerPlantOrderState,
     ProductionConstraint, ProductionProgress, RecruitmentOrderSpec, RequestedCityOrderState,

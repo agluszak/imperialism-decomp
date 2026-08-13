@@ -133,6 +133,11 @@ node_property_patches:
     tag: titl
     properties: {text: {font_family: 1, face_flags: 0, point_size: 24, alignment: 1}}
     evidence: TArmoryView::DoStartup at 0x004cee20 installs its 24-point title style on titl
+  - view: Armory.rsrc:9208
+    node: 0x02da
+    tag: unit
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TArmoryView::DoStartup at 0x004cee20 installs its 12-point unit-name style on unit
   - view: Citydlog.rsrc:9209
     node: 0x07cd
     tag: name
