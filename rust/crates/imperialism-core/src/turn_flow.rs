@@ -48,6 +48,16 @@ impl TurnState {
     pub const fn phase(self) -> PhaseCode {
         self.phase
     }
+
+    /// `abs(economicTurn) % 4`, the quarter index used to stagger AI diplomacy planning.
+    pub(crate) const fn planning_quarter(self) -> u32 {
+        self.economic_turn.unsigned_abs() % 4
+    }
+
+    /// `economicTurn / 4`, the year-quarter count diplomacy scoring reads.
+    pub(crate) const fn year_quarters(self) -> i32 {
+        self.economic_turn / 4
+    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]

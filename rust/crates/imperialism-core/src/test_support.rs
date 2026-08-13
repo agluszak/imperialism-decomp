@@ -104,6 +104,8 @@ pub(crate) fn great_power_state() -> GreatPowerState {
         scenario_initialized: false,
         turn_finished: false,
         pending_actions: PendingActionTable::default(),
+        candidate_nation_flags: NationTable::default(),
+        colony_boycott_flags: NationTable::default(),
         diplomacy_budget_base: 0,
         escalation_counter: 0,
         pending_commitment_cost: 0,

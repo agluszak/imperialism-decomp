@@ -199,9 +199,14 @@ pub(in crate::ui::city) fn bind_city_dialogs(
             CityFacilitySlot::TradeSchool => {
                 configure_training_dialog(&mut commands, &assets, root, &children, &tags)
             }
-            CityFacilitySlot::Armory => {
-                configure_armory_dialog(&mut commands, &assets, root, &children, &tags)
-            }
+            CityFacilitySlot::Armory => configure_armory_dialog(
+                &mut commands,
+                &mut assets,
+                root,
+                &children,
+                &tags,
+                &session.0,
+            ),
             CityFacilitySlot::University => configure_university_dialog(
                 &mut commands,
                 &mut assets,

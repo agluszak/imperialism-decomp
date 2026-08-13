@@ -1325,6 +1325,8 @@ fn great_power_state(
                 prefix.pending_action_payload_by_action[action],
             )
         })),
+        candidate_nation_flags: NationTable::from_array(post.candidate_nation_flags),
+        colony_boycott_flags: NationTable::from_array(post.colony_boycott_flags),
         diplomacy_budget_base: post.diplomacy_budget_base,
         escalation_counter: i16::from(post.escalation_counter),
         pending_commitment_cost: post.pending_commitment_cost,

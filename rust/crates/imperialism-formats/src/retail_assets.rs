@@ -15,6 +15,7 @@ use std::path::{Path, PathBuf};
 const ENGLISH_LANGUAGE: u32 = 1033;
 const STRING_RESOURCE_TYPE: u32 = 6;
 const STRINGS_ARCHIVE_PATH: &str = "Data/STR#ENU.GOB";
+const TABLE_ARCHIVE_PATH: &str = "Data/tabsenu.gob";
 
 const PICTURE_ARCHIVE_PATHS: [&str; 4] = [
     "Data/pictenu.gob",
@@ -25,7 +26,6 @@ const PICTURE_ARCHIVE_PATHS: [&str; 4] = [
 const NEWS_TAB_NAME: &str = "news.tab";
 const NEWS_TEX_NAME: &str = "news.tex";
 const NEWS_ROW_BYTES: usize = 24;
-const IMPERIALISM_EXE_NAMES: [&str; 2] = ["Imperialism.exe", "IMPERIALISM.EXE"];
 
 /// Direct access to the retail files needed by the current application.
 ///
@@ -234,6 +234,9 @@ impl RetailFonts {
 
     fn bytes(&self, face: RetailFontFace) -> &[u8] {
         match face {
+            RetailFontFace::System => {
+                unreachable!("the Windows System font is supplied by the platform")
+            }
             RetailFontFace::BelweBold => &self.belwe_bold,
             RetailFontFace::BookAntiquaRegular => &self.book_antiqua_regular,
             RetailFontFace::BookAntiquaBold => &self.book_antiqua_bold,
@@ -379,7 +382,7 @@ pub enum RetailAssetError {
     StringNotFound { group: i16, direct_index: i16 },
     #[error("Data/pictenu.gob has no English BITMAP resource 950.BMP")]
     DefaultDibPaletteNotFound,
-    #[error("news.tab / news.tex are unavailable as a TABLE resource or Data file")]
+    #[error("news.tab / news.tex are unavailable in Data/tabsenu.gob or as Data files")]
     NewsTableNotFound,
     #[error("{}: news.tab does not contain 360 rows", path.display())]
     NewsTableSize { path: PathBuf },
@@ -394,19 +397,13 @@ fn load_news_table(root: &Path) -> Result<NewsTable, RetailAssetError> {
 }
 
 fn load_named_table(root: &Path, name: &str) -> Result<Vec<u8>, RetailAssetError> {
-    for exe in IMPERIALISM_EXE_NAMES {
-        let path = root.join(exe);
-        if !path.exists() {
-            continue;
-        }
-        if let Ok(archive) = ResourceArchive::read(root, exe)
-            && let Some(bytes) = archive.find(
-                ResourceName::Text("TABLE".to_owned()),
-                ResourceName::Text(name.to_owned()),
-            )
-        {
-            return Ok(bytes.to_vec());
-        }
+    if let Ok(archive) = ResourceArchive::read(root, TABLE_ARCHIVE_PATH)
+        && let Some(bytes) = archive.find(
+            ResourceName::Text("TABLE".to_owned()),
+            ResourceName::Text(name.to_ascii_uppercase()),
+        )
+    {
+        return Ok(bytes.to_vec());
     }
     for relative in [name, &format!("Data/{name}")] {
         let path = root.join(relative);
@@ -586,6 +583,9 @@ mod tests {
 
         assert_eq!(assets.font_bytes(RetailFontFace::BelweBold), b"not a font");
         assert_eq!(assets.string(0x2719, 1).unwrap(), "Textile Mill");
+        assert_eq!(assets.news_table().story_ids()[0], 42);
+        assert_eq!(assets.news_table().headline(0), "Title");
+        assert_eq!(assets.news_table().body(0), "Body");
 
         let bitmap = assets.picture(PictureId::new(4500)).unwrap();
         assert_eq!(bitmap[bitmap.len() - 4], 0x22);
@@ -676,12 +676,27 @@ mod tests {
         for relative in ["Data/Antqua.ttf", "Data/Antquab.ttf", "Data/WeBeBd__.ttf"] {
             write_retail_file(root.path(), relative, b"not a font");
         }
+        let mut news_tab = vec![0; NEWS_TEMPLATE_COUNT * NEWS_ROW_BYTES];
+        news_tab[0..4].copy_from_slice(&42_i32.to_be_bytes());
+        news_tab[8..12].copy_from_slice(&5_i32.to_be_bytes());
+        news_tab[12..16].copy_from_slice(&5_i32.to_be_bytes());
+        news_tab[16..20].copy_from_slice(&4_i32.to_be_bytes());
         write_retail_file(
             root.path(),
-            "Data/news.tab",
-            &vec![0; NEWS_TEMPLATE_COUNT * NEWS_ROW_BYTES],
+            TABLE_ARCHIVE_PATH,
+            &synthetic_pe(vec![
+                TestResource::new(
+                    TestName::text("TABLE"),
+                    TestName::text("NEWS.TAB"),
+                    news_tab,
+                ),
+                TestResource::new(
+                    TestName::text("TABLE"),
+                    TestName::text("NEWS.TEX"),
+                    b"TitleBody".to_vec(),
+                ),
+            ]),
         );
-        write_retail_file(root.path(), "Data/news.tex", b"");
         root
     }
 

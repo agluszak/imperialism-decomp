@@ -24,8 +24,6 @@ struct OfferSheetRoot;
 struct OfferSheetScreen {
     posed: Option<PendingTradeOffer>,
     posed_amount: i16,
-    purc: Entity,
-    nomo: Entity,
 }
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -38,16 +36,13 @@ enum OfferSheetAction {
 struct PurchaseAmountField;
 
 #[derive(Component)]
+struct StopBuyingToggle;
+
+#[derive(Component)]
 struct OfferSheetNotice;
 
 #[derive(Component)]
 struct OfferSheetNoticeBody(String);
-
-#[derive(Resource)]
-struct PendingOfferQuantityError;
-
-#[derive(Component)]
-struct OfferSheetNoticeClose(Entity);
 
 pub(crate) struct OfferSheetPlugin;
 
@@ -65,16 +60,11 @@ impl Plugin for OfferSheetPlugin {
         )
         .add_systems(
             Update,
-            (
-                pose_offer_sheet,
-                spawn_offer_quantity_error,
-                bind_offer_sheet_notice,
-            )
+            (pose_offer_sheet, bind_offer_sheet_notice)
                 .chain()
                 .run_if(in_state(AppState::OfferSheet)),
         )
-        .add_observer(on_offer_sheet_activate.run_if(in_state(AppState::OfferSheet)))
-        .add_observer(on_offer_sheet_notice_activate.run_if(in_state(AppState::OfferSheet)));
+        .add_observer(on_offer_sheet_activate.run_if(in_state(AppState::OfferSheet)));
     }
 }
 
@@ -162,6 +152,7 @@ fn bind_offer_sheet_controls(
         .remove::<InteractionDisabled>();
     commands
         .entity(nomo)
+        .insert(StopBuyingToggle)
         .remove::<(Checked, InteractionDisabled)>();
     commands.entity(purc).insert((
         PurchaseAmountField,
@@ -178,8 +169,6 @@ fn bind_offer_sheet_controls(
     commands.entity(root).insert(OfferSheetScreen {
         posed: None,
         posed_amount: offer.amount,
-        purc,
-        nomo,
     });
 }
 
@@ -208,7 +197,6 @@ fn pose_offer_sheet(
     }
     screen.posed = Some(offer);
     screen.posed_amount = offer.amount;
-    let purc = screen.purc;
     apply_offer_sheet_pose(
         &mut commands,
         &mut assets,
@@ -216,7 +204,6 @@ fn pose_offer_sheet(
         &children,
         &tags,
         &mut amounts,
-        purc,
         &session,
         offer,
     );
@@ -230,7 +217,6 @@ fn apply_offer_sheet_pose(
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
     amounts: &mut Query<&mut EditableText, With<PurchaseAmountField>>,
-    purc: Entity,
     session: &GameSession,
     offer: PendingTradeOffer,
 ) {
@@ -282,7 +268,7 @@ fn apply_offer_sheet_pose(
             .to_string(),
     );
 
-    if let Ok(mut editable) = amounts.get_mut(purc) {
+    if let Ok(mut editable) = amounts.single_mut() {
         *editable = EditableText {
             max_characters: Some(6),
             allow_newlines: false,
@@ -312,11 +298,12 @@ fn on_offer_sheet_activate(
     actions: Query<&OfferSheetAction>,
     screens: Query<&OfferSheetScreen>,
     amounts: Query<&EditableText, With<PurchaseAmountField>>,
-    checked: Query<Has<Checked>>,
+    stop_buying: Query<Has<Checked>, With<StopBuyingToggle>>,
     notices: Query<(), With<OfferSheetNotice>>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
+    assets: RetailUiAssets,
 ) {
     if !notices.is_empty() {
         return;
@@ -327,20 +314,20 @@ fn on_offer_sheet_activate(
     let Ok(screen) = screens.single() else {
         return;
     };
-    let stop_buying = checked.get(screen.nomo).unwrap_or(false);
+    let stop_buying = stop_buying.single().unwrap_or(false);
     let amount = match action {
         OfferSheetAction::Reject => 0,
         OfferSheetAction::Accept => {
             let Some(amount) = amounts
-                .get(screen.purc)
+                .single()
                 .ok()
                 .and_then(|editable| editable.value().to_string().parse::<i16>().ok())
             else {
-                commands.insert_resource(PendingOfferQuantityError);
+                spawn_offer_quantity_error(&mut commands, &assets);
                 return;
             };
             if amount < 0 || amount > screen.posed_amount {
-                commands.insert_resource(PendingOfferQuantityError);
+                spawn_offer_quantity_error(&mut commands, &assets);
                 return;
             }
             amount
@@ -352,19 +339,11 @@ fn on_offer_sheet_activate(
     }
 }
 
-fn spawn_offer_quantity_error(
-    mut commands: Commands,
-    pending: Option<Res<PendingOfferQuantityError>>,
-    assets: RetailUiAssets,
-) {
-    if pending.is_none() {
-        return;
-    }
-    commands.remove_resource::<PendingOfferQuantityError>();
+fn spawn_offer_quantity_error(commands: &mut Commands, assets: &RetailUiAssets) {
     let root = commands.spawn_scene(generated::linger_2020()).id();
     commands.entity(root).insert((
         OfferSheetNotice,
-        OfferSheetNoticeBody(get_string(&assets, OFFER_STRING_GROUP, 0x10)),
+        OfferSheetNoticeBody(get_string(assets, OFFER_STRING_GROUP, 0x10)),
         ModalDialog,
         TabGroup::modal(),
         GlobalZIndex(20),
@@ -403,19 +382,28 @@ fn bind_offer_sheet_notice(
     let okay = find_descendant(root, fourcc!("okay"), &children, &tags);
     commands
         .entity(okay)
-        .insert((OfferSheetNoticeClose(root), ActivateOnPress))
-        .remove::<InteractionDisabled>();
+        .insert(ActivateOnPress)
+        .remove::<InteractionDisabled>()
+        .observe(on_offer_sheet_notice_activate);
 }
 
 fn on_offer_sheet_notice_activate(
     activate: On<Activate>,
-    closes: Query<&OfferSheetNoticeClose>,
+    parents: Query<&ChildOf>,
+    notices: Query<(), With<OfferSheetNotice>>,
     mut commands: Commands,
 ) {
-    let Ok(close) = closes.get(activate.entity) else {
-        return;
-    };
-    commands.entity(close.0).despawn();
+    let mut entity = activate.entity;
+    loop {
+        if notices.contains(entity) {
+            commands.entity(entity).despawn();
+            return;
+        }
+        entity = parents
+            .get(entity)
+            .expect("offer-sheet notice close belongs to its dialog")
+            .parent();
+    }
 }
 
 fn fill_brackets(template: &str, args: &[&str]) -> String {
@@ -557,7 +545,7 @@ mod tests {
         app.add_plugins(MinimalPlugins)
             .add_plugins(StatesPlugin)
             .insert_state(AppState::MainMenu)
-            .add_observer(on_offer_sheet_activate.run_if(in_state(AppState::OfferSheet)));
+            .add_plugins(OfferSheetPlugin);
         let unrelated = app.world_mut().spawn_empty().id();
 
         app.world_mut()

@@ -105,7 +105,11 @@ impl LegacySaveV62 {
             mode: 0,
             previous_turn_state_code: 0,
             previous_mode: 0,
-            nation_count: NATION_COUNT as i32,
+            nation_count: state
+                .nations()
+                .majors()
+                .filter(|major| matches!(major.common.status(), CountryStatus::Independent))
+                .count() as i32,
             minor_nation_count: MINOR_NATION_COUNT as i32,
             turn_flow_status_flags: turn.turn_flow_status_flags,
             difficulty: turn.difficulty as u8,
@@ -526,9 +530,7 @@ fn post_city_dto(
             .iter()
             .map(|unit| civilian_unit_dto(unit, topology))
             .collect(),
-        // Opaque retail bytes: parsed and written for layout compatibility, not promoted
-        // into GameState until their diplomacy semantics are recovered.
-        candidate_nation_flags: [0; NATION_COUNT],
+        candidate_nation_flags: *economy.candidate_nation_flags.as_array(),
         diplomacy_budget_base: economy.diplomacy_budget_base,
         escalation_counter: economy.escalation_counter as i8,
         pending_commitment_cost: economy.pending_commitment_cost,
@@ -537,7 +539,7 @@ fn post_city_dto(
         turn_finished_flag: u8::from(economy.turn_finished),
         special_resource_trade_balance: economy.special_resource_trade_balance,
         aid_allocation_total: economy.aid_allocation_total,
-        colony_boycott_flags: [0; NATION_COUNT],
+        colony_boycott_flags: *economy.colony_boycott_flags.as_array(),
         military_expenses: economy.military_expenses,
     }
 }

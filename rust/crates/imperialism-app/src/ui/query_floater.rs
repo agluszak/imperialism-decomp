@@ -28,21 +28,15 @@ struct QueryFloaterRoot;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum QueryFloaterAction {
-    DealBook {
-        root: Entity,
-        return_state: AppState,
-    },
-    Cancel {
-        root: Entity,
-    },
+    DealBook,
+    Cancel,
 }
 
 pub(crate) struct QueryFloaterPlugin;
 
 impl Plugin for QueryFloaterPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, bind_query_floaters)
-            .add_observer(on_query_floater_activate);
+        app.add_systems(Update, bind_query_floaters);
     }
 }
 
@@ -86,7 +80,6 @@ fn bind_query_floaters(
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     assets: RetailUiAssets,
-    state: Res<State<AppState>>,
 ) {
     for root in &roots {
         for (tag, index) in QUERY_LABELS {
@@ -99,18 +92,14 @@ fn bind_query_floaters(
         }
         commands
             .entity(find_descendant(root, fourcc!("deal"), &children, &tags))
-            .insert((
-                QueryFloaterAction::DealBook {
-                    root,
-                    return_state: *state.get(),
-                },
-                ActivateOnPress,
-            ))
-            .remove::<InteractionDisabled>();
+            .insert((QueryFloaterAction::DealBook, ActivateOnPress))
+            .remove::<InteractionDisabled>()
+            .observe(on_query_floater_activate);
         commands
             .entity(find_descendant(root, fourcc!("cncl"), &children, &tags))
-            .insert((QueryFloaterAction::Cancel { root }, ActivateOnPress))
-            .remove::<InteractionDisabled>();
+            .insert((QueryFloaterAction::Cancel, ActivateOnPress))
+            .remove::<InteractionDisabled>()
+            .observe(on_query_floater_activate);
         for tag in [
             fourcc!("advi"),
             fourcc!("oref"),
@@ -128,19 +117,32 @@ fn bind_query_floaters(
 fn on_query_floater_activate(
     activate: On<Activate>,
     actions: Query<&QueryFloaterAction>,
+    parents: Query<&ChildOf>,
+    roots: Query<(), With<QueryFloaterRoot>>,
+    state: Res<State<AppState>>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
+    let mut entity = activate.entity;
+    let root = loop {
+        if roots.contains(entity) {
+            break entity;
+        }
+        entity = parents
+            .get(entity)
+            .expect("query floater action belongs to its dialog")
+            .parent();
+    };
     match *action {
-        QueryFloaterAction::DealBook { root, return_state } => {
+        QueryFloaterAction::DealBook => {
             commands.entity(root).despawn();
-            commands.insert_resource(DealBookReturn(return_state));
+            commands.insert_resource(DealBookReturn(*state.get()));
             next_state.set(AppState::DealBook);
         }
-        QueryFloaterAction::Cancel { root } => {
+        QueryFloaterAction::Cancel => {
             commands.entity(root).despawn();
         }
     }
@@ -157,13 +159,10 @@ mod tests {
             .add_plugins(bevy::state::app::StatesPlugin)
             .insert_state(AppState::Trade)
             .add_observer(on_query_floater_activate);
-        let root = app.world_mut().spawn_empty().id();
+        let root = app.world_mut().spawn(QueryFloaterRoot).id();
         let action = app
             .world_mut()
-            .spawn(QueryFloaterAction::DealBook {
-                root,
-                return_state: AppState::Trade,
-            })
+            .spawn((QueryFloaterAction::DealBook, ChildOf(root)))
             .id();
 
         app.world_mut()

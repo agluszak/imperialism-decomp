@@ -706,6 +706,7 @@ bitflags::bitflags! {
         /// Set by `ResetTileToBaseTransportFlag`; consumers use this as the base-transport test.
         const BASE_TRANSPORT = 1 << 0;
         const RECRUITMENT_RESERVED = 1 << 1;
+        /// Retail `activeFlags1c` bit 2, the port flag tested by `HasPortInProvince`.
         const PORT = 1 << 2;
         /// Set by `SetProvinceCapitalTileFlagBit08`, which also advances the province fort level.
         const PROVINCE_CAPITAL_FORTIFICATION = 1 << 3;
