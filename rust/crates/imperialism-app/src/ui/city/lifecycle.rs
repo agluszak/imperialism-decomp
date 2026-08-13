@@ -125,20 +125,22 @@ pub(in crate::ui::city) fn bind_city_dialog_root(
         .entity(window)
         .insert((Pickable::default(), CityDialogWindow(slot)));
     commands.entity(window).with_children(|parent| {
-        parent.spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: px(0),
-                top: px(-CITY_DIALOG_CAPTION_HEIGHT),
-                width: percent(100),
-                height: px(CITY_DIALOG_CAPTION_HEIGHT),
-                ..default()
-            },
-            BackgroundColor(Color::srgb_u8(0, 0, 128)),
-            CityDialogCaption,
-            Pickable::default(),
-            Name::new("city-dialog-caption"),
-        ));
+        parent
+            .spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(0),
+                    top: px(-CITY_DIALOG_CAPTION_HEIGHT),
+                    width: percent(100),
+                    height: px(CITY_DIALOG_CAPTION_HEIGHT),
+                    ..default()
+                },
+                BackgroundColor(Color::srgb_u8(0, 0, 128)),
+                CityDialogCaption,
+                Pickable::default(),
+                Name::new("city-dialog-caption"),
+            ))
+            .observe(on_city_dialog_dragged);
         parent
             .spawn((
                 UiButton,
@@ -157,6 +159,7 @@ pub(in crate::ui::city) fn bind_city_dialog_root(
                 ZIndex(1),
                 Name::new("city-dialog-close"),
             ))
+            .observe(on_city_dialog_close)
             .with_child((
                 Text::new("×"),
                 TextFont {
@@ -349,14 +352,10 @@ pub(in crate::ui::city) fn on_city_dialog_pressed(
 
 pub(in crate::ui::city) fn on_city_dialog_dragged(
     drag: On<Pointer<Drag>>,
-    captions: Query<(), With<CityDialogCaption>>,
     parents: Query<&ChildOf>,
     mut windows: Query<&mut Node>,
 ) {
     if drag.event.button != PointerButton::Primary {
-        return;
-    }
-    if captions.get(drag.entity).is_err() {
         return;
     }
     let mut node = windows
@@ -374,14 +373,10 @@ pub(in crate::ui::city) fn on_city_dialog_dragged(
 
 pub(in crate::ui::city) fn on_city_dialog_close(
     activate: On<Activate>,
-    closes: Query<(), With<CityDialogClose>>,
     parents: Query<&ChildOf>,
     dialogs: Query<(), With<CityBuildingDialog>>,
     mut commands: Commands,
 ) {
-    if closes.get(activate.entity).is_err() {
-        return;
-    }
     let mut entity = activate.entity;
     loop {
         if dialogs.contains(entity) {

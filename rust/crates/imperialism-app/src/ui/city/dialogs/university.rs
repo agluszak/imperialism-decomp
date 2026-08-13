@@ -43,8 +43,11 @@ pub(in crate::ui::city) struct UniversityDialogData {
     pub(in crate::ui::city) resource_icons: Handle<Image>,
     pub(in crate::ui::city) tier_labels: [String; 3],
     pub(in crate::ui::city) title_font: TextFont,
+    pub(in crate::ui::city) title_line_height: LineHeight,
     pub(in crate::ui::city) unit_font: TextFont,
+    pub(in crate::ui::city) unit_line_height: LineHeight,
     pub(in crate::ui::city) detail_font: TextFont,
+    pub(in crate::ui::city) detail_line_height: LineHeight,
     pub(in crate::ui::city) normal_color: Color,
     pub(in crate::ui::city) warning_color: Color,
 }
@@ -73,7 +76,7 @@ pub(in crate::ui::city) fn configure_university_dialog(
 ) {
     let nation = MajorNationId::from_nation(state.turn().active_nation)
         .expect("City active nation is a major nation");
-    let (detail_font, _, _) = assets
+    let (detail_font, _, detail_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -81,7 +84,7 @@ pub(in crate::ui::city) fn configure_university_dialog(
             alignment: -2,
         })
         .expect("retail University detail text style");
-    let (title_font, _, _) = assets
+    let (title_font, _, title_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -89,7 +92,7 @@ pub(in crate::ui::city) fn configure_university_dialog(
             alignment: 1,
         })
         .expect("retail University title fallback text style");
-    let (unit_font, _, _) = assets
+    let (unit_font, _, unit_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -125,8 +128,11 @@ pub(in crate::ui::city) fn configure_university_dialog(
                 .expect("retail University tier label")
         }),
         title_font,
+        title_line_height,
         unit_font,
+        unit_line_height,
         detail_font,
+        detail_line_height,
         normal_color: assets.palette_color(0xd2),
         warning_color: assets.palette_color(0xcb),
     };
@@ -146,8 +152,11 @@ pub(in crate::ui::city) fn bind_university_dialog(
         resource_icons,
         tier_labels: tier_label_texts,
         title_font,
+        title_line_height,
         unit_font,
+        unit_line_height,
         detail_font,
+        detail_line_height,
         normal_color,
         warning_color,
     } = data;
@@ -205,6 +214,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
             CityOrderQuantity(binding.order),
             InteractionDisabled,
             detail_font.clone(),
+            detail_line_height,
             TextColor(normal_color),
         ));
     }
@@ -259,6 +269,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
                 },
                 Text::new(""),
                 detail_font.clone(),
+                detail_line_height,
                 TextLayout::justify(Justify::Left),
                 TextColor(normal_color),
                 Visibility::Hidden,
@@ -279,75 +290,94 @@ pub(in crate::ui::city) fn bind_university_dialog(
         commands.entity(entity).insert((
             Text::new(text),
             detail_font.clone(),
+            detail_line_height,
             TextLayout::justify(Justify::Center),
             TextColor(normal_color),
             Visibility::Hidden,
             UniversityDisplay::TierLabel(index),
         ));
     }
-    let style_text = |commands: &mut Commands, tag, font: TextFont, display: UniversityDisplay| {
+    let style_text = |commands: &mut Commands,
+                      tag,
+                      font: TextFont,
+                      line_height: LineHeight,
+                      display: UniversityDisplay| {
         let entity = find_descendant(root, tag, children, tags);
-        commands
-            .entity(entity)
-            .insert((Text::new(""), font, TextColor(normal_color), display));
+        commands.entity(entity).insert((
+            Text::new(""),
+            font,
+            line_height,
+            TextColor(normal_color),
+            display,
+        ));
     };
     style_text(
         commands,
         fourcc!("unit"),
         unit_font,
+        unit_line_height,
         UniversityDisplay::UnitName,
     );
     style_text(
         commands,
         fourcc!("desc"),
         detail_font.clone(),
+        detail_line_height,
         UniversityDisplay::Description,
     );
     style_text(
         commands,
         fourcc!("cexp"),
         detail_font.clone(),
+        detail_line_height,
         UniversityDisplay::LaborCost,
     );
     style_text(
         commands,
         fourcc!("cpap"),
         detail_font.clone(),
+        detail_line_height,
         UniversityDisplay::MaterialCost,
     );
     style_text(
         commands,
         fourcc!("cash"),
         detail_font.clone(),
+        detail_line_height,
         UniversityDisplay::CashCost,
     );
     style_text(
         commands,
         fourcc!("aexp"),
         detail_font.clone(),
+        detail_line_height,
         UniversityDisplay::LaborAvailable,
     );
     style_text(
         commands,
         fourcc!("apap"),
         detail_font.clone(),
+        detail_line_height,
         UniversityDisplay::MaterialAvailable,
     );
     style_text(
         commands,
         fourcc!("trea"),
         detail_font.clone(),
+        detail_line_height,
         UniversityDisplay::Treasury,
     );
     let title = find_descendant(root, fourcc!("titl"), children, tags);
     commands
         .entity(title)
-        .insert((title_font, TextColor(normal_color)));
+        .insert((title_font, title_line_height, TextColor(normal_color)));
     for tag in [fourcc!("fix0"), fourcc!("fix1")] {
         let fixed = find_descendant(root, tag, children, tags);
-        commands
-            .entity(fixed)
-            .insert((detail_font.clone(), TextColor(normal_color)));
+        commands.entity(fixed).insert((
+            detail_font.clone(),
+            detail_line_height,
+            TextColor(normal_color),
+        ));
     }
     commands.entity(root).insert(UniversitySelection {
         kind: CivilianUnitKind::Miner,

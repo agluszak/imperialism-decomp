@@ -7,6 +7,7 @@ use super::retail::{RetailTag, find_descendant};
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
+use bevy::text::LineHeight;
 use bevy::ui::{InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
 use imperialism_core::*;
@@ -65,8 +66,10 @@ struct DealBookPictures {
 struct DealBookFonts {
     body: TextFont,
     body_layout: TextLayout,
+    body_line_height: LineHeight,
     heading: TextFont,
     heading_layout: TextLayout,
+    heading_line_height: LineHeight,
     heading_center: TextLayout,
     color: Color,
 }
@@ -154,7 +157,7 @@ fn bind_deal_book(
             )
         }),
     };
-    let (body, body_layout, _) = assets
+    let (body, body_layout, body_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -162,7 +165,7 @@ fn bind_deal_book(
             alignment: -1,
         })
         .expect("retail deal-book body text style");
-    let (heading, heading_layout, _) = assets
+    let (heading, heading_layout, heading_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -173,8 +176,10 @@ fn bind_deal_book(
     let fonts = DealBookFonts {
         body,
         body_layout,
+        body_line_height,
         heading,
         heading_layout,
+        heading_line_height,
         heading_center: TextLayout::justify(Justify::Center),
         color: Color::BLACK,
     };
@@ -1015,7 +1020,7 @@ fn spawn_text_at(
     heading: bool,
     value: String,
 ) {
-    let (font, layout) = if heading {
+    let (font, layout, line_height) = if heading {
         (
             screen.fonts.heading.clone(),
             if left == 0.0 && width == PAGE_WIDTH {
@@ -1023,9 +1028,14 @@ fn spawn_text_at(
             } else {
                 screen.fonts.heading_layout
             },
+            screen.fonts.heading_line_height,
         )
     } else {
-        (screen.fonts.body.clone(), screen.fonts.body_layout)
+        (
+            screen.fonts.body.clone(),
+            screen.fonts.body_layout,
+            screen.fonts.body_line_height,
+        )
     };
     commands.spawn((
         Node {
@@ -1039,6 +1049,7 @@ fn spawn_text_at(
         Text::new(value),
         font,
         layout,
+        line_height,
         TextColor(screen.fonts.color),
         Pickable::IGNORE,
         ChildOf(host),

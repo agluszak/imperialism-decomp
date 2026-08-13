@@ -193,7 +193,7 @@ fn bind_city_summary_values(
     tags: &Query<&RetailTag>,
     assets: &mut RetailUiAssets,
 ) {
-    let (font, layout, _) = assets
+    let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -207,6 +207,7 @@ fn bind_city_summary_values(
             Text::new(""),
             font.clone(),
             layout,
+            line_height,
             TextColor(Color::BLACK),
             marker,
         ));

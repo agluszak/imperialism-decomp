@@ -61,6 +61,34 @@ impl AiCityOrderDemand {
             population_growth,
         }
     }
+
+    pub const fn training(&self) -> &TrainingOrderTable<i16> {
+        &self.training
+    }
+
+    pub const fn military_recruitment(&self) -> &MilitaryRecruitOrderTable<i16> {
+        &self.military_recruitment
+    }
+
+    pub const fn civilian_recruitment(&self) -> &CivilianUnitTable<i16> {
+        &self.civilian_recruitment
+    }
+
+    pub const fn ships(&self) -> &ShipOrderTable<i16> {
+        &self.ships
+    }
+
+    pub const fn transport_capacity(&self) -> i16 {
+        self.transport_capacity
+    }
+
+    pub const fn expansions(&self) -> &ProductionTable<i16> {
+        &self.expansions
+    }
+
+    pub const fn population_growth(&self) -> i16 {
+        self.population_growth
+    }
 }
 
 /// One ordered city-development request retained by an AI interior minister.
@@ -111,6 +139,54 @@ impl InteriorCivilianState {
             average_development_order_allocation,
             pending_development_actions,
         }
+    }
+
+    pub const fn pending_recruitment(&self) -> Option<CivilianUnitKind> {
+        self.pending_recruitment
+    }
+
+    pub const fn railhead_target(&self) -> Option<TileId> {
+        self.railhead_target
+    }
+
+    pub const fn resource_order_metrics(&self) -> &ResourceTable<i16> {
+        &self.resource_order_metrics
+    }
+
+    pub const fn city_order_demand(&self) -> &AiCityOrderDemand {
+        &self.city_order_demand
+    }
+
+    pub const fn deferred_labor_shortfall(&self) -> i16 {
+        self.deferred_labor_shortfall
+    }
+
+    pub const fn production_deficit_by_slot(&self) -> &ProductionTable<i16> {
+        &self.production_deficit_by_slot
+    }
+
+    pub const fn temporarily_reserved_ship_arms(&self) -> i16 {
+        self.temporarily_reserved_ship_arms
+    }
+
+    pub const fn railhead_priority_by_resource(&self) -> &ResourceTable<i16> {
+        &self.railhead_priority_by_resource
+    }
+
+    pub const fn exterior_need_by_resource(&self) -> &ResourceTable<i16> {
+        &self.exterior_need_by_resource
+    }
+
+    pub const fn historical_need_by_resource(&self) -> &ResourceTable<i16> {
+        &self.historical_need_by_resource
+    }
+
+    pub const fn civilian_order_demand_by_resource(&self) -> &ResourceTable<i16> {
+        &self.civilian_order_demand_by_resource
+    }
+
+    pub fn pending_development_actions(&self) -> &[PendingDevelopmentAction] {
+        &self.pending_development_actions
     }
 }
 

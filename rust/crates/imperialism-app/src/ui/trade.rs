@@ -7,6 +7,7 @@ use super::retail::{RetailTag, find_descendant};
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
+use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, Button as UiButton};
 use imperialism_core::*;
@@ -243,7 +244,7 @@ fn bind_trade_screen(
         .expect("Trade active nation is a major nation");
     session.0.recall_player_trade_orders(nation);
 
-    let (row_font, row_layout, _) = assets
+    let (row_font, row_layout, row_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 2,
             face_flags: 0,
@@ -284,6 +285,7 @@ fn bind_trade_screen(
         &tags,
         row_font,
         row_layout,
+        row_line_height,
         assets.palette_color(0x13),
         pictures,
         assets.palette_color(0x37),
@@ -298,6 +300,7 @@ fn bind_trade_controls(
     tags: &Query<&RetailTag>,
     row_font: TextFont,
     row_layout: TextLayout,
+    row_line_height: LineHeight,
     row_color: Color,
     pictures: TradePictures,
     gauge_color: Color,
@@ -372,6 +375,7 @@ fn bind_trade_controls(
             binding.commodity,
             row_font.clone(),
             row_layout,
+            row_line_height,
             row_color,
         ));
     }
@@ -453,6 +457,7 @@ fn trade_row_overlay(
     commodity: TradeCommodity,
     font: TextFont,
     layout: TextLayout,
+    line_height: LineHeight,
     color: Color,
 ) -> impl Scene {
     let price_font = font.clone();
@@ -469,6 +474,7 @@ fn trade_row_overlay(
                 Text("")
                 template(move |_context| Ok(price_font.clone()))
                 template(move |_context| Ok(layout))
+                template(move |_context| Ok(line_height))
                 TextColor(color)
                 Pickable::IGNORE
                 template(move |_context| Ok(TradeDisplay::Price(commodity)))
@@ -484,6 +490,7 @@ fn trade_row_overlay(
                 Text("")
                 template(move |_context| Ok(font.clone()))
                 template(move |_context| Ok(layout))
+                template(move |_context| Ok(line_height))
                 TextColor(color)
                 Pickable::IGNORE
                 template(move |_context| Ok(TradeDisplay::Stock(commodity)))

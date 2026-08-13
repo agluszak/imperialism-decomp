@@ -7,12 +7,15 @@ use bevy::prelude::*;
 use bevy::window::WindowPlugin;
 use imperialism_core::{GameState, RandomGameNames};
 use imperialism_formats::RetailAssets;
+use std::path::PathBuf;
 
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, PartialEq, States)]
 pub(crate) enum AppState {
     #[default]
     MainMenu,
     RandomSetup,
+    LoadGame,
+    SaveGame,
     CitySite,
     StrategicMap,
     Trade,
@@ -38,7 +41,11 @@ impl RetailAssetsResource {
 #[derive(Resource)]
 pub(crate) struct RandomGameNamesResource(pub(crate) RandomGameNames);
 
-pub fn run(retail_assets: RetailAssets, initial_game: Option<GameState>) -> anyhow::Result<()> {
+pub fn run(
+    retail_assets: RetailAssets,
+    initial_game: Option<GameState>,
+    save_directory: PathBuf,
+) -> anyhow::Result<()> {
     let random_game_names = retail_assets.random_game_names()?;
     let logical_resolution = ui::generated::LOGICAL_RESOLUTION;
     let mut app = App::new();
@@ -55,7 +62,8 @@ pub fn run(retail_assets: RetailAssets, initial_game: Option<GameState>) -> anyh
             }),
     );
     app.insert_resource(RetailAssetsResource::new(retail_assets))
-        .insert_resource(RandomGameNamesResource(random_game_names));
+        .insert_resource(RandomGameNamesResource(random_game_names))
+        .insert_resource(ui::SaveDirectory(save_directory));
     if let Some(game) = initial_game {
         assert_eq!(
             game.turn().phase(),
@@ -71,6 +79,7 @@ pub fn run(retail_assets: RetailAssets, initial_game: Option<GameState>) -> anyh
         TabNavigationPlugin,
         ui::RetailUiPlugin,
         ui::MainMenuPlugin,
+        ui::LoadSavePlugin,
         ui::RandomSetupPlugin,
         ui::MapPreviewPlugin,
         ui::CitySitePlugin,
@@ -81,7 +90,8 @@ pub fn run(retail_assets: RetailAssets, initial_game: Option<GameState>) -> anyh
         ui::DiplomacyPlugin,
         ui::DealBookPlugin,
     ));
-    app.world_mut().spawn(Camera2d);
+    app.world_mut()
+        .spawn((Camera2d, Msaa::Off, UiAntiAlias::Off));
     app.run();
     Ok(())
 }

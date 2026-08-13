@@ -9,6 +9,7 @@ use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::log::warn;
 use bevy::picking::events::{Click, Drag, Pointer, Press};
 use bevy::prelude::*;
+use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, Button as UiButton, ValueChange};
 use imperialism_core::*;
@@ -78,8 +79,6 @@ impl Plugin for CityPlugin {
                 .run_if(in_state(AppState::City)),
         )
         .add_observer(on_city_dialog_pressed.run_if(in_state(AppState::City)))
-        .add_observer(on_city_dialog_dragged.run_if(in_state(AppState::City)))
-        .add_observer(on_city_dialog_close.run_if(in_state(AppState::City)))
         .add_observer(on_city_canvas_click.run_if(in_state(AppState::City)))
         .add_observer(on_armory_row_selected.run_if(in_state(AppState::City)))
         .add_observer(on_university_row_selected.run_if(in_state(AppState::City)))

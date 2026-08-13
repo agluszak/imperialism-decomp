@@ -10,7 +10,7 @@ impl PendingActionState {
     pub const fn new(status: PendingActionStatus, payload: Option<i16>) -> Self {
         Self { status, payload }
     }
-    pub(crate) const fn status(self) -> PendingActionStatus {
+    pub const fn status(self) -> PendingActionStatus {
         self.status
     }
     pub const fn payload(self) -> Option<i16> {
