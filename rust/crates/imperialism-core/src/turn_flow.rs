@@ -261,7 +261,8 @@ impl GameState {
                         return TurnStop::DiplomacyWarJoin(prompt);
                     }
                     _ => {
-                        if let Some(stop) = self.stop_from_diplomacy(self.do_diplomacy()) {
+                        let result = self.do_diplomacy();
+                        if let Some(stop) = self.stop_from_diplomacy(result) {
                             return stop;
                         }
                         self.turn.phase = PhaseCode::TRADE;

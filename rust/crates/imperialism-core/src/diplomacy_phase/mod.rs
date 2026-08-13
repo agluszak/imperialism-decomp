@@ -53,7 +53,8 @@ impl GameState {
     /// processed and may return [`DiplomacyPhaseResult::WarJoin`].
     pub fn do_diplomacy(&mut self) -> DiplomacyPhaseResult {
         self.apply_diplomacy_inter_nation_states();
-        self.record_diplomacy_result(self.reply_to_diplomacy_offers_from(0, 0))
+        let result = self.reply_to_diplomacy_offers_from(0, 0);
+        self.record_diplomacy_result(result)
     }
 
     /// Accepts or rejects the offer stored in the current continuation, then
@@ -66,9 +67,8 @@ impl GameState {
         };
         self.continuation = crate::turn_flow::TurnContinuation::None;
         self.apply_human_offer_decision(nation, usize::from(index), accept);
-        self.record_diplomacy_result(
-            self.reply_to_diplomacy_offers_from(nation.get(), usize::from(index) + 1),
-        )
+        let result = self.reply_to_diplomacy_offers_from(nation.get(), usize::from(index) + 1);
+        self.record_diplomacy_result(result)
     }
 
     /// Accepts or rejects the war-join dialog stored in the current continuation,
@@ -79,11 +79,9 @@ impl GameState {
         };
         self.continuation = crate::turn_flow::TurnContinuation::None;
         self.apply_war_join_decision(prompt, accept);
-        self.record_diplomacy_result(self.continue_war_reactions(
-            prompt.pair_first,
-            prompt.pair_second,
-            prompt.cursor,
-        ))
+        let result =
+            self.continue_war_reactions(prompt.pair_first, prompt.pair_second, prompt.cursor);
+        self.record_diplomacy_result(result)
     }
 
     fn record_diplomacy_result(&mut self, result: DiplomacyPhaseResult) -> DiplomacyPhaseResult {

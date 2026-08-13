@@ -352,7 +352,7 @@ impl GameState {
         Some(tech_id)
     }
 
-    fn consume_interactive_technology_unlock(&mut self) -> Option<TechnologyId> {
+    pub(crate) fn consume_interactive_technology_unlock(&mut self) -> Option<TechnologyId> {
         let nation = MajorNationId::from_nation(self.turn.active_nation)?;
         if self.nations.major(nation).economy.diplomacy_eligible
             && self.nation_slot_eligible_for_event_processing(nation)
@@ -363,7 +363,7 @@ impl GameState {
         }
     }
 
-    fn consume_non_interactive_technology_unlocks(&mut self) {
+    pub(crate) fn consume_non_interactive_technology_unlocks(&mut self) {
         let active = MajorNationId::from_nation(self.turn.active_nation);
         for nation in MajorNationId::all() {
             // FIXME: retail skips the drain when the slot is active, cooldown < 1, and
