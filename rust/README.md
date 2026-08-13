@@ -52,7 +52,11 @@ cargo run -p imperialism-app -- \
   --save-dir /tmp/imperialism-saves
 ```
 
-Load Game on the main menu and Save/Load on the in-game Flag menu use that directory. The `.imp` file does not store RNG; UI loads use a fixed CRT seed of 1 and zeroed map/zone LCGs.
+Load Game on the main menu and Save/Load on the in-game Flag menu use that directory. The `.imp`
+file does not store RNG. Retail `DoRead` leaves the process CRT `rand()`, map-generation LCG, and
+zone-status LCG alone: an in-game load keeps the live session streams, and a main-menu load seeds
+CRT from `time(0)` like `TSimMgr::ISimMgr`, leaves the map LCG at BSS zero, and seeds the zone LCG
+from the 16 ms tick clock like `GetTickCountDiv16()`.
 
 To start from a retail save, also provide the runtime state that the `.imp` file does not store:
 

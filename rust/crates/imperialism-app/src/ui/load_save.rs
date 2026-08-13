@@ -11,7 +11,9 @@ use bevy::prelude::*;
 use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, SelectAllOnFocus};
-use imperialism_core::{GameState, NationId, PhaseCode, TileId, TileOwnerTag};
+use imperialism_core::{
+    GameState, NationId, PhaseCode, RetailCrtRng, RetailLcg, RngState, TileId, TileOwnerTag,
+};
 use imperialism_formats::{
     FourCc, LegacyGameStateContext, LoadGameError, NUMBERED_SAVE_SLOT_COUNT, OverwritePolicy,
     PictureId, SAVE_LABEL_MAX_CHARS, SaveDirectoryListing, SaveFileError, SaveHeaderInfo, SaveSlot,
@@ -19,6 +21,7 @@ use imperialism_formats::{
     peek_save_preview_owners, retail_save_path, write_game_state, write_save_file,
 };
 use std::path::{Path, PathBuf};
+use std::time::{SystemTime, UNIX_EPOCH};
 
 const SLOT_TAGS: [FourCc; NUMBERED_SAVE_SLOT_COUNT as usize] = [
     fourcc!("slt0"),
@@ -185,7 +188,11 @@ pub(crate) fn register_load_save_logic(app: &mut App) {
     .add_observer(on_flag_menu_activate.run_if(in_state(AppState::StrategicMap)));
 }
 
-pub(crate) fn load_slot(directory: &Path, slot: SaveSlot) -> Result<GameState, LoadGameError> {
+pub(crate) fn load_slot(
+    directory: &Path,
+    slot: SaveSlot,
+    rng: RngState,
+) -> Result<GameState, LoadGameError> {
     let path = retail_save_path(directory, slot);
     let bytes = std::fs::read(&path)?;
     let selected_nation = peek_save_header(&bytes)
@@ -194,12 +201,39 @@ pub(crate) fn load_slot(directory: &Path, slot: SaveSlot) -> Result<GameState, L
     load_game_from_bytes(
         &bytes,
         LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 0,
+            crt_rand_state: rng.crt_rand.state(),
+            map_generation_lcg: rng.map_generation.state(),
+            zone_status_lcg: rng.zone_status.state(),
             selected_nation,
         },
     )
+}
+
+/// Retail `DoRead` never stores or reseeds these streams. CRT `rand()` is a process
+/// global seeded by `TSimMgr::ISimMgr` via `srand(time(0))`; the map LCG is BSS-zero
+/// until map generation; the zone LCG starts as `GetTickCountDiv16()`. A later load
+/// leaves whatever the process currently has.
+fn runtime_rng_for_load(existing: Option<&GameState>) -> RngState {
+    if let Some(state) = existing {
+        return *state.rng();
+    }
+    RngState {
+        crt_rand: RetailCrtRng::from_state(clock_derived_crt_seed()),
+        map_generation: RetailLcg::from_state(0),
+        zone_status: RetailLcg::from_state(tick_derived_zone_seed()),
+    }
+}
+
+fn clock_derived_crt_seed() -> u32 {
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map_or(0, |duration| duration.as_secs() as u32)
+}
+
+fn tick_derived_zone_seed() -> u32 {
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map_or(0, |duration| (duration.as_millis() / 16) as u32)
 }
 
 pub(crate) fn save_current_game(
@@ -695,7 +729,15 @@ fn confirm_or_apply(
                 );
                 return;
             }
-            apply_load(commands, save_dir, slot, next_state, screen_state, None);
+            apply_load(
+                commands,
+                save_dir,
+                slot,
+                session.map(|session| &session.0),
+                next_state,
+                screen_state,
+                None,
+            );
         }
         LoadSaveMode::Save => {
             let Some(session) = session else {
@@ -732,6 +774,7 @@ fn apply_load(
     commands: &mut Commands,
     save_dir: &Path,
     slot: SaveSlot,
+    existing: Option<&GameState>,
     next_state: &mut NextState<AppState>,
     screen_state: AppState,
     assets: Option<&RetailUiAssets>,
@@ -739,7 +782,7 @@ fn apply_load(
     if !retail_save_path(save_dir, slot).is_file() {
         return;
     }
-    match commit_loaded_game(load_slot(save_dir, slot)) {
+    match commit_loaded_game(load_slot(save_dir, slot, runtime_rng_for_load(existing))) {
         Ok((session, destination)) => {
             commands.insert_resource(session);
             next_state.set(destination);
@@ -853,6 +896,7 @@ fn on_load_save_notice_activate(
     notices: Query<(Entity, &LoadSaveNotice)>,
     roots: Query<&LoadSaveRoot>,
     save_dir: Res<SaveDirectory>,
+    session: Option<Res<GameSession>>,
     mut next_state: ResMut<NextState<AppState>>,
     state: Res<State<AppState>>,
     mut commands: Commands,
@@ -877,6 +921,7 @@ fn on_load_save_notice_activate(
                 &mut commands,
                 &save_dir.0,
                 slot,
+                session.as_deref().map(|session| &session.0),
                 &mut next_state,
                 *state.get(),
                 Some(&assets),
@@ -1185,7 +1230,11 @@ mod tests {
         )
         .unwrap();
         let session = GameSession(original.clone());
-        let result = commit_loaded_game(load_slot(dir.path(), SaveSlot::Numbered(0)));
+        let result = commit_loaded_game(load_slot(
+            dir.path(),
+            SaveSlot::Numbered(0),
+            *original.rng(),
+        ));
         assert!(result.is_err());
         assert_eq!(session.0, original);
     }
@@ -1195,8 +1244,12 @@ mod tests {
         let original = fixture_state();
         let dir = tempfile::tempdir().unwrap();
         save_current_game(dir.path(), SaveSlot::Numbered(1), &original, "England").unwrap();
-        let (session, destination) =
-            commit_loaded_game(load_slot(dir.path(), SaveSlot::Numbered(1))).unwrap();
+        let (session, destination) = commit_loaded_game(load_slot(
+            dir.path(),
+            SaveSlot::Numbered(1),
+            *original.rng(),
+        ))
+        .unwrap();
         assert_eq!(session.0, original);
         assert_eq!(destination, AppState::StrategicMap);
     }
@@ -1207,7 +1260,7 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "First").unwrap();
         save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "Second").unwrap();
-        let loaded = load_slot(dir.path(), SaveSlot::Numbered(0)).unwrap();
+        let loaded = load_slot(dir.path(), SaveSlot::Numbered(0), *original.rng()).unwrap();
         assert_eq!(loaded, original);
         let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(0))).unwrap();
         assert_eq!(
@@ -1235,5 +1288,32 @@ mod tests {
             pixels.iter().any(|&index| index != 0x10),
             "satellite preview should paint claimed land, not only the off-map key"
         );
+    }
+
+    #[test]
+    fn in_game_load_reuses_the_live_session_rng() {
+        let original = fixture_state();
+        assert_eq!(runtime_rng_for_load(Some(&original)), *original.rng());
+    }
+
+    #[test]
+    fn load_uses_caller_rng_because_imp_does_not_persist_it() {
+        let original = fixture_state();
+        let dir = tempfile::tempdir().unwrap();
+        save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "England").unwrap();
+        let rng = RngState {
+            crt_rand: RetailCrtRng::from_state(0x1234_5678),
+            map_generation: RetailLcg::from_state(0x1111_2222),
+            zone_status: RetailLcg::from_state(0x3333_4444),
+        };
+        let loaded = load_slot(dir.path(), SaveSlot::Numbered(0), rng).unwrap();
+        assert_eq!(*loaded.rng(), rng);
+        assert_ne!(loaded.rng(), original.rng());
+    }
+
+    #[test]
+    fn main_menu_load_leaves_the_map_lcg_at_bss_zero() {
+        let rng = runtime_rng_for_load(None);
+        assert_eq!(rng.map_generation.state(), 0);
     }
 }
