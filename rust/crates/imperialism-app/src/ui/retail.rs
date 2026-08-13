@@ -144,6 +144,57 @@ pub fn retail_editable_text(value: &'static str, max_characters: Option<usize>) 
     }
 }
 
+/// Windows `TEditText::Open` hosts a `CEdit` with `WS_BORDER | WS_EX_CLIENTEDGE`.
+/// Palette `0x13` is recovered white (`COLOR_WINDOW`); index 0 is black.
+pub fn retail_edit_field() -> impl Scene {
+    bsn! {
+        Node {
+            border: UiRect::all(px(2)),
+        }
+        template(move |context| Ok(BackgroundColor(template_palette_color(context, 0x13))))
+        template(move |context| Ok(BorderColor::all(template_palette_color(context, 0))))
+    }
+}
+
+/// `TRadioTextCluster` constructor defaults: selected theme `0x49`, pressed `0x4b`.
+/// `TViewMgr::GetColor` maps those to palettes `0xfa` and `0x66`.
+pub const RADIO_TEXT_SELECTED_PALETTE: u8 = 0xfa;
+pub const RADIO_TEXT_PRESSED_PALETTE: u8 = 0x66;
+
+/// `TSetupRandomMapPicture::DoPostCreate` sets `frameThemeCode90 = 0x2b6b` on
+/// the difficulty and names clusters; `GetColor` maps that theme to palette `0xd2`.
+pub const RADIO_CLUSTER_FRAME_PALETTE: u8 = 0xd2;
+
+/// Headless `TRadioText` selection fill. `TRadioText::Draw` fills the option
+/// when selected or pressed; picture radios keep their art swap instead.
+#[derive(Component, Clone, Copy, Debug)]
+pub struct RetailRadioTextFill {
+    pub selected: Color,
+    pub pressed: Color,
+}
+
+pub fn retail_radio_text_fill() -> impl Scene {
+    bsn! {
+        template(move |context| {
+            let fill = RetailRadioTextFill {
+                selected: template_palette_color(context, RADIO_TEXT_SELECTED_PALETTE),
+                pressed: template_palette_color(context, RADIO_TEXT_PRESSED_PALETTE),
+            };
+            // Generated radios often already have `Checked` before this template
+            // runs; observers on `Add<Checked>` would have missed the fill.
+            let background = if context.entity.get::<Pressed>().is_some() {
+                fill.pressed
+            } else if context.entity.get::<Checked>().is_some() {
+                fill.selected
+            } else {
+                Color::NONE
+            };
+            context.entity.insert(fill);
+            Ok(BackgroundColor(background))
+        })
+    }
+}
+
 pub fn retail_centered_text_padding(
     font_family: i32,
     face_flags: i32,
@@ -309,7 +360,12 @@ impl Plugin for RetailUiPlugin {
             .add_observer(on_retail_picture_swap_state::<Add, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Remove, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Add, Checked>)
-            .add_observer(on_retail_picture_swap_state::<Remove, Checked>);
+            .add_observer(on_retail_picture_swap_state::<Remove, Checked>)
+            .add_observer(on_radio_text_fill_state::<Add, Pressed>)
+            .add_observer(on_radio_text_fill_state::<Remove, Pressed>)
+            .add_observer(on_radio_text_fill_state::<Add, Checked>)
+            .add_observer(on_radio_text_fill_state::<Remove, Checked>)
+            .add_observer(on_radio_text_fill_state::<Add, RetailRadioTextFill>);
         super::hover_help::register_hover_help(app);
     }
 }
@@ -333,6 +389,29 @@ fn on_retail_picture_swap_state<E: EntityEvent, C: Component>(
         swap.active.clone()
     } else {
         swap.idle.clone()
+    };
+}
+
+fn on_radio_text_fill_state<E: EntityEvent, C: Component>(
+    event: On<E, C>,
+    mut fills: Query<(
+        &RetailRadioTextFill,
+        &mut BackgroundColor,
+        Has<Pressed>,
+        Has<Checked>,
+    )>,
+) {
+    let Ok((fill, mut background, pressed, checked)) = fills.get_mut(event.event_target()) else {
+        return;
+    };
+    let pressed = pressed && !(E::is::<Remove>() && C::is::<Pressed>());
+    let checked = checked && !(E::is::<Remove>() && C::is::<Checked>());
+    background.0 = if pressed {
+        fill.pressed
+    } else if checked {
+        fill.selected
+    } else {
+        Color::NONE
     };
 }
 
@@ -537,6 +616,50 @@ mod tests {
 
         app.world_mut().entity_mut(entity).remove::<Checked>();
         assert_eq!(app.world().get::<ImageNode>(entity).unwrap().image, idle);
+    }
+
+    #[test]
+    fn radio_text_fill_follows_pressed_and_checked() {
+        let mut app = App::new();
+        app.add_plugins(RetailUiPlugin);
+        let selected = Color::srgb(1.0, 0.0, 0.0);
+        let pressed = Color::srgb(0.0, 1.0, 0.0);
+        let entity = app
+            .world_mut()
+            .spawn((
+                BackgroundColor(Color::NONE),
+                RetailRadioTextFill { selected, pressed },
+            ))
+            .id();
+
+        assert_eq!(
+            app.world().get::<BackgroundColor>(entity).unwrap().0,
+            Color::NONE
+        );
+
+        app.world_mut().entity_mut(entity).insert(Checked);
+        assert_eq!(
+            app.world().get::<BackgroundColor>(entity).unwrap().0,
+            selected
+        );
+
+        app.world_mut().entity_mut(entity).insert(Pressed);
+        assert_eq!(
+            app.world().get::<BackgroundColor>(entity).unwrap().0,
+            pressed
+        );
+
+        app.world_mut().entity_mut(entity).remove::<Pressed>();
+        assert_eq!(
+            app.world().get::<BackgroundColor>(entity).unwrap().0,
+            selected
+        );
+
+        app.world_mut().entity_mut(entity).remove::<Checked>();
+        assert_eq!(
+            app.world().get::<BackgroundColor>(entity).unwrap().0,
+            Color::NONE
+        );
     }
 
     #[test]
