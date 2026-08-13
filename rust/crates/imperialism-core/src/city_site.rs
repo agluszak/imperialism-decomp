@@ -180,21 +180,20 @@ pub fn place_city(world: &mut MapMgr, tile: TileId, owner_nation: TileOwnerTag) 
     flood_fill_region_marker(world, tile, owner_nation);
 }
 
-/// Confirm the New City dialog: `PlaceCity`, then enter the opening-turn tail.
+/// Confirm the New City dialog: `PlaceCity`, then `StartNextPhase`.
 ///
-/// Retail follows with `StartNextPhase()` through season advance, technology, and
-/// the newspaper. This port applies the human capital binding and lands on
-/// `TECHNOLOGY_ADVANCES` after `AdvanceSeason` / `CheckForAdvances`.
+/// Retail posts command 100 through season advance and technology. This port
+/// runs the same `advance_phase` cases and stops on `TECHNOLOGY_ADVANCES`.
 pub fn confirm_capital_site(state: &mut GameState, site: CapitalSite) -> Option<u8> {
     let tile = site.tile();
     let owner = TileOwnerTag::from_nation(site.nation().nation());
     place_city(&mut state.map, tile, owner);
     bind_home_city_tile(state, site.nation(), tile);
-    state.begin_technology_and_newspaper_tail()
+    state.start_next_phase()
 }
 
 /// Introductory/Easy path: no city-site selector; bind the frog-city marker and
-/// enter the opening-turn tail.
+/// enter the opening-turn tail through the same phase dispatcher.
 pub fn enter_strategic_map_without_capital_selection(
     state: &mut GameState,
     nation: MajorNationId,
@@ -207,7 +206,7 @@ pub fn enter_strategic_map_without_capital_selection(
         .map(|town| town.tile)
         .expect("generated Introductory/Easy game has a home town tile");
     bind_home_city_tile(state, nation, home);
-    state.begin_technology_and_newspaper_tail()
+    state.start_next_phase()
 }
 
 fn bind_home_city_tile(state: &mut GameState, nation: MajorNationId, tile: TileId) {

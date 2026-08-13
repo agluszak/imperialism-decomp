@@ -20,5 +20,5 @@ pub(crate) use order_ships::*;
 pub(crate) use order_training::*;
 pub(crate) use pipeline::*;
 pub use specs::*;
-pub(crate) use types::ship_stock_cap;
+pub(crate) use types::{ship_creates_navy_object, ship_stock_cap};
 pub use types::*;

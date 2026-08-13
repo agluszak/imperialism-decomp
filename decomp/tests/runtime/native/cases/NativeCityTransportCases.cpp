@@ -3,11 +3,15 @@
 
 #include "game/city/TCity.h"
 #include "game/city_ui/TLongintList.h"
+#include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/game_session_globals.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/map_records.h"
 #include "game/nation/TGreatPower.h"
+#include "game/navy/TAdmiral.h"
+#include "game/navy/TOcean.h"
+#include "game/navy/TShip.h"
 #include "game/resource_domain_types.h"
 #include "game/ui_screens/TSimMgr.h"
 
@@ -88,5 +92,39 @@ RuntimeActionResult RunCityAndTransportPhase(NativeTransition& transition) {
   }
 
   g_pSimMgr->DoCityAndTransport();
+  return transition.Finish();
+}
+
+RuntimeActionResult RunNavyGrowthPending(NativeTransition& transition) {
+  TGreatPower* nation = ActiveNation();
+  if (nation == 0) {
+    return RuntimeActionResult::Failure("the loaded fixture has no active great power");
+  }
+  if (g_pNavyPrimaryOrderListHead != 0 || g_pNavySecondaryOrderListHead != 0) {
+    return RuntimeActionResult::Failure("the loaded fixture already has navy objects");
+  }
+  if (g_pActiveMapOrderContext == 0 ||
+      g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(ActiveNationSlot()) == 0) {
+    return RuntimeActionResult::Failure("the loaded fixture has no port zone for the active nation");
+  }
+
+  nation->pendingActionStatus.byAction[0] = 0x32;
+
+  JsonObject args;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  g_pSimMgr->DoCityAndTransport();
+
+  // GenerateEthnicName is CRT mapped-flavor text, not yet a Rust rule. Empty the
+  // display names so this differential covers ship/admiral identity and counters.
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
+    ship->name.Empty();
+  }
+  for (TAdmiral* admiral = g_pNavySecondaryOrderListHead; admiral != 0; admiral = admiral->next) {
+    admiral->displayName.Empty();
+  }
   return transition.Finish();
 }

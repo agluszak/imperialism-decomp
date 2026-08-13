@@ -143,16 +143,13 @@ pub(super) fn build_province_state(
     provinces
 }
 /// `IsNodeTypeLinkUnavailableAndNoActiveMapActionContext` for Accept-time owned provinces.
-///
-/// Without the sea-zone secondary-neighbor graph, coastal isolation falls back to "has any
-/// adjacent province". The second-degree retail quirk (owned province with a neighbor that
-/// itself has neighbors) is preserved.
 pub(super) fn province_mission_available(
     province: ProvinceId,
     nation: TileOwnerTag,
     world: &MapMgr,
     province_capitals: &[Option<TileId>],
     adjacency: &[Vec<ProvinceId>],
+    zones: &[ZoneKind],
 ) -> bool {
     let province_usize = usize::from(province.get());
     let neighbors = &adjacency[province_usize];
@@ -164,8 +161,8 @@ pub(super) fn province_mission_available(
             return true;
         }
     }
-    // CollectSecondDegreeLinksMatchingNodeType: if this owned province has any neighbor that
-    // itself has neighbors, treat as available.
+    // CollectSecondDegreeLinksMatchingNodeType: an owned province with a neighbor that
+    // itself has neighbors is available.
     if !neighbors.is_empty() {
         for &adjacent in neighbors {
             if !adjacency[usize::from(adjacent.get())].is_empty() {
@@ -173,7 +170,9 @@ pub(super) fn province_mission_available(
             }
         }
     }
-    false
+    zones
+        .iter()
+        .any(|zone| zone.zone().secondary_neighbors.contains(&province))
 }
 /// `TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates`.
 pub(super) fn queue_map_action_missions_for_port_zone_candidates(
@@ -181,6 +180,7 @@ pub(super) fn queue_map_action_missions_for_port_zone_candidates(
     province_capitals: &[Option<TileId>],
     adjacency: &[Vec<ProvinceId>],
     ports: &PortZoneTable,
+    zones: &[ZoneKind],
     nation: MajorNationId,
 ) -> Vec<MissionState> {
     let owner = TileOwnerTag::from_nation(nation.nation());
@@ -188,7 +188,8 @@ pub(super) fn queue_map_action_missions_for_port_zone_candidates(
     let mut missions = Vec::new();
 
     for &province in &owned {
-        if !province_mission_available(province, owner, world, province_capitals, adjacency) {
+        if !province_mission_available(province, owner, world, province_capitals, adjacency, zones)
+        {
             continue;
         }
         missions.push(mission_state(

@@ -326,6 +326,39 @@ fn navy_mission_state(mission: &LegacyNavyMission) -> NavyMissionState {
     }
 }
 
+fn ship_states(navy: &LegacyNavyState) -> Vec<ShipState> {
+    navy.ships
+        .iter()
+        .map(|ship| ShipState {
+            ship_type: ShipType::from_index(ship.ship_type as u8)
+                .expect("retail ship type is in the descriptor table"),
+            location: OceanZoneId::new(
+                u16::try_from(ship.zone_ordinal).expect("retail ship zone ordinal is non-negative"),
+            ),
+            task_force: None,
+            aggression: ship.aggression,
+            nation: nation_id_from_retail_i16(ship.nation),
+            name: ship.name.clone(),
+            strength: ship.strength,
+            experience: ship.experience,
+            selection: ship.selection,
+        })
+        .collect()
+}
+
+fn admiral_states(navy: &LegacyNavyState, ship_count: usize) -> Vec<AdmiralState> {
+    navy.admirals
+        .iter()
+        .map(|admiral| AdmiralState {
+            nation: nation_id_from_retail_i16(admiral.nation),
+            name: admiral.name.clone(),
+            experience: admiral.experience,
+            ship: (admiral.ship_index >= 0 && (admiral.ship_index as usize) < ship_count)
+                .then(|| ShipId::new(admiral.ship_index as u32)),
+        })
+        .collect()
+}
+
 fn production_progress(order: &LegacyProductionOrder) -> ProductionProgress {
     ProductionProgress {
         quantity: order.quantity,
@@ -707,6 +740,8 @@ fn technology_state(technology: &LegacyTechnologyState) -> TechnologyState {
                 .map(|row| MilitaryUnitTable::from_array(row.map(|value| value != 0))),
         ),
         city_capabilities_by_nation: MajorNationTable::from_array(city_capabilities_by_nation),
+        navy_growth_ship_type: ShipType::from_index(technology.active_zone_index as u8)
+            .expect("retail activeZoneIndex1d4 is a ship type"),
     }
 }
 
@@ -715,11 +750,12 @@ impl LegacySaveV62 {
     /// selection state must be supplied because the retail stream does not contain them.
     pub fn game_state_parts(&self, context: LegacyGameStateContext) -> GameStateParts {
         assert!(
-            self.navy.ships.is_empty()
-                && self.navy.admirals.is_empty()
-                && self.navy.task_forces.is_empty(),
-            "semantic projection of non-empty retail navy relationships is not implemented"
+            self.navy.task_forces.is_empty(),
+            "semantic projection of retail navy task forces is not implemented"
         );
+
+        let ships = ship_states(&self.navy);
+        let admirals = admiral_states(&self.navy, ships.len());
 
         let mut minors = MinorNationTable::default();
         let mut military_units = Vec::new();
@@ -865,7 +901,8 @@ impl LegacySaveV62 {
             nations: Nations::new(majors, minors),
             military_units,
             civilian_units,
-            ships: Vec::new(),
+            ships,
+            admirals,
             task_forces: Vec::new(),
             missions,
             news: NewsState::default(),

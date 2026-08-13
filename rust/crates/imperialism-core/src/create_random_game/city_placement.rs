@@ -17,6 +17,7 @@ pub(super) fn place_initial_frog_cities(
     human_nation: MajorNationId,
     technology: &TechnologyState,
     port_zones: &mut PortZoneTable,
+    ocean_zones: &[ZoneKind],
     mission_queues: &mut MajorNationTable<Vec<MissionState>>,
     difficulty: Difficulty,
 ) {
@@ -51,6 +52,7 @@ pub(super) fn place_initial_frog_cities(
                 province_capitals,
                 &province_adjacency,
                 port_zones,
+                ocean_zones,
                 nation,
             );
         }

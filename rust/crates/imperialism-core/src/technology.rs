@@ -133,6 +133,8 @@ pub struct TechnologyState {
     pub industry_enabled_by_slot: [bool; 14],
     pub military_unit_ability_active_by_nation: MajorNationTable<MilitaryUnitTable<bool>>,
     pub city_capabilities_by_nation: MajorNationTable<CityTechnologyCapabilities>,
+    /// Retail `TTechMgr::activeZoneIndex1d4`: the hull spawned by a navy-growth reward.
+    pub navy_growth_ship_type: ShipType,
 }
 
 impl Default for TechnologyState {
@@ -165,6 +167,7 @@ impl Default for TechnologyState {
                 ])
             }),
             city_capabilities_by_nation: MajorNationTable::default(),
+            navy_growth_ship_type: ShipType::ShipOfTheLine,
         }
     }
 }
@@ -292,16 +295,21 @@ impl GameState {
         }
     }
 
-    /// Opening/end-turn tail: advance the season, run technology unlocks, and
-    /// apply non-interactive pending research. Consumes the active human nation's
-    /// first pending unlock, matching `ConsumeFirstPendingAbilityUnlock` before
-    /// `ShowAbilityStatusReport`.
+    /// Opening/end-turn tail after season advance: technology unlocks, then the
+    /// interactive consume for the active eligible nation.
     pub fn begin_technology_and_newspaper_tail(&mut self) -> Option<u8> {
-        self.advance_season_phase();
+        self.turn.phase = PhaseCode::SEASON_ADVANCE;
+        self.start_next_phase()
+    }
+
+    pub(crate) fn apply_technology_advances_phase(&mut self) {
         self.check_technology_advances();
         // FIXME: retail ORs `turnFlowStatusFlags` with `0x40` when `marker262` is
         // unchanged (map toolbar new-tech chrome). `marker262` is not modeled.
         self.consume_non_interactive_technology_unlocks();
+    }
+
+    pub(crate) fn consume_opening_technology_unlock(&mut self) -> Option<u8> {
         let nation = MajorNationId::from_nation(self.turn.active_nation)?;
         // FIXME: retail consume-one is active nation + cooldown < 1 + terrain-eligible,
         // not diplomacy eligibility. Same on a normal single-player opening turn.
@@ -494,8 +502,8 @@ impl GameState {
 }
 
 fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id: usize) {
-    // FIXME: retail also writes `marker262`, `techSelectorShort1d2` / `activeZoneIndex1d4`,
-    // and `activePrerequisitePair264` (techs 0xb / 0x16).
+    // FIXME: retail also writes `marker262`, `techSelectorShort1d2`, and
+    // `activePrerequisitePair264` (techs 0xb / 0x16).
     technology.global_unlocks_by_technology[tech_id] = true;
     match tech_id {
         9 => {
@@ -506,8 +514,12 @@ fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id:
         0xf => {
             technology.industry_enabled_by_slot[8] = true;
             technology.advanced_iron_working = true;
+            technology.navy_growth_ship_type = ShipType::Ironclad;
         }
-        0x15 => technology.industry_enabled_by_slot[9] = true,
+        0x15 => {
+            technology.industry_enabled_by_slot[9] = true;
+            technology.navy_growth_ship_type = ShipType::AdvancedIronclad;
+        }
         0x18 => {
             technology.industry_enabled_by_slot[0xb] = true;
             technology.industry_enabled_by_slot[0xa] = true;
@@ -516,6 +528,7 @@ fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id:
         0x1b => {
             technology.industry_enabled_by_slot[0xc] = true;
             technology.industry_enabled_by_slot[0xd] = true;
+            technology.navy_growth_ship_type = ShipType::Dreadnought;
         }
         _ => {}
     }
@@ -612,5 +625,13 @@ mod tests {
             state.technology.research_status_by_nation[MajorNationId::new(0)][3],
             TechnologyResearchStatus::NotStarted
         );
+    }
+
+    #[test]
+    fn ironclad_unlock_advances_the_navy_growth_hull() {
+        let mut state = crate::test_support::game_state();
+        state.technology.scheduled_unlock_turn_by_technology[0xf] = 1;
+        state.check_technology_advances();
+        assert_eq!(state.technology.navy_growth_ship_type, ShipType::Ironclad);
     }
 }

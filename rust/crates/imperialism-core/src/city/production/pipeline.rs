@@ -194,20 +194,17 @@ impl GameState {
             let nation_id = nation.nation();
             let strength = ship_stock_cap(ship_type);
             for _ in 0..quantity {
-                self.ships.insert(
-                    0,
-                    ShipState {
-                        ship_type,
-                        location,
-                        task_force: None,
-                        aggression: 1,
-                        nation: nation_id,
-                        name: String::new(),
-                        strength,
-                        experience: 0,
-                        selection: 0,
-                    },
-                );
+                self.insert_ship_at_head(ShipState {
+                    ship_type,
+                    location,
+                    task_force: None,
+                    aggression: 1,
+                    nation: nation_id,
+                    name: String::new(),
+                    strength,
+                    experience: 0,
+                    selection: 0,
+                });
             }
         }
 
