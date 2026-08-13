@@ -663,9 +663,7 @@ pub(in crate::ui::city) fn sync_city_hover_title(
                 .find(|building| building.mask.contains(point - building.origin))
         });
     let text = hovered.map_or_else(String::new, |building| {
-        assets
-            .string(0x2719, building.slot as i16)
-            .expect("retail city building name must load")
+        city_building_name(&assets, building.slot)
     });
     for mut title in &mut titles {
         title.0.clone_from(&text);

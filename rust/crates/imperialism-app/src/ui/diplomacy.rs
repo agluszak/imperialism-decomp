@@ -1582,6 +1582,7 @@ fn sync_diplomacy_information(
         (
             Without<DiplomacyInfoText>,
             Without<DiplomacyNationLabel>,
+            Without<DiplomacyNationIcon>,
             Without<DiplomacyMapKeyMajorName>,
         ),
     >,

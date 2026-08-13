@@ -44,6 +44,27 @@ impl RetailAssetsResource {
 #[derive(Resource)]
 pub(crate) struct RandomGameNamesResource(pub(crate) RandomGameNames);
 
+fn add_game_plugins(app: &mut App) {
+    app.add_plugins((
+        TabNavigationPlugin,
+        ui::RetailUiPlugin,
+        ui::QueryFloaterPlugin,
+        ui::MainMenuPlugin,
+        ui::LoadSavePlugin,
+        ui::RandomSetupPlugin,
+        ui::MapPreviewPlugin,
+        ui::CitySitePlugin,
+        ui::GameShellPlugin,
+        ui::CityPlugin,
+        ui::TransportPlugin,
+        ui::TradePlugin,
+        ui::DiplomacyPlugin,
+        ui::DealBookPlugin,
+        ui::OfferSheetPlugin,
+    ))
+    .add_plugins((ui::TechnologyAdvancePlugin, ui::NewspaperPlugin));
+}
+
 pub fn run(
     retail_assets: RetailAssets,
     initial_game: Option<GameState>,
@@ -78,26 +99,52 @@ pub fn run(
     } else {
         app.init_state::<AppState>();
     }
-    app.add_plugins((
-        TabNavigationPlugin,
-        ui::RetailUiPlugin,
-        ui::QueryFloaterPlugin,
-        ui::MainMenuPlugin,
-        ui::LoadSavePlugin,
-        ui::RandomSetupPlugin,
-        ui::MapPreviewPlugin,
-        ui::CitySitePlugin,
-        ui::GameShellPlugin,
-        ui::CityPlugin,
-        ui::TransportPlugin,
-        ui::TradePlugin,
-        ui::DiplomacyPlugin,
-        ui::DealBookPlugin,
-        ui::OfferSheetPlugin,
-    ))
-    .add_plugins((ui::TechnologyAdvancePlugin, ui::NewspaperPlugin));
+    add_game_plugins(&mut app);
     app.world_mut()
         .spawn((Camera2d, Msaa::Off, UiAntiAlias::Off));
     app.run();
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use bevy::ecs::schedule::{ScheduleLabel, Schedules};
+
+    fn initialize_schedule(app: &mut App, label: impl ScheduleLabel + Clone) {
+        if app.world().resource::<Schedules>().contains(label.clone()) {
+            app.world_mut()
+                .schedule_scope(label, |world, schedule| schedule.initialize(world))
+                .expect("game schedules must initialize before opening a window");
+        }
+    }
+
+    #[test]
+    fn game_schedules_initialize_without_system_parameter_conflicts() {
+        let mut app = App::new();
+        app.add_plugins(bevy::state::app::StatesPlugin)
+            .init_state::<AppState>();
+        add_game_plugins(&mut app);
+
+        initialize_schedule(&mut app, Update);
+        for state in [
+            AppState::MainMenu,
+            AppState::RandomSetup,
+            AppState::LoadGame,
+            AppState::SaveGame,
+            AppState::CitySite,
+            AppState::StrategicMap,
+            AppState::Trade,
+            AppState::City,
+            AppState::Transport,
+            AppState::Diplomacy,
+            AppState::DealBook,
+            AppState::OfferSheet,
+            AppState::TechnologyAdvance,
+            AppState::Newspaper,
+        ] {
+            initialize_schedule(&mut app, OnEnter(state));
+            initialize_schedule(&mut app, OnExit(state));
+        }
+    }
 }

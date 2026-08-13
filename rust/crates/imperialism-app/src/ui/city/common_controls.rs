@@ -318,3 +318,15 @@ pub(in crate::ui::city) fn sync_industry_bars(
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn specialized_city_buildings_use_the_one_based_retail_name_indexes() {
+        assert_eq!(city_string_index(CityFacilitySlot::OilRefinery as i16), 7);
+        assert_eq!(city_string_index(CityFacilitySlot::Shipyard as i16), 8);
+        assert_eq!(city_string_index(CityFacilitySlot::Armory as i16), 9);
+    }
+}
