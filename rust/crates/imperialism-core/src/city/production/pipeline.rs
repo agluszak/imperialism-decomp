@@ -300,7 +300,6 @@ pub(crate) fn set_pending_action(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::*;
 
     fn empty_zone() -> Zone {
         Zone {
