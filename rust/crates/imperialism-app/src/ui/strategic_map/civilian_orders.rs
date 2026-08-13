@@ -7,26 +7,22 @@ use imperialism_core::{CivilianUnitId, RailOrderRejection};
 
 use super::{StrategicBaseTerrainCanvas, strategic_base_terrain_tile_at_cursor};
 
-#[derive(Clone, Copy, Default, Resource)]
-pub(crate) struct SelectedEngineer(pub(crate) Option<CivilianUnitId>);
+#[derive(Component, Default)]
+pub(crate) struct StrategicSelection(pub(crate) Option<CivilianUnitId>);
 
 pub(crate) fn register(app: &mut App) {
-    app.init_resource::<SelectedEngineer>()
-        .add_observer(on_strategic_map_click.run_if(in_state(AppState::StrategicMap)))
-        .add_systems(OnExit(AppState::StrategicMap), clear_selected_engineer);
-}
-
-fn clear_selected_engineer(mut selected: ResMut<SelectedEngineer>) {
-    selected.0 = None;
+    app.add_observer(on_strategic_map_click.run_if(in_state(AppState::StrategicMap)));
 }
 
 fn on_strategic_map_click(
     click: On<Pointer<Click>>,
-    maps: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
+    mut maps: Query<
+        (&RelativeCursorPosition, &mut StrategicSelection),
+        With<StrategicBaseTerrainCanvas>,
+    >,
     mut session: ResMut<GameSession>,
-    mut selected: ResMut<SelectedEngineer>,
 ) {
-    let Ok(cursor) = maps.get(click.entity) else {
+    let Ok((cursor, mut selected)) = maps.get_mut(click.entity) else {
         return;
     };
     let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.0, cursor) else {

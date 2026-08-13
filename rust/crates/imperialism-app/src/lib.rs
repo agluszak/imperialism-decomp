@@ -39,6 +39,20 @@ impl RetailAssetsResource {
     pub(crate) const fn assets(&self) -> &RetailAssets {
         &self.0
     }
+
+    pub(crate) fn string(
+        &self,
+        group: i16,
+        direct_index: i16,
+    ) -> Result<String, imperialism_formats::RetailAssetError> {
+        self.0.string(group, direct_index)
+    }
+
+    /// `TSimMgr::GetString`: adds one before the direct lookup.
+    pub(crate) fn get_string(&self, group: i16, offset: i16) -> String {
+        self.string(group, offset + 1)
+            .expect("retail hover-help string")
+    }
 }
 
 #[derive(Resource)]

@@ -17,7 +17,7 @@ mod terrain;
 mod units;
 
 use borders::compose_strategic_borders;
-pub(crate) use civilian_orders::SelectedEngineer;
+use civilian_orders::StrategicSelection;
 pub(crate) use civilian_orders::register as register_civilian_orders;
 use overlays::{
     IMPROVEMENT_PICTURE_IDS, compose_strategic_improvements, compose_strategic_railways,
@@ -93,6 +93,7 @@ pub(crate) fn bind_strategic_base_terrain(
         ImageNode::new(image),
         RelativeCursorPosition::default(),
         canvas,
+        StrategicSelection::default(),
     ));
     units::bind_strategic_units(commands, map, assets, state);
     map
@@ -112,16 +113,16 @@ impl StrategicBaseTerrainCanvas {
 
 pub(crate) fn sync_strategic_base_terrain(
     session: Res<GameSession>,
-    selected: Res<SelectedEngineer>,
     retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
-    mut maps: Query<(&mut StrategicBaseTerrainCanvas, &ImageNode)>,
+    mut maps: Query<(
+        &mut StrategicBaseTerrainCanvas,
+        &ImageNode,
+        &StrategicSelection,
+    )>,
 ) {
-    if !session.is_changed() && !selected.is_changed() {
-        return;
-    }
-    let key = strategic_map_compose_key(&session.0, selected.0);
-    for (mut canvas, image_node) in &mut maps {
+    for (mut canvas, image_node, selected) in &mut maps {
+        let key = strategic_map_compose_key(&session.0, selected.0);
         if canvas.composed == Some(key) {
             continue;
         }

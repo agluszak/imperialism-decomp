@@ -184,12 +184,16 @@ pub fn place_city(world: &mut MapMgr, tile: TileId, owner_nation: TileOwnerTag) 
 ///
 /// Retail follows with `StartNextPhase()` through season advance, technology, and
 /// the newspaper.
-pub fn confirm_capital_site(state: &mut GameState, site: CapitalSite) -> crate::TurnStop {
+pub fn confirm_capital_site(
+    state: &mut GameState,
+    site: CapitalSite,
+    news_story_ids: &[i32],
+) -> crate::TurnStop {
     let tile = site.tile();
     let owner = TileOwnerTag::from_nation(site.nation().nation());
     place_city(&mut state.map, tile, owner);
     bind_home_city_tile(state, site.nation(), tile);
-    state.advance_turn()
+    state.advance_turn(news_story_ids)
 }
 
 /// Introductory/Easy path: no city-site selector; bind the frog-city marker and
@@ -197,6 +201,7 @@ pub fn confirm_capital_site(state: &mut GameState, site: CapitalSite) -> crate::
 pub fn enter_strategic_map_without_capital_selection(
     state: &mut GameState,
     nation: MajorNationId,
+    news_story_ids: &[i32],
 ) -> crate::TurnStop {
     let home = state
         .nations
@@ -206,7 +211,7 @@ pub fn enter_strategic_map_without_capital_selection(
         .map(|town| town.tile)
         .expect("generated Introductory/Easy game has a home town tile");
     bind_home_city_tile(state, nation, home);
-    state.advance_turn()
+    state.advance_turn(news_story_ids)
 }
 
 fn bind_home_city_tile(state: &mut GameState, nation: MajorNationId, tile: TileId) {
@@ -452,7 +457,7 @@ mod tests {
         }
 
         let site = validate_capital_site_selection(&state, MajorNationId::new(6), tile).unwrap();
-        confirm_capital_site(&mut state, site);
+        confirm_capital_site(&mut state, site, &[]);
 
         assert!(matches!(
             state.turn.phase,
@@ -507,7 +512,7 @@ mod tests {
         );
         assert_eq!(state.map[home].owner_nation, Some(TileOwnerTag::new(6)));
         assert!(state.map[home].flags.is_city());
-        enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6));
+        enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6), &[]);
         assert!(matches!(
             state.turn.phase,
             crate::PhaseCode::TECHNOLOGY_ADVANCES | crate::PhaseCode::NEWSPAPER

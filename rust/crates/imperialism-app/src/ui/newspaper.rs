@@ -331,13 +331,12 @@ fn on_newspaper_activate(
     actions: Query<&NewspaperAction>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    retail: Res<RetailAssetsResource>,
 ) {
     if actions.get(activate.entity).is_err() {
         return;
     }
     let stop = session.0.close_newspaper();
-    apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state);
+    apply_turn_stop(stop, &mut next_state);
 }
 
 #[cfg(test)]
