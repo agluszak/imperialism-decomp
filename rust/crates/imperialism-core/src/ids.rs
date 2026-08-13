@@ -79,6 +79,10 @@ impl MajorNationId {
     pub const fn nation(self) -> NationId {
         NationId::new(self.0)
     }
+
+    pub fn all() -> impl ExactSizeIterator<Item = Self> {
+        (0..Self::COUNT).map(Self::new)
+    }
 }
 
 impl<'de> Deserialize<'de> for MajorNationId {

@@ -6,7 +6,8 @@ use crate::ui::hover_help::{
 use crate::ui::random_setup_map;
 use crate::ui::retail::ModalDialog;
 use crate::ui::retail::{RetailTag, RetailUiAssets, find_descendant};
-use crate::{AppState, RandomGameNamesResource};
+use crate::ui::technology::TechnologyAdvance;
+use crate::{AppState, RandomGameNamesResource, RetailAssetsResource};
 use bevy::ecs::system::SystemParam;
 use bevy::input::ButtonState;
 use bevy::input::keyboard::KeyboardInput;
@@ -370,6 +371,7 @@ struct RandomSetupActivation<'w, 's> {
     setup: ResMut<'w, RandomGameSetup>,
     preview: ResMut<'w, RandomSetupPreview>,
     names: Res<'w, RandomGameNamesResource>,
+    retail: Res<'w, RetailAssetsResource>,
     next_state: ResMut<'w, NextState<AppState>>,
     commands: Commands<'w, 's>,
 }
@@ -388,6 +390,7 @@ fn on_random_setup_activate(activate: On<Activate>, mut random_setup: RandomSetu
                 &random_setup.setup,
                 &random_setup.preview,
                 &random_setup.names.0,
+                random_setup.retail.assets(),
                 &mut random_setup.commands,
                 &mut random_setup.next_state,
             );
@@ -455,6 +458,7 @@ fn accept_random_setup(
     setup: &RandomGameSetup,
     preview: &RandomSetupPreview,
     names: &RandomGameNames,
+    assets: &imperialism_formats::RetailAssets,
     commands: &mut Commands,
     next_state: &mut NextState<AppState>,
 ) {
@@ -472,9 +476,16 @@ fn accept_random_setup(
         commands.insert_resource(GameSession(session));
         next_state.set(AppState::CitySite);
     } else {
-        enter_strategic_map_without_capital_selection(&mut session, setup.nation);
-        commands.insert_resource(GameSession(session));
-        next_state.set(AppState::StrategicMap);
+        let tech_id = enter_strategic_map_without_capital_selection(&mut session, setup.nation);
+        if let Some(tech_id) = tech_id {
+            commands.insert_resource(TechnologyAdvance(tech_id));
+            commands.insert_resource(GameSession(session));
+            next_state.set(AppState::TechnologyAdvance);
+        } else {
+            session.start_newspaper_phase(assets.news_table().story_ids());
+            commands.insert_resource(GameSession(session));
+            next_state.set(AppState::Newspaper);
+        }
     }
 }
 
@@ -504,6 +515,7 @@ fn open_planet_seed_dialog(commands: &mut Commands) {
         TabGroup::modal(),
         GlobalZIndex(20),
         Pickable::default(),
+        DespawnOnExit(AppState::RandomSetup),
     ));
 }
 
@@ -663,5 +675,31 @@ mod tests {
         let field = fields.single(app.world()).unwrap();
         assert_eq!(field.value(), "Country");
         assert_eq!(field.max_characters, Some(COUNTRY_NAME_MAX_CHARS));
+    }
+
+    #[test]
+    fn leaving_random_setup_despawns_an_open_planet_seed_dialog() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_plugins(bevy::state::app::StatesPlugin)
+            .insert_state(AppState::RandomSetup);
+        app.update();
+
+        let dialog = app
+            .world_mut()
+            .spawn((
+                PlanetSeedDialogRoot,
+                ModalDialog,
+                DespawnOnExit(AppState::RandomSetup),
+            ))
+            .id();
+        app.update();
+        assert!(app.world().get::<PlanetSeedDialogRoot>(dialog).is_some());
+
+        app.world_mut()
+            .resource_mut::<NextState<AppState>>()
+            .set(AppState::MainMenu);
+        app.update();
+        assert!(app.world().get::<PlanetSeedDialogRoot>(dialog).is_none());
     }
 }

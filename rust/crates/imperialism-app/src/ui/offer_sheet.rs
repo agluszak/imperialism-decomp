@@ -73,8 +73,8 @@ impl Plugin for OfferSheetPlugin {
                 .chain()
                 .run_if(in_state(AppState::OfferSheet)),
         )
-        .add_observer(on_offer_sheet_activate)
-        .add_observer(on_offer_sheet_notice_activate);
+        .add_observer(on_offer_sheet_activate.run_if(in_state(AppState::OfferSheet)))
+        .add_observer(on_offer_sheet_notice_activate.run_if(in_state(AppState::OfferSheet)));
     }
 }
 
@@ -549,6 +549,21 @@ mod tests {
                 &AppState::StrategicMap
             );
         }
+    }
+
+    #[test]
+    fn unrelated_activation_before_a_game_does_not_require_a_session() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_plugins(StatesPlugin)
+            .insert_state(AppState::MainMenu)
+            .add_observer(on_offer_sheet_activate.run_if(in_state(AppState::OfferSheet)));
+        let unrelated = app.world_mut().spawn_empty().id();
+
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: unrelated });
+        app.world_mut().flush();
     }
 
     #[test]

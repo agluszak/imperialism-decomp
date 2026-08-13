@@ -151,7 +151,6 @@ struct DiplomacyBracketPictures {
     treaties: Handle<Image>,
     grants: Handle<Image>,
     trade: Handle<Image>,
-    offers: Handle<Image>,
 }
 
 #[derive(Component, Clone)]
@@ -224,9 +223,6 @@ fn bind_diplomacy_screen(
         trade: assets
             .picture(PictureId::new(5005))
             .expect("retail diplomacy trade bracket must load"),
-        offers: assets
-            .picture(PictureId::new(5007))
-            .expect("retail diplomacy offers bracket must load"),
     };
     let (title_font, title_layout, title_line_height, _) = assets
         .text_style(RetailTextStylePreset {
@@ -319,9 +315,6 @@ fn bind_diplomacy_controls(
     commands
         .entity(selected)
         .insert((Checked, InteractionDisabled));
-    commands
-        .entity(find_descendant(root, fourcc!("quer"), children, tags))
-        .insert(InteractionDisabled);
 
     let main = find_descendant(root, fourcc!("main"), children, tags);
     let information = find_child(main, fourcc!("info"), children, tags);
@@ -1113,14 +1106,19 @@ fn sync_diplomacy_controls(
         } else {
             Visibility::Hidden
         };
-        image.image = match screen.topic {
-            DiplomacyTopic::Information => bracket.pictures.information.clone(),
-            DiplomacyTopic::Treaties => bracket.pictures.treaties.clone(),
-            DiplomacyTopic::Grants => bracket.pictures.grants.clone(),
-            DiplomacyTopic::Trade => bracket.pictures.trade.clone(),
-            DiplomacyTopic::Council => bracket.pictures.council.clone(),
-            DiplomacyTopic::Offers => bracket.pictures.offers.clone(),
+        let picture = match screen.topic {
+            DiplomacyTopic::Information => &bracket.pictures.information,
+            DiplomacyTopic::Treaties => &bracket.pictures.treaties,
+            DiplomacyTopic::Grants => &bracket.pictures.grants,
+            DiplomacyTopic::Trade => &bracket.pictures.trade,
+            DiplomacyTopic::Council => &bracket.pictures.council,
+            // The Offers topic has no bound control until its behavior is ported.
+            DiplomacyTopic::Offers => {
+                *visibility = Visibility::Hidden;
+                continue;
+            }
         };
+        image.image = picture.clone();
     }
     let source = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
@@ -1156,6 +1154,7 @@ fn sync_diplomacy_information(
         (
             Without<DiplomacyNationIcon>,
             Without<DiplomacyMapKeyMajorName>,
+            Without<DiplomacyInfoText>,
         ),
     >,
     mut icons: Query<

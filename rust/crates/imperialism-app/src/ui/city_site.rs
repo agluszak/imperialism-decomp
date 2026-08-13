@@ -7,6 +7,7 @@ use crate::ui::strategic_map::{
     StrategicBaseTerrainCanvas, bind_strategic_base_terrain, compose_city_site_terrain,
     strategic_base_terrain_tile_at_cursor,
 };
+use crate::ui::technology::continue_after_capital;
 use crate::{AppState, RetailAssetsResource};
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::picking::events::{Click, Pointer};
@@ -193,6 +194,7 @@ fn open_new_city_dialog(commands: &mut Commands, site: CapitalSite) {
         TabGroup::modal(),
         GlobalZIndex(20),
         Pickable::default(),
+        DespawnOnExit(AppState::CitySite),
     ));
 }
 
@@ -222,6 +224,7 @@ fn on_new_city_activate(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
+    retail: Res<RetailAssetsResource>,
 ) {
     let action = actions
         .get(activate.entity)
@@ -231,11 +234,17 @@ fn on_new_city_activate(
             let Ok((_, dialog)) = dialogs.single() else {
                 return;
             };
-            confirm_capital_site(&mut session.0, dialog.0);
+            let tech_id = confirm_capital_site(&mut session.0, dialog.0);
             for (root, _) in &dialogs {
                 commands.entity(root).despawn();
             }
-            next_state.set(AppState::StrategicMap);
+            continue_after_capital(
+                tech_id,
+                &mut session.0,
+                retail.assets(),
+                &mut commands,
+                &mut next_state,
+            );
         }
         NewCityAction::Cancel => {
             for (root, _) in &dialogs {
