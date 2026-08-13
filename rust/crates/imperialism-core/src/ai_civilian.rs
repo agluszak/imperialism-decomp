@@ -1,5 +1,6 @@
 //! AI civilian assignment (`TCityInteriorMinister::ProcessUnitOrders`).
 
+use crate::civilian_phase::civilian_sea_scan_neighbor;
 use crate::*;
 
 const FORT_COST_BY_LEVEL: [i32; 5] = [5_000, 7_500, 10_000, 0, 0];
