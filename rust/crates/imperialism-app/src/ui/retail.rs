@@ -305,6 +305,7 @@ impl Plugin for RetailUiPlugin {
             .add_observer(on_retail_picture_swap_state::<Remove, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Add, Checked>)
             .add_observer(on_retail_picture_swap_state::<Remove, Checked>);
+        super::hover_help::register_hover_help(app);
     }
 }
 
