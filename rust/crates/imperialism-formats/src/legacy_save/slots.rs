@@ -1,6 +1,6 @@
 use super::{ACTIVE_NATION_NAME_LENGTH, SAVE_LABEL_LENGTH};
 use super::{LegacyGameStateContext, LegacySaveV62};
-use imperialism_core::{GameState, PhaseCode, STRATEGIC_TILE_COUNT};
+use imperialism_core::{GameState, PhaseCode, STRATEGIC_TILE_COUNT, TileOwnerTag};
 use std::fs::OpenOptions;
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
@@ -12,7 +12,8 @@ pub const NUMBERED_SAVE_SLOT_COUNT: u8 = 8;
 const SINGLE_PLAYER_SLOT_PREFIX: &str = "slot";
 const SAVE_EXTENSION: &str = ".imp";
 const HEADER_LABEL_OFFSET: usize = 0x0c;
-const HEADER_SUMMARY_OFFSET: usize = 0x0c + SAVE_LABEL_LENGTH + STRATEGIC_TILE_COUNT;
+const HEADER_OWNERS_OFFSET: usize = HEADER_LABEL_OFFSET + SAVE_LABEL_LENGTH;
+const HEADER_SUMMARY_OFFSET: usize = HEADER_OWNERS_OFFSET + STRATEGIC_TILE_COUNT;
 
 /// One of the eight numbered retail slots, or the autosave slot `slotA.imp`.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
@@ -129,6 +130,23 @@ pub fn peek_save_header(bytes: &[u8]) -> Option<SaveHeaderInfo> {
         active_nation: summary[3],
         active_nation_name: fixed_text(&summary[4..4 + ACTIVE_NATION_NAME_LENGTH]),
     })
+}
+
+/// Tile-owner tags the Load/Save satellite preview reads from the save header.
+pub fn peek_save_preview_owners(bytes: &[u8]) -> Option<Vec<Option<TileOwnerTag>>> {
+    let end = HEADER_OWNERS_OFFSET + STRATEGIC_TILE_COUNT;
+    if bytes.len() < end {
+        return None;
+    }
+    Some(
+        bytes[HEADER_OWNERS_OFFSET..end]
+            .iter()
+            .map(|&byte| {
+                let value = byte as i8;
+                (value != -1).then(|| TileOwnerTag::new(value as u8))
+            })
+            .collect(),
+    )
 }
 
 pub fn list_save_slots(directory: impl AsRef<Path>) -> SaveDirectoryListing {
@@ -322,5 +340,17 @@ mod tests {
         )
         .unwrap_err();
         assert!(matches!(error, LoadGameError::InvalidMagic));
+    }
+
+    #[test]
+    fn peek_save_preview_owners_reads_signed_header_tags() {
+        let mut bytes = vec![0; HEADER_OWNERS_OFFSET + STRATEGIC_TILE_COUNT];
+        bytes[HEADER_OWNERS_OFFSET] = 3;
+        bytes[HEADER_OWNERS_OFFSET + 1] = 0xff;
+        let owners = peek_save_preview_owners(&bytes).unwrap();
+        assert_eq!(owners.len(), STRATEGIC_TILE_COUNT);
+        assert_eq!(owners[0], Some(TileOwnerTag::new(3)));
+        assert_eq!(owners[1], None);
+        assert!(peek_save_preview_owners(&bytes[..HEADER_OWNERS_OFFSET]).is_none());
     }
 }

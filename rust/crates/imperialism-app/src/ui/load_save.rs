@@ -1,6 +1,7 @@
 use crate::AppState;
 use crate::ui::generated;
 use crate::ui::random_setup::GameSession;
+use crate::ui::random_setup_map::{compose_owner_preview_indices, preview_image_from_indices};
 use crate::ui::retail::{
     ModalDialog, RetailPictureSwap, RetailTag, RetailUiAssets, find_descendant,
 };
@@ -10,12 +11,12 @@ use bevy::prelude::*;
 use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, SelectAllOnFocus};
-use imperialism_core::{GameState, NationId, PhaseCode};
+use imperialism_core::{GameState, NationId, PhaseCode, TileId, TileOwnerTag};
 use imperialism_formats::{
     FourCc, LegacyGameStateContext, LoadGameError, NUMBERED_SAVE_SLOT_COUNT, OverwritePolicy,
     PictureId, SAVE_LABEL_MAX_CHARS, SaveDirectoryListing, SaveFileError, SaveHeaderInfo, SaveSlot,
     fourcc, list_save_slots, load_game_from_bytes, normalize_save_label, peek_save_header,
-    retail_save_path, write_game_state, write_save_file,
+    peek_save_preview_owners, retail_save_path, write_game_state, write_save_file,
 };
 use std::path::{Path, PathBuf};
 
@@ -90,6 +91,17 @@ struct SaveNameField;
 #[derive(Component)]
 struct LoadSaveInfo;
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum LoadSavePreviewKey {
+    CurrentGame,
+    Slot(SaveSlot),
+}
+
+#[derive(Component, Default)]
+struct LoadSaveMapPreview {
+    shown: Option<LoadSavePreviewKey>,
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct SlotPresentation {
     label: String,
@@ -154,7 +166,7 @@ impl Plugin for LoadSavePlugin {
             )
             .add_systems(
                 Update,
-                bind_load_save_notice
+                (bind_load_save_notice, sync_load_save_preview)
                     .run_if(in_state(AppState::LoadGame).or_else(in_state(AppState::SaveGame))),
             )
             .add_systems(
@@ -287,6 +299,14 @@ fn bind_load_save(
             &tags,
         ))
         .insert(Text::new(String::new()));
+    commands
+        .entity(find_descendant(
+            root_entity,
+            fourcc!("map "),
+            &children,
+            &tags,
+        ))
+        .insert(LoadSaveMapPreview::default());
     commands.insert_resource(presentation);
 }
 
@@ -430,6 +450,84 @@ fn apply_load_okay_pictures(
         },
         ImageNode::new(idle),
     ));
+}
+
+fn satellite_preview_indices(
+    owners: impl Fn(TileId) -> Option<TileOwnerTag>,
+    selected_nation: NationId,
+) -> Vec<u8> {
+    compose_owner_preview_indices(owners, selected_nation)
+}
+
+fn apply_satellite_preview(
+    commands: &mut Commands,
+    assets: &mut RetailUiAssets,
+    entity: Entity,
+    image_node: Option<&ImageNode>,
+    pixels: &[u8],
+) {
+    let image = preview_image_from_indices(pixels, assets.default_dib_palette());
+    if let Some(image_node) = image_node {
+        assets.replace_image(&image_node.image, image);
+    } else {
+        let handle = assets.add_image(image);
+        commands.entity(entity).insert(ImageNode::new(handle));
+    }
+}
+
+fn sync_load_save_preview(
+    mut commands: Commands,
+    mut assets: RetailUiAssets,
+    roots: Query<&LoadSaveRoot>,
+    mut maps: Query<(Entity, Option<&ImageNode>, &mut LoadSaveMapPreview)>,
+    save_dir: Res<SaveDirectory>,
+    session: Option<Res<GameSession>>,
+) {
+    let Ok(root) = roots.single() else {
+        return;
+    };
+    let Ok((entity, image_node, mut preview)) = maps.single_mut() else {
+        return;
+    };
+    let key = match root.mode {
+        LoadSaveMode::Save => LoadSavePreviewKey::CurrentGame,
+        LoadSaveMode::Load => match root.selected {
+            Some(slot) => LoadSavePreviewKey::Slot(slot),
+            None => return,
+        },
+    };
+    if preview.shown == Some(key) {
+        return;
+    }
+    preview.shown = Some(key);
+    match key {
+        LoadSavePreviewKey::CurrentGame => {
+            let Some(session) = session else {
+                return;
+            };
+            let selected = session.0.turn().active_nation;
+            let pixels =
+                satellite_preview_indices(|tile| session.0.map[tile].owner_nation, selected);
+            apply_satellite_preview(&mut commands, &mut assets, entity, image_node, &pixels);
+        }
+        LoadSavePreviewKey::Slot(slot) => {
+            let path = retail_save_path(&save_dir.0, slot);
+            let Ok(bytes) = std::fs::read(path) else {
+                return;
+            };
+            let Some(owners) = peek_save_preview_owners(&bytes) else {
+                return;
+            };
+            let selected = peek_save_header(&bytes)
+                .and_then(|header| NationId::try_new(header.active_nation))
+                .unwrap_or(NationId::new(0));
+            let pixels = satellite_preview_indices(
+                |tile| owners.get(usize::from(tile.get())).copied().flatten(),
+                selected,
+            );
+            apply_satellite_preview(&mut commands, &mut assets, entity, image_node, &pixels);
+        }
+    }
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -1114,6 +1212,27 @@ mod tests {
         assert_eq!(
             peek_save_header(&bytes).map(|header| header.label),
             Some("Second".to_owned())
+        );
+    }
+
+    #[test]
+    fn save_header_owners_compose_the_retail_satellite_preview() {
+        let original = fixture_state();
+        let dir = tempfile::tempdir().unwrap();
+        save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "Preview").unwrap();
+        let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(0))).unwrap();
+        let owners = peek_save_preview_owners(&bytes).expect("written save has preview tiles");
+        for (index, owner) in owners.iter().enumerate() {
+            assert_eq!(*owner, original.map[TileId::new(index as u16)].owner_nation);
+        }
+        let pixels = satellite_preview_indices(
+            |tile| owners.get(usize::from(tile.get())).copied().flatten(),
+            original.turn().active_nation,
+        );
+        assert_eq!(pixels.len(), 324 * 180);
+        assert!(
+            pixels.iter().any(|&index| index != 0x10),
+            "satellite preview should paint claimed land, not only the off-map key"
         );
     }
 }
