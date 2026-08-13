@@ -417,7 +417,7 @@ fn retail_text_components(
     let mut text_font =
         TextFont::from_font_size(font.metrics.em_pixel_size(style.logical_pixel_height) as f32)
             .with_font(font.handle)
-            .with_font_smoothing(FontSmoothing::None);
+            .with_font_smoothing(FontSmoothing::AntiAliased);
     if style.italic {
         text_font.style = FontStyle::Italic;
     }
