@@ -1775,6 +1775,7 @@ fn sync_diplomacy_controls(
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn sync_diplomacy_offer_sheet(
     mut commands: Commands,
     session: Res<GameSession>,
