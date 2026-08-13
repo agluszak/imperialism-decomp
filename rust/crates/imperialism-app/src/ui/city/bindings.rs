@@ -326,7 +326,7 @@ pub(in crate::ui::city) const fn shipyard_button_tag(slot: ShipOrderSlot) -> Fou
 }
 
 pub(in crate::ui::city) fn city_active_nation(session: &GameSession) -> MajorNationId {
-    MajorNationId::from_nation(session.0.turn().active_nation)
+    MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("City active nation is a major nation")
 }
 
@@ -362,11 +362,9 @@ pub(in crate::ui::city) fn city_building_click(
     let major = state.nations().major(nation);
     city_building_click_action(
         slot,
-        major.city.building_type(
-            slot,
-            &major.economy,
-            major.common.owned_region_count() as i32,
-        ),
+        major
+            .city
+            .building_type(slot, &major.economy, major.common.owned_region_count()),
         state.technology().city_capabilities_by_nation[nation].oil_drilling,
     )
 }
@@ -376,7 +374,7 @@ fn city_building_click_action(
     building_type: i16,
     oil_drilling: bool,
 ) -> Option<CityBuildingClick> {
-    if CityState::is_capacity_center(slot) && building_type == 0 {
+    if slot.is_capacity_center() && building_type == 0 {
         return city_oil_industry_unlocked_for(slot, oil_drilling)
             .then_some(CityBuildingClick::Construction);
     }
@@ -392,7 +390,7 @@ pub(in crate::ui::city) fn city_building_level(
     major.city.next_building_type(
         slot,
         &major.economy,
-        major.common.owned_region_count() as i32,
+        major.common.owned_region_count(),
         state.technology().city_capabilities_by_nation[nation].advanced_iron_working,
     )
 }
@@ -422,7 +420,7 @@ pub(in crate::ui::city) fn city_building_picture(
         }));
     }
     let offset = i16::from(slot as u8);
-    let normal = level == 0 || offset > 5 || !expanding || !CityState::is_capacity_center(slot);
+    let normal = level == 0 || offset > 5 || !expanding || !slot.is_capacity_center();
     Some(PictureId::new(
         (if normal { 7000 } else { 7300 }) + level * 16 + offset,
     ))

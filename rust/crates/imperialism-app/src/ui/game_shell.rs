@@ -1,4 +1,5 @@
 use crate::AppState;
+use crate::RetailAssetsResource;
 use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
@@ -6,19 +7,29 @@ use crate::ui::generated;
 use crate::ui::load_save::OpenFlagMenu;
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailPictureSwap, RetailTag, find_descendant};
+use crate::ui::session::apply_turn_stop;
 use crate::ui::strategic_map::{
-    bind_strategic_base_terrain, register_civilian_orders, sync_strategic_base_terrain,
-    sync_strategic_units,
+    bind_minimap, bind_strategic_base_terrain, register_civilian_orders, sync_minimap,
+    sync_strategic_base_terrain, sync_strategic_units,
 };
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
-use imperialism_core::MajorNationId;
+use imperialism_core::{MajorNationId, MapEdges};
 use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
+
+#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
+enum GameStatusDisplay {
+    Date,
+    Treasury,
+}
 
 #[derive(Component)]
 struct StrategicMapRoot;
+
+#[derive(Component)]
+struct EndTurnAction;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum GameScreenNavAction {
@@ -45,11 +56,15 @@ impl Plugin for GameShellPlugin {
         )
         .add_systems(
             Update,
+            project_game_status_display.run_if(resource_exists::<GameSession>),
+        )
+        .add_systems(
+            Update,
             (
                 scroll_strategic_map,
                 sync_strategic_base_terrain,
                 sync_strategic_units,
-                sync_strategic_map_treasury,
+                sync_minimap,
             )
                 .chain()
                 .run_if(in_state(AppState::StrategicMap)),
@@ -66,8 +81,8 @@ fn scroll_strategic_map(
     let Some(cursor) = window.cursor_position() else {
         return;
     };
-    let edge_mask = strategic_edge_scroll_mask(cursor, Vec2::new(window.width(), window.height()));
-    if edge_mask == 0 {
+    let edges = strategic_edge_scroll_mask(cursor, Vec2::new(window.width(), window.height()));
+    if edges.is_empty() {
         return;
     }
     let tick16 = time.elapsed().as_millis() / 16;
@@ -75,43 +90,33 @@ fn scroll_strategic_map(
         return;
     }
     *last_scroll_tick = Some(tick16);
-    session.0.scroll_map_viewport(edge_mask);
+    session.game.scroll_map_viewport(edges);
 }
 
-fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> u8 {
+fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> MapEdges {
     const EDGE_PIXELS: f32 = 4.0;
-    const EDGE_UP: u8 = 0x01;
-    const EDGE_DOWN: u8 = 0x02;
-    const EDGE_RIGHT: u8 = 0x04;
-    const EDGE_LEFT: u8 = 0x08;
 
     let x = position.x;
     let y = position.y;
     if x <= -200.0 || y <= -200.0 || x >= dialog_size.x + 200.0 || y >= dialog_size.y + 200.0 {
-        return 0;
+        return MapEdges::empty();
     }
-    let mut edge_mask = 0;
+    let mut edges = MapEdges::empty();
     if x <= EDGE_PIXELS {
-        edge_mask |= EDGE_LEFT;
+        edges |= MapEdges::LEFT;
     } else if x >= dialog_size.x - EDGE_PIXELS {
-        edge_mask |= EDGE_RIGHT;
+        edges |= MapEdges::RIGHT;
     }
     if y <= EDGE_PIXELS {
-        edge_mask |= EDGE_UP;
+        edges |= MapEdges::TOP;
     } else if y >= dialog_size.y - EDGE_PIXELS {
-        edge_mask |= EDGE_DOWN;
+        edges |= MapEdges::BOTTOM;
     }
-    edge_mask
+    edges
 }
 
 fn enter_strategic_map_view(mut session: ResMut<GameSession>) {
-    let Some(tile) = session
-        .0
-        .first_idle_civilian_tile(session.0.turn().active_nation)
-    else {
-        return;
-    };
-    session.0.center_map_on(tile);
+    session.game.center_map_on_first_idle_civilian();
 }
 
 fn spawn_strategic_map(mut commands: Commands) {
@@ -138,7 +143,11 @@ fn bind_strategic_map(
         None,
     );
     bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &children, &tags);
-    disable_native_control(&mut commands, *root, &children, &tags, fourcc!("DONE"));
+    commands
+        .entity(find_descendant(*root, fourcc!("DONE"), &children, &tags))
+        .insert((EndTurnAction, ActivateOnPress))
+        .remove::<InteractionDisabled>()
+        .observe(on_end_turn);
     let flag = find_descendant(*root, fourcc!("Flag"), &children, &tags);
     commands
         .entity(flag)
@@ -150,9 +159,17 @@ fn bind_strategic_map(
         &children,
         &tags,
         &mut assets,
-        &session.0,
+        &session.game,
     );
-    project_date_and_treasury(
+    bind_minimap(
+        &mut commands,
+        *root,
+        &children,
+        &tags,
+        &mut assets,
+        &session.game,
+    );
+    bind_game_status_display(
         &mut commands,
         &mut assets,
         *root,
@@ -190,7 +207,7 @@ fn bind_strategic_map_management_pictures(
     }
 }
 
-pub(crate) fn project_date_and_treasury(
+pub(crate) fn bind_game_status_display(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
@@ -198,7 +215,7 @@ pub(crate) fn project_date_and_treasury(
     tags: &Query<&RetailTag>,
     session: &GameSession,
 ) {
-    let state = &session.0;
+    let state = &session.game;
     let (season_font, season_layout, season_line_height, _) = assets
         .text_style(imperialism_formats::RetailTextStylePreset {
             font_family: 1,
@@ -219,12 +236,13 @@ pub(crate) fn project_date_and_treasury(
     // Bevy draws shadows behind text, so use the retail shadow as the visible face.
     let text_color = assets.palette_color(0x28);
     let shadow_color = assets.palette_color(0);
-    set_control_text(
+    bind_status_text(
         commands,
         root,
         children,
         tags,
         fourcc!("seas"),
+        GameStatusDisplay::Date,
         format_retail_date(assets, state.turn().economic_turn),
         season_font,
         season_layout,
@@ -235,12 +253,13 @@ pub(crate) fn project_date_and_treasury(
     let nation = MajorNationId::from_nation(state.turn().active_nation)
         .expect("Game screen requires an active major nation");
     let treasury = format_currency(state.nations().major(nation).common.treasury);
-    set_control_text(
+    bind_status_text(
         commands,
         root,
         children,
         tags,
         fourcc!("trea"),
+        GameStatusDisplay::Treasury,
         treasury,
         treasury_font,
         treasury_layout,
@@ -250,20 +269,47 @@ pub(crate) fn project_date_and_treasury(
     );
 }
 
-fn format_retail_date(assets: &mut RetailUiAssets, economic_turn: i32) -> String {
+fn format_retail_date(assets: &RetailUiAssets, economic_turn: i32) -> String {
     let season = assets
         .string(10_000, (economic_turn % 4) as i16)
         .expect("retail season name must load");
     format!("{season}, {}", 1815 + economic_turn / 4)
 }
 
+fn project_game_status_display(
+    session: Res<GameSession>,
+    retail: Res<RetailAssetsResource>,
+    mut displays: Query<(&GameStatusDisplay, &mut Text)>,
+) {
+    if !session.is_changed() {
+        return;
+    }
+    let state = &session.game;
+    let nation = MajorNationId::from_nation(state.turn().active_nation)
+        .expect("Game screen requires an active major nation");
+    let date = {
+        let season = retail
+            .string(10_000, (state.turn().economic_turn % 4) as i16)
+            .expect("retail season name must load");
+        format!("{season}, {}", 1815 + state.turn().economic_turn / 4)
+    };
+    let treasury = format_currency(state.nations().major(nation).common.treasury);
+    for (kind, mut text) in &mut displays {
+        text.0 = match kind {
+            GameStatusDisplay::Date => date.clone(),
+            GameStatusDisplay::Treasury => treasury.clone(),
+        };
+    }
+}
+
 #[allow(clippy::too_many_arguments)]
-fn set_control_text(
+fn bind_status_text(
     commands: &mut Commands,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
     tag: FourCc,
+    kind: GameStatusDisplay,
     value: String,
     font: TextFont,
     layout: TextLayout,
@@ -274,6 +320,7 @@ fn set_control_text(
     commands
         .entity(find_descendant(root, tag, children, tags))
         .insert((
+            kind,
             Text::new(value),
             font,
             layout,
@@ -322,37 +369,6 @@ pub(crate) fn bind_native_game_screen_nav(
     }
 }
 
-/// Marks a recovered control [`InteractionDisabled`] because its retail behavior
-/// is not implemented yet.
-fn disable_native_control(
-    commands: &mut Commands,
-    root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-    tag: FourCc,
-) {
-    commands
-        .entity(find_descendant(root, tag, children, tags))
-        .insert(InteractionDisabled);
-}
-
-fn sync_strategic_map_treasury(
-    session: Res<GameSession>,
-    mut commands: Commands,
-    root: Query<Entity, With<StrategicMapRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
-    mut assets: RetailUiAssets,
-) {
-    if !session.is_changed() {
-        return;
-    }
-    let Ok(root) = root.single() else {
-        return;
-    };
-    project_date_and_treasury(&mut commands, &mut assets, root, &children, &tags, &session);
-}
-
 fn on_game_screen_activate(
     activate: On<Activate>,
     actions: Query<&GameScreenNavAction>,
@@ -374,6 +390,19 @@ fn on_game_screen_activate(
     }
 }
 
+fn on_end_turn(
+    activate: On<Activate>,
+    actions: Query<&EndTurnAction>,
+    mut session: ResMut<GameSession>,
+    mut next_state: ResMut<NextState<AppState>>,
+) {
+    if actions.get(activate.entity).is_err() {
+        return;
+    }
+    let stop = session.game.finish_player_orders();
+    apply_turn_stop(stop, &mut next_state);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -381,45 +410,48 @@ mod tests {
     #[test]
     fn strategic_scroll_uses_retail_dialog_edges_not_map_child_edges() {
         let dialog = Vec2::new(640.0, 480.0);
-        assert_eq!(strategic_edge_scroll_mask(Vec2::new(5.0, 5.0), dialog), 0);
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(5.0, 5.0), dialog),
+            MapEdges::empty()
+        );
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(4.0, 240.0), dialog),
-            0x08
+            MapEdges::LEFT
         );
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(636.0, 240.0), dialog),
-            0x04
+            MapEdges::RIGHT
         );
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(320.0, 4.0), dialog),
-            0x01
+            MapEdges::TOP
         );
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(320.0, 476.0), dialog),
-            0x02
+            MapEdges::BOTTOM
         );
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(-199.0, -199.0), dialog),
-            0x09
+            MapEdges::TOP | MapEdges::LEFT
         );
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(-200.0, 240.0), dialog),
-            0
+            MapEdges::empty()
         );
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(840.0, 240.0), dialog),
-            0
+            MapEdges::empty()
         );
 
         // The map child ends at x=517 beneath the right toolbar. Retail tests
         // the enclosing 640-pixel dialog, so toolbar hover is not an edge.
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(520.0, 120.0), dialog),
-            0
+            MapEdges::empty()
         );
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(620.0, 120.0), dialog),
-            0
+            MapEdges::empty()
         );
     }
 }

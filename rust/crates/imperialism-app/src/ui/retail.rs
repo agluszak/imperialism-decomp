@@ -456,12 +456,12 @@ fn template_palette_color(context: &TemplateContext, index: u8) -> Color {
     Color::srgb_u8(red, green, blue)
 }
 
-pub fn find_descendant(
+pub fn try_find_descendant(
     root: Entity,
     tag: FourCc,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
-) -> Entity {
+) -> Option<Entity> {
     let mut pending = children
         .get(root)
         .map(|children| children.iter().collect::<Vec<_>>())
@@ -478,7 +478,17 @@ pub fn find_descendant(
             pending.extend(descendants.iter());
         }
     }
-    found.unwrap_or_else(|| panic!("retail tag {tag:?} is missing below {root:?}"))
+    found
+}
+
+pub fn find_descendant(
+    root: Entity,
+    tag: FourCc,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
+) -> Entity {
+    try_find_descendant(root, tag, children, tags)
+        .unwrap_or_else(|| panic!("retail tag {tag:?} is missing below {root:?}"))
 }
 
 pub fn find_child(

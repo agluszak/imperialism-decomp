@@ -52,7 +52,7 @@ pub(in crate::ui::city) fn on_city_canvas_click(
     {
         return;
     }
-    match city_building_click(&session.0, nation, building.slot) {
+    match city_building_click(&session.game, nation, building.slot) {
         Some(CityBuildingClick::Construction) => {
             open_city_construction_dialog(&mut commands, &mut assets, &mut session, building.slot);
         }
@@ -193,7 +193,7 @@ pub(in crate::ui::city) fn bind_city_dialogs(
                 root,
                 &children,
                 &tags,
-                &session.0,
+                &session.game,
             ),
             CityFacilitySlot::University => configure_university_dialog(
                 &mut commands,
@@ -201,7 +201,7 @@ pub(in crate::ui::city) fn bind_city_dialogs(
                 root,
                 &children,
                 &tags,
-                &session.0,
+                &session.game,
             ),
             CityFacilitySlot::Shipyard => configure_shipyard_dialog(
                 &mut commands,
@@ -209,7 +209,7 @@ pub(in crate::ui::city) fn bind_city_dialogs(
                 root,
                 &children,
                 &tags,
-                &session.0,
+                &session.game,
             ),
             CityFacilitySlot::Warehouse => configure_warehouse_dialog(
                 &mut commands,
@@ -217,7 +217,7 @@ pub(in crate::ui::city) fn bind_city_dialogs(
                 root,
                 &children,
                 &tags,
-                &session.0,
+                &session.game,
             ),
             CityFacilitySlot::FoodProcessing => {
                 configure_food_dialog(&mut commands, &mut assets, root, &children, &tags)
@@ -249,11 +249,9 @@ pub(in crate::ui::city) fn restore_city_dialogs(
         return;
     }
     let nation = city_active_nation(&session);
-    let city = &session.0.nations().major(nation).city;
+    let city = &session.game.nations().major(nation).city;
     let mut next_z = 1;
-    for index in 0..CityFacilitySlot::COUNT {
-        let slot = CityFacilitySlot::from_index(index as u8)
-            .expect("City facility index is in the fixed slot range");
+    for slot in CityFacilitySlot::ALL {
         let state = city.building_windows[slot];
         let Some(position) = state else {
             continue;
@@ -286,9 +284,7 @@ pub(in crate::ui::city) fn leave_city_screen(
     windows: Query<(&CityDialogWindow, &Node)>,
 ) {
     let nation = city_active_nation(&session);
-    for index in 0..CityFacilitySlot::COUNT {
-        let slot = CityFacilitySlot::from_index(index as u8)
-            .expect("City facility index is in the fixed slot range");
+    for slot in CityFacilitySlot::ALL {
         let window = windows.iter().find(|(w, _)| w.0 == slot).map(|(_, node)| {
             let (left, top) = node_position(node);
             CityWindowPosition {
@@ -298,7 +294,7 @@ pub(in crate::ui::city) fn leave_city_screen(
                     .expect("City window coordinate fits retail short storage"),
             }
         });
-        session.0.set_city_building_window(nation, slot, window);
+        session.game.set_city_building_window(nation, slot, window);
     }
 }
 

@@ -1,8 +1,8 @@
-use super::RetailUiAssets;
 use super::deal_book::DealBookReturn;
 use super::generated;
 use super::retail::{ModalDialog, RetailTag, find_descendant};
 use crate::AppState;
+use crate::RetailAssetsResource;
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -79,7 +79,7 @@ fn bind_query_floaters(
     roots: Query<Entity, Added<QueryFloaterRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    assets: RetailUiAssets,
+    assets: Res<RetailAssetsResource>,
 ) {
     for root in &roots {
         for (tag, index) in QUERY_LABELS {

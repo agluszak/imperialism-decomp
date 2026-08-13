@@ -1,4 +1,4 @@
-#include "NativeTransition.h"
+#include "NativeCases.h"
 #include "JsonArray.h"
 #include "JsonObject.h"
 
@@ -43,6 +43,8 @@ void WriteSyntheticNewsTab(int eventStoryId) {
   fclose(file);
 }
 
+} // namespace
+
 RuntimeActionResult LoadNewsStoryIds(JsonArray* ids) {
   if (g_pAssetMgr == 0 || g_pLanguageMgr == 0) {
     return RuntimeActionResult::Failure("news table assets are unavailable");
@@ -77,6 +79,8 @@ RuntimeActionResult LoadNewsStoryIds(JsonArray* ids) {
   delete[] buffer;
   return RuntimeActionResult::Success();
 }
+
+namespace {
 
 RuntimeActionResult RunNewspaperConstruction(NativeTransition& transition, bool queueMiscEvent) {
   if (g_pNewsMgr == 0 || g_pNewsMgr->sharedEventRecordQueue == 0) {
