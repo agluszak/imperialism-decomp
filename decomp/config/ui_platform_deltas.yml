@@ -6,8 +6,8 @@ node_property_patches:
   - view: Startup.rsrc:1501
     node: 0x0247
     tag: tcou
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(tcou, 0, 14, ...)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0, color_index: 0x28, shadow_color_index: 0x5c, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(tcou, 0, 14, 0x2b6a, 0x2b6c); GetColor maps those themes to palettes 0x5c and 0x28
   - view: Startup.rsrc:1501
     node: 0x030f
     tag: coun
@@ -16,48 +16,48 @@ node_property_patches:
   - view: Startup.rsrc:1501
     node: 0x049b
     tag: dif0
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, 0x2b6b, 0x2b6c); GetColor maps those themes to palettes 0xd2 and 0x28
   - view: Startup.rsrc:1501
     node: 0x050b
     tag: dif1
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, 0x2b6b, 0x2b6c); GetColor maps those themes to palettes 0xd2 and 0x28
   - view: Startup.rsrc:1501
     node: 0x057b
     tag: dif2
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, 0x2b6b, 0x2b6c); GetColor maps those themes to palettes 0xd2 and 0x28
   - view: Startup.rsrc:1501
     node: 0x05eb
     tag: dif3
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, 0x2b6b, 0x2b6c); GetColor maps those themes to palettes 0xd2 and 0x28
   - view: Startup.rsrc:1501
     node: 0x065b
     tag: dif4
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, 0x2b6b, 0x2b6c); GetColor maps those themes to palettes 0xd2 and 0x28
   - view: Startup.rsrc:1501
     node: 0x06cb
     tag: dift
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(dift, 0, 14, ...)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0, color_index: 0x28, shadow_color_index: 0x5c, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(dift, 0, 14, 0x2b6a, 0x2b6c); GetColor maps those themes to palettes 0x5c and 0x28
   - view: Startup.rsrc:1501
     node: 0x0740
     tag: tnam
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(tnam, 0, 14, ...)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0, color_index: 0x28, shadow_color_index: 0x5c, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(tnam, 0, 14, 0x2b6a, 0x2b6c); GetColor maps those themes to palettes 0x5c and 0x28
   - view: Startup.rsrc:1501
     node: 0x0828
     tag: hist
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles hist at 12 and calls SetTextAlignmentAndMaybeRefresh(1, 0)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles hist through ApplyUiTextStyleAndThemeFlags(..., 0, 12, 0x2b6b, 0x2b6c) and SetTextAlignmentAndMaybeRefresh(1, 0)
   - view: Startup.rsrc:1501
     node: 0x0898
     tag: rand
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles rand at 12 and calls SetTextAlignmentAndMaybeRefresh(1, 0)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles rand through ApplyUiTextStyleAndThemeFlags(..., 0, 12, 0x2b6b, 0x2b6c) and SetTextAlignmentAndMaybeRefresh(1, 0)
   - view: Citydlog.rsrc:9200
     node: 0x06d9
     tag: name
