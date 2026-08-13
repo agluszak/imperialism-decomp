@@ -122,6 +122,7 @@ pub enum TurnStop {
     DiplomacyOffer(DiplomacyOfferPrompt),
     DiplomacyWarJoin(DiplomacyWarJoinPrompt),
     TradeOffer(PendingTradeOffer),
+    DealBook,
     TechnologyAdvance(TechnologyId),
     Newspaper,
     Unimplemented(PhaseCode),
@@ -208,6 +209,13 @@ impl GameState {
             return TurnStop::TechnologyAdvance(tech_id);
         }
         self.turn.phase = PhaseCode::NEWSPAPER;
+        self.advance_turn()
+    }
+
+    /// Dismisses the Deal Book and continues through quarter gate to the next stop.
+    pub fn close_deal_book(&mut self) -> TurnStop {
+        assert_eq!(self.turn.phase(), PhaseCode::DEAL_BOOK);
+        self.turn.phase = PhaseCode::QUARTER_GATE;
         self.advance_turn()
     }
 
@@ -311,6 +319,7 @@ impl GameState {
                     }
                     self.turn.phase = PhaseCode::DEAL_BOOK;
                 }
+                PhaseCode::DEAL_BOOK => return TurnStop::DealBook,
                 PhaseCode::DIPLOMACY_OFFER => {
                     if self.diplomacy_offer_gate() {
                         return TurnStop::Unimplemented(PhaseCode::DIPLOMACY_OFFER);
@@ -416,21 +425,53 @@ mod tests {
         assert!(!state.nations.majors[nation].economy.turn_finished);
     }
 
+    fn land_every_major(state: &mut crate::GameState) {
+        for index in 0..MajorNationId::COUNT {
+            let tile = TileId::new(index as u16 + 1);
+            let nation = NationId::new(index);
+            state.nations.append_owned_region_during_construction(
+                nation,
+                crate::ProvinceId::new(index as u16),
+            );
+            let major = &mut state.nations.majors[MajorNationId::new(index)];
+            major.towns[0].tile = tile;
+            major.common.home_tile = Some(tile);
+            state.map[tile].owner_nation = Some(TileOwnerTag::from_nation(nation));
+        }
+    }
+
+    fn auto_accept_trade_and_reject_diplomacy(state: &mut crate::GameState) -> crate::TurnStop {
+        let mut stop = match state.turn.phase() {
+            crate::PhaseCode::STRATEGIC_MAP => state.finish_player_orders(),
+            _ => state.advance_turn(),
+        };
+        loop {
+            match stop {
+                crate::TurnStop::DiplomacyOffer(_) => {
+                    stop = state.answer_current_diplomacy_offer(false);
+                }
+                crate::TurnStop::DiplomacyWarJoin(_) => {
+                    stop = state.answer_current_diplomacy_war_join(false);
+                }
+                crate::TurnStop::TradeOffer(offer) => {
+                    stop = state.answer_trade_offer(offer.amount, false);
+                }
+                crate::TurnStop::DealBook
+                | crate::TurnStop::TechnologyAdvance(_)
+                | crate::TurnStop::Newspaper
+                | crate::TurnStop::PlayerOrders
+                | crate::TurnStop::Unimplemented(_) => return stop,
+            }
+        }
+    }
+
     #[test]
-    fn finish_player_orders_runs_until_an_unimplemented_or_interactive_stop() {
+    fn finish_player_orders_stops_at_the_deal_book() {
         let mut state = game_state();
-        let stop = state.finish_player_orders();
-        assert!(
-            matches!(
-                stop,
-                crate::TurnStop::DiplomacyOffer(_)
-                    | crate::TurnStop::DiplomacyWarJoin(_)
-                    | crate::TurnStop::TradeOffer(_)
-                    | crate::TurnStop::Unimplemented(_)
-            ),
-            "unexpected stop {stop:?}"
-        );
-        assert_ne!(state.turn.phase(), crate::PhaseCode::STRATEGIC_MAP);
+        land_every_major(&mut state);
+        let stop = auto_accept_trade_and_reject_diplomacy(&mut state);
+        assert_eq!(stop, crate::TurnStop::DealBook);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::DEAL_BOOK);
     }
 
     #[test]
@@ -460,7 +501,10 @@ mod tests {
         assert!(
             matches!(
                 stop,
-                crate::TurnStop::TradeOffer(_) | crate::TurnStop::Unimplemented(_)
+                crate::TurnStop::TradeOffer(_)
+                    | crate::TurnStop::DiplomacyOffer(_)
+                    | crate::TurnStop::DiplomacyWarJoin(_)
+                    | crate::TurnStop::DealBook
             ),
             "unexpected stop {stop:?}"
         );
@@ -471,19 +515,14 @@ mod tests {
     }
 
     #[test]
-    fn completing_trade_leaves_the_offer_sheet_and_continues_the_turn() {
+    fn completing_trade_leaves_the_offer_sheet_and_stops_at_the_deal_book() {
         let mut state = game_state();
+        land_every_major(&mut state);
         state.turn.phase = crate::PhaseCode::TRADE;
-        let mut stop = state.advance_turn();
-        while let crate::TurnStop::TradeOffer(_) = stop {
-            stop = state.answer_trade_offer(0, false);
-        }
+        let stop = auto_accept_trade_and_reject_diplomacy(&mut state);
         assert!(state.pending_trade_offer().is_none());
-        assert_ne!(state.turn.phase(), crate::PhaseCode::TRADE);
-        assert!(
-            matches!(stop, crate::TurnStop::Unimplemented(_)),
-            "unexpected stop {stop:?}"
-        );
+        assert_eq!(stop, crate::TurnStop::DealBook);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::DEAL_BOOK);
     }
 
     #[test]
@@ -514,24 +553,32 @@ mod tests {
     }
 
     #[test]
-    fn city_and_transport_phase_runs_and_continues_past_pressure() {
+    fn city_and_transport_phase_runs_and_stops_at_the_deal_book() {
         let mut state = game_state();
-        for index in 0..MajorNationId::COUNT {
-            let tile = TileId::new(index as u16 + 1);
-            let major = &mut state.nations.majors[MajorNationId::new(index)];
-            major.towns[0].tile = tile;
-            major.common.home_tile = Some(tile);
-        }
-        for index in 0..MajorNationId::COUNT {
-            let tile = TileId::new(index as u16 + 1);
-            state.map[tile].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(index)));
-        }
+        land_every_major(&mut state);
         state.turn.phase = crate::PhaseCode::CITY_AND_TRANSPORT;
         let stop = state.advance_turn();
-        assert_ne!(state.turn.phase(), crate::PhaseCode::CITY_AND_TRANSPORT);
-        assert!(
-            matches!(stop, crate::TurnStop::Unimplemented(_)),
-            "unexpected stop {stop:?}"
+        assert_eq!(stop, crate::TurnStop::DealBook);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::DEAL_BOOK);
+    }
+
+    #[test]
+    fn closing_the_deal_book_returns_to_player_orders_through_newspaper() {
+        let mut state = game_state();
+        land_every_major(&mut state);
+        assert_eq!(
+            auto_accept_trade_and_reject_diplomacy(&mut state),
+            crate::TurnStop::DealBook
         );
+        let start_turn = state.turn.economic_turn;
+        let mut stop = state.close_deal_book();
+        while let crate::TurnStop::TechnologyAdvance(_) = stop {
+            stop = state.acknowledge_technology_report();
+        }
+        assert_eq!(stop, crate::TurnStop::Newspaper);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::NEWSPAPER);
+        assert_eq!(state.turn.economic_turn, start_turn + 1);
+        assert_eq!(state.close_newspaper(), crate::TurnStop::PlayerOrders);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::STRATEGIC_MAP);
     }
 }
