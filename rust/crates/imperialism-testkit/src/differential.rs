@@ -14,8 +14,8 @@ use std::path::Path;
 use std::process::Command;
 
 use crate::{
-    EvidenceKind, RuntimeResultExpectations, ValidatedRuntimeResult, first_serialized_difference,
-    read_runtime_result,
+    EvidenceKind, RuntimeCaptureError, RuntimeResultExpectations, ValidatedRuntimeResult,
+    first_serialized_difference, read_runtime_result,
 };
 
 const NATIVE_ORACLE: &str = "native_transition_oracle";
@@ -136,16 +136,30 @@ fn run_native_case_result(
 }
 
 /// Run one catalogued native runtime scenario into a unique output directory.
+///
+/// The returned run keeps that directory alive so save-backed artifacts remain
+/// readable until the caller is finished.
 pub fn run_retail_fixture_result(
     name: &str,
     required_captures: &'static [&'static str],
-) -> Result<ValidatedRuntimeResult> {
-    Ok(run_runtime_result(name, None, required_captures)?.result)
+) -> Result<RuntimeRun> {
+    run_runtime_result(name, None, required_captures)
 }
 
-struct RuntimeRun {
+/// One native runtime invocation and the unique output directory it wrote.
+pub struct RuntimeRun {
     result: ValidatedRuntimeResult,
     _output_dir: tempfile::TempDir,
+}
+
+impl RuntimeRun {
+    pub fn capture<T: DeserializeOwned>(&self, name: &str) -> Result<T, RuntimeCaptureError> {
+        self.result.capture(name)
+    }
+
+    pub fn artifact_dir(&self) -> Result<&Path, RuntimeCaptureError> {
+        self.result.artifact_dir()
+    }
 }
 
 fn run_runtime_result(

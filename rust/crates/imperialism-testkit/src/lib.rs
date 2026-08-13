@@ -4,7 +4,9 @@ mod differential;
 mod oracle;
 mod runtime_capture;
 
-pub use differential::{assert_game_state_eq, compare_native, run_retail_fixture_result};
+pub use differential::{
+    RuntimeRun, assert_game_state_eq, compare_native, run_retail_fixture_result,
+};
 use imperialism_core::{
     Difficulty, MajorNationId, MapTopology, RetailLcg,
     differential_trace::{
