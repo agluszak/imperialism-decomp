@@ -35,6 +35,7 @@ RuntimeActionResult RunSpecialistRecruitment(NativeTransition& transition);
 RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition);
 
 RuntimeActionResult RunCompletedRailSection(NativeTransition& transition);
+RuntimeActionResult RunIssuedRailSection(NativeTransition& transition);
 RuntimeActionResult RunCompletedResourceDevelopment(NativeTransition& transition);
 
 namespace {
@@ -69,6 +70,7 @@ const NativeCase kCases[] = {
     {"specialist_recruitment", RunSpecialistRecruitment},
     {"military_maintenance", RunMilitaryMaintenance},
     {"completed_rail_section", RunCompletedRailSection},
+    {"issued_rail_section", RunIssuedRailSection},
     {"completed_resource_development", RunCompletedResourceDevelopment},
 };
 
