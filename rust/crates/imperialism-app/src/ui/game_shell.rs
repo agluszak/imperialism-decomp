@@ -7,15 +7,14 @@ use crate::ui::load_save::OpenFlagMenu;
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailPictureSwap, RetailTag, find_descendant};
 use crate::ui::strategic_map::{
-    SelectedEngineer, StrategicBaseTerrainCanvas, bind_strategic_base_terrain,
-    strategic_base_terrain_tile_at_cursor, sync_strategic_base_terrain, sync_strategic_units,
+    bind_strategic_base_terrain, register_civilian_orders, sync_strategic_base_terrain,
+    sync_strategic_units,
 };
-use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
-use bevy::ui::{InteractionDisabled, RelativeCursorPosition};
+use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
-use imperialism_core::{MajorNationId, RailOrderRejection};
+use imperialism_core::MajorNationId;
 use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
 
 #[derive(Component)]
@@ -34,29 +33,27 @@ pub(crate) struct GameShellPlugin;
 
 impl Plugin for GameShellPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<SelectedEngineer>()
-            .add_observer(on_strategic_map_click.run_if(in_state(AppState::StrategicMap)))
-            .add_systems(
-                OnEnter(AppState::StrategicMap),
-                (
-                    enter_strategic_map_view,
-                    spawn_strategic_map,
-                    bind_strategic_map,
-                )
-                    .chain(),
+        register_civilian_orders(app);
+        app.add_systems(
+            OnEnter(AppState::StrategicMap),
+            (
+                enter_strategic_map_view,
+                spawn_strategic_map,
+                bind_strategic_map,
             )
-            .add_systems(OnExit(AppState::StrategicMap), clear_selected_engineer)
-            .add_systems(
-                Update,
-                (
-                    scroll_strategic_map,
-                    sync_strategic_base_terrain,
-                    sync_strategic_units,
-                    sync_strategic_map_treasury,
-                )
-                    .chain()
-                    .run_if(in_state(AppState::StrategicMap)),
-            );
+                .chain(),
+        )
+        .add_systems(
+            Update,
+            (
+                scroll_strategic_map,
+                sync_strategic_base_terrain,
+                sync_strategic_units,
+                sync_strategic_map_treasury,
+            )
+                .chain()
+                .run_if(in_state(AppState::StrategicMap)),
+        );
     }
 }
 
@@ -329,10 +326,6 @@ fn disable_native_control(
         .insert(InteractionDisabled);
 }
 
-fn clear_selected_engineer(mut selected: ResMut<SelectedEngineer>) {
-    selected.0 = None;
-}
-
 fn sync_strategic_map_treasury(
     session: Res<GameSession>,
     mut commands: Commands,
@@ -348,33 +341,6 @@ fn sync_strategic_map_treasury(
         return;
     };
     project_date_and_treasury(&mut commands, &mut assets, root, &children, &tags, &session);
-}
-
-fn on_strategic_map_click(
-    click: On<Pointer<Click>>,
-    maps: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
-    mut session: ResMut<GameSession>,
-    mut selected: ResMut<SelectedEngineer>,
-) {
-    let Ok(cursor) = maps.get(click.entity) else {
-        return;
-    };
-    let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.0, cursor) else {
-        return;
-    };
-    let nation = session.0.turn().active_nation;
-    if let Some(unit) = session.0.selectable_engineer_on_tile(tile, nation) {
-        selected.0 = Some(unit);
-        return;
-    }
-    let Some(unit) = selected.0 else {
-        return;
-    };
-    match session.0.order_rail_construction(unit, tile) {
-        Ok(()) => selected.0 = None,
-        Err(RailOrderRejection::InsufficientFunds | RailOrderRejection::InvalidTarget) => {}
-        Err(RailOrderRejection::IneligibleUnit) => selected.0 = None,
-    }
 }
 
 fn on_game_screen_activate(

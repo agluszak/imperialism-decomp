@@ -11,11 +11,14 @@ use imperialism_core::*;
 use imperialism_formats::*;
 
 mod borders;
+mod civilian_orders;
 mod overlays;
 mod terrain;
 mod units;
 
 use borders::compose_strategic_borders;
+pub(crate) use civilian_orders::SelectedEngineer;
+pub(crate) use civilian_orders::register as register_civilian_orders;
 use overlays::{
     IMPROVEMENT_PICTURE_IDS, compose_strategic_improvements, compose_strategic_railways,
     town_transport_linked,
@@ -41,9 +44,6 @@ struct StrategicMapComposeKey {
     selected_engineer: Option<CivilianUnitId>,
     visible_tiles: u64,
 }
-
-#[derive(Clone, Copy, Default, Resource)]
-pub(crate) struct SelectedEngineer(pub(crate) Option<CivilianUnitId>);
 
 /// The bounded strategic map: retail bases, transitions, rivers, borders, and static infrastructure.
 #[derive(Component)]
