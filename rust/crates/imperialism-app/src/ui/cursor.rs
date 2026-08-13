@@ -6,8 +6,6 @@ use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::window::{CursorIcon, CustomCursor, CustomCursorImage, PrimaryWindow, SystemCursorIcon};
 use imperialism_formats::{RetailAssets, RetailCursor};
 
-const IDLE_ARROW: RequestedCursor = RequestedCursor::Arrow;
-
 /// `TViewMgr::turnEventCursors`, indexed as `resource_id - 1000`.
 #[derive(Resource)]
 struct TurnEventCursors([CursorIcon; RetailAssets::TURN_EVENT_CURSOR_COUNT]);
@@ -20,26 +18,22 @@ pub(crate) enum RequestedCursor {
     TurnEvent(u16),
 }
 
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Resource)]
-struct AppliedCursor(RequestedCursor);
-
 pub(crate) struct CursorPlugin;
 
 impl Plugin for CursorPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<RequestedCursor>()
-            .init_resource::<AppliedCursor>()
             .add_systems(Startup, load_turn_event_cursors)
             .add_systems(Update, apply_requested_cursor);
     }
 }
 
-pub(crate) fn request_turn_event_cursor(requested: &mut RequestedCursor, resource_id: u16) {
-    *requested = RequestedCursor::TurnEvent(resource_id);
+pub(crate) fn request_turn_event_cursor(requested: &mut ResMut<RequestedCursor>, resource_id: u16) {
+    requested.set_if_neq(RequestedCursor::TurnEvent(resource_id));
 }
 
-pub(crate) fn request_arrow_cursor(requested: &mut RequestedCursor) {
-    *requested = IDLE_ARROW;
+pub(crate) fn request_arrow_cursor(requested: &mut ResMut<RequestedCursor>) {
+    requested.set_if_neq(RequestedCursor::Arrow);
 }
 
 fn load_turn_event_cursors(
@@ -79,14 +73,10 @@ fn cursor_icon(images: &mut Assets<Image>, cursor: &RetailCursor) -> CursorIcon 
 fn apply_requested_cursor(
     mut commands: Commands,
     requested: Res<RequestedCursor>,
-    mut applied: ResMut<AppliedCursor>,
     cursors: Option<Res<TurnEventCursors>>,
-    window: Query<Entity, With<PrimaryWindow>>,
+    window: Single<Entity, With<PrimaryWindow>>,
 ) {
-    let Ok(window) = window.single() else {
-        return;
-    };
-    if applied.0 == *requested {
+    if !requested.is_changed() {
         return;
     }
     let icon = match *requested {
@@ -103,6 +93,5 @@ fn apply_requested_cursor(
             cursors.0[index].clone()
         }
     };
-    commands.entity(window).insert(icon);
-    applied.0 = *requested;
+    commands.entity(*window).insert(icon);
 }
