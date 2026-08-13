@@ -52,6 +52,14 @@ pub(in crate::ui::city) struct UniversityDialogData {
     pub(in crate::ui::city) warning_color: Color,
 }
 
+/// Direct `LoadStringA` index in groups `0x2718` (name) and `0x2751` (description).
+///
+/// Retail `TUniversityView::SetUnit` pre-increments the 0-based recruitment category
+/// once and reuses that 1-based index for both lookups.
+const fn university_civilian_string_index(kind: CivilianUnitKind) -> i16 {
+    i16::from(kind as u8) + 1
+}
+
 pub(in crate::ui::city) const fn university_preview_picture(kind: CivilianUnitKind) -> i16 {
     match kind {
         CivilianUnitKind::Miner => 402,
@@ -110,10 +118,10 @@ pub(in crate::ui::city) fn configure_university_dialog(
             };
             UniversityRowText {
                 unit_name: assets
-                    .string(0x2718, i16::from(kind as u8) + 1)
+                    .string(0x2718, university_civilian_string_index(kind))
                     .expect("retail civilian name"),
                 description: assets
-                    .string(0x2751, i16::from(kind as u8))
+                    .string(0x2751, university_civilian_string_index(kind))
                     .expect("retail civilian description"),
                 preview: transparent_picture(
                     assets,
