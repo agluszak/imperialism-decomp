@@ -252,6 +252,7 @@ impl GameState {
             match self.turn.phase() {
                 PhaseCode::STRATEGIC_MAP => return TurnStop::PlayerOrders,
                 PhaseCode::CAPITAL_SELECTION => {
+                    self.grant_opening_civilians();
                     self.turn.phase = PhaseCode::SEASON_ADVANCE;
                 }
                 PhaseCode::DIPLOMACY => match self.continuation {
