@@ -24,6 +24,9 @@ pub struct GameState {
     /// Live `TTradeMgr` deal cursor and pending Offer Sheet. Not part of `.imp`.
     #[serde(skip)]
     pub(crate) trade_session: Option<crate::trade_phase::TradeSession>,
+    /// Land battle created by combat movement. Not part of `.imp`.
+    #[serde(skip)]
+    pub(crate) pending_land_battle: Option<crate::PendingLandBattle>,
 }
 
 /// Construction-only parameter object for assembling [`GameState`].
@@ -73,6 +76,7 @@ impl GameState {
             news: parts.news,
             pending: parts.pending,
             trade_session: None,
+            pending_land_battle: None,
         }
     }
 
