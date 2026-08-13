@@ -3,6 +3,7 @@
 #![allow(clippy::float_cmp)]
 
 mod ai;
+mod ai_civilian;
 mod calendar;
 mod city;
 mod city_economy;

@@ -108,9 +108,48 @@ impl GameState {
         }
     }
 
+    pub(crate) fn apply_town_transport_links(&mut self, nation: MajorNationId) -> Option<Vec<u8>> {
+        let (influence, town_transport_linked) = self.transport_influence(nation)?;
+        for (town, linked) in self.nations.majors[nation]
+            .towns
+            .iter_mut()
+            .zip(town_transport_linked)
+        {
+            town.transport_linked = linked;
+        }
+        Some(influence)
+    }
+
+    pub(crate) fn can_build_port_at_tile(&self, tile: TileId) -> bool {
+        let mut can_build = false;
+        if !matches!(
+            self.map[tile].terrain,
+            TerrainKind::Mountain | TerrainKind::Hills
+        ) {
+            for direction in HexDirection::ALL {
+                if self.map[civilian_sea_scan_neighbor(tile, direction)].terrain
+                    == TerrainKind::Water
+                {
+                    can_build = true;
+                    break;
+                }
+            }
+        }
+        if !can_build
+            && self.map[tile].river().is_some()
+            && river_reaches_sea_without_crossing_nation(&self.map, tile)
+        {
+            can_build = true;
+        }
+        can_build
+    }
+
     /// Retail `TGreatPower::BuildTransportLinkedInfluenceMap` over the complete
     /// ordered `townMarkerList`.
-    fn transport_influence(&self, nation: MajorNationId) -> Option<(Vec<u8>, Vec<bool>)> {
+    pub(crate) fn transport_influence(
+        &self,
+        nation: MajorNationId,
+    ) -> Option<(Vec<u8>, Vec<bool>)> {
         let major = self.nations.major(nation);
         let home_tile = major.common.home_tile?;
         let home_town = major.towns.iter().position(|town| town.tile == home_tile)?;
@@ -191,7 +230,7 @@ impl GameState {
         }
     }
 
-    fn has_reachable_sea_outside_beginning_turn_mask(&self, tile: TileId) -> bool {
+    pub(crate) fn has_reachable_sea_outside_beginning_turn_mask(&self, tile: TileId) -> bool {
         let origin_nation = self.map[tile]
             .owner_nation
             .and_then(TileOwnerTag::nation)
@@ -259,9 +298,9 @@ impl GameState {
     }
 }
 
-/// The port predicates inline a 217-wide doubled-column wrap and vertical
-/// clamp instead of using the session topology helper.
-fn civilian_sea_scan_neighbor(tile: TileId, direction: HexDirection) -> TileId {
+/// `TMapMgr::GetNeighborTileID` and the inlined port/sea predicates: doubled-column
+/// wrap and vertical clamp, ignoring session topology.
+pub(crate) fn civilian_sea_scan_neighbor(tile: TileId, direction: HexDirection) -> TileId {
     const COLUMN_X2_DELTAS: [i32; 6] = [1, 2, 1, -1, -2, -1];
     const ROW_DELTAS: [i32; 6] = [-1, 0, 1, 1, 0, -1];
     const RASTER_WIDTH: i32 = STRATEGIC_MAP_WIDTH as i32 * 2;

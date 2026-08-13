@@ -19,6 +19,13 @@ pub struct MapMgr {
     pub provinces: ProvinceTable<ProvinceState>,
     #[serde(deserialize_with = "deserialize_required_option")]
     pub pending_river_mouth_tile: Option<TileId>,
+    /// Retail `g_nNextRegionMarkerId`. Not saved; a freshly loaded process starts at 1.
+    #[serde(skip_serializing, default = "next_region_marker_id_after_load")]
+    pub(crate) next_region_marker_id: i32,
+}
+
+fn next_region_marker_id_after_load() -> i32 {
+    1
 }
 
 fn deserialize_strategic_tiles<'de, D>(deserializer: D) -> Result<Box<[TileState]>, D::Error>
@@ -68,7 +75,16 @@ impl MapMgr {
             tiles,
             provinces,
             pending_river_mouth_tile: None,
+            next_region_marker_id: next_region_marker_id_after_load(),
         }
+    }
+
+    /// `TMapMgr::FloodFillTileRegionMarker` consumes `g_nNextRegionMarkerId` and then
+    /// stores `(short)id + 1`. The start tile is stamped with the low 8 bits.
+    pub(crate) fn allocate_region_marker(&mut self) -> RegionId {
+        let marker = RegionId::new(self.next_region_marker_id as u8);
+        self.next_region_marker_id = i32::from(self.next_region_marker_id as i16) + 1;
+        marker
     }
 
     pub const fn geometry(&self) -> crate::MapGeometry {
@@ -706,10 +722,11 @@ bitflags::bitflags! {
         /// Set by `ResetTileToBaseTransportFlag`; consumers use this as the base-transport test.
         const BASE_TRANSPORT = 1 << 0;
         const RECRUITMENT_RESERVED = 1 << 1;
-        /// Retail `activeFlags1c` bit 2, the port flag tested by `HasPortInProvince`.
+        /// Retail `activeFlags1c` bit 2, set by `QueuePortConstructionOrder` and tested by `HasPortInProvince`.
         const PORT = 1 << 2;
         /// Set by `SetProvinceCapitalTileFlagBit08`, which also advances the province fort level.
         const PROVINCE_CAPITAL_FORTIFICATION = 1 << 3;
+        /// Depot marker written by `QueueDepotConstructionOrder`.
         const DEPOT = 1 << 4;
         /// The city marker bit tested independently by map and unit consumers.
         const CITY_MARKER = 1 << 5;

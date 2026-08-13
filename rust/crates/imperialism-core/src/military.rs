@@ -153,7 +153,7 @@ impl GameState {
         scores.similarity(TACTICAL_COMPOSITION.baseline)
     }
 
-    fn cross_nation_support_score(&self, province: ProvinceId) -> f32 {
+    pub(crate) fn cross_nation_support_score(&self, province: ProvinceId) -> f32 {
         let Some(owner) = self.map.provinces[province].owner() else {
             return 0.0;
         };
@@ -295,6 +295,31 @@ impl GameState {
             accum += diff;
         }
         sum * (1.0 - accum * 0.5)
+    }
+}
+
+fn bump_mission_ship_ids(data: &mut MissionData) {
+    match data {
+        MissionData::ControlSeaZone(navy)
+        | MissionData::Escort(navy)
+        | MissionData::ScatteredShips(navy)
+        | MissionData::Beachhead(navy) => bump_navy_mission_ship_ids(navy),
+        MissionData::BlockadePort { navy, .. } => bump_navy_mission_ship_ids(navy),
+        MissionData::Invade { beachhead, .. } => {
+            if let Some(navy) = beachhead {
+                bump_navy_mission_ship_ids(navy);
+            }
+        }
+        MissionData::AttackProvince(_) | MissionData::DefendProvince { .. } => {}
+    }
+}
+
+fn bump_navy_mission_ship_ids(navy: &mut NavyMissionState) {
+    if let Some(ship) = &mut navy.selected_ship {
+        *ship = ShipId::new(ship.get() + 1);
+    }
+    for selected in &mut navy.ships {
+        selected.ship = ShipId::new(selected.ship.get() + 1);
     }
 }
 
@@ -484,31 +509,6 @@ fn accumulate_unit_priority(
 
 fn navy_priority_contribution(_ship: &ShipState, _category: i32) -> i32 {
     0
-}
-
-fn bump_mission_ship_ids(data: &mut MissionData) {
-    match data {
-        MissionData::ControlSeaZone(navy)
-        | MissionData::Escort(navy)
-        | MissionData::ScatteredShips(navy)
-        | MissionData::Beachhead(navy) => bump_navy_mission_ship_ids(navy),
-        MissionData::BlockadePort { navy, .. } => bump_navy_mission_ship_ids(navy),
-        MissionData::Invade { beachhead, .. } => {
-            if let Some(navy) = beachhead {
-                bump_navy_mission_ship_ids(navy);
-            }
-        }
-        MissionData::AttackProvince(_) | MissionData::DefendProvince { .. } => {}
-    }
-}
-
-fn bump_navy_mission_ship_ids(navy: &mut NavyMissionState) {
-    if let Some(ship) = &mut navy.selected_ship {
-        *ship = ShipId::new(ship.get() + 1);
-    }
-    for selected in &mut navy.ships {
-        selected.ship = ShipId::new(selected.ship.get() + 1);
-    }
 }
 
 /// A ship in primary-list order. Ship and task-force references are snapshot-local

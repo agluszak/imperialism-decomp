@@ -2,7 +2,6 @@
 #include "JsonObject.h"
 
 #include "game/city_ui/TLongintList.h"
-#include "game/civilian_domain_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TZone.h"
@@ -11,22 +10,9 @@
 #include "game/military/TMilitaryUnit.h"
 #include "game/military_domain_types.h"
 #include "game/nation/TGreatPower.h"
-#include "game/ui_screens/TSimMgr.h"
 #include "game/unit_domain_types.h"
 
 namespace {
-
-bool FindOwnedEmptyTile(NationSlot nationSlot, StrategicTileIndex* tileIndex) {
-  for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
-    const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[candidate];
-    if (tile.ownerNationTag04 == nationSlot && tile.firstCivilianOrder20 == 0 &&
-        (tile.activeFlags1c & 4) == 0) {
-      *tileIndex = candidate;
-      return true;
-    }
-  }
-  return false;
-}
 
 short FindPresentMinorSlot() {
   for (short slot = 7; slot < 23; ++slot) {
@@ -64,37 +50,6 @@ short FindAiGreatPowerSlot(short humanSlot) {
 }
 
 } // namespace
-
-RuntimeActionResult RunCiviliansPhase(NativeTransition& transition) {
-  const NationSlot nationSlot = ActiveNationSlot();
-  StrategicTileIndex tile = -1;
-  if (!FindOwnedEmptyTile(nationSlot, &tile)) {
-    return RuntimeActionResult::Failure("the loaded map has no empty owned tile");
-  }
-
-  TCivUnit* depot = new TCivUnit();
-  depot->ICivUnit(kCivilianUnitEngineer, tile, nationSlot);
-  depot->SetOrders(kUnitOrderBuildDepot, tile);
-  depot->remainingTurns24 = 1;
-
-  TCivUnit* sleep = new TCivUnit();
-  sleep->ICivUnit(kCivilianUnitEngineer, tile, nationSlot);
-  sleep->SetOrders(kUnitOrderSleep, tile);
-
-  TCivUnit* redeploy = new TCivUnit();
-  redeploy->ICivUnit(kCivilianUnitDeveloper, tile, nationSlot);
-  redeploy->SetOrders(kUnitOrderRedeploy, tile);
-  redeploy->remainingTurns24 = 2;
-
-  JsonObject args;
-  RuntimeActionResult started = transition.Begin(args.Release());
-  if (!started.Succeeded()) {
-    return started;
-  }
-
-  g_pSimMgr->DoCivilians();
-  return transition.Finish();
-}
 
 RuntimeActionResult RunProvinceLossWithStationedUnit(NativeTransition& transition) {
   TGreatPower* nation = ActiveNation();

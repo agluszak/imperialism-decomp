@@ -93,6 +93,15 @@ fn issued_rail_section() {
     .unwrap();
 }
 
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn civilians_phase() {
+    compare_native("civilians_phase", |state, (): ()| {
+        state.do_civilians();
+    })
+    .unwrap();
+}
+
 #[derive(Debug, Deserialize)]
 struct EmptyCase {}
 

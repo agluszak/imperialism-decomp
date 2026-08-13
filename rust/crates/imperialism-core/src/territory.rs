@@ -18,7 +18,7 @@ pub enum CountryStatus {
 }
 
 impl CountryStatus {
-    fn is_colony_of(self, nation: NationId) -> bool {
+    pub(crate) fn is_colony_of(self, nation: NationId) -> bool {
         matches!(self, Self::ColonyOf(master) if master == nation)
     }
 }
@@ -146,8 +146,8 @@ impl ProvinceState {
         self.fort_level
     }
 
-    pub(crate) fn add_fort_level(&mut self) {
-        self.fort_level = self.fort_level.wrapping_add(1);
+    pub(crate) fn increment_fort_level(&mut self) {
+        self.fort_level += 1;
     }
 
     pub const fn city_tile(&self) -> Option<TileId> {

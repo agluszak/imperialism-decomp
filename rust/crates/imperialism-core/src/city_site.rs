@@ -1,7 +1,7 @@
 //! Capital-site selection (`TCitySiteView`) and `TMapMgr::PlaceCity` for random-game start.
 
 use crate::{
-    Difficulty, GameState, HexDirection, MajorNationId, MapGeometry, MapMgr, NationId, RegionId,
+    Difficulty, GameState, HexDirection, MajorNationId, MapGeometry, MapMgr, NationId,
     STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, TerrainKind, TileFlags, TileId, TileOwnerTag,
 };
 
@@ -223,7 +223,7 @@ fn bind_home_city_tile(state: &mut GameState, nation: MajorNationId, tile: TileI
 
 fn flood_fill_region_marker(world: &mut MapMgr, tile: TileId, owner_nation: TileOwnerTag) {
     let geometry = world.geometry();
-    let marker = next_region_marker(world);
+    let marker = world.allocate_region_marker();
     world[tile].region = Some(marker);
     for neighbor in geometry.neighbors(tile).into_iter().flatten() {
         let neighbor_state = &mut world[neighbor];
@@ -235,18 +235,6 @@ fn flood_fill_region_marker(world: &mut MapMgr, tile: TileId, owner_nation: Tile
         }
         neighbor_state.region = Some(marker);
     }
-}
-
-pub(crate) fn next_region_marker(world: &MapMgr) -> RegionId {
-    // Retail `g_nNextRegionMarkerId` starts at 1, not 0.
-    let max = world
-        .tiles
-        .iter()
-        .filter_map(|tile| tile.region)
-        .map(RegionId::get)
-        .max()
-        .unwrap_or(0);
-    RegionId::new(max + 1)
 }
 
 /// `EvaluateTerrainFlowCrossNationBoundaryToSea` (0x00563b70): try both ends of the

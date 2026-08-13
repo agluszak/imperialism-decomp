@@ -7,6 +7,7 @@
 #include "game/military/TCivUnit.h"
 #include "game/nation/TGreatPower.h"
 #include "game/strategic_terrain.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/unit_domain_types.h"
 
 namespace {
@@ -80,6 +81,70 @@ bool FindUnoccupiedTile(StrategicTileIndex* tileIndex) {
     if (g_pGlobalMapState->terrainStateTable[candidate].firstCivilianOrder20 == 0) {
       *tileIndex = candidate;
       return true;
+    }
+  }
+  return false;
+}
+
+bool FindUnoccupiedProvinceTile(StrategicTileIndex* tileIndex) {
+  for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
+    const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[candidate];
+    if (tile.firstCivilianOrder20 != 0) {
+      continue;
+    }
+    short province = tile.cityRecordIndex;
+    if (province < 0 || province >= 0x180) {
+      continue;
+    }
+    if (g_pGlobalMapState->cityScoreTable[province].cityTileIndex04 < 0) {
+      continue;
+    }
+    *tileIndex = candidate;
+    return true;
+  }
+  return false;
+}
+
+bool FindOwnedConstructionTile(NationSlot nationSlot, unsigned short requiredFlags,
+                               unsigned short forbiddenFlags, StrategicTileIndex* tileIndex) {
+  for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
+    const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[candidate];
+    if (tile.firstCivilianOrder20 != 0 || tile.ownerNationTag04 != nationSlot) {
+      continue;
+    }
+    if ((tile.activeFlags1c & requiredFlags) != requiredFlags) {
+      continue;
+    }
+    if ((tile.activeFlags1c & forbiddenFlags) != 0) {
+      continue;
+    }
+    *tileIndex = candidate;
+    return true;
+  }
+  return false;
+}
+
+bool FindOwnedCoastalConstructionTile(NationSlot nationSlot, unsigned short forbiddenFlags,
+                                      StrategicTileIndex* tileIndex) {
+  for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
+    const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[candidate];
+    if (tile.firstCivilianOrder20 != 0 || tile.ownerNationTag04 != nationSlot) {
+      continue;
+    }
+    if ((tile.activeFlags1c & forbiddenFlags) != 0) {
+      continue;
+    }
+    for (int direction = 0; direction < 6; ++direction) {
+      StrategicTileIndex neighbor =
+          g_pGlobalMapState->GetNeighborTileID(candidate, static_cast<short>(direction));
+      if (neighbor == -1) {
+        continue;
+      }
+      if (g_pGlobalMapState->terrainStateTable[neighbor].GetTerrainKind() ==
+          kStrategicTerrainWater) {
+        *tileIndex = candidate;
+        return true;
+      }
     }
   }
   return false;
@@ -191,5 +256,111 @@ RuntimeActionResult RunCompletedResourceDevelopment(NativeTransition& transition
 
   extractiveWorker->ContinueOrders();
   surfaceWorker->ContinueOrders();
+  return transition.Finish();
+}
+
+RuntimeActionResult RunCiviliansPhase(NativeTransition& transition) {
+  const NationSlot nationSlot = ActiveNationSlot();
+  TGreatPower* nation = g_apNationStates[nationSlot];
+  if (nation == 0 || nation->trackedObjectList == 0 || g_pGlobalMapState == 0 ||
+      g_pGlobalMapState->terrainStateTable == 0) {
+    return RuntimeActionResult::Failure("the loaded game has no civilian state");
+  }
+
+  StrategicTileIndex sourceTile = -1;
+  StrategicTileIndex destinationTile = -1;
+  if (!FindUnoccupiedRailSection(&sourceTile, &destinationTile)) {
+    return RuntimeActionResult::Failure("the loaded map has no clear rail section");
+  }
+  TCivUnit* engineer = new TCivUnit();
+  engineer->ICivUnit(kCivilianUnitEngineer, sourceTile, nationSlot);
+  g_pGlobalMapState->ApplyRailSectionEndpointDirectionFlags(sourceTile, destinationTile,
+                                                            nationSlot);
+  engineer->SetOrders(kUnitOrderLayRail, sourceTile);
+  engineer->MoveTo(destinationTile);
+  engineer->remainingTurns24 = 1;
+
+  StrategicTileIndex prospectTile = -1;
+  if (!FindUnoccupiedTile(&prospectTile)) {
+    return RuntimeActionResult::Failure("the loaded map has no unoccupied prospecting tile");
+  }
+  TCivUnit* prospector = new TCivUnit();
+  prospector->ICivUnit(kCivilianUnitProspector, prospectTile, nationSlot);
+  prospector->SetOrders(kUnitOrderProspect, prospectTile);
+  prospector->remainingTurns24 = 1;
+
+  StrategicTileIndex developTile = -1;
+  if (!FindUnoccupiedTile(&developTile)) {
+    return RuntimeActionResult::Failure("the loaded map has no unoccupied development tile");
+  }
+  TCivUnit* miner = new TCivUnit();
+  miner->ICivUnit(kCivilianUnitMiner, developTile, nationSlot);
+  miner->SetOrders(kUnitOrderDevelopResource, developTile);
+  miner->remainingTurns24 = 1;
+
+  StrategicTileIndex fortTile = -1;
+  if (!FindUnoccupiedProvinceTile(&fortTile)) {
+    return RuntimeActionResult::Failure("the loaded map has no unoccupied province tile");
+  }
+  TCivUnit* fortEngineer = new TCivUnit();
+  fortEngineer->ICivUnit(kCivilianUnitEngineer, fortTile, nationSlot);
+  fortEngineer->SetOrders(kUnitOrderBuildFort, fortTile);
+  fortEngineer->remainingTurns24 = 1;
+
+  StrategicTileIndex purchaseTile = -1;
+  if (!FindUnoccupiedTile(&purchaseTile)) {
+    return RuntimeActionResult::Failure("the loaded map has no unoccupied purchase tile");
+  }
+  TCivUnit* developer = new TCivUnit();
+  developer->ICivUnit(kCivilianUnitDeveloper, purchaseTile, nationSlot);
+  developer->SetOrders(kUnitOrderPurchaseLand, purchaseTile);
+  developer->remainingTurns24 = 1;
+
+  StrategicTileIndex sleepTile = -1;
+  if (!FindUnoccupiedTile(&sleepTile)) {
+    return RuntimeActionResult::Failure("the loaded map has no unoccupied sleep tile");
+  }
+  TCivUnit* sleeper = new TCivUnit();
+  sleeper->ICivUnit(kCivilianUnitFarmer, sleepTile, nationSlot);
+  sleeper->SetOrders(kUnitOrderSleep, sleepTile);
+
+  StrategicTileIndex redeployTile = -1;
+  if (!FindUnoccupiedTile(&redeployTile)) {
+    return RuntimeActionResult::Failure("the loaded map has no unoccupied redeploy tile");
+  }
+  TCivUnit* traveler = new TCivUnit();
+  traveler->ICivUnit(kCivilianUnitRancher, redeployTile, nationSlot);
+  traveler->SetOrders(kUnitOrderRedeploy, redeployTile);
+  traveler->remainingTurns24 = 1;
+
+  StrategicTileIndex depotTile = -1;
+  if (!FindOwnedConstructionTile(nationSlot, 0, 0x24, &depotTile)) {
+    return RuntimeActionResult::Failure("the loaded map has no owned depot construction tile");
+  }
+  TCivUnit* depotEngineer = new TCivUnit();
+  depotEngineer->ICivUnit(kCivilianUnitEngineer, depotTile, nationSlot);
+  depotEngineer->SetOrders(kUnitOrderBuildDepot, depotTile);
+  depotEngineer->remainingTurns24 = 1;
+
+  StrategicTileIndex portTile = -1;
+  if (!FindOwnedCoastalConstructionTile(nationSlot, 0x30, &portTile)) {
+    return RuntimeActionResult::Failure(
+        "the loaded map has no owned coastal port construction tile");
+  }
+  // beginning_of_game.imp has no owned BASE_TRANSPORT tiles that are not cities.
+  // Ordinary port orders run on a connected coastal tile; stamp that flag so
+  // EnsurePortZoneForTile takes the live path instead of the early-out.
+  g_pGlobalMapState->terrainStateTable[portTile].activeFlags1c |= 1;
+  TCivUnit* portEngineer = new TCivUnit();
+  portEngineer->ICivUnit(kCivilianUnitEngineer, portTile, nationSlot);
+  portEngineer->SetOrders(kUnitOrderBuildPort, portTile);
+  portEngineer->remainingTurns24 = 1;
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  g_pSimMgr->DoCivilians();
   return transition.Finish();
 }
