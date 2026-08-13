@@ -51,6 +51,13 @@ struct CitySiteIntro;
 #[derive(Component)]
 struct CitySiteNotice(String);
 
+/// Marks a spawned city-site scene whose retail controls have been stuffed.
+///
+/// `spawn_scene` can leave the root in the world before its children exist.
+/// Bind retries until the hierarchy is present instead of running once on `Added`.
+#[derive(Component)]
+struct CitySiteWired;
+
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum NewCityAction {
     Accept,
@@ -85,7 +92,7 @@ fn enter_city_site(mut commands: Commands) {
 
 fn bind_city_site(
     mut commands: Commands,
-    root: Option<Single<Entity, Added<CitySiteRoot>>>,
+    root: Option<Single<Entity, (With<CitySiteRoot>, Without<CitySiteWired>)>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut nodes: Query<&mut Node>,
@@ -96,6 +103,9 @@ fn bind_city_site(
         return;
     };
     let root = *root;
+    if !scene_has_children(root, &children) {
+        return;
+    }
     bind_city_site_controls(
         &mut commands,
         root,
@@ -117,6 +127,7 @@ fn bind_city_site(
         .insert(CitySiteHover::default())
         .observe(on_city_site_map_click);
     open_city_site_intro(&mut commands);
+    commands.entity(root).insert(CitySiteWired);
 }
 
 fn bind_city_site_controls(
@@ -174,7 +185,7 @@ fn open_city_site_intro(commands: &mut Commands) {
 
 fn bind_city_site_intro(
     mut commands: Commands,
-    root: Option<Single<Entity, Added<CitySiteIntro>>>,
+    root: Option<Single<Entity, (With<CitySiteIntro>, Without<CitySiteWired>)>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut assets: RetailUiAssets,
@@ -184,6 +195,9 @@ fn bind_city_site_intro(
         return;
     };
     let root = *root;
+    if !scene_has_children(root, &children) {
+        return;
+    }
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("City-site screen requires an active major nation");
     let minister = get_string(&assets, MINISTER_STRING_GROUP, 2);
@@ -209,6 +223,7 @@ fn bind_city_site_intro(
         .insert(ActivateOnPress)
         .remove::<bevy::ui::InteractionDisabled>()
         .observe(on_city_site_intro_activate);
+    commands.entity(root).insert(CitySiteWired);
 }
 
 fn on_city_site_intro_activate(
@@ -345,7 +360,9 @@ fn open_city_site_notice(commands: &mut Commands, body: String) {
 
 fn bind_new_city_dialog(
     mut commands: Commands,
-    root: Option<Single<(Entity, &NewCityDialogRoot), Added<NewCityDialogRoot>>>,
+    root: Option<
+        Single<(Entity, &NewCityDialogRoot), (With<NewCityDialogRoot>, Without<CitySiteWired>)>,
+    >,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut nodes: Query<&mut Node>,
@@ -356,6 +373,9 @@ fn bind_new_city_dialog(
         return;
     };
     let (root, dialog) = *root;
+    if !scene_has_children(root, &children) {
+        return;
+    }
     let report = capital_site_report(&session.0, dialog.0);
     stuff_new_city_dialog(
         &mut commands,
@@ -377,6 +397,7 @@ fn bind_new_city_dialog(
             .remove::<bevy::ui::InteractionDisabled>()
             .observe(on_new_city_activate);
     }
+    commands.entity(root).insert(CitySiteWired);
 }
 
 fn stuff_new_city_dialog(
@@ -463,12 +484,10 @@ fn spawn_numbered_resource_item(
     resource_index: i16,
     count: i16,
 ) {
-    let icon = assets
-        .picture(PictureId::new(COMMODITY_ICON_PICTURE_BASE + resource_index))
-        .expect("retail commodity icon must load");
+    let icon = commodity_icon(assets, resource_index);
     let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset {
-            font_family: 1,
+            font_family: 3,
             face_flags: 0,
             point_size: 9,
             alignment: -1,
@@ -526,7 +545,9 @@ fn new_city_extra_height(visible: i16) -> i32 {
 
 fn bind_city_site_notice(
     mut commands: Commands,
-    notice: Option<Single<(Entity, &CitySiteNotice), Added<CitySiteNotice>>>,
+    notice: Option<
+        Single<(Entity, &CitySiteNotice), (With<CitySiteNotice>, Without<CitySiteWired>)>,
+    >,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut assets: RetailUiAssets,
@@ -536,6 +557,9 @@ fn bind_city_site_notice(
         return;
     };
     let (root, notice) = notice.into_inner();
+    if !scene_has_children(root, &children) {
+        return;
+    }
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("City-site screen requires an active major nation");
     stuff_minister_dialog(
@@ -556,6 +580,7 @@ fn bind_city_site_notice(
         .insert(ActivateOnPress)
         .remove::<bevy::ui::InteractionDisabled>()
         .observe(on_city_site_notice_activate);
+    commands.entity(root).insert(CitySiteWired);
 }
 
 fn on_city_site_notice_activate(
@@ -679,6 +704,34 @@ fn set_styled_text(
         line_height,
         TextColor(assets.palette_color(palette)),
     ));
+}
+
+fn scene_has_children(root: Entity, children: &Query<&Children>) -> bool {
+    children
+        .get(root)
+        .is_ok_and(|children| !children.is_empty())
+}
+
+fn commodity_icon(assets: &mut RetailUiAssets, resource_index: i16) -> Handle<Image> {
+    let picture_id = PictureId::new(COMMODITY_ICON_PICTURE_BASE + resource_index);
+    let indexed = assets
+        .indexed_picture(picture_id)
+        .expect("retail commodity icon must have indexed pixels");
+    assets
+        .transformed_picture(picture_id, |image| {
+            let Some(pixels) = image.data.as_mut() else {
+                return;
+            };
+            if indexed.pixels.len() * 4 != pixels.len() {
+                return;
+            }
+            for (pixel, &palette_index) in pixels.chunks_exact_mut(4).zip(&indexed.pixels) {
+                if palette_index == 0x10 {
+                    pixel[3] = 0;
+                }
+            }
+        })
+        .expect("retail commodity icon must load")
 }
 
 fn despawn_modal_root<C: Component>(
