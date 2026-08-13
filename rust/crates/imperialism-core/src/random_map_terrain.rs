@@ -697,9 +697,9 @@ fn smooth_ownership(
         });
         if !has_same_owner {
             let direction = (rng.next_sample_15() % 6) as usize;
-            let neighbor = full_neighbor(geometry, tile_index, direction)
-                .expect("retail isolated-tile copy selected an out-of-grid neighbor");
-            tiles[tile_index] = tiles[neighbor];
+            if let Some(neighbor) = full_neighbor(geometry, tile_index, direction) {
+                tiles[tile_index] = tiles[neighbor];
+            }
         }
     }
 }
@@ -907,8 +907,10 @@ fn desert_ring(
                     if spreads {
                         let logical_tile = row_start + column;
                         for direction in [5, 3] {
-                            let neighbor = full_neighbor(geometry, logical_tile, direction)
-                                .expect("retail desert band selected an invalid neighbor");
+                            let Some(neighbor) = full_neighbor(geometry, logical_tile, direction)
+                            else {
+                                continue;
+                            };
                             if tiles[neighbor].terrain_kind == PLAINS
                                 && rng.next_sample_15() % 100 < chance as u32
                             {
@@ -948,9 +950,13 @@ fn place_forest(
     tiles[tile].gate_flag = if urgent { 15 } else { 13 };
     let mut remaining = retry_budget - 1;
     for direction in 0..6 {
-        let neighbor = full_neighbor(geometry, tile, direction)
-            .expect("retail forest spread selected an invalid neighbor");
-        if rng.next_sample_15() % 100 < 70 && remaining != 0 {
+        let neighbor = full_neighbor(geometry, tile, direction);
+        // Retail always draws, then spreads when the roll hits, even if the hex
+        // neighbor is off the north or south edge.
+        if rng.next_sample_15() % 100 < 70
+            && remaining != 0
+            && let Some(neighbor) = neighbor
+        {
             remaining -= place_forest(tiles, geometry, neighbor, 1, urgent, rng);
         }
     }
@@ -980,9 +986,9 @@ fn create_rivers(
         let mut direction = first_direction;
         loop {
             direction = if direction == 5 { 0 } else { direction + 1 };
-            let neighbor = full_neighbor(geometry, tile, direction)
-                .expect("retail river start selected an invalid neighbor");
-            if tiles[neighbor].terrain_kind != MOUNTAIN || direction == first_direction {
+            let mountain_neighbor = full_neighbor(geometry, tile, direction)
+                .is_some_and(|neighbor| tiles[neighbor].terrain_kind == MOUNTAIN);
+            if !mountain_neighbor || direction == first_direction {
                 break;
             }
         }
@@ -1031,8 +1037,9 @@ fn grow_river(
             }
         }
     }
-    let neighbor = full_neighbor(geometry, tile, next_direction)
-        .expect("retail river recursion selected an invalid neighbor");
+    let Some(neighbor) = full_neighbor(geometry, tile, next_direction) else {
+        return false;
+    };
     if !grow_river(
         tiles,
         geometry,
@@ -1588,6 +1595,41 @@ mod tests {
             [(PLAINS, -1), (FOREST, 15), (PLAINS, -1), (WATER, -1)]
         );
         assert_eq!(eclectia_rng.state(), 0xd54a_6449);
+    }
+
+    #[test]
+    fn north_edge_forest_spread_still_draws_for_off_map_neighbors() {
+        let geometry = MapGeometry::new(MapTopology::Wrapping);
+        let mut tiles = vec![
+            GeneratedTerrainTileScratch {
+                terrain_kind: PLAINS,
+                river_sprite_code: 0,
+                owner_nation: 0,
+                gate_flag: -1,
+                province_index: 0,
+            };
+            TILE_COUNT
+        ];
+        let mut rng = RetailLcg::from_state(1);
+        assert_eq!(place_forest(&mut tiles, geometry, 0, 1, false, &mut rng), 1);
+        let mut expected = RetailLcg::from_state(1);
+        for _ in 0..6 {
+            let _ = expected.next_sample_15();
+        }
+        assert_eq!(rng, expected);
+        assert_eq!(tiles[0].terrain_kind, FOREST);
+    }
+
+    #[test]
+    fn wrapping_and_bounded_maps_generate_without_panicking() {
+        for topology in [MapTopology::Wrapping, MapTopology::Bounded] {
+            for seed in [1_u32, 2, 9] {
+                let mut rng = RetailLcg::from_state(seed);
+                let generated = generate_random_map(b"ordinary", topology, &mut rng);
+                assert_eq!(generated.tiles().len(), TILE_COUNT);
+                assert_eq!(generated.provinces().len(), 120);
+            }
+        }
     }
 
     #[test]
