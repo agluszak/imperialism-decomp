@@ -1,9 +1,9 @@
 use crate::AppState;
+use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
 use crate::ui::generated;
 use crate::ui::load_save::OpenFlagMenu;
-use crate::ui::random_setup::GameSession;
 use crate::ui::retail::{RetailTag, find_descendant};
 use crate::ui::strategic_map::{
     SelectedEngineer, StrategicBaseTerrainCanvas, bind_strategic_base_terrain,
@@ -77,7 +77,7 @@ fn scroll_strategic_map(
         return;
     }
     *last_scroll_tick = Some(tick16);
-    session.0.map.scroll_viewport(edge_mask);
+    session.0.scroll_map_viewport(edge_mask);
 }
 
 fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> u8 {
@@ -113,8 +113,7 @@ fn enter_strategic_map_view(mut session: ResMut<GameSession>) {
     else {
         return;
     };
-    let origin = session.0.map.viewport_origin_centered_on(tile);
-    session.0.map.view_origin = origin;
+    session.0.center_map_on(tile);
 }
 
 fn spawn_strategic_map(mut commands: Commands) {

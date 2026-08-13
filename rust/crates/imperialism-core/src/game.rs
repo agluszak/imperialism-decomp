@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 pub struct GameState {
     pub(crate) turn: TurnState,
     pub(crate) unit_ids: UnitIdAllocator,
-    pub map: MapMgr,
-    pub ocean: Ocean,
+    pub(crate) map: MapMgr,
+    pub(crate) ocean: Ocean,
     pub(crate) rng: RngState,
     pub(crate) market: TradeMarketState,
     pub(crate) technology: TechnologyState,
@@ -19,6 +19,9 @@ pub struct GameState {
     pub(crate) missions: Vec<MissionState>,
     pub(crate) news: NewsState,
     pub(crate) pending: PendingWorkState,
+    /// Live `TTradeMgr` deal cursor and pending Offer Sheet. Not part of `.imp`.
+    #[serde(skip)]
+    pub(crate) trade_session: Option<crate::trade_phase::TradeSession>,
 }
 
 /// Construction-only parameter object for assembling [`GameState`].
@@ -65,6 +68,7 @@ impl GameState {
             missions: parts.missions,
             news: parts.news,
             pending: parts.pending,
+            trade_session: None,
         }
     }
 
@@ -132,6 +136,32 @@ impl GameState {
         &self.pending
     }
 
+    pub const fn map(&self) -> &MapMgr {
+        &self.map
+    }
+
+    pub fn map_mut(&mut self) -> &mut MapMgr {
+        &mut self.map
+    }
+
+    pub const fn ocean(&self) -> &Ocean {
+        &self.ocean
+    }
+
+    /// Applies the retail map edge-scroll mask to the strategic viewport.
+    pub fn scroll_map_viewport(&mut self, edge_mask: u8) -> bool {
+        self.map.scroll_viewport(edge_mask)
+    }
+
+    pub fn set_map_view_origin(&mut self, origin: TileId) {
+        self.map.view_origin = origin;
+    }
+
+    /// Centers the strategic viewport on `tile` using retail 9-by-7 origin math.
+    pub fn center_map_on(&mut self, tile: TileId) {
+        self.map.view_origin = self.map.viewport_origin_centered_on(tile);
+    }
+
     /// Sets whether a civilian unit kind is unlocked in the nation's University.
     pub fn set_university_civilian_available(
         &mut self,
@@ -150,12 +180,5 @@ impl GameState {
             .iter()
             .find(|unit| unit.nation == nation && unit.order == CivilianWorkOrder::Idle)
             .and_then(|unit| unit.location.tile())
-    }
-}
-
-impl GameStateParts {
-    /// Construction-time access to a major nation while assembling live state.
-    pub fn major_mut(&mut self, nation: MajorNationId) -> &mut MajorNation {
-        self.nations.major_mut(nation)
     }
 }

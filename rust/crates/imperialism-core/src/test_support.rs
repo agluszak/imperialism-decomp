@@ -98,12 +98,10 @@ pub(crate) fn great_power_state() -> GreatPowerState {
         pending_ship: None,
         interior_civilian: Box::default(),
         ai_trade: None,
-        ai_development_pressure: None,
         aid_allocation_by_minor_nation: MinorNationTable::default(),
         budget_pool_base: 0,
         budget_pool_delta: 0,
         special_resource_trade_balance: 0,
-        candidate_nation_flags: NationTable::default(),
         scenario_initialized: false,
         turn_finished: false,
         pending_actions: PendingActionTable::default(),
@@ -113,7 +111,6 @@ pub(crate) fn great_power_state() -> GreatPowerState {
         pressure_counter: 0,
         army_movement_budget: 0,
         aid_allocation_total: 0,
-        colony_boycott_flags: NationTable::default(),
         military_expenses: 0,
     }
 }
@@ -180,5 +177,6 @@ pub(crate) fn game_state() -> GameState {
         missions: Vec::new(),
         news: crate::NewsState::default(),
         pending: crate::PendingWorkState::default(),
+        trade_session: None,
     }
 }

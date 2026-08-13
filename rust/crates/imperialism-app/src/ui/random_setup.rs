@@ -1,3 +1,4 @@
+use crate::ui::GameSession;
 use crate::ui::generated;
 use crate::ui::hover_help::{
     HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, ui_string,
@@ -55,10 +56,6 @@ impl FromWorld for RandomGameSetup {
         }
     }
 }
-
-/// Authoritative game state produced when Random Setup Accept/Okay succeeds.
-#[derive(Resource, Clone, Debug, PartialEq)]
-pub(crate) struct GameSession(pub(crate) GameState);
 
 /// The generated map data owned by the setup screen.
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]

@@ -2,8 +2,7 @@
 
 use anyhow::{Context, Result, bail};
 use imperialism_core::{
-    AiDevelopmentPressureState, GameState, MAJOR_NATION_COUNT, MajorNationId, NewsState,
-    PendingWorkState, RngState, TurnState, UnitIdAllocator,
+    GameState, NewsState, PendingWorkState, RngState, TurnState, UnitIdAllocator,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 use serde::Deserialize;
@@ -31,7 +30,6 @@ struct EphemeralGameState {
     rng: RngState,
     news: NewsState,
     pending: PendingWorkState,
-    ai_development_pressure: Vec<Option<AiDevelopmentPressureState>>,
 }
 
 /// Save bytes plus the runtime-only overlay the `.imp` does not store.
@@ -137,19 +135,6 @@ pub fn load_save_backed_state(capture: SaveBackedState) -> Result<GameState> {
     parts.rng = capture.ephemeral.rng;
     parts.news = capture.ephemeral.news;
     parts.pending = capture.ephemeral.pending;
-    let pressures = capture.ephemeral.ai_development_pressure;
-    if pressures.len() != MAJOR_NATION_COUNT {
-        bail!(
-            "ai_development_pressure length {}, expected {MAJOR_NATION_COUNT}",
-            pressures.len()
-        );
-    }
-    for (slot, pressure) in pressures.into_iter().enumerate() {
-        parts
-            .major_mut(MajorNationId::new(slot as u8))
-            .economy
-            .ai_development_pressure = pressure;
-    }
     Ok(GameState::from_parts(parts))
 }
 

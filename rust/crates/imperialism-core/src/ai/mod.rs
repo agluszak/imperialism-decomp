@@ -1,3 +1,5 @@
+mod interior;
+
 use crate::*;
 use serde::{Deserialize, Serialize};
 
@@ -198,14 +200,6 @@ pub(crate) fn initial_ai_city_order_demand() -> AiCityOrderDemand {
     demand.expansions[CityFacilitySlot::SteelMill] = 2;
     demand.expansions[CityFacilitySlot::LumberMill] = 2;
     demand
-}
-
-/// Runtime-derived inputs used by an AI major when selecting a fort province.
-#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
-pub struct AiDevelopmentPressureState {
-    pub(crate) expansion_pressure_per_compatible_region_bits: u32,
-    pub(crate) average_unit_divergence_per_owned_region_bits: u32,
-    pub(crate) active_mission_pressure_average_bits: u32,
 }
 
 /// An AI major's current use of one province or live sea/port-zone target.
