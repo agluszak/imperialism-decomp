@@ -59,7 +59,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
     let city = &state.nations().major(nation).city;
     let material_pictures = SHIPYARD_MATERIALS
         .map(|resource| transparent_picture(assets, PictureId::new(700 + resource as i16)));
-    let (detail_font, _, _) = assets
+    let (detail_font, _, detail_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -67,7 +67,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             alignment: -2,
         })
         .expect("retail Shipyard detail text style");
-    let (title_font, _, _) = assets
+    let (title_font, _, title_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -75,7 +75,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             alignment: 1,
         })
         .expect("retail Shipyard title text style");
-    let (name_font, _, _) = assets
+    let (name_font, _, name_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -188,6 +188,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             Text::new(""),
             InteractionDisabled,
             detail_font.clone(),
+            detail_line_height,
             TextColor(normal_color),
         ));
         ShipyardRow {
@@ -196,25 +197,32 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             quantity,
         }
     }));
-    let style_text = |commands: &mut Commands, tag, font: TextFont| {
+    let style_text = |commands: &mut Commands, tag, font: TextFont, line_height: LineHeight| {
         let entity = find_descendant(root, tag, children, tags);
         commands
             .entity(entity)
-            .insert((Text::new(""), font, TextColor(normal_color)));
+            .insert((Text::new(""), font, line_height, TextColor(normal_color)));
         entity
     };
-    let ship_name = style_text(commands, fourcc!("snam"), name_font);
-    let description = style_text(commands, fourcc!("desc"), detail_font.clone());
+    let ship_name = style_text(commands, fourcc!("snam"), name_font, name_line_height);
+    let description = style_text(
+        commands,
+        fourcc!("desc"),
+        detail_font.clone(),
+        detail_line_height,
+    );
     let picture = find_descendant(root, fourcc!("spic"), children, tags);
     let title = find_descendant(root, fourcc!("titl"), children, tags);
     commands
         .entity(title)
-        .insert((title_font, TextColor(normal_color)));
+        .insert((title_font, title_line_height, TextColor(normal_color)));
     for tag in [fourcc!("fix0"), fourcc!("fix1")] {
         let fixed = find_descendant(root, tag, children, tags);
-        commands
-            .entity(fixed)
-            .insert((detail_font.clone(), TextColor(normal_color)));
+        commands.entity(fixed).insert((
+            detail_font.clone(),
+            detail_line_height,
+            TextColor(normal_color),
+        ));
     }
     let dlog = find_descendant(root, fourcc!("DLOG"), children, tags);
     let materials = std::array::from_fn(|index| {
@@ -252,6 +260,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
                     },
                     Text::new(""),
                     detail_font.clone(),
+                    detail_line_height,
                     TextLayout::justify(Justify::Left),
                     TextColor(normal_color),
                     Visibility::Hidden,
@@ -281,6 +290,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             },
             Text::new(stat_labels[index].clone()),
             detail_font.clone(),
+            detail_line_height,
             TextLayout::justify(Justify::Left),
             TextColor(normal_color),
             Pickable::IGNORE,
@@ -300,6 +310,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
                 },
                 Text::new(""),
                 detail_font.clone(),
+                detail_line_height,
                 TextLayout::justify(Justify::Left),
                 TextColor(normal_color),
                 Pickable::IGNORE,

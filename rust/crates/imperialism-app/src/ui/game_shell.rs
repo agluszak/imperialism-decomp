@@ -2,9 +2,12 @@ use crate::AppState;
 use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
 use crate::ui::generated;
+use crate::ui::load_save::OpenFlagMenu;
 use crate::ui::random_setup::GameSession;
 use crate::ui::retail::{RetailTag, find_descendant};
-use crate::ui::strategic_map::{bind_strategic_base_terrain, sync_strategic_base_terrain};
+use crate::ui::strategic_map::{
+    bind_strategic_base_terrain, sync_strategic_base_terrain, sync_strategic_units,
+};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -28,22 +31,25 @@ pub(crate) struct GameShellPlugin;
 
 impl Plugin for GameShellPlugin {
     fn build(&self, app: &mut App) {
-        app.add_observer(on_game_screen_activate)
-            .add_systems(
-                OnEnter(AppState::StrategicMap),
-                (
-                    enter_strategic_map_view,
-                    spawn_strategic_map,
-                    bind_strategic_map,
-                )
-                    .chain(),
+        app.add_systems(
+            OnEnter(AppState::StrategicMap),
+            (
+                enter_strategic_map_view,
+                spawn_strategic_map,
+                bind_strategic_map,
             )
-            .add_systems(
-                Update,
-                (scroll_strategic_map, sync_strategic_base_terrain)
-                    .chain()
-                    .run_if(in_state(AppState::StrategicMap)),
-            );
+                .chain(),
+        )
+        .add_systems(
+            Update,
+            (
+                scroll_strategic_map,
+                sync_strategic_base_terrain,
+                sync_strategic_units,
+            )
+                .chain()
+                .run_if(in_state(AppState::StrategicMap)),
+        );
     }
 }
 
@@ -129,6 +135,11 @@ fn bind_strategic_map(
         None,
     );
     disable_native_control(&mut commands, *root, &children, &tags, fourcc!("DONE"));
+    let flag = find_descendant(*root, fourcc!("Flag"), &children, &tags);
+    commands
+        .entity(flag)
+        .insert(OpenFlagMenu)
+        .remove::<InteractionDisabled>();
     bind_strategic_base_terrain(
         &mut commands,
         *root,
@@ -209,7 +220,10 @@ pub(crate) fn bind_native_game_screen_nav(
         (city, GameScreenNavAction::City),
         (diplomacy, GameScreenNavAction::Diplomacy),
     ] {
-        commands.entity(entity).insert(action);
+        commands
+            .entity(entity)
+            .insert(action)
+            .observe(on_game_screen_activate);
     }
     if let Some(leave_toolbar_tag) = leave_toolbar_tag {
         let toolbar = find_descendant(root, leave_toolbar_tag, children, tags);
@@ -217,7 +231,8 @@ pub(crate) fn bind_native_game_screen_nav(
         commands
             .entity(leave)
             .insert((GameScreenNavAction::StrategicMap, ActivateOnPress))
-            .remove::<InteractionDisabled>();
+            .remove::<InteractionDisabled>()
+            .observe(on_game_screen_activate);
     }
 }
 
@@ -241,9 +256,9 @@ fn on_game_screen_activate(
     state: Res<State<AppState>>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
+    let action = actions
+        .get(activate.entity)
+        .expect("game-screen Activate is bound on a GameScreenNavAction control");
     let destination = match *action {
         GameScreenNavAction::StrategicMap => AppState::StrategicMap,
         GameScreenNavAction::Trade => AppState::Trade,

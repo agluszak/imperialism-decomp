@@ -56,7 +56,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::Warehouse);
     let oil_drilling_available = state.technology().oil_drilling_available();
-    let (title_font, title_layout, _) = assets
+    let (title_font, title_layout, title_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -64,7 +64,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
             alignment: 1,
         })
         .expect("retail Warehouse title text style");
-    let (value_font, value_layout, _) = assets
+    let (value_font, value_layout, value_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -79,6 +79,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
         Text::new(building_name),
         title_font,
         title_layout,
+        title_line_height,
         TextColor(text_color),
     ));
 
@@ -89,6 +90,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
             Text::new(""),
             value_font.clone(),
             value_layout,
+            value_line_height,
             TextColor(text_color),
         ));
         stocks.push(WarehouseStockControl {
@@ -103,6 +105,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
             Text::new(""),
             value_font.clone(),
             value_layout,
+            value_line_height,
             TextColor(text_color),
         ));
     }

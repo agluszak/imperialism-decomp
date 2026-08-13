@@ -20,7 +20,7 @@ Keep domain types beside their behavior modules (`game`, `map`, `nations`, `city
 `CityFacilitySlot`. Export a curated crate-root surface—do not reintroduce broad `state::*` or
 `production::*` globs or a prelude. In formats, keep retail binary parse separate from `GameState`
 projection. In the app, keep city UI split by retail dialog under `ui/city/`. Keep the strategic map
-split by retail draw stage under `ui/strategic_map/` (`terrain`, `borders`, `overlays`).
+split by retail draw stage under `ui/strategic_map/` (`terrain`, `borders`, `overlays`, `units`).
 
 Port retail behavior, not the recovered C++ architecture. C++ class hierarchy, ownership, ABI,
 integer storage widths, sentinels, offsets, and control flow are evidence, not Rust design. Keep

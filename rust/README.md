@@ -44,6 +44,16 @@ and reads them directly before Bevy constructs a window; the retail path is not 
 cargo run -p imperialism-app -- --retail-dir /path/to/Imperialism
 ```
 
+Saves are read and written as retail `slot0.imp`…`slot7.imp` / `slotA.imp` files in `Save/` under the installation, matching the recovered game. Override that directory with `--save-dir` when developing:
+
+```sh
+cargo run -p imperialism-app -- \
+  --retail-dir /path/to/Imperialism \
+  --save-dir /tmp/imperialism-saves
+```
+
+Load Game on the main menu and Save/Load on the in-game Flag menu use that directory. The `.imp` file does not store RNG; UI loads use a fixed CRT seed of 1 and zeroed map/zone LCGs.
+
 To start from a retail save, also provide the runtime state that the `.imp` file does not store:
 
 ```sh
