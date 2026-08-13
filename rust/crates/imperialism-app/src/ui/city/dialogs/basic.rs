@@ -379,11 +379,11 @@ pub(in crate::ui::city) fn sync_food_dialog(
             continue;
         }
         let city = &session.0.nations().major(nation).city;
-        let status = session.0.city_order_status(nation, FOOD_ORDER.order);
+        let quantity = session.0.city_order_quantity(nation, FOOD_ORDER.order);
         texts
             .get_mut(view.quantity)
             .expect("Food Processing order control belongs to its dialog")
-            .0 = status.quantity.to_string();
+            .0 = quantity.to_string();
         for (entity, visible) in [
             (view.labor, city.population.strength() >= 2),
             (view.grain, city.stockpile[ResourceKind::Grain] >= 2),
@@ -415,11 +415,11 @@ pub(in crate::ui::city) fn sync_power_dialog(
         if !session.is_changed() && !view.is_added() {
             continue;
         }
-        let status = session.0.city_order_status(nation, POWER_ORDER.order);
+        let quantity = session.0.city_order_quantity(nation, POWER_ORDER.order);
         texts
             .get_mut(view.quantity)
             .expect("Power Plant order control belongs to its dialog")
-            .0 = status.quantity.to_string();
+            .0 = quantity.to_string();
     }
 }
 
@@ -436,13 +436,13 @@ pub(in crate::ui::city) fn sync_transport_capacity_dialog(
             continue;
         }
         let city = &session.0.nations().major(nation).city;
-        let status = session
+        let quantity = session
             .0
-            .city_order_status(nation, TRANSPORT_CAPACITY_ORDER.order);
+            .city_order_quantity(nation, TRANSPORT_CAPACITY_ORDER.order);
         texts
             .get_mut(view.quantity)
             .expect("Transport order control belongs to its dialog")
-            .0 = status.quantity.to_string();
+            .0 = quantity.to_string();
         for (entity, visible) in [
             (view.labor, city.population.strength() >= 2),
             (view.lumber, city.stockpile[ResourceKind::Lumber] < 1),
@@ -473,11 +473,13 @@ pub(in crate::ui::city) fn sync_population_dialog(
         }
         let major = session.0.nations().major(nation);
         let city = &major.city;
-        let status = session.0.city_order_status(nation, POPULATION_ORDER.order);
+        let quantity = session
+            .0
+            .city_order_quantity(nation, POPULATION_ORDER.order);
         texts
             .get_mut(view.quantity)
             .expect("Population order control belongs to its dialog")
-            .0 = status.quantity.to_string();
+            .0 = quantity.to_string();
         for (entity, resource) in [
             (view.food, ResourceKind::Food),
             (view.clothing, ResourceKind::Clothing),

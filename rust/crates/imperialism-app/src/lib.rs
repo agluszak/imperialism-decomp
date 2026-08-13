@@ -20,7 +20,6 @@ pub(crate) enum AppState {
     Transport,
     Diplomacy,
     DealBook,
-    Newspaper,
 }
 
 #[derive(Resource)]

@@ -35,23 +35,21 @@ class RuntimeCatalogTests(unittest.TestCase):
 
     def test_native_transition_oracle_is_the_sole_model_differential_entry(self) -> None:
         oracle = find_test("native_transition_oracle")
-        loaded_turn = find_test("easy_turn_from_save")
         self.assertIsNotNone(oracle)
-        self.assertIsNotNone(loaded_turn)
         assert oracle is not None
-        assert loaded_turn is not None
-        self.assertEqual(oracle.fixture, loaded_turn.fixture)
         self.assertEqual(oracle.evidence_kind, "retail_fixture_oracle")
         self.assertEqual(oracle.native_snapshots, ())
         self.assertEqual(oracle.suites, ())
         self.assertEqual(oracle.required_oracles, ())
         self.assertIn("NativeTransitionOracle()", render_factories())
         self.assertIn('"native_transition_oracle"', render_registry())
+        self.assertIsNone(find_test("easy_turn_from_save"))
         self.assertIsNone(find_test("rolling_stock"))
         self.assertIsNone(find_test("city_item_order_increase"))
         self.assertIsNone(find_test("first_turn_alert_phase"))
         self.assertIsNone(find_test("first_turn_trade_phase"))
         self.assertIsNone(find_test("nation_resource_yield_rebuild"))
+
     def test_pr_suite_is_nonempty_and_part_of_full(self) -> None:
         pr_names = {test.name for test in tests_in_suite("pr")}
         full_names = {test.name for test in tests_in_suite("full")}

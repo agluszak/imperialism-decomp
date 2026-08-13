@@ -17,48 +17,6 @@ pub(crate) const TRANSPORT_CAPACITY_INPUTS: (ResourceKind, ResourceKind) =
 pub(crate) const EXPANSION_INPUTS: (ResourceKind, ResourceKind) =
     (ResourceKind::Lumber, ResourceKind::Steel);
 
-pub(crate) const fn item_order_spec(output: ManufacturedItem) -> ItemOrderSpec {
-    let (inputs, production_slot) = match output {
-        ManufacturedItem::Fabric => (
-            ItemInputs::Either(ResourceKind::Wool, ResourceKind::Cotton),
-            CityFacilitySlot::TextileMill,
-        ),
-        ManufacturedItem::Lumber => (
-            ItemInputs::Double(ResourceKind::Timber),
-            CityFacilitySlot::LumberMill,
-        ),
-        ManufacturedItem::Paper => (
-            ItemInputs::Double(ResourceKind::Timber),
-            CityFacilitySlot::LumberMill,
-        ),
-        ManufacturedItem::Steel => (
-            ItemInputs::Both(ResourceKind::Iron, ResourceKind::Coal),
-            CityFacilitySlot::SteelMill,
-        ),
-        ManufacturedItem::Fuel => (
-            ItemInputs::Double(ResourceKind::Oil),
-            CityFacilitySlot::OilRefinery,
-        ),
-        ManufacturedItem::Clothing => (
-            ItemInputs::Double(ResourceKind::Fabric),
-            CityFacilitySlot::ClothingFactory,
-        ),
-        ManufacturedItem::Furniture => (
-            ItemInputs::Double(ResourceKind::Lumber),
-            CityFacilitySlot::FurnitureFactory,
-        ),
-        ManufacturedItem::Hardware | ManufacturedItem::Arms => (
-            ItemInputs::Double(ResourceKind::Steel),
-            CityFacilitySlot::Metalworks,
-        ),
-    };
-    ItemOrderSpec {
-        output: output.resource(),
-        inputs,
-        production_slot,
-    }
-}
-
 pub const fn civilian_recruitment_spec(kind: CivilianUnitKind) -> RecruitmentOrderSpec {
     let cash_per_unit = match kind {
         CivilianUnitKind::Miner => 1_500,
@@ -199,7 +157,7 @@ pub const fn military_recruitment_spec(
     })
 }
 
-pub fn ship_order_costs(ship_type: ShipType) -> ResourceTable<i16> {
+pub const fn ship_order_costs(ship_type: ShipType) -> ShipMaterials {
     const LUMBER: [i16; 14] = [0, 4, 7, 5, 8, 6, 6, 6, 4, 8, 0, 2, 0, 0];
     const FABRIC: [i16; 14] = [0, 2, 3, 2, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0];
     const ARMS: [i16; 14] = [0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18];
@@ -207,13 +165,13 @@ pub fn ship_order_costs(ship_type: ShipType) -> ResourceTable<i16> {
     const COAL: [i16; 14] = [0, 0, 0, 0, 0, 10, 0, 10, 10, 20, 20, 20, 0, 0];
     const FUEL: [i16; 14] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 20];
 
-    let mut costs = ResourceTable::default();
     let index = ship_type as usize;
-    costs[ResourceKind::Lumber] = LUMBER[index];
-    costs[ResourceKind::Fabric] = FABRIC[index];
-    costs[ResourceKind::Arms] = ARMS[index];
-    costs[ResourceKind::Steel] = STEEL[index];
-    costs[ResourceKind::Coal] = COAL[index];
-    costs[ResourceKind::Fuel] = FUEL[index];
-    costs
+    ShipMaterials {
+        lumber: LUMBER[index],
+        fabric: FABRIC[index],
+        arms: ARMS[index],
+        steel: STEEL[index],
+        coal: COAL[index],
+        fuel: FUEL[index],
+    }
 }

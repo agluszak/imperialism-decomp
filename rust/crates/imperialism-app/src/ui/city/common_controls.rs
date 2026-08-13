@@ -257,22 +257,23 @@ pub(in crate::ui::city) fn sync_industry_dialog(
                 };
         }
         for bar in &view.amount_bars {
-            let status = session.0.city_order_status(nation, bar.order);
+            let quantity = session.0.city_order_quantity(nation, bar.order);
+            let maximum = session.0.city_order_limit(nation, bar.order).maximum;
             texts
                 .get_mut(bar.quantity)
                 .expect("industry order quantity belongs to its dialog")
-                .0 = status.quantity.to_string();
+                .0 = quantity.to_string();
             let capacity = city.production_orders[view.slot];
-            let scale = |quantity: i16| {
+            let scale = |value: i16| {
                 if capacity > 0 {
-                    (i32::from(quantity) * i32::from(INDUSTRY_BAR_WIDTH) / i32::from(capacity))
+                    (i32::from(value) * i32::from(INDUSTRY_BAR_WIDTH) / i32::from(capacity))
                         .clamp(0, i32::from(INDUSTRY_BAR_WIDTH)) as i16
                 } else {
                     0
                 }
             };
-            let current = scale(status.quantity);
-            let maximum = scale(status.maximum);
+            let current = scale(quantity);
+            let maximum = scale(maximum);
             nodes
                 .get_mut(bar.fill)
                 .expect("industry amount fill belongs to its dialog")

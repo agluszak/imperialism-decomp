@@ -14,8 +14,8 @@ use std::path::Path;
 use std::process::Command;
 
 use crate::{
-    EvidenceKind, RuntimeResultExpectations, ValidatedRuntimeResult, first_serialized_difference,
-    read_runtime_result,
+    EvidenceKind, RuntimeCaptureError, RuntimeResultExpectations, ValidatedRuntimeResult,
+    first_serialized_difference, read_runtime_result,
 };
 
 const NATIVE_ORACLE: &str = "native_transition_oracle";
@@ -34,10 +34,8 @@ struct EphemeralGameState {
     unit_ids: UnitIdAllocator,
     rng: RngState,
     news: NewsState,
-    #[serde(default)]
-    pending: Option<PendingWorkState>,
-    #[serde(default)]
-    ai_development_pressure: Option<Vec<Option<AiDevelopmentPressureState>>>,
+    pending: PendingWorkState,
+    ai_development_pressure: Vec<Option<AiDevelopmentPressureState>>,
 }
 
 /// Run the shared C++ native transition oracle for `case_name`, apply the matching
@@ -50,35 +48,21 @@ where
     C: DeserializeOwned,
     R: DeserializeOwned + Debug + PartialEq,
 {
-    let runtime = run_native_case_result(case_name, DIFFERENTIAL_CAPTURES)?;
-    compare_validated(runtime, apply)
-}
-
-/// Compare a catalogued retail-fixture runtime scenario (UI / multi-step flows such as
-/// `easy_turn_from_save`) the same way as a native transition case.
-pub fn compare_runtime_scenario<C, R>(
-    name: &str,
-    apply: impl FnOnce(&mut GameState, C) -> R,
-) -> Result<()>
-where
-    C: DeserializeOwned,
-    R: DeserializeOwned + Debug + PartialEq,
-{
-    let runtime = run_retail_fixture_result(name, DIFFERENTIAL_CAPTURES)?;
-    compare_validated(runtime, apply)
+    let run = run_native_case_result(case_name, DIFFERENTIAL_CAPTURES)?;
+    compare_validated(&run.result, apply)
 }
 
 fn compare_validated<C, R>(
-    runtime: ValidatedRuntimeResult,
+    runtime: &ValidatedRuntimeResult,
     apply: impl FnOnce(&mut GameState, C) -> R,
 ) -> Result<()>
 where
     C: DeserializeOwned,
     R: DeserializeOwned + Debug + PartialEq,
 {
-    let mut actual = load_save_backed_state(&runtime, "before")?;
+    let mut actual = load_save_backed_state(runtime, "before")?;
     let case: C = runtime.capture("case")?;
-    let expected = load_save_backed_state(&runtime, "after")?;
+    let expected = load_save_backed_state(runtime, "after")?;
     let expected_result: R = runtime.capture("result")?;
 
     let actual_result = apply(&mut actual, case);
@@ -107,29 +91,24 @@ fn load_save_backed_state(
         selected_nation: capture.ephemeral.turn.selected_nation,
     });
 
-    let pressures = match capture.ephemeral.ai_development_pressure {
-        None => None,
-        Some(pressures) => {
-            if pressures.len() != MAJOR_NATION_COUNT {
-                bail!(
-                    "{capture_name} ai_development_pressure length {}, expected {MAJOR_NATION_COUNT}",
-                    pressures.len()
-                );
-            }
-            let mut fixed = [None; MAJOR_NATION_COUNT];
-            for (slot, pressure) in pressures.into_iter().enumerate() {
-                fixed[slot] = pressure;
-            }
-            Some(fixed)
-        }
-    };
+    let pressures = capture.ephemeral.ai_development_pressure;
+    if pressures.len() != MAJOR_NATION_COUNT {
+        bail!(
+            "{capture_name} ai_development_pressure length {}, expected {MAJOR_NATION_COUNT}",
+            pressures.len()
+        );
+    }
+    let mut fixed = [None; MAJOR_NATION_COUNT];
+    for (slot, pressure) in pressures.into_iter().enumerate() {
+        fixed[slot] = pressure;
+    }
     state.apply_save_backed_ephemeral(
         capture.ephemeral.turn,
         capture.ephemeral.unit_ids,
         capture.ephemeral.rng,
         capture.ephemeral.news,
         capture.ephemeral.pending,
-        pressures,
+        fixed,
     );
     Ok(state)
 }
@@ -152,27 +131,51 @@ pub fn assert_game_state_eq(expected: &GameState, actual: &GameState) -> Result<
 fn run_native_case_result(
     case_name: &str,
     required_captures: &'static [&'static str],
-) -> Result<ValidatedRuntimeResult> {
+) -> Result<RuntimeRun> {
     run_runtime_result(NATIVE_ORACLE, Some(case_name), required_captures)
 }
 
-/// Run one catalogued native runtime scenario and decode the published result JSON from stdout.
+/// Run one catalogued native runtime scenario into a unique output directory.
+///
+/// The returned run keeps that directory alive so save-backed artifacts remain
+/// readable until the caller is finished.
 pub fn run_retail_fixture_result(
     name: &str,
     required_captures: &'static [&'static str],
-) -> Result<ValidatedRuntimeResult> {
+) -> Result<RuntimeRun> {
     run_runtime_result(name, None, required_captures)
+}
+
+/// One native runtime invocation and the unique output directory it wrote.
+pub struct RuntimeRun {
+    result: ValidatedRuntimeResult,
+    _output_dir: tempfile::TempDir,
+}
+
+impl RuntimeRun {
+    pub fn capture<T: DeserializeOwned>(&self, name: &str) -> Result<T, RuntimeCaptureError> {
+        self.result.capture(name)
+    }
+
+    pub fn artifact_dir(&self) -> Result<&Path, RuntimeCaptureError> {
+        self.result.artifact_dir()
+    }
 }
 
 fn run_runtime_result(
     scenario: &str,
     native_case: Option<&str>,
     required_captures: &'static [&'static str],
-) -> Result<ValidatedRuntimeResult> {
+) -> Result<RuntimeRun> {
+    let output_dir = tempfile::Builder::new()
+        .prefix("imperialism-runtime-")
+        .tempdir()
+        .context("creating a unique native result directory")?;
     let mut command = Command::new("just");
     command
         .current_dir(repository_root()?.join("decomp"))
-        .args(["--quiet", "runtime-run", scenario, "--seed", "1"]);
+        .args(["--quiet", "runtime-run", scenario, "--seed", "1"])
+        .env("IMPERIALISM_RUNTIME_RESULT_DIR", output_dir.path());
     if let Some(case_name) = native_case {
         command.env(NATIVE_CASE_ENV, case_name);
     }
@@ -193,12 +196,8 @@ fn run_runtime_result(
         bail!("native scenario {scenario} failed:\n{detail}");
     }
 
-    let result_path = repository_root()?
-        .join("decomp")
-        .join("build-runtime-tests")
-        .join("runtime-results")
-        .join(format!("{scenario}.json"));
-    read_runtime_result(
+    let result_path = output_dir.path().join(format!("{scenario}.json"));
+    let result = read_runtime_result(
         &result_path,
         RuntimeResultExpectations {
             name: scenario,
@@ -209,13 +208,14 @@ fn run_runtime_result(
     )
     .with_context(|| {
         if native_case.is_some() {
-            format!(
-                "reading native transition oracle result {}",
-                result_path.display()
-            )
+            format!("reading native transition result {}", result_path.display())
         } else {
             format!("reading native runtime result {}", result_path.display())
         }
+    })?;
+    Ok(RuntimeRun {
+        result,
+        _output_dir: output_dir,
     })
 }
 

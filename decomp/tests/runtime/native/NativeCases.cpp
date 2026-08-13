@@ -27,25 +27,6 @@ RuntimeActionResult RunAidAllocation(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyGrantEntry(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyReset(NativeTransition& transition);
 
-RuntimeActionResult RunFirstTurnAlertPhase(NativeTransition& transition);
-RuntimeActionResult RunFirstTurnDiplomacyPhase(NativeTransition& transition);
-RuntimeActionResult RunFirstTurnTradePhase(NativeTransition& transition);
-RuntimeActionResult RunFirstTurnCivilianPhase(NativeTransition& transition);
-RuntimeActionResult RunFirstTurnMilitaryPhase(NativeTransition& transition);
-RuntimeActionResult RunFirstTurnCombatMovementPhase(NativeTransition& transition);
-RuntimeActionResult RunFirstTurnMilitaryCleanupPhase(NativeTransition& transition);
-RuntimeActionResult RunFirstTurnDiplomacyOfferPhase(NativeTransition& transition);
-RuntimeActionResult RunFirstTurnEliminationPhase(NativeTransition& transition);
-RuntimeActionResult RunFirstTurnCityTransportPhase(NativeTransition& transition);
-
-RuntimeActionResult RunFirstTurnGreatPowerPressurePhase(NativeTransition& transition);
-RuntimeActionResult RunFirstTurnDealBookPhase(NativeTransition& transition);
-RuntimeActionResult RunFirstTurnQuarterGatePhase(NativeTransition& transition);
-RuntimeActionResult RunFirstTurnSeasonAdvancePhase(NativeTransition& transition);
-RuntimeActionResult RunFirstTurnTechnologyAdvancesPhase(NativeTransition& transition);
-RuntimeActionResult RunFirstTurnNewspaperPhase(NativeTransition& transition);
-RuntimeActionResult RunFirstTurnReturnToMapPhase(NativeTransition& transition);
-
 RuntimeActionResult RunNationResourceYieldRebuild(NativeTransition& transition);
 RuntimeActionResult RunAiNationResourceYieldRebuildClampsTargets(NativeTransition& transition);
 RuntimeActionResult RunNationResourceYieldRebuildMultipleTowns(NativeTransition& transition);
@@ -80,23 +61,6 @@ const NativeCase kCases[] = {
     {"aid_allocation", RunAidAllocation},
     {"diplomacy_grant_entry_updates_treasury", RunDiplomacyGrantEntry},
     {"diplomacy_reset_preserves_recurring_grants", RunDiplomacyReset},
-    {"first_turn_alert_phase", RunFirstTurnAlertPhase},
-    {"first_turn_diplomacy_phase", RunFirstTurnDiplomacyPhase},
-    {"first_turn_trade_phase", RunFirstTurnTradePhase},
-    {"first_turn_civilian_phase", RunFirstTurnCivilianPhase},
-    {"first_turn_military_phase", RunFirstTurnMilitaryPhase},
-    {"first_turn_combat_movement_phase", RunFirstTurnCombatMovementPhase},
-    {"first_turn_military_cleanup_phase", RunFirstTurnMilitaryCleanupPhase},
-    {"first_turn_diplomacy_offer_phase", RunFirstTurnDiplomacyOfferPhase},
-    {"first_turn_elimination_phase", RunFirstTurnEliminationPhase},
-    {"first_turn_city_transport_phase", RunFirstTurnCityTransportPhase},
-    {"first_turn_great_power_pressure_phase", RunFirstTurnGreatPowerPressurePhase},
-    {"first_turn_deal_book_phase", RunFirstTurnDealBookPhase},
-    {"first_turn_quarter_gate_phase", RunFirstTurnQuarterGatePhase},
-    {"first_turn_season_advance_phase", RunFirstTurnSeasonAdvancePhase},
-    {"first_turn_technology_advances_phase", RunFirstTurnTechnologyAdvancesPhase},
-    {"first_turn_newspaper_phase", RunFirstTurnNewspaperPhase},
-    {"first_turn_return_to_map_phase", RunFirstTurnReturnToMapPhase},
     {"nation_resource_yield_rebuild", RunNationResourceYieldRebuild},
     {"ai_nation_resource_yield_rebuild_clamps_targets",
      RunAiNationResourceYieldRebuildClampsTargets},

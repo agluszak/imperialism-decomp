@@ -1,6 +1,5 @@
 use crate::AppState;
 use crate::ui::RetailUiAssets;
-use crate::ui::deal_book::{DealBookRoot, bind_deal_book};
 use crate::ui::format_currency;
 use crate::ui::generated;
 use crate::ui::random_setup::GameSession;
@@ -10,14 +9,11 @@ use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
-use imperialism_core::{FlowStop, GameScreen, MajorNationId};
+use imperialism_core::MajorNationId;
 use imperialism_formats::{FourCc, TRADE, fourcc};
 
 #[derive(Component)]
 struct StrategicMapRoot;
-
-#[derive(Component)]
-struct TurnFlowRoot;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum GameScreenNavAction {
@@ -28,24 +24,11 @@ enum GameScreenNavAction {
     Diplomacy,
 }
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-enum TurnFlowAction {
-    FinishPlayerOrders,
-    DismissBlockingScreen,
-}
-
 pub(crate) struct GameShellPlugin;
 
 impl Plugin for GameShellPlugin {
     fn build(&self, app: &mut App) {
         app.add_observer(on_game_screen_activate)
-            .add_observer(
-                on_turn_flow_activate.run_if(
-                    in_state(AppState::StrategicMap)
-                        .or_else(in_state(AppState::DealBook))
-                        .or_else(in_state(AppState::Newspaper)),
-                ),
-            )
             .add_systems(
                 OnEnter(AppState::StrategicMap),
                 (
@@ -54,14 +37,6 @@ impl Plugin for GameShellPlugin {
                     bind_strategic_map,
                 )
                     .chain(),
-            )
-            .add_systems(
-                OnEnter(AppState::DealBook),
-                (spawn_deal_book, bind_turn_flow_screen, bind_deal_book).chain(),
-            )
-            .add_systems(
-                OnEnter(AppState::Newspaper),
-                (spawn_newspaper, bind_turn_flow_screen).chain(),
             )
             .add_systems(
                 Update,
@@ -153,11 +128,7 @@ fn bind_strategic_map(
         fourcc!("tool"),
         None,
     );
-    let end = find_descendant(*root, fourcc!("DONE"), &children, &tags);
-    commands
-        .entity(end)
-        .insert((TurnFlowAction::FinishPlayerOrders, ActivateOnPress))
-        .remove::<InteractionDisabled>();
+    disable_native_control(&mut commands, *root, &children, &tags, fourcc!("DONE"));
     bind_strategic_base_terrain(
         &mut commands,
         *root,
@@ -176,61 +147,7 @@ fn bind_strategic_map(
     );
 }
 
-fn spawn_deal_book(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::flagview_8800()).id();
-    commands.entity(root).insert((
-        TurnFlowRoot,
-        DealBookRoot,
-        DespawnOnExit(AppState::DealBook),
-    ));
-}
-
-fn spawn_newspaper(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::flagview_8451()).id();
-    commands
-        .entity(root)
-        .insert((TurnFlowRoot, DespawnOnExit(AppState::Newspaper)));
-}
-
-fn bind_turn_flow_screen(
-    mut commands: Commands,
-    root: Single<Entity, Added<TurnFlowRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
-    mut assets: RetailUiAssets,
-    state: Res<State<AppState>>,
-    session: Res<GameSession>,
-) {
-    let current = *state.get();
-    let end = find_descendant(*root, fourcc!("end "), &children, &tags);
-    commands
-        .entity(end)
-        .insert((TurnFlowAction::DismissBlockingScreen, ActivateOnPress))
-        .remove::<InteractionDisabled>();
-    disable_native_control(&mut commands, *root, &children, &tags, fourcc!("quer"));
-
-    match current {
-        AppState::DealBook => project_date_and_treasury(
-            &mut commands,
-            &mut assets,
-            *root,
-            &children,
-            &tags,
-            &session,
-        ),
-        AppState::Newspaper => project_newspaper_chrome(
-            &mut commands,
-            &mut assets,
-            *root,
-            &children,
-            &tags,
-            &session,
-        ),
-        _ => unreachable!(),
-    }
-}
-
-fn project_date_and_treasury(
+pub(crate) fn project_date_and_treasury(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
@@ -251,28 +168,6 @@ fn project_date_and_treasury(
         .expect("Game screen requires an active major nation");
     let treasury = format_currency(state.nations().major(nation).common.treasury);
     set_control_text(commands, root, children, tags, fourcc!("trea"), treasury);
-}
-
-fn project_newspaper_chrome(
-    commands: &mut Commands,
-    assets: &mut RetailUiAssets,
-    root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-    session: &GameSession,
-) {
-    let date = format_retail_date(assets, session.0.turn().economic_turn);
-    set_control_text(commands, root, children, tags, fourcc!("date"), date);
-    // Recovered evidence carries a false date placeholder here. The quarter-specific
-    // newspaper metric is not authoritative state yet, so do not invent it.
-    set_control_text(
-        commands,
-        root,
-        children,
-        tags,
-        fourcc!("spec"),
-        String::new(),
-    );
 }
 
 fn format_retail_date(assets: &mut RetailUiAssets, economic_turn: i32) -> String {
@@ -357,35 +252,6 @@ fn on_game_screen_activate(
         GameScreenNavAction::Diplomacy => AppState::Diplomacy,
     };
     if destination != *state.get() {
-        next_state.set(destination);
-    }
-}
-
-fn on_turn_flow_activate(
-    activate: On<Activate>,
-    actions: Query<&TurnFlowAction>,
-    mut session: ResMut<GameSession>,
-    state: Res<State<AppState>>,
-    mut next_state: ResMut<NextState<AppState>>,
-) {
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
-    let stop = match *action {
-        TurnFlowAction::FinishPlayerOrders => session.0.finish_player_orders(),
-        TurnFlowAction::DismissBlockingScreen => session.0.dismiss_blocking_screen(),
-    };
-    let destination = match stop {
-        FlowStop::PlayerOrders => Some(AppState::StrategicMap),
-        FlowStop::Show {
-            screen: GameScreen::DealBook,
-        } => Some(AppState::DealBook),
-        FlowStop::Show {
-            screen: GameScreen::Newspaper,
-        } => Some(AppState::Newspaper),
-        FlowStop::Unimplemented { .. } => None,
-    };
-    if let Some(destination) = destination.filter(|destination| *destination != *state.get()) {
         next_state.set(destination);
     }
 }

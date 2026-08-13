@@ -12,12 +12,10 @@ reconstruction in `../decomp/`. Run Rust commands from this directory.
   checks.
 
 Native semantic transitions capture save-backed `before`/`after` (`.imp` plus ephemeral session
-fields), with JSON `case`/`result`, through one shared C++ oracle (`native_transition_oracle`). The
-testkit strictly validates the published oracle name, seed, status, evidence kind, required captures,
-and unknown fields, then compares operation outcomes as well as complete `GameState`. Domain
-integration tests call `compare_native(case, apply)`. Multi-step UI flows such as `easy_turn_from_save`
-stay catalogued scenarios and use `compare_runtime_scenario`. Retail fixtures live in
-`../fixtures/retail/`. The Rust game state does not depend on C++ layouts or Bevy ECS entities.
+fields), with JSON `case`/`result`, through the C++ `native_transition_oracle` scenario. Domain
+integration tests call `compare_native(case, apply)`, which runs that case into a unique output
+directory and compares against that run's result. Retail fixtures live in `../fixtures/retail/`.
+The Rust game state does not depend on C++ layouts or Bevy ECS entities.
 
 Evidence classifications are retained: `retail_fixture_oracle` means Rust agrees with the current C++
 reconstruction from a retail-derived fixture; it is not direct original-executable equivalence.

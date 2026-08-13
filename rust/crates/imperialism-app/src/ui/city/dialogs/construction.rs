@@ -61,7 +61,7 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
                 ExpandableFacility::try_from_slot(slot)
                     .expect("ordinary capacity center is expandable"),
             );
-            let can_reserve = session.0.can_set_city_order_quantity(nation, order, needed);
+            let can_reserve = needed <= session.0.city_order_limit(nation, order).maximum;
             (next_capacity.to_string(), can_reserve)
         }
     };
@@ -297,7 +297,7 @@ pub(in crate::ui::city) fn on_city_expansion_open(
     let order = CityOrderId::Expansion(
         ExpandableFacility::try_from_slot(open.slot).expect("ordinary industry is expandable"),
     );
-    let can_reserve = session.0.can_set_city_order_quantity(nation, order, needed);
+    let can_reserve = needed <= session.0.city_order_limit(nation, order).maximum;
     let root = commands.spawn_scene(generated::citydlog_9221()).id();
     let building_name = city_string(&assets, CITY_BUILDING_STRING_GROUP, open.slot as i16);
     commands.entity(root).insert((

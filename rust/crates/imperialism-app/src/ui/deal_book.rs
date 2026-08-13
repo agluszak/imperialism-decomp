@@ -1,5 +1,7 @@
 use super::RetailUiAssets;
 use super::format_currency;
+use super::game_shell::project_date_and_treasury;
+use super::generated;
 use super::random_setup::GameSession;
 use super::retail::{RetailTag, find_descendant};
 use crate::AppState;
@@ -70,7 +72,7 @@ struct DealBookFonts {
 }
 
 #[derive(Component)]
-pub(crate) struct DealBookRoot;
+struct DealBookRoot;
 
 #[derive(Component)]
 struct DealBookScreen {
@@ -87,24 +89,36 @@ enum DealBookAction {
     History,
     PreviousPage,
     NextPage,
+    Close,
 }
 
 pub(crate) struct DealBookPlugin;
 
 impl Plugin for DealBookPlugin {
     fn build(&self, app: &mut App) {
-        app.add_observer(on_deal_book_activate)
-            .add_observer(on_deal_book_tabs_click)
-            .add_systems(
-                Update,
-                (hover_deal_book_tabs, sync_deal_book)
-                    .chain()
-                    .run_if(in_state(AppState::DealBook)),
-            );
+        app.add_systems(
+            OnEnter(AppState::DealBook),
+            (spawn_deal_book, bind_deal_book).chain(),
+        )
+        .add_observer(on_deal_book_activate)
+        .add_observer(on_deal_book_tabs_click)
+        .add_systems(
+            Update,
+            (hover_deal_book_tabs, sync_deal_book)
+                .chain()
+                .run_if(in_state(AppState::DealBook)),
+        );
     }
 }
 
-pub(crate) fn bind_deal_book(
+fn spawn_deal_book(mut commands: Commands) {
+    let root = commands.spawn_scene(generated::flagview_8800()).id();
+    commands
+        .entity(root)
+        .insert((DealBookRoot, DespawnOnExit(AppState::DealBook)));
+}
+
+fn bind_deal_book(
     mut commands: Commands,
     root: Single<Entity, Added<DealBookRoot>>,
     children: Query<&Children>,
@@ -200,6 +214,14 @@ pub(crate) fn bind_deal_book(
         ))
         .id();
     commands
+        .entity(find_descendant(root, fourcc!("end "), &children, &tags))
+        .insert((DealBookAction::Close, ActivateOnPress))
+        .remove::<InteractionDisabled>();
+    commands
+        .entity(find_descendant(root, fourcc!("quer"), &children, &tags))
+        .insert(InteractionDisabled);
+    project_date_and_treasury(&mut commands, &mut assets, root, &children, &tags, &session);
+    commands
         .entity(mark)
         .insert((DealBookAction::History, ActivateOnPress));
     commands.entity(lcor).insert((
@@ -245,10 +267,15 @@ fn on_deal_book_activate(
     actions: Query<&DealBookAction>,
     mut screens: Query<&mut DealBookScreen>,
     session: Res<GameSession>,
+    mut next_state: ResMut<NextState<AppState>>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
+    if *action == DealBookAction::Close {
+        next_state.set(AppState::StrategicMap);
+        return;
+    }
     let Ok(mut screen) = screens.single_mut() else {
         return;
     };
@@ -274,6 +301,7 @@ fn on_deal_book_activate(
         DealBookAction::NextPage => {
             screen.page = (screen.page + 1).min(last_page);
         }
+        DealBookAction::Close => {}
     }
 }
 

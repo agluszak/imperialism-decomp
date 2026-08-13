@@ -1,129 +1,14 @@
-//! First-turn city and transport resolution (`TSimMgr` phase 8).
+//! City and transport resolution (`TSimMgr::DoCityAndTransport`).
 
 use crate::*;
 
-const ITEM_OUTPUTS: [ManufacturedItem; 9] = ManufacturedItem::ALL;
-
-const CIVILIAN_KINDS: [CivilianUnitKind; 9] = [
-    CivilianUnitKind::Miner,
-    CivilianUnitKind::Prospector,
-    CivilianUnitKind::Farmer,
-    CivilianUnitKind::Forester,
-    CivilianUnitKind::Engineer,
-    CivilianUnitKind::Rancher,
-    CivilianUnitKind::Fisherman,
-    CivilianUnitKind::Developer,
-    CivilianUnitKind::Driller,
-];
-
-const MILITARY_CATEGORIES: [MilitaryRecruitmentCategory; 8] = [
-    MilitaryRecruitmentCategory::LightInfantry,
-    MilitaryRecruitmentCategory::RegularInfantry,
-    MilitaryRecruitmentCategory::HeavyInfantry,
-    MilitaryRecruitmentCategory::LightCavalry,
-    MilitaryRecruitmentCategory::HeavyCavalry,
-    MilitaryRecruitmentCategory::LightArtillery,
-    MilitaryRecruitmentCategory::HeavyArtillery,
-    MilitaryRecruitmentCategory::Demolitionist,
-];
-
-const SHIP_SLOTS: [ShipOrderSlot; 8] = [
-    ShipOrderSlot::MerchantEarlyPrimary,
-    ShipOrderSlot::MerchantEarlySecondary,
-    ShipOrderSlot::MerchantAdvancedPrimary,
-    ShipOrderSlot::MerchantAdvancedSecondary,
-    ShipOrderSlot::WarshipEarlyPrimary,
-    ShipOrderSlot::WarshipEarlySecondary,
-    ShipOrderSlot::WarshipAdvancedPrimary,
-    ShipOrderSlot::WarshipAdvancedSecondary,
-];
-
-const EXPANSION_SLOTS: [ExpandableFacility; 7] = ExpandableFacility::ALL;
-
 impl GameState {
-    pub(crate) fn try_first_turn_city_transport_phase(&mut self) -> bool {
-        if !self.first_turn_city_transport_is_supported() {
-            return false;
-        }
-        self.apply_first_turn_city_transport_phase();
-        true
-    }
-
-    fn first_turn_city_transport_is_supported(&self) -> bool {
-        let player = MajorNationId::new(6);
-        if self.turn.phase != PhaseCode::CITY_AND_TRANSPORT
-            || self.turn.economic_turn != 1
-            || self.turn.difficulty != Difficulty::Easy
-            || self.turn.scenario_map.is_some()
-            || self.turn.active_nation != player.nation()
-            || self.turn.selected_nation != player.nation()
-            || !self.ships.is_empty()
-            || !self.task_forces.is_empty()
-            || self.technology.oil_drilling_available()
-            || self.military_units.iter().any(|unit| unit.roster_id == 0)
-            || (0..MajorNationId::COUNT).any(|major| {
-                (MajorNationId::COUNT..NationId::COUNT).any(|minor| {
-                    self.diplomacy.standings[MajorNationId::new(major).nation()]
-                        [NationId::new(minor)]
-                        > 169
-                })
-            })
-        {
-            return false;
-        }
-
-        (0..MajorNationId::COUNT).all(|index| {
-            let nation = MajorNationId::new(index);
-            let major = self.nations.major(nation);
-            let should_be_human = nation == player;
-            let expected_controller = if should_be_human {
-                MajorNationController::Human
-            } else {
-                MajorNationController::Computer
-            };
-            let city = &major.city;
-            let economy = &major.economy;
-            let interior = economy.interior_civilian.as_ref();
-
-            major.common.status() == CountryStatus::Independent
-                && economy.controller == expected_controller
-                && !major.towns.is_empty()
-                && city.population.count == 7
-                && city.population.baseline_labor == LaborPool::new(4, 2, 1)
-                && city.population.strength == 12
-                && city.power_available == 0
-                && (should_be_human
-                    || EXPANSION_SLOTS
-                        .into_iter()
-                        .all(|facility| city.production_orders[facility.slot()] == 0))
-                && !self.technology.city_capabilities_by_nation[nation].oil_drilling
-                && economy.pending_actions == PendingActionTable::default()
-                && economy.transported_items_by_resource == ResourceTable::default()
-                && economy.purchased_items_by_resource == ResourceTable::default()
-                && city_orders_are_idle(city.orders.as_ref())
-                && interior.pending_recruitment.is_none()
-                && interior.deferred_labor_shortfall == 0
-                && interior.production_deficit_by_slot == ProductionTable::default()
-                && interior.temporarily_reserved_ship_arms == 0
-                && interior.resource_order_metrics == ResourceTable::default()
-                && interior.average_development_order_allocation == 0
-                && if should_be_human {
-                    economy.pending_ship.is_none()
-                        && interior.city_order_demand == AiCityOrderDemand::default()
-                        && economy.pressure_counter == 0
-                } else {
-                    matches!(
-                        economy.pending_ship,
-                        Some(ShipType::Trader | ShipType::Indiaman)
-                    ) && interior.city_order_demand == crate::ai::initial_ai_city_order_demand()
-                        && major.common.treasury >= -20_000
-                }
-        })
-    }
-
-    fn apply_first_turn_city_transport_phase(&mut self) {
+    pub fn do_city_and_transport(&mut self) {
         for index in (0..MajorNationId::COUNT).rev() {
             let nation = MajorNationId::new(index);
+            if !self.city_and_transport_nation_is_eligible(nation) {
+                continue;
+            }
             if self.nations.major(nation).economy.controller.is_human() {
                 self.nations.city_mut(nation).refresh_local_summary_flags();
                 self.produce_city_units(nation);
@@ -131,7 +16,7 @@ impl GameState {
                 self.add_created_items(nation);
                 self.end_city_phase(nation);
             } else {
-                self.fill_first_turn_ai_city_orders(nation);
+                self.fill_interior_minister_orders(nation);
                 self.nations.city_mut(nation).refresh_local_summary_flags();
                 self.produce_city_units(nation);
                 self.rebuild_nation_resource_yields(nation);
@@ -140,31 +25,38 @@ impl GameState {
         }
     }
 
-    fn fill_first_turn_ai_city_orders(&mut self, nation: MajorNationId) {
+    fn city_and_transport_nation_is_eligible(&self, nation: MajorNationId) -> bool {
+        !matches!(
+            self.nations.major(nation).common.status(),
+            CountryStatus::ProtectorateOf(_)
+        )
+    }
+
+    fn fill_interior_minister_orders(&mut self, nation: MajorNationId) {
         for resource in all_resources() {
             self.nations.majors[nation]
                 .economy
                 .update_need_target(resource, 0);
         }
-        self.rebalance_first_turn_ai_transport(nation);
+        self.rebalance_ai_transport(nation);
         self.end_city_phase(nation);
         self.clear_ai_city_orders(nation);
-        self.process_first_turn_ai_pending_ship(nation);
-        let temporary_lumber = self.rebalance_first_turn_ai_labor(nation);
-        self.choose_first_turn_ai_expansion(nation);
-        self.compute_first_turn_ai_item_demands(nation);
+        self.process_ai_pending_ship(nation);
+        let temporary_lumber = self.rebalance_ai_labor(nation);
+        self.choose_ai_expansion(nation);
+        self.compute_ai_item_demands(nation);
         if temporary_lumber != 0 {
             self.nations
                 .city_mut(nation)
                 .adjust_stock(ResourceKind::Lumber, temporary_lumber);
         }
-        self.issue_first_turn_ai_item_orders(nation);
-        self.fill_first_turn_ai_transport_capacity(nation);
-        self.rebuild_first_turn_ai_allocation_average(nation);
-        self.determine_first_turn_ai_trade_bid(nation);
+        self.issue_ai_item_orders(nation);
+        self.fill_ai_transport_capacity(nation);
+        self.rebuild_ai_allocation_average(nation);
+        self.determine_ai_trade_bid(nation);
     }
 
-    fn rebalance_first_turn_ai_transport(&mut self, nation: MajorNationId) {
+    fn rebalance_ai_transport(&mut self, nation: MajorNationId) {
         let summary = {
             let city = self.nations.city_mut(nation);
             let population_order = city.orders.population_growth.quantity;
@@ -174,19 +66,15 @@ impl GameState {
         let mut unfilled = 0_i16;
         for resource in [ResourceKind::Grain, ResourceKind::Fruit] {
             let requested = summary[resource];
-            let allocated = self.request_first_turn_ai_resource(nation, resource, requested, 7);
+            let allocated = self.request_ai_resource(nation, resource, requested, 7);
             unfilled += requested - allocated;
         }
 
         let animal_need = summary[ResourceKind::Livestock];
-        let fish = self.request_first_turn_ai_resource(nation, ResourceKind::Fish, animal_need, 1);
+        let fish = self.request_ai_resource(nation, ResourceKind::Fish, animal_need, 1);
         if fish < animal_need {
-            let livestock = self.request_first_turn_ai_resource(
-                nation,
-                ResourceKind::Livestock,
-                animal_need,
-                7,
-            );
+            let livestock =
+                self.request_ai_resource(nation, ResourceKind::Livestock, animal_need, 7);
             unfilled += animal_need - fish - livestock;
         }
 
@@ -199,19 +87,19 @@ impl GameState {
             if unfilled == 0 {
                 break;
             }
-            unfilled -= self.request_first_turn_ai_resource(nation, resource, unfilled, 9);
+            unfilled -= self.request_ai_resource(nation, resource, unfilled, 9);
         }
 
         let gold = self.nations.majors[nation].economy.need_current_by_type[ResourceKind::Gold];
-        self.request_first_turn_ai_resource(nation, ResourceKind::Gold, gold, 1);
+        self.request_ai_resource(nation, ResourceKind::Gold, gold, 1);
         for index in ResourceKind::Food as u8..=ResourceKind::Arms as u8 {
             let resource = ResourceKind::from_index(index).expect("manufactured resource index");
             let current = self.nations.majors[nation].economy.need_current_by_type[resource];
-            self.request_first_turn_ai_resource(nation, resource, summary[resource] + current, 1);
+            self.request_ai_resource(nation, resource, summary[resource] + current, 1);
         }
     }
 
-    fn request_first_turn_ai_resource(
+    fn request_ai_resource(
         &mut self,
         nation: MajorNationId,
         resource: ResourceKind,
@@ -277,30 +165,30 @@ impl GameState {
 
     fn clear_ai_city_orders(&mut self, nation: MajorNationId) {
         self.set_city_order_quantity(nation, CityOrderId::FoodProcessing, 0);
-        for output in ITEM_OUTPUTS {
+        for output in ManufacturedItem::ALL {
             self.set_city_order_quantity(nation, CityOrderId::Item(output), 0);
         }
-        for level in [TrainingLevel::Medium, TrainingLevel::High] {
+        for level in TrainingLevel::ALL {
             self.set_city_order_quantity(nation, CityOrderId::Training(level), 0);
         }
-        for category in MILITARY_CATEGORIES {
+        for category in MilitaryRecruitmentCategory::ALL {
             self.set_city_order_quantity(nation, CityOrderId::MilitaryRecruit(category), 0);
         }
-        for kind in CIVILIAN_KINDS {
+        for kind in CivilianUnitKind::ALL {
             self.set_city_order_quantity(nation, CityOrderId::CivilianRecruit(kind), 0);
         }
-        for slot in SHIP_SLOTS {
+        for slot in ShipOrderSlot::ALL {
             self.set_city_order_quantity(nation, CityOrderId::Ship(slot), 0);
         }
         self.set_city_order_quantity(nation, CityOrderId::TransportCapacity, 0);
         self.set_city_order_quantity(nation, CityOrderId::PowerPlant, 0);
-        for facility in EXPANSION_SLOTS {
+        for facility in ExpandableFacility::ALL {
             self.set_city_order_quantity(nation, CityOrderId::Expansion(facility), 0);
         }
         self.set_city_order_quantity(nation, CityOrderId::PopulationGrowth, 0);
     }
 
-    fn process_first_turn_ai_pending_ship(&mut self, nation: MajorNationId) {
+    fn process_ai_pending_ship(&mut self, nation: MajorNationId) {
         let reserved_arms = {
             let interior = self.nations.majors[nation]
                 .economy
@@ -312,20 +200,19 @@ impl GameState {
             .city_mut(nation)
             .adjust_stock(ResourceKind::Arms, reserved_arms);
 
-        let ship_type = self.nations.majors[nation]
-            .economy
-            .pending_ship
-            .take()
-            .expect("the supported AI city pass has one pending merchant ship");
-        let slot = SHIP_SLOTS
+        let Some(ship_type) = self.nations.majors[nation].economy.pending_ship.take() else {
+            return;
+        };
+        let Some(slot) = ShipOrderSlot::ALL
             .into_iter()
             .find(|&slot| self.nations.city(nation).orders.ships[slot].ship_type == ship_type)
-            .expect("pending merchant ship has a matching shipyard row");
+        else {
+            return;
+        };
         let costs = ship_order_costs(ship_type);
-        for resource in all_resources() {
-            let amount = costs[resource];
+        for (resource, amount) in costs.iter() {
             if amount != 0 {
-                self.request_first_turn_ai_resource(nation, resource, amount, 7);
+                self.request_ai_resource(nation, resource, amount, 7);
             }
         }
         let maximum = self
@@ -334,7 +221,7 @@ impl GameState {
         assert!(self.set_city_order_quantity(nation, CityOrderId::Ship(slot), maximum.min(1)));
     }
 
-    fn rebalance_first_turn_ai_labor(&mut self, nation: MajorNationId) -> i16 {
+    fn rebalance_ai_labor(&mut self, nation: MajorNationId) -> i16 {
         let average = self.nations.majors[nation]
             .economy
             .interior_civilian
@@ -353,7 +240,7 @@ impl GameState {
         let remaining = capacity - interior.city_order_demand.training[TrainingLevel::Medium];
         interior.city_order_demand.population_growth = (target - baseline.low).clamp(0, remaining);
 
-        for level in [TrainingLevel::Medium, TrainingLevel::High] {
+        for level in TrainingLevel::ALL {
             let requested = self.nations.majors[nation]
                 .economy
                 .interior_civilian
@@ -404,7 +291,7 @@ impl GameState {
         }
     }
 
-    fn choose_first_turn_ai_expansion(&mut self, nation: MajorNationId) {
+    fn choose_ai_expansion(&mut self, nation: MajorNationId) {
         let mut priority = [0_usize, 1, 2, 3, 4, 5, 6];
         {
             let deficits = &mut self.nations.majors[nation]
@@ -420,8 +307,8 @@ impl GameState {
                     .economy
                     .interior_civilian
                     .production_deficit_by_slot;
-                let candidate_score = deficits[EXPANSION_SLOTS[priority[candidate]].slot()];
-                let best_score = deficits[EXPANSION_SLOTS[priority[best]].slot()];
+                let candidate_score = deficits[ExpandableFacility::ALL[priority[candidate]].slot()];
+                let best_score = deficits[ExpandableFacility::ALL[priority[best]].slot()];
                 if candidate_score > best_score
                     || (candidate_score == best_score && self.rng.next_crt_rand() & 1 != 0)
                 {
@@ -431,7 +318,7 @@ impl GameState {
             priority.swap(destination, best);
         }
 
-        let best_facility = EXPANSION_SLOTS[priority[0]];
+        let best_facility = ExpandableFacility::ALL[priority[0]];
         if self.nations.majors[nation]
             .economy
             .interior_civilian
@@ -441,7 +328,7 @@ impl GameState {
         {
             // Every supported building ratio is 0/0. VC5's unordered x87
             // comparison takes the primary member of the selected pair.
-            let selected = EXPANSION_SLOTS[(self.rng.next_crt_rand() % 3) as usize];
+            let selected = ExpandableFacility::ALL[(self.rng.next_crt_rand() % 3) as usize];
             self.nations.majors[nation]
                 .economy
                 .interior_civilian
@@ -449,7 +336,7 @@ impl GameState {
                 .expansions[selected.slot()] = 1;
         }
 
-        for facility in EXPANSION_SLOTS {
+        for facility in ExpandableFacility::ALL {
             let requested = self.nations.majors[nation]
                 .economy
                 .interior_civilian
@@ -459,8 +346,8 @@ impl GameState {
                 continue;
             }
             let (primary, secondary) = EXPANSION_INPUTS;
-            self.request_first_turn_ai_resource(nation, primary, requested, 7);
-            self.request_first_turn_ai_resource(nation, secondary, requested, 7);
+            self.request_ai_resource(nation, primary, requested, 7);
+            self.request_ai_resource(nation, secondary, requested, 7);
             let maximum = self
                 .city_order_limit(nation, CityOrderId::Expansion(facility))
                 .maximum;
@@ -481,7 +368,7 @@ impl GameState {
         }
     }
 
-    fn compute_first_turn_ai_item_demands(&mut self, nation: MajorNationId) {
+    fn compute_ai_item_demands(&mut self, nation: MajorNationId) {
         let city = self.nations.city(nation);
         let lumber = city.production_orders[CityFacilitySlot::LumberMill] + 1;
         let fabric = city.production_orders[CityFacilitySlot::TextileMill] + 1;
@@ -499,30 +386,30 @@ impl GameState {
         }
     }
 
-    fn issue_first_turn_ai_item_orders(&mut self, nation: MajorNationId) {
+    fn issue_ai_item_orders(&mut self, nation: MajorNationId) {
         for output in [
             ManufacturedItem::Clothing,
             ManufacturedItem::Furniture,
             ManufacturedItem::Arms,
             ManufacturedItem::Hardware,
         ] {
-            self.issue_first_turn_ai_item_order(nation, output);
+            self.issue_ai_item_order(nation, output);
         }
-        self.issue_first_turn_ai_food_order(nation);
-        self.issue_first_turn_ai_item_order(nation, ManufacturedItem::Paper);
+        self.issue_ai_food_order(nation);
+        self.issue_ai_item_order(nation, ManufacturedItem::Paper);
         if self.nations.city(nation).stockpile[ResourceKind::Lumber]
             < self.nations.city(nation).stockpile[ResourceKind::Steel]
         {
-            self.issue_first_turn_ai_item_order(nation, ManufacturedItem::Lumber);
-            self.issue_first_turn_ai_item_order(nation, ManufacturedItem::Steel);
+            self.issue_ai_item_order(nation, ManufacturedItem::Lumber);
+            self.issue_ai_item_order(nation, ManufacturedItem::Steel);
         } else {
-            self.issue_first_turn_ai_item_order(nation, ManufacturedItem::Steel);
-            self.issue_first_turn_ai_item_order(nation, ManufacturedItem::Lumber);
+            self.issue_ai_item_order(nation, ManufacturedItem::Steel);
+            self.issue_ai_item_order(nation, ManufacturedItem::Lumber);
         }
-        self.issue_first_turn_ai_item_order(nation, ManufacturedItem::Fabric);
+        self.issue_ai_item_order(nation, ManufacturedItem::Fabric);
     }
 
-    fn issue_first_turn_ai_food_order(&mut self, nation: MajorNationId) {
+    fn issue_ai_food_order(&mut self, nation: MajorNationId) {
         let requested = self.nations.majors[nation]
             .economy
             .interior_civilian
@@ -539,41 +426,35 @@ impl GameState {
         *metric = (*metric - accepted).max(0);
     }
 
-    fn issue_first_turn_ai_item_order(&mut self, nation: MajorNationId, output: ManufacturedItem) {
+    fn issue_ai_item_order(&mut self, nation: MajorNationId, output: ManufacturedItem) {
         let resource = output.resource();
         let mut requested = self.nations.majors[nation]
             .economy
             .interior_civilian
             .resource_order_metrics[resource];
-        let spec = item_order_spec(output);
-        let production_limit =
-            self.nations.city(nation).production_orders[spec.production_slot] * 2 + 2;
+        let facility = output.facility();
+        let production_limit = self.nations.city(nation).production_orders[facility] * 2 + 2;
         requested = requested.min(production_limit);
         self.nations.majors[nation]
             .economy
             .interior_civilian
             .resource_order_metrics[resource] = requested;
 
-        match spec.inputs {
+        match output.inputs() {
             ItemInputs::Double(primary) => {
-                self.request_first_turn_ai_resource(nation, primary, requested * 2, 7);
+                self.request_ai_resource(nation, primary, requested * 2, 7);
             }
             ItemInputs::Both(primary, secondary) => {
-                self.request_first_turn_ai_resource(nation, primary, requested, 7);
-                self.request_first_turn_ai_resource(nation, secondary, requested, 7);
+                self.request_ai_resource(nation, primary, requested, 7);
+                self.request_ai_resource(nation, secondary, requested, 7);
             }
             ItemInputs::Either(_, _) => {
                 let material_need = requested * 2;
-                self.request_first_turn_ai_resource(nation, ResourceKind::Cotton, material_need, 7);
+                self.request_ai_resource(nation, ResourceKind::Cotton, material_need, 7);
                 let stock = self.nations.city(nation).stockpile[ResourceKind::Cotton]
                     + self.nations.city(nation).stockpile[ResourceKind::Wool];
                 if stock < material_need {
-                    self.request_first_turn_ai_resource(
-                        nation,
-                        ResourceKind::Wool,
-                        material_need - stock,
-                        7,
-                    );
+                    self.request_ai_resource(nation, ResourceKind::Wool, material_need - stock, 7);
                 }
             }
         }
@@ -584,7 +465,7 @@ impl GameState {
             self.nations.majors[nation]
                 .economy
                 .interior_civilian
-                .production_deficit_by_slot[spec.production_slot] += requested - accepted;
+                .production_deficit_by_slot[facility] += requested - accepted;
         }
         assert!(self.set_city_order_quantity(nation, CityOrderId::Item(output), accepted));
         let metric = &mut self.nations.majors[nation]
@@ -594,10 +475,10 @@ impl GameState {
         *metric = (*metric - accepted).max(0);
     }
 
-    fn fill_first_turn_ai_transport_capacity(&mut self, nation: MajorNationId) {
+    fn fill_ai_transport_capacity(&mut self, nation: MajorNationId) {
         let horses = self.nations.city(nation).stockpile[ResourceKind::Horses];
         if horses < 5 {
-            self.request_first_turn_ai_resource(nation, ResourceKind::Horses, 5 - horses, 8);
+            self.request_ai_resource(nation, ResourceKind::Horses, 5 - horses, 8);
         }
 
         let mut remaining = self.nations.majors[nation].economy.capacities.transport
@@ -609,17 +490,16 @@ impl GameState {
         while remaining > 0 && previous != remaining {
             previous = remaining;
             for resource in all_resources() {
-                remaining -= self.request_first_turn_ai_resource(nation, resource, 1, 8);
+                remaining -= self.request_ai_resource(nation, resource, 1, 8);
             }
         }
     }
 
-    fn rebuild_first_turn_ai_allocation_average(&mut self, nation: MajorNationId) {
+    fn rebuild_ai_allocation_average(&mut self, nation: MajorNationId) {
         let mut allocation = ProductionTable::<i16>::default();
-        for output in ITEM_OUTPUTS {
+        for output in ManufacturedItem::ALL {
             let order = &self.nations.city(nation).orders.items[output];
-            let slot = item_order_spec(output).production_slot;
-            allocation[slot] += order.progress.quantity;
+            allocation[output.facility()] += order.progress.quantity;
         }
         let total = (0..CityFacilitySlot::COUNT)
             .map(|index| {
@@ -632,7 +512,7 @@ impl GameState {
             .average_development_order_allocation = i32::from(total / 20);
     }
 
-    fn determine_first_turn_ai_trade_bid(&mut self, nation: MajorNationId) {
+    fn determine_ai_trade_bid(&mut self, nation: MajorNationId) {
         let cotton = self.nations.majors[nation]
             .economy
             .interior_civilian
@@ -702,29 +582,4 @@ impl GameState {
                 .interior_bid = Some(bid);
         }
     }
-}
-
-fn city_orders_are_idle(orders: &CityOrders) -> bool {
-    orders.food_processing.quantity == 0
-        && ITEM_OUTPUTS
-            .into_iter()
-            .all(|item| orders.items[item].progress.quantity == 0)
-        && [TrainingLevel::Medium, TrainingLevel::High]
-            .into_iter()
-            .all(|level| orders.training[level].quantity == 0)
-        && MILITARY_CATEGORIES
-            .into_iter()
-            .all(|category| orders.military_recruitment[category].progress.quantity == 0)
-        && CIVILIAN_KINDS
-            .into_iter()
-            .all(|kind| orders.civilian_recruitment[kind].quantity == 0)
-        && SHIP_SLOTS
-            .into_iter()
-            .all(|slot| orders.ships[slot].progress.quantity == 0)
-        && orders.transport_capacity.progress.quantity == 0
-        && orders.power_plant.progress.quantity == 0
-        && EXPANSION_SLOTS
-            .into_iter()
-            .all(|facility| orders.expansions[facility].progress.quantity == 0)
-        && orders.population_growth.quantity == 0
 }
