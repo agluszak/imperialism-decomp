@@ -504,6 +504,7 @@ fn open_planet_seed_dialog(commands: &mut Commands) {
         TabGroup::modal(),
         GlobalZIndex(20),
         Pickable::default(),
+        DespawnOnExit(AppState::RandomSetup),
     ));
 }
 
@@ -663,5 +664,36 @@ mod tests {
         let field = fields.single(app.world()).unwrap();
         assert_eq!(field.value(), "Country");
         assert_eq!(field.max_characters, Some(COUNTRY_NAME_MAX_CHARS));
+    }
+
+    #[test]
+    fn leaving_random_setup_despawns_an_open_planet_seed_dialog() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_plugins(bevy::state::app::StatesPlugin)
+            .insert_state(AppState::RandomSetup)
+            .add_systems(Startup, |mut commands: Commands| {
+                open_planet_seed_dialog(&mut commands);
+            });
+        app.update();
+        assert_eq!(
+            app.world_mut()
+                .query::<&PlanetSeedDialogRoot>()
+                .iter(app.world())
+                .count(),
+            1
+        );
+
+        app.world_mut()
+            .resource_mut::<NextState<AppState>>()
+            .set(AppState::MainMenu);
+        app.update();
+        assert_eq!(
+            app.world_mut()
+                .query::<&PlanetSeedDialogRoot>()
+                .iter(app.world())
+                .count(),
+            0
+        );
     }
 }
