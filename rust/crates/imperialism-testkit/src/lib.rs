@@ -6,6 +6,7 @@ mod runtime_capture;
 
 pub use differential::{
     RuntimeRun, assert_game_state_eq, compare_native, run_retail_fixture_result,
+    run_self_consistency_result,
 };
 use imperialism_core::{
     Difficulty, MajorNationId, MapTopology, RetailLcg,
@@ -69,6 +70,21 @@ pub fn generate_and_compare_terrain_capture(
     } else {
         Ok(actual)
     }
+}
+
+/// Replay a catalogued random-map runtime scenario and compare its terrain capture.
+pub fn compare_map_generation_terrain(scenario: &str) -> anyhow::Result<()> {
+    let runtime = run_self_consistency_result(scenario, &["random_map_terrain"])?;
+    let capture: RandomMapTerrainCapture = runtime.capture("random_map_terrain")?;
+    generate_and_compare_terrain_capture(&capture).map_err(|difference| {
+        anyhow::anyhow!(
+            "terrain oracle mismatch at {}: C++={:?}, Rust={:?}",
+            difference.path,
+            difference.original,
+            difference.reimplementation
+        )
+    })?;
+    Ok(())
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
