@@ -109,6 +109,17 @@ impl ProcessedTradeCommodity {
             _ => None,
         }
     }
+
+    pub(crate) const fn resource(self) -> ResourceKind {
+        match self {
+            Self::Food => ResourceKind::Food,
+            Self::Fabric => ResourceKind::Fabric,
+            Self::Lumber => ResourceKind::Lumber,
+            Self::Paper => ResourceKind::Paper,
+            Self::Steel => ResourceKind::Steel,
+            Self::Fuel => ResourceKind::Fuel,
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
