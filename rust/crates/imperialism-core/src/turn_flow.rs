@@ -500,6 +500,24 @@ mod tests {
     }
 
     #[test]
+    fn closing_the_deal_book_returns_to_player_orders_through_newspaper() {
+        let mut state = game_state();
+        seed_town_tiles(&mut state);
+        state.turn.phase = crate::PhaseCode::CITY_AND_TRANSPORT;
+        assert_eq!(state.advance_turn(), crate::TurnStop::DealBook);
+        let start_turn = state.turn.economic_turn;
+        let mut stop = state.close_turn_deal_book();
+        while let crate::TurnStop::TechnologyAdvance(_) = stop {
+            stop = state.acknowledge_technology_report();
+        }
+        assert_eq!(stop, crate::TurnStop::Newspaper);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::NEWSPAPER);
+        assert_eq!(state.turn.economic_turn, start_turn + 1);
+        assert_eq!(state.close_newspaper(), crate::TurnStop::PlayerOrders);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::STRATEGIC_MAP);
+    }
+
+    #[test]
     fn answering_a_diplomacy_offer_uses_core_continuation_not_the_prompt() {
         let mut state = game_state();
         seed_town_tiles(&mut state);

@@ -299,12 +299,16 @@ fn on_deal_book_close(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    if let Some(return_state) = return_state.as_deref() {
-        next_state.set(return_state.0);
+    if session.game.turn().phase() == PhaseCode::DEAL_BOOK {
+        let stop = session.game.close_turn_deal_book();
+        apply_turn_stop(stop, &mut next_state);
         return;
     }
-    let stop = session.game.close_turn_deal_book();
-    apply_turn_stop(stop, &mut next_state);
+    next_state.set(
+        return_state
+            .as_deref()
+            .map_or(AppState::StrategicMap, |state| state.0),
+    );
 }
 
 fn on_deal_book_history(_activate: On<Activate>, mut screens: Query<&mut DealBookScreen>) {

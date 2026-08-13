@@ -503,6 +503,10 @@ RuntimeActionResult RunTradePhaseCase(NativeTransition& transition, bool buyClot
 
 } // namespace
 
+void RunTradeWithoutUi() {
+  ExecuteDoTradeWithoutPhaseAdvance();
+}
+
 RuntimeActionResult RunTradePhase(NativeTransition& transition) {
   return RunTradePhaseCase(transition, true);
 }

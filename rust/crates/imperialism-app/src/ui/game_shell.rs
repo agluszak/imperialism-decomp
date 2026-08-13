@@ -7,6 +7,7 @@ use crate::ui::generated;
 use crate::ui::load_save::OpenFlagMenu;
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailPictureSwap, RetailTag, find_descendant};
+use crate::ui::session::apply_turn_stop;
 use crate::ui::strategic_map::{
     bind_minimap, bind_strategic_base_terrain, register_civilian_orders, sync_minimap,
     sync_strategic_base_terrain, sync_strategic_units,
@@ -26,6 +27,9 @@ enum GameStatusDisplay {
 
 #[derive(Component)]
 struct StrategicMapRoot;
+
+#[derive(Component)]
+struct EndTurnAction;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum GameScreenNavAction {
@@ -139,7 +143,11 @@ fn bind_strategic_map(
         None,
     );
     bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &children, &tags);
-    disable_native_control(&mut commands, *root, &children, &tags, fourcc!("DONE"));
+    commands
+        .entity(find_descendant(*root, fourcc!("DONE"), &children, &tags))
+        .insert((EndTurnAction, ActivateOnPress))
+        .remove::<InteractionDisabled>()
+        .observe(on_end_turn);
     let flag = find_descendant(*root, fourcc!("Flag"), &children, &tags);
     commands
         .entity(flag)
@@ -361,20 +369,6 @@ pub(crate) fn bind_native_game_screen_nav(
     }
 }
 
-/// Marks a recovered control [`InteractionDisabled`] because its retail behavior
-/// is not implemented yet.
-fn disable_native_control(
-    commands: &mut Commands,
-    root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-    tag: FourCc,
-) {
-    commands
-        .entity(find_descendant(root, tag, children, tags))
-        .insert(InteractionDisabled);
-}
-
 fn on_game_screen_activate(
     activate: On<Activate>,
     actions: Query<&GameScreenNavAction>,
@@ -394,6 +388,19 @@ fn on_game_screen_activate(
     if destination != *state.get() {
         next_state.set(destination);
     }
+}
+
+fn on_end_turn(
+    activate: On<Activate>,
+    actions: Query<&EndTurnAction>,
+    mut session: ResMut<GameSession>,
+    mut next_state: ResMut<NextState<AppState>>,
+) {
+    if actions.get(activate.entity).is_err() {
+        return;
+    }
+    let stop = session.game.finish_player_orders();
+    apply_turn_stop(stop, &mut next_state);
 }
 
 #[cfg(test)]
