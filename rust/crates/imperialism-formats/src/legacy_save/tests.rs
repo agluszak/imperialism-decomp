@@ -219,6 +219,22 @@ fn technology_decoder_reads_retail_resource_type_fields() {
 }
 
 #[test]
+fn trade_current_offer_decoder_keeps_signed_nation_slots() {
+    const MARKET_CURRENT_OFFER_OFFSET_V62: usize = 0x14;
+    let mut bytes = [0_u8; MARKET_ROW_SERIALIZED_SIZE_V62];
+    bytes[MARKET_CURRENT_OFFER_OFFSET_V62..MARKET_CURRENT_OFFER_OFFSET_V62 + 2]
+        .copy_from_slice(&(-3_i16).to_be_bytes());
+    bytes[MARKET_CURRENT_OFFER_OFFSET_V62 + 22 * 2..MARKET_CURRENT_OFFER_OFFSET_V62 + 22 * 2 + 2]
+        .copy_from_slice(&4_i16.to_be_bytes());
+
+    let mut stream = LegacyStream::new(&bytes);
+    let row = read_trade_market_row(&mut stream);
+    assert_eq!(stream.position(), MARKET_ROW_SERIALIZED_SIZE_V62);
+    assert_eq!(row.current_offer_by_nation[0], -3);
+    assert_eq!(row.current_offer_by_nation[22], 4);
+}
+
+#[test]
 fn trade_maximum_decoder_keeps_all_nation_slots() {
     let mut bytes = [0_u8; MARKET_ROW_SERIALIZED_SIZE_V62];
     let nation_zero_offset = MARKET_MAXIMUM_OFFER_OFFSET_V62;

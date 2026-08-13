@@ -574,6 +574,7 @@ fn trade_market_state(market: &LegacyTradeMarketState) -> TradeMarketState {
                 offer_count: i32::from(row.offer_count),
                 amount_offered: i32::from(row.amount_offered),
                 adjusted_offer_count: row.adjusted_offer_count,
+                current_offer_by_nation: NationTable::from_array(row.current_offer_by_nation),
                 maximum_offer_by_nation: NationTable::from_array(row.maximum_offer_by_nation),
             }
         })),

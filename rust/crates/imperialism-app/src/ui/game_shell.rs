@@ -146,7 +146,7 @@ fn bind_strategic_map(
     );
 }
 
-fn project_date_and_treasury(
+pub(crate) fn project_date_and_treasury(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,

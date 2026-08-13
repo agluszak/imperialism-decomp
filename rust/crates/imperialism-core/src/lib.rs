@@ -11,6 +11,7 @@ mod city_transport_phase;
 mod civilian_phase;
 mod civilian_work;
 mod create_random_game;
+mod deal_book;
 mod difficulty;
 mod diplomacy;
 mod game;
@@ -65,6 +66,11 @@ pub use city_site::{
 };
 pub use civilian_work::{CivilianWorkOrder, RailSegment, TurnsRemaining};
 pub use create_random_game::{RandomGameNames, create_random_game};
+pub use deal_book::{
+    DealBookAidLine, DealBookBidRow, DealBookCategory, DealBookCategoryRow, DealBookDealLine,
+    DealBookHistory, DealBookHistoryGroup, DealBookHistoryRow, DealBookOfferRow, DealBookTotals,
+    deal_book_tab_commodity, deal_book_tab_count,
+};
 pub use difficulty::Difficulty;
 pub use diplomacy::{
     DiplomacyGrant, DiplomacyPolicy, DiplomacyState, DiplomaticCongressState,

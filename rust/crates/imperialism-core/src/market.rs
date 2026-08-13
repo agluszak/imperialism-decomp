@@ -122,6 +122,7 @@ pub struct TradeMarketRow {
     pub offer_count: i32,
     pub amount_offered: i32,
     pub adjusted_offer_count: f64,
+    pub current_offer_by_nation: NationTable<i16>,
     pub maximum_offer_by_nation: NationTable<i16>,
 }
 
@@ -135,6 +136,7 @@ impl TradeMarketRow {
             offer_count: 0,
             amount_offered: 0,
             adjusted_offer_count: 0.0,
+            current_offer_by_nation: NationTable::from_array([0; NATION_COUNT]),
             maximum_offer_by_nation: NationTable::from_array([0; NATION_COUNT]),
         }
     }
