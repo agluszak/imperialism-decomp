@@ -438,7 +438,7 @@ fn ministers_dto(economy: &GreatPowerState) -> LegacyGreatPowerMinisters {
 }
 
 fn city_dto(city: &CityState) -> LegacyCityState {
-    let orders = city.orders.as_ref();
+    let orders = &city.orders;
     LegacyCityState {
         power_plant_upgrade_queued: u8::from(city.power_plant_upgrade_queued),
         low_production: u8::from(city.low_production),
@@ -500,8 +500,7 @@ fn city_orders_dto(orders: &CityOrders) -> LegacyCityOrders {
             )
         }),
         ships: std::array::from_fn(|index| {
-            let order = &orders.ships[ShipOrderSlot::from_usize(index)];
-            production_from_progress(&order.progress, order.ship_type.into_usize() as i16)
+            production_from_ship(&orders.ships[ShipOrderSlot::from_usize(index)])
         }),
         transport_capacity: item_from_requested(&orders.transport_capacity, 0),
         power_plant: LegacyPowerPlantOrder {
@@ -970,6 +969,23 @@ fn production_from_progress(
     progress: &ProductionProgress,
     resource_type_index: i16,
 ) -> LegacyProductionOrder {
+    production_order(progress, resource_type_index, [0; RESOURCE_KIND_COUNT], 0)
+}
+
+fn production_from_ship(order: &ShipOrderState) -> LegacyProductionOrder {
+    let mut tracking_slots = [0_i16; RESOURCE_KIND_COUNT];
+    for (kind, amount) in order.materials.iter() {
+        tracking_slots[kind as usize] = amount;
+    }
+    production_order(&order.progress, order.ship_type as i16, tracking_slots, 0)
+}
+
+fn production_order(
+    progress: &ProductionProgress,
+    resource_type_index: i16,
+    tracking_slots: [i16; RESOURCE_KIND_COUNT],
+    accumulated_value: i32,
+) -> LegacyProductionOrder {
     LegacyProductionOrder {
         resource_type_index,
         quantity: progress.quantity,
@@ -979,8 +995,8 @@ fn production_from_progress(
             ProductionConstraint::Capacity => 2,
             ProductionConstraint::Treasury => 3,
         },
-        tracking_slots: resource_i16(&progress.tracking_by_resource),
-        accumulated_value: progress.accumulated_value,
+        tracking_slots,
+        accumulated_value,
     }
 }
 
@@ -989,7 +1005,12 @@ fn item_from_requested(
     resource_type_index: i16,
 ) -> LegacyItemOrder {
     LegacyItemOrder {
-        order: production_from_progress(&order.progress, resource_type_index),
+        order: production_order(
+            &order.progress,
+            resource_type_index,
+            resource_i16(&order.tracking_by_resource),
+            order.accumulated_value,
+        ),
         requested_quantity: order.requested_quantity,
         primary_input_resource_id: 0,
         secondary_input_resource_id: 0,

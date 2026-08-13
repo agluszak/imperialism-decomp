@@ -55,7 +55,7 @@ pub(crate) fn bind_hover_help_bar(
     node: &mut Node,
     style: HoverHelpBarStyle,
 ) {
-    let (font, layout, _) = assets
+    let (font, layout, _, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,

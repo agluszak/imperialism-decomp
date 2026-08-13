@@ -812,7 +812,7 @@ fn bind_load_save_notice(
 ) {
     let (root, notice) = notice.into_inner();
     let body = find_descendant(root, fourcc!("info"), &children, &tags);
-    let (body_font, body_layout, _) = assets
+    let (body_font, body_layout, _, _) = assets
         .text_style(imperialism_formats::RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
