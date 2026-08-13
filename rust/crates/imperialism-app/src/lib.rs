@@ -23,6 +23,7 @@ pub(crate) enum AppState {
     Transport,
     Diplomacy,
     DealBook,
+    OfferSheet,
     TechnologyAdvance,
     Newspaper,
 }
@@ -91,9 +92,9 @@ pub fn run(
         ui::TradePlugin,
         ui::DiplomacyPlugin,
         ui::DealBookPlugin,
-        ui::TechnologyAdvancePlugin,
-        ui::NewspaperPlugin,
-    ));
+        ui::OfferSheetPlugin,
+    ))
+    .add_plugins((ui::TechnologyAdvancePlugin, ui::NewspaperPlugin));
     app.world_mut()
         .spawn((Camera2d, Msaa::Off, UiAntiAlias::Off));
     app.run();

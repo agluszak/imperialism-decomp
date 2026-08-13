@@ -48,9 +48,7 @@ pub(crate) fn city() -> CityState {
         stockpile: crate::Stockpile::default(),
         production_orders: ProductionTable::default(),
         production_accum: ProductionTable::default(),
-        production_flags: ProductionTable::default(),
-        production_current: ProductionTable::default(),
-        production_progress: ProductionTable::default(),
+        building_windows: ProductionTable::default(),
         population_growth_penalty_ticks: 0,
         unmet_resource_retries: ResourceTable::default(),
         consumed_production_input_by_type: ResourceTable::default(),
@@ -98,12 +96,10 @@ pub(crate) fn great_power_state() -> GreatPowerState {
         pending_ship: None,
         interior_civilian: Box::default(),
         ai_trade: None,
-        ai_development_pressure: None,
         aid_allocation_by_minor_nation: MinorNationTable::default(),
         budget_pool_base: 0,
         budget_pool_delta: 0,
         special_resource_trade_balance: 0,
-        candidate_nation_flags: NationTable::default(),
         scenario_initialized: false,
         turn_finished: false,
         pending_actions: PendingActionTable::default(),
@@ -113,7 +109,6 @@ pub(crate) fn great_power_state() -> GreatPowerState {
         pressure_counter: 0,
         army_movement_budget: 0,
         aid_allocation_total: 0,
-        colony_boycott_flags: NationTable::default(),
         military_expenses: 0,
     }
 }
@@ -156,6 +151,7 @@ pub(crate) fn game_state() -> GameState {
             crate::MapTopology::Bounded,
             vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
         ),
+        map_view_origin: TileId::new(1),
         ocean: Ocean::default(),
         rng: RngState {
             crt_rand: RetailCrtRng::from_state(1),
@@ -180,5 +176,6 @@ pub(crate) fn game_state() -> GameState {
         missions: Vec::new(),
         news: crate::NewsState::default(),
         pending: crate::PendingWorkState::default(),
+        trade_session: None,
     }
 }

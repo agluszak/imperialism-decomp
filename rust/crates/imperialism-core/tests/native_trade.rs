@@ -134,3 +134,30 @@ fn trade_policy_set() {
     })
     .unwrap();
 }
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn trade_phase() {
+    compare_native("trade_phase", |state, (): ()| {
+        // Matches DrainRankedDealsWithHumanAutoAccept: settlement algorithm only,
+        // not the production begin_trade_phase / reply_to_trade_offer contract.
+        drain_ranked_deals_with_human_auto_accept(state);
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn trade_phase_sell_only() {
+    compare_native("trade_phase_sell_only", |state, (): ()| {
+        drain_ranked_deals_with_human_auto_accept(state);
+    })
+    .unwrap();
+}
+
+fn drain_ranked_deals_with_human_auto_accept(state: &mut GameState) {
+    let mut progress = state.begin_trade_phase();
+    while let TradeProgress::Offer(offer) = progress {
+        progress = state.reply_to_trade_offer(offer.amount, false);
+    }
+}

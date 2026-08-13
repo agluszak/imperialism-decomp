@@ -1,21 +1,19 @@
-#include "NativeTransition.h"
+#include "NativeCases.h"
 #include "JsonArray.h"
 #include "JsonObject.h"
 
 #include "game/city/TCity.h"
+#include "game/city_ui/TCountry.h"
 #include "game/globals/shared_globals.h"
-#include "game/globals/trade_ui_globals.h"
 #include "game/nation/TGreatPower.h"
 #include "game/resource_domain_types.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/ui_widgets/TDealList.h"
 #include "game/ui_widgets/TTradeMgr.h"
+#include "game/ui_widgets/TradeDealEntry.h"
 
 RuntimeActionResult RunMajorTradeSettlement(NativeTransition& transition) {
-  const short nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0) {
-    return RuntimeActionResult::Failure("the loaded player has no major-nation state");
-  }
+  TGreatPower* nation = ActiveNation();
 
   JsonArray settlements;
   JsonObject fabricBuy;
@@ -36,10 +34,10 @@ RuntimeActionResult RunMajorTradeSettlement(NativeTransition& transition) {
   fabricSale.Set("price", 4);
   settlements.Add(fabricSale.Release());
 
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(nationSlot));
-  operation.Set("settlements", settlements.Release());
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(ActiveNationSlot()));
+  args.Set("settlements", settlements.Release());
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -51,12 +49,7 @@ RuntimeActionResult RunMajorTradeSettlement(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunPurchasedItemsPhase(NativeTransition& transition) {
-  const short nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0 || nation->city == 0) {
-    return RuntimeActionResult::Failure("the loaded player has no trade-phase city state");
-  }
-
+  TGreatPower* nation = ActiveNation();
   nation->SetItemPotentials(kResourceFabric, -1);
   nation->SetItemPotentials(kResourceClothing, -1);
 
@@ -73,10 +66,10 @@ RuntimeActionResult RunPurchasedItemsPhase(NativeTransition& transition) {
   foodPurchase.Set("price", 1);
   purchases.Add(foodPurchase.Release());
 
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(nationSlot));
-  operation.Set("purchases", purchases.Release());
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(ActiveNationSlot()));
+  args.Set("purchases", purchases.Release());
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -89,12 +82,7 @@ RuntimeActionResult RunPurchasedItemsPhase(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunRecallTradeBids(NativeTransition& transition) {
-  const short nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0 || nation->city == 0) {
-    return RuntimeActionResult::Failure("the loaded player has no trade-bid city state");
-  }
-
+  TGreatPower* nation = ActiveNation();
   TCity* city = nation->city;
   for (int resource = 0; resource < kResourceKindCount; ++resource) {
     nation->rememberedTradeOffersByResource[resource] = 0;
@@ -121,9 +109,9 @@ RuntimeActionResult RunRecallTradeBids(NativeTransition& transition) {
   nation->aidAllocationMatrix[0] = 17;
   nation->aidAllocationMatrix[aidAllocationCount - 1] = -9;
 
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(nationSlot));
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(ActiveNationSlot()));
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -133,12 +121,7 @@ RuntimeActionResult RunRecallTradeBids(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunPlayerTradePhaseReset(NativeTransition& transition) {
-  const short nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0 || nation->city == 0 || nation->diplomacyEligibilityA0 == 0) {
-    return RuntimeActionResult::Failure("the loaded active nation is not a human great power");
-  }
-
+  TGreatPower* nation = ActiveNation();
   TCity* city = nation->city;
   for (int slot = 0; slot < kIndustryActionSlotCount; ++slot) {
     city->orderCountByType5c[slot] = 0;
@@ -165,9 +148,9 @@ RuntimeActionResult RunPlayerTradePhaseReset(NativeTransition& transition) {
   nation->availableMerchantCapacity = 7;
   nation->AddAmountToAidAllocationMatrixCellAndTotal(37, kResourceSteel, kMinorNationFirstSlot);
 
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(nationSlot));
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(ActiveNationSlot()));
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -177,12 +160,7 @@ RuntimeActionResult RunPlayerTradePhaseReset(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunTradeCapacityRefresh(NativeTransition& transition) {
-  const short nationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0 || nation->city == 0) {
-    return RuntimeActionResult::Failure("the loaded player has no city-and-trade state");
-  }
-
+  TGreatPower* nation = ActiveNation();
   TCity* city = nation->city;
   for (int slot = 0; slot < kIndustryActionSlotCount; ++slot) {
     city->orderCountByType5c[slot] = 0;
@@ -191,9 +169,9 @@ RuntimeActionResult RunTradeCapacityRefresh(NativeTransition& transition) {
   city->orderCountByType5c[5] = 1;
   city->orderCountByType5c[10] = 1;
 
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(nationSlot));
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(ActiveNationSlot()));
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -203,10 +181,6 @@ RuntimeActionResult RunTradeCapacityRefresh(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunTradeMarketPrice(NativeTransition& transition) {
-  if (g_pTradeMgr == 0) {
-    return RuntimeActionResult::Failure("the loaded game has no trade market");
-  }
-
   TTradeMgr* tradeManager = g_pTradeMgr;
   for (int resource = kResourceCotton; resource < kResourceManufacturedEnd; ++resource) {
     TTradeMgr::NationMetricCategoryRow& row = tradeManager->categoryRows[resource];
@@ -301,25 +275,20 @@ RuntimeActionResult RunTradeMarketPrice(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunTradePolicySet(NativeTransition& transition) {
-  const NationSlot sourceNationSlot = g_pSimMgr->GetActiveNationId();
+  const NationSlot sourceNationSlot = ActiveNationSlot();
   const NationSlot targetNationSlot =
       static_cast<NationSlot>((sourceNationSlot + 1) % kMajorNationCount);
   const short grantAmount = 1000;
   const short kBoycottPolicy = 300;
-  TGreatPower* nation = g_apNationStates[sourceNationSlot];
-  if (nation == 0 || sourceNationSlot == targetNationSlot) {
-    return RuntimeActionResult::Failure("the loaded player cannot set a bilateral trade policy");
-  }
+  TGreatPower* nation = ActiveNation();
 
-  if (!nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNationSlot, grantAmount)) {
-    return RuntimeActionResult::Failure("retail rejected the preexisting diplomacy grant");
-  }
+  nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNationSlot, grantAmount);
 
-  JsonObject operation;
-  operation.Set("nation", static_cast<int>(sourceNationSlot));
-  operation.Set("target", static_cast<int>(targetNationSlot));
-  operation.Set("policy", static_cast<int>(kBoycottPolicy));
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("nation", static_cast<int>(sourceNationSlot));
+  args.Set("target", static_cast<int>(targetNationSlot));
+  args.Set("policy", static_cast<int>(kBoycottPolicy));
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
@@ -329,24 +298,215 @@ RuntimeActionResult RunTradePolicySet(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunTradePolicyStep(NativeTransition& transition) {
-  const NationSlot sourceNationSlot = g_pSimMgr->GetActiveNationId();
+  const NationSlot sourceNationSlot = ActiveNationSlot();
   const NationSlot targetNationSlot = sourceNationSlot == 0 ? 1 : 0;
-  TGreatPower* nation = g_apNationStates[sourceNationSlot];
-  if (nation == 0) {
-    return RuntimeActionResult::Failure("the loaded player has no major-nation state");
-  }
+  TGreatPower* nation = ActiveNation();
 
   nation->needLevelByNation[targetNationSlot] = 75;
   nation->treasuryValue10 = 10001;
 
-  JsonObject operation;
-  operation.Set("source", static_cast<int>(sourceNationSlot));
-  operation.Set("target", static_cast<int>(targetNationSlot));
-  RuntimeActionResult started = transition.Begin(operation.Release());
+  JsonObject args;
+  args.Set("source", static_cast<int>(sourceNationSlot));
+  args.Set("target", static_cast<int>(targetNationSlot));
+  RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
 
   nation->DecrementNeedLevelByNationStep(targetNationSlot);
   return transition.Finish();
+}
+
+namespace {
+
+void SeedMerchantCapacity(TCity* city) {
+  for (int slot = 0; slot < kIndustryActionSlotCount; ++slot) {
+    city->orderCountByType5c[slot] = 0;
+  }
+  city->orderCountByType5c[1] = 2;
+  city->orderCountByType5c[5] = 1;
+  city->orderCountByType5c[10] = 1;
+}
+
+void SeedTradeableStocks(TGreatPower* nation) {
+  TCity* city = nation->city;
+  city->CityStockByType(kResourceCotton) = 8;
+  city->CityStockByType(kResourceWool) = 8;
+  city->CityStockByType(kResourceTimber) = 12;
+  city->CityStockByType(kResourceCoal) = 10;
+  city->CityStockByType(kResourceIron) = 10;
+  city->CityStockByType(kResourceHorses) = 4;
+  city->CityStockByType(kResourceOil) = 6;
+  city->CityStockByType(kResourceFood) = 16;
+  city->CityStockByType(kResourceClothing) = 10;
+  city->CityStockByType(kResourceFurniture) = 8;
+  city->CityStockByType(kResourceHardware) = 8;
+  city->CityStockByType(kResourceArms) = 6;
+  nation->treasuryValue10 = 20000;
+}
+
+void SeedHumanTradeOrders(TGreatPower* nation, bool buyClothing) {
+  for (int resource = 0; resource < kResourceKindCount; ++resource) {
+    nation->rememberedTradeOffersByResource[resource] = 0;
+    nation->itemPotentials[resource] = 0;
+  }
+  if (buyClothing) {
+    nation->rememberedTradeOffersByResource[kResourceClothing] = -1;
+    nation->rememberedTradeOffersByResource[kResourceTimber] = 5;
+  } else {
+    nation->rememberedTradeOffersByResource[kResourceClothing] = 4;
+  }
+}
+
+void DrainRankedDealsWithHumanAutoAccept() {
+  // Synthetic settlement drain: human buyers Accept at the posed amount instead of
+  // TGreatPower::ReplyToTradeOffer / ShowOfferSheet. This tests ranked-deal
+  // settlement, not the complete retail DoTrade interaction.
+  TTradeMgr* tradeManager = g_pTradeMgr;
+  tradeManager->categoryRows[0].dealEntryOrdinal = 1;
+  tradeManager->categoryRows[0].dealCategoryOrderIndex = 0;
+  short next = 0;
+  do {
+    short i = tradeManager->categoryRows[0].dealCategoryOrderIndex;
+    short idx = g_aTradeDealCategoryOrder_0066D810[i];
+    TDealList* list = tradeManager->categoryRankLists[idx];
+    if (list->GetSize() != 0) {
+      break;
+    }
+    next = tradeManager->categoryRows[0].dealCategoryOrderIndex + 1;
+    tradeManager->categoryRows[0].dealCategoryOrderIndex = next;
+  } while (next < 0x11);
+
+  while (tradeManager->categoryRows[0].dealCategoryOrderIndex <= 0x10) {
+    short dispatchIdx =
+        g_aTradeDealCategoryOrder_0066D810[tradeManager->categoryRows[0].dealCategoryOrderIndex];
+    TDealList* list = tradeManager->categoryRankLists[dispatchIdx];
+    TradeDealEntry* entry = static_cast<TradeDealEntry*>(
+        list->GetPtrListEntryByOneBasedIndex(tradeManager->categoryRows[0].dealEntryOrdinal));
+
+    int transfer =
+        g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetAmtUnsold(dispatchIdx);
+    if (entry->targetNationSlot < 7 && entry->sourceNationSlot >= 7) {
+      short capacity =
+          g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetMerchantCapacity();
+      if (capacity < transfer) {
+        transfer = capacity;
+      }
+    }
+
+    if (transfer > 0) {
+      TCountry* buyer = g_apTerrainTypeDescriptorTable[entry->sourceNationSlot];
+      TGreatPower* buyerPower =
+          entry->sourceNationSlot < 7 ? g_apNationStates[entry->sourceNationSlot] : 0;
+      if (buyerPower != 0 && buyerPower->diplomacyEligibilityA0 != 0 &&
+          buyer->StillBuyingItem(dispatchIdx)) {
+        tradeManager->SetDealResults(entry->sourceNationSlot, entry->targetNationSlot,
+                                     static_cast<short>(transfer),
+                                     static_cast<short>(entry->dispatchScore08), dispatchIdx, 0, 0);
+      } else {
+        buyer->ReplyToTradeOffer(entry->targetNationSlot, static_cast<short>(transfer),
+                                 static_cast<short>(entry->dispatchScore08), dispatchIdx);
+      }
+    }
+
+    ++tradeManager->categoryRows[0].dealEntryOrdinal;
+    if (tradeManager->categoryRows[0].dealEntryOrdinal > list->GetSize()) {
+      do {
+        ++tradeManager->categoryRows[0].dealCategoryOrderIndex;
+        if (tradeManager->categoryRows[0].dealCategoryOrderIndex > 0x10) {
+          break;
+        }
+      } while (
+          tradeManager
+              ->categoryRankLists[g_aTradeDealCategoryOrder_0066D810[tradeManager->categoryRows[0]
+                                                                         .dealCategoryOrderIndex]]
+              ->GetSize() == 0);
+      tradeManager->categoryRows[0].dealEntryOrdinal = 1;
+    }
+  }
+}
+
+void FinishTradeOffersWithoutPhaseAdvance() {
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    if (nation != 0) {
+      nation->ClearTradeOffers();
+    }
+  }
+
+  short* rowCursor = &g_pTradeMgr->categoryRows[0].tradeOfferCells[46];
+  int rowCount = 0x11;
+  do {
+    short* cellCursor = rowCursor;
+    int cellCount = 0x17;
+    do {
+      short priorValue = cellCursor[-0x17];
+      if (priorValue > *cellCursor) {
+        *cellCursor = priorValue;
+      }
+      ++cellCursor;
+      --cellCount;
+    } while (cellCount != 0);
+    rowCursor += 0x50;
+    --rowCount;
+  } while (rowCount != 0);
+}
+
+void ExecuteDoTradeWithoutPhaseAdvance() {
+  // Market prepare + auto-accept drain + EndTradeOffers, without StartNextPhase.
+  // Not a complete retail TSimMgr::DoTrade: humans never see the Offer Sheet.
+  for (int nationSlot = 6; nationSlot >= 0; --nationSlot) {
+    if (g_apNationStates[nationSlot] != 0) {
+      g_apNationStates[nationSlot]->InitializeDealBook();
+    }
+  }
+
+  g_pTradeMgr->ResetNationMetricRowsAndClearCategoryRankLists();
+  g_pTradeMgr->RunNationUpdatePassesAndResetTransitionFlags();
+  g_pTradeMgr->SetMinorsTradeBids();
+  g_pTradeMgr->TallyTradeBids();
+  g_pTradeMgr->CalculateNewWorldPrices();
+  g_pTradeMgr->CalculateDealOrder();
+  DrainRankedDealsWithHumanAutoAccept();
+  FinishTradeOffersWithoutPhaseAdvance();
+}
+
+RuntimeActionResult RunTradePhaseCase(NativeTransition& transition, bool buyClothing) {
+  if (g_pTradeMgr == 0) {
+    return RuntimeActionResult::Failure("the loaded game has no trade market");
+  }
+
+  const short nationSlot = g_pSimMgr->GetActiveNationId();
+  TGreatPower* nation = g_apNationStates[nationSlot];
+  if (nation == 0 || nation->city == 0 || nation->diplomacyEligibilityA0 == 0) {
+    return RuntimeActionResult::Failure("the loaded active nation is not a human great power");
+  }
+
+  for (int slot = 0; slot < kMajorNationCount; ++slot) {
+    TGreatPower* major = g_apNationStates[slot];
+    if (major == 0 || major->city == 0) {
+      continue;
+    }
+    SeedMerchantCapacity(major->city);
+    SeedTradeableStocks(major);
+  }
+  SeedHumanTradeOrders(nation, buyClothing);
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  ExecuteDoTradeWithoutPhaseAdvance();
+  return transition.Finish();
+}
+
+} // namespace
+
+RuntimeActionResult RunTradePhase(NativeTransition& transition) {
+  return RunTradePhaseCase(transition, true);
+}
+
+RuntimeActionResult RunTradePhaseSellOnly(NativeTransition& transition) {
+  return RunTradePhaseCase(transition, false);
 }

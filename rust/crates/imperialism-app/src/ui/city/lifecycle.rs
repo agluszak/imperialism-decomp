@@ -261,16 +261,16 @@ pub(in crate::ui::city) fn restore_city_dialogs(
     for index in 0..CityFacilitySlot::COUNT {
         let slot = CityFacilitySlot::from_index(index as u8)
             .expect("City facility index is in the fixed slot range");
-        let state = city.building_window_state(slot);
-        if state.flag == 0 {
+        let state = city.building_windows[slot];
+        let Some(position) = state else {
             continue;
-        }
+        };
         open_city_dialog(
             &mut commands,
             slot,
             Some(IVec2::new(
-                i32::from(state.current),
-                i32::from(state.accumulated),
+                i32::from(position.left),
+                i32::from(position.top),
             )),
             next_z,
         );
@@ -296,25 +296,16 @@ pub(in crate::ui::city) fn leave_city_screen(
     for index in 0..CityFacilitySlot::COUNT {
         let slot = CityFacilitySlot::from_index(index as u8)
             .expect("City facility index is in the fixed slot range");
-        let state = if let Some((_, node)) = windows.iter().find(|(window, _)| window.0 == slot) {
+        let window = windows.iter().find(|(w, _)| w.0 == slot).map(|(_, node)| {
             let (left, top) = node_position(node);
-            BuildingWindowState {
-                flag: 1,
-                current: i16::try_from(left.round() as i32)
+            CityWindowPosition {
+                left: i16::try_from(left.round() as i32)
                     .expect("City window coordinate fits retail short storage"),
-                accumulated: i16::try_from(top.round() as i32)
+                top: i16::try_from(top.round() as i32)
                     .expect("City window coordinate fits retail short storage"),
             }
-        } else {
-            BuildingWindowState {
-                flag: 0,
-                current: 0,
-                accumulated: 0,
-            }
-        };
-        session
-            .0
-            .set_city_building_window_state(nation, slot, state);
+        });
+        session.0.set_city_building_window(nation, slot, window);
     }
 }
 

@@ -10,7 +10,6 @@ use std::ops::{Index, IndexMut};
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MapMgr {
     pub topology: MapTopology,
-    pub view_origin: TileId,
     pub map_data_ready: bool,
     pub recruit_search_active: bool,
     pub city_score_total: i32,
@@ -62,7 +61,6 @@ impl MapMgr {
         );
         Self {
             topology,
-            view_origin: TileId::new(1),
             map_data_ready: false,
             recruit_search_active: false,
             city_score_total: 0,
@@ -98,8 +96,8 @@ impl MapMgr {
             .expect("retail strategic-map viewport origin is inside the map")
     }
 
-    /// Applies the retail map edge-scroll mask to the strategic viewport.
-    pub fn scroll_viewport(&mut self, edge_mask: u8) -> bool {
+    /// Applies the retail map edge-scroll mask to a strategic viewport origin.
+    pub fn scrolled_viewport_origin(&self, origin: TileId, edge_mask: u8) -> TileId {
         const VIEWPORT_TILE_SPAN: i32 = 9;
         const MAX_ORIGIN_ROW: i32 = 0x35;
         const EDGE_UP: u8 = 0x01;
@@ -108,7 +106,7 @@ impl MapMgr {
         const EDGE_LEFT: u8 = 0x08;
 
         let geometry = self.geometry();
-        let (row, column) = geometry.row_column(self.view_origin);
+        let (row, column) = geometry.row_column(origin);
         let row_delta = if edge_mask & EDGE_UP != 0 {
             -1
         } else if edge_mask & EDGE_DOWN != 0 {
@@ -129,14 +127,9 @@ impl MapMgr {
         } else {
             (i32::from(column) + column_delta).clamp(1, 0x6e - VIEWPORT_TILE_SPAN)
         };
-        let next = geometry
+        geometry
             .tile(row as u16, column as u16)
-            .expect("retail strategic viewport origin is inside the map");
-        if next == self.view_origin {
-            return false;
-        }
-        self.view_origin = next;
-        true
+            .expect("retail strategic viewport origin is inside the map")
     }
 
     /// Retail `ComputeRepresentativeTileIndexForNationWithWrapBias`.
@@ -1002,30 +995,24 @@ mod tests {
     #[test]
     fn strategic_viewport_scroll_wraps_and_clamps_at_retail_edges() {
         let tiles = vec![TileState::default(); STRATEGIC_TILE_COUNT];
-        let mut wrapping = MapMgr::new(MapTopology::Wrapping, tiles.clone());
-        wrapping.view_origin = wrapping.geometry().tile(0, 0).unwrap();
-        assert!(wrapping.scroll_viewport(0x09));
+        let wrapping = MapMgr::new(MapTopology::Wrapping, tiles.clone());
+        let origin = wrapping.geometry().tile(0, 0).unwrap();
+        let next = wrapping.scrolled_viewport_origin(origin, 0x09);
         assert_eq!(
-            wrapping.geometry().row_column(wrapping.view_origin),
+            wrapping.geometry().row_column(next),
             (0, STRATEGIC_MAP_WIDTH - 1)
         );
-        wrapping.view_origin = wrapping.geometry().tile(53, 107).unwrap();
-        assert!(wrapping.scroll_viewport(0x06));
-        assert_eq!(
-            wrapping.geometry().row_column(wrapping.view_origin),
-            (53, 0)
-        );
+        let origin = wrapping.geometry().tile(53, 107).unwrap();
+        let next = wrapping.scrolled_viewport_origin(origin, 0x06);
+        assert_eq!(wrapping.geometry().row_column(next), (53, 0));
 
-        let mut bounded = MapMgr::new(MapTopology::Bounded, tiles);
-        bounded.view_origin = bounded.geometry().tile(0, 1).unwrap();
-        assert!(!bounded.scroll_viewport(0x09));
-        bounded.view_origin = bounded.geometry().tile(53, 101).unwrap();
-        assert!(!bounded.scroll_viewport(0x06));
-        bounded.view_origin = bounded.geometry().tile(52, 100).unwrap();
-        assert!(bounded.scroll_viewport(0x06));
-        assert_eq!(
-            bounded.geometry().row_column(bounded.view_origin),
-            (53, 101)
-        );
+        let bounded = MapMgr::new(MapTopology::Bounded, tiles);
+        let origin = bounded.geometry().tile(0, 1).unwrap();
+        assert_eq!(bounded.scrolled_viewport_origin(origin, 0x09), origin);
+        let origin = bounded.geometry().tile(53, 101).unwrap();
+        assert_eq!(bounded.scrolled_viewport_origin(origin, 0x06), origin);
+        let origin = bounded.geometry().tile(52, 100).unwrap();
+        let next = bounded.scrolled_viewport_origin(origin, 0x06);
+        assert_eq!(bounded.geometry().row_column(next), (53, 101));
     }
 }

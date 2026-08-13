@@ -52,7 +52,7 @@ impl LegacySaveV62 {
                 &civilians,
                 &missions,
                 pending,
-                state.map.topology,
+                state.map().topology,
             ));
         }
 
@@ -83,7 +83,7 @@ impl LegacySaveV62 {
             saved_session_slot: session_slot,
             save_label: super::slots::normalize_save_label(label),
             preview_owner_nation_by_tile: state
-                .map
+                .map()
                 .tiles
                 .iter()
                 .map(|tile| option_i8(tile.owner_nation.map(TileOwnerTag::get)))
@@ -138,8 +138,8 @@ impl LegacySaveV62 {
             market: market_dto(state.market()),
             diplomacy: diplomacy_dto(state.diplomacy()),
             technology: technology_dto(state.technology()),
-            map: map_dto(&state.map),
-            ocean: ocean_dto(&state.ocean),
+            map: map_dto(state.map(), state.map_view_origin()),
+            ocean: ocean_dto(state.ocean()),
             navy: LegacyNavyState {
                 ships: Vec::new(),
                 admirals: Vec::new(),
@@ -348,6 +348,8 @@ fn ministers_dto(economy: &GreatPowerState) -> LegacyGreatPowerMinisters {
         }
         None => scalar_fields[0] = -10,
     }
+    scalar_fields[2] = trade.capability_flag_14;
+    scalar_fields[3] = trade.capability_flag_16;
     scalar_fields[4] = trade.phase_counter;
     scalar_fields[5] = trade.refresh_interval;
     scalar_fields[6] = match trade.requested_ship {
@@ -400,7 +402,7 @@ fn ministers_dto(economy: &GreatPowerState) -> LegacyGreatPowerMinisters {
             purchase_priority_by_resource: enum_i16(&trade.purchase_priority),
             preferred_resource_slots: trade.preferred_resources.map(optional_commodity_i16),
             status_flag: 0,
-            trade_partner_enabled: [0; 7],
+            trade_partner_enabled: trade.trade_partner_enabled,
             development_grant_by_nation: *economy.development_grant_by_nation.as_array(),
             bill_order_flag: matches!(
                 economy.foreign_minister_personality,
@@ -439,11 +441,13 @@ fn ministers_dto(economy: &GreatPowerState) -> LegacyGreatPowerMinisters {
 
 fn city_dto(city: &CityState) -> LegacyCityState {
     let orders = &city.orders;
+    let (production_flags, production_current, production_progress) =
+        city_windows_to_retail(&city.building_windows);
     LegacyCityState {
         power_plant_upgrade_queued: u8::from(city.power_plant_upgrade_queued),
         low_production: u8::from(city.low_production),
         low_stock: u8::from(city.low_stock),
-        production_flags: *city.production_flags.as_array(),
+        production_flags,
         food_substitution_count: city.food_substitution_count,
         starvation_population_loss: city.starvation_population_loss,
         serialized_state: city.serialized_state,
@@ -457,8 +461,8 @@ fn city_dto(city: &CityState) -> LegacyCityState {
         production_accum: *city.production_accum.as_array(),
         unmet_resource_retries: resource_i16(&city.unmet_resource_retries),
         reserved_by_type: resource_i16(&city.reserved_by_type),
-        production_current: *city.production_current.as_array(),
-        production_progress: *city.production_progress.as_array(),
+        production_current,
+        production_progress,
         consumed_production_input_by_type: resource_i16(&city.consumed_production_input_by_type),
         rolling_item_production_score: city.rolling_item_production_score,
         population: LegacyPopulationState {
@@ -526,7 +530,9 @@ fn post_city_dto(
             .iter()
             .map(|unit| civilian_unit_dto(unit, topology))
             .collect(),
-        candidate_nation_flags: *economy.candidate_nation_flags.as_array(),
+        // Opaque retail bytes: parsed and written for layout compatibility, not promoted
+        // into GameState until their diplomacy semantics are recovered.
+        candidate_nation_flags: [0; NATION_COUNT],
         diplomacy_budget_base: economy.diplomacy_budget_base,
         escalation_counter: economy.escalation_counter as i8,
         pending_commitment_cost: economy.pending_commitment_cost,
@@ -535,7 +541,7 @@ fn post_city_dto(
         turn_finished_flag: u8::from(economy.turn_finished),
         special_resource_trade_balance: economy.special_resource_trade_balance,
         aid_allocation_total: economy.aid_allocation_total,
-        colony_boycott_flags: *economy.colony_boycott_flags.as_array(),
+        colony_boycott_flags: [0; NATION_COUNT],
         military_expenses: economy.military_expenses,
     }
 }
@@ -723,8 +729,8 @@ fn market_dto(market: &TradeMarketState) -> LegacyTradeMarketState {
                 adjusted_offer_count: row.adjusted_offer_count,
                 amount_offered: row.amount_offered as i16,
                 base_price: row.base_price as i16,
-                current_offer_by_nation: [0; NATION_COUNT],
-                accumulated_offer_by_nation: [0; NATION_COUNT],
+                current_offer_by_nation: *row.current_offer_by_nation.as_array(),
+                accumulated_offer_by_nation: *row.accumulated_offer_by_nation.as_array(),
                 maximum_offer_by_nation: *row.maximum_offer_by_nation.as_array(),
             }
         }),
@@ -813,9 +819,9 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
     }
 }
 
-fn map_dto(map: &MapMgr) -> LegacyMapState {
+fn map_dto(map: &MapMgr, view_origin: TileId) -> LegacyMapState {
     LegacyMapState {
-        view_origin_tile: map.view_origin.get() as i16,
+        view_origin_tile: view_origin.get() as i16,
         map_data_ready: u8::from(map.map_data_ready),
         recruit_search_active: u8::from(map.recruit_search_active),
         city_score_total: map.city_score_total,

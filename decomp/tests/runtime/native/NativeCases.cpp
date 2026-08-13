@@ -1,5 +1,9 @@
 #include "NativeCases.h"
 
+#include "game/globals/shared_globals.h"
+#include "game/nation/TGreatPower.h"
+#include "game/ui_screens/TSimMgr.h"
+
 #include <string.h>
 
 RuntimeActionResult RunCityItemOrderIncrease(NativeTransition& transition);
@@ -22,6 +26,8 @@ RuntimeActionResult RunTradeCapacityRefresh(NativeTransition& transition);
 RuntimeActionResult RunTradeMarketPrice(NativeTransition& transition);
 RuntimeActionResult RunTradePolicySet(NativeTransition& transition);
 RuntimeActionResult RunTradePolicyStep(NativeTransition& transition);
+RuntimeActionResult RunTradePhase(NativeTransition& transition);
+RuntimeActionResult RunTradePhaseSellOnly(NativeTransition& transition);
 
 RuntimeActionResult RunAidAllocation(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyGrantEntry(NativeTransition& transition);
@@ -64,6 +70,8 @@ const NativeCase kCases[] = {
     {"trade_market_price", RunTradeMarketPrice},
     {"trade_policy_set", RunTradePolicySet},
     {"trade_policy_step", RunTradePolicyStep},
+    {"trade_phase", RunTradePhase},
+    {"trade_phase_sell_only", RunTradePhaseSellOnly},
     {"aid_allocation", RunAidAllocation},
     {"diplomacy_grant_entry_updates_treasury", RunDiplomacyGrantEntry},
     {"diplomacy_reset_preserves_recurring_grants", RunDiplomacyReset},
@@ -94,4 +102,12 @@ const NativeCase* FindNativeCase(const char* name) {
     }
   }
   return 0;
+}
+
+TGreatPower* ActiveNation() {
+  return g_apNationStates[g_pSimMgr->GetActiveNationId()];
+}
+
+short ActiveNationSlot() {
+  return g_pSimMgr->GetActiveNationId();
 }

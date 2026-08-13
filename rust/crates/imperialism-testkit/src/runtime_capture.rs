@@ -6,7 +6,11 @@ use std::fs;
 use std::fs::File;
 use std::io::Read;
 use std::path::{Path, PathBuf};
+use std::process::Command;
 use std::str::FromStr;
+
+use anyhow::{Context, Result, bail};
+use serde::de::DeserializeOwned;
 
 /// Runtime catalog evidence classification. Same strings as
 /// `decomp/tools/runtime/catalog.py` `EvidenceKind`.
@@ -108,7 +112,7 @@ impl ValidatedRuntimeResult {
         deserialize_capture(name, capture)
     }
 
-    /// Directory containing published run artifacts (`result.json`, save-backed `.imp` files).
+    /// Directory containing published run artifacts.
     pub fn artifact_dir(&self) -> Result<&Path, RuntimeCaptureError> {
         self.artifact_dir.as_deref().ok_or_else(|| {
             RuntimeCaptureError::Invalid(
@@ -291,6 +295,83 @@ fn validate_runtime_result(
         evidence_kind,
         artifact_dir,
         captures,
+    })
+}
+
+pub(crate) fn repository_root() -> Result<&'static Path> {
+    Path::new(env!("CARGO_MANIFEST_DIR"))
+        .ancestors()
+        .nth(3)
+        .context("could not locate the repository root")
+}
+
+/// Run one catalogued native runtime scenario into a unique output directory.
+pub fn run_retail_fixture_result(
+    name: &str,
+    required_captures: &'static [&'static str],
+) -> Result<RuntimeRun> {
+    run_runtime_result(name, EvidenceKind::RetailFixtureOracle, required_captures)
+}
+
+/// Run a catalogued self-consistency scenario such as random-map generation.
+pub fn run_self_consistency_result(
+    name: &str,
+    required_captures: &'static [&'static str],
+) -> Result<RuntimeRun> {
+    run_runtime_result(name, EvidenceKind::SelfConsistency, required_captures)
+}
+
+/// One native runtime invocation and the unique output directory it wrote.
+pub struct RuntimeRun {
+    result: ValidatedRuntimeResult,
+    _output_dir: tempfile::TempDir,
+}
+
+impl RuntimeRun {
+    pub fn capture<T: DeserializeOwned>(&self, name: &str) -> Result<T, RuntimeCaptureError> {
+        self.result.capture(name)
+    }
+
+    pub fn artifact_dir(&self) -> Result<&Path, RuntimeCaptureError> {
+        self.result.artifact_dir()
+    }
+}
+
+fn run_runtime_result(
+    scenario: &str,
+    evidence_kind: EvidenceKind,
+    required_captures: &'static [&'static str],
+) -> Result<RuntimeRun> {
+    let output_dir = tempfile::Builder::new()
+        .prefix("imperialism-runtime-")
+        .tempdir()
+        .context("creating a unique native result directory")?;
+    let output = Command::new("just")
+        .current_dir(repository_root()?.join("decomp"))
+        .args(["--quiet", "runtime-run", scenario, "--seed", "1"])
+        .env("IMPERIALISM_RUNTIME_RESULT_DIR", output_dir.path())
+        .output()
+        .context("launching native runtime scenario")?;
+
+    if !output.status.success() {
+        let detail = String::from_utf8_lossy(&output.stderr).trim().to_owned();
+        bail!("native scenario {scenario} failed:\n{detail}");
+    }
+
+    let result_path = output_dir.path().join(format!("{scenario}.json"));
+    let result = read_runtime_result(
+        &result_path,
+        RuntimeResultExpectations {
+            name: scenario,
+            seed: 1,
+            evidence_kind,
+            required_captures,
+        },
+    )
+    .with_context(|| format!("reading native runtime result {}", result_path.display()))?;
+    Ok(RuntimeRun {
+        result,
+        _output_dir: output_dir,
     })
 }
 

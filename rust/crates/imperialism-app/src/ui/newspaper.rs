@@ -1,6 +1,6 @@
 use super::generated;
 use super::hover_help::get_string;
-use super::random_setup::GameSession;
+use super::session::GameSession;
 use super::retail::{RetailTag, RetailUiAssets, find_descendant};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;

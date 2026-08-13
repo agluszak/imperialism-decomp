@@ -1,7 +1,7 @@
 use super::game_shell::project_date_and_treasury;
 use super::generated;
 use super::newspaper::enter_newspaper;
-use super::random_setup::GameSession;
+use super::session::GameSession;
 use super::retail::{RetailTag, RetailUiAssets, find_descendant};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
