@@ -137,6 +137,9 @@ enum TransportGaugeKind {
     Capacity,
 }
 
+#[derive(Component)]
+struct TransportCursor;
+
 #[derive(Component, Clone, Copy)]
 enum TransportDisplay {
     Row {
@@ -150,7 +153,6 @@ enum TransportDisplay {
         unit_value: i32,
     },
     Treasury,
-    Cursor,
     Gauge {
         kind: TransportGaugeKind,
         normal_color: Color,
@@ -173,7 +175,13 @@ impl Plugin for TransportPlugin {
         )
         .add_systems(
             Update,
-            (sync_transport_values, sync_transport_cursor).run_if(in_state(AppState::Transport)),
+            (
+                sync_transport_text,
+                sync_transport_visual,
+                sync_transport_presence,
+                sync_transport_cursor,
+            )
+                .run_if(in_state(AppState::Transport)),
         )
         .add_observer(on_transport_adjust.run_if(in_state(AppState::Transport)));
     }
@@ -293,7 +301,7 @@ fn bind_transport_controls(
         font,
         layout,
         TextColor(Color::BLACK),
-        TransportDisplay::Cursor,
+        TransportCursor,
     ));
     let treasury = find_descendant(root, fourcc!("trea"), children, tags);
     commands.entity(treasury).insert(TransportDisplay::Treasury);
@@ -464,19 +472,10 @@ fn on_transport_adjust(
         .step_transport_allocation(nation, action.allocation, action.delta);
 }
 
-#[allow(clippy::type_complexity)]
-fn sync_transport_values(
-    mut commands: Commands,
+fn sync_transport_text(
     session: Res<GameSession>,
     screens: Query<(), Added<TransportScreen>>,
-    mut displays: Query<(
-        &TransportDisplay,
-        Option<&mut Text>,
-        &mut Node,
-        &mut Visibility,
-        Option<&mut BackgroundColor>,
-    )>,
-    actions: Query<(Entity, &TransportAdjust, Has<InteractionDisabled>)>,
+    mut texts: Query<(&TransportDisplay, &mut Text)>,
 ) {
     if !session.is_changed() && screens.is_empty() {
         return;
@@ -485,24 +484,15 @@ fn sync_transport_values(
         .expect("Transport screen requires an active major nation");
     let major = session.0.nations().major(nation);
     let economy = &major.economy;
-    for (display, text, mut node, mut visibility, color) in &mut displays {
+    for (display, mut text) in &mut texts {
         match *display {
-            TransportDisplay::Row { allocation, .. } => {
-                let status = session.0.transport_row_status(nation, allocation);
-                *visibility = if status.adjustable {
-                    Visibility::Visible
-                } else {
-                    Visibility::Hidden
-                };
-            }
             TransportDisplay::RowCaption(allocation) => {
                 let status = session.0.transport_row_status(nation, allocation);
-                text.expect("Transport row caption has text").0 =
-                    format!("{}  /  {}", status.allocated, status.available);
+                text.0 = format!("{}  /  {}", status.allocated, status.available);
             }
             TransportDisplay::CapacityCaption => {
                 let capacities = economy.capacities;
-                text.expect("Transport capacity caption has text").0 = format!(
+                text.0 = format!(
                     "{}  /  {}",
                     capacities.reserved_transport, capacities.transport
                 );
@@ -512,14 +502,34 @@ fn sync_transport_values(
                 unit_value,
             } => {
                 let target = economy.need_target_by_type[resource];
-                text.expect("Transport money caption has text").0 =
-                    format_currency(i32::from(target) * unit_value);
+                text.0 = format_currency(i32::from(target) * unit_value);
             }
             TransportDisplay::Treasury => {
-                text.expect("Transport treasury caption has text").0 =
-                    format_currency(major.common.treasury);
+                text.0 = format_currency(major.common.treasury);
             }
-            TransportDisplay::Cursor => {}
+            _ => {}
+        }
+    }
+}
+
+fn sync_transport_visual(
+    session: Res<GameSession>,
+    screens: Query<(), Added<TransportScreen>>,
+    mut displays: Query<(
+        &TransportDisplay,
+        &mut Node,
+        &mut Visibility,
+        &mut BackgroundColor,
+    )>,
+) {
+    if !session.is_changed() && screens.is_empty() {
+        return;
+    }
+    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+        .expect("Transport screen requires an active major nation");
+    let economy = &session.0.nations().major(nation).economy;
+    for (display, mut node, mut visibility, mut color) in &mut displays {
+        match *display {
             TransportDisplay::Gauge {
                 kind,
                 normal_color,
@@ -536,7 +546,7 @@ fn sync_transport_values(
                     ),
                 };
                 node.width = Val::Px(transport_gauge_width(value, total));
-                color.expect("Transport gauge has a color").0 = if value == total {
+                color.0 = if value == total {
                     full_color
                 } else {
                     normal_color
@@ -553,13 +563,39 @@ fn sync_transport_values(
                     continue;
                 };
                 *visibility = Visibility::Visible;
-                color.expect("Transport limit has a color").0 = if status.allocated < limit {
+                color.0 = if status.allocated < limit {
                     below_color
                 } else {
                     reached_color
                 };
             }
+            _ => {}
         }
+    }
+}
+
+fn sync_transport_presence(
+    mut commands: Commands,
+    session: Res<GameSession>,
+    screens: Query<(), Added<TransportScreen>>,
+    mut rows: Query<(&TransportDisplay, &mut Visibility), Without<BackgroundColor>>,
+    actions: Query<(Entity, &TransportAdjust, Has<InteractionDisabled>)>,
+) {
+    if !session.is_changed() && screens.is_empty() {
+        return;
+    }
+    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+        .expect("Transport screen requires an active major nation");
+    for (display, mut visibility) in &mut rows {
+        let TransportDisplay::Row { allocation, .. } = *display else {
+            continue;
+        };
+        let status = session.0.transport_row_status(nation, allocation);
+        *visibility = if status.adjustable {
+            Visibility::Visible
+        } else {
+            Visibility::Hidden
+        };
     }
     for (entity, action, disabled) in &actions {
         let status = session.0.transport_row_status(nation, action.allocation);
@@ -583,7 +619,7 @@ fn sync_transport_cursor(
     screens: Query<(), Added<TransportScreen>>,
     changed_rows: Query<(), (With<TransportDisplay>, Changed<Hovered>)>,
     rows: Query<(&TransportDisplay, &Hovered)>,
-    mut displays: Query<(&TransportDisplay, &mut Text)>,
+    mut cursor: Query<&mut Text, With<TransportCursor>>,
 ) {
     if !session.is_changed() && screens.is_empty() && changed_rows.is_empty() {
         return;
@@ -591,46 +627,44 @@ fn sync_transport_cursor(
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Transport screen requires an active major nation");
     let major = session.0.nations().major(nation);
-    for (display, mut text) in &mut displays {
-        if !matches!(display, TransportDisplay::Cursor) {
-            continue;
-        }
-        let economy = &major.economy;
-        let Some((label, allocation)) = rows.iter().find_map(|(display, hovered)| {
-            let TransportDisplay::Row { label, allocation } = *display else {
-                return None;
-            };
-            hovered.get().then_some((label, allocation))
-        }) else {
-            text.0 = format!(
-                "Transport: {} of {} allocated",
-                economy.capacities.reserved_transport, economy.capacities.transport
-            );
-            continue;
+    let Ok(mut text) = cursor.single_mut() else {
+        return;
+    };
+    let economy = &major.economy;
+    let Some((label, allocation)) = rows.iter().find_map(|(display, hovered)| {
+        let TransportDisplay::Row { label, allocation } = *display else {
+            return None;
         };
-        let stock = allocation_amount(allocation, |resource| major.city.stockpile[resource]);
-        let status = session.0.transport_row_status(nation, allocation);
-        let supply_headroom = (status.available - status.allocated).max(0);
-        let capacity_headroom =
-            if economy.capacities.reserved_transport <= economy.capacities.transport {
-                economy.capacities.transport - economy.capacities.reserved_transport
-            } else {
-                i16::MAX
-            };
-        let limit = supply_headroom.min(capacity_headroom);
-        let limiting = match supply_headroom.cmp(&capacity_headroom) {
-            std::cmp::Ordering::Less => "supply",
-            std::cmp::Ordering::Equal => "supply and capacity",
-            std::cmp::Ordering::Greater => "capacity",
-        };
-        let city_need = status
-            .limit
-            .map_or_else(|| "".to_owned(), |need| format!("; city need {need}"));
+        hovered.get().then_some((label, allocation))
+    }) else {
         text.0 = format!(
-            "{}: city {stock}; allocated {}; supply {}; +{limit} max ({limiting}){city_need}",
-            label, status.allocated, status.available,
+            "Transport: {} of {} allocated",
+            economy.capacities.reserved_transport, economy.capacities.transport
         );
-    }
+        return;
+    };
+    let stock = allocation_amount(allocation, |resource| major.city.stockpile[resource]);
+    let status = session.0.transport_row_status(nation, allocation);
+    let supply_headroom = (status.available - status.allocated).max(0);
+    let capacity_headroom = if economy.capacities.reserved_transport <= economy.capacities.transport
+    {
+        economy.capacities.transport - economy.capacities.reserved_transport
+    } else {
+        i16::MAX
+    };
+    let limit = supply_headroom.min(capacity_headroom);
+    let limiting = match supply_headroom.cmp(&capacity_headroom) {
+        std::cmp::Ordering::Less => "supply",
+        std::cmp::Ordering::Equal => "supply and capacity",
+        std::cmp::Ordering::Greater => "capacity",
+    };
+    let city_need = status
+        .limit
+        .map_or_else(|| "".to_owned(), |need| format!("; city need {need}"));
+    text.0 = format!(
+        "{}: city {stock}; allocated {}; supply {}; +{limit} max ({limiting}){city_need}",
+        label, status.allocated, status.available,
+    );
 }
 
 fn allocation_amount(

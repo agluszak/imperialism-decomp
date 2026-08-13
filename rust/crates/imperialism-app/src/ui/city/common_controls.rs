@@ -11,33 +11,41 @@ pub(in crate::ui::city) struct CityOrderAdjust {
 }
 
 #[derive(Component)]
+pub(in crate::ui::city) struct CityOrderQuantity(pub(in crate::ui::city) CityOrderId);
+
+#[derive(Component)]
 pub(in crate::ui::city) struct CityIndustryAmountBar {
     pub(in crate::ui::city) order: CityOrderId,
     pub(in crate::ui::city) slot: CityFacilitySlot,
 }
 
-struct IndustryAmountBarControl {
-    order: CityOrderId,
-    quantity: Entity,
-    fill: Entity,
-    maximum: Entity,
-}
-
-struct IndustryStockControl {
-    resource: ResourceKind,
-    minimum: i16,
-    entity: Entity,
+#[derive(Component)]
+pub(in crate::ui::city) struct IndustryCapacity {
+    slot: CityFacilitySlot,
+    template: String,
 }
 
 #[derive(Component)]
-pub(in crate::ui::city) struct IndustryView {
+pub(in crate::ui::city) enum IndustryIndicator {
+    Labor,
+    Stock {
+        resource: ResourceKind,
+        minimum: i16,
+    },
+    Expansion(CityFacilitySlot),
+}
+
+#[derive(Clone, Copy)]
+pub(in crate::ui::city) struct IndustryAmount {
+    order: CityOrderId,
     slot: CityFacilitySlot,
-    capacity_template: String,
-    capacity: Entity,
-    labor: Entity,
-    stocks: Vec<IndustryStockControl>,
-    amount_bars: Vec<IndustryAmountBarControl>,
-    expansion: Entity,
+}
+
+#[derive(Component, Clone, Copy)]
+pub(in crate::ui::city) enum IndustryBar {
+    Fill(IndustryAmount),
+    Maximum(IndustryAmount),
+    Quantity(IndustryAmount),
 }
 
 pub(in crate::ui::city) fn city_building_name(
@@ -94,7 +102,9 @@ pub(in crate::ui::city) fn bind_city_order_control(
         order: binding.order,
         delta: step,
     });
-    commands.entity(quantity).insert(Text::new(""));
+    commands
+        .entity(quantity)
+        .insert((Text::new(""), CityOrderQuantity(binding.order)));
     quantity
 }
 
@@ -105,8 +115,7 @@ fn bind_industry_amount_bars(
     tags: &Query<&RetailTag>,
     page: IndustryPage,
     bar_color: Color,
-) -> Vec<IndustryAmountBarControl> {
-    let mut controls = Vec::with_capacity(page.orders.len());
+) {
     for binding in page.orders {
         let quantity = bind_city_order_control(
             commands,
@@ -119,40 +128,45 @@ fn bind_industry_amount_bars(
             fourcc!("move"),
             1,
         );
+        let amount = IndustryAmount {
+            order: binding.order,
+            slot: page.slot,
+        };
+        commands
+            .entity(quantity)
+            .insert(IndustryBar::Quantity(amount));
         let row = find_descendant(root, binding.tag, children, tags);
         let bar = find_descendant(row, fourcc!("bar "), children, tags);
-        let fill = commands
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(0.0),
-                    top: Val::Px(1.0),
-                    width: Val::Px(0.0),
-                    height: Val::Px(4.0),
-                    ..default()
-                },
-                BackgroundColor(bar_color),
-                Pickable::IGNORE,
-                ChildOf(bar),
-                Name::new("city-industry-amount"),
-            ))
-            .id();
-        let maximum = commands
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(0.0),
-                    top: Val::Px(0.0),
-                    width: Val::Px(1.0),
-                    height: Val::Px(5.0),
-                    ..default()
-                },
-                BackgroundColor(Color::BLACK),
-                Pickable::IGNORE,
-                ChildOf(bar),
-                Name::new("city-industry-maximum"),
-            ))
-            .id();
+        commands.spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: Val::Px(0.0),
+                top: Val::Px(1.0),
+                width: Val::Px(0.0),
+                height: Val::Px(4.0),
+                ..default()
+            },
+            BackgroundColor(bar_color),
+            Pickable::IGNORE,
+            ChildOf(bar),
+            IndustryBar::Fill(amount),
+            Name::new("city-industry-amount"),
+        ));
+        commands.spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: Val::Px(0.0),
+                top: Val::Px(0.0),
+                width: Val::Px(1.0),
+                height: Val::Px(5.0),
+                ..default()
+            },
+            BackgroundColor(Color::BLACK),
+            Pickable::IGNORE,
+            ChildOf(bar),
+            IndustryBar::Maximum(amount),
+            Name::new("city-industry-maximum"),
+        ));
         commands.entity(bar).insert((
             RelativeCursorPosition::default(),
             CityIndustryAmountBar {
@@ -160,14 +174,7 @@ fn bind_industry_amount_bars(
                 slot: page.slot,
             },
         ));
-        controls.push(IndustryAmountBarControl {
-            order: binding.order,
-            quantity,
-            fill,
-            maximum,
-        });
     }
-    controls
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -186,115 +193,128 @@ pub(in crate::ui::city) fn bind_industry_dialog(
     let name = find_descendant(root, fourcc!("name"), children, tags);
     commands.entity(name).insert(Text::new(building_name));
     let capacity = find_descendant(root, fourcc!("capT"), children, tags);
-    commands.entity(capacity).insert(Text::new(""));
+    commands.entity(capacity).insert((
+        Text::new(""),
+        IndustryCapacity {
+            slot: page.slot,
+            template: capacity_template,
+        },
+    ));
     let labor = find_descendant(root, fourcc!("labV"), children, tags);
-    commands.entity(labor).insert(Text::new("X"));
-    let mut stocks = Vec::with_capacity(page.stocks.len());
+    commands
+        .entity(labor)
+        .insert((Text::new("X"), IndustryIndicator::Labor));
     for &(resource, tag, minimum) in page.stocks {
         let entity = find_descendant(root, tag, children, tags);
-        commands.entity(entity).insert(Text::new("X"));
-        stocks.push(IndustryStockControl {
-            resource,
-            minimum,
-            entity,
-        });
+        commands.entity(entity).insert((
+            Text::new("X"),
+            IndustryIndicator::Stock { resource, minimum },
+        ));
     }
-    let amount_bars = bind_industry_amount_bars(commands, root, children, tags, page, bar_color);
+    bind_industry_amount_bars(commands, root, children, tags, page, bar_color);
     let expansion_action = find_descendant(root, fourcc!("expa"), children, tags);
     commands
         .entity(expansion_action)
         .insert(CityExpansionOpen { slot: page.slot });
     let expansion = find_descendant(root, fourcc!("flag"), children, tags);
-    commands.entity(root).insert(IndustryView {
-        slot: page.slot,
-        capacity_template,
-        capacity,
-        labor,
-        stocks,
-        amount_bars,
-        expansion,
-    });
+    commands
+        .entity(expansion)
+        .insert(IndustryIndicator::Expansion(page.slot));
 }
 
-pub(in crate::ui::city) fn sync_industry_dialog(
-    session: Res<GameSession>,
-    dialogs: Query<Ref<IndustryView>>,
-    mut texts: Query<&mut Text>,
-    mut visibilities: Query<&mut Visibility>,
-    mut nodes: Query<&mut Node>,
-) {
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
-        .expect("City active nation is a major nation");
-    for view in &dialogs {
-        if !session.is_changed() && !view.is_added() {
-            continue;
-        }
-        let major = session.0.nations().major(nation);
-        let city = &major.city;
+fn city_projection_idle(session: &Res<GameSession>, added: bool) -> bool {
+    !session.is_changed() && !added
+}
 
-        let capacity =
-            format_retail_number(&view.capacity_template, city.production_orders[view.slot]);
-        texts
-            .get_mut(view.capacity)
-            .expect("industry capacity control belongs to its dialog")
-            .0 = capacity;
-        *visibilities
-            .get_mut(view.labor)
-            .expect("industry labor indicator belongs to its dialog") =
-            if city.population.strength() >= 2 {
-                Visibility::Visible
-            } else {
-                Visibility::Hidden
-            };
-        for stock in &view.stocks {
-            *visibilities
-                .get_mut(stock.entity)
-                .expect("industry stock indicator belongs to its dialog") =
-                if city.stockpile[stock.resource] < stock.minimum {
-                    Visibility::Visible
-                } else {
-                    Visibility::Hidden
-                };
+pub(in crate::ui::city) fn sync_city_order_quantities(
+    session: Res<GameSession>,
+    added: Query<(), Added<CityOrderQuantity>>,
+    mut quantities: Query<(&CityOrderQuantity, &mut Text)>,
+) {
+    if city_projection_idle(&session, !added.is_empty()) {
+        return;
+    }
+    let nation = city_active_nation(&session);
+    for (CityOrderQuantity(order), mut text) in &mut quantities {
+        text.0 = session.0.city_order_quantity(nation, *order).to_string();
+    }
+}
+
+pub(in crate::ui::city) fn sync_industry_texts(
+    session: Res<GameSession>,
+    added: Query<(), Added<IndustryCapacity>>,
+    mut capacities: Query<(&IndustryCapacity, &mut Text)>,
+) {
+    if city_projection_idle(&session, !added.is_empty()) {
+        return;
+    }
+    let nation = city_active_nation(&session);
+    let city = &session.0.nations().major(nation).city;
+    for (capacity, mut text) in &mut capacities {
+        text.0 = format_retail_number(&capacity.template, city.production_orders[capacity.slot]);
+    }
+}
+
+pub(in crate::ui::city) fn sync_industry_indicators(
+    session: Res<GameSession>,
+    added: Query<(), Added<IndustryIndicator>>,
+    mut indicators: Query<(&IndustryIndicator, &mut Visibility)>,
+) {
+    if city_projection_idle(&session, !added.is_empty()) {
+        return;
+    }
+    let nation = city_active_nation(&session);
+    let city = &session.0.nations().major(nation).city;
+    for (indicator, mut visibility) in &mut indicators {
+        let visible = match *indicator {
+            IndustryIndicator::Labor => city.population.strength() >= 2,
+            IndustryIndicator::Stock { resource, minimum } => city.stockpile[resource] < minimum,
+            IndustryIndicator::Expansion(slot) => city_is_expanding(city, slot),
+        };
+        *visibility = if visible {
+            Visibility::Visible
+        } else {
+            Visibility::Hidden
+        };
+    }
+}
+
+pub(in crate::ui::city) fn sync_industry_bars(
+    session: Res<GameSession>,
+    added: Query<(), Added<IndustryBar>>,
+    mut bars: Query<(&IndustryBar, &mut Node)>,
+) {
+    if city_projection_idle(&session, !added.is_empty()) {
+        return;
+    }
+    let nation = city_active_nation(&session);
+    let city = &session.0.nations().major(nation).city;
+    let scale = |value: i16, capacity: i16| {
+        if capacity > 0 {
+            (i32::from(value) * i32::from(INDUSTRY_BAR_WIDTH) / i32::from(capacity))
+                .clamp(0, i32::from(INDUSTRY_BAR_WIDTH)) as i16
+        } else {
+            0
         }
-        for bar in &view.amount_bars {
-            let quantity = session.0.city_order_quantity(nation, bar.order);
-            let maximum = session.0.city_order_limit(nation, bar.order).maximum;
-            texts
-                .get_mut(bar.quantity)
-                .expect("industry order quantity belongs to its dialog")
-                .0 = quantity.to_string();
-            let capacity = city.production_orders[view.slot];
-            let scale = |value: i16| {
-                if capacity > 0 {
-                    (i32::from(value) * i32::from(INDUSTRY_BAR_WIDTH) / i32::from(capacity))
-                        .clamp(0, i32::from(INDUSTRY_BAR_WIDTH)) as i16
-                } else {
-                    0
-                }
-            };
-            let current = scale(quantity);
-            let maximum = scale(maximum);
-            nodes
-                .get_mut(bar.fill)
-                .expect("industry amount fill belongs to its dialog")
-                .width = Val::Px(f32::from(current));
-            nodes
-                .get_mut(bar.maximum)
-                .expect("industry amount maximum belongs to its dialog")
-                .left = Val::Px(f32::from(maximum));
-            let mut quantity = nodes
-                .get_mut(bar.quantity)
-                .expect("industry amount quantity belongs to its dialog");
-            quantity.left = Val::Px(INDUSTRY_BAR_X + f32::from(current) - 2.0);
-            quantity.top = Val::Px(INDUSTRY_BAR_Y + 6.0);
+    };
+    for (bar, mut node) in &mut bars {
+        match *bar {
+            IndustryBar::Fill(amount) => {
+                let capacity = city.production_orders[amount.slot];
+                let quantity = session.0.city_order_quantity(nation, amount.order);
+                node.width = Val::Px(f32::from(scale(quantity, capacity)));
+            }
+            IndustryBar::Maximum(amount) => {
+                let capacity = city.production_orders[amount.slot];
+                let maximum = session.0.city_order_limit(nation, amount.order).maximum;
+                node.left = Val::Px(f32::from(scale(maximum, capacity)));
+            }
+            IndustryBar::Quantity(amount) => {
+                let capacity = city.production_orders[amount.slot];
+                let quantity = session.0.city_order_quantity(nation, amount.order);
+                node.left = Val::Px(INDUSTRY_BAR_X + f32::from(scale(quantity, capacity)) - 2.0);
+                node.top = Val::Px(INDUSTRY_BAR_Y + 6.0);
+            }
         }
-        *visibilities
-            .get_mut(view.expansion)
-            .expect("industry expansion indicator belongs to its dialog") =
-            if city_is_expanding(city, view.slot) {
-                Visibility::Visible
-            } else {
-                Visibility::Hidden
-            };
     }
 }

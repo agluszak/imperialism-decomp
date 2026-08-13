@@ -325,6 +325,11 @@ pub(in crate::ui::city) const fn shipyard_button_tag(slot: ShipOrderSlot) -> Fou
     }
 }
 
+pub(in crate::ui::city) fn city_active_nation(session: &GameSession) -> MajorNationId {
+    MajorNationId::from_nation(session.0.turn().active_nation)
+        .expect("City active nation is a major nation")
+}
+
 pub(in crate::ui::city) fn city_building_level(
     state: &GameState,
     nation: MajorNationId,

@@ -3,9 +3,11 @@ use super::*;
 #[derive(Component)]
 pub(in crate::ui::city) struct CityBuildingDialog {
     pub(in crate::ui::city) slot: CityFacilitySlot,
-    window: Option<Entity>,
     saved_position: Option<IVec2>,
 }
+
+#[derive(Component)]
+pub(in crate::ui::city) struct CityDialogWindow(CityFacilitySlot);
 
 #[derive(Component)]
 pub(in crate::ui::city) struct CityDialogCaption;
@@ -43,8 +45,7 @@ pub(in crate::ui::city) fn on_city_canvas_click(
     else {
         return;
     };
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
-        .expect("City screen requires an active major nation");
+    let nation = city_active_nation(&session);
     if dialogs
         .iter()
         .any(|(dialog, _)| dialog.slot == building.slot)
@@ -104,11 +105,11 @@ pub(in crate::ui::city) fn open_city_dialog(
     commands.entity(root).insert((
         CityBuildingDialog {
             slot,
-            window: None,
             saved_position,
         },
         GlobalZIndex(z_index),
         Pickable::IGNORE,
+        DespawnOnExit(AppState::City),
     ));
 }
 
@@ -117,10 +118,12 @@ pub(in crate::ui::city) fn bind_city_dialog_root(
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
-    _slot: CityFacilitySlot,
+    slot: CityFacilitySlot,
 ) {
     let window = find_descendant(root, fourcc!("WIND"), children, tags);
-    commands.entity(window).insert(Pickable::default());
+    commands
+        .entity(window)
+        .insert((Pickable::default(), CityDialogWindow(slot)));
     commands.entity(window).with_children(|parent| {
         parent.spawn((
             Node {
@@ -168,15 +171,14 @@ pub(in crate::ui::city) fn bind_city_dialog_root(
 
 pub(in crate::ui::city) fn bind_city_dialogs(
     mut commands: Commands,
-    mut dialogs: Query<(Entity, &mut CityBuildingDialog), Added<CityBuildingDialog>>,
+    dialogs: Query<(Entity, &CityBuildingDialog), Added<CityBuildingDialog>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    for (root, mut dialog) in &mut dialogs {
+    for (root, dialog) in &dialogs {
         let window = find_descendant(root, fourcc!("WIND"), &children, &tags);
-        dialog.window = Some(window);
         if let Some(position) = dialog.saved_position {
             commands
                 .entity(window)
@@ -250,8 +252,7 @@ pub(in crate::ui::city) fn restore_city_dialogs(
     if roots.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
-        .expect("City screen requires an active major nation");
+    let nation = city_active_nation(&session);
     let city = &session.0.nations().major(nation).city;
     let mut next_z = 1;
     for index in 0..CityFacilitySlot::COUNT {
@@ -285,25 +286,15 @@ pub(in crate::ui::city) fn node_position(node: &Node) -> (f32, f32) {
 }
 
 pub(in crate::ui::city) fn leave_city_screen(
-    mut commands: Commands,
     mut session: ResMut<GameSession>,
-    dialogs: Query<(Entity, &CityBuildingDialog)>,
-    windows: Query<&Node>,
+    windows: Query<(&CityDialogWindow, &Node)>,
 ) {
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
-        .expect("City screen requires an active major nation");
+    let nation = city_active_nation(&session);
     for index in 0..CityFacilitySlot::COUNT {
         let slot = CityFacilitySlot::from_index(index as u8)
             .expect("City facility index is in the fixed slot range");
-        let open = dialogs.iter().find(|(_, dialog)| dialog.slot == slot);
-        let state = if let Some((_, dialog)) = open
-            && let Some(window) = dialog.window
-        {
-            let (left, top) = node_position(
-                windows
-                    .get(window)
-                    .expect("open City dialog has its generated window"),
-            );
+        let state = if let Some((_, node)) = windows.iter().find(|(window, _)| window.0 == slot) {
+            let (left, top) = node_position(node);
             BuildingWindowState {
                 flag: 1,
                 current: i16::try_from(left.round() as i32)
@@ -321,9 +312,6 @@ pub(in crate::ui::city) fn leave_city_screen(
         session
             .0
             .set_city_building_window_state(nation, slot, state);
-    }
-    for (root, _) in &dialogs {
-        commands.entity(root).despawn();
     }
 }
 
