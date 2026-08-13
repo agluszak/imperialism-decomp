@@ -136,12 +136,6 @@ impl Plugin for RandomSetupPlugin {
                 )
                     .run_if(in_state(AppState::RandomSetup)),
             )
-            .add_observer(on_random_setup_activate)
-            .add_observer(on_difficulty_selected)
-            .add_observer(on_localized_names_selected)
-            .add_observer(on_country_name_edited)
-            .add_observer(on_planet_seed_accept)
-            .add_observer(on_planet_seed_enter)
             .add_systems(
                 OnEnter(AppState::RandomSetup),
                 (enter_random_setup, bind_random_setup).chain(),
@@ -195,7 +189,9 @@ fn bind_random_setup_controls(
     ] {
         let entity = find_descendant(root, tag, children, tags);
         let mut entity_commands = commands.entity(entity);
-        entity_commands.insert(DifficultyChoice(difficulty));
+        entity_commands
+            .insert(DifficultyChoice(difficulty))
+            .observe(on_difficulty_selected);
         if setup.difficulty == difficulty {
             entity_commands.insert(Checked);
         } else {
@@ -209,7 +205,9 @@ fn bind_random_setup_controls(
     ] {
         let entity = find_descendant(root, tag, children, tags);
         let mut entity_commands = commands.entity(entity);
-        entity_commands.insert(LocalizedNamesChoice(localized));
+        entity_commands
+            .insert(LocalizedNamesChoice(localized))
+            .observe(on_localized_names_selected);
         if setup.name_mode == localized {
             entity_commands.insert(Checked);
         } else {
@@ -218,15 +216,18 @@ fn bind_random_setup_controls(
     }
 
     let country = find_descendant(root, fourcc!("coun"), children, tags);
-    commands.entity(country).insert((
-        CountryNameField,
-        SelectAllOnFocus,
-        EditableText {
-            max_characters: Some(COUNTRY_NAME_MAX_CHARS),
-            allow_newlines: false,
-            ..EditableText::new(setup.country_name.clone())
-        },
-    ));
+    commands
+        .entity(country)
+        .insert((
+            CountryNameField,
+            SelectAllOnFocus,
+            EditableText {
+                max_characters: Some(COUNTRY_NAME_MAX_CHARS),
+                allow_newlines: false,
+                ..EditableText::new(setup.country_name.clone())
+            },
+        ))
+        .observe(on_country_name_edited);
 
     let okay = find_descendant(root, OKAY, children, tags);
     // Initialization and preview generation run before this screen is spawned;
@@ -234,7 +235,8 @@ fn bind_random_setup_controls(
     commands
         .entity(okay)
         .insert(RandomSetupAction::Accept)
-        .remove::<InteractionDisabled>();
+        .remove::<InteractionDisabled>()
+        .observe(on_random_setup_activate);
 
     for (tag, action) in [
         (fourcc!("cncl"), RandomSetupAction::Cancel),
@@ -242,7 +244,10 @@ fn bind_random_setup_controls(
         (fourcc!("key "), RandomSetupAction::OpenPlanetSeed),
     ] {
         let entity = find_descendant(root, tag, children, tags);
-        commands.entity(entity).insert(action);
+        commands
+            .entity(entity)
+            .insert(action)
+            .observe(on_random_setup_activate);
     }
 }
 
@@ -355,9 +360,10 @@ struct RandomSetupActivation<'w, 's> {
 }
 
 fn on_random_setup_activate(activate: On<Activate>, mut random_setup: RandomSetupActivation) {
-    let Ok(action) = random_setup.actions.get(activate.entity) else {
-        return;
-    };
+    let action = random_setup
+        .actions
+        .get(activate.entity)
+        .expect("random-setup Activate is bound on a RandomSetupAction control");
     if !random_setup.dialog_open.is_empty() {
         return;
     }
@@ -393,9 +399,9 @@ fn on_difficulty_selected(
     if !change.value {
         return;
     }
-    let Ok(choice) = choices.get(change.source) else {
-        return;
-    };
+    let choice = choices
+        .get(change.source)
+        .expect("difficulty ValueChange is bound on a DifficultyChoice control");
     setup.difficulty = choice.0;
 }
 
@@ -407,9 +413,9 @@ fn on_localized_names_selected(
     if !change.value {
         return;
     }
-    let Ok(choice) = choices.get(change.source) else {
-        return;
-    };
+    let choice = choices
+        .get(change.source)
+        .expect("name-mode ValueChange is bound on a LocalizedNamesChoice control");
     setup.name_mode = choice.0;
 }
 
@@ -418,9 +424,9 @@ fn on_country_name_edited(
     fields: Query<&EditableText, With<CountryNameField>>,
     mut setup: ResMut<RandomGameSetup>,
 ) {
-    let Ok(editable) = fields.get(change.event_target()) else {
-        return;
-    };
+    let editable = fields
+        .get(change.event_target())
+        .expect("country-name TextEditChange is bound on the country name field");
     let mut value = editable.value().to_string();
     if value.chars().count() > COUNTRY_NAME_MAX_CHARS {
         value = value.chars().take(COUNTRY_NAME_MAX_CHARS).collect();
@@ -494,22 +500,26 @@ fn bind_planet_seed_dialog(
     setup: Res<RandomGameSetup>,
 ) {
     let plan = find_descendant(*root, fourcc!("plan"), &children, &tags);
-    commands.entity(plan).insert((
-        PlanetSeedField,
-        SelectAllOnFocus,
-        AutoFocus,
-        TabIndex(0),
-        EditableText {
-            max_characters: Some(PLANET_SEED_MAX_CHARS),
-            allow_newlines: false,
-            ..EditableText::new(setup.planet_seed.clone())
-        },
-    ));
+    commands
+        .entity(plan)
+        .insert((
+            PlanetSeedField,
+            SelectAllOnFocus,
+            AutoFocus,
+            TabIndex(0),
+            EditableText {
+                max_characters: Some(PLANET_SEED_MAX_CHARS),
+                allow_newlines: false,
+                ..EditableText::new(setup.planet_seed.clone())
+            },
+        ))
+        .observe(on_planet_seed_enter);
 
     let okay = find_descendant(*root, OKAY, &children, &tags);
     commands
         .entity(okay)
-        .insert((PlanetSeedAccept, TabIndex(1)));
+        .insert((PlanetSeedAccept, TabIndex(1)))
+        .observe(on_planet_seed_accept);
     // Retail cancel control stays disabled; Escape does not dismiss.
 }
 
@@ -523,14 +533,7 @@ struct PlanetSeedCommit<'w, 's> {
     commands: Commands<'w, 's>,
 }
 
-fn on_planet_seed_accept(
-    activate: On<Activate>,
-    accepts: Query<(), With<PlanetSeedAccept>>,
-    mut commit: PlanetSeedCommit,
-) {
-    if accepts.get(activate.entity).is_err() {
-        return;
-    }
+fn on_planet_seed_accept(_activate: On<Activate>, mut commit: PlanetSeedCommit) {
     commit_planet_seed_dialog(&mut commit);
 }
 
@@ -538,9 +541,6 @@ fn on_planet_seed_enter(
     mut input: On<bevy::input_focus::FocusedInput<KeyboardInput>>,
     mut commit: PlanetSeedCommit,
 ) {
-    if commit.fields.get(input.focused_entity).is_err() {
-        return;
-    }
     let event = &input.input;
     if event.state != ButtonState::Pressed
         || event.repeat

@@ -4,6 +4,7 @@ use bevy::ecs::system::SystemParam;
 use bevy::ecs::template::TemplateContext;
 use bevy::image::{CompressedImageFormats, ImageSampler, ImageType, TextureError};
 use bevy::prelude::*;
+use bevy::reflect::Is;
 use bevy::text::{EditableText, EditableTextFilter, LineHeight, TextCursorStyle};
 use bevy::ui::{Checked, Pressed};
 use imperialism_formats::*;
@@ -300,12 +301,16 @@ impl Plugin for RetailUiPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<RetailPictureHandles>()
             .init_resource::<RetailFontHandles>()
-            .add_systems(Update, sync_retail_picture_swaps);
+            .add_observer(on_retail_picture_swap_state::<Add, Pressed>)
+            .add_observer(on_retail_picture_swap_state::<Remove, Pressed>)
+            .add_observer(on_retail_picture_swap_state::<Add, Checked>)
+            .add_observer(on_retail_picture_swap_state::<Remove, Checked>);
         super::hover_help::register_hover_help(app);
     }
 }
 
-fn sync_retail_picture_swaps(
+fn on_retail_picture_swap_state<E: EntityEvent, C: Component>(
+    event: On<E, C>,
     mut nodes: Query<(
         &RetailPictureSwap,
         &mut ImageNode,
@@ -313,13 +318,17 @@ fn sync_retail_picture_swaps(
         Has<Checked>,
     )>,
 ) {
-    for (swap, mut image, pressed, checked) in &mut nodes {
-        image.image = if pressed || checked {
-            swap.active.clone()
-        } else {
-            swap.idle.clone()
-        };
-    }
+    let Ok((swap, mut image, pressed, checked)) = nodes.get_mut(event.event_target()) else {
+        return;
+    };
+    // `Remove` fires before the component is gone, so it still matches `Has<Pressed>`/`Has<Checked>`.
+    let pressed = pressed && !(E::is::<Remove>() && C::is::<Pressed>());
+    let checked = checked && !(E::is::<Remove>() && C::is::<Checked>());
+    image.image = if pressed || checked {
+        swap.active.clone()
+    } else {
+        swap.idle.clone()
+    };
 }
 
 fn load_retail_picture(
@@ -488,7 +497,7 @@ mod tests {
     fn picture_swap_selects_preloaded_idle_and_active_handles() {
         let mut app = App::new();
         app.init_resource::<Assets<Image>>()
-            .add_systems(Update, sync_retail_picture_swaps);
+            .add_plugins(RetailUiPlugin);
         let (idle, active) = {
             let mut images = app.world_mut().resource_mut::<Assets<Image>>();
             (images.add(Image::default()), images.add(Image::default()))
@@ -496,7 +505,7 @@ mod tests {
         let entity = app
             .world_mut()
             .spawn((
-                ImageNode::new(active.clone()),
+                ImageNode::new(idle.clone()),
                 RetailPictureSwap {
                     idle: idle.clone(),
                     active: active.clone(),
@@ -504,12 +513,17 @@ mod tests {
             ))
             .id();
 
-        app.update();
         assert_eq!(app.world().get::<ImageNode>(entity).unwrap().image, idle);
 
         app.world_mut().entity_mut(entity).insert(Pressed);
-        app.update();
         assert_eq!(app.world().get::<ImageNode>(entity).unwrap().image, active);
+
+        app.world_mut().entity_mut(entity).insert(Checked);
+        app.world_mut().entity_mut(entity).remove::<Pressed>();
+        assert_eq!(app.world().get::<ImageNode>(entity).unwrap().image, active);
+
+        app.world_mut().entity_mut(entity).remove::<Checked>();
+        assert_eq!(app.world().get::<ImageNode>(entity).unwrap().image, idle);
     }
 
     #[test]

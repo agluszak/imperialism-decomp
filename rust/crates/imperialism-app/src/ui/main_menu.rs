@@ -23,7 +23,6 @@ pub(crate) struct MainMenuPlugin;
 
 impl Plugin for MainMenuPlugin {
     fn build(&self, app: &mut App) {
-        register_main_menu_logic(app);
         app.add_systems(
             OnEnter(AppState::MainMenu),
             (
@@ -34,10 +33,6 @@ impl Plugin for MainMenuPlugin {
                 .chain(),
         );
     }
-}
-
-pub(crate) fn register_main_menu_logic(app: &mut App) {
-    app.add_observer(on_main_menu_activate);
 }
 
 fn enter_main_menu(mut commands: Commands) {
@@ -61,7 +56,8 @@ fn bind_main_menu_actions(
         commands
             .entity(entity)
             .insert(action)
-            .remove::<InteractionDisabled>();
+            .remove::<InteractionDisabled>()
+            .observe(on_main_menu_activate);
     }
 }
 
@@ -107,9 +103,9 @@ fn on_main_menu_activate(
     mut next_state: ResMut<NextState<AppState>>,
     mut exit: MessageWriter<AppExit>,
 ) {
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
+    let action = actions
+        .get(activate.entity)
+        .expect("main-menu Activate is bound on a MainMenuAction control");
     match *action {
         MainMenuAction::RandomGame => next_state.set(AppState::RandomSetup),
         MainMenuAction::Quit => {
@@ -129,7 +125,6 @@ mod tests {
             .add_message::<AppExit>()
             .add_plugins(bevy::state::app::StatesPlugin)
             .init_state::<AppState>();
-        register_main_menu_logic(&mut app);
         app.add_systems(
             OnEnter(AppState::MainMenu),
             (spawn_test_main_menu, bind_main_menu_actions).chain(),

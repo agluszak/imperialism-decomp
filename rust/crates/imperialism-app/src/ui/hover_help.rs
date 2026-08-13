@@ -55,7 +55,7 @@ pub(crate) fn bind_hover_help_bar(
     node: &mut Node,
     style: HoverHelpBarStyle,
 ) {
-    let (font, layout, _) = assets
+    let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -71,6 +71,7 @@ pub(crate) fn bind_hover_help_bar(
         Text::new(""),
         font,
         layout,
+        line_height,
         TextColor(text_color),
         TextShadow {
             offset: Vec2::new(1.0, 1.0),

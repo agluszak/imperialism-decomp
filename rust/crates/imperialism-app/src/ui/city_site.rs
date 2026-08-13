@@ -47,10 +47,7 @@ impl Plugin for CitySitePlugin {
         .add_systems(
             Update,
             (bind_new_city_dialog, sync_city_site_hover).run_if(in_state(AppState::CitySite)),
-        )
-        .add_observer(on_city_site_activate.run_if(in_state(AppState::CitySite)))
-        .add_observer(on_city_site_map_click.run_if(in_state(AppState::CitySite)))
-        .add_observer(on_new_city_activate.run_if(in_state(AppState::CitySite)));
+        );
     }
 }
 
@@ -78,7 +75,10 @@ fn bind_city_site(
         &mut assets,
         &session.0,
     );
-    commands.entity(map).insert(CitySiteHover::default());
+    commands
+        .entity(map)
+        .insert(CitySiteHover::default())
+        .observe(on_city_site_map_click);
 }
 
 fn sync_city_site_hover(
@@ -138,7 +138,10 @@ fn bind_city_site_controls(
     tags: &Query<&RetailTag>,
 ) {
     let cancel = find_descendant(root, fourcc!("canc"), children, tags);
-    commands.entity(cancel).insert(CitySiteAction::Cancel);
+    commands
+        .entity(cancel)
+        .insert(CitySiteAction::Cancel)
+        .observe(on_city_site_activate);
 }
 
 fn on_city_site_activate(
@@ -147,9 +150,9 @@ fn on_city_site_activate(
     dialog_open: Query<(), With<ModalDialog>>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
+    let action = actions
+        .get(activate.entity)
+        .expect("city-site Activate is bound on a CitySiteAction control");
     if !dialog_open.is_empty() {
         return;
     }
@@ -168,9 +171,9 @@ fn on_city_site_map_click(
     if !dialog_open.is_empty() {
         return;
     }
-    let Ok(cursor) = maps.get(click.entity) else {
-        return;
-    };
+    let cursor = maps
+        .get(click.entity)
+        .expect("city-site map click is bound on the strategic canvas");
     let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.0, cursor) else {
         return;
     };
@@ -207,7 +210,8 @@ fn bind_new_city_dialog(
         commands
             .entity(entity)
             .insert(action)
-            .remove::<bevy::ui::InteractionDisabled>();
+            .remove::<bevy::ui::InteractionDisabled>()
+            .observe(on_new_city_activate);
     }
 }
 
@@ -219,9 +223,9 @@ fn on_new_city_activate(
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
 ) {
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
+    let action = actions
+        .get(activate.entity)
+        .expect("new-city Activate is bound on a NewCityAction control");
     match *action {
         NewCityAction::Accept => {
             let Ok((_, dialog)) = dialogs.single() else {
