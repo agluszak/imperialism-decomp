@@ -254,6 +254,7 @@ pub fn create_random_game(
             difficulty,
             active_nation: human_nation.nation(),
             selected_nation: human_nation.nation(),
+            last_turn_alert_tick: 0,
         },
         unit_ids,
         map: world,

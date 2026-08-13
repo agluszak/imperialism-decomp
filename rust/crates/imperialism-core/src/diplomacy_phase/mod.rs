@@ -160,7 +160,7 @@ impl GameState {
 }
 
 impl GameState {
-    pub(super) fn has_alliance_guard(&self, nation: NationId, guarded: NationId) -> bool {
+    pub(crate) fn has_alliance_guard(&self, nation: NationId, guarded: NationId) -> bool {
         if !majors().any(|index| self.at_war(nation, index.nation())) {
             return false;
         }
@@ -198,7 +198,7 @@ impl GameState {
         })
     }
 
-    pub(super) fn can_afford_diplomacy(&self, nation: MajorNationId, cost: i32) -> bool {
+    pub(crate) fn can_afford_diplomacy(&self, nation: MajorNationId, cost: i32) -> bool {
         let major = &self.nations.majors[nation];
         major
             .economy
@@ -208,7 +208,7 @@ impl GameState {
             >= 0
     }
 
-    pub(super) fn war_stamp_stale(&self, source: NationId, target: NationId) -> bool {
+    pub(crate) fn war_stamp_stale(&self, source: NationId, target: NationId) -> bool {
         self.at_war(source, target)
             && self.diplomacy.relationship_turns[source][target]
                 != Some(self.turn.economic_turn as i16)
@@ -298,7 +298,7 @@ impl GameState {
         any
     }
 
-    pub(super) fn set_colony_boycott(
+    pub(crate) fn set_colony_boycott(
         &mut self,
         nation: MajorNationId,
         target: NationId,
@@ -326,7 +326,7 @@ impl GameState {
         self.diplomacy.relationships[source][target] == DiplomaticRelationship::War
     }
 
-    pub(super) fn is_auto(&self, nation: MajorNationId) -> bool {
+    pub(crate) fn is_auto(&self, nation: MajorNationId) -> bool {
         self.nations.majors[nation].kind == MajorNationKind::AutoGreatPower
     }
 
@@ -336,21 +336,21 @@ impl GameState {
             .is_some_and(|common| common.status() == CountryStatus::Independent)
     }
 
-    pub(super) fn status_of(&self, nation: NationId) -> CountryStatus {
+    pub(crate) fn status_of(&self, nation: NationId) -> CountryStatus {
         self.nations
             .common(nation)
             .map(|common| common.status())
             .unwrap_or(CountryStatus::Independent)
     }
 
-    pub(super) fn owner_slot(&self, nation: NationId) -> NationId {
+    pub(crate) fn owner_slot(&self, nation: NationId) -> NationId {
         match self.status_of(nation) {
             CountryStatus::ColonyOf(master) | CountryStatus::ProtectorateOf(master) => master,
             CountryStatus::Independent => nation,
         }
     }
 
-    pub(super) fn event_eligible(&self, nation: NationId) -> bool {
+    pub(crate) fn event_eligible(&self, nation: NationId) -> bool {
         if !self.nation_is_present(nation) {
             return false;
         }

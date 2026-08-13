@@ -33,6 +33,8 @@ RuntimeActionResult RunAidAllocation(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyGrantEntry(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyReset(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyPhase(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyPostConsulate(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyRejectConsulateOnMajor(NativeTransition& transition);
 
 RuntimeActionResult RunNationResourceYieldRebuild(NativeTransition& transition);
 RuntimeActionResult RunAiNationResourceYieldRebuildClampsTargets(NativeTransition& transition);
@@ -55,6 +57,15 @@ RuntimeActionResult RunCheckTechnologyAdvances(NativeTransition& transition);
 RuntimeActionResult RunCheckTechnologyAdvancesAiPurchase(NativeTransition& transition);
 RuntimeActionResult RunConstructNewspaperPage(NativeTransition& transition);
 RuntimeActionResult RunConstructNewspaperPageMiscEvent(NativeTransition& transition);
+
+RuntimeActionResult RunGreatPowerPressureHumanDebt(NativeTransition& transition);
+RuntimeActionResult RunGreatPowerPressureAiNoop(NativeTransition& transition);
+RuntimeActionResult RunSeasonAdvanceClearsStatusFlags(NativeTransition& transition);
+RuntimeActionResult RunTurnAlertsSkipFirstEconomicTurn(NativeTransition& transition);
+RuntimeActionResult RunDiplomacyOfferGate(NativeTransition& transition);
+RuntimeActionResult RunQuarterGateOffDecade(NativeTransition& transition);
+RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transition);
+RuntimeActionResult RunEliminationPhaseWithLandedGreatPowers(NativeTransition& transition);
 
 namespace {
 
@@ -83,6 +94,9 @@ const NativeCase kCases[] = {
     {"diplomacy_grant_entry_updates_treasury", RunDiplomacyGrantEntry},
     {"diplomacy_reset_preserves_recurring_grants", RunDiplomacyReset},
     {"diplomacy_phase_applies_grant_and_consulate", RunDiplomacyPhase},
+    {"player_diplomacy_policy_posts_consulate", RunPlayerDiplomacyPolicyPostConsulate},
+    {"player_diplomacy_policy_rejects_consulate_on_major",
+     RunPlayerDiplomacyPolicyRejectConsulateOnMajor},
     {"nation_resource_yield_rebuild", RunNationResourceYieldRebuild},
     {"ai_nation_resource_yield_rebuild_clamps_targets",
      RunAiNationResourceYieldRebuildClampsTargets},
@@ -102,6 +116,14 @@ const NativeCase kCases[] = {
     {"check_technology_advances_ai_purchase", RunCheckTechnologyAdvancesAiPurchase},
     {"construct_newspaper_page", RunConstructNewspaperPage},
     {"construct_newspaper_page_misc_event", RunConstructNewspaperPageMiscEvent},
+    {"great_power_pressure_human_debt", RunGreatPowerPressureHumanDebt},
+    {"great_power_pressure_ai_noop", RunGreatPowerPressureAiNoop},
+    {"season_advance_clears_status_flags", RunSeasonAdvanceClearsStatusFlags},
+    {"turn_alerts_skip_first_economic_turn", RunTurnAlertsSkipFirstEconomicTurn},
+    {"diplomacy_offer_gate", RunDiplomacyOfferGate},
+    {"quarter_gate_off_decade", RunQuarterGateOffDecade},
+    {"return_to_map_clears_notice_queues", RunReturnToMapClearsNoticeQueues},
+    {"elimination_phase_with_landed_great_powers", RunEliminationPhaseWithLandedGreatPowers},
 };
 
 } // namespace
