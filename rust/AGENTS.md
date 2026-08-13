@@ -95,6 +95,12 @@ and ordered non-state effects. Extend the existing oracle only when it cannot ob
 fact; do not create another protocol or harness for convenience. Use the `port-behavior` skill for
 cross-implementation gameplay work.
 
+City production tests follow that same hierarchy: process-isolated C++ differential for retail
+behavior, public `GameState` order tests where a local fixture is enough, and tiny pure-function
+tests only for non-obvious arithmetic. Do not reconstruct private setter plumbing in tests, and do
+not freeze reservation, progress, or constraint field writes that a higher-level test already
+covers. Retail binary-format tests stay field-detailed because the representation is the contract.
+
 ## Commands
 
 Run from `rust/`:

@@ -39,6 +39,7 @@ mod territory;
 #[cfg(test)]
 pub(crate) mod test_support;
 mod trade;
+mod trade_phase;
 mod turn_flow;
 mod units;
 
@@ -152,6 +153,7 @@ pub use technology::{
 };
 pub use territory::{CountryStatus, ProvinceState};
 pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};
+pub use trade_phase::{PendingTradeOffer, TradeProgress};
 pub use turn_flow::{PhaseCode, ScenarioMapId, TurnState};
 pub use units::{
     CivilianLocation, CivilianUnitKind, CivilianUnitState, CivilianUnitTable, MilitaryOrder,

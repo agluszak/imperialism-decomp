@@ -575,6 +575,9 @@ fn trade_market_state(market: &LegacyTradeMarketState) -> TradeMarketState {
                 amount_offered: i32::from(row.amount_offered),
                 adjusted_offer_count: row.adjusted_offer_count,
                 current_offer_by_nation: NationTable::from_array(row.current_offer_by_nation),
+                accumulated_offer_by_nation: NationTable::from_array(
+                    row.accumulated_offer_by_nation,
+                ),
                 maximum_offer_by_nation: NationTable::from_array(row.maximum_offer_by_nation),
             }
         })),
@@ -1155,6 +1158,9 @@ fn foreign_trade_state(minister: &LegacyForeignMinisterState) -> ForeignTradeSta
         requested_ship,
         purchase_priority: TradeCommodityTable::from_array(minister.purchase_priority_by_resource),
         preferred_resources,
+        capability_flag_14: minister.scalar_fields[2],
+        capability_flag_16: minister.scalar_fields[3],
+        trade_partner_enabled: minister.trade_partner_enabled,
     }
 }
 

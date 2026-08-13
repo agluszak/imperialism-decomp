@@ -177,5 +177,6 @@ pub(crate) fn game_state() -> GameState {
         missions: Vec::new(),
         news: crate::NewsState::default(),
         pending: crate::PendingWorkState::default(),
+        trade_session: None,
     }
 }

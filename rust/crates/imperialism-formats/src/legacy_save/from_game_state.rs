@@ -348,6 +348,8 @@ fn ministers_dto(economy: &GreatPowerState) -> LegacyGreatPowerMinisters {
         }
         None => scalar_fields[0] = -10,
     }
+    scalar_fields[2] = trade.capability_flag_14;
+    scalar_fields[3] = trade.capability_flag_16;
     scalar_fields[4] = trade.phase_counter;
     scalar_fields[5] = trade.refresh_interval;
     scalar_fields[6] = match trade.requested_ship {
@@ -400,7 +402,7 @@ fn ministers_dto(economy: &GreatPowerState) -> LegacyGreatPowerMinisters {
             purchase_priority_by_resource: enum_i16(&trade.purchase_priority),
             preferred_resource_slots: trade.preferred_resources.map(optional_commodity_i16),
             status_flag: 0,
-            trade_partner_enabled: [0; 7],
+            trade_partner_enabled: trade.trade_partner_enabled,
             development_grant_by_nation: *economy.development_grant_by_nation.as_array(),
             bill_order_flag: matches!(
                 economy.foreign_minister_personality,
@@ -725,8 +727,8 @@ fn market_dto(market: &TradeMarketState) -> LegacyTradeMarketState {
                 adjusted_offer_count: row.adjusted_offer_count,
                 amount_offered: row.amount_offered as i16,
                 base_price: row.base_price as i16,
-                current_offer_by_nation: [0; NATION_COUNT],
-                accumulated_offer_by_nation: [0; NATION_COUNT],
+                current_offer_by_nation: *row.current_offer_by_nation.as_array(),
+                accumulated_offer_by_nation: *row.accumulated_offer_by_nation.as_array(),
                 maximum_offer_by_nation: *row.maximum_offer_by_nation.as_array(),
             }
         }),
