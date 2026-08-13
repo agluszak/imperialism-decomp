@@ -639,7 +639,6 @@ impl GameState {
             self.nations.major_mut(nation).common.treasury -= 3_000;
         }
         self.map[tile].flags.insert(TileFlags::PORT);
-        self.ensure_port_zone_for_tile(tile);
     }
 
     fn push_new_town(&mut self, tile: TileId, nation: MajorNationId, enabled: u8) {
@@ -698,35 +697,6 @@ impl GameState {
         if self.map.provinces[province].last_turn_tick == 999 {
             self.map.provinces[province].last_turn_tick = self.turn.economic_turn as i16;
         }
-    }
-
-    fn ensure_port_zone_for_tile(&mut self, tile: TileId) {
-        if !self.map[tile].flags.contains(TileFlags::BASE_TRANSPORT) {
-            return;
-        }
-        let already_present = self.ocean.zones.iter().any(|zone| match zone {
-            ZoneKind::PortZone(port) => {
-                port.port_tile == tile
-                    || port.zone.target_tile == Some(tile)
-                    || port.zone.active_tile == Some(tile)
-            }
-            ZoneKind::Zone(_) => false,
-        });
-        if already_present {
-            return;
-        }
-        self.ocean.zones.push(ZoneKind::PortZone(PortZone {
-            zone: Zone {
-                display_name: String::new(),
-                status_code: None,
-                target_tile: Some(tile),
-                seed_owner: self.map[tile].owner_nation,
-                active_tile: None,
-                primary_neighbors: Vec::new(),
-                secondary_neighbors: Vec::new(),
-            },
-            port_tile: tile,
-        }));
     }
 
     pub(crate) fn move_civilian_to(&mut self, index: usize, tile: TileId) {

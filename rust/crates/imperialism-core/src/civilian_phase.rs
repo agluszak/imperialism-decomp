@@ -298,9 +298,9 @@ impl GameState {
     }
 }
 
-/// The port predicates inline a 217-wide doubled-column wrap and vertical
-/// clamp instead of using the session topology helper.
-fn civilian_sea_scan_neighbor(tile: TileId, direction: HexDirection) -> TileId {
+/// `TMapMgr::GetNeighborTileID` and the inlined port/sea predicates: doubled-column
+/// wrap and vertical clamp, ignoring session topology.
+pub(crate) fn civilian_sea_scan_neighbor(tile: TileId, direction: HexDirection) -> TileId {
     const COLUMN_X2_DELTAS: [i32; 6] = [1, 2, 1, -1, -2, -1];
     const ROW_DELTAS: [i32; 6] = [-1, 0, 1, 1, 0, -1];
     const RASTER_WIDTH: i32 = STRATEGIC_MAP_WIDTH as i32 * 2;

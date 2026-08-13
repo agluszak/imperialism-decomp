@@ -187,9 +187,7 @@ impl GameState {
                 if distance == 0 || distance < 9 || !self.can_build_port_at_tile(tile) {
                     reachable = false;
                     for direction in HexDirection::ALL {
-                        let Some(neighbor) = self.map.geometry().neighbor(tile, direction) else {
-                            continue;
-                        };
+                        let neighbor = civilian_sea_scan_neighbor(tile, direction);
                         let neighbor_distance = primary[tile_index(neighbor)];
                         if (neighbor_distance > 0 && neighbor_distance < 9)
                             || self.can_build_port_at_tile(neighbor)
@@ -343,12 +341,9 @@ impl GameState {
     fn projected_town_yield(&self, nation: MajorNationId, tile: TileId) -> ResourceTable<i16> {
         let town_region = self.map[tile].region;
         let mut yields = ResourceTable::<i16>::default();
-        let mut harvest = self
-            .map
-            .geometry()
-            .neighbors(tile)
+        let mut harvest = HexDirection::ALL
             .into_iter()
-            .flatten()
+            .map(|direction| civilian_sea_scan_neighbor(tile, direction))
             .collect::<Vec<_>>();
         harvest.push(tile);
         for harvest_tile in harvest {
@@ -413,7 +408,7 @@ impl GameState {
                     .railhead_target = None;
                 return;
             }
-            let (source, _) = trace_descending(target, secondary, self.map.geometry());
+            let (source, _) = trace_descending(target, secondary);
             if self.owner_civilian_on_tile(source, nation).is_none() {
                 self.move_civilian_to(engineer, source);
                 self.set_civilian_work_order(
@@ -428,7 +423,7 @@ impl GameState {
             && (!self.can_build_port_at_tile(target)
                 || (primary_distance != 0 && primary_distance <= 6))
         {
-            let (source, previous) = trace_descending(target, primary, self.map.geometry());
+            let (source, previous) = trace_descending(target, primary);
             let flags = self.map[source].flags;
             if flags.contains(TileFlags::PORT) && !flags.contains(TileFlags::DEPOT) {
                 self.move_civilian_to(engineer, source);
@@ -436,16 +431,18 @@ impl GameState {
                     engineer,
                     CivilianWorkOrder::BuildDepot { turns: turns(3) },
                 );
-            } else if let Some(segment) = RailSegment::between(self.map.topology, source, previous)
-            {
+            } else {
                 self.move_civilian_to(engineer, previous);
-                self.set_civilian_work_order(
-                    engineer,
-                    CivilianWorkOrder::LayRail {
-                        segment,
-                        turns: turns(1),
-                    },
-                );
+                if let Some(segment) = RailSegment::between(MapTopology::Wrapping, source, previous)
+                {
+                    self.set_civilian_work_order(
+                        engineer,
+                        CivilianWorkOrder::LayRail {
+                            segment,
+                            turns: turns(1),
+                        },
+                    );
+                }
             }
             return;
         }
@@ -593,13 +590,8 @@ impl GameState {
         for town_tile in towns {
             candidates.push(town_tile);
             let region = self.map[town_tile].region;
-            for neighbor in self
-                .map
-                .geometry()
-                .neighbors(town_tile)
-                .into_iter()
-                .flatten()
-            {
+            for direction in HexDirection::ALL {
+                let neighbor = civilian_sea_scan_neighbor(town_tile, direction);
                 if self.map[neighbor].region == region && self.tile_owned_by(neighbor, nation) {
                     candidates.push(neighbor);
                 }
@@ -611,13 +603,8 @@ impl GameState {
             .railhead_target
         {
             candidates.push(railhead);
-            for neighbor in self
-                .map
-                .geometry()
-                .neighbors(railhead)
-                .into_iter()
-                .flatten()
-            {
+            for direction in HexDirection::ALL {
+                let neighbor = civilian_sea_scan_neighbor(railhead, direction);
                 if self.tile_owned_by(neighbor, nation) {
                     candidates.push(neighbor);
                 }
@@ -1021,27 +1008,22 @@ fn expand_distance_map(
     distance
 }
 
-fn trace_descending(start: TileId, scores: &[i8], geometry: MapGeometry) -> (TileId, TileId) {
+fn trace_descending(start: TileId, scores: &[i8]) -> (TileId, TileId) {
     let mut current = start;
     let mut previous = start;
     let mut score = scores[tile_index(current)];
     while score != 1 {
         let desired = score.wrapping_sub(1);
-        let mut found = None;
+        let mut chosen = HexDirection::NorthWest;
         for direction in HexDirection::ALL {
-            if let Some(neighbor) = geometry.neighbor(current, direction)
-                && scores[tile_index(neighbor)] == desired
-            {
-                found = Some(neighbor);
+            chosen = direction;
+            score = scores[tile_index(civilian_sea_scan_neighbor(current, direction))];
+            if score == desired {
                 break;
             }
         }
         previous = current;
-        let Some(next) = found else {
-            break;
-        };
-        current = next;
-        score = scores[tile_index(current)];
+        current = civilian_sea_scan_neighbor(current, chosen);
     }
     (current, previous)
 }
