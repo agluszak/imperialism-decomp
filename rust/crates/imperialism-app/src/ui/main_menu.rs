@@ -4,6 +4,7 @@ use crate::ui::hover_help::{
     HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, get_string,
 };
 use crate::ui::load_save::LoadSaveReturn;
+use crate::ui::preferences::PreferencesReturn;
 use crate::ui::retail::{RetailTag, RetailUiAssets, find_descendant};
 use bevy::app::AppExit;
 use bevy::prelude::*;
@@ -18,6 +19,7 @@ struct MainMenuRoot;
 pub(crate) enum MainMenuAction {
     RandomGame,
     LoadGame,
+    Preferences,
     Quit,
 }
 
@@ -53,6 +55,7 @@ fn bind_main_menu_actions(
     for (tag, action) in [
         (fourcc!("rand"), MainMenuAction::RandomGame),
         (fourcc!("load"), MainMenuAction::LoadGame),
+        (fourcc!("pref"), MainMenuAction::Preferences),
         (fourcc!("quit"), MainMenuAction::Quit),
     ] {
         let entity = find_descendant(*root, tag, &children, &tags);
@@ -116,6 +119,10 @@ fn on_main_menu_activate(
             commands.insert_resource(LoadSaveReturn(AppState::MainMenu));
             next_state.set(AppState::LoadGame);
         }
+        MainMenuAction::Preferences => {
+            commands.insert_resource(PreferencesReturn(AppState::MainMenu));
+            next_state.set(AppState::Preferences);
+        }
         MainMenuAction::Quit => {
             exit.write(AppExit::Success);
         }
@@ -145,11 +152,12 @@ mod tests {
         let root = commands.spawn((MainMenuRoot, Node::default())).id();
         commands.spawn((RetailTag(fourcc!("rand")), Node::default(), ChildOf(root)));
         commands.spawn((RetailTag(fourcc!("load")), Node::default(), ChildOf(root)));
+        commands.spawn((RetailTag(fourcc!("pref")), Node::default(), ChildOf(root)));
         commands.spawn((RetailTag(fourcc!("quit")), Node::default(), ChildOf(root)));
     }
 
     #[test]
-    fn random_game_and_quit_use_typed_actions() {
+    fn random_game_load_preferences_and_quit_use_typed_actions() {
         let mut app = app();
         let random = app
             .world_mut()
@@ -190,6 +198,29 @@ mod tests {
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::LoadGame
+        );
+
+        app.world_mut()
+            .resource_mut::<NextState<AppState>>()
+            .set(AppState::MainMenu);
+        app.update();
+
+        let pref = app
+            .world_mut()
+            .query_filtered::<Entity, With<MainMenuAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<MainMenuAction>(*entity) == Some(&MainMenuAction::Preferences)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: pref });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::Preferences
         );
 
         app.world_mut()

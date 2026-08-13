@@ -26,6 +26,8 @@ pub(crate) enum AppState {
     OfferSheet,
     TechnologyAdvance,
     Newspaper,
+    Credits,
+    Preferences,
 }
 
 #[derive(Resource)]
@@ -95,7 +97,12 @@ pub fn run(
         ui::DealBookPlugin,
         ui::OfferSheetPlugin,
     ))
-    .add_plugins((ui::TechnologyAdvancePlugin, ui::NewspaperPlugin));
+    .add_plugins((
+        ui::TechnologyAdvancePlugin,
+        ui::NewspaperPlugin,
+        ui::CreditsPlugin,
+        ui::PreferencesPlugin,
+    ));
     app.world_mut()
         .spawn((Camera2d, Msaa::Off, UiAntiAlias::Off));
     app.run();
