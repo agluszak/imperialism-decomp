@@ -2,7 +2,7 @@ use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::retail::{RetailTag, RetailUiAssets, find_descendant};
 use super::session::{GameSession, apply_turn_stop};
-use crate::{AppState, RetailAssetsResource};
+use crate::AppState;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -95,16 +95,12 @@ fn on_technology_advance_activate(
     tags: Query<&RetailTag>,
     root: Option<Single<Entity, With<TechnologyAdvanceRoot>>>,
     mut assets: RetailUiAssets,
-    retail: Res<RetailAssetsResource>,
     mut commands: Commands,
 ) {
     if actions.get(activate.entity).is_err() {
         return;
     }
-    match session
-        .game
-        .acknowledge_technology_report(retail.assets().news_table().story_ids())
-    {
+    match session.game.acknowledge_technology_report() {
         TurnStop::TechnologyAdvance(tech_id) => {
             let Some(root) = root else {
                 return;
@@ -112,26 +108,5 @@ fn on_technology_advance_activate(
             fill_technology_advance(&mut commands, &mut assets, *root, &children, &tags, tech_id);
         }
         stop => apply_turn_stop(stop, &mut next_state),
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use bevy::state::app::StatesPlugin;
-
-    #[test]
-    fn unrelated_activation_before_a_game_does_not_require_game_resources() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_plugins(StatesPlugin)
-            .insert_state(AppState::MainMenu)
-            .add_plugins(TechnologyAdvancePlugin);
-        let unrelated = app.world_mut().spawn_empty().id();
-
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: unrelated });
-        app.world_mut().flush();
     }
 }

@@ -5,7 +5,7 @@ use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::retail::{RetailTag, find_descendant};
 use super::session::apply_turn_stop;
-use crate::{AppState, RetailAssetsResource};
+use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
@@ -296,20 +296,11 @@ fn clear_deal_book_return(mut commands: Commands) {
 fn on_deal_book_close(
     _activate: On<Activate>,
     return_state: Option<Res<DealBookReturn>>,
+    mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    session: Option<ResMut<GameSession>>,
-    retail: Option<Res<RetailAssetsResource>>,
 ) {
-    if let Some(mut session) = session
-        && session.game.turn().phase() == PhaseCode::DEAL_BOOK
-    {
-        let stop = session.game.close_deal_book(
-            retail
-                .expect("Deal Book close during the turn phase requires retail assets")
-                .assets()
-                .news_table()
-                .story_ids(),
-        );
+    if session.game.turn().phase() == PhaseCode::DEAL_BOOK {
+        let stop = session.game.close_turn_deal_book();
         apply_turn_stop(stop, &mut next_state);
         return;
     }

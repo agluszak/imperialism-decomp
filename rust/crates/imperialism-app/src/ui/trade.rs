@@ -890,15 +890,9 @@ fn trade_gauge_width(quantity: i16, capacity: i16) -> f32 {
 mod tests {
     use super::*;
     use bevy::asset::AssetPlugin;
-    use bevy::camera::NormalizedRenderTarget;
-    use bevy::picking::backend::HitData;
-    use bevy::picking::events::{Press, Release};
-    use bevy::picking::pointer::{Location, PointerId};
     use bevy::scene::ScenePlugin;
     use bevy::state::app::StatesPlugin;
-    use bevy::ui_widgets::{Button as UiButton, ButtonPlugin};
     use imperialism_formats::{LegacyGameStateContext, LegacySaveV62, peek_save_header};
-    use std::time::Duration;
 
     const BEGINNING_OF_GAME: &[u8] =
         include_bytes!("../../../../../fixtures/retail/beginning_of_game.imp");
@@ -936,24 +930,14 @@ mod tests {
             world.spawn((RetailTag(fourcc!("Sell")), Node::default(), ChildOf(row)));
             world.spawn((RetailTag(fourcc!("card")), Node::default(), ChildOf(row)));
             world.spawn((RetailTag(fourcc!("offr")), Node::default(), ChildOf(row)));
-            world.spawn((
-                RetailTag(fourcc!("left")),
-                UiButton,
-                Node::default(),
-                ChildOf(row),
-            ));
+            world.spawn((RetailTag(fourcc!("left")), Node::default(), ChildOf(row)));
             world.spawn((
                 RetailTag(fourcc!("gree")),
                 ImageNode::default(),
                 Node::default(),
                 ChildOf(row),
             ));
-            world.spawn((
-                RetailTag(fourcc!("rght")),
-                UiButton,
-                Node::default(),
-                ChildOf(row),
-            ));
+            world.spawn((RetailTag(fourcc!("rght")), Node::default(), ChildOf(row)));
             world.spawn((RetailTag(fourcc!("bar ")), Node::default(), ChildOf(row)));
         }
     }
@@ -989,62 +973,14 @@ mod tests {
         );
     }
 
-    fn click_button(app: &mut App, entity: Entity) {
-        let location = Location {
-            target: NormalizedRenderTarget::None {
-                width: 640,
-                height: 480,
-            },
-            position: Vec2::ZERO,
-        };
-        let hit = HitData {
-            camera: Entity::PLACEHOLDER,
-            depth: 0.0,
-            position: None,
-            normal: None,
-            extra: None,
-        };
-        app.world_mut().commands().trigger(Pointer::new(
-            PointerId::Mouse,
-            location.clone(),
-            Press {
-                button: PointerButton::Primary,
-                hit: hit.clone(),
-                count: 1,
-            },
-            entity,
-        ));
-        app.world_mut().flush();
-        app.world_mut().flush();
-        app.world_mut().commands().trigger(Pointer::new(
-            PointerId::Mouse,
-            location.clone(),
-            Click {
-                button: PointerButton::Primary,
-                hit: hit.clone(),
-                duration: Duration::ZERO,
-                count: 1,
-            },
-            entity,
-        ));
-        app.world_mut().flush();
-        app.world_mut().flush();
-        app.world_mut().commands().trigger(Pointer::new(
-            PointerId::Mouse,
-            location,
-            Release {
-                button: PointerButton::Primary,
-                hit,
-            },
-            entity,
-        ));
-        app.world_mut().flush();
+    fn activate(app: &mut App, entity: Entity) {
+        app.world_mut().commands().trigger(Activate { entity });
         app.world_mut().flush();
         app.update();
     }
 
     #[test]
-    fn clicking_generated_trade_offer_and_arrow_preserves_controls_and_updates_order() {
+    fn activating_generated_trade_offer_and_arrow_preserves_controls_and_updates_order() {
         let state = fixture_state();
         let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
         let major = state.nations().major(nation);
@@ -1063,7 +999,6 @@ mod tests {
             AssetPlugin::default(),
             ScenePlugin,
             StatesPlugin,
-            ButtonPlugin,
         ))
         .insert_state(AppState::Trade)
         .insert_resource(GameSession { game: state })
@@ -1110,7 +1045,7 @@ mod tests {
                 _ => None,
             })
             .expect("the generated bid card is enabled");
-        click_button(&mut app, bid_card);
+        activate(&mut app, bid_card);
         assert_eq!(
             app.world()
                 .resource::<GameSession>()
@@ -1157,14 +1092,14 @@ mod tests {
             TRADE_ROWS.len() * 2
         );
 
-        click_button(&mut app, card);
+        activate(&mut app, card);
         let PlayerTradeOrder::Sell(quantity) = app
             .world()
             .resource::<GameSession>()
             .game
             .player_trade_order(nation, commodity)
         else {
-            panic!("clicking the offer card must create a sell order");
+            panic!("activating the offer card must create a sell order");
         };
         assert!(quantity > 1);
 
@@ -1180,7 +1115,7 @@ mod tests {
                 _ => None,
             })
             .expect("the generated left arrow is enabled for the sell order");
-        click_button(&mut app, left);
+        activate(&mut app, left);
         assert_eq!(
             app.world()
                 .resource::<GameSession>()

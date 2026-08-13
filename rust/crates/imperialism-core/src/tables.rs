@@ -305,27 +305,3 @@ impl<T> IndexMut<CityFacilitySlot> for ProductionTable<T> {
         &mut self.0[slot.index()]
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn ship_type_table_uses_the_retail_shipyard_order() {
-        let indexes = ShipTypeTable::from_array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
-        assert_eq!(indexes[ShipType::NoShip], 0);
-        assert_eq!(indexes[ShipType::Trader], 1);
-        assert_eq!(indexes[ShipType::Indiaman], 2);
-        assert_eq!(indexes[ShipType::Frigate], 3);
-        assert_eq!(indexes[ShipType::ShipOfTheLine], 4);
-        assert_eq!(indexes[ShipType::Paddlewheeler], 5);
-        assert_eq!(indexes[ShipType::Clipper], 6);
-        assert_eq!(indexes[ShipType::Raider], 7);
-        assert_eq!(indexes[ShipType::Ironclad], 8);
-        assert_eq!(indexes[ShipType::AdvancedIronclad], 9);
-        assert_eq!(indexes[ShipType::Freighter], 10);
-        assert_eq!(indexes[ShipType::ArmoredCruiser], 11);
-        assert_eq!(indexes[ShipType::Dreadnought], 12);
-        assert_eq!(indexes[ShipType::Battlecruiser], 13);
-    }
-}

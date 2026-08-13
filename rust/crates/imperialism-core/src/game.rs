@@ -25,9 +25,6 @@ pub struct GameState {
     /// Live interruptible-phase resume state. Not written to `.imp`.
     #[serde(default)]
     pub(crate) continuation: crate::turn_flow::TurnContinuation,
-    /// Land battle created by combat movement. Not part of `.imp`.
-    #[serde(skip)]
-    pub(crate) pending_land_battle: Option<crate::PendingLandBattle>,
 }
 
 /// Construction-only parameter object for assembling [`GameState`].
@@ -80,7 +77,6 @@ impl GameState {
             news: parts.news,
             pending: parts.pending,
             continuation: parts.continuation,
-            pending_land_battle: None,
         }
     }
 
@@ -148,6 +144,12 @@ impl GameState {
         &self.news
     }
 
+    /// Installs the `news.tab` template ids used when the turn driver builds
+    /// newspaper pages. Call once when creating or loading a live session.
+    pub fn set_news_story_ids(&mut self, story_ids: &[i32]) {
+        self.news.story_ids = story_ids.to_vec();
+    }
+
     pub const fn pending(&self) -> &PendingWorkState {
         &self.pending
     }
@@ -178,6 +180,11 @@ impl GameState {
 
     pub fn set_map_view_origin(&mut self, origin: TileId) {
         self.map_view_origin = origin;
+    }
+
+    /// Retail mini-map `SetUpperLeft`: commit a toolbar-minimap click as the viewport origin.
+    pub fn set_map_viewport_upper_left(&mut self, column: i32, row: i32) {
+        self.map_view_origin = self.map.viewport_origin_from_upper_left(column, row);
     }
 
     /// Centers the strategic viewport on `tile` using retail 9-by-7 origin math.

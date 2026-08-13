@@ -179,14 +179,49 @@ mod tests {
 
     #[test]
     fn writes_all_mfc_string_length_forms() {
+        let short = "a".repeat(254);
+        let u8_max = "b".repeat(255);
+        let u16_max_minus_one = "c".repeat(65_534);
+        let u16_max = "d".repeat(65_535);
+
         let mut writer = LegacyWriter::new();
-        writer.write_mfc_string("one");
-        writer.write_mfc_string("test");
-        writer.write_mfc_string("ok");
+        writer.write_mfc_string(&short);
+        writer.write_mfc_string(&u8_max);
+        writer.write_mfc_string(&u16_max_minus_one);
+        writer.write_mfc_string(&u16_max);
         let bytes = writer.into_bytes();
-        let mut stream = LegacyStream::new(&bytes);
-        assert_eq!(stream.read_mfc_string(), "one");
-        assert_eq!(stream.read_mfc_string(), "test");
-        assert_eq!(stream.read_mfc_string(), "ok");
+
+        let mut offset = 0;
+        assert_eq!(bytes[offset], 254);
+        offset += 1;
+        assert_eq!(&bytes[offset..offset + 254], short.as_bytes());
+        offset += 254;
+
+        assert_eq!(bytes[offset], u8::MAX);
+        offset += 1;
+        assert_eq!(&bytes[offset..offset + 2], 255_u16.to_le_bytes());
+        offset += 2;
+        assert_eq!(&bytes[offset..offset + 255], u8_max.as_bytes());
+        offset += 255;
+
+        assert_eq!(bytes[offset], u8::MAX);
+        offset += 1;
+        assert_eq!(&bytes[offset..offset + 2], 65_534_u16.to_le_bytes());
+        offset += 2;
+        assert_eq!(
+            &bytes[offset..offset + 65_534],
+            u16_max_minus_one.as_bytes()
+        );
+        offset += 65_534;
+
+        assert_eq!(bytes[offset], u8::MAX);
+        offset += 1;
+        assert_eq!(&bytes[offset..offset + 2], u16::MAX.to_le_bytes());
+        offset += 2;
+        assert_eq!(&bytes[offset..offset + 4], 65_535_u32.to_le_bytes());
+        offset += 4;
+        assert_eq!(&bytes[offset..offset + 65_535], u16_max.as_bytes());
+        offset += 65_535;
+        assert_eq!(offset, bytes.len());
     }
 }

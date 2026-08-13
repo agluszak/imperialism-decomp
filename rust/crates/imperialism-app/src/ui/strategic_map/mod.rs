@@ -12,6 +12,7 @@ use imperialism_formats::*;
 
 mod borders;
 mod civilian_orders;
+mod minimap;
 mod overlays;
 mod terrain;
 mod units;
@@ -19,6 +20,7 @@ mod units;
 use borders::compose_strategic_borders;
 use civilian_orders::StrategicSelection;
 pub(crate) use civilian_orders::register as register_civilian_orders;
+pub(crate) use minimap::{bind_minimap, sync_minimap};
 use overlays::{
     IMPROVEMENT_PICTURE_IDS, compose_strategic_improvements, compose_strategic_railways,
     town_transport_linked,

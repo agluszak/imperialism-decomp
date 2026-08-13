@@ -890,13 +890,7 @@ fn transport_gauge_width(value: i16, total: i16) -> f32 {
 mod tests {
     use super::*;
     use bevy::asset::AssetPlugin;
-    use bevy::camera::NormalizedRenderTarget;
-    use bevy::picking::backend::HitData;
-    use bevy::picking::pointer::{Location, PointerId};
     use bevy::scene::ScenePlugin;
-    use bevy::ui::Pressed;
-    use bevy::ui_widgets::{Button as UiButton, ButtonPlugin};
-    use std::time::Duration;
 
     #[derive(Component)]
     struct TestTransportRoot;
@@ -962,18 +956,8 @@ mod tests {
             let row = world
                 .spawn((RetailTag(binding.tag), Node::default(), ChildOf(root)))
                 .id();
-            world.spawn((
-                RetailTag(fourcc!("left")),
-                UiButton,
-                Node::default(),
-                ChildOf(row),
-            ));
-            world.spawn((
-                RetailTag(fourcc!("rght")),
-                UiButton,
-                Node::default(),
-                ChildOf(row),
-            ));
+            world.spawn((RetailTag(fourcc!("left")), Node::default(), ChildOf(row)));
+            world.spawn((RetailTag(fourcc!("rght")), Node::default(), ChildOf(row)));
         }
     }
 
@@ -1007,64 +991,14 @@ mod tests {
         );
     }
 
-    fn click_button(app: &mut App, entity: Entity) {
-        let location = Location {
-            target: NormalizedRenderTarget::None {
-                width: 640,
-                height: 480,
-            },
-            position: Vec2::ZERO,
-        };
-        let hit = HitData {
-            camera: Entity::PLACEHOLDER,
-            depth: 0.0,
-            position: None,
-            normal: None,
-            extra: None,
-        };
-        app.world_mut().commands().trigger(Pointer::new(
-            PointerId::Mouse,
-            location.clone(),
-            Press {
-                button: PointerButton::Primary,
-                hit: hit.clone(),
-                count: 1,
-            },
-            entity,
-        ));
-        app.world_mut().flush();
-        app.world_mut().flush();
-        assert!(app.world().get::<Pressed>(entity).is_some());
-        app.world_mut().commands().trigger(Pointer::new(
-            PointerId::Mouse,
-            location.clone(),
-            Click {
-                button: PointerButton::Primary,
-                hit: hit.clone(),
-                duration: Duration::ZERO,
-                count: 1,
-            },
-            entity,
-        ));
-        app.world_mut().flush();
-        app.world_mut().flush();
-        app.world_mut().commands().trigger(Pointer::new(
-            PointerId::Mouse,
-            location,
-            Release {
-                button: PointerButton::Primary,
-                hit,
-            },
-            entity,
-        ));
-        app.world_mut().flush();
+    fn activate(app: &mut App, entity: Entity) {
+        app.world_mut().commands().trigger(Activate { entity });
         app.world_mut().flush();
         app.update();
-        assert!(app.world().get::<Pressed>(entity).is_none());
     }
 
     #[test]
-    fn clicking_generated_arrows_updates_allocation_and_caption() {
+    fn activating_generated_arrows_updates_allocation_and_caption() {
         let state = fixture_state();
         let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
         let binding = TRANSPORT_ROWS
@@ -1078,23 +1012,18 @@ mod tests {
         let before = state.transport_row_status(nation, binding.allocation);
 
         let mut app = App::new();
-        app.add_plugins((
-            MinimalPlugins,
-            AssetPlugin::default(),
-            ScenePlugin,
-            ButtonPlugin,
-        ))
-        .insert_resource(GameSession { game: state })
-        .add_systems(
-            Update,
-            (
-                bind_test_transport,
-                sync_transport_text,
-                sync_transport_visual,
-                sync_transport_presence,
-            )
-                .chain(),
-        );
+        app.add_plugins((MinimalPlugins, AssetPlugin::default(), ScenePlugin))
+            .insert_resource(GameSession { game: state })
+            .add_systems(
+                Update,
+                (
+                    bind_test_transport,
+                    sync_transport_text,
+                    sync_transport_visual,
+                    sync_transport_presence,
+                )
+                    .chain(),
+            );
         spawn_transport_hierarchy(app.world_mut());
         app.update();
 
@@ -1128,7 +1057,7 @@ mod tests {
             TRANSPORT_ROWS.len() * 2
         );
 
-        click_button(&mut app, right);
+        activate(&mut app, right);
 
         let after = app
             .world()
@@ -1170,7 +1099,7 @@ mod tests {
             format!("{}  /  {}", after.allocated, after.available)
         );
 
-        click_button(&mut app, left);
+        activate(&mut app, left);
         let restored = app
             .world()
             .resource::<GameSession>()

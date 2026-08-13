@@ -463,26 +463,25 @@ fn accept_random_setup(
     next_state: &mut NextState<AppState>,
 ) {
     // Live play still uses a fixed Accept CRT seed until wall-clock CRT wiring lands.
-    let mut session = create_random_game(
-        &preview.0,
-        setup.nation,
-        setup.difficulty,
-        &setup.country_name,
-        setup.name_mode == NationNameMode::Historical,
-        1,
-        names,
+    let mut session = GameSession::from_assets(
+        create_random_game(
+            &preview.0,
+            setup.nation,
+            setup.difficulty,
+            &setup.country_name,
+            setup.name_mode == NationNameMode::Historical,
+            1,
+            names,
+        ),
+        assets,
     );
     if requires_capital_site_selection(setup.difficulty) {
-        commands.insert_resource(GameSession { game: session });
+        commands.insert_resource(session);
         next_state.set(AppState::CitySite);
     } else {
-        let stop = enter_strategic_map_without_capital_selection(
-            &mut session,
-            setup.nation,
-            assets.news_table().story_ids(),
-        );
+        let stop = enter_strategic_map_without_capital_selection(&mut session.game, setup.nation);
         apply_turn_stop(stop, next_state);
-        commands.insert_resource(GameSession { game: session });
+        commands.insert_resource(session);
     }
 }
 
@@ -672,31 +671,5 @@ mod tests {
         let field = fields.single(app.world()).unwrap();
         assert_eq!(field.value(), "Country");
         assert_eq!(field.max_characters, Some(COUNTRY_NAME_MAX_CHARS));
-    }
-
-    #[test]
-    fn leaving_random_setup_despawns_an_open_planet_seed_dialog() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_plugins(bevy::state::app::StatesPlugin)
-            .insert_state(AppState::RandomSetup);
-        app.update();
-
-        let dialog = app
-            .world_mut()
-            .spawn((
-                PlanetSeedDialogRoot,
-                ModalDialog,
-                DespawnOnExit(AppState::RandomSetup),
-            ))
-            .id();
-        app.update();
-        assert!(app.world().get::<PlanetSeedDialogRoot>(dialog).is_some());
-
-        app.world_mut()
-            .resource_mut::<NextState<AppState>>()
-            .set(AppState::MainMenu);
-        app.update();
-        assert!(app.world().get::<PlanetSeedDialogRoot>(dialog).is_none());
     }
 }

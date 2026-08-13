@@ -39,10 +39,11 @@ semantics.
   comparison must not force unknown save bytes into the domain model.
 - `GameState` map and ocean are crate-private. Inspect with `map()` / `ocean()`; change the viewport
   through named methods such as `scroll_map_viewport` and `center_map_on`.
-- Core owns the turn sequence: `finish_player_orders`, the answer methods, and `advance_turn`.
-  `AppState` is screen routing. Do not chain phases in the app. Pass newspaper story IDs into the
-  turn driver as immutable rule data; core constructs newspaper pages before returning
-  `TurnStop::Newspaper`.
+- Core owns the turn sequence: `finish_player_orders`, interrupt answers including
+  `close_turn_deal_book`, and `advance_turn`. Newspaper pages are built from `news.tab`
+  ids installed once on `GameState` when a live session is created or loaded.
+  `AppState` is screen routing; `apply_turn_stop` only maps a stop to a screen.
+  Do not chain phases in the app.
 - Core owns deterministic sequencing and mutation. The app owns presentation decisions and projects
   core state into Bevy; ECS is not the gameplay database.
 - Keep one authoritative representation for each fact and derive secondary facts. Prefer semantic
@@ -113,6 +114,18 @@ behavior, public `GameState` order tests where a local fixture is enough, and ti
 tests only for non-obvious arithmetic. Do not reconstruct private setter plumbing in tests, and do
 not freeze reservation, progress, or constraint field writes that a higher-level test already
 covers. Retail binary-format tests stay field-detailed because the representation is the contract.
+
+A test should normally survive only if it pins recovered retail/C++ behavior that is not obvious
+from the Rust type declaration, exercises a meaningful branch or interaction, checks a
+serialization boundary against independently specified bytes, compares against the native oracle,
+or protects a historical bug. Do not keep tests whose sole purpose is inserting a component and
+reading it back, echoing a helper argument, restating an enum discriminant, verifying Bevy
+lifecycle machinery, asserting that an untouched local is unchanged, or round-tripping our writer
+through our reader. Do not keep giant white-box snapshots of incidental initialization values when
+the native oracle already compares complete state. A missing fixture is a test failure: do not
+`return` early because setup was not what the test expected. UI tests that assert our behavior
+should trigger typed `Activate` (or other domain events) rather than reconstructing Bevy pointer
+machinery.
 
 ## Commands
 

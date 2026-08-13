@@ -179,6 +179,27 @@ impl MapMgr {
             .expect("retail strategic viewport origin is inside the map")
     }
 
+    /// Retail `TMapDialog::SetMapDialogCellCoordinatesAndRefresh` origin commit.
+    pub fn viewport_origin_from_upper_left(&self, column: i32, row: i32) -> TileId {
+        const VIEWPORT_TILE_SPAN: i32 = 9;
+        const MAX_ORIGIN_ROW: i32 = 0x35;
+
+        let mut column = column;
+        let mut row = row;
+        if !self.topology.wraps_horizontally() {
+            column = column.clamp(1, 0x6e - VIEWPORT_TILE_SPAN);
+        }
+        if column < 0 {
+            column += i32::from(STRATEGIC_MAP_WIDTH);
+        } else if column >= i32::from(STRATEGIC_MAP_WIDTH) {
+            column -= i32::from(STRATEGIC_MAP_WIDTH);
+        }
+        row = row.clamp(0, MAX_ORIGIN_ROW);
+        self.geometry()
+            .tile(row as u16, column as u16)
+            .expect("retail strategic viewport origin is inside the map")
+    }
+
     /// Retail `ComputeRepresentativeTileIndexForNationWithWrapBias`.
     #[allow(clippy::manual_checked_ops)] // Retail guards both integer divisions with tileCount != 0.
     pub(crate) fn representative_tile_index_for_nation(
@@ -1078,5 +1099,37 @@ mod tests {
         let origin = bounded.geometry().tile(52, 100).unwrap();
         let next = bounded.scrolled_viewport_origin(origin, MapEdges::BOTTOM | MapEdges::RIGHT);
         assert_eq!(bounded.geometry().row_column(next), (53, 101));
+    }
+
+    #[test]
+    fn minimap_upper_left_clamps_like_the_map_dialog() {
+        let tiles = vec![TileState::default(); STRATEGIC_TILE_COUNT];
+        let wrapping = MapMgr::new(MapTopology::Wrapping, tiles.clone());
+        assert_eq!(
+            wrapping
+                .geometry()
+                .row_column(wrapping.viewport_origin_from_upper_left(-1, -4)),
+            (0, STRATEGIC_MAP_WIDTH - 1)
+        );
+        assert_eq!(
+            wrapping
+                .geometry()
+                .row_column(wrapping.viewport_origin_from_upper_left(108, 60)),
+            (53, 0)
+        );
+
+        let bounded = MapMgr::new(MapTopology::Bounded, tiles);
+        assert_eq!(
+            bounded
+                .geometry()
+                .row_column(bounded.viewport_origin_from_upper_left(0, 60)),
+            (53, 1)
+        );
+        assert_eq!(
+            bounded
+                .geometry()
+                .row_column(bounded.viewport_origin_from_upper_left(107, 0)),
+            (0, 101)
+        );
     }
 }

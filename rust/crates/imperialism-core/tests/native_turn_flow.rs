@@ -10,17 +10,20 @@ struct PeacefulWholeTurnCase {
 }
 
 fn finish_peaceful_turn(state: &mut GameState, news_story_ids: &[i32]) {
-    let mut stop = state.finish_player_orders(news_story_ids);
+    // Native news capture omits the Rust-only template table. Install it for
+    // `start_newspaper_phase`, then drop it so the after-state matches.
+    state.set_news_story_ids(news_story_ids);
+    let mut stop = state.finish_player_orders();
     loop {
         match stop {
             TurnStop::DiplomacyOffer(_) => {
-                stop = state.answer_current_diplomacy_offer(false, news_story_ids);
+                stop = state.answer_current_diplomacy_offer(false);
             }
             TurnStop::DiplomacyWarJoin(_) => {
-                stop = state.answer_current_diplomacy_war_join(false, news_story_ids);
+                stop = state.answer_current_diplomacy_war_join(false);
             }
             TurnStop::TradeOffer(offer) => {
-                stop = state.answer_trade_offer(offer.amount, false, news_story_ids);
+                stop = state.answer_trade_offer(offer.amount, false);
             }
             TurnStop::DealBook => break,
             other => panic!("unexpected stop before Deal Book: {other:?}"),
@@ -28,14 +31,15 @@ fn finish_peaceful_turn(state: &mut GameState, news_story_ids: &[i32]) {
     }
     assert_eq!(state.turn().phase(), PhaseCode::DEAL_BOOK);
 
-    stop = state.close_deal_book(news_story_ids);
+    stop = state.close_turn_deal_book();
     while let TurnStop::TechnologyAdvance(_) = stop {
-        stop = state.acknowledge_technology_report(news_story_ids);
+        stop = state.acknowledge_technology_report();
     }
     assert_eq!(stop, TurnStop::Newspaper);
     assert_eq!(state.turn().phase(), PhaseCode::NEWSPAPER);
     assert_eq!(state.close_newspaper(), TurnStop::PlayerOrders);
     assert_eq!(state.turn().phase(), PhaseCode::STRATEGIC_MAP);
+    state.set_news_story_ids(&[]);
 }
 
 #[test]

@@ -1146,7 +1146,6 @@ fn on_diplomacy_offer_activate(
     mut screens: Query<&mut DiplomacyScreen>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    retail: Res<RetailAssetsResource>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
@@ -1159,15 +1158,10 @@ fn on_diplomacy_offer_activate(
     if !diplomacy_interrupt(&session.game) {
         return;
     }
-    let news_story_ids = retail.assets().news_table().story_ids();
     let stop = if session.game.current_diplomacy_offer().is_some() {
-        session
-            .game
-            .answer_current_diplomacy_offer(accept, news_story_ids)
+        session.game.answer_current_diplomacy_offer(accept)
     } else {
-        session
-            .game
-            .answer_current_diplomacy_war_join(accept, news_story_ids)
+        session.game.answer_current_diplomacy_war_join(accept)
     };
     match stop {
         TurnStop::DiplomacyOffer(prompt) => {
