@@ -16,11 +16,14 @@ Crate count follows actual ownership. Do not split the core into subsystem crate
 another authoritative state model without a concrete need.
 
 Keep domain types beside their behavior modules (`game`, `map`, `nations`, `city/`, `diplomacy`,
-`turn_flow`, and so on). City production orders live under `city/`; facility slots are
-`CityFacilitySlot`. Export a curated crate-root surface—do not reintroduce broad `state::*` or
+`turn_flow`, `ai/`, and so on). City production orders live under `city/`; facility slots are
+`CityFacilitySlot`. The AI interior minister that fills city/transport orders lives in
+`ai/interior.rs`; `city_transport_phase.rs` keeps the retail `DoCityAndTransport` sequence.
+Export a curated crate-root surface—do not reintroduce broad `state::*` or
 `production::*` globs or a prelude. In formats, keep retail binary parse separate from `GameState`
-projection. In the app, keep city UI split by retail dialog under `ui/city/`. Keep the strategic map
-split by retail draw stage under `ui/strategic_map/` (`terrain`, `borders`, `overlays`, `units`).
+projection. In the app, keep `GameSession` in `ui/session.rs` and city UI split by retail dialog
+under `ui/city/`. Keep the strategic map split by retail draw stage under `ui/strategic_map/`
+(`terrain`, `borders`, `overlays`, `units`).
 
 Port retail behavior, not the recovered C++ architecture. C++ class hierarchy, ownership, ABI,
 integer storage widths, sentinels, offsets, and control flow are evidence, not Rust design. Keep
@@ -31,6 +34,11 @@ semantics.
 
 - Keep gameplay state and rules in `imperialism-core`. Prefer direct typed operations and queries over
   command buses, event-sourcing layers, generic validators, or framework-like indirection.
+- Keep recovered semantic state in core. Opaque persisted or captured retail values stay in
+  `imperialism-formats` until their gameplay meaning is recovered. Whole-state differential
+  comparison must not force unknown save bytes into the domain model.
+- `GameState` map and ocean are private. Inspect with `map()` / `ocean()`; change the viewport
+  through named methods such as `scroll_map_viewport` and `center_map_on`.
 - Core owns deterministic sequencing and mutation. The app owns presentation decisions and projects
   core state into Bevy; ECS is not the gameplay database.
 - Keep one authoritative representation for each fact and derive secondary facts. Prefer semantic

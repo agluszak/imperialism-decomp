@@ -44,8 +44,8 @@ mod turn_flow;
 mod units;
 
 pub use ai::{
-    AiCityOrderDemand, AiDevelopmentPressureState, AiTargetState, AiTradeState,
-    ForeignMinisterPersonality, InteriorCivilianState, PendingDevelopmentAction,
+    AiCityOrderDemand, AiTargetState, AiTradeState, ForeignMinisterPersonality,
+    InteriorCivilianState, PendingDevelopmentAction,
 };
 pub use calendar::TurnCalendar;
 pub use city::{

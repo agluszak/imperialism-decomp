@@ -370,22 +370,22 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
     assert!(human.ai_province_targets.is_none());
     assert_eq!(human.army_movement_budget, 15);
     for province in (0..ProvinceId::COUNT).map(ProvinceId::new) {
-        assert_eq!(state.map.provinces[province].development_stage(), 0);
+        assert_eq!(state.map().provinces[province].development_stage(), 0);
         assert!(
             (0..MajorNationId::COUNT)
                 .map(MajorNationId::new)
-                .all(|nation| !state.map.provinces[province].explored_by_majors()[nation])
+                .all(|nation| !state.map().provinces[province].explored_by_majors()[nation])
         );
     }
-    assert_eq!(state.ocean.zones.len(), 83);
+    assert_eq!(state.ocean().zones.len(), 83);
     for saved in &save.ocean.zones {
-        let ZoneKind::Zone(zone) = &state.ocean.zones[saved.context_ordinal as usize] else {
+        let ZoneKind::Zone(zone) = &state.ocean().zones[saved.context_ordinal as usize] else {
             panic!("saved base zone projected as a port zone")
         };
         assert_projected_zone(zone, saved);
     }
     for saved in &save.ocean.port_zones {
-        let ZoneKind::PortZone(port) = &state.ocean.zones[saved.zone.context_ordinal as usize]
+        let ZoneKind::PortZone(port) = &state.ocean().zones[saved.zone.context_ordinal as usize]
         else {
             panic!("saved port zone projected as a base zone")
         };
@@ -393,7 +393,7 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
         assert_eq!(port.port_tile.get(), saved.port_tile_index as u16);
         assert_eq!(port.zone.primary_neighbors.len(), 1);
         let linked = usize::from(port.zone.primary_neighbors[0].get());
-        let ZoneKind::Zone(linked_zone) = &state.ocean.zones[linked] else {
+        let ZoneKind::Zone(linked_zone) = &state.ocean().zones[linked] else {
             panic!("port zone linked to another port zone")
         };
         assert!(
@@ -403,7 +403,7 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
         );
         let tile = usize::from(port.port_tile.get());
         assert_eq!(
-            state.map[port.port_tile]
+            state.map()[port.port_tile]
                 .former_owner_nation
                 .and_then(TileOwnerTag::nation)
                 .unwrap()
@@ -411,9 +411,9 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
             save.map.tiles[tile].former_owner_nation as u8,
         );
     }
-    assert_eq!(state.ocean.routes.len(), save.ocean.route_segments.len());
+    assert_eq!(state.ocean().routes.len(), save.ocean.route_segments.len());
     for (route, &[start_row, start_column, end_row, end_column]) in
-        state.ocean.routes.iter().zip(&save.ocean.route_segments)
+        state.ocean().routes.iter().zip(&save.ocean.route_segments)
     {
         assert_eq!(
             *route,
@@ -511,17 +511,6 @@ fn retail_projection_preserves_minister_identity_and_direct_state() {
             && nation.economy.defense_minister_skill_index == 0
             && *nation.economy.interior_civilian == expected_interior
     }));
-    assert!(state.nations().majors().take(6).all(|nation| {
-        nation.economy.ai_development_pressure == Some(AiDevelopmentPressureState::default())
-    }));
-    assert_eq!(
-        state
-            .nations()
-            .major(MajorNationId::new(6))
-            .economy
-            .ai_development_pressure,
-        None
-    );
     assert_eq!(
         state
             .nations()
@@ -598,7 +587,7 @@ fn retail_projection_preserves_country_and_province_semantics() {
             .to_vec()
     );
 
-    let province_zero = &state.map.provinces[ProvinceId::new(0)];
+    let province_zero = &state.map().provinces[ProvinceId::new(0)];
     assert_eq!(province_zero.owner(), Some(NationId::new(12)));
     assert_eq!(province_zero.former_owner(), Some(NationId::new(12)));
     assert_eq!(province_zero.adjacency(), [8, 1, 17].map(ProvinceId::new));
@@ -611,7 +600,7 @@ fn retail_projection_preserves_country_and_province_semantics() {
     );
     assert_eq!(province_zero.city_score(), 0);
 
-    let province_seventy_nine = &state.map.provinces[ProvinceId::new(79)];
+    let province_seventy_nine = &state.map().provinces[ProvinceId::new(79)];
     assert_eq!(province_seventy_nine.owner(), Some(NationId::new(0)));
     assert_eq!(
         province_seventy_nine.adjacency(),
@@ -628,7 +617,7 @@ fn retail_projection_preserves_country_and_province_semantics() {
 
     for province in 120..PROVINCE_COUNT {
         assert_eq!(
-            state.map.provinces[ProvinceId::new(province as u16)],
+            state.map().provinces[ProvinceId::new(province as u16)],
             ProvinceState::default()
         );
     }

@@ -4,7 +4,7 @@
 //! action frames into the tile cache. This module keeps those sprites as disposable
 //! Bevy entities over the composed terrain bitmap.
 
-use super::super::random_setup::GameSession;
+use super::super::GameSession;
 use super::RetailUiAssets;
 use super::{TILE_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, for_each_visible_strategic_tile};
 use bevy::asset::RenderAssetUsages;
@@ -485,7 +485,7 @@ fn strategic_unit_project_key(state: &GameState) -> StrategicUnitProjectKey {
         unit.hash(&mut hasher);
     }
     StrategicUnitProjectKey {
-        view_origin: state.map.view_origin,
+        view_origin: state.map().view_origin,
         active_nation: state.turn().active_nation,
         fleet_atlas: fleet_atlas_picture_id(state).get(),
         visible: hasher.finish(),
@@ -547,10 +547,10 @@ struct ProjectedUnit {
 }
 
 fn civilian_on_tile(state: &GameState, tile: TileId) -> Option<ProjectedUnit> {
-    if state.map[tile].terrain == TerrainKind::Water {
+    if state.map()[tile].terrain == TerrainKind::Water {
         return None;
     }
-    if !civilian_tile_is_visible(state.map[tile].owner_nation, state.turn().active_nation) {
+    if !civilian_tile_is_visible(state.map()[tile].owner_nation, state.turn().active_nation) {
         return None;
     }
     let unit = stacked_civilian_on_tile(state.civilian_units(), tile, state.turn().active_nation)?;
@@ -561,7 +561,7 @@ fn civilian_on_tile(state: &GameState, tile: TileId) -> Option<ProjectedUnit> {
 }
 
 fn army_badge_on_tile(state: &GameState, tile: TileId) -> Option<ProjectedUnit> {
-    let tile_state = &state.map[tile];
+    let tile_state = state.map()[tile];
     if tile_state.flags.bits() & 3 == 0 || tile_state.gate == 0 {
         return None;
     }
@@ -590,10 +590,10 @@ fn army_badge_on_tile(state: &GameState, tile: TileId) -> Option<ProjectedUnit> 
 }
 
 fn naval_marker_on_tile(state: &GameState, tile: TileId) -> Option<ProjectedUnit> {
-    if state.map[tile].terrain != TerrainKind::Water {
+    if state.map()[tile].terrain != TerrainKind::Water {
         return None;
     }
-    let frame = naval_action_frame(state.map[tile].action)?;
+    let frame = naval_action_frame(state.map()[tile].action)?;
     Some(ProjectedUnit {
         identity: StrategicUnitIdentity::Naval(tile),
         sprite: StrategicUnitSprite::Naval { frame },
@@ -897,12 +897,12 @@ mod tests {
             assert!(x + TILE_SIZE > 0);
         });
         assert!(!seen.is_empty());
-        let (origin_row, _) = state.map.geometry().row_column(state.map.view_origin);
+        let (origin_row, _) = state.map().geometry().row_column(state.map().view_origin);
         let outside = state
-            .map
+            .map()
             .geometry()
             .tile(origin_row.saturating_add(8), 0)
-            .or_else(|| state.map.geometry().tile(origin_row.saturating_sub(1), 0));
+            .or_else(|| state.map().geometry().tile(origin_row.saturating_sub(1), 0));
         if let Some(outside) = outside {
             assert!(seen.iter().all(|(tile, _, _)| *tile != outside));
         }
@@ -914,7 +914,7 @@ mod tests {
         let civilian_tile = state
             .first_idle_civilian_tile(state.turn().active_nation)
             .expect("opening save has an idle civilian");
-        state.map.view_origin = state.map.viewport_origin_centered_on(civilian_tile);
+        state.center_map_on(civilian_tile);
         assert!(
             visible_strategic_units(&state)
                 .iter()
@@ -927,10 +927,10 @@ mod tests {
             .iter()
             .find_map(|unit| {
                 unit.stationed_province()
-                    .and_then(|province| state.map.provinces[province].city_tile())
+                    .and_then(|province| state.map().provinces[province].city_tile())
             })
             .expect("opening save has a stationed army");
-        state.map.view_origin = state.map.viewport_origin_centered_on(army_tile);
+        state.center_map_on(army_tile);
         assert!(
             visible_strategic_units(&state)
                 .iter()
@@ -941,11 +941,11 @@ mod tests {
         let naval_tile = (0..TileId::COUNT)
             .map(TileId::new)
             .find(|&tile| {
-                state.map[tile].terrain == TerrainKind::Water
-                    && naval_action_frame(state.map[tile].action).is_some()
+                state.map()[tile].terrain == TerrainKind::Water
+                    && naval_action_frame(state.map()[tile].action).is_some()
             })
             .expect("opening save has an ocean action marker");
-        state.map.view_origin = state.map.viewport_origin_centered_on(naval_tile);
+        state.center_map_on(naval_tile);
         assert!(
             visible_strategic_units(&state)
                 .iter()

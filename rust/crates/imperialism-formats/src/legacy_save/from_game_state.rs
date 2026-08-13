@@ -52,7 +52,7 @@ impl LegacySaveV62 {
                 &civilians,
                 &missions,
                 pending,
-                state.map.topology,
+                state.map().topology,
             ));
         }
 
@@ -83,7 +83,7 @@ impl LegacySaveV62 {
             saved_session_slot: session_slot,
             save_label: super::slots::normalize_save_label(label),
             preview_owner_nation_by_tile: state
-                .map
+                .map()
                 .tiles
                 .iter()
                 .map(|tile| option_i8(tile.owner_nation.map(TileOwnerTag::get)))
@@ -138,8 +138,8 @@ impl LegacySaveV62 {
             market: market_dto(state.market()),
             diplomacy: diplomacy_dto(state.diplomacy()),
             technology: technology_dto(state.technology()),
-            map: map_dto(&state.map),
-            ocean: ocean_dto(&state.ocean),
+            map: map_dto(state.map()),
+            ocean: ocean_dto(state.ocean()),
             navy: LegacyNavyState {
                 ships: Vec::new(),
                 admirals: Vec::new(),
@@ -528,7 +528,9 @@ fn post_city_dto(
             .iter()
             .map(|unit| civilian_unit_dto(unit, topology))
             .collect(),
-        candidate_nation_flags: *economy.candidate_nation_flags.as_array(),
+        // Opaque retail bytes: parsed and written for layout compatibility, not promoted
+        // into GameState until their diplomacy semantics are recovered.
+        candidate_nation_flags: [0; NATION_COUNT],
         diplomacy_budget_base: economy.diplomacy_budget_base,
         escalation_counter: economy.escalation_counter as i8,
         pending_commitment_cost: economy.pending_commitment_cost,
@@ -537,7 +539,7 @@ fn post_city_dto(
         turn_finished_flag: u8::from(economy.turn_finished),
         special_resource_trade_balance: economy.special_resource_trade_balance,
         aid_allocation_total: economy.aid_allocation_total,
-        colony_boycott_flags: *economy.colony_boycott_flags.as_array(),
+        colony_boycott_flags: [0; NATION_COUNT],
         military_expenses: economy.military_expenses,
     }
 }

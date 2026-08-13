@@ -66,17 +66,6 @@ bool CapturePersistentGameState(const RuntimeRun& run, CString& persistentState)
     json_value_free(value);
     return false;
   }
-  // TAutoGreatPower::WriteTo/ReadFrom omit these fort-scoring caches. Loading reconstructs the AI
-  // object without initializing them; phase 0x15 recomputes them later. Keep exact bits in
-  // complete-state differentials while excluding them from this persistence-only comparison.
-  for (size_t index = 0; index < json_array_get_count(majors); ++index) {
-    JSON_Object* major = json_array_get_object(majors, index);
-    JSON_Object* economy = major != 0 ? json_object_get_object(major, "economy") : 0;
-    if (economy == 0 || json_object_remove(economy, "ai_development_pressure") != JSONSuccess) {
-      json_value_free(value);
-      return false;
-    }
-  }
   char* serialized = json_serialize_to_string(value);
   json_value_free(value);
   if (serialized == 0) {

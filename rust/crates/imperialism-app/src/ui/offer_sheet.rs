@@ -1,8 +1,8 @@
+use super::GameSession;
 use super::format_currency;
 use super::game_shell::project_date_and_treasury;
 use super::generated;
 use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, get_string};
-use super::random_setup::GameSession;
 use super::retail::{ModalDialog, RetailTag, RetailUiAssets, find_descendant};
 use crate::AppState;
 use bevy::input_focus::AutoFocus;
