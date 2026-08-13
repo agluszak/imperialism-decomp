@@ -79,7 +79,8 @@ pub fn run(retail_assets: RetailAssets, initial_game: Option<GameState>) -> anyh
         ui::TradePlugin,
         ui::DiplomacyPlugin,
     ));
-    app.world_mut().spawn(Camera2d);
+    app.world_mut()
+        .spawn((Camera2d, Msaa::Off, UiAntiAlias::Off));
     app.run();
     Ok(())
 }

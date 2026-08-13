@@ -17,8 +17,9 @@ pub use color::{DibPalette, Rgb};
 pub use legacy_save::{LegacyGameStateContext, LegacySaveV62};
 pub use retail_assets::{RetailAssetError, RetailAssets};
 pub use retail_fonts::{
-    ResolvedRetailTextStyle, RetailFontFace, RetailTextAlignment, RetailTextStyleError,
-    RetailTextStylePreset, resolve_retail_text_style,
+    ResolvedRetailTextStyle, RetailFontCellMetrics, RetailFontFace, RetailFontMetricsError,
+    RetailTextAlignment, RetailTextStyleError, RetailTextStylePreset,
+    decode_retail_font_cell_metrics, resolve_retail_text_style,
 };
 pub use retail_resources::IndexedPicture;
 pub use retail_ui::{FourCc, OKAY, PictureId, TRADE};

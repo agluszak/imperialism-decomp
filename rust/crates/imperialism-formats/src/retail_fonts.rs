@@ -119,6 +119,74 @@ fn retail_logical_font_height(
         .map_err(|_| RetailTextStyleError::HeightOverflow(point_size))
 }
 
+/// OS/2 Windows cell metrics used by GDI `CreateFontIndirectA` with a positive `lfHeight`.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct RetailFontCellMetrics {
+    pub units_per_em: u16,
+    pub win_ascent: u16,
+    pub win_descent: u16,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, thiserror::Error)]
+pub enum RetailFontMetricsError {
+    #[error("retail font {face:?} is not a supported TrueType face")]
+    InvalidFont { face: RetailFontFace },
+}
+
+impl RetailFontCellMetrics {
+    /// Maps a positive GDI cell height onto the em size Bevy/parley consume.
+    ///
+    /// Retail `CreateFontFromPresetAndAttachRegionHandle` stores `lfHeight` as a cell
+    /// height (`tmHeight`). Bevy `TextFont::font_size` is the em square, which GDI
+    /// derives as `MulDiv(lfHeight, unitsPerEm, usWinAscent + usWinDescent)`.
+    pub fn em_pixel_size(self, cell_height: i32) -> i32 {
+        let cell_units = i32::from(self.win_ascent) + i32::from(self.win_descent);
+        if cell_height <= 0 || self.units_per_em == 0 || cell_units <= 0 {
+            return cell_height.max(1);
+        }
+        let product = i64::from(cell_height) * i64::from(self.units_per_em);
+        let divisor = i64::from(cell_units);
+        let rounded = if product >= 0 {
+            product + divisor / 2
+        } else {
+            product - divisor / 2
+        };
+        i32::try_from(rounded / divisor)
+            .ok()
+            .filter(|size| *size > 0)
+            .unwrap_or(1)
+    }
+}
+
+pub fn decode_retail_font_cell_metrics(
+    face: RetailFontFace,
+    bytes: &[u8],
+) -> Result<RetailFontCellMetrics, RetailFontMetricsError> {
+    let parsed = ttf_parser::Face::parse(bytes, 0)
+        .map_err(|_| RetailFontMetricsError::InvalidFont { face })?;
+    let (win_ascent, win_descent) = if let Some(os2) = parsed.tables().os2 {
+        (
+            positive_font_metric(os2.windows_ascender()),
+            os2.windows_descender().unsigned_abs(),
+        )
+    } else {
+        let hhea = parsed.tables().hhea;
+        (
+            positive_font_metric(hhea.ascender),
+            hhea.descender.unsigned_abs(),
+        )
+    };
+    Ok(RetailFontCellMetrics {
+        units_per_em: parsed.units_per_em(),
+        win_ascent,
+        win_descent,
+    })
+}
+
+fn positive_font_metric(value: i16) -> u16 {
+    u16::try_from(value.max(0)).unwrap_or(0)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -170,6 +238,46 @@ mod tests {
                 .unwrap()
                 .logical_pixel_height,
             31
+        );
+    }
+
+    #[test]
+    fn maps_positive_gdi_cell_height_to_em_size() {
+        let metrics = RetailFontCellMetrics {
+            units_per_em: 2048,
+            win_ascent: 1892,
+            win_descent: 430,
+        };
+        assert_eq!(metrics.em_pixel_size(16), 14);
+        assert_eq!(metrics.em_pixel_size(15), 13);
+        assert_eq!(metrics.em_pixel_size(14), 12);
+        assert_eq!(
+            RetailFontCellMetrics {
+                units_per_em: 2048,
+                win_ascent: 2048,
+                win_descent: 0,
+            }
+            .em_pixel_size(15),
+            15
+        );
+        assert_eq!(
+            RetailFontCellMetrics {
+                units_per_em: 2048,
+                win_ascent: 0,
+                win_descent: 0,
+            }
+            .em_pixel_size(15),
+            15
+        );
+    }
+
+    #[test]
+    fn rejects_bytes_that_are_not_a_font() {
+        assert_eq!(
+            decode_retail_font_cell_metrics(RetailFontFace::BelweBold, b"not a font"),
+            Err(RetailFontMetricsError::InvalidFont {
+                face: RetailFontFace::BelweBold,
+            })
         );
     }
 }

@@ -11,6 +11,7 @@ use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::math::Rect;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
+use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, Button as UiButton};
 use imperialism_core::*;
@@ -129,12 +130,16 @@ struct OpenDiplomacyRejectionNotice {
 struct DiplomacyTextStyles {
     title_font: TextFont,
     title_layout: TextLayout,
+    title_line_height: LineHeight,
     row_font: TextFont,
     row_layout: TextLayout,
+    row_line_height: LineHeight,
     map_font: TextFont,
     map_layout: TextLayout,
+    map_line_height: LineHeight,
     key_font: TextFont,
     key_layout: TextLayout,
+    key_line_height: LineHeight,
     foreground: Color,
     shadow: Color,
 }
@@ -224,7 +229,7 @@ fn bind_diplomacy_screen(
             .picture(PictureId::new(5007))
             .expect("retail diplomacy offers bracket must load"),
     };
-    let (title_font, title_layout, _) = assets
+    let (title_font, title_layout, title_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -232,7 +237,7 @@ fn bind_diplomacy_screen(
             alignment: 0,
         })
         .expect("retail diplomacy title text style");
-    let (row_font, row_layout, _) = assets
+    let (row_font, row_layout, row_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -240,7 +245,7 @@ fn bind_diplomacy_screen(
             alignment: 0,
         })
         .expect("retail diplomacy row text style");
-    let (map_font, map_layout, _) = assets
+    let (map_font, map_layout, map_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -248,7 +253,7 @@ fn bind_diplomacy_screen(
             alignment: 1,
         })
         .expect("retail diplomacy map label style");
-    let (key_font, key_layout, _) = assets
+    let (key_font, key_layout, key_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -259,12 +264,16 @@ fn bind_diplomacy_screen(
     let styles = DiplomacyTextStyles {
         title_font,
         title_layout,
+        title_line_height,
         row_font,
         row_layout,
+        row_line_height,
         map_font,
         map_layout,
+        map_line_height,
         key_font,
         key_layout,
+        key_line_height,
         foreground: assets.palette_color(0x13),
         shadow: assets.palette_color(0xd2),
     };
@@ -506,6 +515,7 @@ fn spawn_diplomacy_map_labels(
             90.0,
             &styles.map_font,
             &styles.map_layout,
+            styles.map_line_height,
             styles.foreground,
             styles.shadow,
         );
@@ -575,6 +585,7 @@ fn spawn_diplomacy_panel_text(
         95.0,
         &styles.title_font,
         &styles.title_layout,
+        styles.title_line_height,
         styles.foreground,
         styles.shadow,
     );
@@ -587,6 +598,7 @@ fn spawn_diplomacy_panel_text(
         120.0,
         &styles.title_font,
         &styles.title_layout,
+        styles.title_line_height,
         styles.foreground,
         styles.shadow,
     );
@@ -605,6 +617,7 @@ fn spawn_diplomacy_panel_text(
             95.0,
             &styles.row_font,
             &styles.row_layout,
+            styles.row_line_height,
             styles.foreground,
             styles.shadow,
         );
@@ -622,6 +635,7 @@ fn spawn_diplomacy_panel_text(
             120.0,
             &styles.row_font,
             &styles.row_layout,
+            styles.row_line_height,
             styles.foreground,
             styles.shadow,
         );
@@ -643,6 +657,7 @@ fn spawn_diplomacy_panel_text(
         100.0,
         &styles.key_font,
         &key_label_layout,
+        styles.key_line_height,
         styles.foreground,
         styles.shadow,
     );
@@ -655,6 +670,7 @@ fn spawn_diplomacy_panel_text(
         100.0,
         &styles.key_font,
         &key_label_layout,
+        styles.key_line_height,
         styles.foreground,
         styles.shadow,
     );
@@ -677,10 +693,14 @@ fn spawn_diplomacy_panel_text(
         ("$5,000", 314.0, 115.0, false),
         ("$10,000", 446.0, 115.0, false),
     ] {
-        let (font, layout) = if title {
-            (&styles.title_font, &styles.title_layout)
+        let (font, layout, line_height) = if title {
+            (
+                &styles.title_font,
+                &styles.title_layout,
+                styles.title_line_height,
+            )
         } else {
-            (&styles.row_font, &styles.row_layout)
+            (&styles.row_font, &styles.row_layout, styles.row_line_height)
         };
         spawn_shadowed_text(
             commands,
@@ -691,6 +711,7 @@ fn spawn_diplomacy_panel_text(
             100.0,
             font,
             layout,
+            line_height,
             styles.foreground,
             styles.shadow,
         );
@@ -704,6 +725,7 @@ fn spawn_diplomacy_panel_text(
         180.0,
         &styles.row_font,
         &styles.row_layout,
+        styles.row_line_height,
         styles.foreground,
         styles.shadow,
     );
@@ -720,10 +742,14 @@ fn spawn_diplomacy_panel_text(
         ("75%", 228.0, 85.0, false),
         ("100%", 275.0, 34.0, false),
     ] {
-        let (font, layout) = if title {
-            (&styles.title_font, &styles.title_layout)
+        let (font, layout, line_height) = if title {
+            (
+                &styles.title_font,
+                &styles.title_layout,
+                styles.title_line_height,
+            )
         } else {
-            (&styles.row_font, &styles.row_layout)
+            (&styles.row_font, &styles.row_layout, styles.row_line_height)
         };
         spawn_shadowed_text(
             commands,
@@ -734,6 +760,7 @@ fn spawn_diplomacy_panel_text(
             100.0,
             font,
             layout,
+            line_height,
             styles.foreground,
             styles.shadow,
         );
@@ -753,6 +780,7 @@ fn spawn_diplomacy_panel_text(
             100.0,
             &styles.row_font,
             &centered_layout,
+            styles.row_line_height,
             styles.foreground,
             styles.shadow,
         );
@@ -769,6 +797,7 @@ fn spawn_shadowed_text(
     width: f32,
     font: &TextFont,
     layout: &TextLayout,
+    line_height: LineHeight,
     foreground: Color,
     shadow: Color,
 ) -> [Entity; 2] {
@@ -785,6 +814,7 @@ fn spawn_shadowed_text(
                 Text::new(text),
                 font.clone(),
                 *layout,
+                line_height,
                 TextColor(color),
                 Pickable::IGNORE,
                 ChildOf(parent),
@@ -967,7 +997,7 @@ fn bind_diplomacy_notice(
     let (root, notice) = *notice;
     let notice_color = TextColor(assets.palette_color(0));
     let title = find_descendant(root, fourcc!("titl"), &children, &tags);
-    let (title_font, title_layout, _) = assets
+    let (title_font, title_layout, title_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -979,10 +1009,11 @@ fn bind_diplomacy_notice(
         Text::new("Report from your\nForeign Minister\n\n"),
         title_font,
         title_layout,
+        title_line_height,
         notice_color,
     ));
     let body = find_descendant(root, fourcc!("info"), &children, &tags);
-    let (body_font, body_layout, _) = assets
+    let (body_font, body_layout, body_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -994,6 +1025,7 @@ fn bind_diplomacy_notice(
         Text::new(diplomacy_rejection_text(notice.0)),
         body_font,
         body_layout,
+        body_line_height,
         notice_color,
     ));
     let coat = find_descendant(root, fourcc!("coat"), &children, &tags);

@@ -7,6 +7,7 @@ use super::retail::{RetailTag, find_descendant};
 use crate::AppState;
 use bevy::picking::hover::Hovered;
 use bevy::prelude::*;
+use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::Activate;
 use imperialism_core::*;
@@ -206,7 +207,7 @@ fn bind_transport_screen(
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Transport screen requires an active major nation");
     session.0.rebuild_nation_resource_yields(nation);
-    let (font, layout, _) = assets
+    let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -220,7 +221,16 @@ fn bind_transport_screen(
         below_limit: assets.palette_color(0x33),
         at_limit: assets.palette_color(0x34),
     };
-    bind_transport_controls(&mut commands, *root, &children, &tags, font, layout, colors);
+    bind_transport_controls(
+        &mut commands,
+        *root,
+        &children,
+        &tags,
+        font,
+        layout,
+        line_height,
+        colors,
+    );
 }
 
 fn bind_transport_controls(
@@ -230,6 +240,7 @@ fn bind_transport_controls(
     tags: &Query<&RetailTag>,
     font: TextFont,
     layout: TextLayout,
+    line_height: LineHeight,
     colors: TransportColors,
 ) {
     let selected = find_descendant(root, fourcc!("tran"), children, tags);
@@ -265,6 +276,7 @@ fn bind_transport_controls(
             track_left,
             font.clone(),
             layout,
+            line_height,
             colors,
         ));
         if let Some((resource, unit_value)) = if binding.allocation == TransportAllocation::GOLD {
@@ -279,6 +291,7 @@ fn bind_transport_controls(
                 unit_value,
                 font.clone(),
                 layout,
+                line_height,
             ));
         }
     }
@@ -286,12 +299,18 @@ fn bind_transport_controls(
     let total = find_descendant(root, fourcc!("tota"), children, tags);
     commands
         .entity(total)
-        .apply_scene(transport_capacity_overlay(font.clone(), layout, colors));
+        .apply_scene(transport_capacity_overlay(
+            font.clone(),
+            layout,
+            line_height,
+            colors,
+        ));
     let cursor = find_descendant(root, fourcc!("curs"), children, tags);
     commands.entity(cursor).insert((
         Text::new(""),
         font,
         layout,
+        line_height,
         TextColor(Color::BLACK),
         TransportDisplay::Cursor,
     ));
@@ -318,6 +337,7 @@ fn transport_row_overlay(
     track_left: i32,
     font: TextFont,
     layout: TextLayout,
+    line_height: LineHeight,
     colors: TransportColors,
 ) -> impl Scene {
     bsn! {
@@ -367,6 +387,7 @@ fn transport_row_overlay(
                 Text("")
                 template(move |_context| Ok(font.clone()))
                 template(move |_context| Ok(layout))
+                template(move |_context| Ok(line_height))
                 TextColor(Color::BLACK)
                 Pickable::IGNORE
                 template(move |_context| Ok(TransportDisplay::RowCaption(allocation)))
@@ -380,6 +401,7 @@ fn transport_money_overlay(
     unit_value: i32,
     font: TextFont,
     layout: TextLayout,
+    line_height: LineHeight,
 ) -> impl Scene {
     bsn! {
         Children [
@@ -394,6 +416,7 @@ fn transport_money_overlay(
                 Text("")
                 template(move |_context| Ok(font.clone()))
                 template(move |_context| Ok(layout))
+                template(move |_context| Ok(line_height))
                 TextColor(Color::BLACK)
                 Pickable::IGNORE
                 template(move |_context| Ok(TransportDisplay::Money {
@@ -408,6 +431,7 @@ fn transport_money_overlay(
 fn transport_capacity_overlay(
     font: TextFont,
     layout: TextLayout,
+    line_height: LineHeight,
     colors: TransportColors,
 ) -> impl Scene {
     bsn! {
@@ -441,6 +465,7 @@ fn transport_capacity_overlay(
                 Text("")
                 template(move |_context| Ok(font.clone()))
                 template(move |_context| Ok(layout))
+                template(move |_context| Ok(line_height))
                 TextColor(Color::BLACK)
                 Pickable::IGNORE
                 template(move |_context| Ok(TransportDisplay::CapacityCaption))
