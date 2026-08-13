@@ -124,9 +124,7 @@ pub(crate) struct RandomSetupPlugin;
 
 impl Plugin for RandomSetupPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<RandomSetupClockSeed>()
-            .init_resource::<RandomGameSetup>()
-            .init_resource::<RandomSetupPreview>()
+        app.add_systems(OnEnter(AppState::MainMenu), drop_random_setup_draft)
             .add_systems(
                 Update,
                 (
@@ -138,10 +136,30 @@ impl Plugin for RandomSetupPlugin {
             )
             .add_systems(
                 OnEnter(AppState::RandomSetup),
-                (enter_random_setup, bind_random_setup).chain(),
+                (
+                    ensure_random_setup_draft,
+                    enter_random_setup,
+                    bind_random_setup,
+                )
+                    .chain(),
             )
             .add_systems(Update, bind_planet_seed_dialog);
     }
+}
+
+fn ensure_random_setup_draft(world: &mut World) {
+    if world.contains_resource::<RandomGameSetup>() {
+        return;
+    }
+    world.init_resource::<RandomSetupClockSeed>();
+    world.init_resource::<RandomGameSetup>();
+    world.init_resource::<RandomSetupPreview>();
+}
+
+fn drop_random_setup_draft(mut commands: Commands) {
+    commands.remove_resource::<RandomGameSetup>();
+    commands.remove_resource::<RandomSetupPreview>();
+    commands.remove_resource::<RandomSetupClockSeed>();
 }
 
 fn enter_random_setup(mut commands: Commands) {
@@ -230,8 +248,8 @@ fn bind_random_setup_controls(
         .observe(on_country_name_edited);
 
     let okay = find_descendant(root, OKAY, children, tags);
-    // Initialization and preview generation run before this screen is spawned;
-    // bind the enabled Accept action only at that ready boundary.
+    // Retail rebuilds this screen from the main menu and keeps the draft when
+    // capital selection cancels back into setup.
     commands
         .entity(okay)
         .insert(RandomSetupAction::Accept)

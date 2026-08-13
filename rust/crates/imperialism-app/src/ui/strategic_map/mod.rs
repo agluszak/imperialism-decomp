@@ -112,6 +112,9 @@ pub(crate) fn sync_strategic_base_terrain(
     mut images: ResMut<Assets<Image>>,
     mut maps: Query<(&mut StrategicBaseTerrainCanvas, &ImageNode)>,
 ) {
+    if !session.is_changed() {
+        return;
+    }
     let key = strategic_map_compose_key(&session.0);
     for (mut canvas, image_node) in &mut maps {
         if canvas.composed == Some(key) {

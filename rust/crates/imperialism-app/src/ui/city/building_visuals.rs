@@ -26,22 +26,23 @@ pub(in crate::ui::city) struct CityCanvas {
     pub(in crate::ui::city) buildings: Vec<CityBuildingHitRegion>,
 }
 
-struct CitySummaryControls {
-    labor: [Entity; 3],
-    population: Entity,
-    power: Entity,
-    needs: [(Entity, ResourceKind); 6],
-    treasury: Entity,
-}
-
 #[derive(Component)]
-pub(in crate::ui::city) struct CityScreenRoot {
-    summary: CitySummaryControls,
-    buildings: Vec<(Entity, CityFacilitySlot)>,
-}
+pub(in crate::ui::city) struct CityScreenRoot;
 
 #[derive(Component)]
 pub(in crate::ui::city) struct CitySceneRoot;
+
+#[derive(Component, Clone, Copy)]
+pub(in crate::ui::city) enum CitySummary {
+    Labor(SkillBand),
+    Population,
+    Power,
+    Need(ResourceKind),
+    Treasury,
+}
+
+#[derive(Component)]
+pub(in crate::ui::city) struct CityBuildingSprite(CityFacilitySlot);
 
 #[derive(Component)]
 pub(in crate::ui::city) struct CityBuildingActionAnimation {
@@ -169,10 +170,9 @@ pub(in crate::ui::city) fn bind_city_screen(
         Some(fourcc!("tool")),
     );
 
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
-        .expect("City active nation is a major nation");
-    let summary = bind_city_summary_values(&mut commands, *root, &children, &tags, &mut assets);
-    let buildings = spawn_city_buildings(
+    let nation = city_active_nation(&session);
+    bind_city_summary_values(&mut commands, *root, &children, &tags, &mut assets);
+    spawn_city_buildings(
         &mut commands,
         *root,
         &children,
@@ -183,9 +183,7 @@ pub(in crate::ui::city) fn bind_city_screen(
         nation,
         &mut assets,
     );
-    commands
-        .entity(*root)
-        .insert(CityScreenRoot { summary, buildings });
+    commands.entity(*root).insert(CityScreenRoot);
 }
 
 fn bind_city_summary_values(
@@ -194,7 +192,7 @@ fn bind_city_summary_values(
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
     assets: &mut RetailUiAssets,
-) -> CitySummaryControls {
+) {
     let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
@@ -203,7 +201,7 @@ fn bind_city_summary_values(
             alignment: 1,
         })
         .expect("retail city placard text style");
-    let bind_text = |commands: &mut Commands, tag| {
+    let bind_text = |commands: &mut Commands, tag, marker| {
         let entity = find_descendant(root, tag, children, tags);
         commands.entity(entity).insert((
             Text::new(""),
@@ -211,25 +209,37 @@ fn bind_city_summary_values(
             layout,
             line_height,
             TextColor(Color::BLACK),
+            marker,
         ));
-        entity
     };
-    CitySummaryControls {
-        labor: [fourcc!("untr"), fourcc!("trai"), fourcc!("prof")]
-            .map(|tag| bind_text(commands, tag)),
-        population: bind_text(commands, fourcc!("labP")),
-        power: bind_text(commands, fourcc!("powe")),
-        needs: [
-            (fourcc!("grai"), ResourceKind::Grain),
-            (fourcc!("prod"), ResourceKind::Fruit),
-            (fourcc!("meat"), ResourceKind::Livestock),
-            (fourcc!("hard"), ResourceKind::Hardware),
-            (fourcc!("clot"), ResourceKind::Clothing),
-            (fourcc!("furn"), ResourceKind::Furniture),
-        ]
-        .map(|(tag, resource)| (bind_text(commands, tag), resource)),
-        treasury: find_descendant(root, fourcc!("trea"), children, tags),
+    bind_text(
+        commands,
+        fourcc!("untr"),
+        CitySummary::Labor(SkillBand::Low),
+    );
+    bind_text(
+        commands,
+        fourcc!("trai"),
+        CitySummary::Labor(SkillBand::Medium),
+    );
+    bind_text(
+        commands,
+        fourcc!("prof"),
+        CitySummary::Labor(SkillBand::High),
+    );
+    bind_text(commands, fourcc!("labP"), CitySummary::Population);
+    bind_text(commands, fourcc!("powe"), CitySummary::Power);
+    for (tag, resource) in [
+        (fourcc!("grai"), ResourceKind::Grain),
+        (fourcc!("prod"), ResourceKind::Fruit),
+        (fourcc!("meat"), ResourceKind::Livestock),
+        (fourcc!("hard"), ResourceKind::Hardware),
+        (fourcc!("clot"), ResourceKind::Clothing),
+        (fourcc!("furn"), ResourceKind::Furniture),
+    ] {
+        bind_text(commands, tag, CitySummary::Need(resource));
     }
+    bind_text(commands, fourcc!("trea"), CitySummary::Treasury);
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -243,10 +253,9 @@ pub(in crate::ui::city) fn spawn_city_buildings(
     state: &GameState,
     nation: MajorNationId,
     assets: &mut RetailUiAssets,
-) -> Vec<(Entity, CityFacilitySlot)> {
+) {
     let main = find_descendant(root, fourcc!("main"), children, tags);
     let mut hit_regions = Vec::new();
-    let mut buildings = Vec::new();
     for visual in visuals {
         let level = city_building_level(state, nation, visual.slot);
         let offset = i16::from(visual.slot as u8);
@@ -264,25 +273,23 @@ pub(in crate::ui::city) fn spawn_city_buildings(
                 continue;
             }
         };
-        let entity = commands
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(visual.origin[0] as f32),
-                    top: Val::Px(visual.origin[1] as f32),
-                    width: Val::Px(mask.width as f32),
-                    height: Val::Px(mask.height as f32),
-                    ..default()
-                },
-                ImageNode::default(),
-                Visibility::Hidden,
-                ZIndex(visual.draw_order as i32),
-                Pickable::IGNORE,
-                ChildOf(main),
-                Name::new(format!("city-building:{:?}", visual.slot)),
-            ))
-            .id();
-        buildings.push((entity, visual.slot));
+        commands.spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: Val::Px(visual.origin[0] as f32),
+                top: Val::Px(visual.origin[1] as f32),
+                width: Val::Px(mask.width as f32),
+                height: Val::Px(mask.height as f32),
+                ..default()
+            },
+            ImageNode::default(),
+            Visibility::Hidden,
+            ZIndex(visual.draw_order as i32),
+            Pickable::IGNORE,
+            ChildOf(main),
+            CityBuildingSprite(visual.slot),
+            Name::new(format!("city-building:{:?}", visual.slot)),
+        ));
         hit_regions.push((
             visual.draw_order,
             CityBuildingHitRegion {
@@ -303,7 +310,6 @@ pub(in crate::ui::city) fn spawn_city_buildings(
         RelativeCursorPosition::default(),
     ));
     spawn_city_building_actions(commands, main, actions, state, nation, assets);
-    buildings
 }
 
 pub(in crate::ui::city) fn apply_palette_index_transparency(
@@ -534,74 +540,67 @@ pub(in crate::ui::city) fn transparent_picture(
         .expect("retail City detail picture must load")
 }
 
-pub(in crate::ui::city) fn sync_city_screen(
+pub(in crate::ui::city) fn sync_city_summary(
     session: Res<GameSession>,
-    screens: Query<Ref<CityScreenRoot>>,
-    mut texts: Query<&mut Text>,
-    mut assets: RetailUiAssets,
-    mut pictures: Query<(&mut ImageNode, &mut Visibility)>,
+    added: Query<(), Added<CitySummary>>,
+    mut texts: Query<(&CitySummary, &mut Text)>,
 ) {
-    for root in &screens {
-        if !session.is_changed() && !root.is_added() {
+    if !session.is_changed() && added.is_empty() {
+        return;
+    }
+    let nation = city_active_nation(&session);
+    let major = session.0.nations().major(nation);
+    let city = &major.city;
+    let labor = city.population.baseline_labor();
+    for (summary, mut text) in &mut texts {
+        text.0 = match *summary {
+            CitySummary::Labor(SkillBand::Low) => labor.low.to_string(),
+            CitySummary::Labor(SkillBand::Medium) => labor.medium.to_string(),
+            CitySummary::Labor(SkillBand::High) => labor.high.to_string(),
+            CitySummary::Population => city.population.strength().to_string(),
+            CitySummary::Power => city.power_available.to_string(),
+            CitySummary::Need(resource) => city.population.predicted_need(resource).to_string(),
+            CitySummary::Treasury => format_currency(major.common.treasury),
+        };
+    }
+}
+
+pub(in crate::ui::city) fn sync_city_buildings(
+    session: Res<GameSession>,
+    added: Query<(), Added<CityBuildingSprite>>,
+    mut assets: RetailUiAssets,
+    mut pictures: Query<(&CityBuildingSprite, &mut ImageNode, &mut Visibility)>,
+) {
+    if !session.is_changed() && added.is_empty() {
+        return;
+    }
+    let nation = city_active_nation(&session);
+    let city = &session.0.nations().major(nation).city;
+    for (CityBuildingSprite(slot), mut image, mut visibility) in &mut pictures {
+        let level = city_building_level(&session.0, nation, *slot);
+        let Some(picture) = city_building_picture(city, *slot, level) else {
+            *visibility = Visibility::Hidden;
+            continue;
+        };
+        let indexed = match assets.indexed_picture(picture) {
+            Ok(indexed) => indexed,
+            Err(error) => {
+                warn!("could not decode indexed city building picture {picture}: {error}");
+                continue;
+            }
+        };
+        if let Err(error) = assets.with_picture_image_mut(picture, |picture_image| {
+            apply_city_picture_transparency(picture_image, &indexed);
+        }) {
+            warn!("could not decode city building picture {picture}: {error}");
             continue;
         }
-        let nation = MajorNationId::from_nation(session.0.turn().active_nation)
-            .expect("City active nation is a major nation");
-        let major = session.0.nations().major(nation);
-        let city = &major.city;
-        let labor = city.population.baseline_labor();
-        let values = [
-            (root.summary.labor[0], labor.low),
-            (root.summary.labor[1], labor.medium),
-            (root.summary.labor[2], labor.high),
-            (root.summary.population, city.population.strength()),
-            (root.summary.power, city.power_available),
-        ];
-        for (entity, value) in values {
-            texts
-                .get_mut(entity)
-                .expect("city summary control has text")
-                .0 = value.to_string();
-        }
-        for &(entity, resource) in &root.summary.needs {
-            texts
-                .get_mut(entity)
-                .expect("city summary need control has text")
-                .0 = city.population.predicted_need(resource).to_string();
-        }
-        texts
-            .get_mut(root.summary.treasury)
-            .expect("city treasury control has text")
-            .0 = format_currency(major.common.treasury);
-        for &(entity, slot) in &root.buildings {
-            let (mut image, mut visibility) = pictures
-                .get_mut(entity)
-                .expect("City screen owns its building picture");
-            let level = city_building_level(&session.0, nation, slot);
-            let Some(picture) = city_building_picture(city, slot, level) else {
-                *visibility = Visibility::Hidden;
-                continue;
-            };
-            let indexed = match assets.indexed_picture(picture) {
-                Ok(indexed) => indexed,
-                Err(error) => {
-                    warn!("could not decode indexed city building picture {picture}: {error}");
-                    continue;
-                }
-            };
-            if let Err(error) = assets.with_picture_image_mut(picture, |picture_image| {
-                apply_city_picture_transparency(picture_image, &indexed);
-            }) {
-                warn!("could not decode city building picture {picture}: {error}");
-                continue;
+        match assets.picture(picture) {
+            Ok(handle) => {
+                image.image = handle;
+                *visibility = Visibility::Visible;
             }
-            match assets.picture(picture) {
-                Ok(handle) => {
-                    image.image = handle;
-                    *visibility = Visibility::Visible;
-                }
-                Err(error) => warn!("could not load city building picture {picture}: {error}"),
-            }
+            Err(error) => warn!("could not load city building picture {picture}: {error}"),
         }
     }
 }
