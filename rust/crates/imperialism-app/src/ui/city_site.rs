@@ -3,11 +3,11 @@ use crate::ui::RetailUiAssets;
 use crate::ui::generated;
 use crate::ui::retail::ModalDialog;
 use crate::ui::retail::{RetailTag, find_descendant};
+use crate::ui::session::apply_turn_stop;
 use crate::ui::strategic_map::{
     StrategicBaseTerrainCanvas, bind_strategic_base_terrain, compose_city_site_terrain,
     strategic_base_terrain_tile_at_cursor,
 };
-use crate::ui::technology::continue_after_capital;
 use crate::{AppState, RetailAssetsResource};
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::picking::events::{Click, Pointer};
@@ -234,17 +234,11 @@ fn on_new_city_activate(
             let Ok((_, dialog)) = dialogs.single() else {
                 return;
             };
-            let tech_id = confirm_capital_site(&mut session.0, dialog.0);
+            let stop = confirm_capital_site(&mut session.0, dialog.0);
             for (root, _) in &dialogs {
                 commands.entity(root).despawn();
             }
-            continue_after_capital(
-                tech_id,
-                &mut session.0,
-                retail.assets(),
-                &mut commands,
-                &mut next_state,
-            );
+            apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state);
         }
         NewCityAction::Cancel => {
             for (root, _) in &dialogs {

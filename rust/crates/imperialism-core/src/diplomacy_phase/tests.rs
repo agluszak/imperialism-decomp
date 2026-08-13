@@ -172,7 +172,7 @@ fn human_offer_stops_for_a_reply_and_accepting_forms_the_alliance() {
     );
 
     assert_eq!(
-        state.resolve_diplomacy_offer(prompt, true),
+        state.resolve_diplomacy_offer(true),
         DiplomacyPhaseResult::Resolved
     );
     assert_eq!(
@@ -291,7 +291,7 @@ fn accepted_great_power_join_empire_is_a_colony_not_a_protectorate() {
     };
     assert_eq!(prompt.policy, DiplomacyPolicy::JoinEmpire);
     assert_eq!(
-        state.resolve_diplomacy_offer(prompt, true),
+        state.resolve_diplomacy_offer(true),
         DiplomacyPhaseResult::Resolved
     );
     assert_eq!(
@@ -357,7 +357,7 @@ fn declaring_war_on_an_independent_minor_stops_for_the_favorite_human() {
     assert_eq!(prompt.source, nation(1));
 
     assert_eq!(
-        state.resolve_diplomacy_war_join(prompt, true),
+        state.resolve_diplomacy_war_join(true),
         DiplomacyPhaseResult::Resolved
     );
     assert_eq!(

@@ -37,8 +37,10 @@ semantics.
 - Keep recovered semantic state in core. Opaque persisted or captured retail values stay in
   `imperialism-formats` until their gameplay meaning is recovered. Whole-state differential
   comparison must not force unknown save bytes into the domain model.
-- `GameState` map and ocean are private. Inspect with `map()` / `ocean()`; change the viewport
+- `GameState` map and ocean are crate-private. Inspect with `map()` / `ocean()`; change the viewport
   through named methods such as `scroll_map_viewport` and `center_map_on`.
+- Core owns the turn sequence: `finish_player_orders`, the answer methods, and `advance_turn`.
+  `AppState` is screen routing. Do not chain phases in the app.
 - Core owns deterministic sequencing and mutation. The app owns presentation decisions and projects
   core state into Bevy; ECS is not the gameplay database.
 - Keep one authoritative representation for each fact and derive secondary facts. Prefer semantic

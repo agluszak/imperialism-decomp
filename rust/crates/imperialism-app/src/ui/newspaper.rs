@@ -1,13 +1,13 @@
 use super::generated;
 use super::hover_help::get_string;
 use super::retail::{RetailTag, RetailUiAssets, find_descendant};
-use super::session::GameSession;
+use super::session::{GameSession, apply_turn_stop};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{NewsTable, RetailAssets, RetailTextStylePreset, fourcc};
+use imperialism_formats::{NewsTable, RetailTextStylePreset, fourcc};
 
 const COLUMN_X: [f32; 3] = [24.0, 226.0, 428.0];
 const COLUMN_WIDTH: f32 = 188.0;
@@ -29,16 +29,6 @@ impl Plugin for NewspaperPlugin {
         )
         .add_observer(on_newspaper_activate.run_if(in_state(AppState::Newspaper)));
     }
-}
-
-pub(crate) fn enter_newspaper(
-    session: &mut GameState,
-    assets: &RetailAssets,
-    _commands: &mut Commands,
-    next_state: &mut NextState<AppState>,
-) {
-    session.start_newspaper_phase(assets.news_table().story_ids());
-    next_state.set(AppState::Newspaper);
 }
 
 fn spawn_newspaper(mut commands: Commands) {
@@ -341,12 +331,13 @@ fn on_newspaper_activate(
     actions: Query<&NewspaperAction>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
+    retail: Res<RetailAssetsResource>,
 ) {
     if actions.get(activate.entity).is_err() {
         return;
     }
-    session.0.finish_newspaper_phase();
-    next_state.set(AppState::StrategicMap);
+    let stop = session.0.close_newspaper();
+    apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state);
 }
 
 #[cfg(test)]

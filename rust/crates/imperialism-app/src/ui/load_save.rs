@@ -19,6 +19,7 @@ use imperialism_formats::{
     peek_save_preview_owners, retail_save_path, write_game_state, write_save_file,
 };
 use std::path::{Path, PathBuf};
+use std::time::{SystemTime, UNIX_EPOCH};
 
 const SLOT_TAGS: [FourCc; NUMBERED_SAVE_SLOT_COUNT as usize] = [
     fourcc!("slt0"),
@@ -185,21 +186,58 @@ pub(crate) fn register_load_save_logic(app: &mut App) {
     .add_observer(on_flag_menu_activate.run_if(in_state(AppState::StrategicMap)));
 }
 
-pub(crate) fn load_slot(directory: &Path, slot: SaveSlot) -> Result<GameState, LoadGameError> {
+pub(crate) fn load_slot(
+    directory: &Path,
+    slot: SaveSlot,
+    runtime: LegacyGameStateContext,
+) -> Result<GameState, LoadGameError> {
     let path = retail_save_path(directory, slot);
     let bytes = std::fs::read(&path)?;
-    let selected_nation = peek_save_header(&bytes)
-        .and_then(|header| NationId::try_new(header.active_nation))
-        .ok_or(LoadGameError::Truncated)?;
-    load_game_from_bytes(
-        &bytes,
-        LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 0,
+    load_game_from_bytes(&bytes, runtime)
+}
+
+/// Retail `DoRead` never stores or reseeds these streams. CRT `rand()` is a process
+/// global seeded by `TSimMgr::ISimMgr` via `srand(time(0))`; the map LCG is BSS-zero
+/// until map generation; the zone LCG starts as `GetTickCountDiv16()`. A later load
+/// leaves whatever the process currently has.
+fn runtime_context_for_load(
+    existing: Option<&GameState>,
+    selected_nation: NationId,
+) -> LegacyGameStateContext {
+    if let Some(state) = existing {
+        let rng = state.rng();
+        return LegacyGameStateContext {
+            crt_rand_state: rng.crt_rand.state(),
+            map_generation_lcg: rng.map_generation.state(),
+            zone_status_lcg: rng.zone_status.state(),
             selected_nation,
-        },
-    )
+        };
+    }
+    LegacyGameStateContext {
+        crt_rand_state: clock_derived_crt_seed(),
+        map_generation_lcg: 0,
+        zone_status_lcg: tick_derived_zone_seed(),
+        selected_nation,
+    }
+}
+
+fn selected_nation_from_slot(directory: &Path, slot: SaveSlot) -> Result<NationId, LoadGameError> {
+    let bytes = std::fs::read(retail_save_path(directory, slot))?;
+    peek_save_header(&bytes)
+        .and_then(|header| NationId::try_new(header.active_nation))
+        .ok_or(LoadGameError::Truncated)
+}
+
+fn clock_derived_crt_seed() -> u32 {
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map_or(0, |duration| duration.as_secs() as u32)
+}
+
+fn tick_derived_zone_seed() -> u32 {
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map_or(0, |duration| (duration.as_millis() / 16) as u32)
 }
 
 pub(crate) fn save_current_game(
@@ -696,7 +734,15 @@ fn confirm_or_apply(
                 );
                 return;
             }
-            apply_load(commands, save_dir, slot, next_state, screen_state, None);
+            apply_load(
+                commands,
+                save_dir,
+                slot,
+                session.map(|session| &session.0),
+                next_state,
+                screen_state,
+                None,
+            );
         }
         LoadSaveMode::Save => {
             let Some(session) = session else {
@@ -733,6 +779,7 @@ fn apply_load(
     commands: &mut Commands,
     save_dir: &Path,
     slot: SaveSlot,
+    existing: Option<&GameState>,
     next_state: &mut NextState<AppState>,
     screen_state: AppState,
     assets: Option<&RetailUiAssets>,
@@ -740,7 +787,21 @@ fn apply_load(
     if !retail_save_path(save_dir, slot).is_file() {
         return;
     }
-    match commit_loaded_game(load_slot(save_dir, slot)) {
+    let runtime = match selected_nation_from_slot(save_dir, slot) {
+        Ok(selected_nation) => runtime_context_for_load(existing, selected_nation),
+        Err(error) => {
+            spawn_notice(
+                commands,
+                LoadSaveNoticeKind::Error,
+                assets
+                    .map(|assets| load_error_text(assets, &error))
+                    .unwrap_or_else(|| error.to_string()),
+                screen_state,
+            );
+            return;
+        }
+    };
+    match commit_loaded_game(load_slot(save_dir, slot, runtime)) {
         Ok((session, destination)) => {
             commands.insert_resource(session);
             next_state.set(destination);
@@ -854,6 +915,7 @@ fn on_load_save_notice_activate(
     notices: Query<(Entity, &LoadSaveNotice)>,
     roots: Query<&LoadSaveRoot>,
     save_dir: Res<SaveDirectory>,
+    session: Option<Res<GameSession>>,
     mut next_state: ResMut<NextState<AppState>>,
     state: Res<State<AppState>>,
     mut commands: Commands,
@@ -878,6 +940,7 @@ fn on_load_save_notice_activate(
                 &mut commands,
                 &save_dir.0,
                 slot,
+                session.as_deref().map(|session| &session.0),
                 &mut next_state,
                 *state.get(),
                 Some(&assets),
@@ -1186,7 +1249,11 @@ mod tests {
         )
         .unwrap();
         let session = GameSession(original.clone());
-        let result = commit_loaded_game(load_slot(dir.path(), SaveSlot::Numbered(0)));
+        let result = commit_loaded_game(load_slot(
+            dir.path(),
+            SaveSlot::Numbered(0),
+            runtime_context_for_load(Some(&original), original.turn().selected_nation),
+        ));
         assert!(result.is_err());
         assert_eq!(session.0, original);
     }
@@ -1196,8 +1263,12 @@ mod tests {
         let original = fixture_state();
         let dir = tempfile::tempdir().unwrap();
         save_current_game(dir.path(), SaveSlot::Numbered(1), &original, "England").unwrap();
-        let (session, destination) =
-            commit_loaded_game(load_slot(dir.path(), SaveSlot::Numbered(1))).unwrap();
+        let (session, destination) = commit_loaded_game(load_slot(
+            dir.path(),
+            SaveSlot::Numbered(1),
+            runtime_context_for_load(Some(&original), original.turn().selected_nation),
+        ))
+        .unwrap();
         assert_eq!(session.0, original);
         assert_eq!(destination, AppState::StrategicMap);
     }
@@ -1208,7 +1279,12 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "First").unwrap();
         save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "Second").unwrap();
-        let loaded = load_slot(dir.path(), SaveSlot::Numbered(0)).unwrap();
+        let loaded = load_slot(
+            dir.path(),
+            SaveSlot::Numbered(0),
+            runtime_context_for_load(Some(&original), original.turn().selected_nation),
+        )
+        .unwrap();
         assert_eq!(loaded, original);
         let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(0))).unwrap();
         assert_eq!(
@@ -1239,5 +1315,44 @@ mod tests {
             pixels.iter().any(|&index| index != 0x10),
             "satellite preview should paint claimed land, not only the off-map key"
         );
+    }
+
+    #[test]
+    fn in_game_load_reuses_the_live_session_rng() {
+        let original = fixture_state();
+        let runtime = runtime_context_for_load(Some(&original), original.turn().selected_nation);
+        assert_eq!(runtime.crt_rand_state, original.rng().crt_rand.state());
+        assert_eq!(
+            runtime.map_generation_lcg,
+            original.rng().map_generation.state()
+        );
+        assert_eq!(runtime.zone_status_lcg, original.rng().zone_status.state());
+    }
+
+    #[test]
+    fn load_uses_caller_rng_because_imp_does_not_persist_it() {
+        let original = fixture_state();
+        let dir = tempfile::tempdir().unwrap();
+        save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "England").unwrap();
+        let runtime = LegacyGameStateContext {
+            crt_rand_state: 0x1234_5678,
+            map_generation_lcg: 0x1111_2222,
+            zone_status_lcg: 0x3333_4444,
+            selected_nation: original.turn().selected_nation,
+        };
+        let loaded = load_slot(dir.path(), SaveSlot::Numbered(0), runtime).unwrap();
+        assert_eq!(loaded.rng().crt_rand.state(), runtime.crt_rand_state);
+        assert_eq!(
+            loaded.rng().map_generation.state(),
+            runtime.map_generation_lcg
+        );
+        assert_eq!(loaded.rng().zone_status.state(), runtime.zone_status_lcg);
+        assert_ne!(loaded.rng(), original.rng());
+    }
+
+    #[test]
+    fn main_menu_load_leaves_the_map_lcg_at_bss_zero() {
+        let runtime = runtime_context_for_load(None, NationId::new(0));
+        assert_eq!(runtime.map_generation_lcg, 0);
     }
 }

@@ -277,6 +277,6 @@ pub fn create_random_game(
         missions,
         news: NewsState::default(),
         pending,
-        trade_session: None,
+        continuation: crate::turn_flow::TurnContinuation::None,
     }
 }

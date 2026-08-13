@@ -870,6 +870,7 @@ impl LegacySaveV62 {
             missions,
             news: NewsState::default(),
             pending,
+            continuation: TurnContinuation::default(),
         }
     }
 

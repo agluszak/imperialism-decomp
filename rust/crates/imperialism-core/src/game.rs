@@ -21,9 +21,9 @@ pub struct GameState {
     pub(crate) missions: Vec<MissionState>,
     pub(crate) news: NewsState,
     pub(crate) pending: PendingWorkState,
-    /// Live `TTradeMgr` deal cursor and pending Offer Sheet. Not part of `.imp`.
-    #[serde(skip)]
-    pub(crate) trade_session: Option<crate::trade_phase::TradeSession>,
+    /// Live interruptible-phase resume state. Not written to `.imp`.
+    #[serde(default)]
+    pub(crate) continuation: crate::turn_flow::TurnContinuation,
 }
 
 /// Construction-only parameter object for assembling [`GameState`].
@@ -49,6 +49,7 @@ pub struct GameStateParts {
     pub missions: Vec<MissionState>,
     pub news: NewsState,
     pub pending: PendingWorkState,
+    pub continuation: crate::turn_flow::TurnContinuation,
 }
 
 impl GameState {
@@ -72,7 +73,7 @@ impl GameState {
             missions: parts.missions,
             news: parts.news,
             pending: parts.pending,
-            trade_session: None,
+            continuation: parts.continuation,
         }
     }
 
@@ -144,7 +145,7 @@ impl GameState {
         &self.map
     }
 
-    pub fn map_mut(&mut self) -> &mut MapMgr {
+    pub(crate) fn map_mut(&mut self) -> &mut MapMgr {
         &mut self.map
     }
 

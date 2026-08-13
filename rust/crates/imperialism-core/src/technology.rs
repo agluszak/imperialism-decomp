@@ -84,6 +84,51 @@ impl Default for CityTechnologyCapabilities {
 
 pub const TECHNOLOGY_COUNT: usize = 29;
 
+/// Open bounded identity of one of the 29 technology slots.
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct TechnologyId(u8);
+
+impl TechnologyId {
+    pub const COUNT: u8 = TECHNOLOGY_COUNT as u8;
+
+    pub const fn new(value: u8) -> Self {
+        assert!(value < Self::COUNT, "technology ID is out of range");
+        Self(value)
+    }
+
+    pub const fn try_new(value: u8) -> Option<Self> {
+        if value < Self::COUNT {
+            Some(Self(value))
+        } else {
+            None
+        }
+    }
+
+    pub const fn get(self) -> u8 {
+        self.0
+    }
+
+    pub const fn index(self) -> usize {
+        self.0 as usize
+    }
+}
+
+impl<'de> Deserialize<'de> for TechnologyId {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let value = u8::deserialize(deserializer)?;
+        Self::try_new(value).ok_or_else(|| {
+            serde::de::Error::custom(format_args!(
+                "technology ID {value} is out of range 0..={}",
+                Self::COUNT - 1
+            ))
+        })
+    }
+}
+
 const RANDOM_START_PRIORITY_RANGES: [(i16, i16); TECHNOLOGY_COUNT - 3] = [
     (1, 5),
     (6, 10),
@@ -123,7 +168,7 @@ pub enum TechnologyResearchStatus {
 }
 
 /// Global technology milestones and the city capabilities of every major nation.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TechnologyState {
     pub advanced_iron_working: bool,
     pub marine_engineering: bool,
@@ -237,7 +282,7 @@ impl TechnologyState {
 
     /// Selects the production-capacity term used by retail's naval-force score.
     pub const fn naval_production_capacity(
-        self,
+        &self,
         lumber_mill_capacity: i32,
         steel_mill_capacity: i32,
     ) -> i32 {
@@ -292,19 +337,23 @@ impl GameState {
         }
     }
 
-    /// Opening/end-turn tail: advance the season, run technology unlocks, and
-    /// apply non-interactive pending research. Consumes the active human nation's
-    /// first pending unlock, matching `ConsumeFirstPendingAbilityUnlock` before
-    /// `ShowAbilityStatusReport`.
-    pub fn begin_technology_and_newspaper_tail(&mut self) -> Option<u8> {
-        self.advance_season_phase();
-        self.check_technology_advances();
-        // FIXME: retail ORs `turnFlowStatusFlags` with `0x40` when `marker262` is
-        // unchanged (map toolbar new-tech chrome). `marker262` is not modeled.
-        self.consume_non_interactive_technology_unlocks();
+    pub fn first_pending_technology_unlock(&self, nation: NationId) -> Option<TechnologyId> {
+        let nation = MajorNationId::from_nation(nation)?;
+        self.technology.research_status_by_nation[nation]
+            .iter()
+            .position(|status| *status == TechnologyResearchStatus::Pending)
+            .map(|tech_id| TechnologyId::new(tech_id as u8))
+    }
+
+    /// Mirrors `TTechMgr::ConsumeFirstPendingAbilityUnlock` for one nation.
+    pub fn acknowledge_technology_unlock(&mut self, nation: MajorNationId) -> Option<TechnologyId> {
+        let tech_id = self.first_pending_technology_unlock(nation.nation())?;
+        self.apply_ability_unlock(tech_id.index(), nation);
+        Some(tech_id)
+    }
+
+    fn consume_interactive_technology_unlock(&mut self) -> Option<TechnologyId> {
         let nation = MajorNationId::from_nation(self.turn.active_nation)?;
-        // FIXME: retail consume-one is active nation + cooldown < 1 + terrain-eligible,
-        // not diplomacy eligibility. Same on a normal single-player opening turn.
         if self.nations.major(nation).economy.diplomacy_eligible
             && self.nation_slot_eligible_for_event_processing(nation)
         {
@@ -312,21 +361,6 @@ impl GameState {
         } else {
             None
         }
-    }
-
-    pub fn first_pending_technology_unlock(&self, nation: NationId) -> Option<u8> {
-        let nation = MajorNationId::from_nation(nation)?;
-        self.technology.research_status_by_nation[nation]
-            .iter()
-            .position(|status| *status == TechnologyResearchStatus::Pending)
-            .map(|tech_id| tech_id as u8)
-    }
-
-    /// Mirrors `TTechMgr::ConsumeFirstPendingAbilityUnlock` for one nation.
-    pub fn acknowledge_technology_unlock(&mut self, nation: MajorNationId) -> Option<u8> {
-        let tech_id = self.first_pending_technology_unlock(nation.nation())?;
-        self.apply_ability_unlock(usize::from(tech_id), nation);
-        Some(tech_id)
     }
 
     fn consume_non_interactive_technology_unlocks(&mut self) {

@@ -53,41 +53,53 @@ impl GameState {
     /// processed and may return [`DiplomacyPhaseResult::WarJoin`].
     pub fn do_diplomacy(&mut self) -> DiplomacyPhaseResult {
         self.apply_diplomacy_inter_nation_states();
-        self.reply_to_diplomacy_offers_from(0, 0)
+        self.record_diplomacy_result(self.reply_to_diplomacy_offers_from(0, 0))
     }
 
-    /// Accepts or rejects the offer that stopped [`Self::do_diplomacy`], then
+    /// Accepts or rejects the offer stored in the current continuation, then
     /// continues the remaining replies.
-    pub fn resolve_diplomacy_offer(
-        &mut self,
-        prompt: DiplomacyOfferPrompt,
-        accept: bool,
-    ) -> DiplomacyPhaseResult {
-        let index = usize::from(prompt.index);
-        let queued = self.pending.nations[prompt.nation]
-            .proposals
-            .get(index)
-            .copied();
-        debug_assert_eq!(
-            queued,
-            Some(DiplomacyProposal {
-                source: prompt.source,
-                policy: prompt.policy,
-            })
-        );
-        self.apply_human_offer_decision(prompt.nation, index, accept);
-        self.reply_to_diplomacy_offers_from(prompt.nation.get(), index + 1)
+    pub(crate) fn resolve_diplomacy_offer(&mut self, accept: bool) -> DiplomacyPhaseResult {
+        let crate::turn_flow::TurnContinuation::DiplomacyOffer { nation, index } =
+            self.continuation
+        else {
+            panic!("diplomacy offer reply requires an active offer continuation");
+        };
+        self.continuation = crate::turn_flow::TurnContinuation::None;
+        self.apply_human_offer_decision(nation, usize::from(index), accept);
+        self.record_diplomacy_result(
+            self.reply_to_diplomacy_offers_from(nation.get(), usize::from(index) + 1),
+        )
     }
 
-    /// Accepts or rejects the war-join dialog that stopped war-transition
-    /// processing, then finishes the remaining reactions for that one war.
-    pub fn resolve_diplomacy_war_join(
-        &mut self,
-        prompt: DiplomacyWarJoinPrompt,
-        accept: bool,
-    ) -> DiplomacyPhaseResult {
+    /// Accepts or rejects the war-join dialog stored in the current continuation,
+    /// then finishes the remaining reactions for that one war.
+    pub(crate) fn resolve_diplomacy_war_join(&mut self, accept: bool) -> DiplomacyPhaseResult {
+        let crate::turn_flow::TurnContinuation::DiplomacyWarJoin(prompt) = self.continuation else {
+            panic!("diplomacy war-join reply requires an active war-join continuation");
+        };
+        self.continuation = crate::turn_flow::TurnContinuation::None;
         self.apply_war_join_decision(prompt, accept);
-        self.continue_war_reactions(prompt.pair_first, prompt.pair_second, prompt.cursor)
+        self.record_diplomacy_result(self.continue_war_reactions(
+            prompt.pair_first,
+            prompt.pair_second,
+            prompt.cursor,
+        ))
+    }
+
+    fn record_diplomacy_result(&mut self, result: DiplomacyPhaseResult) -> DiplomacyPhaseResult {
+        self.continuation = match result {
+            DiplomacyPhaseResult::Resolved => crate::turn_flow::TurnContinuation::None,
+            DiplomacyPhaseResult::Offer(prompt) => {
+                crate::turn_flow::TurnContinuation::DiplomacyOffer {
+                    nation: prompt.nation,
+                    index: prompt.index,
+                }
+            }
+            DiplomacyPhaseResult::WarJoin(prompt) => {
+                crate::turn_flow::TurnContinuation::DiplomacyWarJoin(prompt)
+            }
+        };
+        result
     }
 
     fn apply_diplomacy_inter_nation_states(&mut self) {

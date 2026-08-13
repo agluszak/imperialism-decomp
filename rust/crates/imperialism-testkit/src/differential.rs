@@ -2,7 +2,7 @@
 
 use anyhow::{Context, Result, bail};
 use imperialism_core::{
-    GameState, NewsState, PendingWorkState, RngState, TurnState, UnitIdAllocator,
+    GameState, NewsState, PendingWorkState, RngState, TurnContinuation, TurnState, UnitIdAllocator,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 use serde::Deserialize;
@@ -30,6 +30,8 @@ struct EphemeralGameState {
     rng: RngState,
     news: NewsState,
     pending: PendingWorkState,
+    #[serde(default)]
+    continuation: TurnContinuation,
 }
 
 /// Save bytes plus the runtime-only overlay the `.imp` does not store.
@@ -135,6 +137,7 @@ pub fn load_save_backed_state(capture: SaveBackedState) -> Result<GameState> {
     parts.rng = capture.ephemeral.rng;
     parts.news = capture.ephemeral.news;
     parts.pending = capture.ephemeral.pending;
+    parts.continuation = capture.ephemeral.continuation;
     Ok(GameState::from_parts(parts))
 }
 

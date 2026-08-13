@@ -1,10 +1,10 @@
-use super::GameSession;
 use super::format_currency;
 use super::game_shell::project_date_and_treasury;
 use super::generated;
 use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, get_string};
 use super::retail::{ModalDialog, RetailTag, RetailUiAssets, find_descendant};
-use crate::AppState;
+use super::session::{GameSession, apply_turn_stop};
+use crate::{AppState, RetailAssetsResource};
 use bevy::input_focus::AutoFocus;
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
@@ -68,16 +68,11 @@ impl Plugin for OfferSheetPlugin {
     }
 }
 
-fn enter_offer_sheet_phase(
-    mut session: ResMut<GameSession>,
-    mut next_state: ResMut<NextState<AppState>>,
-) {
-    if session.0.pending_trade_offer().is_some() {
-        return;
-    }
-    if session.0.begin_trade_phase() == TradeProgress::Complete {
-        next_state.set(AppState::StrategicMap);
-    }
+fn enter_offer_sheet_phase(session: Res<GameSession>) {
+    assert!(
+        session.0.pending_trade_offer().is_some(),
+        "Offer Sheet requires a core trade continuation"
+    );
 }
 
 fn spawn_offer_sheet(mut commands: Commands, session: Res<GameSession>) {
@@ -304,6 +299,7 @@ fn on_offer_sheet_activate(
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
     assets: RetailUiAssets,
+    retail: Res<RetailAssetsResource>,
 ) {
     if !notices.is_empty() {
         return;
@@ -333,9 +329,9 @@ fn on_offer_sheet_activate(
             amount
         }
     };
-    match session.0.reply_to_trade_offer(amount, stop_buying) {
-        TradeProgress::Complete => next_state.set(AppState::StrategicMap),
-        TradeProgress::Offer(_) => {}
+    match session.0.answer_trade_offer(amount, stop_buying) {
+        TurnStop::TradeOffer(_) => {}
+        stop => apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state),
     }
 }
 
@@ -501,42 +497,28 @@ mod tests {
     }
 
     #[test]
-    fn entering_the_offer_sheet_either_binds_a_pending_offer_or_leaves() {
-        let mut app = test_app(fixture_state());
+    fn entering_the_offer_sheet_binds_a_pending_offer() {
+        let mut state = fixture_state();
+        let TradeProgress::Offer(_) = state.begin_trade_phase() else {
+            return;
+        };
+        let mut app = test_app(state);
         app.update();
-        let pending = app
-            .world()
-            .resource::<GameSession>()
-            .0
-            .pending_trade_offer();
-        if pending.is_some() {
-            let bound = app
-                .world_mut()
-                .query::<&OfferSheetAction>()
-                .iter(app.world())
-                .copied()
-                .collect::<Vec<_>>();
-            assert!(bound.contains(&OfferSheetAction::Accept));
-            assert!(bound.contains(&OfferSheetAction::Reject));
-            let reject = app
-                .world_mut()
-                .query_filtered::<Entity, With<OfferSheetAction>>()
-                .iter(app.world())
-                .find(|entity| {
-                    app.world().get::<OfferSheetAction>(*entity) == Some(&OfferSheetAction::Reject)
-                })
-                .expect("reject is bound");
-            app.world_mut()
-                .commands()
-                .trigger(Activate { entity: reject });
-            app.world_mut().flush();
-            app.update();
-        } else {
-            assert_eq!(
-                app.world().resource::<State<AppState>>().get(),
-                &AppState::StrategicMap
-            );
-        }
+        assert!(
+            app.world()
+                .resource::<GameSession>()
+                .0
+                .pending_trade_offer()
+                .is_some()
+        );
+        let bound = app
+            .world_mut()
+            .query::<&OfferSheetAction>()
+            .iter(app.world())
+            .copied()
+            .collect::<Vec<_>>();
+        assert!(bound.contains(&OfferSheetAction::Accept));
+        assert!(bound.contains(&OfferSheetAction::Reject));
     }
 
     #[test]

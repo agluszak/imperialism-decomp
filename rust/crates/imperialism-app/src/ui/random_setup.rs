@@ -6,7 +6,7 @@ use crate::ui::hover_help::{
 use crate::ui::random_setup_map;
 use crate::ui::retail::ModalDialog;
 use crate::ui::retail::{RetailTag, RetailUiAssets, find_descendant};
-use crate::ui::technology::TechnologyAdvance;
+use crate::ui::session::apply_turn_stop;
 use crate::{AppState, RandomGameNamesResource, RetailAssetsResource};
 use bevy::ecs::system::SystemParam;
 use bevy::input::ButtonState;
@@ -476,16 +476,9 @@ fn accept_random_setup(
         commands.insert_resource(GameSession(session));
         next_state.set(AppState::CitySite);
     } else {
-        let tech_id = enter_strategic_map_without_capital_selection(&mut session, setup.nation);
-        if let Some(tech_id) = tech_id {
-            commands.insert_resource(TechnologyAdvance(tech_id));
-            commands.insert_resource(GameSession(session));
-            next_state.set(AppState::TechnologyAdvance);
-        } else {
-            session.start_newspaper_phase(assets.news_table().story_ids());
-            commands.insert_resource(GameSession(session));
-            next_state.set(AppState::Newspaper);
-        }
+        let stop = enter_strategic_map_without_capital_selection(&mut session, setup.nation);
+        apply_turn_stop(stop, &mut session, assets, next_state);
+        commands.insert_resource(GameSession(session));
     }
 }
 

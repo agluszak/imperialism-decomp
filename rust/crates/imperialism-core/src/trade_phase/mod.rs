@@ -8,6 +8,7 @@ mod prepare;
 
 use crate::market::all_trade_commodities;
 use crate::*;
+use serde::{Deserialize, Serialize};
 
 pub(super) const DEAL_CATEGORY_ORDER: [u8; TradeCommodity::LENGTH] =
     [13, 14, 15, 16, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6];
@@ -40,7 +41,7 @@ pub(super) const PROCESSED_NEED: [ResourceKind; 5] = [
 ];
 
 /// One Offer Sheet interruption from `TGreatPower::ReplyToTradeOffer`.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct PendingTradeOffer {
     pub buyer: NationId,
     pub seller: NationId,
@@ -56,7 +57,7 @@ pub enum TradeProgress {
     Complete,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub(super) struct RankedDeal {
     pub(super) buyer: NationId,
     pub(super) seller: NationId,
@@ -66,7 +67,7 @@ pub(super) struct RankedDeal {
     pub(super) category: TradeCommodity,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub(super) struct TradePhase {
     pub(super) recurring_grant: MinorNationTable<ResourceTable<i16>>,
     pub(super) status_by_major: MinorNationTable<ResourceTable<[i16; MAJOR_NATION_COUNT]>>,
@@ -87,8 +88,8 @@ impl TradePhase {
     }
 }
 
-#[derive(Clone, Debug, PartialEq)]
-pub(crate) struct TradeSession {
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub struct TradeSession {
     phase: TradePhase,
     category_index: usize,
     entry_ordinal: usize,
@@ -144,7 +145,7 @@ impl GameState {
         session.skip_empty_categories();
         let progress = self.continue_trade_deals(&mut session);
         if matches!(progress, TradeProgress::Offer(_)) {
-            self.trade_session = Some(session);
+            self.continuation = crate::turn_flow::TurnContinuation::Trade(session);
         }
         progress
     }
@@ -154,10 +155,13 @@ impl GameState {
     /// `amount` is the purchased quantity (`0` rejects). `stop_buying` is the `nomo`
     /// checkbox and becomes `SetDealResults` shortfall.
     pub fn reply_to_trade_offer(&mut self, amount: i16, stop_buying: bool) -> TradeProgress {
-        let mut session = self
-            .trade_session
-            .take()
-            .expect("Offer Sheet reply requires an active trade session");
+        let mut session = match std::mem::take(&mut self.continuation) {
+            crate::turn_flow::TurnContinuation::Trade(session) => session,
+            other => {
+                self.continuation = other;
+                panic!("Offer Sheet reply requires an active trade session");
+            }
+        };
         let pending = session
             .pending
             .take()
@@ -173,15 +177,16 @@ impl GameState {
         );
         let progress = self.continue_trade_deals(&mut session);
         if matches!(progress, TradeProgress::Offer(_)) {
-            self.trade_session = Some(session);
+            self.continuation = crate::turn_flow::TurnContinuation::Trade(session);
         }
         progress
     }
 
     pub fn pending_trade_offer(&self) -> Option<PendingTradeOffer> {
-        self.trade_session
-            .as_ref()
-            .and_then(|session| session.pending)
+        match &self.continuation {
+            crate::turn_flow::TurnContinuation::Trade(session) => session.pending,
+            _ => None,
+        }
     }
 
     fn continue_trade_deals(&mut self, session: &mut TradeSession) -> TradeProgress {
@@ -641,7 +646,10 @@ mod tests {
             TradeProgress::Complete
         );
         assert_eq!(state.pending_trade_offer(), None);
-        assert!(state.trade_session.is_none());
+        assert!(!matches!(
+            state.continuation,
+            crate::turn_flow::TurnContinuation::Trade(_)
+        ));
         assert_eq!(
             state.nations.majors[MajorNationId::new(0)]
                 .economy
