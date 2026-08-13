@@ -1,6 +1,6 @@
 use super::GameSession;
 use super::format_currency;
-use super::game_shell::{bind_native_game_screen_nav, project_date_and_treasury};
+use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::{ModalDialog, RetailUiAssets};
 use super::retail::{RetailTag, find_descendant};

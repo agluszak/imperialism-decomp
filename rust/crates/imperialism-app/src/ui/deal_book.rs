@@ -1,7 +1,7 @@
 use super::GameSession;
 use super::RetailUiAssets;
 use super::format_currency;
-use super::game_shell::project_date_and_treasury;
+use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::retail::{RetailTag, find_descendant};
 use crate::AppState;
@@ -232,7 +232,7 @@ fn bind_deal_book(
     commands
         .entity(find_descendant(root, fourcc!("quer"), &children, &tags))
         .insert(InteractionDisabled);
-    project_date_and_treasury(&mut commands, &mut assets, root, &children, &tags, &session);
+    bind_game_status_display(&mut commands, &mut assets, root, &children, &tags, &session);
     commands
         .entity(find_descendant(root, fourcc!("mark"), &children, &tags))
         .insert((DealBookHistory, ActivateOnPress))

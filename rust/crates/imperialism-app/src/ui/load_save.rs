@@ -1,4 +1,5 @@
 use crate::AppState;
+use crate::RetailAssetsResource;
 use crate::ui::GameSession;
 use crate::ui::generated;
 use crate::ui::random_setup_map::{compose_owner_preview_indices, preview_image_from_indices};
@@ -782,7 +783,7 @@ fn apply_load(
     existing: Option<&GameState>,
     next_state: &mut NextState<AppState>,
     screen_state: AppState,
-    assets: Option<&RetailUiAssets>,
+    assets: Option<&RetailAssetsResource>,
 ) {
     if !retail_save_path(save_dir, slot).is_file() {
         return;
@@ -839,7 +840,7 @@ fn apply_save(
     }
 }
 
-fn load_error_text(assets: &RetailUiAssets, error: &LoadGameError) -> String {
+fn load_error_text(assets: &RetailAssetsResource, error: &LoadGameError) -> String {
     let retail = match error {
         LoadGameError::InvalidMagic | LoadGameError::Truncated => assets.string(0x2737, 7).ok(),
         LoadGameError::UnsupportedVersion(_) => assets.string(0x2737, 8).ok(),
@@ -919,7 +920,7 @@ fn on_load_save_notice_activate(
     mut next_state: ResMut<NextState<AppState>>,
     state: Res<State<AppState>>,
     mut commands: Commands,
-    assets: RetailUiAssets,
+    assets: Res<RetailAssetsResource>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
@@ -943,7 +944,7 @@ fn on_load_save_notice_activate(
                 session.as_deref().map(|session| &session.0),
                 &mut next_state,
                 *state.get(),
-                Some(&assets),
+                Some(&*assets),
             );
         }
         (LoadSaveNoticeAction::Accept, _) | (LoadSaveNoticeAction::Dismiss, _) => {
@@ -978,7 +979,7 @@ fn bind_flag_menu(
     root: Single<Entity, Added<FlagMenuRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    assets: RetailUiAssets,
+    assets: Res<RetailAssetsResource>,
 ) {
     let root = *root;
     for (index, tag) in FLAG_LABEL_TAGS.iter().copied().enumerate() {

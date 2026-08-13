@@ -1,5 +1,5 @@
 use super::format_currency;
-use super::game_shell::project_date_and_treasury;
+use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, get_string};
 use super::retail::{ModalDialog, RetailTag, RetailUiAssets, find_descendant};
@@ -119,7 +119,7 @@ fn bind_offer_sheet(
             .expect("offer-sheet hover-help bar has Node"),
         HoverHelpBarStyle::MAIN_MENU,
     );
-    project_date_and_treasury(&mut commands, &mut assets, root, &children, &tags, &session);
+    bind_game_status_display(&mut commands, &mut assets, root, &children, &tags, &session);
 }
 
 fn bind_offer_sheet_controls(
@@ -280,7 +280,6 @@ fn apply_offer_sheet_pose(
     commands
         .entity(find_descendant(root, fourcc!("nomo"), children, tags))
         .remove::<Checked>();
-    project_date_and_treasury(commands, assets, root, children, tags, session);
 }
 
 fn set_text(commands: &mut Commands, entity: Entity, value: String) {
@@ -298,7 +297,6 @@ fn on_offer_sheet_activate(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
-    assets: RetailUiAssets,
     retail: Res<RetailAssetsResource>,
 ) {
     if !notices.is_empty() {
@@ -319,27 +317,37 @@ fn on_offer_sheet_activate(
                 .ok()
                 .and_then(|editable| editable.value().to_string().parse::<i16>().ok())
             else {
-                spawn_offer_quantity_error(&mut commands, &assets);
+                spawn_offer_quantity_error(
+                    &mut commands,
+                    retail.get_string(OFFER_STRING_GROUP, 0x10),
+                );
                 return;
             };
             if amount < 0 || amount > screen.posed_amount {
-                spawn_offer_quantity_error(&mut commands, &assets);
+                spawn_offer_quantity_error(
+                    &mut commands,
+                    retail.get_string(OFFER_STRING_GROUP, 0x10),
+                );
                 return;
             }
             amount
         }
     };
-    match session.0.answer_trade_offer(amount, stop_buying) {
+    match session.0.answer_trade_offer(
+        amount,
+        stop_buying,
+        retail.assets().news_table().story_ids(),
+    ) {
         TurnStop::TradeOffer(_) => {}
-        stop => apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state),
+        stop => apply_turn_stop(stop, &mut next_state),
     }
 }
 
-fn spawn_offer_quantity_error(commands: &mut Commands, assets: &RetailUiAssets) {
+fn spawn_offer_quantity_error(commands: &mut Commands, body: String) {
     let root = commands.spawn_scene(generated::linger_2020()).id();
     commands.entity(root).insert((
         OfferSheetNotice,
-        OfferSheetNoticeBody(get_string(assets, OFFER_STRING_GROUP, 0x10)),
+        OfferSheetNoticeBody(body),
         ModalDialog,
         TabGroup::modal(),
         GlobalZIndex(20),

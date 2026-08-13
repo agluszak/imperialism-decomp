@@ -1,7 +1,7 @@
 use super::GameSession;
 use super::RetailUiAssets;
 use super::format_currency;
-use super::game_shell::{bind_native_game_screen_nav, project_date_and_treasury};
+use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::{RetailTag, find_descendant};
 use crate::AppState;
@@ -9,7 +9,7 @@ use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::Activate;
+use bevy::ui_widgets::{Activate, Button as UiButton};
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -244,7 +244,7 @@ fn bind_trade_screen(
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Trade active nation is a major nation");
     session.0.recall_player_trade_orders(nation);
-    project_date_and_treasury(
+    bind_game_status_display(
         &mut commands,
         &mut assets,
         *root,
@@ -348,36 +348,32 @@ fn bind_trade_controls(
         let card_pictures = pictures.for_button(binding.commodity, TradeCardKind::Bid);
         let offer = find_descendant(row, fourcc!("offr"), children, tags);
         let offer_pictures = pictures.for_button(binding.commodity, TradeCardKind::Offer);
-        commands
-            .entity(card)
-            .insert((
-                ImageNode::new(card_pictures.idle.clone()),
-                TradeAction::Card {
-                    commodity: binding.commodity,
-                    kind: TradeCardKind::Bid,
-                },
-                TradeDisplay::Card {
-                    commodity: binding.commodity,
-                    kind: TradeCardKind::Bid,
-                    pictures: card_pictures,
-                },
-            ))
-            .observe(on_trade_card_click);
-        commands
-            .entity(offer)
-            .insert((
-                ImageNode::new(offer_pictures.idle.clone()),
-                TradeAction::Card {
-                    commodity: binding.commodity,
-                    kind: TradeCardKind::Offer,
-                },
-                TradeDisplay::Card {
-                    commodity: binding.commodity,
-                    kind: TradeCardKind::Offer,
-                    pictures: offer_pictures,
-                },
-            ))
-            .observe(on_trade_card_click);
+        commands.entity(card).insert((
+            UiButton,
+            ImageNode::new(card_pictures.idle.clone()),
+            TradeAction::Card {
+                commodity: binding.commodity,
+                kind: TradeCardKind::Bid,
+            },
+            TradeDisplay::Card {
+                commodity: binding.commodity,
+                kind: TradeCardKind::Bid,
+                pictures: card_pictures,
+            },
+        ));
+        commands.entity(offer).insert((
+            UiButton,
+            ImageNode::new(offer_pictures.idle.clone()),
+            TradeAction::Card {
+                commodity: binding.commodity,
+                kind: TradeCardKind::Offer,
+            },
+            TradeDisplay::Card {
+                commodity: binding.commodity,
+                kind: TradeCardKind::Offer,
+                pictures: offer_pictures,
+            },
+        ));
 
         for (tag, delta) in [(fourcc!("left"), -1), (fourcc!("rght"), 1)] {
             let step = find_descendant(row, tag, children, tags);
@@ -533,30 +529,6 @@ fn on_trade_activate(
         }
         TradeAction::Amount(_) => {}
     }
-}
-
-fn on_trade_card_click(
-    mut click: On<Pointer<Click>>,
-    actions: Query<(&TradeAction, Has<InteractionDisabled>)>,
-    mut session: ResMut<GameSession>,
-) {
-    let Ok((TradeAction::Card { commodity, kind }, disabled)) = actions.get(click.entity) else {
-        return;
-    };
-    if disabled {
-        return;
-    }
-    click.propagate(false);
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
-        .expect("Trade active nation is a major nation");
-    let current = session.0.player_trade_order(nation, *commodity);
-    let order = match (*kind, current) {
-        (TradeCardKind::Bid, PlayerTradeOrder::Buy)
-        | (TradeCardKind::Offer, PlayerTradeOrder::Sell(_)) => PlayerTradeOrder::None,
-        (TradeCardKind::Bid, _) => PlayerTradeOrder::Buy,
-        (TradeCardKind::Offer, _) => PlayerTradeOrder::Sell(i16::MAX),
-    };
-    session.0.set_player_trade_order(nation, *commodity, order);
 }
 
 fn on_trade_amount_bar_click(
