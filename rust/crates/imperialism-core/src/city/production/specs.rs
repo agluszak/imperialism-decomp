@@ -67,8 +67,8 @@ pub const CIVILIAN_RESOURCE_SPECIALTIES: CivilianUnitTable<[Option<ResourceKind>
     ]);
 
 /// `g_abUniversityRequirementLevelById` over the semantic resource domain.
-pub const fn resource_development_yield(resource: ResourceKind, level: u8) -> i16 {
-    const YIELDS: [[i16; 4]; ResourceKind::LENGTH] = [
+pub fn resource_development_yield(resource: ResourceKind, level: u8) -> i16 {
+    const YIELDS: ResourceTable<[i16; 4]> = ResourceTable::from_array([
         [1, 2, 3, 4],
         [1, 2, 3, 4],
         [1, 2, 3, 4],
@@ -92,10 +92,10 @@ pub const fn resource_development_yield(resource: ResourceKind, level: u8) -> i1
         [1, 2, 3, 4],
         [0, 1, 2, 3],
         [0, 1, 2, 3],
-    ];
+    ]);
 
     assert!(level <= 3, "resource development level must be in 0..=3");
-    YIELDS[resource as usize][level as usize]
+    YIELDS[resource][level as usize]
 }
 
 pub const fn military_recruitment_spec(
@@ -157,21 +157,121 @@ pub const fn military_recruitment_spec(
     })
 }
 
-pub const fn ship_order_costs(ship_type: ShipType) -> ShipMaterials {
-    const LUMBER: [i16; 14] = [0, 4, 7, 5, 8, 6, 6, 6, 4, 8, 0, 2, 0, 0];
-    const FABRIC: [i16; 14] = [0, 2, 3, 2, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0];
-    const ARMS: [i16; 14] = [0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18];
-    const STEEL: [i16; 14] = [0, 0, 0, 0, 0, 2, 0, 0, 4, 10, 8, 6, 30, 22];
-    const COAL: [i16; 14] = [0, 0, 0, 0, 0, 10, 0, 10, 10, 20, 20, 20, 0, 0];
-    const FUEL: [i16; 14] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 20];
+pub fn ship_order_costs(ship_type: ShipType) -> ShipMaterials {
+    const COSTS: ShipTypeTable<ShipMaterials> = ShipTypeTable::from_array([
+        ShipMaterials {
+            lumber: 0,
+            fabric: 0,
+            arms: 0,
+            steel: 0,
+            coal: 0,
+            fuel: 0,
+        },
+        ShipMaterials {
+            lumber: 4,
+            fabric: 2,
+            arms: 0,
+            steel: 0,
+            coal: 0,
+            fuel: 0,
+        },
+        ShipMaterials {
+            lumber: 7,
+            fabric: 3,
+            arms: 0,
+            steel: 0,
+            coal: 0,
+            fuel: 0,
+        },
+        ShipMaterials {
+            lumber: 5,
+            fabric: 2,
+            arms: 2,
+            steel: 0,
+            coal: 0,
+            fuel: 0,
+        },
+        ShipMaterials {
+            lumber: 8,
+            fabric: 3,
+            arms: 5,
+            steel: 0,
+            coal: 0,
+            fuel: 0,
+        },
+        ShipMaterials {
+            lumber: 6,
+            fabric: 0,
+            arms: 0,
+            steel: 2,
+            coal: 10,
+            fuel: 0,
+        },
+        ShipMaterials {
+            lumber: 6,
+            fabric: 2,
+            arms: 0,
+            steel: 0,
+            coal: 0,
+            fuel: 0,
+        },
+        ShipMaterials {
+            lumber: 6,
+            fabric: 0,
+            arms: 3,
+            steel: 0,
+            coal: 10,
+            fuel: 0,
+        },
+        ShipMaterials {
+            lumber: 4,
+            fabric: 0,
+            arms: 6,
+            steel: 4,
+            coal: 10,
+            fuel: 0,
+        },
+        ShipMaterials {
+            lumber: 8,
+            fabric: 0,
+            arms: 15,
+            steel: 10,
+            coal: 20,
+            fuel: 0,
+        },
+        ShipMaterials {
+            lumber: 0,
+            fabric: 0,
+            arms: 0,
+            steel: 8,
+            coal: 20,
+            fuel: 0,
+        },
+        ShipMaterials {
+            lumber: 2,
+            fabric: 0,
+            arms: 8,
+            steel: 6,
+            coal: 20,
+            fuel: 0,
+        },
+        ShipMaterials {
+            lumber: 0,
+            fabric: 0,
+            arms: 24,
+            steel: 30,
+            coal: 0,
+            fuel: 20,
+        },
+        ShipMaterials {
+            lumber: 0,
+            fabric: 0,
+            arms: 18,
+            steel: 22,
+            coal: 0,
+            fuel: 20,
+        },
+    ]);
 
-    let index = ship_type as usize;
-    ShipMaterials {
-        lumber: LUMBER[index],
-        fabric: FABRIC[index],
-        arms: ARMS[index],
-        steel: STEEL[index],
-        coal: COAL[index],
-        fuel: FUEL[index],
-    }
+    COSTS[ship_type]
 }

@@ -246,10 +246,7 @@ fn normal_random_start_reaches_capital_selection() {
         "human capital awaits selection"
     );
 
-    for nation in (0..MajorNationId::COUNT)
-        .map(MajorNationId::new)
-        .filter(|nation| *nation != human)
-    {
+    for nation in MajorNationId::all().filter(|&nation| nation != human) {
         assert!(
             state.nations.majors[nation].common.home_tile.is_some(),
             "AI majors place a capital before capital selection"
@@ -291,7 +288,7 @@ fn normal_random_start_marks_only_queued_ai_map_targets() {
     let state = normal_start();
     let live_zone_count = state.ocean.zones.len();
 
-    for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
+    for nation in MajorNationId::all() {
         let economy = &state.nations.majors[nation].economy;
         if nation == human {
             assert_eq!(economy.ai_zone_targets, None);

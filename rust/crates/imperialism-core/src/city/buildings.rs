@@ -1,9 +1,12 @@
 use crate::*;
+use enum_map::Enum;
 use serde::{Deserialize, Serialize};
 
 /// A fixed building position on the city production screen.
 ///
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(
+    Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
 #[repr(u8)]
 #[serde(rename_all = "snake_case")]
 pub enum CityFacilitySlot {
@@ -44,7 +47,7 @@ impl CityFacilitySlot {
         Self::Transport,
         Self::RegionalPopulation,
     ];
-    pub const COUNT: usize = Self::ALL.len();
+    pub const COUNT: usize = enum_map::enum_len::<Self>();
 
     pub const fn from_index(value: u8) -> Option<Self> {
         let index = value as usize;
@@ -53,10 +56,6 @@ impl CityFacilitySlot {
         } else {
             None
         }
-    }
-
-    pub(crate) const fn index(self) -> usize {
-        self as usize
     }
 
     pub const fn is_capacity_center(self) -> bool {

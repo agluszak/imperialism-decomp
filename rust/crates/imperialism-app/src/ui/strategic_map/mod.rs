@@ -278,8 +278,8 @@ fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl st
     tile_state.pending_rail_links.bits().hash(hasher);
     tile_state.development.surface.get().hash(hasher);
     tile_state.development.extractive.get().hash(hasher);
-    for nation in 0..MajorNationId::COUNT {
-        tile_state.development.resource_visible_to_majors[MajorNationId::new(nation)].hash(hasher);
+    for nation in MajorNationId::all() {
+        tile_state.development.resource_visible_to_majors[nation].hash(hasher);
     }
     tile_state.edge_resources.hash(hasher);
     town_transport_linked(state, tile).hash(hasher);

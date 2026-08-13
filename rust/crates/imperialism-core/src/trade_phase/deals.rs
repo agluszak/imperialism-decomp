@@ -303,12 +303,11 @@ impl GameState {
 
         let need_current = state.trade.current_supply[resource];
         let mut grants = Vec::new();
-        for slot in 0..MajorNationId::COUNT {
-            let link = phase.status_by_major[minor][resource][usize::from(slot)];
+        for major in MajorNationId::all() {
+            let link = phase.status_by_major[minor][resource][usize::from(major.get())];
             if link == 0 {
                 continue;
             }
-            let major = MajorNationId::new(slot);
             let standing = self.diplomacy.standings[minor.nation()][major.nation()];
             let neg_delta = -i32::from(amount);
             let int_factor = if i32::from(link) < neg_delta {
@@ -358,8 +357,7 @@ impl GameState {
     }
 
     pub(super) fn end_trade_offers(&mut self) {
-        for slot in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(slot);
+        for nation in MajorNationId::all() {
             self.clear_trade_offers(nation);
         }
         for commodity in all_trade_commodities() {

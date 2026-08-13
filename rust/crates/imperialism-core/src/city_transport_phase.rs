@@ -28,8 +28,7 @@ const COMPILE_THRESHOLD_BY_DIFFICULTY: [i32; 5] = [5, 5, 5, 5, 5];
 impl GameState {
     /// Retail `TSimMgr::DoCityAndTransport`.
     pub fn do_city_and_transport(&mut self) {
-        for index in (0..MajorNationId::COUNT).rev() {
-            let nation = MajorNationId::new(index);
+        for nation in MajorNationId::all().rev() {
             if !self.nation_eligible_for_optional_phase(nation) {
                 continue;
             }
@@ -154,15 +153,15 @@ impl GameState {
         };
         let insert_at = self
             .military_units
-            .partition_point(|existing| existing.nation.get() <= nation_id.get());
+            .partition_point(|existing| existing.nation <= nation_id);
         self.military_units.insert(insert_at, unit);
         self.announce_later(nation, 3, unit_kind as i16, 1);
     }
 
     fn needs_overseas_developer(&self, nation: MajorNationId) -> bool {
         let nation_id = nation.nation();
-        for slot in 7..NationId::COUNT {
-            let minor_id = NationId::new(slot);
+        for minor in MinorNationId::all() {
+            let minor_id = minor.nation();
             if self.diplomacy.standings[nation_id][minor_id] <= 0xa9 {
                 continue;
             }
@@ -207,7 +206,7 @@ impl GameState {
         };
         let insert_at = self
             .civilian_units
-            .partition_point(|existing| existing.nation.get() <= nation_id.get());
+            .partition_point(|existing| existing.nation <= nation_id);
         self.civilian_units.insert(insert_at, unit);
     }
 

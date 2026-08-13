@@ -4,8 +4,7 @@ use crate::*;
 
 impl GameState {
     pub(super) fn set_minors_trade_bids(&mut self, phase: &mut TradePhase) {
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = MinorNationId::new(slot);
+        for minor in MinorNationId::all() {
             if self.nations.minors[minor].is_some() {
                 self.set_minor_trade_bids(minor, phase);
             }
@@ -130,8 +129,7 @@ impl GameState {
     pub(super) fn tally_minors_trade_bids(&mut self) {
         let base = minor_offer_base(self.turn.economic_turn);
         for commodity in RAW_COMMODITIES {
-            for slot in MinorNationId::FIRST..NationId::COUNT {
-                let minor = MinorNationId::new(slot);
+            for minor in MinorNationId::all() {
                 let Some(state) = self.nations.minors[minor].as_ref() else {
                     continue;
                 };
@@ -154,8 +152,7 @@ impl GameState {
             }
         }
 
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = MinorNationId::new(slot);
+        for minor in MinorNationId::all() {
             let Some(state) = self.nations.minors[minor].as_ref() else {
                 continue;
             };
@@ -171,8 +168,7 @@ impl GameState {
         }
 
         for commodity in MANUFACTURED_COMMODITIES {
-            for slot in MinorNationId::FIRST..NationId::COUNT {
-                let minor = MinorNationId::new(slot);
+            for minor in MinorNationId::all() {
                 let Some(state) = self.nations.minors[minor].as_ref() else {
                     continue;
                 };
@@ -187,16 +183,14 @@ impl GameState {
 
     pub(super) fn tally_major_trade_bids(&mut self) {
         let base = major_offer_base(self.turn.economic_turn);
-        for slot in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(slot);
+        for nation in MajorNationId::all() {
             if self.major_is_trade_eligible(nation) {
                 self.assign_fallback_trade_offers(nation);
             }
         }
 
         for commodity in all_trade_commodities() {
-            for slot in 0..MajorNationId::COUNT {
-                let nation = MajorNationId::new(slot);
+            for nation in MajorNationId::all() {
                 if !self.major_is_trade_eligible(nation) {
                     continue;
                 }
@@ -371,8 +365,7 @@ impl GameState {
         source: MajorNationId,
     ) -> Vec<MajorNationId> {
         let mut list = Vec::new();
-        for slot in 0..MajorNationId::COUNT {
-            let candidate = MajorNationId::new(slot);
+        for candidate in MajorNationId::all() {
             if !self.nation_present(candidate.nation()) || candidate == source {
                 continue;
             }

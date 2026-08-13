@@ -187,8 +187,7 @@ impl GameState {
             port_tile: tile,
         }));
 
-        for index in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(index);
+        for nation in MajorNationId::all() {
             if let Some(targets) = self
                 .nations
                 .major_mut(nation)

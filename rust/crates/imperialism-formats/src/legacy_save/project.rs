@@ -354,7 +354,7 @@ fn admiral_states(navy: &LegacyNavyState, ship_count: usize) -> Vec<AdmiralState
             name: admiral.name.clone(),
             experience: admiral.experience,
             ship: (admiral.ship_index >= 0 && (admiral.ship_index as usize) < ship_count)
-                .then(|| ShipId::new(admiral.ship_index as u32)),
+                .then(|| ShipId::new(admiral.ship_index as usize)),
         })
         .collect()
 }
@@ -724,14 +724,16 @@ fn technology_state(technology: &LegacyTechnologyState) -> TechnologyState {
             != 0,
         marine_engineering: technology.resource_type_enabled[CityFacilitySlot::PowerPlant as usize]
             != 0,
-        scheduled_unlock_turn_by_technology: technology.priority_slots,
-        global_unlocks_by_technology: technology
-            .per_technology_unlock_flags
-            .map(|value| value != 0),
+        scheduled_unlock_turn_by_technology: TechnologyTable::from_array(technology.priority_slots),
+        global_unlocks_by_technology: TechnologyTable::from_array(
+            technology
+                .per_technology_unlock_flags
+                .map(|value| value != 0),
+        ),
         research_status_by_nation: MajorNationTable::from_array(
             technology
                 .research_status_by_nation
-                .map(|row| row.map(technology_research_status)),
+                .map(|row| TechnologyTable::from_array(row.map(technology_research_status))),
         ),
         industry_enabled_by_slot: technology.resource_type_enabled.map(|value| value != 0),
         military_unit_ability_active_by_nation: MajorNationTable::from_array(
@@ -1056,8 +1058,7 @@ fn zone_state(context: &LegacyZone) -> Zone {
 
 fn rebuild_ocean_neighbors(ocean: &mut Ocean, map: &MapMgr) {
     let geometry = map.geometry();
-    for tile_index in 0..TileId::COUNT {
-        let tile = TileId::new(tile_index);
+    for tile in TileId::all() {
         let Some(zone_index) = ocean_zone_for_tile(ocean, map, tile) else {
             continue;
         };
