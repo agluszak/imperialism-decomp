@@ -94,14 +94,20 @@ pub(in crate::ui::city) fn bind_city_order_control(
     let left = find_descendant(row, decrease_tag, children, tags);
     let right = find_descendant(row, increase_tag, children, tags);
     let quantity = find_descendant(row, quantity_tag, children, tags);
-    commands.entity(left).insert(CityOrderAdjust {
-        order: binding.order,
-        delta: -step,
-    });
-    commands.entity(right).insert(CityOrderAdjust {
-        order: binding.order,
-        delta: step,
-    });
+    commands
+        .entity(left)
+        .insert(CityOrderAdjust {
+            order: binding.order,
+            delta: -step,
+        })
+        .observe(on_city_order_adjust);
+    commands
+        .entity(right)
+        .insert(CityOrderAdjust {
+            order: binding.order,
+            delta: step,
+        })
+        .observe(on_city_order_adjust);
     commands
         .entity(quantity)
         .insert((Text::new(""), CityOrderQuantity(binding.order)));
@@ -167,13 +173,16 @@ fn bind_industry_amount_bars(
             IndustryBar::Maximum(amount),
             Name::new("city-industry-maximum"),
         ));
-        commands.entity(bar).insert((
-            RelativeCursorPosition::default(),
-            CityIndustryAmountBar {
-                order: binding.order,
-                slot: page.slot,
-            },
-        ));
+        commands
+            .entity(bar)
+            .insert((
+                RelativeCursorPosition::default(),
+                CityIndustryAmountBar {
+                    order: binding.order,
+                    slot: page.slot,
+                },
+            ))
+            .observe(on_city_amount_bar_click);
     }
 }
 
@@ -215,7 +224,8 @@ pub(in crate::ui::city) fn bind_industry_dialog(
     let expansion_action = find_descendant(root, fourcc!("expa"), children, tags);
     commands
         .entity(expansion_action)
-        .insert(CityExpansionOpen { slot: page.slot });
+        .insert(CityExpansionOpen { slot: page.slot })
+        .observe(on_city_expansion_open);
     let expansion = find_descendant(root, fourcc!("flag"), children, tags);
     commands
         .entity(expansion)

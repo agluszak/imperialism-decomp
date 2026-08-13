@@ -94,6 +94,45 @@ presentation lives on the screen entity; application-level facts such as
 independently spawned top-level windows/modals; children inherit lifetime from
 their parent.
 
+Wire UI the way Bevy 0.19's headless widgets expect: application state stays in
+`GameSession`, and widget components such as `Checked` are projected onto entities.
+
+```
+Known UI control + EntityEvent
+    -> entity-local observer
+
+Cross-cutting component behavior / application event
+    -> global observer
+
+Game state -> UI presentation
+    -> change-detected projection system
+
+Retail standard control
+    -> Bevy stock headless widget whenever semantics fit
+
+Retail custom canvas/odd control
+    -> custom pointer handling
+```
+
+Attach `.observe(...)` when binding a known control. Do not install an app-global
+observer that catches arbitrary `Activate` / `Pointer<Click>` events and asks
+whether the target was this screen's. Keep a global observer when the behavior is
+genuinely cross-cutting (for example City raising a window from
+`original_event_target()` plus ancestors, retail picture-swap on `Pressed` /
+`Checked`, or application events such as `OpenDiplomacy*Notice`).
+
+Do not replace `sync_*` projection systems with observer chains. Skip expensive
+work with a fact-specific key such as `StrategicMapComposeKey` when
+`GameSession::is_changed()` is too coarse; do not split simulation state into ECS
+components just to leverage change detection.
+
+Map recovered standard controls through `ui_codegen` onto Bevy stock widgets
+(`Button`, `Checkbox`, `RadioButton`, `ScrollArea`, and `Slider` when a real
+retail slider arrives). Keep handwritten pointer math for City/Trade amount bars
+and other odd retail coordinate semantics. Do not sprinkle `TabIndex` on
+individual screens; if retail keyboard navigation matters, recover it as
+semantic evidence and generate it.
+
 ## Retail fidelity
 
 Prefer recovered C++ source and the existing process oracle when retail semantics are uncertain. Use

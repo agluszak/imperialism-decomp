@@ -196,15 +196,19 @@ pub(in crate::ui::city) fn bind_construction_dialog(
     let okay = find_descendant(root, fourcc!("okay"), children, tags);
     let mut okay_commands = commands.entity(okay);
     okay_commands.insert(CityBuildingChangeChoice { slot, accept: true });
+    okay_commands.observe(on_city_building_change_choice);
     if !can_reserve {
         okay_commands.insert((InteractionDisabled, Visibility::Hidden));
     }
 
     let cancel = find_descendant(root, fourcc!("cncl"), children, tags);
-    commands.entity(cancel).insert(CityBuildingChangeChoice {
-        slot,
-        accept: false,
-    });
+    commands
+        .entity(cancel)
+        .insert(CityBuildingChangeChoice {
+            slot,
+            accept: false,
+        })
+        .observe(on_city_building_change_choice);
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -259,15 +263,19 @@ pub(in crate::ui::city) fn bind_expansion_dialog(
     let okay = find_descendant(root, fourcc!("okay"), children, tags);
     let mut okay_commands = commands.entity(okay);
     okay_commands.insert(CityBuildingChangeChoice { slot, accept: true });
+    okay_commands.observe(on_city_building_change_choice);
     if !can_reserve {
         okay_commands.insert((InteractionDisabled, Visibility::Hidden));
     }
 
     let cancel = find_descendant(root, fourcc!("cncl"), children, tags);
-    commands.entity(cancel).insert(CityBuildingChangeChoice {
-        slot,
-        accept: false,
-    });
+    commands
+        .entity(cancel)
+        .insert(CityBuildingChangeChoice {
+            slot,
+            accept: false,
+        })
+        .observe(on_city_building_change_choice);
 }
 
 pub(in crate::ui::city) fn on_city_expansion_open(

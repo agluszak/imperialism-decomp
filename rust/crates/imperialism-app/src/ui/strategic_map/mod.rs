@@ -18,6 +18,7 @@ mod units;
 
 use borders::compose_strategic_borders;
 pub(crate) use civilian_orders::SelectedEngineer;
+pub(crate) use civilian_orders::on_strategic_map_click;
 pub(crate) use civilian_orders::register as register_civilian_orders;
 use overlays::{
     IMPROVEMENT_PICTURE_IDS, compose_strategic_improvements, compose_strategic_railways,

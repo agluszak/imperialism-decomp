@@ -243,8 +243,6 @@ impl Plugin for DiplomacyPlugin {
                 .chain()
                 .run_if(in_state(AppState::Diplomacy)),
         )
-        .add_observer(on_diplomacy_activate.run_if(in_state(AppState::Diplomacy)))
-        .add_observer(on_diplomacy_map_click.run_if(in_state(AppState::Diplomacy)))
         .add_observer(open_diplomacy_rejection_notice.run_if(in_state(AppState::Diplomacy)))
         .add_observer(open_diplomacy_entanglement_notice.run_if(in_state(AppState::Diplomacy)));
     }
@@ -436,7 +434,8 @@ fn bind_diplomacy_controls(
         commands
             .entity(control)
             .insert(DiplomacyAction::Topic(topic))
-            .remove::<InteractionDisabled>();
+            .remove::<InteractionDisabled>()
+            .observe(on_diplomacy_activate);
     }
     for (index, tag) in [
         fourcc!("doc0"),
@@ -452,10 +451,13 @@ fn bind_diplomacy_controls(
     .enumerate()
     {
         let control = find_descendant(root, tag, children, tags);
-        commands.entity(control).insert(DiplomacyAction::Grant {
-            row: index / 2,
-            recurring: index % 2 != 0,
-        });
+        commands
+            .entity(control)
+            .insert(DiplomacyAction::Grant {
+                row: index / 2,
+                recurring: index % 2 != 0,
+            })
+            .observe(on_diplomacy_activate);
     }
     for (index, tag) in [
         fourcc!("traa"),
@@ -472,7 +474,8 @@ fn bind_diplomacy_controls(
         let control = find_descendant(trade_cluster, tag, children, tags);
         commands
             .entity(control)
-            .insert(DiplomacyAction::Trade(index));
+            .insert(DiplomacyAction::Trade(index))
+            .observe(on_diplomacy_activate);
     }
     for (index, tag) in [
         fourcc!("ovr0"),
@@ -488,7 +491,8 @@ fn bind_diplomacy_controls(
         commands
             .entity(control)
             .insert(DiplomacyAction::Overlay(overlay))
-            .remove::<InteractionDisabled>();
+            .remove::<InteractionDisabled>()
+            .observe(on_diplomacy_activate);
     }
     for (index, tag) in [
         fourcc!("scr0"),
@@ -506,7 +510,8 @@ fn bind_diplomacy_controls(
         commands
             .entity(control)
             .insert(DiplomacyAction::Treaty(index))
-            .remove::<InteractionDisabled>();
+            .remove::<InteractionDisabled>()
+            .observe(on_diplomacy_activate);
     }
     commands
         .entity(find_descendant(
@@ -516,7 +521,8 @@ fn bind_diplomacy_controls(
             tags,
         ))
         .insert(DiplomacyAction::ColonyBoycott)
-        .remove::<InteractionDisabled>();
+        .remove::<InteractionDisabled>()
+        .observe(on_diplomacy_activate);
     for tag in [fourcc!("reje"), fourcc!("acce")] {
         let control = find_descendant(root, tag, children, tags);
         commands.entity(control).insert(InteractionDisabled);
@@ -567,6 +573,7 @@ fn bind_diplomacy_controls(
             ZIndex(1),
             ChildOf(main),
         ))
+        .observe(on_diplomacy_map_click)
         .id();
     spawn_diplomacy_map_labels(commands, map, &styles, icon_atlas);
     spawn_diplomacy_panel_text(

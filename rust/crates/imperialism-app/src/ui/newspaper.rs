@@ -16,9 +16,6 @@ const STORY_TOP: f32 = 80.0;
 #[derive(Component)]
 struct NewspaperRoot;
 
-#[derive(Component, Clone, Copy)]
-struct NewspaperAction;
-
 pub(crate) struct NewspaperPlugin;
 
 impl Plugin for NewspaperPlugin {
@@ -26,8 +23,7 @@ impl Plugin for NewspaperPlugin {
         app.add_systems(
             OnEnter(AppState::Newspaper),
             (spawn_newspaper, bind_newspaper).chain(),
-        )
-        .add_observer(on_newspaper_activate.run_if(in_state(AppState::Newspaper)));
+        );
     }
 }
 
@@ -67,7 +63,8 @@ fn bind_newspaper(
     );
     commands
         .entity(find_descendant(root, fourcc!("end "), &children, &tags))
-        .insert((NewspaperAction, ActivateOnPress));
+        .insert(ActivateOnPress)
+        .observe(on_newspaper_activate);
 }
 
 fn fill_newspaper_chrome(
@@ -327,36 +324,11 @@ fn fill_brackets(template: &str, args: &[&str]) -> String {
 }
 
 fn on_newspaper_activate(
-    activate: On<Activate>,
-    actions: Query<&NewspaperAction>,
+    _activate: On<Activate>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     retail: Res<RetailAssetsResource>,
 ) {
-    if actions.get(activate.entity).is_err() {
-        return;
-    }
     let stop = session.0.close_newspaper();
     apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state);
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use bevy::state::app::StatesPlugin;
-
-    #[test]
-    fn unrelated_activation_before_a_game_does_not_require_a_session() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_plugins(StatesPlugin)
-            .insert_state(AppState::MainMenu)
-            .add_plugins(NewspaperPlugin);
-        let unrelated = app.world_mut().spawn_empty().id();
-
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: unrelated });
-        app.world_mut().flush();
-    }
 }

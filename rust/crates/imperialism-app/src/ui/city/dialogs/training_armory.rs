@@ -220,12 +220,20 @@ pub(in crate::ui::city) fn configure_armory_dialog(
             ImageNode::new(idle.clone()),
             RetailPictureSwap { idle, active },
         ));
+        button.observe(on_armory_row_selected);
         if category == MilitaryRecruitmentCategory::LightInfantry {
             button.insert(Checked);
         } else {
             button.remove::<Checked>();
         }
         commands.entity(quantity).insert(InteractionDisabled);
+        let row = find_descendant(root, binding.tag, children, tags);
+        commands
+            .entity(find_descendant(row, fourcc!("minu"), children, tags))
+            .observe(on_armory_order_selected);
+        commands
+            .entity(find_descendant(row, fourcc!("plus"), children, tags))
+            .observe(on_armory_order_selected);
     }
     for (tag, detail) in [
         (fourcc!("unit"), ArmoryDetail::UnitName),

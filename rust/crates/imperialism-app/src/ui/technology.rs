@@ -17,9 +17,6 @@ const ABILITY_STATUS_PICTURE_INDEX: [i16; TECHNOLOGY_COUNT] = [
 #[derive(Component)]
 struct TechnologyAdvanceRoot;
 
-#[derive(Component, Clone, Copy)]
-struct TechnologyAdvanceAction;
-
 pub(crate) struct TechnologyAdvancePlugin;
 
 impl Plugin for TechnologyAdvancePlugin {
@@ -27,8 +24,7 @@ impl Plugin for TechnologyAdvancePlugin {
         app.add_systems(
             OnEnter(AppState::TechnologyAdvance),
             (spawn_technology_advance, bind_technology_advance).chain(),
-        )
-        .add_observer(on_technology_advance_activate.run_if(in_state(AppState::TechnologyAdvance)));
+        );
     }
 }
 
@@ -57,8 +53,9 @@ fn bind_technology_advance(
     fill_technology_advance(&mut commands, &mut assets, root, &children, &tags, tech_id);
     commands
         .entity(find_descendant(root, fourcc!("end "), &children, &tags))
-        .insert((TechnologyAdvanceAction, ActivateOnPress))
-        .remove::<InteractionDisabled>();
+        .insert(ActivateOnPress)
+        .remove::<InteractionDisabled>()
+        .observe(on_technology_advance_activate);
 }
 
 fn fill_technology_advance(
@@ -87,8 +84,7 @@ fn fill_technology_advance(
 
 #[allow(clippy::too_many_arguments)]
 fn on_technology_advance_activate(
-    activate: On<Activate>,
-    actions: Query<&TechnologyAdvanceAction>,
+    _activate: On<Activate>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     children: Query<&Children>,
@@ -98,9 +94,6 @@ fn on_technology_advance_activate(
     retail: Res<RetailAssetsResource>,
     mut commands: Commands,
 ) {
-    if actions.get(activate.entity).is_err() {
-        return;
-    }
     match session.0.acknowledge_technology_report() {
         TurnStop::TechnologyAdvance(tech_id) => {
             let Ok(root) = root.single() else {
@@ -109,26 +102,5 @@ fn on_technology_advance_activate(
             fill_technology_advance(&mut commands, &mut assets, root, &children, &tags, tech_id);
         }
         stop => apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state),
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use bevy::state::app::StatesPlugin;
-
-    #[test]
-    fn unrelated_activation_before_a_game_does_not_require_game_resources() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_plugins(StatesPlugin)
-            .insert_state(AppState::MainMenu)
-            .add_plugins(TechnologyAdvancePlugin);
-        let unrelated = app.world_mut().spawn_empty().id();
-
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: unrelated });
-        app.world_mut().flush();
     }
 }

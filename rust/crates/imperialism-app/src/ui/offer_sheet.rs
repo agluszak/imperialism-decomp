@@ -63,8 +63,7 @@ impl Plugin for OfferSheetPlugin {
             (pose_offer_sheet, bind_offer_sheet_notice)
                 .chain()
                 .run_if(in_state(AppState::OfferSheet)),
-        )
-        .add_observer(on_offer_sheet_activate.run_if(in_state(AppState::OfferSheet)));
+        );
     }
 }
 
@@ -140,11 +139,13 @@ fn bind_offer_sheet_controls(
     commands
         .entity(accept)
         .insert((OfferSheetAction::Accept, ActivateOnPress))
-        .remove::<InteractionDisabled>();
+        .remove::<InteractionDisabled>()
+        .observe(on_offer_sheet_activate);
     commands
         .entity(reject)
         .insert((OfferSheetAction::Reject, ActivateOnPress))
-        .remove::<InteractionDisabled>();
+        .remove::<InteractionDisabled>()
+        .observe(on_offer_sheet_activate);
     commands
         .entity(nomo)
         .insert(StopBuyingToggle)
@@ -461,8 +462,7 @@ mod tests {
             .add_systems(
                 OnEnter(AppState::OfferSheet),
                 (spawn_test_offer_sheet, bind_test_offer_sheet).chain(),
-            )
-            .add_observer(on_offer_sheet_activate);
+            );
         app
     }
 
@@ -519,21 +519,6 @@ mod tests {
             .collect::<Vec<_>>();
         assert!(bound.contains(&OfferSheetAction::Accept));
         assert!(bound.contains(&OfferSheetAction::Reject));
-    }
-
-    #[test]
-    fn unrelated_activation_before_a_game_does_not_require_a_session() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_plugins(StatesPlugin)
-            .insert_state(AppState::MainMenu)
-            .add_plugins(OfferSheetPlugin);
-        let unrelated = app.world_mut().spawn_empty().id();
-
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: unrelated });
-        app.world_mut().flush();
     }
 
     #[test]

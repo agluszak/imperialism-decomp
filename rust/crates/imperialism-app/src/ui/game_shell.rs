@@ -3,12 +3,12 @@ use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
 use crate::ui::generated;
-use crate::ui::load_save::OpenFlagMenu;
+use crate::ui::load_save::bind_open_flag_menu;
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailPictureSwap, RetailTag, find_descendant};
 use crate::ui::strategic_map::{
-    bind_strategic_base_terrain, register_civilian_orders, sync_strategic_base_terrain,
-    sync_strategic_units,
+    bind_strategic_base_terrain, on_strategic_map_click, register_civilian_orders,
+    sync_strategic_base_terrain, sync_strategic_units,
 };
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -140,11 +140,8 @@ fn bind_strategic_map(
     bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &children, &tags);
     disable_native_control(&mut commands, *root, &children, &tags, fourcc!("DONE"));
     let flag = find_descendant(*root, fourcc!("Flag"), &children, &tags);
-    commands
-        .entity(flag)
-        .insert(OpenFlagMenu)
-        .remove::<InteractionDisabled>();
-    bind_strategic_base_terrain(
+    bind_open_flag_menu(&mut commands, flag);
+    let map = bind_strategic_base_terrain(
         &mut commands,
         *root,
         &children,
@@ -152,6 +149,7 @@ fn bind_strategic_map(
         &mut assets,
         &session.0,
     );
+    commands.entity(map).observe(on_strategic_map_click);
     project_date_and_treasury(
         &mut commands,
         &mut assets,

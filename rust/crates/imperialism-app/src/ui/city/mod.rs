@@ -79,17 +79,6 @@ impl Plugin for CityPlugin {
             )
                 .run_if(in_state(AppState::City)),
         )
-        .add_observer(on_city_dialog_pressed.run_if(in_state(AppState::City)))
-        .add_observer(on_city_canvas_click.run_if(in_state(AppState::City)))
-        .add_observer(on_armory_row_selected.run_if(in_state(AppState::City)))
-        .add_observer(on_university_row_selected.run_if(in_state(AppState::City)))
-        .add_observer(on_shipyard_row_selected.run_if(in_state(AppState::City)))
-        .add_observer(on_armory_order_selected.run_if(in_state(AppState::City)))
-        .add_observer(on_university_order_selected.run_if(in_state(AppState::City)))
-        .add_observer(on_shipyard_order_selected.run_if(in_state(AppState::City)))
-        .add_observer(on_city_amount_bar_click.run_if(in_state(AppState::City)))
-        .add_observer(on_city_expansion_open.run_if(in_state(AppState::City)))
-        .add_observer(on_city_building_change_choice.run_if(in_state(AppState::City)))
-        .add_observer(on_city_order_adjust.run_if(in_state(AppState::City)));
+        .add_observer(on_city_dialog_pressed.run_if(in_state(AppState::City)));
     }
 }

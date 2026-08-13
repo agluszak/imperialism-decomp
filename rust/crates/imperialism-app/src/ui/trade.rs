@@ -212,9 +212,7 @@ impl Plugin for TradePlugin {
             Update,
             (sync_trade_text, sync_trade_visual, sync_trade_presence)
                 .run_if(in_state(AppState::Trade)),
-        )
-        .add_observer(on_trade_activate.run_if(in_state(AppState::Trade)))
-        .add_observer(on_trade_amount_bar_click.run_if(in_state(AppState::Trade)));
+        );
     }
 }
 
@@ -381,13 +379,16 @@ fn bind_trade_controls(
 
         for (tag, delta) in [(fourcc!("left"), -1), (fourcc!("rght"), 1)] {
             let step = find_descendant(row, tag, children, tags);
-            commands.entity(step).insert((
-                TradeAction::Step {
-                    commodity: binding.commodity,
-                    delta,
-                },
-                TradeDisplay::Step(binding.commodity),
-            ));
+            commands
+                .entity(step)
+                .insert((
+                    TradeAction::Step {
+                        commodity: binding.commodity,
+                        delta,
+                    },
+                    TradeDisplay::Step(binding.commodity),
+                ))
+                .observe(on_trade_activate);
         }
 
         let sell = find_descendant(row, fourcc!("Sell"), children, tags);
@@ -399,11 +400,14 @@ fn bind_trade_controls(
             .entity(green)
             .insert(TradeDisplay::Offer(binding.commodity));
         let bar = find_descendant(row, fourcc!("bar "), children, tags);
-        commands.entity(bar).insert((
-            TradeAction::Amount(binding.commodity),
-            TradeDisplay::Offer(binding.commodity),
-            RelativeCursorPosition::default(),
-        ));
+        commands
+            .entity(bar)
+            .insert((
+                TradeAction::Amount(binding.commodity),
+                TradeDisplay::Offer(binding.commodity),
+                RelativeCursorPosition::default(),
+            ))
+            .observe(on_trade_amount_bar_click);
         commands
             .entity(bar)
             .apply_scene(trade_gauge_overlay(binding.commodity, gauge_color));
@@ -504,7 +508,8 @@ fn on_trade_activate(
     actions: Query<(&TradeAction, Has<InteractionDisabled>)>,
     mut session: ResMut<GameSession>,
 ) {
-    let Ok((action, disabled)) = actions.get(activate.entity) else {
+    let Ok((TradeAction::Step { commodity, delta }, disabled)) = actions.get(activate.entity)
+    else {
         return;
     };
     if disabled {
@@ -512,26 +517,13 @@ fn on_trade_activate(
     }
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Trade active nation is a major nation");
-    match *action {
-        TradeAction::Card { commodity, kind } => {
-            let current = session.0.player_trade_order(nation, commodity);
-            let order = match (kind, current) {
-                (TradeCardKind::Bid, PlayerTradeOrder::Buy)
-                | (TradeCardKind::Offer, PlayerTradeOrder::Sell(_)) => PlayerTradeOrder::None,
-                (TradeCardKind::Bid, _) => PlayerTradeOrder::Buy,
-                (TradeCardKind::Offer, _) => PlayerTradeOrder::Sell(i16::MAX),
-            };
-            session.0.set_player_trade_order(nation, commodity, order);
-        }
-        TradeAction::Step { commodity, delta } => {
-            if matches!(
-                session.0.player_trade_order(nation, commodity),
-                PlayerTradeOrder::Sell(_)
-            ) {
-                session.0.step_player_trade_offer(nation, commodity, delta);
-            }
-        }
-        TradeAction::Amount(_) => {}
+    if matches!(
+        session.0.player_trade_order(nation, *commodity),
+        PlayerTradeOrder::Sell(_)
+    ) {
+        session
+            .0
+            .step_player_trade_offer(nation, *commodity, *delta);
     }
 }
 
@@ -1093,8 +1085,7 @@ mod tests {
         .add_systems(
             Update,
             (bind_test_trade, sync_trade_visual, sync_trade_presence).chain(),
-        )
-        .add_observer(on_trade_activate);
+        );
         spawn_trade_hierarchy(app.world_mut());
         app.update();
 

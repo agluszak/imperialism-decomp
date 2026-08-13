@@ -170,14 +170,22 @@ pub(in crate::ui::city) fn bind_university_dialog(
         let minus = find_descendant(row, fourcc!("minu"), children, tags);
         let plus = find_descendant(row, fourcc!("plus"), children, tags);
         let quantity = find_descendant(row, fourcc!("numb"), children, tags);
-        commands.entity(minus).insert(CityOrderAdjust {
-            order: binding.order,
-            delta: -1,
-        });
-        commands.entity(plus).insert(CityOrderAdjust {
-            order: binding.order,
-            delta: 1,
-        });
+        commands
+            .entity(minus)
+            .insert(CityOrderAdjust {
+                order: binding.order,
+                delta: -1,
+            })
+            .observe(on_city_order_adjust)
+            .observe(on_university_order_selected);
+        commands
+            .entity(plus)
+            .insert(CityOrderAdjust {
+                order: binding.order,
+                delta: 1,
+            })
+            .observe(on_city_order_adjust)
+            .observe(on_university_order_selected);
         let row_available = available[kind];
         let visibility = if row_available {
             Visibility::Visible
@@ -195,6 +203,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
                 },
                 visibility,
             ));
+            button_commands.observe(on_university_row_selected);
             if row_available {
                 button_commands.remove::<InteractionDisabled>();
             } else {

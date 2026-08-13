@@ -12,7 +12,6 @@ pub(crate) struct SelectedEngineer(pub(crate) Option<CivilianUnitId>);
 
 pub(crate) fn register(app: &mut App) {
     app.init_resource::<SelectedEngineer>()
-        .add_observer(on_strategic_map_click.run_if(in_state(AppState::StrategicMap)))
         .add_systems(OnExit(AppState::StrategicMap), clear_selected_engineer);
 }
 
@@ -20,7 +19,7 @@ fn clear_selected_engineer(mut selected: ResMut<SelectedEngineer>) {
     selected.0 = None;
 }
 
-fn on_strategic_map_click(
+pub(crate) fn on_strategic_map_click(
     click: On<Pointer<Click>>,
     maps: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
     mut session: ResMut<GameSession>,

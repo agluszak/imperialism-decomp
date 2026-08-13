@@ -129,14 +129,22 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
         let minus = find_descendant(row, fourcc!("minu"), children, tags);
         let plus = find_descendant(row, fourcc!("plus"), children, tags);
         let quantity = find_descendant(row, fourcc!("numb"), children, tags);
-        commands.entity(minus).insert(CityOrderAdjust {
-            order: binding.order,
-            delta: -1,
-        });
-        commands.entity(plus).insert(CityOrderAdjust {
-            order: binding.order,
-            delta: 1,
-        });
+        commands
+            .entity(minus)
+            .insert(CityOrderAdjust {
+                order: binding.order,
+                delta: -1,
+            })
+            .observe(on_city_order_adjust)
+            .observe(on_shipyard_order_selected);
+        commands
+            .entity(plus)
+            .insert(CityOrderAdjust {
+                order: binding.order,
+                delta: 1,
+            })
+            .observe(on_city_order_adjust)
+            .observe(on_shipyard_order_selected);
         let visibility = if details.is_some() {
             Visibility::Visible
         } else {
@@ -170,7 +178,8 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
         }
         commands
             .entity(button)
-            .insert(ShipyardRowChoice { slot, details });
+            .insert(ShipyardRowChoice { slot, details })
+            .observe(on_shipyard_row_selected);
         commands.entity(row).insert(visibility);
         for control in [minus, plus] {
             if visibility == Visibility::Visible {
