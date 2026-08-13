@@ -40,9 +40,10 @@ semantics.
 - `GameState` map and ocean are crate-private. Inspect with `map()` / `ocean()`; change the viewport
   through named methods such as `scroll_map_viewport` and `center_map_on`.
 - Core owns the turn sequence: `finish_player_orders`, interrupt answers including
-  `close_turn_deal_book`, and `advance_turn`. Those methods take `news_story_ids` so newspaper
-  pages exist before `TurnStop::Newspaper`. `AppState` is screen routing; `apply_turn_stop`
-  only maps a stop to a screen. Do not chain phases in the app.
+  `close_turn_deal_book`, and `advance_turn`. Newspaper pages are built from `news.tab`
+  ids installed once on `GameState` when a live session is created or loaded.
+  `AppState` is screen routing; `apply_turn_stop` only maps a stop to a screen.
+  Do not chain phases in the app.
 - Core owns deterministic sequencing and mutation. The app owns presentation decisions and projects
   core state into Bevy; ECS is not the gameplay database.
 - Keep one authoritative representation for each fact and derive secondary facts. Prefer semantic

@@ -49,6 +49,7 @@ pub fn run(
     initial_game: Option<GameState>,
     save_directory: PathBuf,
 ) -> anyhow::Result<()> {
+    let news_story_ids = retail_assets.news_table().story_ids().to_vec();
     let random_game_names = retail_assets.random_game_names()?;
     let logical_resolution = ui::generated::LOGICAL_RESOLUTION;
     let mut app = App::new();
@@ -67,12 +68,13 @@ pub fn run(
     app.insert_resource(RetailAssetsResource::new(retail_assets))
         .insert_resource(RandomGameNamesResource(random_game_names))
         .insert_resource(ui::SaveDirectory(save_directory));
-    if let Some(game) = initial_game {
+    if let Some(mut game) = initial_game {
         assert_eq!(
             game.turn().phase(),
             imperialism_core::PhaseCode::STRATEGIC_MAP,
             "Bevy may only start from a strategic-map core phase"
         );
+        game.set_news_story_ids(&news_story_ids);
         app.insert_resource(ui::GameSession(game))
             .insert_state(AppState::StrategicMap);
     } else {

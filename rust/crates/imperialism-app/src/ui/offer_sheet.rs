@@ -4,7 +4,7 @@ use super::generated;
 use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, get_string};
 use super::retail::{ModalDialog, RetailTag, RetailUiAssets, find_descendant};
 use super::session::{GameSession, apply_turn_stop};
-use crate::{AppState, RetailAssetsResource};
+use crate::AppState;
 use bevy::input_focus::AutoFocus;
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
@@ -299,7 +299,6 @@ fn on_offer_sheet_activate(
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
     assets: RetailUiAssets,
-    retail: Res<RetailAssetsResource>,
 ) {
     if !notices.is_empty() {
         return;
@@ -329,11 +328,7 @@ fn on_offer_sheet_activate(
             amount
         }
     };
-    match session.0.answer_trade_offer(
-        amount,
-        stop_buying,
-        retail.assets().news_table().story_ids(),
-    ) {
+    match session.0.answer_trade_offer(amount, stop_buying) {
         TurnStop::TradeOffer(_) => {}
         stop => apply_turn_stop(stop, &mut next_state),
     }

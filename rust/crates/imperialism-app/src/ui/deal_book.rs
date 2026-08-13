@@ -6,7 +6,6 @@ use super::generated;
 use super::retail::{RetailTag, find_descendant};
 use super::session::apply_turn_stop;
 use crate::AppState;
-use crate::RetailAssetsResource;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
@@ -299,15 +298,12 @@ fn on_deal_book_close(
     return_state: Option<Res<DealBookReturn>>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    retail: Res<RetailAssetsResource>,
 ) {
     if let Some(return_state) = return_state.as_deref() {
         next_state.set(return_state.0);
         return;
     }
-    let stop = session
-        .0
-        .close_turn_deal_book(retail.assets().news_table().story_ids());
+    let stop = session.0.close_turn_deal_book();
     apply_turn_stop(stop, &mut next_state);
 }
 

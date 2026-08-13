@@ -214,6 +214,10 @@ pub struct RetailUiAssets<'w> {
 }
 
 impl RetailUiAssets<'_> {
+    pub fn assets(&self) -> &RetailAssets {
+        self.retail_assets.assets()
+    }
+
     pub fn default_dib_palette(&self) -> &DibPalette {
         self.retail_assets.assets().default_dib_palette()
     }

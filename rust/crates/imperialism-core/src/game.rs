@@ -144,6 +144,12 @@ impl GameState {
         &self.news
     }
 
+    /// Installs the `news.tab` template ids used when the turn driver builds
+    /// newspaper pages. Call once when creating or loading a live session.
+    pub fn set_news_story_ids(&mut self, story_ids: &[i32]) {
+        self.news.story_ids = story_ids.to_vec();
+    }
+
     pub const fn pending(&self) -> &PendingWorkState {
         &self.pending
     }
