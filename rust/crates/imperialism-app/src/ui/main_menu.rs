@@ -70,6 +70,7 @@ fn bind_main_menu_hover_help(
     root: Single<Entity, Added<MainMenuRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
+    mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
 ) {
     let bar = find_descendant(*root, fourcc!("curs"), &children, &tags);
@@ -77,6 +78,9 @@ fn bind_main_menu_hover_help(
         &mut commands,
         &mut assets,
         bar,
+        &mut nodes
+            .get_mut(bar)
+            .expect("main-menu hover-help bar has Node"),
         HoverHelpBarStyle::MAIN_MENU,
     );
     bind_hover_help_texts(

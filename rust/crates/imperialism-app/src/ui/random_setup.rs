@@ -162,12 +162,20 @@ fn bind_random_setup(
     root: Single<Entity, Added<RandomSetupRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
+    mut nodes: Query<&mut Node>,
     setup: Res<RandomGameSetup>,
     mut assets: RetailUiAssets,
 ) {
     bind_random_setup_controls(&mut commands, *root, &children, &tags, &setup);
     random_setup_map::attach_random_setup_meanings(&mut commands, *root, &children, &tags);
-    bind_random_setup_hover_help(&mut commands, *root, &children, &tags, &mut assets);
+    bind_random_setup_hover_help(
+        &mut commands,
+        *root,
+        &children,
+        &tags,
+        &mut nodes,
+        &mut assets,
+    );
 }
 
 /// Attach screen meanings only; Bevy widget semantics come from generated components.
@@ -243,10 +251,19 @@ fn bind_random_setup_hover_help(
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
+    nodes: &mut Query<&mut Node>,
     assets: &mut RetailUiAssets,
 ) {
     let bar = find_descendant(root, fourcc!("hot!"), children, tags);
-    bind_hover_help_bar(commands, assets, bar, HoverHelpBarStyle::RANDOM_SETUP);
+    bind_hover_help_bar(
+        commands,
+        assets,
+        bar,
+        &mut nodes
+            .get_mut(bar)
+            .expect("random-setup hover-help bar has Node"),
+        HoverHelpBarStyle::RANDOM_SETUP,
+    );
     let cancel = ui_string(assets, 0x2737, 0x14);
     bind_hover_help_texts(
         commands,

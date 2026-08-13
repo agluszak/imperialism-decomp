@@ -52,6 +52,7 @@ pub(crate) fn bind_hover_help_bar(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     bar: Entity,
+    node: &mut Node,
     style: HoverHelpBarStyle,
 ) {
     let (font, layout, _) = assets
@@ -76,13 +77,9 @@ pub(crate) fn bind_hover_help_bar(
             color: shadow_color,
         },
     ));
-    commands.entity(bar).queue(|mut entity: EntityWorldMut| {
-        if let Some(mut node) = entity.get_mut::<Node>() {
-            node.flex_direction = FlexDirection::Column;
-            node.justify_content = JustifyContent::Center;
-            node.overflow = Overflow::clip();
-        }
-    });
+    node.flex_direction = FlexDirection::Column;
+    node.justify_content = JustifyContent::Center;
+    node.overflow = Overflow::clip();
 }
 
 pub(crate) fn bind_hover_help_texts(
