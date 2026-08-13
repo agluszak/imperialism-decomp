@@ -14,7 +14,9 @@ Run Rust work from `rust/` and generator work from `../decomp/`.
 3. Run the decomp UI generator check and regenerate the checked-in native Rust source through its
    explicit sibling output path.
 4. Emit code-defined BSN containing native Bevy components and `Children` in `imperialism-app`.
-   Reuse the small handwritten retail scene functions/templates for geometry, pictures, and fonts;
+   Retail `TTEView` becomes `ScrollArea` with `Overflow::scroll()`, the same way radio controls
+   become `RadioButton`. Reuse the small handwritten retail scene functions/templates for
+   geometry, pictures, and fonts;
    do not generate commands, asset-cache access, resource-node locals, or a generic scene component.
    Spawn the concrete generated function with `Commands::spawn_scene`; invoke one direct typed core
    operation rather than mutating

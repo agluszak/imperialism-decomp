@@ -357,5 +357,23 @@ class UiCodegenTests(unittest.TestCase):
             self.assertEqual(case_count, 82)
             self.assertGreater(node_count, 1700)
 
+    def test_tte_view_emits_bevy_scroll_area(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        self.assertIn(
+            "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup, ScrollArea};",
+            rendered,
+        )
+        self.assertIn(
+            """\
+                                retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }""",
+            rendered,
+        )
+
 if __name__ == "__main__":
     unittest.main()

@@ -4,8 +4,8 @@
 use super::city::{CityBuildingActionVisual, CityBuildingVisual};
 use super::retail::*;
 use bevy::prelude::*;
-use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup};
+use bevy::ui::{Checked, InteractionDisabled, Overflow, RelativeCursorPosition};
+use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup, ScrollArea};
 use imperialism_core::CityFacilitySlot;
 use imperialism_formats::{PictureId, fourcc};
 
@@ -2615,6 +2615,10 @@ pub fn citymain_2011() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                         ]
                     ),
@@ -2649,6 +2653,10 @@ pub fn diplo_1351() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("curs"), 434, 7, 201, 21)
+                                        ScrollArea
+                                        Node {
+                                            overflow: Overflow::scroll(),
+                                        }
                                     ),
                                     (
                                         retail_node(fourcc!("prev"), 294, 381, 22, 22)
@@ -3087,6 +3095,10 @@ pub fn diplo_2008() -> impl Scene {
                                         Children [
                                             (
                                                 retail_node(fourcc!("prop"), 113, 12, 291, 92)
+                                                ScrollArea
+                                                Node {
+                                                    overflow: Overflow::scroll(),
+                                                }
                                             ),
                                             (
                                                 retail_node(fourcc!("reje"), 12, 26, 75, 70)
@@ -3106,6 +3118,10 @@ pub fn diplo_2008() -> impl Scene {
                                         Children [
                                             (
                                                 retail_node(fourcc!("text"), 113, 12, 291, 92)
+                                                ScrollArea
+                                                Node {
+                                                    overflow: Overflow::scroll(),
+                                                }
                                             ),
                                         ]
                                     ),
@@ -3237,6 +3253,10 @@ pub fn diplo_2008() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 396, 5, 201, 30)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("tool"), 3, 6, 218, 29)
@@ -3396,6 +3416,10 @@ pub fn diplo_2016() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 396, 5, 201, 30)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("sco1"), 455, 402, 54, 39)
@@ -3698,6 +3722,10 @@ pub fn flagview_8500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 273, 7, 318, 25)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 608, 39, 30, 40)
@@ -3831,6 +3859,10 @@ pub fn flagview_8800() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("curs"), 245, 7, 365, 21)
+                        ScrollArea
+                        Node {
+                            overflow: Overflow::scroll(),
+                        }
                     ),
                 ]
             ),
@@ -4039,6 +4071,10 @@ pub fn linger_1502() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 49, 19, 201, 30)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                         ]
                     ),
@@ -4107,6 +4143,10 @@ pub fn linger_2020() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("info"), 17, 160, 354, 84)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                         ]
                     ),
@@ -4221,6 +4261,10 @@ pub fn linger_3005() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("info"), 9, 91, 373, 57)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("titl"), 85, 11, 219, 45)
@@ -4574,18 +4618,38 @@ pub fn linger_4150() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("txtb"), 197, 193, 96, 47)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("txta"), 57, 193, 96, 47)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("txtc"), 57, 396, 96, 47)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("txtd"), 197, 396, 96, 47)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("txte"), 423, 322, 96, 47)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("opca"), 370, 429, 195, 20)
@@ -4610,6 +4674,10 @@ pub fn linger_4150() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tpca"), 370, 380, 195, 47)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                                 InteractionDisabled
                             ),
                             (
@@ -4625,6 +4693,10 @@ pub fn linger_4150() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                         ]
                     ),
@@ -4648,9 +4720,17 @@ pub fn linger_4175() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("cred"), 36, 19, 257, 428)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("cre2"), 326, 19, 290, 428)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                         ]
                     ),
@@ -4685,6 +4765,10 @@ pub fn linger_4300() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("tab0"), 13, 134, 60, 56)
@@ -5321,6 +5405,10 @@ pub fn mapview_2013() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 240, 5, 275, 21)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("send"), 220, 10, 19, 11)
@@ -5366,6 +5454,10 @@ pub fn mapview_3012() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("info"), 7, 44, 287, 91)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("ttl1"), 10, 173, 131, 17)
@@ -6720,6 +6812,10 @@ pub fn minister_9480() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("info"), 17, 160, 354, 84)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                         ]
                     ),
@@ -6976,6 +7072,10 @@ pub fn multiplayer_1508() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("labl"), 33, 26, 234, 18)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                         ]
                     ),
@@ -7467,6 +7567,10 @@ pub fn startup_952() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 240, 5, 275, 21)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                         ]
                     ),
@@ -7646,6 +7750,10 @@ pub fn startup_1500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 180, 424, 274, 52)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("quit"), 221, 102, 195, 195)
@@ -7703,6 +7811,10 @@ pub fn startup_1501() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("hot!"), 36, 22, 238, 27)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("stuf"), 288, 4, 345, 466)
@@ -7919,10 +8031,18 @@ pub fn startup_1503() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("cdes"), 309, 230, 310, 185)
+                                        ScrollArea
+                                        Node {
+                                            overflow: Overflow::scroll(),
+                                        }
                                         InteractionDisabled
                                     ),
                                     (
                                         retail_node(fourcc!("sdes"), 48, 230, 228, 222)
+                                        ScrollArea
+                                        Node {
+                                            overflow: Overflow::scroll(),
+                                        }
                                         InteractionDisabled
                                     ),
                                     (
@@ -7942,6 +8062,10 @@ pub fn startup_1503() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("curs"), 50, 17, 214, 30)
+                                        ScrollArea
+                                        Node {
+                                            overflow: Overflow::scroll(),
+                                        }
                                     ),
                                     (
                                         retail_node(fourcc!("more"), 40, 176, 242, 20)
@@ -8116,6 +8240,10 @@ pub fn startup_1506() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("labl"), 21, 67, 200, 21)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                         ]
                     ),
@@ -8199,6 +8327,10 @@ pub fn startup_1509() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 34, 18, 233, 33)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("name"), 245, 381, 165, 19)
@@ -8436,6 +8568,10 @@ pub fn startup_20000() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("sale"), 7, 6, 398, 379)
+                                        ScrollArea
+                                        Node {
+                                            overflow: Overflow::scroll(),
+                                        }
                                     ),
                                     (
                                         retail_node(fourcc!("show"), 74, 400, 97, 37)
@@ -8449,6 +8585,10 @@ pub fn startup_20000() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("requ"), 412, 255, 210, 130)
+                                        ScrollArea
+                                        Node {
+                                            overflow: Overflow::scroll(),
+                                        }
                                     ),
                                     (
                                         retail_node(fourcc!("tsho"), 51, 446, 138, 23)
@@ -8462,6 +8602,10 @@ pub fn startup_20000() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("titl"), 132, 6, 375, 37)
+                                        ScrollArea
+                                        Node {
+                                            overflow: Overflow::scroll(),
+                                        }
                                         InteractionDisabled
                                     ),
                                 ]
@@ -8496,6 +8640,10 @@ pub fn tactical_3800() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("curs"), 221, 4, 360, 20)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("DLOG"), 5, 25, 575, 450)
@@ -8570,6 +8718,10 @@ pub fn tactical_3821() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("info"), 13, 201, 210, 112)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("titl"), 7, 163, 221, 19)
@@ -8612,6 +8764,10 @@ pub fn tactical_3865() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("info"), 12, 197, 417, 59)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("titl"), 7, 163, 221, 19)
@@ -8688,6 +8844,10 @@ pub fn tech_2200() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 247, 7, 341, 17)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("patc"), 584, 35, 52, 72)
@@ -8809,6 +8969,10 @@ pub fn techstore_2300() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                         ]
                     ),
@@ -9919,6 +10083,10 @@ pub fn trade_2009() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("timb"), 5, 231, 42, 24)
@@ -11050,6 +11218,10 @@ pub fn trade_2010() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                        ScrollArea
+                        Node {
+                            overflow: Overflow::scroll(),
+                        }
                     ),
                 ]
             ),
@@ -11433,6 +11605,10 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 401, 4, 219, 30)
+                                ScrollArea
+                                Node {
+                                    overflow: Overflow::scroll(),
+                                }
                             ),
                         ]
                     ),

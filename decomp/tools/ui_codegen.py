@@ -1333,8 +1333,9 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
 
     The generator is the one place where recovered type/class evidence decides
     whether a static-text-looking control is a radio, a picture is an activate
-    button, or a canvas takes pointer input. The generated BSN carries the
-    resulting native Bevy component, not those C++ class details.
+    button, a `TTEView` is a `ScrollArea`, or a canvas takes pointer input. The
+    generated BSN carries the resulting native Bevy component, not those C++
+    class details.
     """
 
     class_name = node.class_name.casefold()
@@ -1602,12 +1603,9 @@ def report_unsupported_ui_roles(
         unsupported: list[str] = []
         for node in semantic_view.nodes:
             kind = _rust_widget_kind(node)
-            behavior = _rust_widget_behavior(key, node)
             notes: list[str] = []
             if kind == "specialized":
                 notes.append(f"kind={kind}")
-            if behavior in ("scroll_area",):
-                notes.append(f"behavior={behavior}")
             if notes:
                 unsupported.append(
                     f"  {node.tag!r} ({node.class_name}): " + ", ".join(notes)
@@ -1684,6 +1682,12 @@ def _render_bsn_node(
             "radio_group": ["    RadioGroup"],
             "radio_button": ["    RadioButton"],
             "pointer_canvas": ["    RelativeCursorPosition"],
+            "scroll_area": [
+                "    ScrollArea",
+                "    Node {",
+                "        overflow: Overflow::scroll(),",
+                "    }",
+            ],
         }.get(str(behavior), [])
     )
     if bool(node.state) and behavior in ("checkbox", "toggle", "radio_button"):
@@ -1765,8 +1769,8 @@ def render_rust_ui(
         "use super::city::{CityBuildingActionVisual, CityBuildingVisual};",
         "use super::retail::*;",
         "use bevy::prelude::*;",
-        "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};",
-        "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup};",
+        "use bevy::ui::{Checked, InteractionDisabled, Overflow, RelativeCursorPosition};",
+        "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup, ScrollArea};",
         "use imperialism_core::CityFacilitySlot;",
         "use imperialism_formats::{PictureId, fourcc};",
         "",
