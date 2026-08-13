@@ -160,6 +160,17 @@ impl MilitaryUnitKind {
     pub(crate) fn arms_required(self) -> i32 {
         ARMS_BY_MILITARY_UNIT[self]
     }
+
+    pub(crate) fn is_militia_category(self) -> bool {
+        matches!(self, Self::Minutemen | Self::Militia | Self::Conscripts)
+    }
+
+    pub(crate) fn arms_carried(self) -> i32 {
+        match self {
+            Self::GeneralEra1 | Self::GeneralEra2 | Self::GeneralEra3 => 1,
+            other => other.arms_required(),
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]

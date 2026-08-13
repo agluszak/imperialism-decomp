@@ -311,6 +311,10 @@ impl ShipId {
     pub const fn new(value: u32) -> Self {
         Self(value)
     }
+
+    pub const fn get(self) -> u32 {
+        self.0
+    }
 }
 
 /// Snapshot-local position in the authoritative task-force queue order.

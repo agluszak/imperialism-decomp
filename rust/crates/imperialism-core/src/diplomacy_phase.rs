@@ -835,6 +835,7 @@ impl GameState {
             self.set_boycott_policies_to_match(subject, master);
             self.set_relationships_to_match(subject, master);
             self.kill_enemy_civilians(subject);
+            self.deport_civilians(subject);
             if let Some(major) = MajorNationId::from_nation(master) {
                 let pending = &mut self.nations.majors[major].economy.pending_actions
                     [PendingActionKind::ColonyMonumentMerchantCapacity];
@@ -933,6 +934,102 @@ impl GameState {
             };
             !enemies[usize::from(owner.get())]
         });
+    }
+
+    fn deport_civilians(&mut self, nation: NationId) {
+        self.kill_boycotted_foreign_companies(nation);
+        let owner = self.owner_slot(nation);
+        let Some(common) = self.nations.common(nation) else {
+            return;
+        };
+        let tiles: Vec<_> = common
+            .owned_regions()
+            .iter()
+            .flat_map(|&province| self.map.provinces[province].linked_tiles.iter().copied())
+            .collect();
+        let targets: [bool; MAJOR_NATION_COUNT] = std::array::from_fn(|index| {
+            let other = MajorNationId::new(index as u8).nation();
+            other != owner && self.nation_is_present(other) && self.need_level_300(nation, other)
+        });
+        let mut index = 0;
+        while index < self.civilian_units.len() {
+            let unit = &self.civilian_units[index];
+            let Some(tile) = unit.location.tile() else {
+                index += 1;
+                continue;
+            };
+            if !tiles.contains(&tile) {
+                index += 1;
+                continue;
+            }
+            let Some(owner) = MajorNationId::from_nation(unit.owner_nation) else {
+                index += 1;
+                continue;
+            };
+            if !targets[usize::from(owner.get())] {
+                index += 1;
+                continue;
+            }
+            let Some(home) = self.nations.majors[owner].common.home_tile else {
+                self.civilian_units.remove(index);
+                continue;
+            };
+            if let Some(destination) =
+                self.map
+                    .find_reachable_recruit_spawn_tile(&self.civilian_units, home, false)
+            {
+                self.civilian_units[index].location = CivilianLocation::OnMap(destination);
+                index += 1;
+            } else {
+                self.civilian_units.remove(index);
+            }
+        }
+    }
+
+    fn kill_boycotted_foreign_companies(&mut self, nation: NationId) {
+        let Some(common) = self.nations.common(nation) else {
+            return;
+        };
+        let boycott: [bool; MAJOR_NATION_COUNT] = std::array::from_fn(|index| {
+            common.trade_policy_by_nation[MajorNationId::new(index as u8).nation()]
+                == TradePolicyScore::BOYCOTT
+        });
+        let tiles: Vec<_> = common
+            .owned_regions()
+            .iter()
+            .flat_map(|&province| self.map.provinces[province].linked_tiles.iter().copied())
+            .collect();
+        let mut notify = [false; MAJOR_NATION_COUNT];
+        for tile in tiles {
+            let Some(owner) = self.map[tile].secondary_owner_nation else {
+                continue;
+            };
+            let index = usize::from(owner.get());
+            if boycott[index] {
+                notify[index] = true;
+                self.map[tile].secondary_owner_nation = None;
+            }
+        }
+        for (index, flagged) in notify.into_iter().enumerate() {
+            if !flagged {
+                continue;
+            }
+            let major = MajorNationId::new(index as u8);
+            self.add_diplomacy_notice(major, nation, 0x137);
+            self.add_treaty_event(
+                InterNationNewsKind::MinorTerritoryRelationshipAffected,
+                major.nation(),
+                nation,
+            );
+        }
+    }
+
+    fn need_level_300(&self, source: NationId, target: NationId) -> bool {
+        self.nations.common(source).is_some_and(|common| {
+            common.trade_policy_by_nation[target] == TradePolicyScore::BOYCOTT
+        }) || self.nations.common(target).is_some_and(|common| {
+            common.trade_policy_by_nation[source] == TradePolicyScore::BOYCOTT
+        })
     }
 
     fn queue_war(&mut self, source: NationId, target: NationId, annex: Option<NationId>) {
@@ -1490,6 +1587,9 @@ impl GameState {
         let Some(target_major) = MajorNationId::from_nation(target) else {
             return false;
         };
+        if self.is_capitol_threatened(target_major) {
+            return false;
+        }
         if self.accept_peace_number(nation) < self.peace_threat(nation, target_major) {
             self.peace_allies_fighting(nation.nation(), target);
             self.add_treaty_event(
@@ -2110,10 +2210,46 @@ impl GameState {
                 .filter(|&other| other != nation.nation() && !self.at_war(other, nation.nation()))
                 .collect();
             for other in others {
-                self.nations.majors[nation].economy.candidate_nation_flags[other] = 0;
+                self.stop_being_enemies_with(nation, other);
             }
         }
         self.nations.majors[nation].economy.candidate_nation_flags[target] = 1;
+        if self
+            .nations
+            .common(target)
+            .is_none_or(|common| common.owned_regions().is_empty())
+        {
+            return;
+        }
+        if matches!(self.status_of(target), CountryStatus::ProtectorateOf(_)) {
+            return;
+        }
+        self.set_ai_zone_target(nation, target, AiTargetState::Candidate);
+    }
+
+    fn stop_being_enemies_with(&mut self, nation: MajorNationId, target: NationId) {
+        self.nations.majors[nation].economy.candidate_nation_flags[target] = 0;
+        if self
+            .nations
+            .common(target)
+            .is_none_or(|common| common.owned_regions().is_empty())
+        {
+            return;
+        }
+        self.set_ai_zone_target(nation, target, AiTargetState::Unmarked);
+    }
+
+    fn set_ai_zone_target(&mut self, nation: MajorNationId, target: NationId, flag: AiTargetState) {
+        let Some(zone) = self.first_port_zone_for_nation(target) else {
+            return;
+        };
+        let Some(targets) = self.nations.majors[nation].economy.ai_zone_targets.as_mut() else {
+            return;
+        };
+        let index = usize::from(zone.get());
+        if let Some(entry) = targets.get_mut(index) {
+            *entry = flag;
+        }
     }
 
     fn set_colony_boycott(&mut self, nation: MajorNationId, target: NationId, enabled: bool) {
@@ -2573,6 +2709,14 @@ mod tests {
                 .status(),
             PendingActionStatus::Queued
         );
+        assert_eq!(
+            state
+                .nations
+                .majors()
+                .filter(|major| major.common.status() == CountryStatus::Independent)
+                .count(),
+            6
+        );
     }
 
     #[test]
@@ -2644,6 +2788,202 @@ mod tests {
         assert_eq!(
             state.diplomacy.relationships[nation(1)][nation(7)],
             DiplomaticRelationship::NonAggressionPact
+        );
+    }
+
+    fn empty_zone(neighbors: Vec<OceanZoneId>) -> Zone {
+        Zone {
+            display_name: String::new(),
+            status_code: None,
+            target_tile: None,
+            seed_owner: None,
+            active_tile: None,
+            primary_neighbors: neighbors,
+            secondary_neighbors: Vec::new(),
+        }
+    }
+
+    fn province(owner: NationId, adjacency: &[u16], linked: &[u16]) -> ProvinceState {
+        ProvinceState::new(
+            Some(owner),
+            Some(owner),
+            0,
+            adjacency.iter().copied().map(ProvinceId::new).collect(),
+            vec![TileId::new(0); adjacency.len()],
+            None,
+            0,
+            None,
+            0,
+            None,
+            None,
+            linked.iter().copied().map(TileId::new).collect(),
+            ResourceTable::default(),
+            MajorNationTable::default(),
+            0,
+            false,
+            0,
+            String::new(),
+        )
+    }
+
+    #[test]
+    fn colony_annex_clears_boycotted_companies_and_deports_civilians() {
+        let mut state = game_state();
+        let source = major(0);
+        let target = nation(7);
+        let mut minor = independent_minor(7);
+        minor.add_province(ProvinceId::new(0));
+        state.nations.minors[MinorNationId::new(7)] = Some(minor);
+        state.map.provinces[ProvinceId::new(0)] = province(target, &[], &[20]);
+        state.map[TileId::new(20)].secondary_owner_nation = Some(major(1));
+        state.nations.majors[source].economy.colony_boycott_flags[nation(1)] = 1;
+        state.civilian_units.push(
+            CivilianUnitState::new(
+                CivilianUnitId::new(1),
+                nation(1),
+                CivilianUnitKind::Miner,
+                CivilianLocation::OnMap(TileId::new(20)),
+                CivilianWorkOrder::Idle,
+                nation(1),
+                0,
+                false,
+            )
+            .unwrap(),
+        );
+        state.diplomacy.standings[target][source.nation()] = 0xff;
+        state.diplomacy.standings[source.nation()][target] = 0xff;
+        state.nations.majors[source]
+            .economy
+            .diplomacy_policy_by_nation[target] = Some(DiplomacyPolicy::JoinEmpire);
+
+        assert_eq!(state.do_diplomacy(), DiplomacyPhaseResult::Resolved);
+
+        assert_eq!(state.map[TileId::new(20)].secondary_owner_nation, None);
+        assert_eq!(state.civilian_units.len(), 1);
+        assert_eq!(
+            state.civilian_units[0].location.tile(),
+            state.nations.majors[major(1)].common.home_tile
+        );
+        assert!(
+            state.pending.nations[major(1)]
+                .turn_events
+                .iter()
+                .any(|notice| notice.source == target && notice.code == 0x137),
+            "{:?}",
+            state.pending.nations[major(1)].turn_events
+        );
+        assert!(
+            state.pending.newspaper_events.iter().any(|event| matches!(
+                event,
+                PendingNewspaperEvent::InterNation {
+                    event: InterNationNewsKind::MinorTerritoryRelationshipAffected,
+                    subject,
+                    ..
+                } if *subject == major(1)
+            )),
+            "{:?}",
+            state.pending.newspaper_events
+        );
+    }
+
+    #[test]
+    fn declaring_war_marks_the_target_first_port_zone_as_a_candidate() {
+        let mut state = game_state();
+        state.nations.majors[major(1)] = computer_major();
+        state.nations.majors[major(1)].economy.ai_zone_targets =
+            Some(vec![AiTargetState::Unmarked; 2]);
+        let mut minor = independent_minor(7);
+        minor.add_province(ProvinceId::new(0));
+        state.nations.minors[MinorNationId::new(7)] = Some(minor);
+        state.map[TileId::new(30)].former_owner_nation = Some(TileOwnerTag::from_nation(nation(7)));
+        state.ocean.zones = vec![
+            ZoneKind::Zone(empty_zone(Vec::new())),
+            ZoneKind::PortZone(PortZone {
+                zone: empty_zone(vec![OceanZoneId::new(0)]),
+                port_tile: TileId::new(30),
+            }),
+        ];
+        state.nations.majors[major(1)]
+            .economy
+            .diplomacy_policy_by_nation[nation(7)] = Some(DiplomacyPolicy::DeclareWar);
+
+        assert_eq!(state.do_diplomacy(), DiplomacyPhaseResult::Resolved);
+        assert_eq!(
+            state.nations.majors[major(1)]
+                .economy
+                .ai_zone_targets
+                .as_ref(),
+            Some(&vec![AiTargetState::Unmarked, AiTargetState::Candidate])
+        );
+        assert_eq!(
+            state.nations.majors[major(1)]
+                .economy
+                .candidate_nation_flags[nation(7)],
+            1
+        );
+    }
+
+    fn peace_offer_from_human_to_ai() -> GameState {
+        let mut state = game_state();
+        state.nations.majors[major(1)] = computer_major();
+        state.diplomacy.relationships[nation(0)][nation(1)] = DiplomaticRelationship::War;
+        state.diplomacy.relationships[nation(1)][nation(0)] = DiplomaticRelationship::War;
+        state.ships.extend((0..10).map(|_| ShipState {
+            ship_type: ShipType::Frigate,
+            location: OceanZoneId::new(0),
+            task_force: None,
+            aggression: 0,
+            nation: nation(1),
+            name: String::new(),
+            strength: 900,
+            experience: 0,
+            selection: 0,
+        }));
+        state.nations.majors[major(0)]
+            .economy
+            .diplomacy_policy_by_nation[nation(1)] = Some(DiplomacyPolicy::PeaceTreaty);
+        state
+    }
+
+    #[test]
+    fn ai_accepts_peace_when_the_enemy_capitol_is_safe() {
+        let mut state = peace_offer_from_human_to_ai();
+        assert_eq!(state.do_diplomacy(), DiplomacyPhaseResult::Resolved);
+        assert_eq!(
+            state.diplomacy.relationships[nation(1)][nation(0)],
+            DiplomaticRelationship::Peace
+        );
+    }
+
+    #[test]
+    fn ai_rejects_peace_when_the_enemy_capitol_is_threatened() {
+        let mut state = peace_offer_from_human_to_ai();
+        state.nations.majors[major(0)].common.home_tile = Some(TileId::new(1));
+        state.map[TileId::new(1)].province = Some(ProvinceId::new(0));
+        state.map.provinces[ProvinceId::new(0)] = province(nation(0), &[1], &[]);
+        state.map.provinces[ProvinceId::new(1)] = province(nation(2), &[0], &[]);
+        state.diplomacy.relationships[nation(0)][nation(2)] = DiplomaticRelationship::War;
+        state.diplomacy.relationships[nation(2)][nation(0)] = DiplomaticRelationship::War;
+        state.military_units.push(MilitaryUnitState::new(
+            MilitaryUnitId::new(1),
+            nation(2),
+            MilitaryUnitKind::Regulars,
+            Some(ProvinceId::new(1)),
+            MilitaryOrder::idle([None; 3], [None; 3]),
+            nation(2),
+            0,
+            false,
+            String::new(),
+            500,
+            0,
+            0,
+            0,
+        ));
+
+        assert_eq!(state.do_diplomacy(), DiplomacyPhaseResult::Resolved);
+        assert_eq!(
+            state.diplomacy.relationships[nation(1)][nation(0)],
+            DiplomaticRelationship::War
         );
     }
 }

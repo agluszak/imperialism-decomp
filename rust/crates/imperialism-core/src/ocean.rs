@@ -43,3 +43,24 @@ pub struct OceanRoute {
     pub end_column: i32,
     pub end_row: i32,
 }
+
+impl GameState {
+    /// Newest-first `TOcean::FindFirstPortZoneContextByNation`.
+    pub(crate) fn first_port_zone_for_nation(&self, nation: NationId) -> Option<OceanZoneId> {
+        self.ocean
+            .zones
+            .iter()
+            .enumerate()
+            .rev()
+            .find_map(|(index, kind)| {
+                let ZoneKind::PortZone(port) = kind else {
+                    return None;
+                };
+                (self.map[port.port_tile]
+                    .former_owner_nation
+                    .and_then(TileOwnerTag::nation)
+                    == Some(nation))
+                .then(|| OceanZoneId::new(index as u16))
+            })
+    }
+}

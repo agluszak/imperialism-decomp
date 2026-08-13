@@ -105,7 +105,11 @@ impl LegacySaveV62 {
             mode: 0,
             previous_turn_state_code: 0,
             previous_mode: 0,
-            nation_count: NATION_COUNT as i32,
+            nation_count: state
+                .nations()
+                .majors()
+                .filter(|major| matches!(major.common.status(), CountryStatus::Independent))
+                .count() as i32,
             minor_nation_count: MINOR_NATION_COUNT as i32,
             turn_flow_status_flags: turn.turn_flow_status_flags,
             difficulty: turn.difficulty as u8,
