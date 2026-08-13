@@ -1,6 +1,7 @@
 use crate::{
-    Difficulty, DiplomacyOfferPrompt, DiplomacyPhaseResult, DiplomacyWarJoinPrompt, GameState,
-    MajorNationId, NationId, PendingTradeOffer, TechnologyId, TradeProgress,
+    Difficulty, DiplomacyOfferPrompt, DiplomacyPhaseResult, DiplomacyWarJoinPrompt,
+    EliminationOutcome, GameState, MajorNationId, NationId, PendingTradeOffer, QuarterGateResult,
+    TechnologyId, TradeProgress,
 };
 use serde::{Deserialize, Serialize};
 
@@ -283,9 +284,31 @@ impl GameState {
                     self.do_city_and_transport();
                     self.turn.phase = PhaseCode::GREAT_POWER_PRESSURE;
                 }
+                PhaseCode::GREAT_POWER_PRESSURE => {
+                    if self.do_great_power_pressure_phase() {
+                        return TurnStop::Unimplemented(PhaseCode::GREAT_POWER_PRESSURE);
+                    }
+                    self.turn.phase = PhaseCode::DEAL_BOOK;
+                }
+                PhaseCode::DIPLOMACY_OFFER => {
+                    if self.diplomacy_offer_gate() {
+                        return TurnStop::Unimplemented(PhaseCode::DIPLOMACY_OFFER);
+                    }
+                    self.turn.phase = PhaseCode::ELIMINATION;
+                }
+                PhaseCode::ELIMINATION => match self.do_elimination_phase() {
+                    EliminationOutcome::Continue => {
+                        self.turn.phase = PhaseCode::CITY_AND_TRANSPORT;
+                    }
+                    _ => return TurnStop::Unimplemented(PhaseCode::ELIMINATION),
+                },
+                PhaseCode::QUARTER_GATE => {
+                    if self.quarter_gate() == QuarterGateResult::DecadeCinematic {
+                        return TurnStop::Unimplemented(PhaseCode::QUARTER_GATE);
+                    }
+                }
                 PhaseCode::SEASON_ADVANCE => {
-                    self.turn.advance_season();
-                    self.turn.phase = PhaseCode::TECHNOLOGY_ADVANCES;
+                    self.advance_season_phase();
                 }
                 PhaseCode::TECHNOLOGY_ADVANCES => {
                     if let Some(stop) = self.run_technology_advances() {
@@ -294,6 +317,9 @@ impl GameState {
                     self.turn.phase = PhaseCode::NEWSPAPER;
                 }
                 PhaseCode::NEWSPAPER => return TurnStop::Newspaper,
+                PhaseCode::RETURN_TO_MAP => {
+                    self.return_to_map();
+                }
                 phase => return TurnStop::Unimplemented(phase),
             }
         }
