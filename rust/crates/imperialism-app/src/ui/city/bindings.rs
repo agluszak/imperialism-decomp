@@ -381,8 +381,12 @@ pub(in crate::ui::city) fn city_string(
     zero_based_index: i16,
 ) -> String {
     assets
-        .string(group, zero_based_index + 1)
+        .string(group, city_string_index(zero_based_index))
         .expect("retail English City string")
+}
+
+pub(in crate::ui::city) const fn city_string_index(zero_based_index: i16) -> i16 {
+    zero_based_index + 1
 }
 
 pub(in crate::ui::city) fn format_retail_value(template: &str, value: &str) -> String {

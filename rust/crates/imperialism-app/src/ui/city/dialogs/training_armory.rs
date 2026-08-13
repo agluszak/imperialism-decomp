@@ -59,6 +59,25 @@ const ARMORY_STATIC: [bool; 30] = [
     false, false,
 ];
 
+const ARMORY_TITLE_TEXT_STYLE: RetailTextStylePreset = RetailTextStylePreset {
+    font_family: 1,
+    face_flags: 0,
+    point_size: 24,
+    alignment: 1,
+};
+const ARMORY_UNIT_TEXT_STYLE: RetailTextStylePreset = RetailTextStylePreset {
+    font_family: 1,
+    face_flags: 0,
+    point_size: 12,
+    alignment: 1,
+};
+const ARMORY_DETAIL_TEXT_STYLE: RetailTextStylePreset = RetailTextStylePreset {
+    font_family: 3,
+    face_flags: 0,
+    point_size: 10,
+    alignment: 0,
+};
+
 const fn armory_picture_variant(unit: MilitaryUnitKind) -> i16 {
     match unit {
         MilitaryUnitKind::Sappers => 8,
@@ -155,29 +174,14 @@ pub(in crate::ui::city) fn configure_armory_dialog(
     let city = &state.nations().major(nation).city;
     let normal_color = assets.palette_color(0xd2);
     let warning_color = assets.palette_color(0xcb);
-    let (title_font, title_layout, title_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 24,
-            alignment: 1,
-        })
+    let (title_font, _, title_line_height, _) = assets
+        .text_style(ARMORY_TITLE_TEXT_STYLE)
         .expect("retail Armory title text style");
-    let (unit_font, unit_layout, unit_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
+    let (unit_font, _, unit_line_height, _) = assets
+        .text_style(ARMORY_UNIT_TEXT_STYLE)
         .expect("retail Armory unit text style");
-    let (detail_font, detail_layout, detail_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 10,
-            alignment: -2,
-        })
+    let (detail_font, _, detail_line_height, _) = assets
+        .text_style(ARMORY_DETAIL_TEXT_STYLE)
         .expect("retail Armory detail text style");
     let title = assets
         .string(0x271c, 0x20)
@@ -187,7 +191,6 @@ pub(in crate::ui::city) fn configure_armory_dialog(
     commands.entity(title_control).insert((
         Text::new(title),
         title_font,
-        title_layout,
         title_line_height,
         TextColor(normal_color),
     ));
@@ -244,15 +247,14 @@ pub(in crate::ui::city) fn configure_armory_dialog(
         (fourcc!("desc"), ArmoryDetail::Description),
     ] {
         let entity = find_descendant(root, tag, children, tags);
-        let (font, layout, line_height) = if tag == fourcc!("unit") {
-            (unit_font.clone(), unit_layout, unit_line_height)
+        let (font, line_height) = if tag == fourcc!("unit") {
+            (unit_font.clone(), unit_line_height)
         } else {
-            (detail_font.clone(), detail_layout, detail_line_height)
+            (detail_font.clone(), detail_line_height)
         };
         commands.entity(entity).insert((
             Text::new(""),
             font,
-            layout,
             line_height,
             TextColor(normal_color),
             detail,
@@ -274,7 +276,6 @@ pub(in crate::ui::city) fn configure_armory_dialog(
                     .expect("retail Armory label"),
             ),
             detail_font.clone(),
-            detail_layout,
             detail_line_height,
             TextColor(normal_color),
         ));
@@ -496,6 +497,28 @@ mod tests {
 
     const BEGINNING_OF_GAME: &[u8] =
         include_bytes!("../../../../../../../fixtures/retail/beginning_of_game.imp");
+
+    #[test]
+    fn armory_uses_the_recovered_windows_font_families() {
+        assert_eq!(
+            resolve_retail_text_style(ARMORY_TITLE_TEXT_STYLE)
+                .unwrap()
+                .face,
+            RetailFontFace::BelweBold
+        );
+        assert_eq!(
+            resolve_retail_text_style(ARMORY_UNIT_TEXT_STYLE)
+                .unwrap()
+                .face,
+            RetailFontFace::BelweBold
+        );
+        assert_eq!(
+            resolve_retail_text_style(ARMORY_DETAIL_TEXT_STYLE)
+                .unwrap()
+                .face,
+            RetailFontFace::BookAntiquaRegular
+        );
+    }
 
     #[test]
     fn beginning_armory_rows_use_the_retail_unit_picture_sequence() {
