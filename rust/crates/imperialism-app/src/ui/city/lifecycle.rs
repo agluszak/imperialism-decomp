@@ -3,7 +3,7 @@ use super::*;
 #[derive(Component)]
 pub(in crate::ui::city) struct CityBuildingDialog {
     pub(in crate::ui::city) slot: CityFacilitySlot,
-    window: Entity,
+    window: Option<Entity>,
     saved_position: Option<IVec2>,
 }
 
@@ -104,7 +104,7 @@ pub(in crate::ui::city) fn open_city_dialog(
     commands.entity(root).insert((
         CityBuildingDialog {
             slot,
-            window: Entity::PLACEHOLDER,
+            window: None,
             saved_position,
         },
         GlobalZIndex(z_index),
@@ -176,7 +176,7 @@ pub(in crate::ui::city) fn bind_city_dialogs(
 ) {
     for (root, mut dialog) in &mut dialogs {
         let window = find_descendant(root, fourcc!("WIND"), &children, &tags);
-        dialog.window = window;
+        dialog.window = Some(window);
         if let Some(position) = dialog.saved_position {
             commands
                 .entity(window)
@@ -296,10 +296,12 @@ pub(in crate::ui::city) fn leave_city_screen(
         let slot = CityFacilitySlot::from_index(index as u8)
             .expect("City facility index is in the fixed slot range");
         let open = dialogs.iter().find(|(_, dialog)| dialog.slot == slot);
-        let state = if let Some((_, dialog)) = open {
+        let state = if let Some((_, dialog)) = open
+            && let Some(window) = dialog.window
+        {
             let (left, top) = node_position(
                 windows
-                    .get(dialog.window)
+                    .get(window)
                     .expect("open City dialog has its generated window"),
             );
             BuildingWindowState {
