@@ -43,6 +43,7 @@ pub(crate) mod test_support;
 mod trade;
 mod trade_phase;
 mod turn_flow;
+mod turn_tail;
 mod units;
 
 pub use ai::{
@@ -157,6 +158,7 @@ pub use territory::{CountryStatus, ProvinceState};
 pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};
 pub use trade_phase::{PendingTradeOffer, TradeProgress};
 pub use turn_flow::{PhaseCode, ScenarioMapId, TurnState};
+pub use turn_tail::{EliminationOutcome, QuarterGateResult};
 pub use units::{
     CivilianLocation, CivilianUnitKind, CivilianUnitState, CivilianUnitTable, MilitaryOrder,
     MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState, MilitaryUnitTable, UnitIdAllocator,

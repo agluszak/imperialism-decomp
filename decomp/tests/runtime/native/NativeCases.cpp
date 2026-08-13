@@ -52,6 +52,15 @@ RuntimeActionResult RunCheckTechnologyAdvancesAiPurchase(NativeTransition& trans
 RuntimeActionResult RunConstructNewspaperPage(NativeTransition& transition);
 RuntimeActionResult RunConstructNewspaperPageMiscEvent(NativeTransition& transition);
 
+RuntimeActionResult RunGreatPowerPressureHumanDebt(NativeTransition& transition);
+RuntimeActionResult RunGreatPowerPressureAiNoop(NativeTransition& transition);
+RuntimeActionResult RunSeasonAdvanceClearsStatusFlags(NativeTransition& transition);
+RuntimeActionResult RunTurnAlertsSkipFirstEconomicTurn(NativeTransition& transition);
+RuntimeActionResult RunDiplomacyOfferGate(NativeTransition& transition);
+RuntimeActionResult RunQuarterGateOffDecade(NativeTransition& transition);
+RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transition);
+RuntimeActionResult RunEliminationPhaseWithLandedGreatPowers(NativeTransition& transition);
+
 namespace {
 
 const NativeCase kCases[] = {
@@ -94,6 +103,14 @@ const NativeCase kCases[] = {
     {"check_technology_advances_ai_purchase", RunCheckTechnologyAdvancesAiPurchase},
     {"construct_newspaper_page", RunConstructNewspaperPage},
     {"construct_newspaper_page_misc_event", RunConstructNewspaperPageMiscEvent},
+    {"great_power_pressure_human_debt", RunGreatPowerPressureHumanDebt},
+    {"great_power_pressure_ai_noop", RunGreatPowerPressureAiNoop},
+    {"season_advance_clears_status_flags", RunSeasonAdvanceClearsStatusFlags},
+    {"turn_alerts_skip_first_economic_turn", RunTurnAlertsSkipFirstEconomicTurn},
+    {"diplomacy_offer_gate", RunDiplomacyOfferGate},
+    {"quarter_gate_off_decade", RunQuarterGateOffDecade},
+    {"return_to_map_clears_notice_queues", RunReturnToMapClearsNoticeQueues},
+    {"elimination_phase_with_landed_great_powers", RunEliminationPhaseWithLandedGreatPowers},
 };
 
 } // namespace
