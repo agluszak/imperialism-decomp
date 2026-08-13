@@ -105,13 +105,7 @@ fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> u8 {
 }
 
 fn enter_strategic_map_view(mut session: ResMut<GameSession>) {
-    let Some(tile) = session
-        .0
-        .first_idle_civilian_tile(session.0.turn().active_nation)
-    else {
-        return;
-    };
-    session.0.center_map_on(tile);
+    session.0.center_map_on_first_idle_civilian();
 }
 
 fn spawn_strategic_map(mut commands: Commands) {
