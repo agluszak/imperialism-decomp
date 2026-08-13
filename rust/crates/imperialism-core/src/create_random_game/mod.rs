@@ -277,5 +277,6 @@ pub fn create_random_game(
         news: NewsState::default(),
         pending,
         trade_session: None,
+        pending_land_battle: None,
     }
 }

@@ -908,6 +908,13 @@ impl Default for TileDevelopment {
     }
 }
 
+impl TileDevelopment {
+    /// Retail `TTerrainStateRecord::developmentClassNibbles0c` as a whole signed byte.
+    pub(crate) fn packed_byte(self) -> i8 {
+        ((self.extractive.get() << 4) | self.surface.get()) as i8
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
