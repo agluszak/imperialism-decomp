@@ -301,6 +301,7 @@ impl Plugin for RetailUiPlugin {
         app.init_resource::<RetailPictureHandles>()
             .init_resource::<RetailFontHandles>()
             .add_systems(Update, sync_retail_picture_swaps);
+        super::hover_help::register_hover_help(app);
     }
 }
 
