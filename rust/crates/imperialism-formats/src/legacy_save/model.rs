@@ -377,7 +377,6 @@ pub(crate) struct LegacyCivilianUnit {
 pub(crate) struct LegacyGreatPowerPostCity {
     pub towns: Vec<LegacyTown>,
     pub civilian_units: Vec<LegacyCivilianUnit>,
-    /// Unrecovered per-nation bytes. Kept for save layout; not projected into GameState.
     pub candidate_nation_flags: [u8; NATION_COUNT],
     pub diplomacy_budget_base: i32,
     pub escalation_counter: i8,
@@ -387,7 +386,6 @@ pub(crate) struct LegacyGreatPowerPostCity {
     pub turn_finished_flag: u8,
     pub special_resource_trade_balance: i32,
     pub aid_allocation_total: i32,
-    /// Unrecovered per-nation bytes. Kept for save layout; not projected into GameState.
     pub colony_boycott_flags: [u8; NATION_COUNT],
     pub military_expenses: i32,
 }

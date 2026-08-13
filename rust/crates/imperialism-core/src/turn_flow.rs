@@ -17,6 +17,9 @@ pub struct TurnState {
     pub difficulty: Difficulty,
     pub active_nation: NationId,
     pub selected_nation: NationId,
+    /// Process-local last tick that showed turn alerts. Not stored in `.imp`.
+    #[serde(default)]
+    pub last_turn_alert_tick: i32,
 }
 
 impl TurnState {
@@ -42,11 +45,22 @@ impl TurnState {
             difficulty,
             active_nation,
             selected_nation,
+            last_turn_alert_tick: 0,
         }
     }
 
     pub const fn phase(self) -> PhaseCode {
         self.phase
+    }
+
+    /// `abs(economicTurn) % 4`, the quarter index used to stagger AI diplomacy planning.
+    pub(crate) const fn planning_quarter(self) -> u32 {
+        self.economic_turn.unsigned_abs() % 4
+    }
+
+    /// `economicTurn / 4`, the year-quarter count diplomacy scoring reads.
+    pub(crate) const fn year_quarters(self) -> i32 {
+        self.economic_turn / 4
     }
 }
 
@@ -86,6 +100,8 @@ impl PhaseCode {
     pub const RETURN_TO_MAP: Self = Self(0x12);
     pub const COMBAT_MOVES: Self = Self(0x14);
     pub const MILITARY_CLEANUP: Self = Self(0x15);
+    pub const TOP_TEN_SCORES: Self = Self(0x16);
+    pub const OPENING_CINEMATIC: Self = Self(0x17);
     pub const ELIMINATION: Self = Self(0x19);
     pub const fn from_retail(value: i32) -> Self {
         Self(value)

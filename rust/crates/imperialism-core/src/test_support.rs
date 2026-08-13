@@ -104,6 +104,8 @@ pub(crate) fn great_power_state() -> GreatPowerState {
         scenario_initialized: false,
         turn_finished: false,
         pending_actions: PendingActionTable::default(),
+        candidate_nation_flags: NationTable::default(),
+        colony_boycott_flags: NationTable::default(),
         diplomacy_budget_base: 0,
         escalation_counter: 0,
         pending_commitment_cost: 0,
@@ -146,6 +148,7 @@ pub(crate) fn game_state() -> GameState {
             difficulty: Difficulty::Easy,
             active_nation: NationId::new(0),
             selected_nation: NationId::new(0),
+            last_turn_alert_tick: 0,
         },
         unit_ids: crate::UnitIdAllocator::default(),
         map: MapMgr::new(

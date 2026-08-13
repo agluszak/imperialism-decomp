@@ -641,6 +641,7 @@ mod tests {
                 difficulty: Difficulty::Easy,
                 active_nation: NationId::new(6),
                 selected_nation: NationId::new(6),
+                last_turn_alert_tick: 0,
             },
             unit_ids: crate::UnitIdAllocator::default(),
             map: MapMgr::new(

@@ -19,7 +19,9 @@ const ABILITY_STATUS_PICTURE_INDEX: [i16; TECHNOLOGY_COUNT] = [
 pub(crate) struct TechnologyAdvance(pub u8);
 
 #[derive(Component)]
-struct TechnologyAdvanceRoot;
+struct TechnologyAdvanceRoot {
+    tech_id: u8,
+}
 
 #[derive(Component, Clone, Copy)]
 struct TechnologyAdvanceAction;
@@ -32,7 +34,7 @@ impl Plugin for TechnologyAdvancePlugin {
             OnEnter(AppState::TechnologyAdvance),
             (spawn_technology_advance, bind_technology_advance).chain(),
         )
-        .add_observer(on_technology_advance_activate);
+        .add_observer(on_technology_advance_activate.run_if(in_state(AppState::TechnologyAdvance)));
     }
 }
 
@@ -51,24 +53,24 @@ pub(crate) fn continue_after_capital(
     }
 }
 
-fn spawn_technology_advance(mut commands: Commands) {
+fn spawn_technology_advance(mut commands: Commands, pending: Res<TechnologyAdvance>) {
     let root = commands.spawn_scene(generated::tech_2200()).id();
     commands.entity(root).insert((
-        TechnologyAdvanceRoot,
+        TechnologyAdvanceRoot { tech_id: pending.0 },
         DespawnOnExit(AppState::TechnologyAdvance),
     ));
+    commands.remove_resource::<TechnologyAdvance>();
 }
 
 fn bind_technology_advance(
     mut commands: Commands,
-    root: Single<Entity, Added<TechnologyAdvanceRoot>>,
+    root: Single<(Entity, &TechnologyAdvanceRoot), Added<TechnologyAdvanceRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
-    advance: Res<TechnologyAdvance>,
 ) {
-    let root = *root;
+    let (root, advance) = root.into_inner();
     project_date_and_treasury(&mut commands, &mut assets, root, &children, &tags, &session);
     fill_technology_advance(
         &mut commands,
@@ -76,7 +78,7 @@ fn bind_technology_advance(
         root,
         &children,
         &tags,
-        advance.0,
+        advance.tech_id,
     );
     commands
         .entity(find_descendant(root, fourcc!("end "), &children, &tags))
@@ -112,12 +114,11 @@ fn on_technology_advance_activate(
     activate: On<Activate>,
     actions: Query<&TechnologyAdvanceAction>,
     mut session: ResMut<GameSession>,
-    mut advance: ResMut<TechnologyAdvance>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    root: Query<Entity, With<TechnologyAdvanceRoot>>,
+    mut root: Query<(Entity, &mut TechnologyAdvanceRoot)>,
     mut assets: RetailUiAssets,
     retail: Res<RetailAssetsResource>,
 ) {
@@ -127,10 +128,10 @@ fn on_technology_advance_activate(
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("technology report requires an active major nation");
     if let Some(tech_id) = session.0.acknowledge_technology_unlock(nation) {
-        advance.0 = tech_id;
-        let Ok(root) = root.single() else {
+        let Ok((root, mut advance)) = root.single_mut() else {
             return;
         };
+        advance.tech_id = tech_id;
         fill_technology_advance(&mut commands, &mut assets, root, &children, &tags, tech_id);
         return;
     }
@@ -140,4 +141,25 @@ fn on_technology_advance_activate(
         &mut commands,
         &mut next_state,
     );
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use bevy::state::app::StatesPlugin;
+
+    #[test]
+    fn unrelated_activation_before_a_game_does_not_require_game_resources() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_plugins(StatesPlugin)
+            .insert_state(AppState::MainMenu)
+            .add_plugins(TechnologyAdvancePlugin);
+        let unrelated = app.world_mut().spawn_empty().id();
+
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: unrelated });
+        app.world_mut().flush();
+    }
 }

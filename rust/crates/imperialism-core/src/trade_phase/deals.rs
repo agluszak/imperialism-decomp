@@ -358,55 +358,6 @@ impl GameState {
         );
     }
 
-    pub(super) fn set_relationship(&mut self, source: NationId, target: NationId, standing: i16) {
-        if standing == self.diplomacy.standings[source][target] {
-            return;
-        }
-        let mut clamped = i32::from(standing);
-        if standing < 0 {
-            clamped = 0;
-        }
-        if standing > 0xff && source != target {
-            clamped = 0xff;
-        }
-        if standing <= 0x31 {
-            clamped = if self.nations_at_war(source, target) {
-                i32::from(standing)
-            } else {
-                0x32
-            };
-            if (clamped as i16) < 0 {
-                clamped = 0;
-            }
-        }
-        let clamped = clamped as i16;
-        self.diplomacy.standings[source][target] = clamped;
-        self.diplomacy.standings[target][source] = clamped;
-        if MajorNationId::from_nation(source).is_some() {
-            self.match_colony_relationships(source);
-        }
-        if MajorNationId::from_nation(target).is_some() {
-            self.match_colony_relationships(target);
-        }
-    }
-
-    pub(super) fn match_colony_relationships(&mut self, overlord: NationId) {
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = MinorNationId::new(slot);
-            let is_colony = self.nations.minors[minor]
-                .as_ref()
-                .is_some_and(|state| state.common.status() == CountryStatus::ColonyOf(overlord));
-            if !is_colony {
-                continue;
-            }
-            let colony = minor.nation();
-            for other in NationId::all() {
-                self.diplomacy.standings[colony][other] = self.diplomacy.standings[overlord][other];
-                self.diplomacy.standings[other][colony] = self.diplomacy.standings[other][overlord];
-            }
-        }
-    }
-
     pub(super) fn end_trade_offers(&mut self) {
         for slot in 0..MajorNationId::COUNT {
             let nation = MajorNationId::new(slot);

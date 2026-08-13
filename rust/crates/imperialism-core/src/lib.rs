@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 #![allow(clippy::large_enum_variant)]
+#![allow(clippy::float_cmp)]
 
 mod ai;
 mod calendar;
@@ -15,6 +16,7 @@ mod create_random_game;
 mod deal_book;
 mod difficulty;
 mod diplomacy;
+mod diplomacy_phase;
 mod game;
 mod ids;
 mod map;
@@ -44,6 +46,7 @@ pub(crate) mod test_support;
 mod trade;
 mod trade_phase;
 mod turn_flow;
+mod turn_tail;
 mod units;
 
 pub use ai::{
@@ -78,9 +81,9 @@ pub use deal_book::{
 };
 pub use difficulty::Difficulty;
 pub use diplomacy::{
-    DiplomacyGrant, DiplomacyPolicy, DiplomacyState, DiplomaticCongressState,
-    DiplomaticMissionLevel, DiplomaticRelationship, PlayerDiplomacyOrderResult,
-    PlayerDiplomacyRejection, TradePolicyScore,
+    DiplomacyGrant, DiplomacyOfferPrompt, DiplomacyPhaseResult, DiplomacyPolicy, DiplomacyState,
+    DiplomacyWarJoinKind, DiplomacyWarJoinPrompt, DiplomaticCongressState, DiplomaticMissionLevel,
+    DiplomaticRelationship, PlayerDiplomacyOrderResult, PlayerDiplomacyRejection, TradePolicyScore,
 };
 pub use game::{GameState, GameStateParts};
 pub use ids::{
@@ -159,6 +162,7 @@ pub use territory::{CountryStatus, ProvinceState};
 pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};
 pub use trade_phase::{PendingTradeOffer, TradeProgress};
 pub use turn_flow::{PhaseCode, ScenarioMapId, TurnState};
+pub use turn_tail::{EliminationOutcome, QuarterGateResult};
 pub use units::{
     CivilianLocation, CivilianUnitKind, CivilianUnitState, CivilianUnitTable, MilitaryOrder,
     MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState, MilitaryUnitTable, UnitIdAllocator,
