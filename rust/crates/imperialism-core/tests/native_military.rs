@@ -27,6 +27,12 @@ struct RailConstructionCase {
     civilian: CivilianUnitId,
 }
 
+#[derive(Debug, Deserialize)]
+struct IssuedRailSectionCase {
+    civilian: CivilianUnitId,
+    destination: TileId,
+}
+
 #[test]
 #[ignore = "requires the native C++ oracle"]
 fn specialist_recruitment() {
@@ -68,6 +74,20 @@ fn completed_rail_section() {
         "completed_rail_section",
         |state, case: RailConstructionCase| {
             state.advance_civilian_work(case.civilian);
+        },
+    )
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn issued_rail_section() {
+    compare_native(
+        "issued_rail_section",
+        |state, case: IssuedRailSectionCase| {
+            state
+                .order_rail_construction(case.civilian, case.destination)
+                .unwrap();
         },
     )
     .unwrap();

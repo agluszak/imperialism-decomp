@@ -38,8 +38,12 @@ struct StrategicMapComposeKey {
     view_origin: TileId,
     topology: MapTopology,
     active_nation: NationId,
+    selected_engineer: Option<CivilianUnitId>,
     visible_tiles: u64,
 }
+
+#[derive(Clone, Copy, Default, Resource)]
+pub(crate) struct SelectedEngineer(pub(crate) Option<CivilianUnitId>);
 
 /// The bounded strategic map: retail bases, transitions, rivers, borders, and static infrastructure.
 #[derive(Component)]
@@ -81,9 +85,9 @@ pub(crate) fn bind_strategic_base_terrain(
         improvement_pictures,
         resource_icons,
         resource_overlays,
-        composed: Some(strategic_map_compose_key(state)),
+        composed: Some(strategic_map_compose_key(state, None)),
     };
-    let image = compose_strategic_map(state, canvas.sprites(), assets.default_dib_palette());
+    let image = compose_strategic_map(state, canvas.sprites(), assets.default_dib_palette(), None);
     let image = assets.add_image(image);
     commands.entity(map).insert((
         ImageNode::new(image),
@@ -108,14 +112,15 @@ impl StrategicBaseTerrainCanvas {
 
 pub(crate) fn sync_strategic_base_terrain(
     session: Res<GameSession>,
+    selected: Res<SelectedEngineer>,
     retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
     mut maps: Query<(&mut StrategicBaseTerrainCanvas, &ImageNode)>,
 ) {
-    if !session.is_changed() {
+    if !session.is_changed() && !selected.is_changed() {
         return;
     }
-    let key = strategic_map_compose_key(&session.0);
+    let key = strategic_map_compose_key(&session.0, selected.0);
     for (mut canvas, image_node) in &mut maps {
         if canvas.composed == Some(key) {
             continue;
@@ -124,6 +129,7 @@ pub(crate) fn sync_strategic_base_terrain(
             &session.0,
             canvas.sprites(),
             retail_assets.assets().default_dib_palette(),
+            selected.0,
         );
         let Some(mut existing) = images.get_mut(&image_node.image) else {
             continue;
@@ -217,12 +223,19 @@ fn compose_strategic_map(
     state: &GameState,
     sprites: StrategicMapSprites<'_>,
     palette: &DibPalette,
+    selected_engineer: Option<CivilianUnitId>,
 ) -> Image {
-    let indices = compose_strategic_map_indices(state, sprites);
+    let mut indices = compose_strategic_map_indices(state, sprites);
+    if let Some(unit) = selected_engineer {
+        draw_rail_order_selection(state, unit, &mut indices);
+    }
     indexed_viewport_image(&indices, palette)
 }
 
-fn strategic_map_compose_key(state: &GameState) -> StrategicMapComposeKey {
+fn strategic_map_compose_key(
+    state: &GameState,
+    selected_engineer: Option<CivilianUnitId>,
+) -> StrategicMapComposeKey {
     use std::hash::Hasher;
 
     let mut hasher = std::collections::hash_map::DefaultHasher::new();
@@ -233,6 +246,7 @@ fn strategic_map_compose_key(state: &GameState) -> StrategicMapComposeKey {
         view_origin: state.map.view_origin,
         topology: state.map.topology,
         active_nation: state.turn().active_nation,
+        selected_engineer,
         visible_tiles: hasher.finish(),
     }
 }
@@ -356,6 +370,20 @@ pub(super) fn draw_city_site_selection(
         })
     });
     draw_city_site_neighbor_outline(state, neighbors, viewport);
+}
+
+fn draw_rail_order_selection(state: &GameState, unit: CivilianUnitId, viewport: &mut [u8]) {
+    let Some(origin) = state
+        .civilian_units()
+        .iter()
+        .find(|candidate| candidate.id() == unit)
+        .and_then(|candidate| candidate.location().tile())
+    else {
+        return;
+    };
+    let (x, y) = strategic_tile_screen_origin(state, origin);
+    draw_frame(viewport, x, y, 0);
+    draw_city_site_neighbor_outline(state, state.rail_construction_destinations(unit), viewport);
 }
 
 fn draw_frame(viewport: &mut [u8], x: i32, y: i32, color: u8) {
