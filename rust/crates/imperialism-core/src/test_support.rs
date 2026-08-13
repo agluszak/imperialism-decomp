@@ -137,7 +137,7 @@ pub(crate) fn major_nation() -> MajorNation {
 /// A game state with seven valid major nations and an empty world.
 pub(crate) fn game_state() -> GameState {
     let mut diplomacy_rng = RetailCrtRng::from_state(1);
-    GameState {
+    let mut state = GameState {
         turn: TurnState {
             scenario_map: None,
             economic_turn: 1,
@@ -183,5 +183,9 @@ pub(crate) fn game_state() -> GameState {
         pending: crate::PendingWorkState::default(),
         continuation: crate::turn_flow::TurnContinuation::None,
         pending_land_battle: None,
-    }
+    };
+    // Town markers must sit on owned land. The turn loop reaches city/transport
+    // on this fixture, and that phase rebuilds yields from those markers.
+    state.map[TileId::new(1)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
+    state
 }

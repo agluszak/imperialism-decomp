@@ -436,6 +436,13 @@ mod tests {
     #[test]
     fn answering_a_diplomacy_offer_uses_core_continuation_not_the_prompt() {
         let mut state = game_state();
+        // Keep both parties alive through elimination.
+        for index in 0..2 {
+            state.nations.append_owned_region_during_construction(
+                NationId::new(index),
+                crate::ProvinceId::new(index as u16),
+            );
+        }
         state.nations.majors[MajorNationId::new(1)].kind = crate::MajorNationKind::AutoGreatPower;
         state.nations.majors[MajorNationId::new(1)]
             .economy
