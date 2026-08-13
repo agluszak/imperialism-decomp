@@ -79,6 +79,7 @@ fn add_game_plugins(app: &mut App) {
         ui::OfferSheetPlugin,
     ))
     .add_plugins((
+        ui::CursorPlugin,
         ui::TechnologyAdvancePlugin,
         ui::NewspaperPlugin,
         ui::CreditsPlugin,

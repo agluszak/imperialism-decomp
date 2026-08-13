@@ -1,5 +1,6 @@
 use super::GameSession;
 use super::RetailUiAssets;
+use super::cursor::{RequestedCursor, request_arrow_cursor, request_turn_event_cursor};
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
@@ -31,6 +32,11 @@ const MAP_WIDTH: f32 = 540.0;
 const MAP_HEIGHT: f32 = 300.0;
 const MAP_TILE_SCALE: u16 = 5;
 const MAP_ODD_ROW_OFFSET: u16 = 2;
+const DIPLOMACY_IDLE_CURSOR: u16 = 0x41b;
+const DIPLOMACY_CURSOR_BY_ACTION: [u16; 16] = [
+    0x41b, 0x41b, 0x408, 0x407, 0x406, 0x404, 0x405, 0x411, 0x415, 0x409, 0x41b, 0x40f, 0x410,
+    0x3f3, 0x419, 0x41a,
+];
 const GRANT_AMOUNTS: [i32; 4] = [1_000, 3_000, 5_000, 10_000];
 const TRADE_POLICY_SCORES: [TradePolicyScore; 7] = [
     TradePolicyScore::new(95),
@@ -92,6 +98,7 @@ struct DiplomacyScreen {
     treaty_row: usize,
     overlay: u8,
     colony_boycott: bool,
+    map_action: DiplomacyMapAction,
 }
 
 impl DiplomacyScreen {
@@ -104,6 +111,55 @@ impl DiplomacyScreen {
             DiplomacyTopic::Council => 5,
             DiplomacyTopic::Offers => 0,
         }
+    }
+
+    fn cursor_action(&self) -> DiplomacyMapAction {
+        if self.topic == DiplomacyTopic::Council {
+            DiplomacyMapAction::None
+        } else {
+            self.map_action
+        }
+    }
+
+    fn cursor_row(&self) -> usize {
+        match self.cursor_action() {
+            DiplomacyMapAction::TradeSubsidy => self.trade_row,
+            DiplomacyMapAction::OneTimeGrant | DiplomacyMapAction::RecurringGrant => self.grant_row,
+            _ => 0,
+        }
+    }
+
+    fn assign_map_action_for_topic(&mut self) {
+        self.map_action = match self.topic {
+            DiplomacyTopic::Information => DiplomacyMapAction::InspectNation,
+            DiplomacyTopic::Treaties => match self.treaty_row {
+                0 => DiplomacyMapAction::JoinEmpire,
+                1 => DiplomacyMapAction::Alliance,
+                2 => DiplomacyMapAction::NonAggressionPact,
+                3 => DiplomacyMapAction::PeaceTreaty,
+                4 => DiplomacyMapAction::DeclareWar,
+                5 => DiplomacyMapAction::BuildConsulate,
+                6 => DiplomacyMapAction::BuildEmbassy,
+                _ => DiplomacyMapAction::InspectNation,
+            },
+            DiplomacyTopic::Grants => {
+                if self.recurring_grant {
+                    DiplomacyMapAction::RecurringGrant
+                } else {
+                    DiplomacyMapAction::OneTimeGrant
+                }
+            }
+            DiplomacyTopic::Trade => {
+                if self.colony_boycott {
+                    DiplomacyMapAction::LinkTradePolicy
+                } else if self.trade_row == 6 {
+                    DiplomacyMapAction::Boycott
+                } else {
+                    DiplomacyMapAction::TradeSubsidy
+                }
+            }
+            DiplomacyTopic::Council | DiplomacyTopic::Offers => return,
+        };
     }
 }
 
@@ -253,10 +309,12 @@ impl Plugin for DiplomacyPlugin {
                 sync_diplomacy_offer_sheet,
                 sync_diplomacy_information,
                 render_diplomacy_map,
+                sync_diplomacy_map_cursor,
             )
                 .chain()
                 .run_if(in_state(AppState::Diplomacy)),
         )
+        .add_systems(OnExit(AppState::Diplomacy), reset_diplomacy_cursor)
         .add_observer(on_diplomacy_activate.run_if(in_state(AppState::Diplomacy)))
         .add_observer(on_diplomacy_offer_activate.run_if(in_state(AppState::Diplomacy)))
         .add_observer(on_diplomacy_map_click.run_if(in_state(AppState::Diplomacy)))
@@ -278,6 +336,7 @@ fn enter_diplomacy_screen(mut commands: Commands, session: Res<GameSession>) {
         treaty_row: 5,
         overlay: 0,
         colony_boycott: false,
+        map_action: DiplomacyMapAction::InspectNation,
     };
     if let Some(framed) = diplomacy_interrupt_frame(&session.game) {
         screen.topic = DiplomacyTopic::Offers;
@@ -1122,20 +1181,29 @@ fn on_diplomacy_activate(
                     screen.colony_boycott = false;
                 }
             }
+            screen.assign_map_action_for_topic();
         }
         DiplomacyAction::Grant { row, recurring } => {
             if screen.grant_row != row || screen.recurring_grant != recurring {
                 screen.grant_row = row;
                 screen.recurring_grant = recurring;
+                screen.assign_map_action_for_topic();
             }
         }
         DiplomacyAction::Trade(row) => {
             screen.trade_row = row;
             screen.colony_boycott = false;
+            screen.assign_map_action_for_topic();
         }
-        DiplomacyAction::Treaty(row) => screen.treaty_row = row,
+        DiplomacyAction::Treaty(row) => {
+            screen.treaty_row = row;
+            screen.assign_map_action_for_topic();
+        }
         DiplomacyAction::Overlay(mode) => screen.overlay = mode,
-        DiplomacyAction::ColonyBoycott => screen.colony_boycott = true,
+        DiplomacyAction::ColonyBoycott => {
+            screen.colony_boycott = true;
+            screen.assign_map_action_for_topic();
+        }
         DiplomacyAction::AcceptOffer | DiplomacyAction::RejectOffer => {}
     }
 }
@@ -1297,6 +1365,82 @@ fn tile_at_diplomacy_position(normalized: Vec2) -> Option<TileId> {
     let odd_offset = MAP_ODD_ROW_OFFSET * (row & 1);
     let column = (column_pixel as u16).checked_sub(odd_offset)? / MAP_TILE_SCALE;
     MapGeometry::new(MapTopology::Bounded).tile(row, column)
+}
+
+fn sync_diplomacy_map_cursor(
+    maps: Query<&RelativeCursorPosition, With<DiplomacyMapPicture>>,
+    modals: Query<(), With<ModalDialog>>,
+    screens: Query<&DiplomacyScreen>,
+    session: Res<GameSession>,
+    mut requested: ResMut<RequestedCursor>,
+) {
+    if !modals.is_empty() {
+        request_arrow_cursor(&mut requested);
+        return;
+    }
+    let Ok(screen) = screens.single() else {
+        request_arrow_cursor(&mut requested);
+        return;
+    };
+    let Ok(cursor) = maps.single() else {
+        request_arrow_cursor(&mut requested);
+        return;
+    };
+    if !cursor.cursor_over() {
+        request_arrow_cursor(&mut requested);
+        return;
+    }
+    let Some(normalized) = cursor.normalized else {
+        request_turn_event_cursor(&mut requested, DIPLOMACY_IDLE_CURSOR);
+        return;
+    };
+    let source = MajorNationId::from_nation(session.game.turn().active_nation)
+        .expect("Diplomacy screen requires an active major nation");
+    let Some(target) = tile_at_diplomacy_position(normalized).and_then(|tile| {
+        session.game.map()[tile]
+            .owner_nation
+            .and_then(TileOwnerTag::nation)
+    }) else {
+        request_turn_event_cursor(&mut requested, DIPLOMACY_IDLE_CURSOR);
+        return;
+    };
+    let mut action = screen.cursor_action();
+    if action != DiplomacyMapAction::InspectNation && target == source.nation() {
+        action = DiplomacyMapAction::SelectedNation;
+    }
+    let valid = session
+        .game
+        .player_diplomacy_map_action_is_valid(source, target, action);
+    request_turn_event_cursor(
+        &mut requested,
+        diplomacy_map_cursor_resource_id(true, action, screen.cursor_row(), valid),
+    );
+}
+
+fn reset_diplomacy_cursor(mut requested: ResMut<RequestedCursor>) {
+    request_arrow_cursor(&mut requested);
+}
+
+/// `TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback` cursor id.
+fn diplomacy_map_cursor_resource_id(
+    nation_hit: bool,
+    action: DiplomacyMapAction,
+    grant_row: usize,
+    valid: bool,
+) -> u16 {
+    if !nation_hit || !valid {
+        return DIPLOMACY_IDLE_CURSOR;
+    }
+    let mut resource_id = DIPLOMACY_CURSOR_BY_ACTION[action as usize];
+    if matches!(
+        action,
+        DiplomacyMapAction::TradeSubsidy
+            | DiplomacyMapAction::OneTimeGrant
+            | DiplomacyMapAction::RecurringGrant
+    ) {
+        resource_id += u16::try_from(grant_row).expect("diplomacy grant row fits u16");
+    }
+    resource_id
 }
 
 fn on_diplomacy_notice_activate(
@@ -2317,5 +2461,58 @@ fn set_checked(
         commands.entity(entity).insert(Checked);
     } else {
         commands.entity(entity).remove::<Checked>();
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn idle_cursor_when_the_pointer_is_not_over_a_nation() {
+        assert_eq!(
+            diplomacy_map_cursor_resource_id(false, DiplomacyMapAction::DeclareWar, 0, true),
+            DIPLOMACY_IDLE_CURSOR
+        );
+    }
+
+    #[test]
+    fn invalid_target_uses_the_idle_diplomacy_cursor() {
+        assert_eq!(
+            diplomacy_map_cursor_resource_id(true, DiplomacyMapAction::Alliance, 0, false),
+            DIPLOMACY_IDLE_CURSOR
+        );
+    }
+
+    #[test]
+    fn inspect_and_treaty_actions_use_the_retail_cursor_ids() {
+        assert_eq!(
+            diplomacy_map_cursor_resource_id(true, DiplomacyMapAction::InspectNation, 0, true),
+            0x3f3
+        );
+        assert_eq!(
+            diplomacy_map_cursor_resource_id(true, DiplomacyMapAction::DeclareWar, 0, true),
+            0x405
+        );
+        assert_eq!(
+            diplomacy_map_cursor_resource_id(true, DiplomacyMapAction::BuildEmbassy, 0, true),
+            0x41a
+        );
+    }
+
+    #[test]
+    fn grant_and_subsidy_rows_offset_the_base_cursor_id() {
+        assert_eq!(
+            diplomacy_map_cursor_resource_id(true, DiplomacyMapAction::OneTimeGrant, 3, true),
+            0x414
+        );
+        assert_eq!(
+            diplomacy_map_cursor_resource_id(true, DiplomacyMapAction::RecurringGrant, 1, true),
+            0x416
+        );
+        assert_eq!(
+            diplomacy_map_cursor_resource_id(true, DiplomacyMapAction::TradeSubsidy, 2, true),
+            0x40b
+        );
     }
 }
