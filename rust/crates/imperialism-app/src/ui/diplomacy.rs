@@ -1,7 +1,7 @@
 use super::GameSession;
 use super::RetailUiAssets;
 use super::format_currency;
-use super::game_shell::bind_native_game_screen_nav;
+use super::game_shell::{bind_native_game_screen_nav, project_date_and_treasury};
 use super::generated;
 use super::random_setup_map::{compose_owner_preview_indices, preview_image_from_indices};
 use super::retail::ModalDialog;
@@ -203,7 +203,16 @@ fn bind_diplomacy_screen(
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut assets: RetailUiAssets,
+    session: Res<GameSession>,
 ) {
+    project_date_and_treasury(
+        &mut commands,
+        &mut assets,
+        *root,
+        &children,
+        &tags,
+        &session,
+    );
     let pictures = DiplomacyBracketPictures {
         information: assets
             .picture(PictureId::new(5001))

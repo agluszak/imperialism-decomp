@@ -34,7 +34,7 @@ impl Plugin for TechnologyAdvancePlugin {
             OnEnter(AppState::TechnologyAdvance),
             (spawn_technology_advance, bind_technology_advance).chain(),
         )
-        .add_observer(on_technology_advance_activate);
+        .add_observer(on_technology_advance_activate.run_if(in_state(AppState::TechnologyAdvance)));
     }
 }
 
@@ -141,4 +141,25 @@ fn on_technology_advance_activate(
         &mut commands,
         &mut next_state,
     );
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use bevy::state::app::StatesPlugin;
+
+    #[test]
+    fn unrelated_activation_before_a_game_does_not_require_game_resources() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_plugins(StatesPlugin)
+            .insert_state(AppState::MainMenu)
+            .add_plugins(TechnologyAdvancePlugin);
+        let unrelated = app.world_mut().spawn_empty().id();
+
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: unrelated });
+        app.world_mut().flush();
+    }
 }

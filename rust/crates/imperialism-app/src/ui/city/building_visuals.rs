@@ -287,7 +287,7 @@ fn bind_city_hover_title(
 ) {
     let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset {
-            font_family: 0,
+            font_family: 1,
             face_flags: 0,
             point_size: 12,
             alignment: 1,

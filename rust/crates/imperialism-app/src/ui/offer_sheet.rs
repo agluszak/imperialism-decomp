@@ -545,7 +545,7 @@ mod tests {
         app.add_plugins(MinimalPlugins)
             .add_plugins(StatesPlugin)
             .insert_state(AppState::MainMenu)
-            .add_observer(on_offer_sheet_activate.run_if(in_state(AppState::OfferSheet)));
+            .add_plugins(OfferSheetPlugin);
         let unrelated = app.world_mut().spawn_empty().id();
 
         app.world_mut()
