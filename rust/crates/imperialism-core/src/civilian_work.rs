@@ -637,17 +637,15 @@ impl GameState {
     }
 
     fn push_new_town(&mut self, tile: TileId, nation: MajorNationId, enabled: u8) {
-        self.nations.major_mut(nation).towns.push(TownState {
-            name: String::new(),
-            tile,
-            created_turn: self.turn.economic_turn as i16,
-            owner_nation: nation.nation(),
-            resource_yield_by_type: ResourceTable::default(),
-            transport_linked: false,
-            enabled,
-            has_adjacent_city: 0,
-            active: enabled == 0,
-        });
+        self.nations
+            .major_mut(nation)
+            .towns
+            .push(TownState::constructed(
+                tile,
+                nation.nation(),
+                enabled,
+                self.turn.economic_turn as i16,
+            ));
     }
 
     fn find_town_at_mut(&mut self, nation: MajorNationId, tile: TileId) -> Option<&mut TownState> {

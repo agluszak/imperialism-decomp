@@ -526,6 +526,15 @@ pub struct ShipState {
     pub selection: i32,
 }
 
+/// A navy secondary-order node (`TAdmiral`) in head-first list order.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct AdmiralState {
+    pub nation: NationId,
+    pub name: String,
+    pub experience: i16,
+    pub ship: Option<ShipId>,
+}
+
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(tag = "kind", content = "target", rename_all = "snake_case")]
 pub enum TaskForceTarget {
