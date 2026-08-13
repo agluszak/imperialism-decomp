@@ -261,6 +261,7 @@ impl GameState {
             row.offer_count = 0;
             row.amount_offered = 0;
             row.adjusted_offer_count = 0.0;
+            row.current_offer_by_nation = NationTable::default();
         }
     }
 
@@ -1298,6 +1299,8 @@ impl GameState {
 
         for commodity in all_trade_commodities() {
             for nation in NationId::all() {
+                self.market.rows[commodity].current_offer_by_nation[nation] =
+                    scratch.current[commodity][nation];
                 self.market.rows[commodity].maximum_offer_by_nation[nation] =
                     self.market.rows[commodity].maximum_offer_by_nation[nation]
                         .max(scratch.accumulated[commodity][nation]);

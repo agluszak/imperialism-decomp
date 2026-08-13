@@ -697,6 +697,8 @@ JSON_Value* CaptureMarket() {
     rowObject.Set("offer_count", static_cast<int>(row.numOffers));
     rowObject.Set("amount_offered", static_cast<int>(row.amountOffered));
     rowObject.Set("adjusted_offer_count", row.adjustedNumOffers);
+    rowObject.Set("current_offer_by_nation",
+                  CaptureShortArray(&row.tradeOfferCells[0], kNationSlotCount));
     JsonArray maximumOfferRow;
     const short* maximumByNation = &row.tradeOfferCells[46];
     for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {

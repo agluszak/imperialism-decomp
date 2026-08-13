@@ -1,5 +1,6 @@
 use crate::AppState;
 use crate::ui::RetailUiAssets;
+use crate::ui::deal_book::{DealBookRoot, bind_deal_book};
 use crate::ui::format_currency;
 use crate::ui::generated;
 use crate::ui::random_setup::GameSession;
@@ -56,7 +57,7 @@ impl Plugin for GameShellPlugin {
             )
             .add_systems(
                 OnEnter(AppState::DealBook),
-                (spawn_deal_book, bind_turn_flow_screen).chain(),
+                (spawn_deal_book, bind_turn_flow_screen, bind_deal_book).chain(),
             )
             .add_systems(
                 OnEnter(AppState::Newspaper),
@@ -177,9 +178,11 @@ fn bind_strategic_map(
 
 fn spawn_deal_book(mut commands: Commands) {
     let root = commands.spawn_scene(generated::flagview_8800()).id();
-    commands
-        .entity(root)
-        .insert((TurnFlowRoot, DespawnOnExit(AppState::DealBook)));
+    commands.entity(root).insert((
+        TurnFlowRoot,
+        DealBookRoot,
+        DespawnOnExit(AppState::DealBook),
+    ));
 }
 
 fn spawn_newspaper(mut commands: Commands) {
@@ -202,23 +205,19 @@ fn bind_turn_flow_screen(
     let end = find_descendant(*root, fourcc!("end "), &children, &tags);
     commands
         .entity(end)
-        .insert(TurnFlowAction::DismissBlockingScreen)
+        .insert((TurnFlowAction::DismissBlockingScreen, ActivateOnPress))
         .remove::<InteractionDisabled>();
     disable_native_control(&mut commands, *root, &children, &tags, fourcc!("quer"));
 
     match current {
-        AppState::DealBook => {
-            disable_native_control(&mut commands, *root, &children, &tags, fourcc!("tabs"));
-            disable_native_control(&mut commands, *root, &children, &tags, fourcc!("mark"));
-            project_deal_book_chrome(
-                &mut commands,
-                &mut assets,
-                *root,
-                &children,
-                &tags,
-                &session,
-            );
-        }
+        AppState::DealBook => project_date_and_treasury(
+            &mut commands,
+            &mut assets,
+            *root,
+            &children,
+            &tags,
+            &session,
+        ),
         AppState::Newspaper => project_newspaper_chrome(
             &mut commands,
             &mut assets,
@@ -229,26 +228,6 @@ fn bind_turn_flow_screen(
         ),
         _ => unreachable!(),
     }
-}
-
-fn project_deal_book_chrome(
-    commands: &mut Commands,
-    assets: &mut RetailUiAssets,
-    root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-    session: &GameSession,
-) {
-    // Retail starts the deal summary on its sold/bought page.
-    let sold = assets
-        .string(0x2740, 0x19)
-        .expect("retail deal-book sold title must load");
-    let bought = assets
-        .string(0x2740, 0x1a)
-        .expect("retail deal-book bought title must load");
-    set_control_text(commands, root, children, tags, fourcc!("titL"), sold);
-    set_control_text(commands, root, children, tags, fourcc!("rtil"), bought);
-    project_date_and_treasury(commands, assets, root, children, tags, session);
 }
 
 fn project_date_and_treasury(
