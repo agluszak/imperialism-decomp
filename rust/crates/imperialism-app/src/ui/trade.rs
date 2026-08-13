@@ -7,6 +7,7 @@ use super::retail::{RetailTag, find_descendant};
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
+use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, Button as UiButton};
 use imperialism_core::*;
@@ -239,7 +240,7 @@ fn bind_trade_screen(
         .expect("Trade active nation is a major nation");
     session.0.recall_player_trade_orders(nation);
 
-    let (row_font, row_layout, _) = assets
+    let (row_font, row_layout, row_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 2,
             face_flags: 0,
@@ -280,6 +281,7 @@ fn bind_trade_screen(
         &tags,
         row_font,
         row_layout,
+        row_line_height,
         assets.palette_color(0x13),
         pictures,
         assets.palette_color(0x37),
@@ -294,6 +296,7 @@ fn bind_trade_controls(
     tags: &Query<&RetailTag>,
     row_font: TextFont,
     row_layout: TextLayout,
+    row_line_height: LineHeight,
     row_color: Color,
     pictures: TradePictures,
     gauge_color: Color,
@@ -326,33 +329,14 @@ fn bind_trade_controls(
 
         let card = find_descendant(row, fourcc!("card"), children, tags);
         let card_pictures = pictures.for_button(binding.commodity, TradeCardKind::Bid);
-        commands.entity(card).insert((
-            UiButton,
-            ImageNode::new(card_pictures.idle.clone()),
-            TradeAction::Card {
-                commodity: binding.commodity,
-                kind: TradeCardKind::Bid,
-            },
-            TradeDisplay::Card {
-                commodity: binding.commodity,
-                kind: TradeCardKind::Bid,
-                pictures: card_pictures,
-            },
-        ));
         let offer = find_descendant(row, fourcc!("offr"), children, tags);
         let offer_pictures = pictures.for_button(binding.commodity, TradeCardKind::Offer);
-        commands.entity(offer).insert((
-            UiButton,
-            ImageNode::new(offer_pictures.idle.clone()),
-            TradeAction::Card {
-                commodity: binding.commodity,
-                kind: TradeCardKind::Offer,
-            },
-            TradeDisplay::Card {
-                commodity: binding.commodity,
-                kind: TradeCardKind::Offer,
-                pictures: offer_pictures,
-            },
+        commands.entity(card).despawn();
+        commands.entity(offer).despawn();
+        commands.entity(row).apply_scene(trade_order_controls(
+            binding.commodity,
+            card_pictures,
+            offer_pictures,
         ));
 
         for (tag, delta) in [(fourcc!("left"), -1), (fourcc!("rght"), 1)] {
@@ -387,8 +371,62 @@ fn bind_trade_controls(
             binding.commodity,
             row_font.clone(),
             row_layout,
+            row_line_height,
             row_color,
         ));
+    }
+}
+
+fn trade_order_controls(
+    commodity: TradeCommodity,
+    bid: TradeCardPictures,
+    offer: TradeCardPictures,
+) -> impl Scene {
+    let bid_image = bid.idle.clone();
+    let offer_image = offer.idle.clone();
+    bsn! {
+        Children [
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(82),
+                    top: px(0),
+                    width: px(17),
+                    height: px(20),
+                }
+                UiButton
+                template(move |_context| Ok(ImageNode::new(bid_image.clone())))
+                template(move |_context| Ok(TradeAction::Card {
+                    commodity,
+                    kind: TradeCardKind::Bid,
+                }))
+                template(move |_context| Ok(TradeDisplay::Card {
+                    commodity,
+                    kind: TradeCardKind::Bid,
+                    pictures: bid.clone(),
+                }))
+            ),
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(163),
+                    top: px(0),
+                    width: px(17),
+                    height: px(20),
+                }
+                UiButton
+                template(move |_context| Ok(ImageNode::new(offer_image.clone())))
+                template(move |_context| Ok(TradeAction::Card {
+                    commodity,
+                    kind: TradeCardKind::Offer,
+                }))
+                template(move |_context| Ok(TradeDisplay::Card {
+                    commodity,
+                    kind: TradeCardKind::Offer,
+                    pictures: offer.clone(),
+                }))
+            ),
+        ]
     }
 }
 
@@ -415,6 +453,7 @@ fn trade_row_overlay(
     commodity: TradeCommodity,
     font: TextFont,
     layout: TextLayout,
+    line_height: LineHeight,
     color: Color,
 ) -> impl Scene {
     let price_font = font.clone();
@@ -431,6 +470,7 @@ fn trade_row_overlay(
                 Text("")
                 template(move |_context| Ok(price_font.clone()))
                 template(move |_context| Ok(layout))
+                template(move |_context| Ok(line_height))
                 TextColor(color)
                 Pickable::IGNORE
                 template(move |_context| Ok(TradeDisplay::Price(commodity)))
@@ -446,6 +486,7 @@ fn trade_row_overlay(
                 Text("")
                 template(move |_context| Ok(font.clone()))
                 template(move |_context| Ok(layout))
+                template(move |_context| Ok(line_height))
                 TextColor(color)
                 Pickable::IGNORE
                 template(move |_context| Ok(TradeDisplay::Stock(commodity)))
@@ -602,15 +643,18 @@ fn sync_trade_screen(
                 node.left = Val::Px(left);
                 node.width = Val::Px(width);
                 node.height = Val::Px(20.0);
-                let visible = !trade_row_locked(*commodity)
-                    && match kind {
-                        TradeCardKind::Bid => active || (capacity > 0 && bid_count < 4),
-                        TradeCardKind::Offer => {
-                            capacity > 0
-                                && (active || major.city.stockpile[commodity.resource()] > 0)
-                        }
-                    };
-                set_trade_control(&mut commands, entity, visible);
+                match kind {
+                    TradeCardKind::Bid => {
+                        let enabled = !trade_row_locked(*commodity) && (active || bid_count < 4);
+                        set_trade_interaction(&mut commands, entity, enabled);
+                    }
+                    TradeCardKind::Offer => {
+                        let visible = capacity > 0
+                            && !trade_row_locked(*commodity)
+                            && (active || major.city.stockpile[commodity.resource()] > 0);
+                        set_trade_control(&mut commands, entity, visible);
+                    }
+                }
             }
             TradeDisplay::Step(commodity) => {
                 let quantity = match session.0.player_trade_order(nation, *commodity) {
@@ -747,6 +791,15 @@ fn set_trade_control(commands: &mut Commands, entity: Entity, visible: bool) {
         Visibility::Hidden
     });
     if visible {
+        commands.entity(entity).remove::<InteractionDisabled>();
+    } else {
+        commands.entity(entity).insert(InteractionDisabled);
+    }
+}
+
+fn set_trade_interaction(commands: &mut Commands, entity: Entity, enabled: bool) {
+    commands.entity(entity).insert(Visibility::Visible);
+    if enabled {
         commands.entity(entity).remove::<InteractionDisabled>();
     } else {
         commands.entity(entity).insert(InteractionDisabled);

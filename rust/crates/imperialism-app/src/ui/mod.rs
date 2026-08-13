@@ -1,8 +1,10 @@
 mod city;
 mod city_site;
+mod deal_book;
 mod diplomacy;
 mod game_shell;
 pub(crate) mod generated;
+mod hover_help;
 pub(crate) mod load_save;
 mod main_menu;
 mod random_setup;
@@ -14,6 +16,7 @@ mod transport;
 
 pub(crate) use city::CityPlugin;
 pub(crate) use city_site::CitySitePlugin;
+pub(crate) use deal_book::DealBookPlugin;
 pub(crate) use diplomacy::DiplomacyPlugin;
 pub(crate) use game_shell::GameShellPlugin;
 pub(crate) use load_save::{LoadSavePlugin, SaveDirectory};

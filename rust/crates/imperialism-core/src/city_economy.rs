@@ -1,12 +1,10 @@
 use crate::{CityFacilitySlot, CityState, GreatPowerState, ResourceKind, ResourceTable};
 
 impl CityState {
-    /// Mirrors the state effect of `TCity::VerifyStocks`; UI invalidation from
-    /// the C++ method remains a presentation concern.
     /// Mirrors the pointer-taking `TCity::AddTransportedItems` overload.
     pub fn add_transported_items(&mut self, amounts: &ResourceTable<i16>) {
         for (resource, amount) in amounts {
-            self.stockpile.credit(resource, *amount);
+            self.stockpile.wrapping_add(resource, *amount);
         }
         self.clear_precious_metal_stock();
     }
@@ -34,7 +32,7 @@ impl CityState {
             amount = available_capacity;
         }
 
-        self.stockpile.credit(resource, amount);
+        self.stockpile.wrapping_add(resource, amount);
         nation.update_need_target(resource, nation.need_target_by_type[resource] + amount);
         amount
     }
@@ -46,8 +44,10 @@ impl CityState {
             return false;
         }
 
-        self.adjust_stock(ResourceKind::Lumber, -1);
-        self.adjust_stock(ResourceKind::Steel, -1);
+        self.stockpile
+            .wrapping_add_and_verify(ResourceKind::Lumber, -1);
+        self.stockpile
+            .wrapping_add_and_verify(ResourceKind::Steel, -1);
         nation.capacities.transport += 1;
         true
     }
@@ -59,8 +59,10 @@ impl CityState {
             return false;
         }
 
-        self.adjust_stock(ResourceKind::Lumber, -3);
-        self.adjust_stock(ResourceKind::Fabric, -1);
+        self.stockpile
+            .wrapping_add_and_verify(ResourceKind::Lumber, -3);
+        self.stockpile
+            .wrapping_add_and_verify(ResourceKind::Fabric, -1);
         nation.capacities.trade_offer += 1;
         true
     }
@@ -109,12 +111,12 @@ impl CityState {
     }
 
     fn clear_precious_metal_stock(&mut self) {
-        self.stockpile.set_nonnegative(ResourceKind::Gold, 0);
-        self.stockpile.set_nonnegative(ResourceKind::Gems, 0);
+        self.stockpile[ResourceKind::Gold] = 0;
+        self.stockpile[ResourceKind::Gems] = 0;
     }
 
     pub(crate) fn adjust_stock(&mut self, resource: ResourceKind, delta: i16) {
-        self.stockpile.credit(resource, delta);
+        self.stockpile.wrapping_add(resource, delta);
     }
 }
 

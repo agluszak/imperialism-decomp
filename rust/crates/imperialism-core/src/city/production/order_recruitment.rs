@@ -64,9 +64,15 @@ pub(crate) fn set_recruit_quantity(
     }
     progress.quantity = quantity;
 
-    stockpile.credit(spec.primary.resource, -(spec.primary.per_unit() * delta));
+    stockpile.wrapping_add_and_verify(
+        spec.primary.resource,
+        (spec.primary.per_unit() * delta).wrapping_neg(),
+    );
     if let Some(secondary) = spec.secondary {
-        stockpile.credit(secondary.resource, -(secondary.per_unit() * delta));
+        stockpile.wrapping_add_and_verify(
+            secondary.resource,
+            (secondary.per_unit() * delta).wrapping_neg(),
+        );
     }
     population.remove_population(spec.workforce, delta);
     let cash_change = i32::from(spec.cash_per_unit) * i32::from(delta);

@@ -23,6 +23,7 @@ from tools.runtime.wine import (
     prefix_environment,
     runtime_provenance,
     windows_paths,
+    wine_run_lock,
     worktree_prefix,
 )
 
@@ -268,6 +269,13 @@ def execute_run(
     config: RunConfig, dependencies: SessionDependencies | None = None
 ) -> HostResult:
     """Execute one prepared attempt through the selected narrow transport."""
+    with wine_run_lock():
+        return _execute_run(config, dependencies)
+
+
+def _execute_run(
+    config: RunConfig, dependencies: SessionDependencies | None = None
+) -> HostResult:
     deps = dependencies or SessionDependencies()
     executable = deps.executable_provider()
     if not executable.is_file():

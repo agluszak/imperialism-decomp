@@ -56,7 +56,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::Warehouse);
     let oil_drilling_available = state.technology().oil_drilling_available();
-    let (title_font, title_layout, _) = assets
+    let (title_font, title_layout, title_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -64,7 +64,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
             alignment: 1,
         })
         .expect("retail Warehouse title text style");
-    let (value_font, value_layout, _) = assets
+    let (value_font, value_layout, value_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -79,6 +79,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
         Text::new(building_name),
         title_font,
         title_layout,
+        title_line_height,
         TextColor(text_color),
     ));
 
@@ -89,6 +90,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
             Text::new(""),
             value_font.clone(),
             value_layout,
+            value_line_height,
             TextColor(text_color),
         ));
         stocks.push(WarehouseStockControl {
@@ -103,6 +105,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
             Text::new(""),
             value_font.clone(),
             value_layout,
+            value_line_height,
             TextColor(text_color),
         ));
     }
@@ -379,11 +382,11 @@ pub(in crate::ui::city) fn sync_food_dialog(
             continue;
         }
         let city = &session.0.nations().major(nation).city;
-        let status = session.0.city_order_status(nation, FOOD_ORDER.order);
+        let quantity = session.0.city_order_quantity(nation, FOOD_ORDER.order);
         texts
             .get_mut(view.quantity)
             .expect("Food Processing order control belongs to its dialog")
-            .0 = status.quantity.to_string();
+            .0 = quantity.to_string();
         for (entity, visible) in [
             (view.labor, city.population.strength() >= 2),
             (view.grain, city.stockpile[ResourceKind::Grain] >= 2),
@@ -415,11 +418,11 @@ pub(in crate::ui::city) fn sync_power_dialog(
         if !session.is_changed() && !view.is_added() {
             continue;
         }
-        let status = session.0.city_order_status(nation, POWER_ORDER.order);
+        let quantity = session.0.city_order_quantity(nation, POWER_ORDER.order);
         texts
             .get_mut(view.quantity)
             .expect("Power Plant order control belongs to its dialog")
-            .0 = status.quantity.to_string();
+            .0 = quantity.to_string();
     }
 }
 
@@ -436,13 +439,13 @@ pub(in crate::ui::city) fn sync_transport_capacity_dialog(
             continue;
         }
         let city = &session.0.nations().major(nation).city;
-        let status = session
+        let quantity = session
             .0
-            .city_order_status(nation, TRANSPORT_CAPACITY_ORDER.order);
+            .city_order_quantity(nation, TRANSPORT_CAPACITY_ORDER.order);
         texts
             .get_mut(view.quantity)
             .expect("Transport order control belongs to its dialog")
-            .0 = status.quantity.to_string();
+            .0 = quantity.to_string();
         for (entity, visible) in [
             (view.labor, city.population.strength() >= 2),
             (view.lumber, city.stockpile[ResourceKind::Lumber] < 1),
@@ -473,11 +476,13 @@ pub(in crate::ui::city) fn sync_population_dialog(
         }
         let major = session.0.nations().major(nation);
         let city = &major.city;
-        let status = session.0.city_order_status(nation, POPULATION_ORDER.order);
+        let quantity = session
+            .0
+            .city_order_quantity(nation, POPULATION_ORDER.order);
         texts
             .get_mut(view.quantity)
             .expect("Population order control belongs to its dialog")
-            .0 = status.quantity.to_string();
+            .0 = quantity.to_string();
         for (entity, resource) in [
             (view.food, ResourceKind::Food),
             (view.clothing, ResourceKind::Clothing),

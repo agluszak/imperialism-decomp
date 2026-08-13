@@ -6,6 +6,7 @@ import argparse
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -27,7 +28,14 @@ from tools.runtime.runner import format_console_summary
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-RESULT_DIR = REPO_ROOT / "build-runtime-tests" / "runtime-results"
+
+
+def runtime_result_dir() -> Path:
+    override = os.environ.get("IMPERIALISM_RUNTIME_RESULT_DIR")
+    return Path(override) if override else REPO_ROOT / "build-runtime-tests" / "runtime-results"
+
+
+RESULT_DIR = runtime_result_dir()
 
 
 def add_run_arguments(parser: argparse.ArgumentParser) -> None:

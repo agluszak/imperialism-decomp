@@ -22,6 +22,17 @@ pub enum CivilianUnitKind {
 
 impl CivilianUnitKind {
     pub const LENGTH: usize = enum_map::enum_len::<Self>();
+    pub const ALL: [Self; 9] = [
+        Self::Miner,
+        Self::Prospector,
+        Self::Farmer,
+        Self::Forester,
+        Self::Engineer,
+        Self::Rancher,
+        Self::Fisherman,
+        Self::Developer,
+        Self::Driller,
+    ];
 }
 
 pub type CivilianUnitTable<T> = EnumMap<CivilianUnitKind, T>;
@@ -458,7 +469,6 @@ impl CivilianUnitState {
     pub const fn location(&self) -> CivilianLocation {
         self.location
     }
-
     pub const fn unit_type(&self) -> CivilianUnitKind {
         self.unit_type
     }

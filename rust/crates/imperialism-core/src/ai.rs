@@ -208,20 +208,6 @@ pub struct AiDevelopmentPressureState {
     pub(crate) active_mission_pressure_average_bits: u32,
 }
 
-impl AiDevelopmentPressureState {
-    pub(crate) fn expansion_pressure_per_compatible_region(self) -> f32 {
-        f32::from_bits(self.expansion_pressure_per_compatible_region_bits)
-    }
-
-    pub(crate) fn average_unit_divergence_per_owned_region(self) -> f32 {
-        f32::from_bits(self.average_unit_divergence_per_owned_region_bits)
-    }
-
-    pub(crate) fn active_mission_pressure_average(self) -> f32 {
-        f32::from_bits(self.active_mission_pressure_average_bits)
-    }
-}
-
 /// An AI major's current use of one province or live sea/port-zone target.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]

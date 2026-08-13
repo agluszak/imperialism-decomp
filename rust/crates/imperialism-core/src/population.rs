@@ -137,10 +137,12 @@ impl CityState {
         let mut shortage = false;
         for (resource, amount) in STRIKE_RESOURCES.into_iter().zip(consumption) {
             if self.stockpile[resource] < amount {
-                self.stockpile.set_nonnegative(resource, 0);
+                self.stockpile[resource] = 0;
+                self.stockpile.verify_stocks();
                 shortage = true;
             } else {
-                self.stockpile.debit_clamped(resource, amount);
+                self.stockpile
+                    .wrapping_add_and_verify(resource, amount.wrapping_neg());
             }
         }
         shortage
@@ -287,11 +289,12 @@ impl PopulationState {
         if unmet != 0 {
             let canned = stocks[ResourceKind::Food];
             if unmet < canned {
-                stocks.debit_clamped(ResourceKind::Food, unmet);
+                stocks.wrapping_add_and_verify(ResourceKind::Food, unmet.wrapping_neg());
                 unmet = 0;
             } else {
                 unmet -= canned;
-                stocks.set_nonnegative(ResourceKind::Food, 0);
+                stocks[ResourceKind::Food] = 0;
+                stocks.verify_stocks();
             }
 
             if unmet != 0 {
@@ -400,12 +403,16 @@ impl FoodRemainders {
     }
 
     fn write_back(self, stocks: &mut crate::Stockpile) {
-        stocks.set_nonnegative(ResourceKind::Grain, self.grain);
-        stocks.set_nonnegative(ResourceKind::Fruit, self.fruit);
+        stocks[ResourceKind::Grain] = self.grain;
+        stocks.verify_stocks();
+        stocks[ResourceKind::Fruit] = self.fruit;
+        stocks.verify_stocks();
 
         if self.animal == 0 {
-            stocks.set_nonnegative(ResourceKind::Livestock, 0);
-            stocks.set_nonnegative(ResourceKind::Fish, 0);
+            stocks[ResourceKind::Livestock] = 0;
+            stocks.verify_stocks();
+            stocks[ResourceKind::Fish] = 0;
+            stocks.verify_stocks();
             return;
         }
 
@@ -428,8 +435,10 @@ impl FoodRemainders {
             fish -= shift;
             livestock += shift;
         }
-        stocks.set_nonnegative(ResourceKind::Livestock, livestock);
-        stocks.set_nonnegative(ResourceKind::Fish, fish);
+        stocks[ResourceKind::Livestock] = livestock;
+        stocks.verify_stocks();
+        stocks[ResourceKind::Fish] = fish;
+        stocks.verify_stocks();
     }
 }
 

@@ -39,9 +39,7 @@ impl TownState {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CityState {
-    /// Boxed to keep the dense fixed order tables out of already-large
-    /// full-state stack frames.
-    pub orders: Box<CityOrders>,
+    pub orders: CityOrders,
     pub power_plant_upgrade_queued: bool,
     pub food_substitution_count: i16,
     pub starvation_population_loss: i16,
@@ -88,7 +86,7 @@ impl CityState {
         _human: bool,
     ) -> Self {
         Self {
-            orders: Box::default(),
+            orders: CityOrders::default(),
             power_plant_upgrade_queued: false,
             food_substitution_count: 0,
             starvation_population_loss: 0,
@@ -116,34 +114,35 @@ impl CityState {
     }
 }
 
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize)]
+/// City stock counters. Retail stores these as `short` and uses 16-bit wrap;
+/// [`Self::verify_stocks`] is the explicit clamp from `TCity::VerifyStocks`.
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
 pub struct Stockpile(ResourceTable<i16>);
 
-impl<'de> Deserialize<'de> for Stockpile {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        Ok(Self::from_table(ResourceTable::deserialize(deserializer)?))
-    }
-}
-
 impl Stockpile {
-    pub fn from_table(mut amounts: ResourceTable<i16>) -> Self {
-        amounts
-            .values_mut()
-            .for_each(|amount| *amount = (*amount).max(0));
+    pub fn from_table(amounts: ResourceTable<i16>) -> Self {
         Self(amounts)
     }
-    pub(crate) fn credit(&mut self, resource: crate::ResourceKind, amount: i16) {
-        self.0[resource] = self.0[resource].saturating_add(amount).max(0);
+
+    /// Retail `TCity::VerifyStocks`: clamp each negative stock to 0.
+    pub fn verify_stocks(&mut self) {
+        for amount in self.0.values_mut() {
+            if *amount < 0 {
+                *amount = 0;
+            }
+        }
     }
-    pub(crate) fn debit_clamped(&mut self, resource: crate::ResourceKind, amount: i16) {
-        self.0[resource] = self.0[resource].saturating_sub(amount).max(0);
+
+    pub(crate) fn wrapping_add(&mut self, resource: crate::ResourceKind, amount: i16) {
+        self.0[resource] = self.0[resource].wrapping_add(amount);
     }
-    pub(crate) fn set_nonnegative(&mut self, resource: crate::ResourceKind, amount: i16) {
-        self.0[resource] = amount.max(0);
+
+    /// Wrap, then clamp every negative stock. Retail `AddToCityStockCounterAndRefresh`
+    /// and each `SetQuantity` / `Produce` stock mutation.
+    pub(crate) fn wrapping_add_and_verify(&mut self, resource: crate::ResourceKind, amount: i16) {
+        self.wrapping_add(resource, amount);
+        self.verify_stocks();
     }
 }
 
@@ -154,7 +153,6 @@ impl std::ops::Index<crate::ResourceKind> for Stockpile {
     }
 }
 
-#[cfg(test)]
 impl std::ops::IndexMut<crate::ResourceKind> for Stockpile {
     fn index_mut(&mut self, resource: crate::ResourceKind) -> &mut Self::Output {
         &mut self.0[resource]
@@ -166,10 +164,19 @@ mod tests {
     use super::*;
 
     #[test]
-    fn stockpile_deserialization_normalizes_each_resource_once() {
-        let serialized = serde_json::to_string(&ResourceTable::from_array([-1; 23])).unwrap();
-        let stockpile: Stockpile = serde_json::from_str(&serialized).unwrap();
+    fn stockpile_wraps_and_verify_stocks_clamps_negatives() {
+        let mut stockpile = Stockpile::from_table(ResourceTable::from_array([-1; 23]));
+        assert_eq!(stockpile[ResourceKind::Paper], -1);
 
+        stockpile.wrapping_add(ResourceKind::Paper, 1);
+        assert_eq!(stockpile[ResourceKind::Paper], 0);
+        stockpile.wrapping_add(ResourceKind::Paper, -1);
+        assert_eq!(stockpile[ResourceKind::Paper], -1);
+        stockpile[ResourceKind::Paper] = i16::MAX;
+        stockpile.wrapping_add(ResourceKind::Paper, 1);
+        assert_eq!(stockpile[ResourceKind::Paper], i16::MIN);
+
+        stockpile.verify_stocks();
         assert_eq!(stockpile[ResourceKind::Paper], 0);
         assert!(crate::all_resources().all(|resource| stockpile[resource] >= 0));
     }

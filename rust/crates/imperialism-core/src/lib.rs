@@ -10,8 +10,8 @@ mod city_site;
 mod city_transport_phase;
 mod civilian_phase;
 mod civilian_work;
-mod combat_movement_phase;
 mod create_random_game;
+mod deal_book;
 mod difficulty;
 mod diplomacy;
 mod game;
@@ -20,8 +20,6 @@ mod map;
 mod map_geometry;
 mod market;
 mod military;
-mod military_cleanup_phase;
-mod military_phase;
 mod nation_economy;
 mod nations;
 mod news;
@@ -41,9 +39,7 @@ mod territory;
 #[cfg(test)]
 pub(crate) mod test_support;
 mod trade;
-mod trade_phase;
 mod turn_flow;
-mod turn_tail;
 mod units;
 
 pub use ai::{
@@ -52,16 +48,16 @@ pub use ai::{
 };
 pub use calendar::TurnCalendar;
 pub use city::{
-    BuildingWindowState, CIVILIAN_RESOURCE_SPECIALTIES, CityFacilitySlot, CityOrderId,
-    CityOrderStatus, CityOrders, CityState, ExpandableFacility, ExpansionOrderTable,
-    ItemOrderTable, ManufacturedItem, MilitaryRecruitOrderState, MilitaryRecruitOrderTable,
-    MilitaryRecruitmentCategory, OrderLimit, PowerPlantOrderState, ProductionConstraint,
-    ProductionProgress, RecruitmentOrderSpec, RequestedCityOrderState, ResourceCost, ShipOrderSlot,
-    ShipOrderState, ShipOrderTable, Stockpile, TownState, TrainingLevel, TrainingOrderTable,
+    BuildingWindowState, CIVILIAN_RESOURCE_SPECIALTIES, CityFacilitySlot, CityOrderId, CityOrders,
+    CityState, ExpandableFacility, ExpansionOrderTable, ItemOrderTable, ManufacturedItem,
+    MilitaryRecruitOrderState, MilitaryRecruitOrderTable, MilitaryRecruitmentCategory, OrderLimit,
+    PowerPlantOrderState, ProductionConstraint, ProductionProgress, RecruitmentOrderSpec,
+    RequestedCityOrderState, ResourceCost, ShipMaterials, ShipOrderSlot, ShipOrderState,
+    ShipOrderTable, Stockpile, TownState, TrainingLevel, TrainingOrderTable,
     civilian_recruitment_spec, military_recruitment_spec, resource_development_yield,
     ship_display_stats, ship_order_costs,
 };
-pub(crate) use city::{EXPANSION_INPUTS, ItemInputs, item_order_spec};
+pub(crate) use city::{EXPANSION_INPUTS, ItemInputs};
 pub use city_site::{
     CapitalSite, CitySiteError, confirm_capital_site,
     enter_strategic_map_without_capital_selection, is_valid_secondary_nation_home_tile_candidate,
@@ -70,6 +66,11 @@ pub use city_site::{
 };
 pub use civilian_work::{CivilianWorkOrder, RailSegment, TurnsRemaining};
 pub use create_random_game::{RandomGameNames, create_random_game};
+pub use deal_book::{
+    DealBookAidLine, DealBookBidRow, DealBookCategory, DealBookCategoryRow, DealBookDealLine,
+    DealBookHistory, DealBookHistoryGroup, DealBookHistoryRow, DealBookOfferRow, DealBookTotals,
+    deal_book_tab_commodity, deal_book_tab_count,
+};
 pub use difficulty::Difficulty;
 pub use diplomacy::{
     DiplomacyGrant, DiplomacyPolicy, DiplomacyState, DiplomaticCongressState,
@@ -150,10 +151,8 @@ pub use technology::{
     TechnologyResearchStatus, TechnologyState, UniversityTechnologyState,
 };
 pub use territory::{CountryStatus, ProvinceState};
-pub use trade::{PlayerTradeOrder, TransportAllocation};
-pub use turn_flow::{
-    AdvanceTurnOutcome, FlowStop, GameScreen, PhaseCode, ScenarioMapId, TurnEffect, TurnState,
-};
+pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};
+pub use turn_flow::{PhaseCode, ScenarioMapId, TurnState};
 pub use units::{
     CivilianLocation, CivilianUnitKind, CivilianUnitState, CivilianUnitTable, MilitaryOrder,
     MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState, MilitaryUnitTable, UnitIdAllocator,

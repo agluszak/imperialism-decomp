@@ -697,6 +697,8 @@ JSON_Value* CaptureMarket() {
     rowObject.Set("offer_count", static_cast<int>(row.numOffers));
     rowObject.Set("amount_offered", static_cast<int>(row.amountOffered));
     rowObject.Set("adjusted_offer_count", row.adjustedNumOffers);
+    rowObject.Set("current_offer_by_nation",
+                  CaptureShortArray(&row.tradeOfferCells[0], kNationSlotCount));
     JsonArray maximumOfferRow;
     const short* maximumByNation = &row.tradeOfferCells[46];
     for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
@@ -2060,18 +2062,32 @@ void RequireExactOrder(TProductionOrder* order, TCity* city, CRuntimeClass* expe
 JSON_Value* CaptureProductionProgress(const TProductionOrder* order) {
   JsonObject progress;
   progress.Set("quantity", static_cast<int>(order->quantity));
-  progress.Set("tracking_by_resource", CaptureResourceTable(order->trackingSlots));
-  progress.Set("reserved_workforce", static_cast<int>(order->reservedWorkforce));
   progress.Set("limiting_constraint", ProductionConstraintName(order->limitingConstraint));
-  progress.Set("accumulated_value", order->accumulatedValue);
   return progress.Release();
+}
+
+JSON_Value* CaptureTrackingByResource(const TProductionOrder* order) {
+  return CaptureResourceTable(order->trackingSlots);
 }
 
 JSON_Value* CaptureRequestedOrder(const TItemOrder* order) {
   JsonObject state;
   state.Set("progress", CaptureProductionProgress(order));
   state.Set("requested_quantity", static_cast<int>(order->requestedQuantity4c));
+  state.Set("tracking_by_resource", CaptureTrackingByResource(order));
+  state.Set("accumulated_value", order->accumulatedValue);
   return state.Release();
+}
+
+JSON_Value* CaptureShipMaterials(const TProductionOrder* order) {
+  JsonObject materials;
+  materials.Set("lumber", static_cast<int>(order->trackingSlots[kResourceLumber]));
+  materials.Set("fabric", static_cast<int>(order->trackingSlots[kResourceFabric]));
+  materials.Set("arms", static_cast<int>(order->trackingSlots[kResourceArms]));
+  materials.Set("steel", static_cast<int>(order->trackingSlots[kResourceSteel]));
+  materials.Set("coal", static_cast<int>(order->trackingSlots[kResourceCoal]));
+  materials.Set("fuel", static_cast<int>(order->trackingSlots[kResourceFuel]));
+  return materials.Release();
 }
 
 JSON_Value* CaptureItemOrders(TCity* city) {
@@ -2193,6 +2209,7 @@ JSON_Value* CaptureShipOrders(TCity* city) {
     JsonObject state;
     state.Set("ship_type", ShipTypeName(shipType));
     state.Set("progress", CaptureProductionProgress(order));
+    state.Set("materials", CaptureShipMaterials(order));
     orders.Set(kSlotNames[slot], state.Release());
   }
   return orders.Release();

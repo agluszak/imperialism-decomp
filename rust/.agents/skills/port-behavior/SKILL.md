@@ -24,11 +24,11 @@ Run from `rust/` and obey `AGENTS.md`.
    compiler control flow.
 6. Compare complete post-state, semantic result, and required ordered non-state effects. Preserve the
    native evidence kind: `retail_fixture_oracle` is reconstruction agreement, not direct retail
-   proof. Validate the published name, seed, status, evidence kind, required captures, and unknown
-   fields strictly. Add one C++ `NativeTransition` case plus table row and one ignored
-   `compare_native` integration test beside the domain. Do not add a Python catalog entry for an
-   ordinary model transition. Use a small corpus of deliberately constructed rule cases; reserve
-   stable seed corpora for RNG-heavy behavior.
+   proof. Add one C++ `NativeTransition` case plus table row and one ignored `compare_native`
+   integration test beside the domain. `compare_native` must consume that run's unique output; do not
+   publish through a shared result file. Do not add a Python catalog entry for an ordinary model
+   transition. Use a small corpus of deliberately constructed rule cases; reserve stable seed corpora
+   for RNG-heavy behavior.
 7. Classify failures correctly: external decode/malformed payload → `Result`; legal gameplay
    rejection → typed outcome or narrow domain error; broken internal invariant → structure, assert,
    or `expect`, not a shared rule error.

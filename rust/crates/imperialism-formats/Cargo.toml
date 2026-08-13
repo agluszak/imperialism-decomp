@@ -10,6 +10,7 @@ enum-map.workspace = true
 pelite.workspace = true
 serde.workspace = true
 thiserror.workspace = true
+ttf-parser = "0.25.1"
 
 [dev-dependencies]
 anyhow.workspace = true

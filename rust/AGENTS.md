@@ -1,141 +1,92 @@
-# Imperialism Rust guide
+# Imperialism Rust workspace
 
-This directory is an independent Cargo workspace for the Rust implementation. Follow the shared
-repository rules in `../AGENTS.md` plus this guide.
+This is an independent Cargo workspace. Follow `../AGENTS.md` first; this file contains only
+Rust-specific invariants.
 
 ## Architecture
 
-Keep these four crates. Do not split the core into subsystem microcrates, move authoritative state
-into ECS, or introduce a second snapshot-domain model.
+Current crate ownership:
 
-- `imperialism-core` owns authoritative deterministic game state, rules, and typed IDs. It must not
-  depend on Bevy. Direct domain operations return concrete outputs needed by current callers; emit
-  non-state effects only when an existing consumer or oracle comparison requires them.
-- `imperialism-formats` owns retail-file parsing, import, normalization, and retail-format ugliness.
-- `imperialism-app` owns Bevy presentation, input, audio, and lifecycle. ECS is a disposable
-  projection, not the gameplay database.
-- `imperialism-testkit` owns canonical snapshot comparison and process-isolated C++ oracle tooling.
-- Port retail behavior, not the recovered C++ class hierarchy, ownership model, MFC types, ABI, or
-  incidental control flow.
+- `imperialism-core`: authoritative deterministic game state, rules, and typed domain IDs. No Bevy.
+- `imperialism-formats`: retail file decoding/import and retail representation quirks.
+- `imperialism-app`: Bevy presentation, input, audio, and lifecycle.
+- `imperialism-testkit`: process-isolated C++ oracle and semantic comparison support.
+
+Crate count follows actual ownership. Do not split the core into subsystem crates or introduce
+another authoritative state model without a concrete need.
 
 Keep domain types beside their behavior modules (`game`, `map`, `nations`, `city/`, `diplomacy`,
 `turn_flow`, and so on). City production orders live under `city/`; facility slots are
 `CityFacilitySlot`. Export a curated crate-root surface—do not reintroduce broad `state::*` or
 `production::*` globs or a prelude. In formats, keep retail binary parse separate from `GameState`
-projection. In the app, keep city UI split by retail dialog under `ui/city/`.
+projection. In the app, keep city UI split by retail dialog under `ui/city/`. Keep the strategic map
+split by retail draw stage under `ui/strategic_map/` (`terrain`, `borders`, `overlays`, `units`).
 
-Keep retail compatibility concessions at format, import, or oracle boundaries. Do not leak raw offsets,
-weak identifiers, binary-layout constraints, or C++-shaped APIs into the domain model merely because
-the decomp uses them.
+Port retail behavior, not the recovered C++ architecture. C++ class hierarchy, ownership, ABI,
+integer storage widths, sentinels, offsets, and control flow are evidence, not Rust design. Keep
+retail-layout ugliness at format/import/oracle boundaries unless it is itself observable game
+semantics.
 
-## Domain operations and failures
+## Domain model
 
-- Prefer direct typed methods on `GameState`. Do not introduce a universal `GameCommand`, command
-  bus, event-sourcing layer, or event for every private helper.
-- Core owns rules and queries; the app owns presentation decisions. Expose queries such as
-  `first_idle_civilian_tile` and pure helpers such as `viewport_origin_centered_on`; do not put
-  "enter screen X" methods on `GameState`. When retail persists a view field, keep the field, but
-  let the app choose when to write it. Refresh projected UI from the facts it displays (for
-  example a strategic base-terrain key of view origin plus visible tile rendering, or city
-  session/selection/`Added` change detection), not from broad dirty-marker components or
-  `GameSession`-wide full redraws.
-- Recovered resource evidence is compiled into code-defined BSN scenes containing native Bevy
-  components. Keep repeated geometry and retail asset access in the small handwritten scene helpers;
-  generated code should remain declarative and callers should use `Commands::spawn_scene`. Use
-  `RetailTag` only to bind generated retail controls to typed application behavior immediately after
-  spawning. After that, `Entity` and `ChildOf` are the only runtime identity and hierarchy. Do not
-  introduce another generic UI representation, node index, registry, imperative spawner, or loader.
-- Separate planning from mutation for order UI: use `can_set_city_order_quantity` (or a plan API)
-  to decide Accept enablement; do not mutate-and-rollback authoritative state as a probe.
-- Return operation-specific results when callers need them. Keep effects only for ordered
-  observables absent from authoritative state, such as notifications, sounds, modal prompts, or
-  acknowledgement requests. Do not emit effects that merely restate state mutations.
-- Keep app flow `input → one core operation → FlowStop / results / effects → UI projection`.
-  Turn sequencing belongs in core through `advance_turn_step` / `continue_turn`, not in a Bevy
-  schedule. The app-facing stop is [`FlowStop`]; do not ask the UI to restate a gate the phase
-  already encodes (`dismiss_blocking_screen`). Do not emit a show-screen effect that merely
-  restates `FlowStop::Show`. Diplomacy-map and offer-sheet stay as `TurnEffect` on
-  `Continues` (phase advances while UI shows); EasyTurn does not gate on them like
-  DealBook/Newspaper.
-- Supported retail saves and bundled repository data are trusted inputs. Parse their established
-  shapes directly and panic or assert when those assumptions are broken; do not build malformed-
-  input validation APIs around them. Truly recoverable external I/O failures may still return
-  `Result`. Legal gameplay rejection returns a typed outcome or narrow domain error the UI can use.
-- Trusted constructors, repository-owned projections, and direct operations establish and preserve
-  their invariants where state is written. Do not wrap them in whole-state `validate_*` scans before
-  or after the work; behavior tests should assert the resulting semantic state directly.
+- Keep gameplay state and rules in `imperialism-core`. Prefer direct typed operations and queries over
+  command buses, event-sourcing layers, generic validators, or framework-like indirection.
+- Core owns deterministic sequencing and mutation. The app owns presentation decisions and projects
+  core state into Bevy; ECS is not the gameplay database.
+- Keep one authoritative representation for each fact and derive secondary facts. Prefer semantic
+  Rust types, typed IDs, and `Option` over raw retail storage conventions.
+- Return ordinary values or narrow typed outcomes. Represent effects only for ordered observable
+  output not already present in state, such as sounds, notifications, or modal/acknowledgement work.
+  Do not emit events that merely restate mutations.
+- Preserve retail iteration order, collection identity, RNG state, and other observable semantics.
+  Do not sort or normalize state merely to make comparison easier.
+- Treat supported retail files and repository-owned fixtures as trusted inputs. Use `Result` for
+  genuinely recoverable I/O/decoding failures, typed outcomes for legal gameplay rejection, and
+  assertions/`expect` for broken internal invariants. Do not repeatedly validate whole state around
+  ordinary operations.
+- Use ordinary Rust arithmetic and widths unless retail-visible overflow or storage width is proven
+  to matter to behavior.
+- Do not clone `GameState` to answer a query.
+- Separate planning from mutation for order UI: compare the needed quantity against
+  `city_order_limit`; do not mutate-and-rollback authoritative state as a probe.
 
-## Domain types and arithmetic
+## Production completeness
 
-- Treat recovered C++ widths, signedness, sentinels, and packed fields as format evidence, not as
-  default Rust domain types. Choose core types from the game rule they represent.
-- Keep `Legacy*` save structs close to the serialized C++ definitions, including their widths,
-  signedness, sentinels, packing, and list order. Project directly into semantic core types only
-  where the runtime model genuinely differs; assume trusted retail values are valid and do not add
-  checked conversion or validate-then-normalize passes. In `imperialism-core`, represent absence
-  with `Option` and do not expose raw retail storage as a domain API.
-- One retail fact gets one domain field. Example: tile rivers are the saved `riverSpriteCode`
-  (`TileRendering.river_sprite`); connection/flow codes are derived from that sprite and must not
-  be stored beside it. A raw field may exist in the `Legacy*` representation and its semantic form
-  in `GameState`, but do not add a second normalized legacy DTO or validation pass between them.
-- Use ordinary arithmetic for domain rules. Only use wrapping or fixed-width overflow when retail
-  behavior demonstrably depends on that overflow as an observable rule; document that evidence at
-  the narrow boundary where it matters.
+Do not put code specialized to one fixture, turn, nation, difficulty, or scenario in production.
 
-## Differential fidelity
+An incomplete gameplay feature remains disabled. A non-working feature should look non-working; it
+must not mutate half the world and pretend to be an implementation.
 
-- Preserve capture collection order and semantic IDs. Native transitions compare complete
-  `before`/`case`/`after` state, the semantic operation result, and any required ordered non-state
-  effects; do not normalize order. Model `before`/`after` travel as retail `.imp` saves plus a small
-  ephemeral JSON overlay for session-only fields.
-- Validate published runtime result envelopes strictly: name, seed, status, evidence kind, required
-  captures, and unknown capture fields. Model differentials publish under `native_transition_oracle`.
-- Preserve the native oracle's evidence kind. `retail_fixture_oracle` proves agreement with the
-  reconstructed C++ executable from a retail-derived fixture; only `retail_differential` certifies
-  that behavior against the original executable.
-- Advance turns only through `advance_turn_step`. Unported alert, acknowledgement, and phase work
-  stops at the current phase; do not mutate to the next phase before its authoritative work and
-  effects exist.
-- Add a differential by writing one C++ case function plus table row and one Rust integration test
-  beside the domain; do not add Python catalog entries for ordinary model transitions.
+No production `first_turn_*` APIs.
 
-## Collection order and identities
+Do not preserve an abstraction merely because tests were built around it. Testing infrastructure has
+no compatibility contract.
 
-- Nation, major-nation, minor-nation, resource, production, and map tables are fixed-position
-  semantic collections. Preserve their indexes exactly.
-- Compare `GameState` vectors in captured order; do not sort or normalize them in the comparator.
-  Recruitment currently preserves contiguous per-nation unit blocks.
-- `MilitaryUnitId` and `CivilianUnitId` come from retail save `persistent_id` values, and loaded army
-  mission references resolve to those persistent military IDs.
-- `ShipId` and `TaskForceId` are snapshot-local positions in preserved primary-list and queue order;
-  preserve those orders and rewrite every reference together. Legacy projection of non-empty retail
-  navy relationships remains unsupported until the save's references can be resolved independently.
-  `PhaseCode` remains an open numeric domain; type codes only as rules prove them.
+## Bevy UI
 
-## Behavioral work
+Use Bevy directly. Recovered UI should become native Bevy/BSN hierarchy, with handwritten code limited
+to behavior wiring and small reusable helpers. Do not add a parallel generic UI tree, node registry,
+loader, catalog, or imperative scene abstraction beside Bevy entities.
 
-- Prefer recovered C++ source and the existing process oracle when retail semantics matter.
-- Do not reach for Ghidra or `reccmp` merely because the repository contains them. Binary-level
-  investigation is a deliberate cross-implementation/reverse-engineering task, not part of normal
-  Rust or Bevy development.
-- Put deterministic behavior in `imperialism-core` as direct operations that return the concrete
-  output current callers need. Keep Bevy input and presentation outside the game model.
-- Compare complete post-state, operation results, and required ordered non-state effects, not only
-  the symptom or a selected field.
-- Add the smallest focused Rust test that proves the primary behavior. Do not accumulate edge-case
-  or representation-detail tests without a concrete regression they prevent. Add or extend a
-  differential oracle when the change asserts retail semantics.
-- Preserve deterministic RNG state, iteration order, and observable error behavior. Preserve a
-  retail integer width only when it is itself part of the observable rule; otherwise use the
-  semantic Rust type. Model retail save-format distinctions only when retail evidence requires them.
+Generated UI is generated: change the recovery evidence or generator, then regenerate it. Use the
+`ui-recovery` skill for that workflow.
 
-Load the `port-behavior` skill for cross-implementation gameplay work. Load `ui-recovery` for the
-View IR/native Bevy hierarchy pipeline. Do not create generic Rust or Bevy skills without a repeated,
-project-specific workflow that justifies them.
+City dialogs store concrete entity handles and update only their own controls. Do not replace that
+with generated binding structs, a registry, a second scene model, or another abstraction layer.
+
+## Retail fidelity
+
+Prefer recovered C++ source and the existing process oracle when retail semantics are uncertain. Use
+Ghidra or `reccmp` only for deliberate reverse-engineering work, not routine Rust development.
+
+When a change claims retail behavior, compare the complete relevant semantic state, operation result,
+and ordered non-state effects. Extend the existing oracle only when it cannot observe the required
+fact; do not create another protocol or harness for convenience. Use the `port-behavior` skill for
+cross-implementation gameplay work.
 
 ## Commands
 
-Run commands from `rust/`:
+Run from `rust/`:
 
 ```sh
 cargo fmt --all -- --check
@@ -143,13 +94,4 @@ cargo clippy --workspace --all-targets -- -D warnings
 cargo test --workspace
 ```
 
-Use the narrowest useful test during iteration, then run all three checks before committing. The C++
-oracle is invoked through `../decomp/`; never link the implementations.
-
-## Source and docs
-
-- Keep public types narrow and explicit; prefer typed IDs over loosely interpreted integers.
-- Keep unsafe code forbidden unless a separately reviewed boundary genuinely requires it.
-- Keep generated assets generated. Change the source evidence or generator, then regenerate.
-- Update `README.md` when launch/import/operator workflows change.
-- Record active follow-up work in Beads, not source TODO inventories or checked-in plans.
+Use the narrowest useful test while iterating, then run all three before committing.

@@ -7,6 +7,7 @@ use super::retail::{RetailTag, find_descendant};
 use crate::AppState;
 use bevy::picking::hover::Hovered;
 use bevy::prelude::*;
+use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::Activate;
 use imperialism_core::*;
@@ -206,7 +207,7 @@ fn bind_transport_screen(
     let nation = MajorNationId::from_nation(session.0.turn().active_nation)
         .expect("Transport screen requires an active major nation");
     session.0.rebuild_nation_resource_yields(nation);
-    let (font, layout, _) = assets
+    let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -220,9 +221,19 @@ fn bind_transport_screen(
         below_limit: assets.palette_color(0x33),
         at_limit: assets.palette_color(0x34),
     };
-    bind_transport_controls(&mut commands, *root, &children, &tags, font, layout, colors);
+    bind_transport_controls(
+        &mut commands,
+        *root,
+        &children,
+        &tags,
+        font,
+        layout,
+        line_height,
+        colors,
+    );
 }
 
+#[allow(clippy::too_many_arguments)]
 fn bind_transport_controls(
     commands: &mut Commands,
     root: Entity,
@@ -230,6 +241,7 @@ fn bind_transport_controls(
     tags: &Query<&RetailTag>,
     font: TextFont,
     layout: TextLayout,
+    line_height: LineHeight,
     colors: TransportColors,
 ) {
     let selected = find_descendant(root, fourcc!("tran"), children, tags);
@@ -265,6 +277,7 @@ fn bind_transport_controls(
             track_left,
             font.clone(),
             layout,
+            line_height,
             colors,
         ));
         if let Some((resource, unit_value)) = if binding.allocation == TransportAllocation::GOLD {
@@ -279,6 +292,7 @@ fn bind_transport_controls(
                 unit_value,
                 font.clone(),
                 layout,
+                line_height,
             ));
         }
     }
@@ -286,12 +300,18 @@ fn bind_transport_controls(
     let total = find_descendant(root, fourcc!("tota"), children, tags);
     commands
         .entity(total)
-        .apply_scene(transport_capacity_overlay(font.clone(), layout, colors));
+        .apply_scene(transport_capacity_overlay(
+            font.clone(),
+            layout,
+            line_height,
+            colors,
+        ));
     let cursor = find_descendant(root, fourcc!("curs"), children, tags);
     commands.entity(cursor).insert((
         Text::new(""),
         font,
         layout,
+        line_height,
         TextColor(Color::BLACK),
         TransportDisplay::Cursor,
     ));
@@ -318,6 +338,7 @@ fn transport_row_overlay(
     track_left: i32,
     font: TextFont,
     layout: TextLayout,
+    line_height: LineHeight,
     colors: TransportColors,
 ) -> impl Scene {
     bsn! {
@@ -367,6 +388,7 @@ fn transport_row_overlay(
                 Text("")
                 template(move |_context| Ok(font.clone()))
                 template(move |_context| Ok(layout))
+                template(move |_context| Ok(line_height))
                 TextColor(Color::BLACK)
                 Pickable::IGNORE
                 template(move |_context| Ok(TransportDisplay::RowCaption(allocation)))
@@ -380,6 +402,7 @@ fn transport_money_overlay(
     unit_value: i32,
     font: TextFont,
     layout: TextLayout,
+    line_height: LineHeight,
 ) -> impl Scene {
     bsn! {
         Children [
@@ -394,6 +417,7 @@ fn transport_money_overlay(
                 Text("")
                 template(move |_context| Ok(font.clone()))
                 template(move |_context| Ok(layout))
+                template(move |_context| Ok(line_height))
                 TextColor(Color::BLACK)
                 Pickable::IGNORE
                 template(move |_context| Ok(TransportDisplay::Money {
@@ -408,6 +432,7 @@ fn transport_money_overlay(
 fn transport_capacity_overlay(
     font: TextFont,
     layout: TextLayout,
+    line_height: LineHeight,
     colors: TransportColors,
 ) -> impl Scene {
     bsn! {
@@ -441,6 +466,7 @@ fn transport_capacity_overlay(
                 Text("")
                 template(move |_context| Ok(font.clone()))
                 template(move |_context| Ok(layout))
+                template(move |_context| Ok(line_height))
                 TextColor(Color::BLACK)
                 Pickable::IGNORE
                 template(move |_context| Ok(TransportDisplay::CapacityCaption))
@@ -488,22 +514,17 @@ fn sync_transport_values(
     for (display, text, mut node, mut visibility, color) in &mut displays {
         match *display {
             TransportDisplay::Row { allocation, .. } => {
-                let current = allocation_amount(allocation, |resource| {
-                    economy.need_current_by_type[resource]
-                });
-                *visibility = if current == 0 {
-                    Visibility::Hidden
-                } else {
+                let status = session.0.transport_row_status(nation, allocation);
+                *visibility = if status.adjustable {
                     Visibility::Visible
+                } else {
+                    Visibility::Hidden
                 };
             }
             TransportDisplay::RowCaption(allocation) => {
-                let target =
-                    allocation_amount(allocation, |resource| economy.need_target_by_type[resource]);
-                let current = allocation_amount(allocation, |resource| {
-                    economy.need_current_by_type[resource]
-                });
-                text.expect("Transport row caption has text").0 = format!("{target}  /  {current}");
+                let status = session.0.transport_row_status(nation, allocation);
+                text.expect("Transport row caption has text").0 =
+                    format!("{}  /  {}", status.allocated, status.available);
             }
             TransportDisplay::CapacityCaption => {
                 let capacities = economy.capacities;
@@ -531,14 +552,10 @@ fn sync_transport_values(
                 full_color,
             } => {
                 let (value, total) = match kind {
-                    TransportGaugeKind::Allocation(allocation) => (
-                        allocation_amount(allocation, |resource| {
-                            economy.need_target_by_type[resource]
-                        }),
-                        allocation_amount(allocation, |resource| {
-                            economy.need_current_by_type[resource]
-                        }),
-                    ),
+                    TransportGaugeKind::Allocation(allocation) => {
+                        let status = session.0.transport_row_status(nation, allocation);
+                        (status.allocated, status.available)
+                    }
                     TransportGaugeKind::Capacity => (
                         economy.capacities.reserved_transport,
                         economy.capacities.transport,
@@ -556,15 +573,13 @@ fn sync_transport_values(
                 below_color,
                 reached_color,
             } => {
-                let Some(limit) = transport_need_limit(major, allocation) else {
+                let status = session.0.transport_row_status(nation, allocation);
+                let Some(limit) = status.limit else {
                     *visibility = Visibility::Hidden;
                     continue;
                 };
-                let target = allocation_amount(allocation, |resource| {
-                    major.economy.need_target_by_type[resource]
-                });
                 *visibility = Visibility::Visible;
-                color.expect("Transport limit has a color").0 = if target < limit {
+                color.expect("Transport limit has a color").0 = if status.allocated < limit {
                     below_color
                 } else {
                     reached_color
@@ -573,19 +588,12 @@ fn sync_transport_values(
         }
     }
     for (entity, action, disabled) in &actions {
-        let current = allocation_amount(action.allocation, |resource| {
-            economy.need_current_by_type[resource]
-        });
-        let target = allocation_amount(action.allocation, |resource| {
-            economy.need_target_by_type[resource]
-        });
-        let enabled = current != 0
-            && if action.delta < 0 {
-                target > 0
-            } else {
-                target < current
-                    && economy.capacities.reserved_transport != economy.capacities.transport
-            };
+        let status = session.0.transport_row_status(nation, action.allocation);
+        let enabled = if action.delta < 0 {
+            status.can_decrease
+        } else {
+            status.can_increase
+        };
         if enabled == disabled {
             if enabled {
                 commands.entity(entity).remove::<InteractionDisabled>();
@@ -627,12 +635,8 @@ fn sync_transport_cursor(
             continue;
         };
         let stock = allocation_amount(allocation, |resource| major.city.stockpile[resource]);
-        let target =
-            allocation_amount(allocation, |resource| economy.need_target_by_type[resource]);
-        let current = allocation_amount(allocation, |resource| {
-            economy.need_current_by_type[resource]
-        });
-        let supply_headroom = (current - target).max(0);
+        let status = session.0.transport_row_status(nation, allocation);
+        let supply_headroom = (status.available - status.allocated).max(0);
         let capacity_headroom =
             if economy.capacities.reserved_transport <= economy.capacities.transport {
                 economy.capacities.transport - economy.capacities.reserved_transport
@@ -645,11 +649,12 @@ fn sync_transport_cursor(
             std::cmp::Ordering::Equal => "supply and capacity",
             std::cmp::Ordering::Greater => "capacity",
         };
-        let city_need = transport_need_limit(major, allocation)
+        let city_need = status
+            .limit
             .map_or_else(|| "".to_owned(), |need| format!("; city need {need}"));
         text.0 = format!(
-            "{}: city {stock}; allocated {target}; supply {current}; +{limit} max ({limiting}){city_need}",
-            label,
+            "{}: city {stock}; allocated {}; supply {}; +{limit} max ({limiting}){city_need}",
+            label, status.allocated, status.available,
         );
     }
 }
@@ -675,47 +680,4 @@ fn transport_gauge_width(value: i16, total: i16) -> f32 {
         value * (pixels_per_unit + 1.0)
     };
     width.clamp(0.0, 113.0).trunc()
-}
-
-fn transport_need_limit(major: &MajorNation, allocation: TransportAllocation) -> Option<i16> {
-    let city = &major.city;
-    let building = |slot| {
-        city.building_type(
-            slot,
-            &major.economy,
-            major.common.owned_region_count() as i32,
-        )
-    };
-    let deficit = if allocation == TransportAllocation::COTTON_AND_WOOL {
-        building(CityFacilitySlot::TextileMill) * 2
-            - city.stockpile[ResourceKind::Cotton]
-            - city.stockpile[ResourceKind::Wool]
-    } else if allocation == TransportAllocation::TIMBER {
-        building(CityFacilitySlot::LumberMill) * 2 - city.stockpile[ResourceKind::Timber]
-    } else if allocation == TransportAllocation::COAL {
-        building(CityFacilitySlot::SteelMill) - city.stockpile[ResourceKind::Coal]
-    } else if allocation == TransportAllocation::IRON {
-        building(CityFacilitySlot::SteelMill) - city.stockpile[ResourceKind::Iron]
-    } else if allocation == TransportAllocation::OIL {
-        building(CityFacilitySlot::OilRefinery) * 2 - city.stockpile[ResourceKind::Oil]
-    } else if allocation == TransportAllocation::FABRIC {
-        building(CityFacilitySlot::ClothingFactory) * 2 - city.stockpile[ResourceKind::Fabric]
-    } else if allocation == TransportAllocation::LUMBER {
-        building(CityFacilitySlot::FurnitureFactory) * 2 - city.stockpile[ResourceKind::Lumber]
-    } else if allocation == TransportAllocation::STEEL {
-        building(CityFacilitySlot::Metalworks) * 2 - city.stockpile[ResourceKind::Steel]
-    } else if allocation == TransportAllocation::FUEL {
-        building(CityFacilitySlot::PowerPlant) * 2 - city.stockpile[ResourceKind::Fuel]
-    } else if allocation == TransportAllocation::GRAIN {
-        city.population.predicted_need(ResourceKind::Grain) - city.stockpile[ResourceKind::Grain]
-    } else if allocation == TransportAllocation::FRUIT {
-        city.population.predicted_need(ResourceKind::Fruit) - city.stockpile[ResourceKind::Fruit]
-    } else if allocation == TransportAllocation::FISH_AND_LIVESTOCK {
-        city.population.predicted_need(ResourceKind::Livestock)
-            - city.stockpile[ResourceKind::Fish]
-            - city.stockpile[ResourceKind::Livestock]
-    } else {
-        return None;
-    };
-    Some(deficit.max(0))
 }

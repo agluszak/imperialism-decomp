@@ -5,18 +5,18 @@ use crate::ui::generated;
 use crate::ui::load_save::OpenFlagMenu;
 use crate::ui::random_setup::GameSession;
 use crate::ui::retail::{RetailTag, find_descendant};
-use crate::ui::strategic_map::{bind_strategic_base_terrain, sync_strategic_base_terrain};
+use crate::ui::strategic_map::{
+    bind_strategic_base_terrain, sync_strategic_base_terrain, sync_strategic_units,
+};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::Activate;
-use imperialism_core::{FlowStop, GameScreen, MajorNationId};
+use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::window::PrimaryWindow;
+use imperialism_core::MajorNationId;
 use imperialism_formats::{FourCc, TRADE, fourcc};
 
 #[derive(Component)]
 struct StrategicMapRoot;
-
-#[derive(Component)]
-struct TurnFlowRoot;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum GameScreenNavAction {
@@ -27,24 +27,11 @@ enum GameScreenNavAction {
     Diplomacy,
 }
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-enum TurnFlowAction {
-    FinishPlayerOrders,
-    DismissBlockingScreen,
-}
-
 pub(crate) struct GameShellPlugin;
 
 impl Plugin for GameShellPlugin {
     fn build(&self, app: &mut App) {
         app.add_observer(on_game_screen_activate)
-            .add_observer(
-                on_turn_flow_activate.run_if(
-                    in_state(AppState::StrategicMap)
-                        .or_else(in_state(AppState::DealBook))
-                        .or_else(in_state(AppState::Newspaper)),
-                ),
-            )
             .add_systems(
                 OnEnter(AppState::StrategicMap),
                 (
@@ -55,18 +42,63 @@ impl Plugin for GameShellPlugin {
                     .chain(),
             )
             .add_systems(
-                OnEnter(AppState::DealBook),
-                (spawn_deal_book, bind_turn_flow_screen).chain(),
-            )
-            .add_systems(
-                OnEnter(AppState::Newspaper),
-                (spawn_newspaper, bind_turn_flow_screen).chain(),
-            )
-            .add_systems(
                 Update,
-                sync_strategic_base_terrain.run_if(in_state(AppState::StrategicMap)),
+                (
+                    scroll_strategic_map,
+                    sync_strategic_base_terrain,
+                    sync_strategic_units,
+                )
+                    .chain()
+                    .run_if(in_state(AppState::StrategicMap)),
             );
     }
+}
+
+fn scroll_strategic_map(
+    time: Res<Time>,
+    mut last_scroll_tick: Local<Option<u128>>,
+    window: Single<&Window, With<PrimaryWindow>>,
+    mut session: ResMut<GameSession>,
+) {
+    let Some(cursor) = window.cursor_position() else {
+        return;
+    };
+    let edge_mask = strategic_edge_scroll_mask(cursor, Vec2::new(window.width(), window.height()));
+    if edge_mask == 0 {
+        return;
+    }
+    let tick16 = time.elapsed().as_millis() / 16;
+    if last_scroll_tick.is_some_and(|last| last + 3 >= tick16) {
+        return;
+    }
+    *last_scroll_tick = Some(tick16);
+    session.0.map.scroll_viewport(edge_mask);
+}
+
+fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> u8 {
+    const EDGE_PIXELS: f32 = 4.0;
+    const EDGE_UP: u8 = 0x01;
+    const EDGE_DOWN: u8 = 0x02;
+    const EDGE_RIGHT: u8 = 0x04;
+    const EDGE_LEFT: u8 = 0x08;
+
+    let x = position.x;
+    let y = position.y;
+    if x <= -200.0 || y <= -200.0 || x >= dialog_size.x + 200.0 || y >= dialog_size.y + 200.0 {
+        return 0;
+    }
+    let mut edge_mask = 0;
+    if x <= EDGE_PIXELS {
+        edge_mask |= EDGE_LEFT;
+    } else if x >= dialog_size.x - EDGE_PIXELS {
+        edge_mask |= EDGE_RIGHT;
+    }
+    if y <= EDGE_PIXELS {
+        edge_mask |= EDGE_UP;
+    } else if y >= dialog_size.y - EDGE_PIXELS {
+        edge_mask |= EDGE_DOWN;
+    }
+    edge_mask
 }
 
 fn enter_strategic_map_view(mut session: ResMut<GameSession>) {
@@ -103,11 +135,7 @@ fn bind_strategic_map(
         fourcc!("tool"),
         None,
     );
-    let end = find_descendant(*root, fourcc!("DONE"), &children, &tags);
-    commands
-        .entity(end)
-        .insert(TurnFlowAction::FinishPlayerOrders)
-        .remove::<InteractionDisabled>();
+    disable_native_control(&mut commands, *root, &children, &tags, fourcc!("DONE"));
     let flag = find_descendant(*root, fourcc!("Flag"), &children, &tags);
     commands
         .entity(flag)
@@ -131,83 +159,7 @@ fn bind_strategic_map(
     );
 }
 
-fn spawn_deal_book(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::flagview_8800()).id();
-    commands
-        .entity(root)
-        .insert((TurnFlowRoot, DespawnOnExit(AppState::DealBook)));
-}
-
-fn spawn_newspaper(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::flagview_8451()).id();
-    commands
-        .entity(root)
-        .insert((TurnFlowRoot, DespawnOnExit(AppState::Newspaper)));
-}
-
-fn bind_turn_flow_screen(
-    mut commands: Commands,
-    root: Single<Entity, Added<TurnFlowRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
-    mut assets: RetailUiAssets,
-    state: Res<State<AppState>>,
-    session: Res<GameSession>,
-) {
-    let current = *state.get();
-    let end = find_descendant(*root, fourcc!("end "), &children, &tags);
-    commands
-        .entity(end)
-        .insert(TurnFlowAction::DismissBlockingScreen)
-        .remove::<InteractionDisabled>();
-    disable_native_control(&mut commands, *root, &children, &tags, fourcc!("quer"));
-
-    match current {
-        AppState::DealBook => {
-            disable_native_control(&mut commands, *root, &children, &tags, fourcc!("tabs"));
-            disable_native_control(&mut commands, *root, &children, &tags, fourcc!("mark"));
-            project_deal_book_chrome(
-                &mut commands,
-                &mut assets,
-                *root,
-                &children,
-                &tags,
-                &session,
-            );
-        }
-        AppState::Newspaper => project_newspaper_chrome(
-            &mut commands,
-            &mut assets,
-            *root,
-            &children,
-            &tags,
-            &session,
-        ),
-        _ => unreachable!(),
-    }
-}
-
-fn project_deal_book_chrome(
-    commands: &mut Commands,
-    assets: &mut RetailUiAssets,
-    root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-    session: &GameSession,
-) {
-    // Retail starts the deal summary on its sold/bought page.
-    let sold = assets
-        .string(0x2740, 0x19)
-        .expect("retail deal-book sold title must load");
-    let bought = assets
-        .string(0x2740, 0x1a)
-        .expect("retail deal-book bought title must load");
-    set_control_text(commands, root, children, tags, fourcc!("titL"), sold);
-    set_control_text(commands, root, children, tags, fourcc!("rtil"), bought);
-    project_date_and_treasury(commands, assets, root, children, tags, session);
-}
-
-fn project_date_and_treasury(
+pub(crate) fn project_date_and_treasury(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
@@ -228,28 +180,6 @@ fn project_date_and_treasury(
         .expect("Game screen requires an active major nation");
     let treasury = format_currency(state.nations().major(nation).common.treasury);
     set_control_text(commands, root, children, tags, fourcc!("trea"), treasury);
-}
-
-fn project_newspaper_chrome(
-    commands: &mut Commands,
-    assets: &mut RetailUiAssets,
-    root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-    session: &GameSession,
-) {
-    let date = format_retail_date(assets, session.0.turn().economic_turn);
-    set_control_text(commands, root, children, tags, fourcc!("date"), date);
-    // Recovered evidence carries a false date placeholder here. The quarter-specific
-    // newspaper metric is not authoritative state yet, so do not invent it.
-    set_control_text(
-        commands,
-        root,
-        children,
-        tags,
-        fourcc!("spec"),
-        String::new(),
-    );
 }
 
 fn format_retail_date(assets: &mut RetailUiAssets, economic_turn: i32) -> String {
@@ -298,7 +228,7 @@ pub(crate) fn bind_native_game_screen_nav(
         let leave = find_descendant(toolbar, fourcc!("end "), children, tags);
         commands
             .entity(leave)
-            .insert(GameScreenNavAction::StrategicMap)
+            .insert((GameScreenNavAction::StrategicMap, ActivateOnPress))
             .remove::<InteractionDisabled>();
     }
 }
@@ -338,31 +268,52 @@ fn on_game_screen_activate(
     }
 }
 
-fn on_turn_flow_activate(
-    activate: On<Activate>,
-    actions: Query<&TurnFlowAction>,
-    mut session: ResMut<GameSession>,
-    state: Res<State<AppState>>,
-    mut next_state: ResMut<NextState<AppState>>,
-) {
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
-    let stop = match *action {
-        TurnFlowAction::FinishPlayerOrders => session.0.finish_player_orders(),
-        TurnFlowAction::DismissBlockingScreen => session.0.dismiss_blocking_screen(),
-    };
-    let destination = match stop {
-        FlowStop::PlayerOrders => Some(AppState::StrategicMap),
-        FlowStop::Show {
-            screen: GameScreen::DealBook,
-        } => Some(AppState::DealBook),
-        FlowStop::Show {
-            screen: GameScreen::Newspaper,
-        } => Some(AppState::Newspaper),
-        FlowStop::Unimplemented { .. } => None,
-    };
-    if let Some(destination) = destination.filter(|destination| *destination != *state.get()) {
-        next_state.set(destination);
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn strategic_scroll_uses_retail_dialog_edges_not_map_child_edges() {
+        let dialog = Vec2::new(640.0, 480.0);
+        assert_eq!(strategic_edge_scroll_mask(Vec2::new(5.0, 5.0), dialog), 0);
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(4.0, 240.0), dialog),
+            0x08
+        );
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(636.0, 240.0), dialog),
+            0x04
+        );
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(320.0, 4.0), dialog),
+            0x01
+        );
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(320.0, 476.0), dialog),
+            0x02
+        );
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(-199.0, -199.0), dialog),
+            0x09
+        );
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(-200.0, 240.0), dialog),
+            0
+        );
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(840.0, 240.0), dialog),
+            0
+        );
+
+        // The map child ends at x=517 beneath the right toolbar. Retail tests
+        // the enclosing 640-pixel dialog, so toolbar hover is not an edge.
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(520.0, 120.0), dialog),
+            0
+        );
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(620.0, 120.0), dialog),
+            0
+        );
     }
 }

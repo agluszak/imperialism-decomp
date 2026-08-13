@@ -1,7 +1,10 @@
 use crate::AppState;
 use crate::ui::generated;
+use crate::ui::hover_help::{
+    HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, get_string,
+};
 use crate::ui::load_save::LoadSaveReturn;
-use crate::ui::retail::{RetailTag, find_descendant};
+use crate::ui::retail::{RetailTag, RetailUiAssets, find_descendant};
 use bevy::app::AppExit;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -25,7 +28,12 @@ impl Plugin for MainMenuPlugin {
         register_main_menu_logic(app);
         app.add_systems(
             OnEnter(AppState::MainMenu),
-            (enter_main_menu, bind_main_menu_actions).chain(),
+            (
+                enter_main_menu,
+                bind_main_menu_actions,
+                bind_main_menu_hover_help,
+            )
+                .chain(),
         );
     }
 }
@@ -58,6 +66,42 @@ fn bind_main_menu_actions(
             .insert(action)
             .remove::<InteractionDisabled>();
     }
+}
+
+fn bind_main_menu_hover_help(
+    mut commands: Commands,
+    root: Single<Entity, Added<MainMenuRoot>>,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
+    mut nodes: Query<&mut Node>,
+    mut assets: RetailUiAssets,
+) {
+    let bar = find_descendant(*root, fourcc!("curs"), &children, &tags);
+    bind_hover_help_bar(
+        &mut commands,
+        &mut assets,
+        bar,
+        &mut nodes
+            .get_mut(bar)
+            .expect("main-menu hover-help bar has Node"),
+        HoverHelpBarStyle::MAIN_MENU,
+    );
+    bind_hover_help_texts(
+        &mut commands,
+        *root,
+        &children,
+        &tags,
+        [
+            (fourcc!("main"), String::new()),
+            (fourcc!("rand"), get_string(&assets, 0x2737, 0)),
+            (fourcc!("load"), get_string(&assets, 0x2737, 1)),
+            (fourcc!("mult"), get_string(&assets, 0x2737, 2)),
+            (fourcc!("high"), get_string(&assets, 0x2737, 3)),
+            (fourcc!("scen"), get_string(&assets, 0x2737, 4)),
+            (fourcc!("quit"), get_string(&assets, 0x2737, 9)),
+            (fourcc!("pref"), get_string(&assets, 0x2743, 8)),
+        ],
+    );
 }
 
 fn on_main_menu_activate(

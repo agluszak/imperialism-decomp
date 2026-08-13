@@ -11,6 +11,7 @@ use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::math::Rect;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
+use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, Button as UiButton};
 use imperialism_core::*;
@@ -48,8 +49,11 @@ const DIPLOMACY_MAP_KEY_MAJOR_NAME_TAGS: [FourCc; 7] = [
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum DiplomacyTopic {
     Information,
+    Treaties,
     Grants,
     Trade,
+    Council,
+    Offers,
 }
 
 #[derive(Component, Clone, Copy)]
@@ -126,12 +130,16 @@ struct OpenDiplomacyRejectionNotice {
 struct DiplomacyTextStyles {
     title_font: TextFont,
     title_layout: TextLayout,
+    title_line_height: LineHeight,
     row_font: TextFont,
     row_layout: TextLayout,
+    row_line_height: LineHeight,
     map_font: TextFont,
     map_layout: TextLayout,
+    map_line_height: LineHeight,
     key_font: TextFont,
     key_layout: TextLayout,
+    key_line_height: LineHeight,
     foreground: Color,
     shadow: Color,
 }
@@ -139,8 +147,11 @@ struct DiplomacyTextStyles {
 #[derive(Clone)]
 struct DiplomacyBracketPictures {
     information: Handle<Image>,
+    council: Handle<Image>,
+    treaties: Handle<Image>,
     grants: Handle<Image>,
     trade: Handle<Image>,
+    offers: Handle<Image>,
 }
 
 #[derive(Component, Clone)]
@@ -202,14 +213,23 @@ fn bind_diplomacy_screen(
         information: assets
             .picture(PictureId::new(5001))
             .expect("retail diplomacy information bracket must load"),
+        council: assets
+            .picture(PictureId::new(5002))
+            .expect("retail diplomacy council bracket must load"),
+        treaties: assets
+            .picture(PictureId::new(5003))
+            .expect("retail diplomacy treaties bracket must load"),
         grants: assets
             .picture(PictureId::new(5004))
             .expect("retail diplomacy grants bracket must load"),
         trade: assets
             .picture(PictureId::new(5005))
             .expect("retail diplomacy trade bracket must load"),
+        offers: assets
+            .picture(PictureId::new(5007))
+            .expect("retail diplomacy offers bracket must load"),
     };
-    let (title_font, title_layout, _) = assets
+    let (title_font, title_layout, title_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -217,7 +237,7 @@ fn bind_diplomacy_screen(
             alignment: 0,
         })
         .expect("retail diplomacy title text style");
-    let (row_font, row_layout, _) = assets
+    let (row_font, row_layout, row_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -225,7 +245,7 @@ fn bind_diplomacy_screen(
             alignment: 0,
         })
         .expect("retail diplomacy row text style");
-    let (map_font, map_layout, _) = assets
+    let (map_font, map_layout, map_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -233,7 +253,7 @@ fn bind_diplomacy_screen(
             alignment: 1,
         })
         .expect("retail diplomacy map label style");
-    let (key_font, key_layout, _) = assets
+    let (key_font, key_layout, key_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,
@@ -244,12 +264,16 @@ fn bind_diplomacy_screen(
     let styles = DiplomacyTextStyles {
         title_font,
         title_layout,
+        title_line_height,
         row_font,
         row_layout,
+        row_line_height,
         map_font,
         map_layout,
+        map_line_height,
         key_font,
         key_layout,
+        key_line_height,
         foreground: assets.palette_color(0x13),
         shadow: assets.palette_color(0xd2),
     };
@@ -302,27 +326,38 @@ fn bind_diplomacy_controls(
 
     let main = find_descendant(root, fourcc!("main"), children, tags);
     let information = find_child(main, fourcc!("info"), children, tags);
+    let treaties = find_child(main, fourcc!("trty"), children, tags);
     let grants = find_child(main, fourcc!("gran"), children, tags);
     let trade = find_child(main, fourcc!("trad"), children, tags);
+    let council = find_child(main, fourcc!("coun"), children, tags);
+    let offers = find_child(main, fourcc!("offr"), children, tags);
     let trade_cluster = find_descendant(trade, fourcc!("clus"), children, tags);
 
     for topic in [
         DiplomacyTopic::Information,
+        DiplomacyTopic::Treaties,
         DiplomacyTopic::Grants,
         DiplomacyTopic::Trade,
+        DiplomacyTopic::Council,
+        DiplomacyTopic::Offers,
     ] {
         let panel = match topic {
             DiplomacyTopic::Information => information,
+            DiplomacyTopic::Treaties => treaties,
             DiplomacyTopic::Grants => grants,
             DiplomacyTopic::Trade => trade,
+            DiplomacyTopic::Council => council,
+            DiplomacyTopic::Offers => offers,
         };
         commands.entity(panel).insert(DiplomacyPanel(topic));
     }
 
     for (tag, topic) in [
         (fourcc!("inft"), DiplomacyTopic::Information),
+        (fourcc!("trtt"), DiplomacyTopic::Treaties),
         (fourcc!("grat"), DiplomacyTopic::Grants),
         (fourcc!("trat"), DiplomacyTopic::Trade),
+        (fourcc!("cout"), DiplomacyTopic::Council),
     ] {
         let control = find_descendant(root, tag, children, tags);
         commands
@@ -330,12 +365,6 @@ fn bind_diplomacy_controls(
             .insert(DiplomacyAction::Topic(topic))
             .remove::<InteractionDisabled>();
     }
-    for tag in [fourcc!("trtt"), fourcc!("cout")] {
-        commands
-            .entity(find_descendant(root, tag, children, tags))
-            .insert(InteractionDisabled);
-    }
-
     for (index, tag) in [
         fourcc!("doc0"),
         fourcc!("doc1"),
@@ -486,6 +515,7 @@ fn spawn_diplomacy_map_labels(
             90.0,
             &styles.map_font,
             &styles.map_layout,
+            styles.map_line_height,
             styles.foreground,
             styles.shadow,
         );
@@ -555,6 +585,7 @@ fn spawn_diplomacy_panel_text(
         95.0,
         &styles.title_font,
         &styles.title_layout,
+        styles.title_line_height,
         styles.foreground,
         styles.shadow,
     );
@@ -567,6 +598,7 @@ fn spawn_diplomacy_panel_text(
         120.0,
         &styles.title_font,
         &styles.title_layout,
+        styles.title_line_height,
         styles.foreground,
         styles.shadow,
     );
@@ -585,6 +617,7 @@ fn spawn_diplomacy_panel_text(
             95.0,
             &styles.row_font,
             &styles.row_layout,
+            styles.row_line_height,
             styles.foreground,
             styles.shadow,
         );
@@ -602,6 +635,7 @@ fn spawn_diplomacy_panel_text(
             120.0,
             &styles.row_font,
             &styles.row_layout,
+            styles.row_line_height,
             styles.foreground,
             styles.shadow,
         );
@@ -623,6 +657,7 @@ fn spawn_diplomacy_panel_text(
         100.0,
         &styles.key_font,
         &key_label_layout,
+        styles.key_line_height,
         styles.foreground,
         styles.shadow,
     );
@@ -635,6 +670,7 @@ fn spawn_diplomacy_panel_text(
         100.0,
         &styles.key_font,
         &key_label_layout,
+        styles.key_line_height,
         styles.foreground,
         styles.shadow,
     );
@@ -657,10 +693,14 @@ fn spawn_diplomacy_panel_text(
         ("$5,000", 314.0, 115.0, false),
         ("$10,000", 446.0, 115.0, false),
     ] {
-        let (font, layout) = if title {
-            (&styles.title_font, &styles.title_layout)
+        let (font, layout, line_height) = if title {
+            (
+                &styles.title_font,
+                &styles.title_layout,
+                styles.title_line_height,
+            )
         } else {
-            (&styles.row_font, &styles.row_layout)
+            (&styles.row_font, &styles.row_layout, styles.row_line_height)
         };
         spawn_shadowed_text(
             commands,
@@ -671,6 +711,7 @@ fn spawn_diplomacy_panel_text(
             100.0,
             font,
             layout,
+            line_height,
             styles.foreground,
             styles.shadow,
         );
@@ -684,6 +725,7 @@ fn spawn_diplomacy_panel_text(
         180.0,
         &styles.row_font,
         &styles.row_layout,
+        styles.row_line_height,
         styles.foreground,
         styles.shadow,
     );
@@ -700,10 +742,14 @@ fn spawn_diplomacy_panel_text(
         ("75%", 228.0, 85.0, false),
         ("100%", 275.0, 34.0, false),
     ] {
-        let (font, layout) = if title {
-            (&styles.title_font, &styles.title_layout)
+        let (font, layout, line_height) = if title {
+            (
+                &styles.title_font,
+                &styles.title_layout,
+                styles.title_line_height,
+            )
         } else {
-            (&styles.row_font, &styles.row_layout)
+            (&styles.row_font, &styles.row_layout, styles.row_line_height)
         };
         spawn_shadowed_text(
             commands,
@@ -714,6 +760,7 @@ fn spawn_diplomacy_panel_text(
             100.0,
             font,
             layout,
+            line_height,
             styles.foreground,
             styles.shadow,
         );
@@ -733,6 +780,7 @@ fn spawn_diplomacy_panel_text(
             100.0,
             &styles.row_font,
             &centered_layout,
+            styles.row_line_height,
             styles.foreground,
             styles.shadow,
         );
@@ -749,6 +797,7 @@ fn spawn_shadowed_text(
     width: f32,
     font: &TextFont,
     layout: &TextLayout,
+    line_height: LineHeight,
     foreground: Color,
     shadow: Color,
 ) -> [Entity; 2] {
@@ -765,6 +814,7 @@ fn spawn_shadowed_text(
                 Text::new(text),
                 font.clone(),
                 *layout,
+                line_height,
                 TextColor(color),
                 Pickable::IGNORE,
                 ChildOf(parent),
@@ -799,7 +849,10 @@ fn on_diplomacy_activate(
                 .expect("Diplomacy screen requires an active major nation")
                 .nation();
             match topic {
-                DiplomacyTopic::Information => {}
+                DiplomacyTopic::Information
+                | DiplomacyTopic::Treaties
+                | DiplomacyTopic::Council
+                | DiplomacyTopic::Offers => {}
                 DiplomacyTopic::Grants => {
                     screen.grant_row = 0;
                     screen.recurring_grant = false;
@@ -857,6 +910,12 @@ fn on_diplomacy_map_click(
     let rejection =
         match screen.topic {
             DiplomacyTopic::Information => {
+                if screen.framed_nation != target {
+                    screen.framed_nation = target;
+                }
+                None
+            }
+            DiplomacyTopic::Treaties | DiplomacyTopic::Council | DiplomacyTopic::Offers => {
                 if screen.framed_nation != target {
                     screen.framed_nation = target;
                 }
@@ -938,7 +997,7 @@ fn bind_diplomacy_notice(
     let (root, notice) = *notice;
     let notice_color = TextColor(assets.palette_color(0));
     let title = find_descendant(root, fourcc!("titl"), &children, &tags);
-    let (title_font, title_layout, _) = assets
+    let (title_font, title_layout, title_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -950,10 +1009,11 @@ fn bind_diplomacy_notice(
         Text::new("Report from your\nForeign Minister\n\n"),
         title_font,
         title_layout,
+        title_line_height,
         notice_color,
     ));
     let body = find_descendant(root, fourcc!("info"), &children, &tags);
-    let (body_font, body_layout, _) = assets
+    let (body_font, body_layout, body_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -965,6 +1025,7 @@ fn bind_diplomacy_notice(
         Text::new(diplomacy_rejection_text(notice.0)),
         body_font,
         body_layout,
+        body_line_height,
         notice_color,
     ));
     let coat = find_descendant(root, fourcc!("coat"), &children, &tags);
@@ -1042,7 +1103,11 @@ fn sync_diplomacy_controls(
         set_checked(&mut commands, entity, checked.is_some(), selected);
     }
     for (bracket, mut image, mut visibility) in &mut brackets {
-        let visible = bracket.left == (screen.topic == DiplomacyTopic::Information);
+        let visible = bracket.left
+            == matches!(
+                screen.topic,
+                DiplomacyTopic::Information | DiplomacyTopic::Council
+            );
         *visibility = if visible {
             Visibility::Visible
         } else {
@@ -1050,8 +1115,11 @@ fn sync_diplomacy_controls(
         };
         image.image = match screen.topic {
             DiplomacyTopic::Information => bracket.pictures.information.clone(),
+            DiplomacyTopic::Treaties => bracket.pictures.treaties.clone(),
             DiplomacyTopic::Grants => bracket.pictures.grants.clone(),
             DiplomacyTopic::Trade => bracket.pictures.trade.clone(),
+            DiplomacyTopic::Council => bracket.pictures.council.clone(),
+            DiplomacyTopic::Offers => bracket.pictures.offers.clone(),
         };
     }
     let source = MajorNationId::from_nation(session.0.turn().active_nation)
@@ -1152,7 +1220,8 @@ fn sync_diplomacy_information(
             DiplomacyNationIconKind::Compatibility => {
                 let level = state.diplomacy().mission_levels[screen.framed_nation][icon.nation];
                 let atlas_offset = match (screen.topic, level) {
-                    (DiplomacyTopic::Information, _) | (_, DiplomaticMissionLevel::None) => None,
+                    (DiplomacyTopic::Information | DiplomacyTopic::Offers, _)
+                    | (_, DiplomaticMissionLevel::None) => None,
                     (_, DiplomaticMissionLevel::TradeConsulate) => Some(0x170),
                     (_, DiplomaticMissionLevel::Embassy) => Some(0x180),
                 };
@@ -1160,7 +1229,10 @@ fn sync_diplomacy_information(
             }
             DiplomacyNationIconKind::Order => {
                 let atlas_offset = match screen.topic {
-                    DiplomacyTopic::Information => None,
+                    DiplomacyTopic::Information
+                    | DiplomacyTopic::Treaties
+                    | DiplomacyTopic::Council
+                    | DiplomacyTopic::Offers => None,
                     DiplomacyTopic::Grants => major.economy.diplomacy_grants_by_nation[icon.nation]
                         .and_then(diplomacy_grant_icon_offset),
                     DiplomacyTopic::Trade => {

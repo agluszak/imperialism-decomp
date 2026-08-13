@@ -329,9 +329,6 @@ fn navy_mission_state(mission: &LegacyNavyMission) -> NavyMissionState {
 fn production_progress(order: &LegacyProductionOrder) -> ProductionProgress {
     ProductionProgress {
         quantity: order.quantity,
-        tracking_by_resource: ResourceTable::from_array(order.tracking_slots),
-        // TProductionOrder::ReadFrom does not persist or reconstruct this field.
-        reserved_workforce: 0,
         limiting_constraint: match order.limiting_constraint {
             0 => ProductionConstraint::Resources,
             1 => ProductionConstraint::Workforce,
@@ -339,7 +336,6 @@ fn production_progress(order: &LegacyProductionOrder) -> ProductionProgress {
             3 => ProductionConstraint::Treasury,
             value => panic!("unrecovered city production constraint {value}"),
         },
-        accumulated_value: order.accumulated_value,
     }
 }
 
@@ -347,6 +343,8 @@ fn requested_city_order(order: &LegacyItemOrder) -> RequestedCityOrderState {
     RequestedCityOrderState {
         progress: production_progress(&order.order),
         requested_quantity: order.requested_quantity,
+        tracking_by_resource: ResourceTable::from_array(order.order.tracking_slots),
+        accumulated_value: order.order.accumulated_value,
     }
 }
 
@@ -391,9 +389,18 @@ impl LegacyCityOrders {
             )),
             ships: ShipOrderTable::from_array(std::array::from_fn(|index| {
                 let order = &self.ships[index];
+                let tracking = ResourceTable::from_array(order.tracking_slots);
                 ShipOrderState {
                     ship_type: ship_type_from_retail(order.resource_type_index),
                     progress: production_progress(order),
+                    materials: ShipMaterials {
+                        lumber: tracking[ResourceKind::Lumber],
+                        fabric: tracking[ResourceKind::Fabric],
+                        arms: tracking[ResourceKind::Arms],
+                        steel: tracking[ResourceKind::Steel],
+                        coal: tracking[ResourceKind::Coal],
+                        fuel: tracking[ResourceKind::Fuel],
+                    },
                 }
             })),
             training: TrainingOrderTable::from_array(
@@ -431,7 +438,7 @@ impl LegacyCityState {
                 .expect("retail population accumulator is finite");
 
         CityState {
-            orders: Box::new(self.orders.city_orders()),
+            orders: self.orders.city_orders(),
             power_plant_upgrade_queued: self.power_plant_upgrade_queued != 0,
             food_substitution_count: self.food_substitution_count,
             starvation_population_loss: self.starvation_population_loss,
@@ -567,6 +574,7 @@ fn trade_market_state(market: &LegacyTradeMarketState) -> TradeMarketState {
                 offer_count: i32::from(row.offer_count),
                 amount_offered: i32::from(row.amount_offered),
                 adjusted_offer_count: row.adjusted_offer_count,
+                current_offer_by_nation: NationTable::from_array(row.current_offer_by_nation),
                 maximum_offer_by_nation: NationTable::from_array(row.maximum_offer_by_nation),
             }
         })),
