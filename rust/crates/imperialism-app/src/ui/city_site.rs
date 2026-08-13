@@ -194,6 +194,7 @@ fn open_new_city_dialog(commands: &mut Commands, site: CapitalSite) {
         TabGroup::modal(),
         GlobalZIndex(20),
         Pickable::default(),
+        DespawnOnExit(AppState::CitySite),
     ));
 }
 
