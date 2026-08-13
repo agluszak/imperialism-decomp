@@ -94,7 +94,7 @@ pub fn run(
             imperialism_core::PhaseCode::STRATEGIC_MAP,
             "Bevy may only start from a strategic-map core phase"
         );
-        app.insert_resource(ui::GameSession(game))
+        app.insert_resource(ui::GameSession { game })
             .insert_state(AppState::StrategicMap);
     } else {
         app.init_state::<AppState>();

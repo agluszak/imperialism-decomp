@@ -70,13 +70,13 @@ impl Plugin for OfferSheetPlugin {
 
 fn enter_offer_sheet_phase(session: Res<GameSession>) {
     assert!(
-        session.0.pending_trade_offer().is_some(),
+        session.game.pending_trade_offer().is_some(),
         "Offer Sheet requires a core trade continuation"
     );
 }
 
 fn spawn_offer_sheet(mut commands: Commands, session: Res<GameSession>) {
-    if session.0.pending_trade_offer().is_none() {
+    if session.game.pending_trade_offer().is_none() {
         return;
     }
     let root = commands.spawn_scene(generated::flagview_8500()).id();
@@ -130,7 +130,7 @@ fn bind_offer_sheet_controls(
     session: &GameSession,
 ) {
     let offer = session
-        .0
+        .game
         .pending_trade_offer()
         .expect("Offer Sheet bind requires a pending trade offer");
     let accept = find_descendant(root, fourcc!("acce"), children, tags);
@@ -167,26 +167,22 @@ fn bind_offer_sheet_controls(
     });
 }
 
-#[allow(clippy::too_many_arguments)]
 fn pose_offer_sheet(
     mut commands: Commands,
-    mut screens: Query<&mut OfferSheetScreen, With<OfferSheetRoot>>,
+    screen: Option<Single<(Entity, &mut OfferSheetScreen), With<OfferSheetRoot>>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut amounts: Query<&mut EditableText, With<PurchaseAmountField>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
-    roots: Query<Entity, With<OfferSheetRoot>>,
 ) {
-    let Some(offer) = session.0.pending_trade_offer() else {
+    let Some(offer) = session.game.pending_trade_offer() else {
         return;
     };
-    let Ok(root) = roots.single() else {
+    let Some(screen) = screen else {
         return;
     };
-    let Ok(mut screen) = screens.single_mut() else {
-        return;
-    };
+    let (root, mut screen) = screen.into_inner();
     if screen.posed == Some(offer) {
         return;
     }
@@ -216,7 +212,7 @@ fn apply_offer_sheet_pose(
     offer: PendingTradeOffer,
 ) {
     let offering = session
-        .0
+        .game
         .nations()
         .display_name(offer.seller)
         .unwrap_or("")
@@ -248,13 +244,13 @@ fn apply_offer_sheet_pose(
         fill_brackets(&get_string(assets, OFFER_STRING_GROUP, 0xf), &[&commodity]),
     );
 
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Offer Sheet requires an active major nation");
     set_text(
         commands,
         find_descendant(root, fourcc!("mCap"), children, tags),
         session
-            .0
+            .game
             .nations()
             .major(nation)
             .economy
@@ -291,9 +287,9 @@ fn set_text(commands: &mut Commands, entity: Entity, value: String) {
 fn on_offer_sheet_activate(
     activate: On<Activate>,
     actions: Query<&OfferSheetAction>,
-    screens: Query<&OfferSheetScreen>,
-    amounts: Query<&EditableText, With<PurchaseAmountField>>,
-    stop_buying: Query<Has<Checked>, With<StopBuyingToggle>>,
+    screen: Option<Single<&OfferSheetScreen>>,
+    amount: Option<Single<&EditableText, With<PurchaseAmountField>>>,
+    stop_buying: Option<Single<Has<Checked>, With<StopBuyingToggle>>>,
     notices: Query<(), With<OfferSheetNotice>>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
@@ -307,17 +303,15 @@ fn on_offer_sheet_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let Ok(screen) = screens.single() else {
+    let Some(screen) = screen else {
         return;
     };
-    let stop_buying = stop_buying.single().unwrap_or(false);
+    let stop_buying = stop_buying.is_some_and(|flag| *flag);
     let amount = match action {
         OfferSheetAction::Reject => 0,
         OfferSheetAction::Accept => {
-            let Some(amount) = amounts
-                .single()
-                .ok()
-                .and_then(|editable| editable.value().to_string().parse::<i16>().ok())
+            let Some(amount) =
+                amount.and_then(|editable| editable.value().to_string().parse::<i16>().ok())
             else {
                 spawn_offer_quantity_error(&mut commands, &assets);
                 return;
@@ -329,9 +323,9 @@ fn on_offer_sheet_activate(
             amount
         }
     };
-    match session.0.answer_trade_offer(amount, stop_buying) {
+    match session.game.answer_trade_offer(amount, stop_buying) {
         TurnStop::TradeOffer(_) => {}
-        stop => apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state),
+        stop => apply_turn_stop(stop, &mut session.game, retail.assets(), &mut next_state),
     }
 }
 
@@ -455,7 +449,7 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_plugins(StatesPlugin)
-            .insert_resource(GameSession(state))
+            .insert_resource(GameSession { game: state })
             .insert_state(AppState::OfferSheet)
             .add_systems(OnEnter(AppState::OfferSheet), enter_offer_sheet_phase)
             .add_systems(
@@ -467,7 +461,7 @@ mod tests {
     }
 
     fn spawn_test_offer_sheet(mut commands: Commands, session: Res<GameSession>) {
-        if session.0.pending_trade_offer().is_none() {
+        if session.game.pending_trade_offer().is_none() {
             return;
         }
         let root = commands
@@ -507,7 +501,7 @@ mod tests {
         assert!(
             app.world()
                 .resource::<GameSession>()
-                .0
+                .game
                 .pending_trade_offer()
                 .is_some()
         );

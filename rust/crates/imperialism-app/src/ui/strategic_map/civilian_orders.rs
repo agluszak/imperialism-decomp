@@ -29,18 +29,18 @@ fn on_strategic_map_click(
     let Ok(cursor) = maps.get(click.entity) else {
         return;
     };
-    let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.0, cursor) else {
+    let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.game, cursor) else {
         return;
     };
-    let nation = session.0.turn().active_nation;
-    if let Some(unit) = session.0.selectable_engineer_on_tile(tile, nation) {
+    let nation = session.game.turn().active_nation;
+    if let Some(unit) = session.game.selectable_engineer_on_tile(tile, nation) {
         selected.0 = Some(unit);
         return;
     }
     let Some(unit) = selected.0 else {
         return;
     };
-    match session.0.order_rail_construction(unit, tile) {
+    match session.game.order_rail_construction(unit, tile) {
         Ok(()) => selected.0 = None,
         Err(RailOrderRejection::InsufficientFunds | RailOrderRejection::InvalidTarget) => {}
         Err(RailOrderRejection::IneligibleUnit) => selected.0 = None,

@@ -473,12 +473,12 @@ fn accept_random_setup(
         names,
     );
     if requires_capital_site_selection(setup.difficulty) {
-        commands.insert_resource(GameSession(session));
+        commands.insert_resource(GameSession { game: session });
         next_state.set(AppState::CitySite);
     } else {
         let stop = enter_strategic_map_without_capital_selection(&mut session, setup.nation);
         apply_turn_stop(stop, &mut session, assets, next_state);
-        commands.insert_resource(GameSession(session));
+        commands.insert_resource(GameSession { game: session });
     }
 }
 

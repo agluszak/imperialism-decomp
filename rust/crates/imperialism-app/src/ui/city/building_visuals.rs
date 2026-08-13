@@ -199,7 +199,7 @@ pub(in crate::ui::city) fn bind_city_screen(
         &tags,
         generated::CITY_BUILDINGS,
         generated::CITY_BUILDING_ACTIONS,
-        &session.0,
+        &session.game,
         nation,
         &mut assets,
     );
@@ -564,7 +564,7 @@ pub(in crate::ui::city) fn animate_city_building_actions(
         &mut Visibility,
     )>,
 ) {
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("City active nation is a major nation");
     for (mut action, mut image, mut visibility) in &mut actions {
         action.timer.tick(time.delta());
@@ -580,7 +580,7 @@ pub(in crate::ui::city) fn animate_city_building_actions(
                 left + action.frame_size[0] as f32,
                 action.frame_size[1] as f32,
             ));
-            let city = &session.0.nations().major(nation).city;
+            let city = &session.game.nations().major(nation).city;
             *visibility = if city_building_action_enabled(city, action.slot) {
                 Visibility::Visible
             } else {
@@ -616,7 +616,7 @@ pub(in crate::ui::city) fn sync_city_summary(
         return;
     }
     let nation = city_active_nation(&session);
-    let major = session.0.nations().major(nation);
+    let major = session.game.nations().major(nation);
     let city = &major.city;
     let labor = city.population.baseline_labor();
     for (summary, mut text, mut visibility) in &mut texts {
@@ -639,11 +639,11 @@ pub(in crate::ui::city) fn sync_city_summary(
 }
 
 pub(in crate::ui::city) fn sync_city_hover_title(
-    canvases: Query<(&RelativeCursorPosition, &CityCanvas)>,
+    canvas: Option<Single<(&RelativeCursorPosition, &CityCanvas)>>,
     mut titles: Query<&mut Text, With<CityHoverTitle>>,
     assets: RetailUiAssets,
 ) {
-    let Ok((cursor, canvas)) = canvases.single() else {
+    let Some((cursor, canvas)) = canvas.map(Single::into_inner) else {
         return;
     };
     let hovered = cursor
@@ -680,9 +680,9 @@ pub(in crate::ui::city) fn sync_city_buildings(
         return;
     }
     let nation = city_active_nation(&session);
-    let city = &session.0.nations().major(nation).city;
+    let city = &session.game.nations().major(nation).city;
     for (CityBuildingSprite(slot), mut image, mut visibility) in &mut pictures {
-        let level = city_building_level(&session.0, nation, *slot);
+        let level = city_building_level(&session.game, nation, *slot);
         let Some(picture) = city_building_picture(city, *slot, level) else {
             *visibility = Visibility::Hidden;
             continue;

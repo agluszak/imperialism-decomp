@@ -24,10 +24,11 @@ const CIVILIAN_WORKING_PICTURE_BASE: i16 = 418;
 const ARMY_COUNT_PICTURE_IDS: [i16; 4] = [570, 572, 574, 576];
 const OWNER_FLAG_PICTURE_ID: i16 = 580;
 const FLEET_ATLAS_PICTURE_BASE: i16 = 1_380;
-const CIVILIAN_SPRITE_CLASS: [u8; CivilianUnitKind::LENGTH] = [2, 3, 1, 6, 0, 7, 5, 4, 8];
-const CIVILIAN_ANIMATION_PICTURE_IDS: [i16; CivilianUnitKind::LENGTH] = [
+const CIVILIAN_SPRITE_CLASS: CivilianUnitTable<u8> =
+    CivilianUnitTable::from_array([2, 3, 1, 6, 0, 7, 5, 4, 8]);
+const CIVILIAN_ANIMATION_PICTURE_IDS: CivilianUnitTable<i16> = CivilianUnitTable::from_array([
     14_000, 14_005, 14_011, 14_015, 14_021, 14_026, 14_030, 14_035, 14_040,
-];
+]);
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 enum CivilianPose {
@@ -138,7 +139,7 @@ pub(crate) fn sync_strategic_units(
     )>,
     units: Query<Entity, With<StrategicMapUnit>>,
 ) {
-    let state = &session.0;
+    let state = &session.game;
     for (layer, mut projection, mut sprites, children) in &mut layers {
         let fleet_id = fleet_atlas_picture_id(state).get();
         if sprites.fleet_atlas_id != fleet_id {
@@ -256,7 +257,7 @@ fn civilian_picture_id(kind: CivilianUnitKind, pose: CivilianPose) -> i16 {
         CivilianPose::Working => {
             CIVILIAN_WORKING_PICTURE_BASE + i16::from(civilian_sprite_class(kind))
         }
-        CivilianPose::Animated => CIVILIAN_ANIMATION_PICTURE_IDS[kind as usize],
+        CivilianPose::Animated => CIVILIAN_ANIMATION_PICTURE_IDS[kind],
     }
 }
 
@@ -655,7 +656,7 @@ fn civilian_uses_work_animation(order: &CivilianWorkOrder) -> bool {
 }
 
 fn civilian_sprite_class(kind: CivilianUnitKind) -> u8 {
-    CIVILIAN_SPRITE_CLASS[kind as usize]
+    CIVILIAN_SPRITE_CLASS[kind]
 }
 
 fn civilian_tile_is_visible(owner: Option<TileOwnerTag>, active: NationId) -> bool {

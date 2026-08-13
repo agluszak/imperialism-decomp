@@ -14,7 +14,7 @@ use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
-use imperialism_core::MajorNationId;
+use imperialism_core::{MajorNationId, MapEdges};
 use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
 
 #[derive(Component)]
@@ -66,8 +66,8 @@ fn scroll_strategic_map(
     let Some(cursor) = window.cursor_position() else {
         return;
     };
-    let edge_mask = strategic_edge_scroll_mask(cursor, Vec2::new(window.width(), window.height()));
-    if edge_mask == 0 {
+    let edges = strategic_edge_scroll_mask(cursor, Vec2::new(window.width(), window.height()));
+    if edges.is_empty() {
         return;
     }
     let tick16 = time.elapsed().as_millis() / 16;
@@ -75,43 +75,39 @@ fn scroll_strategic_map(
         return;
     }
     *last_scroll_tick = Some(tick16);
-    session.0.scroll_map_viewport(edge_mask);
+    session.game.scroll_map_viewport(edges);
 }
 
-fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> u8 {
+fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> MapEdges {
     const EDGE_PIXELS: f32 = 4.0;
-    const EDGE_UP: u8 = 0x01;
-    const EDGE_DOWN: u8 = 0x02;
-    const EDGE_RIGHT: u8 = 0x04;
-    const EDGE_LEFT: u8 = 0x08;
 
     let x = position.x;
     let y = position.y;
     if x <= -200.0 || y <= -200.0 || x >= dialog_size.x + 200.0 || y >= dialog_size.y + 200.0 {
-        return 0;
+        return MapEdges::empty();
     }
-    let mut edge_mask = 0;
+    let mut edges = MapEdges::empty();
     if x <= EDGE_PIXELS {
-        edge_mask |= EDGE_LEFT;
+        edges |= MapEdges::LEFT;
     } else if x >= dialog_size.x - EDGE_PIXELS {
-        edge_mask |= EDGE_RIGHT;
+        edges |= MapEdges::RIGHT;
     }
     if y <= EDGE_PIXELS {
-        edge_mask |= EDGE_UP;
+        edges |= MapEdges::TOP;
     } else if y >= dialog_size.y - EDGE_PIXELS {
-        edge_mask |= EDGE_DOWN;
+        edges |= MapEdges::BOTTOM;
     }
-    edge_mask
+    edges
 }
 
 fn enter_strategic_map_view(mut session: ResMut<GameSession>) {
     let Some(tile) = session
-        .0
-        .first_idle_civilian_tile(session.0.turn().active_nation)
+        .game
+        .first_idle_civilian_tile(session.game.turn().active_nation)
     else {
         return;
     };
-    session.0.center_map_on(tile);
+    session.game.center_map_on(tile);
 }
 
 fn spawn_strategic_map(mut commands: Commands) {
@@ -150,7 +146,7 @@ fn bind_strategic_map(
         &children,
         &tags,
         &mut assets,
-        &session.0,
+        &session.game,
     );
     project_date_and_treasury(
         &mut commands,
@@ -198,7 +194,7 @@ pub(crate) fn project_date_and_treasury(
     tags: &Query<&RetailTag>,
     session: &GameSession,
 ) {
-    let state = &session.0;
+    let state = &session.game;
     let (season_font, season_layout, season_line_height, _) = assets
         .text_style(imperialism_formats::RetailTextStylePreset {
             font_family: 1,
@@ -339,7 +335,7 @@ fn disable_native_control(
 fn sync_strategic_map_treasury(
     session: Res<GameSession>,
     mut commands: Commands,
-    root: Query<Entity, With<StrategicMapRoot>>,
+    root: Option<Single<Entity, With<StrategicMapRoot>>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut assets: RetailUiAssets,
@@ -347,10 +343,17 @@ fn sync_strategic_map_treasury(
     if !session.is_changed() {
         return;
     }
-    let Ok(root) = root.single() else {
+    let Some(root) = root else {
         return;
     };
-    project_date_and_treasury(&mut commands, &mut assets, root, &children, &tags, &session);
+    project_date_and_treasury(
+        &mut commands,
+        &mut assets,
+        *root,
+        &children,
+        &tags,
+        &session,
+    );
 }
 
 fn on_game_screen_activate(
@@ -381,45 +384,48 @@ mod tests {
     #[test]
     fn strategic_scroll_uses_retail_dialog_edges_not_map_child_edges() {
         let dialog = Vec2::new(640.0, 480.0);
-        assert_eq!(strategic_edge_scroll_mask(Vec2::new(5.0, 5.0), dialog), 0);
+        assert_eq!(
+            strategic_edge_scroll_mask(Vec2::new(5.0, 5.0), dialog),
+            MapEdges::empty()
+        );
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(4.0, 240.0), dialog),
-            0x08
+            MapEdges::LEFT
         );
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(636.0, 240.0), dialog),
-            0x04
+            MapEdges::RIGHT
         );
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(320.0, 4.0), dialog),
-            0x01
+            MapEdges::TOP
         );
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(320.0, 476.0), dialog),
-            0x02
+            MapEdges::BOTTOM
         );
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(-199.0, -199.0), dialog),
-            0x09
+            MapEdges::TOP | MapEdges::LEFT
         );
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(-200.0, 240.0), dialog),
-            0
+            MapEdges::empty()
         );
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(840.0, 240.0), dialog),
-            0
+            MapEdges::empty()
         );
 
         // The map child ends at x=517 beneath the right toolbar. Retail tests
         // the enclosing 640-pixel dialog, so toolbar hover is not an edge.
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(520.0, 120.0), dialog),
-            0
+            MapEdges::empty()
         );
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(620.0, 120.0), dialog),
-            0
+            MapEdges::empty()
         );
     }
 }

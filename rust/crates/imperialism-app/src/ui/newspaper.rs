@@ -54,7 +54,7 @@ fn bind_newspaper(
         root,
         &children,
         &tags,
-        &session.0,
+        &session.game,
     );
     fill_newspaper_stories(
         &mut commands,
@@ -62,7 +62,7 @@ fn bind_newspaper(
         root,
         &children,
         &tags,
-        &session.0,
+        &session.game,
         retail.assets().news_table(),
     );
     commands
@@ -336,8 +336,8 @@ fn on_newspaper_activate(
     if actions.get(activate.entity).is_err() {
         return;
     }
-    let stop = session.0.close_newspaper();
-    apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state);
+    let stop = session.game.close_newspaper();
+    apply_turn_stop(stop, &mut session.game, retail.assets(), &mut next_state);
 }
 
 #[cfg(test)]
