@@ -8,7 +8,7 @@ impl PictureId {
         Self(value)
     }
 
-    pub(crate) const fn get(self) -> i16 {
+    pub const fn get(self) -> i16 {
         self.0
     }
 }

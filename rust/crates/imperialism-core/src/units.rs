@@ -248,6 +248,18 @@ impl MilitaryUnitState {
     pub const fn order(&self) -> &MilitaryOrder {
         &self.order
     }
+
+    pub const fn stationed_province(&self) -> Option<ProvinceId> {
+        self.stationed_province
+    }
+
+    pub const fn owner_nation(&self) -> NationId {
+        self.owner_nation
+    }
+
+    pub const fn registered(&self) -> bool {
+        self.registered
+    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -366,7 +378,7 @@ pub enum CivilianLocation {
     OffMap,
 }
 impl CivilianLocation {
-    pub(crate) const fn tile(self) -> Option<TileId> {
+    pub const fn tile(self) -> Option<TileId> {
         match self {
             Self::OnMap(tile) => Some(tile),
             Self::OffMap => None,
@@ -414,5 +426,17 @@ impl CivilianUnitState {
     }
     pub const fn location(&self) -> CivilianLocation {
         self.location
+    }
+    pub const fn unit_type(&self) -> CivilianUnitKind {
+        self.unit_type
+    }
+    pub const fn order(&self) -> &CivilianWorkOrder {
+        &self.order
+    }
+    pub const fn owner_nation(&self) -> NationId {
+        self.owner_nation
+    }
+    pub const fn registered(&self) -> bool {
+        self.registered
     }
 }

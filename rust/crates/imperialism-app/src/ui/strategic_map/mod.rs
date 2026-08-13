@@ -13,6 +13,7 @@ use imperialism_formats::*;
 mod borders;
 mod overlays;
 mod terrain;
+mod units;
 
 use borders::compose_strategic_borders;
 use overlays::{
@@ -20,6 +21,7 @@ use overlays::{
     town_transport_linked,
 };
 use terrain::{compose_strategic_base_tile, frame_for_offset};
+pub(crate) use units::sync_strategic_units;
 
 const MAP_TAG: FourCc = fourcc!("DLOG");
 pub(super) const VIEWPORT_WIDTH: usize = 512;
@@ -88,6 +90,7 @@ pub(crate) fn bind_strategic_base_terrain(
         RelativeCursorPosition::default(),
         canvas,
     ));
+    units::bind_strategic_units(commands, map, assets, state);
     map
 }
 
@@ -277,7 +280,10 @@ fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl st
     }
 }
 
-fn for_each_visible_strategic_tile(state: &GameState, mut visit: impl FnMut(TileId, i32, i32)) {
+pub(super) fn for_each_visible_strategic_tile(
+    state: &GameState,
+    mut visit: impl FnMut(TileId, i32, i32),
+) {
     let (origin_row, origin_column) = state.map.geometry().row_column(state.map.view_origin);
     let origin_row = i32::from(origin_row);
     let origin_column = i32::from(origin_column);
