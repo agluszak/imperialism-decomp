@@ -180,6 +180,9 @@ pub struct TechnologyState {
     pub research_status_by_nation: MajorNationTable<TechnologyTable<TechnologyResearchStatus>>,
     pub industry_enabled_by_slot: [bool; 14],
     pub military_unit_ability_active_by_nation: MajorNationTable<MilitaryUnitTable<bool>>,
+    /// Retail `TTechMgr::nationCapRows1e8`: the selected ability id in each
+    /// tactical group. Slot 9 is the general spawned by army-growth rewards.
+    pub selected_capability_slots: MajorNationTable<[i16; 10]>,
     pub city_capabilities_by_nation: MajorNationTable<CityTechnologyCapabilities>,
     /// Retail `TTechMgr::activeZoneIndex1d4`: the hull spawned by a navy-growth reward.
     pub navy_growth_ship_type: ShipType,
@@ -215,6 +218,9 @@ impl Default for TechnologyState {
                     false, false, false, false, false, false, false, false, false, false, false,
                     false, true, false, false, true, false, false,
                 ])
+            }),
+            selected_capability_slots: MajorNationTable::from_fn(|_| {
+                default_selected_capability_slots()
             }),
             city_capabilities_by_nation: MajorNationTable::default(),
             navy_growth_ship_type: ShipType::ShipOfTheLine,
@@ -405,9 +411,9 @@ impl GameState {
     }
 
     fn apply_ability_unlock(&mut self, tech_id: TechnologyId, nation: MajorNationId) {
-        // FIXME: `HandleAbilityUnlock` also performs navy/score
-        // `UpdateSelectionAndRecalculateScores`, unit-order cost-profile changes,
-        // and `TMilitaryUnit::Upgrade()` for the corresponding technologies.
+        // FIXME: `HandleAbilityUnlock` also upgrades developed-tile civilian class,
+        // navy/score `UpdateSelectionAndRecalculateScores`, city TUnitOrder cost
+        // profiles, and `TMilitaryUnit::Upgrade()`.
         if self.technology.research_status_by_nation[nation][tech_id]
             == TechnologyResearchStatus::Researched
         {
@@ -558,6 +564,18 @@ impl GameState {
 
     fn activate_military_ability(&mut self, nation: MajorNationId, kind: MilitaryUnitKind) {
         self.technology.military_unit_ability_active_by_nation[nation][kind] = true;
+        let group = crate::military_phase::tactical_category(kind);
+        if (0..10).contains(&group) {
+            self.technology.selected_capability_slots[nation][group as usize] = kind as i16;
+        }
+        if (1..9).contains(&group) {
+            let previous = self.nations.city(nation).orders.military_recruitment
+                [MilitaryRecruitmentCategory::ALL[(group - 1) as usize]]
+                .unit_kind;
+            if previous != kind {
+                self.technology.military_unit_ability_active_by_nation[nation][previous] = false;
+            }
+        }
     }
 
     fn add_era_arms(&mut self, nation: MajorNationId, era_offset: i16, scale: i16) {
@@ -569,6 +587,10 @@ impl GameState {
             .stockpile
             .wrapping_add_and_verify(ResourceKind::Arms, era_offset * scale);
     }
+}
+
+pub(crate) const fn default_selected_capability_slots() -> [i16; 10] {
+    [0, 1, 2, 3, 4, 5, 6, 7, 0x18, 0x1b]
 }
 
 fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id: TechnologyId) {
@@ -705,5 +727,24 @@ mod tests {
         state.technology.scheduled_unlock_turn_by_technology[TechnologyId::new(0xf)] = 1;
         state.check_technology_advances();
         assert_eq!(state.technology.navy_growth_ship_type, ShipType::Ironclad);
+    }
+
+    #[test]
+    fn activating_a_later_general_writes_the_selected_capability_slot() {
+        let mut state = crate::test_support::game_state();
+        let nation = MajorNationId::new(0);
+        state.technology.research_status_by_nation[nation][0xb] = TechnologyResearchStatus::Pending;
+        assert_eq!(
+            state.acknowledge_technology_unlock(nation),
+            Some(TechnologyId::new(0xb))
+        );
+        assert_eq!(
+            state.technology.selected_capability_slots[nation][9],
+            MilitaryUnitKind::GeneralEra2 as i16
+        );
+        assert!(
+            state.technology.military_unit_ability_active_by_nation[nation]
+                [MilitaryUnitKind::GeneralEra2]
+        );
     }
 }

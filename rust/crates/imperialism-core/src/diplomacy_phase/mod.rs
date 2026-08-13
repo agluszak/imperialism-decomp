@@ -332,7 +332,7 @@ impl GameState {
         }
     }
 
-    pub(super) fn at_war(&self, source: NationId, target: NationId) -> bool {
+    pub(crate) fn at_war(&self, source: NationId, target: NationId) -> bool {
         self.diplomacy.relationships[source][target] == DiplomaticRelationship::War
     }
 

@@ -377,7 +377,7 @@ fn order_target_index(order: &MilitaryOrder) -> i16 {
     }
 }
 
-fn set_unit_order(unit: &mut MilitaryUnitState, code: i32, target: i16) {
+pub(crate) fn set_unit_order(unit: &mut MilitaryUnitState, code: i32, target: i16) {
     let targets = *unit.order.targets();
     let mirrors = *unit.order.target_mirrors();
     let target = ProvinceId::try_new(target as u16).filter(|_| target >= 0);

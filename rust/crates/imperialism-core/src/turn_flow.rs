@@ -24,6 +24,9 @@ pub struct TurnState {
     /// Process-local last tick that showed turn alerts. Not stored in `.imp`.
     #[serde(default)]
     pub last_turn_alert_tick: i32,
+    /// Process-local mask of turn alerts presented at the last stop. Not stored in `.imp`.
+    #[serde(default)]
+    pub(crate) turn_alert_mask: u8,
 }
 
 impl TurnState {
@@ -50,6 +53,7 @@ impl TurnState {
             active_nation,
             selected_nation,
             last_turn_alert_tick: 0,
+            turn_alert_mask: 0,
         }
     }
 
@@ -126,6 +130,7 @@ pub enum TurnStop {
     DealBook,
     TechnologyAdvance,
     Newspaper,
+    TurnAlerts,
 }
 
 /// Authoritative runtime resume state for an interruptible phase.
@@ -163,8 +168,25 @@ impl GameState {
     /// Ends player orders on the strategic map and runs the turn until the next stop.
     pub fn finish_player_orders(&mut self) -> TurnStop {
         assert_eq!(self.turn.phase(), PhaseCode::STRATEGIC_MAP);
+        if self.show_turn_alerts() {
+            return TurnStop::TurnAlerts;
+        }
         self.turn.phase = PhaseCode::DIPLOMACY;
         self.advance_turn()
+    }
+
+    /// Dismisses turn alerts and re-enters player-order finish on the same phase.
+    pub fn dismiss_turn_alerts(&mut self) -> TurnStop {
+        assert_eq!(self.turn.phase(), PhaseCode::STRATEGIC_MAP);
+        self.turn.turn_alert_mask = 0;
+        self.finish_player_orders()
+    }
+
+    /// True while the driver is stopped on turn alerts that have not been dismissed.
+    pub fn turn_alerts_pending(&self) -> bool {
+        self.turn.phase() == PhaseCode::STRATEGIC_MAP
+            && self.turn.turn_alert_mask != 0
+            && self.turn.last_turn_alert_tick == self.turn.economic_turn
     }
 
     /// Accepts or rejects the diplomacy offer stored in the current continuation.
@@ -340,6 +362,7 @@ impl GameState {
                     }
                 }
                 PhaseCode::NEWSPAPER => {
+                    self.mark_all_pending_status_flags_handled();
                     self.turn.phase = PhaseCode::RETURN_TO_MAP;
                     self.start_newspaper_phase();
                     return TurnStop::Newspaper;
@@ -647,5 +670,40 @@ mod tests {
         assert_eq!(state.turn.phase(), crate::PhaseCode::RETURN_TO_MAP);
         assert!(state.pending.newspaper_events.is_empty());
         assert!(state.news.pages[MajorNationId::new(0)].is_some());
+    }
+
+    #[test]
+    fn newspaper_marks_queued_navy_growth_as_handled_reward_level() {
+        let mut state = game_state();
+        let nation = MajorNationId::new(0);
+        state.nations.majors[nation].economy.pending_actions
+            [crate::PendingActionKind::NavyGrowthReward] =
+            crate::PendingActionState::new(crate::PendingActionStatus::QUEUED, Some(1));
+        state.turn.phase = crate::PhaseCode::NEWSPAPER;
+        assert_eq!(state.advance_turn(), crate::TurnStop::Newspaper);
+        assert_eq!(
+            state.nations.majors[nation].economy.pending_actions
+                [crate::PendingActionKind::NavyGrowthReward]
+                .status(),
+            crate::PendingActionStatus::from_retail(0x34)
+        );
+    }
+
+    #[test]
+    fn quiet_full_turn_stops_at_deal_book_then_returns_to_player_orders() {
+        let mut state = game_state();
+        seed_town_tiles(&mut state);
+        let stop = state.finish_player_orders();
+        assert_eq!(stop, crate::TurnStop::DealBook);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::QUARTER_GATE);
+        let start_turn = state.turn.economic_turn;
+        let mut stop = state.close_turn_deal_book();
+        while let crate::TurnStop::TechnologyAdvance = stop {
+            stop = state.acknowledge_technology_report();
+        }
+        assert_eq!(stop, crate::TurnStop::Newspaper);
+        assert_eq!(state.close_newspaper(), crate::TurnStop::PlayerOrders);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::STRATEGIC_MAP);
+        assert_eq!(state.turn.economic_turn, start_turn + 1);
     }
 }

@@ -1,3 +1,6 @@
+use crate::{
+    GameState, MajorNationId, PendingActionKind, PendingActionTable, TechnologyResearchStatus,
+};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
@@ -17,30 +20,158 @@ impl PendingActionState {
         self.payload
     }
     pub(crate) fn queue(&mut self, payload: i16) {
-        self.status = PendingActionStatus::Queued;
+        self.status = PendingActionStatus::QUEUED;
         self.payload = (payload != -1).then_some(payload);
     }
-    pub(crate) const fn level(self) -> Option<i16> {
-        match self.status {
-            PendingActionStatus::Queued => None,
-            PendingActionStatus::None | PendingActionStatus::Level3 => Some(0),
-            PendingActionStatus::Level4 => Some(1),
+    pub(crate) fn set_status(&mut self, status: PendingActionStatus) {
+        self.status = status;
+    }
+    pub(crate) fn set_payload(&mut self, payload: Option<i16>) {
+        self.payload = payload;
+    }
+    /// Reward-level recovered from a non-queued status byte.
+    ///
+    /// Matches `TShipOrder::LaunchShip` / army-growth: queued has no completed
+    /// level, `0` is level zero, and handled statuses are `status - 0x33`.
+    pub const fn completed_level(self) -> Option<i16> {
+        self.status.completed_level()
+    }
+}
+
+/// Raw retail pending-action status byte.
+///
+/// Different action kinds assign different meaning to the same values. Common
+/// sentinels are [`NONE`](Self::NONE) (`0`), [`QUEUED`](Self::QUEUED) (`0x32`),
+/// and [`HANDLED`](Self::HANDLED) (`0x33`). Army/navy growth then store
+/// `0x33 + payload` through `0x39`.
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct PendingActionStatus(i8);
+
+impl PendingActionStatus {
+    pub const NONE: Self = Self(0);
+    pub const QUEUED: Self = Self(0x32);
+    pub const HANDLED: Self = Self(0x33);
+
+    pub const fn from_retail(value: i8) -> Self {
+        Self(value)
+    }
+
+    pub const fn retail(self) -> i8 {
+        self.0
+    }
+
+    pub const fn is_queued(self) -> bool {
+        self.0 == 0x32
+    }
+
+    pub const fn is_none(self) -> bool {
+        self.0 == 0
+    }
+
+    pub const fn completed_level(self) -> Option<i16> {
+        if self.0 == 0x32 {
+            None
+        } else if self.0 == 0 {
+            Some(0)
+        } else {
+            Some(self.0 as i16 - 0x33)
+        }
+    }
+
+    pub fn has_reached(self, other: Self) -> bool {
+        self >= other
+    }
+}
+
+impl GameState {
+    /// Retail `TGreatPower::MarkAllPendingStatusFlagsHandled` for every event-eligible major.
+    pub fn mark_all_pending_status_flags_handled(&mut self) {
+        for nation in MajorNationId::all() {
+            if !self.event_eligible(nation.nation()) {
+                continue;
+            }
+            let ironworking_researched = self.technology.research_status_by_nation[nation][0x0f]
+                == TechnologyResearchStatus::Researched;
+            let actions = &mut self.nations.majors[nation].economy.pending_actions;
+            mark_pending_status_flags_handled(actions, ironworking_researched);
         }
     }
 }
 
-#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
-#[serde(rename_all = "snake_case")]
-pub enum PendingActionStatus {
-    #[default]
-    None,
-    Queued,
-    Level3,
-    Level4,
+fn mark_pending_status_flags_handled(
+    actions: &mut PendingActionTable<PendingActionState>,
+    ironworking_researched: bool,
+) {
+    let shipyard = &mut actions[PendingActionKind::ShipyardIronworkingUpgrade];
+    if !shipyard.status().has_reached(PendingActionStatus::HANDLED) && ironworking_researched {
+        shipyard.set_status(PendingActionStatus::HANDLED);
+    }
+
+    mark_queued_handled(
+        &mut actions[PendingActionKind::ConqueredCapitalArmoryUpgrade],
+        PendingActionStatus::HANDLED,
+        false,
+    );
+
+    let university = &mut actions[PendingActionKind::UniversityExpansion];
+    if university.status().is_queued() {
+        match university.payload() {
+            Some(2) => university.set_status(PendingActionStatus::HANDLED),
+            Some(3) => {
+                university.set_status(PendingActionStatus::from_retail(0x34));
+                university.set_payload(None);
+            }
+            _ => {}
+        }
+    }
+
+    for kind in [
+        PendingActionKind::RailyardExpansion,
+        PendingActionKind::AnnexedGreatPowerCapitalExpansion,
+        PendingActionKind::ColonyMonumentMerchantCapacity,
+        PendingActionKind::CouncilLeadMonument,
+        PendingActionKind::ConquestMonumentArmory,
+    ] {
+        mark_queued_handled(&mut actions[kind], PendingActionStatus::HANDLED, false);
+    }
+
+    mark_queued_as_payload_plus_handled(&mut actions[PendingActionKind::NavyGrowthReward]);
+    mark_queued_as_payload_plus_handled(&mut actions[PendingActionKind::ArmyGrowthReward]);
+    mark_queued_handled(
+        &mut actions[PendingActionKind::OverseasDeveloperReward],
+        PendingActionStatus::HANDLED,
+        false,
+    );
+    mark_queued_handled(
+        &mut actions[PendingActionKind::VillageDevelopment],
+        PendingActionStatus::NONE,
+        false,
+    );
+    mark_queued_handled(
+        &mut actions[PendingActionKind::TownDevelopment],
+        PendingActionStatus::NONE,
+        false,
+    );
 }
-impl PendingActionStatus {
-    pub(crate) fn has_reached(self, other: Self) -> bool {
-        self >= other
+
+fn mark_queued_handled(
+    action: &mut PendingActionState,
+    status: PendingActionStatus,
+    clear_payload: bool,
+) {
+    if action.status().is_queued() {
+        action.set_status(status);
+        if clear_payload {
+            action.set_payload(None);
+        }
+    }
+}
+
+fn mark_queued_as_payload_plus_handled(action: &mut PendingActionState) {
+    if action.status().is_queued() {
+        let payload = action.payload().unwrap_or(-1);
+        action.set_status(PendingActionStatus::from_retail((payload + 0x33) as i8));
     }
 }
 
@@ -49,22 +180,56 @@ mod tests {
     use super::*;
 
     #[test]
-    fn pending_action_level_is_derived_from_status_not_payload() {
+    fn pending_action_completed_level_is_derived_from_the_raw_status_byte() {
         assert_eq!(
-            PendingActionState::new(PendingActionStatus::None, None).level(),
+            PendingActionState::new(PendingActionStatus::NONE, None).completed_level(),
             Some(0)
         );
         assert_eq!(
-            PendingActionState::new(PendingActionStatus::Queued, Some(6)).level(),
+            PendingActionState::new(PendingActionStatus::QUEUED, Some(6)).completed_level(),
             None
         );
         assert_eq!(
-            PendingActionState::new(PendingActionStatus::Level3, Some(6)).level(),
+            PendingActionState::new(PendingActionStatus::HANDLED, Some(6)).completed_level(),
             Some(0)
         );
         assert_eq!(
-            PendingActionState::new(PendingActionStatus::Level4, Some(6)).level(),
+            PendingActionState::new(PendingActionStatus::from_retail(0x34), Some(6))
+                .completed_level(),
             Some(1)
+        );
+        assert_eq!(
+            PendingActionState::new(PendingActionStatus::from_retail(0x39), Some(6))
+                .completed_level(),
+            Some(6)
+        );
+    }
+
+    #[test]
+    fn newspaper_mark_handled_promotes_navy_growth_through_reward_levels() {
+        let mut actions = PendingActionTable::default();
+        actions[PendingActionKind::NavyGrowthReward] =
+            PendingActionState::new(PendingActionStatus::QUEUED, Some(1));
+        mark_pending_status_flags_handled(&mut actions, false);
+        assert_eq!(
+            actions[PendingActionKind::NavyGrowthReward].status(),
+            PendingActionStatus::from_retail(0x34)
+        );
+
+        actions[PendingActionKind::NavyGrowthReward] =
+            PendingActionState::new(PendingActionStatus::QUEUED, Some(2));
+        mark_pending_status_flags_handled(&mut actions, false);
+        assert_eq!(
+            actions[PendingActionKind::NavyGrowthReward].status(),
+            PendingActionStatus::from_retail(0x35)
+        );
+
+        actions[PendingActionKind::NavyGrowthReward] =
+            PendingActionState::new(PendingActionStatus::QUEUED, Some(3));
+        mark_pending_status_flags_handled(&mut actions, false);
+        assert_eq!(
+            actions[PendingActionKind::NavyGrowthReward].status(),
+            PendingActionStatus::from_retail(0x36)
         );
     }
 }

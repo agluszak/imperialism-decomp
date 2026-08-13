@@ -230,8 +230,7 @@ impl GameState {
         }
     }
 
-    /// Retail `ShowTurnAlertsForActiveNation`. Capitol-threat alerts wait on
-    /// military scoring and stay off here.
+    /// Retail `ShowTurnAlertsForActiveNation`.
     pub fn show_turn_alerts(&mut self) -> bool {
         let tick = self.turn.economic_turn;
         if tick == 1 || self.turn.last_turn_alert_tick == tick {
@@ -242,33 +241,50 @@ impl GameState {
             return false;
         };
 
-        let mut shown = false;
-        if self.turn.turn_flow_status_flags & 1 == 0
-            && self.treasury_status_prompt_code(nation) != 0
-        {
-            shown = true;
+        const ALERT_LAND_CAPITOL: u8 = 1;
+        const ALERT_NAVY_CAPITOL: u8 = 2;
+        const ALERT_TREASURY: u8 = 4;
+        const ALERT_COMMODITY: u8 = 8;
+        const ALERT_TRANSPORT: u8 = 16;
+        const ALERT_STARVATION: u8 = 32;
+
+        let mut mask = 0_u8;
+        if self.land_capitol_threatened(nation) {
+            mask |= ALERT_LAND_CAPITOL;
         }
-        if self.turn.turn_flow_status_flags & 0x10 == 0 && self.commodity_record_below_step(nation)
-        {
-            shown = true;
+        if self.navy_capitol_threatened(nation) {
+            mask |= ALERT_NAVY_CAPITOL;
         }
-        if self.turn.turn_flow_status_flags & 0x1000 == 0
-            && self.need_current_exceeds_target(nation)
-        {
-            shown = true;
-        }
-        if self
-            .nations
-            .city(nation)
-            .forecast_population_food(&self.nations.majors[nation].economy.need_target_by_type)
-            .starvation_count
-            != 0
-        {
-            shown = true;
+        if mask == 0 {
+            if self.turn.turn_flow_status_flags & 1 == 0
+                && self.treasury_status_prompt_code(nation) != 0
+            {
+                mask |= ALERT_TREASURY;
+            }
+            if self.turn.turn_flow_status_flags & 0x10 == 0
+                && self.commodity_record_below_step(nation)
+            {
+                mask |= ALERT_COMMODITY;
+            }
+            if self.turn.turn_flow_status_flags & 0x1000 == 0
+                && self.need_current_exceeds_target(nation)
+            {
+                mask |= ALERT_TRANSPORT;
+            }
+            if self
+                .nations
+                .city(nation)
+                .forecast_population_food(&self.nations.majors[nation].economy.need_target_by_type)
+                .starvation_count
+                != 0
+            {
+                mask |= ALERT_STARVATION;
+            }
         }
 
+        self.turn.turn_alert_mask = mask;
         self.turn.last_turn_alert_tick = tick;
-        shown
+        mask != 0
     }
 
     fn treasury_status_prompt_code(&self, nation: MajorNationId) -> i16 {

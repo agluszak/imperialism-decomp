@@ -115,14 +115,14 @@ impl GameState {
         self.land_capitol_threatened(nation) || self.navy_capitol_threatened(nation)
     }
 
-    fn land_capitol_threatened(&self, nation: MajorNationId) -> bool {
+    pub(crate) fn land_capitol_threatened(&self, nation: MajorNationId) -> bool {
         let Some(capitol) = self.capitol_province(nation.nation()) else {
             return false;
         };
         self.local_support_score(capitol) < self.cross_nation_support_score(capitol)
     }
 
-    fn navy_capitol_threatened(&self, nation: MajorNationId) -> bool {
+    pub(crate) fn navy_capitol_threatened(&self, nation: MajorNationId) -> bool {
         let Some(port) = self.first_port_zone_for_nation(nation.nation()) else {
             return false;
         };
@@ -319,7 +319,7 @@ fn bump_navy_mission_ship_ids(navy: &mut NavyMissionState) {
     }
 }
 
-const PROVINCE_UNIT_ORDER_WEIGHT: f32 = 33.0;
+pub(crate) const PROVINCE_UNIT_ORDER_WEIGHT: f32 = 33.0;
 
 /// Five action-class weights (`requiredEquipageByClass` / `GetAttribute(0..4)`).
 /// Classes follow the tactical AI class table: infantry, cavalry, artillery,
@@ -458,15 +458,24 @@ impl MilitaryUnitKind {
 }
 
 #[derive(Clone, Copy, Default)]
-struct ActionClassScores {
-    infantry: f32,
-    cavalry: f32,
-    artillery: f32,
-    armor: f32,
-    support: f32,
+pub(crate) struct ActionClassScores {
+    pub(crate) infantry: f32,
+    pub(crate) cavalry: f32,
+    pub(crate) artillery: f32,
+    pub(crate) armor: f32,
+    pub(crate) support: f32,
 }
 
 impl ActionClassScores {
+    pub(crate) fn components(self) -> [f32; 5] {
+        [
+            self.infantry,
+            self.cavalry,
+            self.artillery,
+            self.armor,
+            self.support,
+        ]
+    }
     fn similarity(self, profile: ActionClassWeights) -> f32 {
         let sum = self.infantry + self.cavalry + self.artillery + self.armor + self.support;
         if sum == 0.0 {
@@ -485,7 +494,7 @@ fn class_diff(component: f32, target: i16, sum: f32) -> f32 {
     (component / sum - f32::from(target) * 0.01).abs()
 }
 
-fn accumulate_unit_priority(
+pub(crate) fn accumulate_unit_priority(
     unit: &MilitaryUnitState,
     scores: &mut ActionClassScores,
     mut scale: f32,

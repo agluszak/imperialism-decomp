@@ -17,8 +17,58 @@ impl GameState {
             if !self.nation_is_eligible_for_optional_phase(nation.nation()) {
                 continue;
             }
+            if self.is_auto(nation) {
+                self.adopt_unassigned_militia_into_defend_missions(nation.nation());
+            }
             self.commit_purchased_items(nation);
         }
+    }
+
+    /// `TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment` militia
+    /// adoption. Reassess, prune, and AI development replanning are not ported.
+    fn adopt_unassigned_militia_into_defend_missions(&mut self, nation: NationId) {
+        let mut adoptions = Vec::new();
+        for unit in &self.military_units {
+            if unit.nation() != nation || !unit.unit_type().is_militia_category() {
+                continue;
+            }
+            let Some(province) = unit.stationed_province() else {
+                continue;
+            };
+            if self.mission_contains_unit(unit.id()) {
+                continue;
+            }
+            let Some(index) = self.missions.iter().position(|mission| {
+                mission.nation == nation
+                    && matches!(
+                        &mission.data,
+                        MissionData::DefendProvince {
+                            province: hold,
+                            ..
+                        } if *hold == province
+                    )
+            }) else {
+                continue;
+            };
+            adoptions.push((index, unit.id()));
+        }
+        for (index, id) in adoptions {
+            if let MissionData::DefendProvince { army, .. } = &mut self.missions[index].data {
+                army.units.insert(0, id);
+            }
+        }
+    }
+
+    fn mission_contains_unit(&self, id: MilitaryUnitId) -> bool {
+        self.missions.iter().any(|mission| match &mission.data {
+            MissionData::DefendProvince { army, .. }
+            | MissionData::AttackProvince(AttackMissionState { army, .. })
+            | MissionData::Invade {
+                attack: AttackMissionState { army, .. },
+                ..
+            } => army.units.contains(&id),
+            _ => false,
+        })
     }
 }
 
@@ -107,5 +157,51 @@ mod tests {
                 .purchased_items_by_resource[ResourceKind::Food],
             7
         );
+    }
+
+    #[test]
+    fn cleanup_adopts_unassigned_militia_into_the_defend_mission() {
+        let mut state = game_state();
+        let nation = MajorNationId::new(0);
+        state.nations.majors[nation].kind = MajorNationKind::AutoGreatPower;
+        let province = ProvinceId::new(3);
+        let id = state.unit_ids.next_military();
+        state.military_units.push(MilitaryUnitState::new(
+            id,
+            nation.nation(),
+            MilitaryUnitKind::Minutemen,
+            Some(province),
+            MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
+            nation.nation(),
+            0,
+            true,
+            String::new(),
+            500,
+            0,
+            0,
+            0,
+        ));
+        state.missions.push(MissionState {
+            nation: nation.nation(),
+            data: MissionData::DefendProvince {
+                province,
+                army: ArmyMissionState {
+                    required_equipage_bits: [0; 5],
+                    units: Vec::new(),
+                },
+            },
+            path_nation: None,
+            state: 2,
+            importance_bits: 0,
+            held: false,
+            marker: 0,
+        });
+
+        state.do_military_cleanup();
+
+        let MissionData::DefendProvince { army, .. } = &state.missions[0].data else {
+            panic!("expected a defend-province mission");
+        };
+        assert_eq!(army.units, vec![id]);
     }
 }

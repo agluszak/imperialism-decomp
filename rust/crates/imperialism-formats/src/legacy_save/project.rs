@@ -741,6 +741,7 @@ fn technology_state(technology: &LegacyTechnologyState) -> TechnologyState {
                 .ability_active_by_nation
                 .map(|row| MilitaryUnitTable::from_array(row.map(|value| value != 0))),
         ),
+        selected_capability_slots: MajorNationTable::from_array(technology.nation_capability_slots),
         city_capabilities_by_nation: MajorNationTable::from_array(city_capabilities_by_nation),
         navy_growth_ship_type: ShipType::from_index(technology.active_zone_index as u8)
             .expect("retail activeZoneIndex1d4 is a ship type"),
@@ -1402,14 +1403,10 @@ fn interior_civilian_state(minister: &LegacyInteriorMinisterState) -> InteriorCi
 }
 
 fn pending_action_from_retail(status: i8, payload: i16) -> PendingActionState {
-    let status = match status {
-        0 => PendingActionStatus::None,
-        0x32 => PendingActionStatus::Queued,
-        0x33 => PendingActionStatus::Level3,
-        0x34 => PendingActionStatus::Level4,
-        _ => panic!("unrecovered pending-action status {status}"),
-    };
-    PendingActionState::new(status, (payload != -1).then_some(payload))
+    PendingActionState::new(
+        PendingActionStatus::from_retail(status),
+        (payload != -1).then_some(payload),
+    )
 }
 
 fn diplomacy_grants_from_retail_entries(

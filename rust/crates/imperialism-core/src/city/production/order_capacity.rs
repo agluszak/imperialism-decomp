@@ -316,7 +316,7 @@ pub(crate) fn restock_power_plant(
 pub(crate) fn retail_region_capacity(owner: &GreatPowerState, owned_region_count: usize) -> i16 {
     let divisor = if owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
         .status()
-        .has_reached(crate::PendingActionStatus::Level3)
+        .has_reached(crate::PendingActionStatus::HANDLED)
     {
         3
     } else {

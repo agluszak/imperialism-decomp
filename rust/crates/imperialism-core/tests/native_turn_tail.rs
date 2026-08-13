@@ -74,6 +74,15 @@ fn return_to_map_clears_notice_queues() {
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
+fn newspaper_navy_growth_reward_levels() {
+    compare_native("newspaper_navy_growth_reward_levels", |state, (): ()| {
+        state.mark_all_pending_status_flags_handled();
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
 fn opening_civilian_grant() {
     compare_native("opening_civilian_grant", |state, (): ()| {
         let nation = MajorNationId::from_nation(state.turn().active_nation)

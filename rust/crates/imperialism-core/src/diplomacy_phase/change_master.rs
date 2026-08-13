@@ -42,7 +42,7 @@ impl GameState {
             if let Some(major) = MajorNationId::from_nation(master) {
                 let pending = &mut self.nations.majors[major].economy.pending_actions
                     [PendingActionKind::ColonyMonumentMerchantCapacity];
-                if !pending.status().has_reached(PendingActionStatus::Level3) {
+                if !pending.status().has_reached(PendingActionStatus::HANDLED) {
                     pending.queue(i16::from(subject.get()));
                 }
             }
@@ -55,7 +55,7 @@ impl GameState {
         ) {
             let pending = &mut self.nations.majors[master_major].economy.pending_actions
                 [PendingActionKind::AnnexedGreatPowerCapitalExpansion];
-            if !pending.status().has_reached(PendingActionStatus::Level3) {
+            if !pending.status().has_reached(PendingActionStatus::HANDLED) {
                 pending.queue(i16::from(subject.get()));
             }
         }

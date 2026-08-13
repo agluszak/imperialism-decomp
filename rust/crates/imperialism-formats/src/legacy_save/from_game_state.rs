@@ -844,7 +844,9 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
         init_flags_1ab: [0; 30],
         init_flags_1c9: [0; 9],
         active_prerequisite_pair: [0; 2],
-        nation_capability_slots: [[0; 10]; MAJOR_NATION_COUNT],
+        nation_capability_slots: std::array::from_fn(|slot| {
+            technology.selected_capability_slots[MajorNationId::new(slot as u8)]
+        }),
         research_status_by_nation,
         selected_resource_type_by_nation: [[0; 14]; MAJOR_NATION_COUNT],
         ability_active_by_nation,
@@ -1155,12 +1157,7 @@ fn grant_to_retail(grant: DiplomacyGrant) -> i16 {
 }
 
 fn pending_status_to_retail(status: PendingActionStatus) -> i8 {
-    match status {
-        PendingActionStatus::None => 0,
-        PendingActionStatus::Queued => 0x32,
-        PendingActionStatus::Level3 => 0x33,
-        PendingActionStatus::Level4 => 0x34,
-    }
+    status.retail()
 }
 
 fn foreign_policy_id(personality: ForeignMinisterPersonality) -> i16 {

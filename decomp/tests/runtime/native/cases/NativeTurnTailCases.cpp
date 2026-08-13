@@ -190,6 +190,32 @@ RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transitio
   return transition.Finish();
 }
 
+RuntimeActionResult RunNewspaperNavyGrowthRewardLevels(NativeTransition& transition) {
+  TGreatPower* nation = ActiveNation();
+  if (nation == 0) {
+    return RuntimeActionResult::Failure("the loaded fixture has no active great power");
+  }
+
+  nation->pendingActionStatus.byAction[0] = 0x32;
+  nation->field8d6[0] = 1;
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) == 0) {
+      continue;
+    }
+    TGreatPower* slotNation = g_apNationStates[nationSlot];
+    if (slotNation != 0) {
+      slotNation->MarkAllPendingStatusFlagsHandled();
+    }
+  }
+  return transition.Finish();
+}
+
 RuntimeActionResult RunEliminationPhaseWithLandedGreatPowers(NativeTransition& transition) {
   if (g_pSimMgr == 0) {
     return RuntimeActionResult::Failure("elimination state is unavailable");

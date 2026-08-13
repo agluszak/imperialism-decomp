@@ -267,7 +267,7 @@ impl GameState {
         }
     }
 
-    pub(super) fn post_policy(
+    pub(crate) fn post_policy(
         &mut self,
         nation: MajorNationId,
         target: NationId,

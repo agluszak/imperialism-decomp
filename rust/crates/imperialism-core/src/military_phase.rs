@@ -1,6 +1,11 @@
 //! Military maintenance and order-preparation (`TSimMgr::DoMilitary`).
 
+use crate::combat_moves::set_unit_order;
+use crate::military::{ActionClassScores, PROVINCE_UNIT_ORDER_WEIGHT, accumulate_unit_priority};
 use crate::*;
+
+const UNIT_ORDER_REDEPLOY: i32 = 1;
+const ATTACK_MISSION_READINESS_THRESHOLD: f32 = 1.0;
 
 const HEATMAP_PACKED_DEVELOPMENT_OVERFLOW: [u8; 44] = [
     0, 0, 0, 1, 1, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 10, 0, 4, 0, 7, 0, 6,
@@ -37,9 +42,10 @@ const UNIVERSITY_REQUIREMENT_LEVEL: [[u8; 4]; 24] = [
 const HEATMAP_NEIGHBOR_DIFFUSION: f32 = 0.2;
 
 impl GameState {
-    /// Retail `TSimMgr::DoMilitary` without AutoGreatPower mission planning or navy
-    /// `CarryOutOrders`. Those branches are not represented as complete `GameState`
-    /// operations yet and must not mutate half the world.
+    /// Retail `TSimMgr::DoMilitary` without AutoGreatPower `SelectAndQueueAdvisoryMapMissionsCase16`
+    /// or navy `CarryOutOrders`. Those planners are not represented as complete `GameState`
+    /// operations yet and must not mutate half the world. Auto great powers do run
+    /// `TDefenseMinister::DoArmyMovement` (`GiveOrders` on existing missions).
     pub fn do_military(&mut self) {
         self.recompute_tile_strategic_score_heatmap();
         for nation in NationId::all() {
@@ -56,6 +62,110 @@ impl GameState {
             if self.nations.major(nation).kind == MajorNationKind::GreatPower {
                 self.nations.majors[nation].economy.army_movement_budget =
                     i32::from(self.nations.majors[nation].economy.capacities.transport) / 5;
+            } else if self.is_auto(nation) {
+                self.give_auto_great_power_army_orders(nation.nation());
+            }
+        }
+    }
+
+    fn give_auto_great_power_army_orders(&mut self, nation: NationId) {
+        let mission_count = self.missions.len();
+        for mission_index in 0..mission_count {
+            if self.missions[mission_index].nation != nation {
+                continue;
+            }
+            match &self.missions[mission_index].data {
+                MissionData::DefendProvince { province, army } => {
+                    let province = *province;
+                    let units = army.units.clone();
+                    self.redeploy_units_not_stationed_in(&units, province);
+                }
+                MissionData::AttackProvince(attack) => {
+                    let attack = attack.clone();
+                    self.give_attack_province_orders(nation, &attack);
+                }
+                MissionData::Invade { attack, .. } => {
+                    let attack = attack.clone();
+                    let Some(major) = MajorNationId::from_nation(nation) else {
+                        continue;
+                    };
+                    if self.map.provinces[attack.target_province].explored_by_majors()[major] {
+                        self.give_attack_province_orders(nation, &attack);
+                    }
+                }
+                _ => {}
+            }
+        }
+    }
+
+    fn give_attack_province_orders(&mut self, nation: NationId, attack: &AttackMissionState) {
+        let Some(present) = attack.present_province else {
+            return;
+        };
+
+        let mut projected = ActionClassScores::default();
+        for id in &attack.army.units {
+            let Some(unit) = self.military_units.iter().find(|unit| unit.id() == *id) else {
+                continue;
+            };
+            if unit.stationed_province() == Some(present) {
+                accumulate_unit_priority(unit, &mut projected, 1.0, PROVINCE_UNIT_ORDER_WEIGHT);
+            }
+        }
+        let required = attack.army.required_equipage_bits.map(f32::from_bits);
+        let projected = projected.components();
+        let mut weighted = 0.0;
+        let mut total = 0.0;
+        for index in 0..5 {
+            weighted += (required[index] * projected[index]).sqrt();
+            total += required[index];
+        }
+        if weighted / total > ATTACK_MISSION_READINESS_THRESHOLD
+            && let Some(owner) = self.map.provinces[attack.target_province].owner()
+        {
+            if self.war_stamp_stale(nation, owner) {
+                self.redeploy_units_stationed_in(
+                    &attack.army.units,
+                    present,
+                    attack.target_province,
+                );
+            } else if !self.at_war(nation, owner)
+                && let Some(major) = MajorNationId::from_nation(nation)
+                && self.nations.majors[major]
+                    .economy
+                    .diplomacy_policy_by_nation[owner]
+                    != Some(DiplomacyPolicy::DeclareWar)
+            {
+                self.post_policy(major, owner, DiplomacyPolicy::DeclareWar);
+            }
+        }
+
+        self.redeploy_units_not_stationed_in(&attack.army.units, present);
+    }
+
+    fn redeploy_units_not_stationed_in(&mut self, units: &[MilitaryUnitId], province: ProvinceId) {
+        for id in units {
+            let Some(unit) = self.military_units.iter_mut().find(|unit| unit.id() == *id) else {
+                continue;
+            };
+            if unit.stationed_province() != Some(province) {
+                set_unit_order(unit, UNIT_ORDER_REDEPLOY, province.get() as i16);
+            }
+        }
+    }
+
+    fn redeploy_units_stationed_in(
+        &mut self,
+        units: &[MilitaryUnitId],
+        present: ProvinceId,
+        target: ProvinceId,
+    ) {
+        for id in units {
+            let Some(unit) = self.military_units.iter_mut().find(|unit| unit.id() == *id) else {
+                continue;
+            };
+            if unit.stationed_province() == Some(present) {
+                set_unit_order(unit, UNIT_ORDER_REDEPLOY, target.get() as i16);
             }
         }
     }
@@ -299,5 +409,50 @@ mod tests {
                 .army_movement_budget,
             0
         );
+    }
+
+    #[test]
+    fn auto_great_power_defend_orders_redeploy_units_off_the_held_province() {
+        let mut state = game_state();
+        let nation = MajorNationId::new(0);
+        state.nations.majors[nation].kind = MajorNationKind::AutoGreatPower;
+        let hold = ProvinceId::new(0);
+        let away = ProvinceId::new(1);
+        let id = state.unit_ids.next_military();
+        state.military_units.push(MilitaryUnitState::new(
+            id,
+            nation.nation(),
+            MilitaryUnitKind::Minutemen,
+            Some(away),
+            MilitaryOrder::idle([Some(away); 3], [Some(away); 3]),
+            nation.nation(),
+            0,
+            true,
+            String::new(),
+            500,
+            0,
+            0,
+            0,
+        ));
+        state.missions.push(MissionState {
+            nation: nation.nation(),
+            data: MissionData::DefendProvince {
+                province: hold,
+                army: ArmyMissionState {
+                    required_equipage_bits: [0; 5],
+                    units: vec![id],
+                },
+            },
+            path_nation: None,
+            state: 2,
+            importance_bits: 0,
+            held: false,
+            marker: 0,
+        });
+
+        state.do_military();
+
+        assert_eq!(state.military_units[0].order().code(), UNIT_ORDER_REDEPLOY);
+        assert_eq!(state.military_units[0].order().target(), Some(hold));
     }
 }
