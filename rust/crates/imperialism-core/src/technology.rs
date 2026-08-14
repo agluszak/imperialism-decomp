@@ -574,13 +574,91 @@ impl GameState {
             self.technology.selected_capability_slots[nation][group as usize] = kind as i16;
         }
         if (1..9).contains(&group) {
-            let previous = self.nations.city(nation).orders.military_recruitment
-                [MilitaryRecruitmentCategory::ALL[(group - 1) as usize]]
-                .unit_kind;
+            let category = MilitaryRecruitmentCategory::ALL[(group - 1) as usize];
+            let previous =
+                self.nations.city(nation).orders.military_recruitment[category].unit_kind;
             if previous != kind {
                 self.technology.military_unit_ability_active_by_nation[nation][previous] = false;
             }
+            self.nations.city_mut(nation).orders.military_recruitment[category].unit_kind = kind;
+        } else if self.nation_is_eligible_for_optional_phase(nation.nation()) {
+            self.upgrade_matching_category_units(nation, group);
         }
+    }
+
+    fn upgrade_matching_category_units(&mut self, nation: MajorNationId, group: i16) {
+        let mut indexes = Vec::new();
+        for (index, unit) in self.military_units.iter().enumerate() {
+            if unit.nation() == nation.nation()
+                && crate::military_phase::tactical_category(unit.unit_type()) == group
+            {
+                indexes.push(index);
+            }
+        }
+        for index in indexes {
+            self.upgrade_military_unit(nation, index);
+        }
+    }
+
+    fn upgrade_military_unit(&mut self, nation: MajorNationId, index: usize) -> bool {
+        let Some(candidate) = self.upgrade_type(nation, self.military_units[index].unit_type())
+        else {
+            return false;
+        };
+        let (arms_cost, cash_cost, fuel_cost) = upgrade_resource_costs(candidate);
+        let city = self.nations.city(nation);
+        if arms_cost > city.stockpile[ResourceKind::Arms] {
+            return false;
+        }
+        if fuel_cost > city.stockpile[ResourceKind::Fuel] {
+            return false;
+        }
+        let diplomacy_eligible = self.nations.majors[nation].economy.diplomacy_eligible;
+        let treasury = self.nations.majors[nation].common.treasury;
+        if diplomacy_eligible
+            && i32::from(cash_cost)
+                > self.nations.majors[nation]
+                    .economy
+                    .available_diplomacy_budget(treasury)
+        {
+            return false;
+        }
+        self.nations
+            .city_mut(nation)
+            .stockpile
+            .wrapping_add_and_verify(ResourceKind::Arms, -arms_cost);
+        self.nations
+            .city_mut(nation)
+            .stockpile
+            .wrapping_add_and_verify(ResourceKind::Fuel, -fuel_cost);
+        self.nations.majors[nation].common.treasury -= i32::from(cash_cost);
+        self.military_units[index].unit_type = candidate;
+        true
+    }
+
+    fn upgrade_type(
+        &self,
+        nation: MajorNationId,
+        unit_type: MilitaryUnitKind,
+    ) -> Option<MilitaryUnitKind> {
+        let candidate = if (unit_type as u8) < MilitaryUnitKind::Conscripts as u8 {
+            MilitaryUnitKind::from_index(unit_type as u8 + 8)
+        } else if matches!(
+            unit_type,
+            MilitaryUnitKind::Sappers
+                | MilitaryUnitKind::CombatEngineers
+                | MilitaryUnitKind::GeneralEra1
+                | MilitaryUnitKind::GeneralEra2
+        ) {
+            MilitaryUnitKind::from_index(unit_type as u8 + 1)
+        } else {
+            None
+        }?;
+        let active = &self.technology.military_unit_ability_active_by_nation[nation];
+        if !active[candidate] && active[unit_type] {
+            return None;
+        }
+        Some(candidate)
     }
 
     fn add_era_arms(&mut self, nation: MajorNationId, era_offset: i16, scale: i16) {
@@ -596,6 +674,20 @@ impl GameState {
 
 pub(crate) const fn default_selected_capability_slots() -> [i16; 10] {
     [0, 1, 2, 3, 4, 5, 6, 7, 0x18, 0x1b]
+}
+
+fn upgrade_resource_costs(kind: MilitaryUnitKind) -> (i16, i16, i16) {
+    match military_recruitment_spec(kind) {
+        Some(spec) => {
+            let fuel = spec
+                .secondary
+                .filter(|cost| cost.resource == ResourceKind::Fuel)
+                .map(|cost| cost.per_unit())
+                .unwrap_or(0);
+            (spec.primary.per_unit(), spec.cash_per_unit, fuel)
+        }
+        None => (0, 0, 0),
+    }
 }
 
 fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id: TechnologyId) {
@@ -751,6 +843,56 @@ mod tests {
         assert!(
             state.technology.military_unit_ability_active_by_nation[nation]
                 [MilitaryUnitKind::GeneralEra2]
+        );
+    }
+
+    #[test]
+    fn activating_a_recruitment_ability_rewrites_the_city_order_unit_kind() {
+        let mut state = crate::test_support::game_state();
+        let nation = MajorNationId::new(0);
+        assert_eq!(
+            state.nations.city(nation).orders.military_recruitment
+                [MilitaryRecruitmentCategory::LightInfantry]
+                .unit_kind,
+            MilitaryUnitKind::Skirmishers
+        );
+        state.activate_slot_and_update_ui(nation, MilitaryUnitKind::Sharpshooters);
+        assert_eq!(
+            state.nations.city(nation).orders.military_recruitment
+                [MilitaryRecruitmentCategory::LightInfantry]
+                .unit_kind,
+            MilitaryUnitKind::Sharpshooters
+        );
+        assert!(
+            !state.technology.military_unit_ability_active_by_nation[nation]
+                [MilitaryUnitKind::Skirmishers]
+        );
+    }
+
+    #[test]
+    fn activating_a_later_general_upgrades_existing_matching_units() {
+        let mut state = crate::test_support::game_state();
+        let nation = MajorNationId::new(0);
+        let province = ProvinceId::new(0);
+        state.military_units.push(MilitaryUnitState::new(
+            MilitaryUnitId::new(1),
+            nation.nation(),
+            MilitaryUnitKind::GeneralEra1,
+            Some(province),
+            MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
+            nation.nation(),
+            1,
+            true,
+            String::new(),
+            500,
+            0,
+            0,
+            0,
+        ));
+        state.activate_slot_and_update_ui(nation, MilitaryUnitKind::GeneralEra2);
+        assert_eq!(
+            state.military_units[0].unit_type(),
+            MilitaryUnitKind::GeneralEra2
         );
     }
 }
