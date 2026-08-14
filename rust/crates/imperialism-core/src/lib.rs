@@ -67,7 +67,7 @@ pub use city::{
 };
 pub(crate) use city::{EXPANSION_INPUTS, ItemInputs};
 pub use city_site::{
-    CapitalSite, CitySiteError, confirm_capital_site,
+    CapitalSite, CapitalSiteReport, CitySiteError, capital_site_report, confirm_capital_site,
     enter_strategic_map_without_capital_selection, is_valid_secondary_nation_home_tile_candidate,
     place_city, requires_capital_site_selection, supports_city_site_terrain,
     validate_capital_site_selection,

@@ -389,7 +389,7 @@ pub(super) fn frog_city_score(yields: &ResourceTable<i16>) -> i32 {
         + i32::from(food_bonus)
 }
 /// `TTown::CalculateCityResources` (0x005b73e0) for an enabled Frog City marker.
-pub(super) fn calculate_city_resources(
+pub(crate) fn calculate_city_resources(
     world: &MapMgr,
     home: TileId,
     nation: MajorNationId,

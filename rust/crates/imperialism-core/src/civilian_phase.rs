@@ -120,7 +120,7 @@ impl GameState {
         Some(influence)
     }
 
-    pub(crate) fn can_build_port_at_tile(&self, tile: TileId) -> bool {
+    pub fn can_build_port_at_tile(&self, tile: TileId) -> bool {
         let mut can_build = false;
         if !matches!(
             self.map[tile].terrain,

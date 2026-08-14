@@ -21,6 +21,7 @@ struct HoverHelpSource(Option<Entity>);
 #[derive(Clone, Copy)]
 pub(crate) struct HoverHelpBarStyle {
     point_size: i32,
+    alignment: i32,
     text_palette: u8,
     shadow_palette: u8,
 }
@@ -30,6 +31,7 @@ impl HoverHelpBarStyle {
     /// (palette `0x28`) with shadow theme `0x2b6b` (palette `0xd2`).
     pub(crate) const MAIN_MENU: Self = Self {
         point_size: 14,
+        alignment: 1,
         text_palette: 0x28,
         shadow_palette: 0xd2,
     };
@@ -39,8 +41,19 @@ impl HoverHelpBarStyle {
     /// shadow palette `0x28`.
     pub(crate) const RANDOM_SETUP: Self = Self {
         point_size: 12,
+        alignment: 1,
         text_palette: 0xd2,
         shadow_palette: 0x28,
+    };
+
+    /// `TCitySiteView::DoPostCreate` restyles `curs` through
+    /// `InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67)`: 12pt right-aligned,
+    /// text palette `0x28`, shadow palette `0`.
+    pub(crate) const CITY_SITE: Self = Self {
+        point_size: 12,
+        alignment: -1,
+        text_palette: 0x28,
+        shadow_palette: 0,
     };
 
     /// `TGamePreferencesPicture::DoPostCreate` restyles `curs` through
@@ -48,6 +61,7 @@ impl HoverHelpBarStyle {
     /// shadow palette `0`.
     pub(crate) const PREFERENCES: Self = Self {
         point_size: 12,
+        alignment: 1,
         text_palette: 0x28,
         shadow_palette: 0,
     };
@@ -69,7 +83,7 @@ pub(crate) fn bind_hover_help_bar(
             font_family: 1,
             face_flags: 0,
             point_size: style.point_size,
-            alignment: 1,
+            alignment: style.alignment,
         })
         .expect("retail hover-help bar text style");
     let text_color = assets.palette_color(style.text_palette);
