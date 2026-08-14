@@ -10,7 +10,9 @@ use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
-use imperialism_core::{MajorNationId, MapGeometry, MapTopology, NationId, TileId, TileOwnerTag};
+use imperialism_core::{
+    MajorNationId, MajorNationTable, MapGeometry, MapTopology, NationId, TileId, TileOwnerTag,
+};
 use imperialism_formats::{DibPalette, FourCc, PictureId, Rgb, fourcc};
 
 const MAP_TAG: FourCc = fourcc!("map ");
@@ -26,8 +28,8 @@ const PREVIEW_HEIGHT: usize = 180;
 const PREVIEW_PIXEL_COUNT: usize = PREVIEW_WIDTH * PREVIEW_HEIGHT;
 const OFF_MAP_PALETTE: u8 = 0x10;
 const SELECTED_EDGE_PALETTE: u8 = 0x13;
-const MAJOR_NATION_PALETTES: [u8; MajorNationId::COUNT as usize] =
-    [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
+const MAJOR_NATION_PALETTES: MajorNationTable<u8> =
+    MajorNationTable::from_array([0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e]);
 
 /// The retail 8-bit map surface retained for both display and click sampling.
 #[derive(Component, Default)]
@@ -256,8 +258,7 @@ pub(crate) fn compose_owner_preview_indices_with_fill(
     // setup topology wraps horizontally.
     let geometry = MapGeometry::new(MapTopology::Bounded);
 
-    for tile_index in 0..TileId::COUNT {
-        let tile_id = TileId::new(tile_index);
+    for tile_id in TileId::all() {
         let (row, column) = geometry.row_column(tile_id);
         let odd_row = row & 1 != 0;
         let px = 3 * usize::from(column) + usize::from(odd_row);
@@ -450,7 +451,7 @@ fn is_selection_maskable(palette: u8) -> bool {
 }
 
 fn major_nation_palette(nation: MajorNationId) -> u8 {
-    MAJOR_NATION_PALETTES[usize::from(nation.get())]
+    MAJOR_NATION_PALETTES[nation]
 }
 
 fn nation_at_preview_position(
@@ -472,10 +473,7 @@ fn nation_at_preview_position(
 }
 
 fn nation_for_palette(palette: u8) -> Option<MajorNationId> {
-    MAJOR_NATION_PALETTES
-        .iter()
-        .position(|candidate| *candidate == palette)
-        .map(|nation| MajorNationId::new(nation as u8))
+    MajorNationId::all().find(|&nation| MAJOR_NATION_PALETTES[nation] == palette)
 }
 
 pub(crate) fn preview_image_from_indices(palette_indices: &[u8], palette: &DibPalette) -> Image {

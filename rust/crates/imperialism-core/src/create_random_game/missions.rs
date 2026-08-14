@@ -235,7 +235,7 @@ pub(super) fn initialize_ai_targets(
     mission_queues: &MajorNationTable<Vec<MissionState>>,
     live_zone_count: u16,
 ) {
-    for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
+    for nation in MajorNationId::all() {
         let economy = &mut nations.major_mut(nation).economy;
         let Some(zone_targets) = economy.ai_zone_targets.as_mut() else {
             continue;
@@ -292,7 +292,7 @@ pub(super) fn flatten_mission_queues(
     queues: &mut MajorNationTable<Vec<MissionState>>,
 ) -> Vec<MissionState> {
     let mut missions = Vec::new();
-    for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
+    for nation in MajorNationId::all() {
         missions.append(&mut queues[nation]);
     }
     missions

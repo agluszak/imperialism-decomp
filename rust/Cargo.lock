@@ -2809,6 +2809,7 @@ dependencies = [
  "anyhow",
  "bevy",
  "clap",
+ "enum-map",
  "imperialism-core",
  "imperialism-formats",
  "tempfile",

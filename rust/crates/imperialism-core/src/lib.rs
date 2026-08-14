@@ -154,7 +154,7 @@ pub use rng::{RetailCrtRng, RetailLcg, RngState, hash_retail_scenario_tag};
 pub use tables::{
     MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNationTable, MinorNationTable, NATION_COUNT,
     NationCapacities, NationTable, PENDING_ACTION_COUNT, PROVINCE_COUNT, PendingActionKind,
-    PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable,
+    PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable, TechnologyTable,
 };
 pub use technology::{
     CityTechnologyCapabilities, CivilianTerrainAccess, FortLevelCap, TECHNOLOGY_COUNT,

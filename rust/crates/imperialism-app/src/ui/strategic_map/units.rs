@@ -498,10 +498,10 @@ fn fleet_atlas_picture_id(state: &GameState) -> PictureId {
         .expect("strategic map requires an active major nation");
     let status = &state.technology().research_status_by_nation[nation];
     let mut variant = 0_i16;
-    if status[0x0f] == TechnologyResearchStatus::Researched {
+    if status[TechnologyId::new(0x0f)] == TechnologyResearchStatus::Researched {
         variant = 1;
     }
-    if status[0x18] == TechnologyResearchStatus::Researched {
+    if status[TechnologyId::new(0x18)] == TechnologyResearchStatus::Researched {
         variant = 2;
     }
     PictureId::new(FLEET_ATLAS_PICTURE_BASE + i16::from(nation.get()) + variant * 7)
@@ -942,8 +942,7 @@ mod tests {
             "opening save should show capital army badges"
         );
 
-        let naval_tile = (0..TileId::COUNT)
-            .map(TileId::new)
+        let naval_tile = TileId::all()
             .find(|&tile| {
                 state.map()[tile].terrain == TerrainKind::Water
                     && naval_action_frame(state.map()[tile].action).is_some()

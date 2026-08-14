@@ -158,11 +158,9 @@ impl GameState {
             return 0.0;
         };
         let mut scores = ActionClassScores::default();
-        let mut budget: [i32; MAJOR_NATION_COUNT] = std::array::from_fn(|index| {
-            self.invasion_capacity(MajorNationId::new(index as u8).nation(), province)
-        });
-        for index in 0..ProvinceId::COUNT {
-            let candidate = ProvinceId::new(index);
+        let mut budget =
+            MajorNationTable::from_fn(|nation| self.invasion_capacity(nation.nation(), province));
+        for candidate in ProvinceId::all() {
             let Some(candidate_owner) = self.map.provinces[candidate].owner() else {
                 continue;
             };
@@ -189,15 +187,13 @@ impl GameState {
                         );
                     }
                 }
-            } else if budget[usize::from(candidate_major.get())] > 0
-                && self.province_has_port(candidate)
-            {
+            } else if budget[candidate_major] > 0 && self.province_has_port(candidate) {
                 for unit in self.units_stationed_in(candidate) {
                     if unit.unit_type.is_militia_category() {
                         continue;
                     }
                     let cost = unit.unit_type.arms_carried();
-                    let remaining = &mut budget[usize::from(candidate_major.get())];
+                    let remaining = &mut budget[candidate_major];
                     if cost < *remaining {
                         accumulate_unit_priority(
                             unit,
@@ -235,7 +231,7 @@ impl GameState {
                     && force.target == TaskForceTarget::Province(province)
             })
             .flat_map(|force| force.ships.iter())
-            .filter_map(|selected| self.ships.get(selected.ship.get() as usize))
+            .filter_map(|selected| self.ships.get(selected.ship.get()))
             .map(|ship| {
                 if ship.strength > 0 {
                     NAVY_ARMS_BY_SHIP_TYPE[ship.ship_type]

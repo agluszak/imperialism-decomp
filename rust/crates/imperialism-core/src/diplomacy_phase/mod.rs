@@ -101,8 +101,7 @@ impl GameState {
     }
 
     fn apply_diplomacy_inter_nation_states(&mut self) {
-        for index in (0..MajorNationId::COUNT).rev() {
-            let nation = MajorNationId::new(index);
+        for nation in MajorNationId::all().rev() {
             if self.is_auto(nation) {
                 self.set_ai_diplomacy_policies(nation);
             }
@@ -246,21 +245,24 @@ impl GameState {
         source: NationId,
         majors_only: bool,
     ) -> Vec<NationId> {
-        let range = if majors_only {
-            0..MajorNationId::COUNT
-        } else {
-            MinorNationId::FIRST..NationId::COUNT
-        };
         let mut ranked = Vec::new();
-        for slot in range {
-            let nation = NationId::new(slot);
+        let mut consider = |nation: NationId| {
             if nation == source || !self.nation_is_present(nation) || !self.is_independent(nation) {
-                continue;
+                return;
             }
             let standing = self.diplomacy.standings[source][nation];
             insert_sorted_by_key(&mut self.rng, &mut ranked, (standing, nation), |entry| {
                 entry.0
             });
+        };
+        if majors_only {
+            MajorNationId::all()
+                .map(MajorNationId::nation)
+                .for_each(&mut consider);
+        } else {
+            MinorNationId::all()
+                .map(MinorNationId::nation)
+                .for_each(&mut consider);
         }
         ranked.into_iter().map(|(_, nation)| nation).collect()
     }
@@ -282,8 +284,7 @@ impl GameState {
                 any = true;
             }
         }
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = NationId::new(slot);
+        for minor in MinorNationId::all().map(MinorNationId::nation) {
             if self.nations.majors[nation].economy.candidate_nation_flags[minor] == 0 {
                 continue;
             }
@@ -320,8 +321,7 @@ impl GameState {
         } else {
             TradePolicyScore::NEUTRAL
         };
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = NationId::new(slot);
+        for minor in MinorNationId::all().map(MinorNationId::nation) {
             if self
                 .nations
                 .common(minor)
@@ -406,7 +406,7 @@ impl GameState {
 }
 
 pub(super) fn majors() -> impl Iterator<Item = MajorNationId> {
-    (0..MajorNationId::COUNT).map(MajorNationId::new)
+    MajorNationId::all()
 }
 
 pub(super) fn at_least_one(score: f32) -> f32 {
