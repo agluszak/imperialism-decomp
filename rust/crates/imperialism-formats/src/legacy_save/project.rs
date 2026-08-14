@@ -684,35 +684,31 @@ fn technology_research_status(value: u8) -> TechnologyResearchStatus {
     }
 }
 
-fn technology_state(technology: &LegacyTechnologyState) -> TechnologyState {
-    const ADVANCED_IRON_WORKING: usize = 0x0f;
-    const OIL_DRILLING: usize = 0x13;
-
-    let status = |nation: usize, technology_index: usize| {
-        technology.research_status_by_nation[nation][technology_index]
-    };
-    let researched = |nation: usize, technology_index: usize| status(nation, technology_index) == 2;
+fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
+    let status =
+        |nation: usize, tech: Technology| legacy.research_status_by_nation[nation][tech as usize];
+    let researched = |nation: usize, tech: Technology| status(nation, tech) == 2;
     let city_capabilities_by_nation = std::array::from_fn(|nation| CityTechnologyCapabilities {
-        advanced_iron_working: researched(nation, ADVANCED_IRON_WORKING),
-        oil_drilling: researched(nation, OIL_DRILLING),
+        advanced_iron_working: researched(nation, Technology::AdvancedIronWorking),
+        oil_drilling: researched(nation, Technology::OilDrilling),
         university: UniversityTechnologyState {
             available: CivilianUnitTable::from_array(
-                technology.university_recruitment_availability[nation].map(|value| value != 0),
+                legacy.university_recruitment_availability[nation].map(|value| value != 0),
             ),
             requirement_levels: ResourceTable::from_array(
-                technology.capability_value_by_nation_and_resource[nation].map(|value| value as u8),
+                legacy.capability_value_by_nation_and_resource[nation].map(|value| value as u8),
             ),
         },
         primary_civilian_distance_terrain: CivilianTerrainAccess {
-            hills: researched(nation, 12),
-            mountain: researched(nation, 23),
-            swamp: researched(nation, 6),
+            hills: researched(nation, Technology::CompoundSteamEngine),
+            mountain: researched(nation, Technology::Dynamite),
+            swamp: researched(nation, Technology::IronRailroadBridge),
         },
-        secondary_civilian_hills: researched(nation, 11),
-        secondary_civilian_swamp: researched(nation, 5),
-        fort_level_cap: if status(nation, 22) != 0 {
+        secondary_civilian_hills: researched(nation, Technology::BessemerConverter),
+        secondary_civilian_swamp: researched(nation, Technology::SquareSetTimbering),
+        fort_level_cap: if status(nation, Technology::LargeArtillery) != 0 {
             FortLevelCap::THREE
-        } else if status(nation, 11) != 0 {
+        } else if status(nation, Technology::BessemerConverter) != 0 {
             FortLevelCap::TWO
         } else {
             FortLevelCap::ONE
@@ -720,30 +716,27 @@ fn technology_state(technology: &LegacyTechnologyState) -> TechnologyState {
     });
 
     TechnologyState {
-        advanced_iron_working: technology.resource_type_enabled[CityFacilitySlot::Armory as usize]
+        advanced_iron_working: legacy.resource_type_enabled[CityFacilitySlot::Armory as usize] != 0,
+        marine_engineering: legacy.resource_type_enabled[CityFacilitySlot::PowerPlant as usize]
             != 0,
-        marine_engineering: technology.resource_type_enabled[CityFacilitySlot::PowerPlant as usize]
-            != 0,
-        scheduled_unlock_turn_by_technology: TechnologyTable::from_array(technology.priority_slots),
+        scheduled_unlock_turn_by_technology: TechnologyTable::from_array(legacy.priority_slots),
         global_unlocks_by_technology: TechnologyTable::from_array(
-            technology
-                .per_technology_unlock_flags
-                .map(|value| value != 0),
+            legacy.per_technology_unlock_flags.map(|value| value != 0),
         ),
         research_status_by_nation: MajorNationTable::from_array(
-            technology
+            legacy
                 .research_status_by_nation
                 .map(|row| TechnologyTable::from_array(row.map(technology_research_status))),
         ),
-        industry_enabled_by_slot: technology.resource_type_enabled.map(|value| value != 0),
+        industry_enabled_by_slot: legacy.resource_type_enabled.map(|value| value != 0),
         military_unit_ability_active_by_nation: MajorNationTable::from_array(
-            technology
+            legacy
                 .ability_active_by_nation
                 .map(|row| MilitaryUnitTable::from_array(row.map(|value| value != 0))),
         ),
-        selected_capability_slots: MajorNationTable::from_array(technology.nation_capability_slots),
+        selected_capability_slots: MajorNationTable::from_array(legacy.nation_capability_slots),
         city_capabilities_by_nation: MajorNationTable::from_array(city_capabilities_by_nation),
-        navy_growth_ship_type: ShipType::from_index(technology.active_zone_index as u8)
+        navy_growth_ship_type: ShipType::from_index(legacy.active_zone_index as u8)
             .expect("retail activeZoneIndex1d4 is a ship type"),
     }
 }
@@ -803,34 +796,25 @@ impl LegacySaveV62 {
                 nation,
                 self.simulation.game_setup.foreign_minister_policy_ids[slot],
             );
-            let (ai_zone_targets, ai_province_targets, ai_trade) = match nation {
-                LegacyMajorNationState::Auto(auto) => (
-                    Some(ai_zone_targets(
+            let auto = match nation {
+                LegacyMajorNationState::Auto(auto) => Some(AutoGreatPowerState {
+                    zone_targets: ai_zone_targets(
                         &auto.auto_prefix.port_zone_state_flags,
                         live_ocean_context_count,
-                    )),
-                    Some(ai_province_targets(&auto.auto_prefix.map_node_state_flags)),
-                    Some(AiTradeState {
+                    ),
+                    province_targets: ai_province_targets(&auto.auto_prefix.map_node_state_flags),
+                    trade: AiTradeState {
                         temporary_processed_stock: ProcessedTradeCommodityTable::from_array(
                             auto.auto_prefix.action_metric_by_quarter,
                         ),
-                    }),
-                ),
-                LegacyMajorNationState::Other(_) => (None, None, None),
+                    },
+                }),
+                LegacyMajorNationState::Other(_) => None,
             };
             let major = MajorNation {
-                kind: match nation {
-                    LegacyMajorNationState::Auto(_) => MajorNationKind::AutoGreatPower,
-                    LegacyMajorNationState::Other(_) => MajorNationKind::GreatPower,
-                },
+                auto,
                 common: country_common(&great_power.country),
-                economy: great_power_state(
-                    great_power,
-                    foreign_minister_personality,
-                    ai_zone_targets,
-                    ai_province_targets,
-                    ai_trade,
-                ),
+                economy: great_power_state(great_power, foreign_minister_personality),
                 city,
                 towns,
             };
@@ -1247,9 +1231,6 @@ fn minor_trade_state(nation: &LegacyMinorState) -> MinorTradeState {
 fn great_power_state(
     nation: &LegacyGreatPowerState,
     foreign_minister_personality: ForeignMinisterPersonality,
-    ai_zone_targets: Option<Vec<AiTargetState>>,
-    ai_province_targets: Option<ProvinceTable<AiTargetState>>,
-    ai_trade: Option<AiTradeState>,
 ) -> GreatPowerState {
     let prefix = &nation.prefix;
     let post = &nation.post_city;
@@ -1269,14 +1250,7 @@ fn great_power_state(
         .as_ref()
         .expect("retail great power has an interior minister");
     GreatPowerState {
-        controller: if ai_zone_targets.is_some() {
-            MajorNationController::Computer
-        } else {
-            MajorNationController::Human
-        },
         diplomacy_eligible: prefix.diplomacy_eligible != 0,
-        ai_zone_targets,
-        ai_province_targets,
         foreign_minister_personality,
         foreign_minister_skill_index: foreign_minister.skill_index,
         foreign_trade: foreign_trade_state(foreign_minister),
@@ -1310,7 +1284,6 @@ fn great_power_state(
         deal_book: deal_book_state(&prefix.diplomacy_tracked_slots),
         pending_ship: pending_ship(interior_minister),
         interior_civilian: Box::new(interior_civilian_state(interior_minister)),
-        ai_trade,
         aid_allocation_by_minor_nation: MinorNationTable::from_array(
             prefix
                 .aid_allocation_by_minor_nation
@@ -1350,8 +1323,6 @@ fn interior_civilian_state(minister: &LegacyInteriorMinisterState) -> InteriorCi
     };
     let resource_order_metrics =
         ResourceTable::from_array(std::array::from_fn(|index| minister.order_metrics[index]));
-    let mut expansion_demand = [0_i16; CityFacilitySlot::COUNT];
-    expansion_demand[..7].copy_from_slice(&minister.order_metrics[53..60]);
     let city_order_demand = AiCityOrderDemand::from_parts(
         TrainingOrderTable::from_array(std::array::from_fn(|index| {
             minister.order_metrics[23 + index]
@@ -1366,7 +1337,9 @@ fn interior_civilian_state(minister: &LegacyInteriorMinisterState) -> InteriorCi
             minister.order_metrics[43 + index]
         })),
         minister.order_metrics[51],
-        ProductionTable::from_array(expansion_demand),
+        ExpansionOrderTable::from_array(std::array::from_fn(|index| {
+            minister.order_metrics[53 + index]
+        })),
         minister.order_metrics[60],
     );
     let pending_development_actions = minister.integer_lists[2]

@@ -72,11 +72,8 @@ impl ForeignTradeState {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct GreatPowerState {
-    pub controller: MajorNationController,
-    /// Retail `TGreatPower::diplomacyEligibilityA0`. Independent of [`Self::controller`].
+    /// Retail `TGreatPower::diplomacyEligibilityA0`. Independent of auto-vs-human subclass.
     pub diplomacy_eligible: bool,
-    pub ai_zone_targets: Option<Vec<AiTargetState>>,
-    pub ai_province_targets: Option<ProvinceTable<AiTargetState>>,
     pub foreign_minister_personality: ForeignMinisterPersonality,
     pub foreign_minister_skill_index: i16,
     pub foreign_trade: ForeignTradeState,
@@ -98,7 +95,6 @@ pub struct GreatPowerState {
     pub deal_book: TradeCommodityTable<Vec<TradeDealBookEntry>>,
     pub pending_ship: Option<ShipType>,
     pub interior_civilian: Box<InteriorCivilianState>,
-    pub ai_trade: Option<AiTradeState>,
     pub aid_allocation_by_minor_nation: MinorNationTable<ResourceTable<i32>>,
     pub budget_pool_base: i32,
     pub budget_pool_delta: i32,
@@ -126,11 +122,6 @@ impl GreatPowerState {
         difficulty: Difficulty,
         foreign_minister_personality: ForeignMinisterPersonality,
     ) -> Self {
-        let controller = if human {
-            MajorNationController::Human
-        } else {
-            MajorNationController::Computer
-        };
         let (diplomacy_budget_base, escalation_counter) = match difficulty {
             Difficulty::Introductory => (100_000, 8),
             Difficulty::Easy => (50_000, 10),
@@ -139,16 +130,7 @@ impl GreatPowerState {
             Difficulty::NighOnImpossible => (1_000, 19),
         };
         Self {
-            controller,
             diplomacy_eligible: human,
-            ai_zone_targets: match controller {
-                MajorNationController::Human => None,
-                MajorNationController::Computer => Some(Vec::new()),
-            },
-            ai_province_targets: match controller {
-                MajorNationController::Human => None,
-                MajorNationController::Computer => Some(ProvinceTable::default()),
-            },
             foreign_minister_personality,
             foreign_minister_skill_index: foreign_minister_personality.initial_skill_index(),
             foreign_trade: ForeignTradeState::for_random_start(foreign_minister_personality),
@@ -170,7 +152,6 @@ impl GreatPowerState {
             deal_book: TradeCommodityTable::default(),
             pending_ship: None,
             interior_civilian: Box::new(InteriorCivilianState::for_random_start(human)),
-            ai_trade: (!human).then(AiTradeState::default),
             aid_allocation_by_minor_nation: MinorNationTable::default(),
             budget_pool_base: 0,
             budget_pool_delta: 0,
@@ -210,29 +191,10 @@ impl GreatPowerState {
         (treasury + self.diplomacy_budget_base / 100).max(0)
     }
 
-    pub fn need_target_equals_current(&self, resource: ResourceKind) -> bool {
-        self.need_target_by_type[resource] == self.need_current_by_type[resource]
-    }
-
     pub(crate) fn update_need_target(&mut self, resource: ResourceKind, value: i16) {
         let target = &mut self.need_target_by_type[resource];
         self.capacities.reserved_transport += value - *target;
         *target = value;
-    }
-
-    pub fn increment_need_target_toward_current(&mut self, resource: ResourceKind) {
-        let target = self.need_target_by_type[resource];
-        if target < self.need_current_by_type[resource] {
-            self.update_need_target(resource, target + 1);
-        }
-    }
-
-    pub fn is_transport_capacity_exceeded(&self) -> bool {
-        let current_total = self
-            .need_current_by_type
-            .iter()
-            .fold(0_i32, |total, (_, value)| total + i32::from(*value));
-        current_total > i32::from(self.capacities.transport)
     }
 
     pub(crate) fn allocate_transport_needs(&mut self) {
@@ -245,16 +207,7 @@ impl GreatPowerState {
         }
     }
 
-    pub fn add_purchased_item_amount(&mut self, resource: ResourceKind, delta: i16) {
-        let amount = &mut self.purchased_items_by_resource[resource];
-        *amount += delta;
-    }
-
     pub fn deliver_item(&mut self, amount: i16) {
-        self.capacities.available_merchant -= amount;
-    }
-
-    pub fn consume_merchant_capacity_for_purchase(&mut self, amount: i16) {
         self.capacities.available_merchant -= amount;
     }
 
@@ -346,9 +299,6 @@ mod tests {
         let mut state = nation();
         let resource = ResourceKind::Steel;
         state.need_current_by_type[resource] = 10;
-        assert_eq!(state.need_current_by_type[resource], 10);
-        assert!(!state.need_target_equals_current(resource));
-
         state.update_need_target(resource, 7);
         assert_eq!(state.need_target_by_type[resource], 7);
         assert_eq!(state.capacities.reserved_transport, 18);
@@ -357,37 +307,12 @@ mod tests {
     }
 
     #[test]
-    fn increments_a_target_only_toward_its_current_need() {
-        let mut state = nation();
-        let resource = ResourceKind::Coal;
-        state.need_current_by_type[resource] = 2;
-        state.need_target_by_type[resource] = 1;
-        state.increment_need_target_toward_current(resource);
-        assert_eq!(state.need_target_by_type[resource], 2);
-        assert_eq!(state.capacities.reserved_transport, 12);
-        state.increment_need_target_toward_current(resource);
-        assert_eq!(state.need_target_by_type[resource], 2);
-        assert_eq!(state.capacities.reserved_transport, 12);
-    }
-
-    #[test]
-    fn compares_total_current_needs_with_transport_capacity() {
-        let mut state = nation();
-        state.need_current_by_type[ResourceKind::Coal] = 8;
-        state.need_current_by_type[ResourceKind::Steel] = 7;
-        assert!(!state.is_transport_capacity_exceeded());
-        state.need_current_by_type[ResourceKind::Food] = 1;
-        assert!(state.is_transport_capacity_exceeded());
-    }
-
-    #[test]
     fn trade_offer_leaves_preserve_capacity() {
         let mut state = nation();
         state.capacities.available_merchant = 5;
         state.capacities.trade_offer = 3;
         state.deliver_item(2);
-        state.consume_merchant_capacity_for_purchase(1);
-        assert_eq!(state.capacities.available_merchant, 2);
+        assert_eq!(state.capacities.available_merchant, 3);
 
         let resource = ResourceKind::Coal;
         state.set_item_potential(resource, 7);

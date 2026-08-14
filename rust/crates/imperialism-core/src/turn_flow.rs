@@ -1,6 +1,6 @@
 use crate::{
     Difficulty, DiplomacyOfferPrompt, DiplomacyPhaseResult, DiplomacyWarJoinPrompt,
-    EliminationOutcome, GameState, MajorNationId, NationId, QuarterGateResult, TechnologyId,
+    EliminationOutcome, GameState, MajorNationId, NationId, QuarterGateResult, Technology,
     TradeProgress,
 };
 use serde::{Deserialize, Serialize};
@@ -148,7 +148,7 @@ pub enum TurnContinuation {
     DiplomacyWarJoin(DiplomacyWarJoinPrompt),
     Trade(crate::TradeSession),
     LandBattle(crate::CombatMovesContinuation),
-    TechnologyReport(TechnologyId),
+    TechnologyReport(Technology),
 }
 
 impl TurnState {
@@ -264,7 +264,7 @@ impl GameState {
         }
     }
 
-    pub fn current_technology_report(&self) -> Option<TechnologyId> {
+    pub fn current_technology_report(&self) -> Option<Technology> {
         match self.continuation {
             TurnContinuation::TechnologyReport(tech_id) => Some(tech_id),
             _ => None,
@@ -434,7 +434,7 @@ fn reset_finished_flag(eligible: bool, finished: &mut bool) {
 mod tests {
     use crate::test_support::game_state;
     use crate::{
-        DiplomacyPolicy, DiplomaticRelationship, MajorNationController, MajorNationId, NationId,
+        AutoGreatPowerState, DiplomacyPolicy, DiplomaticRelationship, MajorNationId, NationId,
         ResourceKind, ShipType, TileId, TileOwnerTag, TradeProgress,
     };
 
@@ -454,10 +454,7 @@ mod tests {
     }
 
     fn pose_alliance_offer(state: &mut crate::GameState) {
-        state.nations.majors[MajorNationId::new(1)].kind = crate::MajorNationKind::AutoGreatPower;
-        state.nations.majors[MajorNationId::new(1)]
-            .economy
-            .controller = MajorNationController::Computer;
+        state.nations.majors[MajorNationId::new(1)].auto = Some(AutoGreatPowerState::default());
         state.nations.majors[MajorNationId::new(1)]
             .economy
             .diplomacy_policy_by_nation[NationId::new(0)] = Some(DiplomacyPolicy::Alliance);
@@ -469,7 +466,6 @@ mod tests {
         let nation = MajorNationId::new(0);
         {
             let economy = &mut state.nations.majors[nation].economy;
-            economy.controller = MajorNationController::Human;
             economy.diplomacy_eligible = false;
             economy.turn_finished = true;
         }

@@ -67,10 +67,10 @@ fn fill_technology_advance(
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
-    tech_id: TechnologyId,
+    tech: Technology,
 ) {
     let picture_id =
-        imperialism_formats::PictureId::new(ABILITY_STATUS_PICTURE_INDEX[tech_id] + 0x897);
+        imperialism_formats::PictureId::new(ABILITY_STATUS_PICTURE_INDEX[tech] + 0x897);
     let picture = assets
         .picture(picture_id)
         .expect("technology status picture must load");
@@ -78,8 +78,8 @@ fn fill_technology_advance(
         .entity(find_descendant(root, fourcc!("main"), children, tags))
         .insert(ImageNode::new(picture));
 
-    let status = super::hover_help::get_string(assets, 0x2712, i16::from(tech_id.get()));
-    let prefix = super::hover_help::get_string(assets, 0x274e, i16::from(tech_id.get()) - 1);
+    let status = super::hover_help::get_string(assets, 0x2712, i16::from(tech as u8));
+    let prefix = super::hover_help::get_string(assets, 0x274e, i16::from(tech as u8) - 1);
     commands
         .entity(find_descendant(root, fourcc!("text"), children, tags))
         .insert(Text::new(format!("{status}\n\n{prefix}")));

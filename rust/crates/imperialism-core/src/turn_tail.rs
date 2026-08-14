@@ -381,7 +381,7 @@ mod tests {
     fn modest_debt_sets_pressure_one_and_drains_treasury() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].kind = MajorNationKind::GreatPower;
+        state.nations.majors[nation].auto = None;
         state.nations.majors[nation].common.treasury = -100;
         state.nations.majors[nation].economy.diplomacy_budget_base = 50_000;
         state.nations.majors[nation].economy.escalation_counter = 10;
@@ -397,7 +397,7 @@ mod tests {
     fn auto_great_power_pressure_is_a_noop() {
         let mut state = game_state();
         let nation = MajorNationId::new(1);
-        state.nations.majors[nation].kind = MajorNationKind::AutoGreatPower;
+        state.nations.majors[nation].auto = Some(AutoGreatPowerState::default());
         state.nations.majors[nation].common.treasury = -10_000;
         state.nations.majors[nation].economy.pressure_counter = 4;
         assert!(!state.update_great_power_pressure(nation));
@@ -409,7 +409,7 @@ mod tests {
     fn surplus_decays_existing_pressure() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].kind = MajorNationKind::GreatPower;
+        state.nations.majors[nation].auto = None;
         state.nations.majors[nation].common.treasury = 500;
         state.nations.majors[nation].economy.pressure_counter = 2;
         state.nations.majors[nation].economy.escalation_counter = 10;

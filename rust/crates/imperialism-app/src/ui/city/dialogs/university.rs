@@ -118,13 +118,14 @@ pub(in crate::ui::city) fn configure_university_dialog(
                 description: assets
                     .string(0x2751, i16::from(kind as u8) + 1)
                     .expect("retail civilian description"),
-                preview: transparent_picture(
-                    assets,
-                    PictureId::new(university_preview_picture(kind)),
-                ),
+                preview: assets
+                    .transparent_picture(PictureId::new(university_preview_picture(kind)), 0x10)
+                    .expect("retail University preview picture must load"),
             }
         }),
-        resource_icons: transparent_picture(assets, PictureId::new(750)),
+        resource_icons: assets
+            .transparent_picture(PictureId::new(750), 0x10)
+            .expect("retail University resource icons must load"),
         tier_labels: std::array::from_fn(|level| {
             assets
                 .string(0x2723, 0x0e + level as i16)

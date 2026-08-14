@@ -1,5 +1,6 @@
 use super::GameSession;
 use super::RetailUiAssets;
+use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
@@ -845,22 +846,6 @@ fn transport_string(assets: &RetailUiAssets, offset: i16) -> String {
     assets
         .string(0x2735, offset + 1)
         .expect("retail transport string must load")
-}
-
-fn fill_brackets(template: &str, args: &[&str]) -> String {
-    let mut output = template.to_owned();
-    for (index, value) in args.iter().enumerate() {
-        let slot = index + 1;
-        let Some(start) = output.find(&format!("[{slot}:")) else {
-            continue;
-        };
-        let end = output[start..]
-            .find(']')
-            .map(|end| start + end)
-            .expect("retail bracket expression must close");
-        output.replace_range(start..=end, value);
-    }
-    output
 }
 
 fn allocation_amount(

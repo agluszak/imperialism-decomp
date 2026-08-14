@@ -163,7 +163,7 @@ mod tests {
     fn cleanup_adopts_unassigned_militia_into_the_defend_mission() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].kind = MajorNationKind::AutoGreatPower;
+        state.nations.majors[nation].auto = Some(AutoGreatPowerState::default());
         let province = ProvinceId::new(3);
         let id = state.unit_ids.next_military();
         state.military_units.push(MilitaryUnitState::new(

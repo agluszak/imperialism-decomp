@@ -250,9 +250,9 @@ impl GameState {
         if let Some(major) = MajorNationId::from_nation(nation) {
             if amount < 0
                 && let Some(processed) = ProcessedTradeCommodity::from_resource(resource)
-                && let Some(ai_trade) = self.nations.majors[major].economy.ai_trade.as_mut()
+                && let Some(auto) = self.nations.majors[major].auto.as_mut()
             {
-                ai_trade.temporary_processed_stock[processed] += amount;
+                auto.trade.temporary_processed_stock[processed] += amount;
             }
             self.purchase_item(major, resource, amount, price);
             return;
@@ -374,8 +374,8 @@ impl GameState {
     pub(super) fn clear_trade_offers(&mut self, nation: MajorNationId) {
         if !self.is_human(nation) {
             self.end_ai_trade_phase(nation);
-            if let Some(ai_trade) = self.nations.majors[nation].economy.ai_trade.as_mut() {
-                let pending = ai_trade.temporary_processed_stock;
+            if let Some(auto) = self.nations.majors[nation].auto.as_mut() {
+                let pending = auto.trade.temporary_processed_stock;
                 for processed in [
                     ProcessedTradeCommodity::Food,
                     ProcessedTradeCommodity::Fabric,
@@ -398,8 +398,8 @@ impl GameState {
                             .adjust_stock(resource, next - current);
                     }
                 }
-                if let Some(ai_trade) = self.nations.majors[nation].economy.ai_trade.as_mut() {
-                    ai_trade.temporary_processed_stock = ProcessedTradeCommodityTable::default();
+                if let Some(auto) = self.nations.majors[nation].auto.as_mut() {
+                    auto.trade.temporary_processed_stock = ProcessedTradeCommodityTable::default();
                 }
             }
         }
