@@ -1,7 +1,6 @@
 use crate::{
-    AiTargetState, ArmyMissionState, GameState, MajorNationId, MajorNationKind, MajorNationTable,
-    MapMgr, MinorNationId, MissionData, MissionState, NationId, Nations, ProvinceId, ResourceTable,
-    TileId,
+    AiTargetState, ArmyMissionState, GameState, MajorNationId, MajorNationTable, MapMgr,
+    MinorNationId, MissionData, MissionState, NationId, Nations, ProvinceId, ResourceTable, TileId,
 };
 use serde::{Deserialize, Serialize};
 
@@ -170,6 +169,10 @@ impl ProvinceState {
         &self.explored_by_majors
     }
 
+    pub(crate) fn explored_by_majors_mut(&mut self) -> &mut MajorNationTable<bool> {
+        &mut self.explored_by_majors
+    }
+
     pub const fn city_score(&self) -> i32 {
         self.city_score
     }
@@ -242,7 +245,7 @@ impl GameState {
         self.map.provinces[province].set_owner(new_owner);
 
         if let Some(old_owner) = MajorNationId::from_nation(old_owner) {
-            if self.nations.majors[old_owner].kind == MajorNationKind::AutoGreatPower {
+            if let Some(auto) = self.nations.majors[old_owner].auto.as_mut() {
                 if let Some(position) = self.missions.iter().position(|mission| {
                     mission.nation == old_owner.nation()
                         && matches!(
@@ -253,12 +256,7 @@ impl GameState {
                 }) {
                     self.missions.remove(position);
                 }
-                self.nations.majors[old_owner]
-                    .economy
-                    .ai_province_targets
-                    .as_mut()
-                    .expect("automatic great power requires province target state")[province] =
-                    AiTargetState::Unmarked;
+                auto.province_targets[province] = AiTargetState::Unmarked;
             }
             self.nations.majors[old_owner].lose_province(
                 old_owner,
@@ -285,13 +283,13 @@ impl GameState {
 
         if let Some(new_owner) = MajorNationId::from_nation(new_owner) {
             self.nations.majors[new_owner].add_province(province);
-            if self.nations.majors[new_owner].kind == MajorNationKind::AutoGreatPower {
+            if self.nations.majors[new_owner].is_auto() {
                 let available = self.province_mission_node_available(province, new_owner);
-                let targets = self.nations.majors[new_owner]
-                    .economy
-                    .ai_province_targets
+                let targets = &mut self.nations.majors[new_owner]
+                    .auto
                     .as_mut()
-                    .expect("automatic great power requires province target state");
+                    .expect("automatic great power requires auto state")
+                    .province_targets;
                 targets[province] = if available {
                     AiTargetState::Candidate
                 } else {
@@ -330,11 +328,10 @@ impl GameState {
                         },
                     );
                     self.nations.majors[new_owner]
-                        .economy
-                        .ai_province_targets
+                        .auto
                         .as_mut()
-                        .expect("automatic great power requires province target state")[province] =
-                        AiTargetState::MissionQueued;
+                        .expect("automatic great power requires auto state")
+                        .province_targets[province] = AiTargetState::MissionQueued;
                 }
             }
         } else {
@@ -441,7 +438,7 @@ impl GameState {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{MinorNation, ProvinceTable, TileOwnerTag};
+    use crate::{AutoGreatPowerState, MinorNation, ProvinceTable, TileOwnerTag};
 
     fn set_owned(state: &mut GameState, nation: NationId, provinces: &[u16]) {
         let common = state.nations.common(nation).unwrap().clone();
@@ -616,8 +613,7 @@ mod tests {
             set_province(&mut state, province, Some(1), &[], Some(0));
         }
         let destination = &mut state.nations.majors[MajorNationId::new(1)];
-        destination.kind = MajorNationKind::AutoGreatPower;
-        destination.economy.ai_province_targets = Some(ProvinceTable::default());
+        destination.auto = Some(AutoGreatPowerState::default());
         destination.economy.pending_actions
             [crate::PendingActionKind::ConqueredCapitalArmoryUpgrade] =
             crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, None);
@@ -661,10 +657,10 @@ mod tests {
         assert_eq!(reward.payload(), None);
         assert_eq!(
             state.nations.majors[MajorNationId::new(1)]
-                .economy
-                .ai_province_targets
+                .auto
                 .as_ref()
-                .unwrap()[ProvinceId::new(2)],
+                .unwrap()
+                .province_targets[ProvinceId::new(2)],
             AiTargetState::MissionQueued
         );
         assert!(matches!(
@@ -805,16 +801,15 @@ mod tests {
         set_owned(&mut state, NationId::new(1), &[10]);
         set_province(&mut state, 10, Some(1), &[], Some(0));
         let destination = &mut state.nations.majors[MajorNationId::new(1)];
-        destination.kind = MajorNationKind::AutoGreatPower;
-        destination.economy.ai_province_targets = Some(ProvinceTable::default());
+        destination.auto = Some(AutoGreatPowerState::default());
 
         state.change_province_owner(ProvinceId::new(2), NationId::new(1));
         assert_eq!(
             state.nations.majors[MajorNationId::new(1)]
-                .economy
-                .ai_province_targets
+                .auto
                 .as_ref()
-                .unwrap()[ProvinceId::new(2)],
+                .unwrap()
+                .province_targets[ProvinceId::new(2)],
             AiTargetState::Unmarked
         );
         assert!(state.missions.is_empty());
@@ -832,8 +827,7 @@ mod tests {
         set_owned(&mut state, NationId::new(1), &[10]);
         set_province(&mut state, 10, Some(1), &[], Some(0));
         let destination = &mut state.nations.majors[MajorNationId::new(1)];
-        destination.kind = MajorNationKind::AutoGreatPower;
-        destination.economy.ai_province_targets = Some(ProvinceTable::default());
+        destination.auto = Some(AutoGreatPowerState::default());
         state.ocean.zones.push(crate::ZoneKind::Zone(crate::Zone {
             display_name: String::new(),
             status_code: None,
@@ -847,10 +841,10 @@ mod tests {
         state.change_province_owner(ProvinceId::new(2), NationId::new(1));
         assert_eq!(
             state.nations.majors[MajorNationId::new(1)]
-                .economy
-                .ai_province_targets
+                .auto
                 .as_ref()
-                .unwrap()[ProvinceId::new(2)],
+                .unwrap()
+                .province_targets[ProvinceId::new(2)],
             AiTargetState::MissionQueued
         );
         assert!(matches!(

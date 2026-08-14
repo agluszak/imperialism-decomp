@@ -1,3 +1,4 @@
+use super::fill_brackets;
 use super::generated;
 use super::hover_help::get_string;
 use super::retail::{RetailTag, RetailUiAssets, find_descendant};
@@ -296,34 +297,6 @@ fn join_with_conjunction(assets: &RetailUiAssets, names: &[String], list_and: bo
             out
         }
     }
-}
-
-fn fill_brackets(template: &str, args: &[&str]) -> String {
-    let chars: Vec<char> = template.chars().collect();
-    let mut out = String::new();
-    let mut index = 0;
-    while index < chars.len() {
-        if chars[index] == '[' {
-            let mut scan = index + 1;
-            while scan < chars.len() && chars[scan] != ']' && !chars[scan].is_ascii_digit() {
-                scan += 1;
-            }
-            if scan < chars.len() && chars[scan].is_ascii_digit() {
-                let slot = (chars[scan] as u8 - b'0') as usize;
-                if slot >= 1 && slot <= args.len() {
-                    out.push_str(args[slot - 1]);
-                }
-                while scan < chars.len() && chars[scan] != ']' {
-                    scan += 1;
-                }
-                index = scan.saturating_add(1);
-                continue;
-            }
-        }
-        out.push(chars[index]);
-        index += 1;
-    }
-    out
 }
 
 fn on_newspaper_activate(

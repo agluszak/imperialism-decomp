@@ -582,6 +582,13 @@ mod tests {
                 .any(|unit| unit.nation() == MajorNationId::new(6).nation()),
             "SetHomeCityTileAndDisplayName runs InitialMilitia for the confirmed capital"
         );
+        assert!(
+            state.nations.majors[MajorNationId::new(6)]
+                .common
+                .unit_name_counter
+                > 1,
+            "InitialMilitia names opening units through persistent country counters"
+        );
         for nation in (0..MajorNationId::COUNT)
             .map(MajorNationId::new)
             .filter(|nation| state.nations.major(*nation).common.home_tile.is_some())

@@ -56,14 +56,14 @@ impl GameState {
             .map(|continuation| continuation.battle)
     }
 
-    pub(crate) fn start_combat_moves(&mut self) -> Option<CombatMovesContinuation> {
+    pub fn start_combat_moves(&mut self) -> Option<CombatMovesContinuation> {
         let mut chains = StationedChains::from_units(&self.military_units);
         let stacks = self.form_stacks(&mut chains);
         let mut owner_cache = self.normalized_owner_cache();
         self.resolve_next_move(&mut chains, stacks, 0, &mut owner_cache)
     }
 
-    pub(crate) fn resume_combat_moves(
+    pub fn resume_combat_moves(
         &mut self,
         continuation: CombatMovesContinuation,
     ) -> Option<CombatMovesContinuation> {
@@ -296,7 +296,7 @@ impl GameState {
         std::array::from_fn(|index| self.normalized_province_owner(ProvinceId::new(index as u16)))
     }
 
-    fn normalized_province_owner(&self, province: ProvinceId) -> Option<NationId> {
+    pub(crate) fn normalized_province_owner(&self, province: ProvinceId) -> Option<NationId> {
         let owner = self.map.provinces[province].owner()?;
         Some(match self.nations.country_status(owner) {
             Some(CountryStatus::ColonyOf(master)) => master,
@@ -304,7 +304,7 @@ impl GameState {
         })
     }
 
-    fn nation_pair_war_stamp_out_of_date(
+    pub(crate) fn nation_pair_war_stamp_out_of_date(
         &self,
         source: NationId,
         target: Option<NationId>,

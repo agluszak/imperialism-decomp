@@ -236,25 +236,21 @@ pub(super) fn initialize_ai_targets(
     live_zone_count: u16,
 ) {
     for nation in MajorNationId::all() {
-        let economy = &mut nations.major_mut(nation).economy;
-        let Some(zone_targets) = economy.ai_zone_targets.as_mut() else {
+        let Some(auto) = nations.major_mut(nation).auto.as_mut() else {
             continue;
         };
-        zone_targets.resize(usize::from(live_zone_count), AiTargetState::Unmarked);
+        auto.zone_targets
+            .resize(usize::from(live_zone_count), AiTargetState::Unmarked);
         for mission in &mission_queues[nation] {
             let target = match &mission.data {
                 MissionData::ControlSeaZone(navy) | MissionData::Escort(navy) => navy.target_zone,
                 _ => None,
             };
             if let Some(target) = target {
-                zone_targets[usize::from(target.get())] = AiTargetState::MissionQueued;
+                auto.zone_targets[usize::from(target.get())] = AiTargetState::MissionQueued;
             }
             if let MissionData::DefendProvince { province, .. } = &mission.data {
-                economy
-                    .ai_province_targets
-                    .as_mut()
-                    .expect("AI nation has province target state")[*province] =
-                    AiTargetState::MissionQueued;
+                auto.province_targets[*province] = AiTargetState::MissionQueued;
             }
         }
     }

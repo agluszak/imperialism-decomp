@@ -109,7 +109,7 @@ struct EmptyCase {}
 #[ignore = "requires the native C++ oracle"]
 fn military_phase_supported_subset() {
     compare_native("military_phase_supported_subset", |state, _: EmptyCase| {
-        state.do_military();
+        state.apply_military_orders();
     })
     .unwrap();
 }
@@ -129,7 +129,7 @@ fn army_movement_give_orders() {
     compare_native("army_movement_give_orders", |state, _: EmptyCase| {
         for index in 0..MajorNationId::COUNT {
             let nation = MajorNationId::new(index);
-            if state.nations().major(nation).kind != MajorNationKind::AutoGreatPower {
+            if !state.nations().major(nation).is_auto() {
                 continue;
             }
             if matches!(
@@ -162,14 +162,38 @@ fn combat_moves_creates_battle() {
     .unwrap();
 }
 
+#[derive(Debug, Deserialize, PartialEq)]
+struct TwoLandBattles {
+    first: PendingLandBattle,
+    second: PendingLandBattle,
+}
+
 #[test]
 #[ignore = "requires the native C++ oracle"]
-fn military_cleanup_supported_subset() {
+fn combat_moves_resumes_after_battle() {
     compare_native(
-        "military_cleanup_supported_subset",
+        "combat_moves_resumes_after_battle",
         |state, _: EmptyCase| {
-            state.do_military_cleanup();
+            let first = state
+                .start_combat_moves()
+                .expect("first hostile stack creates a battle");
+            let second = state
+                .resume_combat_moves(first.clone())
+                .expect("remaining stack creates a second battle");
+            TwoLandBattles {
+                first: first.battle,
+                second: second.battle,
+            }
         },
     )
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn reassess_control_sea_missions() {
+    compare_native("reassess_control_sea_missions", |state, _: EmptyCase| {
+        state.reassess_control_sea_missions();
+    })
     .unwrap();
 }

@@ -1,6 +1,6 @@
 //! City and transport resolution (`TSimMgr::DoCityAndTransport`).
 
-use crate::create_random_game::{name_units_for_nation, resource_capability_requirement_level};
+use crate::create_random_game::resource_capability_requirement_level;
 use crate::*;
 
 const COMPILE_DELTA_RESOURCE_ORDER: [ResourceKind; 17] = [
@@ -49,7 +49,7 @@ impl GameState {
 
     /// `TGreatPower::FillInteriorMinisterOrders` / `TAutoGreatPower` override.
     fn fill_interior_minister_orders(&mut self, nation: MajorNationId) {
-        if self.nations.major(nation).kind != MajorNationKind::AutoGreatPower {
+        if self.nations.major(nation).auto.is_none() {
             return;
         }
         for resource in all_resources() {
@@ -214,14 +214,7 @@ impl GameState {
     }
 
     fn name_units(&mut self, nation: MajorNationId) {
-        let mut name_ordinals = [0_i16; MilitaryUnitKind::LENGTH];
-        let mut next_roster_id = 1;
-        name_units_for_nation(
-            &mut self.military_units,
-            nation.nation(),
-            &mut name_ordinals,
-            &mut next_roster_id,
-        );
+        self.name_land_units(nation.nation());
     }
 
     /// `TGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary`
@@ -232,7 +225,7 @@ impl GameState {
     ) {
         self.rebuild_nation_resource_yields(nation);
         self.advance_owned_region_development_counters_and_handle_events(nation);
-        if self.nations.major(nation).kind == MajorNationKind::GreatPower {
+        if self.nations.major(nation).auto.is_none() {
             self.add_created_items(nation);
             self.compile_great_power_relationship_delta_lines(nation);
             self.end_city_phase(nation);
@@ -407,7 +400,7 @@ impl GameState {
     }
 
     fn announce_later(&mut self, nation: MajorNationId, order_kind: i16, payload: i16, flags: i16) {
-        if self.nations.major(nation).kind == MajorNationKind::AutoGreatPower {
+        if self.nations.major(nation).is_auto() {
             return;
         }
         let turn_tick = self.turn.economic_turn;
@@ -705,5 +698,49 @@ mod tests {
             MilitaryUnitKind::GeneralEra2
         );
         assert_eq!(state.military_units[0].stationed_province(), Some(province));
+    }
+
+    #[test]
+    fn naming_uses_persistent_country_counters_across_passes() {
+        let mut state = game_state();
+        let nation = MajorNationId::new(0);
+        let province = ProvinceId::new(0);
+        let unnamed = |state: &mut GameState| {
+            let id = state.unit_ids.next_military();
+            state.military_units.push(MilitaryUnitState::new(
+                id,
+                nation.nation(),
+                MilitaryUnitKind::Regulars,
+                Some(province),
+                MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
+                nation.nation(),
+                0,
+                true,
+                String::new(),
+                500,
+                MilitaryUnitKind::Regulars.spawn_era(),
+                0,
+                0,
+            ));
+        };
+
+        unnamed(&mut state);
+        state.execute_nation_pending_action_state_machine(nation);
+        assert_eq!(state.military_units[0].name(), "1st Regulars");
+        assert_eq!(state.military_units[0].roster_id(), 1);
+        assert_eq!(
+            state.nations.majors[nation]
+                .common
+                .unit_name_ordinal_by_type[MilitaryUnitKind::Regulars as usize],
+            2
+        );
+        assert_eq!(state.nations.majors[nation].common.unit_name_counter, 2);
+
+        unnamed(&mut state);
+        state.execute_nation_pending_action_state_machine(nation);
+        assert_eq!(state.military_units[1].name(), "2nd Regulars");
+        assert_eq!(state.military_units[1].roster_id(), 2);
+        assert_eq!(state.nations.majors[nation].common.unit_name_counter, 3);
+        assert_eq!(state.military_units[0].roster_id(), 1);
     }
 }

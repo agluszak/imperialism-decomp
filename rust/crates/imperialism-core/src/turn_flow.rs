@@ -1,6 +1,6 @@
 use crate::{
     Difficulty, DiplomacyOfferPrompt, DiplomacyPhaseResult, DiplomacyWarJoinPrompt,
-    EliminationOutcome, GameState, MajorNationId, NationId, QuarterGateResult, TechnologyId,
+    EliminationOutcome, GameState, MajorNationId, NationId, QuarterGateResult, Technology,
     TradeProgress,
 };
 use serde::{Deserialize, Serialize};
@@ -27,6 +27,16 @@ pub struct TurnState {
     /// Process-local mask of turn alerts presented at the last stop. Not stored in `.imp`.
     #[serde(default)]
     pub(crate) turn_alert_mask: u8,
+    /// Retail `preferenceValues[8]`. Nonzero (the 0x101 default) enables turn alerts.
+    #[serde(default = "default_turn_alerts_enabled")]
+    pub turn_alerts_enabled: bool,
+    /// Retail `g_nTurnCooldownDeferCounter006A43C4`. Not stored in `.imp`.
+    #[serde(default)]
+    pub turn_cooldown_defer_counter: i16,
+}
+
+const fn default_turn_alerts_enabled() -> bool {
+    true
 }
 
 impl TurnState {
@@ -54,6 +64,8 @@ impl TurnState {
             selected_nation,
             last_turn_alert_tick: 0,
             turn_alert_mask: 0,
+            turn_alerts_enabled: true,
+            turn_cooldown_defer_counter: 0,
         }
     }
 
@@ -148,7 +160,7 @@ pub enum TurnContinuation {
     DiplomacyWarJoin(DiplomacyWarJoinPrompt),
     Trade(crate::TradeSession),
     LandBattle(crate::CombatMovesContinuation),
-    TechnologyReport(TechnologyId),
+    TechnologyReport(Technology),
 }
 
 impl TurnState {
@@ -264,7 +276,7 @@ impl GameState {
         }
     }
 
-    pub fn current_technology_report(&self) -> Option<TechnologyId> {
+    pub fn current_technology_report(&self) -> Option<Technology> {
         match self.continuation {
             TurnContinuation::TechnologyReport(tech_id) => Some(tech_id),
             _ => None,
@@ -281,6 +293,10 @@ impl GameState {
                 PhaseCode::CAPITAL_SELECTION => {
                     for index in 0..MajorNationId::COUNT {
                         self.finalize_home_city_setup(MajorNationId::new(index));
+                    }
+                    if let Some(active) = MajorNationId::from_nation(self.turn.active_nation) {
+                        self.reset_diplomacy_need_scores_and_clear_aid_allocation_matrix(active);
+                        self.reset_diplomacy_need_slots_7012_if_mode_gate_matches(active);
                     }
                     self.turn.phase = PhaseCode::SEASON_ADVANCE;
                 }
@@ -434,7 +450,7 @@ fn reset_finished_flag(eligible: bool, finished: &mut bool) {
 mod tests {
     use crate::test_support::game_state;
     use crate::{
-        DiplomacyPolicy, DiplomaticRelationship, MajorNationController, MajorNationId, NationId,
+        AutoGreatPowerState, DiplomacyPolicy, DiplomaticRelationship, MajorNationId, NationId,
         ResourceKind, ShipType, TileId, TileOwnerTag, TradeProgress,
     };
 
@@ -454,10 +470,7 @@ mod tests {
     }
 
     fn pose_alliance_offer(state: &mut crate::GameState) {
-        state.nations.majors[MajorNationId::new(1)].kind = crate::MajorNationKind::AutoGreatPower;
-        state.nations.majors[MajorNationId::new(1)]
-            .economy
-            .controller = MajorNationController::Computer;
+        state.nations.majors[MajorNationId::new(1)].auto = Some(AutoGreatPowerState::default());
         state.nations.majors[MajorNationId::new(1)]
             .economy
             .diplomacy_policy_by_nation[NationId::new(0)] = Some(DiplomacyPolicy::Alliance);
@@ -469,7 +482,6 @@ mod tests {
         let nation = MajorNationId::new(0);
         {
             let economy = &mut state.nations.majors[nation].economy;
-            economy.controller = MajorNationController::Human;
             economy.diplomacy_eligible = false;
             economy.turn_finished = true;
         }
