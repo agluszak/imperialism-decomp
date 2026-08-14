@@ -43,6 +43,7 @@ RuntimeActionResult RunNationResourceYieldRebuildMultipleTowns(NativeTransition&
 RuntimeActionResult RunSpecialistRecruitment(NativeTransition& transition);
 RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition);
 RuntimeActionResult RunMilitaryPhase(NativeTransition& transition);
+RuntimeActionResult RunSelectAndQueueAdvisoryMissions(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesUncontested(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesCreatesBattle(NativeTransition& transition);
 RuntimeActionResult RunMilitaryCleanup(NativeTransition& transition);
@@ -114,6 +115,7 @@ const NativeCase kCases[] = {
     {"specialist_recruitment", RunSpecialistRecruitment},
     {"military_maintenance", RunMilitaryMaintenance},
     {"military_phase", RunMilitaryPhase},
+    {"select_and_queue_advisory_missions", RunSelectAndQueueAdvisoryMissions},
     {"combat_moves_uncontested", RunCombatMovesUncontested},
     {"combat_moves_creates_battle", RunCombatMovesCreatesBattle},
     {"military_cleanup", RunMilitaryCleanup},

@@ -116,6 +116,18 @@ fn military_phase() {
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
+fn select_and_queue_advisory_missions() {
+    compare_native(
+        "select_and_queue_advisory_missions",
+        |state, _: EmptyCase| {
+            state.select_and_queue_advisory_map_missions();
+        },
+    )
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
 fn combat_moves_uncontested() {
     compare_native("combat_moves_uncontested", |state, _: EmptyCase| {
         state.do_combat_moves()

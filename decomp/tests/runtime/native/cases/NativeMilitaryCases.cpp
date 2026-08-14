@@ -348,6 +348,7 @@ RuntimeActionResult RunMilitaryPhase(NativeTransition& transition) {
     }
     nation = g_apNationStates[slot];
     nation->PayForMilitary();
+    nation->SelectAndQueueAdvisoryMapMissionsCase16();
     nation->MoveArmy();
   }
   return transition.Finish();
@@ -441,6 +442,31 @@ RuntimeActionResult RunMilitaryCleanup(NativeTransition& transition) {
         static_cast<TAutoGreatPower*>(nation)->SeedTrackedEntryAssignmentsFromEligibleUnits();
       }
       nation->AddPurchasedItems();
+    }
+  }
+  return transition.Finish();
+}
+
+RuntimeActionResult RunSelectAndQueueAdvisoryMissions(NativeTransition& transition) {
+  int slot;
+  JsonObject args;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  for (slot = 0; slot < 7; ++slot) {
+    TCountry* country = g_apTerrainTypeDescriptorTable[slot];
+    TGreatPower* nation;
+    if (country == 0) {
+      continue;
+    }
+    if (country->encodedNationSlot >= 100 && country->encodedNationSlot < 200) {
+      continue;
+    }
+    nation = g_apNationStates[slot];
+    if (nation != 0) {
+      nation->SelectAndQueueAdvisoryMapMissionsCase16();
     }
   }
   return transition.Finish();

@@ -42,10 +42,10 @@ const UNIVERSITY_REQUIREMENT_LEVEL: [[u8; 4]; 24] = [
 const HEATMAP_NEIGHBOR_DIFFUSION: f32 = 0.2;
 
 impl GameState {
-    /// Retail `TSimMgr::DoMilitary` without AutoGreatPower `SelectAndQueueAdvisoryMapMissionsCase16`
-    /// or navy `CarryOutOrders`. Those planners are not represented as complete `GameState`
-    /// operations yet and must not mutate half the world. Auto great powers do run
-    /// `TDefenseMinister::DoArmyMovement` (`GiveOrders` on existing missions).
+    /// Retail `TSimMgr::DoMilitary` without navy `CarryOutOrders`. Auto great powers run
+    /// `SelectAndQueueAdvisoryMapMissionsCase16` before `GiveOrders` on the resulting
+    /// missions. Navy order execution is not represented as a complete `GameState`
+    /// operation yet and must not mutate half the world.
     pub fn do_military(&mut self) {
         self.recompute_tile_strategic_score_heatmap();
         for nation in NationId::all() {
@@ -63,6 +63,7 @@ impl GameState {
                 self.nations.majors[nation].economy.army_movement_budget =
                     i32::from(self.nations.majors[nation].economy.capacities.transport) / 5;
             } else if self.is_auto(nation) {
+                self.select_and_queue_advisory_map_missions_for(nation);
                 self.give_auto_great_power_army_orders(nation.nation());
             }
         }
@@ -454,5 +455,122 @@ mod tests {
 
         assert_eq!(state.military_units[0].order().code(), UNIT_ORDER_REDEPLOY);
         assert_eq!(state.military_units[0].order().target(), Some(hold));
+    }
+
+    fn set_owned_province(state: &mut GameState, province: u16, owner: u8, adjacent: &[u16]) {
+        let owner = NationId::new(owner);
+        let id = ProvinceId::new(province);
+        state.map.provinces[id] = ProvinceState::new(
+            Some(owner),
+            Some(owner),
+            0,
+            adjacent.iter().copied().map(ProvinceId::new).collect(),
+            vec![TileId::new(0); adjacent.len()],
+            None,
+            0,
+            None,
+            0,
+            None,
+            None,
+            Vec::new(),
+            ResourceTable::default(),
+            MajorNationTable::default(),
+            0,
+            false,
+            0,
+            String::new(),
+        );
+        state
+            .nations
+            .append_owned_region_during_construction(owner, id);
+    }
+
+    fn add_armor(state: &mut GameState, nation: NationId, province: ProvinceId) {
+        let id = state.unit_ids.next_military();
+        state.military_units.push(MilitaryUnitState::new(
+            id,
+            nation,
+            MilitaryUnitKind::Armor,
+            Some(province),
+            MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
+            nation,
+            0,
+            true,
+            String::new(),
+            500,
+            0,
+            0,
+            0,
+        ));
+    }
+
+    #[test]
+    fn auto_great_power_queues_a_direct_attack_on_a_flagged_neighbor() {
+        let mut state = game_state();
+        let attacker = MajorNationId::new(0);
+        let defender = MajorNationId::new(1);
+        state.nations.majors[attacker].kind = MajorNationKind::AutoGreatPower;
+        state.nations.majors[attacker].economy.ai_province_targets = Some(ProvinceTable::default());
+        set_owned_province(&mut state, 0, 0, &[1]);
+        set_owned_province(&mut state, 1, 1, &[0]);
+        state.nations.majors[attacker]
+            .economy
+            .candidate_nation_flags[defender.nation()] = 1;
+        for _ in 0..20 {
+            add_armor(&mut state, attacker.nation(), ProvinceId::new(0));
+        }
+
+        state.do_military();
+
+        assert_eq!(state.missions.len(), 1);
+        assert_eq!(state.missions[0].nation, attacker.nation());
+        assert_eq!(state.missions[0].marker, 1);
+        assert_eq!(state.missions[0].path_nation, Some(defender.nation()));
+        assert_eq!(state.missions[0].state, 2);
+        match &state.missions[0].data {
+            MissionData::AttackProvince(attack) => {
+                assert_eq!(attack.target_province, ProvinceId::new(1));
+                assert_eq!(attack.present_province, None);
+                assert_eq!(attack.amassing_province, None);
+            }
+            other => panic!("expected a direct attack mission, got {other:?}"),
+        }
+        assert_eq!(
+            state.nations.majors[attacker]
+                .economy
+                .ai_province_targets
+                .as_ref()
+                .unwrap()[ProvinceId::new(1)],
+            AiTargetState::MissionQueued
+        );
+    }
+
+    #[test]
+    fn human_great_power_does_not_queue_advisory_missions() {
+        let mut state = game_state();
+        let attacker = MajorNationId::new(0);
+        let defender = MajorNationId::new(1);
+        state.nations.majors[attacker].kind = MajorNationKind::GreatPower;
+        state.nations.majors[attacker].economy.ai_province_targets = Some(ProvinceTable::default());
+        set_owned_province(&mut state, 0, 0, &[1]);
+        set_owned_province(&mut state, 1, 1, &[0]);
+        state.nations.majors[attacker]
+            .economy
+            .candidate_nation_flags[defender.nation()] = 1;
+        for _ in 0..20 {
+            add_armor(&mut state, attacker.nation(), ProvinceId::new(0));
+        }
+
+        state.do_military();
+
+        assert!(state.missions.is_empty());
+        assert_eq!(
+            state.nations.majors[attacker]
+                .economy
+                .ai_province_targets
+                .as_ref()
+                .unwrap()[ProvinceId::new(1)],
+            AiTargetState::Unmarked
+        );
     }
 }
