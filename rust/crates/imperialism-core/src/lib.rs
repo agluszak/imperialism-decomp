@@ -5,6 +5,7 @@
 mod advisory_missions;
 mod ai;
 mod ai_civilian;
+mod army_movement;
 mod calendar;
 mod city;
 mod city_economy;

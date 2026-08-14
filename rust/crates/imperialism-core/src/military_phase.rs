@@ -37,9 +37,9 @@ const UNIVERSITY_REQUIREMENT_LEVEL: [[u8; 4]; 24] = [
 const HEATMAP_NEIGHBOR_DIFFUSION: f32 = 0.2;
 
 impl GameState {
-    /// Retail `TSimMgr::DoMilitary` without navy `CarryOutOrders` or AI mission
-    /// `GiveOrders`. Those branches are not represented as complete `GameState`
-    /// operations yet and must not mutate half the world.
+    /// Retail `TSimMgr::DoMilitary` without `CleanUpStacks` or navy
+    /// `CarryOutOrders`. AutoGreatPower `MoveArmy` issues land `GiveOrders`;
+    /// navy mission `GiveOrders` is omitted.
     pub fn do_military(&mut self) {
         self.recompute_tile_strategic_score_heatmap();
         for slot in 0..NationId::COUNT {
@@ -57,6 +57,7 @@ impl GameState {
             self.pay_for_military(nation);
             if self.is_auto(nation) {
                 self.select_and_queue_advisory_map_missions_case16(nation);
+                self.do_army_movement(nation);
             } else if self.nations.major(nation).kind == MajorNationKind::GreatPower {
                 self.nations.majors[nation].economy.army_movement_budget =
                     i32::from(self.nations.majors[nation].economy.capacities.transport) / 5;

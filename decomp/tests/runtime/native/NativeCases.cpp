@@ -44,6 +44,7 @@ RuntimeActionResult RunSpecialistRecruitment(NativeTransition& transition);
 RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition);
 RuntimeActionResult RunMilitaryPhaseSupportedSubset(NativeTransition& transition);
 RuntimeActionResult RunAdvisoryMapMissionsCase16(NativeTransition& transition);
+RuntimeActionResult RunArmyMovementGiveOrders(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesUncontested(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesCreatesBattle(NativeTransition& transition);
 RuntimeActionResult RunMilitaryCleanupSupportedSubset(NativeTransition& transition);
@@ -118,6 +119,7 @@ const NativeCase kCases[] = {
     {"military_maintenance", RunMilitaryMaintenance},
     {"military_phase_supported_subset", RunMilitaryPhaseSupportedSubset},
     {"advisory_map_missions_case16", RunAdvisoryMapMissionsCase16},
+    {"army_movement_give_orders", RunArmyMovementGiveOrders},
     {"combat_moves_uncontested", RunCombatMovesUncontested},
     {"combat_moves_creates_battle", RunCombatMovesCreatesBattle},
     {"military_cleanup_supported_subset", RunMilitaryCleanupSupportedSubset},

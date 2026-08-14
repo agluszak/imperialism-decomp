@@ -314,8 +314,8 @@ RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition) {
 }
 
 // Heatmap, militia growth, PayForMilitary, AutoGreatPower case-16 mission
-// selection, and human MoveArmy budget. Does not invoke TSimMgr::DoMilitary
-// (stack cleanup, navy CarryOutOrders, or AI GiveOrders).
+// selection, and MoveArmy (human budget / AI land GiveOrders). Does not invoke
+// TSimMgr::DoMilitary (stack cleanup, navy CarryOutOrders, or navy GiveOrders).
 RuntimeActionResult RunMilitaryPhaseSupportedSubset(NativeTransition& transition) {
   int slot;
   g_pSimMgr->economicTurn = 6;
@@ -352,9 +352,7 @@ RuntimeActionResult RunMilitaryPhaseSupportedSubset(NativeTransition& transition
     nation = g_apNationStates[slot];
     nation->PayForMilitary();
     nation->SelectAndQueueAdvisoryMapMissionsCase16();
-    if (nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
-      nation->MoveArmy();
-    }
+    nation->MoveArmy();
   }
   return transition.Finish();
 }
@@ -379,6 +377,33 @@ RuntimeActionResult RunAdvisoryMapMissionsCase16(NativeTransition& transition) {
     }
     found = 1;
     nation->SelectAndQueueAdvisoryMapMissionsCase16();
+  }
+  if (found == 0) {
+    return RuntimeActionResult::Failure("the loaded fixture has no AutoGreatPower");
+  }
+  return transition.Finish();
+}
+
+RuntimeActionResult RunArmyMovementGiveOrders(NativeTransition& transition) {
+  int slot;
+  int found = 0;
+
+  JsonObject args;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  for (slot = 0; slot < 7; ++slot) {
+    TGreatPower* nation = g_apNationStates[slot];
+    if (nation == 0 || nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
+      continue;
+    }
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {
+      continue;
+    }
+    found = 1;
+    nation->MoveArmy();
   }
   if (found == 0) {
     return RuntimeActionResult::Failure("the loaded fixture has no AutoGreatPower");

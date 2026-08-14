@@ -137,6 +137,27 @@ fn advisory_map_missions_case16() {
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
+fn army_movement_give_orders() {
+    compare_native("army_movement_give_orders", |state, _: EmptyCase| {
+        for index in 0..MajorNationId::COUNT {
+            let nation = MajorNationId::new(index);
+            if state.nations().major(nation).kind != MajorNationKind::AutoGreatPower {
+                continue;
+            }
+            if matches!(
+                state.nations().country_status(nation.nation()),
+                Some(CountryStatus::ProtectorateOf(_))
+            ) {
+                continue;
+            }
+            state.do_army_movement(nation);
+        }
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
 fn combat_moves_uncontested() {
     compare_native("combat_moves_uncontested", |state, _: EmptyCase| {
         state.do_combat_moves()

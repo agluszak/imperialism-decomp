@@ -489,6 +489,36 @@ fn class_diff(component: f32, target: i16, sum: f32) -> f32 {
     (component / sum - f32::from(target) * 0.01).abs()
 }
 
+pub(crate) fn project_mission_equipage(
+    military_units: &[MilitaryUnitState],
+    mission_units: &[MilitaryUnitId],
+    present: Option<ProvinceId>,
+    bypass_turns: i16,
+) -> [f32; 5] {
+    let mut scores = ActionClassScores::default();
+    for &id in mission_units {
+        let Some(unit) = military_units.iter().find(|unit| unit.id() == id) else {
+            continue;
+        };
+        let include = present.is_none()
+            || if bypass_turns == 0 {
+                unit.stationed_province() == present
+            } else {
+                true
+            };
+        if include {
+            accumulate_unit_priority(unit, &mut scores, 1.0, PROVINCE_UNIT_ORDER_WEIGHT);
+        }
+    }
+    [
+        scores.infantry,
+        scores.cavalry,
+        scores.artillery,
+        scores.armor,
+        scores.support,
+    ]
+}
+
 fn accumulate_unit_priority(
     unit: &MilitaryUnitState,
     scores: &mut ActionClassScores,
