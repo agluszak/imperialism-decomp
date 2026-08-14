@@ -1,6 +1,4 @@
 #![forbid(unsafe_code)]
-#![allow(clippy::large_enum_variant)]
-#![allow(clippy::float_cmp)]
 
 mod advisory_missions;
 mod ai;

@@ -116,7 +116,7 @@ fn on_land_battle_activate(
         LandBattleAction::Retreat => false,
     };
     session.game.resolve_land_battle(attacker_won);
-    match session.game.continue_combat_moves() {
+    match session.game.resume_after_land_battle() {
         TurnStop::LandBattle => {}
         stop => apply_turn_stop(stop, &mut next_state),
     }

@@ -32,20 +32,29 @@ const NAME_SHADOW_PALETTE: u8 = 0;
 const LEGEND_PALETTE: u8 = 0x28;
 
 /// `g_anTargetTileProfileByCivilianClassAndSlot`.
-const TARGET_TILE_PROFILES: CivilianUnitTable<[i16; 5]> = CivilianUnitTable::from_array([
-    [8, 9, -1, -1, -1],
-    [8, 9, 10, 11, 12],
-    [6, 5, 2, -1, -1],
-    [13, -1, -1, -1, -1],
-    [-1, -1, -1, -1, 0],
-    [3, 7, -1, -1, -1],
-    [-1, -1, -1, -1, 0],
-    [-1, -1, -1, -1, 0],
-    [10, 11, 12, -1, -1],
+const TARGET_TILE_PROFILES: CivilianUnitTable<[Option<i16>; 5]> = CivilianUnitTable::from_array([
+    [Some(8), Some(9), None, None, None],
+    [Some(8), Some(9), Some(10), Some(11), Some(12)],
+    [Some(6), Some(5), Some(2), None, None],
+    [Some(13), None, None, None, None],
+    [None, None, None, None, Some(0)],
+    [Some(3), Some(7), None, None, None],
+    [None, None, None, None, Some(0)],
+    [None, None, None, None, Some(0)],
+    [Some(10), Some(11), Some(12), None, None],
 ]);
 
-const DEVELOPMENT_STRIP_BASE_X: CivilianUnitTable<i16> =
-    CivilianUnitTable::from_array([228, -1, 0, 114, -1, 798, 912, 1064, 684]);
+const DEVELOPMENT_STRIP_BASE_X: CivilianUnitTable<Option<i16>> = CivilianUnitTable::from_array([
+    Some(228),
+    None,
+    Some(0),
+    Some(114),
+    None,
+    Some(798),
+    Some(912),
+    Some(1064),
+    Some(684),
+]);
 const DEVELOPER_MAX_ROWS: CivilianUnitTable<i16> =
     CivilianUnitTable::from_array([2, 0, 3, 1, 0, 2, 0, 0, 3]);
 const DEVELOPER_ROW_ICON_X: [i16; 12] =
@@ -219,7 +228,7 @@ fn civilian_legend_target_counts(state: &GameState, unit: &CivilianUnitState) ->
             }
             let profile = i16::from(state.map()[linked].gate);
             for (slot, expected) in profiles.iter().copied().enumerate() {
-                if profile == expected {
+                if expected == Some(profile) {
                     counts[slot] += 1;
                 }
             }
@@ -429,7 +438,8 @@ fn spawn_prospector_legend(
         if column == 1 {
             icon_top += 12.0;
         }
-        let terrain = TARGET_TILE_PROFILES[CivilianUnitKind::Prospector][column];
+        let terrain = TARGET_TILE_PROFILES[CivilianUnitKind::Prospector][column]
+            .expect("prospector legend columns have terrain profiles");
         spawn_atlas_icon(
             commands,
             legend,
@@ -491,10 +501,9 @@ fn spawn_developer_legend(
     atlases: LegendAtlases,
 ) {
     let kind = unit.unit_type();
-    let strip_base = DEVELOPMENT_STRIP_BASE_X[kind];
-    if strip_base < 0 {
+    let Some(strip_base) = DEVELOPMENT_STRIP_BASE_X[kind] else {
         return;
-    }
+    };
     let nation = MajorNationId::from_nation(state.turn().active_nation)
         .expect("civilian toolbar requires an active major nation");
     let levels = state.technology().city_capabilities_by_nation[nation]
@@ -591,10 +600,9 @@ fn spawn_developer_legend(
     }
     let counts = civilian_legend_target_counts(state, unit);
     for row in 0..row_limit {
-        let terrain = TARGET_TILE_PROFILES[kind][row as usize];
-        if terrain < 0 {
+        let Some(terrain) = TARGET_TILE_PROFILES[kind][row as usize] else {
             continue;
-        }
+        };
         let icon_x = DEVELOPER_ROW_ICON_X[row as usize + 3 * row_limit as usize]
             - LEGEND_WINDOW_ORIGIN.x as i16;
         spawn_atlas_icon(
@@ -790,7 +798,7 @@ mod tests {
         let counts = civilian_legend_target_counts(&state, unit);
         let profiles = TARGET_TILE_PROFILES[unit.unit_type()];
         for (slot, profile) in profiles.iter().copied().enumerate() {
-            if profile < 0 {
+            if profile.is_none() {
                 assert_eq!(
                     counts[slot],
                     0,
@@ -804,5 +812,13 @@ mod tests {
             "{:?} legend should count matching owned tiles, got {counts:?}",
             unit.unit_type()
         );
+    }
+
+    #[test]
+    fn engineer_and_prospector_are_not_developer_legends() {
+        assert_eq!(DEVELOPMENT_STRIP_BASE_X[CivilianUnitKind::Engineer], None);
+        assert_eq!(DEVELOPMENT_STRIP_BASE_X[CivilianUnitKind::Prospector], None);
+        assert!(DEVELOPMENT_STRIP_BASE_X[CivilianUnitKind::Miner].is_some());
+        assert!(DEVELOPMENT_STRIP_BASE_X[CivilianUnitKind::Developer].is_some());
     }
 }

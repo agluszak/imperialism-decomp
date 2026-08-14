@@ -106,7 +106,7 @@ impl GameState {
             self.spawn_pending_overseas_developer(nation);
             self.nations.majors[nation].economy.pending_actions
                 [PendingActionKind::OverseasDeveloperReward]
-                .queue(-1);
+                .queue();
         }
 
         let monument_queued = self.nations.major(nation).economy.pending_actions
@@ -134,10 +134,7 @@ impl GameState {
         let province = self.map[home]
             .province
             .expect("army-growth pending requires the home tile's province");
-        let unit_kind = MilitaryUnitKind::from_index(
-            self.technology.selected_capability_slots[nation][9] as u8,
-        )
-        .expect("selected general capability is a military unit kind");
+        let unit_kind = self.technology.selected_capability_slots[nation][9];
         let id = self.unit_ids.next_military();
         let unit = MilitaryUnitState {
             id,
@@ -351,11 +348,11 @@ impl GameState {
             if pending_stage == 2 {
                 self.nations.majors[nation].economy.pending_actions
                     [PendingActionKind::TownDevelopment]
-                    .queue(province_id.get() as i16);
+                    .queue_with_payload(province_id.get() as i16);
             } else if pending_stage == 1 {
                 self.nations.majors[nation].economy.pending_actions
                     [PendingActionKind::VillageDevelopment]
-                    .queue(province_id.get() as i16);
+                    .queue_with_payload(province_id.get() as i16);
                 if self.nations.majors[nation].economy.pending_actions
                     [PendingActionKind::RailyardExpansion]
                     .status()
@@ -363,7 +360,7 @@ impl GameState {
                 {
                     self.nations.majors[nation].economy.pending_actions
                         [PendingActionKind::RailyardExpansion]
-                        .queue(-1);
+                        .queue();
                 }
             }
         }
@@ -618,7 +615,7 @@ mod tests {
             }),
         ];
         state.nations.majors[nation].economy.pending_actions[PendingActionKind::NavyGrowthReward]
-            .queue(-1);
+            .queue();
 
         state.execute_nation_pending_action_state_machine(nation);
 
@@ -666,7 +663,7 @@ mod tests {
         })];
         state.technology.navy_growth_ship_type = ShipType::Ironclad;
         state.nations.majors[nation].economy.pending_actions[PendingActionKind::NavyGrowthReward]
-            .queue(-1);
+            .queue();
 
         state.execute_nation_pending_action_state_machine(nation);
 
@@ -685,10 +682,9 @@ mod tests {
         let province = ProvinceId::new(0);
         state.nations.majors[nation].common.home_tile = Some(home);
         state.map[home].province = Some(province);
-        state.technology.selected_capability_slots[nation][9] =
-            MilitaryUnitKind::GeneralEra2 as i16;
+        state.technology.selected_capability_slots[nation][9] = MilitaryUnitKind::GeneralEra2;
         state.nations.majors[nation].economy.pending_actions[PendingActionKind::ArmyGrowthReward]
-            .queue(-1);
+            .queue();
 
         state.execute_nation_pending_action_state_machine(nation);
 

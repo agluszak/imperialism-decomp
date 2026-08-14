@@ -185,7 +185,7 @@ pub struct TechnologyState {
     pub military_unit_ability_active_by_nation: MajorNationTable<MilitaryUnitTable<bool>>,
     /// Retail `TTechMgr::nationCapRows1e8`: the selected ability id in each
     /// tactical group. Slot 9 is the general spawned by army-growth rewards.
-    pub selected_capability_slots: MajorNationTable<[i16; 10]>,
+    pub selected_capability_slots: MajorNationTable<[MilitaryUnitKind; 10]>,
     pub city_capabilities_by_nation: MajorNationTable<CityTechnologyCapabilities>,
     /// Retail `TTechMgr::activeZoneIndex1d4`: the hull spawned by a navy-growth reward.
     pub navy_growth_ship_type: ShipType,
@@ -583,7 +583,7 @@ impl GameState {
         self.technology.military_unit_ability_active_by_nation[nation][kind] = true;
         let group = crate::military_phase::tactical_category(kind);
         if (0..10).contains(&group) {
-            self.technology.selected_capability_slots[nation][group as usize] = kind as i16;
+            self.technology.selected_capability_slots[nation][group as usize] = kind;
         }
         if (1..9).contains(&group) {
             let category = MilitaryRecruitmentCategory::ALL[(group - 1) as usize];
@@ -684,8 +684,19 @@ impl GameState {
     }
 }
 
-pub(crate) const fn default_selected_capability_slots() -> [i16; 10] {
-    [0, 1, 2, 3, 4, 5, 6, 7, 0x18, 0x1b]
+pub(crate) const fn default_selected_capability_slots() -> [MilitaryUnitKind; 10] {
+    [
+        MilitaryUnitKind::Minutemen,
+        MilitaryUnitKind::Skirmishers,
+        MilitaryUnitKind::Regulars,
+        MilitaryUnitKind::Grenadiers,
+        MilitaryUnitKind::Hussars,
+        MilitaryUnitKind::Cuirassiers,
+        MilitaryUnitKind::LightArtillery,
+        MilitaryUnitKind::Artillery,
+        MilitaryUnitKind::Sappers,
+        MilitaryUnitKind::GeneralEra1,
+    ]
 }
 
 fn upgrade_resource_costs(kind: MilitaryUnitKind) -> (i16, i16, i16) {
@@ -848,7 +859,7 @@ mod tests {
         );
         assert_eq!(
             state.technology.selected_capability_slots[nation][9],
-            MilitaryUnitKind::GeneralEra2 as i16
+            MilitaryUnitKind::GeneralEra2
         );
         assert!(
             state.technology.military_unit_ability_active_by_nation[nation]

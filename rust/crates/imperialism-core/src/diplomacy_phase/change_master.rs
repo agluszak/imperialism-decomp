@@ -43,7 +43,7 @@ impl GameState {
                 let pending = &mut self.nations.majors[major].economy.pending_actions
                     [PendingActionKind::ColonyMonumentMerchantCapacity];
                 if !pending.status().has_reached(PendingActionStatus::HANDLED) {
-                    pending.queue(i16::from(subject.get()));
+                    pending.queue_with_payload(i16::from(subject.get()));
                 }
             }
             self.add_treaty_event(InterNationNewsKind::NationJoinedEmpire, master, subject);
@@ -56,7 +56,7 @@ impl GameState {
             let pending = &mut self.nations.majors[master_major].economy.pending_actions
                 [PendingActionKind::AnnexedGreatPowerCapitalExpansion];
             if !pending.status().has_reached(PendingActionStatus::HANDLED) {
-                pending.queue(i16::from(subject.get()));
+                pending.queue_with_payload(i16::from(subject.get()));
             }
         }
     }

@@ -148,7 +148,9 @@ fn army_movement_give_orders() {
 #[ignore = "requires the native C++ oracle"]
 fn combat_moves_uncontested() {
     compare_native("combat_moves_uncontested", |state, _: EmptyCase| {
-        state.do_combat_moves()
+        state
+            .do_combat_moves()
+            .map(|continuation| continuation.battle)
     })
     .unwrap();
 }
@@ -157,7 +159,9 @@ fn combat_moves_uncontested() {
 #[ignore = "requires the native C++ oracle"]
 fn combat_moves_creates_battle() {
     compare_native("combat_moves_creates_battle", |state, _: EmptyCase| {
-        state.do_combat_moves()
+        state
+            .do_combat_moves()
+            .map(|continuation| continuation.battle)
     })
     .unwrap();
 }
@@ -181,7 +185,7 @@ fn combat_moves_resumes_after_battle() {
         "combat_moves_resumes_after_battle",
         |state, _: EmptyCase| {
             let first = state
-                .start_combat_moves()
+                .do_combat_moves()
                 .expect("first hostile stack creates a battle");
             let second = state
                 .resume_combat_moves(first.clone())
@@ -202,7 +206,7 @@ fn combat_moves_battle_then_later_movement() {
         "combat_moves_battle_then_later_movement",
         |state, _: EmptyCase| {
             let continuation = state
-                .start_combat_moves()
+                .do_combat_moves()
                 .expect("hostile stack creates a battle");
             let first = continuation.battle.clone();
             let second = state

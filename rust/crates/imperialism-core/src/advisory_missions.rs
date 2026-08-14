@@ -722,6 +722,7 @@ impl GameState {
                 }
             }
         }
+        #[allow(clippy::float_cmp)]
         if composite == 0.0 {
             let f2 = self.navy_power_factor(selected);
             let f4 = self.navy_zone_factor(zone, selected);
