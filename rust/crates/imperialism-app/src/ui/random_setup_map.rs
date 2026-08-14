@@ -11,7 +11,7 @@ use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
 use imperialism_core::{
-    MajorNationId, MajorNationTable, MapGeometry, MapTopology, NationId, TileId, TileOwnerTag,
+    MAJOR_NATION_COUNT, MajorNationId, MapGeometry, MapTopology, NationId, TileId, TileOwnerTag,
 };
 use imperialism_formats::{DibPalette, FourCc, PictureId, Rgb, fourcc};
 
@@ -28,8 +28,7 @@ const PREVIEW_HEIGHT: usize = 180;
 const PREVIEW_PIXEL_COUNT: usize = PREVIEW_WIDTH * PREVIEW_HEIGHT;
 const OFF_MAP_PALETTE: u8 = 0x10;
 const SELECTED_EDGE_PALETTE: u8 = 0x13;
-const MAJOR_NATION_PALETTES: MajorNationTable<u8> =
-    MajorNationTable::from_array([0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e]);
+const MAJOR_NATION_PALETTES: [u8; MAJOR_NATION_COUNT] = [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
 
 /// The retail 8-bit map surface retained for both display and click sampling.
 #[derive(Component, Default)]
@@ -451,7 +450,7 @@ fn is_selection_maskable(palette: u8) -> bool {
 }
 
 fn major_nation_palette(nation: MajorNationId) -> u8 {
-    MAJOR_NATION_PALETTES[nation]
+    MAJOR_NATION_PALETTES[usize::from(nation.get())]
 }
 
 fn nation_at_preview_position(
@@ -473,7 +472,7 @@ fn nation_at_preview_position(
 }
 
 fn nation_for_palette(palette: u8) -> Option<MajorNationId> {
-    MajorNationId::all().find(|&nation| MAJOR_NATION_PALETTES[nation] == palette)
+    MajorNationId::all().find(|&nation| MAJOR_NATION_PALETTES[usize::from(nation.get())] == palette)
 }
 
 pub(crate) fn preview_image_from_indices(palette_indices: &[u8], palette: &DibPalette) -> Image {
