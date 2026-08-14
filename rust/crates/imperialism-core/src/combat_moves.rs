@@ -296,7 +296,7 @@ impl GameState {
         std::array::from_fn(|index| self.normalized_province_owner(ProvinceId::new(index as u16)))
     }
 
-    fn normalized_province_owner(&self, province: ProvinceId) -> Option<NationId> {
+    pub(crate) fn normalized_province_owner(&self, province: ProvinceId) -> Option<NationId> {
         let owner = self.map.provinces[province].owner()?;
         Some(match self.nations.country_status(owner) {
             Some(CountryStatus::ColonyOf(master)) => master,
@@ -304,7 +304,7 @@ impl GameState {
         })
     }
 
-    fn nation_pair_war_stamp_out_of_date(
+    pub(crate) fn nation_pair_war_stamp_out_of_date(
         &self,
         source: NationId,
         target: Option<NationId>,

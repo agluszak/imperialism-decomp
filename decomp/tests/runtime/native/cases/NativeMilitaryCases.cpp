@@ -535,8 +535,9 @@ RuntimeActionResult RunCombatMovesResumesAfterBattle(NativeTransition& transitio
   return transition.Finish(result.Release());
 }
 
-// Selection-bit clear, heatmap, and AddPurchasedItems only. Does not invoke the
-// retail military-cleanup phase (navy cleanup, AI replan, power/order metrics).
+// Selection-bit clear, heatmap, militia adoption, and AddPurchasedItems only.
+// Does not invoke navy straggler cleanup, mission prune, AI replan, or
+// power/order metrics.
 RuntimeActionResult RunMilitaryCleanupSupportedSubset(NativeTransition& transition) {
   int slot;
   if (g_pNavyPrimaryOrderListHead != 0) {

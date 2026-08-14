@@ -184,6 +184,43 @@ impl GameState {
         }
     }
 
+    /// Retail `TNavyMgr::ClearAllTransientOrders`: `RemoveStragglers` then clear
+    /// selection bit 1. Sail/repair and empty task forces are freed; patrol and
+    /// blockade forces remain.
+    pub(crate) fn clear_all_transient_navy_orders(&mut self) {
+        let mut remove = Vec::new();
+        for (index, force) in self.task_forces.iter().enumerate() {
+            if self.task_force_is_straggler(force) {
+                remove.push(index);
+            }
+        }
+        for index in remove.into_iter().rev() {
+            self.free_task_force(TaskForceId::new(index));
+        }
+        for ship in &mut self.ships {
+            if ship.selection == 1 {
+                ship.selection = 0;
+            }
+        }
+    }
+
+    fn task_force_is_straggler(&self, force: &TaskForceState) -> bool {
+        if force.ships.is_empty() {
+            return true;
+        }
+        match force.order {
+            0 | ORDER_SAIL | 4 | 7 | ORDER_REPAIR => true,
+            ORDER_MARINES => match force.target {
+                TaskForceTarget::Province(province) => {
+                    let owner = self.map.provinces[province].owner();
+                    !self.nation_pair_war_stamp_out_of_date(force.nation, owner)
+                }
+                _ => false,
+            },
+            _ => false,
+        }
+    }
+
     pub(crate) fn prepare_to_carry_out_navy_orders(&mut self) {
         for province in ProvinceId::all() {
             let explored = self.map.provinces[province]

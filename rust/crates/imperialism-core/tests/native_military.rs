@@ -195,7 +195,7 @@ fn military_cleanup_supported_subset() {
     compare_native(
         "military_cleanup_supported_subset",
         |state, _: EmptyCase| {
-            state.do_military_cleanup();
+            state.apply_military_cleanup_supported_subset();
         },
     )
     .unwrap();
