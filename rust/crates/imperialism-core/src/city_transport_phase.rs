@@ -1,6 +1,6 @@
 //! City and transport resolution (`TSimMgr::DoCityAndTransport`).
 
-use crate::create_random_game::{name_units_for_nation, resource_capability_requirement_level};
+use crate::create_random_game::resource_capability_requirement_level;
 use crate::*;
 
 const COMPILE_DELTA_RESOURCE_ORDER: [ResourceKind; 17] = [
@@ -214,14 +214,7 @@ impl GameState {
     }
 
     fn name_units(&mut self, nation: MajorNationId) {
-        let mut name_ordinals = [0_i16; MilitaryUnitKind::LENGTH];
-        let mut next_roster_id = 1;
-        name_units_for_nation(
-            &mut self.military_units,
-            nation.nation(),
-            &mut name_ordinals,
-            &mut next_roster_id,
-        );
+        self.name_land_units(nation.nation());
     }
 
     /// `TGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary`
@@ -705,5 +698,49 @@ mod tests {
             MilitaryUnitKind::GeneralEra2
         );
         assert_eq!(state.military_units[0].stationed_province(), Some(province));
+    }
+
+    #[test]
+    fn naming_uses_persistent_country_counters_across_passes() {
+        let mut state = game_state();
+        let nation = MajorNationId::new(0);
+        let province = ProvinceId::new(0);
+        let unnamed = |state: &mut GameState| {
+            let id = state.unit_ids.next_military();
+            state.military_units.push(MilitaryUnitState::new(
+                id,
+                nation.nation(),
+                MilitaryUnitKind::Regulars,
+                Some(province),
+                MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
+                nation.nation(),
+                0,
+                true,
+                String::new(),
+                500,
+                MilitaryUnitKind::Regulars.spawn_era(),
+                0,
+                0,
+            ));
+        };
+
+        unnamed(&mut state);
+        state.execute_nation_pending_action_state_machine(nation);
+        assert_eq!(state.military_units[0].name(), "1st Regulars");
+        assert_eq!(state.military_units[0].roster_id(), 1);
+        assert_eq!(
+            state.nations.majors[nation]
+                .common
+                .unit_name_ordinal_by_type[MilitaryUnitKind::Regulars as usize],
+            2
+        );
+        assert_eq!(state.nations.majors[nation].common.unit_name_counter, 2);
+
+        unnamed(&mut state);
+        state.execute_nation_pending_action_state_machine(nation);
+        assert_eq!(state.military_units[1].name(), "2nd Regulars");
+        assert_eq!(state.military_units[1].roster_id(), 2);
+        assert_eq!(state.nations.majors[nation].common.unit_name_counter, 3);
+        assert_eq!(state.military_units[0].roster_id(), 1);
     }
 }
