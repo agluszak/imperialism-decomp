@@ -18,8 +18,9 @@ const HEATMAP_NEIGHBOR_DIFFUSION: f32 = 0.2;
 impl GameState {
     /// Retail `TSimMgr::DoMilitary`. Auto great powers run advisory mission
     /// selection and `GiveOrders` for land and navy missions, then navy order
-    /// execution for sail/repair/marines. Navy battle pairing and
-    /// `MakeSureAllShipsHaveOrders` are not ported.
+    /// execution for sail/repair/marines plus the CarryOutOrders straggler
+    /// tail. Navy battle pairing, `MakeSureAllShipsHaveOrders`, and
+    /// `CleanUpStacks` (map-context records) are not ported.
     pub fn do_military(&mut self) {
         self.apply_military_orders();
         self.prepare_to_carry_out_navy_orders();

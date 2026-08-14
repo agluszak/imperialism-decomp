@@ -21,13 +21,23 @@
 #include "game/map/TMission.h"
 #include "game/nation/TAutoGreatPower.h"
 #include "game/nation/TGreatPower.h"
+#include "game/nation/TGreatPower_internal.h"
 #include "game/nation_domain_types.h"
 #include "game/navy/TShip.h"
 #include "game/ui_core/CIterator.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/unit_domain_types.h"
+#include "game/globals/nation_globals.h"
+
+#include <string.h>
 
 namespace {
+
+unsigned int FloatBits(float value) {
+  unsigned int bits = 0;
+  memcpy(&bits, &value, sizeof(bits));
+  return bits;
+}
 
 void ClearAllMilitaryOrders() {
   int slot;
@@ -694,4 +704,55 @@ RuntimeActionResult RunReassessControlSeaMissions(NativeTransition& transition) 
     }
   }
   return transition.Finish();
+}
+
+// Result is the IEEE-754 bits of RecomputeNationOrderPriorityMetrics plus the
+// AutoGreatPower B64/B68/B6c scores it writes. Those globals are not saved.
+RuntimeActionResult RunRecomputeNationOrderPriorityMetrics(NativeTransition& transition) {
+  int nation;
+  JsonObject args;
+  JsonObject result;
+  JsonArray queueDivergence;
+  JsonArray mobileScore;
+  JsonArray mobileDivergence;
+  JsonArray combinedDivergence;
+  JsonArray weightedMilitary;
+  JsonArray expansionPressure;
+  JsonArray unitDivergence;
+  JsonArray missionPressure;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  RecomputeNationOrderPriorityMetrics();
+
+  for (nation = 0; nation < 7; ++nation) {
+    queueDivergence.Add(FloatBits(g_afNationOrderQueueDivergence_006a3a88[nation]));
+    mobileScore.Add(FloatBits(g_afNationMobileUnitScore_006a3b88[nation]));
+    mobileDivergence.Add(FloatBits(g_afNationMobileUnitDivergence_006a3ae0[nation]));
+    combinedDivergence.Add(FloatBits(g_afNationCombinedUnitDivergence_006a3b50[nation]));
+    weightedMilitary.Add(FloatBits(g_afNationWeightedMilitaryOrderScore_006a3b20[nation]));
+    TGreatPower* power = g_apNationStates[nation];
+    if (power != 0 && power->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0) {
+      TAutoGreatPower* autoPower = static_cast<TAutoGreatPower*>(power);
+      expansionPressure.Add(FloatBits(autoPower->expansionPressurePerCompatibleRegionB64));
+      unitDivergence.Add(FloatBits(autoPower->averageUnitDivergencePerOwnedRegionB68));
+      missionPressure.Add(FloatBits(autoPower->activeMissionPressureAverageB6c));
+    } else {
+      expansionPressure.Add(0U);
+      unitDivergence.Add(0U);
+      missionPressure.Add(0U);
+    }
+  }
+
+  result.Set("queue_divergence", queueDivergence.Release());
+  result.Set("mobile_score", mobileScore.Release());
+  result.Set("mobile_divergence", mobileDivergence.Release());
+  result.Set("combined_divergence", combinedDivergence.Release());
+  result.Set("weighted_military", weightedMilitary.Release());
+  result.Set("expansion_pressure", expansionPressure.Release());
+  result.Set("unit_divergence", unitDivergence.Release());
+  result.Set("mission_pressure", missionPressure.Release());
+  return transition.Finish(result.Release());
 }

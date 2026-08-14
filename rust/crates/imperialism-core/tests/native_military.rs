@@ -222,3 +222,13 @@ fn reassess_control_sea_missions() {
     })
     .unwrap();
 }
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn recompute_nation_order_priority_metrics() {
+    compare_native(
+        "recompute_nation_order_priority_metrics",
+        |state, _: EmptyCase| state.recompute_nation_order_priority_metrics(),
+    )
+    .unwrap();
+}
