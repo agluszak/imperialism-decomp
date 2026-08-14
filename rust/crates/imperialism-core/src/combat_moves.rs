@@ -133,6 +133,16 @@ impl GameState {
         }
     }
 
+    /// Strength-weighted combat-class comparison used when Auto resolves a battle
+    /// without the tactical hex view.
+    pub fn land_battle_attacker_would_win(&self) -> bool {
+        let Some(battle) = self.pending_land_battle() else {
+            panic!("land-battle auto-resolve requires a combat-moves continuation");
+        };
+        stack_combat_power(&self.military_units, &battle.attacker_units)
+            >= stack_combat_power(&self.military_units, &battle.defender_units)
+    }
+
     /// Continues `DoCombatMoves` from the preserved stack cursor.
     pub fn continue_combat_moves(&mut self) -> crate::TurnStop {
         let crate::turn_flow::TurnContinuation::LandBattle(continuation) =
@@ -607,6 +617,15 @@ fn compare_stack_keys(a: i16, b: i16) -> i16 {
     }
 }
 
+fn stack_combat_power(units: &[MilitaryUnitState], ids: &[MilitaryUnitId]) -> i32 {
+    ids.iter()
+        .map(|&id| {
+            let unit = &units[military_index(units, id)];
+            i32::from(combat_class(unit.unit_type)) * i32::from(unit.strength)
+        })
+        .sum()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -908,5 +927,31 @@ mod tests {
             state.map.provinces[ProvinceId::new(2)].owner(),
             Some(NationId::new(0))
         );
+    }
+
+    #[test]
+    fn auto_resolve_awards_the_heavier_stack_and_continues() {
+        let (mut state, attacker, mover) = battle_then_later_uncontested_state();
+        assert_eq!(state.advance_turn(), crate::TurnStop::LandBattle);
+        assert!(state.land_battle_attacker_would_win());
+        let attacker_won = state.land_battle_attacker_would_win();
+        state.resolve_land_battle(attacker_won);
+        let crate::turn_flow::TurnContinuation::LandBattle(continuation) =
+            std::mem::take(&mut state.continuation)
+        else {
+            panic!("combat continuation");
+        };
+        assert!(state.resume_combat_moves(continuation).is_none());
+        assert_eq!(state.military_units[0].id, attacker);
+        assert_eq!(
+            state.military_units[0].stationed_province,
+            Some(ProvinceId::new(2))
+        );
+        assert_eq!(state.military_units[2].id, mover);
+        assert_eq!(
+            state.military_units[2].stationed_province,
+            Some(ProvinceId::new(4))
+        );
+        assert!(state.pending_land_battle().is_none());
     }
 }

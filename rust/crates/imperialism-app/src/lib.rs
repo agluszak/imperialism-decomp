@@ -25,6 +25,7 @@ pub(crate) enum AppState {
     OfferSheet,
     TechnologyAdvance,
     Newspaper,
+    LandBattle,
     Credits,
     Preferences,
 }
@@ -81,6 +82,7 @@ fn add_game_plugins(app: &mut App) {
         ui::CursorPlugin,
         ui::TechnologyAdvancePlugin,
         ui::NewspaperPlugin,
+        ui::LandBattlePlugin,
         ui::CreditsPlugin,
         ui::PreferencesPlugin,
     ));
@@ -162,6 +164,7 @@ mod tests {
             AppState::OfferSheet,
             AppState::TechnologyAdvance,
             AppState::Newspaper,
+            AppState::LandBattle,
             AppState::Credits,
             AppState::Preferences,
         ] {

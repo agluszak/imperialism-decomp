@@ -27,6 +27,6 @@ pub(crate) fn apply_turn_stop(stop: TurnStop, next_state: &mut NextState<AppStat
         TurnStop::Newspaper => next_state.set(AppState::Newspaper),
         TurnStop::DiplomacyOffer => next_state.set(AppState::Diplomacy),
         TurnStop::DiplomacyWarJoin => next_state.set(AppState::Diplomacy),
-        TurnStop::LandBattle => panic!("land battle screen is not wired yet"),
+        TurnStop::LandBattle => next_state.set(AppState::LandBattle),
     }
 }
