@@ -47,6 +47,7 @@ RuntimeActionResult RunAdvisoryMapMissionsCase16(NativeTransition& transition);
 RuntimeActionResult RunArmyMovementGiveOrders(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesUncontested(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesCreatesBattle(NativeTransition& transition);
+RuntimeActionResult RunCombatMovesResumesAfterBattle(NativeTransition& transition);
 RuntimeActionResult RunMilitaryCleanupSupportedSubset(NativeTransition& transition);
 
 RuntimeActionResult RunCompletedRailSection(NativeTransition& transition);
@@ -123,6 +124,7 @@ const NativeCase kCases[] = {
     {"army_movement_give_orders", RunArmyMovementGiveOrders},
     {"combat_moves_uncontested", RunCombatMovesUncontested},
     {"combat_moves_creates_battle", RunCombatMovesCreatesBattle},
+    {"combat_moves_resumes_after_battle", RunCombatMovesResumesAfterBattle},
     {"military_cleanup_supported_subset", RunMilitaryCleanupSupportedSubset},
     {"completed_rail_section", RunCompletedRailSection},
     {"issued_rail_section", RunIssuedRailSection},

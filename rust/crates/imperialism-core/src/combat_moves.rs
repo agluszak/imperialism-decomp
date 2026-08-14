@@ -56,14 +56,14 @@ impl GameState {
             .map(|continuation| continuation.battle)
     }
 
-    pub(crate) fn start_combat_moves(&mut self) -> Option<CombatMovesContinuation> {
+    pub fn start_combat_moves(&mut self) -> Option<CombatMovesContinuation> {
         let mut chains = StationedChains::from_units(&self.military_units);
         let stacks = self.form_stacks(&mut chains);
         let mut owner_cache = self.normalized_owner_cache();
         self.resolve_next_move(&mut chains, stacks, 0, &mut owner_cache)
     }
 
-    pub(crate) fn resume_combat_moves(
+    pub fn resume_combat_moves(
         &mut self,
         continuation: CombatMovesContinuation,
     ) -> Option<CombatMovesContinuation> {

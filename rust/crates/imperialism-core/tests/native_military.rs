@@ -109,7 +109,7 @@ struct EmptyCase {}
 #[ignore = "requires the native C++ oracle"]
 fn military_phase_supported_subset() {
     compare_native("military_phase_supported_subset", |state, _: EmptyCase| {
-        state.do_military();
+        state.apply_military_orders();
     })
     .unwrap();
 }
@@ -159,6 +159,33 @@ fn combat_moves_creates_battle() {
     compare_native("combat_moves_creates_battle", |state, _: EmptyCase| {
         state.do_combat_moves()
     })
+    .unwrap();
+}
+
+#[derive(Debug, Deserialize, PartialEq)]
+struct TwoLandBattles {
+    first: PendingLandBattle,
+    second: PendingLandBattle,
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn combat_moves_resumes_after_battle() {
+    compare_native(
+        "combat_moves_resumes_after_battle",
+        |state, _: EmptyCase| {
+            let first = state
+                .start_combat_moves()
+                .expect("first hostile stack creates a battle");
+            let second = state
+                .resume_combat_moves(first.clone())
+                .expect("remaining stack creates a second battle");
+            TwoLandBattles {
+                first: first.battle,
+                second: second.battle,
+            }
+        },
+    )
     .unwrap();
 }
 

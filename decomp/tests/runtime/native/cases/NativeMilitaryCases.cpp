@@ -142,12 +142,9 @@ JSON_Value* TryCreateBattleWithoutUi(TArmyMgr* army, TArmyStack* stack) {
   return 0;
 }
 
-JSON_Value* ResolveCombatMovesWithoutBattleUi() {
+JSON_Value* ResolveNextPendingBattleWithoutUi() {
   TArmyMgr* army = g_pMapContextActionManager;
-  int stackCount;
-  army->FormStacks();
-  army->nextStackOrdinal10 = 1;
-  stackCount = army->pendingUnitPool0c->GetCount();
+  int stackCount = army->pendingUnitPool0c->GetCount();
   while (army->nextStackOrdinal10 <= stackCount) {
     const int cursor = army->nextStackOrdinal10;
     TArmyStack* stack;
@@ -164,6 +161,18 @@ JSON_Value* ResolveCombatMovesWithoutBattleUi() {
       }
     }
     stackCount = army->pendingUnitPool0c->GetCount();
+  }
+  return 0;
+}
+
+JSON_Value* ResolveCombatMovesWithoutBattleUi() {
+  TArmyMgr* army = g_pMapContextActionManager;
+  JSON_Value* battle;
+  army->FormStacks();
+  army->nextStackOrdinal10 = 1;
+  battle = ResolveNextPendingBattleWithoutUi();
+  if (battle != 0) {
+    return battle;
   }
   army->ClearPendingStacksAndFinalizeMilitaryUnits();
   army->DoOwnershipChanges();
@@ -203,7 +212,8 @@ bool FindUncontestedRedeploy(TMilitaryUnit** outUnit, short* outDest) {
   return false;
 }
 
-bool FindHostileRedeploy(TMilitaryUnit** outUnit, short* outDest, short* outDefender) {
+bool FindHostileRedeployExcluding(TMilitaryUnit* skipUnit, short skipDest, TMilitaryUnit** outUnit,
+                                  short* outDest, short* outDefender) {
   int slot;
   for (slot = 0; slot < kNationSlotCount; ++slot) {
     TCountry* country = g_apTerrainTypeDescriptorTable[slot];
@@ -217,12 +227,12 @@ bool FindHostileRedeploy(TMilitaryUnit** outUnit, short* outDest, short* outDefe
       const short source = unit->tileIndex06;
       Province* record;
       int adj;
-      if (source >= 0 && source < 0x180) {
+      if (unit != skipUnit && source >= 0 && source < 0x180) {
         record = &g_pGlobalMapState->cityScoreTable[source];
         for (adj = 0; adj < record->adjacentRegionCount08; ++adj) {
           const short dest = record->adjacentRegionIds0A[adj];
           short defender;
-          if (dest < 0 || dest >= 0x180) {
+          if (dest < 0 || dest >= 0x180 || dest == skipDest) {
             continue;
           }
           if (g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 ==
@@ -244,6 +254,17 @@ bool FindHostileRedeploy(TMilitaryUnit** outUnit, short* outDest, short* outDefe
     }
   }
   return false;
+}
+
+bool FindHostileRedeploy(TMilitaryUnit** outUnit, short* outDest, short* outDefender) {
+  return FindHostileRedeployExcluding(0, -1, outUnit, outDest, outDefender);
+}
+
+void ForceWarBetween(short left, short right) {
+  g_pDiplomacyTurnStateManager->relationPropagationMatrix[left * kNationSlotCount + right] =
+      kDiplomacyRelationshipWar;
+  g_pDiplomacyTurnStateManager->relationPropagationMatrix[right * kNationSlotCount + left] =
+      kDiplomacyRelationshipWar;
 }
 
 } // namespace
@@ -314,8 +335,8 @@ RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition) {
 }
 
 // Heatmap, militia growth, PayForMilitary, AutoGreatPower case-16 mission
-// selection, and MoveArmy (human budget / AI land GiveOrders). Does not invoke
-// TSimMgr::DoMilitary (stack cleanup, navy CarryOutOrders, or navy GiveOrders).
+// selection, and MoveArmy (human budget / AI GiveOrders including navy). Does
+// not invoke TSimMgr::DoMilitary stack cleanup or navy CarryOutOrders.
 RuntimeActionResult RunMilitaryPhaseSupportedSubset(NativeTransition& transition) {
   int slot;
   g_pSimMgr->economicTurn = 6;
@@ -442,12 +463,7 @@ RuntimeActionResult RunCombatMovesCreatesBattle(NativeTransition& transition) {
     return RuntimeActionResult::Failure(
         "the loaded fixture has no adjacent enemy-garrisoned province");
   }
-  g_pDiplomacyTurnStateManager
-      ->relationPropagationMatrix[unit->ownerNationSlot18 * kNationSlotCount + defender] =
-      kDiplomacyRelationshipWar;
-  g_pDiplomacyTurnStateManager
-      ->relationPropagationMatrix[defender * kNationSlotCount + unit->ownerNationSlot18] =
-      kDiplomacyRelationshipWar;
+  ForceWarBetween(unit->ownerNationSlot18, defender);
   unit->SetOrders(kUnitOrderRedeploy, dest);
 
   JsonObject args;
@@ -462,6 +478,61 @@ RuntimeActionResult RunCombatMovesCreatesBattle(NativeTransition& transition) {
     return RuntimeActionResult::Failure("identical orders did not create a land battle");
   }
   return transition.Finish(result);
+}
+
+// FormStacks once, stop at the first tactical battle, then continue from the
+// retained nextStackOrdinal10 without reforming. The first battle is not resolved.
+RuntimeActionResult RunCombatMovesResumesAfterBattle(NativeTransition& transition) {
+  TMilitaryUnit* firstUnit = 0;
+  TMilitaryUnit* secondUnit = 0;
+  short firstDest = -1;
+  short secondDest = -1;
+  short firstDefender = -1;
+  short secondDefender = -1;
+  TArmyMgr* army;
+  JSON_Value* firstBattle;
+  JSON_Value* secondBattle;
+  JsonObject result;
+
+  ClearAllMilitaryOrders();
+  if (!FindHostileRedeploy(&firstUnit, &firstDest, &firstDefender)) {
+    return RuntimeActionResult::Failure(
+        "the loaded fixture has no adjacent enemy-garrisoned province");
+  }
+  if (!FindHostileRedeployExcluding(firstUnit, firstDest, &secondUnit, &secondDest,
+                                    &secondDefender)) {
+    return RuntimeActionResult::Failure(
+        "the loaded fixture has no second distinct hostile stack");
+  }
+  ForceWarBetween(firstUnit->ownerNationSlot18, firstDefender);
+  ForceWarBetween(secondUnit->ownerNationSlot18, secondDefender);
+  firstUnit->SetOrders(kUnitOrderRedeploy, firstDest);
+  secondUnit->SetOrders(kUnitOrderRedeploy, secondDest);
+
+  JsonObject args;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  army = g_pMapContextActionManager;
+  army->FormStacks();
+  army->nextStackOrdinal10 = 1;
+  firstBattle = ResolveNextPendingBattleWithoutUi();
+  if (firstBattle == 0 || json_value_get_type(firstBattle) != JSONObject) {
+    JsonFreeValue(firstBattle);
+    return RuntimeActionResult::Failure("first hostile stack did not create a land battle");
+  }
+  secondBattle = ResolveNextPendingBattleWithoutUi();
+  if (secondBattle == 0 || json_value_get_type(secondBattle) != JSONObject) {
+    JsonFreeValue(firstBattle);
+    JsonFreeValue(secondBattle);
+    return RuntimeActionResult::Failure(
+        "second stack did not create a land battle after the first stop");
+  }
+  result.Set("first", firstBattle);
+  result.Set("second", secondBattle);
+  return transition.Finish(result.Release());
 }
 
 // Selection-bit clear, heatmap, and AddPurchasedItems only. Does not invoke the
