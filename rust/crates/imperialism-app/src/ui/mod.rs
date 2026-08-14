@@ -43,6 +43,12 @@ pub(crate) use technology::TechnologyAdvancePlugin;
 pub(crate) use trade::TradePlugin;
 pub(crate) use transport::TransportPlugin;
 
+use bevy::prelude::Res;
+
+pub(in crate::ui) fn projection_idle(session: &Res<GameSession>, added: bool) -> bool {
+    !session.is_changed() && !added
+}
+
 pub(in crate::ui) fn format_currency(value: i32) -> String {
     let negative = value < 0;
     let digits = i64::from(value).abs().to_string();

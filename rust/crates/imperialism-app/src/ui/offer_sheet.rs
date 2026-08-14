@@ -87,13 +87,12 @@ fn bind_offer_sheet(
     tags: Query<&RetailTag>,
     mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
-    session: Res<GameSession>,
 ) {
     let Some(root) = root else {
         return;
     };
     let root = *root;
-    bind_offer_sheet_controls(&mut commands, root, &children, &tags, &session);
+    bind_offer_sheet_controls(&mut commands, root, &children, &tags);
     for tag in [
         fourcc!("ForM"),
         fourcc!("tabs"),
@@ -114,7 +113,7 @@ fn bind_offer_sheet(
             .expect("offer-sheet hover-help bar has Node"),
         HoverHelpBarStyle::MAIN_MENU,
     );
-    bind_game_status_display(&mut commands, &mut assets, root, &children, &tags, &session);
+    bind_game_status_display(&mut commands, &mut assets, root, &children, &tags);
 }
 
 fn bind_offer_sheet_controls(
@@ -122,12 +121,7 @@ fn bind_offer_sheet_controls(
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
-    session: &GameSession,
 ) {
-    let offer = session
-        .game
-        .pending_trade_offer()
-        .expect("Offer Sheet bind requires a pending trade offer");
     let accept = find_descendant(root, fourcc!("acce"), children, tags);
     let reject = find_descendant(root, fourcc!("reje"), children, tags);
     let purc = find_descendant(root, fourcc!("purc"), children, tags);
@@ -153,7 +147,7 @@ fn bind_offer_sheet_controls(
         EditableText {
             max_characters: Some(6),
             allow_newlines: false,
-            ..EditableText::new(offer.amount.to_string())
+            ..EditableText::new(String::new())
         },
     ));
 }
@@ -463,12 +457,11 @@ mod tests {
         root: Option<Single<Entity, Added<OfferSheetRoot>>>,
         children: Query<&Children>,
         tags: Query<&RetailTag>,
-        session: Res<GameSession>,
     ) {
         let Some(root) = root else {
             return;
         };
-        bind_offer_sheet_controls(&mut commands, *root, &children, &tags, &session);
+        bind_offer_sheet_controls(&mut commands, *root, &children, &tags);
     }
 
     #[test]

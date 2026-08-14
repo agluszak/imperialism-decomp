@@ -235,7 +235,7 @@ fn bind_deal_book(
     commands
         .entity(find_descendant(root, fourcc!("quer"), &children, &tags))
         .insert(InteractionDisabled);
-    bind_game_status_display(&mut commands, &mut assets, root, &children, &tags, &session);
+    bind_game_status_display(&mut commands, &mut assets, root, &children, &tags);
     commands
         .entity(find_descendant(root, fourcc!("mark"), &children, &tags))
         .insert((DealBookHistory, ActivateOnPress))
