@@ -88,6 +88,24 @@ impl GameState {
             })
     }
 
+    /// `TOcean::FindPortZoneBySelectedTile` using the city's home town tile.
+    pub(crate) fn port_zone_for_city_tile(&self, home: TileId) -> Option<OceanZoneId> {
+        self.ocean
+            .zones
+            .iter()
+            .enumerate()
+            .rev()
+            .find_map(|(index, kind)| {
+                let ZoneKind::PortZone(port) = kind else {
+                    return None;
+                };
+                (port.zone.target_tile == Some(home)
+                    || port.zone.active_tile == Some(home)
+                    || port.port_tile == home)
+                    .then(|| OceanZoneId::new(index as u16))
+            })
+    }
+
     /// `TOcean::EnsurePortZoneForTile` (0x005635e0).
     pub(crate) fn ensure_port_zone_for_tile(&mut self, tile: TileId) {
         const ACTION_STATE_ANCHOR: i16 = 3;

@@ -42,11 +42,12 @@ RuntimeActionResult RunNationResourceYieldRebuildMultipleTowns(NativeTransition&
 
 RuntimeActionResult RunSpecialistRecruitment(NativeTransition& transition);
 RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition);
-RuntimeActionResult RunMilitaryPhase(NativeTransition& transition);
-RuntimeActionResult RunSelectAndQueueAdvisoryMissions(NativeTransition& transition);
+RuntimeActionResult RunMilitaryPhaseSupportedSubset(NativeTransition& transition);
+RuntimeActionResult RunAdvisoryMapMissionsCase16(NativeTransition& transition);
+RuntimeActionResult RunArmyMovementGiveOrders(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesUncontested(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesCreatesBattle(NativeTransition& transition);
-RuntimeActionResult RunMilitaryCleanup(NativeTransition& transition);
+RuntimeActionResult RunMilitaryCleanupSupportedSubset(NativeTransition& transition);
 
 RuntimeActionResult RunCompletedRailSection(NativeTransition& transition);
 RuntimeActionResult RunIssuedRailSection(NativeTransition& transition);
@@ -76,6 +77,9 @@ RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transitio
 RuntimeActionResult RunNewspaperNavyGrowthRewardLevels(NativeTransition& transition);
 RuntimeActionResult RunEliminationPhaseWithLandedGreatPowers(NativeTransition& transition);
 RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition);
+RuntimeActionResult RunOpeningHomeCitySetup(NativeTransition& transition);
+RuntimeActionResult RunNewspaperPendingStatus(NativeTransition& transition);
+RuntimeActionResult RunArmyGrowthSelectedGeneral(NativeTransition& transition);
 RuntimeActionResult RunDealBookTurnStop(NativeTransition& transition);
 
 namespace {
@@ -114,11 +118,12 @@ const NativeCase kCases[] = {
     {"nation_resource_yield_rebuild_multiple_towns", RunNationResourceYieldRebuildMultipleTowns},
     {"specialist_recruitment", RunSpecialistRecruitment},
     {"military_maintenance", RunMilitaryMaintenance},
-    {"military_phase", RunMilitaryPhase},
-    {"select_and_queue_advisory_missions", RunSelectAndQueueAdvisoryMissions},
+    {"military_phase_supported_subset", RunMilitaryPhaseSupportedSubset},
+    {"advisory_map_missions_case16", RunAdvisoryMapMissionsCase16},
+    {"army_movement_give_orders", RunArmyMovementGiveOrders},
     {"combat_moves_uncontested", RunCombatMovesUncontested},
     {"combat_moves_creates_battle", RunCombatMovesCreatesBattle},
-    {"military_cleanup", RunMilitaryCleanup},
+    {"military_cleanup_supported_subset", RunMilitaryCleanupSupportedSubset},
     {"completed_rail_section", RunCompletedRailSection},
     {"issued_rail_section", RunIssuedRailSection},
     {"completed_resource_development", RunCompletedResourceDevelopment},
@@ -145,6 +150,9 @@ const NativeCase kCases[] = {
     {"newspaper_navy_growth_reward_levels", RunNewspaperNavyGrowthRewardLevels},
     {"elimination_phase_with_landed_great_powers", RunEliminationPhaseWithLandedGreatPowers},
     {"opening_civilian_grant", RunOpeningCivilianGrant},
+    {"opening_home_city_setup", RunOpeningHomeCitySetup},
+    {"newspaper_pending_status", RunNewspaperPendingStatus},
+    {"army_growth_selected_general", RunArmyGrowthSelectedGeneral},
     {"turn_stop_deal_book", RunDealBookTurnStop},
 };
 

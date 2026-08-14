@@ -74,7 +74,7 @@ pub use city_site::{
     validate_capital_site_selection,
 };
 pub use civilian_work::{CivilianWorkOrder, RailOrderRejection, RailSegment, TurnsRemaining};
-pub use combat_moves::PendingLandBattle;
+pub use combat_moves::{CombatMovesContinuation, PendingLandBattle};
 pub use create_random_game::{RandomGameNames, create_random_game};
 pub use deal_book::{
     DealBookAidLine, DealBookBidRow, DealBookCategory, DealBookCategoryRow, DealBookDealLine,

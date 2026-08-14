@@ -562,6 +562,11 @@ impl GameState {
             .available[kind] = available;
     }
 
+    /// Retail `TTechMgr::ActivateSlotAndUpdateUI`.
+    pub fn activate_slot_and_update_ui(&mut self, nation: MajorNationId, kind: MilitaryUnitKind) {
+        self.activate_military_ability(nation, kind);
+    }
+
     fn activate_military_ability(&mut self, nation: MajorNationId, kind: MilitaryUnitKind) {
         self.technology.military_unit_ability_active_by_nation[nation][kind] = true;
         let group = crate::military_phase::tactical_category(kind);

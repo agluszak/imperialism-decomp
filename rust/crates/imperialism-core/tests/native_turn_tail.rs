@@ -94,6 +94,26 @@ fn opening_civilian_grant() {
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
+fn opening_home_city_setup() {
+    compare_native("opening_home_city_setup", |state, (): ()| {
+        for index in 0..MajorNationId::COUNT {
+            state.finalize_home_city_setup(MajorNationId::new(index));
+        }
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn newspaper_pending_status() {
+    compare_native("newspaper_pending_status", |state, (): ()| {
+        state.mark_all_pending_status_flags_handled();
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
 fn elimination_phase_with_landed_great_powers() {
     compare_native(
         "elimination_phase_with_landed_great_powers",

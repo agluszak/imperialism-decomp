@@ -1529,7 +1529,7 @@ fn province_state(province: &LegacyProvince) -> ProvinceState {
 }
 
 fn country_common(country: &LegacyCountryBase) -> NationCommonState {
-    NationCommonState::from_parts(
+    let mut common = NationCommonState::from_parts(
         normalize_nation_display_name(&country.alternate_identity),
         country_status_from_retail(country.encoded_country_status),
         country
@@ -1545,5 +1545,8 @@ fn country_common(country: &LegacyCountryBase) -> NationCommonState {
                 .need_level_by_nation
                 .map(|score| TradePolicyScore::new(i32::from(score))),
         ),
-    )
+    );
+    common.unit_name_ordinal_by_type = country.unit_name_ordinal_by_type;
+    common.unit_name_counter = country.unit_name_counter;
+    common
 }

@@ -69,6 +69,11 @@ impl GameState {
         }
     }
 
+    /// Retail `TAutoGreatPower::MoveArmy` / land `GiveOrders`. Navy missions are omitted.
+    pub fn do_army_movement(&mut self, nation: MajorNationId) {
+        self.give_auto_great_power_army_orders(nation.nation());
+    }
+
     fn give_auto_great_power_army_orders(&mut self, nation: NationId) {
         let mission_count = self.missions.len();
         for mission_index in 0..mission_count {
@@ -275,20 +280,30 @@ impl GameState {
         }
     }
 
-    fn add_militia(&mut self, nation: NationId, province: ProvinceId) {
-        let unit_type = self.militia_kind(nation);
+    pub(crate) fn insert_land_unit(
+        &mut self,
+        nation: NationId,
+        unit_type: MilitaryUnitKind,
+        province: Option<ProvinceId>,
+        order_code: i32,
+    ) {
         let id = self.unit_ids.next_military();
+        let order = if order_code == 0 {
+            MilitaryOrder::idle([province; 3], [province; 3])
+        } else {
+            MilitaryOrder::retail(
+                MilitaryOrderCode::from_retail(order_code),
+                None,
+                [province; 3],
+                [province; 3],
+            )
+        };
         let unit = MilitaryUnitState::new(
             id,
             nation,
             unit_type,
-            Some(province),
-            MilitaryOrder::retail(
-                MilitaryOrderCode::from_retail(2),
-                None,
-                [Some(province); 3],
-                [Some(province); 3],
-            ),
+            province,
+            order,
             nation,
             0,
             true,
@@ -300,11 +315,16 @@ impl GameState {
         );
         let insert_at = self
             .military_units
-            .partition_point(|existing| existing.nation <= nation);
+            .partition_point(|existing| existing.nation.get() <= nation.get());
         self.military_units.insert(insert_at, unit);
     }
 
-    fn militia_kind(&self, nation: NationId) -> MilitaryUnitKind {
+    fn add_militia(&mut self, nation: NationId, province: ProvinceId) {
+        let unit_type = self.militia_kind(nation);
+        self.insert_land_unit(nation, unit_type, Some(province), 2);
+    }
+
+    pub(crate) fn militia_kind(&self, nation: NationId) -> MilitaryUnitKind {
         let Some(major) = MajorNationId::from_nation(nation) else {
             return MilitaryUnitKind::Minutemen;
         };

@@ -107,8 +107,8 @@ struct EmptyCase {}
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
-fn military_phase() {
-    compare_native("military_phase", |state, _: EmptyCase| {
+fn military_phase_supported_subset() {
+    compare_native("military_phase_supported_subset", |state, _: EmptyCase| {
         state.do_military();
     })
     .unwrap();
@@ -116,13 +116,31 @@ fn military_phase() {
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
-fn select_and_queue_advisory_missions() {
-    compare_native(
-        "select_and_queue_advisory_missions",
-        |state, _: EmptyCase| {
-            state.select_and_queue_advisory_map_missions();
-        },
-    )
+fn advisory_map_missions_case16() {
+    compare_native("advisory_map_missions_case16", |state, _: EmptyCase| {
+        state.select_and_queue_advisory_map_missions();
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn army_movement_give_orders() {
+    compare_native("army_movement_give_orders", |state, _: EmptyCase| {
+        for index in 0..MajorNationId::COUNT {
+            let nation = MajorNationId::new(index);
+            if state.nations().major(nation).kind != MajorNationKind::AutoGreatPower {
+                continue;
+            }
+            if matches!(
+                state.nations().country_status(nation.nation()),
+                Some(CountryStatus::ProtectorateOf(_))
+            ) {
+                continue;
+            }
+            state.do_army_movement(nation);
+        }
+    })
     .unwrap();
 }
 
@@ -146,9 +164,12 @@ fn combat_moves_creates_battle() {
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
-fn military_cleanup() {
-    compare_native("military_cleanup", |state, _: EmptyCase| {
-        state.do_military_cleanup();
-    })
+fn military_cleanup_supported_subset() {
+    compare_native(
+        "military_cleanup_supported_subset",
+        |state, _: EmptyCase| {
+            state.do_military_cleanup();
+        },
+    )
     .unwrap();
 }

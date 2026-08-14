@@ -341,11 +341,7 @@ impl Plugin for DiplomacyPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             OnEnter(AppState::Diplomacy),
-            (
-                enter_diplomacy_screen,
-                bind_diplomacy_screen,
-            )
-                .chain(),
+            (enter_diplomacy_screen, bind_diplomacy_screen).chain(),
         )
         .add_systems(
             Update,

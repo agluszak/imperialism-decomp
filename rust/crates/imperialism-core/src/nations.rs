@@ -327,6 +327,8 @@ pub struct NationCommonState {
     pub treasury: i32,
     pub home_tile: Option<TileId>,
     pub trade_policy_by_nation: NationTable<TradePolicyScore>,
+    pub unit_name_ordinal_by_type: [i16; crate::MilitaryUnitKind::LENGTH],
+    pub unit_name_counter: i16,
 }
 
 impl NationCommonState {
@@ -345,6 +347,8 @@ impl NationCommonState {
             treasury,
             home_tile,
             trade_policy_by_nation,
+            unit_name_ordinal_by_type: [1; crate::MilitaryUnitKind::LENGTH],
+            unit_name_counter: 1,
         }
     }
 

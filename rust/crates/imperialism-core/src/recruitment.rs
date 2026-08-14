@@ -1,7 +1,8 @@
 use crate::{
     CivilianLocation, CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, Difficulty,
-    GameState, MajorNationId, MapMgr, MilitaryUnitKind, MilitaryUnitState, NationId,
-    PendingActionKind, ShipType, TileFlags, TileId, TileOwnerTag, TurnSummary,
+    GameState, MajorNationId, MapMgr, MilitaryUnitKind, MilitaryUnitState, NationId, OceanZoneId,
+    PendingActionKind, ProvinceId, ShipState, ShipType, TileFlags, TileId, TileOwnerTag,
+    TurnSummary,
 };
 #[cfg(test)]
 use crate::{CivilianUnitId, MilitaryUnitId};
@@ -98,14 +99,21 @@ impl GameState {
         }
     }
 
-    /// Opening-turn civilian grant from `TGreatPower::SetHomeCityTileAndDisplayName`.
-    pub(crate) fn grant_opening_civilians(&mut self) {
-        if self.turn.scenario_map.is_some() {
+    /// `TGreatPower::SetHomeCityTileAndDisplayName` after the home tile is already bound.
+    ///
+    /// Scenario maps skip only the random-map civilian grant, not yields, transport
+    /// allocation, the self relationship, or `InitialMilitia`.
+    pub fn finalize_home_city_setup(&mut self, nation: MajorNationId) {
+        if self.nations.major(nation).common.home_tile.is_none() {
             return;
         }
-        for nation in MajorNationId::all() {
+        self.rebuild_nation_resource_yields(nation);
+        self.allocate_transport_needs(nation);
+        if self.turn.scenario_map.is_none() {
             self.grant_opening_civilians_for_nation(nation);
         }
+        self.set_relationship(nation.nation(), nation.nation(), 0x100);
+        self.initial_militia(nation.nation());
     }
 
     /// One nation's prospector/engineer pair, plus the Introductory human extras.
@@ -169,6 +177,165 @@ impl GameState {
             .civilian_units
             .partition_point(|existing| existing.nation <= nation_id);
         self.civilian_units.insert(insert_at, unit);
+    }
+
+    /// `TCountry::InitialMilitia`.
+    pub(crate) fn initial_militia(&mut self, nation: NationId) {
+        if self.turn.scenario_map.is_some() {
+            if let Some(home) = self.nations.home_tile(nation)
+                && let Some(province) = self.map[home].province
+            {
+                self.set_province_capital_fortification(province);
+            }
+            return;
+        }
+
+        let owned = self
+            .nations
+            .common(nation)
+            .expect("initial militia requires a present nation")
+            .owned_regions()
+            .to_vec();
+        let garrison_orders = matches!(
+            self.turn.difficulty,
+            Difficulty::Introductory | Difficulty::Easy
+        );
+        let garrison_order = if garrison_orders { 2 } else { 0 };
+        let major = MajorNationId::from_nation(nation);
+        let diplomacy_eligible =
+            major.is_some_and(|major| self.nations.major(major).economy.diplomacy_eligible);
+        let extra_ai_army = major.is_some()
+            && !diplomacy_eligible
+            && self.turn.difficulty == Difficulty::NighOnImpossible;
+        let introductory_navy = major.is_some()
+            && diplomacy_eligible
+            && self.turn.difficulty == Difficulty::Introductory;
+        let extra_militia = matches!(
+            self.turn.difficulty,
+            Difficulty::Hard | Difficulty::NighOnImpossible
+        );
+        let bonus_regulars = self.map.scenario_tag.as_bytes().first() == Some(&b'+');
+
+        for province in owned {
+            if let Some(capital) = self.map.provinces[province].city_tile()
+                && self.map[capital].flags.has_base_transport()
+            {
+                self.insert_land_unit(
+                    nation,
+                    MilitaryUnitKind::Regulars,
+                    Some(province),
+                    garrison_order,
+                );
+                self.insert_land_unit(
+                    nation,
+                    MilitaryUnitKind::Regulars,
+                    Some(province),
+                    garrison_order,
+                );
+                self.insert_land_unit(
+                    nation,
+                    MilitaryUnitKind::Artillery,
+                    Some(province),
+                    garrison_order,
+                );
+                self.set_province_capital_fortification(province);
+                if extra_ai_army {
+                    self.insert_land_unit(
+                        nation,
+                        MilitaryUnitKind::LightArtillery,
+                        Some(province),
+                        garrison_order,
+                    );
+                    self.insert_land_unit(
+                        nation,
+                        MilitaryUnitKind::Cuirassiers,
+                        Some(province),
+                        garrison_order,
+                    );
+                    if let Some(home) = self.nations.home_tile(nation)
+                        && let Some(port) = self.port_zone_for_city_tile(home)
+                    {
+                        self.spawn_opening_frigate(nation, port);
+                    }
+                }
+                if introductory_navy
+                    && let Some(home) = self.nations.home_tile(nation)
+                    && let Some(port) = self.port_zone_for_city_tile(home)
+                    && let Some(&neighbor) = self.ocean.zones[usize::from(port.get())]
+                        .zone()
+                        .primary_neighbors
+                        .first()
+                {
+                    self.spawn_opening_frigate(nation, neighbor);
+                }
+            }
+            for _ in 0..3 {
+                self.add_opening_militia(nation, province);
+            }
+            if extra_militia {
+                self.add_opening_militia(nation, province);
+                if major.is_none() {
+                    self.insert_land_unit(nation, MilitaryUnitKind::Artillery, Some(province), 0);
+                }
+            }
+            if bonus_regulars {
+                self.insert_land_unit(nation, MilitaryUnitKind::Regulars, Some(province), 2);
+            }
+        }
+        self.name_land_units(nation);
+    }
+
+    fn add_opening_militia(&mut self, nation: NationId, province: ProvinceId) {
+        let unit_type = self.militia_kind(nation);
+        self.insert_land_unit(nation, unit_type, Some(province), 2);
+    }
+
+    fn set_province_capital_fortification(&mut self, province: ProvinceId) {
+        if let Some(capital) = self.map.provinces[province].city_tile() {
+            self.map[capital]
+                .flags
+                .insert(TileFlags::PROVINCE_CAPITAL_FORTIFICATION);
+        }
+        self.map.provinces[province].increment_fort_level();
+    }
+
+    fn spawn_opening_frigate(&mut self, nation: NationId, location: OceanZoneId) {
+        if !crate::city::ship_creates_navy_object(ShipType::Frigate) {
+            return;
+        }
+        self.insert_ship_at_head(ShipState {
+            ship_type: ShipType::Frigate,
+            location,
+            task_force: None,
+            aggression: 0,
+            nation,
+            name: String::new(),
+            strength: crate::city::ship_stock_cap(ShipType::Frigate),
+            experience: 0,
+            selection: 0,
+        });
+    }
+
+    pub(crate) fn name_land_units(&mut self, nation: NationId) {
+        let (mut ordinals, mut counter) = {
+            let common = self
+                .nations
+                .common(nation)
+                .expect("naming units requires a present nation");
+            (common.unit_name_ordinal_by_type, common.unit_name_counter)
+        };
+        crate::create_random_game::name_units_for_nation(
+            &mut self.military_units,
+            nation,
+            &mut ordinals,
+            &mut counter,
+        );
+        let common = self
+            .nations
+            .common_mut(nation)
+            .expect("naming units requires a present nation");
+        common.unit_name_ordinal_by_type = ordinals;
+        common.unit_name_counter = counter;
     }
 
     pub fn produce_military_recruits(

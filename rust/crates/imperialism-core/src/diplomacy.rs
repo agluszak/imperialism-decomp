@@ -839,7 +839,7 @@ impl GameState {
     /// `TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks` while the
     /// diplomacy map is open (`TSimMgr::mode != 6`), so declare-war does not
     /// queue a war transition.
-    fn apply_player_diplomacy_policy(
+    pub(crate) fn apply_player_diplomacy_policy(
         &mut self,
         source: MajorNationId,
         target: NationId,
