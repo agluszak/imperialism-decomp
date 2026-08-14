@@ -136,8 +136,9 @@ pub struct NewsState {
     pub pages: MajorNationTable<Option<NewsPage>>,
     pub last_used_turn_by_nation_and_template: MajorNationTable<Vec<i16>>,
     /// `news.tab` story template ids. Installed from retail assets for a live
-    /// session; not stored in `.imp`.
-    #[serde(default)]
+    /// session; not stored in `.imp`. Semantic JSON omits this field because it is
+    /// immutable rule input; reinstall it with [`GameState::set_news_story_ids`].
+    #[serde(skip)]
     pub story_ids: Vec<i32>,
 }
 

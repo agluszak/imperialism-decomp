@@ -42,6 +42,7 @@ semantics.
 - Core owns the turn sequence: `finish_player_orders`, interrupt answers including
   `close_turn_deal_book`, and `advance_turn`. Newspaper pages are built from `news.tab`
   ids installed once on `GameState` when a live session is created or loaded.
+  Those ids are live-session rule input and are omitted from semantic JSON.
   `AppState` is screen routing; `apply_turn_stop` only maps a stop to a screen.
   Do not chain phases in the app.
 - Core owns deterministic sequencing and mutation. The app owns presentation decisions and projects
