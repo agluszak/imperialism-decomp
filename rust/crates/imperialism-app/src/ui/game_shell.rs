@@ -8,8 +8,8 @@ use crate::ui::load_save::OpenFlagMenu;
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailPictureSwap, RetailTag, find_descendant};
 use crate::ui::strategic_map::{
-    bind_minimap, bind_strategic_base_terrain, register_civilian_orders, sync_minimap,
-    sync_strategic_base_terrain, sync_strategic_units,
+    bind_civilian_toolbar, bind_minimap, bind_strategic_base_terrain, register_civilian_orders,
+    register_civilian_toolbar, sync_minimap, sync_strategic_base_terrain, sync_strategic_units,
 };
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -41,6 +41,7 @@ pub(crate) struct GameShellPlugin;
 impl Plugin for GameShellPlugin {
     fn build(&self, app: &mut App) {
         register_civilian_orders(app);
+        register_civilian_toolbar(app);
         app.add_systems(
             OnEnter(AppState::StrategicMap),
             (
@@ -161,6 +162,7 @@ fn bind_strategic_map(
         &mut assets,
         &session.game,
     );
+    bind_civilian_toolbar(&mut commands, &mut assets, *root, &children, &tags);
     bind_game_status_display(
         &mut commands,
         &mut assets,

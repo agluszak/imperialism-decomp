@@ -206,15 +206,14 @@ impl GameState {
             })
     }
 
-    /// The idle-selectable engineer of `nation` standing on `tile`, if any.
-    pub fn selectable_engineer_on_tile(
+    /// The idle-selectable civilian of `nation` standing on `tile`, if any.
+    pub fn selectable_civilian_on_tile(
         &self,
         tile: TileId,
         nation: NationId,
     ) -> Option<CivilianUnitId> {
         self.civilian_units.iter().find_map(|unit| {
             (unit.owner_nation() == nation
-                && unit.unit_type() == CivilianUnitKind::Engineer
                 && unit.location().tile() == Some(tile)
                 && idle_selectable(unit.order()))
             .then_some(unit.id())
