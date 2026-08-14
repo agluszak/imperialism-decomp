@@ -442,10 +442,12 @@ impl GameState {
         if let Some(province) = map_node {
             self.set_province_target(nation, province, AiTargetState::MissionQueued);
         }
-        if zone.is_some() && related.is_none() {
+        if let Some(zone) = zone
+            && related.is_none()
+        {
             self.set_zone_target(
                 nation,
-                usize::from(zone.expect("zone mission").get()),
+                usize::from(zone.get()),
                 AiTargetState::MissionQueued,
             );
         }

@@ -356,10 +356,10 @@ fn spawn_engineer_legend(
         .expect("civilian toolbar requires an active major nation");
     let status = state.technology().research_status_by_nation[nation];
     let cannot_build = [
-        status[6] != TechnologyResearchStatus::Researched,
-        status[12] != TechnologyResearchStatus::Researched,
-        status[12] != TechnologyResearchStatus::Researched,
-        status[23] != TechnologyResearchStatus::Researched,
+        status[TechnologyId::new(6)] != TechnologyResearchStatus::Researched,
+        status[TechnologyId::new(12)] != TechnologyResearchStatus::Researched,
+        status[TechnologyId::new(12)] != TechnologyResearchStatus::Researched,
+        status[TechnologyId::new(23)] != TechnologyResearchStatus::Researched,
     ];
     let terrain_icons = [10_i16, 7, 8, 9];
     let mut icon_x = 10.0;
@@ -410,7 +410,7 @@ fn spawn_prospector_legend(
     );
     let nation = MajorNationId::from_nation(state.turn().active_nation)
         .expect("civilian toolbar requires an active major nation");
-    let oil_unlocked = state.technology().research_status_by_nation[nation][4]
+    let oil_unlocked = state.technology().research_status_by_nation[nation][TechnologyId::new(4)]
         == TechnologyResearchStatus::Researched;
     let counts = civilian_legend_target_counts(state, unit);
     let column_resources: [[i16; 4]; 5] = [
