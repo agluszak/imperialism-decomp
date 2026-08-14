@@ -2,17 +2,24 @@
 #include "JsonObject.h"
 
 #include "game/city/TCity.h"
+#include "game/city_ui/TCountry.h"
 #include "game/city_ui/TLongintList.h"
 #include "game/globals/navy_globals.h"
+#include "game/globals/nation_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/game_session_globals.h"
+#include "game/globals/tactical_ui_globals.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/map_records.h"
+#include "game/military/TMilitaryUnit.h"
+#include "game/military_domain_types.h"
 #include "game/nation/TGreatPower.h"
 #include "game/navy/TAdmiral.h"
 #include "game/navy/TOcean.h"
 #include "game/navy/TShip.h"
 #include "game/resource_domain_types.h"
+#include "game/tactical_ui/TTechMgr.h"
+#include "game/ui_core/CIterator.h"
 #include "game/ui_screens/TSimMgr.h"
 
 #include <string.h>
@@ -125,6 +132,38 @@ RuntimeActionResult RunNavyGrowthPending(NativeTransition& transition) {
   }
   for (TAdmiral* admiral = g_pNavySecondaryOrderListHead; admiral != 0; admiral = admiral->next) {
     admiral->displayName.Empty();
+  }
+  return transition.Finish();
+}
+
+RuntimeActionResult RunArmyGrowthSelectedGeneral(NativeTransition& transition) {
+  TGreatPower* nation = ActiveNation();
+  if (nation == 0 || g_pTechMgr == 0 || g_pSimMgr == 0) {
+    return RuntimeActionResult::Failure("the loaded fixture has no active great power");
+  }
+
+  nation->pendingActionStatus.byAction[1] = 0x32;
+
+  JsonObject args;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  g_pTechMgr->ActivateSlotAndUpdateUI(kMilitaryUnitGeneralEra2, ActiveNationSlot());
+  g_pSimMgr->DoCityAndTransport();
+
+  // GenerateEthnicName / mapped-flavor general names are not yet a Rust rule.
+  TCountry* country = g_apTerrainTypeDescriptorTable[ActiveNationSlot()];
+  if (country != 0 && country->militaryUnitList44 != 0) {
+    CIterator cursor(country->militaryUnitList44);
+    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
+    while (cursor.More() != 0) {
+      if (unit->orderType >= EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1)) {
+        unit->name24.Empty();
+      }
+      unit = static_cast<TMilitaryUnit*>(cursor.Advance());
+    }
   }
   return transition.Finish();
 }

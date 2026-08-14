@@ -38,3 +38,15 @@ fn navy_growth_pending() {
     })
     .unwrap();
 }
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn army_growth_selected_general() {
+    compare_native("army_growth_selected_general", |state, _: EmptyCase| {
+        let nation = MajorNationId::from_nation(state.turn().active_nation)
+            .expect("active nation is a great power");
+        state.activate_slot_and_update_ui(nation, MilitaryUnitKind::GeneralEra2);
+        state.do_city_and_transport();
+    })
+    .unwrap();
+}

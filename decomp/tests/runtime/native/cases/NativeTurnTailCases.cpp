@@ -3,6 +3,8 @@
 
 #include "game/city/TCity.h"
 #include "game/civilian_domain_types.h"
+#include "game/globals/navy_globals.h"
+#include "game/globals/nation_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
 #include "game/military/TCivUnit.h"
@@ -10,6 +12,7 @@
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
 #include "game/nation/TMinor.h"
+#include "game/navy/TShip.h"
 #include "game/ui_core/THelpMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 
@@ -312,4 +315,67 @@ RuntimeActionResult RunDealBookTurnStop(NativeTransition& transition) {
   }
   g_pSimMgr->AdvanceGlobalTurnStateMachine();
   return transition.Finish(json_value_init_string("deal_book"));
+}
+
+RuntimeActionResult RunOpeningHomeCitySetup(NativeTransition& transition) {
+  if (g_pSimMgr == 0) {
+    return RuntimeActionResult::Failure("turn state is unavailable");
+  }
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    if (nation == 0 || nation->IsRemote() != 0 || g_bMultiplayerScenarioSetupActive != 0) {
+      continue;
+    }
+    nation->SetHomeCityTileAndDisplayName(-1, 0);
+  }
+
+  // GenerateEthnicName is CRT mapped-flavor text, not yet a Rust rule.
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
+    ship->name.Empty();
+  }
+  return transition.Finish();
+}
+
+RuntimeActionResult RunNewspaperPendingStatus(NativeTransition& transition) {
+  if (g_pSimMgr == 0) {
+    return RuntimeActionResult::Failure("turn state is unavailable");
+  }
+
+  for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) == 0) {
+      continue;
+    }
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    if (nation == 0) {
+      continue;
+    }
+    nation->pendingActionStatus.byAction[0] = 0x32;
+    nation->field8d6[0] = 3;
+    nation->pendingActionStatus.byAction[1] = 0x32;
+    nation->field8d6[1] = 6;
+    nation->pendingActionStatus.byAction[3] = 0x32;
+    nation->field8d6[3] = -1;
+  }
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) == 0) {
+      continue;
+    }
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    if (nation != 0) {
+      nation->MarkAllPendingStatusFlagsHandled();
+    }
+  }
+  return transition.Finish();
 }

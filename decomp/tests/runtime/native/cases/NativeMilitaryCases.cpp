@@ -313,7 +313,10 @@ RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition) {
   return transition.Finish();
 }
 
-RuntimeActionResult RunMilitaryPhase(NativeTransition& transition) {
+// Heatmap, militia growth, PayForMilitary, and human MoveArmy budget only.
+// Does not invoke TSimMgr::DoMilitary (AutoGreatPower missions, stack cleanup,
+// or navy CarryOutOrders).
+RuntimeActionResult RunMilitaryPhaseSupportedSubset(NativeTransition& transition) {
   int slot;
   g_pSimMgr->economicTurn = 6;
 
@@ -408,7 +411,9 @@ RuntimeActionResult RunCombatMovesCreatesBattle(NativeTransition& transition) {
   return transition.Finish(result);
 }
 
-RuntimeActionResult RunMilitaryCleanup(NativeTransition& transition) {
+// Selection-bit clear, heatmap, and AddPurchasedItems only. Does not invoke the
+// retail military-cleanup phase (navy cleanup, AI replan, power/order metrics).
+RuntimeActionResult RunMilitaryCleanupSupportedSubset(NativeTransition& transition) {
   int slot;
   if (g_pNavyPrimaryOrderListHead != 0) {
     g_pNavyPrimaryOrderListHead->selection = 1;

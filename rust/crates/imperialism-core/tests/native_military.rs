@@ -107,8 +107,8 @@ struct EmptyCase {}
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
-fn military_phase() {
-    compare_native("military_phase", |state, _: EmptyCase| {
+fn military_phase_supported_subset() {
+    compare_native("military_phase_supported_subset", |state, _: EmptyCase| {
         state.do_military();
     })
     .unwrap();
@@ -134,9 +134,12 @@ fn combat_moves_creates_battle() {
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
-fn military_cleanup() {
-    compare_native("military_cleanup", |state, _: EmptyCase| {
-        state.do_military_cleanup();
-    })
+fn military_cleanup_supported_subset() {
+    compare_native(
+        "military_cleanup_supported_subset",
+        |state, _: EmptyCase| {
+            state.do_military_cleanup();
+        },
+    )
     .unwrap();
 }
