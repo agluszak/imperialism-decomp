@@ -604,23 +604,6 @@ pub(in crate::ui::city) fn animate_city_building_actions(
     }
 }
 
-pub(in crate::ui::city) fn transparent_picture(
-    assets: &mut RetailUiAssets,
-    picture_id: PictureId,
-) -> Handle<Image> {
-    let indexed = assets
-        .indexed_picture(picture_id)
-        .expect("retail City detail picture must have indexed pixels");
-    assets
-        .transformed_picture(picture_id, |image| {
-            assert!(
-                apply_palette_index_transparency(image, &indexed),
-                "retail City detail picture dimensions must match its decoded image"
-            );
-        })
-        .expect("retail City detail picture must load")
-}
-
 fn city_summary_text_entity(
     entity: Entity,
     texts: &Query<&mut Text>,
