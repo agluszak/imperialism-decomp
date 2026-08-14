@@ -13,6 +13,16 @@ pub(in crate::ui::city) struct CityOrderAdjust {
 #[derive(Component)]
 pub(in crate::ui::city) struct CityOrderQuantity(pub(in crate::ui::city) CityOrderId);
 
+#[derive(Component, Clone, Copy, Eq, PartialEq)]
+pub(in crate::ui::city) struct CityRowChoice(pub(in crate::ui::city) CityOrderId);
+
+#[derive(Component)]
+pub(in crate::ui::city) struct CityRowSelection {
+    pub(in crate::ui::city) order: CityOrderId,
+    pub(in crate::ui::city) normal_color: Color,
+    pub(in crate::ui::city) warning_color: Color,
+}
+
 #[derive(Component)]
 pub(in crate::ui::city) struct CityIndustryAmountBar {
     pub(in crate::ui::city) order: CityOrderId,
@@ -222,8 +232,82 @@ pub(in crate::ui::city) fn bind_industry_dialog(
         .insert(IndustryIndicator::Expansion(page.slot));
 }
 
-fn city_projection_idle(session: &Res<GameSession>, added: bool) -> bool {
-    !session.is_changed() && !added
+pub(in crate::ui::city) fn on_city_row_selected(
+    change: On<ValueChange<bool>>,
+    rows: Query<&CityRowChoice>,
+    mut views: Query<&mut CityRowSelection>,
+) {
+    if !change.value {
+        return;
+    }
+    let Ok(row) = rows.get(change.source) else {
+        return;
+    };
+    let Some(mut selection) = views.iter_mut().next() else {
+        return;
+    };
+    if recruitment_kind_matches(selection.order, row.0) {
+        selection.order = row.0;
+    }
+}
+
+pub(in crate::ui::city) fn on_city_recruitment_order_selected(
+    activate: On<Activate>,
+    actions: Query<&CityOrderAdjust>,
+    mut views: Query<&mut CityRowSelection>,
+) {
+    let Ok(action) = actions.get(activate.entity) else {
+        return;
+    };
+    let Some(mut selection) = views.iter_mut().next() else {
+        return;
+    };
+    if recruitment_kind_matches(selection.order, action.order) {
+        selection.order = action.order;
+    }
+}
+
+const fn recruitment_kind_matches(selected: CityOrderId, candidate: CityOrderId) -> bool {
+    matches!(
+        (selected, candidate),
+        (
+            CityOrderId::MilitaryRecruit(_),
+            CityOrderId::MilitaryRecruit(_)
+        ) | (
+            CityOrderId::CivilianRecruit(_),
+            CityOrderId::CivilianRecruit(_)
+        ) | (CityOrderId::Ship(_), CityOrderId::Ship(_))
+    )
+}
+
+pub(in crate::ui::city) fn city_stock_color(short: bool, selection: &CityRowSelection) -> Color {
+    if short {
+        selection.warning_color
+    } else {
+        selection.normal_color
+    }
+}
+
+pub(in crate::ui::city) fn sync_city_row_selection(
+    mut commands: Commands,
+    session: Res<GameSession>,
+    selections: Query<Ref<CityRowSelection>>,
+    rows: Query<(Entity, &CityRowChoice, Has<Checked>)>,
+) {
+    let Some(selection) = selections.iter().next() else {
+        return;
+    };
+    if !session.is_changed() && !selection.is_changed() && !selection.is_added() {
+        return;
+    }
+    for (entity, row, checked) in &rows {
+        let should_check = row.0 == selection.order;
+        if should_check && !checked {
+            commands.entity(entity).insert(Checked);
+        } else if !should_check && checked {
+            commands.entity(entity).remove::<Checked>();
+        }
+    }
 }
 
 pub(in crate::ui::city) fn sync_city_order_quantities(

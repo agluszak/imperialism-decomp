@@ -58,7 +58,7 @@ impl GameState {
         self.resolve_next_move(&mut chains, stacks, 0, owner_cache)
     }
 
-    pub(crate) fn resume_combat_moves(
+    pub fn resume_combat_moves(
         &mut self,
         continuation: CombatMovesContinuation,
     ) -> Option<CombatMovesContinuation> {
@@ -307,7 +307,7 @@ impl GameState {
         ProvinceTable::from_fn(|province| self.normalized_province_owner(province))
     }
 
-    fn normalized_province_owner(&self, province: ProvinceId) -> Option<NationId> {
+    pub(crate) fn normalized_province_owner(&self, province: ProvinceId) -> Option<NationId> {
         let owner = self.map.provinces[province].owner()?;
         Some(match self.nations.country_status(owner) {
             Some(CountryStatus::ColonyOf(master)) => master,
@@ -315,7 +315,7 @@ impl GameState {
         })
     }
 
-    fn nation_pair_war_stamp_out_of_date(
+    pub(crate) fn nation_pair_war_stamp_out_of_date(
         &self,
         source: NationId,
         target: Option<NationId>,

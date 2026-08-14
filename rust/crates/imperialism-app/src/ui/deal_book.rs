@@ -1,5 +1,6 @@
 use super::GameSession;
 use super::RetailUiAssets;
+use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::bind_game_status_display;
 use super::generated;
@@ -162,12 +163,13 @@ fn bind_deal_book(
         tab_filled: assets
             .picture(PictureId::new(tab_base))
             .expect("retail deal-book filled tab strip must load"),
-        flags: transparent_picture(&mut assets, PictureId::new(FLAG_ATLAS)),
+        flags: assets
+            .transparent_picture(PictureId::new(FLAG_ATLAS), 0x10)
+            .expect("retail deal-book flag atlas must load"),
         commodities: std::array::from_fn(|index| {
-            transparent_picture(
-                &mut assets,
-                PictureId::new(COMMODITY_ICON_BASE + index as i16),
-            )
+            assets
+                .transparent_picture(PictureId::new(COMMODITY_ICON_BASE + index as i16), 0x10)
+                .expect("retail deal-book commodity icon must load")
         }),
     };
     let (body, body_layout, body_line_height, _) = assets
@@ -233,7 +235,7 @@ fn bind_deal_book(
     commands
         .entity(find_descendant(root, fourcc!("quer"), &children, &tags))
         .insert(InteractionDisabled);
-    bind_game_status_display(&mut commands, &mut assets, root, &children, &tags, &session);
+    bind_game_status_display(&mut commands, &mut assets, root, &children, &tags);
     commands
         .entity(find_descendant(root, fourcc!("mark"), &children, &tags))
         .insert((DealBookHistory, ActivateOnPress))
@@ -1226,34 +1228,6 @@ fn nation_name(state: &GameState, nation: NationId) -> String {
         .to_owned()
 }
 
-fn fill_brackets(template: &str, args: &[&str]) -> String {
-    let chars: Vec<char> = template.chars().collect();
-    let mut out = String::new();
-    let mut index = 0;
-    while index < chars.len() {
-        if chars[index] == '[' {
-            let mut scan = index + 1;
-            while scan < chars.len() && chars[scan] != ']' && !chars[scan].is_ascii_digit() {
-                scan += 1;
-            }
-            if scan < chars.len() && chars[scan].is_ascii_digit() {
-                let slot = (chars[scan] as u8 - b'0') as usize;
-                if slot >= 1 && slot <= args.len() {
-                    out.push_str(args[slot - 1]);
-                }
-                while scan < chars.len() && chars[scan] != ']' {
-                    scan += 1;
-                }
-                index = scan.saturating_add(1);
-                continue;
-            }
-        }
-        out.push(chars[index]);
-        index += 1;
-    }
-    out
-}
-
 fn flag_rect(nation: NationId) -> Rect {
     let left = f32::from(nation.get()) * ICON_WIDTH;
     Rect::new(left, 0.0, left + ICON_WIDTH, ICON_HEIGHT)
@@ -1310,38 +1284,5 @@ fn clear_host(commands: &mut Commands, host: Entity, children: &Query<&Children>
     };
     for child in children.iter() {
         commands.entity(child).despawn();
-    }
-}
-
-fn transparent_picture(assets: &mut RetailUiAssets, picture_id: PictureId) -> Handle<Image> {
-    let indexed = assets
-        .indexed_picture(picture_id)
-        .expect("retail deal-book picture must have indexed pixels");
-    assets
-        .transformed_picture(picture_id, |image| {
-            apply_palette_index_transparency(image, &indexed);
-        })
-        .expect("retail deal-book picture must load")
-}
-
-fn apply_palette_index_transparency(image: &mut Image, indexed: &IndexedPicture) {
-    let width = image.width() as usize;
-    let height = image.height() as usize;
-    let Some(pixels) = image.data.as_mut() else {
-        return;
-    };
-    if width == 0
-        || height == 0
-        || indexed.width as usize != width
-        || indexed.height as usize != height
-        || pixels.len() != width * height * 4
-        || indexed.pixels.len() != width * height
-    {
-        return;
-    }
-    for (pixel, &palette_index) in pixels.chunks_exact_mut(4).zip(&indexed.pixels) {
-        if palette_index == 0x10 {
-            pixel[3] = 0;
-        }
     }
 }

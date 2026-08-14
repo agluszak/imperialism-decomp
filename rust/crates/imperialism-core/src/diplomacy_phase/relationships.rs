@@ -210,7 +210,7 @@ impl GameState {
             self.inflict_war_penalty(source, target, false);
         }
         if let Some(major) = MajorNationId::from_nation(target)
-            && self.nations.majors[major].economy.controller.is_human()
+            && self.nations.majors[major].auto.is_none()
         {
             self.add_diplomacy_notice(major, source, 0x139);
         }

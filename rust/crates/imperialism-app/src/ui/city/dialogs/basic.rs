@@ -318,10 +318,6 @@ pub(in crate::ui::city) fn configure_population_dialog(
         .insert((Text::new(""), PopulationText::Provinces(province_template)));
 }
 
-fn city_projection_idle(session: &Res<GameSession>, added: bool) -> bool {
-    !session.is_changed() && !added
-}
-
 pub(in crate::ui::city) fn sync_warehouse_dialog(
     session: Res<GameSession>,
     added: Query<(), Added<WarehouseDisplay>>,

@@ -1,15 +1,7 @@
 use super::*;
 
 #[derive(Component)]
-pub(in crate::ui::city) struct UniversitySelection {
-    pub(in crate::ui::city) kind: CivilianUnitKind,
-    normal_color: Color,
-    warning_color: Color,
-}
-
-#[derive(Component)]
-pub(in crate::ui::city) struct UniversityRowChoice {
-    pub(in crate::ui::city) kind: CivilianUnitKind,
+pub(in crate::ui::city) struct UniversityRowAssets {
     unit_name: String,
     description: String,
     preview: Handle<Image>,
@@ -39,7 +31,7 @@ pub(in crate::ui::city) struct UniversityRowText {
 
 pub(in crate::ui::city) struct UniversityDialogData {
     pub(in crate::ui::city) available: CivilianUnitTable<bool>,
-    pub(in crate::ui::city) rows: [UniversityRowText; UNIVERSITY_ORDERS.len()],
+    pub(in crate::ui::city) rows: [UniversityRowText; UNIVERSITY_ROWS.len()],
     pub(in crate::ui::city) resource_icons: Handle<Image>,
     pub(in crate::ui::city) tier_labels: [String; 3],
     pub(in crate::ui::city) title_font: TextFont,
@@ -104,27 +96,25 @@ pub(in crate::ui::city) fn configure_university_dialog(
         available: state.technology().city_capabilities_by_nation[nation]
             .university
             .available,
-        rows: UNIVERSITY_ORDERS.map(|binding| {
-            let CityOrderId::CivilianRecruit(kind) = binding.order else {
-                unreachable!("University binding has a civilian recruitment order");
-            };
+        rows: UNIVERSITY_ROWS.map(|row| {
             UniversityRowText {
                 // Retail `TUniversityView::SetUnit` pre-increments the 0-based
                 // recruitment category once and reuses that 1-based index for
                 // both `0x2718` (name) and `0x2751` (description).
                 unit_name: assets
-                    .string(0x2718, i16::from(kind as u8) + 1)
+                    .string(0x2718, i16::from(row.kind as u8) + 1)
                     .expect("retail civilian name"),
                 description: assets
-                    .string(0x2751, i16::from(kind as u8) + 1)
+                    .string(0x2751, i16::from(row.kind as u8) + 1)
                     .expect("retail civilian description"),
-                preview: transparent_picture(
-                    assets,
-                    PictureId::new(university_preview_picture(kind)),
-                ),
+                preview: assets
+                    .transparent_picture(PictureId::new(university_preview_picture(row.kind)), 0x10)
+                    .expect("retail University preview picture must load"),
             }
         }),
-        resource_icons: transparent_picture(assets, PictureId::new(750)),
+        resource_icons: assets
+            .transparent_picture(PictureId::new(750), 0x10)
+            .expect("retail University resource icons must load"),
         tier_labels: std::array::from_fn(|level| {
             assets
                 .string(0x2723, 0x0e + level as i16)
@@ -164,12 +154,11 @@ pub(in crate::ui::city) fn bind_university_dialog(
         warning_color,
     } = data;
     bind_city_dialog_root(commands, root, children, tags, CityFacilitySlot::University);
-    for (binding, row_text) in UNIVERSITY_ORDERS.iter().zip(rows) {
-        let CityOrderId::CivilianRecruit(kind) = binding.order else {
-            unreachable!("University binding has a civilian recruitment order");
-        };
-        let button = find_descendant(root, university_button_tag(kind), children, tags);
-        let row = find_descendant(root, binding.tag, children, tags);
+    for (spec, row_text) in UNIVERSITY_ROWS.iter().zip(rows) {
+        let kind = spec.kind;
+        let binding = spec.binding();
+        let button = find_descendant(root, spec.button_tag, children, tags);
+        let row = find_descendant(root, spec.order_tag, children, tags);
         let minus = find_descendant(row, fourcc!("minu"), children, tags);
         let plus = find_descendant(row, fourcc!("plus"), children, tags);
         let quantity = find_descendant(row, fourcc!("numb"), children, tags);
@@ -190,8 +179,8 @@ pub(in crate::ui::city) fn bind_university_dialog(
         {
             let mut button_commands = commands.entity(button);
             button_commands.insert((
-                UniversityRowChoice {
-                    kind,
+                CityRowChoice(CityOrderId::CivilianRecruit(kind)),
+                UniversityRowAssets {
                     unit_name: row_text.unit_name,
                     description: row_text.description,
                     preview: row_text.preview,
@@ -382,79 +371,26 @@ pub(in crate::ui::city) fn bind_university_dialog(
             TextColor(normal_color),
         ));
     }
-    commands.entity(root).insert(UniversitySelection {
-        kind: CivilianUnitKind::Miner,
+    commands.entity(root).insert(CityRowSelection {
+        order: CityOrderId::CivilianRecruit(CivilianUnitKind::Miner),
         normal_color,
         warning_color,
     });
 }
 
-pub(in crate::ui::city) fn on_university_row_selected(
-    change: On<ValueChange<bool>>,
-    rows: Query<&UniversityRowChoice>,
-    mut views: Query<&mut UniversitySelection>,
-) {
-    if !change.value {
-        return;
-    }
-    let Ok(row) = rows.get(change.source) else {
-        return;
-    };
-    views
-        .single_mut()
-        .expect("University row has one open University dialog")
-        .kind = row.kind;
-}
-
-pub(in crate::ui::city) fn on_university_order_selected(
-    activate: On<Activate>,
-    actions: Query<&CityOrderAdjust>,
-    mut views: Query<&mut UniversitySelection>,
-) {
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
-    let CityOrderId::CivilianRecruit(kind) = action.order else {
-        return;
-    };
-    views
-        .single_mut()
-        .expect("University order has one open University dialog")
-        .kind = kind;
-}
-
-pub(in crate::ui::city) fn sync_university_selection(
-    mut commands: Commands,
-    session: Res<GameSession>,
-    selections: Query<Ref<UniversitySelection>>,
-    rows: Query<(Entity, &UniversityRowChoice, Has<Checked>)>,
-) {
-    let Some(selection) = selections.iter().next() else {
-        return;
-    };
-    if !session.is_changed() && !selection.is_changed() && !selection.is_added() {
-        return;
-    }
-    for (entity, row, checked) in &rows {
-        let should_check = row.kind == selection.kind;
-        if should_check && !checked {
-            commands.entity(entity).insert(Checked);
-        } else if !should_check && checked {
-            commands.entity(entity).remove::<Checked>();
-        }
-    }
-}
-
 pub(in crate::ui::city) fn sync_university_details(
     session: Res<GameSession>,
-    selections: Query<Ref<UniversitySelection>>,
-    rows: Query<&UniversityRowChoice>,
+    selections: Query<Ref<CityRowSelection>>,
+    rows: Query<(&CityRowChoice, &UniversityRowAssets)>,
     mut texts: Query<(&UniversityDisplay, &mut Text), Without<ImageNode>>,
     mut text_colors: Query<(&UniversityDisplay, &mut TextColor), Without<ImageNode>>,
     mut images: Query<(&UniversityDisplay, &mut ImageNode)>,
     mut visibilities: Query<(&UniversityDisplay, &mut Visibility)>,
 ) {
     let Some(selection) = selections.iter().next() else {
+        return;
+    };
+    let CityOrderId::CivilianRecruit(kind) = selection.order else {
         return;
     };
     if !session.is_changed() && !selection.is_changed() && !selection.is_added() {
@@ -465,12 +401,13 @@ pub(in crate::ui::city) fn sync_university_details(
     let city = &major.city;
     let row = rows
         .iter()
-        .find(|row| row.kind == selection.kind)
+        .find(|(choice, _)| choice.0 == selection.order)
+        .map(|(_, assets)| assets)
         .expect("University selection has a bound retail row");
-    let spec = civilian_recruitment_spec(selection.kind);
+    let spec = civilian_recruitment_spec(kind);
     let production = city.population.production_labor();
     let workforce_available = production.high.min(city.population.strength() / 4);
-    let specialties = CIVILIAN_RESOURCE_SPECIALTIES[selection.kind];
+    let specialties = CIVILIAN_RESOURCE_SPECIALTIES[kind];
     let levels = &session.game.technology().city_capabilities_by_nation[nation]
         .university
         .requirement_levels;
@@ -520,11 +457,7 @@ pub(in crate::ui::city) fn sync_university_details(
             UniversityDisplay::Treasury => major.common.treasury < i32::from(spec.cash_per_unit),
             _ => continue,
         };
-        color.0 = if insufficient {
-            selection.warning_color
-        } else {
-            selection.normal_color
-        };
+        color.0 = city_stock_color(insufficient, &selection);
     }
     for (display, mut image) in &mut images {
         match *display {

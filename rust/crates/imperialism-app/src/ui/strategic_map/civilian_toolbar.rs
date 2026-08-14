@@ -366,10 +366,10 @@ fn spawn_engineer_legend(
         .expect("civilian toolbar requires an active major nation");
     let status = state.technology().research_status_by_nation[nation];
     let cannot_build = [
-        status[TechnologyId::new(6).index()] != TechnologyResearchStatus::Researched,
-        status[TechnologyId::new(12).index()] != TechnologyResearchStatus::Researched,
-        status[TechnologyId::new(12).index()] != TechnologyResearchStatus::Researched,
-        status[TechnologyId::new(23).index()] != TechnologyResearchStatus::Researched,
+        status[Technology::IronRailroadBridge] != TechnologyResearchStatus::Researched,
+        status[Technology::CompoundSteamEngine] != TechnologyResearchStatus::Researched,
+        status[Technology::CompoundSteamEngine] != TechnologyResearchStatus::Researched,
+        status[Technology::Dynamite] != TechnologyResearchStatus::Researched,
     ];
     let terrain_icons = [10_i16, 7, 8, 9];
     let mut icon_x = 10.0;
@@ -420,8 +420,8 @@ fn spawn_prospector_legend(
     );
     let nation = MajorNationId::from_nation(state.turn().active_nation)
         .expect("civilian toolbar requires an active major nation");
-    let oil_unlocked = state.technology().research_status_by_nation[nation]
-        [TechnologyId::new(4).index()]
+    let streamlined_hulls_researched = state.technology().research_status_by_nation[nation]
+        [Technology::StreamlinedHulls]
         == TechnologyResearchStatus::Researched;
     let counts = civilian_legend_target_counts(state, unit);
     let column_resources: [[i16; 4]; 5] = [
@@ -431,7 +431,7 @@ fn spawn_prospector_legend(
         [6, -1, -1, -1],
         [6, -1, -1, -1],
     ];
-    let column_count = if oil_unlocked { 5 } else { 2 };
+    let column_count = if streamlined_hulls_researched { 5 } else { 2 };
     let mut column_top = 0x68 as f32;
     for column in 0..column_count {
         let mut icon_top = column_top;
@@ -717,21 +717,8 @@ fn spawn_atlas_icon(
 }
 
 fn transparent_atlas(assets: &mut RetailUiAssets, picture_id: i16) -> Handle<Image> {
-    let picture_id = PictureId::new(picture_id);
-    let indexed = assets
-        .indexed_picture(picture_id)
-        .expect("retail civilian legend atlas must decode");
     assets
-        .transformed_picture(picture_id, |image| {
-            let Some(pixels) = image.data.as_mut() else {
-                return;
-            };
-            for (pixel, &index) in pixels.chunks_exact_mut(4).zip(&indexed.pixels) {
-                if index == TRANSPARENT_INDEX {
-                    pixel[3] = 0;
-                }
-            }
-        })
+        .transparent_picture(PictureId::new(picture_id), TRANSPARENT_INDEX)
         .expect("retail civilian legend atlas must load")
 }
 
@@ -776,19 +763,6 @@ mod tests {
             zone_status_lcg: 3_916_827_792,
             selected_nation: NationId::new(6),
         })
-    }
-
-    #[test]
-    fn civilian_portraits_are_consecutive_artwork_from_the_class_base() {
-        assert_eq!(portrait_picture_id(CivilianUnitKind::Miner), 0x438);
-        assert_eq!(portrait_picture_id(CivilianUnitKind::Engineer), 0x43c);
-        assert_eq!(portrait_picture_id(CivilianUnitKind::Driller), 0x440);
-    }
-
-    #[test]
-    fn civilian_page_uses_the_map_uber_locate_points() {
-        assert_eq!(CIVILIAN_PAGE_VISIBLE, Vec2::new(0.0, 143.0));
-        assert_eq!(CIVILIAN_PAGE_PARKED, Vec2::new(-1000.0, -1000.0));
     }
 
     #[test]

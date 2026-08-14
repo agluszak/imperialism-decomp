@@ -140,9 +140,27 @@ impl GameState {
             })
     }
 
-    fn capitol_province(&self, nation: NationId) -> Option<ProvinceId> {
+    pub(crate) fn capitol_province(&self, nation: NationId) -> Option<ProvinceId> {
         let home = self.nations.home_tile(nation)?;
         self.map[home].province
+    }
+
+    pub(crate) fn province_mission_importance_bits(
+        &self,
+        province: ProvinceId,
+        nation: NationId,
+    ) -> u32 {
+        let record = &self.map.provinces[province];
+        let mut score = record.city_score() as f32;
+        let adjacent = record.adjacency();
+        if !adjacent.is_empty() {
+            let matches = adjacent
+                .iter()
+                .filter(|&&neighbor| self.normalized_province_owner(neighbor) == Some(nation))
+                .count();
+            score *= matches as f32 / adjacent.len() as f32 + 1.0;
+        }
+        (score / 5000.0).to_bits()
     }
 
     fn local_support_score(&self, province: ProvinceId) -> f32 {
@@ -216,7 +234,10 @@ impl GameState {
         scores.similarity(profile)
     }
 
-    fn units_stationed_in(&self, province: ProvinceId) -> impl Iterator<Item = &MilitaryUnitState> {
+    pub(crate) fn units_stationed_in(
+        &self,
+        province: ProvinceId,
+    ) -> impl Iterator<Item = &MilitaryUnitState> {
         self.military_units
             .iter()
             .filter(move |unit| unit.stationed_province() == Some(province))
@@ -254,6 +275,8 @@ impl GameState {
         zone: OceanZoneId,
         matches: impl Fn(&ShipState) -> bool,
     ) -> f32 {
+        let baselines =
+            crate::navy_orders::navy_category_baselines(&self.technology.industry_enabled_by_slot);
         let mut vector = [0.0_f32; 4];
         for ship in self
             .ships
@@ -265,18 +288,13 @@ impl GameState {
                 continue;
             }
             let scale = f32::from(ship.strength) / f32::from(max_strength);
-            let mut category = i32::from(ship.strength % max_strength);
-            let mut contribution = navy_priority_contribution(ship, category);
-            vector[0] += contribution as f32 * scale;
-            category = contribution;
-            contribution = navy_priority_contribution(ship, category);
-            vector[1] += contribution as f32 * scale;
-            category = contribution;
-            contribution = navy_priority_contribution(ship, category);
-            vector[2] += contribution as f32 * scale;
-            category = contribution;
-            contribution = navy_priority_contribution(ship, category);
-            vector[3] += contribution as f32;
+            vector[0] +=
+                crate::navy_orders::ship_priority_contribution(ship, 0, &baselines) as f32 * scale;
+            vector[1] +=
+                crate::navy_orders::ship_priority_contribution(ship, 1, &baselines) as f32 * scale;
+            vector[2] +=
+                crate::navy_orders::ship_priority_contribution(ship, 2, &baselines) as f32 * scale;
+            vector[3] += crate::navy_orders::ship_priority_contribution(ship, 3, &baselines) as f32;
         }
         let sum: f32 = vector.iter().sum();
         #[allow(clippy::float_cmp)]
@@ -326,7 +344,7 @@ pub(crate) const PROVINCE_UNIT_ORDER_WEIGHT: f32 = 33.0;
 /// Classes follow the tactical AI class table: infantry, cavalry, artillery,
 /// armor, and support (sappers, engineers, generals).
 #[derive(Clone, Copy, Default)]
-struct ActionClassWeights {
+pub(crate) struct ActionClassWeights {
     infantry: i16,
     cavalry: i16,
     artillery: i16,
@@ -344,20 +362,31 @@ impl ActionClassWeights {
             support,
         }
     }
+
+    pub(crate) const fn components(self) -> [i16; 5] {
+        [
+            self.infantry,
+            self.cavalry,
+            self.artillery,
+            self.armor,
+            self.support,
+        ]
+    }
 }
 
-/// Retail `g_awTacticalCompositionReferenceProfiles_00697870` rows 0–2.
-/// Row 3 is unattributed and unused by `IsCapitolThreatened`.
-struct TacticalCompositions {
-    baseline: ActionClassWeights,
-    fort_siege: ActionClassWeights,
-    open_field: ActionClassWeights,
+/// Retail `g_awTacticalCompositionReferenceProfiles_00697870` rows 0–3.
+pub(crate) struct TacticalCompositions {
+    pub(crate) baseline: ActionClassWeights,
+    pub(crate) fort_siege: ActionClassWeights,
+    pub(crate) open_field: ActionClassWeights,
+    pub(crate) fort_garrison: ActionClassWeights,
 }
 
-const TACTICAL_COMPOSITION: TacticalCompositions = TacticalCompositions {
+pub(crate) const TACTICAL_COMPOSITION: TacticalCompositions = TacticalCompositions {
     baseline: ActionClassWeights::new(40, 27, 0, 17, 16),
     fort_siege: ActionClassWeights::new(27, 36, 0, 17, 20),
     open_field: ActionClassWeights::new(26, 31, 20, 23, 0),
+    fort_garrison: ActionClassWeights::new(40, 22, 0, 38, 0),
 };
 
 const NAVY_DISTRIBUTION_PROFILE: [i16; 4] = [40, 40, 20, 0];
@@ -391,6 +420,17 @@ impl UnitTypeStats {
             support,
             dampen,
         }
+    }
+
+    fn class_costs(self) -> [i16; 5] {
+        let scaled = self.attributes();
+        [
+            scaled.infantry,
+            scaled.cavalry,
+            scaled.artillery,
+            scaled.armor,
+            scaled.support,
+        ]
     }
 
     fn attributes(self) -> ScaledUnitStats {
@@ -456,6 +496,10 @@ impl MilitaryUnitKind {
     fn stats(self) -> UnitTypeStats {
         UNIT_TYPE_STATS[self]
     }
+
+    pub(crate) fn class_costs(self) -> [i16; 5] {
+        self.stats().class_costs()
+    }
 }
 
 #[derive(Clone, Copy, Default)]
@@ -477,7 +521,7 @@ impl ActionClassScores {
             self.support,
         ]
     }
-    fn similarity(self, profile: ActionClassWeights) -> f32 {
+    pub(crate) fn similarity(self, profile: ActionClassWeights) -> f32 {
         let sum = self.infantry + self.cavalry + self.artillery + self.armor + self.support;
         #[allow(clippy::float_cmp)]
         if sum == 0.0 {
@@ -512,10 +556,6 @@ pub(crate) fn accumulate_unit_priority(
     scores.artillery += f32::from(stats.artillery) * scale;
     scores.armor += f32::from(stats.armor) * scale;
     scores.support += f32::from(stats.support) * scale * dampen;
-}
-
-fn navy_priority_contribution(_ship: &ShipState, _category: i32) -> i32 {
-    0
 }
 
 /// A ship in primary-list order. Ship and task-force references are snapshot-local

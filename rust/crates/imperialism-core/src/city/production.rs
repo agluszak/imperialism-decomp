@@ -19,6 +19,7 @@ pub(crate) use order_recruitment::*;
 pub(crate) use order_ships::*;
 pub(crate) use order_training::*;
 pub(crate) use pipeline::*;
+pub(crate) use specs::UNIVERSITY_REQUIREMENT_LEVEL_BY_ID;
 pub use specs::*;
 pub use types::*;
 pub(crate) use types::{ship_creates_navy_object, ship_stock_cap};

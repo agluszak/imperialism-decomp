@@ -23,7 +23,7 @@ const NEIGHBOR_UNIT_WEIGHT: [i32; 32] = [
 ];
 
 // Columns: resolve, calculate, task-force weight, unused, navy-priority dword.
-const NAVY_STUDLINESS: [[i32; 5]; 14] = [
+const NAVY_STUDLINESS: ShipTypeTable<[i32; 5]> = ShipTypeTable::from_array([
     [0, 0, 0, 0, 0],
     [0, 0, 100, 0, 0],
     [0, 0, 95, 0, 0],
@@ -38,7 +38,7 @@ const NAVY_STUDLINESS: [[i32; 5]; 14] = [
     [600, 9, 50, 0, 8],
     [2000, 13, 30, 0, 7],
     [1800, 13, 45, 0, 9],
-];
+]);
 
 const MISSION_SCORE_DIVISOR: f32 = 5000.0;
 const PORT_FRIENDLY_MULTIPLIER: f32 = 1.5;
@@ -51,6 +51,44 @@ enum AdvisoryMissionKind {
     Invade = 2,
     Defend = 3,
     Blockade = 4,
+}
+
+#[derive(Clone, Copy)]
+struct AdvisoryCandidate {
+    score: f32,
+    route: AdvisoryRoute,
+}
+
+#[derive(Clone, Copy)]
+enum AdvisoryRoute {
+    Direct(ProvinceId),
+    Via {
+        target: ProvinceId,
+        link: ProvinceId,
+    },
+    Sea {
+        zone: OceanZoneId,
+        target: Option<ProvinceId>,
+    },
+}
+
+impl AdvisoryRoute {
+    fn tier(self, zones: &[ZoneKind]) -> i32 {
+        match self {
+            Self::Direct(_) => 0,
+            Self::Via { .. } => 1,
+            Self::Sea {
+                target: Some(_), ..
+            } => 2,
+            Self::Sea { zone, target: None } => {
+                if matches!(zones[usize::from(zone.get())], ZoneKind::PortZone(_)) {
+                    4
+                } else {
+                    2
+                }
+            }
+        }
+    }
 }
 
 impl GameState {
@@ -66,61 +104,59 @@ impl GameState {
     }
 
     pub(crate) fn select_and_queue_advisory_map_missions_for(&mut self, nation: MajorNationId) {
-        if self.nations.majors[nation]
-            .economy
-            .ai_province_targets
-            .is_none()
-        {
+        if self.nations.majors[nation].auto.is_none() {
             return;
         }
 
         self.populate_case16_advisory_candidates(nation);
 
-        let mut best_score = 0.0_f32;
-        let mut best_region = None;
-        let mut best_tier = None;
-        let mut best_link = None;
-        let mut best_port_zone = None;
+        let mut best: Option<AdvisoryCandidate> = None;
         let mut best_direct_score = 0.0_f32;
         let mut direct_region = None;
         let mut second_best_direct_score = 0.0_f32;
-        let mut second_best_direct = None;
+        let mut best_direct_fallback = None;
 
         for province in ProvinceId::all() {
             if self.province_target(nation, province) != Some(AiTargetState::Candidate) {
                 continue;
             }
-            let mut link_region = None;
-            let (score, tier) = if self.has_direct_or_colony_link(province, nation.nation()) {
-                let score = self.advisory_node_score_by_mode(nation, province, 0, None);
+            let candidate = if self.has_direct_or_colony_link(province, nation.nation()) {
+                let score = self.advisory_direct_score(nation, province);
                 best_direct_score = score;
                 direct_region = Some(province);
-                (score, Some(0))
+                Some(AdvisoryCandidate {
+                    score,
+                    route: AdvisoryRoute::Direct(province),
+                })
             } else if let Some(link) = self.first_second_degree_link(province, nation.nation()) {
-                link_region = Some(link);
-                (
-                    self.advisory_node_score_by_mode(nation, province, 1, Some(link)),
-                    Some(1),
-                )
-            } else if self.newest_context_containing_province(province).is_some() {
-                (
-                    self.advisory_node_score_by_mode(nation, province, 2, None),
-                    Some(2),
-                )
+                Some(AdvisoryCandidate {
+                    score: self.advisory_via_score(nation, province, link),
+                    route: AdvisoryRoute::Via {
+                        target: province,
+                        link,
+                    },
+                })
+            } else if let Some(zone) = self.newest_context_containing_province(province) {
+                Some(AdvisoryCandidate {
+                    score: self.advisory_overseas_score(nation, province),
+                    route: AdvisoryRoute::Sea {
+                        zone,
+                        target: Some(province),
+                    },
+                })
             } else {
                 self.set_province_target(nation, province, AiTargetState::Unmarked);
-                (0.0, None)
+                None
             };
-            if score > best_score {
-                best_score = score;
-                best_region = Some(province);
-                best_link = link_region;
-                best_tier = tier;
+            if let Some(candidate) = candidate
+                && candidate.score > best.map_or(0.0, |best| best.score)
+            {
+                best = Some(candidate);
             }
             if best_direct_score > second_best_direct_score
                 && let Some(direct) = direct_region
             {
-                second_best_direct = Some(direct);
+                best_direct_fallback = Some(direct);
                 second_best_direct_score = best_direct_score;
             }
         }
@@ -130,27 +166,23 @@ impl GameState {
                 continue;
             }
             let zone = OceanZoneId::new(ordinal as u16);
-            let zone_score = self.map_action_context_score(nation, zone);
-            if zone_score > best_score {
-                best_port_zone = Some(zone);
-                best_score = zone_score;
-                best_tier = Some(
-                    if matches!(self.ocean.zones[ordinal], ZoneKind::PortZone(_)) {
-                        4
-                    } else {
-                        2
-                    },
-                );
+            let score = self.map_action_context_score(nation, zone);
+            if score > best.map_or(0.0, |best| best.score) {
+                best = Some(AdvisoryCandidate {
+                    score,
+                    route: AdvisoryRoute::Sea { zone, target: None },
+                });
             }
         }
 
         let mut queue_secondary = false;
-        if let Some(tier) = best_tier {
+        if let Some(best) = best {
+            let tier = best.route.tier(&self.ocean.zones);
             let skill = self.nations.majors[nation]
                 .economy
                 .defense_minister_skill_index;
             let skill = usize::try_from(skill).expect("defense minister skill is a table row");
-            let accept = TIER_THRESHOLDS[skill][tier as usize] < best_score;
+            let accept = TIER_THRESHOLDS[skill][tier as usize] < best.score;
             if !accept && self.nation_has_war_relation(nation.nation()) {
                 let has_attack_mission = self
                     .missions
@@ -161,20 +193,20 @@ impl GameState {
                 }
             }
             if accept {
-                if let Some(port) = best_port_zone {
-                    self.create_advisory_mission(
-                        nation,
-                        kind_from_tier(tier),
-                        None,
-                        Some(port),
-                        None,
-                    );
-                } else if tier == 2 {
-                    if let (Some(region), Some(zone)) = (
-                        best_region,
-                        best_region
-                            .and_then(|region| self.newest_context_containing_province(region)),
-                    ) {
+                match best.route {
+                    AdvisoryRoute::Sea { zone, target: None } => {
+                        self.create_advisory_mission(
+                            nation,
+                            kind_from_tier(tier),
+                            None,
+                            Some(zone),
+                            None,
+                        );
+                    }
+                    AdvisoryRoute::Sea {
+                        zone,
+                        target: Some(region),
+                    } => {
                         self.create_advisory_mission(
                             nation,
                             AdvisoryMissionKind::Invade,
@@ -182,28 +214,28 @@ impl GameState {
                             Some(zone),
                             Some(region),
                         );
-                    } else if let Some(region) = best_region {
-                        self.set_province_target(nation, region, AiTargetState::Unmarked);
                     }
-                } else if let Some(link) = best_link {
-                    self.create_advisory_mission(
-                        nation,
-                        kind_from_tier(tier),
-                        Some(link),
-                        None,
-                        best_region,
-                    );
-                } else if let Some(region) = best_region {
-                    self.create_advisory_mission(
-                        nation,
-                        kind_from_tier(tier),
-                        Some(region),
-                        None,
-                        None,
-                    );
+                    AdvisoryRoute::Via { target, link } => {
+                        self.create_advisory_mission(
+                            nation,
+                            kind_from_tier(tier),
+                            Some(link),
+                            None,
+                            Some(target),
+                        );
+                    }
+                    AdvisoryRoute::Direct(region) => {
+                        self.create_advisory_mission(
+                            nation,
+                            kind_from_tier(tier),
+                            Some(region),
+                            None,
+                            None,
+                        );
+                    }
                 }
             }
-            if queue_secondary && let Some(region) = second_best_direct {
+            if queue_secondary && let Some(region) = best_direct_fallback {
                 self.create_advisory_mission(
                     nation,
                     AdvisoryMissionKind::Attack,
@@ -510,78 +542,138 @@ impl GameState {
         }
     }
 
-    fn advisory_node_score_by_mode(
+    fn advisory_direct_score(&self, nation: MajorNationId, province: ProvinceId) -> f32 {
+        let Some(owner) = self.map.provinces[province].owner() else {
+            return 0.0;
+        };
+        if MajorNationId::from_nation(owner).is_some() {
+            let f1 = self.army_power_factor(owner);
+            let f3 = self.province_strength_factor(province, owner);
+            let f5 = self.standing_factor(nation, owner);
+            let f6 = self.province_score_factor(nation, province);
+            let score = f6 * f5 * f3 * f1 * f1;
+            return score * score;
+        }
+        let f3 = self.province_strength_factor(province, owner);
+        let f5 = self.standing_factor(nation, owner);
+        let f6 = self.province_score_factor(nation, province);
+        f6 * f5 * f3
+    }
+
+    fn advisory_via_score(
         &self,
         nation: MajorNationId,
         province: ProvinceId,
-        mode: i32,
-        link: Option<ProvinceId>,
+        link: ProvinceId,
     ) -> f32 {
         let Some(owner) = self.map.provinces[province].owner() else {
             return 0.0;
         };
-        let gp_owner = MajorNationId::from_nation(owner).is_some();
-        if gp_owner {
-            if mode == 0 {
-                let f1 = self.score_factor(nation, 1, Some(province), None, owner);
-                let f3 = self.score_factor(nation, 3, Some(province), None, owner);
-                let f5 = self.score_factor(nation, 5, Some(province), None, owner);
-                let f6 = self.score_factor(nation, 6, Some(province), None, owner);
-                let score = f6 * f5 * f3 * f1 * f1;
-                return score * score;
-            }
-            if mode == 1 {
-                let Some(link) = link else {
-                    return 0.0;
-                };
-                if self.map.provinces[link].owner() != Some(owner) {
-                    return 0.0;
-                }
-                let f1 = self.score_factor(nation, 1, Some(province), None, owner);
-                let f3 = self.score_factor(nation, 3, Some(province), None, owner);
-                let f5 = self.score_factor(nation, 5, Some(province), None, owner);
-                let f6 = self.score_factor(nation, 6, Some(province), None, owner);
-                let f3_link = self.score_factor(nation, 3, Some(link), None, owner);
-                let score = f3_link * f6 * f5 * f3 * f1;
-                return score * score;
-            }
-            let zone = self.newest_context_containing_province(province);
-            let f1 = self.score_factor(nation, 1, Some(province), None, owner);
-            let f2 = self.score_factor(nation, 2, Some(province), None, owner);
-            let f3 = self.score_factor(nation, 3, Some(province), None, owner);
-            let f4 = self.score_factor(nation, 4, Some(province), zone, owner);
-            let f5 = self.score_factor(nation, 5, Some(province), None, owner);
-            let f6 = self.score_factor(nation, 6, Some(province), None, owner);
-            let f7 = self.score_factor(nation, 7, Some(province), zone, owner);
-            return f7 * f6 * f4 * f5 * f2 * f3 * f1;
+        if self.map.provinces[link].owner() != Some(owner) {
+            return 0.0;
         }
-        if mode == 0 {
-            let f3 = self.score_factor(nation, 3, Some(province), None, owner);
-            let f5 = self.score_factor(nation, 5, Some(province), None, owner);
-            let f6 = self.score_factor(nation, 6, Some(province), None, owner);
-            return f6 * f5 * f3;
+        let f1 = self.army_power_factor(owner);
+        let f3 = self.province_strength_factor(province, owner);
+        let f5 = self.standing_factor(nation, owner);
+        let f6 = self.province_score_factor(nation, province);
+        let f3_link = self.province_strength_factor(link, owner);
+        if MajorNationId::from_nation(owner).is_some() {
+            let score = f3_link * f6 * f5 * f3 * f1;
+            score * score
+        } else {
+            f3_link * f6 * f5 * f3 * f1
         }
-        if mode == 1 {
-            let Some(link) = link else {
-                return 0.0;
-            };
-            if self.map.provinces[link].owner() != Some(owner) {
-                return 0.0;
-            }
-            let f1 = self.score_factor(nation, 1, Some(province), None, owner);
-            let f3 = self.score_factor(nation, 3, Some(province), None, owner);
-            let f5 = self.score_factor(nation, 5, Some(province), None, owner);
-            let f6 = self.score_factor(nation, 6, Some(province), None, owner);
-            let f3_link = self.score_factor(nation, 3, Some(link), None, owner);
-            return f3_link * f6 * f5 * f3 * f1;
-        }
+    }
+
+    fn advisory_overseas_score(&self, nation: MajorNationId, province: ProvinceId) -> f32 {
+        let Some(owner) = self.map.provinces[province].owner() else {
+            return 0.0;
+        };
         let zone = self.newest_context_containing_province(province);
-        let f1 = self.score_factor(nation, 1, Some(province), None, owner);
-        let f3 = self.score_factor(nation, 3, Some(province), None, owner);
-        let f5 = self.score_factor(nation, 5, Some(province), None, owner);
-        let f6 = self.score_factor(nation, 6, Some(province), None, owner);
-        let f7 = self.score_factor(nation, 7, Some(province), zone, owner);
-        f7 * f6 * f5 * f3 * f1
+        let f1 = self.army_power_factor(owner);
+        let f3 = self.province_strength_factor(province, owner);
+        let f5 = self.standing_factor(nation, owner);
+        let f6 = self.province_score_factor(nation, province);
+        let f7 = zone.map_or(0.0, |zone| self.zone_value_factor(zone));
+        if MajorNationId::from_nation(owner).is_some() {
+            let f2 = self.navy_power_factor(owner);
+            let f4 = zone.map_or(0.0, |zone| self.navy_zone_factor(zone, owner));
+            f7 * f6 * f4 * f5 * f2 * f3 * f1
+        } else {
+            f7 * f6 * f5 * f3 * f1
+        }
+    }
+
+    fn army_power_factor(&self, selected: NationId) -> f32 {
+        self.force_ratio_factor(selected, Self::military_power)
+    }
+
+    fn navy_power_factor(&self, selected: NationId) -> f32 {
+        self.force_ratio_factor(selected, Self::naval_force)
+    }
+
+    fn force_ratio_factor(
+        &self,
+        selected: NationId,
+        power: fn(&Self, MajorNationId) -> f32,
+    ) -> f32 {
+        let mut sum = 0.0_f32;
+        let mut result = 0.0_f32;
+        for slot in MajorNationId::all() {
+            if !self.event_eligible(slot.nation()) {
+                continue;
+            }
+            let power = power(self, slot);
+            sum += power;
+            if slot.nation() == selected {
+                result = power;
+            }
+        }
+        if result == 0.0 {
+            result = 1.0;
+        }
+        let gps = self.num_great_powers() as f32;
+        (sum - -6.0) / (gps * result - -6.0)
+    }
+
+    fn province_strength_factor(&self, province: ProvinceId, selected: NationId) -> f32 {
+        let owned = self.owned_regions_of(selected).len() as f32;
+        let node = self.weighted_neighbor_score(province) as f32 * owned;
+        (self.sum_weighted_neighbor_scores(selected) as f32 - -100.0) / (node - -100.0)
+    }
+
+    fn navy_zone_factor(&self, zone: OceanZoneId, selected: NationId) -> f32 {
+        let Some(major) = MajorNationId::from_nation(selected) else {
+            return 0.0;
+        };
+        let in_zone = self.navy_priority_in_zone(major, zone) as f32
+            * self.zone_count_with_nation_bit(major) as f32;
+        (self.navy_priority_total(major) as f32 - -6.0) / (in_zone - -6.0)
+    }
+
+    fn standing_factor(&self, nation: MajorNationId, selected: NationId) -> f32 {
+        100.0 / f32::from(self.diplomacy.standings[nation.nation()][selected])
+    }
+
+    fn province_score_factor(&self, nation: MajorNationId, province: ProvinceId) -> f32 {
+        let total = self.map.city_score_total;
+        let mut result = self.map.provinces[province].city_score() as f32 / total as f32;
+        if self.map.provinces[province].former_owner() == Some(nation.nation())
+            && let Some(owner) = self.map.provinces[province].owner()
+            && owner != nation.nation()
+            && self.at_war(nation.nation(), owner)
+        {
+            result *= 1.5;
+        }
+        result
+    }
+
+    fn zone_value_factor(&self, zone: OceanZoneId) -> f32 {
+        let global = self.global_zone_value_average();
+        if global == 0 {
+            return 0.0;
+        }
+        self.zone_value_average(zone) as f32 / global as f32
     }
 
     fn map_action_context_score(&mut self, nation: MajorNationId, zone: OceanZoneId) -> f32 {
@@ -632,95 +724,13 @@ impl GameState {
         }
         #[allow(clippy::float_cmp)]
         if composite == 0.0 {
-            let f2 = self.score_factor(nation, 2, None, Some(zone), selected);
-            let f4 = self.score_factor(nation, 4, None, Some(zone), selected);
-            let f5 = self.score_factor(nation, 5, None, Some(zone), selected);
-            let f7 = self.score_factor(nation, 7, None, Some(zone), selected);
+            let f2 = self.navy_power_factor(selected);
+            let f4 = self.navy_zone_factor(zone, selected);
+            let f5 = self.standing_factor(nation, selected);
+            let f7 = self.zone_value_factor(zone);
             composite = f5 * f7 * f2 * f4;
         }
         composite
-    }
-
-    fn score_factor(
-        &self,
-        nation: MajorNationId,
-        metric: i32,
-        province: Option<ProvinceId>,
-        zone: Option<OceanZoneId>,
-        selected: NationId,
-    ) -> f32 {
-        match metric {
-            1 | 2 => {
-                let mut sum = 0.0_f32;
-                let mut result = 0.0_f32;
-                for slot in MajorNationId::all() {
-                    if !self.event_eligible(slot.nation()) {
-                        continue;
-                    }
-                    let power = if metric == 1 {
-                        self.military_power(slot)
-                    } else {
-                        self.naval_force(slot)
-                    };
-                    sum += power;
-                    if slot.nation() == selected {
-                        result = power;
-                    }
-                }
-                #[allow(clippy::float_cmp)]
-                if result == 0.0 {
-                    result = 1.0;
-                }
-                let gps = self.num_great_powers() as f32;
-                (sum - -6.0) / (gps * result - -6.0)
-            }
-            3 => {
-                let Some(province) = province else {
-                    return 0.0;
-                };
-                let owned = self.owned_regions_of(selected).len() as f32;
-                let node = self.weighted_neighbor_score(province) as f32 * owned;
-                (self.sum_weighted_neighbor_scores(selected) as f32 - -100.0) / (node - -100.0)
-            }
-            4 => {
-                let Some(major) = MajorNationId::from_nation(selected) else {
-                    return 0.0;
-                };
-                let Some(zone) = zone else {
-                    return 0.0;
-                };
-                let in_zone = self.navy_priority_in_zone(major, zone) as f32
-                    * self.zone_count_with_nation_bit(major) as f32;
-                (self.navy_priority_total(major) as f32 - -6.0) / (in_zone - -6.0)
-            }
-            5 => 100.0 / f32::from(self.diplomacy.standings[nation.nation()][selected]),
-            6 => {
-                let Some(province) = province else {
-                    return 0.0;
-                };
-                let total = self.map.city_score_total;
-                let mut result = self.map.provinces[province].city_score() as f32 / total as f32;
-                if self.map.provinces[province].former_owner() == Some(nation.nation())
-                    && let Some(owner) = self.map.provinces[province].owner()
-                    && owner != nation.nation()
-                    && self.at_war(nation.nation(), owner)
-                {
-                    result *= 1.5;
-                }
-                result
-            }
-            7 => {
-                let Some(zone) = zone else {
-                    return 0.0;
-                };
-                let global = self.global_zone_value_average();
-                if global == 0 {
-                    return 0.0;
-                }
-                self.zone_value_average(zone) as f32 / global as f32
-            }
-            _ => 0.0,
-        }
     }
 
     fn num_great_powers(&self) -> i32 {
@@ -772,7 +782,7 @@ impl GameState {
             .count() as i32
     }
 
-    fn zone_nation_key_mask(&self, zone: OceanZoneId) -> u16 {
+    pub(crate) fn zone_nation_key_mask(&self, zone: OceanZoneId) -> u16 {
         let mut mask = 0u16;
         for ship in &self.ships {
             if ship.location == zone {
@@ -782,7 +792,7 @@ impl GameState {
         mask
     }
 
-    fn zone_value_average(&self, zone: OceanZoneId) -> i32 {
+    pub(crate) fn zone_value_average(&self, zone: OceanZoneId) -> i32 {
         match &self.ocean.zones[usize::from(zone.get())] {
             ZoneKind::PortZone(port) => {
                 let Some(owner) = self.map[port.port_tile]
@@ -824,7 +834,15 @@ impl GameState {
         sum / self.ocean.zones.len() as i32
     }
 
-    fn control_sea_zone_importance_bits(&self, nation: MajorNationId, target: OceanZoneId) -> u32 {
+    pub(crate) fn control_sea_zone_importance_bits(
+        &self,
+        nation: MajorNationId,
+        target: OceanZoneId,
+    ) -> u32 {
+        (self.sea_zone_importance(nation.nation(), target)).to_bits()
+    }
+
+    pub(crate) fn sea_zone_importance(&self, nation: NationId, target: OceanZoneId) -> f32 {
         let mut score = self.zone_value_average(target) as f32;
         for (_ordinal, kind) in self.ocean.zones.iter().enumerate().rev() {
             let ZoneKind::PortZone(port) = kind else {
@@ -836,13 +854,13 @@ impl GameState {
             let owner = self.map[port.port_tile]
                 .owner_nation
                 .and_then(TileOwnerTag::nation);
-            score *= if owner == Some(nation.nation()) {
+            score *= if owner == Some(nation) {
                 PORT_FRIENDLY_MULTIPLIER
             } else {
                 PORT_FOREIGN_MULTIPLIER
             };
         }
-        (score / MISSION_SCORE_DIVISOR).to_bits()
+        score / MISSION_SCORE_DIVISOR
     }
 
     fn has_direct_or_colony_link(&self, province: ProvinceId, nation: NationId) -> bool {
@@ -936,10 +954,9 @@ impl GameState {
         province: ProvinceId,
     ) -> Option<AiTargetState> {
         self.nations.majors[nation]
-            .economy
-            .ai_province_targets
+            .auto
             .as_ref()
-            .map(|flags| flags[province])
+            .map(|auto| auto.province_targets[province])
     }
 
     fn set_province_target(
@@ -948,26 +965,21 @@ impl GameState {
         province: ProvinceId,
         flag: AiTargetState,
     ) {
-        if let Some(flags) = self.nations.majors[nation]
-            .economy
-            .ai_province_targets
-            .as_mut()
-        {
-            flags[province] = flag;
+        if let Some(auto) = self.nations.majors[nation].auto.as_mut() {
+            auto.province_targets[province] = flag;
         }
     }
 
     fn zone_target(&self, nation: MajorNationId, ordinal: usize) -> Option<AiTargetState> {
         self.nations.majors[nation]
-            .economy
-            .ai_zone_targets
+            .auto
             .as_ref()
-            .and_then(|flags| flags.get(ordinal).copied())
+            .and_then(|auto| auto.zone_targets.get(ordinal).copied())
     }
 
     fn set_zone_target(&mut self, nation: MajorNationId, ordinal: usize, flag: AiTargetState) {
-        if let Some(flags) = self.nations.majors[nation].economy.ai_zone_targets.as_mut()
-            && let Some(slot) = flags.get_mut(ordinal)
+        if let Some(auto) = self.nations.majors[nation].auto.as_mut()
+            && let Some(slot) = auto.zone_targets.get_mut(ordinal)
         {
             *slot = flag;
         }
@@ -1029,8 +1041,7 @@ fn collect_second_degree_links(
 }
 
 fn ship_studliness(ship: &ShipState) -> i32 {
-    let index = ship.ship_type as usize;
-    let desc = NAVY_STUDLINESS[index];
+    let desc = NAVY_STUDLINESS[ship.ship_type];
     let task_force = desc[2];
     if task_force == 0 {
         return 0;

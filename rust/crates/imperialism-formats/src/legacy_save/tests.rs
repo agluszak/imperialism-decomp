@@ -346,7 +346,8 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
         .enumerate()
     {
         let major = state.nations().major(MajorNationId::new(slot as u8));
-        let targets = major.economy.ai_zone_targets.as_ref().unwrap();
+        let auto = major.auto.as_ref().unwrap();
+        let targets = &auto.zone_targets;
         assert_eq!(targets.len(), 83);
         let mut expected_targets = vec![AiTargetState::Unmarked; 83];
         for ordinal in expected_zones {
@@ -354,7 +355,7 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
         }
         assert_eq!(targets, &expected_targets);
 
-        let province_targets = major.economy.ai_province_targets.as_ref().unwrap();
+        let province_targets = &auto.province_targets;
         for province in ProvinceId::all() {
             let expected = if expected_provinces.contains(&province.get()) {
                 AiTargetState::MissionQueued
@@ -365,10 +366,9 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
         }
         assert_eq!(major.economy.army_movement_budget, 15);
     }
-    let human = &state.nations().major(MajorNationId::new(6)).economy;
-    assert!(human.ai_zone_targets.is_none());
-    assert!(human.ai_province_targets.is_none());
-    assert_eq!(human.army_movement_budget, 15);
+    let human = state.nations().major(MajorNationId::new(6));
+    assert!(human.auto.is_none());
+    assert_eq!(human.economy.army_movement_budget, 15);
     for province in ProvinceId::all() {
         assert_eq!(state.map().provinces[province].development_stage(), 0);
         assert!(
@@ -479,10 +479,11 @@ fn retail_projection_preserves_minister_identity_and_direct_state() {
         [0, 4, 0, 4, 0, 5, 0]
     );
     assert!(state.nations().majors().enumerate().all(|(index, nation)| {
-        let mut expansion_demand = [0_i16; CityFacilitySlot::COUNT];
-        if index < 6 {
-            expansion_demand[..7].copy_from_slice(&[2, 1, 2, 0, 2, 0, 0]);
-        }
+        let expansions = if index < 6 {
+            ExpansionOrderTable::from_array([2, 1, 2, 0, 2, 0, 0])
+        } else {
+            ExpansionOrderTable::default()
+        };
         let expected_interior = InteriorCivilianState::from_parts(
             None,
             None,
@@ -493,7 +494,7 @@ fn retail_projection_preserves_minister_identity_and_direct_state() {
                 CivilianUnitTable::default(),
                 ShipOrderTable::default(),
                 0,
-                ProductionTable::from_array(expansion_demand),
+                expansions,
                 0,
             ),
             0,

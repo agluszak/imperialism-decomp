@@ -206,15 +206,10 @@ impl GameState {
         }));
 
         for nation in MajorNationId::all() {
-            if let Some(targets) = self
-                .nations
-                .major_mut(nation)
-                .economy
-                .ai_zone_targets
-                .as_mut()
-                && targets.len() == usize::from(ordinal.get())
+            if let Some(auto) = self.nations.major_mut(nation).auto.as_mut()
+                && auto.zone_targets.len() == usize::from(ordinal.get())
             {
-                targets.push(AiTargetState::Unmarked);
+                auto.zone_targets.push(AiTargetState::Unmarked);
             }
         }
     }

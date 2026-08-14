@@ -14,8 +14,7 @@ pub(crate) enum AppState {
     #[default]
     MainMenu,
     RandomSetup,
-    LoadGame,
-    SaveGame,
+    LoadSave,
     CitySite,
     StrategicMap,
     Trade,
@@ -152,8 +151,7 @@ mod tests {
         for state in [
             AppState::MainMenu,
             AppState::RandomSetup,
-            AppState::LoadGame,
-            AppState::SaveGame,
+            AppState::LoadSave,
             AppState::CitySite,
             AppState::StrategicMap,
             AppState::Trade,

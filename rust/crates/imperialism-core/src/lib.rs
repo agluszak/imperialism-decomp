@@ -27,6 +27,7 @@ mod military_cleanup;
 mod military_phase;
 mod nation_economy;
 mod nations;
+mod navy_orders;
 mod news;
 mod ocean;
 mod pending;
@@ -110,9 +111,7 @@ pub use military::{
 pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,
 };
-pub use nations::{
-    MajorNation, MajorNationController, MajorNationKind, MinorNation, NationCommonState, Nations,
-};
+pub use nations::{AutoGreatPowerState, MajorNation, MinorNation, NationCommonState, Nations};
 pub use news::{
     DiplomacyNotice, DiplomacyProposal, InterNationNewsKind, LandSale, NEWS_TEMPLATE_COUNT,
     NationPendingWork, NewsArgument, NewsPage, NewsState, NewsStory, PendingNewspaperEvent,
@@ -156,8 +155,8 @@ pub use tables::{
     PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable,
 };
 pub use technology::{
-    CityTechnologyCapabilities, CivilianTerrainAccess, FortLevelCap, TECHNOLOGY_COUNT,
-    TechnologyId, TechnologyResearchStatus, TechnologyState, UniversityTechnologyState,
+    CityTechnologyCapabilities, CivilianTerrainAccess, FortLevelCap, Technology,
+    TechnologyResearchStatus, TechnologyState, TechnologyTable, UniversityTechnologyState,
 };
 pub use territory::{CountryStatus, ProvinceState};
 pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};

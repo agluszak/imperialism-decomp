@@ -106,16 +106,16 @@ impl Nations {
     }
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(rename_all = "snake_case")]
-pub enum MajorNationKind {
-    GreatPower,
-    AutoGreatPower,
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct AutoGreatPowerState {
+    pub province_targets: ProvinceTable<AiTargetState>,
+    pub zone_targets: Vec<AiTargetState>,
+    pub trade: AiTradeState,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MajorNation {
-    pub kind: MajorNationKind,
+    pub auto: Option<AutoGreatPowerState>,
     pub common: NationCommonState,
     pub economy: GreatPowerState,
     pub city: CityState,
@@ -124,6 +124,10 @@ pub struct MajorNation {
 }
 
 impl MajorNation {
+    pub fn is_auto(&self) -> bool {
+        self.auto.is_some()
+    }
+
     /// Builds a random-game start major nation from the resolved starting
     /// `treasury`, whether the slot is the `human` player, and its scenario
     /// `city`. Normal+ human homes remain unset until capital selection places them;
@@ -142,11 +146,7 @@ impl MajorNation {
             town.name = "Frog City".to_owned();
         }
         Self {
-            kind: if human {
-                MajorNationKind::GreatPower
-            } else {
-                MajorNationKind::AutoGreatPower
-            },
+            auto: (!human).then(AutoGreatPowerState::default),
             common: NationCommonState::from_parts(
                 display_name,
                 crate::CountryStatus::Independent,
@@ -375,17 +375,5 @@ impl NationCommonState {
 
     fn add_province(&mut self, province: ProvinceId) {
         self.owned_regions.push(province);
-    }
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub enum MajorNationController {
-    Human,
-    Computer,
-}
-
-impl MajorNationController {
-    pub const fn is_human(self) -> bool {
-        matches!(self, Self::Human)
     }
 }

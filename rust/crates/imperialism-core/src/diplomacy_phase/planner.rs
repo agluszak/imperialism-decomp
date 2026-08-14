@@ -296,7 +296,7 @@ impl GameState {
                 {
                     self.post_policy(nation, master, DiplomacyPolicy::DeclareWar);
                 }
-                if self.nations.majors[nation].economy.controller.is_human() {
+                if self.nations.majors[nation].auto.is_none() {
                     let _ = self.set_diplomacy_grant(nation, target, None);
                 }
             }

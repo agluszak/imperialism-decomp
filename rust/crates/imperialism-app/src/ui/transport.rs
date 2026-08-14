@@ -1,5 +1,6 @@
 use super::GameSession;
 use super::RetailUiAssets;
+use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
@@ -113,8 +114,8 @@ struct TransportAdjust {
     delta: i16,
 }
 
-#[derive(Component)]
-struct TransportHoverText(String);
+#[derive(Component, Clone, Copy)]
+struct TransportHover(TransportAllocation);
 
 #[derive(Clone, Copy)]
 enum TransportGaugeKind {
@@ -196,14 +197,7 @@ fn bind_transport_screen(
     let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Transport screen requires an active major nation");
     session.game.rebuild_nation_resource_yields(nation);
-    bind_game_status_display(
-        &mut commands,
-        &mut assets,
-        *root,
-        &children,
-        &tags,
-        &session,
-    );
+    bind_game_status_display(&mut commands, &mut assets, *root, &children, &tags);
     let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
@@ -273,12 +267,7 @@ fn bind_transport_screen(
         let row = find_descendant(*root, binding.tag, &children, &tags);
         commands
             .entity(row)
-            .insert(TransportHoverText(transport_hover_text(
-                &assets,
-                &session.game,
-                nation,
-                binding.allocation,
-            )));
+            .insert(TransportHover(binding.allocation));
     }
 }
 
@@ -752,7 +741,8 @@ fn sync_transport_cursor(
     session: Res<GameSession>,
     screens: Query<(), Added<TransportScreen>>,
     changed_rows: Query<(), (With<TransportDisplay>, Changed<Hovered>)>,
-    rows: Query<(&TransportHoverText, &Hovered)>,
+    rows: Query<(&TransportHover, &Hovered)>,
+    assets: RetailUiAssets,
     mut cursor: Query<&mut Text, With<TransportCursor>>,
 ) {
     if !session.is_changed() && screens.is_empty() && changed_rows.is_empty() {
@@ -761,9 +751,15 @@ fn sync_transport_cursor(
     let Ok(mut text) = cursor.single_mut() else {
         return;
     };
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
+        .expect("Transport screen requires an active major nation");
     text.0 = rows
         .iter()
-        .find_map(|(hover, hovered)| hovered.get().then_some(hover.0.clone()))
+        .find_map(|(hover, hovered)| {
+            hovered
+                .get()
+                .then(|| transport_hover_text(&assets, &session.game, nation, hover.0))
+        })
         .unwrap_or_default();
 }
 
@@ -845,22 +841,6 @@ fn transport_string(assets: &RetailUiAssets, offset: i16) -> String {
     assets
         .string(0x2735, offset + 1)
         .expect("retail transport string must load")
-}
-
-fn fill_brackets(template: &str, args: &[&str]) -> String {
-    let mut output = template.to_owned();
-    for (index, value) in args.iter().enumerate() {
-        let slot = index + 1;
-        let Some(start) = output.find(&format!("[{slot}:")) else {
-            continue;
-        };
-        let end = output[start..]
-            .find(']')
-            .map(|end| start + end)
-            .expect("retail bracket expression must close");
-        output.replace_range(start..=end, value);
-    }
-    output
 }
 
 fn allocation_amount(

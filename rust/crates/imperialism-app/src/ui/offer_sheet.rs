@@ -1,3 +1,4 @@
+use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::bind_game_status_display;
 use super::generated;
@@ -86,13 +87,12 @@ fn bind_offer_sheet(
     tags: Query<&RetailTag>,
     mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
-    session: Res<GameSession>,
 ) {
     let Some(root) = root else {
         return;
     };
     let root = *root;
-    bind_offer_sheet_controls(&mut commands, root, &children, &tags, &session);
+    bind_offer_sheet_controls(&mut commands, root, &children, &tags);
     for tag in [
         fourcc!("ForM"),
         fourcc!("tabs"),
@@ -113,7 +113,7 @@ fn bind_offer_sheet(
             .expect("offer-sheet hover-help bar has Node"),
         HoverHelpBarStyle::MAIN_MENU,
     );
-    bind_game_status_display(&mut commands, &mut assets, root, &children, &tags, &session);
+    bind_game_status_display(&mut commands, &mut assets, root, &children, &tags);
 }
 
 fn bind_offer_sheet_controls(
@@ -121,12 +121,7 @@ fn bind_offer_sheet_controls(
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
-    session: &GameSession,
 ) {
-    let offer = session
-        .game
-        .pending_trade_offer()
-        .expect("Offer Sheet bind requires a pending trade offer");
     let accept = find_descendant(root, fourcc!("acce"), children, tags);
     let reject = find_descendant(root, fourcc!("reje"), children, tags);
     let purc = find_descendant(root, fourcc!("purc"), children, tags);
@@ -152,7 +147,7 @@ fn bind_offer_sheet_controls(
         EditableText {
             max_characters: Some(6),
             allow_newlines: false,
-            ..EditableText::new(offer.amount.to_string())
+            ..EditableText::new(String::new())
         },
     ));
 }
@@ -385,34 +380,6 @@ fn on_offer_sheet_notice_activate(
     }
 }
 
-fn fill_brackets(template: &str, args: &[&str]) -> String {
-    let chars: Vec<char> = template.chars().collect();
-    let mut out = String::new();
-    let mut index = 0;
-    while index < chars.len() {
-        if chars[index] == '[' {
-            let mut scan = index + 1;
-            while scan < chars.len() && chars[scan] != ']' && !chars[scan].is_ascii_digit() {
-                scan += 1;
-            }
-            if scan < chars.len() && chars[scan].is_ascii_digit() {
-                let slot = (chars[scan] as u8 - b'0') as usize;
-                if slot >= 1 && slot <= args.len() {
-                    out.push_str(args[slot - 1]);
-                }
-                while scan < chars.len() && chars[scan] != ']' {
-                    scan += 1;
-                }
-                index = scan.saturating_add(1);
-                continue;
-            }
-        }
-        out.push(chars[index]);
-        index += 1;
-    }
-    out
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -490,12 +457,11 @@ mod tests {
         root: Option<Single<Entity, Added<OfferSheetRoot>>>,
         children: Query<&Children>,
         tags: Query<&RetailTag>,
-        session: Res<GameSession>,
     ) {
         let Some(root) = root else {
             return;
         };
-        bind_offer_sheet_controls(&mut commands, *root, &children, &tags, &session);
+        bind_offer_sheet_controls(&mut commands, *root, &children, &tags);
     }
 
     #[test]
@@ -521,16 +487,5 @@ mod tests {
             .collect::<Vec<_>>();
         assert!(bound.contains(&OfferSheetAction::Accept));
         assert!(bound.contains(&OfferSheetAction::Reject));
-    }
-
-    #[test]
-    fn fill_brackets_expands_numbered_slots() {
-        assert_eq!(
-            fill_brackets(
-                "[1] offers [2] [3] at [4]",
-                &["Spain", "4", "clothing", "$10"]
-            ),
-            "Spain offers 4 clothing at $10"
-        );
     }
 }

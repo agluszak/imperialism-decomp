@@ -32,6 +32,10 @@ use dialogs::*;
 use input::*;
 use lifecycle::*;
 
+pub(in crate::ui::city) fn city_projection_idle(session: &Res<GameSession>, added: bool) -> bool {
+    super::projection_idle(session, added)
+}
+
 pub(crate) struct CityPlugin;
 
 impl Plugin for CityPlugin {
@@ -70,23 +74,17 @@ impl Plugin for CityPlugin {
                 sync_transport_capacity_dialog,
                 sync_population_dialog,
                 sync_training_dialog,
-                sync_armory_selection,
+                sync_city_row_selection,
                 sync_armory_details,
-                sync_university_selection,
                 sync_university_details,
-                sync_shipyard_selection,
                 sync_shipyard_details,
             )
                 .run_if(in_state(AppState::City)),
         )
         .add_observer(on_city_dialog_pressed.run_if(in_state(AppState::City)))
         .add_observer(on_city_canvas_click.run_if(in_state(AppState::City)))
-        .add_observer(on_armory_row_selected.run_if(in_state(AppState::City)))
-        .add_observer(on_university_row_selected.run_if(in_state(AppState::City)))
-        .add_observer(on_shipyard_row_selected.run_if(in_state(AppState::City)))
-        .add_observer(on_armory_order_selected.run_if(in_state(AppState::City)))
-        .add_observer(on_university_order_selected.run_if(in_state(AppState::City)))
-        .add_observer(on_shipyard_order_selected.run_if(in_state(AppState::City)))
+        .add_observer(on_city_row_selected.run_if(in_state(AppState::City)))
+        .add_observer(on_city_recruitment_order_selected.run_if(in_state(AppState::City)))
         .add_observer(on_city_amount_bar_click.run_if(in_state(AppState::City)))
         .add_observer(on_city_expansion_open.run_if(in_state(AppState::City)))
         .add_observer(on_city_building_change_choice.run_if(in_state(AppState::City)))
