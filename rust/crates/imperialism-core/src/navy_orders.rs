@@ -285,6 +285,7 @@ impl GameState {
                 _ => {}
             }
         }
+        self.clear_all_transient_navy_orders();
     }
 
     fn consolidate_mission_ships_to(&mut self, ships: &[ShipId], destination: OceanZoneId) {
@@ -1194,6 +1195,10 @@ mod tests {
         assert_eq!(state.task_forces[0].order, ORDER_SAIL);
         state.carry_out_navy_orders();
         assert_eq!(state.ships[0].location, OceanZoneId::new(3));
+        assert!(
+            state.task_forces.is_empty(),
+            "sail orders are stragglers after CarryOutOrders"
+        );
     }
 
     #[test]

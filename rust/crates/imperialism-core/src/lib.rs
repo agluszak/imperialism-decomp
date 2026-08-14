@@ -108,6 +108,7 @@ pub use military::{
     AdmiralState, ArmyMissionState, AttackMissionState, MissionData, MissionState,
     NavyMissionState, SelectedShip, ShipState, TaskForceState, TaskForceTarget,
 };
+pub use military_cleanup::NationOrderPriorityMetrics;
 pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,
 };

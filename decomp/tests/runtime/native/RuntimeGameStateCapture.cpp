@@ -825,9 +825,9 @@ JSON_Value* CaptureTechnology() {
     cityCapabilitiesByNation.Add(cityCapabilities.Release());
   }
   JsonArray selectedCapabilitySlotsByNation;
-  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
+  for (int capabilityNation = 0; capabilityNation < kMajorNationCount; ++capabilityNation) {
     selectedCapabilitySlotsByNation.Add(
-        CaptureShortArray(g_pTechMgr->nationCapRows1e8[nationSlot].slots, 10));
+        CaptureShortArray(g_pTechMgr->nationCapRows1e8[capabilityNation].slots, 10));
   }
   technology.Set("advanced_iron_working", advancedIronWorking != 0);
   technology.Set("marine_engineering", marineEngineering != 0);

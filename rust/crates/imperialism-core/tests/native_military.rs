@@ -172,6 +172,12 @@ struct TwoLandBattles {
     second: PendingLandBattle,
 }
 
+#[derive(Debug, Deserialize, PartialEq)]
+struct CombatMovesResumeResult {
+    first: PendingLandBattle,
+    second: Option<PendingLandBattle>,
+}
+
 #[test]
 #[ignore = "requires the native C++ oracle"]
 fn combat_moves_resumes_after_battle() {
@@ -195,9 +201,38 @@ fn combat_moves_resumes_after_battle() {
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
+fn combat_moves_battle_then_later_movement() {
+    compare_native(
+        "combat_moves_battle_then_later_movement",
+        |state, _: EmptyCase| {
+            let continuation = state
+                .do_combat_moves()
+                .expect("hostile stack creates a battle");
+            let first = continuation.battle.clone();
+            let second = state
+                .resume_combat_moves(continuation)
+                .map(|continuation| continuation.battle);
+            CombatMovesResumeResult { first, second }
+        },
+    )
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
 fn reassess_control_sea_missions() {
     compare_native("reassess_control_sea_missions", |state, _: EmptyCase| {
         state.reassess_control_sea_missions();
     })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn recompute_nation_order_priority_metrics() {
+    compare_native(
+        "recompute_nation_order_priority_metrics",
+        |state, _: EmptyCase| state.recompute_nation_order_priority_metrics(),
+    )
     .unwrap();
 }

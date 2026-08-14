@@ -21,13 +21,23 @@
 #include "game/map/TMission.h"
 #include "game/nation/TAutoGreatPower.h"
 #include "game/nation/TGreatPower.h"
+#include "game/nation/TGreatPower_internal.h"
 #include "game/nation_domain_types.h"
 #include "game/navy/TShip.h"
 #include "game/ui_core/CIterator.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/unit_domain_types.h"
+#include "game/globals/nation_globals.h"
+
+#include <string.h>
 
 namespace {
+
+unsigned int FloatBits(float value) {
+  unsigned int bits = 0;
+  memcpy(&bits, &value, sizeof(bits));
+  return bits;
+}
 
 void ClearAllMilitaryOrders() {
   int slot;
@@ -143,7 +153,7 @@ JSON_Value* TryCreateBattleWithoutUi(TArmyMgr* army, TArmyStack* stack) {
   return 0;
 }
 
-JSON_Value* ResolveNextPendingBattleWithoutUi() {
+JSON_Value* ProcessPendingStacksUntilBattle(int finalizeIfComplete) {
   TArmyMgr* army = g_pMapContextActionManager;
   int stackCount = army->pendingUnitPool0c->GetCount();
   while (army->nextStackOrdinal10 <= stackCount) {
@@ -163,24 +173,60 @@ JSON_Value* ResolveNextPendingBattleWithoutUi() {
     }
     stackCount = army->pendingUnitPool0c->GetCount();
   }
+  if (finalizeIfComplete != 0) {
+    army->ClearPendingStacksAndFinalizeMilitaryUnits();
+    army->DoOwnershipChanges();
+    return JsonNullValue();
+  }
   return 0;
+}
+
+JSON_Value* ResolveNextPendingBattleWithoutUi() {
+  return ProcessPendingStacksUntilBattle(0);
 }
 
 JSON_Value* ResolveCombatMovesWithoutBattleUi() {
   TArmyMgr* army = g_pMapContextActionManager;
-  JSON_Value* battle;
   army->FormStacks();
   army->nextStackOrdinal10 = 1;
-  battle = ResolveNextPendingBattleWithoutUi();
-  if (battle != 0) {
-    return battle;
-  }
-  army->ClearPendingStacksAndFinalizeMilitaryUnits();
-  army->DoOwnershipChanges();
-  return JsonNullValue();
+  return ProcessPendingStacksUntilBattle(1);
 }
 
-bool FindUncontestedRedeploy(TMilitaryUnit** outUnit, short* outDest) {
+bool IssueUncontestedRedeploys(TMilitaryUnit* skip, int* issued) {
+  int slot;
+  *issued = 0;
+  for (slot = 0; slot < kNationSlotCount; ++slot) {
+    TCountry* country = g_apTerrainTypeDescriptorTable[slot];
+    CIterator cursor(country == 0 ? 0 : country->militaryUnitList44);
+    TMilitaryUnit* unit;
+    if (country == 0 || country->militaryUnitList44 == 0) {
+      continue;
+    }
+    unit = static_cast<TMilitaryUnit*>(cursor.Reset());
+    while (cursor.More() != 0) {
+      const short source = unit->tileIndex06;
+      Province* record;
+      int adj;
+      if (unit != skip && source >= 0 && source < 0x180) {
+        record = &g_pGlobalMapState->cityScoreTable[source];
+        for (adj = 0; adj < record->adjacentRegionCount08; ++adj) {
+          const short dest = record->adjacentRegionIds0A[adj];
+          if (dest >= 0 && dest < 0x180 &&
+              g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 ==
+                  record->ownerNationCode00) {
+            unit->SetOrders(kUnitOrderRedeploy, dest);
+            *issued += 1;
+            break;
+          }
+        }
+      }
+      unit = static_cast<TMilitaryUnit*>(cursor.Advance());
+    }
+  }
+  return *issued != 0;
+}
+
+bool FindUncontestedRedeploy(TMilitaryUnit** outUnit, short* outDest, TMilitaryUnit* skip) {
   int slot;
   for (slot = 0; slot < kNationSlotCount; ++slot) {
     TCountry* country = g_apTerrainTypeDescriptorTable[slot];
@@ -194,7 +240,7 @@ bool FindUncontestedRedeploy(TMilitaryUnit** outUnit, short* outDest) {
       const short source = unit->tileIndex06;
       Province* record;
       int adj;
-      if (source >= 0 && source < 0x180) {
+      if (unit != skip && source >= 0 && source < 0x180) {
         record = &g_pGlobalMapState->cityScoreTable[source];
         for (adj = 0; adj < record->adjacentRegionCount08; ++adj) {
           const short dest = record->adjacentRegionIds0A[adj];
@@ -438,7 +484,7 @@ RuntimeActionResult RunCombatMovesUncontested(NativeTransition& transition) {
   short dest = -1;
   JSON_Value* result;
   ClearAllMilitaryOrders();
-  if (!FindUncontestedRedeploy(&unit, &dest)) {
+  if (!FindUncontestedRedeploy(&unit, &dest, 0)) {
     return RuntimeActionResult::Failure(
         "the loaded fixture has no adjacent same-owner provinces with a stationed unit");
   }
@@ -536,6 +582,55 @@ RuntimeActionResult RunCombatMovesResumesAfterBattle(NativeTransition& transitio
   return transition.Finish(result.Release());
 }
 
+RuntimeActionResult RunCombatMovesBattleThenLaterMovement(NativeTransition& transition) {
+  TMilitaryUnit* hostile = 0;
+  short hostileDest = -1;
+  short defender = -1;
+  int uncontestedCount = 0;
+  TArmyMgr* army;
+  JSON_Value* first;
+  JSON_Value* second;
+  JsonObject result;
+  JsonObject args;
+  RuntimeActionResult started;
+
+  ClearAllMilitaryOrders();
+  if (!FindHostileRedeploy(&hostile, &hostileDest, &defender)) {
+    return RuntimeActionResult::Failure(
+        "the loaded fixture has no adjacent enemy-garrisoned province");
+  }
+  if (!IssueUncontestedRedeploys(hostile, &uncontestedCount)) {
+    return RuntimeActionResult::Failure(
+        "the loaded fixture has no later same-owner redeploy besides the hostile stack");
+  }
+  ForceWarBetween(hostile->ownerNationSlot18, defender);
+  hostile->SetOrders(kUnitOrderRedeploy, hostileDest);
+
+  started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  army = g_pMapContextActionManager;
+  army->FormStacks();
+  army->nextStackOrdinal10 = 1;
+  first = ProcessPendingStacksUntilBattle(0);
+  if (first == 0 || json_value_get_type(first) != JSONObject) {
+    JsonFreeValue(first);
+    return RuntimeActionResult::Failure("identical orders did not create a land battle");
+  }
+  if (army->nextStackOrdinal10 > army->pendingUnitPool0c->GetCount()) {
+    JsonFreeValue(first);
+    return RuntimeActionResult::Failure(
+        "the first battle consumed the last stack; no later movement remains");
+  }
+
+  second = ProcessPendingStacksUntilBattle(1);
+  result.Set("first", first);
+  result.Set("second", second);
+  return transition.Finish(result.Release());
+}
+
 // Selection-bit clear, heatmap, militia adoption, and AddPurchasedItems only.
 // Does not invoke navy straggler cleanup, mission prune, AI replan, or
 // power/order metrics.
@@ -609,4 +704,55 @@ RuntimeActionResult RunReassessControlSeaMissions(NativeTransition& transition) 
     }
   }
   return transition.Finish();
+}
+
+// Result is the IEEE-754 bits of RecomputeNationOrderPriorityMetrics plus the
+// AutoGreatPower B64/B68/B6c scores it writes. Those globals are not saved.
+RuntimeActionResult RunRecomputeNationOrderPriorityMetrics(NativeTransition& transition) {
+  int nation;
+  JsonObject args;
+  JsonObject result;
+  JsonArray queueDivergence;
+  JsonArray mobileScore;
+  JsonArray mobileDivergence;
+  JsonArray combinedDivergence;
+  JsonArray weightedMilitary;
+  JsonArray expansionPressure;
+  JsonArray unitDivergence;
+  JsonArray missionPressure;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  RecomputeNationOrderPriorityMetrics();
+
+  for (nation = 0; nation < 7; ++nation) {
+    queueDivergence.Add(FloatBits(g_afNationOrderQueueDivergence_006a3a88[nation]));
+    mobileScore.Add(FloatBits(g_afNationMobileUnitScore_006a3b88[nation]));
+    mobileDivergence.Add(FloatBits(g_afNationMobileUnitDivergence_006a3ae0[nation]));
+    combinedDivergence.Add(FloatBits(g_afNationCombinedUnitDivergence_006a3b50[nation]));
+    weightedMilitary.Add(FloatBits(g_afNationWeightedMilitaryOrderScore_006a3b20[nation]));
+    TGreatPower* power = g_apNationStates[nation];
+    if (power != 0 && power->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0) {
+      TAutoGreatPower* autoPower = static_cast<TAutoGreatPower*>(power);
+      expansionPressure.Add(FloatBits(autoPower->expansionPressurePerCompatibleRegionB64));
+      unitDivergence.Add(FloatBits(autoPower->averageUnitDivergencePerOwnedRegionB68));
+      missionPressure.Add(FloatBits(autoPower->activeMissionPressureAverageB6c));
+    } else {
+      expansionPressure.Add(0U);
+      unitDivergence.Add(0U);
+      missionPressure.Add(0U);
+    }
+  }
+
+  result.Set("queue_divergence", queueDivergence.Release());
+  result.Set("mobile_score", mobileScore.Release());
+  result.Set("mobile_divergence", mobileDivergence.Release());
+  result.Set("combined_divergence", combinedDivergence.Release());
+  result.Set("weighted_military", weightedMilitary.Release());
+  result.Set("expansion_pressure", expansionPressure.Release());
+  result.Set("unit_divergence", unitDivergence.Release());
+  result.Set("mission_pressure", missionPressure.Release());
+  return transition.Finish(result.Release());
 }

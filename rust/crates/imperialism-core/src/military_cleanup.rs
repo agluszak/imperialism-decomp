@@ -3,7 +3,9 @@
 use crate::military::{
     ActionClassScores, PROVINCE_UNIT_ORDER_WEIGHT, TACTICAL_COMPOSITION, accumulate_unit_priority,
 };
+use crate::navy_orders::{navy_category_baselines, ship_priority_contribution};
 use crate::*;
+use serde::{Deserialize, Serialize};
 
 const ATTACK_RESOURCE_SCALE: [[f32; 4]; 5] = [
     [1.9, 2.3, 2.5, 2.7],
@@ -12,22 +14,211 @@ const ATTACK_RESOURCE_SCALE: [[f32; 4]; 5] = [
     [2.1, 2.3, 2.5, 2.7],
     [2.3, 2.5, 2.7, 2.9],
 ];
+const NAVY_QUEUE_PROFILE: [i16; 4] = [40, 40, 20, 0];
+const UNIT_PRIORITY_WEIGHT: f32 = 0.33;
+const PRESSURE_UNSET: f32 = -1.0;
+const PRESSURE_RATIO_CAP: f32 = 1.0;
+const PRESSURE_MIDPOINT: f32 = 0.5;
+const PRESSURE_PEER_SCALE: f32 = 1.1;
+
+/// IEEE-754 bits for `RecomputeNationOrderPriorityMetrics` and the AutoGreatPower
+/// B64/B68/B6c scores it writes. Not saved; used as the native-case result.
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct NationOrderPriorityMetrics {
+    pub queue_divergence: [u32; 7],
+    pub mobile_score: [u32; 7],
+    pub mobile_divergence: [u32; 7],
+    pub combined_divergence: [u32; 7],
+    pub weighted_military: [u32; 7],
+    pub expansion_pressure: [u32; 7],
+    pub unit_divergence: [u32; 7],
+    pub mission_pressure: [u32; 7],
+}
 
 impl GameState {
-    /// Retail military-cleanup for a non-client host. AI development replanning,
-    /// order-priority metric globals, and the 40-turn diplomacy standing rebuild
-    /// are not ported. AutoGreatPower pressure scores B64/B68/B6c are treated as
-    /// unset (retail fallback 1.0) until those metrics live in `GameState`.
+    /// Retail military-cleanup for a non-client host. Order-priority metrics run
+    /// before mission reassess so defend needs read B64/B68. AI development
+    /// replanning (`PlanAiDevelopmentActionsFromResourcePools`) and the 40-turn
+    /// diplomacy standing rebuild are not ported.
     pub fn do_military_cleanup(&mut self) {
         self.clear_all_transient_navy_orders();
         self.apply_military_cleanup_supported_subset();
+        let metrics = self.recompute_nation_order_priority_metrics();
         for nation in MajorNationId::all() {
             if !self.nation_is_eligible_for_optional_phase(nation.nation()) {
                 continue;
             }
             if self.is_auto(nation) {
-                self.reassess_missions(nation.nation());
+                self.reassess_missions_with_metrics(nation.nation(), Some(&metrics));
                 self.prune_invalid_defend_missions(nation.nation());
+            }
+        }
+    }
+
+    /// `RecomputeNationOrderPriorityMetrics` plus AutoGreatPower
+    /// `RecomputeAiExpansionAndMissionPressureScores`.
+    pub fn recompute_nation_order_priority_metrics(&self) -> NationOrderPriorityMetrics {
+        let mut metrics = NationOrderPriorityMetrics::default();
+        let baselines = navy_category_baselines(&self.technology.industry_enabled_by_slot);
+        for nation in MajorNationId::all() {
+            if !self.nation_is_eligible_for_optional_phase(nation.nation()) {
+                continue;
+            }
+            let slot = usize::from(nation.get());
+            let mut category = [0.0_f32; 4];
+            for ship in &self.ships {
+                if ship.nation != nation.nation() {
+                    continue;
+                }
+                category[0] += ship_priority_contribution(ship, 0, &baselines) as f32;
+                category[1] += ship_priority_contribution(ship, 1, &baselines) as f32;
+                category[2] += ship_priority_contribution(ship, 2, &baselines) as f32;
+                category[3] += ship_priority_contribution(ship, 3, &baselines) as f32;
+            }
+            metrics.queue_divergence[slot] = bits(queue_divergence(category));
+
+            let mut unit_vector = ActionClassScores::default();
+            for unit in &self.military_units {
+                if unit.nation != nation.nation() || unit.unit_type.is_militia_category() {
+                    continue;
+                }
+                accumulate_unit_priority(unit, &mut unit_vector, 1.0, UNIT_PRIORITY_WEIGHT);
+            }
+            metrics.mobile_score[slot] =
+                bits(unit_vector.similarity(TACTICAL_COMPOSITION.fort_siege));
+            metrics.mobile_divergence[slot] =
+                bits(unit_vector.similarity(TACTICAL_COMPOSITION.baseline));
+            for unit in &self.military_units {
+                if unit.nation != nation.nation() || !unit.unit_type.is_militia_category() {
+                    continue;
+                }
+                accumulate_unit_priority(unit, &mut unit_vector, 1.0, UNIT_PRIORITY_WEIGHT);
+            }
+            metrics.combined_divergence[slot] =
+                bits(unit_vector.similarity(TACTICAL_COMPOSITION.baseline));
+            let military_power = self.army_unit_power(nation.nation());
+            let navy_arms = self.navy_arms(nation.nation());
+            let mut power_ratio = 1.0_f32;
+            if (military_power as f32) < navy_arms as f32 && navy_arms != 0 {
+                power_ratio = military_power as f32 / navy_arms as f32;
+            }
+            metrics.weighted_military[slot] =
+                bits(f32::from_bits(metrics.mobile_score[slot]) * power_ratio);
+        }
+        for nation in MajorNationId::all() {
+            if !self.nation_is_eligible_for_optional_phase(nation.nation()) || !self.is_auto(nation)
+            {
+                continue;
+            }
+            self.write_ai_pressure_scores(nation, &mut metrics);
+        }
+        metrics
+    }
+
+    fn write_ai_pressure_scores(
+        &self,
+        nation: MajorNationId,
+        metrics: &mut NationOrderPriorityMetrics,
+    ) {
+        let slot = usize::from(nation.get());
+        let mut total_regions = 0;
+        let mut compatible_regions = 0;
+        self.count_pressure_regions(nation.nation(), &mut total_regions, &mut compatible_regions);
+        for minor in MinorNationId::all() {
+            if self
+                .nations
+                .common(minor.nation())
+                .is_some_and(|common| common.status().is_colony_of(nation.nation()))
+            {
+                self.count_pressure_regions(
+                    minor.nation(),
+                    &mut total_regions,
+                    &mut compatible_regions,
+                );
+            }
+        }
+        let active_missions = self
+            .missions
+            .iter()
+            .filter(|mission| {
+                mission.nation == nation.nation()
+                    && matches!(mission.data, MissionData::ScatteredShips(_))
+            })
+            .count();
+        let own_unit_divergence = f32::from_bits(metrics.combined_divergence[slot])
+            - f32::from_bits(metrics.mobile_divergence[slot]);
+        // Retail divides even when the nation owns no regions.
+        let unit_divergence = own_unit_divergence / total_regions as f32;
+        metrics.unit_divergence[slot] = bits(unit_divergence);
+
+        let mut maximum_adjusted_military = 0.0_f32;
+        let mut maximum_adjusted_mission = 0.0_f32;
+        let mut maximum_raw_military = 0.0_f32;
+        let mut minimum_peer_combined = PRESSURE_UNSET;
+        for peer in MajorNationId::all() {
+            if peer == nation {
+                continue;
+            }
+            let peer_slot = usize::from(peer.get());
+            let peer_combined = f32::from_bits(metrics.combined_divergence[peer_slot]);
+            if peer_combined < minimum_peer_combined || minimum_peer_combined == PRESSURE_UNSET {
+                minimum_peer_combined = peer_combined;
+            }
+            let military_score =
+                if self.do_nation_territories_share_region_class(nation.nation(), peer.nation()) {
+                    f32::from_bits(metrics.mobile_score[peer_slot])
+                } else {
+                    f32::from_bits(metrics.weighted_military[peer_slot])
+                };
+            if military_score > maximum_raw_military {
+                maximum_raw_military = military_score;
+            }
+            let mission_score = f32::from_bits(metrics.queue_divergence[peer_slot]);
+            if self.diplomacy.standings[nation.nation()][peer.nation()] >= 100 {
+                maximum_adjusted_military = military_score;
+            }
+            if military_score > maximum_adjusted_military {
+                maximum_adjusted_military = military_score;
+            }
+            if mission_score > maximum_adjusted_mission {
+                maximum_adjusted_mission = mission_score;
+            }
+        }
+        let mut military_ratio = maximum_raw_military
+            / (f32::from_bits(metrics.mobile_divergence[slot]) + unit_divergence);
+        if military_ratio > 1.0 {
+            military_ratio = PRESSURE_RATIO_CAP;
+        }
+        let peer_scaled = (military_ratio - PRESSURE_UNSET)
+            * PRESSURE_MIDPOINT
+            * PRESSURE_PEER_SCALE
+            * minimum_peer_combined;
+        if peer_scaled > maximum_adjusted_military {
+            maximum_adjusted_military = peer_scaled;
+        }
+        let mut expansion = maximum_adjusted_military - own_unit_divergence;
+        if expansion < 0.0 {
+            expansion = 0.0;
+        }
+        if compatible_regions != 0 {
+            expansion /= compatible_regions as f32;
+        }
+        metrics.expansion_pressure[slot] = bits(expansion);
+        metrics.mission_pressure[slot] = bits(if active_missions == 0 {
+            maximum_adjusted_mission
+        } else {
+            maximum_adjusted_mission / active_missions as f32
+        });
+    }
+
+    fn count_pressure_regions(&self, nation: NationId, total: &mut i32, compatible: &mut i32) {
+        let Some(common) = self.nations.common(nation) else {
+            return;
+        };
+        for &province in common.owned_regions() {
+            *total += 1;
+            if self.province_is_mission_compatible(province) {
+                *compatible += 1;
             }
         }
     }
@@ -37,11 +228,19 @@ impl GameState {
     /// and required equipage. Blockade uses the control-sea needs body without
     /// the extra threat floor.
     pub fn reassess_missions(&mut self, nation: NationId) {
+        self.reassess_missions_with_metrics(nation, None);
+    }
+
+    fn reassess_missions_with_metrics(
+        &mut self,
+        nation: NationId,
+        metrics: Option<&NationOrderPriorityMetrics>,
+    ) {
         for index in 0..self.missions.len() {
             if self.missions[index].nation != nation {
                 continue;
             }
-            self.reassess_mission(index);
+            self.reassess_mission(index, metrics);
         }
     }
 
@@ -66,11 +265,11 @@ impl GameState {
         }
     }
 
-    fn reassess_mission(&mut self, index: usize) {
+    fn reassess_mission(&mut self, index: usize, metrics: Option<&NationOrderPriorityMetrics>) {
         match &self.missions[index].data {
             MissionData::DefendProvince { province, .. } => {
                 let province = *province;
-                self.reassess_defend_mission(index, province);
+                self.reassess_defend_mission(index, province, metrics);
             }
             MissionData::AttackProvince(attack) => {
                 let attack = attack.clone();
@@ -88,7 +287,12 @@ impl GameState {
         }
     }
 
-    fn reassess_defend_mission(&mut self, index: usize, province: ProvinceId) {
+    fn reassess_defend_mission(
+        &mut self,
+        index: usize,
+        province: ProvinceId,
+        metrics: Option<&NationOrderPriorityMetrics>,
+    ) {
         let nation = self.missions[index].nation;
         self.missions[index].state = if self.capitol_province(nation) == Some(province) {
             0
@@ -97,7 +301,7 @@ impl GameState {
         };
         self.missions[index].importance_bits =
             self.province_mission_importance_bits(province, nation);
-        let required = self.defend_required_equipage(nation, province);
+        let required = self.defend_required_equipage(nation, province, metrics);
         if let MissionData::DefendProvince { army, .. } = &mut self.missions[index].data {
             army.required_equipage_bits = required;
         }
@@ -120,9 +324,15 @@ impl GameState {
         }
     }
 
-    fn defend_required_equipage(&self, nation: NationId, province: ProvinceId) -> [u32; 5] {
-        let pressure = 1.0_f32;
-        if !self.province_is_mission_compatible(province) {
+    fn defend_required_equipage(
+        &self,
+        nation: NationId,
+        province: ProvinceId,
+        metrics: Option<&NationOrderPriorityMetrics>,
+    ) -> [u32; 5] {
+        let compatible = self.province_is_mission_compatible(province);
+        let pressure = defend_pressure_scale(nation, compatible, metrics);
+        if !compatible {
             let kind = self.latest_militia_kind(nation);
             let costs = kind.class_costs();
             let sum: i32 = costs.iter().map(|&cost| i32::from(cost)).sum();
@@ -302,6 +512,44 @@ impl GameState {
             } => army.units.contains(&id),
             _ => false,
         })
+    }
+}
+
+fn bits(value: f32) -> u32 {
+    value.to_bits()
+}
+
+fn queue_divergence(category: [f32; 4]) -> f32 {
+    let sum = category[0] + category[1] + category[2] + category[3];
+    if sum == 0.0 {
+        return 0.0;
+    }
+    let accum = (0..4)
+        .map(|index| (category[index] / sum - f32::from(NAVY_QUEUE_PROFILE[index]) * 0.01).abs())
+        .sum::<f32>();
+    sum * (1.0 - accum * 0.5)
+}
+
+fn defend_pressure_scale(
+    nation: NationId,
+    compatible: bool,
+    metrics: Option<&NationOrderPriorityMetrics>,
+) -> f32 {
+    let Some(metrics) = metrics else {
+        return 1.0;
+    };
+    let Some(major) = MajorNationId::from_nation(nation) else {
+        return 1.0;
+    };
+    let slot = usize::from(major.get());
+    let mut b68 = f32::from_bits(metrics.unit_divergence[slot]);
+    if b68 <= 0.0 {
+        b68 = 1.0;
+    }
+    if compatible {
+        f32::from_bits(metrics.expansion_pressure[slot]) + b68
+    } else {
+        b68
     }
 }
 
