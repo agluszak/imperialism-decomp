@@ -247,6 +247,9 @@ class UiTextPropertyPatch:
     point_size: int
     alignment: int
     evidence: str
+    color_index: int | None = None
+    shadow_color_index: int | None = None
+    shadow_offset: tuple[int, int] | None = None
 
 
 @dataclass(frozen=True)
@@ -523,9 +526,24 @@ def load_windows_text_property_patches(repo_root: Path) -> tuple[UiTextPropertyP
         if set(properties) != {"text"}:
             raise ValueError(f"{context}/properties: only generic text patches are supported")
         text = _mapping(properties["text"], f"{context}/properties/text")
-        expected = {"font_family", "face_flags", "point_size", "alignment"}
-        if set(text) != expected:
-            raise ValueError(f"{context}/properties/text: expected {sorted(expected)!r}")
+        required = {"font_family", "face_flags", "point_size", "alignment"}
+        optional = {"color_index", "shadow_color_index", "shadow_offset"}
+        if not required <= set(text) or set(text) - (required | optional):
+            raise ValueError(
+                f"{context}/properties/text: expected {sorted(required)!r} "
+                f"with optional {sorted(optional)!r}"
+            )
+        shadow_offset = None
+        if "shadow_offset" in text:
+            offset = _sequence(
+                text["shadow_offset"], 2, f"{context}/properties/text/shadow_offset"
+            )
+            shadow_offset = (int(offset[0]), int(offset[1]))
+        if ("shadow_color_index" in text) != (shadow_offset is not None):
+            raise ValueError(
+                f"{context}/properties/text: shadow_color_index and shadow_offset "
+                "must be declared together"
+            )
         evidence = str(row["evidence"]).strip()
         if not evidence:
             raise ValueError(f"{context}: evidence is required")
@@ -543,6 +561,15 @@ def load_windows_text_property_patches(repo_root: Path) -> tuple[UiTextPropertyP
                 int(text["point_size"]),
                 int(text["alignment"]),
                 evidence,
+                color_index=(
+                    int(text["color_index"]) if "color_index" in text else None
+                ),
+                shadow_color_index=(
+                    int(text["shadow_color_index"])
+                    if "shadow_color_index" in text
+                    else None
+                ),
+                shadow_offset=shadow_offset,
             )
         )
     return tuple(
@@ -801,6 +828,21 @@ def apply_windows_text_property_patches(
             flags=patch.face_flags,
             point_size=patch.point_size,
             theme=patch.alignment,
+            color_index=(
+                patch.color_index
+                if patch.color_index is not None
+                else node.family.text.color_index
+            ),
+            shadow_color_index=(
+                patch.shadow_color_index
+                if patch.shadow_color_index is not None
+                else node.family.text.shadow_color_index
+            ),
+            shadow_offset=(
+                patch.shadow_offset
+                if patch.shadow_offset is not None
+                else node.family.text.shadow_offset
+            ),
         )
         nodes.append(
             replace(
@@ -1339,7 +1381,10 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
 
     class_name = node.class_name.casefold()
     kind = _rust_widget_kind(node)
-    if node.type_code == "clus":
+    # Generic `clus` records are layout groups (TIndustryCluster, TToolBarCluster,
+    # the random-setup `stuf` panel). Only TRadioTextCluster is a mutually
+    # exclusive option group.
+    if node.class_name == "TRadioTextCluster":
         return "radio_group"
     if node.type_code == "radb" or "radio" in class_name:
         return "radio_button"
@@ -1698,6 +1743,7 @@ def _render_bsn_node(
             if max_chars is not None and max_chars < 0:
                 max_chars = None
             max_expr = "None" if max_chars is None else f"Some({max_chars})"
+            lines.append("    retail_edit_field()")
             lines.append(f"    retail_editable_text({value}, {max_expr})")
         else:
             lines.append(f"    Text({value})")
@@ -1736,6 +1782,9 @@ def _render_bsn_node(
             lines.append(f"    retail_picture({idle_id})")
         else:
             lines.append(f"    retail_picture_swap({idle_id}, {active_id})")
+    elif behavior == "radio_button":
+        # TRadioText has no picture; Draw fills the selected/pressed option.
+        lines.append("    retail_radio_text_fill()")
 
     children = children_by_parent.get(node.node_id, [])
     if children:

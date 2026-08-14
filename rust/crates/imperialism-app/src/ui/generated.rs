@@ -413,11 +413,9 @@ pub fn armory_9208() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("sele"), 200, 50, 165, 346)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("clu4"), 91, 92, 64, 76)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("num4"), 24, 56, 18, 20)
@@ -460,7 +458,6 @@ pub fn armory_9208() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu6"), 91, 260, 64, 76)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("num6"), 24, 56, 18, 20)
@@ -503,7 +500,6 @@ pub fn armory_9208() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu3"), 91, 8, 64, 76)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("num3"), 24, 56, 18, 20)
@@ -546,7 +542,6 @@ pub fn armory_9208() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu5"), 91, 176, 64, 76)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("num5"), 24, 56, 18, 20)
@@ -589,7 +584,6 @@ pub fn armory_9208() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu2"), 12, 176, 64, 76)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("num2"), 24, 56, 18, 20)
@@ -632,7 +626,6 @@ pub fn armory_9208() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu7"), 12, 260, 64, 76)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("num7"), 24, 56, 18, 20)
@@ -675,7 +668,6 @@ pub fn armory_9208() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu1"), 12, 92, 64, 76)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("num1"), 24, 56, 18, 20)
@@ -718,7 +710,6 @@ pub fn armory_9208() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu0"), 12, 8, 64, 76)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("num0"), 24, 56, 18, 20)
@@ -991,7 +982,6 @@ pub fn citydlog_9200() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fabr"), 19, 87, 239, 36)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
@@ -1081,7 +1071,6 @@ pub fn citydlog_9201() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("clot"), 19, 87, 239, 36)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 3, 13, 13)
@@ -1160,7 +1149,6 @@ pub fn citydlog_9202() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("stee"), 19, 87, 239, 36)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
@@ -1244,7 +1232,6 @@ pub fn citydlog_9203() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("hard"), 19, 92, 239, 36)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
@@ -1270,7 +1257,6 @@ pub fn citydlog_9203() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("arma"), 19, 122, 239, 36)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
@@ -1354,7 +1340,6 @@ pub fn citydlog_9204() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("lumb"), 19, 92, 239, 36)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
@@ -1379,7 +1364,6 @@ pub fn citydlog_9204() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("pape"), 19, 122, 239, 36)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
@@ -1463,7 +1447,6 @@ pub fn citydlog_9205() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("furn"), 19, 87, 239, 36)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
@@ -1542,7 +1525,6 @@ pub fn citydlog_9206() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fuel"), 19, 87, 239, 36)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
@@ -1613,7 +1595,6 @@ pub fn citydlog_9209() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("trai"), 20, 152, 239, 36)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
@@ -1638,7 +1619,6 @@ pub fn citydlog_9209() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("prof"), 20, 233, 239, 36)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
@@ -1747,7 +1727,6 @@ pub fn citydlog_9211() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("powe"), 19, 81, 239, 36)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 10, 13, 13)
@@ -1812,7 +1791,6 @@ pub fn citydlog_9212() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("food"), 20, 121, 239, 36)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 10, 13, 13)
@@ -2228,7 +2206,6 @@ pub fn citydlog_9214() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("rail"), 19, 87, 239, 36)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
@@ -2303,7 +2280,6 @@ pub fn citydlog_9215() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("popu"), 25, 85, 239, 36)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
@@ -2555,7 +2531,6 @@ pub fn citymain_2011() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tool"), 7, 6, 228, 67)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
@@ -2578,7 +2553,6 @@ pub fn citymain_2011() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("topB"), 267, 5, 105, 26)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
@@ -2604,7 +2578,6 @@ pub fn citymain_2011() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 600, 31, 30, 44)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
@@ -2710,7 +2683,6 @@ pub fn diplo_1351() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("tbr2"), 602, 37, 40, 46)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("quer"), 6, 3, 22, 37)
@@ -2873,7 +2845,6 @@ pub fn diplo_2008() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clus"), 238, 4, 36, 117)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("ovr2"), 6, 94, 25, 25)
@@ -2912,7 +2883,6 @@ pub fn diplo_2008() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("docs"), 6, 45, 510, 60)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("doc7"), 462, 8, 42, 55)
@@ -2971,7 +2941,6 @@ pub fn diplo_2008() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("scro"), 14, 14, 484, 99)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("scr6"), 341, 2, 75, 36)
@@ -3024,7 +2993,6 @@ pub fn diplo_2008() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("clus"), 6, 8, 506, 110)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("traa"), 5, 18, 43, 50)
@@ -3083,7 +3051,6 @@ pub fn diplo_2008() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("shee"), 8, 7, 502, 108)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("prop"), 113, 12, 291, 92)
@@ -3102,7 +3069,6 @@ pub fn diplo_2008() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("wait"), 8, 7, 502, 108)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("text"), 113, 12, 291, 92)
@@ -3113,7 +3079,6 @@ pub fn diplo_2008() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("too2"), 608, 39, 23, 39)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
@@ -3200,7 +3165,6 @@ pub fn diplo_2008() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("too3"), 3, 32, 37, 62)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("end "), 5, 6, 30, 52)
@@ -3211,7 +3175,6 @@ pub fn diplo_2008() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("topB"), 267, 5, 105, 26)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
@@ -3240,7 +3203,6 @@ pub fn diplo_2008() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tool"), 3, 6, 218, 29)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -3286,7 +3248,6 @@ pub fn diplo_2016() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("tool"), 3, 6, 38, 88)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
@@ -3297,7 +3258,6 @@ pub fn diplo_2016() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 608, 39, 23, 39)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
@@ -3472,7 +3432,6 @@ pub fn flagview_8451() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("tool"), 0, 0, 47, 49)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("end "), 23, 15, 22, 33)
@@ -3483,7 +3442,6 @@ pub fn flagview_8451() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 592, 15, 73, 36)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 22, 33)
@@ -3528,7 +3486,6 @@ pub fn flagview_8500() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("tool"), 3, 6, 237, 40)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("seas"), 44, 1, 94, 17)
@@ -3558,7 +3515,6 @@ pub fn flagview_8500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("shee"), 45, 128, 510, 313)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("mCap"), 411, 284, 37, 15)
@@ -3582,7 +3538,6 @@ pub fn flagview_8500() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clus"), 30, 221, 33, 17)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("nomo"), 9, 4, 18, 11)
@@ -3701,7 +3656,6 @@ pub fn flagview_8500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 608, 39, 30, 40)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
@@ -3743,7 +3697,6 @@ pub fn flagview_8800() -> impl Scene {
                                         Children [
                                             (
                                                 retail_node(fourcc!("tool"), 3, 6, 237, 90)
-                                                RadioGroup
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("end "), 5, 32, 30, 51)
@@ -3814,7 +3767,6 @@ pub fn flagview_8800() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("tbr2"), 608, 40, 22, 37)
-                                                RadioGroup
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("quer"), 0, 0, 22, 37)
@@ -3879,6 +3831,7 @@ pub fn linger_954() -> impl Scene {
                                         Checked
                                         Text("")
                                         TextColor(Color::BLACK)
+                                        retail_radio_text_fill()
                                     ),
                                     (
                                         retail_node(fourcc!("two2"), 88, 2, 85, 16)
@@ -3886,6 +3839,7 @@ pub fn linger_954() -> impl Scene {
                                         Checked
                                         Text("")
                                         TextColor(Color::BLACK)
+                                        retail_radio_text_fill()
                                     ),
                                 ]
                             ),
@@ -3905,6 +3859,7 @@ pub fn linger_954() -> impl Scene {
                                         bottom: px(3),
                                     },
                                 }
+                                retail_edit_field()
                                 retail_editable_text("", Some(32))
                                 TextColor(Color::BLACK)
                             ),
@@ -4563,7 +4518,6 @@ pub fn linger_4150() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 602, 36, 40, 46)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 22, 38)
@@ -4598,6 +4552,7 @@ pub fn linger_4150() -> impl Scene {
                                         Checked
                                         Text("")
                                         TextColor(Color::BLACK)
+                                        retail_radio_text_fill()
                                     ),
                                     (
                                         retail_node(fourcc!("nooo"), 98, 2, 95, 16)
@@ -4605,6 +4560,7 @@ pub fn linger_4150() -> impl Scene {
                                         Checked
                                         Text("")
                                         TextColor(Color::BLACK)
+                                        retail_radio_text_fill()
                                     ),
                                 ]
                             ),
@@ -4614,7 +4570,6 @@ pub fn linger_4150() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tool"), 3, 6, 64, 91)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("okay"), 5, 32, 31, 51)
@@ -4674,7 +4629,6 @@ pub fn linger_4300() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("tool"), 3, 6, 64, 91)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
@@ -4728,7 +4682,6 @@ pub fn linger_4300() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 602, 36, 40, 46)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 22, 38)
@@ -4889,7 +4842,6 @@ pub fn mapview_2013() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tool"), 517, 0, 123, 480)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Flag"), 62, 8, 25, 35)
@@ -4930,7 +4882,6 @@ pub fn mapview_2013() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("unav"), 128, 144, 123, 308)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("back"), 4, 34, 112, 269)
@@ -4958,7 +4909,6 @@ pub fn mapview_2013() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("cls0"), 4, 72, 113, 57)
-                                                RadioGroup
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("ship"), 0, 0, 100, 57)
@@ -4980,7 +4930,6 @@ pub fn mapview_2013() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("cls1"), 4, 129, 113, 57)
-                                                RadioGroup
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("ship"), 0, 0, 100, 57)
@@ -5002,7 +4951,6 @@ pub fn mapview_2013() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("cls2"), 4, 187, 113, 57)
-                                                RadioGroup
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("ship"), 0, 0, 100, 57)
@@ -5024,7 +4972,6 @@ pub fn mapview_2013() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("cls3"), 4, 244, 113, 57)
-                                                RadioGroup
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("ship"), 0, 0, 100, 57)
@@ -5066,7 +5013,6 @@ pub fn mapview_2013() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("uarm"), 128, 146, 120, 307)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("arr0"), 46, 36, 11, 41)
@@ -5257,7 +5203,6 @@ pub fn mapview_2013() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("uciv"), 128, 143, 126, 306)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("unit"), 33, 39, 54, 68)
@@ -5290,7 +5235,6 @@ pub fn mapview_2013() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("ocea"), 1, 5, 29, 40)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("ZmOt"), 3, 3, 25, 35)
@@ -5303,7 +5247,6 @@ pub fn mapview_2013() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tbr1"), 3, 6, 179, 19)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("seas"), 2, 1, 94, 17)
@@ -5519,6 +5462,7 @@ pub fn mapview_3508() -> impl Scene {
                                         bottom: px(3),
                                     },
                                 }
+                                retail_edit_field()
                                 retail_editable_text("", Some(16))
                                 TextColor(Color::BLACK)
                             ),
@@ -6757,6 +6701,7 @@ pub fn multiplayer_1507() -> impl Scene {
                                         bottom: px(3),
                                     },
                                 }
+                                retail_edit_field()
                                 retail_editable_text("", Some(30))
                                 TextColor(Color::BLACK)
                             ),
@@ -7017,6 +6962,7 @@ pub fn multiplayer_1510() -> impl Scene {
                                         bottom: px(3),
                                     },
                                 }
+                                retail_edit_field()
                                 retail_editable_text("", Some(255))
                                 TextColor(Color::BLACK)
                             ),
@@ -7077,7 +7023,6 @@ pub fn shipyard_9207() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("sele"), 0, 230, 370, 180)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("but0"), 8, 12, 89, 78)
@@ -7087,7 +7032,6 @@ pub fn shipyard_9207() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu0"), 12, 70, 83, 22)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("numb"), 30, 1, 20, 18)
@@ -7124,7 +7068,6 @@ pub fn shipyard_9207() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu1"), 101, 70, 80, 22)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("numb"), 30, 1, 20, 18)
@@ -7161,7 +7104,6 @@ pub fn shipyard_9207() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu2"), 189, 70, 80, 22)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("numb"), 30, 1, 20, 18)
@@ -7198,7 +7140,6 @@ pub fn shipyard_9207() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu3"), 276, 70, 80, 22)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("numb"), 30, 1, 20, 18)
@@ -7235,7 +7176,6 @@ pub fn shipyard_9207() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu4"), 12, 148, 80, 22)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("numb"), 30, 1, 20, 18)
@@ -7272,7 +7212,6 @@ pub fn shipyard_9207() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu5"), 101, 148, 80, 22)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("numb"), 30, 1, 20, 18)
@@ -7309,7 +7248,6 @@ pub fn shipyard_9207() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu6"), 189, 148, 80, 22)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("numb"), 30, 1, 20, 18)
@@ -7346,7 +7284,6 @@ pub fn shipyard_9207() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu7"), 276, 148, 80, 22)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("numb"), 30, 1, 20, 18)
@@ -7441,7 +7378,6 @@ pub fn startup_952() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("tool"), 517, 0, 123, 480)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 91, 8, 26, 36)
@@ -7706,7 +7642,6 @@ pub fn startup_1501() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("stuf"), 288, 4, 345, 466)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("map "), 14, 10, 324, 180)
@@ -7716,7 +7651,8 @@ pub fn startup_1501() -> impl Scene {
                                         retail_node(fourcc!("tcou"), 66, 230, 144, 16)
                                         Text("")
                                         retail_text_style(1, 0, 14, 0)
-                                        TextColor(Color::BLACK)
+                                        retail_text_color(40)
+                                        retail_text_shadow(92, -1, -1)
                                     ),
                                     (
                                         retail_node(fourcc!("flag"), 25, 225, 32, 24)
@@ -7731,6 +7667,7 @@ pub fn startup_1501() -> impl Scene {
                                                 bottom: px(3),
                                             },
                                         }
+                                        retail_edit_field()
                                         retail_editable_text("", Some(30))
                                         retail_text_style(1, 0, 12, 1)
                                         TextColor(Color::BLACK)
@@ -7750,7 +7687,9 @@ pub fn startup_1501() -> impl Scene {
                                                 Checked
                                                 Text("Introductory")
                                                 retail_text_style(1, 0, 12, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_color(40)
+                                                retail_text_shadow(210, -1, -1)
+                                                retail_radio_text_fill()
                                             ),
                                             (
                                                 retail_node(fourcc!("dif1"), 2, 18, 298, 16)
@@ -7758,7 +7697,9 @@ pub fn startup_1501() -> impl Scene {
                                                 Checked
                                                 Text("Easy")
                                                 retail_text_style(1, 0, 12, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_color(40)
+                                                retail_text_shadow(210, -1, -1)
+                                                retail_radio_text_fill()
                                             ),
                                             (
                                                 retail_node(fourcc!("dif2"), 2, 34, 298, 16)
@@ -7766,7 +7707,9 @@ pub fn startup_1501() -> impl Scene {
                                                 Checked
                                                 Text("Normal")
                                                 retail_text_style(1, 0, 12, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_color(40)
+                                                retail_text_shadow(210, -1, -1)
+                                                retail_radio_text_fill()
                                             ),
                                             (
                                                 retail_node(fourcc!("dif3"), 2, 50, 298, 16)
@@ -7774,7 +7717,9 @@ pub fn startup_1501() -> impl Scene {
                                                 Checked
                                                 Text("Hard")
                                                 retail_text_style(1, 0, 12, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_color(40)
+                                                retail_text_shadow(210, -1, -1)
+                                                retail_radio_text_fill()
                                             ),
                                             (
                                                 retail_node(fourcc!("dif4"), 2, 66, 298, 16)
@@ -7782,7 +7727,9 @@ pub fn startup_1501() -> impl Scene {
                                                 Checked
                                                 Text("Nigh-On Impossible")
                                                 retail_text_style(1, 0, 12, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_color(40)
+                                                retail_text_shadow(210, -1, -1)
+                                                retail_radio_text_fill()
                                             ),
                                         ]
                                     ),
@@ -7790,13 +7737,15 @@ pub fn startup_1501() -> impl Scene {
                                         retail_node(fourcc!("dift"), 26, 278, 159, 18)
                                         Text("Difficulty Setting")
                                         retail_text_style(1, 0, 14, 0)
-                                        TextColor(Color::BLACK)
+                                        retail_text_color(40)
+                                        retail_text_shadow(92, -1, -1)
                                     ),
                                     (
                                         retail_node(fourcc!("tnam"), 26, 392, 63, 16)
                                         Text("Names:")
                                         retail_text_style(1, 0, 14, 0)
-                                        TextColor(Color::BLACK)
+                                        retail_text_color(40)
+                                        retail_text_shadow(92, -1, -1)
                                     ),
                                     (
                                         retail_node(fourcc!("name"), 91, 390, 235, 20)
@@ -7808,7 +7757,9 @@ pub fn startup_1501() -> impl Scene {
                                                 Checked
                                                 Text("Historical")
                                                 retail_text_style(1, 0, 12, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_color(40)
+                                                retail_text_shadow(210, -1, -1)
+                                                retail_radio_text_fill()
                                             ),
                                             (
                                                 retail_node(fourcc!("rand"), 118, 2, 115, 16)
@@ -7816,7 +7767,9 @@ pub fn startup_1501() -> impl Scene {
                                                 Checked
                                                 Text("Random")
                                                 retail_text_style(1, 0, 12, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_color(40)
+                                                retail_text_shadow(210, -1, -1)
+                                                retail_radio_text_fill()
                                             ),
                                         ]
                                     ),
@@ -8048,7 +8001,6 @@ pub fn startup_1506() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("prot"), 222, 104, 48, 208)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("rad0"), 8, 61, 31, 27)
@@ -8111,6 +8063,7 @@ pub fn startup_1506() -> impl Scene {
                                         bottom: px(3),
                                     },
                                 }
+                                retail_edit_field()
                                 retail_editable_text("", Some(255))
                                 TextColor(Color::BLACK)
                             ),
@@ -8502,7 +8455,6 @@ pub fn tactical_3800() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tool"), 583, 0, 55, 479)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("help"), 9, 8, 35, 44)
@@ -8664,7 +8616,6 @@ pub fn tech_2200() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tool"), 3, 6, 237, 90)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
@@ -8723,7 +8674,6 @@ pub fn techstore_2300() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("tool"), 7, 6, 225, 84)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("end "), 1, 32, 30, 50)
@@ -8746,7 +8696,6 @@ pub fn techstore_2300() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("topB"), 267, 5, 105, 26)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
@@ -8772,7 +8721,6 @@ pub fn techstore_2300() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 600, 31, 30, 48)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 8, 9, 22, 38)
@@ -8882,7 +8830,6 @@ pub fn trade_2009() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("tbr2"), 600, 31, 30, 44)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
@@ -8908,7 +8855,6 @@ pub fn trade_2009() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tool"), 7, 6, 228, 67)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
@@ -8953,7 +8899,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 342, 3, 33, 15)
@@ -9007,7 +8952,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 343, 3, 32, 15)
@@ -9061,7 +9005,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 344, 3, 31, 15)
@@ -9115,7 +9058,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 343, 3, 32, 15)
@@ -9169,7 +9111,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 344, 3, 31, 15)
@@ -9223,7 +9164,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 343, 3, 32, 15)
@@ -9277,7 +9217,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 343, 3, 32, 15)
@@ -9331,7 +9270,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 343, 3, 32, 15)
@@ -9385,7 +9323,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -9439,7 +9376,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -9493,7 +9429,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -9547,7 +9482,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -9601,7 +9535,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -9655,7 +9588,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -9709,7 +9641,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -9763,7 +9694,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -9817,7 +9747,6 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -9893,7 +9822,6 @@ pub fn trade_2009() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("topB"), 267, 5, 105, 26)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
@@ -9981,7 +9909,6 @@ pub fn trade_2010() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("tbr2"), 600, 31, 30, 43)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("quer"), 0, 2, 27, 37)
@@ -10000,7 +9927,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 342, 3, 33, 15)
@@ -10054,7 +9980,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 343, 3, 32, 15)
@@ -10108,7 +10033,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 344, 3, 31, 15)
@@ -10162,7 +10086,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 343, 3, 32, 15)
@@ -10216,7 +10139,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 344, 3, 31, 15)
@@ -10270,7 +10192,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 343, 3, 32, 15)
@@ -10324,7 +10245,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 343, 3, 32, 15)
@@ -10378,7 +10298,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 343, 3, 32, 15)
@@ -10432,7 +10351,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -10486,7 +10404,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -10540,7 +10457,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -10594,7 +10510,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -10648,7 +10563,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -10702,7 +10616,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -10756,7 +10669,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -10810,7 +10722,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -10864,7 +10775,6 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 3, 41, 15)
@@ -10940,7 +10850,6 @@ pub fn trade_2010() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("tool"), 7, 6, 228, 67)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("end "), 5, 27, 27, 37)
@@ -11022,7 +10931,6 @@ pub fn trade_2010() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("topB"), 267, 5, 105, 26)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
@@ -11071,7 +10979,6 @@ pub fn transport_2014() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("topB"), 267, 5, 105, 26)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
@@ -11097,7 +11004,6 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 599, 36, 40, 46)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 25, 38)
@@ -11108,7 +11014,6 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tool"), 3, 6, 218, 88)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
@@ -11534,11 +11439,9 @@ pub fn univ_9210() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("sele"), 204, 49, 162, 355)
-                                RadioGroup
                                 Children [
                                     (
                                         retail_node(fourcc!("clu0"), 11, 67, 61, 25)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("num0"), 21, 0, 18, 20)
@@ -11587,7 +11490,6 @@ pub fn univ_9210() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu1"), 90, 67, 61, 25)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("num1"), 21, 0, 18, 20)
@@ -11630,7 +11532,6 @@ pub fn univ_9210() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu2"), 11, 151, 61, 25)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("num2"), 21, 0, 18, 20)
@@ -11673,7 +11574,6 @@ pub fn univ_9210() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu3"), 90, 151, 61, 25)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("num3"), 21, 0, 18, 20)
@@ -11710,7 +11610,6 @@ pub fn univ_9210() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu4"), 11, 235, 61, 25)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("num4"), 21, 0, 18, 20)
@@ -11759,7 +11658,6 @@ pub fn univ_9210() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu8"), 90, 319, 61, 25)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("num8"), 21, 0, 18, 20)
@@ -11796,7 +11694,6 @@ pub fn univ_9210() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("clu5"), 90, 235, 61, 25)
-                                        RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("num5"), 21, 0, 18, 20)
@@ -11921,6 +11818,7 @@ pub fn join_selector_message() -> impl Scene {
                                         bottom: px(3),
                                     },
                                 }
+                                retail_edit_field()
                                 retail_editable_text("", Some(255))
                                 TextColor(Color::BLACK)
                             ),

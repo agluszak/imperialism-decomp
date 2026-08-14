@@ -96,6 +96,54 @@ class UiCodegenTests(unittest.TestCase):
         ]
         self.assertIn("retail_text_style(1, 0, 12, 1)", unit)
 
+    def test_random_setup_emits_windows_option_controls(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        setup = rendered[
+            rendered.index("pub fn startup_1501()") : rendered.index(
+                "pub fn startup_1503()"
+            )
+        ]
+        stuf = setup[
+            setup.index('retail_node(fourcc!("stuf")') : setup.index(
+                'retail_node(fourcc!("map ")'
+            )
+        ]
+        self.assertNotIn("RadioGroup", stuf)
+        self.assertEqual(setup.count("RadioGroup"), 2)
+
+        diff = setup[
+            setup.index('retail_node(fourcc!("diff")') : setup.index(
+                'retail_node(fourcc!("dift")'
+            )
+        ]
+        self.assertIn("RadioGroup", diff)
+
+        name = setup[
+            setup.index('retail_node(fourcc!("name")') : setup.index(
+                'retail_node(fourcc!("hist")'
+            )
+        ]
+        self.assertIn("RadioGroup", name)
+
+        coun = setup[
+            setup.index('retail_node(fourcc!("coun")') : setup.index(
+                'retail_node(fourcc!("okay")'
+            )
+        ]
+        self.assertIn("retail_edit_field()", coun)
+
+        dif0 = setup[
+            setup.index('retail_node(fourcc!("dif0")') : setup.index(
+                'retail_node(fourcc!("dif1")'
+            )
+        ]
+        self.assertIn("retail_radio_text_fill()", dif0)
+        self.assertIn("retail_text_color(40)", dif0)
+        self.assertIn("retail_text_shadow(210, -1, -1)", dif0)
+        self.assertIn("RadioButton", dif0)
+
     def test_control_state_uses_recovered_control_api(self) -> None:
         rendered = "\n".join(self.rendered.values())
         self.assertNotIn("SetControlStateFlagAndMaybeRefresh", rendered)

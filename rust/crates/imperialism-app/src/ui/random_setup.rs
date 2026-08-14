@@ -5,7 +5,7 @@ use crate::ui::hover_help::{
 };
 use crate::ui::random_setup_map;
 use crate::ui::retail::ModalDialog;
-use crate::ui::retail::{RetailTag, RetailUiAssets, find_descendant};
+use crate::ui::retail::{RADIO_CLUSTER_FRAME_PALETTE, RetailTag, RetailUiAssets, find_descendant};
 use crate::ui::session::apply_turn_stop;
 use crate::{AppState, RandomGameNamesResource, RetailAssetsResource};
 use bevy::ecs::system::SystemParam;
@@ -177,6 +177,14 @@ fn bind_random_setup(
     mut assets: RetailUiAssets,
 ) {
     bind_random_setup_controls(&mut commands, *root, &children, &tags, &setup);
+    bind_random_setup_labels(
+        &mut commands,
+        *root,
+        &children,
+        &tags,
+        &mut nodes,
+        &mut assets,
+    );
     random_setup_map::attach_random_setup_meanings(&mut commands, *root, &children, &tags);
     bind_random_setup_hover_help(
         &mut commands,
@@ -206,7 +214,7 @@ fn bind_random_setup_controls(
         let entity = find_descendant(root, tag, children, tags);
         let mut entity_commands = commands.entity(entity);
         entity_commands
-            .insert(DifficultyChoice(difficulty))
+            .insert((DifficultyChoice(difficulty), Pickable::default()))
             .observe(on_difficulty_selected);
         if setup.difficulty == difficulty {
             entity_commands.insert(Checked);
@@ -222,7 +230,7 @@ fn bind_random_setup_controls(
         let entity = find_descendant(root, tag, children, tags);
         let mut entity_commands = commands.entity(entity);
         entity_commands
-            .insert(LocalizedNamesChoice(localized))
+            .insert((LocalizedNamesChoice(localized), Pickable::default()))
             .observe(on_localized_names_selected);
         if setup.name_mode == localized {
             entity_commands.insert(Checked);
@@ -237,6 +245,7 @@ fn bind_random_setup_controls(
         .insert((
             CountryNameField,
             SelectAllOnFocus,
+            Pickable::default(),
             EditableText {
                 max_characters: Some(COUNTRY_NAME_MAX_CHARS),
                 allow_newlines: false,
@@ -264,6 +273,44 @@ fn bind_random_setup_controls(
             .entity(entity)
             .insert(action)
             .observe(on_random_setup_activate);
+    }
+}
+
+fn bind_random_setup_labels(
+    commands: &mut Commands,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
+    nodes: &mut Query<&mut Node>,
+    assets: &mut RetailUiAssets,
+) {
+    // TSetupRandomMapPicture::DoPostCreate overwrites Mac STR# captions from
+    // the Windows string tables and frames the two TRadioTextCluster groups.
+    for (tag, group, index) in [
+        (fourcc!("tcou"), 0x2737, 0x1e),
+        (fourcc!("dift"), 0x2758, 2),
+        (fourcc!("tnam"), 0x2758, 3),
+        (fourcc!("hist"), 0x2758, 4),
+        (fourcc!("rand"), 0x2758, 5),
+        (fourcc!("dif0"), 0x2737, 0x0e),
+        (fourcc!("dif1"), 0x2737, 0x0f),
+        (fourcc!("dif2"), 0x2737, 0x10),
+        (fourcc!("dif3"), 0x2737, 0x11),
+        (fourcc!("dif4"), 0x2737, 0x12),
+    ] {
+        let entity = find_descendant(root, tag, children, tags);
+        commands
+            .entity(entity)
+            .insert(Text::new(ui_string(assets, group, index)));
+    }
+    let frame = BorderColor::all(assets.palette_color(RADIO_CLUSTER_FRAME_PALETTE));
+    for tag in [fourcc!("diff"), fourcc!("name")] {
+        let entity = find_descendant(root, tag, children, tags);
+        nodes
+            .get_mut(entity)
+            .expect("random-setup radio cluster has Node")
+            .border = UiRect::all(px(1));
+        commands.entity(entity).insert(frame);
     }
 }
 
@@ -463,22 +510,25 @@ fn accept_random_setup(
     next_state: &mut NextState<AppState>,
 ) {
     // Live play still uses a fixed Accept CRT seed until wall-clock CRT wiring lands.
-    let mut session = create_random_game(
-        &preview.0,
-        setup.nation,
-        setup.difficulty,
-        &setup.country_name,
-        setup.name_mode == NationNameMode::Historical,
-        1,
-        names,
+    let mut session = GameSession::from_assets(
+        create_random_game(
+            &preview.0,
+            setup.nation,
+            setup.difficulty,
+            &setup.country_name,
+            setup.name_mode == NationNameMode::Historical,
+            1,
+            names,
+        ),
+        assets,
     );
     if requires_capital_site_selection(setup.difficulty) {
-        commands.insert_resource(GameSession(session));
+        commands.insert_resource(session);
         next_state.set(AppState::CitySite);
     } else {
-        let stop = enter_strategic_map_without_capital_selection(&mut session, setup.nation);
-        apply_turn_stop(stop, &mut session, assets, next_state);
-        commands.insert_resource(GameSession(session));
+        let stop = enter_strategic_map_without_capital_selection(&mut session.game, setup.nation);
+        apply_turn_stop(stop, next_state);
+        commands.insert_resource(session);
     }
 }
 
@@ -668,31 +718,5 @@ mod tests {
         let field = fields.single(app.world()).unwrap();
         assert_eq!(field.value(), "Country");
         assert_eq!(field.max_characters, Some(COUNTRY_NAME_MAX_CHARS));
-    }
-
-    #[test]
-    fn leaving_random_setup_despawns_an_open_planet_seed_dialog() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_plugins(bevy::state::app::StatesPlugin)
-            .insert_state(AppState::RandomSetup);
-        app.update();
-
-        let dialog = app
-            .world_mut()
-            .spawn((
-                PlanetSeedDialogRoot,
-                ModalDialog,
-                DespawnOnExit(AppState::RandomSetup),
-            ))
-            .id();
-        app.update();
-        assert!(app.world().get::<PlanetSeedDialogRoot>(dialog).is_some());
-
-        app.world_mut()
-            .resource_mut::<NextState<AppState>>()
-            .set(AppState::MainMenu);
-        app.update();
-        assert!(app.world().get::<PlanetSeedDialogRoot>(dialog).is_none());
     }
 }

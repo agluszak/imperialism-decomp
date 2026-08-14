@@ -1,7 +1,8 @@
 use super::GameSession;
 use super::RetailUiAssets;
+use super::cursor::{RequestedCursor, request_arrow_cursor, request_turn_event_cursor};
 use super::format_currency;
-use super::game_shell::{bind_native_game_screen_nav, project_date_and_treasury};
+use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::hover_help::get_string;
 use super::random_setup_map::{
@@ -10,14 +11,16 @@ use super::random_setup_map::{
 };
 use super::retail::ModalDialog;
 use super::retail::{RetailTag, find_child, find_descendant};
+use super::session::apply_turn_stop;
 use crate::AppState;
+use crate::RetailAssetsResource;
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::math::Rect;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::{Activate, Button as UiButton};
+use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -29,6 +32,11 @@ const MAP_WIDTH: f32 = 540.0;
 const MAP_HEIGHT: f32 = 300.0;
 const MAP_TILE_SCALE: u16 = 5;
 const MAP_ODD_ROW_OFFSET: u16 = 2;
+const DIPLOMACY_IDLE_CURSOR: u16 = 0x41b;
+const DIPLOMACY_CURSOR_BY_ACTION: [u16; 16] = [
+    0x41b, 0x41b, 0x408, 0x407, 0x406, 0x404, 0x405, 0x411, 0x415, 0x409, 0x41b, 0x40f, 0x410,
+    0x3f3, 0x419, 0x41a,
+];
 const GRANT_AMOUNTS: [i32; 4] = [1_000, 3_000, 5_000, 10_000];
 const TRADE_POLICY_SCORES: [TradePolicyScore; 7] = [
     TradePolicyScore::new(95),
@@ -80,27 +88,120 @@ enum DiplomacyTopic {
     Offers,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum DiplomacyMode {
+    Information { overlay: u8 },
+    Treaties { row: usize },
+    Grants { row: usize, recurring: bool },
+    Trade { row: usize, colony_boycott: bool },
+    Council,
+    Offers,
+}
+
+impl DiplomacyMode {
+    fn from_topic(topic: DiplomacyTopic) -> Self {
+        match topic {
+            DiplomacyTopic::Information => Self::Information { overlay: 0 },
+            DiplomacyTopic::Treaties => Self::Treaties { row: 5 },
+            DiplomacyTopic::Grants => Self::Grants {
+                row: 0,
+                recurring: false,
+            },
+            DiplomacyTopic::Trade => Self::Trade {
+                row: 0,
+                colony_boycott: false,
+            },
+            DiplomacyTopic::Council => Self::Council,
+            DiplomacyTopic::Offers => Self::Offers,
+        }
+    }
+
+    fn topic(self) -> DiplomacyTopic {
+        match self {
+            Self::Information { .. } => DiplomacyTopic::Information,
+            Self::Treaties { .. } => DiplomacyTopic::Treaties,
+            Self::Grants { .. } => DiplomacyTopic::Grants,
+            Self::Trade { .. } => DiplomacyTopic::Trade,
+            Self::Council => DiplomacyTopic::Council,
+            Self::Offers => DiplomacyTopic::Offers,
+        }
+    }
+}
+
 #[derive(Component, Clone, Copy)]
 struct DiplomacyScreen {
     framed_nation: NationId,
-    topic: DiplomacyTopic,
-    grant_row: usize,
-    recurring_grant: bool,
-    trade_row: usize,
-    treaty_row: usize,
-    overlay: u8,
-    colony_boycott: bool,
+    mode: DiplomacyMode,
 }
 
 impl DiplomacyScreen {
+    fn topic(&self) -> DiplomacyTopic {
+        self.mode.topic()
+    }
+
     fn interaction_mode(&self) -> i32 {
-        match self.topic {
-            DiplomacyTopic::Information => i32::from(self.overlay),
-            DiplomacyTopic::Treaties => 4,
-            DiplomacyTopic::Grants => 1,
-            DiplomacyTopic::Trade => 2,
-            DiplomacyTopic::Council => 5,
-            DiplomacyTopic::Offers => 0,
+        match self.mode {
+            DiplomacyMode::Information { overlay } => i32::from(overlay),
+            DiplomacyMode::Treaties { .. } => 4,
+            DiplomacyMode::Grants { .. } => 1,
+            DiplomacyMode::Trade { .. } => 2,
+            DiplomacyMode::Council => 5,
+            DiplomacyMode::Offers => 0,
+        }
+    }
+
+    fn map_action(&self) -> DiplomacyMapAction {
+        match self.mode {
+            DiplomacyMode::Information { .. } | DiplomacyMode::Offers => {
+                DiplomacyMapAction::InspectNation
+            }
+            DiplomacyMode::Treaties { row } => match row {
+                0 => DiplomacyMapAction::JoinEmpire,
+                1 => DiplomacyMapAction::Alliance,
+                2 => DiplomacyMapAction::NonAggressionPact,
+                3 => DiplomacyMapAction::PeaceTreaty,
+                4 => DiplomacyMapAction::DeclareWar,
+                5 => DiplomacyMapAction::BuildConsulate,
+                6 => DiplomacyMapAction::BuildEmbassy,
+                _ => DiplomacyMapAction::InspectNation,
+            },
+            DiplomacyMode::Grants {
+                recurring: true, ..
+            } => DiplomacyMapAction::RecurringGrant,
+            DiplomacyMode::Grants {
+                recurring: false, ..
+            } => DiplomacyMapAction::OneTimeGrant,
+            DiplomacyMode::Trade {
+                colony_boycott: true,
+                ..
+            } => DiplomacyMapAction::LinkTradePolicy,
+            DiplomacyMode::Trade { row: 6, .. } => DiplomacyMapAction::Boycott,
+            DiplomacyMode::Trade { .. } => DiplomacyMapAction::TradeSubsidy,
+            DiplomacyMode::Council => DiplomacyMapAction::None,
+        }
+    }
+
+    fn cursor_action(&self) -> DiplomacyMapAction {
+        if matches!(self.mode, DiplomacyMode::Council) {
+            DiplomacyMapAction::None
+        } else {
+            self.map_action()
+        }
+    }
+
+    fn cursor_row(&self) -> usize {
+        match self.cursor_action() {
+            DiplomacyMapAction::TradeSubsidy => match self.mode {
+                DiplomacyMode::Trade { row, .. } => row,
+                _ => 0,
+            },
+            DiplomacyMapAction::OneTimeGrant | DiplomacyMapAction::RecurringGrant => {
+                match self.mode {
+                    DiplomacyMode::Grants { row, .. } => row,
+                    _ => 0,
+                }
+            }
+            _ => 0,
         }
     }
 }
@@ -116,10 +217,21 @@ enum DiplomacyAction {
     Treaty(usize),
     Overlay(u8),
     ColonyBoycott,
+    AcceptOffer,
+    RejectOffer,
 }
 
 #[derive(Component)]
 struct DiplomacyMapPicture;
+
+#[derive(Component)]
+struct DiplomacyOfferSheet;
+
+#[derive(Component)]
+struct DiplomacyOfferWait;
+
+#[derive(Component)]
+struct DiplomacyOfferText;
 
 #[derive(Component)]
 struct DiplomacyTreasury;
@@ -127,7 +239,6 @@ struct DiplomacyTreasury;
 #[derive(Component, Clone, Copy)]
 struct DiplomacyNationLabel {
     nation: NationId,
-    shadow: bool,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -237,13 +348,17 @@ impl Plugin for DiplomacyPlugin {
                 bind_diplomacy_notice,
                 bind_diplomacy_entanglement_notice,
                 sync_diplomacy_controls,
+                sync_diplomacy_offer_sheet,
                 sync_diplomacy_information,
                 render_diplomacy_map,
+                sync_diplomacy_map_cursor,
             )
                 .chain()
                 .run_if(in_state(AppState::Diplomacy)),
         )
+        .add_systems(OnExit(AppState::Diplomacy), reset_diplomacy_cursor)
         .add_observer(on_diplomacy_activate.run_if(in_state(AppState::Diplomacy)))
+        .add_observer(on_diplomacy_offer_activate.run_if(in_state(AppState::Diplomacy)))
         .add_observer(on_diplomacy_map_click.run_if(in_state(AppState::Diplomacy)))
         .add_observer(open_diplomacy_rejection_notice.run_if(in_state(AppState::Diplomacy)))
         .add_observer(open_diplomacy_entanglement_notice.run_if(in_state(AppState::Diplomacy)));
@@ -252,21 +367,19 @@ impl Plugin for DiplomacyPlugin {
 
 fn enter_diplomacy_screen(mut commands: Commands, session: Res<GameSession>) {
     let root = commands.spawn_scene(generated::diplo_2008()).id();
-    let source = MajorNationId::from_nation(session.0.turn().active_nation)
+    let source = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
-    commands.entity(root).insert((
-        DiplomacyScreen {
-            framed_nation: source.nation(),
-            topic: DiplomacyTopic::Information,
-            grant_row: 0,
-            recurring_grant: false,
-            trade_row: 0,
-            treaty_row: 5,
-            overlay: 0,
-            colony_boycott: false,
-        },
-        DespawnOnExit(AppState::Diplomacy),
-    ));
+    let mut screen = DiplomacyScreen {
+        framed_nation: source.nation(),
+        mode: DiplomacyMode::Information { overlay: 0 },
+    };
+    if let Some(framed) = diplomacy_interrupt_frame(&session.game) {
+        screen.mode = DiplomacyMode::Offers;
+        screen.framed_nation = framed;
+    }
+    commands
+        .entity(root)
+        .insert((screen, DespawnOnExit(AppState::Diplomacy)));
 }
 
 fn bind_diplomacy_screen(
@@ -277,7 +390,7 @@ fn bind_diplomacy_screen(
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    project_date_and_treasury(
+    bind_game_status_display(
         &mut commands,
         &mut assets,
         *root,
@@ -369,6 +482,7 @@ fn bind_diplomacy_screen(
         styles,
         icon_atlas,
         &mut assets,
+        &session,
     );
 }
 
@@ -382,15 +496,18 @@ fn bind_diplomacy_controls(
     styles: DiplomacyTextStyles,
     icon_atlas: Handle<Image>,
     assets: &mut RetailUiAssets,
+    session: &GameSession,
 ) -> Entity {
-    bind_native_game_screen_nav(
-        commands,
-        root,
-        children,
-        tags,
-        fourcc!("topB"),
-        Some(fourcc!("too3")),
-    );
+    if !diplomacy_interrupt(&session.game) {
+        bind_native_game_screen_nav(
+            commands,
+            root,
+            children,
+            tags,
+            fourcc!("topB"),
+            Some(fourcc!("too3")),
+        );
+    }
     let top = find_descendant(root, fourcc!("topB"), children, tags);
     let selected = find_descendant(top, fourcc!("dipl"), children, tags);
     commands
@@ -517,9 +634,15 @@ fn bind_diplomacy_controls(
         ))
         .insert(DiplomacyAction::ColonyBoycott)
         .remove::<InteractionDisabled>();
-    for tag in [fourcc!("reje"), fourcc!("acce")] {
+    for (tag, action) in [
+        (fourcc!("acce"), DiplomacyAction::AcceptOffer),
+        (fourcc!("reje"), DiplomacyAction::RejectOffer),
+    ] {
         let control = find_descendant(root, tag, children, tags);
-        commands.entity(control).insert(InteractionDisabled);
+        commands
+            .entity(control)
+            .insert((action, ActivateOnPress))
+            .remove::<InteractionDisabled>();
     }
     for (tag, checked) in [
         (fourcc!("ovr0"), true),
@@ -583,6 +706,27 @@ fn bind_diplomacy_controls(
         assets,
     );
 
+    let shee = find_descendant(root, fourcc!("shee"), children, tags);
+    let wait = find_descendant(root, fourcc!("wait"), children, tags);
+    let prop = find_descendant(root, fourcc!("prop"), children, tags);
+    commands.entity(shee).insert(DiplomacyOfferSheet);
+    commands.entity(wait).insert(DiplomacyOfferWait);
+    let offer_layout = styles.row_layout.with_justify(Justify::Center);
+    let entity = spawn_shadowed_text(
+        commands,
+        prop,
+        "",
+        0.0,
+        12.0,
+        291.0,
+        &styles.row_font,
+        &offer_layout,
+        styles.row_line_height,
+        styles.foreground,
+        styles.shadow,
+    );
+    commands.entity(entity).insert(DiplomacyOfferText);
+
     let treasury = find_descendant(root, fourcc!("trea"), children, tags);
     commands.entity(treasury).insert(DiplomacyTreasury);
     let left = find_descendant(root, fourcc!("ltab"), children, tags);
@@ -605,7 +749,7 @@ fn spawn_diplomacy_map_labels(
     icon_atlas: Handle<Image>,
 ) {
     for nation in NationId::all() {
-        let labels = spawn_shadowed_text(
+        let entity = spawn_shadowed_text(
             commands,
             map,
             "",
@@ -618,20 +762,9 @@ fn spawn_diplomacy_map_labels(
             styles.foreground,
             styles.shadow,
         );
-        commands.entity(labels[0]).insert((
-            DiplomacyNationLabel {
-                nation,
-                shadow: true,
-            },
-            Visibility::Hidden,
-        ));
-        commands.entity(labels[1]).insert((
-            DiplomacyNationLabel {
-                nation,
-                shadow: false,
-            },
-            Visibility::Hidden,
-        ));
+        commands
+            .entity(entity)
+            .insert((DiplomacyNationLabel { nation }, Visibility::Hidden));
         for kind in [
             DiplomacyNationIconKind::Compatibility,
             DiplomacyNationIconKind::Order,
@@ -692,7 +825,7 @@ fn spawn_diplomacy_panel_text(
         styles.foreground,
         styles.shadow,
     );
-    let name = spawn_shadowed_text(
+    let entity = spawn_shadowed_text(
         commands,
         information,
         "",
@@ -705,13 +838,11 @@ fn spawn_diplomacy_panel_text(
         styles.foreground,
         styles.shadow,
     );
-    for entity in name {
-        commands
-            .entity(entity)
-            .insert(DiplomacyInfoText(DiplomacyInfoField::Name));
-    }
+    commands
+        .entity(entity)
+        .insert(DiplomacyInfoText(DiplomacyInfoField::Name));
     for (row, top) in [54.0, 71.0, 88.0].into_iter().enumerate() {
-        let label = spawn_shadowed_text(
+        let entity = spawn_shadowed_text(
             commands,
             information,
             "",
@@ -724,12 +855,10 @@ fn spawn_diplomacy_panel_text(
             styles.foreground,
             styles.shadow,
         );
-        for entity in label {
-            commands
-                .entity(entity)
-                .insert(DiplomacyInfoText(DiplomacyInfoField::Label(row as u8)));
-        }
-        let value = spawn_shadowed_text(
+        commands
+            .entity(entity)
+            .insert(DiplomacyInfoText(DiplomacyInfoField::Label(row as u8)));
+        let entity = spawn_shadowed_text(
             commands,
             information,
             "",
@@ -742,11 +871,9 @@ fn spawn_diplomacy_panel_text(
             styles.foreground,
             styles.shadow,
         );
-        for entity in value {
-            commands
-                .entity(entity)
-                .insert(DiplomacyInfoText(DiplomacyInfoField::Value(row as u8)));
-        }
+        commands
+            .entity(entity)
+            .insert(DiplomacyInfoText(DiplomacyInfoField::Value(row as u8)));
     }
 
     let map_key = find_descendant(information, fourcc!("mkey"), children, tags);
@@ -833,7 +960,7 @@ fn spawn_diplomacy_panel_text(
             styles.shadow,
         );
     }
-    let total = spawn_shadowed_text(
+    let entity = spawn_shadowed_text(
         commands,
         grants,
         "",
@@ -846,9 +973,7 @@ fn spawn_diplomacy_panel_text(
         styles.foreground,
         styles.shadow,
     );
-    for entity in total {
-        commands.entity(entity).insert(DiplomacyGrantTotal);
-    }
+    commands.entity(entity).insert(DiplomacyGrantTotal);
 
     for (text, left, top, title) in [
         ("Trade Policies", 15.0, 13.0, true),
@@ -934,7 +1059,7 @@ fn spawn_diplomacy_panel_text(
     }
 
     let council_title_layout = styles.title_layout.with_justify(Justify::Center);
-    let title = spawn_shadowed_text(
+    let entity = spawn_shadowed_text(
         commands,
         council,
         "",
@@ -947,15 +1072,13 @@ fn spawn_diplomacy_panel_text(
         styles.foreground,
         styles.shadow,
     );
-    for entity in title {
-        commands
-            .entity(entity)
-            .insert((DiplomacyCouncilText(0), Visibility::Inherited));
-    }
+    commands
+        .entity(entity)
+        .insert((DiplomacyCouncilText(0), Visibility::Inherited));
     let council_label_layout = styles.row_layout.with_justify(Justify::Right);
     for row in 0..3_u8 {
         let top = 60.0 + f32::from(row) * 16.0;
-        let label = spawn_shadowed_text(
+        let entity = spawn_shadowed_text(
             commands,
             council,
             "",
@@ -968,12 +1091,10 @@ fn spawn_diplomacy_panel_text(
             styles.foreground,
             styles.shadow,
         );
-        for entity in label {
-            commands
-                .entity(entity)
-                .insert((DiplomacyCouncilText(1 + row * 2), Visibility::Inherited));
-        }
-        let value = spawn_shadowed_text(
+        commands
+            .entity(entity)
+            .insert((DiplomacyCouncilText(1 + row * 2), Visibility::Inherited));
+        let entity = spawn_shadowed_text(
             commands,
             council,
             "",
@@ -986,11 +1107,9 @@ fn spawn_diplomacy_panel_text(
             styles.foreground,
             styles.shadow,
         );
-        for entity in value {
-            commands
-                .entity(entity)
-                .insert((DiplomacyCouncilText(2 + row * 2), Visibility::Inherited));
-        }
+        commands
+            .entity(entity)
+            .insert((DiplomacyCouncilText(2 + row * 2), Visibility::Inherited));
     }
 }
 
@@ -1007,31 +1126,29 @@ fn spawn_shadowed_text(
     line_height: LineHeight,
     foreground: Color,
     shadow: Color,
-) -> [Entity; 2] {
-    let spawn = |commands: &mut Commands, left, top, color| {
-        commands
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(left),
-                    top: Val::Px(top),
-                    width: Val::Px(width),
-                    ..default()
-                },
-                Text::new(text),
-                font.clone(),
-                *layout,
-                line_height,
-                TextColor(color),
-                Pickable::IGNORE,
-                ChildOf(parent),
-            ))
-            .id()
-    };
-    [
-        spawn(commands, left, top, shadow),
-        spawn(commands, left + 1.0, top + 1.0, foreground),
-    ]
+) -> Entity {
+    commands
+        .spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: Val::Px(left),
+                top: Val::Px(top),
+                width: Val::Px(width),
+                ..default()
+            },
+            Text::new(text),
+            font.clone(),
+            *layout,
+            line_height,
+            TextColor(foreground),
+            TextShadow {
+                offset: Vec2::new(-1.0, -1.0),
+                color: shadow,
+            },
+            Pickable::IGNORE,
+            ChildOf(parent),
+        ))
+        .id()
 }
 
 fn on_diplomacy_activate(
@@ -1048,40 +1165,99 @@ fn on_diplomacy_activate(
         .expect("Diplomacy control has one open Diplomacy screen");
     match *action {
         DiplomacyAction::Topic(topic) => {
-            if screen.topic == topic {
+            if diplomacy_interrupt(&session.game) {
                 return;
             }
-            screen.topic = topic;
-            screen.framed_nation = MajorNationId::from_nation(session.0.turn().active_nation)
+            if screen.topic() == topic {
+                return;
+            }
+            screen.mode = DiplomacyMode::from_topic(topic);
+            screen.framed_nation = MajorNationId::from_nation(session.game.turn().active_nation)
                 .expect("Diplomacy screen requires an active major nation")
                 .nation();
-            match topic {
-                DiplomacyTopic::Information => screen.overlay = 0,
-                DiplomacyTopic::Treaties => screen.treaty_row = 5,
-                DiplomacyTopic::Council | DiplomacyTopic::Offers => {}
-                DiplomacyTopic::Grants => {
-                    screen.grant_row = 0;
-                    screen.recurring_grant = false;
-                }
-                DiplomacyTopic::Trade => {
-                    screen.trade_row = 0;
-                    screen.colony_boycott = false;
-                }
-            }
         }
         DiplomacyAction::Grant { row, recurring } => {
-            if screen.grant_row != row || screen.recurring_grant != recurring {
-                screen.grant_row = row;
-                screen.recurring_grant = recurring;
+            if matches!(screen.mode, DiplomacyMode::Grants { .. }) {
+                screen.mode = DiplomacyMode::Grants { row, recurring };
             }
         }
         DiplomacyAction::Trade(row) => {
-            screen.trade_row = row;
-            screen.colony_boycott = false;
+            if matches!(screen.mode, DiplomacyMode::Trade { .. }) {
+                screen.mode = DiplomacyMode::Trade {
+                    row,
+                    colony_boycott: false,
+                };
+            }
         }
-        DiplomacyAction::Treaty(row) => screen.treaty_row = row,
-        DiplomacyAction::Overlay(mode) => screen.overlay = mode,
-        DiplomacyAction::ColonyBoycott => screen.colony_boycott = true,
+        DiplomacyAction::Treaty(row) => {
+            if matches!(screen.mode, DiplomacyMode::Treaties { .. }) {
+                screen.mode = DiplomacyMode::Treaties { row };
+            }
+        }
+        DiplomacyAction::Overlay(overlay) => {
+            if matches!(screen.mode, DiplomacyMode::Information { .. }) {
+                screen.mode = DiplomacyMode::Information { overlay };
+            }
+        }
+        DiplomacyAction::ColonyBoycott => {
+            if let DiplomacyMode::Trade { row, .. } = screen.mode {
+                screen.mode = DiplomacyMode::Trade {
+                    row,
+                    colony_boycott: true,
+                };
+            }
+        }
+        DiplomacyAction::AcceptOffer | DiplomacyAction::RejectOffer => {}
+    }
+}
+
+fn on_diplomacy_offer_activate(
+    activate: On<Activate>,
+    actions: Query<&DiplomacyAction>,
+    mut screens: Query<&mut DiplomacyScreen>,
+    mut session: ResMut<GameSession>,
+    mut next_state: ResMut<NextState<AppState>>,
+) {
+    let Ok(action) = actions.get(activate.entity) else {
+        return;
+    };
+    let accept = match *action {
+        DiplomacyAction::AcceptOffer => true,
+        DiplomacyAction::RejectOffer => false,
+        _ => return,
+    };
+    if !diplomacy_interrupt(&session.game) {
+        return;
+    }
+    let stop = if session.game.current_diplomacy_offer().is_some() {
+        session.game.answer_current_diplomacy_offer(accept)
+    } else {
+        session.game.answer_current_diplomacy_war_join(accept)
+    };
+    match stop {
+        TurnStop::DiplomacyOffer => {
+            let prompt = session
+                .game
+                .current_diplomacy_offer()
+                .expect("diplomacy stop requires a current offer");
+            let mut screen = screens
+                .single_mut()
+                .expect("Diplomacy offer answer has one open Diplomacy screen");
+            screen.mode = DiplomacyMode::Offers;
+            screen.framed_nation = prompt.source;
+        }
+        TurnStop::DiplomacyWarJoin => {
+            let prompt = session
+                .game
+                .current_diplomacy_war_join()
+                .expect("diplomacy stop requires a current war-join prompt");
+            let mut screen = screens
+                .single_mut()
+                .expect("Diplomacy war-join answer has one open Diplomacy screen");
+            screen.mode = DiplomacyMode::Offers;
+            screen.framed_nation = prompt.target;
+        }
+        stop => apply_turn_stop(stop, &mut next_state),
     }
 }
 
@@ -1108,7 +1284,7 @@ fn on_diplomacy_map_click(
     let Some(tile) = tile_at_diplomacy_position(normalized) else {
         return;
     };
-    let Some(target) = session.0.map()[tile]
+    let Some(target) = session.game.map()[tile]
         .owner_nation
         .and_then(TileOwnerTag::nation)
     else {
@@ -1117,22 +1293,22 @@ fn on_diplomacy_map_click(
     let mut screen = screens
         .single_mut()
         .expect("Diplomacy map has one open Diplomacy screen");
-    let source = MajorNationId::from_nation(session.0.turn().active_nation)
+    let source = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
-    let rejection = match screen.topic {
-        DiplomacyTopic::Information => {
+    let rejection = match screen.mode {
+        DiplomacyMode::Information { .. } => {
             if screen.framed_nation != target {
                 screen.framed_nation = target;
             }
             None
         }
-        DiplomacyTopic::Council | DiplomacyTopic::Offers => None,
-        DiplomacyTopic::Treaties => {
-            let Some(policy) = TREATY_POLICIES.get(screen.treaty_row).copied() else {
+        DiplomacyMode::Council | DiplomacyMode::Offers => None,
+        DiplomacyMode::Treaties { row } => {
+            let Some(policy) = TREATY_POLICIES.get(row).copied() else {
                 return;
             };
             match session
-                .0
+                .game
                 .toggle_player_diplomacy_policy(source, target, policy, false)
             {
                 PlayerDiplomacyOrderResult::NeedsEntanglementConfirmation => {
@@ -1142,24 +1318,29 @@ fn on_diplomacy_map_click(
                 other => player_diplomacy_rejection(other),
             }
         }
-        DiplomacyTopic::Grants => {
-            player_diplomacy_rejection(session.0.toggle_player_diplomacy_grant(
+        DiplomacyMode::Grants { row, recurring } => {
+            player_diplomacy_rejection(session.game.toggle_player_diplomacy_grant(
                 source,
                 target,
                 DiplomacyGrant {
-                    amount: GRANT_AMOUNTS[screen.grant_row],
-                    recurring: screen.recurring_grant,
+                    amount: GRANT_AMOUNTS[row],
+                    recurring,
                 },
             ))
         }
-        DiplomacyTopic::Trade => {
-            if screen.colony_boycott {
-                player_diplomacy_rejection(session.0.toggle_player_colony_boycott(source, target))
+        DiplomacyMode::Trade {
+            row,
+            colony_boycott,
+        } => {
+            if colony_boycott {
+                player_diplomacy_rejection(
+                    session.game.toggle_player_colony_boycott(source, target),
+                )
             } else {
-                player_diplomacy_rejection(session.0.toggle_player_trade_policy(
+                player_diplomacy_rejection(session.game.toggle_player_trade_policy(
                     source,
                     target,
-                    TRADE_POLICY_SCORES[screen.trade_row],
+                    TRADE_POLICY_SCORES[row],
                 ))
             }
         }
@@ -1190,6 +1371,82 @@ fn tile_at_diplomacy_position(normalized: Vec2) -> Option<TileId> {
     let odd_offset = MAP_ODD_ROW_OFFSET * (row & 1);
     let column = (column_pixel as u16).checked_sub(odd_offset)? / MAP_TILE_SCALE;
     MapGeometry::new(MapTopology::Bounded).tile(row, column)
+}
+
+fn sync_diplomacy_map_cursor(
+    maps: Query<&RelativeCursorPosition, With<DiplomacyMapPicture>>,
+    modals: Query<(), With<ModalDialog>>,
+    screens: Query<&DiplomacyScreen>,
+    session: Res<GameSession>,
+    mut requested: ResMut<RequestedCursor>,
+) {
+    if !modals.is_empty() {
+        request_arrow_cursor(&mut requested);
+        return;
+    }
+    let Ok(screen) = screens.single() else {
+        request_arrow_cursor(&mut requested);
+        return;
+    };
+    let Ok(cursor) = maps.single() else {
+        request_arrow_cursor(&mut requested);
+        return;
+    };
+    if !cursor.cursor_over() {
+        request_arrow_cursor(&mut requested);
+        return;
+    }
+    let Some(normalized) = cursor.normalized else {
+        request_turn_event_cursor(&mut requested, DIPLOMACY_IDLE_CURSOR);
+        return;
+    };
+    let source = MajorNationId::from_nation(session.game.turn().active_nation)
+        .expect("Diplomacy screen requires an active major nation");
+    let Some(target) = tile_at_diplomacy_position(normalized).and_then(|tile| {
+        session.game.map()[tile]
+            .owner_nation
+            .and_then(TileOwnerTag::nation)
+    }) else {
+        request_turn_event_cursor(&mut requested, DIPLOMACY_IDLE_CURSOR);
+        return;
+    };
+    let mut action = screen.cursor_action();
+    if action != DiplomacyMapAction::InspectNation && target == source.nation() {
+        action = DiplomacyMapAction::SelectedNation;
+    }
+    let valid = session
+        .game
+        .player_diplomacy_map_action_is_valid(source, target, action);
+    request_turn_event_cursor(
+        &mut requested,
+        diplomacy_map_cursor_resource_id(true, action, screen.cursor_row(), valid),
+    );
+}
+
+fn reset_diplomacy_cursor(mut requested: ResMut<RequestedCursor>) {
+    request_arrow_cursor(&mut requested);
+}
+
+/// `TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback` cursor id.
+fn diplomacy_map_cursor_resource_id(
+    nation_hit: bool,
+    action: DiplomacyMapAction,
+    grant_row: usize,
+    valid: bool,
+) -> u16 {
+    if !nation_hit || !valid {
+        return DIPLOMACY_IDLE_CURSOR;
+    }
+    let mut resource_id = DIPLOMACY_CURSOR_BY_ACTION[action as usize];
+    if matches!(
+        action,
+        DiplomacyMapAction::TradeSubsidy
+            | DiplomacyMapAction::OneTimeGrant
+            | DiplomacyMapAction::RecurringGrant
+    ) {
+        resource_id += u16::try_from(grant_row).expect("diplomacy grant row fits u16");
+    }
+    resource_id
 }
 
 fn on_diplomacy_notice_activate(
@@ -1269,7 +1526,7 @@ fn bind_diplomacy_notice(
         notice_color,
     ));
     let coat = find_descendant(root, fourcc!("coat"), &children, &tags);
-    let source = MajorNationId::from_nation(session.0.turn().active_nation)
+    let source = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     let coat_picture = PictureId::new(9500 + i16::from(source.get()));
     if let Ok(image) = assets.picture(coat_picture) {
@@ -1339,7 +1596,7 @@ fn bind_diplomacy_entanglement_notice(
         .expect("retail diplomacy entanglement body style");
     commands.entity(body).insert((
         Text::new(diplomacy_entanglement_body(
-            &session.0,
+            &session.game,
             &assets,
             notice.target,
             notice.policy,
@@ -1350,7 +1607,7 @@ fn bind_diplomacy_entanglement_notice(
         notice_color,
     ));
     let coat = find_descendant(root, fourcc!("coat"), &children, &tags);
-    let source = MajorNationId::from_nation(session.0.turn().active_nation)
+    let source = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     let coat_picture = PictureId::new(9500 + i16::from(source.get()));
     if let Ok(image) = assets.picture(coat_picture) {
@@ -1404,11 +1661,11 @@ fn on_diplomacy_entanglement_activate(
     if !matches!(*action, DiplomacyEntanglementAction::Confirm) {
         return;
     }
-    let source = MajorNationId::from_nation(session.0.turn().active_nation)
+    let source = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     if let Some(rejection) = player_diplomacy_rejection(
         session
-            .0
+            .game
             .toggle_player_diplomacy_policy(source, target, policy, true),
     ) {
         commands.trigger(OpenDiplomacyRejectionNotice { rejection });
@@ -1441,6 +1698,123 @@ fn diplomacy_entanglement_body(
         names.push('\n');
     }
     format!("{intro}\n{names}")
+}
+
+fn diplomacy_interrupt(state: &GameState) -> bool {
+    state.current_diplomacy_offer().is_some() || state.current_diplomacy_war_join().is_some()
+}
+
+fn diplomacy_interrupt_frame(state: &GameState) -> Option<NationId> {
+    if let Some(prompt) = state.current_diplomacy_offer() {
+        return Some(prompt.source);
+    }
+    state
+        .current_diplomacy_war_join()
+        .map(|prompt| prompt.target)
+}
+
+fn nation_label(state: &GameState, nation: NationId) -> String {
+    state
+        .nations()
+        .display_name(nation)
+        .unwrap_or("")
+        .to_string()
+}
+
+fn major_at_war(state: &GameState, first: NationId, second: NationId) -> bool {
+    state.diplomacy().relationships[first][second] == DiplomaticRelationship::War
+}
+
+fn offer_has_alliance_entanglements(state: &GameState, source: NationId, target: NationId) -> bool {
+    MajorNationId::all().any(|nation| {
+        let other = nation.nation();
+        other != source
+            && other != target
+            && major_at_war(state, other, target)
+            && !major_at_war(state, source, other)
+    })
+}
+
+fn offer_has_peace_entanglements(state: &GameState, source: NationId, target: NationId) -> bool {
+    MajorNationId::all().any(|nation| {
+        let other = nation.nation();
+        other != source
+            && other != target
+            && state.diplomacy().relationships[source][other] == DiplomaticRelationship::Alliance
+            && major_at_war(state, other, target)
+    })
+}
+
+fn war_join_adds_entanglements(state: &GameState, prompt: DiplomacyWarJoinPrompt) -> bool {
+    let human = prompt.nation.nation();
+    match prompt.kind {
+        DiplomacyWarJoinKind::DefendMinor | DiplomacyWarJoinKind::AnnexMinor => {
+            MajorNationId::all().any(|nation| {
+                let other = nation.nation();
+                other != prompt.source
+                    && major_at_war(state, other, prompt.target)
+                    && !major_at_war(state, other, human)
+            })
+        }
+        DiplomacyWarJoinKind::JoinTargetAlly => MajorNationId::all().any(|nation| {
+            let other = nation.nation();
+            state.diplomacy().relationships[prompt.source][other]
+                == DiplomaticRelationship::Alliance
+                && !major_at_war(state, other, human)
+        }),
+        DiplomacyWarJoinKind::JoinSourceAlly => false,
+    }
+}
+
+fn diplomacy_offer_message(state: &GameState, assets: &RetailUiAssets) -> Option<String> {
+    if let Some(prompt) = state.current_diplomacy_offer() {
+        let target = nation_label(state, prompt.source);
+        let (group, index) = match prompt.policy {
+            DiplomacyPolicy::JoinEmpire => (0x274a, 0),
+            DiplomacyPolicy::Alliance
+                if offer_has_alliance_entanglements(
+                    state,
+                    prompt.nation.nation(),
+                    prompt.source,
+                ) =>
+            {
+                (0x274a, 8)
+            }
+            DiplomacyPolicy::Alliance => (0x274a, 1),
+            DiplomacyPolicy::NonAggressionPact => (0x274a, 2),
+            DiplomacyPolicy::PeaceTreaty
+                if offer_has_peace_entanglements(state, prompt.nation.nation(), prompt.source) =>
+            {
+                (0x274a, 9)
+            }
+            DiplomacyPolicy::PeaceTreaty => (0x274a, 3),
+            DiplomacyPolicy::JoinEmpireWithWarEntanglements => (0x274a, 4),
+            _ => return None,
+        };
+        return Some(fill_brackets(
+            &get_string(assets, group, index),
+            &[&target, &target],
+        ));
+    }
+    let prompt = state.current_diplomacy_war_join()?;
+    let minor = nation_label(state, prompt.target);
+    let enemy = nation_label(state, prompt.source);
+    let entangled = war_join_adds_entanglements(state, prompt);
+    let (index, args): (i16, [&str; 4]) = match prompt.kind {
+        DiplomacyWarJoinKind::DefendMinor => {
+            (if entangled { 4 } else { 0 }, [&enemy, &minor, &enemy, ""])
+        }
+        DiplomacyWarJoinKind::JoinTargetAlly => (
+            if entangled { 5 } else { 1 },
+            [&enemy, &minor, &minor, &enemy],
+        ),
+        DiplomacyWarJoinKind::JoinSourceAlly => (2, [&enemy, &minor, &enemy, &minor]),
+        DiplomacyWarJoinKind::AnnexMinor => (
+            if entangled { 8 } else { 3 },
+            [&minor, &enemy, &minor, &minor],
+        ),
+    };
+    Some(fill_brackets(&get_string(assets, 0x2729, index), &args))
 }
 
 fn fill_brackets(template: &str, args: &[&str]) -> String {
@@ -1489,41 +1863,55 @@ fn sync_diplomacy_controls(
         return;
     }
     for (panel, mut node) in &mut panels {
-        node.top = Val::Px(if panel.0 == screen.topic {
+        node.top = Val::Px(if panel.0 == screen.topic() {
             PANEL_TOP
         } else {
             PANEL_OFFSCREEN_TOP
         });
     }
     for (entity, action, checked) in &controls {
-        let selected = match *action {
-            DiplomacyAction::Grant { row, recurring } => {
-                screen.topic == DiplomacyTopic::Grants
-                    && row == screen.grant_row
-                    && recurring == screen.recurring_grant
+        let selected = match (*action, screen.mode) {
+            (
+                DiplomacyAction::Grant { row, recurring },
+                DiplomacyMode::Grants {
+                    row: selected_row,
+                    recurring: selected_recurring,
+                },
+            ) => row == selected_row && recurring == selected_recurring,
+            (
+                DiplomacyAction::Trade(row),
+                DiplomacyMode::Trade {
+                    row: selected_row,
+                    colony_boycott: false,
+                },
+            ) => row == selected_row,
+            (DiplomacyAction::Treaty(row), DiplomacyMode::Treaties { row: selected_row }) => {
+                row == selected_row
             }
-            DiplomacyAction::Trade(row) => {
-                screen.topic == DiplomacyTopic::Trade
-                    && !screen.colony_boycott
-                    && row == screen.trade_row
+            (DiplomacyAction::Overlay(mode), DiplomacyMode::Information { overlay }) => {
+                overlay == mode
             }
-            DiplomacyAction::Treaty(row) => {
-                screen.topic == DiplomacyTopic::Treaties && row == screen.treaty_row
-            }
-            DiplomacyAction::Overlay(mode) => {
-                screen.topic == DiplomacyTopic::Information && screen.overlay == mode
-            }
-            DiplomacyAction::ColonyBoycott => {
-                screen.topic == DiplomacyTopic::Trade && screen.colony_boycott
-            }
-            DiplomacyAction::Topic(_) => continue,
+            (
+                DiplomacyAction::ColonyBoycott,
+                DiplomacyMode::Trade {
+                    colony_boycott: true,
+                    ..
+                },
+            ) => true,
+            (
+                DiplomacyAction::Topic(_)
+                | DiplomacyAction::AcceptOffer
+                | DiplomacyAction::RejectOffer,
+                _,
+            ) => continue,
+            _ => false,
         };
         set_checked(&mut commands, entity, checked.is_some(), selected);
     }
     for (bracket, mut image, mut visibility) in &mut brackets {
         let visible = bracket.left
             == matches!(
-                screen.topic,
+                screen.topic(),
                 DiplomacyTopic::Information | DiplomacyTopic::Council
             );
         *visibility = if visible {
@@ -1531,13 +1919,13 @@ fn sync_diplomacy_controls(
         } else {
             Visibility::Hidden
         };
-        let picture = match screen.topic {
+        let picture = match screen.topic() {
             DiplomacyTopic::Information => &bracket.pictures.information,
             DiplomacyTopic::Treaties => &bracket.pictures.treaties,
             DiplomacyTopic::Grants => &bracket.pictures.grants,
             DiplomacyTopic::Trade => &bracket.pictures.trade,
             DiplomacyTopic::Council => &bracket.pictures.council,
-            // The Offers topic has no bound control until its behavior is ported.
+            // Offers uses the sheet overlay, not a topic-bracket picture.
             DiplomacyTopic::Offers => {
                 *visibility = Visibility::Hidden;
                 continue;
@@ -1545,9 +1933,9 @@ fn sync_diplomacy_controls(
         };
         image.image = picture.clone();
     }
-    let source = MajorNationId::from_nation(session.0.turn().active_nation)
+    let source = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
-    let major = session.0.nations().major(source);
+    let major = session.game.nations().major(source);
     for mut text in &mut treasury {
         text.0 = format_currency(major.common.treasury);
     }
@@ -1559,11 +1947,60 @@ fn sync_diplomacy_controls(
     }
 }
 
+#[allow(clippy::too_many_arguments)]
+fn sync_diplomacy_offer_sheet(
+    mut commands: Commands,
+    session: Res<GameSession>,
+    screens: Query<Ref<DiplomacyScreen>>,
+    assets: RetailUiAssets,
+    mut texts: Query<&mut Text, With<DiplomacyOfferText>>,
+    mut sheets: Query<&mut Visibility, (With<DiplomacyOfferSheet>, Without<DiplomacyOfferWait>)>,
+    mut waits: Query<&mut Visibility, (With<DiplomacyOfferWait>, Without<DiplomacyOfferSheet>)>,
+    controls: Query<(Entity, &DiplomacyAction)>,
+) {
+    let screen = screens
+        .single()
+        .expect("Diplomacy state has one Diplomacy screen");
+    if !session.is_changed() && !screen.is_added() && !screen.is_changed() {
+        return;
+    }
+    let message = diplomacy_offer_message(&session.game, &assets);
+    let posing = message.is_some();
+    for mut visibility in &mut sheets {
+        *visibility = if posing {
+            Visibility::Inherited
+        } else {
+            Visibility::Hidden
+        };
+    }
+    for mut visibility in &mut waits {
+        *visibility = Visibility::Hidden;
+    }
+    if let Some(message) = message {
+        for mut text in &mut texts {
+            text.0 = message.clone();
+        }
+    }
+    for (entity, action) in &controls {
+        if !matches!(
+            *action,
+            DiplomacyAction::AcceptOffer | DiplomacyAction::RejectOffer
+        ) {
+            continue;
+        }
+        if posing {
+            commands.entity(entity).remove::<InteractionDisabled>();
+        } else {
+            commands.entity(entity).insert(InteractionDisabled);
+        }
+    }
+}
+
 #[allow(clippy::too_many_arguments, clippy::type_complexity)]
 fn sync_diplomacy_information(
     session: Res<GameSession>,
     screens: Query<Ref<DiplomacyScreen>>,
-    assets: RetailUiAssets,
+    assets: Res<RetailAssetsResource>,
     mut information: Query<
         (&DiplomacyInfoText, &mut Text),
         (
@@ -1611,7 +2048,7 @@ fn sync_diplomacy_information(
     if !session.is_changed() && !screen.is_added() && !screen.is_changed() {
         return;
     }
-    let state = &session.0;
+    let state = &session.game;
     let (name, labels_by_row, values_by_row) = diplomacy_information(state, screen.framed_nation);
     for (field, mut text) in &mut information {
         text.0 = match field.0 {
@@ -1620,7 +2057,10 @@ fn sync_diplomacy_information(
             DiplomacyInfoField::Value(row) => values_by_row[usize::from(row)].clone(),
         };
     }
-    let show_map_key_names = screen.topic != DiplomacyTopic::Information || screen.overlay == 0;
+    let show_map_key_names = match screen.mode {
+        DiplomacyMode::Information { overlay } => overlay == 0,
+        _ => true,
+    };
     for (major, mut text, mut visibility) in &mut map_key_names {
         text.0.clear();
         text.0
@@ -1632,10 +2072,10 @@ fn sync_diplomacy_information(
         };
     }
     for (map_key, mut image) in &mut map_keys {
-        image.image = match screen.overlay {
-            1 => map_key.relationship_notch.clone(),
-            2 => map_key.trade.clone(),
-            4 => map_key.relationship_type.clone(),
+        image.image = match screen.mode {
+            DiplomacyMode::Information { overlay: 1 } => map_key.relationship_notch.clone(),
+            DiplomacyMode::Information { overlay: 2 } => map_key.trade.clone(),
+            DiplomacyMode::Information { overlay: 4 } => map_key.relationship_type.clone(),
             _ => map_key.owner.clone(),
         };
     }
@@ -1675,8 +2115,7 @@ fn sync_diplomacy_information(
             continue;
         }
         let (row, column) = state.map().geometry().row_column(anchor);
-        let is_major = MajorNationId::from_nation(label.nation).is_some();
-        let offset = f32::from(if is_major == label.shadow { 1_u8 } else { 0 });
+        let offset = f32::from(MajorNationId::from_nation(label.nation).is_none());
         node.left = Val::Px(f32::from(column) * 5.0 - 45.0 + offset);
         node.top = Val::Px(f32::from(row) * 5.0 - 6.0 + offset);
         text.0.clear();
@@ -1797,17 +2236,14 @@ fn render_diplomacy_map(
     mut commands: Commands,
     session: Res<GameSession>,
     mut assets: RetailUiAssets,
-    screens: Query<Ref<DiplomacyScreen>>,
-    maps: Query<(Entity, Option<&ImageNode>), With<DiplomacyMapPicture>>,
+    screen: Single<Ref<DiplomacyScreen>>,
+    map: Single<(Entity, Option<&ImageNode>), With<DiplomacyMapPicture>>,
 ) {
-    let screen = screens
-        .single()
-        .expect("Diplomacy state has one Diplomacy screen");
     if !session.is_changed() && !screen.is_added() && !screen.is_changed() {
         return;
     }
-    let (entity, image_node) = maps.single().expect("Diplomacy screen has one map picture");
-    let state = &session.0;
+    let (entity, image_node) = map.into_inner();
+    let state = &session.game;
     let framed = screen.framed_nation;
     let pixels = match screen.interaction_mode() {
         1 => compose_owner_preview_indices_with_fill(
@@ -1929,12 +2365,12 @@ struct CouncilPanelText {
     rows: Option<[(String, String); 3]>,
 }
 
-fn council_panel_text(state: &GameState, assets: &RetailUiAssets) -> CouncilPanelText {
+fn council_panel_text(state: &GameState, assets: &RetailAssetsResource) -> CouncilPanelText {
     let congress = &state.diplomacy().congress;
     if let (Some(chairman), Some(counterpart)) = (congress.chairman, congress.counterpart) {
         let decade = (state.turn().economic_turn / 4) / 10 * 10 + 1815;
         CouncilPanelText {
-            title: fill_brackets(&get_string(assets, 0x2733, 0x35), &[&decade.to_string()]),
+            title: fill_brackets(&assets.get_string(0x2733, 0x35), &[&decade.to_string()]),
             rows: Some([
                 (
                     format!(
@@ -1957,14 +2393,14 @@ fn council_panel_text(state: &GameState, assets: &RetailUiAssets) -> CouncilPane
                     congress.counterpart_support.to_string(),
                 ),
                 (
-                    get_string(assets, 0x2733, 0x36),
+                    assets.get_string(0x2733, 0x36),
                     congress.neutral_support.to_string(),
                 ),
             ]),
         }
     } else {
         CouncilPanelText {
-            title: get_string(assets, 0x2733, 0x34),
+            title: assets.get_string(0x2733, 0x34),
             rows: None,
         }
     }
@@ -2045,5 +2481,58 @@ fn set_checked(
         commands.entity(entity).insert(Checked);
     } else {
         commands.entity(entity).remove::<Checked>();
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn idle_cursor_when_the_pointer_is_not_over_a_nation() {
+        assert_eq!(
+            diplomacy_map_cursor_resource_id(false, DiplomacyMapAction::DeclareWar, 0, true),
+            DIPLOMACY_IDLE_CURSOR
+        );
+    }
+
+    #[test]
+    fn invalid_target_uses_the_idle_diplomacy_cursor() {
+        assert_eq!(
+            diplomacy_map_cursor_resource_id(true, DiplomacyMapAction::Alliance, 0, false),
+            DIPLOMACY_IDLE_CURSOR
+        );
+    }
+
+    #[test]
+    fn inspect_and_treaty_actions_use_the_retail_cursor_ids() {
+        assert_eq!(
+            diplomacy_map_cursor_resource_id(true, DiplomacyMapAction::InspectNation, 0, true),
+            0x3f3
+        );
+        assert_eq!(
+            diplomacy_map_cursor_resource_id(true, DiplomacyMapAction::DeclareWar, 0, true),
+            0x405
+        );
+        assert_eq!(
+            diplomacy_map_cursor_resource_id(true, DiplomacyMapAction::BuildEmbassy, 0, true),
+            0x41a
+        );
+    }
+
+    #[test]
+    fn grant_and_subsidy_rows_offset_the_base_cursor_id() {
+        assert_eq!(
+            diplomacy_map_cursor_resource_id(true, DiplomacyMapAction::OneTimeGrant, 3, true),
+            0x414
+        );
+        assert_eq!(
+            diplomacy_map_cursor_resource_id(true, DiplomacyMapAction::RecurringGrant, 1, true),
+            0x416
+        );
+        assert_eq!(
+            diplomacy_map_cursor_resource_id(true, DiplomacyMapAction::TradeSubsidy, 2, true),
+            0x40b
+        );
     }
 }

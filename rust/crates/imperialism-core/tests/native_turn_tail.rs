@@ -74,6 +74,17 @@ fn return_to_map_clears_notice_queues() {
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
+fn opening_civilian_grant() {
+    compare_native("opening_civilian_grant", |state, (): ()| {
+        let nation = MajorNationId::from_nation(state.turn().active_nation)
+            .expect("active nation is a great power");
+        state.grant_opening_civilians_for_nation(nation);
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
 fn elimination_phase_with_landed_great_powers() {
     compare_native(
         "elimination_phase_with_landed_great_powers",

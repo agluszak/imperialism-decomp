@@ -2,7 +2,7 @@
 
 use super::super::format_currency;
 use super::super::retail::{RetailTag, RetailUiAssets, find_child, find_descendant};
-use super::civilian_orders::SelectedCivilian;
+use super::civilian_orders::StrategicSelection;
 use crate::AppState;
 use crate::ui::GameSession;
 use bevy::prelude::*;
@@ -119,7 +119,7 @@ pub(crate) fn bind_civilian_toolbar(
 #[allow(clippy::too_many_arguments)]
 fn sync_civilian_toolbar(
     session: Res<GameSession>,
-    selected: Res<SelectedCivilian>,
+    selected: Query<Ref<StrategicSelection>>,
     mut commands: Commands,
     mut pages: Query<&mut Node, With<CivilianToolbarPage>>,
     portraits: Query<Entity, With<CivilianPortrait>>,
@@ -128,6 +128,9 @@ fn sync_civilian_toolbar(
     items: Query<Entity, With<CivilianLegendItem>>,
     mut assets: RetailUiAssets,
 ) {
+    let Ok(selected) = selected.single() else {
+        return;
+    };
     if !session.is_changed() && !selected.is_changed() {
         return;
     }
@@ -136,7 +139,7 @@ fn sync_civilian_toolbar(
     };
     let unit = selected.0.and_then(|id| {
         session
-            .0
+            .game
             .civilian_units()
             .iter()
             .find(|unit| unit.id() == id)
@@ -183,7 +186,7 @@ fn sync_civilian_toolbar(
         &mut commands,
         &mut assets,
         legend,
-        &session.0,
+        &session.game,
         unit,
         atlases.clone(),
     );

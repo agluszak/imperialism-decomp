@@ -196,7 +196,7 @@ fn write_map(writer: &mut LegacyWriter, map: &LegacyMapState) {
     writer.write_le_i32(map.city_score_total);
     writer.write_mfc_string(&map.scenario_tag);
     writer.write_u8(map.no_horizontal_wrap);
-    for tile in &map.tiles {
+    for tile in map.tiles.iter() {
         write_terrain_tile(writer, tile);
     }
     for province in &map.provinces {

@@ -20,9 +20,7 @@ fn beginning_save_projection_matches_cpp_loaded_state() -> anyhow::Result<()> {
     });
 
     // Map entry centers on the first idle civilian using the same retail viewport math.
-    if let Some(tile) = actual.first_idle_civilian_tile(actual.turn().active_nation) {
-        actual.center_map_on(tile);
-    }
+    actual.center_map_on_first_idle_civilian();
     assert_eq!(actual.map_view_origin(), expected.map_view_origin());
 
     assert_game_state_eq(&expected, &actual)

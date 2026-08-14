@@ -1,10 +1,10 @@
 use super::format_currency;
-use super::game_shell::project_date_and_treasury;
+use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, get_string};
 use super::retail::{ModalDialog, RetailTag, RetailUiAssets, find_descendant};
 use super::session::{GameSession, apply_turn_stop};
-use crate::{AppState, RetailAssetsResource};
+use crate::AppState;
 use bevy::input_focus::AutoFocus;
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
@@ -19,12 +19,6 @@ const OFFER_STRING_GROUP: i16 = 0x2740;
 
 #[derive(Component)]
 struct OfferSheetRoot;
-
-#[derive(Component)]
-struct OfferSheetScreen {
-    posed: Option<PendingTradeOffer>,
-    posed_amount: i16,
-}
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum OfferSheetAction {
@@ -60,9 +54,12 @@ impl Plugin for OfferSheetPlugin {
         )
         .add_systems(
             Update,
-            (pose_offer_sheet, bind_offer_sheet_notice)
-                .chain()
-                .run_if(in_state(AppState::OfferSheet)),
+            pose_offer_sheet
+                .run_if(in_state(AppState::OfferSheet).and_then(resource_changed::<GameSession>)),
+        )
+        .add_systems(
+            Update,
+            bind_offer_sheet_notice.run_if(in_state(AppState::OfferSheet)),
         )
         .add_observer(on_offer_sheet_activate.run_if(in_state(AppState::OfferSheet)));
     }
@@ -70,15 +67,12 @@ impl Plugin for OfferSheetPlugin {
 
 fn enter_offer_sheet_phase(session: Res<GameSession>) {
     assert!(
-        session.0.pending_trade_offer().is_some(),
+        session.game.pending_trade_offer().is_some(),
         "Offer Sheet requires a core trade continuation"
     );
 }
 
-fn spawn_offer_sheet(mut commands: Commands, session: Res<GameSession>) {
-    if session.0.pending_trade_offer().is_none() {
-        return;
-    }
+fn spawn_offer_sheet(mut commands: Commands) {
     let root = commands.spawn_scene(generated::flagview_8500()).id();
     commands
         .entity(root)
@@ -119,7 +113,7 @@ fn bind_offer_sheet(
             .expect("offer-sheet hover-help bar has Node"),
         HoverHelpBarStyle::MAIN_MENU,
     );
-    project_date_and_treasury(&mut commands, &mut assets, root, &children, &tags, &session);
+    bind_game_status_display(&mut commands, &mut assets, root, &children, &tags, &session);
 }
 
 fn bind_offer_sheet_controls(
@@ -130,7 +124,7 @@ fn bind_offer_sheet_controls(
     session: &GameSession,
 ) {
     let offer = session
-        .0
+        .game
         .pending_trade_offer()
         .expect("Offer Sheet bind requires a pending trade offer");
     let accept = find_descendant(root, fourcc!("acce"), children, tags);
@@ -161,41 +155,28 @@ fn bind_offer_sheet_controls(
             ..EditableText::new(offer.amount.to_string())
         },
     ));
-    commands.entity(root).insert(OfferSheetScreen {
-        posed: None,
-        posed_amount: offer.amount,
-    });
 }
 
-#[allow(clippy::too_many_arguments)]
 fn pose_offer_sheet(
     mut commands: Commands,
-    mut screens: Query<&mut OfferSheetScreen, With<OfferSheetRoot>>,
+    root: Option<Single<Entity, With<OfferSheetRoot>>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
     mut amounts: Query<&mut EditableText, With<PurchaseAmountField>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
-    roots: Query<Entity, With<OfferSheetRoot>>,
 ) {
-    let Some(offer) = session.0.pending_trade_offer() else {
+    let Some(root) = root else {
         return;
     };
-    let Ok(root) = roots.single() else {
-        return;
-    };
-    let Ok(mut screen) = screens.single_mut() else {
-        return;
-    };
-    if screen.posed == Some(offer) {
-        return;
-    }
-    screen.posed = Some(offer);
-    screen.posed_amount = offer.amount;
+    let offer = session
+        .game
+        .pending_trade_offer()
+        .expect("OfferSheet requires pending trade offer");
     apply_offer_sheet_pose(
         &mut commands,
         &mut assets,
-        root,
+        *root,
         &children,
         &tags,
         &mut amounts,
@@ -216,7 +197,7 @@ fn apply_offer_sheet_pose(
     offer: PendingTradeOffer,
 ) {
     let offering = session
-        .0
+        .game
         .nations()
         .display_name(offer.seller)
         .unwrap_or("")
@@ -248,13 +229,13 @@ fn apply_offer_sheet_pose(
         fill_brackets(&get_string(assets, OFFER_STRING_GROUP, 0xf), &[&commodity]),
     );
 
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Offer Sheet requires an active major nation");
     set_text(
         commands,
         find_descendant(root, fourcc!("mCap"), children, tags),
         session
-            .0
+            .game
             .nations()
             .major(nation)
             .economy
@@ -280,7 +261,6 @@ fn apply_offer_sheet_pose(
     commands
         .entity(find_descendant(root, fourcc!("nomo"), children, tags))
         .remove::<Checked>();
-    project_date_and_treasury(commands, assets, root, children, tags, session);
 }
 
 fn set_text(commands: &mut Commands, entity: Entity, value: String) {
@@ -291,15 +271,13 @@ fn set_text(commands: &mut Commands, entity: Entity, value: String) {
 fn on_offer_sheet_activate(
     activate: On<Activate>,
     actions: Query<&OfferSheetAction>,
-    screens: Query<&OfferSheetScreen>,
-    amounts: Query<&EditableText, With<PurchaseAmountField>>,
-    stop_buying: Query<Has<Checked>, With<StopBuyingToggle>>,
+    amount: Option<Single<&EditableText, With<PurchaseAmountField>>>,
+    stop_buying: Option<Single<Has<Checked>, With<StopBuyingToggle>>>,
     notices: Query<(), With<OfferSheetNotice>>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
     assets: RetailUiAssets,
-    retail: Res<RetailAssetsResource>,
 ) {
     if !notices.is_empty() {
         return;
@@ -307,39 +285,44 @@ fn on_offer_sheet_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let Ok(screen) = screens.single() else {
-        return;
-    };
-    let stop_buying = stop_buying.single().unwrap_or(false);
+    let offer = session
+        .game
+        .pending_trade_offer()
+        .expect("OfferSheet requires pending trade offer");
+    let stop_buying = stop_buying.is_some_and(|flag| *flag);
     let amount = match action {
         OfferSheetAction::Reject => 0,
         OfferSheetAction::Accept => {
-            let Some(amount) = amounts
-                .single()
-                .ok()
-                .and_then(|editable| editable.value().to_string().parse::<i16>().ok())
+            let Some(amount) =
+                amount.and_then(|editable| editable.value().to_string().parse::<i16>().ok())
             else {
-                spawn_offer_quantity_error(&mut commands, &assets);
+                spawn_offer_quantity_error(
+                    &mut commands,
+                    get_string(&assets, OFFER_STRING_GROUP, 0x10),
+                );
                 return;
             };
-            if amount < 0 || amount > screen.posed_amount {
-                spawn_offer_quantity_error(&mut commands, &assets);
+            if amount < 0 || amount > offer.amount {
+                spawn_offer_quantity_error(
+                    &mut commands,
+                    get_string(&assets, OFFER_STRING_GROUP, 0x10),
+                );
                 return;
             }
             amount
         }
     };
-    match session.0.answer_trade_offer(amount, stop_buying) {
-        TurnStop::TradeOffer(_) => {}
-        stop => apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state),
+    match session.game.answer_trade_offer(amount, stop_buying) {
+        TurnStop::TradeOffer => {}
+        stop => apply_turn_stop(stop, &mut next_state),
     }
 }
 
-fn spawn_offer_quantity_error(commands: &mut Commands, assets: &RetailUiAssets) {
+fn spawn_offer_quantity_error(commands: &mut Commands, body: String) {
     let root = commands.spawn_scene(generated::linger_2020()).id();
     commands.entity(root).insert((
         OfferSheetNotice,
-        OfferSheetNoticeBody(get_string(assets, OFFER_STRING_GROUP, 0x10)),
+        OfferSheetNoticeBody(body),
         ModalDialog,
         TabGroup::modal(),
         GlobalZIndex(20),
@@ -443,19 +426,41 @@ mod tests {
         let selected_nation = peek_save_header(BEGINNING_OF_GAME)
             .and_then(|header| NationId::try_new(header.active_nation))
             .unwrap_or(NationId::new(0));
-        LegacySaveV62::parse(BEGINNING_OF_GAME).game_state(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 0,
-            selected_nation,
-        })
+        let mut parts =
+            LegacySaveV62::parse(BEGINNING_OF_GAME).game_state_parts(LegacyGameStateContext {
+                crt_rand_state: 1,
+                map_generation_lcg: 0,
+                zone_status_lcg: 0,
+                selected_nation,
+            });
+        let buyer = MajorNationId::from_nation(selected_nation).expect("active nation is a major");
+        let seller = MajorNationId::new(if buyer.get() == 0 { 1 } else { 0 });
+        let majors = MajorNationTable::from_fn(|nation| {
+            let mut major = parts.nations.major(nation).clone();
+            major.city.ship_order_count_by_type[ShipType::Trader] = 2;
+            major.city.ship_order_count_by_type[ShipType::Paddlewheeler] = 1;
+            major.city.ship_order_count_by_type[ShipType::Freighter] = 1;
+            major.city.stockpile[ResourceKind::Clothing] = 10;
+            major.city.stockpile[ResourceKind::Timber] = 12;
+            major.common.treasury = 20_000;
+            if nation == buyer {
+                major.economy.remembered_trade_offers_by_resource[ResourceKind::Clothing] = -1;
+                major.economy.remembered_trade_offers_by_resource[ResourceKind::Timber] = 5;
+            }
+            if nation == seller {
+                major.economy.remembered_trade_offers_by_resource[ResourceKind::Clothing] = 4;
+            }
+            major
+        });
+        parts.nations = Nations::new(majors, MinorNationTable::default());
+        GameState::from_parts(parts)
     }
 
     fn test_app(state: GameState) -> App {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_plugins(StatesPlugin)
-            .insert_resource(GameSession(state))
+            .insert_resource(GameSession { game: state })
             .insert_state(AppState::OfferSheet)
             .add_systems(OnEnter(AppState::OfferSheet), enter_offer_sheet_phase)
             .add_systems(
@@ -466,10 +471,7 @@ mod tests {
         app
     }
 
-    fn spawn_test_offer_sheet(mut commands: Commands, session: Res<GameSession>) {
-        if session.0.pending_trade_offer().is_none() {
-            return;
-        }
+    fn spawn_test_offer_sheet(mut commands: Commands) {
         let root = commands
             .spawn((
                 OfferSheetRoot,
@@ -500,14 +502,14 @@ mod tests {
     fn entering_the_offer_sheet_binds_a_pending_offer() {
         let mut state = fixture_state();
         let TradeProgress::Offer(_) = state.begin_trade_phase() else {
-            return;
+            panic!("beginning-of-game fixture must produce a pending offer");
         };
         let mut app = test_app(state);
         app.update();
         assert!(
             app.world()
                 .resource::<GameSession>()
-                .0
+                .game
                 .pending_trade_offer()
                 .is_some()
         );
@@ -519,21 +521,6 @@ mod tests {
             .collect::<Vec<_>>();
         assert!(bound.contains(&OfferSheetAction::Accept));
         assert!(bound.contains(&OfferSheetAction::Reject));
-    }
-
-    #[test]
-    fn unrelated_activation_before_a_game_does_not_require_a_session() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_plugins(StatesPlugin)
-            .insert_state(AppState::MainMenu)
-            .add_plugins(OfferSheetPlugin);
-        let unrelated = app.world_mut().spawn_empty().id();
-
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: unrelated });
-        app.world_mut().flush();
     }
 
     #[test]

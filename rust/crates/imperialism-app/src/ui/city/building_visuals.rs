@@ -161,7 +161,7 @@ pub(in crate::ui::city) fn bind_city_screen(
     root: Single<Entity, Added<CitySceneRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    mut nodes: Query<&mut Node>,
+    nodes: Query<&Node>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
@@ -175,7 +175,7 @@ pub(in crate::ui::city) fn bind_city_screen(
     );
 
     let nation = city_active_nation(&session);
-    project_date_and_treasury(
+    bind_game_status_display(
         &mut commands,
         &mut assets,
         *root,
@@ -183,14 +183,7 @@ pub(in crate::ui::city) fn bind_city_screen(
         &tags,
         &session,
     );
-    bind_city_summary_values(
-        &mut commands,
-        *root,
-        &children,
-        &tags,
-        &mut nodes,
-        &mut assets,
-    );
+    bind_city_summary_values(&mut commands, *root, &children, &tags, &nodes, &mut assets);
     bind_city_hover_title(&mut commands, *root, &children, &tags, &mut assets);
     spawn_city_buildings(
         &mut commands,
@@ -199,41 +192,62 @@ pub(in crate::ui::city) fn bind_city_screen(
         &tags,
         generated::CITY_BUILDINGS,
         generated::CITY_BUILDING_ACTIONS,
-        &session.0,
+        &session.game,
         nation,
         &mut assets,
     );
     commands.entity(*root).insert(CityScreenRoot);
 }
 
+/// `TPlacard::Draw` uses `BuildUiTextStyleDescriptor(0, 10, 0x2b6c)`: size 10
+/// selects Book Antiqua (family 3), centered, palette `0x28`.
+const CITY_SUMMARY_NUMBER_STYLE: RetailTextStylePreset = RetailTextStylePreset {
+    font_family: 3,
+    face_flags: 0,
+    point_size: 10,
+    alignment: 1,
+};
+
 fn bind_city_summary_values(
     commands: &mut Commands,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
-    nodes: &mut Query<&mut Node>,
+    nodes: &Query<&Node>,
     assets: &mut RetailUiAssets,
 ) {
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 10,
-            alignment: 1,
-        })
+        .text_style(CITY_SUMMARY_NUMBER_STYLE)
         .expect("retail city placard text style");
+    let line_px = match line_height {
+        LineHeight::Px(value) => value,
+        LineHeight::RelativeToFont(_) => {
+            unreachable!("retail placard line height is absolute")
+        }
+    };
     let text_color = assets.palette_color(0x28);
     let shadow_color = assets.palette_color(0);
-    let mut bind_text = |commands: &mut Commands, tag, marker| {
+    let bind_text = |commands: &mut Commands, tag, marker| {
         let entity = find_descendant(root, tag, children, tags);
-        let mut node = nodes
-            .get_mut(entity)
+        let node = nodes
+            .get(entity)
             .expect("retail city placard has a native node");
         let Val::Px(height) = node.height else {
             unreachable!("retail city placard height is fixed in pixels");
         };
-        node.padding.top = px((height - 10.0).max(0.0));
-        commands.entity(entity).insert((
+        // Bevy UI will not draw `Text` on the same entity as `ImageNode`. C++
+        // `TPlacard::Draw` paints the picture first, then the count near the
+        // bottom of the frame (`textY = frameHeight - 2`).
+        commands.entity(entity).insert(marker).with_child((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(0),
+                top: px(0),
+                width: percent(100),
+                height: percent(100),
+                padding: UiRect::top(px((height - line_px).max(0.0))),
+                ..default()
+            },
             Text::new(""),
             font.clone(),
             layout,
@@ -243,7 +257,7 @@ fn bind_city_summary_values(
                 offset: Vec2::ONE,
                 color: shadow_color,
             },
-            marker,
+            Pickable::IGNORE,
         ));
     };
     bind_text(
@@ -564,7 +578,7 @@ pub(in crate::ui::city) fn animate_city_building_actions(
         &mut Visibility,
     )>,
 ) {
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("City active nation is a major nation");
     for (mut action, mut image, mut visibility) in &mut actions {
         action.timer.tick(time.delta());
@@ -580,7 +594,7 @@ pub(in crate::ui::city) fn animate_city_building_actions(
                 left + action.frame_size[0] as f32,
                 action.frame_size[1] as f32,
             ));
-            let city = &session.0.nations().major(nation).city;
+            let city = &session.game.nations().major(nation).city;
             *visibility = if city_building_action_enabled(city, action.slot) {
                 Visibility::Visible
             } else {
@@ -607,26 +621,52 @@ pub(in crate::ui::city) fn transparent_picture(
         .expect("retail City detail picture must load")
 }
 
+fn city_summary_text_entity(
+    entity: Entity,
+    texts: &Query<&mut Text>,
+    children: &Query<&Children>,
+) -> Option<Entity> {
+    if texts.contains(entity) {
+        return Some(entity);
+    }
+    children
+        .get(entity)
+        .ok()?
+        .iter()
+        .find(|&child| texts.contains(child))
+}
+
 pub(in crate::ui::city) fn sync_city_summary(
     session: Res<GameSession>,
     added: Query<(), Added<CitySummary>>,
-    mut texts: Query<(&CitySummary, &mut Text, &mut Visibility)>,
+    mut summaries: Query<(Entity, &CitySummary, &mut Visibility)>,
+    mut texts: Query<&mut Text>,
+    children: Query<&Children>,
 ) {
     if !session.is_changed() && added.is_empty() {
         return;
     }
     let nation = city_active_nation(&session);
-    let major = session.0.nations().major(nation);
+    let major = session.game.nations().major(nation);
     let city = &major.city;
     let labor = city.population.baseline_labor();
-    for (summary, mut text, mut visibility) in &mut texts {
+    for (entity, summary, mut visibility) in &mut summaries {
+        let Some(text_entity) = city_summary_text_entity(entity, &texts, &children) else {
+            continue;
+        };
+        let Ok(mut text) = texts.get_mut(text_entity) else {
+            continue;
+        };
         let value = match *summary {
             CitySummary::Labor(SkillBand::Low) => labor.low.to_string(),
             CitySummary::Labor(SkillBand::Medium) => labor.medium.to_string(),
             CitySummary::Labor(SkillBand::High) => labor.high.to_string(),
             CitySummary::Population => city.population.strength().to_string(),
             CitySummary::Power => city.power_available.to_string(),
-            CitySummary::Need(resource) => city.population.predicted_need(resource).to_string(),
+            CitySummary::Need(resource) => city
+                .population
+                .predicted_need_after_refresh(resource, city.orders.population_growth.quantity)
+                .to_string(),
             CitySummary::Treasury => format_currency(major.common.treasury),
         };
         *visibility = if !matches!(summary, CitySummary::Treasury) && value == "0" {
@@ -639,11 +679,12 @@ pub(in crate::ui::city) fn sync_city_summary(
 }
 
 pub(in crate::ui::city) fn sync_city_hover_title(
-    canvases: Query<(&RelativeCursorPosition, &CityCanvas)>,
+    canvas: Option<Single<(&RelativeCursorPosition, &CityCanvas)>>,
     mut titles: Query<&mut Text, With<CityHoverTitle>>,
-    assets: RetailUiAssets,
+    assets: Res<RetailAssetsResource>,
+    session: Res<GameSession>,
 ) {
-    let Ok((cursor, canvas)) = canvases.single() else {
+    let Some((cursor, canvas)) = canvas.map(Single::into_inner) else {
         return;
     };
     let hovered = cursor
@@ -662,8 +703,18 @@ pub(in crate::ui::city) fn sync_city_hover_title(
                 .rev()
                 .find(|building| building.mask.contains(point - building.origin))
         });
+    let nation = city_active_nation(&session);
     let text = hovered.map_or_else(String::new, |building| {
-        city_building_name(&assets, building.slot)
+        if city_oil_industry_unlocked(&session.game, nation, building.slot) {
+            assets
+                .string(
+                    CITY_BUILDING_STRING_GROUP,
+                    city_string_index(building.slot as i16),
+                )
+                .expect("retail English City string")
+        } else {
+            String::new()
+        }
     });
     for mut title in &mut titles {
         title.0.clone_from(&text);
@@ -680,9 +731,9 @@ pub(in crate::ui::city) fn sync_city_buildings(
         return;
     }
     let nation = city_active_nation(&session);
-    let city = &session.0.nations().major(nation).city;
+    let city = &session.game.nations().major(nation).city;
     for (CityBuildingSprite(slot), mut image, mut visibility) in &mut pictures {
-        let level = city_building_level(&session.0, nation, *slot);
+        let level = city_building_level(&session.game, nation, *slot);
         let Some(picture) = city_building_picture(city, *slot, level) else {
             *visibility = Visibility::Hidden;
             continue;
@@ -707,5 +758,75 @@ pub(in crate::ui::city) fn sync_city_buildings(
             }
             Err(error) => warn!("could not load city building picture {picture}: {error}"),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use imperialism_formats::{LegacyGameStateContext, LegacySaveV62, peek_save_header};
+
+    const BEGINNING_OF_GAME: &[u8] =
+        include_bytes!("../../../../../../fixtures/retail/beginning_of_game.imp");
+
+    #[test]
+    fn city_production_placard_values_use_book_antiqua_10pt() {
+        let style = resolve_retail_text_style(CITY_SUMMARY_NUMBER_STYLE).unwrap();
+        assert_eq!(style.face, RetailFontFace::BookAntiquaRegular);
+        assert_eq!(style.logical_pixel_height, 14);
+        assert_eq!(style.alignment, RetailTextAlignment::Center);
+    }
+
+    #[test]
+    fn beginning_city_need_windows_follow_predicted_needs() {
+        let selected_nation = peek_save_header(BEGINNING_OF_GAME)
+            .and_then(|header| NationId::try_new(header.active_nation))
+            .unwrap();
+        let state = LegacySaveV62::parse(BEGINNING_OF_GAME).game_state(LegacyGameStateContext {
+            crt_rand_state: 1,
+            map_generation_lcg: 0,
+            zone_status_lcg: 0,
+            selected_nation,
+        });
+        let city = &state
+            .nations()
+            .major(MajorNationId::from_nation(selected_nation).unwrap())
+            .city;
+        let quantity = city.orders.population_growth.quantity;
+        assert_eq!(city.population.count(), 7);
+        assert_eq!(quantity, 0);
+        assert_eq!(
+            city.population
+                .predicted_need_after_refresh(ResourceKind::Grain, quantity),
+            4
+        );
+        assert_eq!(
+            city.population
+                .predicted_need_after_refresh(ResourceKind::Fruit, quantity),
+            2
+        );
+        assert_eq!(
+            city.population
+                .predicted_need_after_refresh(ResourceKind::Livestock, quantity),
+            1
+        );
+        assert_eq!(city.population.predicted_need(ResourceKind::Grain), 0);
+        assert_eq!(city.population.predicted_need(ResourceKind::Fruit), 0);
+        assert_eq!(city.population.predicted_need(ResourceKind::Livestock), 0);
+        assert_eq!(
+            city.population
+                .predicted_need_after_refresh(ResourceKind::Hardware, quantity),
+            0
+        );
+        assert_eq!(
+            city.population
+                .predicted_need_after_refresh(ResourceKind::Clothing, quantity),
+            0
+        );
+        assert_eq!(
+            city.population
+                .predicted_need_after_refresh(ResourceKind::Furniture, quantity),
+            0
+        );
     }
 }

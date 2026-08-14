@@ -13,14 +13,16 @@ use imperialism_formats::*;
 mod borders;
 mod civilian_orders;
 mod civilian_toolbar;
+mod minimap;
 mod overlays;
 mod terrain;
 mod units;
 
 use borders::compose_strategic_borders;
-pub(crate) use civilian_orders::SelectedCivilian;
+use civilian_orders::StrategicSelection;
 pub(crate) use civilian_orders::register as register_civilian_orders;
 pub(crate) use civilian_toolbar::{bind_civilian_toolbar, register_civilian_toolbar};
+pub(crate) use minimap::{bind_minimap, sync_minimap};
 use overlays::{
     IMPROVEMENT_PICTURE_IDS, compose_strategic_improvements, compose_strategic_railways,
     town_transport_linked,
@@ -95,6 +97,7 @@ pub(crate) fn bind_strategic_base_terrain(
         ImageNode::new(image),
         RelativeCursorPosition::default(),
         canvas,
+        StrategicSelection::default(),
     ));
     units::bind_strategic_units(commands, map, assets, state);
     map
@@ -114,21 +117,21 @@ impl StrategicBaseTerrainCanvas {
 
 pub(crate) fn sync_strategic_base_terrain(
     session: Res<GameSession>,
-    selected: Res<SelectedCivilian>,
     retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
-    mut maps: Query<(&mut StrategicBaseTerrainCanvas, &ImageNode)>,
+    mut maps: Query<(
+        &mut StrategicBaseTerrainCanvas,
+        &ImageNode,
+        &StrategicSelection,
+    )>,
 ) {
-    if !session.is_changed() && !selected.is_changed() {
-        return;
-    }
-    let key = strategic_map_compose_key(&session.0, selected.0);
-    for (mut canvas, image_node) in &mut maps {
+    for (mut canvas, image_node, selected) in &mut maps {
+        let key = strategic_map_compose_key(&session.game, selected.0);
         if canvas.composed == Some(key) {
             continue;
         }
         let image = compose_strategic_map(
-            &session.0,
+            &session.game,
             canvas.sprites(),
             retail_assets.assets().default_dib_palette(),
             selected.0,

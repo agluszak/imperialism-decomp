@@ -661,7 +661,6 @@ void TCityProductionView::DoEvent(int commandId, TEventHandler* sourceHandler, T
   TControl::DoEvent(commandId, sourceHandler, event);
 }
 
-// FUNCTION: IMPERIALISM 0x004bc660
 #if defined(IMPERIALISM_RUNTIME_TESTS)
 bool TCityProductionView::ActivateBuildingSlotForRuntimeTest(short buildingSlot) {
   if (buildingSlot < 0 || buildingSlot >= 16 || buildingClipRegionsEC[buildingSlot] == 0) {
@@ -702,6 +701,7 @@ TCityProductionView::BuildingActionAnimationForRuntimeTest(short buildingSlot) {
 }
 #endif
 
+// FUNCTION: IMPERIALISM 0x004bc660
 void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)event;
   (void)origin;
@@ -737,12 +737,13 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
         UpdateToolbar();
         return;
       }
+      // MATCH: unbuilt oil/power without tech 0x13 skip OpenBuildingWindow (jz 0x4bc7e7).
+    } else {
+      g_pSfxPlaybackSystem->PlaySoundEffect(
+          static_cast<short>(g_cityBuildingSoundCueOffsets[buildingSlot] + 3000), 0, 1);
+      buildingViewsAC[buildingSlot] =
+          g_pMacViewMgr->OpenBuildingWindow(buildingSlot, city94, 0, 0, 0);
     }
-
-    g_pSfxPlaybackSystem->PlaySoundEffect(
-        static_cast<short>(g_cityBuildingSoundCueOffsets[buildingSlot] + 3000), 0, 1);
-    buildingViewsAC[buildingSlot] =
-        g_pMacViewMgr->OpenBuildingWindow(buildingSlot, city94, 0, 0, 0);
   }
   UpdateToolbar();
 }

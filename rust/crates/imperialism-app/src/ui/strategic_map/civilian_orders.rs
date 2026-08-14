@@ -7,33 +7,29 @@ use imperialism_core::{CivilianUnitId, CivilianUnitKind, RailOrderRejection};
 
 use super::{StrategicBaseTerrainCanvas, strategic_base_terrain_tile_at_cursor};
 
-#[derive(Clone, Copy, Default, Resource)]
-pub(crate) struct SelectedCivilian(pub(crate) Option<CivilianUnitId>);
+#[derive(Component, Default)]
+pub(crate) struct StrategicSelection(pub(crate) Option<CivilianUnitId>);
 
 pub(crate) fn register(app: &mut App) {
-    app.init_resource::<SelectedCivilian>()
-        .add_observer(on_strategic_map_click.run_if(in_state(AppState::StrategicMap)))
-        .add_systems(OnExit(AppState::StrategicMap), clear_selected_civilian);
-}
-
-fn clear_selected_civilian(mut selected: ResMut<SelectedCivilian>) {
-    selected.0 = None;
+    app.add_observer(on_strategic_map_click.run_if(in_state(AppState::StrategicMap)));
 }
 
 fn on_strategic_map_click(
     click: On<Pointer<Click>>,
-    maps: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
+    mut maps: Query<
+        (&RelativeCursorPosition, &mut StrategicSelection),
+        With<StrategicBaseTerrainCanvas>,
+    >,
     mut session: ResMut<GameSession>,
-    mut selected: ResMut<SelectedCivilian>,
 ) {
-    let Ok(cursor) = maps.get(click.entity) else {
+    let Ok((cursor, mut selected)) = maps.get_mut(click.entity) else {
         return;
     };
-    let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.0, cursor) else {
+    let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.game, cursor) else {
         return;
     };
-    let nation = session.0.turn().active_nation;
-    if let Some(unit) = session.0.selectable_civilian_on_tile(tile, nation) {
+    let nation = session.game.turn().active_nation;
+    if let Some(unit) = session.game.selectable_civilian_on_tile(tile, nation) {
         selected.0 = Some(unit);
         return;
     }
@@ -41,7 +37,7 @@ fn on_strategic_map_click(
         return;
     };
     let Some(kind) = session
-        .0
+        .game
         .civilian_units()
         .iter()
         .find(|candidate| candidate.id() == unit)
@@ -53,7 +49,7 @@ fn on_strategic_map_click(
     if kind != CivilianUnitKind::Engineer {
         return;
     }
-    match session.0.order_rail_construction(unit, tile) {
+    match session.game.order_rail_construction(unit, tile) {
         Ok(()) => selected.0 = None,
         Err(RailOrderRejection::InsufficientFunds | RailOrderRejection::InvalidTarget) => {}
         Err(RailOrderRejection::IneligibleUnit) => selected.0 = None,

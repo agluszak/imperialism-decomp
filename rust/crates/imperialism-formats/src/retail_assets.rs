@@ -1,6 +1,6 @@
 use crate::color::DibPalette;
 use crate::retail_resources::*;
-use crate::{PictureId, RetailFontFace};
+use crate::{PictureId, RetailCursor, RetailFontFace};
 use imperialism_core::{
     MajorNationId, NEWS_TEMPLATE_COUNT, NationId, NationTable, RandomGameNames,
 };
@@ -14,6 +14,9 @@ use std::path::{Path, PathBuf};
 
 const ENGLISH_LANGUAGE: u32 = 1033;
 const STRING_RESOURCE_TYPE: u32 = 6;
+const CURSOR_RESOURCE_TYPE: u32 = 1;
+const GROUP_CURSOR_RESOURCE_TYPE: u32 = 12;
+const EXE_PATH: &str = "Imperialism.exe";
 const STRINGS_ARCHIVE_PATH: &str = "Data/STR#ENU.GOB";
 const TABLE_ARCHIVE_PATH: &str = "Data/tabsenu.gob";
 
@@ -29,12 +32,13 @@ const NEWS_ROW_BYTES: usize = 24;
 
 /// Direct access to the retail files needed by the current application.
 ///
-/// The object owns raw archive/font bytes and indexes English PE resource ranges during opening.
+/// The object owns raw archive/font/exe bytes and indexes English PE resource ranges during opening.
 /// It deliberately retains no borrowed PE views.
 #[derive(Debug)]
 pub struct RetailAssets {
     pictures: [ResourceArchive; 4],
     strings: ResourceArchive,
+    exe: ResourceArchive,
     fonts: RetailFonts,
     default_dib_palette: DibPalette,
     news: NewsTable,
@@ -89,12 +93,14 @@ impl RetailAssets {
             bitmap_palette_rgb(dib).map_err(|error| resource_error(&archive.path, error))?
         };
         let strings = ResourceArchive::read(&root, STRINGS_ARCHIVE_PATH)?;
+        let exe = ResourceArchive::read(&root, EXE_PATH)?;
         let fonts = RetailFonts::read(&root)?;
         let news = load_news_table(&root)?;
 
         Ok(Self {
             pictures,
             strings,
+            exe,
             fonts,
             default_dib_palette,
             news,
@@ -205,6 +211,47 @@ impl RetailAssets {
     /// from the localized picture library before it draws the random-map preview.
     pub fn default_dib_palette(&self) -> &DibPalette {
         &self.default_dib_palette
+    }
+
+    /// `TViewMgr::LoadTurnEventCursorTable`: `LoadCursorA("~C%d")` for 1000..=1053.
+    pub const TURN_EVENT_CURSOR_BASE: u16 = 1000;
+    pub const TURN_EVENT_CURSOR_COUNT: usize = 0x36;
+
+    /// Resolves one turn-event cursor loaded by `LoadTurnEventCursorByResourceIdOffset1000`.
+    pub fn turn_event_cursor(&self, resource_id: u16) -> Result<RetailCursor, RetailAssetError> {
+        let name = format!("~C{resource_id}");
+        let group = self
+            .exe
+            .find(
+                ResourceName::Id(GROUP_CURSOR_RESOURCE_TYPE),
+                ResourceName::Text(name),
+            )
+            .ok_or(RetailAssetError::CursorNotFound { resource_id })?;
+        group_cursor_to_rgba(group, |cursor_id| {
+            self.exe
+                .find(
+                    ResourceName::Id(CURSOR_RESOURCE_TYPE),
+                    ResourceName::Id(cursor_id),
+                )
+                .map(ToOwned::to_owned)
+        })
+        .map_err(|error| resource_error(&self.exe.path, error))
+    }
+
+    /// Loads the 54-entry `TViewMgr::turnEventCursors` table.
+    pub fn turn_event_cursors(
+        &self,
+    ) -> Result<[RetailCursor; Self::TURN_EVENT_CURSOR_COUNT], RetailAssetError> {
+        let mut cursors = Vec::with_capacity(Self::TURN_EVENT_CURSOR_COUNT);
+        for index in 0..Self::TURN_EVENT_CURSOR_COUNT {
+            cursors.push(self.turn_event_cursor(
+                Self::TURN_EVENT_CURSOR_BASE
+                    + u16::try_from(index).expect("turn-event cursor index fits u16"),
+            )?);
+        }
+        Ok(cursors
+            .try_into()
+            .unwrap_or_else(|_| unreachable!("turn-event cursor table is a fixed 54-entry array")))
     }
 
     /// Returns the font bytes consumed by the UI.
@@ -378,6 +425,8 @@ pub enum RetailAssetError {
     Resource { path: PathBuf, detail: String },
     #[error("no English picture {0} is available")]
     PictureNotFound(PictureId),
+    #[error("no English turn-event cursor ~C{resource_id} is available")]
+    CursorNotFound { resource_id: u16 },
     #[error("no English string is available for group {group:#06x}, direct index {direct_index}")]
     StringNotFound { group: i16, direct_index: i16 },
     #[error("Data/pictenu.gob has no English BITMAP resource 950.BMP")]
@@ -528,7 +577,7 @@ mod tests {
     const SECTION_OFFSET: usize = OPTIONAL_OFFSET + 224;
     const RESOURCE_OFFSET: usize = 0x200;
     const RESOURCE_RVA: u32 = 0x1000;
-    const RESOURCE_SIZE: usize = 0x3e00;
+    const RESOURCE_SIZE: usize = 0x10000;
 
     #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
     enum TestName {
@@ -593,6 +642,10 @@ mod tests {
             assets.default_dib_palette()[0x16],
             crate::Rgb::new(0x57, 0x8b, 0xa6)
         );
+        let idle = assets.turn_event_cursor(0x41b).unwrap();
+        assert_eq!(idle.width, 32);
+        assert_eq!(idle.height, 32);
+        assert_eq!(idle.rgba.len(), 32 * 32 * 4);
     }
 
     #[test]
@@ -627,6 +680,12 @@ mod tests {
         let palette = assets.default_dib_palette();
         assert_eq!(palette[0x13], crate::Rgb::new(0xff, 0xff, 0xff));
         assert_eq!(palette[0x16], crate::Rgb::new(0x57, 0x8b, 0xa6));
+        let peace = assets
+            .turn_event_cursor(1028)
+            .expect("diplomacy peace cursor ~C1028");
+        assert_eq!(peace.width, 32);
+        assert_eq!(peace.height, 32);
+        assert_eq!(peace.rgba.len(), 32 * 32 * 4);
     }
 
     fn temporary_root() -> TempDir {
@@ -697,7 +756,66 @@ mod tests {
                 ),
             ]),
         );
+        write_retail_file(
+            root.path(),
+            EXE_PATH,
+            &synthetic_pe(turn_event_cursor_resources()),
+        );
         root
+    }
+
+    fn turn_event_cursor_resources() -> Vec<TestResource> {
+        let cursor = one_bit_cursor_resource();
+        let group = group_cursor_directory(cursor.len() as u32, 7);
+        let mut resources = vec![TestResource::new(
+            TestName::id(CURSOR_RESOURCE_TYPE),
+            TestName::id(7),
+            cursor,
+        )];
+        for index in 0..RetailAssets::TURN_EVENT_CURSOR_COUNT {
+            let id = RetailAssets::TURN_EVENT_CURSOR_BASE + index as u16;
+            resources.push(TestResource::new(
+                TestName::id(GROUP_CURSOR_RESOURCE_TYPE),
+                TestName::text(&format!("~C{id}")),
+                group.clone(),
+            ));
+        }
+        resources
+    }
+
+    fn one_bit_cursor_resource() -> Vec<u8> {
+        let mut blob = Vec::new();
+        blob.extend_from_slice(&0u16.to_le_bytes());
+        blob.extend_from_slice(&0u16.to_le_bytes());
+        blob.extend_from_slice(&40u32.to_le_bytes());
+        blob.extend_from_slice(&32i32.to_le_bytes());
+        blob.extend_from_slice(&64i32.to_le_bytes());
+        blob.extend_from_slice(&1u16.to_le_bytes());
+        blob.extend_from_slice(&1u16.to_le_bytes());
+        blob.extend_from_slice(&0u32.to_le_bytes());
+        blob.extend_from_slice(&256u32.to_le_bytes());
+        blob.extend_from_slice(&0i32.to_le_bytes());
+        blob.extend_from_slice(&0i32.to_le_bytes());
+        blob.extend_from_slice(&2u32.to_le_bytes());
+        blob.extend_from_slice(&0u32.to_le_bytes());
+        blob.extend_from_slice(&[0, 0, 0, 0, 0xff, 0xff, 0xff, 0]);
+        blob.extend_from_slice(&[0u8; 128]);
+        blob.extend_from_slice(&[0xffu8; 128]);
+        blob
+    }
+
+    fn group_cursor_directory(resource_size: u32, resource_id: u16) -> Vec<u8> {
+        let mut group = Vec::new();
+        group.extend_from_slice(&0u16.to_le_bytes());
+        group.extend_from_slice(&2u16.to_le_bytes());
+        group.extend_from_slice(&1u16.to_le_bytes());
+        group.extend_from_slice(&32u16.to_le_bytes());
+        group.extend_from_slice(&64u16.to_le_bytes());
+        group.extend_from_slice(&1u16.to_le_bytes());
+        group.extend_from_slice(&1u16.to_le_bytes());
+        group.extend_from_slice(&resource_size.to_le_bytes());
+        group.extend_from_slice(&resource_id.to_le_bytes());
+        group
     }
 
     fn write_retail_file(root: &Path, relative: &str, bytes: &[u8]) {
