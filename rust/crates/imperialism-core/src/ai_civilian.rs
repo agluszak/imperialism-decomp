@@ -1043,7 +1043,7 @@ fn turns(value: i16) -> TurnsRemaining {
     TurnsRemaining::try_new(value).expect("work orders use a positive remaining-turn count")
 }
 
-fn extractive_resource(resource: ResourceKind) -> bool {
+pub(crate) fn extractive_resource(resource: ResourceKind) -> bool {
     matches!(
         resource,
         ResourceKind::Coal

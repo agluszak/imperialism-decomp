@@ -139,18 +139,10 @@ mod tests {
             actual,
             vec![41, 18_467, 6_334, 26_500, 19_169, 15_724, 11_478, 29_358]
         );
+        assert_eq!(actual[0] % 7, 6, "setup nation draw is rand() % 7");
         assert_eq!(rng.crt_rand, RetailCrtRng::from_state(1_924_036_713));
         assert_eq!(rng.map_generation, RetailLcg::from_state(0x1122_3344));
         assert_eq!(rng.zone_status, RetailLcg::from_state(0x5566_7788));
-    }
-
-    #[test]
-    fn retail_crt_rng_reproduces_the_setup_nation_draw() {
-        let mut rng = RetailCrtRng::from_state(1);
-        let draw = rng.next_rand();
-        assert_eq!(draw, 41);
-        assert_eq!(draw % 7, 6);
-        assert_eq!(rng.state(), 2_745_024);
     }
 
     #[test]

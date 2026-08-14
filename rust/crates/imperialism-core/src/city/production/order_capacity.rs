@@ -49,7 +49,7 @@ pub(crate) fn produce_population_growth(
     population: &mut PopulationState,
     production_accum: &mut ProductionTable<i16>,
     owner: &GreatPowerState,
-    owned_region_count: i32,
+    owned_region_count: usize,
 ) {
     population.baseline_labor.low += progress.quantity;
     population.production_labor.low += progress.quantity;
@@ -313,7 +313,7 @@ pub(crate) fn restock_power_plant(
     }
 }
 
-pub(crate) fn retail_region_capacity(owner: &GreatPowerState, owned_region_count: i32) -> i16 {
+pub(crate) fn retail_region_capacity(owner: &GreatPowerState, owned_region_count: usize) -> i16 {
     let divisor = if owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
         .status()
         .has_reached(crate::PendingActionStatus::Level3)

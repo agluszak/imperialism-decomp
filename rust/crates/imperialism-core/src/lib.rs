@@ -56,14 +56,14 @@ pub use ai::{
 };
 pub use calendar::TurnCalendar;
 pub use city::{
-    CIVILIAN_RESOURCE_SPECIALTIES, CityFacilitySlot, CityOrderId, CityOrders, CityState,
-    CityWindowPosition, ExpandableFacility, ExpansionOrderTable, ItemOrderTable, ManufacturedItem,
-    MilitaryRecruitOrderState, MilitaryRecruitOrderTable, MilitaryRecruitmentCategory, OrderLimit,
-    PowerPlantOrderState, ProductionConstraint, ProductionProgress, RecruitmentOrderSpec,
-    RequestedCityOrderState, ResourceCost, ShipMaterials, ShipOrderSlot, ShipOrderState,
-    ShipOrderTable, Stockpile, TownState, TrainingLevel, TrainingOrderTable,
-    civilian_recruitment_spec, military_recruitment_spec, resource_development_yield,
-    ship_display_stats, ship_order_costs,
+    CIVILIAN_RESOURCE_SPECIALTIES, CityFacilitySlot, CityOrderId, CityOrderUpdate, CityOrders,
+    CityState, CityWindowPosition, ExpandableFacility, ExpansionOrderTable, ItemOrderTable,
+    ManufacturedItem, MilitaryRecruitOrderState, MilitaryRecruitOrderTable,
+    MilitaryRecruitmentCategory, OrderLimit, PowerPlantOrderState, ProductionConstraint,
+    ProductionProgress, RecruitmentOrderSpec, RequestedCityOrderState, ResourceCost, ShipMaterials,
+    ShipOrderSlot, ShipOrderState, ShipOrderTable, Stockpile, TownState, TrainingLevel,
+    TrainingOrderTable, civilian_recruitment_spec, military_recruitment_spec,
+    resource_development_yield, ship_display_stats, ship_order_costs,
 };
 pub(crate) use city::{EXPANSION_INPUTS, ItemInputs};
 pub use city_site::{
@@ -82,9 +82,10 @@ pub use deal_book::{
 };
 pub use difficulty::Difficulty;
 pub use diplomacy::{
-    DiplomacyGrant, DiplomacyOfferPrompt, DiplomacyPhaseResult, DiplomacyPolicy, DiplomacyState,
-    DiplomacyWarJoinKind, DiplomacyWarJoinPrompt, DiplomaticCongressState, DiplomaticMissionLevel,
-    DiplomaticRelationship, PlayerDiplomacyOrderResult, PlayerDiplomacyRejection, TradePolicyScore,
+    DiplomacyGrant, DiplomacyMapAction, DiplomacyOfferPrompt, DiplomacyPhaseResult,
+    DiplomacyPolicy, DiplomacyState, DiplomacyWarJoinKind, DiplomacyWarJoinPrompt,
+    DiplomaticCongressState, DiplomaticMissionLevel, DiplomaticRelationship,
+    PlayerDiplomacyOrderResult, PlayerDiplomacyRejection, TradePolicyScore,
 };
 pub use game::{GameState, GameStateParts};
 pub use ids::{
@@ -92,8 +93,8 @@ pub use ids::{
     ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,
 };
 pub use map::{
-    DevelopmentLevel, MapMgr, RegionId, RiverSegment, RiverSprite, TerrainKind, TileAction,
-    TileDevelopment, TileFlags, TileRendering, TileState, TileTransportLinks,
+    DevelopmentLevel, MapEdges, MapMgr, RegionId, RiverSegment, RiverSprite, TerrainKind,
+    TileAction, TileDevelopment, TileFlags, TileRendering, TileState, TileTransportLinks,
 };
 pub use map_geometry::{
     HexDirection, MapGeometry, MapTopology, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH,

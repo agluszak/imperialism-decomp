@@ -209,7 +209,7 @@ pub(super) fn initialize_minor_trade_state(world: &MapMgr, nations: &mut Nations
         };
         let owner = TileOwnerTag::from_nation(nation.nation());
         let mut counts = ResourceTable::default();
-        for tile in &world.tiles {
+        for tile in world.tiles.iter() {
             if tile.owner_nation != Some(owner) || tile.gate == 0xf {
                 continue;
             }

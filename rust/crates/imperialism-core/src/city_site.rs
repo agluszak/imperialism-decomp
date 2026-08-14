@@ -420,6 +420,70 @@ mod tests {
         )
     }
 
+    fn assert_opening_civilians(state: &GameState, nation: MajorNationId, count: usize) {
+        let units: Vec<_> = state
+            .civilian_units()
+            .iter()
+            .filter(|unit| unit.nation() == nation.nation())
+            .collect();
+        assert_eq!(units.len(), count);
+        assert!(
+            units
+                .iter()
+                .all(|unit| *unit.order() == CivilianWorkOrder::Idle)
+        );
+        assert!(units.iter().all(|unit| unit.location().tile().is_some()));
+        let expected_kinds = match count {
+            2 => vec![CivilianUnitKind::Prospector, CivilianUnitKind::Engineer],
+            5 => vec![
+                CivilianUnitKind::Prospector,
+                CivilianUnitKind::Engineer,
+                CivilianUnitKind::Prospector,
+                CivilianUnitKind::Miner,
+                CivilianUnitKind::Farmer,
+            ],
+            _ => panic!("unexpected opening civilian count {count}"),
+        };
+        let kinds: Vec<_> = units.iter().map(|unit| unit.unit_type()).collect();
+        assert_eq!(kinds, expected_kinds);
+        let trader = state.nations.city(nation).ship_order_count_by_type[ShipType::Trader];
+        assert_eq!(trader, if count == 5 { 8 } else { 2 });
+    }
+
+    fn assert_map_centers_on_first_idle_civilian(state: &mut GameState) {
+        let civilian = state
+            .first_idle_civilian_tile(state.turn().active_nation)
+            .expect("opening civilians include an idle unit on the map");
+        let expected = state.map().viewport_origin_centered_on(civilian);
+        state.center_map_on_first_idle_civilian();
+        assert_eq!(state.map_view_origin(), expected);
+        let home = state
+            .nations
+            .major(
+                MajorNationId::from_nation(state.turn().active_nation)
+                    .expect("active nation is a great power"),
+            )
+            .common
+            .home_tile
+            .expect("opening map centering requires a home tile");
+        let geometry = state.map().geometry();
+        let (home_row, home_column) = geometry.row_column(home);
+        let (origin_row, origin_column) = geometry.row_column(state.map_view_origin());
+        let row_delta = i32::from(home_row) - i32::from(origin_row);
+        let mut column_delta = i32::from(home_column) - i32::from(origin_column);
+        if column_delta < 0 {
+            column_delta += i32::from(STRATEGIC_MAP_WIDTH);
+        }
+        assert!(
+            (0..7).contains(&row_delta),
+            "capital row {home_row} is outside the 7-row viewport from {origin_row}"
+        );
+        assert!(
+            (0..9).contains(&column_delta),
+            "capital column {home_column} is outside the 9-column viewport from {origin_column}"
+        );
+    }
+
     fn normal_start() -> GameState {
         let preview = initial_seed_one_preview();
         create_random_game(
@@ -468,11 +532,17 @@ mod tests {
         }
 
         let site = validate_capital_site_selection(&state, MajorNationId::new(6), tile).unwrap();
-        confirm_capital_site(&mut state, site);
+        let mut story_ids = vec![1; 360];
+        story_ids[0] = -1003;
+        state.set_news_story_ids(&story_ids);
+        let stop = confirm_capital_site(&mut state, site);
 
         assert!(matches!(
-            state.turn.phase,
-            crate::PhaseCode::TECHNOLOGY_ADVANCES | crate::PhaseCode::NEWSPAPER
+            (stop, state.turn.phase),
+            (
+                crate::TurnStop::TechnologyAdvance,
+                crate::PhaseCode::NEWSPAPER
+            ) | (crate::TurnStop::Newspaper, crate::PhaseCode::RETURN_TO_MAP)
         ));
         assert_eq!(state.turn.economic_turn, 1);
         assert_eq!(
@@ -496,6 +566,8 @@ mod tests {
                 .map(|town| town.tile),
             Some(tile)
         );
+        assert_opening_civilians(&state, MajorNationId::new(6), 2);
+        assert_map_centers_on_first_idle_civilian(&mut state);
     }
 
     #[test]
@@ -521,10 +593,16 @@ mod tests {
         );
         assert_eq!(state.map[home].owner_nation, Some(TileOwnerTag::new(6)));
         assert!(state.map[home].flags.is_city());
-        enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6));
+        let mut story_ids = vec![1; 360];
+        story_ids[0] = -1003;
+        state.set_news_story_ids(&story_ids);
+        let stop = enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6));
         assert!(matches!(
-            state.turn.phase,
-            crate::PhaseCode::TECHNOLOGY_ADVANCES | crate::PhaseCode::NEWSPAPER
+            (stop, state.turn.phase),
+            (
+                crate::TurnStop::TechnologyAdvance,
+                crate::PhaseCode::NEWSPAPER
+            ) | (crate::TurnStop::Newspaper, crate::PhaseCode::RETURN_TO_MAP)
         ));
         assert_eq!(state.turn.economic_turn, 1);
         assert_eq!(
@@ -532,6 +610,34 @@ mod tests {
             Some(home)
         );
         state.rebuild_nation_resource_yields(MajorNationId::new(6));
+        assert_opening_civilians(&state, MajorNationId::new(6), 2);
+        assert_map_centers_on_first_idle_civilian(&mut state);
+    }
+
+    #[test]
+    fn introductory_path_grants_five_human_civilians_and_centers_on_the_first() {
+        let preview = initial_seed_one_preview();
+        let mut state = create_random_game(
+            &preview,
+            MajorNationId::new(6),
+            Difficulty::Introductory,
+            "Testland",
+            true,
+            1,
+            &crate::test_support::random_game_names(),
+        );
+        enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6));
+        assert_opening_civilians(&state, MajorNationId::new(6), 5);
+        for slot in 0..MajorNationId::COUNT {
+            let nation = MajorNationId::new(slot);
+            if nation == MajorNationId::new(6)
+                || state.nations.major(nation).common.home_tile.is_none()
+            {
+                continue;
+            }
+            assert_opening_civilians(&state, nation, 2);
+        }
+        assert_map_centers_on_first_idle_civilian(&mut state);
     }
 
     #[test]

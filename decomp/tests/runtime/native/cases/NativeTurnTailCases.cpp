@@ -1,7 +1,11 @@
 #include "NativeCases.h"
 #include "JsonObject.h"
 
+#include "game/city/TCity.h"
+#include "game/civilian_domain_types.h"
 #include "game/globals/shared_globals.h"
+#include "game/map/TMapMgr.h"
+#include "game/military/TCivUnit.h"
 #include "game/military/TArmyMgr.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
@@ -244,4 +248,68 @@ RuntimeActionResult RunEliminationPhaseWithLandedGreatPowers(NativeTransition& t
     return transition.Finish(json_value_init_string("player_eliminated"));
   }
   return transition.Finish(ContinueOutcome());
+}
+
+RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition) {
+  TGreatPower* nation = ActiveNation();
+  if (nation == 0 || nation->city == 0 || g_pSimMgr == 0 || g_pGlobalMapState == 0) {
+    return RuntimeActionResult::Failure("opening civilian grant state is unavailable");
+  }
+
+  g_pSimMgr->difficultyLevel = 0;
+  g_pSimMgr->scenarioMapIndexPlusOne = 0;
+  nation->diplomacyEligibilityA0 = 1;
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  TCity* city = nation->city;
+  short result1 =
+      g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(nation->homeTileIndex, 0);
+  TCivUnit* civ1 = new TCivUnit();
+  civ1->ICivUnit(kCivilianUnitProspector, result1, nation->nationSlot);
+
+  short result2 =
+      g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(nation->homeTileIndex, 1);
+  TCivUnit* civ2 = new TCivUnit();
+  civ2->ICivUnit(kCivilianUnitEngineer, result2, nation->nationSlot);
+
+  city->orderCountByType5c[1] += 2;
+
+  if (g_pSimMgr->difficultyLevel == 0 && nation->diplomacyEligibilityA0) {
+    city->orderCountByType5c[1] += 6;
+
+    short result3 =
+        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(nation->homeTileIndex, 0);
+    TCivUnit* civ3 = new TCivUnit();
+    civ3->ICivUnit(kCivilianUnitProspector, result3, nation->nationSlot);
+
+    short result4 =
+        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(nation->homeTileIndex, 0);
+    TCivUnit* civ4 = new TCivUnit();
+    civ4->ICivUnit(kCivilianUnitMiner, result4, nation->nationSlot);
+
+    short result5 =
+        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(nation->homeTileIndex, 0);
+    TCivUnit* civ5 = new TCivUnit();
+    civ5->ICivUnit(kCivilianUnitFarmer, result5, nation->nationSlot);
+  }
+
+  return transition.Finish();
+}
+
+RuntimeActionResult RunDealBookTurnStop(NativeTransition& transition) {
+  if (g_pSimMgr == 0) {
+    return RuntimeActionResult::Failure("turn state is unavailable");
+  }
+  g_pSimMgr->turnStateCode = 0xc;
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+  g_pSimMgr->AdvanceGlobalTurnStateMachine();
+  return transition.Finish(json_value_init_string("deal_book"));
 }

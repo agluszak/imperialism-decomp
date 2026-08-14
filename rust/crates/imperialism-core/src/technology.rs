@@ -396,9 +396,9 @@ impl GameState {
     }
 
     fn apply_ability_unlock(&mut self, tech_id: usize, nation: MajorNationId) {
-        // FIXME: `HandleAbilityUnlock` also upgrades developed-tile civilian class,
-        // navy/score `UpdateSelectionAndRecalculateScores`, unit-order cost profiles,
-        // and `TMilitaryUnit::Upgrade()`. First turn usually has nothing Pending.
+        // FIXME: `HandleAbilityUnlock` also performs navy/score
+        // `UpdateSelectionAndRecalculateScores`, unit-order cost-profile changes,
+        // and `TMilitaryUnit::Upgrade()` for the corresponding technologies.
         if self.technology.research_status_by_nation[nation][tech_id]
             == TechnologyResearchStatus::Researched
         {
@@ -503,7 +503,31 @@ impl GameState {
             }
             _ => {}
         }
+        self.upgrade_owned_surface_development(nation);
         sync_city_capabilities_from_research(&mut self.technology, nation);
+    }
+
+    fn upgrade_owned_surface_development(&mut self, nation: MajorNationId) {
+        let requirements = self.technology.city_capabilities_by_nation[nation]
+            .university
+            .requirement_levels;
+        let owner = TileOwnerTag::from_nation(nation.nation());
+        for tile in self.map.tiles.iter_mut() {
+            if tile.owner_nation != Some(owner) || !tile.flags.contains(TileFlags::BASE_TRANSPORT) {
+                continue;
+            }
+            let level = tile
+                .edge_resources
+                .into_iter()
+                .flatten()
+                .filter(|resource| !crate::ai_civilian::extractive_resource(*resource))
+                .map(|resource| requirements[resource])
+                .max()
+                .unwrap_or(0);
+            if tile.development.surface.get() < level {
+                tile.development.surface = DevelopmentLevel::new(level);
+            }
+        }
     }
 
     fn set_requirement_level(&mut self, nation: MajorNationId, resource: usize, level: u8) {

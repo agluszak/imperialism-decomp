@@ -1,4 +1,4 @@
-#include "NativeTransition.h"
+#include "NativeCases.h"
 #include "JsonArray.h"
 #include "JsonObject.h"
 
@@ -9,6 +9,7 @@
 #include "game/globals/ui_core_globals.h"
 #include "game/ui_core/TLanguageMgr.h"
 #include "game/ui_screens/TNewsMgr.h"
+#include "game/ui_screens/TSimMgr.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -112,4 +113,26 @@ RuntimeActionResult RunConstructNewspaperPage(NativeTransition& transition) {
 
 RuntimeActionResult RunConstructNewspaperPageMiscEvent(NativeTransition& transition) {
   return RunNewspaperConstruction(transition, true);
+}
+
+RuntimeActionResult RunNewspaperTurnStop(NativeTransition& transition) {
+  if (g_pSimMgr == 0) {
+    return RuntimeActionResult::Failure("turn state is unavailable");
+  }
+
+  JsonArray storyIds;
+  RuntimeActionResult loaded = LoadNewsStoryIds(&storyIds);
+  if (!loaded.Succeeded()) {
+    return loaded;
+  }
+  g_pSimMgr->turnStateCode = 0xf;
+
+  JsonObject operation;
+  operation.Set("story_ids", storyIds.Release());
+  RuntimeActionResult started = transition.Begin(operation.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+  g_pSimMgr->AdvanceGlobalTurnStateMachine();
+  return transition.Finish(json_value_init_string("newspaper"));
 }

@@ -81,7 +81,11 @@ pub enum SkillBand {
 
 impl SkillBand {
     const fn weight(self) -> i16 {
-        self as i16
+        match self {
+            Self::Low => 1,
+            Self::Medium => 2,
+            Self::High => 4,
+        }
     }
 }
 
@@ -208,18 +212,36 @@ impl PopulationState {
         }
     }
 
+    /// Values `TPopulationMgr::PredictedNeeds` writes for `resource`.
+    ///
+    /// Grain, fruit, and livestock are rebuilt from current population plus the
+    /// city's population-growth order. Hardware, clothing, and furniture are
+    /// cleared. Other slots keep their stored table entry.
+    pub fn predicted_need_after_refresh(&self, resource: ResourceKind, order_quantity: i16) -> i16 {
+        if STRIKE_RESOURCES.contains(&resource) {
+            return 0;
+        }
+        let supported = self.count + order_quantity;
+        match resource {
+            ResourceKind::Grain => ((i32::from(supported) + 1) / 2) as i16,
+            ResourceKind::Fruit => ((i32::from(supported) + 2) / 4) as i16,
+            ResourceKind::Livestock => supported / 4,
+            _ => self.predicted_need_by_resource[resource],
+        }
+    }
+
     /// Mirrors `TPopulationMgr::PredictedNeeds`; the order quantity is the
     /// city's trailing order slot 9 contribution to supported population.
     pub fn refresh_predicted_needs(&mut self, order_quantity: i16) -> &mut ResourceTable<i16> {
         for resource in STRIKE_RESOURCES {
             self.predicted_need_by_resource[resource] = 0;
         }
-        let supported = self.count + order_quantity;
         self.predicted_need_by_resource[ResourceKind::Grain] =
-            ((i32::from(supported) + 1) / 2) as i16;
+            self.predicted_need_after_refresh(ResourceKind::Grain, order_quantity);
         self.predicted_need_by_resource[ResourceKind::Fruit] =
-            ((i32::from(supported) + 2) / 4) as i16;
-        self.predicted_need_by_resource[ResourceKind::Livestock] = supported / 4;
+            self.predicted_need_after_refresh(ResourceKind::Fruit, order_quantity);
+        self.predicted_need_by_resource[ResourceKind::Livestock] =
+            self.predicted_need_after_refresh(ResourceKind::Livestock, order_quantity);
         &mut self.predicted_need_by_resource
     }
 
@@ -754,6 +776,29 @@ mod tests {
         assert_eq!(state.predicted_need_by_resource[ResourceKind::Fruit], 2);
         assert_eq!(state.predicted_need_by_resource[ResourceKind::Livestock], 2);
         assert_eq!(state.predicted_need_by_resource[ResourceKind::Arms], 9);
+    }
+
+    #[test]
+    fn city_screen_need_rebuilds_predicted_needs_without_mutating() {
+        let state = population();
+        assert_eq!(
+            state.predicted_need_after_refresh(ResourceKind::Clothing, 2),
+            0
+        );
+        assert_eq!(
+            state.predicted_need_after_refresh(ResourceKind::Grain, 2),
+            5
+        );
+        assert_eq!(
+            state.predicted_need_after_refresh(ResourceKind::Fruit, 2),
+            2
+        );
+        assert_eq!(
+            state.predicted_need_after_refresh(ResourceKind::Livestock, 2),
+            2
+        );
+        assert_eq!(state.predicted_need(ResourceKind::Clothing), 9);
+        assert_eq!(state.predicted_need(ResourceKind::Grain), 9);
     }
 
     #[test]

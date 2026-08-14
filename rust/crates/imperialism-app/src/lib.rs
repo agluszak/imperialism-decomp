@@ -26,6 +26,8 @@ pub(crate) enum AppState {
     OfferSheet,
     TechnologyAdvance,
     Newspaper,
+    Credits,
+    Preferences,
 }
 
 #[derive(Resource)]
@@ -38,6 +40,20 @@ impl RetailAssetsResource {
 
     pub(crate) const fn assets(&self) -> &RetailAssets {
         &self.0
+    }
+
+    pub(crate) fn string(
+        &self,
+        group: i16,
+        direct_index: i16,
+    ) -> Result<String, imperialism_formats::RetailAssetError> {
+        self.0.string(group, direct_index)
+    }
+
+    /// `TSimMgr::GetString`: adds one before the direct lookup.
+    pub(crate) fn get_string(&self, group: i16, offset: i16) -> String {
+        self.string(group, offset + 1)
+            .expect("retail hover-help string")
     }
 }
 
@@ -62,7 +78,13 @@ fn add_game_plugins(app: &mut App) {
         ui::DealBookPlugin,
         ui::OfferSheetPlugin,
     ))
-    .add_plugins((ui::TechnologyAdvancePlugin, ui::NewspaperPlugin));
+    .add_plugins((
+        ui::CursorPlugin,
+        ui::TechnologyAdvancePlugin,
+        ui::NewspaperPlugin,
+        ui::CreditsPlugin,
+        ui::PreferencesPlugin,
+    ));
 }
 
 pub fn run(
@@ -85,20 +107,20 @@ pub fn run(
                 ..default()
             }),
     );
-    app.insert_resource(RetailAssetsResource::new(retail_assets))
-        .insert_resource(RandomGameNamesResource(random_game_names))
-        .insert_resource(ui::SaveDirectory(save_directory));
     if let Some(game) = initial_game {
         assert_eq!(
             game.turn().phase(),
             imperialism_core::PhaseCode::STRATEGIC_MAP,
             "Bevy may only start from a strategic-map core phase"
         );
-        app.insert_resource(ui::GameSession(game))
+        app.insert_resource(ui::GameSession::from_assets(game, &retail_assets))
             .insert_state(AppState::StrategicMap);
     } else {
         app.init_state::<AppState>();
     }
+    app.insert_resource(RetailAssetsResource::new(retail_assets))
+        .insert_resource(RandomGameNamesResource(random_game_names))
+        .insert_resource(ui::SaveDirectory(save_directory));
     add_game_plugins(&mut app);
     app.world_mut()
         .spawn((Camera2d, Msaa::Off, UiAntiAlias::Off));
@@ -142,6 +164,8 @@ mod tests {
             AppState::OfferSheet,
             AppState::TechnologyAdvance,
             AppState::Newspaper,
+            AppState::Credits,
+            AppState::Preferences,
         ] {
             initialize_schedule(&mut app, OnEnter(state));
             initialize_schedule(&mut app, OnExit(state));

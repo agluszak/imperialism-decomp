@@ -439,6 +439,50 @@ enum PlayerDiplomacyAction {
     BuildEmbassy,
 }
 
+/// Retail `eDipAction` used by the diplomacy map click and cursor paths.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[repr(u8)]
+pub enum DiplomacyMapAction {
+    None = 0,
+    SelectedNation = 1,
+    JoinEmpire = 2,
+    Alliance = 3,
+    NonAggressionPact = 4,
+    PeaceTreaty = 5,
+    DeclareWar = 6,
+    OneTimeGrant = 7,
+    RecurringGrant = 8,
+    TradeSubsidy = 9,
+    TradePolicy = 10,
+    Boycott = 11,
+    LinkTradePolicy = 12,
+    InspectNation = 13,
+    BuildConsulate = 14,
+    BuildEmbassy = 15,
+}
+
+impl DiplomacyMapAction {
+    const fn player_action(self) -> Option<PlayerDiplomacyAction> {
+        match self {
+            Self::JoinEmpire => Some(PlayerDiplomacyAction::JoinEmpire),
+            Self::Alliance => Some(PlayerDiplomacyAction::Alliance),
+            Self::NonAggressionPact => Some(PlayerDiplomacyAction::NonAggressionPact),
+            Self::PeaceTreaty => Some(PlayerDiplomacyAction::PeaceTreaty),
+            Self::DeclareWar => Some(PlayerDiplomacyAction::DeclareWar),
+            Self::OneTimeGrant | Self::RecurringGrant => Some(PlayerDiplomacyAction::Grant),
+            Self::TradeSubsidy => Some(PlayerDiplomacyAction::TradeSubsidy),
+            Self::Boycott => Some(PlayerDiplomacyAction::Boycott),
+            Self::BuildConsulate => Some(PlayerDiplomacyAction::BuildConsulate),
+            Self::BuildEmbassy => Some(PlayerDiplomacyAction::BuildEmbassy),
+            Self::None
+            | Self::SelectedNation
+            | Self::TradePolicy
+            | Self::LinkTradePolicy
+            | Self::InspectNation => None,
+        }
+    }
+}
+
 impl DiplomacyPolicy {
     const fn player_action(self) -> Option<PlayerDiplomacyAction> {
         match self {
@@ -639,6 +683,24 @@ impl GameState {
     ) -> PlayerDiplomacyOrderResult {
         self.diplomacy.proposal_mode_raw = rejection.proposal_mode();
         PlayerDiplomacyOrderResult::Rejected(rejection)
+    }
+
+    /// Bool result of `ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode`.
+    pub fn player_diplomacy_map_action_is_valid(
+        &self,
+        source: MajorNationId,
+        target: NationId,
+        action: DiplomacyMapAction,
+    ) -> bool {
+        if source.nation() == target {
+            return false;
+        }
+        match action.player_action() {
+            None => matches!(self.status_of(target), CountryStatus::Independent),
+            Some(action) => self
+                .validate_player_diplomacy_action(source, target, action)
+                .is_ok(),
+        }
     }
 
     fn validate_player_diplomacy_action(

@@ -615,4 +615,32 @@ mod tests {
                     && fields.contains("map.provinces.0.oracle_extra")
         ));
     }
+
+    #[test]
+    fn semantic_comparison_rejects_a_runtime_only_difference() {
+        let mut sea_zone_marker_crt = RetailCrtRng::from_state(1);
+        let _ = sea_zone_marker_crt.next_rand();
+        let preview = generate_random_setup_preview_with_clock_seed(
+            b"Woopnist",
+            MapTopology::Wrapping,
+            1,
+            sea_zone_marker_crt,
+        );
+        let expected = create_random_game(
+            &preview,
+            MajorNationId::new(6),
+            Difficulty::Easy,
+            "Testland",
+            true,
+            1,
+            &test_random_game_names(),
+        );
+        let actual = serde_json::from_value(serde_json::to_value(&expected).unwrap()).unwrap();
+
+        let error = crate::assert_game_state_eq(&expected, &actual).unwrap_err();
+        assert_eq!(
+            error.to_string(),
+            "game states differ only in non-serialized state"
+        );
+    }
 }

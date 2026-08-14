@@ -458,7 +458,7 @@ pub(in crate::ui::city) fn sync_university_details(
         return;
     }
     let nation = city_active_nation(&session);
-    let major = session.0.nations().major(nation);
+    let major = session.game.nations().major(nation);
     let city = &major.city;
     let row = rows
         .iter()
@@ -468,7 +468,7 @@ pub(in crate::ui::city) fn sync_university_details(
     let production = city.population.production_labor();
     let workforce_available = production.high.min(city.population.strength() / 4);
     let specialties = CIVILIAN_RESOURCE_SPECIALTIES[selection.kind];
-    let levels = &session.0.technology().city_capabilities_by_nation[nation]
+    let levels = &session.game.technology().city_capabilities_by_nation[nation]
         .university
         .requirement_levels;
     let maximum = specialties

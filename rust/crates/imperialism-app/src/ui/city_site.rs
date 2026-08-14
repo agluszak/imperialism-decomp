@@ -9,8 +9,8 @@ use crate::ui::retail::ModalDialog;
 use crate::ui::retail::{RetailTag, find_descendant};
 use crate::ui::session::apply_turn_stop;
 use crate::ui::strategic_map::{
-    StrategicBaseTerrainCanvas, bind_strategic_base_terrain, compose_city_site_terrain,
-    strategic_base_terrain_tile_at_cursor,
+    StrategicBaseTerrainCanvas, bind_minimap, bind_strategic_base_terrain,
+    compose_city_site_terrain, strategic_base_terrain_tile_at_cursor, sync_minimap,
 };
 use crate::{AppState, RetailAssetsResource};
 use bevy::input_focus::tab_navigation::TabGroup;
@@ -77,6 +77,7 @@ impl Plugin for CitySitePlugin {
                     bind_new_city_dialog,
                     bind_city_site_notice,
                     sync_city_site_hover,
+                    sync_minimap,
                 )
                     .run_if(in_state(AppState::CitySite)),
             );
@@ -119,7 +120,15 @@ fn bind_city_site(
         &children,
         &tags,
         &mut assets,
-        &session.0,
+        &session.game,
+    );
+    bind_minimap(
+        &mut commands,
+        root,
+        &children,
+        &tags,
+        &mut assets,
+        &session.game,
     );
     commands
         .entity(map)
@@ -196,7 +205,7 @@ fn bind_city_site_intro(
     if !scene_has_children(root, &children) {
         return;
     }
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("City-site screen requires an active major nation");
     let minister = get_string(&assets, MINISTER_STRING_GROUP, 2);
     let mut title = fill_brackets(&get_string(&assets, MINISTER_STRING_GROUP, 4), &[&minister]);
@@ -248,19 +257,20 @@ fn sync_city_site_hover(
     if !dialog_open.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("City-site screen requires an active major nation");
     for (canvas, cursor, image_node, mut hover) in &mut maps {
-        let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.0, cursor) else {
+        let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.game, cursor) else {
             continue;
         };
         if hover.0 == Some(tile) && !session.is_changed() {
             continue;
         }
         hover.0 = Some(tile);
-        let highlighted = highlights_city_site_candidate(&session.0, nation, tile).then_some(tile);
+        let highlighted =
+            highlights_city_site_candidate(&session.game, nation, tile).then_some(tile);
         let image = compose_city_site_terrain(
-            &session.0,
+            &session.game,
             canvas,
             nation,
             highlighted,
@@ -314,18 +324,18 @@ fn on_city_site_map_click(
     let cursor = maps
         .get(click.entity)
         .expect("city-site map click is bound on the strategic canvas");
-    let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.0, cursor) else {
+    let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.game, cursor) else {
         return;
     };
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("City-site screen requires an active major nation");
-    match validate_capital_site_selection(&session.0, nation, tile) {
+    match validate_capital_site_selection(&session.game, nation, tile) {
         Ok(site) => open_new_city_dialog(&mut commands, site),
         Err(error) => {
             let body = get_string(
                 &assets,
                 BAD_CITY_SITE_STRING_GROUP,
-                error.message_offset(&session.0, tile),
+                error.message_offset(&session.game, tile),
             );
             open_city_site_notice(&mut commands, body);
         }
@@ -371,7 +381,7 @@ fn bind_new_city_dialog(
     if !scene_has_children(root, &children) {
         return;
     }
-    let report = capital_site_report(&session.0, dialog.0);
+    let report = capital_site_report(&session.game, dialog.0);
     stuff_new_city_dialog(
         &mut commands,
         root,
@@ -552,7 +562,7 @@ fn bind_city_site_notice(
     if !scene_has_children(root, &children) {
         return;
     }
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("City-site screen requires an active major nation");
     stuff_minister_dialog(
         &mut commands,
@@ -591,7 +601,6 @@ fn on_new_city_activate(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
-    retail: Res<RetailAssetsResource>,
 ) {
     let action = actions
         .get(activate.entity)
@@ -601,11 +610,11 @@ fn on_new_city_activate(
             let Ok((_, dialog)) = dialogs.single() else {
                 return;
             };
-            let stop = confirm_capital_site(&mut session.0, dialog.0);
+            let stop = confirm_capital_site(&mut session.game, dialog.0);
             for (root, _) in &dialogs {
                 commands.entity(root).despawn();
             }
-            apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state);
+            apply_turn_stop(stop, &mut next_state);
         }
         NewCityAction::Cancel => {
             for (root, _) in &dialogs {
