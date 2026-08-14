@@ -2628,8 +2628,7 @@ mod tests {
             if id != computer {
                 return;
             }
-            major.kind = MajorNationKind::AutoGreatPower;
-            major.economy.controller = MajorNationController::Computer;
+            major.auto = Some(AutoGreatPowerState::default());
             major.economy.diplomacy_policy_by_nation[player.nation()] =
                 Some(DiplomacyPolicy::Alliance);
         });
@@ -2650,8 +2649,7 @@ mod tests {
             if id != computer {
                 return;
             }
-            major.kind = MajorNationKind::AutoGreatPower;
-            major.economy.controller = MajorNationController::Computer;
+            major.auto = Some(AutoGreatPowerState::default());
             major.economy.diplomacy_policy_by_nation[minor] = Some(DiplomacyPolicy::DeclareWar);
         });
         parts.diplomacy.mission_levels[player.nation()][minor] = DiplomaticMissionLevel::Embassy;

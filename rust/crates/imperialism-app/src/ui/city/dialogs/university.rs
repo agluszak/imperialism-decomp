@@ -1,7 +1,7 @@
 use super::*;
 
 #[derive(Component)]
-struct UniversityRowAssets {
+pub(in crate::ui::city) struct UniversityRowAssets {
     unit_name: String,
     description: String,
     preview: Handle<Image>,

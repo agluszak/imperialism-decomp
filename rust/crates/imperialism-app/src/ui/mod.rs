@@ -43,7 +43,7 @@ pub(crate) use technology::TechnologyAdvancePlugin;
 pub(crate) use trade::TradePlugin;
 pub(crate) use transport::TransportPlugin;
 
-use bevy::prelude::Res;
+use bevy::prelude::{DetectChanges, Res};
 
 pub(in crate::ui) fn projection_idle(session: &Res<GameSession>, added: bool) -> bool {
     !session.is_changed() && !added

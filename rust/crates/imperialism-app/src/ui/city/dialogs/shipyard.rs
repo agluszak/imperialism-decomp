@@ -1,7 +1,7 @@
 use super::*;
 
 #[derive(Component)]
-struct ShipyardRowAssets {
+pub(in crate::ui::city) struct ShipyardRowAssets {
     details: Option<ShipyardRowData>,
 }
 
