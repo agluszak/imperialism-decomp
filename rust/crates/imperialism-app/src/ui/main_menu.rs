@@ -3,7 +3,7 @@ use crate::ui::generated;
 use crate::ui::hover_help::{
     HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, get_string,
 };
-use crate::ui::load_save::LoadSaveReturn;
+use crate::ui::load_save::{LoadSaveMode, open_load_save};
 use crate::ui::preferences::PreferencesReturn;
 use crate::ui::retail::{RetailTag, RetailUiAssets, find_descendant};
 use bevy::app::AppExit;
@@ -116,8 +116,12 @@ fn on_main_menu_activate(
     match *action {
         MainMenuAction::RandomGame => next_state.set(AppState::RandomSetup),
         MainMenuAction::LoadGame => {
-            commands.insert_resource(LoadSaveReturn(AppState::MainMenu));
-            next_state.set(AppState::LoadGame);
+            open_load_save(
+                &mut commands,
+                &mut next_state,
+                LoadSaveMode::Load,
+                AppState::MainMenu,
+            );
         }
         MainMenuAction::Preferences => {
             commands.insert_resource(PreferencesReturn(AppState::MainMenu));
@@ -197,7 +201,7 @@ mod tests {
         app.update();
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
-            &AppState::LoadGame
+            &AppState::LoadSave
         );
 
         app.world_mut()

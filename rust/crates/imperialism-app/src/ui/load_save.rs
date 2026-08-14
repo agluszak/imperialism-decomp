@@ -72,9 +72,24 @@ pub(crate) struct LoadSaveReturn(pub(crate) AppState);
 pub(crate) struct OpenFlagMenu;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-enum LoadSaveMode {
+pub(crate) enum LoadSaveMode {
     Load,
     Save,
+}
+
+/// Mode to use when entering `AppState::LoadSave`.
+#[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
+struct LoadSaveRequest(LoadSaveMode);
+
+pub(crate) fn open_load_save(
+    commands: &mut Commands,
+    next_state: &mut NextState<AppState>,
+    mode: LoadSaveMode,
+    return_to: AppState,
+) {
+    commands.insert_resource(LoadSaveRequest(mode));
+    commands.insert_resource(LoadSaveReturn(return_to));
+    next_state.set(AppState::LoadSave);
 }
 
 #[derive(Component)]
@@ -204,22 +219,15 @@ impl Plugin for LoadSavePlugin {
     fn build(&self, app: &mut App) {
         register_load_save_logic(app);
         app.init_resource::<LoadSaveReturn>()
-            .add_observer(
-                on_load_save_notice_activate
-                    .run_if(in_state(AppState::LoadGame).or_else(in_state(AppState::SaveGame))),
-            )
+            .add_observer(on_load_save_notice_activate.run_if(in_state(AppState::LoadSave)))
             .add_systems(
-                OnEnter(AppState::LoadGame),
-                (enter_load_save, bind_load_save).chain(),
-            )
-            .add_systems(
-                OnEnter(AppState::SaveGame),
+                OnEnter(AppState::LoadSave),
                 (enter_load_save, bind_load_save).chain(),
             )
             .add_systems(
                 Update,
                 (bind_load_save_notice, sync_load_save_preview)
-                    .run_if(in_state(AppState::LoadGame).or_else(in_state(AppState::SaveGame))),
+                    .run_if(in_state(AppState::LoadSave)),
             )
             .add_systems(
                 Update,
@@ -234,13 +242,10 @@ impl Plugin for LoadSavePlugin {
 }
 
 pub(crate) fn register_load_save_logic(app: &mut App) {
-    app.add_observer(
-        on_load_save_activate
-            .run_if(in_state(AppState::LoadGame).or_else(in_state(AppState::SaveGame))),
-    )
-    .add_observer(on_open_flag_menu.run_if(in_state(AppState::StrategicMap)))
-    .add_observer(on_flag_menu_activate.run_if(in_state(AppState::StrategicMap)))
-    .add_observer(on_flag_menu_prompt_activate.run_if(in_state(AppState::StrategicMap)));
+    app.add_observer(on_load_save_activate.run_if(in_state(AppState::LoadSave)))
+        .add_observer(on_open_flag_menu.run_if(in_state(AppState::StrategicMap)))
+        .add_observer(on_flag_menu_activate.run_if(in_state(AppState::StrategicMap)))
+        .add_observer(on_flag_menu_prompt_activate.run_if(in_state(AppState::StrategicMap)));
 }
 
 /// Retail `DoRead` never stores or reseeds these streams. CRT `rand()` is a process
@@ -309,20 +314,15 @@ fn loaded_game_destination(game: &GameState) -> AppState {
     }
 }
 
-fn enter_load_save(mut commands: Commands, state: Res<State<AppState>>) {
-    let mode = match *state.get() {
-        AppState::LoadGame => LoadSaveMode::Load,
-        AppState::SaveGame => LoadSaveMode::Save,
-        other => panic!("Load/Save screen entered from {other:?}"),
-    };
+fn enter_load_save(mut commands: Commands, request: Res<LoadSaveRequest>) {
     let root = commands.spawn_scene(generated::linger_1502()).id();
     commands.entity(root).insert((
         LoadSaveRoot {
-            mode,
+            mode: request.0,
             selected: None,
             renaming: false,
         },
-        DespawnOnExit(*state.get()),
+        DespawnOnExit(AppState::LoadSave),
     ));
 }
 
@@ -1082,12 +1082,20 @@ fn on_flag_menu_activate(
             }
         }
         FlagMenuNavigation::Save => {
-            commands.insert_resource(LoadSaveReturn(AppState::StrategicMap));
-            next_state.set(AppState::SaveGame);
+            open_load_save(
+                &mut commands,
+                &mut next_state,
+                LoadSaveMode::Save,
+                AppState::StrategicMap,
+            );
         }
         FlagMenuNavigation::Load => {
-            commands.insert_resource(LoadSaveReturn(AppState::StrategicMap));
-            next_state.set(AppState::LoadGame);
+            open_load_save(
+                &mut commands,
+                &mut next_state,
+                LoadSaveMode::Load,
+                AppState::StrategicMap,
+            );
         }
         FlagMenuNavigation::Preferences => {
             commands.insert_resource(PreferencesReturn(AppState::StrategicMap));
@@ -1239,31 +1247,22 @@ mod tests {
             .init_resource::<LoadSaveReturn>();
         register_load_save_logic(&mut app);
         app.add_systems(
-            OnEnter(AppState::LoadGame),
-            (spawn_test_load_save, bind_test_load_save).chain(),
-        );
-        app.add_systems(
-            OnEnter(AppState::SaveGame),
+            OnEnter(AppState::LoadSave),
             (spawn_test_load_save, bind_test_load_save).chain(),
         );
         app
     }
 
-    fn spawn_test_load_save(mut commands: Commands, state: Res<State<AppState>>) {
-        let mode = match *state.get() {
-            AppState::LoadGame => LoadSaveMode::Load,
-            AppState::SaveGame => LoadSaveMode::Save,
-            other => panic!("unexpected test state {other:?}"),
-        };
+    fn spawn_test_load_save(mut commands: Commands, request: Res<LoadSaveRequest>) {
         let root = commands
             .spawn((
                 LoadSaveRoot {
-                    mode,
+                    mode: request.0,
                     selected: None,
                     renaming: false,
                 },
                 Node::default(),
-                DespawnOnExit(*state.get()),
+                DespawnOnExit(AppState::LoadSave),
             ))
             .id();
         for tag in SLOT_TAGS {
@@ -1312,13 +1311,14 @@ mod tests {
     fn cancel_restores_the_previous_application_state() {
         let mut app = test_app(AppState::MainMenu);
         app.insert_resource(LoadSaveReturn(AppState::MainMenu));
+        app.insert_resource(LoadSaveRequest(LoadSaveMode::Load));
         app.world_mut()
             .resource_mut::<NextState<AppState>>()
-            .set(AppState::LoadGame);
+            .set(AppState::LoadSave);
         app.update();
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
-            &AppState::LoadGame
+            &AppState::LoadSave
         );
 
         let cancel = app
