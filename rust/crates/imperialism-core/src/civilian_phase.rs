@@ -100,7 +100,7 @@ impl GameState {
                     .update_need_target(resource, major.economy.need_current_by_type[resource]);
             }
         }
-        if major.kind == MajorNationKind::AutoGreatPower {
+        if major.is_auto() {
             let fish = major.economy.need_current_by_type[ResourceKind::Fish];
             major.economy.need_current_by_type[ResourceKind::Fish] = 0;
             major.economy.need_current_by_type[ResourceKind::Livestock] =

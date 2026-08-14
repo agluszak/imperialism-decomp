@@ -437,7 +437,7 @@ mod tests {
     fn cleanup_adopts_unassigned_militia_into_the_defend_mission() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].kind = MajorNationKind::AutoGreatPower;
+        state.nations.majors[nation].auto = Some(AutoGreatPowerState::default());
         let province = ProvinceId::new(3);
         seed_owned_province(&mut state, province, nation.nation());
         let id = state.unit_ids.next_military();
@@ -472,7 +472,7 @@ mod tests {
     fn cleanup_prunes_a_defend_mission_whose_province_changed_owner() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].kind = MajorNationKind::AutoGreatPower;
+        state.nations.majors[nation].auto = Some(AutoGreatPowerState::default());
         let province = ProvinceId::new(3);
         seed_owned_province(&mut state, province, NationId::new(1));
         state
@@ -554,7 +554,7 @@ mod tests {
     fn reassess_writes_defend_needs_from_the_baseline_profile() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].kind = MajorNationKind::AutoGreatPower;
+        state.nations.majors[nation].auto = Some(AutoGreatPowerState::default());
         let province = ProvinceId::new(3);
         seed_owned_province(&mut state, province, nation.nation());
         state.map.provinces[province].set_city_score(2500);
@@ -583,7 +583,7 @@ mod tests {
     fn reassess_writes_attack_needs_from_the_unfortified_output_profile() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].kind = MajorNationKind::AutoGreatPower;
+        state.nations.majors[nation].auto = Some(AutoGreatPowerState::default());
         let target = ProvinceId::new(4);
         seed_owned_province(&mut state, target, NationId::new(1));
         state.map.provinces[target].set_city_score(1000);
@@ -609,7 +609,7 @@ mod tests {
     fn reassess_fills_control_sea_needs_when_the_zone_has_no_hostiles() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].kind = MajorNationKind::AutoGreatPower;
+        state.nations.majors[nation].auto = Some(AutoGreatPowerState::default());
         let tile = TileId::new(1);
         state.map[tile].former_owner_nation = Some(TileOwnerTag::from_nation(nation.nation()));
         state.ocean.zones = vec![

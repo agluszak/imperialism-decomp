@@ -337,7 +337,7 @@ impl GameState {
     }
 
     pub(crate) fn is_auto(&self, nation: MajorNationId) -> bool {
-        self.nations.majors[nation].kind == MajorNationKind::AutoGreatPower
+        self.nations.majors[nation].is_auto()
     }
 
     pub(super) fn is_independent(&self, nation: NationId) -> bool {

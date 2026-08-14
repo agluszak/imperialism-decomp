@@ -1200,7 +1200,7 @@ mod tests {
     fn reassess_advances_navy_state_when_assigned_ships_are_on_the_target() {
         let mut state = game_state();
         let nation = NationId::new(0);
-        state.nations.majors[MajorNationId::new(0)].kind = MajorNationKind::AutoGreatPower;
+        state.nations.majors[MajorNationId::new(0)].auto = Some(AutoGreatPowerState::default());
         state.ocean.zones = vec![ZoneKind::Zone(zone(Vec::new()))];
         state.ships.push(ShipState {
             ship_type: ShipType::Frigate,

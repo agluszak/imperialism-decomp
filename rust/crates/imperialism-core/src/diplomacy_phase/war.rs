@@ -80,7 +80,7 @@ impl GameState {
                 } else {
                     DiplomacyWarJoinKind::DefendMinor
                 };
-                if self.nations.majors[favorite].economy.controller.is_human() {
+                if self.nations.majors[favorite].auto.is_none() {
                     return DiplomacyPhaseResult::WarJoin(DiplomacyWarJoinPrompt {
                         nation: favorite,
                         target: second,
@@ -106,7 +106,7 @@ impl GameState {
             {
                 continue;
             }
-            if self.nations.majors[other].economy.controller.is_human() {
+            if self.nations.majors[other].auto.is_none() {
                 return DiplomacyPhaseResult::WarJoin(DiplomacyWarJoinPrompt {
                     nation: other,
                     target: second,
@@ -128,7 +128,7 @@ impl GameState {
             {
                 continue;
             }
-            if self.nations.majors[other].economy.controller.is_human() {
+            if self.nations.majors[other].auto.is_none() {
                 return DiplomacyPhaseResult::WarJoin(DiplomacyWarJoinPrompt {
                     nation: other,
                     target: second,
@@ -353,7 +353,11 @@ impl GameState {
         let Some(zone) = self.first_port_zone_for_nation(target) else {
             return;
         };
-        let Some(targets) = self.nations.majors[nation].economy.ai_zone_targets.as_mut() else {
+        let Some(targets) = self.nations.majors[nation]
+            .auto
+            .as_mut()
+            .map(|auto| &mut auto.zone_targets)
+        else {
             return;
         };
         let index = usize::from(zone.get());

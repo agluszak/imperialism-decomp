@@ -127,7 +127,7 @@ impl GameState {
         source: NationId,
         code: i16,
     ) {
-        if self.nations.majors[nation].economy.controller.is_human() {
+        if self.nations.majors[nation].auto.is_none() {
             self.insert_sorted_notice(nation, DiplomacyNotice { source, code });
         }
 
@@ -175,7 +175,7 @@ impl GameState {
             .economy
             .diplomacy_policy_by_nation[source]
             == Some(policy);
-        let human = self.nations.majors[nation].economy.controller.is_human();
+        let human = self.nations.majors[nation].auto.is_none();
 
         if human {
             if matching {

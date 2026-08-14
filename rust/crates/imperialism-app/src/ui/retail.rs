@@ -326,6 +326,26 @@ impl RetailUiAssets<'_> {
         Ok(self.images.add(image))
     }
 
+    pub fn transparent_picture(
+        &mut self,
+        picture_id: PictureId,
+        palette_index: u8,
+    ) -> Result<Handle<Image>, RetailPictureError> {
+        let indexed = self
+            .indexed_picture(picture_id)
+            .expect("retail picture must have indexed pixels");
+        self.transformed_picture(picture_id, move |image| {
+            let Some(pixels) = image.data.as_mut() else {
+                return;
+            };
+            for (pixel, &index) in pixels.chunks_exact_mut(4).zip(&indexed.pixels) {
+                if index == palette_index {
+                    pixel[3] = 0;
+                }
+            }
+        })
+    }
+
     pub fn indexed_picture(
         &self,
         picture_id: PictureId,

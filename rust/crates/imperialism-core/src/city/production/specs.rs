@@ -66,36 +66,39 @@ pub const CIVILIAN_RESOURCE_SPECIALTIES: CivilianUnitTable<[Option<ResourceKind>
         [Some(ResourceKind::Oil), None, None, None],
     ]);
 
+/// Retail `g_abUniversityRequirementLevelById`, including the unused 24th overflow row
+/// the heatmap reads past the semantic resource domain.
+pub(crate) const UNIVERSITY_REQUIREMENT_LEVEL_BY_ID: [[u8; 4]; 24] = [
+    [1, 2, 3, 4],
+    [1, 2, 3, 4],
+    [1, 2, 3, 4],
+    [0, 2, 4, 6],
+    [0, 2, 4, 6],
+    [1, 1, 1, 1],
+    [0, 2, 4, 6],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [1, 2, 3, 4],
+    [1, 2, 3, 4],
+    [1, 2, 3, 4],
+    [1, 2, 3, 4],
+    [0, 1, 2, 3],
+    [0, 1, 2, 3],
+    [0, 0, 0, 0],
+];
+
 /// `g_abUniversityRequirementLevelById` over the semantic resource domain.
 pub fn resource_development_yield(resource: ResourceKind, level: u8) -> i16 {
-    const YIELDS: ResourceTable<[i16; 4]> = ResourceTable::from_array([
-        [1, 2, 3, 4],
-        [1, 2, 3, 4],
-        [1, 2, 3, 4],
-        [0, 2, 4, 6],
-        [0, 2, 4, 6],
-        [1, 1, 1, 1],
-        [0, 2, 4, 6],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [1, 2, 3, 4],
-        [1, 2, 3, 4],
-        [1, 2, 3, 4],
-        [1, 2, 3, 4],
-        [0, 1, 2, 3],
-        [0, 1, 2, 3],
-    ]);
-
     assert!(level <= 3, "resource development level must be in 0..=3");
-    YIELDS[resource][level as usize]
+    i16::from(UNIVERSITY_REQUIREMENT_LEVEL_BY_ID[resource as usize][level as usize])
 }
 
 pub const fn military_recruitment_spec(

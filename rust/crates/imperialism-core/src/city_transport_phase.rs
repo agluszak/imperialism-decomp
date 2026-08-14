@@ -49,7 +49,7 @@ impl GameState {
 
     /// `TGreatPower::FillInteriorMinisterOrders` / `TAutoGreatPower` override.
     fn fill_interior_minister_orders(&mut self, nation: MajorNationId) {
-        if self.nations.major(nation).kind != MajorNationKind::AutoGreatPower {
+        if self.nations.major(nation).auto.is_none() {
             return;
         }
         for resource in all_resources() {
@@ -225,7 +225,7 @@ impl GameState {
     ) {
         self.rebuild_nation_resource_yields(nation);
         self.advance_owned_region_development_counters_and_handle_events(nation);
-        if self.nations.major(nation).kind == MajorNationKind::GreatPower {
+        if self.nations.major(nation).auto.is_none() {
             self.add_created_items(nation);
             self.compile_great_power_relationship_delta_lines(nation);
             self.end_city_phase(nation);
@@ -400,7 +400,7 @@ impl GameState {
     }
 
     fn announce_later(&mut self, nation: MajorNationId, order_kind: i16, payload: i16, flags: i16) {
-        if self.nations.major(nation).kind == MajorNationKind::AutoGreatPower {
+        if self.nations.major(nation).is_auto() {
             return;
         }
         let turn_tick = self.turn.economic_turn;

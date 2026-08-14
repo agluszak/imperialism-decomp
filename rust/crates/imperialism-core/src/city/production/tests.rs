@@ -495,7 +495,6 @@ fn training_limit_records_workforce_treasury_paper_and_the_global_cap() {
         }
     );
 
-    game.nations.major_mut(nation).economy.controller = MajorNationController::Computer;
     game.nations.major_mut(nation).economy.diplomacy_eligible = false;
     {
         let city = city_mut(&mut game, nation);
@@ -679,7 +678,6 @@ fn recruit_limit_uses_workforce_mode_resources_and_human_treasury() {
         }
     );
 
-    game.nations.major_mut(nation).economy.controller = MajorNationController::Computer;
     game.nations.major_mut(nation).economy.diplomacy_eligible = false;
     game.nations.major_mut(nation).common.treasury = -10_000;
     {

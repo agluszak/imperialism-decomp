@@ -361,7 +361,7 @@ impl GameState {
                 .economy
                 .interior_civilian
                 .city_order_demand
-                .expansions[selected.slot()] = 1;
+                .expansions[selected] = 1;
         }
 
         for facility in ExpandableFacility::ALL {
@@ -369,7 +369,7 @@ impl GameState {
                 .economy
                 .interior_civilian
                 .city_order_demand
-                .expansions[facility.slot()];
+                .expansions[facility];
             if requested == 0 {
                 continue;
             }
@@ -393,8 +393,8 @@ impl GameState {
                 .economy
                 .interior_civilian
                 .as_mut();
-            interior.city_order_demand.expansions[facility.slot()] -= accepted;
-            if interior.city_order_demand.expansions[facility.slot()] < 2 {
+            interior.city_order_demand.expansions[facility] -= accepted;
+            if interior.city_order_demand.expansions[facility] < 2 {
                 interior.production_deficit_by_slot[facility.slot()] = 0;
             }
         }

@@ -1,5 +1,5 @@
 use crate::{
-    GameState, MajorNationId, PendingActionKind, PendingActionTable, TechnologyId,
+    GameState, MajorNationId, PendingActionKind, PendingActionTable, Technology,
     TechnologyResearchStatus,
 };
 use serde::{Deserialize, Serialize};
@@ -93,7 +93,7 @@ impl GameState {
                 continue;
             }
             let ironworking_researched = self.technology.research_status_by_nation[nation]
-                [TechnologyId::new(0x0f)]
+                [Technology::AdvancedIronWorking]
                 == TechnologyResearchStatus::Researched;
             let actions = &mut self.nations.majors[nation].economy.pending_actions;
             mark_pending_status_flags_handled(actions, ironworking_researched);
@@ -113,7 +113,6 @@ fn mark_pending_status_flags_handled(
     mark_queued_handled(
         &mut actions[PendingActionKind::ConqueredCapitalArmoryUpgrade],
         PendingActionStatus::HANDLED,
-        false,
     );
 
     let university = &mut actions[PendingActionKind::UniversityExpansion];
@@ -135,7 +134,7 @@ fn mark_pending_status_flags_handled(
         PendingActionKind::CouncilLeadMonument,
         PendingActionKind::ConquestMonumentArmory,
     ] {
-        mark_queued_handled(&mut actions[kind], PendingActionStatus::HANDLED, false);
+        mark_queued_handled(&mut actions[kind], PendingActionStatus::HANDLED);
     }
 
     mark_queued_as_payload_plus_handled(&mut actions[PendingActionKind::NavyGrowthReward]);
@@ -143,30 +142,20 @@ fn mark_pending_status_flags_handled(
     mark_queued_handled(
         &mut actions[PendingActionKind::OverseasDeveloperReward],
         PendingActionStatus::HANDLED,
-        false,
     );
     mark_queued_handled(
         &mut actions[PendingActionKind::VillageDevelopment],
         PendingActionStatus::NONE,
-        false,
     );
     mark_queued_handled(
         &mut actions[PendingActionKind::TownDevelopment],
         PendingActionStatus::NONE,
-        false,
     );
 }
 
-fn mark_queued_handled(
-    action: &mut PendingActionState,
-    status: PendingActionStatus,
-    clear_payload: bool,
-) {
+fn mark_queued_handled(action: &mut PendingActionState, status: PendingActionStatus) {
     if action.status().is_queued() {
         action.set_status(status);
-        if clear_payload {
-            action.set_payload(None);
-        }
     }
 }
 

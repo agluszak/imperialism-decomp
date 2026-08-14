@@ -50,8 +50,11 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
     let nation = MajorNationId::from_nation(state.turn().active_nation)
         .expect("City active nation is a major nation");
     let city = &state.nations().major(nation).city;
-    let material_pictures = SHIPYARD_MATERIALS
-        .map(|resource| transparent_picture(assets, PictureId::new(700 + resource as i16)));
+    let material_pictures = SHIPYARD_MATERIALS.map(|resource| {
+        assets
+            .transparent_picture(PictureId::new(700 + resource as i16), 0x10)
+            .expect("retail Shipyard material picture must load")
+    });
     let (detail_font, _, detail_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
@@ -116,7 +119,9 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             }),
         )
     });
-    let queue_icons = transparent_picture(assets, PictureId::new(9807));
+    let queue_icons = assets
+        .transparent_picture(PictureId::new(9807), 0x10)
+        .expect("retail Shipyard queue icons must load");
     let stat_labels: [String; 6] =
         std::array::from_fn(|index| city_string(assets, 0x2736, 0x10 + index as i16));
     let normal_color = assets.palette_color(0xd2);
