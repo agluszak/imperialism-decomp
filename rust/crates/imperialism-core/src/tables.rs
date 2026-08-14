@@ -272,36 +272,4 @@ impl PendingActionKind {
 pub const PENDING_ACTION_COUNT: usize = PendingActionKind::LENGTH;
 pub type PendingActionTable<T> = EnumMap<PendingActionKind, T>;
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct ProductionTable<T>([T; CityFacilitySlot::COUNT]);
-
-impl<T> ProductionTable<T> {
-    pub const fn from_array(values: [T; CityFacilitySlot::COUNT]) -> Self {
-        Self(values)
-    }
-
-    pub const fn as_array(&self) -> &[T; CityFacilitySlot::COUNT] {
-        &self.0
-    }
-}
-
-impl<T: Default> Default for ProductionTable<T> {
-    fn default() -> Self {
-        Self(std::array::from_fn(|_| T::default()))
-    }
-}
-
-impl<T> Index<CityFacilitySlot> for ProductionTable<T> {
-    type Output = T;
-
-    fn index(&self, slot: CityFacilitySlot) -> &Self::Output {
-        &self.0[slot.index()]
-    }
-}
-
-impl<T> IndexMut<CityFacilitySlot> for ProductionTable<T> {
-    fn index_mut(&mut self, slot: CityFacilitySlot) -> &mut Self::Output {
-        &mut self.0[slot.index()]
-    }
-}
+pub type ProductionTable<T> = EnumMap<CityFacilitySlot, T>;

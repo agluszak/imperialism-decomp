@@ -284,18 +284,17 @@ pub(in crate::ui::city) fn leave_city_screen(
     windows: Query<(&CityDialogWindow, &Node)>,
 ) {
     let nation = city_active_nation(&session);
-    for slot in CityFacilitySlot::ALL {
-        let window = windows.iter().find(|(w, _)| w.0 == slot).map(|(_, node)| {
-            let (left, top) = node_position(node);
-            CityWindowPosition {
-                left: i16::try_from(left.round() as i32)
-                    .expect("City window coordinate fits retail short storage"),
-                top: i16::try_from(top.round() as i32)
-                    .expect("City window coordinate fits retail short storage"),
-            }
+    let mut positions = ProductionTable::default();
+    for (window, node) in &windows {
+        let (left, top) = node_position(node);
+        positions[window.0] = Some(CityWindowPosition {
+            left: i16::try_from(left.round() as i32)
+                .expect("City window coordinate fits retail short storage"),
+            top: i16::try_from(top.round() as i32)
+                .expect("City window coordinate fits retail short storage"),
         });
-        session.game.set_city_building_window(nation, slot, window);
     }
+    session.game.set_city_building_windows(nation, positions);
 }
 
 pub(in crate::ui::city) fn on_city_dialog_pressed(
