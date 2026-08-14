@@ -684,6 +684,13 @@ fn technology_research_status(value: u8) -> TechnologyResearchStatus {
     }
 }
 
+fn military_capability_kind(value: i16) -> MilitaryUnitKind {
+    MilitaryUnitKind::from_index(
+        u8::try_from(value).expect("retail nationCapRows slot is a military unit kind"),
+    )
+    .expect("retail nationCapRows slot is a military unit kind")
+}
+
 fn technology_state(technology: &LegacyTechnologyState) -> TechnologyState {
     const ADVANCED_IRON_WORKING: usize = 0x0f;
     const OIL_DRILLING: usize = 0x13;
@@ -724,16 +731,14 @@ fn technology_state(technology: &LegacyTechnologyState) -> TechnologyState {
             != 0,
         marine_engineering: technology.resource_type_enabled[CityFacilitySlot::PowerPlant as usize]
             != 0,
-        scheduled_unlock_turn_by_technology: TechnologyTable::from_array(technology.priority_slots),
-        global_unlocks_by_technology: TechnologyTable::from_array(
-            technology
-                .per_technology_unlock_flags
-                .map(|value| value != 0),
-        ),
+        scheduled_unlock_turn_by_technology: technology.priority_slots,
+        global_unlocks_by_technology: technology
+            .per_technology_unlock_flags
+            .map(|value| value != 0),
         research_status_by_nation: MajorNationTable::from_array(
             technology
                 .research_status_by_nation
-                .map(|row| TechnologyTable::from_array(row.map(technology_research_status))),
+                .map(|row| row.map(technology_research_status)),
         ),
         industry_enabled_by_slot: technology.resource_type_enabled.map(|value| value != 0),
         military_unit_ability_active_by_nation: MajorNationTable::from_array(
@@ -741,7 +746,11 @@ fn technology_state(technology: &LegacyTechnologyState) -> TechnologyState {
                 .ability_active_by_nation
                 .map(|row| MilitaryUnitTable::from_array(row.map(|value| value != 0))),
         ),
-        selected_capability_slots: MajorNationTable::from_array(technology.nation_capability_slots),
+        selected_capability_slots: MajorNationTable::from_array(
+            technology
+                .nation_capability_slots
+                .map(|row| row.map(military_capability_kind)),
+        ),
         city_capabilities_by_nation: MajorNationTable::from_array(city_capabilities_by_nation),
         navy_growth_ship_type: ShipType::from_index(technology.active_zone_index as u8)
             .expect("retail activeZoneIndex1d4 is a ship type"),

@@ -9,10 +9,10 @@ use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
 use imperialism_formats::fourcc;
 
-const ABILITY_STATUS_PICTURE_INDEX: TechnologyTable<i16> = TechnologyTable::from_array([
+const ABILITY_STATUS_PICTURE_INDEX: [i16; TECHNOLOGY_COUNT] = [
     0, 1, 3, 2, 7, 5, 6, 9, 10, 4, 8, 16, 12, 19, 22, 11, 17, 13, 14, 21, 15, 18, 26, 20, 23, 28,
     24, 25, 27,
-]);
+];
 
 #[derive(Component)]
 struct TechnologyAdvanceRoot;
@@ -70,7 +70,7 @@ fn fill_technology_advance(
     tech_id: TechnologyId,
 ) {
     let picture_id =
-        imperialism_formats::PictureId::new(ABILITY_STATUS_PICTURE_INDEX[tech_id] + 0x897);
+        imperialism_formats::PictureId::new(ABILITY_STATUS_PICTURE_INDEX[tech_id.index()] + 0x897);
     let picture = assets
         .picture(picture_id)
         .expect("technology status picture must load");

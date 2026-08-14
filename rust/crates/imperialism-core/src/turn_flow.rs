@@ -137,6 +137,7 @@ pub enum TurnStop {
 ///
 /// Included in semantic `GameState` serialization. The `.imp` writer omits it
 /// because retail cannot save at these transient boundaries.
+#[allow(clippy::large_enum_variant)]
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub enum TurnContinuation {
     #[default]
@@ -279,8 +280,8 @@ impl GameState {
             match self.turn.phase() {
                 PhaseCode::STRATEGIC_MAP => return TurnStop::PlayerOrders,
                 PhaseCode::CAPITAL_SELECTION => {
-                    for index in 0..MajorNationId::COUNT {
-                        self.finalize_home_city_setup(MajorNationId::new(index));
+                    for nation in MajorNationId::all() {
+                        self.finalize_home_city_setup(nation);
                     }
                     self.turn.phase = PhaseCode::SEASON_ADVANCE;
                 }
@@ -308,7 +309,7 @@ impl GameState {
                 }
                 PhaseCode::COMBAT_MOVES => {
                     self.turn.phase = PhaseCode::MILITARY_CLEANUP;
-                    if let Some(continuation) = self.start_combat_moves() {
+                    if let Some(continuation) = self.do_combat_moves() {
                         self.continuation = TurnContinuation::LandBattle(continuation);
                         return TurnStop::LandBattle;
                     }

@@ -109,6 +109,7 @@ impl GameState {
 
     pub(super) fn ratio(self_score: f32, target: f32, ally: f32) -> f32 {
         let denom = target - ally * ALLY_WEIGHT;
+        #[allow(clippy::float_cmp)]
         if denom == 0.0 {
             self_score
         } else {
@@ -144,6 +145,7 @@ impl GameState {
         let standing = f32::from(self.diplomacy.standings[nation.nation()][target.nation()]);
         let denom = standing - ally * ALLY_WEIGHT + target_score;
         let numer = year + self_score - YEAR_BIAS;
+        #[allow(clippy::float_cmp)]
         if denom == 0.0 { numer } else { numer / denom }
     }
 
@@ -221,6 +223,7 @@ impl GameState {
         let standing_target = f32::from(self.diplomacy.standings[nation.nation()][target]);
         let standing_partner = f32::from(self.diplomacy.standings[nation.nation()][partner]);
         let denom = standing_target - ally * ALLY_WEIGHT + self.target_force(target_major, partner);
+        #[allow(clippy::float_cmp)]
         if denom == 0.0 {
             standing_partner + self_score
         } else {
@@ -279,6 +282,7 @@ impl GameState {
         } else {
             self_score - partner * PEER_WEIGHT
         };
+        #[allow(clippy::float_cmp)]
         if denom != 0.0 {
             numer /= denom;
         }
@@ -386,6 +390,7 @@ impl GameState {
         } else {
             standing_partner - partner_score * PEER_WEIGHT + self_score
         };
+        #[allow(clippy::float_cmp)]
         if denom != 0.0 {
             numer /= denom;
         }

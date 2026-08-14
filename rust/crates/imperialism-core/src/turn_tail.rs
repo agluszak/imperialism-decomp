@@ -6,15 +6,16 @@
 //! Technology and newspaper are in their own modules.
 
 use crate::*;
+use enum_map::EnumMap;
 use serde::{Deserialize, Serialize};
 
-const BASE_PRESSURE: [i32; 5] = [1000, 500, 200, 100, 10];
-const PRESSURE_MIN_FLOOR: [i32; 5] = [2, 3, 4, 6, 10];
-const PRESSURE_RISE_CAP: [i32; 5] = [20, 35, 50, 75, 100];
-const PRESSURE_DECAY_STEP: [i32; 5] = [2, 2, 1, 1, 1];
-const PRESSURE_RISE_STEP: [i32; 5] = [1, 1, 1, 2, 3];
-const PRESSURE_HARD_ALERT: [i32; 5] = [6, 6, 6, 6, 6];
-const PRESSURE_COMPILE_THRESHOLD: [i32; 5] = [5, 5, 5, 5, 5];
+const BASE_PRESSURE: EnumMap<Difficulty, i32> = EnumMap::from_array([1000, 500, 200, 100, 10]);
+const PRESSURE_MIN_FLOOR: EnumMap<Difficulty, i32> = EnumMap::from_array([2, 3, 4, 6, 10]);
+const PRESSURE_RISE_CAP: EnumMap<Difficulty, i32> = EnumMap::from_array([20, 35, 50, 75, 100]);
+const PRESSURE_DECAY_STEP: EnumMap<Difficulty, i32> = EnumMap::from_array([2, 2, 1, 1, 1]);
+const PRESSURE_RISE_STEP: EnumMap<Difficulty, i32> = EnumMap::from_array([1, 1, 1, 2, 3]);
+const PRESSURE_HARD_ALERT: EnumMap<Difficulty, i32> = EnumMap::from_array([6, 6, 6, 6, 6]);
+const PRESSURE_COMPILE_THRESHOLD: EnumMap<Difficulty, i32> = EnumMap::from_array([5, 5, 5, 5, 5]);
 const COMMODITY_ALERT_ITEMS: [ManufacturedItem; 5] = [
     ManufacturedItem::Fabric,
     ManufacturedItem::Lumber,
@@ -49,14 +50,14 @@ impl GameState {
             return false;
         }
 
-        let locale = self.turn.difficulty as usize;
+        let difficulty = self.turn.difficulty;
         let treasury = self.nations.majors[nation].common.treasury;
         let mut base_pressure = sum_aid_allocation(&self.nations.majors[nation].economy);
         let need = &self.nations.majors[nation].economy.need_target_by_type;
         base_pressure += i32::from(need[ResourceKind::Gold]) * 200;
         base_pressure += i32::from(need[ResourceKind::Gems]) * 500;
         base_pressure += self.nations.majors[nation].economy.budget_pool_base;
-        let floor = BASE_PRESSURE[locale];
+        let floor = BASE_PRESSURE[difficulty];
         if base_pressure < floor {
             base_pressure = floor;
         }
@@ -74,11 +75,11 @@ impl GameState {
                 self.nations.majors[nation].economy.pressure_counter = 1;
             } else if -pressure_band == treasury || -treasury < pressure_band {
                 if self.nations.majors[nation].economy.pressure_counter > 1 {
-                    raise_escalation(&mut self.nations.majors[nation].economy, locale);
+                    raise_escalation(&mut self.nations.majors[nation].economy, difficulty);
                 }
                 self.nations.majors[nation].economy.pressure_counter = 2;
             } else {
-                raise_escalation(&mut self.nations.majors[nation].economy, locale);
+                raise_escalation(&mut self.nations.majors[nation].economy, difficulty);
                 let pressure = &mut self.nations.majors[nation].economy.pressure_counter;
                 if *pressure < 3 {
                     *pressure = 3;
@@ -86,17 +87,17 @@ impl GameState {
                     *pressure += 1;
                 }
                 let pressure_tier = i32::from(self.nations.majors[nation].economy.pressure_counter);
-                if PRESSURE_HARD_ALERT[locale] <= pressure_tier {
+                if PRESSURE_HARD_ALERT[difficulty] <= pressure_tier {
                     hard_alert = true;
-                } else if pressure_tier >= PRESSURE_COMPILE_THRESHOLD[locale] {
+                } else if pressure_tier >= PRESSURE_COMPILE_THRESHOLD[difficulty] {
                     self.compile_great_power_relationship_delta_lines(nation);
                 }
             }
         } else if self.nations.majors[nation].economy.pressure_counter != 0 {
             let next = i32::from(self.nations.majors[nation].economy.escalation_counter)
-                - PRESSURE_DECAY_STEP[locale];
+                - PRESSURE_DECAY_STEP[difficulty];
             self.nations.majors[nation].economy.escalation_counter =
-                next.max(PRESSURE_MIN_FLOOR[locale]) as i16;
+                next.max(PRESSURE_MIN_FLOOR[difficulty]) as i16;
             self.nations.majors[nation].economy.pressure_counter = 0;
         }
 
@@ -367,9 +368,9 @@ fn sum_aid_allocation(economy: &GreatPowerState) -> i32 {
     total
 }
 
-fn raise_escalation(economy: &mut GreatPowerState, locale: usize) {
-    let next = i32::from(economy.escalation_counter) + PRESSURE_RISE_STEP[locale];
-    economy.escalation_counter = next.min(PRESSURE_RISE_CAP[locale]) as i16;
+fn raise_escalation(economy: &mut GreatPowerState, difficulty: Difficulty) {
+    let next = i32::from(economy.escalation_counter) + PRESSURE_RISE_STEP[difficulty];
+    economy.escalation_counter = next.min(PRESSURE_RISE_CAP[difficulty]) as i16;
 }
 
 #[cfg(test)]

@@ -630,6 +630,7 @@ impl GameState {
                 }
             }
         }
+        #[allow(clippy::float_cmp)]
         if composite == 0.0 {
             let f2 = self.score_factor(nation, 2, None, Some(zone), selected);
             let f4 = self.score_factor(nation, 4, None, Some(zone), selected);
@@ -666,6 +667,7 @@ impl GameState {
                         result = power;
                     }
                 }
+                #[allow(clippy::float_cmp)]
                 if result == 0.0 {
                     result = 1.0;
                 }

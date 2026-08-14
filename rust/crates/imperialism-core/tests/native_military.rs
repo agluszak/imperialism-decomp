@@ -148,7 +148,9 @@ fn army_movement_give_orders() {
 #[ignore = "requires the native C++ oracle"]
 fn combat_moves_uncontested() {
     compare_native("combat_moves_uncontested", |state, _: EmptyCase| {
-        state.do_combat_moves()
+        state
+            .do_combat_moves()
+            .map(|continuation| continuation.battle)
     })
     .unwrap();
 }
@@ -157,7 +159,9 @@ fn combat_moves_uncontested() {
 #[ignore = "requires the native C++ oracle"]
 fn combat_moves_creates_battle() {
     compare_native("combat_moves_creates_battle", |state, _: EmptyCase| {
-        state.do_combat_moves()
+        state
+            .do_combat_moves()
+            .map(|continuation| continuation.battle)
     })
     .unwrap();
 }

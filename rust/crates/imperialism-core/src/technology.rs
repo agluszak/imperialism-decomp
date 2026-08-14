@@ -1,10 +1,10 @@
 use crate::*;
 use serde::{Deserialize, Deserializer, Serialize};
 
-const TECH_ITEM_PURCHASE_COST: TechnologyTable<i32> = TechnologyTable::from_array([
+const TECH_ITEM_PURCHASE_COST: [i32; TECHNOLOGY_COUNT] = [
     0, 0, 1000, 1000, 1500, 1500, 1500, 1500, 3000, 3000, 3000, 6000, 7000, 10000, 12000, 12000,
     12000, 12000, 12000, 25000, 20000, 40000, 40000, 40000, 40000, 100000, 120000, 150000, 150000,
-]);
+];
 
 /// Per-nation University capability state used by city production and recruitment.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
@@ -175,14 +175,14 @@ pub enum TechnologyResearchStatus {
 pub struct TechnologyState {
     pub advanced_iron_working: bool,
     pub marine_engineering: bool,
-    pub scheduled_unlock_turn_by_technology: TechnologyTable<i16>,
-    pub global_unlocks_by_technology: TechnologyTable<bool>,
-    pub research_status_by_nation: MajorNationTable<TechnologyTable<TechnologyResearchStatus>>,
+    pub scheduled_unlock_turn_by_technology: [i16; TECHNOLOGY_COUNT],
+    pub global_unlocks_by_technology: [bool; TECHNOLOGY_COUNT],
+    pub research_status_by_nation: MajorNationTable<[TechnologyResearchStatus; TECHNOLOGY_COUNT]>,
     pub industry_enabled_by_slot: [bool; 14],
     pub military_unit_ability_active_by_nation: MajorNationTable<MilitaryUnitTable<bool>>,
     /// Retail `TTechMgr::nationCapRows1e8`: the selected ability id in each
     /// tactical group. Slot 9 is the general spawned by army-growth rewards.
-    pub selected_capability_slots: MajorNationTable<[i16; 10]>,
+    pub selected_capability_slots: MajorNationTable<[MilitaryUnitKind; 10]>,
     pub city_capabilities_by_nation: MajorNationTable<CityTechnologyCapabilities>,
     /// Retail `TTechMgr::activeZoneIndex1d4`: the hull spawned by a navy-growth reward.
     pub navy_growth_ship_type: ShipType,
@@ -193,15 +193,15 @@ impl Default for TechnologyState {
         Self {
             advanced_iron_working: false,
             marine_engineering: false,
-            scheduled_unlock_turn_by_technology: TechnologyTable::from_array([0; TECHNOLOGY_COUNT]),
-            global_unlocks_by_technology: TechnologyTable::from_array([
+            scheduled_unlock_turn_by_technology: [0; TECHNOLOGY_COUNT],
+            global_unlocks_by_technology: [
                 true, true, true, false, false, false, false, false, false, false, false, false,
                 false, false, false, false, false, false, false, false, false, false, false, false,
                 false, false, false, false, false,
-            ]),
+            ],
             research_status_by_nation: MajorNationTable::from_fn(|_| {
-                TechnologyTable::from_fn(|tech| {
-                    if tech.get() < 3 {
+                std::array::from_fn(|index| {
+                    if index < 3 {
                         TechnologyResearchStatus::Researched
                     } else {
                         TechnologyResearchStatus::NotStarted
@@ -283,11 +283,10 @@ impl TechnologyState {
             let range_span = (end_group - start_group) * 4 + 1;
             loop {
                 let candidate = (rng.next_sample_15() % range_span as u32) as i16 + range_start;
-                if !TechnologyId::all()
-                    .take(technology.index())
-                    .any(|prior| state.scheduled_unlock_turn_by_technology[prior] == candidate)
-                {
-                    state.scheduled_unlock_turn_by_technology[technology] = candidate;
+                if !TechnologyId::all().take(technology.index()).any(|prior| {
+                    state.scheduled_unlock_turn_by_technology[prior.index()] == candidate
+                }) {
+                    state.scheduled_unlock_turn_by_technology[technology.index()] = candidate;
                     break;
                 }
             }
@@ -296,7 +295,7 @@ impl TechnologyState {
     }
 
     pub fn oil_drilling_available(&self) -> bool {
-        self.global_unlocks_by_technology[TechnologyId::new(0x13)]
+        self.global_unlocks_by_technology[TechnologyId::new(0x13).index()]
     }
 
     /// Selects the production-capacity term used by retail's naval-force score.
@@ -320,8 +319,8 @@ impl GameState {
     pub fn check_technology_advances(&mut self) {
         let economic_turn = self.turn.economic_turn;
         for tech_id in TechnologyId::all().skip(3) {
-            if !self.technology.global_unlocks_by_technology[tech_id] {
-                if i32::from(self.technology.scheduled_unlock_turn_by_technology[tech_id])
+            if !self.technology.global_unlocks_by_technology[tech_id.index()] {
+                if i32::from(self.technology.scheduled_unlock_turn_by_technology[tech_id.index()])
                     == economic_turn
                 {
                     apply_city_order_capability_unlock(&mut self.technology, tech_id);
@@ -341,13 +340,14 @@ impl GameState {
                 if self.nations.major(nation).economy.diplomacy_eligible {
                     continue;
                 }
-                if self.technology.research_status_by_nation[nation][tech_id]
+                if self.technology.research_status_by_nation[nation][tech_id.index()]
                     == TechnologyResearchStatus::Researched
                 {
                     continue;
                 }
-                self.nations.major_mut(nation).common.treasury -= TECH_ITEM_PURCHASE_COST[tech_id];
-                self.technology.research_status_by_nation[nation][tech_id] =
+                self.nations.major_mut(nation).common.treasury -=
+                    TECH_ITEM_PURCHASE_COST[tech_id.index()];
+                self.technology.research_status_by_nation[nation][tech_id.index()] =
                     TechnologyResearchStatus::Pending;
                 // FIXME: retail also stamps `capRowsE4a6.completionYearOffsetByTechId`
                 // to `economicTurn / 4`. That field is not in the semantic model.
@@ -358,7 +358,7 @@ impl GameState {
     pub fn first_pending_technology_unlock(&self, nation: NationId) -> Option<TechnologyId> {
         let nation = MajorNationId::from_nation(nation)?;
         TechnologyId::all().find(|&tech| {
-            self.technology.research_status_by_nation[nation][tech]
+            self.technology.research_status_by_nation[nation][tech.index()]
                 == TechnologyResearchStatus::Pending
         })
     }
@@ -414,12 +414,12 @@ impl GameState {
         // FIXME: `HandleAbilityUnlock` also upgrades developed-tile civilian class,
         // navy/score `UpdateSelectionAndRecalculateScores`, city TUnitOrder cost
         // profiles, and `TMilitaryUnit::Upgrade()`.
-        if self.technology.research_status_by_nation[nation][tech_id]
+        if self.technology.research_status_by_nation[nation][tech_id.index()]
             == TechnologyResearchStatus::Researched
         {
             return;
         }
-        self.technology.research_status_by_nation[nation][tech_id] =
+        self.technology.research_status_by_nation[nation][tech_id.index()] =
             TechnologyResearchStatus::Researched;
 
         let difficulty = self.turn.difficulty as u8;
@@ -571,7 +571,7 @@ impl GameState {
         self.technology.military_unit_ability_active_by_nation[nation][kind] = true;
         let group = crate::military_phase::tactical_category(kind);
         if (0..10).contains(&group) {
-            self.technology.selected_capability_slots[nation][group as usize] = kind as i16;
+            self.technology.selected_capability_slots[nation][group as usize] = kind;
         }
         if (1..9).contains(&group) {
             let previous = self.nations.city(nation).orders.military_recruitment
@@ -594,14 +594,25 @@ impl GameState {
     }
 }
 
-pub(crate) const fn default_selected_capability_slots() -> [i16; 10] {
-    [0, 1, 2, 3, 4, 5, 6, 7, 0x18, 0x1b]
+pub(crate) const fn default_selected_capability_slots() -> [MilitaryUnitKind; 10] {
+    [
+        MilitaryUnitKind::Minutemen,
+        MilitaryUnitKind::Skirmishers,
+        MilitaryUnitKind::Regulars,
+        MilitaryUnitKind::Grenadiers,
+        MilitaryUnitKind::Hussars,
+        MilitaryUnitKind::Cuirassiers,
+        MilitaryUnitKind::LightArtillery,
+        MilitaryUnitKind::Artillery,
+        MilitaryUnitKind::Sappers,
+        MilitaryUnitKind::GeneralEra1,
+    ]
 }
 
 fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id: TechnologyId) {
     // FIXME: retail also writes `marker262`, `techSelectorShort1d2`, and
     // `activePrerequisitePair264` (techs 0xb / 0x16).
-    technology.global_unlocks_by_technology[tech_id] = true;
+    technology.global_unlocks_by_technology[tech_id.index()] = true;
     match tech_id.get() {
         9 => {
             technology.industry_enabled_by_slot[7] = true;
@@ -633,10 +644,12 @@ fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id:
 
 fn sync_city_capabilities_from_research(technology: &mut TechnologyState, nation: MajorNationId) {
     let status = &technology.research_status_by_nation[nation];
-    let researched =
-        |tech_id: u8| status[TechnologyId::new(tech_id)] == TechnologyResearchStatus::Researched;
-    let started =
-        |tech_id: u8| status[TechnologyId::new(tech_id)] != TechnologyResearchStatus::NotStarted;
+    let researched = |tech_id: u8| {
+        status[TechnologyId::new(tech_id).index()] == TechnologyResearchStatus::Researched
+    };
+    let started = |tech_id: u8| {
+        status[TechnologyId::new(tech_id).index()] != TechnologyResearchStatus::NotStarted
+    };
     let capabilities = &mut technology.city_capabilities_by_nation[nation];
     capabilities.advanced_iron_working = researched(0x0f);
     capabilities.oil_drilling = researched(0x13);
@@ -664,10 +677,10 @@ mod tests {
     fn random_start_schedule_matches_the_native_seed_one_table() {
         assert_eq!(
             TechnologyState::for_random_start(1).scheduled_unlock_turn_by_technology,
-            TechnologyTable::from_array([
+            [
                 0, 0, 0, 19, 40, 38, 34, 28, 48, 47, 68, 99, 89, 114, 115, 140, 136, 155, 164, 169,
                 192, 210, 228, 237, 240, 252, 249, 273, 279,
-            ])
+            ]
         );
     }
 
@@ -691,10 +704,10 @@ mod tests {
     #[test]
     fn check_for_advances_unlocks_a_scheduled_technology_and_queues_news() {
         let mut state = crate::test_support::game_state();
-        state.technology.scheduled_unlock_turn_by_technology[TechnologyId::new(4)] = 1;
+        state.technology.scheduled_unlock_turn_by_technology[TechnologyId::new(4).index()] = 1;
         state.check_technology_advances();
 
-        assert!(state.technology.global_unlocks_by_technology[TechnologyId::new(4)]);
+        assert!(state.technology.global_unlocks_by_technology[TechnologyId::new(4).index()]);
         assert!(state.technology.industry_enabled_by_slot[6]);
         assert_eq!(
             state.pending.newspaper_events,
@@ -712,16 +725,17 @@ mod tests {
         state.nations.major_mut(ai).economy.controller = MajorNationController::Computer;
         state.nations.major_mut(ai).economy.diplomacy_eligible = false;
         state.nations.major_mut(ai).common.treasury = 50_000;
-        state.technology.global_unlocks_by_technology[TechnologyId::new(3)] = true;
+        state.technology.global_unlocks_by_technology[TechnologyId::new(3).index()] = true;
         state.check_technology_advances();
 
         assert_eq!(state.nations.major(ai).common.treasury, 49_000);
         assert_eq!(
-            state.technology.research_status_by_nation[ai][TechnologyId::new(3)],
+            state.technology.research_status_by_nation[ai][TechnologyId::new(3).index()],
             TechnologyResearchStatus::Pending
         );
         assert_eq!(
-            state.technology.research_status_by_nation[MajorNationId::new(0)][TechnologyId::new(3)],
+            state.technology.research_status_by_nation[MajorNationId::new(0)]
+                [TechnologyId::new(3).index()],
             TechnologyResearchStatus::NotStarted
         );
     }
@@ -729,7 +743,7 @@ mod tests {
     #[test]
     fn ironclad_unlock_advances_the_navy_growth_hull() {
         let mut state = crate::test_support::game_state();
-        state.technology.scheduled_unlock_turn_by_technology[TechnologyId::new(0xf)] = 1;
+        state.technology.scheduled_unlock_turn_by_technology[TechnologyId::new(0xf).index()] = 1;
         state.check_technology_advances();
         assert_eq!(state.technology.navy_growth_ship_type, ShipType::Ironclad);
     }
@@ -738,7 +752,7 @@ mod tests {
     fn activating_a_later_general_writes_the_selected_capability_slot() {
         let mut state = crate::test_support::game_state();
         let nation = MajorNationId::new(0);
-        state.technology.research_status_by_nation[nation][TechnologyId::new(0xb)] =
+        state.technology.research_status_by_nation[nation][TechnologyId::new(0xb).index()] =
             TechnologyResearchStatus::Pending;
         assert_eq!(
             state.acknowledge_technology_unlock(nation),
@@ -746,7 +760,7 @@ mod tests {
         );
         assert_eq!(
             state.technology.selected_capability_slots[nation][9],
-            MilitaryUnitKind::GeneralEra2 as i16
+            MilitaryUnitKind::GeneralEra2
         );
         assert!(
             state.technology.military_unit_ability_active_by_nation[nation]

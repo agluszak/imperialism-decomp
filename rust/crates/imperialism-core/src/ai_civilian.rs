@@ -709,6 +709,7 @@ impl GameState {
     }
 
     #[allow(clippy::too_many_lines)]
+    #[allow(clippy::float_cmp)]
     fn auto_assign_prospecting(&mut self, nation: MajorNationId) {
         if self.turn.economic_turn < 4 {
             return;

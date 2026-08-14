@@ -279,6 +279,7 @@ impl GameState {
             vector[3] += contribution as f32;
         }
         let sum: f32 = vector.iter().sum();
+        #[allow(clippy::float_cmp)]
         if sum == 0.0 {
             return 0.0;
         }
@@ -478,6 +479,7 @@ impl ActionClassScores {
     }
     fn similarity(self, profile: ActionClassWeights) -> f32 {
         let sum = self.infantry + self.cavalry + self.artillery + self.armor + self.support;
+        #[allow(clippy::float_cmp)]
         if sum == 0.0 {
             return 0.0;
         }

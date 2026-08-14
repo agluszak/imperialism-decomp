@@ -498,10 +498,10 @@ fn fleet_atlas_picture_id(state: &GameState) -> PictureId {
         .expect("strategic map requires an active major nation");
     let status = &state.technology().research_status_by_nation[nation];
     let mut variant = 0_i16;
-    if status[TechnologyId::new(0x0f)] == TechnologyResearchStatus::Researched {
+    if status[TechnologyId::new(0x0f).index()] == TechnologyResearchStatus::Researched {
         variant = 1;
     }
-    if status[TechnologyId::new(0x18)] == TechnologyResearchStatus::Researched {
+    if status[TechnologyId::new(0x18).index()] == TechnologyResearchStatus::Researched {
         variant = 2;
     }
     PictureId::new(FLEET_ATLAS_PICTURE_BASE + i16::from(nation.get()) + variant * 7)
