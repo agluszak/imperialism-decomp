@@ -39,7 +39,7 @@ pub struct AiCityOrderDemand {
     pub(crate) civilian_recruitment: CivilianUnitTable<i16>,
     pub(crate) ships: ShipOrderTable<i16>,
     pub(crate) transport_capacity: i16,
-    pub(crate) expansions: ProductionTable<i16>,
+    pub(crate) expansions: ExpansionOrderTable<i16>,
     pub(crate) population_growth: i16,
 }
 
@@ -50,7 +50,7 @@ impl AiCityOrderDemand {
         civilian_recruitment: CivilianUnitTable<i16>,
         ships: ShipOrderTable<i16>,
         transport_capacity: i16,
-        expansions: ProductionTable<i16>,
+        expansions: ExpansionOrderTable<i16>,
         population_growth: i16,
     ) -> Self {
         Self {
@@ -84,7 +84,7 @@ impl AiCityOrderDemand {
         self.transport_capacity
     }
 
-    pub const fn expansions(&self) -> &ProductionTable<i16> {
+    pub const fn expansions(&self) -> &ExpansionOrderTable<i16> {
         &self.expansions
     }
 
@@ -195,10 +195,10 @@ impl InteriorCivilianState {
 /// Demand retained after `TCityInteriorMinister::MakeNewCity` binds an AI Frog City.
 pub(crate) fn initial_ai_city_order_demand() -> AiCityOrderDemand {
     let mut demand = AiCityOrderDemand::default();
-    demand.expansions[CityFacilitySlot::TextileMill] = 2;
-    demand.expansions[CityFacilitySlot::ClothingFactory] = 1;
-    demand.expansions[CityFacilitySlot::SteelMill] = 2;
-    demand.expansions[CityFacilitySlot::LumberMill] = 2;
+    demand.expansions[ExpandableFacility::TextileMill] = 2;
+    demand.expansions[ExpandableFacility::ClothingFactory] = 1;
+    demand.expansions[ExpandableFacility::SteelMill] = 2;
+    demand.expansions[ExpandableFacility::LumberMill] = 2;
     demand
 }
 
