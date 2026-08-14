@@ -496,7 +496,11 @@ RuntimeActionResult RunMilitaryCleanupSupportedSubset(NativeTransition& transiti
       continue;
     }
     if (g_apNationStates[slot] != 0) {
-      g_apNationStates[slot]->AddPurchasedItems();
+      TGreatPower* nation = g_apNationStates[slot];
+      if (nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0) {
+        static_cast<TAutoGreatPower*>(nation)->SeedTrackedEntryAssignmentsFromEligibleUnits();
+      }
+      nation->AddPurchasedItems();
     }
   }
   return transition.Finish();

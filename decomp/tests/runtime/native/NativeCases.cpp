@@ -74,6 +74,7 @@ RuntimeActionResult RunTurnAlertsSkipFirstEconomicTurn(NativeTransition& transit
 RuntimeActionResult RunDiplomacyOfferGate(NativeTransition& transition);
 RuntimeActionResult RunQuarterGateOffDecade(NativeTransition& transition);
 RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transition);
+RuntimeActionResult RunNewspaperNavyGrowthRewardLevels(NativeTransition& transition);
 RuntimeActionResult RunEliminationPhaseWithLandedGreatPowers(NativeTransition& transition);
 RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition);
 RuntimeActionResult RunOpeningHomeCitySetup(NativeTransition& transition);
@@ -146,6 +147,7 @@ const NativeCase kCases[] = {
     {"diplomacy_offer_gate", RunDiplomacyOfferGate},
     {"quarter_gate_off_decade", RunQuarterGateOffDecade},
     {"return_to_map_clears_notice_queues", RunReturnToMapClearsNoticeQueues},
+    {"newspaper_navy_growth_reward_levels", RunNewspaperNavyGrowthRewardLevels},
     {"elimination_phase_with_landed_great_powers", RunEliminationPhaseWithLandedGreatPowers},
     {"opening_civilian_grant", RunOpeningCivilianGrant},
     {"opening_home_city_setup", RunOpeningHomeCitySetup},

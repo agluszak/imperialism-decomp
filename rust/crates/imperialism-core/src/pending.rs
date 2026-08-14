@@ -1,4 +1,7 @@
-use crate::{GameState, MajorNationId, PendingActionKind, TechnologyResearchStatus};
+use crate::{
+    GameState, MajorNationId, PendingActionKind, PendingActionTable, TechnologyId,
+    TechnologyResearchStatus,
+};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
@@ -17,23 +20,6 @@ impl PendingActionState {
     pub const fn payload(self) -> Option<i16> {
         self.payload
     }
-    pub const fn is_queued(self) -> bool {
-        self.status.is_queued()
-    }
-    pub const fn completed_level(self) -> Option<i16> {
-        self.status.completed_level()
-    }
-    /// Army-growth threshold level: queued work is ignored; raw 0 and `0x33`
-    /// both count as level 0, matching `TUnitOrder` recruit production.
-    pub(crate) const fn level(self) -> Option<i16> {
-        if self.status.is_queued() {
-            None
-        } else if let Some(level) = self.status.completed_level() {
-            Some(level)
-        } else {
-            Some(0)
-        }
-    }
     pub(crate) fn queue(&mut self, payload: i16) {
         self.status = PendingActionStatus::QUEUED;
         self.payload = (payload != -1).then_some(payload);
@@ -44,12 +30,21 @@ impl PendingActionState {
     pub(crate) fn set_payload(&mut self, payload: Option<i16>) {
         self.payload = payload;
     }
+    /// Reward-level recovered from a non-queued status byte.
+    ///
+    /// Matches `TShipOrder::LaunchShip` / army-growth: queued has no completed
+    /// level, `0` is level zero, and handled statuses are `status - 0x33`.
+    pub const fn completed_level(self) -> Option<i16> {
+        self.status.completed_level()
+    }
 }
 
-/// Retail `TGreatPower::pendingActionStatus.byAction[]` raw status byte.
+/// Raw retail pending-action status byte.
 ///
-/// Queued work is `0x32`. Completed reward levels use the `0x33 + n` convention,
-/// so `0x33` through `0x39` are valid persistent values.
+/// Different action kinds assign different meaning to the same values. Common
+/// sentinels are [`NONE`](Self::NONE) (`0`), [`QUEUED`](Self::QUEUED) (`0x32`),
+/// and [`HANDLED`](Self::HANDLED) (`0x33`). Army/navy growth then store
+/// `0x33 + payload` through `0x39`.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(transparent)]
 pub struct PendingActionStatus(i8);
@@ -57,6 +52,7 @@ pub struct PendingActionStatus(i8);
 impl PendingActionStatus {
     pub const NONE: Self = Self(0);
     pub const QUEUED: Self = Self(0x32);
+    pub const HANDLED: Self = Self(0x33);
 
     pub const fn from_retail(value: i8) -> Self {
         Self(value)
@@ -67,157 +63,141 @@ impl PendingActionStatus {
     }
 
     pub const fn is_queued(self) -> bool {
-        self.0 == Self::QUEUED.0
+        self.0 == 0x32
     }
 
-    /// Completed reward level `n` stored as `0x33 + n`.
-    pub const fn completed(level: i16) -> Self {
-        Self((0x33 + level) as i8)
+    pub const fn is_none(self) -> bool {
+        self.0 == 0
     }
 
     pub const fn completed_level(self) -> Option<i16> {
-        if self.0 >= 0x33 {
-            Some((self.0 as i16) - 0x33)
-        } else {
+        if self.0 == 0x32 {
             None
+        } else if self.0 == 0 {
+            Some(0)
+        } else {
+            Some(self.0 as i16 - 0x33)
         }
     }
 
-    pub(crate) fn has_reached(self, other: Self) -> bool {
+    pub fn has_reached(self, other: Self) -> bool {
         self >= other
     }
 }
 
 impl GameState {
-    /// `TGreatPower::MarkAllPendingStatusFlagsHandled` for every event-eligible great power.
+    /// Retail `TGreatPower::MarkAllPendingStatusFlagsHandled` for every event-eligible major.
     pub fn mark_all_pending_status_flags_handled(&mut self) {
-        for index in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(index);
+        for nation in MajorNationId::all() {
             if !self.event_eligible(nation.nation()) {
                 continue;
             }
-            self.mark_nation_pending_status_flags_handled(nation);
+            let ironworking_researched = self.technology.research_status_by_nation[nation]
+                [TechnologyId::new(0x0f)]
+                == TechnologyResearchStatus::Researched;
+            let actions = &mut self.nations.majors[nation].economy.pending_actions;
+            mark_pending_status_flags_handled(actions, ironworking_researched);
+        }
+    }
+}
+
+fn mark_pending_status_flags_handled(
+    actions: &mut PendingActionTable<PendingActionState>,
+    ironworking_researched: bool,
+) {
+    let shipyard = &mut actions[PendingActionKind::ShipyardIronworkingUpgrade];
+    if !shipyard.status().has_reached(PendingActionStatus::HANDLED) && ironworking_researched {
+        shipyard.set_status(PendingActionStatus::HANDLED);
+    }
+
+    mark_queued_handled(
+        &mut actions[PendingActionKind::ConqueredCapitalArmoryUpgrade],
+        PendingActionStatus::HANDLED,
+        false,
+    );
+
+    let university = &mut actions[PendingActionKind::UniversityExpansion];
+    if university.status().is_queued() {
+        match university.payload() {
+            Some(2) => university.set_status(PendingActionStatus::HANDLED),
+            Some(3) => {
+                university.set_status(PendingActionStatus::from_retail(0x34));
+                university.set_payload(None);
+            }
+            _ => {}
         }
     }
 
-    fn mark_nation_pending_status_flags_handled(&mut self, nation: MajorNationId) {
-        let ironworking_researched = self.technology.research_status_by_nation[nation][0x0f]
-            == TechnologyResearchStatus::Researched;
-        let actions = &mut self.nations.majors[nation].economy.pending_actions;
+    for kind in [
+        PendingActionKind::RailyardExpansion,
+        PendingActionKind::AnnexedGreatPowerCapitalExpansion,
+        PendingActionKind::ColonyMonumentMerchantCapacity,
+        PendingActionKind::CouncilLeadMonument,
+        PendingActionKind::ConquestMonumentArmory,
+    ] {
+        mark_queued_handled(&mut actions[kind], PendingActionStatus::HANDLED, false);
+    }
 
-        if actions[PendingActionKind::ShipyardIronworkingUpgrade]
-            .status()
-            .retail()
-            < 0x33
-            && ironworking_researched
-        {
-            actions[PendingActionKind::ShipyardIronworkingUpgrade]
-                .set_status(PendingActionStatus::completed(0));
+    mark_queued_as_payload_plus_handled(&mut actions[PendingActionKind::NavyGrowthReward]);
+    mark_queued_as_payload_plus_handled(&mut actions[PendingActionKind::ArmyGrowthReward]);
+    mark_queued_handled(
+        &mut actions[PendingActionKind::OverseasDeveloperReward],
+        PendingActionStatus::HANDLED,
+        false,
+    );
+    mark_queued_handled(
+        &mut actions[PendingActionKind::VillageDevelopment],
+        PendingActionStatus::NONE,
+        false,
+    );
+    mark_queued_handled(
+        &mut actions[PendingActionKind::TownDevelopment],
+        PendingActionStatus::NONE,
+        false,
+    );
+}
+
+fn mark_queued_handled(
+    action: &mut PendingActionState,
+    status: PendingActionStatus,
+    clear_payload: bool,
+) {
+    if action.status().is_queued() {
+        action.set_status(status);
+        if clear_payload {
+            action.set_payload(None);
         }
-        if actions[PendingActionKind::ConqueredCapitalArmoryUpgrade].is_queued() {
-            actions[PendingActionKind::ConqueredCapitalArmoryUpgrade]
-                .set_status(PendingActionStatus::completed(0));
-        }
-        if actions[PendingActionKind::UniversityExpansion].is_queued() {
-            match actions[PendingActionKind::UniversityExpansion].payload() {
-                Some(2) => actions[PendingActionKind::UniversityExpansion]
-                    .set_status(PendingActionStatus::completed(0)),
-                Some(3) => {
-                    actions[PendingActionKind::UniversityExpansion]
-                        .set_status(PendingActionStatus::completed(1));
-                    actions[PendingActionKind::UniversityExpansion].set_payload(None);
-                }
-                _ => {}
-            }
-        }
-        if actions[PendingActionKind::RailyardExpansion].is_queued() {
-            actions[PendingActionKind::RailyardExpansion]
-                .set_status(PendingActionStatus::completed(0));
-        }
-        if actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion].is_queued() {
-            actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
-                .set_status(PendingActionStatus::completed(0));
-        }
-        if actions[PendingActionKind::ColonyMonumentMerchantCapacity].is_queued() {
-            actions[PendingActionKind::ColonyMonumentMerchantCapacity]
-                .set_status(PendingActionStatus::completed(0));
-        }
-        if actions[PendingActionKind::CouncilLeadMonument].is_queued() {
-            actions[PendingActionKind::CouncilLeadMonument]
-                .set_status(PendingActionStatus::completed(0));
-        }
-        if actions[PendingActionKind::ConquestMonumentArmory].is_queued() {
-            actions[PendingActionKind::ConquestMonumentArmory]
-                .set_status(PendingActionStatus::completed(0));
-        }
-        if actions[PendingActionKind::NavyGrowthReward].is_queued() {
-            let level = actions[PendingActionKind::NavyGrowthReward]
-                .payload()
-                .unwrap_or(-1);
-            actions[PendingActionKind::NavyGrowthReward]
-                .set_status(PendingActionStatus::completed(level));
-        }
-        if actions[PendingActionKind::ArmyGrowthReward].is_queued() {
-            let level = actions[PendingActionKind::ArmyGrowthReward]
-                .payload()
-                .unwrap_or(-1);
-            actions[PendingActionKind::ArmyGrowthReward]
-                .set_status(PendingActionStatus::completed(level));
-        }
-        if actions[PendingActionKind::OverseasDeveloperReward].is_queued() {
-            actions[PendingActionKind::OverseasDeveloperReward]
-                .set_status(PendingActionStatus::completed(0));
-        }
-        if actions[PendingActionKind::VillageDevelopment].is_queued() {
-            actions[PendingActionKind::VillageDevelopment].set_status(PendingActionStatus::NONE);
-        }
-        if actions[PendingActionKind::TownDevelopment].is_queued() {
-            actions[PendingActionKind::TownDevelopment].set_status(PendingActionStatus::NONE);
-        }
+    }
+}
+
+fn mark_queued_as_payload_plus_handled(action: &mut PendingActionState) {
+    if action.status().is_queued() {
+        let payload = action.payload().unwrap_or(-1);
+        action.set_status(PendingActionStatus::from_retail((payload + 0x33) as i8));
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_support::game_state;
 
     #[test]
-    fn pending_action_level_is_derived_from_status_not_payload() {
-        assert_eq!(
-            PendingActionState::new(PendingActionStatus::NONE, None).level(),
-            Some(0)
-        );
-        assert_eq!(
-            PendingActionState::new(PendingActionStatus::QUEUED, Some(6)).level(),
-            None
-        );
-        assert_eq!(
-            PendingActionState::new(PendingActionStatus::completed(0), Some(6)).level(),
-            Some(0)
-        );
-        assert_eq!(
-            PendingActionState::new(PendingActionStatus::completed(1), Some(6)).level(),
-            Some(1)
-        );
-    }
-
-    #[test]
-    fn pending_action_completed_level_follows_the_0x33_plus_n_convention() {
+    fn pending_action_completed_level_is_derived_from_the_raw_status_byte() {
         assert_eq!(
             PendingActionState::new(PendingActionStatus::NONE, None).completed_level(),
-            None
+            Some(0)
         );
         assert_eq!(
             PendingActionState::new(PendingActionStatus::QUEUED, Some(6)).completed_level(),
             None
         );
         assert_eq!(
-            PendingActionState::new(PendingActionStatus::completed(0), Some(6)).completed_level(),
+            PendingActionState::new(PendingActionStatus::HANDLED, Some(6)).completed_level(),
             Some(0)
         );
         assert_eq!(
-            PendingActionState::new(PendingActionStatus::completed(1), Some(6)).completed_level(),
+            PendingActionState::new(PendingActionStatus::from_retail(0x34), Some(6))
+                .completed_level(),
             Some(1)
         );
         assert_eq!(
@@ -228,30 +208,30 @@ mod tests {
     }
 
     #[test]
-    fn newspaper_boundary_promotes_queued_army_and_navy_payloads() {
-        let mut state = game_state();
-        let nation = MajorNationId::new(0);
-        state.nations.majors[nation].economy.pending_actions[PendingActionKind::ArmyGrowthReward]
-            .queue(6);
-        state.nations.majors[nation].economy.pending_actions[PendingActionKind::NavyGrowthReward]
-            .queue(3);
-        state.nations.majors[nation].economy.pending_actions[PendingActionKind::VillageDevelopment]
-            .queue(-1);
-
-        state.mark_all_pending_status_flags_handled();
-
-        let army = state.nations.majors[nation].economy.pending_actions
-            [PendingActionKind::ArmyGrowthReward];
-        assert_eq!(army.status(), PendingActionStatus::from_retail(0x39));
-        assert_eq!(army.completed_level(), Some(6));
-        let navy = state.nations.majors[nation].economy.pending_actions
-            [PendingActionKind::NavyGrowthReward];
-        assert_eq!(navy.status(), PendingActionStatus::completed(3));
+    fn newspaper_mark_handled_promotes_navy_growth_through_reward_levels() {
+        let mut actions = PendingActionTable::default();
+        actions[PendingActionKind::NavyGrowthReward] =
+            PendingActionState::new(PendingActionStatus::QUEUED, Some(1));
+        mark_pending_status_flags_handled(&mut actions, false);
         assert_eq!(
-            state.nations.majors[nation].economy.pending_actions
-                [PendingActionKind::VillageDevelopment]
-                .status(),
-            PendingActionStatus::NONE
+            actions[PendingActionKind::NavyGrowthReward].status(),
+            PendingActionStatus::from_retail(0x34)
+        );
+
+        actions[PendingActionKind::NavyGrowthReward] =
+            PendingActionState::new(PendingActionStatus::QUEUED, Some(2));
+        mark_pending_status_flags_handled(&mut actions, false);
+        assert_eq!(
+            actions[PendingActionKind::NavyGrowthReward].status(),
+            PendingActionStatus::from_retail(0x35)
+        );
+
+        actions[PendingActionKind::NavyGrowthReward] =
+            PendingActionState::new(PendingActionStatus::QUEUED, Some(3));
+        mark_pending_status_flags_handled(&mut actions, false);
+        assert_eq!(
+            actions[PendingActionKind::NavyGrowthReward].status(),
+            PendingActionStatus::from_retail(0x36)
         );
     }
 }

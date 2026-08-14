@@ -116,8 +116,7 @@ pub(super) fn initialize_sea_zone_neighbors(
     }
 
     let geometry = world.geometry();
-    for tile_index in 0..TileId::COUNT {
-        let tile = TileId::new(tile_index);
+    for tile in TileId::all() {
         let Some(owner) = world[tile]
             .owner_nation
             .map(TileOwnerTag::get)
@@ -201,7 +200,7 @@ pub(super) fn generate_province_names(
     names: &RandomGameNames,
 ) {
     let mut next_ordinal = [0_usize; NATION_COUNT];
-    for province_id in (0..ProvinceId::COUNT).map(ProvinceId::new) {
+    for province_id in ProvinceId::all() {
         let province = &mut provinces[province_id];
         if province.linked_tiles.is_empty() {
             continue;

@@ -42,10 +42,7 @@ impl GameState {
             if let Some(major) = MajorNationId::from_nation(master) {
                 let pending = &mut self.nations.majors[major].economy.pending_actions
                     [PendingActionKind::ColonyMonumentMerchantCapacity];
-                if !pending
-                    .status()
-                    .has_reached(PendingActionStatus::completed(0))
-                {
+                if !pending.status().has_reached(PendingActionStatus::HANDLED) {
                     pending.queue(i16::from(subject.get()));
                 }
             }
@@ -58,10 +55,7 @@ impl GameState {
         ) {
             let pending = &mut self.nations.majors[master_major].economy.pending_actions
                 [PendingActionKind::AnnexedGreatPowerCapitalExpansion];
-            if !pending
-                .status()
-                .has_reached(PendingActionStatus::completed(0))
-            {
+            if !pending.status().has_reached(PendingActionStatus::HANDLED) {
                 pending.queue(i16::from(subject.get()));
             }
         }
@@ -81,8 +75,7 @@ impl GameState {
     }
 
     pub(super) fn declare_war_for_colonies(&mut self, master: NationId, enemy: NationId) {
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = NationId::new(slot);
+        for minor in MinorNationId::all().map(MinorNationId::nation) {
             if !self
                 .nations
                 .common(minor)

@@ -3,7 +3,7 @@ use crate::ui::GameSession;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
-use imperialism_core::{CivilianUnitId, RailOrderRejection};
+use imperialism_core::{CivilianUnitId, CivilianUnitKind, RailOrderRejection};
 
 use super::{StrategicBaseTerrainCanvas, strategic_base_terrain_tile_at_cursor};
 
@@ -29,13 +29,26 @@ fn on_strategic_map_click(
         return;
     };
     let nation = session.game.turn().active_nation;
-    if let Some(unit) = session.game.selectable_engineer_on_tile(tile, nation) {
+    if let Some(unit) = session.game.selectable_civilian_on_tile(tile, nation) {
         selected.0 = Some(unit);
         return;
     }
     let Some(unit) = selected.0 else {
         return;
     };
+    let Some(kind) = session
+        .game
+        .civilian_units()
+        .iter()
+        .find(|candidate| candidate.id() == unit)
+        .map(|candidate| candidate.unit_type())
+    else {
+        selected.0 = None;
+        return;
+    };
+    if kind != CivilianUnitKind::Engineer {
+        return;
+    }
     match session.game.order_rail_construction(unit, tile) {
         Ok(()) => selected.0 = None,
         Err(RailOrderRejection::InsufficientFunds | RailOrderRejection::InvalidTarget) => {}

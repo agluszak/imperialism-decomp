@@ -109,11 +109,14 @@ pub(in crate::ui::city) fn configure_university_dialog(
                 unreachable!("University binding has a civilian recruitment order");
             };
             UniversityRowText {
+                // Retail `TUniversityView::SetUnit` pre-increments the 0-based
+                // recruitment category once and reuses that 1-based index for
+                // both `0x2718` (name) and `0x2751` (description).
                 unit_name: assets
                     .string(0x2718, i16::from(kind as u8) + 1)
                     .expect("retail civilian name"),
                 description: assets
-                    .string(0x2751, i16::from(kind as u8))
+                    .string(0x2751, i16::from(kind as u8) + 1)
                     .expect("retail civilian description"),
                 preview: transparent_picture(
                     assets,

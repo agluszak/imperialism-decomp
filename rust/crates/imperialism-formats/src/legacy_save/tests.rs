@@ -355,7 +355,7 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
         assert_eq!(targets, &expected_targets);
 
         let province_targets = major.economy.ai_province_targets.as_ref().unwrap();
-        for province in (0..ProvinceId::COUNT).map(ProvinceId::new) {
+        for province in ProvinceId::all() {
             let expected = if expected_provinces.contains(&province.get()) {
                 AiTargetState::MissionQueued
             } else {
@@ -369,11 +369,10 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
     assert!(human.ai_zone_targets.is_none());
     assert!(human.ai_province_targets.is_none());
     assert_eq!(human.army_movement_budget, 15);
-    for province in (0..ProvinceId::COUNT).map(ProvinceId::new) {
+    for province in ProvinceId::all() {
         assert_eq!(state.map().provinces[province].development_stage(), 0);
         assert!(
-            (0..MajorNationId::COUNT)
-                .map(MajorNationId::new)
+            MajorNationId::all()
                 .all(|nation| !state.map().provinces[province].explored_by_majors()[nation])
         );
     }
@@ -684,6 +683,52 @@ fn semantic_projection_preserves_inactive_pending_action_payload() {
             .payload(),
         Some(0)
     );
+}
+
+#[test]
+fn navy_growth_handled_reward_levels_round_trip_through_retail_save() {
+    let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
+    let prefix = &mut first_great_power_mut(&mut save).prefix;
+    let action = PendingActionKind::NavyGrowthReward as usize;
+    prefix.pending_action_status[action] = 0x34;
+    prefix.pending_action_payload_by_action[action] = 1;
+
+    let state = save.game_state(game_context());
+    let pending = state
+        .nations()
+        .major(MajorNationId::new(0))
+        .economy
+        .pending_actions[PendingActionKind::NavyGrowthReward];
+    assert_eq!(pending.status(), PendingActionStatus::from_retail(0x34));
+    assert_eq!(pending.completed_level(), Some(1));
+    assert_eq!(pending.payload(), Some(1));
+
+    let bytes = LegacySaveV62::from_game_state(&state, "- Autosave -", 0).to_bytes();
+    let round_tripped =
+        load_game_from_bytes(&bytes, game_context()).expect("rust-written save loads");
+    let pending = round_tripped
+        .nations()
+        .major(MajorNationId::new(0))
+        .economy
+        .pending_actions[PendingActionKind::NavyGrowthReward];
+    assert_eq!(pending.status(), PendingActionStatus::from_retail(0x34));
+    assert_eq!(pending.completed_level(), Some(1));
+
+    let mut save = LegacySaveV62::parse(&bytes);
+    first_great_power_mut(&mut save)
+        .prefix
+        .pending_action_status[action] = 0x39;
+    first_great_power_mut(&mut save)
+        .prefix
+        .pending_action_payload_by_action[action] = 6;
+    let level_six = save.game_state(game_context());
+    let pending = level_six
+        .nations()
+        .major(MajorNationId::new(0))
+        .economy
+        .pending_actions[PendingActionKind::NavyGrowthReward];
+    assert_eq!(pending.status(), PendingActionStatus::from_retail(0x39));
+    assert_eq!(pending.completed_level(), Some(6));
 }
 
 #[test]

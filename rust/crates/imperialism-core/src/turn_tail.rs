@@ -121,8 +121,8 @@ impl GameState {
     /// Turn-machine case `0x0b`: update every live great power from slot 6 down to 0.
     pub fn do_great_power_pressure_phase(&mut self) -> bool {
         let mut lost = false;
-        for index in (0..MajorNationId::COUNT).rev() {
-            if self.update_great_power_pressure(MajorNationId::new(index)) {
+        for nation in MajorNationId::all().rev() {
+            if self.update_great_power_pressure(nation) {
                 lost = true;
             }
         }
@@ -145,8 +145,7 @@ impl GameState {
             outcome = EliminationOutcome::PlayerEliminated;
         }
 
-        let empty_majors: Vec<_> = (0..MajorNationId::COUNT)
-            .map(MajorNationId::new)
+        let empty_majors: Vec<_> = MajorNationId::all()
             .filter(|&nation| {
                 self.nations.majors[nation]
                     .common
@@ -158,15 +157,14 @@ impl GameState {
             self.remove_nation_slot(nation.nation());
         }
 
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let empty = self.nations.minors[MinorNationId::new(slot)]
+        for minor in MinorNationId::all() {
+            let empty = self.nations.minors[minor]
                 .as_ref()
                 .is_some_and(|nation| nation.common.owned_regions().is_empty());
             if !empty {
                 continue;
             }
-            for index in 0..MajorNationId::COUNT {
-                let nation = MajorNationId::new(index);
+            for nation in MajorNationId::all() {
                 if self.event_eligible(nation.nation()) {
                     self.new_status_for(nation, NationId::new(0), 100);
                 }
@@ -177,8 +175,7 @@ impl GameState {
             return outcome;
         }
 
-        let eligible = (0..MajorNationId::COUNT)
-            .map(MajorNationId::new)
+        let eligible = MajorNationId::all()
             .filter(|&nation| self.event_eligible(nation.nation()))
             .count();
         if eligible == 1 && self.event_eligible(self.turn.active_nation) {
@@ -224,8 +221,7 @@ impl GameState {
     /// Turn-machine case `0x12` reset work, then the strategic map.
     pub fn return_to_map(&mut self) {
         self.turn.phase = PhaseCode::STRATEGIC_MAP;
-        for index in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(index);
+        for nation in MajorNationId::all() {
             if !self.event_eligible(nation.nation()) {
                 continue;
             }
@@ -234,8 +230,7 @@ impl GameState {
         }
     }
 
-    /// Retail `ShowTurnAlertsForActiveNation`. Capitol-threat alerts wait on
-    /// military scoring and stay off here.
+    /// Retail `ShowTurnAlertsForActiveNation`.
     pub fn show_turn_alerts(&mut self) -> bool {
         let tick = self.turn.economic_turn;
         if tick == 1 || self.turn.last_turn_alert_tick == tick {
@@ -246,33 +241,50 @@ impl GameState {
             return false;
         };
 
-        let mut shown = false;
-        if self.turn.turn_flow_status_flags & 1 == 0
-            && self.treasury_status_prompt_code(nation) != 0
-        {
-            shown = true;
+        const ALERT_LAND_CAPITOL: u8 = 1;
+        const ALERT_NAVY_CAPITOL: u8 = 2;
+        const ALERT_TREASURY: u8 = 4;
+        const ALERT_COMMODITY: u8 = 8;
+        const ALERT_TRANSPORT: u8 = 16;
+        const ALERT_STARVATION: u8 = 32;
+
+        let mut mask = 0_u8;
+        if self.land_capitol_threatened(nation) {
+            mask |= ALERT_LAND_CAPITOL;
         }
-        if self.turn.turn_flow_status_flags & 0x10 == 0 && self.commodity_record_below_step(nation)
-        {
-            shown = true;
+        if self.navy_capitol_threatened(nation) {
+            mask |= ALERT_NAVY_CAPITOL;
         }
-        if self.turn.turn_flow_status_flags & 0x1000 == 0
-            && self.need_current_exceeds_target(nation)
-        {
-            shown = true;
-        }
-        if self
-            .nations
-            .city(nation)
-            .forecast_population_food(&self.nations.majors[nation].economy.need_target_by_type)
-            .starvation_count
-            != 0
-        {
-            shown = true;
+        if mask == 0 {
+            if self.turn.turn_flow_status_flags & 1 == 0
+                && self.treasury_status_prompt_code(nation) != 0
+            {
+                mask |= ALERT_TREASURY;
+            }
+            if self.turn.turn_flow_status_flags & 0x10 == 0
+                && self.commodity_record_below_step(nation)
+            {
+                mask |= ALERT_COMMODITY;
+            }
+            if self.turn.turn_flow_status_flags & 0x1000 == 0
+                && self.need_current_exceeds_target(nation)
+            {
+                mask |= ALERT_TRANSPORT;
+            }
+            if self
+                .nations
+                .city(nation)
+                .forecast_population_food(&self.nations.majors[nation].economy.need_target_by_type)
+                .starvation_count
+                != 0
+            {
+                mask |= ALERT_STARVATION;
+            }
         }
 
+        self.turn.turn_alert_mask = mask;
         self.turn.last_turn_alert_tick = tick;
-        shown
+        mask != 0
     }
 
     fn treasury_status_prompt_code(&self, nation: MajorNationId) -> i16 {
@@ -329,8 +341,7 @@ impl GameState {
     }
 
     fn remove_nation_slot(&mut self, removed: NationId) {
-        for index in 0..MajorNationId::COUNT {
-            let peer = MajorNationId::new(index);
+        for peer in MajorNationId::all() {
             if peer.nation() == removed || !self.event_eligible(peer.nation()) {
                 continue;
             }
@@ -498,10 +509,10 @@ mod tests {
     #[test]
     fn elimination_continues_when_every_great_power_still_holds_land() {
         let mut state = game_state();
-        for index in 0..MajorNationId::COUNT {
+        for nation in MajorNationId::all() {
             state.nations.append_owned_region_during_construction(
-                MajorNationId::new(index).nation(),
-                ProvinceId::new(index as u16),
+                nation.nation(),
+                ProvinceId::new(u16::from(nation.get())),
             );
         }
         assert_eq!(state.do_elimination_phase(), EliminationOutcome::Continue);

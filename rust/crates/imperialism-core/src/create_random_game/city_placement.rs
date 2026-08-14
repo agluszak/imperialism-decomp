@@ -22,8 +22,7 @@ pub(super) fn place_initial_frog_cities(
     difficulty: Difficulty,
 ) {
     let province_adjacency = build_province_adjacency(world);
-    for slot in (0..MajorNationId::COUNT).rev() {
-        let nation = MajorNationId::new(slot);
+    for nation in MajorNationId::all().rev() {
         if nation == human_nation && requires_capital_site_selection(difficulty) {
             continue;
         }
@@ -80,7 +79,7 @@ pub(super) fn bootstrap_minors(
     difficulty: Difficulty,
     port_zones: &mut PortZoneTable,
 ) {
-    for minor_id in (MinorNationId::FIRST..NationId::COUNT).map(MinorNationId::new) {
+    for minor_id in MinorNationId::all() {
         let owner = TileOwnerTag::from_nation(minor_id.nation());
         let Some(home) = select_minor_home_tile(world, owner, crt) else {
             continue;
@@ -390,7 +389,7 @@ pub(super) fn frog_city_score(yields: &ResourceTable<i16>) -> i32 {
         + i32::from(food_bonus)
 }
 /// `TTown::CalculateCityResources` (0x005b73e0) for an enabled Frog City marker.
-pub(super) fn calculate_city_resources(
+pub(crate) fn calculate_city_resources(
     world: &MapMgr,
     home: TileId,
     nation: MajorNationId,

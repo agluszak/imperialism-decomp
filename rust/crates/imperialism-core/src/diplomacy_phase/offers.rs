@@ -148,9 +148,8 @@ impl GameState {
         start_nation: u8,
         start_index: usize,
     ) -> DiplomacyPhaseResult {
-        for nation_index in start_nation..MajorNationId::COUNT {
-            let nation = MajorNationId::new(nation_index);
-            let first = if nation_index == start_nation {
+        for nation in MajorNationId::all().skip(usize::from(start_nation)) {
+            let first = if nation.get() == start_nation {
                 start_index
             } else {
                 0

@@ -20,7 +20,7 @@ impl GameSession {
 /// Maps one core turn stop onto the matching Bevy screen.
 pub(crate) fn apply_turn_stop(stop: TurnStop, next_state: &mut NextState<AppState>) {
     match stop {
-        TurnStop::PlayerOrders => next_state.set(AppState::StrategicMap),
+        TurnStop::PlayerOrders | TurnStop::TurnAlerts => next_state.set(AppState::StrategicMap),
         TurnStop::TradeOffer => next_state.set(AppState::OfferSheet),
         TurnStop::DealBook => next_state.set(AppState::DealBook),
         TurnStop::TechnologyAdvance => next_state.set(AppState::TechnologyAdvance),

@@ -1,6 +1,6 @@
 //! City and transport resolution (`TSimMgr::DoCityAndTransport`).
 
-use crate::create_random_game::resource_capability_requirement_level;
+use crate::create_random_game::{name_units_for_nation, resource_capability_requirement_level};
 use crate::*;
 
 const COMPILE_DELTA_RESOURCE_ORDER: [ResourceKind; 17] = [
@@ -28,8 +28,7 @@ const COMPILE_THRESHOLD_BY_DIFFICULTY: [i32; 5] = [5, 5, 5, 5, 5];
 impl GameState {
     /// Retail `TSimMgr::DoCityAndTransport`.
     pub fn do_city_and_transport(&mut self) {
-        for index in (0..MajorNationId::COUNT).rev() {
-            let nation = MajorNationId::new(index);
+        for nation in MajorNationId::all().rev() {
             if !self.nation_eligible_for_optional_phase(nation) {
                 continue;
             }
@@ -86,14 +85,16 @@ impl GameState {
 
         let army_queued = self.nations.major(nation).economy.pending_actions
             [PendingActionKind::ArmyGrowthReward]
-            .is_queued();
+            .status()
+            == PendingActionStatus::QUEUED;
         if army_queued {
             self.spawn_pending_army_growth_unit(nation);
         }
 
         let navy_queued = self.nations.major(nation).economy.pending_actions
             [PendingActionKind::NavyGrowthReward]
-            .is_queued();
+            .status()
+            == PendingActionStatus::QUEUED;
         if navy_queued {
             self.spawn_pending_navy_growth_unit(nation);
         }
@@ -101,7 +102,7 @@ impl GameState {
         let overseas = self.nations.major(nation).economy.pending_actions
             [PendingActionKind::OverseasDeveloperReward]
             .status();
-        if overseas < PendingActionStatus::completed(0) && self.needs_overseas_developer(nation) {
+        if overseas < PendingActionStatus::HANDLED && self.needs_overseas_developer(nation) {
             self.spawn_pending_overseas_developer(nation);
             self.nations.majors[nation].economy.pending_actions
                 [PendingActionKind::OverseasDeveloperReward]
@@ -111,7 +112,7 @@ impl GameState {
         let monument_queued = self.nations.major(nation).economy.pending_actions
             [PendingActionKind::ColonyMonumentMerchantCapacity]
             .status()
-            .is_queued();
+            == PendingActionStatus::QUEUED;
         if monument_queued {
             let count =
                 &mut self.nations.city_mut(nation).ship_order_count_by_type[ShipType::Clipper];
@@ -133,7 +134,10 @@ impl GameState {
         let province = self.map[home]
             .province
             .expect("army-growth pending requires the home tile's province");
-        let unit_kind = self.technology.capability_group_slots[nation][9];
+        let unit_kind = MilitaryUnitKind::from_index(
+            self.technology.selected_capability_slots[nation][9] as u8,
+        )
+        .expect("selected general capability is a military unit kind");
         let id = self.unit_ids.next_military();
         let unit = MilitaryUnitState {
             id,
@@ -152,15 +156,15 @@ impl GameState {
         };
         let insert_at = self
             .military_units
-            .partition_point(|existing| existing.nation.get() <= nation_id.get());
+            .partition_point(|existing| existing.nation <= nation_id);
         self.military_units.insert(insert_at, unit);
         self.announce_later(nation, 3, unit_kind as i16, 1);
     }
 
     fn needs_overseas_developer(&self, nation: MajorNationId) -> bool {
         let nation_id = nation.nation();
-        for slot in 7..NationId::COUNT {
-            let minor_id = NationId::new(slot);
+        for minor in MinorNationId::all() {
+            let minor_id = minor.nation();
             if self.diplomacy.standings[nation_id][minor_id] <= 0xa9 {
                 continue;
             }
@@ -205,12 +209,19 @@ impl GameState {
         };
         let insert_at = self
             .civilian_units
-            .partition_point(|existing| existing.nation.get() <= nation_id.get());
+            .partition_point(|existing| existing.nation <= nation_id);
         self.civilian_units.insert(insert_at, unit);
     }
 
     fn name_units(&mut self, nation: MajorNationId) {
-        self.name_land_units(nation.nation());
+        let mut name_ordinals = [0_i16; MilitaryUnitKind::LENGTH];
+        let mut next_roster_id = 1;
+        name_units_for_nation(
+            &mut self.military_units,
+            nation.nation(),
+            &mut name_ordinals,
+            &mut next_roster_id,
+        );
     }
 
     /// `TGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary`
@@ -355,7 +366,7 @@ impl GameState {
                 if self.nations.majors[nation].economy.pending_actions
                     [PendingActionKind::RailyardExpansion]
                     .status()
-                    < PendingActionStatus::completed(0)
+                    < PendingActionStatus::HANDLED
                 {
                     self.nations.majors[nation].economy.pending_actions
                         [PendingActionKind::RailyardExpansion]
@@ -674,24 +685,25 @@ mod tests {
     }
 
     #[test]
-    fn army_growth_pending_spawns_the_selected_general() {
+    fn army_growth_pending_spawns_the_selected_general_capability() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
         let home = TileId::new(1);
+        let province = ProvinceId::new(0);
         state.nations.majors[nation].common.home_tile = Some(home);
-        state.map[home].province = Some(ProvinceId::new(0));
-        state.activate_slot_and_update_ui(nation, MilitaryUnitKind::GeneralEra2);
+        state.map[home].province = Some(province);
+        state.technology.selected_capability_slots[nation][9] =
+            MilitaryUnitKind::GeneralEra2 as i16;
         state.nations.majors[nation].economy.pending_actions[PendingActionKind::ArmyGrowthReward]
-            .queue(1);
+            .queue(-1);
 
         state.execute_nation_pending_action_state_machine(nation);
 
-        let spawned = state
-            .military_units
-            .iter()
-            .find(|unit| unit.nation == nation.nation())
-            .expect("army-growth pending creates a general");
-        assert_eq!(spawned.unit_type, MilitaryUnitKind::GeneralEra2);
-        assert_eq!(spawned.stationed_province, Some(ProvinceId::new(0)));
+        assert_eq!(state.military_units.len(), 1);
+        assert_eq!(
+            state.military_units[0].unit_type(),
+            MilitaryUnitKind::GeneralEra2
+        );
+        assert_eq!(state.military_units[0].stationed_province(), Some(province));
     }
 }

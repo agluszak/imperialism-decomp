@@ -1,4 +1,5 @@
 use crate::*;
+use enum_map::Enum;
 use serde::{Deserialize, Serialize};
 
 /// The authoritative bilateral relationship stored by retail diplomacy state.
@@ -105,21 +106,23 @@ impl DiplomacyState {
         difficulty: Difficulty,
         rng: &mut RetailCrtRng,
     ) -> Self {
-        let human_slot = human_nation.get();
-        let mut standings = NationTable::from_array(std::array::from_fn(|source| {
-            NationTable::from_array(std::array::from_fn(|target| {
-                let source = source as u8;
-                let target = target as u8;
+        let human = human_nation.nation();
+        let mut standings = NationTable::from_fn(|source| {
+            NationTable::from_fn(|target| {
                 if source == target {
                     0xff
-                } else if source >= MinorNationId::FIRST && target >= MinorNationId::FIRST {
-                    if (source - MinorNationId::FIRST) / 4 == (target - MinorNationId::FIRST) / 4 {
+                } else if source.get() >= MinorNationId::FIRST
+                    && target.get() >= MinorNationId::FIRST
+                {
+                    if (source.get() - MinorNationId::FIRST) / 4
+                        == (target.get() - MinorNationId::FIRST) / 4
+                    {
                         0x96
                     } else {
                         0x6e
                     }
-                } else if source < MajorNationId::COUNT
-                    && source != human_slot
+                } else if MajorNationId::from_nation(source).is_some()
+                    && source != human
                     && difficulty > Difficulty::Normal
                 {
                     if difficulty == Difficulty::NighOnImpossible {
@@ -130,20 +133,20 @@ impl DiplomacyState {
                 } else {
                     0x5a
                 }
-            }))
-        }));
-        let mut mission_levels = NationTable::from_array(std::array::from_fn(|source| {
-            NationTable::from_array(std::array::from_fn(|target| {
-                if source < MajorNationId::COUNT as usize
-                    && target < MajorNationId::COUNT as usize
+            })
+        });
+        let mut mission_levels = NationTable::from_fn(|source| {
+            NationTable::from_fn(|target| {
+                if MajorNationId::from_nation(source).is_some()
+                    && MajorNationId::from_nation(target).is_some()
                     && source != target
                 {
                     DiplomaticMissionLevel::Embassy
                 } else {
                     DiplomaticMissionLevel::None
                 }
-            }))
-        }));
+            })
+        });
 
         if difficulty == Difficulty::Introductory {
             let first_minor = (rng.next_rand() as u8 % 4) * 4 + MinorNationId::FIRST;
@@ -158,14 +161,14 @@ impl DiplomacyState {
         }
 
         if difficulty > Difficulty::Normal {
-            for source in 0..MajorNationId::COUNT {
-                if source == human_slot {
+            for source in MajorNationId::all() {
+                if source == human_nation {
                     continue;
                 }
                 let target = NationId::new(
                     rng.next_rand() as u8 % MinorNationId::COUNT + MinorNationId::FIRST,
                 );
-                let source = NationId::new(source);
+                let source = source.nation();
                 mission_levels[source][target] = DiplomaticMissionLevel::TradeConsulate;
                 mission_levels[target][source] = DiplomaticMissionLevel::TradeConsulate;
                 standings[source][target] = 0x6e;
@@ -174,16 +177,16 @@ impl DiplomacyState {
         }
 
         if difficulty == Difficulty::NighOnImpossible {
-            for source in 0..MajorNationId::COUNT {
-                if source == human_slot {
+            for source in MajorNationId::all() {
+                if source == human_nation {
                     continue;
                 }
-                for target in 0..MajorNationId::COUNT {
-                    if target == human_slot {
+                for target in MajorNationId::all() {
+                    if target == human_nation {
                         continue;
                     }
-                    let source = NationId::new(source);
-                    let target = NationId::new(target);
+                    let source = source.nation();
+                    let target = target.nation();
                     standings[source][target] = 0x6e;
                     standings[target][source] = 0x6e;
                 }
@@ -192,9 +195,9 @@ impl DiplomacyState {
 
         Self {
             standings,
-            relationships: NationTable::from_array(std::array::from_fn(|_| {
-                NationTable::from_array([DiplomaticRelationship::Peace; crate::NATION_COUNT])
-            })),
+            relationships: NationTable::from_fn(|_| {
+                NationTable::from_fn(|_| DiplomaticRelationship::Peace)
+            }),
             relationship_turns: NationTable::default(),
             influence_thresholds: ProvinceTable::default(),
             influence_sides: ProvinceTable::default(),
@@ -440,7 +443,7 @@ enum PlayerDiplomacyAction {
 }
 
 /// Retail `eDipAction` used by the diplomacy map click and cursor paths.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Enum, Eq, PartialEq)]
 #[repr(u8)]
 pub enum DiplomacyMapAction {
     None = 0,
@@ -887,8 +890,7 @@ impl GameState {
 
     /// Retail nation information panel military classification.
     pub fn diplomacy_military_power_band(&self, nation: MajorNationId) -> u8 {
-        let scores = (0..MajorNationId::COUNT)
-            .map(MajorNationId::new)
+        let scores = MajorNationId::all()
             .filter(|&candidate| self.major_is_event_eligible(candidate))
             .map(|candidate| self.military_power_score(candidate) as f32)
             .collect::<Vec<_>>();
@@ -897,8 +899,7 @@ impl GameState {
 
     /// Retail nation information panel industry classification.
     pub fn diplomacy_industry_band(&self, nation: MajorNationId) -> u8 {
-        let scores = (0..MajorNationId::COUNT)
-            .map(MajorNationId::new)
+        let scores = MajorNationId::all()
             .filter(|&candidate| self.major_is_event_eligible(candidate))
             .map(|candidate| self.diplomacy_industry_score(candidate) as f32)
             .collect::<Vec<_>>();
@@ -910,10 +911,7 @@ impl GameState {
         let minor_nation = minor.nation();
         let mut best_score = 0;
         let mut selected = None;
-        for major in (0..MajorNationId::COUNT)
-            .map(MajorNationId::new)
-            .filter(|&major| self.major_is_event_eligible(major))
-        {
+        for major in MajorNationId::all().filter(|&major| self.major_is_event_eligible(major)) {
             let policy = self.nations.majors[major].common.trade_policy_by_nation[minor_nation];
             let score = (200 - policy.retail())
                 * i32::from(self.diplomacy.standings[minor_nation][major.nation()]);

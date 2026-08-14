@@ -24,7 +24,7 @@ impl NationId {
         self.0
     }
 
-    pub fn all() -> impl ExactSizeIterator<Item = Self> {
+    pub fn all() -> impl DoubleEndedIterator<Item = Self> + ExactSizeIterator {
         (0..Self::COUNT).map(Self::new)
     }
 }
@@ -80,7 +80,7 @@ impl MajorNationId {
         NationId::new(self.0)
     }
 
-    pub fn all() -> impl ExactSizeIterator<Item = Self> {
+    pub fn all() -> impl DoubleEndedIterator<Item = Self> + ExactSizeIterator {
         (0..Self::COUNT).map(Self::new)
     }
 }
@@ -132,6 +132,10 @@ impl MinorNationId {
     pub(crate) const fn table_index(self) -> usize {
         (self.0 - Self::FIRST) as usize
     }
+
+    pub fn all() -> impl DoubleEndedIterator<Item = Self> + ExactSizeIterator {
+        (Self::FIRST..NationId::COUNT).map(Self::new)
+    }
 }
 
 impl<'de> Deserialize<'de> for MinorNationId {
@@ -172,6 +176,10 @@ impl TileId {
 
     pub const fn get(self) -> u16 {
         self.0
+    }
+
+    pub fn all() -> impl DoubleEndedIterator<Item = Self> + ExactSizeIterator {
+        (0..Self::COUNT).map(Self::new)
     }
 
     pub(crate) const fn from_index_unchecked(value: u16) -> Self {
@@ -239,6 +247,10 @@ impl ProvinceId {
 
     pub const fn get(self) -> u16 {
         self.0
+    }
+
+    pub fn all() -> impl DoubleEndedIterator<Item = Self> + ExactSizeIterator {
+        (0..Self::COUNT).map(Self::new)
     }
 }
 
@@ -309,14 +321,14 @@ impl OceanZoneId {
 /// Snapshot-local position in the authoritative ship-list order.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(transparent)]
-pub struct ShipId(u32);
+pub struct ShipId(usize);
 
 impl ShipId {
-    pub const fn new(value: u32) -> Self {
+    pub const fn new(value: usize) -> Self {
         Self(value)
     }
 
-    pub const fn get(self) -> u32 {
+    pub const fn get(self) -> usize {
         self.0
     }
 }
@@ -324,14 +336,14 @@ impl ShipId {
 /// Snapshot-local position in the authoritative task-force queue order.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(transparent)]
-pub struct TaskForceId(u32);
+pub struct TaskForceId(usize);
 
 impl TaskForceId {
-    pub const fn new(value: u32) -> Self {
+    pub const fn new(value: usize) -> Self {
         Self(value)
     }
 
-    pub const fn get(self) -> u32 {
+    pub const fn get(self) -> usize {
         self.0
     }
 }

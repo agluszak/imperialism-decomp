@@ -5,7 +5,6 @@
 mod advisory_missions;
 mod ai;
 mod ai_civilian;
-mod army_movement;
 mod calendar;
 mod city;
 mod city_economy;
@@ -69,7 +68,7 @@ pub use city::{
 };
 pub(crate) use city::{EXPANSION_INPUTS, ItemInputs};
 pub use city_site::{
-    CapitalSite, CitySiteError, confirm_capital_site,
+    CapitalSite, CapitalSiteReport, CitySiteError, capital_site_report, confirm_capital_site,
     enter_strategic_map_without_capital_selection, is_valid_secondary_nation_home_tile_candidate,
     place_city, requires_capital_site_selection, supports_city_site_terrain,
     validate_capital_site_selection,
@@ -106,7 +105,6 @@ pub use market::{
     DealBookEntryKind, ProcessedTradeCommodity, ProcessedTradeCommodityTable, TradeCommodity,
     TradeCommodityTable, TradeDealBookEntry, TradeMarketRow, TradeMarketState,
 };
-pub(crate) use military::project_mission_equipage;
 pub use military::{
     AdmiralState, ArmyMissionState, AttackMissionState, MissionData, MissionState,
     NavyMissionState, SelectedShip, ShipState, TaskForceState, TaskForceTarget,
@@ -157,7 +155,7 @@ pub use rng::{RetailCrtRng, RetailLcg, RngState, hash_retail_scenario_tag};
 pub use tables::{
     MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNationTable, MinorNationTable, NATION_COUNT,
     NationCapacities, NationTable, PENDING_ACTION_COUNT, PROVINCE_COUNT, PendingActionKind,
-    PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable,
+    PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable, TechnologyTable,
 };
 pub use technology::{
     CityTechnologyCapabilities, CivilianTerrainAccess, FortLevelCap, TECHNOLOGY_COUNT,

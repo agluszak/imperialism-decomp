@@ -27,7 +27,7 @@ or narrow domain error), and broken internal invariants (structure, assertion, o
 
 ```sh
 cargo test --workspace
-cargo clippy --workspace --all-targets -- -D warnings
+cargo clippy --workspace --all-targets --all-features -- -D warnings
 ```
 
 Native-oracle differential tests are ignored by default (they need Wine/`just native-oracle`):

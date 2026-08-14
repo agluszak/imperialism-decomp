@@ -203,7 +203,7 @@ pub(super) const fn minor_trade_thresholds(
     }
 }
 pub(super) fn initialize_minor_trade_state(world: &MapMgr, nations: &mut Nations) {
-    for nation in (MinorNationId::FIRST..NationId::COUNT).map(MinorNationId::new) {
+    for nation in MinorNationId::all() {
         let Some(minor) = nations.minors[nation].as_mut() else {
             continue;
         };

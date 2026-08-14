@@ -160,7 +160,9 @@ impl GameState {
         unit: CivilianUnitId,
         destination: TileId,
     ) -> Result<(), RailOrderRejection> {
-        let index = self.civilian_index(unit);
+        let index = self
+            .civilian_index(unit)
+            .ok_or(RailOrderRejection::IneligibleUnit)?;
         let (segment, nation) = self.rail_construction_target(index, destination)?;
         let cost = rail_cost(self.map[segment.destination()].terrain);
         let major = self.nations.major(nation);
@@ -189,7 +191,9 @@ impl GameState {
 
     /// Neighbor tiles `DimByEngineering` would leave undimmed for a rail click.
     pub fn rail_construction_destinations(&self, unit: CivilianUnitId) -> [Option<TileId>; 6] {
-        let index = self.civilian_index(unit);
+        let Some(index) = self.civilian_index(unit) else {
+            return [None; 6];
+        };
         let Some(origin) = self.civilian_units[index].location.tile() else {
             return [None; 6];
         };
@@ -202,26 +206,22 @@ impl GameState {
             })
     }
 
-    /// The idle-selectable engineer of `nation` standing on `tile`, if any.
-    pub fn selectable_engineer_on_tile(
+    /// The idle-selectable civilian of `nation` standing on `tile`, if any.
+    pub fn selectable_civilian_on_tile(
         &self,
         tile: TileId,
         nation: NationId,
     ) -> Option<CivilianUnitId> {
         self.civilian_units.iter().find_map(|unit| {
             (unit.owner_nation() == nation
-                && unit.unit_type() == CivilianUnitKind::Engineer
                 && unit.location().tile() == Some(tile)
                 && idle_selectable(unit.order()))
             .then_some(unit.id())
         })
     }
 
-    fn civilian_index(&self, unit: CivilianUnitId) -> usize {
-        self.civilian_units
-            .iter()
-            .position(|candidate| candidate.id == unit)
-            .expect("rail order references a present unit")
+    fn civilian_index(&self, id: CivilianUnitId) -> Option<usize> {
+        self.civilian_units.iter().position(|unit| unit.id == id)
     }
 
     fn rail_construction_target(
@@ -269,8 +269,7 @@ impl GameState {
     pub fn do_civilians(&mut self) {
         self.rebuild_civilian_tile_chains();
         self.resolve_civilian_disputes();
-        for index in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(index);
+        for nation in MajorNationId::all() {
             if !self.civilian_nation_is_eligible(nation) {
                 continue;
             }
@@ -284,7 +283,9 @@ impl GameState {
     }
 
     pub fn advance_civilian_work(&mut self, civilian: CivilianUnitId) {
-        let index = self.civilian_index(civilian);
+        let index = self
+            .civilian_index(civilian)
+            .expect("work advances a present unit");
         self.continue_civilian_order(index);
     }
 
@@ -718,14 +719,14 @@ impl GameState {
 
     fn unlink_civilian_from_tile_chain(&mut self, id: CivilianUnitId, tile: TileId) {
         let next = self
-            .civilian_index_of(id)
+            .civilian_index(id)
             .and_then(|index| self.civilian_units[index].next_on_tile);
         if let Some(prev) = self.civilian_units.iter().position(|unit| {
             unit.location.tile() == Some(tile) && unit.id != id && unit.next_on_tile == Some(id)
         }) {
             self.civilian_units[prev].next_on_tile = next;
         }
-        if let Some(index) = self.civilian_index_of(id) {
+        if let Some(index) = self.civilian_index(id) {
             self.civilian_units[index].next_on_tile = None;
         }
     }
@@ -736,10 +737,6 @@ impl GameState {
             .filter(|&head| head != index)
             .map(|head| self.civilian_units[head].id);
         self.civilian_units[index].next_on_tile = head;
-    }
-
-    fn civilian_index_of(&self, id: CivilianUnitId) -> Option<usize> {
-        self.civilian_units.iter().position(|unit| unit.id == id)
     }
 
     pub(crate) fn chain_head_on_tile(&self, tile: TileId) -> Option<usize> {
@@ -771,7 +768,7 @@ impl GameState {
             chain.push(index);
             current = self.civilian_units[index]
                 .next_on_tile
-                .and_then(|id| self.civilian_index_of(id));
+                .and_then(|id| self.civilian_index(id));
         }
         chain
     }
@@ -783,10 +780,11 @@ impl GameState {
 
 const LAND_SALE_TAG: i32 = 0x6c61_6e64;
 
-const CIVILIAN_SORT_PRIORITY: [i16; CivilianUnitKind::LENGTH] = [2, 0, 4, 3, 1, 5, 0, 0, 0];
+const CIVILIAN_SORT_PRIORITY: CivilianUnitTable<i16> =
+    CivilianUnitTable::from_array([2, 0, 4, 3, 1, 5, 0, 0, 0]);
 
 fn civilian_sort_priority(kind: CivilianUnitKind) -> i16 {
-    CIVILIAN_SORT_PRIORITY[kind as usize]
+    CIVILIAN_SORT_PRIORITY[kind]
 }
 
 fn idle_selectable(order: &CivilianWorkOrder) -> bool {
@@ -967,6 +965,17 @@ mod tests {
             state.order_rail_construction(unit, destination),
             Err(RailOrderRejection::IneligibleUnit)
         );
+    }
+
+    #[test]
+    fn missing_civilian_is_an_ineligible_rail_unit() {
+        let mut state = crate::test_support::game_state();
+        let missing = CivilianUnitId::from_serialized(99);
+        assert_eq!(
+            state.order_rail_construction(missing, TileId::new(0)),
+            Err(RailOrderRejection::IneligibleUnit)
+        );
+        assert_eq!(state.rail_construction_destinations(missing), [None; 6]);
     }
 
     #[test]

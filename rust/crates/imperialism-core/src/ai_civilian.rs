@@ -715,23 +715,21 @@ impl GameState {
         }
 
         let mut relation_scale = [0.0_f32; NATION_COUNT];
-        for minor in MinorNationId::FIRST..NationId::COUNT {
-            let minor_nation = NationId::new(minor);
+        for minor_nation in MinorNationId::all().map(MinorNationId::nation) {
             if self.nation_has_war(minor_nation) {
                 continue;
             }
             let mut strongest = 0.1_f32;
-            for major in 0..MajorNationId::COUNT {
-                if major == nation.get() {
+            for major in MajorNationId::all() {
+                if major == nation {
                     continue;
                 }
-                let standing =
-                    f32::from(self.diplomacy.standings[NationId::new(major)][minor_nation]);
+                let standing = f32::from(self.diplomacy.standings[major.nation()][minor_nation]);
                 if standing > strongest {
                     strongest = standing;
                 }
             }
-            relation_scale[usize::from(minor)] =
+            relation_scale[usize::from(minor_nation.get())] =
                 f32::from(self.diplomacy.standings[nation.nation()][minor_nation]) / strongest;
         }
 

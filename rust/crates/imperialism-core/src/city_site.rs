@@ -2,7 +2,8 @@
 
 use crate::{
     Difficulty, GameState, HexDirection, MajorNationId, MapGeometry, MapMgr, NationId,
-    STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, TerrainKind, TileFlags, TileId, TileOwnerTag,
+    ResourceKind, ResourceTable, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, TerrainKind, TileFlags,
+    TileId, TileOwnerTag, all_resources,
 };
 
 const TERRAIN_FLOW_DIRECTIONS: [[HexDirection; 2]; 9] = [
@@ -42,6 +43,46 @@ impl CapitalSite {
     }
 }
 
+/// Neighbor-tile yields and food capacity shown by `TPlaceCityDialog::StuffValues`.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct CapitalSiteReport {
+    pub yields: ResourceTable<i16>,
+    pub total_food: i16,
+    pub sustainable_population: i16,
+}
+
+impl CapitalSiteReport {
+    pub fn visible_resource_count(self) -> i16 {
+        all_resources()
+            .filter(|&resource| self.yields[resource] != 0)
+            .count() as i16
+    }
+}
+
+impl CitySiteError {
+    /// `TSimMgr::GetString` offset into group `0x273b` for a rejected map click.
+    pub fn message_offset(self, state: &GameState, tile: TileId) -> i16 {
+        match self {
+            Self::NotOwned => {
+                if state.map()[tile].terrain == TerrainKind::Water {
+                    3
+                } else {
+                    0
+                }
+            }
+            Self::UnsupportedTerrain | Self::InvalidHomeSite => {
+                if supports_city_site_terrain(state.map()[tile].terrain)
+                    && state.can_build_port_at_tile(tile)
+                {
+                    2
+                } else {
+                    1
+                }
+            }
+        }
+    }
+}
+
 /// Retail difficulties that dispatch the city-site selector (`difficultyLevel > 1`).
 pub const fn requires_capital_site_selection(difficulty: Difficulty) -> bool {
     matches!(
@@ -66,8 +107,7 @@ impl MapMgr {
     ) {
         let owner = TileOwnerTag::from_nation(nation.nation());
         self.recruit_search_active = true;
-        for index in 0..TileId::COUNT {
-            let tile = TileId::new(index);
+        for tile in TileId::all() {
             let is_candidate = {
                 let state = &self[tile];
                 state.owner_nation == Some(owner)
@@ -172,6 +212,45 @@ pub fn validate_capital_site_selection(
         return Err(CitySiteError::InvalidHomeSite);
     }
     Ok(CapitalSite { tile, nation })
+}
+
+/// `TTown::CalculateCityResources` plus the New City dialog's food-sustain math.
+pub fn capital_site_report(state: &GameState, site: CapitalSite) -> CapitalSiteReport {
+    let university = &state.technology.city_capabilities_by_nation[site.nation()].university;
+    let yields = crate::create_random_game::calculate_city_resources(
+        &state.map,
+        site.tile(),
+        site.nation(),
+        university,
+    );
+    let (total_food, sustainable_population) = sustainable_food_population(&yields);
+    CapitalSiteReport {
+        yields,
+        total_food,
+        sustainable_population,
+    }
+}
+
+fn sustainable_food_population(yields: &ResourceTable<i16>) -> (i16, i16) {
+    let mut primary_food = yields[ResourceKind::Grain];
+    let mut secondary_food = yields[ResourceKind::Fruit];
+    let mut alternate_food = yields[ResourceKind::Fish] + yields[ResourceKind::Livestock];
+    let total_food = primary_food + secondary_food + alternate_food;
+    let mut sustainable_population = 0_i16;
+    for unit in 0..total_food {
+        let food_pool = if unit % 4 == 1 {
+            &mut secondary_food
+        } else if unit % 4 == 3 {
+            &mut alternate_food
+        } else {
+            &mut primary_food
+        };
+        if *food_pool != 0 {
+            *food_pool -= 1;
+            sustainable_population += 1;
+        }
+    }
+    (total_food, sustainable_population)
 }
 
 /// Tile marking from `TMapMgr::PlaceCity` that fits the current [`TileState`] fields.
@@ -426,8 +505,7 @@ mod tests {
             None
         );
 
-        let tile = (0..TileId::COUNT)
-            .map(TileId::new)
+        let tile = TileId::all()
             .find(|&tile| {
                 let t = &state.map[tile];
                 t.owner_nation == Some(TileOwnerTag::new(6))
@@ -581,8 +659,7 @@ mod tests {
         );
         enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6));
         assert_opening_civilians(&state, MajorNationId::new(6), 5);
-        for slot in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(slot);
+        for nation in MajorNationId::all() {
             if nation == MajorNationId::new(6)
                 || state.nations.major(nation).common.home_tile.is_none()
             {
@@ -594,14 +671,38 @@ mod tests {
     }
 
     #[test]
+    fn new_city_food_uses_the_grain_fruit_alternate_rotation() {
+        let mut yields = ResourceTable::default();
+        yields[ResourceKind::Grain] = 4;
+        yields[ResourceKind::Fruit] = 1;
+        yields[ResourceKind::Fish] = 1;
+        yields[ResourceKind::Livestock] = 1;
+        // Rotation is grain, fruit, grain, alternate. Fruit runs out after the
+        // first fruit slot, so later fruit beats are skipped.
+        assert_eq!(sustainable_food_population(&yields), (7, 6));
+
+        yields = ResourceTable::default();
+        yields[ResourceKind::Grain] = 2;
+        yields[ResourceKind::Timber] = 3;
+        // Only `total_food` beats run, so the second grain slot (unit 2) never happens.
+        assert_eq!(sustainable_food_population(&yields), (2, 1));
+        let report = CapitalSiteReport {
+            yields,
+            total_food: 2,
+            sustainable_population: 1,
+        };
+        assert_eq!(report.visible_resource_count(), 2);
+    }
+
+    #[test]
     fn home_site_sea_scan_uses_its_retail_edge_wrap_and_owner_test() {
         let owner = TileOwnerTag::new(6);
         let mut world = MapMgr::new(
             MapTopology::Bounded,
             vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
         );
-        for index in 0..TileId::COUNT {
-            world[TileId::new(index)].owner_nation = Some(owner);
+        for tile in TileId::all() {
+            world[tile].owner_nation = Some(owner);
         }
         let candidate = TileId::new(0);
         let wrapped_sea = TileId::new(107);

@@ -243,9 +243,9 @@ impl GameState {
     fn queue_navy_growth_pending(&mut self, nation: MajorNationId) {
         let pending =
             self.nations.major(nation).economy.pending_actions[PendingActionKind::NavyGrowthReward];
-        if pending.is_queued() {
+        let Some(desired) = pending.completed_level() else {
             return;
-        }
+        };
         let nation_id = nation.nation();
         let arms: i32 = self
             .ships
@@ -256,7 +256,6 @@ impl GameState {
         if arms < 25 {
             return;
         }
-        let desired = pending.completed_level().unwrap_or(0);
         let payload = if arms < 50 {
             (desired == 0).then_some(1)
         } else if arms < 100 {
@@ -327,5 +326,70 @@ mod tests {
         assert_eq!(state.ships.len(), 1);
         assert_eq!(state.ships[0].ship_type, ShipType::Frigate);
         assert_eq!(state.ships[0].location, OceanZoneId::new(1));
+    }
+
+    fn test_frigate(nation: MajorNationId) -> ShipState {
+        ShipState {
+            ship_type: ShipType::Frigate,
+            location: OceanZoneId::new(0),
+            task_force: None,
+            aggression: 0,
+            nation: nation.nation(),
+            name: String::new(),
+            strength: 100,
+            experience: 0,
+            selection: 0,
+        }
+    }
+
+    #[test]
+    fn navy_growth_reward_advances_through_newspaper_levels() {
+        let mut state = crate::test_support::game_state();
+        let nation = MajorNationId::new(0);
+        for _ in 0..13 {
+            state.ships.push(test_frigate(nation));
+        }
+        assert_eq!(
+            state.nations.majors[nation].economy.pending_actions
+                [PendingActionKind::NavyGrowthReward]
+                .completed_level(),
+            Some(0)
+        );
+        state.queue_navy_growth_pending(nation);
+        let pending = state.nations.majors[nation].economy.pending_actions
+            [PendingActionKind::NavyGrowthReward];
+        assert_eq!(pending.status(), PendingActionStatus::QUEUED);
+        assert_eq!(pending.payload(), Some(1));
+
+        state.mark_all_pending_status_flags_handled();
+        let pending = state.nations.majors[nation].economy.pending_actions
+            [PendingActionKind::NavyGrowthReward];
+        assert_eq!(pending.status(), PendingActionStatus::from_retail(0x34));
+        assert_eq!(pending.completed_level(), Some(1));
+
+        for _ in 0..12 {
+            state.ships.push(test_frigate(nation));
+        }
+        state.queue_navy_growth_pending(nation);
+        let pending = state.nations.majors[nation].economy.pending_actions
+            [PendingActionKind::NavyGrowthReward];
+        assert_eq!(pending.status(), PendingActionStatus::QUEUED);
+        assert_eq!(pending.payload(), Some(2));
+
+        state.mark_all_pending_status_flags_handled();
+        let pending = state.nations.majors[nation].economy.pending_actions
+            [PendingActionKind::NavyGrowthReward];
+        assert_eq!(pending.status(), PendingActionStatus::from_retail(0x35));
+        assert_eq!(pending.completed_level(), Some(2));
+
+        for _ in 0..25 {
+            state.ships.push(test_frigate(nation));
+        }
+        state.queue_navy_growth_pending(nation);
+        state.mark_all_pending_status_flags_handled();
+        let pending = state.nations.majors[nation].economy.pending_actions
+            [PendingActionKind::NavyGrowthReward];
+        assert_eq!(pending.status(), PendingActionStatus::from_retail(0x36));
+        assert_eq!(pending.completed_level(), Some(3));
     }
 }

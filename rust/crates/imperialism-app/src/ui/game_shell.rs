@@ -1,3 +1,5 @@
+use super::retail::ModalDialog;
+use super::session::apply_turn_stop;
 use crate::AppState;
 use crate::RetailAssetsResource;
 use crate::ui::GameSession;
@@ -8,15 +10,16 @@ use crate::ui::load_save::OpenFlagMenu;
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailPictureSwap, RetailTag, find_descendant};
 use crate::ui::strategic_map::{
-    bind_minimap, bind_strategic_base_terrain, register_civilian_orders, sync_minimap,
-    sync_strategic_base_terrain, sync_strategic_units,
+    bind_civilian_toolbar, bind_minimap, bind_strategic_base_terrain, register_civilian_orders,
+    register_civilian_toolbar, sync_minimap, sync_strategic_base_terrain, sync_strategic_units,
 };
+use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
 use imperialism_core::{MajorNationId, MapEdges};
-use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
+use imperialism_formats::{FourCc, PictureId, RetailTextStylePreset, TRADE, fourcc};
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum GameStatusDisplay {
@@ -41,6 +44,7 @@ pub(crate) struct GameShellPlugin;
 impl Plugin for GameShellPlugin {
     fn build(&self, app: &mut App) {
         register_civilian_orders(app);
+        register_civilian_toolbar(app);
         app.add_systems(
             OnEnter(AppState::StrategicMap),
             (
@@ -61,6 +65,8 @@ impl Plugin for GameShellPlugin {
                 sync_strategic_base_terrain,
                 sync_strategic_units,
                 sync_minimap,
+                spawn_turn_alerts_if_pending,
+                bind_turn_alert_notice,
             )
                 .chain()
                 .run_if(in_state(AppState::StrategicMap)),
@@ -161,6 +167,7 @@ fn bind_strategic_map(
         &mut assets,
         &session.game,
     );
+    bind_civilian_toolbar(&mut commands, &mut assets, *root, &children, &tags);
     bind_game_status_display(
         &mut commands,
         &mut assets,
@@ -392,6 +399,105 @@ fn on_game_screen_activate(
     if destination != *state.get() {
         next_state.set(destination);
     }
+}
+
+#[derive(Component)]
+struct TurnAlertNotice;
+
+fn spawn_turn_alerts_if_pending(
+    mut commands: Commands,
+    session: Res<GameSession>,
+    existing: Query<(), With<TurnAlertNotice>>,
+) {
+    if !existing.is_empty() || !session.game.turn_alerts_pending() {
+        return;
+    }
+    let root = commands.spawn_scene(generated::linger_2020()).id();
+    commands.entity(root).insert((
+        TurnAlertNotice,
+        ModalDialog,
+        TabGroup::modal(),
+        GlobalZIndex(20),
+        Pickable::default(),
+        DespawnOnExit(AppState::StrategicMap),
+    ));
+}
+
+fn bind_turn_alert_notice(
+    mut commands: Commands,
+    notice: Option<Single<Entity, Added<TurnAlertNotice>>>,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
+    mut assets: RetailUiAssets,
+) {
+    let Some(root) = notice else {
+        return;
+    };
+    let root = *root;
+    let notice_color = TextColor(assets.palette_color(0));
+    let title = find_descendant(root, fourcc!("titl"), &children, &tags);
+    let (title_font, title_layout, title_line_height, _) = assets
+        .text_style(RetailTextStylePreset {
+            font_family: 1,
+            face_flags: 0,
+            point_size: 12,
+            alignment: 1,
+        })
+        .expect("retail turn-alert title style");
+    commands.entity(title).insert((
+        Text::new("Report from your\nAdvisors\n\n"),
+        title_font,
+        title_layout,
+        title_line_height,
+        notice_color,
+    ));
+    let body = find_descendant(root, fourcc!("info"), &children, &tags);
+    let (body_font, body_layout, body_line_height, _) = assets
+        .text_style(RetailTextStylePreset {
+            font_family: 1,
+            face_flags: 0,
+            point_size: 12,
+            alignment: 0,
+        })
+        .expect("retail turn-alert body style");
+    commands.entity(body).insert((
+        Text::new("Your ministers have an urgent report."),
+        body_font,
+        body_layout,
+        body_line_height,
+        notice_color,
+    ));
+    let okay = find_descendant(root, fourcc!("okay"), &children, &tags);
+    commands
+        .entity(okay)
+        .insert(ActivateOnPress)
+        .remove::<InteractionDisabled>()
+        .observe(on_turn_alert_dismiss);
+    let cancel = find_descendant(root, fourcc!("cncl"), &children, &tags);
+    commands.entity(cancel).insert(Visibility::Hidden);
+}
+
+fn on_turn_alert_dismiss(
+    activate: On<Activate>,
+    parents: Query<&ChildOf>,
+    notices: Query<Entity, With<TurnAlertNotice>>,
+    mut session: ResMut<GameSession>,
+    mut commands: Commands,
+    mut next_state: ResMut<NextState<AppState>>,
+) {
+    let mut entity = activate.entity;
+    let root = loop {
+        if notices.contains(entity) {
+            break entity;
+        }
+        entity = parents
+            .get(entity)
+            .expect("turn alert belongs to its dialog")
+            .parent();
+    };
+    let stop = session.game.dismiss_turn_alerts();
+    commands.entity(root).despawn();
+    apply_turn_stop(stop, &mut next_state);
 }
 
 #[cfg(test)]

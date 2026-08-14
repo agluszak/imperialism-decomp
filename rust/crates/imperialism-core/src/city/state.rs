@@ -118,7 +118,7 @@ impl CityState {
             reserved_by_type: ResourceTable::default(),
             power_available: 0,
             stockpile: Stockpile::from_table(stockpile),
-            production_orders: production.clone(),
+            production_orders: production,
             production_accum: production,
             building_windows: ProductionTable::default(),
             population_growth_penalty_ticks: 0,

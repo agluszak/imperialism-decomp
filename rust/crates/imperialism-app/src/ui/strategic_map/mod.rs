@@ -12,6 +12,7 @@ use imperialism_formats::*;
 
 mod borders;
 mod civilian_orders;
+mod civilian_toolbar;
 mod minimap;
 mod overlays;
 mod terrain;
@@ -20,6 +21,7 @@ mod units;
 use borders::compose_strategic_borders;
 use civilian_orders::StrategicSelection;
 pub(crate) use civilian_orders::register as register_civilian_orders;
+pub(crate) use civilian_toolbar::{bind_civilian_toolbar, register_civilian_toolbar};
 pub(crate) use minimap::{bind_minimap, sync_minimap};
 use overlays::{
     IMPROVEMENT_PICTURE_IDS, compose_strategic_improvements, compose_strategic_railways,
@@ -43,7 +45,7 @@ struct StrategicMapComposeKey {
     view_origin: TileId,
     topology: MapTopology,
     active_nation: NationId,
-    selected_engineer: Option<CivilianUnitId>,
+    selected_civilian: Option<CivilianUnitId>,
     visible_tiles: u64,
 }
 
@@ -226,10 +228,14 @@ fn compose_strategic_map(
     state: &GameState,
     sprites: StrategicMapSprites<'_>,
     palette: &DibPalette,
-    selected_engineer: Option<CivilianUnitId>,
+    selected_civilian: Option<CivilianUnitId>,
 ) -> Image {
     let mut indices = compose_strategic_map_indices(state, sprites);
-    if let Some(unit) = selected_engineer {
+    if let Some(unit) = selected_civilian.filter(|&unit| {
+        state.civilian_units().iter().any(|candidate| {
+            candidate.id() == unit && candidate.unit_type() == CivilianUnitKind::Engineer
+        })
+    }) {
         draw_rail_order_selection(state, unit, &mut indices);
     }
     indexed_viewport_image(&indices, palette)
@@ -237,7 +243,7 @@ fn compose_strategic_map(
 
 fn strategic_map_compose_key(
     state: &GameState,
-    selected_engineer: Option<CivilianUnitId>,
+    selected_civilian: Option<CivilianUnitId>,
 ) -> StrategicMapComposeKey {
     use std::hash::Hasher;
 
@@ -249,7 +255,7 @@ fn strategic_map_compose_key(
         view_origin: state.map_view_origin(),
         topology: state.map().topology,
         active_nation: state.turn().active_nation,
-        selected_engineer,
+        selected_civilian,
         visible_tiles: hasher.finish(),
     }
 }
@@ -278,8 +284,8 @@ fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl st
     tile_state.pending_rail_links.bits().hash(hasher);
     tile_state.development.surface.get().hash(hasher);
     tile_state.development.extractive.get().hash(hasher);
-    for nation in 0..MajorNationId::COUNT {
-        tile_state.development.resource_visible_to_majors[MajorNationId::new(nation)].hash(hasher);
+    for nation in MajorNationId::all() {
+        tile_state.development.resource_visible_to_majors[nation].hash(hasher);
     }
     tile_state.edge_resources.hash(hasher);
     town_transport_linked(state, tile).hash(hasher);

@@ -175,7 +175,7 @@ pub(super) fn resolve_region_tile_subtype_code(tile: &TileState, index: usize) -
 }
 /// `TMapMgr::GuaranteeResources` (0x00511a70).
 pub(super) fn guarantee_resources(tiles: &mut [TileState], map_lcg: &mut RetailLcg) {
-    for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
+    for nation in MajorNationId::all() {
         let owner = TileOwnerTag::from_nation(nation.nation());
         let linked: Vec<usize> = tiles
             .iter()

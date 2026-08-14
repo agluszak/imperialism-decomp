@@ -103,7 +103,7 @@ pub(crate) fn produce_training(
                     Some(2)
                 } else if new_level >= 30
                     && owner.pending_actions[PendingActionKind::UniversityExpansion].status()
-                        <= crate::PendingActionStatus::completed(0)
+                        <= crate::PendingActionStatus::HANDLED
                 {
                     Some(3)
                 } else {

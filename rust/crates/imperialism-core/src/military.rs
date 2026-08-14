@@ -115,14 +115,14 @@ impl GameState {
         self.land_capitol_threatened(nation) || self.navy_capitol_threatened(nation)
     }
 
-    fn land_capitol_threatened(&self, nation: MajorNationId) -> bool {
+    pub(crate) fn land_capitol_threatened(&self, nation: MajorNationId) -> bool {
         let Some(capitol) = self.capitol_province(nation.nation()) else {
             return false;
         };
         self.local_support_score(capitol) < self.cross_nation_support_score(capitol)
     }
 
-    fn navy_capitol_threatened(&self, nation: MajorNationId) -> bool {
+    pub(crate) fn navy_capitol_threatened(&self, nation: MajorNationId) -> bool {
         let Some(port) = self.first_port_zone_for_nation(nation.nation()) else {
             return false;
         };
@@ -158,11 +158,9 @@ impl GameState {
             return 0.0;
         };
         let mut scores = ActionClassScores::default();
-        let mut budget: [i32; MAJOR_NATION_COUNT] = std::array::from_fn(|index| {
-            self.invasion_capacity(MajorNationId::new(index as u8).nation(), province)
-        });
-        for index in 0..ProvinceId::COUNT {
-            let candidate = ProvinceId::new(index);
+        let mut budget =
+            MajorNationTable::from_fn(|nation| self.invasion_capacity(nation.nation(), province));
+        for candidate in ProvinceId::all() {
             let Some(candidate_owner) = self.map.provinces[candidate].owner() else {
                 continue;
             };
@@ -189,15 +187,13 @@ impl GameState {
                         );
                     }
                 }
-            } else if budget[usize::from(candidate_major.get())] > 0
-                && self.province_has_port(candidate)
-            {
+            } else if budget[candidate_major] > 0 && self.province_has_port(candidate) {
                 for unit in self.units_stationed_in(candidate) {
                     if unit.unit_type.is_militia_category() {
                         continue;
                     }
                     let cost = unit.unit_type.arms_carried();
-                    let remaining = &mut budget[usize::from(candidate_major.get())];
+                    let remaining = &mut budget[candidate_major];
                     if cost < *remaining {
                         accumulate_unit_priority(
                             unit,
@@ -235,7 +231,7 @@ impl GameState {
                     && force.target == TaskForceTarget::Province(province)
             })
             .flat_map(|force| force.ships.iter())
-            .filter_map(|selected| self.ships.get(selected.ship.get() as usize))
+            .filter_map(|selected| self.ships.get(selected.ship.get()))
             .map(|ship| {
                 if ship.strength > 0 {
                     NAVY_ARMS_BY_SHIP_TYPE[ship.ship_type]
@@ -323,7 +319,7 @@ fn bump_navy_mission_ship_ids(navy: &mut NavyMissionState) {
     }
 }
 
-const PROVINCE_UNIT_ORDER_WEIGHT: f32 = 33.0;
+pub(crate) const PROVINCE_UNIT_ORDER_WEIGHT: f32 = 33.0;
 
 /// Five action-class weights (`requiredEquipageByClass` / `GetAttribute(0..4)`).
 /// Classes follow the tactical AI class table: infantry, cavalry, artillery,
@@ -462,15 +458,24 @@ impl MilitaryUnitKind {
 }
 
 #[derive(Clone, Copy, Default)]
-struct ActionClassScores {
-    infantry: f32,
-    cavalry: f32,
-    artillery: f32,
-    armor: f32,
-    support: f32,
+pub(crate) struct ActionClassScores {
+    pub(crate) infantry: f32,
+    pub(crate) cavalry: f32,
+    pub(crate) artillery: f32,
+    pub(crate) armor: f32,
+    pub(crate) support: f32,
 }
 
 impl ActionClassScores {
+    pub(crate) fn components(self) -> [f32; 5] {
+        [
+            self.infantry,
+            self.cavalry,
+            self.artillery,
+            self.armor,
+            self.support,
+        ]
+    }
     fn similarity(self, profile: ActionClassWeights) -> f32 {
         let sum = self.infantry + self.cavalry + self.artillery + self.armor + self.support;
         if sum == 0.0 {
@@ -489,37 +494,7 @@ fn class_diff(component: f32, target: i16, sum: f32) -> f32 {
     (component / sum - f32::from(target) * 0.01).abs()
 }
 
-pub(crate) fn project_mission_equipage(
-    military_units: &[MilitaryUnitState],
-    mission_units: &[MilitaryUnitId],
-    present: Option<ProvinceId>,
-    bypass_turns: i16,
-) -> [f32; 5] {
-    let mut scores = ActionClassScores::default();
-    for &id in mission_units {
-        let Some(unit) = military_units.iter().find(|unit| unit.id() == id) else {
-            continue;
-        };
-        let include = present.is_none()
-            || if bypass_turns == 0 {
-                unit.stationed_province() == present
-            } else {
-                true
-            };
-        if include {
-            accumulate_unit_priority(unit, &mut scores, 1.0, PROVINCE_UNIT_ORDER_WEIGHT);
-        }
-    }
-    [
-        scores.infantry,
-        scores.cavalry,
-        scores.artillery,
-        scores.armor,
-        scores.support,
-    ]
-}
-
-fn accumulate_unit_priority(
+pub(crate) fn accumulate_unit_priority(
     unit: &MilitaryUnitState,
     scores: &mut ActionClassScores,
     mut scale: f32,

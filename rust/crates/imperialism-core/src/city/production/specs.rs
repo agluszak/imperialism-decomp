@@ -67,8 +67,8 @@ pub const CIVILIAN_RESOURCE_SPECIALTIES: CivilianUnitTable<[Option<ResourceKind>
     ]);
 
 /// `g_abUniversityRequirementLevelById` over the semantic resource domain.
-pub const fn resource_development_yield(resource: ResourceKind, level: u8) -> i16 {
-    const YIELDS: [[i16; 4]; ResourceKind::LENGTH] = [
+pub fn resource_development_yield(resource: ResourceKind, level: u8) -> i16 {
+    const YIELDS: ResourceTable<[i16; 4]> = ResourceTable::from_array([
         [1, 2, 3, 4],
         [1, 2, 3, 4],
         [1, 2, 3, 4],
@@ -92,10 +92,10 @@ pub const fn resource_development_yield(resource: ResourceKind, level: u8) -> i1
         [1, 2, 3, 4],
         [0, 1, 2, 3],
         [0, 1, 2, 3],
-    ];
+    ]);
 
     assert!(level <= 3, "resource development level must be in 0..=3");
-    YIELDS[resource as usize][level as usize]
+    YIELDS[resource][level as usize]
 }
 
 pub const fn military_recruitment_spec(
@@ -157,21 +157,40 @@ pub const fn military_recruitment_spec(
     })
 }
 
-pub const fn ship_order_costs(ship_type: ShipType) -> ShipMaterials {
-    const LUMBER: [i16; 14] = [0, 4, 7, 5, 8, 6, 6, 6, 4, 8, 0, 2, 0, 0];
-    const FABRIC: [i16; 14] = [0, 2, 3, 2, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0];
-    const ARMS: [i16; 14] = [0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18];
-    const STEEL: [i16; 14] = [0, 0, 0, 0, 0, 2, 0, 0, 4, 10, 8, 6, 30, 22];
-    const COAL: [i16; 14] = [0, 0, 0, 0, 0, 10, 0, 10, 10, 20, 20, 20, 0, 0];
-    const FUEL: [i16; 14] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 20];
-
-    let index = ship_type as usize;
+const fn ship_materials(
+    lumber: i16,
+    fabric: i16,
+    arms: i16,
+    steel: i16,
+    coal: i16,
+    fuel: i16,
+) -> ShipMaterials {
     ShipMaterials {
-        lumber: LUMBER[index],
-        fabric: FABRIC[index],
-        arms: ARMS[index],
-        steel: STEEL[index],
-        coal: COAL[index],
-        fuel: FUEL[index],
+        lumber,
+        fabric,
+        arms,
+        steel,
+        coal,
+        fuel,
     }
+}
+
+pub fn ship_order_costs(ship_type: ShipType) -> ShipMaterials {
+    const COSTS: ShipTypeTable<ShipMaterials> = ShipTypeTable::from_array([
+        ship_materials(0, 0, 0, 0, 0, 0),
+        ship_materials(4, 2, 0, 0, 0, 0),
+        ship_materials(7, 3, 0, 0, 0, 0),
+        ship_materials(5, 2, 2, 0, 0, 0),
+        ship_materials(8, 3, 5, 0, 0, 0),
+        ship_materials(6, 0, 0, 2, 10, 0),
+        ship_materials(6, 2, 0, 0, 0, 0),
+        ship_materials(6, 0, 3, 0, 10, 0),
+        ship_materials(4, 0, 6, 4, 10, 0),
+        ship_materials(8, 0, 15, 10, 20, 0),
+        ship_materials(0, 0, 0, 8, 20, 0),
+        ship_materials(2, 0, 8, 6, 20, 0),
+        ship_materials(0, 0, 24, 30, 0, 20),
+        ship_materials(0, 0, 18, 22, 0, 20),
+    ]);
+    COSTS[ship_type]
 }

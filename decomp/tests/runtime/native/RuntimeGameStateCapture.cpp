@@ -824,6 +824,11 @@ JSON_Value* CaptureTechnology() {
     cityCapabilities.Set("fort_level_cap", g_pTechMgr->GetNationFortLevelCap(nationSlot));
     cityCapabilitiesByNation.Add(cityCapabilities.Release());
   }
+  JsonArray selectedCapabilitySlotsByNation;
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
+    selectedCapabilitySlotsByNation.Add(
+        CaptureShortArray(g_pTechMgr->nationCapRows1e8[nationSlot].slots, 10));
+  }
   technology.Set("advanced_iron_working", advancedIronWorking != 0);
   technology.Set("marine_engineering", marineEngineering != 0);
   technology.Set("scheduled_unlock_turn_by_technology", scheduledUnlockTurnByTechnology.Release());
@@ -832,6 +837,7 @@ JSON_Value* CaptureTechnology() {
   technology.Set("industry_enabled_by_slot", industryEnabledBySlot.Release());
   technology.Set("military_unit_ability_active_by_nation",
                  militaryUnitAbilityActiveByNation.Release());
+  technology.Set("selected_capability_slots", selectedCapabilitySlotsByNation.Release());
   technology.Set("city_capabilities_by_nation", cityCapabilitiesByNation.Release());
   technology.Set("navy_growth_ship_type", ShipTypeName(g_pTechMgr->activeZoneIndex1d4));
   return technology.Release();
@@ -1053,27 +1059,11 @@ JSON_Value* CaptureOcean() {
   return ocean.Release();
 }
 
-const char* PendingActionStatusName(signed char status) {
-  switch (status) {
-  case 0:
-    return "none";
-  case 0x32:
-    return "queued";
-  case 0x33:
-    return "level3";
-  case 0x34:
-    return "level4";
-  default:
-    FailSemanticCapture("pending-action status has no semantic representation");
-    return "none";
-  }
-}
-
 JSON_Value* CapturePendingActions(const signed char* statuses, const short* payloads) {
   JsonObject table;
   for (int index = 0; index < 0x0d; ++index) {
     JsonObject action;
-    action.Set("status", PendingActionStatusName(statuses[index]));
+    action.Set("status", static_cast<int>(statuses[index]));
     if (payloads[index] == -1) {
       action.SetNull("payload");
     } else if (payloads[index] < -1) {

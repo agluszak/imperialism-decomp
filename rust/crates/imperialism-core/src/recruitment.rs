@@ -16,8 +16,8 @@ impl MapMgr {
     ) -> Option<TileId> {
         let owner = self[start].owner_nation;
         let geometry = self.geometry();
-        for index in 0..TileId::COUNT {
-            self[TileId::new(index)].recruit_search_visited = 0;
+        for tile in TileId::all() {
+            self[tile].recruit_search_visited = 0;
         }
         let mut pending = vec![start];
 
@@ -175,7 +175,7 @@ impl GameState {
         };
         let insert_at = self
             .civilian_units
-            .partition_point(|existing| existing.nation.get() <= nation_id.get());
+            .partition_point(|existing| existing.nation <= nation_id);
         self.civilian_units.insert(insert_at, unit);
     }
 
@@ -362,7 +362,7 @@ impl GameState {
                 major.pending_actions[PendingActionKind::ConqueredCapitalArmoryUpgrade].status();
             Some((
                 province,
-                action_6.has_reached(crate::PendingActionStatus::completed(0)),
+                action_6.has_reached(crate::PendingActionStatus::HANDLED),
             ))
         } else {
             None
@@ -392,12 +392,12 @@ impl GameState {
                 };
                 let insert_at = self
                     .military_units
-                    .partition_point(|existing| existing.nation.get() <= nation_id.get());
+                    .partition_point(|existing| existing.nation <= nation_id);
                 self.military_units.insert(insert_at, unit);
 
                 let pending = self.nations.majors[nation].economy.pending_actions
                     [PendingActionKind::ArmyGrowthReward];
-                if let Some(current_level) = pending.level() {
+                if let Some(current_level) = pending.completed_level() {
                     let military_power = self.selected_military_power_score(nation_id);
                     if let Some(payload) =
                         pending_military_action_payload(military_power, i32::from(current_level))
@@ -717,7 +717,7 @@ mod tests {
             .major_mut(MajorNationId::new(0))
             .economy
             .pending_actions[PendingActionKind::ArmyGrowthReward] =
-            crate::PendingActionState::new(crate::PendingActionStatus::completed(0), Some(6));
+            crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, Some(6));
         state.produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Skirmishers, 1);
 
         let pending = state

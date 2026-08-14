@@ -12,7 +12,8 @@ mod tests;
 
 use city_placement::*;
 pub(crate) use city_placement::{
-    name_units_for_nation, resource_capability_level, resource_capability_requirement_level,
+    calculate_city_resources, name_units_for_nation, resource_capability_level,
+    resource_capability_requirement_level,
 };
 use map_post_pass::*;
 use map_render::*;
@@ -125,8 +126,8 @@ pub fn create_random_game(
     world.pending_river_mouth_tile = post.pending_river_mouth_tile;
     // Fresh-map BuildOrLoadGlobalMapStateForSession runs this mode-0 cache pass
     // once, in tile order, immediately after its final AssignPictToTile pass.
-    for index in 0..TileId::COUNT {
-        world.update_tile_neighbor_border_influence_counters(TileId::new(index), 0);
+    for tile in TileId::all() {
+        world.update_tile_neighbor_border_influence_counters(tile, 0);
     }
     let mut ocean_zones = initialize_sea_zone_map_markers(&mut world, preview.sea_zone_marker_crt);
     initialize_sea_zone_neighbors(&mut ocean_zones, &world, &preview.map.ocean_zone_links);
@@ -255,6 +256,7 @@ pub fn create_random_game(
             active_nation: human_nation.nation(),
             selected_nation: human_nation.nation(),
             last_turn_alert_tick: 0,
+            turn_alert_mask: 0,
         },
         unit_ids,
         map: world,
