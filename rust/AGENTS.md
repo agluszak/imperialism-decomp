@@ -48,6 +48,9 @@ semantics.
   core state into Bevy; ECS is not the gameplay database.
 - Keep one authoritative representation for each fact and derive secondary facts. Prefer semantic
   Rust types, typed IDs, and `Option` over raw retail storage conventions.
+- Keep retail-sized semantic IDs when their width is natural. Use `Option` instead of integer
+  sentinels. Use `EnumMap` for closed-enum tables. Do not add collection wrappers or widen IDs
+  merely to eliminate casts; explicit boundary conversions are fine.
 - Persisted city-dialog origins and the strategic viewport origin are saved session state, not
   production or terrain. Model them as `Option<CityWindowPosition>` and `map_view_origin`; keep the
   retail field triples at the formats boundary.

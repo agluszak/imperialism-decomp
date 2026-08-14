@@ -150,7 +150,7 @@ impl GameState {
                 continue;
             };
             if unit.stationed_province() != Some(province) {
-                set_unit_order(unit, UNIT_ORDER_REDEPLOY, province.get() as i16);
+                set_unit_order(unit, UNIT_ORDER_REDEPLOY, Some(province));
             }
         }
     }
@@ -166,7 +166,7 @@ impl GameState {
                 continue;
             };
             if unit.stationed_province() == Some(present) {
-                set_unit_order(unit, UNIT_ORDER_REDEPLOY, target.get() as i16);
+                set_unit_order(unit, UNIT_ORDER_REDEPLOY, Some(target));
             }
         }
     }
