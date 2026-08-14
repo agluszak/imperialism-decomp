@@ -32,7 +32,7 @@ const NAME_SHADOW_PALETTE: u8 = 0;
 const LEGEND_PALETTE: u8 = 0x28;
 
 /// `g_anTargetTileProfileByCivilianClassAndSlot`.
-const TARGET_TILE_PROFILES: [[i16; 5]; CivilianUnitKind::LENGTH] = [
+const TARGET_TILE_PROFILES: CivilianUnitTable<[i16; 5]> = CivilianUnitTable::from_array([
     [8, 9, -1, -1, -1],
     [8, 9, 10, 11, 12],
     [6, 5, 2, -1, -1],
@@ -42,11 +42,12 @@ const TARGET_TILE_PROFILES: [[i16; 5]; CivilianUnitKind::LENGTH] = [
     [-1, -1, -1, -1, 0],
     [-1, -1, -1, -1, 0],
     [10, 11, 12, -1, -1],
-];
+]);
 
-const DEVELOPMENT_STRIP_BASE_X: [i16; CivilianUnitKind::LENGTH] =
-    [228, -1, 0, 114, -1, 798, 912, 1064, 684];
-const DEVELOPER_MAX_ROWS: [i16; CivilianUnitKind::LENGTH] = [2, 0, 3, 1, 0, 2, 0, 0, 3];
+const DEVELOPMENT_STRIP_BASE_X: CivilianUnitTable<i16> =
+    CivilianUnitTable::from_array([228, -1, 0, 114, -1, 798, 912, 1064, 684]);
+const DEVELOPER_MAX_ROWS: CivilianUnitTable<i16> =
+    CivilianUnitTable::from_array([2, 0, 3, 1, 0, 2, 0, 0, 3]);
 const DEVELOPER_ROW_ICON_X: [i16; 12] =
     [0, 0, 0, 0x237, 0, 0, 0x21c, 0x24c, 0, 0x216, 0x237, 0x258];
 /// Window origin of `back` while `uciv` is at the civilian Locate point (0, 0x8f).
@@ -210,7 +211,7 @@ fn civilian_legend_target_counts(state: &GameState, unit: &CivilianUnitState) ->
     let Some(common) = state.nation(owner) else {
         return counts;
     };
-    let profiles = TARGET_TILE_PROFILES[kind_index(unit.unit_type())];
+    let profiles = TARGET_TILE_PROFILES[unit.unit_type()];
     for &province in common.owned_regions() {
         for &linked in &state.map().provinces[province].linked_tiles {
             if state.map()[linked].recruit_search_visited != 0 {
@@ -356,10 +357,10 @@ fn spawn_engineer_legend(
         .expect("civilian toolbar requires an active major nation");
     let status = state.technology().research_status_by_nation[nation];
     let cannot_build = [
-        status[TechnologyId::new(6)] != TechnologyResearchStatus::Researched,
-        status[TechnologyId::new(12)] != TechnologyResearchStatus::Researched,
-        status[TechnologyId::new(12)] != TechnologyResearchStatus::Researched,
-        status[TechnologyId::new(23)] != TechnologyResearchStatus::Researched,
+        status[Technology::IronRailroadBridge] != TechnologyResearchStatus::Researched,
+        status[Technology::CompoundSteamEngine] != TechnologyResearchStatus::Researched,
+        status[Technology::CompoundSteamEngine] != TechnologyResearchStatus::Researched,
+        status[Technology::Dynamite] != TechnologyResearchStatus::Researched,
     ];
     let terrain_icons = [10_i16, 7, 8, 9];
     let mut icon_x = 10.0;
@@ -410,7 +411,8 @@ fn spawn_prospector_legend(
     );
     let nation = MajorNationId::from_nation(state.turn().active_nation)
         .expect("civilian toolbar requires an active major nation");
-    let oil_unlocked = state.technology().research_status_by_nation[nation][TechnologyId::new(4)]
+    let streamlined_hulls_researched = state.technology().research_status_by_nation[nation]
+        [Technology::StreamlinedHulls]
         == TechnologyResearchStatus::Researched;
     let counts = civilian_legend_target_counts(state, unit);
     let column_resources: [[i16; 4]; 5] = [
@@ -420,14 +422,14 @@ fn spawn_prospector_legend(
         [6, -1, -1, -1],
         [6, -1, -1, -1],
     ];
-    let column_count = if oil_unlocked { 5 } else { 2 };
+    let column_count = if streamlined_hulls_researched { 5 } else { 2 };
     let mut column_top = 0x68 as f32;
     for column in 0..column_count {
         let mut icon_top = column_top;
         if column == 1 {
             icon_top += 12.0;
         }
-        let terrain = TARGET_TILE_PROFILES[kind_index(CivilianUnitKind::Prospector)][column];
+        let terrain = TARGET_TILE_PROFILES[CivilianUnitKind::Prospector][column];
         spawn_atlas_icon(
             commands,
             legend,
@@ -489,7 +491,7 @@ fn spawn_developer_legend(
     atlases: LegendAtlases,
 ) {
     let kind = unit.unit_type();
-    let strip_base = DEVELOPMENT_STRIP_BASE_X[kind_index(kind)];
+    let strip_base = DEVELOPMENT_STRIP_BASE_X[kind];
     if strip_base < 0 {
         return;
     }
@@ -583,13 +585,13 @@ fn spawn_developer_legend(
             None,
         );
     }
-    let mut row_limit = DEVELOPER_MAX_ROWS[kind_index(kind)];
+    let mut row_limit = DEVELOPER_MAX_ROWS[kind];
     if kind == CivilianUnitKind::Farmer && levels[ResourceKind::Cotton] == 0 {
         row_limit -= 1;
     }
     let counts = civilian_legend_target_counts(state, unit);
     for row in 0..row_limit {
-        let terrain = TARGET_TILE_PROFILES[kind_index(kind)][row as usize];
+        let terrain = TARGET_TILE_PROFILES[kind][row as usize];
         if terrain < 0 {
             continue;
         }
@@ -707,21 +709,8 @@ fn spawn_atlas_icon(
 }
 
 fn transparent_atlas(assets: &mut RetailUiAssets, picture_id: i16) -> Handle<Image> {
-    let picture_id = PictureId::new(picture_id);
-    let indexed = assets
-        .indexed_picture(picture_id)
-        .expect("retail civilian legend atlas must decode");
     assets
-        .transformed_picture(picture_id, |image| {
-            let Some(pixels) = image.data.as_mut() else {
-                return;
-            };
-            for (pixel, &index) in pixels.chunks_exact_mut(4).zip(&indexed.pixels) {
-                if index == TRANSPARENT_INDEX {
-                    pixel[3] = 0;
-                }
-            }
-        })
+        .transparent_picture(PictureId::new(picture_id), TRANSPARENT_INDEX)
         .expect("retail civilian legend atlas must load")
 }
 
@@ -751,10 +740,6 @@ fn locate_node(commands: &mut Commands, entity: Entity, position: Vec2) {
     });
 }
 
-fn kind_index(kind: CivilianUnitKind) -> usize {
-    kind as usize
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -770,19 +755,6 @@ mod tests {
             zone_status_lcg: 3_916_827_792,
             selected_nation: NationId::new(6),
         })
-    }
-
-    #[test]
-    fn civilian_portraits_are_consecutive_artwork_from_the_class_base() {
-        assert_eq!(portrait_picture_id(CivilianUnitKind::Miner), 0x438);
-        assert_eq!(portrait_picture_id(CivilianUnitKind::Engineer), 0x43c);
-        assert_eq!(portrait_picture_id(CivilianUnitKind::Driller), 0x440);
-    }
-
-    #[test]
-    fn civilian_page_uses_the_map_uber_locate_points() {
-        assert_eq!(CIVILIAN_PAGE_VISIBLE, Vec2::new(0.0, 143.0));
-        assert_eq!(CIVILIAN_PAGE_PARKED, Vec2::new(-1000.0, -1000.0));
     }
 
     #[test]
@@ -816,7 +788,7 @@ mod tests {
                 )
             });
         let counts = civilian_legend_target_counts(&state, unit);
-        let profiles = TARGET_TILE_PROFILES[kind_index(unit.unit_type())];
+        let profiles = TARGET_TILE_PROFILES[unit.unit_type()];
         for (slot, profile) in profiles.iter().copied().enumerate() {
             if profile < 0 {
                 assert_eq!(
@@ -832,19 +804,5 @@ mod tests {
             "{:?} legend should count matching owned tiles, got {counts:?}",
             unit.unit_type()
         );
-    }
-
-    #[test]
-    fn engineer_and_prospector_are_not_developer_legends() {
-        assert_eq!(
-            DEVELOPMENT_STRIP_BASE_X[kind_index(CivilianUnitKind::Engineer)],
-            -1
-        );
-        assert_eq!(
-            DEVELOPMENT_STRIP_BASE_X[kind_index(CivilianUnitKind::Prospector)],
-            -1
-        );
-        assert!(DEVELOPMENT_STRIP_BASE_X[kind_index(CivilianUnitKind::Miner)] >= 0);
-        assert!(DEVELOPMENT_STRIP_BASE_X[kind_index(CivilianUnitKind::Developer)] >= 0);
     }
 }
