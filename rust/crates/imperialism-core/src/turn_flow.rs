@@ -465,6 +465,8 @@ mod tests {
                 nation,
                 crate::ProvinceId::new(u16::from(major_id.get())),
             );
+            state.map.provinces[crate::ProvinceId::new(u16::from(major_id.get()))].region_class =
+                Some(0);
             state.map[tile].owner_nation = Some(TileOwnerTag::from_nation(nation));
         }
     }
