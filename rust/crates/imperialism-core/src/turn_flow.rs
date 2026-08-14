@@ -132,7 +132,6 @@ pub enum TurnStop {
 ///
 /// Included in semantic `GameState` serialization. The `.imp` writer omits it
 /// because retail cannot save at these transient boundaries.
-#[allow(clippy::large_enum_variant)]
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub enum TurnContinuation {
     #[default]
