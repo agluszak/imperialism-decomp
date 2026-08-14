@@ -68,7 +68,7 @@ impl GameState {
         continuation: CombatMovesContinuation,
     ) -> Option<CombatMovesContinuation> {
         let mut chains = StationedChains::from_units(&self.military_units);
-        let mut owner_cache = continuation.owner_cache.as_array().clone();
+        let mut owner_cache = *continuation.owner_cache.as_array();
         self.resolve_next_move(
             &mut chains,
             continuation.stacks,
