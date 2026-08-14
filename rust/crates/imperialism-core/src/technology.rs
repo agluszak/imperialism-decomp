@@ -733,7 +733,8 @@ mod tests {
     fn activating_a_later_general_writes_the_selected_capability_slot() {
         let mut state = crate::test_support::game_state();
         let nation = MajorNationId::new(0);
-        state.technology.research_status_by_nation[nation][0xb] = TechnologyResearchStatus::Pending;
+        state.technology.research_status_by_nation[nation][TechnologyId::new(0xb)] =
+            TechnologyResearchStatus::Pending;
         assert_eq!(
             state.acknowledge_technology_unlock(nation),
             Some(TechnologyId::new(0xb))

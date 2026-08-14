@@ -1,5 +1,6 @@
 use crate::{
-    GameState, MajorNationId, PendingActionKind, PendingActionTable, TechnologyResearchStatus,
+    GameState, MajorNationId, PendingActionKind, PendingActionTable, TechnologyId,
+    TechnologyResearchStatus,
 };
 use serde::{Deserialize, Serialize};
 
@@ -91,7 +92,8 @@ impl GameState {
             if !self.event_eligible(nation.nation()) {
                 continue;
             }
-            let ironworking_researched = self.technology.research_status_by_nation[nation][0x0f]
+            let ironworking_researched = self.technology.research_status_by_nation[nation]
+                [TechnologyId::new(0x0f)]
                 == TechnologyResearchStatus::Researched;
             let actions = &mut self.nations.majors[nation].economy.pending_actions;
             mark_pending_status_flags_handled(actions, ironworking_researched);
