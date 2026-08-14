@@ -820,6 +820,18 @@ mod tests {
         seed_province(&mut state, 2, 1, &[1]);
         seed_province(&mut state, 3, 0, &[4]);
         seed_province(&mut state, 4, 0, &[3]);
+        state
+            .nations
+            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(1));
+        state
+            .nations
+            .append_owned_region_during_construction(NationId::new(1), ProvinceId::new(2));
+        state
+            .nations
+            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(3));
+        state
+            .nations
+            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(4));
         let attacker = push_unit(&mut state, 0, 1, MilitaryUnitKind::Hussars, Some(2));
         let _defender = push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);
         let mover = push_unit(&mut state, 0, 3, MilitaryUnitKind::Regulars, Some(4));
@@ -891,6 +903,10 @@ mod tests {
         assert_eq!(
             state.military_units[2].stationed_province,
             Some(ProvinceId::new(4))
+        );
+        assert_eq!(
+            state.map.provinces[ProvinceId::new(2)].owner(),
+            Some(NationId::new(0))
         );
     }
 }

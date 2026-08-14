@@ -394,11 +394,11 @@ RuntimeActionResult RunNewspaperPendingStatus(NativeTransition& transition) {
     return started;
   }
 
-  for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) == 0) {
+  for (short eligibleSlot = 0; eligibleSlot < 7; ++eligibleSlot) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(eligibleSlot) == 0) {
       continue;
     }
-    TGreatPower* nation = g_apNationStates[nationSlot];
+    TGreatPower* nation = g_apNationStates[eligibleSlot];
     if (nation != 0) {
       nation->MarkAllPendingStatusFlagsHandled();
     }
