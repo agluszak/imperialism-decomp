@@ -413,15 +413,15 @@ mod tests {
     };
 
     fn seed_town_tiles(state: &mut crate::GameState) {
-        for index in 0..MajorNationId::COUNT {
-            let tile = TileId::new(index as u16 + 1);
-            let nation = NationId::new(index);
-            let major = &mut state.nations.majors[MajorNationId::new(index)];
+        for major_id in MajorNationId::all() {
+            let tile = TileId::new(u16::from(major_id.get()) + 1);
+            let nation = major_id.nation();
+            let major = &mut state.nations.majors[major_id];
             major.towns[0].tile = tile;
             major.common.home_tile = Some(tile);
             state.nations.append_owned_region_during_construction(
                 nation,
-                crate::ProvinceId::new(index as u16),
+                crate::ProvinceId::new(u16::from(major_id.get())),
             );
             state.map[tile].owner_nation = Some(TileOwnerTag::from_nation(nation));
         }
@@ -582,8 +582,7 @@ mod tests {
         let mut state = game_state();
         let buyer = MajorNationId::new(0);
         let seller = MajorNationId::new(1);
-        for slot in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(slot);
+        for nation in MajorNationId::all() {
             state.nations.majors[nation].city.ship_order_count_by_type[ShipType::Trader] = 2;
             state.nations.majors[nation].city.ship_order_count_by_type[ShipType::Paddlewheeler] = 1;
             state.nations.majors[nation].city.ship_order_count_by_type[ShipType::Freighter] = 1;

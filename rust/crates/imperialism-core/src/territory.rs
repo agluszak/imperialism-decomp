@@ -306,9 +306,7 @@ impl GameState {
                             || {
                                 self.missions
                                     .iter()
-                                    .position(|mission| {
-                                        mission.nation.get() > new_owner.nation().get()
-                                    })
+                                    .position(|mission| mission.nation > new_owner.nation())
                                     .unwrap_or(self.missions.len())
                             },
                             |position| position + 1,
@@ -370,8 +368,7 @@ impl GameState {
             .common(nation_a)
             .expect("territory comparison requires nation A to be present");
         self.mark_owned_region_classes(nation_a_common.owned_regions(), &mut region_class_seen);
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = MinorNationId::new(slot);
+        for minor in MinorNationId::all() {
             if let Some(common) = self.nations.common(minor.nation())
                 && common.status().is_colony_of(nation_a)
             {
@@ -386,8 +383,7 @@ impl GameState {
         if self.any_owned_region_class_seen(nation_b_common.owned_regions(), &region_class_seen) {
             return true;
         }
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = MinorNationId::new(slot);
+        for minor in MinorNationId::all() {
             if let Some(common) = self.nations.common(minor.nation())
                 && common.status().is_colony_of(nation_b)
                 && self.any_owned_region_class_seen(common.owned_regions(), &region_class_seen)

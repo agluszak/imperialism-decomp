@@ -272,8 +272,7 @@ impl GameState {
             let Some(task_force) = ship.task_force else {
                 continue;
             };
-            let task_force = &self.task_forces
-                [usize::try_from(task_force.get()).expect("task-force ordinal fits this process")];
+            let task_force = &self.task_forces[task_force.get()];
             if !task_force.defeated && matches!(task_force.order, 3 | 4) {
                 active_nations |= 1_u32 << ship.nation.get();
             }
@@ -283,7 +282,7 @@ impl GameState {
         if active_nations & origin_bit != 0 {
             return true;
         }
-        for candidate in (0..MajorNationId::COUNT).map(NationId::new) {
+        for candidate in MajorNationId::all().map(MajorNationId::nation) {
             if active_nations & (1_u32 << candidate.get()) == 0 {
                 continue;
             }

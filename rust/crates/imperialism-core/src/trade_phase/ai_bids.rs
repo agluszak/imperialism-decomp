@@ -247,8 +247,8 @@ impl GameState {
             return;
         }
 
-        let has_trade_candidate = (MinorNationId::FIRST..NationId::COUNT).any(|slot| {
-            let nation_id = NationId::new(slot);
+        let has_trade_candidate = MinorNationId::all().any(|minor| {
+            let nation_id = minor.nation();
             self.nation_present(nation_id)
                 && (self.market.rows[TradeCommodity::Coal].maximum_offer_by_nation[nation_id] != 0
                     || self.market.rows[TradeCommodity::Iron].maximum_offer_by_nation[nation_id]

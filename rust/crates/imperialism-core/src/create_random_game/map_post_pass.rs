@@ -19,8 +19,7 @@ pub(super) fn capital_selection_view_origin(world: &MapMgr, human_nation: MajorN
     let mut min_row = i32::MAX;
     let mut max_row = i32::MIN;
 
-    for index in 0..TileId::COUNT {
-        let tile = TileId::new(index);
+    for tile in TileId::all() {
         if world[tile].owner_nation != Some(owner) {
             continue;
         }

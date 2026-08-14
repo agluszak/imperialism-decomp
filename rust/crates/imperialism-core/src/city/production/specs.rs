@@ -67,8 +67,8 @@ pub const CIVILIAN_RESOURCE_SPECIALTIES: CivilianUnitTable<[Option<ResourceKind>
     ]);
 
 /// `g_abUniversityRequirementLevelById` over the semantic resource domain.
-pub const fn resource_development_yield(resource: ResourceKind, level: u8) -> i16 {
-    const YIELDS: [[i16; 4]; ResourceKind::LENGTH] = [
+pub fn resource_development_yield(resource: ResourceKind, level: u8) -> i16 {
+    const YIELDS: ResourceTable<[i16; 4]> = ResourceTable::from_array([
         [1, 2, 3, 4],
         [1, 2, 3, 4],
         [1, 2, 3, 4],
@@ -92,10 +92,10 @@ pub const fn resource_development_yield(resource: ResourceKind, level: u8) -> i1
         [1, 2, 3, 4],
         [0, 1, 2, 3],
         [0, 1, 2, 3],
-    ];
+    ]);
 
     assert!(level <= 3, "resource development level must be in 0..=3");
-    YIELDS[resource as usize][level as usize]
+    YIELDS[resource][level as usize]
 }
 
 pub const fn military_recruitment_spec(

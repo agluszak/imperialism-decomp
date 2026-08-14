@@ -42,15 +42,13 @@ impl GameState {
     /// operations yet and must not mutate half the world.
     pub fn do_military(&mut self) {
         self.recompute_tile_strategic_score_heatmap();
-        for slot in 0..NationId::COUNT {
-            let nation = NationId::new(slot);
+        for nation in NationId::all() {
             if !self.nation_is_eligible_for_optional_phase(nation) {
                 continue;
             }
             self.grow_militia(nation);
         }
-        for index in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(index);
+        for nation in MajorNationId::all() {
             if !self.nation_is_eligible_for_optional_phase(nation.nation()) {
                 continue;
             }
@@ -73,59 +71,54 @@ impl GameState {
     }
 
     pub(crate) fn recompute_tile_strategic_score_heatmap(&mut self) {
-        let mut resource_weights = [0_i32; ResourceKind::LENGTH];
+        let mut resource_weights = ResourceTable::<i32>::default();
         for resource in 0_i16..=16 {
             let commodity = TradeCommodity::from_retail(resource)
                 .expect("manufactured heatmap weights use trade commodities");
-            resource_weights[resource as usize] = self.market.rows[commodity].base_price;
+            resource_weights[commodity.resource()] = self.market.rows[commodity].base_price;
         }
-        resource_weights[ResourceKind::Gems as usize] = 500;
-        resource_weights[ResourceKind::Gold as usize] = 200;
+        resource_weights[ResourceKind::Gems] = 500;
+        resource_weights[ResourceKind::Gold] = 200;
         let oil_drilling = self.technology.oil_drilling_available();
 
-        let mut region_scores = [0_i32; PROVINCE_COUNT];
-        for (index, score) in region_scores.iter_mut().enumerate() {
-            let province = ProvinceId::new(index as u16);
-            *score = 200;
+        let mut region_scores = ProvinceTable::from_fn(|_| 200);
+        for province in ProvinceId::all() {
             for &tile in &self.map.provinces[province].linked_tiles {
                 for resource in self.map[tile].edge_resources.iter().flatten() {
                     if *resource == ResourceKind::Oil && !oil_drilling {
                         continue;
                     }
-                    *score += i32::from(heatmap_requirement_level(
+                    region_scores[province] += i32::from(heatmap_requirement_level(
                         *resource as usize,
                         self.map[tile].development.packed_byte(),
-                    )) * resource_weights[*resource as usize];
+                    )) * resource_weights[*resource];
                 }
             }
         }
 
-        for (index, score) in region_scores.iter_mut().enumerate() {
-            let province = ProvinceId::new(index as u16);
-            *score += i32::from(self.map.provinces[province].development_stage() + 3) * 1000;
+        for province in ProvinceId::all() {
+            region_scores[province] +=
+                i32::from(self.map.provinces[province].development_stage() + 3) * 1000;
         }
 
-        for slot in 0..NationId::COUNT {
-            let nation = NationId::new(slot);
+        for nation in NationId::all() {
             let Some(home) = self.nations.home_tile(nation) else {
                 continue;
             };
             let Some(capitol) = self.map[home].province else {
                 continue;
             };
-            region_scores[usize::from(capitol.get())] += if slot < MajorNationId::COUNT {
+            region_scores[capitol] += if MajorNationId::from_nation(nation).is_some() {
                 10_000
             } else {
                 8_000
             };
         }
 
-        for (index, region_score) in region_scores.iter().enumerate() {
-            let province = ProvinceId::new(index as u16);
-            let mut city_score = *region_score;
+        for province in ProvinceId::all() {
+            let mut city_score = region_scores[province];
             for &adjacent in self.map.provinces[province].adjacency().iter().rev() {
-                city_score = (region_scores[usize::from(adjacent.get())] as f32
-                    * HEATMAP_NEIGHBOR_DIFFUSION
+                city_score = (region_scores[adjacent] as f32 * HEATMAP_NEIGHBOR_DIFFUSION
                     + city_score as f32) as i32;
             }
             self.map.provinces[province].set_city_score(city_score);
@@ -196,7 +189,7 @@ impl GameState {
         );
         let insert_at = self
             .military_units
-            .partition_point(|existing| existing.nation.get() <= nation.get());
+            .partition_point(|existing| existing.nation <= nation);
         self.military_units.insert(insert_at, unit);
     }
 
@@ -231,19 +224,17 @@ pub(crate) fn is_recruit_quarter_tick_gate(tick: i32) -> bool {
 }
 
 pub(crate) fn tactical_category(kind: MilitaryUnitKind) -> i16 {
-    const CATEGORY: [i16; 32] = [
+    const CATEGORY: MilitaryUnitTable<i16> = MilitaryUnitTable::from_array([
         0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9, 9, 9,
-        0, 0,
-    ];
-    CATEGORY[kind as usize]
+    ]);
+    CATEGORY[kind]
 }
 
 pub(crate) fn combat_class(kind: MilitaryUnitKind) -> i16 {
-    const CLASS: [i16; 32] = [
+    const CLASS: MilitaryUnitTable<i16> = MilitaryUnitTable::from_array([
         1, 2, 1, 1, 3, 2, 2, 1, 1, 2, 1, 1, 3, 2, 2, 1, 1, 2, 1, 1, 3, 3, 2, 1, 1, 2, 3, 2, 2, 2,
-        0, 0,
-    ];
-    CLASS[kind as usize]
+    ]);
+    CLASS[kind]
 }
 
 fn heatmap_requirement_level(resource_type: usize, packed_development: i8) -> u8 {

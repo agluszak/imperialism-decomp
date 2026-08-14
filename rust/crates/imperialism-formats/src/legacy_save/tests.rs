@@ -355,7 +355,7 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
         assert_eq!(targets, &expected_targets);
 
         let province_targets = major.economy.ai_province_targets.as_ref().unwrap();
-        for province in (0..ProvinceId::COUNT).map(ProvinceId::new) {
+        for province in ProvinceId::all() {
             let expected = if expected_provinces.contains(&province.get()) {
                 AiTargetState::MissionQueued
             } else {
@@ -369,11 +369,10 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
     assert!(human.ai_zone_targets.is_none());
     assert!(human.ai_province_targets.is_none());
     assert_eq!(human.army_movement_budget, 15);
-    for province in (0..ProvinceId::COUNT).map(ProvinceId::new) {
+    for province in ProvinceId::all() {
         assert_eq!(state.map().provinces[province].development_stage(), 0);
         assert!(
-            (0..MajorNationId::COUNT)
-                .map(MajorNationId::new)
+            MajorNationId::all()
                 .all(|nation| !state.map().provinces[province].explored_by_majors()[nation])
         );
     }

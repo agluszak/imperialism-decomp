@@ -223,8 +223,7 @@ impl MapMgr {
         let mut west_count = 0_u32;
         let mut east_count = 0_u32;
 
-        for index in 0..TileId::COUNT {
-            let tile = TileId::new(index);
+        for tile in TileId::all() {
             if self[tile].owner_nation != Some(owner) {
                 continue;
             }
@@ -251,8 +250,7 @@ impl MapMgr {
                 column_sum = 0;
                 row_sum = 0;
                 tile_count = 0;
-                for index in 0..TileId::COUNT {
-                    let tile = TileId::new(index);
+                for tile in TileId::all() {
                     if self[tile].owner_nation != Some(owner) {
                         continue;
                     }

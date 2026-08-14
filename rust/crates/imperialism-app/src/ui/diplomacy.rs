@@ -21,6 +21,7 @@ use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
+use enum_map::EnumMap;
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -33,10 +34,10 @@ const MAP_HEIGHT: f32 = 300.0;
 const MAP_TILE_SCALE: u16 = 5;
 const MAP_ODD_ROW_OFFSET: u16 = 2;
 const DIPLOMACY_IDLE_CURSOR: u16 = 0x41b;
-const DIPLOMACY_CURSOR_BY_ACTION: [u16; 16] = [
+const DIPLOMACY_CURSOR_BY_ACTION: EnumMap<DiplomacyMapAction, u16> = EnumMap::from_array([
     0x41b, 0x41b, 0x408, 0x407, 0x406, 0x404, 0x405, 0x411, 0x415, 0x409, 0x41b, 0x40f, 0x410,
     0x3f3, 0x419, 0x41a,
-];
+]);
 const GRANT_AMOUNTS: [i32; 4] = [1_000, 3_000, 5_000, 10_000];
 const TRADE_POLICY_SCORES: [TradePolicyScore; 7] = [
     TradePolicyScore::new(95),
@@ -918,10 +919,7 @@ fn spawn_diplomacy_panel_text(
         styles.foreground,
         styles.shadow,
     );
-    for (major, tag) in (0..MajorNationId::COUNT)
-        .map(MajorNationId::new)
-        .zip(DIPLOMACY_MAP_KEY_MAJOR_NAME_TAGS)
-    {
+    for (major, tag) in MajorNationId::all().zip(DIPLOMACY_MAP_KEY_MAJOR_NAME_TAGS) {
         commands
             .entity(find_descendant(root, tag, children, tags))
             .insert((DiplomacyMapKeyMajorName(major), Visibility::Inherited));
@@ -1437,7 +1435,7 @@ fn diplomacy_map_cursor_resource_id(
     if !nation_hit || !valid {
         return DIPLOMACY_IDLE_CURSOR;
     }
-    let mut resource_id = DIPLOMACY_CURSOR_BY_ACTION[action as usize];
+    let mut resource_id = DIPLOMACY_CURSOR_BY_ACTION[action];
     if matches!(
         action,
         DiplomacyMapAction::TradeSubsidy
@@ -1686,7 +1684,7 @@ fn diplomacy_entanglement_body(
     };
     let intro = fill_brackets(&get_string(assets, 0x275d, intro_index), &[target_name]);
     let mut names = String::new();
-    for major in (0..MajorNationId::COUNT).map(MajorNationId::new) {
+    for major in MajorNationId::all() {
         if state.diplomacy().relationships[target][major.nation()] != DiplomaticRelationship::War {
             continue;
         }
@@ -2419,8 +2417,7 @@ fn representative_tile_for_nation(state: &GameState, nation: NationId) -> Option
     let mut east_count = 0_u32;
     let mut fallback = None;
 
-    for index in 0..TileId::COUNT {
-        let tile = TileId::new(index);
+    for tile in TileId::all() {
         if state.map()[tile]
             .owner_nation
             .and_then(TileOwnerTag::nation)

@@ -15,8 +15,8 @@ impl MapMgr {
     ) -> Option<TileId> {
         let owner = self[start].owner_nation;
         let geometry = self.geometry();
-        for index in 0..TileId::COUNT {
-            self[TileId::new(index)].recruit_search_visited = 0;
+        for tile in TileId::all() {
+            self[tile].recruit_search_visited = 0;
         }
         let mut pending = vec![start];
 
@@ -103,8 +103,8 @@ impl GameState {
         if self.turn.scenario_map.is_some() {
             return;
         }
-        for index in 0..MajorNationId::COUNT {
-            self.grant_opening_civilians_for_nation(MajorNationId::new(index));
+        for nation in MajorNationId::all() {
+            self.grant_opening_civilians_for_nation(nation);
         }
     }
 
@@ -167,7 +167,7 @@ impl GameState {
         };
         let insert_at = self
             .civilian_units
-            .partition_point(|existing| existing.nation.get() <= nation_id.get());
+            .partition_point(|existing| existing.nation <= nation_id);
         self.civilian_units.insert(insert_at, unit);
     }
 
@@ -225,7 +225,7 @@ impl GameState {
                 };
                 let insert_at = self
                     .military_units
-                    .partition_point(|existing| existing.nation.get() <= nation_id.get());
+                    .partition_point(|existing| existing.nation <= nation_id);
                 self.military_units.insert(insert_at, unit);
 
                 let pending = self.nations.majors[nation].economy.pending_actions

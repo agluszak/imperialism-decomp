@@ -66,8 +66,7 @@ impl MapMgr {
     ) {
         let owner = TileOwnerTag::from_nation(nation.nation());
         self.recruit_search_active = true;
-        for index in 0..TileId::COUNT {
-            let tile = TileId::new(index);
+        for tile in TileId::all() {
             let is_candidate = {
                 let state = &self[tile];
                 state.owner_nation == Some(owner)
@@ -426,8 +425,7 @@ mod tests {
             None
         );
 
-        let tile = (0..TileId::COUNT)
-            .map(TileId::new)
+        let tile = TileId::all()
             .find(|&tile| {
                 let t = &state.map[tile];
                 t.owner_nation == Some(TileOwnerTag::new(6))
@@ -548,8 +546,7 @@ mod tests {
         );
         enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6));
         assert_opening_civilians(&state, MajorNationId::new(6), 5);
-        for slot in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(slot);
+        for nation in MajorNationId::all() {
             if nation == MajorNationId::new(6)
                 || state.nations.major(nation).common.home_tile.is_none()
             {
@@ -567,8 +564,8 @@ mod tests {
             MapTopology::Bounded,
             vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
         );
-        for index in 0..TileId::COUNT {
-            world[TileId::new(index)].owner_nation = Some(owner);
+        for tile in TileId::all() {
+            world[tile].owner_nation = Some(owner);
         }
         let candidate = TileId::new(0);
         let wrapped_sea = TileId::new(107);

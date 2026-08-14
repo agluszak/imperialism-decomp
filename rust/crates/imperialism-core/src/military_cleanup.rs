@@ -13,8 +13,7 @@ impl GameState {
             }
         }
         self.recompute_tile_strategic_score_heatmap();
-        for index in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(index);
+        for nation in MajorNationId::all() {
             if !self.nation_is_eligible_for_optional_phase(nation.nation()) {
                 continue;
             }
@@ -67,7 +66,7 @@ mod tests {
 
         let mut expected = state.clone();
         expected.recompute_tile_strategic_score_heatmap();
-        for province in (0..ProvinceId::COUNT).map(ProvinceId::new) {
+        for province in ProvinceId::all() {
             state.map.provinces[province].set_city_score(1);
         }
         state.map.city_score_total = 1;
@@ -81,7 +80,7 @@ mod tests {
             "cleanup must rebuild the heatmap, not keep a corrupted total"
         );
         assert_ne!(state.map.city_score_total, 1);
-        for province in (0..ProvinceId::COUNT).map(ProvinceId::new) {
+        for province in ProvinceId::all() {
             assert_eq!(
                 state.map.provinces[province].city_score(),
                 expected.map.provinces[province].city_score()

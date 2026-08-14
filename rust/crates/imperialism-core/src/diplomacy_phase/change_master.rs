@@ -75,8 +75,7 @@ impl GameState {
     }
 
     pub(super) fn declare_war_for_colonies(&mut self, master: NationId, enemy: NationId) {
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = NationId::new(slot);
+        for minor in MinorNationId::all().map(MinorNationId::nation) {
             if !self
                 .nations
                 .common(minor)
