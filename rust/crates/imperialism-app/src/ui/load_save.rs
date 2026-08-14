@@ -194,8 +194,8 @@ fn flag_menu_navigation(action: FlagMenuAction) -> FlagMenuNavigation {
     }
 }
 
-/// `TFlagOptionsPicture` new-game/quit confirmation, posed before the window dismisses.
-#[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
+/// New-game or quit confirmation posed by the flag menu.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum FlagMenuPending {
     NewGame,
     Quit,
@@ -204,7 +204,6 @@ enum FlagMenuPending {
 #[derive(Component)]
 struct FlagMenuPrompt {
     kind: FlagMenuPending,
-    body: String,
 }
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -231,12 +230,7 @@ impl Plugin for LoadSavePlugin {
             )
             .add_systems(
                 Update,
-                (
-                    bind_flag_menu,
-                    spawn_flag_menu_prompt,
-                    bind_flag_menu_prompt,
-                )
-                    .run_if(in_state(AppState::StrategicMap)),
+                (bind_flag_menu, bind_flag_menu_prompt).run_if(in_state(AppState::StrategicMap)),
             );
     }
 }
@@ -1106,37 +1100,15 @@ fn on_flag_menu_activate(
             next_state.set(AppState::Credits);
         }
         FlagMenuNavigation::Confirm(pending) => {
-            commands.insert_resource(pending);
+            open_flag_menu_prompt(&mut commands, pending);
         }
     }
 }
 
-fn spawn_flag_menu_prompt(
-    pending: Option<Res<FlagMenuPending>>,
-    existing: Query<(), With<FlagMenuPrompt>>,
-    assets: RetailUiAssets,
-    mut commands: Commands,
-) {
-    let Some(pending) = pending.as_deref().copied() else {
-        return;
-    };
-    if !existing.is_empty() {
-        return;
-    }
-    // `TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted` for single-player.
-    let index = match pending {
-        FlagMenuPending::NewGame => 0x2b,
-        FlagMenuPending::Quit => 0x2a,
-    };
-    let body = assets
-        .string(0x2737, index)
-        .expect("retail flag-menu confirm string");
+fn open_flag_menu_prompt(commands: &mut Commands, pending: FlagMenuPending) {
     let root = commands.spawn_scene(generated::linger_2020()).id();
     commands.entity(root).insert((
-        FlagMenuPrompt {
-            kind: pending,
-            body,
-        },
+        FlagMenuPrompt { kind: pending },
         ModalDialog,
         TabGroup::modal(),
         GlobalZIndex(21),
@@ -1153,7 +1125,15 @@ fn bind_flag_menu_prompt(
     mut assets: RetailUiAssets,
 ) {
     let (root, prompt) = prompt.into_inner();
-    let body = find_descendant(root, fourcc!("info"), &children, &tags);
+    // `TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted` for single-player.
+    let index = match prompt.kind {
+        FlagMenuPending::NewGame => 0x2b,
+        FlagMenuPending::Quit => 0x2a,
+    };
+    let body = assets
+        .string(0x2737, index)
+        .expect("retail flag-menu confirm string");
+    let info = find_descendant(root, fourcc!("info"), &children, &tags);
     let (body_font, body_layout, body_line_height, _) = assets
         .text_style(imperialism_formats::RetailTextStylePreset {
             font_family: 1,
@@ -1162,8 +1142,8 @@ fn bind_flag_menu_prompt(
             alignment: 0,
         })
         .expect("retail flag-menu prompt body style");
-    commands.entity(body).insert((
-        Text::new(prompt.body.clone()),
+    commands.entity(info).insert((
+        Text::new(body),
         body_font,
         body_layout,
         body_line_height,
@@ -1197,11 +1177,9 @@ fn on_flag_menu_prompt_activate(
     match *action {
         FlagMenuPromptAction::Dismiss => {
             commands.entity(prompt_entity).despawn();
-            commands.remove_resource::<FlagMenuPending>();
         }
         FlagMenuPromptAction::Accept => {
             commands.entity(prompt_entity).despawn();
-            commands.remove_resource::<FlagMenuPending>();
             for entity in &menus {
                 commands.entity(entity).despawn();
             }
@@ -1295,13 +1273,7 @@ mod tests {
 
     fn spawn_test_flag_prompt(mut commands: Commands, kind: FlagMenuPending) {
         let root = commands
-            .spawn((
-                FlagMenuPrompt {
-                    kind,
-                    body: String::new(),
-                },
-                Node::default(),
-            ))
+            .spawn((FlagMenuPrompt { kind }, Node::default()))
             .id();
         commands.spawn((FlagMenuPromptAction::Accept, ChildOf(root)));
         commands.spawn((FlagMenuPromptAction::Dismiss, ChildOf(root)));
@@ -1442,7 +1414,6 @@ mod tests {
         app.add_systems(Startup, |commands: Commands| {
             spawn_test_flag_prompt(commands, FlagMenuPending::NewGame)
         });
-        app.insert_resource(FlagMenuPending::NewGame);
         app.update();
 
         let dismiss = app
@@ -1463,7 +1434,13 @@ mod tests {
             app.world().resource::<State<AppState>>().get(),
             &AppState::StrategicMap
         );
-        assert!(app.world().get_resource::<FlagMenuPending>().is_none());
+        assert!(
+            app.world_mut()
+                .query_filtered::<Entity, With<FlagMenuPrompt>>()
+                .iter(app.world())
+                .next()
+                .is_none()
+        );
         assert!(
             app.world_mut()
                 .query_filtered::<Entity, With<FlagMenuRoot>>()

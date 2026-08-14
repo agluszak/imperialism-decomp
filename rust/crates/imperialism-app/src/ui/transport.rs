@@ -136,7 +136,6 @@ enum TransportDisplay {
         resource: ResourceKind,
         unit_value: i32,
     },
-    Treasury,
     Gauge {
         kind: TransportGaugeKind,
         normal_color: Color,
@@ -385,8 +384,6 @@ fn bind_transport_controls(
         },
         TransportCursor,
     ));
-    let treasury = find_descendant(root, fourcc!("trea"), children, tags);
-    commands.entity(treasury).insert(TransportDisplay::Treasury);
 }
 
 fn transport_track(left: i32, color: Color, allocation: Option<TransportAllocation>) -> impl Scene {
@@ -597,9 +594,6 @@ fn sync_transport_text(
             } => {
                 let target = economy.need_target_by_type[resource];
                 text.0 = format_currency(i32::from(target) * unit_value);
-            }
-            TransportDisplay::Treasury => {
-                text.0 = format_currency(major.common.treasury);
             }
             _ => {}
         }

@@ -139,6 +139,9 @@ pub(crate) fn sync_strategic_units(
     )>,
     units: Query<Entity, With<StrategicMapUnit>>,
 ) {
+    if !session.is_changed() {
+        return;
+    }
     let state = &session.game;
     for (layer, mut projection, mut sprites, children) in &mut layers {
         let fleet_id = fleet_atlas_picture_id(state).get();
