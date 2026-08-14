@@ -175,14 +175,7 @@ pub(in crate::ui::city) fn bind_city_screen(
     );
 
     let nation = city_active_nation(&session);
-    bind_game_status_display(
-        &mut commands,
-        &mut assets,
-        *root,
-        &children,
-        &tags,
-        &session,
-    );
+    bind_game_status_display(&mut commands, &mut assets, *root, &children, &tags);
     bind_city_summary_values(&mut commands, *root, &children, &tags, &nodes, &mut assets);
     bind_city_hover_title(&mut commands, *root, &children, &tags, &mut assets);
     spawn_city_buildings(

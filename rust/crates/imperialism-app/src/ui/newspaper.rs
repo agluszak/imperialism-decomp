@@ -20,6 +20,12 @@ struct NewspaperRoot;
 #[derive(Component, Clone, Copy)]
 struct NewspaperAction;
 
+#[derive(Component, Clone, Copy)]
+enum NewspaperDisplay {
+    Date,
+    Spec,
+}
+
 pub(crate) struct NewspaperPlugin;
 
 impl Plugin for NewspaperPlugin {
@@ -27,6 +33,11 @@ impl Plugin for NewspaperPlugin {
         app.add_systems(
             OnEnter(AppState::Newspaper),
             (spawn_newspaper, bind_newspaper).chain(),
+        )
+        .add_systems(
+            Update,
+            project_newspaper_chrome
+                .run_if(in_state(AppState::Newspaper).and_then(resource_exists::<GameSession>)),
         )
         .add_observer(on_newspaper_activate.run_if(in_state(AppState::Newspaper)));
     }
@@ -49,14 +60,7 @@ fn bind_newspaper(
     retail: Res<RetailAssetsResource>,
 ) {
     let root = *root;
-    fill_newspaper_chrome(
-        &mut commands,
-        &mut assets,
-        root,
-        &children,
-        &tags,
-        &session.game,
-    );
+    bind_newspaper_chrome(&mut commands, root, &children, &tags);
     fill_newspaper_stories(
         &mut commands,
         &mut assets,
@@ -71,23 +75,37 @@ fn bind_newspaper(
         .insert((NewspaperAction, ActivateOnPress));
 }
 
-fn fill_newspaper_chrome(
+fn bind_newspaper_chrome(
     commands: &mut Commands,
-    assets: &mut RetailUiAssets,
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
-    state: &GameState,
 ) {
-    let date = project_newspaper_date(assets, state.turn().economic_turn);
     commands
         .entity(find_descendant(root, fourcc!("date"), children, tags))
-        .insert(Text::new(date));
-
-    let spec = newspaper_spec_text(assets, state);
+        .insert((NewspaperDisplay::Date, Text::default()));
     commands
         .entity(find_descendant(root, fourcc!("spec"), children, tags))
-        .insert(Text::new(spec));
+        .insert((NewspaperDisplay::Spec, Text::default()));
+}
+
+fn project_newspaper_chrome(
+    session: Res<GameSession>,
+    added: Query<(), Added<NewspaperDisplay>>,
+    assets: RetailUiAssets,
+    mut displays: Query<(&NewspaperDisplay, &mut Text)>,
+) {
+    if super::projection_idle(&session, !added.is_empty()) {
+        return;
+    }
+    let date = project_newspaper_date(&assets, session.game.turn().economic_turn);
+    let spec = newspaper_spec_text(&assets, &session.game);
+    for (display, mut text) in &mut displays {
+        text.0 = match display {
+            NewspaperDisplay::Date => date.clone(),
+            NewspaperDisplay::Spec => spec.clone(),
+        };
+    }
 }
 
 fn project_newspaper_date(assets: &RetailUiAssets, economic_turn: i32) -> String {

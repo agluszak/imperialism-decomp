@@ -244,14 +244,7 @@ fn bind_trade_screen(
         .expect("Trade active nation is a major nation");
     session.game.refresh_merchant_capacity(nation);
     session.game.recall_player_trade_orders(nation);
-    bind_game_status_display(
-        &mut commands,
-        &mut assets,
-        *root,
-        &children,
-        &tags,
-        &session,
-    );
+    bind_game_status_display(&mut commands, &mut assets, *root, &children, &tags);
 
     let (row_font, row_layout, row_line_height, _) = assets
         .text_style(RetailTextStylePreset {

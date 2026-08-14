@@ -168,14 +168,7 @@ fn bind_strategic_map(
         &session.game,
     );
     bind_civilian_toolbar(&mut commands, &mut assets, *root, &children, &tags);
-    bind_game_status_display(
-        &mut commands,
-        &mut assets,
-        *root,
-        &children,
-        &tags,
-        &session,
-    );
+    bind_game_status_display(&mut commands, &mut assets, *root, &children, &tags);
 }
 
 fn bind_strategic_map_management_pictures(
@@ -212,9 +205,7 @@ pub(crate) fn bind_game_status_display(
     root: Entity,
     children: &Query<&Children>,
     tags: &Query<&RetailTag>,
-    session: &GameSession,
 ) {
-    let state = &session.game;
     let (season_font, season_layout, season_line_height, _) = assets
         .text_style(imperialism_formats::RetailTextStylePreset {
             font_family: 1,
@@ -242,16 +233,12 @@ pub(crate) fn bind_game_status_display(
         tags,
         fourcc!("seas"),
         GameStatusDisplay::Date,
-        format_retail_date(assets, state.turn().economic_turn),
         season_font,
         season_layout,
         season_line_height,
         text_color,
         shadow_color,
     );
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
-        .expect("Game screen requires an active major nation");
-    let treasury = format_currency(state.nations().major(nation).common.treasury);
     bind_status_text(
         commands,
         root,
@@ -259,7 +246,6 @@ pub(crate) fn bind_game_status_display(
         tags,
         fourcc!("trea"),
         GameStatusDisplay::Treasury,
-        treasury,
         treasury_font,
         treasury_layout,
         treasury_line_height,
@@ -268,19 +254,13 @@ pub(crate) fn bind_game_status_display(
     );
 }
 
-fn format_retail_date(assets: &RetailUiAssets, economic_turn: i32) -> String {
-    let season = assets
-        .string(10_000, (economic_turn % 4) as i16)
-        .expect("retail season name must load");
-    format!("{season}, {}", 1815 + economic_turn / 4)
-}
-
 fn project_game_status_display(
     session: Res<GameSession>,
+    added: Query<(), Added<GameStatusDisplay>>,
     retail: Res<RetailAssetsResource>,
     mut displays: Query<(&GameStatusDisplay, &mut Text)>,
 ) {
-    if !session.is_changed() {
+    if super::projection_idle(&session, !added.is_empty()) {
         return;
     }
     let state = &session.game;
@@ -309,7 +289,6 @@ fn bind_status_text(
     tags: &Query<&RetailTag>,
     tag: FourCc,
     kind: GameStatusDisplay,
-    value: String,
     font: TextFont,
     layout: TextLayout,
     line_height: bevy::text::LineHeight,
@@ -320,7 +299,7 @@ fn bind_status_text(
         .entity(find_descendant(root, tag, children, tags))
         .insert((
             kind,
-            Text::new(value),
+            Text::default(),
             font,
             layout,
             line_height,

@@ -114,8 +114,8 @@ struct TransportAdjust {
     delta: i16,
 }
 
-#[derive(Component)]
-struct TransportHoverText(String);
+#[derive(Component, Clone, Copy)]
+struct TransportHover(TransportAllocation);
 
 #[derive(Clone, Copy)]
 enum TransportGaugeKind {
@@ -197,14 +197,7 @@ fn bind_transport_screen(
     let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Transport screen requires an active major nation");
     session.game.rebuild_nation_resource_yields(nation);
-    bind_game_status_display(
-        &mut commands,
-        &mut assets,
-        *root,
-        &children,
-        &tags,
-        &session,
-    );
+    bind_game_status_display(&mut commands, &mut assets, *root, &children, &tags);
     let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
@@ -274,12 +267,7 @@ fn bind_transport_screen(
         let row = find_descendant(*root, binding.tag, &children, &tags);
         commands
             .entity(row)
-            .insert(TransportHoverText(transport_hover_text(
-                &assets,
-                &session.game,
-                nation,
-                binding.allocation,
-            )));
+            .insert(TransportHover(binding.allocation));
     }
 }
 
@@ -753,7 +741,8 @@ fn sync_transport_cursor(
     session: Res<GameSession>,
     screens: Query<(), Added<TransportScreen>>,
     changed_rows: Query<(), (With<TransportDisplay>, Changed<Hovered>)>,
-    rows: Query<(&TransportHoverText, &Hovered)>,
+    rows: Query<(&TransportHover, &Hovered)>,
+    assets: RetailUiAssets,
     mut cursor: Query<&mut Text, With<TransportCursor>>,
 ) {
     if !session.is_changed() && screens.is_empty() && changed_rows.is_empty() {
@@ -762,9 +751,15 @@ fn sync_transport_cursor(
     let Ok(mut text) = cursor.single_mut() else {
         return;
     };
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
+        .expect("Transport screen requires an active major nation");
     text.0 = rows
         .iter()
-        .find_map(|(hover, hovered)| hovered.get().then_some(hover.0.clone()))
+        .find_map(|(hover, hovered)| {
+            hovered
+                .get()
+                .then(|| transport_hover_text(&assets, &session.game, nation, hover.0))
+        })
         .unwrap_or_default();
 }
 

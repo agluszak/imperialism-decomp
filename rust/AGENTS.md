@@ -102,6 +102,18 @@ children inherit lifetime from their parent. Use `Res<RetailAssetsResource>` for
 string and palette lookups; `RetailUiAssets` is for loading or mutating Bevy
 fonts and images.
 
+Binders attach semantic identity, static style, and interaction. Observers
+mutate game or screen state. Projectors are the only code that derive dynamic
+presentation from that state, including the first frame. Do not compute the
+same display value while binding and again while projecting. Group projected
+presentation by the Bevy component being written (`Text`, `ImageNode`,
+`Visibility`), not one marker type per widget and not one god-system per
+screen.
+
+Keep `EnumMap` for closed-enum tables and `NationTable`/`ProvinceTable` as
+persistent domain containers. Do not wrap local palettes or lookup arrays in
+table types merely to index by ID.
+
 ## Retail fidelity
 
 Prefer recovered C++ source and the existing process oracle when retail semantics are uncertain. Use
