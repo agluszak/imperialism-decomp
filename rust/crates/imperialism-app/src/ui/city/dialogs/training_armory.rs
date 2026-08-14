@@ -9,18 +9,6 @@ pub(in crate::ui::city) enum TrainingIndicator {
     TrainedAvailable,
 }
 
-#[derive(Component)]
-pub(in crate::ui::city) struct ArmorySelection {
-    pub(in crate::ui::city) category: MilitaryRecruitmentCategory,
-    normal_color: Color,
-    warning_color: Color,
-}
-
-#[derive(Component)]
-pub(in crate::ui::city) struct ArmoryRowChoice {
-    pub(in crate::ui::city) category: MilitaryRecruitmentCategory,
-}
-
 #[derive(Component, Clone, Copy)]
 pub(in crate::ui::city) enum ArmoryDetail {
     UnitName,
@@ -194,23 +182,20 @@ pub(in crate::ui::city) fn configure_armory_dialog(
         title_line_height,
         TextColor(normal_color),
     ));
-    for binding in ARMORY_ORDERS {
-        let CityOrderId::MilitaryRecruit(category) = binding.order else {
-            unreachable!("armory binding has a military recruitment order");
-        };
+    for row in ARMORY_ROWS {
         let quantity = bind_city_order_control(
             commands,
             root,
             children,
             tags,
-            binding,
+            row.binding(),
             fourcc!("minu"),
             fourcc!("plus"),
             fourcc!("numb"),
             1,
         );
-        let button = find_descendant(root, armory_button_tag(category), children, tags);
-        let unit = city.orders.military_recruitment[category].unit_kind;
+        let button = find_descendant(root, row.button_tag, children, tags);
+        let unit = city.orders.military_recruitment[row.category].unit_kind;
         let idle = assets
             .picture(armory_row_picture(unit))
             .expect("retail Armory row picture");
@@ -219,15 +204,10 @@ pub(in crate::ui::city) fn configure_armory_dialog(
             .expect("retail Armory selected row picture");
         let mut button = commands.entity(button);
         button.insert((
-            ArmoryRowChoice { category },
+            CityRowChoice(CityOrderId::MilitaryRecruit(row.category)),
             ImageNode::new(idle.clone()),
             RetailPictureSwap { idle, active },
         ));
-        if category == MilitaryRecruitmentCategory::LightInfantry {
-            button.insert(Checked);
-        } else {
-            button.remove::<Checked>();
-        }
         commands.entity(quantity).insert(InteractionDisabled);
     }
     for (tag, detail) in [
@@ -282,49 +262,11 @@ pub(in crate::ui::city) fn configure_armory_dialog(
     }
     let placard = find_descendant(root, fourcc!("plaq"), children, tags);
     commands.entity(placard).insert(ArmoryPlacard);
-    commands.entity(root).insert(ArmorySelection {
-        category: MilitaryRecruitmentCategory::LightInfantry,
+    commands.entity(root).insert(CityRowSelection {
+        order: CityOrderId::MilitaryRecruit(MilitaryRecruitmentCategory::LightInfantry),
         normal_color,
         warning_color,
     });
-}
-
-pub(in crate::ui::city) fn on_armory_row_selected(
-    change: On<ValueChange<bool>>,
-    rows: Query<&ArmoryRowChoice>,
-    mut views: Query<&mut ArmorySelection>,
-) {
-    if !change.value {
-        return;
-    }
-    let Ok(row) = rows.get(change.source) else {
-        return;
-    };
-    views
-        .single_mut()
-        .expect("Armory row has one open Armory dialog")
-        .category = row.category;
-}
-
-pub(in crate::ui::city) fn on_armory_order_selected(
-    activate: On<Activate>,
-    actions: Query<&CityOrderAdjust>,
-    mut views: Query<&mut ArmorySelection>,
-) {
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
-    let CityOrderId::MilitaryRecruit(category) = action.order else {
-        return;
-    };
-    views
-        .single_mut()
-        .expect("Armory order has one open Armory dialog")
-        .category = category;
-}
-
-fn city_projection_idle(session: &Res<GameSession>, added: bool) -> bool {
-    !session.is_changed() && !added
 }
 
 pub(in crate::ui::city) fn sync_training_dialog(
@@ -358,31 +300,9 @@ pub(in crate::ui::city) fn sync_training_dialog(
     }
 }
 
-pub(in crate::ui::city) fn sync_armory_selection(
-    mut commands: Commands,
-    session: Res<GameSession>,
-    selections: Query<Ref<ArmorySelection>>,
-    rows: Query<(Entity, &ArmoryRowChoice, Has<Checked>)>,
-) {
-    let Some(selection) = selections.iter().next() else {
-        return;
-    };
-    if !session.is_changed() && !selection.is_changed() && !selection.is_added() {
-        return;
-    }
-    for (entity, row, checked) in &rows {
-        let should_check = row.category == selection.category;
-        if should_check && !checked {
-            commands.entity(entity).insert(Checked);
-        } else if !should_check && checked {
-            commands.entity(entity).remove::<Checked>();
-        }
-    }
-}
-
 pub(in crate::ui::city) fn sync_armory_details(
     session: Res<GameSession>,
-    selections: Query<Ref<ArmorySelection>>,
+    selections: Query<Ref<CityRowSelection>>,
     mut assets: RetailUiAssets,
     mut texts: Query<(&ArmoryDetail, &mut Text, &mut TextColor)>,
     mut visibilities: Query<(&ArmoryDetail, &mut Visibility)>,
@@ -391,13 +311,16 @@ pub(in crate::ui::city) fn sync_armory_details(
     let Some(selection) = selections.iter().next() else {
         return;
     };
+    let CityOrderId::MilitaryRecruit(category) = selection.order else {
+        return;
+    };
     if !session.is_changed() && !selection.is_changed() && !selection.is_added() {
         return;
     }
     let nation = city_active_nation(&session);
     let major = session.game.nations().major(nation);
     let city = &major.city;
-    let order = &city.orders.military_recruitment[selection.category];
+    let order = &city.orders.military_recruitment[category];
     let spec = military_recruitment_spec(order.unit_kind)
         .expect("Armory row has a recruitable retail unit recipe");
     let production = city.population.production_labor();
@@ -463,11 +386,7 @@ pub(in crate::ui::city) fn sync_armory_details(
             ArmoryDetail::Treasury => major.common.treasury < i32::from(spec.cash_per_unit),
             _ => false,
         };
-        color.0 = if warning {
-            selection.warning_color
-        } else {
-            selection.normal_color
-        };
+        color.0 = city_stock_color(warning, &selection);
     }
     placards
         .single_mut()
