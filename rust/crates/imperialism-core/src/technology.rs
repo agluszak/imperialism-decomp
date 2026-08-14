@@ -178,6 +178,9 @@ pub struct TechnologyState {
     pub industry_enabled_by_slot: [bool; 14],
     pub military_unit_ability_active_by_nation: MajorNationTable<MilitaryUnitTable<bool>>,
     pub city_capabilities_by_nation: MajorNationTable<CityTechnologyCapabilities>,
+    /// Retail `TTechMgr::nationCapRows1e8`: selected ability for each tactical group.
+    #[serde(default = "default_capability_group_slots_by_nation")]
+    pub capability_group_slots: MajorNationTable<[MilitaryUnitKind; 10]>,
     /// Retail `TTechMgr::activeZoneIndex1d4`: the hull spawned by a navy-growth reward.
     pub navy_growth_ship_type: ShipType,
 }
@@ -212,9 +215,29 @@ impl Default for TechnologyState {
                 ])
             }),
             city_capabilities_by_nation: MajorNationTable::default(),
+            capability_group_slots: default_capability_group_slots_by_nation(),
             navy_growth_ship_type: ShipType::ShipOfTheLine,
         }
     }
+}
+
+const fn default_nation_capability_group_slots() -> [MilitaryUnitKind; 10] {
+    [
+        MilitaryUnitKind::Minutemen,
+        MilitaryUnitKind::Skirmishers,
+        MilitaryUnitKind::Regulars,
+        MilitaryUnitKind::Grenadiers,
+        MilitaryUnitKind::Hussars,
+        MilitaryUnitKind::Cuirassiers,
+        MilitaryUnitKind::LightArtillery,
+        MilitaryUnitKind::Artillery,
+        MilitaryUnitKind::Sappers,
+        MilitaryUnitKind::GeneralEra1,
+    ]
+}
+
+fn default_capability_group_slots_by_nation() -> MajorNationTable<[MilitaryUnitKind; 10]> {
+    MajorNationTable::from_fn(|_| default_nation_capability_group_slots())
 }
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
@@ -397,8 +420,7 @@ impl GameState {
 
     fn apply_ability_unlock(&mut self, tech_id: usize, nation: MajorNationId) {
         // FIXME: `HandleAbilityUnlock` also performs navy/score
-        // `UpdateSelectionAndRecalculateScores`, unit-order cost-profile changes,
-        // and `TMilitaryUnit::Upgrade()` for the corresponding technologies.
+        // `UpdateSelectionAndRecalculateScores` for the corresponding technologies.
         if self.technology.research_status_by_nation[nation][tech_id]
             == TechnologyResearchStatus::Researched
         {
@@ -446,18 +468,18 @@ impl GameState {
             0x12 => self.set_requirement_level(nation, 0x12, 3),
             0x14 => self.set_requirement_level(nation, 0x14, 2),
             0xb => {
-                self.activate_military_ability(nation, 0xc);
-                self.activate_military_ability(nation, 9);
-                self.activate_military_ability(nation, 0x19);
-                self.activate_military_ability(nation, 0x1c);
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0xc));
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(9));
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0x19));
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0x1c));
             }
             0x10 => {
                 self.set_requirement_level(nation, 0, 3);
                 self.set_requirement_level(nation, 1, 3);
             }
             0xd => {
-                self.activate_military_ability(nation, 0xe);
-                self.activate_military_ability(nation, 0xf);
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0xe));
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0xf));
                 self.add_era_arms(nation, era_offset, 10);
             }
             0x17 => {
@@ -466,17 +488,17 @@ impl GameState {
                 self.set_requirement_level(nation, 0x16, 3);
                 self.set_requirement_level(nation, 0x15, 3);
                 self.set_requirement_level(nation, 2, 3);
-                self.activate_military_ability(nation, 0x1a);
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0x1a));
             }
             0x13 => {
                 self.set_requirement_level(nation, 6, 1);
                 self.set_university_available(nation, 8, true);
             }
             0xe => {
-                self.activate_military_ability(nation, 8);
-                self.activate_military_ability(nation, 0xd);
-                self.activate_military_ability(nation, 0xa);
-                self.activate_military_ability(nation, 0xb);
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(8));
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0xd));
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0xa));
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0xb));
                 self.add_era_arms(nation, era_offset, 10);
             }
             0x1a => {
@@ -484,21 +506,21 @@ impl GameState {
                 self.set_requirement_level(nation, 0x14, 3);
             }
             0x16 => {
-                self.activate_military_ability(nation, 0x16);
-                self.activate_military_ability(nation, 0x17);
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0x16));
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0x17));
                 self.add_era_arms(nation, era_offset, 20);
             }
             0x1c => {
                 self.set_requirement_level(nation, 6, 3);
-                self.activate_military_ability(nation, 0x14);
-                self.activate_military_ability(nation, 0x15);
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0x14));
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0x15));
             }
             0x19 => {
-                self.activate_military_ability(nation, 0x10);
-                self.activate_military_ability(nation, 0x11);
-                self.activate_military_ability(nation, 0x12);
-                self.activate_military_ability(nation, 0x13);
-                self.activate_military_ability(nation, 0x1d);
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0x10));
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0x11));
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0x12));
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0x13));
+                self.activate_slot_and_update_ui(nation, MilitaryUnitKind::from_usize(0x1d));
                 self.add_era_arms(nation, era_offset, 20);
             }
             _ => {}
@@ -545,9 +567,99 @@ impl GameState {
             .available[kind] = available;
     }
 
-    fn activate_military_ability(&mut self, nation: MajorNationId, ability: usize) {
-        let kind = MilitaryUnitKind::from_usize(ability);
-        self.technology.military_unit_ability_active_by_nation[nation][kind] = true;
+    /// Retail `TTechMgr::ActivateSlotAndUpdateUI`.
+    pub fn activate_slot_and_update_ui(
+        &mut self,
+        nation: MajorNationId,
+        ability: MilitaryUnitKind,
+    ) {
+        let group = crate::military_phase::tactical_category(ability);
+        self.technology.military_unit_ability_active_by_nation[nation][ability] = true;
+        self.technology.capability_group_slots[nation][group as usize] = ability;
+        if (1..9).contains(&group) {
+            let category = MilitaryRecruitmentCategory::from_usize((group - 1) as usize);
+            let previous =
+                self.nations.city(nation).orders.military_recruitment[category].unit_kind;
+            self.technology.military_unit_ability_active_by_nation[nation][previous] = false;
+            self.nations.city_mut(nation).orders.military_recruitment[category].unit_kind = ability;
+        } else if self.nation_slot_eligible_for_event_processing(nation) {
+            self.upgrade_units_in_tactical_category(nation, group);
+        }
+    }
+
+    fn upgrade_units_in_tactical_category(&mut self, nation: MajorNationId, group: i16) {
+        let nation_id = nation.nation();
+        let indices: Vec<usize> = self
+            .military_units
+            .iter()
+            .enumerate()
+            .filter(|(_, unit)| {
+                unit.nation == nation_id
+                    && crate::military_phase::tactical_category(unit.unit_type) == group
+            })
+            .map(|(index, _)| index)
+            .collect();
+        for index in indices {
+            self.try_upgrade_military_unit(index);
+        }
+    }
+
+    fn try_upgrade_military_unit(&mut self, index: usize) {
+        let Some(candidate) = self.military_unit_upgrade_type(index) else {
+            return;
+        };
+        let Some(owner) = MajorNationId::from_nation(self.military_units[index].owner_nation)
+        else {
+            return;
+        };
+        let (arms, fuel, cash) = military_unit_upgrade_costs(candidate);
+        let stockpile = &self.nations.city(owner).stockpile;
+        if arms > stockpile[ResourceKind::Arms] || fuel > stockpile[ResourceKind::Fuel] {
+            return;
+        }
+        let major = &self.nations.majors[owner];
+        if major.economy.diplomacy_eligible
+            && i32::from(cash)
+                > major
+                    .economy
+                    .available_diplomacy_budget(major.common.treasury)
+        {
+            return;
+        }
+        self.nations
+            .city_mut(owner)
+            .stockpile
+            .wrapping_add_and_verify(ResourceKind::Arms, -arms);
+        self.nations
+            .city_mut(owner)
+            .stockpile
+            .wrapping_add_and_verify(ResourceKind::Fuel, -fuel);
+        self.nations.majors[owner].common.treasury -= i32::from(cash);
+        self.military_units[index].unit_type = candidate;
+    }
+
+    fn military_unit_upgrade_type(&self, index: usize) -> Option<MilitaryUnitKind> {
+        let unit = &self.military_units[index];
+        let unit_type = unit.unit_type;
+        let candidate = if (unit_type as u8) < MilitaryUnitKind::Conscripts as u8 {
+            MilitaryUnitKind::from_index(unit_type as u8 + 8)?
+        } else if matches!(
+            unit_type,
+            MilitaryUnitKind::Sappers
+                | MilitaryUnitKind::CombatEngineers
+                | MilitaryUnitKind::GeneralEra1
+                | MilitaryUnitKind::GeneralEra2
+        ) {
+            MilitaryUnitKind::from_index(unit_type as u8 + 1)?
+        } else {
+            return None;
+        };
+        let owner = MajorNationId::from_nation(unit.owner_nation)?;
+        let active = &self.technology.military_unit_ability_active_by_nation[owner];
+        if !active[candidate] && active[unit_type] {
+            return None;
+        }
+        Some(candidate)
     }
 
     fn add_era_arms(&mut self, nation: MajorNationId, era_offset: i16, scale: i16) {
@@ -559,6 +671,18 @@ impl GameState {
             .stockpile
             .wrapping_add_and_verify(ResourceKind::Arms, era_offset * scale);
     }
+}
+
+fn military_unit_upgrade_costs(kind: MilitaryUnitKind) -> (i16, i16, i16) {
+    let Some(spec) = military_recruitment_spec(kind) else {
+        return (0, 0, 0);
+    };
+    let fuel = spec
+        .secondary
+        .filter(|cost| cost.resource == ResourceKind::Fuel)
+        .map(ResourceCost::per_unit)
+        .unwrap_or(0);
+    (spec.primary.per_unit(), fuel, spec.cash_per_unit)
 }
 
 fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id: usize) {
@@ -693,5 +817,52 @@ mod tests {
         state.technology.scheduled_unlock_turn_by_technology[0xf] = 1;
         state.check_technology_advances();
         assert_eq!(state.technology.navy_growth_ship_type, ShipType::Ironclad);
+    }
+
+    #[test]
+    fn activate_slot_rewrites_the_matching_armory_row() {
+        let mut state = crate::test_support::game_state();
+        let nation = MajorNationId::new(0);
+        state.activate_slot_and_update_ui(nation, MilitaryUnitKind::Sharpshooters);
+
+        assert!(
+            state.technology.military_unit_ability_active_by_nation[nation]
+                [MilitaryUnitKind::Sharpshooters]
+        );
+        assert!(
+            !state.technology.military_unit_ability_active_by_nation[nation]
+                [MilitaryUnitKind::Skirmishers]
+        );
+        assert_eq!(
+            state.technology.capability_group_slots[nation][1],
+            MilitaryUnitKind::Sharpshooters
+        );
+        assert_eq!(
+            state.nations.city(nation).orders.military_recruitment
+                [MilitaryRecruitmentCategory::LightInfantry]
+                .unit_kind,
+            MilitaryUnitKind::Sharpshooters
+        );
+    }
+
+    #[test]
+    fn activate_slot_selects_the_later_general_without_rewriting_armory_rows() {
+        let mut state = crate::test_support::game_state();
+        let nation = MajorNationId::new(0);
+        let previous = state.nations.city(nation).orders.military_recruitment
+            [MilitaryRecruitmentCategory::LightInfantry]
+            .unit_kind;
+        state.activate_slot_and_update_ui(nation, MilitaryUnitKind::GeneralEra2);
+
+        assert_eq!(
+            state.technology.capability_group_slots[nation][9],
+            MilitaryUnitKind::GeneralEra2
+        );
+        assert_eq!(
+            state.nations.city(nation).orders.military_recruitment
+                [MilitaryRecruitmentCategory::LightInfantry]
+                .unit_kind,
+            previous
+        );
     }
 }

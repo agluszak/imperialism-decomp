@@ -624,7 +624,7 @@ mod tests {
         destination.economy.ai_province_targets = Some(ProvinceTable::default());
         destination.economy.pending_actions
             [crate::PendingActionKind::ConqueredCapitalArmoryUpgrade] =
-            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
+            crate::PendingActionState::new(crate::PendingActionStatus::completed(0), None);
         state.civilian_units.push(
             crate::CivilianUnitState::new(
                 crate::CivilianUnitId::new(1),
@@ -661,7 +661,7 @@ mod tests {
         let reward = state.nations.majors[MajorNationId::new(1)]
             .economy
             .pending_actions[crate::PendingActionKind::ConquestMonumentArmory];
-        assert_eq!(reward.status(), crate::PendingActionStatus::Queued);
+        assert_eq!(reward.status(), crate::PendingActionStatus::QUEUED);
         assert_eq!(reward.payload(), None);
         assert_eq!(
             state.nations.majors[MajorNationId::new(1)]

@@ -243,7 +243,7 @@ impl GameState {
     fn queue_navy_growth_pending(&mut self, nation: MajorNationId) {
         let pending =
             self.nations.major(nation).economy.pending_actions[PendingActionKind::NavyGrowthReward];
-        if pending.status() == crate::PendingActionStatus::Queued {
+        if pending.is_queued() {
             return;
         }
         let nation_id = nation.nation();
@@ -256,11 +256,7 @@ impl GameState {
         if arms < 25 {
             return;
         }
-        let desired = match pending.status() {
-            crate::PendingActionStatus::None | crate::PendingActionStatus::Level3 => 0,
-            crate::PendingActionStatus::Level4 => 1,
-            crate::PendingActionStatus::Queued => return,
-        };
+        let desired = pending.completed_level().unwrap_or(0);
         let payload = if arms < 50 {
             (desired == 0).then_some(1)
         } else if arms < 100 {

@@ -98,12 +98,12 @@ pub(crate) fn produce_training(
             if new_level >= 10 {
                 let payload = if owner.pending_actions[PendingActionKind::UniversityExpansion]
                     .status()
-                    < crate::PendingActionStatus::Queued
+                    < crate::PendingActionStatus::QUEUED
                 {
                     Some(2)
                 } else if new_level >= 30
                     && owner.pending_actions[PendingActionKind::UniversityExpansion].status()
-                        <= crate::PendingActionStatus::Level3
+                        <= crate::PendingActionStatus::completed(0)
                 {
                     Some(3)
                 } else {

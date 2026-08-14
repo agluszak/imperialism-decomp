@@ -343,7 +343,7 @@ fn retail_region_capacity_uses_the_annexation_divisor() {
     let mut owner = crate::test_support::great_power_state();
     assert_eq!(retail_region_capacity(&owner, 12), 3);
     owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-        crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
+        crate::PendingActionState::new(crate::PendingActionStatus::completed(0), None);
     assert_eq!(retail_region_capacity(&owner, 12), 4);
     assert_eq!(retail_region_capacity(&owner, 1), 1);
 }
@@ -577,7 +577,7 @@ fn high_training_queues_university_expansion_at_the_retail_thresholds() {
     assert_eq!(state.population.baseline_labor.high, 10);
     assert_eq!(
         owner.pending_actions[PendingActionKind::UniversityExpansion].status(),
-        crate::PendingActionStatus::Queued
+        crate::PendingActionStatus::QUEUED
     );
     assert_eq!(
         owner.pending_actions[PendingActionKind::UniversityExpansion].payload(),
@@ -586,7 +586,7 @@ fn high_training_queues_university_expansion_at_the_retail_thresholds() {
     assert_eq!(production.quantity, 0);
 
     owner.pending_actions[PendingActionKind::UniversityExpansion] =
-        crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
+        crate::PendingActionState::new(crate::PendingActionStatus::completed(0), None);
     state.population.baseline_labor.high = 29;
     production.quantity = 1;
     produce_training(

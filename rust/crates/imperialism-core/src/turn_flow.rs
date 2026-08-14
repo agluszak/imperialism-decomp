@@ -142,7 +142,7 @@ pub enum TurnContinuation {
     },
     DiplomacyWarJoin(DiplomacyWarJoinPrompt),
     Trade(crate::TradeSession),
-    LandBattle(crate::PendingLandBattle),
+    LandBattle(crate::CombatMovesContinuation),
     TechnologyReport(TechnologyId),
 }
 
@@ -257,7 +257,9 @@ impl GameState {
             match self.turn.phase() {
                 PhaseCode::STRATEGIC_MAP => return TurnStop::PlayerOrders,
                 PhaseCode::CAPITAL_SELECTION => {
-                    self.grant_opening_civilians();
+                    for index in 0..MajorNationId::COUNT {
+                        self.finalize_home_city_setup(MajorNationId::new(index));
+                    }
                     self.turn.phase = PhaseCode::SEASON_ADVANCE;
                 }
                 PhaseCode::DIPLOMACY => {
@@ -284,8 +286,8 @@ impl GameState {
                 }
                 PhaseCode::COMBAT_MOVES => {
                     self.turn.phase = PhaseCode::MILITARY_CLEANUP;
-                    if let Some(battle) = self.do_combat_moves() {
-                        self.continuation = TurnContinuation::LandBattle(battle);
+                    if let Some(continuation) = self.start_combat_moves() {
+                        self.continuation = TurnContinuation::LandBattle(continuation);
                         return TurnStop::LandBattle;
                     }
                 }
@@ -342,6 +344,7 @@ impl GameState {
                 PhaseCode::NEWSPAPER => {
                     self.turn.phase = PhaseCode::RETURN_TO_MAP;
                     self.start_newspaper_phase();
+                    self.mark_all_pending_status_flags_handled();
                     return TurnStop::Newspaper;
                 }
                 PhaseCode::RETURN_TO_MAP => {

@@ -740,6 +740,14 @@ fn technology_state(technology: &LegacyTechnologyState) -> TechnologyState {
                 .map(|row| MilitaryUnitTable::from_array(row.map(|value| value != 0))),
         ),
         city_capabilities_by_nation: MajorNationTable::from_array(city_capabilities_by_nation),
+        capability_group_slots: MajorNationTable::from_array(std::array::from_fn(|nation| {
+            std::array::from_fn(|group| {
+                MilitaryUnitKind::from_index(
+                    technology.nation_capability_slots[nation][group] as u8,
+                )
+                .expect("retail capability group slot is a military unit kind")
+            })
+        })),
         navy_growth_ship_type: ShipType::from_index(technology.active_zone_index as u8)
             .expect("retail activeZoneIndex1d4 is a ship type"),
     }
@@ -1401,14 +1409,10 @@ fn interior_civilian_state(minister: &LegacyInteriorMinisterState) -> InteriorCi
 }
 
 fn pending_action_from_retail(status: i8, payload: i16) -> PendingActionState {
-    let status = match status {
-        0 => PendingActionStatus::None,
-        0x32 => PendingActionStatus::Queued,
-        0x33 => PendingActionStatus::Level3,
-        0x34 => PendingActionStatus::Level4,
-        _ => panic!("unrecovered pending-action status {status}"),
-    };
-    PendingActionState::new(status, (payload != -1).then_some(payload))
+    PendingActionState::new(
+        PendingActionStatus::from_retail(status),
+        (payload != -1).then_some(payload),
+    )
 }
 
 fn diplomacy_grants_from_retail_entries(
@@ -1531,7 +1535,7 @@ fn province_state(province: &LegacyProvince) -> ProvinceState {
 }
 
 fn country_common(country: &LegacyCountryBase) -> NationCommonState {
-    NationCommonState::from_parts(
+    let mut common = NationCommonState::from_parts(
         normalize_nation_display_name(&country.alternate_identity),
         country_status_from_retail(country.encoded_country_status),
         country
@@ -1547,5 +1551,8 @@ fn country_common(country: &LegacyCountryBase) -> NationCommonState {
                 .need_level_by_nation
                 .map(|score| TradePolicyScore::new(i32::from(score))),
         ),
-    )
+    );
+    common.unit_name_ordinal_by_type = country.unit_name_ordinal_by_type;
+    common.unit_name_counter = country.unit_name_counter;
+    common
 }

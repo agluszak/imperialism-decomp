@@ -214,10 +214,10 @@ impl MajorNation {
         if self.common.owned_regions.len() >= 9
             && self.economy.pending_actions[PendingActionKind::ConqueredCapitalArmoryUpgrade]
                 .status()
-                .has_reached(PendingActionStatus::Level3)
+                .has_reached(PendingActionStatus::completed(0))
             && !self.economy.pending_actions[PendingActionKind::ConquestMonumentArmory]
                 .status()
-                .has_reached(PendingActionStatus::Level3)
+                .has_reached(PendingActionStatus::completed(0))
         {
             self.economy.pending_actions[PendingActionKind::ConquestMonumentArmory].queue(-1);
         }
@@ -327,6 +327,10 @@ pub struct NationCommonState {
     pub treasury: i32,
     pub home_tile: Option<TileId>,
     pub trade_policy_by_nation: NationTable<TradePolicyScore>,
+    /// Retail `TCountry::unitNameOrdinalByType`.
+    pub unit_name_ordinal_by_type: [i16; MilitaryUnitKind::LENGTH],
+    /// Retail `TCountry::unitNameCounter84`.
+    pub unit_name_counter: i16,
 }
 
 impl NationCommonState {
@@ -345,6 +349,8 @@ impl NationCommonState {
             treasury,
             home_tile,
             trade_policy_by_nation,
+            unit_name_ordinal_by_type: [1; MilitaryUnitKind::LENGTH],
+            unit_name_counter: 1,
         }
     }
 

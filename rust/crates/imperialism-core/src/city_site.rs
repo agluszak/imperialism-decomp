@@ -444,7 +444,7 @@ mod tests {
             .next()
             .expect("interior tiles still have neighbors on a wrapping map");
         state.map[sea].terrain = TerrainKind::Water;
-        state.map[sea].owner_nation = Some(TileOwnerTag::new(6));
+        state.map[sea].owner_nation = Some(TileOwnerTag::new(0x17));
         state.map[sea].action = None;
         for direction in HexDirection::ALL {
             let around = home_site_scan_neighbor(sea, direction);
@@ -469,8 +469,18 @@ mod tests {
             state.nations.majors[MajorNationId::new(6)].towns[0].name,
             "FrogCity"
         );
-        assert_eq!(state.map[tile].flags, TileFlags::PLACED_CITY_STATE);
         assert!(state.map[tile].flags.is_city());
+        if let Some(province) = state.map[tile].province
+            && let Some(capital) = state.map.provinces[province].city_tile()
+            && state.map[capital].flags.has_base_transport()
+        {
+            assert!(
+                state.map[capital]
+                    .flags
+                    .contains(TileFlags::PROVINCE_CAPITAL_FORTIFICATION),
+                "InitialMilitia fortifies each owned province capital with base transport"
+            );
+        }
         assert_eq!(
             state.nations.majors[MajorNationId::new(6)].common.home_tile,
             Some(tile)
@@ -487,6 +497,22 @@ mod tests {
             Some(tile)
         );
         assert_opening_civilians(&state, MajorNationId::new(6), 2);
+        assert!(
+            state
+                .military_units()
+                .iter()
+                .any(|unit| unit.nation() == MajorNationId::new(6).nation()),
+            "SetHomeCityTileAndDisplayName runs InitialMilitia for the confirmed capital"
+        );
+        for nation in (0..MajorNationId::COUNT)
+            .map(MajorNationId::new)
+            .filter(|nation| state.nations.major(*nation).common.home_tile.is_some())
+        {
+            assert_eq!(
+                state.diplomacy.standings[nation.nation()][nation.nation()],
+                0x100
+            );
+        }
         assert_map_centers_on_first_idle_civilian(&mut state);
     }
 
@@ -528,6 +554,13 @@ mod tests {
         assert_eq!(
             state.nations.majors[MajorNationId::new(6)].common.home_tile,
             Some(home)
+        );
+        assert!(
+            state
+                .military_units()
+                .iter()
+                .any(|unit| unit.nation() == MajorNationId::new(6).nation()),
+            "SetHomeCityTileAndDisplayName runs InitialMilitia for the Easy-path capital"
         );
         state.rebuild_nation_resource_yields(MajorNationId::new(6));
         assert_opening_civilians(&state, MajorNationId::new(6), 2);

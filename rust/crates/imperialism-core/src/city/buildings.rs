@@ -195,25 +195,25 @@ impl CityState {
             CityFacilitySlot::Shipyard => i16::from(active_nation_has_technology_15) + 1,
             CityFacilitySlot::Armory => {
                 if status[PendingActionKind::ConquestMonumentArmory].status()
-                    == crate::PendingActionStatus::Level3
+                    == crate::PendingActionStatus::completed(0)
                 {
                     3
                 } else {
                     i16::from(
                         status[PendingActionKind::ConqueredCapitalArmoryUpgrade].status()
-                            == crate::PendingActionStatus::Level3,
+                            == crate::PendingActionStatus::completed(0),
                     ) + 1
                 }
             }
             CityFacilitySlot::University => {
                 if status[PendingActionKind::UniversityExpansion].status()
-                    < crate::PendingActionStatus::Level3
+                    < crate::PendingActionStatus::completed(0)
                 {
                     1
                 } else {
                     i16::from(
                         status[PendingActionKind::UniversityExpansion].status()
-                            != crate::PendingActionStatus::Level3,
+                            != crate::PendingActionStatus::completed(0),
                     ) + 2
                 }
             }
@@ -221,14 +221,14 @@ impl CityState {
                 i16::from(
                     status[PendingActionKind::RailyardExpansion]
                         .status()
-                        .has_reached(crate::PendingActionStatus::Level3),
+                        .has_reached(crate::PendingActionStatus::completed(0)),
                 ) + 1
             }
             CityFacilitySlot::RegionalPopulation => {
                 i16::from(
                     status[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
                         .status()
-                        .has_reached(crate::PendingActionStatus::Level3),
+                        .has_reached(crate::PendingActionStatus::completed(0)),
                 ) + 1
             }
             _ => 0,
@@ -261,7 +261,7 @@ impl GameState {
 fn region_capacity(owner: &GreatPowerState, owned_region_count: usize) -> i16 {
     let divisor = if owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
         .status()
-        .has_reached(crate::PendingActionStatus::Level3)
+        .has_reached(crate::PendingActionStatus::completed(0))
     {
         3
     } else {
@@ -330,10 +330,10 @@ mod tests {
         let state = city();
         let mut owner = nation();
         owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-            crate::PendingActionState::new(crate::PendingActionStatus::Queued, None);
+            crate::PendingActionState::new(crate::PendingActionStatus::QUEUED, None);
         assert_eq!(state.max_building_capacity(slot(15), &owner, 12), 3);
         owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
+            crate::PendingActionState::new(crate::PendingActionStatus::completed(0), None);
         assert_eq!(state.max_building_capacity(slot(15), &owner, 12), 4);
         assert_eq!(state.max_building_capacity(slot(15), &owner, 2), 1);
     }
@@ -365,13 +365,13 @@ mod tests {
         assert_eq!(state.next_building_type(slot(7), &owner, 0, true), 2);
 
         owner.pending_actions[PendingActionKind::ConquestMonumentArmory] =
-            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
+            crate::PendingActionState::new(crate::PendingActionStatus::completed(0), None);
         owner.pending_actions[PendingActionKind::UniversityExpansion] =
-            crate::PendingActionState::new(crate::PendingActionStatus::Level4, None);
+            crate::PendingActionState::new(crate::PendingActionStatus::completed(1), None);
         owner.pending_actions[PendingActionKind::RailyardExpansion] =
-            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
+            crate::PendingActionState::new(crate::PendingActionStatus::completed(0), None);
         owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
+            crate::PendingActionState::new(crate::PendingActionStatus::completed(0), None);
         assert_eq!(state.next_building_type(slot(8), &owner, 0, false), 3);
         assert_eq!(state.next_building_type(slot(10), &owner, 0, false), 3);
         assert_eq!(state.next_building_type(slot(14), &owner, 0, false), 2);
