@@ -129,7 +129,7 @@ fn army_movement_give_orders() {
     compare_native("army_movement_give_orders", |state, _: EmptyCase| {
         for index in 0..MajorNationId::COUNT {
             let nation = MajorNationId::new(index);
-            if state.nations().major(nation).kind != MajorNationKind::AutoGreatPower {
+            if !state.nations().major(nation).is_auto() {
                 continue;
             }
             if matches!(

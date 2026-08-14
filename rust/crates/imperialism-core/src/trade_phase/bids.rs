@@ -321,9 +321,9 @@ impl GameState {
         resource: ResourceKind,
     ) {
         if let Some(processed) = ProcessedTradeCommodity::from_resource(resource)
-            && let Some(ai_trade) = self.nations.majors[nation].economy.ai_trade.as_mut()
+            && let Some(auto) = self.nations.majors[nation].auto.as_mut()
         {
-            ai_trade.temporary_processed_stock[processed] += 4;
+            auto.trade.temporary_processed_stock[processed] += 4;
         }
         self.nations.city_mut(nation).adjust_stock(resource, 4);
         let potential = self.nations.majors[nation].economy.item_potentials[resource];

@@ -608,7 +608,7 @@ mod tests {
 
     fn state() -> GameState {
         let majors = crate::MajorNationTable::from_fn(|nation| MajorNation {
-            kind: MajorNationKind::GreatPower,
+            auto: None,
             common: NationCommonState::from_parts(
                 String::new(),
                 crate::CountryStatus::Independent,

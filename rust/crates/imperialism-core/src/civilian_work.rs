@@ -273,7 +273,7 @@ impl GameState {
             if !self.civilian_nation_is_eligible(nation) {
                 continue;
             }
-            if self.nations.major(nation).economy.controller.is_human() {
+            if self.nations.major(nation).auto.is_none() {
                 self.continue_civilian_orders(nation);
                 self.sort_tracked_orders_by_type_priority(nation);
             } else {

@@ -112,9 +112,7 @@ pub use military::{
 pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,
 };
-pub use nations::{
-    MajorNation, MajorNationController, MajorNationKind, MinorNation, NationCommonState, Nations,
-};
+pub use nations::{AutoGreatPowerState, MajorNation, MinorNation, NationCommonState, Nations};
 pub use news::{
     DiplomacyNotice, DiplomacyProposal, InterNationNewsKind, LandSale, NEWS_TEMPLATE_COUNT,
     NationPendingWork, NewsArgument, NewsPage, NewsState, NewsStory, PendingNewspaperEvent,
@@ -155,11 +153,11 @@ pub use rng::{RetailCrtRng, RetailLcg, RngState, hash_retail_scenario_tag};
 pub use tables::{
     MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNationTable, MinorNationTable, NATION_COUNT,
     NationCapacities, NationTable, PENDING_ACTION_COUNT, PROVINCE_COUNT, PendingActionKind,
-    PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable, TechnologyTable,
+    PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable,
 };
 pub use technology::{
-    CityTechnologyCapabilities, CivilianTerrainAccess, FortLevelCap, TECHNOLOGY_COUNT,
-    TechnologyId, TechnologyResearchStatus, TechnologyState, UniversityTechnologyState,
+    CityTechnologyCapabilities, CivilianTerrainAccess, FortLevelCap, Technology,
+    TechnologyResearchStatus, TechnologyState, TechnologyTable, UniversityTechnologyState,
 };
 pub use territory::{CountryStatus, ProvinceState};
 pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};

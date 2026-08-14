@@ -237,10 +237,7 @@ fn normal_random_start_reaches_capital_selection() {
     assert_eq!(state.turn.phase, crate::PhaseCode::CAPITAL_SELECTION);
     assert_eq!(state.turn.difficulty, Difficulty::Normal);
     assert!(state.map.map_data_ready);
-    assert!(matches!(
-        state.nations.majors[human].economy.controller,
-        crate::MajorNationController::Human
-    ));
+    assert!(state.nations.majors[human].auto.is_none());
     assert!(
         state.nations.majors[human].common.home_tile.is_none(),
         "human capital awaits selection"
@@ -251,10 +248,7 @@ fn normal_random_start_reaches_capital_selection() {
             state.nations.majors[nation].common.home_tile.is_some(),
             "AI majors place a capital before capital selection"
         );
-        assert!(!matches!(
-            state.nations.majors[nation].economy.controller,
-            crate::MajorNationController::Human
-        ));
+        assert!(state.nations.majors[nation].is_auto());
     }
 
     assert!(state.nations.minor_count() > 0);
@@ -289,10 +283,9 @@ fn normal_random_start_marks_only_queued_ai_map_targets() {
     let live_zone_count = state.ocean.zones.len();
 
     for nation in MajorNationId::all() {
-        let economy = &state.nations.majors[nation].economy;
+        let major = &state.nations.majors[nation];
         if nation == human {
-            assert_eq!(economy.ai_zone_targets, None);
-            assert_eq!(economy.ai_province_targets, None);
+            assert!(major.auto.is_none());
             continue;
         }
 
@@ -316,17 +309,14 @@ fn normal_random_start_marks_only_queued_ai_map_targets() {
             }
         }
 
-        let actual = economy
-            .ai_zone_targets
+        let auto = major
+            .auto
             .as_ref()
-            .expect("computer majors own AI zone-target state");
-        assert_eq!(actual, &expected);
-        assert_eq!(
-            economy.ai_province_targets.as_ref(),
-            Some(&expected_provinces)
-        );
+            .expect("computer majors own AutoGreatPower state");
+        assert_eq!(&auto.zone_targets, &expected);
+        assert_eq!(auto.province_targets, expected_provinces);
         assert!(
-            !actual.contains(&AiTargetState::Candidate),
+            !auto.zone_targets.contains(&AiTargetState::Candidate),
             "start-of-game AI targets are queued missions, never candidates"
         );
     }
