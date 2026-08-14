@@ -20,7 +20,7 @@ use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
+use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton, ValueChange};
 use enum_map::EnumMap;
 use imperialism_core::*;
 use imperialism_formats::*;
@@ -359,6 +359,7 @@ impl Plugin for DiplomacyPlugin {
         )
         .add_systems(OnExit(AppState::Diplomacy), reset_diplomacy_cursor)
         .add_observer(on_diplomacy_activate.run_if(in_state(AppState::Diplomacy)))
+        .add_observer(on_diplomacy_radio_selected.run_if(in_state(AppState::Diplomacy)))
         .add_observer(on_diplomacy_offer_activate.run_if(in_state(AppState::Diplomacy)))
         .add_observer(on_diplomacy_map_click.run_if(in_state(AppState::Diplomacy)))
         .add_observer(open_diplomacy_rejection_notice.run_if(in_state(AppState::Diplomacy)))
@@ -1174,6 +1175,29 @@ fn on_diplomacy_activate(
                 .expect("Diplomacy screen requires an active major nation")
                 .nation();
         }
+        other => apply_diplomacy_radio_action(other, &mut screen),
+    }
+}
+
+fn on_diplomacy_radio_selected(
+    change: On<ValueChange<bool>>,
+    actions: Query<&DiplomacyAction>,
+    mut screens: Query<&mut DiplomacyScreen>,
+) {
+    if !change.value {
+        return;
+    }
+    let Ok(action) = actions.get(change.source) else {
+        return;
+    };
+    let mut screen = screens
+        .single_mut()
+        .expect("Diplomacy control has one open Diplomacy screen");
+    apply_diplomacy_radio_action(*action, &mut screen);
+}
+
+fn apply_diplomacy_radio_action(action: DiplomacyAction, screen: &mut DiplomacyScreen) {
+    match action {
         DiplomacyAction::Grant { row, recurring } => {
             if matches!(screen.mode, DiplomacyMode::Grants { .. }) {
                 screen.mode = DiplomacyMode::Grants { row, recurring };
@@ -1205,7 +1229,8 @@ fn on_diplomacy_activate(
                 };
             }
         }
-        DiplomacyAction::AcceptOffer | DiplomacyAction::RejectOffer => {}
+        DiplomacyAction::Topic(_) | DiplomacyAction::AcceptOffer | DiplomacyAction::RejectOffer => {
+        }
     }
 }
 
@@ -2349,11 +2374,16 @@ fn diplomacy_relationship_fill(state: &GameState, framed: NationId, nation: Nati
     if nation == framed {
         return RELATIONSHIP_SELF_PALETTE;
     }
-    match state.diplomacy().relationships[framed][nation] {
-        DiplomaticRelationship::Alliance => 0x22,
-        DiplomaticRelationship::NonAggressionPact => 0x1b,
-        DiplomaticRelationship::Peace => 0x21,
-        DiplomaticRelationship::JoinedEmpire => 0x29,
+    relationship_type_palette(state.diplomacy().relationships[framed][nation])
+}
+
+fn relationship_type_palette(relationship: DiplomaticRelationship) -> u8 {
+    // Mode-4 fills use `g_aDiplomacyRelationPaletteColorCodes` through `TViewMgr::GetColor`.
+    match relationship {
+        DiplomaticRelationship::Alliance => 0x1b,
+        DiplomaticRelationship::NonAggressionPact => 0x21,
+        DiplomaticRelationship::Peace => 0x29,
+        DiplomaticRelationship::JoinedEmpire => 0x22,
         DiplomaticRelationship::War => 0x17,
     }
 }
@@ -2484,6 +2514,49 @@ fn set_checked(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn relationship_type_fill_uses_get_color_of_retail_relation_codes() {
+        assert_eq!(
+            relationship_type_palette(DiplomaticRelationship::Alliance),
+            0x1b
+        );
+        assert_eq!(
+            relationship_type_palette(DiplomaticRelationship::NonAggressionPact),
+            0x21
+        );
+        assert_eq!(
+            relationship_type_palette(DiplomaticRelationship::Peace),
+            0x29
+        );
+        assert_eq!(
+            relationship_type_palette(DiplomaticRelationship::JoinedEmpire),
+            0x22
+        );
+        assert_eq!(relationship_type_palette(DiplomaticRelationship::War), 0x17);
+    }
+
+    #[test]
+    fn treaty_radio_value_change_selects_that_pact() {
+        let mut app = App::new();
+        app.add_observer(on_diplomacy_radio_selected);
+        app.world_mut().spawn(DiplomacyScreen {
+            framed_nation: NationId::new(0),
+            mode: DiplomacyMode::Treaties { row: 5 },
+        });
+        let radio = app.world_mut().spawn(DiplomacyAction::Treaty(2)).id();
+        app.world_mut().commands().trigger(ValueChange {
+            source: radio,
+            value: true,
+            is_final: true,
+        });
+        app.world_mut().flush();
+
+        let mut screens = app.world_mut().query::<&DiplomacyScreen>();
+        let screen = screens.single(app.world()).unwrap();
+        assert_eq!(screen.mode, DiplomacyMode::Treaties { row: 2 });
+        assert_eq!(screen.map_action(), DiplomacyMapAction::NonAggressionPact);
+    }
 
     #[test]
     fn idle_cursor_when_the_pointer_is_not_over_a_nation() {
