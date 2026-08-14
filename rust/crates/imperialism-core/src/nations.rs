@@ -219,7 +219,7 @@ impl MajorNation {
                 .status()
                 .has_reached(PendingActionStatus::HANDLED)
         {
-            self.economy.pending_actions[PendingActionKind::ConquestMonumentArmory].queue(-1);
+            self.economy.pending_actions[PendingActionKind::ConquestMonumentArmory].queue();
         }
     }
 }

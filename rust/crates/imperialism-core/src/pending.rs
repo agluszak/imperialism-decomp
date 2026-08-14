@@ -20,9 +20,13 @@ impl PendingActionState {
     pub const fn payload(self) -> Option<i16> {
         self.payload
     }
-    pub(crate) fn queue(&mut self, payload: i16) {
+    pub(crate) fn queue(&mut self) {
         self.status = PendingActionStatus::QUEUED;
-        self.payload = (payload != -1).then_some(payload);
+        self.payload = None;
+    }
+    pub(crate) fn queue_with_payload(&mut self, payload: i16) {
+        self.status = PendingActionStatus::QUEUED;
+        self.payload = Some(payload);
     }
     pub(crate) fn set_status(&mut self, status: PendingActionStatus) {
         self.status = status;
@@ -30,12 +34,13 @@ impl PendingActionState {
     pub(crate) fn set_payload(&mut self, payload: Option<i16>) {
         self.payload = payload;
     }
-    /// Reward-level recovered from a non-queued status byte.
+    /// Army/navy growth reward level recovered from the status byte.
     ///
-    /// Matches `TShipOrder::LaunchShip` / army-growth: queued has no completed
-    /// level, `0` is level zero, and handled statuses are `status - 0x33`.
-    pub const fn completed_level(self) -> Option<i16> {
-        self.status.completed_level()
+    /// Queued has no completed level, `0` is level zero, and handled growth
+    /// statuses `0x33..=0x39` are `status - 0x33`. Other action kinds assign
+    /// different meaning to the same values.
+    pub const fn growth_reward_level(self) -> Option<i16> {
+        self.status.growth_reward_level()
     }
 }
 
@@ -70,13 +75,12 @@ impl PendingActionStatus {
         self.0 == 0
     }
 
-    pub const fn completed_level(self) -> Option<i16> {
-        if self.0 == 0x32 {
-            None
-        } else if self.0 == 0 {
-            Some(0)
-        } else {
-            Some(self.0 as i16 - 0x33)
+    pub const fn growth_reward_level(self) -> Option<i16> {
+        match self.0 {
+            0 => Some(0),
+            0x32 => None,
+            0x33..=0x39 => Some(self.0 as i16 - 0x33),
+            _ => None,
         }
     }
 
@@ -161,8 +165,11 @@ fn mark_queued_handled(action: &mut PendingActionState, status: PendingActionSta
 
 fn mark_queued_as_payload_plus_handled(action: &mut PendingActionState) {
     if action.status().is_queued() {
-        let payload = action.payload().unwrap_or(-1);
-        action.set_status(PendingActionStatus::from_retail((payload + 0x33) as i8));
+        let status = match action.payload() {
+            Some(payload) => PendingActionStatus::from_retail((payload + 0x33) as i8),
+            None => PendingActionStatus::QUEUED,
+        };
+        action.set_status(status);
     }
 }
 
@@ -171,28 +178,33 @@ mod tests {
     use super::*;
 
     #[test]
-    fn pending_action_completed_level_is_derived_from_the_raw_status_byte() {
+    fn pending_action_growth_reward_level_is_derived_from_the_raw_status_byte() {
         assert_eq!(
-            PendingActionState::new(PendingActionStatus::NONE, None).completed_level(),
+            PendingActionState::new(PendingActionStatus::NONE, None).growth_reward_level(),
             Some(0)
         );
         assert_eq!(
-            PendingActionState::new(PendingActionStatus::QUEUED, Some(6)).completed_level(),
+            PendingActionState::new(PendingActionStatus::QUEUED, Some(6)).growth_reward_level(),
             None
         );
         assert_eq!(
-            PendingActionState::new(PendingActionStatus::HANDLED, Some(6)).completed_level(),
+            PendingActionState::new(PendingActionStatus::HANDLED, Some(6)).growth_reward_level(),
             Some(0)
         );
         assert_eq!(
             PendingActionState::new(PendingActionStatus::from_retail(0x34), Some(6))
-                .completed_level(),
+                .growth_reward_level(),
             Some(1)
         );
         assert_eq!(
             PendingActionState::new(PendingActionStatus::from_retail(0x39), Some(6))
-                .completed_level(),
+                .growth_reward_level(),
             Some(6)
+        );
+        assert_eq!(
+            PendingActionState::new(PendingActionStatus::from_retail(0x3a), None)
+                .growth_reward_level(),
+            None
         );
     }
 

@@ -308,7 +308,7 @@ impl GameState {
         );
         let insert_at = self
             .military_units
-            .partition_point(|existing| existing.nation.get() <= nation.get());
+            .partition_point(|existing| existing.nation <= nation);
         self.military_units.insert(insert_at, unit);
     }
 

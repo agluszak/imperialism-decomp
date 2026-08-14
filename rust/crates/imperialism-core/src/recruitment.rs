@@ -397,13 +397,14 @@ impl GameState {
 
                 let pending = self.nations.majors[nation].economy.pending_actions
                     [PendingActionKind::ArmyGrowthReward];
-                if let Some(current_level) = pending.completed_level() {
+                if let Some(current_level) = pending.growth_reward_level() {
                     let military_power = self.selected_military_power_score(nation_id);
                     if let Some(payload) =
                         pending_military_action_payload(military_power, i32::from(current_level))
                     {
                         let major = &mut self.nations.majors[nation].economy;
-                        major.pending_actions[PendingActionKind::ArmyGrowthReward].queue(payload);
+                        major.pending_actions[PendingActionKind::ArmyGrowthReward]
+                            .queue_with_payload(payload);
                     }
                 }
             }
