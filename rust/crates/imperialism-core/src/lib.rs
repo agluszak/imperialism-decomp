@@ -106,6 +106,7 @@ pub use market::{
     DealBookEntryKind, ProcessedTradeCommodity, ProcessedTradeCommodityTable, TradeCommodity,
     TradeCommodityTable, TradeDealBookEntry, TradeMarketRow, TradeMarketState,
 };
+pub(crate) use military::project_mission_equipage;
 pub use military::{
     AdmiralState, ArmyMissionState, AttackMissionState, MissionData, MissionState,
     NavyMissionState, SelectedShip, ShipState, TaskForceState, TaskForceTarget,

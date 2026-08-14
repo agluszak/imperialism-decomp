@@ -295,7 +295,7 @@ impl GameState {
         }))
     }
 
-    fn normalized_province_owner(&self, province: ProvinceId) -> i16 {
+    pub(crate) fn normalized_province_owner(&self, province: ProvinceId) -> i16 {
         let Some(owner) = self.map.provinces[province].owner() else {
             return -1;
         };

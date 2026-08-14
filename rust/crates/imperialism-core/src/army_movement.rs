@@ -100,7 +100,7 @@ impl GameState {
         let mut present = None;
         let mut best_score = 0.0_f32;
         for &candidate in self.map.provinces[target].adjacency() {
-            if self.normalized_province_owner(candidate) != Some(nation) {
+            if self.normalized_province_owner(candidate) != i16::from(nation.get()) {
                 continue;
             }
             if present.is_some() {
@@ -122,19 +122,13 @@ impl GameState {
         if !adjacent.is_empty() {
             let owned = adjacent
                 .iter()
-                .filter(|&&neighbor| self.normalized_province_owner(neighbor) == Some(nation))
+                .filter(|&&neighbor| {
+                    self.normalized_province_owner(neighbor) == i16::from(nation.get())
+                })
                 .count();
             score *= owned as f32 / adjacent.len() as f32 - -1.0;
         }
         score / MISSION_SCORE_NORMALIZATION
-    }
-
-    fn normalized_province_owner(&self, province: ProvinceId) -> Option<NationId> {
-        let owner = self.map.provinces[province].owner()?;
-        match self.nations.country_status(owner) {
-            Some(CountryStatus::ColonyOf(master)) => Some(master),
-            _ => Some(owner),
-        }
     }
 
     fn war_stamp_out_of_date(&self, source: NationId, target: NationId) -> bool {
