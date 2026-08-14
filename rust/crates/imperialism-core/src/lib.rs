@@ -29,6 +29,7 @@ mod military_cleanup;
 mod military_phase;
 mod nation_economy;
 mod nations;
+mod navy_orders;
 mod news;
 mod ocean;
 mod pending;

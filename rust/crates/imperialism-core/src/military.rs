@@ -254,6 +254,8 @@ impl GameState {
         zone: OceanZoneId,
         matches: impl Fn(&ShipState) -> bool,
     ) -> f32 {
+        let baselines =
+            crate::navy_orders::navy_category_baselines(&self.technology.industry_enabled_by_slot);
         let mut vector = [0.0_f32; 4];
         for ship in self
             .ships
@@ -265,18 +267,13 @@ impl GameState {
                 continue;
             }
             let scale = f32::from(ship.strength) / f32::from(max_strength);
-            let mut category = i32::from(ship.strength % max_strength);
-            let mut contribution = navy_priority_contribution(ship, category);
-            vector[0] += contribution as f32 * scale;
-            category = contribution;
-            contribution = navy_priority_contribution(ship, category);
-            vector[1] += contribution as f32 * scale;
-            category = contribution;
-            contribution = navy_priority_contribution(ship, category);
-            vector[2] += contribution as f32 * scale;
-            category = contribution;
-            contribution = navy_priority_contribution(ship, category);
-            vector[3] += contribution as f32;
+            vector[0] +=
+                crate::navy_orders::ship_priority_contribution(ship, 0, &baselines) as f32 * scale;
+            vector[1] +=
+                crate::navy_orders::ship_priority_contribution(ship, 1, &baselines) as f32 * scale;
+            vector[2] +=
+                crate::navy_orders::ship_priority_contribution(ship, 2, &baselines) as f32 * scale;
+            vector[3] += crate::navy_orders::ship_priority_contribution(ship, 3, &baselines) as f32;
         }
         let sum: f32 = vector.iter().sum();
         if sum == 0.0 {
@@ -510,10 +507,6 @@ pub(crate) fn accumulate_unit_priority(
     scores.artillery += f32::from(stats.artillery) * scale;
     scores.armor += f32::from(stats.armor) * scale;
     scores.support += f32::from(stats.support) * scale * dampen;
-}
-
-fn navy_priority_contribution(_ship: &ShipState, _category: i32) -> i32 {
-    0
 }
 
 /// A ship in primary-list order. Ship and task-force references are snapshot-local

@@ -1,11 +1,11 @@
-//! Military cleanup phase (`TSimMgr` turn-state 0x15) without navy straggler
-//! removal, AI replanning, or power-score recomputation.
+//! Military cleanup phase (`TSimMgr` turn-state 0x15).
 
 use crate::*;
 
 impl GameState {
-    /// Retail military-cleanup phase for a non-client host, limited to the
-    /// operations already represented in `GameState`.
+    /// Retail military-cleanup for a non-client host. Navy straggler removal,
+    /// mission reassess/prune, power-score globals, and AI development replanning
+    /// are not ported. Ship assignment onto navy missions is.
     pub fn do_military_cleanup(&mut self) {
         for ship in &mut self.ships {
             if ship.selection == 1 {
@@ -19,6 +19,7 @@ impl GameState {
             }
             if self.is_auto(nation) {
                 self.adopt_unassigned_militia_into_defend_missions(nation.nation());
+                self.assign_unassigned_ships_to_navy_missions(nation.nation());
             }
             self.commit_purchased_items(nation);
         }

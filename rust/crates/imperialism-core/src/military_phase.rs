@@ -42,11 +42,20 @@ const UNIVERSITY_REQUIREMENT_LEVEL: [[u8; 4]; 24] = [
 const HEATMAP_NEIGHBOR_DIFFUSION: f32 = 0.2;
 
 impl GameState {
-    /// Retail `TSimMgr::DoMilitary` without navy `CarryOutOrders`. Auto great powers run
-    /// `SelectAndQueueAdvisoryMapMissionsCase16` before `GiveOrders` on the resulting
-    /// missions. Navy order execution is not represented as a complete `GameState`
-    /// operation yet and must not mutate half the world.
+    /// Retail `TSimMgr::DoMilitary`. Auto great powers run advisory mission
+    /// selection and `GiveOrders` for land and navy missions, then navy order
+    /// execution for sail/repair/marines. Navy battle pairing and
+    /// `MakeSureAllShipsHaveOrders` are not ported.
     pub fn do_military(&mut self) {
+        self.apply_military_orders();
+        self.prepare_to_carry_out_navy_orders();
+        self.carry_out_navy_orders();
+    }
+
+    /// Heatmap, militia, pay, advisory selection, and mission `GiveOrders`.
+    /// This is the native `military_phase_supported_subset` operation; it does
+    /// not execute navy `CarryOutOrders`.
+    pub fn apply_military_orders(&mut self) {
         self.recompute_tile_strategic_score_heatmap();
         for nation in NationId::all() {
             if !self.nation_is_eligible_for_optional_phase(nation) {
@@ -69,7 +78,7 @@ impl GameState {
         }
     }
 
-    /// Retail `TAutoGreatPower::MoveArmy` / land `GiveOrders`. Navy missions are omitted.
+    /// Retail `TAutoGreatPower::MoveArmy` / mission `GiveOrders`.
     pub fn do_army_movement(&mut self, nation: MajorNationId) {
         self.give_auto_great_power_army_orders(nation.nation());
     }
@@ -90,8 +99,12 @@ impl GameState {
                     let attack = attack.clone();
                     self.give_attack_province_orders(nation, &attack);
                 }
-                MissionData::Invade { attack, .. } => {
-                    let attack = attack.clone();
+                MissionData::Invade { .. } => {
+                    self.give_navy_mission_orders(mission_index);
+                    let attack = match &self.missions[mission_index].data {
+                        MissionData::Invade { attack, .. } => attack.clone(),
+                        _ => continue,
+                    };
                     let Some(major) = MajorNationId::from_nation(nation) else {
                         continue;
                     };
@@ -99,7 +112,13 @@ impl GameState {
                         self.give_attack_province_orders(nation, &attack);
                     }
                 }
-                _ => {}
+                MissionData::ControlSeaZone(_)
+                | MissionData::Escort(_)
+                | MissionData::ScatteredShips(_)
+                | MissionData::BlockadePort { .. }
+                | MissionData::Beachhead(_) => {
+                    self.give_navy_mission_orders(mission_index);
+                }
             }
         }
     }

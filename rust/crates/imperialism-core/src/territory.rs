@@ -170,6 +170,10 @@ impl ProvinceState {
         &self.explored_by_majors
     }
 
+    pub(crate) fn explored_by_majors_mut(&mut self) -> &mut MajorNationTable<bool> {
+        &mut self.explored_by_majors
+    }
+
     pub const fn city_score(&self) -> i32 {
         self.city_score
     }
