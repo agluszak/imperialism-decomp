@@ -9,7 +9,7 @@ use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::{Activate, Button as UiButton};
+use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -213,7 +213,6 @@ impl Plugin for TradePlugin {
             (sync_trade_text, sync_trade_visual, sync_trade_presence)
                 .run_if(in_state(AppState::Trade)),
         )
-        .add_observer(on_trade_activate.run_if(in_state(AppState::Trade)))
         .add_observer(on_trade_amount_bar_click.run_if(in_state(AppState::Trade)));
     }
 }
@@ -243,6 +242,7 @@ fn bind_trade_screen(
     );
     let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Trade active nation is a major nation");
+    session.game.refresh_merchant_capacity(nation);
     session.game.recall_player_trade_orders(nation);
     bind_game_status_display(
         &mut commands,
@@ -337,7 +337,7 @@ fn bind_trade_controls(
         let row = find_descendant(root, binding.tag, children, tags);
         commands
             .entity(row)
-            .insert(TradeDisplay::Row(binding.commodity));
+            .insert((TradeDisplay::Row(binding.commodity), Pickable::IGNORE));
         set_trade_row_visible(
             commands,
             row,
@@ -348,42 +348,34 @@ fn bind_trade_controls(
         let card_pictures = pictures.for_button(binding.commodity, TradeCardKind::Bid);
         let offer = find_descendant(row, fourcc!("offr"), children, tags);
         let offer_pictures = pictures.for_button(binding.commodity, TradeCardKind::Offer);
-        commands.entity(card).insert((
-            UiButton,
-            trade_card_image(card_pictures.idle.clone()),
-            TradeAction::Card {
-                commodity: binding.commodity,
-                kind: TradeCardKind::Bid,
-            },
-            TradeDisplay::Card {
-                commodity: binding.commodity,
-                kind: TradeCardKind::Bid,
-                pictures: card_pictures,
-            },
-        ));
-        commands.entity(offer).insert((
-            UiButton,
-            trade_card_image(offer_pictures.idle.clone()),
-            TradeAction::Card {
-                commodity: binding.commodity,
-                kind: TradeCardKind::Offer,
-            },
-            TradeDisplay::Card {
-                commodity: binding.commodity,
-                kind: TradeCardKind::Offer,
-                pictures: offer_pictures,
-            },
-        ));
+        bind_trade_card(
+            commands,
+            card,
+            binding.commodity,
+            TradeCardKind::Bid,
+            card_pictures,
+        );
+        bind_trade_card(
+            commands,
+            offer,
+            binding.commodity,
+            TradeCardKind::Offer,
+            offer_pictures,
+        );
 
         for (tag, delta) in [(fourcc!("left"), -1), (fourcc!("rght"), 1)] {
             let step = find_descendant(row, tag, children, tags);
-            commands.entity(step).insert((
-                TradeAction::Step {
-                    commodity: binding.commodity,
-                    delta,
-                },
-                TradeDisplay::Step(binding.commodity),
-            ));
+            commands
+                .entity(step)
+                .insert((
+                    ActivateOnPress,
+                    TradeAction::Step {
+                        commodity: binding.commodity,
+                        delta,
+                    },
+                    TradeDisplay::Step(binding.commodity),
+                ))
+                .observe(on_trade_activate);
         }
 
         let sell = find_descendant(row, fourcc!("Sell"), children, tags);
@@ -889,6 +881,31 @@ fn trade_card_image(image: Handle<Image>) -> ImageNode {
     ImageNode::new(image).with_mode(NodeImageMode::Stretch)
 }
 
+fn bind_trade_card(
+    commands: &mut Commands,
+    entity: Entity,
+    commodity: TradeCommodity,
+    kind: TradeCardKind,
+    pictures: TradeCardPictures,
+) {
+    commands
+        .entity(entity)
+        .insert((
+            UiButton,
+            ActivateOnPress,
+            Pickable::default(),
+            ZIndex(1),
+            trade_card_image(pictures.idle.clone()),
+            TradeAction::Card { commodity, kind },
+            TradeDisplay::Card {
+                commodity,
+                kind,
+                pictures,
+            },
+        ))
+        .observe(on_trade_activate);
+}
+
 /// Idle `offr` tabs stay shown when merchant capacity is 0: C++ skips
 /// `SetTradeOfferSecondaryBitmap` and leaves the DoPostCreate-enabled control.
 /// With capacity, C++ hides the tab unless the row is selling or has stockpile.
@@ -1028,8 +1045,7 @@ mod tests {
         .add_systems(
             Update,
             (bind_test_trade, sync_trade_visual, sync_trade_presence).chain(),
-        )
-        .add_observer(on_trade_activate);
+        );
         spawn_trade_hierarchy(app.world_mut());
         app.update();
 
