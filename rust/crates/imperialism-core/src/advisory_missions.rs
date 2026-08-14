@@ -770,7 +770,7 @@ impl GameState {
             .count() as i32
     }
 
-    fn zone_nation_key_mask(&self, zone: OceanZoneId) -> u16 {
+    pub(crate) fn zone_nation_key_mask(&self, zone: OceanZoneId) -> u16 {
         let mut mask = 0u16;
         for ship in &self.ships {
             if ship.location == zone {
@@ -780,7 +780,7 @@ impl GameState {
         mask
     }
 
-    fn zone_value_average(&self, zone: OceanZoneId) -> i32 {
+    pub(crate) fn zone_value_average(&self, zone: OceanZoneId) -> i32 {
         match &self.ocean.zones[usize::from(zone.get())] {
             ZoneKind::PortZone(port) => {
                 let Some(owner) = self.map[port.port_tile]
@@ -822,7 +822,15 @@ impl GameState {
         sum / self.ocean.zones.len() as i32
     }
 
-    fn control_sea_zone_importance_bits(&self, nation: MajorNationId, target: OceanZoneId) -> u32 {
+    pub(crate) fn control_sea_zone_importance_bits(
+        &self,
+        nation: MajorNationId,
+        target: OceanZoneId,
+    ) -> u32 {
+        (self.sea_zone_importance(nation.nation(), target)).to_bits()
+    }
+
+    pub(crate) fn sea_zone_importance(&self, nation: NationId, target: OceanZoneId) -> f32 {
         let mut score = self.zone_value_average(target) as f32;
         for (_ordinal, kind) in self.ocean.zones.iter().enumerate().rev() {
             let ZoneKind::PortZone(port) = kind else {
@@ -834,13 +842,13 @@ impl GameState {
             let owner = self.map[port.port_tile]
                 .owner_nation
                 .and_then(TileOwnerTag::nation);
-            score *= if owner == Some(nation.nation()) {
+            score *= if owner == Some(nation) {
                 PORT_FRIENDLY_MULTIPLIER
             } else {
                 PORT_FOREIGN_MULTIPLIER
             };
         }
-        (score / MISSION_SCORE_DIVISOR).to_bits()
+        score / MISSION_SCORE_DIVISOR
     }
 
     fn has_direct_or_colony_link(&self, province: ProvinceId, nation: NationId) -> bool {

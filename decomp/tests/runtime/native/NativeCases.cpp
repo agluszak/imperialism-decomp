@@ -49,6 +49,7 @@ RuntimeActionResult RunCombatMovesUncontested(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesCreatesBattle(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesResumesAfterBattle(NativeTransition& transition);
 RuntimeActionResult RunMilitaryCleanupSupportedSubset(NativeTransition& transition);
+RuntimeActionResult RunReassessControlSeaMissions(NativeTransition& transition);
 
 RuntimeActionResult RunCompletedRailSection(NativeTransition& transition);
 RuntimeActionResult RunIssuedRailSection(NativeTransition& transition);
@@ -126,6 +127,7 @@ const NativeCase kCases[] = {
     {"combat_moves_creates_battle", RunCombatMovesCreatesBattle},
     {"combat_moves_resumes_after_battle", RunCombatMovesResumesAfterBattle},
     {"military_cleanup_supported_subset", RunMilitaryCleanupSupportedSubset},
+    {"reassess_control_sea_missions", RunReassessControlSeaMissions},
     {"completed_rail_section", RunCompletedRailSection},
     {"issued_rail_section", RunIssuedRailSection},
     {"completed_resource_development", RunCompletedResourceDevelopment},

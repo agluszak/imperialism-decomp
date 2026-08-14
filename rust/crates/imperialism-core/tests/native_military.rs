@@ -191,12 +191,9 @@ fn combat_moves_resumes_after_battle() {
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
-fn military_cleanup_supported_subset() {
-    compare_native(
-        "military_cleanup_supported_subset",
-        |state, _: EmptyCase| {
-            state.apply_military_cleanup_supported_subset();
-        },
-    )
+fn reassess_control_sea_missions() {
+    compare_native("reassess_control_sea_missions", |state, _: EmptyCase| {
+        state.reassess_control_sea_missions();
+    })
     .unwrap();
 }

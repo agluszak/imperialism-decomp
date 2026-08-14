@@ -18,6 +18,7 @@
 #include "game/military/TUnit.h"
 #include "game/military_domain_types.h"
 #include "game/military_ui/TDiplomacyMgr.h"
+#include "game/map/TMission.h"
 #include "game/nation/TAutoGreatPower.h"
 #include "game/nation/TGreatPower.h"
 #include "game/nation_domain_types.h"
@@ -573,6 +574,38 @@ RuntimeActionResult RunMilitaryCleanupSupportedSubset(NativeTransition& transiti
         static_cast<TAutoGreatPower*>(nation)->SeedTrackedEntryAssignmentsFromEligibleUnits();
       }
       nation->AddPurchasedItems();
+    }
+  }
+  return transition.Finish();
+}
+
+// ControlSeaZone Reassess only. Opening ControlSea missions do not read
+// AutoGreatPower B64/B68/B6c pressure scores, so this is safe on the loaded
+// beginning_of_game fixture without RecomputeNationOrderPriorityMetrics.
+RuntimeActionResult RunReassessControlSeaMissions(NativeTransition& transition) {
+  int slot;
+
+  JsonObject args;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  for (slot = 0; slot < 7; ++slot) {
+    TGreatPower* nation = g_apNationStates[slot];
+    if (nation == 0 || nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
+      continue;
+    }
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {
+      continue;
+    }
+    TAutoGreatPower* autoNation = static_cast<TAutoGreatPower*>(nation);
+    CIterator iter(autoNation->missionQueue);
+    for (TMission* mission = static_cast<TMission*>(iter.Reset()); iter.More();
+         mission = static_cast<TMission*>(iter.Advance())) {
+      if (mission->IsNavyMission() != 0 && mission->IsHospitalMission() != 0) {
+        mission->Reassess();
+      }
     }
   }
   return transition.Finish();
