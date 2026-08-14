@@ -260,15 +260,13 @@ fn sync_city_site_hover(
     let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("City-site screen requires an active major nation");
     for (canvas, cursor, image_node, mut hover) in &mut maps {
-        let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.game, cursor) else {
-            continue;
-        };
-        if hover.0 == Some(tile) && !session.is_changed() {
+        let tile = strategic_base_terrain_tile_at_cursor(&session.game, cursor);
+        if hover.0 == tile && !session.is_changed() {
             continue;
         }
-        hover.0 = Some(tile);
+        hover.0 = tile;
         let highlighted =
-            highlights_city_site_candidate(&session.game, nation, tile).then_some(tile);
+            tile.filter(|&tile| highlights_city_site_candidate(&session.game, nation, tile));
         let image = compose_city_site_terrain(
             &session.game,
             canvas,
