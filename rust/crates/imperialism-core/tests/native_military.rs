@@ -168,6 +168,12 @@ struct TwoLandBattles {
     second: PendingLandBattle,
 }
 
+#[derive(Debug, Deserialize, PartialEq)]
+struct CombatMovesResumeResult {
+    first: PendingLandBattle,
+    second: Option<PendingLandBattle>,
+}
+
 #[test]
 #[ignore = "requires the native C++ oracle"]
 fn combat_moves_resumes_after_battle() {
@@ -184,6 +190,25 @@ fn combat_moves_resumes_after_battle() {
                 first: first.battle,
                 second: second.battle,
             }
+        },
+    )
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn combat_moves_battle_then_later_movement() {
+    compare_native(
+        "combat_moves_battle_then_later_movement",
+        |state, _: EmptyCase| {
+            let continuation = state
+                .start_combat_moves()
+                .expect("hostile stack creates a battle");
+            let first = continuation.battle.clone();
+            let second = state
+                .resume_combat_moves(continuation)
+                .map(|continuation| continuation.battle);
+            CombatMovesResumeResult { first, second }
         },
     )
     .unwrap();

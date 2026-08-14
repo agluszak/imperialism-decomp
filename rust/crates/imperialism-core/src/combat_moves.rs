@@ -6,7 +6,11 @@ use serde::{Deserialize, Serialize};
 
 const STACK_COMPOSITION: [i16; 16] = [0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 3, 0, 0, 3, 4, 5];
 const UNIT_ORDER_IDLE: i32 = 0;
+const UNIT_ORDER_REDEPLOY: i32 = 1;
 const UNIT_ORDER_SLEEP: i32 = 2;
+const EXPERIENCE_WINNER: i16 = 0x23;
+const EXPERIENCE_LOSER: i16 = 0x14;
+const EXPERIENCE_CAP: i16 = 0x190;
 
 /// Land battle that retail would open as a modal tactical view.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -46,11 +50,10 @@ struct StationedChains {
 }
 
 impl GameState {
-    /// Retail `TArmyMgr::DoCombatMoves` for a non-client host.
+    /// Retail `TArmyMgr::DoCombatMoves` for a non-client host until the first battle.
     ///
-    /// Identical orders produce identical movement and battle-creation state.
-    /// The first would-be tactical battle is returned for the turn driver to store
-    /// as [`crate::TurnContinuation::LandBattle`].
+    /// Does not keep the sorted stack cursor. The turn driver uses
+    /// [`Self::start_combat_moves`] and [`Self::continue_combat_moves`].
     pub fn do_combat_moves(&mut self) -> Option<PendingLandBattle> {
         self.start_combat_moves()
             .map(|continuation| continuation.battle)
@@ -86,8 +89,52 @@ impl GameState {
         }
     }
 
-    /// Continues `DoCombatMoves` after the current land battle has been resolved.
-    pub fn resume_after_land_battle(&mut self) -> crate::TurnStop {
+    /// `TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters` without the trailing
+    /// `ResolveNextMove`. Call [`Self::continue_combat_moves`] to resume the cursor.
+    pub fn resolve_land_battle(&mut self, attacker_won: bool) {
+        let crate::turn_flow::TurnContinuation::LandBattle(continuation) = &self.continuation
+        else {
+            panic!("land-battle resolve requires a combat-moves continuation");
+        };
+        assert!(
+            continuation.next_stack > 0,
+            "combat continuation has no interrupted stack"
+        );
+        let stack = continuation.stacks[continuation.next_stack - 1].clone();
+        let battle = continuation.battle.clone();
+        let owner_cache = *continuation.owner_cache.as_array();
+        let attacker_indices = battle
+            .attacker_units
+            .iter()
+            .map(|&id| military_index(&self.military_units, id))
+            .collect::<Vec<_>>();
+        let defender_indices = battle
+            .defender_units
+            .iter()
+            .map(|&id| military_index(&self.military_units, id))
+            .collect::<Vec<_>>();
+
+        let mut chains = StationedChains::from_units(&self.military_units);
+        if attacker_won {
+            self.redistribute_losers(&defender_indices, battle.province, &owner_cache);
+            self.apply_uncontested_indices(&mut chains, &attacker_indices);
+            self.grow_stack_experience(&attacker_indices, EXPERIENCE_WINNER);
+            self.grow_stack_experience(&defender_indices, EXPERIENCE_LOSER);
+            let crate::turn_flow::TurnContinuation::LandBattle(continuation) =
+                &mut self.continuation
+            else {
+                unreachable!("continuation still holds the land battle");
+            };
+            continuation.owner_cache[battle.province] = Some(stack.owner);
+        } else {
+            self.relocate_stack_to_source(&mut chains, &stack, &attacker_indices);
+            self.grow_stack_experience(&attacker_indices, EXPERIENCE_LOSER);
+            self.grow_stack_experience(&defender_indices, EXPERIENCE_WINNER);
+        }
+    }
+
+    /// Continues `DoCombatMoves` from the preserved stack cursor.
+    pub fn continue_combat_moves(&mut self) -> crate::TurnStop {
         let crate::turn_flow::TurnContinuation::LandBattle(continuation) =
             std::mem::take(&mut self.continuation)
         else {
@@ -358,6 +405,59 @@ impl GameState {
             self.change_province_owner(province, new_owner);
         }
     }
+
+    fn redistribute_losers(
+        &mut self,
+        defender_indices: &[usize],
+        battle_site: ProvinceId,
+        owner_cache: &[Option<NationId>; PROVINCE_COUNT],
+    ) {
+        let Some(&head) = defender_indices.first() else {
+            return;
+        };
+        let owner = self.military_units[head].owner_nation;
+        let mut candidates = [ProvinceId::new(0); 12];
+        let mut count = 0_i32;
+        for &adjacent in self.map.provinces[battle_site].adjacency() {
+            if owner_cache[usize::from(adjacent.get())] == Some(owner) {
+                candidates[count as usize] = adjacent;
+                count += 1;
+                if count == 12 {
+                    break;
+                }
+            }
+        }
+        if count == 0 {
+            return;
+        }
+        let chosen = candidates[(self.rng.next_crt_rand() % count) as usize];
+        for &index in defender_indices {
+            if tactical_category(self.military_units[index].unit_type) == 0 {
+                continue;
+            }
+            set_unit_order(
+                &mut self.military_units[index],
+                UNIT_ORDER_REDEPLOY,
+                Some(chosen),
+            );
+        }
+    }
+
+    fn grow_stack_experience(&mut self, indices: &[usize], amount: i16) {
+        for &index in indices {
+            let unit = &mut self.military_units[index];
+            if unit.strength > 0 {
+                unit.experience = (unit.experience + amount).min(EXPERIENCE_CAP);
+            }
+        }
+    }
+}
+
+fn military_index(units: &[MilitaryUnitState], id: MilitaryUnitId) -> usize {
+    units
+        .iter()
+        .position(|unit| unit.id == id)
+        .expect("pending battle unit")
 }
 
 impl StationedChains {
@@ -695,10 +795,7 @@ mod tests {
             first_defender
         };
 
-        assert_eq!(
-            state.resume_after_land_battle(),
-            crate::TurnStop::LandBattle
-        );
+        assert_eq!(state.continue_combat_moves(), crate::TurnStop::LandBattle);
         let second = state
             .pending_land_battle()
             .cloned()
@@ -706,5 +803,94 @@ mod tests {
         assert_eq!(second.attacker_units, vec![remaining_attacker]);
         assert_eq!(second.defender_units, vec![remaining_defender]);
         assert_ne!(first.province, second.province);
+    }
+
+    fn seed_war(state: &mut GameState) {
+        state.diplomacy.relationships[NationId::new(0)][NationId::new(1)] =
+            DiplomaticRelationship::War;
+        state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
+            DiplomaticRelationship::War;
+    }
+
+    fn battle_then_later_uncontested_state() -> (GameState, MilitaryUnitId, MilitaryUnitId) {
+        let mut state = game_state();
+        state.turn.economic_turn = 3;
+        state.turn.phase = crate::PhaseCode::COMBAT_MOVES;
+        seed_province(&mut state, 1, 0, &[2]);
+        seed_province(&mut state, 2, 1, &[1]);
+        seed_province(&mut state, 3, 0, &[4]);
+        seed_province(&mut state, 4, 0, &[3]);
+        let attacker = push_unit(&mut state, 0, 1, MilitaryUnitKind::Hussars, Some(2));
+        let _defender = push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);
+        let mover = push_unit(&mut state, 0, 3, MilitaryUnitKind::Regulars, Some(4));
+        seed_war(&mut state);
+        (state, attacker, mover)
+    }
+
+    #[test]
+    fn later_uncontested_stack_moves_without_reforming() {
+        let (mut state, attacker, mover) = battle_then_later_uncontested_state();
+        assert_eq!(state.advance_turn(), crate::TurnStop::LandBattle);
+        let battle = state
+            .pending_land_battle()
+            .cloned()
+            .expect("higher-class hostile stack battles first");
+        assert_eq!(battle.attacker_units, vec![attacker]);
+        assert_eq!(
+            state.military_units[2].stationed_province,
+            Some(ProvinceId::new(3))
+        );
+
+        let crate::turn_flow::TurnContinuation::LandBattle(continuation) =
+            std::mem::take(&mut state.continuation)
+        else {
+            panic!("combat continuation");
+        };
+        assert!(
+            state.resume_combat_moves(continuation).is_none(),
+            "remaining uncontested stack should finish combat moves"
+        );
+        assert_eq!(
+            state.military_units[0].stationed_province,
+            Some(ProvinceId::new(1)),
+            "unresolved attackers stay put"
+        );
+        assert_eq!(state.military_units[2].id, mover);
+        assert_eq!(
+            state.military_units[2].stationed_province,
+            Some(ProvinceId::new(4))
+        );
+        assert_eq!(state.military_units[2].order.code(), 0);
+    }
+
+    #[test]
+    fn resolve_land_battle_then_continue_remaining_stacks() {
+        let (mut state, attacker, mover) = battle_then_later_uncontested_state();
+        assert_eq!(state.advance_turn(), crate::TurnStop::LandBattle);
+        state.resolve_land_battle(true);
+        assert_eq!(state.military_units[0].id, attacker);
+        assert_eq!(
+            state.military_units[0].stationed_province,
+            Some(ProvinceId::new(2))
+        );
+        assert_eq!(state.military_units[0].order.code(), 0);
+        assert_eq!(state.military_units[0].experience, EXPERIENCE_WINNER);
+        assert_eq!(state.military_units[1].experience, EXPERIENCE_LOSER);
+        assert_eq!(
+            state.military_units[2].stationed_province,
+            Some(ProvinceId::new(3))
+        );
+
+        let crate::turn_flow::TurnContinuation::LandBattle(continuation) =
+            std::mem::take(&mut state.continuation)
+        else {
+            panic!("combat continuation");
+        };
+        assert!(state.resume_combat_moves(continuation).is_none());
+        assert_eq!(state.military_units[2].id, mover);
+        assert_eq!(
+            state.military_units[2].stationed_province,
+            Some(ProvinceId::new(4))
+        );
     }
 }

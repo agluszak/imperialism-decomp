@@ -143,7 +143,7 @@ JSON_Value* TryCreateBattleWithoutUi(TArmyMgr* army, TArmyStack* stack) {
   return 0;
 }
 
-JSON_Value* ResolveNextPendingBattleWithoutUi() {
+JSON_Value* ProcessPendingStacksUntilBattle(int finalizeIfComplete) {
   TArmyMgr* army = g_pMapContextActionManager;
   int stackCount = army->pendingUnitPool0c->GetCount();
   while (army->nextStackOrdinal10 <= stackCount) {
@@ -163,24 +163,60 @@ JSON_Value* ResolveNextPendingBattleWithoutUi() {
     }
     stackCount = army->pendingUnitPool0c->GetCount();
   }
+  if (finalizeIfComplete != 0) {
+    army->ClearPendingStacksAndFinalizeMilitaryUnits();
+    army->DoOwnershipChanges();
+    return JsonNullValue();
+  }
   return 0;
+}
+
+JSON_Value* ResolveNextPendingBattleWithoutUi() {
+  return ProcessPendingStacksUntilBattle(0);
 }
 
 JSON_Value* ResolveCombatMovesWithoutBattleUi() {
   TArmyMgr* army = g_pMapContextActionManager;
-  JSON_Value* battle;
   army->FormStacks();
   army->nextStackOrdinal10 = 1;
-  battle = ResolveNextPendingBattleWithoutUi();
-  if (battle != 0) {
-    return battle;
-  }
-  army->ClearPendingStacksAndFinalizeMilitaryUnits();
-  army->DoOwnershipChanges();
-  return JsonNullValue();
+  return ProcessPendingStacksUntilBattle(1);
 }
 
-bool FindUncontestedRedeploy(TMilitaryUnit** outUnit, short* outDest) {
+bool IssueUncontestedRedeploys(TMilitaryUnit* skip, int* issued) {
+  int slot;
+  *issued = 0;
+  for (slot = 0; slot < kNationSlotCount; ++slot) {
+    TCountry* country = g_apTerrainTypeDescriptorTable[slot];
+    CIterator cursor(country == 0 ? 0 : country->militaryUnitList44);
+    TMilitaryUnit* unit;
+    if (country == 0 || country->militaryUnitList44 == 0) {
+      continue;
+    }
+    unit = static_cast<TMilitaryUnit*>(cursor.Reset());
+    while (cursor.More() != 0) {
+      const short source = unit->tileIndex06;
+      Province* record;
+      int adj;
+      if (unit != skip && source >= 0 && source < 0x180) {
+        record = &g_pGlobalMapState->cityScoreTable[source];
+        for (adj = 0; adj < record->adjacentRegionCount08; ++adj) {
+          const short dest = record->adjacentRegionIds0A[adj];
+          if (dest >= 0 && dest < 0x180 &&
+              g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 ==
+                  record->ownerNationCode00) {
+            unit->SetOrders(kUnitOrderRedeploy, dest);
+            *issued += 1;
+            break;
+          }
+        }
+      }
+      unit = static_cast<TMilitaryUnit*>(cursor.Advance());
+    }
+  }
+  return *issued != 0;
+}
+
+bool FindUncontestedRedeploy(TMilitaryUnit** outUnit, short* outDest, TMilitaryUnit* skip) {
   int slot;
   for (slot = 0; slot < kNationSlotCount; ++slot) {
     TCountry* country = g_apTerrainTypeDescriptorTable[slot];
@@ -194,7 +230,7 @@ bool FindUncontestedRedeploy(TMilitaryUnit** outUnit, short* outDest) {
       const short source = unit->tileIndex06;
       Province* record;
       int adj;
-      if (source >= 0 && source < 0x180) {
+      if (unit != skip && source >= 0 && source < 0x180) {
         record = &g_pGlobalMapState->cityScoreTable[source];
         for (adj = 0; adj < record->adjacentRegionCount08; ++adj) {
           const short dest = record->adjacentRegionIds0A[adj];
@@ -438,7 +474,7 @@ RuntimeActionResult RunCombatMovesUncontested(NativeTransition& transition) {
   short dest = -1;
   JSON_Value* result;
   ClearAllMilitaryOrders();
-  if (!FindUncontestedRedeploy(&unit, &dest)) {
+  if (!FindUncontestedRedeploy(&unit, &dest, 0)) {
     return RuntimeActionResult::Failure(
         "the loaded fixture has no adjacent same-owner provinces with a stationed unit");
   }
@@ -533,6 +569,55 @@ RuntimeActionResult RunCombatMovesResumesAfterBattle(NativeTransition& transitio
   }
   result.Set("first", firstBattle);
   result.Set("second", secondBattle);
+  return transition.Finish(result.Release());
+}
+
+RuntimeActionResult RunCombatMovesBattleThenLaterMovement(NativeTransition& transition) {
+  TMilitaryUnit* hostile = 0;
+  short hostileDest = -1;
+  short defender = -1;
+  int uncontestedCount = 0;
+  TArmyMgr* army;
+  JSON_Value* first;
+  JSON_Value* second;
+  JsonObject result;
+  JsonObject args;
+  RuntimeActionResult started;
+
+  ClearAllMilitaryOrders();
+  if (!FindHostileRedeploy(&hostile, &hostileDest, &defender)) {
+    return RuntimeActionResult::Failure(
+        "the loaded fixture has no adjacent enemy-garrisoned province");
+  }
+  if (!IssueUncontestedRedeploys(hostile, &uncontestedCount)) {
+    return RuntimeActionResult::Failure(
+        "the loaded fixture has no later same-owner redeploy besides the hostile stack");
+  }
+  ForceWarBetween(hostile->ownerNationSlot18, defender);
+  hostile->SetOrders(kUnitOrderRedeploy, hostileDest);
+
+  started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  army = g_pMapContextActionManager;
+  army->FormStacks();
+  army->nextStackOrdinal10 = 1;
+  first = ProcessPendingStacksUntilBattle(0);
+  if (first == 0 || json_value_get_type(first) != JSONObject) {
+    JsonFreeValue(first);
+    return RuntimeActionResult::Failure("identical orders did not create a land battle");
+  }
+  if (army->nextStackOrdinal10 > army->pendingUnitPool0c->GetCount()) {
+    JsonFreeValue(first);
+    return RuntimeActionResult::Failure(
+        "the first battle consumed the last stack; no later movement remains");
+  }
+
+  second = ProcessPendingStacksUntilBattle(1);
+  result.Set("first", first);
+  result.Set("second", second);
   return transition.Finish(result.Release());
 }
 
