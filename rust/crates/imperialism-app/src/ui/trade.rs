@@ -195,7 +195,6 @@ enum TradeDisplay {
     Price(TradeCommodity),
     Stock(TradeCommodity),
     Capacity,
-    Treasury,
     Advisory(TradeAdvisoryKind),
 }
 
@@ -324,8 +323,6 @@ fn bind_trade_controls(
     commands
         .entity(capacity)
         .insert((TradeDisplay::Capacity, InteractionDisabled));
-    let treasury = find_descendant(root, fourcc!("trea"), children, tags);
-    commands.entity(treasury).insert(TradeDisplay::Treasury);
     for (tag, kind) in TRADE_ADVISORIES {
         let advisory = find_descendant(root, tag, children, tags);
         commands
@@ -615,7 +612,6 @@ fn sync_trade_text(
                 };
             }
             TradeDisplay::Capacity => text.0 = capacity.to_string(),
-            TradeDisplay::Treasury => text.0 = format_currency(major.common.treasury),
             _ => {}
         }
     }
