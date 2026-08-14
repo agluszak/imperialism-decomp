@@ -157,121 +157,40 @@ pub const fn military_recruitment_spec(
     })
 }
 
+const fn ship_materials(
+    lumber: i16,
+    fabric: i16,
+    arms: i16,
+    steel: i16,
+    coal: i16,
+    fuel: i16,
+) -> ShipMaterials {
+    ShipMaterials {
+        lumber,
+        fabric,
+        arms,
+        steel,
+        coal,
+        fuel,
+    }
+}
+
 pub fn ship_order_costs(ship_type: ShipType) -> ShipMaterials {
     const COSTS: ShipTypeTable<ShipMaterials> = ShipTypeTable::from_array([
-        ShipMaterials {
-            lumber: 0,
-            fabric: 0,
-            arms: 0,
-            steel: 0,
-            coal: 0,
-            fuel: 0,
-        },
-        ShipMaterials {
-            lumber: 4,
-            fabric: 2,
-            arms: 0,
-            steel: 0,
-            coal: 0,
-            fuel: 0,
-        },
-        ShipMaterials {
-            lumber: 7,
-            fabric: 3,
-            arms: 0,
-            steel: 0,
-            coal: 0,
-            fuel: 0,
-        },
-        ShipMaterials {
-            lumber: 5,
-            fabric: 2,
-            arms: 2,
-            steel: 0,
-            coal: 0,
-            fuel: 0,
-        },
-        ShipMaterials {
-            lumber: 8,
-            fabric: 3,
-            arms: 5,
-            steel: 0,
-            coal: 0,
-            fuel: 0,
-        },
-        ShipMaterials {
-            lumber: 6,
-            fabric: 0,
-            arms: 0,
-            steel: 2,
-            coal: 10,
-            fuel: 0,
-        },
-        ShipMaterials {
-            lumber: 6,
-            fabric: 2,
-            arms: 0,
-            steel: 0,
-            coal: 0,
-            fuel: 0,
-        },
-        ShipMaterials {
-            lumber: 6,
-            fabric: 0,
-            arms: 3,
-            steel: 0,
-            coal: 10,
-            fuel: 0,
-        },
-        ShipMaterials {
-            lumber: 4,
-            fabric: 0,
-            arms: 6,
-            steel: 4,
-            coal: 10,
-            fuel: 0,
-        },
-        ShipMaterials {
-            lumber: 8,
-            fabric: 0,
-            arms: 15,
-            steel: 10,
-            coal: 20,
-            fuel: 0,
-        },
-        ShipMaterials {
-            lumber: 0,
-            fabric: 0,
-            arms: 0,
-            steel: 8,
-            coal: 20,
-            fuel: 0,
-        },
-        ShipMaterials {
-            lumber: 2,
-            fabric: 0,
-            arms: 8,
-            steel: 6,
-            coal: 20,
-            fuel: 0,
-        },
-        ShipMaterials {
-            lumber: 0,
-            fabric: 0,
-            arms: 24,
-            steel: 30,
-            coal: 0,
-            fuel: 20,
-        },
-        ShipMaterials {
-            lumber: 0,
-            fabric: 0,
-            arms: 18,
-            steel: 22,
-            coal: 0,
-            fuel: 20,
-        },
+        ship_materials(0, 0, 0, 0, 0, 0),
+        ship_materials(4, 2, 0, 0, 0, 0),
+        ship_materials(7, 3, 0, 0, 0, 0),
+        ship_materials(5, 2, 2, 0, 0, 0),
+        ship_materials(8, 3, 5, 0, 0, 0),
+        ship_materials(6, 0, 0, 2, 10, 0),
+        ship_materials(6, 2, 0, 0, 0, 0),
+        ship_materials(6, 0, 3, 0, 10, 0),
+        ship_materials(4, 0, 6, 4, 10, 0),
+        ship_materials(8, 0, 15, 10, 20, 0),
+        ship_materials(0, 0, 0, 8, 20, 0),
+        ship_materials(2, 0, 8, 6, 20, 0),
+        ship_materials(0, 0, 24, 30, 0, 20),
+        ship_materials(0, 0, 18, 22, 0, 20),
     ]);
-
     COSTS[ship_type]
 }

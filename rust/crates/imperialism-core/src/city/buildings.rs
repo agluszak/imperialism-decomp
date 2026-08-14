@@ -246,14 +246,13 @@ impl CityState {
 }
 
 impl GameState {
-    /// Records whether a city-screen building dialog is open and where it sits.
-    pub fn set_city_building_window(
+    /// Replaces the open city-screen building dialog origins for one nation.
+    pub fn set_city_building_windows(
         &mut self,
         nation: MajorNationId,
-        slot: CityFacilitySlot,
-        window: Option<CityWindowPosition>,
+        windows: ProductionTable<Option<CityWindowPosition>>,
     ) {
-        self.nations.city_mut(nation).building_windows[slot] = window;
+        self.nations.city_mut(nation).building_windows = windows;
     }
 }
 
