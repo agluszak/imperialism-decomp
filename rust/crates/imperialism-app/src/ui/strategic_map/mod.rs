@@ -122,10 +122,13 @@ pub(crate) fn sync_strategic_base_terrain(
     mut maps: Query<(
         &mut StrategicBaseTerrainCanvas,
         &ImageNode,
-        &StrategicSelection,
+        Ref<StrategicSelection>,
     )>,
 ) {
     for (mut canvas, image_node, selected) in &mut maps {
+        if !session.is_changed() && !selected.is_changed() {
+            continue;
+        }
         let key = strategic_map_compose_key(&session.game, selected.0);
         if canvas.composed == Some(key) {
             continue;
