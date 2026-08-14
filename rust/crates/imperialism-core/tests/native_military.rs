@@ -116,6 +116,27 @@ fn military_phase_supported_subset() {
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
+fn advisory_map_missions_case16() {
+    compare_native("advisory_map_missions_case16", |state, _: EmptyCase| {
+        for index in 0..MajorNationId::COUNT {
+            let nation = MajorNationId::new(index);
+            if state.nations().major(nation).kind != MajorNationKind::AutoGreatPower {
+                continue;
+            }
+            if matches!(
+                state.nations().country_status(nation.nation()),
+                Some(CountryStatus::ProtectorateOf(_))
+            ) {
+                continue;
+            }
+            state.select_and_queue_advisory_map_missions_case16(nation);
+        }
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
 fn combat_moves_uncontested() {
     compare_native("combat_moves_uncontested", |state, _: EmptyCase| {
         state.do_combat_moves()
