@@ -780,10 +780,11 @@ impl GameState {
 
 const LAND_SALE_TAG: i32 = 0x6c61_6e64;
 
-const CIVILIAN_SORT_PRIORITY: [i16; CivilianUnitKind::LENGTH] = [2, 0, 4, 3, 1, 5, 0, 0, 0];
+const CIVILIAN_SORT_PRIORITY: CivilianUnitTable<i16> =
+    CivilianUnitTable::from_array([2, 0, 4, 3, 1, 5, 0, 0, 0]);
 
 fn civilian_sort_priority(kind: CivilianUnitKind) -> i16 {
-    CIVILIAN_SORT_PRIORITY[kind as usize]
+    CIVILIAN_SORT_PRIORITY[kind]
 }
 
 fn idle_selectable(order: &CivilianWorkOrder) -> bool {
