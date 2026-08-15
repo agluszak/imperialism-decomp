@@ -3,7 +3,7 @@ use super::RetailUiAssets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::{RetailTag, find_descendant};
+use super::retail::RetailTree;
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -226,24 +226,21 @@ fn enter_trade_screen(mut commands: Commands) {
 fn bind_trade_screen(
     mut commands: Commands,
     root: Single<Entity, Added<TradeScreen>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
     mut session: ResMut<GameSession>,
 ) {
     bind_native_game_screen_nav(
         &mut commands,
         *root,
-        &children,
-        &tags,
+        &tree,
         fourcc!("topB"),
         Some(fourcc!("tool")),
     );
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("Trade active nation is a major nation");
+    let nation = session.active_major_nation();
     session.game.refresh_merchant_capacity(nation);
     session.game.recall_player_trade_orders(nation);
-    bind_game_status_display(&mut commands, &mut assets, *root, &children, &tags);
+    bind_game_status_display(&mut commands, &mut assets, *root, &tree);
 
     let (row_font, row_layout, row_line_height, _) = assets
         .text_style(RetailTextStylePreset {
@@ -282,8 +279,7 @@ fn bind_trade_screen(
     bind_trade_controls(
         &mut commands,
         *root,
-        &children,
-        &tags,
+        &tree,
         row_font,
         row_layout,
         row_line_height,
@@ -298,8 +294,7 @@ fn bind_trade_screen(
 fn bind_trade_controls(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     row_font: TextFont,
     row_layout: TextLayout,
     row_line_height: LineHeight,
@@ -308,23 +303,23 @@ fn bind_trade_controls(
     gauge_color: Color,
     advanced_trade_unlocked: bool,
 ) {
-    let selected = find_descendant(root, fourcc!("trad"), children, tags);
+    let selected = tree.find(root, fourcc!("trad"));
     commands
         .entity(selected)
         .insert((Checked, InteractionDisabled));
-    let capacity = find_descendant(root, fourcc!("mCap"), children, tags);
+    let capacity = tree.find(root, fourcc!("mCap"));
     commands
         .entity(capacity)
         .insert((TradeDisplay::Capacity, InteractionDisabled));
     for (tag, kind) in TRADE_ADVISORIES {
-        let advisory = find_descendant(root, tag, children, tags);
+        let advisory = tree.find(root, tag);
         commands
             .entity(advisory)
             .insert(TradeDisplay::Advisory(kind));
     }
 
     for binding in TRADE_ROWS {
-        let row = find_descendant(root, binding.tag, children, tags);
+        let row = tree.find(root, binding.tag);
         commands
             .entity(row)
             .insert((TradeDisplay::Row(binding.commodity), Pickable::IGNORE));
@@ -334,9 +329,9 @@ fn bind_trade_controls(
             trade_row_available(advanced_trade_unlocked, binding.commodity),
         );
 
-        let card = find_descendant(row, fourcc!("card"), children, tags);
+        let card = tree.find(row, fourcc!("card"));
         let card_pictures = pictures.for_button(binding.commodity, TradeCardKind::Bid);
-        let offer = find_descendant(row, fourcc!("offr"), children, tags);
+        let offer = tree.find(row, fourcc!("offr"));
         let offer_pictures = pictures.for_button(binding.commodity, TradeCardKind::Offer);
         bind_trade_card(
             commands,
@@ -354,7 +349,7 @@ fn bind_trade_controls(
         );
 
         for (tag, delta) in [(fourcc!("left"), -1), (fourcc!("rght"), 1)] {
-            let step = find_descendant(row, tag, children, tags);
+            let step = tree.find(row, tag);
             commands
                 .entity(step)
                 .insert((
@@ -368,15 +363,15 @@ fn bind_trade_controls(
                 .observe(on_trade_activate);
         }
 
-        let sell = find_descendant(row, fourcc!("Sell"), children, tags);
+        let sell = tree.find(row, fourcc!("Sell"));
         commands
             .entity(sell)
             .insert(TradeDisplay::Sell(binding.commodity));
-        let green = find_descendant(row, fourcc!("gree"), children, tags);
+        let green = tree.find(row, fourcc!("gree"));
         commands
             .entity(green)
             .insert(TradeDisplay::Offer(binding.commodity));
-        let bar = find_descendant(row, fourcc!("bar "), children, tags);
+        let bar = tree.find(row, fourcc!("bar "));
         commands.entity(bar).insert((
             TradeAction::Amount(binding.commodity),
             TradeDisplay::Offer(binding.commodity),
@@ -475,8 +470,7 @@ fn trade_row_overlay(
 }
 
 fn remember_trade_orders(mut session: ResMut<GameSession>) {
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("Trade active nation is a major nation");
+    let nation = session.active_major_nation();
     session.game.remember_trade_bids(nation);
 }
 
@@ -491,8 +485,7 @@ fn on_trade_activate(
     if disabled {
         return;
     }
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("Trade active nation is a major nation");
+    let nation = session.active_major_nation();
     match *action {
         TradeAction::Card { commodity, kind } => {
             let current = session.game.player_trade_order(nation, commodity);
@@ -541,8 +534,7 @@ fn on_trade_amount_bar_click(
     let Some(normalized) = cursor.normalized.filter(|_| cursor.cursor_over()) else {
         return;
     };
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("Trade active nation is a major nation");
+    let nation = session.active_major_nation();
     if !matches!(
         session.game.player_trade_order(nation, commodity),
         PlayerTradeOrder::Sell(_)
@@ -581,8 +573,7 @@ fn sync_trade_text(
     if !session.is_changed() && roots.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("Trade active nation is a major nation");
+    let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let capacity = major.economy.capacities.trade_offer;
     for (display, mut text) in &mut texts {
@@ -619,8 +610,7 @@ fn sync_trade_visual(
     if !session.is_changed() && roots.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("Trade active nation is a major nation");
+    let nation = session.active_major_nation();
     let capacity = session
         .game
         .nations()
@@ -680,8 +670,7 @@ fn sync_trade_presence(
     if !session.is_changed() && roots.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("Trade active nation is a major nation");
+    let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let capacity = major.economy.capacities.trade_offer;
     let advanced_trade_unlocked = session.game.technology().oil_drilling_available();
@@ -917,6 +906,7 @@ fn trade_gauge_width(quantity: i16, capacity: i16) -> f32 {
 
 #[cfg(test)]
 mod tests {
+    use super::super::retail::RetailTag;
     use super::*;
     use bevy::asset::AssetPlugin;
     use bevy::scene::ScenePlugin;
@@ -974,15 +964,13 @@ mod tests {
     fn bind_test_trade(
         mut commands: Commands,
         root: Single<Entity, Added<TestTradeRoot>>,
-        children: Query<&Children>,
-        tags: Query<&RetailTag>,
+        tree: RetailTree,
     ) {
         let image = Handle::<Image>::default();
         bind_trade_controls(
             &mut commands,
             *root,
-            &children,
-            &tags,
+            &tree,
             TextFont::default(),
             TextLayout::default(),
             LineHeight::default(),

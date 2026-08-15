@@ -8,7 +8,7 @@ use crate::ui::format_currency;
 use crate::ui::generated;
 use crate::ui::load_save::OpenFlagMenu;
 use crate::ui::query_floater::bind_query_floater_control;
-use crate::ui::retail::{RetailPictureSwap, RetailTag, find_descendant};
+use crate::ui::retail::{RetailPictureSwap, RetailTree, ancestor_with};
 use crate::ui::strategic_map::{
     bind_civilian_toolbar, bind_minimap, bind_strategic_base_terrain, register_civilian_orders,
     register_civilian_toolbar, sync_minimap, sync_strategic_base_terrain, sync_strategic_units,
@@ -18,7 +18,7 @@ use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
-use imperialism_core::{MajorNationId, MapEdges};
+use imperialism_core::MapEdges;
 use imperialism_formats::{FourCc, PictureId, RetailTextStylePreset, TRADE, fourcc};
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -131,61 +131,38 @@ fn spawn_strategic_map(mut commands: Commands) {
 fn bind_strategic_map(
     mut commands: Commands,
     root: Single<Entity, Added<StrategicMapRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    bind_native_game_screen_nav(
-        &mut commands,
-        *root,
-        &children,
-        &tags,
-        fourcc!("tool"),
-        None,
-    );
-    bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &children, &tags);
-    disable_native_control(&mut commands, *root, &children, &tags, fourcc!("DONE"));
-    let flag = find_descendant(*root, fourcc!("Flag"), &children, &tags);
+    bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None);
+    bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &tree);
+    disable_native_control(&mut commands, *root, &tree, fourcc!("DONE"));
+    let flag = tree.find(*root, fourcc!("Flag"));
     commands
         .entity(flag)
         .insert(OpenFlagMenu)
         .remove::<InteractionDisabled>();
-    bind_strategic_base_terrain(
-        &mut commands,
-        *root,
-        &children,
-        &tags,
-        &mut assets,
-        &session.game,
-    );
-    bind_minimap(
-        &mut commands,
-        *root,
-        &children,
-        &tags,
-        &mut assets,
-        &session.game,
-    );
-    bind_civilian_toolbar(&mut commands, &mut assets, *root, &children, &tags);
-    bind_game_status_display(&mut commands, &mut assets, *root, &children, &tags);
+    bind_strategic_base_terrain(&mut commands, *root, &tree, &mut assets, &session.game);
+    bind_minimap(&mut commands, *root, &tree, &mut assets, &session.game);
+    bind_civilian_toolbar(&mut commands, &mut assets, *root, &tree);
+    bind_game_status_display(&mut commands, &mut assets, *root, &tree);
 }
 
 fn bind_strategic_map_management_pictures(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
 ) {
-    let toolbar = find_descendant(root, fourcc!("tool"), children, tags);
+    let toolbar = tree.find(root, fourcc!("tool"));
     for (tag, idle_id) in [
         (fourcc!("dipl"), 0x24d9),
         (fourcc!("trad"), 0x24db),
         (fourcc!("city"), 0x24dd),
         (fourcc!("tran"), 0x24df),
     ] {
-        let entity = find_descendant(toolbar, tag, children, tags);
+        let entity = tree.find(toolbar, tag);
         let idle = assets
             .picture(PictureId::new(idle_id))
             .expect("retail strategic management button must load");
@@ -203,8 +180,7 @@ pub(crate) fn bind_game_status_display(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
 ) {
     let (season_font, season_layout, season_line_height, _) = assets
         .text_style(imperialism_formats::RetailTextStylePreset {
@@ -229,8 +205,7 @@ pub(crate) fn bind_game_status_display(
     bind_status_text(
         commands,
         root,
-        children,
-        tags,
+        tree,
         fourcc!("seas"),
         GameStatusDisplay::Date,
         season_font,
@@ -242,8 +217,7 @@ pub(crate) fn bind_game_status_display(
     bind_status_text(
         commands,
         root,
-        children,
-        tags,
+        tree,
         fourcc!("trea"),
         GameStatusDisplay::Treasury,
         treasury_font,
@@ -263,16 +237,14 @@ fn project_game_status_display(
     if super::projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let state = &session.game;
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
-        .expect("Game screen requires an active major nation");
+    let nation = session.active_major_nation();
     let date = {
         let season = retail
-            .string(10_000, (state.turn().economic_turn % 4) as i16)
+            .string(10_000, (session.game.turn().economic_turn % 4) as i16)
             .expect("retail season name must load");
-        format!("{season}, {}", 1815 + state.turn().economic_turn / 4)
+        format!("{season}, {}", 1815 + session.game.turn().economic_turn / 4)
     };
-    let treasury = format_currency(state.nations().major(nation).common.treasury);
+    let treasury = format_currency(session.game.nations().major(nation).common.treasury);
     for (kind, mut text) in &mut displays {
         text.0 = match kind {
             GameStatusDisplay::Date => date.clone(),
@@ -285,8 +257,7 @@ fn project_game_status_display(
 fn bind_status_text(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     tag: FourCc,
     kind: GameStatusDisplay,
     font: TextFont,
@@ -295,36 +266,33 @@ fn bind_status_text(
     text_color: Color,
     shadow_color: Color,
 ) {
-    commands
-        .entity(find_descendant(root, tag, children, tags))
-        .insert((
-            kind,
-            Text::default(),
-            font,
-            layout,
-            line_height,
-            TextColor(text_color),
-            TextShadow {
-                offset: Vec2::ONE,
-                color: shadow_color,
-            },
-        ));
+    commands.entity(tree.find(root, tag)).insert((
+        kind,
+        Text::default(),
+        font,
+        layout,
+        line_height,
+        TextColor(text_color),
+        TextShadow {
+            offset: Vec2::ONE,
+            color: shadow_color,
+        },
+    ));
 }
 
 pub(crate) fn bind_native_game_screen_nav(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     toolbar_tag: FourCc,
     leave_toolbar_tag: Option<FourCc>,
 ) {
-    bind_query_floater_control(commands, root, children, tags);
-    let toolbar = find_descendant(root, toolbar_tag, children, tags);
-    let trade = find_descendant(toolbar, TRADE, children, tags);
-    let transport = find_descendant(toolbar, fourcc!("tran"), children, tags);
-    let city = find_descendant(toolbar, fourcc!("city"), children, tags);
-    let diplomacy = find_descendant(toolbar, fourcc!("dipl"), children, tags);
+    bind_query_floater_control(commands, root, tree);
+    let toolbar = tree.find(root, toolbar_tag);
+    let trade = tree.find(toolbar, TRADE);
+    let transport = tree.find(toolbar, fourcc!("tran"));
+    let city = tree.find(toolbar, fourcc!("city"));
+    let diplomacy = tree.find(toolbar, fourcc!("dipl"));
     for (entity, action) in [
         (trade, GameScreenNavAction::Trade),
         (transport, GameScreenNavAction::Transport),
@@ -337,8 +305,8 @@ pub(crate) fn bind_native_game_screen_nav(
             .observe(on_game_screen_activate);
     }
     if let Some(leave_toolbar_tag) = leave_toolbar_tag {
-        let toolbar = find_descendant(root, leave_toolbar_tag, children, tags);
-        let leave = find_descendant(toolbar, fourcc!("end "), children, tags);
+        let toolbar = tree.find(root, leave_toolbar_tag);
+        let leave = tree.find(toolbar, fourcc!("end "));
         commands
             .entity(leave)
             .insert((GameScreenNavAction::StrategicMap, ActivateOnPress))
@@ -347,15 +315,9 @@ pub(crate) fn bind_native_game_screen_nav(
     }
 }
 
-fn disable_native_control(
-    commands: &mut Commands,
-    root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-    tag: FourCc,
-) {
+fn disable_native_control(commands: &mut Commands, root: Entity, tree: &RetailTree, tag: FourCc) {
     commands
-        .entity(find_descendant(root, tag, children, tags))
+        .entity(tree.find(root, tag))
         .insert(InteractionDisabled);
 }
 
@@ -405,8 +367,7 @@ fn spawn_turn_alerts_if_pending(
 fn bind_turn_alert_notice(
     mut commands: Commands,
     notice: Option<Single<Entity, Added<TurnAlertNotice>>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
 ) {
     let Some(root) = notice else {
@@ -414,23 +375,10 @@ fn bind_turn_alert_notice(
     };
     let root = *root;
     let notice_color = TextColor(assets.palette_color(0));
-    let title = find_descendant(root, fourcc!("titl"), &children, &tags);
-    let (title_font, title_layout, title_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
-        .expect("retail turn-alert title style");
-    commands.entity(title).insert((
-        Text::new("Report from your\nAdvisors\n\n"),
-        title_font,
-        title_layout,
-        title_line_height,
-        notice_color,
-    ));
-    let body = find_descendant(root, fourcc!("info"), &children, &tags);
+    commands
+        .entity(tree.find(root, fourcc!("titl")))
+        .insert((Text::new("Report from your\nAdvisors\n\n"), notice_color));
+    let body = tree.find(root, fourcc!("info"));
     let (body_font, body_layout, body_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
@@ -446,13 +394,13 @@ fn bind_turn_alert_notice(
         body_line_height,
         notice_color,
     ));
-    let okay = find_descendant(root, fourcc!("okay"), &children, &tags);
+    let okay = tree.find(root, fourcc!("okay"));
     commands
         .entity(okay)
         .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_turn_alert_dismiss);
-    let cancel = find_descendant(root, fourcc!("cncl"), &children, &tags);
+    let cancel = tree.find(root, fourcc!("cncl"));
     commands.entity(cancel).insert(Visibility::Hidden);
 }
 
@@ -464,16 +412,8 @@ fn on_turn_alert_dismiss(
     mut commands: Commands,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    let mut entity = activate.entity;
-    let root = loop {
-        if notices.contains(entity) {
-            break entity;
-        }
-        entity = parents
-            .get(entity)
-            .expect("turn alert belongs to its dialog")
-            .parent();
-    };
+    let root = ancestor_with(activate.entity, &parents, &notices)
+        .expect("turn alert belongs to its dialog");
     let stop = session.game.dismiss_turn_alerts();
     commands.entity(root).despawn();
     apply_turn_stop(stop, &mut next_state);

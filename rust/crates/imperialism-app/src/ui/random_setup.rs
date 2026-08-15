@@ -5,7 +5,7 @@ use crate::ui::hover_help::{
 };
 use crate::ui::random_setup_map;
 use crate::ui::retail::ModalDialog;
-use crate::ui::retail::{RADIO_CLUSTER_FRAME_PALETTE, RetailTag, RetailUiAssets, find_descendant};
+use crate::ui::retail::{RADIO_CLUSTER_FRAME_PALETTE, RetailTree, RetailUiAssets};
 use crate::ui::session::apply_turn_stop;
 use crate::{AppState, RandomGameNamesResource, RetailAssetsResource};
 use bevy::ecs::system::SystemParam;
@@ -170,38 +170,22 @@ fn enter_random_setup(mut commands: Commands) {
 fn bind_random_setup(
     mut commands: Commands,
     root: Single<Entity, Added<RandomSetupRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut nodes: Query<&mut Node>,
     setup: Res<RandomGameSetup>,
     mut assets: RetailUiAssets,
 ) {
-    bind_random_setup_controls(&mut commands, *root, &children, &tags, &setup);
-    bind_random_setup_labels(
-        &mut commands,
-        *root,
-        &children,
-        &tags,
-        &mut nodes,
-        &mut assets,
-    );
-    random_setup_map::attach_random_setup_meanings(&mut commands, *root, &children, &tags);
-    bind_random_setup_hover_help(
-        &mut commands,
-        *root,
-        &children,
-        &tags,
-        &mut nodes,
-        &mut assets,
-    );
+    bind_random_setup_controls(&mut commands, *root, &tree, &setup);
+    bind_random_setup_labels(&mut commands, *root, &tree, &mut nodes, &mut assets);
+    random_setup_map::attach_random_setup_meanings(&mut commands, *root, &tree);
+    bind_random_setup_hover_help(&mut commands, *root, &tree, &mut nodes, &mut assets);
 }
 
 /// Attach screen meanings only; Bevy widget semantics come from generated components.
 fn bind_random_setup_controls(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     setup: &RandomGameSetup,
 ) {
     for (tag, difficulty) in [
@@ -211,7 +195,7 @@ fn bind_random_setup_controls(
         (fourcc!("dif3"), Difficulty::Hard),
         (fourcc!("dif4"), Difficulty::NighOnImpossible),
     ] {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         let mut entity_commands = commands.entity(entity);
         entity_commands
             .insert((DifficultyChoice(difficulty), Pickable::default()))
@@ -227,7 +211,7 @@ fn bind_random_setup_controls(
         (fourcc!("hist"), NationNameMode::Historical),
         (fourcc!("rand"), NationNameMode::Random),
     ] {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         let mut entity_commands = commands.entity(entity);
         entity_commands
             .insert((LocalizedNamesChoice(localized), Pickable::default()))
@@ -239,7 +223,7 @@ fn bind_random_setup_controls(
         }
     }
 
-    let country = find_descendant(root, fourcc!("coun"), children, tags);
+    let country = tree.find(root, fourcc!("coun"));
     commands
         .entity(country)
         .insert((
@@ -254,7 +238,7 @@ fn bind_random_setup_controls(
         ))
         .observe(on_country_name_edited);
 
-    let okay = find_descendant(root, OKAY, children, tags);
+    let okay = tree.find(root, OKAY);
     // Retail rebuilds this screen from the main menu and keeps the draft when
     // capital selection cancels back into setup.
     commands
@@ -268,7 +252,7 @@ fn bind_random_setup_controls(
         (fourcc!("glob"), RandomSetupAction::RegeneratePlanet),
         (fourcc!("key "), RandomSetupAction::OpenPlanetSeed),
     ] {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         commands
             .entity(entity)
             .insert(action)
@@ -279,8 +263,7 @@ fn bind_random_setup_controls(
 fn bind_random_setup_labels(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     nodes: &mut Query<&mut Node>,
     assets: &mut RetailUiAssets,
 ) {
@@ -298,14 +281,14 @@ fn bind_random_setup_labels(
         (fourcc!("dif3"), 0x2737, 0x11),
         (fourcc!("dif4"), 0x2737, 0x12),
     ] {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         commands
             .entity(entity)
             .insert(Text::new(ui_string(assets, group, index)));
     }
     let frame = BorderColor::all(assets.palette_color(RADIO_CLUSTER_FRAME_PALETTE));
     for tag in [fourcc!("diff"), fourcc!("name")] {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         nodes
             .get_mut(entity)
             .expect("random-setup radio cluster has Node")
@@ -317,12 +300,11 @@ fn bind_random_setup_labels(
 fn bind_random_setup_hover_help(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     nodes: &mut Query<&mut Node>,
     assets: &mut RetailUiAssets,
 ) {
-    let bar = find_descendant(root, fourcc!("hot!"), children, tags);
+    let bar = tree.find(root, fourcc!("hot!"));
     bind_hover_help_bar(
         commands,
         assets,
@@ -336,8 +318,7 @@ fn bind_random_setup_hover_help(
     bind_hover_help_texts(
         commands,
         root,
-        children,
-        tags,
+        tree,
         [
             (fourcc!("main"), String::new()),
             (fourcc!("key "), String::new()),
@@ -565,11 +546,10 @@ fn open_planet_seed_dialog(commands: &mut Commands) {
 fn bind_planet_seed_dialog(
     mut commands: Commands,
     root: Single<Entity, Added<PlanetSeedDialogRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     setup: Res<RandomGameSetup>,
 ) {
-    let plan = find_descendant(*root, fourcc!("plan"), &children, &tags);
+    let plan = tree.find(*root, fourcc!("plan"));
     commands
         .entity(plan)
         .insert((
@@ -585,7 +565,7 @@ fn bind_planet_seed_dialog(
         ))
         .observe(on_planet_seed_enter);
 
-    let okay = find_descendant(*root, OKAY, &children, &tags);
+    let okay = tree.find(*root, OKAY);
     commands
         .entity(okay)
         .insert((PlanetSeedAccept, TabIndex(1)))
@@ -654,6 +634,7 @@ fn update_random_setup_preview(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ui::retail::RetailTag;
 
     fn spawn_binding_fixture(mut commands: Commands) {
         let root = commands.spawn((RandomSetupRoot, Node::default())).id();
@@ -690,10 +671,9 @@ mod tests {
                 spawn_binding_fixture,
                 |mut commands: Commands,
                  root: Single<Entity, Added<RandomSetupRoot>>,
-                 children: Query<&Children>,
-                 tags: Query<&RetailTag>,
+                 tree: RetailTree,
                  setup: Res<RandomGameSetup>| {
-                    bind_random_setup_controls(&mut commands, *root, &children, &tags, &setup);
+                    bind_random_setup_controls(&mut commands, *root, &tree, &setup);
                 },
             )
                 .chain(),

@@ -34,10 +34,6 @@ pub(in crate::ui::city) struct UniversityDialogData {
     pub(in crate::ui::city) rows: [UniversityRowText; UNIVERSITY_ROWS.len()],
     pub(in crate::ui::city) resource_icons: Handle<Image>,
     pub(in crate::ui::city) tier_labels: [String; 3],
-    pub(in crate::ui::city) title_font: TextFont,
-    pub(in crate::ui::city) title_line_height: LineHeight,
-    pub(in crate::ui::city) unit_font: TextFont,
-    pub(in crate::ui::city) unit_line_height: LineHeight,
     pub(in crate::ui::city) detail_font: TextFont,
     pub(in crate::ui::city) detail_line_height: LineHeight,
     pub(in crate::ui::city) normal_color: Color,
@@ -62,8 +58,7 @@ pub(in crate::ui::city) fn configure_university_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     state: &GameState,
 ) {
     let nation = MajorNationId::from_nation(state.turn().active_nation)
@@ -76,22 +71,6 @@ pub(in crate::ui::city) fn configure_university_dialog(
             alignment: -2,
         })
         .expect("retail University detail text style");
-    let (title_font, _, title_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 24,
-            alignment: 1,
-        })
-        .expect("retail University title fallback text style");
-    let (unit_font, _, unit_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
-        .expect("retail University unit-name fallback text style");
     let data = UniversityDialogData {
         available: state.technology().city_capabilities_by_nation[nation]
             .university
@@ -120,23 +99,18 @@ pub(in crate::ui::city) fn configure_university_dialog(
                 .string(0x2723, 0x0e + level as i16)
                 .expect("retail University tier label")
         }),
-        title_font,
-        title_line_height,
-        unit_font,
-        unit_line_height,
         detail_font,
         detail_line_height,
         normal_color: assets.palette_color(0xd2),
         warning_color: assets.palette_color(0xcb),
     };
-    bind_university_dialog(commands, root, children, tags, data);
+    bind_university_dialog(commands, root, tree, data);
 }
 
 pub(in crate::ui::city) fn bind_university_dialog(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     data: UniversityDialogData,
 ) {
     let UniversityDialogData {
@@ -144,24 +118,20 @@ pub(in crate::ui::city) fn bind_university_dialog(
         rows,
         resource_icons,
         tier_labels: tier_label_texts,
-        title_font,
-        title_line_height,
-        unit_font,
-        unit_line_height,
         detail_font,
         detail_line_height,
         normal_color,
         warning_color,
     } = data;
-    bind_city_dialog_root(commands, root, children, tags, CityFacilitySlot::University);
+    bind_city_dialog_root(commands, root, tree, CityFacilitySlot::University);
     for (spec, row_text) in UNIVERSITY_ROWS.iter().zip(rows) {
         let kind = spec.kind;
         let binding = spec.binding();
-        let button = find_descendant(root, spec.button_tag, children, tags);
-        let row = find_descendant(root, spec.order_tag, children, tags);
-        let minus = find_descendant(row, fourcc!("minu"), children, tags);
-        let plus = find_descendant(row, fourcc!("plus"), children, tags);
-        let quantity = find_descendant(row, fourcc!("numb"), children, tags);
+        let button = tree.find(root, spec.button_tag);
+        let row = tree.find(root, spec.order_tag);
+        let minus = tree.find(row, fourcc!("minu"));
+        let plus = tree.find(row, fourcc!("plus"));
+        let quantity = tree.find(row, fourcc!("numb"));
         commands.entity(minus).insert(CityOrderAdjust {
             order: binding.order,
             delta: -1,
@@ -205,12 +175,10 @@ pub(in crate::ui::city) fn bind_university_dialog(
             Text::new(""),
             CityOrderQuantity(binding.order),
             InteractionDisabled,
-            detail_font.clone(),
-            detail_line_height,
             TextColor(normal_color),
         ));
     }
-    let dlog = find_descendant(root, fourcc!("DLOG"), children, tags);
+    let dlog = tree.find(root, fourcc!("DLOG"));
     commands.spawn((
         Node {
             position_type: PositionType::Absolute,
@@ -274,102 +242,41 @@ pub(in crate::ui::city) fn bind_university_dialog(
         }
     }
     let tier_labels = [
-        find_descendant(root, fourcc!("fix2"), children, tags),
-        find_descendant(root, fourcc!("fix3"), children, tags),
-        find_descendant(root, fourcc!("fix4"), children, tags),
+        tree.find(root, fourcc!("fix2")),
+        tree.find(root, fourcc!("fix3")),
+        tree.find(root, fourcc!("fix4")),
     ];
     for (index, (entity, text)) in tier_labels.into_iter().zip(tier_label_texts).enumerate() {
         commands.entity(entity).insert((
             Text::new(text),
-            detail_font.clone(),
-            detail_line_height,
-            TextLayout::justify(Justify::Center),
             TextColor(normal_color),
             Visibility::Hidden,
             UniversityDisplay::TierLabel(index),
         ));
     }
-    let style_text = |commands: &mut Commands,
-                      tag,
-                      font: TextFont,
-                      line_height: LineHeight,
-                      display: UniversityDisplay| {
-        let entity = find_descendant(root, tag, children, tags);
-        commands.entity(entity).insert((
+    for (tag, display) in [
+        (fourcc!("unit"), UniversityDisplay::UnitName),
+        (fourcc!("desc"), UniversityDisplay::Description),
+        (fourcc!("cexp"), UniversityDisplay::LaborCost),
+        (fourcc!("cpap"), UniversityDisplay::MaterialCost),
+        (fourcc!("cash"), UniversityDisplay::CashCost),
+        (fourcc!("aexp"), UniversityDisplay::LaborAvailable),
+        (fourcc!("apap"), UniversityDisplay::MaterialAvailable),
+        (fourcc!("trea"), UniversityDisplay::Treasury),
+    ] {
+        commands.entity(tree.find(root, tag)).insert((
             Text::new(""),
-            font,
-            line_height,
             TextColor(normal_color),
             display,
         ));
-    };
-    style_text(
-        commands,
-        fourcc!("unit"),
-        unit_font,
-        unit_line_height,
-        UniversityDisplay::UnitName,
-    );
-    style_text(
-        commands,
-        fourcc!("desc"),
-        detail_font.clone(),
-        detail_line_height,
-        UniversityDisplay::Description,
-    );
-    style_text(
-        commands,
-        fourcc!("cexp"),
-        detail_font.clone(),
-        detail_line_height,
-        UniversityDisplay::LaborCost,
-    );
-    style_text(
-        commands,
-        fourcc!("cpap"),
-        detail_font.clone(),
-        detail_line_height,
-        UniversityDisplay::MaterialCost,
-    );
-    style_text(
-        commands,
-        fourcc!("cash"),
-        detail_font.clone(),
-        detail_line_height,
-        UniversityDisplay::CashCost,
-    );
-    style_text(
-        commands,
-        fourcc!("aexp"),
-        detail_font.clone(),
-        detail_line_height,
-        UniversityDisplay::LaborAvailable,
-    );
-    style_text(
-        commands,
-        fourcc!("apap"),
-        detail_font.clone(),
-        detail_line_height,
-        UniversityDisplay::MaterialAvailable,
-    );
-    style_text(
-        commands,
-        fourcc!("trea"),
-        detail_font.clone(),
-        detail_line_height,
-        UniversityDisplay::Treasury,
-    );
-    let title = find_descendant(root, fourcc!("titl"), children, tags);
+    }
     commands
-        .entity(title)
-        .insert((title_font, title_line_height, TextColor(normal_color)));
+        .entity(tree.find(root, fourcc!("titl")))
+        .insert(TextColor(normal_color));
     for tag in [fourcc!("fix0"), fourcc!("fix1")] {
-        let fixed = find_descendant(root, tag, children, tags);
-        commands.entity(fixed).insert((
-            detail_font.clone(),
-            detail_line_height,
-            TextColor(normal_color),
-        ));
+        commands
+            .entity(tree.find(root, tag))
+            .insert(TextColor(normal_color));
     }
     commands.entity(root).insert(CityRowSelection {
         order: CityOrderId::CivilianRecruit(CivilianUnitKind::Miner),
@@ -396,7 +303,7 @@ pub(in crate::ui::city) fn sync_university_details(
     if !session.is_changed() && !selection.is_changed() && !selection.is_added() {
         return;
     }
-    let nation = city_active_nation(&session);
+    let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let city = &major.city;
     let row = rows

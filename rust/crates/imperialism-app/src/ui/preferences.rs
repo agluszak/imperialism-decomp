@@ -4,10 +4,8 @@ use super::hover_help::{
     ui_string,
 };
 use super::query_floater::bind_query_floater_control;
-use super::retail::{
-    RetailPictureSwap, RetailTag, RetailUiAssets, find_descendant, try_find_descendant,
-};
-use crate::AppState;
+use super::retail::{RetailPictureSwap, RetailTag, RetailTree, RetailUiAssets};
+use crate::{AppState, ReturnTo};
 use bevy::picking::hover::DirectlyHovered;
 use bevy::prelude::*;
 use bevy::reflect::Is;
@@ -41,10 +39,6 @@ const MUSIC_PICTURE_BASE: i16 = 0x1036;
 const SOUND_PICTURE_BASE: i16 = 0x1038;
 const TACTICAL_BATTLE_ON_PICTURE: i16 = 4158;
 const TACTICAL_BATTLE_OFF_PICTURE: i16 = 4160;
-
-/// Screen restored when preferences close.
-#[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) struct PreferencesReturn(pub(crate) AppState);
 
 /// Retail `TSimMgr::preferenceValues[14]`.
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
@@ -112,7 +106,11 @@ impl Plugin for PreferencesPlugin {
                 on_preference_checked::<Remove, Checked>.run_if(in_state(AppState::Preferences)),
             )
             .add_observer(on_preference_slider_change.run_if(in_state(AppState::Preferences)))
-            .add_observer(on_preferences_activate.run_if(in_state(AppState::Preferences)));
+            .add_observer(on_preferences_activate.run_if(in_state(AppState::Preferences)))
+            .add_systems(
+                OnExit(AppState::Preferences),
+                super::session::clear_return_to,
+            );
     }
 }
 
@@ -126,15 +124,14 @@ fn spawn_preferences(mut commands: Commands) {
 fn bind_preferences(
     mut commands: Commands,
     root: Single<Entity, Added<PreferencesRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut nodes: Query<&mut Node>,
     prefs: Res<GamePreferences>,
     mut assets: RetailUiAssets,
 ) {
     let root = *root;
-    bind_query_floater_control(&mut commands, root, &children, &tags);
-    let curs = find_descendant(root, fourcc!("curs"), &children, &tags);
+    bind_query_floater_control(&mut commands, root, &tree);
+    let curs = tree.find(root, fourcc!("curs"));
     bind_hover_help_bar(
         &mut commands,
         &mut assets,
@@ -145,8 +142,7 @@ fn bind_preferences(
     bind_hover_help_texts(
         &mut commands,
         root,
-        &children,
-        &tags,
+        &tree,
         [
             (fourcc!("okay"), ui_string(&assets, 0x2743, 0x25)),
             (fourcc!("quer"), ui_string(&assets, 0x2730, 3)),
@@ -163,19 +159,18 @@ fn bind_preferences(
         .expect("retail preferences caption style");
     let color = TextColor(assets.palette_color(0x38));
 
+    let view = tree.view(root);
     for row in 0..5 {
-        let checkbox = try_find_descendant(root, CHECKBOX_TAGS[row], &children, &tags);
+        let checkbox = view.try_find(CHECKBOX_TAGS[row]);
         // Missing opta/optb: label-only row always uses the "on" caption.
         let caption_on = checkbox.is_none() || preference_row_is_on(&prefs, row);
-        commands
-            .entity(find_descendant(root, LABEL_TAGS[row], &children, &tags))
-            .insert((
-                Text::new(preference_caption(&assets, row, caption_on)),
-                font.clone(),
-                layout,
-                line_height,
-                color,
-            ));
+        commands.entity(view.find(LABEL_TAGS[row])).insert((
+            Text::new(preference_caption(&assets, row, caption_on)),
+            font.clone(),
+            layout,
+            line_height,
+            color,
+        ));
         let Some(checkbox) = checkbox else {
             continue;
         };
@@ -215,7 +210,7 @@ fn bind_preferences(
     bind_volume_slider(
         &mut commands,
         &mut assets,
-        find_descendant(root, fourcc!("musi"), &children, &tags),
+        tree.find(root, fourcc!("musi")),
         &nodes,
         MUSIC_PICTURE_BASE,
         3,
@@ -226,7 +221,7 @@ fn bind_preferences(
     bind_volume_slider(
         &mut commands,
         &mut assets,
-        find_descendant(root, fourcc!("soun"), &children, &tags),
+        tree.find(root, fourcc!("soun")),
         &nodes,
         SOUND_PICTURE_BASE,
         2,
@@ -236,7 +231,7 @@ fn bind_preferences(
     );
 
     commands
-        .entity(find_descendant(root, fourcc!("okay"), &children, &tags))
+        .entity(tree.find(root, fourcc!("okay")))
         .insert(PreferencesAction::Okay)
         .remove::<InteractionDisabled>();
 
@@ -254,7 +249,7 @@ fn bind_preferences(
         color: assets.palette_color(0x5c),
     };
     commands
-        .entity(find_descendant(root, fourcc!("tpca"), &children, &tags))
+        .entity(tree.find(root, fourcc!("tpca")))
         .insert((
             Text::new(ui_string(&assets, 0x2763, 0x18)),
             font,
@@ -263,8 +258,8 @@ fn bind_preferences(
             color,
         ))
         .remove::<InteractionDisabled>();
-    let yes = find_descendant(root, fourcc!("yess"), &children, &tags);
-    let no = find_descendant(root, fourcc!("nooo"), &children, &tags);
+    let yes = tree.find(root, fourcc!("yess"));
+    let no = tree.find(root, fourcc!("nooo"));
     commands.entity(yes).insert((
         Text::new(ui_string(&assets, 0x2763, 0x16)),
         radio_font.clone(),
@@ -286,7 +281,7 @@ fn bind_preferences(
         ))
         .remove::<Checked>();
     commands
-        .entity(find_descendant(root, fourcc!("opca"), &children, &tags))
+        .entity(tree.find(root, fourcc!("opca")))
         .remove::<InteractionDisabled>();
 }
 
@@ -574,7 +569,7 @@ fn on_preferences_activate(
     rows: Query<(&PreferenceRow, Has<Checked>)>,
     sliders: Query<(&PreferenceSlider, &SliderValue)>,
     mut prefs: ResMut<GamePreferences>,
-    returning: Res<PreferencesReturn>,
+    returning: Res<ReturnTo>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
@@ -612,7 +607,7 @@ mod tests {
         app.add_plugins(MinimalPlugins)
             .add_plugins(bevy::state::app::StatesPlugin)
             .insert_state(AppState::Preferences)
-            .insert_resource(PreferencesReturn(AppState::StrategicMap))
+            .insert_resource(ReturnTo(AppState::StrategicMap))
             .init_resource::<GamePreferences>()
             .add_observer(on_preferences_activate);
         let root = app.world_mut().spawn(PreferencesRoot).id();

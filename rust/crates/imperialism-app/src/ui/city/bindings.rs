@@ -342,11 +342,6 @@ pub(in crate::ui::city) fn industry_page(slot: CityFacilitySlot) -> Option<Indus
         .find(|page| page.slot == slot)
 }
 
-pub(in crate::ui::city) fn city_active_nation(session: &GameSession) -> MajorNationId {
-    MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("City active nation is a major nation")
-}
-
 pub(in crate::ui::city) fn city_oil_industry_unlocked(
     state: &GameState,
     nation: MajorNationId,
