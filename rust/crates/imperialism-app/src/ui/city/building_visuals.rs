@@ -159,8 +159,7 @@ pub(in crate::ui::city) fn enter_city_screen(mut commands: Commands) {
 pub(in crate::ui::city) fn bind_city_screen(
     mut commands: Commands,
     root: Single<Entity, Added<CitySceneRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     nodes: Query<&Node>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
@@ -168,21 +167,19 @@ pub(in crate::ui::city) fn bind_city_screen(
     bind_native_game_screen_nav(
         &mut commands,
         *root,
-        &children,
-        &tags,
+        &tree,
         fourcc!("topB"),
         Some(fourcc!("tool")),
     );
 
-    let nation = city_active_nation(&session);
-    bind_game_status_display(&mut commands, &mut assets, *root, &children, &tags);
-    bind_city_summary_values(&mut commands, *root, &children, &tags, &nodes, &mut assets);
-    bind_city_hover_title(&mut commands, *root, &children, &tags, &mut assets);
+    let nation = session.active_major_nation();
+    bind_game_status_display(&mut commands, &mut assets, *root, &tree);
+    bind_city_summary_values(&mut commands, *root, &tree, &nodes, &mut assets);
+    bind_city_hover_title(&mut commands, *root, &tree, &mut assets);
     spawn_city_buildings(
         &mut commands,
         *root,
-        &children,
-        &tags,
+        &tree,
         generated::CITY_BUILDINGS,
         generated::CITY_BUILDING_ACTIONS,
         &session.game,
@@ -204,8 +201,7 @@ const CITY_SUMMARY_NUMBER_STYLE: RetailTextStylePreset = RetailTextStylePreset {
 fn bind_city_summary_values(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     nodes: &Query<&Node>,
     assets: &mut RetailUiAssets,
 ) {
@@ -221,7 +217,7 @@ fn bind_city_summary_values(
     let text_color = assets.palette_color(0x28);
     let shadow_color = assets.palette_color(0);
     let bind_text = |commands: &mut Commands, tag, marker| {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         let node = nodes
             .get(entity)
             .expect("retail city placard has a native node");
@@ -281,15 +277,14 @@ fn bind_city_summary_values(
         bind_text(commands, tag, CitySummary::Need(resource));
     }
     commands
-        .entity(find_descendant(root, fourcc!("trea"), children, tags))
+        .entity(tree.find(root, fourcc!("trea")))
         .insert(CitySummary::Treasury);
 }
 
 fn bind_city_hover_title(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     assets: &mut RetailUiAssets,
 ) {
     let (font, layout, line_height, _) = assets
@@ -300,35 +295,32 @@ fn bind_city_hover_title(
             alignment: 1,
         })
         .expect("retail city cursor-panel text style");
-    commands
-        .entity(find_descendant(root, fourcc!("curs"), children, tags))
-        .insert((
-            Text::new(""),
-            font,
-            layout,
-            line_height,
-            TextColor(assets.palette_color(0x28)),
-            TextShadow {
-                offset: Vec2::ONE,
-                color: assets.palette_color(0),
-            },
-            CityHoverTitle,
-        ));
+    commands.entity(tree.find(root, fourcc!("curs"))).insert((
+        Text::new(""),
+        font,
+        layout,
+        line_height,
+        TextColor(assets.palette_color(0x28)),
+        TextShadow {
+            offset: Vec2::ONE,
+            color: assets.palette_color(0),
+        },
+        CityHoverTitle,
+    ));
 }
 
 #[allow(clippy::too_many_arguments)]
 pub(in crate::ui::city) fn spawn_city_buildings(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     visuals: &[CityBuildingVisual],
     actions: &[CityBuildingActionVisual],
     state: &GameState,
     nation: MajorNationId,
     assets: &mut RetailUiAssets,
 ) {
-    let main = find_descendant(root, fourcc!("main"), children, tags);
+    let main = tree.find(root, fourcc!("main"));
     let mut hit_regions = Vec::new();
     for visual in visuals {
         let level = city_building_level(state, nation, visual.slot);
@@ -571,8 +563,7 @@ pub(in crate::ui::city) fn animate_city_building_actions(
         &mut Visibility,
     )>,
 ) {
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("City active nation is a major nation");
+    let nation = session.active_major_nation();
     for (mut action, mut image, mut visibility) in &mut actions {
         action.timer.tick(time.delta());
         let advanced = action.timer.times_finished_this_tick();
@@ -622,7 +613,7 @@ pub(in crate::ui::city) fn sync_city_summary(
     if !session.is_changed() && added.is_empty() {
         return;
     }
-    let nation = city_active_nation(&session);
+    let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let city = &major.city;
     let labor = city.population.baseline_labor();
@@ -679,7 +670,7 @@ pub(in crate::ui::city) fn sync_city_hover_title(
                 .rev()
                 .find(|building| building.mask.contains(point - building.origin))
         });
-    let nation = city_active_nation(&session);
+    let nation = session.active_major_nation();
     let text = hovered.map_or_else(String::new, |building| {
         if city_oil_industry_unlocked(&session.game, nation, building.slot) {
             assets
@@ -706,7 +697,7 @@ pub(in crate::ui::city) fn sync_city_buildings(
     if !session.is_changed() && added.is_empty() {
         return;
     }
-    let nation = city_active_nation(&session);
+    let nation = session.active_major_nation();
     let city = &session.game.nations().major(nation).city;
     for (CityBuildingSprite(slot), mut image, mut visibility) in &mut pictures {
         let level = city_building_level(&session.game, nation, *slot);

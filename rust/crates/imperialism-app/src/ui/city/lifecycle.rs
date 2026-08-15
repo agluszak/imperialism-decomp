@@ -45,7 +45,7 @@ pub(in crate::ui::city) fn on_city_canvas_click(
     else {
         return;
     };
-    let nation = city_active_nation(&session);
+    let nation = session.active_major_nation();
     if dialogs
         .iter()
         .any(|(dialog, _)| dialog.slot == building.slot)
@@ -104,11 +104,10 @@ pub(in crate::ui::city) fn open_city_dialog(
 pub(in crate::ui::city) fn bind_city_dialog_root(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     slot: CityFacilitySlot,
 ) {
-    let window = find_descendant(root, fourcc!("WIND"), children, tags);
+    let window = tree.find(root, fourcc!("WIND"));
     commands
         .entity(window)
         .insert((Pickable::default(), CityDialogWindow(slot)));
@@ -163,13 +162,12 @@ pub(in crate::ui::city) fn bind_city_dialog_root(
 pub(in crate::ui::city) fn bind_city_dialogs(
     mut commands: Commands,
     dialogs: Query<(Entity, &CityBuildingDialog), Added<CityBuildingDialog>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
     for (root, dialog) in &dialogs {
-        let window = find_descendant(root, fourcc!("WIND"), &children, &tags);
+        let window = tree.find(root, fourcc!("WIND"));
         if let Some(position) = dialog.saved_position {
             commands
                 .entity(window)
@@ -181,58 +179,34 @@ pub(in crate::ui::city) fn bind_city_dialogs(
         }
         match city_dialog_kind(dialog.slot) {
             CityDialogKind::Industry(page) => {
-                configure_industry_dialog(&mut commands, &mut assets, root, &children, &tags, page);
+                configure_industry_dialog(&mut commands, &mut assets, root, &tree, page);
             }
             CityDialogKind::Training => {
-                configure_training_dialog(&mut commands, &assets, root, &children, &tags)
+                configure_training_dialog(&mut commands, &assets, root, &tree)
             }
-            CityDialogKind::Armory => configure_armory_dialog(
-                &mut commands,
-                &mut assets,
-                root,
-                &children,
-                &tags,
-                &session.game,
-            ),
-            CityDialogKind::University => configure_university_dialog(
-                &mut commands,
-                &mut assets,
-                root,
-                &children,
-                &tags,
-                &session.game,
-            ),
-            CityDialogKind::Shipyard => configure_shipyard_dialog(
-                &mut commands,
-                &mut assets,
-                root,
-                &children,
-                &tags,
-                &session.game,
-            ),
-            CityDialogKind::Warehouse => configure_warehouse_dialog(
-                &mut commands,
-                &mut assets,
-                root,
-                &children,
-                &tags,
-                &session.game,
-            ),
+            CityDialogKind::Armory => {
+                configure_armory_dialog(&mut commands, &mut assets, root, &tree, &session.game)
+            }
+            CityDialogKind::University => {
+                configure_university_dialog(&mut commands, &mut assets, root, &tree, &session.game)
+            }
+            CityDialogKind::Shipyard => {
+                configure_shipyard_dialog(&mut commands, &mut assets, root, &tree, &session.game)
+            }
+            CityDialogKind::Warehouse => {
+                configure_warehouse_dialog(&mut commands, &mut assets, root, &tree, &session.game)
+            }
             CityDialogKind::FoodProcessing => {
-                configure_food_dialog(&mut commands, &mut assets, root, &children, &tags)
+                configure_food_dialog(&mut commands, &mut assets, root, &tree)
             }
             CityDialogKind::PowerPlant => {
-                configure_power_dialog(&mut commands, &mut assets, root, &children, &tags)
+                configure_power_dialog(&mut commands, &mut assets, root, &tree)
             }
-            CityDialogKind::Transport => configure_transport_capacity_dialog(
-                &mut commands,
-                &mut assets,
-                root,
-                &children,
-                &tags,
-            ),
+            CityDialogKind::Transport => {
+                configure_transport_capacity_dialog(&mut commands, &mut assets, root, &tree)
+            }
             CityDialogKind::Population => {
-                configure_population_dialog(&mut commands, &mut assets, root, &children, &tags)
+                configure_population_dialog(&mut commands, &mut assets, root, &tree)
             }
         }
     }
@@ -246,10 +220,10 @@ pub(in crate::ui::city) fn restore_city_dialogs(
     if roots.is_empty() {
         return;
     }
-    let nation = city_active_nation(&session);
+    let nation = session.active_major_nation();
     let city = &session.game.nations().major(nation).city;
     let mut next_z = 1;
-    for slot in CityFacilitySlot::ALL {
+    for slot in (0..enum_map::enum_len::<CityFacilitySlot>()).map(CityFacilitySlot::from_usize) {
         let state = city.building_windows[slot];
         let Some(position) = state else {
             continue;
@@ -281,7 +255,7 @@ pub(in crate::ui::city) fn leave_city_screen(
     mut session: ResMut<GameSession>,
     windows: Query<(&CityDialogWindow, &Node)>,
 ) {
-    let nation = city_active_nation(&session);
+    let nation = session.active_major_nation();
     let mut positions = ProductionTable::default();
     for (window, node) in &windows {
         let (left, top) = node_position(node);

@@ -62,8 +62,7 @@ pub(in crate::ui::city) fn configure_university_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     state: &GameState,
 ) {
     let nation = MajorNationId::from_nation(state.turn().active_nation)
@@ -130,14 +129,13 @@ pub(in crate::ui::city) fn configure_university_dialog(
         normal_color: assets.palette_color(0xd2),
         warning_color: assets.palette_color(0xcb),
     };
-    bind_university_dialog(commands, root, children, tags, data);
+    bind_university_dialog(commands, root, tree, data);
 }
 
 pub(in crate::ui::city) fn bind_university_dialog(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     data: UniversityDialogData,
 ) {
     let UniversityDialogData {
@@ -154,15 +152,14 @@ pub(in crate::ui::city) fn bind_university_dialog(
         normal_color,
         warning_color,
     } = data;
-    bind_city_dialog_root(commands, root, children, tags, CityFacilitySlot::University);
+    bind_city_dialog_root(commands, root, tree, CityFacilitySlot::University);
     for (spec, row_text) in UNIVERSITY_ROWS.iter().zip(rows) {
         let kind = spec.civilian_kind();
-        let button = find_descendant(root, spec.button_tag, children, tags);
+        let button = tree.find(root, spec.button_tag);
         let bound = bind_city_order_row(
             commands,
             root,
-            children,
-            tags,
+            tree,
             spec.binding,
             fourcc!("minu"),
             fourcc!("plus"),
@@ -199,7 +196,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
             TextColor(normal_color),
         ));
     }
-    let dlog = find_descendant(root, fourcc!("DLOG"), children, tags);
+    let dlog = tree.find(root, fourcc!("DLOG"));
     commands.spawn((
         Node {
             position_type: PositionType::Absolute,
@@ -263,9 +260,9 @@ pub(in crate::ui::city) fn bind_university_dialog(
         }
     }
     let tier_labels = [
-        find_descendant(root, fourcc!("fix2"), children, tags),
-        find_descendant(root, fourcc!("fix3"), children, tags),
-        find_descendant(root, fourcc!("fix4"), children, tags),
+        tree.find(root, fourcc!("fix2")),
+        tree.find(root, fourcc!("fix3")),
+        tree.find(root, fourcc!("fix4")),
     ];
     for (index, (entity, text)) in tier_labels.into_iter().zip(tier_label_texts).enumerate() {
         commands.entity(entity).insert((
@@ -283,7 +280,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
                       font: TextFont,
                       line_height: LineHeight,
                       display: UniversityDisplay| {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         commands.entity(entity).insert((
             Text::new(""),
             font,
@@ -348,12 +345,12 @@ pub(in crate::ui::city) fn bind_university_dialog(
         detail_line_height,
         UniversityDisplay::Treasury,
     );
-    let title = find_descendant(root, fourcc!("titl"), children, tags);
+    let title = tree.find(root, fourcc!("titl"));
     commands
         .entity(title)
         .insert((title_font, title_line_height, TextColor(normal_color)));
     for tag in [fourcc!("fix0"), fourcc!("fix1")] {
-        let fixed = find_descendant(root, tag, children, tags);
+        let fixed = tree.find(root, tag);
         commands.entity(fixed).insert((
             detail_font.clone(),
             detail_line_height,
@@ -388,7 +385,7 @@ pub(in crate::ui::city) fn sync_university_details(
     let CityOrderId::CivilianRecruit(kind) = selection.order else {
         return;
     };
-    let nation = city_active_nation(&session);
+    let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let city = &major.city;
     let row = rows

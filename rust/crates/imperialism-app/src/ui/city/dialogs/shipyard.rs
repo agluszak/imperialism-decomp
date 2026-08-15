@@ -35,8 +35,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     state: &GameState,
 ) {
     let nation = MajorNationId::from_nation(state.turn().active_nation)
@@ -113,15 +112,14 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
         std::array::from_fn(|index| city_string(assets, 0x2736, 0x10 + index as i16));
     let normal_color = assets.palette_color(0xd2);
     let warning_color = assets.palette_color(0xcb);
-    bind_city_dialog_root(commands, root, children, tags, CityFacilitySlot::Shipyard);
+    bind_city_dialog_root(commands, root, tree, CityFacilitySlot::Shipyard);
     for (spec, details) in prepared_rows {
         let slot = spec.slot();
-        let button = find_descendant(root, spec.button_tag, children, tags);
+        let button = tree.find(root, spec.button_tag);
         let bound = bind_city_order_row(
             commands,
             root,
-            children,
-            tags,
+            tree,
             spec.binding,
             fourcc!("minu"),
             fourcc!("plus"),
@@ -176,7 +174,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
                       font: TextFont,
                       line_height: LineHeight,
                       display: ShipyardDisplay| {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         commands.entity(entity).insert((
             Text::new(""),
             font,
@@ -199,21 +197,21 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
         detail_line_height,
         ShipyardDisplay::Description,
     );
-    let picture = find_descendant(root, fourcc!("spic"), children, tags);
+    let picture = tree.find(root, fourcc!("spic"));
     commands.entity(picture).insert(ShipyardDisplay::Picture);
-    let title = find_descendant(root, fourcc!("titl"), children, tags);
+    let title = tree.find(root, fourcc!("titl"));
     commands
         .entity(title)
         .insert((title_font, title_line_height, TextColor(normal_color)));
     for tag in [fourcc!("fix0"), fourcc!("fix1")] {
-        let fixed = find_descendant(root, tag, children, tags);
+        let fixed = tree.find(root, tag);
         commands.entity(fixed).insert((
             detail_font.clone(),
             detail_line_height,
             TextColor(normal_color),
         ));
     }
-    let dlog = find_descendant(root, fourcc!("DLOG"), children, tags);
+    let dlog = tree.find(root, fourcc!("DLOG"));
     for index in 0..4 {
         let left = 26.0 + index as f32 * 40.0;
         for top in [152.0, 204.0] {
@@ -345,7 +343,7 @@ pub(in crate::ui::city) fn sync_shipyard_details(
     if !session.is_changed() && !selection.is_changed() && !selection.is_added() {
         return;
     }
-    let nation = city_active_nation(&session);
+    let nation = session.active_major_nation();
     let city = &session.game.nations().major(nation).city;
     let row = rows
         .iter()

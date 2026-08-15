@@ -3,7 +3,7 @@
 
 use super::super::GameSession;
 use super::super::RetailUiAssets;
-use super::super::retail::{RetailTag, find_descendant};
+use super::super::retail::RetailTree;
 use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
@@ -45,12 +45,11 @@ pub(super) struct MiniMapWindow {
 pub(crate) fn bind_minimap(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     assets: &mut RetailUiAssets,
     state: &GameState,
 ) {
-    let toolbar = find_descendant(root, TOOL_TAG, children, tags);
+    let toolbar = tree.find(root, TOOL_TAG);
     let (image, window) = compose_minimap(state, assets.default_dib_palette(), None);
     let image = assets.add_image(image);
     commands.entity(toolbar).with_children(|parent| {

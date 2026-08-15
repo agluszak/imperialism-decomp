@@ -11,6 +11,7 @@ use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
+use enum_map::Enum;
 use imperialism_core::*;
 use imperialism_formats::*;
 use std::collections::HashMap;
@@ -208,7 +209,7 @@ fn project_strategic_units_onto(
 
 fn load_strategic_unit_sprites(assets: &RetailUiAssets, state: &GameState) -> StrategicUnitSprites {
     let mut civilians = HashMap::new();
-    for kind in CivilianUnitKind::ALL {
+    for kind in (0..CivilianUnitKind::LENGTH).map(CivilianUnitKind::from_usize) {
         for pose in [
             CivilianPose::Idle,
             CivilianPose::Working,

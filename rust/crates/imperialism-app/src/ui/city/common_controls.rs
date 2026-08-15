@@ -69,8 +69,7 @@ pub(in crate::ui::city) fn configure_industry_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     page: IndustryPage,
 ) {
     let building_name = city_building_name(assets, page.slot);
@@ -79,8 +78,7 @@ pub(in crate::ui::city) fn configure_industry_dialog(
     bind_industry_dialog(
         commands,
         root,
-        children,
-        tags,
+        tree,
         page,
         building_name,
         capacity_template,
@@ -117,18 +115,17 @@ impl CityOrderRow {
 pub(in crate::ui::city) fn bind_city_order_row(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     binding: CityOrderBinding,
     decrease_tag: FourCc,
     increase_tag: FourCc,
     quantity_tag: FourCc,
     step: i16,
 ) -> CityOrderRow {
-    let row = find_descendant(root, binding.tag, children, tags);
-    let decrease = find_descendant(row, decrease_tag, children, tags);
-    let increase = find_descendant(row, increase_tag, children, tags);
-    let quantity = find_descendant(row, quantity_tag, children, tags);
+    let row = tree.find(root, binding.tag);
+    let decrease = tree.find(row, decrease_tag);
+    let increase = tree.find(row, increase_tag);
+    let quantity = tree.find(row, quantity_tag);
     commands.entity(decrease).insert(CityOrderAdjust {
         order: binding.order,
         delta: -step,
@@ -151,8 +148,7 @@ pub(in crate::ui::city) fn bind_city_order_row(
 fn bind_industry_amount_bars(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     page: IndustryPage,
     bar_color: Color,
 ) {
@@ -160,8 +156,7 @@ fn bind_industry_amount_bars(
         let bound = bind_city_order_row(
             commands,
             root,
-            children,
-            tags,
+            tree,
             *binding,
             fourcc!("left"),
             fourcc!("rght"),
@@ -175,7 +170,7 @@ fn bind_industry_amount_bars(
         commands
             .entity(bound.quantity)
             .insert(IndustryBar::Quantity(amount));
-        let bar = find_descendant(bound.row, fourcc!("bar "), children, tags);
+        let bar = tree.find(bound.row, fourcc!("bar "));
         commands.spawn((
             Node {
                 position_type: PositionType::Absolute,
@@ -220,18 +215,17 @@ fn bind_industry_amount_bars(
 pub(in crate::ui::city) fn bind_industry_dialog(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     page: IndustryPage,
     building_name: String,
     capacity_template: String,
     bar_color: Color,
 ) {
-    bind_city_dialog_root(commands, root, children, tags, page.slot);
+    bind_city_dialog_root(commands, root, tree, page.slot);
 
-    let name = find_descendant(root, fourcc!("name"), children, tags);
+    let name = tree.find(root, fourcc!("name"));
     commands.entity(name).insert(Text::new(building_name));
-    let capacity = find_descendant(root, fourcc!("capT"), children, tags);
+    let capacity = tree.find(root, fourcc!("capT"));
     commands.entity(capacity).insert((
         Text::new(""),
         IndustryCapacity {
@@ -239,23 +233,23 @@ pub(in crate::ui::city) fn bind_industry_dialog(
             template: capacity_template,
         },
     ));
-    let labor = find_descendant(root, fourcc!("labV"), children, tags);
+    let labor = tree.find(root, fourcc!("labV"));
     commands
         .entity(labor)
         .insert((Text::new("X"), IndustryIndicator::Labor));
     for &(resource, tag, minimum) in page.stocks {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         commands.entity(entity).insert((
             Text::new("X"),
             IndustryIndicator::Stock { resource, minimum },
         ));
     }
-    bind_industry_amount_bars(commands, root, children, tags, page, bar_color);
-    let expansion_action = find_descendant(root, fourcc!("expa"), children, tags);
+    bind_industry_amount_bars(commands, root, tree, page, bar_color);
+    let expansion_action = tree.find(root, fourcc!("expa"));
     commands
         .entity(expansion_action)
         .insert(CityExpansionOpen { slot: page.slot });
-    let expansion = find_descendant(root, fourcc!("flag"), children, tags);
+    let expansion = tree.find(root, fourcc!("flag"));
     commands
         .entity(expansion)
         .insert(IndustryIndicator::Expansion(page.slot));
@@ -386,7 +380,7 @@ pub(in crate::ui::city) fn sync_city_order_quantities(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let nation = city_active_nation(&session);
+    let nation = session.active_major_nation();
     for (CityOrderQuantity(order), mut text) in &mut quantities {
         text.0 = session.game.city_order_quantity(nation, *order).to_string();
     }
@@ -400,7 +394,7 @@ pub(in crate::ui::city) fn sync_industry_texts(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let nation = city_active_nation(&session);
+    let nation = session.active_major_nation();
     let city = &session.game.nations().major(nation).city;
     for (capacity, mut text) in &mut capacities {
         text.0 = format_retail_number(&capacity.template, city.production_orders[capacity.slot]);
@@ -415,7 +409,7 @@ pub(in crate::ui::city) fn sync_industry_indicators(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let nation = city_active_nation(&session);
+    let nation = session.active_major_nation();
     let city = &session.game.nations().major(nation).city;
     for (indicator, mut visibility) in &mut indicators {
         let visible = match *indicator {
@@ -439,7 +433,7 @@ pub(in crate::ui::city) fn sync_industry_bars(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let nation = city_active_nation(&session);
+    let nation = session.active_major_nation();
     let city = &session.game.nations().major(nation).city;
     let scale = |value: i16, capacity: i16| {
         if capacity > 0 {

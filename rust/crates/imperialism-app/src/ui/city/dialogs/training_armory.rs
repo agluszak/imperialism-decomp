@@ -83,39 +83,30 @@ pub(in crate::ui::city) fn configure_training_dialog(
     commands: &mut Commands,
     assets: &RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::TradeSchool);
-    bind_training_dialog(commands, root, children, tags, building_name);
+    bind_training_dialog(commands, root, tree, building_name);
 }
 
 pub(in crate::ui::city) fn bind_training_dialog(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     building_name: String,
 ) {
-    bind_city_dialog_root(
-        commands,
-        root,
-        children,
-        tags,
-        CityFacilitySlot::TradeSchool,
-    );
-    let name = find_descendant(root, fourcc!("name"), children, tags);
+    bind_city_dialog_root(commands, root, tree, CityFacilitySlot::TradeSchool);
+    let name = tree.find(root, fourcc!("name"));
     commands.entity(name).insert(Text::new(building_name));
     for (tag, text) in [(fourcc!("cos1"), "$100"), (fourcc!("cos2"), "$1,000")] {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         commands.entity(entity).insert(Text::new(text));
     }
     for binding in TRAINING_ORDERS {
         bind_city_order_row(
             commands,
             root,
-            children,
-            tags,
+            tree,
             binding,
             fourcc!("left"),
             fourcc!("rght"),
@@ -123,12 +114,12 @@ pub(in crate::ui::city) fn bind_training_dialog(
             1,
         );
     }
-    let paper_one = find_descendant(root, fourcc!("pap1"), children, tags);
-    let paper_two = find_descendant(root, fourcc!("pap2"), children, tags);
-    let money_one = find_descendant(root, fourcc!("mon1"), children, tags);
-    let money_two = find_descendant(root, fourcc!("mon2"), children, tags);
-    let untrained_available = find_descendant(root, fourcc!("untV"), children, tags);
-    let trained_available = find_descendant(root, fourcc!("traV"), children, tags);
+    let paper_one = tree.find(root, fourcc!("pap1"));
+    let paper_two = tree.find(root, fourcc!("pap2"));
+    let money_one = tree.find(root, fourcc!("mon1"));
+    let money_two = tree.find(root, fourcc!("mon2"));
+    let untrained_available = tree.find(root, fourcc!("untV"));
+    let trained_available = tree.find(root, fourcc!("traV"));
     commands
         .entity(paper_one)
         .insert((Text::new("X"), TrainingIndicator::Paper { minimum: 1 }));
@@ -153,8 +144,7 @@ pub(in crate::ui::city) fn configure_armory_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     state: &GameState,
 ) {
     let nation = MajorNationId::from_nation(state.turn().active_nation)
@@ -174,8 +164,8 @@ pub(in crate::ui::city) fn configure_armory_dialog(
     let title = assets
         .string(0x271c, 0x20)
         .expect("retail English Armory title");
-    bind_city_dialog_root(commands, root, children, tags, CityFacilitySlot::Armory);
-    let title_control = find_descendant(root, fourcc!("titl"), children, tags);
+    bind_city_dialog_root(commands, root, tree, CityFacilitySlot::Armory);
+    let title_control = tree.find(root, fourcc!("titl"));
     commands.entity(title_control).insert((
         Text::new(title),
         title_font,
@@ -186,15 +176,14 @@ pub(in crate::ui::city) fn configure_armory_dialog(
         let bound = bind_city_order_row(
             commands,
             root,
-            children,
-            tags,
+            tree,
             row.binding,
             fourcc!("minu"),
             fourcc!("plus"),
             fourcc!("numb"),
             1,
         );
-        let button = find_descendant(root, row.button_tag, children, tags);
+        let button = tree.find(root, row.button_tag);
         let category = row.military_category();
         let unit = city.orders.military_recruitment[category].unit_kind;
         let idle = assets
@@ -227,7 +216,7 @@ pub(in crate::ui::city) fn configure_armory_dialog(
         (fourcc!("sta3"), ArmoryDetail::Static),
         (fourcc!("desc"), ArmoryDetail::Description),
     ] {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         let (font, line_height) = if tag == fourcc!("unit") {
             (unit_font.clone(), unit_line_height)
         } else {
@@ -249,7 +238,7 @@ pub(in crate::ui::city) fn configure_armory_dialog(
         (fourcc!("lab2"), 3),
         (fourcc!("lab3"), 4),
     ] {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         commands.entity(entity).insert((
             Text::new(
                 assets
@@ -261,7 +250,7 @@ pub(in crate::ui::city) fn configure_armory_dialog(
             TextColor(normal_color),
         ));
     }
-    let placard = find_descendant(root, fourcc!("plaq"), children, tags);
+    let placard = tree.find(root, fourcc!("plaq"));
     commands.entity(placard).insert(ArmoryPlacard);
     commands.entity(root).insert(CityRowSelection {
         order: CityOrderId::MilitaryRecruit(MilitaryRecruitmentCategory::LightInfantry),
@@ -278,7 +267,7 @@ pub(in crate::ui::city) fn sync_training_dialog(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let nation = city_active_nation(&session);
+    let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let city = &major.city;
     let production = city.population.production_labor();
@@ -321,7 +310,7 @@ pub(in crate::ui::city) fn sync_armory_details(
     if !session.is_changed() && !selection.is_changed() && !selection.is_added() {
         return;
     }
-    let nation = city_active_nation(&session);
+    let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let city = &major.city;
     let order = &city.orders.military_recruitment[category];
@@ -445,9 +434,12 @@ mod tests {
         let state = beginning_of_game();
         let nation = MajorNationId::from_nation(state.turn().selected_nation).unwrap();
         let city = &state.nations().major(nation).city;
-        let pictures = MilitaryRecruitmentCategory::ALL.map(|category| {
-            armory_row_picture(city.orders.military_recruitment[category].unit_kind).get()
-        });
+        let pictures: Vec<_> = (0..enum_map::enum_len::<MilitaryRecruitmentCategory>())
+            .map(MilitaryRecruitmentCategory::from_usize)
+            .map(|category| {
+                armory_row_picture(city.orders.military_recruitment[category].unit_kind).get()
+            })
+            .collect();
 
         assert_eq!(pictures, [7522, 7524, 7526, 7528, 7530, 7532, 7534, 7536]);
         assert_eq!(

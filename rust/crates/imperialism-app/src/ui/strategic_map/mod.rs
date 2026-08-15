@@ -1,6 +1,6 @@
 use super::GameSession;
 use super::RetailUiAssets;
-use super::retail::{RetailTag, find_descendant};
+use super::retail::RetailTree;
 use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
@@ -72,12 +72,11 @@ pub(super) struct StrategicMapSprites<'a> {
 pub(crate) fn bind_strategic_base_terrain(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     assets: &mut RetailUiAssets,
     state: &GameState,
 ) -> Entity {
-    let map = find_descendant(root, MAP_TAG, children, tags);
+    let map = tree.find(root, MAP_TAG);
     let terrain_pictures = load_strategic_terrain_pictures(assets);
     let river_masks = load_strategic_river_masks(assets);
     let improvement_pictures = load_strategic_improvement_pictures(assets);

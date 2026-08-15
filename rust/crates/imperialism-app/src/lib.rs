@@ -30,6 +30,11 @@ pub(crate) enum AppState {
     Preferences,
 }
 
+/// Screen restored when leaving an overlay such as Credits, Preferences,
+/// Load/Save, or Deal Book.
+#[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub(crate) struct ReturnTo(pub(crate) AppState);
+
 #[derive(Resource)]
 pub(crate) struct RetailAssetsResource(RetailAssets);
 

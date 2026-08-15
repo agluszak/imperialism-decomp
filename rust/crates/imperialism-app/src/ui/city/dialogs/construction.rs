@@ -95,8 +95,7 @@ fn bind_building_change_common(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     presentation: BuildingChangePresentation,
 ) {
     let BuildingChangePresentation {
@@ -111,7 +110,7 @@ fn bind_building_change_common(
     } = presentation;
     match assets.picture(picture) {
         Ok(handle) => {
-            let dialog = find_descendant(root, fourcc!("DLOG"), children, tags);
+            let dialog = tree.find(root, fourcc!("DLOG"));
             commands.entity(dialog).insert(ImageNode::new(handle));
         }
         Err(error) => warn!("could not load building-change picture {picture}: {error}"),
@@ -121,10 +120,10 @@ fn bind_building_change_common(
         (fourcc!("capT"), capacity),
         (fourcc!("cost"), cost),
     ] {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         commands.entity(entity).insert(Text::new(text));
     }
-    let warning = find_descendant(root, fourcc!("warn"), children, tags);
+    let warning = tree.find(root, fourcc!("warn"));
     commands.entity(warning).insert((
         Text::new(warning_text),
         TextColor(warning_color),
@@ -134,13 +133,13 @@ fn bind_building_change_common(
             Visibility::Visible
         },
     ));
-    let okay = find_descendant(root, fourcc!("okay"), children, tags);
+    let okay = tree.find(root, fourcc!("okay"));
     let mut okay_commands = commands.entity(okay);
     okay_commands.insert(CityBuildingChangeChoice { slot, accept: true });
     if !can_reserve {
         okay_commands.insert((InteractionDisabled, Visibility::Hidden));
     }
-    let cancel = find_descendant(root, fourcc!("cncl"), children, tags);
+    let cancel = tree.find(root, fourcc!("cncl"));
     commands.entity(cancel).insert(CityBuildingChangeChoice {
         slot,
         accept: false,
@@ -152,8 +151,7 @@ pub(in crate::ui::city) fn bind_construction_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     slot: CityFacilitySlot,
     capacity_value: &str,
     can_reserve: bool,
@@ -165,10 +163,10 @@ pub(in crate::ui::city) fn bind_construction_dialog(
     let headline = assets
         .string(0x2422 + i16::from(slot as u8), 1)
         .expect("retail English construction headline");
-    let tex1 = find_descendant(root, fourcc!("tex1"), children, tags);
+    let tex1 = tree.find(root, fourcc!("tex1"));
     commands.entity(tex1).insert(Text::new(headline));
 
-    let text2 = find_descendant(root, fourcc!("tex2"), children, tags);
+    let text2 = tree.find(root, fourcc!("tex2"));
     if slot == CityFacilitySlot::PowerPlant {
         commands
             .entity(text2)
@@ -181,7 +179,7 @@ pub(in crate::ui::city) fn bind_construction_dialog(
             });
     }
 
-    let connective = find_descendant(root, fourcc!("or  "), children, tags);
+    let connective = tree.find(root, fourcc!("or  "));
     let connective_left = match slot {
         CityFacilitySlot::TextileMill => Some(0x98),
         CityFacilitySlot::Metalworks => Some(0xcd),
@@ -199,7 +197,7 @@ pub(in crate::ui::city) fn bind_construction_dialog(
         commands.entity(connective).insert(Visibility::Hidden);
     }
 
-    let buck = find_descendant(root, fourcc!("buck"), children, tags);
+    let buck = tree.find(root, fourcc!("buck"));
     commands.entity(buck).insert((
         Text::new(if slot == CityFacilitySlot::PowerPlant {
             format_currency(5_000)
@@ -217,8 +215,7 @@ pub(in crate::ui::city) fn bind_construction_dialog(
         commands,
         assets,
         root,
-        children,
-        tags,
+        tree,
         BuildingChangePresentation {
             slot,
             picture: PictureId::new(9250 + i16::from(slot as u8) * 5),
@@ -245,8 +242,7 @@ pub(in crate::ui::city) fn bind_expansion_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     slot: CityFacilitySlot,
     building_name: String,
     next_capacity: i16,
@@ -257,8 +253,7 @@ pub(in crate::ui::city) fn bind_expansion_dialog(
         commands,
         assets,
         root,
-        children,
-        tags,
+        tree,
         BuildingChangePresentation {
             slot,
             picture: PictureId::new(9250 + i16::from(slot as u8) * 5 + i16::from(next_level)),
@@ -325,8 +320,7 @@ pub(in crate::ui::city) fn bind_building_change_dialogs(
     mut commands: Commands,
     constructions: Query<(Entity, &ConstructionDialog), Added<ConstructionDialog>>,
     expansions: Query<(Entity, &ExpansionDialog), Added<ExpansionDialog>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
 ) {
     for (root, dialog) in &constructions {
@@ -334,8 +328,7 @@ pub(in crate::ui::city) fn bind_building_change_dialogs(
             &mut commands,
             &mut assets,
             root,
-            &children,
-            &tags,
+            &tree,
             dialog.slot,
             &dialog.capacity_value,
             dialog.can_reserve,
@@ -346,8 +339,7 @@ pub(in crate::ui::city) fn bind_building_change_dialogs(
             &mut commands,
             &mut assets,
             root,
-            &children,
-            &tags,
+            &tree,
             dialog.slot,
             dialog.building_name.clone(),
             dialog.next_capacity,

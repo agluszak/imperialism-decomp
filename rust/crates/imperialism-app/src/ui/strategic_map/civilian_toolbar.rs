@@ -1,7 +1,7 @@
 //! Right-hand civilian command page (`uciv` / `TCivToolbar` + `TCivDescription`).
 
 use super::super::format_currency;
-use super::super::retail::{RetailTag, RetailUiAssets, find_child, find_descendant};
+use super::super::retail::{RetailTree, RetailUiAssets};
 use super::civilian_orders::StrategicSelection;
 use crate::AppState;
 use crate::ui::GameSession;
@@ -95,25 +95,22 @@ pub(crate) fn bind_civilian_toolbar(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
 ) {
-    let page = find_descendant(root, PAGE_TAG, children, tags);
+    let page = tree.find(root, PAGE_TAG);
     locate_node(commands, page, CIVILIAN_PAGE_PARKED);
     commands.entity(page).insert(CivilianToolbarPage);
     commands
-        .entity(find_child(page, PORTRAIT_TAG, children, tags))
+        .entity(tree.child(page, PORTRAIT_TAG))
         .insert((CivilianPortrait, Visibility::Hidden));
-    commands
-        .entity(find_child(page, LEGEND_TAG, children, tags))
-        .insert((
-            CivilianLegend,
-            LegendAtlases {
-                resources: transparent_atlas(assets, RESOURCE_ICON_ATLAS),
-                development: transparent_atlas(assets, DEVELOPMENT_STRIP_ATLAS),
-                terrain: transparent_atlas(assets, TERRAIN_ICON_ATLAS),
-            },
-        ));
+    commands.entity(tree.child(page, LEGEND_TAG)).insert((
+        CivilianLegend,
+        LegendAtlases {
+            resources: transparent_atlas(assets, RESOURCE_ICON_ATLAS),
+            development: transparent_atlas(assets, DEVELOPMENT_STRIP_ATLAS),
+            terrain: transparent_atlas(assets, TERRAIN_ICON_ATLAS),
+        },
+    ));
     for tag in [
         fourcc!("dfnd"),
         fourcc!("done"),
@@ -121,7 +118,7 @@ pub(crate) fn bind_civilian_toolbar(
         fourcc!("latr"),
     ] {
         commands
-            .entity(find_child(page, tag, children, tags))
+            .entity(tree.child(page, tag))
             .insert((CivilianCommandButton, InteractionDisabled));
     }
 }

@@ -1,5 +1,5 @@
 use super::generated;
-use super::retail::{RetailTag, find_descendant};
+use super::retail::RetailTree;
 use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
 use bevy::prelude::*;
@@ -47,27 +47,23 @@ fn spawn_land_battle(mut commands: Commands) {
 fn bind_land_battle(
     mut commands: Commands,
     root: Single<Entity, Added<LandBattleRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
 ) {
-    bind_land_battle_controls(&mut commands, *root, &children, &tags);
+    bind_land_battle_controls(&mut commands, *root, &tree);
 }
 
-fn bind_land_battle_controls(
-    commands: &mut Commands,
-    root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-) {
+fn bind_land_battle_controls(commands: &mut Commands, root: Entity, tree: &RetailTree) {
+    commands.entity(tree.find(root, fourcc!("curs"))).insert((
+        LandBattleCaption,
+        Text::default(),
+        TextColor(Color::WHITE),
+    ));
     commands
-        .entity(find_descendant(root, fourcc!("curs"), children, tags))
-        .insert((LandBattleCaption, Text::default(), TextColor(Color::WHITE)));
-    commands
-        .entity(find_descendant(root, fourcc!("auto"), children, tags))
+        .entity(tree.find(root, fourcc!("auto")))
         .insert((LandBattleAction::Auto, ActivateOnPress))
         .remove::<InteractionDisabled>();
     commands
-        .entity(find_descendant(root, fourcc!("retr"), children, tags))
+        .entity(tree.find(root, fourcc!("retr")))
         .insert((LandBattleAction::Retreat, ActivateOnPress))
         .remove::<InteractionDisabled>();
 }
@@ -128,6 +124,7 @@ fn on_land_battle_activate(
 
 #[cfg(test)]
 mod tests {
+    use super::super::retail::RetailTag;
     use super::*;
     use crate::ui::test_support::beginning_of_game_parts;
     use bevy::state::app::StatesPlugin;
@@ -346,13 +343,12 @@ mod tests {
     fn bind_test_land_battle(
         mut commands: Commands,
         root: Option<Single<Entity, Added<LandBattleRoot>>>,
-        children: Query<&Children>,
-        tags: Query<&RetailTag>,
+        tree: RetailTree,
     ) {
         let Some(root) = root else {
             return;
         };
-        bind_land_battle_controls(&mut commands, *root, &children, &tags);
+        bind_land_battle_controls(&mut commands, *root, &tree);
     }
 
     fn action_entity(app: &mut App, action: LandBattleAction) -> Entity {

@@ -1,15 +1,11 @@
-use crate::AppState;
 use crate::RetailAssetsResource;
 use crate::ui::GameSession;
-use crate::ui::credits::CreditsReturn;
 use crate::ui::generated;
 use crate::ui::hover_help::get_string;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
-use crate::ui::preferences::PreferencesReturn;
 use crate::ui::random_setup_map::{compose_owner_preview_indices, preview_image_from_indices};
-use crate::ui::retail::{
-    ModalDialog, RetailPictureSwap, RetailTag, RetailUiAssets, find_descendant,
-};
+use crate::ui::retail::{ModalDialog, RetailPictureSwap, RetailTree, RetailUiAssets};
+use crate::{AppState, ReturnTo};
 use bevy::app::AppExit;
 use bevy::input_focus::AutoFocus;
 use bevy::input_focus::tab_navigation::TabGroup;
@@ -64,10 +60,6 @@ const FLAG_LABEL_TAGS: [FourCc; 8] = [
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
 pub(crate) struct SaveDirectory(pub(crate) PathBuf);
 
-/// Screen to restore when Load/Save is cancelled.
-#[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub(crate) struct LoadSaveReturn(pub(crate) AppState);
-
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) struct OpenFlagMenu;
 
@@ -88,7 +80,7 @@ pub(crate) fn open_load_save(
     return_to: AppState,
 ) {
     commands.insert_resource(LoadSaveRequest(mode));
-    commands.insert_resource(LoadSaveReturn(return_to));
+    commands.insert_resource(ReturnTo(return_to));
     next_state.set(AppState::LoadSave);
 }
 
@@ -217,8 +209,7 @@ pub(crate) struct LoadSavePlugin;
 impl Plugin for LoadSavePlugin {
     fn build(&self, app: &mut App) {
         register_load_save_logic(app);
-        app.init_resource::<LoadSaveReturn>()
-            .add_observer(on_load_save_notice_activate.run_if(in_state(AppState::LoadSave)))
+        app.add_observer(on_load_save_notice_activate.run_if(in_state(AppState::LoadSave)))
             .add_systems(
                 OnEnter(AppState::LoadSave),
                 (enter_load_save, bind_load_save).chain(),
@@ -231,6 +222,10 @@ impl Plugin for LoadSavePlugin {
             .add_systems(
                 Update,
                 (bind_flag_menu, bind_flag_menu_prompt).run_if(in_state(AppState::StrategicMap)),
+            )
+            .add_systems(
+                OnExit(AppState::LoadSave),
+                crate::ui::session::clear_return_to,
             );
     }
 }
@@ -323,53 +318,30 @@ fn enter_load_save(mut commands: Commands, request: Res<LoadSaveRequest>) {
 fn bind_load_save(
     mut commands: Commands,
     root: Single<(Entity, &LoadSaveRoot), Added<LoadSaveRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
     save_dir: Res<SaveDirectory>,
 ) {
     let (root_entity, screen) = root.into_inner();
     let mode = screen.mode;
-    bind_load_save_actions(&mut commands, root_entity, &children, &tags, mode);
+    bind_load_save_actions(&mut commands, root_entity, &tree, mode);
     let listing = list_save_slots(&save_dir.0);
     let empty_label = assets
         .string(EMPTY_SLOT_STRING_GROUP, EMPTY_SLOT_STRING_INDEX)
         .unwrap_or_default();
     let presentation = presentation_from_listing(&listing, &empty_label, &assets);
-    populate_load_save_slots(
-        &mut commands,
-        root_entity,
-        &children,
-        &tags,
-        mode,
-        &presentation,
-    );
+    populate_load_save_slots(&mut commands, root_entity, &tree, mode, &presentation);
     if mode == LoadSaveMode::Load {
-        apply_load_okay_pictures(&mut commands, &mut assets, root_entity, &children, &tags);
+        apply_load_okay_pictures(&mut commands, &mut assets, root_entity, &tree);
         commands
-            .entity(find_descendant(
-                root_entity,
-                fourcc!("otto"),
-                &children,
-                &tags,
-            ))
+            .entity(tree.find(root_entity, fourcc!("otto")))
             .remove::<InteractionDisabled>();
     }
     commands
-        .entity(find_descendant(
-            root_entity,
-            fourcc!("info"),
-            &children,
-            &tags,
-        ))
+        .entity(tree.find(root_entity, fourcc!("info")))
         .insert(Text::new(String::new()));
     commands
-        .entity(find_descendant(
-            root_entity,
-            fourcc!("map "),
-            &children,
-            &tags,
-        ))
+        .entity(tree.find(root_entity, fourcc!("map ")))
         .insert(LoadSaveMapPreview::default());
     commands.entity(root_entity).insert(presentation);
 }
@@ -377,29 +349,28 @@ fn bind_load_save(
 fn bind_load_save_actions(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     mode: LoadSaveMode,
 ) {
     for (index, tag) in SLOT_TAGS.iter().copied().enumerate() {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         let slot = SaveSlot::numbered(index as u8).expect("slot tags are numbered 0..=7");
         commands
             .entity(entity)
             .insert((Button, LoadSaveAction::SelectSlot(slot)));
     }
     commands
-        .entity(find_descendant(root, fourcc!("info"), children, tags))
+        .entity(tree.find(root, fourcc!("info")))
         .insert(LoadSaveInfo);
     commands
-        .entity(find_descendant(root, fourcc!("okay"), children, tags))
+        .entity(tree.find(root, fourcc!("okay")))
         .insert(LoadSaveAction::Okay)
         .remove::<InteractionDisabled>();
     commands
-        .entity(find_descendant(root, fourcc!("cncl"), children, tags))
+        .entity(tree.find(root, fourcc!("cncl")))
         .insert(LoadSaveAction::Cancel)
         .remove::<InteractionDisabled>();
-    let otto = find_descendant(root, fourcc!("otto"), children, tags);
+    let otto = tree.find(root, fourcc!("otto"));
     let mut otto_commands = commands.entity(otto);
     otto_commands.insert(LoadSaveAction::Autosave);
     if mode == LoadSaveMode::Save {
@@ -451,13 +422,12 @@ fn slot_presentation(header: &SaveHeaderInfo, assets: &RetailUiAssets) -> SlotPr
 fn populate_load_save_slots(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     mode: LoadSaveMode,
     presentation: &LoadSavePresentation,
 ) {
     for (index, tag) in SLOT_TAGS.iter().copied().enumerate() {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         match presentation.slots[index].as_ref() {
             Some(slot) => {
                 commands
@@ -489,10 +459,9 @@ fn apply_load_okay_pictures(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
 ) {
-    let okay = find_descendant(root, fourcc!("okay"), children, tags);
+    let okay = tree.find(root, fourcc!("okay"));
     let idle = match assets.picture(PictureId::new(LOAD_OKAY_IDLE_PICTURE)) {
         Ok(handle) => handle,
         Err(error) => {
@@ -606,7 +575,7 @@ fn on_load_save_activate(
     mut texts: Query<&mut Text>,
     info: Query<Entity, With<LoadSaveInfo>>,
     save_dir: Option<Res<SaveDirectory>>,
-    returning: Res<LoadSaveReturn>,
+    returning: Res<ReturnTo>,
     session: Option<Res<GameSession>>,
     state: Res<State<AppState>>,
     mut next_state: ResMut<NextState<AppState>>,
@@ -882,12 +851,11 @@ fn spawn_notice(
 fn bind_load_save_notice(
     mut commands: Commands,
     notice: Single<(Entity, &LoadSaveNotice), Added<LoadSaveNotice>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
 ) {
     let (root, notice) = notice.into_inner();
-    let linger = bind_linger_dialog(root, &children, &tags);
+    let linger = bind_linger_dialog(root, &tree);
     linger.set_body(&mut commands, &mut assets, &notice.body);
     commands
         .entity(linger.okay)
@@ -974,13 +942,12 @@ fn on_open_flag_menu(
 fn bind_flag_menu(
     mut commands: Commands,
     root: Single<Entity, Added<FlagMenuRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
 ) {
     let root = *root;
     for (index, tag) in FLAG_LABEL_TAGS.iter().copied().enumerate() {
-        let entity = find_descendant(root, tag, &children, &tags);
+        let entity = tree.find(root, tag);
         let (font, layout, line_height, _) = assets
             .text_style(imperialism_formats::RetailTextStylePreset {
                 font_family: 1,
@@ -1016,7 +983,7 @@ fn bind_flag_menu(
         (fourcc!("quit"), FlagMenuAction::Quit),
     ] {
         commands
-            .entity(find_descendant(root, tag, &children, &tags))
+            .entity(tree.find(root, tag))
             .insert(action)
             .remove::<InteractionDisabled>();
     }
@@ -1059,11 +1026,11 @@ fn on_flag_menu_activate(
             );
         }
         FlagMenuNavigation::Preferences => {
-            commands.insert_resource(PreferencesReturn(AppState::StrategicMap));
+            commands.insert_resource(ReturnTo(AppState::StrategicMap));
             next_state.set(AppState::Preferences);
         }
         FlagMenuNavigation::Credits => {
-            commands.insert_resource(CreditsReturn(AppState::StrategicMap));
+            commands.insert_resource(ReturnTo(AppState::StrategicMap));
             next_state.set(AppState::Credits);
         }
         FlagMenuNavigation::Confirm(pending) => {
@@ -1084,8 +1051,7 @@ fn open_flag_menu_prompt(commands: &mut Commands, pending: FlagMenuPending) {
 fn bind_flag_menu_prompt(
     mut commands: Commands,
     prompt: Single<(Entity, &FlagMenuPrompt), Added<FlagMenuPrompt>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
 ) {
     let (root, prompt) = prompt.into_inner();
@@ -1097,7 +1063,7 @@ fn bind_flag_menu_prompt(
     let body = assets
         .string(0x2737, index)
         .expect("retail flag-menu confirm string");
-    let linger = bind_linger_dialog(root, &children, &tags);
+    let linger = bind_linger_dialog(root, &tree);
     linger.set_body(&mut commands, &mut assets, body);
     commands
         .entity(linger.okay)
@@ -1149,6 +1115,7 @@ fn on_flag_menu_prompt_activate(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ui::retail::RetailTag;
     use crate::ui::test_support::beginning_of_game;
     use imperialism_formats::load_game_from_path;
 
@@ -1162,7 +1129,7 @@ mod tests {
             .add_plugins(bevy::state::app::StatesPlugin)
             .add_message::<AppExit>()
             .insert_state(initial)
-            .init_resource::<LoadSaveReturn>();
+            .insert_resource(ReturnTo(AppState::MainMenu));
         register_load_save_logic(&mut app);
         app.add_systems(
             OnEnter(AppState::LoadSave),
@@ -1200,11 +1167,10 @@ mod tests {
     fn bind_test_load_save(
         mut commands: Commands,
         root: Single<(Entity, &LoadSaveRoot), Added<LoadSaveRoot>>,
-        children: Query<&Children>,
-        tags: Query<&RetailTag>,
+        tree: RetailTree,
     ) {
         let (entity, screen) = root.into_inner();
-        bind_load_save_actions(&mut commands, entity, &children, &tags, screen.mode);
+        bind_load_save_actions(&mut commands, entity, &tree, screen.mode);
     }
 
     fn spawn_test_flag_menu(mut commands: Commands) {
@@ -1222,7 +1188,7 @@ mod tests {
     #[test]
     fn cancel_restores_the_previous_application_state() {
         let mut app = test_app(AppState::MainMenu);
-        app.insert_resource(LoadSaveReturn(AppState::MainMenu));
+        app.insert_resource(ReturnTo(AppState::MainMenu));
         app.insert_resource(LoadSaveRequest(LoadSaveMode::Load));
         app.world_mut()
             .resource_mut::<NextState<AppState>>()

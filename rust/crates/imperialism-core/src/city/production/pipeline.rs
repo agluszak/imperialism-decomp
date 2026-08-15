@@ -2,6 +2,7 @@
 
 use super::*;
 use crate::*;
+use enum_map::Enum;
 
 impl GameState {
     /// Resolves the city's retained production orders and starts its next
@@ -53,13 +54,15 @@ impl GameState {
                         output,
                     );
                 }
-                for level in TrainingLevel::ALL {
+                for level in
+                    (0..enum_map::enum_len::<TrainingLevel>()).map(TrainingLevel::from_usize)
+                {
                     produce_training(level, &mut orders.training[level], population, economy);
                 }
                 *rolling_item_production_score =
                     previous_production_score * 9 / 10 + *rolling_item_production_score * 10;
 
-                for kind in CivilianUnitKind::ALL {
+                for kind in (0..CivilianUnitKind::LENGTH).map(CivilianUnitKind::from_usize) {
                     let progress = &mut orders.civilian_recruitment[kind];
                     produced_civilians[kind] = progress.quantity;
                     progress.quantity = 0;
@@ -153,7 +156,7 @@ impl GameState {
                 order.progress.quantity = 0;
                 produced
             });
-            for kind in CivilianUnitKind::ALL {
+            for kind in (0..CivilianUnitKind::LENGTH).map(CivilianUnitKind::from_usize) {
                 let order = &mut city.orders.civilian_recruitment[kind];
                 civilian_qty[kind] = order.quantity;
                 order.quantity = 0;
@@ -167,7 +170,7 @@ impl GameState {
         for (unit_kind, quantity) in civilian_qty {
             self.produce_civilian_recruits(nation, unit_kind, quantity);
         }
-        for slot in ShipOrderSlot::ALL {
+        for slot in (0..enum_map::enum_len::<ShipOrderSlot>()).map(ShipOrderSlot::from_usize) {
             self.produce_ship_order(nation, slot);
         }
     }

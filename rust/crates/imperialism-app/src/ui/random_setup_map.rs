@@ -1,6 +1,6 @@
 use super::RetailUiAssets;
 use super::random_setup::{RandomGameSetup, RandomSetupPreview};
-use super::retail::{RetailTag, find_descendant};
+use super::retail::RetailTree;
 use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
@@ -68,18 +68,17 @@ impl Plugin for MapPreviewPlugin {
 pub(crate) fn attach_random_setup_meanings(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
 ) {
     // PointerCanvas behavior already adds RelativeCursorPosition for the map.
-    let map = find_descendant(root, MAP_TAG, children, tags);
+    let map = tree.find(root, MAP_TAG);
     commands
         .entity(map)
         .insert(RandomSetupMapPreview::default())
         .observe(on_map_preview_click);
-    let coat = find_descendant(root, COAT_TAG, children, tags);
+    let coat = tree.find(root, COAT_TAG);
     commands.entity(coat).insert(RandomSetupCoat::default());
-    let flag = find_descendant(root, FLAG_TAG, children, tags);
+    let flag = tree.find(root, FLAG_TAG);
     commands.entity(flag).insert(RandomSetupFlag::default());
 }
 

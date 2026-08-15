@@ -1,5 +1,6 @@
 use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
+use bevy::ecs::query::{QueryData, QueryFilter};
 use bevy::ecs::system::SystemParam;
 use bevy::ecs::template::TemplateContext;
 use bevy::image::{CompressedImageFormats, ImageSampler, ImageType, TextureError};
@@ -555,59 +556,95 @@ fn template_palette_color(context: &TemplateContext, index: u8) -> Color {
     Color::srgb_u8(red, green, blue)
 }
 
-pub fn try_find_descendant(
+/// Hierarchy lookup for recovered View tags. The same FourCc can appear in
+/// different subtrees, so searches stay scoped to a root rather than a global index.
+#[derive(SystemParam)]
+pub struct RetailTree<'w, 's> {
+    pub children: Query<'w, 's, &'static Children>,
+    tags: Query<'w, 's, &'static RetailTag>,
+}
+
+impl<'w, 's> RetailTree<'w, 's> {
+    pub fn view<'a>(&'a self, root: Entity) -> RetailView<'a, 'w, 's> {
+        RetailView { tree: self, root }
+    }
+
+    pub fn try_find(&self, root: Entity, tag: FourCc) -> Option<Entity> {
+        let mut pending = self
+            .children
+            .get(root)
+            .map(|children| children.iter().collect::<Vec<_>>())
+            .unwrap_or_default();
+        let mut found = None;
+        while let Some(entity) = pending.pop() {
+            if self
+                .tags
+                .get(entity)
+                .is_ok_and(|candidate| candidate.0 == tag)
+            {
+                assert!(
+                    found.replace(entity).is_none(),
+                    "retail tag {tag:?} is ambiguous"
+                );
+            }
+            if let Ok(descendants) = self.children.get(entity) {
+                pending.extend(descendants.iter());
+            }
+        }
+        found
+    }
+
+    pub fn find(&self, root: Entity, tag: FourCc) -> Entity {
+        self.try_find(root, tag)
+            .unwrap_or_else(|| panic!("retail tag {tag:?} is missing below {root:?}"))
+    }
+
+    pub fn child(&self, parent: Entity, tag: FourCc) -> Entity {
+        let mut found = None;
+        for entity in self.children.get(parent).into_iter().flatten() {
+            if let Ok(candidate) = self.tags.get(*entity)
+                && candidate.0 == tag
+            {
+                assert!(
+                    found.replace(*entity).is_none(),
+                    "retail tag {tag:?} is ambiguous directly below {parent:?}"
+                );
+            }
+        }
+        found.unwrap_or_else(|| panic!("retail tag {tag:?} is missing directly below {parent:?}"))
+    }
+}
+
+pub struct RetailView<'a, 'w, 's> {
+    tree: &'a RetailTree<'w, 's>,
     root: Entity,
-    tag: FourCc,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+}
+
+impl RetailView<'_, '_, '_> {
+    pub fn try_find(&self, tag: FourCc) -> Option<Entity> {
+        self.tree.try_find(self.root, tag)
+    }
+
+    pub fn find(&self, tag: FourCc) -> Entity {
+        self.tree.find(self.root, tag)
+    }
+
+    pub fn child(&self, tag: FourCc) -> Entity {
+        self.tree.child(self.root, tag)
+    }
+}
+
+pub fn ancestor_with<D: QueryData, F: QueryFilter>(
+    mut entity: Entity,
+    parents: &Query<&ChildOf>,
+    query: &Query<D, F>,
 ) -> Option<Entity> {
-    let mut pending = children
-        .get(root)
-        .map(|children| children.iter().collect::<Vec<_>>())
-        .unwrap_or_default();
-    let mut found = None;
-    while let Some(entity) = pending.pop() {
-        if tags.get(entity).is_ok_and(|candidate| candidate.0 == tag) {
-            assert!(
-                found.replace(entity).is_none(),
-                "retail tag {tag:?} is ambiguous"
-            );
+    loop {
+        if query.contains(entity) {
+            return Some(entity);
         }
-        if let Ok(descendants) = children.get(entity) {
-            pending.extend(descendants.iter());
-        }
+        entity = parents.get(entity).ok()?.parent();
     }
-    found
-}
-
-pub fn find_descendant(
-    root: Entity,
-    tag: FourCc,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-) -> Entity {
-    try_find_descendant(root, tag, children, tags)
-        .unwrap_or_else(|| panic!("retail tag {tag:?} is missing below {root:?}"))
-}
-
-pub fn find_child(
-    parent: Entity,
-    tag: FourCc,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-) -> Entity {
-    let mut found = None;
-    for entity in children.get(parent).into_iter().flatten() {
-        if let Ok(candidate) = tags.get(*entity)
-            && candidate.0 == tag
-        {
-            assert!(
-                found.replace(*entity).is_none(),
-                "retail tag {tag:?} is ambiguous directly below {parent:?}"
-            );
-        }
-    }
-    found.unwrap_or_else(|| panic!("retail tag {tag:?} is missing directly below {parent:?}"))
 }
 
 #[cfg(test)]
@@ -707,12 +744,12 @@ mod tests {
         app.world_mut()
             .spawn((RetailTag(fourcc!("trad")), ChildOf(container)));
 
-        let mut state = SystemState::<(Query<&Children>, Query<&RetailTag>)>::new(app.world_mut());
-        let (children, tags) = state.get(app.world()).unwrap();
+        let mut state = SystemState::<RetailTree>::new(app.world_mut());
+        let tree = state.get(app.world()).unwrap();
 
-        assert_eq!(
-            find_child(parent, fourcc!("trad"), &children, &tags),
-            direct
-        );
+        assert_eq!(tree.child(parent, fourcc!("trad")), direct);
+        assert_eq!(tree.view(parent).child(fourcc!("trad")), direct);
+        assert_eq!(tree.view(parent).find(fourcc!("clus")), container);
+        assert!(tree.view(parent).try_find(fourcc!("nope")).is_none());
     }
 }

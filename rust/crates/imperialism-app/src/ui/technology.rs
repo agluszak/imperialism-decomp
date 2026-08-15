@@ -1,7 +1,7 @@
 use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::hover_help::get_string;
-use super::retail::{RetailTag, RetailUiAssets, find_descendant};
+use super::retail::{RetailTree, RetailUiAssets};
 use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
 use bevy::prelude::*;
@@ -56,20 +56,19 @@ fn spawn_technology_advance(mut commands: Commands) {
 fn bind_technology_advance(
     mut commands: Commands,
     root: Single<Entity, Added<TechnologyAdvanceRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
 ) {
     let root = *root;
-    bind_game_status_display(&mut commands, &mut assets, root, &children, &tags);
+    bind_game_status_display(&mut commands, &mut assets, root, &tree);
     commands
-        .entity(find_descendant(root, fourcc!("main"), &children, &tags))
+        .entity(tree.find(root, fourcc!("main")))
         .insert(TechnologyAdvanceDisplay::Picture);
     commands
-        .entity(find_descendant(root, fourcc!("text"), &children, &tags))
+        .entity(tree.find(root, fourcc!("text")))
         .insert((TechnologyAdvanceDisplay::Text, Text::default()));
     commands
-        .entity(find_descendant(root, fourcc!("end "), &children, &tags))
+        .entity(tree.find(root, fourcc!("end ")))
         .insert((TechnologyAdvanceAction, ActivateOnPress))
         .remove::<InteractionDisabled>();
 }

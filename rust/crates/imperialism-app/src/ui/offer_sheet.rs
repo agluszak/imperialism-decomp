@@ -4,7 +4,7 @@ use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, get_string};
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
-use super::retail::{RetailTag, RetailUiAssets, find_descendant};
+use super::retail::{RetailTree, RetailUiAssets, ancestor_with};
 use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
 use bevy::input_focus::AutoFocus;
@@ -83,8 +83,7 @@ fn spawn_offer_sheet(mut commands: Commands) {
 fn bind_offer_sheet(
     mut commands: Commands,
     root: Option<Single<Entity, Added<OfferSheetRoot>>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
 ) {
@@ -92,7 +91,7 @@ fn bind_offer_sheet(
         return;
     };
     let root = *root;
-    bind_offer_sheet_controls(&mut commands, root, &children, &tags);
+    bind_offer_sheet_controls(&mut commands, root, &tree);
     for tag in [
         fourcc!("ForM"),
         fourcc!("tabs"),
@@ -100,10 +99,10 @@ fn bind_offer_sheet(
         fourcc!("done"),
     ] {
         commands
-            .entity(find_descendant(root, tag, &children, &tags))
+            .entity(tree.find(root, tag))
             .insert(InteractionDisabled);
     }
-    let curs = find_descendant(root, fourcc!("curs"), &children, &tags);
+    let curs = tree.find(root, fourcc!("curs"));
     bind_hover_help_bar(
         &mut commands,
         &mut assets,
@@ -113,19 +112,14 @@ fn bind_offer_sheet(
             .expect("offer-sheet hover-help bar has Node"),
         HoverHelpBarStyle::MAIN_MENU,
     );
-    bind_game_status_display(&mut commands, &mut assets, root, &children, &tags);
+    bind_game_status_display(&mut commands, &mut assets, root, &tree);
 }
 
-fn bind_offer_sheet_controls(
-    commands: &mut Commands,
-    root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-) {
-    let accept = find_descendant(root, fourcc!("acce"), children, tags);
-    let reject = find_descendant(root, fourcc!("reje"), children, tags);
-    let purc = find_descendant(root, fourcc!("purc"), children, tags);
-    let nomo = find_descendant(root, fourcc!("nomo"), children, tags);
+fn bind_offer_sheet_controls(commands: &mut Commands, root: Entity, tree: &RetailTree) {
+    let accept = tree.find(root, fourcc!("acce"));
+    let reject = tree.find(root, fourcc!("reje"));
+    let purc = tree.find(root, fourcc!("purc"));
+    let nomo = tree.find(root, fourcc!("nomo"));
     commands
         .entity(accept)
         .insert((OfferSheetAction::Accept, ActivateOnPress))
@@ -155,8 +149,7 @@ fn bind_offer_sheet_controls(
 fn pose_offer_sheet(
     mut commands: Commands,
     root: Option<Single<Entity, With<OfferSheetRoot>>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut amounts: Query<&mut EditableText, With<PurchaseAmountField>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
@@ -172,8 +165,7 @@ fn pose_offer_sheet(
         &mut commands,
         &mut assets,
         *root,
-        &children,
-        &tags,
+        &tree,
         &mut amounts,
         &session,
         offer,
@@ -185,8 +177,7 @@ fn apply_offer_sheet_pose(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     amounts: &mut Query<&mut EditableText, With<PurchaseAmountField>>,
     session: &GameSession,
     offer: PendingTradeOffer,
@@ -202,7 +193,7 @@ fn apply_offer_sheet_pose(
     let price = format_currency(i32::from(offer.price));
     set_text(
         commands,
-        find_descendant(root, fourcc!("offe"), children, tags),
+        tree.find(root, fourcc!("offe")),
         fill_brackets(
             &get_string(assets, OFFER_STRING_GROUP, 0xc),
             &[&offering, &amount, &commodity, &price],
@@ -210,25 +201,24 @@ fn apply_offer_sheet_pose(
     );
     set_text(
         commands,
-        find_descendant(root, fourcc!("purT"), children, tags),
+        tree.find(root, fourcc!("purT")),
         get_string(assets, OFFER_STRING_GROUP, 0xe),
     );
     set_text(
         commands,
-        find_descendant(root, fourcc!("unit"), children, tags),
+        tree.find(root, fourcc!("unit")),
         get_string(assets, OFFER_STRING_GROUP, 0xf),
     );
     set_text(
         commands,
-        find_descendant(root, fourcc!("noof"), children, tags),
+        tree.find(root, fourcc!("noof")),
         fill_brackets(&get_string(assets, OFFER_STRING_GROUP, 0xf), &[&commodity]),
     );
 
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("Offer Sheet requires an active major nation");
+    let nation = session.active_major_nation();
     set_text(
         commands,
-        find_descendant(root, fourcc!("mCap"), children, tags),
+        tree.find(root, fourcc!("mCap")),
         session
             .game
             .nations()
@@ -249,12 +239,12 @@ fn apply_offer_sheet_pose(
 
     if let Ok(icon) = assets.picture(PictureId::new(COMMODITY_ICON_BASE + offer.commodity as i16)) {
         commands
-            .entity(find_descendant(root, fourcc!("icon"), children, tags))
+            .entity(tree.find(root, fourcc!("icon")))
             .insert(ImageNode::new(icon));
     }
 
     commands
-        .entity(find_descendant(root, fourcc!("nomo"), children, tags))
+        .entity(tree.find(root, fourcc!("nomo")))
         .remove::<Checked>();
 }
 
@@ -330,15 +320,14 @@ fn spawn_offer_quantity_error(commands: &mut Commands, body: String) {
 fn bind_offer_sheet_notice(
     mut commands: Commands,
     notice: Option<Single<(Entity, &OfferSheetNoticeBody), Added<OfferSheetNotice>>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
 ) {
     let Some(notice) = notice else {
         return;
     };
     let (root, body) = notice.into_inner();
-    let linger = bind_linger_dialog(root, &children, &tags);
+    let linger = bind_linger_dialog(root, &tree);
     linger.set_body(&mut commands, &mut assets, &body.0);
     commands
         .entity(linger.okay)
@@ -353,21 +342,14 @@ fn on_offer_sheet_notice_activate(
     notices: Query<(), With<OfferSheetNotice>>,
     mut commands: Commands,
 ) {
-    let mut entity = activate.entity;
-    loop {
-        if notices.contains(entity) {
-            commands.entity(entity).despawn();
-            return;
-        }
-        entity = parents
-            .get(entity)
-            .expect("offer-sheet notice close belongs to its dialog")
-            .parent();
-    }
+    let root = ancestor_with(activate.entity, &parents, &notices)
+        .expect("offer-sheet notice close belongs to its dialog");
+    commands.entity(root).despawn();
 }
 
 #[cfg(test)]
 mod tests {
+    use super::super::retail::RetailTag;
     use super::*;
     use crate::ui::test_support::beginning_of_game_parts;
     use bevy::state::app::StatesPlugin;
@@ -430,13 +412,12 @@ mod tests {
     fn bind_test_offer_sheet(
         mut commands: Commands,
         root: Option<Single<Entity, Added<OfferSheetRoot>>>,
-        children: Query<&Children>,
-        tags: Query<&RetailTag>,
+        tree: RetailTree,
     ) {
         let Some(root) = root else {
             return;
         };
-        bind_offer_sheet_controls(&mut commands, *root, &children, &tags);
+        bind_offer_sheet_controls(&mut commands, *root, &tree);
     }
 
     #[test]

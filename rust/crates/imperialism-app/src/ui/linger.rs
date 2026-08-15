@@ -1,5 +1,5 @@
 use super::generated;
-use super::retail::{ModalDialog, RetailTag, RetailUiAssets, find_descendant};
+use super::retail::{ModalDialog, RetailTree, RetailUiAssets};
 use crate::AppState;
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
@@ -31,17 +31,13 @@ pub fn spawn_linger_dialog(
     root
 }
 
-pub fn bind_linger_dialog(
-    root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-) -> LingerControls {
+pub fn bind_linger_dialog(root: Entity, tree: &RetailTree) -> LingerControls {
     LingerControls {
-        title: find_descendant(root, fourcc!("titl"), children, tags),
-        body: find_descendant(root, fourcc!("info"), children, tags),
-        okay: find_descendant(root, fourcc!("okay"), children, tags),
-        cancel: find_descendant(root, fourcc!("cncl"), children, tags),
-        coat: find_descendant(root, fourcc!("coat"), children, tags),
+        title: tree.find(root, fourcc!("titl")),
+        body: tree.find(root, fourcc!("info")),
+        okay: tree.find(root, fourcc!("okay")),
+        cancel: tree.find(root, fourcc!("cncl")),
+        coat: tree.find(root, fourcc!("coat")),
     }
 }
 
