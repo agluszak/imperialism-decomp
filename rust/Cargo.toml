@@ -33,6 +33,7 @@ bevy = { version = "0.19", default-features = false, features = [
     "bmp",
     "bevy_audio",
     "wav",
+    "vorbis",
     "dynamic_linking",
     "debug"
 ] }

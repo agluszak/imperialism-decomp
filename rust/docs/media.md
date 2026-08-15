@@ -51,10 +51,11 @@ Known cue ids from `TSoundPlayer` call sites:
 
 `TSoundPlayer` is game policy, not an OS wrapper: active and pending cues, fade-before-switch
 (`GetTickCountDiv16` + 6-tick timer), a cue pool, and a remaining pool sampled without
-replacement via CRT `rand()`. Volume is preference slot 3 (0..=255). Do not add a second
-settings resource. Do not call the gameplay CRT stream from presentation unless a differential
-capture shows `SelectAndScheduleRandomAudioCue` consuming it; native semantic captures do not
-pump that idle path today.
+replacement. Volume is preference slot 3 (0..=255). Rust keeps that policy in `MusicDirector`
+and drives one Bevy `AudioSink`. Presentation RNG is independent of the gameplay CRT stream;
+native semantic captures do not pump `SelectAndScheduleRandomAudioCue`. Screen wiring today:
+main menu cue 6, diplomacy/deal book `set_cue(4, fade)`, offer sheet `request_preset(4, fade)`,
+load/save pool 2+3, credits cue 12. Missing GOG `MUSIC/TrackNN` files are skipped.
 
 ## Sound effects
 
@@ -73,6 +74,6 @@ DIB. Movie construction replaces that with black.
 
 ## Follow-up order
 
-`MusicDirector` over one Bevy sink and preference slot 3, then the 640×480 viewport / tiled
-surround, then wire `MovieBackend` to `AppState::Cinematic`, then opening / decade / victory
-sequences. DirectSound's six-voice steal and the millibel volume curve stay evidence-driven.
+Persistent tiled chrome and a centered 640×480 `RetailViewport`, then wire `MovieBackend` to
+`AppState::Cinematic`, then opening / decade / victory sequences. DirectSound's six-voice steal,
+the millibel SFX curve, and exact CD fade tick timing stay evidence-driven.
