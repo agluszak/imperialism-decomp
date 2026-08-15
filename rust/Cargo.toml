@@ -31,6 +31,8 @@ bevy = { version = "0.19", default-features = false, features = [
     "custom_cursor",
     "2d_bevy_render",
     "bmp",
+    "bevy_audio",
+    "wav",
     "dynamic_linking",
     "debug"
 ] }

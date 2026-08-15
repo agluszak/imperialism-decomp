@@ -8,6 +8,9 @@ use super::retail::{
     RetailPictureSwap, RetailTag, RetailUiAssets, find_descendant, try_find_descendant,
 };
 use crate::AppState;
+use crate::RetailAssetsResource;
+use crate::media::{RetailAudioHandles, play_cached_or_retail_sound};
+use bevy::audio::AudioSource;
 use bevy::picking::hover::DirectlyHovered;
 use bevy::prelude::*;
 use bevy::reflect::Is;
@@ -16,7 +19,7 @@ use bevy::ui_widgets::{
     Activate, Button, Checkbox, Slider, SliderOrientation, SliderPrecision, SliderRange,
     SliderValue, TrackClick, ValueChange, slider_self_update,
 };
-use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc};
+use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
 
 /// `g_anGamePreferenceIndexByRow`: which `preferenceValues` slot each opta..opte row displays.
 const PREFERENCE_INDEX_BY_ROW: [i16; 5] = [3, 2, 8, 10, 0];
@@ -67,6 +70,13 @@ impl Default for GamePreferences {
     }
 }
 
+impl GamePreferences {
+    /// Preference slot 2: DirectSound master percent, 0..=100.
+    pub(crate) fn sound_volume_percent(&self) -> i16 {
+        self.values[2]
+    }
+}
+
 #[derive(Component)]
 struct PreferencesRoot;
 
@@ -112,6 +122,7 @@ impl Plugin for PreferencesPlugin {
                 on_preference_checked::<Remove, Checked>.run_if(in_state(AppState::Preferences)),
             )
             .add_observer(on_preference_slider_change.run_if(in_state(AppState::Preferences)))
+            .add_observer(on_sound_slider_released.run_if(in_state(AppState::Preferences)))
             .add_observer(on_preferences_activate.run_if(in_state(AppState::Preferences)));
     }
 }
@@ -489,9 +500,39 @@ fn on_preference_slider_change(
     let Ok(slider) = sliders.get(change.source) else {
         return;
     };
-    if slider.slot == 3 {
-        prefs.values[3] = change.value as i16;
+    match slider.slot {
+        3 => prefs.values[3] = change.value as i16,
+        2 if change.is_final => prefs.values[2] = change.value as i16,
+        _ => {}
     }
+}
+
+fn on_sound_slider_released(
+    change: On<ValueChange<f32>>,
+    sliders: Query<&PreferenceSlider>,
+    prefs: Res<GamePreferences>,
+    mut commands: Commands,
+    retail: Option<Res<RetailAssetsResource>>,
+    sources: Option<ResMut<Assets<AudioSource>>>,
+    handles: Option<ResMut<RetailAudioHandles>>,
+) {
+    let Ok(slider) = sliders.get(change.source) else {
+        return;
+    };
+    if slider.slot != 2 || !change.is_final {
+        return;
+    }
+    let (Some(mut sources), Some(mut handles)) = (sources, handles) else {
+        return;
+    };
+    play_cached_or_retail_sound(
+        &mut commands,
+        retail.as_ref().map(|assets| assets.assets()),
+        &mut sources,
+        &mut handles,
+        prefs.sound_volume_percent(),
+        SoundId::UI_CLICK,
+    );
 }
 
 #[allow(clippy::type_complexity)]
@@ -647,5 +688,39 @@ mod tests {
         let prefs = app.world().resource::<GamePreferences>();
         assert_eq!(prefs.values[2], 50);
         assert_eq!(prefs.values[3], 0);
+    }
+
+    #[test]
+    fn sound_slider_release_writes_preference_slot_2() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .init_resource::<GamePreferences>()
+            .add_observer(on_preference_slider_change);
+        let slider = app.world_mut().spawn(PreferenceSlider { slot: 2 }).id();
+        app.world_mut().commands().trigger(ValueChange {
+            source: slider,
+            value: 40.0_f32,
+            is_final: false,
+        });
+        app.world_mut().flush();
+        assert_eq!(
+            app.world()
+                .resource::<GamePreferences>()
+                .sound_volume_percent(),
+            100
+        );
+
+        app.world_mut().commands().trigger(ValueChange {
+            source: slider,
+            value: 40.0_f32,
+            is_final: true,
+        });
+        app.world_mut().flush();
+        assert_eq!(
+            app.world()
+                .resource::<GamePreferences>()
+                .sound_volume_percent(),
+            40
+        );
     }
 }

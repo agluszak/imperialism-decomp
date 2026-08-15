@@ -60,8 +60,10 @@ pump that idle path today.
 
 WAVE resources live in `Data/wave.gob` (language IRG string `0x80` / `ImperialismApp::field_DC`),
 not in `Imperialism.exe`. Load is `<id>.wav` on disk first, then `FindResourceA(..., "WAVE")`.
-Retail had six DirectSound PCM channels; start with ordinary one-shot Bevy players. Volume is
-preference slot 2 (0..=100). Shared UI click is WAVE 7000 / `0x1b58`.
+Retail had six DirectSound PCM channels; Rust plays ordinary one-shot Bevy `AudioPlayer`s and
+despawns them when finished. Volume is preference slot 2 (0..=100); slot 2 at 0 skips playback.
+Shared UI click is WAVE 7000 / `0x1b58`, fired from generated `Button` `Activate` and from the
+sound slider's track-end (`TTwoPicSlider` mode 2). Missing WAVE resources continue silently.
 
 ## Chrome
 
@@ -71,5 +73,6 @@ DIB. Movie construction replaces that with black.
 
 ## Follow-up order
 
-SFX (Bevy audio + WAVE), then `MusicDirector`, then the 640×480 viewport / tiled surround, then
-wire `MovieBackend` to `AppState::Cinematic`, then opening / decade / victory sequences.
+`MusicDirector` over one Bevy sink and preference slot 3, then the 640×480 viewport / tiled
+surround, then wire `MovieBackend` to `AppState::Cinematic`, then opening / decade / victory
+sequences. DirectSound's six-voice steal and the millibel volume curve stay evidence-driven.

@@ -9,8 +9,8 @@ reconstruction in `../decomp/`. Run Rust commands from this directory.
 - `imperialism-formats` parses retail files and accesses retail assets directly, including movie
   paths, GOG music-track files, WAVE resources, and the host-frame chrome bitmap.
 - `imperialism-app` is the only Bevy-dependent crate and owns presentation, lifecycle, and media
-  playback. GStreamer is used only behind `media::MovieBackend`; there is no MCI/DirectSound/VfW
-  reconstruction. See [docs/media.md](docs/media.md).
+  playback. WAVE effects use Bevy audio; GStreamer stays behind `media::MovieBackend`. There is no
+  MCI/DirectSound/VfW reconstruction. See [docs/media.md](docs/media.md).
 - `imperialism-testkit` reads named semantic captures and runs process-isolated differential
   checks.
 
