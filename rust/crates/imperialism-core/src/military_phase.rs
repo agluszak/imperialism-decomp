@@ -19,12 +19,20 @@ impl GameState {
     /// Retail `TSimMgr::DoMilitary`. Auto great powers run advisory mission
     /// selection and `GiveOrders` for land and navy missions, then navy order
     /// execution for sail/repair/marines plus the CarryOutOrders straggler
-    /// tail. Navy battle pairing, `MakeSureAllShipsHaveOrders`, and
-    /// `CleanUpStacks` (map-context records) are not ported.
+    /// tail. Navy battle pairing and `MakeSureAllShipsHaveOrders` are not
+    /// ported. `CleanUpStacks` clears last turn's combat-report latch before
+    /// this turn's navy execution.
     pub fn do_military(&mut self) {
         self.apply_military_orders();
+        self.clean_up_stacks();
         self.prepare_to_carry_out_navy_orders();
         self.carry_out_navy_orders();
+    }
+
+    /// Retail `TArmyMgr::CleanUpStacks`: drop map-context battle reports and
+    /// clear the post-combat diplomacy latch (`flag8`).
+    pub fn clean_up_stacks(&mut self) {
+        self.pending.combat_reports_pending = false;
     }
 
     /// Heatmap, militia, pay, advisory selection, and mission `GiveOrders`.
@@ -405,10 +413,12 @@ mod tests {
         state.turn.economic_turn = 6;
         let nation = NationId::new(0);
         let province = ProvinceId::new(3);
+        state.pending.combat_reports_pending = true;
         state
             .nations
             .append_owned_region_during_construction(nation, province);
         state.do_military();
+        assert!(!state.pending.combat_reports_pending);
         assert_eq!(state.military_units.len(), 1);
         assert_eq!(state.military_units[0].nation, nation);
         assert_eq!(

@@ -126,6 +126,7 @@ impl GameState {
             self.grow_stack_experience(&attacker_indices, EXPERIENCE_LOSER);
             self.grow_stack_experience(&defender_indices, EXPERIENCE_WINNER);
         }
+        self.pending.combat_reports_pending = true;
     }
 
     /// Strength-weighted combat-class comparison used when Auto resolves a battle
@@ -942,6 +943,7 @@ mod tests {
         assert!(state.land_battle_attacker_would_win());
         let attacker_won = state.land_battle_attacker_would_win();
         state.resolve_land_battle(attacker_won);
+        assert!(state.pending.combat_reports_pending);
         let crate::turn_flow::TurnContinuation::LandBattle(continuation) =
             std::mem::take(&mut state.continuation)
         else {

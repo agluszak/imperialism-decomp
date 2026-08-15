@@ -26,6 +26,11 @@ pub(crate) enum AppState {
     TechnologyAdvance,
     Newspaper,
     LandBattle,
+    GreatPowerDefeat,
+    PostCombatDiplomacy,
+    PlayerEliminated,
+    Victory,
+    DecadeCinematic,
     Credits,
     Preferences,
 }
@@ -83,6 +88,7 @@ fn add_game_plugins(app: &mut App) {
         ui::TechnologyAdvancePlugin,
         ui::NewspaperPlugin,
         ui::LandBattlePlugin,
+        ui::TurnCinematicPlugin,
         ui::CreditsPlugin,
         ui::PreferencesPlugin,
     ));
@@ -165,6 +171,11 @@ mod tests {
             AppState::TechnologyAdvance,
             AppState::Newspaper,
             AppState::LandBattle,
+            AppState::GreatPowerDefeat,
+            AppState::PostCombatDiplomacy,
+            AppState::PlayerEliminated,
+            AppState::Victory,
+            AppState::DecadeCinematic,
             AppState::Credits,
             AppState::Preferences,
         ] {

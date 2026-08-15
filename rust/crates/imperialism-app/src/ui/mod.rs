@@ -22,6 +22,7 @@ mod strategic_map;
 mod technology;
 mod trade;
 mod transport;
+mod turn_cinematic;
 
 pub(crate) use city::CityPlugin;
 pub(crate) use city_site::CitySitePlugin;
@@ -44,6 +45,7 @@ pub(crate) use session::GameSession;
 pub(crate) use technology::TechnologyAdvancePlugin;
 pub(crate) use trade::TradePlugin;
 pub(crate) use transport::TransportPlugin;
+pub(crate) use turn_cinematic::TurnCinematicPlugin;
 
 use bevy::prelude::{DetectChanges, Res};
 
