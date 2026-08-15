@@ -387,15 +387,18 @@ pub(in crate::ui::city) fn sync_university_details(
     mut images: Query<(&UniversityDisplay, &mut ImageNode)>,
     mut visibilities: Query<(&UniversityDisplay, &mut Visibility)>,
 ) {
-    let Some(selection) = selections.iter().next() else {
-        return;
-    };
-    let CityOrderId::CivilianRecruit(kind) = selection.order else {
+    let Some(selection) = selections
+        .iter()
+        .find(|selection| matches!(selection.order, CityOrderId::CivilianRecruit(_)))
+    else {
         return;
     };
     if !session.is_changed() && !selection.is_changed() && !selection.is_added() {
         return;
     }
+    let CityOrderId::CivilianRecruit(kind) = selection.order else {
+        return;
+    };
     let nation = city_active_nation(&session);
     let major = session.game.nations().major(nation);
     let city = &major.city;

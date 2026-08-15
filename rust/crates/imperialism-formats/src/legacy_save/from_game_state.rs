@@ -259,7 +259,7 @@ fn military_unit_dto(unit: &MilitaryUnitState) -> LegacyMilitaryUnit {
         owner_nation: i16::from(unit.owner_nation().get()),
         roster_id: unit.roster_id(),
         registered: u8::from(unit.registered()),
-        order: unit.order().code(),
+        order: unit.order().code().get(),
         persistent_id: unit.id().get(),
         name: unit.name().to_owned(),
         order_target_tiles: unit

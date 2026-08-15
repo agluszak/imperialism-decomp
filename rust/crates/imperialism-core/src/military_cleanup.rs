@@ -5,7 +5,6 @@ use crate::military::{
 };
 use crate::navy_orders::{navy_category_baselines, ship_priority_contribution};
 use crate::*;
-use serde::{Deserialize, Serialize};
 
 const ATTACK_RESOURCE_SCALE: [[f32; 4]; 5] = [
     [1.9, 2.3, 2.5, 2.7],
@@ -21,18 +20,18 @@ const PRESSURE_RATIO_CAP: f32 = 1.0;
 const PRESSURE_MIDPOINT: f32 = 0.5;
 const PRESSURE_PEER_SCALE: f32 = 1.1;
 
-/// IEEE-754 bits for `RecomputeNationOrderPriorityMetrics` and the AutoGreatPower
-/// B64/B68/B6c scores it writes. Not saved; used as the native-case result.
-#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
-pub struct NationOrderPriorityMetrics {
-    pub queue_divergence: [u32; 7],
-    pub mobile_score: [u32; 7],
-    pub mobile_divergence: [u32; 7],
-    pub combined_divergence: [u32; 7],
-    pub weighted_military: [u32; 7],
-    pub expansion_pressure: [u32; 7],
-    pub unit_divergence: [u32; 7],
-    pub mission_pressure: [u32; 7],
+/// AutoGreatPower B64/B68/B6c scores and queue/unit divergence used by
+/// mission reassess. Not saved.
+#[derive(Clone, Debug, Default, PartialEq)]
+pub(crate) struct NationOrderPriorityMetrics {
+    pub(crate) queue_divergence: [f32; 7],
+    pub(crate) mobile_score: [f32; 7],
+    pub(crate) mobile_divergence: [f32; 7],
+    pub(crate) combined_divergence: [f32; 7],
+    pub(crate) weighted_military: [f32; 7],
+    pub(crate) expansion_pressure: [f32; 7],
+    pub(crate) unit_divergence: [f32; 7],
+    pub(crate) mission_pressure: [f32; 7],
 }
 
 impl GameState {
@@ -57,7 +56,7 @@ impl GameState {
 
     /// `RecomputeNationOrderPriorityMetrics` plus AutoGreatPower
     /// `RecomputeAiExpansionAndMissionPressureScores`.
-    pub fn recompute_nation_order_priority_metrics(&self) -> NationOrderPriorityMetrics {
+    pub(crate) fn recompute_nation_order_priority_metrics(&self) -> NationOrderPriorityMetrics {
         let mut metrics = NationOrderPriorityMetrics::default();
         let baselines = navy_category_baselines(&self.technology.industry_enabled_by_slot);
         for nation in MajorNationId::all() {
@@ -75,7 +74,7 @@ impl GameState {
                 category[2] += ship_priority_contribution(ship, 2, &baselines) as f32;
                 category[3] += ship_priority_contribution(ship, 3, &baselines) as f32;
             }
-            metrics.queue_divergence[slot] = bits(queue_divergence(category));
+            metrics.queue_divergence[slot] = queue_divergence(category);
 
             let mut unit_vector = ActionClassScores::default();
             for unit in &self.military_units {
@@ -84,10 +83,8 @@ impl GameState {
                 }
                 accumulate_unit_priority(unit, &mut unit_vector, 1.0, UNIT_PRIORITY_WEIGHT);
             }
-            metrics.mobile_score[slot] =
-                bits(unit_vector.similarity(TACTICAL_COMPOSITION.fort_siege));
-            metrics.mobile_divergence[slot] =
-                bits(unit_vector.similarity(TACTICAL_COMPOSITION.baseline));
+            metrics.mobile_score[slot] = unit_vector.similarity(TACTICAL_COMPOSITION.fort_siege);
+            metrics.mobile_divergence[slot] = unit_vector.similarity(TACTICAL_COMPOSITION.baseline);
             for unit in &self.military_units {
                 if unit.nation != nation.nation() || !unit.unit_type.is_militia_category() {
                     continue;
@@ -95,15 +92,14 @@ impl GameState {
                 accumulate_unit_priority(unit, &mut unit_vector, 1.0, UNIT_PRIORITY_WEIGHT);
             }
             metrics.combined_divergence[slot] =
-                bits(unit_vector.similarity(TACTICAL_COMPOSITION.baseline));
+                unit_vector.similarity(TACTICAL_COMPOSITION.baseline);
             let military_power = self.army_unit_power(nation.nation());
             let navy_arms = self.navy_arms(nation.nation());
             let mut power_ratio = 1.0_f32;
             if (military_power as f32) < navy_arms as f32 && navy_arms != 0 {
                 power_ratio = military_power as f32 / navy_arms as f32;
             }
-            metrics.weighted_military[slot] =
-                bits(f32::from_bits(metrics.mobile_score[slot]) * power_ratio);
+            metrics.weighted_military[slot] = metrics.mobile_score[slot] * power_ratio;
         }
         for nation in MajorNationId::all() {
             if !self.nation_is_eligible_for_optional_phase(nation.nation()) || !self.is_auto(nation)
@@ -145,11 +141,11 @@ impl GameState {
                     && matches!(mission.data, MissionData::ScatteredShips(_))
             })
             .count();
-        let own_unit_divergence = f32::from_bits(metrics.combined_divergence[slot])
-            - f32::from_bits(metrics.mobile_divergence[slot]);
+        let own_unit_divergence =
+            metrics.combined_divergence[slot] - metrics.mobile_divergence[slot];
         // Retail divides even when the nation owns no regions.
         let unit_divergence = own_unit_divergence / total_regions as f32;
-        metrics.unit_divergence[slot] = bits(unit_divergence);
+        metrics.unit_divergence[slot] = unit_divergence;
 
         let mut maximum_adjusted_military = 0.0_f32;
         let mut maximum_adjusted_mission = 0.0_f32;
@@ -160,20 +156,20 @@ impl GameState {
                 continue;
             }
             let peer_slot = usize::from(peer.get());
-            let peer_combined = f32::from_bits(metrics.combined_divergence[peer_slot]);
+            let peer_combined = metrics.combined_divergence[peer_slot];
             if peer_combined < minimum_peer_combined || minimum_peer_combined == PRESSURE_UNSET {
                 minimum_peer_combined = peer_combined;
             }
             let military_score =
                 if self.do_nation_territories_share_region_class(nation.nation(), peer.nation()) {
-                    f32::from_bits(metrics.mobile_score[peer_slot])
+                    metrics.mobile_score[peer_slot]
                 } else {
-                    f32::from_bits(metrics.weighted_military[peer_slot])
+                    metrics.weighted_military[peer_slot]
                 };
             if military_score > maximum_raw_military {
                 maximum_raw_military = military_score;
             }
-            let mission_score = f32::from_bits(metrics.queue_divergence[peer_slot]);
+            let mission_score = metrics.queue_divergence[peer_slot];
             if self.diplomacy.standings[nation.nation()][peer.nation()] >= 100 {
                 maximum_adjusted_military = military_score;
             }
@@ -184,8 +180,8 @@ impl GameState {
                 maximum_adjusted_mission = mission_score;
             }
         }
-        let mut military_ratio = maximum_raw_military
-            / (f32::from_bits(metrics.mobile_divergence[slot]) + unit_divergence);
+        let mut military_ratio =
+            maximum_raw_military / (metrics.mobile_divergence[slot] + unit_divergence);
         if military_ratio > 1.0 {
             military_ratio = PRESSURE_RATIO_CAP;
         }
@@ -203,12 +199,12 @@ impl GameState {
         if compatible_regions != 0 {
             expansion /= compatible_regions as f32;
         }
-        metrics.expansion_pressure[slot] = bits(expansion);
-        metrics.mission_pressure[slot] = bits(if active_missions == 0 {
+        metrics.expansion_pressure[slot] = expansion;
+        metrics.mission_pressure[slot] = if active_missions == 0 {
             maximum_adjusted_mission
         } else {
             maximum_adjusted_mission / active_missions as f32
-        });
+        };
     }
 
     fn count_pressure_regions(&self, nation: NationId, total: &mut i32, compatible: &mut i32) {
@@ -221,14 +217,6 @@ impl GameState {
                 *compatible += 1;
             }
         }
-    }
-
-    /// `TAutoGreatPower::MReassess`. Attack, defend, control-sea, escort,
-    /// scattered-ships, and invade missions update lifecycle state, importance,
-    /// and required equipage. Blockade uses the control-sea needs body without
-    /// the extra threat floor.
-    pub fn reassess_missions(&mut self, nation: NationId) {
-        self.reassess_missions_with_metrics(nation, None);
     }
 
     fn reassess_missions_with_metrics(
@@ -244,9 +232,9 @@ impl GameState {
         }
     }
 
-    /// Native `reassess_control_sea_missions`: ControlSeaZone only. Opening
-    /// ControlSea needs do not read AutoGreatPower pressure scores.
-    pub fn reassess_control_sea_missions(&mut self) {
+    /// ControlSeaZone reassess only. Opening ControlSea needs do not read
+    /// AutoGreatPower pressure scores.
+    pub(crate) fn reassess_control_sea_missions(&mut self) {
         for nation in MajorNationId::all() {
             if !self.nation_is_eligible_for_optional_phase(nation.nation()) {
                 continue;
@@ -427,9 +415,8 @@ impl GameState {
     }
 
     /// Selection-bit clear, heatmap, militia adoption, ship assignment, and
-    /// `AddPurchasedItems`. This is the native `military_cleanup_supported_subset`
-    /// operation; it does not prune missions or remove navy stragglers.
-    pub fn apply_military_cleanup_supported_subset(&mut self) {
+    /// `AddPurchasedItems`. Does not prune missions or remove navy stragglers.
+    pub(crate) fn apply_military_cleanup_supported_subset(&mut self) {
         for ship in &mut self.ships {
             if ship.selection == 1 {
                 ship.selection = 0;
@@ -515,10 +502,6 @@ impl GameState {
     }
 }
 
-fn bits(value: f32) -> u32 {
-    value.to_bits()
-}
-
 fn queue_divergence(category: [f32; 4]) -> f32 {
     let sum = category[0] + category[1] + category[2] + category[3];
     if sum == 0.0 {
@@ -542,12 +525,12 @@ fn defend_pressure_scale(
         return 1.0;
     };
     let slot = usize::from(major.get());
-    let mut b68 = f32::from_bits(metrics.unit_divergence[slot]);
+    let mut b68 = metrics.unit_divergence[slot];
     if b68 <= 0.0 {
         b68 = 1.0;
     }
     if compatible {
-        f32::from_bits(metrics.expansion_pressure[slot]) + b68
+        metrics.expansion_pressure[slot] + b68
     } else {
         b68
     }
@@ -739,42 +722,42 @@ mod tests {
         state.ships.push(ship(0));
         state.task_forces.push(TaskForceState {
             aggression: 0,
-            order: 3,
+            order: TaskForceOrder::Patrol,
             target: TaskForceTarget::Zone(OceanZoneId::new(0)),
             location: OceanZoneId::new(0),
             nation: NationId::new(0),
             ship_counts: [0; 4],
             defeated: false,
             ingot_tile: -1,
-            flagship: Some(ShipId::new(0)),
+            flagship: Some(ShipIndex::new(0)),
             ships: vec![SelectedShip {
-                ship: ShipId::new(0),
+                ship: ShipIndex::new(0),
                 selected: true,
             }],
         });
         state.task_forces.push(TaskForceState {
             aggression: 0,
-            order: 1,
+            order: TaskForceOrder::Sail,
             target: TaskForceTarget::Zone(OceanZoneId::new(1)),
             location: OceanZoneId::new(0),
             nation: NationId::new(0),
             ship_counts: [0; 4],
             defeated: false,
             ingot_tile: -1,
-            flagship: Some(ShipId::new(1)),
+            flagship: Some(ShipIndex::new(1)),
             ships: vec![SelectedShip {
-                ship: ShipId::new(1),
+                ship: ShipIndex::new(1),
                 selected: true,
             }],
         });
-        state.ships[0].task_force = Some(TaskForceId::new(0));
-        state.ships[1].task_force = Some(TaskForceId::new(1));
+        state.ships[0].task_force = Some(TaskForceIndex::new(0));
+        state.ships[1].task_force = Some(TaskForceIndex::new(1));
 
         state.do_military_cleanup();
 
         assert_eq!(state.task_forces.len(), 1);
-        assert_eq!(state.task_forces[0].order, 3);
-        assert_eq!(state.ships[0].task_force, Some(TaskForceId::new(0)));
+        assert_eq!(state.task_forces[0].order, TaskForceOrder::Patrol);
+        assert_eq!(state.ships[0].task_force, Some(TaskForceIndex::new(0)));
         assert_eq!(state.ships[1].task_force, None);
     }
 
@@ -811,7 +794,7 @@ mod tests {
             .missions
             .push(defend_mission(nation.nation(), province));
 
-        state.reassess_missions(nation.nation());
+        state.reassess_missions_with_metrics(nation.nation(), None);
 
         assert_eq!(state.missions[0].state, 0, "capitol province uses state 0");
         assert_eq!(
@@ -837,7 +820,7 @@ mod tests {
         state.map.provinces[target].set_city_score(1000);
         state.missions.push(attack_mission(nation.nation(), target));
 
-        state.reassess_missions(nation.nation());
+        state.reassess_missions_with_metrics(nation.nation(), None);
 
         let MissionData::AttackProvince(attack) = &state.missions[0].data else {
             panic!("expected an attack-province mission");

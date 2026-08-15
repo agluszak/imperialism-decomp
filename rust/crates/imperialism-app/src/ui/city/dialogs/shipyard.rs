@@ -347,10 +347,10 @@ pub(in crate::ui::city) fn sync_shipyard_details(
     mut images: Query<(&ShipyardDisplay, &mut ImageNode)>,
     mut visibilities: Query<(&ShipyardDisplay, &mut Visibility)>,
 ) {
-    let Some(selection) = selections.iter().next() else {
-        return;
-    };
-    let CityOrderId::Ship(_) = selection.order else {
+    let Some(selection) = selections
+        .iter()
+        .find(|selection| matches!(selection.order, CityOrderId::Ship(_)))
+    else {
         return;
     };
     if !session.is_changed() && !selection.is_changed() && !selection.is_added() {

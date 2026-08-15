@@ -14,6 +14,10 @@ mod civilian_work;
 mod combat_moves;
 mod create_random_game;
 mod deal_book;
+/// Retail-substep entry points for C++ native-case integration tests.
+/// Gameplay code should call whole-phase operations such as `do_military`
+/// and `resume_after_land_battle` instead of these slices.
+pub mod differential;
 mod difficulty;
 mod diplomacy;
 mod diplomacy_phase;
@@ -90,7 +94,7 @@ pub use diplomacy::{
 pub use game::{GameState, GameStateParts};
 pub use ids::{
     CivilianUnitId, MajorNationId, MilitaryUnitId, MinorNationId, NationId, OceanZoneId,
-    ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,
+    ProvinceId, ShipIndex, TaskForceIndex, TileId, TileOwnerTag,
 };
 pub use map::{
     DevelopmentLevel, MapEdges, MapMgr, RegionId, RiverSegment, RiverSprite, TerrainKind,
@@ -106,9 +110,8 @@ pub use market::{
 };
 pub use military::{
     AdmiralState, ArmyMissionState, AttackMissionState, MissionData, MissionState,
-    NavyMissionState, SelectedShip, ShipState, TaskForceState, TaskForceTarget,
+    NavyMissionState, SelectedShip, ShipState, TaskForceOrder, TaskForceState, TaskForceTarget,
 };
-pub use military_cleanup::NationOrderPriorityMetrics;
 pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,
 };

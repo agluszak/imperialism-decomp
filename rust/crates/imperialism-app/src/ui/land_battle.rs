@@ -176,7 +176,7 @@ mod tests {
             kind,
             Some(from),
             MilitaryOrder::retail(
-                MilitaryOrderCode::from_retail(1),
+                MilitaryOrderCode::Redeploy,
                 Some(to),
                 [Some(to); 3],
                 [Some(to); 3],
