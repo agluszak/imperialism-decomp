@@ -3,6 +3,7 @@
 use super::super::format_currency;
 use super::super::retail::{RetailTag, RetailUiAssets, find_child, find_descendant};
 use super::civilian_orders::StrategicSelection;
+use super::map_interaction::MapInteractionMode;
 use crate::AppState;
 use crate::ui::GameSession;
 use bevy::prelude::*;
@@ -129,6 +130,7 @@ pub(crate) fn bind_civilian_toolbar(
 #[allow(clippy::too_many_arguments)]
 fn sync_civilian_toolbar(
     session: Res<GameSession>,
+    mode: Res<MapInteractionMode>,
     selected: Query<Ref<StrategicSelection>>,
     mut commands: Commands,
     mut pages: Query<&mut Node, With<CivilianToolbarPage>>,
@@ -141,7 +143,7 @@ fn sync_civilian_toolbar(
     let Ok(selected) = selected.single() else {
         return;
     };
-    if !session.is_changed() && !selected.is_changed() {
+    if !session.is_changed() && !selected.is_changed() && !mode.is_changed() {
         return;
     }
     let Ok(mut page) = pages.single_mut() else {
@@ -154,7 +156,7 @@ fn sync_civilian_toolbar(
             .iter()
             .find(|unit| unit.id() == id)
     });
-    let position = if unit.is_some() {
+    let position = if *mode == MapInteractionMode::Civilian {
         CIVILIAN_PAGE_VISIBLE
     } else {
         CIVILIAN_PAGE_PARKED

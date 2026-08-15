@@ -6,12 +6,18 @@ use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
 use crate::ui::generated;
+use crate::ui::hover_help::{
+    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, get_string,
+};
 use crate::ui::load_save::OpenFlagMenu;
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailPictureSwap, RetailTag, find_descendant};
 use crate::ui::strategic_map::{
-    bind_civilian_toolbar, bind_minimap, bind_strategic_base_terrain, register_civilian_orders,
-    register_civilian_toolbar, sync_minimap, sync_strategic_base_terrain, sync_strategic_units,
+    MapInteractionMode, bind_army_toolbar, bind_civilian_toolbar, bind_minimap, bind_navy_toolbar,
+    bind_ocean_view, bind_strategic_base_terrain, register_army_toolbar, register_civilian_orders,
+    register_civilian_toolbar, register_map_click, register_map_interaction, register_map_keys,
+    register_map_modals, register_navy_toolbar, register_ocean_view, sync_minimap,
+    sync_strategic_base_terrain, sync_strategic_units,
 };
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
@@ -43,34 +49,43 @@ pub(crate) struct GameShellPlugin;
 
 impl Plugin for GameShellPlugin {
     fn build(&self, app: &mut App) {
+        register_map_interaction(app);
         register_civilian_orders(app);
         register_civilian_toolbar(app);
-        app.add_systems(
-            OnEnter(AppState::StrategicMap),
-            (
-                enter_strategic_map_view,
-                spawn_strategic_map,
-                bind_strategic_map,
+        register_army_toolbar(app);
+        register_navy_toolbar(app);
+        register_map_click(app);
+        register_map_keys(app);
+        register_map_modals(app);
+        register_ocean_view(app);
+        app.add_observer(on_ocean_toggle.run_if(in_state(AppState::StrategicMap)))
+            .add_systems(
+                OnEnter(AppState::StrategicMap),
+                (
+                    enter_strategic_map_view,
+                    spawn_strategic_map,
+                    bind_strategic_map,
+                )
+                    .chain(),
             )
-                .chain(),
-        )
-        .add_systems(
-            Update,
-            project_game_status_display.run_if(resource_exists::<GameSession>),
-        )
-        .add_systems(
-            Update,
-            (
-                scroll_strategic_map,
-                sync_strategic_base_terrain,
-                sync_strategic_units,
-                sync_minimap,
-                spawn_turn_alerts_if_pending,
-                bind_turn_alert_notice,
+            .add_systems(
+                Update,
+                project_game_status_display.run_if(resource_exists::<GameSession>),
             )
-                .chain()
-                .run_if(in_state(AppState::StrategicMap)),
-        );
+            .add_systems(
+                Update,
+                (
+                    scroll_strategic_map,
+                    sync_status_date_hover,
+                    sync_strategic_base_terrain,
+                    sync_strategic_units,
+                    sync_minimap,
+                    spawn_turn_alerts_if_pending,
+                    bind_turn_alert_notice,
+                )
+                    .chain()
+                    .run_if(in_state(AppState::StrategicMap)),
+            );
     }
 }
 
@@ -79,6 +94,7 @@ fn scroll_strategic_map(
     mut last_scroll_tick: Local<Option<u128>>,
     window: Single<&Window, With<PrimaryWindow>>,
     mut session: ResMut<GameSession>,
+    mut ocean: ResMut<crate::ui::strategic_map::OceanView>,
 ) {
     let Some(cursor) = window.cursor_position() else {
         return;
@@ -92,7 +108,11 @@ fn scroll_strategic_map(
         return;
     }
     *last_scroll_tick = Some(tick16);
-    session.game.scroll_map_viewport(edges);
+    if ocean.active {
+        ocean.nudge(edges);
+    } else {
+        session.game.scroll_map_viewport(edges);
+    }
 }
 
 fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> MapEdges {
@@ -133,6 +153,7 @@ fn bind_strategic_map(
     root: Single<Entity, Added<StrategicMapRoot>>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
+    mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
@@ -159,6 +180,7 @@ fn bind_strategic_map(
         &mut assets,
         &session.game,
     );
+    bind_ocean_view(&mut commands, &mut assets, *root, &children, &tags);
     bind_minimap(
         &mut commands,
         *root,
@@ -168,7 +190,78 @@ fn bind_strategic_map(
         &session.game,
     );
     bind_civilian_toolbar(&mut commands, &mut assets, *root, &children, &tags);
+    bind_army_toolbar(&mut commands, &mut assets, *root, &children, &tags);
+    bind_navy_toolbar(&mut commands, &mut assets, *root, &children, &tags);
     bind_game_status_display(&mut commands, &mut assets, *root, &children, &tags);
+    bind_strategic_hover(
+        &mut commands,
+        &mut assets,
+        *root,
+        &children,
+        &tags,
+        &mut nodes,
+    );
+}
+
+fn bind_strategic_hover(
+    commands: &mut Commands,
+    assets: &mut RetailUiAssets,
+    root: Entity,
+    children: &Query<&Children>,
+    tags: &Query<&RetailTag>,
+    nodes: &mut Query<&mut Node>,
+) {
+    let bar = find_descendant(root, fourcc!("curs"), children, tags);
+    bind_hover_help_bar(
+        commands,
+        assets,
+        bar,
+        &mut nodes
+            .get_mut(bar)
+            .expect("strategic hover-help bar has Node"),
+        HoverHelpBarStyle::CITY_SITE,
+    );
+    let civilian_seas = format!(
+        "{}, {}",
+        get_string(assets, 0x2730, 0x12),
+        get_string(assets, 0x2730, 8)
+    );
+    bind_hover_help_texts(
+        commands,
+        root,
+        children,
+        tags,
+        [
+            (fourcc!("seas"), civilian_seas),
+            (fourcc!("ZmOt"), String::new()),
+        ],
+    );
+    commands
+        .entity(find_descendant(root, fourcc!("ZmOt"), children, tags))
+        .insert((OceanToggle, ActivateOnPress));
+}
+
+#[derive(Component)]
+struct OceanToggle;
+
+fn on_ocean_toggle(
+    activate: On<Activate>,
+    toggles: Query<(), With<OceanToggle>>,
+    session: Res<GameSession>,
+    mut ocean: ResMut<crate::ui::strategic_map::OceanView>,
+) {
+    if toggles.get(activate.entity).is_err() {
+        return;
+    }
+    if ocean.active {
+        ocean.active = false;
+    } else {
+        ocean.center_on(
+            session.game.map_view_origin(),
+            &session.game.map().geometry(),
+        );
+        ocean.active = true;
+    }
 }
 
 fn bind_strategic_map_management_pictures(
@@ -309,6 +402,30 @@ fn bind_status_text(
                 color: shadow_color,
             },
         ));
+}
+
+fn sync_status_date_hover(
+    mode: Res<MapInteractionMode>,
+    assets: RetailUiAssets,
+    mut texts: Query<(&GameStatusDisplay, &mut HoverHelpText)>,
+) {
+    if !mode.is_changed() {
+        return;
+    }
+    let help = if *mode == MapInteractionMode::Army {
+        get_string(&assets, 0x2732, 0x11)
+    } else {
+        format!(
+            "{}, {}",
+            get_string(&assets, 0x2730, 0x12),
+            get_string(&assets, 0x2730, 8)
+        )
+    };
+    for (kind, mut text) in &mut texts {
+        if *kind == GameStatusDisplay::Date {
+            text.0.clone_from(&help);
+        }
+    }
 }
 
 pub(crate) fn bind_native_game_screen_nav(

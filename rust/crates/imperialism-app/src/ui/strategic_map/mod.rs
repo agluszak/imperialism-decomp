@@ -10,19 +10,35 @@ use bevy::ui::RelativeCursorPosition;
 use imperialism_core::*;
 use imperialism_formats::*;
 
+mod army_toolbar;
 mod borders;
 mod civilian_orders;
 mod civilian_toolbar;
+mod map_click;
+mod map_interaction;
+mod map_keys;
+mod map_modals;
 mod minimap;
+mod navy_toolbar;
+mod ocean_view;
 mod overlays;
 mod terrain;
 mod units;
 
+pub(crate) use army_toolbar::{bind_army_toolbar, register as register_army_toolbar};
 use borders::compose_strategic_borders;
 use civilian_orders::StrategicSelection;
 pub(crate) use civilian_orders::register as register_civilian_orders;
 pub(crate) use civilian_toolbar::{bind_civilian_toolbar, register_civilian_toolbar};
+pub(crate) use map_click::register as register_map_click;
+pub(crate) use map_interaction::{
+    MapInteractionMode, OceanView, register as register_map_interaction,
+};
+pub(crate) use map_keys::register as register_map_keys;
+pub(crate) use map_modals::register as register_map_modals;
 pub(crate) use minimap::{bind_minimap, sync_minimap};
+pub(crate) use navy_toolbar::{bind_navy_toolbar, register as register_navy_toolbar};
+pub(crate) use ocean_view::{bind_ocean_view, register as register_ocean_view};
 use overlays::{
     IMPROVEMENT_PICTURE_IDS, compose_strategic_improvements, compose_strategic_railways,
     town_transport_linked,
