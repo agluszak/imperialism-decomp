@@ -1,5 +1,4 @@
 use super::*;
-use enum_map::Enum;
 
 #[derive(Component)]
 pub(in crate::ui::city) struct CityBuildingDialog {
@@ -178,39 +177,37 @@ pub(in crate::ui::city) fn bind_city_dialogs(
                     node.top = px(position.y as f32);
                 });
         }
-        if let Some(page) = industry_page(dialog.slot) {
-            configure_industry_dialog(&mut commands, &mut assets, root, &tree, page);
-            continue;
-        }
-        match dialog.slot {
-            CityFacilitySlot::TradeSchool => {
+        match city_dialog_kind(dialog.slot) {
+            CityDialogKind::Industry(page) => {
+                configure_industry_dialog(&mut commands, &mut assets, root, &tree, page);
+            }
+            CityDialogKind::Training => {
                 configure_training_dialog(&mut commands, &assets, root, &tree)
             }
-            CityFacilitySlot::Armory => {
+            CityDialogKind::Armory => {
                 configure_armory_dialog(&mut commands, &mut assets, root, &tree, &session.game)
             }
-            CityFacilitySlot::University => {
+            CityDialogKind::University => {
                 configure_university_dialog(&mut commands, &mut assets, root, &tree, &session.game)
             }
-            CityFacilitySlot::Shipyard => {
+            CityDialogKind::Shipyard => {
                 configure_shipyard_dialog(&mut commands, &mut assets, root, &tree, &session.game)
             }
-            CityFacilitySlot::Warehouse => {
+            CityDialogKind::Warehouse => {
                 configure_warehouse_dialog(&mut commands, &mut assets, root, &tree, &session.game)
             }
-            CityFacilitySlot::FoodProcessing => {
+            CityDialogKind::FoodProcessing => {
                 configure_food_dialog(&mut commands, &mut assets, root, &tree)
             }
-            CityFacilitySlot::PowerPlant => {
+            CityDialogKind::PowerPlant => {
                 configure_power_dialog(&mut commands, &mut assets, root, &tree)
             }
-            CityFacilitySlot::Transport => {
+            CityDialogKind::Transport => {
                 configure_transport_capacity_dialog(&mut commands, &mut assets, root, &tree)
             }
-            CityFacilitySlot::RegionalPopulation => {
+            CityDialogKind::Population => {
                 configure_population_dialog(&mut commands, &mut assets, root, &tree)
             }
-            _ => unreachable!("City building has no dialog binder"),
         }
     }
 }
@@ -226,7 +223,7 @@ pub(in crate::ui::city) fn restore_city_dialogs(
     let nation = session.active_major_nation();
     let city = &session.game.nations().major(nation).city;
     let mut next_z = 1;
-    for slot in (0..CityFacilitySlot::COUNT).map(CityFacilitySlot::from_usize) {
+    for slot in (0..enum_map::enum_len::<CityFacilitySlot>()).map(CityFacilitySlot::from_usize) {
         let state = city.building_windows[slot];
         let Some(position) = state else {
             continue;
@@ -280,8 +277,15 @@ pub(in crate::ui::city) fn on_city_dialog_pressed(
     if press.event.button != PointerButton::Primary {
         return;
     }
-    let Some(dialog) = ancestor_with(press.original_event_target(), &parents, &dialogs) else {
-        return;
+    let mut target = press.original_event_target();
+    let dialog = loop {
+        if dialogs.contains(target) {
+            break target;
+        }
+        let Ok(parent) = parents.get(target) else {
+            return;
+        };
+        target = parent.parent();
     };
     let mut order = dialogs
         .iter()
@@ -324,7 +328,15 @@ pub(in crate::ui::city) fn on_city_dialog_close(
     dialogs: Query<(), With<CityBuildingDialog>>,
     mut commands: Commands,
 ) {
-    let entity = ancestor_with(activate.entity, &parents, &dialogs)
-        .expect("City close button belongs to its dialog");
-    commands.entity(entity).despawn();
+    let mut entity = activate.entity;
+    loop {
+        if dialogs.contains(entity) {
+            commands.entity(entity).despawn();
+            return;
+        }
+        entity = parents
+            .get(entity)
+            .expect("City close button belongs to its dialog")
+            .parent();
+    }
 }

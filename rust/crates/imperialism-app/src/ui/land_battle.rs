@@ -103,6 +103,7 @@ fn on_land_battle_activate(
     actions: Query<&LandBattleAction>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
+    assets: Option<Res<crate::RetailAssetsResource>>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
@@ -112,7 +113,10 @@ fn on_land_battle_activate(
         LandBattleAction::Retreat => false,
     };
     session.game.resolve_land_battle(attacker_won);
-    match session.game.resume_after_land_battle() {
+    match session
+        .game
+        .resume_after_land_battle(super::session::news_story_ids(assets.as_deref()))
+    {
         TurnStop::LandBattle => {}
         stop => apply_turn_stop(stop, &mut next_state),
     }
@@ -122,22 +126,11 @@ fn on_land_battle_activate(
 mod tests {
     use super::super::retail::RetailTag;
     use super::*;
+    use crate::ui::test_support::beginning_of_game_parts;
     use bevy::state::app::StatesPlugin;
-    use imperialism_formats::{LegacyGameStateContext, LegacySaveV62, peek_save_header};
-
-    const BEGINNING_OF_GAME: &[u8] =
-        include_bytes!("../../../../../fixtures/retail/beginning_of_game.imp");
 
     fn fixture_parts() -> GameStateParts {
-        let selected_nation = peek_save_header(BEGINNING_OF_GAME)
-            .and_then(|header| NationId::try_new(header.active_nation))
-            .unwrap_or(NationId::new(0));
-        LegacySaveV62::parse(BEGINNING_OF_GAME).game_state_parts(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 0,
-            selected_nation,
-        })
+        beginning_of_game_parts()
     }
 
     fn idle_unit(unit: &MilitaryUnitState) -> MilitaryUnitState {
@@ -173,7 +166,7 @@ mod tests {
             kind,
             Some(from),
             MilitaryOrder::retail(
-                MilitaryOrderCode::from_retail(1),
+                MilitaryOrderCode::Redeploy,
                 Some(to),
                 [Some(to); 3],
                 [Some(to); 3],
@@ -309,7 +302,7 @@ mod tests {
         );
 
         let mut state = GameState::from_parts(parts);
-        assert_eq!(state.advance_turn(), TurnStop::LandBattle);
+        assert_eq!(state.advance_turn(&[]), TurnStop::LandBattle);
         assert!(state.pending_land_battle().is_some());
         state
     }

@@ -60,6 +60,10 @@ impl RetailAssetsResource {
         self.string(group, offset + 1)
             .expect("retail hover-help string")
     }
+
+    pub(crate) fn news_story_ids(&self) -> &[i32] {
+        self.0.news_table().story_ids()
+    }
 }
 
 #[derive(Resource)]
@@ -119,7 +123,7 @@ pub fn run(
             imperialism_core::PhaseCode::STRATEGIC_MAP,
             "Bevy may only start from a strategic-map core phase"
         );
-        app.insert_resource(ui::GameSession::from_assets(game, &retail_assets))
+        app.insert_resource(ui::GameSession { game })
             .insert_state(AppState::StrategicMap);
     } else {
         app.init_state::<AppState>();

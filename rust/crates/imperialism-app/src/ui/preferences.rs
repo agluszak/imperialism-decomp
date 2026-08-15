@@ -61,6 +61,13 @@ impl Default for GamePreferences {
     }
 }
 
+impl GamePreferences {
+    /// Retail `preferenceValues[8]`. Nonzero (the 0x101 default) enables turn alerts.
+    pub(crate) fn turn_alerts_enabled(&self) -> bool {
+        self.values[8] != 0
+    }
+}
+
 #[derive(Component)]
 struct PreferencesRoot;
 

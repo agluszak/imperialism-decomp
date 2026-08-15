@@ -5,6 +5,7 @@ use crate::ui::generated;
 use crate::ui::hover_help::{
     HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, get_string, ui_string,
 };
+use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::ModalDialog;
 use crate::ui::retail::{RetailTree, ancestor_with};
@@ -157,15 +158,7 @@ fn bind_city_site_controls(
 }
 
 fn open_city_site_intro(commands: &mut Commands) {
-    let root = commands.spawn_scene(generated::linger_2020()).id();
-    commands.entity(root).insert((
-        CitySiteIntro,
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
-        Pickable::default(),
-        DespawnOnExit(AppState::CitySite),
-    ));
+    spawn_linger_dialog(commands, CitySiteIntro, AppState::CitySite, 20);
 }
 
 fn bind_city_site_intro(
@@ -325,15 +318,7 @@ fn open_new_city_dialog(commands: &mut Commands, site: CapitalSite) {
 }
 
 fn open_city_site_notice(commands: &mut Commands, body: String) {
-    let root = commands.spawn_scene(generated::linger_2020()).id();
-    commands.entity(root).insert((
-        CitySiteNotice(body),
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
-        Pickable::default(),
-        DespawnOnExit(AppState::CitySite),
-    ));
+    spawn_linger_dialog(commands, CitySiteNotice(body), AppState::CitySite, 20);
 }
 
 fn bind_new_city_dialog(
@@ -556,6 +541,7 @@ fn on_new_city_activate(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
+    assets: Res<RetailAssetsResource>,
 ) {
     let action = actions
         .get(activate.entity)
@@ -565,7 +551,7 @@ fn on_new_city_activate(
             let Ok((_, dialog)) = dialogs.single() else {
                 return;
             };
-            let stop = confirm_capital_site(&mut session.game, dialog.0);
+            let stop = confirm_capital_site(&mut session.game, dialog.0, assets.news_story_ids());
             for (root, _) in &dialogs {
                 commands.entity(root).despawn();
             }
@@ -591,6 +577,7 @@ fn stuff_minister_dialog(
     coat_picture: Option<i16>,
     hide_cancel: bool,
 ) {
+    let linger = bind_linger_dialog(root, tree);
     if let Some(picture) = gold_picture {
         let gold = assets
             .picture(PictureId::new(picture))
@@ -601,29 +588,15 @@ fn stuff_minister_dialog(
     }
     if let Some(picture) = coat_picture {
         if let Ok(image) = assets.picture(PictureId::new(picture)) {
-            commands
-                .entity(tree.find(root, fourcc!("coat")))
-                .insert(ImageNode::new(image));
+            commands.entity(linger.coat).insert(ImageNode::new(image));
         }
     } else {
-        commands
-            .entity(tree.find(root, fourcc!("coat")))
-            .insert(Visibility::Hidden);
+        commands.entity(linger.coat).insert(Visibility::Hidden);
     }
-    set_text(commands, tree.find(root, fourcc!("titl")), assets, title, 0);
-    set_styled_text(
-        commands,
-        tree.find(root, fourcc!("info")),
-        assets,
-        body,
-        12,
-        0,
-        0,
-    );
+    linger.set_title(commands, assets, retail_lines(title));
+    linger.set_body(commands, assets, retail_lines(body));
     if hide_cancel {
-        commands
-            .entity(tree.find(root, fourcc!("cncl")))
-            .insert(Visibility::Hidden);
+        commands.entity(linger.cancel).insert(Visibility::Hidden);
     }
 }
 

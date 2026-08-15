@@ -647,13 +647,6 @@ pub fn ancestor_with<D: QueryData, F: QueryFilter>(
     }
 }
 
-pub fn scene_root(mut entity: Entity, parents: &Query<&ChildOf>) -> Entity {
-    while let Ok(parent) = parents.get(entity) {
-        entity = parent.parent();
-    }
-    entity
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;

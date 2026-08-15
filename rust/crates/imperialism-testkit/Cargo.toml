@@ -6,7 +6,6 @@ rust-version.workspace = true
 
 [dependencies]
 anyhow.workspace = true
-clap.workspace = true
 imperialism-core = { path = "../imperialism-core", features = ["differential-trace"] }
 imperialism-formats = { path = "../imperialism-formats" }
 serde.workspace = true

@@ -355,7 +355,7 @@ fn admiral_states(navy: &LegacyNavyState, ship_count: usize) -> Vec<AdmiralState
             name: admiral.name.clone(),
             experience: admiral.experience,
             ship: (admiral.ship_index >= 0 && (admiral.ship_index as usize) < ship_count)
-                .then(|| ShipId::new(admiral.ship_index as usize)),
+                .then(|| ShipIndex::new(admiral.ship_index as usize)),
         })
         .collect()
 }

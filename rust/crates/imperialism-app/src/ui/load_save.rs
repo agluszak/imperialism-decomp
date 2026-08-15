@@ -2,6 +2,7 @@ use crate::RetailAssetsResource;
 use crate::ui::GameSession;
 use crate::ui::generated;
 use crate::ui::hover_help::get_string;
+use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::random_setup_map::{compose_owner_preview_indices, preview_image_from_indices};
 use crate::ui::retail::{ModalDialog, RetailPictureSwap, RetailTree, RetailUiAssets};
 use crate::{AppState, ReturnTo};
@@ -15,10 +16,9 @@ use bevy::ui_widgets::{Activate, SelectAllOnFocus};
 use imperialism_core::{GameState, NationId, PhaseCode, TileId, TileOwnerTag};
 use imperialism_formats::{
     FourCc, LegacyGameStateContext, LoadGameError, NUMBERED_SAVE_SLOT_COUNT, OverwritePolicy,
-    PictureId, RetailAssets, SAVE_LABEL_MAX_CHARS, SaveDirectoryListing, SaveFileError,
-    SaveHeaderInfo, SaveSlot, fourcc, list_save_slots, load_game_from_bytes, normalize_save_label,
-    peek_save_header, peek_save_preview_owners, retail_save_path, write_game_state,
-    write_save_file,
+    PictureId, SAVE_LABEL_MAX_CHARS, SaveDirectoryListing, SaveFileError, SaveHeaderInfo, SaveSlot,
+    fourcc, list_save_slots, load_game_from_bytes, normalize_save_label, peek_save_header,
+    peek_save_preview_owners, retail_save_path, write_game_state, write_save_file,
 };
 use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -580,7 +580,6 @@ fn on_load_save_activate(
     state: Res<State<AppState>>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
-    retail: Option<Res<RetailAssetsResource>>,
 ) {
     if !notices.is_empty() {
         return;
@@ -617,9 +616,6 @@ fn on_load_save_activate(
             let Some(save_dir) = save_dir else {
                 return;
             };
-            let Some(retail) = retail.as_deref() else {
-                return;
-            };
             confirm_or_apply(
                 &mut commands,
                 &root,
@@ -630,7 +626,6 @@ fn on_load_save_activate(
                 returning.0,
                 *state.get(),
                 &mut next_state,
-                retail.assets(),
             );
         }
     }
@@ -707,7 +702,6 @@ fn confirm_or_apply(
     returning: AppState,
     screen_state: AppState,
     next_state: &mut NextState<AppState>,
-    retail: &RetailAssets,
 ) {
     let Some(slot) = root.selected else {
         if root.mode == LoadSaveMode::Save {
@@ -743,7 +737,6 @@ fn confirm_or_apply(
                 next_state,
                 screen_state,
                 None,
-                retail,
             );
         }
         LoadSaveMode::Save => {
@@ -785,7 +778,6 @@ fn apply_load(
     next_state: &mut NextState<AppState>,
     screen_state: AppState,
     assets: Option<&RetailAssetsResource>,
-    retail: &RetailAssets,
 ) {
     let path = retail_save_path(save_dir, slot);
     if !path.is_file() {
@@ -802,7 +794,7 @@ fn apply_load(
     match load {
         Ok(game) => {
             let destination = loaded_game_destination(&game);
-            commands.insert_resource(GameSession::from_assets(game, retail));
+            commands.insert_resource(GameSession { game });
             next_state.set(destination);
         }
         Err(error) => spawn_notice(
@@ -853,15 +845,7 @@ fn spawn_notice(
     body: String,
     screen_state: AppState,
 ) {
-    let root = commands.spawn_scene(generated::linger_2020()).id();
-    commands.entity(root).insert((
-        LoadSaveNotice { kind, body },
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
-        Pickable::default(),
-        DespawnOnExit(screen_state),
-    ));
+    spawn_linger_dialog(commands, LoadSaveNotice { kind, body }, screen_state, 20);
 }
 
 fn bind_load_save_notice(
@@ -871,37 +855,21 @@ fn bind_load_save_notice(
     mut assets: RetailUiAssets,
 ) {
     let (root, notice) = notice.into_inner();
-    let body = tree.find(root, fourcc!("info"));
-    let (body_font, body_layout, body_line_height, _) = assets
-        .text_style(imperialism_formats::RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 0,
-        })
-        .expect("retail load/save notice body style");
-    commands.entity(body).insert((
-        Text::new(notice.body.clone()),
-        body_font,
-        body_layout,
-        body_line_height,
-        TextColor(assets.palette_color(0)),
-    ));
-    let okay = tree.find(root, fourcc!("okay"));
+    let linger = bind_linger_dialog(root, &tree);
+    linger.set_body(&mut commands, &mut assets, &notice.body);
     commands
-        .entity(okay)
+        .entity(linger.okay)
         .insert(LoadSaveNoticeAction::Accept)
         .remove::<InteractionDisabled>();
-    let cancel = tree.find(root, fourcc!("cncl"));
     match notice.kind {
         LoadSaveNoticeKind::ConfirmLoad => {
             commands
-                .entity(cancel)
+                .entity(linger.cancel)
                 .insert(LoadSaveNoticeAction::Dismiss)
                 .remove::<InteractionDisabled>();
         }
         LoadSaveNoticeKind::PickSlot | LoadSaveNoticeKind::Error => {
-            commands.entity(cancel).insert(Visibility::Hidden);
+            commands.entity(linger.cancel).insert(Visibility::Hidden);
         }
     }
 }
@@ -942,7 +910,6 @@ fn on_load_save_notice_activate(
                 &mut next_state,
                 *state.get(),
                 Some(&*assets),
-                assets.assets(),
             );
         }
         (LoadSaveNoticeAction::Accept, _) | (LoadSaveNoticeAction::Dismiss, _) => {
@@ -1073,15 +1040,12 @@ fn on_flag_menu_activate(
 }
 
 fn open_flag_menu_prompt(commands: &mut Commands, pending: FlagMenuPending) {
-    let root = commands.spawn_scene(generated::linger_2020()).id();
-    commands.entity(root).insert((
+    spawn_linger_dialog(
+        commands,
         FlagMenuPrompt { kind: pending },
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(21),
-        Pickable::default(),
-        DespawnOnExit(AppState::StrategicMap),
-    ));
+        AppState::StrategicMap,
+        21,
+    );
 }
 
 fn bind_flag_menu_prompt(
@@ -1099,28 +1063,14 @@ fn bind_flag_menu_prompt(
     let body = assets
         .string(0x2737, index)
         .expect("retail flag-menu confirm string");
-    let info = tree.find(root, fourcc!("info"));
-    let (body_font, body_layout, body_line_height, _) = assets
-        .text_style(imperialism_formats::RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 0,
-        })
-        .expect("retail flag-menu prompt body style");
-    commands.entity(info).insert((
-        Text::new(body),
-        body_font,
-        body_layout,
-        body_line_height,
-        TextColor(assets.palette_color(0)),
-    ));
+    let linger = bind_linger_dialog(root, &tree);
+    linger.set_body(&mut commands, &mut assets, body);
     commands
-        .entity(tree.find(root, fourcc!("okay")))
+        .entity(linger.okay)
         .insert(FlagMenuPromptAction::Accept)
         .remove::<InteractionDisabled>();
     commands
-        .entity(tree.find(root, fourcc!("cncl")))
+        .entity(linger.cancel)
         .insert(FlagMenuPromptAction::Dismiss)
         .remove::<InteractionDisabled>();
 }
@@ -1166,21 +1116,11 @@ fn on_flag_menu_prompt_activate(
 mod tests {
     use super::*;
     use crate::ui::retail::RetailTag;
-    use imperialism_formats::{LegacySaveV62, load_game_from_path};
-
-    const BEGINNING_OF_GAME: &[u8] =
-        include_bytes!("../../../../../fixtures/retail/beginning_of_game.imp");
+    use crate::ui::test_support::beginning_of_game;
+    use imperialism_formats::load_game_from_path;
 
     fn fixture_state() -> GameState {
-        let selected_nation = peek_save_header(BEGINNING_OF_GAME)
-            .and_then(|header| NationId::try_new(header.active_nation))
-            .expect("beginning-of-game fixture names a nation in range");
-        LegacySaveV62::parse(BEGINNING_OF_GAME).game_state(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 0,
-            selected_nation,
-        })
+        beginning_of_game()
     }
 
     fn test_app(initial: AppState) -> App {

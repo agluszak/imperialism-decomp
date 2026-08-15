@@ -2849,7 +2849,6 @@ name = "imperialism-testkit"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "clap",
  "imperialism-core",
  "imperialism-formats",
  "serde",

@@ -1,4 +1,4 @@
-use super::retail::ModalDialog;
+use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::session::apply_turn_stop;
 use crate::AppState;
 use crate::RetailAssetsResource;
@@ -13,13 +13,12 @@ use crate::ui::strategic_map::{
     bind_civilian_toolbar, bind_minimap, bind_strategic_base_terrain, register_civilian_orders,
     register_civilian_toolbar, sync_minimap, sync_strategic_base_terrain, sync_strategic_units,
 };
-use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
 use imperialism_core::MapEdges;
-use imperialism_formats::{FourCc, PictureId, RetailTextStylePreset, TRADE, fourcc};
+use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum GameStatusDisplay {
@@ -47,12 +46,7 @@ impl Plugin for GameShellPlugin {
         register_civilian_toolbar(app);
         app.add_systems(
             OnEnter(AppState::StrategicMap),
-            (
-                enter_strategic_map_view,
-                spawn_strategic_map,
-                bind_strategic_map,
-            )
-                .chain(),
+            (spawn_strategic_map, bind_strategic_map).chain(),
         )
         .add_systems(
             Update,
@@ -115,10 +109,6 @@ fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> MapEdges {
         edges |= MapEdges::BOTTOM;
     }
     edges
-}
-
-fn enter_strategic_map_view(mut session: ResMut<GameSession>) {
-    session.game.center_map_on_first_idle_civilian();
 }
 
 fn spawn_strategic_map(mut commands: Commands) {
@@ -353,15 +343,7 @@ fn spawn_turn_alerts_if_pending(
     if !existing.is_empty() || !session.game.turn_alerts_pending() {
         return;
     }
-    let root = commands.spawn_scene(generated::linger_2020()).id();
-    commands.entity(root).insert((
-        TurnAlertNotice,
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
-        Pickable::default(),
-        DespawnOnExit(AppState::StrategicMap),
-    ));
+    spawn_linger_dialog(&mut commands, TurnAlertNotice, AppState::StrategicMap, 20);
 }
 
 fn bind_turn_alert_notice(
@@ -374,47 +356,37 @@ fn bind_turn_alert_notice(
         return;
     };
     let root = *root;
-    let notice_color = TextColor(assets.palette_color(0));
+    let linger = bind_linger_dialog(root, &tree);
+    linger.set_title(&mut commands, &mut assets, "Report from your\nAdvisors\n\n");
+    linger.set_body(
+        &mut commands,
+        &mut assets,
+        "Your ministers have an urgent report.",
+    );
     commands
-        .entity(tree.find(root, fourcc!("titl")))
-        .insert((Text::new("Report from your\nAdvisors\n\n"), notice_color));
-    let body = tree.find(root, fourcc!("info"));
-    let (body_font, body_layout, body_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 0,
-        })
-        .expect("retail turn-alert body style");
-    commands.entity(body).insert((
-        Text::new("Your ministers have an urgent report."),
-        body_font,
-        body_layout,
-        body_line_height,
-        notice_color,
-    ));
-    let okay = tree.find(root, fourcc!("okay"));
-    commands
-        .entity(okay)
+        .entity(linger.okay)
         .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_turn_alert_dismiss);
-    let cancel = tree.find(root, fourcc!("cncl"));
-    commands.entity(cancel).insert(Visibility::Hidden);
+    commands.entity(linger.cancel).insert(Visibility::Hidden);
 }
 
+#[allow(clippy::too_many_arguments)]
 fn on_turn_alert_dismiss(
     activate: On<Activate>,
     parents: Query<&ChildOf>,
     notices: Query<Entity, With<TurnAlertNotice>>,
     mut session: ResMut<GameSession>,
+    prefs: Res<super::preferences::GamePreferences>,
+    assets: Res<RetailAssetsResource>,
     mut commands: Commands,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     let root = ancestor_with(activate.entity, &parents, &notices)
         .expect("turn alert belongs to its dialog");
-    let stop = session.game.dismiss_turn_alerts();
+    let stop = session
+        .game
+        .dismiss_turn_alerts(prefs.turn_alerts_enabled(), assets.news_story_ids());
     commands.entity(root).despawn();
     apply_turn_stop(stop, &mut next_state);
 }

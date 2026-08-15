@@ -20,11 +20,9 @@ pub(crate) fn set_ship_quantity(
     maximum: i16,
     quantity: i16,
 ) -> bool {
-    let delta = quantity - state.progress.quantity;
-    if quantity > maximum || quantity < 0 {
+    let Some(delta) = state.progress.try_set_within(maximum, quantity) else {
         return false;
-    }
-    state.progress.quantity = quantity;
+    };
     let costs = ship_order_costs(state.ship_type);
     for (resource, cost) in costs.iter() {
         stockpile.wrapping_add_and_verify(resource, -(cost * delta));

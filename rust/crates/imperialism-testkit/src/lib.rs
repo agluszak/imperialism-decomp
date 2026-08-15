@@ -1,7 +1,6 @@
 #![forbid(unsafe_code)]
 
 mod differential;
-mod oracle;
 mod runtime_capture;
 
 pub use differential::{assert_game_state_eq, compare_native, load_save_backed_state, run_native};
@@ -10,10 +9,6 @@ use imperialism_core::{
     differential_trace::{
         CoarseMapTrace, RandomMapTerrainTrace, trace_coarse_random_map, trace_random_map_terrain,
     },
-};
-pub use oracle::{
-    check_coarse, check_random_game_start, check_random_setup, check_random_setup_initial,
-    check_snapshot, check_terrain,
 };
 pub use runtime_capture::{
     EvidenceKind, RuntimeCaptureError, RuntimeResultExpectations, RuntimeRun,

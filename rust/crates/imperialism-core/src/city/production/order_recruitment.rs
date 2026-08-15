@@ -24,27 +24,22 @@ pub(crate) fn recruit_limit(
     } else {
         primary_limit
     };
-    let mut constraint = ProductionConstraint::Workforce;
-    let mut limit = workforce_limit;
-    if primary_limit < limit {
-        constraint = ProductionConstraint::Resources;
-        limit = primary_limit;
-    }
-    if secondary_limit < limit {
-        constraint = ProductionConstraint::Resources;
-        limit = secondary_limit;
-    }
+    let mut limit = OrderLimit {
+        maximum: workforce_limit,
+        constraint: ProductionConstraint::Workforce,
+    };
+    limit.min_with(primary_limit, ProductionConstraint::Resources);
+    limit.min_with(secondary_limit, ProductionConstraint::Resources);
     if spec.cash_per_unit != 0 && owner.diplomacy_eligible {
         let affordable =
             (owner.available_diplomacy_budget(treasury) / i32::from(spec.cash_per_unit)).max(0);
-        if affordable < i32::from(limit) {
-            constraint = ProductionConstraint::Treasury;
-            limit = affordable as i16;
+        if affordable < i32::from(limit.maximum) {
+            limit.min_with(affordable as i16, ProductionConstraint::Treasury);
         }
     }
     OrderLimit {
-        maximum: progress.quantity + limit,
-        constraint,
+        maximum: progress.quantity + limit.maximum,
+        constraint: limit.constraint,
     }
 }
 
@@ -57,12 +52,9 @@ pub(crate) fn set_recruit_quantity(
     limit: OrderLimit,
     quantity: i16,
 ) -> bool {
-    let delta = quantity - progress.quantity;
-    progress.limiting_constraint = limit.constraint;
-    if quantity > limit.maximum || quantity < 0 {
+    let Some(delta) = progress.try_set(limit, quantity) else {
         return false;
-    }
-    progress.quantity = quantity;
+    };
 
     stockpile.wrapping_add_and_verify(
         spec.primary.resource,

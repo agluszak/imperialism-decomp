@@ -86,8 +86,33 @@ pub(in crate::ui::city) fn configure_industry_dialog(
     );
 }
 
+pub(in crate::ui::city) struct CityOrderRow {
+    pub(in crate::ui::city) row: Entity,
+    pub(in crate::ui::city) decrease: Entity,
+    pub(in crate::ui::city) increase: Entity,
+    pub(in crate::ui::city) quantity: Entity,
+}
+
+impl CityOrderRow {
+    pub(in crate::ui::city) fn set_available(&self, commands: &mut Commands, available: bool) {
+        let visibility = if available {
+            Visibility::Visible
+        } else {
+            Visibility::Hidden
+        };
+        commands.entity(self.row).insert(visibility);
+        for control in [self.decrease, self.increase] {
+            if available {
+                commands.entity(control).remove::<InteractionDisabled>();
+            } else {
+                commands.entity(control).insert(InteractionDisabled);
+            }
+        }
+    }
+}
+
 #[allow(clippy::too_many_arguments)]
-pub(in crate::ui::city) fn bind_city_order_control(
+pub(in crate::ui::city) fn bind_city_order_row(
     commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,
@@ -96,24 +121,28 @@ pub(in crate::ui::city) fn bind_city_order_control(
     increase_tag: FourCc,
     quantity_tag: FourCc,
     step: i16,
-) -> Entity {
+) -> CityOrderRow {
     let row = tree.find(root, binding.tag);
-    let view = tree.view(row);
-    let left = view.find(decrease_tag);
-    let right = view.find(increase_tag);
-    let quantity = view.find(quantity_tag);
-    commands.entity(left).insert(CityOrderAdjust {
+    let decrease = tree.find(row, decrease_tag);
+    let increase = tree.find(row, increase_tag);
+    let quantity = tree.find(row, quantity_tag);
+    commands.entity(decrease).insert(CityOrderAdjust {
         order: binding.order,
         delta: -step,
     });
-    commands.entity(right).insert(CityOrderAdjust {
+    commands.entity(increase).insert(CityOrderAdjust {
         order: binding.order,
         delta: step,
     });
     commands
         .entity(quantity)
         .insert((Text::new(""), CityOrderQuantity(binding.order)));
-    quantity
+    CityOrderRow {
+        row,
+        decrease,
+        increase,
+        quantity,
+    }
 }
 
 fn bind_industry_amount_bars(
@@ -124,7 +153,7 @@ fn bind_industry_amount_bars(
     bar_color: Color,
 ) {
     for binding in page.orders {
-        let quantity = bind_city_order_control(
+        let bound = bind_city_order_row(
             commands,
             root,
             tree,
@@ -139,10 +168,9 @@ fn bind_industry_amount_bars(
             slot: page.slot,
         };
         commands
-            .entity(quantity)
+            .entity(bound.quantity)
             .insert(IndustryBar::Quantity(amount));
-        let row = tree.find(root, binding.tag);
-        let bar = tree.find(row, fourcc!("bar "));
+        let bar = tree.find(bound.row, fourcc!("bar "));
         commands.spawn((
             Node {
                 position_type: PositionType::Absolute,
@@ -230,6 +258,7 @@ pub(in crate::ui::city) fn bind_industry_dialog(
 pub(in crate::ui::city) fn on_city_row_selected(
     change: On<ValueChange<bool>>,
     rows: Query<&CityRowChoice>,
+    parents: Query<&ChildOf>,
     mut views: Query<&mut CityRowSelection>,
 ) {
     if !change.value {
@@ -238,7 +267,7 @@ pub(in crate::ui::city) fn on_city_row_selected(
     let Ok(row) = rows.get(change.source) else {
         return;
     };
-    let Some(mut selection) = views.iter_mut().next() else {
+    let Some(mut selection) = city_row_selection_mut(change.source, &parents, &mut views) else {
         return;
     };
     if recruitment_kind_matches(selection.order, row.0) {
@@ -249,16 +278,43 @@ pub(in crate::ui::city) fn on_city_row_selected(
 pub(in crate::ui::city) fn on_city_recruitment_order_selected(
     activate: On<Activate>,
     actions: Query<&CityOrderAdjust>,
+    parents: Query<&ChildOf>,
     mut views: Query<&mut CityRowSelection>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let Some(mut selection) = views.iter_mut().next() else {
+    let Some(mut selection) = city_row_selection_mut(activate.entity, &parents, &mut views) else {
         return;
     };
     if recruitment_kind_matches(selection.order, action.order) {
         selection.order = action.order;
+    }
+}
+
+fn city_row_selection_mut<'w>(
+    mut entity: Entity,
+    parents: &Query<&ChildOf>,
+    views: &'w mut Query<&mut CityRowSelection>,
+) -> Option<Mut<'w, CityRowSelection>> {
+    loop {
+        if views.contains(entity) {
+            return views.get_mut(entity).ok();
+        }
+        entity = parents.get(entity).ok()?.parent();
+    }
+}
+
+fn ancestor_city_row_selection(
+    mut entity: Entity,
+    parents: &Query<&ChildOf>,
+    selections: &Query<(Entity, Ref<CityRowSelection>)>,
+) -> Option<Entity> {
+    loop {
+        if selections.contains(entity) {
+            return Some(entity);
+        }
+        entity = parents.get(entity).ok()?.parent();
     }
 }
 
@@ -286,16 +342,27 @@ pub(in crate::ui::city) fn city_stock_color(short: bool, selection: &CityRowSele
 pub(in crate::ui::city) fn sync_city_row_selection(
     mut commands: Commands,
     session: Res<GameSession>,
-    selections: Query<Ref<CityRowSelection>>,
+    parents: Query<&ChildOf>,
+    selections: Query<(Entity, Ref<CityRowSelection>)>,
     rows: Query<(Entity, &CityRowChoice, Has<Checked>)>,
 ) {
-    let Some(selection) = selections.iter().next() else {
+    if selections.is_empty() {
         return;
-    };
-    if !session.is_changed() && !selection.is_changed() && !selection.is_added() {
+    }
+    if !session.is_changed()
+        && selections
+            .iter()
+            .all(|(_, selection)| !selection.is_changed() && !selection.is_added())
+    {
         return;
     }
     for (entity, row, checked) in &rows {
+        let Some(root) = ancestor_city_row_selection(entity, &parents, &selections) else {
+            continue;
+        };
+        let Ok((_, selection)) = selections.get(root) else {
+            continue;
+        };
         let should_check = row.0 == selection.order;
         if should_check && !checked {
             commands.entity(entity).insert(Checked);

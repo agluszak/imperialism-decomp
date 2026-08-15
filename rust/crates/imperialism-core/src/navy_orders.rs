@@ -1,50 +1,109 @@
 //! Navy mission `GiveOrders`, hop-limited sail, and `CarryOutOrders` type 1/5/8.
 
-use crate::city::ship_stock_cap;
 use crate::*;
 
 const UNREACHED: i16 = 0x29a;
-const ORDER_SAIL: i32 = 1;
-const ORDER_PATROL: i32 = 3;
-const ORDER_MARINES: i32 = 5;
-const ORDER_BLOCKADE: i32 = 6;
-const ORDER_REPAIR: i32 = 8;
-const ORDER_EVADE: i32 = 9;
 
-const NAVY_DESCRIPTORS: [[i32; 9]; 14] = [
-    [0, 0, 0, 0, 0, 0, -1, 0, 0],
-    [0, 0, 100, 600, 0, 2, -1, 1, 0],
-    [0, 0, 95, 1000, 0, 4, -1, 1, 0],
-    [300, 5, 90, 900, 4, 0, 1, 3, 1],
-    [600, 6, 80, 1700, 3, 0, 0, 2, 1],
-    [0, 0, 95, 900, 0, 8, -1, 1, 0],
-    [0, 0, 100, 600, 0, 4, -1, 1, 0],
-    [300, 7, 80, 700, 7, 0, 2, 5, 2],
-    [500, 8, 45, 1200, 5, 0, 3, 3, 2],
-    [1000, 10, 40, 1800, 6, 0, 0, 4, 3],
-    [0, 0, 75, 1200, 0, 16, -1, 1, 0],
-    [600, 9, 50, 1000, 8, 0, 1, 6, 3],
-    [2000, 13, 30, 2800, 7, 0, 3, 5, 4],
-    [1800, 13, 45, 2200, 9, 0, 2, 6, 4],
-];
+/// Recovered navy-order descriptor columns. One semantic record; not the C++
+/// dword-column layout.
+#[derive(Clone, Copy, Debug)]
+pub(crate) struct NavyOrderDescriptor {
+    pub(crate) resolve_weight: i32,
+    pub(crate) calculate_weight: i32,
+    pub(crate) task_force_weight: i32,
+    pub(crate) stock_cap: i32,
+    pub(crate) navy_priority_weight: i32,
+    pub(crate) resource_weight: i32,
+    pub(crate) toolbar_bucket: i32,
+    pub(crate) descriptor_weight: i32,
+    #[allow(dead_code)]
+    pub(crate) priority_tier: i32,
+}
 
-const INDUSTRY_COST: [i16; 14] = [0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18];
+#[allow(clippy::too_many_arguments)]
+const fn navy_descriptor(
+    resolve_weight: i32,
+    calculate_weight: i32,
+    task_force_weight: i32,
+    stock_cap: i32,
+    navy_priority_weight: i32,
+    resource_weight: i32,
+    toolbar_bucket: i32,
+    descriptor_weight: i32,
+    priority_tier: i32,
+) -> NavyOrderDescriptor {
+    NavyOrderDescriptor {
+        resolve_weight,
+        calculate_weight,
+        task_force_weight,
+        stock_cap,
+        navy_priority_weight,
+        resource_weight,
+        toolbar_bucket,
+        descriptor_weight,
+        priority_tier,
+    }
+}
+
+pub(crate) const NAVY_DESCRIPTORS: ShipTypeTable<NavyOrderDescriptor> =
+    ShipTypeTable::from_array([
+        navy_descriptor(0, 0, 0, 0, 0, 0, -1, 0, 0),
+        navy_descriptor(0, 0, 100, 600, 0, 2, -1, 1, 0),
+        navy_descriptor(0, 0, 95, 1000, 0, 4, -1, 1, 0),
+        navy_descriptor(300, 5, 90, 900, 4, 0, 1, 3, 1),
+        navy_descriptor(600, 6, 80, 1700, 3, 0, 0, 2, 1),
+        navy_descriptor(0, 0, 95, 900, 0, 8, -1, 1, 0),
+        navy_descriptor(0, 0, 100, 600, 0, 4, -1, 1, 0),
+        navy_descriptor(300, 7, 80, 700, 7, 0, 2, 5, 2),
+        navy_descriptor(500, 8, 45, 1200, 5, 0, 3, 3, 2),
+        navy_descriptor(1000, 10, 40, 1800, 6, 0, 0, 4, 3),
+        navy_descriptor(0, 0, 75, 1200, 0, 16, -1, 1, 0),
+        navy_descriptor(600, 9, 50, 1000, 8, 0, 1, 6, 3),
+        navy_descriptor(2000, 13, 30, 2800, 7, 0, 3, 5, 4),
+        navy_descriptor(1800, 13, 45, 2200, 9, 0, 2, 6, 4),
+    ]);
+
+/// Retail industrial-cost lookup used by navy category 3. Separate from the
+/// arms table even though the numbers currently match.
+const INDUSTRY_COST: ShipTypeTable<i16> =
+    ShipTypeTable::from_array([0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18]);
+
+pub(crate) fn ship_stock_cap(ship_type: ShipType) -> i16 {
+    NAVY_DESCRIPTORS[ship_type].stock_cap as i16
+}
+
+pub(crate) fn ship_creates_navy_object(ship_type: ShipType) -> bool {
+    NAVY_DESCRIPTORS[ship_type].toolbar_bucket >= 0
+}
+
+pub(crate) fn ship_display_stats(ship_type: ShipType) -> [i16; 6] {
+    let descriptor = NAVY_DESCRIPTORS[ship_type];
+    [
+        descriptor.resolve_weight as i16,
+        descriptor.calculate_weight as i16,
+        descriptor.task_force_weight as i16,
+        descriptor.stock_cap as i16,
+        descriptor.navy_priority_weight as i16,
+        descriptor.resource_weight as i16,
+    ]
+}
 
 pub(crate) fn navy_category_baselines(enabled: &[bool; 14]) -> [i32; 4] {
     let mut totals = [0_i32; 4];
     let mut enabled_count = 0;
-    for type_index in 1..14 {
-        if NAVY_DESCRIPTORS[type_index][0] <= 0 || !enabled[type_index] {
+    for (type_index, &is_enabled) in enabled.iter().enumerate().skip(1) {
+        let ship_type = ShipType::from_index(type_index as u8)
+            .expect("ship type index is inside the descriptor table");
+        let descriptor = NAVY_DESCRIPTORS[ship_type];
+        if descriptor.resolve_weight <= 0 || !is_enabled {
             continue;
         }
         enabled_count += 1;
-        let calc = NAVY_DESCRIPTORS[type_index][1];
-        totals[0] += NAVY_DESCRIPTORS[type_index][0] * calc * calc;
-        let stock = NAVY_DESCRIPTORS[type_index][3];
-        let task_force = NAVY_DESCRIPTORS[type_index][2];
-        totals[1] += (calc * stock * 100) / task_force;
-        totals[2] += NAVY_DESCRIPTORS[type_index][4];
-        totals[3] += i32::from(INDUSTRY_COST[type_index]);
+        let calc = descriptor.calculate_weight;
+        totals[0] += descriptor.resolve_weight * calc * calc;
+        totals[1] += (calc * descriptor.stock_cap * 100) / descriptor.task_force_weight;
+        totals[2] += descriptor.navy_priority_weight;
+        totals[3] += i32::from(INDUSTRY_COST[ship_type]);
     }
     if enabled_count == 0 {
         return totals;
@@ -63,31 +122,28 @@ pub(crate) fn ship_priority_contribution(
     category: i32,
     baselines: &[i32; 4],
 ) -> i32 {
-    let type_index = ship.ship_type as usize;
-    if type_index >= NAVY_DESCRIPTORS.len() {
-        return 0;
-    }
     let divisor = baselines[category as usize];
     if divisor == 0 {
         return 0;
     }
-    let descriptor = NAVY_DESCRIPTORS[type_index];
+    let descriptor = NAVY_DESCRIPTORS[ship.ship_type];
     match category {
         0 => {
-            let quantity_term = i32::from(ship.experience / 100) + descriptor[0] * 10 + 5;
-            let weight = descriptor[1];
+            let quantity_term =
+                i32::from(ship.experience / 100) + descriptor.resolve_weight * 10 + 5;
+            let weight = descriptor.calculate_weight;
             (quantity_term / 10 * weight * weight * 100) / divisor
         }
         1 => {
-            let weight = descriptor[1];
-            (weight * i32::from(ship.strength) * 10000) / (descriptor[2] * divisor)
+            let weight = descriptor.calculate_weight;
+            (weight * i32::from(ship.strength) * 10000) / (descriptor.task_force_weight * divisor)
         }
-        2 => (descriptor[7] * 100) / divisor,
+        2 => (descriptor.descriptor_weight * 100) / divisor,
         3 => {
             if ship.strength < 1 {
                 0
             } else {
-                (i32::from(INDUSTRY_COST[type_index]) * 100) / divisor
+                (i32::from(INDUSTRY_COST[ship.ship_type]) * 100) / divisor
             }
         }
         _ => 0,
@@ -95,7 +151,7 @@ pub(crate) fn ship_priority_contribution(
 }
 
 fn descriptor_weight(ship_type: ShipType) -> i32 {
-    NAVY_DESCRIPTORS[ship_type as usize][7]
+    NAVY_DESCRIPTORS[ship_type].descriptor_weight
 }
 
 impl GameState {
@@ -107,7 +163,7 @@ impl GameState {
         let navy_state_code = navy.state;
         let target = navy.target_zone;
         let mut port = navy.resolved_port_zone;
-        let ships: Vec<ShipId> = navy.ships.iter().map(|ship| ship.ship).collect();
+        let ships: Vec<ShipIndex> = navy.ships.iter().map(|ship| ship.ship).collect();
         let kind = navy_action_kind(&self.missions[mission_index].data);
         if let Some(navy) = navy_state_mut(&mut self.missions[mission_index].data) {
             for ship in &mut navy.ships {
@@ -133,7 +189,7 @@ impl GameState {
                     self.consolidate_mission_ships_to(&ships, target);
                     let force = self.combine_force_at(mission_index, nation, &ships, target);
                     if let Some(force) = force {
-                        self.task_forces[force.get()].order = ORDER_EVADE;
+                        self.task_forces[force.get()].order = TaskForceOrder::Evade;
                     }
                 }
             }
@@ -151,7 +207,7 @@ impl GameState {
                     let force = self.combine_force_at(mission_index, nation, &ships, port);
                     if let Some(force) = force {
                         self.task_forces[force.get()].aggression = 0;
-                        self.task_forces[force.get()].order = ORDER_PATROL;
+                        self.task_forces[force.get()].order = TaskForceOrder::Patrol;
                     }
                 }
             }
@@ -165,11 +221,11 @@ impl GameState {
         }) {
             let assigned = assigned_navy_ships(&self.missions);
             let Some(ship_index) = self.ships.iter().enumerate().position(|(index, ship)| {
-                ship.nation == nation && !assigned.contains(&ShipId::new(index))
+                ship.nation == nation && !assigned.contains(&ShipIndex::new(index))
             }) else {
                 break;
             };
-            let ship = ShipId::new(ship_index);
+            let ship = ShipIndex::new(ship_index);
             if let Some(navy) = navy_state_mut(&mut self.missions[mission_index].data) {
                 navy.ships.insert(
                     0,
@@ -195,7 +251,7 @@ impl GameState {
             }
         }
         for index in remove.into_iter().rev() {
-            self.free_task_force(TaskForceId::new(index));
+            self.free_task_force(TaskForceIndex::new(index));
         }
         for ship in &mut self.ships {
             if ship.selection == 1 {
@@ -209,8 +265,12 @@ impl GameState {
             return true;
         }
         match force.order {
-            0 | ORDER_SAIL | 4 | 7 | ORDER_REPAIR => true,
-            ORDER_MARINES => match force.target {
+            TaskForceOrder::None
+            | TaskForceOrder::Sail
+            | TaskForceOrder::Transit
+            | TaskForceOrder::Escort
+            | TaskForceOrder::Repair => true,
+            TaskForceOrder::Marines => match force.target {
                 TaskForceTarget::Province(province) => {
                     let owner = self.map.provinces[province].owner();
                     !self.nation_pair_war_stamp_out_of_date(force.nation, owner)
@@ -244,9 +304,9 @@ impl GameState {
                 continue;
             }
             match self.task_forces[index].order {
-                ORDER_SAIL => {
+                TaskForceOrder::Sail => {
                     if let TaskForceTarget::Zone(zone) = self.task_forces[index].target {
-                        let ships: Vec<ShipId> = self.task_forces[index]
+                        let ships: Vec<ShipIndex> = self.task_forces[index]
                             .ships
                             .iter()
                             .map(|ship| ship.ship)
@@ -258,7 +318,7 @@ impl GameState {
                         }
                     }
                 }
-                ORDER_MARINES => {
+                TaskForceOrder::Marines => {
                     if let TaskForceTarget::Province(province) = self.task_forces[index].target
                         && let Some(major) =
                             MajorNationId::from_nation(self.task_forces[index].nation)
@@ -267,8 +327,8 @@ impl GameState {
                     }
                     self.task_forces[index].defeated = true;
                 }
-                ORDER_REPAIR => {
-                    let ships: Vec<ShipId> = self.task_forces[index]
+                TaskForceOrder::Repair => {
+                    let ships: Vec<ShipIndex> = self.task_forces[index]
                         .ships
                         .iter()
                         .map(|ship| ship.ship)
@@ -288,7 +348,7 @@ impl GameState {
         self.clear_all_transient_navy_orders();
     }
 
-    fn consolidate_mission_ships_to(&mut self, ships: &[ShipId], destination: OceanZoneId) {
+    fn consolidate_mission_ships_to(&mut self, ships: &[ShipIndex], destination: OceanZoneId) {
         let mut pending = ships.to_vec();
         while let Some(ship) = pending.pop() {
             let Some(location) = self.ships.get(ship.get()).map(|ship| ship.location) else {
@@ -319,9 +379,9 @@ impl GameState {
         &mut self,
         mission_index: usize,
         nation: NationId,
-        ships: &[ShipId],
+        ships: &[ShipIndex],
         location: OceanZoneId,
-    ) -> Option<TaskForceId> {
+    ) -> Option<TaskForceIndex> {
         if let Some(existing) =
             navy_state(&self.missions[mission_index].data).and_then(|navy| navy.task_force)
             && self
@@ -358,7 +418,7 @@ impl GameState {
 
     fn give_navy_action_orders(
         &mut self,
-        force: TaskForceId,
+        force: TaskForceIndex,
         nation: NationId,
         kind: NavyActionKind,
     ) {
@@ -368,14 +428,14 @@ impl GameState {
                 let location = self.task_forces[force.get()].location;
                 let blockade = self.control_sea_blockade_port(nation, location);
                 if let Some(port) = blockade {
-                    self.task_forces[force.get()].order = ORDER_BLOCKADE;
+                    self.task_forces[force.get()].order = TaskForceOrder::Blockade;
                     self.task_forces[force.get()].target = TaskForceTarget::Zone(port);
                 } else {
-                    self.task_forces[force.get()].order = ORDER_PATROL;
+                    self.task_forces[force.get()].order = TaskForceOrder::Patrol;
                 }
             }
             NavyActionKind::BlockadePort { port_zone } => {
-                self.task_forces[force.get()].order = ORDER_BLOCKADE;
+                self.task_forces[force.get()].order = TaskForceOrder::Blockade;
                 self.task_forces[force.get()].target = TaskForceTarget::Zone(port_zone);
             }
             NavyActionKind::Beachhead { target_province } => {
@@ -383,7 +443,7 @@ impl GameState {
                     return;
                 };
                 if self.war_stamp_stale(nation, owner) {
-                    self.task_forces[force.get()].order = ORDER_MARINES;
+                    self.task_forces[force.get()].order = TaskForceOrder::Marines;
                     self.task_forces[force.get()].target =
                         TaskForceTarget::Province(target_province);
                     return;
@@ -438,7 +498,7 @@ impl GameState {
         }
     }
 
-    fn order_sail_towards(&mut self, force: TaskForceId, destination: OceanZoneId) {
+    fn order_sail_towards(&mut self, force: TaskForceIndex, destination: OceanZoneId) {
         let location = self.task_forces[force.get()].location;
         let mut min_weight = 10_000;
         for selected in &self.task_forces[force.get()].ships {
@@ -467,11 +527,11 @@ impl GameState {
             }
         }
         self.task_forces[force.get()].target = TaskForceTarget::Zone(current);
-        self.task_forces[force.get()].order = ORDER_SAIL;
+        self.task_forces[force.get()].order = TaskForceOrder::Sail;
         self.prune_inactive_ships(force);
     }
 
-    fn prune_inactive_ships(&mut self, force: TaskForceId) {
+    fn prune_inactive_ships(&mut self, force: TaskForceIndex) {
         let ships = self.task_forces[force.get()].ships.clone();
         let mut kept = Vec::new();
         for selected in ships {
@@ -488,7 +548,7 @@ impl GameState {
             .map(|ship| ship.ship);
     }
 
-    fn demand_exclusive_task_force(&mut self, ship: ShipId) -> TaskForceId {
+    fn demand_exclusive_task_force(&mut self, ship: ShipIndex) -> TaskForceIndex {
         if let Some(force) = self.ships.get(ship.get()).and_then(|ship| ship.task_force)
             && self
                 .task_forces
@@ -516,14 +576,14 @@ impl GameState {
         &mut self,
         location: OceanZoneId,
         nation: NationId,
-        ship: ShipId,
-    ) -> TaskForceId {
+        ship: ShipIndex,
+    ) -> TaskForceIndex {
         self.bump_task_force_ids();
         self.task_forces.insert(
             0,
             TaskForceState {
                 aggression: 0,
-                order: 0,
+                order: TaskForceOrder::None,
                 target: TaskForceTarget::None,
                 location,
                 nation,
@@ -538,12 +598,12 @@ impl GameState {
             },
         );
         if let Some(state) = self.ships.get_mut(ship.get()) {
-            state.task_force = Some(TaskForceId::new(0));
+            state.task_force = Some(TaskForceIndex::new(0));
         }
-        TaskForceId::new(0)
+        TaskForceIndex::new(0)
     }
 
-    fn reassign_ship_to_force(&mut self, ship: ShipId, force: TaskForceId) {
+    fn reassign_ship_to_force(&mut self, ship: ShipIndex, force: TaskForceIndex) {
         if let Some(previous) = self.ships.get(ship.get()).and_then(|ship| ship.task_force)
             && previous != force
         {
@@ -562,7 +622,7 @@ impl GameState {
         }
     }
 
-    fn remove_ship_from_force(&mut self, ship: ShipId, force: TaskForceId) {
+    fn remove_ship_from_force(&mut self, ship: ShipIndex, force: TaskForceIndex) {
         if let Some(force) = self.task_forces.get_mut(force.get()) {
             force.ships.retain(|entry| entry.ship != ship);
             if force.flagship == Some(ship) {
@@ -574,12 +634,12 @@ impl GameState {
         }
     }
 
-    fn free_task_force(&mut self, force: TaskForceId) {
+    fn free_task_force(&mut self, force: TaskForceIndex) {
         let index = force.get();
         if index >= self.task_forces.len() {
             return;
         }
-        let ships: Vec<ShipId> = self.task_forces[index]
+        let ships: Vec<ShipIndex> = self.task_forces[index]
             .ships
             .iter()
             .map(|ship| ship.ship)
@@ -594,7 +654,7 @@ impl GameState {
                 if current.get() == index {
                     ship.task_force = None;
                 } else if current.get() > index {
-                    ship.task_force = Some(TaskForceId::new(current.get() - 1));
+                    ship.task_force = Some(TaskForceIndex::new(current.get() - 1));
                 }
             }
         }
@@ -605,7 +665,7 @@ impl GameState {
                 if current.get() == index {
                     navy.task_force = None;
                 } else if current.get() > index {
-                    navy.task_force = Some(TaskForceId::new(current.get() - 1));
+                    navy.task_force = Some(TaskForceIndex::new(current.get() - 1));
                 }
             }
         }
@@ -615,14 +675,14 @@ impl GameState {
     fn bump_task_force_ids(&mut self) {
         for ship in &mut self.ships {
             if let Some(force) = &mut ship.task_force {
-                *force = TaskForceId::new(force.get() + 1);
+                *force = TaskForceIndex::new(force.get() + 1);
             }
         }
         for mission in &mut self.missions {
             if let Some(navy) = navy_state_mut(&mut mission.data)
                 && let Some(force) = &mut navy.task_force
             {
-                *force = TaskForceId::new(force.get() + 1);
+                *force = TaskForceIndex::new(force.get() + 1);
             }
         }
     }
@@ -812,7 +872,7 @@ impl GameState {
         let target = navy.target_zone;
         let port = navy.resolved_port_zone;
         let required = navy.required_equipage_bits.map(f32::from_bits);
-        let ships: Vec<ShipId> = navy.ships.iter().map(|ship| ship.ship).collect();
+        let ships: Vec<ShipIndex> = navy.ships.iter().map(|ship| ship.ship).collect();
         let mode = navy.state;
         let next = match mode {
             0 => {
@@ -848,7 +908,7 @@ impl GameState {
 
     fn assigned_navy_readiness(
         &self,
-        ships: &[ShipId],
+        ships: &[ShipIndex],
         required: [f32; 4],
         near: Option<OceanZoneId>,
         distance_threshold: i16,
@@ -870,7 +930,7 @@ impl GameState {
 
     fn assigned_navy_category_vector(
         &self,
-        ships: &[ShipId],
+        ships: &[ShipIndex],
         near: Option<OceanZoneId>,
         distance_threshold: i16,
         far: Option<OceanZoneId>,
@@ -997,7 +1057,7 @@ impl GameState {
     }
 }
 
-fn assigned_navy_ships(missions: &[MissionState]) -> Vec<ShipId> {
+fn assigned_navy_ships(missions: &[MissionState]) -> Vec<ShipIndex> {
     let mut assigned = Vec::new();
     for mission in missions {
         if let Some(navy) = navy_state(&mission.data) {
@@ -1051,7 +1111,7 @@ fn accumulate_ship_categories(ship: &ShipState, vector: &mut [f32; 4], enabled: 
         return;
     }
     let baselines = navy_category_baselines(enabled);
-    let scale = f32::from(ship.strength / max_strength);
+    let scale = f32::from(ship.strength) / f32::from(max_strength);
     vector[0] += ship_priority_contribution(ship, 0, &baselines) as f32 * scale;
     vector[1] += ship_priority_contribution(ship, 1, &baselines) as f32 * scale;
     vector[2] += ship_priority_contribution(ship, 2, &baselines) as f32 * scale;
@@ -1181,7 +1241,7 @@ mod tests {
                 state: 2,
                 required_equipage_bits: [0; 4],
                 ships: vec![SelectedShip {
-                    ship: ShipId::new(0),
+                    ship: ShipIndex::new(0),
                     selected: false,
                 }],
             }),
@@ -1192,7 +1252,7 @@ mod tests {
             marker: 0,
         });
         state.give_navy_mission_orders(0);
-        assert_eq!(state.task_forces[0].order, ORDER_SAIL);
+        assert_eq!(state.task_forces[0].order, TaskForceOrder::Sail);
         state.carry_out_navy_orders();
         assert_eq!(state.ships[0].location, OceanZoneId::new(3));
         assert!(
@@ -1228,7 +1288,7 @@ mod tests {
                 state: 0,
                 required_equipage_bits: [0; 4],
                 ships: vec![SelectedShip {
-                    ship: ShipId::new(0),
+                    ship: ShipIndex::new(0),
                     selected: false,
                 }],
             }),
@@ -1245,5 +1305,54 @@ mod tests {
             panic!("expected a control-sea mission");
         };
         assert_eq!(navy.state, 2);
+    }
+
+    #[test]
+    fn damaged_hostile_frigate_scales_control_sea_needs_by_float_strength_ratio() {
+        let mut state = game_state();
+        let nation = NationId::new(0);
+        let hostile = NationId::new(1);
+        state.nations.majors[MajorNationId::new(0)].auto = Some(AutoGreatPowerState::default());
+        state.diplomacy.relationships[nation][hostile] = DiplomaticRelationship::War;
+        state.ocean.zones = vec![ZoneKind::Zone(zone(Vec::new()))];
+        state.ships.push(ShipState {
+            ship_type: ShipType::Frigate,
+            location: OceanZoneId::new(0),
+            task_force: None,
+            aggression: 0,
+            nation: hostile,
+            name: String::new(),
+            strength: 899,
+            experience: 0,
+            selection: 0,
+        });
+        state.missions.push(MissionState {
+            nation,
+            data: MissionData::ControlSeaZone(NavyMissionState {
+                target_zone: Some(OceanZoneId::new(0)),
+                resolved_port_zone: None,
+                selected_ship: None,
+                task_force: None,
+                state: 0,
+                required_equipage_bits: [0; 4],
+                ships: Vec::new(),
+            }),
+            path_nation: None,
+            state: 2,
+            importance_bits: 0,
+            held: false,
+            marker: 0,
+        });
+
+        state.reassess_navy_mission(0);
+
+        let MissionData::ControlSeaZone(navy) = &state.missions[0].data else {
+            panic!("expected a control-sea mission");
+        };
+        let empty_zone = [40.0_f32, 40.0, 20.0, 0.0].map(|weight| weight.to_bits());
+        assert_ne!(
+            navy.required_equipage_bits, empty_zone,
+            "integer strength/max_strength would treat 899/900 as 0.0 and keep the empty-zone needs"
+        );
     }
 }

@@ -54,8 +54,24 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             alignment: -2,
         })
         .expect("retail Shipyard detail text style");
+    let (title_font, _, title_line_height, _) = assets
+        .text_style(RetailTextStylePreset {
+            font_family: 1,
+            face_flags: 0,
+            point_size: 24,
+            alignment: 1,
+        })
+        .expect("retail Shipyard title text style");
+    let (name_font, _, name_line_height, _) = assets
+        .text_style(RetailTextStylePreset {
+            font_family: 1,
+            face_flags: 0,
+            point_size: 12,
+            alignment: 1,
+        })
+        .expect("retail Shipyard name text style");
     let prepared_rows: [_; 8] = SHIPYARD_ROWS.map(|spec| {
-        let ship_type = city.orders.ships[spec.slot].ship_type;
+        let ship_type = city.orders.ships[spec.slot()].ship_type;
         if ship_type == ShipType::NoShip {
             return (spec, None);
         }
@@ -98,27 +114,25 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
     let warning_color = assets.palette_color(0xcb);
     bind_city_dialog_root(commands, root, tree, CityFacilitySlot::Shipyard);
     for (spec, details) in prepared_rows {
-        let binding = spec.binding();
-        let slot = spec.slot;
+        let slot = spec.slot();
         let button = tree.find(root, spec.button_tag);
-        let row = tree.find(root, spec.order_tag);
-        let minus = tree.find(row, fourcc!("minu"));
-        let plus = tree.find(row, fourcc!("plus"));
-        let quantity = tree.find(row, fourcc!("numb"));
-        commands.entity(minus).insert(CityOrderAdjust {
-            order: binding.order,
-            delta: -1,
-        });
-        commands.entity(plus).insert(CityOrderAdjust {
-            order: binding.order,
-            delta: 1,
-        });
-        let visibility = if details.is_some() {
+        let bound = bind_city_order_row(
+            commands,
+            root,
+            tree,
+            spec.binding,
+            fourcc!("minu"),
+            fourcc!("plus"),
+            fourcc!("numb"),
+            1,
+        );
+        let available = details.is_some();
+        bound.set_available(commands, available);
+        commands.entity(button).insert(if available {
             Visibility::Visible
         } else {
             Visibility::Hidden
-        };
-        commands.entity(button).insert(visibility);
+        });
         if let Some(row_data) = details.as_ref() {
             let source_left = f32::from(row_data.ship_type as u8 - 1) * 80.0;
             commands.spawn((
@@ -138,50 +152,64 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
                 Pickable::IGNORE,
                 ZIndex(1),
                 ChildOf(button),
-                Name::new(format!("shipyard-queue-icon-{}", spec.slot as u8)),
+                Name::new(format!("shipyard-queue-icon-{}", slot as u8)),
             ));
             commands.entity(button).remove::<InteractionDisabled>();
         } else {
             commands.entity(button).insert(InteractionDisabled);
         }
         commands.entity(button).insert((
-            CityRowChoice(CityOrderId::Ship(slot)),
+            CityRowChoice(spec.binding.order),
             ShipyardRowAssets { details },
         ));
-        commands.entity(row).insert(visibility);
-        for control in [minus, plus] {
-            if visibility == Visibility::Visible {
-                commands.entity(control).remove::<InteractionDisabled>();
-            } else {
-                commands.entity(control).insert(InteractionDisabled);
-            }
-        }
-        commands.entity(quantity).insert((
-            Text::new(""),
-            CityOrderQuantity(binding.order),
+        commands.entity(bound.quantity).insert((
             InteractionDisabled,
+            detail_font.clone(),
+            detail_line_height,
             TextColor(normal_color),
         ));
     }
-    for (tag, display) in [
-        (fourcc!("snam"), ShipyardDisplay::ShipName),
-        (fourcc!("desc"), ShipyardDisplay::Description),
-    ] {
-        commands.entity(tree.find(root, tag)).insert((
+    let style_text = |commands: &mut Commands,
+                      tag,
+                      font: TextFont,
+                      line_height: LineHeight,
+                      display: ShipyardDisplay| {
+        let entity = tree.find(root, tag);
+        commands.entity(entity).insert((
             Text::new(""),
+            font,
+            line_height,
             TextColor(normal_color),
             display,
         ));
-    }
+    };
+    style_text(
+        commands,
+        fourcc!("snam"),
+        name_font,
+        name_line_height,
+        ShipyardDisplay::ShipName,
+    );
+    style_text(
+        commands,
+        fourcc!("desc"),
+        detail_font.clone(),
+        detail_line_height,
+        ShipyardDisplay::Description,
+    );
     let picture = tree.find(root, fourcc!("spic"));
     commands.entity(picture).insert(ShipyardDisplay::Picture);
+    let title = tree.find(root, fourcc!("titl"));
     commands
-        .entity(tree.find(root, fourcc!("titl")))
-        .insert(TextColor(normal_color));
+        .entity(title)
+        .insert((title_font, title_line_height, TextColor(normal_color)));
     for tag in [fourcc!("fix0"), fourcc!("fix1")] {
-        commands
-            .entity(tree.find(root, tag))
-            .insert(TextColor(normal_color));
+        let fixed = tree.find(root, tag);
+        commands.entity(fixed).insert((
+            detail_font.clone(),
+            detail_line_height,
+            TextColor(normal_color),
+        ));
     }
     let dlog = tree.find(root, fourcc!("DLOG"));
     for index in 0..4 {
@@ -306,10 +334,10 @@ pub(in crate::ui::city) fn sync_shipyard_details(
     mut images: Query<(&ShipyardDisplay, &mut ImageNode)>,
     mut visibilities: Query<(&ShipyardDisplay, &mut Visibility)>,
 ) {
-    let Some(selection) = selections.iter().next() else {
-        return;
-    };
-    let CityOrderId::Ship(_) = selection.order else {
+    let Some(selection) = selections
+        .iter()
+        .find(|selection| matches!(selection.order, CityOrderId::Ship(_)))
+    else {
         return;
     };
     if !session.is_changed() && !selection.is_changed() && !selection.is_added() {
