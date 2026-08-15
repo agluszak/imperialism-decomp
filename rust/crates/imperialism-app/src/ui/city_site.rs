@@ -600,6 +600,7 @@ fn on_new_city_activate(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
+    assets: Res<RetailAssetsResource>,
 ) {
     let action = actions
         .get(activate.entity)
@@ -609,7 +610,7 @@ fn on_new_city_activate(
             let Ok((_, dialog)) = dialogs.single() else {
                 return;
             };
-            let stop = confirm_capital_site(&mut session.game, dialog.0);
+            let stop = confirm_capital_site(&mut session.game, dialog.0, assets.news_story_ids());
             for (root, _) in &dialogs {
                 commands.entity(root).despawn();
             }

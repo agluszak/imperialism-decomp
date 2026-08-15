@@ -19,10 +19,9 @@ use bevy::ui_widgets::{Activate, SelectAllOnFocus};
 use imperialism_core::{GameState, NationId, PhaseCode, TileId, TileOwnerTag};
 use imperialism_formats::{
     FourCc, LegacyGameStateContext, LoadGameError, NUMBERED_SAVE_SLOT_COUNT, OverwritePolicy,
-    PictureId, RetailAssets, SAVE_LABEL_MAX_CHARS, SaveDirectoryListing, SaveFileError,
-    SaveHeaderInfo, SaveSlot, fourcc, list_save_slots, load_game_from_bytes, normalize_save_label,
-    peek_save_header, peek_save_preview_owners, retail_save_path, write_game_state,
-    write_save_file,
+    PictureId, SAVE_LABEL_MAX_CHARS, SaveDirectoryListing, SaveFileError, SaveHeaderInfo, SaveSlot,
+    fourcc, list_save_slots, load_game_from_bytes, normalize_save_label, peek_save_header,
+    peek_save_preview_owners, retail_save_path, write_game_state, write_save_file,
 };
 use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -611,7 +610,6 @@ fn on_load_save_activate(
     state: Res<State<AppState>>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
-    retail: Option<Res<RetailAssetsResource>>,
 ) {
     if !notices.is_empty() {
         return;
@@ -648,9 +646,6 @@ fn on_load_save_activate(
             let Some(save_dir) = save_dir else {
                 return;
             };
-            let Some(retail) = retail.as_deref() else {
-                return;
-            };
             confirm_or_apply(
                 &mut commands,
                 &root,
@@ -661,7 +656,6 @@ fn on_load_save_activate(
                 returning.0,
                 *state.get(),
                 &mut next_state,
-                retail.assets(),
             );
         }
     }
@@ -738,7 +732,6 @@ fn confirm_or_apply(
     returning: AppState,
     screen_state: AppState,
     next_state: &mut NextState<AppState>,
-    retail: &RetailAssets,
 ) {
     let Some(slot) = root.selected else {
         if root.mode == LoadSaveMode::Save {
@@ -774,7 +767,6 @@ fn confirm_or_apply(
                 next_state,
                 screen_state,
                 None,
-                retail,
             );
         }
         LoadSaveMode::Save => {
@@ -816,7 +808,6 @@ fn apply_load(
     next_state: &mut NextState<AppState>,
     screen_state: AppState,
     assets: Option<&RetailAssetsResource>,
-    retail: &RetailAssets,
 ) {
     let path = retail_save_path(save_dir, slot);
     if !path.is_file() {
@@ -833,7 +824,7 @@ fn apply_load(
     match load {
         Ok(game) => {
             let destination = loaded_game_destination(&game);
-            commands.insert_resource(GameSession::from_assets(game, retail));
+            commands.insert_resource(GameSession { game });
             next_state.set(destination);
         }
         Err(error) => spawn_notice(
@@ -974,7 +965,6 @@ fn on_load_save_notice_activate(
                 &mut next_state,
                 *state.get(),
                 Some(&*assets),
-                assets.assets(),
             );
         }
         (LoadSaveNoticeAction::Accept, _) | (LoadSaveNoticeAction::Dismiss, _) => {

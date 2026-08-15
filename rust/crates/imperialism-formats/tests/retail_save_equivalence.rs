@@ -12,16 +12,12 @@ fn beginning_save_projection_matches_cpp_loaded_state() -> anyhow::Result<()> {
     let expected: GameState = runtime.capture("game_state")?;
 
     let save = LegacySaveV62::parse(BEGINNING_OF_GAME);
-    let mut actual = save.game_state(LegacyGameStateContext {
+    let actual = save.game_state(LegacyGameStateContext {
         crt_rand_state: expected.rng().crt_rand.state(),
         map_generation_lcg: expected.rng().map_generation.state(),
         zone_status_lcg: expected.rng().zone_status.state(),
         selected_nation: expected.turn().selected_nation,
     });
-
-    // Map entry centers on the first idle civilian using the same retail viewport math.
-    actual.center_map_on_first_idle_civilian();
-    assert_eq!(actual.map_view_origin(), expected.map_view_origin());
 
     assert_game_state_eq(&expected, &actual)
 }

@@ -343,6 +343,21 @@ RuntimeActionResult RunDealBookTurnStop(NativeTransition& transition) {
   return transition.Finish(json_value_init_string("deal_book"));
 }
 
+RuntimeActionResult RunCityAndTransportTurnStop(NativeTransition& transition) {
+  if (g_pSimMgr == 0) {
+    return RuntimeActionResult::Failure("turn state is unavailable");
+  }
+  g_pSimMgr->turnStateCode = 8;
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+  g_pSimMgr->turnStateCode = 0xb;
+  g_pSimMgr->DoCityAndTransport();
+  return transition.Finish();
+}
+
 RuntimeActionResult RunOpeningHomeCitySetup(NativeTransition& transition) {
   if (g_pSimMgr == 0) {
     return RuntimeActionResult::Failure("turn state is unavailable");
