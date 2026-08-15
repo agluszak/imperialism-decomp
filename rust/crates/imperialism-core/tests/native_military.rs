@@ -236,3 +236,305 @@ fn recompute_nation_order_priority_metrics() {
     )
     .unwrap();
 }
+
+#[derive(Debug, Deserialize)]
+struct ArmyProvinceCase {
+    province: ProvinceId,
+}
+
+#[derive(Debug, Deserialize, PartialEq)]
+struct ArmyToolbarResult {
+    totals: [i32; 10],
+    available: [i32; 10],
+    can_upgrade: bool,
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn army_toolbar_counts() {
+    compare_native("army_toolbar_counts", |state, case: ArmyProvinceCase| {
+        let counts = state.army_toolbar_counts(case.province);
+        ArmyToolbarResult {
+            totals: counts.totals,
+            available: counts.available,
+            can_upgrade: counts.can_upgrade,
+        }
+    })
+    .unwrap();
+}
+
+#[derive(Debug, Deserialize)]
+struct ArmyCategoryCase {
+    province: ProvinceId,
+    category: i16,
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn army_select_category() {
+    compare_native("army_select_category", |state, case: ArmyCategoryCase| {
+        i32::from(state.activate_first_idle_unit_by_category(case.province, case.category))
+    })
+    .unwrap();
+}
+
+#[derive(Debug, Deserialize)]
+struct ArmyOrderModeCase {
+    province: ProvinceId,
+    mode: i32,
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn army_set_order_mode() {
+    compare_native("army_set_order_mode", |state, case: ArmyOrderModeCase| {
+        let mode = match case.mode {
+            2 => ArmyIdleOrderMode::Sleep,
+            3 => ArmyIdleOrderMode::Latr,
+            4 => ArmyIdleOrderMode::Done,
+            other => panic!("unproven army idle order mode {other}"),
+        };
+        state.set_idle_unit_orders_on_province(case.province, mode);
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn army_select_province() {
+    compare_native("army_select_province", |state, case: ArmyProvinceCase| {
+        state.apply_army_province_selection(Some(case.province));
+    })
+    .unwrap();
+}
+
+#[derive(Debug, Deserialize)]
+struct ArmyTileCase {
+    province: ProvinceId,
+    tile: TileId,
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn army_click_blocked() {
+    compare_native("army_click_blocked", |state, case: ArmyTileCase| {
+        state
+            .army_map_cursor_state(
+                state.turn().active_nation,
+                Some(case.province),
+                case.tile,
+                0,
+                true,
+            )
+            .retail()
+    })
+    .unwrap();
+}
+
+#[derive(Debug, Deserialize)]
+struct ArmyTargetCase {
+    province: ProvinceId,
+    target: ProvinceId,
+}
+
+fn army_click_target_friendly(state: &mut GameState, from: ProvinceId, to: ProvinceId) {
+    state.issue_army_redeploy(from, to);
+}
+
+fn army_click_target_hostile(state: &mut GameState, from: ProvinceId, to: ProvinceId) {
+    let nation = state.turn().active_nation;
+    state.issue_army_hostile_order(nation, from, to);
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn army_click_friendly() {
+    compare_native("army_click_friendly", |state, case: ArmyTargetCase| {
+        army_click_target_friendly(state, case.province, case.target);
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn army_click_hostile() {
+    compare_native("army_click_hostile", |state, case: ArmyTargetCase| {
+        army_click_target_hostile(state, case.province, case.target);
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn army_selection_cycling() {
+    compare_native("army_selection_cycling", |state, case: ArmyProvinceCase| {
+        state
+            .find_next_selectable_army_province(state.turn().active_nation, Some(case.province))
+            .map(|province| i32::from(province.get()))
+            .unwrap_or(-1)
+    })
+    .unwrap();
+}
+
+#[derive(Debug, Deserialize)]
+struct NavyZoneCase {
+    zone: OceanZoneId,
+}
+
+#[derive(Debug, Deserialize)]
+struct NavySelectCase {
+    class: i16,
+    selecting: bool,
+}
+
+#[derive(Debug, Deserialize)]
+struct NavyAggressionCase {
+    aggression: i32,
+}
+
+#[derive(Debug, Deserialize, PartialEq)]
+struct NavyToolbarResult {
+    available: [i16; 4],
+    selected: [i16; 4],
+}
+
+#[derive(Debug, Deserialize)]
+struct NavyZoneTargetCase {
+    zone: OceanZoneId,
+    other: OceanZoneId,
+}
+
+#[derive(Debug, Deserialize, PartialEq)]
+struct NavyZoneTargetResult {
+    legal: bool,
+    illegal: bool,
+}
+
+#[derive(Debug, Deserialize)]
+struct NavyProvinceTargetCase {
+    province: ProvinceId,
+}
+
+fn first_task_force(state: &GameState) -> TaskForceId {
+    assert!(
+        !state.task_forces().is_empty(),
+        "native navy case expected a committed task force"
+    );
+    TaskForceId::new(0)
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn navy_create_force() {
+    compare_native("navy_create_force", |state, case: NavyZoneCase| {
+        let nation = state.turn().active_nation;
+        let force = state
+            .demand_task_force_for_zone(case.zone, nation)
+            .expect("loose ships must create a task force");
+        assert!(state.submit_navy_order(force, NavyOrder::Evade, TaskForceTarget::None));
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn navy_toolbar_counts() {
+    compare_native("navy_toolbar_counts", |state, _: NavyZoneCase| {
+        let counts = state.navy_toolbar_counts(Some(first_task_force(state)));
+        NavyToolbarResult {
+            available: counts.available,
+            selected: counts.selected,
+        }
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn navy_select_ship() {
+    compare_native("navy_select_ship", |state, case: NavySelectCase| {
+        state.select_task_force_toolbar_class(first_task_force(state), case.class, case.selecting);
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn navy_set_aggression() {
+    compare_native("navy_set_aggression", |state, case: NavyAggressionCase| {
+        state.set_task_force_aggression(first_task_force(state), case.aggression);
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn navy_submit_order() {
+    compare_native("navy_submit_order", |state, case: NavyZoneCase| {
+        let nation = state.turn().active_nation;
+        let force = state
+            .demand_task_force_for_zone(case.zone, nation)
+            .expect("loose ships must create a task force");
+        assert!(state.submit_navy_order(force, NavyOrder::Evade, TaskForceTarget::None));
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn navy_cancel_order() {
+    compare_native("navy_cancel_order", |state, _: NavyZoneCase| {
+        state.cancel_task_force(first_task_force(state));
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn navy_zone_target() {
+    compare_native("navy_zone_target", |state, case: NavyZoneTargetCase| {
+        let force = first_task_force(state);
+        NavyZoneTargetResult {
+            legal: state.navy_zone_is_valid_target(force, case.zone),
+            illegal: state.navy_zone_is_valid_target(force, case.other),
+        }
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn navy_province_target() {
+    compare_native(
+        "navy_province_target",
+        |state, case: NavyProvinceTargetCase| {
+            state.navy_province_is_valid_target(first_task_force(state), case.province)
+        },
+    )
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn navy_selection_cycling() {
+    compare_native("navy_selection_cycling", |state, case: NavyZoneCase| {
+        state
+            .next_navy_order_zone(state.turn().active_nation, Some(case.zone))
+            .map(|zone| i32::from(zone.get()))
+            .unwrap_or(-1)
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn navy_empty_toolbar() {
+    compare_native("navy_empty_toolbar", |state, _: ()| {
+        let counts = state.navy_toolbar_counts(None);
+        NavyToolbarResult {
+            available: counts.available,
+            selected: counts.selected,
+        }
+    })
+    .unwrap();
+}
