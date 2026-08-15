@@ -73,7 +73,9 @@ process-derived and must not be replaced with a fixture-wide default.
 
 ## Recovered native UI
 
-The existing UI generator emits deterministic native Bevy scenes into `imperialism-app`:
+The existing UI generator emits deterministic native Bevy scenes into
+`imperialism-app/src/ui/generated/` by screen family, with data tables in `common.rs`.
+Callers still spawn `generated::diplo_2008()` and the other factory names:
 
 ```sh
 (cd ../decomp && uv run python -m tools.ui_codegen --check)

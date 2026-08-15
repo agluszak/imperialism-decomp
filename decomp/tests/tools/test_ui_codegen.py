@@ -8,13 +8,13 @@ from pathlib import Path
 
 from tools.source_model import build_model
 from tools.ui_codegen import (
-    RUST_UI_PATH,
     load_recipes,
     load_text_resources,
     load_ui_views,
     load_windows_views,
     render_factory,
     render_rust_ui,
+    rust_ui_is_current,
     validate,
     write_generated,
 )
@@ -72,12 +72,10 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("RegisterUiResourceEntry", second_text)
 
     def test_generated_rust_ui_is_current(self) -> None:
-        rendered = render_rust_ui(
-            REPO_ROOT, self.recipes, self.views, self.text_resources
-        )
-        self.assertEqual(
-            rendered,
-            (REPO_ROOT / RUST_UI_PATH).read_text(encoding="utf-8"),
+        self.assertTrue(
+            rust_ui_is_current(
+                REPO_ROOT, self.recipes, self.views, self.text_resources
+            )
         )
 
     def test_armory_unit_name_uses_the_windows_runtime_style(self) -> None:

@@ -1032,10 +1032,7 @@ struct CouncilPanelText {
     rows: Option<[(String, String); 3]>,
 }
 
-fn council_panel_text(
-    state: &GameState,
-    assets: &RetailAssetsResource,
-) -> CouncilPanelText {
+fn council_panel_text(state: &GameState, assets: &RetailAssetsResource) -> CouncilPanelText {
     let congress = &state.diplomacy().congress;
     if let (Some(chairman), Some(counterpart)) = (congress.chairman, congress.counterpart) {
         let decade = (state.turn().economic_turn / 4) / 10 * 10 + 1815;

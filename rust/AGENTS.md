@@ -18,9 +18,12 @@ Split a module when it owns multiple concepts; do not split a recovered algorith
 it is long. In the app, generic political-map preview rendering lives in `ui/map_preview.rs`,
 random-setup coat/flag/click behavior stays in `ui/random_setup_map.rs`, the load/save screen
 lives under `ui/load_save/`, the strategic-map flag menu is `ui/flag_menu.rs`, and diplomacy is
-split under `ui/diplomacy/` (`mod`, `panels`, `map`, `prompts`). In formats,
-keep binary parse/write linear with the serialized layout; keep GameState conversion beside the
-legacy structures it maps, organized by domain rather than conversion direction.
+split under `ui/diplomacy/` (`mod`, `panels`, `map`, `prompts`). Generated UI lives under
+`ui/generated/` by screen family, with data tables in `common.rs`; change the generator, not the
+checked-in files. Callers still use `generated::diplo_2008()`. In formats, keep binary parse/write
+linear with the serialized layout; keep GameState conversion under `legacy_save/convert/` by
+domain rather than conversion direction. In core, random-map terrain is split by pipeline stage
+under `random_map_terrain/`, and navy orders split execution vs mission assessment.
 
 Port retail behavior, not the recovered C++ architecture. C++ class hierarchy, ownership, ABI,
 integer storage widths, sentinels, offsets, and control flow are evidence, not Rust design. Keep
