@@ -74,6 +74,7 @@ impl AdvisoryRoute {
 }
 
 impl GameState {
+    #[cfg(feature = "oracle")]
     pub(crate) fn select_and_queue_advisory_map_missions(&mut self) {
         for nation in MajorNationId::all() {
             if !self.nation_is_eligible_for_optional_phase(nation.nation()) {

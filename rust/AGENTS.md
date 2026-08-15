@@ -6,6 +6,8 @@ Rust-specific invariants.
 ## Architecture
 
 - `imperialism-core` owns deterministic gameplay state and rules. No Bevy.
+  The `oracle` feature exposes substep facades and map-generation traces for C++
+  integration tests; production gameplay must not enable it or call those APIs.
 - `imperialism-formats` owns retail file decoding and representation quirks.
 - `imperialism-app` is Bevy presentation, input, audio, and lifecycle.
 - `imperialism-testkit` is process-isolated C++ oracle and semantic comparison support.
