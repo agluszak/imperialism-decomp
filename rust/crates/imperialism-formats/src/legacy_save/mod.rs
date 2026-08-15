@@ -1,7 +1,6 @@
-mod from_game_state;
+mod convert;
 mod model;
 mod parse;
-mod project;
 mod slots;
 mod write;
 
