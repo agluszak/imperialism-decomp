@@ -276,8 +276,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             Name::new(format!("shipyard-material-value-{index}-true")),
         ));
     }
-    for index in 0..6 {
-        let (left, baseline) = SHIPYARD_STAT_ORIGINS[index];
+    for (index, &(left, baseline)) in generated::SHIPYARD_STAT_ORIGINS.iter().enumerate() {
         commands.spawn((
             Node {
                 position_type: PositionType::Absolute,
