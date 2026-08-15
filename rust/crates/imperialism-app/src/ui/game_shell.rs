@@ -447,6 +447,7 @@ fn bind_turn_alert_notice(
     commands.entity(cancel).insert(Visibility::Hidden);
 }
 
+#[allow(clippy::too_many_arguments)]
 fn on_turn_alert_dismiss(
     activate: On<Activate>,
     parents: Query<&ChildOf>,
