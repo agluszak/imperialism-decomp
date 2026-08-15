@@ -8,6 +8,7 @@ mod game_shell;
 pub(crate) mod generated;
 mod hover_help;
 mod land_battle;
+pub(crate) mod linger;
 pub(crate) mod load_save;
 mod main_menu;
 mod newspaper;
@@ -22,6 +23,9 @@ mod strategic_map;
 mod technology;
 mod trade;
 mod transport;
+
+#[cfg(test)]
+pub(crate) mod test_support;
 
 pub(crate) use city::CityPlugin;
 pub(crate) use city_site::CitySitePlugin;

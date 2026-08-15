@@ -6,16 +6,15 @@ use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::hover_help::get_string;
+use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::random_setup_map::{
     compose_owner_preview_indices, compose_owner_preview_indices_with_fill,
     preview_image_from_indices,
 };
-use super::retail::ModalDialog;
-use super::retail::{RetailTag, find_child, find_descendant};
+use super::retail::{ModalDialog, RetailTag, find_child, find_descendant};
 use super::session::apply_turn_stop;
 use crate::AppState;
 use crate::RetailAssetsResource;
-use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::math::Rect;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -1489,15 +1488,12 @@ fn open_diplomacy_rejection_notice(
     request: On<OpenDiplomacyRejectionNotice>,
     mut commands: Commands,
 ) {
-    let root = commands.spawn_scene(generated::linger_2020()).id();
-    commands.entity(root).insert((
+    spawn_linger_dialog(
+        &mut commands,
         DiplomacyNotice(request.rejection),
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
-        Pickable::default(),
-        DespawnOnExit(AppState::Diplomacy),
-    ));
+        AppState::Diplomacy,
+        20,
+    );
 }
 
 fn bind_diplomacy_notice(
@@ -1509,71 +1505,40 @@ fn bind_diplomacy_notice(
     session: Res<GameSession>,
 ) {
     let (root, notice) = *notice;
-    let notice_color = TextColor(assets.palette_color(0));
-    let title = find_descendant(root, fourcc!("titl"), &children, &tags);
-    let (title_font, title_layout, title_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
-        .expect("retail diplomacy notice title style");
-    commands.entity(title).insert((
-        Text::new("Report from your\nForeign Minister\n\n"),
-        title_font,
-        title_layout,
-        title_line_height,
-        notice_color,
-    ));
-    let body = find_descendant(root, fourcc!("info"), &children, &tags);
-    let (body_font, body_layout, body_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 0,
-        })
-        .expect("retail diplomacy notice body style");
-    commands.entity(body).insert((
-        Text::new(get_string(&assets, 0x2754, notice.0.proposal_mode() - 1)),
-        body_font,
-        body_layout,
-        body_line_height,
-        notice_color,
-    ));
-    let coat = find_descendant(root, fourcc!("coat"), &children, &tags);
+    let body = get_string(&assets, 0x2754, notice.0.proposal_mode() - 1);
+    let linger = bind_linger_dialog(root, &children, &tags);
+    linger.set_title(
+        &mut commands,
+        &mut assets,
+        "Report from your\nForeign Minister\n\n",
+    );
+    linger.set_body(&mut commands, &mut assets, body);
     let source = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     let coat_picture = PictureId::new(9500 + i16::from(source.get()));
     if let Ok(image) = assets.picture(coat_picture) {
-        commands.entity(coat).insert(ImageNode::new(image));
+        commands.entity(linger.coat).insert(ImageNode::new(image));
     }
-    let okay = find_descendant(root, fourcc!("okay"), &children, &tags);
     commands
-        .entity(okay)
+        .entity(linger.okay)
         .remove::<InteractionDisabled>()
         .observe(on_diplomacy_notice_activate);
-    let cancel = find_descendant(root, fourcc!("cncl"), &children, &tags);
-    commands.entity(cancel).insert(Visibility::Hidden);
+    commands.entity(linger.cancel).insert(Visibility::Hidden);
 }
 
 fn open_diplomacy_entanglement_notice(
     request: On<OpenDiplomacyEntanglementNotice>,
     mut commands: Commands,
 ) {
-    let root = commands.spawn_scene(generated::linger_2020()).id();
-    commands.entity(root).insert((
+    spawn_linger_dialog(
+        &mut commands,
         DiplomacyEntanglementNotice {
             target: request.target,
             policy: request.policy,
         },
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
-        Pickable::default(),
-        DespawnOnExit(AppState::Diplomacy),
-    ));
+        AppState::Diplomacy,
+        20,
+    );
 }
 
 fn bind_diplomacy_entanglement_notice(
@@ -1585,60 +1550,24 @@ fn bind_diplomacy_entanglement_notice(
     session: Res<GameSession>,
 ) {
     let (root, notice) = *notice;
-    let notice_color = TextColor(assets.palette_color(0));
-    let title = find_descendant(root, fourcc!("titl"), &children, &tags);
-    let (title_font, title_layout, title_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
-        .expect("retail diplomacy entanglement title style");
-    commands.entity(title).insert((
-        Text::new(get_string(&assets, 0x275d, 5)),
-        title_font,
-        title_layout,
-        title_line_height,
-        notice_color,
-    ));
-    let body = find_descendant(root, fourcc!("info"), &children, &tags);
-    let (body_font, body_layout, body_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 0,
-        })
-        .expect("retail diplomacy entanglement body style");
-    commands.entity(body).insert((
-        Text::new(diplomacy_entanglement_body(
-            &session.game,
-            &assets,
-            notice.target,
-            notice.policy,
-        )),
-        body_font,
-        body_layout,
-        body_line_height,
-        notice_color,
-    ));
-    let coat = find_descendant(root, fourcc!("coat"), &children, &tags);
+    let title = get_string(&assets, 0x275d, 5);
+    let body = diplomacy_entanglement_body(&session.game, &assets, notice.target, notice.policy);
+    let linger = bind_linger_dialog(root, &children, &tags);
+    linger.set_title(&mut commands, &mut assets, title);
+    linger.set_body(&mut commands, &mut assets, body);
     let source = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     let coat_picture = PictureId::new(9500 + i16::from(source.get()));
     if let Ok(image) = assets.picture(coat_picture) {
-        commands.entity(coat).insert(ImageNode::new(image));
+        commands.entity(linger.coat).insert(ImageNode::new(image));
     }
-    let okay = find_descendant(root, fourcc!("okay"), &children, &tags);
     commands
-        .entity(okay)
+        .entity(linger.okay)
         .insert(DiplomacyEntanglementAction::Confirm)
         .remove::<InteractionDisabled>()
         .observe(on_diplomacy_entanglement_activate);
-    let cancel = find_descendant(root, fourcc!("cncl"), &children, &tags);
     commands
-        .entity(cancel)
+        .entity(linger.cancel)
         .insert(DiplomacyEntanglementAction::Dismiss)
         .remove::<InteractionDisabled>()
         .observe(on_diplomacy_entanglement_activate);
@@ -2586,19 +2515,10 @@ mod tests {
         );
     }
 
-    const BEGINNING_OF_GAME: &[u8] =
-        include_bytes!("../../../../../fixtures/retail/beginning_of_game.imp");
+    use crate::ui::test_support::beginning_of_game_parts;
 
     fn fixture_parts() -> GameStateParts {
-        let selected_nation = peek_save_header(BEGINNING_OF_GAME)
-            .and_then(|header| NationId::try_new(header.active_nation))
-            .unwrap_or(NationId::new(0));
-        LegacySaveV62::parse(BEGINNING_OF_GAME).game_state_parts(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 0,
-            selected_nation,
-        })
+        beginning_of_game_parts()
     }
 
     fn rebuild_nations(

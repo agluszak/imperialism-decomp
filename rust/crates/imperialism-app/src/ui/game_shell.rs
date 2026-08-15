@@ -1,4 +1,4 @@
-use super::retail::ModalDialog;
+use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::session::apply_turn_stop;
 use crate::AppState;
 use crate::RetailAssetsResource;
@@ -13,13 +13,12 @@ use crate::ui::strategic_map::{
     bind_civilian_toolbar, bind_minimap, bind_strategic_base_terrain, register_civilian_orders,
     register_civilian_toolbar, sync_minimap, sync_strategic_base_terrain, sync_strategic_units,
 };
-use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
 use imperialism_core::{MajorNationId, MapEdges};
-use imperialism_formats::{FourCc, PictureId, RetailTextStylePreset, TRADE, fourcc};
+use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum GameStatusDisplay {
@@ -391,15 +390,7 @@ fn spawn_turn_alerts_if_pending(
     if !existing.is_empty() || !session.game.turn_alerts_pending() {
         return;
     }
-    let root = commands.spawn_scene(generated::linger_2020()).id();
-    commands.entity(root).insert((
-        TurnAlertNotice,
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
-        Pickable::default(),
-        DespawnOnExit(AppState::StrategicMap),
-    ));
+    spawn_linger_dialog(&mut commands, TurnAlertNotice, AppState::StrategicMap, 20);
 }
 
 fn bind_turn_alert_notice(
@@ -413,47 +404,19 @@ fn bind_turn_alert_notice(
         return;
     };
     let root = *root;
-    let notice_color = TextColor(assets.palette_color(0));
-    let title = find_descendant(root, fourcc!("titl"), &children, &tags);
-    let (title_font, title_layout, title_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
-        .expect("retail turn-alert title style");
-    commands.entity(title).insert((
-        Text::new("Report from your\nAdvisors\n\n"),
-        title_font,
-        title_layout,
-        title_line_height,
-        notice_color,
-    ));
-    let body = find_descendant(root, fourcc!("info"), &children, &tags);
-    let (body_font, body_layout, body_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 0,
-        })
-        .expect("retail turn-alert body style");
-    commands.entity(body).insert((
-        Text::new("Your ministers have an urgent report."),
-        body_font,
-        body_layout,
-        body_line_height,
-        notice_color,
-    ));
-    let okay = find_descendant(root, fourcc!("okay"), &children, &tags);
+    let linger = bind_linger_dialog(root, &children, &tags);
+    linger.set_title(&mut commands, &mut assets, "Report from your\nAdvisors\n\n");
+    linger.set_body(
+        &mut commands,
+        &mut assets,
+        "Your ministers have an urgent report.",
+    );
     commands
-        .entity(okay)
+        .entity(linger.okay)
         .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_turn_alert_dismiss);
-    let cancel = find_descendant(root, fourcc!("cncl"), &children, &tags);
-    commands.entity(cancel).insert(Visibility::Hidden);
+    commands.entity(linger.cancel).insert(Visibility::Hidden);
 }
 
 fn on_turn_alert_dismiss(

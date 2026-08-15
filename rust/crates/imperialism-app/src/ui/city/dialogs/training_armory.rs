@@ -111,7 +111,7 @@ pub(in crate::ui::city) fn bind_training_dialog(
         commands.entity(entity).insert(Text::new(text));
     }
     for binding in TRAINING_ORDERS {
-        bind_city_order_control(
+        bind_city_order_row(
             commands,
             root,
             children,
@@ -183,19 +183,20 @@ pub(in crate::ui::city) fn configure_armory_dialog(
         TextColor(normal_color),
     ));
     for row in ARMORY_ROWS {
-        let quantity = bind_city_order_control(
+        let bound = bind_city_order_row(
             commands,
             root,
             children,
             tags,
-            row.binding(),
+            row.binding,
             fourcc!("minu"),
             fourcc!("plus"),
             fourcc!("numb"),
             1,
         );
         let button = find_descendant(root, row.button_tag, children, tags);
-        let unit = city.orders.military_recruitment[row.category].unit_kind;
+        let category = row.military_category();
+        let unit = city.orders.military_recruitment[category].unit_kind;
         let idle = assets
             .picture(armory_row_picture(unit))
             .expect("retail Armory row picture");
@@ -204,11 +205,11 @@ pub(in crate::ui::city) fn configure_armory_dialog(
             .expect("retail Armory selected row picture");
         let mut button = commands.entity(button);
         button.insert((
-            CityRowChoice(CityOrderId::MilitaryRecruit(row.category)),
+            CityRowChoice(row.binding.order),
             ImageNode::new(idle.clone()),
             RetailPictureSwap { idle, active },
         ));
-        commands.entity(quantity).insert(InteractionDisabled);
+        commands.entity(bound.quantity).insert(InteractionDisabled);
     }
     for (tag, detail) in [
         (fourcc!("unit"), ArmoryDetail::UnitName),
@@ -412,10 +413,7 @@ pub(in crate::ui::city) fn sync_armory_details(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_formats::{LegacyGameStateContext, LegacySaveV62, peek_save_header};
-
-    const BEGINNING_OF_GAME: &[u8] =
-        include_bytes!("../../../../../../../fixtures/retail/beginning_of_game.imp");
+    use crate::ui::test_support::beginning_of_game;
 
     #[test]
     fn armory_uses_the_recovered_windows_font_families() {
@@ -441,16 +439,8 @@ mod tests {
 
     #[test]
     fn beginning_armory_rows_use_the_retail_unit_picture_sequence() {
-        let selected_nation = peek_save_header(BEGINNING_OF_GAME)
-            .and_then(|header| NationId::try_new(header.active_nation))
-            .unwrap();
-        let state = LegacySaveV62::parse(BEGINNING_OF_GAME).game_state(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 0,
-            selected_nation,
-        });
-        let nation = MajorNationId::from_nation(selected_nation).unwrap();
+        let state = beginning_of_game();
+        let nation = MajorNationId::from_nation(state.turn().selected_nation).unwrap();
         let city = &state.nations().major(nation).city;
         let pictures = MilitaryRecruitmentCategory::ALL.map(|category| {
             armory_row_picture(city.orders.military_recruitment[category].unit_kind).get()

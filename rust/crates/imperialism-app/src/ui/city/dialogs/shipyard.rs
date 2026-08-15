@@ -72,7 +72,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
         })
         .expect("retail Shipyard name text style");
     let prepared_rows: [_; 8] = SHIPYARD_ROWS.map(|spec| {
-        let ship_type = city.orders.ships[spec.slot].ship_type;
+        let ship_type = city.orders.ships[spec.slot()].ship_type;
         if ship_type == ShipType::NoShip {
             return (spec, None);
         }
@@ -115,27 +115,26 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
     let warning_color = assets.palette_color(0xcb);
     bind_city_dialog_root(commands, root, children, tags, CityFacilitySlot::Shipyard);
     for (spec, details) in prepared_rows {
-        let binding = spec.binding();
-        let slot = spec.slot;
+        let slot = spec.slot();
         let button = find_descendant(root, spec.button_tag, children, tags);
-        let row = find_descendant(root, spec.order_tag, children, tags);
-        let minus = find_descendant(row, fourcc!("minu"), children, tags);
-        let plus = find_descendant(row, fourcc!("plus"), children, tags);
-        let quantity = find_descendant(row, fourcc!("numb"), children, tags);
-        commands.entity(minus).insert(CityOrderAdjust {
-            order: binding.order,
-            delta: -1,
-        });
-        commands.entity(plus).insert(CityOrderAdjust {
-            order: binding.order,
-            delta: 1,
-        });
-        let visibility = if details.is_some() {
+        let bound = bind_city_order_row(
+            commands,
+            root,
+            children,
+            tags,
+            spec.binding,
+            fourcc!("minu"),
+            fourcc!("plus"),
+            fourcc!("numb"),
+            1,
+        );
+        let available = details.is_some();
+        bound.set_available(commands, available);
+        commands.entity(button).insert(if available {
             Visibility::Visible
         } else {
             Visibility::Hidden
-        };
-        commands.entity(button).insert(visibility);
+        });
         if let Some(row_data) = details.as_ref() {
             let source_left = f32::from(row_data.ship_type as u8 - 1) * 80.0;
             commands.spawn((
@@ -155,27 +154,17 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
                 Pickable::IGNORE,
                 ZIndex(1),
                 ChildOf(button),
-                Name::new(format!("shipyard-queue-icon-{}", spec.slot as u8)),
+                Name::new(format!("shipyard-queue-icon-{}", slot as u8)),
             ));
             commands.entity(button).remove::<InteractionDisabled>();
         } else {
             commands.entity(button).insert(InteractionDisabled);
         }
         commands.entity(button).insert((
-            CityRowChoice(CityOrderId::Ship(slot)),
+            CityRowChoice(spec.binding.order),
             ShipyardRowAssets { details },
         ));
-        commands.entity(row).insert(visibility);
-        for control in [minus, plus] {
-            if visibility == Visibility::Visible {
-                commands.entity(control).remove::<InteractionDisabled>();
-            } else {
-                commands.entity(control).insert(InteractionDisabled);
-            }
-        }
-        commands.entity(quantity).insert((
-            Text::new(""),
-            CityOrderQuantity(binding.order),
+        commands.entity(bound.quantity).insert((
             InteractionDisabled,
             detail_font.clone(),
             detail_line_height,

@@ -171,7 +171,7 @@ pub(in crate::ui::city) fn bind_rail_dialog(
     commands
         .entity(name_control)
         .insert(Text::new(building_name));
-    bind_city_order_control(
+    bind_city_order_row(
         commands,
         root,
         children,

@@ -3,17 +3,17 @@ use super::format_currency;
 use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, get_string};
-use super::retail::{ModalDialog, RetailTag, RetailUiAssets, find_descendant};
+use super::linger::{bind_linger_dialog, spawn_linger_dialog};
+use super::retail::{RetailTag, RetailUiAssets, find_descendant};
 use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
 use bevy::input_focus::AutoFocus;
-use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::*;
-use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc};
+use imperialism_formats::{PictureId, fourcc};
 
 const COMMODITY_ICON_BASE: i16 = 700;
 const OFFER_STRING_GROUP: i16 = 0x2740;
@@ -314,16 +314,12 @@ fn on_offer_sheet_activate(
 }
 
 fn spawn_offer_quantity_error(commands: &mut Commands, body: String) {
-    let root = commands.spawn_scene(generated::linger_2020()).id();
-    commands.entity(root).insert((
-        OfferSheetNotice,
-        OfferSheetNoticeBody(body),
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
-        Pickable::default(),
-        DespawnOnExit(AppState::OfferSheet),
-    ));
+    spawn_linger_dialog(
+        commands,
+        (OfferSheetNotice, OfferSheetNoticeBody(body)),
+        AppState::OfferSheet,
+        20,
+    );
 }
 
 fn bind_offer_sheet_notice(
@@ -337,25 +333,10 @@ fn bind_offer_sheet_notice(
         return;
     };
     let (root, body) = notice.into_inner();
-    let info = find_descendant(root, fourcc!("info"), &children, &tags);
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 0,
-        })
-        .expect("retail offer-sheet notice body style");
-    commands.entity(info).insert((
-        Text::new(body.0.clone()),
-        font,
-        layout,
-        line_height,
-        TextColor(assets.palette_color(0)),
-    ));
-    let okay = find_descendant(root, fourcc!("okay"), &children, &tags);
+    let linger = bind_linger_dialog(root, &children, &tags);
+    linger.set_body(&mut commands, &mut assets, &body.0);
     commands
-        .entity(okay)
+        .entity(linger.okay)
         .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_offer_sheet_notice_activate);
@@ -383,24 +364,13 @@ fn on_offer_sheet_notice_activate(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ui::test_support::beginning_of_game_parts;
     use bevy::state::app::StatesPlugin;
-    use imperialism_formats::{LegacyGameStateContext, LegacySaveV62, peek_save_header};
-
-    const BEGINNING_OF_GAME: &[u8] =
-        include_bytes!("../../../../../fixtures/retail/beginning_of_game.imp");
 
     fn fixture_state() -> GameState {
-        let selected_nation = peek_save_header(BEGINNING_OF_GAME)
-            .and_then(|header| NationId::try_new(header.active_nation))
-            .unwrap_or(NationId::new(0));
-        let mut parts =
-            LegacySaveV62::parse(BEGINNING_OF_GAME).game_state_parts(LegacyGameStateContext {
-                crt_rand_state: 1,
-                map_generation_lcg: 0,
-                zone_status_lcg: 0,
-                selected_nation,
-            });
-        let buyer = MajorNationId::from_nation(selected_nation).expect("active nation is a major");
+        let mut parts = beginning_of_game_parts();
+        let buyer = MajorNationId::from_nation(parts.turn.selected_nation)
+            .expect("active nation is a major");
         let seller = MajorNationId::new(if buyer.get() == 0 { 1 } else { 0 });
         let majors = MajorNationTable::from_fn(|nation| {
             let mut major = parts.nations.major(nation).clone();
