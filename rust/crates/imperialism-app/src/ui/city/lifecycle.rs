@@ -179,15 +179,14 @@ pub(in crate::ui::city) fn bind_city_dialogs(
                     node.top = px(position.y as f32);
                 });
         }
-        if let Some(page) = industry_page(dialog.slot) {
-            configure_industry_dialog(&mut commands, &mut assets, root, &children, &tags, page);
-            continue;
-        }
-        match dialog.slot {
-            CityFacilitySlot::TradeSchool => {
+        match city_dialog_kind(dialog.slot) {
+            CityDialogKind::Industry(page) => {
+                configure_industry_dialog(&mut commands, &mut assets, root, &children, &tags, page);
+            }
+            CityDialogKind::Training => {
                 configure_training_dialog(&mut commands, &assets, root, &children, &tags)
             }
-            CityFacilitySlot::Armory => configure_armory_dialog(
+            CityDialogKind::Armory => configure_armory_dialog(
                 &mut commands,
                 &mut assets,
                 root,
@@ -195,7 +194,7 @@ pub(in crate::ui::city) fn bind_city_dialogs(
                 &tags,
                 &session.game,
             ),
-            CityFacilitySlot::University => configure_university_dialog(
+            CityDialogKind::University => configure_university_dialog(
                 &mut commands,
                 &mut assets,
                 root,
@@ -203,7 +202,7 @@ pub(in crate::ui::city) fn bind_city_dialogs(
                 &tags,
                 &session.game,
             ),
-            CityFacilitySlot::Shipyard => configure_shipyard_dialog(
+            CityDialogKind::Shipyard => configure_shipyard_dialog(
                 &mut commands,
                 &mut assets,
                 root,
@@ -211,7 +210,7 @@ pub(in crate::ui::city) fn bind_city_dialogs(
                 &tags,
                 &session.game,
             ),
-            CityFacilitySlot::Warehouse => configure_warehouse_dialog(
+            CityDialogKind::Warehouse => configure_warehouse_dialog(
                 &mut commands,
                 &mut assets,
                 root,
@@ -219,23 +218,22 @@ pub(in crate::ui::city) fn bind_city_dialogs(
                 &tags,
                 &session.game,
             ),
-            CityFacilitySlot::FoodProcessing => {
+            CityDialogKind::FoodProcessing => {
                 configure_food_dialog(&mut commands, &mut assets, root, &children, &tags)
             }
-            CityFacilitySlot::PowerPlant => {
+            CityDialogKind::PowerPlant => {
                 configure_power_dialog(&mut commands, &mut assets, root, &children, &tags)
             }
-            CityFacilitySlot::Transport => configure_transport_capacity_dialog(
+            CityDialogKind::Transport => configure_transport_capacity_dialog(
                 &mut commands,
                 &mut assets,
                 root,
                 &children,
                 &tags,
             ),
-            CityFacilitySlot::RegionalPopulation => {
+            CityDialogKind::Population => {
                 configure_population_dialog(&mut commands, &mut assets, root, &children, &tags)
             }
-            _ => unreachable!("City building has no dialog binder"),
         }
     }
 }

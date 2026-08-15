@@ -703,19 +703,10 @@ fn naval_action_frame(action: Option<TileAction>) -> Option<u16> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
-
-    const BEGINNING_OF_GAME: &[u8] =
-        include_bytes!("../../../../../../fixtures/retail/beginning_of_game.imp");
+    use crate::ui::test_support::{beginning_of_game_with, strategic_map_beginning_context};
 
     fn fixture_state() -> GameState {
-        let save = LegacySaveV62::parse(BEGINNING_OF_GAME);
-        save.game_state(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 3_916_827_792,
-            selected_nation: NationId::new(6),
-        })
+        beginning_of_game_with(strategic_map_beginning_context())
     }
 
     fn civilian(

@@ -97,18 +97,19 @@ pub(in crate::ui::city) fn configure_university_dialog(
             .university
             .available,
         rows: UNIVERSITY_ROWS.map(|row| {
+            let kind = row.civilian_kind();
             UniversityRowText {
                 // Retail `TUniversityView::SetUnit` pre-increments the 0-based
                 // recruitment category once and reuses that 1-based index for
                 // both `0x2718` (name) and `0x2751` (description).
                 unit_name: assets
-                    .string(0x2718, i16::from(row.kind as u8) + 1)
+                    .string(0x2718, i16::from(kind as u8) + 1)
                     .expect("retail civilian name"),
                 description: assets
-                    .string(0x2751, i16::from(row.kind as u8) + 1)
+                    .string(0x2751, i16::from(kind as u8) + 1)
                     .expect("retail civilian description"),
                 preview: assets
-                    .transparent_picture(PictureId::new(university_preview_picture(row.kind)), 0x10)
+                    .transparent_picture(PictureId::new(university_preview_picture(kind)), 0x10)
                     .expect("retail University preview picture must load"),
             }
         }),
@@ -155,37 +156,35 @@ pub(in crate::ui::city) fn bind_university_dialog(
     } = data;
     bind_city_dialog_root(commands, root, children, tags, CityFacilitySlot::University);
     for (spec, row_text) in UNIVERSITY_ROWS.iter().zip(rows) {
-        let kind = spec.kind;
-        let binding = spec.binding();
+        let kind = spec.civilian_kind();
         let button = find_descendant(root, spec.button_tag, children, tags);
-        let row = find_descendant(root, spec.order_tag, children, tags);
-        let minus = find_descendant(row, fourcc!("minu"), children, tags);
-        let plus = find_descendant(row, fourcc!("plus"), children, tags);
-        let quantity = find_descendant(row, fourcc!("numb"), children, tags);
-        commands.entity(minus).insert(CityOrderAdjust {
-            order: binding.order,
-            delta: -1,
-        });
-        commands.entity(plus).insert(CityOrderAdjust {
-            order: binding.order,
-            delta: 1,
-        });
+        let bound = bind_city_order_row(
+            commands,
+            root,
+            children,
+            tags,
+            spec.binding,
+            fourcc!("minu"),
+            fourcc!("plus"),
+            fourcc!("numb"),
+            1,
+        );
         let row_available = available[kind];
-        let visibility = if row_available {
-            Visibility::Visible
-        } else {
-            Visibility::Hidden
-        };
+        bound.set_available(commands, row_available);
         {
             let mut button_commands = commands.entity(button);
             button_commands.insert((
-                CityRowChoice(CityOrderId::CivilianRecruit(kind)),
+                CityRowChoice(spec.binding.order),
                 UniversityRowAssets {
                     unit_name: row_text.unit_name,
                     description: row_text.description,
                     preview: row_text.preview,
                 },
-                visibility,
+                if row_available {
+                    Visibility::Visible
+                } else {
+                    Visibility::Hidden
+                },
             ));
             if row_available {
                 button_commands.remove::<InteractionDisabled>();
@@ -193,17 +192,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
                 button_commands.insert(InteractionDisabled);
             }
         }
-        commands.entity(row).insert(visibility);
-        for control in [minus, plus] {
-            if row_available {
-                commands.entity(control).remove::<InteractionDisabled>();
-            } else {
-                commands.entity(control).insert(InteractionDisabled);
-            }
-        }
-        commands.entity(quantity).insert((
-            Text::new(""),
-            CityOrderQuantity(binding.order),
+        commands.entity(bound.quantity).insert((
             InteractionDisabled,
             detail_font.clone(),
             detail_line_height,

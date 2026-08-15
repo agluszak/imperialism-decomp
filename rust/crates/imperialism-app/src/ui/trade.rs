@@ -918,29 +918,19 @@ fn trade_gauge_width(quantity: i16, capacity: i16) -> f32 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ui::test_support::beginning_of_game;
     use bevy::asset::AssetPlugin;
     use bevy::scene::ScenePlugin;
     use bevy::state::app::StatesPlugin;
-    use imperialism_formats::{LegacyGameStateContext, LegacySaveV62, peek_save_header};
-
-    const BEGINNING_OF_GAME: &[u8] =
-        include_bytes!("../../../../../fixtures/retail/beginning_of_game.imp");
 
     #[derive(Component)]
     struct TestTradeRoot;
 
     fn fixture_state() -> GameState {
-        let selected_nation = peek_save_header(BEGINNING_OF_GAME)
-            .and_then(|header| NationId::try_new(header.active_nation))
-            .unwrap();
-        let mut state =
-            LegacySaveV62::parse(BEGINNING_OF_GAME).game_state(LegacyGameStateContext {
-                crt_rand_state: 1,
-                map_generation_lcg: 0,
-                zone_status_lcg: 0,
-                selected_nation,
-            });
-        state.recall_player_trade_orders(MajorNationId::from_nation(selected_nation).unwrap());
+        let mut state = beginning_of_game();
+        state.recall_player_trade_orders(
+            MajorNationId::from_nation(state.turn().selected_nation).unwrap(),
+        );
         state
     }
 

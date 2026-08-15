@@ -88,8 +88,33 @@ pub(in crate::ui::city) fn configure_industry_dialog(
     );
 }
 
+pub(in crate::ui::city) struct CityOrderRow {
+    pub(in crate::ui::city) row: Entity,
+    pub(in crate::ui::city) decrease: Entity,
+    pub(in crate::ui::city) increase: Entity,
+    pub(in crate::ui::city) quantity: Entity,
+}
+
+impl CityOrderRow {
+    pub(in crate::ui::city) fn set_available(&self, commands: &mut Commands, available: bool) {
+        let visibility = if available {
+            Visibility::Visible
+        } else {
+            Visibility::Hidden
+        };
+        commands.entity(self.row).insert(visibility);
+        for control in [self.decrease, self.increase] {
+            if available {
+                commands.entity(control).remove::<InteractionDisabled>();
+            } else {
+                commands.entity(control).insert(InteractionDisabled);
+            }
+        }
+    }
+}
+
 #[allow(clippy::too_many_arguments)]
-pub(in crate::ui::city) fn bind_city_order_control(
+pub(in crate::ui::city) fn bind_city_order_row(
     commands: &mut Commands,
     root: Entity,
     children: &Query<&Children>,
@@ -99,23 +124,28 @@ pub(in crate::ui::city) fn bind_city_order_control(
     increase_tag: FourCc,
     quantity_tag: FourCc,
     step: i16,
-) -> Entity {
+) -> CityOrderRow {
     let row = find_descendant(root, binding.tag, children, tags);
-    let left = find_descendant(row, decrease_tag, children, tags);
-    let right = find_descendant(row, increase_tag, children, tags);
+    let decrease = find_descendant(row, decrease_tag, children, tags);
+    let increase = find_descendant(row, increase_tag, children, tags);
     let quantity = find_descendant(row, quantity_tag, children, tags);
-    commands.entity(left).insert(CityOrderAdjust {
+    commands.entity(decrease).insert(CityOrderAdjust {
         order: binding.order,
         delta: -step,
     });
-    commands.entity(right).insert(CityOrderAdjust {
+    commands.entity(increase).insert(CityOrderAdjust {
         order: binding.order,
         delta: step,
     });
     commands
         .entity(quantity)
         .insert((Text::new(""), CityOrderQuantity(binding.order)));
-    quantity
+    CityOrderRow {
+        row,
+        decrease,
+        increase,
+        quantity,
+    }
 }
 
 fn bind_industry_amount_bars(
@@ -127,7 +157,7 @@ fn bind_industry_amount_bars(
     bar_color: Color,
 ) {
     for binding in page.orders {
-        let quantity = bind_city_order_control(
+        let bound = bind_city_order_row(
             commands,
             root,
             children,
@@ -143,10 +173,9 @@ fn bind_industry_amount_bars(
             slot: page.slot,
         };
         commands
-            .entity(quantity)
+            .entity(bound.quantity)
             .insert(IndustryBar::Quantity(amount));
-        let row = find_descendant(root, binding.tag, children, tags);
-        let bar = find_descendant(row, fourcc!("bar "), children, tags);
+        let bar = find_descendant(bound.row, fourcc!("bar "), children, tags);
         commands.spawn((
             Node {
                 position_type: PositionType::Absolute,

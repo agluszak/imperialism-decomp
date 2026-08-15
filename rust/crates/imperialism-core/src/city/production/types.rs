@@ -19,6 +19,17 @@ pub struct OrderLimit {
     pub constraint: ProductionConstraint,
 }
 
+impl OrderLimit {
+    /// Keep this limit when `maximum` is not strictly smaller, matching retail
+    /// tie-breaking that preserves the earlier constraint.
+    pub fn min_with(&mut self, maximum: i16, constraint: ProductionConstraint) {
+        if maximum < self.maximum {
+            self.maximum = maximum;
+            self.constraint = constraint;
+        }
+    }
+}
+
 /// Outcome of applying an absolute city-order quantity.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum CityOrderUpdate {
@@ -38,6 +49,25 @@ impl Default for ProductionProgress {
             quantity: 0,
             limiting_constraint: ProductionConstraint::Resources,
         }
+    }
+}
+
+impl ProductionProgress {
+    /// Record `limit.constraint` and commit `quantity` when it is in `0..=limit.maximum`.
+    /// Returns the signed delta on success. Rejection still updates the constraint.
+    pub(crate) fn try_set(&mut self, limit: OrderLimit, quantity: i16) -> Option<i16> {
+        self.limiting_constraint = limit.constraint;
+        self.try_set_within(limit.maximum, quantity)
+    }
+
+    /// Commit `quantity` when it is in `0..=maximum`. Returns the signed delta on success.
+    pub(crate) fn try_set_within(&mut self, maximum: i16, quantity: i16) -> Option<i16> {
+        let delta = quantity - self.quantity;
+        if quantity > maximum || quantity < 0 {
+            return None;
+        }
+        self.quantity = quantity;
+        Some(delta)
     }
 }
 

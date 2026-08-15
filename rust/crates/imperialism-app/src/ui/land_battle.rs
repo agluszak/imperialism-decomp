@@ -129,22 +129,11 @@ fn on_land_battle_activate(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ui::test_support::beginning_of_game_parts;
     use bevy::state::app::StatesPlugin;
-    use imperialism_formats::{LegacyGameStateContext, LegacySaveV62, peek_save_header};
-
-    const BEGINNING_OF_GAME: &[u8] =
-        include_bytes!("../../../../../fixtures/retail/beginning_of_game.imp");
 
     fn fixture_parts() -> GameStateParts {
-        let selected_nation = peek_save_header(BEGINNING_OF_GAME)
-            .and_then(|header| NationId::try_new(header.active_nation))
-            .unwrap_or(NationId::new(0));
-        LegacySaveV62::parse(BEGINNING_OF_GAME).game_state_parts(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 0,
-            selected_nation,
-        })
+        beginning_of_game_parts()
     }
 
     fn idle_unit(unit: &MilitaryUnitState) -> MilitaryUnitState {

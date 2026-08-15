@@ -5,6 +5,7 @@ use crate::ui::generated;
 use crate::ui::hover_help::{
     HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, get_string, ui_string,
 };
+use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::ModalDialog;
 use crate::ui::retail::{RetailTag, find_descendant};
@@ -181,15 +182,7 @@ fn bind_city_site_controls(
 }
 
 fn open_city_site_intro(commands: &mut Commands) {
-    let root = commands.spawn_scene(generated::linger_2020()).id();
-    commands.entity(root).insert((
-        CitySiteIntro,
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
-        Pickable::default(),
-        DespawnOnExit(AppState::CitySite),
-    ));
+    spawn_linger_dialog(commands, CitySiteIntro, AppState::CitySite, 20);
 }
 
 fn bind_city_site_intro(
@@ -354,15 +347,7 @@ fn open_new_city_dialog(commands: &mut Commands, site: CapitalSite) {
 }
 
 fn open_city_site_notice(commands: &mut Commands, body: String) {
-    let root = commands.spawn_scene(generated::linger_2020()).id();
-    commands.entity(root).insert((
-        CitySiteNotice(body),
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
-        Pickable::default(),
-        DespawnOnExit(AppState::CitySite),
-    ));
+    spawn_linger_dialog(commands, CitySiteNotice(body), AppState::CitySite, 20);
 }
 
 fn bind_new_city_dialog(
@@ -637,6 +622,7 @@ fn stuff_minister_dialog(
     coat_picture: Option<i16>,
     hide_cancel: bool,
 ) {
+    let linger = bind_linger_dialog(root, children, tags);
     if let Some(picture) = gold_picture {
         let gold = assets
             .picture(PictureId::new(picture))
@@ -647,37 +633,15 @@ fn stuff_minister_dialog(
     }
     if let Some(picture) = coat_picture {
         if let Ok(image) = assets.picture(PictureId::new(picture)) {
-            commands
-                .entity(find_descendant(root, fourcc!("coat"), children, tags))
-                .insert(ImageNode::new(image));
+            commands.entity(linger.coat).insert(ImageNode::new(image));
         }
     } else {
-        commands
-            .entity(find_descendant(root, fourcc!("coat"), children, tags))
-            .insert(Visibility::Hidden);
+        commands.entity(linger.coat).insert(Visibility::Hidden);
     }
-    set_styled_text(
-        commands,
-        find_descendant(root, fourcc!("titl"), children, tags),
-        assets,
-        title,
-        12,
-        1,
-        0,
-    );
-    set_styled_text(
-        commands,
-        find_descendant(root, fourcc!("info"), children, tags),
-        assets,
-        body,
-        12,
-        0,
-        0,
-    );
+    linger.set_title(commands, assets, retail_lines(title));
+    linger.set_body(commands, assets, retail_lines(body));
     if hide_cancel {
-        commands
-            .entity(find_descendant(root, fourcc!("cncl"), children, tags))
-            .insert(Visibility::Hidden);
+        commands.entity(linger.cancel).insert(Visibility::Hidden);
     }
 }
 

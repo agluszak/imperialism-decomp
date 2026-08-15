@@ -447,7 +447,7 @@ pub(in crate::ui::city) fn city_building_action_enabled(
         !city.power_plant_upgrade_queued && city.orders.power_plant.progress.quantity > 0
     } else {
         assert!(
-            industry_page(slot).is_some(),
+            matches!(city_dialog_kind(slot), CityDialogKind::Industry(_)),
             "generated city action belongs to a supported retail building"
         );
         !city_is_expanding(city, slot) && city.production_accum[slot] < city.production_orders[slot]
@@ -740,10 +740,7 @@ pub(in crate::ui::city) fn sync_city_buildings(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_formats::{LegacyGameStateContext, LegacySaveV62, peek_save_header};
-
-    const BEGINNING_OF_GAME: &[u8] =
-        include_bytes!("../../../../../../fixtures/retail/beginning_of_game.imp");
+    use crate::ui::test_support::beginning_of_game;
 
     #[test]
     fn city_production_placard_values_use_book_antiqua_10pt() {
@@ -755,18 +752,10 @@ mod tests {
 
     #[test]
     fn beginning_city_need_windows_follow_predicted_needs() {
-        let selected_nation = peek_save_header(BEGINNING_OF_GAME)
-            .and_then(|header| NationId::try_new(header.active_nation))
-            .unwrap();
-        let state = LegacySaveV62::parse(BEGINNING_OF_GAME).game_state(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 0,
-            selected_nation,
-        });
+        let state = beginning_of_game();
         let city = &state
             .nations()
-            .major(MajorNationId::from_nation(selected_nation).unwrap())
+            .major(MajorNationId::from_nation(state.turn().selected_nation).unwrap())
             .city;
         let quantity = city.orders.population_growth.quantity;
         assert_eq!(city.population.count(), 7);
