@@ -1,0 +1,75 @@
+# Retail media
+
+Playback is a modern presentation layer in `imperialism-app`. The 1997 MCI / DirectSound /
+Video for Windows devices are not reconstructed. File discovery and WAVE extraction live on
+`RetailAssets`.
+
+## Movies
+
+`TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup` builds `Movies/<name>.avi` and continues
+immediately when the file cannot be opened. `kTurnEventOpeningCinematic` is the shared cinematic
+dispatcher; `TViewMgr::HandleTurnEventDialogFactorySlotF4` picks the stem from `TSimMgr::mode`:
+
+| Mode | Clip | When |
+| --- | --- | --- |
+| 1 | `open` | Startup opening |
+| `0x0e` | `vote` | Decade / quarter-gate |
+| `0x16` | `win` | Top-ten / victory |
+| `0x17` | `lose` | Defeat cinematic mode |
+| `0x19` | `win` or `lose` | Elimination, from nation eligibility |
+
+Natural EOS and skip share `HandleTurnStateExitAndPostFollowupEventCode(0)`. Mouse down on
+`TMovieView` and Escape / Space / Enter through `TGameWindow::DoKeyEvent` all call
+`StopMovieIfActive` (MCI_STOP). Missing movies never enter that wait; they post followup
+immediately.
+
+A movie also stops CD/music, tears down DirectSound so AVI audio can open the wave device, and
+paints the host frame black (`PALETTEINDEX(0)`). Destruction restores the tiled BITMAP `0x119`
+surround and DirectSound.
+
+This checkout's GStreamer 1.24 stack decodes Cinepak (`cvid`) plus PCM via `playbin` /
+`avdec_cinepak`. Untouched GOG `Movies/*.avi` codecs still need a machine with
+`IMPERIALISM_RETAIL_DIR`; the ignored `decodes_untouched_retail_open_avi` test is that proof.
+
+## Music
+
+Retail music is CD-DA through `TCdAudioDevice` using TMSF range `[cue, cue+1)`. GOG replaces the
+CD with ripped files. The synthetic-install negative test already names `MUSIC/Track06.ogg`,
+which matches ogg-winmm's `TrackNN` spelling for cue 6 (main menu).
+
+Known cue ids from `TSoundPlayer` call sites:
+
+| Cue | Use |
+| --- | --- |
+| 2, 3 | Load/save, credits, turn-flow pool |
+| 4 | Diplomacy / deal book (`SetActiveAudioCueAndResetQueue(4, true)`) |
+| 5 | Battle report |
+| 6 | Main menu |
+| 9 / 10 | Tactical victory / defeat |
+| 11 | High score / game score |
+| 12 | Credits |
+
+`TSoundPlayer` is game policy, not an OS wrapper: active and pending cues, fade-before-switch
+(`GetTickCountDiv16` + 6-tick timer), a cue pool, and a remaining pool sampled without
+replacement via CRT `rand()`. Volume is preference slot 3 (0..=255). Do not add a second
+settings resource. Do not call the gameplay CRT stream from presentation unless a differential
+capture shows `SelectAndScheduleRandomAudioCue` consuming it; native semantic captures do not
+pump that idle path today.
+
+## Sound effects
+
+WAVE resources live in `Data/wave.gob` (language IRG string `0x80` / `ImperialismApp::field_DC`),
+not in `Imperialism.exe`. Load is `<id>.wav` on disk first, then `FindResourceA(..., "WAVE")`.
+Retail had six DirectSound PCM channels; start with ordinary one-shot Bevy players. Volume is
+preference slot 2 (0..=100). Shared UI click is WAVE 7000 / `0x1b58`.
+
+## Chrome
+
+`CMainFrame::OnEraseBkgnd` tiles `Imperialism.exe` BITMAP `0x119` in 128×128 chunks when the
+background color is the tiled sentinel. Confirmed on the GOG exe: 128×128, 8 bpp, 17448-byte
+DIB. Movie construction replaces that with black.
+
+## Follow-up order
+
+SFX (Bevy audio + WAVE), then `MusicDirector`, then the 640×480 viewport / tiled surround, then
+wire `MovieBackend` to `AppState::Cinematic`, then opening / decade / victory sequences.

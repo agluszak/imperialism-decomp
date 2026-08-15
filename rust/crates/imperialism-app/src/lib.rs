@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+mod media;
 mod ui;
 
 use bevy::input_focus::tab_navigation::TabNavigationPlugin;
@@ -79,6 +80,7 @@ fn add_game_plugins(app: &mut App) {
         ui::OfferSheetPlugin,
     ))
     .add_plugins((
+        media::ImperialismMediaPlugin,
         ui::CursorPlugin,
         ui::TechnologyAdvancePlugin,
         ui::NewspaperPlugin,

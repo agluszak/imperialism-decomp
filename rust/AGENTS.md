@@ -9,7 +9,7 @@ Current crate ownership:
 
 - `imperialism-core`: authoritative deterministic game state, rules, and typed domain IDs. No Bevy.
 - `imperialism-formats`: retail file decoding/import and retail representation quirks.
-- `imperialism-app`: Bevy presentation, input, audio, and lifecycle.
+- `imperialism-app`: Bevy presentation, input, audio, movies, chrome, and lifecycle.
 - `imperialism-testkit`: process-isolated C++ oracle and semantic comparison support.
 
 Crate count follows actual ownership. Do not split the core into subsystem crates or introduce
@@ -23,7 +23,9 @@ Export a curated crate-root surface—do not reintroduce broad `state::*` or
 `production::*` globs or a prelude. In formats, keep retail binary parse separate from `GameState`
 projection. In the app, keep `GameSession` in `ui/session.rs` and city UI split by retail dialog
 under `ui/city/`. Keep the strategic map split by retail draw stage under `ui/strategic_map/`
-(`terrain`, `borders`, `overlays`, `units`).
+(`terrain`, `borders`, `overlays`, `units`). Media playback lives in `imperialism-app::media`;
+retail movie/music/WAVE/chrome discovery lives on `RetailAssets`. Do not reconstruct MCI,
+DirectSound, VfW, CD devices, or a generic media framework.
 
 Port retail behavior, not the recovered C++ architecture. C++ class hierarchy, ownership, ABI,
 integer storage widths, sentinels, offsets, and control flow are evidence, not Rust design. Keep
