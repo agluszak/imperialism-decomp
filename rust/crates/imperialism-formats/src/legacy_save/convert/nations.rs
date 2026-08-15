@@ -1,3 +1,4 @@
+use super::super::PROVINCE_COUNT;
 use super::*;
 use imperialism_core::*;
 
@@ -58,7 +59,7 @@ impl LegacyCountryBase {
 pub(super) fn country_common(country: &LegacyCountryBase) -> NationCommonState {
     let mut common = NationCommonState::from_parts(
         normalize_nation_display_name(&country.alternate_identity),
-        country_status_from_retail(country.encoded_country_status),
+        super::country_status_from_retail(country.encoded_country_status),
         country
             .owned_regions
             .iter()
@@ -114,15 +115,6 @@ fn country_status_to_retail(status: CountryStatus) -> i16 {
         CountryStatus::Independent => -1,
         CountryStatus::ProtectorateOf(nation) => 100 + i16::from(nation.get()),
         CountryStatus::ColonyOf(nation) => 200 + i16::from(nation.get()),
-    }
-}
-
-pub(super) fn country_status_from_retail(value: i16) -> CountryStatus {
-    match value {
-        -1 => CountryStatus::Independent,
-        100..=122 => CountryStatus::ProtectorateOf(NationId::new((value - 100) as u8)),
-        200..=222 => CountryStatus::ColonyOf(NationId::new((value - 200) as u8)),
-        _ => panic!("unrecovered encoded nation status {value}"),
     }
 }
 

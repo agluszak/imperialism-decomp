@@ -20,7 +20,14 @@ use nations::{
 use technology::{technology_dto, technology_state};
 use units::{admiral_states, navy_dto, ship_states};
 
-pub(super) use nations::country_status_from_retail;
+pub(super) fn country_status_from_retail(value: i16) -> CountryStatus {
+    match value {
+        -1 => CountryStatus::Independent,
+        100..=122 => CountryStatus::ProtectorateOf(NationId::new((value - 100) as u8)),
+        200..=222 => CountryStatus::ColonyOf(NationId::new((value - 200) as u8)),
+        _ => panic!("unrecovered encoded nation status {value}"),
+    }
+}
 
 fn optional_region_id(value: i8) -> Option<RegionId> {
     (value != -1).then(|| RegionId::new(value as u8))
