@@ -5,7 +5,6 @@ use crate::combat_moves::set_unit_order;
 use crate::military::{ActionClassScores, PROVINCE_UNIT_ORDER_WEIGHT, accumulate_unit_priority};
 use crate::*;
 
-const UNIT_ORDER_REDEPLOY: i32 = 1;
 const ATTACK_MISSION_READINESS_THRESHOLD: f32 = 1.0;
 
 const HEATMAP_PACKED_DEVELOPMENT_OVERFLOW: [u8; 44] = [
@@ -28,9 +27,8 @@ impl GameState {
     }
 
     /// Heatmap, militia, pay, advisory selection, and mission `GiveOrders`.
-    /// This is the native `military_phase_supported_subset` operation; it does
-    /// not execute navy `CarryOutOrders`.
-    pub fn apply_military_orders(&mut self) {
+    /// Does not execute navy `CarryOutOrders`.
+    pub(crate) fn apply_military_orders(&mut self) {
         self.recompute_tile_strategic_score_heatmap();
         for nation in NationId::all() {
             if !self.nation_is_eligible_for_optional_phase(nation) {
@@ -54,7 +52,7 @@ impl GameState {
     }
 
     /// Retail `TAutoGreatPower::MoveArmy` / mission `GiveOrders`.
-    pub fn do_army_movement(&mut self, nation: MajorNationId) {
+    pub(crate) fn do_army_movement(&mut self, nation: MajorNationId) {
         self.give_auto_great_power_army_orders(nation.nation());
     }
 
@@ -149,7 +147,7 @@ impl GameState {
                 continue;
             };
             if unit.stationed_province() != Some(province) {
-                set_unit_order(unit, UNIT_ORDER_REDEPLOY, Some(province));
+                set_unit_order(unit, MilitaryOrderCode::Redeploy, Some(province));
             }
         }
     }
@@ -165,7 +163,7 @@ impl GameState {
                 continue;
             };
             if unit.stationed_province() == Some(present) {
-                set_unit_order(unit, UNIT_ORDER_REDEPLOY, Some(target));
+                set_unit_order(unit, MilitaryOrderCode::Redeploy, Some(target));
             }
         }
     }
@@ -279,18 +277,13 @@ impl GameState {
         nation: NationId,
         unit_type: MilitaryUnitKind,
         province: Option<ProvinceId>,
-        order_code: i32,
+        order_code: MilitaryOrderCode,
     ) {
         let id = self.unit_ids.next_military();
-        let order = if order_code == 0 {
+        let order = if order_code == MilitaryOrderCode::Idle {
             MilitaryOrder::idle([province; 3], [province; 3])
         } else {
-            MilitaryOrder::retail(
-                MilitaryOrderCode::from_retail(order_code),
-                None,
-                [province; 3],
-                [province; 3],
-            )
+            MilitaryOrder::retail(order_code, None, [province; 3], [province; 3])
         };
         let unit = MilitaryUnitState::new(
             id,
@@ -315,7 +308,7 @@ impl GameState {
 
     fn add_militia(&mut self, nation: NationId, province: ProvinceId) {
         let unit_type = self.militia_kind(nation);
-        self.insert_land_unit(nation, unit_type, Some(province), 2);
+        self.insert_land_unit(nation, unit_type, Some(province), MilitaryOrderCode::Sleep);
     }
 
     pub(crate) fn militia_kind(&self, nation: NationId) -> MilitaryUnitKind {
@@ -416,7 +409,10 @@ mod tests {
             MilitaryUnitKind::Minutemen
         );
         assert_eq!(state.military_units[0].stationed_province, Some(province));
-        assert_eq!(state.military_units[0].order.code(), 2);
+        assert_eq!(
+            state.military_units[0].order.code(),
+            MilitaryOrderCode::Sleep
+        );
         assert_eq!(state.military_units[0].strength, 500);
         assert_eq!(
             state.nations.majors[MajorNationId::new(0)]
@@ -467,7 +463,10 @@ mod tests {
 
         state.do_military();
 
-        assert_eq!(state.military_units[0].order().code(), UNIT_ORDER_REDEPLOY);
+        assert_eq!(
+            state.military_units[0].order().code(),
+            MilitaryOrderCode::Redeploy
+        );
         assert_eq!(state.military_units[0].order().target(), Some(hold));
     }
 

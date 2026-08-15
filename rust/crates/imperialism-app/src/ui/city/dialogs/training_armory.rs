@@ -308,7 +308,10 @@ pub(in crate::ui::city) fn sync_armory_details(
     mut visibilities: Query<(&ArmoryDetail, &mut Visibility)>,
     mut placards: Query<&mut ImageNode, With<ArmoryPlacard>>,
 ) {
-    let Some(selection) = selections.iter().next() else {
+    let Some(selection) = selections
+        .iter()
+        .find(|selection| matches!(selection.order, CityOrderId::MilitaryRecruit(_)))
+    else {
         return;
     };
     let CityOrderId::MilitaryRecruit(category) = selection.order else {

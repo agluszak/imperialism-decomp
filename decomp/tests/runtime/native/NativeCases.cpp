@@ -51,6 +51,7 @@ RuntimeActionResult RunCombatMovesResumesAfterBattle(NativeTransition& transitio
 RuntimeActionResult RunCombatMovesBattleThenLaterMovement(NativeTransition& transition);
 RuntimeActionResult RunMilitaryCleanupSupportedSubset(NativeTransition& transition);
 RuntimeActionResult RunReassessControlSeaMissions(NativeTransition& transition);
+RuntimeActionResult RunReassessControlSeaMissionsDamagedShip(NativeTransition& transition);
 RuntimeActionResult RunRecomputeNationOrderPriorityMetrics(NativeTransition& transition);
 
 RuntimeActionResult RunCompletedRailSection(NativeTransition& transition);
@@ -132,6 +133,7 @@ const NativeCase kCases[] = {
     {"combat_moves_battle_then_later_movement", RunCombatMovesBattleThenLaterMovement},
     {"military_cleanup_supported_subset", RunMilitaryCleanupSupportedSubset},
     {"reassess_control_sea_missions", RunReassessControlSeaMissions},
+    {"reassess_control_sea_missions_damaged_ship", RunReassessControlSeaMissionsDamagedShip},
     {"recompute_nation_order_priority_metrics", RunRecomputeNationOrderPriorityMetrics},
     {"completed_rail_section", RunCompletedRailSection},
     {"issued_rail_section", RunIssuedRailSection},
