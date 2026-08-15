@@ -120,25 +120,20 @@ fn sync_random_setup_flag(
     setup: Res<RandomGameSetup>,
     mut pictures: RetailUiAssets,
     mut flags: Query<(Entity, &mut RandomSetupFlag, Option<&mut ImageNode>)>,
-    mut atlas_transparency_applied: Local<bool>,
+    mut transparent_atlas: Local<Option<Handle<Image>>>,
 ) {
     let added = flags.iter_mut().any(|(_, flag, _)| flag.is_added());
     if !setup.is_changed() && !added {
         return;
     }
-    let handle = match pictures.picture(FLAG_ATLAS_PICTURE) {
-        Ok(handle) => handle,
-        Err(error) => {
-            warn!(
-                "could not load retail setup flag atlas {:?}: {error}",
-                FLAG_ATLAS_PICTURE
-            );
-            return;
-        }
-    };
-    if !*atlas_transparency_applied {
-        match pictures.with_picture_image_mut(FLAG_ATLAS_PICTURE, apply_flag_atlas_transparency) {
-            Ok(()) => *atlas_transparency_applied = true,
+    let handle = if let Some(handle) = transparent_atlas.clone() {
+        handle
+    } else {
+        match pictures.transformed_picture(FLAG_ATLAS_PICTURE, apply_flag_atlas_transparency) {
+            Ok(handle) => {
+                *transparent_atlas = Some(handle.clone());
+                handle
+            }
             Err(error) => {
                 warn!(
                     "could not apply transparency to retail setup flag atlas {:?}: {error}",
@@ -147,7 +142,7 @@ fn sync_random_setup_flag(
                 return;
             }
         }
-    }
+    };
 
     for (entity, mut flag, image_node) in &mut flags {
         if flag.nation == Some(setup.nation) {

@@ -450,12 +450,9 @@ fn bind_diplomacy_screen(
         shadow: assets.palette_color(0xd2),
     };
     let icon_picture = PictureId::new(802);
-    let icon_atlas = assets
-        .picture(icon_picture)
-        .expect("retail diplomacy icon atlas must load");
     let transparent_rgb = assets.default_dib_palette()[0x10].to_array();
-    assets
-        .with_picture_image_mut(icon_picture, |image| {
+    let icon_atlas = assets
+        .transformed_picture(icon_picture, |image| {
             apply_diplomacy_atlas_transparency(image, transparent_rgb);
         })
         .expect("retail diplomacy icon atlas transparency must apply");

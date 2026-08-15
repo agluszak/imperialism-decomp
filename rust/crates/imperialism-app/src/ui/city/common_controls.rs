@@ -8,13 +8,17 @@ pub(in crate::ui::city) const INDUSTRY_BAR_Y: f32 = 8.0;
 pub(in crate::ui::city) struct CityOrderAdjust {
     pub(in crate::ui::city) order: CityOrderId,
     pub(in crate::ui::city) delta: i16,
+    pub(in crate::ui::city) selection: Option<Entity>,
 }
 
 #[derive(Component)]
 pub(in crate::ui::city) struct CityOrderQuantity(pub(in crate::ui::city) CityOrderId);
 
 #[derive(Component, Clone, Copy, Eq, PartialEq)]
-pub(in crate::ui::city) struct CityRowChoice(pub(in crate::ui::city) CityOrderId);
+pub(in crate::ui::city) struct CityRowChoice {
+    pub(in crate::ui::city) order: CityOrderId,
+    pub(in crate::ui::city) selection: Entity,
+}
 
 #[derive(Component)]
 pub(in crate::ui::city) struct CityRowSelection {
@@ -121,6 +125,7 @@ pub(in crate::ui::city) fn bind_city_order_row(
     increase_tag: FourCc,
     quantity_tag: FourCc,
     step: i16,
+    selection: Option<Entity>,
 ) -> CityOrderRow {
     let row = tree.find(root, binding.tag);
     let decrease = tree.find(row, decrease_tag);
@@ -129,10 +134,12 @@ pub(in crate::ui::city) fn bind_city_order_row(
     commands.entity(decrease).insert(CityOrderAdjust {
         order: binding.order,
         delta: -step,
+        selection,
     });
     commands.entity(increase).insert(CityOrderAdjust {
         order: binding.order,
         delta: step,
+        selection,
     });
     commands
         .entity(quantity)
@@ -162,6 +169,7 @@ fn bind_industry_amount_bars(
             fourcc!("rght"),
             fourcc!("move"),
             1,
+            None,
         );
         let amount = IndustryAmount {
             order: binding.order,
@@ -258,7 +266,6 @@ pub(in crate::ui::city) fn bind_industry_dialog(
 pub(in crate::ui::city) fn on_city_row_selected(
     change: On<ValueChange<bool>>,
     rows: Query<&CityRowChoice>,
-    parents: Query<&ChildOf>,
     mut views: Query<&mut CityRowSelection>,
 ) {
     if !change.value {
@@ -267,54 +274,30 @@ pub(in crate::ui::city) fn on_city_row_selected(
     let Ok(row) = rows.get(change.source) else {
         return;
     };
-    let Some(mut selection) = city_row_selection_mut(change.source, &parents, &mut views) else {
+    let Ok(mut selection) = views.get_mut(row.selection) else {
         return;
     };
-    if recruitment_kind_matches(selection.order, row.0) {
-        selection.order = row.0;
+    if recruitment_kind_matches(selection.order, row.order) {
+        selection.order = row.order;
     }
 }
 
 pub(in crate::ui::city) fn on_city_recruitment_order_selected(
     activate: On<Activate>,
     actions: Query<&CityOrderAdjust>,
-    parents: Query<&ChildOf>,
     mut views: Query<&mut CityRowSelection>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let Some(mut selection) = city_row_selection_mut(activate.entity, &parents, &mut views) else {
+    let Some(selection_entity) = action.selection else {
+        return;
+    };
+    let Ok(mut selection) = views.get_mut(selection_entity) else {
         return;
     };
     if recruitment_kind_matches(selection.order, action.order) {
         selection.order = action.order;
-    }
-}
-
-fn city_row_selection_mut<'w>(
-    mut entity: Entity,
-    parents: &Query<&ChildOf>,
-    views: &'w mut Query<&mut CityRowSelection>,
-) -> Option<Mut<'w, CityRowSelection>> {
-    loop {
-        if views.contains(entity) {
-            return views.get_mut(entity).ok();
-        }
-        entity = parents.get(entity).ok()?.parent();
-    }
-}
-
-fn ancestor_city_row_selection(
-    mut entity: Entity,
-    parents: &Query<&ChildOf>,
-    selections: &Query<(Entity, Ref<CityRowSelection>)>,
-) -> Option<Entity> {
-    loop {
-        if selections.contains(entity) {
-            return Some(entity);
-        }
-        entity = parents.get(entity).ok()?.parent();
     }
 }
 
@@ -342,7 +325,6 @@ pub(in crate::ui::city) fn city_stock_color(short: bool, selection: &CityRowSele
 pub(in crate::ui::city) fn sync_city_row_selection(
     mut commands: Commands,
     session: Res<GameSession>,
-    parents: Query<&ChildOf>,
     selections: Query<(Entity, Ref<CityRowSelection>)>,
     rows: Query<(Entity, &CityRowChoice, Has<Checked>)>,
 ) {
@@ -357,13 +339,10 @@ pub(in crate::ui::city) fn sync_city_row_selection(
         return;
     }
     for (entity, row, checked) in &rows {
-        let Some(root) = ancestor_city_row_selection(entity, &parents, &selections) else {
+        let Ok((_, selection)) = selections.get(row.selection) else {
             continue;
         };
-        let Ok((_, selection)) = selections.get(root) else {
-            continue;
-        };
-        let should_check = row.0 == selection.order;
+        let should_check = row.order == selection.order;
         if should_check && !checked {
             commands.entity(entity).insert(Checked);
         } else if !should_check && checked {

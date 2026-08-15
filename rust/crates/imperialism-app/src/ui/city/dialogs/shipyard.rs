@@ -125,6 +125,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             fourcc!("plus"),
             fourcc!("numb"),
             1,
+            Some(root),
         );
         let available = details.is_some();
         bound.set_available(commands, available);
@@ -159,7 +160,10 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             commands.entity(button).insert(InteractionDisabled);
         }
         commands.entity(button).insert((
-            CityRowChoice(spec.binding.order),
+            CityRowChoice {
+                order: spec.binding.order,
+                selection: root,
+            },
             ShipyardRowAssets { details },
         ));
         commands.entity(bound.quantity).insert((
@@ -346,7 +350,7 @@ pub(in crate::ui::city) fn sync_shipyard_details(
     let city = &session.game.nations().major(nation).city;
     let row = rows
         .iter()
-        .find(|(choice, _)| choice.0 == selection.order)
+        .find(|(choice, _)| choice.order == selection.order)
         .and_then(|(_, assets)| assets.details.as_ref())
         .expect("Shipyard selection has a bound retail row");
     for (display, mut text) in &mut texts {

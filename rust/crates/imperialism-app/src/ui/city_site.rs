@@ -8,7 +8,7 @@ use crate::ui::hover_help::{
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::ModalDialog;
-use crate::ui::retail::{RetailTree, ancestor_with};
+use crate::ui::retail::{RetailTree, ancestor_with, apply_index_transparency};
 use crate::ui::session::apply_turn_stop;
 use crate::ui::strategic_map::{
     StrategicBaseTerrainCanvas, bind_minimap, bind_strategic_base_terrain,
@@ -652,17 +652,7 @@ fn commodity_icon(assets: &mut RetailUiAssets, resource_index: i16) -> Handle<Im
         .expect("retail commodity icon must have indexed pixels");
     assets
         .transformed_picture(picture_id, |image| {
-            let Some(pixels) = image.data.as_mut() else {
-                return;
-            };
-            if indexed.pixels.len() * 4 != pixels.len() {
-                return;
-            }
-            for (pixel, &palette_index) in pixels.chunks_exact_mut(4).zip(&indexed.pixels) {
-                if palette_index == 0x10 {
-                    pixel[3] = 0;
-                }
-            }
+            apply_index_transparency(image, &indexed, 0x10);
         })
         .expect("retail commodity icon must load")
 }
