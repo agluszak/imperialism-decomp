@@ -40,6 +40,8 @@ mod recruitment;
 mod resources;
 mod rng;
 mod tables;
+mod tactical_battle;
+mod tactical_tables;
 mod technology;
 mod territory;
 #[cfg(test)]

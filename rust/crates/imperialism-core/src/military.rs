@@ -500,6 +500,19 @@ impl MilitaryUnitKind {
     pub(crate) fn class_costs(self) -> [i16; 5] {
         self.stats().class_costs()
     }
+
+    pub(crate) fn tactical_attribute(self, index: usize) -> i16 {
+        let stats = self.stats().attributes();
+        match index {
+            0 => stats.infantry,
+            1 => stats.cavalry,
+            2 => stats.artillery,
+            3 => stats.armor,
+            4 => stats.support,
+            5 => stats.dampen,
+            _ => 0,
+        }
+    }
 }
 
 #[derive(Clone, Copy, Default)]

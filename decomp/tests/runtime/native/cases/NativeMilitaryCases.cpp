@@ -24,6 +24,7 @@
 #include "game/nation/TGreatPower_internal.h"
 #include "game/nation_domain_types.h"
 #include "game/navy/TShip.h"
+#include "game/tactical/TArmyBattle.h"
 #include "game/ui_core/CIterator.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/unit_domain_types.h"
@@ -525,6 +526,50 @@ RuntimeActionResult RunCombatMovesCreatesBattle(NativeTransition& transition) {
     return RuntimeActionResult::Failure("identical orders did not create a land battle");
   }
   return transition.Finish(result);
+}
+
+RuntimeActionResult RunAutoResolveLandBattle(NativeTransition& transition) {
+  TMilitaryUnit* unit = 0;
+  short dest = -1;
+  short defender = -1;
+  TArmyMgr* army;
+  TArmyBattle* battle;
+  int guard;
+  JsonObject args;
+  RuntimeActionResult started;
+
+  ClearAllMilitaryOrders();
+  if (!FindHostileRedeploy(&unit, &dest, &defender)) {
+    return RuntimeActionResult::Failure(
+        "the loaded fixture has no adjacent enemy-garrisoned province");
+  }
+  ForceWarBetween(unit->ownerNationSlot18, defender);
+  unit->SetOrders(kUnitOrderRedeploy, dest);
+
+  started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  g_pSimMgr->preferenceValues[0] = 0;
+  army = g_pMapContextActionManager;
+  army->FormStacks();
+  army->nextStackOrdinal10 = 1;
+  army->ResolveNextMove();
+  battle = army->activeBattleView3a4;
+  if (battle == 0) {
+    return RuntimeActionResult::Failure("identical orders did not create a land battle");
+  }
+
+  guard = 20000;
+  while (battle->battleOutcome44 == kTacticalBattleInProgress) {
+    if (guard-- <= 0) {
+      return RuntimeActionResult::Failure("tactical auto did not terminate");
+    }
+    battle->NextMove();
+  }
+  battle->NextMove();
+  return transition.Finish();
 }
 
 // FormStacks once, stop at the first tactical battle, then continue from the

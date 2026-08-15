@@ -111,14 +111,18 @@ fn on_land_battle_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let attacker_won = match *action {
-        LandBattleAction::Auto => session.game.land_battle_attacker_would_win(),
-        LandBattleAction::Retreat => false,
-    };
-    session.game.resolve_land_battle(attacker_won);
-    match session.game.resume_after_land_battle() {
-        TurnStop::LandBattle => {}
-        stop => apply_turn_stop(stop, &mut next_state),
+    match *action {
+        LandBattleAction::Auto => match session.game.auto_resolve_land_battle() {
+            TurnStop::LandBattle => {}
+            stop => apply_turn_stop(stop, &mut next_state),
+        },
+        LandBattleAction::Retreat => {
+            session.game.resolve_land_battle(false);
+            match session.game.resume_after_land_battle() {
+                TurnStop::LandBattle => {}
+                stop => apply_turn_stop(stop, &mut next_state),
+            }
+        }
     }
 }
 

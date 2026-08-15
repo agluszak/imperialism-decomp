@@ -166,6 +166,19 @@ fn combat_moves_creates_battle() {
     .unwrap();
 }
 
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn auto_resolve_land_battle() {
+    compare_native("auto_resolve_land_battle", |state, _: EmptyCase| {
+        let continuation = state
+            .do_combat_moves()
+            .expect("hostile stack creates a battle");
+        state.enter_land_battle(continuation);
+        let _ = state.auto_resolve_land_battle();
+    })
+    .unwrap();
+}
+
 #[derive(Debug, Deserialize, PartialEq)]
 struct TwoLandBattles {
     first: PendingLandBattle,

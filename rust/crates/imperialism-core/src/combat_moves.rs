@@ -129,14 +129,9 @@ impl GameState {
         self.pending.combat_reports_pending = true;
     }
 
-    /// Strength-weighted combat-class comparison used when Auto resolves a battle
-    /// without the tactical hex view.
-    pub fn land_battle_attacker_would_win(&self) -> bool {
-        let Some(battle) = self.pending_land_battle() else {
-            panic!("land-battle auto-resolve requires a combat-moves continuation");
-        };
-        stack_combat_power(&self.military_units, &battle.attacker_units)
-            >= stack_combat_power(&self.military_units, &battle.defender_units)
+    /// Stores a `DoCombatMoves` land-battle continuation (same as `advance_turn`).
+    pub fn enter_land_battle(&mut self, continuation: CombatMovesContinuation) {
+        self.continuation = crate::turn_flow::TurnContinuation::LandBattle(continuation);
     }
 
     /// Continues `DoCombatMoves` after the current land battle has been resolved.
@@ -358,7 +353,7 @@ impl GameState {
         clear_order_target(&mut self.military_units[index]);
     }
 
-    fn military_index(&self, id: MilitaryUnitId) -> Option<usize> {
+    pub(crate) fn military_index(&self, id: MilitaryUnitId) -> Option<usize> {
         self.military_units.iter().position(|unit| unit.id == id)
     }
 
@@ -620,13 +615,6 @@ fn compare_stack_keys(a: i16, b: i16) -> i16 {
     } else {
         0
     }
-}
-
-fn stack_combat_power(units: &[MilitaryUnitState], ids: &[MilitaryUnitId]) -> i32 {
-    ids.iter()
-        .filter_map(|&id| units.iter().find(|unit| unit.id == id))
-        .map(|unit| i32::from(combat_class(unit.unit_type)) * i32::from(unit.strength))
-        .sum()
 }
 
 #[cfg(test)]
@@ -937,30 +925,62 @@ mod tests {
     }
 
     #[test]
-    fn auto_resolve_awards_the_heavier_stack_and_continues() {
-        let (mut state, attacker, mover) = battle_then_later_uncontested_state();
+    fn auto_resolve_writes_strengths_then_continues() {
+        let mut state = game_state();
+        state.turn.economic_turn = 3;
+        state.turn.phase = crate::PhaseCode::COMBAT_MOVES;
+        seed_province(&mut state, 1, 0, &[2]);
+        seed_province(&mut state, 2, 1, &[1]);
+        seed_province(&mut state, 3, 0, &[4]);
+        seed_province(&mut state, 4, 0, &[3]);
+        state
+            .nations
+            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(1));
+        state
+            .nations
+            .append_owned_region_during_construction(NationId::new(1), ProvinceId::new(2));
+        state
+            .nations
+            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(3));
+        state
+            .nations
+            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(4));
+        let attacker = push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
+        state.military_units[0].strength = 500;
+        let _defender = push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);
+        state.military_units[1].strength = 100;
+        let mover = push_unit(&mut state, 0, 3, MilitaryUnitKind::Regulars, Some(4));
+        seed_war(&mut state);
+
         assert_eq!(state.advance_turn(), crate::TurnStop::LandBattle);
-        assert!(state.land_battle_attacker_would_win());
-        let attacker_won = state.land_battle_attacker_would_win();
-        state.resolve_land_battle(attacker_won);
+        let attacker_strength = state.military_units[0].strength;
+        let defender_strength = state.military_units[1].strength;
+        let _ = state.auto_resolve_land_battle();
         assert!(state.pending.combat_reports_pending);
-        let crate::turn_flow::TurnContinuation::LandBattle(continuation) =
-            std::mem::take(&mut state.continuation)
-        else {
-            panic!("combat continuation");
-        };
-        assert!(state.resume_combat_moves(continuation).is_none());
-        assert_eq!(state.military_units[0].id, attacker);
-        assert_eq!(
-            state.military_units[0].stationed_province,
-            Some(ProvinceId::new(2))
+        assert_ne!(
+            (
+                state.military_units[0].strength,
+                state.military_units[1].strength
+            ),
+            (attacker_strength, defender_strength),
+            "ApplyChanges must write tactical strengths before post-battle"
         );
+        assert_eq!(state.military_units[0].id, attacker);
         assert_eq!(state.military_units[2].id, mover);
         assert_eq!(
             state.military_units[2].stationed_province,
             Some(ProvinceId::new(4))
         );
         assert!(state.pending_land_battle().is_none());
+        let attacker_xp = state.military_units[0].experience;
+        let defender_xp = state.military_units[1].experience;
+        assert!(
+            attacker_xp == EXPERIENCE_WINNER && defender_xp == EXPERIENCE_LOSER
+                || attacker_xp == EXPERIENCE_LOSER && defender_xp == EXPERIENCE_WINNER
+                || attacker_xp == EXPERIENCE_WINNER && defender_xp == 0
+                || attacker_xp == 0 && defender_xp == EXPERIENCE_WINNER,
+            "post-battle experience must follow the Auto outcome, got {attacker_xp}/{defender_xp}"
+        );
     }
 
     #[test]
