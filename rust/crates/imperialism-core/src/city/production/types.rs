@@ -73,8 +73,6 @@ pub enum TrainingLevel {
 }
 
 impl TrainingLevel {
-    pub const ALL: [Self; 2] = [Self::Medium, Self::High];
-
     pub(crate) const fn input_band(self) -> SkillBand {
         match self {
             Self::Medium => SkillBand::Low,
@@ -116,19 +114,6 @@ pub enum MilitaryRecruitmentCategory {
     Demolitionist,
 }
 
-impl MilitaryRecruitmentCategory {
-    pub const ALL: [Self; 8] = [
-        Self::LightInfantry,
-        Self::RegularInfantry,
-        Self::HeavyInfantry,
-        Self::LightCavalry,
-        Self::HeavyCavalry,
-        Self::LightArtillery,
-        Self::HeavyArtillery,
-        Self::Demolitionist,
-    ];
-}
-
 pub type MilitaryRecruitOrderTable<T> = EnumMap<MilitaryRecruitmentCategory, T>;
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -150,19 +135,6 @@ pub enum ShipOrderSlot {
     WarshipEarlySecondary,
     WarshipAdvancedPrimary,
     WarshipAdvancedSecondary,
-}
-
-impl ShipOrderSlot {
-    pub const ALL: [Self; 8] = [
-        Self::MerchantEarlyPrimary,
-        Self::MerchantEarlySecondary,
-        Self::MerchantAdvancedPrimary,
-        Self::MerchantAdvancedSecondary,
-        Self::WarshipEarlyPrimary,
-        Self::WarshipEarlySecondary,
-        Self::WarshipAdvancedPrimary,
-        Self::WarshipAdvancedSecondary,
-    ];
 }
 
 pub type ShipOrderTable<T> = EnumMap<ShipOrderSlot, T>;

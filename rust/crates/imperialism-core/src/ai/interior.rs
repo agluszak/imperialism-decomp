@@ -1,6 +1,7 @@
 //! AI city interior-minister orders issued during [`GameState::do_city_and_transport`].
 
 use crate::*;
+use enum_map::Enum;
 
 /// How [`GameState::request_ai_resource`] spends city stock, transport, and order metrics.
 #[derive(Clone, Copy)]
@@ -182,16 +183,18 @@ impl GameState {
         for output in ManufacturedItem::ALL {
             self.set_city_order_quantity(nation, CityOrderId::Item(output), 0);
         }
-        for level in TrainingLevel::ALL {
+        for level in (0..enum_map::enum_len::<TrainingLevel>()).map(TrainingLevel::from_usize) {
             self.set_city_order_quantity(nation, CityOrderId::Training(level), 0);
         }
-        for category in MilitaryRecruitmentCategory::ALL {
+        for category in (0..enum_map::enum_len::<MilitaryRecruitmentCategory>())
+            .map(MilitaryRecruitmentCategory::from_usize)
+        {
             self.set_city_order_quantity(nation, CityOrderId::MilitaryRecruit(category), 0);
         }
-        for kind in CivilianUnitKind::ALL {
+        for kind in (0..CivilianUnitKind::LENGTH).map(CivilianUnitKind::from_usize) {
             self.set_city_order_quantity(nation, CityOrderId::CivilianRecruit(kind), 0);
         }
-        for slot in ShipOrderSlot::ALL {
+        for slot in (0..enum_map::enum_len::<ShipOrderSlot>()).map(ShipOrderSlot::from_usize) {
             self.set_city_order_quantity(nation, CityOrderId::Ship(slot), 0);
         }
         self.set_city_order_quantity(nation, CityOrderId::TransportCapacity, 0);
@@ -217,8 +220,8 @@ impl GameState {
         let Some(ship_type) = self.nations.majors[nation].economy.pending_ship.take() else {
             return;
         };
-        let Some(slot) = ShipOrderSlot::ALL
-            .into_iter()
+        let Some(slot) = (0..enum_map::enum_len::<ShipOrderSlot>())
+            .map(ShipOrderSlot::from_usize)
             .find(|&slot| self.nations.city(nation).orders.ships[slot].ship_type == ship_type)
         else {
             return;
@@ -262,7 +265,7 @@ impl GameState {
         let remaining = capacity - interior.city_order_demand.training[TrainingLevel::Medium];
         interior.city_order_demand.population_growth = (target - baseline.low).clamp(0, remaining);
 
-        for level in TrainingLevel::ALL {
+        for level in (0..enum_map::enum_len::<TrainingLevel>()).map(TrainingLevel::from_usize) {
             let requested = self.nations.majors[nation]
                 .economy
                 .interior_civilian
@@ -574,8 +577,8 @@ impl GameState {
             let order = &self.nations.city(nation).orders.items[output];
             allocation[output.facility()] += order.progress.quantity;
         }
-        let total = CityFacilitySlot::ALL
-            .into_iter()
+        let total = (0..CityFacilitySlot::COUNT)
+            .map(CityFacilitySlot::from_usize)
             .map(|slot| allocation[slot])
             .fold(0_i16, i16::wrapping_add);
         self.nations.majors[nation]
