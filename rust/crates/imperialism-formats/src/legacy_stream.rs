@@ -93,10 +93,6 @@ impl LegacyWriter {
         self.bytes.extend_from_slice(bytes);
     }
 
-    pub(crate) fn write_zeros(&mut self, length: usize) {
-        self.bytes.resize(self.bytes.len() + length, 0);
-    }
-
     pub(crate) fn write_u8(&mut self, value: u8) {
         self.bytes.push(value);
     }

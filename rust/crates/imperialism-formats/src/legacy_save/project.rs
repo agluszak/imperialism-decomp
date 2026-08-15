@@ -768,10 +768,7 @@ impl LegacySaveV62 {
         let mut military_units = Vec::new();
         let mut civilian_units = Vec::new();
         let mut missions = Vec::new();
-        let mut pending = PendingWorkState {
-            combat_reports_pending: self.army_report_count != 0,
-            ..PendingWorkState::default()
-        };
+        let mut pending = PendingWorkState::default();
         let map = self.map.map_mgr();
         let map_view_origin = TileId::new(self.map.view_origin_tile as u16);
         let ocean = ocean_state(&self.ocean, &map);
@@ -905,6 +902,7 @@ impl LegacySaveV62 {
             missions,
             news: NewsState::default(),
             pending,
+            battle_reports: battle_reports(&self.army_reports),
             continuation: TurnContinuation::default(),
         }
     }
@@ -1533,4 +1531,48 @@ fn country_common(country: &LegacyCountryBase) -> NationCommonState {
     common.unit_name_ordinal_by_type = country.unit_name_ordinal_by_type;
     common.unit_name_counter = country.unit_name_counter;
     common
+}
+
+fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
+    reports
+        .iter()
+        .filter_map(|report| {
+            let kind = BattleReportKind::from_retail(report.kind)?;
+            let location = if kind.is_land() {
+                BattleReportLocation::Province(ProvinceId::try_new(report.node_id as u16)?)
+            } else {
+                BattleReportLocation::Zone(OceanZoneId::new(report.node_id as u16))
+            };
+            Some(BattleReport {
+                participant_index: report.participant_index,
+                displayed_participant: report.displayed_participant,
+                kind,
+                location,
+                sides: std::array::from_fn(|side| {
+                    let side = &report.sides[side];
+                    BattleReportSide {
+                        nation: NationId::try_new(side.nation).unwrap_or(NationId::new(0)),
+                        name: side.name.clone(),
+                        overlay: side.overlay.clone(),
+                        children: side
+                            .children
+                            .iter()
+                            .map(|child| BattleReportUnit {
+                                resource_type: child.resource_type,
+                                stock_or_required: child.stock_or_required,
+                                name: child.name.clone(),
+                                strength_bucket: child.strength_bucket,
+                                detail_identity: child.detail_identity,
+                            })
+                            .collect(),
+                    }
+                }),
+                marker_pixel_x: 0,
+                marker_pixel_y: 0,
+                placed: false,
+                marker_sprite: 0,
+                list_ordinal: 0,
+            })
+        })
+        .collect()
 }

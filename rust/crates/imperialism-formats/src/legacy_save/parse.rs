@@ -76,7 +76,7 @@ impl LegacySaveV62 {
         let map = read_map(&mut stream);
         let ocean = read_ocean(&mut stream);
         let navy = read_navy(&mut stream);
-        let army_report_count = skip_army_reports(&mut stream);
+        let army_reports = read_army_reports(&mut stream);
 
         // MFC shares one class/object index space across all mission queues;
         // index zero is the null pointer.
@@ -117,7 +117,7 @@ impl LegacySaveV62 {
             map,
             ocean,
             navy,
-            army_report_count,
+            army_reports,
             major_nations,
             minor_nations,
             help,
@@ -363,17 +363,44 @@ fn read_task_force(stream: &mut LegacyStream<'_>) -> LegacyTaskForce {
     }
 }
 
-fn skip_army_reports(stream: &mut LegacyStream<'_>) -> u16 {
-    let report_count = stream.read_le_u16();
-    for _ in 0..report_count {
-        stream.skip(8);
-        for _ in 0..2 {
-            stream.skip(1 + 0x20 + 0xff);
-            let child_count = stream.read_le_u16() as usize;
-            stream.skip(child_count * 42);
-        }
-    }
-    report_count
+fn read_army_reports(stream: &mut LegacyStream<'_>) -> Vec<LegacyBattleReport> {
+    let report_count = stream.read_le_u16() as usize;
+    (0..report_count)
+        .map(|_| {
+            let participant_index = stream.read_u8();
+            let displayed_participant = stream.read_u8();
+            let kind = stream.read_le_i32();
+            let node_id = stream.read_le_i16();
+            let sides = std::array::from_fn(|_| {
+                let nation = stream.read_u8();
+                let name = fixed_text(&stream.read_array::<0x20>());
+                let overlay = fixed_text(&stream.read_array::<0xff>());
+                let child_count = stream.read_le_u16() as usize;
+                let children = (0..child_count)
+                    .map(|_| LegacyBattleReportChild {
+                        resource_type: stream.read_le_i16(),
+                        stock_or_required: stream.read_le_i16(),
+                        name: fixed_text(&stream.read_array::<0x20>()),
+                        strength_bucket: stream.read_le_i16(),
+                        detail_identity: stream.read_le_u32(),
+                    })
+                    .collect();
+                LegacyBattleReportSide {
+                    nation,
+                    name,
+                    overlay,
+                    children,
+                }
+            });
+            LegacyBattleReport {
+                participant_index,
+                displayed_participant,
+                kind,
+                node_id,
+                sides,
+            }
+        })
+        .collect()
 }
 
 fn read_country_base(stream: &mut LegacyStream<'_>) -> LegacyCountryBase {

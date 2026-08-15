@@ -12,6 +12,10 @@ const EXPERIENCE_WINNER: i16 = 0x23;
 const EXPERIENCE_LOSER: i16 = 0x14;
 const EXPERIENCE_CAP: i16 = 0x190;
 
+fn military_ids(units: &[MilitaryUnitState], indices: &[usize]) -> Vec<MilitaryUnitId> {
+    indices.iter().map(|&index| units[index].id).collect()
+}
+
 /// Land battle that retail would open as a modal tactical view.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct PendingLandBattle {
@@ -108,6 +112,18 @@ impl GameState {
             .iter()
             .filter_map(|&id| self.military_index(id))
             .collect::<Vec<_>>();
+
+        // `ApplyPostBattleStackOutcomeAndGrowUnitMeters` (0x004a5ca0) builds the land
+        // battle record before redistributing stacks.
+        self.append_land_battle_report(
+            BattleReportKind::LandBattle,
+            battle.province,
+            battle.attacker_nation,
+            battle.defender_nation,
+            &battle.attacker_units,
+            &battle.defender_units,
+            attacker_won,
+        );
 
         let mut chains = StationedChains::from_units(&self.military_units);
         if attacker_won {
@@ -289,7 +305,21 @@ impl GameState {
             garrison = chains.next[index];
         }
 
+        let attacker_ids = military_ids(&self.military_units, &our_units);
+        let defender_ids = military_ids(&self.military_units, &enemy_units);
         if !self.nation_pair_war_stamp_out_of_date(stack.owner, cached_owner) {
+            // `TryCreateTacticalBattleViewForTileArmies` (0x004a4xxx): current war stamp
+            // builds a preempted report (`sideWonFlag=0`) then relocates the stack.
+            let defender = cached_owner.expect("preempted stack has a province owner");
+            self.append_land_battle_report(
+                BattleReportKind::PreemptedLandBattle,
+                stack.dest,
+                stack.owner,
+                defender,
+                &attacker_ids,
+                &defender_ids,
+                false,
+            );
             self.relocate_stack_to_source(chains, stack, &our_units);
             return None;
         }
@@ -299,17 +329,21 @@ impl GameState {
                 province: stack.dest,
                 attacker_nation: stack.owner,
                 defender_nation: defender,
-                attacker_units: our_units
-                    .iter()
-                    .map(|&index| self.military_units[index].id)
-                    .collect(),
-                defender_units: enemy_units
-                    .iter()
-                    .map(|&index| self.military_units[index].id)
-                    .collect(),
+                attacker_units: attacker_ids,
+                defender_units: defender_ids,
             });
         }
 
+        let defender = cached_owner.expect("uncontested takeover has a province owner");
+        self.append_land_battle_report(
+            BattleReportKind::UncontestedTakeover,
+            stack.dest,
+            stack.owner,
+            defender,
+            &attacker_ids,
+            &[],
+            true,
+        );
         self.apply_uncontested_indices(chains, &our_units);
         owner_cache[stack.dest] = Some(stack.owner);
         None
@@ -472,6 +506,20 @@ impl GameState {
             }
         }
     }
+}
+
+pub(crate) fn stationed_chain_indices(
+    units: &[MilitaryUnitState],
+    province: ProvinceId,
+) -> Vec<usize> {
+    let chains = StationedChains::from_units(units);
+    let mut indices = Vec::new();
+    let mut cursor = chains.head[usize::from(province.get())];
+    while let Some(index) = cursor {
+        indices.push(index);
+        cursor = chains.next[index];
+    }
+    indices
 }
 
 impl StationedChains {
@@ -705,6 +753,7 @@ mod tests {
         assert_eq!(unit.order.code(), 0);
         assert_eq!(unit.order.targets(), &[Some(ProvinceId::new(1)); 3]);
         assert_eq!(unit.strength, 400);
+        assert!(state.battle_reports.is_empty());
     }
 
     #[test]
@@ -743,6 +792,10 @@ mod tests {
             Some(ProvinceId::new(2))
         );
         assert!(state.pending_land_battle().is_none());
+        assert!(
+            state.battle_reports.is_empty(),
+            "land-battle records are written in ApplyPostBattleStackOutcome, not CreateTacticalBattle"
+        );
     }
 
     #[test]

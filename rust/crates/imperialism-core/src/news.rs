@@ -123,8 +123,6 @@ fn inter_nation_event(
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct PendingWorkState {
     pub nations: MajorNationTable<NationPendingWork>,
-    /// Whether retail's post-combat map boundary has battle reports to present.
-    pub combat_reports_pending: bool,
     pub newspaper_events: Vec<PendingNewspaperEvent>,
     pub war_transitions: Vec<WarTransition>,
 }

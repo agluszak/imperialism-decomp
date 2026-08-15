@@ -711,6 +711,7 @@ mod tests {
             missions: vec![],
             news: crate::NewsState::default(),
             pending: crate::PendingWorkState::default(),
+            battle_reports: Vec::new(),
             continuation: crate::turn_flow::TurnContinuation::None,
         }
     }

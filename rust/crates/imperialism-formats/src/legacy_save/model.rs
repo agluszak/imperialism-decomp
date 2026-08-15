@@ -567,3 +567,26 @@ pub(crate) struct LegacyMapState {
     pub provinces: Vec<LegacyProvince>,
     pub pending_river_mouth_tile: i16,
 }
+
+pub(crate) struct LegacyBattleReportChild {
+    pub resource_type: i16,
+    pub stock_or_required: i16,
+    pub name: String,
+    pub strength_bucket: i16,
+    pub detail_identity: u32,
+}
+
+pub(crate) struct LegacyBattleReportSide {
+    pub nation: u8,
+    pub name: String,
+    pub overlay: String,
+    pub children: Vec<LegacyBattleReportChild>,
+}
+
+pub(crate) struct LegacyBattleReport {
+    pub participant_index: u8,
+    pub displayed_participant: u8,
+    pub kind: i32,
+    pub node_id: i16,
+    pub sides: [LegacyBattleReportSide; 2],
+}
