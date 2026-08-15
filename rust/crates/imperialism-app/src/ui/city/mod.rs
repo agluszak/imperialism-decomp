@@ -1,9 +1,10 @@
 use super::GameSession;
+use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::{ModalDialog, RetailTree, RetailUiAssets};
-use crate::*;
+use crate::{AppState, RetailAssetsResource};
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::log::warn;
 use bevy::picking::events::{Click, Drag, Pointer, Press};

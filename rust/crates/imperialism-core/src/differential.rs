@@ -5,7 +5,7 @@
 //! `pay_for_military`, and `finish_player_orders` from production code.
 
 use crate::military_cleanup::NationOrderPriorityMetrics as Metrics;
-use crate::*;
+use crate::{CombatMovesContinuation, GameState, MajorNationId};
 use serde::{Deserialize, Serialize};
 
 pub use crate::random_map::{
