@@ -5,7 +5,7 @@ use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use imperialism_core::{
     MAJOR_NATION_COUNT, MajorNationId, MapGeometry, MapTopology, NationId, TileId, TileOwnerTag,
 };
-use imperialism_formats::{DibPalette, Rgb};
+use imperialism_formats::DibPalette;
 
 pub(crate) const PREVIEW_WIDTH: usize = 324;
 pub(crate) const PREVIEW_HEIGHT: usize = 180;
@@ -251,6 +251,7 @@ pub(crate) fn preview_image_from_indices(palette_indices: &[u8], palette: &DibPa
 mod tests {
     use super::*;
     use imperialism_core::{STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, TileOwnerTag};
+    use imperialism_formats::Rgb;
 
     fn owners(owner: Option<TileOwnerTag>) -> Vec<Option<TileOwnerTag>> {
         vec![owner; STRATEGIC_TILE_COUNT]

@@ -1,17 +1,15 @@
 use super::RetailUiAssets;
 use super::map_preview::{
-    OFF_MAP_PALETTE, PREVIEW_HEIGHT, PREVIEW_PIXEL_COUNT, PREVIEW_WIDTH,
-    compose_owner_preview_indices, major_nation_palette, preview_image_from_indices,
+    PREVIEW_HEIGHT, PREVIEW_WIDTH, compose_owner_preview_indices, major_nation_palette,
+    preview_image_from_indices,
 };
 use super::random_setup::{RandomGameSetup, RandomSetupPreview};
 use super::retail::{RetailTag, find_descendant};
 use crate::RetailAssetsResource;
-use bevy::asset::RenderAssetUsages;
 use bevy::log::warn;
 use bevy::math::Rect;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
-use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
 use imperialism_core::MajorNationId;
 use imperialism_formats::{FourCc, PictureId, Rgb, fourcc};
@@ -268,7 +266,10 @@ fn nation_for_palette(palette: u8) -> Option<MajorNationId> {
 
 #[cfg(test)]
 mod tests {
+    use super::super::map_preview::{OFF_MAP_PALETTE, PREVIEW_PIXEL_COUNT};
     use super::*;
+    use bevy::asset::RenderAssetUsages;
+    use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 
     #[test]
     fn click_sampling_uses_composed_major_palette_indices() {
