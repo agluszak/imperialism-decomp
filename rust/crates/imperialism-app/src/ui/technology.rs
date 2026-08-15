@@ -111,11 +111,15 @@ fn on_technology_advance_activate(
     actions: Query<&TechnologyAdvanceAction>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
+    assets: Res<crate::RetailAssetsResource>,
 ) {
     if actions.get(activate.entity).is_err() {
         return;
     }
-    match session.game.acknowledge_technology_report() {
+    match session
+        .game
+        .acknowledge_technology_report(assets.news_story_ids())
+    {
         TurnStop::TechnologyAdvance => {}
         stop => apply_turn_stop(stop, &mut next_state),
     }

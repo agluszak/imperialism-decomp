@@ -1,8 +1,7 @@
 use bevy::prelude::*;
 use imperialism_core::{GameState, TurnStop};
-use imperialism_formats::RetailAssets;
 
-use crate::AppState;
+use crate::{AppState, RetailAssetsResource};
 
 /// Authoritative in-memory game owned by the running Bevy app.
 #[derive(Resource, Debug, PartialEq)]
@@ -10,11 +9,10 @@ pub(crate) struct GameSession {
     pub(crate) game: GameState,
 }
 
-impl GameSession {
-    pub(crate) fn from_assets(mut game: GameState, assets: &RetailAssets) -> Self {
-        game.set_news_story_ids(assets.news_table().story_ids());
-        Self { game }
-    }
+pub(crate) fn news_story_ids(assets: Option<&RetailAssetsResource>) -> &[i32] {
+    assets
+        .map(RetailAssetsResource::news_story_ids)
+        .unwrap_or(&[])
 }
 
 /// Maps one core turn stop onto the matching Bevy screen.

@@ -40,7 +40,7 @@ fn season_advance_clears_status_flags() {
 #[ignore = "requires the native C++ oracle"]
 fn turn_alerts_skip_first_economic_turn() {
     compare_native("turn_alerts_skip_first_economic_turn", |state, (): ()| {
-        state.show_turn_alerts()
+        state.show_turn_alerts(true)
     })
     .unwrap();
 }

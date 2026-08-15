@@ -47,12 +47,7 @@ impl Plugin for GameShellPlugin {
         register_civilian_toolbar(app);
         app.add_systems(
             OnEnter(AppState::StrategicMap),
-            (
-                enter_strategic_map_view,
-                spawn_strategic_map,
-                bind_strategic_map,
-            )
-                .chain(),
+            (spawn_strategic_map, bind_strategic_map).chain(),
         )
         .add_systems(
             Update,
@@ -115,10 +110,6 @@ fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> MapEdges {
         edges |= MapEdges::BOTTOM;
     }
     edges
-}
-
-fn enter_strategic_map_view(mut session: ResMut<GameSession>) {
-    session.game.center_map_on_first_idle_civilian();
 }
 
 fn spawn_strategic_map(mut commands: Commands) {
@@ -461,6 +452,8 @@ fn on_turn_alert_dismiss(
     parents: Query<&ChildOf>,
     notices: Query<Entity, With<TurnAlertNotice>>,
     mut session: ResMut<GameSession>,
+    prefs: Res<super::preferences::GamePreferences>,
+    assets: Res<RetailAssetsResource>,
     mut commands: Commands,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
@@ -474,7 +467,9 @@ fn on_turn_alert_dismiss(
             .expect("turn alert belongs to its dialog")
             .parent();
     };
-    let stop = session.game.dismiss_turn_alerts();
+    let stop = session
+        .game
+        .dismiss_turn_alerts(prefs.turn_alerts_enabled(), assets.news_story_ids());
     commands.entity(root).despawn();
     apply_turn_stop(stop, &mut next_state);
 }

@@ -107,6 +107,7 @@ fn on_land_battle_activate(
     actions: Query<&LandBattleAction>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
+    assets: Option<Res<crate::RetailAssetsResource>>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
@@ -116,7 +117,10 @@ fn on_land_battle_activate(
         LandBattleAction::Retreat => false,
     };
     session.game.resolve_land_battle(attacker_won);
-    match session.game.resume_after_land_battle() {
+    match session
+        .game
+        .resume_after_land_battle(super::session::news_story_ids(assets.as_deref()))
+    {
         TurnStop::LandBattle => {}
         stop => apply_turn_stop(stop, &mut next_state),
     }
@@ -312,7 +316,7 @@ mod tests {
         );
 
         let mut state = GameState::from_parts(parts);
-        assert_eq!(state.advance_turn(), TurnStop::LandBattle);
+        assert_eq!(state.advance_turn(&[]), TurnStop::LandBattle);
         assert!(state.pending_land_battle().is_some());
         state
     }

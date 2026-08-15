@@ -85,6 +85,7 @@ RuntimeActionResult RunOpeningHomeCitySetup(NativeTransition& transition);
 RuntimeActionResult RunNewspaperPendingStatus(NativeTransition& transition);
 RuntimeActionResult RunArmyGrowthSelectedGeneral(NativeTransition& transition);
 RuntimeActionResult RunDealBookTurnStop(NativeTransition& transition);
+RuntimeActionResult RunCityAndTransportTurnStop(NativeTransition& transition);
 
 namespace {
 
@@ -162,6 +163,7 @@ const NativeCase kCases[] = {
     {"newspaper_pending_status", RunNewspaperPendingStatus},
     {"army_growth_selected_general", RunArmyGrowthSelectedGeneral},
     {"turn_stop_deal_book", RunDealBookTurnStop},
+    {"turn_stop_city_and_transport", RunCityAndTransportTurnStop},
 };
 
 } // namespace

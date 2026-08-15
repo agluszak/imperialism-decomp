@@ -273,6 +273,7 @@ fn on_offer_sheet_activate(
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
     assets: RetailUiAssets,
+    news: Option<Res<crate::RetailAssetsResource>>,
 ) {
     if !notices.is_empty() {
         return;
@@ -307,7 +308,11 @@ fn on_offer_sheet_activate(
             amount
         }
     };
-    match session.game.answer_trade_offer(amount, stop_buying) {
+    match session.game.answer_trade_offer(
+        amount,
+        stop_buying,
+        super::session::news_story_ids(news.as_deref()),
+    ) {
         TurnStop::TradeOffer => {}
         stop => apply_turn_stop(stop, &mut next_state),
     }

@@ -144,12 +144,6 @@ impl GameState {
         &self.news
     }
 
-    /// Installs the `news.tab` template ids used when the turn driver builds
-    /// newspaper pages. Call once when creating or loading a live session.
-    pub fn set_news_story_ids(&mut self, story_ids: &[i32]) {
-        self.news.story_ids = story_ids.to_vec();
-    }
-
     pub const fn pending(&self) -> &PendingWorkState {
         &self.pending
     }
@@ -212,7 +206,10 @@ impl GameState {
             .and_then(|unit| unit.location.tile())
     }
 
-    /// Map-entry camera from `TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick`.
+    /// Centers the strategic viewport on the first idle civilian for `nation`.
+    ///
+    /// Retail uses this from `TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick`,
+    /// not from every strategic-map enter.
     pub fn center_map_on_first_idle_civilian(&mut self) {
         if let Some(tile) = self.first_idle_civilian_tile(self.turn.active_nation) {
             self.center_map_on(tile);
