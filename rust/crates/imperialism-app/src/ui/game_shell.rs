@@ -4,9 +4,9 @@ use crate::AppState;
 use crate::RetailAssetsResource;
 use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
+use crate::ui::flag_menu::OpenFlagMenu;
 use crate::ui::format_currency;
 use crate::ui::generated;
-use crate::ui::load_save::OpenFlagMenu;
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailPictureSwap, RetailTag, find_descendant};
 use crate::ui::strategic_map::{

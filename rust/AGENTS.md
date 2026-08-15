@@ -14,6 +14,14 @@ Do not split the core into subsystem crates or introduce another authoritative s
 without a concrete need. Keep domain types beside their behavior. Export a curated crate-root
 surface—do not reintroduce broad `state::*` or `production::*` globs or a prelude.
 
+Split a module when it owns multiple concepts; do not split a recovered algorithm merely because
+it is long. In the app, generic political-map preview rendering lives in `ui/map_preview.rs`,
+random-setup coat/flag/click behavior stays in `ui/random_setup_map.rs`, the load/save screen
+lives under `ui/load_save/`, the strategic-map flag menu is `ui/flag_menu.rs`, and diplomacy is
+split under `ui/diplomacy/` (`mod`, `panels`, `map`, `prompts`). In formats,
+keep binary parse/write linear with the serialized layout; keep GameState conversion beside the
+legacy structures it maps, organized by domain rather than conversion direction.
+
 Port retail behavior, not the recovered C++ architecture. C++ class hierarchy, ownership, ABI,
 integer storage widths, sentinels, offsets, and control flow are evidence, not Rust design. Keep
 retail-layout ugliness at format/import/oracle boundaries unless it is itself observable game

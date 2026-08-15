@@ -84,6 +84,7 @@ fn add_game_plugins(app: &mut App) {
     ))
     .add_plugins((
         ui::CursorPlugin,
+        ui::FlagMenuPlugin,
         ui::TechnologyAdvancePlugin,
         ui::NewspaperPlugin,
         ui::LandBattlePlugin,
