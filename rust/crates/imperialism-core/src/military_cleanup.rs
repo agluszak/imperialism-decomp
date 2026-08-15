@@ -234,6 +234,7 @@ impl GameState {
 
     /// ControlSeaZone reassess only. Opening ControlSea needs do not read
     /// AutoGreatPower pressure scores.
+    #[cfg(feature = "oracle")]
     pub(crate) fn reassess_control_sea_missions(&mut self) {
         for nation in MajorNationId::all() {
             if !self.nation_is_eligible_for_optional_phase(nation.nation()) {

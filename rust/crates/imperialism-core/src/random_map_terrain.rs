@@ -1,4 +1,4 @@
-#[cfg(feature = "differential-trace")]
+#[cfg(feature = "oracle")]
 use crate::random_map::trace_coarse_random_map;
 use crate::random_map::{CoarseMap, generate_coarse_random_map};
 use crate::{
@@ -262,7 +262,7 @@ pub enum RandomSetupPreviewError {
     ClockSeedRequired,
 }
 
-#[cfg(feature = "differential-trace")]
+#[cfg(feature = "oracle")]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RandomMapTerrainAttemptTrace {
     pub coarse_generation: crate::random_map::CoarseMapTrace,
@@ -278,7 +278,7 @@ pub struct RandomMapTerrainAttemptTrace {
     pub accepted: bool,
 }
 
-#[cfg(feature = "differential-trace")]
+#[cfg(feature = "oracle")]
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RandomMapTerrainStageTrace {
     pub map_lcg: u32,
@@ -289,7 +289,7 @@ pub struct RandomMapTerrainStageTrace {
 
 /// Test-only stage record emitted by the native differential harness. Normal
 /// generation returns [`GeneratedMap`] instead.
-#[cfg(feature = "differential-trace")]
+#[cfg(feature = "oracle")]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RandomMapTerrainTrace {
     pub tuning: RandomMapTuning,
@@ -309,7 +309,7 @@ pub fn generate_random_map(
         topology,
         tuning,
         rng,
-        #[cfg(feature = "differential-trace")]
+        #[cfg(feature = "oracle")]
         None,
     )
 }
@@ -400,7 +400,7 @@ fn retail_random_setup_lcg_from_seed_state(seed: u32) -> RetailLcg {
     rng
 }
 
-#[cfg(feature = "differential-trace")]
+#[cfg(feature = "oracle")]
 pub fn trace_random_map_terrain(
     scenario_tag: &[u8],
     topology: MapTopology,
@@ -423,20 +423,18 @@ fn generate_random_map_impl(
     topology: MapTopology,
     tuning: RandomMapTuning,
     rng: &mut RetailLcg,
-    #[cfg(feature = "differential-trace")] mut attempts: Option<
-        &mut Vec<RandomMapTerrainAttemptTrace>,
-    >,
+    #[cfg(feature = "oracle")] mut attempts: Option<&mut Vec<RandomMapTerrainAttemptTrace>>,
 ) -> GeneratedMap {
     let geometry = MapGeometry::new(topology);
     loop {
-        #[cfg(feature = "differential-trace")]
+        #[cfg(feature = "oracle")]
         let (coarse_map, coarse_trace) = if attempts.is_some() {
             let trace = trace_coarse_random_map(rng);
             (trace.final_map(), Some(trace))
         } else {
             (generate_coarse_random_map(rng), None)
         };
-        #[cfg(not(feature = "differential-trace"))]
+        #[cfg(not(feature = "oracle"))]
         let coarse_map = generate_coarse_random_map(rng);
 
         let (expanded_tiles, provinces) = coarse_map.expanded_seed_data();
@@ -451,23 +449,23 @@ fn generate_random_map_impl(
             })
             .collect::<Vec<_>>();
 
-        #[cfg(feature = "differential-trace")]
+        #[cfg(feature = "oracle")]
         let after_expansion = attempts
             .as_ref()
             .map(|_| summarize_stage(&tiles, rng.state()));
         randomize_templates_and_smooth(&mut tiles, &coarse_map, geometry, rng);
-        #[cfg(feature = "differential-trace")]
+        #[cfg(feature = "oracle")]
         let after_templates = attempts
             .as_ref()
             .map(|_| summarize_stage(&tiles, rng.state()));
         place_terrain_features(&mut tiles, geometry, tuning, rng);
-        #[cfg(feature = "differential-trace")]
+        #[cfg(feature = "oracle")]
         let after_features = attempts
             .as_ref()
             .map(|_| summarize_stage(&tiles, rng.state()));
         #[allow(unused_variables)]
         let rotation_column = rotate_map_columns(&mut tiles);
-        #[cfg(feature = "differential-trace")]
+        #[cfg(feature = "oracle")]
         let after_rotation = attempts
             .as_ref()
             .map(|_| summarize_stage(&tiles, rng.state()));
@@ -478,7 +476,7 @@ fn generate_random_map_impl(
             tuning.region_seed_columns,
             rng,
         );
-        #[cfg(feature = "differential-trace")]
+        #[cfg(feature = "oracle")]
         let after_water_regions = attempts
             .as_ref()
             .map(|_| summarize_stage(&tiles, rng.state()));
@@ -497,12 +495,12 @@ fn generate_random_map_impl(
                 + 1
         );
         apply_scenario_keyword_override(&mut tiles, scenario_tag, rng);
-        #[cfg(feature = "differential-trace")]
+        #[cfg(feature = "oracle")]
         let after_keyword = attempts
             .as_ref()
             .map(|_| summarize_keyword_stage(&tiles, rng.state()));
         let (accepted, seed_candidate_tiles) = validate_seed_candidates(&tiles, geometry, rng);
-        #[cfg(feature = "differential-trace")]
+        #[cfg(feature = "oracle")]
         if let Some(attempts) = &mut attempts {
             attempts.push(RandomMapTerrainAttemptTrace {
                 coarse_generation: coarse_trace.expect("trace collection selects a coarse trace"),
@@ -541,7 +539,7 @@ fn generate_random_map_impl(
     }
 }
 
-#[cfg(feature = "differential-trace")]
+#[cfg(feature = "oracle")]
 fn summarize_stage(
     tiles: &[GeneratedTerrainTileScratch],
     map_lcg: u32,
@@ -549,7 +547,7 @@ fn summarize_stage(
     summarize_stage_with_water_ownership(tiles, map_lcg, true)
 }
 
-#[cfg(feature = "differential-trace")]
+#[cfg(feature = "oracle")]
 fn summarize_keyword_stage(
     tiles: &[GeneratedTerrainTileScratch],
     map_lcg: u32,
@@ -557,7 +555,7 @@ fn summarize_keyword_stage(
     summarize_stage_with_water_ownership(tiles, map_lcg, false)
 }
 
-#[cfg(feature = "differential-trace")]
+#[cfg(feature = "oracle")]
 fn summarize_stage_with_water_ownership(
     tiles: &[GeneratedTerrainTileScratch],
     map_lcg: u32,
@@ -1708,7 +1706,7 @@ mod tests {
         assert_eq!(random_setup_map_seed_state(-1, 0x1234_5678), u32::MAX);
     }
 
-    #[cfg(feature = "differential-trace")]
+    #[cfg(feature = "oracle")]
     #[test]
     fn trace_preserves_retail_stage_boundaries_when_requested() {
         let mut rng = RetailLcg::from_state(3_122_877_655);
