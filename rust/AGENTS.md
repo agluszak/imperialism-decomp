@@ -9,12 +9,16 @@ Rust-specific invariants.
   The `oracle` feature exposes substep facades and map-generation traces for C++
   integration tests; production gameplay must not enable it or call those APIs.
 - `imperialism-formats` owns retail file decoding and representation quirks.
-- `imperialism-app` is Bevy presentation, input, audio, and lifecycle.
+- `imperialism-app` is Bevy presentation, input, audio, movies, chrome, and lifecycle.
 - `imperialism-testkit` is process-isolated C++ oracle and semantic comparison support.
 
 Do not split the core into subsystem crates or introduce another authoritative state model
 without a concrete need. Keep domain types beside their behavior. Export a curated crate-root
 surface—do not reintroduce broad `state::*` or `production::*` globs or a prelude.
+
+Media playback lives in `imperialism-app::media`; retail movie/music/WAVE/chrome discovery lives
+on `RetailAssets`. Do not reconstruct MCI, DirectSound, VfW, CD devices, or a generic media
+framework.
 
 Port retail behavior, not the recovered C++ architecture. C++ class hierarchy, ownership, ABI,
 integer storage widths, sentinels, offsets, and control flow are evidence, not Rust design. Keep

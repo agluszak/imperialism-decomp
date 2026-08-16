@@ -8,7 +8,6 @@ mod game_shell;
 pub(crate) mod generated;
 mod hover_help;
 mod land_battle;
-pub(crate) mod linger;
 pub(crate) mod load_save;
 mod main_menu;
 mod newspaper;
@@ -24,9 +23,6 @@ mod technology;
 mod trade;
 mod transport;
 
-#[cfg(test)]
-pub(crate) mod test_support;
-
 pub(crate) use city::CityPlugin;
 pub(crate) use city_site::CitySitePlugin;
 pub(crate) use credits::CreditsPlugin;
@@ -39,7 +35,7 @@ pub(crate) use load_save::{LoadSavePlugin, SaveDirectory};
 pub(crate) use main_menu::MainMenuPlugin;
 pub(crate) use newspaper::NewspaperPlugin;
 pub(crate) use offer_sheet::OfferSheetPlugin;
-pub(crate) use preferences::PreferencesPlugin;
+pub(crate) use preferences::{GamePreferences, PreferencesPlugin};
 pub(crate) use query_floater::QueryFloaterPlugin;
 pub(crate) use random_setup::RandomSetupPlugin;
 pub(crate) use random_setup_map::MapPreviewPlugin;

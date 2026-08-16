@@ -4,8 +4,13 @@ use super::hover_help::{
     ui_string,
 };
 use super::query_floater::bind_query_floater_control;
-use super::retail::{RetailPictureSwap, RetailTag, RetailTree, RetailUiAssets};
-use crate::{AppState, ReturnTo};
+use super::retail::{
+    RetailPictureSwap, RetailTag, RetailUiAssets, find_descendant, try_find_descendant,
+};
+use crate::AppState;
+use crate::RetailAssetsResource;
+use crate::media::{RetailAudioHandles, play_cached_or_retail_sound};
+use bevy::audio::AudioSource;
 use bevy::picking::hover::DirectlyHovered;
 use bevy::prelude::*;
 use bevy::reflect::Is;
@@ -14,7 +19,7 @@ use bevy::ui_widgets::{
     Activate, Button, Checkbox, Slider, SliderOrientation, SliderPrecision, SliderRange,
     SliderValue, TrackClick, ValueChange, slider_self_update,
 };
-use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc};
+use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
 
 /// `g_anGamePreferenceIndexByRow`: which `preferenceValues` slot each opta..opte row displays.
 const PREFERENCE_INDEX_BY_ROW: [i16; 5] = [3, 2, 8, 10, 0];
@@ -40,6 +45,10 @@ const SOUND_PICTURE_BASE: i16 = 0x1038;
 const TACTICAL_BATTLE_ON_PICTURE: i16 = 4158;
 const TACTICAL_BATTLE_OFF_PICTURE: i16 = 4160;
 
+/// Screen restored when preferences close.
+#[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) struct PreferencesReturn(pub(crate) AppState);
+
 /// Retail `TSimMgr::preferenceValues[14]`.
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
 pub(crate) struct GamePreferences {
@@ -62,9 +71,14 @@ impl Default for GamePreferences {
 }
 
 impl GamePreferences {
-    /// Retail `preferenceValues[8]`. Nonzero (the 0x101 default) enables turn alerts.
-    pub(crate) fn turn_alerts_enabled(&self) -> bool {
-        self.values[8] != 0
+    /// Preference slot 2: DirectSound master percent, 0..=100.
+    pub(crate) fn sound_volume_percent(&self) -> i16 {
+        self.values[2]
+    }
+
+    /// Preference slot 3: CD/aux music scalar, 0..=255.
+    pub(crate) fn music_volume(&self) -> i16 {
+        self.values[3]
     }
 }
 
@@ -113,11 +127,8 @@ impl Plugin for PreferencesPlugin {
                 on_preference_checked::<Remove, Checked>.run_if(in_state(AppState::Preferences)),
             )
             .add_observer(on_preference_slider_change.run_if(in_state(AppState::Preferences)))
-            .add_observer(on_preferences_activate.run_if(in_state(AppState::Preferences)))
-            .add_systems(
-                OnExit(AppState::Preferences),
-                super::session::clear_return_to,
-            );
+            .add_observer(on_sound_slider_released.run_if(in_state(AppState::Preferences)))
+            .add_observer(on_preferences_activate.run_if(in_state(AppState::Preferences)));
     }
 }
 
@@ -131,14 +142,15 @@ fn spawn_preferences(mut commands: Commands) {
 fn bind_preferences(
     mut commands: Commands,
     root: Single<Entity, Added<PreferencesRoot>>,
-    tree: RetailTree,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
     mut nodes: Query<&mut Node>,
     prefs: Res<GamePreferences>,
     mut assets: RetailUiAssets,
 ) {
     let root = *root;
-    bind_query_floater_control(&mut commands, root, &tree);
-    let curs = tree.find(root, fourcc!("curs"));
+    bind_query_floater_control(&mut commands, root, &children, &tags);
+    let curs = find_descendant(root, fourcc!("curs"), &children, &tags);
     bind_hover_help_bar(
         &mut commands,
         &mut assets,
@@ -149,7 +161,8 @@ fn bind_preferences(
     bind_hover_help_texts(
         &mut commands,
         root,
-        &tree,
+        &children,
+        &tags,
         [
             (fourcc!("okay"), ui_string(&assets, 0x2743, 0x25)),
             (fourcc!("quer"), ui_string(&assets, 0x2730, 3)),
@@ -166,18 +179,19 @@ fn bind_preferences(
         .expect("retail preferences caption style");
     let color = TextColor(assets.palette_color(0x38));
 
-    let view = tree.view(root);
     for row in 0..5 {
-        let checkbox = view.try_find(CHECKBOX_TAGS[row]);
+        let checkbox = try_find_descendant(root, CHECKBOX_TAGS[row], &children, &tags);
         // Missing opta/optb: label-only row always uses the "on" caption.
         let caption_on = checkbox.is_none() || preference_row_is_on(&prefs, row);
-        commands.entity(view.find(LABEL_TAGS[row])).insert((
-            Text::new(preference_caption(&assets, row, caption_on)),
-            font.clone(),
-            layout,
-            line_height,
-            color,
-        ));
+        commands
+            .entity(find_descendant(root, LABEL_TAGS[row], &children, &tags))
+            .insert((
+                Text::new(preference_caption(&assets, row, caption_on)),
+                font.clone(),
+                layout,
+                line_height,
+                color,
+            ));
         let Some(checkbox) = checkbox else {
             continue;
         };
@@ -217,7 +231,7 @@ fn bind_preferences(
     bind_volume_slider(
         &mut commands,
         &mut assets,
-        tree.find(root, fourcc!("musi")),
+        find_descendant(root, fourcc!("musi"), &children, &tags),
         &nodes,
         MUSIC_PICTURE_BASE,
         3,
@@ -228,7 +242,7 @@ fn bind_preferences(
     bind_volume_slider(
         &mut commands,
         &mut assets,
-        tree.find(root, fourcc!("soun")),
+        find_descendant(root, fourcc!("soun"), &children, &tags),
         &nodes,
         SOUND_PICTURE_BASE,
         2,
@@ -238,7 +252,7 @@ fn bind_preferences(
     );
 
     commands
-        .entity(tree.find(root, fourcc!("okay")))
+        .entity(find_descendant(root, fourcc!("okay"), &children, &tags))
         .insert(PreferencesAction::Okay)
         .remove::<InteractionDisabled>();
 
@@ -256,7 +270,7 @@ fn bind_preferences(
         color: assets.palette_color(0x5c),
     };
     commands
-        .entity(tree.find(root, fourcc!("tpca")))
+        .entity(find_descendant(root, fourcc!("tpca"), &children, &tags))
         .insert((
             Text::new(ui_string(&assets, 0x2763, 0x18)),
             font,
@@ -265,8 +279,8 @@ fn bind_preferences(
             color,
         ))
         .remove::<InteractionDisabled>();
-    let yes = tree.find(root, fourcc!("yess"));
-    let no = tree.find(root, fourcc!("nooo"));
+    let yes = find_descendant(root, fourcc!("yess"), &children, &tags);
+    let no = find_descendant(root, fourcc!("nooo"), &children, &tags);
     commands.entity(yes).insert((
         Text::new(ui_string(&assets, 0x2763, 0x16)),
         radio_font.clone(),
@@ -288,7 +302,7 @@ fn bind_preferences(
         ))
         .remove::<Checked>();
     commands
-        .entity(tree.find(root, fourcc!("opca")))
+        .entity(find_descendant(root, fourcc!("opca"), &children, &tags))
         .remove::<InteractionDisabled>();
 }
 
@@ -491,9 +505,39 @@ fn on_preference_slider_change(
     let Ok(slider) = sliders.get(change.source) else {
         return;
     };
-    if slider.slot == 3 {
-        prefs.values[3] = change.value as i16;
+    match slider.slot {
+        3 => prefs.values[3] = change.value as i16,
+        2 if change.is_final => prefs.values[2] = change.value as i16,
+        _ => {}
     }
+}
+
+fn on_sound_slider_released(
+    change: On<ValueChange<f32>>,
+    sliders: Query<&PreferenceSlider>,
+    prefs: Res<GamePreferences>,
+    mut commands: Commands,
+    retail: Option<Res<RetailAssetsResource>>,
+    sources: Option<ResMut<Assets<AudioSource>>>,
+    handles: Option<ResMut<RetailAudioHandles>>,
+) {
+    let Ok(slider) = sliders.get(change.source) else {
+        return;
+    };
+    if slider.slot != 2 || !change.is_final {
+        return;
+    }
+    let (Some(mut sources), Some(mut handles)) = (sources, handles) else {
+        return;
+    };
+    play_cached_or_retail_sound(
+        &mut commands,
+        retail.as_ref().map(|assets| assets.assets()),
+        &mut sources,
+        &mut handles,
+        prefs.sound_volume_percent(),
+        SoundId::UI_CLICK,
+    );
 }
 
 #[allow(clippy::type_complexity)]
@@ -576,7 +620,7 @@ fn on_preferences_activate(
     rows: Query<(&PreferenceRow, Has<Checked>)>,
     sliders: Query<(&PreferenceSlider, &SliderValue)>,
     mut prefs: ResMut<GamePreferences>,
-    returning: Res<ReturnTo>,
+    returning: Res<PreferencesReturn>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
@@ -614,7 +658,7 @@ mod tests {
         app.add_plugins(MinimalPlugins)
             .add_plugins(bevy::state::app::StatesPlugin)
             .insert_state(AppState::Preferences)
-            .insert_resource(ReturnTo(AppState::StrategicMap))
+            .insert_resource(PreferencesReturn(AppState::StrategicMap))
             .init_resource::<GamePreferences>()
             .add_observer(on_preferences_activate);
         let root = app.world_mut().spawn(PreferencesRoot).id();
@@ -649,5 +693,39 @@ mod tests {
         let prefs = app.world().resource::<GamePreferences>();
         assert_eq!(prefs.values[2], 50);
         assert_eq!(prefs.values[3], 0);
+    }
+
+    #[test]
+    fn sound_slider_release_writes_preference_slot_2() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .init_resource::<GamePreferences>()
+            .add_observer(on_preference_slider_change);
+        let slider = app.world_mut().spawn(PreferenceSlider { slot: 2 }).id();
+        app.world_mut().commands().trigger(ValueChange {
+            source: slider,
+            value: 40.0_f32,
+            is_final: false,
+        });
+        app.world_mut().flush();
+        assert_eq!(
+            app.world()
+                .resource::<GamePreferences>()
+                .sound_volume_percent(),
+            100
+        );
+
+        app.world_mut().commands().trigger(ValueChange {
+            source: slider,
+            value: 40.0_f32,
+            is_final: true,
+        });
+        app.world_mut().flush();
+        assert_eq!(
+            app.world()
+                .resource::<GamePreferences>()
+                .sound_volume_percent(),
+            40
+        );
     }
 }
