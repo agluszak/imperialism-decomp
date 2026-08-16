@@ -547,7 +547,6 @@ mod tests {
             id: ShipId::new(id),
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
-            task_force: None,
             aggression: 0,
             nation: NationId::new(0),
             name: String::new(),
@@ -752,15 +751,16 @@ mod tests {
                 selected: true,
             }],
         });
-        state.ships[0].task_force = Some(TaskForceId::new(0));
-        state.ships[1].task_force = Some(TaskForceId::new(1));
 
         state.do_military_cleanup();
 
         assert_eq!(state.task_forces.len(), 1);
         assert_eq!(state.task_forces[0].order, TaskForceOrder::Patrol);
-        assert_eq!(state.ships[0].task_force, Some(TaskForceId::new(0)));
-        assert_eq!(state.ships[1].task_force, None);
+        assert_eq!(
+            state.task_force_of_ship(ShipId::new(0)),
+            Some(TaskForceId::new(0))
+        );
+        assert_eq!(state.task_force_of_ship(ShipId::new(1)), None);
     }
 
     fn attack_mission(nation: NationId, target: ProvinceId) -> MissionState {
@@ -874,7 +874,6 @@ mod tests {
                 target_zone: Some(OceanZoneId::new(0)),
                 resolved_port_zone: None,
                 selected_ship: None,
-                task_force: None,
                 state: 0,
                 required_equipage_bits: [0; 4],
                 ships: Vec::new(),

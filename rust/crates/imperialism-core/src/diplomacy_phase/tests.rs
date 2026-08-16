@@ -533,7 +533,6 @@ fn peace_offer_from_human_to_ai() -> GameState {
         id: ShipId::new(index),
         ship_type: ShipType::Frigate,
         location: OceanZoneId::new(0),
-        task_force: None,
         aggression: 0,
         nation: nation(1),
         name: String::new(),

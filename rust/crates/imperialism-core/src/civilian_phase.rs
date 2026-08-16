@@ -269,7 +269,7 @@ impl GameState {
             if ship.location != zone {
                 continue;
             }
-            let Some(task_force) = ship.task_force else {
+            let Some(task_force) = self.task_force_of_ship(ship.id) else {
                 continue;
             };
             let Some(task_force) = self.task_force(task_force) else {
@@ -505,13 +505,15 @@ mod tests {
             defeated: false,
             ingot_tile: -1,
             flagship: None,
-            ships: Vec::new(),
+            ships: vec![SelectedShip {
+                ship: ShipId::new(0),
+                selected: true,
+            }],
         });
         state.ships.push(ShipState {
             id: ShipId::new(0),
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
-            task_force: Some(TaskForceId::new(0)),
             aggression: 1,
             nation: hostile,
             name: String::new(),

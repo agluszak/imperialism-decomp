@@ -338,7 +338,6 @@ fn ship_states(navy: &LegacyNavyState) -> Vec<ShipState> {
             location: OceanZoneId::new(
                 u16::try_from(ship.zone_ordinal).expect("retail ship zone ordinal is non-negative"),
             ),
-            task_force: None,
             aggression: ship.aggression,
             nation: nation_id_from_retail_i16(ship.nation),
             name: ship.name.clone(),

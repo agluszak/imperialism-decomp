@@ -436,7 +436,6 @@ impl GameState {
                 id: ShipId::new(0),
                 ship_type,
                 location,
-                task_force: None,
                 aggression: 1,
                 nation: nation_id,
                 name: String::new(),

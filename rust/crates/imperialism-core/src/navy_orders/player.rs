@@ -277,7 +277,9 @@ impl GameState {
             .ships
             .iter()
             .filter(|ship| {
-                ship.location == location && ship.nation == nation && ship.task_force.is_none()
+                ship.location == location
+                    && ship.nation == nation
+                    && self.task_force_of_ship(ship.id).is_none()
             })
             .map(|ship| ship.id)
             .collect();
@@ -375,8 +377,10 @@ impl GameState {
             return Some(force);
         }
         let ship = self.ships.iter().find_map(|ship| {
-            (ship.location == zone && ship.nation == nation && ship.task_force.is_none())
-                .then_some(ship.id)
+            (ship.location == zone
+                && ship.nation == nation
+                && self.task_force_of_ship(ship.id).is_none())
+            .then_some(ship.id)
         })?;
         let force = self.create_task_force(zone, nation, ship);
         self.fill_task_force_from_loose_ships(force, true);
@@ -669,7 +673,7 @@ impl GameState {
         self.ships.iter().any(|ship| {
             ship.location == zone
                 && ship.nation == nation
-                && ship.task_force.is_none()
+                && self.task_force_of_ship(ship.id).is_none()
                 && ship.selection == 0
         })
     }
@@ -692,7 +696,9 @@ impl GameState {
             .ships
             .iter()
             .filter(|ship| {
-                ship.location == location && ship.nation == nation && ship.task_force.is_none()
+                ship.location == location
+                    && ship.nation == nation
+                    && self.task_force_of_ship(ship.id).is_none()
             })
             .map(|ship| ship.id)
             .collect();

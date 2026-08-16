@@ -7,6 +7,36 @@ const MILITARY_MAINTENANCE_MULTIPLIER: i32 = 25;
 const NAVY_ARMS_BY_SHIP_TYPE: ShipTypeTable<i32> =
     ShipTypeTable::from_array([0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18]);
 
+/// Shared runtime identity allocator for ships and task forces.
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub(crate) struct NavyIdAllocator(usize);
+
+impl NavyIdAllocator {
+    pub(crate) fn from_existing(
+        ships: impl Iterator<Item = ShipId>,
+        forces: impl Iterator<Item = TaskForceId>,
+    ) -> Self {
+        Self(
+            ships
+                .map(ShipId::get)
+                .chain(forces.map(TaskForceId::get))
+                .max()
+                .unwrap_or(0),
+        )
+    }
+
+    pub(crate) fn ship(&mut self) -> ShipId {
+        self.0 += 1;
+        ShipId::new(self.0)
+    }
+
+    pub(crate) fn task_force(&mut self) -> TaskForceId {
+        self.0 += 1;
+        TaskForceId::new(self.0)
+    }
+}
+
 impl GameState {
     pub(crate) fn army_unit_power(&self, nation: NationId) -> i32 {
         self.military_units
@@ -94,16 +124,7 @@ impl GameState {
     }
 
     pub(crate) fn allocate_ship_id(&mut self) -> ShipId {
-        let next_existing = self
-            .ships
-            .iter()
-            .map(|ship| ship.id.get())
-            .max()
-            .map_or(0, |id| id + 1);
-        self.next_ship_id = self.next_ship_id.max(next_existing);
-        let id = ShipId::new(self.next_ship_id);
-        self.next_ship_id += 1;
-        id
+        self.navy_ids.ship()
     }
 
     pub(crate) fn ship_index(&self, id: ShipId) -> Option<usize> {
@@ -119,16 +140,7 @@ impl GameState {
     }
 
     pub(crate) fn allocate_task_force_id(&mut self) -> TaskForceId {
-        let next_existing = self
-            .task_forces
-            .iter()
-            .map(|force| force.id.get())
-            .max()
-            .map_or(0, |id| id + 1);
-        self.next_task_force_id = self.next_task_force_id.max(next_existing);
-        let id = TaskForceId::new(self.next_task_force_id);
-        self.next_task_force_id += 1;
-        id
+        self.navy_ids.task_force()
     }
 
     pub(crate) fn task_force_index(&self, id: TaskForceId) -> Option<usize> {
@@ -138,6 +150,13 @@ impl GameState {
     pub fn task_force(&self, id: TaskForceId) -> Option<&TaskForceState> {
         self.task_force_index(id)
             .map(|index| &self.task_forces[index])
+    }
+
+    pub(crate) fn task_force_of_ship(&self, ship: ShipId) -> Option<TaskForceId> {
+        self.task_forces
+            .iter()
+            .find(|force| force.ships.iter().any(|entry| entry.ship == ship))
+            .map(|force| force.id)
     }
 
     pub(crate) fn task_force_mut(&mut self, id: TaskForceId) -> Option<&mut TaskForceState> {
@@ -588,7 +607,6 @@ pub struct ShipState {
     pub id: ShipId,
     pub ship_type: ShipType,
     pub location: OceanZoneId,
-    pub task_force: Option<TaskForceId>,
     pub aggression: i32,
     pub nation: NationId,
     pub name: String,
