@@ -65,6 +65,7 @@ impl Plugin for CityPlugin {
                 sync_city_summary,
                 sync_city_hover_title,
                 sync_city_buildings,
+                sync_city_building_action_visibility,
                 sync_city_order_quantities,
                 sync_industry_texts,
                 sync_industry_indicators,

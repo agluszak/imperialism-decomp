@@ -112,6 +112,7 @@ pub(in crate::ui::city) fn bind_training_dialog(
             fourcc!("rght"),
             fourcc!("move"),
             1,
+            None,
         );
     }
     let paper_one = tree.find(root, fourcc!("pap1"));
@@ -182,6 +183,7 @@ pub(in crate::ui::city) fn configure_armory_dialog(
             fourcc!("plus"),
             fourcc!("numb"),
             1,
+            Some(root),
         );
         let button = tree.find(root, row.button_tag);
         let category = row.military_category();
@@ -194,7 +196,10 @@ pub(in crate::ui::city) fn configure_armory_dialog(
             .expect("retail Armory selected row picture");
         let mut button = commands.entity(button);
         button.insert((
-            CityRowChoice(row.binding.order),
+            CityRowChoice {
+                order: row.binding.order,
+                selection: root,
+            },
             ImageNode::new(idle.clone()),
             RetailPictureSwap { idle, active },
         ));

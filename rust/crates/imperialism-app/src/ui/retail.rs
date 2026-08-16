@@ -265,6 +265,29 @@ pub struct RetailUiAssets<'w> {
     font_handles: ResMut<'w, RetailFontHandles>,
 }
 
+pub fn apply_index_transparency(image: &mut Image, indexed: &IndexedPicture, index: u8) -> bool {
+    let width = image.width() as usize;
+    let height = image.height() as usize;
+    let Some(pixels) = image.data.as_mut() else {
+        return false;
+    };
+    if width == 0
+        || height == 0
+        || indexed.width as usize != width
+        || indexed.height as usize != height
+        || pixels.len() != width * height * 4
+        || indexed.pixels.len() != width * height
+    {
+        return false;
+    }
+    for (pixel, &palette_index) in pixels.chunks_exact_mut(4).zip(&indexed.pixels) {
+        if palette_index == index {
+            pixel[3] = 0;
+        }
+    }
+    true
+}
+
 impl RetailUiAssets<'_> {
     pub fn default_dib_palette(&self) -> &DibPalette {
         self.retail_assets.assets().default_dib_palette()
@@ -299,19 +322,6 @@ impl RetailUiAssets<'_> {
         )
     }
 
-    pub fn with_picture_image_mut<R>(
-        &mut self,
-        picture_id: PictureId,
-        f: impl FnOnce(&mut Image) -> R,
-    ) -> Result<R, RetailPictureError> {
-        let handle = self.picture(picture_id)?;
-        let mut image = self
-            .images
-            .get_mut(&handle)
-            .expect("picture handle was just resolved");
-        Ok(f(&mut image))
-    }
-
     pub fn transformed_picture(
         &mut self,
         picture_id: PictureId,
@@ -336,14 +346,7 @@ impl RetailUiAssets<'_> {
             .indexed_picture(picture_id)
             .expect("retail picture must have indexed pixels");
         self.transformed_picture(picture_id, move |image| {
-            let Some(pixels) = image.data.as_mut() else {
-                return;
-            };
-            for (pixel, &index) in pixels.chunks_exact_mut(4).zip(&indexed.pixels) {
-                if index == palette_index {
-                    pixel[3] = 0;
-                }
-            }
+            apply_index_transparency(image, &indexed, palette_index);
         })
     }
 

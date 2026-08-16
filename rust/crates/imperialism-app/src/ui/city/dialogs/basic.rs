@@ -178,6 +178,7 @@ pub(in crate::ui::city) fn bind_rail_dialog(
         fourcc!("rght"),
         fourcc!("move"),
         step,
+        None,
     );
 }
 

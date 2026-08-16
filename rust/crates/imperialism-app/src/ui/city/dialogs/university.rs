@@ -165,13 +165,17 @@ pub(in crate::ui::city) fn bind_university_dialog(
             fourcc!("plus"),
             fourcc!("numb"),
             1,
+            Some(root),
         );
         let row_available = available[kind];
         bound.set_available(commands, row_available);
         {
             let mut button_commands = commands.entity(button);
             button_commands.insert((
-                CityRowChoice(spec.binding.order),
+                CityRowChoice {
+                    order: spec.binding.order,
+                    selection: root,
+                },
                 UniversityRowAssets {
                     unit_name: row_text.unit_name,
                     description: row_text.description,
@@ -390,7 +394,7 @@ pub(in crate::ui::city) fn sync_university_details(
     let city = &major.city;
     let row = rows
         .iter()
-        .find(|(choice, _)| choice.0 == selection.order)
+        .find(|(choice, _)| choice.order == selection.order)
         .map(|(_, assets)| assets)
         .expect("University selection has a bound retail row");
     let spec = civilian_recruitment_spec(kind);
