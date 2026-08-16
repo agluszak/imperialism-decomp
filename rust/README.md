@@ -6,8 +6,11 @@ reconstruction in `../decomp/`. Run Rust commands from this directory.
 - `imperialism-core` owns deterministic game state and direct typed rule operations. It has no Bevy
   dependency and exposes non-state effects only when a current consumer requires them; there is no
   universal command bus.
-- `imperialism-formats` parses retail files and accesses retail assets directly.
-- `imperialism-app` is the only Bevy-dependent crate and owns presentation and lifecycle.
+- `imperialism-formats` parses retail files and accesses retail assets directly, including movie
+  paths, GOG music-track files, WAVE resources, and the host-frame chrome bitmap.
+- `imperialism-app` is the only Bevy-dependent crate and owns presentation, lifecycle, and media
+  playback. WAVE effects use Bevy audio; GStreamer stays behind `media::MovieBackend`. There is no
+  MCI/DirectSound/VfW reconstruction. See [docs/media.md](docs/media.md).
 - `imperialism-testkit` reads named semantic captures and runs process-isolated differential
   checks.
 
@@ -28,6 +31,15 @@ or narrow domain error), and broken internal invariants (structure, assertion, o
 ```sh
 cargo test --workspace
 cargo clippy --workspace --all-targets --all-features -- -D warnings
+```
+
+Movie decode needs the GStreamer 1.24 development packages (`libgstreamer1.0-dev`,
+`libgstreamer-plugins-base1.0-dev`) plus `gstreamer1.0-libav` for Cinepak. GOG movie/music
+inventory tests stay ignored unless `IMPERIALISM_RETAIL_DIR` points at an English install:
+
+```sh
+IMPERIALISM_RETAIL_DIR=/path/to/Imperialism cargo test -p imperialism-formats inventories_gog -- --ignored
+IMPERIALISM_RETAIL_DIR=/path/to/Imperialism cargo test -p imperialism-app decodes_untouched -- --ignored
 ```
 
 Native-oracle differential tests are ignored by default (they need Wine/`just native-oracle`):
@@ -73,9 +85,7 @@ process-derived and must not be replaced with a fixture-wide default.
 
 ## Recovered native UI
 
-The existing UI generator emits deterministic native Bevy scenes into
-`imperialism-app/src/ui/generated/` by screen family, with data tables in `common.rs`.
-Callers still spawn `generated::diplo_2008()` and the other factory names:
+The existing UI generator emits deterministic native Bevy scenes into `imperialism-app`:
 
 ```sh
 (cd ../decomp && uv run python -m tools.ui_codegen --check)

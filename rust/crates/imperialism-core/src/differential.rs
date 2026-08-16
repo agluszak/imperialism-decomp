@@ -1,12 +1,20 @@
-//! Retail-substep entry points used by C++ native-case integration tests.
+//! Retail-substep entry points and map-generation traces for C++ integration tests.
 //!
 //! These are not the gameplay API. Call `GameState::do_military`,
 //! `do_military_cleanup`, `do_combat_moves`, `resume_after_land_battle`,
 //! `pay_for_military`, and `finish_player_orders` from production code.
 
 use crate::military_cleanup::NationOrderPriorityMetrics as Metrics;
-use crate::*;
+use crate::{CombatMovesContinuation, GameState, MajorNationId};
 use serde::{Deserialize, Serialize};
+
+pub use crate::random_map::{
+    CoarseMap, CoarseMapAttempt, CoarseMapGrid, CoarseMapTrace, trace_coarse_random_map,
+};
+pub use crate::random_map_terrain::{
+    RandomMapTerrainAttemptTrace, RandomMapTerrainStageTrace, RandomMapTerrainTrace,
+    trace_random_map_terrain,
+};
 
 pub fn apply_military_orders(state: &mut GameState) {
     state.apply_military_orders();

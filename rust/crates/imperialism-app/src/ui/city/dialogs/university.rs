@@ -62,8 +62,7 @@ pub(in crate::ui::city) fn configure_university_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     state: &GameState,
 ) {
     let nation = MajorNationId::from_nation(state.turn().active_nation)
@@ -97,18 +96,19 @@ pub(in crate::ui::city) fn configure_university_dialog(
             .university
             .available,
         rows: UNIVERSITY_ROWS.map(|row| {
+            let kind = row.civilian_kind();
             UniversityRowText {
                 // Retail `TUniversityView::SetUnit` pre-increments the 0-based
                 // recruitment category once and reuses that 1-based index for
                 // both `0x2718` (name) and `0x2751` (description).
                 unit_name: assets
-                    .string(0x2718, i16::from(row.kind as u8) + 1)
+                    .string(0x2718, i16::from(kind as u8) + 1)
                     .expect("retail civilian name"),
                 description: assets
-                    .string(0x2751, i16::from(row.kind as u8) + 1)
+                    .string(0x2751, i16::from(kind as u8) + 1)
                     .expect("retail civilian description"),
                 preview: assets
-                    .transparent_picture(PictureId::new(university_preview_picture(row.kind)), 0x10)
+                    .transparent_picture(PictureId::new(university_preview_picture(kind)), 0x10)
                     .expect("retail University preview picture must load"),
             }
         }),
@@ -129,14 +129,13 @@ pub(in crate::ui::city) fn configure_university_dialog(
         normal_color: assets.palette_color(0xd2),
         warning_color: assets.palette_color(0xcb),
     };
-    bind_university_dialog(commands, root, children, tags, data);
+    bind_university_dialog(commands, root, tree, data);
 }
 
 pub(in crate::ui::city) fn bind_university_dialog(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     data: UniversityDialogData,
 ) {
     let UniversityDialogData {
@@ -153,39 +152,40 @@ pub(in crate::ui::city) fn bind_university_dialog(
         normal_color,
         warning_color,
     } = data;
-    bind_city_dialog_root(commands, root, children, tags, CityFacilitySlot::University);
+    bind_city_dialog_root(commands, root, tree, CityFacilitySlot::University);
     for (spec, row_text) in UNIVERSITY_ROWS.iter().zip(rows) {
-        let kind = spec.kind;
-        let binding = spec.binding();
-        let button = find_descendant(root, spec.button_tag, children, tags);
-        let row = find_descendant(root, spec.order_tag, children, tags);
-        let minus = find_descendant(row, fourcc!("minu"), children, tags);
-        let plus = find_descendant(row, fourcc!("plus"), children, tags);
-        let quantity = find_descendant(row, fourcc!("numb"), children, tags);
-        commands.entity(minus).insert(CityOrderAdjust {
-            order: binding.order,
-            delta: -1,
-        });
-        commands.entity(plus).insert(CityOrderAdjust {
-            order: binding.order,
-            delta: 1,
-        });
+        let kind = spec.civilian_kind();
+        let button = tree.find(root, spec.button_tag);
+        let bound = bind_city_order_row(
+            commands,
+            root,
+            tree,
+            spec.binding,
+            fourcc!("minu"),
+            fourcc!("plus"),
+            fourcc!("numb"),
+            1,
+            Some(root),
+        );
         let row_available = available[kind];
-        let visibility = if row_available {
-            Visibility::Visible
-        } else {
-            Visibility::Hidden
-        };
+        bound.set_available(commands, row_available);
         {
             let mut button_commands = commands.entity(button);
             button_commands.insert((
-                CityRowChoice(CityOrderId::CivilianRecruit(kind)),
+                CityRowChoice {
+                    order: spec.binding.order,
+                    selection: root,
+                },
                 UniversityRowAssets {
                     unit_name: row_text.unit_name,
                     description: row_text.description,
                     preview: row_text.preview,
                 },
-                visibility,
+                if row_available {
+                    Visibility::Visible
+                } else {
+                    Visibility::Hidden
+                },
             ));
             if row_available {
                 button_commands.remove::<InteractionDisabled>();
@@ -193,24 +193,14 @@ pub(in crate::ui::city) fn bind_university_dialog(
                 button_commands.insert(InteractionDisabled);
             }
         }
-        commands.entity(row).insert(visibility);
-        for control in [minus, plus] {
-            if row_available {
-                commands.entity(control).remove::<InteractionDisabled>();
-            } else {
-                commands.entity(control).insert(InteractionDisabled);
-            }
-        }
-        commands.entity(quantity).insert((
-            Text::new(""),
-            CityOrderQuantity(binding.order),
+        commands.entity(bound.quantity).insert((
             InteractionDisabled,
             detail_font.clone(),
             detail_line_height,
             TextColor(normal_color),
         ));
     }
-    let dlog = find_descendant(root, fourcc!("DLOG"), children, tags);
+    let dlog = tree.find(root, fourcc!("DLOG"));
     commands.spawn((
         Node {
             position_type: PositionType::Absolute,
@@ -274,9 +264,9 @@ pub(in crate::ui::city) fn bind_university_dialog(
         }
     }
     let tier_labels = [
-        find_descendant(root, fourcc!("fix2"), children, tags),
-        find_descendant(root, fourcc!("fix3"), children, tags),
-        find_descendant(root, fourcc!("fix4"), children, tags),
+        tree.find(root, fourcc!("fix2")),
+        tree.find(root, fourcc!("fix3")),
+        tree.find(root, fourcc!("fix4")),
     ];
     for (index, (entity, text)) in tier_labels.into_iter().zip(tier_label_texts).enumerate() {
         commands.entity(entity).insert((
@@ -294,7 +284,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
                       font: TextFont,
                       line_height: LineHeight,
                       display: UniversityDisplay| {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         commands.entity(entity).insert((
             Text::new(""),
             font,
@@ -359,12 +349,12 @@ pub(in crate::ui::city) fn bind_university_dialog(
         detail_line_height,
         UniversityDisplay::Treasury,
     );
-    let title = find_descendant(root, fourcc!("titl"), children, tags);
+    let title = tree.find(root, fourcc!("titl"));
     commands
         .entity(title)
         .insert((title_font, title_line_height, TextColor(normal_color)));
     for tag in [fourcc!("fix0"), fourcc!("fix1")] {
-        let fixed = find_descendant(root, tag, children, tags);
+        let fixed = tree.find(root, tag);
         commands.entity(fixed).insert((
             detail_font.clone(),
             detail_line_height,
@@ -399,12 +389,12 @@ pub(in crate::ui::city) fn sync_university_details(
     let CityOrderId::CivilianRecruit(kind) = selection.order else {
         return;
     };
-    let nation = city_active_nation(&session);
+    let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let city = &major.city;
     let row = rows
         .iter()
-        .find(|(choice, _)| choice.0 == selection.order)
+        .find(|(choice, _)| choice.order == selection.order)
         .map(|(_, assets)| assets)
         .expect("University selection has a bound retail row");
     let spec = civilian_recruitment_spec(kind);

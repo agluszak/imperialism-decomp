@@ -52,6 +52,7 @@ impl GameState {
     }
 
     /// Retail `TAutoGreatPower::MoveArmy` / mission `GiveOrders`.
+    #[cfg(feature = "oracle")]
     pub(crate) fn do_army_movement(&mut self, nation: MajorNationId) {
         self.give_auto_great_power_army_orders(nation.nation());
     }

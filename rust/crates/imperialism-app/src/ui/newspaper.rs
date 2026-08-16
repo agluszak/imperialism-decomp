@@ -1,7 +1,7 @@
 use super::fill_brackets;
 use super::generated;
 use super::hover_help::get_string;
-use super::retail::{RetailTag, RetailUiAssets, find_descendant};
+use super::retail::{RetailTree, RetailUiAssets};
 use super::session::{GameSession, apply_turn_stop};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
@@ -53,39 +53,32 @@ fn spawn_newspaper(mut commands: Commands) {
 fn bind_newspaper(
     mut commands: Commands,
     root: Single<Entity, Added<NewspaperRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
     retail: Res<RetailAssetsResource>,
 ) {
     let root = *root;
-    bind_newspaper_chrome(&mut commands, root, &children, &tags);
+    bind_newspaper_chrome(&mut commands, root, &tree);
     fill_newspaper_stories(
         &mut commands,
         &mut assets,
         root,
-        &children,
-        &tags,
+        &tree,
         &session.game,
         retail.assets().news_table(),
     );
     commands
-        .entity(find_descendant(root, fourcc!("end "), &children, &tags))
+        .entity(tree.find(root, fourcc!("end ")))
         .insert((NewspaperAction, ActivateOnPress));
 }
 
-fn bind_newspaper_chrome(
-    commands: &mut Commands,
-    root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-) {
+fn bind_newspaper_chrome(commands: &mut Commands, root: Entity, tree: &RetailTree) {
     commands
-        .entity(find_descendant(root, fourcc!("date"), children, tags))
+        .entity(tree.find(root, fourcc!("date")))
         .insert((NewspaperDisplay::Date, Text::default()));
     commands
-        .entity(find_descendant(root, fourcc!("spec"), children, tags))
+        .entity(tree.find(root, fourcc!("spec")))
         .insert((NewspaperDisplay::Spec, Text::default()));
 }
 
@@ -138,8 +131,7 @@ fn fill_newspaper_stories(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     state: &GameState,
     news: &NewsTable,
 ) {
@@ -148,7 +140,7 @@ fn fill_newspaper_stories(
     let Some(page) = state.news().pages[nation].as_ref() else {
         return;
     };
-    let main = find_descendant(root, fourcc!("main"), children, tags);
+    let main = tree.find(root, fourcc!("main"));
     let (feature_font, feature_layout, feature_line, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,

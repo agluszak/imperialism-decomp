@@ -6,24 +6,19 @@ Rust-specific invariants.
 ## Architecture
 
 - `imperialism-core` owns deterministic gameplay state and rules. No Bevy.
+  The `oracle` feature exposes substep facades and map-generation traces for C++
+  integration tests; production gameplay must not enable it or call those APIs.
 - `imperialism-formats` owns retail file decoding and representation quirks.
-- `imperialism-app` is Bevy presentation, input, audio, and lifecycle.
+- `imperialism-app` is Bevy presentation, input, audio, movies, chrome, and lifecycle.
 - `imperialism-testkit` is process-isolated C++ oracle and semantic comparison support.
 
 Do not split the core into subsystem crates or introduce another authoritative state model
 without a concrete need. Keep domain types beside their behavior. Export a curated crate-root
 surface—do not reintroduce broad `state::*` or `production::*` globs or a prelude.
 
-Split a module when it owns multiple concepts; do not split a recovered algorithm merely because
-it is long. In the app, generic political-map preview rendering lives in `ui/map_preview.rs`,
-random-setup coat/flag/click behavior stays in `ui/random_setup_map.rs`, the load/save screen
-lives under `ui/load_save/`, the strategic-map flag menu is `ui/flag_menu.rs`, and diplomacy is
-split under `ui/diplomacy/` (`mod`, `panels`, `map`, `prompts`). Generated UI lives under
-`ui/generated/` by screen family, with data tables in `common.rs`; change the generator, not the
-checked-in files. Callers still use `generated::diplo_2008()`. In formats, keep binary parse/write
-linear with the serialized layout; keep GameState conversion under `legacy_save/convert/` by
-domain rather than conversion direction. In core, random-map terrain is split by pipeline stage
-under `random_map_terrain/`, and navy orders split execution vs mission assessment.
+Media playback lives in `imperialism-app::media`; retail movie/music/WAVE/chrome discovery lives
+on `RetailAssets`. Do not reconstruct MCI, DirectSound, VfW, CD devices, or a generic media
+framework.
 
 Port retail behavior, not the recovered C++ architecture. C++ class hierarchy, ownership, ABI,
 integer storage widths, sentinels, offsets, and control flow are evidence, not Rust design. Keep

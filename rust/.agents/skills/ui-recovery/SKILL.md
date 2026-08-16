@@ -11,9 +11,8 @@ Run Rust work from `rust/` and generator work from `../decomp/`.
    bindings, and platform-specific evidence.
 2. Change the committed Mac View IR or a narrowly declared Windows delta in `../decomp/`; do not
    hand-author a parallel Bevy screen description.
-3. Run the decomp UI generator check and regenerate `imperialism-app/src/ui/generated/` (screen-family
-   modules plus `common.rs` tables). Do not hand-edit those files or collapse them back into one
-   `generated.rs`.
+3. Run the decomp UI generator check and regenerate the checked-in native Rust source through its
+   explicit sibling output path.
 4. Emit code-defined BSN containing native Bevy components and `Children` in `imperialism-app`.
    Reuse the small handwritten retail scene functions/templates for geometry, pictures, and fonts;
    do not generate commands, asset-cache access, resource-node locals, or a generic scene component.

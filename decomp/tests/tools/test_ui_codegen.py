@@ -8,13 +8,13 @@ from pathlib import Path
 
 from tools.source_model import build_model
 from tools.ui_codegen import (
+    RUST_UI_PATH,
     load_recipes,
     load_text_resources,
     load_ui_views,
     load_windows_views,
     render_factory,
     render_rust_ui,
-    rust_ui_is_current,
     validate,
     write_generated,
 )
@@ -72,10 +72,34 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("RegisterUiResourceEntry", second_text)
 
     def test_generated_rust_ui_is_current(self) -> None:
-        self.assertTrue(
-            rust_ui_is_current(
-                REPO_ROOT, self.recipes, self.views, self.text_resources
-            )
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        self.assertEqual(
+            rendered,
+            (REPO_ROOT / RUST_UI_PATH).read_text(encoding="utf-8"),
+        )
+
+    def test_generated_city_dialog_controls_use_recovered_tags(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        self.assertIn("pub fn spawn_city_dialog(", rendered)
+        self.assertIn(
+            'CityFacilitySlot::TextileMill => commands.spawn_scene(citydlog_9200()).id()',
+            rendered,
+        )
+        self.assertIn(
+            'CityFacilitySlot::University => commands.spawn_scene(univ_9210()).id()',
+            rendered,
+        )
+        self.assertIn(
+            '(fourcc!("clu0"), fourcc!("civ0"))',
+            rendered[rendered.index("ARMORY_ROW_CONTROLS") :],
+        )
+        self.assertIn(
+            '(fourcc!("clu8"), fourcc!("civ8"))',
+            rendered[rendered.index("UNIVERSITY_ROW_CONTROLS") :],
         )
 
     def test_armory_unit_name_uses_the_windows_runtime_style(self) -> None:

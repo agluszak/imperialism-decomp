@@ -44,20 +44,13 @@ pub(crate) fn item_limit_from_fields(
         }
     };
 
-    let mut constraint = ProductionConstraint::Capacity;
-    let mut limit = production_limit;
-    if workforce_limit < limit {
-        constraint = ProductionConstraint::Workforce;
-        limit = workforce_limit;
-    }
-    if resource_limit < limit {
-        constraint = ProductionConstraint::Resources;
-        limit = resource_limit;
-    }
-    OrderLimit {
-        maximum: limit,
-        constraint,
-    }
+    let mut limit = OrderLimit {
+        maximum: production_limit,
+        constraint: ProductionConstraint::Capacity,
+    };
+    limit.min_with(workforce_limit, ProductionConstraint::Workforce);
+    limit.min_with(resource_limit, ProductionConstraint::Resources);
+    limit
 }
 
 pub(crate) fn set_item_quantity(
@@ -69,13 +62,10 @@ pub(crate) fn set_item_quantity(
     limit: OrderLimit,
     quantity: i16,
 ) -> bool {
-    let delta = quantity - state.progress.quantity;
-    state.progress.limiting_constraint = limit.constraint;
-    if quantity > limit.maximum || quantity < 0 {
+    let Some(delta) = state.progress.try_set(limit, quantity) else {
         return false;
-    }
+    };
 
-    state.progress.quantity = quantity;
     state.requested_quantity = quantity;
     match item.inputs() {
         ItemInputs::Double(primary) => {

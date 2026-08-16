@@ -1,5 +1,5 @@
 use super::PROVINCE_COUNT;
-use super::convert::*;
+use super::conversions::*;
 use super::model::*;
 use super::parse::*;
 use super::*;

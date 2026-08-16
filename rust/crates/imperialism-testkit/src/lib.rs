@@ -6,15 +6,11 @@ mod runtime_capture;
 pub use differential::{assert_game_state_eq, compare_native, load_save_backed_state, run_native};
 use imperialism_core::{
     Difficulty, MajorNationId, MapTopology, RetailLcg,
-    differential_trace::{
+    differential::{
         CoarseMapTrace, RandomMapTerrainTrace, trace_coarse_random_map, trace_random_map_terrain,
     },
 };
-pub use runtime_capture::{
-    EvidenceKind, RuntimeCaptureError, RuntimeResultExpectations, RuntimeRun,
-    ValidatedRuntimeResult, decode_runtime_result, read_runtime_result, run_retail_fixture_result,
-    run_self_consistency_result,
-};
+pub use runtime_capture::{RuntimeRun, run_runtime};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
@@ -67,7 +63,7 @@ pub fn generate_and_compare_terrain_capture(
 
 /// Replay a catalogued random-map runtime scenario and compare its terrain capture.
 pub fn compare_map_generation_terrain(scenario: &str) -> anyhow::Result<()> {
-    let runtime = run_self_consistency_result(scenario, &["random_map_terrain"])?;
+    let runtime = run_runtime(scenario)?;
     let capture: RandomMapTerrainCapture = runtime.capture("random_map_terrain")?;
     generate_and_compare_terrain_capture(&capture).map_err(|difference| {
         anyhow::anyhow!(

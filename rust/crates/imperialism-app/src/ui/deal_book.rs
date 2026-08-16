@@ -4,9 +4,9 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::bind_game_status_display;
 use super::generated;
-use super::retail::{RetailTag, find_descendant};
-use super::session::apply_turn_stop;
-use crate::AppState;
+use super::retail::RetailTree;
+use super::session::{apply_turn_stop, clear_return_to};
+use crate::{AppState, ReturnTo};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
@@ -98,9 +98,6 @@ struct DealBookFonts {
 #[derive(Component)]
 struct DealBookRoot;
 
-#[derive(Resource)]
-pub(crate) struct DealBookReturn(pub(crate) AppState);
-
 #[derive(Component)]
 struct DealBookScreen {
     mode: DealBookMode,
@@ -118,7 +115,7 @@ impl Plugin for DealBookPlugin {
             OnEnter(AppState::DealBook),
             (spawn_deal_book, bind_deal_book).chain(),
         )
-        .add_systems(OnExit(AppState::DealBook), clear_deal_book_return)
+        .add_systems(OnExit(AppState::DealBook), clear_return_to)
         .add_systems(
             Update,
             (hover_deal_book_tabs, sync_deal_book)
@@ -138,8 +135,7 @@ fn spawn_deal_book(mut commands: Commands) {
 fn bind_deal_book(
     mut commands: Commands,
     root: Single<Entity, Added<DealBookRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
@@ -199,7 +195,7 @@ fn bind_deal_book(
         color: Color::BLACK,
     };
 
-    let tabs = find_descendant(root, fourcc!("tabs"), &children, &tags);
+    let tabs = tree.find(root, fourcc!("tabs"));
     commands
         .entity(tabs)
         .insert((
@@ -228,20 +224,20 @@ fn bind_deal_book(
         ChildOf(tabs),
     ));
     commands
-        .entity(find_descendant(root, fourcc!("end "), &children, &tags))
+        .entity(tree.find(root, fourcc!("end ")))
         .insert((DealBookClose, ActivateOnPress))
         .remove::<InteractionDisabled>()
         .observe(on_deal_book_close);
     commands
-        .entity(find_descendant(root, fourcc!("quer"), &children, &tags))
+        .entity(tree.find(root, fourcc!("quer")))
         .insert(InteractionDisabled);
-    bind_game_status_display(&mut commands, &mut assets, root, &children, &tags);
+    bind_game_status_display(&mut commands, &mut assets, root, &tree);
     commands
-        .entity(find_descendant(root, fourcc!("mark"), &children, &tags))
+        .entity(tree.find(root, fourcc!("mark")))
         .insert((DealBookHistory, ActivateOnPress))
         .observe(on_deal_book_history);
     commands
-        .entity(find_descendant(root, fourcc!("lcor"), &children, &tags))
+        .entity(tree.find(root, fourcc!("lcor")))
         .insert((
             UiButton,
             DealBookPageButton::Previous,
@@ -251,7 +247,7 @@ fn bind_deal_book(
         ))
         .observe(on_deal_book_page);
     commands
-        .entity(find_descendant(root, fourcc!("rcor"), &children, &tags))
+        .entity(tree.find(root, fourcc!("rcor")))
         .insert((
             UiButton,
             DealBookPageButton::Next,
@@ -261,25 +257,25 @@ fn bind_deal_book(
         ))
         .observe(on_deal_book_page);
     commands
-        .entity(find_descendant(root, fourcc!("main"), &children, &tags))
+        .entity(tree.find(root, fourcc!("main")))
         .insert(DealBookBackground);
     commands
-        .entity(find_descendant(root, fourcc!("sold"), &children, &tags))
+        .entity(tree.find(root, fourcc!("sold")))
         .insert(DealBookHost::Sold);
     commands
-        .entity(find_descendant(root, fourcc!("boug"), &children, &tags))
+        .entity(tree.find(root, fourcc!("boug")))
         .insert(DealBookHost::Bought);
     commands
-        .entity(find_descendant(root, fourcc!("tsol"), &children, &tags))
+        .entity(tree.find(root, fourcc!("tsol")))
         .insert(DealBookHost::SoldByCategory);
     commands
-        .entity(find_descendant(root, fourcc!("tbou"), &children, &tags))
+        .entity(tree.find(root, fourcc!("tbou")))
         .insert(DealBookHost::BoughtByCategory);
     commands
-        .entity(find_descendant(root, fourcc!("titL"), &children, &tags))
+        .entity(tree.find(root, fourcc!("titL")))
         .insert(DealBookTitle::Left);
     commands
-        .entity(find_descendant(root, fourcc!("rtil"), &children, &tags))
+        .entity(tree.find(root, fourcc!("rtil")))
         .insert(DealBookTitle::Right);
 
     commands.entity(root).insert(DealBookScreen {
@@ -291,13 +287,9 @@ fn bind_deal_book(
     });
 }
 
-fn clear_deal_book_return(mut commands: Commands) {
-    commands.remove_resource::<DealBookReturn>();
-}
-
 fn on_deal_book_close(
     _activate: On<Activate>,
-    return_state: Option<Res<DealBookReturn>>,
+    return_state: Option<Res<ReturnTo>>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     assets: Res<crate::RetailAssetsResource>,
@@ -344,8 +336,7 @@ fn on_deal_book_page(
 }
 
 fn deal_book_last_page(screen: &DealBookScreen, session: &GameSession) -> u16 {
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("Deal Book requires an active major nation");
+    let nation = session.active_major_nation();
     match screen.mode {
         DealBookMode::History => session.game.deal_book_history(nation).last_page_index(),
         DealBookMode::Category { commodity, .. } => session
@@ -445,8 +436,7 @@ fn sync_deal_book(
     let Some(&history) = history.as_deref() else {
         return;
     };
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("Deal Book requires an active major nation");
+    let nation = session.active_major_nation();
     let last_page = match screen.mode {
         DealBookMode::History => project_history(
             &mut commands,

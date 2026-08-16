@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+mod media;
 mod ui;
 
 use bevy::input_focus::tab_navigation::TabNavigationPlugin;
@@ -29,6 +30,11 @@ pub(crate) enum AppState {
     Credits,
     Preferences,
 }
+
+/// Screen restored when leaving an overlay such as Credits, Preferences,
+/// Load/Save, or Deal Book.
+#[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub(crate) struct ReturnTo(pub(crate) AppState);
 
 #[derive(Resource)]
 pub(crate) struct RetailAssetsResource(RetailAssets);
@@ -83,8 +89,8 @@ fn add_game_plugins(app: &mut App) {
         ui::OfferSheetPlugin,
     ))
     .add_plugins((
+        media::ImperialismMediaPlugin,
         ui::CursorPlugin,
-        ui::FlagMenuPlugin,
         ui::TechnologyAdvancePlugin,
         ui::NewspaperPlugin,
         ui::LandBattlePlugin,

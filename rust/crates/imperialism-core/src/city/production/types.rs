@@ -19,6 +19,17 @@ pub struct OrderLimit {
     pub constraint: ProductionConstraint,
 }
 
+impl OrderLimit {
+    /// Keep this limit when `maximum` is not strictly smaller, matching retail
+    /// tie-breaking that preserves the earlier constraint.
+    pub fn min_with(&mut self, maximum: i16, constraint: ProductionConstraint) {
+        if maximum < self.maximum {
+            self.maximum = maximum;
+            self.constraint = constraint;
+        }
+    }
+}
+
 /// Outcome of applying an absolute city-order quantity.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum CityOrderUpdate {
@@ -38,6 +49,25 @@ impl Default for ProductionProgress {
             quantity: 0,
             limiting_constraint: ProductionConstraint::Resources,
         }
+    }
+}
+
+impl ProductionProgress {
+    /// Record `limit.constraint` and commit `quantity` when it is in `0..=limit.maximum`.
+    /// Returns the signed delta on success. Rejection still updates the constraint.
+    pub(crate) fn try_set(&mut self, limit: OrderLimit, quantity: i16) -> Option<i16> {
+        self.limiting_constraint = limit.constraint;
+        self.try_set_within(limit.maximum, quantity)
+    }
+
+    /// Commit `quantity` when it is in `0..=maximum`. Returns the signed delta on success.
+    pub(crate) fn try_set_within(&mut self, maximum: i16, quantity: i16) -> Option<i16> {
+        let delta = quantity - self.quantity;
+        if quantity > maximum || quantity < 0 {
+            return None;
+        }
+        self.quantity = quantity;
+        Some(delta)
     }
 }
 
@@ -73,8 +103,6 @@ pub enum TrainingLevel {
 }
 
 impl TrainingLevel {
-    pub const ALL: [Self; 2] = [Self::Medium, Self::High];
-
     pub(crate) const fn input_band(self) -> SkillBand {
         match self {
             Self::Medium => SkillBand::Low,
@@ -116,19 +144,6 @@ pub enum MilitaryRecruitmentCategory {
     Demolitionist,
 }
 
-impl MilitaryRecruitmentCategory {
-    pub const ALL: [Self; 8] = [
-        Self::LightInfantry,
-        Self::RegularInfantry,
-        Self::HeavyInfantry,
-        Self::LightCavalry,
-        Self::HeavyCavalry,
-        Self::LightArtillery,
-        Self::HeavyArtillery,
-        Self::Demolitionist,
-    ];
-}
-
 pub type MilitaryRecruitOrderTable<T> = EnumMap<MilitaryRecruitmentCategory, T>;
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -150,19 +165,6 @@ pub enum ShipOrderSlot {
     WarshipEarlySecondary,
     WarshipAdvancedPrimary,
     WarshipAdvancedSecondary,
-}
-
-impl ShipOrderSlot {
-    pub const ALL: [Self; 8] = [
-        Self::MerchantEarlyPrimary,
-        Self::MerchantEarlySecondary,
-        Self::MerchantAdvancedPrimary,
-        Self::MerchantAdvancedSecondary,
-        Self::WarshipEarlyPrimary,
-        Self::WarshipEarlySecondary,
-        Self::WarshipAdvancedPrimary,
-        Self::WarshipAdvancedSecondary,
-    ];
 }
 
 pub type ShipOrderTable<T> = EnumMap<ShipOrderSlot, T>;

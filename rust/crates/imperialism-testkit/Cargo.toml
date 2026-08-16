@@ -6,11 +6,8 @@ rust-version.workspace = true
 
 [dependencies]
 anyhow.workspace = true
-imperialism-core = { path = "../imperialism-core", features = ["differential-trace"] }
+imperialism-core = { path = "../imperialism-core", features = ["oracle"] }
 imperialism-formats = { path = "../imperialism-formats" }
 serde.workspace = true
-serde_ignored = "0.1.14"
 serde_json.workspace = true
-thiserror.workspace = true
-sha2 = "0.10"
 tempfile = "3"
