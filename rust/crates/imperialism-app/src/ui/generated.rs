@@ -7,7 +7,7 @@ use bevy::prelude::*;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup};
 use imperialism_core::CityFacilitySlot;
-use imperialism_formats::{PictureId, fourcc};
+use imperialism_formats::{FourCc, PictureId, fourcc};
 
 pub const LOGICAL_RESOLUTION: [u32; 2] = [640, 480];
 
@@ -392,6 +392,140 @@ pub const CITY_BUILDING_ACTIONS: &[CityBuildingActionVisual] = &[
         frame_size: [24, 23],
     },
 ];
+
+pub const ARMORY_ROW_CONTROLS: [(FourCc, FourCc); 8] = [
+    (fourcc!("clu0"), fourcc!("civ0")),
+    (fourcc!("clu1"), fourcc!("civ1")),
+    (fourcc!("clu2"), fourcc!("civ2")),
+    (fourcc!("clu3"), fourcc!("civ3")),
+    (fourcc!("clu4"), fourcc!("civ4")),
+    (fourcc!("clu5"), fourcc!("civ5")),
+    (fourcc!("clu6"), fourcc!("civ6")),
+    (fourcc!("clu7"), fourcc!("civ7")),
+];
+
+pub const UNIVERSITY_ROW_CONTROLS: [(FourCc, FourCc); 7] = [
+    (fourcc!("clu0"), fourcc!("civ0")),
+    (fourcc!("clu1"), fourcc!("civ1")),
+    (fourcc!("clu2"), fourcc!("civ2")),
+    (fourcc!("clu3"), fourcc!("civ3")),
+    (fourcc!("clu4"), fourcc!("civ4")),
+    (fourcc!("clu5"), fourcc!("civ5")),
+    (fourcc!("clu8"), fourcc!("civ8")),
+];
+
+pub const SHIPYARD_ROW_CONTROLS: [(FourCc, FourCc, f32); 8] = [
+    (fourcc!("clu0"), fourcc!("but0"), 4.0),
+    (fourcc!("clu1"), fourcc!("but1"), 4.0),
+    (fourcc!("clu2"), fourcc!("but2"), 3.0),
+    (fourcc!("clu3"), fourcc!("but3"), 2.0),
+    (fourcc!("clu4"), fourcc!("but4"), 4.0),
+    (fourcc!("clu5"), fourcc!("but5"), 4.0),
+    (fourcc!("clu6"), fourcc!("but6"), 3.0),
+    (fourcc!("clu7"), fourcc!("but7"), 2.0),
+];
+
+pub const SHIPYARD_STAT_ORIGINS: [(f32, f32); 6] = [
+    (28.0, 86.0),
+    (28.0, 102.0),
+    (28.0, 118.0),
+    (120.0, 86.0),
+    (120.0, 102.0),
+    (120.0, 118.0),
+];
+
+pub const TRAINING_ORDER_TAGS: [FourCc; 2] = [fourcc!("trai"), fourcc!("prof")];
+pub const FOOD_ORDER_TAG: FourCc = fourcc!("food");
+pub const POWER_ORDER_TAG: FourCc = fourcc!("powe");
+pub const TRANSPORT_ORDER_TAG: FourCc = fourcc!("rail");
+pub const POPULATION_ORDER_TAG: FourCc = fourcc!("popu");
+pub const WAREHOUSE_STOCK_TAGS: [FourCc; 20] = [
+    fourcc!("cott"),
+    fourcc!("wool"),
+    fourcc!("timb"),
+    fourcc!("coal"),
+    fourcc!("iron"),
+    fourcc!("hors"),
+    fourcc!("oil "),
+    fourcc!("food"),
+    fourcc!("fabr"),
+    fourcc!("lumb"),
+    fourcc!("pape"),
+    fourcc!("stee"),
+    fourcc!("fuel"),
+    fourcc!("clot"),
+    fourcc!("furn"),
+    fourcc!("hard"),
+    fourcc!("arma"),
+    fourcc!("grai"),
+    fourcc!("prod"),
+    fourcc!("live"),
+];
+
+pub struct IndustryPageControls {
+    pub slot: CityFacilitySlot,
+    pub order_tags: &'static [FourCc],
+    pub stocks: &'static [(FourCc, i16)],
+}
+
+pub const INDUSTRY_PAGE_CONTROLS: [IndustryPageControls; 7] = [
+    IndustryPageControls {
+        slot: CityFacilitySlot::TextileMill,
+        order_tags: &[fourcc!("fabr")],
+        stocks: &[(fourcc!("cott"), 1), (fourcc!("wool"), 1)],
+    },
+    IndustryPageControls {
+        slot: CityFacilitySlot::ClothingFactory,
+        order_tags: &[fourcc!("clot")],
+        stocks: &[(fourcc!("fabr"), 2)],
+    },
+    IndustryPageControls {
+        slot: CityFacilitySlot::SteelMill,
+        order_tags: &[fourcc!("stee")],
+        stocks: &[(fourcc!("coal"), 1), (fourcc!("iron"), 1)],
+    },
+    IndustryPageControls {
+        slot: CityFacilitySlot::Metalworks,
+        order_tags: &[fourcc!("hard"), fourcc!("arma")],
+        stocks: &[(fourcc!("stee"), 2)],
+    },
+    IndustryPageControls {
+        slot: CityFacilitySlot::LumberMill,
+        order_tags: &[fourcc!("lumb"), fourcc!("pape")],
+        stocks: &[(fourcc!("timb"), 2)],
+    },
+    IndustryPageControls {
+        slot: CityFacilitySlot::FurnitureFactory,
+        order_tags: &[fourcc!("furn")],
+        stocks: &[(fourcc!("lumb"), 2)],
+    },
+    IndustryPageControls {
+        slot: CityFacilitySlot::OilRefinery,
+        order_tags: &[fourcc!("fuel")],
+        stocks: &[(fourcc!("oil "), 2)],
+    },
+];
+
+pub fn spawn_city_dialog(commands: &mut Commands, slot: CityFacilitySlot) -> Entity {
+    match slot {
+        CityFacilitySlot::TextileMill => commands.spawn_scene(citydlog_9200()).id(),
+        CityFacilitySlot::ClothingFactory => commands.spawn_scene(citydlog_9201()).id(),
+        CityFacilitySlot::SteelMill => commands.spawn_scene(citydlog_9202()).id(),
+        CityFacilitySlot::Metalworks => commands.spawn_scene(citydlog_9203()).id(),
+        CityFacilitySlot::LumberMill => commands.spawn_scene(citydlog_9204()).id(),
+        CityFacilitySlot::FurnitureFactory => commands.spawn_scene(citydlog_9205()).id(),
+        CityFacilitySlot::OilRefinery => commands.spawn_scene(citydlog_9206()).id(),
+        CityFacilitySlot::Shipyard => commands.spawn_scene(shipyard_9207()).id(),
+        CityFacilitySlot::Armory => commands.spawn_scene(armory_9208()).id(),
+        CityFacilitySlot::TradeSchool => commands.spawn_scene(citydlog_9209()).id(),
+        CityFacilitySlot::University => commands.spawn_scene(univ_9210()).id(),
+        CityFacilitySlot::PowerPlant => commands.spawn_scene(citydlog_9211()).id(),
+        CityFacilitySlot::FoodProcessing => commands.spawn_scene(citydlog_9212()).id(),
+        CityFacilitySlot::Warehouse => commands.spawn_scene(citydlog_9213()).id(),
+        CityFacilitySlot::Transport => commands.spawn_scene(citydlog_9214()).id(),
+        CityFacilitySlot::RegionalPopulation => commands.spawn_scene(citydlog_9215()).id(),
+    }
+}
 
 #[rustfmt::skip]
 pub fn armory_9208() -> impl Scene {

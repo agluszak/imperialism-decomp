@@ -22,17 +22,6 @@ pub enum CivilianUnitKind {
 
 impl CivilianUnitKind {
     pub const LENGTH: usize = enum_map::enum_len::<Self>();
-    pub const ALL: [Self; 9] = [
-        Self::Miner,
-        Self::Prospector,
-        Self::Farmer,
-        Self::Forester,
-        Self::Engineer,
-        Self::Rancher,
-        Self::Fisherman,
-        Self::Developer,
-        Self::Driller,
-    ];
 }
 
 pub type CivilianUnitTable<T> = EnumMap<CivilianUnitKind, T>;
@@ -358,26 +347,65 @@ impl MilitaryOrder {
         }
     }
 
-    pub const fn code(&self) -> i32 {
+    pub const fn code(&self) -> MilitaryOrderCode {
         match *self {
-            Self::Idle { .. } => 0,
-            Self::Retail { code, .. } => code.get(),
+            Self::Idle { .. } => MilitaryOrderCode::Idle,
+            Self::Retail { code, .. } => code,
         }
     }
 }
 
-/// An unrecovered retail military order discriminator retained only inside an
-/// otherwise data-carrying order.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct MilitaryOrderCode(i32);
+/// Land-unit order discriminator recovered from retail `UnitOrder`.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[repr(i32)]
+pub enum MilitaryOrderCode {
+    Idle = 0,
+    Redeploy = 1,
+    Sleep = 2,
+}
+
 impl MilitaryOrderCode {
-    pub const fn from_retail(value: i32) -> Self {
-        Self(value)
+    pub fn from_retail(value: i32) -> Self {
+        match value {
+            0 => Self::Idle,
+            1 => Self::Redeploy,
+            2 => Self::Sleep,
+            _ => panic!("unrecovered military order code {value}"),
+        }
     }
 
     pub const fn get(self) -> i32 {
-        self.0
+        self as i32
+    }
+}
+
+impl From<MilitaryOrderCode> for i32 {
+    fn from(code: MilitaryOrderCode) -> Self {
+        code.get()
+    }
+}
+
+impl From<i32> for MilitaryOrderCode {
+    fn from(value: i32) -> Self {
+        Self::from_retail(value)
+    }
+}
+
+impl Serialize for MilitaryOrderCode {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        self.get().serialize(serializer)
+    }
+}
+
+impl<'de> Deserialize<'de> for MilitaryOrderCode {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        i32::deserialize(deserializer).map(Self::from_retail)
     }
 }
 

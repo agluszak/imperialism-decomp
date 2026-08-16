@@ -1,4 +1,4 @@
-use super::retail::{RetailTag, RetailUiAssets, find_descendant};
+use super::retail::{RetailTree, RetailUiAssets};
 use bevy::picking::hover::DirectlyHovered;
 use bevy::prelude::*;
 use imperialism_formats::{FourCc, RetailTextStylePreset};
@@ -109,13 +109,12 @@ pub(crate) fn bind_hover_help_bar(
 pub(crate) fn bind_hover_help_texts(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     texts: impl IntoIterator<Item = (FourCc, String)>,
 ) {
     for (tag, text) in texts {
         commands
-            .entity(find_descendant(root, tag, children, tags))
+            .entity(tree.find(root, tag))
             .insert((HoverHelpText(text), DirectlyHovered::default()));
     }
 }

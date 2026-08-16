@@ -5,9 +5,9 @@ edition.workspace = true
 rust-version.workspace = true
 
 [features]
-# Differential captures are test-only diagnostics.  Production map generation
-# returns only its final semantic map and advances the supplied RNG.
-differential-trace = []
+# C++ oracle integration: substep facades and map-generation traces.
+# Production gameplay must not enable this feature.
+oracle = []
 
 [dependencies]
 bitflags.workspace = true

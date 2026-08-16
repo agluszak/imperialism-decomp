@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+mod media;
 mod ui;
 
 use bevy::input_focus::tab_navigation::TabNavigationPlugin;
@@ -36,6 +37,11 @@ pub(crate) enum AppState {
     Preferences,
 }
 
+/// Screen restored when leaving an overlay such as Credits, Preferences,
+/// Load/Save, or Deal Book.
+#[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub(crate) struct ReturnTo(pub(crate) AppState);
+
 #[derive(Resource)]
 pub(crate) struct RetailAssetsResource(RetailAssets);
 
@@ -61,6 +67,10 @@ impl RetailAssetsResource {
         self.string(group, offset + 1)
             .expect("retail hover-help string")
     }
+
+    pub(crate) fn news_story_ids(&self) -> &[i32] {
+        self.0.news_table().story_ids()
+    }
 }
 
 #[derive(Resource)]
@@ -70,6 +80,7 @@ fn add_game_plugins(app: &mut App) {
     app.add_plugins((
         TabNavigationPlugin,
         ui::RetailUiPlugin,
+        ui::RetailViewportPlugin,
         ui::QueryFloaterPlugin,
         ui::MainMenuPlugin,
         ui::LoadSavePlugin,
@@ -85,6 +96,7 @@ fn add_game_plugins(app: &mut App) {
         ui::OfferSheetPlugin,
     ))
     .add_plugins((
+        media::ImperialismMediaPlugin,
         ui::CursorPlugin,
         ui::TechnologyAdvancePlugin,
         ui::NewspaperPlugin,
@@ -125,10 +137,10 @@ pub fn run(
             imperialism_core::PhaseCode::STRATEGIC_MAP,
             "Bevy may only start from a strategic-map core phase"
         );
-        app.insert_resource(ui::GameSession::from_assets(game, &retail_assets))
+        app.insert_resource(ui::GameSession { game })
             .insert_state(AppState::StrategicMap);
     } else {
-        app.init_state::<AppState>();
+        app.insert_state(AppState::OpeningCinematic);
     }
     app.insert_resource(RetailAssetsResource::new(retail_assets))
         .insert_resource(RandomGameNamesResource(random_game_names))

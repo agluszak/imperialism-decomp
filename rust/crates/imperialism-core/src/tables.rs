@@ -8,6 +8,53 @@ pub const MAJOR_NATION_COUNT: usize = MajorNationId::COUNT as usize;
 pub const MINOR_NATION_COUNT: usize = MinorNationId::COUNT as usize;
 pub const PROVINCE_COUNT: usize = ProvinceId::COUNT as usize;
 
+macro_rules! fixed_table {
+    (
+        $(#[$meta:meta])*
+        $name:ident, $id:ty, $count:expr
+    ) => {
+        $(#[$meta])*
+        #[serde(transparent)]
+        pub struct $name<T>([T; $count]);
+
+        impl<T> $name<T> {
+            pub const fn from_array(values: [T; $count]) -> Self {
+                Self(values)
+            }
+
+            pub fn from_fn(mut function: impl FnMut($id) -> T) -> Self {
+                Self(std::array::from_fn(|index| {
+                    function(<$id>::new(index as u8))
+                }))
+            }
+
+            pub const fn as_array(&self) -> &[T; $count] {
+                &self.0
+            }
+        }
+
+        impl<T: Default> Default for $name<T> {
+            fn default() -> Self {
+                Self(std::array::from_fn(|_| T::default()))
+            }
+        }
+
+        impl<T> Index<$id> for $name<T> {
+            type Output = T;
+
+            fn index(&self, id: $id) -> &Self::Output {
+                &self.0[usize::from(id.get())]
+            }
+        }
+
+        impl<T> IndexMut<$id> for $name<T> {
+            fn index_mut(&mut self, id: $id) -> &mut Self::Output {
+                &mut self.0[usize::from(id.get())]
+            }
+        }
+    };
+}
+
 /// The fourteen entries in the retail shipyard descriptor table.
 ///
 /// Their order is the zero-based index into the retail ship-name string group
@@ -63,91 +110,27 @@ impl NationCapacities {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct NationTable<T>([T; NATION_COUNT]);
+fixed_table!(
+    #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+    NationTable,
+    NationId,
+    NATION_COUNT
+);
 
-impl<T> NationTable<T> {
-    pub const fn from_array(values: [T; NATION_COUNT]) -> Self {
-        Self(values)
-    }
-
-    pub fn from_fn(mut function: impl FnMut(NationId) -> T) -> Self {
-        Self(std::array::from_fn(|index| {
-            function(NationId::new(index as u8))
-        }))
-    }
-
-    pub const fn as_array(&self) -> &[T; NATION_COUNT] {
-        &self.0
-    }
-}
-
-impl<T: Default> Default for NationTable<T> {
-    fn default() -> Self {
-        Self(std::array::from_fn(|_| T::default()))
-    }
-}
-
-impl<T> Index<NationId> for NationTable<T> {
-    type Output = T;
-
-    fn index(&self, nation: NationId) -> &Self::Output {
-        &self.0[usize::from(nation.get())]
-    }
-}
-
-impl<T> IndexMut<NationId> for NationTable<T> {
-    fn index_mut(&mut self, nation: NationId) -> &mut Self::Output {
-        &mut self.0[usize::from(nation.get())]
-    }
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct MajorNationTable<T>([T; MAJOR_NATION_COUNT]);
+fixed_table!(
+    #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+    MajorNationTable,
+    MajorNationId,
+    MAJOR_NATION_COUNT
+);
 
 impl<T> MajorNationTable<T> {
-    pub const fn from_array(values: [T; MAJOR_NATION_COUNT]) -> Self {
-        Self(values)
-    }
-
-    pub fn from_fn(mut function: impl FnMut(MajorNationId) -> T) -> Self {
-        Self(std::array::from_fn(|index| {
-            function(MajorNationId::new(index as u8))
-        }))
-    }
-
-    pub const fn as_array(&self) -> &[T; MAJOR_NATION_COUNT] {
-        &self.0
-    }
-
     pub(crate) fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
         self.0.iter()
     }
 
     pub(crate) fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = &mut T> {
         self.0.iter_mut()
-    }
-}
-
-impl<T> Index<MajorNationId> for MajorNationTable<T> {
-    type Output = T;
-
-    fn index(&self, nation: MajorNationId) -> &Self::Output {
-        &self.0[usize::from(nation.get())]
-    }
-}
-
-impl<T> IndexMut<MajorNationId> for MajorNationTable<T> {
-    fn index_mut(&mut self, nation: MajorNationId) -> &mut Self::Output {
-        &mut self.0[usize::from(nation.get())]
-    }
-}
-
-impl<T: Default> Default for MajorNationTable<T> {
-    fn default() -> Self {
-        Self(std::array::from_fn(|_| T::default()))
     }
 }
 

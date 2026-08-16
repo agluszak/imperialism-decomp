@@ -4,7 +4,7 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::{RetailTag, find_descendant};
+use super::retail::RetailTree;
 use crate::AppState;
 use bevy::picking::hover::Hovered;
 use bevy::prelude::*;
@@ -179,24 +179,21 @@ fn enter_transport_screen(mut commands: Commands) {
 fn bind_transport_screen(
     mut commands: Commands,
     root: Single<Entity, Added<TransportScreen>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
     mut session: ResMut<GameSession>,
 ) {
     bind_native_game_screen_nav(
         &mut commands,
         *root,
-        &children,
-        &tags,
+        &tree,
         fourcc!("topB"),
         Some(fourcc!("tool")),
     );
 
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("Transport screen requires an active major nation");
+    let nation = session.active_major_nation();
     session.game.rebuild_nation_resource_yields(nation);
-    bind_game_status_display(&mut commands, &mut assets, *root, &children, &tags);
+    bind_game_status_display(&mut commands, &mut assets, *root, &tree);
     let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
@@ -216,18 +213,16 @@ fn bind_transport_screen(
     let title_color = assets.palette_color(0xd2);
     let title_shadow = assets.palette_color(0x28);
     for tag in [fourcc!("titL"), fourcc!("titR")] {
-        commands
-            .entity(find_descendant(*root, tag, &children, &tags))
-            .insert((
-                title_font.clone(),
-                title_layout,
-                title_line_height,
-                TextColor(title_color),
-                TextShadow {
-                    offset: Vec2::ONE,
-                    color: title_shadow,
-                },
-            ));
+        commands.entity(tree.find(*root, tag)).insert((
+            title_font.clone(),
+            title_layout,
+            title_line_height,
+            TextColor(title_color),
+            TextShadow {
+                offset: Vec2::ONE,
+                color: title_shadow,
+            },
+        ));
     }
     let colors = TransportColors {
         // TTransportPicture passes these color codes through TViewMgr::GetColor.
@@ -254,8 +249,7 @@ fn bind_transport_screen(
     bind_transport_controls(
         &mut commands,
         *root,
-        &children,
-        &tags,
+        &tree,
         font,
         layout,
         line_height,
@@ -263,7 +257,7 @@ fn bind_transport_screen(
         colors,
     );
     for binding in TRANSPORT_ROWS {
-        let row = find_descendant(*root, binding.tag, &children, &tags);
+        let row = tree.find(*root, binding.tag);
         commands
             .entity(row)
             .insert(TransportHover(binding.allocation));
@@ -274,26 +268,25 @@ fn bind_transport_screen(
 fn bind_transport_controls(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     font: TextFont,
     layout: TextLayout,
     line_height: LineHeight,
     cursor_style: (TextFont, TextLayout, LineHeight, Color, Color),
     colors: TransportColors,
 ) {
-    let selected = find_descendant(root, fourcc!("tran"), children, tags);
+    let selected = tree.find(root, fourcc!("tran"));
     commands
         .entity(selected)
         .insert((Checked, InteractionDisabled));
     for (index, binding) in TRANSPORT_ROWS.into_iter().enumerate() {
-        let row = find_descendant(root, binding.tag, children, tags);
+        let row = tree.find(root, binding.tag);
         commands.entity(row).insert((
             TransportDisplay::Row(binding.allocation),
             Hovered::default(),
         ));
-        let left = find_descendant(row, fourcc!("left"), children, tags);
-        let right = find_descendant(row, fourcc!("rght"), children, tags);
+        let left = tree.find(row, fourcc!("left"));
+        let right = tree.find(row, fourcc!("rght"));
         commands
             .entity(left)
             .insert(TransportAdjust {
@@ -360,7 +353,7 @@ fn bind_transport_controls(
         }
     }
 
-    let total = find_descendant(root, fourcc!("tota"), children, tags);
+    let total = tree.find(root, fourcc!("tota"));
     commands
         .entity(total)
         .apply_scene(transport_capacity_overlay(
@@ -369,7 +362,7 @@ fn bind_transport_controls(
             line_height,
             colors,
         ));
-    let cursor = find_descendant(root, fourcc!("curs"), children, tags);
+    let cursor = tree.find(root, fourcc!("curs"));
     let (cursor_font, cursor_layout, cursor_line_height, cursor_color, cursor_shadow) =
         cursor_style;
     commands.entity(cursor).insert((
@@ -556,8 +549,7 @@ fn on_transport_arrow_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("Transport screen requires an active major nation");
+    let nation = session.active_major_nation();
     session
         .game
         .step_transport_allocation(nation, action.allocation, action.delta);
@@ -571,8 +563,7 @@ fn sync_transport_text(
     if !session.is_changed() && screens.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("Transport screen requires an active major nation");
+    let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let economy = &major.economy;
     for (display, mut text) in &mut texts {
@@ -613,8 +604,7 @@ fn sync_transport_visual(
     if !session.is_changed() && screens.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("Transport screen requires an active major nation");
+    let nation = session.active_major_nation();
     let economy = &session.game.nations().major(nation).economy;
     for (display, mut node, mut visibility, mut color) in &mut displays {
         match *display {
@@ -686,8 +676,7 @@ fn sync_transport_presence(
     if !session.is_changed() && screens.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("Transport screen requires an active major nation");
+    let nation = session.active_major_nation();
     for (entity, display, mut visibility, disabled) in &mut rows {
         let allocation = match *display {
             TransportDisplay::Row(allocation)
@@ -745,8 +734,7 @@ fn sync_transport_cursor(
     let Ok(mut text) = cursor.single_mut() else {
         return;
     };
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("Transport screen requires an active major nation");
+    let nation = session.active_major_nation();
     text.0 = rows
         .iter()
         .find_map(|(hover, hovered)| {
@@ -862,6 +850,7 @@ fn transport_gauge_width(value: i16, total: i16) -> f32 {
 
 #[cfg(test)]
 mod tests {
+    use super::super::retail::RetailTag;
     use super::*;
     use bevy::asset::AssetPlugin;
     use bevy::scene::ScenePlugin;
@@ -938,14 +927,12 @@ mod tests {
     fn bind_test_transport(
         mut commands: Commands,
         root: Single<Entity, Added<TestTransportRoot>>,
-        children: Query<&Children>,
-        tags: Query<&RetailTag>,
+        tree: RetailTree,
     ) {
         bind_transport_controls(
             &mut commands,
             *root,
-            &children,
-            &tags,
+            &tree,
             TextFont::default(),
             TextLayout::default(),
             LineHeight::default(),

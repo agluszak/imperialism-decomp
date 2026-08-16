@@ -1,8 +1,8 @@
 use crate::{
     CivilianLocation, CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, Difficulty,
-    GameState, MajorNationId, MapMgr, MilitaryUnitKind, MilitaryUnitState, NationId, OceanZoneId,
-    PendingActionKind, ProvinceId, ShipState, ShipType, TileFlags, TileId, TileOwnerTag,
-    TurnSummary,
+    GameState, MajorNationId, MapMgr, MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState,
+    NationId, OceanZoneId, PendingActionKind, ProvinceId, ShipState, ShipType, TileFlags, TileId,
+    TileOwnerTag, TurnSummary,
 };
 #[cfg(test)]
 use crate::{CivilianUnitId, MilitaryUnitId};
@@ -200,7 +200,11 @@ impl GameState {
             self.turn.difficulty,
             Difficulty::Introductory | Difficulty::Easy
         );
-        let garrison_order = if garrison_orders { 2 } else { 0 };
+        let garrison_order = if garrison_orders {
+            MilitaryOrderCode::Sleep
+        } else {
+            MilitaryOrderCode::Idle
+        };
         let major = MajorNationId::from_nation(nation);
         let diplomacy_eligible =
             major.is_some_and(|major| self.nations.major(major).economy.diplomacy_eligible);
@@ -275,11 +279,21 @@ impl GameState {
             if extra_militia {
                 self.add_opening_militia(nation, province);
                 if major.is_none() {
-                    self.insert_land_unit(nation, MilitaryUnitKind::Artillery, Some(province), 0);
+                    self.insert_land_unit(
+                        nation,
+                        MilitaryUnitKind::Artillery,
+                        Some(province),
+                        MilitaryOrderCode::Idle,
+                    );
                 }
             }
             if bonus_regulars {
-                self.insert_land_unit(nation, MilitaryUnitKind::Regulars, Some(province), 2);
+                self.insert_land_unit(
+                    nation,
+                    MilitaryUnitKind::Regulars,
+                    Some(province),
+                    MilitaryOrderCode::Sleep,
+                );
             }
         }
         self.name_land_units(nation);
@@ -287,7 +301,7 @@ impl GameState {
 
     fn add_opening_militia(&mut self, nation: NationId, province: ProvinceId) {
         let unit_type = self.militia_kind(nation);
-        self.insert_land_unit(nation, unit_type, Some(province), 2);
+        self.insert_land_unit(nation, unit_type, Some(province), MilitaryOrderCode::Sleep);
     }
 
     fn set_province_capital_fortification(&mut self, province: ProvinceId) {

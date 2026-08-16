@@ -1,16 +1,11 @@
 use super::generated;
 use super::hover_help::ui_string;
-use super::retail::{RetailTag, RetailUiAssets, find_descendant};
-use crate::AppState;
+use super::retail::{RetailTree, RetailUiAssets};
+use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_formats::{RetailTextStylePreset, fourcc};
-
-/// Screen restored when credits close. Retail `EnterOptionalPhase(0x71)` posts
-/// `kTurnEventCredits` and later `StartNextPhase` redisplays the previous phase.
-#[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) struct CreditsReturn(pub(crate) AppState);
 
 #[derive(Component)]
 struct CreditsRoot {
@@ -32,7 +27,8 @@ impl Plugin for CreditsPlugin {
             Update,
             sync_credits_page.run_if(in_state(AppState::Credits)),
         )
-        .add_observer(on_credits_activate.run_if(in_state(AppState::Credits)));
+        .add_observer(on_credits_activate.run_if(in_state(AppState::Credits)))
+        .add_systems(OnExit(AppState::Credits), super::session::clear_return_to);
     }
 }
 
@@ -47,11 +43,10 @@ fn spawn_credits(mut commands: Commands) {
 fn bind_credits(
     mut commands: Commands,
     root: Single<Entity, Added<CreditsRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
 ) {
     commands
-        .entity(find_descendant(*root, fourcc!("main"), &children, &tags))
+        .entity(tree.find(*root, fourcc!("main")))
         .insert((CreditsAction, Button, ActivateOnPress))
         .remove::<InteractionDisabled>();
 }
@@ -59,19 +54,11 @@ fn bind_credits(
 fn sync_credits_page(
     mut commands: Commands,
     roots: Query<(Entity, &CreditsRoot), Changed<CreditsRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
 ) {
     for (root, screen) in &roots {
-        fill_credits_page(
-            &mut commands,
-            &mut assets,
-            root,
-            &children,
-            &tags,
-            screen.second_page,
-        );
+        fill_credits_page(&mut commands, &mut assets, root, &tree, screen.second_page);
     }
 }
 
@@ -79,8 +66,7 @@ fn fill_credits_page(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     second_page: bool,
 ) {
     // `TCreditsPicture::SetTextFromUiStringResourceId`: LoadStringA ids 0xfb0..0xfb3.
@@ -103,7 +89,7 @@ fn fill_credits_page(
         color: assets.palette_color(0xd2),
     });
     for (tag, string_id) in [(fourcc!("cred"), left_id), (fourcc!("cre2"), right_id)] {
-        let mut entity = commands.entity(find_descendant(root, tag, children, tags));
+        let mut entity = commands.entity(tree.find(root, tag));
         entity.insert((
             Text::new(string_from_id(assets, string_id)),
             font.clone(),
@@ -128,7 +114,7 @@ fn on_credits_activate(
     activate: On<Activate>,
     actions: Query<&CreditsAction>,
     mut roots: Query<&mut CreditsRoot>,
-    returning: Res<CreditsReturn>,
+    returning: Res<ReturnTo>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     if actions.get(activate.entity).is_err() {
@@ -153,7 +139,7 @@ mod tests {
         app.add_plugins(MinimalPlugins)
             .add_plugins(bevy::state::app::StatesPlugin)
             .insert_state(AppState::Credits)
-            .insert_resource(CreditsReturn(AppState::StrategicMap))
+            .insert_resource(ReturnTo(AppState::StrategicMap))
             .add_observer(on_credits_activate);
         let root = app
             .world_mut()
