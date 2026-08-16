@@ -15,15 +15,24 @@ const HEATMAP_PACKED_DEVELOPMENT_OVERFLOW: [u8; 44] = [
 const HEATMAP_NEIGHBOR_DIFFUSION: f32 = 0.2;
 
 impl GameState {
-    /// Retail `TSimMgr::DoMilitary`. Auto great powers run advisory mission
-    /// selection and `GiveOrders` for land and navy missions, then navy order
-    /// execution for sail/repair/marines plus the CarryOutOrders straggler
-    /// tail. Navy battle pairing, `MakeSureAllShipsHaveOrders`, and
-    /// `CleanUpStacks` (map-context records) are not ported.
+    /// Retail `TSimMgr::DoMilitary` sequence: rebuild the strategic heatmap,
+    /// grow militia, then pay maintenance, select advisory missions, and issue
+    /// orders in major-nation order. Army map-context records are released
+    /// before navy preparation and execution.
     pub fn do_military(&mut self) {
         self.apply_military_orders();
+        self.clean_up_army_stacks();
         self.prepare_to_carry_out_navy_orders();
-        self.carry_out_navy_orders();
+        if let Some(continuation) = self.carry_out_navy_orders() {
+            self.continuation = TurnContinuation::NavalBattle(continuation);
+        }
+    }
+
+    /// Semantic effects of `TArmyMgr::CleanUpStacks`. Core's battle reports are
+    /// the copied map-context records; dropping them also drops their owned side
+    /// arrays. The C++ transient flag is derived here from whether records exist.
+    fn clean_up_army_stacks(&mut self) {
+        self.battle_reports.clear();
     }
 
     /// Heatmap, militia, pay, advisory selection, and mission `GiveOrders`.

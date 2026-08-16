@@ -10,6 +10,7 @@
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
+#include "game/map/TZone.h"
 #include "game/map/map_records.h"
 #include "game/military/TArmyMgr.h"
 #include "game/military/TArmyStack.h"
@@ -383,11 +384,8 @@ RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition) {
   return transition.Finish();
 }
 
-// Heatmap, militia growth, PayForMilitary, AutoGreatPower case-16 mission
-// selection, and MoveArmy (human budget / AI GiveOrders including navy). Does
-// not invoke TSimMgr::DoMilitary stack cleanup or navy CarryOutOrders.
-RuntimeActionResult RunMilitaryPhaseSupportedSubset(NativeTransition& transition) {
-  int slot;
+// Complete recovered phase; in particular, its army cleanup precedes navy work.
+RuntimeActionResult RunMilitaryPhase(NativeTransition& transition) {
   g_pSimMgr->economicTurn = 6;
 
   JsonObject args;
@@ -396,34 +394,28 @@ RuntimeActionResult RunMilitaryPhaseSupportedSubset(NativeTransition& transition
     return started;
   }
 
-  g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
-  for (slot = 0; slot < kNationSlotCount; ++slot) {
-    TCountry* country = g_apTerrainTypeDescriptorTable[slot];
-    if (country == 0) {
-      continue;
-    }
-    if (slot < 7) {
-      const short profileCode = country->encodedNationSlot;
-      if (profileCode >= 100 && profileCode < 200) {
-        continue;
-      }
-    }
-    country->GrowMilitia();
+  g_pSimMgr->DoMilitary();
+  return transition.Finish();
+}
+
+RuntimeActionResult RunMilitaryPhaseShipsWithoutOrders(NativeTransition& transition) {
+  g_pSimMgr->economicTurn = 6;
+  TZone* zone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(ActiveNationSlot());
+  if (zone == 0) {
+    return RuntimeActionResult::Failure("the fixture has no active-nation port zone");
   }
-  for (slot = 0; slot < 7; ++slot) {
-    TCountry* country = g_apTerrainTypeDescriptorTable[slot];
-    TGreatPower* nation;
-    if (country == 0) {
-      continue;
-    }
-    if (country->encodedNationSlot >= 100 && country->encodedNationSlot < 200) {
-      continue;
-    }
-    nation = g_apNationStates[slot];
-    nation->PayForMilitary();
-    nation->SelectAndQueueAdvisoryMapMissionsCase16();
-    nation->MoveArmy();
+  TShip* damaged = new TShip();
+  damaged->IShip(3, zone, ActiveNationSlot(), "military-unordered-damaged");
+  damaged->strength = 1;
+  TShip* ready = new TShip();
+  ready->IShip(9, zone, ActiveNationSlot(), "military-unordered-ready");
+
+  JsonObject args;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
   }
+  g_pSimMgr->DoMilitary();
   return transition.Finish();
 }
 

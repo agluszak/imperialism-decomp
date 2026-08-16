@@ -1,6 +1,47 @@
 use super::*;
+use serde::{Deserialize, Serialize};
+
+/// Strategic fleets handed to retail's modal naval battle view.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct PendingNavalBattle {
+    pub attacker: TaskForceIndex,
+    pub defender: TaskForceIndex,
+}
+
+/// Exact `TNavyMgr::CarryOutOrders` scan position following a modal encounter.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct NavyOrdersContinuation {
+    pass: u8,
+    outer: usize,
+    inner: usize,
+    pub battle: PendingNavalBattle,
+}
 
 impl GameState {
+    pub fn pending_naval_battle(&self) -> Option<&PendingNavalBattle> {
+        match &self.continuation {
+            crate::turn_flow::TurnContinuation::NavalBattle(continuation) => {
+                Some(&continuation.battle)
+            }
+            _ => None,
+        }
+    }
+
+    /// Continues the retained `CarryOutOrders` scan after the tactical naval
+    /// battle has applied its outcome to the two authoritative task forces.
+    pub fn resume_after_naval_battle(&mut self, story_ids: &[i32]) -> crate::TurnStop {
+        let crate::turn_flow::TurnContinuation::NavalBattle(continuation) =
+            std::mem::take(&mut self.continuation)
+        else {
+            panic!("naval-battle resume requires a navy-orders continuation");
+        };
+        if let Some(continuation) = self.resume_navy_orders(continuation) {
+            self.continuation = crate::turn_flow::TurnContinuation::NavalBattle(continuation);
+            return crate::TurnStop::NavalBattle;
+        }
+        self.advance_turn(story_ids)
+    }
+
     pub(crate) fn give_navy_mission_orders(&mut self, mission_index: usize) {
         let Some(navy) = navy_state(&self.missions[mission_index].data) else {
             return;
@@ -138,15 +179,167 @@ impl GameState {
                     MajorNationTable::default();
             }
         }
+        self.make_sure_all_ships_have_orders();
         for force in &mut self.task_forces {
             force.defeated = false;
         }
     }
 
-    pub(crate) fn carry_out_navy_orders(&mut self) {
+    /// Semantic `MakeSureAllShipsHaveOrders` normalization. Task forces are the
+    /// authoritative navy-order records in core, so the retail rebuild becomes
+    /// a rebuild of only ships which are not already in the committed queue.
+    fn make_sure_all_ships_have_orders(&mut self) {
+        for index in (0..self.task_forces.len()).rev() {
+            if self.task_forces[index].order == TaskForceOrder::None {
+                self.free_task_force(TaskForceIndex::new(index));
+            }
+        }
+
+        // `g_pMapActionContextListHead` is newest-first; context ordinals grow
+        // at construction, so retail visits them in descending ordinal order.
+        for zone_index in (0..self.ocean.zones.len()).rev() {
+            let zone = OceanZoneId::new(
+                u16::try_from(zone_index).expect("ocean context ordinal fits a zone id"),
+            );
+            let in_port = self.is_port_zone(zone);
+            for nation in MajorNationId::all() {
+                let ships = self
+                    .ships
+                    .iter()
+                    .enumerate()
+                    .filter_map(|(index, ship)| {
+                        (ship.task_force.is_none()
+                            && ship.location == zone
+                            && ship.nation == nation.nation())
+                        .then_some(ShipIndex::new(index))
+                    })
+                    .collect::<Vec<_>>();
+                if in_port {
+                    let (damaged, ready): (Vec<_>, Vec<_>) = ships.into_iter().partition(|ship| {
+                        let ship = &self.ships[ship.get()];
+                        i32::from(ship.strength) < NAVY_DESCRIPTORS[ship.ship_type].stock_cap
+                    });
+                    self.commit_rebuilt_force(
+                        zone,
+                        nation.nation(),
+                        &damaged,
+                        TaskForceOrder::Repair,
+                    );
+                    self.commit_rebuilt_force(
+                        zone,
+                        nation.nation(),
+                        &ready,
+                        TaskForceOrder::Escort,
+                    );
+                } else {
+                    self.commit_rebuilt_force(
+                        zone,
+                        nation.nation(),
+                        &ships,
+                        TaskForceOrder::Transit,
+                    );
+                }
+            }
+        }
+    }
+
+    fn commit_rebuilt_force(
+        &mut self,
+        zone: OceanZoneId,
+        nation: NationId,
+        ships: &[ShipIndex],
+        order: TaskForceOrder,
+    ) {
+        let Some((&first, rest)) = ships.split_first() else {
+            return;
+        };
+        let force = self.create_task_force(zone, nation, first);
+        for &ship in rest {
+            self.reassign_ship_to_force(ship, force);
+        }
+        self.task_forces[force.get()].order = order;
+    }
+
+    pub(crate) fn carry_out_navy_orders(&mut self) -> Option<NavyOrdersContinuation> {
+        self.carry_out_navy_orders_from(0, 0, 0)
+    }
+
+    pub(crate) fn resume_navy_orders(
+        &mut self,
+        continuation: NavyOrdersContinuation,
+    ) -> Option<NavyOrdersContinuation> {
+        self.carry_out_navy_orders_from(continuation.pass, continuation.outer, continuation.inner)
+    }
+
+    fn carry_out_navy_orders_from(
+        &mut self,
+        start_pass: u8,
+        start_outer: usize,
+        start_inner: usize,
+    ) -> Option<NavyOrdersContinuation> {
+        for pass in start_pass..6 {
+            if matches!(pass, 2 | 5) {
+                self.execute_navy_order_pass(
+                    pass,
+                    if pass == start_pass { start_outer } else { 0 },
+                );
+                continue;
+            }
+            let outer_start = if pass == start_pass { start_outer } else { 0 };
+            for outer in outer_start..self.task_forces.len() {
+                if !self.navy_outer_matches(pass, outer) || self.task_forces[outer].defeated {
+                    continue;
+                }
+                let inner_start = if pass == start_pass && outer == outer_start {
+                    start_inner
+                } else {
+                    0
+                };
+                for inner in inner_start..self.task_forces.len() {
+                    if !self.navy_pair_matches(pass, outer, inner) {
+                        continue;
+                    }
+                    let proceed = if pass == 4 {
+                        self.navy_inline_spot(outer, inner)
+                    } else {
+                        self.navy_try_to_spot(outer, inner)
+                    };
+                    if proceed && self.navy_resolve_encounter(outer, inner) {
+                        return Some(NavyOrdersContinuation {
+                            pass,
+                            outer,
+                            inner: inner + 1,
+                            battle: PendingNavalBattle {
+                                attacker: TaskForceIndex::new(outer),
+                                defender: TaskForceIndex::new(inner),
+                            },
+                        });
+                    }
+                    if self.task_forces[outer].defeated {
+                        break;
+                    }
+                }
+            }
+        }
+        self.finish_carry_out_navy_orders();
+        None
+    }
+
+    fn execute_navy_order_pass(&mut self, pass: u8, start: usize) {
         let forces: Vec<usize> = (0..self.task_forces.len()).collect();
-        for index in forces {
+        for index in forces.into_iter().skip(start) {
             if self.task_forces[index].defeated {
+                continue;
+            }
+            let selected = match pass {
+                2 => self.task_forces[index].order == TaskForceOrder::Sail,
+                5 => matches!(
+                    self.task_forces[index].order,
+                    TaskForceOrder::Marines | TaskForceOrder::Repair
+                ),
+                _ => false,
+            };
+            if !selected {
                 continue;
             }
             match self.task_forces[index].order {
@@ -191,7 +384,143 @@ impl GameState {
                 _ => {}
             }
         }
+    }
+
+    fn finish_carry_out_navy_orders(&mut self) {
         self.clear_all_transient_navy_orders();
+    }
+
+    fn navy_outer_matches(&self, pass: u8, index: usize) -> bool {
+        match pass {
+            0 | 3 => matches!(
+                self.task_forces[index].order,
+                TaskForceOrder::Patrol | TaskForceOrder::Transit
+            ),
+            1 => self.task_forces[index].order == TaskForceOrder::Blockade,
+            4 => self.task_forces[index].order == TaskForceOrder::Sail,
+            _ => false,
+        }
+    }
+
+    fn navy_pair_matches(&self, pass: u8, outer: usize, inner: usize) -> bool {
+        let entry = &self.task_forces[outer];
+        let other = &self.task_forces[inner];
+        if !self.nation_pair_war_stamp_out_of_date(other.nation, Some(entry.nation)) {
+            return false;
+        }
+        match pass {
+            0 => other.location == entry.location && other.order == TaskForceOrder::Blockade,
+            1 => {
+                other.order == TaskForceOrder::Sail
+                    && (other.location
+                        == match entry.target {
+                            TaskForceTarget::Zone(zone) => zone,
+                            _ => entry.location,
+                        }
+                        || other.target == entry.target)
+            }
+            3 => other.location == entry.location && other.order != TaskForceOrder::Blockade,
+            4 => other.location == entry.location && other.order == TaskForceOrder::Marines,
+            _ => false,
+        }
+    }
+
+    fn navy_try_to_spot(&mut self, outer: usize, inner: usize) -> bool {
+        if self.task_forces[outer].ships.is_empty() || self.task_forces[inner].ships.is_empty() {
+            return false;
+        }
+        if self.task_forces[outer].order == TaskForceOrder::Blockade
+            || matches!(
+                self.task_forces[inner].order,
+                TaskForceOrder::Blockade | TaskForceOrder::Marines
+            )
+        {
+            return true;
+        }
+        let threshold = self.task_force_deci_speed(outer) - self.task_force_deci_speed(inner)
+            + 50
+            + (self.task_forces[outer].ships.len() + self.task_forces[inner].ships.len())
+                .saturating_sub(10) as i32;
+        self.rng.next_crt_rand() % 100 < threshold
+    }
+
+    fn navy_inline_spot(&mut self, outer: usize, inner: usize) -> bool {
+        if self.task_forces[outer].ships.is_empty() || self.task_forces[inner].ships.is_empty() {
+            return false;
+        }
+        // Pass E always pairs against order 5, which retail force-attempts.
+        true
+    }
+
+    fn task_force_deci_speed(&self, force: usize) -> i32 {
+        let mut sum = 0;
+        let mut count = 0;
+        for child in &self.task_forces[force].ships {
+            if child.selected {
+                sum += descriptor_weight(self.ships[child.ship.get()].ship_type);
+                count += 1;
+            }
+        }
+        if count == 0 { 0 } else { sum * 10 / count }
+    }
+
+    fn task_force_battle_strength(&self, force: usize) -> i32 {
+        self.task_forces[force]
+            .ships
+            .iter()
+            .map(|child| {
+                let ship = &self.ships[child.ship.get()];
+                let descriptor = NAVY_DESCRIPTORS[ship.ship_type];
+                let quality = i32::from(ship.experience / 100);
+                let priority = (quality + descriptor.navy_priority_weight * 10 + 5) / 10;
+                let resolve = (quality + descriptor.resolve_weight * 10 + 5) / 10;
+                ((priority + descriptor.calculate_weight) * 100
+                    + resolve
+                    + i32::from(ship.strength))
+                    / descriptor.task_force_weight
+            })
+            .sum()
+    }
+
+    fn navy_resolve_encounter(&mut self, outer: usize, inner: usize) -> bool {
+        const WEIGHT: [i32; 3] = [200, 100, 50];
+        let this = self.task_force_battle_strength(outer) as i16 as i32;
+        let other = self.task_force_battle_strength(inner) as i16 as i32;
+        let this_aggression = self.task_forces[outer].aggression as usize;
+        let other_aggression = self.task_forces[inner].aggression as usize;
+        if this * 100 < WEIGHT[this_aggression] * other {
+            if other * 100 < WEIGHT[other_aggression] * this || self.task_forces[inner].defeated {
+                return false;
+            }
+            let worst = self.task_forces[outer]
+                .ships
+                .iter()
+                .filter(|child| child.selected)
+                .map(|child| descriptor_weight(self.ships[child.ship.get()].ship_type))
+                .min()
+                .unwrap_or(0);
+            if self.rng.next_crt_rand() % 100 < (worst + 5) * 10 - self.task_force_deci_speed(inner)
+            {
+                self.task_forces[outer].defeated = true;
+                return false;
+            }
+            return true;
+        }
+        if other * 100 < WEIGHT[other_aggression] * this {
+            let worst = self.task_forces[inner]
+                .ships
+                .iter()
+                .filter(|child| child.selected)
+                .map(|child| descriptor_weight(self.ships[child.ship.get()].ship_type))
+                .min()
+                .unwrap_or(0);
+            if self.rng.next_crt_rand() % 100 < (worst + 5) * 10 - self.task_force_deci_speed(outer)
+            {
+                self.task_forces[inner].defeated = true;
+                return false;
+            }
+        }
+        true
     }
 
     fn consolidate_mission_ships_to(&mut self, ships: &[ShipIndex], destination: OceanZoneId) {
@@ -394,7 +723,7 @@ impl GameState {
             .map(|ship| ship.ship);
     }
 
-    fn demand_exclusive_task_force(&mut self, ship: ShipIndex) -> TaskForceIndex {
+    pub(super) fn demand_exclusive_task_force(&mut self, ship: ShipIndex) -> TaskForceIndex {
         if let Some(force) = self.ships.get(ship.get()).and_then(|ship| ship.task_force)
             && self
                 .task_forces
@@ -425,6 +754,9 @@ impl GameState {
         ship: ShipIndex,
     ) -> TaskForceIndex {
         self.bump_task_force_ids();
+        let mut ship_counts = [0; 4];
+        let bucket = NAVY_DESCRIPTORS[self.ships[ship.get()].ship_type].toolbar_bucket as usize;
+        ship_counts[bucket] = 1;
         self.task_forces.insert(
             0,
             TaskForceState {
@@ -435,7 +767,7 @@ impl GameState {
                 target: TaskForceTarget::None,
                 location,
                 nation,
-                ship_counts: [0; 4],
+                ship_counts,
                 defeated: false,
                 ingot_tile: -1,
                 flagship: Some(ship),
@@ -463,6 +795,8 @@ impl GameState {
         if let Some(force) = self.task_forces.get_mut(force.get())
             && !force.ships.iter().any(|entry| entry.ship == ship)
         {
+            let bucket = NAVY_DESCRIPTORS[self.ships[ship.get()].ship_type].toolbar_bucket as usize;
+            force.ship_counts[bucket] += 1;
             force.ships.push(SelectedShip {
                 ship,
                 selected: true,
@@ -472,7 +806,12 @@ impl GameState {
 
     pub(super) fn remove_ship_from_force(&mut self, ship: ShipIndex, force: TaskForceIndex) {
         if let Some(force) = self.task_forces.get_mut(force.get()) {
-            force.ships.retain(|entry| entry.ship != ship);
+            if force.ships.iter().any(|entry| entry.ship == ship) {
+                let bucket =
+                    NAVY_DESCRIPTORS[self.ships[ship.get()].ship_type].toolbar_bucket as usize;
+                force.ship_counts[bucket] -= 1;
+                force.ships.retain(|entry| entry.ship != ship);
+            }
             if force.flagship == Some(ship) {
                 force.flagship = force.ships.first().map(|entry| entry.ship);
             }
@@ -542,6 +881,116 @@ mod tests {
     use super::*;
     use crate::test_support::game_state;
 
+    fn encounter_force(
+        state: &mut GameState,
+        nation: NationId,
+        location: OceanZoneId,
+        order: TaskForceOrder,
+    ) {
+        let ship = ShipIndex::new(state.ships.len());
+        let force = TaskForceIndex::new(state.task_forces.len());
+        state.ships.push(ShipState {
+            ship_type: ShipType::Frigate,
+            location,
+            task_force: Some(force),
+            aggression: 1,
+            nation,
+            name: String::new(),
+            strength: 900,
+            experience: 0,
+            selection: 0,
+        });
+        state.task_forces.push(TaskForceState {
+            aggression: 1,
+            order,
+            target: TaskForceTarget::None,
+            location,
+            nation,
+            ship_counts: [0; 4],
+            defeated: false,
+            ingot_tile: -1,
+            flagship: Some(ship),
+            ships: vec![SelectedShip {
+                ship,
+                selected: true,
+            }],
+        });
+    }
+
+    #[test]
+    fn preparation_splits_unordered_port_ships_into_escort_then_repair() {
+        let mut state = game_state();
+        let nation = NationId::new(0);
+        state.ocean.zones = vec![ZoneKind::PortZone(PortZone {
+            zone: zone(Vec::new()),
+            port_tile: TileId::new(0),
+        })];
+        for (ship_type, strength) in [(ShipType::Frigate, 1), (ShipType::Clipper, i16::MAX)] {
+            state.ships.push(ShipState {
+                ship_type,
+                location: OceanZoneId::new(0),
+                task_force: None,
+                aggression: 1,
+                nation,
+                name: String::new(),
+                strength,
+                experience: 0,
+                selection: 0,
+            });
+        }
+
+        state.prepare_to_carry_out_navy_orders();
+
+        assert_eq!(state.task_forces.len(), 2);
+        assert_eq!(state.task_forces[0].order, TaskForceOrder::Escort);
+        assert_eq!(state.task_forces[0].ships[0].ship, ShipIndex::new(1));
+        assert_eq!(state.task_forces[0].ship_counts.iter().sum::<i16>(), 1);
+        assert_eq!(state.task_forces[1].order, TaskForceOrder::Repair);
+        assert_eq!(state.task_forces[1].ships[0].ship, ShipIndex::new(0));
+        assert_eq!(state.task_forces[1].ship_counts.iter().sum::<i16>(), 1);
+        assert_eq!(state.ships[0].task_force, Some(TaskForceIndex::new(1)));
+        assert_eq!(state.ships[1].task_force, Some(TaskForceIndex::new(0)));
+    }
+
+    #[test]
+    fn naval_encounters_resume_from_the_retained_pair_cursor() {
+        let mut state = game_state();
+        let attacker = NationId::new(0);
+        let defender = NationId::new(1);
+        state.diplomacy.relationships[defender][attacker] = DiplomaticRelationship::War;
+        encounter_force(
+            &mut state,
+            attacker,
+            OceanZoneId::new(0),
+            TaskForceOrder::Patrol,
+        );
+        encounter_force(
+            &mut state,
+            defender,
+            OceanZoneId::new(0),
+            TaskForceOrder::Blockade,
+        );
+        encounter_force(
+            &mut state,
+            attacker,
+            OceanZoneId::new(1),
+            TaskForceOrder::Patrol,
+        );
+        encounter_force(
+            &mut state,
+            defender,
+            OceanZoneId::new(1),
+            TaskForceOrder::Blockade,
+        );
+
+        let first = state.carry_out_navy_orders().expect("first encounter");
+        assert_eq!(first.battle.attacker, TaskForceIndex::new(0));
+        assert_eq!(first.battle.defender, TaskForceIndex::new(1));
+        let second = state.resume_navy_orders(first).expect("second encounter");
+        assert_eq!(second.battle.attacker, TaskForceIndex::new(2));
+        assert_eq!(second.battle.defender, TaskForceIndex::new(3));
+    }
+
     #[test]
     fn control_sea_give_orders_sails_an_assigned_frigate_one_descriptor_hop() {
         let mut state = game_state();
@@ -586,7 +1035,7 @@ mod tests {
         });
         state.give_navy_mission_orders(0);
         assert_eq!(state.task_forces[0].order, TaskForceOrder::Sail);
-        state.carry_out_navy_orders();
+        let _ = state.carry_out_navy_orders();
         assert_eq!(state.ships[0].location, OceanZoneId::new(3));
         assert!(
             state.task_forces.is_empty(),

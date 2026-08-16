@@ -158,6 +158,7 @@ mod assessment;
 mod execution;
 mod player;
 
+pub use execution::{NavyOrdersContinuation, PendingNavalBattle};
 pub use player::{NavyOrder, NavySelectionClick, NavyTileClick, NavyToolbarCounts};
 
 impl GameState {

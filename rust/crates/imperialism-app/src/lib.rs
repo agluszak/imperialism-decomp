@@ -27,6 +27,7 @@ pub(crate) enum AppState {
     TechnologyAdvance,
     Newspaper,
     LandBattle,
+    NavalBattle,
     OpeningCinematic,
     CouncilOfGovernors,
     BattleReport,

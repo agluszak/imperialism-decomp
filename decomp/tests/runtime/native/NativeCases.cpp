@@ -42,7 +42,8 @@ RuntimeActionResult RunNationResourceYieldRebuildMultipleTowns(NativeTransition&
 
 RuntimeActionResult RunSpecialistRecruitment(NativeTransition& transition);
 RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition);
-RuntimeActionResult RunMilitaryPhaseSupportedSubset(NativeTransition& transition);
+RuntimeActionResult RunMilitaryPhase(NativeTransition& transition);
+RuntimeActionResult RunMilitaryPhaseShipsWithoutOrders(NativeTransition& transition);
 RuntimeActionResult RunAdvisoryMapMissionsCase16(NativeTransition& transition);
 RuntimeActionResult RunArmyMovementGiveOrders(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesUncontested(NativeTransition& transition);
@@ -143,7 +144,8 @@ const NativeCase kCases[] = {
     {"nation_resource_yield_rebuild_multiple_towns", RunNationResourceYieldRebuildMultipleTowns},
     {"specialist_recruitment", RunSpecialistRecruitment},
     {"military_maintenance", RunMilitaryMaintenance},
-    {"military_phase_supported_subset", RunMilitaryPhaseSupportedSubset},
+    {"military_phase", RunMilitaryPhase},
+    {"military_phase_ships_without_orders", RunMilitaryPhaseShipsWithoutOrders},
     {"advisory_map_missions_case16", RunAdvisoryMapMissionsCase16},
     {"army_movement_give_orders", RunArmyMovementGiveOrders},
     {"combat_moves_uncontested", RunCombatMovesUncontested},

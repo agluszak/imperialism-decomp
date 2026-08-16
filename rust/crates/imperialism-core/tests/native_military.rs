@@ -108,10 +108,22 @@ struct EmptyCase {}
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
-fn military_phase_supported_subset() {
-    compare_native("military_phase_supported_subset", |state, _: EmptyCase| {
-        differential::apply_military_orders(state);
+fn military_phase() {
+    compare_native("military_phase", |state, _: EmptyCase| {
+        state.do_military();
     })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn military_phase_ships_without_orders() {
+    compare_native(
+        "military_phase_ships_without_orders",
+        |state, _: EmptyCase| {
+            state.do_military();
+        },
+    )
     .unwrap();
 }
 

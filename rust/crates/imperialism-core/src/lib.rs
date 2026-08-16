@@ -131,6 +131,7 @@ pub use nation_economy::{
 };
 pub use nations::{AutoGreatPowerState, MajorNation, MinorNation, NationCommonState, Nations};
 pub use navy_orders::{NavyOrder, NavySelectionClick, NavyTileClick, NavyToolbarCounts};
+pub use navy_orders::{NavyOrdersContinuation, PendingNavalBattle};
 pub use news::{
     DiplomacyNotice, DiplomacyProposal, InterNationNewsKind, LandSale, NEWS_TEMPLATE_COUNT,
     NationPendingWork, NewsArgument, NewsPage, NewsState, NewsStory, PendingNewspaperEvent,
