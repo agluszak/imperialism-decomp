@@ -62,7 +62,7 @@ jobs:
           test -z "$(git diff --name-only --diff-filter=U)"
           git diff --check
 
-      - name: Fix typed differential test identity
+      - name: Normalize typed differential test identity
         shell: bash
         run: |
           set -euxo pipefail
@@ -70,10 +70,11 @@ jobs:
           from pathlib import Path
           path = Path('rust/crates/imperialism-core/tests/native_military.rs')
           text = path.read_text()
-          old = 'before.task_force_toolbar_counts(0.into())'
-          new = 'before.task_force_toolbar_counts(TaskForceIndex::new(0))'
-          assert text.count(old) == 1, text.count(old)
-          path.write_text(text.replace(old, new))
+          text = text.replace(
+              'task_force_toolbar_counts(0.into())',
+              'task_force_toolbar_counts(TaskForceIndex::new(0))',
+          )
+          path.write_text(text)
           PY
 
       - name: Install native build dependencies
