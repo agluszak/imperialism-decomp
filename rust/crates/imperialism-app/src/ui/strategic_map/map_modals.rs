@@ -2,7 +2,7 @@
 
 use crate::AppState;
 use crate::ui::generated;
-use crate::ui::retail::{ModalDialog, RetailTag, RetailTree};
+use crate::ui::retail::{ModalDialog, RetailTree};
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -16,8 +16,7 @@ pub(crate) fn register(app: &mut App) {
     app.add_systems(
         Update,
         bind_added_map_modals.run_if(in_state(AppState::StrategicMap)),
-    )
-    .add_observer(on_map_modal_close.run_if(in_state(AppState::StrategicMap)));
+    );
 }
 
 pub(crate) fn spawn_garrison(commands: &mut Commands, _province: ProvinceId) {
@@ -69,7 +68,10 @@ fn bind_added_map_modals(
     for root in &added {
         for tag in [fourcc!("okay"), fourcc!("end ")] {
             if let Some(entity) = tree.try_find(root, tag) {
-                commands.entity(entity).insert(ActivateOnPress);
+                commands
+                    .entity(entity)
+                    .insert(ActivateOnPress)
+                    .observe(on_map_modal_close);
             }
         }
     }
@@ -78,16 +80,9 @@ fn bind_added_map_modals(
 fn on_map_modal_close(
     activate: On<Activate>,
     mut commands: Commands,
-    tags: Query<&RetailTag>,
     child_of: Query<&ChildOf>,
     modals: Query<Entity, With<MapModal>>,
 ) {
-    let Ok(tag) = tags.get(activate.entity) else {
-        return;
-    };
-    if tag.0 != fourcc!("okay") && tag.0 != fourcc!("end ") {
-        return;
-    }
     let mut entity = activate.entity;
     for _ in 0..8 {
         if modals.contains(entity) {

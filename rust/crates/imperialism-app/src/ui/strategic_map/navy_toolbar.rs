@@ -1,9 +1,8 @@
 //! Right-hand navy command page (`unav` / `TNavyToolbarCluster`).
 
 use super::super::retail::{RetailTree, RetailUiAssets};
-use super::civilian_orders::StrategicSelection;
 use super::map_interaction::{
-    ArmySelection, MapInteractionMode, NavySelection, cycle_map_interaction_selection,
+    MapInteractionMode, StrategicInteraction, cycle_map_interaction_selection,
 };
 use super::map_modals::spawn_navy_roster;
 use crate::AppState;
@@ -47,9 +46,7 @@ pub(crate) fn register(app: &mut App) {
     app.add_systems(
         Update,
         sync_navy_toolbar.run_if(in_state(AppState::StrategicMap)),
-    )
-    .add_observer(on_navy_command.run_if(in_state(AppState::StrategicMap)))
-    .add_observer(on_navy_class_arrow.run_if(in_state(AppState::StrategicMap)));
+    );
 }
 
 pub(crate) fn bind_navy_toolbar(
@@ -87,20 +84,23 @@ pub(crate) fn bind_navy_toolbar(
             .entity(ship)
             .insert((NavyClassShip, Visibility::Hidden));
         let arrow = tree.child(cluster, fourcc!("arro"));
-        commands.entity(arrow).insert((
-            NavyClassArrow(index as u8),
-            ImageNode {
-                image: arrow_atlas.clone(),
-                rect: Some(Rect::from_corners(
-                    Vec2::new(10.0, 0.0),
-                    Vec2::new(21.0, 16.0),
-                )),
-                ..default()
-            },
-            RelativeCursorPosition::default(),
-            ActivateOnPress,
-            Visibility::Hidden,
-        ));
+        commands
+            .entity(arrow)
+            .insert((
+                NavyClassArrow(index as u8),
+                ImageNode {
+                    image: arrow_atlas.clone(),
+                    rect: Some(Rect::from_corners(
+                        Vec2::new(10.0, 0.0),
+                        Vec2::new(21.0, 16.0),
+                    )),
+                    ..default()
+                },
+                RelativeCursorPosition::default(),
+                ActivateOnPress,
+                Visibility::Hidden,
+            ))
+            .observe(on_navy_class_arrow);
         spawn_count_label(commands, arrow, assets);
     }
     for (tag, command) in [
@@ -114,7 +114,8 @@ pub(crate) fn bind_navy_toolbar(
     ] {
         commands
             .entity(tree.child(page, tag))
-            .insert((command, ActivateOnPress));
+            .insert((command, ActivateOnPress))
+            .observe(on_navy_command);
     }
 }
 
@@ -129,8 +130,7 @@ pub(crate) fn navy_page_position(mode: MapInteractionMode) -> Vec2 {
 #[allow(clippy::too_many_arguments, clippy::type_complexity)]
 fn sync_navy_toolbar(
     session: Res<GameSession>,
-    mode: Res<MapInteractionMode>,
-    navy: Res<NavySelection>,
+    interactions: Query<Ref<StrategicInteraction>>,
     mut assets: RetailUiAssets,
     mut pages: Query<&mut Node, With<NavyToolbarPage>>,
     mut ships: Query<
@@ -152,16 +152,22 @@ fn sync_navy_toolbar(
     mut radios: Query<(&NavyCommand, Entity)>,
     mut commands: Commands,
 ) {
-    if !session.is_changed() && !mode.is_changed() && !navy.is_changed() {
+    let Ok(interaction) = interactions.single() else {
+        return;
+    };
+    if !session.is_changed() && !interaction.is_changed() {
         return;
     }
     let Ok(mut page) = pages.single_mut() else {
         return;
     };
-    let position = navy_page_position(*mode);
+    let position = navy_page_position(interaction.mode);
     page.left = Val::Px(position.x);
     page.top = Val::Px(position.y);
-    let force = navy.force.filter(|_| *mode == MapInteractionMode::Navy);
+    let force = interaction
+        .navy
+        .force
+        .filter(|_| interaction.mode == MapInteractionMode::Navy);
     let toolbar = session.game.navy_toolbar_counts(force);
     for (entity, class) in &classes {
         let slot = usize::from(class.0);
@@ -260,40 +266,39 @@ fn spawn_count_label(commands: &mut Commands, parent: Entity, assets: &mut Retai
     ));
 }
 
-#[allow(clippy::too_many_arguments)]
 fn on_navy_command(
     activate: On<Activate>,
     commands_query: Query<&NavyCommand>,
     mut commands: Commands,
     mut session: ResMut<GameSession>,
-    mut mode: ResMut<MapInteractionMode>,
-    mut civilian: Query<&mut StrategicSelection>,
-    mut army: ResMut<ArmySelection>,
-    mut navy: ResMut<NavySelection>,
+    mut interactions: Query<&mut StrategicInteraction>,
 ) {
     let Ok(command) = commands_query.get(activate.entity) else {
         return;
     };
+    let Ok(mut interaction) = interactions.single_mut() else {
+        return;
+    };
     match *command {
         NavyCommand::Aggression(level) => {
-            if let Some(force) = navy.force {
+            if let Some(force) = interaction.navy.force {
                 session.game.set_task_force_aggression(force, level);
             }
         }
         NavyCommand::Defend => {
-            if let Some(force) = navy.force {
+            if let Some(force) = interaction.navy.force {
                 session.game.drop_task_force_ships(force, false);
             }
-            cycle_after(&mut session, &mut mode, &mut civilian, &mut army, &mut navy);
+            cycle_map_interaction_selection(&mut session, &mut interaction);
         }
         NavyCommand::Done => {
-            if let Some(force) = navy.force {
+            if let Some(force) = interaction.navy.force {
                 session.game.drop_task_force_ships(force, true);
             }
-            cycle_after(&mut session, &mut mode, &mut civilian, &mut army, &mut navy);
+            cycle_map_interaction_selection(&mut session, &mut interaction);
         }
         NavyCommand::Next => {
-            cycle_after(&mut session, &mut mode, &mut civilian, &mut army, &mut navy);
+            cycle_map_interaction_selection(&mut session, &mut interaction);
         }
         NavyCommand::Bomb => {
             spawn_navy_roster(&mut commands);
@@ -305,12 +310,15 @@ fn on_navy_class_arrow(
     activate: On<Activate>,
     arrows: Query<(&NavyClassArrow, &RelativeCursorPosition)>,
     mut session: ResMut<GameSession>,
-    navy: Res<NavySelection>,
+    interactions: Query<&StrategicInteraction>,
 ) {
     let Ok((arrow, cursor)) = arrows.get(activate.entity) else {
         return;
     };
-    let Some(force) = navy.force else {
+    let Ok(interaction) = interactions.single() else {
+        return;
+    };
+    let Some(force) = interaction.navy.force else {
         return;
     };
     let Some(normalized) = cursor.normalized else {
@@ -323,17 +331,4 @@ fn on_navy_class_arrow(
     session
         .game
         .select_task_force_toolbar_class(force, i16::from(arrow.0), normalized.y < 0.0);
-}
-
-fn cycle_after(
-    session: &mut GameSession,
-    mode: &mut MapInteractionMode,
-    civilian: &mut Query<&mut StrategicSelection>,
-    army: &mut ArmySelection,
-    navy: &mut NavySelection,
-) {
-    let Ok(mut civilian) = civilian.single_mut() else {
-        return;
-    };
-    cycle_map_interaction_selection(session, mode, &mut civilian, army, navy);
 }

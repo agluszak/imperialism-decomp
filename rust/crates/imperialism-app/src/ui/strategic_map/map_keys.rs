@@ -1,8 +1,7 @@
 //! Confirmed `TWorldView::DoKeyEvent` bindings: N/W/C/Z/X/A.
 
-use super::civilian_orders::StrategicSelection;
 use super::map_interaction::{
-    ArmySelection, MapInteractionMode, NavySelection, OceanView, cycle_map_interaction_selection,
+    MapInteractionMode, OceanView, StrategicInteraction, cycle_map_interaction_selection,
     has_active_map_interaction_selection, navy_zone_center_tile,
 };
 use crate::AppState;
@@ -17,61 +16,45 @@ pub(crate) fn register(app: &mut App) {
 fn map_hotkeys(
     keys: Res<ButtonInput<KeyCode>>,
     mut session: ResMut<GameSession>,
-    mut mode: ResMut<MapInteractionMode>,
-    mut civilian: Query<&mut StrategicSelection>,
-    mut army: ResMut<ArmySelection>,
-    mut navy: ResMut<NavySelection>,
-    mut ocean: ResMut<OceanView>,
+    mut interactions: Query<&mut StrategicInteraction>,
 ) {
-    let Ok(mut civilian) = civilian.single_mut() else {
+    let Ok(mut interaction) = interactions.single_mut() else {
         return;
     };
     let nation = session.game.turn().active_nation;
     if keys.just_pressed(KeyCode::KeyN) {
         session.game.clear_nation_army_action_modes(nation);
-        if !has_active_map_interaction_selection(*mode, civilian.0, army.0, navy.force) {
-            cycle_map_interaction_selection(
-                &mut session,
-                &mut mode,
-                &mut civilian,
-                &mut army,
-                &mut navy,
-            );
+        if !has_active_map_interaction_selection(&interaction) {
+            cycle_map_interaction_selection(&mut session, &mut interaction);
         }
     }
     if keys.just_pressed(KeyCode::KeyW) {
         session.game.clear_nation_civilian_action_modes(nation);
-        if !has_active_map_interaction_selection(*mode, civilian.0, army.0, navy.force) {
-            cycle_map_interaction_selection(
-                &mut session,
-                &mut mode,
-                &mut civilian,
-                &mut army,
-                &mut navy,
-            );
+        if !has_active_map_interaction_selection(&interaction) {
+            cycle_map_interaction_selection(&mut session, &mut interaction);
         }
     }
     if keys.just_pressed(KeyCode::KeyC) {
         center_current_selection(
             &mut session,
-            *mode,
-            civilian.0,
-            army.0,
-            navy.zone,
-            &mut ocean,
+            interaction.mode,
+            interaction.civilian,
+            interaction.army,
+            interaction.navy.zone,
+            &mut interaction.ocean,
         );
     }
     if keys.just_pressed(KeyCode::KeyX)
         && let Some(tile) = session.game.representative_tile_for_nation(nation)
     {
-        center_on(&mut session, &mut ocean, tile);
+        center_on(&mut session, &mut interaction.ocean, tile);
     }
     if keys.just_pressed(KeyCode::KeyA) {
         session.game.free_ships_of(nation);
-        navy.force = None;
+        interaction.navy.force = None;
     }
     if keys.just_pressed(KeyCode::KeyZ) {
-        toggle_ocean_view(&mut session, &mut ocean);
+        toggle_ocean_view(&mut session, &mut interaction.ocean);
     }
 }
 

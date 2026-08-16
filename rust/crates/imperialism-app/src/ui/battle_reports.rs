@@ -10,13 +10,9 @@ use imperialism_core::*;
 use imperialism_formats::fourcc;
 
 #[derive(Component)]
-struct BattleReportRoot;
-
-#[derive(Component)]
-struct BattleReportClose;
-
-#[derive(Component)]
-struct BattleReportDetailButton;
+struct BattleReportRoot {
+    selected: usize,
+}
 
 #[derive(Component, Clone, Copy)]
 enum BattleReportStep {
@@ -24,62 +20,34 @@ enum BattleReportStep {
     Next,
 }
 
-#[derive(Resource, Default)]
-struct SelectedBattleReport(usize);
-
 #[derive(Component)]
 struct BattleReportField(&'static str);
 
 #[derive(Component)]
 struct DetailRoot;
 
-#[derive(Component)]
-struct DetailClose;
-
 pub(crate) struct BattleReportPlugin;
 
 impl Plugin for BattleReportPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<SelectedBattleReport>()
-            .add_systems(
-                OnEnter(AppState::BattleReport),
-                (
-                    reset_selected_report,
-                    spawn_battle_report,
-                    bind_battle_report,
-                )
-                    .chain(),
-            )
-            .add_systems(
-                Update,
-                project_battle_report.run_if(
-                    in_state(AppState::BattleReport).and_then(resource_exists::<GameSession>),
-                ),
-            )
-            .add_observer(on_battle_report_activate.run_if(in_state(AppState::BattleReport)))
-            .add_systems(
-                OnEnter(AppState::BattleReportDetail),
-                (spawn_detail, bind_detail).chain(),
-            )
-            .add_systems(
-                Update,
-                project_detail.run_if(
-                    in_state(AppState::BattleReportDetail).and_then(resource_exists::<GameSession>),
-                ),
-            )
-            .add_observer(on_detail_close.run_if(in_state(AppState::BattleReportDetail)));
+        app.add_systems(
+            OnEnter(AppState::BattleReport),
+            (spawn_battle_report, bind_battle_report).chain(),
+        )
+        .add_systems(
+            Update,
+            (project_battle_report, bind_detail, project_detail)
+                .run_if(in_state(AppState::BattleReport).and_then(resource_exists::<GameSession>)),
+        );
     }
-}
-
-fn reset_selected_report(mut selected: ResMut<SelectedBattleReport>) {
-    selected.0 = 0;
 }
 
 fn spawn_battle_report(mut commands: Commands) {
     let root = commands.spawn_scene(generated::diplo_1351()).id();
-    commands
-        .entity(root)
-        .insert((BattleReportRoot, DespawnOnExit(AppState::BattleReport)));
+    commands.entity(root).insert((
+        BattleReportRoot { selected: 0 },
+        DespawnOnExit(AppState::BattleReport),
+    ));
 }
 
 fn bind_battle_report(
@@ -89,16 +57,20 @@ fn bind_battle_report(
 ) {
     commands
         .entity(tree.find(*root, fourcc!("okay")))
-        .insert((BattleReportClose, ActivateOnPress));
+        .insert(ActivateOnPress)
+        .observe(on_battle_report_close);
     commands
         .entity(tree.find(*root, fourcc!("info")))
-        .insert((BattleReportDetailButton, ActivateOnPress));
+        .insert(ActivateOnPress)
+        .observe(on_battle_report_detail);
     commands
         .entity(tree.find(*root, fourcc!("prev")))
-        .insert((BattleReportStep::Prev, ActivateOnPress));
+        .insert((BattleReportStep::Prev, ActivateOnPress))
+        .observe(on_battle_report_step);
     commands
         .entity(tree.find(*root, fourcc!("next")))
-        .insert((BattleReportStep::Next, ActivateOnPress));
+        .insert((BattleReportStep::Next, ActivateOnPress))
+        .observe(on_battle_report_step);
     for (tag, field) in [
         (fourcc!("resu"), "resu"),
         (fourcc!("loca"), "loca"),
@@ -115,15 +87,18 @@ fn bind_battle_report(
 
 fn project_battle_report(
     session: Res<GameSession>,
-    selected: Res<SelectedBattleReport>,
+    roots: Query<Ref<BattleReportRoot>>,
     added: Query<(), Added<BattleReportField>>,
     mut fields: Query<(&BattleReportField, &mut Text)>,
 ) {
-    if super::projection_idle(&session, !added.is_empty()) && !selected.is_changed() {
+    let Ok(root) = roots.single() else {
+        return;
+    };
+    if super::projection_idle(&session, !added.is_empty()) && !root.is_changed() {
         return;
     }
     let reports = session.game.battle_reports();
-    let Some(report) = reports.get(selected.0) else {
+    let Some(report) = reports.get(root.selected) else {
         for (_, mut text) in &mut fields {
             text.0.clear();
         }
@@ -156,29 +131,37 @@ fn project_battle_report(
     }
 }
 
-fn on_battle_report_activate(
-    activate: On<Activate>,
-    close: Query<(), With<BattleReportClose>>,
-    detail: Query<(), With<BattleReportDetailButton>>,
-    step: Query<&BattleReportStep>,
+fn on_battle_report_close(
+    _activate: On<Activate>,
     mut session: ResMut<GameSession>,
-    mut selected: ResMut<SelectedBattleReport>,
     mut next_state: ResMut<NextState<AppState>>,
     assets: Option<Res<crate::RetailAssetsResource>>,
 ) {
-    if close.get(activate.entity).is_ok() {
-        apply_turn_stop(
-            session
-                .game
-                .close_post_combat_reports(super::session::news_story_ids(assets.as_deref())),
-            &mut next_state,
-        );
-        return;
+    apply_turn_stop(
+        session
+            .game
+            .close_post_combat_reports(super::session::news_story_ids(assets.as_deref())),
+        &mut next_state,
+    );
+}
+
+fn on_battle_report_detail(
+    _activate: On<Activate>,
+    mut commands: Commands,
+    session: Res<GameSession>,
+    details: Query<(), With<DetailRoot>>,
+) {
+    if details.is_empty() && !session.game.battle_reports().is_empty() {
+        spawn_detail(&mut commands);
     }
-    if detail.get(activate.entity).is_ok() && !session.game.battle_reports().is_empty() {
-        next_state.set(AppState::BattleReportDetail);
-        return;
-    }
+}
+
+fn on_battle_report_step(
+    activate: On<Activate>,
+    step: Query<&BattleReportStep>,
+    session: Res<GameSession>,
+    mut roots: Query<&mut BattleReportRoot>,
+) {
     let Ok(step) = step.get(activate.entity) else {
         return;
     };
@@ -186,32 +169,32 @@ fn on_battle_report_activate(
     if count == 0 {
         return;
     }
-    selected.0 = match *step {
-        BattleReportStep::Prev => (selected.0 + count - 1) % count,
-        BattleReportStep::Next => (selected.0 + 1) % count,
+    let Ok(mut root) = roots.single_mut() else {
+        return;
+    };
+    root.selected = match *step {
+        BattleReportStep::Prev => (root.selected + count - 1) % count,
+        BattleReportStep::Next => (root.selected + 1) % count,
     };
 }
 
-fn spawn_detail(mut commands: Commands) {
+fn spawn_detail(commands: &mut Commands) {
     let root = commands.spawn_scene(generated::diplo_1352()).id();
     commands
         .entity(root)
-        .insert((DetailRoot, DespawnOnExit(AppState::BattleReportDetail)));
+        .insert((DetailRoot, DespawnOnExit(AppState::BattleReport)));
 }
 
-fn bind_detail(
-    mut commands: Commands,
-    root: Single<Entity, Added<DetailRoot>>,
-    tree: RetailTree,
-) {
+fn bind_detail(mut commands: Commands, root: Single<Entity, Added<DetailRoot>>, tree: RetailTree) {
     commands
         .entity(tree.find(*root, fourcc!("okay")))
-        .insert((DetailClose, ActivateOnPress));
+        .insert(ActivateOnPress)
+        .observe(on_detail_close);
 }
 
 fn project_detail(
     session: Res<GameSession>,
-    selected: Res<SelectedBattleReport>,
+    selected: Single<&BattleReportRoot>,
     added: Query<(), Added<DetailRoot>>,
     tree: RetailTree,
     root: Query<Entity, With<DetailRoot>>,
@@ -223,7 +206,7 @@ fn project_detail(
     let Ok(root) = root.single() else {
         return;
     };
-    let Some(report) = session.game.battle_reports().get(selected.0) else {
+    let Some(report) = session.game.battle_reports().get(selected.selected) else {
         return;
     };
     let left = tree.find(root, fourcc!("natL"));
@@ -237,12 +220,11 @@ fn project_detail(
 }
 
 fn on_detail_close(
-    activate: On<Activate>,
-    actions: Query<(), With<DetailClose>>,
-    mut next_state: ResMut<NextState<AppState>>,
+    _activate: On<Activate>,
+    details: Query<Entity, With<DetailRoot>>,
+    mut commands: Commands,
 ) {
-    if actions.get(activate.entity).is_err() {
-        return;
+    for detail in &details {
+        commands.entity(detail).despawn();
     }
-    next_state.set(AppState::BattleReport);
 }

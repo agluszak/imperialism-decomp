@@ -32,8 +32,7 @@ impl Plugin for LandBattlePlugin {
             Update,
             project_land_battle
                 .run_if(in_state(AppState::LandBattle).and_then(resource_exists::<GameSession>)),
-        )
-        .add_observer(on_land_battle_activate.run_if(in_state(AppState::LandBattle)));
+        );
     }
 }
 
@@ -61,10 +60,12 @@ fn bind_land_battle_controls(commands: &mut Commands, root: Entity, tree: &Retai
     commands
         .entity(tree.find(root, fourcc!("auto")))
         .insert((LandBattleAction::Auto, ActivateOnPress))
+        .observe(on_land_battle_activate)
         .remove::<InteractionDisabled>();
     commands
         .entity(tree.find(root, fourcc!("retr")))
         .insert((LandBattleAction::Retreat, ActivateOnPress))
+        .observe(on_land_battle_activate)
         .remove::<InteractionDisabled>();
 }
 
@@ -329,8 +330,7 @@ mod tests {
                 project_land_battle.run_if(
                     in_state(AppState::LandBattle).and_then(resource_exists::<GameSession>),
                 ),
-            )
-            .add_observer(on_land_battle_activate.run_if(in_state(AppState::LandBattle)));
+            );
         app
     }
 

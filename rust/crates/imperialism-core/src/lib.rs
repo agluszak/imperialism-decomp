@@ -167,7 +167,9 @@ pub use technology::{
 pub use territory::{CountryStatus, ProvinceState};
 pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};
 pub use trade_phase::{PendingTradeOffer, TradeProgress, TradeSession};
-pub use turn_flow::{PhaseCode, ScenarioMapId, TurnContinuation, TurnState, TurnStop};
+pub use turn_flow::{
+    CinematicKind, PhaseCode, ScenarioMapId, TurnContinuation, TurnState, TurnStop,
+};
 pub use turn_tail::{EliminationOutcome, QuarterGateResult};
 pub use units::{
     CivilianLocation, CivilianUnitKind, CivilianUnitState, CivilianUnitTable, MilitaryOrder,

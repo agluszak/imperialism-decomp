@@ -5,6 +5,13 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum CinematicKind {
+    Vote,
+    Win,
+    Lose,
+}
+
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TurnState {
     pub scenario_map: Option<ScenarioMapId>,
@@ -291,12 +298,14 @@ impl GameState {
 
     /// Movie clip for `kTurnEventOpeningCinematic`. Switches on the entered mode, not
     /// the already-updated `turnStateCode` (`HandleTurnEventDialogFactorySlotF4`).
-    pub fn opening_cinematic_movie(&self) -> &'static str {
+    pub fn opening_cinematic_movie(&self) -> CinematicKind {
         match self.continuation {
-            TurnContinuation::DecadeCinematic => "vote",
-            TurnContinuation::Victory => "win",
-            TurnContinuation::PlayerEliminated | TurnContinuation::GreatPowerLoss => "lose",
-            _ => "lose",
+            TurnContinuation::DecadeCinematic => CinematicKind::Vote,
+            TurnContinuation::Victory => CinematicKind::Win,
+            TurnContinuation::PlayerEliminated | TurnContinuation::GreatPowerLoss => {
+                CinematicKind::Lose
+            }
+            _ => CinematicKind::Lose,
         }
     }
 
@@ -918,15 +927,17 @@ mod tests {
             eliminated.advance_turn(&[]),
             crate::TurnStop::PlayerEliminated
         );
-        assert_eq!(eliminated.turn.phase(), crate::PhaseCode::CITY_AND_TRANSPORT);
+        assert_eq!(
+            eliminated.turn.phase(),
+            crate::PhaseCode::CITY_AND_TRANSPORT
+        );
 
         let mut victory = game_state();
         let survivor = MajorNationId::new(0);
         victory.turn.active_nation = survivor.nation();
-        victory.nations.append_owned_region_during_construction(
-            survivor.nation(),
-            crate::ProvinceId::new(0),
-        );
+        victory
+            .nations
+            .append_owned_region_during_construction(survivor.nation(), crate::ProvinceId::new(0));
         victory.turn.phase = crate::PhaseCode::ELIMINATION;
         assert_eq!(victory.advance_turn(&[]), crate::TurnStop::Victory);
         assert_eq!(victory.turn.phase(), crate::PhaseCode::CITY_AND_TRANSPORT);
@@ -965,13 +976,13 @@ mod tests {
     fn opening_cinematic_movie_follows_entered_mode() {
         let mut state = game_state();
         state.continuation = crate::TurnContinuation::DecadeCinematic;
-        assert_eq!(state.opening_cinematic_movie(), "vote");
+        assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Vote);
         state.continuation = crate::TurnContinuation::Victory;
-        assert_eq!(state.opening_cinematic_movie(), "win");
+        assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Win);
         state.continuation = crate::TurnContinuation::PlayerEliminated;
-        assert_eq!(state.opening_cinematic_movie(), "lose");
+        assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Lose);
         state.continuation = crate::TurnContinuation::GreatPowerLoss;
-        assert_eq!(state.opening_cinematic_movie(), "lose");
+        assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Lose);
     }
 
     #[test]
