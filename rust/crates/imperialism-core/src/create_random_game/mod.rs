@@ -257,7 +257,6 @@ pub fn create_random_game(
             selected_nation: human_nation.nation(),
             last_turn_alert_tick: 0,
             turn_alert_mask: 0,
-            turn_alerts_enabled: true,
             turn_cooldown_defer_counter: 0,
         },
         unit_ids,
@@ -283,6 +282,7 @@ pub fn create_random_game(
         missions,
         news: NewsState::default(),
         pending,
+        battle_reports: Vec::new(),
         continuation: crate::turn_flow::TurnContinuation::None,
     }
 }

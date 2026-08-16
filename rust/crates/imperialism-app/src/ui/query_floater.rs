@@ -1,8 +1,7 @@
-use super::deal_book::DealBookReturn;
 use super::generated;
-use super::retail::{ModalDialog, RetailTag, find_descendant};
-use crate::AppState;
+use super::retail::{ModalDialog, RetailTree, ancestor_with};
 use crate::RetailAssetsResource;
+use crate::{AppState, ReturnTo};
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -40,14 +39,9 @@ impl Plugin for QueryFloaterPlugin {
     }
 }
 
-pub(crate) fn bind_query_floater_control(
-    commands: &mut Commands,
-    root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-) {
+pub(crate) fn bind_query_floater_control(commands: &mut Commands, root: Entity, tree: &RetailTree) {
     commands
-        .entity(find_descendant(root, fourcc!("quer"), children, tags))
+        .entity(tree.find(root, fourcc!("quer")))
         .insert((OpenQueryFloater, ActivateOnPress))
         .remove::<InteractionDisabled>()
         .observe(on_open_query_floater);
@@ -77,26 +71,24 @@ fn on_open_query_floater(
 fn bind_query_floaters(
     mut commands: Commands,
     roots: Query<Entity, Added<QueryFloaterRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     assets: Res<RetailAssetsResource>,
 ) {
     for root in &roots {
+        let view = tree.view(root);
         for (tag, index) in QUERY_LABELS {
             let text = assets
                 .string(0x2757, index)
                 .expect("retail query-floater label must load");
-            commands
-                .entity(find_descendant(root, tag, &children, &tags))
-                .insert(Text::new(text));
+            commands.entity(view.find(tag)).insert(Text::new(text));
         }
         commands
-            .entity(find_descendant(root, fourcc!("deal"), &children, &tags))
+            .entity(view.find(fourcc!("deal")))
             .insert((QueryFloaterAction::DealBook, ActivateOnPress))
             .remove::<InteractionDisabled>()
             .observe(on_query_floater_activate);
         commands
-            .entity(find_descendant(root, fourcc!("cncl"), &children, &tags))
+            .entity(view.find(fourcc!("cncl")))
             .insert((QueryFloaterAction::Cancel, ActivateOnPress))
             .remove::<InteractionDisabled>()
             .observe(on_query_floater_activate);
@@ -107,9 +99,7 @@ fn bind_query_floaters(
             fourcc!("batt"),
             fourcc!("char"),
         ] {
-            commands
-                .entity(find_descendant(root, tag, &children, &tags))
-                .insert(InteractionDisabled);
+            commands.entity(view.find(tag)).insert(InteractionDisabled);
         }
     }
 }
@@ -126,20 +116,12 @@ fn on_query_floater_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let mut entity = activate.entity;
-    let root = loop {
-        if roots.contains(entity) {
-            break entity;
-        }
-        entity = parents
-            .get(entity)
-            .expect("query floater action belongs to its dialog")
-            .parent();
-    };
+    let root = ancestor_with(activate.entity, &parents, &roots)
+        .expect("query floater action belongs to its dialog");
     match *action {
         QueryFloaterAction::DealBook => {
             commands.entity(root).despawn();
-            commands.insert_resource(DealBookReturn(*state.get()));
+            commands.insert_resource(ReturnTo(*state.get()));
             next_state.set(AppState::DealBook);
         }
         QueryFloaterAction::Cancel => {
@@ -175,7 +157,7 @@ mod tests {
             app.world().resource::<State<AppState>>().get(),
             &AppState::DealBook
         );
-        assert_eq!(app.world().resource::<DealBookReturn>().0, AppState::Trade);
+        assert_eq!(app.world().resource::<ReturnTo>().0, AppState::Trade);
         assert!(app.world().get_entity(root).is_err());
     }
 }

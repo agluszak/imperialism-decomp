@@ -1,11 +1,10 @@
-use crate::AppState;
 use crate::ui::generated;
 use crate::ui::hover_help::{
     HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, get_string,
 };
 use crate::ui::load_save::{LoadSaveMode, open_load_save};
-use crate::ui::preferences::PreferencesReturn;
-use crate::ui::retail::{RetailTag, RetailUiAssets, find_descendant};
+use crate::ui::retail::{RetailTree, RetailUiAssets};
+use crate::{AppState, ReturnTo};
 use bevy::app::AppExit;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -49,8 +48,7 @@ fn enter_main_menu(mut commands: Commands) {
 fn bind_main_menu_actions(
     mut commands: Commands,
     root: Single<Entity, Added<MainMenuRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
 ) {
     for (tag, action) in [
         (fourcc!("rand"), MainMenuAction::RandomGame),
@@ -58,7 +56,7 @@ fn bind_main_menu_actions(
         (fourcc!("pref"), MainMenuAction::Preferences),
         (fourcc!("quit"), MainMenuAction::Quit),
     ] {
-        let entity = find_descendant(*root, tag, &children, &tags);
+        let entity = tree.find(*root, tag);
         commands
             .entity(entity)
             .insert(action)
@@ -70,12 +68,11 @@ fn bind_main_menu_actions(
 fn bind_main_menu_hover_help(
     mut commands: Commands,
     root: Single<Entity, Added<MainMenuRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
 ) {
-    let bar = find_descendant(*root, fourcc!("curs"), &children, &tags);
+    let bar = tree.find(*root, fourcc!("curs"));
     bind_hover_help_bar(
         &mut commands,
         &mut assets,
@@ -88,8 +85,7 @@ fn bind_main_menu_hover_help(
     bind_hover_help_texts(
         &mut commands,
         *root,
-        &children,
-        &tags,
+        &tree,
         [
             (fourcc!("main"), String::new()),
             (fourcc!("rand"), get_string(&assets, 0x2737, 0)),
@@ -124,7 +120,7 @@ fn on_main_menu_activate(
             );
         }
         MainMenuAction::Preferences => {
-            commands.insert_resource(PreferencesReturn(AppState::MainMenu));
+            commands.insert_resource(ReturnTo(AppState::MainMenu));
             next_state.set(AppState::Preferences);
         }
         MainMenuAction::Quit => {
@@ -136,6 +132,7 @@ fn on_main_menu_activate(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ui::retail::RetailTag;
     use bevy::ecs::message::Messages;
 
     fn app() -> App {

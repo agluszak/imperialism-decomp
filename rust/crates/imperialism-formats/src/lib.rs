@@ -8,10 +8,12 @@
 mod color;
 mod legacy_save;
 mod legacy_stream;
+mod media;
 mod retail_assets;
 mod retail_fonts;
 mod retail_resources;
 mod retail_ui;
+mod scores_dat;
 
 pub use color::{DibPalette, Rgb};
 pub use legacy_save::{
@@ -21,6 +23,7 @@ pub use legacy_save::{
     load_game_from_path, normalize_save_label, peek_save_header, peek_save_preview_owners,
     retail_save_path, write_game_state, write_save_file,
 };
+pub use media::{MovieId, MusicTrack, SoundId};
 pub use retail_assets::{NewsTable, RetailAssetError, RetailAssets};
 pub use retail_fonts::{
     ResolvedRetailTextStyle, RetailFontCellMetrics, RetailFontFace, RetailFontMetricsError,
@@ -29,3 +32,8 @@ pub use retail_fonts::{
 };
 pub use retail_resources::{IndexedPicture, RetailCursor};
 pub use retail_ui::{FourCc, OKAY, PictureId, TRADE};
+pub use scores_dat::{
+    HIGH_SCORE_COUNT, HIGH_SCORE_NAME_LENGTH, HighScoreEntry, HighScoreTable,
+    empty_high_score_table, insert_high_score, read_scores_dat, read_scores_dat_from,
+    write_scores_dat, write_scores_dat_to,
+};

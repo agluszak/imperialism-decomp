@@ -17,267 +17,254 @@ pub(in crate::ui::city) struct IndustryPage {
 }
 
 #[derive(Clone, Copy)]
-pub(in crate::ui::city) struct ArmoryRow {
-    pub(in crate::ui::city) category: MilitaryRecruitmentCategory,
-    pub(in crate::ui::city) order_tag: FourCc,
+pub(in crate::ui::city) struct CityChoiceRow {
+    pub(in crate::ui::city) binding: CityOrderBinding,
     pub(in crate::ui::city) button_tag: FourCc,
 }
 
-impl ArmoryRow {
-    pub(in crate::ui::city) const fn binding(self) -> CityOrderBinding {
-        CityOrderBinding {
-            order: CityOrderId::MilitaryRecruit(self.category),
-            tag: self.order_tag,
+impl CityChoiceRow {
+    const fn military(
+        category: MilitaryRecruitmentCategory,
+        (order_tag, button_tag): (FourCc, FourCc),
+    ) -> Self {
+        Self {
+            binding: CityOrderBinding {
+                order: CityOrderId::MilitaryRecruit(category),
+                tag: order_tag,
+            },
+            button_tag,
         }
     }
-}
 
-#[derive(Clone, Copy)]
-pub(in crate::ui::city) struct UniversityRow {
-    pub(in crate::ui::city) kind: CivilianUnitKind,
-    pub(in crate::ui::city) order_tag: FourCc,
-    pub(in crate::ui::city) button_tag: FourCc,
-}
+    const fn civilian(kind: CivilianUnitKind, (order_tag, button_tag): (FourCc, FourCc)) -> Self {
+        Self {
+            binding: CityOrderBinding {
+                order: CityOrderId::CivilianRecruit(kind),
+                tag: order_tag,
+            },
+            button_tag,
+        }
+    }
 
-impl UniversityRow {
-    pub(in crate::ui::city) const fn binding(self) -> CityOrderBinding {
-        CityOrderBinding {
-            order: CityOrderId::CivilianRecruit(self.kind),
-            tag: self.order_tag,
+    pub(in crate::ui::city) fn military_category(self) -> MilitaryRecruitmentCategory {
+        match self.binding.order {
+            CityOrderId::MilitaryRecruit(category) => category,
+            other => panic!("Armory row is a military recruit order, got {other:?}"),
+        }
+    }
+
+    pub(in crate::ui::city) fn civilian_kind(self) -> CivilianUnitKind {
+        match self.binding.order {
+            CityOrderId::CivilianRecruit(kind) => kind,
+            other => panic!("University row is a civilian recruit order, got {other:?}"),
         }
     }
 }
 
 #[derive(Clone, Copy)]
 pub(in crate::ui::city) struct ShipyardRow {
-    pub(in crate::ui::city) slot: ShipOrderSlot,
-    pub(in crate::ui::city) order_tag: FourCc,
+    pub(in crate::ui::city) binding: CityOrderBinding,
     pub(in crate::ui::city) button_tag: FourCc,
     pub(in crate::ui::city) overlay_left: f32,
 }
 
 impl ShipyardRow {
-    pub(in crate::ui::city) const fn binding(self) -> CityOrderBinding {
-        CityOrderBinding {
-            order: CityOrderId::Ship(self.slot),
-            tag: self.order_tag,
+    const fn new(
+        slot: ShipOrderSlot,
+        (order_tag, button_tag, overlay_left): (FourCc, FourCc, f32),
+    ) -> Self {
+        Self {
+            binding: CityOrderBinding {
+                order: CityOrderId::Ship(slot),
+                tag: order_tag,
+            },
+            button_tag,
+            overlay_left,
         }
     }
+
+    pub(in crate::ui::city) fn slot(self) -> ShipOrderSlot {
+        match self.binding.order {
+            CityOrderId::Ship(slot) => slot,
+            other => panic!("Shipyard row is a ship order, got {other:?}"),
+        }
+    }
+}
+
+const fn item_binding(item: ManufacturedItem, page: usize, order: usize) -> CityOrderBinding {
+    CityOrderBinding {
+        order: CityOrderId::Item(item),
+        tag: generated::INDUSTRY_PAGE_CONTROLS[page].order_tags[order],
+    }
+}
+
+const fn stock_binding(
+    resource: ResourceKind,
+    page: usize,
+    stock: usize,
+) -> (ResourceKind, FourCc, i16) {
+    (
+        resource,
+        generated::INDUSTRY_PAGE_CONTROLS[page].stocks[stock].0,
+        generated::INDUSTRY_PAGE_CONTROLS[page].stocks[stock].1,
+    )
 }
 
 pub(in crate::ui::city) const TRAINING_ORDERS: [CityOrderBinding; 2] = [
     CityOrderBinding {
         order: CityOrderId::Training(TrainingLevel::Medium),
-        tag: fourcc!("trai"),
+        tag: generated::TRAINING_ORDER_TAGS[0],
     },
     CityOrderBinding {
         order: CityOrderId::Training(TrainingLevel::High),
-        tag: fourcc!("prof"),
+        tag: generated::TRAINING_ORDER_TAGS[1],
     },
 ];
-pub(in crate::ui::city) const ARMORY_ROWS: [ArmoryRow; 8] = [
-    ArmoryRow {
-        category: MilitaryRecruitmentCategory::LightInfantry,
-        order_tag: fourcc!("clu0"),
-        button_tag: fourcc!("civ0"),
-    },
-    ArmoryRow {
-        category: MilitaryRecruitmentCategory::RegularInfantry,
-        order_tag: fourcc!("clu1"),
-        button_tag: fourcc!("civ1"),
-    },
-    ArmoryRow {
-        category: MilitaryRecruitmentCategory::HeavyInfantry,
-        order_tag: fourcc!("clu2"),
-        button_tag: fourcc!("civ2"),
-    },
-    ArmoryRow {
-        category: MilitaryRecruitmentCategory::LightCavalry,
-        order_tag: fourcc!("clu3"),
-        button_tag: fourcc!("civ3"),
-    },
-    ArmoryRow {
-        category: MilitaryRecruitmentCategory::HeavyCavalry,
-        order_tag: fourcc!("clu4"),
-        button_tag: fourcc!("civ4"),
-    },
-    ArmoryRow {
-        category: MilitaryRecruitmentCategory::LightArtillery,
-        order_tag: fourcc!("clu5"),
-        button_tag: fourcc!("civ5"),
-    },
-    ArmoryRow {
-        category: MilitaryRecruitmentCategory::HeavyArtillery,
-        order_tag: fourcc!("clu6"),
-        button_tag: fourcc!("civ6"),
-    },
-    ArmoryRow {
-        category: MilitaryRecruitmentCategory::Demolitionist,
-        order_tag: fourcc!("clu7"),
-        button_tag: fourcc!("civ7"),
-    },
+pub(in crate::ui::city) const ARMORY_ROWS: [CityChoiceRow; 8] = [
+    CityChoiceRow::military(
+        MilitaryRecruitmentCategory::LightInfantry,
+        generated::ARMORY_ROW_CONTROLS[0],
+    ),
+    CityChoiceRow::military(
+        MilitaryRecruitmentCategory::RegularInfantry,
+        generated::ARMORY_ROW_CONTROLS[1],
+    ),
+    CityChoiceRow::military(
+        MilitaryRecruitmentCategory::HeavyInfantry,
+        generated::ARMORY_ROW_CONTROLS[2],
+    ),
+    CityChoiceRow::military(
+        MilitaryRecruitmentCategory::LightCavalry,
+        generated::ARMORY_ROW_CONTROLS[3],
+    ),
+    CityChoiceRow::military(
+        MilitaryRecruitmentCategory::HeavyCavalry,
+        generated::ARMORY_ROW_CONTROLS[4],
+    ),
+    CityChoiceRow::military(
+        MilitaryRecruitmentCategory::LightArtillery,
+        generated::ARMORY_ROW_CONTROLS[5],
+    ),
+    CityChoiceRow::military(
+        MilitaryRecruitmentCategory::HeavyArtillery,
+        generated::ARMORY_ROW_CONTROLS[6],
+    ),
+    CityChoiceRow::military(
+        MilitaryRecruitmentCategory::Demolitionist,
+        generated::ARMORY_ROW_CONTROLS[7],
+    ),
 ];
-pub(in crate::ui::city) const UNIVERSITY_ROWS: [UniversityRow; 7] = [
-    UniversityRow {
-        kind: CivilianUnitKind::Miner,
-        order_tag: fourcc!("clu0"),
-        button_tag: fourcc!("civ0"),
-    },
-    UniversityRow {
-        kind: CivilianUnitKind::Prospector,
-        order_tag: fourcc!("clu1"),
-        button_tag: fourcc!("civ1"),
-    },
-    UniversityRow {
-        kind: CivilianUnitKind::Farmer,
-        order_tag: fourcc!("clu2"),
-        button_tag: fourcc!("civ2"),
-    },
-    UniversityRow {
-        kind: CivilianUnitKind::Forester,
-        order_tag: fourcc!("clu3"),
-        button_tag: fourcc!("civ3"),
-    },
-    UniversityRow {
-        kind: CivilianUnitKind::Engineer,
-        order_tag: fourcc!("clu4"),
-        button_tag: fourcc!("civ4"),
-    },
-    UniversityRow {
-        kind: CivilianUnitKind::Rancher,
-        order_tag: fourcc!("clu5"),
-        button_tag: fourcc!("civ5"),
-    },
-    UniversityRow {
-        kind: CivilianUnitKind::Driller,
-        order_tag: fourcc!("clu8"),
-        button_tag: fourcc!("civ8"),
-    },
+pub(in crate::ui::city) const UNIVERSITY_ROWS: [CityChoiceRow; 7] = [
+    CityChoiceRow::civilian(
+        CivilianUnitKind::Miner,
+        generated::UNIVERSITY_ROW_CONTROLS[0],
+    ),
+    CityChoiceRow::civilian(
+        CivilianUnitKind::Prospector,
+        generated::UNIVERSITY_ROW_CONTROLS[1],
+    ),
+    CityChoiceRow::civilian(
+        CivilianUnitKind::Farmer,
+        generated::UNIVERSITY_ROW_CONTROLS[2],
+    ),
+    CityChoiceRow::civilian(
+        CivilianUnitKind::Forester,
+        generated::UNIVERSITY_ROW_CONTROLS[3],
+    ),
+    CityChoiceRow::civilian(
+        CivilianUnitKind::Engineer,
+        generated::UNIVERSITY_ROW_CONTROLS[4],
+    ),
+    CityChoiceRow::civilian(
+        CivilianUnitKind::Rancher,
+        generated::UNIVERSITY_ROW_CONTROLS[5],
+    ),
+    CityChoiceRow::civilian(
+        CivilianUnitKind::Driller,
+        generated::UNIVERSITY_ROW_CONTROLS[6],
+    ),
 ];
 pub(in crate::ui::city) const SHIPYARD_ROWS: [ShipyardRow; 8] = [
-    ShipyardRow {
-        slot: ShipOrderSlot::MerchantEarlyPrimary,
-        order_tag: fourcc!("clu0"),
-        button_tag: fourcc!("but0"),
-        overlay_left: 4.0,
-    },
-    ShipyardRow {
-        slot: ShipOrderSlot::MerchantEarlySecondary,
-        order_tag: fourcc!("clu1"),
-        button_tag: fourcc!("but1"),
-        overlay_left: 4.0,
-    },
-    ShipyardRow {
-        slot: ShipOrderSlot::MerchantAdvancedPrimary,
-        order_tag: fourcc!("clu2"),
-        button_tag: fourcc!("but2"),
-        overlay_left: 3.0,
-    },
-    ShipyardRow {
-        slot: ShipOrderSlot::MerchantAdvancedSecondary,
-        order_tag: fourcc!("clu3"),
-        button_tag: fourcc!("but3"),
-        overlay_left: 2.0,
-    },
-    ShipyardRow {
-        slot: ShipOrderSlot::WarshipEarlyPrimary,
-        order_tag: fourcc!("clu4"),
-        button_tag: fourcc!("but4"),
-        overlay_left: 4.0,
-    },
-    ShipyardRow {
-        slot: ShipOrderSlot::WarshipEarlySecondary,
-        order_tag: fourcc!("clu5"),
-        button_tag: fourcc!("but5"),
-        overlay_left: 4.0,
-    },
-    ShipyardRow {
-        slot: ShipOrderSlot::WarshipAdvancedPrimary,
-        order_tag: fourcc!("clu6"),
-        button_tag: fourcc!("but6"),
-        overlay_left: 3.0,
-    },
-    ShipyardRow {
-        slot: ShipOrderSlot::WarshipAdvancedSecondary,
-        order_tag: fourcc!("clu7"),
-        button_tag: fourcc!("but7"),
-        overlay_left: 2.0,
-    },
+    ShipyardRow::new(
+        ShipOrderSlot::MerchantEarlyPrimary,
+        generated::SHIPYARD_ROW_CONTROLS[0],
+    ),
+    ShipyardRow::new(
+        ShipOrderSlot::MerchantEarlySecondary,
+        generated::SHIPYARD_ROW_CONTROLS[1],
+    ),
+    ShipyardRow::new(
+        ShipOrderSlot::MerchantAdvancedPrimary,
+        generated::SHIPYARD_ROW_CONTROLS[2],
+    ),
+    ShipyardRow::new(
+        ShipOrderSlot::MerchantAdvancedSecondary,
+        generated::SHIPYARD_ROW_CONTROLS[3],
+    ),
+    ShipyardRow::new(
+        ShipOrderSlot::WarshipEarlyPrimary,
+        generated::SHIPYARD_ROW_CONTROLS[4],
+    ),
+    ShipyardRow::new(
+        ShipOrderSlot::WarshipEarlySecondary,
+        generated::SHIPYARD_ROW_CONTROLS[5],
+    ),
+    ShipyardRow::new(
+        ShipOrderSlot::WarshipAdvancedPrimary,
+        generated::SHIPYARD_ROW_CONTROLS[6],
+    ),
+    ShipyardRow::new(
+        ShipOrderSlot::WarshipAdvancedSecondary,
+        generated::SHIPYARD_ROW_CONTROLS[7],
+    ),
 ];
 const INDUSTRY_PAGES: [IndustryPage; 7] = [
     IndustryPage {
         slot: CityFacilitySlot::TextileMill,
-        orders: &[CityOrderBinding {
-            order: CityOrderId::Item(ManufacturedItem::Fabric),
-            tag: fourcc!("fabr"),
-        }],
+        orders: &[item_binding(ManufacturedItem::Fabric, 0, 0)],
         stocks: &[
-            (ResourceKind::Cotton, fourcc!("cott"), 1),
-            (ResourceKind::Wool, fourcc!("wool"), 1),
+            stock_binding(ResourceKind::Cotton, 0, 0),
+            stock_binding(ResourceKind::Wool, 0, 1),
         ],
     },
     IndustryPage {
         slot: CityFacilitySlot::ClothingFactory,
-        orders: &[CityOrderBinding {
-            order: CityOrderId::Item(ManufacturedItem::Clothing),
-            tag: fourcc!("clot"),
-        }],
-        stocks: &[(ResourceKind::Fabric, fourcc!("fabr"), 2)],
+        orders: &[item_binding(ManufacturedItem::Clothing, 1, 0)],
+        stocks: &[stock_binding(ResourceKind::Fabric, 1, 0)],
     },
     IndustryPage {
         slot: CityFacilitySlot::SteelMill,
-        orders: &[CityOrderBinding {
-            order: CityOrderId::Item(ManufacturedItem::Steel),
-            tag: fourcc!("stee"),
-        }],
+        orders: &[item_binding(ManufacturedItem::Steel, 2, 0)],
         stocks: &[
-            (ResourceKind::Coal, fourcc!("coal"), 1),
-            (ResourceKind::Iron, fourcc!("iron"), 1),
+            stock_binding(ResourceKind::Coal, 2, 0),
+            stock_binding(ResourceKind::Iron, 2, 1),
         ],
     },
     IndustryPage {
         slot: CityFacilitySlot::Metalworks,
         orders: &[
-            CityOrderBinding {
-                order: CityOrderId::Item(ManufacturedItem::Hardware),
-                tag: fourcc!("hard"),
-            },
-            CityOrderBinding {
-                order: CityOrderId::Item(ManufacturedItem::Arms),
-                tag: fourcc!("arma"),
-            },
+            item_binding(ManufacturedItem::Hardware, 3, 0),
+            item_binding(ManufacturedItem::Arms, 3, 1),
         ],
-        stocks: &[(ResourceKind::Steel, fourcc!("stee"), 2)],
+        stocks: &[stock_binding(ResourceKind::Steel, 3, 0)],
     },
     IndustryPage {
         slot: CityFacilitySlot::LumberMill,
         orders: &[
-            CityOrderBinding {
-                order: CityOrderId::Item(ManufacturedItem::Lumber),
-                tag: fourcc!("lumb"),
-            },
-            CityOrderBinding {
-                order: CityOrderId::Item(ManufacturedItem::Paper),
-                tag: fourcc!("pape"),
-            },
+            item_binding(ManufacturedItem::Lumber, 4, 0),
+            item_binding(ManufacturedItem::Paper, 4, 1),
         ],
-        stocks: &[(ResourceKind::Timber, fourcc!("timb"), 2)],
+        stocks: &[stock_binding(ResourceKind::Timber, 4, 0)],
     },
     IndustryPage {
         slot: CityFacilitySlot::FurnitureFactory,
-        orders: &[CityOrderBinding {
-            order: CityOrderId::Item(ManufacturedItem::Furniture),
-            tag: fourcc!("furn"),
-        }],
-        stocks: &[(ResourceKind::Lumber, fourcc!("lumb"), 2)],
+        orders: &[item_binding(ManufacturedItem::Furniture, 5, 0)],
+        stocks: &[stock_binding(ResourceKind::Lumber, 5, 0)],
     },
     IndustryPage {
         slot: CityFacilitySlot::OilRefinery,
-        orders: &[CityOrderBinding {
-            order: CityOrderId::Item(ManufacturedItem::Fuel),
-            tag: fourcc!("fuel"),
-        }],
-        stocks: &[(ResourceKind::Oil, fourcc!("oil "), 2)],
+        orders: &[item_binding(ManufacturedItem::Fuel, 6, 0)],
+        stocks: &[stock_binding(ResourceKind::Oil, 6, 0)],
     },
 ];
 pub(in crate::ui::city) const SHIPYARD_MATERIALS: [ResourceKind; 6] = [
@@ -288,63 +275,82 @@ pub(in crate::ui::city) const SHIPYARD_MATERIALS: [ResourceKind; 6] = [
     ResourceKind::Coal,
     ResourceKind::Fuel,
 ];
-pub(in crate::ui::city) const SHIPYARD_STAT_ORIGINS: [(f32, f32); 6] = [
-    (28.0, 86.0),
-    (28.0, 102.0),
-    (28.0, 118.0),
-    (120.0, 86.0),
-    (120.0, 102.0),
-    (120.0, 118.0),
-];
 pub(in crate::ui::city) const FOOD_ORDER: CityOrderBinding = CityOrderBinding {
     order: CityOrderId::FoodProcessing,
-    tag: fourcc!("food"),
+    tag: generated::FOOD_ORDER_TAG,
 };
 pub(in crate::ui::city) const POWER_ORDER: CityOrderBinding = CityOrderBinding {
     order: CityOrderId::PowerPlant,
-    tag: fourcc!("powe"),
+    tag: generated::POWER_ORDER_TAG,
 };
 pub(in crate::ui::city) const TRANSPORT_CAPACITY_ORDER: CityOrderBinding = CityOrderBinding {
     order: CityOrderId::TransportCapacity,
-    tag: fourcc!("rail"),
+    tag: generated::TRANSPORT_ORDER_TAG,
 };
 pub(in crate::ui::city) const POPULATION_ORDER: CityOrderBinding = CityOrderBinding {
     order: CityOrderId::PopulationGrowth,
-    tag: fourcc!("popu"),
+    tag: generated::POPULATION_ORDER_TAG,
 };
 pub(in crate::ui::city) const WAREHOUSE_STOCKS: [(ResourceKind, FourCc); 20] = [
-    (ResourceKind::Cotton, fourcc!("cott")),
-    (ResourceKind::Wool, fourcc!("wool")),
-    (ResourceKind::Timber, fourcc!("timb")),
-    (ResourceKind::Coal, fourcc!("coal")),
-    (ResourceKind::Iron, fourcc!("iron")),
-    (ResourceKind::Horses, fourcc!("hors")),
-    (ResourceKind::Oil, fourcc!("oil ")),
-    (ResourceKind::Food, fourcc!("food")),
-    (ResourceKind::Fabric, fourcc!("fabr")),
-    (ResourceKind::Lumber, fourcc!("lumb")),
-    (ResourceKind::Paper, fourcc!("pape")),
-    (ResourceKind::Steel, fourcc!("stee")),
-    (ResourceKind::Fuel, fourcc!("fuel")),
-    (ResourceKind::Clothing, fourcc!("clot")),
-    (ResourceKind::Furniture, fourcc!("furn")),
-    (ResourceKind::Hardware, fourcc!("hard")),
-    (ResourceKind::Arms, fourcc!("arma")),
-    (ResourceKind::Grain, fourcc!("grai")),
-    (ResourceKind::Fruit, fourcc!("prod")),
-    (ResourceKind::Livestock, fourcc!("live")),
+    (ResourceKind::Cotton, generated::WAREHOUSE_STOCK_TAGS[0]),
+    (ResourceKind::Wool, generated::WAREHOUSE_STOCK_TAGS[1]),
+    (ResourceKind::Timber, generated::WAREHOUSE_STOCK_TAGS[2]),
+    (ResourceKind::Coal, generated::WAREHOUSE_STOCK_TAGS[3]),
+    (ResourceKind::Iron, generated::WAREHOUSE_STOCK_TAGS[4]),
+    (ResourceKind::Horses, generated::WAREHOUSE_STOCK_TAGS[5]),
+    (ResourceKind::Oil, generated::WAREHOUSE_STOCK_TAGS[6]),
+    (ResourceKind::Food, generated::WAREHOUSE_STOCK_TAGS[7]),
+    (ResourceKind::Fabric, generated::WAREHOUSE_STOCK_TAGS[8]),
+    (ResourceKind::Lumber, generated::WAREHOUSE_STOCK_TAGS[9]),
+    (ResourceKind::Paper, generated::WAREHOUSE_STOCK_TAGS[10]),
+    (ResourceKind::Steel, generated::WAREHOUSE_STOCK_TAGS[11]),
+    (ResourceKind::Fuel, generated::WAREHOUSE_STOCK_TAGS[12]),
+    (ResourceKind::Clothing, generated::WAREHOUSE_STOCK_TAGS[13]),
+    (ResourceKind::Furniture, generated::WAREHOUSE_STOCK_TAGS[14]),
+    (ResourceKind::Hardware, generated::WAREHOUSE_STOCK_TAGS[15]),
+    (ResourceKind::Arms, generated::WAREHOUSE_STOCK_TAGS[16]),
+    (ResourceKind::Grain, generated::WAREHOUSE_STOCK_TAGS[17]),
+    (ResourceKind::Fruit, generated::WAREHOUSE_STOCK_TAGS[18]),
+    (ResourceKind::Livestock, generated::WAREHOUSE_STOCK_TAGS[19]),
 ];
 
-pub(in crate::ui::city) fn industry_page(slot: CityFacilitySlot) -> Option<IndustryPage> {
+fn industry_page(slot: CityFacilitySlot) -> Option<IndustryPage> {
     INDUSTRY_PAGES
         .iter()
         .copied()
         .find(|page| page.slot == slot)
 }
 
-pub(in crate::ui::city) fn city_active_nation(session: &GameSession) -> MajorNationId {
-    MajorNationId::from_nation(session.game.turn().active_nation)
-        .expect("City active nation is a major nation")
+#[derive(Clone, Copy)]
+pub(in crate::ui::city) enum CityDialogKind {
+    Industry(IndustryPage),
+    Training,
+    Armory,
+    University,
+    Shipyard,
+    Warehouse,
+    FoodProcessing,
+    PowerPlant,
+    Transport,
+    Population,
+}
+
+pub(in crate::ui::city) fn city_dialog_kind(slot: CityFacilitySlot) -> CityDialogKind {
+    if let Some(page) = industry_page(slot) {
+        return CityDialogKind::Industry(page);
+    }
+    match slot {
+        CityFacilitySlot::TradeSchool => CityDialogKind::Training,
+        CityFacilitySlot::Armory => CityDialogKind::Armory,
+        CityFacilitySlot::University => CityDialogKind::University,
+        CityFacilitySlot::Shipyard => CityDialogKind::Shipyard,
+        CityFacilitySlot::Warehouse => CityDialogKind::Warehouse,
+        CityFacilitySlot::FoodProcessing => CityDialogKind::FoodProcessing,
+        CityFacilitySlot::PowerPlant => CityDialogKind::PowerPlant,
+        CityFacilitySlot::Transport => CityDialogKind::Transport,
+        CityFacilitySlot::RegionalPopulation => CityDialogKind::Population,
+        _ => unreachable!("ordinary industry is classified by INDUSTRY_PAGES"),
+    }
 }
 
 pub(in crate::ui::city) fn city_oil_industry_unlocked(
@@ -457,18 +463,8 @@ pub(in crate::ui::city) const fn city_string_index(zero_based_index: i16) -> i16
     zero_based_index + 1
 }
 
-pub(in crate::ui::city) fn format_retail_value(template: &str, value: &str) -> String {
-    if template.contains("[1: number]") {
-        template.replace("[1: number]", value)
-    } else if template.contains("[1:number]") {
-        template.replace("[1:number]", value)
-    } else {
-        panic!("retail City number template has no first-number token");
-    }
-}
-
 pub(in crate::ui::city) fn format_retail_number(template: &str, value: i16) -> String {
-    format_retail_value(template, &value.to_string())
+    fill_brackets(template, &[&value.to_string()])
 }
 
 #[cfg(test)]
@@ -516,21 +512,10 @@ mod tests {
         );
     }
 
-    const BEGINNING_OF_GAME: &[u8] =
-        include_bytes!("../../../../../../fixtures/retail/beginning_of_game.imp");
-
     #[test]
     fn beginning_of_game_does_not_open_unbuilt_oil_or_power() {
-        let selected_nation = peek_save_header(BEGINNING_OF_GAME)
-            .and_then(|header| NationId::try_new(header.active_nation))
-            .unwrap();
-        let state = LegacySaveV62::parse(BEGINNING_OF_GAME).game_state(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 0,
-            selected_nation,
-        });
-        let nation = MajorNationId::from_nation(selected_nation).unwrap();
+        let state = crate::ui::test_support::beginning_of_game();
+        let nation = MajorNationId::from_nation(state.turn().selected_nation).unwrap();
         assert_eq!(
             city_building_click(&state, nation, CityFacilitySlot::OilRefinery),
             None

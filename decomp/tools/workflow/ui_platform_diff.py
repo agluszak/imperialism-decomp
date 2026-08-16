@@ -16,6 +16,7 @@ from tools.ui_codegen import (
     apply_case_windows_overrides,
     load_city_building_action_visuals,
     load_city_building_visuals,
+    load_city_dialog_controls,
     load_diplomacy_map_key_names,
     load_recipes,
     load_text_resources,
@@ -39,6 +40,7 @@ def _load_delta_config(repo_root: Path) -> dict:
         "diplomacy_map_key_names",
         "city_buildings",
         "city_building_actions",
+        "city_dialog_controls",
     }
     unknown = sorted(set(data) - allowed)
     if unknown:
@@ -77,6 +79,7 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
     diplomacy_map_key_names = load_diplomacy_map_key_names(repo_root)
     load_city_building_visuals(repo_root)
     load_city_building_action_visuals(repo_root)
+    load_city_dialog_controls(repo_root)
     recipes = load_recipes(repo_root)
     raw_views = load_ui_views(repo_root)
     text_resources = load_text_resources(repo_root)

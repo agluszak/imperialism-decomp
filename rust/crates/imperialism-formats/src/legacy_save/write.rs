@@ -80,7 +80,7 @@ impl LegacySaveV62 {
         write_map(&mut writer, &self.map);
         write_ocean(&mut writer, &self.ocean);
         write_navy(&mut writer, &self.navy);
-        write_army_reports(&mut writer, self.army_report_count);
+        write_army_reports(&mut writer, &self.army_reports);
 
         let mut archive = vec![None];
         for nation in &self.major_nations {
@@ -336,13 +336,25 @@ fn write_navy(writer: &mut LegacyWriter, navy: &LegacyNavyState) {
     }
 }
 
-fn write_army_reports(writer: &mut LegacyWriter, report_count: u16) {
-    writer.write_le_u16(report_count);
-    for _ in 0..report_count {
-        writer.write_zeros(8);
-        for _ in 0..2 {
-            writer.write_zeros(1 + 0x20 + 0xff);
-            writer.write_le_u16(0);
+fn write_army_reports(writer: &mut LegacyWriter, reports: &[LegacyBattleReport]) {
+    writer.write_le_u16(reports.len() as u16);
+    for report in reports {
+        writer.write_u8(report.participant_index);
+        writer.write_u8(report.displayed_participant);
+        writer.write_le_i32(report.kind);
+        writer.write_le_i16(report.node_id);
+        for side in &report.sides {
+            writer.write_u8(side.nation);
+            writer.write_fixed_text(&side.name, 0x20);
+            writer.write_fixed_text(&side.overlay, 0xff);
+            writer.write_le_u16(side.children.len() as u16);
+            for child in &side.children {
+                writer.write_le_i16(child.resource_type);
+                writer.write_le_i16(child.stock_or_required);
+                writer.write_fixed_text(&child.name, 0x20);
+                writer.write_le_i16(child.strength_bucket);
+                writer.write_le_u32(child.detail_identity);
+            }
         }
     }
 }

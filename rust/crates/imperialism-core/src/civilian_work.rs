@@ -220,6 +220,30 @@ impl GameState {
         })
     }
 
+    /// Owner-matched civilian standing on `tile`, idle or not.
+    pub fn civilian_on_tile_for_nation(
+        &self,
+        tile: TileId,
+        nation: NationId,
+    ) -> Option<&CivilianUnitState> {
+        self.civilian_units
+            .iter()
+            .find(|unit| unit.owner_nation() == nation && unit.location().tile() == Some(tile))
+    }
+
+    /// `TCivMgr::ClearNationCivilianActionModesAndCycleSelection` unit walk (cycle is app-side).
+    pub fn clear_nation_civilian_action_modes(&mut self, nation: NationId) {
+        for unit in &mut self.civilian_units {
+            if unit.nation() != nation {
+                continue;
+            }
+            // Retail resets unitOrder 2/3/4. Sleep is the recovered idle-mode 2.
+            if matches!(unit.order, CivilianWorkOrder::Sleep) {
+                unit.order = CivilianWorkOrder::Idle;
+            }
+        }
+    }
+
     fn civilian_index(&self, id: CivilianUnitId) -> Option<usize> {
         self.civilian_units.iter().position(|unit| unit.id == id)
     }

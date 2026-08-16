@@ -82,7 +82,7 @@ struct Battle {
 impl GameState {
     /// Headless retail Auto: TArmyPlayer auto-deploy + Auto turn pump + ApplyChanges
     /// + ApplyPostBattleStackOutcomeAndGrowUnitMeters, then remaining combat-moves.
-    pub fn auto_resolve_land_battle(&mut self) -> TurnStop {
+    pub fn auto_resolve_land_battle(&mut self, story_ids: &[i32]) -> TurnStop {
         let crate::turn_flow::TurnContinuation::LandBattle(_) = &self.continuation else {
             panic!("land-battle auto-resolve requires a combat-moves continuation");
         };
@@ -96,7 +96,7 @@ impl GameState {
                 break;
             }
         }
-        self.resume_after_land_battle()
+        self.resume_after_land_battle(story_ids)
     }
 }
 

@@ -2,11 +2,12 @@ use crate::*;
 use serde::{Deserialize, Serialize};
 
 /// Every nation slot, split into the two populations that carry different
-/// domain state. Every major slot is a complete major nation; minor slots may
-/// still be absent until their save projection is normalized separately.
+/// domain state. Major slots retain their state after elimination so references
+/// remain stable, while `present_majors` mirrors retail's nullable live-slot table.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Nations {
     pub(crate) majors: Box<MajorNationTable<MajorNation>>,
+    present_majors: MajorNationTable<bool>,
     pub(crate) minors: MinorNationTable<Option<MinorNation>>,
 }
 
@@ -17,6 +18,7 @@ impl Nations {
     ) -> Self {
         Self {
             majors: Box::new(majors),
+            present_majors: MajorNationTable::from_array([true; MAJOR_NATION_COUNT]),
             minors,
         }
     }
@@ -27,6 +29,14 @@ impl Nations {
 
     pub(crate) fn major_mut(&mut self, nation: crate::MajorNationId) -> &mut MajorNation {
         &mut self.majors[nation]
+    }
+
+    pub fn major_is_present(&self, nation: MajorNationId) -> bool {
+        self.present_majors[nation]
+    }
+
+    pub(crate) fn remove_major(&mut self, nation: MajorNationId) {
+        self.present_majors[nation] = false;
     }
 
     pub(crate) fn city(&self, nation: crate::MajorNationId) -> &CityState {
@@ -70,7 +80,7 @@ impl Nations {
 
     pub(crate) fn common(&self, nation: NationId) -> Option<&NationCommonState> {
         if let Some(nation) = MajorNationId::from_nation(nation) {
-            Some(&self.majors[nation].common)
+            self.present_majors[nation].then_some(&self.majors[nation].common)
         } else {
             self.minors[MinorNationId::new(nation.get())]
                 .as_ref()
@@ -80,7 +90,7 @@ impl Nations {
 
     pub(crate) fn common_mut(&mut self, nation: NationId) -> Option<&mut NationCommonState> {
         if let Some(nation) = MajorNationId::from_nation(nation) {
-            Some(&mut self.majors[nation].common)
+            self.present_majors[nation].then_some(&mut self.majors[nation].common)
         } else {
             self.minors[MinorNationId::new(nation.get())]
                 .as_mut()

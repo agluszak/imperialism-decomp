@@ -680,7 +680,6 @@ mod tests {
                 selected_nation: NationId::new(6),
                 last_turn_alert_tick: 0,
                 turn_alert_mask: 0,
-                turn_alerts_enabled: true,
                 turn_cooldown_defer_counter: 0,
             },
             unit_ids: crate::UnitIdAllocator::default(),
@@ -711,6 +710,7 @@ mod tests {
             missions: vec![],
             news: crate::NewsState::default(),
             pending: crate::PendingWorkState::default(),
+            battle_reports: Vec::new(),
             continuation: crate::turn_flow::TurnContinuation::None,
         }
     }

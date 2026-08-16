@@ -1,5 +1,5 @@
 use super::generated;
-use super::retail::{RetailTag, find_descendant};
+use super::retail::RetailTree;
 use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
 use bevy::prelude::*;
@@ -47,27 +47,23 @@ fn spawn_land_battle(mut commands: Commands) {
 fn bind_land_battle(
     mut commands: Commands,
     root: Single<Entity, Added<LandBattleRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
 ) {
-    bind_land_battle_controls(&mut commands, *root, &children, &tags);
+    bind_land_battle_controls(&mut commands, *root, &tree);
 }
 
-fn bind_land_battle_controls(
-    commands: &mut Commands,
-    root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-) {
+fn bind_land_battle_controls(commands: &mut Commands, root: Entity, tree: &RetailTree) {
+    commands.entity(tree.find(root, fourcc!("curs"))).insert((
+        LandBattleCaption,
+        Text::default(),
+        TextColor(Color::WHITE),
+    ));
     commands
-        .entity(find_descendant(root, fourcc!("curs"), children, tags))
-        .insert((LandBattleCaption, Text::default(), TextColor(Color::WHITE)));
-    commands
-        .entity(find_descendant(root, fourcc!("auto"), children, tags))
+        .entity(tree.find(root, fourcc!("auto")))
         .insert((LandBattleAction::Auto, ActivateOnPress))
         .remove::<InteractionDisabled>();
     commands
-        .entity(find_descendant(root, fourcc!("retr"), children, tags))
+        .entity(tree.find(root, fourcc!("retr")))
         .insert((LandBattleAction::Retreat, ActivateOnPress))
         .remove::<InteractionDisabled>();
 }
@@ -107,18 +103,25 @@ fn on_land_battle_activate(
     actions: Query<&LandBattleAction>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
+    assets: Option<Res<crate::RetailAssetsResource>>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
     match *action {
-        LandBattleAction::Auto => match session.game.auto_resolve_land_battle() {
+        LandBattleAction::Auto => match session
+            .game
+            .auto_resolve_land_battle(super::session::news_story_ids(assets.as_deref()))
+        {
             TurnStop::LandBattle => {}
             stop => apply_turn_stop(stop, &mut next_state),
         },
         LandBattleAction::Retreat => {
             session.game.resolve_land_battle(false);
-            match session.game.resume_after_land_battle() {
+            match session
+                .game
+                .resume_after_land_battle(super::session::news_story_ids(assets.as_deref()))
+            {
                 TurnStop::LandBattle => {}
                 stop => apply_turn_stop(stop, &mut next_state),
             }
@@ -128,23 +131,13 @@ fn on_land_battle_activate(
 
 #[cfg(test)]
 mod tests {
+    use super::super::retail::RetailTag;
     use super::*;
+    use crate::ui::test_support::beginning_of_game_parts;
     use bevy::state::app::StatesPlugin;
-    use imperialism_formats::{LegacyGameStateContext, LegacySaveV62, peek_save_header};
-
-    const BEGINNING_OF_GAME: &[u8] =
-        include_bytes!("../../../../../fixtures/retail/beginning_of_game.imp");
 
     fn fixture_parts() -> GameStateParts {
-        let selected_nation = peek_save_header(BEGINNING_OF_GAME)
-            .and_then(|header| NationId::try_new(header.active_nation))
-            .unwrap_or(NationId::new(0));
-        LegacySaveV62::parse(BEGINNING_OF_GAME).game_state_parts(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 0,
-            selected_nation,
-        })
+        beginning_of_game_parts()
     }
 
     fn idle_unit(unit: &MilitaryUnitState) -> MilitaryUnitState {
@@ -180,7 +173,7 @@ mod tests {
             kind,
             Some(from),
             MilitaryOrder::retail(
-                MilitaryOrderCode::from_retail(1),
+                MilitaryOrderCode::Redeploy,
                 Some(to),
                 [Some(to); 3],
                 [Some(to); 3],
@@ -316,7 +309,7 @@ mod tests {
         );
 
         let mut state = GameState::from_parts(parts);
-        assert_eq!(state.advance_turn(), TurnStop::LandBattle);
+        assert_eq!(state.advance_turn(&[]), TurnStop::LandBattle);
         assert!(state.pending_land_battle().is_some());
         state
     }
@@ -357,13 +350,12 @@ mod tests {
     fn bind_test_land_battle(
         mut commands: Commands,
         root: Option<Single<Entity, Added<LandBattleRoot>>>,
-        children: Query<&Children>,
-        tags: Query<&RetailTag>,
+        tree: RetailTree,
     ) {
         let Some(root) = root else {
             return;
         };
-        bind_land_battle_controls(&mut commands, *root, &children, &tags);
+        bind_land_battle_controls(&mut commands, *root, &tree);
     }
 
     fn action_entity(app: &mut App, action: LandBattleAction) -> Entity {

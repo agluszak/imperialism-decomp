@@ -181,8 +181,18 @@ impl ProvinceState {
         self.city_score = city_score;
     }
 
-    fn set_owner(&mut self, new_owner: NationId) {
-        self.owner = Some(new_owner);
+    pub(crate) fn set_owner(&mut self, new_owner: Option<NationId>) {
+        self.owner = new_owner;
+    }
+
+    #[cfg(test)]
+    pub(crate) fn set_adjacency(&mut self, adjacency: Vec<ProvinceId>) {
+        self.adjacency = adjacency;
+    }
+
+    #[cfg(test)]
+    pub(crate) fn set_city_tile(&mut self, city_tile: Option<TileId>) {
+        self.city_tile = city_tile;
     }
 }
 
@@ -242,7 +252,7 @@ impl GameState {
         for &tile in &linked_tiles {
             self.map.set_owner(&mut self.nations, tile, new_owner);
         }
-        self.map.provinces[province].set_owner(new_owner);
+        self.map.provinces[province].set_owner(Some(new_owner));
 
         if let Some(old_owner) = MajorNationId::from_nation(old_owner) {
             if let Some(auto) = self.nations.majors[old_owner].auto.as_mut() {

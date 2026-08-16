@@ -102,12 +102,18 @@ impl GameState {
 
     fn apply_diplomacy_inter_nation_states(&mut self) {
         for nation in MajorNationId::all().rev() {
+            if !self.nation_is_present(nation.nation()) {
+                continue;
+            }
             if self.is_auto(nation) {
                 self.set_ai_diplomacy_policies(nation);
             }
         }
 
         for source in majors() {
+            if !self.nation_is_present(source.nation()) {
+                continue;
+            }
             for target in NationId::all() {
                 if !self.nation_is_present(target) {
                     continue;
@@ -280,7 +286,12 @@ impl GameState {
     pub(super) fn has_active_candidates(&mut self, nation: MajorNationId) -> bool {
         let mut any = false;
         for candidate in majors() {
-            if self.nations.majors[nation].economy.candidate_nation_flags[candidate.nation()] != 0 {
+            let present = self.nations.major_is_present(candidate);
+            let flag = &mut self.nations.majors[nation].economy.candidate_nation_flags
+                [candidate.nation()];
+            if !present {
+                *flag = 0;
+            } else if *flag != 0 {
                 any = true;
             }
         }
@@ -337,7 +348,7 @@ impl GameState {
     }
 
     pub(crate) fn is_auto(&self, nation: MajorNationId) -> bool {
-        self.nations.majors[nation].is_auto()
+        self.nations.major_is_present(nation) && self.nations.majors[nation].is_auto()
     }
 
     pub(super) fn is_independent(&self, nation: NationId) -> bool {

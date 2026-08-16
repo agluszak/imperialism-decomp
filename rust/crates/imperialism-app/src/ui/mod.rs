@@ -1,9 +1,11 @@
+mod battle_reports;
 mod city;
 mod city_site;
 mod credits;
 mod cursor;
 mod deal_book;
 mod diplomacy;
+mod endgame;
 mod game_shell;
 pub(crate) mod generated;
 mod hover_help;
@@ -22,21 +24,25 @@ mod strategic_map;
 mod technology;
 mod trade;
 mod transport;
-mod turn_cinematic;
+mod viewport;
 
+pub(crate) use battle_reports::BattleReportPlugin;
 pub(crate) use city::CityPlugin;
 pub(crate) use city_site::CitySitePlugin;
 pub(crate) use credits::CreditsPlugin;
 pub(crate) use cursor::CursorPlugin;
 pub(crate) use deal_book::DealBookPlugin;
 pub(crate) use diplomacy::DiplomacyPlugin;
+pub(crate) use endgame::{
+    CouncilOfGovernorsPlugin, GameScorePlugin, HighScorePlugin, OpeningCinematicPlugin,
+};
 pub(crate) use game_shell::GameShellPlugin;
 pub(crate) use land_battle::LandBattlePlugin;
 pub(crate) use load_save::{LoadSavePlugin, SaveDirectory};
 pub(crate) use main_menu::MainMenuPlugin;
 pub(crate) use newspaper::NewspaperPlugin;
 pub(crate) use offer_sheet::OfferSheetPlugin;
-pub(crate) use preferences::PreferencesPlugin;
+pub(crate) use preferences::{GamePreferences, PreferencesPlugin};
 pub(crate) use query_floater::QueryFloaterPlugin;
 pub(crate) use random_setup::RandomSetupPlugin;
 pub(crate) use random_setup_map::MapPreviewPlugin;
@@ -45,7 +51,7 @@ pub(crate) use session::GameSession;
 pub(crate) use technology::TechnologyAdvancePlugin;
 pub(crate) use trade::TradePlugin;
 pub(crate) use transport::TransportPlugin;
-pub(crate) use turn_cinematic::TurnCinematicPlugin;
+pub(crate) use viewport::RetailViewportPlugin;
 
 use bevy::prelude::{DetectChanges, Res};
 

@@ -22,6 +22,9 @@ pub struct GameState {
     pub(crate) missions: Vec<MissionState>,
     pub(crate) news: NewsState,
     pub(crate) pending: PendingWorkState,
+    /// `TArmyMgr::mapContextActionRecordList04`. Marker fields are omitted from `.imp`.
+    #[serde(default)]
+    pub(crate) battle_reports: Vec<crate::BattleReport>,
     /// Live interruptible-phase resume state. Not written to `.imp`.
     #[serde(default)]
     pub(crate) continuation: crate::turn_flow::TurnContinuation,
@@ -51,6 +54,7 @@ pub struct GameStateParts {
     pub missions: Vec<MissionState>,
     pub news: NewsState,
     pub pending: PendingWorkState,
+    pub battle_reports: Vec<crate::BattleReport>,
     pub continuation: crate::turn_flow::TurnContinuation,
 }
 
@@ -76,6 +80,7 @@ impl GameState {
             missions: parts.missions,
             news: parts.news,
             pending: parts.pending,
+            battle_reports: parts.battle_reports,
             continuation: parts.continuation,
         }
     }
@@ -144,12 +149,6 @@ impl GameState {
         &self.news
     }
 
-    /// Installs the `news.tab` template ids used when the turn driver builds
-    /// newspaper pages. Call once when creating or loading a live session.
-    pub fn set_news_story_ids(&mut self, story_ids: &[i32]) {
-        self.news.story_ids = story_ids.to_vec();
-    }
-
     pub const fn pending(&self) -> &PendingWorkState {
         &self.pending
     }
@@ -192,6 +191,12 @@ impl GameState {
         self.map_view_origin = self.map.viewport_origin_centered_on(tile);
     }
 
+    /// `ComputeRepresentativeTileIndexForNation` used by the strategic `X` key and mode-3 `C`.
+    pub fn representative_tile_for_nation(&self, nation: NationId) -> Option<TileId> {
+        self.map
+            .representative_tile_index_for_nation(nation, self.nations.home_tile(nation), false)
+    }
+
     /// Sets whether a civilian unit kind is unlocked in the nation's University.
     pub fn set_university_civilian_available(
         &mut self,
@@ -206,13 +211,21 @@ impl GameState {
 
     /// First idle civilian for `nation` that is on the map, if any.
     pub fn first_idle_civilian_tile(&self, nation: NationId) -> Option<TileId> {
-        self.civilian_units
-            .iter()
-            .find(|unit| unit.nation == nation && unit.order == CivilianWorkOrder::Idle)
-            .and_then(|unit| unit.location.tile())
+        self.first_idle_civilian(nation)
+            .and_then(|unit| unit.location().tile())
     }
 
-    /// Map-entry camera from `TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick`.
+    /// `TCivMgr::SelectFirstAvailableCivilianForNation` candidate (list order).
+    pub fn first_idle_civilian(&self, nation: NationId) -> Option<&CivilianUnitState> {
+        self.civilian_units
+            .iter()
+            .find(|unit| unit.nation() == nation && *unit.order() == CivilianWorkOrder::Idle)
+    }
+
+    /// Centers the strategic viewport on the first idle civilian for `nation`.
+    ///
+    /// Retail uses this from `TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick`,
+    /// not from every strategic-map enter.
     pub fn center_map_on_first_idle_civilian(&mut self) {
         if let Some(tile) = self.first_idle_civilian_tile(self.turn.active_nation) {
             self.center_map_on(tile);

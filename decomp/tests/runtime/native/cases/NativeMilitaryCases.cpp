@@ -18,6 +18,7 @@
 #include "game/military/TUnit.h"
 #include "game/military_domain_types.h"
 #include "game/military_ui/TDiplomacyMgr.h"
+#include "game/map/TControlSeaZoneMission.h"
 #include "game/map/TMission.h"
 #include "game/nation/TAutoGreatPower.h"
 #include "game/nation/TGreatPower.h"
@@ -724,6 +725,92 @@ RuntimeActionResult RunMilitaryCleanupSupportedSubset(NativeTransition& transiti
 // beginning_of_game fixture without RecomputeNationOrderPriorityMetrics.
 RuntimeActionResult RunReassessControlSeaMissions(NativeTransition& transition) {
   int slot;
+
+  JsonObject args;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  for (slot = 0; slot < 7; ++slot) {
+    TGreatPower* nation = g_apNationStates[slot];
+    if (nation == 0 || nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
+      continue;
+    }
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {
+      continue;
+    }
+    TAutoGreatPower* autoNation = static_cast<TAutoGreatPower*>(nation);
+    CIterator iter(autoNation->missionQueue);
+    for (TMission* mission = static_cast<TMission*>(iter.Reset()); iter.More();
+         mission = static_cast<TMission*>(iter.Advance())) {
+      if (mission->IsNavyMission() != 0 && mission->IsHospitalMission() != 0) {
+        mission->Reassess();
+      }
+    }
+  }
+  return transition.Finish();
+}
+
+// ControlSeaZone Reassess with a hostile frigate at 899/900 strength. Integer
+// strength/max_strength would treat that ratio as 0 and keep empty-zone needs.
+RuntimeActionResult RunReassessControlSeaMissionsDamagedShip(NativeTransition& transition) {
+  int slot;
+  TZone* targetZone = 0;
+  short missionNation = -1;
+  TGreatPower* hostNation = 0;
+
+  for (slot = 0; slot < 7; ++slot) {
+    TGreatPower* nation = g_apNationStates[slot];
+    if (nation == 0 || nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
+      continue;
+    }
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {
+      continue;
+    }
+    TAutoGreatPower* autoNation = static_cast<TAutoGreatPower*>(nation);
+    CIterator iter(autoNation->missionQueue);
+    for (TMission* mission = static_cast<TMission*>(iter.Reset()); iter.More();
+         mission = static_cast<TMission*>(iter.Advance())) {
+      if (mission->GetRuntimeClass() == RUNTIME_CLASS(TControlSeaZoneMission)) {
+        TControlSeaZoneMission* sea = static_cast<TControlSeaZoneMission*>(mission);
+        targetZone = sea->missionTargetZone;
+        missionNation = static_cast<short>(slot);
+        hostNation = nation;
+        break;
+      }
+    }
+    if (targetZone != 0) {
+      break;
+    }
+  }
+
+  if (targetZone == 0) {
+    for (slot = 0; slot < 7; ++slot) {
+      TGreatPower* nation = g_apNationStates[slot];
+      if (nation == 0 || nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
+        continue;
+      }
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {
+        continue;
+      }
+      hostNation = nation;
+      missionNation = static_cast<short>(slot);
+      targetZone = g_pMapActionContextListHead;
+      TControlSeaZoneMission* mission = new TControlSeaZoneMission(targetZone);
+      mission->InitializeMissionWithNationIdAndResetPathMarker(missionNation);
+      static_cast<TAutoGreatPower*>(nation)->missionQueue->AddTail(mission);
+      break;
+    }
+  }
+
+  if (targetZone != 0 && hostNation != 0) {
+    short hostile = missionNation == 0 ? 1 : 0;
+    ForceWarBetween(missionNation, hostile);
+    TShip* ship = new TShip();
+    ship->IShip(3, targetZone, hostile, "damaged-hostile-frigate");
+    ship->strength = 899;
+  }
 
   JsonObject args;
   RuntimeActionResult started = transition.Begin(args.Release());

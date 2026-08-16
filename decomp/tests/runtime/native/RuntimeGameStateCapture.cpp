@@ -2926,21 +2926,81 @@ JSON_Value* CapturePendingNewspaperEvents() {
   return events.Release();
 }
 
+JSON_Value* CaptureBattleReports() {
+  JsonArray reports;
+  if (g_pMapContextActionManager == 0 ||
+      g_pMapContextActionManager->mapContextActionRecordList04 == 0) {
+    FailSemanticCapture("combat-report state is unavailable");
+  }
+  TSortedPtrList* list = g_pMapContextActionManager->mapContextActionRecordList04;
+  const int combatReportCount = list->GetSize();
+  if (combatReportCount < 0 ||
+      (g_pMapContextActionManager->GetByteFlagAtOffset8() != 0) != (combatReportCount != 0)) {
+    FailSemanticCapture("combat-report count and gate flag disagree");
+  }
+  const char* const kKindNames[] = {"land_battle", "sea_battle", "merchant_interception",
+                                    "preempted_land_battle", "uncontested_takeover"};
+  for (int ordinal = 1; ordinal <= combatReportCount; ++ordinal) {
+    MapContextActionRecord* record =
+        static_cast<MapContextActionRecord*>(list->GetPtrListEntryByOneBasedIndex(ordinal));
+    if (record == 0) {
+      FailSemanticCapture("combat-report list contains a null record");
+    }
+    const int kind = record->reportKind04;
+    if (kind < 0 || kind > 4) {
+      FailSemanticCapture("combat-report kind is outside the recovered domain");
+    }
+    JsonObject object;
+    object.Set("participant_index", static_cast<int>(record->reportParticipantIndex02));
+    object.Set("displayed_participant", static_cast<int>(record->displayedParticipantIndex03));
+    object.Set("kind", kKindNames[kind]);
+    JsonObject location;
+    if (kind == kMapContextReportLandBattle || kind == kMapContextReportPreemptedLandBattle ||
+        kind == kMapContextReportUncontestedTakeover) {
+      location.Set("province", static_cast<int>(reinterpret_cast<unsigned>(record->location08)));
+    } else {
+      location.Set("zone",
+                   RuntimeRequiredZoneIndex(static_cast<TZone*>(record->location08)));
+    }
+    object.Set("location", location.Release());
+    JsonArray sides;
+    for (int side = 0; side < 2; ++side) {
+      JsonObject sideObject;
+      sideObject.Set("nation", static_cast<int>(record->nationIds[side]));
+      sideObject.Set("name", record->nameBuffer0c[side].data);
+      sideObject.Set("overlay", record->overlayLabel4c[side].data);
+      JsonArray children;
+      const int childCount = record->childCount24a[side];
+      for (int child = 0; child < childCount; ++child) {
+        MapOrderBattleSideChildRecord& row = record->sideChildRecords250[side][child];
+        JsonObject childObject;
+        childObject.Set("resource_type", static_cast<int>(row.resourceType));
+        childObject.Set("stock_or_required", static_cast<int>(row.stockOrRequired));
+        childObject.Set("name", row.nameBuffer);
+        childObject.Set("strength_bucket", static_cast<int>(row.strengthBucket));
+        childObject.Set("detail_identity", row.detailIdentity28);
+        children.Add(childObject.Release());
+      }
+      sideObject.Set("children", children.Release());
+      sides.Add(sideObject.Release());
+    }
+    object.Set("sides", sides.Release());
+    object.Set("marker_pixel_x", record->markerPixelX258);
+    object.Set("marker_pixel_y", record->markerPixelY25c);
+    object.Set("placed", record->placedFlag260 != 0);
+    object.Set("marker_sprite", static_cast<int>(record->markerSpriteCode262));
+    object.Set("list_ordinal", static_cast<int>(record->listOrdinal264));
+    reports.Add(object.Release());
+  }
+  return reports.Release();
+}
+
 JSON_Value* CapturePending() {
   JsonObject object;
   JsonArray nations;
   JsonArray transitions;
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     nations.Add(CaptureNationPendingWork(g_apNationStates[nationSlot]));
-  }
-  if (g_pMapContextActionManager == 0 ||
-      g_pMapContextActionManager->mapContextActionRecordList04 == 0) {
-    FailSemanticCapture("combat-report state is unavailable");
-  }
-  const int combatReportCount = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
-  if (combatReportCount < 0 ||
-      (g_pMapContextActionManager->GetByteFlagAtOffset8() != 0) != (combatReportCount != 0)) {
-    FailSemanticCapture("combat-report count and gate flag disagree");
   }
   TSortedPtrList* queue = g_pDiplomacyTurnStateManager != 0
                               ? g_pDiplomacyTurnStateManager->pendingWarTransitionQueue
@@ -2963,7 +3023,6 @@ JSON_Value* CapturePending() {
     transitions.Add(transition.Release());
   }
   object.Set("nations", nations.Release());
-  object.Set("combat_reports_pending", g_pMapContextActionManager->GetByteFlagAtOffset8() != 0);
   object.Set("newspaper_events", CapturePendingNewspaperEvents());
   object.Set("war_transitions", transitions.Release());
   return object.Release();
@@ -2998,8 +3057,9 @@ bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("admirals", CaptureAdmirals());
   object.Set("task_forces", CaptureTaskForces());
   object.Set("missions", CaptureMissions());
-  object.Set("pending", CapturePending());
   object.Set("news", CaptureNews());
+  object.Set("pending", CapturePending());
+  object.Set("battle_reports", CaptureBattleReports());
   *state = object.Release();
   return true;
 }
