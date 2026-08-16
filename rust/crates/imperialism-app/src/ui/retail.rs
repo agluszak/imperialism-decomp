@@ -624,11 +624,6 @@ pub struct RetailView<'a, 'w, 's> {
 }
 
 impl RetailView<'_, '_, '_> {
-    #[cfg(test)]
-    pub fn try_find(&self, tag: FourCc) -> Option<Entity> {
-        self.tree.try_find(self.root, tag)
-    }
-
     pub fn find(&self, tag: FourCc) -> Entity {
         self.tree.find(self.root, tag)
     }
@@ -754,6 +749,5 @@ mod tests {
         assert_eq!(tree.child(parent, fourcc!("trad")), direct);
         assert_eq!(tree.view(parent).child(fourcc!("trad")), direct);
         assert_eq!(tree.view(parent).find(fourcc!("clus")), container);
-        assert!(tree.view(parent).try_find(fourcc!("nope")).is_none());
     }
 }

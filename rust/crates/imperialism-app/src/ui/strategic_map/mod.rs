@@ -12,7 +12,6 @@ use imperialism_formats::*;
 
 mod army_toolbar;
 mod borders;
-mod civilian_orders;
 mod civilian_toolbar;
 mod map_click;
 mod map_interaction;
@@ -27,13 +26,9 @@ mod units;
 
 pub(crate) use army_toolbar::{bind_army_toolbar, register as register_army_toolbar};
 use borders::compose_strategic_borders;
-use civilian_orders::StrategicSelection;
-pub(crate) use civilian_orders::register as register_civilian_orders;
 pub(crate) use civilian_toolbar::{bind_civilian_toolbar, register_civilian_toolbar};
 pub(crate) use map_click::{on_strategic_map_click, register as register_map_click};
-pub(crate) use map_interaction::{
-    MapInteractionMode, OceanView, register as register_map_interaction,
-};
+pub(crate) use map_interaction::{MapInteractionMode, StrategicInteraction};
 pub(crate) use map_keys::register as register_map_keys;
 pub(crate) use map_modals::register as register_map_modals;
 pub(crate) use minimap::{bind_minimap, sync_minimap};
@@ -112,7 +107,7 @@ pub(crate) fn bind_strategic_base_terrain(
         ImageNode::new(image),
         RelativeCursorPosition::default(),
         canvas,
-        StrategicSelection::default(),
+        StrategicInteraction::default(),
     ));
     units::bind_strategic_units(commands, map, assets, state);
     map
@@ -137,14 +132,14 @@ pub(crate) fn sync_strategic_base_terrain(
     mut maps: Query<(
         &mut StrategicBaseTerrainCanvas,
         &ImageNode,
-        Ref<StrategicSelection>,
+        Ref<StrategicInteraction>,
     )>,
 ) {
     for (mut canvas, image_node, selected) in &mut maps {
         if !session.is_changed() && !selected.is_changed() {
             continue;
         }
-        let key = strategic_map_compose_key(&session.game, selected.0);
+        let key = strategic_map_compose_key(&session.game, selected.civilian);
         if canvas.composed == Some(key) {
             continue;
         }
@@ -152,7 +147,7 @@ pub(crate) fn sync_strategic_base_terrain(
             &session.game,
             canvas.sprites(),
             retail_assets.assets().default_dib_palette(),
-            selected.0,
+            selected.civilian,
         );
         let Some(mut existing) = images.get_mut(&image_node.image) else {
             continue;

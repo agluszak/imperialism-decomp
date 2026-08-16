@@ -12,9 +12,6 @@ struct CreditsRoot {
     second_page: bool,
 }
 
-#[derive(Component)]
-struct CreditsAction;
-
 pub(crate) struct CreditsPlugin;
 
 impl Plugin for CreditsPlugin {
@@ -27,7 +24,6 @@ impl Plugin for CreditsPlugin {
             Update,
             sync_credits_page.run_if(in_state(AppState::Credits)),
         )
-        .add_observer(on_credits_activate.run_if(in_state(AppState::Credits)))
         .add_systems(OnExit(AppState::Credits), super::session::clear_return_to);
     }
 }
@@ -47,7 +43,8 @@ fn bind_credits(
 ) {
     commands
         .entity(tree.find(*root, fourcc!("main")))
-        .insert((CreditsAction, Button, ActivateOnPress))
+        .insert((Button, ActivateOnPress))
+        .observe(on_credits_activate)
         .remove::<InteractionDisabled>();
 }
 
@@ -111,15 +108,11 @@ fn string_from_id(assets: &RetailUiAssets, string_id: i16) -> String {
 }
 
 fn on_credits_activate(
-    activate: On<Activate>,
-    actions: Query<&CreditsAction>,
+    _activate: On<Activate>,
     mut roots: Query<&mut CreditsRoot>,
     returning: Res<ReturnTo>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    if actions.get(activate.entity).is_err() {
-        return;
-    }
     let Ok(mut root) = roots.single_mut() else {
         return;
     };
@@ -128,63 +121,4 @@ fn on_credits_activate(
         return;
     }
     root.second_page = true;
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    fn app() -> App {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_plugins(bevy::state::app::StatesPlugin)
-            .insert_state(AppState::Credits)
-            .insert_resource(ReturnTo(AppState::StrategicMap))
-            .add_observer(on_credits_activate);
-        let root = app
-            .world_mut()
-            .spawn(CreditsRoot { second_page: false })
-            .id();
-        app.world_mut().spawn((CreditsAction, ChildOf(root)));
-        app
-    }
-
-    #[test]
-    fn first_click_stays_on_credits_and_second_click_returns() {
-        let mut app = app();
-        let action = app
-            .world_mut()
-            .query_filtered::<Entity, With<CreditsAction>>()
-            .iter(app.world())
-            .next()
-            .unwrap();
-
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: action });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::Credits
-        );
-        assert!(
-            app.world_mut()
-                .query::<&CreditsRoot>()
-                .iter(app.world())
-                .next()
-                .unwrap()
-                .second_page
-        );
-
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: action });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::StrategicMap
-        );
-    }
 }

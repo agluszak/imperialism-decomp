@@ -1,8 +1,7 @@
 //! `TWorldView::HandleMapClickByInteractionMode` (0x005964b0).
 
-use super::civilian_orders::StrategicSelection;
 use super::map_interaction::{
-    ArmySelection, MapInteractionMode, NavySelection, cycle_map_interaction_selection,
+    MapInteractionMode, StrategicInteraction, cycle_map_interaction_selection,
     has_active_map_interaction_selection, navy_zone_center_tile, set_map_interaction_mode,
 };
 use super::map_modals::{spawn_army_report, spawn_fleet_report, spawn_garrison, spawn_navy_roster};
@@ -24,20 +23,16 @@ pub(crate) fn register(app: &mut App) {
     );
 }
 
-#[allow(clippy::too_many_arguments, clippy::type_complexity)]
+#[allow(clippy::type_complexity)]
 pub(crate) fn on_strategic_map_click(
     click: On<Pointer<Click>>,
     mut commands: Commands,
     mut land: Query<
-        (&RelativeCursorPosition, &mut StrategicSelection),
+        (&RelativeCursorPosition, &mut StrategicInteraction),
         (With<StrategicBaseTerrainCanvas>, Without<OceanMapCanvas>),
     >,
     ocean_maps: Query<&RelativeCursorPosition, With<OceanMapCanvas>>,
-    ocean_view: Res<super::map_interaction::OceanView>,
     mut session: ResMut<GameSession>,
-    mut mode: ResMut<MapInteractionMode>,
-    mut army: ResMut<ArmySelection>,
-    mut navy: ResMut<NavySelection>,
 ) {
     if click.event.button != PointerButton::Primary {
         return;
@@ -45,116 +40,128 @@ pub(crate) fn on_strategic_map_click(
     let tile = if let Ok((cursor, _)) = land.get(click.entity) {
         strategic_base_terrain_tile_at_cursor(&session.game, cursor)
     } else if let Ok(cursor) = ocean_maps.get(click.entity) {
-        ocean_tile_at_cursor(&session.game, cursor, &ocean_view)
+        let Ok((_, interaction)) = land.single() else {
+            return;
+        };
+        ocean_tile_at_cursor(&session.game, cursor, &interaction.ocean)
     } else {
         return;
     };
     let Some(tile) = tile else {
         return;
     };
-    let Ok((_, mut civilian)) = land.single_mut() else {
+    let Ok((_, mut interaction)) = land.single_mut() else {
         return;
     };
-    handle_map_click_by_interaction_mode(
-        &mut commands,
-        &mut session,
-        &mut mode,
-        &mut civilian,
-        &mut army,
-        &mut navy,
-        tile,
-        0,
-    );
+    handle_map_click_by_interaction_mode(&mut commands, &mut session, &mut interaction, tile, 0);
 }
 
-#[allow(clippy::too_many_arguments)]
 fn handle_map_click_by_interaction_mode(
     commands: &mut Commands,
     session: &mut GameSession,
-    mode: &mut MapInteractionMode,
-    civilian: &mut StrategicSelection,
-    army: &mut ArmySelection,
-    navy: &mut NavySelection,
+    interaction: &mut StrategicInteraction,
     tile: TileId,
     input_flags: i32,
 ) {
     let nation = session.game.turn().active_nation;
-    let has_selection = has_active_map_interaction_selection(*mode, civilian.0, army.0, navy.force);
-    match *mode {
+    let has_selection = has_active_map_interaction_selection(interaction);
+    match interaction.mode {
         MapInteractionMode::Civilian => {
-            if apply_army_unselected(session, army, nation, tile, input_flags, has_selection)
-                || apply_navy_selection(commands, session, mode, civilian, army, navy, tile, nation)
+            if apply_army_unselected(
+                session,
+                &mut interaction.army,
+                nation,
+                tile,
+                input_flags,
+                has_selection,
+            ) || apply_navy_selection(commands, session, interaction, tile, nation)
             {
                 return;
             }
-            if apply_civilian_tile_order(session, civilian, tile, nation) {
-                cycle_map_interaction_selection(session, mode, civilian, army, navy);
+            if apply_civilian_tile_order(session, &mut interaction.civilian, tile, nation) {
+                cycle_map_interaction_selection(session, interaction);
             }
         }
         MapInteractionMode::Army => {
-            if apply_army_unselected(session, army, nation, tile, input_flags, has_selection)
-                || apply_civilian_selection_or_report(
-                    commands,
-                    session,
-                    mode,
-                    civilian,
-                    army,
-                    tile,
-                    nation,
-                    input_flags,
-                )
-                || apply_navy_selection(commands, session, mode, civilian, army, navy, tile, nation)
+            if apply_army_unselected(
+                session,
+                &mut interaction.army,
+                nation,
+                tile,
+                input_flags,
+                has_selection,
+            ) || apply_civilian_selection_or_report(
+                commands,
+                session,
+                interaction,
+                tile,
+                nation,
+                input_flags,
+            ) || apply_navy_selection(commands, session, interaction, tile, nation)
             {
                 return;
             }
-            if let Some(pending) = army.0
-                && apply_army_selected(commands, session, army, nation, pending, tile)
+            if let Some(pending) = interaction.army
+                && apply_army_selected(
+                    commands,
+                    session,
+                    &mut interaction.army,
+                    nation,
+                    pending,
+                    tile,
+                )
             {
-                cycle_map_interaction_selection(session, mode, civilian, army, navy);
+                cycle_map_interaction_selection(session, interaction);
             }
         }
         MapInteractionMode::Navy => {
-            if apply_army_unselected(session, army, nation, tile, input_flags, has_selection)
-                || apply_civilian_selection_or_report(
-                    commands,
-                    session,
-                    mode,
-                    civilian,
-                    army,
-                    tile,
-                    nation,
-                    input_flags,
-                )
-            {
+            if apply_army_unselected(
+                session,
+                &mut interaction.army,
+                nation,
+                tile,
+                input_flags,
+                has_selection,
+            ) || apply_civilian_selection_or_report(
+                commands,
+                session,
+                interaction,
+                tile,
+                nation,
+                input_flags,
+            ) {
                 return;
             }
-            if apply_navy_tile_click(commands, session, mode, civilian, army, navy, tile, nation) {
-                cycle_map_interaction_selection(session, mode, civilian, army, navy);
+            if apply_navy_tile_click(commands, session, interaction, tile, nation) {
+                cycle_map_interaction_selection(session, interaction);
             }
         }
         MapInteractionMode::None => {
-            if apply_army_unselected(session, army, nation, tile, input_flags, has_selection)
-                || apply_civilian_selection_or_report(
-                    commands,
-                    session,
-                    mode,
-                    civilian,
-                    army,
-                    tile,
-                    nation,
-                    input_flags,
-                )
-            {
+            if apply_army_unselected(
+                session,
+                &mut interaction.army,
+                nation,
+                tile,
+                input_flags,
+                has_selection,
+            ) || apply_civilian_selection_or_report(
+                commands,
+                session,
+                interaction,
+                tile,
+                nation,
+                input_flags,
+            ) {
                 return;
             }
-            apply_navy_selection(commands, session, mode, civilian, army, navy, tile, nation);
+            apply_navy_selection(commands, session, interaction, tile, nation);
         }
     }
 }
 
 fn apply_army_unselected(
     session: &mut GameSession,
-    army: &mut ArmySelection,
+    army: &mut Option<ProvinceId>,
     nation: NationId,
     tile: TileId,
     input_flags: i32,
@@ -166,7 +173,7 @@ fn apply_army_unselected(
     {
         ArmyMapClickOutcome::Ignored => false,
         ArmyMapClickOutcome::SelectedProvince(province) => {
-            army.0 = Some(province);
+            *army = Some(province);
             true
         }
         ArmyMapClickOutcome::Marched | ArmyMapClickOutcome::IssuedOrders => true,
@@ -179,7 +186,7 @@ fn apply_army_unselected(
 fn apply_army_selected(
     commands: &mut Commands,
     session: &mut GameSession,
-    army: &mut ArmySelection,
+    army: &mut Option<ProvinceId>,
     nation: NationId,
     pending: ProvinceId,
     tile: TileId,
@@ -190,7 +197,7 @@ fn apply_army_selected(
     {
         ArmyMapClickOutcome::Ignored | ArmyMapClickOutcome::OrderRejected(_) => false,
         ArmyMapClickOutcome::SelectedProvince(province) => {
-            army.0 = Some(province);
+            *army = Some(province);
             true
         }
         ArmyMapClickOutcome::IssuedOrders | ArmyMapClickOutcome::Marched => true,
@@ -205,13 +212,10 @@ fn apply_army_selected(
     }
 }
 
-#[allow(clippy::too_many_arguments)]
 fn apply_civilian_selection_or_report(
     commands: &mut Commands,
     session: &mut GameSession,
-    mode: &mut MapInteractionMode,
-    civilian: &mut StrategicSelection,
-    army: &mut ArmySelection,
+    interaction: &mut StrategicInteraction,
     tile: TileId,
     nation: NationId,
     input_flags: i32,
@@ -229,8 +233,8 @@ fn apply_civilian_selection_or_report(
     if idle {
         if input_flags == 2 || !city {
             let id = unit.id();
-            set_map_interaction_mode(mode, MapInteractionMode::Civilian, civilian, army);
-            civilian.0 = Some(id);
+            set_map_interaction_mode(interaction, MapInteractionMode::Civilian);
+            interaction.civilian = Some(id);
             return true;
         }
         return false;
@@ -244,15 +248,15 @@ fn apply_civilian_selection_or_report(
 
 fn apply_civilian_tile_order(
     session: &mut GameSession,
-    civilian: &mut StrategicSelection,
+    civilian: &mut Option<CivilianUnitId>,
     tile: TileId,
     nation: NationId,
 ) -> bool {
     if let Some(unit) = session.game.selectable_civilian_on_tile(tile, nation) {
-        civilian.0 = Some(unit);
+        *civilian = Some(unit);
         return false;
     }
-    let Some(unit) = civilian.0 else {
+    let Some(unit) = *civilian else {
         return false;
     };
     let Some(kind) = session
@@ -262,7 +266,7 @@ fn apply_civilian_tile_order(
         .find(|candidate| candidate.id() == unit)
         .map(|candidate| candidate.unit_type())
     else {
-        civilian.0 = None;
+        *civilian = None;
         return false;
     };
     if kind != CivilianUnitKind::Engineer {
@@ -270,34 +274,33 @@ fn apply_civilian_tile_order(
     }
     match session.game.order_rail_construction(unit, tile) {
         Ok(()) => {
-            civilian.0 = None;
+            *civilian = None;
             true
         }
         Err(RailOrderRejection::InsufficientFunds | RailOrderRejection::InvalidTarget) => false,
         Err(RailOrderRejection::IneligibleUnit) => {
-            civilian.0 = None;
+            *civilian = None;
             false
         }
     }
 }
 
-#[allow(clippy::too_many_arguments)]
 fn apply_navy_selection(
     commands: &mut Commands,
     session: &mut GameSession,
-    mode: &mut MapInteractionMode,
-    civilian: &mut StrategicSelection,
-    army: &mut ArmySelection,
-    navy: &mut NavySelection,
+    interaction: &mut StrategicInteraction,
     tile: TileId,
     nation: NationId,
 ) -> bool {
-    match session.game.navy_selection_click(tile, navy.zone, nation) {
+    match session
+        .game
+        .navy_selection_click(tile, interaction.navy.zone, nation)
+    {
         NavySelectionClick::Ignored => false,
         NavySelectionClick::SelectZone { zone, force } => {
-            set_map_interaction_mode(mode, MapInteractionMode::Navy, civilian, army);
-            navy.zone = Some(zone);
-            navy.force = force;
+            set_map_interaction_mode(interaction, MapInteractionMode::Navy);
+            interaction.navy.zone = Some(zone);
+            interaction.navy.force = force;
             if let Some(center) = navy_zone_center_tile(&session.game, zone) {
                 session.game.center_map_on(center);
             }
@@ -318,28 +321,26 @@ fn apply_navy_selection(
     }
 }
 
-#[allow(clippy::too_many_arguments)]
 fn apply_navy_tile_click(
     commands: &mut Commands,
     session: &mut GameSession,
-    mode: &mut MapInteractionMode,
-    civilian: &mut StrategicSelection,
-    army: &mut ArmySelection,
-    navy: &mut NavySelection,
+    interaction: &mut StrategicInteraction,
     tile: TileId,
     nation: NationId,
 ) -> bool {
-    match session
-        .game
-        .navy_do_tile_click(tile, navy.force, navy.zone, nation)
-    {
+    match session.game.navy_do_tile_click(
+        tile,
+        interaction.navy.force,
+        interaction.navy.zone,
+        nation,
+    ) {
         NavyTileClick::Ignored => false,
         NavyTileClick::Selection(selection) => {
             match selection {
                 NavySelectionClick::SelectZone { zone, force } => {
-                    set_map_interaction_mode(mode, MapInteractionMode::Navy, civilian, army);
-                    navy.zone = Some(zone);
-                    navy.force = force;
+                    set_map_interaction_mode(interaction, MapInteractionMode::Navy);
+                    interaction.navy.zone = Some(zone);
+                    interaction.navy.force = force;
                 }
                 NavySelectionClick::Intelligence { .. } => spawn_fleet_report(commands, false),
                 NavySelectionClick::InspectForce(_) => spawn_fleet_report(commands, true),
@@ -356,22 +357,20 @@ fn apply_navy_tile_click(
     }
 }
 
-#[allow(clippy::too_many_arguments)]
 fn sync_strategic_map_cursor(
     session: Res<GameSession>,
-    mode: Res<MapInteractionMode>,
-    army: Res<ArmySelection>,
-    navy: Res<NavySelection>,
-    civilian: Query<&StrategicSelection>,
+    interactions: Query<Ref<StrategicInteraction>>,
     land: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
     ocean: Query<&RelativeCursorPosition, With<OceanMapCanvas>>,
-    ocean_view: Res<super::map_interaction::OceanView>,
     mut requested: ResMut<RequestedCursor>,
 ) {
-    let tile = if ocean_view.active {
+    let Ok(interaction) = interactions.single() else {
+        return;
+    };
+    let tile = if interaction.ocean.active {
         ocean
             .iter()
-            .find_map(|cursor| ocean_tile_at_cursor(&session.game, cursor, &ocean_view))
+            .find_map(|cursor| ocean_tile_at_cursor(&session.game, cursor, &interaction.ocean))
     } else {
         land.iter()
             .find_map(|cursor| strategic_base_terrain_tile_at_cursor(&session.game, cursor))
@@ -380,10 +379,9 @@ fn sync_strategic_map_cursor(
         request_arrow_cursor(&mut requested);
         return;
     };
-    let civilian = civilian.single().ok().and_then(|selected| selected.0);
-    let has_selection = has_active_map_interaction_selection(*mode, civilian, army.0, navy.force);
+    let has_selection = has_active_map_interaction_selection(&interaction);
     let nation = session.game.turn().active_nation;
-    let token = match *mode {
+    let token = match interaction.mode {
         MapInteractionMode::Civilian => {
             let army_token = session
                 .game
@@ -392,7 +390,9 @@ fn sync_strategic_map_cursor(
             if army_token != 0 {
                 army_token
             } else {
-                let navy_token = session.game.navy_action_cursor_token(tile, navy.zone);
+                let navy_token = session
+                    .game
+                    .navy_action_cursor_token(tile, interaction.navy.zone);
                 if navy_token != 0 { navy_token } else { 0 }
             }
         }
@@ -403,13 +403,15 @@ fn sync_strategic_map_cursor(
                 .unselected_cursor_token();
             if army_token != 0 {
                 army_token
-            } else if let Some(pending) = army.0 {
+            } else if let Some(pending) = interaction.army {
                 session
                     .game
                     .army_map_cursor_state(nation, Some(pending), tile, 0, has_selection)
                     .selected_cursor_token()
             } else {
-                session.game.navy_action_cursor_token(tile, navy.zone)
+                session
+                    .game
+                    .navy_action_cursor_token(tile, interaction.navy.zone)
             }
         }
         MapInteractionMode::Navy => {
@@ -420,9 +422,11 @@ fn sync_strategic_map_cursor(
             if army_token != 0 {
                 army_token
             } else {
-                session
-                    .game
-                    .navy_selection_cursor_token(tile, navy.force, navy.zone)
+                session.game.navy_selection_cursor_token(
+                    tile,
+                    interaction.navy.force,
+                    interaction.navy.zone,
+                )
             }
         }
         MapInteractionMode::None => session

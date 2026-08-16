@@ -26,26 +26,14 @@ struct ActiveCinematic {
 struct CouncilRoot;
 
 #[derive(Component)]
-struct CouncilClose;
-
-#[derive(Component)]
 struct GameScoreRoot;
-
-#[derive(Component)]
-struct GameScoreClose;
 
 #[derive(Component)]
 struct HighScoreRoot;
 
-#[derive(Component)]
-struct HighScoreClose;
+pub(crate) struct EndgamePlugin;
 
-pub(crate) struct OpeningCinematicPlugin;
-pub(crate) struct CouncilOfGovernorsPlugin;
-pub(crate) struct GameScorePlugin;
-pub(crate) struct HighScorePlugin;
-
-impl Plugin for OpeningCinematicPlugin {
+impl Plugin for EndgamePlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(AppState::OpeningCinematic), spawn_opening_cinematic)
             .add_systems(
@@ -55,6 +43,33 @@ impl Plugin for OpeningCinematicPlugin {
             .add_systems(
                 OnExit(AppState::OpeningCinematic),
                 cleanup_opening_cinematic,
+            )
+            .add_systems(
+                OnEnter(AppState::CouncilOfGovernors),
+                (spawn_council, bind_council).chain(),
+            )
+            .add_systems(
+                Update,
+                project_council.run_if(
+                    in_state(AppState::CouncilOfGovernors).and_then(resource_exists::<GameSession>),
+                ),
+            )
+            .add_systems(
+                OnEnter(AppState::GameScore),
+                (spawn_game_score, bind_game_score).chain(),
+            )
+            .add_systems(
+                Update,
+                project_game_score
+                    .run_if(in_state(AppState::GameScore).and_then(resource_exists::<GameSession>)),
+            )
+            .add_systems(
+                OnEnter(AppState::HighScore),
+                (spawn_high_score, bind_high_score).chain(),
+            )
+            .add_systems(
+                Update,
+                project_high_score.run_if(in_state(AppState::HighScore)),
             );
     }
 }
@@ -69,7 +84,11 @@ fn spawn_opening_cinematic(
 ) {
     music.stop_all();
     let movie_id = session.as_ref().map_or(MovieId::Open, |session| {
-        movie_id_for_stem(session.game.opening_cinematic_movie())
+        match session.game.opening_cinematic_movie() {
+            CinematicKind::Vote => MovieId::Vote,
+            CinematicKind::Win => MovieId::Win,
+            CinematicKind::Lose => MovieId::Lose,
+        }
     });
     let path = retail.assets().movie_path(movie_id);
     let movie = match MovieBackend::open(&path) {
@@ -181,32 +200,6 @@ fn finish_opening_cinematic(
     }
 }
 
-fn movie_id_for_stem(stem: &str) -> MovieId {
-    match stem {
-        "open" => MovieId::Open,
-        "vote" => MovieId::Vote,
-        "win" => MovieId::Win,
-        "lose" => MovieId::Lose,
-        _ => panic!("core returned unknown retail movie stem {stem:?}"),
-    }
-}
-
-impl Plugin for CouncilOfGovernorsPlugin {
-    fn build(&self, app: &mut App) {
-        app.add_systems(
-            OnEnter(AppState::CouncilOfGovernors),
-            (spawn_council, bind_council).chain(),
-        )
-        .add_systems(
-            Update,
-            project_council.run_if(
-                in_state(AppState::CouncilOfGovernors).and_then(resource_exists::<GameSession>),
-            ),
-        )
-        .add_observer(on_council_close.run_if(in_state(AppState::CouncilOfGovernors)));
-    }
-}
-
 fn spawn_council(mut commands: Commands) {
     let root = commands.spawn_scene(generated::diplo_2016()).id();
     commands
@@ -221,7 +214,19 @@ fn bind_council(
 ) {
     commands
         .entity(tree.find(*root, fourcc!("end ")))
-        .insert((CouncilClose, ActivateOnPress));
+        .insert(ActivateOnPress)
+        .observe(on_council_close);
+    for tag in [
+        fourcc!("can0"),
+        fourcc!("can1"),
+        fourcc!("num0"),
+        fourcc!("num1"),
+        fourcc!("num2"),
+    ] {
+        commands
+            .entity(tree.find(*root, tag))
+            .insert(CouncilText(tag));
+    }
 }
 
 #[derive(Component)]
@@ -230,28 +235,9 @@ struct CouncilText(FourCc);
 fn project_council(
     session: Res<GameSession>,
     added: Query<(), Added<CouncilRoot>>,
-    mut commands: Commands,
-    tree: RetailTree,
-    root: Query<Entity, With<CouncilRoot>>,
     mut texts: Query<(&CouncilText, &mut Text)>,
 ) {
-    if super::projection_idle(&session, !added.is_empty()) && !texts.is_empty() {
-        return;
-    }
-    let Ok(root) = root.single() else {
-        return;
-    };
-    if texts.is_empty() {
-        for tag in [
-            fourcc!("can0"),
-            fourcc!("can1"),
-            fourcc!("num0"),
-            fourcc!("num1"),
-            fourcc!("num2"),
-        ] {
-            let entity = tree.find(root, tag);
-            commands.entity(entity).insert(CouncilText(tag));
-        }
+    if super::projection_idle(&session, !added.is_empty()) {
         return;
     }
     let congress = &session.game.diplomacy().congress;
@@ -278,36 +264,17 @@ fn project_council(
 }
 
 fn on_council_close(
-    activate: On<Activate>,
-    actions: Query<(), With<CouncilClose>>,
+    _activate: On<Activate>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     assets: Option<Res<RetailAssetsResource>>,
 ) {
-    if actions.get(activate.entity).is_err() {
-        return;
-    }
     apply_turn_stop(
         session
             .game
             .close_council_of_governors(super::session::news_story_ids(assets.as_deref())),
         &mut next_state,
     );
-}
-
-impl Plugin for GameScorePlugin {
-    fn build(&self, app: &mut App) {
-        app.add_systems(
-            OnEnter(AppState::GameScore),
-            (spawn_game_score, bind_game_score).chain(),
-        )
-        .add_systems(
-            Update,
-            project_game_score
-                .run_if(in_state(AppState::GameScore).and_then(resource_exists::<GameSession>)),
-        )
-        .add_observer(on_game_score_close.run_if(in_state(AppState::GameScore)));
-    }
 }
 
 fn spawn_game_score(mut commands: Commands) {
@@ -324,46 +291,39 @@ fn bind_game_score(
 ) {
     commands
         .entity(tree.find(*root, fourcc!("done")))
-        .insert((GameScoreClose, ActivateOnPress));
+        .insert(ActivateOnPress)
+        .observe(on_game_score_close);
+    for (index, tag) in NUMS.iter().enumerate() {
+        commands
+            .entity(tree.find(*root, *tag))
+            .insert(GameScoreValue(index));
+    }
 }
 
 #[derive(Component)]
 struct GameScoreValue(usize);
 
+const NUMS: [imperialism_formats::FourCc; 12] = [
+    fourcc!("numa"),
+    fourcc!("numb"),
+    fourcc!("numc"),
+    fourcc!("numd"),
+    fourcc!("nume"),
+    fourcc!("numf"),
+    fourcc!("numg"),
+    fourcc!("numh"),
+    fourcc!("numi"),
+    fourcc!("numj"),
+    fourcc!("numk"),
+    fourcc!("numl"),
+];
+
 fn project_game_score(
     session: Res<GameSession>,
     added: Query<(), Added<GameScoreRoot>>,
-    mut commands: Commands,
-    tree: RetailTree,
-    root: Query<Entity, With<GameScoreRoot>>,
     mut values: Query<(&GameScoreValue, &mut Text)>,
 ) {
-    if super::projection_idle(&session, !added.is_empty()) && !values.is_empty() {
-        return;
-    }
-    let Ok(root) = root.single() else {
-        return;
-    };
-    const NUMS: [imperialism_formats::FourCc; 12] = [
-        fourcc!("numa"),
-        fourcc!("numb"),
-        fourcc!("numc"),
-        fourcc!("numd"),
-        fourcc!("nume"),
-        fourcc!("numf"),
-        fourcc!("numg"),
-        fourcc!("numh"),
-        fourcc!("numi"),
-        fourcc!("numj"),
-        fourcc!("numk"),
-        fourcc!("numl"),
-    ];
-    if values.is_empty() {
-        for (index, tag) in NUMS.iter().enumerate() {
-            commands
-                .entity(tree.find(root, *tag))
-                .insert(GameScoreValue(index));
-        }
+    if super::projection_idle(&session, !added.is_empty()) {
         return;
     }
     let Some(nation) = MajorNationId::from_nation(session.game.turn().active_nation) else {
@@ -376,15 +336,11 @@ fn project_game_score(
 }
 
 fn on_game_score_close(
-    activate: On<Activate>,
-    actions: Query<(), With<GameScoreClose>>,
+    _activate: On<Activate>,
     mut session: ResMut<GameSession>,
     save_dir: Res<SaveDirectory>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    if actions.get(activate.entity).is_err() {
-        return;
-    }
     if let Some(nation) = MajorNationId::from_nation(session.game.turn().active_nation) {
         persist_high_score(&session.game, nation, &save_dir.0);
     }
@@ -402,20 +358,6 @@ fn persist_high_score(state: &GameState, nation: MajorNationId, directory: &std:
     let _ = std::fs::write(&path, write_scores_dat(&table));
 }
 
-impl Plugin for HighScorePlugin {
-    fn build(&self, app: &mut App) {
-        app.add_systems(
-            OnEnter(AppState::HighScore),
-            (spawn_high_score, bind_high_score).chain(),
-        )
-        .add_systems(
-            Update,
-            project_high_score.run_if(in_state(AppState::HighScore)),
-        )
-        .add_observer(on_high_score_close.run_if(in_state(AppState::HighScore)));
-    }
-}
-
 fn spawn_high_score(mut commands: Commands) {
     let root = commands.spawn_scene(generated::startup_1504()).id();
     commands
@@ -430,7 +372,8 @@ fn bind_high_score(
 ) {
     commands
         .entity(tree.find(*root, fourcc!("labl")))
-        .insert((HighScoreClose, ActivateOnPress));
+        .insert(ActivateOnPress)
+        .observe(on_high_score_close);
 }
 
 fn project_high_score(
@@ -469,31 +412,14 @@ fn project_high_score(
 }
 
 fn on_high_score_close(
-    activate: On<Activate>,
-    actions: Query<(), With<HighScoreClose>>,
+    _activate: On<Activate>,
     mut commands: Commands,
     mut session: Option<ResMut<GameSession>>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    if actions.get(activate.entity).is_err() {
-        return;
-    }
     if let Some(session) = session.as_mut() {
         let _ = session.game.close_high_scores();
     }
     commands.remove_resource::<GameSession>();
     next_state.set(AppState::MainMenu);
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn retail_movie_stems_map_to_typed_assets() {
-        assert_eq!(movie_id_for_stem("open"), MovieId::Open);
-        assert_eq!(movie_id_for_stem("vote"), MovieId::Vote);
-        assert_eq!(movie_id_for_stem("win"), MovieId::Win);
-        assert_eq!(movie_id_for_stem("lose"), MovieId::Lose);
-    }
 }

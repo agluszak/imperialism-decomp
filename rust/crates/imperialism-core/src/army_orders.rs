@@ -893,8 +893,14 @@ mod tests {
         place_unit(&mut state, MilitaryUnitKind::Regulars, province, 0);
         place_unit(&mut state, MilitaryUnitKind::Regulars, province, 2);
         state.set_idle_unit_orders_on_province(province, ArmyIdleOrderMode::Latr);
-        assert_eq!(state.military_units[0].order.code(), UNIT_ORDER_LATR);
-        assert_eq!(state.military_units[1].order.code(), UNIT_ORDER_SLEEP);
+        assert_eq!(
+            state.military_units[0].order.code(),
+            MilitaryOrderCode::Latr
+        );
+        assert_eq!(
+            state.military_units[1].order.code(),
+            MilitaryOrderCode::Sleep
+        );
     }
 
     #[test]
@@ -914,14 +920,14 @@ mod tests {
         assert_eq!(
             codes
                 .iter()
-                .filter(|&&code| code == UNIT_ORDER_DONE)
+                .filter(|&&code| code == MilitaryOrderCode::Done)
                 .count(),
             1
         );
         assert_eq!(
             codes
                 .iter()
-                .filter(|&&code| code == UNIT_ORDER_IDLE)
+                .filter(|&&code| code == MilitaryOrderCode::Idle)
                 .count(),
             1
         );
@@ -931,7 +937,7 @@ mod tests {
             state
                 .military_units
                 .iter()
-                .all(|unit| unit.order.code() == UNIT_ORDER_IDLE)
+                .all(|unit| unit.order.code() == MilitaryOrderCode::Idle)
         );
     }
 
@@ -945,12 +951,27 @@ mod tests {
         place_unit(&mut state, MilitaryUnitKind::Minutemen, province, 4);
         place_unit(&mut state, MilitaryUnitKind::Regulars, province, 2);
         state.apply_army_province_selection(Some(province));
-        assert_eq!(state.military_units[0].order.code(), UNIT_ORDER_IDLE);
-        assert_eq!(state.military_units[1].order.code(), UNIT_ORDER_IDLE);
-        assert_eq!(state.military_units[2].order.code(), UNIT_ORDER_DONE);
-        assert_eq!(state.military_units[3].order.code(), UNIT_ORDER_SLEEP);
+        assert_eq!(
+            state.military_units[0].order.code(),
+            MilitaryOrderCode::Idle
+        );
+        assert_eq!(
+            state.military_units[1].order.code(),
+            MilitaryOrderCode::Idle
+        );
+        assert_eq!(
+            state.military_units[2].order.code(),
+            MilitaryOrderCode::Done
+        );
+        assert_eq!(
+            state.military_units[3].order.code(),
+            MilitaryOrderCode::Sleep
+        );
         state.apply_army_province_selection(None);
-        assert_eq!(state.military_units[0].order.code(), UNIT_ORDER_IDLE);
+        assert_eq!(
+            state.military_units[0].order.code(),
+            MilitaryOrderCode::Idle
+        );
     }
 
     #[test]
@@ -1057,6 +1078,9 @@ mod tests {
         assert_eq!(outcome, ArmyMapClickOutcome::IssuedOrders);
         assert_eq!(state.military_units[0].order.code(), UNIT_ORDER_REDEPLOY);
         assert_eq!(state.military_units[0].order.target(), Some(to));
-        assert_eq!(state.military_units[1].order.code(), UNIT_ORDER_IDLE);
+        assert_eq!(
+            state.military_units[1].order.code(),
+            MilitaryOrderCode::Idle
+        );
     }
 }

@@ -94,7 +94,6 @@ struct LoadSaveRoot {
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum LoadSaveAction {
     SelectSlot(SaveSlot),
-    Autosave,
     Okay,
     Cancel,
 }
@@ -127,21 +126,13 @@ struct LoadSavePresentation {
     slots: [Option<SlotPresentation>; NUMBERED_SAVE_SLOT_COUNT as usize],
     autosave: Option<SlotPresentation>,
     empty_label: String,
-    pick_slot_prompt: String,
-    confirm_load_prompt: String,
 }
 
 #[derive(Component)]
-struct LoadSaveNotice {
-    kind: LoadSaveNoticeKind,
-    body: String,
-}
-
-#[derive(Clone, Debug, Eq, PartialEq)]
-enum LoadSaveNoticeKind {
+enum LoadSaveNotice {
     PickSlot,
     ConfirmLoad,
-    Error,
+    Error(String),
 }
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -162,28 +153,6 @@ enum FlagMenuAction {
     Preferences,
     Credits,
     Quit,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-enum FlagMenuNavigation {
-    Dismiss,
-    Save,
-    Load,
-    Preferences,
-    Credits,
-    Confirm(FlagMenuPending),
-}
-
-fn flag_menu_navigation(action: FlagMenuAction) -> FlagMenuNavigation {
-    match action {
-        FlagMenuAction::Cancel => FlagMenuNavigation::Dismiss,
-        FlagMenuAction::Save => FlagMenuNavigation::Save,
-        FlagMenuAction::Load => FlagMenuNavigation::Load,
-        FlagMenuAction::Preferences => FlagMenuNavigation::Preferences,
-        FlagMenuAction::Credits => FlagMenuNavigation::Credits,
-        FlagMenuAction::NewGame => FlagMenuNavigation::Confirm(FlagMenuPending::NewGame),
-        FlagMenuAction::Quit => FlagMenuNavigation::Confirm(FlagMenuPending::Quit),
-    }
 }
 
 /// New-game or quit confirmation posed by the flag menu.
@@ -365,7 +334,7 @@ fn bind_load_save_actions(
         .observe(on_load_save_activate);
     let otto = tree.find(root, fourcc!("otto"));
     let mut otto_commands = commands.entity(otto);
-    otto_commands.insert(LoadSaveAction::Autosave);
+    otto_commands.insert(LoadSaveAction::SelectSlot(SaveSlot::Autosave));
     otto_commands.observe(on_load_save_activate);
     if mode == LoadSaveMode::Save {
         otto_commands.insert(InteractionDisabled);
@@ -388,12 +357,6 @@ fn presentation_from_listing(
             .as_ref()
             .map(|header| slot_presentation(header, assets)),
         empty_label: empty_label.to_owned(),
-        pick_slot_prompt: assets
-            .string(PICK_SLOT_STRING_GROUP, PICK_SLOT_STRING_INDEX)
-            .unwrap_or_default(),
-        confirm_load_prompt: assets
-            .string(CONFIRM_LOAD_STRING_GROUP, CONFIRM_LOAD_STRING_INDEX)
-            .unwrap_or_default(),
     }
 }
 
@@ -571,7 +534,6 @@ fn on_load_save_activate(
     save_dir: Option<Res<SaveDirectory>>,
     returning: Res<ReturnTo>,
     session: Option<Res<GameSession>>,
-    state: Res<State<AppState>>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
 ) {
@@ -597,15 +559,6 @@ fn on_load_save_activate(
             &mut texts,
             info.single().ok(),
         ),
-        LoadSaveAction::Autosave => select_slot(
-            &mut commands,
-            &mut root,
-            activate.entity,
-            SaveSlot::Autosave,
-            presentation,
-            &mut texts,
-            info.single().ok(),
-        ),
         LoadSaveAction::Okay => {
             let Some(save_dir) = save_dir else {
                 return;
@@ -618,7 +571,6 @@ fn on_load_save_activate(
                 &save_dir.0,
                 session.as_deref(),
                 returning.0,
-                *state.get(),
                 &mut next_state,
             );
         }
@@ -694,33 +646,18 @@ fn confirm_or_apply(
     save_dir: &Path,
     session: Option<&GameSession>,
     returning: AppState,
-    screen_state: AppState,
     next_state: &mut NextState<AppState>,
 ) {
     let Some(slot) = root.selected else {
         if root.mode == LoadSaveMode::Save {
-            spawn_notice(
-                commands,
-                LoadSaveNoticeKind::PickSlot,
-                presentation
-                    .map(|listing| listing.pick_slot_prompt.clone())
-                    .unwrap_or_default(),
-                screen_state,
-            );
+            spawn_notice(commands, LoadSaveNotice::PickSlot);
         }
         return;
     };
     match root.mode {
         LoadSaveMode::Load => {
             if returning != AppState::MainMenu {
-                spawn_notice(
-                    commands,
-                    LoadSaveNoticeKind::ConfirmLoad,
-                    presentation
-                        .map(|listing| listing.confirm_load_prompt.clone())
-                        .unwrap_or_default(),
-                    screen_state,
-                );
+                spawn_notice(commands, LoadSaveNotice::ConfirmLoad);
                 return;
             }
             apply_load(
@@ -729,7 +666,6 @@ fn confirm_or_apply(
                 slot,
                 session.map(|session| &session.game),
                 next_state,
-                screen_state,
                 None,
             );
         }
@@ -757,7 +693,6 @@ fn confirm_or_apply(
                 &label,
                 returning,
                 next_state,
-                screen_state,
             );
         }
     }
@@ -770,7 +705,6 @@ fn apply_load(
     slot: SaveSlot,
     existing: Option<&GameState>,
     next_state: &mut NextState<AppState>,
-    screen_state: AppState,
     assets: Option<&RetailAssetsResource>,
 ) {
     let path = retail_save_path(save_dir, slot);
@@ -793,11 +727,11 @@ fn apply_load(
         }
         Err(error) => spawn_notice(
             commands,
-            LoadSaveNoticeKind::Error,
-            assets
-                .map(|assets| load_error_text(assets, &error))
-                .unwrap_or_else(|| error.to_string()),
-            screen_state,
+            LoadSaveNotice::Error(
+                assets
+                    .map(|assets| load_error_text(assets, &error))
+                    .unwrap_or_else(|| error.to_string()),
+            ),
         ),
     }
 }
@@ -811,16 +745,10 @@ fn apply_save(
     label: &str,
     returning: AppState,
     next_state: &mut NextState<AppState>,
-    screen_state: AppState,
 ) {
     match save_current_game(save_dir, slot, state, label) {
         Ok(()) => next_state.set(returning),
-        Err(error) => spawn_notice(
-            commands,
-            LoadSaveNoticeKind::Error,
-            error.to_string(),
-            screen_state,
-        ),
+        Err(error) => spawn_notice(commands, LoadSaveNotice::Error(error.to_string())),
     }
 }
 
@@ -833,13 +761,8 @@ fn load_error_text(assets: &RetailAssetsResource, error: &LoadGameError) -> Stri
     retail.unwrap_or_else(|| error.to_string())
 }
 
-fn spawn_notice(
-    commands: &mut Commands,
-    kind: LoadSaveNoticeKind,
-    body: String,
-    screen_state: AppState,
-) {
-    spawn_linger_dialog(commands, LoadSaveNotice { kind, body }, screen_state, 20);
+fn spawn_notice(commands: &mut Commands, notice: LoadSaveNotice) {
+    spawn_linger_dialog(commands, notice, AppState::LoadSave, 20);
 }
 
 fn bind_load_save_notice(
@@ -850,21 +773,30 @@ fn bind_load_save_notice(
 ) {
     let (root, notice) = notice.into_inner();
     let linger = bind_linger_dialog(root, &tree);
-    linger.set_body(&mut commands, &mut assets, &notice.body);
+    let body = match notice {
+        LoadSaveNotice::PickSlot => assets
+            .string(PICK_SLOT_STRING_GROUP, PICK_SLOT_STRING_INDEX)
+            .unwrap_or_default(),
+        LoadSaveNotice::ConfirmLoad => assets
+            .string(CONFIRM_LOAD_STRING_GROUP, CONFIRM_LOAD_STRING_INDEX)
+            .unwrap_or_default(),
+        LoadSaveNotice::Error(body) => body.clone(),
+    };
+    linger.set_body(&mut commands, &mut assets, &body);
     commands
         .entity(linger.okay)
         .insert(LoadSaveNoticeAction::Accept)
         .remove::<InteractionDisabled>()
         .observe(on_load_save_notice_activate);
-    match notice.kind {
-        LoadSaveNoticeKind::ConfirmLoad => {
+    match notice {
+        LoadSaveNotice::ConfirmLoad => {
             commands
                 .entity(linger.cancel)
                 .insert(LoadSaveNoticeAction::Dismiss)
                 .remove::<InteractionDisabled>()
                 .observe(on_load_save_notice_activate);
         }
-        LoadSaveNoticeKind::PickSlot | LoadSaveNoticeKind::Error => {
+        LoadSaveNotice::PickSlot | LoadSaveNotice::Error(_) => {
             commands.entity(linger.cancel).insert(Visibility::Hidden);
         }
     }
@@ -879,7 +811,6 @@ fn on_load_save_notice_activate(
     save_dir: Res<SaveDirectory>,
     session: Option<Res<GameSession>>,
     mut next_state: ResMut<NextState<AppState>>,
-    state: Res<State<AppState>>,
     mut commands: Commands,
     assets: Res<RetailAssetsResource>,
 ) {
@@ -889,8 +820,8 @@ fn on_load_save_notice_activate(
     let Ok((notice_entity, notice)) = notices.single() else {
         return;
     };
-    match (*action, &notice.kind) {
-        (LoadSaveNoticeAction::Accept, LoadSaveNoticeKind::ConfirmLoad) => {
+    match (*action, notice) {
+        (LoadSaveNoticeAction::Accept, LoadSaveNotice::ConfirmLoad) => {
             commands.entity(notice_entity).despawn();
             let Ok(root) = roots.single() else {
                 return;
@@ -904,7 +835,6 @@ fn on_load_save_notice_activate(
                 slot,
                 session.as_deref().map(|session| &session.game),
                 &mut next_state,
-                *state.get(),
                 Some(&*assets),
             );
         }
@@ -1008,13 +938,13 @@ fn on_flag_menu_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    match flag_menu_navigation(*action) {
-        FlagMenuNavigation::Dismiss => {
+    match *action {
+        FlagMenuAction::Cancel => {
             for entity in &menus {
                 commands.entity(entity).despawn();
             }
         }
-        FlagMenuNavigation::Save => {
+        FlagMenuAction::Save => {
             open_load_save(
                 &mut commands,
                 &mut next_state,
@@ -1022,7 +952,7 @@ fn on_flag_menu_activate(
                 AppState::StrategicMap,
             );
         }
-        FlagMenuNavigation::Load => {
+        FlagMenuAction::Load => {
             open_load_save(
                 &mut commands,
                 &mut next_state,
@@ -1030,16 +960,19 @@ fn on_flag_menu_activate(
                 AppState::StrategicMap,
             );
         }
-        FlagMenuNavigation::Preferences => {
+        FlagMenuAction::Preferences => {
             commands.insert_resource(ReturnTo(AppState::StrategicMap));
             next_state.set(AppState::Preferences);
         }
-        FlagMenuNavigation::Credits => {
+        FlagMenuAction::Credits => {
             commands.insert_resource(ReturnTo(AppState::StrategicMap));
             next_state.set(AppState::Credits);
         }
-        FlagMenuNavigation::Confirm(pending) => {
-            open_flag_menu_prompt(&mut commands, pending);
+        FlagMenuAction::NewGame => {
+            open_flag_menu_prompt(&mut commands, FlagMenuPending::NewGame);
+        }
+        FlagMenuAction::Quit => {
+            open_flag_menu_prompt(&mut commands, FlagMenuPending::Quit);
         }
     }
 }
@@ -1225,38 +1158,6 @@ mod tests {
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::MainMenu
-        );
-    }
-
-    #[test]
-    fn flag_menu_actions_map_to_navigation_intent() {
-        assert_eq!(
-            flag_menu_navigation(FlagMenuAction::Cancel),
-            FlagMenuNavigation::Dismiss
-        );
-        assert_eq!(
-            flag_menu_navigation(FlagMenuAction::Save),
-            FlagMenuNavigation::Save
-        );
-        assert_eq!(
-            flag_menu_navigation(FlagMenuAction::Load),
-            FlagMenuNavigation::Load
-        );
-        assert_eq!(
-            flag_menu_navigation(FlagMenuAction::Preferences),
-            FlagMenuNavigation::Preferences
-        );
-        assert_eq!(
-            flag_menu_navigation(FlagMenuAction::Credits),
-            FlagMenuNavigation::Credits
-        );
-        assert_eq!(
-            flag_menu_navigation(FlagMenuAction::NewGame),
-            FlagMenuNavigation::Confirm(FlagMenuPending::NewGame)
-        );
-        assert_eq!(
-            flag_menu_navigation(FlagMenuAction::Quit),
-            FlagMenuNavigation::Confirm(FlagMenuPending::Quit)
         );
     }
 
