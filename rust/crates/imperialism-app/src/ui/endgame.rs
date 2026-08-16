@@ -279,11 +279,17 @@ fn on_council_close(
     actions: Query<(), With<CouncilClose>>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
+    assets: Option<Res<RetailAssetsResource>>,
 ) {
     if actions.get(activate.entity).is_err() {
         return;
     }
-    apply_turn_stop(session.game.close_council_of_governors(), &mut next_state);
+    apply_turn_stop(
+        session
+            .game
+            .close_council_of_governors(super::session::news_story_ids(assets.as_deref())),
+        &mut next_state,
+    );
 }
 
 impl Plugin for GameScorePlugin {

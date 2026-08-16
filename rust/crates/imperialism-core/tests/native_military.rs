@@ -167,6 +167,19 @@ fn combat_moves_creates_battle() {
     .unwrap();
 }
 
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn auto_resolve_land_battle() {
+    compare_native("auto_resolve_land_battle", |state, _: EmptyCase| {
+        let continuation = state
+            .do_combat_moves()
+            .expect("hostile stack creates a battle");
+        state.enter_land_battle(continuation);
+        let _ = state.auto_resolve_land_battle(&[]);
+    })
+    .unwrap();
+}
+
 #[derive(Debug, Deserialize, PartialEq)]
 struct TwoLandBattles {
     first: PendingLandBattle,
@@ -426,12 +439,12 @@ struct NavyProvinceTargetCase {
     province: ProvinceId,
 }
 
-fn first_task_force(state: &GameState) -> TaskForceId {
+fn first_task_force(state: &GameState) -> TaskForceIndex {
     assert!(
         !state.task_forces().is_empty(),
         "native navy case expected a committed task force"
     );
-    TaskForceId::new(0)
+    TaskForceIndex::new(0)
 }
 
 #[test]

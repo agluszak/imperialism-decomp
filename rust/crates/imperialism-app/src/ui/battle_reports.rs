@@ -164,9 +164,15 @@ fn on_battle_report_activate(
     mut session: ResMut<GameSession>,
     mut selected: ResMut<SelectedBattleReport>,
     mut next_state: ResMut<NextState<AppState>>,
+    assets: Option<Res<crate::RetailAssetsResource>>,
 ) {
     if close.get(activate.entity).is_ok() {
-        apply_turn_stop(session.game.close_post_combat_reports(), &mut next_state);
+        apply_turn_stop(
+            session
+                .game
+                .close_post_combat_reports(super::session::news_story_ids(assets.as_deref())),
+            &mut next_state,
+        );
         return;
     }
     if detail.get(activate.entity).is_ok() && !session.game.battle_reports().is_empty() {

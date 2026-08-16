@@ -311,13 +311,13 @@ impl GameState {
 
     /// Closes `TBattleReportView`. Reports stay until `CleanUpStacks`; phase is already
     /// `ELIMINATION`.
-    pub fn close_post_combat_reports(&mut self) -> TurnStop {
+    pub fn close_post_combat_reports(&mut self, story_ids: &[i32]) -> TurnStop {
         assert!(
             matches!(self.continuation, TurnContinuation::PostCombatReports),
             "post-combat report resume requires a post-combat continuation"
         );
         self.continuation = TurnContinuation::None;
-        self.advance_turn()
+        self.advance_turn(story_ids)
     }
 
     /// After the opening cinematic: vote/win/lose from 0x0e/0x16/0x17 go to council;
@@ -353,13 +353,13 @@ impl GameState {
     }
 
     /// Council of Governors closed. `StartNextPhase` uses the already-updated phase.
-    pub fn close_council_of_governors(&mut self) -> TurnStop {
+    pub fn close_council_of_governors(&mut self, story_ids: &[i32]) -> TurnStop {
         assert!(
             matches!(self.continuation, TurnContinuation::CouncilOfGovernors),
             "council resume requires a council continuation"
         );
         self.continuation = TurnContinuation::None;
-        self.advance_turn()
+        self.advance_turn(story_ids)
     }
 
     /// Game Score `done` posts `kTurnEventHighScores` after reinitialize.
@@ -520,7 +520,6 @@ impl GameState {
                     }
                 }
                 PhaseCode::NEWSPAPER => {
-                    self.mark_all_pending_status_flags_handled();
                     self.turn.phase = PhaseCode::RETURN_TO_MAP;
                     self.construct_newspaper_pages(story_ids);
                     self.mark_all_pending_status_flags_handled();

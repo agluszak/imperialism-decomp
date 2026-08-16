@@ -36,7 +36,7 @@ pub(crate) struct ArmySelection(pub Option<ProvinceId>);
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Resource)]
 pub(crate) struct NavySelection {
     pub zone: Option<OceanZoneId>,
-    pub force: Option<TaskForceId>,
+    pub force: Option<TaskForceIndex>,
 }
 
 /// `TMapUberPicture::invalidationFlag94 == 0` is the `DOOG` ocean view.
@@ -125,7 +125,7 @@ pub(crate) fn has_active_map_interaction_selection(
     mode: MapInteractionMode,
     civilian: Option<CivilianUnitId>,
     army: Option<ProvinceId>,
-    navy_force: Option<TaskForceId>,
+    navy_force: Option<TaskForceIndex>,
 ) -> bool {
     match mode {
         MapInteractionMode::Civilian => civilian.is_some(),
