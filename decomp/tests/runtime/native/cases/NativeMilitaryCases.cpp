@@ -26,6 +26,7 @@
 #include "game/nation/TGreatPower_internal.h"
 #include "game/nation_domain_types.h"
 #include "game/navy/TShip.h"
+#include "game/navy/TTaskForce.h"
 #include "game/tactical/TArmyBattle.h"
 #include "game/ui_core/CIterator.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -132,7 +133,7 @@ JSON_Value* TryCreateBattleWithoutUi(TArmyMgr* army, TArmyStack* stack) {
   }
 
   if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(attackerNation,
-                                                                          cachedOwner) == 0) {
+                                                                           cachedOwner) == 0) {
     army->RelocateStackUnitsToStackTile(stack);
     return 0;
   }
@@ -317,6 +318,17 @@ void ForceWarBetween(short left, short right) {
       kDiplomacyRelationshipWar;
 }
 
+int TaskForceQueueIndex(TTaskForce* expected) {
+  int index = 0;
+  for (TTaskForce* force = g_pNavyOrderManager->orderQueueHead; force != 0;
+       force = force->nextForce, ++index) {
+    if (force == expected) {
+      return index;
+    }
+  }
+  return -1;
+}
+
 } // namespace
 
 RuntimeActionResult RunSpecialistRecruitment(NativeTransition& transition) {
@@ -417,6 +429,75 @@ RuntimeActionResult RunMilitaryPhaseShipsWithoutOrders(NativeTransition& transit
   }
   g_pSimMgr->DoMilitary();
   return transition.Finish();
+}
+
+RuntimeActionResult RunMilitaryPhaseNavalEncounter(NativeTransition& transition) {
+  const short activeNation = ActiveNationSlot();
+  short hostileNation = -1;
+  for (short nation = 0; nation < kMajorNationCount; ++nation) {
+    if (nation != activeNation && g_apNationStates[nation] != 0) {
+      hostileNation = nation;
+      break;
+    }
+  }
+  TZone* zone = 0;
+  for (TZone* candidate = g_pMapActionContextListHead; candidate != 0;
+       candidate = candidate->prev18) {
+    bool occupied = false;
+    for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
+      if (ship->location == candidate) {
+        occupied = true;
+        break;
+      }
+    }
+    if (!occupied) {
+      zone = candidate;
+      break;
+    }
+  }
+  if (hostileNation < 0 || zone == 0) {
+    return RuntimeActionResult::Failure("the fixture cannot create a naval encounter");
+  }
+
+  TShip* attackerShip = new TShip();
+  attackerShip->IShip(3, zone, activeNation, "military-encounter-attacker");
+  TTaskForce* attacker = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(activeNation);
+  if (attacker == 0) {
+    return RuntimeActionResult::Failure("could not create the attacking task force");
+  }
+  attacker->SubmitOrders(3, 0);
+
+  TShip* defenderShip = new TShip();
+  defenderShip->IShip(3, zone, hostileNation, "military-encounter-defender");
+  TTaskForce* defender = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(hostileNation);
+  if (defender == 0) {
+    return RuntimeActionResult::Failure("could not create the defending task force");
+  }
+  defender->SubmitOrders(6, zone);
+  ForceWarBetween(activeNation, hostileNation);
+
+  JsonObject args;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+  g_pSimMgr->DoMilitary();
+
+  const int attackerIndex = TaskForceQueueIndex(attacker);
+  const int defenderIndex = TaskForceQueueIndex(defender);
+  if (attackerIndex < 0 || defenderIndex < 0) {
+    return RuntimeActionResult::Failure("the naval encounter did not retain both task forces");
+  }
+
+  JsonObject battle;
+  battle.Set("attacker", attackerIndex);
+  battle.Set("defender", defenderIndex);
+  JsonObject continuation;
+  continuation.Set("pass", 0);
+  continuation.Set("outer", attackerIndex);
+  continuation.Set("inner", defenderIndex + 1);
+  continuation.Set("battle", battle.Release());
+  return transition.Finish(continuation.Release());
 }
 
 RuntimeActionResult RunAdvisoryMapMissionsCase16(NativeTransition& transition) {
@@ -586,8 +667,7 @@ RuntimeActionResult RunCombatMovesResumesAfterBattle(NativeTransition& transitio
   }
   if (!FindHostileRedeployExcluding(firstUnit, firstDest, &secondUnit, &secondDest,
                                     &secondDefender)) {
-    return RuntimeActionResult::Failure(
-        "the loaded fixture has no second distinct hostile stack");
+    return RuntimeActionResult::Failure("the loaded fixture has no second distinct hostile stack");
   }
   ForceWarBetween(firstUnit->ownerNationSlot18, firstDefender);
   ForceWarBetween(secondUnit->ownerNationSlot18, secondDefender);

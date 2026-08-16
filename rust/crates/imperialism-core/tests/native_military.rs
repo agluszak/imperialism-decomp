@@ -109,10 +109,7 @@ struct EmptyCase {}
 #[test]
 #[ignore = "requires the native C++ oracle"]
 fn military_phase() {
-    compare_native("military_phase", |state, _: EmptyCase| {
-        state.do_military();
-    })
-    .unwrap();
+    compare_native("military_phase", |state, _: EmptyCase| state.do_military()).unwrap();
 }
 
 #[test]
@@ -120,10 +117,17 @@ fn military_phase() {
 fn military_phase_ships_without_orders() {
     compare_native(
         "military_phase_ships_without_orders",
-        |state, _: EmptyCase| {
-            state.do_military();
-        },
+        |state, _: EmptyCase| state.do_military(),
     )
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn military_phase_naval_encounter() {
+    compare_native("military_phase_naval_encounter", |state, _: EmptyCase| {
+        state.do_military()
+    })
     .unwrap();
 }
 

@@ -19,13 +19,11 @@ impl GameState {
     /// grow militia, then pay maintenance, select advisory missions, and issue
     /// orders in major-nation order. Army map-context records are released
     /// before navy preparation and execution.
-    pub fn do_military(&mut self) {
+    pub fn do_military(&mut self) -> Option<NavyOrdersContinuation> {
         self.apply_military_orders();
         self.clean_up_army_stacks();
         self.prepare_to_carry_out_navy_orders();
-        if let Some(continuation) = self.carry_out_navy_orders() {
-            self.continuation = TurnContinuation::NavalBattle(continuation);
-        }
+        self.carry_out_navy_orders()
     }
 
     /// Semantic effects of `TArmyMgr::CleanUpStacks`. Core's battle reports are
@@ -411,7 +409,7 @@ mod tests {
         state
             .nations
             .append_owned_region_during_construction(nation, province);
-        state.do_military();
+        let _ = state.do_military();
         assert_eq!(state.military_units.len(), 1);
         assert_eq!(state.military_units[0].nation, nation);
         assert_eq!(
@@ -471,7 +469,7 @@ mod tests {
             marker: 0,
         });
 
-        state.do_military();
+        let _ = state.do_military();
 
         assert_eq!(
             state.military_units[0].order().code(),
@@ -542,7 +540,7 @@ mod tests {
             add_armor(&mut state, attacker.nation(), ProvinceId::new(0));
         }
 
-        state.do_military();
+        let _ = state.do_military();
 
         assert_eq!(state.missions.len(), 1);
         assert_eq!(state.missions[0].nation, attacker.nation());
@@ -582,7 +580,7 @@ mod tests {
             add_armor(&mut state, attacker.nation(), ProvinceId::new(0));
         }
 
-        state.do_military();
+        let _ = state.do_military();
 
         assert!(state.missions.is_empty());
     }

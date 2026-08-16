@@ -446,8 +446,8 @@ impl GameState {
                 }
                 PhaseCode::MILITARY => {
                     self.turn.phase = PhaseCode::COMBAT_MOVES;
-                    self.do_military();
-                    if matches!(self.continuation, TurnContinuation::NavalBattle(_)) {
+                    if let Some(continuation) = self.do_military() {
+                        self.continuation = TurnContinuation::NavalBattle(continuation);
                         return TurnStop::NavalBattle;
                     }
                 }
