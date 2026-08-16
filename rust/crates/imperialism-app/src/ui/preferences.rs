@@ -102,6 +102,10 @@ impl Plugin for PreferencesPlugin {
             .add_systems(
                 Update,
                 sync_preference_slider_visuals.run_if(in_state(AppState::Preferences)),
+            )
+            .add_systems(
+                OnExit(AppState::Preferences),
+                super::session::clear_return_to,
             );
     }
 }

@@ -1,9 +1,10 @@
 //! Post-combat `TBattleReportView` / `TBattleDetailBook`.
 
 use super::generated;
-use super::retail::RetailTree;
+use super::retail::{ModalDialog, RetailTree};
 use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
+use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
@@ -180,9 +181,13 @@ fn on_battle_report_step(
 
 fn spawn_detail(commands: &mut Commands) {
     let root = commands.spawn_scene(generated::diplo_1352()).id();
-    commands
-        .entity(root)
-        .insert((DetailRoot, DespawnOnExit(AppState::BattleReport)));
+    commands.entity(root).insert((
+        DetailRoot,
+        ModalDialog,
+        TabGroup::modal(),
+        GlobalZIndex(20),
+        DespawnOnExit(AppState::BattleReport),
+    ));
 }
 
 fn bind_detail(mut commands: Commands, root: Single<Entity, Added<DetailRoot>>, tree: RetailTree) {
