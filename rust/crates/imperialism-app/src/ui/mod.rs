@@ -24,6 +24,7 @@ mod strategic_map;
 mod technology;
 mod trade;
 mod transport;
+mod viewport;
 
 pub(crate) use battle_reports::BattleReportPlugin;
 pub(crate) use city::CityPlugin;
@@ -50,6 +51,7 @@ pub(crate) use session::GameSession;
 pub(crate) use technology::TechnologyAdvancePlugin;
 pub(crate) use trade::TradePlugin;
 pub(crate) use transport::TransportPlugin;
+pub(crate) use viewport::RetailViewportPlugin;
 
 use bevy::prelude::{DetectChanges, Res};
 

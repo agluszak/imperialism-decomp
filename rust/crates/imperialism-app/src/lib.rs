@@ -80,6 +80,7 @@ fn add_game_plugins(app: &mut App) {
     app.add_plugins((
         TabNavigationPlugin,
         ui::RetailUiPlugin,
+        ui::RetailViewportPlugin,
         ui::QueryFloaterPlugin,
         ui::MainMenuPlugin,
         ui::LoadSavePlugin,
@@ -139,7 +140,7 @@ pub fn run(
         app.insert_resource(ui::GameSession { game })
             .insert_state(AppState::StrategicMap);
     } else {
-        app.init_state::<AppState>();
+        app.insert_state(AppState::OpeningCinematic);
     }
     app.insert_resource(RetailAssetsResource::new(retail_assets))
         .insert_resource(RandomGameNamesResource(random_game_names))

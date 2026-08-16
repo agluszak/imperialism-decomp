@@ -1,7 +1,4 @@
-//! GStreamer playbin adapter. Cinematic session wiring is a follow-up; this module is the
-//! production decoder used by tests and by that later caller.
-
-#![allow(dead_code)]
+//! GStreamer playbin adapter for retail AVI cinematics.
 
 use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
@@ -58,21 +55,28 @@ pub(crate) fn rgba_frame_to_image(frame: &RgbaFrame) -> Image {
     image
 }
 
-/// Playbin-backed decoder that feeds application-owned RGBA frames.
-///
-/// Audio stays inside GStreamer. Tests attach `appsink` pads so EOS, skip, and
-/// one audio buffer can be observed without a window or sound device.
+/// Playbin-backed decoder that feeds application-owned RGBA frames while
+/// GStreamer owns synchronized movie audio in production.
 pub(crate) struct MovieBackend {
     playbin: gst::Element,
     video_sink: gst_app::AppSink,
-    audio_sink: gst_app::AppSink,
+    #[cfg(test)]
+    audio_sink: Option<gst_app::AppSink>,
     path: std::path::PathBuf,
 }
 
 impl MovieBackend {
     pub(crate) fn open(path: impl AsRef<Path>) -> Result<Self, MovieError> {
+        Self::open_inner(path.as_ref(), false)
+    }
+
+    #[cfg(test)]
+    fn open_observed(path: impl AsRef<Path>) -> Result<Self, MovieError> {
+        Self::open_inner(path.as_ref(), true)
+    }
+
+    fn open_inner(path: &Path, observe_audio: bool) -> Result<Self, MovieError> {
         ensure_initialized();
-        let path = path.as_ref();
         if !path.is_file() {
             return Err(MovieError::Missing {
                 path: path.to_owned(),
@@ -92,29 +96,40 @@ impl MovieBackend {
             )
             .max_buffers(4)
             .drop(true)
-            .sync(false)
-            .wait_on_eos(false)
-            .build();
-        let audio_sink = gst_app::AppSink::builder()
-            .caps(&gst::Caps::builder("audio/x-raw").build())
-            .max_buffers(4)
-            .drop(true)
-            .sync(false)
+            .sync(!observe_audio)
             .wait_on_eos(false)
             .build();
         let playbin = gst::ElementFactory::make("playbin")
             .property("uri", uri.as_str())
             .property("video-sink", &video_sink)
-            .property("audio-sink", &audio_sink)
             .build()
             .map_err(|error| MovieError::Unplayable {
                 path: path.to_owned(),
                 detail: error.to_string(),
             })?;
 
+        #[cfg(test)]
+        let audio_sink = if observe_audio {
+            let sink = gst_app::AppSink::builder()
+                .caps(&gst::Caps::builder("audio/x-raw").build())
+                .max_buffers(4)
+                .drop(true)
+                .sync(false)
+                .wait_on_eos(false)
+                .build();
+            playbin.set_property("audio-sink", &sink);
+            Some(sink)
+        } else {
+            None
+        };
+
+        #[cfg(not(test))]
+        debug_assert!(!observe_audio);
+
         Ok(Self {
             playbin,
             video_sink,
+            #[cfg(test)]
             audio_sink,
             path: path.to_owned(),
         })
@@ -145,18 +160,16 @@ impl MovieBackend {
         Ok(Some(frame_from_sample(sample, &self.path)?))
     }
 
-    pub(crate) fn pull_audio_buffer(&self, timeout: Duration) -> bool {
+    #[cfg(test)]
+    fn pull_audio_buffer(&self, timeout: Duration) -> bool {
         self.audio_sink
-            .try_pull_sample(clock_time(timeout))
-            .is_some()
+            .as_ref()
+            .is_some_and(|sink| sink.try_pull_sample(clock_time(timeout)).is_some())
     }
 
     pub(crate) fn reached_eos(&self) -> bool {
-        if self.video_sink.is_eos() {
-            return true;
-        }
         self.playbin.bus().is_some_and(|bus| {
-            bus.timed_pop_filtered(gst::ClockTime::from_mseconds(1), &[gst::MessageType::Eos])
+            bus.timed_pop_filtered(gst::ClockTime::ZERO, &[gst::MessageType::Eos])
                 .is_some()
         })
     }
@@ -292,7 +305,7 @@ mod tests {
         let path = dir.path().join("open.avi");
         write_cinepak_avi(&path);
 
-        let movie = MovieBackend::open(&path).unwrap();
+        let movie = MovieBackend::open_observed(&path).unwrap();
         movie.play().unwrap();
         let frame = wait_for_video_frame(&movie);
         assert_eq!(frame.width, 160);
@@ -358,7 +371,7 @@ mod tests {
         );
         let assets = imperialism_formats::RetailAssets::open(&root).unwrap();
         let path = assets.movie_path(MovieId::Open);
-        let movie = MovieBackend::open(&path).unwrap();
+        let movie = MovieBackend::open_observed(&path).unwrap();
         movie.play().unwrap();
         let frame = wait_for_video_frame(&movie);
         assert!(frame.width > 0 && frame.height > 0);

@@ -1,22 +1,26 @@
-//! Opening cinematic, Council of Governors, Game Score, and high-score screens.
+//! Retail cinematics, Council of Governors, Game Score, and high-score screens.
 
 use super::generated;
 use super::retail::{RetailTag, find_descendant};
 use super::session::{GameSession, apply_turn_stop};
-use crate::AppState;
+use crate::media::{MovieBackend, MusicDirector, rgba_frame_to_image};
 use crate::ui::load_save::SaveDirectory;
+use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
+use bevy::ui::widget::NodeImageMode;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
 use imperialism_formats::{
-    FourCc, empty_high_score_table, fourcc, insert_high_score, read_scores_dat, write_scores_dat,
+    FourCc, MovieId, empty_high_score_table, fourcc, insert_high_score, read_scores_dat,
+    write_scores_dat,
 };
+use std::time::Duration;
 
-#[derive(Component)]
-struct OpeningCinematicRoot;
-
-#[derive(Component)]
-struct OpeningCinematicAction;
+#[derive(Resource)]
+struct ActiveCinematic {
+    movie: MovieBackend,
+    image: Handle<Image>,
+}
 
 #[derive(Component)]
 struct CouncilRoot;
@@ -44,52 +48,143 @@ pub(crate) struct HighScorePlugin;
 impl Plugin for OpeningCinematicPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(AppState::OpeningCinematic), spawn_opening_cinematic)
-            .add_observer(on_opening_cinematic.run_if(in_state(AppState::OpeningCinematic)));
+            .add_systems(
+                Update,
+                pump_opening_cinematic.run_if(in_state(AppState::OpeningCinematic)),
+            )
+            .add_systems(OnExit(AppState::OpeningCinematic), cleanup_opening_cinematic);
     }
 }
 
-fn spawn_opening_cinematic(mut commands: Commands, session: Res<GameSession>) {
-    let clip = session.game.opening_cinematic_movie();
-    let root = commands
+fn spawn_opening_cinematic(
+    mut commands: Commands,
+    retail: Res<RetailAssetsResource>,
+    mut images: ResMut<Assets<Image>>,
+    mut music: ResMut<MusicDirector>,
+    mut session: Option<ResMut<GameSession>>,
+    mut next_state: ResMut<NextState<AppState>>,
+) {
+    music.stop_all();
+    let movie_id = session.as_ref().map_or(MovieId::Open, |session| {
+        movie_id_for_stem(session.game.opening_cinematic_movie())
+    });
+    let path = retail.assets().movie_path(movie_id);
+    let movie = match MovieBackend::open(&path) {
+        Ok(movie) => movie,
+        Err(error) => {
+            warn!("skipping unavailable retail movie {movie_id}: {error}");
+            finish_opening_cinematic(&mut commands, &mut session, &mut next_state);
+            return;
+        }
+    };
+    if let Err(error) = movie.play() {
+        warn!("skipping unplayable retail movie {movie_id}: {error}");
+        finish_opening_cinematic(&mut commands, &mut session, &mut next_state);
+        return;
+    }
+
+    let image = images.add(Image::default());
+    commands
         .spawn((
-            OpeningCinematicRoot,
+            Name::new(format!("Retail movie: {movie_id}")),
             DespawnOnExit(AppState::OpeningCinematic),
             Node {
-                width: Val::Px(640.0),
-                height: Val::Px(480.0),
+                position_type: PositionType::Absolute,
+                width: Val::Percent(100.0),
+                height: Val::Percent(100.0),
                 justify_content: JustifyContent::Center,
                 align_items: AlignItems::Center,
                 ..default()
             },
             BackgroundColor(Color::BLACK),
-            OpeningCinematicAction,
-            ActivateOnPress,
+            GlobalZIndex(100),
+            Pickable::IGNORE,
         ))
-        .id();
-    commands.spawn((
-        ChildOf(root),
-        Text::new(clip),
-        TextColor(Color::WHITE),
-        Pickable::IGNORE,
-    ));
+        .with_children(|parent| {
+            parent.spawn((
+                Node {
+                    width: Val::Px(640.0),
+                    height: Val::Px(480.0),
+                    ..default()
+                },
+                ImageNode::new(image.clone()).with_mode(NodeImageMode::Stretch),
+                Pickable::IGNORE,
+            ));
+        });
+    commands.insert_resource(ActiveCinematic { movie, image });
 }
 
-fn on_opening_cinematic(
-    activate: On<Activate>,
-    actions: Query<(), With<OpeningCinematicAction>>,
+fn pump_opening_cinematic(
+    active: Option<Res<ActiveCinematic>>,
+    keyboard: Res<ButtonInput<KeyCode>>,
+    mouse: Res<ButtonInput<MouseButton>>,
+    mut images: ResMut<Assets<Image>>,
     mut commands: Commands,
-    mut session: ResMut<GameSession>,
+    mut session: Option<ResMut<GameSession>>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    if actions.get(activate.entity).is_err() {
+    let Some(active) = active else {
         return;
+    };
+    let skip = keyboard.just_pressed(KeyCode::Escape)
+        || keyboard.just_pressed(KeyCode::Space)
+        || keyboard.just_pressed(KeyCode::Enter)
+        || keyboard.just_pressed(KeyCode::NumpadEnter)
+        || mouse.get_just_pressed().next().is_some();
+
+    let mut finished = skip;
+    if !finished {
+        match active.movie.pull_video_frame(Duration::ZERO) {
+            Ok(Some(frame)) => {
+                if let Some(image) = images.get_mut(&active.image) {
+                    *image = rgba_frame_to_image(&frame);
+                }
+            }
+            Ok(None) => {}
+            Err(error) => {
+                warn!("retail movie playback failed: {error}");
+                finished = true;
+            }
+        }
+        finished |= active.movie.reached_eos();
     }
+
+    if finished {
+        active.movie.stop();
+        finish_opening_cinematic(&mut commands, &mut session, &mut next_state);
+    }
+}
+
+fn cleanup_opening_cinematic(mut commands: Commands) {
+    commands.remove_resource::<ActiveCinematic>();
+}
+
+fn finish_opening_cinematic(
+    commands: &mut Commands,
+    session: &mut Option<ResMut<GameSession>>,
+    next_state: &mut NextState<AppState>,
+) {
+    commands.remove_resource::<ActiveCinematic>();
+    let Some(session) = session.as_mut() else {
+        next_state.set(AppState::MainMenu);
+        return;
+    };
     let stop = session.game.close_opening_cinematic();
     if stop == TurnStop::SessionEnded {
         commands.remove_resource::<GameSession>();
         next_state.set(AppState::MainMenu);
     } else {
-        apply_turn_stop(stop, &mut next_state);
+        apply_turn_stop(stop, next_state);
+    }
+}
+
+fn movie_id_for_stem(stem: &str) -> MovieId {
+    match stem {
+        "open" => MovieId::Open,
+        "vote" => MovieId::Vote,
+        "win" => MovieId::Win,
+        "lose" => MovieId::Lose,
+        _ => panic!("core returned unknown retail movie stem {stem:?}"),
     }
 }
 
@@ -308,10 +403,7 @@ impl Plugin for HighScorePlugin {
             OnEnter(AppState::HighScore),
             (spawn_high_score, bind_high_score).chain(),
         )
-        .add_systems(
-            Update,
-            project_high_score.run_if(in_state(AppState::HighScore)),
-        )
+        .add_systems(Update, project_high_score.run_if(in_state(AppState::HighScore)))
         .add_observer(on_high_score_close.run_if(in_state(AppState::HighScore)));
     }
 }
@@ -385,4 +477,17 @@ fn on_high_score_close(
     }
     commands.remove_resource::<GameSession>();
     next_state.set(AppState::MainMenu);
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn retail_movie_stems_map_to_typed_assets() {
+        assert_eq!(movie_id_for_stem("open"), MovieId::Open);
+        assert_eq!(movie_id_for_stem("vote"), MovieId::Vote);
+        assert_eq!(movie_id_for_stem("win"), MovieId::Win);
+        assert_eq!(movie_id_for_stem("lose"), MovieId::Lose);
+    }
 }
