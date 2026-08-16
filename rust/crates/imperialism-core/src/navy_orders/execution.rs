@@ -711,6 +711,8 @@ impl GameState {
             );
             self.prune_sunk_force_ships(left_id);
             self.prune_sunk_force_ships(right_id);
+            self.elect_task_force_flagship(left_id);
+            self.elect_task_force_flagship(right_id);
             if self.task_forces[left].ships.is_empty() || self.task_forces[right].ships.is_empty() {
                 break;
             }
@@ -1117,10 +1119,7 @@ impl GameState {
             }
         }
         self.task_forces[force_index].ships = kept;
-        self.task_forces[force_index].flagship = self.task_forces[force_index]
-            .ships
-            .first()
-            .map(|ship| ship.ship);
+        self.elect_task_force_flagship(force);
     }
 
     pub(super) fn demand_exclusive_task_force(&mut self, ship: ShipId) -> TaskForceId {
@@ -1185,11 +1184,11 @@ impl GameState {
         let Some(force_index) = self.task_force_index(force) else {
             return;
         };
-        if !self.task_forces[force_index]
+        let added = !self.task_forces[force_index]
             .ships
             .iter()
-            .any(|entry| entry.ship == ship)
-        {
+            .any(|entry| entry.ship == ship);
+        if added {
             let bucket = usize::try_from(
                 NAVY_DESCRIPTORS[self.ship(ship).expect("task-force ship exists").ship_type]
                     .toolbar_bucket,
@@ -1215,19 +1214,36 @@ impl GameState {
                 },
             );
         }
-        self.elect_task_force_flagship(force);
+        if added {
+            self.consider_task_force_flagship(force, ship);
+        }
     }
 
     pub(super) fn remove_ship_from_force(&mut self, ship: ShipId, force: TaskForceId) {
+        let was_flagship = self
+            .task_force(force)
+            .is_some_and(|force| force.flagship == Some(ship));
         if let Some(force) = self.task_force_mut(force) {
             if force.ships.iter().any(|entry| entry.ship == ship) {
                 force.ships.retain(|entry| entry.ship != ship);
             }
-            if force.flagship == Some(ship) {
-                force.flagship = None;
-            }
         }
-        self.elect_task_force_flagship(force);
+        if was_flagship {
+            self.elect_task_force_flagship(force);
+        }
+    }
+
+    fn consider_task_force_flagship(&mut self, force: TaskForceId, ship: ShipId) {
+        let Some(current) = self.task_force(force).and_then(|force| force.flagship) else {
+            if let Some(force) = self.task_force_mut(force) {
+                force.flagship = Some(ship);
+            }
+            return;
+        };
+        let finest = self.finest_ship(ship, current);
+        self.task_force_mut(force)
+            .expect("task force exists")
+            .flagship = Some(finest);
     }
 
     fn elect_task_force_flagship(&mut self, force: TaskForceId) {

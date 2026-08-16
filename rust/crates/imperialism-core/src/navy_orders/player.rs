@@ -829,8 +829,6 @@ impl GameState {
         for ship in drop {
             self.remove_ship_from_force(ship, force);
         }
-        if let Some(entry) = self.task_force_mut(force) {
-            entry.flagship = entry.ships.first().map(|node| node.ship);
-        }
+        self.elect_task_force_flagship(force);
     }
 }
