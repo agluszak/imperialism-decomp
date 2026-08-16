@@ -94,10 +94,7 @@ impl GameState {
         self.populate_case16_advisory_candidates(nation);
 
         let mut best: Option<AdvisoryCandidate> = None;
-        let mut best_direct_score = 0.0_f32;
-        let mut direct_region = None;
-        let mut second_best_direct_score = 0.0_f32;
-        let mut best_direct_fallback = None;
+        let mut best_direct: Option<(f32, ProvinceId)> = None;
 
         for province in ProvinceId::all() {
             if self.province_target(nation, province) != Some(AiTargetState::Candidate) {
@@ -105,8 +102,9 @@ impl GameState {
             }
             let candidate = if self.has_direct_or_colony_link(province, nation.nation()) {
                 let score = self.advisory_direct_score(nation, province);
-                best_direct_score = score;
-                direct_region = Some(province);
+                if best_direct.is_none_or(|(best_score, _)| score > best_score) {
+                    best_direct = Some((score, province));
+                }
                 Some(AdvisoryCandidate {
                     score,
                     route: AdvisoryRoute::Direct(province),
@@ -135,12 +133,6 @@ impl GameState {
                 && candidate.score > best.map_or(0.0, |best| best.score)
             {
                 best = Some(candidate);
-            }
-            if best_direct_score > second_best_direct_score
-                && let Some(direct) = direct_region
-            {
-                best_direct_fallback = Some(direct);
-                second_best_direct_score = best_direct_score;
             }
         }
 
@@ -218,7 +210,7 @@ impl GameState {
                     }
                 }
             }
-            if queue_secondary && let Some(region) = best_direct_fallback {
+            if queue_secondary && let Some((_, region)) = best_direct {
                 self.create_advisory_mission(
                     nation,
                     AdvisoryMissionKind::Attack,

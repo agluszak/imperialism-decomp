@@ -156,9 +156,9 @@ pub(in crate::ui::city) fn bind_construction_dialog(
     capacity_value: &str,
     can_reserve: bool,
 ) {
-    let capacity = format_retail_value(
+    let capacity = fill_brackets(
         &city_string(assets, CITY_TEXT_STRING_GROUP, 0x10),
-        capacity_value,
+        &[capacity_value],
     );
     let headline = assets
         .string(0x2422 + i16::from(slot as u8), 1)

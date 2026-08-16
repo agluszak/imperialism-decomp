@@ -1,69 +1,59 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-#[serde(transparent)]
-pub struct NationId(u8);
+macro_rules! bounded_id {
+    ($name:ident, $inner:ty, $count:expr, $label:literal) => {
+        #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+        #[serde(transparent)]
+        pub struct $name($inner);
 
-impl NationId {
-    pub const COUNT: u8 = 23;
+        impl $name {
+            pub const COUNT: $inner = $count;
 
-    pub const fn new(value: u8) -> Self {
-        assert!(value < Self::COUNT, "nation ID is out of range");
-        Self(value)
-    }
+            pub const fn new(value: $inner) -> Self {
+                assert!(value < Self::COUNT, concat!($label, " is out of range"));
+                Self(value)
+            }
 
-    pub const fn try_new(value: u8) -> Option<Self> {
-        if value < Self::COUNT {
-            Some(Self(value))
-        } else {
-            None
+            pub const fn try_new(value: $inner) -> Option<Self> {
+                if value < Self::COUNT {
+                    Some(Self(value))
+                } else {
+                    None
+                }
+            }
+
+            pub const fn get(self) -> $inner {
+                self.0
+            }
+
+            pub fn all() -> impl DoubleEndedIterator<Item = Self> + ExactSizeIterator {
+                (0..Self::COUNT).map(Self::new)
+            }
         }
-    }
 
-    pub const fn get(self) -> u8 {
-        self.0
-    }
-
-    pub fn all() -> impl DoubleEndedIterator<Item = Self> + ExactSizeIterator {
-        (0..Self::COUNT).map(Self::new)
-    }
+        impl<'de> Deserialize<'de> for $name {
+            fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+            where
+                D: serde::Deserializer<'de>,
+            {
+                let value = <$inner>::deserialize(deserializer)?;
+                Self::try_new(value).ok_or_else(|| {
+                    serde::de::Error::custom(format_args!(
+                        concat!($label, " {} is out of range"),
+                        value
+                    ))
+                })
+            }
+        }
+    };
 }
 
-impl<'de> Deserialize<'de> for NationId {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        let value = u8::deserialize(deserializer)?;
-        Self::try_new(value).ok_or_else(|| {
-            serde::de::Error::custom(format_args!(
-                "nation ID {value} is out of range 0..={}",
-                Self::COUNT - 1
-            ))
-        })
-    }
-}
-
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-#[serde(transparent)]
-pub struct MajorNationId(u8);
+bounded_id!(NationId, u8, 23, "nation ID");
+bounded_id!(MajorNationId, u8, 7, "major-nation ID");
+bounded_id!(TileId, u16, 6_480, "strategic tile ID");
+bounded_id!(ProvinceId, u16, 0x180, "province ID");
 
 impl MajorNationId {
-    pub const COUNT: u8 = 7;
-
-    pub const fn new(value: u8) -> Self {
-        assert!(value < Self::COUNT, "major-nation ID is out of range");
-        Self(value)
-    }
-
-    const fn try_new(value: u8) -> Option<Self> {
-        if value < Self::COUNT {
-            Some(Self(value))
-        } else {
-            None
-        }
-    }
-
     pub const fn from_nation(nation: NationId) -> Option<Self> {
         if nation.get() < Self::COUNT {
             Some(Self(nation.get()))
@@ -72,28 +62,14 @@ impl MajorNationId {
         }
     }
 
-    pub const fn get(self) -> u8 {
-        self.0
-    }
-
     pub const fn nation(self) -> NationId {
         NationId::new(self.0)
     }
-
-    pub fn all() -> impl DoubleEndedIterator<Item = Self> + ExactSizeIterator {
-        (0..Self::COUNT).map(Self::new)
-    }
 }
 
-impl<'de> Deserialize<'de> for MajorNationId {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        let value = u8::deserialize(deserializer)?;
-        Self::try_new(value).ok_or_else(|| {
-            serde::de::Error::custom(format_args!("major-nation ID {value} is out of range"))
-        })
+impl TileId {
+    pub(crate) const fn from_index_unchecked(value: u16) -> Self {
+        Self(value)
     }
 }
 
@@ -154,50 +130,6 @@ impl<'de> Deserialize<'de> for MinorNationId {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-#[serde(transparent)]
-pub struct TileId(u16);
-
-impl TileId {
-    pub const COUNT: u16 = 6_480;
-
-    pub const fn new(value: u16) -> Self {
-        assert!(value < Self::COUNT, "strategic tile ID is out of range");
-        Self(value)
-    }
-
-    pub const fn try_new(value: u16) -> Option<Self> {
-        if value < Self::COUNT {
-            Some(Self(value))
-        } else {
-            None
-        }
-    }
-
-    pub const fn get(self) -> u16 {
-        self.0
-    }
-
-    pub fn all() -> impl DoubleEndedIterator<Item = Self> + ExactSizeIterator {
-        (0..Self::COUNT).map(Self::new)
-    }
-
-    pub(crate) const fn from_index_unchecked(value: u16) -> Self {
-        Self(value)
-    }
-}
-
-impl<'de> Deserialize<'de> for TileId {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        let value = u16::deserialize(deserializer)?;
-        Self::try_new(value).ok_or_else(|| {
-            serde::de::Error::custom(format_args!("strategic tile ID {value} is out of range"))
-        })
-    }
-}
 // A strategic-tile ownership context. Values above the nation range identify
 // non-nation map contexts, so this deliberately is not a NationId.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -225,46 +157,7 @@ impl TileOwnerTag {
         self.0 < NationId::COUNT
     }
 }
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-#[serde(transparent)]
-pub struct ProvinceId(u16);
 
-impl ProvinceId {
-    pub const COUNT: u16 = 0x180;
-
-    pub const fn new(value: u16) -> Self {
-        assert!(value < Self::COUNT, "province ID is out of range");
-        Self(value)
-    }
-
-    pub const fn try_new(value: u16) -> Option<Self> {
-        if value < Self::COUNT {
-            Some(Self(value))
-        } else {
-            None
-        }
-    }
-
-    pub const fn get(self) -> u16 {
-        self.0
-    }
-
-    pub fn all() -> impl DoubleEndedIterator<Item = Self> + ExactSizeIterator {
-        (0..Self::COUNT).map(Self::new)
-    }
-}
-
-impl<'de> Deserialize<'de> for ProvinceId {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        let value = u16::deserialize(deserializer)?;
-        Self::try_new(value).ok_or_else(|| {
-            serde::de::Error::custom(format_args!("province ID {value} is out of range"))
-        })
-    }
-}
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(transparent)]
 pub struct MilitaryUnitId(i32);

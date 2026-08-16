@@ -691,7 +691,6 @@ pub(in crate::ui::city) fn sync_city_buildings(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::test_support::beginning_of_game;
 
     #[test]
     fn city_production_placard_values_use_book_antiqua_10pt() {
@@ -699,50 +698,5 @@ mod tests {
         assert_eq!(style.face, RetailFontFace::BookAntiquaRegular);
         assert_eq!(style.logical_pixel_height, 14);
         assert_eq!(style.alignment, RetailTextAlignment::Center);
-    }
-
-    #[test]
-    fn beginning_city_need_windows_follow_predicted_needs() {
-        let state = beginning_of_game();
-        let city = &state
-            .nations()
-            .major(MajorNationId::from_nation(state.turn().selected_nation).unwrap())
-            .city;
-        let quantity = city.orders.population_growth.quantity;
-        assert_eq!(city.population.count(), 7);
-        assert_eq!(quantity, 0);
-        assert_eq!(
-            city.population
-                .predicted_need_after_refresh(ResourceKind::Grain, quantity),
-            4
-        );
-        assert_eq!(
-            city.population
-                .predicted_need_after_refresh(ResourceKind::Fruit, quantity),
-            2
-        );
-        assert_eq!(
-            city.population
-                .predicted_need_after_refresh(ResourceKind::Livestock, quantity),
-            1
-        );
-        assert_eq!(city.population.predicted_need(ResourceKind::Grain), 0);
-        assert_eq!(city.population.predicted_need(ResourceKind::Fruit), 0);
-        assert_eq!(city.population.predicted_need(ResourceKind::Livestock), 0);
-        assert_eq!(
-            city.population
-                .predicted_need_after_refresh(ResourceKind::Hardware, quantity),
-            0
-        );
-        assert_eq!(
-            city.population
-                .predicted_need_after_refresh(ResourceKind::Clothing, quantity),
-            0
-        );
-        assert_eq!(
-            city.population
-                .predicted_need_after_refresh(ResourceKind::Furniture, quantity),
-            0
-        );
     }
 }

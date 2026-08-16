@@ -463,18 +463,8 @@ pub(in crate::ui::city) const fn city_string_index(zero_based_index: i16) -> i16
     zero_based_index + 1
 }
 
-pub(in crate::ui::city) fn format_retail_value(template: &str, value: &str) -> String {
-    if template.contains("[1: number]") {
-        template.replace("[1: number]", value)
-    } else if template.contains("[1:number]") {
-        template.replace("[1:number]", value)
-    } else {
-        panic!("retail City number template has no first-number token");
-    }
-}
-
 pub(in crate::ui::city) fn format_retail_number(template: &str, value: i16) -> String {
-    format_retail_value(template, &value.to_string())
+    fill_brackets(template, &[&value.to_string()])
 }
 
 #[cfg(test)]
