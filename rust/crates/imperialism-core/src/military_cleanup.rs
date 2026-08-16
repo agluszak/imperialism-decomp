@@ -60,7 +60,7 @@ impl GameState {
                 .get(decade as usize)
                 .is_some_and(|&gate| gate != 0)
         {
-            self.rebuild_council_ballot();
+            self.rebuild_council_ballot(false);
         }
     }
 

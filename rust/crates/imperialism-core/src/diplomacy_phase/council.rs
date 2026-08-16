@@ -8,14 +8,8 @@ const NAVY_POWER_WEIGHT: [i32; 14] = [0, 0, 0, 150, 300, 0, 0, 200, 400, 650, 0,
 
 impl GameState {
     /// Retail's decade-boundary Council of Governors ballot rebuild.
-    pub(crate) fn rebuild_council_ballot(&mut self) {
-        if self
-            .diplomacy
-            .influence_thresholds
-            .as_array()
-            .iter()
-            .all(|&value| value == 0)
-        {
+    pub(crate) fn rebuild_council_ballot(&mut self, force_full_clear: bool) {
+        if self.diplomacy.influence_thresholds.as_array()[0] == 0 {
             for province in ProvinceId::all() {
                 let Some(former) = self.map.provinces[province].former_owner() else {
                     continue;
@@ -31,6 +25,9 @@ impl GameState {
                 }
                 self.diplomacy.influence_thresholds[province] = threshold;
             }
+        }
+        if force_full_clear {
+            self.diplomacy.influence_thresholds = ProvinceTable::default();
         }
 
         let power = self.council_comparative_power();
@@ -174,13 +171,20 @@ impl GameState {
             None
         };
         if let Some((leader, support)) = leader {
-            if support >= owned * 2 / 3 {
+            if force_full_clear || support >= owned * 2 / 3 {
                 self.diplomacy.last_processed_nation = Some(leader);
-            } else if self.event_eligible(leader.nation()) {
+            } else if self.event_eligible(leader.nation())
+                && self.nations.majors[leader].economy.pending_actions
+                    [PendingActionKind::CouncilLeadMonument]
+                    .status()
+                    < PendingActionStatus::HANDLED
+            {
                 self.nations.majors[leader].economy.pending_actions
                     [PendingActionKind::CouncilLeadMonument]
                     .queue();
             }
+        } else if force_full_clear {
+            self.diplomacy.last_processed_nation = Some(chairman);
         }
     }
 
@@ -248,5 +252,31 @@ impl GameState {
             rows[nation][3] = rows[nation][3] * 100 / maxima[4];
         }
         rows
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn forced_rebuild_clears_thresholds_and_resolves_a_tie_for_the_chairman() {
+        let mut state = crate::test_support::game_state();
+        state.diplomacy.influence_thresholds = ProvinceTable::from_array([12; PROVINCE_COUNT]);
+
+        state.rebuild_council_ballot(true);
+
+        assert!(
+            state
+                .diplomacy
+                .influence_thresholds
+                .as_array()
+                .iter()
+                .all(|&threshold| threshold == 0)
+        );
+        assert_eq!(
+            state.diplomacy.last_processed_nation,
+            state.diplomacy.congress.chairman
+        );
     }
 }
