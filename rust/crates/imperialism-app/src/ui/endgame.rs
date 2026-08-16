@@ -52,7 +52,10 @@ impl Plugin for OpeningCinematicPlugin {
                 Update,
                 pump_opening_cinematic.run_if(in_state(AppState::OpeningCinematic)),
             )
-            .add_systems(OnExit(AppState::OpeningCinematic), cleanup_opening_cinematic);
+            .add_systems(
+                OnExit(AppState::OpeningCinematic),
+                cleanup_opening_cinematic,
+            );
     }
 }
 
@@ -403,7 +406,10 @@ impl Plugin for HighScorePlugin {
             OnEnter(AppState::HighScore),
             (spawn_high_score, bind_high_score).chain(),
         )
-        .add_systems(Update, project_high_score.run_if(in_state(AppState::HighScore)))
+        .add_systems(
+            Update,
+            project_high_score.run_if(in_state(AppState::HighScore)),
+        )
         .add_observer(on_high_score_close.run_if(in_state(AppState::HighScore)));
     }
 }
