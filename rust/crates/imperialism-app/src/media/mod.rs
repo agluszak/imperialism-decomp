@@ -8,7 +8,7 @@ mod sfx;
 
 pub(crate) use movie::{MovieBackend, rgba_frame_to_image};
 pub(crate) use music::MusicDirector;
-pub(crate) use sfx::{RetailAudioHandles, play_cached_or_retail_sound};
+pub(crate) use sfx::RetailAudioAssets;
 
 pub(crate) struct ImperialismMediaPlugin;
 

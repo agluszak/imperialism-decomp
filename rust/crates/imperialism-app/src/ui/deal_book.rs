@@ -35,7 +35,7 @@ const TEXT_INSET: f32 = 40.0;
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum DealBookMode {
     History,
-    Category { commodity: TradeCommodity, tab: u8 },
+    Category(u8),
 }
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -69,9 +69,6 @@ enum DealBookPageButton {
 
 #[derive(Component)]
 struct DealBookHistory;
-
-#[derive(Component)]
-struct DealBookClose;
 
 #[derive(Clone)]
 struct DealBookPictures {
@@ -225,7 +222,7 @@ fn bind_deal_book(
     ));
     commands
         .entity(tree.find(root, fourcc!("end ")))
-        .insert((DealBookClose, ActivateOnPress))
+        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_deal_book_close);
     commands
@@ -339,9 +336,12 @@ fn deal_book_last_page(screen: &DealBookScreen, session: &GameSession) -> u16 {
     let nation = session.active_major_nation();
     match screen.mode {
         DealBookMode::History => session.game.deal_book_history(nation).last_page_index(),
-        DealBookMode::Category { commodity, .. } => session
+        DealBookMode::Category(tab) => session
             .game
-            .deal_book_category(nation, commodity)
+            .deal_book_category(
+                nation,
+                deal_book_tab_commodity(screen.oil_drilling, tab).unwrap(),
+            )
             .last_page_index(),
     }
 }
@@ -360,14 +360,11 @@ fn on_deal_book_tabs_click(
     let Some(row) = tab_row(cursor, screen.oil_drilling) else {
         return;
     };
-    let Some(commodity) = deal_book_tab_commodity(screen.oil_drilling, row) else {
+    if deal_book_tab_commodity(screen.oil_drilling, row).is_none() {
         return;
     };
     click.propagate(false);
-    screen.mode = DealBookMode::Category {
-        commodity,
-        tab: row,
-    };
+    screen.mode = DealBookMode::Category(row);
     screen.page = 0;
 }
 
@@ -387,7 +384,7 @@ fn hover_deal_book_tabs(
     };
     let row = tab_row(*cursor, screen.oil_drilling).or(match screen.mode {
         DealBookMode::History => None,
-        DealBookMode::Category { tab, .. } => Some(tab),
+        DealBookMode::Category(tab) => Some(tab),
     });
     let Some(row) = row else {
         *visibility = Visibility::Hidden;
@@ -454,12 +451,12 @@ fn sync_deal_book(
             &mut pictures,
             &mut visibilities,
         ),
-        DealBookMode::Category { commodity, .. } => project_category(
+        DealBookMode::Category(tab) => project_category(
             &mut commands,
             &mut assets,
             &session.game,
             nation,
-            commodity,
+            deal_book_tab_commodity(screen.oil_drilling, tab).unwrap(),
             *screen,
             &hosts,
             &titles,

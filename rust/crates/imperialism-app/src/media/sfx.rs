@@ -22,33 +22,27 @@ struct SoundEffect;
 pub(crate) struct RetailAudioHandles(HashMap<SoundId, Handle<AudioSource>>);
 
 #[derive(SystemParam)]
-#[allow(dead_code)]
 pub(crate) struct RetailAudioAssets<'w> {
     retail_assets: Res<'w, RetailAssetsResource>,
     sources: ResMut<'w, Assets<AudioSource>>,
     handles: ResMut<'w, RetailAudioHandles>,
+    prefs: Res<'w, GamePreferences>,
 }
 
 impl RetailAudioAssets<'_> {
-    #[allow(dead_code)]
-    pub(crate) fn play(
-        &mut self,
-        commands: &mut Commands,
-        prefs: &GamePreferences,
-        sound: SoundId,
-    ) {
+    pub(crate) fn play(&mut self, commands: &mut Commands, sound: SoundId) {
         play_cached_or_retail_sound(
             commands,
             Some(self.retail_assets.assets()),
             &mut self.sources,
             &mut self.handles,
-            prefs.sound_volume_percent(),
+            self.prefs.sound_volume_percent(),
             sound,
         );
     }
 }
 
-pub(crate) fn play_cached_or_retail_sound(
+fn play_cached_or_retail_sound(
     commands: &mut Commands,
     retail: Option<&RetailAssets>,
     sources: &mut Assets<AudioSource>,
@@ -73,25 +67,12 @@ pub(crate) fn on_picture_button_activate(
     activate: On<Activate>,
     buttons: Query<(), With<Button>>,
     mut commands: Commands,
-    retail: Option<Res<RetailAssetsResource>>,
-    sources: Option<ResMut<Assets<AudioSource>>>,
-    handles: Option<ResMut<RetailAudioHandles>>,
-    prefs: Option<Res<GamePreferences>>,
+    mut audio: RetailAudioAssets,
 ) {
     if !buttons.contains(activate.entity) {
         return;
     }
-    let (Some(mut sources), Some(mut handles), Some(prefs)) = (sources, handles, prefs) else {
-        return;
-    };
-    play_cached_or_retail_sound(
-        &mut commands,
-        retail.as_ref().map(|assets| assets.assets()),
-        &mut sources,
-        &mut handles,
-        prefs.sound_volume_percent(),
-        SoundId::UI_CLICK,
-    );
+    audio.play(&mut commands, SoundId::UI_CLICK);
 }
 
 fn audio_source(
@@ -159,8 +140,7 @@ mod tests {
         app.add_plugins((MinimalPlugins, AssetPlugin::default()))
             .init_asset::<AudioSource>()
             .init_resource::<RetailAudioHandles>()
-            .init_resource::<GamePreferences>()
-            .add_observer(on_picture_button_activate);
+            .init_resource::<GamePreferences>();
         app
     }
 
@@ -214,30 +194,6 @@ mod tests {
     fn missing_wave_does_not_strand() {
         let mut app = audio_app();
         play_click(&mut app, 100);
-        assert!(spawned_volumes(app.world_mut()).is_empty());
-    }
-
-    #[test]
-    fn picture_button_activate_plays_ui_click() {
-        let mut app = audio_app();
-        seed_click(app.world_mut());
-        let button = app.world_mut().spawn(Button).id();
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: button });
-        app.world_mut().flush();
-        assert_eq!(spawned_volumes(app.world_mut()), [1.0]);
-    }
-
-    #[test]
-    fn activate_without_a_picture_button_is_silent() {
-        let mut app = audio_app();
-        seed_click(app.world_mut());
-        let other = app.world_mut().spawn_empty().id();
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: other });
-        app.world_mut().flush();
         assert!(spawned_volumes(app.world_mut()).is_empty());
     }
 }

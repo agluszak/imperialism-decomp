@@ -221,7 +221,8 @@ impl Battle {
             morale: i32::from(unit.strength),
             quality: unit.experience / 100,
             sap_target: -1,
-            flag3c: unit.order.code() == 2 && combat_category(unit.unit_type) == 0,
+            flag3c: unit.order.code() == MilitaryOrderCode::Sleep
+                && combat_category(unit.unit_type) == 0,
             side,
             field24: 0,
             projection: [0.0; 5],

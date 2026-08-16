@@ -61,15 +61,19 @@ pub(crate) fn bind_ocean_view(
 }
 
 fn sync_ocean_view_frames(
-    mode: Res<super::map_interaction::MapInteractionMode>,
-    mut ocean: ResMut<OceanView>,
+    mut interactions: Query<&mut super::map_interaction::StrategicInteraction>,
     mut land: Query<&mut Node, (With<LandMapFrame>, Without<OceanMapCanvas>)>,
     mut sea: Query<&mut Node, (With<OceanMapCanvas>, Without<LandMapFrame>)>,
 ) {
-    if *mode == super::map_interaction::MapInteractionMode::Civilian && ocean.active {
-        ocean.active = false;
+    let Ok(mut interaction) = interactions.single_mut() else {
+        return;
+    };
+    if interaction.mode == super::map_interaction::MapInteractionMode::Civilian
+        && interaction.ocean.active
+    {
+        interaction.ocean.active = false;
     }
-    let (land_pos, sea_pos) = if ocean.active {
+    let (land_pos, sea_pos) = if interaction.ocean.active {
         (PARKED_POS, LAND_POS)
     } else {
         (LAND_POS, PARKED_POS)
@@ -86,19 +90,22 @@ fn sync_ocean_view_frames(
 
 fn sync_ocean_canvas(
     session: Res<GameSession>,
-    ocean: Res<OceanView>,
+    interactions: Query<Ref<super::map_interaction::StrategicInteraction>>,
     retail: Res<crate::RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
     canvases: Query<&ImageNode, With<OceanMapCanvas>>,
 ) {
-    if !ocean.active && !session.is_changed() && !ocean.is_changed() {
+    let Ok(interaction) = interactions.single() else {
+        return;
+    };
+    if !interaction.ocean.active && !session.is_changed() && !interaction.is_changed() {
         return;
     }
-    if !ocean.active {
+    if !interaction.ocean.active {
         return;
     }
     let palette = retail.assets().default_dib_palette();
-    let image = compose_ocean_map(&session.game, &ocean, palette);
+    let image = compose_ocean_map(&session.game, &interaction.ocean, palette);
     for node in &canvases {
         if let Some(mut existing) = images.get_mut(&node.image) {
             *existing = image.clone();
