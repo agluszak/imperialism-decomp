@@ -94,15 +94,15 @@ impl GameState {
     fn bump_ship_ids(&mut self) {
         for admiral in &mut self.admirals {
             if let Some(ship) = &mut admiral.ship {
-                *ship = ShipId::new(ship.get() + 1);
+                *ship = ShipIndex::new(ship.get() + 1);
             }
         }
         for force in &mut self.task_forces {
             if let Some(flagship) = &mut force.flagship {
-                *flagship = ShipId::new(flagship.get() + 1);
+                *flagship = ShipIndex::new(flagship.get() + 1);
             }
             for selected in &mut force.ships {
-                selected.ship = ShipId::new(selected.ship.get() + 1);
+                selected.ship = ShipIndex::new(selected.ship.get() + 1);
             }
         }
         for mission in &mut self.missions {
@@ -248,7 +248,7 @@ impl GameState {
             .iter()
             .filter(|force| {
                 force.nation == nation
-                    && force.order == 5
+                    && force.order == TaskForceOrder::Marines
                     && force.target == TaskForceTarget::Province(province)
             })
             .flat_map(|force| force.ships.iter())
@@ -331,10 +331,10 @@ fn bump_mission_ship_ids(data: &mut MissionData) {
 
 fn bump_navy_mission_ship_ids(navy: &mut NavyMissionState) {
     if let Some(ship) = &mut navy.selected_ship {
-        *ship = ShipId::new(ship.get() + 1);
+        *ship = ShipIndex::new(ship.get() + 1);
     }
     for selected in &mut navy.ships {
-        selected.ship = ShipId::new(selected.ship.get() + 1);
+        selected.ship = ShipIndex::new(selected.ship.get() + 1);
     }
 }
 
@@ -564,7 +564,7 @@ pub(crate) fn accumulate_unit_priority(
 pub struct ShipState {
     pub ship_type: ShipType,
     pub location: OceanZoneId,
-    pub task_force: Option<TaskForceId>,
+    pub task_force: Option<TaskForceIndex>,
     pub aggression: i32,
     pub nation: NationId,
     pub name: String,
@@ -579,7 +579,7 @@ pub struct AdmiralState {
     pub nation: NationId,
     pub name: String,
     pub experience: i16,
-    pub ship: Option<ShipId>,
+    pub ship: Option<ShipIndex>,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -590,23 +590,88 @@ pub enum TaskForceTarget {
     Province(ProvinceId),
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[repr(i32)]
+pub enum TaskForceOrder {
+    None = 0,
+    Sail = 1,
+    Patrol = 3,
+    Transit = 4,
+    Marines = 5,
+    Blockade = 6,
+    Escort = 7,
+    Repair = 8,
+    Evade = 9,
+}
+
+impl TaskForceOrder {
+    pub fn from_retail(value: i32) -> Self {
+        match value {
+            0 => Self::None,
+            1 => Self::Sail,
+            3 => Self::Patrol,
+            4 => Self::Transit,
+            5 => Self::Marines,
+            6 => Self::Blockade,
+            7 => Self::Escort,
+            8 => Self::Repair,
+            9 => Self::Evade,
+            _ => panic!("unrecovered task-force order {value}"),
+        }
+    }
+
+    pub const fn get(self) -> i32 {
+        self as i32
+    }
+}
+
+impl From<TaskForceOrder> for i32 {
+    fn from(order: TaskForceOrder) -> Self {
+        order.get()
+    }
+}
+
+impl From<i32> for TaskForceOrder {
+    fn from(value: i32) -> Self {
+        Self::from_retail(value)
+    }
+}
+
+impl Serialize for TaskForceOrder {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        self.get().serialize(serializer)
+    }
+}
+
+impl<'de> Deserialize<'de> for TaskForceOrder {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        i32::deserialize(deserializer).map(Self::from_retail)
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TaskForceState {
     pub aggression: i32,
-    pub order: i32,
+    pub order: TaskForceOrder,
     pub target: TaskForceTarget,
     pub location: OceanZoneId,
     pub nation: NationId,
     pub ship_counts: [i16; 4],
     pub defeated: bool,
     pub ingot_tile: i16,
-    pub flagship: Option<ShipId>,
+    pub flagship: Option<ShipIndex>,
     pub ships: Vec<SelectedShip>,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct SelectedShip {
-    pub ship: ShipId,
+    pub ship: ShipIndex,
     pub selected: bool,
 }
 
@@ -621,8 +686,8 @@ pub struct ArmyMissionState {
 pub struct NavyMissionState {
     pub target_zone: Option<OceanZoneId>,
     pub resolved_port_zone: Option<OceanZoneId>,
-    pub selected_ship: Option<ShipId>,
-    pub task_force: Option<TaskForceId>,
+    pub selected_ship: Option<ShipIndex>,
+    pub task_force: Option<TaskForceIndex>,
     /// Retail target-selection state. Values 0, 1, and 2 select between the
     /// resolved port and target zone; the save field remains open until more
     /// lifecycle behavior is implemented.

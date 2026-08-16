@@ -2,7 +2,7 @@
 
 use crate::AppState;
 use crate::ui::generated;
-use crate::ui::retail::{ModalDialog, RetailTag, try_find_descendant};
+use crate::ui::retail::{ModalDialog, RetailTag, RetailTree};
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -64,12 +64,11 @@ fn spawn_modal(commands: &mut Commands, root: Entity) {
 fn bind_added_map_modals(
     mut commands: Commands,
     added: Query<Entity, Added<MapModal>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
 ) {
     for root in &added {
         for tag in [fourcc!("okay"), fourcc!("end ")] {
-            if let Some(entity) = try_find_descendant(root, tag, &children, &tags) {
+            if let Some(entity) = tree.try_find(root, tag) {
                 commands.entity(entity).insert(ActivateOnPress);
             }
         }

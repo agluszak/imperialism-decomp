@@ -10,14 +10,15 @@ use super::terrain::{
     uses_river_mouth_coast_frame,
 };
 use super::*;
+use crate::ui::test_support::{beginning_of_game_parts_with, strategic_map_beginning_context};
 use imperialism_core::{
     GameState, GameStateParts, MapMgr, MapTopology, NationId, STRATEGIC_TILE_COUNT, TerrainKind,
     TileId, TileOwnerTag, TileRendering, TileState,
 };
-use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 
-const BEGINNING_OF_GAME: &[u8] =
-    include_bytes!("../../../../../../fixtures/retail/beginning_of_game.imp");
+fn fixture_parts() -> GameStateParts {
+    beginning_of_game_parts_with(strategic_map_beginning_context())
+}
 
 fn solid_frame(index: u8) -> IndexedPicture {
     IndexedPicture {
@@ -98,16 +99,6 @@ fn sprites_from<'a>(
         resource_icons: icons,
         resource_overlays: overlays,
     }
-}
-
-fn fixture_parts() -> GameStateParts {
-    let save = LegacySaveV62::parse(BEGINNING_OF_GAME);
-    save.game_state_parts(LegacyGameStateContext {
-        crt_rand_state: 1,
-        map_generation_lcg: 0,
-        zone_status_lcg: 3_916_827_792,
-        selected_nation: imperialism_core::NationId::new(6),
-    })
 }
 
 fn fixture_state() -> GameState {

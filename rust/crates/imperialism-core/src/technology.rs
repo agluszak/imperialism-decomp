@@ -586,7 +586,7 @@ impl GameState {
             self.technology.selected_capability_slots[nation][group as usize] = kind;
         }
         if (1..9).contains(&group) {
-            let category = MilitaryRecruitmentCategory::ALL[(group - 1) as usize];
+            let category = MilitaryRecruitmentCategory::from_usize((group - 1) as usize);
             let previous =
                 self.nations.city(nation).orders.military_recruitment[category].unit_kind;
             if previous != kind {

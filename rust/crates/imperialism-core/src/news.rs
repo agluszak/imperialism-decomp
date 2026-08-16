@@ -133,11 +133,6 @@ pub const NEWS_TEMPLATE_COUNT: usize = 360;
 pub struct NewsState {
     pub pages: MajorNationTable<Option<NewsPage>>,
     pub last_used_turn_by_nation_and_template: MajorNationTable<Vec<i16>>,
-    /// `news.tab` story template ids. Installed from retail assets for a live
-    /// session; not stored in `.imp`. Semantic JSON omits this field because it is
-    /// immutable rule input; reinstall it with [`GameState::set_news_story_ids`].
-    #[serde(skip)]
-    pub story_ids: Vec<i32>,
 }
 
 impl Default for NewsState {
@@ -147,7 +142,6 @@ impl Default for NewsState {
             last_used_turn_by_nation_and_template: MajorNationTable::from_fn(|_| {
                 vec![0; NEWS_TEMPLATE_COUNT]
             }),
-            story_ids: Vec::new(),
         }
     }
 }
@@ -370,14 +364,6 @@ pub struct LandSale {
 }
 
 impl GameState {
-    /// Mirrors `TNewsMgr::StartNewsPhase`: build pages, then drop the consumed
-    /// event queue. The turn driver owns the surrounding phase transition.
-    pub fn start_newspaper_phase(&mut self) {
-        let story_ids = std::mem::take(&mut self.news.story_ids);
-        self.construct_newspaper_pages(&story_ids);
-        self.news.story_ids = story_ids;
-    }
-
     /// Mirrors `TNewsMgr::StartNewsPhase` page construction without loading `news.tab`.
     pub fn construct_newspaper_pages(&mut self, story_ids: &[i32]) {
         self.news.pages = MajorNationTable::default();
@@ -840,8 +826,7 @@ mod tests {
                 audience: None,
                 story_code: 3,
             });
-        state.set_news_story_ids(&filler_table());
-        state.start_newspaper_phase();
+        state.construct_newspaper_pages(&filler_table());
         assert_eq!(state.turn.phase, PhaseCode::RETURN_TO_MAP);
         assert!(state.pending.newspaper_events.is_empty());
         assert!(state.news.pages[MajorNationId::new(0)].is_some());

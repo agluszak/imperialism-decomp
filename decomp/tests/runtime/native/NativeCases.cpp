@@ -51,6 +51,7 @@ RuntimeActionResult RunCombatMovesResumesAfterBattle(NativeTransition& transitio
 RuntimeActionResult RunCombatMovesBattleThenLaterMovement(NativeTransition& transition);
 RuntimeActionResult RunMilitaryCleanupSupportedSubset(NativeTransition& transition);
 RuntimeActionResult RunReassessControlSeaMissions(NativeTransition& transition);
+RuntimeActionResult RunReassessControlSeaMissionsDamagedShip(NativeTransition& transition);
 RuntimeActionResult RunRecomputeNationOrderPriorityMetrics(NativeTransition& transition);
 
 RuntimeActionResult RunCompletedRailSection(NativeTransition& transition);
@@ -85,6 +86,7 @@ RuntimeActionResult RunOpeningHomeCitySetup(NativeTransition& transition);
 RuntimeActionResult RunNewspaperPendingStatus(NativeTransition& transition);
 RuntimeActionResult RunArmyGrowthSelectedGeneral(NativeTransition& transition);
 RuntimeActionResult RunDealBookTurnStop(NativeTransition& transition);
+RuntimeActionResult RunCityAndTransportTurnStop(NativeTransition& transition);
 RuntimeActionResult RunArmyToolbarCounts(NativeTransition& transition);
 RuntimeActionResult RunArmySelectCategory(NativeTransition& transition);
 RuntimeActionResult RunArmySetOrderMode(NativeTransition& transition);
@@ -149,6 +151,7 @@ const NativeCase kCases[] = {
     {"combat_moves_battle_then_later_movement", RunCombatMovesBattleThenLaterMovement},
     {"military_cleanup_supported_subset", RunMilitaryCleanupSupportedSubset},
     {"reassess_control_sea_missions", RunReassessControlSeaMissions},
+    {"reassess_control_sea_missions_damaged_ship", RunReassessControlSeaMissionsDamagedShip},
     {"recompute_nation_order_priority_metrics", RunRecomputeNationOrderPriorityMetrics},
     {"completed_rail_section", RunCompletedRailSection},
     {"issued_rail_section", RunIssuedRailSection},
@@ -180,6 +183,7 @@ const NativeCase kCases[] = {
     {"newspaper_pending_status", RunNewspaperPendingStatus},
     {"army_growth_selected_general", RunArmyGrowthSelectedGeneral},
     {"turn_stop_deal_book", RunDealBookTurnStop},
+    {"turn_stop_city_and_transport", RunCityAndTransportTurnStop},
     {"army_toolbar_counts", RunArmyToolbarCounts},
     {"army_select_category", RunArmySelectCategory},
     {"army_set_order_mode", RunArmySetOrderMode},

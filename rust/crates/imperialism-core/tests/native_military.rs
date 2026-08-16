@@ -1,5 +1,6 @@
 //! Native transition differentials for recruitment, maintenance, and civilian work.
 
+use imperialism_core::differential;
 use imperialism_core::*;
 use imperialism_testkit::compare_native;
 use serde::Deserialize;
@@ -109,7 +110,7 @@ struct EmptyCase {}
 #[ignore = "requires the native C++ oracle"]
 fn military_phase_supported_subset() {
     compare_native("military_phase_supported_subset", |state, _: EmptyCase| {
-        state.apply_military_orders();
+        differential::apply_military_orders(state);
     })
     .unwrap();
 }
@@ -118,7 +119,7 @@ fn military_phase_supported_subset() {
 #[ignore = "requires the native C++ oracle"]
 fn advisory_map_missions_case16() {
     compare_native("advisory_map_missions_case16", |state, _: EmptyCase| {
-        state.select_and_queue_advisory_map_missions();
+        differential::select_and_queue_advisory_map_missions(state);
     })
     .unwrap();
 }
@@ -138,7 +139,7 @@ fn army_movement_give_orders() {
             ) {
                 continue;
             }
-            state.do_army_movement(nation);
+            differential::do_army_movement(state, nation);
         }
     })
     .unwrap();
@@ -187,8 +188,7 @@ fn combat_moves_resumes_after_battle() {
             let first = state
                 .do_combat_moves()
                 .expect("first hostile stack creates a battle");
-            let second = state
-                .resume_combat_moves(first.clone())
+            let second = differential::resume_combat_moves(state, first.clone())
                 .expect("remaining stack creates a second battle");
             TwoLandBattles {
                 first: first.battle,
@@ -209,8 +209,7 @@ fn combat_moves_battle_then_later_movement() {
                 .do_combat_moves()
                 .expect("hostile stack creates a battle");
             let first = continuation.battle.clone();
-            let second = state
-                .resume_combat_moves(continuation)
+            let second = differential::resume_combat_moves(state, continuation)
                 .map(|continuation| continuation.battle);
             CombatMovesResumeResult { first, second }
         },
@@ -222,7 +221,7 @@ fn combat_moves_battle_then_later_movement() {
 #[ignore = "requires the native C++ oracle"]
 fn reassess_control_sea_missions() {
     compare_native("reassess_control_sea_missions", |state, _: EmptyCase| {
-        state.reassess_control_sea_missions();
+        differential::reassess_control_sea_missions(state);
     })
     .unwrap();
 }
@@ -232,7 +231,19 @@ fn reassess_control_sea_missions() {
 fn recompute_nation_order_priority_metrics() {
     compare_native(
         "recompute_nation_order_priority_metrics",
-        |state, _: EmptyCase| state.recompute_nation_order_priority_metrics(),
+        |state, _: EmptyCase| differential::recompute_nation_order_priority_metrics(state),
+    )
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn reassess_control_sea_missions_damaged_ship() {
+    compare_native(
+        "reassess_control_sea_missions_damaged_ship",
+        |state, _: EmptyCase| {
+            differential::reassess_control_sea_missions(state);
+        },
     )
     .unwrap();
 }

@@ -1,6 +1,6 @@
 //! Right-hand army command page (`uarm` / `TArmyToolbar`).
 
-use super::super::retail::{RetailTag, RetailUiAssets, find_child, find_descendant};
+use super::super::retail::{RetailTree, RetailUiAssets};
 use super::civilian_orders::StrategicSelection;
 use super::map_interaction::{
     ArmySelection, MapInteractionMode, NavySelection, cycle_map_interaction_selection,
@@ -55,10 +55,9 @@ pub(crate) fn bind_army_toolbar(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
 ) {
-    let page = find_descendant(root, PAGE_TAG, children, tags);
+    let page = tree.find(root, PAGE_TAG);
     commands.entity(page).insert((
         ArmyToolbarPage,
         Node {
@@ -74,10 +73,10 @@ pub(crate) fn bind_army_toolbar(
         .transparent_picture(PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)
         .expect("retail numbered-arrow atlas 804 must load");
     for category in 0..10_u8 {
-        let pic = find_child(page, placard_tag(category), children, tags);
+        let pic = tree.child(page, placard_tag(category));
         commands.entity(pic).insert(ArmyPlacard(category));
         spawn_count_label(commands, pic, assets, true);
-        let arrow = find_child(page, arrow_tag(category), children, tags);
+        let arrow = tree.child(page, arrow_tag(category));
         commands.entity(arrow).insert((
             ArmyArrow(category),
             ImageNode {
@@ -101,7 +100,7 @@ pub(crate) fn bind_army_toolbar(
         (fourcc!("garr"), ArmyCommand::Garrison),
     ] {
         commands
-            .entity(find_child(page, tag, children, tags))
+            .entity(tree.child(page, tag))
             .insert((command, ActivateOnPress));
     }
 }

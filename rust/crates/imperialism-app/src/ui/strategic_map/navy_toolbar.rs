@@ -1,6 +1,6 @@
 //! Right-hand navy command page (`unav` / `TNavyToolbarCluster`).
 
-use super::super::retail::{RetailTag, RetailUiAssets, find_child, find_descendant};
+use super::super::retail::{RetailTree, RetailUiAssets};
 use super::civilian_orders::StrategicSelection;
 use super::map_interaction::{
     ArmySelection, MapInteractionMode, NavySelection, cycle_map_interaction_selection,
@@ -56,10 +56,9 @@ pub(crate) fn bind_navy_toolbar(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
 ) {
-    let page = find_descendant(root, PAGE_TAG, children, tags);
+    let page = tree.find(root, PAGE_TAG);
     commands.entity(page).insert((
         NavyToolbarPage,
         Node {
@@ -81,13 +80,13 @@ pub(crate) fn bind_navy_toolbar(
         fourcc!("cls3"),
     ];
     for (index, tag) in CLASS_TAGS.into_iter().enumerate() {
-        let cluster = find_child(page, tag, children, tags);
+        let cluster = tree.child(page, tag);
         commands.entity(cluster).insert(NavyClass(index as u8));
-        let ship = find_child(cluster, fourcc!("ship"), children, tags);
+        let ship = tree.child(cluster, fourcc!("ship"));
         commands
             .entity(ship)
             .insert((NavyClassShip, Visibility::Hidden));
-        let arrow = find_child(cluster, fourcc!("arro"), children, tags);
+        let arrow = tree.child(cluster, fourcc!("arro"));
         commands.entity(arrow).insert((
             NavyClassArrow(index as u8),
             ImageNode {
@@ -114,7 +113,7 @@ pub(crate) fn bind_navy_toolbar(
         (fourcc!("agr2"), NavyCommand::Aggression(2)),
     ] {
         commands
-            .entity(find_child(page, tag, children, tags))
+            .entity(tree.child(page, tag))
             .insert((command, ActivateOnPress));
     }
 }

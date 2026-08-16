@@ -146,7 +146,6 @@ pub(crate) fn game_state() -> GameState {
             selected_nation: NationId::new(0),
             last_turn_alert_tick: 0,
             turn_alert_mask: 0,
-            turn_alerts_enabled: true,
             turn_cooldown_defer_counter: 0,
         },
         unit_ids: crate::UnitIdAllocator::default(),

@@ -1,7 +1,7 @@
 //! Post-combat `TBattleReportView` / `TBattleDetailBook`.
 
 use super::generated;
-use super::retail::{RetailTag, find_descendant};
+use super::retail::RetailTree;
 use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
 use bevy::prelude::*;
@@ -85,20 +85,19 @@ fn spawn_battle_report(mut commands: Commands) {
 fn bind_battle_report(
     mut commands: Commands,
     root: Single<Entity, Added<BattleReportRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
 ) {
     commands
-        .entity(find_descendant(*root, fourcc!("okay"), &children, &tags))
+        .entity(tree.find(*root, fourcc!("okay")))
         .insert((BattleReportClose, ActivateOnPress));
     commands
-        .entity(find_descendant(*root, fourcc!("info"), &children, &tags))
+        .entity(tree.find(*root, fourcc!("info")))
         .insert((BattleReportDetailButton, ActivateOnPress));
     commands
-        .entity(find_descendant(*root, fourcc!("prev"), &children, &tags))
+        .entity(tree.find(*root, fourcc!("prev")))
         .insert((BattleReportStep::Prev, ActivateOnPress));
     commands
-        .entity(find_descendant(*root, fourcc!("next"), &children, &tags))
+        .entity(tree.find(*root, fourcc!("next")))
         .insert((BattleReportStep::Next, ActivateOnPress));
     for (tag, field) in [
         (fourcc!("resu"), "resu"),
@@ -109,7 +108,7 @@ fn bind_battle_report(
         (fourcc!("eshp"), "eshp"),
     ] {
         commands
-            .entity(find_descendant(*root, tag, &children, &tags))
+            .entity(tree.find(*root, tag))
             .insert(BattleReportField(field));
     }
 }
@@ -197,11 +196,10 @@ fn spawn_detail(mut commands: Commands) {
 fn bind_detail(
     mut commands: Commands,
     root: Single<Entity, Added<DetailRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
 ) {
     commands
-        .entity(find_descendant(*root, fourcc!("okay"), &children, &tags))
+        .entity(tree.find(*root, fourcc!("okay")))
         .insert((DetailClose, ActivateOnPress));
 }
 
@@ -209,8 +207,7 @@ fn project_detail(
     session: Res<GameSession>,
     selected: Res<SelectedBattleReport>,
     added: Query<(), Added<DetailRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     root: Query<Entity, With<DetailRoot>>,
     mut texts: Query<&mut Text>,
 ) {
@@ -223,8 +220,8 @@ fn project_detail(
     let Some(report) = session.game.battle_reports().get(selected.0) else {
         return;
     };
-    let left = find_descendant(root, fourcc!("natL"), &children, &tags);
-    let right = find_descendant(root, fourcc!("natR"), &children, &tags);
+    let left = tree.find(root, fourcc!("natL"));
+    let right = tree.find(root, fourcc!("natR"));
     if let Ok(mut text) = texts.get_mut(left) {
         text.0 = report.sides[0].name.clone();
     }

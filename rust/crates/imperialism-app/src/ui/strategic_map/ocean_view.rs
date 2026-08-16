@@ -5,7 +5,7 @@ use super::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 use crate::AppState;
 use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
-use crate::ui::retail::{RetailTag, find_descendant};
+use crate::ui::retail::RetailTree;
 use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
 use bevy::prelude::*;
@@ -37,12 +37,11 @@ pub(crate) fn bind_ocean_view(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
 ) {
-    let land = find_descendant(root, fourcc!("DLOG"), children, tags);
+    let land = tree.find(root, fourcc!("DLOG"));
     commands.entity(land).insert(LandMapFrame);
-    let ocean = find_descendant(root, fourcc!("DOOG"), children, tags);
+    let ocean = tree.find(root, fourcc!("DOOG"));
     let palette = *assets.default_dib_palette();
     let image = assets.add_image(empty_ocean_image(&palette));
     commands.entity(ocean).insert((

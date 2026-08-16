@@ -1,7 +1,7 @@
 //! Retail cinematics, Council of Governors, Game Score, and high-score screens.
 
 use super::generated;
-use super::retail::{RetailTag, find_descendant};
+use super::retail::RetailTree;
 use super::session::{GameSession, apply_turn_stop};
 use crate::media::{MovieBackend, MusicDirector, rgba_frame_to_image};
 use crate::ui::load_save::SaveDirectory;
@@ -52,10 +52,7 @@ impl Plugin for OpeningCinematicPlugin {
                 Update,
                 pump_opening_cinematic.run_if(in_state(AppState::OpeningCinematic)),
             )
-            .add_systems(
-                OnExit(AppState::OpeningCinematic),
-                cleanup_opening_cinematic,
-            );
+            .add_systems(OnExit(AppState::OpeningCinematic), cleanup_opening_cinematic);
     }
 }
 
@@ -217,11 +214,10 @@ fn spawn_council(mut commands: Commands) {
 fn bind_council(
     mut commands: Commands,
     root: Single<Entity, Added<CouncilRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
 ) {
     commands
-        .entity(find_descendant(*root, fourcc!("end "), &children, &tags))
+        .entity(tree.find(*root, fourcc!("end ")))
         .insert((CouncilClose, ActivateOnPress));
 }
 
@@ -232,8 +228,7 @@ fn project_council(
     session: Res<GameSession>,
     added: Query<(), Added<CouncilRoot>>,
     mut commands: Commands,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     root: Query<Entity, With<CouncilRoot>>,
     mut texts: Query<(&CouncilText, &mut Text)>,
 ) {
@@ -251,7 +246,7 @@ fn project_council(
             fourcc!("num1"),
             fourcc!("num2"),
         ] {
-            let entity = find_descendant(root, tag, &children, &tags);
+            let entity = tree.find(root, tag);
             commands.entity(entity).insert(CouncilText(tag));
         }
         return;
@@ -316,11 +311,10 @@ fn spawn_game_score(mut commands: Commands) {
 fn bind_game_score(
     mut commands: Commands,
     root: Single<Entity, Added<GameScoreRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
 ) {
     commands
-        .entity(find_descendant(*root, fourcc!("done"), &children, &tags))
+        .entity(tree.find(*root, fourcc!("done")))
         .insert((GameScoreClose, ActivateOnPress));
 }
 
@@ -331,8 +325,7 @@ fn project_game_score(
     session: Res<GameSession>,
     added: Query<(), Added<GameScoreRoot>>,
     mut commands: Commands,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     root: Query<Entity, With<GameScoreRoot>>,
     mut values: Query<(&GameScoreValue, &mut Text)>,
 ) {
@@ -359,7 +352,7 @@ fn project_game_score(
     if values.is_empty() {
         for (index, tag) in NUMS.iter().enumerate() {
             commands
-                .entity(find_descendant(root, *tag, &children, &tags))
+                .entity(tree.find(root, *tag))
                 .insert(GameScoreValue(index));
         }
         return;
@@ -406,10 +399,7 @@ impl Plugin for HighScorePlugin {
             OnEnter(AppState::HighScore),
             (spawn_high_score, bind_high_score).chain(),
         )
-        .add_systems(
-            Update,
-            project_high_score.run_if(in_state(AppState::HighScore)),
-        )
+        .add_systems(Update, project_high_score.run_if(in_state(AppState::HighScore)))
         .add_observer(on_high_score_close.run_if(in_state(AppState::HighScore)));
     }
 }
@@ -424,19 +414,17 @@ fn spawn_high_score(mut commands: Commands) {
 fn bind_high_score(
     mut commands: Commands,
     root: Single<Entity, Added<HighScoreRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
 ) {
     commands
-        .entity(find_descendant(*root, fourcc!("labl"), &children, &tags))
+        .entity(tree.find(*root, fourcc!("labl")))
         .insert((HighScoreClose, ActivateOnPress));
 }
 
 fn project_high_score(
     save_dir: Option<Res<SaveDirectory>>,
     added: Query<(), Added<HighScoreRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     root: Query<Entity, With<HighScoreRoot>>,
     mut labels: Query<&mut Text>,
 ) {
@@ -446,7 +434,7 @@ fn project_high_score(
     let Ok(root) = root.single() else {
         return;
     };
-    let label = find_descendant(root, fourcc!("labl"), &children, &tags);
+    let label = tree.find(root, fourcc!("labl"));
     let table = save_dir
         .and_then(|dir| std::fs::read(dir.0.join("scores.dat")).ok())
         .map(|bytes| read_scores_dat(&bytes))

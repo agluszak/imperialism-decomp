@@ -1,3 +1,4 @@
+use super::conversions::*;
 use super::model::*;
 use super::*;
 use enum_map::Enum;
@@ -22,7 +23,7 @@ impl LegacySaveV62 {
             nation_names[slot] = nation.common.display_name.clone();
             nation_control_modes[slot] = if nation.auto.is_some() { 2 } else { 0 };
             foreign_minister_policy_ids[slot] =
-                foreign_policy_id(nation.economy.foreign_minister_personality);
+                foreign_minister_personality_to_retail(nation.economy.foreign_minister_personality);
             let military = state
                 .military_units()
                 .iter()
@@ -259,7 +260,7 @@ fn military_unit_dto(unit: &MilitaryUnitState) -> LegacyMilitaryUnit {
         owner_nation: i16::from(unit.owner_nation().get()),
         roster_id: unit.roster_id(),
         registered: u8::from(unit.registered()),
-        order: unit.order().code(),
+        order: unit.order().code().get(),
         persistent_id: unit.id().get(),
         name: unit.name().to_owned(),
         order_target_tiles: unit
@@ -315,9 +316,9 @@ fn great_power_prefix_dto(
             resource_i32(&economy.aid_allocation_by_minor_nation[id])
         }),
         pending_action_status: std::array::from_fn(|index| {
-            pending_status_to_retail(
-                economy.pending_actions[PendingActionKind::from_usize(index)].status(),
-            )
+            economy.pending_actions[PendingActionKind::from_usize(index)]
+                .status()
+                .retail()
         }),
         pending_action_payload_by_action: std::array::from_fn(|index| {
             economy.pending_actions[PendingActionKind::from_usize(index)]
@@ -805,12 +806,9 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
         [[0_i16; RESOURCE_KIND_COUNT]; MAJOR_NATION_COUNT];
     for slot in 0..MAJOR_NATION_COUNT {
         let nation = MajorNationId::new(slot as u8);
-        research_status_by_nation[slot] =
-            (*technology.research_status_by_nation[nation].as_array()).map(|status| match status {
-                TechnologyResearchStatus::NotStarted => 0,
-                TechnologyResearchStatus::Pending => 1,
-                TechnologyResearchStatus::Researched => 2,
-            });
+        research_status_by_nation[slot] = (*technology.research_status_by_nation[nation]
+            .as_array())
+        .map(technology_research_status_to_retail);
         ability_active_by_nation[slot] =
             enum_u8(&technology.military_unit_ability_active_by_nation[nation]);
         let capabilities = &technology.city_capabilities_by_nation[nation];
@@ -1020,12 +1018,7 @@ fn production_order(
     LegacyProductionOrder {
         resource_type_index,
         quantity: progress.quantity,
-        limiting_constraint: match progress.limiting_constraint {
-            ProductionConstraint::Resources => 0,
-            ProductionConstraint::Workforce => 1,
-            ProductionConstraint::Capacity => 2,
-            ProductionConstraint::Treasury => 3,
-        },
+        limiting_constraint: production_constraint_to_retail(progress.limiting_constraint),
         tracking_slots,
         accumulated_value,
     }
@@ -1101,10 +1094,7 @@ fn deal_book_records(entries: &[TradeDealBookEntry]) -> LegacyFixedRecordList {
         .iter()
         .map(|entry| {
             let mut record = vec![0_u8; 12];
-            let kind = match entry.kind {
-                DealBookEntryKind::Accept => 0_i16,
-                DealBookEntryKind::Offer => 1_i16,
-            };
+            let kind = deal_book_entry_kind_to_retail(entry.kind);
             record[..2].copy_from_slice(&kind.to_le_bytes());
             record[2..4].copy_from_slice(&i16::from(entry.nation.get()).to_le_bytes());
             record[4..6].copy_from_slice(&entry.amount.to_le_bytes());
@@ -1126,14 +1116,6 @@ fn empty_records() -> LegacyFixedRecordList {
     }
 }
 
-fn country_status_to_retail(status: CountryStatus) -> i16 {
-    match status {
-        CountryStatus::Independent => -1,
-        CountryStatus::ProtectorateOf(nation) => 100 + i16::from(nation.get()),
-        CountryStatus::ColonyOf(nation) => 200 + i16::from(nation.get()),
-    }
-}
-
 fn grant_to_retail(grant: DiplomacyGrant) -> i16 {
     let amount = (grant.amount as i16) & 0x3fff;
     if grant.recurring {
@@ -1141,41 +1123,6 @@ fn grant_to_retail(grant: DiplomacyGrant) -> i16 {
     } else {
         amount
     }
-}
-
-fn pending_status_to_retail(status: PendingActionStatus) -> i8 {
-    status.retail()
-}
-
-fn foreign_policy_id(personality: ForeignMinisterPersonality) -> i16 {
-    match personality {
-        ForeignMinisterPersonality::Base | ForeignMinisterPersonality::Arms => 0,
-        ForeignMinisterPersonality::Trader => 1,
-        ForeignMinisterPersonality::Textile => 2,
-        ForeignMinisterPersonality::Diplomat => 3,
-        ForeignMinisterPersonality::Bill => 4,
-        ForeignMinisterPersonality::Ted => 5,
-    }
-}
-
-fn ai_target_to_retail(target: AiTargetState) -> u8 {
-    match target {
-        AiTargetState::Unmarked => 0,
-        AiTargetState::Candidate => 1,
-        AiTargetState::MissionQueued => 2,
-    }
-}
-
-fn option_i8(value: Option<u8>) -> i8 {
-    value.map(|value| value as i8).unwrap_or(-1)
-}
-
-fn option_i16(value: Option<u16>) -> i16 {
-    value.map(|value| value as i16).unwrap_or(-1)
-}
-
-fn option_i32(value: Option<u16>) -> i32 {
-    value.map(i32::from).unwrap_or(-1)
 }
 
 fn resource_i16<T: Copy + Into<i16>>(table: &ResourceTable<T>) -> [i16; RESOURCE_KIND_COUNT] {
