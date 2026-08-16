@@ -15,15 +15,25 @@ const HEATMAP_PACKED_DEVELOPMENT_OVERFLOW: [u8; 44] = [
 const HEATMAP_NEIGHBOR_DIFFUSION: f32 = 0.2;
 
 impl GameState {
-    /// Retail `TSimMgr::DoMilitary`. Auto great powers run advisory mission
-    /// selection and `GiveOrders` for land and navy missions, then navy order
-    /// execution for sail/repair/marines plus the CarryOutOrders straggler
-    /// tail. Navy battle pairing, `MakeSureAllShipsHaveOrders`, and
-    /// `CleanUpStacks` (map-context records) are not ported.
-    pub fn do_military(&mut self) {
+    /// Retail `TSimMgr::DoMilitary` sequence: rebuild the strategic heatmap,
+    /// grow militia, then pay maintenance, select advisory missions, and issue
+    /// orders in major-nation order. Army map-context records are released
+    /// before navy preparation and execution. The caller owns any returned
+    /// naval-battle continuation. Tactical naval presentation is not available
+    /// yet, so production resolves those encounters strategically rather than
+    /// stopping the turn in an unusable screen state.
+    pub fn do_military(&mut self) -> Option<NavyOrdersContinuation> {
         self.apply_military_orders();
+        self.clean_up_army_stacks();
         self.prepare_to_carry_out_navy_orders();
-        self.carry_out_navy_orders();
+        self.carry_out_navy_orders_without_tactical_battles()
+    }
+
+    /// Semantic effects of `TArmyMgr::CleanUpStacks`. Core's battle reports are
+    /// the copied map-context records; dropping them also drops their owned side
+    /// arrays. The C++ transient flag is derived here from whether records exist.
+    fn clean_up_army_stacks(&mut self) {
+        self.battle_reports.clear();
     }
 
     /// Heatmap, militia, pay, advisory selection, and mission `GiveOrders`.
@@ -402,7 +412,7 @@ mod tests {
         state
             .nations
             .append_owned_region_during_construction(nation, province);
-        state.do_military();
+        let _ = state.do_military();
         assert_eq!(state.military_units.len(), 1);
         assert_eq!(state.military_units[0].nation, nation);
         assert_eq!(
@@ -462,7 +472,7 @@ mod tests {
             marker: 0,
         });
 
-        state.do_military();
+        let _ = state.do_military();
 
         assert_eq!(
             state.military_units[0].order().code(),
@@ -533,7 +543,7 @@ mod tests {
             add_armor(&mut state, attacker.nation(), ProvinceId::new(0));
         }
 
-        state.do_military();
+        let _ = state.do_military();
 
         assert_eq!(state.missions.len(), 1);
         assert_eq!(state.missions[0].nation, attacker.nation());
@@ -573,7 +583,7 @@ mod tests {
             add_armor(&mut state, attacker.nation(), ProvinceId::new(0));
         }
 
-        state.do_military();
+        let _ = state.do_military();
 
         assert!(state.missions.is_empty());
     }

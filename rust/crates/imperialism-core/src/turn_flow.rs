@@ -138,6 +138,7 @@ pub enum TurnStop {
     DiplomacyWarJoin,
     TradeOffer,
     LandBattle,
+    NavalBattle,
     DealBook,
     TechnologyAdvance,
     Newspaper,
@@ -178,6 +179,7 @@ pub enum TurnContinuation {
     DiplomacyWarJoin(DiplomacyWarJoinPrompt),
     Trade(crate::TradeSession),
     LandBattle(crate::CombatMovesContinuation),
+    NavalBattle(crate::NavyOrdersContinuation),
     TechnologyReport(Technology),
     GreatPowerLoss,
     PostCombatReports,
@@ -318,8 +320,8 @@ impl GameState {
         self.continuation = TurnContinuation::None;
     }
 
-    /// Closes `TBattleReportView`. Reports stay until `CleanUpStacks`; phase is already
-    /// `ELIMINATION`.
+    /// Closes `TBattleReportView`. Reports stay until the next military phase's
+    /// `CleanUpStacks`; phase is already `ELIMINATION`.
     pub fn close_post_combat_reports(&mut self, story_ids: &[i32]) -> TurnStop {
         assert!(
             matches!(self.continuation, TurnContinuation::PostCombatReports),
@@ -453,7 +455,10 @@ impl GameState {
                 }
                 PhaseCode::MILITARY => {
                     self.turn.phase = PhaseCode::COMBAT_MOVES;
-                    self.do_military();
+                    if let Some(continuation) = self.do_military() {
+                        self.continuation = TurnContinuation::NavalBattle(continuation);
+                        return TurnStop::NavalBattle;
+                    }
                 }
                 PhaseCode::COMBAT_MOVES => {
                     self.turn.phase = PhaseCode::MILITARY_CLEANUP;
@@ -549,6 +554,7 @@ impl GameState {
             TurnContinuation::DiplomacyWarJoin(_) => Some(TurnStop::DiplomacyWarJoin),
             TurnContinuation::Trade(_) => Some(TurnStop::TradeOffer),
             TurnContinuation::LandBattle(_) => Some(TurnStop::LandBattle),
+            TurnContinuation::NavalBattle(_) => Some(TurnStop::NavalBattle),
             TurnContinuation::TechnologyReport(_) => Some(TurnStop::TechnologyAdvance),
             TurnContinuation::GreatPowerLoss => Some(TurnStop::GreatPowerLoss),
             TurnContinuation::PostCombatReports => Some(TurnStop::PostCombatReports),

@@ -18,7 +18,7 @@ pub(crate) enum MapInteractionMode {
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub(crate) struct NavySelection {
     pub zone: Option<OceanZoneId>,
-    pub force: Option<TaskForceIndex>,
+    pub force: Option<TaskForceId>,
 }
 
 /// `TMapUberPicture::invalidationFlag94 == 0` is the `DOOG` ocean view.

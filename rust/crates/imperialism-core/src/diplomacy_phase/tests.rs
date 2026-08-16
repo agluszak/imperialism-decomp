@@ -529,10 +529,10 @@ fn peace_offer_from_human_to_ai() -> GameState {
     state.nations.majors[major(1)] = computer_major();
     state.diplomacy.relationships[nation(0)][nation(1)] = DiplomaticRelationship::War;
     state.diplomacy.relationships[nation(1)][nation(0)] = DiplomaticRelationship::War;
-    state.ships.extend((0..10).map(|_| ShipState {
+    state.ships.extend((0..10).map(|index| ShipState {
+        id: ShipId::new(index),
         ship_type: ShipType::Frigate,
         location: OceanZoneId::new(0),
-        task_force: None,
         aggression: 0,
         nation: nation(1),
         name: String::new(),

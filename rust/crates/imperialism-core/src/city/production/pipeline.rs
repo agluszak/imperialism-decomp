@@ -197,9 +197,9 @@ impl GameState {
             let strength = ship_stock_cap(ship_type);
             for _ in 0..quantity {
                 self.insert_ship_at_head(ShipState {
+                    id: ShipId::new(0),
                     ship_type,
                     location,
-                    task_force: None,
                     aggression: 1,
                     nation: nation_id,
                     name: String::new(),
@@ -332,9 +332,9 @@ mod tests {
 
     fn test_frigate(nation: MajorNationId) -> ShipState {
         ShipState {
+            id: ShipId::new(0),
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
-            task_force: None,
             aggression: 0,
             nation: nation.nation(),
             name: String::new(),
@@ -349,7 +349,7 @@ mod tests {
         let mut state = crate::test_support::game_state();
         let nation = MajorNationId::new(0);
         for _ in 0..13 {
-            state.ships.push(test_frigate(nation));
+            state.insert_ship_at_head(test_frigate(nation));
         }
         assert_eq!(
             state.nations.majors[nation].economy.pending_actions
@@ -370,7 +370,7 @@ mod tests {
         assert_eq!(pending.growth_reward_level(), Some(1));
 
         for _ in 0..12 {
-            state.ships.push(test_frigate(nation));
+            state.insert_ship_at_head(test_frigate(nation));
         }
         state.queue_navy_growth_pending(nation);
         let pending = state.nations.majors[nation].economy.pending_actions
@@ -385,7 +385,7 @@ mod tests {
         assert_eq!(pending.growth_reward_level(), Some(2));
 
         for _ in 0..25 {
-            state.ships.push(test_frigate(nation));
+            state.insert_ship_at_head(test_frigate(nation));
         }
         state.queue_navy_growth_pending(nation);
         state.mark_all_pending_status_flags_handled();

@@ -186,7 +186,7 @@ impl GameState {
         let target = navy.target_zone;
         let port = navy.resolved_port_zone;
         let required = navy.required_equipage_bits.map(f32::from_bits);
-        let ships: Vec<ShipIndex> = navy.ships.iter().map(|ship| ship.ship).collect();
+        let ships: Vec<ShipId> = navy.ships.iter().map(|ship| ship.ship).collect();
         let mode = navy.state;
         let next = match mode {
             0 => {
@@ -222,7 +222,7 @@ impl GameState {
 
     fn assigned_navy_readiness(
         &self,
-        ships: &[ShipIndex],
+        ships: &[ShipId],
         required: [f32; 4],
         near: Option<OceanZoneId>,
         distance_threshold: i16,
@@ -244,7 +244,7 @@ impl GameState {
 
     fn assigned_navy_category_vector(
         &self,
-        ships: &[ShipIndex],
+        ships: &[ShipId],
         near: Option<OceanZoneId>,
         distance_threshold: i16,
         far: Option<OceanZoneId>,
@@ -254,7 +254,7 @@ impl GameState {
         let far_distances = far.map(|zone| self.zone_hop_distances_from(zone));
         let mut vector = [0.0_f32; 4];
         for &id in ships {
-            let Some(ship) = self.ships.get(id.get()) else {
+            let Some(ship) = self.ship(id) else {
                 continue;
             };
             let near_ok = match &near_distances {
@@ -319,9 +319,9 @@ mod tests {
         state.nations.majors[MajorNationId::new(0)].auto = Some(AutoGreatPowerState::default());
         state.ocean.zones = vec![ZoneKind::Zone(zone(Vec::new()))];
         state.ships.push(ShipState {
+            id: ShipId::new(0),
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
-            task_force: None,
             aggression: 0,
             nation,
             name: String::new(),
@@ -335,11 +335,10 @@ mod tests {
                 target_zone: Some(OceanZoneId::new(0)),
                 resolved_port_zone: None,
                 selected_ship: None,
-                task_force: None,
                 state: 0,
                 required_equipage_bits: [0; 4],
                 ships: vec![SelectedShip {
-                    ship: ShipIndex::new(0),
+                    ship: ShipId::new(0),
                     selected: false,
                 }],
             }),
@@ -367,9 +366,9 @@ mod tests {
         state.diplomacy.relationships[nation][hostile] = DiplomaticRelationship::War;
         state.ocean.zones = vec![ZoneKind::Zone(zone(Vec::new()))];
         state.ships.push(ShipState {
+            id: ShipId::new(0),
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
-            task_force: None,
             aggression: 0,
             nation: hostile,
             name: String::new(),
@@ -383,7 +382,6 @@ mod tests {
                 target_zone: Some(OceanZoneId::new(0)),
                 resolved_port_zone: None,
                 selected_ship: None,
-                task_force: None,
                 state: 0,
                 required_equipage_bits: [0; 4],
                 ships: Vec::new(),

@@ -73,6 +73,11 @@ impl GamePreferences {
     pub(crate) fn music_volume(&self) -> i16 {
         self.values[3]
     }
+
+    /// Preference slot 8 gates `ShowTurnAlertsForActiveNation`.
+    pub(crate) fn turn_alerts_enabled(&self) -> bool {
+        self.values[8] != 0
+    }
 }
 
 #[derive(Component)]
