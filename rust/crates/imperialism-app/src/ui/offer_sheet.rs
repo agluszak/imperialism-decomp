@@ -61,8 +61,7 @@ impl Plugin for OfferSheetPlugin {
         .add_systems(
             Update,
             bind_offer_sheet_notice.run_if(in_state(AppState::OfferSheet)),
-        )
-        .add_observer(on_offer_sheet_activate.run_if(in_state(AppState::OfferSheet)));
+        );
     }
 }
 
@@ -123,11 +122,13 @@ fn bind_offer_sheet_controls(commands: &mut Commands, root: Entity, tree: &Retai
     commands
         .entity(accept)
         .insert((OfferSheetAction::Accept, ActivateOnPress))
-        .remove::<InteractionDisabled>();
+        .remove::<InteractionDisabled>()
+        .observe(on_offer_sheet_activate);
     commands
         .entity(reject)
         .insert((OfferSheetAction::Reject, ActivateOnPress))
-        .remove::<InteractionDisabled>();
+        .remove::<InteractionDisabled>()
+        .observe(on_offer_sheet_activate);
     commands
         .entity(nomo)
         .insert(StopBuyingToggle)
@@ -390,8 +391,7 @@ mod tests {
             .add_systems(
                 OnEnter(AppState::OfferSheet),
                 (spawn_test_offer_sheet, bind_test_offer_sheet).chain(),
-            )
-            .add_observer(on_offer_sheet_activate);
+            );
         app
     }
 

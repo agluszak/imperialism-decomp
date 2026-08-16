@@ -38,7 +38,7 @@ pub(crate) fn bind_ocean_view(
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
-) {
+) -> Entity {
     let land = tree.find(root, fourcc!("DLOG"));
     commands.entity(land).insert(LandMapFrame);
     let ocean = tree.find(root, fourcc!("DOOG"));
@@ -57,6 +57,7 @@ pub(crate) fn bind_ocean_view(
             ..default()
         },
     ));
+    ocean
 }
 
 fn sync_ocean_view_frames(

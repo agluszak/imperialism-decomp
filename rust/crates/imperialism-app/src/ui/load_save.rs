@@ -61,7 +61,7 @@ const FLAG_LABEL_TAGS: [FourCc; 8] = [
 pub(crate) struct SaveDirectory(pub(crate) PathBuf);
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) struct OpenFlagMenu;
+struct OpenFlagMenu;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum LoadSaveMode {
@@ -208,12 +208,10 @@ pub(crate) struct LoadSavePlugin;
 
 impl Plugin for LoadSavePlugin {
     fn build(&self, app: &mut App) {
-        register_load_save_logic(app);
-        app.add_observer(on_load_save_notice_activate.run_if(in_state(AppState::LoadSave)))
-            .add_systems(
-                OnEnter(AppState::LoadSave),
-                (enter_load_save, bind_load_save).chain(),
-            )
+        app.add_systems(
+            OnEnter(AppState::LoadSave),
+            (enter_load_save, bind_load_save).chain(),
+        )
             .add_systems(
                 Update,
                 (bind_load_save_notice, sync_load_save_preview)
@@ -228,13 +226,6 @@ impl Plugin for LoadSavePlugin {
                 crate::ui::session::clear_return_to,
             );
     }
-}
-
-pub(crate) fn register_load_save_logic(app: &mut App) {
-    app.add_observer(on_load_save_activate.run_if(in_state(AppState::LoadSave)))
-        .add_observer(on_open_flag_menu.run_if(in_state(AppState::StrategicMap)))
-        .add_observer(on_flag_menu_activate.run_if(in_state(AppState::StrategicMap)))
-        .add_observer(on_flag_menu_prompt_activate.run_if(in_state(AppState::StrategicMap)));
 }
 
 /// Retail `DoRead` never stores or reseeds these streams. CRT `rand()` is a process
@@ -357,7 +348,8 @@ fn bind_load_save_actions(
         let slot = SaveSlot::numbered(index as u8).expect("slot tags are numbered 0..=7");
         commands
             .entity(entity)
-            .insert((Button, LoadSaveAction::SelectSlot(slot)));
+            .insert((Button, LoadSaveAction::SelectSlot(slot)))
+            .observe(on_load_save_activate);
     }
     commands
         .entity(tree.find(root, fourcc!("info")))
@@ -365,14 +357,17 @@ fn bind_load_save_actions(
     commands
         .entity(tree.find(root, fourcc!("okay")))
         .insert(LoadSaveAction::Okay)
-        .remove::<InteractionDisabled>();
+        .remove::<InteractionDisabled>()
+        .observe(on_load_save_activate);
     commands
         .entity(tree.find(root, fourcc!("cncl")))
         .insert(LoadSaveAction::Cancel)
-        .remove::<InteractionDisabled>();
+        .remove::<InteractionDisabled>()
+        .observe(on_load_save_activate);
     let otto = tree.find(root, fourcc!("otto"));
     let mut otto_commands = commands.entity(otto);
     otto_commands.insert(LoadSaveAction::Autosave);
+    otto_commands.observe(on_load_save_activate);
     if mode == LoadSaveMode::Save {
         otto_commands.insert(InteractionDisabled);
     }
@@ -860,13 +855,15 @@ fn bind_load_save_notice(
     commands
         .entity(linger.okay)
         .insert(LoadSaveNoticeAction::Accept)
-        .remove::<InteractionDisabled>();
+        .remove::<InteractionDisabled>()
+        .observe(on_load_save_notice_activate);
     match notice.kind {
         LoadSaveNoticeKind::ConfirmLoad => {
             commands
                 .entity(linger.cancel)
                 .insert(LoadSaveNoticeAction::Dismiss)
-                .remove::<InteractionDisabled>();
+                .remove::<InteractionDisabled>()
+                .observe(on_load_save_notice_activate);
         }
         LoadSaveNoticeKind::PickSlot | LoadSaveNoticeKind::Error => {
             commands.entity(linger.cancel).insert(Visibility::Hidden);
@@ -916,6 +913,14 @@ fn on_load_save_notice_activate(
             commands.entity(notice_entity).despawn();
         }
     }
+}
+
+pub(crate) fn bind_open_flag_menu(commands: &mut Commands, flag: Entity) {
+    commands
+        .entity(flag)
+        .insert(OpenFlagMenu)
+        .remove::<InteractionDisabled>()
+        .observe(on_open_flag_menu);
 }
 
 fn on_open_flag_menu(
@@ -985,7 +990,8 @@ fn bind_flag_menu(
         commands
             .entity(tree.find(root, tag))
             .insert(action)
-            .remove::<InteractionDisabled>();
+            .remove::<InteractionDisabled>()
+            .observe(on_flag_menu_activate);
     }
 }
 
@@ -1068,11 +1074,13 @@ fn bind_flag_menu_prompt(
     commands
         .entity(linger.okay)
         .insert(FlagMenuPromptAction::Accept)
-        .remove::<InteractionDisabled>();
+        .remove::<InteractionDisabled>()
+        .observe(on_flag_menu_prompt_activate);
     commands
         .entity(linger.cancel)
         .insert(FlagMenuPromptAction::Dismiss)
-        .remove::<InteractionDisabled>();
+        .remove::<InteractionDisabled>()
+        .observe(on_flag_menu_prompt_activate);
 }
 
 fn on_flag_menu_prompt_activate(
@@ -1130,7 +1138,6 @@ mod tests {
             .add_message::<AppExit>()
             .insert_state(initial)
             .insert_resource(ReturnTo(AppState::MainMenu));
-        register_load_save_logic(&mut app);
         app.add_systems(
             OnEnter(AppState::LoadSave),
             (spawn_test_load_save, bind_test_load_save).chain(),
@@ -1181,8 +1188,12 @@ mod tests {
         let root = commands
             .spawn((FlagMenuPrompt { kind }, Node::default()))
             .id();
-        commands.spawn((FlagMenuPromptAction::Accept, ChildOf(root)));
-        commands.spawn((FlagMenuPromptAction::Dismiss, ChildOf(root)));
+        commands
+            .spawn((FlagMenuPromptAction::Accept, ChildOf(root)))
+            .observe(on_flag_menu_prompt_activate);
+        commands
+            .spawn((FlagMenuPromptAction::Dismiss, ChildOf(root)))
+            .observe(on_flag_menu_prompt_activate);
     }
 
     #[test]

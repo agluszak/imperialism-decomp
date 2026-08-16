@@ -350,10 +350,6 @@ impl Plugin for DiplomacyPlugin {
                 .run_if(in_state(AppState::Diplomacy)),
         )
         .add_systems(OnExit(AppState::Diplomacy), reset_diplomacy_cursor)
-        .add_observer(on_diplomacy_activate.run_if(in_state(AppState::Diplomacy)))
-        .add_observer(on_diplomacy_radio_selected.run_if(in_state(AppState::Diplomacy)))
-        .add_observer(on_diplomacy_offer_activate.run_if(in_state(AppState::Diplomacy)))
-        .add_observer(on_diplomacy_map_click.run_if(in_state(AppState::Diplomacy)))
         .add_observer(open_diplomacy_rejection_notice.run_if(in_state(AppState::Diplomacy)))
         .add_observer(open_diplomacy_entanglement_notice.run_if(in_state(AppState::Diplomacy)));
     }
@@ -528,7 +524,9 @@ fn bind_diplomacy_controls(
     ] {
         let control = tree.find(root, tag);
         let mut entity = commands.entity(control);
-        entity.insert(DiplomacyAction::Topic(topic));
+        entity
+            .insert(DiplomacyAction::Topic(topic))
+            .observe(on_diplomacy_activate);
         if posing {
             entity.insert(InteractionDisabled);
         } else {
@@ -549,10 +547,13 @@ fn bind_diplomacy_controls(
     .enumerate()
     {
         let control = tree.find(root, tag);
-        commands.entity(control).insert(DiplomacyAction::Grant {
-            row: index / 2,
-            recurring: index % 2 != 0,
-        });
+        commands
+            .entity(control)
+            .insert(DiplomacyAction::Grant {
+                row: index / 2,
+                recurring: index % 2 != 0,
+            })
+            .observe(on_diplomacy_radio_selected);
     }
     for (index, tag) in [
         fourcc!("traa"),
@@ -569,7 +570,8 @@ fn bind_diplomacy_controls(
         let control = tree.find(trade_cluster, tag);
         commands
             .entity(control)
-            .insert(DiplomacyAction::Trade(index));
+            .insert(DiplomacyAction::Trade(index))
+            .observe(on_diplomacy_radio_selected);
     }
     for (index, tag) in [
         fourcc!("ovr0"),
@@ -585,7 +587,8 @@ fn bind_diplomacy_controls(
         commands
             .entity(control)
             .insert(DiplomacyAction::Overlay(overlay))
-            .remove::<InteractionDisabled>();
+            .remove::<InteractionDisabled>()
+            .observe(on_diplomacy_radio_selected);
     }
     for (index, tag) in [
         fourcc!("scr0"),
@@ -603,12 +606,14 @@ fn bind_diplomacy_controls(
         commands
             .entity(control)
             .insert(DiplomacyAction::Treaty(index))
-            .remove::<InteractionDisabled>();
+            .remove::<InteractionDisabled>()
+            .observe(on_diplomacy_radio_selected);
     }
     commands
         .entity(tree.find(trade_cluster, fourcc!("link")))
         .insert(DiplomacyAction::ColonyBoycott)
-        .remove::<InteractionDisabled>();
+        .remove::<InteractionDisabled>()
+        .observe(on_diplomacy_radio_selected);
     for (tag, action) in [
         (fourcc!("acce"), DiplomacyAction::AcceptOffer),
         (fourcc!("reje"), DiplomacyAction::RejectOffer),
@@ -617,7 +622,8 @@ fn bind_diplomacy_controls(
         commands
             .entity(control)
             .insert((action, ActivateOnPress))
-            .remove::<InteractionDisabled>();
+            .remove::<InteractionDisabled>()
+            .observe(on_diplomacy_offer_activate);
     }
     for (tag, checked) in [
         (fourcc!("ovr0"), true),
@@ -660,6 +666,7 @@ fn bind_diplomacy_controls(
             ZIndex(1),
             ChildOf(main),
         ))
+        .observe(on_diplomacy_map_click)
         .id();
     spawn_diplomacy_map_labels(commands, map, &styles, icon_atlas);
     spawn_diplomacy_panel_text(
@@ -2406,12 +2413,15 @@ mod tests {
     #[test]
     fn treaty_radio_value_change_selects_that_pact() {
         let mut app = App::new();
-        app.add_observer(on_diplomacy_radio_selected);
         app.world_mut().spawn(DiplomacyScreen {
             framed_nation: NationId::new(0),
             mode: DiplomacyMode::Treaties { row: 5 },
         });
-        let radio = app.world_mut().spawn(DiplomacyAction::Treaty(2)).id();
+        let radio = app
+            .world_mut()
+            .spawn(DiplomacyAction::Treaty(2))
+            .observe(on_diplomacy_radio_selected)
+            .id();
         app.world_mut().commands().trigger(ValueChange {
             source: radio,
             value: true,
@@ -2563,14 +2573,21 @@ mod tests {
         app.add_plugins(MinimalPlugins)
             .add_plugins(bevy::state::app::StatesPlugin)
             .insert_resource(GameSession { game: state })
-            .insert_state(AppState::Diplomacy)
-            .add_observer(on_diplomacy_offer_activate);
+            .insert_state(AppState::Diplomacy);
         app.world_mut().spawn(DiplomacyScreen {
             framed_nation: framed,
             mode: DiplomacyMode::Offers,
         });
-        let accept = app.world_mut().spawn(DiplomacyAction::AcceptOffer).id();
-        let reject = app.world_mut().spawn(DiplomacyAction::RejectOffer).id();
+        let accept = app
+            .world_mut()
+            .spawn(DiplomacyAction::AcceptOffer)
+            .observe(on_diplomacy_offer_activate)
+            .id();
+        let reject = app
+            .world_mut()
+            .spawn(DiplomacyAction::RejectOffer)
+            .observe(on_diplomacy_offer_activate)
+            .id();
         (app, accept, reject)
     }
 

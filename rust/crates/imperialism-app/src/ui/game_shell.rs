@@ -9,15 +9,15 @@ use crate::ui::generated;
 use crate::ui::hover_help::{
     HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, get_string,
 };
-use crate::ui::load_save::OpenFlagMenu;
+use crate::ui::load_save::bind_open_flag_menu;
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailPictureSwap, RetailTree, ancestor_with};
 use crate::ui::strategic_map::{
     MapInteractionMode, bind_army_toolbar, bind_civilian_toolbar, bind_minimap, bind_navy_toolbar,
     bind_ocean_view, bind_strategic_base_terrain, register_army_toolbar, register_civilian_orders,
-    register_civilian_toolbar, register_map_click, register_map_interaction, register_map_keys,
-    register_map_modals, register_navy_toolbar, register_ocean_view, sync_minimap,
-    sync_strategic_base_terrain, sync_strategic_units,
+    on_strategic_map_click, register_civilian_toolbar, register_map_click, register_map_interaction,
+    register_map_keys, register_map_modals, register_navy_toolbar, register_ocean_view,
+    sync_minimap, sync_strategic_base_terrain, sync_strategic_units,
 };
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -159,12 +159,11 @@ fn bind_strategic_map(
     bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &tree);
     disable_native_control(&mut commands, *root, &tree, fourcc!("DONE"));
     let flag = tree.find(*root, fourcc!("Flag"));
-    commands
-        .entity(flag)
-        .insert(OpenFlagMenu)
-        .remove::<InteractionDisabled>();
-    bind_strategic_base_terrain(&mut commands, *root, &tree, &mut assets, &session.game);
-    bind_ocean_view(&mut commands, &mut assets, *root, &tree);
+    bind_open_flag_menu(&mut commands, flag);
+    let land = bind_strategic_base_terrain(&mut commands, *root, &tree, &mut assets, &session.game);
+    commands.entity(land).observe(on_strategic_map_click);
+    let ocean = bind_ocean_view(&mut commands, &mut assets, *root, &tree);
+    commands.entity(ocean).observe(on_strategic_map_click);
     bind_minimap(&mut commands, *root, &tree, &mut assets, &session.game);
     bind_civilian_toolbar(&mut commands, &mut assets, *root, &tree);
     bind_army_toolbar(&mut commands, &mut assets, *root, &tree);

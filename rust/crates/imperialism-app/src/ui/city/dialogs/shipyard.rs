@@ -159,13 +159,16 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
         } else {
             commands.entity(button).insert(InteractionDisabled);
         }
-        commands.entity(button).insert((
-            CityRowChoice {
-                order: spec.binding.order,
-                selection: root,
-            },
-            ShipyardRowAssets { details },
-        ));
+        commands
+            .entity(button)
+            .insert((
+                CityRowChoice {
+                    order: spec.binding.order,
+                    selection: root,
+                },
+                ShipyardRowAssets { details },
+            ))
+            .observe(on_city_row_selected);
         commands.entity(bound.quantity).insert((
             InteractionDisabled,
             detail_font.clone(),

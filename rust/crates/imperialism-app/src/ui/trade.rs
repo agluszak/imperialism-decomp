@@ -211,8 +211,7 @@ impl Plugin for TradePlugin {
             Update,
             (sync_trade_text, sync_trade_visual, sync_trade_presence)
                 .run_if(in_state(AppState::Trade)),
-        )
-        .add_observer(on_trade_amount_bar_click.run_if(in_state(AppState::Trade)));
+        );
     }
 }
 
@@ -372,11 +371,14 @@ fn bind_trade_controls(
             .entity(green)
             .insert(TradeDisplay::Offer(binding.commodity));
         let bar = tree.find(row, fourcc!("bar "));
-        commands.entity(bar).insert((
-            TradeAction::Amount(binding.commodity),
-            TradeDisplay::Offer(binding.commodity),
-            RelativeCursorPosition::default(),
-        ));
+        commands
+            .entity(bar)
+            .insert((
+                TradeAction::Amount(binding.commodity),
+                TradeDisplay::Offer(binding.commodity),
+                RelativeCursorPosition::default(),
+            ))
+            .observe(on_trade_amount_bar_click);
         commands
             .entity(bar)
             .apply_scene(trade_gauge_overlay(binding.commodity, gauge_color));

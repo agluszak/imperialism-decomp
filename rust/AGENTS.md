@@ -89,6 +89,18 @@ Binders attach semantic identity, static style, and interaction. Observers mutat
 state. Projectors are the only code that derive dynamic presentation from that state, including
 the first frame. Do not compute the same display value while binding and again while projecting.
 
+Wire known UI controls with entity-local observers when binding them. Application state stays in
+`GameSession`, while widget components such as `Checked` are projected onto the entities. Keep an
+app-global observer only for genuinely cross-cutting component behavior or application events,
+such as City raising a window from an event target and its ancestors, retail picture swaps, or
+`OpenDiplomacy*Notice`. Do not catch arbitrary `Activate` or `Pointer<Click>` events globally and
+then test whether the target belongs to a particular screen.
+
+Keep `sync_*` projection systems for game-state-to-presentation updates. When `GameSession`
+change detection is too coarse, use a fact-specific projection key rather than splitting
+simulation state into ECS components. Prefer Bevy's stock headless widgets for recovered standard
+controls, and keep handwritten pointer math for unusual retail canvases and amount bars.
+
 Keep `EnumMap` for closed-enum tables and `NationTable`/`ProvinceTable` as persistent domain
 containers. Do not wrap local palettes or lookup arrays in table types merely to index by ID.
 

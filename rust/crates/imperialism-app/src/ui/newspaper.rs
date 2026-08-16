@@ -18,9 +18,6 @@ const STORY_TOP: f32 = 80.0;
 struct NewspaperRoot;
 
 #[derive(Component, Clone, Copy)]
-struct NewspaperAction;
-
-#[derive(Component, Clone, Copy)]
 enum NewspaperDisplay {
     Date,
     Spec,
@@ -38,8 +35,7 @@ impl Plugin for NewspaperPlugin {
             Update,
             project_newspaper_chrome
                 .run_if(in_state(AppState::Newspaper).and_then(resource_exists::<GameSession>)),
-        )
-        .add_observer(on_newspaper_activate.run_if(in_state(AppState::Newspaper)));
+        );
     }
 }
 
@@ -70,7 +66,8 @@ fn bind_newspaper(
     );
     commands
         .entity(tree.find(root, fourcc!("end ")))
-        .insert((NewspaperAction, ActivateOnPress));
+        .insert(ActivateOnPress)
+        .observe(on_newspaper_activate);
 }
 
 fn bind_newspaper_chrome(commands: &mut Commands, root: Entity, tree: &RetailTree) {
@@ -310,14 +307,10 @@ fn join_with_conjunction(assets: &RetailUiAssets, names: &[String], list_and: bo
 }
 
 fn on_newspaper_activate(
-    activate: On<Activate>,
-    actions: Query<&NewspaperAction>,
+    _activate: On<Activate>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    if actions.get(activate.entity).is_err() {
-        return;
-    }
     let stop = session.game.close_newspaper();
     apply_turn_stop(stop, &mut next_state);
 }

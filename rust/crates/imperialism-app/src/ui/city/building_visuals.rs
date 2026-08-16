@@ -350,15 +350,18 @@ pub(in crate::ui::city) fn spawn_city_buildings(
         ));
     }
     hit_regions.sort_by_key(|(draw_order, _)| *draw_order);
-    commands.entity(main).insert((
-        CityCanvas {
-            buildings: hit_regions
-                .into_iter()
-                .map(|(_, building)| building)
-                .collect(),
-        },
-        RelativeCursorPosition::default(),
-    ));
+    commands
+        .entity(main)
+        .insert((
+            CityCanvas {
+                buildings: hit_regions
+                    .into_iter()
+                    .map(|(_, building)| building)
+                    .collect(),
+            },
+            RelativeCursorPosition::default(),
+        ))
+        .observe(on_city_canvas_click);
     spawn_city_building_actions(commands, main, actions, state, nation, assets);
 }
 

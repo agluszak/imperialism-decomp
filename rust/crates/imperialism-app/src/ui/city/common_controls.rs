@@ -131,16 +131,28 @@ pub(in crate::ui::city) fn bind_city_order_row(
     let decrease = tree.find(row, decrease_tag);
     let increase = tree.find(row, increase_tag);
     let quantity = tree.find(row, quantity_tag);
-    commands.entity(decrease).insert(CityOrderAdjust {
-        order: binding.order,
-        delta: -step,
-        selection,
-    });
-    commands.entity(increase).insert(CityOrderAdjust {
-        order: binding.order,
-        delta: step,
-        selection,
-    });
+    let mut decrease_commands = commands.entity(decrease);
+    decrease_commands
+        .insert(CityOrderAdjust {
+            order: binding.order,
+            delta: -step,
+            selection,
+        })
+        .observe(on_city_order_adjust);
+    if selection.is_some() {
+        decrease_commands.observe(on_city_recruitment_order_selected);
+    }
+    let mut increase_commands = commands.entity(increase);
+    increase_commands
+        .insert(CityOrderAdjust {
+            order: binding.order,
+            delta: step,
+            selection,
+        })
+        .observe(on_city_order_adjust);
+    if selection.is_some() {
+        increase_commands.observe(on_city_recruitment_order_selected);
+    }
     commands
         .entity(quantity)
         .insert((Text::new(""), CityOrderQuantity(binding.order)));
@@ -209,13 +221,16 @@ fn bind_industry_amount_bars(
             IndustryBar::Maximum(amount),
             Name::new("city-industry-maximum"),
         ));
-        commands.entity(bar).insert((
-            RelativeCursorPosition::default(),
-            CityIndustryAmountBar {
-                order: binding.order,
-                slot: page.slot,
-            },
-        ));
+        commands
+            .entity(bar)
+            .insert((
+                RelativeCursorPosition::default(),
+                CityIndustryAmountBar {
+                    order: binding.order,
+                    slot: page.slot,
+                },
+            ))
+            .observe(on_city_amount_bar_click);
     }
 }
 
@@ -256,7 +271,8 @@ pub(in crate::ui::city) fn bind_industry_dialog(
     let expansion_action = tree.find(root, fourcc!("expa"));
     commands
         .entity(expansion_action)
-        .insert(CityExpansionOpen { slot: page.slot });
+        .insert(CityExpansionOpen { slot: page.slot })
+        .observe(on_city_expansion_open);
     let expansion = tree.find(root, fourcc!("flag"));
     commands
         .entity(expansion)

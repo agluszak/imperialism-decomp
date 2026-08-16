@@ -187,6 +187,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
                     Visibility::Hidden
                 },
             ));
+            button_commands.observe(on_city_row_selected);
             if row_available {
                 button_commands.remove::<InteractionDisabled>();
             } else {

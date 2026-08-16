@@ -19,9 +19,6 @@ const ABILITY_STATUS_PICTURE_INDEX: [i16; Technology::LENGTH] = [
 struct TechnologyAdvanceRoot;
 
 #[derive(Component, Clone, Copy)]
-struct TechnologyAdvanceAction;
-
-#[derive(Component, Clone, Copy)]
 enum TechnologyAdvanceDisplay {
     Picture,
     Text,
@@ -40,8 +37,7 @@ impl Plugin for TechnologyAdvancePlugin {
             project_technology_advance.run_if(
                 in_state(AppState::TechnologyAdvance).and_then(resource_exists::<GameSession>),
             ),
-        )
-        .add_observer(on_technology_advance_activate.run_if(in_state(AppState::TechnologyAdvance)));
+        );
     }
 }
 
@@ -69,8 +65,9 @@ fn bind_technology_advance(
         .insert((TechnologyAdvanceDisplay::Text, Text::default()));
     commands
         .entity(tree.find(root, fourcc!("end ")))
-        .insert((TechnologyAdvanceAction, ActivateOnPress))
-        .remove::<InteractionDisabled>();
+        .insert(ActivateOnPress)
+        .remove::<InteractionDisabled>()
+        .observe(on_technology_advance_activate);
 }
 
 fn project_technology_advance(
@@ -106,15 +103,11 @@ fn project_technology_advance(
 }
 
 fn on_technology_advance_activate(
-    activate: On<Activate>,
-    actions: Query<&TechnologyAdvanceAction>,
+    _activate: On<Activate>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     assets: Res<crate::RetailAssetsResource>,
 ) {
-    if actions.get(activate.entity).is_err() {
-        return;
-    }
     match session
         .game
         .acknowledge_technology_report(assets.news_story_ids())

@@ -30,7 +30,7 @@ use borders::compose_strategic_borders;
 use civilian_orders::StrategicSelection;
 pub(crate) use civilian_orders::register as register_civilian_orders;
 pub(crate) use civilian_toolbar::{bind_civilian_toolbar, register_civilian_toolbar};
-pub(crate) use map_click::register as register_map_click;
+pub(crate) use map_click::{on_strategic_map_click, register as register_map_click};
 pub(crate) use map_interaction::{
     MapInteractionMode, OceanView, register as register_map_interaction,
 };

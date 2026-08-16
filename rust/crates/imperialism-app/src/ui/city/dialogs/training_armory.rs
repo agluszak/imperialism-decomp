@@ -203,6 +203,7 @@ pub(in crate::ui::city) fn configure_armory_dialog(
             ImageNode::new(idle.clone()),
             RetailPictureSwap { idle, active },
         ));
+        button.observe(on_city_row_selected);
         commands.entity(bound.quantity).insert(InteractionDisabled);
     }
     for (tag, detail) in [

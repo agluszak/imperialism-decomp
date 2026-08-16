@@ -18,15 +18,14 @@ use bevy::ui::RelativeCursorPosition;
 use imperialism_core::*;
 
 pub(crate) fn register(app: &mut App) {
-    app.add_observer(on_strategic_map_click.run_if(in_state(AppState::StrategicMap)))
-        .add_systems(
-            Update,
-            sync_strategic_map_cursor.run_if(in_state(AppState::StrategicMap)),
-        );
+    app.add_systems(
+        Update,
+        sync_strategic_map_cursor.run_if(in_state(AppState::StrategicMap)),
+    );
 }
 
 #[allow(clippy::too_many_arguments, clippy::type_complexity)]
-fn on_strategic_map_click(
+pub(crate) fn on_strategic_map_click(
     click: On<Pointer<Click>>,
     mut commands: Commands,
     mut land: Query<
