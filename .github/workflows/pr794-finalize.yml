@@ -1,0 +1,17 @@
+name: Finalize PR 794
+
+on:
+  push:
+    branches: [agent/pr794-export-main3]
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: echo ready
