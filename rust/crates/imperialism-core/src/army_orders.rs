@@ -4,30 +4,33 @@ use crate::combat_moves::{set_unit_order, stationed_chain_indices};
 use crate::military_phase::tactical_category;
 use crate::*;
 
-const UNIT_ORDER_IDLE: i32 = 0;
-const UNIT_ORDER_REDEPLOY: i32 = 1;
-const UNIT_ORDER_SLEEP: i32 = 2;
-const UNIT_ORDER_LATR: i32 = 3;
-const UNIT_ORDER_DONE: i32 = 4;
+const UNIT_ORDER_IDLE: MilitaryOrderCode = MilitaryOrderCode::Idle;
+const UNIT_ORDER_REDEPLOY: MilitaryOrderCode = MilitaryOrderCode::Redeploy;
+const UNIT_ORDER_SLEEP: MilitaryOrderCode = MilitaryOrderCode::Sleep;
+const UNIT_ORDER_LATR: MilitaryOrderCode = MilitaryOrderCode::Latr;
+const UNIT_ORDER_DONE: MilitaryOrderCode = MilitaryOrderCode::Done;
 
 const HEX_COL_DELTA: [i16; 6] = [1, 2, 1, -1, -2, -1];
 const HEX_ROW_DELTA: [i16; 6] = [-1, 0, 1, 1, 0, -1];
 
 /// Idle-unit modes applied by `TArmyToolbar::DoEvent` (`dfnd`/`latr`/`done`).
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-#[repr(i32)]
 pub enum ArmyIdleOrderMode {
     /// `dfnd` → `SetOrdersForIdleUnitsOnPendingTile(2)` / `UNIT_ORDER_SLEEP`.
-    Sleep = UNIT_ORDER_SLEEP,
+    Sleep,
     /// `latr` → retail unitOrder 3.
-    Latr = UNIT_ORDER_LATR,
+    Latr,
     /// `done` → retail unitOrder 4.
-    Done = UNIT_ORDER_DONE,
+    Done,
 }
 
 impl ArmyIdleOrderMode {
-    pub const fn retail(self) -> i32 {
-        self as i32
+    pub const fn retail(self) -> MilitaryOrderCode {
+        match self {
+            Self::Sleep => UNIT_ORDER_SLEEP,
+            Self::Latr => UNIT_ORDER_LATR,
+            Self::Done => UNIT_ORDER_DONE,
+        }
     }
 }
 
@@ -889,8 +892,8 @@ mod tests {
         place_unit(&mut state, MilitaryUnitKind::Regulars, province, 0);
         place_unit(&mut state, MilitaryUnitKind::Regulars, province, 2);
         state.set_idle_unit_orders_on_province(province, ArmyIdleOrderMode::Latr);
-        assert_eq!(state.military_units[0].order.code(), 3);
-        assert_eq!(state.military_units[1].order.code(), 2);
+        assert_eq!(state.military_units[0].order.code().get(), 3);
+        assert_eq!(state.military_units[1].order.code().get(), 2);
     }
 
     #[test]
@@ -905,7 +908,7 @@ mod tests {
         let codes: Vec<i32> = state
             .military_units
             .iter()
-            .map(|unit| unit.order.code())
+            .map(|unit| unit.order.code().get())
             .collect();
         assert_eq!(codes.iter().filter(|&&code| code == 4).count(), 1);
         assert_eq!(codes.iter().filter(|&&code| code == 0).count(), 1);
@@ -915,7 +918,7 @@ mod tests {
             state
                 .military_units
                 .iter()
-                .all(|unit| unit.order.code() == 0)
+                .all(|unit| unit.order.code().get() == 0)
         );
     }
 
@@ -929,12 +932,12 @@ mod tests {
         place_unit(&mut state, MilitaryUnitKind::Minutemen, province, 4);
         place_unit(&mut state, MilitaryUnitKind::Regulars, province, 2);
         state.apply_army_province_selection(Some(province));
-        assert_eq!(state.military_units[0].order.code(), 0);
-        assert_eq!(state.military_units[1].order.code(), 0);
-        assert_eq!(state.military_units[2].order.code(), 4);
-        assert_eq!(state.military_units[3].order.code(), 2);
+        assert_eq!(state.military_units[0].order.code().get(), 0);
+        assert_eq!(state.military_units[1].order.code().get(), 0);
+        assert_eq!(state.military_units[2].order.code().get(), 4);
+        assert_eq!(state.military_units[3].order.code().get(), 2);
         state.apply_army_province_selection(None);
-        assert_eq!(state.military_units[0].order.code(), 0);
+        assert_eq!(state.military_units[0].order.code().get(), 0);
     }
 
     #[test]
@@ -1041,6 +1044,6 @@ mod tests {
         assert_eq!(outcome, ArmyMapClickOutcome::IssuedOrders);
         assert_eq!(state.military_units[0].order.code(), UNIT_ORDER_REDEPLOY);
         assert_eq!(state.military_units[0].order.target(), Some(to));
-        assert_eq!(state.military_units[1].order.code(), 0);
+        assert_eq!(state.military_units[1].order.code().get(), 0);
     }
 }

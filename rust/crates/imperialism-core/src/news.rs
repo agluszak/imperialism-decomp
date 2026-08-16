@@ -386,6 +386,8 @@ impl GameState {
         let mut row = 0;
         create_event_stories(
             &self.pending.newspaper_events,
+            &self.battle_reports,
+            &mut self.rng,
             nation,
             story_ids,
             &mut page,
@@ -458,6 +460,8 @@ impl GameState {
 
 fn create_event_stories(
     events: &[PendingNewspaperEvent],
+    battle_reports: &[BattleReport],
+    rng: &mut RngState,
     nation: MajorNationId,
     story_ids: &[i32],
     page: &mut NewsPage,
@@ -581,9 +585,42 @@ fn create_event_stories(
         }
     }
 
-    // FIXME: `CreateEventStories` phase 5 picks one army/map-context report with
-    // CRT `rand()` when `mapContextActionRecordList04` is non-empty. Skipping it
-    // drops that story and desyncs later-turn filler RNG. Opening-turn lists are empty.
+    if *row < 3 && !battle_reports.is_empty() {
+        let report = &battle_reports[rng.next_crt_rand() as usize % battle_reports.len()];
+        let (want_id, location) = if report.kind.is_land() {
+            let BattleReportLocation::Province(province) = report.location else {
+                panic!("land battle report requires a province location");
+            };
+            (
+                i32::from(report.participant_index != 0) - 0x1a,
+                NewsArgument::Province { province },
+            )
+        } else {
+            let BattleReportLocation::Zone(zone) = report.location else {
+                panic!("naval battle report requires a zone location");
+            };
+            (
+                -0x1b - i32::from(report.kind != BattleReportKind::SeaBattle),
+                NewsArgument::Zone {
+                    ordinal: zone.get() as i16,
+                },
+            )
+        };
+        if let Some(template) = find_template(story_ids, want_id) {
+            page.stories[*column][*row] = Some(NewsStory {
+                template_index: template as u16,
+                story_id: want_id as i16,
+                feature: true,
+                arguments: [
+                    location,
+                    nation_mask_arg(1 << report.sides[0].nation.get()),
+                    nation_mask_arg(1 << report.sides[1].nation.get()),
+                    NewsArgument::Empty,
+                ],
+            });
+            advance_page_cursor(column, row);
+        }
+    }
 
     for pass in 0..2 {
         if *row > 2 {
@@ -830,5 +867,59 @@ mod tests {
         assert_eq!(state.turn.phase, PhaseCode::RETURN_TO_MAP);
         assert!(state.pending.newspaper_events.is_empty());
         assert!(state.news.pages[MajorNationId::new(0)].is_some());
+    }
+
+    #[test]
+    fn newspaper_uses_battle_location_participants_and_report_variant() {
+        let mut state = game_state();
+        state.append_battle_report(BattleReport {
+            participant_index: 1,
+            displayed_participant: 0,
+            kind: BattleReportKind::LandBattle,
+            location: BattleReportLocation::Province(ProvinceId::new(4)),
+            sides: [
+                BattleReportSide {
+                    nation: MajorNationId::new(1).nation(),
+                    name: String::new(),
+                    overlay: String::new(),
+                    children: Vec::new(),
+                },
+                BattleReportSide {
+                    nation: MajorNationId::new(2).nation(),
+                    name: String::new(),
+                    overlay: String::new(),
+                    children: Vec::new(),
+                },
+            ],
+            marker_pixel_x: 0,
+            marker_pixel_y: 0,
+            placed: false,
+            marker_sprite: 0,
+            list_ordinal: 0,
+        });
+        let mut templates = filler_table();
+        templates[1] = -0x19;
+
+        state.construct_newspaper_pages(&templates);
+
+        let story = state.news.pages[MajorNationId::new(0)]
+            .as_ref()
+            .unwrap()
+            .stories[0][0]
+            .as_ref()
+            .unwrap();
+        assert_eq!(story.story_id, -0x19);
+        assert!(story.feature);
+        assert_eq!(
+            story.arguments,
+            [
+                NewsArgument::Province {
+                    province: ProvinceId::new(4),
+                },
+                nation_mask_arg(1 << 1),
+                nation_mask_arg(1 << 2),
+                NewsArgument::Empty,
+            ]
+        );
     }
 }

@@ -362,6 +362,8 @@ pub enum MilitaryOrderCode {
     Idle = 0,
     Redeploy = 1,
     Sleep = 2,
+    Latr = 3,
+    Done = 4,
 }
 
 impl MilitaryOrderCode {
@@ -370,6 +372,8 @@ impl MilitaryOrderCode {
             0 => Self::Idle,
             1 => Self::Redeploy,
             2 => Self::Sleep,
+            3 => Self::Latr,
+            4 => Self::Done,
             _ => panic!("unrecovered military order code {value}"),
         }
     }

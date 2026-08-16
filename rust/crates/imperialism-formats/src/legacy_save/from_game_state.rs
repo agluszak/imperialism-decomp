@@ -836,7 +836,9 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
         selected_resource_type_by_nation: [[0; 14]; MAJOR_NATION_COUNT],
         ability_active_by_nation,
         university_recruitment_availability,
-        completion_year_offsets: [[0; Technology::LENGTH]; MAJOR_NATION_COUNT],
+        completion_year_offsets: std::array::from_fn(|slot| {
+            *technology.completion_year_by_nation[MajorNationId::new(slot as u8)].as_array()
+        }),
         capability_value_by_nation_and_resource,
         marker: 0,
     }

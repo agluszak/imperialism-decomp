@@ -278,7 +278,7 @@ impl GameState {
             );
         } else {
             let old_owner = MinorNationId::new(old_owner.get());
-            let Nations { majors, minors } = &mut self.nations;
+            let Nations { majors, minors, .. } = &mut self.nations;
             minors[old_owner]
                 .as_mut()
                 .expect("owned province requires its minor nation to be present")

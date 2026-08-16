@@ -704,6 +704,11 @@ fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
                 TechnologyTable::from_array(row.map(technology_research_status_from_retail))
             }),
         ),
+        completion_year_by_nation: MajorNationTable::from_array(
+            legacy
+                .completion_year_offsets
+                .map(TechnologyTable::from_array),
+        ),
         industry_enabled_by_slot: legacy.resource_type_enabled.map(|value| value != 0),
         military_unit_ability_active_by_nation: MajorNationTable::from_array(
             legacy
