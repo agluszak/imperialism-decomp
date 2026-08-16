@@ -62,19 +62,33 @@ jobs:
           test -z "$(git diff --name-only --diff-filter=U)"
           git diff --check
 
-      - name: Normalize typed differential test identity
+      - name: Normalize post-rebase Rust idioms
         shell: bash
         run: |
           set -euxo pipefail
           python3 - <<'PY'
           from pathlib import Path
-          path = Path('rust/crates/imperialism-core/tests/native_military.rs')
-          text = path.read_text()
+
+          test_path = Path('rust/crates/imperialism-core/tests/native_military.rs')
+          text = test_path.read_text()
           text = text.replace(
               'task_force_toolbar_counts(0.into())',
               'task_force_toolbar_counts(TaskForceIndex::new(0))',
           )
-          path.write_text(text)
+          test_path.write_text(text)
+
+          army_path = Path('rust/crates/imperialism-core/src/army_orders.rs')
+          text = army_path.read_text()
+          old = '''        if self.nations.common(nation).is_some() {\n            if let Some(home) = self.nations.home_tile(nation)\n                && self.map[home].province == Some(province)\n            {\n                counts.can_upgrade = true;\n            }\n        }'''
+          new = '''        if self.nations.common(nation).is_some()\n            && let Some(home) = self.nations.home_tile(nation)\n            && self.map[home].province == Some(province)\n        {\n            counts.can_upgrade = true;\n        }'''
+          assert old in text
+          army_path.write_text(text.replace(old, new, 1))
+
+          navy_path = Path('rust/crates/imperialism-core/src/navy_orders/player.rs')
+          text = navy_path.read_text()
+          old = 'usize::try_from(zone.get()).unwrap_or(usize::MAX)'
+          assert text.count(old) == 2, text.count(old)
+          navy_path.write_text(text.replace(old, 'usize::from(zone.get())'))
           PY
 
       - name: Install native build dependencies
