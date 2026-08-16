@@ -18,7 +18,10 @@ impl GameState {
     /// Retail `TSimMgr::DoMilitary` sequence: rebuild the strategic heatmap,
     /// grow militia, then pay maintenance, select advisory missions, and issue
     /// orders in major-nation order. Army map-context records are released
-    /// before navy preparation and execution.
+    /// before navy preparation and execution. The caller owns any returned
+    /// naval-battle continuation; the production turn driver stores it before
+    /// presenting the battle boundary.
+    #[must_use = "a naval battle continuation must be retained and resumed"]
     pub fn do_military(&mut self) -> Option<NavyOrdersContinuation> {
         self.apply_military_orders();
         self.clean_up_army_stacks();
