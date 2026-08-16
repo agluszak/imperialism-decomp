@@ -41,7 +41,7 @@ pub(crate) use load_save::{LoadSavePlugin, SaveDirectory};
 pub(crate) use main_menu::MainMenuPlugin;
 pub(crate) use newspaper::NewspaperPlugin;
 pub(crate) use offer_sheet::OfferSheetPlugin;
-pub(crate) use preferences::PreferencesPlugin;
+pub(crate) use preferences::{GamePreferences, PreferencesPlugin};
 pub(crate) use query_floater::QueryFloaterPlugin;
 pub(crate) use random_setup::RandomSetupPlugin;
 pub(crate) use random_setup_map::MapPreviewPlugin;

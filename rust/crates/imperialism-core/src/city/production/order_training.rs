@@ -32,22 +32,18 @@ pub(crate) fn training_limit(
     };
     let paper_limit = city.stockpile[ResourceKind::Paper] / paper_per_unit;
 
-    let mut constraint = ProductionConstraint::Workforce;
-    let mut limit = workforce_limit;
-    if cash_limit < limit {
-        constraint = ProductionConstraint::Treasury;
-        limit = cash_limit;
-    }
-    if paper_limit < limit {
-        constraint = ProductionConstraint::Resources;
-        limit = paper_limit;
-    }
-    if i32::from(progress.quantity) + i32::from(limit) > 99 {
-        limit = 99 - progress.quantity;
+    let mut limit = OrderLimit {
+        maximum: workforce_limit,
+        constraint: ProductionConstraint::Workforce,
+    };
+    limit.min_with(cash_limit, ProductionConstraint::Treasury);
+    limit.min_with(paper_limit, ProductionConstraint::Resources);
+    if i32::from(progress.quantity) + i32::from(limit.maximum) > 99 {
+        limit.maximum = 99 - progress.quantity;
     }
     OrderLimit {
-        maximum: progress.quantity + limit,
-        constraint,
+        maximum: progress.quantity + limit.maximum,
+        constraint: limit.constraint,
     }
 }
 
@@ -60,12 +56,9 @@ pub(crate) fn set_training_quantity(
     limit: OrderLimit,
     quantity: i16,
 ) -> bool {
-    let delta = quantity - progress.quantity;
-    progress.limiting_constraint = limit.constraint;
-    if quantity > limit.maximum || quantity < 0 {
+    let Some(delta) = progress.try_set(limit, quantity) else {
         return false;
-    }
-    progress.quantity = quantity;
+    };
 
     let (paper_change, cash_change) = match level {
         TrainingLevel::Medium => (delta, i32::from(delta) * 100),

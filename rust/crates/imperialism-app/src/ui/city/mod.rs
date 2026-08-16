@@ -1,10 +1,10 @@
 use super::GameSession;
+use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::{ModalDialog, RetailUiAssets};
-use super::retail::{RetailTag, find_descendant};
-use crate::*;
+use super::retail::{ModalDialog, RetailTree, RetailUiAssets};
+use crate::{AppState, RetailAssetsResource};
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::log::warn;
 use bevy::picking::events::{Click, Drag, Pointer, Press};
@@ -12,6 +12,7 @@ use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, Button as UiButton, ValueChange};
+use enum_map::Enum;
 use imperialism_core::*;
 use imperialism_formats::*;
 use std::time::Duration;
@@ -65,6 +66,7 @@ impl Plugin for CityPlugin {
                 sync_city_summary,
                 sync_city_hover_title,
                 sync_city_buildings,
+                sync_city_building_action_visibility,
                 sync_city_order_quantities,
                 sync_industry_texts,
                 sync_industry_indicators,

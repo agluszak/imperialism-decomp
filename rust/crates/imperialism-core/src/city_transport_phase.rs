@@ -448,7 +448,7 @@ impl GameState {
         let count = &mut self.nations.city_mut(nation).ship_order_count_by_type[ship_type];
         *count = count.wrapping_add(1);
 
-        let ship = crate::city::ship_creates_navy_object(ship_type).then_some(ShipId::new(0));
+        let ship = crate::city::ship_creates_navy_object(ship_type).then_some(ShipIndex::new(0));
         self.admirals.insert(
             0,
             AdmiralState {
@@ -630,7 +630,7 @@ mod tests {
         );
         assert_eq!(state.admirals.len(), 1);
         assert_eq!(state.admirals[0].nation, nation.nation());
-        assert_eq!(state.admirals[0].ship, Some(ShipId::new(0)));
+        assert_eq!(state.admirals[0].ship, Some(ShipIndex::new(0)));
         assert_eq!(
             state.pending.nations[nation].turn_summary,
             [

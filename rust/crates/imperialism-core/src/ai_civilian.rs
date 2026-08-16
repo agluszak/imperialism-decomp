@@ -2,6 +2,7 @@
 
 use crate::civilian_phase::civilian_sea_scan_neighbor;
 use crate::*;
+use enum_map::Enum;
 
 const FORT_COST_BY_LEVEL: [i32; 5] = [5_000, 7_500, 10_000, 0, 0];
 const WORK_ORDER_COST_BY_CLASS: [i32; 3] = [100, 1_000, 5_000];
@@ -683,7 +684,10 @@ impl GameState {
         }
         has_kind[CivilianUnitKind::Prospector] = true;
         has_kind[CivilianUnitKind::Developer] = true;
-        for kind in CivilianUnitKind::ALL.into_iter().rev() {
+        for kind in (0..CivilianUnitKind::LENGTH)
+            .rev()
+            .map(CivilianUnitKind::from_usize)
+        {
             if !self.technology.city_capabilities_by_nation[nation]
                 .university
                 .available[kind]

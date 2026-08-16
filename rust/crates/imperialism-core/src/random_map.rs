@@ -26,7 +26,7 @@ impl CoarseMapGrid {
         self.cells.iter().flatten().copied()
     }
 
-    #[cfg(any(test, feature = "differential-trace"))]
+    #[cfg(any(test, feature = "oracle"))]
     pub fn fnv1a_hash(&self) -> u32 {
         self.cells
             .iter()
@@ -54,7 +54,7 @@ pub(crate) struct ExpandedProvinceSeed {
 /// The accepted coarse map and the region class assigned to each nation class.
 ///
 /// Rejected attempts, generator group bookkeeping, and expanded tile seeds are
-/// not game state. They are available only through `differential_trace` while
+/// not game state. They are available only through `differential` while
 /// the native oracle still requires them.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CoarseMap {
@@ -112,7 +112,7 @@ impl CoarseMap {
     }
 }
 
-#[cfg(feature = "differential-trace")]
+#[cfg(feature = "oracle")]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CoarseMapAttempt {
     pub draw_count: u32,
@@ -131,7 +131,7 @@ pub struct CoarseMapAttempt {
 
 /// Test-only record of the rejected coarse-generation attempts emitted by the
 /// native differential harness. Normal generation returns [`CoarseMap`].
-#[cfg(feature = "differential-trace")]
+#[cfg(feature = "oracle")]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CoarseMapTrace {
     pub initial_map_lcg: u32,
@@ -145,7 +145,7 @@ pub struct CoarseMapTrace {
     expanded_provinces: Vec<ExpandedProvinceSeed>,
 }
 
-#[cfg(feature = "differential-trace")]
+#[cfg(feature = "oracle")]
 impl CoarseMapTrace {
     fn from_generation_result(
         initial_map_lcg: u32,
@@ -185,9 +185,9 @@ impl CoarseMapTrace {
 
 struct CoarseMapBuild {
     map: CoarseMap,
-    #[cfg(feature = "differential-trace")]
+    #[cfg(feature = "oracle")]
     city_region_next_id: i32,
-    #[cfg(feature = "differential-trace")]
+    #[cfg(feature = "oracle")]
     group_members: [[i32; 3]; 7],
 }
 
@@ -510,16 +510,16 @@ impl GeneratorScratch {
 /// Retail's coarse neighbor routine always wraps its 27 columns and does not read
 /// the map topology byte. The bounded/wrapping topology choice first affects later
 /// full-resolution passes, so it is intentionally not an input to this function.
-pub fn generate_coarse_random_map(rng: &mut RetailLcg) -> CoarseMap {
+pub(crate) fn generate_coarse_random_map(rng: &mut RetailLcg) -> CoarseMap {
     generate_coarse_random_map_impl(
         rng,
-        #[cfg(feature = "differential-trace")]
+        #[cfg(feature = "oracle")]
         None,
     )
     .map
 }
 
-#[cfg(feature = "differential-trace")]
+#[cfg(feature = "oracle")]
 pub fn trace_coarse_random_map(rng: &mut RetailLcg) -> CoarseMapTrace {
     let initial_map_lcg = rng.state();
     let mut attempts = Vec::new();
@@ -529,7 +529,7 @@ pub fn trace_coarse_random_map(rng: &mut RetailLcg) -> CoarseMapTrace {
 
 fn generate_coarse_random_map_impl(
     rng: &mut RetailLcg,
-    #[cfg(feature = "differential-trace")] mut attempts: Option<&mut Vec<CoarseMapAttempt>>,
+    #[cfg(feature = "oracle")] mut attempts: Option<&mut Vec<CoarseMapAttempt>>,
 ) -> CoarseMapBuild {
     let mut scratch = GeneratorScratch {
         grid: CoarseMapGrid {
@@ -542,7 +542,7 @@ fn generate_coarse_random_map_impl(
     };
     loop {
         scratch.run_attempt(rng);
-        #[cfg(feature = "differential-trace")]
+        #[cfg(feature = "oracle")]
         let trace_before_validation = attempts.as_ref().map(|_| {
             (
                 scratch.draw_count,
@@ -562,7 +562,7 @@ fn generate_coarse_random_map_impl(
         let accepted = !error_check_failed
             && has_continuous_ocean_column == Some(true)
             && frontier_mask_complete == Some(true);
-        #[cfg(feature = "differential-trace")]
+        #[cfg(feature = "oracle")]
         if let (Some(attempts), Some(trace_before_validation)) =
             (&mut attempts, trace_before_validation)
         {
@@ -600,9 +600,9 @@ fn generate_coarse_random_map_impl(
             grid: scratch.grid,
             region_classes: scratch.city_region_ids.map(|id| id as i8),
         },
-        #[cfg(feature = "differential-trace")]
+        #[cfg(feature = "oracle")]
         city_region_next_id: scratch.city_region_next_id,
-        #[cfg(feature = "differential-trace")]
+        #[cfg(feature = "oracle")]
         group_members: scratch.group_members,
     }
 }
@@ -668,7 +668,7 @@ mod tests {
         );
     }
 
-    #[cfg(feature = "differential-trace")]
+    #[cfg(feature = "oracle")]
     #[test]
     fn trace_matches_retail_oracle_seed_one_attempt_stream() {
         let mut rng = RetailLcg::from_state(0x15a6_cd28);
@@ -700,7 +700,7 @@ mod tests {
         assert_eq!(trace.expanded_province_count(), 120);
     }
 
-    #[cfg(feature = "differential-trace")]
+    #[cfg(feature = "oracle")]
     #[test]
     fn trace_matches_retail_oracle_seed_two_rejection_stream() {
         let mut rng = RetailLcg::from_state(0x51b2_c045);
