@@ -302,11 +302,23 @@ impl GameState {
     }
 
     pub(crate) fn carry_out_navy_orders(&mut self) -> Option<NavyOrdersContinuation> {
+        self.carry_out_navy_orders_with_tactical_battles(true)
+    }
+
+    fn carry_out_navy_orders_without_tactical_battles(&mut self) -> Option<NavyOrdersContinuation> {
+        self.carry_out_navy_orders_with_tactical_battles(false)
+    }
+
+    fn carry_out_navy_orders_with_tactical_battles(
+        &mut self,
+        allow_tactical_battles: bool,
+    ) -> Option<NavyOrdersContinuation> {
         self.carry_out_navy_orders_from(
             NavyPass::PatrolAgainstBlockade,
             self.task_forces.iter().map(|force| force.id).collect(),
             0,
             0,
+            allow_tactical_battles,
         )
     }
 
@@ -319,6 +331,7 @@ impl GameState {
             continuation.forces,
             continuation.outer,
             continuation.inner,
+            true,
         )
     }
 
@@ -328,6 +341,7 @@ impl GameState {
         mut forces: Vec<TaskForceId>,
         mut outer: usize,
         mut inner: usize,
+        allow_tactical_battles: bool,
     ) -> Option<NavyOrdersContinuation> {
         loop {
             if pass.is_action() {
@@ -360,7 +374,7 @@ impl GameState {
                                 || self
                                     .task_force(inner_force)
                                     .is_some_and(|f| f.nation == active);
-                            if player_involved {
+                            if allow_tactical_battles && player_involved {
                                 return Some(NavyOrdersContinuation {
                                     pass,
                                     forces,

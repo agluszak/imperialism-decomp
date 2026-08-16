@@ -19,14 +19,14 @@ impl GameState {
     /// grow militia, then pay maintenance, select advisory missions, and issue
     /// orders in major-nation order. Army map-context records are released
     /// before navy preparation and execution. The caller owns any returned
-    /// naval-battle continuation; the production turn driver stores it before
-    /// presenting the battle boundary.
-    #[must_use = "a naval battle continuation must be retained and resumed"]
+    /// naval-battle continuation. Tactical naval presentation is not available
+    /// yet, so production resolves those encounters strategically rather than
+    /// stopping the turn in an unusable screen state.
     pub fn do_military(&mut self) -> Option<NavyOrdersContinuation> {
         self.apply_military_orders();
         self.clean_up_army_stacks();
         self.prepare_to_carry_out_navy_orders();
-        self.carry_out_navy_orders()
+        self.carry_out_navy_orders_without_tactical_battles()
     }
 
     /// Semantic effects of `TArmyMgr::CleanUpStacks`. Core's battle reports are
