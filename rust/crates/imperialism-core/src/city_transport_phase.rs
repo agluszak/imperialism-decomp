@@ -428,11 +428,12 @@ impl GameState {
     fn spawn_pending_navy_growth_unit(&mut self, nation: MajorNationId) {
         let nation_id = nation.nation();
         let ship_type = self.technology.navy_growth_ship_type;
-        if crate::city::ship_creates_navy_object(ship_type) {
+        let ship = if crate::city::ship_creates_navy_object(ship_type) {
             let location = self
                 .first_port_zone_for_nation(nation_id)
                 .expect("navy-growth pending requires a port zone for the nation");
-            self.insert_ship_at_head(ShipState {
+            Some(self.insert_ship_at_head(ShipState {
+                id: ShipId::new(0),
                 ship_type,
                 location,
                 task_force: None,
@@ -442,13 +443,14 @@ impl GameState {
                 strength: crate::city::ship_stock_cap(ship_type),
                 experience: 0,
                 selection: 0,
-            });
-        }
+            }))
+        } else {
+            None
+        };
 
         let count = &mut self.nations.city_mut(nation).ship_order_count_by_type[ship_type];
         *count = count.wrapping_add(1);
 
-        let ship = crate::city::ship_creates_navy_object(ship_type).then_some(ShipIndex::new(0));
         self.admirals.insert(
             0,
             AdmiralState {
@@ -630,7 +632,7 @@ mod tests {
         );
         assert_eq!(state.admirals.len(), 1);
         assert_eq!(state.admirals[0].nation, nation.nation());
-        assert_eq!(state.admirals[0].ship, Some(ShipIndex::new(0)));
+        assert_eq!(state.admirals[0].ship, Some(ShipId::new(0)));
         assert_eq!(
             state.pending.nations[nation].turn_summary,
             [

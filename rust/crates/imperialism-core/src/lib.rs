@@ -108,7 +108,7 @@ pub use game::{GameState, GameStateParts};
 pub use game_score::GameScore;
 pub use ids::{
     CivilianUnitId, MajorNationId, MilitaryUnitId, MinorNationId, NationId, OceanZoneId,
-    ProvinceId, ShipIndex, TaskForceIndex, TileId, TileOwnerTag,
+    ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,
 };
 pub use map::{
     DevelopmentLevel, MapEdges, MapMgr, RegionId, RiverSegment, RiverSprite, TerrainKind,

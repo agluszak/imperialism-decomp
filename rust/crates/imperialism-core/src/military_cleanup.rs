@@ -542,8 +542,9 @@ mod tests {
     use super::*;
     use crate::test_support::game_state;
 
-    fn ship(selection: i32) -> ShipState {
+    fn ship(id: usize, selection: i32) -> ShipState {
         ShipState {
+            id: ShipId::new(id),
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
             task_force: None,
@@ -600,7 +601,7 @@ mod tests {
     #[test]
     fn cleanup_resets_transient_selection_rebuilds_the_heatmap_and_commits_purchases() {
         let mut state = game_state();
-        state.ships.extend([ship(1), ship(2)]);
+        state.ships.extend([ship(0, 1), ship(1, 2)]);
         state.map[TileId::new(1)].province = Some(ProvinceId::new(0));
         state.map[TileId::new(1)].edge_resources = [Some(ResourceKind::Cotton), None];
         state.map.provinces[ProvinceId::new(0)].linked_tiles = vec![TileId::new(1)];
@@ -719,46 +720,46 @@ mod tests {
     #[test]
     fn cleanup_removes_sail_and_empty_task_forces_and_keeps_patrol() {
         let mut state = game_state();
-        state.ships.push(ship(0));
-        state.ships.push(ship(0));
+        state.ships.push(ship(0, 0));
+        state.ships.push(ship(1, 0));
         state.task_forces.push(TaskForceState {
+            id: TaskForceId::new(0),
             aggression: 0,
             order: TaskForceOrder::Patrol,
             target: TaskForceTarget::Zone(OceanZoneId::new(0)),
             location: OceanZoneId::new(0),
             nation: NationId::new(0),
-            ship_counts: [0; 4],
             defeated: false,
             ingot_tile: -1,
-            flagship: Some(ShipIndex::new(0)),
+            flagship: Some(ShipId::new(0)),
             ships: vec![SelectedShip {
-                ship: ShipIndex::new(0),
+                ship: ShipId::new(0),
                 selected: true,
             }],
         });
         state.task_forces.push(TaskForceState {
+            id: TaskForceId::new(1),
             aggression: 0,
             order: TaskForceOrder::Sail,
             target: TaskForceTarget::Zone(OceanZoneId::new(1)),
             location: OceanZoneId::new(0),
             nation: NationId::new(0),
-            ship_counts: [0; 4],
             defeated: false,
             ingot_tile: -1,
-            flagship: Some(ShipIndex::new(1)),
+            flagship: Some(ShipId::new(1)),
             ships: vec![SelectedShip {
-                ship: ShipIndex::new(1),
+                ship: ShipId::new(1),
                 selected: true,
             }],
         });
-        state.ships[0].task_force = Some(TaskForceIndex::new(0));
-        state.ships[1].task_force = Some(TaskForceIndex::new(1));
+        state.ships[0].task_force = Some(TaskForceId::new(0));
+        state.ships[1].task_force = Some(TaskForceId::new(1));
 
         state.do_military_cleanup();
 
         assert_eq!(state.task_forces.len(), 1);
         assert_eq!(state.task_forces[0].order, TaskForceOrder::Patrol);
-        assert_eq!(state.ships[0].task_force, Some(TaskForceIndex::new(0)));
+        assert_eq!(state.ships[0].task_force, Some(TaskForceId::new(0)));
         assert_eq!(state.ships[1].task_force, None);
     }
 

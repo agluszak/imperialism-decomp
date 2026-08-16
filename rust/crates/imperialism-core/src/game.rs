@@ -16,8 +16,12 @@ pub struct GameState {
     pub(crate) nations: Nations,
     pub(crate) military_units: Vec<MilitaryUnitState>,
     pub(crate) civilian_units: Vec<CivilianUnitState>,
+    #[serde(default)]
+    pub(crate) next_ship_id: usize,
     pub(crate) ships: Vec<ShipState>,
     pub(crate) admirals: Vec<AdmiralState>,
+    #[serde(default)]
+    pub(crate) next_task_force_id: usize,
     pub(crate) task_forces: Vec<TaskForceState>,
     pub(crate) missions: Vec<MissionState>,
     pub(crate) news: NewsState,
@@ -61,6 +65,18 @@ pub struct GameStateParts {
 impl GameState {
     /// Assembles authoritative state from loader-built parts.
     pub fn from_parts(parts: GameStateParts) -> Self {
+        let next_ship_id = parts
+            .ships
+            .iter()
+            .map(|ship| ship.id.get())
+            .max()
+            .map_or(0, |id| id + 1);
+        let next_task_force_id = parts
+            .task_forces
+            .iter()
+            .map(|force| force.id.get())
+            .max()
+            .map_or(0, |id| id + 1);
         Self {
             turn: parts.turn,
             unit_ids: parts.unit_ids,
@@ -74,8 +90,10 @@ impl GameState {
             nations: parts.nations,
             military_units: parts.military_units,
             civilian_units: parts.civilian_units,
+            next_ship_id,
             ships: parts.ships,
             admirals: parts.admirals,
+            next_task_force_id,
             task_forces: parts.task_forces,
             missions: parts.missions,
             news: parts.news,

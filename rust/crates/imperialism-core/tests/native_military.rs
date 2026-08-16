@@ -455,12 +455,12 @@ struct NavyProvinceTargetCase {
     province: ProvinceId,
 }
 
-fn first_task_force(state: &GameState) -> TaskForceIndex {
+fn first_task_force(state: &GameState) -> TaskForceId {
     assert!(
         !state.task_forces().is_empty(),
         "native navy case expected a committed task force"
     );
-    TaskForceIndex::new(0)
+    state.task_forces()[0].id
 }
 
 #[test]

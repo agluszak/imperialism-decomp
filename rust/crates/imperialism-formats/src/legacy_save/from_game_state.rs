@@ -708,7 +708,14 @@ fn navy_dto(state: &GameState) -> LegacyNavyState {
             experience: admiral.experience,
             ship_index: admiral
                 .ship
-                .map(|id| i16::try_from(id.get()).expect("admiral ship index fits a save short"))
+                .map(|id| {
+                    let ordinal = state
+                        .ships()
+                        .iter()
+                        .position(|ship| ship.id == id)
+                        .expect("admiral ship is present in the retail ship list");
+                    i16::try_from(ordinal).expect("admiral ship index fits a save short")
+                })
                 .unwrap_or(ship_count),
         })
         .collect();

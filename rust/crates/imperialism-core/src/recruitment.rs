@@ -318,6 +318,7 @@ impl GameState {
             return;
         }
         self.insert_ship_at_head(ShipState {
+            id: ShipId::new(0),
             ship_type: ShipType::Frigate,
             location,
             task_force: None,

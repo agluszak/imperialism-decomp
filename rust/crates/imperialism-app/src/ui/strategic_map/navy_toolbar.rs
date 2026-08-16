@@ -198,13 +198,7 @@ fn sync_navy_toolbar(
             }
         }
     }
-    let aggression = force.and_then(|id| {
-        session
-            .game
-            .task_forces()
-            .get(id.get())
-            .map(|f| f.aggression)
-    });
+    let aggression = force.and_then(|id| session.game.task_force(id).map(|f| f.aggression));
     for (command, entity) in &mut radios {
         if let NavyCommand::Aggression(level) = *command {
             if aggression == Some(level) {

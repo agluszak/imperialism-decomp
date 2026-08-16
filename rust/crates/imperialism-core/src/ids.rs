@@ -211,14 +211,12 @@ impl OceanZoneId {
     }
 }
 
-/// Snapshot-local position in the authoritative ship-list order.
-/// This is not a durable identity: inserting a ship before this index
-/// increments every later reference. Contrast `MilitaryUnitId`.
+/// Stable identity of a ship. Retail ordinals are translated at the save boundary.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(transparent)]
-pub struct ShipIndex(usize);
+pub struct ShipId(usize);
 
-impl ShipIndex {
+impl ShipId {
     pub const fn new(value: usize) -> Self {
         Self(value)
     }
@@ -228,14 +226,12 @@ impl ShipIndex {
     }
 }
 
-/// Snapshot-local position in the authoritative task-force queue order.
-/// This is not a durable identity: deleting a task force rewrites every
-/// later reference. Contrast `MilitaryUnitId`.
+/// Stable identity of a task force, independent of retail processing order.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(transparent)]
-pub struct TaskForceIndex(usize);
+pub struct TaskForceId(usize);
 
-impl TaskForceIndex {
+impl TaskForceId {
     pub const fn new(value: usize) -> Self {
         Self(value)
     }
