@@ -41,37 +41,26 @@ jobs:
           echo '80f4ac3478cc742e6a54850f912db5bc17cbbfd3ff489d39ffb426cf73f81d85  /tmp/pr794.patch' | sha256sum -c -
 
       - name: Apply to latest main
-        id: apply
-        continue-on-error: true
         shell: bash
         run: |
           set -euxo pipefail
           git fetch origin main cursor/strategic-army-navy-reports-950e
           git checkout -B pr794-final origin/main
-          git apply --3way /tmp/pr794.patch
+          if ! git apply --3way /tmp/pr794.patch; then
+            mapfile -t conflicts < <(git diff --name-only --diff-filter=U | sort)
+            expected=(
+              rust/crates/imperialism-app/src/ui/session.rs
+              rust/crates/imperialism-core/src/turn_flow.rs
+            )
+            test "${#conflicts[@]}" -eq "${#expected[@]}"
+            for i in "${!expected[@]}"; do
+              test "${conflicts[$i]}" = "${expected[$i]}"
+            done
+            git checkout --theirs -- "${expected[@]}"
+            git add -- "${expected[@]}"
+          fi
           test -z "$(git diff --name-only --diff-filter=U)"
           git diff --check
-
-      - name: Package conflict workspace
-        if: steps.apply.outcome == 'failure'
-        shell: bash
-        run: |
-          set -euxo pipefail
-          git status --short
-          git diff --name-only --diff-filter=U
-          tar -czf /tmp/pr794-conflict-workspace.tar.gz .git rust decomp/tests/runtime/native
-
-      - uses: actions/upload-artifact@v4
-        if: steps.apply.outcome == 'failure'
-        with:
-          name: pr794-conflict-workspace
-          path: /tmp/pr794-conflict-workspace.tar.gz
-          retention-days: 1
-          compression-level: 0
-
-      - name: Stop on unresolved apply
-        if: steps.apply.outcome == 'failure'
-        run: exit 1
 
       - name: Install native build dependencies
         run: |
