@@ -11,6 +11,7 @@ use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
+use enum_map::Enum;
 use imperialism_core::*;
 use imperialism_formats::*;
 use std::collections::HashMap;
@@ -208,7 +209,7 @@ fn project_strategic_units_onto(
 
 fn load_strategic_unit_sprites(assets: &RetailUiAssets, state: &GameState) -> StrategicUnitSprites {
     let mut civilians = HashMap::new();
-    for kind in CivilianUnitKind::ALL {
+    for kind in (0..CivilianUnitKind::LENGTH).map(CivilianUnitKind::from_usize) {
         for pose in [
             CivilianPose::Idle,
             CivilianPose::Working,
@@ -703,19 +704,10 @@ fn naval_action_frame(action: Option<TileAction>) -> Option<u16> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
-
-    const BEGINNING_OF_GAME: &[u8] =
-        include_bytes!("../../../../../../fixtures/retail/beginning_of_game.imp");
+    use crate::ui::test_support::{beginning_of_game_with, strategic_map_beginning_context};
 
     fn fixture_state() -> GameState {
-        let save = LegacySaveV62::parse(BEGINNING_OF_GAME);
-        save.game_state(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 3_916_827_792,
-            selected_nation: NationId::new(6),
-        })
+        beginning_of_game_with(strategic_map_beginning_context())
     }
 
     fn civilian(

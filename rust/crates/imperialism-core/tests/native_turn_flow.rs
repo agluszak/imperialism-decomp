@@ -29,7 +29,20 @@ struct TradeBoundaryResult {
 #[ignore = "requires the native C++ oracle"]
 fn deal_book_dispatch_precedes_the_quarter_gate() {
     compare_native("turn_stop_deal_book", |state, (): ()| {
-        stop_name(state.advance_turn())
+        stop_name(state.advance_turn(&[]))
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn city_and_transport_writes_the_resume_phase_before_the_body() {
+    compare_native("turn_stop_city_and_transport", |state, (): ()| {
+        assert_eq!(
+            state.turn().phase(),
+            imperialism_core::PhaseCode::CITY_AND_TRANSPORT
+        );
+        state.apply_city_and_transport_case();
     })
     .unwrap();
 }
@@ -39,10 +52,11 @@ fn deal_book_dispatch_precedes_the_quarter_gate() {
 fn newspaper_dispatch_precedes_return_to_map() {
     let native = run_native::<NewspaperCase, String>("turn_stop_newspaper").unwrap();
     let mut actual = load_save_backed_state(native.before).unwrap();
-    let mut expected = load_save_backed_state(native.after).unwrap();
-    actual.set_news_story_ids(&native.case.story_ids);
-    expected.set_news_story_ids(&native.case.story_ids);
-    assert_eq!(stop_name(actual.advance_turn()), native.result);
+    let expected = load_save_backed_state(native.after).unwrap();
+    assert_eq!(
+        stop_name(actual.advance_turn(&native.case.story_ids)),
+        native.result
+    );
     assert_game_state_eq(&expected, &actual).unwrap();
 }
 
@@ -50,7 +64,7 @@ fn newspaper_dispatch_precedes_return_to_map() {
 #[ignore = "requires the native C++ oracle"]
 fn technology_report_dispatch_precedes_newspaper() {
     compare_native("turn_stop_technology", |state, (): ()| {
-        stop_name(state.advance_turn())
+        stop_name(state.advance_turn(&[]))
     })
     .unwrap();
 }
@@ -62,7 +76,7 @@ fn trade_offer_dispatch_precedes_the_offer_sheet_phase() {
     let mut actual = load_save_backed_state(native.before).unwrap();
     let expected = load_save_backed_state(native.after).unwrap();
 
-    assert_eq!(actual.advance_turn(), TurnStop::TradeOffer);
+    assert_eq!(actual.advance_turn(&[]), TurnStop::TradeOffer);
     let pending = actual
         .pending_trade_offer()
         .expect("trade stop requires a pending offer");

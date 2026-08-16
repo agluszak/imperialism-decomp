@@ -232,8 +232,8 @@ impl GameState {
     }
 
     /// Retail `ShowTurnAlertsForActiveNation`.
-    pub fn show_turn_alerts(&mut self) -> bool {
-        if !self.turn.turn_alerts_enabled {
+    pub fn show_turn_alerts(&mut self, turn_alerts_enabled: bool) -> bool {
+        if !turn_alerts_enabled {
             return false;
         }
         if self.turn.turn_cooldown_defer_counter >= 1 {
@@ -434,7 +434,7 @@ mod tests {
     fn first_tick_skips_turn_alerts() {
         let mut state = game_state();
         state.turn.economic_turn = 1;
-        assert!(!state.show_turn_alerts());
+        assert!(!state.show_turn_alerts(true));
         assert_eq!(state.turn.last_turn_alert_tick, 0);
     }
 
@@ -443,9 +443,9 @@ mod tests {
         let mut state = game_state();
         state.turn.economic_turn = 3;
         state.diplomacy.last_diplomatic_effort_turn = 0;
-        assert!(state.show_turn_alerts());
+        assert!(state.show_turn_alerts(true));
         assert_eq!(state.turn.last_turn_alert_tick, 3);
-        assert!(!state.show_turn_alerts());
+        assert!(!state.show_turn_alerts(true));
     }
 
     #[test]
@@ -453,13 +453,11 @@ mod tests {
         let mut state = game_state();
         state.turn.economic_turn = 3;
         state.diplomacy.last_diplomatic_effort_turn = 0;
-        state.turn.turn_alerts_enabled = false;
-        assert!(!state.show_turn_alerts());
+        assert!(!state.show_turn_alerts(false));
         assert_eq!(state.turn.last_turn_alert_tick, 0);
 
-        state.turn.turn_alerts_enabled = true;
         state.turn.turn_cooldown_defer_counter = 2;
-        assert!(!state.show_turn_alerts());
+        assert!(!state.show_turn_alerts(true));
         assert_eq!(state.turn.turn_cooldown_defer_counter, 2);
         assert_eq!(state.turn.last_turn_alert_tick, 0);
     }

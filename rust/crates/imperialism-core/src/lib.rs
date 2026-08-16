@@ -14,6 +14,11 @@ mod civilian_work;
 mod combat_moves;
 mod create_random_game;
 mod deal_book;
+/// Retail-substep entry points and map-generation traces for C++ integration
+/// tests. Gameplay must not enable the `oracle` feature or call these APIs;
+/// use whole-phase operations such as `do_military` and `resume_after_land_battle`.
+#[cfg(feature = "oracle")]
+pub mod differential;
 mod difficulty;
 mod diplomacy;
 mod diplomacy_phase;
@@ -90,7 +95,7 @@ pub use diplomacy::{
 pub use game::{GameState, GameStateParts};
 pub use ids::{
     CivilianUnitId, MajorNationId, MilitaryUnitId, MinorNationId, NationId, OceanZoneId,
-    ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,
+    ProvinceId, ShipIndex, TaskForceIndex, TileId, TileOwnerTag,
 };
 pub use map::{
     DevelopmentLevel, MapEdges, MapMgr, RegionId, RiverSegment, RiverSprite, TerrainKind,
@@ -106,9 +111,8 @@ pub use market::{
 };
 pub use military::{
     AdmiralState, ArmyMissionState, AttackMissionState, MissionData, MissionState,
-    NavyMissionState, SelectedShip, ShipState, TaskForceState, TaskForceTarget,
+    NavyMissionState, SelectedShip, ShipState, TaskForceOrder, TaskForceState, TaskForceTarget,
 };
-pub use military_cleanup::NationOrderPriorityMetrics;
 pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,
 };
@@ -134,19 +138,6 @@ pub use random_map_terrain::{
 };
 pub use random_setup_name::{COUNTRY_NAME_MAX_CHARS, generate_english_random_setup_name};
 
-/// Instrumentation used only by the C++ differential test harness. It is not
-/// enabled by `imperialism-core`'s default feature set and must not be used by
-/// normal game creation.
-#[cfg(feature = "differential-trace")]
-pub mod differential_trace {
-    pub use crate::random_map::{
-        CoarseMap, CoarseMapAttempt, CoarseMapGrid, CoarseMapTrace, trace_coarse_random_map,
-    };
-    pub use crate::random_map_terrain::{
-        RandomMapTerrainAttemptTrace, RandomMapTerrainStageTrace, RandomMapTerrainTrace,
-        trace_random_map_terrain,
-    };
-}
 pub(crate) use resources::all_resources;
 pub use resources::{ResourceKind, ResourceTable};
 pub use rng::{RetailCrtRng, RetailLcg, RngState, hash_retail_scenario_tag};

@@ -273,7 +273,12 @@ impl GameState {
                 continue;
             };
             let task_force = &self.task_forces[task_force.get()];
-            if !task_force.defeated && matches!(task_force.order, 3 | 4) {
+            if !task_force.defeated
+                && matches!(
+                    task_force.order,
+                    TaskForceOrder::Patrol | TaskForceOrder::Transit
+                )
+            {
                 active_nations |= 1_u32 << ship.nation.get();
             }
         }
@@ -490,7 +495,7 @@ mod tests {
         state.diplomacy.relationship_turns[hostile][origin] = Some(9);
         state.task_forces.push(TaskForceState {
             aggression: 1,
-            order: 3,
+            order: TaskForceOrder::Patrol,
             target: TaskForceTarget::None,
             location: OceanZoneId::new(0),
             nation: hostile,
@@ -503,7 +508,7 @@ mod tests {
         state.ships.push(ShipState {
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
-            task_force: Some(TaskForceId::new(0)),
+            task_force: Some(TaskForceIndex::new(0)),
             aggression: 1,
             nation: hostile,
             name: String::new(),

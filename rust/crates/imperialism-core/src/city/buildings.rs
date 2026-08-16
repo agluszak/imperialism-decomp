@@ -29,33 +29,11 @@ pub enum CityFacilitySlot {
 }
 
 impl CityFacilitySlot {
-    pub const ALL: [Self; 16] = [
-        Self::TextileMill,
-        Self::ClothingFactory,
-        Self::SteelMill,
-        Self::Metalworks,
-        Self::LumberMill,
-        Self::FurnitureFactory,
-        Self::OilRefinery,
-        Self::Shipyard,
-        Self::Armory,
-        Self::TradeSchool,
-        Self::University,
-        Self::PowerPlant,
-        Self::FoodProcessing,
-        Self::Warehouse,
-        Self::Transport,
-        Self::RegionalPopulation,
-    ];
     pub const COUNT: usize = enum_map::enum_len::<Self>();
 
-    pub const fn from_index(value: u8) -> Option<Self> {
-        let index = value as usize;
-        if index < Self::ALL.len() {
-            Some(Self::ALL[index])
-        } else {
-            None
-        }
+    pub fn from_index(value: u8) -> Option<Self> {
+        let index = usize::from(value);
+        (index < Self::COUNT).then(|| Self::from_usize(index))
     }
 
     pub const fn is_capacity_center(self) -> bool {
@@ -287,8 +265,8 @@ mod tests {
 
     #[test]
     fn identifies_only_the_retail_capacity_center_slots() {
-        let actual: Vec<CityFacilitySlot> = CityFacilitySlot::ALL
-            .into_iter()
+        let actual: Vec<CityFacilitySlot> = (0..CityFacilitySlot::COUNT)
+            .map(CityFacilitySlot::from_usize)
             .filter(|slot| slot.is_capacity_center())
             .collect();
         assert_eq!(

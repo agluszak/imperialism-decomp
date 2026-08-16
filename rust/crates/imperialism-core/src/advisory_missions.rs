@@ -22,24 +22,6 @@ const NEIGHBOR_UNIT_WEIGHT: [i32; 32] = [
     495, 493, 1010, 715, 913, 193, 260, 360, 200, 200, 200, 0, 1000,
 ];
 
-// Columns: resolve, calculate, task-force weight, unused, navy-priority dword.
-const NAVY_STUDLINESS: ShipTypeTable<[i32; 5]> = ShipTypeTable::from_array([
-    [0, 0, 0, 0, 0],
-    [0, 0, 100, 0, 0],
-    [0, 0, 95, 0, 0],
-    [300, 5, 90, 0, 4],
-    [600, 6, 80, 0, 3],
-    [0, 0, 95, 0, 0],
-    [0, 0, 100, 0, 0],
-    [300, 7, 80, 0, 7],
-    [500, 8, 45, 0, 5],
-    [1000, 10, 40, 0, 6],
-    [0, 0, 75, 0, 0],
-    [600, 9, 50, 0, 8],
-    [2000, 13, 30, 0, 7],
-    [1800, 13, 45, 0, 9],
-]);
-
 const MISSION_SCORE_DIVISOR: f32 = 5000.0;
 const PORT_FRIENDLY_MULTIPLIER: f32 = 1.5;
 const PORT_FOREIGN_MULTIPLIER: f32 = 1.25;
@@ -92,7 +74,8 @@ impl AdvisoryRoute {
 }
 
 impl GameState {
-    pub fn select_and_queue_advisory_map_missions(&mut self) {
+    #[cfg(feature = "oracle")]
+    pub(crate) fn select_and_queue_advisory_map_missions(&mut self) {
         for nation in MajorNationId::all() {
             if !self.nation_is_eligible_for_optional_phase(nation.nation()) {
                 continue;
@@ -111,10 +94,7 @@ impl GameState {
         self.populate_case16_advisory_candidates(nation);
 
         let mut best: Option<AdvisoryCandidate> = None;
-        let mut best_direct_score = 0.0_f32;
-        let mut direct_region = None;
-        let mut second_best_direct_score = 0.0_f32;
-        let mut best_direct_fallback = None;
+        let mut best_direct: Option<(f32, ProvinceId)> = None;
 
         for province in ProvinceId::all() {
             if self.province_target(nation, province) != Some(AiTargetState::Candidate) {
@@ -122,8 +102,9 @@ impl GameState {
             }
             let candidate = if self.has_direct_or_colony_link(province, nation.nation()) {
                 let score = self.advisory_direct_score(nation, province);
-                best_direct_score = score;
-                direct_region = Some(province);
+                if best_direct.is_none_or(|(best_score, _)| score > best_score) {
+                    best_direct = Some((score, province));
+                }
                 Some(AdvisoryCandidate {
                     score,
                     route: AdvisoryRoute::Direct(province),
@@ -152,12 +133,6 @@ impl GameState {
                 && candidate.score > best.map_or(0.0, |best| best.score)
             {
                 best = Some(candidate);
-            }
-            if best_direct_score > second_best_direct_score
-                && let Some(direct) = direct_region
-            {
-                best_direct_fallback = Some(direct);
-                second_best_direct_score = best_direct_score;
             }
         }
 
@@ -235,7 +210,7 @@ impl GameState {
                     }
                 }
             }
-            if queue_secondary && let Some(region) = best_direct_fallback {
+            if queue_secondary && let Some((_, region)) = best_direct {
                 self.create_advisory_mission(
                     nation,
                     AdvisoryMissionKind::Attack,
@@ -1041,15 +1016,16 @@ fn collect_second_degree_links(
 }
 
 fn ship_studliness(ship: &ShipState) -> i32 {
-    let desc = NAVY_STUDLINESS[ship.ship_type];
-    let task_force = desc[2];
+    let desc = crate::navy_orders::NAVY_DESCRIPTORS[ship.ship_type];
+    let task_force = desc.task_force_weight;
     if task_force == 0 {
         return 0;
     }
     let quantity_term = i32::from(ship.experience) / 100;
-    let navy_term = (quantity_term + desc[4] * 10 + 5) / 10;
-    let resolve_term = (quantity_term + desc[0] * 10 + 5) / 10;
-    ((navy_term + desc[1]) * 100 + resolve_term + i32::from(ship.strength)) / task_force
+    let navy_term = (quantity_term + desc.navy_priority_weight * 10 + 5) / 10;
+    let resolve_term = (quantity_term + desc.resolve_weight * 10 + 5) / 10;
+    ((navy_term + desc.calculate_weight) * 100 + resolve_term + i32::from(ship.strength))
+        / task_force
 }
 
 fn empty_army() -> ArmyMissionState {
