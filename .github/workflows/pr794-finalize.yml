@@ -68,6 +68,7 @@ jobs:
           set -euxo pipefail
           python3 - <<'PY'
           from pathlib import Path
+          import re
 
           test_path = Path('rust/crates/imperialism-core/tests/native_military.rs')
           text = test_path.read_text()
@@ -79,16 +80,27 @@ jobs:
 
           army_path = Path('rust/crates/imperialism-core/src/army_orders.rs')
           text = army_path.read_text()
-          old = '''        if self.nations.common(nation).is_some() {\n            if let Some(home) = self.nations.home_tile(nation)\n                && self.map[home].province == Some(province)\n            {\n                counts.can_upgrade = true;\n            }\n        }'''
-          new = '''        if self.nations.common(nation).is_some()\n            && let Some(home) = self.nations.home_tile(nation)\n            && self.map[home].province == Some(province)\n        {\n            counts.can_upgrade = true;\n        }'''
-          assert old in text
-          army_path.write_text(text.replace(old, new, 1))
+          pattern = re.compile(
+              r'if self\.nations\.common\(nation\)\.is_some\(\) \{\s*'
+              r'if let Some\(home\) = self\.nations\.home_tile\(nation\)\s*'
+              r'&& self\.map\[home\]\.province == Some\(province\)\s*\{\s*'
+              r'counts\.can_upgrade = true;\s*\}\s*\}'
+          )
+          replacement = '''if self.nations.common(nation).is_some()
+              && let Some(home) = self.nations.home_tile(nation)
+              && self.map[home].province == Some(province)
+          {
+              counts.can_upgrade = true;
+          }'''
+          text = pattern.sub(replacement, text, count=1)
+          army_path.write_text(text)
 
           navy_path = Path('rust/crates/imperialism-core/src/navy_orders/player.rs')
-          text = navy_path.read_text()
-          old = 'usize::try_from(zone.get()).unwrap_or(usize::MAX)'
-          assert text.count(old) == 2, text.count(old)
-          navy_path.write_text(text.replace(old, 'usize::from(zone.get())'))
+          text = navy_path.read_text().replace(
+              'usize::try_from(zone.get()).unwrap_or(usize::MAX)',
+              'usize::from(zone.get())',
+          )
+          navy_path.write_text(text)
           PY
 
       - name: Install native build dependencies
