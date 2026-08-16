@@ -1,9 +1,12 @@
 use crate::*;
+use enum_map::Enum;
 use serde::{Deserialize, Serialize};
 
 /// A fixed building position on the city production screen.
 ///
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(
+    Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
 #[repr(u8)]
 #[serde(rename_all = "snake_case")]
 pub enum CityFacilitySlot {
@@ -26,32 +29,25 @@ pub enum CityFacilitySlot {
 }
 
 impl CityFacilitySlot {
-    pub const COUNT: usize = 16;
+    pub const COUNT: usize = enum_map::enum_len::<Self>();
 
-    pub const fn from_index(value: u8) -> Option<Self> {
-        match value {
-            0 => Some(Self::TextileMill),
-            1 => Some(Self::ClothingFactory),
-            2 => Some(Self::SteelMill),
-            3 => Some(Self::Metalworks),
-            4 => Some(Self::LumberMill),
-            5 => Some(Self::FurnitureFactory),
-            6 => Some(Self::OilRefinery),
-            7 => Some(Self::Shipyard),
-            8 => Some(Self::Armory),
-            9 => Some(Self::TradeSchool),
-            10 => Some(Self::University),
-            11 => Some(Self::PowerPlant),
-            12 => Some(Self::FoodProcessing),
-            13 => Some(Self::Warehouse),
-            14 => Some(Self::Transport),
-            15 => Some(Self::RegionalPopulation),
-            _ => None,
-        }
+    pub fn from_index(value: u8) -> Option<Self> {
+        let index = usize::from(value);
+        (index < Self::COUNT).then(|| Self::from_usize(index))
     }
 
-    pub(crate) const fn index(self) -> usize {
-        self as usize
+    pub const fn is_capacity_center(self) -> bool {
+        matches!(
+            self,
+            Self::TextileMill
+                | Self::ClothingFactory
+                | Self::SteelMill
+                | Self::Metalworks
+                | Self::LumberMill
+                | Self::FurnitureFactory
+                | Self::OilRefinery
+                | Self::PowerPlant
+        )
     }
 }
 
@@ -63,25 +59,11 @@ pub struct CityWindowPosition {
 }
 
 impl CityState {
-    pub const fn is_capacity_center(slot: CityFacilitySlot) -> bool {
-        matches!(
-            slot,
-            CityFacilitySlot::TextileMill
-                | CityFacilitySlot::ClothingFactory
-                | CityFacilitySlot::SteelMill
-                | CityFacilitySlot::Metalworks
-                | CityFacilitySlot::LumberMill
-                | CityFacilitySlot::FurnitureFactory
-                | CityFacilitySlot::OilRefinery
-                | CityFacilitySlot::PowerPlant
-        )
-    }
-
     pub fn max_building_capacity(
         &self,
         slot: CityFacilitySlot,
         owner: &GreatPowerState,
-        owned_region_count: i32,
+        owned_region_count: usize,
     ) -> i16 {
         if slot == CityFacilitySlot::RegionalPopulation {
             return region_capacity(owner, owned_region_count);
@@ -114,7 +96,7 @@ impl CityState {
         &self,
         slot: CityFacilitySlot,
         owner: &GreatPowerState,
-        owned_region_count: i32,
+        owned_region_count: usize,
     ) -> u8 {
         let capacity = self.max_building_capacity(slot, owner, owned_region_count);
         if matches!(
@@ -143,7 +125,7 @@ impl CityState {
         &self,
         slot: CityFacilitySlot,
         owner: &GreatPowerState,
-        owned_region_count: i32,
+        owned_region_count: usize,
     ) -> i16 {
         if slot == CityFacilitySlot::RegionalPopulation {
             region_capacity(owner, owned_region_count)
@@ -156,7 +138,7 @@ impl CityState {
         &self,
         slot: CityFacilitySlot,
         owner: &GreatPowerState,
-        owned_region_count: i32,
+        owned_region_count: usize,
         active_nation_has_technology_15: bool,
     ) -> i16 {
         let building_type = self.building_type(slot, owner, owned_region_count);
@@ -190,25 +172,25 @@ impl CityState {
             CityFacilitySlot::Shipyard => i16::from(active_nation_has_technology_15) + 1,
             CityFacilitySlot::Armory => {
                 if status[PendingActionKind::ConquestMonumentArmory].status()
-                    == crate::PendingActionStatus::Level3
+                    == crate::PendingActionStatus::HANDLED
                 {
                     3
                 } else {
                     i16::from(
                         status[PendingActionKind::ConqueredCapitalArmoryUpgrade].status()
-                            == crate::PendingActionStatus::Level3,
+                            == crate::PendingActionStatus::HANDLED,
                     ) + 1
                 }
             }
             CityFacilitySlot::University => {
                 if status[PendingActionKind::UniversityExpansion].status()
-                    < crate::PendingActionStatus::Level3
+                    < crate::PendingActionStatus::HANDLED
                 {
                     1
                 } else {
                     i16::from(
                         status[PendingActionKind::UniversityExpansion].status()
-                            != crate::PendingActionStatus::Level3,
+                            != crate::PendingActionStatus::HANDLED,
                     ) + 2
                 }
             }
@@ -216,14 +198,14 @@ impl CityState {
                 i16::from(
                     status[PendingActionKind::RailyardExpansion]
                         .status()
-                        .has_reached(crate::PendingActionStatus::Level3),
+                        .has_reached(crate::PendingActionStatus::HANDLED),
                 ) + 1
             }
             CityFacilitySlot::RegionalPopulation => {
                 i16::from(
                     status[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
                         .status()
-                        .has_reached(crate::PendingActionStatus::Level3),
+                        .has_reached(crate::PendingActionStatus::HANDLED),
                 ) + 1
             }
             _ => 0,
@@ -242,21 +224,20 @@ impl CityState {
 }
 
 impl GameState {
-    /// Records whether a city-screen building dialog is open and where it sits.
-    pub fn set_city_building_window(
+    /// Replaces the open city-screen building dialog origins for one nation.
+    pub fn set_city_building_windows(
         &mut self,
         nation: MajorNationId,
-        slot: CityFacilitySlot,
-        window: Option<CityWindowPosition>,
+        windows: ProductionTable<Option<CityWindowPosition>>,
     ) {
-        self.nations.city_mut(nation).building_windows[slot] = window;
+        self.nations.city_mut(nation).building_windows = windows;
     }
 }
 
-fn region_capacity(owner: &GreatPowerState, owned_region_count: i32) -> i16 {
+fn region_capacity(owner: &GreatPowerState, owned_region_count: usize) -> i16 {
     let divisor = if owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
         .status()
-        .has_reached(crate::PendingActionStatus::Level3)
+        .has_reached(crate::PendingActionStatus::HANDLED)
     {
         3
     } else {
@@ -284,10 +265,23 @@ mod tests {
 
     #[test]
     fn identifies_only_the_retail_capacity_center_slots() {
-        let actual: Vec<u8> = (0..CityFacilitySlot::COUNT as u8)
-            .filter(|value| CityState::is_capacity_center(slot(*value)))
+        let actual: Vec<CityFacilitySlot> = (0..CityFacilitySlot::COUNT)
+            .map(CityFacilitySlot::from_usize)
+            .filter(|slot| slot.is_capacity_center())
             .collect();
-        assert_eq!(actual, vec![0, 1, 2, 3, 4, 5, 6, 11]);
+        assert_eq!(
+            actual,
+            [
+                CityFacilitySlot::TextileMill,
+                CityFacilitySlot::ClothingFactory,
+                CityFacilitySlot::SteelMill,
+                CityFacilitySlot::Metalworks,
+                CityFacilitySlot::LumberMill,
+                CityFacilitySlot::FurnitureFactory,
+                CityFacilitySlot::OilRefinery,
+                CityFacilitySlot::PowerPlant,
+            ]
+        );
     }
 
     #[test]
@@ -312,10 +306,10 @@ mod tests {
         let state = city();
         let mut owner = nation();
         owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-            crate::PendingActionState::new(crate::PendingActionStatus::Queued, None);
+            crate::PendingActionState::new(crate::PendingActionStatus::QUEUED, None);
         assert_eq!(state.max_building_capacity(slot(15), &owner, 12), 3);
         owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
+            crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, None);
         assert_eq!(state.max_building_capacity(slot(15), &owner, 12), 4);
         assert_eq!(state.max_building_capacity(slot(15), &owner, 2), 1);
     }
@@ -347,13 +341,13 @@ mod tests {
         assert_eq!(state.next_building_type(slot(7), &owner, 0, true), 2);
 
         owner.pending_actions[PendingActionKind::ConquestMonumentArmory] =
-            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
+            crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, None);
         owner.pending_actions[PendingActionKind::UniversityExpansion] =
-            crate::PendingActionState::new(crate::PendingActionStatus::Level4, None);
+            crate::PendingActionState::new(crate::PendingActionStatus::from_retail(0x34), None);
         owner.pending_actions[PendingActionKind::RailyardExpansion] =
-            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
+            crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, None);
         owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
+            crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, None);
         assert_eq!(state.next_building_type(slot(8), &owner, 0, false), 3);
         assert_eq!(state.next_building_type(slot(10), &owner, 0, false), 3);
         assert_eq!(state.next_building_type(slot(14), &owner, 0, false), 2);

@@ -35,8 +35,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     state: &GameState,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::Warehouse);
@@ -58,8 +57,8 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
         })
         .expect("retail Warehouse value text style");
     let text_color = assets.palette_color(0);
-    bind_city_dialog_root(commands, root, children, tags, CityFacilitySlot::Warehouse);
-    let name = find_descendant(root, fourcc!("name"), children, tags);
+    bind_city_dialog_root(commands, root, tree, CityFacilitySlot::Warehouse);
+    let name = tree.find(root, fourcc!("name"));
     commands.entity(name).insert((
         Text::new(building_name),
         title_font,
@@ -69,7 +68,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
     ));
 
     for &(resource, tag) in &WAREHOUSE_STOCKS {
-        let control = find_descendant(root, tag, children, tags);
+        let control = tree.find(root, tag);
         commands.entity(control).insert((
             Text::new(""),
             value_font.clone(),
@@ -79,8 +78,8 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
             WarehouseDisplay::Stock(resource),
         ));
     }
-    let labor = find_descendant(root, fourcc!("labo"), children, tags);
-    let power = find_descendant(root, fourcc!("powe"), children, tags);
+    let labor = tree.find(root, fourcc!("labo"));
+    let power = tree.find(root, fourcc!("powe"));
     commands.entity(labor).insert((
         Text::new(""),
         value_font.clone(),
@@ -98,7 +97,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
         WarehouseDisplay::Power,
     ));
     for tag in [fourcc!("oil "), fourcc!("fuel"), fourcc!("powe")] {
-        let control = find_descendant(root, tag, children, tags);
+        let control = tree.find(root, tag);
         let mut control_commands = commands.entity(control);
         if oil_drilling_available {
             control_commands
@@ -113,7 +112,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
     }
 
     let picture = PictureId::new(9215);
-    let dialog = find_descendant(root, fourcc!("DLOG"), children, tags);
+    let dialog = tree.find(root, fourcc!("DLOG"));
     match assets.picture(picture) {
         Ok(handle) => {
             commands.entity(dialog).insert(ImageNode::new(handle));
@@ -125,7 +124,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
         .entry::<Node>()
         .and_modify(|mut node| node.overflow = Overflow::clip());
     for tag in [fourcc!("WIND"), fourcc!("DLOG")] {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         commands
             .entity(entity)
             .entry::<Node>()
@@ -142,7 +141,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
         fourcc!("prod"),
         fourcc!("live"),
     ] {
-        let entity = find_descendant(root, tag, children, tags);
+        let entity = tree.find(root, tag);
         commands
             .entity(entity)
             .entry::<Node>()
@@ -159,28 +158,27 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
 pub(in crate::ui::city) fn bind_rail_dialog(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     slot: CityFacilitySlot,
     building_name: String,
     binding: CityOrderBinding,
     step: i16,
 ) {
-    bind_city_dialog_root(commands, root, children, tags, slot);
-    let name_control = find_descendant(root, fourcc!("name"), children, tags);
+    bind_city_dialog_root(commands, root, tree, slot);
+    let name_control = tree.find(root, fourcc!("name"));
     commands
         .entity(name_control)
         .insert(Text::new(building_name));
-    bind_city_order_control(
+    bind_city_order_row(
         commands,
         root,
-        children,
-        tags,
+        tree,
         binding,
         fourcc!("left"),
         fourcc!("rght"),
         fourcc!("move"),
         step,
+        None,
     );
 }
 
@@ -188,24 +186,22 @@ pub(in crate::ui::city) fn configure_food_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::FoodProcessing);
     bind_rail_dialog(
         commands,
         root,
-        children,
-        tags,
+        tree,
         CityFacilitySlot::FoodProcessing,
         building_name,
         FOOD_ORDER,
         2,
     );
-    let labor = find_descendant(root, fourcc!("labV"), children, tags);
-    let grain = find_descendant(root, fourcc!("grai"), children, tags);
-    let fruit = find_descendant(root, fourcc!("prod"), children, tags);
-    let fish_and_livestock = find_descendant(root, fourcc!("fish"), children, tags);
+    let labor = tree.find(root, fourcc!("labV"));
+    let grain = tree.find(root, fourcc!("grai"));
+    let fruit = tree.find(root, fourcc!("prod"));
+    let fish_and_livestock = tree.find(root, fourcc!("fish"));
     commands
         .entity(labor)
         .insert((Text::new("X"), FoodIndicator::Labor));
@@ -224,21 +220,19 @@ pub(in crate::ui::city) fn configure_power_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::PowerPlant);
     bind_rail_dialog(
         commands,
         root,
-        children,
-        tags,
+        tree,
         CityFacilitySlot::PowerPlant,
         building_name,
         POWER_ORDER,
         6,
     );
-    let fuel = find_descendant(root, fourcc!("fuel"), children, tags);
+    let fuel = tree.find(root, fourcc!("fuel"));
     commands
         .entity(fuel)
         .insert((Text::new("X"), Visibility::Hidden));
@@ -248,23 +242,21 @@ pub(in crate::ui::city) fn configure_transport_capacity_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::Transport);
     bind_rail_dialog(
         commands,
         root,
-        children,
-        tags,
+        tree,
         CityFacilitySlot::Transport,
         building_name,
         TRANSPORT_CAPACITY_ORDER,
         1,
     );
-    let labor = find_descendant(root, fourcc!("labV"), children, tags);
-    let lumber = find_descendant(root, fourcc!("lumb"), children, tags);
-    let steel = find_descendant(root, fourcc!("stee"), children, tags);
+    let labor = tree.find(root, fourcc!("labV"));
+    let lumber = tree.find(root, fourcc!("lumb"));
+    let steel = tree.find(root, fourcc!("stee"));
     commands
         .entity(labor)
         .insert((Text::new("X"), TransportCapacityIndicator::Labor));
@@ -280,8 +272,7 @@ pub(in crate::ui::city) fn configure_population_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::RegionalPopulation);
     let capacity_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x10);
@@ -289,18 +280,17 @@ pub(in crate::ui::city) fn configure_population_dialog(
     bind_rail_dialog(
         commands,
         root,
-        children,
-        tags,
+        tree,
         CityFacilitySlot::RegionalPopulation,
         building_name,
         POPULATION_ORDER,
         1,
     );
-    let food = find_descendant(root, fourcc!("food"), children, tags);
-    let clothing = find_descendant(root, fourcc!("clot"), children, tags);
-    let furniture = find_descendant(root, fourcc!("furn"), children, tags);
-    let capacity = find_descendant(root, fourcc!("capT"), children, tags);
-    let provinces = find_descendant(root, fourcc!("prov"), children, tags);
+    let food = tree.find(root, fourcc!("food"));
+    let clothing = tree.find(root, fourcc!("clot"));
+    let furniture = tree.find(root, fourcc!("furn"));
+    let capacity = tree.find(root, fourcc!("capT"));
+    let provinces = tree.find(root, fourcc!("prov"));
     commands
         .entity(food)
         .insert((Text::new("X"), PopulationGood(ResourceKind::Food)));
@@ -318,10 +308,6 @@ pub(in crate::ui::city) fn configure_population_dialog(
         .insert((Text::new(""), PopulationText::Provinces(province_template)));
 }
 
-fn city_projection_idle(session: &Res<GameSession>, added: bool) -> bool {
-    !session.is_changed() && !added
-}
-
 pub(in crate::ui::city) fn sync_warehouse_dialog(
     session: Res<GameSession>,
     added: Query<(), Added<WarehouseDisplay>>,
@@ -330,7 +316,11 @@ pub(in crate::ui::city) fn sync_warehouse_dialog(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let city = &session.0.nations().major(city_active_nation(&session)).city;
+    let city = &session
+        .game
+        .nations()
+        .major(session.active_major_nation())
+        .city;
     for (display, mut text) in &mut displays {
         text.0 = match *display {
             WarehouseDisplay::Stock(resource) => {
@@ -355,7 +345,11 @@ pub(in crate::ui::city) fn sync_food_dialog(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let city = &session.0.nations().major(city_active_nation(&session)).city;
+    let city = &session
+        .game
+        .nations()
+        .major(session.active_major_nation())
+        .city;
     for (indicator, mut visibility) in &mut indicators {
         let visible = match indicator {
             FoodIndicator::Labor => city.population.strength() >= 2,
@@ -381,7 +375,11 @@ pub(in crate::ui::city) fn sync_transport_capacity_dialog(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let city = &session.0.nations().major(city_active_nation(&session)).city;
+    let city = &session
+        .game
+        .nations()
+        .major(session.active_major_nation())
+        .city;
     for (indicator, mut visibility) in &mut indicators {
         let visible = match indicator {
             TransportCapacityIndicator::Labor => city.population.strength() >= 2,
@@ -405,8 +403,8 @@ pub(in crate::ui::city) fn sync_population_dialog(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let nation = city_active_nation(&session);
-    let major = session.0.nations().major(nation);
+    let nation = session.active_major_nation();
+    let major = session.game.nations().major(nation);
     let city = &major.city;
     for (PopulationGood(resource), mut visibility) in &mut goods {
         *visibility = if city.stockpile[*resource] >= 1 {
@@ -419,7 +417,7 @@ pub(in crate::ui::city) fn sync_population_dialog(
     let building = city.building_type(
         CityFacilitySlot::RegionalPopulation,
         &major.economy,
-        owned_regions as i32,
+        owned_regions,
     );
     for (text_kind, mut text) in &mut texts {
         text.0 = match text_kind {

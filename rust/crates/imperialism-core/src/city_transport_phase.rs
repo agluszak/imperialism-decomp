@@ -1,6 +1,6 @@
 //! City and transport resolution (`TSimMgr::DoCityAndTransport`).
 
-use crate::create_random_game::{name_units_for_nation, resource_capability_requirement_level};
+use crate::create_random_game::resource_capability_requirement_level;
 use crate::*;
 
 const COMPILE_DELTA_RESOURCE_ORDER: [ResourceKind; 17] = [
@@ -28,8 +28,7 @@ const COMPILE_THRESHOLD_BY_DIFFICULTY: [i32; 5] = [5, 5, 5, 5, 5];
 impl GameState {
     /// Retail `TSimMgr::DoCityAndTransport`.
     pub fn do_city_and_transport(&mut self) {
-        for index in (0..MajorNationId::COUNT).rev() {
-            let nation = MajorNationId::new(index);
+        for nation in MajorNationId::all().rev() {
             if !self.nation_eligible_for_optional_phase(nation) {
                 continue;
             }
@@ -50,7 +49,7 @@ impl GameState {
 
     /// `TGreatPower::FillInteriorMinisterOrders` / `TAutoGreatPower` override.
     fn fill_interior_minister_orders(&mut self, nation: MajorNationId) {
-        if self.nations.major(nation).kind != MajorNationKind::AutoGreatPower {
+        if self.nations.major(nation).auto.is_none() {
             return;
         }
         for resource in all_resources() {
@@ -87,7 +86,7 @@ impl GameState {
         let army_queued = self.nations.major(nation).economy.pending_actions
             [PendingActionKind::ArmyGrowthReward]
             .status()
-            == PendingActionStatus::Queued;
+            == PendingActionStatus::QUEUED;
         if army_queued {
             self.spawn_pending_army_growth_unit(nation);
         }
@@ -95,7 +94,7 @@ impl GameState {
         let navy_queued = self.nations.major(nation).economy.pending_actions
             [PendingActionKind::NavyGrowthReward]
             .status()
-            == PendingActionStatus::Queued;
+            == PendingActionStatus::QUEUED;
         if navy_queued {
             self.spawn_pending_navy_growth_unit(nation);
         }
@@ -103,17 +102,17 @@ impl GameState {
         let overseas = self.nations.major(nation).economy.pending_actions
             [PendingActionKind::OverseasDeveloperReward]
             .status();
-        if overseas < PendingActionStatus::Level3 && self.needs_overseas_developer(nation) {
+        if overseas < PendingActionStatus::HANDLED && self.needs_overseas_developer(nation) {
             self.spawn_pending_overseas_developer(nation);
             self.nations.majors[nation].economy.pending_actions
                 [PendingActionKind::OverseasDeveloperReward]
-                .queue(-1);
+                .queue();
         }
 
         let monument_queued = self.nations.major(nation).economy.pending_actions
             [PendingActionKind::ColonyMonumentMerchantCapacity]
             .status()
-            == PendingActionStatus::Queued;
+            == PendingActionStatus::QUEUED;
         if monument_queued {
             let count =
                 &mut self.nations.city_mut(nation).ship_order_count_by_type[ShipType::Clipper];
@@ -135,7 +134,7 @@ impl GameState {
         let province = self.map[home]
             .province
             .expect("army-growth pending requires the home tile's province");
-        let unit_kind = MilitaryUnitKind::GeneralEra1;
+        let unit_kind = self.technology.selected_capability_slots[nation][9];
         let id = self.unit_ids.next_military();
         let unit = MilitaryUnitState {
             id,
@@ -154,15 +153,15 @@ impl GameState {
         };
         let insert_at = self
             .military_units
-            .partition_point(|existing| existing.nation.get() <= nation_id.get());
+            .partition_point(|existing| existing.nation <= nation_id);
         self.military_units.insert(insert_at, unit);
         self.announce_later(nation, 3, unit_kind as i16, 1);
     }
 
     fn needs_overseas_developer(&self, nation: MajorNationId) -> bool {
         let nation_id = nation.nation();
-        for slot in 7..NationId::COUNT {
-            let minor_id = NationId::new(slot);
+        for minor in MinorNationId::all() {
+            let minor_id = minor.nation();
             if self.diplomacy.standings[nation_id][minor_id] <= 0xa9 {
                 continue;
             }
@@ -207,19 +206,12 @@ impl GameState {
         };
         let insert_at = self
             .civilian_units
-            .partition_point(|existing| existing.nation.get() <= nation_id.get());
+            .partition_point(|existing| existing.nation <= nation_id);
         self.civilian_units.insert(insert_at, unit);
     }
 
     fn name_units(&mut self, nation: MajorNationId) {
-        let mut name_ordinals = [0_i16; MilitaryUnitKind::LENGTH];
-        let mut next_roster_id = 1;
-        name_units_for_nation(
-            &mut self.military_units,
-            nation.nation(),
-            &mut name_ordinals,
-            &mut next_roster_id,
-        );
+        self.name_land_units(nation.nation());
     }
 
     /// `TGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary`
@@ -230,7 +222,7 @@ impl GameState {
     ) {
         self.rebuild_nation_resource_yields(nation);
         self.advance_owned_region_development_counters_and_handle_events(nation);
-        if self.nations.major(nation).kind == MajorNationKind::GreatPower {
+        if self.nations.major(nation).auto.is_none() {
             self.add_created_items(nation);
             self.compile_great_power_relationship_delta_lines(nation);
             self.end_city_phase(nation);
@@ -356,19 +348,19 @@ impl GameState {
             if pending_stage == 2 {
                 self.nations.majors[nation].economy.pending_actions
                     [PendingActionKind::TownDevelopment]
-                    .queue(province_id.get() as i16);
+                    .queue_with_payload(province_id.get() as i16);
             } else if pending_stage == 1 {
                 self.nations.majors[nation].economy.pending_actions
                     [PendingActionKind::VillageDevelopment]
-                    .queue(province_id.get() as i16);
+                    .queue_with_payload(province_id.get() as i16);
                 if self.nations.majors[nation].economy.pending_actions
                     [PendingActionKind::RailyardExpansion]
                     .status()
-                    < PendingActionStatus::Level3
+                    < PendingActionStatus::HANDLED
                 {
                     self.nations.majors[nation].economy.pending_actions
                         [PendingActionKind::RailyardExpansion]
-                        .queue(-1);
+                        .queue();
                 }
             }
         }
@@ -405,7 +397,7 @@ impl GameState {
     }
 
     fn announce_later(&mut self, nation: MajorNationId, order_kind: i16, payload: i16, flags: i16) {
-        if self.nations.major(nation).kind == MajorNationKind::AutoGreatPower {
+        if self.nations.major(nation).is_auto() {
             return;
         }
         let turn_tick = self.turn.economic_turn;
@@ -456,7 +448,7 @@ impl GameState {
         let count = &mut self.nations.city_mut(nation).ship_order_count_by_type[ship_type];
         *count = count.wrapping_add(1);
 
-        let ship = crate::city::ship_creates_navy_object(ship_type).then_some(ShipId::new(0));
+        let ship = crate::city::ship_creates_navy_object(ship_type).then_some(ShipIndex::new(0));
         self.admirals.insert(
             0,
             AdmiralState {
@@ -555,11 +547,11 @@ mod tests {
         assert_eq!(state.map.provinces[other].development_stage(), 1);
         let village = state.nations.majors[nation].economy.pending_actions
             [PendingActionKind::VillageDevelopment];
-        assert_eq!(village.status(), PendingActionStatus::Queued);
+        assert_eq!(village.status(), PendingActionStatus::QUEUED);
         assert_eq!(village.payload(), Some(1));
         let railyard = state.nations.majors[nation].economy.pending_actions
             [PendingActionKind::RailyardExpansion];
-        assert_eq!(railyard.status(), PendingActionStatus::Queued);
+        assert_eq!(railyard.status(), PendingActionStatus::QUEUED);
         assert_eq!(railyard.payload(), None);
     }
 
@@ -592,7 +584,7 @@ mod tests {
         assert_eq!(state.map.provinces[other].development_stage(), 2);
         let town = state.nations.majors[nation].economy.pending_actions
             [PendingActionKind::TownDevelopment];
-        assert_eq!(town.status(), PendingActionStatus::Queued);
+        assert_eq!(town.status(), PendingActionStatus::QUEUED);
         assert_eq!(town.payload(), Some(1));
     }
 
@@ -623,7 +615,7 @@ mod tests {
             }),
         ];
         state.nations.majors[nation].economy.pending_actions[PendingActionKind::NavyGrowthReward]
-            .queue(-1);
+            .queue();
 
         state.execute_nation_pending_action_state_machine(nation);
 
@@ -638,7 +630,7 @@ mod tests {
         );
         assert_eq!(state.admirals.len(), 1);
         assert_eq!(state.admirals[0].nation, nation.nation());
-        assert_eq!(state.admirals[0].ship, Some(ShipId::new(0)));
+        assert_eq!(state.admirals[0].ship, Some(ShipIndex::new(0)));
         assert_eq!(
             state.pending.nations[nation].turn_summary,
             [
@@ -671,7 +663,7 @@ mod tests {
         })];
         state.technology.navy_growth_ship_type = ShipType::Ironclad;
         state.nations.majors[nation].economy.pending_actions[PendingActionKind::NavyGrowthReward]
-            .queue(-1);
+            .queue();
 
         state.execute_nation_pending_action_state_machine(nation);
 
@@ -680,5 +672,71 @@ mod tests {
             state.nations.city(nation).ship_order_count_by_type[ShipType::Ironclad],
             1
         );
+    }
+
+    #[test]
+    fn army_growth_pending_spawns_the_selected_general_capability() {
+        let mut state = game_state();
+        let nation = MajorNationId::new(0);
+        let home = TileId::new(1);
+        let province = ProvinceId::new(0);
+        state.nations.majors[nation].common.home_tile = Some(home);
+        state.map[home].province = Some(province);
+        state.technology.selected_capability_slots[nation][9] = MilitaryUnitKind::GeneralEra2;
+        state.nations.majors[nation].economy.pending_actions[PendingActionKind::ArmyGrowthReward]
+            .queue();
+
+        state.execute_nation_pending_action_state_machine(nation);
+
+        assert_eq!(state.military_units.len(), 1);
+        assert_eq!(
+            state.military_units[0].unit_type(),
+            MilitaryUnitKind::GeneralEra2
+        );
+        assert_eq!(state.military_units[0].stationed_province(), Some(province));
+    }
+
+    #[test]
+    fn naming_uses_persistent_country_counters_across_passes() {
+        let mut state = game_state();
+        let nation = MajorNationId::new(0);
+        let province = ProvinceId::new(0);
+        let unnamed = |state: &mut GameState| {
+            let id = state.unit_ids.next_military();
+            state.military_units.push(MilitaryUnitState::new(
+                id,
+                nation.nation(),
+                MilitaryUnitKind::Regulars,
+                Some(province),
+                MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
+                nation.nation(),
+                0,
+                true,
+                String::new(),
+                500,
+                MilitaryUnitKind::Regulars.spawn_era(),
+                0,
+                0,
+            ));
+        };
+
+        unnamed(&mut state);
+        state.execute_nation_pending_action_state_machine(nation);
+        assert_eq!(state.military_units[0].name(), "1st Regulars");
+        assert_eq!(state.military_units[0].roster_id(), 1);
+        assert_eq!(
+            state.nations.majors[nation]
+                .common
+                .unit_name_ordinal_by_type[MilitaryUnitKind::Regulars as usize],
+            2
+        );
+        assert_eq!(state.nations.majors[nation].common.unit_name_counter, 2);
+
+        unnamed(&mut state);
+        state.execute_nation_pending_action_state_machine(nation);
+        assert_eq!(state.military_units[1].name(), "2nd Regulars");
+        assert_eq!(state.military_units[1].roster_id(), 2);
+        assert_eq!(state.nations.majors[nation].common.unit_name_counter, 3);
+        assert_eq!(state.military_units[0].roster_id(), 1);
     }
 }

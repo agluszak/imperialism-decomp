@@ -80,6 +80,92 @@ class UiCodegenTests(unittest.TestCase):
             (REPO_ROOT / RUST_UI_PATH).read_text(encoding="utf-8"),
         )
 
+    def test_generated_city_dialog_controls_use_recovered_tags(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        self.assertIn("pub fn spawn_city_dialog(", rendered)
+        self.assertIn(
+            'CityFacilitySlot::TextileMill => commands.spawn_scene(citydlog_9200()).id()',
+            rendered,
+        )
+        self.assertIn(
+            'CityFacilitySlot::University => commands.spawn_scene(univ_9210()).id()',
+            rendered,
+        )
+        self.assertIn(
+            '(fourcc!("clu0"), fourcc!("civ0"))',
+            rendered[rendered.index("ARMORY_ROW_CONTROLS") :],
+        )
+        self.assertIn(
+            '(fourcc!("clu8"), fourcc!("civ8"))',
+            rendered[rendered.index("UNIVERSITY_ROW_CONTROLS") :],
+        )
+
+    def test_armory_unit_name_uses_the_windows_runtime_style(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        armory = rendered[
+            rendered.index("pub fn armory_9208()") : rendered.index(
+                "pub fn citydlog_9200()"
+            )
+        ]
+        unit = armory[
+            armory.index('retail_node(fourcc!("unit")') : armory.index(
+                'retail_node(fourcc!("sele")'
+            )
+        ]
+        self.assertIn("retail_text_style(1, 0, 12, 1)", unit)
+
+    def test_random_setup_emits_windows_option_controls(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        setup = rendered[
+            rendered.index("pub fn startup_1501()") : rendered.index(
+                "pub fn startup_1503()"
+            )
+        ]
+        stuf = setup[
+            setup.index('retail_node(fourcc!("stuf")') : setup.index(
+                'retail_node(fourcc!("map ")'
+            )
+        ]
+        self.assertNotIn("RadioGroup", stuf)
+        self.assertEqual(setup.count("RadioGroup"), 2)
+
+        diff = setup[
+            setup.index('retail_node(fourcc!("diff")') : setup.index(
+                'retail_node(fourcc!("dift")'
+            )
+        ]
+        self.assertIn("RadioGroup", diff)
+
+        name = setup[
+            setup.index('retail_node(fourcc!("name")') : setup.index(
+                'retail_node(fourcc!("hist")'
+            )
+        ]
+        self.assertIn("RadioGroup", name)
+
+        coun = setup[
+            setup.index('retail_node(fourcc!("coun")') : setup.index(
+                'retail_node(fourcc!("okay")'
+            )
+        ]
+        self.assertIn("retail_edit_field()", coun)
+
+        dif0 = setup[
+            setup.index('retail_node(fourcc!("dif0")') : setup.index(
+                'retail_node(fourcc!("dif1")'
+            )
+        ]
+        self.assertIn("retail_radio_text_fill()", dif0)
+        self.assertIn("retail_text_color(40)", dif0)
+        self.assertIn("retail_text_shadow(210, -1, -1)", dif0)
+        self.assertIn("RadioButton", dif0)
+
     def test_control_state_uses_recovered_control_api(self) -> None:
         rendered = "\n".join(self.rendered.values())
         self.assertNotIn("SetControlStateFlagAndMaybeRefresh", rendered)

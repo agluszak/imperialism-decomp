@@ -69,10 +69,7 @@ pub(crate) fn city() -> CityState {
 /// A neutral major-nation rule state with default tables and capacities.
 pub(crate) fn great_power_state() -> GreatPowerState {
     GreatPowerState {
-        controller: crate::MajorNationController::Human,
         diplomacy_eligible: true,
-        ai_zone_targets: None,
-        ai_province_targets: None,
         foreign_minister_personality: crate::ForeignMinisterPersonality::Base,
         foreign_minister_skill_index: 0,
         foreign_trade: crate::ForeignTradeState::for_random_start(
@@ -96,7 +93,6 @@ pub(crate) fn great_power_state() -> GreatPowerState {
         deal_book: crate::TradeCommodityTable::default(),
         pending_ship: None,
         interior_civilian: Box::default(),
-        ai_trade: None,
         aid_allocation_by_minor_nation: MinorNationTable::default(),
         budget_pool_base: 0,
         budget_pool_delta: 0,
@@ -119,7 +115,7 @@ pub(crate) fn great_power_state() -> GreatPowerState {
 /// A present major nation with common state, rule state, and a city.
 pub(crate) fn major_nation() -> MajorNation {
     MajorNation {
-        kind: MajorNationKind::GreatPower,
+        auto: None,
         common: NationCommonState::from_parts(
             String::new(),
             crate::CountryStatus::Independent,
@@ -149,6 +145,8 @@ pub(crate) fn game_state() -> GameState {
             active_nation: NationId::new(0),
             selected_nation: NationId::new(0),
             last_turn_alert_tick: 0,
+            turn_alert_mask: 0,
+            turn_cooldown_defer_counter: 0,
         },
         unit_ids: crate::UnitIdAllocator::default(),
         map: MapMgr::new(
@@ -181,8 +179,8 @@ pub(crate) fn game_state() -> GameState {
         missions: Vec::new(),
         news: crate::NewsState::default(),
         pending: crate::PendingWorkState::default(),
+        battle_reports: Vec::new(),
         continuation: crate::turn_flow::TurnContinuation::None,
-        pending_land_battle: None,
     };
     // Town markers must sit on owned land. The turn loop reaches city/transport
     // on this fixture, and that phase rebuilds yields from those markers.

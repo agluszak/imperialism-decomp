@@ -1,11 +1,18 @@
 #include "NativeCases.h"
 #include "JsonObject.h"
 
+#include "game/city/TCity.h"
+#include "game/civilian_domain_types.h"
+#include "game/globals/navy_globals.h"
+#include "game/globals/nation_globals.h"
 #include "game/globals/shared_globals.h"
+#include "game/map/TMapMgr.h"
+#include "game/military/TCivUnit.h"
 #include "game/military/TArmyMgr.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
 #include "game/nation/TMinor.h"
+#include "game/navy/TShip.h"
 #include "game/ui_core/THelpMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 
@@ -186,6 +193,32 @@ RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transitio
   return transition.Finish();
 }
 
+RuntimeActionResult RunNewspaperNavyGrowthRewardLevels(NativeTransition& transition) {
+  TGreatPower* nation = ActiveNation();
+  if (nation == 0) {
+    return RuntimeActionResult::Failure("the loaded fixture has no active great power");
+  }
+
+  nation->pendingActionStatus.byAction[0] = 0x32;
+  nation->field8d6[0] = 1;
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) == 0) {
+      continue;
+    }
+    TGreatPower* slotNation = g_apNationStates[nationSlot];
+    if (slotNation != 0) {
+      slotNation->MarkAllPendingStatusFlagsHandled();
+    }
+  }
+  return transition.Finish();
+}
+
 RuntimeActionResult RunEliminationPhaseWithLandedGreatPowers(NativeTransition& transition) {
   if (g_pSimMgr == 0) {
     return RuntimeActionResult::Failure("elimination state is unavailable");
@@ -244,4 +277,146 @@ RuntimeActionResult RunEliminationPhaseWithLandedGreatPowers(NativeTransition& t
     return transition.Finish(json_value_init_string("player_eliminated"));
   }
   return transition.Finish(ContinueOutcome());
+}
+
+RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition) {
+  TGreatPower* nation = ActiveNation();
+  if (nation == 0 || nation->city == 0 || g_pSimMgr == 0 || g_pGlobalMapState == 0) {
+    return RuntimeActionResult::Failure("opening civilian grant state is unavailable");
+  }
+
+  g_pSimMgr->difficultyLevel = 0;
+  g_pSimMgr->scenarioMapIndexPlusOne = 0;
+  nation->diplomacyEligibilityA0 = 1;
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  TCity* city = nation->city;
+  short result1 =
+      g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(nation->homeTileIndex, 0);
+  TCivUnit* civ1 = new TCivUnit();
+  civ1->ICivUnit(kCivilianUnitProspector, result1, nation->nationSlot);
+
+  short result2 =
+      g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(nation->homeTileIndex, 1);
+  TCivUnit* civ2 = new TCivUnit();
+  civ2->ICivUnit(kCivilianUnitEngineer, result2, nation->nationSlot);
+
+  city->orderCountByType5c[1] += 2;
+
+  if (g_pSimMgr->difficultyLevel == 0 && nation->diplomacyEligibilityA0) {
+    city->orderCountByType5c[1] += 6;
+
+    short result3 =
+        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(nation->homeTileIndex, 0);
+    TCivUnit* civ3 = new TCivUnit();
+    civ3->ICivUnit(kCivilianUnitProspector, result3, nation->nationSlot);
+
+    short result4 =
+        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(nation->homeTileIndex, 0);
+    TCivUnit* civ4 = new TCivUnit();
+    civ4->ICivUnit(kCivilianUnitMiner, result4, nation->nationSlot);
+
+    short result5 =
+        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(nation->homeTileIndex, 0);
+    TCivUnit* civ5 = new TCivUnit();
+    civ5->ICivUnit(kCivilianUnitFarmer, result5, nation->nationSlot);
+  }
+
+  return transition.Finish();
+}
+
+RuntimeActionResult RunDealBookTurnStop(NativeTransition& transition) {
+  if (g_pSimMgr == 0) {
+    return RuntimeActionResult::Failure("turn state is unavailable");
+  }
+  g_pSimMgr->turnStateCode = 0xc;
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+  g_pSimMgr->AdvanceGlobalTurnStateMachine();
+  return transition.Finish(json_value_init_string("deal_book"));
+}
+
+RuntimeActionResult RunCityAndTransportTurnStop(NativeTransition& transition) {
+  if (g_pSimMgr == 0) {
+    return RuntimeActionResult::Failure("turn state is unavailable");
+  }
+  g_pSimMgr->turnStateCode = 8;
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+  g_pSimMgr->turnStateCode = 0xb;
+  g_pSimMgr->DoCityAndTransport();
+  return transition.Finish();
+}
+
+RuntimeActionResult RunOpeningHomeCitySetup(NativeTransition& transition) {
+  if (g_pSimMgr == 0) {
+    return RuntimeActionResult::Failure("turn state is unavailable");
+  }
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    if (nation == 0 || nation->IsRemote() != 0 || g_bMultiplayerScenarioSetupActive != 0) {
+      continue;
+    }
+    nation->SetHomeCityTileAndDisplayName(-1, 0);
+  }
+
+  // GenerateEthnicName is CRT mapped-flavor text, not yet a Rust rule.
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
+    ship->name.Empty();
+  }
+  return transition.Finish();
+}
+
+RuntimeActionResult RunNewspaperPendingStatus(NativeTransition& transition) {
+  if (g_pSimMgr == 0) {
+    return RuntimeActionResult::Failure("turn state is unavailable");
+  }
+
+  for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) == 0) {
+      continue;
+    }
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    if (nation == 0) {
+      continue;
+    }
+    nation->pendingActionStatus.byAction[0] = 0x32;
+    nation->field8d6[0] = 3;
+    nation->pendingActionStatus.byAction[1] = 0x32;
+    nation->field8d6[1] = 6;
+    nation->pendingActionStatus.byAction[3] = 0x32;
+    nation->field8d6[3] = -1;
+  }
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  for (short eligibleSlot = 0; eligibleSlot < 7; ++eligibleSlot) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(eligibleSlot) == 0) {
+      continue;
+    }
+    TGreatPower* nation = g_apNationStates[eligibleSlot];
+    if (nation != 0) {
+      nation->MarkAllPendingStatusFlagsHandled();
+    }
+  }
+  return transition.Finish();
 }

@@ -80,7 +80,10 @@ fn steel_order_reserves_both_inputs_and_releases_them() {
         city.stockpile[ResourceKind::Coal] = 1;
     }
 
-    assert!(game.set_city_order_quantity(nation, steel, 1));
+    assert_eq!(
+        game.set_city_order_quantity(nation, steel, 1),
+        CityOrderUpdate::Applied
+    );
     let after_order = city(&game, nation);
     assert_eq!(game.city_order_quantity(nation, steel), 1);
     assert_eq!(after_order.stockpile[ResourceKind::Iron], 0);
@@ -88,7 +91,10 @@ fn steel_order_reserves_both_inputs_and_releases_them() {
     assert_eq!(after_order.population.strength, 10);
     assert_eq!(after_order.production_accum[CityFacilitySlot::SteelMill], 0);
 
-    assert!(game.set_city_order_quantity(nation, steel, 0));
+    assert_eq!(
+        game.set_city_order_quantity(nation, steel, 0),
+        CityOrderUpdate::Applied
+    );
     let after_release = city(&game, nation);
     assert_eq!(game.city_order_quantity(nation, steel), 0);
     assert_eq!(after_release.stockpile[ResourceKind::Iron], 1);
@@ -110,7 +116,10 @@ fn rejected_item_order_leaves_stock_and_capacity_unchanged() {
         city.stockpile[ResourceKind::Timber] = 20;
     }
 
-    assert!(!game.set_city_order_quantity(nation, lumber, 2));
+    assert!(matches!(
+        game.set_city_order_quantity(nation, lumber, 2),
+        CityOrderUpdate::Rejected(_)
+    ));
     let city = city(&game, nation);
     assert_eq!(game.city_order_quantity(nation, lumber), 0);
     assert_eq!(city.stockpile[ResourceKind::Timber], 20);
@@ -130,7 +139,10 @@ fn fabric_order_shifts_a_wool_shortfall_onto_cotton() {
     }
 
     assert_eq!(game.city_order_limit(nation, fabric).maximum, 5);
-    assert!(game.set_city_order_quantity(nation, fabric, 3));
+    assert_eq!(
+        game.set_city_order_quantity(nation, fabric, 3),
+        CityOrderUpdate::Applied
+    );
     let reserved = city(&game, nation);
     let order = &reserved.orders.items[ManufacturedItem::Fabric];
     assert_eq!(reserved.stockpile[ResourceKind::Wool], 0);
@@ -138,7 +150,10 @@ fn fabric_order_shifts_a_wool_shortfall_onto_cotton() {
     assert_eq!(order.tracking_by_resource[ResourceKind::Wool], 1);
     assert_eq!(order.tracking_by_resource[ResourceKind::Cotton], 5);
 
-    assert!(game.set_city_order_quantity(nation, fabric, 1));
+    assert_eq!(
+        game.set_city_order_quantity(nation, fabric, 1),
+        CityOrderUpdate::Applied
+    );
     let released = city(&game, nation);
     let order = &released.orders.items[ManufacturedItem::Fabric];
     assert_eq!(released.stockpile[ResourceKind::Wool], 1);
@@ -158,7 +173,10 @@ fn fabric_order_shifts_a_cotton_shortfall_onto_wool() {
         city.stockpile[ResourceKind::Cotton] = 1;
     }
 
-    assert!(game.set_city_order_quantity(nation, fabric, 3));
+    assert_eq!(
+        game.set_city_order_quantity(nation, fabric, 3),
+        CityOrderUpdate::Applied
+    );
     let city = city(&game, nation);
     let order = &city.orders.items[ManufacturedItem::Fabric];
     assert_eq!(city.stockpile[ResourceKind::Wool], 5);
@@ -219,7 +237,10 @@ fn food_processing_limit_uses_grain_fruit_animals_and_workforce() {
 #[test]
 fn food_processing_rounds_odd_orders_up_and_spends_livestock_before_fish() {
     let (mut game, nation) = fresh_game();
-    assert!(game.set_city_order_quantity(nation, CityOrderId::FoodProcessing, -1));
+    assert_eq!(
+        game.set_city_order_quantity(nation, CityOrderId::FoodProcessing, -1),
+        CityOrderUpdate::Applied
+    );
     assert_eq!(
         game.city_order_quantity(nation, CityOrderId::FoodProcessing),
         0
@@ -234,7 +255,10 @@ fn food_processing_rounds_odd_orders_up_and_spends_livestock_before_fish() {
         city.population.strength = 10;
     }
 
-    assert!(game.set_city_order_quantity(nation, CityOrderId::FoodProcessing, 3));
+    assert_eq!(
+        game.set_city_order_quantity(nation, CityOrderId::FoodProcessing, 3),
+        CityOrderUpdate::Applied
+    );
     let reserved = city(&game, nation);
     assert_eq!(
         game.city_order_quantity(nation, CityOrderId::FoodProcessing),
@@ -245,7 +269,10 @@ fn food_processing_rounds_odd_orders_up_and_spends_livestock_before_fish() {
     assert_eq!(reserved.stockpile[ResourceKind::Livestock], 0);
     assert_eq!(reserved.stockpile[ResourceKind::Fish], 2);
 
-    assert!(game.set_city_order_quantity(nation, CityOrderId::FoodProcessing, 1));
+    assert_eq!(
+        game.set_city_order_quantity(nation, CityOrderId::FoodProcessing, 1),
+        CityOrderUpdate::Applied
+    );
     let released = city(&game, nation);
     assert_eq!(
         game.city_order_quantity(nation, CityOrderId::FoodProcessing),
@@ -297,7 +324,10 @@ fn population_growth_order_spends_furniture_clothing_and_food() {
         city.production_accum[CityFacilitySlot::RegionalPopulation] = 3;
     }
 
-    assert!(game.set_city_order_quantity(nation, CityOrderId::PopulationGrowth, 2));
+    assert_eq!(
+        game.set_city_order_quantity(nation, CityOrderId::PopulationGrowth, 2),
+        CityOrderUpdate::Applied
+    );
     let city = city(&game, nation);
     assert_eq!(city.stockpile[ResourceKind::Furniture], 1);
     assert_eq!(city.stockpile[ResourceKind::Clothing], 1);
@@ -313,7 +343,7 @@ fn retail_region_capacity_uses_the_annexation_divisor() {
     let mut owner = crate::test_support::great_power_state();
     assert_eq!(retail_region_capacity(&owner, 12), 3);
     owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-        crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
+        crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, None);
     assert_eq!(retail_region_capacity(&owner, 12), 4);
     assert_eq!(retail_region_capacity(&owner, 1), 1);
 }
@@ -330,14 +360,20 @@ fn expansion_order_spends_only_lumber_and_steel() {
     }
 
     assert_eq!(game.city_order_limit(nation, expansion).maximum, 2);
-    assert!(game.set_city_order_quantity(nation, expansion, 2));
+    assert_eq!(
+        game.set_city_order_quantity(nation, expansion, 2),
+        CityOrderUpdate::Applied
+    );
     let reserved = city(&game, nation);
     assert_eq!(reserved.stockpile[ResourceKind::Lumber], 1);
     assert_eq!(reserved.stockpile[ResourceKind::Steel], 0);
     assert_eq!(reserved.population.strength, 12);
     assert_eq!(reserved.production_accum[CityFacilitySlot::SteelMill], 9);
 
-    assert!(game.set_city_order_quantity(nation, expansion, 1));
+    assert_eq!(
+        game.set_city_order_quantity(nation, expansion, 1),
+        CityOrderUpdate::Applied
+    );
     let released = city(&game, nation);
     assert_eq!(released.stockpile[ResourceKind::Lumber], 2);
     assert_eq!(released.stockpile[ResourceKind::Steel], 1);
@@ -363,7 +399,10 @@ fn power_plant_order_uses_truncating_fuel_division() {
     let (mut game, nation) = fresh_game();
     city_mut(&mut game, nation).stockpile[ResourceKind::Fuel] = 3;
 
-    assert!(game.set_city_order_quantity(nation, CityOrderId::PowerPlant, 13));
+    assert_eq!(
+        game.set_city_order_quantity(nation, CityOrderId::PowerPlant, 13),
+        CityOrderUpdate::Applied
+    );
     let reserved = city(&game, nation);
     assert_eq!(reserved.stockpile[ResourceKind::Fuel], 1);
     assert_eq!(reserved.orders.power_plant.desired_quantity, 13);
@@ -371,7 +410,10 @@ fn power_plant_order_uses_truncating_fuel_division() {
     assert_eq!(reserved.population.extra, 13);
     assert_eq!(reserved.population.strength, 25);
 
-    assert!(game.set_city_order_quantity(nation, CityOrderId::PowerPlant, 6));
+    assert_eq!(
+        game.set_city_order_quantity(nation, CityOrderId::PowerPlant, 6),
+        CityOrderUpdate::Applied
+    );
     let released = city(&game, nation);
     assert_eq!(released.stockpile[ResourceKind::Fuel], 2);
     assert_eq!(released.orders.power_plant.desired_quantity, 6);
@@ -384,11 +426,17 @@ fn power_plant_order_uses_truncating_fuel_division() {
 fn power_plant_rejects_a_cut_that_exceeds_available_strength() {
     let (mut game, nation) = fresh_game();
     city_mut(&mut game, nation).stockpile[ResourceKind::Fuel] = 2;
-    assert!(game.set_city_order_quantity(nation, CityOrderId::PowerPlant, 6));
+    assert_eq!(
+        game.set_city_order_quantity(nation, CityOrderId::PowerPlant, 6),
+        CityOrderUpdate::Applied
+    );
     city_mut(&mut game, nation).population.strength = 2;
     let expected = city(&game, nation).clone();
 
-    assert!(!game.set_city_order_quantity(nation, CityOrderId::PowerPlant, 0));
+    assert!(matches!(
+        game.set_city_order_quantity(nation, CityOrderId::PowerPlant, 0),
+        CityOrderUpdate::Rejected(_)
+    ));
     assert_eq!(city(&game, nation), &expected);
 }
 
@@ -447,7 +495,6 @@ fn training_limit_records_workforce_treasury_paper_and_the_global_cap() {
         }
     );
 
-    game.nations.major_mut(nation).economy.controller = MajorNationController::Computer;
     game.nations.major_mut(nation).economy.diplomacy_eligible = false;
     {
         let city = city_mut(&mut game, nation);
@@ -471,7 +518,10 @@ fn training_order_spends_paper_cash_and_workers() {
     let medium = CityOrderId::Training(TrainingLevel::Medium);
     city_mut(&mut game, nation).stockpile[ResourceKind::Paper] = 10;
 
-    assert!(game.set_city_order_quantity(nation, medium, 2));
+    assert_eq!(
+        game.set_city_order_quantity(nation, medium, 2),
+        CityOrderUpdate::Applied
+    );
     {
         let city = city(&game, nation);
         assert_eq!(city.stockpile[ResourceKind::Paper], 8);
@@ -480,7 +530,10 @@ fn training_order_spends_paper_cash_and_workers() {
         assert_eq!(city.population.strength, 10);
     }
 
-    assert!(game.set_city_order_quantity(nation, medium, 1));
+    assert_eq!(
+        game.set_city_order_quantity(nation, medium, 1),
+        CityOrderUpdate::Applied
+    );
     {
         let city = city(&game, nation);
         assert_eq!(city.stockpile[ResourceKind::Paper], 9);
@@ -493,7 +546,10 @@ fn training_order_spends_paper_cash_and_workers() {
     let high = CityOrderId::Training(TrainingLevel::High);
     city_mut(&mut game, nation).stockpile[ResourceKind::Paper] = 6;
     game.nations.major_mut(nation).common.treasury = 3_000;
-    assert!(game.set_city_order_quantity(nation, high, 2));
+    assert_eq!(
+        game.set_city_order_quantity(nation, high, 2),
+        CityOrderUpdate::Applied
+    );
     let city = city(&game, nation);
     assert_eq!(city.stockpile[ResourceKind::Paper], 2);
     assert_eq!(game.nations.major(nation).common.treasury, 1_000);
@@ -520,7 +576,7 @@ fn high_training_queues_university_expansion_at_the_retail_thresholds() {
     assert_eq!(state.population.baseline_labor.high, 10);
     assert_eq!(
         owner.pending_actions[PendingActionKind::UniversityExpansion].status(),
-        crate::PendingActionStatus::Queued
+        crate::PendingActionStatus::QUEUED
     );
     assert_eq!(
         owner.pending_actions[PendingActionKind::UniversityExpansion].payload(),
@@ -529,7 +585,7 @@ fn high_training_queues_university_expansion_at_the_retail_thresholds() {
     assert_eq!(production.quantity, 0);
 
     owner.pending_actions[PendingActionKind::UniversityExpansion] =
-        crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
+        crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, None);
     state.population.baseline_labor.high = 29;
     production.quantity = 1;
     produce_training(
@@ -622,7 +678,6 @@ fn recruit_limit_uses_workforce_mode_resources_and_human_treasury() {
         }
     );
 
-    game.nations.major_mut(nation).economy.controller = MajorNationController::Computer;
     game.nations.major_mut(nation).economy.diplomacy_eligible = false;
     game.nations.major_mut(nation).common.treasury = -10_000;
     {
@@ -645,7 +700,10 @@ fn recruit_order_removes_population_and_refunds_it() {
     let skirmishers = CityOrderId::MilitaryRecruit(MilitaryRecruitmentCategory::LightInfantry);
     city_mut(&mut game, nation).stockpile[ResourceKind::Arms] = 10;
 
-    assert!(game.set_city_order_quantity(nation, skirmishers, 2));
+    assert_eq!(
+        game.set_city_order_quantity(nation, skirmishers, 2),
+        CityOrderUpdate::Applied
+    );
     {
         let city = city(&game, nation);
         assert_eq!(city.stockpile[ResourceKind::Arms], 8);
@@ -655,7 +713,10 @@ fn recruit_order_removes_population_and_refunds_it() {
         assert_eq!(city.population.strength, 10);
     }
 
-    assert!(game.set_city_order_quantity(nation, skirmishers, 1));
+    assert_eq!(
+        game.set_city_order_quantity(nation, skirmishers, 1),
+        CityOrderUpdate::Applied
+    );
     let city = city(&game, nation);
     assert_eq!(city.stockpile[ResourceKind::Arms], 9);
     assert_eq!(game.nations.major(nation).common.treasury, 800);

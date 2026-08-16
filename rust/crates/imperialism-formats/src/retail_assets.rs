@@ -1,6 +1,7 @@
 use crate::color::DibPalette;
+use crate::media::{MovieId, MusicTrack, SoundId};
 use crate::retail_resources::*;
-use crate::{PictureId, RetailFontFace};
+use crate::{PictureId, RetailCursor, RetailFontFace};
 use imperialism_core::{
     MajorNationId, NEWS_TEMPLATE_COUNT, NationId, NationTable, RandomGameNames,
 };
@@ -13,9 +14,20 @@ use std::ops::Range;
 use std::path::{Path, PathBuf};
 
 const ENGLISH_LANGUAGE: u32 = 1033;
+const NEUTRAL_LANGUAGE: u32 = 0;
 const STRING_RESOURCE_TYPE: u32 = 6;
+const BITMAP_RESOURCE_TYPE: u32 = 2;
+const CURSOR_RESOURCE_TYPE: u32 = 1;
+const GROUP_CURSOR_RESOURCE_TYPE: u32 = 12;
+const CHROME_BACKDROP_BITMAP_ID: u32 = 0x119;
+const EXE_PATH: &str = "Imperialism.exe";
 const STRINGS_ARCHIVE_PATH: &str = "Data/STR#ENU.GOB";
 const TABLE_ARCHIVE_PATH: &str = "Data/tabsenu.gob";
+const WAVE_ARCHIVE_PATH: &str = "Data/wave.gob";
+const WAVE_RESOURCE_TYPE: &str = "WAVE";
+const MUSIC_DIRECTORY: &str = "MUSIC";
+const MOVIES_DIRECTORY: &str = "Movies";
+const MUSIC_EXTENSIONS: [&str; 4] = ["ogg", "mp3", "flac", "wav"];
 
 const PICTURE_ARCHIVE_PATHS: [&str; 4] = [
     "Data/pictenu.gob",
@@ -29,12 +41,15 @@ const NEWS_ROW_BYTES: usize = 24;
 
 /// Direct access to the retail files needed by the current application.
 ///
-/// The object owns raw archive/font bytes and indexes English PE resource ranges during opening.
+/// The object owns raw archive/font/exe bytes and indexes English PE resource ranges during opening.
 /// It deliberately retains no borrowed PE views.
 #[derive(Debug)]
 pub struct RetailAssets {
+    root: PathBuf,
     pictures: [ResourceArchive; 4],
     strings: ResourceArchive,
+    exe: ResourceArchive,
+    waves: Option<ResourceArchive>,
     fonts: RetailFonts,
     default_dib_palette: DibPalette,
     news: NewsTable,
@@ -82,23 +97,32 @@ impl RetailAssets {
             let archive = &pictures[0];
             let dib = archive
                 .find(
-                    ResourceName::Id(2),
+                    ResourceName::Id(BITMAP_RESOURCE_TYPE),
                     ResourceName::Text("950.BMP".to_owned()),
                 )
                 .ok_or(RetailAssetError::DefaultDibPaletteNotFound)?;
             bitmap_palette_rgb(dib).map_err(|error| resource_error(&archive.path, error))?
         };
         let strings = ResourceArchive::read(&root, STRINGS_ARCHIVE_PATH)?;
+        let exe = ResourceArchive::read(&root, EXE_PATH)?;
+        let waves = optional_archive(&root, WAVE_ARCHIVE_PATH)?;
         let fonts = RetailFonts::read(&root)?;
         let news = load_news_table(&root)?;
 
         Ok(Self {
+            root,
             pictures,
             strings,
+            exe,
+            waves,
             fonts,
             default_dib_palette,
             news,
         })
+    }
+
+    pub fn root(&self) -> &Path {
+        &self.root
     }
 
     pub const fn news_table(&self) -> &NewsTable {
@@ -191,7 +215,9 @@ impl RetailAssets {
         ];
         for name in &names {
             for archive in &self.pictures {
-                if let Some(dib) = archive.find(ResourceName::Id(2), name.clone()) {
+                if let Some(dib) =
+                    archive.find(ResourceName::Id(BITMAP_RESOURCE_TYPE), name.clone())
+                {
                     return Ok((&archive.path, dib));
                 }
             }
@@ -207,9 +233,122 @@ impl RetailAssets {
         &self.default_dib_palette
     }
 
+    /// `TViewMgr::LoadTurnEventCursorTable`: `LoadCursorA("~C%d")` for 1000..=1053.
+    pub const TURN_EVENT_CURSOR_BASE: u16 = 1000;
+    pub const TURN_EVENT_CURSOR_COUNT: usize = 0x36;
+
+    /// Resolves one turn-event cursor loaded by `LoadTurnEventCursorByResourceIdOffset1000`.
+    pub fn turn_event_cursor(&self, resource_id: u16) -> Result<RetailCursor, RetailAssetError> {
+        let name = format!("~C{resource_id}");
+        let group = self
+            .exe
+            .find(
+                ResourceName::Id(GROUP_CURSOR_RESOURCE_TYPE),
+                ResourceName::Text(name),
+            )
+            .ok_or(RetailAssetError::CursorNotFound { resource_id })?;
+        group_cursor_to_rgba(group, |cursor_id| {
+            self.exe
+                .find(
+                    ResourceName::Id(CURSOR_RESOURCE_TYPE),
+                    ResourceName::Id(cursor_id),
+                )
+                .map(ToOwned::to_owned)
+        })
+        .map_err(|error| resource_error(&self.exe.path, error))
+    }
+
+    /// Loads the 54-entry `TViewMgr::turnEventCursors` table.
+    pub fn turn_event_cursors(
+        &self,
+    ) -> Result<[RetailCursor; Self::TURN_EVENT_CURSOR_COUNT], RetailAssetError> {
+        let mut cursors = Vec::with_capacity(Self::TURN_EVENT_CURSOR_COUNT);
+        for index in 0..Self::TURN_EVENT_CURSOR_COUNT {
+            cursors.push(self.turn_event_cursor(
+                Self::TURN_EVENT_CURSOR_BASE
+                    + u16::try_from(index).expect("turn-event cursor index fits u16"),
+            )?);
+        }
+        Ok(cursors
+            .try_into()
+            .unwrap_or_else(|_| unreachable!("turn-event cursor table is a fixed 54-entry array")))
+    }
+
     /// Returns the font bytes consumed by the UI.
     pub fn font_bytes(&self, face: RetailFontFace) -> &[u8] {
         self.fonts.bytes(face)
+    }
+
+    /// `Movies/<stem>.avi`. Missing files are a caller-side continue, matching
+    /// `PlayMovieClipAndDispatchTurnStateFollowup`.
+    pub fn movie_path(&self, movie: MovieId) -> PathBuf {
+        self.root
+            .join(MOVIES_DIRECTORY)
+            .join(format!("{}.avi", movie.file_stem()))
+    }
+
+    /// GOG replacement for CD track `cue`, usually `MUSIC/TrackNN.ogg`.
+    pub fn music_track_path(&self, track: MusicTrack) -> Result<PathBuf, RetailAssetError> {
+        let stem = track.file_stem();
+        for directory in [MUSIC_DIRECTORY, "Music"] {
+            for extension in MUSIC_EXTENSIONS {
+                for name in [
+                    format!("{stem}.{extension}"),
+                    format!("{}.{extension}", stem.to_ascii_lowercase()),
+                ] {
+                    let path = self.root.join(directory).join(name);
+                    if path.is_file() {
+                        return Ok(path);
+                    }
+                }
+            }
+        }
+        Err(RetailAssetError::MusicTrackNotFound(track))
+    }
+
+    /// Raw RIFF WAVE bytes from `Data/wave.gob`.
+    pub fn sound(&self, sound_id: SoundId) -> Result<Vec<u8>, RetailAssetError> {
+        let waves = self
+            .waves
+            .as_ref()
+            .ok_or(RetailAssetError::WaveArchiveNotFound)?;
+        waves
+            .find(
+                ResourceName::Text(WAVE_RESOURCE_TYPE.to_owned()),
+                ResourceName::Id(u32::from(sound_id.get())),
+            )
+            .map(ToOwned::to_owned)
+            .ok_or(RetailAssetError::SoundNotFound(sound_id))
+    }
+
+    /// WAVE resource ids present in `Data/wave.gob`, in archive order.
+    pub fn sound_ids(&self) -> Vec<SoundId> {
+        let Some(waves) = &self.waves else {
+            return Vec::new();
+        };
+        waves
+            .english_resources
+            .keys()
+            .filter(|key| key.resource_type == ResourceName::Text(WAVE_RESOURCE_TYPE.to_owned()))
+            .filter_map(|key| match key.name {
+                ResourceName::Id(id) => u16::try_from(id).ok().map(SoundId::new),
+                ResourceName::Text(_) => None,
+            })
+            .collect()
+    }
+
+    /// Host-frame tile from `Imperialism.exe` BITMAP `0x119` (`CMainFrame::OnEraseBkgnd`).
+    ///
+    /// The returned bytes are a BMP file assembled from the retail DIB, same as `picture()`.
+    pub fn chrome_backdrop(&self) -> Result<Vec<u8>, RetailAssetError> {
+        let dib = self
+            .exe
+            .find(
+                ResourceName::Id(BITMAP_RESOURCE_TYPE),
+                ResourceName::Id(CHROME_BACKDROP_BITMAP_ID),
+            )
+            .ok_or(RetailAssetError::ChromeBackdropNotFound)?;
+        bitmap_resource_to_bmp(dib).map_err(|error| resource_error(&self.exe.path, error))
     }
 }
 
@@ -336,7 +475,11 @@ fn index_english_resources(
                 .ok_or_else(|| invalid_resource_shape(path, "resource name is not a directory"))?;
             let data = match languages.get_data(Name::Id(ENGLISH_LANGUAGE)) {
                 Ok(data) => data,
-                Err(FindError::NotFound) => continue,
+                Err(FindError::NotFound) => match languages.get_data(Name::Id(NEUTRAL_LANGUAGE)) {
+                    Ok(data) => data,
+                    Err(FindError::NotFound) => continue,
+                    Err(error) => return Err(resource_error(path, error)),
+                },
                 Err(error) => return Err(resource_error(path, error)),
             };
             let start = pe
@@ -378,6 +521,16 @@ pub enum RetailAssetError {
     Resource { path: PathBuf, detail: String },
     #[error("no English picture {0} is available")]
     PictureNotFound(PictureId),
+    #[error("no English WAVE resource {0} is available")]
+    SoundNotFound(SoundId),
+    #[error("Data/wave.gob is not present in the retail directory")]
+    WaveArchiveNotFound,
+    #[error("no GOG music file is available for CD track {0}")]
+    MusicTrackNotFound(MusicTrack),
+    #[error("Imperialism.exe has no English BITMAP resource 0x119")]
+    ChromeBackdropNotFound,
+    #[error("no English turn-event cursor ~C{resource_id} is available")]
+    CursorNotFound { resource_id: u16 },
     #[error("no English string is available for group {group:#06x}, direct index {direct_index}")]
     StringNotFound { group: i16, direct_index: i16 },
     #[error("Data/pictenu.gob has no English BITMAP resource 950.BMP")]
@@ -473,6 +626,21 @@ fn read_file(path: &Path) -> Result<Vec<u8>, RetailAssetError> {
     })
 }
 
+fn optional_archive(
+    root: &Path,
+    relative: &str,
+) -> Result<Option<ResourceArchive>, RetailAssetError> {
+    match ResourceArchive::read(root, relative) {
+        Ok(archive) => Ok(Some(archive)),
+        Err(RetailAssetError::Io { source, .. })
+            if source.kind() == std::io::ErrorKind::NotFound =>
+        {
+            Ok(None)
+        }
+        Err(error) => Err(error),
+    }
+}
+
 fn resource_error(path: &Path, error: impl Display) -> RetailAssetError {
     RetailAssetError::Resource {
         path: path.to_owned(),
@@ -528,7 +696,7 @@ mod tests {
     const SECTION_OFFSET: usize = OPTIONAL_OFFSET + 224;
     const RESOURCE_OFFSET: usize = 0x200;
     const RESOURCE_RVA: u32 = 0x1000;
-    const RESOURCE_SIZE: usize = 0x3e00;
+    const RESOURCE_SIZE: usize = 0x10000;
 
     #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
     enum TestName {
@@ -593,6 +761,10 @@ mod tests {
             assets.default_dib_palette()[0x16],
             crate::Rgb::new(0x57, 0x8b, 0xa6)
         );
+        let idle = assets.turn_event_cursor(0x41b).unwrap();
+        assert_eq!(idle.width, 32);
+        assert_eq!(idle.height, 32);
+        assert_eq!(idle.rgba.len(), 32 * 32 * 4);
     }
 
     #[test]
@@ -627,6 +799,97 @@ mod tests {
         let palette = assets.default_dib_palette();
         assert_eq!(palette[0x13], crate::Rgb::new(0xff, 0xff, 0xff));
         assert_eq!(palette[0x16], crate::Rgb::new(0x57, 0x8b, 0xa6));
+        let peace = assets
+            .turn_event_cursor(1028)
+            .expect("diplomacy peace cursor ~C1028");
+        assert_eq!(peace.width, 32);
+        assert_eq!(peace.height, 32);
+        assert_eq!(peace.rgba.len(), 32 * 32 * 4);
+        assert!(assets.chrome_backdrop().unwrap().starts_with(b"BM"));
+    }
+
+    #[test]
+    fn discovers_media_paths_without_requiring_wave_or_music_at_open() {
+        let root = synthetic_retail_install();
+        write_retail_file(root.path(), "MUSIC/Track06.ogg", b"not a real ogg");
+        let assets = RetailAssets::open(root.path()).unwrap();
+
+        assert_eq!(
+            assets.movie_path(MovieId::Open),
+            root.path().join("Movies/open.avi")
+        );
+        assert_eq!(
+            assets.movie_path(MovieId::Vote),
+            root.path().join("Movies/vote.avi")
+        );
+        assert!(!assets.movie_path(MovieId::Open).exists());
+        assert_eq!(
+            assets.music_track_path(MusicTrack::MAIN_MENU).unwrap(),
+            root.path().join("MUSIC/Track06.ogg")
+        );
+        assert!(matches!(
+            assets.music_track_path(MusicTrack::DIPLOMACY),
+            Err(RetailAssetError::MusicTrackNotFound(_))
+        ));
+        assert!(matches!(
+            assets.sound(SoundId::UI_CLICK),
+            Err(RetailAssetError::WaveArchiveNotFound)
+        ));
+        assert!(assets.sound_ids().is_empty());
+        assert!(assets.chrome_backdrop().unwrap().starts_with(b"BM"));
+    }
+
+    #[test]
+    fn loads_wave_resources_from_wave_gob() {
+        let root = synthetic_retail_install();
+        write_retail_file(
+            root.path(),
+            WAVE_ARCHIVE_PATH,
+            &synthetic_pe(vec![TestResource::new(
+                TestName::text(WAVE_RESOURCE_TYPE),
+                TestName::id(u32::from(SoundId::UI_CLICK.get())),
+                pcm_wav(),
+            )]),
+        );
+        let assets = RetailAssets::open(root.path()).unwrap();
+        let wave = assets.sound(SoundId::UI_CLICK).unwrap();
+        assert!(wave.starts_with(b"RIFF"));
+        assert_eq!(assets.sound_ids(), vec![SoundId::UI_CLICK]);
+    }
+
+    #[test]
+    #[ignore = "requires IMPERIALISM_RETAIL_DIR pointing at the English GOG installation"]
+    fn inventories_gog_movies_music_and_wave_resources() {
+        let root = PathBuf::from(
+            std::env::var_os("IMPERIALISM_RETAIL_DIR")
+                .expect("IMPERIALISM_RETAIL_DIR must name the English GOG installation"),
+        );
+        let assets = RetailAssets::open(&root).unwrap();
+        for movie in [MovieId::Open, MovieId::Vote, MovieId::Win, MovieId::Lose] {
+            let path = assets.movie_path(movie);
+            assert!(
+                path.is_file(),
+                "expected GOG cinematic {} at {}",
+                movie.file_stem(),
+                path.display()
+            );
+        }
+        let menu = assets
+            .music_track_path(MusicTrack::MAIN_MENU)
+            .expect("GOG MUSIC/Track06.* replacement for CD cue 6");
+        assert!(menu.is_file(), "{}", menu.display());
+        assert!(
+            !assets.sound_ids().is_empty(),
+            "Data/wave.gob should expose WAVE resources"
+        );
+        assert!(
+            assets
+                .sound(SoundId::UI_CLICK)
+                .expect("WAVE 7000")
+                .starts_with(b"RIFF")
+        );
+        let backdrop = assets.chrome_backdrop().unwrap();
+        assert!(backdrop.starts_with(b"BM"));
     }
 
     fn temporary_root() -> TempDir {
@@ -697,13 +960,94 @@ mod tests {
                 ),
             ]),
         );
+        write_retail_file(
+            root.path(),
+            EXE_PATH,
+            &synthetic_pe(turn_event_cursor_resources()),
+        );
         root
+    }
+
+    fn turn_event_cursor_resources() -> Vec<TestResource> {
+        let cursor = one_bit_cursor_resource();
+        let group = group_cursor_directory(cursor.len() as u32, 7);
+        let mut resources = vec![
+            TestResource::new(TestName::id(CURSOR_RESOURCE_TYPE), TestName::id(7), cursor),
+            TestResource::new(
+                TestName::id(BITMAP_RESOURCE_TYPE),
+                TestName::id(CHROME_BACKDROP_BITMAP_ID),
+                default_palette_dib(),
+            ),
+        ];
+        for index in 0..RetailAssets::TURN_EVENT_CURSOR_COUNT {
+            let id = RetailAssets::TURN_EVENT_CURSOR_BASE + index as u16;
+            resources.push(TestResource::new(
+                TestName::id(GROUP_CURSOR_RESOURCE_TYPE),
+                TestName::text(&format!("~C{id}")),
+                group.clone(),
+            ));
+        }
+        resources
+    }
+
+    fn one_bit_cursor_resource() -> Vec<u8> {
+        let mut blob = Vec::new();
+        blob.extend_from_slice(&0u16.to_le_bytes());
+        blob.extend_from_slice(&0u16.to_le_bytes());
+        blob.extend_from_slice(&40u32.to_le_bytes());
+        blob.extend_from_slice(&32i32.to_le_bytes());
+        blob.extend_from_slice(&64i32.to_le_bytes());
+        blob.extend_from_slice(&1u16.to_le_bytes());
+        blob.extend_from_slice(&1u16.to_le_bytes());
+        blob.extend_from_slice(&0u32.to_le_bytes());
+        blob.extend_from_slice(&256u32.to_le_bytes());
+        blob.extend_from_slice(&0i32.to_le_bytes());
+        blob.extend_from_slice(&0i32.to_le_bytes());
+        blob.extend_from_slice(&2u32.to_le_bytes());
+        blob.extend_from_slice(&0u32.to_le_bytes());
+        blob.extend_from_slice(&[0, 0, 0, 0, 0xff, 0xff, 0xff, 0]);
+        blob.extend_from_slice(&[0u8; 128]);
+        blob.extend_from_slice(&[0xffu8; 128]);
+        blob
+    }
+
+    fn group_cursor_directory(resource_size: u32, resource_id: u16) -> Vec<u8> {
+        let mut group = Vec::new();
+        group.extend_from_slice(&0u16.to_le_bytes());
+        group.extend_from_slice(&2u16.to_le_bytes());
+        group.extend_from_slice(&1u16.to_le_bytes());
+        group.extend_from_slice(&32u16.to_le_bytes());
+        group.extend_from_slice(&64u16.to_le_bytes());
+        group.extend_from_slice(&1u16.to_le_bytes());
+        group.extend_from_slice(&1u16.to_le_bytes());
+        group.extend_from_slice(&resource_size.to_le_bytes());
+        group.extend_from_slice(&resource_id.to_le_bytes());
+        group
     }
 
     fn write_retail_file(root: &Path, relative: &str, bytes: &[u8]) {
         let path = root.join(relative);
         fs::create_dir_all(path.parent().unwrap()).unwrap();
         fs::write(path, bytes).unwrap();
+    }
+
+    fn pcm_wav() -> Vec<u8> {
+        let mut wav = Vec::new();
+        wav.extend_from_slice(b"RIFF");
+        wav.extend_from_slice(&36u32.to_le_bytes());
+        wav.extend_from_slice(b"WAVE");
+        wav.extend_from_slice(b"fmt ");
+        wav.extend_from_slice(&16u32.to_le_bytes());
+        wav.extend_from_slice(&1u16.to_le_bytes());
+        wav.extend_from_slice(&1u16.to_le_bytes());
+        wav.extend_from_slice(&8000u32.to_le_bytes());
+        wav.extend_from_slice(&16000u32.to_le_bytes());
+        wav.extend_from_slice(&2u16.to_le_bytes());
+        wav.extend_from_slice(&16u16.to_le_bytes());
+        wav.extend_from_slice(b"data");
+        wav.extend_from_slice(&4u32.to_le_bytes());
+        wav.extend_from_slice(&[0, 0, 0, 0]);
+        wav
     }
 
     fn one_pixel_dib(marker: u8) -> Vec<u8> {

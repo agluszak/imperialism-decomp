@@ -2,11 +2,12 @@ use crate::*;
 use serde::{Deserialize, Serialize};
 
 /// Every nation slot, split into the two populations that carry different
-/// domain state. Every major slot is a complete major nation; minor slots may
-/// still be absent until their save projection is normalized separately.
+/// domain state. Major slots retain their state after elimination so references
+/// remain stable, while `present_majors` mirrors retail's nullable live-slot table.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Nations {
     pub(crate) majors: Box<MajorNationTable<MajorNation>>,
+    present_majors: MajorNationTable<bool>,
     pub(crate) minors: MinorNationTable<Option<MinorNation>>,
 }
 
@@ -17,6 +18,7 @@ impl Nations {
     ) -> Self {
         Self {
             majors: Box::new(majors),
+            present_majors: MajorNationTable::from_array([true; MAJOR_NATION_COUNT]),
             minors,
         }
     }
@@ -27,6 +29,14 @@ impl Nations {
 
     pub(crate) fn major_mut(&mut self, nation: crate::MajorNationId) -> &mut MajorNation {
         &mut self.majors[nation]
+    }
+
+    pub fn major_is_present(&self, nation: MajorNationId) -> bool {
+        self.present_majors[nation]
+    }
+
+    pub(crate) fn remove_major(&mut self, nation: MajorNationId) {
+        self.present_majors[nation] = false;
     }
 
     pub(crate) fn city(&self, nation: crate::MajorNationId) -> &CityState {
@@ -70,7 +80,7 @@ impl Nations {
 
     pub(crate) fn common(&self, nation: NationId) -> Option<&NationCommonState> {
         if let Some(nation) = MajorNationId::from_nation(nation) {
-            Some(&self.majors[nation].common)
+            self.present_majors[nation].then_some(&self.majors[nation].common)
         } else {
             self.minors[MinorNationId::new(nation.get())]
                 .as_ref()
@@ -80,7 +90,7 @@ impl Nations {
 
     pub(crate) fn common_mut(&mut self, nation: NationId) -> Option<&mut NationCommonState> {
         if let Some(nation) = MajorNationId::from_nation(nation) {
-            Some(&mut self.majors[nation].common)
+            self.present_majors[nation].then_some(&mut self.majors[nation].common)
         } else {
             self.minors[MinorNationId::new(nation.get())]
                 .as_mut()
@@ -106,16 +116,16 @@ impl Nations {
     }
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(rename_all = "snake_case")]
-pub enum MajorNationKind {
-    GreatPower,
-    AutoGreatPower,
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct AutoGreatPowerState {
+    pub province_targets: ProvinceTable<AiTargetState>,
+    pub zone_targets: Vec<AiTargetState>,
+    pub trade: AiTradeState,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MajorNation {
-    pub kind: MajorNationKind,
+    pub auto: Option<AutoGreatPowerState>,
     pub common: NationCommonState,
     pub economy: GreatPowerState,
     pub city: CityState,
@@ -124,6 +134,10 @@ pub struct MajorNation {
 }
 
 impl MajorNation {
+    pub fn is_auto(&self) -> bool {
+        self.auto.is_some()
+    }
+
     /// Builds a random-game start major nation from the resolved starting
     /// `treasury`, whether the slot is the `human` player, and its scenario
     /// `city`. Normal+ human homes remain unset until capital selection places them;
@@ -142,11 +156,7 @@ impl MajorNation {
             town.name = "Frog City".to_owned();
         }
         Self {
-            kind: if human {
-                MajorNationKind::GreatPower
-            } else {
-                MajorNationKind::AutoGreatPower
-            },
+            auto: (!human).then(AutoGreatPowerState::default),
             common: NationCommonState::from_parts(
                 display_name,
                 crate::CountryStatus::Independent,
@@ -214,12 +224,12 @@ impl MajorNation {
         if self.common.owned_regions.len() >= 9
             && self.economy.pending_actions[PendingActionKind::ConqueredCapitalArmoryUpgrade]
                 .status()
-                .has_reached(PendingActionStatus::Level3)
+                .has_reached(PendingActionStatus::HANDLED)
             && !self.economy.pending_actions[PendingActionKind::ConquestMonumentArmory]
                 .status()
-                .has_reached(PendingActionStatus::Level3)
+                .has_reached(PendingActionStatus::HANDLED)
         {
-            self.economy.pending_actions[PendingActionKind::ConquestMonumentArmory].queue(-1);
+            self.economy.pending_actions[PendingActionKind::ConquestMonumentArmory].queue();
         }
     }
 }
@@ -327,6 +337,8 @@ pub struct NationCommonState {
     pub treasury: i32,
     pub home_tile: Option<TileId>,
     pub trade_policy_by_nation: NationTable<TradePolicyScore>,
+    pub unit_name_ordinal_by_type: [i16; crate::MilitaryUnitKind::LENGTH],
+    pub unit_name_counter: i16,
 }
 
 impl NationCommonState {
@@ -345,6 +357,8 @@ impl NationCommonState {
             treasury,
             home_tile,
             trade_policy_by_nation,
+            unit_name_ordinal_by_type: [1; crate::MilitaryUnitKind::LENGTH],
+            unit_name_counter: 1,
         }
     }
 
@@ -371,17 +385,5 @@ impl NationCommonState {
 
     fn add_province(&mut self, province: ProvinceId) {
         self.owned_regions.push(province);
-    }
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub enum MajorNationController {
-    Human,
-    Computer,
-}
-
-impl MajorNationController {
-    pub const fn is_human(self) -> bool {
-        matches!(self, Self::Human)
     }
 }

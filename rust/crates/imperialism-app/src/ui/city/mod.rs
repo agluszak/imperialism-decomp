@@ -1,10 +1,10 @@
 use super::GameSession;
+use super::fill_brackets;
 use super::format_currency;
-use super::game_shell::{bind_native_game_screen_nav, project_date_and_treasury};
+use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::{ModalDialog, RetailUiAssets};
-use super::retail::{RetailTag, find_descendant};
-use crate::*;
+use super::retail::{ModalDialog, RetailTree, RetailUiAssets};
+use crate::{AppState, RetailAssetsResource};
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::log::warn;
 use bevy::picking::events::{Click, Drag, Pointer, Press};
@@ -12,6 +12,7 @@ use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, Button as UiButton, ValueChange};
+use enum_map::Enum;
 use imperialism_core::*;
 use imperialism_formats::*;
 use std::time::Duration;
@@ -31,6 +32,10 @@ use common_controls::*;
 use dialogs::*;
 use input::*;
 use lifecycle::*;
+
+pub(in crate::ui::city) fn city_projection_idle(session: &Res<GameSession>, added: bool) -> bool {
+    super::projection_idle(session, added)
+}
 
 pub(crate) struct CityPlugin;
 
@@ -61,6 +66,7 @@ impl Plugin for CityPlugin {
                 sync_city_summary,
                 sync_city_hover_title,
                 sync_city_buildings,
+                sync_city_building_action_visibility,
                 sync_city_order_quantities,
                 sync_industry_texts,
                 sync_industry_indicators,
@@ -70,11 +76,9 @@ impl Plugin for CityPlugin {
                 sync_transport_capacity_dialog,
                 sync_population_dialog,
                 sync_training_dialog,
-                sync_armory_selection,
+                sync_city_row_selection,
                 sync_armory_details,
-                sync_university_selection,
                 sync_university_details,
-                sync_shipyard_selection,
                 sync_shipyard_details,
             )
                 .run_if(in_state(AppState::City)),

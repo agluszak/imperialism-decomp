@@ -234,8 +234,7 @@ impl GameState {
     }
 
     fn initialize_deal_books(&mut self) {
-        for slot in (0..MajorNationId::COUNT).rev() {
-            let nation = MajorNationId::new(slot);
+        for nation in MajorNationId::all().rev() {
             self.nations.majors[nation].economy.deal_book = TradeCommodityTable::default();
         }
     }
@@ -596,8 +595,7 @@ mod tests {
         let mut state = game_state();
         let buyer = MajorNationId::new(0);
         let seller = MajorNationId::new(1);
-        for slot in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(slot);
+        for nation in MajorNationId::all() {
             seed_merchant_capacity(&mut state.nations.majors[nation].city);
             state.nations.majors[nation].city.stockpile[ResourceKind::Clothing] = 10;
             state.nations.majors[nation].city.stockpile[ResourceKind::Timber] = 12;

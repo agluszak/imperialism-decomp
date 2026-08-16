@@ -19,6 +19,24 @@ pub struct OrderLimit {
     pub constraint: ProductionConstraint,
 }
 
+impl OrderLimit {
+    /// Keep this limit when `maximum` is not strictly smaller, matching retail
+    /// tie-breaking that preserves the earlier constraint.
+    pub fn min_with(&mut self, maximum: i16, constraint: ProductionConstraint) {
+        if maximum < self.maximum {
+            self.maximum = maximum;
+            self.constraint = constraint;
+        }
+    }
+}
+
+/// Outcome of applying an absolute city-order quantity.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum CityOrderUpdate {
+    Applied,
+    Rejected(OrderLimit),
+}
+
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ProductionProgress {
     pub quantity: i16,
@@ -31,6 +49,25 @@ impl Default for ProductionProgress {
             quantity: 0,
             limiting_constraint: ProductionConstraint::Resources,
         }
+    }
+}
+
+impl ProductionProgress {
+    /// Record `limit.constraint` and commit `quantity` when it is in `0..=limit.maximum`.
+    /// Returns the signed delta on success. Rejection still updates the constraint.
+    pub(crate) fn try_set(&mut self, limit: OrderLimit, quantity: i16) -> Option<i16> {
+        self.limiting_constraint = limit.constraint;
+        self.try_set_within(limit.maximum, quantity)
+    }
+
+    /// Commit `quantity` when it is in `0..=maximum`. Returns the signed delta on success.
+    pub(crate) fn try_set_within(&mut self, maximum: i16, quantity: i16) -> Option<i16> {
+        let delta = quantity - self.quantity;
+        if quantity > maximum || quantity < 0 {
+            return None;
+        }
+        self.quantity = quantity;
+        Some(delta)
     }
 }
 
@@ -66,8 +103,6 @@ pub enum TrainingLevel {
 }
 
 impl TrainingLevel {
-    pub const ALL: [Self; 2] = [Self::Medium, Self::High];
-
     pub(crate) const fn input_band(self) -> SkillBand {
         match self {
             Self::Medium => SkillBand::Low,
@@ -109,19 +144,6 @@ pub enum MilitaryRecruitmentCategory {
     Demolitionist,
 }
 
-impl MilitaryRecruitmentCategory {
-    pub const ALL: [Self; 8] = [
-        Self::LightInfantry,
-        Self::RegularInfantry,
-        Self::HeavyInfantry,
-        Self::LightCavalry,
-        Self::HeavyCavalry,
-        Self::LightArtillery,
-        Self::HeavyArtillery,
-        Self::Demolitionist,
-    ];
-}
-
 pub type MilitaryRecruitOrderTable<T> = EnumMap<MilitaryRecruitmentCategory, T>;
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -145,19 +167,6 @@ pub enum ShipOrderSlot {
     WarshipAdvancedSecondary,
 }
 
-impl ShipOrderSlot {
-    pub const ALL: [Self; 8] = [
-        Self::MerchantEarlyPrimary,
-        Self::MerchantEarlySecondary,
-        Self::MerchantAdvancedPrimary,
-        Self::MerchantAdvancedSecondary,
-        Self::WarshipEarlyPrimary,
-        Self::WarshipEarlySecondary,
-        Self::WarshipAdvancedPrimary,
-        Self::WarshipAdvancedSecondary,
-    ];
-}
-
 pub type ShipOrderTable<T> = EnumMap<ShipOrderSlot, T>;
 
 /// The six resources retail spends on a ship order.
@@ -172,31 +181,15 @@ pub struct ShipMaterials {
 }
 
 impl ShipMaterials {
-    pub const RESOURCES: [ResourceKind; 6] = [
-        ResourceKind::Lumber,
-        ResourceKind::Fabric,
-        ResourceKind::Arms,
-        ResourceKind::Steel,
-        ResourceKind::Coal,
-        ResourceKind::Fuel,
-    ];
-
-    pub const fn get(self, resource: ResourceKind) -> i16 {
-        match resource {
-            ResourceKind::Lumber => self.lumber,
-            ResourceKind::Fabric => self.fabric,
-            ResourceKind::Arms => self.arms,
-            ResourceKind::Steel => self.steel,
-            ResourceKind::Coal => self.coal,
-            ResourceKind::Fuel => self.fuel,
-            _ => 0,
-        }
-    }
-
-    pub fn iter(self) -> impl Iterator<Item = (ResourceKind, i16)> {
-        Self::RESOURCES
-            .into_iter()
-            .map(move |resource| (resource, self.get(resource)))
+    pub const fn iter(self) -> [(ResourceKind, i16); 6] {
+        [
+            (ResourceKind::Lumber, self.lumber),
+            (ResourceKind::Fabric, self.fabric),
+            (ResourceKind::Arms, self.arms),
+            (ResourceKind::Steel, self.steel),
+            (ResourceKind::Coal, self.coal),
+            (ResourceKind::Fuel, self.fuel),
+        ]
     }
 }
 
@@ -237,39 +230,18 @@ pub struct ShipOrderState {
 }
 
 /// Retail `TNavyOrderResourceDescriptor::StockCap`.
-pub(crate) const fn ship_stock_cap(ship_type: ShipType) -> i16 {
-    const CAPS: [i16; 14] = [
-        0, 600, 1000, 900, 1700, 900, 600, 700, 1200, 1800, 1200, 1000, 2800, 2200,
-    ];
-    CAPS[ship_type as usize]
+pub(crate) fn ship_stock_cap(ship_type: ShipType) -> i16 {
+    crate::navy_orders::ship_stock_cap(ship_type)
 }
 
 /// Retail toolbar bucket ≥ 0. Merchants are -1 and `CreateNavy` returns no ship.
-pub(crate) const fn ship_creates_navy_object(ship_type: ShipType) -> bool {
-    const TOOLBAR: [i16; 14] = [-1, -1, -1, 1, 0, -1, -1, 2, 3, 0, -1, 1, 3, 2];
-    TOOLBAR[ship_type as usize] >= 0
+pub(crate) fn ship_creates_navy_object(ship_type: ShipType) -> bool {
+    crate::navy_orders::ship_creates_navy_object(ship_type)
 }
 
-/// Retail's descriptor-derived Shipyard values, including its separate hull table.
-pub const fn ship_display_stats(ship_type: ShipType) -> [i16; 6] {
-    const STATS: [[i16; 6]; 14] = [
-        [0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 25, 0, 2],
-        [0, 0, 5, 40, 0, 4],
-        [3, 5, 10, 35, 4, 0],
-        [6, 6, 20, 65, 3, 0],
-        [0, 0, 5, 35, 0, 8],
-        [0, 0, 0, 25, 0, 4],
-        [3, 7, 20, 30, 7, 0],
-        [5, 8, 55, 50, 5, 0],
-        [10, 10, 60, 70, 6, 0],
-        [0, 0, 25, 45, 0, 16],
-        [6, 9, 50, 40, 8, 0],
-        [20, 13, 70, 115, 7, 0],
-        [18, 13, 55, 90, 9, 0],
-    ];
-
-    STATS[ship_type as usize]
+/// Shipyard `sta0`..`sta5`: descriptor columns 0–5.
+pub fn ship_display_stats(ship_type: ShipType) -> [i16; 6] {
+    crate::navy_orders::ship_display_stats(ship_type)
 }
 
 /// The one authoritative mutable order set for a city. Collection keys are

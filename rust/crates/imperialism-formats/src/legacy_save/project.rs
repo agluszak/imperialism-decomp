@@ -1,26 +1,27 @@
 use super::PROVINCE_COUNT;
+use super::conversions::*;
 use super::model::*;
 use super::*;
 use imperialism_core::*;
 
 fn optional_region_id(value: i8) -> Option<RegionId> {
-    (value != -1).then(|| RegionId::new(value as u8))
+    optional_u8(value).map(RegionId::new)
 }
 
 fn optional_resource_kind(value: i8) -> Option<ResourceKind> {
-    (value != -1).then(|| ResourceKind::from_index(value as u8).expect("retail resource kind"))
+    optional_u8(value).map(|value| ResourceKind::from_index(value).expect("retail resource kind"))
 }
 
 fn optional_tile_owner_tag(value: i8) -> Option<TileOwnerTag> {
-    (value != -1).then(|| TileOwnerTag::new(value as u8))
+    optional_u8(value).map(TileOwnerTag::new)
 }
 
 fn optional_major_nation_id(value: i8) -> Option<MajorNationId> {
-    (value != -1).then(|| MajorNationId::new(value as u8))
+    optional_u8(value).map(MajorNationId::new)
 }
 
 fn optional_province_id(value: i16) -> Option<ProvinceId> {
-    (value != -1).then(|| ProvinceId::new(value as u16))
+    optional_u16(value).map(ProvinceId::new)
 }
 
 fn optional_province_array(values: [i16; 3]) -> [Option<ProvinceId>; 3] {
@@ -28,15 +29,15 @@ fn optional_province_array(values: [i16; 3]) -> [Option<ProvinceId>; 3] {
 }
 
 fn optional_ocean_zone_id(value: i16) -> Option<OceanZoneId> {
-    (value != -1).then(|| OceanZoneId::new(value as u16))
+    optional_u16(value).map(OceanZoneId::new)
 }
 
 fn optional_nation_id(value: i16) -> Option<NationId> {
-    (value != -1).then(|| nation_id_from_retail_i16(value))
+    optional_u16(value).map(|value| NationId::new(value as u8))
 }
 
 fn optional_tile_id(value: i32) -> Option<TileId> {
-    (value != -1).then(|| TileId::new(value as u16))
+    optional_u16_from_i32(value).map(TileId::new)
 }
 
 fn civilian_work_order(
@@ -354,7 +355,7 @@ fn admiral_states(navy: &LegacyNavyState, ship_count: usize) -> Vec<AdmiralState
             name: admiral.name.clone(),
             experience: admiral.experience,
             ship: (admiral.ship_index >= 0 && (admiral.ship_index as usize) < ship_count)
-                .then(|| ShipId::new(admiral.ship_index as u32)),
+                .then(|| ShipIndex::new(admiral.ship_index as usize)),
         })
         .collect()
 }
@@ -362,13 +363,7 @@ fn admiral_states(navy: &LegacyNavyState, ship_count: usize) -> Vec<AdmiralState
 fn production_progress(order: &LegacyProductionOrder) -> ProductionProgress {
     ProductionProgress {
         quantity: order.quantity,
-        limiting_constraint: match order.limiting_constraint {
-            0 => ProductionConstraint::Resources,
-            1 => ProductionConstraint::Workforce,
-            2 => ProductionConstraint::Capacity,
-            3 => ProductionConstraint::Treasury,
-            value => panic!("unrecovered city production constraint {value}"),
-        },
+        limiting_constraint: production_constraint_from_retail(order.limiting_constraint),
     }
 }
 
@@ -378,26 +373,6 @@ fn requested_city_order(order: &LegacyItemOrder) -> RequestedCityOrderState {
         requested_quantity: order.requested_quantity,
         tracking_by_resource: ResourceTable::from_array(order.order.tracking_slots),
         accumulated_value: order.order.accumulated_value,
-    }
-}
-
-fn ship_type_from_retail(value: i16) -> ShipType {
-    match value {
-        0 => ShipType::NoShip,
-        1 => ShipType::Trader,
-        2 => ShipType::Indiaman,
-        3 => ShipType::Frigate,
-        4 => ShipType::ShipOfTheLine,
-        5 => ShipType::Paddlewheeler,
-        6 => ShipType::Clipper,
-        7 => ShipType::Raider,
-        8 => ShipType::Ironclad,
-        9 => ShipType::AdvancedIronclad,
-        10 => ShipType::Freighter,
-        11 => ShipType::ArmoredCruiser,
-        12 => ShipType::Dreadnought,
-        13 => ShipType::Battlecruiser,
-        _ => panic!("unrecovered ship type {value}"),
     }
 }
 
@@ -424,7 +399,10 @@ impl LegacyCityOrders {
                 let order = &self.ships[index];
                 let tracking = ResourceTable::from_array(order.tracking_slots);
                 ShipOrderState {
-                    ship_type: ship_type_from_retail(order.resource_type_index),
+                    ship_type: ShipType::from_index(
+                        u8::try_from(order.resource_type_index).expect("retail ship type"),
+                    )
+                    .expect("retail ship type"),
                     progress: production_progress(order),
                     materials: ShipMaterials {
                         lumber: tracking[ResourceKind::Lumber],
@@ -628,7 +606,7 @@ fn nation_pair_table<T: Copy>(
 }
 
 fn optional_major_nation_from_i16(value: i16) -> Option<MajorNationId> {
-    (value != -1).then(|| MajorNationId::new(value as u8))
+    optional_u16(value).map(|value| MajorNationId::new(value as u8))
 }
 
 fn diplomacy_state(diplomacy: &LegacyDiplomacyState) -> DiplomacyState {
@@ -675,44 +653,38 @@ fn diplomacy_state(diplomacy: &LegacyDiplomacyState) -> DiplomacyState {
     }
 }
 
-fn technology_research_status(value: u8) -> TechnologyResearchStatus {
-    match value {
-        0 => TechnologyResearchStatus::NotStarted,
-        1 => TechnologyResearchStatus::Pending,
-        2 => TechnologyResearchStatus::Researched,
-        _ => panic!("unrecovered technology research status {value}"),
-    }
+fn military_capability_kind(value: i16) -> MilitaryUnitKind {
+    MilitaryUnitKind::from_index(
+        u8::try_from(value).expect("retail nationCapRows slot is a military unit kind"),
+    )
+    .expect("retail nationCapRows slot is a military unit kind")
 }
 
-fn technology_state(technology: &LegacyTechnologyState) -> TechnologyState {
-    const ADVANCED_IRON_WORKING: usize = 0x0f;
-    const OIL_DRILLING: usize = 0x13;
-
-    let status = |nation: usize, technology_index: usize| {
-        technology.research_status_by_nation[nation][technology_index]
-    };
-    let researched = |nation: usize, technology_index: usize| status(nation, technology_index) == 2;
+fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
+    let status =
+        |nation: usize, tech: Technology| legacy.research_status_by_nation[nation][tech as usize];
+    let researched = |nation: usize, tech: Technology| status(nation, tech) == 2;
     let city_capabilities_by_nation = std::array::from_fn(|nation| CityTechnologyCapabilities {
-        advanced_iron_working: researched(nation, ADVANCED_IRON_WORKING),
-        oil_drilling: researched(nation, OIL_DRILLING),
+        advanced_iron_working: researched(nation, Technology::AdvancedIronWorking),
+        oil_drilling: researched(nation, Technology::OilDrilling),
         university: UniversityTechnologyState {
             available: CivilianUnitTable::from_array(
-                technology.university_recruitment_availability[nation].map(|value| value != 0),
+                legacy.university_recruitment_availability[nation].map(|value| value != 0),
             ),
             requirement_levels: ResourceTable::from_array(
-                technology.capability_value_by_nation_and_resource[nation].map(|value| value as u8),
+                legacy.capability_value_by_nation_and_resource[nation].map(|value| value as u8),
             ),
         },
         primary_civilian_distance_terrain: CivilianTerrainAccess {
-            hills: researched(nation, 12),
-            mountain: researched(nation, 23),
-            swamp: researched(nation, 6),
+            hills: researched(nation, Technology::CompoundSteamEngine),
+            mountain: researched(nation, Technology::Dynamite),
+            swamp: researched(nation, Technology::IronRailroadBridge),
         },
-        secondary_civilian_hills: researched(nation, 11),
-        secondary_civilian_swamp: researched(nation, 5),
-        fort_level_cap: if status(nation, 22) != 0 {
+        secondary_civilian_hills: researched(nation, Technology::BessemerConverter),
+        secondary_civilian_swamp: researched(nation, Technology::SquareSetTimbering),
+        fort_level_cap: if status(nation, Technology::LargeArtillery) != 0 {
             FortLevelCap::THREE
-        } else if status(nation, 11) != 0 {
+        } else if status(nation, Technology::BessemerConverter) != 0 {
             FortLevelCap::TWO
         } else {
             FortLevelCap::ONE
@@ -720,27 +692,31 @@ fn technology_state(technology: &LegacyTechnologyState) -> TechnologyState {
     });
 
     TechnologyState {
-        advanced_iron_working: technology.resource_type_enabled[CityFacilitySlot::Armory as usize]
+        advanced_iron_working: legacy.resource_type_enabled[CityFacilitySlot::Armory as usize] != 0,
+        marine_engineering: legacy.resource_type_enabled[CityFacilitySlot::PowerPlant as usize]
             != 0,
-        marine_engineering: technology.resource_type_enabled[CityFacilitySlot::PowerPlant as usize]
-            != 0,
-        scheduled_unlock_turn_by_technology: technology.priority_slots,
-        global_unlocks_by_technology: technology
-            .per_technology_unlock_flags
-            .map(|value| value != 0),
-        research_status_by_nation: MajorNationTable::from_array(
-            technology
-                .research_status_by_nation
-                .map(|row| row.map(technology_research_status)),
+        scheduled_unlock_turn_by_technology: TechnologyTable::from_array(legacy.priority_slots),
+        global_unlocks_by_technology: TechnologyTable::from_array(
+            legacy.per_technology_unlock_flags.map(|value| value != 0),
         ),
-        industry_enabled_by_slot: technology.resource_type_enabled.map(|value| value != 0),
+        research_status_by_nation: MajorNationTable::from_array(
+            legacy.research_status_by_nation.map(|row| {
+                TechnologyTable::from_array(row.map(technology_research_status_from_retail))
+            }),
+        ),
+        industry_enabled_by_slot: legacy.resource_type_enabled.map(|value| value != 0),
         military_unit_ability_active_by_nation: MajorNationTable::from_array(
-            technology
+            legacy
                 .ability_active_by_nation
                 .map(|row| MilitaryUnitTable::from_array(row.map(|value| value != 0))),
         ),
+        selected_capability_slots: MajorNationTable::from_array(
+            legacy
+                .nation_capability_slots
+                .map(|row| row.map(military_capability_kind)),
+        ),
         city_capabilities_by_nation: MajorNationTable::from_array(city_capabilities_by_nation),
-        navy_growth_ship_type: ShipType::from_index(technology.active_zone_index as u8)
+        navy_growth_ship_type: ShipType::from_index(legacy.active_zone_index as u8)
             .expect("retail activeZoneIndex1d4 is a ship type"),
     }
 }
@@ -761,10 +737,7 @@ impl LegacySaveV62 {
         let mut military_units = Vec::new();
         let mut civilian_units = Vec::new();
         let mut missions = Vec::new();
-        let mut pending = PendingWorkState {
-            combat_reports_pending: self.army_report_count != 0,
-            ..PendingWorkState::default()
-        };
+        let mut pending = PendingWorkState::default();
         let map = self.map.map_mgr();
         let map_view_origin = TileId::new(self.map.view_origin_tile as u16);
         let ocean = ocean_state(&self.ocean, &map);
@@ -800,34 +773,25 @@ impl LegacySaveV62 {
                 nation,
                 self.simulation.game_setup.foreign_minister_policy_ids[slot],
             );
-            let (ai_zone_targets, ai_province_targets, ai_trade) = match nation {
-                LegacyMajorNationState::Auto(auto) => (
-                    Some(ai_zone_targets(
+            let auto = match nation {
+                LegacyMajorNationState::Auto(auto) => Some(AutoGreatPowerState {
+                    zone_targets: ai_zone_targets(
                         &auto.auto_prefix.port_zone_state_flags,
                         live_ocean_context_count,
-                    )),
-                    Some(ai_province_targets(&auto.auto_prefix.map_node_state_flags)),
-                    Some(AiTradeState {
+                    ),
+                    province_targets: ai_province_targets(&auto.auto_prefix.map_node_state_flags),
+                    trade: AiTradeState {
                         temporary_processed_stock: ProcessedTradeCommodityTable::from_array(
                             auto.auto_prefix.action_metric_by_quarter,
                         ),
-                    }),
-                ),
-                LegacyMajorNationState::Other(_) => (None, None, None),
+                    },
+                }),
+                LegacyMajorNationState::Other(_) => None,
             };
             let major = MajorNation {
-                kind: match nation {
-                    LegacyMajorNationState::Auto(_) => MajorNationKind::AutoGreatPower,
-                    LegacyMajorNationState::Other(_) => MajorNationKind::GreatPower,
-                },
+                auto,
                 common: country_common(&great_power.country),
-                economy: great_power_state(
-                    great_power,
-                    foreign_minister_personality,
-                    ai_zone_targets,
-                    ai_province_targets,
-                    ai_trade,
-                ),
+                economy: great_power_state(great_power, foreign_minister_personality),
                 city,
                 towns,
             };
@@ -907,6 +871,7 @@ impl LegacySaveV62 {
             missions,
             news: NewsState::default(),
             pending,
+            battle_reports: battle_reports(&self.army_reports),
             continuation: TurnContinuation::default(),
         }
     }
@@ -958,16 +923,11 @@ fn deal_book_entries(list: &LegacyFixedRecordList) -> Vec<TradeDealBookEntry> {
         .records
         .iter()
         .map(|record| {
-            let kind = match i16::from_le_bytes([record[0], record[1]]) {
-                0 => DealBookEntryKind::Accept,
-                1 => DealBookEntryKind::Offer,
-                value => panic!("unrecovered deal-book entry kind {value}"),
-            };
             let nation_raw = i16::from_le_bytes([record[2], record[3]]);
             let nation = nation_id_from_retail_i16(nation_raw);
             let amount = i16::from_le_bytes([record[4], record[5]]);
             TradeDealBookEntry {
-                kind,
+                kind: deal_book_entry_kind_from_retail(i16::from_le_bytes([record[0], record[1]])),
                 nation,
                 amount,
                 unit_price: i32::from_le_bytes([record[8], record[9], record[10], record[11]]),
@@ -982,21 +942,14 @@ fn ai_zone_targets(flags: &[u8; AI_ZONE_TARGET_CAPACITY], live_count: usize) -> 
     flags[..live_count]
         .iter()
         .copied()
-        .map(ai_target_state)
+        .map(ai_target_from_retail)
         .collect()
 }
 
 fn ai_province_targets(flags: &[u8; PROVINCE_COUNT]) -> ProvinceTable<AiTargetState> {
-    ProvinceTable::from_array(std::array::from_fn(|index| ai_target_state(flags[index])))
-}
-
-fn ai_target_state(value: u8) -> AiTargetState {
-    match value {
-        0 => AiTargetState::Unmarked,
-        1 => AiTargetState::Candidate,
-        2 => AiTargetState::MissionQueued,
-        _ => panic!("unrecovered AI target state {value}"),
-    }
+    ProvinceTable::from_array(std::array::from_fn(|index| {
+        ai_target_from_retail(flags[index])
+    }))
 }
 
 fn ocean_state(ocean: &LegacyOceanState, map: &MapMgr) -> Ocean {
@@ -1056,8 +1009,7 @@ fn zone_state(context: &LegacyZone) -> Zone {
 
 fn rebuild_ocean_neighbors(ocean: &mut Ocean, map: &MapMgr) {
     let geometry = map.geometry();
-    for tile_index in 0..TileId::COUNT {
-        let tile = TileId::new(tile_index);
+    for tile in TileId::all() {
         let Some(zone_index) = ocean_zone_for_tile(ocean, map, tile) else {
             continue;
         };
@@ -1153,18 +1105,10 @@ fn foreign_minister_personality(
     nation: &LegacyMajorNationState,
     setup_policy_id: i16,
 ) -> ForeignMinisterPersonality {
-    if !matches!(nation, LegacyMajorNationState::Auto(_)) {
-        return ForeignMinisterPersonality::Base;
-    }
-    match setup_policy_id {
-        0 => ForeignMinisterPersonality::Arms,
-        1 => ForeignMinisterPersonality::Trader,
-        2 => ForeignMinisterPersonality::Textile,
-        3 => ForeignMinisterPersonality::Diplomat,
-        4 => ForeignMinisterPersonality::Bill,
-        5 => ForeignMinisterPersonality::Ted,
-        _ => panic!("unrecovered AI foreign-minister setup policy {setup_policy_id}"),
-    }
+    foreign_minister_personality_from_retail(
+        matches!(nation, LegacyMajorNationState::Auto(_)),
+        setup_policy_id,
+    )
 }
 
 fn trade_commodity_from_retail(value: i16) -> TradeCommodity {
@@ -1245,9 +1189,6 @@ fn minor_trade_state(nation: &LegacyMinorState) -> MinorTradeState {
 fn great_power_state(
     nation: &LegacyGreatPowerState,
     foreign_minister_personality: ForeignMinisterPersonality,
-    ai_zone_targets: Option<Vec<AiTargetState>>,
-    ai_province_targets: Option<ProvinceTable<AiTargetState>>,
-    ai_trade: Option<AiTradeState>,
 ) -> GreatPowerState {
     let prefix = &nation.prefix;
     let post = &nation.post_city;
@@ -1267,14 +1208,7 @@ fn great_power_state(
         .as_ref()
         .expect("retail great power has an interior minister");
     GreatPowerState {
-        controller: if ai_zone_targets.is_some() {
-            MajorNationController::Computer
-        } else {
-            MajorNationController::Human
-        },
         diplomacy_eligible: prefix.diplomacy_eligible != 0,
-        ai_zone_targets,
-        ai_province_targets,
         foreign_minister_personality,
         foreign_minister_skill_index: foreign_minister.skill_index,
         foreign_trade: foreign_trade_state(foreign_minister),
@@ -1308,7 +1242,6 @@ fn great_power_state(
         deal_book: deal_book_state(&prefix.diplomacy_tracked_slots),
         pending_ship: pending_ship(interior_minister),
         interior_civilian: Box::new(interior_civilian_state(interior_minister)),
-        ai_trade,
         aid_allocation_by_minor_nation: MinorNationTable::from_array(
             prefix
                 .aid_allocation_by_minor_nation
@@ -1348,8 +1281,6 @@ fn interior_civilian_state(minister: &LegacyInteriorMinisterState) -> InteriorCi
     };
     let resource_order_metrics =
         ResourceTable::from_array(std::array::from_fn(|index| minister.order_metrics[index]));
-    let mut expansion_demand = [0_i16; CityFacilitySlot::COUNT];
-    expansion_demand[..7].copy_from_slice(&minister.order_metrics[53..60]);
     let city_order_demand = AiCityOrderDemand::from_parts(
         TrainingOrderTable::from_array(std::array::from_fn(|index| {
             minister.order_metrics[23 + index]
@@ -1364,7 +1295,9 @@ fn interior_civilian_state(minister: &LegacyInteriorMinisterState) -> InteriorCi
             minister.order_metrics[43 + index]
         })),
         minister.order_metrics[51],
-        ProductionTable::from_array(expansion_demand),
+        ExpansionOrderTable::from_array(std::array::from_fn(|index| {
+            minister.order_metrics[53 + index]
+        })),
         minister.order_metrics[60],
     );
     let pending_development_actions = minister.integer_lists[2]
@@ -1401,14 +1334,10 @@ fn interior_civilian_state(minister: &LegacyInteriorMinisterState) -> InteriorCi
 }
 
 fn pending_action_from_retail(status: i8, payload: i16) -> PendingActionState {
-    let status = match status {
-        0 => PendingActionStatus::None,
-        0x32 => PendingActionStatus::Queued,
-        0x33 => PendingActionStatus::Level3,
-        0x34 => PendingActionStatus::Level4,
-        _ => panic!("unrecovered pending-action status {status}"),
-    };
-    PendingActionState::new(status, (payload != -1).then_some(payload))
+    PendingActionState::new(
+        PendingActionStatus::from_retail(status),
+        (payload != -1).then_some(payload),
+    )
 }
 
 fn diplomacy_grants_from_retail_entries(
@@ -1446,15 +1375,6 @@ fn diplomacy_policy_from_retail(entry: i16) -> DiplomacyPolicy {
         0x133 => DiplomacyPolicy::BuildConsulate,
         0x134 => DiplomacyPolicy::BuildEmbassy,
         _ => panic!("unrecovered diplomacy policy {entry:#06x}"),
-    }
-}
-
-pub(super) fn country_status_from_retail(value: i16) -> CountryStatus {
-    match value {
-        -1 => CountryStatus::Independent,
-        100..=122 => CountryStatus::ProtectorateOf(NationId::new((value - 100) as u8)),
-        200..=222 => CountryStatus::ColonyOf(NationId::new((value - 200) as u8)),
-        _ => panic!("unrecovered encoded nation status {value}"),
     }
 }
 
@@ -1531,7 +1451,7 @@ fn province_state(province: &LegacyProvince) -> ProvinceState {
 }
 
 fn country_common(country: &LegacyCountryBase) -> NationCommonState {
-    NationCommonState::from_parts(
+    let mut common = NationCommonState::from_parts(
         normalize_nation_display_name(&country.alternate_identity),
         country_status_from_retail(country.encoded_country_status),
         country
@@ -1547,5 +1467,52 @@ fn country_common(country: &LegacyCountryBase) -> NationCommonState {
                 .need_level_by_nation
                 .map(|score| TradePolicyScore::new(i32::from(score))),
         ),
-    )
+    );
+    common.unit_name_ordinal_by_type = country.unit_name_ordinal_by_type;
+    common.unit_name_counter = country.unit_name_counter;
+    common
+}
+
+fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
+    reports
+        .iter()
+        .filter_map(|report| {
+            let kind = BattleReportKind::from_retail(report.kind)?;
+            let location = if kind.is_land() {
+                BattleReportLocation::Province(ProvinceId::try_new(report.node_id as u16)?)
+            } else {
+                BattleReportLocation::Zone(OceanZoneId::new(report.node_id as u16))
+            };
+            Some(BattleReport {
+                participant_index: report.participant_index,
+                displayed_participant: report.displayed_participant,
+                kind,
+                location,
+                sides: std::array::from_fn(|side| {
+                    let side = &report.sides[side];
+                    BattleReportSide {
+                        nation: NationId::try_new(side.nation).unwrap_or(NationId::new(0)),
+                        name: side.name.clone(),
+                        overlay: side.overlay.clone(),
+                        children: side
+                            .children
+                            .iter()
+                            .map(|child| BattleReportUnit {
+                                resource_type: child.resource_type,
+                                stock_or_required: child.stock_or_required,
+                                name: child.name.clone(),
+                                strength_bucket: child.strength_bucket,
+                                detail_identity: child.detail_identity,
+                            })
+                            .collect(),
+                    }
+                }),
+                marker_pixel_x: 0,
+                marker_pixel_y: 0,
+                placed: false,
+                marker_sprite: 0,
+                list_ordinal: 0,
+            })
+        })
+        .collect()
 }

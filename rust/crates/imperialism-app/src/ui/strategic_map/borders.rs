@@ -4,7 +4,7 @@ use super::TILE_SIZE;
 
 pub(super) const CITY_BORDER_PALETTE: u8 = 0x13;
 pub(super) const MINOR_NATION_BORDER_PALETTE: u8 = 0x0a;
-pub(super) const MAJOR_NATION_BORDER_PALETTES: [u8; MajorNationId::COUNT as usize] =
+pub(super) const MAJOR_NATION_BORDER_PALETTES: [u8; MAJOR_NATION_COUNT] =
     [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
 pub(super) fn compose_strategic_borders(state: &GameState, tile: TileId, pixels: &mut [u8]) {
     let tile_state = state.map()[tile];

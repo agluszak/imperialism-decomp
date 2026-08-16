@@ -40,7 +40,7 @@ fn season_advance_clears_status_flags() {
 #[ignore = "requires the native C++ oracle"]
 fn turn_alerts_skip_first_economic_turn() {
     compare_native("turn_alerts_skip_first_economic_turn", |state, (): ()| {
-        state.show_turn_alerts()
+        state.show_turn_alerts(true)
     })
     .unwrap();
 }
@@ -68,6 +68,46 @@ fn quarter_gate_off_decade() {
 fn return_to_map_clears_notice_queues() {
     compare_native("return_to_map_clears_notice_queues", |state, (): ()| {
         state.return_to_map();
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn newspaper_navy_growth_reward_levels() {
+    compare_native("newspaper_navy_growth_reward_levels", |state, (): ()| {
+        state.mark_all_pending_status_flags_handled();
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn opening_civilian_grant() {
+    compare_native("opening_civilian_grant", |state, (): ()| {
+        let nation = MajorNationId::from_nation(state.turn().active_nation)
+            .expect("active nation is a great power");
+        state.grant_opening_civilians_for_nation(nation);
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn opening_home_city_setup() {
+    compare_native("opening_home_city_setup", |state, (): ()| {
+        for index in 0..MajorNationId::COUNT {
+            state.finalize_home_city_setup(MajorNationId::new(index));
+        }
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn newspaper_pending_status() {
+    compare_native("newspaper_pending_status", |state, (): ()| {
+        state.mark_all_pending_status_flags_handled();
     })
     .unwrap();
 }

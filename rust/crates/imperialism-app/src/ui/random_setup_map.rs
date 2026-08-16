@@ -1,6 +1,6 @@
 use super::RetailUiAssets;
 use super::random_setup::{RandomGameSetup, RandomSetupPreview};
-use super::retail::{RetailTag, find_descendant};
+use super::retail::RetailTree;
 use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
@@ -10,7 +10,9 @@ use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
-use imperialism_core::{MajorNationId, MapGeometry, MapTopology, NationId, TileId, TileOwnerTag};
+use imperialism_core::{
+    MAJOR_NATION_COUNT, MajorNationId, MapGeometry, MapTopology, NationId, TileId, TileOwnerTag,
+};
 use imperialism_formats::{DibPalette, FourCc, PictureId, Rgb, fourcc};
 
 const MAP_TAG: FourCc = fourcc!("map ");
@@ -26,8 +28,7 @@ const PREVIEW_HEIGHT: usize = 180;
 const PREVIEW_PIXEL_COUNT: usize = PREVIEW_WIDTH * PREVIEW_HEIGHT;
 const OFF_MAP_PALETTE: u8 = 0x10;
 const SELECTED_EDGE_PALETTE: u8 = 0x13;
-const MAJOR_NATION_PALETTES: [u8; MajorNationId::COUNT as usize] =
-    [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
+const MAJOR_NATION_PALETTES: [u8; MAJOR_NATION_COUNT] = [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
 
 /// The retail 8-bit map surface retained for both display and click sampling.
 #[derive(Component, Default)]
@@ -67,18 +68,17 @@ impl Plugin for MapPreviewPlugin {
 pub(crate) fn attach_random_setup_meanings(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
 ) {
     // PointerCanvas behavior already adds RelativeCursorPosition for the map.
-    let map = find_descendant(root, MAP_TAG, children, tags);
+    let map = tree.find(root, MAP_TAG);
     commands
         .entity(map)
         .insert(RandomSetupMapPreview::default())
         .observe(on_map_preview_click);
-    let coat = find_descendant(root, COAT_TAG, children, tags);
+    let coat = tree.find(root, COAT_TAG);
     commands.entity(coat).insert(RandomSetupCoat::default());
-    let flag = find_descendant(root, FLAG_TAG, children, tags);
+    let flag = tree.find(root, FLAG_TAG);
     commands.entity(flag).insert(RandomSetupFlag::default());
 }
 
@@ -120,25 +120,20 @@ fn sync_random_setup_flag(
     setup: Res<RandomGameSetup>,
     mut pictures: RetailUiAssets,
     mut flags: Query<(Entity, &mut RandomSetupFlag, Option<&mut ImageNode>)>,
-    mut atlas_transparency_applied: Local<bool>,
+    mut transparent_atlas: Local<Option<Handle<Image>>>,
 ) {
     let added = flags.iter_mut().any(|(_, flag, _)| flag.is_added());
     if !setup.is_changed() && !added {
         return;
     }
-    let handle = match pictures.picture(FLAG_ATLAS_PICTURE) {
-        Ok(handle) => handle,
-        Err(error) => {
-            warn!(
-                "could not load retail setup flag atlas {:?}: {error}",
-                FLAG_ATLAS_PICTURE
-            );
-            return;
-        }
-    };
-    if !*atlas_transparency_applied {
-        match pictures.with_picture_image_mut(FLAG_ATLAS_PICTURE, apply_flag_atlas_transparency) {
-            Ok(()) => *atlas_transparency_applied = true,
+    let handle = if let Some(handle) = transparent_atlas.clone() {
+        handle
+    } else {
+        match pictures.transformed_picture(FLAG_ATLAS_PICTURE, apply_flag_atlas_transparency) {
+            Ok(handle) => {
+                *transparent_atlas = Some(handle.clone());
+                handle
+            }
             Err(error) => {
                 warn!(
                     "could not apply transparency to retail setup flag atlas {:?}: {error}",
@@ -147,7 +142,7 @@ fn sync_random_setup_flag(
                 return;
             }
         }
-    }
+    };
 
     for (entity, mut flag, image_node) in &mut flags {
         if flag.nation == Some(setup.nation) {
@@ -256,8 +251,7 @@ pub(crate) fn compose_owner_preview_indices_with_fill(
     // setup topology wraps horizontally.
     let geometry = MapGeometry::new(MapTopology::Bounded);
 
-    for tile_index in 0..TileId::COUNT {
-        let tile_id = TileId::new(tile_index);
+    for tile_id in TileId::all() {
         let (row, column) = geometry.row_column(tile_id);
         let odd_row = row & 1 != 0;
         let px = 3 * usize::from(column) + usize::from(odd_row);
@@ -472,10 +466,7 @@ fn nation_at_preview_position(
 }
 
 fn nation_for_palette(palette: u8) -> Option<MajorNationId> {
-    MAJOR_NATION_PALETTES
-        .iter()
-        .position(|candidate| *candidate == palette)
-        .map(|nation| MajorNationId::new(nation as u8))
+    MajorNationId::all().find(|&nation| MAJOR_NATION_PALETTES[usize::from(nation.get())] == palette)
 }
 
 pub(crate) fn preview_image_from_indices(palette_indices: &[u8], palette: &DibPalette) -> Image {

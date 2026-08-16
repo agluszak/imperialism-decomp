@@ -5,8 +5,13 @@ use crate::*;
 use serde::{Deserialize, Serialize};
 
 const STACK_COMPOSITION: [i16; 16] = [0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 3, 0, 0, 3, 4, 5];
-const UNIT_ORDER_IDLE: i32 = 0;
-const UNIT_ORDER_SLEEP: i32 = 2;
+const EXPERIENCE_WINNER: i16 = 0x23;
+const EXPERIENCE_LOSER: i16 = 0x14;
+const EXPERIENCE_CAP: i16 = 0x190;
+
+fn military_ids(units: &[MilitaryUnitState], indices: &[usize]) -> Vec<MilitaryUnitId> {
+    indices.iter().map(|&index| units[index].id).collect()
+}
 
 /// Land battle that retail would open as a modal tactical view.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -18,11 +23,24 @@ pub struct PendingLandBattle {
     pub defender_units: Vec<MilitaryUnitId>,
 }
 
+/// Remaining `DoCombatMoves` work after a tactical battle stop.
+///
+/// Retail keeps `pendingUnitPool0c` and `nextStackOrdinal10` so later stacks
+/// continue without reforming or re-rolling sort keys.
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub struct CombatMovesContinuation {
+    stacks: Vec<ArmyStack>,
+    next_stack: usize,
+    owner_cache: ProvinceTable<Option<NationId>>,
+    pub battle: PendingLandBattle,
+}
+
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 struct ArmyStack {
     dest: ProvinceId,
     owner: NationId,
     source: ProvinceId,
-    units: Vec<usize>,
+    units: Vec<MilitaryUnitId>,
     sort_key: i16,
 }
 
@@ -36,35 +54,124 @@ impl GameState {
     /// Retail `TArmyMgr::DoCombatMoves` for a non-client host.
     ///
     /// Identical orders produce identical movement and battle-creation state.
-    /// The first would-be tactical battle is stored instead of opening UI.
-    pub fn do_combat_moves(&mut self) -> Option<PendingLandBattle> {
+    /// The first would-be tactical battle is returned with the remaining stacks
+    /// for the turn driver to store as [`crate::TurnContinuation::LandBattle`].
+    pub fn do_combat_moves(&mut self) -> Option<CombatMovesContinuation> {
         let mut chains = StationedChains::from_units(&self.military_units);
         let stacks = self.form_stacks(&mut chains);
-        let mut owner_cache = self.normalized_owner_cache();
-        let battle = self.resolve_next_move(&mut chains, stacks, &mut owner_cache);
-        self.pending_land_battle = battle.clone();
-        if battle.is_none() {
-            self.finalize_military_units_without_ui(&owner_cache);
-        }
-        battle
+        let owner_cache = self.normalized_owner_cache();
+        self.resolve_next_move(&mut chains, stacks, 0, owner_cache)
+    }
+
+    pub(crate) fn resume_combat_moves(
+        &mut self,
+        continuation: CombatMovesContinuation,
+    ) -> Option<CombatMovesContinuation> {
+        let mut chains = StationedChains::from_units(&self.military_units);
+        self.resolve_next_move(
+            &mut chains,
+            continuation.stacks,
+            continuation.next_stack,
+            continuation.owner_cache,
+        )
     }
 
     pub fn pending_land_battle(&self) -> Option<&PendingLandBattle> {
-        self.pending_land_battle.as_ref()
+        match &self.continuation {
+            crate::turn_flow::TurnContinuation::LandBattle(continuation) => {
+                Some(&continuation.battle)
+            }
+            _ => None,
+        }
+    }
+
+    /// `TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters` without the trailing
+    /// `ResolveNextMove`. Call [`Self::resume_after_land_battle`] to resume the cursor.
+    pub fn resolve_land_battle(&mut self, attacker_won: bool) {
+        let crate::turn_flow::TurnContinuation::LandBattle(continuation) = &self.continuation
+        else {
+            panic!("land-battle resolve requires a combat-moves continuation");
+        };
+        assert!(
+            continuation.next_stack > 0,
+            "combat continuation has no interrupted stack"
+        );
+        let stack = continuation.stacks[continuation.next_stack - 1].clone();
+        let battle = continuation.battle.clone();
+        let owner_cache = continuation.owner_cache.clone();
+        let attacker_indices = battle
+            .attacker_units
+            .iter()
+            .filter_map(|&id| self.military_index(id))
+            .collect::<Vec<_>>();
+        let defender_indices = battle
+            .defender_units
+            .iter()
+            .filter_map(|&id| self.military_index(id))
+            .collect::<Vec<_>>();
+
+        // `ApplyPostBattleStackOutcomeAndGrowUnitMeters` (0x004a5ca0) builds the land
+        // battle record before redistributing stacks.
+        self.append_land_battle_report(
+            BattleReportKind::LandBattle,
+            battle.province,
+            battle.attacker_nation,
+            battle.defender_nation,
+            &battle.attacker_units,
+            &battle.defender_units,
+            attacker_won,
+        );
+
+        let mut chains = StationedChains::from_units(&self.military_units);
+        if attacker_won {
+            self.redistribute_losers(&defender_indices, battle.province, &owner_cache);
+            self.apply_uncontested_indices(&mut chains, &attacker_indices);
+            self.grow_stack_experience(&attacker_indices, EXPERIENCE_WINNER);
+            self.grow_stack_experience(&defender_indices, EXPERIENCE_LOSER);
+            let crate::turn_flow::TurnContinuation::LandBattle(continuation) =
+                &mut self.continuation
+            else {
+                unreachable!("continuation still holds the land battle");
+            };
+            continuation.owner_cache[battle.province] = Some(stack.owner);
+        } else {
+            self.relocate_stack_to_source(&mut chains, &stack, &attacker_indices);
+            self.grow_stack_experience(&attacker_indices, EXPERIENCE_LOSER);
+            self.grow_stack_experience(&defender_indices, EXPERIENCE_WINNER);
+        }
+    }
+
+    /// Stores a `DoCombatMoves` land-battle continuation (same as `advance_turn`).
+    pub fn enter_land_battle(&mut self, continuation: CombatMovesContinuation) {
+        self.continuation = crate::turn_flow::TurnContinuation::LandBattle(continuation);
+    }
+
+    /// Continues `DoCombatMoves` after the current land battle has been resolved.
+    pub fn resume_after_land_battle(&mut self, story_ids: &[i32]) -> crate::TurnStop {
+        let crate::turn_flow::TurnContinuation::LandBattle(continuation) =
+            std::mem::take(&mut self.continuation)
+        else {
+            panic!("land-battle resume requires a combat-moves continuation");
+        };
+        if let Some(continuation) = self.resume_combat_moves(continuation) {
+            self.continuation = crate::turn_flow::TurnContinuation::LandBattle(continuation);
+            return crate::TurnStop::LandBattle;
+        }
+        self.advance_turn(story_ids)
     }
 
     fn form_stacks(&mut self, chains: &mut StationedChains) -> Vec<ArmyStack> {
         let mut stacks = Vec::new();
         for (tile_index, mut unit_index) in chains.head.iter().copied().enumerate() {
             let province = ProvinceId::new(tile_index as u16);
-            let mut previous_target: Option<i16> = Some(-1);
+            let mut previous_target: Option<ProvinceId> = None;
             let mut previous_owner: Option<NationId> = None;
             let mut current_stack: Option<usize> = None;
             while let Some(index) = unit_index {
                 let next = chains.next[index];
-                let target = order_target_index(&self.military_units[index].order);
+                let target = self.military_units[index].order.target();
                 let owner = self.military_units[index].owner_nation;
-                if target == -1 {
+                let Some(dest) = target else {
                     let strength = self.military_units[index].strength;
                     self.military_units[index].strength = if strength < 0x191 {
                         strength + 100
@@ -74,15 +181,18 @@ impl GameState {
                     if let Some(major) = MajorNationId::from_nation(owner)
                         && !self.nations.majors[major].economy.diplomacy_eligible
                     {
-                        set_unit_order(&mut self.military_units[index], UNIT_ORDER_SLEEP, -1);
+                        set_unit_order(
+                            &mut self.military_units[index],
+                            MilitaryOrderCode::Sleep,
+                            None,
+                        );
                     }
                     unit_index = next;
                     continue;
-                }
+                };
 
-                let dest = ProvinceId::new(target as u16);
                 let reuse = current_stack
-                    .filter(|_| previous_target == Some(target) && previous_owner == Some(owner));
+                    .filter(|_| previous_target == Some(dest) && previous_owner == Some(owner));
                 let stack_index = if let Some(stack_index) = reuse {
                     stack_index
                 } else {
@@ -104,11 +214,13 @@ impl GameState {
                         );
                         0
                     };
-                    previous_target = Some(target);
+                    previous_target = Some(dest);
                     previous_owner = Some(owner);
                     stack_index
                 };
-                stacks[stack_index].units.insert(0, index);
+                stacks[stack_index]
+                    .units
+                    .insert(0, self.military_units[index].id);
                 current_stack = Some(stack_index);
                 unit_index = next;
             }
@@ -117,7 +229,10 @@ impl GameState {
         for stack in &mut stacks {
             let mut min_class = 3_i16;
             let mut max_class = 1_i16;
-            for &index in &stack.units {
+            for &id in &stack.units {
+                let index = self
+                    .military_index(id)
+                    .expect("formed stacks only contain live units");
                 let class = combat_class(self.military_units[index].unit_type);
                 min_class = min_class.min(class);
                 max_class = max_class.max(class);
@@ -134,18 +249,27 @@ impl GameState {
         &mut self,
         chains: &mut StationedChains,
         stacks: Vec<ArmyStack>,
-        owner_cache: &mut [i16; PROVINCE_COUNT],
-    ) -> Option<PendingLandBattle> {
-        for stack in stacks {
-            let dest_index = usize::from(stack.dest.get());
-            if owner_cache[dest_index] == i16::from(stack.owner.get()) {
-                self.apply_uncontested_stack(chains, &stack);
+        mut next_stack: usize,
+        mut owner_cache: ProvinceTable<Option<NationId>>,
+    ) -> Option<CombatMovesContinuation> {
+        while next_stack < stacks.len() {
+            let index = next_stack;
+            next_stack += 1;
+            let stack = &stacks[index];
+            if owner_cache[stack.dest] == Some(stack.owner) {
+                self.apply_uncontested_stack(chains, stack);
                 continue;
             }
-            if let Some(battle) = self.try_create_land_battle(chains, &stack, owner_cache) {
-                return Some(battle);
+            if let Some(battle) = self.try_create_land_battle(chains, stack, &mut owner_cache) {
+                return Some(CombatMovesContinuation {
+                    stacks,
+                    next_stack,
+                    owner_cache,
+                    battle,
+                });
             }
         }
+        self.finalize_military_units_without_ui(&owner_cache);
         None
     }
 
@@ -153,13 +277,16 @@ impl GameState {
         &mut self,
         chains: &mut StationedChains,
         stack: &ArmyStack,
-        owner_cache: &mut [i16; PROVINCE_COUNT],
+        owner_cache: &mut ProvinceTable<Option<NationId>>,
     ) -> Option<PendingLandBattle> {
         let dest_index = usize::from(stack.dest.get());
-        let cached_owner = owner_cache[dest_index];
+        let cached_owner = owner_cache[stack.dest];
         let mut our_units = Vec::new();
-        for &index in &stack.units {
-            if order_target_index(&self.military_units[index].order) == stack.dest.get() as i16 {
+        for &id in &stack.units {
+            let Some(index) = self.military_index(id) else {
+                continue;
+            };
+            if self.military_units[index].order.target() == Some(stack.dest) {
                 our_units.insert(0, index);
             }
         }
@@ -174,41 +301,72 @@ impl GameState {
             garrison = chains.next[index];
         }
 
+        let attacker_ids = military_ids(&self.military_units, &our_units);
+        let defender_ids = military_ids(&self.military_units, &enemy_units);
         if !self.nation_pair_war_stamp_out_of_date(stack.owner, cached_owner) {
+            // `TryCreateTacticalBattleViewForTileArmies` (0x004a4xxx): current war stamp
+            // builds a preempted report (`sideWonFlag=0`) then relocates the stack.
+            let defender = cached_owner.expect("preempted stack has a province owner");
+            self.append_land_battle_report(
+                BattleReportKind::PreemptedLandBattle,
+                stack.dest,
+                stack.owner,
+                defender,
+                &attacker_ids,
+                &defender_ids,
+                false,
+            );
             self.relocate_stack_to_source(chains, stack, &our_units);
             return None;
         }
         if !enemy_units.is_empty() {
-            let defender = NationId::new(cached_owner as u8);
+            let defender = cached_owner.expect("war stamp requires a province owner");
             return Some(PendingLandBattle {
                 province: stack.dest,
                 attacker_nation: stack.owner,
                 defender_nation: defender,
-                attacker_units: our_units
-                    .iter()
-                    .map(|&index| self.military_units[index].id)
-                    .collect(),
-                defender_units: enemy_units
-                    .iter()
-                    .map(|&index| self.military_units[index].id)
-                    .collect(),
+                attacker_units: attacker_ids,
+                defender_units: defender_ids,
             });
         }
 
+        let defender = cached_owner.expect("uncontested takeover has a province owner");
+        self.append_land_battle_report(
+            BattleReportKind::UncontestedTakeover,
+            stack.dest,
+            stack.owner,
+            defender,
+            &attacker_ids,
+            &[],
+            true,
+        );
         self.apply_uncontested_indices(chains, &our_units);
-        owner_cache[dest_index] = i16::from(stack.owner.get());
+        owner_cache[stack.dest] = Some(stack.owner);
         None
     }
 
     fn apply_uncontested_stack(&mut self, chains: &mut StationedChains, stack: &ArmyStack) {
-        self.apply_uncontested_indices(chains, &stack.units);
+        let mut units = Vec::new();
+        for &id in &stack.units {
+            if let Some(index) = self.military_index(id) {
+                units.push(index);
+            }
+        }
+        self.apply_uncontested_indices(chains, &units);
     }
 
     fn apply_uncontested_indices(&mut self, chains: &mut StationedChains, units: &[usize]) {
         for &index in units {
-            let dest = order_target_index(&self.military_units[index].order);
-            self.move_unit_to(chains, index, ProvinceId::new(dest as u16));
-            set_unit_order(&mut self.military_units[index], UNIT_ORDER_IDLE, -1);
+            let dest = self.military_units[index]
+                .order
+                .target()
+                .expect("moving stack units have a destination");
+            self.move_unit_to(chains, index, dest);
+            set_unit_order(
+                &mut self.military_units[index],
+                MilitaryOrderCode::Idle,
+                None,
+            );
         }
     }
 
@@ -219,7 +377,11 @@ impl GameState {
         units: &[usize],
     ) {
         for &index in units {
-            set_unit_order(&mut self.military_units[index], UNIT_ORDER_IDLE, -1);
+            set_unit_order(
+                &mut self.military_units[index],
+                MilitaryOrderCode::Idle,
+                None,
+            );
             if self.military_units[index].stationed_province != Some(stack.source) {
                 self.move_unit_to(chains, index, stack.source);
             }
@@ -233,26 +395,28 @@ impl GameState {
         clear_order_target(&mut self.military_units[index]);
     }
 
-    fn normalized_owner_cache(&self) -> [i16; PROVINCE_COUNT] {
-        let mut cache = [-1_i16; PROVINCE_COUNT];
-        for (index, owner) in cache.iter_mut().enumerate() {
-            *owner = self.normalized_province_owner(ProvinceId::new(index as u16));
-        }
-        cache
+    pub(crate) fn military_index(&self, id: MilitaryUnitId) -> Option<usize> {
+        self.military_units.iter().position(|unit| unit.id == id)
     }
 
-    fn normalized_province_owner(&self, province: ProvinceId) -> i16 {
-        let Some(owner) = self.map.provinces[province].owner() else {
-            return -1;
-        };
-        match self.nations.country_status(owner) {
-            Some(CountryStatus::ColonyOf(master)) => i16::from(master.get()),
-            _ => i16::from(owner.get()),
-        }
+    fn normalized_owner_cache(&self) -> ProvinceTable<Option<NationId>> {
+        ProvinceTable::from_fn(|province| self.normalized_province_owner(province))
     }
 
-    fn nation_pair_war_stamp_out_of_date(&self, source: NationId, target: i16) -> bool {
-        let Some(target) = NationId::try_new(target as u8) else {
+    pub(crate) fn normalized_province_owner(&self, province: ProvinceId) -> Option<NationId> {
+        let owner = self.map.provinces[province].owner()?;
+        Some(match self.nations.country_status(owner) {
+            Some(CountryStatus::ColonyOf(master)) => master,
+            _ => owner,
+        })
+    }
+
+    pub(crate) fn nation_pair_war_stamp_out_of_date(
+        &self,
+        source: NationId,
+        target: Option<NationId>,
+    ) -> bool {
+        let Some(target) = target else {
             return false;
         };
         if self.nations.common(source).is_none() || self.nations.common(target).is_none() {
@@ -264,31 +428,36 @@ impl GameState {
         self.diplomacy.relationship_turns[source][target] != Some(self.turn.economic_turn as i16)
     }
 
-    fn finalize_military_units_without_ui(&mut self, owner_cache: &[i16; PROVINCE_COUNT]) {
-        for tile in &mut self.map.tiles {
+    fn finalize_military_units_without_ui(
+        &mut self,
+        owner_cache: &ProvinceTable<Option<NationId>>,
+    ) {
+        for tile in self.map.tiles.iter_mut() {
             tile.per_tile_visited = 0;
         }
         for unit in &mut self.military_units {
-            if unit.strength > 0 && unit.stationed_province.is_some() && unit.order.code() != 2 {
-                let target = order_target_index(&unit.order);
-                set_unit_order(unit, UNIT_ORDER_IDLE, target);
+            if unit.strength > 0
+                && unit.stationed_province.is_some()
+                && unit.order.code() != MilitaryOrderCode::Sleep
+            {
+                let target = unit.order.target();
+                set_unit_order(unit, MilitaryOrderCode::Idle, target);
             }
         }
         self.apply_ownership_changes(owner_cache);
     }
 
-    fn apply_ownership_changes(&mut self, owner_cache: &[i16; PROVINCE_COUNT]) {
-        for (index, &cached) in owner_cache.iter().enumerate() {
-            let province = ProvinceId::new(index as u16);
+    fn apply_ownership_changes(&mut self, owner_cache: &ProvinceTable<Option<NationId>>) {
+        for province in ProvinceId::all() {
             let Some(current) = self.map.provinces[province].owner() else {
                 continue;
             };
-            if cached == i16::from(current.get()) {
-                continue;
-            }
-            let Some(new_owner) = NationId::try_new(cached as u8) else {
+            let Some(new_owner) = owner_cache[province] else {
                 continue;
             };
+            if new_owner == current {
+                continue;
+            }
             if matches!(
                 self.nations.country_status(current),
                 Some(CountryStatus::ColonyOf(master)) if master == new_owner
@@ -298,6 +467,66 @@ impl GameState {
             self.change_province_owner(province, new_owner);
         }
     }
+
+    fn redistribute_losers(
+        &mut self,
+        defender_indices: &[usize],
+        battle_site: ProvinceId,
+        owner_cache: &ProvinceTable<Option<NationId>>,
+    ) {
+        let Some(&head) = defender_indices.first() else {
+            return;
+        };
+        let owner = self.military_units[head].owner_nation;
+        let mut candidates = [ProvinceId::new(0); 12];
+        let mut count = 0_i32;
+        for &adjacent in self.map.provinces[battle_site].adjacency() {
+            if owner_cache[adjacent] == Some(owner) {
+                candidates[count as usize] = adjacent;
+                count += 1;
+                if count == 12 {
+                    break;
+                }
+            }
+        }
+        if count == 0 {
+            return;
+        }
+        let chosen = candidates[(self.rng.next_crt_rand() % count) as usize];
+        for &index in defender_indices {
+            if tactical_category(self.military_units[index].unit_type) == 0 {
+                continue;
+            }
+            set_unit_order(
+                &mut self.military_units[index],
+                MilitaryOrderCode::Redeploy,
+                Some(chosen),
+            );
+        }
+    }
+
+    fn grow_stack_experience(&mut self, indices: &[usize], amount: i16) {
+        for &index in indices {
+            let unit = &mut self.military_units[index];
+            if unit.strength > 0 {
+                unit.experience = (unit.experience + amount).min(EXPERIENCE_CAP);
+            }
+        }
+    }
+}
+
+pub(crate) fn stationed_chain_indices(
+    units: &[MilitaryUnitState],
+    province: ProvinceId,
+) -> Vec<usize> {
+    let chains = StationedChains::from_units(units);
+    let mut indices = Vec::new();
+    let mut cursor = chains.head[usize::from(province.get())];
+    while let Some(index) = cursor {
+        indices.push(index);
+        cursor = chains.next[index];
+    }
+    indices
 }
 
 impl StationedChains {
@@ -367,32 +596,23 @@ impl StationedChains {
     }
 }
 
-fn order_target_index(order: &MilitaryOrder) -> i16 {
-    match *order {
-        MilitaryOrder::Idle { .. } => -1,
-        MilitaryOrder::Retail { target, .. } => target.map_or(-1, |province| province.get() as i16),
-    }
-}
-
-fn set_unit_order(unit: &mut MilitaryUnitState, code: i32, target: i16) {
+pub(crate) fn set_unit_order(
+    unit: &mut MilitaryUnitState,
+    code: MilitaryOrderCode,
+    target: Option<ProvinceId>,
+) {
     let targets = *unit.order.targets();
     let mirrors = *unit.order.target_mirrors();
-    let target = ProvinceId::try_new(target as u16).filter(|_| target >= 0);
-    unit.order = if code == UNIT_ORDER_IDLE && target.is_none() {
+    unit.order = if code == MilitaryOrderCode::Idle && target.is_none() {
         MilitaryOrder::idle(targets, mirrors)
     } else {
-        MilitaryOrder::retail(
-            MilitaryOrderCode::from_retail(code),
-            target,
-            targets,
-            mirrors,
-        )
+        MilitaryOrder::retail(code, target, targets, mirrors)
     };
 }
 
 fn clear_order_target(unit: &mut MilitaryUnitState) {
     let code = unit.order.code();
-    set_unit_order(unit, code, -1);
+    set_unit_order(unit, code, None);
 }
 
 fn sort_stacks_descending(stacks: &mut [ArmyStack], rng: &mut RngState) {
@@ -494,7 +714,7 @@ mod tests {
         let province = ProvinceId::new(province);
         let order = match dest {
             Some(dest) => MilitaryOrder::retail(
-                MilitaryOrderCode::from_retail(1),
+                MilitaryOrderCode::Redeploy,
                 Some(ProvinceId::new(dest)),
                 [Some(province); 3],
                 [Some(province); 3],
@@ -529,9 +749,10 @@ mod tests {
         let unit = &state.military_units[0];
         assert_eq!(unit.id, id);
         assert_eq!(unit.stationed_province, Some(ProvinceId::new(2)));
-        assert_eq!(unit.order.code(), 0);
+        assert_eq!(unit.order.code(), MilitaryOrderCode::Idle);
         assert_eq!(unit.order.targets(), &[Some(ProvinceId::new(1)); 3]);
         assert_eq!(unit.strength, 400);
+        assert!(state.battle_reports.is_empty());
     }
 
     #[test]
@@ -548,7 +769,8 @@ mod tests {
             DiplomaticRelationship::War;
         let battle = state
             .do_combat_moves()
-            .expect("hostile move creates a battle");
+            .expect("hostile move creates a battle")
+            .battle;
         assert_eq!(
             battle,
             PendingLandBattle {
@@ -563,10 +785,322 @@ mod tests {
             state.military_units[0].stationed_province,
             Some(ProvinceId::new(1))
         );
-        assert_eq!(state.military_units[0].order.code(), 1);
+        assert_eq!(
+            state.military_units[0].order.code(),
+            MilitaryOrderCode::Redeploy
+        );
         assert_eq!(
             state.military_units[1].stationed_province,
             Some(ProvinceId::new(2))
         );
+        assert!(state.pending_land_battle().is_none());
+        assert!(
+            state.battle_reports.is_empty(),
+            "land-battle records are written in ApplyPostBattleStackOutcome, not CreateTacticalBattle"
+        );
+    }
+
+    #[test]
+    fn combat_moves_phase_keeps_the_battle_in_continuation() {
+        let mut state = game_state();
+        state.turn.economic_turn = 3;
+        state.turn.phase = crate::PhaseCode::COMBAT_MOVES;
+        seed_province(&mut state, 1, 0, &[2]);
+        seed_province(&mut state, 2, 1, &[1]);
+        let attacker = push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
+        let defender = push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);
+        state.diplomacy.relationships[NationId::new(0)][NationId::new(1)] =
+            DiplomaticRelationship::War;
+        state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
+            DiplomaticRelationship::War;
+        let expected = PendingLandBattle {
+            province: ProvinceId::new(2),
+            attacker_nation: NationId::new(0),
+            defender_nation: NationId::new(1),
+            attacker_units: vec![attacker],
+            defender_units: vec![defender],
+        };
+        assert_eq!(state.advance_turn(&[]), crate::TurnStop::LandBattle);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::MILITARY_CLEANUP);
+        assert_eq!(state.pending_land_battle(), Some(&expected));
+        let encoded = serde_json::to_vec(&state).expect("serialize");
+        let restored: GameState = serde_json::from_slice(&encoded).expect("deserialize");
+        assert_eq!(restored.pending_land_battle(), Some(&expected));
+        assert_eq!(state.advance_turn(&[]), crate::TurnStop::LandBattle);
+        assert_eq!(
+            state.military_units[0].stationed_province,
+            Some(ProvinceId::new(1))
+        );
+    }
+
+    #[test]
+    fn land_battle_stop_keeps_remaining_stacks_for_resume() {
+        let mut state = game_state();
+        state.turn.economic_turn = 3;
+        state.turn.phase = crate::PhaseCode::COMBAT_MOVES;
+        seed_province(&mut state, 1, 0, &[2]);
+        seed_province(&mut state, 2, 1, &[1]);
+        seed_province(&mut state, 3, 0, &[4]);
+        seed_province(&mut state, 4, 1, &[3]);
+        let first_attacker = push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
+        let first_defender = push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);
+        let second_attacker = push_unit(&mut state, 0, 3, MilitaryUnitKind::Regulars, Some(4));
+        let second_defender = push_unit(&mut state, 1, 4, MilitaryUnitKind::Militia, None);
+        state.diplomacy.relationships[NationId::new(0)][NationId::new(1)] =
+            DiplomaticRelationship::War;
+        state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
+            DiplomaticRelationship::War;
+
+        assert_eq!(state.advance_turn(&[]), crate::TurnStop::LandBattle);
+        let first = state
+            .pending_land_battle()
+            .cloned()
+            .expect("first hostile stack creates a battle");
+        assert!(
+            first.attacker_units.contains(&first_attacker)
+                || first.attacker_units.contains(&second_attacker)
+        );
+
+        let remaining_attacker = if first.attacker_units.contains(&first_attacker) {
+            second_attacker
+        } else {
+            first_attacker
+        };
+        let remaining_defender = if first.defender_units.contains(&first_defender) {
+            second_defender
+        } else {
+            first_defender
+        };
+
+        assert_eq!(
+            state.resume_after_land_battle(&[]),
+            crate::TurnStop::LandBattle
+        );
+        let second = state
+            .pending_land_battle()
+            .cloned()
+            .expect("remaining hostile stack creates a second battle");
+        assert_eq!(second.attacker_units, vec![remaining_attacker]);
+        assert_eq!(second.defender_units, vec![remaining_defender]);
+        assert_ne!(first.province, second.province);
+    }
+
+    fn seed_war(state: &mut GameState) {
+        state.diplomacy.relationships[NationId::new(0)][NationId::new(1)] =
+            DiplomaticRelationship::War;
+        state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
+            DiplomaticRelationship::War;
+    }
+
+    fn battle_then_later_uncontested_state() -> (GameState, MilitaryUnitId, MilitaryUnitId) {
+        let mut state = game_state();
+        state.turn.economic_turn = 3;
+        state.turn.phase = crate::PhaseCode::COMBAT_MOVES;
+        seed_province(&mut state, 1, 0, &[2]);
+        seed_province(&mut state, 2, 1, &[1]);
+        seed_province(&mut state, 3, 0, &[4]);
+        seed_province(&mut state, 4, 0, &[3]);
+        state
+            .nations
+            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(1));
+        state
+            .nations
+            .append_owned_region_during_construction(NationId::new(1), ProvinceId::new(2));
+        state
+            .nations
+            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(3));
+        state
+            .nations
+            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(4));
+        let attacker = push_unit(&mut state, 0, 1, MilitaryUnitKind::Hussars, Some(2));
+        let _defender = push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);
+        let mover = push_unit(&mut state, 0, 3, MilitaryUnitKind::Regulars, Some(4));
+        seed_war(&mut state);
+        (state, attacker, mover)
+    }
+
+    #[test]
+    fn later_uncontested_stack_moves_without_reforming() {
+        let (mut state, attacker, mover) = battle_then_later_uncontested_state();
+        assert_eq!(state.advance_turn(&[]), crate::TurnStop::LandBattle);
+        let battle = state
+            .pending_land_battle()
+            .cloned()
+            .expect("higher-class hostile stack battles first");
+        assert_eq!(battle.attacker_units, vec![attacker]);
+        assert_eq!(
+            state.military_units[2].stationed_province,
+            Some(ProvinceId::new(3))
+        );
+
+        let crate::turn_flow::TurnContinuation::LandBattle(continuation) =
+            std::mem::take(&mut state.continuation)
+        else {
+            panic!("combat continuation");
+        };
+        assert!(
+            state.resume_combat_moves(continuation).is_none(),
+            "remaining uncontested stack should finish combat moves"
+        );
+        assert_eq!(
+            state.military_units[0].stationed_province,
+            Some(ProvinceId::new(1)),
+            "unresolved attackers stay put"
+        );
+        assert_eq!(state.military_units[2].id, mover);
+        assert_eq!(
+            state.military_units[2].stationed_province,
+            Some(ProvinceId::new(4))
+        );
+        assert_eq!(
+            state.military_units[2].order.code(),
+            MilitaryOrderCode::Idle
+        );
+    }
+
+    #[test]
+    fn resolve_land_battle_then_continue_remaining_stacks() {
+        let (mut state, attacker, mover) = battle_then_later_uncontested_state();
+        assert_eq!(state.advance_turn(&[]), crate::TurnStop::LandBattle);
+        state.resolve_land_battle(true);
+        assert_eq!(state.military_units[0].id, attacker);
+        assert_eq!(
+            state.military_units[0].stationed_province,
+            Some(ProvinceId::new(2))
+        );
+        assert_eq!(
+            state.military_units[0].order.code(),
+            MilitaryOrderCode::Idle
+        );
+        assert_eq!(state.military_units[0].experience, EXPERIENCE_WINNER);
+        assert_eq!(state.military_units[1].experience, EXPERIENCE_LOSER);
+        assert_eq!(
+            state.military_units[2].stationed_province,
+            Some(ProvinceId::new(3))
+        );
+
+        let crate::turn_flow::TurnContinuation::LandBattle(continuation) =
+            std::mem::take(&mut state.continuation)
+        else {
+            panic!("combat continuation");
+        };
+        assert!(state.resume_combat_moves(continuation).is_none());
+        assert_eq!(state.military_units[2].id, mover);
+        assert_eq!(
+            state.military_units[2].stationed_province,
+            Some(ProvinceId::new(4))
+        );
+        assert_eq!(
+            state.map.provinces[ProvinceId::new(2)].owner(),
+            Some(NationId::new(0))
+        );
+    }
+
+    #[test]
+    fn auto_resolve_writes_strengths_then_continues() {
+        let mut state = game_state();
+        state.turn.economic_turn = 3;
+        state.turn.phase = crate::PhaseCode::COMBAT_MOVES;
+        seed_province(&mut state, 1, 0, &[2]);
+        seed_province(&mut state, 2, 1, &[1]);
+        seed_province(&mut state, 3, 0, &[4]);
+        seed_province(&mut state, 4, 0, &[3]);
+        state
+            .nations
+            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(1));
+        state
+            .nations
+            .append_owned_region_during_construction(NationId::new(1), ProvinceId::new(2));
+        state
+            .nations
+            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(3));
+        state
+            .nations
+            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(4));
+        let attacker = push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
+        state.military_units[0].strength = 500;
+        let _defender = push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);
+        state.military_units[1].strength = 100;
+        let mover = push_unit(&mut state, 0, 3, MilitaryUnitKind::Regulars, Some(4));
+        seed_war(&mut state);
+
+        assert_eq!(state.advance_turn(&[]), crate::TurnStop::LandBattle);
+        let attacker_strength = state.military_units[0].strength;
+        let defender_strength = state.military_units[1].strength;
+        let _ = state.auto_resolve_land_battle(&[]);
+        assert!(state.battle_reports_pending());
+        assert_ne!(
+            (
+                state.military_units[0].strength,
+                state.military_units[1].strength
+            ),
+            (attacker_strength, defender_strength),
+            "ApplyChanges must write tactical strengths before post-battle"
+        );
+        assert_eq!(state.military_units[0].id, attacker);
+        assert_eq!(state.military_units[2].id, mover);
+        assert_eq!(
+            state.military_units[2].stationed_province,
+            Some(ProvinceId::new(4))
+        );
+        assert!(state.pending_land_battle().is_none());
+        let attacker_xp = state.military_units[0].experience;
+        let defender_xp = state.military_units[1].experience;
+        assert!(
+            attacker_xp == EXPERIENCE_WINNER && defender_xp == EXPERIENCE_LOSER
+                || attacker_xp == EXPERIENCE_LOSER && defender_xp == EXPERIENCE_WINNER
+                || attacker_xp == EXPERIENCE_WINNER && defender_xp == 0
+                || attacker_xp == 0 && defender_xp == EXPERIENCE_WINNER,
+            "post-battle experience must follow the Auto outcome, got {attacker_xp}/{defender_xp}"
+        );
+    }
+
+    #[test]
+    fn land_battle_resume_follows_unit_ids_after_roster_shift() {
+        let mut state = game_state();
+        state.turn.economic_turn = 3;
+        state.turn.phase = crate::PhaseCode::COMBAT_MOVES;
+        seed_province(&mut state, 1, 0, &[2]);
+        seed_province(&mut state, 2, 1, &[1]);
+        seed_province(&mut state, 3, 0, &[4]);
+        seed_province(&mut state, 4, 1, &[3]);
+        let first_attacker = push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
+        let first_defender = push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);
+        let second_attacker = push_unit(&mut state, 0, 3, MilitaryUnitKind::Regulars, Some(4));
+        let second_defender = push_unit(&mut state, 1, 4, MilitaryUnitKind::Militia, None);
+        seed_war(&mut state);
+
+        assert_eq!(state.advance_turn(&[]), crate::TurnStop::LandBattle);
+        let first = state
+            .pending_land_battle()
+            .cloned()
+            .expect("first hostile stack creates a battle");
+        let remaining_attacker = if first.attacker_units.contains(&first_attacker) {
+            second_attacker
+        } else {
+            first_attacker
+        };
+        let remaining_defender = if first.defender_units.contains(&first_defender) {
+            second_defender
+        } else {
+            first_defender
+        };
+
+        let dummy = push_unit(&mut state, 0, 1, MilitaryUnitKind::Minutemen, None);
+        let dummy_unit = state.military_units.pop().expect("dummy was pushed");
+        assert_eq!(dummy_unit.id, dummy);
+        state.military_units.insert(0, dummy_unit);
+
+        assert_eq!(
+            state.resume_after_land_battle(&[]),
+            crate::TurnStop::LandBattle
+        );
+        let second = state
+            .pending_land_battle()
+            .cloned()
+            .expect("remaining hostile stack creates a second battle");
+        assert_eq!(second.attacker_units, vec![remaining_attacker]);
+        assert_eq!(second.defender_units, vec![remaining_defender]);
+        assert_ne!(first.province, second.province);
     }
 }

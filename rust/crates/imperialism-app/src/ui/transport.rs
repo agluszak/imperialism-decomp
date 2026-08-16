@@ -1,9 +1,10 @@
 use super::GameSession;
 use super::RetailUiAssets;
+use super::fill_brackets;
 use super::format_currency;
-use super::game_shell::{bind_native_game_screen_nav, project_date_and_treasury};
+use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::{RetailTag, find_descendant};
+use super::retail::RetailTree;
 use crate::AppState;
 use bevy::picking::hover::Hovered;
 use bevy::prelude::*;
@@ -113,8 +114,8 @@ struct TransportAdjust {
     delta: i16,
 }
 
-#[derive(Component)]
-struct TransportHoverText(String);
+#[derive(Component, Clone, Copy)]
+struct TransportHover(TransportAllocation);
 
 #[derive(Clone, Copy)]
 enum TransportGaugeKind {
@@ -135,7 +136,6 @@ enum TransportDisplay {
         resource: ResourceKind,
         unit_value: i32,
     },
-    Treasury,
     Gauge {
         kind: TransportGaugeKind,
         normal_color: Color,
@@ -179,31 +179,21 @@ fn enter_transport_screen(mut commands: Commands) {
 fn bind_transport_screen(
     mut commands: Commands,
     root: Single<Entity, Added<TransportScreen>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
     mut session: ResMut<GameSession>,
 ) {
     bind_native_game_screen_nav(
         &mut commands,
         *root,
-        &children,
-        &tags,
+        &tree,
         fourcc!("topB"),
         Some(fourcc!("tool")),
     );
 
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
-        .expect("Transport screen requires an active major nation");
-    session.0.rebuild_nation_resource_yields(nation);
-    project_date_and_treasury(
-        &mut commands,
-        &mut assets,
-        *root,
-        &children,
-        &tags,
-        &session,
-    );
+    let nation = session.active_major_nation();
+    session.game.rebuild_nation_resource_yields(nation);
+    bind_game_status_display(&mut commands, &mut assets, *root, &tree);
     let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
@@ -223,18 +213,16 @@ fn bind_transport_screen(
     let title_color = assets.palette_color(0xd2);
     let title_shadow = assets.palette_color(0x28);
     for tag in [fourcc!("titL"), fourcc!("titR")] {
-        commands
-            .entity(find_descendant(*root, tag, &children, &tags))
-            .insert((
-                title_font.clone(),
-                title_layout,
-                title_line_height,
-                TextColor(title_color),
-                TextShadow {
-                    offset: Vec2::ONE,
-                    color: title_shadow,
-                },
-            ));
+        commands.entity(tree.find(*root, tag)).insert((
+            title_font.clone(),
+            title_layout,
+            title_line_height,
+            TextColor(title_color),
+            TextShadow {
+                offset: Vec2::ONE,
+                color: title_shadow,
+            },
+        ));
     }
     let colors = TransportColors {
         // TTransportPicture passes these color codes through TViewMgr::GetColor.
@@ -261,8 +249,7 @@ fn bind_transport_screen(
     bind_transport_controls(
         &mut commands,
         *root,
-        &children,
-        &tags,
+        &tree,
         font,
         layout,
         line_height,
@@ -270,15 +257,10 @@ fn bind_transport_screen(
         colors,
     );
     for binding in TRANSPORT_ROWS {
-        let row = find_descendant(*root, binding.tag, &children, &tags);
+        let row = tree.find(*root, binding.tag);
         commands
             .entity(row)
-            .insert(TransportHoverText(transport_hover_text(
-                &assets,
-                &session.0,
-                nation,
-                binding.allocation,
-            )));
+            .insert(TransportHover(binding.allocation));
     }
 }
 
@@ -286,26 +268,25 @@ fn bind_transport_screen(
 fn bind_transport_controls(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     font: TextFont,
     layout: TextLayout,
     line_height: LineHeight,
     cursor_style: (TextFont, TextLayout, LineHeight, Color, Color),
     colors: TransportColors,
 ) {
-    let selected = find_descendant(root, fourcc!("tran"), children, tags);
+    let selected = tree.find(root, fourcc!("tran"));
     commands
         .entity(selected)
         .insert((Checked, InteractionDisabled));
     for (index, binding) in TRANSPORT_ROWS.into_iter().enumerate() {
-        let row = find_descendant(root, binding.tag, children, tags);
+        let row = tree.find(root, binding.tag);
         commands.entity(row).insert((
             TransportDisplay::Row(binding.allocation),
             Hovered::default(),
         ));
-        let left = find_descendant(row, fourcc!("left"), children, tags);
-        let right = find_descendant(row, fourcc!("rght"), children, tags);
+        let left = tree.find(row, fourcc!("left"));
+        let right = tree.find(row, fourcc!("rght"));
         commands
             .entity(left)
             .insert(TransportAdjust {
@@ -372,7 +353,7 @@ fn bind_transport_controls(
         }
     }
 
-    let total = find_descendant(root, fourcc!("tota"), children, tags);
+    let total = tree.find(root, fourcc!("tota"));
     commands
         .entity(total)
         .apply_scene(transport_capacity_overlay(
@@ -381,7 +362,7 @@ fn bind_transport_controls(
             line_height,
             colors,
         ));
-    let cursor = find_descendant(root, fourcc!("curs"), children, tags);
+    let cursor = tree.find(root, fourcc!("curs"));
     let (cursor_font, cursor_layout, cursor_line_height, cursor_color, cursor_shadow) =
         cursor_style;
     commands.entity(cursor).insert((
@@ -396,8 +377,6 @@ fn bind_transport_controls(
         },
         TransportCursor,
     ));
-    let treasury = find_descendant(root, fourcc!("trea"), children, tags);
-    commands.entity(treasury).insert(TransportDisplay::Treasury);
 }
 
 fn transport_track(left: i32, color: Color, allocation: Option<TransportAllocation>) -> impl Scene {
@@ -570,10 +549,9 @@ fn on_transport_arrow_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
-        .expect("Transport screen requires an active major nation");
+    let nation = session.active_major_nation();
     session
-        .0
+        .game
         .step_transport_allocation(nation, action.allocation, action.delta);
 }
 
@@ -585,14 +563,13 @@ fn sync_transport_text(
     if !session.is_changed() && screens.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
-        .expect("Transport screen requires an active major nation");
-    let major = session.0.nations().major(nation);
+    let nation = session.active_major_nation();
+    let major = session.game.nations().major(nation);
     let economy = &major.economy;
     for (display, mut text) in &mut texts {
         match *display {
             TransportDisplay::RowCaption(allocation) => {
-                let status = session.0.transport_row_status(nation, allocation);
+                let status = session.game.transport_row_status(nation, allocation);
                 text.0 = format!("{}  /  {}", status.allocated, status.available);
             }
             TransportDisplay::CapacityCaption => {
@@ -608,9 +585,6 @@ fn sync_transport_text(
             } => {
                 let target = economy.need_target_by_type[resource];
                 text.0 = format_currency(i32::from(target) * unit_value);
-            }
-            TransportDisplay::Treasury => {
-                text.0 = format_currency(major.common.treasury);
             }
             _ => {}
         }
@@ -630,9 +604,8 @@ fn sync_transport_visual(
     if !session.is_changed() && screens.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
-        .expect("Transport screen requires an active major nation");
-    let economy = &session.0.nations().major(nation).economy;
+    let nation = session.active_major_nation();
+    let economy = &session.game.nations().major(nation).economy;
     for (display, mut node, mut visibility, mut color) in &mut displays {
         match *display {
             TransportDisplay::Gauge {
@@ -642,7 +615,7 @@ fn sync_transport_visual(
             } => {
                 let (value, total) = match kind {
                     TransportGaugeKind::Allocation(allocation) => {
-                        let status = session.0.transport_row_status(nation, allocation);
+                        let status = session.game.transport_row_status(nation, allocation);
                         *visibility = if status.adjustable {
                             Visibility::Visible
                         } else {
@@ -667,7 +640,7 @@ fn sync_transport_visual(
                 below_color,
                 reached_color,
             } => {
-                let status = session.0.transport_row_status(nation, allocation);
+                let status = session.game.transport_row_status(nation, allocation);
                 if !status.adjustable {
                     *visibility = Visibility::Hidden;
                     continue;
@@ -703,8 +676,7 @@ fn sync_transport_presence(
     if !session.is_changed() && screens.is_empty() {
         return;
     }
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
-        .expect("Transport screen requires an active major nation");
+    let nation = session.active_major_nation();
     for (entity, display, mut visibility, disabled) in &mut rows {
         let allocation = match *display {
             TransportDisplay::Row(allocation)
@@ -717,7 +689,7 @@ fn sync_transport_presence(
             },
             _ => continue,
         };
-        let status = session.0.transport_row_status(nation, allocation);
+        let status = session.game.transport_row_status(nation, allocation);
         *visibility = if status.adjustable {
             Visibility::Visible
         } else {
@@ -732,7 +704,7 @@ fn sync_transport_presence(
         }
     }
     for (entity, action, disabled) in &actions {
-        let status = session.0.transport_row_status(nation, action.allocation);
+        let status = session.game.transport_row_status(nation, action.allocation);
         let enabled = if action.delta < 0 {
             status.can_decrease
         } else {
@@ -752,7 +724,8 @@ fn sync_transport_cursor(
     session: Res<GameSession>,
     screens: Query<(), Added<TransportScreen>>,
     changed_rows: Query<(), (With<TransportDisplay>, Changed<Hovered>)>,
-    rows: Query<(&TransportHoverText, &Hovered)>,
+    rows: Query<(&TransportHover, &Hovered)>,
+    assets: RetailUiAssets,
     mut cursor: Query<&mut Text, With<TransportCursor>>,
 ) {
     if !session.is_changed() && screens.is_empty() && changed_rows.is_empty() {
@@ -761,9 +734,14 @@ fn sync_transport_cursor(
     let Ok(mut text) = cursor.single_mut() else {
         return;
     };
+    let nation = session.active_major_nation();
     text.0 = rows
         .iter()
-        .find_map(|(hover, hovered)| hovered.get().then_some(hover.0.clone()))
+        .find_map(|(hover, hovered)| {
+            hovered
+                .get()
+                .then(|| transport_hover_text(&assets, &session.game, nation, hover.0))
+        })
         .unwrap_or_default();
 }
 
@@ -800,8 +778,7 @@ fn transport_hover_text(
     }
 
     let stock = allocation_amount(allocation, |resource| city.stockpile[resource]);
-    let building =
-        |slot| city.building_type(slot, economy, major.common.owned_region_count() as i32);
+    let building = |slot| city.building_type(slot, economy, major.common.owned_region_count());
     let needed = if allocation == TransportAllocation::COTTON_AND_WOOL {
         Some(building(CityFacilitySlot::TextileMill) * 2)
     } else if allocation == TransportAllocation::TIMBER {
@@ -848,22 +825,6 @@ fn transport_string(assets: &RetailUiAssets, offset: i16) -> String {
         .expect("retail transport string must load")
 }
 
-fn fill_brackets(template: &str, args: &[&str]) -> String {
-    let mut output = template.to_owned();
-    for (index, value) in args.iter().enumerate() {
-        let slot = index + 1;
-        let Some(start) = output.find(&format!("[{slot}:")) else {
-            continue;
-        };
-        let end = output[start..]
-            .find(']')
-            .map(|end| start + end)
-            .expect("retail bracket expression must close");
-        output.replace_range(start..=end, value);
-    }
-    output
-}
-
 fn allocation_amount(
     allocation: TransportAllocation,
     mut amount: impl FnMut(ResourceKind) -> i16,
@@ -889,15 +850,10 @@ fn transport_gauge_width(value: i16, total: i16) -> f32 {
 
 #[cfg(test)]
 mod tests {
+    use super::super::retail::RetailTag;
     use super::*;
     use bevy::asset::AssetPlugin;
-    use bevy::camera::NormalizedRenderTarget;
-    use bevy::picking::backend::HitData;
-    use bevy::picking::pointer::{Location, PointerId};
     use bevy::scene::ScenePlugin;
-    use bevy::ui::Pressed;
-    use bevy::ui_widgets::{Button as UiButton, ButtonPlugin};
-    use std::time::Duration;
 
     #[derive(Component)]
     struct TestTransportRoot;
@@ -963,32 +919,20 @@ mod tests {
             let row = world
                 .spawn((RetailTag(binding.tag), Node::default(), ChildOf(root)))
                 .id();
-            world.spawn((
-                RetailTag(fourcc!("left")),
-                UiButton,
-                Node::default(),
-                ChildOf(row),
-            ));
-            world.spawn((
-                RetailTag(fourcc!("rght")),
-                UiButton,
-                Node::default(),
-                ChildOf(row),
-            ));
+            world.spawn((RetailTag(fourcc!("left")), Node::default(), ChildOf(row)));
+            world.spawn((RetailTag(fourcc!("rght")), Node::default(), ChildOf(row)));
         }
     }
 
     fn bind_test_transport(
         mut commands: Commands,
         root: Single<Entity, Added<TestTransportRoot>>,
-        children: Query<&Children>,
-        tags: Query<&RetailTag>,
+        tree: RetailTree,
     ) {
         bind_transport_controls(
             &mut commands,
             *root,
-            &children,
-            &tags,
+            &tree,
             TextFont::default(),
             TextLayout::default(),
             LineHeight::default(),
@@ -1008,64 +952,14 @@ mod tests {
         );
     }
 
-    fn click_button(app: &mut App, entity: Entity) {
-        let location = Location {
-            target: NormalizedRenderTarget::None {
-                width: 640,
-                height: 480,
-            },
-            position: Vec2::ZERO,
-        };
-        let hit = HitData {
-            camera: Entity::PLACEHOLDER,
-            depth: 0.0,
-            position: None,
-            normal: None,
-            extra: None,
-        };
-        app.world_mut().commands().trigger(Pointer::new(
-            PointerId::Mouse,
-            location.clone(),
-            Press {
-                button: PointerButton::Primary,
-                hit: hit.clone(),
-                count: 1,
-            },
-            entity,
-        ));
-        app.world_mut().flush();
-        app.world_mut().flush();
-        assert!(app.world().get::<Pressed>(entity).is_some());
-        app.world_mut().commands().trigger(Pointer::new(
-            PointerId::Mouse,
-            location.clone(),
-            Click {
-                button: PointerButton::Primary,
-                hit: hit.clone(),
-                duration: Duration::ZERO,
-                count: 1,
-            },
-            entity,
-        ));
-        app.world_mut().flush();
-        app.world_mut().flush();
-        app.world_mut().commands().trigger(Pointer::new(
-            PointerId::Mouse,
-            location,
-            Release {
-                button: PointerButton::Primary,
-                hit,
-            },
-            entity,
-        ));
-        app.world_mut().flush();
+    fn activate(app: &mut App, entity: Entity) {
+        app.world_mut().commands().trigger(Activate { entity });
         app.world_mut().flush();
         app.update();
-        assert!(app.world().get::<Pressed>(entity).is_none());
     }
 
     #[test]
-    fn clicking_generated_arrows_updates_allocation_and_caption() {
+    fn activating_generated_arrows_updates_allocation_and_caption() {
         let state = fixture_state();
         let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
         let binding = TRANSPORT_ROWS
@@ -1079,23 +973,18 @@ mod tests {
         let before = state.transport_row_status(nation, binding.allocation);
 
         let mut app = App::new();
-        app.add_plugins((
-            MinimalPlugins,
-            AssetPlugin::default(),
-            ScenePlugin,
-            ButtonPlugin,
-        ))
-        .insert_resource(GameSession(state))
-        .add_systems(
-            Update,
-            (
-                bind_test_transport,
-                sync_transport_text,
-                sync_transport_visual,
-                sync_transport_presence,
-            )
-                .chain(),
-        );
+        app.add_plugins((MinimalPlugins, AssetPlugin::default(), ScenePlugin))
+            .insert_resource(GameSession { game: state })
+            .add_systems(
+                Update,
+                (
+                    bind_test_transport,
+                    sync_transport_text,
+                    sync_transport_visual,
+                    sync_transport_presence,
+                )
+                    .chain(),
+            );
         spawn_transport_hierarchy(app.world_mut());
         app.update();
 
@@ -1129,12 +1018,12 @@ mod tests {
             TRANSPORT_ROWS.len() * 2
         );
 
-        click_button(&mut app, right);
+        activate(&mut app, right);
 
         let after = app
             .world()
             .resource::<GameSession>()
-            .0
+            .game
             .transport_row_status(nation, binding.allocation);
         assert_eq!(after.allocated, before.allocated + 1);
         let (gauge, visibility, color) = app
@@ -1171,11 +1060,11 @@ mod tests {
             format!("{}  /  {}", after.allocated, after.available)
         );
 
-        click_button(&mut app, left);
+        activate(&mut app, left);
         let restored = app
             .world()
             .resource::<GameSession>()
-            .0
+            .game
             .transport_row_status(nation, binding.allocation);
         assert_eq!(restored.allocated, before.allocated);
         let caption = app

@@ -123,8 +123,6 @@ fn inter_nation_event(
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct PendingWorkState {
     pub nations: MajorNationTable<NationPendingWork>,
-    /// Whether retail's post-combat map boundary has battle reports to present.
-    pub combat_reports_pending: bool,
     pub newspaper_events: Vec<PendingNewspaperEvent>,
     pub war_transitions: Vec<WarTransition>,
 }
@@ -366,17 +364,6 @@ pub struct LandSale {
 }
 
 impl GameState {
-    /// Mirrors turn-machine case `0xf` after `StartNewsPhase`: build pages, then
-    /// drop the consumed event queue.
-    pub fn start_newspaper_phase(&mut self, story_ids: &[i32]) {
-        self.turn.phase = PhaseCode::NEWSPAPER;
-        self.construct_newspaper_pages(story_ids);
-    }
-
-    pub fn finish_newspaper_phase(&mut self) {
-        self.return_to_map();
-    }
-
     /// Mirrors `TNewsMgr::StartNewsPhase` page construction without loading `news.tab`.
     pub fn construct_newspaper_pages(&mut self, story_ids: &[i32]) {
         self.news.pages = MajorNationTable::default();
@@ -830,16 +817,17 @@ mod tests {
     }
 
     #[test]
-    fn start_newspaper_phase_clears_the_consumed_event_queue() {
+    fn newspaper_construction_does_not_own_the_turn_phase() {
         let mut state = game_state();
+        state.turn.phase = PhaseCode::RETURN_TO_MAP;
         state
             .pending
             .queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
                 audience: None,
                 story_code: 3,
             });
-        state.start_newspaper_phase(&filler_table());
-        assert_eq!(state.turn.phase, PhaseCode::NEWSPAPER);
+        state.construct_newspaper_pages(&filler_table());
+        assert_eq!(state.turn.phase, PhaseCode::RETURN_TO_MAP);
         assert!(state.pending.newspaper_events.is_empty());
         assert!(state.news.pages[MajorNationId::new(0)].is_some());
     }

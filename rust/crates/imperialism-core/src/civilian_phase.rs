@@ -100,7 +100,7 @@ impl GameState {
                     .update_need_target(resource, major.economy.need_current_by_type[resource]);
             }
         }
-        if major.kind == MajorNationKind::AutoGreatPower {
+        if major.is_auto() {
             let fish = major.economy.need_current_by_type[ResourceKind::Fish];
             major.economy.need_current_by_type[ResourceKind::Fish] = 0;
             major.economy.need_current_by_type[ResourceKind::Livestock] =
@@ -120,7 +120,7 @@ impl GameState {
         Some(influence)
     }
 
-    pub(crate) fn can_build_port_at_tile(&self, tile: TileId) -> bool {
+    pub fn can_build_port_at_tile(&self, tile: TileId) -> bool {
         let mut can_build = false;
         if !matches!(
             self.map[tile].terrain,
@@ -272,9 +272,13 @@ impl GameState {
             let Some(task_force) = ship.task_force else {
                 continue;
             };
-            let task_force = &self.task_forces
-                [usize::try_from(task_force.get()).expect("task-force ordinal fits this process")];
-            if !task_force.defeated && matches!(task_force.order, 3 | 4) {
+            let task_force = &self.task_forces[task_force.get()];
+            if !task_force.defeated
+                && matches!(
+                    task_force.order,
+                    TaskForceOrder::Patrol | TaskForceOrder::Transit
+                )
+            {
                 active_nations |= 1_u32 << ship.nation.get();
             }
         }
@@ -283,7 +287,7 @@ impl GameState {
         if active_nations & origin_bit != 0 {
             return true;
         }
-        for candidate in (0..MajorNationId::COUNT).map(NationId::new) {
+        for candidate in MajorNationId::all().map(MajorNationId::nation) {
             if active_nations & (1_u32 << candidate.get()) == 0 {
                 continue;
             }
@@ -491,7 +495,7 @@ mod tests {
         state.diplomacy.relationship_turns[hostile][origin] = Some(9);
         state.task_forces.push(TaskForceState {
             aggression: 1,
-            order: 3,
+            order: TaskForceOrder::Patrol,
             target: TaskForceTarget::None,
             location: OceanZoneId::new(0),
             nation: hostile,
@@ -504,7 +508,7 @@ mod tests {
         state.ships.push(ShipState {
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
-            task_force: Some(TaskForceId::new(0)),
+            task_force: Some(TaskForceIndex::new(0)),
             aggression: 1,
             nation: hostile,
             name: String::new(),

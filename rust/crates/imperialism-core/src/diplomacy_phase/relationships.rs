@@ -48,8 +48,7 @@ impl GameState {
     }
 
     pub(super) fn copy_colony_standings_from(&mut self, master: NationId) {
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = MinorNationId::new(slot);
+        for minor in MinorNationId::all() {
             if self.nations.minors[minor]
                 .as_ref()
                 .is_some_and(|nation| nation.common.status() == CountryStatus::ColonyOf(master))
@@ -172,8 +171,7 @@ impl GameState {
         counterpart: NationId,
         relationship: DiplomaticRelationship,
     ) {
-        for slot in MinorNationId::FIRST..NationId::COUNT {
-            let minor = MinorNationId::new(slot);
+        for minor in MinorNationId::all() {
             if !self.nations.minors[minor]
                 .as_ref()
                 .is_some_and(|nation| nation.common.status() == CountryStatus::ColonyOf(master))
@@ -212,7 +210,7 @@ impl GameState {
             self.inflict_war_penalty(source, target, false);
         }
         if let Some(major) = MajorNationId::from_nation(target)
-            && self.nations.majors[major].economy.controller.is_human()
+            && self.nations.majors[major].auto.is_none()
         {
             self.add_diplomacy_notice(major, source, 0x139);
         }

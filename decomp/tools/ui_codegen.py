@@ -247,6 +247,9 @@ class UiTextPropertyPatch:
     point_size: int
     alignment: int
     evidence: str
+    color_index: int | None = None
+    shadow_color_index: int | None = None
+    shadow_offset: tuple[int, int] | None = None
 
 
 @dataclass(frozen=True)
@@ -294,6 +297,41 @@ class CityBuildingActionVisual:
 class CityBuildingActionVisuals:
     view: UiResourceKey
     actions: tuple[CityBuildingActionVisual, ...]
+
+
+@dataclass(frozen=True)
+class CityRowControls:
+    cluster: str
+    button: str
+
+
+@dataclass(frozen=True)
+class CityShipyardRowControls:
+    cluster: str
+    button: str
+    overlay_left: int
+
+
+@dataclass(frozen=True)
+class CityIndustryPageControls:
+    slot: str
+    order_tags: tuple[str, ...]
+    stocks: tuple[tuple[str, int], ...]
+
+
+@dataclass(frozen=True)
+class CityDialogControls:
+    armory_rows: tuple[CityRowControls, ...]
+    university_rows: tuple[CityRowControls, ...]
+    shipyard_rows: tuple[CityShipyardRowControls, ...]
+    shipyard_stat_origins: tuple[tuple[int, int], ...]
+    training_orders: tuple[str, ...]
+    food_order: str
+    power_order: str
+    transport_order: str
+    population_order: str
+    warehouse_stocks: tuple[str, ...]
+    industry: tuple[CityIndustryPageControls, ...]
 
 
 _GAME_HEADER_CACHE: dict[str, dict[str, str]] = {}
@@ -523,9 +561,24 @@ def load_windows_text_property_patches(repo_root: Path) -> tuple[UiTextPropertyP
         if set(properties) != {"text"}:
             raise ValueError(f"{context}/properties: only generic text patches are supported")
         text = _mapping(properties["text"], f"{context}/properties/text")
-        expected = {"font_family", "face_flags", "point_size", "alignment"}
-        if set(text) != expected:
-            raise ValueError(f"{context}/properties/text: expected {sorted(expected)!r}")
+        required = {"font_family", "face_flags", "point_size", "alignment"}
+        optional = {"color_index", "shadow_color_index", "shadow_offset"}
+        if not required <= set(text) or set(text) - (required | optional):
+            raise ValueError(
+                f"{context}/properties/text: expected {sorted(required)!r} "
+                f"with optional {sorted(optional)!r}"
+            )
+        shadow_offset = None
+        if "shadow_offset" in text:
+            offset = _sequence(
+                text["shadow_offset"], 2, f"{context}/properties/text/shadow_offset"
+            )
+            shadow_offset = (int(offset[0]), int(offset[1]))
+        if ("shadow_color_index" in text) != (shadow_offset is not None):
+            raise ValueError(
+                f"{context}/properties/text: shadow_color_index and shadow_offset "
+                "must be declared together"
+            )
         evidence = str(row["evidence"]).strip()
         if not evidence:
             raise ValueError(f"{context}: evidence is required")
@@ -543,6 +596,15 @@ def load_windows_text_property_patches(repo_root: Path) -> tuple[UiTextPropertyP
                 int(text["point_size"]),
                 int(text["alignment"]),
                 evidence,
+                color_index=(
+                    int(text["color_index"]) if "color_index" in text else None
+                ),
+                shadow_color_index=(
+                    int(text["shadow_color_index"])
+                    if "shadow_color_index" in text
+                    else None
+                ),
+                shadow_offset=shadow_offset,
             )
         )
     return tuple(
@@ -766,6 +828,147 @@ def load_city_building_action_visuals(repo_root: Path) -> CityBuildingActionVisu
     )
 
 
+def _load_row_controls(
+    rows: object, length: int, context: str
+) -> tuple[CityRowControls, ...]:
+    loaded: list[CityRowControls] = []
+    for index, raw_row in enumerate(_sequence(rows, length, context)):
+        row_context = f"{context}[{index}]"
+        row = _mapping(raw_row, row_context)
+        if set(row) != {"cluster", "button"}:
+            raise ValueError(f"{row_context}: expected cluster and button")
+        loaded.append(
+            CityRowControls(
+                cluster=_fourcc(row["cluster"], f"{row_context}/cluster"),
+                button=_fourcc(row["button"], f"{row_context}/button"),
+            )
+        )
+    return tuple(loaded)
+
+
+def load_city_dialog_controls(repo_root: Path) -> CityDialogControls:
+    data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
+    context = f"{WINDOWS_DELTA_PATH}: city_dialog_controls"
+    section = _mapping(data.get("city_dialog_controls"), context)
+    expected = {
+        "evidence",
+        "armory_rows",
+        "university_rows",
+        "shipyard_rows",
+        "shipyard_stat_origins",
+        "training_orders",
+        "food_order",
+        "power_order",
+        "transport_order",
+        "population_order",
+        "warehouse_stocks",
+        "industry",
+    }
+    if set(section) != expected:
+        raise ValueError(f"{context}: unexpected keys")
+    if not str(section["evidence"]).strip():
+        raise ValueError(f"{context}: evidence is required")
+
+    shipyard_rows: list[CityShipyardRowControls] = []
+    for index, raw_row in enumerate(
+        _sequence(section["shipyard_rows"], 8, f"{context}/shipyard_rows")
+    ):
+        row_context = f"{context}/shipyard_rows[{index}]"
+        row = _mapping(raw_row, row_context)
+        if set(row) != {"cluster", "button", "overlay_left"}:
+            raise ValueError(f"{row_context}: malformed shipyard row")
+        overlay_left = int(row["overlay_left"])
+        if overlay_left < 0:
+            raise ValueError(f"{row_context}: overlay_left must be non-negative")
+        shipyard_rows.append(
+            CityShipyardRowControls(
+                cluster=_fourcc(row["cluster"], f"{row_context}/cluster"),
+                button=_fourcc(row["button"], f"{row_context}/button"),
+                overlay_left=overlay_left,
+            )
+        )
+
+    origins: list[tuple[int, int]] = []
+    for index, raw_origin in enumerate(
+        _sequence(section["shipyard_stat_origins"], 6, f"{context}/shipyard_stat_origins")
+    ):
+        origin = _sequence(raw_origin, 2, f"{context}/shipyard_stat_origins[{index}]")
+        origins.append((int(origin[0]), int(origin[1])))
+
+    industry_slots = (
+        "textile_mill",
+        "clothing_factory",
+        "steel_mill",
+        "metalworks",
+        "lumber_mill",
+        "furniture_factory",
+        "oil_refinery",
+    )
+    industry: list[CityIndustryPageControls] = []
+    for index, raw_page in enumerate(
+        _sequence(section["industry"], 7, f"{context}/industry")
+    ):
+        page_context = f"{context}/industry[{index}]"
+        page = _mapping(raw_page, page_context)
+        if set(page) != {"slot", "orders", "stocks"}:
+            raise ValueError(f"{page_context}: malformed industry page")
+        slot = str(page["slot"])
+        if slot != industry_slots[index]:
+            raise ValueError(f"{page_context}: expected slot {industry_slots[index]}")
+        orders = tuple(
+            _fourcc(tag, f"{page_context}/orders[{order_index}]")
+            for order_index, tag in enumerate(page["orders"])
+        )
+        if not orders:
+            raise ValueError(f"{page_context}: orders must not be empty")
+        stocks: list[tuple[str, int]] = []
+        raw_stocks = page["stocks"]
+        if not isinstance(raw_stocks, list) or not raw_stocks:
+            raise ValueError(f"{page_context}/stocks: expected a non-empty list")
+        for stock_index, raw_stock in enumerate(raw_stocks):
+            stock_context = f"{page_context}/stocks[{stock_index}]"
+            stock = _mapping(raw_stock, stock_context)
+            if set(stock) != {"tag", "columns"}:
+                raise ValueError(f"{stock_context}: expected tag and columns")
+            columns = int(stock["columns"])
+            if columns not in (1, 2):
+                raise ValueError(f"{stock_context}: columns must be 1 or 2")
+            stocks.append((_fourcc(stock["tag"], f"{stock_context}/tag"), columns))
+        industry.append(
+            CityIndustryPageControls(slot, orders, tuple(stocks))
+        )
+
+    warehouse = tuple(
+        _fourcc(tag, f"{context}/warehouse_stocks[{index}]")
+        for index, tag in enumerate(
+            _sequence(section["warehouse_stocks"], 20, f"{context}/warehouse_stocks")
+        )
+    )
+    training = tuple(
+        _fourcc(tag, f"{context}/training_orders[{index}]")
+        for index, tag in enumerate(
+            _sequence(section["training_orders"], 2, f"{context}/training_orders")
+        )
+    )
+    return CityDialogControls(
+        armory_rows=_load_row_controls(section["armory_rows"], 8, f"{context}/armory_rows"),
+        university_rows=_load_row_controls(
+            section["university_rows"], 7, f"{context}/university_rows"
+        ),
+        shipyard_rows=tuple(shipyard_rows),
+        shipyard_stat_origins=tuple(origins),
+        training_orders=training,
+        food_order=_fourcc(section["food_order"], f"{context}/food_order"),
+        power_order=_fourcc(section["power_order"], f"{context}/power_order"),
+        transport_order=_fourcc(section["transport_order"], f"{context}/transport_order"),
+        population_order=_fourcc(
+            section["population_order"], f"{context}/population_order"
+        ),
+        warehouse_stocks=warehouse,
+        industry=tuple(industry),
+    )
+
+
 def apply_windows_text_property_patches(
     key: UiResourceKey,
     view: UiSemanticView,
@@ -801,6 +1004,21 @@ def apply_windows_text_property_patches(
             flags=patch.face_flags,
             point_size=patch.point_size,
             theme=patch.alignment,
+            color_index=(
+                patch.color_index
+                if patch.color_index is not None
+                else node.family.text.color_index
+            ),
+            shadow_color_index=(
+                patch.shadow_color_index
+                if patch.shadow_color_index is not None
+                else node.family.text.shadow_color_index
+            ),
+            shadow_offset=(
+                patch.shadow_offset
+                if patch.shadow_offset is not None
+                else node.family.text.shadow_offset
+            ),
         )
         nodes.append(
             replace(
@@ -1339,7 +1557,10 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
 
     class_name = node.class_name.casefold()
     kind = _rust_widget_kind(node)
-    if node.type_code == "clus":
+    # Generic `clus` records are layout groups (TIndustryCluster, TToolBarCluster,
+    # the random-setup `stuf` panel). Only TRadioTextCluster is a mutually
+    # exclusive option group.
+    if node.class_name == "TRadioTextCluster":
         return "radio_group"
     if node.type_code == "radb" or "radio" in class_name:
         return "radio_button"
@@ -1633,6 +1854,10 @@ def _rust_function_name(resource_file: str, resource_id: int) -> str:
     return f"{stem}_{resource_id}"
 
 
+def _rust_fourcc(tag: str) -> str:
+    return f'fourcc!("{tag}")'
+
+
 def _rust_enum_variant(value: str) -> str:
     return "".join(part.capitalize() for part in value.split("_"))
 
@@ -1698,6 +1923,7 @@ def _render_bsn_node(
             if max_chars is not None and max_chars < 0:
                 max_chars = None
             max_expr = "None" if max_chars is None else f"Some({max_chars})"
+            lines.append("    retail_edit_field()")
             lines.append(f"    retail_editable_text({value}, {max_expr})")
         else:
             lines.append(f"    Text({value})")
@@ -1736,6 +1962,9 @@ def _render_bsn_node(
             lines.append(f"    retail_picture({idle_id})")
         else:
             lines.append(f"    retail_picture_swap({idle_id}, {active_id})")
+    elif behavior == "radio_button":
+        # TRadioText has no picture; Draw fills the selected/pressed option.
+        lines.append("    retail_radio_text_fill()")
 
     children = children_by_parent.get(node.node_id, [])
     if children:
@@ -1749,6 +1978,93 @@ def _render_bsn_node(
     return lines
 
 
+def _render_city_dialog_controls(
+    city_buildings: CityBuildingVisuals,
+    controls: CityDialogControls,
+) -> list[str]:
+    def row_array(name: str, rows: tuple[CityRowControls, ...]) -> list[str]:
+        lines = [f"pub const {name}: [(FourCc, FourCc); {len(rows)}] = ["]
+        for row in rows:
+            lines.append(
+                f"    ({_rust_fourcc(row.cluster)}, {_rust_fourcc(row.button)}),"
+            )
+        lines.extend(["];", ""])
+        return lines
+
+    lines: list[str] = []
+    lines.extend(row_array("ARMORY_ROW_CONTROLS", controls.armory_rows))
+    lines.extend(row_array("UNIVERSITY_ROW_CONTROLS", controls.university_rows))
+    lines.append(
+        f"pub const SHIPYARD_ROW_CONTROLS: [(FourCc, FourCc, f32); {len(controls.shipyard_rows)}] = ["
+    )
+    for row in controls.shipyard_rows:
+        lines.append(
+            f"    ({_rust_fourcc(row.cluster)}, {_rust_fourcc(row.button)}, {row.overlay_left}.0),"
+        )
+    lines.extend(["];", ""])
+    lines.append(
+        f"pub const SHIPYARD_STAT_ORIGINS: [(f32, f32); {len(controls.shipyard_stat_origins)}] = ["
+    )
+    for left, top in controls.shipyard_stat_origins:
+        lines.append(f"    ({left}.0, {top}.0),")
+    lines.extend(["];", ""])
+    training = ", ".join(_rust_fourcc(tag) for tag in controls.training_orders)
+    lines.append(f"pub const TRAINING_ORDER_TAGS: [FourCc; 2] = [{training}];")
+    lines.append(f"pub const FOOD_ORDER_TAG: FourCc = {_rust_fourcc(controls.food_order)};")
+    lines.append(f"pub const POWER_ORDER_TAG: FourCc = {_rust_fourcc(controls.power_order)};")
+    lines.append(
+        f"pub const TRANSPORT_ORDER_TAG: FourCc = {_rust_fourcc(controls.transport_order)};"
+    )
+    lines.append(
+        f"pub const POPULATION_ORDER_TAG: FourCc = {_rust_fourcc(controls.population_order)};"
+    )
+    lines.extend(
+        [
+            "pub const WAREHOUSE_STOCK_TAGS: [FourCc; 20] = [",
+        ]
+    )
+    for tag in controls.warehouse_stocks:
+        lines.append(f"    {_rust_fourcc(tag)},")
+    lines.extend(
+        [
+            "];",
+            "",
+            "pub struct IndustryPageControls {",
+            "    pub slot: CityFacilitySlot,",
+            "    pub order_tags: &'static [FourCc],",
+            "    pub stocks: &'static [(FourCc, i16)],",
+            "}",
+            "",
+            "pub const INDUSTRY_PAGE_CONTROLS: [IndustryPageControls; 7] = [",
+        ]
+    )
+    for page in controls.industry:
+        order_tags = ", ".join(_rust_fourcc(tag) for tag in page.order_tags)
+        stocks = ", ".join(
+            f"({_rust_fourcc(tag)}, {columns})" for tag, columns in page.stocks
+        )
+        lines.extend(
+            [
+                "    IndustryPageControls {",
+                f"        slot: CityFacilitySlot::{_rust_enum_variant(page.slot)},",
+                f"        order_tags: &[{order_tags}],",
+                f"        stocks: &[{stocks}],",
+                "    },",
+            ]
+        )
+    lines.extend(["];", ""])
+    lines.append("pub fn spawn_city_dialog(commands: &mut Commands, slot: CityFacilitySlot) -> Entity {")
+    lines.append("    match slot {")
+    for visual in city_buildings.visuals:
+        function = _rust_function_name(visual.dialog.resource_file, visual.dialog.view_id)
+        variant = _rust_enum_variant(visual.slot)
+        lines.append(
+            f"        CityFacilitySlot::{variant} => commands.spawn_scene({function}()).id(),"
+        )
+    lines.extend(["    }", "}"])
+    return lines
+
+
 def render_rust_ui(
     repo_root: Path,
     recipes: Iterable[UiFactoryRecipe],
@@ -1758,6 +2074,7 @@ def render_rust_ui(
     scene_views, city_buildings, city_building_actions = _rust_ui_semantic_views(
         repo_root, recipes, views, text_resources
     )
+    dialog_controls = load_city_dialog_controls(repo_root)
     lines = [
         "// @generated by tools.ui_codegen. Do not edit by hand.",
         "#![allow(dead_code, clippy::identity_op)]",
@@ -1768,7 +2085,7 @@ def render_rust_ui(
         "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};",
         "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup};",
         "use imperialism_core::CityFacilitySlot;",
-        "use imperialism_formats::{PictureId, fourcc};",
+        "use imperialism_formats::{FourCc, PictureId, fourcc};",
         "",
         "pub const LOGICAL_RESOLUTION: [u32; 2] = [640, 480];",
         "",
@@ -1799,6 +2116,8 @@ def render_rust_ui(
             ]
         )
     lines.extend(["];", ""])
+    lines.extend(_render_city_dialog_controls(city_buildings, dialog_controls))
+    lines.append("")
     for view_id, semantic_view in scene_views:
         if isinstance(view_id, UiResourceKey):
             function = _rust_function_name(view_id.resource_file, view_id.view_id)

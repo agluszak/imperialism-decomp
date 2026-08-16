@@ -42,10 +42,18 @@ RuntimeActionResult RunNationResourceYieldRebuildMultipleTowns(NativeTransition&
 
 RuntimeActionResult RunSpecialistRecruitment(NativeTransition& transition);
 RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition);
-RuntimeActionResult RunMilitaryPhase(NativeTransition& transition);
+RuntimeActionResult RunMilitaryPhaseSupportedSubset(NativeTransition& transition);
+RuntimeActionResult RunAdvisoryMapMissionsCase16(NativeTransition& transition);
+RuntimeActionResult RunArmyMovementGiveOrders(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesUncontested(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesCreatesBattle(NativeTransition& transition);
-RuntimeActionResult RunMilitaryCleanup(NativeTransition& transition);
+RuntimeActionResult RunAutoResolveLandBattle(NativeTransition& transition);
+RuntimeActionResult RunCombatMovesResumesAfterBattle(NativeTransition& transition);
+RuntimeActionResult RunCombatMovesBattleThenLaterMovement(NativeTransition& transition);
+RuntimeActionResult RunMilitaryCleanupSupportedSubset(NativeTransition& transition);
+RuntimeActionResult RunReassessControlSeaMissions(NativeTransition& transition);
+RuntimeActionResult RunReassessControlSeaMissionsDamagedShip(NativeTransition& transition);
+RuntimeActionResult RunRecomputeNationOrderPriorityMetrics(NativeTransition& transition);
 
 RuntimeActionResult RunCompletedRailSection(NativeTransition& transition);
 RuntimeActionResult RunIssuedRailSection(NativeTransition& transition);
@@ -59,8 +67,11 @@ RuntimeActionResult RunProvinceOwnerOceanContext(NativeTransition& transition);
 
 RuntimeActionResult RunCheckTechnologyAdvances(NativeTransition& transition);
 RuntimeActionResult RunCheckTechnologyAdvancesAiPurchase(NativeTransition& transition);
+RuntimeActionResult RunTechnologyTurnStop(NativeTransition& transition);
 RuntimeActionResult RunConstructNewspaperPage(NativeTransition& transition);
 RuntimeActionResult RunConstructNewspaperPageMiscEvent(NativeTransition& transition);
+RuntimeActionResult RunNewspaperTurnStop(NativeTransition& transition);
+RuntimeActionResult RunTradeTurnStop(NativeTransition& transition);
 
 RuntimeActionResult RunGreatPowerPressureHumanDebt(NativeTransition& transition);
 RuntimeActionResult RunGreatPowerPressureAiNoop(NativeTransition& transition);
@@ -69,7 +80,32 @@ RuntimeActionResult RunTurnAlertsSkipFirstEconomicTurn(NativeTransition& transit
 RuntimeActionResult RunDiplomacyOfferGate(NativeTransition& transition);
 RuntimeActionResult RunQuarterGateOffDecade(NativeTransition& transition);
 RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transition);
+RuntimeActionResult RunNewspaperNavyGrowthRewardLevels(NativeTransition& transition);
 RuntimeActionResult RunEliminationPhaseWithLandedGreatPowers(NativeTransition& transition);
+RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition);
+RuntimeActionResult RunOpeningHomeCitySetup(NativeTransition& transition);
+RuntimeActionResult RunNewspaperPendingStatus(NativeTransition& transition);
+RuntimeActionResult RunArmyGrowthSelectedGeneral(NativeTransition& transition);
+RuntimeActionResult RunDealBookTurnStop(NativeTransition& transition);
+RuntimeActionResult RunCityAndTransportTurnStop(NativeTransition& transition);
+RuntimeActionResult RunArmyToolbarCounts(NativeTransition& transition);
+RuntimeActionResult RunArmySelectCategory(NativeTransition& transition);
+RuntimeActionResult RunArmySetOrderMode(NativeTransition& transition);
+RuntimeActionResult RunArmySelectProvince(NativeTransition& transition);
+RuntimeActionResult RunArmyClickBlocked(NativeTransition& transition);
+RuntimeActionResult RunArmyClickFriendly(NativeTransition& transition);
+RuntimeActionResult RunArmyClickHostile(NativeTransition& transition);
+RuntimeActionResult RunArmySelectionCycling(NativeTransition& transition);
+RuntimeActionResult RunNavyCreateForce(NativeTransition& transition);
+RuntimeActionResult RunNavyToolbarCounts(NativeTransition& transition);
+RuntimeActionResult RunNavySelectShip(NativeTransition& transition);
+RuntimeActionResult RunNavySetAggression(NativeTransition& transition);
+RuntimeActionResult RunNavySubmitOrder(NativeTransition& transition);
+RuntimeActionResult RunNavyCancelOrder(NativeTransition& transition);
+RuntimeActionResult RunNavyZoneTarget(NativeTransition& transition);
+RuntimeActionResult RunNavyProvinceTarget(NativeTransition& transition);
+RuntimeActionResult RunNavySelectionCycling(NativeTransition& transition);
+RuntimeActionResult RunNavyEmptyToolbar(NativeTransition& transition);
 
 namespace {
 
@@ -107,10 +143,18 @@ const NativeCase kCases[] = {
     {"nation_resource_yield_rebuild_multiple_towns", RunNationResourceYieldRebuildMultipleTowns},
     {"specialist_recruitment", RunSpecialistRecruitment},
     {"military_maintenance", RunMilitaryMaintenance},
-    {"military_phase", RunMilitaryPhase},
+    {"military_phase_supported_subset", RunMilitaryPhaseSupportedSubset},
+    {"advisory_map_missions_case16", RunAdvisoryMapMissionsCase16},
+    {"army_movement_give_orders", RunArmyMovementGiveOrders},
     {"combat_moves_uncontested", RunCombatMovesUncontested},
     {"combat_moves_creates_battle", RunCombatMovesCreatesBattle},
-    {"military_cleanup", RunMilitaryCleanup},
+    {"auto_resolve_land_battle", RunAutoResolveLandBattle},
+    {"combat_moves_resumes_after_battle", RunCombatMovesResumesAfterBattle},
+    {"combat_moves_battle_then_later_movement", RunCombatMovesBattleThenLaterMovement},
+    {"military_cleanup_supported_subset", RunMilitaryCleanupSupportedSubset},
+    {"reassess_control_sea_missions", RunReassessControlSeaMissions},
+    {"reassess_control_sea_missions_damaged_ship", RunReassessControlSeaMissionsDamagedShip},
+    {"recompute_nation_order_priority_metrics", RunRecomputeNationOrderPriorityMetrics},
     {"completed_rail_section", RunCompletedRailSection},
     {"issued_rail_section", RunIssuedRailSection},
     {"completed_resource_development", RunCompletedResourceDevelopment},
@@ -122,8 +166,11 @@ const NativeCase kCases[] = {
     {"province_owner_ocean_context", RunProvinceOwnerOceanContext},
     {"check_technology_advances", RunCheckTechnologyAdvances},
     {"check_technology_advances_ai_purchase", RunCheckTechnologyAdvancesAiPurchase},
+    {"turn_stop_technology", RunTechnologyTurnStop},
     {"construct_newspaper_page", RunConstructNewspaperPage},
     {"construct_newspaper_page_misc_event", RunConstructNewspaperPageMiscEvent},
+    {"turn_stop_newspaper", RunNewspaperTurnStop},
+    {"turn_stop_trade", RunTradeTurnStop},
     {"great_power_pressure_human_debt", RunGreatPowerPressureHumanDebt},
     {"great_power_pressure_ai_noop", RunGreatPowerPressureAiNoop},
     {"season_advance_clears_status_flags", RunSeasonAdvanceClearsStatusFlags},
@@ -131,7 +178,32 @@ const NativeCase kCases[] = {
     {"diplomacy_offer_gate", RunDiplomacyOfferGate},
     {"quarter_gate_off_decade", RunQuarterGateOffDecade},
     {"return_to_map_clears_notice_queues", RunReturnToMapClearsNoticeQueues},
+    {"newspaper_navy_growth_reward_levels", RunNewspaperNavyGrowthRewardLevels},
     {"elimination_phase_with_landed_great_powers", RunEliminationPhaseWithLandedGreatPowers},
+    {"opening_civilian_grant", RunOpeningCivilianGrant},
+    {"opening_home_city_setup", RunOpeningHomeCitySetup},
+    {"newspaper_pending_status", RunNewspaperPendingStatus},
+    {"army_growth_selected_general", RunArmyGrowthSelectedGeneral},
+    {"turn_stop_deal_book", RunDealBookTurnStop},
+    {"turn_stop_city_and_transport", RunCityAndTransportTurnStop},
+    {"army_toolbar_counts", RunArmyToolbarCounts},
+    {"army_select_category", RunArmySelectCategory},
+    {"army_set_order_mode", RunArmySetOrderMode},
+    {"army_select_province", RunArmySelectProvince},
+    {"army_click_blocked", RunArmyClickBlocked},
+    {"army_click_friendly", RunArmyClickFriendly},
+    {"army_click_hostile", RunArmyClickHostile},
+    {"army_selection_cycling", RunArmySelectionCycling},
+    {"navy_create_force", RunNavyCreateForce},
+    {"navy_toolbar_counts", RunNavyToolbarCounts},
+    {"navy_select_ship", RunNavySelectShip},
+    {"navy_set_aggression", RunNavySetAggression},
+    {"navy_submit_order", RunNavySubmitOrder},
+    {"navy_cancel_order", RunNavyCancelOrder},
+    {"navy_zone_target", RunNavyZoneTarget},
+    {"navy_province_target", RunNavyProvinceTarget},
+    {"navy_selection_cycling", RunNavySelectionCycling},
+    {"navy_empty_toolbar", RunNavyEmptyToolbar},
 };
 
 } // namespace

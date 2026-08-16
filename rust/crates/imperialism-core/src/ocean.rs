@@ -88,6 +88,24 @@ impl GameState {
             })
     }
 
+    /// `TOcean::FindPortZoneBySelectedTile` using the city's home town tile.
+    pub(crate) fn port_zone_for_city_tile(&self, home: TileId) -> Option<OceanZoneId> {
+        self.ocean
+            .zones
+            .iter()
+            .enumerate()
+            .rev()
+            .find_map(|(index, kind)| {
+                let ZoneKind::PortZone(port) = kind else {
+                    return None;
+                };
+                (port.zone.target_tile == Some(home)
+                    || port.zone.active_tile == Some(home)
+                    || port.port_tile == home)
+                    .then(|| OceanZoneId::new(index as u16))
+            })
+    }
+
     /// `TOcean::EnsurePortZoneForTile` (0x005635e0).
     pub(crate) fn ensure_port_zone_for_tile(&mut self, tile: TileId) {
         const ACTION_STATE_ANCHOR: i16 = 3;
@@ -187,17 +205,11 @@ impl GameState {
             port_tile: tile,
         }));
 
-        for index in 0..MajorNationId::COUNT {
-            let nation = MajorNationId::new(index);
-            if let Some(targets) = self
-                .nations
-                .major_mut(nation)
-                .economy
-                .ai_zone_targets
-                .as_mut()
-                && targets.len() == usize::from(ordinal.get())
+        for nation in MajorNationId::all() {
+            if let Some(auto) = self.nations.major_mut(nation).auto.as_mut()
+                && auto.zone_targets.len() == usize::from(ordinal.get())
             {
-                targets.push(AiTargetState::Unmarked);
+                auto.zone_targets.push(AiTargetState::Unmarked);
             }
         }
     }

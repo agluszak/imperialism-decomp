@@ -8,8 +8,42 @@ const AID_HEADING_MARGIN: i32 = 60;
 const MAX_BIDDER_FLAGS: usize = 7;
 const NAVY_STATUS_PRICES: [i32; 4] = [-123_456, -123_457, -123_458, -123_459];
 
-const TABS_WITHOUT_OIL: [i16; 15] = [13, 14, 15, 16, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5];
-const TABS_WITH_OIL: [i16; 17] = [13, 14, 15, 16, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6];
+const TABS_WITHOUT_OIL: [TradeCommodity; 15] = [
+    TradeCommodity::Clothing,
+    TradeCommodity::Furniture,
+    TradeCommodity::Hardware,
+    TradeCommodity::Arms,
+    TradeCommodity::Food,
+    TradeCommodity::Fabric,
+    TradeCommodity::Lumber,
+    TradeCommodity::Paper,
+    TradeCommodity::Steel,
+    TradeCommodity::Cotton,
+    TradeCommodity::Wool,
+    TradeCommodity::Timber,
+    TradeCommodity::Coal,
+    TradeCommodity::Iron,
+    TradeCommodity::Horses,
+];
+const TABS_WITH_OIL: [TradeCommodity; 17] = [
+    TradeCommodity::Clothing,
+    TradeCommodity::Furniture,
+    TradeCommodity::Hardware,
+    TradeCommodity::Arms,
+    TradeCommodity::Food,
+    TradeCommodity::Fabric,
+    TradeCommodity::Lumber,
+    TradeCommodity::Paper,
+    TradeCommodity::Steel,
+    TradeCommodity::Fuel,
+    TradeCommodity::Cotton,
+    TradeCommodity::Wool,
+    TradeCommodity::Timber,
+    TradeCommodity::Coal,
+    TradeCommodity::Iron,
+    TradeCommodity::Horses,
+    TradeCommodity::Oil,
+];
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct DealBookDealLine {
@@ -130,12 +164,11 @@ pub fn deal_book_tab_count(oil_drilling: bool) -> u8 {
 }
 
 pub fn deal_book_tab_commodity(oil_drilling: bool, tab: u8) -> Option<TradeCommodity> {
-    let slot = if oil_drilling {
-        *TABS_WITH_OIL.get(usize::from(tab))?
+    if oil_drilling {
+        TABS_WITH_OIL.get(usize::from(tab)).copied()
     } else {
-        *TABS_WITHOUT_OIL.get(usize::from(tab))?
-    };
-    TradeCommodity::from_retail(slot)
+        TABS_WITHOUT_OIL.get(usize::from(tab)).copied()
+    }
 }
 
 impl DealBookHistory {
@@ -224,8 +257,7 @@ impl GameState {
                     continue;
                 }
                 let mut lines = Vec::new();
-                for slot in MinorNationId::FIRST..NationId::COUNT {
-                    let minor = MinorNationId::new(slot);
+                for minor in MinorNationId::all() {
                     if self.nations.minor(minor).is_none() {
                         continue;
                     }
@@ -274,8 +306,7 @@ impl GameState {
         let player = current[nation.nation()];
         let player_participated = player != 0;
         let mut offers = Vec::new();
-        for slot in (0..NationId::COUNT).rev() {
-            let other = NationId::new(slot);
+        for other in NationId::all().rev() {
             if current[other] <= 0 {
                 continue;
             }

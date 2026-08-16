@@ -2,16 +2,17 @@
 
 use super::*;
 use crate::*;
+use enum_map::Enum;
 
 impl GameState {
     /// Resolves the city's retained production orders and starts its next
     /// production cycle. This is retail `TCity::EndCityPhase`; unit objects are
     /// committed after the city borrow is released.
     pub fn end_city_phase(&mut self, nation: MajorNationId) {
-        let owned_region_count =
-            self.nations
-                .owned_region_count(nation.nation())
-                .expect("city production requires a present major nation") as i32;
+        let owned_region_count = self
+            .nations
+            .owned_region_count(nation.nation())
+            .expect("city production requires a present major nation");
         let mut produced_civilians = CivilianUnitTable::default();
         {
             let MajorNation { economy, city, .. } = &mut self.nations.majors[nation];
@@ -53,13 +54,15 @@ impl GameState {
                         output,
                     );
                 }
-                for level in TrainingLevel::ALL {
+                for level in
+                    (0..enum_map::enum_len::<TrainingLevel>()).map(TrainingLevel::from_usize)
+                {
                     produce_training(level, &mut orders.training[level], population, economy);
                 }
                 *rolling_item_production_score =
                     previous_production_score * 9 / 10 + *rolling_item_production_score * 10;
 
-                for kind in CivilianUnitKind::ALL {
+                for kind in (0..CivilianUnitKind::LENGTH).map(CivilianUnitKind::from_usize) {
                     let progress = &mut orders.civilian_recruitment[kind];
                     produced_civilians[kind] = progress.quantity;
                     progress.quantity = 0;
@@ -144,31 +147,30 @@ impl GameState {
 
     /// Resolves the Armory and Shipyard orders after potential calculation.
     pub fn produce_city_units(&mut self, nation: MajorNationId) {
-        let mut military_kinds = [MilitaryUnitKind::Skirmishers; 8];
-        let mut military_qty = [0_i16; 8];
         let mut civilian_qty = CivilianUnitTable::default();
-        {
+        let military = {
             let city = self.nations.city_mut(nation);
-            for (index, category) in MilitaryRecruitmentCategory::ALL.into_iter().enumerate() {
+            let military = MilitaryRecruitOrderTable::from_fn(|category| {
                 let order = &mut city.orders.military_recruitment[category];
-                military_kinds[index] = order.unit_kind;
-                military_qty[index] = order.progress.quantity;
+                let produced = (order.unit_kind, order.progress.quantity);
                 order.progress.quantity = 0;
-            }
-            for kind in CivilianUnitKind::ALL {
+                produced
+            });
+            for kind in (0..CivilianUnitKind::LENGTH).map(CivilianUnitKind::from_usize) {
                 let order = &mut city.orders.civilian_recruitment[kind];
                 civilian_qty[kind] = order.quantity;
                 order.quantity = 0;
             }
-        }
+            military
+        };
 
-        for (unit_kind, quantity) in military_kinds.into_iter().zip(military_qty) {
+        for (_, (unit_kind, quantity)) in military {
             self.produce_military_recruits(nation, unit_kind, quantity);
         }
         for (unit_kind, quantity) in civilian_qty {
             self.produce_civilian_recruits(nation, unit_kind, quantity);
         }
-        for slot in ShipOrderSlot::ALL {
+        for slot in (0..enum_map::enum_len::<ShipOrderSlot>()).map(ShipOrderSlot::from_usize) {
             self.produce_ship_order(nation, slot);
         }
     }
@@ -243,9 +245,9 @@ impl GameState {
     fn queue_navy_growth_pending(&mut self, nation: MajorNationId) {
         let pending =
             self.nations.major(nation).economy.pending_actions[PendingActionKind::NavyGrowthReward];
-        if pending.status() == crate::PendingActionStatus::Queued {
+        let Some(desired) = pending.growth_reward_level() else {
             return;
-        }
+        };
         let nation_id = nation.nation();
         let arms: i32 = self
             .ships
@@ -256,11 +258,6 @@ impl GameState {
         if arms < 25 {
             return;
         }
-        let desired = match pending.status() {
-            crate::PendingActionStatus::None | crate::PendingActionStatus::Level3 => 0,
-            crate::PendingActionStatus::Level4 => 1,
-            crate::PendingActionStatus::Queued => return,
-        };
         let payload = if arms < 50 {
             (desired == 0).then_some(1)
         } else if arms < 100 {
@@ -291,7 +288,7 @@ pub(crate) fn set_pending_action(
     action: PendingActionKind,
     payload: i16,
 ) {
-    owner.pending_actions[action].queue(payload);
+    owner.pending_actions[action].queue_with_payload(payload);
 }
 
 #[cfg(test)]
@@ -331,5 +328,70 @@ mod tests {
         assert_eq!(state.ships.len(), 1);
         assert_eq!(state.ships[0].ship_type, ShipType::Frigate);
         assert_eq!(state.ships[0].location, OceanZoneId::new(1));
+    }
+
+    fn test_frigate(nation: MajorNationId) -> ShipState {
+        ShipState {
+            ship_type: ShipType::Frigate,
+            location: OceanZoneId::new(0),
+            task_force: None,
+            aggression: 0,
+            nation: nation.nation(),
+            name: String::new(),
+            strength: 100,
+            experience: 0,
+            selection: 0,
+        }
+    }
+
+    #[test]
+    fn navy_growth_reward_advances_through_newspaper_levels() {
+        let mut state = crate::test_support::game_state();
+        let nation = MajorNationId::new(0);
+        for _ in 0..13 {
+            state.ships.push(test_frigate(nation));
+        }
+        assert_eq!(
+            state.nations.majors[nation].economy.pending_actions
+                [PendingActionKind::NavyGrowthReward]
+                .growth_reward_level(),
+            Some(0)
+        );
+        state.queue_navy_growth_pending(nation);
+        let pending = state.nations.majors[nation].economy.pending_actions
+            [PendingActionKind::NavyGrowthReward];
+        assert_eq!(pending.status(), PendingActionStatus::QUEUED);
+        assert_eq!(pending.payload(), Some(1));
+
+        state.mark_all_pending_status_flags_handled();
+        let pending = state.nations.majors[nation].economy.pending_actions
+            [PendingActionKind::NavyGrowthReward];
+        assert_eq!(pending.status(), PendingActionStatus::from_retail(0x34));
+        assert_eq!(pending.growth_reward_level(), Some(1));
+
+        for _ in 0..12 {
+            state.ships.push(test_frigate(nation));
+        }
+        state.queue_navy_growth_pending(nation);
+        let pending = state.nations.majors[nation].economy.pending_actions
+            [PendingActionKind::NavyGrowthReward];
+        assert_eq!(pending.status(), PendingActionStatus::QUEUED);
+        assert_eq!(pending.payload(), Some(2));
+
+        state.mark_all_pending_status_flags_handled();
+        let pending = state.nations.majors[nation].economy.pending_actions
+            [PendingActionKind::NavyGrowthReward];
+        assert_eq!(pending.status(), PendingActionStatus::from_retail(0x35));
+        assert_eq!(pending.growth_reward_level(), Some(2));
+
+        for _ in 0..25 {
+            state.ships.push(test_frigate(nation));
+        }
+        state.queue_navy_growth_pending(nation);
+        state.mark_all_pending_status_flags_handled();
+        let pending = state.nations.majors[nation].economy.pending_actions
+            [PendingActionKind::NavyGrowthReward];
+        assert_eq!(pending.status(), PendingActionStatus::from_retail(0x36));
+        assert_eq!(pending.growth_reward_level(), Some(3));
     }
 }

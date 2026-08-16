@@ -82,22 +82,22 @@ pub(crate) struct LegacyDiplomacyState {
 }
 
 pub(crate) struct LegacyTechnologyState {
-    pub priority_slots: [i16; TECHNOLOGY_COUNT],
+    pub priority_slots: [i16; Technology::LENGTH],
     pub initial_capability_value_by_nation_and_resource:
         [[i16; RESOURCE_KIND_COUNT]; MAJOR_NATION_COUNT],
     pub tech_selector: i16,
     pub active_zone_index: i16,
-    pub per_technology_unlock_flags: [u8; TECHNOLOGY_COUNT],
+    pub per_technology_unlock_flags: [u8; Technology::LENGTH],
     pub resource_type_enabled: [u8; 14],
     pub init_flags_1ab: [u8; 30],
     pub init_flags_1c9: [u8; 9],
     pub active_prerequisite_pair: [i16; 2],
     pub nation_capability_slots: [[i16; 10]; MAJOR_NATION_COUNT],
-    pub research_status_by_nation: [[u8; TECHNOLOGY_COUNT]; MAJOR_NATION_COUNT],
+    pub research_status_by_nation: [[u8; Technology::LENGTH]; MAJOR_NATION_COUNT],
     pub selected_resource_type_by_nation: [[u8; 14]; MAJOR_NATION_COUNT],
     pub ability_active_by_nation: [[u8; 30]; MAJOR_NATION_COUNT],
     pub university_recruitment_availability: [[u8; 9]; MAJOR_NATION_COUNT],
-    pub completion_year_offsets: [[i16; TECHNOLOGY_COUNT]; MAJOR_NATION_COUNT],
+    pub completion_year_offsets: [[i16; Technology::LENGTH]; MAJOR_NATION_COUNT],
     pub capability_value_by_nation_and_resource: [[i16; RESOURCE_KIND_COUNT]; MAJOR_NATION_COUNT],
     pub marker: i16,
 }
@@ -566,4 +566,27 @@ pub(crate) struct LegacyMapState {
     pub tiles: Vec<LegacyTerrainTile>,
     pub provinces: Vec<LegacyProvince>,
     pub pending_river_mouth_tile: i16,
+}
+
+pub(crate) struct LegacyBattleReportChild {
+    pub resource_type: i16,
+    pub stock_or_required: i16,
+    pub name: String,
+    pub strength_bucket: i16,
+    pub detail_identity: u32,
+}
+
+pub(crate) struct LegacyBattleReportSide {
+    pub nation: u8,
+    pub name: String,
+    pub overlay: String,
+    pub children: Vec<LegacyBattleReportChild>,
+}
+
+pub(crate) struct LegacyBattleReport {
+    pub participant_index: u8,
+    pub displayed_participant: u8,
+    pub kind: i32,
+    pub node_id: i16,
+    pub sides: [LegacyBattleReportSide; 2],
 }

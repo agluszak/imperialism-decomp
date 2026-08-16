@@ -1,3 +1,4 @@
+mod conversions;
 mod from_game_state;
 mod model;
 mod parse;
@@ -44,7 +45,7 @@ pub struct LegacySaveV62 {
     map: LegacyMapState,
     ocean: LegacyOceanState,
     navy: LegacyNavyState,
-    army_report_count: u16,
+    army_reports: Vec<model::LegacyBattleReport>,
     major_nations: Vec<LegacyMajorNationState>,
     minor_nations: Vec<LegacyMinorState>,
     help: LegacyHelpState,

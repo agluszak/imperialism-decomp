@@ -1,5 +1,5 @@
 use crate::*;
-use serde::{Deserialize, Deserializer, Serialize};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::ops::{Index, IndexMut};
 
 /// Retail's authoritative `TMapMgr` state without its MFC/ABI scaffolding.
@@ -14,8 +14,11 @@ pub struct MapMgr {
     pub recruit_search_active: bool,
     pub city_score_total: i32,
     pub scenario_tag: String,
-    #[serde(deserialize_with = "deserialize_strategic_tiles")]
-    pub tiles: Box<[TileState]>,
+    #[serde(
+        serialize_with = "serialize_strategic_tiles",
+        deserialize_with = "deserialize_strategic_tiles"
+    )]
+    pub tiles: Box<[TileState; STRATEGIC_TILE_COUNT]>,
     pub provinces: ProvinceTable<ProvinceState>,
     #[serde(deserialize_with = "deserialize_required_option")]
     pub pending_river_mouth_tile: Option<TileId>,
@@ -28,18 +31,30 @@ fn next_region_marker_id_after_load() -> i32 {
     1
 }
 
-fn deserialize_strategic_tiles<'de, D>(deserializer: D) -> Result<Box<[TileState]>, D::Error>
+#[allow(clippy::borrowed_box)]
+fn serialize_strategic_tiles<S>(
+    tiles: &Box<[TileState; STRATEGIC_TILE_COUNT]>,
+    serializer: S,
+) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    tiles.as_slice().serialize(serializer)
+}
+
+fn deserialize_strategic_tiles<'de, D>(
+    deserializer: D,
+) -> Result<Box<[TileState; STRATEGIC_TILE_COUNT]>, D::Error>
 where
     D: Deserializer<'de>,
 {
     let tiles = Box::<[TileState]>::deserialize(deserializer)?;
-    if tiles.len() != STRATEGIC_TILE_COUNT {
-        return Err(serde::de::Error::custom(format!(
+    tiles.try_into().map_err(|tiles: Box<[TileState]>| {
+        serde::de::Error::custom(format!(
             "strategic map has {} tiles; expected {STRATEGIC_TILE_COUNT}",
             tiles.len()
-        )));
-    }
-    Ok(tiles)
+        ))
+    })
 }
 
 fn deserialize_required_option<'de, D, T>(deserializer: D) -> Result<Option<T>, D::Error>
@@ -48,6 +63,31 @@ where
     T: Deserialize<'de>,
 {
     Option::<T>::deserialize(deserializer)
+}
+
+fn boxed_strategic_tiles(
+    tiles: impl Into<Box<[TileState]>>,
+) -> Box<[TileState; STRATEGIC_TILE_COUNT]> {
+    tiles
+        .into()
+        .try_into()
+        .unwrap_or_else(|tiles: Box<[TileState]>| {
+            panic!(
+                "strategic map must have the retail fixed tile count; got {}",
+                tiles.len()
+            )
+        })
+}
+
+bitflags::bitflags! {
+    /// Retail strategic-map edge-scroll bits (`TMapDialog` cursor-edge mask).
+    #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+    pub struct MapEdges: u8 {
+        const TOP = 0x01;
+        const BOTTOM = 0x02;
+        const RIGHT = 0x04;
+        const LEFT = 0x08;
+    }
 }
 
 impl MapMgr {
@@ -60,12 +100,7 @@ impl MapMgr {
         tiles: impl Into<Box<[TileState]>>,
         provinces: ProvinceTable<ProvinceState>,
     ) -> Self {
-        let tiles = tiles.into();
-        assert_eq!(
-            tiles.len(),
-            STRATEGIC_TILE_COUNT,
-            "strategic map must have the retail fixed tile count"
-        );
+        let tiles = boxed_strategic_tiles(tiles);
         Self {
             topology,
             map_data_ready: false,
@@ -113,26 +148,22 @@ impl MapMgr {
     }
 
     /// Applies the retail map edge-scroll mask to a strategic viewport origin.
-    pub fn scrolled_viewport_origin(&self, origin: TileId, edge_mask: u8) -> TileId {
+    pub fn scrolled_viewport_origin(&self, origin: TileId, edges: MapEdges) -> TileId {
         const VIEWPORT_TILE_SPAN: i32 = 9;
         const MAX_ORIGIN_ROW: i32 = 0x35;
-        const EDGE_UP: u8 = 0x01;
-        const EDGE_DOWN: u8 = 0x02;
-        const EDGE_RIGHT: u8 = 0x04;
-        const EDGE_LEFT: u8 = 0x08;
 
         let geometry = self.geometry();
         let (row, column) = geometry.row_column(origin);
-        let row_delta = if edge_mask & EDGE_UP != 0 {
+        let row_delta = if edges.contains(MapEdges::TOP) {
             -1
-        } else if edge_mask & EDGE_DOWN != 0 {
+        } else if edges.contains(MapEdges::BOTTOM) {
             1
         } else {
             0
         };
-        let column_delta = if edge_mask & EDGE_RIGHT != 0 {
+        let column_delta = if edges.contains(MapEdges::RIGHT) {
             1
-        } else if edge_mask & EDGE_LEFT != 0 {
+        } else if edges.contains(MapEdges::LEFT) {
             -1
         } else {
             0
@@ -144,6 +175,27 @@ impl MapMgr {
             (i32::from(column) + column_delta).clamp(1, 0x6e - VIEWPORT_TILE_SPAN)
         };
         geometry
+            .tile(row as u16, column as u16)
+            .expect("retail strategic viewport origin is inside the map")
+    }
+
+    /// Retail `TMapDialog::SetMapDialogCellCoordinatesAndRefresh` origin commit.
+    pub fn viewport_origin_from_upper_left(&self, column: i32, row: i32) -> TileId {
+        const VIEWPORT_TILE_SPAN: i32 = 9;
+        const MAX_ORIGIN_ROW: i32 = 0x35;
+
+        let mut column = column;
+        let mut row = row;
+        if !self.topology.wraps_horizontally() {
+            column = column.clamp(1, 0x6e - VIEWPORT_TILE_SPAN);
+        }
+        if column < 0 {
+            column += i32::from(STRATEGIC_MAP_WIDTH);
+        } else if column >= i32::from(STRATEGIC_MAP_WIDTH) {
+            column -= i32::from(STRATEGIC_MAP_WIDTH);
+        }
+        row = row.clamp(0, MAX_ORIGIN_ROW);
+        self.geometry()
             .tile(row as u16, column as u16)
             .expect("retail strategic viewport origin is inside the map")
     }
@@ -171,8 +223,7 @@ impl MapMgr {
         let mut west_count = 0_u32;
         let mut east_count = 0_u32;
 
-        for index in 0..TileId::COUNT {
-            let tile = TileId::new(index);
+        for tile in TileId::all() {
             if self[tile].owner_nation != Some(owner) {
                 continue;
             }
@@ -199,8 +250,7 @@ impl MapMgr {
                 column_sum = 0;
                 row_sum = 0;
                 tile_count = 0;
-                for index in 0..TileId::COUNT {
-                    let tile = TileId::new(index);
+                for tile in TileId::all() {
                     if self[tile].owner_nation != Some(owner) {
                         continue;
                     }
@@ -1024,22 +1074,60 @@ mod tests {
         let tiles = vec![TileState::default(); STRATEGIC_TILE_COUNT];
         let wrapping = MapMgr::new(MapTopology::Wrapping, tiles.clone());
         let origin = wrapping.geometry().tile(0, 0).unwrap();
-        let next = wrapping.scrolled_viewport_origin(origin, 0x09);
+        let next = wrapping.scrolled_viewport_origin(origin, MapEdges::TOP | MapEdges::LEFT);
         assert_eq!(
             wrapping.geometry().row_column(next),
             (0, STRATEGIC_MAP_WIDTH - 1)
         );
         let origin = wrapping.geometry().tile(53, 107).unwrap();
-        let next = wrapping.scrolled_viewport_origin(origin, 0x06);
+        let next = wrapping.scrolled_viewport_origin(origin, MapEdges::BOTTOM | MapEdges::RIGHT);
         assert_eq!(wrapping.geometry().row_column(next), (53, 0));
 
         let bounded = MapMgr::new(MapTopology::Bounded, tiles);
         let origin = bounded.geometry().tile(0, 1).unwrap();
-        assert_eq!(bounded.scrolled_viewport_origin(origin, 0x09), origin);
+        assert_eq!(
+            bounded.scrolled_viewport_origin(origin, MapEdges::TOP | MapEdges::LEFT),
+            origin
+        );
         let origin = bounded.geometry().tile(53, 101).unwrap();
-        assert_eq!(bounded.scrolled_viewport_origin(origin, 0x06), origin);
+        assert_eq!(
+            bounded.scrolled_viewport_origin(origin, MapEdges::BOTTOM | MapEdges::RIGHT),
+            origin
+        );
         let origin = bounded.geometry().tile(52, 100).unwrap();
-        let next = bounded.scrolled_viewport_origin(origin, 0x06);
+        let next = bounded.scrolled_viewport_origin(origin, MapEdges::BOTTOM | MapEdges::RIGHT);
         assert_eq!(bounded.geometry().row_column(next), (53, 101));
+    }
+
+    #[test]
+    fn minimap_upper_left_clamps_like_the_map_dialog() {
+        let tiles = vec![TileState::default(); STRATEGIC_TILE_COUNT];
+        let wrapping = MapMgr::new(MapTopology::Wrapping, tiles.clone());
+        assert_eq!(
+            wrapping
+                .geometry()
+                .row_column(wrapping.viewport_origin_from_upper_left(-1, -4)),
+            (0, STRATEGIC_MAP_WIDTH - 1)
+        );
+        assert_eq!(
+            wrapping
+                .geometry()
+                .row_column(wrapping.viewport_origin_from_upper_left(108, 60)),
+            (53, 0)
+        );
+
+        let bounded = MapMgr::new(MapTopology::Bounded, tiles);
+        assert_eq!(
+            bounded
+                .geometry()
+                .row_column(bounded.viewport_origin_from_upper_left(0, 60)),
+            (53, 1)
+        );
+        assert_eq!(
+            bounded
+                .geometry()
+                .row_column(bounded.viewport_origin_from_upper_left(107, 0)),
+            (0, 101)
+        );
     }
 }

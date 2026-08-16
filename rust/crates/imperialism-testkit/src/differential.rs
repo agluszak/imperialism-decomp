@@ -146,7 +146,7 @@ pub fn assert_game_state_eq(expected: &GameState, actual: &GameState) -> Result<
         return Ok(());
     }
     match first_serialized_difference(expected, actual).context("comparing game states")? {
-        None => Ok(()),
+        None => bail!("game states differ only in non-serialized state"),
         Some(difference) => bail!(
             "{} differs: expected {:?}, actual {:?}",
             difference.path,

@@ -1,6 +1,7 @@
+use super::fill_brackets;
 use super::generated;
 use super::hover_help::get_string;
-use super::retail::{RetailTag, RetailUiAssets, find_descendant};
+use super::retail::{RetailTree, RetailUiAssets};
 use super::session::{GameSession, apply_turn_stop};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
@@ -16,6 +17,12 @@ const STORY_TOP: f32 = 80.0;
 #[derive(Component)]
 struct NewspaperRoot;
 
+#[derive(Component, Clone, Copy)]
+enum NewspaperDisplay {
+    Date,
+    Spec,
+}
+
 pub(crate) struct NewspaperPlugin;
 
 impl Plugin for NewspaperPlugin {
@@ -23,6 +30,11 @@ impl Plugin for NewspaperPlugin {
         app.add_systems(
             OnEnter(AppState::Newspaper),
             (spawn_newspaper, bind_newspaper).chain(),
+        )
+        .add_systems(
+            Update,
+            project_newspaper_chrome
+                .run_if(in_state(AppState::Newspaper).and_then(resource_exists::<GameSession>)),
         );
     }
 }
@@ -37,53 +49,53 @@ fn spawn_newspaper(mut commands: Commands) {
 fn bind_newspaper(
     mut commands: Commands,
     root: Single<Entity, Added<NewspaperRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
     retail: Res<RetailAssetsResource>,
 ) {
     let root = *root;
-    fill_newspaper_chrome(
-        &mut commands,
-        &mut assets,
-        root,
-        &children,
-        &tags,
-        &session.0,
-    );
+    bind_newspaper_chrome(&mut commands, root, &tree);
     fill_newspaper_stories(
         &mut commands,
         &mut assets,
         root,
-        &children,
-        &tags,
-        &session.0,
+        &tree,
+        &session.game,
         retail.assets().news_table(),
     );
     commands
-        .entity(find_descendant(root, fourcc!("end "), &children, &tags))
+        .entity(tree.find(root, fourcc!("end ")))
         .insert(ActivateOnPress)
         .observe(on_newspaper_activate);
 }
 
-fn fill_newspaper_chrome(
-    commands: &mut Commands,
-    assets: &mut RetailUiAssets,
-    root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-    state: &GameState,
-) {
-    let date = project_newspaper_date(assets, state.turn().economic_turn);
+fn bind_newspaper_chrome(commands: &mut Commands, root: Entity, tree: &RetailTree) {
     commands
-        .entity(find_descendant(root, fourcc!("date"), children, tags))
-        .insert(Text::new(date));
+        .entity(tree.find(root, fourcc!("date")))
+        .insert((NewspaperDisplay::Date, Text::default()));
+    commands
+        .entity(tree.find(root, fourcc!("spec")))
+        .insert((NewspaperDisplay::Spec, Text::default()));
+}
 
-    let spec = newspaper_spec_text(assets, state);
-    commands
-        .entity(find_descendant(root, fourcc!("spec"), children, tags))
-        .insert(Text::new(spec));
+fn project_newspaper_chrome(
+    session: Res<GameSession>,
+    added: Query<(), Added<NewspaperDisplay>>,
+    assets: RetailUiAssets,
+    mut displays: Query<(&NewspaperDisplay, &mut Text)>,
+) {
+    if super::projection_idle(&session, !added.is_empty()) {
+        return;
+    }
+    let date = project_newspaper_date(&assets, session.game.turn().economic_turn);
+    let spec = newspaper_spec_text(&assets, &session.game);
+    for (display, mut text) in &mut displays {
+        text.0 = match display {
+            NewspaperDisplay::Date => date.clone(),
+            NewspaperDisplay::Spec => spec.clone(),
+        };
+    }
 }
 
 fn project_newspaper_date(assets: &RetailUiAssets, economic_turn: i32) -> String {
@@ -116,8 +128,7 @@ fn fill_newspaper_stories(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     state: &GameState,
     news: &NewsTable,
 ) {
@@ -126,7 +137,7 @@ fn fill_newspaper_stories(
     let Some(page) = state.news().pages[nation].as_ref() else {
         return;
     };
-    let main = find_descendant(root, fourcc!("main"), children, tags);
+    let main = tree.find(root, fourcc!("main"));
     let (feature_font, feature_layout, feature_line, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
@@ -295,40 +306,11 @@ fn join_with_conjunction(assets: &RetailUiAssets, names: &[String], list_and: bo
     }
 }
 
-fn fill_brackets(template: &str, args: &[&str]) -> String {
-    let chars: Vec<char> = template.chars().collect();
-    let mut out = String::new();
-    let mut index = 0;
-    while index < chars.len() {
-        if chars[index] == '[' {
-            let mut scan = index + 1;
-            while scan < chars.len() && chars[scan] != ']' && !chars[scan].is_ascii_digit() {
-                scan += 1;
-            }
-            if scan < chars.len() && chars[scan].is_ascii_digit() {
-                let slot = (chars[scan] as u8 - b'0') as usize;
-                if slot >= 1 && slot <= args.len() {
-                    out.push_str(args[slot - 1]);
-                }
-                while scan < chars.len() && chars[scan] != ']' {
-                    scan += 1;
-                }
-                index = scan.saturating_add(1);
-                continue;
-            }
-        }
-        out.push(chars[index]);
-        index += 1;
-    }
-    out
-}
-
 fn on_newspaper_activate(
     _activate: On<Activate>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    retail: Res<RetailAssetsResource>,
 ) {
-    let stop = session.0.close_newspaper();
-    apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state);
+    let stop = session.game.close_newspaper();
+    apply_turn_stop(stop, &mut next_state);
 }

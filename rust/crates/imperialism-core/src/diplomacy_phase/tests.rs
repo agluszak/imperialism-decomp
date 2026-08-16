@@ -26,8 +26,7 @@ fn independent_minor(id: u8) -> MinorNation {
 
 fn computer_major() -> MajorNation {
     let mut nation = major_nation();
-    nation.kind = MajorNationKind::AutoGreatPower;
-    nation.economy.controller = MajorNationController::Computer;
+    nation.auto = Some(AutoGreatPowerState::default());
     nation
 }
 
@@ -261,7 +260,7 @@ fn accepted_join_empire_makes_the_subject_a_colony() {
         state.nations.majors[source].economy.pending_actions
             [PendingActionKind::ColonyMonumentMerchantCapacity]
             .status(),
-        PendingActionStatus::Queued
+        PendingActionStatus::QUEUED
     );
     assert!(
         state.pending.newspaper_events.iter().any(|event| matches!(
@@ -306,7 +305,7 @@ fn accepted_great_power_join_empire_is_a_colony_not_a_protectorate() {
         state.nations.majors[major(1)].economy.pending_actions
             [PendingActionKind::AnnexedGreatPowerCapitalExpansion]
             .status(),
-        PendingActionStatus::Queued
+        PendingActionStatus::QUEUED
     );
     assert_eq!(
         state
@@ -489,7 +488,11 @@ fn colony_annex_clears_boycotted_companies_and_deports_civilians() {
 fn declaring_war_marks_the_target_first_port_zone_as_a_candidate() {
     let mut state = game_state();
     state.nations.majors[major(1)] = computer_major();
-    state.nations.majors[major(1)].economy.ai_zone_targets = Some(vec![AiTargetState::Unmarked; 2]);
+    state.nations.majors[major(1)]
+        .auto
+        .as_mut()
+        .unwrap()
+        .zone_targets = vec![AiTargetState::Unmarked; 2];
     let mut minor = independent_minor(7);
     minor.add_province(ProvinceId::new(0));
     state.nations.minors[MinorNationId::new(7)] = Some(minor);
@@ -508,9 +511,9 @@ fn declaring_war_marks_the_target_first_port_zone_as_a_candidate() {
     assert_eq!(state.do_diplomacy(), DiplomacyPhaseResult::Resolved);
     assert_eq!(
         state.nations.majors[major(1)]
-            .economy
-            .ai_zone_targets
-            .as_ref(),
+            .auto
+            .as_ref()
+            .map(|auto| &auto.zone_targets),
         Some(&vec![AiTargetState::Unmarked, AiTargetState::Candidate])
     );
     assert_eq!(

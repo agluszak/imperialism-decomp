@@ -1,10 +1,12 @@
 use super::GameSession;
 use super::RetailUiAssets;
+use super::fill_brackets;
 use super::format_currency;
-use super::game_shell::project_date_and_treasury;
+use super::game_shell::bind_game_status_display;
 use super::generated;
-use super::retail::{RetailTag, find_descendant};
-use crate::AppState;
+use super::retail::RetailTree;
+use super::session::{apply_turn_stop, clear_return_to};
+use crate::{AppState, ReturnTo};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
@@ -96,9 +98,6 @@ struct DealBookFonts {
 #[derive(Component)]
 struct DealBookRoot;
 
-#[derive(Resource)]
-pub(crate) struct DealBookReturn(pub(crate) AppState);
-
 #[derive(Component)]
 struct DealBookScreen {
     mode: DealBookMode,
@@ -116,7 +115,7 @@ impl Plugin for DealBookPlugin {
             OnEnter(AppState::DealBook),
             (spawn_deal_book, bind_deal_book).chain(),
         )
-        .add_systems(OnExit(AppState::DealBook), clear_deal_book_return)
+        .add_systems(OnExit(AppState::DealBook), clear_return_to)
         .add_systems(
             Update,
             (hover_deal_book_tabs, sync_deal_book)
@@ -136,13 +135,12 @@ fn spawn_deal_book(mut commands: Commands) {
 fn bind_deal_book(
     mut commands: Commands,
     root: Single<Entity, Added<DealBookRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
     let root = *root;
-    let oil_drilling = session.0.technology().oil_drilling_available();
+    let oil_drilling = session.game.technology().oil_drilling_available();
     let tab_base = if oil_drilling {
         TAB_STRIP_BASE + 1
     } else {
@@ -161,12 +159,13 @@ fn bind_deal_book(
         tab_filled: assets
             .picture(PictureId::new(tab_base))
             .expect("retail deal-book filled tab strip must load"),
-        flags: transparent_picture(&mut assets, PictureId::new(FLAG_ATLAS)),
+        flags: assets
+            .transparent_picture(PictureId::new(FLAG_ATLAS), 0x10)
+            .expect("retail deal-book flag atlas must load"),
         commodities: std::array::from_fn(|index| {
-            transparent_picture(
-                &mut assets,
-                PictureId::new(COMMODITY_ICON_BASE + index as i16),
-            )
+            assets
+                .transparent_picture(PictureId::new(COMMODITY_ICON_BASE + index as i16), 0x10)
+                .expect("retail deal-book commodity icon must load")
         }),
     };
     let (body, body_layout, body_line_height, _) = assets
@@ -196,7 +195,7 @@ fn bind_deal_book(
         color: Color::BLACK,
     };
 
-    let tabs = find_descendant(root, fourcc!("tabs"), &children, &tags);
+    let tabs = tree.find(root, fourcc!("tabs"));
     commands
         .entity(tabs)
         .insert((
@@ -225,20 +224,20 @@ fn bind_deal_book(
         ChildOf(tabs),
     ));
     commands
-        .entity(find_descendant(root, fourcc!("end "), &children, &tags))
+        .entity(tree.find(root, fourcc!("end ")))
         .insert((DealBookClose, ActivateOnPress))
         .remove::<InteractionDisabled>()
         .observe(on_deal_book_close);
     commands
-        .entity(find_descendant(root, fourcc!("quer"), &children, &tags))
+        .entity(tree.find(root, fourcc!("quer")))
         .insert(InteractionDisabled);
-    project_date_and_treasury(&mut commands, &mut assets, root, &children, &tags, &session);
+    bind_game_status_display(&mut commands, &mut assets, root, &tree);
     commands
-        .entity(find_descendant(root, fourcc!("mark"), &children, &tags))
+        .entity(tree.find(root, fourcc!("mark")))
         .insert((DealBookHistory, ActivateOnPress))
         .observe(on_deal_book_history);
     commands
-        .entity(find_descendant(root, fourcc!("lcor"), &children, &tags))
+        .entity(tree.find(root, fourcc!("lcor")))
         .insert((
             UiButton,
             DealBookPageButton::Previous,
@@ -248,7 +247,7 @@ fn bind_deal_book(
         ))
         .observe(on_deal_book_page);
     commands
-        .entity(find_descendant(root, fourcc!("rcor"), &children, &tags))
+        .entity(tree.find(root, fourcc!("rcor")))
         .insert((
             UiButton,
             DealBookPageButton::Next,
@@ -258,25 +257,25 @@ fn bind_deal_book(
         ))
         .observe(on_deal_book_page);
     commands
-        .entity(find_descendant(root, fourcc!("main"), &children, &tags))
+        .entity(tree.find(root, fourcc!("main")))
         .insert(DealBookBackground);
     commands
-        .entity(find_descendant(root, fourcc!("sold"), &children, &tags))
+        .entity(tree.find(root, fourcc!("sold")))
         .insert(DealBookHost::Sold);
     commands
-        .entity(find_descendant(root, fourcc!("boug"), &children, &tags))
+        .entity(tree.find(root, fourcc!("boug")))
         .insert(DealBookHost::Bought);
     commands
-        .entity(find_descendant(root, fourcc!("tsol"), &children, &tags))
+        .entity(tree.find(root, fourcc!("tsol")))
         .insert(DealBookHost::SoldByCategory);
     commands
-        .entity(find_descendant(root, fourcc!("tbou"), &children, &tags))
+        .entity(tree.find(root, fourcc!("tbou")))
         .insert(DealBookHost::BoughtByCategory);
     commands
-        .entity(find_descendant(root, fourcc!("titL"), &children, &tags))
+        .entity(tree.find(root, fourcc!("titL")))
         .insert(DealBookTitle::Left);
     commands
-        .entity(find_descendant(root, fourcc!("rtil"), &children, &tags))
+        .entity(tree.find(root, fourcc!("rtil")))
         .insert(DealBookTitle::Right);
 
     commands.entity(root).insert(DealBookScreen {
@@ -288,20 +287,19 @@ fn bind_deal_book(
     });
 }
 
-fn clear_deal_book_return(mut commands: Commands) {
-    commands.remove_resource::<DealBookReturn>();
-}
-
 fn on_deal_book_close(
     _activate: On<Activate>,
-    return_state: Option<Res<DealBookReturn>>,
+    return_state: Option<Res<ReturnTo>>,
+    mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
+    assets: Res<crate::RetailAssetsResource>,
 ) {
-    next_state.set(
-        return_state
-            .as_deref()
-            .map_or(AppState::StrategicMap, |state| state.0),
-    );
+    if let Some(return_state) = return_state.as_deref() {
+        next_state.set(return_state.0);
+        return;
+    }
+    let stop = session.game.close_turn_deal_book(assets.news_story_ids());
+    apply_turn_stop(stop, &mut next_state);
 }
 
 fn on_deal_book_history(_activate: On<Activate>, mut screens: Query<&mut DealBookScreen>) {
@@ -338,12 +336,11 @@ fn on_deal_book_page(
 }
 
 fn deal_book_last_page(screen: &DealBookScreen, session: &GameSession) -> u16 {
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
-        .expect("Deal Book requires an active major nation");
+    let nation = session.active_major_nation();
     match screen.mode {
-        DealBookMode::History => session.0.deal_book_history(nation).last_page_index(),
+        DealBookMode::History => session.game.deal_book_history(nation).last_page_index(),
         DealBookMode::Category { commodity, .. } => session
-            .0
+            .game
             .deal_book_category(nation, commodity)
             .last_page_index(),
     }
@@ -375,23 +372,23 @@ fn on_deal_book_tabs_click(
 }
 
 fn hover_deal_book_tabs(
-    screens: Query<&DealBookScreen>,
-    tabs: Query<&RelativeCursorPosition, With<DealBookTabs>>,
+    screen: Option<Single<&DealBookScreen>>,
+    tabs: Option<Single<&RelativeCursorPosition, With<DealBookTabs>>>,
     mut highlights: Query<(&mut Node, &mut ImageNode, &mut Visibility), With<DealBookTabHighlight>>,
 ) {
-    let Ok(screen) = screens.single() else {
+    let Some(screen) = screen else {
         return;
     };
-    let Ok(cursor) = tabs.single() else {
+    let Some(cursor) = tabs else {
         return;
     };
-    let row = tab_row(cursor, screen.oil_drilling).or(match screen.mode {
-        DealBookMode::History => None,
-        DealBookMode::Category { tab, .. } => Some(tab),
-    });
     let Ok((mut node, mut image, mut visibility)) = highlights.single_mut() else {
         return;
     };
+    let row = tab_row(*cursor, screen.oil_drilling).or(match screen.mode {
+        DealBookMode::History => None,
+        DealBookMode::Category { tab, .. } => Some(tab),
+    });
     let Some(row) = row else {
         *visibility = Visibility::Hidden;
         return;
@@ -418,36 +415,35 @@ fn sync_deal_book(
     mut commands: Commands,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
-    screens: Query<&DealBookScreen, Changed<DealBookScreen>>,
+    screen: Option<Single<&DealBookScreen, Changed<DealBookScreen>>>,
     children: Query<&Children>,
     hosts: Query<(Entity, &DealBookHost)>,
     titles: Query<(Entity, &DealBookTitle)>,
-    background: Query<Entity, With<DealBookBackground>>,
-    history: Query<Entity, With<DealBookHistory>>,
+    background: Option<Single<Entity, With<DealBookBackground>>>,
+    history: Option<Single<Entity, With<DealBookHistory>>>,
     page_buttons: Query<(Entity, &DealBookPageButton)>,
     mut nodes: Query<&mut Node>,
     mut texts: Query<&mut Text>,
     mut pictures: Query<&mut ImageNode>,
     mut visibilities: Query<&mut Visibility>,
 ) {
-    let Ok(screen) = screens.single() else {
+    let Some(screen) = screen else {
         return;
     };
-    let Ok(background) = background.single() else {
+    let Some(&background) = background.as_deref() else {
         return;
     };
-    let Ok(history) = history.single() else {
+    let Some(&history) = history.as_deref() else {
         return;
     };
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
-        .expect("Deal Book requires an active major nation");
+    let nation = session.active_major_nation();
     let last_page = match screen.mode {
         DealBookMode::History => project_history(
             &mut commands,
             &mut assets,
-            &session.0,
+            &session.game,
             nation,
-            screen,
+            *screen,
             &hosts,
             &titles,
             background,
@@ -461,10 +457,10 @@ fn sync_deal_book(
         DealBookMode::Category { commodity, .. } => project_category(
             &mut commands,
             &mut assets,
-            &session.0,
+            &session.game,
             nation,
             commodity,
-            screen,
+            *screen,
             &hosts,
             &titles,
             background,
@@ -1223,34 +1219,6 @@ fn nation_name(state: &GameState, nation: NationId) -> String {
         .to_owned()
 }
 
-fn fill_brackets(template: &str, args: &[&str]) -> String {
-    let chars: Vec<char> = template.chars().collect();
-    let mut out = String::new();
-    let mut index = 0;
-    while index < chars.len() {
-        if chars[index] == '[' {
-            let mut scan = index + 1;
-            while scan < chars.len() && chars[scan] != ']' && !chars[scan].is_ascii_digit() {
-                scan += 1;
-            }
-            if scan < chars.len() && chars[scan].is_ascii_digit() {
-                let slot = (chars[scan] as u8 - b'0') as usize;
-                if slot >= 1 && slot <= args.len() {
-                    out.push_str(args[slot - 1]);
-                }
-                while scan < chars.len() && chars[scan] != ']' {
-                    scan += 1;
-                }
-                index = scan.saturating_add(1);
-                continue;
-            }
-        }
-        out.push(chars[index]);
-        index += 1;
-    }
-    out
-}
-
 fn flag_rect(nation: NationId) -> Rect {
     let left = f32::from(nation.get()) * ICON_WIDTH;
     Rect::new(left, 0.0, left + ICON_WIDTH, ICON_HEIGHT)
@@ -1307,38 +1275,5 @@ fn clear_host(commands: &mut Commands, host: Entity, children: &Query<&Children>
     };
     for child in children.iter() {
         commands.entity(child).despawn();
-    }
-}
-
-fn transparent_picture(assets: &mut RetailUiAssets, picture_id: PictureId) -> Handle<Image> {
-    let indexed = assets
-        .indexed_picture(picture_id)
-        .expect("retail deal-book picture must have indexed pixels");
-    assets
-        .transformed_picture(picture_id, |image| {
-            apply_palette_index_transparency(image, &indexed);
-        })
-        .expect("retail deal-book picture must load")
-}
-
-fn apply_palette_index_transparency(image: &mut Image, indexed: &IndexedPicture) {
-    let width = image.width() as usize;
-    let height = image.height() as usize;
-    let Some(pixels) = image.data.as_mut() else {
-        return;
-    };
-    if width == 0
-        || height == 0
-        || indexed.width as usize != width
-        || indexed.height as usize != height
-        || pixels.len() != width * height * 4
-        || indexed.pixels.len() != width * height
-    {
-        return;
-    }
-    for (pixel, &palette_index) in pixels.chunks_exact_mut(4).zip(&indexed.pixels) {
-        if palette_index == 0x10 {
-            pixel[3] = 0;
-        }
     }
 }

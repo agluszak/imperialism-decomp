@@ -1,10 +1,10 @@
-use crate::AppState;
 use crate::ui::generated;
 use crate::ui::hover_help::{
     HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, get_string,
 };
-use crate::ui::load_save::LoadSaveReturn;
-use crate::ui::retail::{RetailTag, RetailUiAssets, find_descendant};
+use crate::ui::load_save::{LoadSaveMode, open_load_save};
+use crate::ui::retail::{RetailTree, RetailUiAssets};
+use crate::{AppState, ReturnTo};
 use bevy::app::AppExit;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -18,6 +18,7 @@ struct MainMenuRoot;
 pub(crate) enum MainMenuAction {
     RandomGame,
     LoadGame,
+    Preferences,
     Quit,
 }
 
@@ -47,15 +48,15 @@ fn enter_main_menu(mut commands: Commands) {
 fn bind_main_menu_actions(
     mut commands: Commands,
     root: Single<Entity, Added<MainMenuRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
 ) {
     for (tag, action) in [
         (fourcc!("rand"), MainMenuAction::RandomGame),
         (fourcc!("load"), MainMenuAction::LoadGame),
+        (fourcc!("pref"), MainMenuAction::Preferences),
         (fourcc!("quit"), MainMenuAction::Quit),
     ] {
-        let entity = find_descendant(*root, tag, &children, &tags);
+        let entity = tree.find(*root, tag);
         commands
             .entity(entity)
             .insert(action)
@@ -67,12 +68,11 @@ fn bind_main_menu_actions(
 fn bind_main_menu_hover_help(
     mut commands: Commands,
     root: Single<Entity, Added<MainMenuRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
 ) {
-    let bar = find_descendant(*root, fourcc!("curs"), &children, &tags);
+    let bar = tree.find(*root, fourcc!("curs"));
     bind_hover_help_bar(
         &mut commands,
         &mut assets,
@@ -85,8 +85,7 @@ fn bind_main_menu_hover_help(
     bind_hover_help_texts(
         &mut commands,
         *root,
-        &children,
-        &tags,
+        &tree,
         [
             (fourcc!("main"), String::new()),
             (fourcc!("rand"), get_string(&assets, 0x2737, 0)),
@@ -113,8 +112,16 @@ fn on_main_menu_activate(
     match *action {
         MainMenuAction::RandomGame => next_state.set(AppState::RandomSetup),
         MainMenuAction::LoadGame => {
-            commands.insert_resource(LoadSaveReturn(AppState::MainMenu));
-            next_state.set(AppState::LoadGame);
+            open_load_save(
+                &mut commands,
+                &mut next_state,
+                LoadSaveMode::Load,
+                AppState::MainMenu,
+            );
+        }
+        MainMenuAction::Preferences => {
+            commands.insert_resource(ReturnTo(AppState::MainMenu));
+            next_state.set(AppState::Preferences);
         }
         MainMenuAction::Quit => {
             exit.write(AppExit::Success);
@@ -125,6 +132,7 @@ fn on_main_menu_activate(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ui::retail::RetailTag;
     use bevy::ecs::message::Messages;
 
     fn app() -> App {
@@ -145,11 +153,12 @@ mod tests {
         let root = commands.spawn((MainMenuRoot, Node::default())).id();
         commands.spawn((RetailTag(fourcc!("rand")), Node::default(), ChildOf(root)));
         commands.spawn((RetailTag(fourcc!("load")), Node::default(), ChildOf(root)));
+        commands.spawn((RetailTag(fourcc!("pref")), Node::default(), ChildOf(root)));
         commands.spawn((RetailTag(fourcc!("quit")), Node::default(), ChildOf(root)));
     }
 
     #[test]
-    fn random_game_and_quit_use_typed_actions() {
+    fn random_game_load_preferences_and_quit_use_typed_actions() {
         let mut app = app();
         let random = app
             .world_mut()
@@ -189,7 +198,30 @@ mod tests {
         app.update();
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
-            &AppState::LoadGame
+            &AppState::LoadSave
+        );
+
+        app.world_mut()
+            .resource_mut::<NextState<AppState>>()
+            .set(AppState::MainMenu);
+        app.update();
+
+        let pref = app
+            .world_mut()
+            .query_filtered::<Entity, With<MainMenuAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<MainMenuAction>(*entity) == Some(&MainMenuAction::Preferences)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: pref });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::Preferences
         );
 
         app.world_mut()

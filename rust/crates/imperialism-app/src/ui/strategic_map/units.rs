@@ -11,6 +11,7 @@ use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
+use enum_map::Enum;
 use imperialism_core::*;
 use imperialism_formats::*;
 use std::collections::HashMap;
@@ -24,10 +25,11 @@ const CIVILIAN_WORKING_PICTURE_BASE: i16 = 418;
 const ARMY_COUNT_PICTURE_IDS: [i16; 4] = [570, 572, 574, 576];
 const OWNER_FLAG_PICTURE_ID: i16 = 580;
 const FLEET_ATLAS_PICTURE_BASE: i16 = 1_380;
-const CIVILIAN_SPRITE_CLASS: [u8; CivilianUnitKind::LENGTH] = [2, 3, 1, 6, 0, 7, 5, 4, 8];
-const CIVILIAN_ANIMATION_PICTURE_IDS: [i16; CivilianUnitKind::LENGTH] = [
+const CIVILIAN_SPRITE_CLASS: CivilianUnitTable<u8> =
+    CivilianUnitTable::from_array([2, 3, 1, 6, 0, 7, 5, 4, 8]);
+const CIVILIAN_ANIMATION_PICTURE_IDS: CivilianUnitTable<i16> = CivilianUnitTable::from_array([
     14_000, 14_005, 14_011, 14_015, 14_021, 14_026, 14_030, 14_035, 14_040,
-];
+]);
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 enum CivilianPose {
@@ -138,7 +140,10 @@ pub(crate) fn sync_strategic_units(
     )>,
     units: Query<Entity, With<StrategicMapUnit>>,
 ) {
-    let state = &session.0;
+    if !session.is_changed() {
+        return;
+    }
+    let state = &session.game;
     for (layer, mut projection, mut sprites, children) in &mut layers {
         let fleet_id = fleet_atlas_picture_id(state).get();
         if sprites.fleet_atlas_id != fleet_id {
@@ -204,7 +209,7 @@ fn project_strategic_units_onto(
 
 fn load_strategic_unit_sprites(assets: &RetailUiAssets, state: &GameState) -> StrategicUnitSprites {
     let mut civilians = HashMap::new();
-    for kind in CivilianUnitKind::ALL {
+    for kind in (0..CivilianUnitKind::LENGTH).map(CivilianUnitKind::from_usize) {
         for pose in [
             CivilianPose::Idle,
             CivilianPose::Working,
@@ -256,7 +261,7 @@ fn civilian_picture_id(kind: CivilianUnitKind, pose: CivilianPose) -> i16 {
         CivilianPose::Working => {
             CIVILIAN_WORKING_PICTURE_BASE + i16::from(civilian_sprite_class(kind))
         }
-        CivilianPose::Animated => CIVILIAN_ANIMATION_PICTURE_IDS[kind as usize],
+        CivilianPose::Animated => CIVILIAN_ANIMATION_PICTURE_IDS[kind],
     }
 }
 
@@ -497,10 +502,10 @@ fn fleet_atlas_picture_id(state: &GameState) -> PictureId {
         .expect("strategic map requires an active major nation");
     let status = &state.technology().research_status_by_nation[nation];
     let mut variant = 0_i16;
-    if status[0x0f] == TechnologyResearchStatus::Researched {
+    if status[Technology::AdvancedIronWorking] == TechnologyResearchStatus::Researched {
         variant = 1;
     }
-    if status[0x18] == TechnologyResearchStatus::Researched {
+    if status[Technology::MarineEngineering] == TechnologyResearchStatus::Researched {
         variant = 2;
     }
     PictureId::new(FLEET_ATLAS_PICTURE_BASE + i16::from(nation.get()) + variant * 7)
@@ -655,7 +660,7 @@ fn civilian_uses_work_animation(order: &CivilianWorkOrder) -> bool {
 }
 
 fn civilian_sprite_class(kind: CivilianUnitKind) -> u8 {
-    CIVILIAN_SPRITE_CLASS[kind as usize]
+    CIVILIAN_SPRITE_CLASS[kind]
 }
 
 fn civilian_tile_is_visible(owner: Option<TileOwnerTag>, active: NationId) -> bool {
@@ -699,19 +704,10 @@ fn naval_action_frame(action: Option<TileAction>) -> Option<u16> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
-
-    const BEGINNING_OF_GAME: &[u8] =
-        include_bytes!("../../../../../../fixtures/retail/beginning_of_game.imp");
+    use crate::ui::test_support::{beginning_of_game_with, strategic_map_beginning_context};
 
     fn fixture_state() -> GameState {
-        let save = LegacySaveV62::parse(BEGINNING_OF_GAME);
-        save.game_state(LegacyGameStateContext {
-            crt_rand_state: 1,
-            map_generation_lcg: 0,
-            zone_status_lcg: 3_916_827_792,
-            selected_nation: NationId::new(6),
-        })
+        beginning_of_game_with(strategic_map_beginning_context())
     }
 
     fn civilian(
@@ -911,10 +907,13 @@ mod tests {
     #[test]
     fn beginning_of_game_projects_civilians_armies_and_fleets() {
         let mut state = fixture_state();
-        let civilian_tile = state
-            .first_idle_civilian_tile(state.turn().active_nation)
-            .expect("opening save has an idle civilian");
-        state.center_map_on(civilian_tile);
+        state.center_map_on_first_idle_civilian();
+        assert!(
+            state
+                .first_idle_civilian_tile(state.turn().active_nation)
+                .is_some(),
+            "opening save has an idle civilian"
+        );
         assert!(
             visible_strategic_units(&state)
                 .iter()
@@ -938,8 +937,7 @@ mod tests {
             "opening save should show capital army badges"
         );
 
-        let naval_tile = (0..TileId::COUNT)
-            .map(TileId::new)
+        let naval_tile = TileId::all()
             .find(|&tile| {
                 state.map()[tile].terrain == TerrainKind::Water
                     && naval_action_frame(state.map()[tile].action).is_some()

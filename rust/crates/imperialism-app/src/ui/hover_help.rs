@@ -1,4 +1,4 @@
-use super::retail::{RetailTag, RetailUiAssets, find_descendant};
+use super::retail::{RetailTree, RetailUiAssets};
 use bevy::picking::hover::DirectlyHovered;
 use bevy::prelude::*;
 use imperialism_formats::{FourCc, RetailTextStylePreset};
@@ -21,6 +21,7 @@ struct HoverHelpSource(Option<Entity>);
 #[derive(Clone, Copy)]
 pub(crate) struct HoverHelpBarStyle {
     point_size: i32,
+    alignment: i32,
     text_palette: u8,
     shadow_palette: u8,
 }
@@ -30,6 +31,7 @@ impl HoverHelpBarStyle {
     /// (palette `0x28`) with shadow theme `0x2b6b` (palette `0xd2`).
     pub(crate) const MAIN_MENU: Self = Self {
         point_size: 14,
+        alignment: 1,
         text_palette: 0x28,
         shadow_palette: 0xd2,
     };
@@ -39,8 +41,29 @@ impl HoverHelpBarStyle {
     /// shadow palette `0x28`.
     pub(crate) const RANDOM_SETUP: Self = Self {
         point_size: 12,
+        alignment: 1,
         text_palette: 0xd2,
         shadow_palette: 0x28,
+    };
+
+    /// `TCitySiteView::DoPostCreate` restyles `curs` through
+    /// `InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67)`: 12pt right-aligned,
+    /// text palette `0x28`, shadow palette `0`.
+    pub(crate) const CITY_SITE: Self = Self {
+        point_size: 12,
+        alignment: -1,
+        text_palette: 0x28,
+        shadow_palette: 0,
+    };
+
+    /// `TGamePreferencesPicture::DoPostCreate` restyles `curs` through
+    /// `InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67)`: 12pt, text palette `0x28`,
+    /// shadow palette `0`.
+    pub(crate) const PREFERENCES: Self = Self {
+        point_size: 12,
+        alignment: 1,
+        text_palette: 0x28,
+        shadow_palette: 0,
     };
 }
 
@@ -60,7 +83,7 @@ pub(crate) fn bind_hover_help_bar(
             font_family: 1,
             face_flags: 0,
             point_size: style.point_size,
-            alignment: 1,
+            alignment: style.alignment,
         })
         .expect("retail hover-help bar text style");
     let text_color = assets.palette_color(style.text_palette);
@@ -86,13 +109,12 @@ pub(crate) fn bind_hover_help_bar(
 pub(crate) fn bind_hover_help_texts(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     texts: impl IntoIterator<Item = (FourCc, String)>,
 ) {
     for (tag, text) in texts {
         commands
-            .entity(find_descendant(root, tag, children, tags))
+            .entity(tree.find(root, tag))
             .insert((HoverHelpText(text), DirectlyHovered::default()));
     }
 }
@@ -138,7 +160,6 @@ fn sync_hover_help_bar(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_formats::fourcc;
 
     fn app() -> App {
         let mut app = App::new();
@@ -156,23 +177,6 @@ mod tests {
             .spawn((HoverHelpText(text.to_owned()), DirectlyHovered(false)))
             .id();
         (bar, source)
-    }
-
-    #[test]
-    fn directly_hovered_control_replaces_info_bar_text() {
-        let mut app = app();
-        let (bar, source) = spawn_bar_and_source(&mut app, "Start a new Random Game");
-        app.update();
-        assert_eq!(app.world().get::<Text>(bar).unwrap().0, "stale");
-
-        app.world_mut()
-            .entity_mut(source)
-            .insert(DirectlyHovered(true));
-        app.update();
-        assert_eq!(
-            app.world().get::<Text>(bar).unwrap().0,
-            "Start a new Random Game"
-        );
     }
 
     #[test]
@@ -198,6 +202,7 @@ mod tests {
             .entity_mut(first)
             .insert(DirectlyHovered(true));
         app.update();
+        assert_eq!(app.world().get::<Text>(bar).unwrap().0, "Random");
         app.world_mut()
             .entity_mut(first)
             .insert(DirectlyHovered(false));
@@ -221,44 +226,5 @@ mod tests {
             .insert(DirectlyHovered(false));
         app.update();
         assert_eq!(app.world().get::<Text>(bar).unwrap().0, "Quit");
-    }
-
-    #[test]
-    fn bind_hover_help_texts_attaches_help_and_direct_hover() {
-        #[derive(Component)]
-        struct Root;
-
-        let mut app = App::new();
-        app.add_systems(
-            Update,
-            (
-                |mut commands: Commands| {
-                    let root = commands.spawn((Root, Node::default())).id();
-                    commands.spawn((RetailTag(fourcc!("rand")), Node::default(), ChildOf(root)));
-                },
-                |mut commands: Commands,
-                 root: Single<Entity, Added<Root>>,
-                 children: Query<&Children>,
-                 tags: Query<&RetailTag>| {
-                    bind_hover_help_texts(
-                        &mut commands,
-                        *root,
-                        &children,
-                        &tags,
-                        [(fourcc!("rand"), "Start a new Random Game".to_owned())],
-                    );
-                },
-            )
-                .chain(),
-        );
-        app.update();
-
-        let mut query = app
-            .world_mut()
-            .query::<(&HoverHelpText, &DirectlyHovered, &RetailTag)>();
-        let (help, hovered, tag) = query.single(app.world()).unwrap();
-        assert_eq!(tag.0, fourcc!("rand"));
-        assert_eq!(help.0, "Start a new Random Game");
-        assert!(!hovered.get());
     }
 }

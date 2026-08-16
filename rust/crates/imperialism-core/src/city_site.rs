@@ -2,7 +2,8 @@
 
 use crate::{
     Difficulty, GameState, HexDirection, MajorNationId, MapGeometry, MapMgr, NationId,
-    STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, TerrainKind, TileFlags, TileId, TileOwnerTag,
+    ResourceKind, ResourceTable, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, TerrainKind, TileFlags,
+    TileId, TileOwnerTag, all_resources,
 };
 
 const TERRAIN_FLOW_DIRECTIONS: [[HexDirection; 2]; 9] = [
@@ -42,6 +43,46 @@ impl CapitalSite {
     }
 }
 
+/// Neighbor-tile yields and food capacity shown by `TPlaceCityDialog::StuffValues`.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct CapitalSiteReport {
+    pub yields: ResourceTable<i16>,
+    pub total_food: i16,
+    pub sustainable_population: i16,
+}
+
+impl CapitalSiteReport {
+    pub fn visible_resource_count(self) -> i16 {
+        all_resources()
+            .filter(|&resource| self.yields[resource] != 0)
+            .count() as i16
+    }
+}
+
+impl CitySiteError {
+    /// `TSimMgr::GetString` offset into group `0x273b` for a rejected map click.
+    pub fn message_offset(self, state: &GameState, tile: TileId) -> i16 {
+        match self {
+            Self::NotOwned => {
+                if state.map()[tile].terrain == TerrainKind::Water {
+                    3
+                } else {
+                    0
+                }
+            }
+            Self::UnsupportedTerrain | Self::InvalidHomeSite => {
+                if supports_city_site_terrain(state.map()[tile].terrain)
+                    && state.can_build_port_at_tile(tile)
+                {
+                    2
+                } else {
+                    1
+                }
+            }
+        }
+    }
+}
+
 /// Retail difficulties that dispatch the city-site selector (`difficultyLevel > 1`).
 pub const fn requires_capital_site_selection(difficulty: Difficulty) -> bool {
     matches!(
@@ -66,8 +107,7 @@ impl MapMgr {
     ) {
         let owner = TileOwnerTag::from_nation(nation.nation());
         self.recruit_search_active = true;
-        for index in 0..TileId::COUNT {
-            let tile = TileId::new(index);
+        for tile in TileId::all() {
             let is_candidate = {
                 let state = &self[tile];
                 state.owner_nation == Some(owner)
@@ -174,6 +214,45 @@ pub fn validate_capital_site_selection(
     Ok(CapitalSite { tile, nation })
 }
 
+/// `TTown::CalculateCityResources` plus the New City dialog's food-sustain math.
+pub fn capital_site_report(state: &GameState, site: CapitalSite) -> CapitalSiteReport {
+    let university = &state.technology.city_capabilities_by_nation[site.nation()].university;
+    let yields = crate::create_random_game::calculate_city_resources(
+        &state.map,
+        site.tile(),
+        site.nation(),
+        university,
+    );
+    let (total_food, sustainable_population) = sustainable_food_population(&yields);
+    CapitalSiteReport {
+        yields,
+        total_food,
+        sustainable_population,
+    }
+}
+
+fn sustainable_food_population(yields: &ResourceTable<i16>) -> (i16, i16) {
+    let mut primary_food = yields[ResourceKind::Grain];
+    let mut secondary_food = yields[ResourceKind::Fruit];
+    let mut alternate_food = yields[ResourceKind::Fish] + yields[ResourceKind::Livestock];
+    let total_food = primary_food + secondary_food + alternate_food;
+    let mut sustainable_population = 0_i16;
+    for unit in 0..total_food {
+        let food_pool = if unit % 4 == 1 {
+            &mut secondary_food
+        } else if unit % 4 == 3 {
+            &mut alternate_food
+        } else {
+            &mut primary_food
+        };
+        if *food_pool != 0 {
+            *food_pool -= 1;
+            sustainable_population += 1;
+        }
+    }
+    (total_food, sustainable_population)
+}
+
 /// Tile marking from `TMapMgr::PlaceCity` that fits the current [`TileState`] fields.
 pub fn place_city(world: &mut MapMgr, tile: TileId, owner_nation: TileOwnerTag) {
     world[tile].flags = TileFlags::PLACED_CITY_STATE;
@@ -184,12 +263,16 @@ pub fn place_city(world: &mut MapMgr, tile: TileId, owner_nation: TileOwnerTag) 
 ///
 /// Retail follows with `StartNextPhase()` through season advance, technology, and
 /// the newspaper.
-pub fn confirm_capital_site(state: &mut GameState, site: CapitalSite) -> crate::TurnStop {
+pub fn confirm_capital_site(
+    state: &mut GameState,
+    site: CapitalSite,
+    story_ids: &[i32],
+) -> crate::TurnStop {
     let tile = site.tile();
     let owner = TileOwnerTag::from_nation(site.nation().nation());
     place_city(&mut state.map, tile, owner);
     bind_home_city_tile(state, site.nation(), tile);
-    state.advance_turn()
+    state.advance_turn(story_ids)
 }
 
 /// Introductory/Easy path: no city-site selector; bind the frog-city marker and
@@ -197,6 +280,7 @@ pub fn confirm_capital_site(state: &mut GameState, site: CapitalSite) -> crate::
 pub fn enter_strategic_map_without_capital_selection(
     state: &mut GameState,
     nation: MajorNationId,
+    story_ids: &[i32],
 ) -> crate::TurnStop {
     let home = state
         .nations
@@ -206,7 +290,7 @@ pub fn enter_strategic_map_without_capital_selection(
         .map(|town| town.tile)
         .expect("generated Introductory/Easy game has a home town tile");
     bind_home_city_tile(state, nation, home);
-    state.advance_turn()
+    state.advance_turn(story_ids)
 }
 
 fn bind_home_city_tile(state: &mut GameState, nation: MajorNationId, tile: TileId) {
@@ -340,6 +424,70 @@ mod tests {
         )
     }
 
+    fn assert_opening_civilians(state: &GameState, nation: MajorNationId, count: usize) {
+        let units: Vec<_> = state
+            .civilian_units()
+            .iter()
+            .filter(|unit| unit.nation() == nation.nation())
+            .collect();
+        assert_eq!(units.len(), count);
+        assert!(
+            units
+                .iter()
+                .all(|unit| *unit.order() == CivilianWorkOrder::Idle)
+        );
+        assert!(units.iter().all(|unit| unit.location().tile().is_some()));
+        let expected_kinds = match count {
+            2 => vec![CivilianUnitKind::Prospector, CivilianUnitKind::Engineer],
+            5 => vec![
+                CivilianUnitKind::Prospector,
+                CivilianUnitKind::Engineer,
+                CivilianUnitKind::Prospector,
+                CivilianUnitKind::Miner,
+                CivilianUnitKind::Farmer,
+            ],
+            _ => panic!("unexpected opening civilian count {count}"),
+        };
+        let kinds: Vec<_> = units.iter().map(|unit| unit.unit_type()).collect();
+        assert_eq!(kinds, expected_kinds);
+        let trader = state.nations.city(nation).ship_order_count_by_type[ShipType::Trader];
+        assert_eq!(trader, if count == 5 { 8 } else { 2 });
+    }
+
+    fn assert_map_centers_on_first_idle_civilian(state: &mut GameState) {
+        let civilian = state
+            .first_idle_civilian_tile(state.turn().active_nation)
+            .expect("opening civilians include an idle unit on the map");
+        let expected = state.map().viewport_origin_centered_on(civilian);
+        state.center_map_on_first_idle_civilian();
+        assert_eq!(state.map_view_origin(), expected);
+        let home = state
+            .nations
+            .major(
+                MajorNationId::from_nation(state.turn().active_nation)
+                    .expect("active nation is a great power"),
+            )
+            .common
+            .home_tile
+            .expect("opening map centering requires a home tile");
+        let geometry = state.map().geometry();
+        let (home_row, home_column) = geometry.row_column(home);
+        let (origin_row, origin_column) = geometry.row_column(state.map_view_origin());
+        let row_delta = i32::from(home_row) - i32::from(origin_row);
+        let mut column_delta = i32::from(home_column) - i32::from(origin_column);
+        if column_delta < 0 {
+            column_delta += i32::from(STRATEGIC_MAP_WIDTH);
+        }
+        assert!(
+            (0..7).contains(&row_delta),
+            "capital row {home_row} is outside the 7-row viewport from {origin_row}"
+        );
+        assert!(
+            (0..9).contains(&column_delta),
+            "capital column {home_column} is outside the 9-column viewport from {origin_column}"
+        );
+    }
+
     fn normal_start() -> GameState {
         let preview = initial_seed_one_preview();
         create_random_game(
@@ -362,8 +510,7 @@ mod tests {
             None
         );
 
-        let tile = (0..TileId::COUNT)
-            .map(TileId::new)
+        let tile = TileId::all()
             .find(|&tile| {
                 let t = &state.map[tile];
                 t.owner_nation == Some(TileOwnerTag::new(6))
@@ -380,7 +527,7 @@ mod tests {
             .next()
             .expect("interior tiles still have neighbors on a wrapping map");
         state.map[sea].terrain = TerrainKind::Water;
-        state.map[sea].owner_nation = Some(TileOwnerTag::new(6));
+        state.map[sea].owner_nation = Some(TileOwnerTag::new(0x17));
         state.map[sea].action = None;
         for direction in HexDirection::ALL {
             let around = home_site_scan_neighbor(sea, direction);
@@ -388,19 +535,34 @@ mod tests {
         }
 
         let site = validate_capital_site_selection(&state, MajorNationId::new(6), tile).unwrap();
-        confirm_capital_site(&mut state, site);
+        let mut story_ids = vec![1; 360];
+        story_ids[0] = -1003;
+        let stop = confirm_capital_site(&mut state, site, &story_ids);
 
         assert!(matches!(
-            state.turn.phase,
-            crate::PhaseCode::TECHNOLOGY_ADVANCES | crate::PhaseCode::NEWSPAPER
+            (stop, state.turn.phase),
+            (
+                crate::TurnStop::TechnologyAdvance,
+                crate::PhaseCode::NEWSPAPER
+            ) | (crate::TurnStop::Newspaper, crate::PhaseCode::RETURN_TO_MAP)
         ));
         assert_eq!(state.turn.economic_turn, 1);
         assert_eq!(
             state.nations.majors[MajorNationId::new(6)].towns[0].name,
             "FrogCity"
         );
-        assert_eq!(state.map[tile].flags, TileFlags::PLACED_CITY_STATE);
         assert!(state.map[tile].flags.is_city());
+        if let Some(province) = state.map[tile].province
+            && let Some(capital) = state.map.provinces[province].city_tile()
+            && state.map[capital].flags.has_base_transport()
+        {
+            assert!(
+                state.map[capital]
+                    .flags
+                    .contains(TileFlags::PROVINCE_CAPITAL_FORTIFICATION),
+                "InitialMilitia fortifies each owned province capital with base transport"
+            );
+        }
         assert_eq!(
             state.nations.majors[MajorNationId::new(6)].common.home_tile,
             Some(tile)
@@ -416,6 +578,31 @@ mod tests {
                 .map(|town| town.tile),
             Some(tile)
         );
+        assert_opening_civilians(&state, MajorNationId::new(6), 2);
+        assert!(
+            state
+                .military_units()
+                .iter()
+                .any(|unit| unit.nation() == MajorNationId::new(6).nation()),
+            "SetHomeCityTileAndDisplayName runs InitialMilitia for the confirmed capital"
+        );
+        assert!(
+            state.nations.majors[MajorNationId::new(6)]
+                .common
+                .unit_name_counter
+                > 1,
+            "InitialMilitia names opening units through persistent country counters"
+        );
+        for nation in (0..MajorNationId::COUNT)
+            .map(MajorNationId::new)
+            .filter(|nation| state.nations.major(*nation).common.home_tile.is_some())
+        {
+            assert_eq!(
+                state.diplomacy.standings[nation.nation()][nation.nation()],
+                0x100
+            );
+        }
+        assert_map_centers_on_first_idle_civilian(&mut state);
     }
 
     #[test]
@@ -441,17 +628,84 @@ mod tests {
         );
         assert_eq!(state.map[home].owner_nation, Some(TileOwnerTag::new(6)));
         assert!(state.map[home].flags.is_city());
-        enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6));
+        let mut story_ids = vec![1; 360];
+        story_ids[0] = -1003;
+        let stop = enter_strategic_map_without_capital_selection(
+            &mut state,
+            MajorNationId::new(6),
+            &story_ids,
+        );
         assert!(matches!(
-            state.turn.phase,
-            crate::PhaseCode::TECHNOLOGY_ADVANCES | crate::PhaseCode::NEWSPAPER
+            (stop, state.turn.phase),
+            (
+                crate::TurnStop::TechnologyAdvance,
+                crate::PhaseCode::NEWSPAPER
+            ) | (crate::TurnStop::Newspaper, crate::PhaseCode::RETURN_TO_MAP)
         ));
         assert_eq!(state.turn.economic_turn, 1);
         assert_eq!(
             state.nations.majors[MajorNationId::new(6)].common.home_tile,
             Some(home)
         );
+        assert!(
+            state
+                .military_units()
+                .iter()
+                .any(|unit| unit.nation() == MajorNationId::new(6).nation()),
+            "SetHomeCityTileAndDisplayName runs InitialMilitia for the Easy-path capital"
+        );
         state.rebuild_nation_resource_yields(MajorNationId::new(6));
+        assert_opening_civilians(&state, MajorNationId::new(6), 2);
+        assert_map_centers_on_first_idle_civilian(&mut state);
+    }
+
+    #[test]
+    fn introductory_path_grants_five_human_civilians_and_centers_on_the_first() {
+        let preview = initial_seed_one_preview();
+        let mut state = create_random_game(
+            &preview,
+            MajorNationId::new(6),
+            Difficulty::Introductory,
+            "Testland",
+            true,
+            1,
+            &crate::test_support::random_game_names(),
+        );
+        enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6), &[]);
+        assert_opening_civilians(&state, MajorNationId::new(6), 5);
+        for nation in MajorNationId::all() {
+            if nation == MajorNationId::new(6)
+                || state.nations.major(nation).common.home_tile.is_none()
+            {
+                continue;
+            }
+            assert_opening_civilians(&state, nation, 2);
+        }
+        assert_map_centers_on_first_idle_civilian(&mut state);
+    }
+
+    #[test]
+    fn new_city_food_uses_the_grain_fruit_alternate_rotation() {
+        let mut yields = ResourceTable::default();
+        yields[ResourceKind::Grain] = 4;
+        yields[ResourceKind::Fruit] = 1;
+        yields[ResourceKind::Fish] = 1;
+        yields[ResourceKind::Livestock] = 1;
+        // Rotation is grain, fruit, grain, alternate. Fruit runs out after the
+        // first fruit slot, so later fruit beats are skipped.
+        assert_eq!(sustainable_food_population(&yields), (7, 6));
+
+        yields = ResourceTable::default();
+        yields[ResourceKind::Grain] = 2;
+        yields[ResourceKind::Timber] = 3;
+        // Only `total_food` beats run, so the second grain slot (unit 2) never happens.
+        assert_eq!(sustainable_food_population(&yields), (2, 1));
+        let report = CapitalSiteReport {
+            yields,
+            total_food: 2,
+            sustainable_population: 1,
+        };
+        assert_eq!(report.visible_resource_count(), 2);
     }
 
     #[test]
@@ -461,8 +715,8 @@ mod tests {
             MapTopology::Bounded,
             vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
         );
-        for index in 0..TileId::COUNT {
-            world[TileId::new(index)].owner_nation = Some(owner);
+        for tile in TileId::all() {
+            world[tile].owner_nation = Some(owner);
         }
         let candidate = TileId::new(0);
         let wrapped_sea = TileId::new(107);

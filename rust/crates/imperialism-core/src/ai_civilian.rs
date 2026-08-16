@@ -2,6 +2,7 @@
 
 use crate::civilian_phase::civilian_sea_scan_neighbor;
 use crate::*;
+use enum_map::Enum;
 
 const FORT_COST_BY_LEVEL: [i32; 5] = [5_000, 7_500, 10_000, 0, 0];
 const WORK_ORDER_COST_BY_CLASS: [i32; 3] = [100, 1_000, 5_000];
@@ -683,7 +684,10 @@ impl GameState {
         }
         has_kind[CivilianUnitKind::Prospector] = true;
         has_kind[CivilianUnitKind::Developer] = true;
-        for kind in CivilianUnitKind::ALL.into_iter().rev() {
+        for kind in (0..CivilianUnitKind::LENGTH)
+            .rev()
+            .map(CivilianUnitKind::from_usize)
+        {
             if !self.technology.city_capabilities_by_nation[nation]
                 .university
                 .available[kind]
@@ -709,29 +713,28 @@ impl GameState {
     }
 
     #[allow(clippy::too_many_lines)]
+    #[allow(clippy::float_cmp)]
     fn auto_assign_prospecting(&mut self, nation: MajorNationId) {
         if self.turn.economic_turn < 4 {
             return;
         }
 
         let mut relation_scale = [0.0_f32; NATION_COUNT];
-        for minor in MinorNationId::FIRST..NationId::COUNT {
-            let minor_nation = NationId::new(minor);
+        for minor_nation in MinorNationId::all().map(MinorNationId::nation) {
             if self.nation_has_war(minor_nation) {
                 continue;
             }
             let mut strongest = 0.1_f32;
-            for major in 0..MajorNationId::COUNT {
-                if major == nation.get() {
+            for major in MajorNationId::all() {
+                if major == nation {
                     continue;
                 }
-                let standing =
-                    f32::from(self.diplomacy.standings[NationId::new(major)][minor_nation]);
+                let standing = f32::from(self.diplomacy.standings[major.nation()][minor_nation]);
                 if standing > strongest {
                     strongest = standing;
                 }
             }
-            relation_scale[usize::from(minor)] =
+            relation_scale[usize::from(minor_nation.get())] =
                 f32::from(self.diplomacy.standings[nation.nation()][minor_nation]) / strongest;
         }
 
@@ -1043,7 +1046,7 @@ fn turns(value: i16) -> TurnsRemaining {
     TurnsRemaining::try_new(value).expect("work orders use a positive remaining-turn count")
 }
 
-fn extractive_resource(resource: ResourceKind) -> bool {
+pub(crate) fn extractive_resource(resource: ResourceKind) -> bool {
     matches!(
         resource,
         ResourceKind::Coal

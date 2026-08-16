@@ -6,8 +6,8 @@ node_property_patches:
   - view: Startup.rsrc:1501
     node: 0x0247
     tag: tcou
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(tcou, 0, 14, ...)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0, color_index: 0x28, shadow_color_index: 0x5c, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(tcou, 0, 14, 0x2b6a, 0x2b6c); GetColor maps those themes to palettes 0x5c and 0x28
   - view: Startup.rsrc:1501
     node: 0x030f
     tag: coun
@@ -16,48 +16,48 @@ node_property_patches:
   - view: Startup.rsrc:1501
     node: 0x049b
     tag: dif0
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, 0x2b6b, 0x2b6c); GetColor maps those themes to palettes 0xd2 and 0x28
   - view: Startup.rsrc:1501
     node: 0x050b
     tag: dif1
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, 0x2b6b, 0x2b6c); GetColor maps those themes to palettes 0xd2 and 0x28
   - view: Startup.rsrc:1501
     node: 0x057b
     tag: dif2
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, 0x2b6b, 0x2b6c); GetColor maps those themes to palettes 0xd2 and 0x28
   - view: Startup.rsrc:1501
     node: 0x05eb
     tag: dif3
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, 0x2b6b, 0x2b6c); GetColor maps those themes to palettes 0xd2 and 0x28
   - view: Startup.rsrc:1501
     node: 0x065b
     tag: dif4
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, 0x2b6b, 0x2b6c); GetColor maps those themes to palettes 0xd2 and 0x28
   - view: Startup.rsrc:1501
     node: 0x06cb
     tag: dift
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(dift, 0, 14, ...)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0, color_index: 0x28, shadow_color_index: 0x5c, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(dift, 0, 14, 0x2b6a, 0x2b6c); GetColor maps those themes to palettes 0x5c and 0x28
   - view: Startup.rsrc:1501
     node: 0x0740
     tag: tnam
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(tnam, 0, 14, ...)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0, color_index: 0x28, shadow_color_index: 0x5c, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(tnam, 0, 14, 0x2b6a, 0x2b6c); GetColor maps those themes to palettes 0x5c and 0x28
   - view: Startup.rsrc:1501
     node: 0x0828
     tag: hist
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles hist at 12 and calls SetTextAlignmentAndMaybeRefresh(1, 0)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles hist through ApplyUiTextStyleAndThemeFlags(..., 0, 12, 0x2b6b, 0x2b6c) and SetTextAlignmentAndMaybeRefresh(1, 0)
   - view: Startup.rsrc:1501
     node: 0x0898
     tag: rand
-    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
-    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles rand at 12 and calls SetTextAlignmentAndMaybeRefresh(1, 0)
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [-1, -1]}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles rand through ApplyUiTextStyleAndThemeFlags(..., 0, 12, 0x2b6b, 0x2b6c) and SetTextAlignmentAndMaybeRefresh(1, 0)
   - view: Citydlog.rsrc:9200
     node: 0x06d9
     tag: name
@@ -133,6 +133,11 @@ node_property_patches:
     tag: titl
     properties: {text: {font_family: 1, face_flags: 0, point_size: 24, alignment: 1}}
     evidence: TArmoryView::DoStartup at 0x004cee20 installs its 24-point title style on titl
+  - view: Armory.rsrc:9208
+    node: 0x02da
+    tag: unit
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TArmoryView::DoStartup at 0x004cee20 installs its 12-point unit-name style on unit
   - view: Citydlog.rsrc:9209
     node: 0x07cd
     tag: name
@@ -277,6 +282,67 @@ city_building_actions:
     - {slot: furniture_factory, level: 3, picture_id: 15058, frame_count: 11, origin: [390, 397], frame_size: [20, 19]}
     - {slot: oil_refinery, level: 1, picture_id: 15060, frame_count: 7, origin: [491, 187], frame_size: [22, 18]}
     - {slot: power_plant, level: 1, picture_id: 15070, frame_count: 13, origin: [514, 165], frame_size: [24, 23]}
+
+# Recovered City dialog FourCC tags, Shipyard overlay offsets, and industry
+# stock columns. Semantic orders (LightInfantry, Fabric, Cotton, ...) stay in
+# handwritten Rust and zip onto these controls by index.
+city_dialog_controls:
+  evidence: TIndustryView/TArmoryView/TUniversityView/TShipyardView/TWarehouseView recovered control tags and Shipyard overlay/stat layout
+  armory_rows:
+    - {cluster: clu0, button: civ0}
+    - {cluster: clu1, button: civ1}
+    - {cluster: clu2, button: civ2}
+    - {cluster: clu3, button: civ3}
+    - {cluster: clu4, button: civ4}
+    - {cluster: clu5, button: civ5}
+    - {cluster: clu6, button: civ6}
+    - {cluster: clu7, button: civ7}
+  university_rows:
+    - {cluster: clu0, button: civ0}
+    - {cluster: clu1, button: civ1}
+    - {cluster: clu2, button: civ2}
+    - {cluster: clu3, button: civ3}
+    - {cluster: clu4, button: civ4}
+    - {cluster: clu5, button: civ5}
+    - {cluster: clu8, button: civ8}
+  shipyard_rows:
+    - {cluster: clu0, button: but0, overlay_left: 4}
+    - {cluster: clu1, button: but1, overlay_left: 4}
+    - {cluster: clu2, button: but2, overlay_left: 3}
+    - {cluster: clu3, button: but3, overlay_left: 2}
+    - {cluster: clu4, button: but4, overlay_left: 4}
+    - {cluster: clu5, button: but5, overlay_left: 4}
+    - {cluster: clu6, button: but6, overlay_left: 3}
+    - {cluster: clu7, button: but7, overlay_left: 2}
+  shipyard_stat_origins: [[28, 86], [28, 102], [28, 118], [120, 86], [120, 102], [120, 118]]
+  training_orders: [trai, prof]
+  food_order: food
+  power_order: powe
+  transport_order: rail
+  population_order: popu
+  warehouse_stocks: [cott, wool, timb, coal, iron, hors, "oil ", food, fabr, lumb, pape, stee, fuel, clot, furn, hard, arma, grai, prod, live]
+  industry:
+    - slot: textile_mill
+      orders: [fabr]
+      stocks: [{tag: cott, columns: 1}, {tag: wool, columns: 1}]
+    - slot: clothing_factory
+      orders: [clot]
+      stocks: [{tag: fabr, columns: 2}]
+    - slot: steel_mill
+      orders: [stee]
+      stocks: [{tag: coal, columns: 1}, {tag: iron, columns: 1}]
+    - slot: metalworks
+      orders: [hard, arma]
+      stocks: [{tag: stee, columns: 2}]
+    - slot: lumber_mill
+      orders: [lumb, pape]
+      stocks: [{tag: timb, columns: 2}]
+    - slot: furniture_factory
+      orders: [furn]
+      stocks: [{tag: lumb, columns: 2}]
+    - slot: oil_refinery
+      orders: [fuel]
+      stocks: [{tag: "oil ", columns: 2}]
 
 # Explicit semantic differences between the Mac resource class name and the
 # Windows source model. These are not ABI claims; each substitution must remain

@@ -8,6 +8,53 @@ pub const MAJOR_NATION_COUNT: usize = MajorNationId::COUNT as usize;
 pub const MINOR_NATION_COUNT: usize = MinorNationId::COUNT as usize;
 pub const PROVINCE_COUNT: usize = ProvinceId::COUNT as usize;
 
+macro_rules! fixed_table {
+    (
+        $(#[$meta:meta])*
+        $name:ident, $id:ty, $count:expr
+    ) => {
+        $(#[$meta])*
+        #[serde(transparent)]
+        pub struct $name<T>([T; $count]);
+
+        impl<T> $name<T> {
+            pub const fn from_array(values: [T; $count]) -> Self {
+                Self(values)
+            }
+
+            pub fn from_fn(mut function: impl FnMut($id) -> T) -> Self {
+                Self(std::array::from_fn(|index| {
+                    function(<$id>::new(index as u8))
+                }))
+            }
+
+            pub const fn as_array(&self) -> &[T; $count] {
+                &self.0
+            }
+        }
+
+        impl<T: Default> Default for $name<T> {
+            fn default() -> Self {
+                Self(std::array::from_fn(|_| T::default()))
+            }
+        }
+
+        impl<T> Index<$id> for $name<T> {
+            type Output = T;
+
+            fn index(&self, id: $id) -> &Self::Output {
+                &self.0[usize::from(id.get())]
+            }
+        }
+
+        impl<T> IndexMut<$id> for $name<T> {
+            fn index_mut(&mut self, id: $id) -> &mut Self::Output {
+                &mut self.0[usize::from(id.get())]
+            }
+        }
+    };
+}
+
 /// The fourteen entries in the retail shipyard descriptor table.
 ///
 /// Their order is the zero-based index into the retail ship-name string group
@@ -63,85 +110,27 @@ impl NationCapacities {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct NationTable<T>([T; NATION_COUNT]);
+fixed_table!(
+    #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+    NationTable,
+    NationId,
+    NATION_COUNT
+);
 
-impl<T> NationTable<T> {
-    pub const fn from_array(values: [T; NATION_COUNT]) -> Self {
-        Self(values)
-    }
-
-    pub const fn as_array(&self) -> &[T; NATION_COUNT] {
-        &self.0
-    }
-}
-
-impl<T: Default> Default for NationTable<T> {
-    fn default() -> Self {
-        Self(std::array::from_fn(|_| T::default()))
-    }
-}
-
-impl<T> Index<NationId> for NationTable<T> {
-    type Output = T;
-
-    fn index(&self, nation: NationId) -> &Self::Output {
-        &self.0[usize::from(nation.get())]
-    }
-}
-
-impl<T> IndexMut<NationId> for NationTable<T> {
-    fn index_mut(&mut self, nation: NationId) -> &mut Self::Output {
-        &mut self.0[usize::from(nation.get())]
-    }
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct MajorNationTable<T>([T; MAJOR_NATION_COUNT]);
+fixed_table!(
+    #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+    MajorNationTable,
+    MajorNationId,
+    MAJOR_NATION_COUNT
+);
 
 impl<T> MajorNationTable<T> {
-    pub const fn from_array(values: [T; MAJOR_NATION_COUNT]) -> Self {
-        Self(values)
-    }
-
-    pub fn from_fn(mut function: impl FnMut(MajorNationId) -> T) -> Self {
-        Self(std::array::from_fn(|index| {
-            function(MajorNationId::new(index as u8))
-        }))
-    }
-
-    pub const fn as_array(&self) -> &[T; MAJOR_NATION_COUNT] {
-        &self.0
-    }
-
     pub(crate) fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
         self.0.iter()
     }
 
     pub(crate) fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = &mut T> {
         self.0.iter_mut()
-    }
-}
-
-impl<T> Index<MajorNationId> for MajorNationTable<T> {
-    type Output = T;
-
-    fn index(&self, nation: MajorNationId) -> &Self::Output {
-        &self.0[usize::from(nation.get())]
-    }
-}
-
-impl<T> IndexMut<MajorNationId> for MajorNationTable<T> {
-    fn index_mut(&mut self, nation: MajorNationId) -> &mut Self::Output {
-        &mut self.0[usize::from(nation.get())]
-    }
-}
-
-impl<T: Default> Default for MajorNationTable<T> {
-    fn default() -> Self {
-        Self(std::array::from_fn(|_| T::default()))
     }
 }
 
@@ -196,6 +185,12 @@ pub struct ProvinceTable<T>(Box<[T; PROVINCE_COUNT]>);
 impl<T> ProvinceTable<T> {
     pub fn from_array(values: [T; PROVINCE_COUNT]) -> Self {
         Self(Box::new(values))
+    }
+
+    pub fn from_fn(mut function: impl FnMut(ProvinceId) -> T) -> Self {
+        Self::from_array(std::array::from_fn(|index| {
+            function(ProvinceId::new(index as u16))
+        }))
     }
 
     pub fn as_array(&self) -> &[T; PROVINCE_COUNT] {
@@ -272,60 +267,4 @@ impl PendingActionKind {
 pub const PENDING_ACTION_COUNT: usize = PendingActionKind::LENGTH;
 pub type PendingActionTable<T> = EnumMap<PendingActionKind, T>;
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct ProductionTable<T>([T; CityFacilitySlot::COUNT]);
-
-impl<T> ProductionTable<T> {
-    pub const fn from_array(values: [T; CityFacilitySlot::COUNT]) -> Self {
-        Self(values)
-    }
-
-    pub const fn as_array(&self) -> &[T; CityFacilitySlot::COUNT] {
-        &self.0
-    }
-}
-
-impl<T: Default> Default for ProductionTable<T> {
-    fn default() -> Self {
-        Self(std::array::from_fn(|_| T::default()))
-    }
-}
-
-impl<T> Index<CityFacilitySlot> for ProductionTable<T> {
-    type Output = T;
-
-    fn index(&self, slot: CityFacilitySlot) -> &Self::Output {
-        &self.0[slot.index()]
-    }
-}
-
-impl<T> IndexMut<CityFacilitySlot> for ProductionTable<T> {
-    fn index_mut(&mut self, slot: CityFacilitySlot) -> &mut Self::Output {
-        &mut self.0[slot.index()]
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn ship_type_table_uses_the_retail_shipyard_order() {
-        let indexes = ShipTypeTable::from_array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
-        assert_eq!(indexes[ShipType::NoShip], 0);
-        assert_eq!(indexes[ShipType::Trader], 1);
-        assert_eq!(indexes[ShipType::Indiaman], 2);
-        assert_eq!(indexes[ShipType::Frigate], 3);
-        assert_eq!(indexes[ShipType::ShipOfTheLine], 4);
-        assert_eq!(indexes[ShipType::Paddlewheeler], 5);
-        assert_eq!(indexes[ShipType::Clipper], 6);
-        assert_eq!(indexes[ShipType::Raider], 7);
-        assert_eq!(indexes[ShipType::Ironclad], 8);
-        assert_eq!(indexes[ShipType::AdvancedIronclad], 9);
-        assert_eq!(indexes[ShipType::Freighter], 10);
-        assert_eq!(indexes[ShipType::ArmoredCruiser], 11);
-        assert_eq!(indexes[ShipType::Dreadnought], 12);
-        assert_eq!(indexes[ShipType::Battlecruiser], 13);
-    }
-}
+pub type ProductionTable<T> = EnumMap<CityFacilitySlot, T>;

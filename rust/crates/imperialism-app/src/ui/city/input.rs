@@ -13,11 +13,10 @@ pub(in crate::ui::city) fn on_city_amount_bar_click(
     };
     click.propagate(false);
 
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
-        .expect("City screen requires an active major nation");
+    let nation = session.active_major_nation();
     let x = (((normalized.x + 0.5) * f32::from(INDUSTRY_BAR_WIDTH)).floor() as i16)
         .clamp(0, INDUSTRY_BAR_WIDTH - 1);
-    let city = &session.0.nations().major(nation).city;
+    let city = &session.game.nations().major(nation).city;
     let capacity = city.production_orders[bar.slot];
     let previous = match bar.order {
         CityOrderId::Item(output) => city.orders.items[output].progress.quantity,
@@ -35,8 +34,8 @@ pub(in crate::ui::city) fn on_city_amount_bar_click(
     if quantity == 0 && x != 0 && previous == 0 {
         quantity = 1;
     }
-    let _ = session
-        .0
+    session
+        .game
         .set_city_order_quantity(nation, bar.order, quantity);
 }
 
@@ -48,9 +47,8 @@ pub(in crate::ui::city) fn on_city_order_adjust(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let nation = MajorNationId::from_nation(session.0.turn().active_nation)
-        .expect("City screen requires an active major nation");
-    let _ = session
-        .0
+    let nation = session.active_major_nation();
+    session
+        .game
         .adjust_city_order(nation, action.order, action.delta);
 }

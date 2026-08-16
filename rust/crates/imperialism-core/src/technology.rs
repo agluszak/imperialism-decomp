@@ -1,11 +1,11 @@
 use crate::*;
-use enum_map::Enum;
+use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Deserializer, Serialize};
 
-const TECH_ITEM_PURCHASE_COST: [i32; TECHNOLOGY_COUNT] = [
+const TECH_ITEM_PURCHASE_COST: TechnologyTable<i32> = TechnologyTable::from_array([
     0, 0, 1000, 1000, 1500, 1500, 1500, 1500, 3000, 3000, 3000, 6000, 7000, 10000, 12000, 12000,
     12000, 12000, 12000, 25000, 20000, 40000, 40000, 40000, 40000, 100000, 120000, 150000, 150000,
-];
+]);
 
 /// Per-nation University capability state used by city production and recruitment.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
@@ -82,54 +82,60 @@ impl Default for CityTechnologyCapabilities {
     }
 }
 
-pub const TECHNOLOGY_COUNT: usize = 29;
+/// The 29 retail technology slots. Numeric discriminants match save/oracle IDs;
+/// string group `0x2712` uses the same order via `GetString` (offset + 1).
+#[derive(
+    Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
+#[repr(u8)]
+#[serde(rename_all = "snake_case")]
+pub enum Technology {
+    ScientistsHaveDiscovered = 0,
+    HighPressureSteamEngine = 1,
+    SeedDrill = 2,
+    CottonGin = 3,
+    StreamlinedHulls = 4,
+    SquareSetTimbering = 5,
+    IronRailroadBridge = 6,
+    FeedGrasses = 7,
+    SpinningJenny = 8,
+    Paddlewheels = 9,
+    SteelPlows = 10,
+    BessemerConverter = 11,
+    CompoundSteamEngine = 12,
+    RifledArtillery = 13,
+    BreechLoadingRifles = 14,
+    AdvancedIronWorking = 15,
+    PowerLoom = 16,
+    MechanicalReaper = 17,
+    CommercialFertilizer = 18,
+    OilDrilling = 19,
+    BarbedWire = 20,
+    SteelArmorPlate = 21,
+    LargeArtillery = 22,
+    Dynamite = 23,
+    MarineEngineering = 24,
+    MachineGuns = 25,
+    Chemistry = 26,
+    ImprovedRangeFinding = 27,
+    InternalCombustion = 28,
+}
 
-/// Open bounded identity of one of the 29 technology slots.
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-#[serde(transparent)]
-pub struct TechnologyId(u8);
+impl Technology {
+    pub const LENGTH: usize = enum_map::enum_len::<Self>();
 
-impl TechnologyId {
-    pub const COUNT: u8 = TECHNOLOGY_COUNT as u8;
-
-    pub const fn new(value: u8) -> Self {
-        assert!(value < Self::COUNT, "technology ID is out of range");
-        Self(value)
+    pub fn from_index(index: u8) -> Option<Self> {
+        (usize::from(index) < Self::LENGTH).then(|| Self::from_usize(usize::from(index)))
     }
 
-    pub const fn try_new(value: u8) -> Option<Self> {
-        if value < Self::COUNT {
-            Some(Self(value))
-        } else {
-            None
-        }
-    }
-
-    pub const fn get(self) -> u8 {
-        self.0
-    }
-
-    pub const fn index(self) -> usize {
-        self.0 as usize
+    pub fn all() -> impl DoubleEndedIterator<Item = Self> + ExactSizeIterator {
+        (0..Self::LENGTH).map(Self::from_usize)
     }
 }
 
-impl<'de> Deserialize<'de> for TechnologyId {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: Deserializer<'de>,
-    {
-        let value = u8::deserialize(deserializer)?;
-        Self::try_new(value).ok_or_else(|| {
-            serde::de::Error::custom(format_args!(
-                "technology ID {value} is out of range 0..={}",
-                Self::COUNT - 1
-            ))
-        })
-    }
-}
+pub type TechnologyTable<T> = EnumMap<Technology, T>;
 
-const RANDOM_START_PRIORITY_RANGES: [(i16, i16); TECHNOLOGY_COUNT - 3] = [
+const RANDOM_START_PRIORITY_RANGES: [(i16, i16); Technology::LENGTH - 3] = [
     (1, 5),
     (6, 10),
     (6, 10),
@@ -172,11 +178,14 @@ pub enum TechnologyResearchStatus {
 pub struct TechnologyState {
     pub advanced_iron_working: bool,
     pub marine_engineering: bool,
-    pub scheduled_unlock_turn_by_technology: [i16; TECHNOLOGY_COUNT],
-    pub global_unlocks_by_technology: [bool; TECHNOLOGY_COUNT],
-    pub research_status_by_nation: MajorNationTable<[TechnologyResearchStatus; TECHNOLOGY_COUNT]>,
+    pub scheduled_unlock_turn_by_technology: TechnologyTable<i16>,
+    pub global_unlocks_by_technology: TechnologyTable<bool>,
+    pub research_status_by_nation: MajorNationTable<TechnologyTable<TechnologyResearchStatus>>,
     pub industry_enabled_by_slot: [bool; 14],
     pub military_unit_ability_active_by_nation: MajorNationTable<MilitaryUnitTable<bool>>,
+    /// Retail `TTechMgr::nationCapRows1e8`: the selected ability id in each
+    /// tactical group. Slot 9 is the general spawned by army-growth rewards.
+    pub selected_capability_slots: MajorNationTable<[MilitaryUnitKind; 10]>,
     pub city_capabilities_by_nation: MajorNationTable<CityTechnologyCapabilities>,
     /// Retail `TTechMgr::activeZoneIndex1d4`: the hull spawned by a navy-growth reward.
     pub navy_growth_ship_type: ShipType,
@@ -187,18 +196,22 @@ impl Default for TechnologyState {
         Self {
             advanced_iron_working: false,
             marine_engineering: false,
-            scheduled_unlock_turn_by_technology: [0; TECHNOLOGY_COUNT],
-            global_unlocks_by_technology: [
+            scheduled_unlock_turn_by_technology: TechnologyTable::from_array(
+                [0; Technology::LENGTH],
+            ),
+            global_unlocks_by_technology: TechnologyTable::from_array([
                 true, true, true, false, false, false, false, false, false, false, false, false,
                 false, false, false, false, false, false, false, false, false, false, false, false,
                 false, false, false, false, false,
-            ],
+            ]),
             research_status_by_nation: MajorNationTable::from_fn(|_| {
-                let mut status = [TechnologyResearchStatus::NotStarted; TECHNOLOGY_COUNT];
-                status[0] = TechnologyResearchStatus::Researched;
-                status[1] = TechnologyResearchStatus::Researched;
-                status[2] = TechnologyResearchStatus::Researched;
-                status
+                TechnologyTable::from_array(std::array::from_fn(|index| {
+                    if index < 3 {
+                        TechnologyResearchStatus::Researched
+                    } else {
+                        TechnologyResearchStatus::NotStarted
+                    }
+                }))
             }),
             industry_enabled_by_slot: [
                 true, true, true, true, true, false, false, false, false, false, false, false,
@@ -210,6 +223,9 @@ impl Default for TechnologyState {
                     false, false, false, false, false, false, false, false, false, false, false,
                     false, true, false, false, true, false, false,
                 ])
+            }),
+            selected_capability_slots: MajorNationTable::from_fn(|_| {
+                default_selected_capability_slots()
             }),
             city_capabilities_by_nation: MajorNationTable::default(),
             navy_growth_ship_type: ShipType::ShipOfTheLine,
@@ -264,13 +280,17 @@ impl TechnologyState {
     pub(crate) fn for_random_start(seed: u32) -> Self {
         let mut state = Self::default();
         let mut rng = RetailLcg::from_state(seed);
-        for (offset, &(start_group, end_group)) in RANDOM_START_PRIORITY_RANGES.iter().enumerate() {
-            let technology = offset + 3;
+        for (technology, (start_group, end_group)) in
+            Technology::all().skip(3).zip(RANDOM_START_PRIORITY_RANGES)
+        {
             let range_start = start_group * 4;
             let range_span = (end_group - start_group) * 4 + 1;
             loop {
                 let candidate = (rng.next_sample_15() % range_span as u32) as i16 + range_start;
-                if !state.scheduled_unlock_turn_by_technology[..technology].contains(&candidate) {
+                if !Technology::all()
+                    .take(technology as usize)
+                    .any(|prior| state.scheduled_unlock_turn_by_technology[prior] == candidate)
+                {
                     state.scheduled_unlock_turn_by_technology[technology] = candidate;
                     break;
                 }
@@ -279,8 +299,8 @@ impl TechnologyState {
         state
     }
 
-    pub const fn oil_drilling_available(&self) -> bool {
-        self.global_unlocks_by_technology[0x13]
+    pub fn oil_drilling_available(&self) -> bool {
+        self.global_unlocks_by_technology[Technology::OilDrilling]
     }
 
     /// Selects the production-capacity term used by retail's naval-force score.
@@ -301,10 +321,9 @@ impl TechnologyState {
 
 impl GameState {
     /// Mirrors `TTechMgr::CheckForAdvances`.
-    #[allow(clippy::needless_range_loop)]
     pub fn check_technology_advances(&mut self) {
         let economic_turn = self.turn.economic_turn;
-        for tech_id in 3..TECHNOLOGY_COUNT {
+        for tech_id in Technology::all().skip(3) {
             if !self.technology.global_unlocks_by_technology[tech_id] {
                 if i32::from(self.technology.scheduled_unlock_turn_by_technology[tech_id])
                     == economic_turn
@@ -313,7 +332,7 @@ impl GameState {
                     self.pending
                         .queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
                             audience: None,
-                            story_code: tech_id as i32,
+                            story_code: i32::from(tech_id as u8),
                         });
                 }
                 continue;
@@ -340,18 +359,18 @@ impl GameState {
         }
     }
 
-    pub fn first_pending_technology_unlock(&self, nation: NationId) -> Option<TechnologyId> {
+    pub fn first_pending_technology_unlock(&self, nation: NationId) -> Option<Technology> {
         let nation = MajorNationId::from_nation(nation)?;
-        self.technology.research_status_by_nation[nation]
-            .iter()
-            .position(|status| *status == TechnologyResearchStatus::Pending)
-            .map(|tech_id| TechnologyId::new(tech_id as u8))
+        Technology::all().find(|&tech| {
+            self.technology.research_status_by_nation[nation][tech]
+                == TechnologyResearchStatus::Pending
+        })
     }
 
     /// Mirrors `TTechMgr::ConsumeFirstPendingAbilityUnlock` for one nation.
-    pub fn acknowledge_technology_unlock(&mut self, nation: MajorNationId) -> Option<TechnologyId> {
+    pub fn acknowledge_technology_unlock(&mut self, nation: MajorNationId) -> Option<Technology> {
         let tech_id = self.first_pending_technology_unlock(nation.nation())?;
-        self.apply_ability_unlock(tech_id.index(), nation);
+        self.apply_ability_unlock(tech_id, nation);
         Some(tech_id)
     }
 
@@ -362,7 +381,7 @@ impl GameState {
         self.consume_non_interactive_technology_unlocks();
     }
 
-    pub(crate) fn consume_interactive_technology_unlock(&mut self) -> Option<TechnologyId> {
+    pub(crate) fn consume_interactive_technology_unlock(&mut self) -> Option<Technology> {
         let nation = MajorNationId::from_nation(self.turn.active_nation)?;
         if self.nations.major(nation).economy.diplomacy_eligible
             && self.nation_slot_eligible_for_event_processing(nation)
@@ -395,10 +414,10 @@ impl GameState {
         )
     }
 
-    fn apply_ability_unlock(&mut self, tech_id: usize, nation: MajorNationId) {
+    fn apply_ability_unlock(&mut self, tech_id: Technology, nation: MajorNationId) {
         // FIXME: `HandleAbilityUnlock` also upgrades developed-tile civilian class,
-        // navy/score `UpdateSelectionAndRecalculateScores`, unit-order cost profiles,
-        // and `TMilitaryUnit::Upgrade()`. First turn usually has nothing Pending.
+        // navy/score `UpdateSelectionAndRecalculateScores`, city TUnitOrder cost
+        // profiles, and `TMilitaryUnit::Upgrade()`.
         if self.technology.research_status_by_nation[nation][tech_id]
             == TechnologyResearchStatus::Researched
         {
@@ -416,114 +435,242 @@ impl GameState {
             };
 
         match tech_id {
-            3 => self.set_requirement_level(nation, 0, 1),
-            2 => self.set_requirement_level(nation, 0x11, 1),
-            5 => {
-                self.set_requirement_level(nation, 3, 2);
-                self.set_requirement_level(nation, 4, 2);
-                self.set_requirement_level(nation, 0x16, 2);
-                self.set_requirement_level(nation, 0x15, 2);
+            Technology::CottonGin => self.set_requirement_level(nation, ResourceKind::Cotton, 1),
+            Technology::SeedDrill => self.set_requirement_level(nation, ResourceKind::Grain, 1),
+            Technology::SquareSetTimbering => {
+                self.set_requirement_level(nation, ResourceKind::Coal, 2);
+                self.set_requirement_level(nation, ResourceKind::Iron, 2);
+                self.set_requirement_level(nation, ResourceKind::Gold, 2);
+                self.set_requirement_level(nation, ResourceKind::Gems, 2);
             }
-            6 => {
-                self.set_requirement_level(nation, 2, 1);
-                self.set_university_available(nation, 3, true);
+            Technology::IronRailroadBridge => {
+                self.set_requirement_level(nation, ResourceKind::Timber, 1);
+                self.set_university_available(nation, CivilianUnitKind::Forester, true);
             }
-            0xa => {
-                self.set_requirement_level(nation, 0x12, 2);
-                self.set_requirement_level(nation, 0x11, 2);
+            Technology::SteelPlows => {
+                self.set_requirement_level(nation, ResourceKind::Fruit, 2);
+                self.set_requirement_level(nation, ResourceKind::Grain, 2);
             }
-            7 => {
-                self.set_requirement_level(nation, 0x14, 1);
-                self.set_requirement_level(nation, 1, 1);
-                self.set_university_available(nation, 5, true);
+            Technology::FeedGrasses => {
+                self.set_requirement_level(nation, ResourceKind::Livestock, 1);
+                self.set_requirement_level(nation, ResourceKind::Wool, 1);
+                self.set_university_available(nation, CivilianUnitKind::Rancher, true);
             }
-            8 => {
-                self.set_requirement_level(nation, 0, 2);
-                self.set_requirement_level(nation, 1, 2);
+            Technology::SpinningJenny => {
+                self.set_requirement_level(nation, ResourceKind::Cotton, 2);
+                self.set_requirement_level(nation, ResourceKind::Wool, 2);
             }
-            0xc => self.set_requirement_level(nation, 2, 2),
-            0x11 => self.set_requirement_level(nation, 0x11, 3),
-            0x12 => self.set_requirement_level(nation, 0x12, 3),
-            0x14 => self.set_requirement_level(nation, 0x14, 2),
-            0xb => {
-                self.activate_military_ability(nation, 0xc);
-                self.activate_military_ability(nation, 9);
-                self.activate_military_ability(nation, 0x19);
-                self.activate_military_ability(nation, 0x1c);
+            Technology::CompoundSteamEngine => {
+                self.set_requirement_level(nation, ResourceKind::Timber, 2)
             }
-            0x10 => {
-                self.set_requirement_level(nation, 0, 3);
-                self.set_requirement_level(nation, 1, 3);
+            Technology::MechanicalReaper => {
+                self.set_requirement_level(nation, ResourceKind::Grain, 3)
             }
-            0xd => {
-                self.activate_military_ability(nation, 0xe);
-                self.activate_military_ability(nation, 0xf);
+            Technology::CommercialFertilizer => {
+                self.set_requirement_level(nation, ResourceKind::Fruit, 3)
+            }
+            Technology::BarbedWire => {
+                self.set_requirement_level(nation, ResourceKind::Livestock, 2)
+            }
+            Technology::BessemerConverter => {
+                self.activate_military_ability(nation, MilitaryUnitKind::Scouts);
+                self.activate_military_ability(nation, MilitaryUnitKind::Sharpshooters);
+                self.activate_military_ability(nation, MilitaryUnitKind::CombatEngineers);
+                self.activate_military_ability(nation, MilitaryUnitKind::GeneralEra2);
+            }
+            Technology::PowerLoom => {
+                self.set_requirement_level(nation, ResourceKind::Cotton, 3);
+                self.set_requirement_level(nation, ResourceKind::Wool, 3);
+            }
+            Technology::RifledArtillery => {
+                self.activate_military_ability(nation, MilitaryUnitKind::FieldArtillery);
+                self.activate_military_ability(nation, MilitaryUnitKind::SiegeArtillery);
                 self.add_era_arms(nation, era_offset, 10);
             }
-            0x17 => {
-                self.set_requirement_level(nation, 3, 3);
-                self.set_requirement_level(nation, 4, 3);
-                self.set_requirement_level(nation, 0x16, 3);
-                self.set_requirement_level(nation, 0x15, 3);
-                self.set_requirement_level(nation, 2, 3);
-                self.activate_military_ability(nation, 0x1a);
+            Technology::Dynamite => {
+                self.set_requirement_level(nation, ResourceKind::Coal, 3);
+                self.set_requirement_level(nation, ResourceKind::Iron, 3);
+                self.set_requirement_level(nation, ResourceKind::Gold, 3);
+                self.set_requirement_level(nation, ResourceKind::Gems, 3);
+                self.set_requirement_level(nation, ResourceKind::Timber, 3);
+                self.activate_military_ability(nation, MilitaryUnitKind::Saboteurs);
             }
-            0x13 => {
-                self.set_requirement_level(nation, 6, 1);
-                self.set_university_available(nation, 8, true);
+            Technology::OilDrilling => {
+                self.set_requirement_level(nation, ResourceKind::Oil, 1);
+                self.set_university_available(nation, CivilianUnitKind::Driller, true);
             }
-            0xe => {
-                self.activate_military_ability(nation, 8);
-                self.activate_military_ability(nation, 0xd);
-                self.activate_military_ability(nation, 0xa);
-                self.activate_military_ability(nation, 0xb);
+            Technology::BreechLoadingRifles => {
+                self.activate_military_ability(nation, MilitaryUnitKind::Militia);
+                self.activate_military_ability(nation, MilitaryUnitKind::CarbineCavalry);
+                self.activate_military_ability(nation, MilitaryUnitKind::RifleInfantry);
+                self.activate_military_ability(nation, MilitaryUnitKind::Guards);
                 self.add_era_arms(nation, era_offset, 10);
             }
-            0x1a => {
-                self.set_requirement_level(nation, 6, 2);
-                self.set_requirement_level(nation, 0x14, 3);
+            Technology::Chemistry => {
+                self.set_requirement_level(nation, ResourceKind::Oil, 2);
+                self.set_requirement_level(nation, ResourceKind::Livestock, 3);
             }
-            0x16 => {
-                self.activate_military_ability(nation, 0x16);
-                self.activate_military_ability(nation, 0x17);
+            Technology::LargeArtillery => {
+                self.activate_military_ability(nation, MilitaryUnitKind::MobileArtillery);
+                self.activate_military_ability(nation, MilitaryUnitKind::RailroadGuns);
                 self.add_era_arms(nation, era_offset, 20);
             }
-            0x1c => {
-                self.set_requirement_level(nation, 6, 3);
-                self.activate_military_ability(nation, 0x14);
-                self.activate_military_ability(nation, 0x15);
+            Technology::InternalCombustion => {
+                self.set_requirement_level(nation, ResourceKind::Oil, 3);
+                self.activate_military_ability(nation, MilitaryUnitKind::MechanizedInfantry);
+                self.activate_military_ability(nation, MilitaryUnitKind::Armor);
             }
-            0x19 => {
-                self.activate_military_ability(nation, 0x10);
-                self.activate_military_ability(nation, 0x11);
-                self.activate_military_ability(nation, 0x12);
-                self.activate_military_ability(nation, 0x13);
-                self.activate_military_ability(nation, 0x1d);
+            Technology::MachineGuns => {
+                self.activate_military_ability(nation, MilitaryUnitKind::Conscripts);
+                self.activate_military_ability(nation, MilitaryUnitKind::Rangers);
+                self.activate_military_ability(nation, MilitaryUnitKind::Infantry);
+                self.activate_military_ability(nation, MilitaryUnitKind::MachineGunners);
+                self.activate_military_ability(nation, MilitaryUnitKind::GeneralEra3);
                 self.add_era_arms(nation, era_offset, 20);
             }
             _ => {}
         }
+        self.upgrade_owned_surface_development(nation);
         sync_city_capabilities_from_research(&mut self.technology, nation);
     }
 
-    fn set_requirement_level(&mut self, nation: MajorNationId, resource: usize, level: u8) {
-        let resource = ResourceKind::from_index(resource as u8)
-            .expect("technology unlock uses a retail resource index");
+    fn upgrade_owned_surface_development(&mut self, nation: MajorNationId) {
+        let requirements = self.technology.city_capabilities_by_nation[nation]
+            .university
+            .requirement_levels;
+        let owner = TileOwnerTag::from_nation(nation.nation());
+        for tile in self.map.tiles.iter_mut() {
+            if tile.owner_nation != Some(owner) || !tile.flags.contains(TileFlags::BASE_TRANSPORT) {
+                continue;
+            }
+            let level = tile
+                .edge_resources
+                .into_iter()
+                .flatten()
+                .filter(|resource| !crate::ai_civilian::extractive_resource(*resource))
+                .map(|resource| requirements[resource])
+                .max()
+                .unwrap_or(0);
+            if tile.development.surface.get() < level {
+                tile.development.surface = DevelopmentLevel::new(level);
+            }
+        }
+    }
+
+    fn set_requirement_level(&mut self, nation: MajorNationId, resource: ResourceKind, level: u8) {
         self.technology.city_capabilities_by_nation[nation]
             .university
             .requirement_levels[resource] = level;
     }
 
-    fn set_university_available(&mut self, nation: MajorNationId, kind: usize, available: bool) {
-        let kind = CivilianUnitKind::from_usize(kind);
+    fn set_university_available(
+        &mut self,
+        nation: MajorNationId,
+        kind: CivilianUnitKind,
+        available: bool,
+    ) {
         self.technology.city_capabilities_by_nation[nation]
             .university
             .available[kind] = available;
     }
 
-    fn activate_military_ability(&mut self, nation: MajorNationId, ability: usize) {
-        let kind = MilitaryUnitKind::from_usize(ability);
+    /// Retail `TTechMgr::ActivateSlotAndUpdateUI`.
+    pub fn activate_slot_and_update_ui(&mut self, nation: MajorNationId, kind: MilitaryUnitKind) {
+        self.activate_military_ability(nation, kind);
+    }
+
+    fn activate_military_ability(&mut self, nation: MajorNationId, kind: MilitaryUnitKind) {
         self.technology.military_unit_ability_active_by_nation[nation][kind] = true;
+        let group = crate::military_phase::tactical_category(kind);
+        if (0..10).contains(&group) {
+            self.technology.selected_capability_slots[nation][group as usize] = kind;
+        }
+        if (1..9).contains(&group) {
+            let category = MilitaryRecruitmentCategory::from_usize((group - 1) as usize);
+            let previous =
+                self.nations.city(nation).orders.military_recruitment[category].unit_kind;
+            if previous != kind {
+                self.technology.military_unit_ability_active_by_nation[nation][previous] = false;
+            }
+            self.nations.city_mut(nation).orders.military_recruitment[category].unit_kind = kind;
+        } else if self.nation_is_eligible_for_optional_phase(nation.nation()) {
+            self.upgrade_matching_category_units(nation, group);
+        }
+    }
+
+    fn upgrade_matching_category_units(&mut self, nation: MajorNationId, group: i16) {
+        let mut indexes = Vec::new();
+        for (index, unit) in self.military_units.iter().enumerate() {
+            if unit.nation() == nation.nation()
+                && crate::military_phase::tactical_category(unit.unit_type()) == group
+            {
+                indexes.push(index);
+            }
+        }
+        for index in indexes {
+            self.upgrade_military_unit(nation, index);
+        }
+    }
+
+    fn upgrade_military_unit(&mut self, nation: MajorNationId, index: usize) -> bool {
+        let Some(candidate) = self.upgrade_type(nation, self.military_units[index].unit_type())
+        else {
+            return false;
+        };
+        let (arms_cost, cash_cost, fuel_cost) = upgrade_resource_costs(candidate);
+        let city = self.nations.city(nation);
+        if arms_cost > city.stockpile[ResourceKind::Arms] {
+            return false;
+        }
+        if fuel_cost > city.stockpile[ResourceKind::Fuel] {
+            return false;
+        }
+        let diplomacy_eligible = self.nations.majors[nation].economy.diplomacy_eligible;
+        let treasury = self.nations.majors[nation].common.treasury;
+        if diplomacy_eligible
+            && i32::from(cash_cost)
+                > self.nations.majors[nation]
+                    .economy
+                    .available_diplomacy_budget(treasury)
+        {
+            return false;
+        }
+        self.nations
+            .city_mut(nation)
+            .stockpile
+            .wrapping_add_and_verify(ResourceKind::Arms, -arms_cost);
+        self.nations
+            .city_mut(nation)
+            .stockpile
+            .wrapping_add_and_verify(ResourceKind::Fuel, -fuel_cost);
+        self.nations.majors[nation].common.treasury -= i32::from(cash_cost);
+        self.military_units[index].unit_type = candidate;
+        true
+    }
+
+    pub(crate) fn upgrade_type(
+        &self,
+        nation: MajorNationId,
+        unit_type: MilitaryUnitKind,
+    ) -> Option<MilitaryUnitKind> {
+        let candidate = if (unit_type as u8) < MilitaryUnitKind::Conscripts as u8 {
+            MilitaryUnitKind::from_index(unit_type as u8 + 8)
+        } else if matches!(
+            unit_type,
+            MilitaryUnitKind::Sappers
+                | MilitaryUnitKind::CombatEngineers
+                | MilitaryUnitKind::GeneralEra1
+                | MilitaryUnitKind::GeneralEra2
+        ) {
+            MilitaryUnitKind::from_index(unit_type as u8 + 1)
+        } else {
+            None
+        }?;
+        let active = &self.technology.military_unit_ability_active_by_nation[nation];
+        if !active[candidate] && active[unit_type] {
+            return None;
+        }
+        Some(candidate)
     }
 
     fn add_era_arms(&mut self, nation: MajorNationId, era_offset: i16, scale: i16) {
@@ -537,31 +684,60 @@ impl GameState {
     }
 }
 
-fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id: usize) {
+pub(crate) const fn default_selected_capability_slots() -> [MilitaryUnitKind; 10] {
+    [
+        MilitaryUnitKind::Minutemen,
+        MilitaryUnitKind::Skirmishers,
+        MilitaryUnitKind::Regulars,
+        MilitaryUnitKind::Grenadiers,
+        MilitaryUnitKind::Hussars,
+        MilitaryUnitKind::Cuirassiers,
+        MilitaryUnitKind::LightArtillery,
+        MilitaryUnitKind::Artillery,
+        MilitaryUnitKind::Sappers,
+        MilitaryUnitKind::GeneralEra1,
+    ]
+}
+
+fn upgrade_resource_costs(kind: MilitaryUnitKind) -> (i16, i16, i16) {
+    match military_recruitment_spec(kind) {
+        Some(spec) => {
+            let fuel = spec
+                .secondary
+                .filter(|cost| cost.resource == ResourceKind::Fuel)
+                .map(|cost| cost.per_unit())
+                .unwrap_or(0);
+            (spec.primary.per_unit(), spec.cash_per_unit, fuel)
+        }
+        None => (0, 0, 0),
+    }
+}
+
+fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id: Technology) {
     // FIXME: retail also writes `marker262`, `techSelectorShort1d2`, and
     // `activePrerequisitePair264` (techs 0xb / 0x16).
     technology.global_unlocks_by_technology[tech_id] = true;
     match tech_id {
-        9 => {
+        Technology::Paddlewheels => {
             technology.industry_enabled_by_slot[7] = true;
             technology.industry_enabled_by_slot[5] = true;
         }
-        4 => technology.industry_enabled_by_slot[6] = true,
-        0xf => {
+        Technology::StreamlinedHulls => technology.industry_enabled_by_slot[6] = true,
+        Technology::AdvancedIronWorking => {
             technology.industry_enabled_by_slot[8] = true;
             technology.advanced_iron_working = true;
             technology.navy_growth_ship_type = ShipType::Ironclad;
         }
-        0x15 => {
+        Technology::SteelArmorPlate => {
             technology.industry_enabled_by_slot[9] = true;
             technology.navy_growth_ship_type = ShipType::AdvancedIronclad;
         }
-        0x18 => {
+        Technology::MarineEngineering => {
             technology.industry_enabled_by_slot[0xb] = true;
             technology.industry_enabled_by_slot[0xa] = true;
             technology.marine_engineering = true;
         }
-        0x1b => {
+        Technology::ImprovedRangeFinding => {
             technology.industry_enabled_by_slot[0xc] = true;
             technology.industry_enabled_by_slot[0xd] = true;
             technology.navy_growth_ship_type = ShipType::Dreadnought;
@@ -571,22 +747,22 @@ fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id:
 }
 
 fn sync_city_capabilities_from_research(technology: &mut TechnologyState, nation: MajorNationId) {
-    let status = technology.research_status_by_nation[nation];
-    let researched = |tech_id: usize| status[tech_id] == TechnologyResearchStatus::Researched;
-    let started = |tech_id: usize| status[tech_id] != TechnologyResearchStatus::NotStarted;
+    let status = &technology.research_status_by_nation[nation];
+    let researched = |tech| status[tech] == TechnologyResearchStatus::Researched;
+    let started = |tech| status[tech] != TechnologyResearchStatus::NotStarted;
     let capabilities = &mut technology.city_capabilities_by_nation[nation];
-    capabilities.advanced_iron_working = researched(0x0f);
-    capabilities.oil_drilling = researched(0x13);
+    capabilities.advanced_iron_working = researched(Technology::AdvancedIronWorking);
+    capabilities.oil_drilling = researched(Technology::OilDrilling);
     capabilities.primary_civilian_distance_terrain = CivilianTerrainAccess {
-        hills: researched(12),
-        swamp: researched(6),
-        mountain: researched(23),
+        hills: researched(Technology::CompoundSteamEngine),
+        swamp: researched(Technology::IronRailroadBridge),
+        mountain: researched(Technology::Dynamite),
     };
-    capabilities.secondary_civilian_hills = researched(11);
-    capabilities.secondary_civilian_swamp = researched(5);
-    capabilities.fort_level_cap = if started(0x16) {
+    capabilities.secondary_civilian_hills = researched(Technology::BessemerConverter);
+    capabilities.secondary_civilian_swamp = researched(Technology::SquareSetTimbering);
+    capabilities.fort_level_cap = if started(Technology::LargeArtillery) {
         FortLevelCap::THREE
-    } else if started(0x0b) {
+    } else if started(Technology::BessemerConverter) {
         FortLevelCap::TWO
     } else {
         FortLevelCap::ONE
@@ -601,10 +777,10 @@ mod tests {
     fn random_start_schedule_matches_the_native_seed_one_table() {
         assert_eq!(
             TechnologyState::for_random_start(1).scheduled_unlock_turn_by_technology,
-            [
+            TechnologyTable::from_array([
                 0, 0, 0, 19, 40, 38, 34, 28, 48, 47, 68, 99, 89, 114, 115, 140, 136, 155, 164, 169,
                 192, 210, 228, 237, 240, 252, 249, 273, 279,
-            ]
+            ])
         );
     }
 
@@ -628,10 +804,10 @@ mod tests {
     #[test]
     fn check_for_advances_unlocks_a_scheduled_technology_and_queues_news() {
         let mut state = crate::test_support::game_state();
-        state.technology.scheduled_unlock_turn_by_technology[4] = 1;
+        state.technology.scheduled_unlock_turn_by_technology[Technology::StreamlinedHulls] = 1;
         state.check_technology_advances();
 
-        assert!(state.technology.global_unlocks_by_technology[4]);
+        assert!(state.technology.global_unlocks_by_technology[Technology::StreamlinedHulls]);
         assert!(state.technology.industry_enabled_by_slot[6]);
         assert_eq!(
             state.pending.newspaper_events,
@@ -646,19 +822,19 @@ mod tests {
     fn check_for_advances_charges_ai_nations_for_already_unlocked_technology() {
         let mut state = crate::test_support::game_state();
         let ai = MajorNationId::new(1);
-        state.nations.major_mut(ai).economy.controller = MajorNationController::Computer;
         state.nations.major_mut(ai).economy.diplomacy_eligible = false;
         state.nations.major_mut(ai).common.treasury = 50_000;
-        state.technology.global_unlocks_by_technology[3] = true;
+        state.technology.global_unlocks_by_technology[Technology::CottonGin] = true;
         state.check_technology_advances();
 
         assert_eq!(state.nations.major(ai).common.treasury, 49_000);
         assert_eq!(
-            state.technology.research_status_by_nation[ai][3],
+            state.technology.research_status_by_nation[ai][Technology::CottonGin],
             TechnologyResearchStatus::Pending
         );
         assert_eq!(
-            state.technology.research_status_by_nation[MajorNationId::new(0)][3],
+            state.technology.research_status_by_nation[MajorNationId::new(0)]
+                [Technology::CottonGin],
             TechnologyResearchStatus::NotStarted
         );
     }
@@ -666,8 +842,78 @@ mod tests {
     #[test]
     fn ironclad_unlock_advances_the_navy_growth_hull() {
         let mut state = crate::test_support::game_state();
-        state.technology.scheduled_unlock_turn_by_technology[0xf] = 1;
+        state.technology.scheduled_unlock_turn_by_technology[Technology::AdvancedIronWorking] = 1;
         state.check_technology_advances();
         assert_eq!(state.technology.navy_growth_ship_type, ShipType::Ironclad);
+    }
+
+    #[test]
+    fn activating_a_later_general_writes_the_selected_capability_slot() {
+        let mut state = crate::test_support::game_state();
+        let nation = MajorNationId::new(0);
+        state.technology.research_status_by_nation[nation][Technology::BessemerConverter] =
+            TechnologyResearchStatus::Pending;
+        assert_eq!(
+            state.acknowledge_technology_unlock(nation),
+            Some(Technology::BessemerConverter)
+        );
+        assert_eq!(
+            state.technology.selected_capability_slots[nation][9],
+            MilitaryUnitKind::GeneralEra2
+        );
+        assert!(
+            state.technology.military_unit_ability_active_by_nation[nation]
+                [MilitaryUnitKind::GeneralEra2]
+        );
+    }
+
+    #[test]
+    fn activating_a_recruitment_ability_rewrites_the_city_order_unit_kind() {
+        let mut state = crate::test_support::game_state();
+        let nation = MajorNationId::new(0);
+        assert_eq!(
+            state.nations.city(nation).orders.military_recruitment
+                [MilitaryRecruitmentCategory::LightInfantry]
+                .unit_kind,
+            MilitaryUnitKind::Skirmishers
+        );
+        state.activate_slot_and_update_ui(nation, MilitaryUnitKind::Sharpshooters);
+        assert_eq!(
+            state.nations.city(nation).orders.military_recruitment
+                [MilitaryRecruitmentCategory::LightInfantry]
+                .unit_kind,
+            MilitaryUnitKind::Sharpshooters
+        );
+        assert!(
+            !state.technology.military_unit_ability_active_by_nation[nation]
+                [MilitaryUnitKind::Skirmishers]
+        );
+    }
+
+    #[test]
+    fn activating_a_later_general_upgrades_existing_matching_units() {
+        let mut state = crate::test_support::game_state();
+        let nation = MajorNationId::new(0);
+        let province = ProvinceId::new(0);
+        state.military_units.push(MilitaryUnitState::new(
+            MilitaryUnitId::new(1),
+            nation.nation(),
+            MilitaryUnitKind::GeneralEra1,
+            Some(province),
+            MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
+            nation.nation(),
+            1,
+            true,
+            String::new(),
+            500,
+            0,
+            0,
+            0,
+        ));
+        state.activate_slot_and_update_ui(nation, MilitaryUnitKind::GeneralEra2);
+        assert_eq!(
+            state.military_units[0].unit_type(),
+            MilitaryUnitKind::GeneralEra2
+        );
     }
 }

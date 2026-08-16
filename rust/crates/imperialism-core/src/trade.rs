@@ -411,6 +411,48 @@ impl GameState {
         self.recall_trade_bids(nation);
     }
 
+    /// Retail `TGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix`
+    /// and the `TAutoGreatPower` override.
+    pub(crate) fn reset_diplomacy_need_scores_and_clear_aid_allocation_matrix(
+        &mut self,
+        nation: MajorNationId,
+    ) {
+        self.refresh_merchant_capacity(nation);
+        let is_auto = self.is_auto(nation);
+        let major = &mut self.nations.majors[nation].economy;
+        major.unfilled_trade_offer_count = 0;
+        major.budget_pool_delta = 0;
+        major.budget_pool_base = 0;
+        if is_auto {
+            major.item_potentials = ResourceTable::default();
+            major.aid_allocation_by_minor_nation = Default::default();
+            return;
+        }
+        self.recall_trade_bids(nation);
+    }
+
+    /// Retail `TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches`.
+    /// The AutoGreatPower override (`SetTradeBids` / subsidy) is not ported.
+    pub(crate) fn reset_diplomacy_need_slots_7012_if_mode_gate_matches(
+        &mut self,
+        nation: MajorNationId,
+    ) {
+        if self.is_auto(nation) || self.turn.difficulty != Difficulty::Introductory {
+            return;
+        }
+        for resource in [
+            ResourceKind::Food,
+            ResourceKind::Cotton,
+            ResourceKind::Wool,
+            ResourceKind::Timber,
+        ] {
+            self.nations.majors[nation]
+                .economy
+                .set_item_potential(resource, -1);
+        }
+        self.remember_trade_bids(nation);
+    }
+
     /// Credits a minor nation's resource-specific aid allocation.
     pub fn add_aid_allocation(
         &mut self,
@@ -514,13 +556,8 @@ fn transport_allocation_total(
 
 fn transport_row_limit(major: &MajorNation, allocation: TransportAllocation) -> Option<i16> {
     let city = &major.city;
-    let building = |slot| {
-        city.building_type(
-            slot,
-            &major.economy,
-            major.common.owned_region_count() as i32,
-        )
-    };
+    let building =
+        |slot| city.building_type(slot, &major.economy, major.common.owned_region_count());
     let deficit = if allocation == TransportAllocation::COTTON_AND_WOOL {
         building(CityFacilitySlot::TextileMill) * 2
             - city.stockpile[ResourceKind::Cotton]
@@ -613,7 +650,7 @@ mod tests {
 
     fn state() -> GameState {
         let majors = crate::MajorNationTable::from_fn(|nation| MajorNation {
-            kind: MajorNationKind::GreatPower,
+            auto: None,
             common: NationCommonState::from_parts(
                 String::new(),
                 crate::CountryStatus::Independent,
@@ -642,6 +679,8 @@ mod tests {
                 active_nation: NationId::new(6),
                 selected_nation: NationId::new(6),
                 last_turn_alert_tick: 0,
+                turn_alert_mask: 0,
+                turn_cooldown_defer_counter: 0,
             },
             unit_ids: crate::UnitIdAllocator::default(),
             map: MapMgr::new(
@@ -671,8 +710,8 @@ mod tests {
             missions: vec![],
             news: crate::NewsState::default(),
             pending: crate::PendingWorkState::default(),
+            battle_reports: Vec::new(),
             continuation: crate::turn_flow::TurnContinuation::None,
-            pending_land_battle: None,
         }
     }
 

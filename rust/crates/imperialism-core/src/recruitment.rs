@@ -1,31 +1,32 @@
+use crate::{
+    CivilianLocation, CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, Difficulty,
+    GameState, MajorNationId, MapMgr, MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState,
+    NationId, OceanZoneId, PendingActionKind, ProvinceId, ShipState, ShipType, TileFlags, TileId,
+    TileOwnerTag, TurnSummary,
+};
 #[cfg(test)]
 use crate::{CivilianUnitId, MilitaryUnitId};
-use crate::{
-    CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, GameState, MajorNationId, MapMgr,
-    MilitaryUnitKind, MilitaryUnitState, NationId, PendingActionKind, STRATEGIC_TILE_COUNT,
-    TileFlags, TileId, TileOwnerTag, TurnSummary,
-};
 
 impl MapMgr {
     pub fn find_reachable_recruit_spawn_tile(
-        &self,
+        &mut self,
         civilians: &[CivilianUnitState],
         start: TileId,
         allow_active_flag_2: bool,
     ) -> Option<TileId> {
         let owner = self[start].owner_nation;
         let geometry = self.geometry();
-        let mut visited = vec![false; STRATEGIC_TILE_COUNT];
+        for tile in TileId::all() {
+            self[tile].recruit_search_visited = 0;
+        }
         let mut pending = vec![start];
 
         while let Some(tile_id) = pending.pop() {
-            let index = usize::from(tile_id.get());
-            let tile = &self[tile_id];
-            if visited[index] {
+            if self[tile_id].recruit_search_visited != 0 {
                 continue;
             }
-            visited[index] = true;
-            if tile.owner_nation != owner {
+            self[tile_id].recruit_search_visited = 1;
+            if self[tile_id].owner_nation != owner {
                 continue;
             }
 
@@ -34,7 +35,10 @@ impl MapMgr {
                     && Some(civilian.owner_nation) == owner.and_then(TileOwnerTag::nation)
             });
             if !occupied
-                && (!tile.flags.contains(TileFlags::RECRUITMENT_RESERVED) || allow_active_flag_2)
+                && (!self[tile_id]
+                    .flags
+                    .contains(TileFlags::RECRUITMENT_RESERVED)
+                    || allow_active_flag_2)
             {
                 return Some(tile_id);
             }
@@ -85,22 +89,7 @@ impl GameState {
                 ) else {
                     continue;
                 };
-                let id = self.unit_ids.next_civilian();
-                let unit = CivilianUnitState {
-                    id,
-                    nation: nation_id,
-                    unit_type: unit_kind,
-                    location: crate::CivilianLocation::OnMap(tile),
-                    order: CivilianWorkOrder::Idle,
-                    owner_nation: nation_id,
-                    roster_id: 0,
-                    registered: false,
-                    next_on_tile: None,
-                };
-                let insert_at = self
-                    .civilian_units
-                    .partition_point(|existing| existing.nation.get() <= nation_id.get());
-                self.civilian_units.insert(insert_at, unit);
+                self.insert_idle_civilian(nation_id, unit_kind, CivilianLocation::OnMap(tile));
             }
         }
 
@@ -108,6 +97,259 @@ impl GameState {
             let city = self.nations.city_mut(nation);
             city.serialized_state += 1;
         }
+    }
+
+    /// `TGreatPower::SetHomeCityTileAndDisplayName` after the home tile is already bound.
+    ///
+    /// Scenario maps skip only the random-map civilian grant, not yields, transport
+    /// allocation, the self relationship, or `InitialMilitia`.
+    pub fn finalize_home_city_setup(&mut self, nation: MajorNationId) {
+        if self.nations.major(nation).common.home_tile.is_none() {
+            return;
+        }
+        self.rebuild_nation_resource_yields(nation);
+        self.allocate_transport_needs(nation);
+        if self.turn.scenario_map.is_none() {
+            self.grant_opening_civilians_for_nation(nation);
+        }
+        self.set_relationship(nation.nation(), nation.nation(), 0x100);
+        self.initial_militia(nation.nation());
+    }
+
+    /// One nation's prospector/engineer pair, plus the Introductory human extras.
+    pub fn grant_opening_civilians_for_nation(&mut self, nation: MajorNationId) {
+        if self.nations.major(nation).common.home_tile.is_none() {
+            return;
+        }
+        self.spawn_opening_civilian(nation, CivilianUnitKind::Prospector, false);
+        self.spawn_opening_civilian(nation, CivilianUnitKind::Engineer, true);
+        self.nations.city_mut(nation).ship_order_count_by_type[ShipType::Trader] += 2;
+        if self.turn.difficulty == Difficulty::Introductory
+            && self.nations.major(nation).economy.diplomacy_eligible
+        {
+            self.nations.city_mut(nation).ship_order_count_by_type[ShipType::Trader] += 6;
+            self.spawn_opening_civilian(nation, CivilianUnitKind::Prospector, false);
+            self.spawn_opening_civilian(nation, CivilianUnitKind::Miner, false);
+            self.spawn_opening_civilian(nation, CivilianUnitKind::Farmer, false);
+        }
+    }
+
+    fn spawn_opening_civilian(
+        &mut self,
+        nation: MajorNationId,
+        kind: CivilianUnitKind,
+        allow_reserved: bool,
+    ) {
+        let nation_id = nation.nation();
+        let home = self
+            .nations
+            .major(nation)
+            .common
+            .home_tile
+            .expect("opening civilians require a home town tile");
+        let location = self
+            .map
+            .find_reachable_recruit_spawn_tile(&self.civilian_units, home, allow_reserved)
+            .map(CivilianLocation::OnMap)
+            .unwrap_or(CivilianLocation::OffMap);
+        self.insert_idle_civilian(nation_id, kind, location);
+    }
+
+    fn insert_idle_civilian(
+        &mut self,
+        nation_id: NationId,
+        kind: CivilianUnitKind,
+        location: CivilianLocation,
+    ) {
+        let id = self.unit_ids.next_civilian();
+        let unit = CivilianUnitState {
+            id,
+            nation: nation_id,
+            unit_type: kind,
+            location,
+            order: CivilianWorkOrder::Idle,
+            owner_nation: nation_id,
+            roster_id: 0,
+            registered: false,
+            next_on_tile: None,
+        };
+        let insert_at = self
+            .civilian_units
+            .partition_point(|existing| existing.nation <= nation_id);
+        self.civilian_units.insert(insert_at, unit);
+    }
+
+    /// `TCountry::InitialMilitia`.
+    pub(crate) fn initial_militia(&mut self, nation: NationId) {
+        if self.turn.scenario_map.is_some() {
+            if let Some(home) = self.nations.home_tile(nation)
+                && let Some(province) = self.map[home].province
+            {
+                self.set_province_capital_fortification(province);
+            }
+            return;
+        }
+
+        let owned = self
+            .nations
+            .common(nation)
+            .expect("initial militia requires a present nation")
+            .owned_regions()
+            .to_vec();
+        let garrison_orders = matches!(
+            self.turn.difficulty,
+            Difficulty::Introductory | Difficulty::Easy
+        );
+        let garrison_order = if garrison_orders {
+            MilitaryOrderCode::Sleep
+        } else {
+            MilitaryOrderCode::Idle
+        };
+        let major = MajorNationId::from_nation(nation);
+        let diplomacy_eligible =
+            major.is_some_and(|major| self.nations.major(major).economy.diplomacy_eligible);
+        let extra_ai_army = major.is_some()
+            && !diplomacy_eligible
+            && self.turn.difficulty == Difficulty::NighOnImpossible;
+        let introductory_navy = major.is_some()
+            && diplomacy_eligible
+            && self.turn.difficulty == Difficulty::Introductory;
+        let extra_militia = matches!(
+            self.turn.difficulty,
+            Difficulty::Hard | Difficulty::NighOnImpossible
+        );
+        let bonus_regulars = self.map.scenario_tag.as_bytes().first() == Some(&b'+');
+
+        for province in owned {
+            if let Some(capital) = self.map.provinces[province].city_tile()
+                && self.map[capital].flags.has_base_transport()
+            {
+                self.insert_land_unit(
+                    nation,
+                    MilitaryUnitKind::Regulars,
+                    Some(province),
+                    garrison_order,
+                );
+                self.insert_land_unit(
+                    nation,
+                    MilitaryUnitKind::Regulars,
+                    Some(province),
+                    garrison_order,
+                );
+                self.insert_land_unit(
+                    nation,
+                    MilitaryUnitKind::Artillery,
+                    Some(province),
+                    garrison_order,
+                );
+                self.set_province_capital_fortification(province);
+                if extra_ai_army {
+                    self.insert_land_unit(
+                        nation,
+                        MilitaryUnitKind::LightArtillery,
+                        Some(province),
+                        garrison_order,
+                    );
+                    self.insert_land_unit(
+                        nation,
+                        MilitaryUnitKind::Cuirassiers,
+                        Some(province),
+                        garrison_order,
+                    );
+                    if let Some(home) = self.nations.home_tile(nation)
+                        && let Some(port) = self.port_zone_for_city_tile(home)
+                    {
+                        self.spawn_opening_frigate(nation, port);
+                    }
+                }
+                if introductory_navy
+                    && let Some(home) = self.nations.home_tile(nation)
+                    && let Some(port) = self.port_zone_for_city_tile(home)
+                    && let Some(&neighbor) = self.ocean.zones[usize::from(port.get())]
+                        .zone()
+                        .primary_neighbors
+                        .first()
+                {
+                    self.spawn_opening_frigate(nation, neighbor);
+                }
+            }
+            for _ in 0..3 {
+                self.add_opening_militia(nation, province);
+            }
+            if extra_militia {
+                self.add_opening_militia(nation, province);
+                if major.is_none() {
+                    self.insert_land_unit(
+                        nation,
+                        MilitaryUnitKind::Artillery,
+                        Some(province),
+                        MilitaryOrderCode::Idle,
+                    );
+                }
+            }
+            if bonus_regulars {
+                self.insert_land_unit(
+                    nation,
+                    MilitaryUnitKind::Regulars,
+                    Some(province),
+                    MilitaryOrderCode::Sleep,
+                );
+            }
+        }
+        self.name_land_units(nation);
+    }
+
+    fn add_opening_militia(&mut self, nation: NationId, province: ProvinceId) {
+        let unit_type = self.militia_kind(nation);
+        self.insert_land_unit(nation, unit_type, Some(province), MilitaryOrderCode::Sleep);
+    }
+
+    fn set_province_capital_fortification(&mut self, province: ProvinceId) {
+        if let Some(capital) = self.map.provinces[province].city_tile() {
+            self.map[capital]
+                .flags
+                .insert(TileFlags::PROVINCE_CAPITAL_FORTIFICATION);
+        }
+        self.map.provinces[province].increment_fort_level();
+    }
+
+    fn spawn_opening_frigate(&mut self, nation: NationId, location: OceanZoneId) {
+        if !crate::city::ship_creates_navy_object(ShipType::Frigate) {
+            return;
+        }
+        self.insert_ship_at_head(ShipState {
+            ship_type: ShipType::Frigate,
+            location,
+            task_force: None,
+            aggression: 0,
+            nation,
+            name: String::new(),
+            strength: crate::city::ship_stock_cap(ShipType::Frigate),
+            experience: 0,
+            selection: 0,
+        });
+    }
+
+    pub(crate) fn name_land_units(&mut self, nation: NationId) {
+        let (mut ordinals, mut counter) = {
+            let common = self
+                .nations
+                .common(nation)
+                .expect("naming units requires a present nation");
+            (common.unit_name_ordinal_by_type, common.unit_name_counter)
+        };
+        crate::create_random_game::name_units_for_nation(
+            &mut self.military_units,
+            nation,
+            &mut ordinals,
+            &mut counter,
+        );
+        let common = self
+            .nations
+            .common_mut(nation)
+            .expect("naming units requires a present nation");
+        common.unit_name_ordinal_by_type = ordinals;
+        common.unit_name_counter = counter;
     }
 
     pub fn produce_military_recruits(
@@ -134,7 +376,7 @@ impl GameState {
                 major.pending_actions[PendingActionKind::ConqueredCapitalArmoryUpgrade].status();
             Some((
                 province,
-                action_6.has_reached(crate::PendingActionStatus::Level3),
+                action_6.has_reached(crate::PendingActionStatus::HANDLED),
             ))
         } else {
             None
@@ -164,18 +406,19 @@ impl GameState {
                 };
                 let insert_at = self
                     .military_units
-                    .partition_point(|existing| existing.nation.get() <= nation_id.get());
+                    .partition_point(|existing| existing.nation <= nation_id);
                 self.military_units.insert(insert_at, unit);
 
                 let pending = self.nations.majors[nation].economy.pending_actions
                     [PendingActionKind::ArmyGrowthReward];
-                if let Some(current_level) = pending.level() {
+                if let Some(current_level) = pending.growth_reward_level() {
                     let military_power = self.selected_military_power_score(nation_id);
                     if let Some(payload) =
                         pending_military_action_payload(military_power, i32::from(current_level))
                     {
                         let major = &mut self.nations.majors[nation].economy;
-                        major.pending_actions[PendingActionKind::ArmyGrowthReward].queue(payload);
+                        major.pending_actions[PendingActionKind::ArmyGrowthReward]
+                            .queue_with_payload(payload);
                     }
                 }
             }
@@ -467,7 +710,7 @@ mod tests {
         let major = &state.nations.major(MajorNationId::new(0)).economy;
         assert_eq!(
             major.pending_actions[PendingActionKind::ArmyGrowthReward].status(),
-            crate::PendingActionStatus::Queued
+            crate::PendingActionStatus::QUEUED
         );
         assert_eq!(
             major.pending_actions[PendingActionKind::ArmyGrowthReward].payload(),
@@ -489,7 +732,7 @@ mod tests {
             .major_mut(MajorNationId::new(0))
             .economy
             .pending_actions[PendingActionKind::ArmyGrowthReward] =
-            crate::PendingActionState::new(crate::PendingActionStatus::Level3, Some(6));
+            crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, Some(6));
         state.produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Skirmishers, 1);
 
         let pending = state
@@ -497,7 +740,7 @@ mod tests {
             .major(MajorNationId::new(0))
             .economy
             .pending_actions[PendingActionKind::ArmyGrowthReward];
-        assert_eq!(pending.status(), crate::PendingActionStatus::Queued);
+        assert_eq!(pending.status(), crate::PendingActionStatus::QUEUED);
         assert_eq!(pending.payload(), Some(1));
     }
 

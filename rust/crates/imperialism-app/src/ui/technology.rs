@@ -1,21 +1,28 @@
-use super::game_shell::project_date_and_treasury;
+use super::game_shell::bind_game_status_display;
 use super::generated;
-use super::retail::{RetailTag, RetailUiAssets, find_descendant};
+use super::hover_help::get_string;
+use super::retail::{RetailTree, RetailUiAssets};
 use super::session::{GameSession, apply_turn_stop};
-use crate::{AppState, RetailAssetsResource};
+use crate::AppState;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::fourcc;
+use imperialism_formats::{PictureId, fourcc};
 
-const ABILITY_STATUS_PICTURE_INDEX: [i16; TECHNOLOGY_COUNT] = [
+const ABILITY_STATUS_PICTURE_INDEX: [i16; Technology::LENGTH] = [
     0, 1, 3, 2, 7, 5, 6, 9, 10, 4, 8, 16, 12, 19, 22, 11, 17, 13, 14, 21, 15, 18, 26, 20, 23, 28,
     24, 25, 27,
 ];
 
 #[derive(Component)]
 struct TechnologyAdvanceRoot;
+
+#[derive(Component, Clone, Copy)]
+enum TechnologyAdvanceDisplay {
+    Picture,
+    Text,
+}
 
 pub(crate) struct TechnologyAdvancePlugin;
 
@@ -24,6 +31,12 @@ impl Plugin for TechnologyAdvancePlugin {
         app.add_systems(
             OnEnter(AppState::TechnologyAdvance),
             (spawn_technology_advance, bind_technology_advance).chain(),
+        )
+        .add_systems(
+            Update,
+            project_technology_advance.run_if(
+                in_state(AppState::TechnologyAdvance).and_then(resource_exists::<GameSession>),
+            ),
         );
     }
 }
@@ -39,68 +52,67 @@ fn spawn_technology_advance(mut commands: Commands) {
 fn bind_technology_advance(
     mut commands: Commands,
     root: Single<Entity, Added<TechnologyAdvanceRoot>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
+    tree: RetailTree,
     mut assets: RetailUiAssets,
-    session: Res<GameSession>,
 ) {
     let root = *root;
-    let tech_id = session
-        .0
-        .current_technology_report()
-        .expect("technology screen requires a core technology continuation");
-    project_date_and_treasury(&mut commands, &mut assets, root, &children, &tags, &session);
-    fill_technology_advance(&mut commands, &mut assets, root, &children, &tags, tech_id);
+    bind_game_status_display(&mut commands, &mut assets, root, &tree);
     commands
-        .entity(find_descendant(root, fourcc!("end "), &children, &tags))
+        .entity(tree.find(root, fourcc!("main")))
+        .insert(TechnologyAdvanceDisplay::Picture);
+    commands
+        .entity(tree.find(root, fourcc!("text")))
+        .insert((TechnologyAdvanceDisplay::Text, Text::default()));
+    commands
+        .entity(tree.find(root, fourcc!("end ")))
         .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_technology_advance_activate);
 }
 
-fn fill_technology_advance(
-    commands: &mut Commands,
-    assets: &mut RetailUiAssets,
-    root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
-    tech_id: TechnologyId,
+fn project_technology_advance(
+    session: Res<GameSession>,
+    added: Query<(), Added<TechnologyAdvanceDisplay>>,
+    mut assets: RetailUiAssets,
+    mut pictures: Query<(&TechnologyAdvanceDisplay, &mut ImageNode)>,
+    mut texts: Query<(&TechnologyAdvanceDisplay, &mut Text), Without<ImageNode>>,
 ) {
-    let picture_id =
-        imperialism_formats::PictureId::new(ABILITY_STATUS_PICTURE_INDEX[tech_id.index()] + 0x897);
+    if super::projection_idle(&session, !added.is_empty()) {
+        return;
+    }
+    let Some(tech) = session.game.current_technology_report() else {
+        return;
+    };
+    let picture_id = PictureId::new(ABILITY_STATUS_PICTURE_INDEX[tech as usize] + 0x897);
     let picture = assets
         .picture(picture_id)
         .expect("technology status picture must load");
-    commands
-        .entity(find_descendant(root, fourcc!("main"), children, tags))
-        .insert(ImageNode::new(picture));
-
-    let status = super::hover_help::get_string(assets, 0x2712, i16::from(tech_id.get()));
-    let prefix = super::hover_help::get_string(assets, 0x274e, i16::from(tech_id.get()) - 1);
-    commands
-        .entity(find_descendant(root, fourcc!("text"), children, tags))
-        .insert(Text::new(format!("{status}\n\n{prefix}")));
+    let status = get_string(&assets, 0x2712, i16::from(tech as u8));
+    let prefix = get_string(&assets, 0x274e, i16::from(tech as u8) - 1);
+    let body = format!("{status}\n\n{prefix}");
+    for (display, mut image) in &mut pictures {
+        if matches!(*display, TechnologyAdvanceDisplay::Picture) {
+            image.image = picture.clone();
+        }
+    }
+    for (display, mut text) in &mut texts {
+        if matches!(*display, TechnologyAdvanceDisplay::Text) {
+            text.0.clone_from(&body);
+        }
+    }
 }
 
-#[allow(clippy::too_many_arguments)]
 fn on_technology_advance_activate(
     _activate: On<Activate>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    children: Query<&Children>,
-    tags: Query<&RetailTag>,
-    root: Query<Entity, With<TechnologyAdvanceRoot>>,
-    mut assets: RetailUiAssets,
-    retail: Res<RetailAssetsResource>,
-    mut commands: Commands,
+    assets: Res<crate::RetailAssetsResource>,
 ) {
-    match session.0.acknowledge_technology_report() {
-        TurnStop::TechnologyAdvance(tech_id) => {
-            let Ok(root) = root.single() else {
-                return;
-            };
-            fill_technology_advance(&mut commands, &mut assets, root, &children, &tags, tech_id);
-        }
-        stop => apply_turn_stop(stop, &mut session.0, retail.assets(), &mut next_state),
+    match session
+        .game
+        .acknowledge_technology_report(assets.news_story_ids())
+    {
+        TurnStop::TechnologyAdvance => {}
+        stop => apply_turn_stop(stop, &mut next_state),
     }
 }

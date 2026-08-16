@@ -1,6 +1,6 @@
 use super::GameSession;
 use super::RetailUiAssets;
-use super::retail::{RetailTag, find_descendant};
+use super::retail::RetailTree;
 use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
@@ -10,16 +10,35 @@ use bevy::ui::RelativeCursorPosition;
 use imperialism_core::*;
 use imperialism_formats::*;
 
+mod army_toolbar;
 mod borders;
 mod civilian_orders;
+mod civilian_toolbar;
+mod map_click;
+mod map_interaction;
+mod map_keys;
+mod map_modals;
+mod minimap;
+mod navy_toolbar;
+mod ocean_view;
 mod overlays;
 mod terrain;
 mod units;
 
+pub(crate) use army_toolbar::{bind_army_toolbar, register as register_army_toolbar};
 use borders::compose_strategic_borders;
-pub(crate) use civilian_orders::SelectedEngineer;
-pub(crate) use civilian_orders::on_strategic_map_click;
+use civilian_orders::StrategicSelection;
 pub(crate) use civilian_orders::register as register_civilian_orders;
+pub(crate) use civilian_toolbar::{bind_civilian_toolbar, register_civilian_toolbar};
+pub(crate) use map_click::{on_strategic_map_click, register as register_map_click};
+pub(crate) use map_interaction::{
+    MapInteractionMode, OceanView, register as register_map_interaction,
+};
+pub(crate) use map_keys::register as register_map_keys;
+pub(crate) use map_modals::register as register_map_modals;
+pub(crate) use minimap::{bind_minimap, sync_minimap};
+pub(crate) use navy_toolbar::{bind_navy_toolbar, register as register_navy_toolbar};
+pub(crate) use ocean_view::{bind_ocean_view, register as register_ocean_view};
 use overlays::{
     IMPROVEMENT_PICTURE_IDS, compose_strategic_improvements, compose_strategic_railways,
     town_transport_linked,
@@ -42,7 +61,7 @@ struct StrategicMapComposeKey {
     view_origin: TileId,
     topology: MapTopology,
     active_nation: NationId,
-    selected_engineer: Option<CivilianUnitId>,
+    selected_civilian: Option<CivilianUnitId>,
     visible_tiles: u64,
 }
 
@@ -69,12 +88,11 @@ pub(super) struct StrategicMapSprites<'a> {
 pub(crate) fn bind_strategic_base_terrain(
     commands: &mut Commands,
     root: Entity,
-    children: &Query<&Children>,
-    tags: &Query<&RetailTag>,
+    tree: &RetailTree,
     assets: &mut RetailUiAssets,
     state: &GameState,
 ) -> Entity {
-    let map = find_descendant(root, MAP_TAG, children, tags);
+    let map = tree.find(root, MAP_TAG);
     let terrain_pictures = load_strategic_terrain_pictures(assets);
     let river_masks = load_strategic_river_masks(assets);
     let improvement_pictures = load_strategic_improvement_pictures(assets);
@@ -94,6 +112,7 @@ pub(crate) fn bind_strategic_base_terrain(
         ImageNode::new(image),
         RelativeCursorPosition::default(),
         canvas,
+        StrategicSelection::default(),
     ));
     units::bind_strategic_units(commands, map, assets, state);
     map
@@ -113,21 +132,24 @@ impl StrategicBaseTerrainCanvas {
 
 pub(crate) fn sync_strategic_base_terrain(
     session: Res<GameSession>,
-    selected: Res<SelectedEngineer>,
     retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
-    mut maps: Query<(&mut StrategicBaseTerrainCanvas, &ImageNode)>,
+    mut maps: Query<(
+        &mut StrategicBaseTerrainCanvas,
+        &ImageNode,
+        Ref<StrategicSelection>,
+    )>,
 ) {
-    if !session.is_changed() && !selected.is_changed() {
-        return;
-    }
-    let key = strategic_map_compose_key(&session.0, selected.0);
-    for (mut canvas, image_node) in &mut maps {
+    for (mut canvas, image_node, selected) in &mut maps {
+        if !session.is_changed() && !selected.is_changed() {
+            continue;
+        }
+        let key = strategic_map_compose_key(&session.game, selected.0);
         if canvas.composed == Some(key) {
             continue;
         }
         let image = compose_strategic_map(
-            &session.0,
+            &session.game,
             canvas.sprites(),
             retail_assets.assets().default_dib_palette(),
             selected.0,
@@ -224,10 +246,14 @@ fn compose_strategic_map(
     state: &GameState,
     sprites: StrategicMapSprites<'_>,
     palette: &DibPalette,
-    selected_engineer: Option<CivilianUnitId>,
+    selected_civilian: Option<CivilianUnitId>,
 ) -> Image {
     let mut indices = compose_strategic_map_indices(state, sprites);
-    if let Some(unit) = selected_engineer {
+    if let Some(unit) = selected_civilian.filter(|&unit| {
+        state.civilian_units().iter().any(|candidate| {
+            candidate.id() == unit && candidate.unit_type() == CivilianUnitKind::Engineer
+        })
+    }) {
         draw_rail_order_selection(state, unit, &mut indices);
     }
     indexed_viewport_image(&indices, palette)
@@ -235,7 +261,7 @@ fn compose_strategic_map(
 
 fn strategic_map_compose_key(
     state: &GameState,
-    selected_engineer: Option<CivilianUnitId>,
+    selected_civilian: Option<CivilianUnitId>,
 ) -> StrategicMapComposeKey {
     use std::hash::Hasher;
 
@@ -247,7 +273,7 @@ fn strategic_map_compose_key(
         view_origin: state.map_view_origin(),
         topology: state.map().topology,
         active_nation: state.turn().active_nation,
-        selected_engineer,
+        selected_civilian,
         visible_tiles: hasher.finish(),
     }
 }
@@ -276,8 +302,8 @@ fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl st
     tile_state.pending_rail_links.bits().hash(hasher);
     tile_state.development.surface.get().hash(hasher);
     tile_state.development.extractive.get().hash(hasher);
-    for nation in 0..MajorNationId::COUNT {
-        tile_state.development.resource_visible_to_majors[MajorNationId::new(nation)].hash(hasher);
+    for nation in MajorNationId::all() {
+        tile_state.development.resource_visible_to_majors[nation].hash(hasher);
     }
     tile_state.edge_resources.hash(hasher);
     town_transport_linked(state, tile).hash(hasher);
