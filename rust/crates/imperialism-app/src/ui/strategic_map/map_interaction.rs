@@ -14,18 +14,6 @@ pub(crate) enum MapInteractionMode {
     None,
 }
 
-impl MapInteractionMode {
-    #[allow(dead_code)]
-    pub(crate) const fn retail(self) -> i32 {
-        match self {
-            Self::Civilian => 0,
-            Self::Army => 1,
-            Self::Navy => 2,
-            Self::None => 3,
-        }
-    }
-}
-
 /// Navy zone context (`orderEntryContext98`) and its task force (`selectedTaskForce14`).
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub(crate) struct NavySelection {

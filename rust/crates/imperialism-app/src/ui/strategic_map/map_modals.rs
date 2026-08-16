@@ -48,12 +48,6 @@ pub(crate) fn spawn_army_roster(commands: &mut Commands) {
     spawn_modal(commands, root);
 }
 
-#[allow(dead_code)]
-pub(crate) fn spawn_combat_report(commands: &mut Commands) {
-    let root = commands.spawn_scene(generated::mapview_1350()).id();
-    spawn_modal(commands, root);
-}
-
 fn spawn_modal(commands: &mut Commands, root: Entity) {
     commands
         .entity(root)
