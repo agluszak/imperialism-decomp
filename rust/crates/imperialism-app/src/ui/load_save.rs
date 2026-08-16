@@ -773,7 +773,7 @@ fn bind_load_save_notice(
 ) {
     let (root, notice) = notice.into_inner();
     let linger = bind_linger_dialog(root, &tree);
-    let body = match &*notice {
+    let body = match notice {
         LoadSaveNotice::PickSlot => assets
             .string(PICK_SLOT_STRING_GROUP, PICK_SLOT_STRING_INDEX)
             .unwrap_or_default(),
@@ -788,7 +788,7 @@ fn bind_load_save_notice(
         .insert(LoadSaveNoticeAction::Accept)
         .remove::<InteractionDisabled>()
         .observe(on_load_save_notice_activate);
-    match &*notice {
+    match notice {
         LoadSaveNotice::ConfirmLoad => {
             commands
                 .entity(linger.cancel)

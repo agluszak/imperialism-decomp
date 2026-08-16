@@ -92,7 +92,6 @@ fn add_game_plugins(app: &mut App) {
         ui::TradePlugin,
         ui::DiplomacyPlugin,
         ui::DealBookPlugin,
-        ui::OfferSheetPlugin,
     ))
     .add_plugins((
         media::ImperialismMediaPlugin,
@@ -104,6 +103,7 @@ fn add_game_plugins(app: &mut App) {
         ui::BattleReportPlugin,
         ui::CreditsPlugin,
         ui::PreferencesPlugin,
+        ui::OfferSheetPlugin,
     ));
 }
 

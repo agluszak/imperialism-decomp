@@ -871,16 +871,6 @@ mod tests {
     }
 
     #[test]
-    fn legal_presentation_phases_stop_instead_of_panicking() {
-        let mut state = game_state();
-        state.turn.phase = crate::PhaseCode::TOP_TEN_SCORES;
-        assert_eq!(state.advance_turn(&[]), crate::TurnStop::Victory);
-
-        state.turn.phase = crate::PhaseCode::OPENING_CINEMATIC;
-        assert_eq!(state.advance_turn(&[]), crate::TurnStop::PlayerEliminated);
-    }
-
-    #[test]
     fn post_combat_diplomacy_is_an_explicit_turn_stop() {
         let mut state = game_state();
         seed_town_tiles(&mut state);

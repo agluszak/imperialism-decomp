@@ -158,7 +158,7 @@ fn pump_opening_cinematic(
     if !finished {
         match active.movie.pull_video_frame(Duration::ZERO) {
             Ok(Some(frame)) => {
-                if let Some(image) = images.get_mut(&active.image) {
+                if let Some(mut image) = images.get_mut(&active.image) {
                     *image = rgba_frame_to_image(&frame);
                 }
             }

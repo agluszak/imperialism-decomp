@@ -394,7 +394,7 @@ impl GameState {
             .map(|ship| ship.ship);
     }
 
-    fn demand_exclusive_task_force(&mut self, ship: ShipIndex) -> TaskForceIndex {
+    pub(super) fn demand_exclusive_task_force(&mut self, ship: ShipIndex) -> TaskForceIndex {
         if let Some(force) = self.ships.get(ship.get()).and_then(|ship| ship.task_force)
             && self
                 .task_forces

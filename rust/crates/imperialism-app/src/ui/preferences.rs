@@ -6,7 +6,7 @@ use super::hover_help::{
 use super::query_floater::bind_query_floater_control;
 use super::retail::{RetailPictureSwap, RetailTag, RetailTree, RetailUiAssets};
 use crate::media::RetailAudioAssets;
-use crate::{AppState, RetailAssetsResource, ReturnTo};
+use crate::{AppState, ReturnTo};
 use bevy::picking::hover::DirectlyHovered;
 use bevy::prelude::*;
 use bevy::reflect::Is;
@@ -59,6 +59,11 @@ impl Default for GamePreferences {
 }
 
 impl GamePreferences {
+    /// Preference slot 8: strategic turn alerts.
+    pub(crate) fn turn_alerts_enabled(&self) -> bool {
+        self.values[8] != 0
+    }
+
     /// Preference slot 2: DirectSound master percent, 0..=100.
     pub(crate) fn sound_volume_percent(&self) -> i16 {
         self.values[2]
@@ -155,8 +160,7 @@ fn bind_preferences(
         .expect("retail preferences caption style");
     let color = TextColor(assets.palette_color(0x38));
 
-    for row in 0..5 {
-        let (_, checkbox_tag, label_tag) = PREFERENCE_ROWS[row];
+    for (row, &(_, checkbox_tag, label_tag)) in PREFERENCE_ROWS.iter().enumerate() {
         let checkbox = tree.try_find(root, checkbox_tag);
         // Missing opta/optb: label-only row always uses the "on" caption.
         let caption_on = checkbox.is_none() || preference_row_is_on(&prefs, row);
