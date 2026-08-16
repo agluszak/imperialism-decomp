@@ -699,6 +699,8 @@ fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
         global_unlocks_by_technology: TechnologyTable::from_array(
             legacy.per_technology_unlock_flags.map(|value| value != 0),
         ),
+        latest_global_unlock: Technology::from_index(legacy.marker as u8)
+            .filter(|_| legacy.marker >= 0),
         research_status_by_nation: MajorNationTable::from_array(
             legacy.research_status_by_nation.map(|row| {
                 TechnologyTable::from_array(row.map(technology_research_status_from_retail))

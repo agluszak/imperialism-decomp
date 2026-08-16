@@ -180,6 +180,8 @@ pub struct TechnologyState {
     pub marine_engineering: bool,
     pub scheduled_unlock_turn_by_technology: TechnologyTable<i16>,
     pub global_unlocks_by_technology: TechnologyTable<bool>,
+    /// Retail `marker262`, the most recently applied global capability unlock.
+    pub latest_global_unlock: Option<Technology>,
     pub research_status_by_nation: MajorNationTable<TechnologyTable<TechnologyResearchStatus>>,
     /// Retail `capRowsE4a6.completionYearOffsetByTechId`, stamped when a nation
     /// receives the technology and consumed by technology-history presentation.
@@ -207,6 +209,7 @@ impl Default for TechnologyState {
                 false, false, false, false, false, false, false, false, false, false, false, false,
                 false, false, false, false, false,
             ]),
+            latest_global_unlock: None,
             research_status_by_nation: MajorNationTable::from_fn(|_| {
                 TechnologyTable::from_array(std::array::from_fn(|index| {
                     if index < 3 {
@@ -379,9 +382,11 @@ impl GameState {
     }
 
     pub(crate) fn apply_technology_advances_phase(&mut self) {
+        let marker_before = self.technology.latest_global_unlock;
         self.check_technology_advances();
-        // FIXME: retail ORs `turnFlowStatusFlags` with `0x40` when `marker262` is
-        // unchanged (map toolbar new-tech chrome). `marker262` is not modeled.
+        if self.technology.latest_global_unlock == marker_before {
+            self.turn.turn_flow_status_flags |= 0x40;
+        }
         self.consume_non_interactive_technology_unlocks();
     }
 
@@ -717,8 +722,7 @@ fn upgrade_resource_costs(kind: MilitaryUnitKind) -> (i16, i16, i16) {
 }
 
 fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id: Technology) {
-    // FIXME: retail also writes `marker262`, `techSelectorShort1d2`, and
-    // `activePrerequisitePair264` (techs 0xb / 0x16).
+    technology.latest_global_unlock = Some(tech_id);
     technology.global_unlocks_by_technology[tech_id] = true;
     match tech_id {
         Technology::Paddlewheels => {
@@ -819,6 +823,23 @@ mod tests {
                 story_code: 4,
             }]
         );
+    }
+
+    #[test]
+    fn technology_phase_sets_status_bit_only_when_global_marker_is_unchanged() {
+        let mut unchanged = crate::test_support::game_state();
+        unchanged.apply_technology_advances_phase();
+        assert_eq!(unchanged.turn.turn_flow_status_flags & 0x40, 0x40);
+
+        let mut unlocked = crate::test_support::game_state();
+        unlocked.turn.economic_turn = 12;
+        unlocked.technology.scheduled_unlock_turn_by_technology[Technology::CottonGin] = 12;
+        unlocked.apply_technology_advances_phase();
+        assert_eq!(
+            unlocked.technology.latest_global_unlock,
+            Some(Technology::CottonGin)
+        );
+        assert_eq!(unlocked.turn.turn_flow_status_flags & 0x40, 0);
     }
 
     #[test]
