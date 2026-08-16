@@ -873,6 +873,7 @@ mod tests {
         state.turn.phase = crate::PhaseCode::TOP_TEN_SCORES;
         assert_eq!(state.advance_turn(&[]), crate::TurnStop::Victory);
 
+        let mut state = game_state();
         state.turn.phase = crate::PhaseCode::OPENING_CINEMATIC;
         assert_eq!(state.advance_turn(&[]), crate::TurnStop::PlayerEliminated);
     }
@@ -924,15 +925,17 @@ mod tests {
             eliminated.advance_turn(&[]),
             crate::TurnStop::PlayerEliminated
         );
-        assert_eq!(eliminated.turn.phase(), crate::PhaseCode::CITY_AND_TRANSPORT);
+        assert_eq!(
+            eliminated.turn.phase(),
+            crate::PhaseCode::CITY_AND_TRANSPORT
+        );
 
         let mut victory = game_state();
         let survivor = MajorNationId::new(0);
         victory.turn.active_nation = survivor.nation();
-        victory.nations.append_owned_region_during_construction(
-            survivor.nation(),
-            crate::ProvinceId::new(0),
-        );
+        victory
+            .nations
+            .append_owned_region_during_construction(survivor.nation(), crate::ProvinceId::new(0));
         victory.turn.phase = crate::PhaseCode::ELIMINATION;
         assert_eq!(victory.advance_turn(&[]), crate::TurnStop::Victory);
         assert_eq!(victory.turn.phase(), crate::PhaseCode::CITY_AND_TRANSPORT);

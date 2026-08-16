@@ -52,7 +52,10 @@ impl Plugin for OpeningCinematicPlugin {
                 Update,
                 pump_opening_cinematic.run_if(in_state(AppState::OpeningCinematic)),
             )
-            .add_systems(OnExit(AppState::OpeningCinematic), cleanup_opening_cinematic);
+            .add_systems(
+                OnExit(AppState::OpeningCinematic),
+                cleanup_opening_cinematic,
+            );
     }
 }
 
@@ -136,7 +139,7 @@ fn pump_opening_cinematic(
     if !finished {
         match active.movie.pull_video_frame(Duration::ZERO) {
             Ok(Some(frame)) => {
-                if let Some(image) = images.get_mut(&active.image) {
+                if let Some(mut image) = images.get_mut(&active.image) {
                     *image = rgba_frame_to_image(&frame);
                 }
             }
@@ -405,7 +408,10 @@ impl Plugin for HighScorePlugin {
             OnEnter(AppState::HighScore),
             (spawn_high_score, bind_high_score).chain(),
         )
-        .add_systems(Update, project_high_score.run_if(in_state(AppState::HighScore)))
+        .add_systems(
+            Update,
+            project_high_score.run_if(in_state(AppState::HighScore)),
+        )
         .add_observer(on_high_score_close.run_if(in_state(AppState::HighScore)));
     }
 }

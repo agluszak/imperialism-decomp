@@ -755,7 +755,9 @@ impl GameState {
     ) -> TaskForceIndex {
         self.bump_task_force_ids();
         let mut ship_counts = [0; 4];
-        let bucket = NAVY_DESCRIPTORS[self.ships[ship.get()].ship_type].toolbar_bucket as usize;
+        let bucket =
+            usize::try_from(NAVY_DESCRIPTORS[self.ships[ship.get()].ship_type].toolbar_bucket)
+                .expect("navy ship has a toolbar bucket");
         ship_counts[bucket] = 1;
         self.task_forces.insert(
             0,
@@ -795,7 +797,9 @@ impl GameState {
         if let Some(force) = self.task_forces.get_mut(force.get())
             && !force.ships.iter().any(|entry| entry.ship == ship)
         {
-            let bucket = NAVY_DESCRIPTORS[self.ships[ship.get()].ship_type].toolbar_bucket as usize;
+            let bucket =
+                usize::try_from(NAVY_DESCRIPTORS[self.ships[ship.get()].ship_type].toolbar_bucket)
+                    .expect("navy ship has a toolbar bucket");
             force.ship_counts[bucket] += 1;
             force.ships.push(SelectedShip {
                 ship,
@@ -807,8 +811,10 @@ impl GameState {
     pub(super) fn remove_ship_from_force(&mut self, ship: ShipIndex, force: TaskForceIndex) {
         if let Some(force) = self.task_forces.get_mut(force.get()) {
             if force.ships.iter().any(|entry| entry.ship == ship) {
-                let bucket =
-                    NAVY_DESCRIPTORS[self.ships[ship.get()].ship_type].toolbar_bucket as usize;
+                let bucket = usize::try_from(
+                    NAVY_DESCRIPTORS[self.ships[ship.get()].ship_type].toolbar_bucket,
+                )
+                .expect("navy ship has a toolbar bucket");
                 force.ship_counts[bucket] -= 1;
                 force.ships.retain(|entry| entry.ship != ship);
             }
@@ -925,7 +931,10 @@ mod tests {
             zone: zone(Vec::new()),
             port_tile: TileId::new(0),
         })];
-        for (ship_type, strength) in [(ShipType::Frigate, 1), (ShipType::Clipper, i16::MAX)] {
+        for (ship_type, strength) in [
+            (ShipType::Frigate, 1),
+            (ShipType::AdvancedIronclad, i16::MAX),
+        ] {
             state.ships.push(ShipState {
                 ship_type,
                 location: OceanZoneId::new(0),

@@ -564,10 +564,9 @@ mod tests {
         let mut state = game_state();
         let survivor = MajorNationId::new(0);
         state.turn.active_nation = survivor.nation();
-        state.nations.append_owned_region_during_construction(
-            survivor.nation(),
-            ProvinceId::new(0),
-        );
+        state
+            .nations
+            .append_owned_region_during_construction(survivor.nation(), ProvinceId::new(0));
 
         assert_eq!(state.do_elimination_phase(), EliminationOutcome::Victory);
         assert!(state.nations.major_is_present(survivor));
@@ -583,10 +582,9 @@ mod tests {
         let mut state = game_state();
         let survivor = MajorNationId::new(0);
         state.turn.active_nation = survivor.nation();
-        state.nations.append_owned_region_during_construction(
-            survivor.nation(),
-            ProvinceId::new(0),
-        );
+        state
+            .nations
+            .append_owned_region_during_construction(survivor.nation(), ProvinceId::new(0));
         assert_eq!(state.do_elimination_phase(), EliminationOutcome::Victory);
 
         let eliminated = MajorNationId::new(1);

@@ -14,10 +14,10 @@ use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailPictureSwap, RetailTree, ancestor_with};
 use crate::ui::strategic_map::{
     MapInteractionMode, bind_army_toolbar, bind_civilian_toolbar, bind_minimap, bind_navy_toolbar,
-    bind_ocean_view, bind_strategic_base_terrain, register_army_toolbar, register_civilian_orders,
-    on_strategic_map_click, register_civilian_toolbar, register_map_click, register_map_interaction,
-    register_map_keys, register_map_modals, register_navy_toolbar, register_ocean_view,
-    sync_minimap, sync_strategic_base_terrain, sync_strategic_units,
+    bind_ocean_view, bind_strategic_base_terrain, on_strategic_map_click, register_army_toolbar,
+    register_civilian_orders, register_civilian_toolbar, register_map_click,
+    register_map_interaction, register_map_keys, register_map_modals, register_navy_toolbar,
+    register_ocean_view, sync_minimap, sync_strategic_base_terrain, sync_strategic_units,
 };
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -169,13 +169,7 @@ fn bind_strategic_map(
     bind_army_toolbar(&mut commands, &mut assets, *root, &tree);
     bind_navy_toolbar(&mut commands, &mut assets, *root, &tree);
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
-    bind_strategic_hover(
-        &mut commands,
-        &mut assets,
-        *root,
-        &tree,
-        &mut nodes,
-    );
+    bind_strategic_hover(&mut commands, &mut assets, *root, &tree, &mut nodes);
 }
 
 fn bind_strategic_hover(
@@ -234,7 +228,7 @@ fn on_ocean_toggle(
             &session.game.map().geometry(),
         );
         ocean.active = true;
-}
+    }
 }
 
 fn bind_strategic_map_management_pictures(

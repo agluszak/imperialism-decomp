@@ -624,6 +624,7 @@ pub struct RetailView<'a, 'w, 's> {
 }
 
 impl RetailView<'_, '_, '_> {
+    #[cfg(test)]
     pub fn try_find(&self, tag: FourCc) -> Option<Entity> {
         self.tree.try_find(self.root, tag)
     }

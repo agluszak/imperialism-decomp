@@ -78,6 +78,11 @@ impl GamePreferences {
     pub(crate) fn music_volume(&self) -> i16 {
         self.values[3]
     }
+
+    /// Preference slot 8 gates `ShowTurnAlertsForActiveNation`.
+    pub(crate) fn turn_alerts_enabled(&self) -> bool {
+        self.values[8] != 0
+    }
 }
 
 #[derive(Component)]
@@ -179,15 +184,13 @@ fn bind_preferences(
         let checkbox = tree.try_find(root, CHECKBOX_TAGS[row]);
         // Missing opta/optb: label-only row always uses the "on" caption.
         let caption_on = checkbox.is_none() || preference_row_is_on(&prefs, row);
-        commands
-            .entity(tree.find(root, LABEL_TAGS[row]))
-            .insert((
-                Text::new(preference_caption(&assets, row, caption_on)),
-                font.clone(),
-                layout,
-                line_height,
-                color,
-            ));
+        commands.entity(tree.find(root, LABEL_TAGS[row])).insert((
+            Text::new(preference_caption(&assets, row, caption_on)),
+            font.clone(),
+            layout,
+            line_height,
+            color,
+        ));
         let Some(checkbox) = checkbox else {
             continue;
         };

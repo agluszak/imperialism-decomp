@@ -212,19 +212,18 @@ impl Plugin for LoadSavePlugin {
             OnEnter(AppState::LoadSave),
             (enter_load_save, bind_load_save).chain(),
         )
-            .add_systems(
-                Update,
-                (bind_load_save_notice, sync_load_save_preview)
-                    .run_if(in_state(AppState::LoadSave)),
-            )
-            .add_systems(
-                Update,
-                (bind_flag_menu, bind_flag_menu_prompt).run_if(in_state(AppState::StrategicMap)),
-            )
-            .add_systems(
-                OnExit(AppState::LoadSave),
-                crate::ui::session::clear_return_to,
-            );
+        .add_systems(
+            Update,
+            (bind_load_save_notice, sync_load_save_preview).run_if(in_state(AppState::LoadSave)),
+        )
+        .add_systems(
+            Update,
+            (bind_flag_menu, bind_flag_menu_prompt).run_if(in_state(AppState::StrategicMap)),
+        )
+        .add_systems(
+            OnExit(AppState::LoadSave),
+            crate::ui::session::clear_return_to,
+        );
     }
 }
 

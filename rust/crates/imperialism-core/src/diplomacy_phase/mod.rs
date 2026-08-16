@@ -287,8 +287,8 @@ impl GameState {
         let mut any = false;
         for candidate in majors() {
             let present = self.nations.major_is_present(candidate);
-            let flag = &mut self.nations.majors[nation].economy.candidate_nation_flags
-                [candidate.nation()];
+            let flag =
+                &mut self.nations.majors[nation].economy.candidate_nation_flags[candidate.nation()];
             if !present {
                 *flag = 0;
             } else if *flag != 0 {

@@ -128,10 +128,6 @@ impl<T> MajorNationTable<T> {
     pub(crate) fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
         self.0.iter()
     }
-
-    pub(crate) fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = &mut T> {
-        self.0.iter_mut()
-    }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]

@@ -156,6 +156,7 @@ fn project_battle_report(
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn on_battle_report_activate(
     activate: On<Activate>,
     close: Query<(), With<BattleReportClose>>,
@@ -199,11 +200,7 @@ fn spawn_detail(mut commands: Commands) {
         .insert((DetailRoot, DespawnOnExit(AppState::BattleReportDetail)));
 }
 
-fn bind_detail(
-    mut commands: Commands,
-    root: Single<Entity, Added<DetailRoot>>,
-    tree: RetailTree,
-) {
+fn bind_detail(mut commands: Commands, root: Single<Entity, Added<DetailRoot>>, tree: RetailTree) {
     commands
         .entity(tree.find(*root, fourcc!("okay")))
         .insert((DetailClose, ActivateOnPress));
