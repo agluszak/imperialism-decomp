@@ -37,7 +37,11 @@ impl MovieId {
 pub struct MusicTrack(u8);
 
 impl MusicTrack {
+    /// Load/save, credits-exit, and turn-flow pool entries (`PushCueToDualAudioCuePools`).
+    pub const TURN_FLOW_2: Self = Self(2);
+    pub const TURN_FLOW_3: Self = Self(3);
     pub const DIPLOMACY: Self = Self(4);
+    pub const BATTLE_REPORT: Self = Self(5);
     pub const MAIN_MENU: Self = Self(6);
     pub const BATTLE_VICTORY: Self = Self(9);
     pub const BATTLE_DEFEAT: Self = Self(10);

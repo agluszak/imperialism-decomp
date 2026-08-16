@@ -3,6 +3,7 @@
 use bevy::prelude::*;
 
 mod movie;
+mod music;
 mod sfx;
 
 pub(crate) use sfx::{RetailAudioHandles, play_cached_or_retail_sound};
@@ -14,5 +15,6 @@ impl Plugin for ImperialismMediaPlugin {
         movie::ensure_initialized();
         app.init_resource::<sfx::RetailAudioHandles>()
             .add_observer(sfx::on_picture_button_activate);
+        music::register(app);
     }
 }

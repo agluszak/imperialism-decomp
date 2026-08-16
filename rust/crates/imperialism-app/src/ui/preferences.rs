@@ -75,6 +75,11 @@ impl GamePreferences {
     pub(crate) fn sound_volume_percent(&self) -> i16 {
         self.values[2]
     }
+
+    /// Preference slot 3: CD/aux music scalar, 0..=255.
+    pub(crate) fn music_volume(&self) -> i16 {
+        self.values[3]
+    }
 }
 
 #[derive(Component)]
