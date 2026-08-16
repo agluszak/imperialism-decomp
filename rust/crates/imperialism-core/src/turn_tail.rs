@@ -123,6 +123,9 @@ impl GameState {
     pub fn do_great_power_pressure_phase(&mut self) -> bool {
         let mut lost = false;
         for nation in MajorNationId::all().rev() {
+            if !self.nations.major_is_present(nation) {
+                continue;
+            }
             if self.update_great_power_pressure(nation) {
                 lost = true;
             }
@@ -148,10 +151,11 @@ impl GameState {
 
         let empty_majors: Vec<_> = MajorNationId::all()
             .filter(|&nation| {
-                self.nations.majors[nation]
-                    .common
-                    .owned_regions()
-                    .is_empty()
+                self.nations.major_is_present(nation)
+                    && self.nations.majors[nation]
+                        .common
+                        .owned_regions()
+                        .is_empty()
             })
             .collect();
         for nation in empty_majors {
@@ -349,6 +353,8 @@ impl GameState {
     }
 
     fn remove_nation_slot(&mut self, removed: NationId) {
+        let removed_major =
+            MajorNationId::from_nation(removed).expect("elimination removes a great-power slot");
         for peer in MajorNationId::all() {
             if peer.nation() == removed || !self.event_eligible(peer.nation()) {
                 continue;
@@ -362,6 +368,7 @@ impl GameState {
             self.diplomacy.standings[removed][other] = 0x5a;
             self.diplomacy.standings[other][removed] = 0x5a;
         }
+        self.nations.remove_major(removed_major);
     }
 }
 
@@ -384,6 +391,15 @@ fn raise_escalation(economy: &mut GreatPowerState, difficulty: Difficulty) {
 mod tests {
     use super::*;
     use crate::test_support::game_state;
+
+    fn keep_all_majors_alive(state: &mut GameState) {
+        for nation in MajorNationId::all() {
+            state.nations.append_owned_region_during_construction(
+                nation.nation(),
+                ProvinceId::new(u16::from(nation.get())),
+            );
+        }
+    }
 
     #[test]
     fn modest_debt_sets_pressure_one_and_drains_treasury() {
@@ -531,18 +547,53 @@ mod tests {
     #[test]
     fn elimination_continues_when_every_great_power_still_holds_land() {
         let mut state = game_state();
-        for nation in MajorNationId::all() {
-            state.nations.append_owned_region_during_construction(
-                nation.nation(),
-                ProvinceId::new(u16::from(nation.get())),
-            );
-        }
+        keep_all_majors_alive(&mut state);
         assert_eq!(state.do_elimination_phase(), EliminationOutcome::Continue);
+    }
+
+    #[test]
+    fn elimination_removes_empty_major_slots_and_detects_victory() {
+        let mut state = game_state();
+        let survivor = MajorNationId::new(0);
+        state.turn.active_nation = survivor.nation();
+        state.nations.append_owned_region_during_construction(
+            survivor.nation(),
+            ProvinceId::new(0),
+        );
+
+        assert_eq!(state.do_elimination_phase(), EliminationOutcome::Victory);
+        assert!(state.nations.major_is_present(survivor));
+        for eliminated in MajorNationId::all().skip(1) {
+            assert!(!state.nations.major_is_present(eliminated));
+            assert!(!state.event_eligible(eliminated.nation()));
+            assert_eq!(state.nations.display_name(eliminated.nation()), None);
+        }
+    }
+
+    #[test]
+    fn pressure_phase_skips_eliminated_major_slots() {
+        let mut state = game_state();
+        let survivor = MajorNationId::new(0);
+        state.turn.active_nation = survivor.nation();
+        state.nations.append_owned_region_during_construction(
+            survivor.nation(),
+            ProvinceId::new(0),
+        );
+        assert_eq!(state.do_elimination_phase(), EliminationOutcome::Victory);
+
+        let eliminated = MajorNationId::new(1);
+        state.nations.majors[eliminated].auto = None;
+        state.nations.majors[eliminated].common.treasury = -10_000;
+        state.nations.majors[eliminated].economy.pressure_counter = 4;
+        assert!(!state.do_great_power_pressure_phase());
+        assert_eq!(state.nations.majors[eliminated].common.treasury, -10_000);
+        assert_eq!(state.nations.majors[eliminated].economy.pressure_counter, 4);
     }
 
     #[test]
     fn empty_minor_resets_trade_policy_toward_nation_zero() {
         let mut state = game_state();
+        keep_all_majors_alive(&mut state);
         let minor = MinorNationId::new(7);
         state.nations.minors[minor] = Some(MinorNation {
             common: NationCommonState::from_parts(
