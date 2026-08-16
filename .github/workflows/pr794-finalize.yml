@@ -62,7 +62,7 @@ jobs:
           test -z "$(git diff --name-only --diff-filter=U)"
           git diff --check
 
-      - name: Normalize post-rebase Rust idioms
+      - name: Normalize post-rebase Rust APIs and idioms
         shell: bash
         run: |
           set -euxo pipefail
@@ -70,37 +70,112 @@ jobs:
           from pathlib import Path
           import re
 
-          test_path = Path('rust/crates/imperialism-core/tests/native_military.rs')
-          text = test_path.read_text()
-          text = text.replace(
-              'task_force_toolbar_counts(0.into())',
-              'task_force_toolbar_counts(TaskForceIndex::new(0))',
-          )
-          test_path.write_text(text)
+          def rewrite(path, f):
+              p = Path(path)
+              p.write_text(f(p.read_text()))
 
-          army_path = Path('rust/crates/imperialism-core/src/army_orders.rs')
-          text = army_path.read_text()
-          pattern = re.compile(
-              r'if self\.nations\.common\(nation\)\.is_some\(\) \{\s*'
-              r'if let Some\(home\) = self\.nations\.home_tile\(nation\)\s*'
-              r'&& self\.map\[home\]\.province == Some\(province\)\s*\{\s*'
-              r'counts\.can_upgrade = true;\s*\}\s*\}'
+          rewrite(
+              'rust/crates/imperialism-core/tests/native_military.rs',
+              lambda text: text.replace(
+                  'task_force_toolbar_counts(0.into())',
+                  'task_force_toolbar_counts(TaskForceIndex::new(0))',
+              ),
           )
-          replacement = '''if self.nations.common(nation).is_some()
-              && let Some(home) = self.nations.home_tile(nation)
-              && self.map[home].province == Some(province)
-          {
-              counts.can_upgrade = true;
-          }'''
-          text = pattern.sub(replacement, text, count=1)
-          army_path.write_text(text)
 
-          navy_path = Path('rust/crates/imperialism-core/src/navy_orders/player.rs')
-          text = navy_path.read_text().replace(
-              'usize::try_from(zone.get()).unwrap_or(usize::MAX)',
-              'usize::from(zone.get())',
+          def army(text):
+              pattern = re.compile(
+                  r'if self\.nations\.common\(nation\)\.is_some\(\) \{\s*'
+                  r'if let Some\(home\) = self\.nations\.home_tile\(nation\)\s*'
+                  r'&& self\.map\[home\]\.province == Some\(province\)\s*\{\s*'
+                  r'counts\.can_upgrade = true;\s*\}\s*\}'
+              )
+              replacement = '''if self.nations.common(nation).is_some()
+                  && let Some(home) = self.nations.home_tile(nation)
+                  && self.map[home].province == Some(province)
+              {
+                  counts.can_upgrade = true;
+              }'''
+              return pattern.sub(replacement, text, count=1)
+          rewrite('rust/crates/imperialism-core/src/army_orders.rs', army)
+
+          rewrite(
+              'rust/crates/imperialism-core/src/navy_orders/player.rs',
+              lambda text: text.replace(
+                  'usize::try_from(zone.get()).unwrap_or(usize::MAX)',
+                  'usize::from(zone.get())',
+              ),
           )
-          navy_path.write_text(text)
+
+          def game_score(text):
+              old = '''let industry = CityFacilitySlot::ALL
+              .iter()
+              .take(6)
+              .map(|&slot| i32::from(major.city.production_orders[slot]))
+              .sum();'''
+              new = '''let industry = [
+              CityFacilitySlot::TextileMill,
+              CityFacilitySlot::ClothingFactory,
+              CityFacilitySlot::SteelMill,
+              CityFacilitySlot::Metalworks,
+              CityFacilitySlot::LumberMill,
+              CityFacilitySlot::FurnitureFactory,
+          ]
+          .into_iter()
+          .map(|slot| i32::from(major.city.production_orders[slot]))
+          .sum();'''
+              if old not in text:
+                  raise SystemExit('game_score facility block not found')
+              return text.replace(old, new, 1)
+          rewrite('rust/crates/imperialism-core/src/game_score.rs', game_score)
+
+          rewrite(
+              'rust/crates/imperialism-core/src/territory.rs',
+              lambda text: text.replace(
+                  'let Nations { majors, minors } = &mut self.nations;',
+                  'let Nations { majors, minors, .. } = &mut self.nations;',
+              ),
+          )
+
+          def turn_flow(text):
+              text = text.replace(
+                  'pub fn close_post_combat_reports(&mut self) -> TurnStop {',
+                  'pub fn close_post_combat_reports(&mut self, story_ids: &[i32]) -> TurnStop {',
+                  1,
+              )
+              text = text.replace(
+                  'pub fn close_council_of_governors(&mut self) -> TurnStop {',
+                  'pub fn close_council_of_governors(&mut self, story_ids: &[i32]) -> TurnStop {',
+                  1,
+              )
+              # These are the only two zero-argument advance_turn calls introduced by PR 794.
+              text = text.replace('self.advance_turn()', 'self.advance_turn(story_ids)')
+              return text
+          rewrite('rust/crates/imperialism-core/src/turn_flow.rs', turn_flow)
+
+          def battle_reports(text):
+              if 'use crate::RetailAssetsResource;' not in text:
+                  text = text.replace('use crate::AppState;', 'use crate::{AppState, RetailAssetsResource};', 1)
+              text = text.replace(
+                  'mut session: ResMut<GameSession>,\n    mut selected: ResMut<SelectedBattleReport>,',
+                  'mut session: ResMut<GameSession>,\n    assets: Res<RetailAssetsResource>,\n    mut selected: ResMut<SelectedBattleReport>,',
+                  1,
+              )
+              text = text.replace(
+                  'session.game.close_post_combat_reports()',
+                  'session.game.close_post_combat_reports(assets.news_story_ids())',
+                  1,
+              )
+              return text
+          rewrite('rust/crates/imperialism-app/src/ui/battle_reports.rs', battle_reports)
+
+          def endgame(text):
+              text = text.replace(
+                  'mut session: ResMut<GameSession>,\n    mut next_state: ResMut<NextState<AppState>>,\n) {\n    if actions.get(activate.entity).is_err() {\n        return;\n    }\n    apply_turn_stop(session.game.close_council_of_governors(), &mut next_state);',
+                  'mut session: ResMut<GameSession>,\n    assets: Res<RetailAssetsResource>,\n    mut next_state: ResMut<NextState<AppState>>,\n) {\n    if actions.get(activate.entity).is_err() {\n        return;\n    }\n    apply_turn_stop(\n        session.game.close_council_of_governors(assets.news_story_ids()),\n        &mut next_state,\n    );',
+                  1,
+              )
+              return text
+          rewrite('rust/crates/imperialism-app/src/ui/endgame.rs', endgame)
           PY
 
       - name: Install native build dependencies
