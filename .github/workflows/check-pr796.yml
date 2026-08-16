@@ -37,8 +37,24 @@ jobs:
             git push
           fi
       - name: Clippy
+        id: clippy
         working-directory: rust
-        run: cargo clippy --workspace --all-targets --all-features -- -D warnings
+        shell: bash
+        run: |
+          set +e
+          cargo clippy --workspace --all-targets --all-features -- -D warnings 2>&1 | tee ../clippy-pr796.log
+          status=${PIPESTATUS[0]}
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Upload Clippy diagnostics
+        if: steps.clippy.outputs.status != '0'
+        uses: actions/upload-artifact@v4
+        with:
+          name: clippy-pr796
+          path: clippy-pr796.log
+      - name: Require Clippy success
+        if: steps.clippy.outputs.status != '0'
+        run: exit 1
       - name: Test
         working-directory: rust
         run: cargo test --workspace
