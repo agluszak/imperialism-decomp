@@ -51,17 +51,20 @@ Known cue ids from `TSoundPlayer` call sites:
 
 `TSoundPlayer` is game policy, not an OS wrapper: active and pending cues, fade-before-switch
 (`GetTickCountDiv16` + 6-tick timer), a cue pool, and a remaining pool sampled without
-replacement via CRT `rand()`. Volume is preference slot 3 (0..=255). Do not add a second
-settings resource. Do not call the gameplay CRT stream from presentation unless a differential
-capture shows `SelectAndScheduleRandomAudioCue` consuming it; native semantic captures do not
-pump that idle path today.
+replacement. Volume is preference slot 3 (0..=255). Rust keeps that policy in `MusicDirector`
+and drives one Bevy `AudioSink`. Presentation RNG is independent of the gameplay CRT stream;
+native semantic captures do not pump `SelectAndScheduleRandomAudioCue`. Screen wiring today:
+main menu cue 6, diplomacy/deal book `set_cue(4, fade)`, offer sheet `request_preset(4, fade)`,
+load/save pool 2+3, credits cue 12. Missing GOG `MUSIC/TrackNN` files are skipped.
 
 ## Sound effects
 
 WAVE resources live in `Data/wave.gob` (language IRG string `0x80` / `ImperialismApp::field_DC`),
 not in `Imperialism.exe`. Load is `<id>.wav` on disk first, then `FindResourceA(..., "WAVE")`.
-Retail had six DirectSound PCM channels; start with ordinary one-shot Bevy players. Volume is
-preference slot 2 (0..=100). Shared UI click is WAVE 7000 / `0x1b58`.
+Retail had six DirectSound PCM channels; Rust plays ordinary one-shot Bevy `AudioPlayer`s and
+despawns them when finished. Volume is preference slot 2 (0..=100); slot 2 at 0 skips playback.
+Shared UI click is WAVE 7000 / `0x1b58`, fired from generated `Button` `Activate` and from the
+sound slider's track-end (`TTwoPicSlider` mode 2). Missing WAVE resources continue silently.
 
 ## Chrome
 
@@ -71,5 +74,6 @@ DIB. Movie construction replaces that with black.
 
 ## Follow-up order
 
-SFX (Bevy audio + WAVE), then `MusicDirector`, then the 640×480 viewport / tiled surround, then
-wire `MovieBackend` to `AppState::Cinematic`, then opening / decade / victory sequences.
+Persistent tiled chrome and a centered 640×480 `RetailViewport`, then wire `MovieBackend` to
+`AppState::Cinematic`, then opening / decade / victory sequences. DirectSound's six-voice steal,
+the millibel SFX curve, and exact CD fade tick timing stay evidence-driven.
