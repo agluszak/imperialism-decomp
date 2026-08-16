@@ -32,16 +32,15 @@ pub(crate) fn apply_turn_stop(stop: TurnStop, next_state: &mut NextState<AppStat
         TurnStop::DiplomacyOffer => next_state.set(AppState::Diplomacy),
         TurnStop::DiplomacyWarJoin => next_state.set(AppState::Diplomacy),
         TurnStop::LandBattle => next_state.set(AppState::LandBattle),
-        // Core must stop at these retail presentation boundaries even before their
-        // Bevy screens are ported. Staying on the current screen is safer than
-        // silently advancing the simulation through an unresolved event.
         TurnStop::GreatPowerLoss
-        | TurnStop::PostCombatDiplomacy
         | TurnStop::PlayerEliminated
         | TurnStop::Victory
-        | TurnStop::DecadeCinematic
-        | TurnStop::TopTenScores
-        | TurnStop::OpeningCinematic => {}
+        | TurnStop::DecadeCinematic => next_state.set(AppState::OpeningCinematic),
+        TurnStop::PostCombatReports => next_state.set(AppState::BattleReport),
+        TurnStop::CouncilOfGovernors => next_state.set(AppState::CouncilOfGovernors),
+        TurnStop::GameScore => next_state.set(AppState::GameScore),
+        TurnStop::HighScores => next_state.set(AppState::HighScore),
+        TurnStop::SessionEnded => next_state.set(AppState::MainMenu),
     }
 }
 

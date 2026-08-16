@@ -136,7 +136,7 @@ impl GameState {
     /// Turn-machine case `0x0d`: post-combat diplomacy-offer screen, not the
     /// diplomacy-phase offer replies.
     pub fn diplomacy_offer_gate(&self) -> bool {
-        self.pending.combat_reports_pending && self.event_eligible(self.turn.active_nation)
+        self.battle_reports_pending() && self.event_eligible(self.turn.active_nation)
     }
 
     /// Turn-machine case `0x19`.
@@ -482,7 +482,15 @@ mod tests {
     fn diplomacy_offer_gate_follows_combat_reports_and_eligibility() {
         let mut state = game_state();
         assert!(!state.diplomacy_offer_gate());
-        state.pending.combat_reports_pending = true;
+        state.append_land_battle_report(
+            BattleReportKind::UncontestedTakeover,
+            ProvinceId::new(0),
+            state.turn.active_nation,
+            NationId::new(1),
+            &[],
+            &[],
+            true,
+        );
         assert!(state.diplomacy_offer_gate());
         state.nations.set_country_status(
             state.turn.active_nation,

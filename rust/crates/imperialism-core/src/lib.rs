@@ -3,6 +3,8 @@
 mod advisory_missions;
 mod ai;
 mod ai_civilian;
+mod army_orders;
+mod battle_report;
 mod calendar;
 mod city;
 mod city_economy;
@@ -23,6 +25,7 @@ mod difficulty;
 mod diplomacy;
 mod diplomacy_phase;
 mod game;
+mod game_score;
 mod ids;
 mod map;
 mod map_geometry;
@@ -59,6 +62,13 @@ pub use ai::{
     AiCityOrderDemand, AiTargetState, AiTradeState, ForeignMinisterPersonality,
     InteriorCivilianState, PendingDevelopmentAction,
 };
+pub use army_orders::{
+    ArmyIdleOrderMode, ArmyMapClickOutcome, ArmyMapCursorState, ArmyOrderIssue, ArmyToolbarCounts,
+};
+pub use battle_report::{
+    BATTLE_REPORT_ARMY_IDENTITY, BattleReport, BattleReportKind, BattleReportLocation,
+    BattleReportSide, BattleReportUnit,
+};
 pub use calendar::TurnCalendar;
 pub use city::{
     CIVILIAN_RESOURCE_SPECIALTIES, CityFacilitySlot, CityOrderId, CityOrderUpdate, CityOrders,
@@ -93,6 +103,7 @@ pub use diplomacy::{
     PlayerDiplomacyOrderResult, PlayerDiplomacyRejection, TradePolicyScore,
 };
 pub use game::{GameState, GameStateParts};
+pub use game_score::GameScore;
 pub use ids::{
     CivilianUnitId, MajorNationId, MilitaryUnitId, MinorNationId, NationId, OceanZoneId,
     ProvinceId, ShipIndex, TaskForceIndex, TileId, TileOwnerTag,
@@ -117,6 +128,7 @@ pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,
 };
 pub use nations::{AutoGreatPowerState, MajorNation, MinorNation, NationCommonState, Nations};
+pub use navy_orders::{NavyOrder, NavySelectionClick, NavyTileClick, NavyToolbarCounts};
 pub use news::{
     DiplomacyNotice, DiplomacyProposal, InterNationNewsKind, LandSale, NEWS_TEMPLATE_COUNT,
     NationPendingWork, NewsArgument, NewsPage, NewsState, NewsStory, PendingNewspaperEvent,

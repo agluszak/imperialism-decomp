@@ -418,7 +418,7 @@ impl GameState {
         self.create_task_force(location, nation, ship)
     }
 
-    fn create_task_force(
+    pub(super) fn create_task_force(
         &mut self,
         location: OceanZoneId,
         nation: NationId,
@@ -428,7 +428,9 @@ impl GameState {
         self.task_forces.insert(
             0,
             TaskForceState {
-                aggression: 0,
+                // `TTaskForce(TZone*, short)` seeds aggression at 1, then
+                // `DemocraticallyDetermineAggressionLevel` may overwrite it.
+                aggression: 1,
                 order: TaskForceOrder::None,
                 target: TaskForceTarget::None,
                 location,
@@ -449,7 +451,7 @@ impl GameState {
         TaskForceIndex::new(0)
     }
 
-    fn reassign_ship_to_force(&mut self, ship: ShipIndex, force: TaskForceIndex) {
+    pub(super) fn reassign_ship_to_force(&mut self, ship: ShipIndex, force: TaskForceIndex) {
         if let Some(previous) = self.ships.get(ship.get()).and_then(|ship| ship.task_force)
             && previous != force
         {
@@ -468,7 +470,7 @@ impl GameState {
         }
     }
 
-    fn remove_ship_from_force(&mut self, ship: ShipIndex, force: TaskForceIndex) {
+    pub(super) fn remove_ship_from_force(&mut self, ship: ShipIndex, force: TaskForceIndex) {
         if let Some(force) = self.task_forces.get_mut(force.get()) {
             force.ships.retain(|entry| entry.ship != ship);
             if force.flagship == Some(ship) {
@@ -480,7 +482,7 @@ impl GameState {
         }
     }
 
-    fn free_task_force(&mut self, force: TaskForceIndex) {
+    pub(super) fn free_task_force(&mut self, force: TaskForceIndex) {
         let index = force.get();
         if index >= self.task_forces.len() {
             return;

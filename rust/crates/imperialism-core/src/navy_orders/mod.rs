@@ -156,6 +156,9 @@ fn descriptor_weight(ship_type: ShipType) -> i32 {
 
 mod assessment;
 mod execution;
+mod player;
+
+pub use player::{NavyOrder, NavySelectionClick, NavyTileClick, NavyToolbarCounts};
 
 impl GameState {
     fn zone_hop_distances_from(&self, origin: OceanZoneId) -> Vec<i16> {

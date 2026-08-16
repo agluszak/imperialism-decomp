@@ -108,6 +108,15 @@ impl MusicDirector {
         self.queue_cue(chosen, self.active.is_some(), now_tick16);
     }
 
+    /// Retail movies call the immediate CD-audio stop path before opening the AVI.
+    pub(crate) fn stop_all(&mut self) {
+        self.active = None;
+        self.pending = None;
+        self.pool.clear();
+        self.remaining.clear();
+        self.fade = None;
+    }
+
     fn queue_cue(&mut self, cue: MusicTrack, fade: bool, now_tick16: u32) {
         if fade && self.active.is_some() {
             self.pending = Some(cue);
@@ -391,5 +400,19 @@ mod tests {
         );
         assert_eq!(music.pending, Some(MusicTrack::DIPLOMACY));
         assert_eq!(music.active, Some(MusicTrack::TURN_FLOW_2));
+    }
+
+    #[test]
+    fn movie_stop_clears_active_and_queued_music() {
+        let mut music = MusicDirector::default();
+        music.set_pool(&[MusicTrack::MAIN_MENU, MusicTrack::TURN_FLOW_2]);
+        music.schedule_random(0);
+        music.request_preset(MusicTrack::DIPLOMACY, true, 1);
+        music.stop_all();
+        assert!(music.active.is_none());
+        assert!(music.pending.is_none());
+        assert!(music.pool.is_empty());
+        assert!(music.remaining.is_empty());
+        assert!(music.fade.is_none());
     }
 }

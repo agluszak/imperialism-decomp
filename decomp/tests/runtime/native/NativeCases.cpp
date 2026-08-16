@@ -87,6 +87,24 @@ RuntimeActionResult RunNewspaperPendingStatus(NativeTransition& transition);
 RuntimeActionResult RunArmyGrowthSelectedGeneral(NativeTransition& transition);
 RuntimeActionResult RunDealBookTurnStop(NativeTransition& transition);
 RuntimeActionResult RunCityAndTransportTurnStop(NativeTransition& transition);
+RuntimeActionResult RunArmyToolbarCounts(NativeTransition& transition);
+RuntimeActionResult RunArmySelectCategory(NativeTransition& transition);
+RuntimeActionResult RunArmySetOrderMode(NativeTransition& transition);
+RuntimeActionResult RunArmySelectProvince(NativeTransition& transition);
+RuntimeActionResult RunArmyClickBlocked(NativeTransition& transition);
+RuntimeActionResult RunArmyClickFriendly(NativeTransition& transition);
+RuntimeActionResult RunArmyClickHostile(NativeTransition& transition);
+RuntimeActionResult RunArmySelectionCycling(NativeTransition& transition);
+RuntimeActionResult RunNavyCreateForce(NativeTransition& transition);
+RuntimeActionResult RunNavyToolbarCounts(NativeTransition& transition);
+RuntimeActionResult RunNavySelectShip(NativeTransition& transition);
+RuntimeActionResult RunNavySetAggression(NativeTransition& transition);
+RuntimeActionResult RunNavySubmitOrder(NativeTransition& transition);
+RuntimeActionResult RunNavyCancelOrder(NativeTransition& transition);
+RuntimeActionResult RunNavyZoneTarget(NativeTransition& transition);
+RuntimeActionResult RunNavyProvinceTarget(NativeTransition& transition);
+RuntimeActionResult RunNavySelectionCycling(NativeTransition& transition);
+RuntimeActionResult RunNavyEmptyToolbar(NativeTransition& transition);
 
 namespace {
 
@@ -166,6 +184,24 @@ const NativeCase kCases[] = {
     {"army_growth_selected_general", RunArmyGrowthSelectedGeneral},
     {"turn_stop_deal_book", RunDealBookTurnStop},
     {"turn_stop_city_and_transport", RunCityAndTransportTurnStop},
+    {"army_toolbar_counts", RunArmyToolbarCounts},
+    {"army_select_category", RunArmySelectCategory},
+    {"army_set_order_mode", RunArmySetOrderMode},
+    {"army_select_province", RunArmySelectProvince},
+    {"army_click_blocked", RunArmyClickBlocked},
+    {"army_click_friendly", RunArmyClickFriendly},
+    {"army_click_hostile", RunArmyClickHostile},
+    {"army_selection_cycling", RunArmySelectionCycling},
+    {"navy_create_force", RunNavyCreateForce},
+    {"navy_toolbar_counts", RunNavyToolbarCounts},
+    {"navy_select_ship", RunNavySelectShip},
+    {"navy_set_aggression", RunNavySetAggression},
+    {"navy_submit_order", RunNavySubmitOrder},
+    {"navy_cancel_order", RunNavyCancelOrder},
+    {"navy_zone_target", RunNavyZoneTarget},
+    {"navy_province_target", RunNavyProvinceTarget},
+    {"navy_selection_cycling", RunNavySelectionCycling},
+    {"navy_empty_toolbar", RunNavyEmptyToolbar},
 };
 
 } // namespace

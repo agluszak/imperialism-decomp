@@ -143,7 +143,7 @@ impl LegacySaveV62 {
             map: map_dto(state.map(), state.map_view_origin()),
             ocean: ocean_dto(state.ocean()),
             navy: navy_dto(state),
-            army_report_count: u16::from(state.pending().combat_reports_pending),
+            army_reports: army_reports_from_state(state),
             major_nations,
             minor_nations,
             help: LegacyHelpState {
@@ -1175,4 +1175,39 @@ fn trade_commodity_i16(commodity: TradeCommodity) -> i16 {
 
 fn optional_commodity_i16(commodity: Option<TradeCommodity>) -> i16 {
     commodity.map(trade_commodity_i16).unwrap_or(-10)
+}
+
+fn army_reports_from_state(state: &GameState) -> Vec<LegacyBattleReport> {
+    state
+        .battle_reports()
+        .iter()
+        .map(|report| LegacyBattleReport {
+            participant_index: report.participant_index,
+            displayed_participant: report.displayed_participant,
+            kind: report.kind.retail(),
+            node_id: match report.location {
+                BattleReportLocation::Province(province) => province.get() as i16,
+                BattleReportLocation::Zone(zone) => zone.get() as i16,
+            },
+            sides: std::array::from_fn(|side| {
+                let side = &report.sides[side];
+                LegacyBattleReportSide {
+                    nation: side.nation.get(),
+                    name: side.name.clone(),
+                    overlay: side.overlay.clone(),
+                    children: side
+                        .children
+                        .iter()
+                        .map(|child| LegacyBattleReportChild {
+                            resource_type: child.resource_type,
+                            stock_or_required: child.stock_or_required,
+                            name: child.name.clone(),
+                            strength_bucket: child.strength_bucket,
+                            detail_identity: child.detail_identity,
+                        })
+                        .collect(),
+                }
+            }),
+        })
+        .collect()
 }

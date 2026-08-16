@@ -135,13 +135,24 @@ pub enum TurnStop {
     TechnologyAdvance,
     Newspaper,
     TurnAlerts,
+    /// Turn-machine case `0x0b` after `SorryYouLose`. Distinct from elimination loss.
     GreatPowerLoss,
-    PostCombatDiplomacy,
-    PlayerEliminated,
-    Victory,
+    /// Turn-machine case `0x0d` / `kTurnEventDiplomacyOffer` (0x0547) battle-report overview.
+    PostCombatReports,
+    /// Turn-machine case `0x0e` decade gate; movie is `"vote"` because `mode` is still `0x0e`.
     DecadeCinematic,
-    TopTenScores,
-    OpeningCinematic,
+    /// Follow-up after the vote/win/lose movies (`kTurnEventCouncilOfGovernors` 0x07e0).
+    CouncilOfGovernors,
+    /// Turn-machine case `0x19` when the active nation is a protectorate.
+    PlayerEliminated,
+    /// Turn-machine case `0x19` when one eligible major remains.
+    Victory,
+    /// `kTurnEventGameScore` (0x05eb), after the elimination win movie.
+    GameScore,
+    /// Game Score `done` → `kTurnEventHighScores` (0x05e0).
+    HighScores,
+    /// After a lose movie, retail reinitializes to the main menu.
+    SessionEnded,
 }
 
 /// Authoritative runtime resume state for an interruptible phase.
@@ -161,6 +172,13 @@ pub enum TurnContinuation {
     Trade(crate::TradeSession),
     LandBattle(crate::CombatMovesContinuation),
     TechnologyReport(Technology),
+    GreatPowerLoss,
+    PostCombatReports,
+    DecadeCinematic,
+    CouncilOfGovernors,
+    PlayerEliminated,
+    Victory,
+    GameScore,
 }
 
 impl TurnState {
@@ -271,6 +289,95 @@ impl GameState {
         TurnStop::PlayerOrders
     }
 
+    /// Movie clip for `kTurnEventOpeningCinematic`. Switches on the entered mode, not
+    /// the already-updated `turnStateCode` (`HandleTurnEventDialogFactorySlotF4`).
+    pub fn opening_cinematic_movie(&self) -> &'static str {
+        match self.continuation {
+            TurnContinuation::DecadeCinematic => "vote",
+            TurnContinuation::Victory => "win",
+            TurnContinuation::PlayerEliminated | TurnContinuation::GreatPowerLoss => "lose",
+            _ => "lose",
+        }
+    }
+
+    /// Pressure-loss movie finished. Retail reinitializes; it does not continue to Deal Book.
+    pub fn acknowledge_great_power_loss(&mut self) {
+        assert!(
+            matches!(self.continuation, TurnContinuation::GreatPowerLoss),
+            "great-power loss resume requires a great-power-loss continuation"
+        );
+        self.continuation = TurnContinuation::None;
+    }
+
+    /// Closes `TBattleReportView`. Reports stay until `CleanUpStacks`; phase is already
+    /// `ELIMINATION`.
+    pub fn close_post_combat_reports(&mut self) -> TurnStop {
+        assert!(
+            matches!(self.continuation, TurnContinuation::PostCombatReports),
+            "post-combat report resume requires a post-combat continuation"
+        );
+        self.continuation = TurnContinuation::None;
+        self.advance_turn()
+    }
+
+    /// After the opening cinematic: vote/win/lose from 0x0e/0x16/0x17 go to council;
+    /// elimination win goes to Game Score; elimination/pressure loss ends the session.
+    pub fn close_opening_cinematic(&mut self) -> TurnStop {
+        match &self.continuation {
+            TurnContinuation::DecadeCinematic => {
+                self.continuation = TurnContinuation::CouncilOfGovernors;
+                TurnStop::CouncilOfGovernors
+            }
+            TurnContinuation::Victory if self.turn.phase() == PhaseCode::TOP_TEN_SCORES => {
+                self.continuation = TurnContinuation::CouncilOfGovernors;
+                TurnStop::CouncilOfGovernors
+            }
+            TurnContinuation::Victory => {
+                self.continuation = TurnContinuation::GameScore;
+                TurnStop::GameScore
+            }
+            TurnContinuation::PlayerEliminated
+                if self.turn.phase() == PhaseCode::OPENING_CINEMATIC =>
+            {
+                self.continuation = TurnContinuation::CouncilOfGovernors;
+                TurnStop::CouncilOfGovernors
+            }
+            TurnContinuation::PlayerEliminated | TurnContinuation::GreatPowerLoss => {
+                self.continuation = TurnContinuation::None;
+                TurnStop::SessionEnded
+            }
+            other => {
+                panic!("opening cinematic resume requires a cinematic continuation, got {other:?}")
+            }
+        }
+    }
+
+    /// Council of Governors closed. `StartNextPhase` uses the already-updated phase.
+    pub fn close_council_of_governors(&mut self) -> TurnStop {
+        assert!(
+            matches!(self.continuation, TurnContinuation::CouncilOfGovernors),
+            "council resume requires a council continuation"
+        );
+        self.continuation = TurnContinuation::None;
+        self.advance_turn()
+    }
+
+    /// Game Score `done` posts `kTurnEventHighScores` after reinitialize.
+    pub fn close_game_score(&mut self) -> TurnStop {
+        assert!(
+            matches!(self.continuation, TurnContinuation::GameScore),
+            "game-score resume requires a game-score continuation"
+        );
+        self.continuation = TurnContinuation::None;
+        TurnStop::HighScores
+    }
+
+    /// High-score table dismissed. Retail reinitializes to the main menu.
+    pub fn close_high_scores(&mut self) -> TurnStop {
+        self.continuation = TurnContinuation::None;
+        TurnStop::SessionEnded
+    }
+
     pub fn current_diplomacy_offer(&self) -> Option<DiplomacyOfferPrompt> {
         let TurnContinuation::DiplomacyOffer { nation, index } = self.continuation else {
             return None;
@@ -354,6 +461,9 @@ impl GameState {
                 PhaseCode::GREAT_POWER_PRESSURE => {
                     self.turn.phase = PhaseCode::DEAL_BOOK;
                     if self.do_great_power_pressure_phase() {
+                        // `mode` is still `0x0b`; movie factory default is `"lose"`, then
+                        // `ReinitializeGameFlow` — not the council path.
+                        self.continuation = TurnContinuation::GreatPowerLoss;
                         return TurnStop::GreatPowerLoss;
                     }
                 }
@@ -366,7 +476,8 @@ impl GameState {
                 PhaseCode::DIPLOMACY_OFFER => {
                     self.turn.phase = PhaseCode::ELIMINATION;
                     if self.diplomacy_offer_gate() {
-                        return TurnStop::PostCombatDiplomacy;
+                        self.continuation = TurnContinuation::PostCombatReports;
+                        return TurnStop::PostCombatReports;
                     }
                 }
                 PhaseCode::ELIMINATION => {
@@ -374,15 +485,30 @@ impl GameState {
                     match self.do_elimination_phase() {
                         EliminationOutcome::Continue => {}
                         EliminationOutcome::PlayerEliminated => {
+                            self.continuation = TurnContinuation::PlayerEliminated;
                             return TurnStop::PlayerEliminated;
                         }
-                        EliminationOutcome::Victory => return TurnStop::Victory,
+                        EliminationOutcome::Victory => {
+                            self.continuation = TurnContinuation::Victory;
+                            return TurnStop::Victory;
+                        }
                     }
                 }
                 PhaseCode::QUARTER_GATE => {
                     if self.quarter_gate() == QuarterGateResult::DecadeCinematic {
+                        self.continuation = TurnContinuation::DecadeCinematic;
                         return TurnStop::DecadeCinematic;
                     }
+                }
+                PhaseCode::TOP_TEN_SCORES => {
+                    // Case `0x16`: scores then `"win"` movie; follow-up is council.
+                    self.continuation = TurnContinuation::Victory;
+                    return TurnStop::Victory;
+                }
+                PhaseCode::OPENING_CINEMATIC => {
+                    // Case `0x17`: `"lose"` movie; follow-up is council.
+                    self.continuation = TurnContinuation::PlayerEliminated;
+                    return TurnStop::PlayerEliminated;
                 }
                 PhaseCode::SEASON_ADVANCE => {
                     self.advance_season_phase();
@@ -403,8 +529,6 @@ impl GameState {
                 PhaseCode::RETURN_TO_MAP => {
                     self.return_to_map();
                 }
-                PhaseCode::TOP_TEN_SCORES => return TurnStop::TopTenScores,
-                PhaseCode::OPENING_CINEMATIC => return TurnStop::OpeningCinematic,
                 phase => panic!("unsupported internal turn phase {phase:?}"),
             }
         }
@@ -418,6 +542,13 @@ impl GameState {
             TurnContinuation::Trade(_) => Some(TurnStop::TradeOffer),
             TurnContinuation::LandBattle(_) => Some(TurnStop::LandBattle),
             TurnContinuation::TechnologyReport(_) => Some(TurnStop::TechnologyAdvance),
+            TurnContinuation::GreatPowerLoss => Some(TurnStop::GreatPowerLoss),
+            TurnContinuation::PostCombatReports => Some(TurnStop::PostCombatReports),
+            TurnContinuation::DecadeCinematic => Some(TurnStop::DecadeCinematic),
+            TurnContinuation::CouncilOfGovernors => Some(TurnStop::CouncilOfGovernors),
+            TurnContinuation::PlayerEliminated => Some(TurnStop::PlayerEliminated),
+            TurnContinuation::Victory => Some(TurnStop::Victory),
+            TurnContinuation::GameScore => Some(TurnStop::GameScore),
         }
     }
 
@@ -475,8 +606,9 @@ fn reset_finished_flag(eligible: bool, finished: &mut bool) {
 mod tests {
     use crate::test_support::game_state;
     use crate::{
-        AutoGreatPowerState, DiplomacyPolicy, DiplomaticRelationship, MajorNationId, NationId,
-        ResourceKind, ShipType, TileId, TileOwnerTag, TradeProgress,
+        AutoGreatPowerState, BattleReport, BattleReportKind, BattleReportLocation,
+        BattleReportSide, DiplomacyPolicy, DiplomaticRelationship, MajorNationId, NationId,
+        ProvinceId, ResourceKind, ShipType, TileId, TileOwnerTag, TradeProgress,
     };
 
     fn seed_town_tiles(state: &mut crate::GameState) {
@@ -734,22 +866,43 @@ mod tests {
     fn legal_presentation_phases_stop_instead_of_panicking() {
         let mut state = game_state();
         state.turn.phase = crate::PhaseCode::TOP_TEN_SCORES;
-        assert_eq!(state.advance_turn(&[]), crate::TurnStop::TopTenScores);
+        assert_eq!(state.advance_turn(&[]), crate::TurnStop::Victory);
 
         state.turn.phase = crate::PhaseCode::OPENING_CINEMATIC;
-        assert_eq!(state.advance_turn(&[]), crate::TurnStop::OpeningCinematic);
+        assert_eq!(state.advance_turn(&[]), crate::TurnStop::PlayerEliminated);
     }
 
     #[test]
     fn post_combat_diplomacy_is_an_explicit_turn_stop() {
         let mut state = game_state();
         seed_town_tiles(&mut state);
-        state.pending.combat_reports_pending = true;
+        state.append_battle_report(BattleReport {
+            participant_index: 0,
+            displayed_participant: 0,
+            kind: BattleReportKind::LandBattle,
+            location: BattleReportLocation::Province(ProvinceId::new(0)),
+            sides: [
+                BattleReportSide {
+                    nation: NationId::new(0),
+                    name: String::new(),
+                    overlay: String::new(),
+                    children: Vec::new(),
+                },
+                BattleReportSide {
+                    nation: NationId::new(1),
+                    name: String::new(),
+                    overlay: String::new(),
+                    children: Vec::new(),
+                },
+            ],
+            marker_pixel_x: 0,
+            marker_pixel_y: 0,
+            placed: false,
+            marker_sprite: 0,
+            list_ordinal: 0,
+        });
         state.turn.phase = crate::PhaseCode::DIPLOMACY_OFFER;
-        assert_eq!(
-            state.advance_turn(&[]),
-            crate::TurnStop::PostCombatDiplomacy
-        );
+        assert_eq!(state.advance_turn(&[]), crate::TurnStop::PostCombatReports);
         assert_eq!(state.turn.phase(), crate::PhaseCode::ELIMINATION);
     }
 
@@ -807,5 +960,83 @@ mod tests {
         assert_eq!(state.close_newspaper(), crate::TurnStop::PlayerOrders);
         assert_eq!(state.turn.phase(), crate::PhaseCode::STRATEGIC_MAP);
         assert_eq!(state.turn.economic_turn, start_turn + 1);
+    }
+
+    #[test]
+    fn opening_cinematic_movie_follows_entered_mode() {
+        let mut state = game_state();
+        state.continuation = crate::TurnContinuation::DecadeCinematic;
+        assert_eq!(state.opening_cinematic_movie(), "vote");
+        state.continuation = crate::TurnContinuation::Victory;
+        assert_eq!(state.opening_cinematic_movie(), "win");
+        state.continuation = crate::TurnContinuation::PlayerEliminated;
+        assert_eq!(state.opening_cinematic_movie(), "lose");
+        state.continuation = crate::TurnContinuation::GreatPowerLoss;
+        assert_eq!(state.opening_cinematic_movie(), "lose");
+    }
+
+    #[test]
+    fn decade_cinematic_close_enters_council() {
+        let mut state = game_state();
+        state.continuation = crate::TurnContinuation::DecadeCinematic;
+        assert_eq!(
+            state.close_opening_cinematic(),
+            crate::TurnStop::CouncilOfGovernors
+        );
+        assert!(matches!(
+            state.continuation,
+            crate::TurnContinuation::CouncilOfGovernors
+        ));
+    }
+
+    #[test]
+    fn elimination_win_close_enters_game_score() {
+        let mut state = game_state();
+        state.continuation = crate::TurnContinuation::Victory;
+        assert_eq!(state.close_opening_cinematic(), crate::TurnStop::GameScore);
+        assert_eq!(state.close_game_score(), crate::TurnStop::HighScores);
+        assert_eq!(state.close_high_scores(), crate::TurnStop::SessionEnded);
+    }
+
+    #[test]
+    fn pressure_loss_close_ends_the_session() {
+        let mut state = game_state();
+        state.continuation = crate::TurnContinuation::GreatPowerLoss;
+        assert_eq!(
+            state.close_opening_cinematic(),
+            crate::TurnStop::SessionEnded
+        );
+    }
+
+    #[test]
+    fn reports_pending_follows_the_battle_report_collection() {
+        let mut state = game_state();
+        assert!(!state.battle_reports_pending());
+        state.append_battle_report(BattleReport {
+            participant_index: 0,
+            displayed_participant: 0,
+            kind: BattleReportKind::LandBattle,
+            location: BattleReportLocation::Province(ProvinceId::new(0)),
+            sides: [
+                BattleReportSide {
+                    nation: NationId::new(0),
+                    name: String::new(),
+                    overlay: String::new(),
+                    children: Vec::new(),
+                },
+                BattleReportSide {
+                    nation: NationId::new(1),
+                    name: String::new(),
+                    overlay: String::new(),
+                    children: Vec::new(),
+                },
+            ],
+            marker_pixel_x: 0,
+            marker_pixel_y: 0,
+            placed: false,
+            marker_sprite: 0,
+            list_ordinal: 0,
+        });
+        assert!(state.battle_reports_pending());
     }
 }

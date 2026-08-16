@@ -648,7 +648,7 @@ impl GameState {
         true
     }
 
-    fn upgrade_type(
+    pub(crate) fn upgrade_type(
         &self,
         nation: MajorNationId,
         unit_type: MilitaryUnitKind,

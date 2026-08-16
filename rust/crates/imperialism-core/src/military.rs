@@ -243,7 +243,7 @@ impl GameState {
             .filter(move |unit| unit.stationed_province() == Some(province))
     }
 
-    fn invasion_capacity(&self, nation: NationId, province: ProvinceId) -> i32 {
+    pub(crate) fn invasion_capacity(&self, nation: NationId, province: ProvinceId) -> i32 {
         self.task_forces
             .iter()
             .filter(|force| {
@@ -263,7 +263,7 @@ impl GameState {
             .sum()
     }
 
-    fn province_has_port(&self, province: ProvinceId) -> bool {
+    pub(crate) fn province_has_port(&self, province: ProvinceId) -> bool {
         self.map.provinces[province]
             .linked_tiles
             .iter()

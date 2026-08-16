@@ -27,6 +27,12 @@ pub(crate) enum AppState {
     TechnologyAdvance,
     Newspaper,
     LandBattle,
+    OpeningCinematic,
+    CouncilOfGovernors,
+    BattleReport,
+    BattleReportDetail,
+    GameScore,
+    HighScore,
     Credits,
     Preferences,
 }
@@ -74,6 +80,7 @@ fn add_game_plugins(app: &mut App) {
     app.add_plugins((
         TabNavigationPlugin,
         ui::RetailUiPlugin,
+        ui::RetailViewportPlugin,
         ui::QueryFloaterPlugin,
         ui::MainMenuPlugin,
         ui::LoadSavePlugin,
@@ -94,6 +101,11 @@ fn add_game_plugins(app: &mut App) {
         ui::TechnologyAdvancePlugin,
         ui::NewspaperPlugin,
         ui::LandBattlePlugin,
+        ui::OpeningCinematicPlugin,
+        ui::CouncilOfGovernorsPlugin,
+        ui::BattleReportPlugin,
+        ui::GameScorePlugin,
+        ui::HighScorePlugin,
         ui::CreditsPlugin,
         ui::PreferencesPlugin,
     ));
@@ -128,7 +140,7 @@ pub fn run(
         app.insert_resource(ui::GameSession { game })
             .insert_state(AppState::StrategicMap);
     } else {
-        app.init_state::<AppState>();
+        app.insert_state(AppState::OpeningCinematic);
     }
     app.insert_resource(RetailAssetsResource::new(retail_assets))
         .insert_resource(RandomGameNamesResource(random_game_names))
@@ -176,6 +188,12 @@ mod tests {
             AppState::TechnologyAdvance,
             AppState::Newspaper,
             AppState::LandBattle,
+            AppState::OpeningCinematic,
+            AppState::CouncilOfGovernors,
+            AppState::BattleReport,
+            AppState::BattleReportDetail,
+            AppState::GameScore,
+            AppState::HighScore,
             AppState::Credits,
             AppState::Preferences,
         ] {

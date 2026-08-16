@@ -282,6 +282,7 @@ pub fn create_random_game(
         missions,
         news: NewsState::default(),
         pending,
+        battle_reports: Vec::new(),
         continuation: crate::turn_flow::TurnContinuation::None,
     }
 }
