@@ -112,11 +112,22 @@ jobs:
         working-directory: rust
         shell: bash
         run: |
-          set -euxo pipefail
-          cargo fmt --all
-          cargo fmt --all -- --check
-          cargo clippy --workspace --all-targets --all-features -- -D warnings
-          cargo test --workspace
+          set -o pipefail
+          {
+            set -x
+            cargo fmt --all
+            cargo fmt --all -- --check
+            cargo clippy --workspace --all-targets --all-features -- -D warnings
+            cargo test --workspace
+          } 2>&1 | tee /tmp/pr794-validation.log
+
+      - name: Upload validation transcript
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr794-validation-log
+          path: /tmp/pr794-validation.log
+          retention-days: 1
 
       - name: Publish rebased PR branch
         shell: bash
