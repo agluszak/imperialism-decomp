@@ -10,6 +10,14 @@ use crate::*;
 use enum_map::{Enum, EnumMap};
 
 #[derive(Clone, Copy, Eq, PartialEq)]
+enum TacticalUnitState {
+    Ready,
+    MoraleBroken,
+    Retreated,
+    Destroyed,
+}
+
+#[derive(Clone, Copy, Eq, PartialEq)]
 enum BattleOutcome {
     InProgress,
     AttackerWon,
@@ -47,7 +55,7 @@ struct TacUnit {
     unit_type: MilitaryUnitKind,
     tile: i32,
     selected: bool,
-    state: i32,
+    state: TacticalUnitState,
     action_points: i32,
     ai_state: i32,
     strength: i32,
@@ -240,7 +248,7 @@ impl Battle {
             unit_type,
             tile: -2,
             selected: enemy_selected,
-            state: 0,
+            state: TacticalUnitState::Ready,
             action_points: BASE_ACTION_POINTS[unit_type],
             ai_state: 0,
             strength: i32::from(unit.strength),
@@ -558,12 +566,12 @@ impl Battle {
                 position += 1;
             }
             let idx = self.records[(position - 1) as usize];
-            if self.units[idx].state != 3 {
+            if self.units[idx].state != TacticalUnitState::Destroyed {
                 break idx;
             }
         };
         self.set_current_selection(candidate);
-        if self.units[candidate].state == 1 {
+        if self.units[candidate].state == TacticalUnitState::MoraleBroken {
             self.process_morale_broken(state, candidate);
             return;
         }
@@ -949,7 +957,7 @@ impl Battle {
         self.sides[side].field51 = 0;
         let units = self.sides[side].units.clone();
         for idx in units {
-            if self.units[idx].state != 0 {
+            if self.units[idx].state != TacticalUnitState::Ready {
                 continue;
             }
             self.compute_projection(state, idx);
@@ -998,7 +1006,7 @@ impl Battle {
         self.sides[enemy].units.iter().any(|&idx| {
             self.units[idx].tile >= 0
                 && AI_CLASS[self.units[idx].unit_type] == 2
-                && self.units[idx].state == 0
+                && self.units[idx].state == TacticalUnitState::Ready
         })
     }
 
@@ -1010,7 +1018,7 @@ impl Battle {
         let enemy_has_active = self.sides[opponent]
             .units
             .iter()
-            .any(|&idx| self.units[idx].state == 0);
+            .any(|&idx| self.units[idx].state == TacticalUnitState::Ready);
         self.sides[side].field48 = i32::from(!enemy_has_active);
         let mut cursor_mode;
         if !self.sides[side].is_our {
@@ -1042,12 +1050,12 @@ impl Battle {
             let strength_ratio = self.sides[side].projection_sums[1] / opponent_metrics[0];
             let have_sapper = self.sides[side].units.iter().any(|&idx| {
                 self.units[idx].unit_type.tactical_category() == ArmyUnitCategory::Engineers
-                    && self.units[idx].state == 0
+                    && self.units[idx].state == TacticalUnitState::Ready
             });
-            let have_artillery = self.sides[side]
-                .units
-                .iter()
-                .any(|&idx| AI_CLASS[self.units[idx].unit_type] == 2 && self.units[idx].state == 0);
+            let have_artillery = self.sides[side].units.iter().any(|&idx| {
+                AI_CLASS[self.units[idx].unit_type] == 2
+                    && self.units[idx].state == TacticalUnitState::Ready
+            });
             if !self.fort_breached() {
                 if have_sapper {
                     cursor_mode = 3;
@@ -1125,7 +1133,7 @@ impl Battle {
 
     fn stance_hold(&mut self, side: BattleSide) {
         for &idx in &self.sides[side].units.clone() {
-            if self.units[idx].state != 0 {
+            if self.units[idx].state != TacticalUnitState::Ready {
                 continue;
             }
             self.units[idx].ai_state = match AI_CLASS[self.units[idx].unit_type] {
@@ -1141,7 +1149,7 @@ impl Battle {
 
     fn stance_bombard(&mut self, side: BattleSide) {
         for &idx in &self.sides[side].units.clone() {
-            if self.units[idx].state != 0 {
+            if self.units[idx].state != TacticalUnitState::Ready {
                 continue;
             }
             self.units[idx].ai_state = match AI_CLASS[self.units[idx].unit_type] {
@@ -1253,7 +1261,7 @@ impl Battle {
             let selected = self.selected;
             for &idx in &self.sides[side].units.clone() {
                 if self.units[idx].unit_type.tactical_category() == ArmyUnitCategory::Engineers
-                    && self.units[idx].state == 0
+                    && self.units[idx].state == TacticalUnitState::Ready
                 {
                     if selected.is_none_or(|sel| {
                         self.units[sel].unit_type.tactical_category() != ArmyUnitCategory::Engineers
@@ -1310,7 +1318,9 @@ impl Battle {
         }
         if target != self.units[unit].tile {
             let mut guard = 200;
-            while self.pending_end && self.units[unit].state == 0 && self.units[unit].tile != target
+            while self.pending_end
+                && self.units[unit].state == TacticalUnitState::Ready
+                && self.units[unit].tile != target
             {
                 if guard == 0 {
                     break;
@@ -1319,7 +1329,7 @@ impl Battle {
                 self.move_and_maybe_finish(state, unit, target);
             }
         }
-        if self.pending_end && self.units[unit].state == 0 {
+        if self.pending_end && self.units[unit].state == TacticalUnitState::Ready {
             if general(self.units[unit].unit_type) {
                 let neighbors = self.neighbors(self.units[unit].tile);
                 let mut rally = None;
@@ -1381,7 +1391,7 @@ impl Battle {
                             if advance != self.units[unit].tile {
                                 let mut guard = 200;
                                 while self.selected == Some(unit)
-                                    && self.units[unit].state == 0
+                                    && self.units[unit].state == TacticalUnitState::Ready
                                     && self.units[unit].tile != advance
                                 {
                                     if guard == 0 {
@@ -1494,7 +1504,8 @@ impl Battle {
         while score == 0 && scan < TACTICAL_TILE_COUNT as i32 {
             if let Some(occupant) = self.tiles[scan as usize].occupant
                 && self.units[occupant].side != self.units[unit].side
-                && (self.units[occupant].state == 0 || self.sides[side].field48 == 1)
+                && (self.units[occupant].state == TacticalUnitState::Ready
+                    || self.sides[side].field48 == 1)
             {
                 let category = self.units[unit].unit_type.tactical_category();
                 if self.reachable_for_action(
@@ -1546,7 +1557,8 @@ impl Battle {
             }
             if let Some(occupant) = self.tiles[neighbor as usize].occupant
                 && self.units[occupant].side != self.units[unit].side
-                && (self.units[occupant].state == 0 || self.sides[side].field48 == 1)
+                && (self.units[occupant].state == TacticalUnitState::Ready
+                    || self.sides[side].field48 == 1)
             {
                 return 0x64;
             }
@@ -1662,7 +1674,7 @@ impl Battle {
         for scan in 0..TACTICAL_TILE_COUNT as i32 {
             if let Some(occupant) = self.tiles[scan as usize].occupant
                 && self.units[occupant].side != self.units[unit].side
-                && self.units[occupant].state == 0
+                && self.units[occupant].state == TacticalUnitState::Ready
                 && self.reachable_for_action(tile, scan, direct_fire(category), range)
             {
                 let candidate = hex_distance(tile, scan) + 0x32;
@@ -1693,7 +1705,7 @@ impl Battle {
         for scan in 0..TACTICAL_TILE_COUNT as i32 {
             if let Some(occupant) = self.tiles[scan as usize].occupant
                 && self.units[occupant].side != self.units[unit].side
-                && self.units[occupant].state == 0
+                && self.units[occupant].state == TacticalUnitState::Ready
                 && AI_CLASS[self.units[occupant].unit_type] == 2
                 && self.reachable_for_action(tile, scan, direct_fire(category), range)
             {
@@ -1715,8 +1727,9 @@ impl Battle {
         let mut best_tile = -1;
         let mut best_score = 0;
         for &idx in &self.sides[enemy].units.clone() {
-            let broken_ok = self.sides[side].field48 == 1 && self.units[idx].state == 1;
-            if !broken_ok && self.units[idx].state != 0 {
+            let broken_ok = self.sides[side].field48 == 1
+                && self.units[idx].state == TacticalUnitState::MoraleBroken;
+            if !broken_ok && self.units[idx].state != TacticalUnitState::Ready {
                 continue;
             }
             if require_reach {
@@ -1780,7 +1793,9 @@ impl Battle {
     fn evaluate_outcome(&mut self) {
         let mut live = BattleSideTable::default();
         for &idx in &self.records {
-            if self.units[idx].state == 0 || self.units[idx].state == 1 {
+            if self.units[idx].state == TacticalUnitState::Ready
+                || self.units[idx].state == TacticalUnitState::MoraleBroken
+            {
                 live[self.units[idx].side] = true;
                 if live[BattleSide::Attacker] && live[BattleSide::Defender] {
                     break;
@@ -2016,7 +2031,7 @@ impl Battle {
         for tile in 0..TACTICAL_TILE_COUNT {
             if let Some(occupant) = self.tiles[tile].occupant
                 && self.units[occupant].side != side
-                && self.units[occupant].state == 0
+                && self.units[occupant].state == TacticalUnitState::Ready
             {
                 self.threat[tile] = (self.unit_range(occupant) + 1) as i8;
             } else {
@@ -2175,7 +2190,9 @@ impl Battle {
         if self.units[unit].unit_type.tactical_category() == ArmyUnitCategory::SiegeArtillery {
             self.units[unit].selected = false;
         }
-        if self.units[unit].state == 0 && self.outcome == BattleOutcome::InProgress {
+        if self.units[unit].state == TacticalUnitState::Ready
+            && self.outcome == BattleOutcome::InProgress
+        {
             if self.units[unit].selected && self.has_followup(unit) {
                 return;
             }
@@ -2269,9 +2286,9 @@ impl Battle {
         {
             // Headless unbroken-morale path leaves unitMayLeave uninitialized in retail.
             // Use 0 (do not leave) for determinism.
-            let unit_may_leave = self.units[unit].state == 1;
+            let unit_may_leave = self.units[unit].state == TacticalUnitState::MoraleBroken;
             if unit_may_leave {
-                self.units[unit].state = 2;
+                self.units[unit].state = TacticalUnitState::Retreated;
                 self.tiles[arrived as usize].occupant = None;
                 self.units[unit].tile = -2;
                 self.evaluate_outcome();
@@ -2360,7 +2377,8 @@ impl Battle {
         let reactors = self.sides[reacting].units.clone();
         let mut fired = false;
         for reactor in reactors {
-            if self.units[reactor].state == 0 && self.units[reactor].selected {
+            if self.units[reactor].state == TacticalUnitState::Ready && self.units[reactor].selected
+            {
                 let category = self.units[reactor].unit_type.tactical_category();
                 if self.reachable_for_action(
                     self.units[reactor].tile,
@@ -2436,7 +2454,9 @@ impl Battle {
         let mut leader = 2.0f32;
         let defender_side = self.units[defender].side;
         for &idx in &self.sides[defender_side].units {
-            if general(self.units[idx].unit_type) && self.units[idx].state == 0 {
+            if general(self.units[idx].unit_type)
+                && self.units[idx].state == TacticalUnitState::Ready
+            {
                 let value = (2.0 - f64::from(self.units[idx].quality) * 0.2 - 0.2) as f32;
                 if value < leader {
                     leader = value;
@@ -2452,14 +2472,14 @@ impl Battle {
         self.units[target].morale -= damage_b;
         if self.units[target].morale <= 0 {
             self.units[target].morale = 0;
-            self.units[target].state = 1;
+            self.units[target].state = TacticalUnitState::MoraleBroken;
         }
         self.units[target].strength -= damage_a;
         if self.units[target].strength <= 0 {
             self.units[target].strength = 0;
-            self.units[target].state = 3;
+            self.units[target].state = TacticalUnitState::Destroyed;
         }
-        if self.units[target].state == 3 {
+        if self.units[target].state == TacticalUnitState::Destroyed {
             let tile = self.units[target].tile;
             if tile >= 0 {
                 self.tiles[tile as usize].occupant = None;
@@ -2491,11 +2511,11 @@ impl Battle {
         if best_tile != self.units[unit].tile {
             self.move_toward(state, unit, best_tile);
         }
-        if self.units[unit].state == 1 {
+        if self.units[unit].state == TacticalUnitState::MoraleBroken {
             let enemy = self.units[unit].side.opponent();
             let mut nearby = 0;
             for &idx in &self.sides[enemy].units {
-                if self.units[idx].state != 0 {
+                if self.units[idx].state != TacticalUnitState::Ready {
                     continue;
                 }
                 if hex_distance(self.units[unit].tile, self.units[idx].tile) < 3 {
@@ -2610,14 +2630,14 @@ impl Battle {
     fn rally(&mut self, state: &mut GameState, rallier: usize, target: usize) {
         let mut new_state = self.units[target].state;
         let mut new_morale = self.units[target].morale;
-        if new_state == 0 {
+        if new_state == TacticalUnitState::Ready {
             new_morale +=
                 self.units[target].strength / 10 * (i32::from(self.units[rallier].quality) + 3);
-        } else if new_state == 1 {
+        } else if new_state == TacticalUnitState::MoraleBroken {
             let quality = i32::from(self.units[rallier].quality);
             if state.rng.next_crt_rand() % 100 < (quality + 5) * 10 {
                 new_morale = self.units[target].strength / 10 + 20;
-                new_state = 0;
+                new_state = TacticalUnitState::Ready;
             }
         }
         let strength = self.units[target].strength;
