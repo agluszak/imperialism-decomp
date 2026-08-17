@@ -428,6 +428,7 @@ mod tests {
         let units: Vec<_> = state
             .civilian_units()
             .filter(|(_, unit)| unit.nation() == nation.nation())
+            .map(|(_, unit)| unit)
             .collect();
         assert_eq!(units.len(), count);
         assert!(

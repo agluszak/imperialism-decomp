@@ -912,7 +912,8 @@ mod tests {
         state.map[destination].owner_nation = owner;
         state.map[destination].terrain = TerrainKind::Plains;
         let id = CivilianUnitId::new(1);
-        state.civilian_units.push(
+        state.civilian_units.insert(
+            id,
             CivilianUnitState::new(
                 id,
                 nation,
@@ -1104,7 +1105,8 @@ mod tests {
     ) -> CivilianUnitId {
         state.map[tile].owner_nation = Some(TileOwnerTag::from_nation(nation));
         let id = CivilianUnitId::new(id);
-        state.civilian_units.push(
+        state.civilian_units.insert(
+            id,
             CivilianUnitState::new(
                 id,
                 nation,
@@ -1244,7 +1246,7 @@ mod tests {
         let province = Some(ProvinceId::new(0));
         state.map[TileId::new(1)].province = province;
         state.map[capital].province = province;
-        for unit in &state.civilian_units {
+        for unit in state.civilian_units.values() {
             if let Some(tile) = unit.location.tile() {
                 state.map[tile].province = province;
             }
@@ -1302,18 +1304,18 @@ mod tests {
         assert!(
             state
                 .civilian_units
-                .iter()
+                .values()
                 .any(|unit| unit.unit_type == CivilianUnitKind::Farmer
                     && matches!(unit.order, CivilianWorkOrder::Sleep))
         );
         assert!(
             state
                 .civilian_units
-                .iter()
+                .values()
                 .any(|unit| unit.unit_type == CivilianUnitKind::Rancher
                     && matches!(unit.order, CivilianWorkOrder::Idle))
         );
-        assert!(state.civilian_units.iter().any(|unit| {
+        assert!(state.civilian_units.values().any(|unit| {
             unit.unit_type == CivilianUnitKind::Miner
                 && matches!(
                     unit.order,

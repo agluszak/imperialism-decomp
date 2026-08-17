@@ -710,21 +710,24 @@ mod tests {
         let province = ProvinceId::new(0);
         let unnamed = |state: &mut GameState| {
             let id = state.unit_ids.next_military();
-            state.military_units.push(MilitaryUnitState::new(
+            state.military_units.insert(
                 id,
-                nation.nation(),
-                MilitaryUnitKind::Regulars,
-                Some(province),
-                MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
-                nation.nation(),
-                0,
-                true,
-                String::new(),
-                500,
-                MilitaryUnitKind::Regulars.spawn_era(),
-                0,
-                0,
-            ));
+                MilitaryUnitState::new(
+                    id,
+                    nation.nation(),
+                    MilitaryUnitKind::Regulars,
+                    Some(province),
+                    MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
+                    nation.nation(),
+                    0,
+                    true,
+                    String::new(),
+                    500,
+                    MilitaryUnitKind::Regulars.spawn_era(),
+                    0,
+                    0,
+                ),
+            );
         };
 
         unnamed(&mut state);

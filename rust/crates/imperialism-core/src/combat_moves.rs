@@ -696,21 +696,24 @@ mod tests {
             ),
             None => MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
         };
-        state.military_units.push(MilitaryUnitState::new(
+        state.military_units.insert(
             id,
-            NationId::new(nation),
-            kind,
-            Some(province),
-            order,
-            NationId::new(nation),
-            0,
-            true,
-            String::new(),
-            400,
-            kind.spawn_era(),
-            0,
-            0,
-        ));
+            MilitaryUnitState::new(
+                id,
+                NationId::new(nation),
+                kind,
+                Some(province),
+                order,
+                NationId::new(nation),
+                0,
+                true,
+                String::new(),
+                400,
+                kind.spawn_era(),
+                0,
+                0,
+            ),
+        );
         id
     }
 
@@ -1062,9 +1065,11 @@ mod tests {
         };
 
         let dummy = push_unit(&mut state, 0, 1, MilitaryUnitKind::Minutemen, None);
-        let dummy_unit = state.military_units.pop().expect("dummy was pushed");
-        assert_eq!(dummy_unit.id, dummy);
-        state.military_units.insert(0, dummy_unit);
+        let dummy_unit = state
+            .military_units
+            .shift_remove(&dummy)
+            .expect("dummy was pushed");
+        state.military_units.shift_insert(0, dummy, dummy_unit);
 
         assert_eq!(
             state.resume_after_land_battle(&[]),

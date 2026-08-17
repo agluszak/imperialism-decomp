@@ -543,9 +543,8 @@ fn projects_mission_holds_and_ordered_pending_development_actions() {
     let state = save.game_state(game_context());
     let held_mission_indices = state
         .missions()
-        .iter()
         .enumerate()
-        .filter_map(|(index, mission)| mission.held.then_some(index))
+        .filter_map(|(index, (_, mission))| mission.held.then_some(index))
         .collect::<Vec<_>>();
     assert_eq!(held_mission_indices, [62, 63, 64]);
     let interior_civilian = serde_json::to_value(
@@ -568,7 +567,7 @@ fn projects_mission_holds_and_ordered_pending_development_actions() {
         serde_json::json!(0)
     );
     assert_eq!(
-        serde_json::to_value(&state.missions()[62]).unwrap()["held"],
+        serde_json::to_value(state.missions().nth(62).expect("fixture mission").1).unwrap()["held"],
         serde_json::json!(true)
     );
 }
