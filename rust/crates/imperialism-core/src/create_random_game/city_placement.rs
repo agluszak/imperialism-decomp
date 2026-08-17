@@ -64,16 +64,6 @@ pub(super) fn place_initial_frog_cities(
         }
     }
 }
-pub(super) const LAND_UNIT_TYPE_NAMES: [&str; 8] = [
-    "Minutemen",
-    "Skirmishers",
-    "Regulars",
-    "Grenadiers",
-    "Hussars",
-    "Cuirassiers",
-    "Light Artillery",
-    "Artillery",
-];
 /// `RebuildSecondaryNationStateForSlot` for minors: home pick, militia, trailing Regulars.
 #[allow(clippy::too_many_arguments)]
 pub(super) fn bootstrap_minors(
@@ -98,7 +88,7 @@ pub(super) fn bootstrap_minors(
             minor.common.home_tile = Some(home);
         }
 
-        let mut name_ordinals = [1i16; MilitaryUnitKind::LENGTH];
+        let mut name_ordinals = MilitaryUnitTable::from_array([1; MilitaryUnitKind::LENGTH]);
         let mut next_roster_id = 1i16;
         let owned = owned_province_ids(world, province_capitals, owner);
         spawn_initial_militia_for_minor(
@@ -197,7 +187,7 @@ pub(super) fn spawn_initial_militia_for_minor(
     difficulty: Difficulty,
     military_units: &mut IndexMap<MilitaryUnitId, MilitaryUnitState>,
     unit_ids: &mut UnitIdAllocator,
-    name_ordinals: &mut [i16],
+    name_ordinals: &mut MilitaryUnitTable<i16>,
     next_roster_id: &mut i16,
 ) {
     let nation = minor_id.nation();
@@ -310,7 +300,7 @@ pub(super) fn push_military_unit(
 pub(crate) fn name_units_for_nation(
     military_units: &mut IndexMap<MilitaryUnitId, MilitaryUnitState>,
     nation: NationId,
-    name_ordinals: &mut [i16],
+    name_ordinals: &mut MilitaryUnitTable<i16>,
     next_roster_id: &mut i16,
 ) {
     for unit in military_units
@@ -320,16 +310,14 @@ pub(crate) fn name_units_for_nation(
         if unit.roster_id != 0 {
             continue;
         }
-        if unit.unit_type >= MilitaryUnitKind::GeneralEra1 {
+        let Some(type_name) = unit.unit_type.roster_name() else {
             continue;
-        }
-        let kind = unit.unit_type as usize;
-        let ordinal = name_ordinals[kind];
-        let type_name = LAND_UNIT_TYPE_NAMES[kind];
+        };
+        let ordinal = name_ordinals[unit.unit_type];
         unit.name = format!("{} {}", english_ordinal(ordinal), type_name);
         unit.roster_id = *next_roster_id;
         *next_roster_id += 1;
-        name_ordinals[kind] = ordinal + 1;
+        name_ordinals[unit.unit_type] = ordinal + 1;
     }
 }
 pub(super) fn english_ordinal(value: i16) -> String {

@@ -191,7 +191,7 @@ fn minor_home_garrison_preserves_the_base_state_and_marks_the_capital() {
 
     let mut units = indexmap::IndexMap::new();
     let mut unit_ids = UnitIdAllocator::default();
-    let mut name_ordinals = [1; MilitaryUnitKind::LENGTH];
+    let mut name_ordinals = MilitaryUnitTable::from_array([1; MilitaryUnitKind::LENGTH]);
     let mut next_roster_id = 1;
     spawn_initial_militia_for_minor(
         &mut world,

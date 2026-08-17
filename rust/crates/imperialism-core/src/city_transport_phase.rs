@@ -741,7 +741,7 @@ mod tests {
         assert_eq!(
             state.nations.majors[&nation]
                 .common
-                .unit_name_ordinal_by_type[MilitaryUnitKind::Regulars as usize],
+                .unit_name_ordinal_by_type[MilitaryUnitKind::Regulars],
             2
         );
         assert_eq!(state.nations.majors[&nation].common.unit_name_counter, 2);

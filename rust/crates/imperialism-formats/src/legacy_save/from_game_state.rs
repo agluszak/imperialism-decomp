@@ -240,7 +240,7 @@ fn country_dto(
         alternate_identity: identity,
         nation_slot,
         encoded_country_status: country_status_to_retail(common.status()),
-        unit_name_ordinal_by_type: common.unit_name_ordinal_by_type,
+        unit_name_ordinal_by_type: common.unit_name_ordinal_by_type.into_array(),
         unit_name_counter: common.unit_name_counter,
         treasury: common.treasury,
         home_tile: option_i32(common.home_tile.map(TileId::get)),

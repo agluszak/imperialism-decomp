@@ -213,6 +213,20 @@ impl MilitaryUnitKind {
         (self as i16) / 8
     }
 
+    pub(crate) const fn roster_name(self) -> Option<&'static str> {
+        match self {
+            Self::Minutemen => Some("Minutemen"),
+            Self::Skirmishers => Some("Skirmishers"),
+            Self::Regulars => Some("Regulars"),
+            Self::Grenadiers => Some("Grenadiers"),
+            Self::Hussars => Some("Hussars"),
+            Self::Cuirassiers => Some("Cuirassiers"),
+            Self::LightArtillery => Some("Light Artillery"),
+            Self::Artillery => Some("Artillery"),
+            _ => None,
+        }
+    }
+
     pub(crate) fn arms_required(self) -> i32 {
         ARMS_BY_MILITARY_UNIT[self]
     }
