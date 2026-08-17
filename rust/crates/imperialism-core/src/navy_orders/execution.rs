@@ -1151,7 +1151,7 @@ impl GameState {
         nation: NationId,
         ship: ShipId,
     ) -> TaskForceId {
-        let id = self.allocate_task_force_id();
+        let id = self.object_ids.task_force();
         // `TTaskForce` links itself at `orderQueueHead`; naval continuation
         // traverses this queue, so its head position is retail state.
         self.task_forces.shift_insert(
@@ -1330,7 +1330,7 @@ mod tests {
         order: TaskForceOrder,
     ) -> (ShipId, TaskForceId) {
         let ship = state.object_ids.ship();
-        let force = state.allocate_task_force_id();
+        let force = state.object_ids.task_force();
         state.ships.insert(
             ship,
             ShipState {

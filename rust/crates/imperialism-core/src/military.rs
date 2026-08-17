@@ -143,10 +143,6 @@ impl GameState {
         self.ships.get_mut(&id)
     }
 
-    pub(crate) fn allocate_task_force_id(&mut self) -> TaskForceId {
-        self.object_ids.task_force()
-    }
-
     pub fn task_force(&self, id: TaskForceId) -> Option<&TaskForceState> {
         self.task_forces.get(&id)
     }
