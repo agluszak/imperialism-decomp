@@ -442,6 +442,8 @@ impl GameState {
         *count = count.wrapping_add(1);
 
         let admiral = self.object_ids.admiral();
+        // Retail links new admirals at the head of its secondary navy list; this
+        // list order is serialized and therefore remains a positional semantic.
         self.admirals.shift_insert(
             0,
             admiral,

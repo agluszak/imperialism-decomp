@@ -1152,6 +1152,8 @@ impl GameState {
         ship: ShipId,
     ) -> TaskForceId {
         let id = self.allocate_task_force_id();
+        // `TTaskForce` links itself at `orderQueueHead`; naval continuation
+        // traverses this queue, so its head position is retail state.
         self.task_forces.shift_insert(
             0,
             id,

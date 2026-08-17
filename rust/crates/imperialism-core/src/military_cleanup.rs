@@ -487,6 +487,8 @@ impl GameState {
         }
         for (mission_id, id) in adoptions {
             if let MissionData::DefendProvince { army, .. } = &mut self.missions[&mission_id].data {
+                // `AcceptReenforcement` prepends the retained child link; this
+                // membership order is an observable mission traversal order.
                 army.units.shift_insert(0, id);
             }
         }
