@@ -688,8 +688,8 @@ impl GameState {
 
             let left_eligible = self.task_force_count_at_or_above_tier(left_id, tier);
             let right_eligible = self.task_force_count_at_or_above_tier(right_id, tier);
-            let left_count = self.task_forces[left].ships.len();
-            let right_count = self.task_forces[right].ships.len();
+            let left_count = self.task_forces[&left_id].ships.len();
+            let right_count = self.task_forces[&right_id].ships.len();
             self.apply_naval_attrition(
                 left_id,
                 left_ratio,
@@ -706,38 +706,43 @@ impl GameState {
             self.prune_sunk_force_ships(right_id);
             self.elect_task_force_flagship(left_id);
             self.elect_task_force_flagship(right_id);
-            if self.task_forces[left].ships.is_empty() || self.task_forces[right].ships.is_empty() {
+            if self.task_forces[&left_id].ships.is_empty()
+                || self.task_forces[&right_id].ships.is_empty()
+            {
                 break;
             }
         }
 
-        let left_empty = self.task_forces[left].ships.is_empty();
-        let right_empty = self.task_forces[right].ships.is_empty();
+        let left_empty = self.task_forces[&left_id].ships.is_empty();
+        let right_empty = self.task_forces[&right_id].ships.is_empty();
         if !unreachable && left_empty != right_empty {
             let (loser, winner, loser_start) = if left_empty {
-                (left, right, left_start)
+                (left_id, right_id, left_start)
             } else {
-                (right, left, right_start)
+                (right_id, left_id, right_start)
             };
-            let remaining = self.task_forces[loser].ships.len();
+            let remaining = self.task_forces[&loser].ships.len();
             let bump = ((loser_start - remaining) * 5 + remaining) as i16;
-            let winner_count = self.task_forces[winner].ships.len() as i16;
+            let winner_count = self.task_forces[&winner].ships.len() as i16;
             if winner_count > 0 {
-                if let Some(flagship) = self.task_forces[winner].flagship
+                if let Some(flagship) = self.task_forces[&winner].flagship
                     && let Some(admiral) = self
                         .admirals
-                        .iter_mut()
+                        .values_mut()
                         .find(|admiral| admiral.ship == Some(flagship))
                 {
                     admiral.experience = (admiral.experience + bump).min(499);
                 }
                 let gain = bump * 3 / winner_count;
-                for child in self.task_forces[winner].ships.clone() {
-                    let ship = self.ship_mut(child.ship).expect("task-force ship exists");
+                for (child, _) in self.task_forces[&winner].ships.clone() {
+                    let ship = self.ship_mut(child).expect("task-force ship exists");
                     ship.experience = (ship.experience + gain).min(499);
                 }
             }
-            self.task_forces[loser].defeated = true;
+            self.task_forces
+                .get_mut(&loser)
+                .expect("task force remains queued")
+                .defeated = true;
         }
     }
 
@@ -747,7 +752,7 @@ impl GameState {
             .flagship
             .and_then(|flagship| {
                 self.admirals
-                    .iter()
+                    .values()
                     .find(|admiral| admiral.ship == Some(flagship))
             })
             .map_or(0, |admiral| i32::from(admiral.experience / 100))
@@ -758,8 +763,8 @@ impl GameState {
             .expect("battle task force exists")
             .ships
             .iter()
-            .filter_map(|child| {
-                let ship = self.ship(child.ship).expect("task-force ship exists");
+            .filter_map(|(&child, _)| {
+                let ship = self.ship(child).expect("task-force ship exists");
                 let descriptor = NAVY_DESCRIPTORS[ship.ship_type];
                 (descriptor.priority_tier >= tier).then_some(
                     (i32::from(ship.experience / 100) + descriptor.resolve_weight * 10 + 5) / 10,
@@ -798,13 +803,11 @@ impl GameState {
             .expect("battle task force exists")
             .ships
             .iter()
-            .filter(|child| child.selected)
+            .filter_map(|(&child, &selected)| selected.then_some(child))
             .fold((0, 0), |(sum, count), child| {
                 (
                     sum + descriptor_weight(
-                        self.ship(child.ship)
-                            .expect("task-force ship exists")
-                            .ship_type,
+                        self.ship(child).expect("task-force ship exists").ship_type,
                     ),
                     count + 1,
                 )
@@ -817,9 +820,9 @@ impl GameState {
             .expect("battle task force exists")
             .ships
             .iter()
-            .filter(|child| {
+            .filter(|(child, _)| {
                 NAVY_DESCRIPTORS[self
-                    .ship(child.ship)
+                    .ship(**child)
                     .expect("task-force ship exists")
                     .ship_type]
                     .priority_tier
@@ -845,7 +848,7 @@ impl GameState {
             .clone();
         let mut selected = 0;
         while selected < target {
-            for child in &ships {
+            for (&child, _) in &ships {
                 if selected == target {
                     break;
                 }
@@ -855,7 +858,7 @@ impl GameState {
                     selected += 1;
                     let roll =
                         self.rng.next_crt_rand() % 100 + self.rng.next_crt_rand() % 100 + 100;
-                    let ship = self.ship_mut(child.ship).expect("task-force ship exists");
+                    let ship = self.ship_mut(child).expect("task-force ship exists");
                     let damage = (0.5
                         - NAVY_DESCRIPTORS[ship.ship_type].task_force_weight as f32
                             * (roll as f32 * 0.005)
