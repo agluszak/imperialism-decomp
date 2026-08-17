@@ -59,11 +59,6 @@ impl Default for GamePreferences {
 }
 
 impl GamePreferences {
-    /// Preference slot 8: strategic turn alerts.
-    pub(crate) fn turn_alerts_enabled(&self) -> bool {
-        self.values[8] != 0
-    }
-
     /// Preference slot 2: DirectSound master percent, 0..=100.
     pub(crate) fn sound_volume_percent(&self) -> i16 {
         self.values[2]

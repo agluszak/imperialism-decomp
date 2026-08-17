@@ -90,9 +90,8 @@ fn center_current_selection(
             session
                 .game
                 .civilian_units()
-                .iter()
-                .find(|unit| unit.id() == id)
-                .and_then(|unit| unit.location().tile())
+                .find(|(candidate, _)| *candidate == id)
+                .and_then(|(_, unit)| unit.location().tile())
         }),
         MapInteractionMode::Army => {
             army.and_then(|province| session.game.map().provinces[province].city_tile())

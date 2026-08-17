@@ -558,9 +558,10 @@ fn civilian_on_tile(state: &GameState, tile: TileId) -> Option<ProjectedUnit> {
     if !civilian_tile_is_visible(state.map()[tile].owner_nation, state.turn().active_nation) {
         return None;
     }
-    let unit = stacked_civilian_on_tile(state.civilian_units(), tile, state.turn().active_nation)?;
+    let (id, unit) =
+        stacked_civilian_on_tile(state.civilian_units(), tile, state.turn().active_nation)?;
     Some(ProjectedUnit {
-        identity: StrategicUnitIdentity::Civilian(unit.id()),
+        identity: StrategicUnitIdentity::Civilian(id),
         sprite: civilian_sprite(unit, state.turn().active_nation),
     })
 }
@@ -573,7 +574,7 @@ fn army_badge_on_tile(state: &GameState, tile: TileId) -> Option<ProjectedUnit> 
     let province = tile_state.province?;
     let mut present = false;
     let mut displayed = 0_u16;
-    for unit in state.military_units() {
+    for (_, unit) in state.military_units() {
         if unit.stationed_province() != Some(province) {
             continue;
         }
@@ -605,26 +606,26 @@ fn naval_marker_on_tile(state: &GameState, tile: TileId) -> Option<ProjectedUnit
     })
 }
 
-fn stacked_civilian_on_tile(
-    units: &[CivilianUnitState],
+fn stacked_civilian_on_tile<'a>(
+    units: impl IntoIterator<Item = (CivilianUnitId, &'a CivilianUnitState)>,
     tile: TileId,
     active: NationId,
-) -> Option<&CivilianUnitState> {
+) -> Option<(CivilianUnitId, &'a CivilianUnitState)> {
     let mut first = None;
     let mut owned = None;
-    for unit in units {
+    for (id, unit) in units {
         if unit.location().tile() != Some(tile) {
             continue;
         }
         if first.is_none() {
-            first = Some(unit);
+            first = Some((id, unit));
         }
         if owned.is_none() && unit.owner_nation() == active {
-            owned = Some(unit);
+            owned = Some((id, unit));
         }
     }
     let selected = owned.or(first)?;
-    (!selected.registered()).then_some(selected)
+    (!selected.1.registered()).then_some(selected)
 }
 
 fn civilian_sprite(unit: &CivilianUnitState, active: NationId) -> StrategicUnitSprite {
@@ -807,8 +808,10 @@ mod tests {
                 false,
             ),
         ];
-        let selected = stacked_civilian_on_tile(&units, tile, active).unwrap();
-        assert_eq!(selected.id(), CivilianUnitId::from_serialized(2));
+        let (id, selected) =
+            stacked_civilian_on_tile(units.iter().map(|unit| (unit.id(), unit)), tile, active)
+                .unwrap();
+        assert_eq!(id, CivilianUnitId::from_serialized(2));
         assert_eq!(selected.unit_type(), CivilianUnitKind::Engineer);
     }
 
@@ -824,7 +827,10 @@ mod tests {
             CivilianWorkOrder::Idle,
             true,
         )];
-        assert!(stacked_civilian_on_tile(&units, tile, active).is_none());
+        assert!(
+            stacked_civilian_on_tile(units.iter().map(|unit| (unit.id(), unit)), tile, active,)
+                .is_none()
+        );
     }
 
     #[test]
@@ -923,8 +929,7 @@ mod tests {
 
         let army_tile = state
             .military_units()
-            .iter()
-            .find_map(|unit| {
+            .find_map(|(_, unit)| {
                 unit.stationed_province()
                     .and_then(|province| state.map().provinces[province].city_tile())
             })

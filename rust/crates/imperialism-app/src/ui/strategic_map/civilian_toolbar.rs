@@ -148,8 +148,7 @@ fn sync_civilian_toolbar(
         session
             .game
             .civilian_units()
-            .iter()
-            .find(|unit| unit.id() == id)
+            .find(|(candidate, _)| *candidate == id)
     });
     let position = if selected.mode == MapInteractionMode::Civilian {
         CIVILIAN_PAGE_VISIBLE
@@ -169,7 +168,7 @@ fn sync_civilian_toolbar(
     }
     if let Ok(portrait) = portraits.single() {
         match unit {
-            Some(unit) => {
+            Some((_, unit)) => {
                 let picture = assets
                     .picture(PictureId::new(portrait_picture_id(unit.unit_type())))
                     .expect("retail civilian toolbar portrait must load");
@@ -186,7 +185,7 @@ fn sync_civilian_toolbar(
         return;
     };
     despawn_legend_items(&mut commands, legend_children, &items);
-    let Some(unit) = unit else {
+    let Some((_, unit)) = unit else {
         return;
     };
     spawn_civilian_legend(
@@ -758,10 +757,9 @@ mod tests {
     fn legend_counts_owned_unvisited_profile_tiles() {
         let state = fixture_state();
         let nation = state.turn().active_nation;
-        let unit = state
+        let (_, unit) = state
             .civilian_units()
-            .iter()
-            .find(|unit| {
+            .find(|(_, unit)| {
                 unit.owner_nation() == nation
                     && matches!(
                         unit.unit_type(),
@@ -779,8 +777,7 @@ mod tests {
                     "civilians: {:?}",
                     state
                         .civilian_units()
-                        .iter()
-                        .map(|unit| (unit.owner_nation(), unit.nation(), unit.unit_type()))
+                        .map(|(_, unit)| (unit.owner_nation(), unit.nation(), unit.unit_type()))
                         .collect::<Vec<_>>()
                 )
             });
