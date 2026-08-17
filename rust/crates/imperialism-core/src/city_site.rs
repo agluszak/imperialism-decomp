@@ -1,9 +1,9 @@
 //! Capital-site selection (`TCitySiteView`) and `TMapMgr::PlaceCity` for random-game start.
 
 use crate::{
-    Difficulty, GameState, HexDirection, MajorNationId, MapGeometry, MapMgr, NationId,
-    ResourceKind, ResourceTable, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, TerrainKind, TileFlags,
-    TileId, TileOwnerTag, all_resources,
+    Difficulty, GameState, HexDirection, HexDirectionTable, MajorNationId, MapGeometry, MapMgr,
+    NationId, ResourceKind, ResourceTable, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, TerrainKind,
+    TileFlags, TileId, TileOwnerTag, all_resources,
 };
 
 const TERRAIN_FLOW_DIRECTIONS: [[HexDirection; 2]; 9] = [
@@ -168,15 +168,15 @@ pub fn is_valid_secondary_nation_home_tile_candidate(world: &MapMgr, tile: TileI
 /// This one retail predicate always uses the 217-wide doubled-column wrap and
 /// vertical clamp, independent of the session map-topology flag.
 fn home_site_scan_neighbor(tile: TileId, direction: HexDirection) -> TileId {
-    const COLUMN_X2_DELTAS: [i32; 6] = [1, 2, 1, -1, -2, -1];
-    const ROW_DELTAS: [i32; 6] = [-1, 0, 1, 1, 0, -1];
+    const COLUMN_X2_DELTAS: HexDirectionTable<i32> =
+        HexDirectionTable::from_array([1, 2, 1, -1, -2, -1]);
+    const ROW_DELTAS: HexDirectionTable<i32> = HexDirectionTable::from_array([-1, 0, 1, 1, 0, -1]);
     const RASTER_WIDTH: i32 = STRATEGIC_MAP_WIDTH as i32 * 2;
 
     let row = i32::from(tile.get() / STRATEGIC_MAP_WIDTH);
     let column = i32::from(tile.get() % STRATEGIC_MAP_WIDTH);
-    let index = direction as usize;
-    let mut column_x2 = row % 2 + column * 2 + COLUMN_X2_DELTAS[index];
-    let row = (row + ROW_DELTAS[index]).clamp(0, i32::from(STRATEGIC_MAP_HEIGHT) - 1);
+    let mut column_x2 = row % 2 + column * 2 + COLUMN_X2_DELTAS[direction];
+    let row = (row + ROW_DELTAS[direction]).clamp(0, i32::from(STRATEGIC_MAP_HEIGHT) - 1);
     if column_x2 >= RASTER_WIDTH {
         column_x2 -= RASTER_WIDTH + 1;
     } else if column_x2 < 0 {

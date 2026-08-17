@@ -11,8 +11,8 @@ const UNIT_ORDER_SLEEP: MilitaryOrderCode = MilitaryOrderCode::Sleep;
 const UNIT_ORDER_LATR: MilitaryOrderCode = MilitaryOrderCode::Latr;
 const UNIT_ORDER_DONE: MilitaryOrderCode = MilitaryOrderCode::Done;
 
-const HEX_COL_DELTA: [i16; 6] = [1, 2, 1, -1, -2, -1];
-const HEX_ROW_DELTA: [i16; 6] = [-1, 0, 1, 1, 0, -1];
+const HEX_COL_DELTA: HexDirectionTable<i16> = HexDirectionTable::from_array([1, 2, 1, -1, -2, -1]);
+const HEX_ROW_DELTA: HexDirectionTable<i16> = HexDirectionTable::from_array([-1, 0, 1, 1, 0, -1]);
 
 /// Idle-unit modes applied by `TArmyToolbar::DoEvent` (`dfnd`/`latr`/`done`).
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -641,11 +641,10 @@ impl GameState {
     /// Confirm-dialog decline path of `TArmyMgr::MarchSelectedArmies`.
     fn march_selected_armies(&mut self, nation: NationId, tile: TileId) {
         let direction = (i32::from(self.map[tile].per_tile_visited) - 1).rem_euclid(6);
-        let Some(neighbor) = self
-            .map
-            .geometry()
-            .neighbor(tile, HexDirection::ALL[direction as usize])
-        else {
+        let Some(direction) = HexDirection::from_retail(direction) else {
+            return;
+        };
+        let Some(neighbor) = self.map.geometry().neighbor(tile, direction) else {
             return;
         };
         let Some(dest) = self.map[neighbor].province else {
@@ -848,9 +847,8 @@ fn hex_area_tile(anchor: TileId, direction: HexDirection) -> Option<TileId> {
     let index = i32::from(anchor.get());
     let row = index / i32::from(STRATEGIC_MAP_WIDTH);
     let col = index % i32::from(STRATEGIC_MAP_WIDTH);
-    let dir = direction as usize;
-    let mut hex_x = row % 2 + col * 2 + i32::from(HEX_COL_DELTA[dir]);
-    let mut hex_y = i32::from(HEX_ROW_DELTA[dir]) + row;
+    let mut hex_x = row % 2 + col * 2 + i32::from(HEX_COL_DELTA[direction]);
+    let mut hex_y = i32::from(HEX_ROW_DELTA[direction]) + row;
     if hex_x > 0xd7 {
         hex_x -= 0xd9;
     } else if hex_x < 0 {

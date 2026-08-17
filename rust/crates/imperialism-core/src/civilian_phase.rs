@@ -308,15 +308,15 @@ impl GameState {
 /// `TMapMgr::GetNeighborTileID` and the inlined port/sea predicates: doubled-column
 /// wrap and vertical clamp, ignoring session topology.
 pub(crate) fn civilian_sea_scan_neighbor(tile: TileId, direction: HexDirection) -> TileId {
-    const COLUMN_X2_DELTAS: [i32; 6] = [1, 2, 1, -1, -2, -1];
-    const ROW_DELTAS: [i32; 6] = [-1, 0, 1, 1, 0, -1];
+    const COLUMN_X2_DELTAS: HexDirectionTable<i32> =
+        HexDirectionTable::from_array([1, 2, 1, -1, -2, -1]);
+    const ROW_DELTAS: HexDirectionTable<i32> = HexDirectionTable::from_array([-1, 0, 1, 1, 0, -1]);
     const RASTER_WIDTH: i32 = STRATEGIC_MAP_WIDTH as i32 * 2;
 
     let row = i32::from(tile.get() / STRATEGIC_MAP_WIDTH);
     let column = i32::from(tile.get() % STRATEGIC_MAP_WIDTH);
-    let index = direction as usize;
-    let mut column_x2 = row % 2 + column * 2 + COLUMN_X2_DELTAS[index];
-    let row = (row + ROW_DELTAS[index]).clamp(0, i32::from(STRATEGIC_MAP_HEIGHT) - 1);
+    let mut column_x2 = row % 2 + column * 2 + COLUMN_X2_DELTAS[direction];
+    let row = (row + ROW_DELTAS[direction]).clamp(0, i32::from(STRATEGIC_MAP_HEIGHT) - 1);
     if column_x2 >= RASTER_WIDTH {
         column_x2 -= RASTER_WIDTH + 1;
     } else if column_x2 < 0 {

@@ -64,6 +64,18 @@ impl HexDirection {
             Self::NorthWest => Self::NorthEast,
         }
     }
+
+    pub(crate) fn from_retail(value: i32) -> Option<Self> {
+        match value {
+            0 => Some(Self::NorthEast),
+            1 => Some(Self::East),
+            2 => Some(Self::SouthEast),
+            3 => Some(Self::SouthWest),
+            4 => Some(Self::West),
+            5 => Some(Self::NorthWest),
+            _ => None,
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
