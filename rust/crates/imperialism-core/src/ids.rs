@@ -211,32 +211,79 @@ impl OceanZoneId {
     }
 }
 
-/// Stable identity of a ship. Retail ordinals are translated at the save boundary.
+/// Process-local identity for objects represented by pointers in retail.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(transparent)]
-pub struct ShipId(usize);
+pub struct ObjectId(u32);
 
-impl ShipId {
-    pub const fn new(value: usize) -> Self {
+impl ObjectId {
+    pub(crate) const fn new(value: u32) -> Self {
         Self(value)
     }
 
-    pub const fn get(self) -> usize {
+    pub(crate) const fn get(self) -> u32 {
         self.0
+    }
+}
+
+/// Stable identity of a ship. Retail ordinals are translated at the save boundary.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct ShipId(ObjectId);
+
+impl ShipId {
+    #[doc(hidden)]
+    pub const fn new(value: usize) -> Self {
+        Self(ObjectId::new(value as u32))
+    }
+
+    pub(crate) const fn object(self) -> ObjectId {
+        self.0
+    }
+
+    pub(crate) const fn from_object(id: ObjectId) -> Self {
+        Self(id)
     }
 }
 
 /// Stable identity of a task force, independent of retail processing order.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(transparent)]
-pub struct TaskForceId(usize);
+pub struct TaskForceId(ObjectId);
 
 impl TaskForceId {
+    #[doc(hidden)]
     pub const fn new(value: usize) -> Self {
-        Self(value)
+        Self(ObjectId::new(value as u32))
     }
 
-    pub const fn get(self) -> usize {
+    pub(crate) const fn object(self) -> ObjectId {
         self.0
+    }
+
+    pub(crate) const fn from_object(id: ObjectId) -> Self {
+        Self(id)
+    }
+}
+
+/// Stable identity of an admiral object.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct AdmiralId(ObjectId);
+
+impl AdmiralId {
+    pub(crate) const fn from_object(id: ObjectId) -> Self {
+        Self(id)
+    }
+}
+
+/// Stable identity of a mission object.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct MissionId(ObjectId);
+
+impl MissionId {
+    pub(crate) const fn from_object(id: ObjectId) -> Self {
+        Self(id)
     }
 }

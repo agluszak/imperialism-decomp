@@ -704,7 +704,7 @@ mod tests {
             nations: Nations::new(majors, MinorNationTable::default()),
             military_units: vec![],
             civilian_units: vec![],
-            navy_ids: crate::NavyIdAllocator::default(),
+            object_ids: crate::ObjectIdAllocator::default(),
             ships: vec![],
             admirals: vec![],
             task_forces: vec![],

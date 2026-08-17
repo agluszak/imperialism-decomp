@@ -7,33 +7,44 @@ const MILITARY_MAINTENANCE_MULTIPLIER: i32 = 25;
 const NAVY_ARMS_BY_SHIP_TYPE: ShipTypeTable<i32> =
     ShipTypeTable::from_array([0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18]);
 
-/// Shared runtime identity allocator for ships and task forces.
+/// Shared process-local identity allocator for retail pointer-like objects.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
-pub(crate) struct NavyIdAllocator(usize);
+pub(crate) struct ObjectIdAllocator(u32);
 
-impl NavyIdAllocator {
+impl ObjectIdAllocator {
     pub(crate) fn from_existing(
         ships: impl Iterator<Item = ShipId>,
         forces: impl Iterator<Item = TaskForceId>,
     ) -> Self {
         Self(
             ships
-                .map(ShipId::get)
-                .chain(forces.map(TaskForceId::get))
+                .map(|id| id.object().get())
+                .chain(forces.map(|id| id.object().get()))
                 .max()
                 .unwrap_or(0),
         )
     }
 
-    pub(crate) fn ship(&mut self) -> ShipId {
+    fn next(&mut self) -> ObjectId {
         self.0 += 1;
-        ShipId::new(self.0)
+        ObjectId::new(self.0)
+    }
+
+    pub(crate) fn ship(&mut self) -> ShipId {
+        ShipId::from_object(self.next())
     }
 
     pub(crate) fn task_force(&mut self) -> TaskForceId {
-        self.0 += 1;
-        TaskForceId::new(self.0)
+        TaskForceId::from_object(self.next())
+    }
+
+    pub(crate) fn admiral(&mut self) -> AdmiralId {
+        AdmiralId::from_object(self.next())
+    }
+
+    pub(crate) fn mission(&mut self) -> MissionId {
+        MissionId::from_object(self.next())
     }
 }
 
@@ -124,7 +135,7 @@ impl GameState {
     }
 
     pub(crate) fn allocate_ship_id(&mut self) -> ShipId {
-        self.navy_ids.ship()
+        self.object_ids.ship()
     }
 
     pub(crate) fn ship_index(&self, id: ShipId) -> Option<usize> {
@@ -140,7 +151,7 @@ impl GameState {
     }
 
     pub(crate) fn allocate_task_force_id(&mut self) -> TaskForceId {
-        self.navy_ids.task_force()
+        self.object_ids.task_force()
     }
 
     pub(crate) fn task_force_index(&self, id: TaskForceId) -> Option<usize> {

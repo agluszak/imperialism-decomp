@@ -12,6 +12,7 @@ oracle = []
 [dependencies]
 bitflags.workspace = true
 enum-map.workspace = true
+indexmap.workspace = true
 serde.workspace = true
 thiserror.workspace = true
 
