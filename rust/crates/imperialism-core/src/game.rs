@@ -51,7 +51,7 @@ pub struct GameStateParts {
     pub nations: Nations,
     pub military_units: Vec<MilitaryUnitState>,
     pub civilian_units: Vec<CivilianUnitState>,
-    pub ships: Vec<ShipState>,
+    pub ships: Vec<(ShipId, ShipState)>,
     pub admirals: Vec<AdmiralState>,
     pub task_forces: Vec<TaskForceState>,
     pub missions: Vec<MissionState>,
@@ -65,7 +65,7 @@ impl GameState {
     /// Assembles authoritative state from loader-built parts.
     pub fn from_parts(parts: GameStateParts) -> Self {
         let mut object_ids = ObjectIdAllocator::from_existing(
-            parts.ships.iter().map(|ship| ship.id),
+            parts.ships.iter().map(|(id, _)| *id),
             parts.task_forces.iter().map(|force| force.id),
         );
         let admirals = parts
@@ -100,11 +100,7 @@ impl GameState {
                 .map(|unit| (unit.id, unit))
                 .collect(),
             object_ids,
-            ships: parts
-                .ships
-                .into_iter()
-                .map(|ship| (ship.id, ship))
-                .collect(),
+            ships: parts.ships.into_iter().collect(),
             admirals,
             task_forces: parts
                 .task_forces

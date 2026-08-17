@@ -1348,7 +1348,6 @@ mod tests {
         state.ships.insert(
             ship,
             ShipState {
-                id: ship,
                 ship_type: ShipType::Frigate,
                 location,
                 aggression: 1,
@@ -1395,7 +1394,6 @@ mod tests {
             state.ships.insert(
                 ShipId::new(index),
                 ShipState {
-                    id: ShipId::new(index),
                     ship_type,
                     location: OceanZoneId::new(0),
                     aggression: 1,
@@ -1486,7 +1484,6 @@ mod tests {
         state.ships.insert(
             ship,
             ShipState {
-                id: ship,
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(2),
                 aggression: 1,
@@ -1580,7 +1577,6 @@ mod tests {
         state.ships.insert(
             loose_ship,
             ShipState {
-                id: loose_ship,
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(9),
                 aggression: 1,
@@ -1639,7 +1635,6 @@ mod tests {
             state.ships.insert(
                 ship,
                 ShipState {
-                    id: ship,
                     ship_type: ShipType::Frigate,
                     location: OceanZoneId::new(0),
                     aggression: 1,
@@ -1771,7 +1766,6 @@ mod tests {
         state.ships.insert(
             ShipId::new(0),
             ShipState {
-                id: ShipId::new(0),
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(0),
                 aggression: 0,

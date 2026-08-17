@@ -129,9 +129,8 @@ impl GameState {
     }
 
     /// Prepends a ship the way `TShip::TShip` prepends `g_pNavyPrimaryOrderListHead`.
-    pub(crate) fn insert_ship_at_head(&mut self, mut ship: ShipState) -> ShipId {
-        ship.id = self.allocate_ship_id();
-        let id = ship.id;
+    pub(crate) fn insert_ship_at_head(&mut self, ship: ShipState) -> ShipId {
+        let id = self.allocate_ship_id();
         self.ships.shift_insert(0, id, ship);
         id
     }
@@ -606,7 +605,6 @@ pub(crate) fn accumulate_unit_priority(
 /// ordinals are translated by `imperialism-formats`.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ShipState {
-    pub id: ShipId,
     pub ship_type: ShipType,
     pub location: OceanZoneId,
     pub aggression: i32,

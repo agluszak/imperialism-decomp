@@ -265,11 +265,11 @@ impl GameState {
                 .expect("sea owner tag must name a base ocean zone"),
         ));
         let mut active_nations = 0_u32;
-        for ship in self.ships.values() {
+        for (&ship_id, ship) in &self.ships {
             if ship.location != zone {
                 continue;
             }
-            let Some(task_force) = self.task_force_of_ship(ship.id) else {
+            let Some(task_force) = self.task_force_of_ship(ship_id) else {
                 continue;
             };
             let Some(task_force) = self.task_force(task_force) else {
@@ -513,7 +513,6 @@ mod tests {
         state.ships.insert(
             ShipId::new(0),
             ShipState {
-                id: ShipId::new(0),
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(0),
                 aggression: 1,

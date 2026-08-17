@@ -336,7 +336,6 @@ pub(super) mod tests {
         ];
         let baselines = navy_category_baselines(&enabled);
         let ship = ShipState {
-            id: ShipId::new(0),
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
             aggression: 0,
@@ -366,7 +365,6 @@ pub(super) mod tests {
         state.ships.insert(
             ShipId::new(0),
             ShipState {
-                id: ShipId::new(0),
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(0),
                 aggression: 0,

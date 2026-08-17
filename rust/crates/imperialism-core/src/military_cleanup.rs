@@ -565,7 +565,6 @@ mod tests {
 
     fn ship(id: usize, selection: i32) -> ShipState {
         ShipState {
-            id: ShipId::new(id),
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
             aggression: 0,

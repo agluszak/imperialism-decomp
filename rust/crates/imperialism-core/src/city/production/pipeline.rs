@@ -197,7 +197,6 @@ impl GameState {
             let strength = ship_stock_cap(ship_type);
             for _ in 0..quantity {
                 self.insert_ship_at_head(ShipState {
-                    id: ShipId::new(0),
                     ship_type,
                     location,
                     aggression: 1,
@@ -333,7 +332,6 @@ mod tests {
 
     fn test_frigate(nation: MajorNationId) -> ShipState {
         ShipState {
-            id: ShipId::new(0),
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
             aggression: 0,

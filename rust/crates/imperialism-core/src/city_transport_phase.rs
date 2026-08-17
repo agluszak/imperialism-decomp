@@ -437,7 +437,6 @@ impl GameState {
                 .first_port_zone_for_nation(nation_id)
                 .expect("navy-growth pending requires a port zone for the nation");
             Some(self.insert_ship_at_head(ShipState {
-                id: ShipId::new(0),
                 ship_type,
                 location,
                 aggression: 1,

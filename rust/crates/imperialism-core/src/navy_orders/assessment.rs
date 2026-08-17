@@ -320,7 +320,6 @@ mod tests {
         state.ships.insert(
             ShipId::new(0),
             ShipState {
-                id: ShipId::new(0),
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(0),
                 aggression: 0,
@@ -372,7 +371,6 @@ mod tests {
         state.ships.insert(
             ShipId::new(0),
             ShipState {
-                id: ShipId::new(0),
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(0),
                 aggression: 0,
