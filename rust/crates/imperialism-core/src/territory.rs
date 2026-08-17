@@ -308,22 +308,8 @@ impl GameState {
                     AiTargetState::Unmarked
                 };
                 if available {
-                    let insert_at = self
-                        .missions
-                        .iter()
-                        .rposition(|(_, mission)| mission.nation == new_owner.nation())
-                        .map_or_else(
-                            || {
-                                self.missions
-                                    .iter()
-                                    .position(|(_, mission)| mission.nation > new_owner.nation())
-                                    .unwrap_or(self.missions.len())
-                            },
-                            |position| position + 1,
-                        );
                     let id = self.object_ids.mission();
-                    self.missions.shift_insert(
-                        insert_at,
+                    self.missions.insert(
                         id,
                         MissionState {
                             nation: new_owner.nation(),

@@ -155,7 +155,7 @@ impl GameState {
                 .get_mut(&mission_id)
                 .and_then(|mission| navy_state_mut(&mut mission.data))
             {
-                navy.ships.shift_insert(0, ship, false);
+                navy.ships.insert(ship, false);
             } else {
                 break;
             }
@@ -1688,19 +1688,19 @@ mod tests {
             Some(ships[2])
         );
         assert_eq!(
-            state.admirals.get_index(0).map(|(_, admiral)| admiral.ship),
+            state.admirals.values().nth(0).map(|admiral| admiral.ship),
             Some(Some(ships[0]))
         );
         assert_eq!(
-            state.admirals.get_index(1).map(|(_, admiral)| admiral.ship),
+            state.admirals.values().nth(1).map(|admiral| admiral.ship),
             Some(None)
         );
         assert_eq!(
-            state.admirals.get_index(2).map(|(_, admiral)| admiral.ship),
+            state.admirals.values().nth(2).map(|admiral| admiral.ship),
             Some(Some(ships[2]))
         );
         assert_eq!(
-            state.admirals.get_index(3).map(|(_, admiral)| admiral.ship),
+            state.admirals.values().nth(3).map(|admiral| admiral.ship),
             Some(None)
         );
         let navy = navy_state(&state.missions[&mission].data).expect("navy mission");

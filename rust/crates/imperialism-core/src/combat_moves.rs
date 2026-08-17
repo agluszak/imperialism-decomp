@@ -1067,7 +1067,7 @@ mod tests {
             .military_units
             .shift_remove(&dummy)
             .expect("dummy was pushed");
-        state.military_units.shift_insert(0, dummy, dummy_unit);
+        state.military_units.insert(dummy, dummy_unit);
 
         assert_eq!(
             state.resume_after_land_battle(&[]),
