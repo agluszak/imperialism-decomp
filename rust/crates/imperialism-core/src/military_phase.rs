@@ -311,12 +311,7 @@ impl GameState {
             0,
             0,
         );
-        let insert_at = self
-            .military_units
-            .values()
-            .position(|existing| existing.nation > nation)
-            .unwrap_or(self.military_units.len());
-        self.military_units.shift_insert(insert_at, id, unit);
+        self.military_units.insert(id, unit);
     }
 
     fn add_militia(&mut self, nation: NationId, province: ProvinceId) {

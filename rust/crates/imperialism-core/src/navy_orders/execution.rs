@@ -1183,24 +1183,10 @@ impl GameState {
         };
         let added = !force_state.ships.contains_key(&ship);
         if added {
-            let bucket = usize::try_from(
-                NAVY_DESCRIPTORS[self.ship(ship).expect("task-force ship exists").ship_type]
-                    .toolbar_bucket,
-            )
-            .expect("navy ship has a toolbar bucket");
-            let insert_at = force_state
-                .ships
-                .iter()
-                .position(|(&member, _)| {
-                    NAVY_DESCRIPTORS[self.ship(member).expect("task-force ship exists").ship_type]
-                        .toolbar_bucket
-                        >= bucket as i32
-                })
-                .unwrap_or(force_state.ships.len());
             self.task_force_mut(force)
                 .expect("task force remains present")
                 .ships
-                .shift_insert(insert_at, ship, true);
+                .insert(ship, true);
         }
         if added {
             self.consider_task_force_flagship(force, ship);

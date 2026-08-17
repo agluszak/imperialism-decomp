@@ -173,12 +173,7 @@ impl GameState {
             registered: false,
             next_on_tile: None,
         };
-        let insert_at = self
-            .civilian_units
-            .values()
-            .position(|existing| existing.nation > nation_id)
-            .unwrap_or(self.civilian_units.len());
-        self.civilian_units.shift_insert(insert_at, id, unit);
+        self.civilian_units.insert(id, unit);
     }
 
     /// `TCountry::InitialMilitia`.
@@ -404,12 +399,7 @@ impl GameState {
                     experience,
                     battle_flags: 0,
                 };
-                let insert_at = self
-                    .military_units
-                    .values()
-                    .position(|existing| existing.nation > nation_id)
-                    .unwrap_or(self.military_units.len());
-                self.military_units.shift_insert(insert_at, id, unit);
+                self.military_units.insert(id, unit);
 
                 let pending = self.nations.majors[nation].economy.pending_actions
                     [PendingActionKind::ArmyGrowthReward];
