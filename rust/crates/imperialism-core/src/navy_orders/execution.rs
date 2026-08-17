@@ -168,16 +168,15 @@ impl GameState {
     /// blockade forces remain.
     pub(crate) fn clear_all_transient_navy_orders(&mut self) {
         let mut remove = Vec::new();
-        for (index, force) in self.task_forces.iter().enumerate() {
+        for (&id, force) in &self.task_forces {
             if self.task_force_is_straggler(force) {
-                remove.push(index);
+                remove.push(id);
             }
         }
-        for index in remove.into_iter().rev() {
-            let force = self.task_forces[index].id;
+        for force in remove {
             self.free_task_force(force);
         }
-        for ship in &mut self.ships {
+        for ship in self.ships.values_mut() {
             if ship.selection == 1 {
                 ship.selection = 0;
             }
@@ -217,7 +216,7 @@ impl GameState {
             }
         }
         self.make_sure_all_ships_have_orders();
-        for force in &mut self.task_forces {
+        for force in self.task_forces.values_mut() {
             force.defeated = false;
         }
     }
@@ -226,9 +225,8 @@ impl GameState {
     /// authoritative navy-order records in core, so the retail rebuild becomes
     /// a rebuild of only ships which are not already in the committed queue.
     fn make_sure_all_ships_have_orders(&mut self) {
-        for index in (0..self.task_forces.len()).rev() {
-            if self.task_forces[index].order == TaskForceOrder::None {
-                let force = self.task_forces[index].id;
+        for force in self.task_forces.keys().copied().collect::<Vec<_>>() {
+            if self.task_forces[&force].order == TaskForceOrder::None {
                 self.free_task_force(force);
             }
         }
@@ -244,11 +242,11 @@ impl GameState {
                 let ships = self
                     .ships
                     .iter()
-                    .filter_map(|ship| {
-                        (self.task_force_of_ship(ship.id).is_none()
+                    .filter_map(|(&id, ship)| {
+                        (self.task_force_of_ship(id).is_none()
                             && ship.location == zone
                             && ship.nation == nation.nation())
-                        .then_some(ship.id)
+                        .then_some(id)
                     })
                     .collect::<Vec<_>>();
                 if in_port {
@@ -313,7 +311,7 @@ impl GameState {
     ) -> Option<NavyOrdersContinuation> {
         self.carry_out_navy_orders_from(
             NavyPass::PatrolAgainstBlockade,
-            self.task_forces.iter().map(|force| force.id).collect(),
+            self.task_forces.keys().copied().collect(),
             0,
             0,
             allow_tactical_battles,
@@ -397,21 +395,21 @@ impl GameState {
                 return None;
             };
             pass = next;
-            forces = self.task_forces.iter().map(|force| force.id).collect();
+            forces = self.task_forces.keys().copied().collect();
             outer = 0;
             inner = 0;
         }
     }
 
     fn execute_navy_order_pass(&mut self, pass: NavyPass) {
-        for index in 0..self.task_forces.len() {
-            if self.task_forces[index].defeated {
+        for id in self.task_forces.keys().copied().collect::<Vec<_>>() {
+            if self.task_forces[&id].defeated {
                 continue;
             }
             let selected = match pass {
-                NavyPass::Sail => self.task_forces[index].order == TaskForceOrder::Sail,
+                NavyPass::Sail => self.task_forces[&id].order == TaskForceOrder::Sail,
                 NavyPass::MarinesAndRepair => matches!(
-                    self.task_forces[index].order,
+                    self.task_forces[&id].order,
                     TaskForceOrder::Marines | TaskForceOrder::Repair
                 ),
                 _ => false,
@@ -419,14 +417,11 @@ impl GameState {
             if !selected {
                 continue;
             }
-            match self.task_forces[index].order {
+            match self.task_forces[&id].order {
                 TaskForceOrder::Sail => {
-                    if let TaskForceTarget::Zone(zone) = self.task_forces[index].target {
-                        let ships: Vec<ShipId> = self.task_forces[index]
-                            .ships
-                            .iter()
-                            .map(|ship| ship.ship)
-                            .collect();
+                    if let TaskForceTarget::Zone(zone) = self.task_forces[&id].target {
+                        let ships: Vec<ShipId> =
+                            self.task_forces[&id].ships.keys().copied().collect();
                         for ship in ships {
                             if let Some(state) = self.ship_mut(ship) {
                                 state.location = zone;
@@ -435,20 +430,19 @@ impl GameState {
                     }
                 }
                 TaskForceOrder::Marines => {
-                    if let TaskForceTarget::Province(province) = self.task_forces[index].target
+                    if let TaskForceTarget::Province(province) = self.task_forces[&id].target
                         && let Some(major) =
-                            MajorNationId::from_nation(self.task_forces[index].nation)
+                            MajorNationId::from_nation(self.task_forces[&id].nation)
                     {
                         self.map.provinces[province].explored_by_majors_mut()[major] = true;
                     }
-                    self.task_forces[index].defeated = true;
+                    self.task_forces
+                        .get_mut(&id)
+                        .expect("force remains queued")
+                        .defeated = true;
                 }
                 TaskForceOrder::Repair => {
-                    let ships: Vec<ShipId> = self.task_forces[index]
-                        .ships
-                        .iter()
-                        .map(|ship| ship.ship)
-                        .collect();
+                    let ships: Vec<ShipId> = self.task_forces[&id].ships.keys().copied().collect();
                     for ship in ships {
                         let Some(state) = self.ship_mut(ship) else {
                             continue;
@@ -456,7 +450,10 @@ impl GameState {
                         let cap = ship_stock_cap(state.ship_type);
                         state.strength = (state.strength + cap / 4).min(cap);
                     }
-                    self.task_forces[index].defeated = true;
+                    self.task_forces
+                        .get_mut(&id)
+                        .expect("force remains queued")
+                        .defeated = true;
                 }
                 _ => {}
             }
