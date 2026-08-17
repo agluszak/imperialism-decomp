@@ -108,7 +108,7 @@ pub use game::{GameState, GameStateParts};
 pub use game_score::GameScore;
 pub use ids::{
     CivilianUnitId, MajorNationId, MilitaryUnitId, MinorNationId, NationId, OceanZoneId,
-    ProvinceId, ShipIndex, TaskForceIndex, TileId, TileOwnerTag,
+    ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,
 };
 pub use map::{
     DevelopmentLevel, MapEdges, MapMgr, RegionId, RiverSegment, RiverSprite, TerrainKind,
@@ -122,6 +122,7 @@ pub use market::{
     DealBookEntryKind, ProcessedTradeCommodity, ProcessedTradeCommodityTable, TradeCommodity,
     TradeCommodityTable, TradeDealBookEntry, TradeMarketRow, TradeMarketState,
 };
+pub(crate) use military::NavyIdAllocator;
 pub use military::{
     AdmiralState, ArmyMissionState, AttackMissionState, MissionData, MissionState,
     NavyMissionState, SelectedShip, ShipState, TaskForceOrder, TaskForceState, TaskForceTarget,
@@ -131,6 +132,7 @@ pub use nation_economy::{
 };
 pub use nations::{AutoGreatPowerState, MajorNation, MinorNation, NationCommonState, Nations};
 pub use navy_orders::{NavyOrder, NavySelectionClick, NavyTileClick, NavyToolbarCounts};
+pub use navy_orders::{NavyOrdersContinuation, PendingNavalBattle};
 pub use news::{
     DiplomacyNotice, DiplomacyProposal, InterNationNewsKind, LandSale, NEWS_TEMPLATE_COUNT,
     NationPendingWork, NewsArgument, NewsPage, NewsState, NewsStory, PendingNewspaperEvent,
@@ -167,7 +169,9 @@ pub use technology::{
 pub use territory::{CountryStatus, ProvinceState};
 pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};
 pub use trade_phase::{PendingTradeOffer, TradeProgress, TradeSession};
-pub use turn_flow::{PhaseCode, ScenarioMapId, TurnContinuation, TurnState, TurnStop};
+pub use turn_flow::{
+    CinematicKind, PhaseCode, ScenarioMapId, TurnContinuation, TurnState, TurnStop,
+};
 pub use turn_tail::{EliminationOutcome, QuarterGateResult};
 pub use units::{
     CivilianLocation, CivilianUnitKind, CivilianUnitState, CivilianUnitTable, MilitaryOrder,

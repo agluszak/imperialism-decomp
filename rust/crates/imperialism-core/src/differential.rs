@@ -16,10 +16,6 @@ pub use crate::random_map_terrain::{
     trace_random_map_terrain,
 };
 
-pub fn apply_military_orders(state: &mut GameState) {
-    state.apply_military_orders();
-}
-
 pub fn select_and_queue_advisory_map_missions(state: &mut GameState) {
     state.select_and_queue_advisory_map_missions();
 }

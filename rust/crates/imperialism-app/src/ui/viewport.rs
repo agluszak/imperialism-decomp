@@ -62,10 +62,7 @@ fn center_retail_views(
     window: Single<&Window, With<PrimaryWindow>>,
     mut roots: Query<&mut Node, Without<ChildOf>>,
 ) {
-    let [left, top] = centered_origin(
-        window.resolution.width(),
-        window.resolution.height(),
-    );
+    let [left, top] = centered_origin(window.resolution.width(), window.resolution.height());
     for mut node in &mut roots {
         if node.position_type == PositionType::Absolute
             && node.width == Val::Px(RETAIL_WIDTH)

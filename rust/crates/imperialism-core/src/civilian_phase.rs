@@ -269,10 +269,12 @@ impl GameState {
             if ship.location != zone {
                 continue;
             }
-            let Some(task_force) = ship.task_force else {
+            let Some(task_force) = self.task_force_of_ship(ship.id) else {
                 continue;
             };
-            let task_force = &self.task_forces[task_force.get()];
+            let Some(task_force) = self.task_force(task_force) else {
+                continue;
+            };
             if !task_force.defeated
                 && matches!(
                     task_force.order,
@@ -494,21 +496,24 @@ mod tests {
         state.diplomacy.relationships[hostile][origin] = DiplomaticRelationship::War;
         state.diplomacy.relationship_turns[hostile][origin] = Some(9);
         state.task_forces.push(TaskForceState {
+            id: TaskForceId::new(0),
             aggression: 1,
             order: TaskForceOrder::Patrol,
             target: TaskForceTarget::None,
             location: OceanZoneId::new(0),
             nation: hostile,
-            ship_counts: [0; 4],
             defeated: false,
             ingot_tile: -1,
             flagship: None,
-            ships: Vec::new(),
+            ships: vec![SelectedShip {
+                ship: ShipId::new(0),
+                selected: true,
+            }],
         });
         state.ships.push(ShipState {
+            id: ShipId::new(0),
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
-            task_force: Some(TaskForceIndex::new(0)),
             aggression: 1,
             nation: hostile,
             name: String::new(),

@@ -330,13 +330,14 @@ fn navy_mission_state(mission: &LegacyNavyMission) -> NavyMissionState {
 fn ship_states(navy: &LegacyNavyState) -> Vec<ShipState> {
     navy.ships
         .iter()
-        .map(|ship| ShipState {
+        .enumerate()
+        .map(|(index, ship)| ShipState {
+            id: ShipId::new(index),
             ship_type: ShipType::from_index(ship.ship_type as u8)
                 .expect("retail ship type is in the descriptor table"),
             location: OceanZoneId::new(
                 u16::try_from(ship.zone_ordinal).expect("retail ship zone ordinal is non-negative"),
             ),
-            task_force: None,
             aggression: ship.aggression,
             nation: nation_id_from_retail_i16(ship.nation),
             name: ship.name.clone(),
@@ -355,7 +356,7 @@ fn admiral_states(navy: &LegacyNavyState, ship_count: usize) -> Vec<AdmiralState
             name: admiral.name.clone(),
             experience: admiral.experience,
             ship: (admiral.ship_index >= 0 && (admiral.ship_index as usize) < ship_count)
-                .then(|| ShipIndex::new(admiral.ship_index as usize)),
+                .then(|| ShipId::new(admiral.ship_index as usize)),
         })
         .collect()
 }

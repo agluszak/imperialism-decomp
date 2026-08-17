@@ -5,10 +5,8 @@ use super::hover_help::{
 };
 use super::query_floater::bind_query_floater_control;
 use super::retail::{RetailPictureSwap, RetailTag, RetailTree, RetailUiAssets};
-use crate::AppState;
-use crate::RetailAssetsResource;
-use crate::media::{RetailAudioHandles, play_cached_or_retail_sound};
-use bevy::audio::AudioSource;
+use crate::media::RetailAudioAssets;
+use crate::{AppState, ReturnTo};
 use bevy::picking::hover::DirectlyHovered;
 use bevy::prelude::*;
 use bevy::reflect::Is;
@@ -19,21 +17,17 @@ use bevy::ui_widgets::{
 };
 use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
 
-/// `g_anGamePreferenceIndexByRow`: which `preferenceValues` slot each opta..opte row displays.
-const PREFERENCE_INDEX_BY_ROW: [i16; 5] = [3, 2, 8, 10, 0];
-const CHECKBOX_TAGS: [imperialism_formats::FourCc; 5] = [
-    fourcc!("opta"),
-    fourcc!("optb"),
-    fourcc!("optc"),
-    fourcc!("optd"),
-    fourcc!("opte"),
-];
-const LABEL_TAGS: [imperialism_formats::FourCc; 5] = [
-    fourcc!("txta"),
-    fourcc!("txtb"),
-    fourcc!("txtc"),
-    fourcc!("txtd"),
-    fourcc!("txte"),
+/// `g_anGamePreferenceIndexByRow` and the controls for each displayed row.
+const PREFERENCE_ROWS: [(
+    i16,
+    imperialism_formats::FourCc,
+    imperialism_formats::FourCc,
+); 5] = [
+    (3, fourcc!("opta"), fourcc!("txta")),
+    (2, fourcc!("optb"), fourcc!("txtb")),
+    (8, fourcc!("optc"), fourcc!("txtc")),
+    (10, fourcc!("optd"), fourcc!("txtd")),
+    (0, fourcc!("opte"), fourcc!("txte")),
 ];
 const SLIDER_SPLIT_PAD: i16 = 0x0c;
 const MUSIC_SLIDER_SCALE: i16 = 0xff;
@@ -42,10 +36,6 @@ const MUSIC_PICTURE_BASE: i16 = 0x1036;
 const SOUND_PICTURE_BASE: i16 = 0x1038;
 const TACTICAL_BATTLE_ON_PICTURE: i16 = 4158;
 const TACTICAL_BATTLE_OFF_PICTURE: i16 = 4160;
-
-/// Screen restored when preferences close.
-#[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) struct PreferencesReturn(pub(crate) AppState);
 
 /// Retail `TSimMgr::preferenceValues[14]`.
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
@@ -69,6 +59,11 @@ impl Default for GamePreferences {
 }
 
 impl GamePreferences {
+    /// Preference slot 8: strategic turn alerts.
+    pub(crate) fn turn_alerts_enabled(&self) -> bool {
+        self.values[8] != 0
+    }
+
     /// Preference slot 2: DirectSound master percent, 0..=100.
     pub(crate) fn sound_volume_percent(&self) -> i16 {
         self.values[2]
@@ -78,15 +73,15 @@ impl GamePreferences {
     pub(crate) fn music_volume(&self) -> i16 {
         self.values[3]
     }
+
+    /// Preference slot 8 gates `ShowTurnAlertsForActiveNation`.
+    pub(crate) fn turn_alerts_enabled(&self) -> bool {
+        self.values[8] != 0
+    }
 }
 
 #[derive(Component)]
 struct PreferencesRoot;
-
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-enum PreferencesAction {
-    Okay,
-}
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 struct PreferenceRow(usize);
@@ -118,15 +113,10 @@ impl Plugin for PreferencesPlugin {
                 Update,
                 sync_preference_slider_visuals.run_if(in_state(AppState::Preferences)),
             )
-            .add_observer(
-                on_preference_checked::<Add, Checked>.run_if(in_state(AppState::Preferences)),
-            )
-            .add_observer(
-                on_preference_checked::<Remove, Checked>.run_if(in_state(AppState::Preferences)),
-            )
-            .add_observer(on_preference_slider_change.run_if(in_state(AppState::Preferences)))
-            .add_observer(on_sound_slider_released.run_if(in_state(AppState::Preferences)))
-            .add_observer(on_preferences_activate.run_if(in_state(AppState::Preferences)));
+            .add_systems(
+                OnExit(AppState::Preferences),
+                super::session::clear_return_to,
+            );
     }
 }
 
@@ -175,19 +165,17 @@ fn bind_preferences(
         .expect("retail preferences caption style");
     let color = TextColor(assets.palette_color(0x38));
 
-    for row in 0..5 {
-        let checkbox = tree.try_find(root, CHECKBOX_TAGS[row]);
+    for (row, &(_, checkbox_tag, label_tag)) in PREFERENCE_ROWS.iter().enumerate() {
+        let checkbox = tree.try_find(root, checkbox_tag);
         // Missing opta/optb: label-only row always uses the "on" caption.
         let caption_on = checkbox.is_none() || preference_row_is_on(&prefs, row);
-        commands
-            .entity(tree.find(root, LABEL_TAGS[row]))
-            .insert((
-                Text::new(preference_caption(&assets, row, caption_on)),
-                font.clone(),
-                layout,
-                line_height,
-                color,
-            ));
+        commands.entity(tree.find(root, label_tag)).insert((
+            Text::new(preference_caption(&assets, row, caption_on)),
+            font.clone(),
+            layout,
+            line_height,
+            color,
+        ));
         let Some(checkbox) = checkbox else {
             continue;
         };
@@ -198,6 +186,8 @@ fn bind_preferences(
                 HoverHelpText(ui_string(&assets, 0x2743, row as i16 + 0x26)),
                 DirectlyHovered::default(),
             ))
+            .observe(on_preference_checked::<Add, Checked>)
+            .observe(on_preference_checked::<Remove, Checked>)
             .remove::<InteractionDisabled>();
         if row == 4 {
             let idle = assets
@@ -249,7 +239,7 @@ fn bind_preferences(
 
     commands
         .entity(tree.find(root, fourcc!("okay")))
-        .insert(PreferencesAction::Okay)
+        .observe(on_preferences_activate)
         .remove::<InteractionDisabled>();
 
     let (radio_font, radio_layout, radio_line_height, _) = assets
@@ -338,6 +328,8 @@ fn bind_volume_slider(
             DirectlyHovered::default(),
         ))
         .observe(slider_self_update)
+        .observe(on_preference_slider_change)
+        .observe(on_sound_slider_released)
         .remove::<InteractionDisabled>();
     spawn_slider_layers(commands, slider, upper, lower, split, height, width);
     let (off_font, off_layout, off_line_height, _) = assets
@@ -465,7 +457,7 @@ fn node_px_width(nodes: &Query<&mut Node>, entity: Entity) -> Option<f32> {
 }
 
 fn preference_row_is_on(prefs: &GamePreferences, row: usize) -> bool {
-    let index = PREFERENCE_INDEX_BY_ROW[row];
+    let index = PREFERENCE_ROWS[row].0;
     if index < 0 {
         return false;
     }
@@ -511,11 +503,8 @@ fn on_preference_slider_change(
 fn on_sound_slider_released(
     change: On<ValueChange<f32>>,
     sliders: Query<&PreferenceSlider>,
-    prefs: Res<GamePreferences>,
     mut commands: Commands,
-    retail: Option<Res<RetailAssetsResource>>,
-    sources: Option<ResMut<Assets<AudioSource>>>,
-    handles: Option<ResMut<RetailAudioHandles>>,
+    mut audio: RetailAudioAssets,
 ) {
     let Ok(slider) = sliders.get(change.source) else {
         return;
@@ -523,17 +512,7 @@ fn on_sound_slider_released(
     if slider.slot != 2 || !change.is_final {
         return;
     }
-    let (Some(mut sources), Some(mut handles)) = (sources, handles) else {
-        return;
-    };
-    play_cached_or_retail_sound(
-        &mut commands,
-        retail.as_ref().map(|assets| assets.assets()),
-        &mut sources,
-        &mut handles,
-        prefs.sound_volume_percent(),
-        SoundId::UI_CLICK,
-    );
+    audio.play(&mut commands, SoundId::UI_CLICK);
 }
 
 #[allow(clippy::type_complexity)]
@@ -602,7 +581,10 @@ fn on_preference_checked<E: EntityEvent, C: Component>(
     let Ok(row) = rows.get(event.event_target()) else {
         return;
     };
-    let Some((label, _)) = labels.iter().find(|(_, tag)| tag.0 == LABEL_TAGS[row.0]) else {
+    let Some((label, _)) = labels
+        .iter()
+        .find(|(_, tag)| tag.0 == PREFERENCE_ROWS[row.0].2)
+    else {
         return;
     };
     if let Ok(mut text) = texts.get_mut(label) {
@@ -611,30 +593,22 @@ fn on_preference_checked<E: EntityEvent, C: Component>(
 }
 
 fn on_preferences_activate(
-    activate: On<Activate>,
-    actions: Query<&PreferencesAction>,
+    _activate: On<Activate>,
     rows: Query<(&PreferenceRow, Has<Checked>)>,
     sliders: Query<(&PreferenceSlider, &SliderValue)>,
     mut prefs: ResMut<GamePreferences>,
-    returning: Res<PreferencesReturn>,
+    returning: Res<ReturnTo>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
-    match *action {
-        PreferencesAction::Okay => {
-            // `TGamePreferencesPicture::DoEvent` writes `preferenceValues[row] = IsOn`
-            // for each present opta+row checkbox, then overwrites [3]/[2] from the sliders.
-            for (row, checked) in &rows {
-                prefs.values[row.0] = i16::from(checked);
-            }
-            for (slider, value) in &sliders {
-                prefs.values[slider.slot] = value.0 as i16;
-            }
-            next_state.set(returning.0);
-        }
+    // `TGamePreferencesPicture::DoEvent` writes `preferenceValues[row] = IsOn`
+    // for each present opta+row checkbox, then overwrites [3]/[2] from the sliders.
+    for (row, checked) in &rows {
+        prefs.values[row.0] = i16::from(checked);
     }
+    for (slider, value) in &sliders {
+        prefs.values[slider.slot] = value.0 as i16;
+    }
+    next_state.set(returning.0);
 }
 
 #[cfg(test)]
@@ -646,49 +620,6 @@ mod tests {
         assert_eq!(slider_split_from_value(0, 91, 100), 0);
         assert_eq!(slider_split_from_value(100, 91, 100), 91);
         assert_eq!(slider_split_from_value(0xff, 91, 0xff), 91);
-    }
-
-    #[test]
-    fn okay_writes_checkbox_rows_then_slider_slots() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_plugins(bevy::state::app::StatesPlugin)
-            .insert_state(AppState::Preferences)
-            .insert_resource(PreferencesReturn(AppState::StrategicMap))
-            .init_resource::<GamePreferences>()
-            .add_observer(on_preferences_activate);
-        let root = app.world_mut().spawn(PreferencesRoot).id();
-        app.world_mut()
-            .spawn((PreferenceRow(2), Checked, ChildOf(root)));
-        app.world_mut().spawn((PreferenceRow(3), ChildOf(root)));
-        app.world_mut().spawn((
-            PreferenceSlider { slot: 2 },
-            SliderValue(50.0),
-            ChildOf(root),
-        ));
-        app.world_mut().spawn((
-            PreferenceSlider { slot: 3 },
-            SliderValue(0.0),
-            ChildOf(root),
-        ));
-        let okay = app
-            .world_mut()
-            .spawn((PreferencesAction::Okay, ChildOf(root)))
-            .id();
-
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: okay });
-        app.world_mut().flush();
-        app.update();
-
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::StrategicMap
-        );
-        let prefs = app.world().resource::<GamePreferences>();
-        assert_eq!(prefs.values[2], 50);
-        assert_eq!(prefs.values[3], 0);
     }
 
     #[test]

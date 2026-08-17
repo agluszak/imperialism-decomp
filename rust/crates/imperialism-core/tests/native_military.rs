@@ -108,9 +108,25 @@ struct EmptyCase {}
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
-fn military_phase_supported_subset() {
-    compare_native("military_phase_supported_subset", |state, _: EmptyCase| {
-        differential::apply_military_orders(state);
+fn military_phase() {
+    compare_native("military_phase", |state, _: EmptyCase| state.do_military()).unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn military_phase_ships_without_orders() {
+    compare_native(
+        "military_phase_ships_without_orders",
+        |state, _: EmptyCase| state.do_military(),
+    )
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn military_phase_naval_encounter() {
+    compare_native("military_phase_naval_encounter", |state, _: EmptyCase| {
+        state.do_military()
     })
     .unwrap();
 }
@@ -439,12 +455,12 @@ struct NavyProvinceTargetCase {
     province: ProvinceId,
 }
 
-fn first_task_force(state: &GameState) -> TaskForceIndex {
+fn first_task_force(state: &GameState) -> TaskForceId {
     assert!(
         !state.task_forces().is_empty(),
         "native navy case expected a committed task force"
     );
-    TaskForceIndex::new(0)
+    state.task_forces()[0].id
 }
 
 #[test]

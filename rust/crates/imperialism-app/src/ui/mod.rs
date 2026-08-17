@@ -10,6 +10,7 @@ mod game_shell;
 pub(crate) mod generated;
 mod hover_help;
 mod land_battle;
+mod linger;
 pub(crate) mod load_save;
 mod main_menu;
 mod newspaper;
@@ -22,6 +23,8 @@ mod retail;
 mod session;
 mod strategic_map;
 mod technology;
+#[cfg(test)]
+mod test_support;
 mod trade;
 mod transport;
 mod viewport;
@@ -33,9 +36,7 @@ pub(crate) use credits::CreditsPlugin;
 pub(crate) use cursor::CursorPlugin;
 pub(crate) use deal_book::DealBookPlugin;
 pub(crate) use diplomacy::DiplomacyPlugin;
-pub(crate) use endgame::{
-    CouncilOfGovernorsPlugin, GameScorePlugin, HighScorePlugin, OpeningCinematicPlugin,
-};
+pub(crate) use endgame::EndgamePlugin;
 pub(crate) use game_shell::GameShellPlugin;
 pub(crate) use land_battle::LandBattlePlugin;
 pub(crate) use load_save::{LoadSavePlugin, SaveDirectory};

@@ -158,6 +158,7 @@ mod assessment;
 mod execution;
 mod player;
 
+pub use execution::{NavyOrdersContinuation, PendingNavalBattle};
 pub use player::{NavyOrder, NavySelectionClick, NavyTileClick, NavyToolbarCounts};
 
 impl GameState {
@@ -226,7 +227,7 @@ impl GameState {
     }
 }
 
-fn assigned_navy_ships(missions: &[MissionState]) -> Vec<ShipIndex> {
+fn assigned_navy_ships(missions: &[MissionState]) -> Vec<ShipId> {
     let mut assigned = Vec::new();
     for mission in missions {
         if let Some(navy) = navy_state(&mission.data) {
@@ -334,9 +335,9 @@ pub(super) mod tests {
         ];
         let baselines = navy_category_baselines(&enabled);
         let ship = ShipState {
+            id: ShipId::new(0),
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
-            task_force: None,
             aggression: 0,
             nation: NationId::new(0),
             name: String::new(),
@@ -362,9 +363,9 @@ pub(super) mod tests {
         ];
         assert!(!state.navy_capitol_threatened(MajorNationId::new(0)));
         state.ships.push(ShipState {
+            id: ShipId::new(0),
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
-            task_force: None,
             aggression: 0,
             nation: NationId::new(1),
             name: String::new(),

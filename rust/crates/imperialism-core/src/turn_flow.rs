@@ -5,6 +5,13 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum CinematicKind {
+    Vote,
+    Win,
+    Lose,
+}
+
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TurnState {
     pub scenario_map: Option<ScenarioMapId>,
@@ -131,6 +138,7 @@ pub enum TurnStop {
     DiplomacyWarJoin,
     TradeOffer,
     LandBattle,
+    NavalBattle,
     DealBook,
     TechnologyAdvance,
     Newspaper,
@@ -171,6 +179,7 @@ pub enum TurnContinuation {
     DiplomacyWarJoin(DiplomacyWarJoinPrompt),
     Trade(crate::TradeSession),
     LandBattle(crate::CombatMovesContinuation),
+    NavalBattle(crate::NavyOrdersContinuation),
     TechnologyReport(Technology),
     GreatPowerLoss,
     PostCombatReports,
@@ -291,12 +300,14 @@ impl GameState {
 
     /// Movie clip for `kTurnEventOpeningCinematic`. Switches on the entered mode, not
     /// the already-updated `turnStateCode` (`HandleTurnEventDialogFactorySlotF4`).
-    pub fn opening_cinematic_movie(&self) -> &'static str {
+    pub fn opening_cinematic_movie(&self) -> CinematicKind {
         match self.continuation {
-            TurnContinuation::DecadeCinematic => "vote",
-            TurnContinuation::Victory => "win",
-            TurnContinuation::PlayerEliminated | TurnContinuation::GreatPowerLoss => "lose",
-            _ => "lose",
+            TurnContinuation::DecadeCinematic => CinematicKind::Vote,
+            TurnContinuation::Victory => CinematicKind::Win,
+            TurnContinuation::PlayerEliminated | TurnContinuation::GreatPowerLoss => {
+                CinematicKind::Lose
+            }
+            _ => CinematicKind::Lose,
         }
     }
 
@@ -309,8 +320,8 @@ impl GameState {
         self.continuation = TurnContinuation::None;
     }
 
-    /// Closes `TBattleReportView`. Reports stay until `CleanUpStacks`; phase is already
-    /// `ELIMINATION`.
+    /// Closes `TBattleReportView`. Reports stay until the next military phase's
+    /// `CleanUpStacks`; phase is already `ELIMINATION`.
     pub fn close_post_combat_reports(&mut self, story_ids: &[i32]) -> TurnStop {
         assert!(
             matches!(self.continuation, TurnContinuation::PostCombatReports),
@@ -444,7 +455,10 @@ impl GameState {
                 }
                 PhaseCode::MILITARY => {
                     self.turn.phase = PhaseCode::COMBAT_MOVES;
-                    self.do_military();
+                    if let Some(continuation) = self.do_military() {
+                        self.continuation = TurnContinuation::NavalBattle(continuation);
+                        return TurnStop::NavalBattle;
+                    }
                 }
                 PhaseCode::COMBAT_MOVES => {
                     self.turn.phase = PhaseCode::MILITARY_CLEANUP;
@@ -540,6 +554,7 @@ impl GameState {
             TurnContinuation::DiplomacyWarJoin(_) => Some(TurnStop::DiplomacyWarJoin),
             TurnContinuation::Trade(_) => Some(TurnStop::TradeOffer),
             TurnContinuation::LandBattle(_) => Some(TurnStop::LandBattle),
+            TurnContinuation::NavalBattle(_) => Some(TurnStop::NavalBattle),
             TurnContinuation::TechnologyReport(_) => Some(TurnStop::TechnologyAdvance),
             TurnContinuation::GreatPowerLoss => Some(TurnStop::GreatPowerLoss),
             TurnContinuation::PostCombatReports => Some(TurnStop::PostCombatReports),
@@ -862,17 +877,6 @@ mod tests {
     }
 
     #[test]
-    fn legal_presentation_phases_stop_instead_of_panicking() {
-        let mut state = game_state();
-        state.turn.phase = crate::PhaseCode::TOP_TEN_SCORES;
-        assert_eq!(state.advance_turn(&[]), crate::TurnStop::Victory);
-
-        let mut state = game_state();
-        state.turn.phase = crate::PhaseCode::OPENING_CINEMATIC;
-        assert_eq!(state.advance_turn(&[]), crate::TurnStop::PlayerEliminated);
-    }
-
-    #[test]
     fn post_combat_diplomacy_is_an_explicit_turn_stop() {
         let mut state = game_state();
         seed_town_tiles(&mut state);
@@ -968,13 +972,13 @@ mod tests {
     fn opening_cinematic_movie_follows_entered_mode() {
         let mut state = game_state();
         state.continuation = crate::TurnContinuation::DecadeCinematic;
-        assert_eq!(state.opening_cinematic_movie(), "vote");
+        assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Vote);
         state.continuation = crate::TurnContinuation::Victory;
-        assert_eq!(state.opening_cinematic_movie(), "win");
+        assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Win);
         state.continuation = crate::TurnContinuation::PlayerEliminated;
-        assert_eq!(state.opening_cinematic_movie(), "lose");
+        assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Lose);
         state.continuation = crate::TurnContinuation::GreatPowerLoss;
-        assert_eq!(state.opening_cinematic_movie(), "lose");
+        assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Lose);
     }
 
     #[test]

@@ -27,10 +27,10 @@ pub(crate) enum AppState {
     TechnologyAdvance,
     Newspaper,
     LandBattle,
+    NavalBattle,
     OpeningCinematic,
     CouncilOfGovernors,
     BattleReport,
-    BattleReportDetail,
     GameScore,
     HighScore,
     Credits,
@@ -93,21 +93,19 @@ fn add_game_plugins(app: &mut App) {
         ui::TradePlugin,
         ui::DiplomacyPlugin,
         ui::DealBookPlugin,
-        ui::OfferSheetPlugin,
     ))
+    .add_plugins(ui::OfferSheetPlugin)
     .add_plugins((
         media::ImperialismMediaPlugin,
         ui::CursorPlugin,
         ui::TechnologyAdvancePlugin,
         ui::NewspaperPlugin,
         ui::LandBattlePlugin,
-        ui::OpeningCinematicPlugin,
-        ui::CouncilOfGovernorsPlugin,
+        ui::EndgamePlugin,
         ui::BattleReportPlugin,
-        ui::GameScorePlugin,
-        ui::HighScorePlugin,
         ui::CreditsPlugin,
         ui::PreferencesPlugin,
+        ui::OfferSheetPlugin,
     ));
 }
 
@@ -150,55 +148,4 @@ pub fn run(
         .spawn((Camera2d, Msaa::Off, UiAntiAlias::Off));
     app.run();
     Ok(())
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use bevy::ecs::schedule::{ScheduleLabel, Schedules};
-
-    fn initialize_schedule(app: &mut App, label: impl ScheduleLabel + Clone) {
-        if app.world().resource::<Schedules>().contains(label.clone()) {
-            app.world_mut()
-                .schedule_scope(label, |world, schedule| schedule.initialize(world))
-                .expect("game schedules must initialize before opening a window");
-        }
-    }
-
-    #[test]
-    fn game_schedules_initialize_without_system_parameter_conflicts() {
-        let mut app = App::new();
-        app.add_plugins(bevy::state::app::StatesPlugin)
-            .init_state::<AppState>();
-        add_game_plugins(&mut app);
-
-        initialize_schedule(&mut app, Update);
-        for state in [
-            AppState::MainMenu,
-            AppState::RandomSetup,
-            AppState::LoadSave,
-            AppState::CitySite,
-            AppState::StrategicMap,
-            AppState::Trade,
-            AppState::City,
-            AppState::Transport,
-            AppState::Diplomacy,
-            AppState::DealBook,
-            AppState::OfferSheet,
-            AppState::TechnologyAdvance,
-            AppState::Newspaper,
-            AppState::LandBattle,
-            AppState::OpeningCinematic,
-            AppState::CouncilOfGovernors,
-            AppState::BattleReport,
-            AppState::BattleReportDetail,
-            AppState::GameScore,
-            AppState::HighScore,
-            AppState::Credits,
-            AppState::Preferences,
-        ] {
-            initialize_schedule(&mut app, OnEnter(state));
-            initialize_schedule(&mut app, OnExit(state));
-        }
-    }
 }

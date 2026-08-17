@@ -32,6 +32,7 @@ pub(crate) fn apply_turn_stop(stop: TurnStop, next_state: &mut NextState<AppStat
         TurnStop::DiplomacyOffer => next_state.set(AppState::Diplomacy),
         TurnStop::DiplomacyWarJoin => next_state.set(AppState::Diplomacy),
         TurnStop::LandBattle => next_state.set(AppState::LandBattle),
+        TurnStop::NavalBattle => next_state.set(AppState::NavalBattle),
         TurnStop::GreatPowerLoss
         | TurnStop::PlayerEliminated
         | TurnStop::Victory

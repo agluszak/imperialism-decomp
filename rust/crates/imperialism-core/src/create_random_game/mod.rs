@@ -276,6 +276,7 @@ pub fn create_random_game(
         nations,
         military_units,
         civilian_units: Vec::new(),
+        navy_ids: NavyIdAllocator::default(),
         ships: Vec::new(),
         admirals: Vec::new(),
         task_forces: Vec::new(),

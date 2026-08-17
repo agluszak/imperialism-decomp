@@ -1,7 +1,6 @@
 //! `TGreatPower::GenerateGameScore` (0x004e32a0).
 
 use crate::*;
-use enum_map::Enum;
 
 const DIFFICULTY_PERCENT: [i32; 5] = [10, 15, 20, 25, 30];
 
@@ -47,11 +46,17 @@ impl GameState {
         let major = &self.nations.majors[nation];
         let labor = i32::from(major.city.population.baseline_labor.strength());
         let transport = i32::from(major.economy.capacities.transport);
-        let industry = (0..CityFacilitySlot::COUNT)
-            .map(CityFacilitySlot::from_usize)
-            .take(6)
-            .map(|slot| i32::from(major.city.production_orders[slot]))
-            .sum();
+        let industry = [
+            CityFacilitySlot::TextileMill,
+            CityFacilitySlot::ClothingFactory,
+            CityFacilitySlot::SteelMill,
+            CityFacilitySlot::Metalworks,
+            CityFacilitySlot::LumberMill,
+            CityFacilitySlot::FurnitureFactory,
+        ]
+        .iter()
+        .map(|&slot| i32::from(major.city.production_orders[slot]))
+        .sum();
         let mut provinces = major.common.owned_regions().len() as i32;
         for minor in MinorNationId::all() {
             let Some(common) = self.nations.minors[minor].as_ref() else {
