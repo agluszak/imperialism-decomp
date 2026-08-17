@@ -454,8 +454,10 @@ impl GameState {
         let count = &mut self.nations.city_mut(nation).ship_order_count_by_type[ship_type];
         *count = count.wrapping_add(1);
 
-        self.admirals.insert(
+        let admiral = self.object_ids.admiral();
+        self.admirals.shift_insert(
             0,
+            admiral,
             AdmiralState {
                 nation: nation_id,
                 name: String::new(),

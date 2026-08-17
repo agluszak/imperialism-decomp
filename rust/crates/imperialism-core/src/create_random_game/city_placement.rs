@@ -1,4 +1,5 @@
 use super::*;
+use indexmap::IndexMap;
 
 /// `g_abResourceTypeUsesHighNibbleFlag` — nonzero means extractive nibble / tech override.
 pub(super) const RESOURCE_USES_HIGH_NIBBLE: [u8; 24] = [
@@ -74,7 +75,7 @@ pub(super) fn bootstrap_minors(
     province_capitals: &mut [Option<TileId>],
     nations: &mut Nations,
     crt: &mut RetailCrtRng,
-    military_units: &mut Vec<MilitaryUnitState>,
+    military_units: &mut IndexMap<MilitaryUnitId, MilitaryUnitState>,
     unit_ids: &mut UnitIdAllocator,
     difficulty: Difficulty,
     port_zones: &mut PortZoneTable,
@@ -188,7 +189,7 @@ pub(super) fn spawn_initial_militia_for_minor(
     minor_id: MinorNationId,
     owned_provinces: &[ProvinceId],
     difficulty: Difficulty,
-    military_units: &mut Vec<MilitaryUnitState>,
+    military_units: &mut IndexMap<MilitaryUnitId, MilitaryUnitState>,
     unit_ids: &mut UnitIdAllocator,
     name_ordinals: &mut [i16],
     next_roster_id: &mut i16,
@@ -262,7 +263,7 @@ pub(super) fn spawn_initial_militia_for_minor(
     name_units_for_nation(military_units, nation, name_ordinals, next_roster_id);
 }
 pub(super) fn push_military_unit(
-    military_units: &mut Vec<MilitaryUnitState>,
+    military_units: &mut IndexMap<MilitaryUnitId, MilitaryUnitState>,
     unit_ids: &mut UnitIdAllocator,
     nation: NationId,
     unit_type: MilitaryUnitKind,
@@ -280,31 +281,35 @@ pub(super) fn push_military_unit(
             targets,
         )
     };
-    military_units.push(MilitaryUnitState::new(
-        unit_ids.next_military(),
-        nation,
-        unit_type,
-        stationed_province,
-        order,
-        nation,
-        0,
-        true,
-        String::new(),
-        500,
-        unit_type.spawn_era(),
-        0,
-        0,
-    ));
+    let id = unit_ids.next_military();
+    military_units.insert(
+        id,
+        MilitaryUnitState::new(
+            id,
+            nation,
+            unit_type,
+            stationed_province,
+            order,
+            nation,
+            0,
+            true,
+            String::new(),
+            500,
+            unit_type.spawn_era(),
+            0,
+            0,
+        ),
+    );
 }
 /// `TCountry::NameUnits` for non-general land units (English STR# 0x2717 / 0x275f).
 pub(crate) fn name_units_for_nation(
-    military_units: &mut [MilitaryUnitState],
+    military_units: &mut IndexMap<MilitaryUnitId, MilitaryUnitState>,
     nation: NationId,
     name_ordinals: &mut [i16],
     next_roster_id: &mut i16,
 ) {
     for unit in military_units
-        .iter_mut()
+        .values_mut()
         .filter(|unit| unit.nation == nation)
     {
         if unit.roster_id != 0 {

@@ -141,9 +141,8 @@ impl GameState {
 
     pub(crate) fn assign_unassigned_ships_to_navy_missions(&mut self, nation: NationId) {
         while let Some(mission_id) = self.missions.iter().find_map(|(&id, mission)| {
-            mission.nation == nation
-                && !mission.held
-                && navy_state(&mission.data).is_some().then_some(id)
+            (mission.nation == nation && !mission.held && navy_state(&mission.data).is_some())
+                .then_some(id)
         }) {
             let assigned = assigned_navy_ships(&self.missions);
             let Some(ship) = self.ships.iter().find_map(|(&id, ship)| {
@@ -1129,11 +1128,11 @@ impl GameState {
                 .task_force(force)
                 .is_some_and(|force| force.ships.len() == 1)
         {
-            if let Some(entry) = self
+            if let Some((_, selected)) = self
                 .task_force_mut(force)
                 .and_then(|force| force.ships.first_mut())
             {
-                entry.selected = true;
+                *selected = true;
             }
             return force;
         }
@@ -1328,7 +1327,7 @@ fn remove_mission_ship_id(data: &mut MissionData, removed: ShipId) {
     if navy.selected_ship == Some(removed) {
         navy.selected_ship = None;
     }
-    navy.ships.retain(|child| child.ship != removed);
+    navy.ships.shift_remove(&removed);
 }
 
 #[cfg(test)]

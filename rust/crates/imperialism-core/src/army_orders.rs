@@ -699,7 +699,6 @@ impl GameState {
         }
         let orders: Vec<(ProvinceId, ProvinceId, bool)> = self
             .military_units
-            .iter()
             .values()
             .filter(|unit| unit.owner_nation() == nation)
             .filter_map(|unit| {
@@ -800,7 +799,7 @@ impl GameState {
 
     fn civilian_on_tile(&self, tile: TileId) -> bool {
         self.civilian_units
-            .iter()
+            .values()
             .any(|unit| unit.location().tile() == Some(tile))
     }
 }

@@ -145,7 +145,7 @@ impl GameState {
         }
         let active_missions = self
             .missions
-            .iter()
+            .values()
             .filter(|mission| {
                 mission.nation == nation.nation()
                     && matches!(mission.data, MissionData::ScatteredShips(_))

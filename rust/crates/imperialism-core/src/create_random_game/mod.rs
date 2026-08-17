@@ -1,5 +1,6 @@
 use crate::*;
 use enum_map::EnumMap;
+use indexmap::IndexMap;
 
 mod city_placement;
 mod map_post_pass;
@@ -162,7 +163,7 @@ pub fn create_random_game(
         difficulty,
     );
 
-    let mut military_units = Vec::new();
+    let mut military_units = IndexMap::new();
     let mut unit_ids = UnitIdAllocator::default();
     // `TMinor::IMinor` snapshots these map resource counts before choosing and
     // resetting each minor's home tile.
@@ -274,7 +275,7 @@ pub fn create_random_game(
         technology,
         diplomacy,
         nations,
-        military_units,
+        military_units: military_units.into_values().collect(),
         civilian_units: Vec::new(),
         object_ids: ObjectIdAllocator::default(),
         ships: Vec::new(),

@@ -1,8 +1,8 @@
 use crate::{
     CivilianLocation, CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, Difficulty,
     GameState, MajorNationId, MapMgr, MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState,
-    NationId, OceanZoneId, PendingActionKind, ProvinceId, ShipState, ShipType, TileFlags, TileId,
-    TileOwnerTag, TurnSummary,
+    NationId, OceanZoneId, PendingActionKind, ProvinceId, ShipId, ShipState, ShipType, TileFlags,
+    TileId, TileOwnerTag, TurnSummary,
 };
 #[cfg(test)]
 use crate::{CivilianUnitId, MilitaryUnitId};
@@ -176,8 +176,10 @@ impl GameState {
         };
         let insert_at = self
             .civilian_units
-            .partition_point(|existing| existing.nation <= nation_id);
-        self.civilian_units.insert(insert_at, unit);
+            .values()
+            .position(|existing| existing.nation > nation_id)
+            .unwrap_or(self.civilian_units.len());
+        self.civilian_units.shift_insert(insert_at, id, unit);
     }
 
     /// `TCountry::InitialMilitia`.
@@ -407,8 +409,10 @@ impl GameState {
                 };
                 let insert_at = self
                     .military_units
-                    .partition_point(|existing| existing.nation <= nation_id);
-                self.military_units.insert(insert_at, unit);
+                    .values()
+                    .position(|existing| existing.nation > nation_id)
+                    .unwrap_or(self.military_units.len());
+                self.military_units.shift_insert(insert_at, id, unit);
 
                 let pending = self.nations.majors[nation].economy.pending_actions
                     [PendingActionKind::ArmyGrowthReward];

@@ -1,4 +1,5 @@
 use crate::city::ship_stock_cap;
+use crate::ids::ObjectId;
 use crate::*;
 use indexmap::{IndexMap, IndexSet};
 use serde::{Deserialize, Serialize};

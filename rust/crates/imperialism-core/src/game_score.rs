@@ -69,7 +69,7 @@ impl GameState {
         provinces *= 10;
         let military = self
             .military_units
-            .iter()
+            .values()
             .filter(|unit| unit.nation == nation.nation())
             .map(|unit| unit.unit_type.arms_required())
             .sum();
