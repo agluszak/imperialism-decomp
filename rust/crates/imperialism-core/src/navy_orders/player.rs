@@ -110,14 +110,10 @@ impl GameState {
         selected: bool,
     ) {
         let found = self.task_force_mut(force).is_some_and(|entry| {
-            entry
-                .ships
-                .iter_mut()
-                .find(|node| node.ship == ship)
-                .is_some_and(|node| {
-                    node.selected = selected;
-                    true
-                })
+            entry.ships.get_mut(&ship).is_some_and(|node| {
+                *node = selected;
+                true
+            })
         });
         if found
             && selected
@@ -137,20 +133,20 @@ impl GameState {
         let Some(entry) = self.task_force(force) else {
             return;
         };
-        let Some(index) = entry.ships.iter().position(|node| {
-            let Some(ship) = self.ship(node.ship) else {
-                return false;
+        let Some(ship_id) = entry.ships.iter().find_map(|(&ship_id, &selected)| {
+            let Some(ship) = self.ship(ship_id) else {
+                return None;
             };
-            toolbar_bucket(ship.ship_type) == Some(class as usize) && node.selected != selecting
+            (toolbar_bucket(ship.ship_type) == Some(class as usize) && selected != selecting)
+                .then_some(ship_id)
         }) else {
             return;
         };
         let entry = self
             .task_force_mut(force)
             .expect("selected task force exists");
-        let ship = entry.ships[index].ship;
-        entry.ships[index].selected = selecting;
-        if selecting && let Some(state) = self.ship_mut(ship) {
+        *entry.ships.get_mut(&ship_id).expect("selected ship exists") = selecting;
+        if selecting && let Some(state) = self.ship_mut(ship_id) {
             state.selection = 0;
         }
     }
@@ -167,13 +163,13 @@ impl GameState {
             available: [0; 4],
             selected: [0; 4],
         };
-        for node in &force.ships {
-            let Some(ship) = self.ship(node.ship) else {
+        for (&ship_id, &selected) in &force.ships {
+            let Some(ship) = self.ship(ship_id) else {
                 continue;
             };
             if let Some(bucket) = toolbar_bucket(ship.ship_type) {
                 counts.available[bucket] += 1;
-                if node.selected {
+                if selected {
                     counts.selected[bucket] += 1;
                 }
             }
@@ -196,15 +192,15 @@ impl GameState {
         let Some(entry) = self.task_force(force) else {
             return false;
         };
-        if !entry.ships.iter().any(|node| node.selected) {
+        if !entry.ships.values().any(|&selected| selected) {
             return false;
         }
         let mut worst = 10_000_i32;
-        for node in &entry.ships {
-            if !node.selected {
+        for (&ship_id, &selected) in &entry.ships {
+            if !selected {
                 continue;
             }
-            let Some(ship) = self.ship(node.ship) else {
+            let Some(ship) = self.ship(ship_id) else {
                 continue;
             };
             worst = worst.min(descriptor_weight(ship.ship_type));
@@ -218,7 +214,7 @@ impl GameState {
         let Some(entry) = self.task_force(force) else {
             return false;
         };
-        entry.ships.iter().any(|node| node.selected)
+        entry.ships.values().any(|&selected| selected)
             && self.map.provinces[province].navy_order_reachable
     }
 
