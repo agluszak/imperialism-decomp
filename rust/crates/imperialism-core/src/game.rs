@@ -187,8 +187,8 @@ impl GameState {
         self.task_forces.iter().map(|(&id, force)| (id, force))
     }
 
-    pub fn missions(&self) -> &[MissionState] {
-        &self.missions
+    pub fn missions(&self) -> impl ExactSizeIterator<Item = (MissionId, &MissionState)> {
+        self.missions.iter().map(|(&id, mission)| (id, mission))
     }
 
     pub const fn news(&self) -> &NewsState {

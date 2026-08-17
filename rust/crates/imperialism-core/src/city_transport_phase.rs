@@ -188,7 +188,7 @@ impl GameState {
             .expect("overseas-developer pending requires a home tile");
         let Some(tile) =
             self.map
-                .find_reachable_recruit_spawn_tile(&self.civilian_units, home, false)
+                .find_reachable_recruit_spawn_tile(self.civilian_units.values(), home, false)
         else {
             return;
         };

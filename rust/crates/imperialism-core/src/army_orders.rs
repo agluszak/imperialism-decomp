@@ -1,6 +1,6 @@
 //! Strategic army map orders (`TArmyMgr` interaction methods, not combat execution).
 
-use crate::combat_moves::{set_unit_order, stationed_chain_indices};
+use crate::combat_moves::{set_unit_order, stationed_chain_ids};
 use crate::military_phase::tactical_category;
 use crate::*;
 
@@ -147,8 +147,8 @@ impl GameState {
     /// `TArmyToolbar::SetProvince` count walk over the stationed-unit chain.
     pub fn army_toolbar_counts(&self, province: ProvinceId) -> ArmyToolbarCounts {
         let mut counts = ArmyToolbarCounts::default();
-        for index in stationed_chain_indices(&self.military_units, province) {
-            let unit = &self.military_units[index];
+        for id in stationed_chain_ids(&self.military_units, province) {
+            let unit = &self.military_units[&id];
             let category = tactical_category(unit.unit_type()) as usize;
             if category >= 10 {
                 continue;
@@ -182,10 +182,16 @@ impl GameState {
         province: ProvinceId,
         mode: ArmyIdleOrderMode,
     ) {
-        let indices = stationed_chain_indices(&self.military_units, province);
-        for index in indices {
-            if self.military_units[index].order.code() == UNIT_ORDER_IDLE {
-                set_unit_order(&mut self.military_units[index], mode.order(), None);
+        let ids = stationed_chain_ids(&self.military_units, province);
+        for id in ids {
+            if self.military_units[&id].order.code() == UNIT_ORDER_IDLE {
+                set_unit_order(
+                    self.military_units
+                        .get_mut(&id)
+                        .expect("stationed unit remains live"),
+                    mode.order(),
+                    None,
+                );
             }
         }
     }
@@ -196,11 +202,11 @@ impl GameState {
         province: ProvinceId,
         category: i16,
     ) -> i16 {
-        let indices = stationed_chain_indices(&self.military_units, province);
+        let ids = stationed_chain_ids(&self.military_units, province);
         let mut activated = false;
         let mut remaining = 0_i16;
-        for index in indices {
-            let unit = &self.military_units[index];
+        for id in ids {
+            let unit = &self.military_units[&id];
             if tactical_category(unit.unit_type()) != category
                 || unit.order.code() != UNIT_ORDER_IDLE
             {
@@ -209,7 +215,13 @@ impl GameState {
             if activated {
                 remaining += 1;
             } else {
-                set_unit_order(&mut self.military_units[index], UNIT_ORDER_DONE, None);
+                set_unit_order(
+                    self.military_units
+                        .get_mut(&id)
+                        .expect("stationed unit remains live"),
+                    UNIT_ORDER_DONE,
+                    None,
+                );
                 activated = true;
             }
         }
@@ -222,20 +234,26 @@ impl GameState {
         province: ProvinceId,
         category: i16,
     ) -> i16 {
-        let indices = stationed_chain_indices(&self.military_units, province);
+        let ids = stationed_chain_ids(&self.military_units, province);
         let mut deactivated = false;
         let mut idle = 0_i16;
-        for index in indices {
-            if tactical_category(self.military_units[index].unit_type()) != category {
+        for id in ids {
+            if tactical_category(self.military_units[&id].unit_type()) != category {
                 continue;
             }
-            let order = self.military_units[index].order.code();
+            let order = self.military_units[&id].order.code();
             if order == UNIT_ORDER_IDLE {
                 idle += 1;
             } else if matches!(order, UNIT_ORDER_SLEEP | UNIT_ORDER_LATR | UNIT_ORDER_DONE)
                 && !deactivated
             {
-                set_unit_order(&mut self.military_units[index], UNIT_ORDER_IDLE, None);
+                set_unit_order(
+                    self.military_units
+                        .get_mut(&id)
+                        .expect("stationed unit remains live"),
+                    UNIT_ORDER_IDLE,
+                    None,
+                );
                 deactivated = true;
                 idle += 1;
             }
@@ -249,24 +267,28 @@ impl GameState {
         let Some(province) = province else {
             return;
         };
-        let indices = stationed_chain_indices(&self.military_units, province);
-        for index in indices {
-            let order = self.military_units[index].order.code();
+        let ids = stationed_chain_ids(&self.military_units, province);
+        for id in ids {
+            let order = self.military_units[&id].order.code();
             if matches!(order, UNIT_ORDER_LATR | UNIT_ORDER_DONE)
-                && tactical_category(self.military_units[index].unit_type()) != 0
+                && tactical_category(self.military_units[&id].unit_type()) != 0
             {
-                set_unit_order(&mut self.military_units[index], UNIT_ORDER_IDLE, None);
+                set_unit_order(
+                    self.military_units
+                        .get_mut(&id)
+                        .expect("stationed unit remains live"),
+                    UNIT_ORDER_IDLE,
+                    None,
+                );
             }
         }
     }
 
     /// `TArmyMgr::ClearProvinceSelectionHighlightsForNation`.
     pub fn clear_province_selection_highlights_for_nation(&mut self, nation: NationId) {
-        for index in 0..self.military_units.len() {
-            if self.military_units[index].owner_nation() == nation
-                && self.military_units[index].order.code() == UNIT_ORDER_LATR
-            {
-                set_unit_order(&mut self.military_units[index], UNIT_ORDER_IDLE, None);
+        for unit in self.military_units.values_mut() {
+            if unit.owner_nation() == nation && unit.order.code() == UNIT_ORDER_LATR {
+                set_unit_order(unit, UNIT_ORDER_IDLE, None);
             }
         }
     }
@@ -297,13 +319,19 @@ impl GameState {
             .map(|common| common.owned_regions().to_vec())
             .unwrap_or_default();
         for province in regions {
-            let indices = stationed_chain_indices(&self.military_units, province);
-            for index in indices {
-                let unit = &self.military_units[index];
+            let ids = stationed_chain_ids(&self.military_units, province);
+            for id in ids {
+                let unit = &self.military_units[&id];
                 if !unit.unit_type().is_militia_category()
                     && unit.order.code() != UNIT_ORDER_REDEPLOY
                 {
-                    set_unit_order(&mut self.military_units[index], UNIT_ORDER_IDLE, None);
+                    set_unit_order(
+                        self.military_units
+                            .get_mut(&id)
+                            .expect("stationed unit remains live"),
+                        UNIT_ORDER_IDLE,
+                        None,
+                    );
                 }
             }
         }
@@ -531,13 +559,15 @@ impl GameState {
         to: ProvinceId,
         hostile_overlay: bool,
     ) -> ArmyOrderIssue {
-        let indices = stationed_chain_indices(&self.military_units, from);
+        let ids = stationed_chain_ids(&self.military_units, from);
         let mut found = false;
-        for index in indices {
-            let unit = &self.military_units[index];
+        for id in ids {
+            let unit = &self.military_units[&id];
             if unit.order.code() == UNIT_ORDER_IDLE && !unit.unit_type().is_militia_category() {
                 set_unit_order(
-                    &mut self.military_units[index],
+                    self.military_units
+                        .get_mut(&id)
+                        .expect("stationed unit remains live"),
                     UNIT_ORDER_REDEPLOY,
                     Some(to),
                 );
@@ -620,8 +650,9 @@ impl GameState {
         };
         let same_owner = self.map.provinces[dest].owner() == Some(nation);
         let mut refund = 0_i32;
-        for index in 0..self.military_units.len() {
-            let unit = &self.military_units[index];
+        let ids: Vec<_> = self.military_units.keys().copied().collect();
+        for id in ids {
+            let unit = &self.military_units[&id];
             if unit.owner_nation() != nation || unit.order.target() != Some(dest) {
                 continue;
             }
@@ -632,7 +663,13 @@ impl GameState {
             {
                 refund += unit.unit_type().arms_carried();
             }
-            set_unit_order(&mut self.military_units[index], UNIT_ORDER_IDLE, None);
+            set_unit_order(
+                self.military_units
+                    .get_mut(&id)
+                    .expect("ordered unit remains live"),
+                UNIT_ORDER_IDLE,
+                None,
+            );
         }
         if refund != 0
             && let Some(major) = MajorNationId::from_nation(nation)
@@ -663,6 +700,7 @@ impl GameState {
         let orders: Vec<(ProvinceId, ProvinceId, bool)> = self
             .military_units
             .iter()
+            .values()
             .filter(|unit| unit.owner_nation() == nation)
             .filter_map(|unit| {
                 let dest = unit.order.target()?;
@@ -701,9 +739,9 @@ impl GameState {
     }
 
     fn idle_movable_arms_cost(&self, province: ProvinceId) -> i32 {
-        stationed_chain_indices(&self.military_units, province)
+        stationed_chain_ids(&self.military_units, province)
             .into_iter()
-            .map(|index| &self.military_units[index])
+            .map(|id| &self.military_units[&id])
             .filter(|unit| {
                 unit.order.code() == UNIT_ORDER_IDLE && !unit.unit_type().is_militia_category()
             })
@@ -713,7 +751,7 @@ impl GameState {
 
     fn non_adjacent_redeploy_arms_to(&self, nation: NationId, dest: ProvinceId) -> i32 {
         self.military_units
-            .iter()
+            .values()
             .filter(|unit| {
                 unit.owner_nation() == nation
                     && unit.order.code() == UNIT_ORDER_REDEPLOY
@@ -727,9 +765,9 @@ impl GameState {
     }
 
     fn has_idle_movable_unit(&self, province: ProvinceId) -> bool {
-        stationed_chain_indices(&self.military_units, province)
+        stationed_chain_ids(&self.military_units, province)
             .into_iter()
-            .map(|index| &self.military_units[index])
+            .map(|id| &self.military_units[&id])
             .any(|unit| {
                 unit.order.code() == UNIT_ORDER_IDLE && !unit.unit_type().is_militia_category()
             })

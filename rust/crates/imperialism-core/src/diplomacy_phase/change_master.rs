@@ -176,10 +176,11 @@ impl GameState {
                 self.civilian_units.remove(index);
                 continue;
             };
-            if let Some(destination) =
-                self.map
-                    .find_reachable_recruit_spawn_tile(&self.civilian_units, home, false)
-            {
+            if let Some(destination) = self.map.find_reachable_recruit_spawn_tile(
+                self.civilian_units.values(),
+                home,
+                false,
+            ) {
                 self.civilian_units[index].location = CivilianLocation::OnMap(destination);
                 index += 1;
             } else {

@@ -1,4 +1,5 @@
 use crate::*;
+use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
 /// Every nation slot, split into the two populations that carry different
@@ -182,16 +183,16 @@ impl MajorNation {
         nation: MajorNationId,
         province: ProvinceId,
         map: &MapMgr,
-        civilian_units: &mut Vec<CivilianUnitState>,
-        military_units: &mut Vec<MilitaryUnitState>,
-        missions: &mut [MissionState],
+        civilian_units: &mut IndexMap<CivilianUnitId, CivilianUnitState>,
+        military_units: &mut IndexMap<MilitaryUnitId, MilitaryUnitState>,
+        missions: &mut IndexMap<MissionId, MissionState>,
     ) {
         self.common.lose_province(province);
 
         let nation = nation.nation();
         // `KillUnitsIn` first pass: tracked civilian orders whose tile is in the lost
         // province. Military `tileIndex06` is a province id and is not used here.
-        civilian_units.retain(|unit| {
+        civilian_units.retain(|_, unit| {
             unit.nation != nation
                 || unit
                     .location
@@ -201,9 +202,8 @@ impl MajorNation {
 
         // Second pass frees already-detached military units (`tileIndex06 == -1`).
         // Units still stationed in the lost province stay on the map.
-        military_units.retain(|unit| unit.nation != nation || unit.stationed_province.is_some());
-        let remaining: Vec<_> = military_units.iter().map(|unit| unit.id).collect();
-        for mission in missions.iter_mut() {
+        military_units.retain(|_, unit| unit.nation != nation || unit.stationed_province.is_some());
+        for mission in missions.values_mut() {
             if mission.nation != nation {
                 continue;
             }
@@ -213,8 +213,7 @@ impl MajorNation {
                 MissionData::Invade { attack, .. } => &mut attack.army,
                 _ => continue,
             };
-            army.units
-                .retain(|id| remaining.iter().any(|present| present == id));
+            army.units.retain(|id| military_units.contains_key(id));
         }
     }
 
@@ -249,7 +248,7 @@ impl MinorNation {
         map: &mut MapMgr,
         major_nations: &MajorNationTable<MajorNation>,
         diplomacy: &DiplomacyState,
-        civilian_units: &mut Vec<CivilianUnitState>,
+        civilian_units: &mut IndexMap<CivilianUnitId, CivilianUnitState>,
     ) {
         self.common.lose_province(province);
         let new_owner = map.provinces[province]
@@ -265,11 +264,12 @@ impl MinorNation {
         // enemy civilian orders are freed. The following deport pass then acts
         // on every remaining foreign major, matching includeAllPolicyTargets=1.
         for &tile in &linked_tiles {
-            let mut index = 0;
-            while index < civilian_units.len() {
-                let unit = &civilian_units[index];
+            let ids: Vec<_> = civilian_units.keys().copied().collect();
+            for id in ids {
+                let Some(unit) = civilian_units.get(&id) else {
+                    continue;
+                };
                 let Some(owner) = MajorNationId::from_nation(unit.owner_nation) else {
-                    index += 1;
                     continue;
                 };
                 if unit.location.tile() != Some(tile)
@@ -277,33 +277,34 @@ impl MinorNation {
                     || diplomacy.relationships[new_owner][unit.owner_nation]
                         != DiplomaticRelationship::War
                 {
-                    index += 1;
                     continue;
                 }
                 if unit.unit_type == CivilianUnitKind::Developer {
-                    civilian_units[index].location = CivilianLocation::OnMap(
+                    civilian_units
+                        .get_mut(&id)
+                        .expect("civilian remained present")
+                        .location = CivilianLocation::OnMap(
                         major_nations[owner]
                             .common
                             .home_tile
                             .expect("foreign developer requires its owner's home town"),
                     );
-                    index += 1;
                 } else {
-                    civilian_units.remove(index);
+                    civilian_units.shift_remove(&id);
                 }
             }
         }
 
         for &tile in &linked_tiles {
-            let mut index = 0;
-            while index < civilian_units.len() {
-                let unit = &civilian_units[index];
+            let ids: Vec<_> = civilian_units.keys().copied().collect();
+            for id in ids {
+                let Some(unit) = civilian_units.get(&id) else {
+                    continue;
+                };
                 let Some(owner) = MajorNationId::from_nation(unit.owner_nation) else {
-                    index += 1;
                     continue;
                 };
                 if unit.location.tile() != Some(tile) || unit.owner_nation == new_owner {
-                    index += 1;
                     continue;
                 }
                 let home = major_nations[owner]
@@ -311,13 +312,15 @@ impl MinorNation {
                     .home_tile
                     .expect("deported civilian requires its owner's home town");
                 if let Some(destination) =
-                    map.find_reachable_recruit_spawn_tile(civilian_units, home, false)
+                    map.find_reachable_recruit_spawn_tile(civilian_units.values(), home, false)
                 {
-                    civilian_units[index].order = CivilianWorkOrder::Idle;
-                    civilian_units[index].location = CivilianLocation::OnMap(destination);
-                    index += 1;
+                    let unit = civilian_units
+                        .get_mut(&id)
+                        .expect("civilian remained present");
+                    unit.order = CivilianWorkOrder::Idle;
+                    unit.location = CivilianLocation::OnMap(destination);
                 } else {
-                    civilian_units.remove(index);
+                    civilian_units.shift_remove(&id);
                 }
             }
         }

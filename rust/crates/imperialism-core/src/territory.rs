@@ -2,6 +2,7 @@ use crate::{
     AiTargetState, ArmyMissionState, GameState, MajorNationId, MajorNationTable, MapMgr,
     MinorNationId, MissionData, MissionState, NationId, Nations, ProvinceId, ResourceTable, TileId,
 };
+use indexmap::IndexSet;
 use serde::{Deserialize, Serialize};
 
 const REGION_CLASS_COUNT: usize = 24;
@@ -256,15 +257,16 @@ impl GameState {
 
         if let Some(old_owner) = MajorNationId::from_nation(old_owner) {
             if let Some(auto) = self.nations.majors[old_owner].auto.as_mut() {
-                if let Some(position) = self.missions.iter().position(|mission| {
-                    mission.nation == old_owner.nation()
+                if let Some(id) = self.missions.iter().find_map(|(&id, mission)| {
+                    (mission.nation == old_owner.nation()
                         && matches!(
                             &mission.data,
                             MissionData::DefendProvince { province: target, .. }
                                 if *target == province
-                        )
+                        ))
+                    .then_some(id)
                 }) {
-                    self.missions.remove(position);
+                    self.missions.shift_remove(&id);
                 }
                 auto.province_targets[province] = AiTargetState::Unmarked;
             }
@@ -309,25 +311,27 @@ impl GameState {
                     let insert_at = self
                         .missions
                         .iter()
-                        .rposition(|mission| mission.nation == new_owner.nation())
+                        .rposition(|(_, mission)| mission.nation == new_owner.nation())
                         .map_or_else(
                             || {
                                 self.missions
                                     .iter()
-                                    .position(|mission| mission.nation > new_owner.nation())
+                                    .position(|(_, mission)| mission.nation > new_owner.nation())
                                     .unwrap_or(self.missions.len())
                             },
                             |position| position + 1,
                         );
-                    self.missions.insert(
+                    let id = self.object_ids.mission();
+                    self.missions.shift_insert(
                         insert_at,
+                        id,
                         MissionState {
                             nation: new_owner.nation(),
                             data: MissionData::DefendProvince {
                                 province,
                                 army: ArmyMissionState {
                                     required_equipage_bits: [0; 5],
-                                    units: Vec::new(),
+                                    units: IndexSet::new(),
                                 },
                             },
                             path_nation: None,

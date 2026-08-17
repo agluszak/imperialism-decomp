@@ -294,13 +294,13 @@ impl GameState {
         province: ProvinceId,
     ) -> impl Iterator<Item = &MilitaryUnitState> {
         self.military_units
-            .iter()
+            .values()
             .filter(move |unit| unit.stationed_province() == Some(province))
     }
 
     pub(crate) fn invasion_capacity(&self, nation: NationId, province: ProvinceId) -> i32 {
         self.task_forces
-            .iter()
+            .values()
             .filter(|force| {
                 force.nation == nation
                     && force.order == TaskForceOrder::Marines
@@ -335,7 +335,7 @@ impl GameState {
         let mut vector = [0.0_f32; 4];
         for ship in self
             .ships
-            .iter()
+            .values()
             .filter(|ship| ship.location == zone && matches(ship))
         {
             let max_strength = ship_stock_cap(ship.ship_type);
