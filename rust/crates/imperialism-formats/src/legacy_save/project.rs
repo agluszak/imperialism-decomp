@@ -708,11 +708,11 @@ fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
         secondary_civilian_hills: researched(nation, Technology::BessemerConverter),
         secondary_civilian_swamp: researched(nation, Technology::SquareSetTimbering),
         fort_level_cap: if status(nation, Technology::LargeArtillery) != 0 {
-            FortLevelCap::THREE
+            FortLevelCap::Three
         } else if status(nation, Technology::BessemerConverter) != 0 {
-            FortLevelCap::TWO
+            FortLevelCap::Two
         } else {
-            FortLevelCap::ONE
+            FortLevelCap::One
         },
     });
 

@@ -1,10 +1,25 @@
 use crate::*;
 
-const ARMY_POWER_WEIGHT: [i32; 30] = [
+const ARMY_POWER_WEIGHT: MilitaryUnitTable<i32> = MilitaryUnitTable::from_array([
     70, 137, 135, 164, 165, 211, 193, 300, 95, 243, 230, 265, 230, 275, 323, 549, 170, 450, 471,
     495, 493, 1010, 715, 913, 193, 260, 360, 200, 200, 200,
-];
-const NAVY_POWER_WEIGHT: [i32; 14] = [0, 0, 0, 150, 300, 0, 0, 200, 400, 650, 0, 450, 1500, 1200];
+]);
+const NAVY_POWER_WEIGHT: ShipTypeTable<i32> =
+    ShipTypeTable::from_array([0, 0, 0, 150, 300, 0, 0, 200, 400, 650, 0, 450, 1500, 1200]);
+
+#[derive(Clone, Copy, Default)]
+struct CouncilPower {
+    military: i32,
+    relations: i32,
+    territory_and_population: i32,
+    commodity: i32,
+}
+
+impl CouncilPower {
+    const fn total(self) -> i32 {
+        self.military + self.relations + self.territory_and_population + self.commodity
+    }
+}
 
 impl GameState {
     /// Retail's decade-boundary Council of Governors ballot rebuild.
@@ -32,7 +47,7 @@ impl GameState {
 
         let power = self.council_comparative_power();
         let mut ranking: Vec<_> = MajorNationId::all()
-            .map(|nation| (nation, power[nation].iter().sum::<i32>()))
+            .map(|nation| (nation, power[nation].total()))
             .collect();
         for left in 0..ranking.len() - 1 {
             for right in left + 1..ranking.len() {
@@ -76,11 +91,11 @@ impl GameState {
             } else {
                 chairman_side[nation] =
                     (i32::from(self.diplomacy.standings[chairman.nation()][nation]) * 100 / 255
-                        + power[chairman][1])
+                        + power[chairman].relations)
                         / 2;
                 counterpart_side[nation] =
                     (i32::from(self.diplomacy.standings[counterpart.nation()][nation]) * 100 / 255
-                        + power[counterpart][1])
+                        + power[counterpart].relations)
                         / 2;
             }
         }
@@ -114,8 +129,8 @@ impl GameState {
                     .is_some();
                 let (mut chairman_score, mut counterpart_score) = if former_major {
                     (
-                        (power[chairman][0] + power[chairman][3]) / 2,
-                        (power[counterpart][0] + power[counterpart][3]) / 2,
+                        (power[chairman].military + power[chairman].commodity) / 2,
+                        (power[counterpart].military + power[counterpart].commodity) / 2,
                     )
                 } else {
                     (chairman_side[owner], counterpart_side[owner])
@@ -191,8 +206,8 @@ impl GameState {
         }
     }
 
-    fn council_comparative_power(&self) -> MajorNationTable<[i32; 4]> {
-        let mut rows: MajorNationTable<[i32; 4]> = MajorNationTable::default();
+    fn council_comparative_power(&self) -> MajorNationTable<CouncilPower> {
+        let mut rows: MajorNationTable<CouncilPower> = MajorNationTable::default();
         let mut territory: MajorNationTable<i32> = MajorNationTable::default();
         let mut technology: MajorNationTable<i32> = MajorNationTable::default();
         let mut maxima = [1; 5];
@@ -200,16 +215,14 @@ impl GameState {
             if !self.event_eligible(nation.nation()) {
                 continue;
             }
-            rows[nation][0] = self
+            rows[nation].military = self
                 .military_units
                 .values()
                 .filter(|unit| {
                     unit.nation == nation.nation() && !unit.unit_type.is_militia_category()
                 })
                 .map(|unit| {
-                    ARMY_POWER_WEIGHT[unit.unit_type as usize]
-                        * (i32::from(unit.experience) / 100 + 10)
-                        / 10
+                    ARMY_POWER_WEIGHT[unit.unit_type] * (i32::from(unit.experience) / 100 + 10) / 10
                 })
                 .sum::<i32>()
                 + self
@@ -217,8 +230,7 @@ impl GameState {
                     .values()
                     .filter(|ship| ship.nation == nation.nation())
                     .map(|ship| {
-                        NAVY_POWER_WEIGHT[ship.ship_type as usize]
-                            * (i32::from(ship.experience) / 100 + 10)
+                        NAVY_POWER_WEIGHT[ship.ship_type] * (i32::from(ship.experience) / 100 + 10)
                             / 10
                     })
                     .sum::<i32>()
@@ -231,28 +243,28 @@ impl GameState {
                     relation_count += 1;
                 }
             }
-            rows[nation][1] = relation_sum / relation_count;
-            rows[nation][3] = ManufacturedItem::ALL[4..]
+            rows[nation].relations = relation_sum / relation_count;
+            rows[nation].commodity = ManufacturedItem::ALL[4..]
                 .iter()
                 .map(|&item| self.nations.majors[&nation].city.orders.items[item].accumulated_value)
                 .sum();
             territory[nation] = self.nations.majors[&nation].common.owned_regions().len() as i32;
             technology[nation] = i32::from(self.nations.majors[&nation].city.population.count);
-            maxima[0] = maxima[0].max(rows[nation][0]);
-            maxima[1] = maxima[1].max(rows[nation][1]);
+            maxima[0] = maxima[0].max(rows[nation].military);
+            maxima[1] = maxima[1].max(rows[nation].relations);
             maxima[2] = maxima[2].max(territory[nation]);
             maxima[3] = maxima[3].max(technology[nation]);
-            maxima[4] = maxima[4].max(rows[nation][3]);
+            maxima[4] = maxima[4].max(rows[nation].commodity);
         }
         for nation in MajorNationId::all() {
             if !self.event_eligible(nation.nation()) {
                 continue;
             }
-            rows[nation][0] = rows[nation][0] * 100 / maxima[0];
-            rows[nation][1] = rows[nation][1] * 100 / maxima[1];
-            rows[nation][2] =
+            rows[nation].military = rows[nation].military * 100 / maxima[0];
+            rows[nation].relations = rows[nation].relations * 100 / maxima[1];
+            rows[nation].territory_and_population =
                 territory[nation] * 50 / maxima[2] + technology[nation] * 50 / maxima[3];
-            rows[nation][3] = rows[nation][3] * 100 / maxima[4];
+            rows[nation].commodity = rows[nation].commodity * 100 / maxima[4];
         }
         rows
     }

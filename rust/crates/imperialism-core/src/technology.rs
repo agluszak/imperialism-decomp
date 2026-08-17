@@ -1,6 +1,6 @@
 use crate::*;
 use enum_map::{Enum, EnumMap};
-use serde::{Deserialize, Deserializer, Serialize};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 const TECH_ITEM_PURCHASE_COST: TechnologyTable<i32> = TechnologyTable::from_array([
     0, 0, 1000, 1000, 1500, 1500, 1500, 1500, 3000, 3000, 3000, 6000, 7000, 10000, 12000, 12000,
@@ -77,7 +77,7 @@ impl Default for CityTechnologyCapabilities {
             primary_civilian_distance_terrain: CivilianTerrainAccess::default(),
             secondary_civilian_hills: false,
             secondary_civilian_swamp: false,
-            fort_level_cap: FortLevelCap::ONE,
+            fort_level_cap: FortLevelCap::One,
         }
     }
 }
@@ -247,17 +247,27 @@ pub struct CivilianTerrainAccess {
     pub swamp: bool,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct FortLevelCap(i8);
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[repr(i8)]
+pub enum FortLevelCap {
+    #[default]
+    One = 1,
+    Two = 2,
+    Three = 3,
+}
 
 impl FortLevelCap {
-    pub const ONE: Self = Self(1);
-    pub const TWO: Self = Self(2);
-    pub const THREE: Self = Self(3);
-
     pub const fn get(self) -> i8 {
-        self.0
+        self as i8
+    }
+}
+
+impl Serialize for FortLevelCap {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_i8(self.get())
     }
 }
 
@@ -267,19 +277,13 @@ impl<'de> Deserialize<'de> for FortLevelCap {
         D: Deserializer<'de>,
     {
         match i8::deserialize(deserializer)? {
-            1 => Ok(Self::ONE),
-            2 => Ok(Self::TWO),
-            3 => Ok(Self::THREE),
+            1 => Ok(Self::One),
+            2 => Ok(Self::Two),
+            3 => Ok(Self::Three),
             value => Err(serde::de::Error::custom(format!(
                 "fort level cap {value} is outside 1..=3"
             ))),
         }
-    }
-}
-
-impl Default for FortLevelCap {
-    fn default() -> Self {
-        Self::ONE
     }
 }
 
@@ -774,11 +778,11 @@ fn sync_city_capabilities_from_research(technology: &mut TechnologyState, nation
     capabilities.secondary_civilian_hills = researched(Technology::BessemerConverter);
     capabilities.secondary_civilian_swamp = researched(Technology::SquareSetTimbering);
     capabilities.fort_level_cap = if started(Technology::LargeArtillery) {
-        FortLevelCap::THREE
+        FortLevelCap::Three
     } else if started(Technology::BessemerConverter) {
-        FortLevelCap::TWO
+        FortLevelCap::Two
     } else {
-        FortLevelCap::ONE
+        FortLevelCap::One
     };
 }
 
