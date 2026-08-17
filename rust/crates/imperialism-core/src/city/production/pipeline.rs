@@ -326,8 +326,9 @@ mod tests {
         state.produce_city_units(nation);
 
         assert_eq!(state.ships.len(), 1);
-        assert_eq!(state.ships[0].ship_type, ShipType::Frigate);
-        assert_eq!(state.ships[0].location, OceanZoneId::new(1));
+        let (_, ship) = state.ships.first().expect("frigate was launched");
+        assert_eq!(ship.ship_type, ShipType::Frigate);
+        assert_eq!(ship.location, OceanZoneId::new(1));
     }
 
     fn test_frigate(nation: MajorNationId) -> ShipState {
