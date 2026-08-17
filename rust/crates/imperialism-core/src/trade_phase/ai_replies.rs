@@ -299,8 +299,7 @@ impl GameState {
                 TradeCommodity::Timber | TradeCommodity::Coal | TradeCommodity::Iron
             ) {
                 self.foreign_trade_mut(buyer).capability_flag_16 = cap;
-            } else if resource < 7 && self.foreign_trade(buyer).trade_partner_enabled[resource] != 0
-            {
+            } else if resource < 7 && self.foreign_trade(buyer).trade_partner_enabled[resource] {
                 self.foreign_trade_mut(buyer).capability_flag_16 = if phase.arms_advanced_split == 0
                 {
                     cap / 3
@@ -317,7 +316,7 @@ impl GameState {
                 | TradeCommodity::Coal
         ) {
             self.foreign_trade_mut(buyer).capability_flag_16 = cap;
-        } else if resource < 7 && self.foreign_trade(buyer).trade_partner_enabled[resource] != 0 {
+        } else if resource < 7 && self.foreign_trade(buyer).trade_partner_enabled[resource] {
             self.foreign_trade_mut(buyer).capability_flag_16 = if phase.arms_basic_split == 0 {
                 cap / 3
             } else {
@@ -326,7 +325,7 @@ impl GameState {
             phase.arms_basic_split += 1;
         }
         if resource < 7 {
-            self.foreign_trade_mut(buyer).trade_partner_enabled[resource] = 0;
+            self.foreign_trade_mut(buyer).trade_partner_enabled[resource] = false;
         }
         self.accept_from_capability_flag(buyer, seller, amount, price, commodity, true, phase);
     }

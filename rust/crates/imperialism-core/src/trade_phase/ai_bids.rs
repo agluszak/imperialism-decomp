@@ -29,7 +29,7 @@ impl GameState {
         let treasury = self.nations.majors[&nation].common.treasury;
         {
             let trade = self.foreign_trade_mut(nation);
-            trade.trade_partner_enabled = [1; 7];
+            trade.trade_partner_enabled = [true; 7];
             trade.capability_flag_16 = 0;
             if treasury < 0 {
                 trade.capability_flag_14 = 1;

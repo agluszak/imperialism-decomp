@@ -1197,7 +1197,7 @@ fn foreign_trade_state(minister: &LegacyForeignMinisterState) -> ForeignTradeSta
         preferred_resources,
         capability_flag_14: minister.scalar_fields[2],
         capability_flag_16: minister.scalar_fields[3],
-        trade_partner_enabled: minister.trade_partner_enabled,
+        trade_partner_enabled: minister.trade_partner_enabled.map(|flag| flag != 0),
     }
 }
 
