@@ -75,7 +75,7 @@ impl GameState {
             }
             let slot = usize::from(nation.get());
             let mut category = [0.0_f32; 4];
-            for ship in &self.ships {
+            for ship in self.ships.values() {
                 if ship.nation != nation.nation() {
                     continue;
                 }
@@ -87,7 +87,7 @@ impl GameState {
             metrics.queue_divergence[slot] = queue_divergence(category);
 
             let mut unit_vector = ActionClassScores::default();
-            for unit in &self.military_units {
+            for unit in self.military_units.values() {
                 if unit.nation != nation.nation() || unit.unit_type.is_militia_category() {
                     continue;
                 }
@@ -95,7 +95,7 @@ impl GameState {
             }
             metrics.mobile_score[slot] = unit_vector.similarity(TACTICAL_COMPOSITION.fort_siege);
             metrics.mobile_divergence[slot] = unit_vector.similarity(TACTICAL_COMPOSITION.baseline);
-            for unit in &self.military_units {
+            for unit in self.military_units.values() {
                 if unit.nation != nation.nation() || !unit.unit_type.is_militia_category() {
                     continue;
                 }

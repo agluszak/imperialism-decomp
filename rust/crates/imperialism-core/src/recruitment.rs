@@ -55,7 +55,7 @@ impl MapMgr {
 impl GameState {
     pub fn selected_military_power_score(&self, nation: NationId) -> i32 {
         self.military_units
-            .iter()
+            .values()
             .filter(|unit| unit.nation == nation)
             .map(|unit| unit.unit_type.arms_required())
             .sum()

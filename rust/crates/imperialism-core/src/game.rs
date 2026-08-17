@@ -264,7 +264,7 @@ impl GameState {
     /// `TCivMgr::SelectFirstAvailableCivilianForNation` candidate (list order).
     pub fn first_idle_civilian(&self, nation: NationId) -> Option<&CivilianUnitState> {
         self.civilian_units
-            .iter()
+            .values()
             .find(|unit| unit.nation() == nation && *unit.order() == CivilianWorkOrder::Idle)
     }
 
