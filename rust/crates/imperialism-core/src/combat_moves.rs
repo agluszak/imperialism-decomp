@@ -724,8 +724,7 @@ mod tests {
         seed_province(&mut state, 2, 0, &[1]);
         let id = push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
         assert_eq!(state.do_combat_moves(), None);
-        let unit = &state.military_units[0];
-        assert_eq!(unit.id, id);
+        let unit = &state.military_units[&id];
         assert_eq!(unit.stationed_province, Some(ProvinceId::new(2)));
         assert_eq!(unit.order.code(), MilitaryOrderCode::Idle);
         assert_eq!(unit.order.targets(), &[Some(ProvinceId::new(1)); 3]);

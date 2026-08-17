@@ -1332,7 +1332,7 @@ mod tests {
         let mut state = crate::test_support::game_state();
         let (first, second) = interior();
         let nation = NationId::new(0);
-        civilian_on(
+        let farmer = civilian_on(
             &mut state,
             2,
             CivilianUnitKind::Farmer,
@@ -1340,7 +1340,7 @@ mod tests {
             CivilianWorkOrder::Idle,
             nation,
         );
-        civilian_on(
+        let miner = civilian_on(
             &mut state,
             3,
             CivilianUnitKind::Miner,
@@ -1351,16 +1351,25 @@ mod tests {
 
         state.set_country_status(nation, CountryStatus::ProtectorateOf(NationId::new(1)));
         state.do_civilians();
-        assert_eq!(state.civilian_units[0].unit_type, CivilianUnitKind::Farmer);
+        assert_eq!(
+            state.civilian_units[&farmer].unit_type,
+            CivilianUnitKind::Farmer
+        );
         assert!(matches!(
-            state.civilian_units[1].order,
+            state.civilian_units[&miner].order,
             CivilianWorkOrder::DevelopResource { .. }
         ));
 
         state.set_country_status(nation, CountryStatus::Independent);
         state.do_civilians();
-        assert_eq!(state.civilian_units[0].unit_type, CivilianUnitKind::Miner);
-        assert_eq!(state.civilian_units[1].unit_type, CivilianUnitKind::Farmer);
-        assert_eq!(state.civilian_units[0].order, CivilianWorkOrder::Idle);
+        assert_eq!(
+            state.civilian_units[&miner].unit_type,
+            CivilianUnitKind::Miner
+        );
+        assert_eq!(
+            state.civilian_units[&farmer].unit_type,
+            CivilianUnitKind::Farmer
+        );
+        assert_eq!(state.civilian_units[&miner].order, CivilianWorkOrder::Idle);
     }
 }
