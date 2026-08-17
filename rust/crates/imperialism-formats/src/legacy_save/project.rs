@@ -323,7 +323,7 @@ fn navy_mission_state(mission: &LegacyNavyMission) -> NavyMissionState {
         task_force: None,
         state: mission.state,
         required_equipage_bits: mission.required_equipage_bits,
-        ships: Vec::new(),
+        ships: Default::default(),
     }
 }
 

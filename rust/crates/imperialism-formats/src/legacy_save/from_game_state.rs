@@ -26,21 +26,18 @@ impl LegacySaveV62 {
                 foreign_minister_personality_to_retail(nation.economy.foreign_minister_personality);
             let military = state
                 .military_units()
-                .iter()
-                .filter(|unit| unit.nation() == major_id.nation())
-                .cloned()
+                .filter(|(_, unit)| unit.nation() == major_id.nation())
+                .map(|(_, unit)| unit.clone())
                 .collect::<Vec<_>>();
             let civilians = state
                 .civilian_units()
-                .iter()
-                .filter(|unit| unit.nation() == major_id.nation())
-                .cloned()
+                .filter(|(_, unit)| unit.nation() == major_id.nation())
+                .map(|(_, unit)| unit.clone())
                 .collect::<Vec<_>>();
             let missions = state
                 .missions()
-                .iter()
-                .filter(|mission| mission.nation == major_id.nation())
-                .cloned()
+                .filter(|(_, mission)| mission.nation == major_id.nation())
+                .map(|(_, mission)| mission.clone())
                 .collect::<Vec<_>>();
             let pending = &state.pending().nations[major_id];
             major_nations.push(major_nation_dto(
@@ -64,9 +61,8 @@ impl LegacySaveV62 {
             nation_names[slot] = minor.common.display_name.clone();
             let military = state
                 .military_units()
-                .iter()
-                .filter(|unit| unit.nation() == minor_id.nation())
-                .cloned()
+                .filter(|(_, unit)| unit.nation() == minor_id.nation())
+                .map(|(_, unit)| unit.clone())
                 .collect::<Vec<_>>();
             minor_nations.push(minor_nation_dto(minor, minor_id, &military));
         }
@@ -685,8 +681,7 @@ fn army_dto(
 fn navy_dto(state: &GameState) -> LegacyNavyState {
     let ships: Vec<LegacyShip> = state
         .ships()
-        .iter()
-        .map(|ship| LegacyShip {
+        .map(|(_, ship)| LegacyShip {
             ship_type: ship.ship_type as i16,
             aggression: ship.aggression,
             nation: i16::from(ship.nation.get()),
@@ -699,22 +694,28 @@ fn navy_dto(state: &GameState) -> LegacyNavyState {
         })
         .collect();
     let ship_count = i16::try_from(ships.len()).expect("ship count fits a save short");
+    let ship_ordinals: std::collections::HashMap<ShipId, i16> = state
+        .ships()
+        .enumerate()
+        .map(|(ordinal, (id, _))| {
+            (
+                *id,
+                i16::try_from(ordinal).expect("ship ordinal fits a save short"),
+            )
+        })
+        .collect();
     let admirals = state
         .admirals()
-        .iter()
-        .map(|admiral| LegacyAdmiral {
+        .map(|(_, admiral)| LegacyAdmiral {
             nation: i16::from(admiral.nation.get()),
             name: admiral.name.clone(),
             experience: admiral.experience,
             ship_index: admiral
                 .ship
                 .map(|id| {
-                    let ordinal = state
-                        .ships()
-                        .iter()
-                        .position(|ship| ship.id == id)
-                        .expect("admiral ship is present in the retail ship list");
-                    i16::try_from(ordinal).expect("admiral ship index fits a save short")
+                    *ship_ordinals
+                        .get(&id)
+                        .expect("admiral ship is present in the retail ship list")
                 })
                 .unwrap_or(ship_count),
         })
