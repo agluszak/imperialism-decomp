@@ -39,6 +39,11 @@ semantics.
   `imperialism-formats` until their gameplay meaning is recovered. Whole-state differential
   comparison must not force unknown save bytes into the domain model.
 - Prefer semantic Rust types, typed IDs, and `Option` over raw retail storage conventions.
+- Keep a fixed retail domain in its existing typed ordinal table or array. Store a dynamic game
+  object in `IndexMap<Id, State>`: the key is its stable identity and map order is the retail
+  list order. Use `IndexSet<Id>` for ordered, unique object references and `IndexMap<Id, Flag>`
+  for ordered references with per-link state. Do not use a Rust collection index as object
+  identity, add sidecar order vectors, or introduce an entity/arena framework.
 - Keep retail-sized semantic IDs when their width is natural. Use `Option` instead of integer
   sentinels. Use `EnumMap` for closed-enum tables. Do not add collection wrappers or widen IDs
   merely to eliminate casts; explicit boundary conversions are fine.
