@@ -562,11 +562,12 @@ mod tests {
         let _ = state.do_military();
 
         assert_eq!(state.missions.len(), 1);
-        assert_eq!(state.missions[0].nation, attacker.nation());
-        assert_eq!(state.missions[0].marker, 1);
-        assert_eq!(state.missions[0].path_nation, Some(defender.nation()));
-        assert_eq!(state.missions[0].state, 2);
-        match &state.missions[0].data {
+        let (_, mission) = state.missions.first().expect("attack mission was queued");
+        assert_eq!(mission.nation, attacker.nation());
+        assert_eq!(mission.marker, 1);
+        assert_eq!(mission.path_nation, Some(defender.nation()));
+        assert_eq!(mission.state, 2);
+        match &mission.data {
             MissionData::AttackProvince(attack) => {
                 assert_eq!(attack.target_province, ProvinceId::new(1));
                 assert_eq!(attack.present_province, None);

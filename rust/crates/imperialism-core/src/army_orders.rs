@@ -934,11 +934,23 @@ mod tests {
         place_unit(&mut state, MilitaryUnitKind::Regulars, province, 2);
         state.set_idle_unit_orders_on_province(province, ArmyIdleOrderMode::Latr);
         assert_eq!(
-            state.military_units[0].order.code(),
+            state
+                .military_units
+                .values()
+                .next()
+                .expect("first unit")
+                .order
+                .code(),
             MilitaryOrderCode::Latr
         );
         assert_eq!(
-            state.military_units[1].order.code(),
+            state
+                .military_units
+                .values()
+                .nth(1)
+                .expect("second unit")
+                .order
+                .code(),
             MilitaryOrderCode::Sleep
         );
     }
@@ -992,24 +1004,54 @@ mod tests {
         place_unit(&mut state, MilitaryUnitKind::Regulars, province, 2);
         state.apply_army_province_selection(Some(province));
         assert_eq!(
-            state.military_units[0].order.code(),
+            state
+                .military_units
+                .values()
+                .next()
+                .expect("first unit")
+                .order
+                .code(),
             MilitaryOrderCode::Idle
         );
         assert_eq!(
-            state.military_units[1].order.code(),
+            state
+                .military_units
+                .values()
+                .nth(1)
+                .expect("second unit")
+                .order
+                .code(),
             MilitaryOrderCode::Idle
         );
         assert_eq!(
-            state.military_units[2].order.code(),
+            state
+                .military_units
+                .values()
+                .nth(2)
+                .expect("third unit")
+                .order
+                .code(),
             MilitaryOrderCode::Done
         );
         assert_eq!(
-            state.military_units[3].order.code(),
+            state
+                .military_units
+                .values()
+                .nth(3)
+                .expect("fourth unit")
+                .order
+                .code(),
             MilitaryOrderCode::Sleep
         );
         state.apply_army_province_selection(None);
         assert_eq!(
-            state.military_units[0].order.code(),
+            state
+                .military_units
+                .values()
+                .next()
+                .expect("first unit")
+                .order
+                .code(),
             MilitaryOrderCode::Idle
         );
     }
@@ -1116,10 +1158,34 @@ mod tests {
         state.map[tile].province = Some(to);
         let outcome = state.handle_army_selected_map_click(nation, from, tile);
         assert_eq!(outcome, ArmyMapClickOutcome::IssuedOrders);
-        assert_eq!(state.military_units[0].order.code(), UNIT_ORDER_REDEPLOY);
-        assert_eq!(state.military_units[0].order.target(), Some(to));
         assert_eq!(
-            state.military_units[1].order.code(),
+            state
+                .military_units
+                .values()
+                .next()
+                .expect("first unit")
+                .order
+                .code(),
+            UNIT_ORDER_REDEPLOY
+        );
+        assert_eq!(
+            state
+                .military_units
+                .values()
+                .next()
+                .expect("first unit")
+                .order
+                .target(),
+            Some(to)
+        );
+        assert_eq!(
+            state
+                .military_units
+                .values()
+                .nth(1)
+                .expect("second unit")
+                .order
+                .code(),
             MilitaryOrderCode::Idle
         );
     }
