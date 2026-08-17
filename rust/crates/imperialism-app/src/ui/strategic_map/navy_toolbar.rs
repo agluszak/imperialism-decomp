@@ -10,7 +10,7 @@ use crate::ui::GameSession;
 use bevy::prelude::*;
 use bevy::ui::{Checked, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, ActivateOnPress};
-use imperialism_core::NavalAggression;
+use imperialism_core::{NavalAggression, NavyToolbarClass};
 use imperialism_formats::*;
 
 const PAGE_TAG: FourCc = fourcc!("unav");
@@ -23,13 +23,13 @@ const TRANSPARENT_INDEX: u8 = 0x10;
 pub(super) struct NavyToolbarPage;
 
 #[derive(Component, Clone, Copy)]
-struct NavyClass(u8);
+struct NavyClass(NavyToolbarClass);
 
 #[derive(Component)]
 struct NavyClassShip;
 
 #[derive(Component, Clone, Copy)]
-struct NavyClassArrow(u8);
+struct NavyClassArrow(NavyToolbarClass);
 
 #[derive(Component, Clone, Copy)]
 enum NavyCommand {
@@ -71,15 +71,15 @@ pub(crate) fn bind_navy_toolbar(
     let arrow_atlas = assets
         .transparent_picture(PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)
         .expect("retail numbered-arrow atlas 804 must load");
-    const CLASS_TAGS: [FourCc; 4] = [
-        fourcc!("cls0"),
-        fourcc!("cls1"),
-        fourcc!("cls2"),
-        fourcc!("cls3"),
+    const CLASS_TAGS: [(NavyToolbarClass, FourCc); 4] = [
+        (NavyToolbarClass::Class0, fourcc!("cls0")),
+        (NavyToolbarClass::Class1, fourcc!("cls1")),
+        (NavyToolbarClass::Class2, fourcc!("cls2")),
+        (NavyToolbarClass::Class3, fourcc!("cls3")),
     ];
-    for (index, tag) in CLASS_TAGS.into_iter().enumerate() {
+    for (class, tag) in CLASS_TAGS {
         let cluster = tree.child(page, tag);
-        commands.entity(cluster).insert(NavyClass(index as u8));
+        commands.entity(cluster).insert(NavyClass(class));
         let ship = tree.child(cluster, fourcc!("ship"));
         commands
             .entity(ship)
@@ -88,7 +88,7 @@ pub(crate) fn bind_navy_toolbar(
         commands
             .entity(arrow)
             .insert((
-                NavyClassArrow(index as u8),
+                NavyClassArrow(class),
                 ImageNode {
                     image: arrow_atlas.clone(),
                     rect: Some(Rect::from_corners(
@@ -180,12 +180,9 @@ fn sync_navy_toolbar(
         .filter(|_| interaction.mode == MapInteractionMode::Navy);
     let toolbar = session.game.navy_toolbar_counts(force);
     for (entity, class) in &classes {
-        let slot = usize::from(class.0);
-        let available = toolbar.available[slot];
-        let selected = toolbar.selected[slot];
-        let picture = session
-            .game
-            .navy_toolbar_class_picture_id(i16::from(class.0));
+        let available = toolbar.available[class.0];
+        let selected = toolbar.selected[class.0];
+        let picture = session.game.navy_toolbar_class_picture_id(class.0);
         for (child_of, mut image, mut visibility) in &mut ships {
             if child_of.parent() != entity {
                 continue;
@@ -334,5 +331,5 @@ fn on_navy_class_arrow(
     // Top half 0x64 increment/select; bottom 0x65 decrement/deselect.
     session
         .game
-        .select_task_force_toolbar_class(force, i16::from(arrow.0), normalized.y < 0.0);
+        .select_task_force_toolbar_class(force, arrow.0, normalized.y < 0.0);
 }

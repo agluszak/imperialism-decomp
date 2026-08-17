@@ -131,7 +131,9 @@ pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,
 };
 pub use nations::{AutoGreatPowerState, MajorNation, MinorNation, NationCommonState, Nations};
-pub use navy_orders::{NavyOrder, NavySelectionClick, NavyTileClick, NavyToolbarCounts};
+pub use navy_orders::{
+    NavyOrder, NavySelectionClick, NavyTileClick, NavyToolbarClass, NavyToolbarCounts,
+};
 pub use navy_orders::{NavyOrdersContinuation, PendingNavalBattle};
 pub use news::{
     DiplomacyNotice, DiplomacyProposal, InterNationNewsKind, LandSale, NEWS_TEMPLATE_COUNT,

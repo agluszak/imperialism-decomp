@@ -48,8 +48,8 @@ impl NavyOrder {
 /// `TNavyToolbarCluster` class buckets (`cls0..cls3`).
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct NavyToolbarCounts {
-    pub available: [i16; 4],
-    pub selected: [i16; 4],
+    pub available: NavyToolbarClassTable<i16>,
+    pub selected: NavyToolbarClassTable<i16>,
 }
 
 /// `TNavyMgr::SelectionClick` outcomes.
@@ -77,9 +77,8 @@ pub enum NavyTileClick {
     Roster,
 }
 
-fn toolbar_bucket(ship_type: ShipType) -> Option<usize> {
-    let bucket = NAVY_DESCRIPTORS[ship_type].toolbar_bucket;
-    (0..4).contains(&bucket).then_some(bucket as usize)
+fn toolbar_class(ship_type: ShipType) -> Option<NavyToolbarClass> {
+    NAVY_DESCRIPTORS[ship_type].toolbar_class
 }
 
 impl GameState {
@@ -127,7 +126,7 @@ impl GameState {
     pub fn select_task_force_toolbar_class(
         &mut self,
         force: TaskForceId,
-        class: i16,
+        class: NavyToolbarClass,
         selecting: bool,
     ) {
         let Some(entry) = self.task_force(force) else {
@@ -135,7 +134,7 @@ impl GameState {
         };
         let Some(ship_id) = entry.ships.iter().find_map(|(&ship_id, &selected)| {
             let ship = self.ship(ship_id)?;
-            (toolbar_bucket(ship.ship_type) == Some(class as usize) && selected != selecting)
+            (toolbar_class(ship.ship_type) == Some(class) && selected != selecting)
                 .then_some(ship_id)
         }) else {
             return;
@@ -153,22 +152,22 @@ impl GameState {
     pub fn navy_toolbar_counts(&self, force: Option<TaskForceId>) -> NavyToolbarCounts {
         let Some(force) = force.and_then(|id| self.task_force(id)) else {
             return NavyToolbarCounts {
-                available: [0; 4],
-                selected: [-1; 4],
+                available: NavyToolbarClassTable::default(),
+                selected: NavyToolbarClassTable::from_array([-1; 4]),
             };
         };
         let mut counts = NavyToolbarCounts {
-            available: [0; 4],
-            selected: [0; 4],
+            available: NavyToolbarClassTable::default(),
+            selected: NavyToolbarClassTable::default(),
         };
         for (&ship_id, &selected) in &force.ships {
             let Some(ship) = self.ship(ship_id) else {
                 continue;
             };
-            if let Some(bucket) = toolbar_bucket(ship.ship_type) {
-                counts.available[bucket] += 1;
+            if let Some(class) = toolbar_class(ship.ship_type) {
+                counts.available[class] += 1;
                 if selected {
-                    counts.selected[bucket] += 1;
+                    counts.selected[class] += 1;
                 }
             }
         }
@@ -322,11 +321,11 @@ impl GameState {
     }
 
     /// `GetEnabledIndustryCapabilitySlotByClass` then picture `slot + 0x5e6`.
-    pub fn navy_toolbar_class_picture_id(&self, class: i16) -> Option<i16> {
+    pub fn navy_toolbar_class_picture_id(&self, class: NavyToolbarClass) -> Option<i16> {
         for slot in (1..14).rev() {
-            if ShipType::from_index(slot as u8).is_some_and(|ship_type| {
-                NAVY_DESCRIPTORS[ship_type].toolbar_bucket == i32::from(class)
-            }) && self.technology.industry_enabled_by_slot[slot]
+            if ShipType::from_index(slot as u8)
+                .is_some_and(|ship_type| NAVY_DESCRIPTORS[ship_type].toolbar_class == Some(class))
+                && self.technology.industry_enabled_by_slot[slot]
             {
                 return Some(slot as i16 + 0x5e6);
             }

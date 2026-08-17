@@ -16,6 +16,30 @@ pub(crate) enum NavyPriorityComponent {
 
 pub(crate) type NavyPriorityTable<T> = EnumMap<NavyPriorityComponent, T>;
 
+/// Retail navy toolbar classes `cls0` through `cls3`.
+#[derive(Clone, Copy, Debug, Enum, Eq, PartialEq)]
+#[repr(i16)]
+pub enum NavyToolbarClass {
+    Class0,
+    Class1,
+    Class2,
+    Class3,
+}
+
+pub type NavyToolbarClassTable<T> = EnumMap<NavyToolbarClass, T>;
+
+impl NavyToolbarClass {
+    pub const fn from_retail(value: i16) -> Option<Self> {
+        match value {
+            0 => Some(Self::Class0),
+            1 => Some(Self::Class1),
+            2 => Some(Self::Class2),
+            3 => Some(Self::Class3),
+            _ => None,
+        }
+    }
+}
+
 /// Recovered navy-order descriptor columns. One semantic record; not the C++
 /// dword-column layout.
 #[derive(Clone, Copy, Debug)]
@@ -26,7 +50,7 @@ pub(crate) struct NavyOrderDescriptor {
     pub(crate) stock_cap: i32,
     pub(crate) navy_priority_weight: i32,
     pub(crate) resource_weight: i32,
-    pub(crate) toolbar_bucket: i32,
+    pub(crate) toolbar_class: Option<NavyToolbarClass>,
     pub(crate) descriptor_weight: i32,
     #[allow(dead_code)]
     pub(crate) priority_tier: i32,
@@ -40,7 +64,7 @@ const fn navy_descriptor(
     stock_cap: i32,
     navy_priority_weight: i32,
     resource_weight: i32,
-    toolbar_bucket: i32,
+    toolbar_class: Option<NavyToolbarClass>,
     descriptor_weight: i32,
     priority_tier: i32,
 ) -> NavyOrderDescriptor {
@@ -51,7 +75,7 @@ const fn navy_descriptor(
         stock_cap,
         navy_priority_weight,
         resource_weight,
-        toolbar_bucket,
+        toolbar_class,
         descriptor_weight,
         priority_tier,
     }
@@ -59,20 +83,50 @@ const fn navy_descriptor(
 
 pub(crate) const NAVY_DESCRIPTORS: ShipTypeTable<NavyOrderDescriptor> =
     ShipTypeTable::from_array([
-        navy_descriptor(0, 0, 0, 0, 0, 0, -1, 0, 0),
-        navy_descriptor(0, 0, 100, 600, 0, 2, -1, 1, 0),
-        navy_descriptor(0, 0, 95, 1000, 0, 4, -1, 1, 0),
-        navy_descriptor(300, 5, 90, 900, 4, 0, 1, 3, 1),
-        navy_descriptor(600, 6, 80, 1700, 3, 0, 0, 2, 1),
-        navy_descriptor(0, 0, 95, 900, 0, 8, -1, 1, 0),
-        navy_descriptor(0, 0, 100, 600, 0, 4, -1, 1, 0),
-        navy_descriptor(300, 7, 80, 700, 7, 0, 2, 5, 2),
-        navy_descriptor(500, 8, 45, 1200, 5, 0, 3, 3, 2),
-        navy_descriptor(1000, 10, 40, 1800, 6, 0, 0, 4, 3),
-        navy_descriptor(0, 0, 75, 1200, 0, 16, -1, 1, 0),
-        navy_descriptor(600, 9, 50, 1000, 8, 0, 1, 6, 3),
-        navy_descriptor(2000, 13, 30, 2800, 7, 0, 3, 5, 4),
-        navy_descriptor(1800, 13, 45, 2200, 9, 0, 2, 6, 4),
+        navy_descriptor(0, 0, 0, 0, 0, 0, None, 0, 0),
+        navy_descriptor(0, 0, 100, 600, 0, 2, None, 1, 0),
+        navy_descriptor(0, 0, 95, 1000, 0, 4, None, 1, 0),
+        navy_descriptor(300, 5, 90, 900, 4, 0, Some(NavyToolbarClass::Class1), 3, 1),
+        navy_descriptor(600, 6, 80, 1700, 3, 0, Some(NavyToolbarClass::Class0), 2, 1),
+        navy_descriptor(0, 0, 95, 900, 0, 8, None, 1, 0),
+        navy_descriptor(0, 0, 100, 600, 0, 4, None, 1, 0),
+        navy_descriptor(300, 7, 80, 700, 7, 0, Some(NavyToolbarClass::Class2), 5, 2),
+        navy_descriptor(500, 8, 45, 1200, 5, 0, Some(NavyToolbarClass::Class3), 3, 2),
+        navy_descriptor(
+            1000,
+            10,
+            40,
+            1800,
+            6,
+            0,
+            Some(NavyToolbarClass::Class0),
+            4,
+            3,
+        ),
+        navy_descriptor(0, 0, 75, 1200, 0, 16, None, 1, 0),
+        navy_descriptor(600, 9, 50, 1000, 8, 0, Some(NavyToolbarClass::Class1), 6, 3),
+        navy_descriptor(
+            2000,
+            13,
+            30,
+            2800,
+            7,
+            0,
+            Some(NavyToolbarClass::Class3),
+            5,
+            4,
+        ),
+        navy_descriptor(
+            1800,
+            13,
+            45,
+            2200,
+            9,
+            0,
+            Some(NavyToolbarClass::Class2),
+            6,
+            4,
+        ),
     ]);
 
 /// Retail industrial-cost lookup used by navy category 3. Separate from the
@@ -85,7 +139,7 @@ pub(crate) fn ship_stock_cap(ship_type: ShipType) -> i16 {
 }
 
 pub(crate) fn ship_creates_navy_object(ship_type: ShipType) -> bool {
-    NAVY_DESCRIPTORS[ship_type].toolbar_bucket >= 0
+    NAVY_DESCRIPTORS[ship_type].toolbar_class.is_some()
 }
 
 pub(crate) fn ship_display_stats(ship_type: ShipType) -> [i16; 6] {

@@ -1,4 +1,5 @@
 use crate::*;
+use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::ops::{Index, IndexMut};
 
@@ -286,7 +287,8 @@ impl MapMgr {
         province: ProvinceId,
         city_tile: TileId,
     ) -> (TileId, TileId) {
-        const PRIORITY: [i16; 8] = [10, 4, 7, 6, 8, 0, 9, 5];
+        const PRIORITY: TerrainKindTable<i16> =
+            TerrainKindTable::from_array([10, 4, 7, 6, 8, 0, 9, 5]);
 
         let neighbors = self.geometry().neighbors(city_tile);
         let mut primary = None;
@@ -296,7 +298,7 @@ impl MapMgr {
                 continue;
             };
             let tile = &self[neighbor];
-            let priority = PRIORITY[tile.terrain as usize];
+            let priority = PRIORITY[tile.terrain];
             if tile.province == Some(province) && primary_priority < priority {
                 primary = Some((direction, neighbor));
                 primary_priority = priority;
@@ -315,7 +317,7 @@ impl MapMgr {
                 continue;
             }
             let tile = &self[neighbor];
-            let mut priority = PRIORITY[tile.terrain as usize];
+            let mut priority = PRIORITY[tile.terrain];
             if tile.province == Some(province) {
                 priority += 0x14;
             }
@@ -700,7 +702,7 @@ impl<'de> Deserialize<'de> for RiverSprite {
     }
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, PartialEq, Serialize)]
 #[repr(u8)]
 #[serde(rename_all = "snake_case")]
 pub enum TerrainKind {
@@ -713,6 +715,8 @@ pub enum TerrainKind {
     Desert,
     Farmland,
 }
+
+pub type TerrainKindTable<T> = EnumMap<TerrainKind, T>;
 
 impl TerrainKind {
     pub const fn from_retail(value: i8) -> Option<Self> {

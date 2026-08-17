@@ -8,13 +8,13 @@ use crate::navy_orders::{
 };
 use crate::*;
 
-const ATTACK_RESOURCE_SCALE: [[f32; 4]; 5] = [
+const ATTACK_RESOURCE_SCALE: DifficultyTable<[f32; 4]> = DifficultyTable::from_array([
     [1.9, 2.3, 2.5, 2.7],
     [1.9, 2.3, 2.5, 2.7],
     [2.0, 2.3, 2.5, 2.7],
     [2.1, 2.3, 2.5, 2.7],
     [2.3, 2.5, 2.7, 2.9],
-];
+]);
 const NAVY_QUEUE_PROFILE: [i16; 4] = [40, 40, 20, 0];
 const UNIT_PRIORITY_WEIGHT: f32 = 0.33;
 const PRESSURE_UNSET: f32 = -1.0;
@@ -391,9 +391,8 @@ impl GameState {
         if similarity == 0.0 {
             similarity = 1.0;
         }
-        let difficulty = self.turn.difficulty as usize;
         let fort_column = (self.map.provinces[target].fort_level().max(0) as usize).min(3);
-        let scale = ATTACK_RESOURCE_SCALE[difficulty][fort_column] * similarity;
+        let scale = ATTACK_RESOURCE_SCALE[self.turn.difficulty][fort_column] * similarity;
         let profile = if fort {
             TACTICAL_COMPOSITION.open_field
         } else {

@@ -485,8 +485,8 @@ fn navy_toolbar_counts() {
     compare_native("navy_toolbar_counts", |state, _: NavyZoneCase| {
         let counts = state.navy_toolbar_counts(Some(first_task_force(state)));
         NavyToolbarResult {
-            available: counts.available,
-            selected: counts.selected,
+            available: counts.available.into_array(),
+            selected: counts.selected.into_array(),
         }
     })
     .unwrap();
@@ -496,7 +496,12 @@ fn navy_toolbar_counts() {
 #[ignore = "requires the native C++ oracle"]
 fn navy_select_ship() {
     compare_native("navy_select_ship", |state, case: NavySelectCase| {
-        state.select_task_force_toolbar_class(first_task_force(state), case.class, case.selecting);
+        state.select_task_force_toolbar_class(
+            first_task_force(state),
+            NavyToolbarClass::from_retail(case.class)
+                .expect("native navy toolbar fixture class is in 0..=3"),
+            case.selecting,
+        );
     })
     .unwrap();
 }
@@ -579,8 +584,8 @@ fn navy_empty_toolbar() {
     compare_native("navy_empty_toolbar", |state, _: ()| {
         let counts = state.navy_toolbar_counts(None);
         NavyToolbarResult {
-            available: counts.available,
-            selected: counts.selected,
+            available: counts.available.into_array(),
+            selected: counts.selected.into_array(),
         }
     })
     .unwrap();
