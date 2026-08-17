@@ -87,11 +87,7 @@ impl GameState {
                     self.give_attack_province_orders(nation, &attack);
                 }
                 MissionData::Invade { .. } => {
-                    let mission_index = self
-                        .missions
-                        .get_index_of(&mission_id)
-                        .expect("mission remains present");
-                    self.give_navy_mission_orders(mission_index);
+                    self.give_navy_mission_orders(mission_id);
                     let attack = match &self.missions[&mission_id].data {
                         MissionData::Invade { attack, .. } => attack.clone(),
                         _ => continue,
@@ -108,11 +104,7 @@ impl GameState {
                 | MissionData::ScatteredShips(_)
                 | MissionData::BlockadePort { .. }
                 | MissionData::Beachhead(_) => {
-                    let mission_index = self
-                        .missions
-                        .get_index_of(&mission_id)
-                        .expect("mission remains present");
-                    self.give_navy_mission_orders(mission_index);
+                    self.give_navy_mission_orders(mission_id);
                 }
             }
         }

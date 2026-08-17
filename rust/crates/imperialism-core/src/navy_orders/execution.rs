@@ -74,17 +74,17 @@ impl GameState {
         self.advance_turn(story_ids)
     }
 
-    pub(crate) fn give_navy_mission_orders(&mut self, mission_index: usize) {
-        let Some(navy) = navy_state(&self.missions[mission_index].data) else {
+    pub(crate) fn give_navy_mission_orders(&mut self, mission: MissionId) {
+        let Some(navy) = navy_state(&self.missions[&mission].data) else {
             return;
         };
-        let nation = self.missions[mission_index].nation;
+        let nation = self.missions[&mission].nation;
         let navy_state_code = navy.state;
         let target = navy.target_zone;
         let mut port = navy.resolved_port_zone;
         let ships: Vec<ShipId> = navy.ships.keys().copied().collect();
-        let kind = navy_action_kind(&self.missions[mission_index].data);
-        if let Some(navy) = navy_state_mut(&mut self.missions[mission_index].data) {
+        let kind = navy_action_kind(&self.missions[&mission].data);
+        if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
             for selected in navy.ships.values_mut() {
                 *selected = false;
             }
@@ -97,7 +97,7 @@ impl GameState {
             2 => {
                 if let Some(target) = target {
                     self.consolidate_mission_ships_to(&ships, target);
-                    let force = self.combine_force_at(mission_index, nation, &ships, target);
+                    let force = self.combine_force_at(mission, nation, &ships, target);
                     if let Some(force) = force {
                         self.give_navy_action_orders(force, nation, kind);
                     }
@@ -106,7 +106,7 @@ impl GameState {
             1 => {
                 if let Some(target) = target {
                     self.consolidate_mission_ships_to(&ships, target);
-                    let force = self.combine_force_at(mission_index, nation, &ships, target);
+                    let force = self.combine_force_at(mission, nation, &ships, target);
                     if let Some(force) = force {
                         self.task_force_mut(force)
                             .expect("mission task force exists")
@@ -119,13 +119,13 @@ impl GameState {
                     && let Some(target) = target
                 {
                     port = self.safest_nearby_zone(target, nation);
-                    if let Some(navy) = navy_state_mut(&mut self.missions[mission_index].data) {
+                    if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
                         navy.resolved_port_zone = port;
                     }
                 }
                 if let Some(port) = port {
                     self.consolidate_mission_ships_to(&ships, port);
-                    let force = self.combine_force_at(mission_index, nation, &ships, port);
+                    let force = self.combine_force_at(mission, nation, &ships, port);
                     if let Some(force) = force {
                         let force = self
                             .task_force_mut(force)
@@ -935,24 +935,23 @@ impl GameState {
 
     fn combine_force_at(
         &mut self,
-        mission_index: usize,
+        mission: MissionId,
         nation: NationId,
         ships: &[ShipId],
         location: OceanZoneId,
     ) -> Option<TaskForceId> {
         if let Some(existing) =
-            navy_state(&self.missions[mission_index].data).and_then(|navy| navy.task_force)
+            navy_state(&self.missions[&mission].data).and_then(|navy| navy.task_force)
             && self
                 .task_force(existing)
                 .is_some_and(|force| force.location != location)
         {
             self.free_task_force(existing);
-            if let Some(navy) = navy_state_mut(&mut self.missions[mission_index].data) {
+            if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
                 navy.task_force = None;
             }
         }
-        let mut force =
-            navy_state(&self.missions[mission_index].data).and_then(|navy| navy.task_force);
+        let mut force = navy_state(&self.missions[&mission].data).and_then(|navy| navy.task_force);
         for &ship in ships {
             if !self
                 .ship(ship)
@@ -966,7 +965,7 @@ impl GameState {
                 self.reassign_ship_to_force(ship, force);
             }
         }
-        if let Some(navy) = navy_state_mut(&mut self.missions[mission_index].data) {
+        if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
             navy.task_force = force;
         }
         force
@@ -1795,7 +1794,7 @@ mod tests {
                 marker: 0,
             },
         );
-        state.give_navy_mission_orders(0);
+        state.give_navy_mission_orders(mission);
         let force = state
             .task_force_of_ship(ShipId::new(0))
             .expect("assigned ship has a task force");
