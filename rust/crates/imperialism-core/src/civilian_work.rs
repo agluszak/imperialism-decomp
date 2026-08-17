@@ -160,10 +160,7 @@ impl GameState {
         unit: CivilianUnitId,
         destination: TileId,
     ) -> Result<(), RailOrderRejection> {
-        let index = self
-            .civilian_index(unit)
-            .ok_or(RailOrderRejection::IneligibleUnit)?;
-        let (segment, nation) = self.rail_construction_target(index, destination)?;
+        let (segment, nation) = self.rail_construction_target(unit, destination)?;
         let cost = rail_cost(self.map[segment.destination()].terrain);
         let major = self.nations.major(nation);
         if major
@@ -180,28 +177,31 @@ impl GameState {
         self.map[segment.destination()]
             .pending_rail_links
             .insert_direction(segment.direction().opposite());
-        let unit = &mut self.civilian_units[index];
-        unit.order = CivilianWorkOrder::LayRail {
+        self.civilian_units
+            .get_mut(&unit)
+            .expect("rail construction unit remains present")
+            .order = CivilianWorkOrder::LayRail {
             segment,
             turns: TurnsRemaining::try_new(RAIL_TURNS).expect("rail construction lasts one turn"),
         };
-        self.move_civilian_to(index, segment.destination());
+        self.move_civilian_to(unit, segment.destination());
         Ok(())
     }
 
     /// Neighbor tiles `DimByEngineering` would leave undimmed for a rail click.
     pub fn rail_construction_destinations(&self, unit: CivilianUnitId) -> [Option<TileId>; 6] {
-        let Some(index) = self.civilian_index(unit) else {
+        let Some(unit) = self.civilian_units.get(&unit) else {
             return [None; 6];
         };
-        let Some(origin) = self.civilian_units[index].location.tile() else {
+        let Some(origin) = unit.location.tile() else {
             return [None; 6];
         };
         MapGeometry::new(MapTopology::Bounded)
             .neighbors(origin)
             .map(|destination| {
                 destination.filter(|&destination| {
-                    self.rail_construction_target(index, destination).is_ok()
+                    self.rail_construction_target(unit.id(), destination)
+                        .is_ok()
                 })
             })
     }
@@ -212,11 +212,11 @@ impl GameState {
         tile: TileId,
         nation: NationId,
     ) -> Option<CivilianUnitId> {
-        self.civilian_units.iter().find_map(|unit| {
+        self.civilian_units.iter().find_map(|(&id, unit)| {
             (unit.owner_nation() == nation
                 && unit.location().tile() == Some(tile)
                 && idle_selectable(unit.order()))
-            .then_some(unit.id())
+            .then_some(id)
         })
     }
 
@@ -228,12 +228,13 @@ impl GameState {
     ) -> Option<&CivilianUnitState> {
         self.civilian_units
             .iter()
+            .values()
             .find(|unit| unit.owner_nation() == nation && unit.location().tile() == Some(tile))
     }
 
     /// `TCivMgr::ClearNationCivilianActionModesAndCycleSelection` unit walk (cycle is app-side).
     pub fn clear_nation_civilian_action_modes(&mut self, nation: NationId) {
-        for unit in &mut self.civilian_units {
+        for unit in self.civilian_units.values_mut() {
             if unit.nation() != nation {
                 continue;
             }
@@ -244,16 +245,15 @@ impl GameState {
         }
     }
 
-    fn civilian_index(&self, id: CivilianUnitId) -> Option<usize> {
-        self.civilian_units.iter().position(|unit| unit.id == id)
-    }
-
     fn rail_construction_target(
         &self,
-        index: usize,
+        id: CivilianUnitId,
         destination: TileId,
     ) -> Result<(RailSegment, MajorNationId), RailOrderRejection> {
-        let unit = &self.civilian_units[index];
+        let unit = self
+            .civilian_units
+            .get(&id)
+            .ok_or(RailOrderRejection::IneligibleUnit)?;
         if unit.unit_type != CivilianUnitKind::Engineer || !idle_selectable(&unit.order) {
             return Err(RailOrderRejection::IneligibleUnit);
         }
@@ -308,7 +308,8 @@ impl GameState {
 
     pub fn advance_civilian_work(&mut self, civilian: CivilianUnitId) {
         let index = self
-            .civilian_index(civilian)
+            .civilian_units
+            .get_index_of(&civilian)
             .expect("work advances a present unit");
         self.continue_civilian_order(index);
     }
@@ -325,7 +326,7 @@ impl GameState {
             .civilian_units
             .iter()
             .enumerate()
-            .filter(|(_, unit)| unit.nation == nation.nation())
+            .filter(|(_, (_, unit))| unit.nation == nation.nation())
             .map(|(index, _)| index)
             .collect();
         for index in indices {
