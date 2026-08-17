@@ -658,15 +658,18 @@ mod tests {
         let mut state = game(start);
         state.map[start].owner_nation = Some(crate::TileOwnerTag::new(0));
         state.map[first_neighbor].owner_nation = Some(crate::TileOwnerTag::new(0));
-        state.civilian_units.push(civilian(40, 0, start));
+        state
+            .civilian_units
+            .insert(CivilianUnitId::new(40), civilian(40, 0, start));
         state.produce_civilian_recruits(MajorNationId::new(0), CivilianUnitKind::Forester, 2);
 
         assert_eq!(state.civilian_units.len(), 2);
         assert_eq!(
-            state.civilian_units[1].location.tile(),
+            state.civilian_units[&CivilianUnitId::new(41)]
+                .location
+                .tile(),
             Some(first_neighbor)
         );
-        assert_eq!(state.civilian_units[1].id, CivilianUnitId::new(41));
         assert_eq!(state.unit_ids.current(), 41);
         assert_eq!(
             state
@@ -704,14 +707,20 @@ mod tests {
         let mut state = game(home_tile);
         state.map[home_tile].province = Some(crate::ProvinceId::new(17));
         state.military_units = (0..14)
-            .map(|index| military_unit(41 + index, 0, MilitaryUnitKind::Skirmishers, 17))
+            .map(|index| {
+                let id = MilitaryUnitId::new(41 + index);
+                (
+                    id,
+                    military_unit(41 + index, 0, MilitaryUnitKind::Skirmishers, 17),
+                )
+            })
             .collect();
         state.unit_ids = crate::UnitIdAllocator::from_retail(54);
         state.produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Skirmishers, 2);
 
         assert_eq!(state.selected_military_power_score(NationId::new(0)), 16);
-        assert_eq!(state.military_units[14].id, MilitaryUnitId::new(55));
-        assert_eq!(state.military_units[15].id, MilitaryUnitId::new(56));
+        assert!(state.military_units.contains_key(&MilitaryUnitId::new(55)));
+        assert!(state.military_units.contains_key(&MilitaryUnitId::new(56)));
         let major = &state.nations.major(MajorNationId::new(0)).economy;
         assert_eq!(
             major.pending_actions[PendingActionKind::ArmyGrowthReward].status(),
@@ -729,7 +738,13 @@ mod tests {
         let mut state = game(home_tile);
         state.map[home_tile].province = Some(crate::ProvinceId::new(17));
         state.military_units = (0..14)
-            .map(|index| military_unit(41 + index, 0, MilitaryUnitKind::Skirmishers, 17))
+            .map(|index| {
+                let id = MilitaryUnitId::new(41 + index);
+                (
+                    id,
+                    military_unit(41 + index, 0, MilitaryUnitKind::Skirmishers, 17),
+                )
+            })
             .collect();
         state.unit_ids = crate::UnitIdAllocator::from_retail(54);
         state

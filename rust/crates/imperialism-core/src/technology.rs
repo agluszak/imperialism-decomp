@@ -974,21 +974,24 @@ mod tests {
         let mut state = crate::test_support::game_state();
         let nation = MajorNationId::new(0);
         let province = ProvinceId::new(0);
-        state.military_units.push(MilitaryUnitState::new(
+        state.military_units.insert(
             MilitaryUnitId::new(1),
-            nation.nation(),
-            MilitaryUnitKind::GeneralEra1,
-            Some(province),
-            MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
-            nation.nation(),
-            1,
-            true,
-            String::new(),
-            500,
-            0,
-            0,
-            0,
-        ));
+            MilitaryUnitState::new(
+                MilitaryUnitId::new(1),
+                nation.nation(),
+                MilitaryUnitKind::GeneralEra1,
+                Some(province),
+                MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
+                nation.nation(),
+                1,
+                true,
+                String::new(),
+                500,
+                0,
+                0,
+                0,
+            ),
+        );
         state.activate_slot_and_update_ui(nation, MilitaryUnitKind::GeneralEra2);
         assert_eq!(
             state.military_units[0].unit_type(),

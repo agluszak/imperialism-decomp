@@ -298,7 +298,7 @@ fn normal_random_start_marks_only_queued_ai_map_targets() {
         {
             match &mission.data {
                 MissionData::DefendProvince { province, .. } => {
-                    expected_provinces[province] = AiTargetState::MissionQueued;
+                    expected_provinces[*province] = AiTargetState::MissionQueued;
                 }
                 MissionData::ControlSeaZone(navy) | MissionData::Escort(navy) => {
                     if let Some(target) = navy.target_zone {

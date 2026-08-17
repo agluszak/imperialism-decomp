@@ -597,7 +597,7 @@ mod tests {
                 province,
                 army: ArmyMissionState {
                     required_equipage_bits: [0; 5],
-                    units: Vec::new(),
+                    units: Default::default(),
                 },
             },
             path_nation: None,
@@ -611,7 +611,9 @@ mod tests {
     #[test]
     fn cleanup_resets_transient_selection_rebuilds_the_heatmap_and_commits_purchases() {
         let mut state = game_state();
-        state.ships.extend([ship(0, 1), ship(1, 2)]);
+        state
+            .ships
+            .extend([(ShipId::new(0), ship(0, 1)), (ShipId::new(1), ship(1, 2))]);
         state.map[TileId::new(1)].province = Some(ProvinceId::new(0));
         state.map[TileId::new(1)].edge_resources = [Some(ResourceKind::Cotton), None];
         state.map.provinces[ProvinceId::new(0)].linked_tiles = vec![TileId::new(1)];
@@ -640,8 +642,8 @@ mod tests {
 
         state.do_military_cleanup();
 
-        assert_eq!(state.ships[0].selection, 0);
-        assert_eq!(state.ships[1].selection, 2);
+        assert_eq!(state.ships[&ShipId::new(0)].selection, 0);
+        assert_eq!(state.ships[&ShipId::new(1)].selection, 2);
         assert_eq!(
             state.map.city_score_total, expected.map.city_score_total,
             "cleanup must rebuild the heatmap, not keep a corrupted total"
@@ -684,31 +686,35 @@ mod tests {
         let province = ProvinceId::new(3);
         seed_owned_province(&mut state, province, nation.nation());
         let id = state.unit_ids.next_military();
-        state.military_units.push(MilitaryUnitState::new(
+        state.military_units.insert(
             id,
-            nation.nation(),
-            MilitaryUnitKind::Minutemen,
-            Some(province),
-            MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
-            nation.nation(),
-            0,
-            true,
-            String::new(),
-            500,
-            0,
-            0,
-            0,
-        ));
+            MilitaryUnitState::new(
+                id,
+                nation.nation(),
+                MilitaryUnitKind::Minutemen,
+                Some(province),
+                MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
+                nation.nation(),
+                0,
+                true,
+                String::new(),
+                500,
+                0,
+                0,
+                0,
+            ),
+        );
+        let mission = state.object_ids.mission();
         state
             .missions
-            .push(defend_mission(nation.nation(), province));
+            .insert(mission, defend_mission(nation.nation(), province));
 
         state.do_military_cleanup();
 
-        let MissionData::DefendProvince { army, .. } = &state.missions[0].data else {
+        let MissionData::DefendProvince { army, .. } = &state.missions[&mission].data else {
             panic!("expected a defend-province mission");
         };
-        assert_eq!(army.units, vec![id]);
+        assert_eq!(army.units.iter().copied().collect::<Vec<_>>(), vec![id]);
     }
 
     #[test]
@@ -718,9 +724,10 @@ mod tests {
         state.nations.majors[nation].auto = Some(AutoGreatPowerState::default());
         let province = ProvinceId::new(3);
         seed_owned_province(&mut state, province, NationId::new(1));
+        let mission = state.object_ids.mission();
         state
             .missions
-            .push(defend_mission(nation.nation(), province));
+            .insert(mission, defend_mission(nation.nation(), province));
 
         state.do_military_cleanup();
 
@@ -766,7 +773,10 @@ mod tests {
         state.do_military_cleanup();
 
         assert_eq!(state.task_forces.len(), 1);
-        assert_eq!(state.task_forces[0].order, TaskForceOrder::Patrol);
+        assert_eq!(
+            state.task_forces[&TaskForceId::new(0)].order,
+            TaskForceOrder::Patrol
+        );
         assert_eq!(
             state.task_force_of_ship(ShipId::new(0)),
             Some(TaskForceId::new(0))
@@ -780,7 +790,7 @@ mod tests {
             data: MissionData::AttackProvince(AttackMissionState {
                 army: ArmyMissionState {
                     required_equipage_bits: [0; 5],
-                    units: Vec::new(),
+                    units: Default::default(),
                 },
                 present_province: Some(ProvinceId::new(0)),
                 target_province: target,
@@ -803,18 +813,22 @@ mod tests {
         seed_owned_province(&mut state, province, nation.nation());
         state.map.provinces[province].set_city_score(2500);
         state.map[TileId::new(1)].province = Some(province);
+        let mission = state.object_ids.mission();
         state
             .missions
-            .push(defend_mission(nation.nation(), province));
+            .insert(mission, defend_mission(nation.nation(), province));
 
         state.reassess_missions_with_metrics(nation.nation(), None);
 
-        assert_eq!(state.missions[0].state, 0, "capitol province uses state 0");
         assert_eq!(
-            state.missions[0].importance_bits,
+            state.missions[&mission].state, 0,
+            "capitol province uses state 0"
+        );
+        assert_eq!(
+            state.missions[&mission].importance_bits,
             (2500.0_f32 / 5000.0).to_bits()
         );
-        let MissionData::DefendProvince { army, .. } = &state.missions[0].data else {
+        let MissionData::DefendProvince { army, .. } = &state.missions[&mission].data else {
             panic!("expected a defend-province mission");
         };
         assert_eq!(
@@ -831,11 +845,14 @@ mod tests {
         let target = ProvinceId::new(4);
         seed_owned_province(&mut state, target, NationId::new(1));
         state.map.provinces[target].set_city_score(1000);
-        state.missions.push(attack_mission(nation.nation(), target));
+        let mission = state.object_ids.mission();
+        state
+            .missions
+            .insert(mission, attack_mission(nation.nation(), target));
 
         state.reassess_missions_with_metrics(nation.nation(), None);
 
-        let MissionData::AttackProvince(attack) = &state.missions[0].data else {
+        let MissionData::AttackProvince(attack) = &state.missions[&mission].data else {
             panic!("expected an attack-province mission");
         };
         let scale = 1.9_f32;
@@ -844,7 +861,7 @@ mod tests {
             [27.0, 36.0, 0.0, 17.0, 20.0].map(|weight| (weight * scale * 0.01).to_bits())
         );
         assert_eq!(
-            state.missions[0].importance_bits,
+            state.missions[&mission].importance_bits,
             (1000.0_f32 / 5000.0).to_bits()
         );
     }
@@ -879,26 +896,31 @@ mod tests {
                 port_tile: tile,
             }),
         ];
-        state.missions.push(MissionState {
-            nation: nation.nation(),
-            data: MissionData::ControlSeaZone(NavyMissionState {
-                target_zone: Some(OceanZoneId::new(0)),
-                resolved_port_zone: None,
-                selected_ship: None,
-                state: 0,
-                required_equipage_bits: [0; 4],
-                ships: Vec::new(),
-            }),
-            path_nation: None,
-            state: 2,
-            importance_bits: 0,
-            held: false,
-            marker: 0,
-        });
+        let mission = state.object_ids.mission();
+        state.missions.insert(
+            mission,
+            MissionState {
+                nation: nation.nation(),
+                data: MissionData::ControlSeaZone(NavyMissionState {
+                    target_zone: Some(OceanZoneId::new(0)),
+                    resolved_port_zone: None,
+                    selected_ship: None,
+                    state: 0,
+                    required_equipage_bits: [0; 4],
+                    task_force: None,
+                    ships: Default::default(),
+                }),
+                path_nation: None,
+                state: 2,
+                importance_bits: 0,
+                held: false,
+                marker: 0,
+            },
+        );
 
         state.do_military_cleanup();
 
-        let MissionData::ControlSeaZone(navy) = &state.missions[0].data else {
+        let MissionData::ControlSeaZone(navy) = &state.missions[&mission].data else {
             panic!("expected a control-sea mission");
         };
         assert_eq!(
@@ -906,6 +928,6 @@ mod tests {
             [40.0_f32, 40.0, 20.0, 0.0].map(|weight| weight.to_bits())
         );
         assert_eq!(navy.state, 0);
-        assert_eq!(state.missions[0].state, 2);
+        assert_eq!(state.missions[&mission].state, 2);
     }
 }

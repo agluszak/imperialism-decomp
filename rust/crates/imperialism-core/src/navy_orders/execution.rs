@@ -1345,29 +1345,35 @@ mod tests {
     ) -> (ShipId, TaskForceId) {
         let ship = state.allocate_ship_id();
         let force = state.allocate_task_force_id();
-        state.ships.push(ShipState {
-            id: ship,
-            ship_type: ShipType::Frigate,
-            location,
-            aggression: 1,
-            nation,
-            name: String::new(),
-            strength: 900,
-            experience: 0,
-            selection: 0,
-        });
-        state.task_forces.push(TaskForceState {
-            id: force,
-            aggression: 1,
-            order,
-            target: TaskForceTarget::None,
-            location,
-            nation,
-            defeated: false,
-            ingot_tile: -1,
-            flagship: Some(ship),
-            ships: [(ship, true)].into_iter().collect(),
-        });
+        state.ships.insert(
+            ship,
+            ShipState {
+                id: ship,
+                ship_type: ShipType::Frigate,
+                location,
+                aggression: 1,
+                nation,
+                name: String::new(),
+                strength: 900,
+                experience: 0,
+                selection: 0,
+            },
+        );
+        state.task_forces.insert(
+            force,
+            TaskForceState {
+                id: force,
+                aggression: 1,
+                order,
+                target: TaskForceTarget::None,
+                location,
+                nation,
+                defeated: false,
+                ingot_tile: -1,
+                flagship: Some(ship),
+                ships: [(ship, true)].into_iter().collect(),
+            },
+        );
         (ship, force)
     }
 
@@ -1386,26 +1392,37 @@ mod tests {
         .into_iter()
         .enumerate()
         {
-            state.ships.push(ShipState {
-                id: ShipId::new(index),
-                ship_type,
-                location: OceanZoneId::new(0),
-                aggression: 1,
-                nation,
-                name: String::new(),
-                strength,
-                experience: 0,
-                selection: 0,
-            });
+            state.ships.insert(
+                ShipId::new(index),
+                ShipState {
+                    id: ShipId::new(index),
+                    ship_type,
+                    location: OceanZoneId::new(0),
+                    aggression: 1,
+                    nation,
+                    name: String::new(),
+                    strength,
+                    experience: 0,
+                    selection: 0,
+                },
+            );
         }
 
         state.prepare_to_carry_out_navy_orders();
 
         assert_eq!(state.task_forces.len(), 2);
-        assert_eq!(state.task_forces[0].order, TaskForceOrder::Escort);
-        assert_eq!(state.task_forces[0].ships[0].ship, ShipId::new(1));
-        assert_eq!(state.task_forces[1].order, TaskForceOrder::Repair);
-        assert_eq!(state.task_forces[1].ships[0].ship, ShipId::new(0));
+        let (_, escort) = state.task_forces.first().expect("escort force");
+        let (_, repair) = state.task_forces.last().expect("repair force");
+        assert_eq!(escort.order, TaskForceOrder::Escort);
+        assert_eq!(
+            escort.ships.first().map(|(ship, _)| *ship),
+            Some(ShipId::new(1))
+        );
+        assert_eq!(repair.order, TaskForceOrder::Repair);
+        assert_eq!(
+            repair.ships.first().map(|(ship, _)| *ship),
+            Some(ShipId::new(0))
+        );
         assert_eq!(
             state.task_force_of_ship(ShipId::new(0)),
             Some(TaskForceId::new(1))
@@ -1432,47 +1449,54 @@ mod tests {
             OceanZoneId::new(1),
             TaskForceOrder::Patrol,
         );
-        state.missions.push(MissionState {
-            nation,
-            data: MissionData::ControlSeaZone(NavyMissionState {
-                target_zone: Some(OceanZoneId::new(1)),
-                resolved_port_zone: None,
-                selected_ship: Some(survivor_ship),
-                task_force: Some(survivor),
+        let mission = state.object_ids.mission();
+        state.missions.insert(
+            mission,
+            MissionState {
+                nation,
+                data: MissionData::ControlSeaZone(NavyMissionState {
+                    target_zone: Some(OceanZoneId::new(1)),
+                    resolved_port_zone: None,
+                    selected_ship: Some(survivor_ship),
+                    task_force: Some(survivor),
+                    state: 2,
+                    required_equipage_bits: [0; 4],
+                    ships: [(survivor_ship, false)].into_iter().collect(),
+                }),
+                path_nation: None,
                 state: 2,
-                required_equipage_bits: [0; 4],
-                ships: [(survivor_ship, false)].into_iter().collect(),
-            }),
-            path_nation: None,
-            state: 2,
-            importance_bits: 0,
-            held: false,
-            marker: 0,
-        });
+                importance_bits: 0,
+                held: false,
+                marker: 0,
+            },
+        );
 
         state.free_task_force(removed);
 
-        assert_eq!(state.task_forces[0].id, survivor);
+        assert!(state.task_forces.contains_key(&survivor));
         assert_eq!(state.task_force_of_ship(survivor_ship), Some(survivor));
         assert_eq!(
-            navy_state(&state.missions[0].data)
+            navy_state(&state.missions[&mission].data)
                 .expect("navy mission")
                 .task_force,
             Some(survivor)
         );
 
         let ship = state.allocate_ship_id();
-        state.ships.push(ShipState {
-            id: ship,
-            ship_type: ShipType::Frigate,
-            location: OceanZoneId::new(2),
-            aggression: 1,
-            nation,
-            name: String::new(),
-            strength: 900,
-            experience: 0,
-            selection: 0,
-        });
+        state.ships.insert(
+            ship,
+            ShipState {
+                id: ship,
+                ship_type: ShipType::Frigate,
+                location: OceanZoneId::new(2),
+                aggression: 1,
+                nation,
+                name: String::new(),
+                strength: 900,
+                experience: 0,
+                selection: 0,
+            },
+        );
         let replacement = state.create_task_force(OceanZoneId::new(2), nation, ship);
         assert_ne!(replacement, removed);
     }
@@ -1553,19 +1577,22 @@ mod tests {
             serde_json::from_str(&encoded).expect("deserialize continuation");
 
         let loose_ship = state.allocate_ship_id();
-        state.ships.push(ShipState {
-            id: loose_ship,
-            ship_type: ShipType::Frigate,
-            location: OceanZoneId::new(9),
-            aggression: 1,
-            nation: attacker,
-            name: String::new(),
-            strength: 900,
-            experience: 0,
-            selection: 0,
-        });
+        state.ships.insert(
+            loose_ship,
+            ShipState {
+                id: loose_ship,
+                ship_type: ShipType::Frigate,
+                location: OceanZoneId::new(9),
+                aggression: 1,
+                nation: attacker,
+                name: String::new(),
+                strength: 900,
+                experience: 0,
+                selection: 0,
+            },
+        );
         let inserted = state.create_task_force(OceanZoneId::new(9), attacker, loose_ship);
-        assert_eq!(state.task_forces[0].id, inserted);
+        assert_eq!(state.task_forces.first().map(|(id, _)| *id), Some(inserted));
 
         let second = state.resume_navy_orders(first).expect("second encounter");
         assert_eq!(second.battle.attacker, expected_attacker);
@@ -1609,54 +1636,67 @@ mod tests {
         let mut ships = vec![first_ship];
         for _ in 0..3 {
             let ship = state.allocate_ship_id();
-            state.ships.push(ShipState {
-                id: ship,
-                ship_type: ShipType::Frigate,
-                location: OceanZoneId::new(0),
-                aggression: 1,
-                nation,
-                name: String::new(),
-                strength: 900,
-                experience: 0,
-                selection: 0,
-            });
+            state.ships.insert(
+                ship,
+                ShipState {
+                    id: ship,
+                    ship_type: ShipType::Frigate,
+                    location: OceanZoneId::new(0),
+                    aggression: 1,
+                    nation,
+                    name: String::new(),
+                    strength: 900,
+                    experience: 0,
+                    selection: 0,
+                },
+            );
             state.reassign_ship_to_force(ship, force);
             ships.push(ship);
         }
         state.admirals = ships
             .iter()
             .copied()
-            .map(|ship| AdmiralState {
-                nation,
-                name: String::new(),
-                experience: 0,
-                ship: Some(ship),
+            .map(|ship| {
+                let admiral = state.object_ids.admiral();
+                (
+                    admiral,
+                    AdmiralState {
+                        nation,
+                        name: String::new(),
+                        experience: 0,
+                        ship: Some(ship),
+                    },
+                )
             })
             .collect();
-        state.missions.push(MissionState {
-            nation,
-            data: MissionData::ControlSeaZone(NavyMissionState {
-                target_zone: Some(OceanZoneId::new(0)),
-                resolved_port_zone: None,
-                selected_ship: Some(ships[2]),
-                task_force: Some(force),
+        let mission = state.object_ids.mission();
+        state.missions.insert(
+            mission,
+            MissionState {
+                nation,
+                data: MissionData::ControlSeaZone(NavyMissionState {
+                    target_zone: Some(OceanZoneId::new(0)),
+                    resolved_port_zone: None,
+                    selected_ship: Some(ships[2]),
+                    task_force: Some(force),
+                    state: 2,
+                    required_equipage_bits: [0; 4],
+                    ships: ships.iter().copied().map(|ship| (ship, false)).collect(),
+                }),
+                path_nation: None,
                 state: 2,
-                required_equipage_bits: [0; 4],
-                ships: ships.iter().copied().map(|ship| (ship, false)).collect(),
-            }),
-            path_nation: None,
-            state: 2,
-            importance_bits: 0,
-            held: false,
-            marker: 0,
-        });
+                importance_bits: 0,
+                held: false,
+                marker: 0,
+            },
+        );
         state.ship_mut(ships[1]).expect("ship exists").strength = 0;
         state.ship_mut(ships[3]).expect("ship exists").strength = 0;
 
         state.prune_sunk_force_ships(force);
 
         assert_eq!(
-            state.ships.iter().map(|ship| ship.id).collect::<Vec<_>>(),
+            state.ships.keys().copied().collect::<Vec<_>>(),
             vec![ships[0], ships[2]]
         );
         assert_eq!(
@@ -1667,14 +1707,26 @@ mod tests {
             state.task_force(force).expect("force survives").flagship(),
             Some(ships[2])
         );
-        assert_eq!(state.admirals[0].ship, Some(ships[0]));
-        assert_eq!(state.admirals[1].ship, None);
-        assert_eq!(state.admirals[2].ship, Some(ships[2]));
-        assert_eq!(state.admirals[3].ship, None);
-        let navy = navy_state(&state.missions[0].data).expect("navy mission");
+        assert_eq!(
+            state.admirals.get_index(0).map(|(_, admiral)| admiral.ship),
+            Some(Some(ships[0]))
+        );
+        assert_eq!(
+            state.admirals.get_index(1).map(|(_, admiral)| admiral.ship),
+            Some(None)
+        );
+        assert_eq!(
+            state.admirals.get_index(2).map(|(_, admiral)| admiral.ship),
+            Some(Some(ships[2]))
+        );
+        assert_eq!(
+            state.admirals.get_index(3).map(|(_, admiral)| admiral.ship),
+            Some(None)
+        );
+        let navy = navy_state(&state.missions[&mission].data).expect("navy mission");
         assert_eq!(navy.selected_ship, Some(ships[2]));
         assert_eq!(
-            navy.ships.iter().map(|ship| ship.ship).collect::<Vec<_>>(),
+            navy.ships.keys().copied().collect::<Vec<_>>(),
             vec![ships[0], ships[2]]
         );
     }
@@ -1714,38 +1766,48 @@ mod tests {
             ZoneKind::Zone(zone(vec![OceanZoneId::new(2), OceanZoneId::new(4)])),
             ZoneKind::Zone(zone(vec![OceanZoneId::new(3)])),
         ];
-        state.ships.push(ShipState {
-            id: ShipId::new(0),
-            ship_type: ShipType::Frigate,
-            location: OceanZoneId::new(0),
-            aggression: 0,
-            nation,
-            name: String::new(),
-            strength: 900,
-            experience: 0,
-            selection: 0,
-        });
-        state.missions.push(MissionState {
-            nation,
-            data: MissionData::ControlSeaZone(NavyMissionState {
-                target_zone: Some(OceanZoneId::new(4)),
-                resolved_port_zone: None,
-                selected_ship: None,
-                task_force: None,
+        state.ships.insert(
+            ShipId::new(0),
+            ShipState {
+                id: ShipId::new(0),
+                ship_type: ShipType::Frigate,
+                location: OceanZoneId::new(0),
+                aggression: 0,
+                nation,
+                name: String::new(),
+                strength: 900,
+                experience: 0,
+                selection: 0,
+            },
+        );
+        let mission = state.object_ids.mission();
+        state.missions.insert(
+            mission,
+            MissionState {
+                nation,
+                data: MissionData::ControlSeaZone(NavyMissionState {
+                    target_zone: Some(OceanZoneId::new(4)),
+                    resolved_port_zone: None,
+                    selected_ship: None,
+                    task_force: None,
+                    state: 2,
+                    required_equipage_bits: [0; 4],
+                    ships: [(ShipId::new(0), false)].into_iter().collect(),
+                }),
+                path_nation: None,
                 state: 2,
-                required_equipage_bits: [0; 4],
-                ships: [(ShipId::new(0), false)].into_iter().collect(),
-            }),
-            path_nation: None,
-            state: 2,
-            importance_bits: 0,
-            held: false,
-            marker: 0,
-        });
+                importance_bits: 0,
+                held: false,
+                marker: 0,
+            },
+        );
         state.give_navy_mission_orders(0);
-        assert_eq!(state.task_forces[0].order, TaskForceOrder::Sail);
+        let force = state
+            .task_force_of_ship(ShipId::new(0))
+            .expect("assigned ship has a task force");
+        assert_eq!(state.task_forces[&force].order, TaskForceOrder::Sail);
         let _ = state.carry_out_navy_orders();
-        assert_eq!(state.ships[0].location, OceanZoneId::new(3));
+        assert_eq!(state.ships[&ShipId::new(0)].location, OceanZoneId::new(3));
         assert!(
             state.task_forces.is_empty(),
             "sail orders are stragglers after CarryOutOrders"

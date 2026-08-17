@@ -363,17 +363,20 @@ pub(super) mod tests {
             }),
         ];
         assert!(!state.navy_capitol_threatened(MajorNationId::new(0)));
-        state.ships.push(ShipState {
-            id: ShipId::new(0),
-            ship_type: ShipType::Frigate,
-            location: OceanZoneId::new(0),
-            aggression: 0,
-            nation: NationId::new(1),
-            name: String::new(),
-            strength: 900,
-            experience: 0,
-            selection: 0,
-        });
+        state.ships.insert(
+            ShipId::new(0),
+            ShipState {
+                id: ShipId::new(0),
+                ship_type: ShipType::Frigate,
+                location: OceanZoneId::new(0),
+                aggression: 0,
+                nation: NationId::new(1),
+                name: String::new(),
+                strength: 900,
+                experience: 0,
+                selection: 0,
+            },
+        );
         state.diplomacy.relationships[NationId::new(0)][NationId::new(1)] =
             DiplomaticRelationship::War;
         assert!(state.navy_capitol_threatened(MajorNationId::new(0)));

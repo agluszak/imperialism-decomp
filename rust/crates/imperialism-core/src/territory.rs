@@ -631,7 +631,8 @@ mod tests {
         destination.economy.pending_actions
             [crate::PendingActionKind::ConqueredCapitalArmoryUpgrade] =
             crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, None);
-        state.civilian_units.push(
+        state.civilian_units.insert(
+            crate::CivilianUnitId::new(1),
             crate::CivilianUnitState::new(
                 crate::CivilianUnitId::new(1),
                 NationId::new(0),
@@ -678,7 +679,7 @@ mod tests {
             AiTargetState::MissionQueued
         );
         assert!(matches!(
-            &state.missions[..],
+            state.missions.values().collect::<Vec<_>>().as_slice(),
             [MissionState {
                 nation,
                 data: MissionData::DefendProvince { province, .. },
@@ -699,7 +700,8 @@ mod tests {
         state.map[TileId::new(20)].secondary_owner_nation = Some(MajorNationId::new(2));
         set_owned(&mut state, NationId::new(1), &[]);
         state.map[TileId::new(1)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(2)));
-        state.civilian_units.push(
+        state.civilian_units.insert(
+            crate::CivilianUnitId::new(1),
             crate::CivilianUnitState::new(
                 crate::CivilianUnitId::new(1),
                 NationId::new(2),
@@ -725,11 +727,11 @@ mod tests {
         );
         assert_eq!(state.map[TileId::new(20)].secondary_owner_nation, None);
         assert_eq!(
-            state.civilian_units[0].location(),
+            state.civilian_units[&crate::CivilianUnitId::new(1)].location(),
             crate::CivilianLocation::OnMap(TileId::new(1))
         );
         assert_eq!(
-            state.civilian_units[0].order,
+            state.civilian_units[&crate::CivilianUnitId::new(1)].order,
             crate::CivilianWorkOrder::Idle
         );
     }
@@ -862,7 +864,7 @@ mod tests {
             AiTargetState::MissionQueued
         );
         assert!(matches!(
-            &state.missions[..],
+            state.missions.values().collect::<Vec<_>>().as_slice(),
             [MissionState {
                 nation,
                 data: MissionData::DefendProvince { province, .. },
@@ -883,7 +885,8 @@ mod tests {
         state.map.provinces[ProvinceId::new(2)].linked_tiles = vec![TileId::new(20)];
         state.map[TileId::new(20)].province = Some(ProvinceId::new(2));
         state.map[TileId::new(20)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
-        state.civilian_units.push(
+        state.civilian_units.insert(
+            crate::CivilianUnitId::new(1),
             crate::CivilianUnitState::new(
                 crate::CivilianUnitId::new(1),
                 NationId::new(0),
@@ -898,36 +901,42 @@ mod tests {
         );
         let stationed = crate::MilitaryUnitId::new(1);
         let detached = crate::MilitaryUnitId::new(2);
-        state.military_units.push(crate::MilitaryUnitState::new(
+        state.military_units.insert(
             stationed,
-            NationId::new(0),
-            crate::MilitaryUnitKind::Minutemen,
-            Some(ProvinceId::new(2)),
-            crate::MilitaryOrder::idle([None; 3], [None; 3]),
-            NationId::new(0),
-            0,
-            true,
-            String::new(),
-            500,
-            0,
-            0,
-            0,
-        ));
-        state.military_units.push(crate::MilitaryUnitState::new(
+            crate::MilitaryUnitState::new(
+                stationed,
+                NationId::new(0),
+                crate::MilitaryUnitKind::Minutemen,
+                Some(ProvinceId::new(2)),
+                crate::MilitaryOrder::idle([None; 3], [None; 3]),
+                NationId::new(0),
+                0,
+                true,
+                String::new(),
+                500,
+                0,
+                0,
+                0,
+            ),
+        );
+        state.military_units.insert(
             detached,
-            NationId::new(0),
-            crate::MilitaryUnitKind::Minutemen,
-            None,
-            crate::MilitaryOrder::idle([None; 3], [None; 3]),
-            NationId::new(0),
-            0,
-            true,
-            String::new(),
-            500,
-            0,
-            0,
-            0,
-        ));
+            crate::MilitaryUnitState::new(
+                detached,
+                NationId::new(0),
+                crate::MilitaryUnitKind::Minutemen,
+                None,
+                crate::MilitaryOrder::idle([None; 3], [None; 3]),
+                NationId::new(0),
+                0,
+                true,
+                String::new(),
+                500,
+                0,
+                0,
+                0,
+            ),
+        );
 
         state.change_province_owner(ProvinceId::new(2), NationId::new(1));
 

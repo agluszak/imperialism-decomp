@@ -354,7 +354,7 @@ mod tests {
             },
         );
 
-        state.reassess_navy_mission(0);
+        state.reassess_navy_mission(mission);
 
         let MissionData::ControlSeaZone(navy) = &state.missions[&mission].data else {
             panic!("expected a control-sea mission");
@@ -406,7 +406,7 @@ mod tests {
             },
         );
 
-        state.reassess_navy_mission(0);
+        state.reassess_navy_mission(mission);
 
         let MissionData::ControlSeaZone(navy) = &state.missions[&mission].data else {
             panic!("expected a control-sea mission");

@@ -425,17 +425,12 @@ mod tests {
             .append_owned_region_during_construction(nation, province);
         let _ = state.do_military();
         assert_eq!(state.military_units.len(), 1);
-        assert_eq!(state.military_units[0].nation, nation);
-        assert_eq!(
-            state.military_units[0].unit_type,
-            MilitaryUnitKind::Minutemen
-        );
-        assert_eq!(state.military_units[0].stationed_province, Some(province));
-        assert_eq!(
-            state.military_units[0].order.code(),
-            MilitaryOrderCode::Sleep
-        );
-        assert_eq!(state.military_units[0].strength, 500);
+        let (_, unit) = state.military_units.first().expect("militia was created");
+        assert_eq!(unit.nation, nation);
+        assert_eq!(unit.unit_type, MilitaryUnitKind::Minutemen);
+        assert_eq!(unit.stationed_province, Some(province));
+        assert_eq!(unit.order.code(), MilitaryOrderCode::Sleep);
+        assert_eq!(unit.strength, 500);
         assert_eq!(
             state.nations.majors[MajorNationId::new(0)]
                 .economy
@@ -452,44 +447,51 @@ mod tests {
         let hold = ProvinceId::new(0);
         let away = ProvinceId::new(1);
         let id = state.unit_ids.next_military();
-        state.military_units.push(MilitaryUnitState::new(
+        state.military_units.insert(
             id,
-            nation.nation(),
-            MilitaryUnitKind::Minutemen,
-            Some(away),
-            MilitaryOrder::idle([Some(away); 3], [Some(away); 3]),
-            nation.nation(),
-            0,
-            true,
-            String::new(),
-            500,
-            0,
-            0,
-            0,
-        ));
-        state.missions.push(MissionState {
-            nation: nation.nation(),
-            data: MissionData::DefendProvince {
-                province: hold,
-                army: ArmyMissionState {
-                    required_equipage_bits: [0; 5],
-                    units: vec![id],
+            MilitaryUnitState::new(
+                id,
+                nation.nation(),
+                MilitaryUnitKind::Minutemen,
+                Some(away),
+                MilitaryOrder::idle([Some(away); 3], [Some(away); 3]),
+                nation.nation(),
+                0,
+                true,
+                String::new(),
+                500,
+                0,
+                0,
+                0,
+            ),
+        );
+        let mission = state.object_ids.mission();
+        state.missions.insert(
+            mission,
+            MissionState {
+                nation: nation.nation(),
+                data: MissionData::DefendProvince {
+                    province: hold,
+                    army: ArmyMissionState {
+                        required_equipage_bits: [0; 5],
+                        units: [id].into_iter().collect(),
+                    },
                 },
+                path_nation: None,
+                state: 2,
+                importance_bits: 0,
+                held: false,
+                marker: 0,
             },
-            path_nation: None,
-            state: 2,
-            importance_bits: 0,
-            held: false,
-            marker: 0,
-        });
+        );
 
         let _ = state.do_military();
 
         assert_eq!(
-            state.military_units[0].order().code(),
+            state.military_units[&id].order().code(),
             MilitaryOrderCode::Redeploy
         );
-        assert_eq!(state.military_units[0].order().target(), Some(hold));
+        assert_eq!(state.military_units[&id].order().target(), Some(hold));
     }
 
     fn set_owned_province(state: &mut GameState, province: u16, owner: u8, adjacent: &[u16]) {
@@ -522,21 +524,24 @@ mod tests {
 
     fn add_armor(state: &mut GameState, nation: NationId, province: ProvinceId) {
         let id = state.unit_ids.next_military();
-        state.military_units.push(MilitaryUnitState::new(
+        state.military_units.insert(
             id,
-            nation,
-            MilitaryUnitKind::Armor,
-            Some(province),
-            MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
-            nation,
-            0,
-            true,
-            String::new(),
-            500,
-            0,
-            0,
-            0,
-        ));
+            MilitaryUnitState::new(
+                id,
+                nation,
+                MilitaryUnitKind::Armor,
+                Some(province),
+                MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
+                nation,
+                0,
+                true,
+                String::new(),
+                500,
+                0,
+                0,
+                0,
+            ),
+        );
     }
 
     #[test]
