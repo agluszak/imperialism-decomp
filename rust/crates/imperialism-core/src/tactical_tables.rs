@@ -52,8 +52,6 @@ pub(crate) const AI_CLASS: MilitaryUnitTable<TacticalCombatClass> =
         TacticalCombatClass::Support,
     ]);
 
-pub(crate) const DIRECT_FIRE: [f32; 10] = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0];
-
 pub(crate) const BASE_ATTACK_POWER: MilitaryUnitTable<f32> = MilitaryUnitTable::from_array([
     50.0, 50.0, 100.0, 125.0, 75.0, 150.0, 100.0, 160.0, 75.0, 100.0, 150.0, 175.0, 100.0, 200.0,
     175.0, 300.0, 100.0, 150.0, 225.0, 250.0, 225.0, 450.0, 250.0, 500.0, 0.0, 0.0, 0.0, 0.0, 0.0,
