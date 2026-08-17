@@ -164,7 +164,6 @@ impl GameState {
     ) {
         let id = self.unit_ids.next_civilian();
         let unit = CivilianUnitState {
-            id,
             nation: nation_id,
             unit_type: kind,
             location,
@@ -513,9 +512,8 @@ mod tests {
         }
     }
 
-    fn civilian(id: i32, nation: u8, tile: TileId) -> CivilianUnitState {
+    fn civilian(_id: i32, nation: u8, tile: TileId) -> CivilianUnitState {
         CivilianUnitState {
-            id: CivilianUnitId::new(id),
             nation: NationId::new(nation),
             unit_type: CivilianUnitKind::Miner,
             location: crate::CivilianLocation::OnMap(tile),

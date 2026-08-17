@@ -137,7 +137,6 @@ impl GameState {
         let unit_kind = self.technology.selected_capability_slots[nation][9];
         let id = self.unit_ids.next_military();
         let unit = MilitaryUnitState {
-            id,
             nation: nation_id,
             unit_type: unit_kind,
             stationed_province: Some(province),
@@ -196,7 +195,6 @@ impl GameState {
         };
         let id = self.unit_ids.next_civilian();
         let unit = CivilianUnitState {
-            id,
             nation: nation_id,
             unit_type: CivilianUnitKind::Developer,
             location: crate::CivilianLocation::OnMap(tile),

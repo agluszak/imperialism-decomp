@@ -634,7 +634,6 @@ mod tests {
         state.civilian_units.insert(
             crate::CivilianUnitId::new(1),
             crate::CivilianUnitState::new(
-                crate::CivilianUnitId::new(1),
                 NationId::new(0),
                 crate::CivilianUnitKind::Miner,
                 crate::CivilianLocation::OnMap(TileId::new(20)),
@@ -703,7 +702,6 @@ mod tests {
         state.civilian_units.insert(
             crate::CivilianUnitId::new(1),
             crate::CivilianUnitState::new(
-                crate::CivilianUnitId::new(1),
                 NationId::new(2),
                 crate::CivilianUnitKind::Miner,
                 crate::CivilianLocation::OnMap(TileId::new(20)),
@@ -888,7 +886,6 @@ mod tests {
         state.civilian_units.insert(
             crate::CivilianUnitId::new(1),
             crate::CivilianUnitState::new(
-                crate::CivilianUnitId::new(1),
                 NationId::new(0),
                 crate::CivilianUnitKind::Miner,
                 crate::CivilianLocation::OnMap(TileId::new(20)),

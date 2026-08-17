@@ -50,7 +50,7 @@ pub struct GameStateParts {
     pub diplomacy: DiplomacyState,
     pub nations: Nations,
     pub military_units: Vec<MilitaryUnitState>,
-    pub civilian_units: Vec<CivilianUnitState>,
+    pub civilian_units: Vec<(CivilianUnitId, CivilianUnitState)>,
     pub ships: Vec<(ShipId, ShipState)>,
     pub admirals: Vec<AdmiralState>,
     pub task_forces: Vec<(TaskForceId, TaskForceState)>,
@@ -94,11 +94,7 @@ impl GameState {
                 .into_iter()
                 .map(|unit| (unit.id, unit))
                 .collect(),
-            civilian_units: parts
-                .civilian_units
-                .into_iter()
-                .map(|unit| (unit.id, unit))
-                .collect(),
+            civilian_units: parts.civilian_units.into_iter().collect(),
             object_ids,
             ships: parts.ships.into_iter().collect(),
             admirals,
@@ -250,14 +246,18 @@ impl GameState {
     /// First idle civilian for `nation` that is on the map, if any.
     pub fn first_idle_civilian_tile(&self, nation: NationId) -> Option<TileId> {
         self.first_idle_civilian(nation)
-            .and_then(|unit| unit.location().tile())
+            .and_then(|(_, unit)| unit.location().tile())
     }
 
     /// `TCivMgr::SelectFirstAvailableCivilianForNation` candidate (list order).
-    pub fn first_idle_civilian(&self, nation: NationId) -> Option<&CivilianUnitState> {
-        self.civilian_units
-            .values()
-            .find(|unit| unit.nation() == nation && *unit.order() == CivilianWorkOrder::Idle)
+    pub fn first_idle_civilian(
+        &self,
+        nation: NationId,
+    ) -> Option<(CivilianUnitId, &CivilianUnitState)> {
+        self.civilian_units.iter().find_map(|(&id, unit)| {
+            (unit.nation() == nation && *unit.order() == CivilianWorkOrder::Idle)
+                .then_some((id, unit))
+        })
     }
 
     /// Centers the strategic viewport on the first idle civilian for `nation`.

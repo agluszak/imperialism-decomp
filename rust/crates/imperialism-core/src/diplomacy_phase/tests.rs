@@ -438,7 +438,6 @@ fn colony_annex_clears_boycotted_companies_and_deports_civilians() {
     state.civilian_units.insert(
         CivilianUnitId::new(1),
         CivilianUnitState::new(
-            CivilianUnitId::new(1),
             nation(1),
             CivilianUnitKind::Miner,
             CivilianLocation::OnMap(TileId::new(20)),

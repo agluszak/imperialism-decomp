@@ -718,9 +718,9 @@ mod tests {
         tile: TileId,
         order: CivilianWorkOrder,
         registered: bool,
-    ) -> CivilianUnitState {
-        CivilianUnitState::new(
-            CivilianUnitId::from_serialized(id),
+    ) -> (CivilianUnitId, CivilianUnitState) {
+        let id = CivilianUnitId::from_serialized(id);
+        let state = CivilianUnitState::new(
             owner,
             kind,
             CivilianLocation::OnMap(tile),
@@ -729,7 +729,8 @@ mod tests {
             0,
             registered,
         )
-        .expect("test civilian is internally consistent")
+        .expect("test civilian is internally consistent");
+        (id, state)
     }
 
     #[test]
@@ -809,7 +810,7 @@ mod tests {
             ),
         ];
         let (id, selected) =
-            stacked_civilian_on_tile(units.iter().map(|unit| (unit.id(), unit)), tile, active)
+            stacked_civilian_on_tile(units.iter().map(|(id, unit)| (*id, unit)), tile, active)
                 .unwrap();
         assert_eq!(id, CivilianUnitId::from_serialized(2));
         assert_eq!(selected.unit_type(), CivilianUnitKind::Engineer);
@@ -828,7 +829,7 @@ mod tests {
             true,
         )];
         assert!(
-            stacked_civilian_on_tile(units.iter().map(|unit| (unit.id(), unit)), tile, active,)
+            stacked_civilian_on_tile(units.iter().map(|(id, unit)| (*id, unit)), tile, active)
                 .is_none()
         );
     }

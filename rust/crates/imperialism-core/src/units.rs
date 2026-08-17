@@ -413,9 +413,8 @@ impl<'de> Deserialize<'de> for MilitaryOrderCode {
     }
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CivilianUnitState {
-    pub(crate) id: CivilianUnitId,
     pub(crate) nation: NationId,
     pub(crate) unit_type: CivilianUnitKind,
     pub(crate) location: CivilianLocation,
@@ -426,38 +425,6 @@ pub struct CivilianUnitState {
     /// Per-tile prepend chain (`nextAtLocation14`). Tracked-list order stays in `civilian_units`.
     #[serde(skip)]
     pub(crate) next_on_tile: Option<CivilianUnitId>,
-}
-
-impl<'de> Deserialize<'de> for CivilianUnitState {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        #[derive(Deserialize)]
-        struct SerializedCivilianUnit {
-            id: CivilianUnitId,
-            nation: NationId,
-            unit_type: CivilianUnitKind,
-            location: CivilianLocation,
-            order: CivilianWorkOrder,
-            owner_nation: NationId,
-            roster_id: i16,
-            registered: bool,
-        }
-
-        let unit = SerializedCivilianUnit::deserialize(deserializer)?;
-        Self::new(
-            unit.id,
-            unit.nation,
-            unit.unit_type,
-            unit.location,
-            unit.order,
-            unit.owner_nation,
-            unit.roster_id,
-            unit.registered,
-        )
-        .ok_or_else(|| serde::de::Error::custom("civilian order is inconsistent with location"))
-    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -477,7 +444,6 @@ impl CivilianLocation {
 impl CivilianUnitState {
     #[allow(clippy::too_many_arguments)]
     pub fn new(
-        id: CivilianUnitId,
         nation: NationId,
         unit_type: CivilianUnitKind,
         location: CivilianLocation,
@@ -496,7 +462,6 @@ impl CivilianUnitState {
             _ => location.tile().is_some(),
         };
         valid_location.then_some(Self {
-            id,
             nation,
             unit_type,
             location,
@@ -506,9 +471,6 @@ impl CivilianUnitState {
             registered,
             next_on_tile: None,
         })
-    }
-    pub const fn id(&self) -> CivilianUnitId {
-        self.id
     }
     pub const fn nation(&self) -> NationId {
         self.nation

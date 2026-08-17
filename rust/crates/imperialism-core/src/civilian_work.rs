@@ -223,10 +223,11 @@ impl GameState {
         &self,
         tile: TileId,
         nation: NationId,
-    ) -> Option<&CivilianUnitState> {
-        self.civilian_units
-            .values()
-            .find(|unit| unit.owner_nation() == nation && unit.location().tile() == Some(tile))
+    ) -> Option<(CivilianUnitId, &CivilianUnitState)> {
+        self.civilian_units.iter().find_map(|(&id, unit)| {
+            (unit.owner_nation() == nation && unit.location().tile() == Some(tile))
+                .then_some((id, unit))
+        })
     }
 
     /// `TCivMgr::ClearNationCivilianActionModesAndCycleSelection` unit walk (cycle is app-side).
@@ -915,7 +916,6 @@ mod tests {
         state.civilian_units.insert(
             id,
             CivilianUnitState::new(
-                id,
                 nation,
                 CivilianUnitKind::Engineer,
                 CivilianLocation::OnMap(origin),
@@ -1111,7 +1111,6 @@ mod tests {
         state.civilian_units.insert(
             id,
             CivilianUnitState::new(
-                id,
                 nation,
                 kind,
                 CivilianLocation::OnMap(tile),

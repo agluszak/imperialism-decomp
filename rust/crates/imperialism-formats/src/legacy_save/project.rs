@@ -161,16 +161,16 @@ impl LegacyGreatPowerPostCity {
         &self,
         nation: NationId,
         topology: MapTopology,
-    ) -> Vec<CivilianUnitState> {
+    ) -> Vec<(CivilianUnitId, CivilianUnitState)> {
         self.civilian_units
             .iter()
             .map(|unit| {
+                let id = CivilianUnitId::from_serialized(unit.persistent_id);
                 let unit_type = CivilianUnitKind::from_index(unit.unit_type as u8)
                     .expect("retail civilian unit type");
                 let tile = optional_tile_id(i32::from(unit.tile_index));
                 let target = optional_tile_id(i32::from(unit.order_target));
-                CivilianUnitState::new(
-                    CivilianUnitId::from_serialized(unit.persistent_id),
+                let state = CivilianUnitState::new(
                     nation,
                     unit_type,
                     tile.map_or(CivilianLocation::OffMap, CivilianLocation::OnMap),
@@ -179,7 +179,8 @@ impl LegacyGreatPowerPostCity {
                     unit.roster_id,
                     unit.registered != 0,
                 )
-                .expect("retail civilian order agrees with its location")
+                .expect("retail civilian order agrees with its location");
+                (id, state)
             })
             .collect()
     }
