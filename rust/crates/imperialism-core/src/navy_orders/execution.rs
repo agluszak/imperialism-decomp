@@ -1701,7 +1701,9 @@ mod tests {
         );
         assert_eq!(
             state.task_force(force).expect("force survives").ships,
-            [(ships[2], true), (ships[0], true)].into_iter().collect()
+            [(ships[2], true), (ships[0], true)]
+                .into_iter()
+                .collect::<IndexMap<_, _>>()
         );
         assert_eq!(
             state.task_force(force).expect("force survives").flagship(),

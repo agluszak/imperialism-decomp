@@ -234,11 +234,13 @@ impl GameState {
         nation: NationId,
         metrics: Option<&NationOrderPriorityMetrics>,
     ) {
-        for index in 0..self.missions.len() {
-            if self.missions[index].nation != nation {
-                continue;
-            }
-            self.reassess_mission(index, metrics);
+        let missions: Vec<_> = self
+            .missions
+            .iter()
+            .filter_map(|(&id, mission)| (mission.nation == nation).then_some(id))
+            .collect();
+        for mission in missions {
+            self.reassess_mission(mission, metrics);
         }
     }
 
@@ -253,27 +255,35 @@ impl GameState {
             if !self.is_auto(nation) {
                 continue;
             }
-            for index in 0..self.missions.len() {
-                if self.missions[index].nation != nation.nation() {
-                    continue;
-                }
-                if matches!(self.missions[index].data, MissionData::ControlSeaZone(_)) {
-                    self.reassess_navy_mission(index);
-                }
+            let missions: Vec<_> = self
+                .missions
+                .iter()
+                .filter_map(|(&id, mission)| {
+                    (mission.nation == nation.nation()
+                        && matches!(mission.data, MissionData::ControlSeaZone(_)))
+                    .then_some(id)
+                })
+                .collect();
+            for mission in missions {
+                self.reassess_navy_mission(mission);
             }
         }
     }
 
-    fn reassess_mission(&mut self, index: usize, metrics: Option<&NationOrderPriorityMetrics>) {
-        match &self.missions[index].data {
+    fn reassess_mission(
+        &mut self,
+        mission: MissionId,
+        metrics: Option<&NationOrderPriorityMetrics>,
+    ) {
+        match &self.missions[&mission].data {
             MissionData::DefendProvince { province, .. } => {
                 let province = *province;
-                self.reassess_defend_mission(index, province, metrics);
+                self.reassess_defend_mission(mission, province, metrics);
             }
             MissionData::AttackProvince(attack) => {
                 let attack = attack.clone();
-                self.missions[index].state = 2;
-                self.reassess_attack_mission_fields(index, &attack);
+                self.missions[&mission].state = 2;
+                self.reassess_attack_mission_fields(mission, &attack);
             }
             MissionData::ControlSeaZone(_)
             | MissionData::Escort(_)
@@ -281,41 +291,41 @@ impl GameState {
             | MissionData::BlockadePort { .. }
             | MissionData::Beachhead(_)
             | MissionData::Invade { .. } => {
-                self.reassess_navy_mission(index);
+                self.reassess_navy_mission(mission);
             }
         }
     }
 
     fn reassess_defend_mission(
         &mut self,
-        index: usize,
+        mission: MissionId,
         province: ProvinceId,
         metrics: Option<&NationOrderPriorityMetrics>,
     ) {
-        let nation = self.missions[index].nation;
-        self.missions[index].state = if self.capitol_province(nation) == Some(province) {
+        let nation = self.missions[&mission].nation;
+        self.missions[&mission].state = if self.capitol_province(nation) == Some(province) {
             0
         } else {
             2
         };
-        self.missions[index].importance_bits =
+        self.missions[&mission].importance_bits =
             self.province_mission_importance_bits(province, nation);
         let required = self.defend_required_equipage(nation, province, metrics);
-        if let MissionData::DefendProvince { army, .. } = &mut self.missions[index].data {
+        if let MissionData::DefendProvince { army, .. } = &mut self.missions[&mission].data {
             army.required_equipage_bits = required;
         }
     }
 
     pub(crate) fn reassess_attack_mission_fields(
         &mut self,
-        index: usize,
+        mission: MissionId,
         attack: &AttackMissionState,
     ) {
-        let nation = self.missions[index].nation;
-        self.missions[index].importance_bits =
+        let nation = self.missions[&mission].nation;
+        self.missions[&mission].importance_bits =
             self.province_mission_importance_bits(attack.target_province, nation);
         let required = self.attack_required_equipage(attack.target_province);
-        match &mut self.missions[index].data {
+        match &mut self.missions[&mission].data {
             MissionData::AttackProvince(state) | MissionData::Invade { attack: state, .. } => {
                 state.army.required_equipage_bits = required;
             }

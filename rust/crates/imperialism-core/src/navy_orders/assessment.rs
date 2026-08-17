@@ -1,59 +1,58 @@
 use super::*;
 
 impl GameState {
-    pub(crate) fn reassess_navy_mission(&mut self, mission_index: usize) {
-        match &self.missions[mission_index].data {
-            MissionData::ScatteredShips(_) => self.reassess_scattered_ships(mission_index),
+    pub(crate) fn reassess_navy_mission(&mut self, mission: MissionId) {
+        match &self.missions[&mission].data {
+            MissionData::ScatteredShips(_) => self.reassess_scattered_ships(mission),
             MissionData::ControlSeaZone(_)
             | MissionData::Beachhead(_)
             | MissionData::BlockadePort { .. }
-            | MissionData::Escort(_) => self.reassess_navy_order_mission(mission_index),
-            MissionData::Invade { .. } => self.reassess_invade_mission(mission_index),
+            | MissionData::Escort(_) => self.reassess_navy_order_mission(mission),
+            MissionData::Invade { .. } => self.reassess_invade_mission(mission),
             MissionData::AttackProvince(_) | MissionData::DefendProvince { .. } => {}
         }
     }
 
-    fn reassess_scattered_ships(&mut self, mission_index: usize) {
-        self.missions[mission_index].state = 3;
-        self.missions[mission_index].importance_bits = 0.001_f32.to_bits();
+    fn reassess_scattered_ships(&mut self, mission: MissionId) {
+        self.missions[&mission].state = 3;
+        self.missions[&mission].importance_bits = 0.001_f32.to_bits();
         let required = navy_required_from_profile(NAVY_CONTROL_PROFILE, 1.0);
-        if let Some(navy) = navy_state_mut(&mut self.missions[mission_index].data) {
+        if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
             navy.required_equipage_bits = required;
         }
     }
 
-    fn reassess_invade_mission(&mut self, mission_index: usize) {
-        if navy_state(&self.missions[mission_index].data).is_some() {
-            self.write_control_sea_needs(mission_index);
-            self.advance_navy_selection_state(mission_index);
+    fn reassess_invade_mission(&mut self, mission: MissionId) {
+        if navy_state(&self.missions[&mission].data).is_some() {
+            self.write_control_sea_needs(mission);
+            self.advance_navy_selection_state(mission);
         }
-        self.missions[mission_index].state = 2;
-        if let MissionData::Invade { attack, .. } = &self.missions[mission_index].data {
+        self.missions[&mission].state = 2;
+        if let MissionData::Invade { attack, .. } = &self.missions[&mission].data {
             let attack = attack.clone();
-            self.reassess_attack_mission_fields(mission_index, &attack);
+            self.reassess_attack_mission_fields(mission, &attack);
         }
-        if navy_state(&self.missions[mission_index].data).is_some() {
-            self.write_control_sea_needs(mission_index);
+        if navy_state(&self.missions[&mission].data).is_some() {
+            self.write_control_sea_needs(mission);
         }
     }
 
-    fn reassess_navy_order_mission(&mut self, mission_index: usize) {
-        let nation = self.missions[mission_index].nation;
-        match &self.missions[mission_index].data {
+    fn reassess_navy_order_mission(&mut self, mission: MissionId) {
+        let nation = self.missions[&mission].nation;
+        match &self.missions[&mission].data {
             MissionData::BlockadePort { .. } => {
-                self.missions[mission_index].state = 3;
+                self.missions[&mission].state = 3;
             }
             MissionData::Escort(_) => {
-                self.missions[mission_index].state = 2;
+                self.missions[&mission].state = 2;
             }
             _ => {
-                self.missions[mission_index].state =
-                    self.control_sea_lifecycle_state(mission_index);
+                self.missions[&mission].state = self.control_sea_lifecycle_state(mission);
             }
         }
-        match &self.missions[mission_index].data {
+        match &self.missions[&mission].data {
             MissionData::Escort(_) => {
-                self.missions[mission_index].importance_bits = self.escort_importance_bits(nation);
+                self.missions[&mission].importance_bits = self.escort_importance_bits(nation);
             }
             MissionData::ControlSeaZone(navy)
             | MissionData::Beachhead(navy)
@@ -61,22 +60,22 @@ impl GameState {
                 if let Some(target) = navy.target_zone
                     && let Some(major) = MajorNationId::from_nation(nation)
                 {
-                    self.missions[mission_index].importance_bits =
+                    self.missions[&mission].importance_bits =
                         self.control_sea_zone_importance_bits(major, target);
                 }
             }
             _ => {}
         }
-        match &self.missions[mission_index].data {
-            MissionData::Escort(_) => self.write_escort_needs(mission_index),
-            _ => self.write_control_sea_needs(mission_index),
+        match &self.missions[&mission].data {
+            MissionData::Escort(_) => self.write_escort_needs(mission),
+            _ => self.write_control_sea_needs(mission),
         }
-        self.advance_navy_selection_state(mission_index);
+        self.advance_navy_selection_state(mission);
     }
 
-    fn control_sea_lifecycle_state(&self, mission_index: usize) -> u8 {
-        let nation = self.missions[mission_index].nation;
-        let Some(navy) = navy_state(&self.missions[mission_index].data) else {
+    fn control_sea_lifecycle_state(&self, mission: MissionId) -> u8 {
+        let nation = self.missions[&mission].nation;
+        let Some(navy) = navy_state(&self.missions[&mission].data) else {
             return 2;
         };
         let Some(target) = navy.target_zone else {
@@ -114,9 +113,9 @@ impl GameState {
             .to_bits()
     }
 
-    fn write_control_sea_needs(&mut self, mission_index: usize) {
-        let nation = self.missions[mission_index].nation;
-        let Some(navy) = navy_state(&self.missions[mission_index].data) else {
+    fn write_control_sea_needs(&mut self, mission: MissionId) {
+        let nation = self.missions[&mission].nation;
+        let Some(navy) = navy_state(&self.missions[&mission].data) else {
             return;
         };
         let Some(target) = navy.target_zone else {
@@ -126,13 +125,13 @@ impl GameState {
         if total == 0.0 {
             total = 100.0;
         }
-        if let Some(navy) = navy_state_mut(&mut self.missions[mission_index].data) {
+        if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
             navy.required_equipage_bits = navy_required_from_profile(NAVY_CONTROL_PROFILE, total);
         }
     }
 
-    fn write_escort_needs(&mut self, mission_index: usize) {
-        let nation = self.missions[mission_index].nation;
+    fn write_escort_needs(&mut self, mission: MissionId) {
+        let nation = self.missions[&mission].nation;
         let year_threshold = (self.turn.economic_turn / 4) as f32 + 110.0;
         let mut total = 1.0_f32;
         for minor in MinorNationId::all() {
@@ -150,7 +149,7 @@ impl GameState {
                 NAVY_ESCORT_PROFILE,
             );
         }
-        if let Some(navy) = navy_state_mut(&mut self.missions[mission_index].data) {
+        if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
             navy.required_equipage_bits = navy_required_from_profile(NAVY_ESCORT_PROFILE, total);
         }
     }
@@ -172,17 +171,17 @@ impl GameState {
         }
     }
 
-    fn advance_navy_selection_state(&mut self, mission_index: usize) {
-        let Some(navy) = navy_state(&self.missions[mission_index].data) else {
+    fn advance_navy_selection_state(&mut self, mission: MissionId) {
+        let Some(navy) = navy_state(&self.missions[&mission].data) else {
             return;
         };
         if navy.ships.is_empty() {
-            if let Some(navy) = navy_state_mut(&mut self.missions[mission_index].data) {
+            if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
                 navy.state = 0;
             }
             return;
         }
-        let nation = self.missions[mission_index].nation;
+        let nation = self.missions[&mission].nation;
         let target = navy.target_zone;
         let port = navy.resolved_port_zone;
         let required = navy.required_equipage_bits.map(f32::from_bits);
@@ -204,7 +203,7 @@ impl GameState {
                 if near < 0.8 {
                     if let Some(target) = target {
                         let refreshed = self.safest_nearby_zone(target, nation);
-                        if let Some(navy) = navy_state_mut(&mut self.missions[mission_index].data) {
+                        if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
                             navy.resolved_port_zone = refreshed;
                         }
                     }
@@ -215,7 +214,7 @@ impl GameState {
             }
             _ => mode,
         };
-        if let Some(navy) = navy_state_mut(&mut self.missions[mission_index].data) {
+        if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
             navy.state = next;
         }
     }
