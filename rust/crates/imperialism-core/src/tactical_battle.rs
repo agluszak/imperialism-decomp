@@ -339,9 +339,10 @@ impl Battle {
                 }
                 let row = tile / TACTICAL_STRIDE;
                 let column = tile % TACTICAL_STRIDE;
-                let ai_class = AI_CLASS[self.units[idx].unit_type].attacker_deploy_band();
-                let mut score = ATTACKER_DEPLOY_ZONE_SCORES
-                    [(2 * (3 * ai_class - column) - (row & 1) + 11) as usize];
+                let score_slot = usize::try_from(11 - 2 * column - (row & 1))
+                    .expect("attacker deployment column has a score slot");
+                let mut score =
+                    ATTACKER_DEPLOY_ZONE_SCORES[AI_CLASS[self.units[idx].unit_type]][score_slot];
                 let mut edge = row;
                 if edge > 7 {
                     edge = TACTICAL_ROWS - edge;

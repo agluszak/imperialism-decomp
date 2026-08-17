@@ -1,7 +1,7 @@
 //! Numeric tables for headless land-battle Auto (`global_data_tables.cpp`).
 
-use crate::MilitaryUnitTable;
 use crate::units::TacticalCombatClass;
+use crate::{MilitaryUnitTable, TacticalCombatClassTable};
 
 pub(crate) const TACTICAL_TILE_COUNT: usize = 0x1b3;
 pub(crate) const TACTICAL_STRIDE: i32 = 0x1d;
@@ -119,10 +119,14 @@ pub(crate) const HEURISTIC_WEIGHTS: [[i32; 15]; 20] = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
 ];
 
-pub(crate) const ATTACKER_DEPLOY_ZONE_SCORES: [i32; 30] = [
-    10, 30, 10, 20, 10, 10, 10, 20, 30, 40, 50, 60, 60, 40, 50, 30, 20, 10, 10, 20, 30, 40, 50, 60,
-    10, 20, 30, 40, 50, 60,
-];
+pub(crate) const ATTACKER_DEPLOY_ZONE_SCORES: TacticalCombatClassTable<[i32; 6]> =
+    TacticalCombatClassTable::from_array([
+        [10, 30, 10, 20, 10, 10],
+        [10, 20, 30, 40, 50, 60],
+        [60, 40, 50, 30, 20, 10],
+        [10, 20, 30, 40, 50, 60],
+        [10, 20, 30, 40, 50, 60],
+    ]);
 
 pub(crate) const CURSOR_STRONG_RATIO: f32 = 3.0;
 pub(crate) const CURSOR_OVERWHELM_RATIO: f32 = 4.0;

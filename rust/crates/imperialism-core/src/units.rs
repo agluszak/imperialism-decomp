@@ -114,18 +114,6 @@ pub enum TacticalCombatClass {
 
 pub type TacticalCombatClassTable<T> = EnumMap<TacticalCombatClass, T>;
 
-impl TacticalCombatClass {
-    pub(crate) const fn attacker_deploy_band(self) -> i32 {
-        match self {
-            Self::Infantry => 0,
-            Self::Cavalry => 1,
-            Self::Artillery => 2,
-            Self::Armor => 3,
-            Self::Support => 4,
-        }
-    }
-}
-
 /// Retail's ten land-unit toolbar and tactical groups.
 #[derive(
     Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
