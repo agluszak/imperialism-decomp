@@ -427,8 +427,7 @@ mod tests {
     fn assert_opening_civilians(state: &GameState, nation: MajorNationId, count: usize) {
         let units: Vec<_> = state
             .civilian_units()
-            .iter()
-            .filter(|unit| unit.nation() == nation.nation())
+            .filter(|(_, unit)| unit.nation() == nation.nation())
             .collect();
         assert_eq!(units.len(), count);
         assert!(
@@ -582,8 +581,7 @@ mod tests {
         assert!(
             state
                 .military_units()
-                .iter()
-                .any(|unit| unit.nation() == MajorNationId::new(6).nation()),
+                .any(|(_, unit)| unit.nation() == MajorNationId::new(6).nation()),
             "SetHomeCityTileAndDisplayName runs InitialMilitia for the confirmed capital"
         );
         assert!(
@@ -650,8 +648,7 @@ mod tests {
         assert!(
             state
                 .military_units()
-                .iter()
-                .any(|unit| unit.nation() == MajorNationId::new(6).nation()),
+                .any(|(_, unit)| unit.nation() == MajorNationId::new(6).nation()),
             "SetHomeCityTileAndDisplayName runs InitialMilitia for the Easy-path capital"
         );
         state.rebuild_nation_resource_yields(MajorNationId::new(6));

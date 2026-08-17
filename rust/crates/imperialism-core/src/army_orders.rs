@@ -871,30 +871,33 @@ mod tests {
     ) -> MilitaryUnitId {
         let id = MilitaryUnitId::new(state.military_units.len() as i32 + 1);
         let nation = state.turn.active_nation;
-        state.military_units.push(MilitaryUnitState::new(
+        state.military_units.insert(
             id,
-            nation,
-            kind,
-            Some(province),
-            if order == 0 {
-                MilitaryOrder::idle([None; 3], [None; 3])
-            } else {
-                MilitaryOrder::retail(
-                    MilitaryOrderCode::from_retail(order),
-                    None,
-                    [None; 3],
-                    [None; 3],
-                )
-            },
-            nation,
-            0,
-            true,
-            String::new(),
-            0x1f4,
-            0,
-            0,
-            0,
-        ));
+            MilitaryUnitState::new(
+                id,
+                nation,
+                kind,
+                Some(province),
+                if order == 0 {
+                    MilitaryOrder::idle([None; 3], [None; 3])
+                } else {
+                    MilitaryOrder::retail(
+                        MilitaryOrderCode::from_retail(order),
+                        None,
+                        [None; 3],
+                        [None; 3],
+                    )
+                },
+                nation,
+                0,
+                true,
+                String::new(),
+                0x1f4,
+                0,
+                0,
+                0,
+            ),
+        );
         id
     }
 
@@ -951,7 +954,7 @@ mod tests {
         assert_eq!(remaining, 1);
         let codes: Vec<MilitaryOrderCode> = state
             .military_units
-            .iter()
+            .values()
             .map(|unit| unit.order.code())
             .collect();
         assert_eq!(
@@ -973,7 +976,7 @@ mod tests {
         assert!(
             state
                 .military_units
-                .iter()
+                .values()
                 .all(|unit| unit.order.code() == MilitaryOrderCode::Idle)
         );
     }

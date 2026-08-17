@@ -337,10 +337,7 @@ mod tests {
                 selected_ship: None,
                 state: 0,
                 required_equipage_bits: [0; 4],
-                ships: vec![SelectedShip {
-                    ship: ShipId::new(0),
-                    selected: false,
-                }],
+                ships: [(ShipId::new(0), false)].into_iter().collect(),
             }),
             path_nation: None,
             state: 2,

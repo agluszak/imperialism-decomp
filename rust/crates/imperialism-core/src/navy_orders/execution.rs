@@ -1366,10 +1366,7 @@ mod tests {
             defeated: false,
             ingot_tile: -1,
             flagship: Some(ship),
-            ships: vec![SelectedShip {
-                ship,
-                selected: true,
-            }],
+            ships: [(ship, true)].into_iter().collect(),
         });
         (ship, force)
     }
@@ -1444,10 +1441,7 @@ mod tests {
                 task_force: Some(survivor),
                 state: 2,
                 required_equipage_bits: [0; 4],
-                ships: vec![SelectedShip {
-                    ship: survivor_ship,
-                    selected: false,
-                }],
+                ships: [(survivor_ship, false)].into_iter().collect(),
             }),
             path_nation: None,
             state: 2,
@@ -1648,14 +1642,7 @@ mod tests {
                 task_force: Some(force),
                 state: 2,
                 required_equipage_bits: [0; 4],
-                ships: ships
-                    .iter()
-                    .copied()
-                    .map(|ship| SelectedShip {
-                        ship,
-                        selected: false,
-                    })
-                    .collect(),
+                ships: ships.iter().copied().map(|ship| (ship, false)).collect(),
             }),
             path_nation: None,
             state: 2,
@@ -1674,16 +1661,7 @@ mod tests {
         );
         assert_eq!(
             state.task_force(force).expect("force survives").ships,
-            vec![
-                SelectedShip {
-                    ship: ships[2],
-                    selected: true,
-                },
-                SelectedShip {
-                    ship: ships[0],
-                    selected: true,
-                },
-            ]
+            [(ships[2], true), (ships[0], true)].into_iter().collect()
         );
         assert_eq!(
             state.task_force(force).expect("force survives").flagship(),
@@ -1756,10 +1734,7 @@ mod tests {
                 task_force: None,
                 state: 2,
                 required_equipage_bits: [0; 4],
-                ships: vec![SelectedShip {
-                    ship: ShipId::new(0),
-                    selected: false,
-                }],
+                ships: [(ShipId::new(0), false)].into_iter().collect(),
             }),
             path_nation: None,
             state: 2,
