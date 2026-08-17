@@ -431,7 +431,7 @@ impl GameState {
                 name: String::new(),
                 strength: crate::city::ship_stock_cap(ship_type),
                 experience: 0,
-                selection: 0,
+                selection: ShipSelection::Available,
             }))
         } else {
             None

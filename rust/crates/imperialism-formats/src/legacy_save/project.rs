@@ -356,7 +356,8 @@ fn ship_states(
                     name: ship.name.clone(),
                     strength: ship.strength,
                     experience: ship.experience,
-                    selection: ship.selection,
+                    selection: ShipSelection::from_retail(ship.selection)
+                        .expect("retail ship selection"),
                 },
             )
         })

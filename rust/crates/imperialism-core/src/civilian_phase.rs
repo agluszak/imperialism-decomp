@@ -524,7 +524,7 @@ mod tests {
                 name: String::new(),
                 strength: 1,
                 experience: 0,
-                selection: 0,
+                selection: ShipSelection::Available,
             },
         );
 

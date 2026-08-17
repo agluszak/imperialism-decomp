@@ -607,7 +607,32 @@ pub struct ShipState {
     pub name: String,
     pub strength: i16,
     pub experience: i16,
-    pub selection: i32,
+    pub selection: ShipSelection,
+}
+
+/// Retail's three ship-selection flags: free, one-pass transient, and reserved.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[repr(i32)]
+#[serde(rename_all = "snake_case")]
+pub enum ShipSelection {
+    Available,
+    Transient,
+    Reserved,
+}
+
+impl ShipSelection {
+    pub const fn retail(self) -> i32 {
+        self as i32
+    }
+
+    pub fn from_retail(value: i32) -> Option<Self> {
+        match value {
+            0 => Some(Self::Available),
+            1 => Some(Self::Transient),
+            2 => Some(Self::Reserved),
+            _ => None,
+        }
+    }
 }
 
 /// The three retail `agr0`–`agr2` navy engagement levels.

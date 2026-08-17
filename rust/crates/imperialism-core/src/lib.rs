@@ -124,8 +124,8 @@ pub use market::{
 };
 pub use military::{
     AdmiralState, ArmyMissionState, AttackMissionState, MissionData, MissionState, NavalAggression,
-    NavyMissionSelection, NavyMissionState, ObjectIdAllocator, ShipState, TaskForceOrder,
-    TaskForceState, TaskForceTarget,
+    NavyMissionSelection, NavyMissionState, ObjectIdAllocator, ShipSelection, ShipState,
+    TaskForceOrder, TaskForceState, TaskForceTarget,
 };
 pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,

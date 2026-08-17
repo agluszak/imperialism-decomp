@@ -413,7 +413,7 @@ pub(super) mod tests {
             name: String::new(),
             strength: 900,
             experience: 0,
-            selection: 0,
+            selection: ShipSelection::Available,
         };
         assert!(ship_priority_contribution(&ship, NavyPriorityComponent::Resolve, &baselines) > 0);
         assert!(
@@ -444,7 +444,7 @@ pub(super) mod tests {
                 name: String::new(),
                 strength: 900,
                 experience: 0,
-                selection: 0,
+                selection: ShipSelection::Available,
             },
         );
         state.diplomacy.relationships[NationId::new(0)][NationId::new(1)] =

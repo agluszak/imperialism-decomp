@@ -1,8 +1,8 @@
 use crate::{
     CivilianLocation, CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, Difficulty,
     GameState, MajorNationId, MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState, NationId,
-    NavalAggression, OceanZoneId, PendingActionKind, ProvinceId, ShipState, ShipType, TileFlags,
-    TileId, TileOwnerTag, TurnSummary,
+    NavalAggression, OceanZoneId, PendingActionKind, ProvinceId, ShipSelection, ShipState,
+    ShipType, TileFlags, TileId, TileOwnerTag, TurnSummary,
 };
 #[cfg(test)]
 use crate::{CivilianUnitId, MapMgr, MilitaryUnitId};
@@ -318,7 +318,7 @@ impl GameState {
             name: String::new(),
             strength: crate::city::ship_stock_cap(ShipType::Frigate),
             experience: 0,
-            selection: 0,
+            selection: ShipSelection::Available,
         });
     }
 

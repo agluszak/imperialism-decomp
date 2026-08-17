@@ -118,7 +118,7 @@ impl GameState {
             && selected
             && let Some(state) = self.ship_mut(ship)
         {
-            state.selection = 0;
+            state.selection = ShipSelection::Available;
         }
     }
 
@@ -144,7 +144,7 @@ impl GameState {
             .expect("selected task force exists");
         *entry.ships.get_mut(&ship_id).expect("selected ship exists") = selecting;
         if selecting && let Some(state) = self.ship_mut(ship_id) {
-            state.selection = 0;
+            state.selection = ShipSelection::Available;
         }
     }
 
@@ -251,7 +251,11 @@ impl GameState {
         };
         let location = entry.location;
         let nation = entry.nation;
-        let selection = if reserve_extra { 1 } else { 2 };
+        let selection = if reserve_extra {
+            ShipSelection::Transient
+        } else {
+            ShipSelection::Reserved
+        };
         let selected: Vec<ShipId> = entry
             .ships
             .iter()
@@ -279,7 +283,7 @@ impl GameState {
             .ships
             .keys()
             .copied()
-            .filter(|ship| self.ships[ship].selection == 0)
+            .filter(|ship| self.ships[ship].selection == ShipSelection::Available)
             .collect();
         if let Some(entry) = self.task_force_mut(force) {
             for (ship, selected) in &mut entry.ships {
@@ -305,7 +309,7 @@ impl GameState {
         }
         for ship in self.ships.values_mut() {
             if ship.nation == nation {
-                ship.selection = 0;
+                ship.selection = ShipSelection::Available;
             }
         }
     }
@@ -659,7 +663,7 @@ impl GameState {
             ship.location == zone
                 && ship.nation == nation
                 && self.task_force_of_ship(id).is_none()
-                && ship.selection == 0
+                && ship.selection == ShipSelection::Available
         })
     }
 
@@ -692,7 +696,7 @@ impl GameState {
         let available: Vec<ShipId> = self
             .ships
             .iter()
-            .filter_map(|(&id, ship)| (ship.selection == 0).then_some(id))
+            .filter_map(|(&id, ship)| (ship.selection == ShipSelection::Available).then_some(id))
             .collect();
         if max_out && let Some(entry) = self.task_force_mut(force) {
             for (ship, selected) in &mut entry.ships {

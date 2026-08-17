@@ -204,7 +204,7 @@ impl GameState {
                     name: String::new(),
                     strength,
                     experience: 0,
-                    selection: 0,
+                    selection: ShipSelection::Available,
                 });
             }
         }
@@ -339,7 +339,7 @@ mod tests {
             name: String::new(),
             strength: 100,
             experience: 0,
-            selection: 0,
+            selection: ShipSelection::Available,
         }
     }
 

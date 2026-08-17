@@ -547,7 +547,7 @@ fn peace_offer_from_human_to_ai() -> GameState {
                 name: String::new(),
                 strength: 900,
                 experience: 0,
-                selection: 0,
+                selection: ShipSelection::Available,
             },
         )
     }));

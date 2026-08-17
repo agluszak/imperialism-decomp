@@ -176,8 +176,8 @@ impl GameState {
             self.free_task_force(force);
         }
         for ship in self.ships.values_mut() {
-            if ship.selection == 1 {
-                ship.selection = 0;
+            if ship.selection == ShipSelection::Transient {
+                ship.selection = ShipSelection::Available;
             }
         }
     }
@@ -1339,7 +1339,7 @@ mod tests {
                 name: String::new(),
                 strength: 900,
                 experience: 0,
-                selection: 0,
+                selection: ShipSelection::Available,
             },
         );
         state.task_forces.insert(
@@ -1384,7 +1384,7 @@ mod tests {
                     name: String::new(),
                     strength,
                     experience: 0,
-                    selection: 0,
+                    selection: ShipSelection::Available,
                 },
             );
         }
@@ -1475,7 +1475,7 @@ mod tests {
                 name: String::new(),
                 strength: 900,
                 experience: 0,
-                selection: 0,
+                selection: ShipSelection::Available,
             },
         );
         let replacement = state.create_task_force(OceanZoneId::new(2), nation, ship);
@@ -1568,7 +1568,7 @@ mod tests {
                 name: String::new(),
                 strength: 900,
                 experience: 0,
-                selection: 0,
+                selection: ShipSelection::Available,
             },
         );
         let inserted = state.create_task_force(OceanZoneId::new(9), attacker, loose_ship);
@@ -1626,7 +1626,7 @@ mod tests {
                     name: String::new(),
                     strength: 900,
                     experience: 0,
-                    selection: 0,
+                    selection: ShipSelection::Available,
                 },
             );
             state.reassign_ship_to_force(ship, force);
@@ -1757,7 +1757,7 @@ mod tests {
                 name: String::new(),
                 strength: 900,
                 experience: 0,
-                selection: 0,
+                selection: ShipSelection::Available,
             },
         );
         let mission = state.object_ids.mission();

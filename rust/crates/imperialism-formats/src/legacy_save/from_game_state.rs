@@ -710,7 +710,7 @@ fn navy_dto(state: &GameState) -> LegacyNavyState {
             nation: i16::from(ship.nation.get()),
             name: ship.name.clone(),
             strength: ship.strength,
-            selection: ship.selection,
+            selection: ship.selection.retail(),
             experience: ship.experience,
             zone_ordinal: i16::try_from(ship.location.get())
                 .expect("ship zone ordinal fits a save short"),

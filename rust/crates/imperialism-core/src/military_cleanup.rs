@@ -448,8 +448,8 @@ impl GameState {
     /// `AddPurchasedItems`. Does not prune missions or remove navy stragglers.
     pub(crate) fn apply_military_cleanup_supported_subset(&mut self) {
         for ship in self.ships.values_mut() {
-            if ship.selection == 1 {
-                ship.selection = 0;
+            if ship.selection == ShipSelection::Transient {
+                ship.selection = ShipSelection::Available;
             }
         }
         self.recompute_tile_strategic_score_heatmap();
@@ -572,7 +572,7 @@ mod tests {
     use super::*;
     use crate::test_support::game_state;
 
-    fn ship(_id: usize, selection: i32) -> ShipState {
+    fn ship(_id: usize, selection: ShipSelection) -> ShipState {
         ShipState {
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
@@ -629,9 +629,10 @@ mod tests {
     #[test]
     fn cleanup_resets_transient_selection_rebuilds_the_heatmap_and_commits_purchases() {
         let mut state = game_state();
-        state
-            .ships
-            .extend([(ShipId::new(0), ship(0, 1)), (ShipId::new(1), ship(1, 2))]);
+        state.ships.extend([
+            (ShipId::new(0), ship(0, ShipSelection::Transient)),
+            (ShipId::new(1), ship(1, ShipSelection::Reserved)),
+        ]);
         state.map[TileId::new(1)].province = Some(ProvinceId::new(0));
         state.map[TileId::new(1)].edge_resources = [Some(ResourceKind::Cotton), None];
         state.map.provinces[ProvinceId::new(0)].linked_tiles = vec![TileId::new(1)];
@@ -660,8 +661,14 @@ mod tests {
 
         state.do_military_cleanup();
 
-        assert_eq!(state.ships[&ShipId::new(0)].selection, 0);
-        assert_eq!(state.ships[&ShipId::new(1)].selection, 2);
+        assert_eq!(
+            state.ships[&ShipId::new(0)].selection,
+            ShipSelection::Available
+        );
+        assert_eq!(
+            state.ships[&ShipId::new(1)].selection,
+            ShipSelection::Reserved
+        );
         assert_eq!(
             state.map.city_score_total, expected.map.city_score_total,
             "cleanup must rebuild the heatmap, not keep a corrupted total"
@@ -754,8 +761,12 @@ mod tests {
     #[test]
     fn cleanup_removes_sail_and_empty_task_forces_and_keeps_patrol() {
         let mut state = game_state();
-        state.ships.insert(ShipId::new(0), ship(0, 0));
-        state.ships.insert(ShipId::new(1), ship(1, 0));
+        state
+            .ships
+            .insert(ShipId::new(0), ship(0, ShipSelection::Available));
+        state
+            .ships
+            .insert(ShipId::new(1), ship(1, ShipSelection::Available));
         state.task_forces.insert(
             TaskForceId::new(0),
             TaskForceState {

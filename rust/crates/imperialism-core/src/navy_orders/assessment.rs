@@ -330,7 +330,7 @@ mod tests {
                 name: String::new(),
                 strength: 900,
                 experience: 0,
-                selection: 0,
+                selection: ShipSelection::Available,
             },
         );
         let mission = state.object_ids.mission();
@@ -381,7 +381,7 @@ mod tests {
                 name: String::new(),
                 strength: 899,
                 experience: 0,
-                selection: 0,
+                selection: ShipSelection::Available,
             },
         );
         let mission = state.object_ids.mission();
