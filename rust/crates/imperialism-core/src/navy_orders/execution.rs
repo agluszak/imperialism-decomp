@@ -1690,7 +1690,7 @@ mod tests {
             Some(ships[2])
         );
         assert_eq!(
-            state.admirals.values().nth(0).map(|admiral| admiral.ship),
+            state.admirals.values().next().map(|admiral| admiral.ship),
             Some(Some(ships[0]))
         );
         assert_eq!(
