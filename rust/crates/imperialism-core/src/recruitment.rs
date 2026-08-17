@@ -540,10 +540,12 @@ mod tests {
         nation.common.treasury = 0;
         nation.common.home_tile = Some(home_town_tile);
         nation.city = city();
-        nation.towns = vec![crate::TownState::for_frog_city(
+        nation.towns = [(
             home_town_tile,
-            MajorNationId::new(0).nation(),
-        )];
+            crate::TownState::for_frog_city(home_town_tile, MajorNationId::new(0).nation()),
+        )]
+        .into_iter()
+        .collect();
         let mut state = crate::test_support::game_state();
         state.unit_ids = crate::UnitIdAllocator::from_retail(40);
         state.map = world();
