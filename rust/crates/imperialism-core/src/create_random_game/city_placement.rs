@@ -9,6 +9,17 @@ pub(super) const RESOURCE_USES_HIGH_NIBBLE: [u8; 24] = [
 pub(super) const GATE_FLAG_QUALIFIES: [u8; 24] = [
     0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 ];
+
+const fn resource_uses_high_nibble(resource: ResourceKind) -> bool {
+    matches!(
+        resource,
+        ResourceKind::Coal
+            | ResourceKind::Iron
+            | ResourceKind::Oil
+            | ResourceKind::Gems
+            | ResourceKind::Gold
+    )
+}
 /// Accept-time `CreateFrogCityAtHomeRegionAndAttach` placement.
 #[allow(clippy::too_many_arguments)]
 pub(super) fn place_initial_frog_cities(
@@ -428,9 +439,8 @@ pub(crate) fn resource_capability_level(tile: &TileState, resource: ResourceKind
     if !tile.edge_resources.contains(&Some(resource)) {
         return 0;
     }
-    let resource_index = resource as usize;
     let packed = (tile.development.extractive.get() << 4) | tile.development.surface.get();
-    let index = if RESOURCE_USES_HIGH_NIBBLE[resource_index] != 0 {
+    let index = if resource_uses_high_nibble(resource) {
         packed >> 4
     } else {
         packed & 0x0f
@@ -447,7 +457,7 @@ pub(crate) fn resource_capability_requirement_level(tile: &TileState, edge: usiz
         return 0;
     };
     let packed = (tile.development.extractive.get() << 4) | tile.development.surface.get();
-    let index = if RESOURCE_USES_HIGH_NIBBLE[resource as usize] != 0 {
+    let index = if resource_uses_high_nibble(resource) {
         packed >> 4
     } else {
         packed
