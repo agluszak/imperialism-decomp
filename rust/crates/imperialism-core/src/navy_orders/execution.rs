@@ -301,7 +301,9 @@ impl GameState {
         self.carry_out_navy_orders_with_tactical_battles(true)
     }
 
-    fn carry_out_navy_orders_without_tactical_battles(&mut self) -> Option<NavyOrdersContinuation> {
+    pub(crate) fn carry_out_navy_orders_without_tactical_battles(
+        &mut self,
+    ) -> Option<NavyOrdersContinuation> {
         self.carry_out_navy_orders_with_tactical_battles(false)
     }
 
@@ -1234,7 +1236,7 @@ impl GameState {
             .flagship = Some(finest);
     }
 
-    fn elect_task_force_flagship(&mut self, force: TaskForceId) {
+    pub(crate) fn elect_task_force_flagship(&mut self, force: TaskForceId) {
         let Some(force_state) = self.task_force(force) else {
             return;
         };
