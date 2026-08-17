@@ -359,7 +359,8 @@ impl GameState {
         {
             // Every supported building ratio is 0/0. VC5's unordered x87
             // comparison takes the primary member of the selected pair.
-            let selected = ExpandableFacility::ALL[(self.rng.next_crt_rand() % 3) as usize];
+            let selected =
+                ExpandableFacility::fallback_for_zero_ratio_roll(self.rng.next_crt_rand());
             self.nations.majors[&nation]
                 .economy
                 .interior_civilian

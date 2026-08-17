@@ -299,7 +299,7 @@ impl TechnologyState {
             loop {
                 let candidate = (rng.next_sample_15() % range_span as u32) as i16 + range_start;
                 if !Technology::all()
-                    .take(technology as usize)
+                    .take_while(|&prior| prior != technology)
                     .any(|prior| state.scheduled_unlock_turn_by_technology[prior] == candidate)
                 {
                     state.scheduled_unlock_turn_by_technology[technology] = candidate;
