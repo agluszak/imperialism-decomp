@@ -23,7 +23,7 @@ struct Seapoint {
     coord: i32,
     lo: i32,
     hi: i32,
-    side: i32,
+    direction: HexDirection,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -43,13 +43,13 @@ pub(crate) struct WaterMergeResult {
 }
 
 impl Seapoint {
-    fn init_sorted(coord: i32, a: i32, b: i32, side: i32) -> Self {
+    fn init_sorted(coord: i32, a: i32, b: i32, direction: HexDirection) -> Self {
         let (lo, hi) = if a > b { (b, a) } else { (a, b) };
         Self {
             coord,
             lo,
             hi,
-            side,
+            direction,
         }
     }
 
@@ -285,23 +285,21 @@ fn region_at_tile(tiles: &[GeneratedTerrainTileScratch], tile_index: i32) -> i32
     water_region_id(&tiles[index])
 }
 
-fn hex_neighbor(geometry: MapGeometry, tile_index: i32, direction: usize) -> i32 {
+fn hex_neighbor(geometry: MapGeometry, tile_index: i32, direction: HexDirection) -> i32 {
     if tile_index < 0 {
         return -1;
     }
-    let Some(neighbor) =
-        geometry.neighbor(TileId::new(tile_index as u16), HexDirection::ALL[direction])
-    else {
+    let Some(neighbor) = geometry.neighbor(TileId::new(tile_index as u16), direction) else {
         return -1;
     };
     i32::from(neighbor.get())
 }
 
-fn overlay_coord_from_tile_side(tile_index: i32, side: i32) -> i32 {
+fn overlay_coord_from_tile_edge(tile_index: i32, lower: bool) -> i32 {
     let mut row = tile_index / i32::from(STRATEGIC_MAP_WIDTH);
     let column = (row & 1) + (tile_index % i32::from(STRATEGIC_MAP_WIDTH)) * 2;
     let mut result = column;
-    if side == 0 {
+    if lower {
         result = column + 2;
         row += 1;
         if result >= OVERLAY_WIDTH {
@@ -316,32 +314,42 @@ fn append_border_quad(
     tile_index: i32,
     region_a: i32,
     region_b: i32,
-    side: i32,
+    direction: HexDirection,
 ) {
     quads.push(Seapoint::init_sorted(
-        overlay_coord_from_tile_side(tile_index, 1),
+        overlay_coord_from_tile_edge(tile_index, false),
         region_a,
         region_b,
-        side,
+        direction,
     ));
 }
 
 fn emit_overlay_segment_from_tile_edge_sorted(
     quads: &mut Vec<Seapoint>,
     tile_index: i32,
-    side: i32,
+    lower: bool,
     a: i32,
     b: i32,
-    extra: i32,
+    direction: HexDirection,
 ) {
-    let coord = overlay_coord_from_tile_side(tile_index, side);
+    let coord = overlay_coord_from_tile_edge(tile_index, lower);
     let (lo, hi) = if a > b { (b, a) } else { (a, b) };
     quads.push(Seapoint {
         coord,
         lo,
         hi,
-        side: extra,
+        direction,
     });
+}
+
+fn clockwise_delta(from: HexDirection, to: HexDirection) -> u8 {
+    let mut direction = from;
+    let mut delta = 0;
+    while direction != to {
+        direction = direction.next_clockwise();
+        delta += 1;
+    }
+    delta
 }
 
 /// `TMapMaker::BuildCityRegionBorderOverlaySegments`.
@@ -356,34 +364,44 @@ fn build_city_region_border_overlay_segments(
     // Phase 1: row 0 tiles, direction-4 edges.
     for tile_idx in 0..width {
         let region1 = region_at_tile(tiles, tile_idx);
-        let region2 = region_at_tile(tiles, hex_neighbor(geometry, tile_idx, 4));
+        let region2 = region_at_tile(tiles, hex_neighbor(geometry, tile_idx, HexDirection::West));
         if region1 != region2 && region1 != -1 && region2 != -1 {
-            append_border_quad(&mut quads, tile_idx, region1, region2, 2);
+            append_border_quad(
+                &mut quads,
+                tile_idx,
+                region1,
+                region2,
+                HexDirection::SouthEast,
+            );
         }
     }
 
     // Phase 2: remaining tiles, directions 4 and 5.
     for tile_idx in width..tile_count {
         let mut this_region = region_at_tile(tiles, tile_idx);
-        let dir4_region = region_at_tile(tiles, hex_neighbor(geometry, tile_idx, 4));
-        let dir5_region = region_at_tile(tiles, hex_neighbor(geometry, tile_idx, 5));
+        let dir4_region =
+            region_at_tile(tiles, hex_neighbor(geometry, tile_idx, HexDirection::West));
+        let dir5_region = region_at_tile(
+            tiles,
+            hex_neighbor(geometry, tile_idx, HexDirection::NorthWest),
+        );
 
-        let mut code_dir45 = 4;
-        let mut code_this_dir4 = 2;
+        let mut code_dir45 = HexDirection::West;
+        let mut code_this_dir4 = HexDirection::SouthEast;
         let mut saved_dir5 = dir5_region;
         if this_region == -1 {
-            code_dir45 = 2;
+            code_dir45 = HexDirection::SouthEast;
             saved_dir5 = -1;
-            code_this_dir4 = 4;
+            code_this_dir4 = HexDirection::West;
             this_region = dir5_region;
         }
         let mut code_first = code_this_dir4;
-        let mut code_second = 0;
+        let mut code_second = HexDirection::NorthEast;
         let mut other_dir5 = saved_dir5;
         let mut dir4 = dir4_region;
         if dir4 == -1 {
             other_dir5 = -1;
-            code_first = 0;
+            code_first = HexDirection::NorthEast;
             code_second = code_this_dir4;
             dir4 = saved_dir5;
         }
@@ -402,24 +420,25 @@ fn build_city_region_border_overlay_segments(
     let mut t3 = 0_i32;
     loop {
         let mut r_this = region_at_tile(tiles, t3);
-        let mut dir1_region = region_at_tile(tiles, hex_neighbor(geometry, t3, 1));
-        let dir2_region = region_at_tile(tiles, hex_neighbor(geometry, t3, 2));
+        let mut dir1_region = region_at_tile(tiles, hex_neighbor(geometry, t3, HexDirection::East));
+        let dir2_region =
+            region_at_tile(tiles, hex_neighbor(geometry, t3, HexDirection::SouthEast));
 
-        let mut code_a = 1;
-        let mut code_b = 3;
-        let mut code_this_dir1 = 5;
+        let mut code_a = HexDirection::East;
+        let mut code_b = HexDirection::SouthWest;
+        let mut code_this_dir1 = HexDirection::NorthWest;
         let mut saved_dir2 = dir2_region;
         if r_this == -1 {
-            code_a = 5;
+            code_a = HexDirection::NorthWest;
             saved_dir2 = -1;
-            code_this_dir1 = 1;
+            code_this_dir1 = HexDirection::East;
             r_this = dir2_region;
         }
         let mut code_mid = code_this_dir1;
         let mut other_dir2 = saved_dir2;
         if dir1_region == -1 {
             other_dir2 = -1;
-            code_mid = 3;
+            code_mid = HexDirection::SouthWest;
             dir1_region = saved_dir2;
             code_b = code_this_dir1;
         }
@@ -428,13 +447,13 @@ fn build_city_region_border_overlay_segments(
                 emit_overlay_segment_from_tile_edge_sorted(
                     &mut quads,
                     t3,
-                    0,
+                    true,
                     r_this,
                     dir1_region,
                     code_mid,
                 );
                 emit_overlay_segment_from_tile_edge_sorted(
-                    &mut quads, t3, 0, r_this, other_dir2, code_b,
+                    &mut quads, t3, true, r_this, other_dir2, code_b,
                 );
                 r_this = dir1_region;
                 dir1_region = other_dir2;
@@ -443,7 +462,7 @@ fn build_city_region_border_overlay_segments(
             emit_overlay_segment_from_tile_edge_sorted(
                 &mut quads,
                 t3,
-                0,
+                true,
                 r_this,
                 dir1_region,
                 code_mid,
@@ -454,9 +473,16 @@ fn build_city_region_border_overlay_segments(
         if t3 * 0x24 > 0x3800f {
             while t3 < tile_count {
                 let r1 = region_at_tile(tiles, t3);
-                let r2 = region_at_tile(tiles, hex_neighbor(geometry, t3, 1));
+                let r2 = region_at_tile(tiles, hex_neighbor(geometry, t3, HexDirection::East));
                 if r1 != r2 && r1 != -1 && r2 != -1 {
-                    emit_overlay_segment_from_tile_edge_sorted(&mut quads, t3, 0, r1, r2, 5);
+                    emit_overlay_segment_from_tile_edge_sorted(
+                        &mut quads,
+                        t3,
+                        true,
+                        r1,
+                        r2,
+                        HexDirection::NorthWest,
+                    );
                 }
                 t3 += 1;
             }
@@ -488,7 +514,7 @@ fn build_overlay_span_records_from_quad_border_links(
             let b = quads[j];
             let same_edge = a.lo == b.lo && a.hi == b.hi;
             if same_edge {
-                let dir_delta = ((b.side - a.side) + 6) % 6;
+                let dir_delta = clockwise_delta(a.direction, b.direction);
                 let is_primary = (2..=4).contains(&dir_delta);
                 if is_primary {
                     if let Some(best_primary) = best_primary {
