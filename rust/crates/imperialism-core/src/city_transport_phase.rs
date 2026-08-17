@@ -153,8 +153,10 @@ impl GameState {
         };
         let insert_at = self
             .military_units
-            .partition_point(|existing| existing.nation <= nation_id);
-        self.military_units.insert(insert_at, unit);
+            .values()
+            .position(|existing| existing.nation > nation_id)
+            .unwrap_or(self.military_units.len());
+        self.military_units.shift_insert(insert_at, id, unit);
         self.announce_later(nation, 3, unit_kind as i16, 1);
     }
 
@@ -206,8 +208,10 @@ impl GameState {
         };
         let insert_at = self
             .civilian_units
-            .partition_point(|existing| existing.nation <= nation_id);
-        self.civilian_units.insert(insert_at, unit);
+            .values()
+            .position(|existing| existing.nation > nation_id)
+            .unwrap_or(self.civilian_units.len());
+        self.civilian_units.shift_insert(insert_at, id, unit);
     }
 
     fn name_units(&mut self, nation: MajorNationId) {

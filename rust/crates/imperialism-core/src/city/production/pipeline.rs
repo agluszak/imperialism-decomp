@@ -251,7 +251,7 @@ impl GameState {
         let nation_id = nation.nation();
         let arms: i32 = self
             .ships
-            .iter()
+            .values()
             .filter(|ship| ship.nation == nation_id)
             .map(|ship| i32::from(ship_order_costs(ship.ship_type).arms))
             .sum();
