@@ -318,37 +318,45 @@ mod tests {
         let nation = NationId::new(0);
         state.nations.majors[MajorNationId::new(0)].auto = Some(AutoGreatPowerState::default());
         state.ocean.zones = vec![ZoneKind::Zone(zone(Vec::new()))];
-        state.ships.push(ShipState {
-            id: ShipId::new(0),
-            ship_type: ShipType::Frigate,
-            location: OceanZoneId::new(0),
-            aggression: 0,
-            nation,
-            name: String::new(),
-            strength: 900,
-            experience: 0,
-            selection: 0,
-        });
-        state.missions.push(MissionState {
-            nation,
-            data: MissionData::ControlSeaZone(NavyMissionState {
-                target_zone: Some(OceanZoneId::new(0)),
-                resolved_port_zone: None,
-                selected_ship: None,
-                state: 0,
-                required_equipage_bits: [0; 4],
-                ships: [(ShipId::new(0), false)].into_iter().collect(),
-            }),
-            path_nation: None,
-            state: 2,
-            importance_bits: 0,
-            held: false,
-            marker: 0,
-        });
+        state.ships.insert(
+            ShipId::new(0),
+            ShipState {
+                id: ShipId::new(0),
+                ship_type: ShipType::Frigate,
+                location: OceanZoneId::new(0),
+                aggression: 0,
+                nation,
+                name: String::new(),
+                strength: 900,
+                experience: 0,
+                selection: 0,
+            },
+        );
+        let mission = state.object_ids.mission();
+        state.missions.insert(
+            mission,
+            MissionState {
+                nation,
+                data: MissionData::ControlSeaZone(NavyMissionState {
+                    target_zone: Some(OceanZoneId::new(0)),
+                    resolved_port_zone: None,
+                    selected_ship: None,
+                    state: 0,
+                    required_equipage_bits: [0; 4],
+                    task_force: None,
+                    ships: [(ShipId::new(0), false)].into_iter().collect(),
+                }),
+                path_nation: None,
+                state: 2,
+                importance_bits: 0,
+                held: false,
+                marker: 0,
+            },
+        );
 
         state.reassess_navy_mission(0);
 
-        let MissionData::ControlSeaZone(navy) = &state.missions[0].data else {
+        let MissionData::ControlSeaZone(navy) = &state.missions[&mission].data else {
             panic!("expected a control-sea mission");
         };
         assert_eq!(navy.state, 2);
@@ -362,37 +370,45 @@ mod tests {
         state.nations.majors[MajorNationId::new(0)].auto = Some(AutoGreatPowerState::default());
         state.diplomacy.relationships[nation][hostile] = DiplomaticRelationship::War;
         state.ocean.zones = vec![ZoneKind::Zone(zone(Vec::new()))];
-        state.ships.push(ShipState {
-            id: ShipId::new(0),
-            ship_type: ShipType::Frigate,
-            location: OceanZoneId::new(0),
-            aggression: 0,
-            nation: hostile,
-            name: String::new(),
-            strength: 899,
-            experience: 0,
-            selection: 0,
-        });
-        state.missions.push(MissionState {
-            nation,
-            data: MissionData::ControlSeaZone(NavyMissionState {
-                target_zone: Some(OceanZoneId::new(0)),
-                resolved_port_zone: None,
-                selected_ship: None,
-                state: 0,
-                required_equipage_bits: [0; 4],
-                ships: Vec::new(),
-            }),
-            path_nation: None,
-            state: 2,
-            importance_bits: 0,
-            held: false,
-            marker: 0,
-        });
+        state.ships.insert(
+            ShipId::new(0),
+            ShipState {
+                id: ShipId::new(0),
+                ship_type: ShipType::Frigate,
+                location: OceanZoneId::new(0),
+                aggression: 0,
+                nation: hostile,
+                name: String::new(),
+                strength: 899,
+                experience: 0,
+                selection: 0,
+            },
+        );
+        let mission = state.object_ids.mission();
+        state.missions.insert(
+            mission,
+            MissionState {
+                nation,
+                data: MissionData::ControlSeaZone(NavyMissionState {
+                    target_zone: Some(OceanZoneId::new(0)),
+                    resolved_port_zone: None,
+                    selected_ship: None,
+                    task_force: None,
+                    state: 0,
+                    required_equipage_bits: [0; 4],
+                    ships: Default::default(),
+                }),
+                path_nation: None,
+                state: 2,
+                importance_bits: 0,
+                held: false,
+                marker: 0,
+            },
+        );
 
         state.reassess_navy_mission(0);
 
-        let MissionData::ControlSeaZone(navy) = &state.missions[0].data else {
+        let MissionData::ControlSeaZone(navy) = &state.missions[&mission].data else {
             panic!("expected a control-sea mission");
         };
         let empty_zone = [40.0_f32, 40.0, 20.0, 0.0].map(|weight| weight.to_bits());
