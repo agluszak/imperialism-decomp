@@ -435,7 +435,8 @@ fn colony_annex_clears_boycotted_companies_and_deports_civilians() {
     state.map.provinces[ProvinceId::new(0)] = province(target, &[], &[20]);
     state.map[TileId::new(20)].secondary_owner_nation = Some(major(1));
     state.nations.majors[source].economy.colony_boycott_flags[nation(1)] = 1;
-    state.civilian_units.push(
+    state.civilian_units.insert(
+        CivilianUnitId::new(1),
         CivilianUnitState::new(
             CivilianUnitId::new(1),
             nation(1),
@@ -529,16 +530,21 @@ fn peace_offer_from_human_to_ai() -> GameState {
     state.nations.majors[major(1)] = computer_major();
     state.diplomacy.relationships[nation(0)][nation(1)] = DiplomaticRelationship::War;
     state.diplomacy.relationships[nation(1)][nation(0)] = DiplomaticRelationship::War;
-    state.ships.extend((0..10).map(|index| ShipState {
-        id: ShipId::new(index),
-        ship_type: ShipType::Frigate,
-        location: OceanZoneId::new(0),
-        aggression: 0,
-        nation: nation(1),
-        name: String::new(),
-        strength: 900,
-        experience: 0,
-        selection: 0,
+    state.ships.extend((0..10).map(|index| {
+        (
+            ShipId::new(index),
+            ShipState {
+                id: ShipId::new(index),
+                ship_type: ShipType::Frigate,
+                location: OceanZoneId::new(0),
+                aggression: 0,
+                nation: nation(1),
+                name: String::new(),
+                strength: 900,
+                experience: 0,
+                selection: 0,
+            },
+        )
     }));
     state.nations.majors[major(0)]
         .economy
@@ -565,21 +571,24 @@ fn ai_rejects_peace_when_the_enemy_capitol_is_threatened() {
     state.map.provinces[ProvinceId::new(1)] = province(nation(2), &[0], &[]);
     state.diplomacy.relationships[nation(0)][nation(2)] = DiplomaticRelationship::War;
     state.diplomacy.relationships[nation(2)][nation(0)] = DiplomaticRelationship::War;
-    state.military_units.push(MilitaryUnitState::new(
+    state.military_units.insert(
         MilitaryUnitId::new(1),
-        nation(2),
-        MilitaryUnitKind::Regulars,
-        Some(ProvinceId::new(1)),
-        MilitaryOrder::idle([None; 3], [None; 3]),
-        nation(2),
-        0,
-        false,
-        String::new(),
-        500,
-        0,
-        0,
-        0,
-    ));
+        MilitaryUnitState::new(
+            MilitaryUnitId::new(1),
+            nation(2),
+            MilitaryUnitKind::Regulars,
+            Some(ProvinceId::new(1)),
+            MilitaryOrder::idle([None; 3], [None; 3]),
+            nation(2),
+            0,
+            false,
+            String::new(),
+            500,
+            0,
+            0,
+            0,
+        ),
+    );
 
     assert_eq!(state.do_diplomacy(), DiplomacyPhaseResult::Resolved);
     assert_eq!(
