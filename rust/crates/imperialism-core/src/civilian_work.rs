@@ -227,7 +227,6 @@ impl GameState {
         nation: NationId,
     ) -> Option<&CivilianUnitState> {
         self.civilian_units
-            .iter()
             .values()
             .find(|unit| unit.owner_nation() == nation && unit.location().tile() == Some(tile))
     }
@@ -417,10 +416,22 @@ impl GameState {
         let (start, end) = self.nation_civilian_range(nation);
         for outer in start..end.saturating_sub(1) {
             for inner in outer + 1..end {
-                let outer_priority = civilian_sort_priority(self.civilian_units[outer].unit_type);
-                let inner_priority = civilian_sort_priority(self.civilian_units[inner].unit_type);
+                let outer_priority = civilian_sort_priority(
+                    self.civilian_units
+                        .get_index(outer)
+                        .expect("civilian sort position exists")
+                        .1
+                        .unit_type,
+                );
+                let inner_priority = civilian_sort_priority(
+                    self.civilian_units
+                        .get_index(inner)
+                        .expect("civilian sort position exists")
+                        .1
+                        .unit_type,
+                );
                 if inner_priority < outer_priority {
-                    self.civilian_units.swap(outer, inner);
+                    self.civilian_units.swap_indices(outer, inner);
                 }
             }
         }
@@ -431,12 +442,14 @@ impl GameState {
         let start = self
             .civilian_units
             .iter()
-            .position(|unit| unit.nation == nation)
+            .position(|(_, unit)| unit.nation == nation)
             .unwrap_or(self.civilian_units.len());
         let end = start
-            + self.civilian_units[start..]
+            + self
+                .civilian_units
                 .iter()
-                .take_while(|unit| unit.nation == nation)
+                .skip(start)
+                .take_while(|(_, unit)| unit.nation == nation)
                 .count();
         (start, end)
     }
