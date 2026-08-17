@@ -180,7 +180,12 @@ pub struct TechnologyState {
     pub marine_engineering: bool,
     pub scheduled_unlock_turn_by_technology: TechnologyTable<i16>,
     pub global_unlocks_by_technology: TechnologyTable<bool>,
+    /// Retail `marker262`, the most recently applied global capability unlock.
+    pub latest_global_unlock: Technology,
     pub research_status_by_nation: MajorNationTable<TechnologyTable<TechnologyResearchStatus>>,
+    /// Retail `capRowsE4a6.completionYearOffsetByTechId`, stamped when a nation
+    /// receives the technology and consumed by technology-history presentation.
+    pub completion_year_by_nation: MajorNationTable<TechnologyTable<i16>>,
     pub industry_enabled_by_slot: [bool; 14],
     pub military_unit_ability_active_by_nation: MajorNationTable<MilitaryUnitTable<bool>>,
     /// Retail `TTechMgr::nationCapRows1e8`: the selected ability id in each
@@ -204,6 +209,7 @@ impl Default for TechnologyState {
                 false, false, false, false, false, false, false, false, false, false, false, false,
                 false, false, false, false, false,
             ]),
+            latest_global_unlock: Technology::SeedDrill,
             research_status_by_nation: MajorNationTable::from_fn(|_| {
                 TechnologyTable::from_array(std::array::from_fn(|index| {
                     if index < 3 {
@@ -213,6 +219,7 @@ impl Default for TechnologyState {
                     }
                 }))
             }),
+            completion_year_by_nation: MajorNationTable::default(),
             industry_enabled_by_slot: [
                 true, true, true, true, true, false, false, false, false, false, false, false,
                 false, false,
@@ -329,11 +336,12 @@ impl GameState {
                     == economic_turn
                 {
                     apply_city_order_capability_unlock(&mut self.technology, tech_id);
-                    self.pending
-                        .queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
+                    self.pending.queue_newspaper_event(
+                        PendingNewspaperEvent::TechnologyDiscovery {
                             audience: None,
-                            story_code: i32::from(tech_id as u8),
-                        });
+                            technology: tech_id,
+                        },
+                    );
                 }
                 continue;
             }
@@ -353,8 +361,8 @@ impl GameState {
                 self.nations.major_mut(nation).common.treasury -= TECH_ITEM_PURCHASE_COST[tech_id];
                 self.technology.research_status_by_nation[nation][tech_id] =
                     TechnologyResearchStatus::Pending;
-                // FIXME: retail also stamps `capRowsE4a6.completionYearOffsetByTechId`
-                // to `economicTurn / 4`. That field is not in the semantic model.
+                self.technology.completion_year_by_nation[nation][tech_id] =
+                    (economic_turn / 4) as i16;
             }
         }
     }
@@ -375,17 +383,20 @@ impl GameState {
     }
 
     pub(crate) fn apply_technology_advances_phase(&mut self) {
+        let marker_before = self.technology.latest_global_unlock;
         self.check_technology_advances();
-        // FIXME: retail ORs `turnFlowStatusFlags` with `0x40` when `marker262` is
-        // unchanged (map toolbar new-tech chrome). `marker262` is not modeled.
+        if self.technology.latest_global_unlock == marker_before {
+            self.turn.turn_flow_status_flags |= 0x40;
+        }
         self.consume_non_interactive_technology_unlocks();
     }
 
     pub(crate) fn consume_interactive_technology_unlock(&mut self) -> Option<Technology> {
         let nation = MajorNationId::from_nation(self.turn.active_nation)?;
-        if self.nations.major(nation).economy.diplomacy_eligible
+        if self.turn.turn_cooldown_defer_counter < 1
             && self.nation_slot_eligible_for_event_processing(nation)
         {
+            self.turn.turn_cooldown_defer_counter = 0;
             self.acknowledge_technology_unlock(nation)
         } else {
             None
@@ -395,10 +406,8 @@ impl GameState {
     pub(crate) fn consume_non_interactive_technology_unlocks(&mut self) {
         let active = MajorNationId::from_nation(self.turn.active_nation);
         for nation in MajorNationId::all() {
-            // FIXME: retail skips the drain when the slot is active, cooldown < 1, and
-            // terrain-eligible — not when diplomacyEligibilityA0 is set.
             let interactive = active == Some(nation)
-                && self.nations.major(nation).economy.diplomacy_eligible
+                && self.turn.turn_cooldown_defer_counter < 1
                 && self.nation_slot_eligible_for_event_processing(nation);
             if interactive {
                 continue;
@@ -425,6 +434,8 @@ impl GameState {
         }
         self.technology.research_status_by_nation[nation][tech_id] =
             TechnologyResearchStatus::Researched;
+        self.technology.completion_year_by_nation[nation][tech_id] =
+            (self.turn.economic_turn / 4) as i16;
 
         let difficulty = self.turn.difficulty as u8;
         let era_offset =
@@ -714,8 +725,7 @@ fn upgrade_resource_costs(kind: MilitaryUnitKind) -> (i16, i16, i16) {
 }
 
 fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id: Technology) {
-    // FIXME: retail also writes `marker262`, `techSelectorShort1d2`, and
-    // `activePrerequisitePair264` (techs 0xb / 0x16).
+    technology.latest_global_unlock = tech_id;
     technology.global_unlocks_by_technology[tech_id] = true;
     match tech_id {
         Technology::Paddlewheels => {
@@ -811,10 +821,35 @@ mod tests {
         assert!(state.technology.industry_enabled_by_slot[6]);
         assert_eq!(
             state.pending.newspaper_events,
-            [PendingNewspaperEvent::Miscellaneous {
+            [PendingNewspaperEvent::TechnologyDiscovery {
                 audience: None,
-                story_code: 4,
+                technology: Technology::StreamlinedHulls,
             }]
+        );
+    }
+
+    #[test]
+    fn technology_phase_sets_status_bit_only_when_global_marker_is_unchanged() {
+        let mut unchanged = crate::test_support::game_state();
+        unchanged.apply_technology_advances_phase();
+        assert_eq!(unchanged.turn.turn_flow_status_flags & 0x40, 0x40);
+
+        let mut unlocked = crate::test_support::game_state();
+        unlocked.turn.economic_turn = 12;
+        unlocked.technology.scheduled_unlock_turn_by_technology[Technology::CottonGin] = 12;
+        unlocked.apply_technology_advances_phase();
+        assert_eq!(
+            unlocked.technology.latest_global_unlock,
+            Technology::CottonGin
+        );
+        assert_eq!(unlocked.turn.turn_flow_status_flags & 0x40, 0);
+    }
+
+    #[test]
+    fn default_global_unlock_marker_matches_retail_initialization() {
+        assert_eq!(
+            TechnologyState::default().latest_global_unlock,
+            Technology::SeedDrill
         );
     }
 
@@ -824,6 +859,7 @@ mod tests {
         let ai = MajorNationId::new(1);
         state.nations.major_mut(ai).economy.diplomacy_eligible = false;
         state.nations.major_mut(ai).common.treasury = 50_000;
+        state.turn.economic_turn = 44;
         state.technology.global_unlocks_by_technology[Technology::CottonGin] = true;
         state.check_technology_advances();
 
@@ -833,10 +869,50 @@ mod tests {
             TechnologyResearchStatus::Pending
         );
         assert_eq!(
+            state.technology.completion_year_by_nation[ai][Technology::CottonGin],
+            11
+        );
+        assert_eq!(
             state.technology.research_status_by_nation[MajorNationId::new(0)]
                 [Technology::CottonGin],
             TechnologyResearchStatus::NotStarted
         );
+    }
+
+    #[test]
+    fn active_technology_report_uses_cooldown_not_diplomacy_eligibility() {
+        let mut state = crate::test_support::game_state();
+        let active = MajorNationId::new(0);
+        state.nations.major_mut(active).economy.diplomacy_eligible = false;
+        state.technology.research_status_by_nation[active][Technology::CottonGin] =
+            TechnologyResearchStatus::Pending;
+
+        state.consume_non_interactive_technology_unlocks();
+        assert_eq!(
+            state.first_pending_technology_unlock(active.nation()),
+            Some(Technology::CottonGin)
+        );
+        assert_eq!(
+            state.consume_interactive_technology_unlock(),
+            Some(Technology::CottonGin)
+        );
+        assert_eq!(
+            state.technology.completion_year_by_nation[active][Technology::CottonGin],
+            (state.turn.economic_turn / 4) as i16
+        );
+    }
+
+    #[test]
+    fn positive_turn_cooldown_drains_active_unlock_without_a_report() {
+        let mut state = crate::test_support::game_state();
+        let active = MajorNationId::new(0);
+        state.turn.turn_cooldown_defer_counter = 1;
+        state.technology.research_status_by_nation[active][Technology::CottonGin] =
+            TechnologyResearchStatus::Pending;
+
+        state.consume_non_interactive_technology_unlocks();
+        assert_eq!(state.first_pending_technology_unlock(active.nation()), None);
+        assert_eq!(state.consume_interactive_technology_unlock(), None);
     }
 
     #[test]

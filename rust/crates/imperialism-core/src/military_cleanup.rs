@@ -37,8 +37,7 @@ pub(crate) struct NationOrderPriorityMetrics {
 impl GameState {
     /// Retail military-cleanup for a non-client host. Order-priority metrics run
     /// before mission reassess so defend needs read B64/B68. AI development
-    /// replanning (`PlanAiDevelopmentActionsFromResourcePools`) and the 40-turn
-    /// diplomacy standing rebuild are not ported.
+    /// replanning (`PlanAiDevelopmentActionsFromResourcePools`) is not ported.
     pub fn do_military_cleanup(&mut self) {
         self.clear_all_transient_navy_orders();
         self.apply_military_cleanup_supported_subset();
@@ -51,6 +50,17 @@ impl GameState {
                 self.reassess_missions_with_metrics(nation.nation(), Some(&metrics));
                 self.prune_invalid_defend_missions(nation.nation());
             }
+        }
+        let decade = self.turn.economic_turn / 40;
+        if self.turn.economic_turn % 40 == 0
+            && decade >= 0
+            && self
+                .turn
+                .quarter_gate_by_decade
+                .get(decade as usize)
+                .is_some_and(|&gate| gate != 0)
+        {
+            self.rebuild_council_ballot(false);
         }
     }
 

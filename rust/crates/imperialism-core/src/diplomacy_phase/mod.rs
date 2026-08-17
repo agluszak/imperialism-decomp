@@ -2,6 +2,7 @@
 //! plus per-nation `ReplyToDiplomacyOffers` and one queued war transition).
 
 mod change_master;
+mod council;
 mod offers;
 mod planner;
 mod relationships;

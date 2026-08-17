@@ -700,10 +700,19 @@ fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
         global_unlocks_by_technology: TechnologyTable::from_array(
             legacy.per_technology_unlock_flags.map(|value| value != 0),
         ),
+        latest_global_unlock: u8::try_from(legacy.marker)
+            .ok()
+            .and_then(Technology::from_index)
+            .unwrap_or(Technology::SeedDrill),
         research_status_by_nation: MajorNationTable::from_array(
             legacy.research_status_by_nation.map(|row| {
                 TechnologyTable::from_array(row.map(technology_research_status_from_retail))
             }),
+        ),
+        completion_year_by_nation: MajorNationTable::from_array(
+            legacy
+                .completion_year_offsets
+                .map(TechnologyTable::from_array),
         ),
         industry_enabled_by_slot: legacy.resource_type_enabled.map(|value| value != 0),
         military_unit_ability_active_by_nation: MajorNationTable::from_array(
