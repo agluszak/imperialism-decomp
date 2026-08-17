@@ -177,7 +177,7 @@ impl GameState {
         };
         if navy.ships.is_empty() {
             if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
-                navy.state = 0;
+                navy.state = NavyMissionSelection::AssembleAtPort;
             }
             return;
         }
@@ -186,19 +186,23 @@ impl GameState {
         let port = navy.resolved_port_zone;
         let required = navy.required_equipage_bits.map(f32::from_bits);
         let ships: Vec<ShipId> = navy.ships.keys().copied().collect();
-        let mode = navy.state;
-        let next = match mode {
-            0 => {
+        let selection = navy.state;
+        let next = match selection {
+            NavyMissionSelection::AssembleAtPort => {
                 let near = self.assigned_navy_readiness(&ships, required, target, 1, port);
                 if near >= 1.0 {
                     let at_target = self.assigned_navy_readiness(&ships, required, target, 0, port);
-                    if at_target >= 1.0 { 2 } else { 1 }
+                    if at_target >= 1.0 {
+                        NavyMissionSelection::ExecuteAtTarget
+                    } else {
+                        NavyMissionSelection::EvadeAtTarget
+                    }
                 } else {
-                    0
+                    NavyMissionSelection::AssembleAtPort
                 }
             }
-            1 => 2,
-            2 => {
+            NavyMissionSelection::EvadeAtTarget => NavyMissionSelection::ExecuteAtTarget,
+            NavyMissionSelection::ExecuteAtTarget => {
                 let near = self.assigned_navy_readiness(&ships, required, target, 1, port);
                 if near < 0.8 {
                     if let Some(target) = target {
@@ -207,12 +211,11 @@ impl GameState {
                             navy.resolved_port_zone = refreshed;
                         }
                     }
-                    0
+                    NavyMissionSelection::AssembleAtPort
                 } else {
-                    2
+                    NavyMissionSelection::ExecuteAtTarget
                 }
             }
-            _ => mode,
         };
         if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
             navy.state = next;
@@ -339,7 +342,7 @@ mod tests {
                     target_zone: Some(OceanZoneId::new(0)),
                     resolved_port_zone: None,
                     selected_ship: None,
-                    state: 0,
+                    state: NavyMissionSelection::AssembleAtPort,
                     required_equipage_bits: [0; 4],
                     task_force: None,
                     ships: [(ShipId::new(0), false)].into_iter().collect(),
@@ -357,7 +360,7 @@ mod tests {
         let MissionData::ControlSeaZone(navy) = &state.missions[&mission].data else {
             panic!("expected a control-sea mission");
         };
-        assert_eq!(navy.state, 2);
+        assert_eq!(navy.state, NavyMissionSelection::ExecuteAtTarget);
     }
 
     #[test]
@@ -391,7 +394,7 @@ mod tests {
                     resolved_port_zone: None,
                     selected_ship: None,
                     task_force: None,
-                    state: 0,
+                    state: NavyMissionSelection::AssembleAtPort,
                     required_equipage_bits: [0; 4],
                     ships: Default::default(),
                 }),

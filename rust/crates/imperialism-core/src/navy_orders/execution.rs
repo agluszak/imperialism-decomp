@@ -80,7 +80,7 @@ impl GameState {
             return;
         };
         let nation = self.missions[&mission].nation;
-        let navy_state_code = navy.state;
+        let selection = navy.state;
         let target = navy.target_zone;
         let mut port = navy.resolved_port_zone;
         let ships: Vec<ShipId> = navy.ships.keys().copied().collect();
@@ -94,8 +94,8 @@ impl GameState {
             return;
         }
 
-        match navy_state_code {
-            2 => {
+        match selection {
+            NavyMissionSelection::ExecuteAtTarget => {
                 if let Some(target) = target {
                     self.consolidate_mission_ships_to(&ships, target);
                     let force = self.combine_force_at(mission, nation, &ships, target);
@@ -104,7 +104,7 @@ impl GameState {
                     }
                 }
             }
-            1 => {
+            NavyMissionSelection::EvadeAtTarget => {
                 if let Some(target) = target {
                     self.consolidate_mission_ships_to(&ships, target);
                     let force = self.combine_force_at(mission, nation, &ships, target);
@@ -115,7 +115,7 @@ impl GameState {
                     }
                 }
             }
-            0 => {
+            NavyMissionSelection::AssembleAtPort => {
                 if port.is_none()
                     && let Some(target) = target
                 {
@@ -136,7 +136,6 @@ impl GameState {
                     }
                 }
             }
-            _ => {}
         }
     }
 
@@ -1442,7 +1441,7 @@ mod tests {
                     resolved_port_zone: None,
                     selected_ship: Some(survivor_ship),
                     task_force: Some(survivor),
-                    state: 2,
+                    state: NavyMissionSelection::ExecuteAtTarget,
                     required_equipage_bits: [0; 4],
                     ships: [(survivor_ship, false)].into_iter().collect(),
                 }),
@@ -1659,7 +1658,7 @@ mod tests {
                     resolved_port_zone: None,
                     selected_ship: Some(ships[2]),
                     task_force: Some(force),
-                    state: 2,
+                    state: NavyMissionSelection::ExecuteAtTarget,
                     required_equipage_bits: [0; 4],
                     ships: ships.iter().copied().map(|ship| (ship, false)).collect(),
                 }),
@@ -1771,7 +1770,7 @@ mod tests {
                     resolved_port_zone: None,
                     selected_ship: None,
                     task_force: None,
-                    state: 2,
+                    state: NavyMissionSelection::ExecuteAtTarget,
                     required_equipage_bits: [0; 4],
                     ships: [(ShipId::new(0), false)].into_iter().collect(),
                 }),

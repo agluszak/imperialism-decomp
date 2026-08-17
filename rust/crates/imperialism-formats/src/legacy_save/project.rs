@@ -325,7 +325,8 @@ fn navy_mission_state(mission: &LegacyNavyMission) -> NavyMissionState {
         // TNavyMission::ReadFrom rebuilds these runtime-only links as null.
         selected_ship: None,
         task_force: None,
-        state: mission.state,
+        state: NavyMissionSelection::from_retail(mission.state)
+            .expect("retail navy mission selection"),
         required_equipage_bits: mission.required_equipage_bits,
         ships: Default::default(),
     }

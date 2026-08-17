@@ -920,7 +920,7 @@ mod tests {
                     target_zone: Some(OceanZoneId::new(0)),
                     resolved_port_zone: None,
                     selected_ship: None,
-                    state: 0,
+                    state: NavyMissionSelection::AssembleAtPort,
                     required_equipage_bits: [0; 4],
                     task_force: None,
                     ships: Default::default(),
@@ -942,7 +942,7 @@ mod tests {
             navy.required_equipage_bits,
             [40.0_f32, 40.0, 20.0, 0.0].map(|weight| weight.to_bits())
         );
-        assert_eq!(navy.state, 0);
+        assert_eq!(navy.state, NavyMissionSelection::AssembleAtPort);
         assert_eq!(state.missions[&mission].state, 2);
     }
 }

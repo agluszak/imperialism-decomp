@@ -749,16 +749,38 @@ pub struct ArmyMissionState {
     pub units: IndexSet<MilitaryUnitId>,
 }
 
+/// The three target-selection stages used while assigning a navy mission.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[repr(i32)]
+#[serde(rename_all = "snake_case")]
+pub enum NavyMissionSelection {
+    AssembleAtPort,
+    EvadeAtTarget,
+    ExecuteAtTarget,
+}
+
+impl NavyMissionSelection {
+    pub const fn retail(self) -> i32 {
+        self as i32
+    }
+
+    pub fn from_retail(value: i32) -> Option<Self> {
+        match value {
+            0 => Some(Self::AssembleAtPort),
+            1 => Some(Self::EvadeAtTarget),
+            2 => Some(Self::ExecuteAtTarget),
+            _ => None,
+        }
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct NavyMissionState {
     pub target_zone: Option<OceanZoneId>,
     pub resolved_port_zone: Option<OceanZoneId>,
     pub selected_ship: Option<ShipId>,
     pub task_force: Option<TaskForceId>,
-    /// Retail target-selection state. Values 0, 1, and 2 select between the
-    /// resolved port and target zone; the save field remains open until more
-    /// lifecycle behavior is implemented.
-    pub state: i32,
+    pub state: NavyMissionSelection,
     /// Exact IEEE-754 bits retained for deterministic mission scoring.
     pub required_equipage_bits: [u32; 4],
     pub ships: IndexMap<ShipId, bool>,

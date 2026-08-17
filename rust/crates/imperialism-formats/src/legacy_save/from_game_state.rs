@@ -756,7 +756,7 @@ fn navy_mission_dto(navy: &NavyMissionState) -> LegacyNavyMission {
         resolved_port_zone: option_i16(navy.resolved_port_zone.map(OceanZoneId::get)),
         required_equipage_bits: navy.required_equipage_bits,
         ship_ordinals: Vec::new(),
-        state: navy.state,
+        state: navy.state.retail(),
     }
 }
 

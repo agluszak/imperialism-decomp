@@ -1059,7 +1059,7 @@ fn empty_navy_mission(
         resolved_port_zone,
         selected_ship: None,
         task_force: None,
-        state: 0,
+        state: NavyMissionSelection::AssembleAtPort,
         required_equipage_bits: [0; 4],
         ships: Default::default(),
     }
