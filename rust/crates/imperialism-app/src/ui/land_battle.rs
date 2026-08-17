@@ -144,7 +144,6 @@ mod tests {
     fn idle_unit(unit: &MilitaryUnitState) -> MilitaryUnitState {
         let stationed = unit.stationed_province();
         MilitaryUnitState::new(
-            unit.id(),
             unit.nation(),
             unit.unit_type(),
             stationed,
@@ -161,7 +160,6 @@ mod tests {
     }
 
     fn redeploy_unit(
-        id: MilitaryUnitId,
         nation: NationId,
         kind: MilitaryUnitKind,
         from: ProvinceId,
@@ -169,7 +167,6 @@ mod tests {
         strength: i16,
     ) -> MilitaryUnitState {
         MilitaryUnitState::new(
-            id,
             nation,
             kind,
             Some(from),
@@ -191,14 +188,12 @@ mod tests {
     }
 
     fn garrison_unit(
-        id: MilitaryUnitId,
         nation: NationId,
         kind: MilitaryUnitKind,
         province: ProvinceId,
         strength: i16,
     ) -> MilitaryUnitState {
         MilitaryUnitState::new(
-            id,
             nation,
             kind,
             Some(province),
@@ -254,7 +249,11 @@ mod tests {
             })
             .expect("beginning-of-game map has two distinct major-power borders");
 
-        parts.military_units = parts.military_units.iter().map(idle_unit).collect();
+        parts.military_units = parts
+            .military_units
+            .iter()
+            .map(|(id, unit)| (*id, idle_unit(unit)))
+            .collect();
         parts.diplomacy.relationships[first.2][first.3] = DiplomaticRelationship::War;
         parts.diplomacy.relationships[first.3][first.2] = DiplomaticRelationship::War;
         parts.diplomacy.relationships[second.2][second.3] = DiplomaticRelationship::War;
@@ -266,36 +265,28 @@ mod tests {
 
         let next = parts.unit_ids.current();
         parts.unit_ids = UnitIdAllocator::from_retail(next + 4);
-        parts.military_units.push(redeploy_unit(
+        parts.military_units.insert(
             MilitaryUnitId::from_serialized(next + 1),
-            first.2,
-            MilitaryUnitKind::Regulars,
-            first.0,
-            first.1,
-            500,
-        ));
-        parts.military_units.push(garrison_unit(
+            redeploy_unit(first.2, MilitaryUnitKind::Regulars, first.0, first.1, 500),
+        );
+        parts.military_units.insert(
             MilitaryUnitId::from_serialized(next + 2),
-            first.3,
-            MilitaryUnitKind::Militia,
-            first.1,
-            100,
-        ));
-        parts.military_units.push(redeploy_unit(
+            garrison_unit(first.3, MilitaryUnitKind::Militia, first.1, 100),
+        );
+        parts.military_units.insert(
             MilitaryUnitId::from_serialized(next + 3),
-            second.2,
-            MilitaryUnitKind::Regulars,
-            second.0,
-            second.1,
-            500,
-        ));
-        parts.military_units.push(garrison_unit(
+            redeploy_unit(
+                second.2,
+                MilitaryUnitKind::Regulars,
+                second.0,
+                second.1,
+                500,
+            ),
+        );
+        parts.military_units.insert(
             MilitaryUnitId::from_serialized(next + 4),
-            second.3,
-            MilitaryUnitKind::Militia,
-            second.1,
-            100,
-        ));
+            garrison_unit(second.3, MilitaryUnitKind::Militia, second.1, 100),
+        );
 
         parts.turn = TurnState::new(
             parts.turn.scenario_map,

@@ -139,10 +139,9 @@ impl GameState {
         let mut overlay = String::new();
         let mut children = Vec::new();
         for &id in units {
-            let Some(index) = self.military_units.iter().position(|unit| unit.id() == id) else {
+            let Some(unit) = self.military_units.get(&id) else {
                 continue;
             };
-            let unit = &self.military_units[index];
             let mut stock = unit.strength();
             if stock == -86 {
                 stock = 0;
@@ -180,21 +179,23 @@ mod tests {
         let attacker = state.turn.active_nation;
         let defender = NationId::new(1);
         let id = MilitaryUnitId::new(1);
-        state.military_units.push(MilitaryUnitState::new(
+        state.military_units.insert(
             id,
-            attacker,
-            MilitaryUnitKind::Regulars,
-            Some(province),
-            MilitaryOrder::idle([None; 3], [None; 3]),
-            attacker,
-            0,
-            true,
-            "1st Regulars".to_string(),
-            0x1f4,
-            0,
-            150,
-            0,
-        ));
+            MilitaryUnitState::new(
+                attacker,
+                MilitaryUnitKind::Regulars,
+                Some(province),
+                MilitaryOrder::idle([None; 3], [None; 3]),
+                attacker,
+                0,
+                true,
+                "1st Regulars".to_string(),
+                0x1f4,
+                0,
+                150,
+                0,
+            ),
+        );
         state.append_land_battle_report(
             BattleReportKind::LandBattle,
             province,

@@ -129,9 +129,9 @@ pub(crate) fn cycle_map_interaction_selection(
                 if previous != MapInteractionMode::Civilian {
                     visited |= 1;
                 }
-                if let Some(unit) = session.game.first_idle_civilian(nation) {
+                if let Some((id, unit)) = session.game.first_idle_civilian(nation) {
                     set_map_interaction_mode(interaction, MapInteractionMode::Civilian);
-                    interaction.civilian = Some(unit.id());
+                    interaction.civilian = Some(id);
                     if let Some(tile) = unit.location().tile() {
                         session.game.center_map_on(tile);
                     }

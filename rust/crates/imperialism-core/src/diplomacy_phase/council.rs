@@ -202,7 +202,7 @@ impl GameState {
             }
             rows[nation][0] = self
                 .military_units
-                .iter()
+                .values()
                 .filter(|unit| {
                     unit.nation == nation.nation() && !unit.unit_type.is_militia_category()
                 })
@@ -214,7 +214,7 @@ impl GameState {
                 .sum::<i32>()
                 + self
                     .ships
-                    .iter()
+                    .values()
                     .filter(|ship| ship.nation == nation.nation())
                     .map(|ship| {
                         NAVY_POWER_WEIGHT[ship.ship_type as usize]

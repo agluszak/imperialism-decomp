@@ -3,6 +3,7 @@ use super::conversions::*;
 use super::model::*;
 use super::*;
 use imperialism_core::*;
+use indexmap::IndexMap;
 
 fn optional_region_id(value: i8) -> Option<RegionId> {
     optional_u8(value).map(RegionId::new)
@@ -117,10 +118,11 @@ fn normalize_nation_display_name(raw: &str) -> String {
 }
 
 impl LegacyCountryBase {
-    fn military_unit_states(&self, nation: NationId) -> Vec<MilitaryUnitState> {
+    fn military_unit_states(&self, nation: NationId) -> Vec<(MilitaryUnitId, MilitaryUnitState)> {
         self.military_units
             .iter()
             .map(|unit| {
+                let id = MilitaryUnitId::from_serialized(unit.persistent_id);
                 let unit_type = MilitaryUnitKind::from_index(unit.unit_type as u8)
                     .expect("retail military unit type");
                 let targets = optional_province_array(unit.order_target_tiles);
@@ -136,8 +138,7 @@ impl LegacyCountryBase {
                         target_mirrors,
                     )
                 };
-                MilitaryUnitState::new(
-                    MilitaryUnitId::from_serialized(unit.persistent_id),
+                let state = MilitaryUnitState::new(
                     nation,
                     unit_type,
                     optional_province_id(unit.stationed_province),
@@ -150,7 +151,8 @@ impl LegacyCountryBase {
                     unit.era,
                     unit.experience,
                     unit.battle_flags,
-                )
+                );
+                (id, state)
             })
             .collect()
     }
@@ -161,16 +163,16 @@ impl LegacyGreatPowerPostCity {
         &self,
         nation: NationId,
         topology: MapTopology,
-    ) -> Vec<CivilianUnitState> {
+    ) -> Vec<(CivilianUnitId, CivilianUnitState)> {
         self.civilian_units
             .iter()
             .map(|unit| {
+                let id = CivilianUnitId::from_serialized(unit.persistent_id);
                 let unit_type = CivilianUnitKind::from_index(unit.unit_type as u8)
                     .expect("retail civilian unit type");
                 let tile = optional_tile_id(i32::from(unit.tile_index));
                 let target = optional_tile_id(i32::from(unit.order_target));
-                CivilianUnitState::new(
-                    CivilianUnitId::from_serialized(unit.persistent_id),
+                let state = CivilianUnitState::new(
                     nation,
                     unit_type,
                     tile.map_or(CivilianLocation::OffMap, CivilianLocation::OnMap),
@@ -179,7 +181,8 @@ impl LegacyGreatPowerPostCity {
                     unit.roster_id,
                     unit.registered != 0,
                 )
-                .expect("retail civilian order agrees with its location")
+                .expect("retail civilian order agrees with its location");
+                (id, state)
             })
             .collect()
     }
@@ -280,6 +283,7 @@ fn army_mission_state(
     let units = mission
         .unit_ordinals
         .iter()
+        .rev()
         .map(|ordinal| {
             let unit = &military_units[(*ordinal - 1) as usize];
             MilitaryUnitId::from_serialized(unit.persistent_id)
@@ -323,40 +327,60 @@ fn navy_mission_state(mission: &LegacyNavyMission) -> NavyMissionState {
         task_force: None,
         state: mission.state,
         required_equipage_bits: mission.required_equipage_bits,
-        ships: Vec::new(),
+        ships: Default::default(),
     }
 }
 
-fn ship_states(navy: &LegacyNavyState) -> Vec<ShipState> {
+fn ship_states(
+    navy: &LegacyNavyState,
+    object_ids: &mut ObjectIdAllocator,
+) -> IndexMap<ShipId, ShipState> {
     navy.ships
         .iter()
-        .enumerate()
-        .map(|(index, ship)| ShipState {
-            id: ShipId::new(index),
-            ship_type: ShipType::from_index(ship.ship_type as u8)
-                .expect("retail ship type is in the descriptor table"),
-            location: OceanZoneId::new(
-                u16::try_from(ship.zone_ordinal).expect("retail ship zone ordinal is non-negative"),
-            ),
-            aggression: ship.aggression,
-            nation: nation_id_from_retail_i16(ship.nation),
-            name: ship.name.clone(),
-            strength: ship.strength,
-            experience: ship.experience,
-            selection: ship.selection,
+        .rev()
+        .map(|ship| {
+            let id = object_ids.ship();
+            (
+                id,
+                ShipState {
+                    ship_type: ShipType::from_index(ship.ship_type as u8)
+                        .expect("retail ship type is in the descriptor table"),
+                    location: OceanZoneId::new(
+                        u16::try_from(ship.zone_ordinal)
+                            .expect("retail ship zone ordinal is non-negative"),
+                    ),
+                    aggression: ship.aggression,
+                    nation: nation_id_from_retail_i16(ship.nation),
+                    name: ship.name.clone(),
+                    strength: ship.strength,
+                    experience: ship.experience,
+                    selection: ship.selection,
+                },
+            )
         })
         .collect()
 }
 
-fn admiral_states(navy: &LegacyNavyState, ship_count: usize) -> Vec<AdmiralState> {
+fn admiral_states(
+    navy: &LegacyNavyState,
+    ship_ids: &[ShipId],
+    object_ids: &mut ObjectIdAllocator,
+) -> IndexMap<AdmiralId, AdmiralState> {
     navy.admirals
         .iter()
-        .map(|admiral| AdmiralState {
-            nation: nation_id_from_retail_i16(admiral.nation),
-            name: admiral.name.clone(),
-            experience: admiral.experience,
-            ship: (admiral.ship_index >= 0 && (admiral.ship_index as usize) < ship_count)
-                .then(|| ShipId::new(admiral.ship_index as usize)),
+        .rev()
+        .map(|admiral| {
+            (
+                object_ids.admiral(),
+                AdmiralState {
+                    nation: nation_id_from_retail_i16(admiral.nation),
+                    name: admiral.name.clone(),
+                    experience: admiral.experience,
+                    ship: (admiral.ship_index >= 0)
+                        .then(|| ship_ids.get(admiral.ship_index as usize).copied())
+                        .flatten(),
+                },
+            )
         })
         .collect()
 }
@@ -740,13 +764,15 @@ impl LegacySaveV62 {
             "semantic projection of retail navy task forces is not implemented"
         );
 
-        let ships = ship_states(&self.navy);
-        let admirals = admiral_states(&self.navy, ships.len());
+        let mut object_ids = ObjectIdAllocator::default();
+        let ships = ship_states(&self.navy, &mut object_ids);
+        let ship_ids = ships.keys().rev().copied().collect::<Vec<_>>();
+        let admirals = admiral_states(&self.navy, &ship_ids, &mut object_ids);
 
         let mut minors = MinorNationTable::default();
-        let mut military_units = Vec::new();
-        let mut civilian_units = Vec::new();
-        let mut missions = Vec::new();
+        let mut military_units = IndexMap::new();
+        let mut civilian_units = IndexMap::new();
+        let mut missions = IndexMap::new();
         let mut pending = PendingWorkState::default();
         let map = self.map.map_mgr();
         let map_view_origin = TileId::new(self.map.view_origin_tile as u16);
@@ -765,17 +791,24 @@ impl LegacySaveV62 {
                 .post_city
                 .towns
                 .iter()
-                .map(|town| TownState {
-                    name: town.name.clone(),
-                    tile: optional_tile_id(i32::from(town.tile_index))
-                        .expect("retail town has a tile"),
-                    created_turn: town.created_turn,
-                    owner_nation: NationId::new(town.owner_nation as u8),
-                    resource_yield_by_type: ResourceTable::from_array(town.resource_yield_by_type),
-                    transport_linked: town.transport_linked != 0,
-                    enabled: town.enabled,
-                    has_adjacent_city: town.has_adjacent_city,
-                    active: town.active != 0,
+                .map(|town| {
+                    let tile = optional_tile_id(i32::from(town.tile_index))
+                        .expect("retail town has a tile");
+                    (
+                        tile,
+                        TownState {
+                            name: town.name.clone(),
+                            created_turn: town.created_turn,
+                            owner_nation: NationId::new(town.owner_nation as u8),
+                            resource_yield_by_type: ResourceTable::from_array(
+                                town.resource_yield_by_type,
+                            ),
+                            transport_linked: town.transport_linked != 0,
+                            enabled: town.enabled,
+                            has_adjacent_city: town.has_adjacent_city,
+                            active: town.active != 0,
+                        },
+                    )
                 })
                 .collect();
             let city = city.city_state();
@@ -813,7 +846,8 @@ impl LegacySaveV62 {
             );
             if let LegacyMajorNationState::Auto(auto) = nation {
                 for mission in &auto.missions {
-                    missions.push(
+                    missions.insert(
+                        object_ids.mission(),
                         mission.mission_state(nation_id, &great_power.country.military_units),
                     );
                 }
@@ -875,9 +909,10 @@ impl LegacySaveV62 {
             nations: Nations::new(majors, minors),
             military_units,
             civilian_units,
+            object_ids,
             ships,
             admirals,
-            task_forces: Vec::new(),
+            task_forces: IndexMap::new(),
             missions,
             news: NewsState::default(),
             pending,

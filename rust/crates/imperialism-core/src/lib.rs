@@ -107,8 +107,8 @@ pub use diplomacy::{
 pub use game::{GameState, GameStateParts};
 pub use game_score::GameScore;
 pub use ids::{
-    CivilianUnitId, MajorNationId, MilitaryUnitId, MinorNationId, NationId, OceanZoneId,
-    ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,
+    AdmiralId, CivilianUnitId, MajorNationId, MilitaryUnitId, MinorNationId, MissionId, NationId,
+    OceanZoneId, ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,
 };
 pub use map::{
     DevelopmentLevel, MapEdges, MapMgr, RegionId, RiverSegment, RiverSprite, TerrainKind,
@@ -122,10 +122,10 @@ pub use market::{
     DealBookEntryKind, ProcessedTradeCommodity, ProcessedTradeCommodityTable, TradeCommodity,
     TradeCommodityTable, TradeDealBookEntry, TradeMarketRow, TradeMarketState,
 };
-pub(crate) use military::NavyIdAllocator;
 pub use military::{
     AdmiralState, ArmyMissionState, AttackMissionState, MissionData, MissionState,
-    NavyMissionState, SelectedShip, ShipState, TaskForceOrder, TaskForceState, TaskForceTarget,
+    NavyMissionState, ObjectIdAllocator, ShipState, TaskForceOrder, TaskForceState,
+    TaskForceTarget,
 };
 pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,

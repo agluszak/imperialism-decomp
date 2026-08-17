@@ -161,7 +161,7 @@ impl GameState {
             if !accept && self.nation_has_war_relation(nation.nation()) {
                 let has_attack_mission = self
                     .missions
-                    .iter()
+                    .values()
                     .any(|mission| mission.nation == nation.nation() && mission.marker & 1 != 0);
                 if !has_attack_mission {
                     queue_secondary = true;
@@ -437,15 +437,19 @@ impl GameState {
             }
             _ => 0,
         };
-        self.missions.push(MissionState {
-            nation: nation.nation(),
-            data,
-            path_nation,
-            state: 2,
-            importance_bits,
-            held: false,
-            marker,
-        });
+        let id = self.object_ids.mission();
+        self.missions.insert(
+            id,
+            MissionState {
+                nation: nation.nation(),
+                data,
+                path_nation,
+                state: 2,
+                importance_bits,
+                held: false,
+                marker,
+            },
+        );
         if let Some(province) = map_node {
             self.set_province_target(nation, province, AiTargetState::MissionQueued);
         }
@@ -716,7 +720,7 @@ impl GameState {
 
     fn weighted_neighbor_score(&self, province: ProvinceId) -> i32 {
         self.military_units
-            .iter()
+            .values()
             .filter(|unit| unit.stationed_province() == Some(province))
             .map(|unit| NEIGHBOR_UNIT_WEIGHT[unit.unit_type as usize])
             .sum()
@@ -731,7 +735,7 @@ impl GameState {
 
     fn navy_priority_in_zone(&self, nation: MajorNationId, zone: OceanZoneId) -> i32 {
         self.ships
-            .iter()
+            .values()
             .filter(|ship| ship.nation == nation.nation() && ship.location == zone)
             .map(ship_studliness)
             .sum()
@@ -739,7 +743,7 @@ impl GameState {
 
     fn navy_priority_total(&self, nation: MajorNationId) -> i32 {
         self.ships
-            .iter()
+            .values()
             .filter(|ship| ship.nation == nation.nation())
             .map(ship_studliness)
             .sum()
@@ -759,7 +763,7 @@ impl GameState {
 
     pub(crate) fn zone_nation_key_mask(&self, zone: OceanZoneId) -> u16 {
         let mut mask = 0u16;
-        for ship in &self.ships {
+        for ship in self.ships.values() {
             if ship.location == zone {
                 mask |= 1 << ship.nation.get();
             }
@@ -1031,7 +1035,7 @@ fn ship_studliness(ship: &ShipState) -> i32 {
 fn empty_army() -> ArmyMissionState {
     ArmyMissionState {
         required_equipage_bits: [0; 5],
-        units: Vec::new(),
+        units: Default::default(),
     }
 }
 
@@ -1055,6 +1059,6 @@ fn empty_navy_mission(
         task_force: None,
         state: 0,
         required_equipage_bits: [0; 4],
-        ships: Vec::new(),
+        ships: Default::default(),
     }
 }

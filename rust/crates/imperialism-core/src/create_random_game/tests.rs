@@ -189,7 +189,7 @@ fn minor_home_garrison_preserves_the_base_state_and_marks_the_capital() {
     reset_tile_to_base_transport_flag(&mut world, &mut capitals, tile);
     assert_eq!(world[tile].flags, TileFlags::MINOR_HOME_STATE);
 
-    let mut units = Vec::new();
+    let mut units = indexmap::IndexMap::new();
     let mut unit_ids = UnitIdAllocator::default();
     let mut name_ordinals = [1; MilitaryUnitKind::LENGTH];
     let mut next_roster_id = 1;
@@ -259,7 +259,7 @@ fn normal_random_start_reaches_capital_selection() {
     assert!(
         state
             .military_units
-            .iter()
+            .values()
             .all(|unit| unit.nation().get() >= MinorNationId::FIRST),
         "pre-capital military units are minor-owned only"
     );
@@ -270,7 +270,7 @@ fn normal_random_start_reaches_capital_selection() {
     assert!(
         state
             .missions
-            .iter()
+            .values()
             .all(|mission| mission.nation != human.nation()),
         "human Normal+ majors do not receive Accept mission queues"
     );
@@ -293,7 +293,7 @@ fn normal_random_start_marks_only_queued_ai_map_targets() {
         let mut expected_provinces = ProvinceTable::default();
         for mission in state
             .missions
-            .iter()
+            .values()
             .filter(|mission| mission.nation == nation.nation())
         {
             match &mission.data {

@@ -245,8 +245,8 @@ fn compose_strategic_map(
 ) -> Image {
     let mut indices = compose_strategic_map_indices(state, sprites);
     if let Some(unit) = selected_civilian.filter(|&unit| {
-        state.civilian_units().iter().any(|candidate| {
-            candidate.id() == unit && candidate.unit_type() == CivilianUnitKind::Engineer
+        state.civilian_units().any(|(candidate, state)| {
+            candidate == unit && state.unit_type() == CivilianUnitKind::Engineer
         })
     }) {
         draw_rail_order_selection(state, unit, &mut indices);
@@ -396,9 +396,7 @@ pub(super) fn draw_city_site_selection(
 
 fn draw_rail_order_selection(state: &GameState, unit: CivilianUnitId, viewport: &mut [u8]) {
     let Some(origin) = state
-        .civilian_units()
-        .iter()
-        .find(|candidate| candidate.id() == unit)
+        .civilian_unit(unit)
         .and_then(|candidate| candidate.location().tile())
     else {
         return;

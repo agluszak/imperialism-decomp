@@ -1,4 +1,5 @@
 use crate::*;
+use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
@@ -14,14 +15,13 @@ pub struct GameState {
     pub(crate) technology: TechnologyState,
     pub(crate) diplomacy: DiplomacyState,
     pub(crate) nations: Nations,
-    pub(crate) military_units: Vec<MilitaryUnitState>,
-    pub(crate) civilian_units: Vec<CivilianUnitState>,
-    #[serde(default)]
-    pub(crate) navy_ids: NavyIdAllocator,
-    pub(crate) ships: Vec<ShipState>,
-    pub(crate) admirals: Vec<AdmiralState>,
-    pub(crate) task_forces: Vec<TaskForceState>,
-    pub(crate) missions: Vec<MissionState>,
+    pub(crate) military_units: IndexMap<MilitaryUnitId, MilitaryUnitState>,
+    pub(crate) civilian_units: IndexMap<CivilianUnitId, CivilianUnitState>,
+    pub(crate) object_ids: ObjectIdAllocator,
+    pub(crate) ships: IndexMap<ShipId, ShipState>,
+    pub(crate) admirals: IndexMap<AdmiralId, AdmiralState>,
+    pub(crate) task_forces: IndexMap<TaskForceId, TaskForceState>,
+    pub(crate) missions: IndexMap<MissionId, MissionState>,
     pub(crate) news: NewsState,
     pub(crate) pending: PendingWorkState,
     /// `TArmyMgr::mapContextActionRecordList04`. Marker fields are omitted from `.imp`.
@@ -48,12 +48,13 @@ pub struct GameStateParts {
     pub technology: TechnologyState,
     pub diplomacy: DiplomacyState,
     pub nations: Nations,
-    pub military_units: Vec<MilitaryUnitState>,
-    pub civilian_units: Vec<CivilianUnitState>,
-    pub ships: Vec<ShipState>,
-    pub admirals: Vec<AdmiralState>,
-    pub task_forces: Vec<TaskForceState>,
-    pub missions: Vec<MissionState>,
+    pub military_units: IndexMap<MilitaryUnitId, MilitaryUnitState>,
+    pub civilian_units: IndexMap<CivilianUnitId, CivilianUnitState>,
+    pub object_ids: ObjectIdAllocator,
+    pub ships: IndexMap<ShipId, ShipState>,
+    pub admirals: IndexMap<AdmiralId, AdmiralState>,
+    pub task_forces: IndexMap<TaskForceId, TaskForceState>,
+    pub missions: IndexMap<MissionId, MissionState>,
     pub news: NewsState,
     pub pending: PendingWorkState,
     pub battle_reports: Vec<crate::BattleReport>,
@@ -63,10 +64,6 @@ pub struct GameStateParts {
 impl GameState {
     /// Assembles authoritative state from loader-built parts.
     pub fn from_parts(parts: GameStateParts) -> Self {
-        let navy_ids = NavyIdAllocator::from_existing(
-            parts.ships.iter().map(|ship| ship.id),
-            parts.task_forces.iter().map(|force| force.id),
-        );
         Self {
             turn: parts.turn,
             unit_ids: parts.unit_ids,
@@ -80,7 +77,7 @@ impl GameState {
             nations: parts.nations,
             military_units: parts.military_units,
             civilian_units: parts.civilian_units,
-            navy_ids,
+            object_ids: parts.object_ids,
             ships: parts.ships,
             admirals: parts.admirals,
             task_forces: parts.task_forces,
@@ -128,28 +125,65 @@ impl GameState {
         self.nations.city(id)
     }
 
-    pub fn military_units(&self) -> &[MilitaryUnitState] {
-        &self.military_units
+    pub fn military_units(
+        &self,
+    ) -> impl ExactSizeIterator<Item = (MilitaryUnitId, &MilitaryUnitState)> {
+        self.military_units.iter().map(|(&id, unit)| (id, unit))
     }
 
-    pub fn civilian_units(&self) -> &[CivilianUnitState] {
-        &self.civilian_units
+    pub fn military_unit(&self, id: MilitaryUnitId) -> Option<&MilitaryUnitState> {
+        self.military_units.get(&id)
     }
 
-    pub fn ships(&self) -> &[ShipState] {
-        &self.ships
+    pub fn civilian_units(
+        &self,
+    ) -> impl ExactSizeIterator<Item = (CivilianUnitId, &CivilianUnitState)> {
+        self.civilian_units.iter().map(|(&id, unit)| (id, unit))
     }
 
-    pub fn admirals(&self) -> &[AdmiralState] {
-        &self.admirals
+    pub fn civilian_unit(&self, id: CivilianUnitId) -> Option<&CivilianUnitState> {
+        self.civilian_units.get(&id)
     }
 
-    pub fn task_forces(&self) -> &[TaskForceState] {
-        &self.task_forces
+    pub fn ships(&self) -> impl ExactSizeIterator<Item = (ShipId, &ShipState)> {
+        self.ships.iter().map(|(&id, ship)| (id, ship))
     }
 
-    pub fn missions(&self) -> &[MissionState] {
-        &self.missions
+    /// Retail's primary ship list, whose newest link is visited first.
+    pub fn ships_in_retail_order(&self) -> impl ExactSizeIterator<Item = (ShipId, &ShipState)> {
+        self.ships.iter().rev().map(|(&id, ship)| (id, ship))
+    }
+
+    pub fn admirals(&self) -> impl ExactSizeIterator<Item = (AdmiralId, &AdmiralState)> {
+        self.admirals.iter().map(|(&id, admiral)| (id, admiral))
+    }
+
+    /// Retail's secondary admiral list, whose newest link is visited first.
+    pub fn admirals_in_retail_order(
+        &self,
+    ) -> impl ExactSizeIterator<Item = (AdmiralId, &AdmiralState)> {
+        self.admirals
+            .iter()
+            .rev()
+            .map(|(&id, admiral)| (id, admiral))
+    }
+
+    pub fn task_forces(&self) -> impl ExactSizeIterator<Item = (TaskForceId, &TaskForceState)> {
+        self.task_forces.iter().map(|(&id, force)| (id, force))
+    }
+
+    /// Retail's order queue, whose newest force is traversed first.
+    pub fn task_forces_in_retail_order(
+        &self,
+    ) -> impl ExactSizeIterator<Item = (TaskForceId, &TaskForceState)> {
+        self.task_forces
+            .iter()
+            .rev()
+            .map(|(&id, force)| (id, force))
+    }
+
+    pub fn missions(&self) -> impl ExactSizeIterator<Item = (MissionId, &MissionState)> {
+        self.missions.iter().map(|(&id, mission)| (id, mission))
     }
 
     pub const fn news(&self) -> &NewsState {
@@ -219,14 +253,18 @@ impl GameState {
     /// First idle civilian for `nation` that is on the map, if any.
     pub fn first_idle_civilian_tile(&self, nation: NationId) -> Option<TileId> {
         self.first_idle_civilian(nation)
-            .and_then(|unit| unit.location().tile())
+            .and_then(|(_, unit)| unit.location().tile())
     }
 
     /// `TCivMgr::SelectFirstAvailableCivilianForNation` candidate (list order).
-    pub fn first_idle_civilian(&self, nation: NationId) -> Option<&CivilianUnitState> {
-        self.civilian_units
-            .iter()
-            .find(|unit| unit.nation() == nation && *unit.order() == CivilianWorkOrder::Idle)
+    pub fn first_idle_civilian(
+        &self,
+        nation: NationId,
+    ) -> Option<(CivilianUnitId, &CivilianUnitState)> {
+        self.civilian_units.iter().find_map(|(&id, unit)| {
+            (unit.nation() == nation && *unit.order() == CivilianWorkOrder::Idle)
+                .then_some((id, unit))
+        })
     }
 
     /// Centers the strategic viewport on the first idle civilian for `nation`.

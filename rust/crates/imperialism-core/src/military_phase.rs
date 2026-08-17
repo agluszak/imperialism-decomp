@@ -68,15 +68,18 @@ impl GameState {
     }
 
     fn give_auto_great_power_army_orders(&mut self, nation: NationId) {
-        let mission_count = self.missions.len();
-        for mission_index in 0..mission_count {
-            if self.missions[mission_index].nation != nation {
+        let mission_ids: Vec<_> = self.missions.keys().copied().collect();
+        for mission_id in mission_ids {
+            let Some(mission) = self.missions.get(&mission_id) else {
+                continue;
+            };
+            if mission.nation != nation {
                 continue;
             }
-            match &self.missions[mission_index].data {
+            match &mission.data {
                 MissionData::DefendProvince { province, army } => {
                     let province = *province;
-                    let units = army.units.clone();
+                    let units: Vec<_> = army.units.iter().rev().copied().collect();
                     self.redeploy_units_not_stationed_in(&units, province);
                 }
                 MissionData::AttackProvince(attack) => {
@@ -84,8 +87,8 @@ impl GameState {
                     self.give_attack_province_orders(nation, &attack);
                 }
                 MissionData::Invade { .. } => {
-                    self.give_navy_mission_orders(mission_index);
-                    let attack = match &self.missions[mission_index].data {
+                    self.give_navy_mission_orders(mission_id);
+                    let attack = match &self.missions[&mission_id].data {
                         MissionData::Invade { attack, .. } => attack.clone(),
                         _ => continue,
                     };
@@ -101,7 +104,7 @@ impl GameState {
                 | MissionData::ScatteredShips(_)
                 | MissionData::BlockadePort { .. }
                 | MissionData::Beachhead(_) => {
-                    self.give_navy_mission_orders(mission_index);
+                    self.give_navy_mission_orders(mission_id);
                 }
             }
         }
@@ -113,8 +116,8 @@ impl GameState {
         };
 
         let mut projected = ActionClassScores::default();
-        for id in &attack.army.units {
-            let Some(unit) = self.military_units.iter().find(|unit| unit.id() == *id) else {
+        for id in attack.army.units.iter().rev() {
+            let Some(unit) = self.military_units.get(id) else {
                 continue;
             };
             if unit.stationed_province() == Some(present) {
@@ -133,11 +136,8 @@ impl GameState {
             && let Some(owner) = self.map.provinces[attack.target_province].owner()
         {
             if self.war_stamp_stale(nation, owner) {
-                self.redeploy_units_stationed_in(
-                    &attack.army.units,
-                    present,
-                    attack.target_province,
-                );
+                let units: Vec<_> = attack.army.units.iter().rev().copied().collect();
+                self.redeploy_units_stationed_in(&units, present, attack.target_province);
             } else if !self.at_war(nation, owner)
                 && let Some(major) = MajorNationId::from_nation(nation)
                 && self.nations.majors[major]
@@ -149,12 +149,13 @@ impl GameState {
             }
         }
 
-        self.redeploy_units_not_stationed_in(&attack.army.units, present);
+        let units: Vec<_> = attack.army.units.iter().rev().copied().collect();
+        self.redeploy_units_not_stationed_in(&units, present);
     }
 
     fn redeploy_units_not_stationed_in(&mut self, units: &[MilitaryUnitId], province: ProvinceId) {
         for id in units {
-            let Some(unit) = self.military_units.iter_mut().find(|unit| unit.id() == *id) else {
+            let Some(unit) = self.military_units.get_mut(id) else {
                 continue;
             };
             if unit.stationed_province() != Some(province) {
@@ -170,7 +171,7 @@ impl GameState {
         target: ProvinceId,
     ) {
         for id in units {
-            let Some(unit) = self.military_units.iter_mut().find(|unit| unit.id() == *id) else {
+            let Some(unit) = self.military_units.get_mut(id) else {
                 continue;
             };
             if unit.stationed_province() == Some(present) {
@@ -271,7 +272,7 @@ impl GameState {
         for province in owned {
             let garrison = self
                 .military_units
-                .iter()
+                .values()
                 .filter(|unit| {
                     unit.stationed_province == Some(province)
                         && tactical_category(unit.unit_type) == 0
@@ -297,7 +298,6 @@ impl GameState {
             MilitaryOrder::retail(order_code, None, [province; 3], [province; 3])
         };
         let unit = MilitaryUnitState::new(
-            id,
             nation,
             unit_type,
             province,
@@ -311,10 +311,7 @@ impl GameState {
             0,
             0,
         );
-        let insert_at = self
-            .military_units
-            .partition_point(|existing| existing.nation <= nation);
-        self.military_units.insert(insert_at, unit);
+        self.military_units.insert(id, unit);
     }
 
     fn add_militia(&mut self, nation: NationId, province: ProvinceId) {
@@ -414,17 +411,12 @@ mod tests {
             .append_owned_region_during_construction(nation, province);
         let _ = state.do_military();
         assert_eq!(state.military_units.len(), 1);
-        assert_eq!(state.military_units[0].nation, nation);
-        assert_eq!(
-            state.military_units[0].unit_type,
-            MilitaryUnitKind::Minutemen
-        );
-        assert_eq!(state.military_units[0].stationed_province, Some(province));
-        assert_eq!(
-            state.military_units[0].order.code(),
-            MilitaryOrderCode::Sleep
-        );
-        assert_eq!(state.military_units[0].strength, 500);
+        let (_, unit) = state.military_units.first().expect("militia was created");
+        assert_eq!(unit.nation, nation);
+        assert_eq!(unit.unit_type, MilitaryUnitKind::Minutemen);
+        assert_eq!(unit.stationed_province, Some(province));
+        assert_eq!(unit.order.code(), MilitaryOrderCode::Sleep);
+        assert_eq!(unit.strength, 500);
         assert_eq!(
             state.nations.majors[MajorNationId::new(0)]
                 .economy
@@ -441,44 +433,50 @@ mod tests {
         let hold = ProvinceId::new(0);
         let away = ProvinceId::new(1);
         let id = state.unit_ids.next_military();
-        state.military_units.push(MilitaryUnitState::new(
+        state.military_units.insert(
             id,
-            nation.nation(),
-            MilitaryUnitKind::Minutemen,
-            Some(away),
-            MilitaryOrder::idle([Some(away); 3], [Some(away); 3]),
-            nation.nation(),
-            0,
-            true,
-            String::new(),
-            500,
-            0,
-            0,
-            0,
-        ));
-        state.missions.push(MissionState {
-            nation: nation.nation(),
-            data: MissionData::DefendProvince {
-                province: hold,
-                army: ArmyMissionState {
-                    required_equipage_bits: [0; 5],
-                    units: vec![id],
+            MilitaryUnitState::new(
+                nation.nation(),
+                MilitaryUnitKind::Minutemen,
+                Some(away),
+                MilitaryOrder::idle([Some(away); 3], [Some(away); 3]),
+                nation.nation(),
+                0,
+                true,
+                String::new(),
+                500,
+                0,
+                0,
+                0,
+            ),
+        );
+        let mission = state.object_ids.mission();
+        state.missions.insert(
+            mission,
+            MissionState {
+                nation: nation.nation(),
+                data: MissionData::DefendProvince {
+                    province: hold,
+                    army: ArmyMissionState {
+                        required_equipage_bits: [0; 5],
+                        units: [id].into_iter().collect(),
+                    },
                 },
+                path_nation: None,
+                state: 2,
+                importance_bits: 0,
+                held: false,
+                marker: 0,
             },
-            path_nation: None,
-            state: 2,
-            importance_bits: 0,
-            held: false,
-            marker: 0,
-        });
+        );
 
         let _ = state.do_military();
 
         assert_eq!(
-            state.military_units[0].order().code(),
+            state.military_units[&id].order().code(),
             MilitaryOrderCode::Redeploy
         );
-        assert_eq!(state.military_units[0].order().target(), Some(hold));
+        assert_eq!(state.military_units[&id].order().target(), Some(hold));
     }
 
     fn set_owned_province(state: &mut GameState, province: u16, owner: u8, adjacent: &[u16]) {
@@ -511,21 +509,23 @@ mod tests {
 
     fn add_armor(state: &mut GameState, nation: NationId, province: ProvinceId) {
         let id = state.unit_ids.next_military();
-        state.military_units.push(MilitaryUnitState::new(
+        state.military_units.insert(
             id,
-            nation,
-            MilitaryUnitKind::Armor,
-            Some(province),
-            MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
-            nation,
-            0,
-            true,
-            String::new(),
-            500,
-            0,
-            0,
-            0,
-        ));
+            MilitaryUnitState::new(
+                nation,
+                MilitaryUnitKind::Armor,
+                Some(province),
+                MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
+                nation,
+                0,
+                true,
+                String::new(),
+                500,
+                0,
+                0,
+                0,
+            ),
+        );
     }
 
     #[test]
@@ -546,11 +546,12 @@ mod tests {
         let _ = state.do_military();
 
         assert_eq!(state.missions.len(), 1);
-        assert_eq!(state.missions[0].nation, attacker.nation());
-        assert_eq!(state.missions[0].marker, 1);
-        assert_eq!(state.missions[0].path_nation, Some(defender.nation()));
-        assert_eq!(state.missions[0].state, 2);
-        match &state.missions[0].data {
+        let (_, mission) = state.missions.first().expect("attack mission was queued");
+        assert_eq!(mission.nation, attacker.nation());
+        assert_eq!(mission.marker, 1);
+        assert_eq!(mission.path_nation, Some(defender.nation()));
+        assert_eq!(mission.state, 2);
+        match &mission.data {
             MissionData::AttackProvince(attack) => {
                 assert_eq!(attack.target_province, ProvinceId::new(1));
                 assert_eq!(attack.present_province, None);

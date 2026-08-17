@@ -661,10 +661,12 @@ mod tests {
             ),
             economy: major(),
             city: city(),
-            towns: vec![crate::TownState::for_frog_city(
+            towns: [(
                 crate::TileId::new(0),
-                nation.nation(),
-            )],
+                crate::TownState::for_frog_city(crate::TileId::new(0), nation.nation()),
+            )]
+            .into_iter()
+            .collect(),
         });
         let mut diplomacy_rng = RetailCrtRng::from_state(1);
         GameState {
@@ -702,13 +704,13 @@ mod tests {
                 &mut diplomacy_rng,
             ),
             nations: Nations::new(majors, MinorNationTable::default()),
-            military_units: vec![],
-            civilian_units: vec![],
-            navy_ids: crate::NavyIdAllocator::default(),
-            ships: vec![],
-            admirals: vec![],
-            task_forces: vec![],
-            missions: vec![],
+            military_units: Default::default(),
+            civilian_units: Default::default(),
+            object_ids: crate::ObjectIdAllocator::default(),
+            ships: Default::default(),
+            admirals: Default::default(),
+            task_forces: Default::default(),
+            missions: Default::default(),
             news: crate::NewsState::default(),
             pending: crate::PendingWorkState::default(),
             battle_reports: Vec::new(),

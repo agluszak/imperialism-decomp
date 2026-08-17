@@ -93,7 +93,7 @@ impl GameState {
             Some(_) => {
                 let mut has_engineer = false;
                 let mut idle_engineer = None;
-                for (index, unit) in self.civilian_units.iter().enumerate() {
+                for (&id, unit) in &self.civilian_units {
                     if unit.nation != nation.nation()
                         || unit.unit_type != CivilianUnitKind::Engineer
                     {
@@ -101,7 +101,7 @@ impl GameState {
                     }
                     has_engineer = true;
                     if matches!(unit.order, CivilianWorkOrder::Idle) {
-                        idle_engineer = Some(index);
+                        idle_engineer = Some(id);
                         break;
                     }
                 }
@@ -239,13 +239,19 @@ impl GameState {
     }
 
     fn seek_lost_towns(&mut self, nation: MajorNationId, primary: &[i8], secondary: &[i8]) {
-        let target = self.nations.major(nation).towns.iter().find_map(|town| {
-            let primary_distance = primary[tile_index(town.tile)];
-            let secondary_distance = secondary[tile_index(town.tile)];
-            (!town.transport_linked
-                && (primary_distance < 12 || (secondary_distance < 8 && secondary_distance > 2)))
-                .then_some(town.tile)
-        });
+        let target = self
+            .nations
+            .major(nation)
+            .towns
+            .iter()
+            .find_map(|(&tile, town)| {
+                let primary_distance = primary[tile_index(tile)];
+                let secondary_distance = secondary[tile_index(tile)];
+                (!town.transport_linked
+                    && (primary_distance < 12
+                        || (secondary_distance < 8 && secondary_distance > 2)))
+                    .then_some(tile)
+            });
         self.nations.majors[nation]
             .economy
             .interior_civilian
@@ -392,7 +398,7 @@ impl GameState {
     fn continue_railhead_project(
         &mut self,
         nation: MajorNationId,
-        engineer: usize,
+        engineer: CivilianUnitId,
         primary: &[i8],
         secondary: &[i8],
     ) {
@@ -475,17 +481,12 @@ impl GameState {
     }
 
     fn dispatch_builders(&mut self, nation: MajorNationId) {
-        let Some(engineer) = self
-            .civilian_units
-            .iter()
-            .enumerate()
-            .find_map(|(index, unit)| {
-                (unit.nation == nation.nation()
-                    && unit.unit_type == CivilianUnitKind::Engineer
-                    && matches!(unit.order, CivilianWorkOrder::Idle))
-                .then_some(index)
-            })
-        else {
+        let Some(engineer) = self.civilian_units.iter().find_map(|(&id, unit)| {
+            (unit.nation == nation.nation()
+                && unit.unit_type == CivilianUnitKind::Engineer
+                && matches!(unit.order, CivilianWorkOrder::Idle))
+            .then_some(id)
+        }) else {
             return;
         };
         let Some(province) = self.best_fort_province(nation) else {
@@ -495,7 +496,7 @@ impl GameState {
             return;
         };
         let occupant = self.chain_head_on_tile(city_tile);
-        if occupant.is_some_and(|index| index != engineer) {
+        if occupant.is_some_and(|id| id != engineer) {
             return;
         }
         let fort_level = self.map.provinces[province].fort_level();
@@ -582,7 +583,7 @@ impl GameState {
             .major(nation)
             .towns
             .iter()
-            .map(|town| town.tile)
+            .map(|(&tile, _)| tile)
             .collect();
         for town_tile in towns {
             candidates.push(town_tile);
@@ -614,19 +615,18 @@ impl GameState {
             }
         }
 
-        let idle: Vec<usize> = self
+        let idle: Vec<CivilianUnitId> = self
             .civilian_units
             .iter()
-            .enumerate()
             .filter(|(_, unit)| {
                 unit.nation == nation.nation()
                     && unit.unit_type != CivilianUnitKind::Engineer
                     && matches!(unit.order, CivilianWorkOrder::Idle)
             })
-            .map(|(index, _)| index)
+            .map(|(&id, _)| id)
             .collect();
-        for unit_index in idle {
-            let kind = self.civilian_units[unit_index].unit_type;
+        for unit_id in idle {
+            let kind = self.civilian_units[&unit_id].unit_type;
             let extractive = matches!(kind, CivilianUnitKind::Miner | CivilianUnitKind::Driller);
             for &tile in &candidates {
                 if self.has_kind_with_develop(tile, kind) {
@@ -650,9 +650,9 @@ impl GameState {
                         i16::from(self.map[tile].development.surface.get())
                     };
                     if available > current {
-                        self.move_civilian_to(unit_index, tile);
+                        self.move_civilian_to(unit_id, tile);
                         self.set_civilian_work_order(
-                            unit_index,
+                            unit_id,
                             CivilianWorkOrder::DevelopResource { turns: turns(3) },
                         );
                         let cost = if current == 0 {
@@ -677,7 +677,7 @@ impl GameState {
 
     fn request_missing_civilian_order_types(&mut self, nation: MajorNationId) {
         let mut has_kind = CivilianUnitTable::default();
-        for unit in &self.civilian_units {
+        for unit in self.civilian_units.values() {
             if unit.nation == nation.nation() {
                 has_kind[unit.unit_type] = true;
             }
@@ -740,7 +740,7 @@ impl GameState {
 
         let mut prospector_count = 0;
         let mut developer_count = 0;
-        for unit in &self.civilian_units {
+        for unit in self.civilian_units.values() {
             if unit.nation != nation.nation() || !matches!(unit.order, CivilianWorkOrder::Idle) {
                 continue;
             }
@@ -812,7 +812,7 @@ impl GameState {
             }
 
             if prospectable_terrain(self.map[tile].terrain, oil) {
-                let has_active_prospecting = self.civilian_units.iter().rev().any(|unit| {
+                let has_active_prospecting = self.civilian_units.values().rev().any(|unit| {
                     unit.location.tile() == Some(tile)
                         && matches!(
                             unit.order,
@@ -855,21 +855,17 @@ impl GameState {
 
         let mut prospecting_index = 0;
         let mut developer_index = 0;
-        let assignment: Vec<usize> = self
+        let assignment: Vec<CivilianUnitId> = self
             .civilian_units
             .iter()
-            .enumerate()
             .filter(|(_, unit)| unit.nation == nation.nation())
-            .map(|(index, _)| index)
+            .map(|(&id, _)| id)
             .collect();
-        for unit_index in assignment {
-            if !matches!(
-                self.civilian_units[unit_index].order,
-                CivilianWorkOrder::Idle
-            ) {
+        for unit_id in assignment {
+            if !matches!(self.civilian_units[&unit_id].order, CivilianWorkOrder::Idle) {
                 continue;
             }
-            match self.civilian_units[unit_index].unit_type {
+            match self.civilian_units[&unit_id].unit_type {
                 CivilianUnitKind::Prospector
                     if prospecting_index < prospector_count
                         && prospecting_scores[prospecting_index] != 0.0 =>
@@ -877,10 +873,10 @@ impl GameState {
                     let tile = TileId::new(prospecting_tiles[prospecting_index] as u16);
                     prospecting_index += 1;
                     self.set_civilian_work_order(
-                        unit_index,
+                        unit_id,
                         CivilianWorkOrder::Prospect { turns: turns(1) },
                     );
-                    self.move_civilian_to(unit_index, tile);
+                    self.move_civilian_to(unit_id, tile);
                 }
                 CivilianUnitKind::Developer
                     if developer_index < developer_count
@@ -889,10 +885,10 @@ impl GameState {
                     let tile = TileId::new(developer_tiles[developer_index] as u16);
                     developer_index += 1;
                     self.set_civilian_work_order(
-                        unit_index,
+                        unit_id,
                         CivilianWorkOrder::PurchaseLand { turns: turns(1) },
                     );
-                    self.move_civilian_to(unit_index, tile);
+                    self.move_civilian_to(unit_id, tile);
                     let cost = self.developer_tile_purchase_cost(tile);
                     self.nations.major_mut(nation).common.treasury -= cost;
                 }
@@ -934,17 +930,21 @@ impl GameState {
     }
 
     fn has_kind_with_develop(&self, tile: TileId, kind: CivilianUnitKind) -> bool {
-        self.civilian_units.iter().any(|unit| {
+        self.civilian_units.values().any(|unit| {
             unit.location.tile() == Some(tile)
                 && unit.unit_type == kind
                 && matches!(unit.order, CivilianWorkOrder::DevelopResource { .. })
         })
     }
 
-    fn owner_civilian_on_tile(&self, tile: TileId, nation: MajorNationId) -> Option<usize> {
+    fn owner_civilian_on_tile(
+        &self,
+        tile: TileId,
+        nation: MajorNationId,
+    ) -> Option<CivilianUnitId> {
         self.civilians_on_tile_chain(tile)
             .into_iter()
-            .find(|&index| self.civilian_units[index].owner_nation == nation.nation())
+            .find(|&id| self.civilian_units[&id].owner_nation == nation.nation())
     }
 
     fn nation_has_war(&self, nation: NationId) -> bool {

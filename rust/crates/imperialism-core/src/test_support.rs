@@ -126,7 +126,12 @@ pub(crate) fn major_nation() -> MajorNation {
         ),
         economy: great_power_state(),
         city: city(),
-        towns: vec![TownState::for_frog_city(TileId::new(1), NationId::new(0))],
+        towns: [(
+            TileId::new(1),
+            TownState::for_frog_city(TileId::new(1), NationId::new(0)),
+        )]
+        .into_iter()
+        .collect(),
     }
 }
 
@@ -171,13 +176,13 @@ pub(crate) fn game_state() -> GameState {
             MajorNationTable::from_fn(|_nation| major_nation()),
             MinorNationTable::default(),
         ),
-        military_units: Vec::new(),
-        civilian_units: Vec::new(),
-        navy_ids: crate::NavyIdAllocator::default(),
-        ships: Vec::new(),
-        admirals: Vec::new(),
-        task_forces: Vec::new(),
-        missions: Vec::new(),
+        military_units: Default::default(),
+        civilian_units: Default::default(),
+        object_ids: crate::ObjectIdAllocator::default(),
+        ships: Default::default(),
+        admirals: Default::default(),
+        task_forces: Default::default(),
+        missions: Default::default(),
         news: crate::NewsState::default(),
         pending: crate::PendingWorkState::default(),
         battle_reports: Vec::new(),

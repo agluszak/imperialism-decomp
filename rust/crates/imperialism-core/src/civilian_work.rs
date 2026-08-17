@@ -160,10 +160,7 @@ impl GameState {
         unit: CivilianUnitId,
         destination: TileId,
     ) -> Result<(), RailOrderRejection> {
-        let index = self
-            .civilian_index(unit)
-            .ok_or(RailOrderRejection::IneligibleUnit)?;
-        let (segment, nation) = self.rail_construction_target(index, destination)?;
+        let (segment, nation) = self.rail_construction_target(unit, destination)?;
         let cost = rail_cost(self.map[segment.destination()].terrain);
         let major = self.nations.major(nation);
         if major
@@ -180,29 +177,30 @@ impl GameState {
         self.map[segment.destination()]
             .pending_rail_links
             .insert_direction(segment.direction().opposite());
-        let unit = &mut self.civilian_units[index];
-        unit.order = CivilianWorkOrder::LayRail {
+        self.civilian_units
+            .get_mut(&unit)
+            .expect("rail construction unit remains present")
+            .order = CivilianWorkOrder::LayRail {
             segment,
             turns: TurnsRemaining::try_new(RAIL_TURNS).expect("rail construction lasts one turn"),
         };
-        self.move_civilian_to(index, segment.destination());
+        self.move_civilian_to(unit, segment.destination());
         Ok(())
     }
 
     /// Neighbor tiles `DimByEngineering` would leave undimmed for a rail click.
     pub fn rail_construction_destinations(&self, unit: CivilianUnitId) -> [Option<TileId>; 6] {
-        let Some(index) = self.civilian_index(unit) else {
+        let Some(civilian) = self.civilian_units.get(&unit) else {
             return [None; 6];
         };
-        let Some(origin) = self.civilian_units[index].location.tile() else {
+        let Some(origin) = civilian.location.tile() else {
             return [None; 6];
         };
         MapGeometry::new(MapTopology::Bounded)
             .neighbors(origin)
             .map(|destination| {
-                destination.filter(|&destination| {
-                    self.rail_construction_target(index, destination).is_ok()
-                })
+                destination
+                    .filter(|&destination| self.rail_construction_target(unit, destination).is_ok())
             })
     }
 
@@ -212,11 +210,11 @@ impl GameState {
         tile: TileId,
         nation: NationId,
     ) -> Option<CivilianUnitId> {
-        self.civilian_units.iter().find_map(|unit| {
+        self.civilian_units.iter().find_map(|(&id, unit)| {
             (unit.owner_nation() == nation
                 && unit.location().tile() == Some(tile)
                 && idle_selectable(unit.order()))
-            .then_some(unit.id())
+            .then_some(id)
         })
     }
 
@@ -225,15 +223,16 @@ impl GameState {
         &self,
         tile: TileId,
         nation: NationId,
-    ) -> Option<&CivilianUnitState> {
-        self.civilian_units
-            .iter()
-            .find(|unit| unit.owner_nation() == nation && unit.location().tile() == Some(tile))
+    ) -> Option<(CivilianUnitId, &CivilianUnitState)> {
+        self.civilian_units.iter().find_map(|(&id, unit)| {
+            (unit.owner_nation() == nation && unit.location().tile() == Some(tile))
+                .then_some((id, unit))
+        })
     }
 
     /// `TCivMgr::ClearNationCivilianActionModesAndCycleSelection` unit walk (cycle is app-side).
     pub fn clear_nation_civilian_action_modes(&mut self, nation: NationId) {
-        for unit in &mut self.civilian_units {
+        for unit in self.civilian_units.values_mut() {
             if unit.nation() != nation {
                 continue;
             }
@@ -244,16 +243,15 @@ impl GameState {
         }
     }
 
-    fn civilian_index(&self, id: CivilianUnitId) -> Option<usize> {
-        self.civilian_units.iter().position(|unit| unit.id == id)
-    }
-
     fn rail_construction_target(
         &self,
-        index: usize,
+        id: CivilianUnitId,
         destination: TileId,
     ) -> Result<(RailSegment, MajorNationId), RailOrderRejection> {
-        let unit = &self.civilian_units[index];
+        let unit = self
+            .civilian_units
+            .get(&id)
+            .ok_or(RailOrderRejection::IneligibleUnit)?;
         if unit.unit_type != CivilianUnitKind::Engineer || !idle_selectable(&unit.order) {
             return Err(RailOrderRejection::IneligibleUnit);
         }
@@ -307,10 +305,11 @@ impl GameState {
     }
 
     pub fn advance_civilian_work(&mut self, civilian: CivilianUnitId) {
-        let index = self
-            .civilian_index(civilian)
-            .expect("work advances a present unit");
-        self.continue_civilian_order(index);
+        assert!(
+            self.civilian_units.contains_key(&civilian),
+            "work advances a present unit"
+        );
+        self.continue_civilian_order(civilian);
     }
 
     fn civilian_nation_is_eligible(&self, nation: MajorNationId) -> bool {
@@ -321,19 +320,18 @@ impl GameState {
     }
 
     pub(crate) fn continue_civilian_orders(&mut self, nation: MajorNationId) {
-        let indices: Vec<usize> = self
+        let ids: Vec<CivilianUnitId> = self
             .civilian_units
             .iter()
-            .enumerate()
             .filter(|(_, unit)| unit.nation == nation.nation())
-            .map(|(index, _)| index)
+            .map(|(&id, _)| id)
             .collect();
-        for index in indices {
-            self.continue_civilian_order(index);
+        for id in ids {
+            self.continue_civilian_order(id);
         }
     }
 
-    fn continue_civilian_order(&mut self, index: usize) {
+    fn continue_civilian_order(&mut self, id: CivilianUnitId) {
         enum Completion {
             None,
             Idle,
@@ -345,7 +343,12 @@ impl GameState {
             Fort,
             Purchase,
         }
-        let completion = match &mut self.civilian_units[index].order {
+        let completion = match &mut self
+            .civilian_units
+            .get_mut(&id)
+            .expect("civilian remains present")
+            .order
+        {
             CivilianWorkOrder::Sleep => Completion::None,
             CivilianWorkOrder::Idle | CivilianWorkOrder::Redeploy { .. } => Completion::Idle,
             CivilianWorkOrder::LayRail { segment, turns } => {
@@ -401,43 +404,34 @@ impl GameState {
         };
         match completion {
             Completion::None => {}
-            Completion::Idle => self.civilian_units[index].order = CivilianWorkOrder::Idle,
-            Completion::Rail(segment) => self.complete_rail_construction(index, segment),
-            Completion::Depot => self.complete_depot_construction(index),
-            Completion::Port => self.complete_port_construction(index),
-            Completion::Prospect => self.complete_prospecting(index),
-            Completion::Develop => self.complete_resource_development(index),
-            Completion::Fort => self.complete_fort_construction(index),
-            Completion::Purchase => self.complete_land_purchase(index),
+            Completion::Idle => {
+                self.civilian_units
+                    .get_mut(&id)
+                    .expect("civilian remains present")
+                    .order = CivilianWorkOrder::Idle
+            }
+            Completion::Rail(segment) => self.complete_rail_construction(id, segment),
+            Completion::Depot => self.complete_depot_construction(id),
+            Completion::Port => self.complete_port_construction(id),
+            Completion::Prospect => self.complete_prospecting(id),
+            Completion::Develop => self.complete_resource_development(id),
+            Completion::Fort => self.complete_fort_construction(id),
+            Completion::Purchase => self.complete_land_purchase(id),
         }
     }
 
     fn sort_tracked_orders_by_type_priority(&mut self, nation: MajorNationId) {
-        let (start, end) = self.nation_civilian_range(nation);
-        for outer in start..end.saturating_sub(1) {
-            for inner in outer + 1..end {
-                let outer_priority = civilian_sort_priority(self.civilian_units[outer].unit_type);
-                let inner_priority = civilian_sort_priority(self.civilian_units[inner].unit_type);
-                if inner_priority < outer_priority {
-                    self.civilian_units.swap(outer, inner);
-                }
-            }
-        }
-    }
-
-    fn nation_civilian_range(&self, nation: MajorNationId) -> (usize, usize) {
         let nation = nation.nation();
-        let start = self
-            .civilian_units
-            .iter()
-            .position(|unit| unit.nation == nation)
-            .unwrap_or(self.civilian_units.len());
-        let end = start
-            + self.civilian_units[start..]
-                .iter()
-                .take_while(|unit| unit.nation == nation)
-                .count();
-        (start, end)
+        let mut entries: Vec<_> = std::mem::take(&mut self.civilian_units)
+            .into_iter()
+            .collect();
+        entries.sort_by_key(|(_, unit)| {
+            (
+                unit.nation,
+                (unit.nation == nation).then(|| civilian_sort_priority(unit.unit_type)),
+            )
+        });
+        self.civilian_units = entries.into_iter().collect();
     }
 
     fn resolve_civilian_disputes(&mut self) {
@@ -447,12 +441,12 @@ impl GameState {
             if on_tile.len() < 2 {
                 continue;
             }
-            let competing: Vec<usize> = on_tile
+            let competing: Vec<CivilianUnitId> = on_tile
                 .into_iter()
-                .filter(|&index| {
-                    self.civilian_units[index].unit_type == CivilianUnitKind::Developer
+                .filter(|&id| {
+                    self.civilian_units[&id].unit_type == CivilianUnitKind::Developer
                         && matches!(
-                            self.civilian_units[index].order,
+                            self.civilian_units[&id].order,
                             CivilianWorkOrder::PurchaseLand { .. }
                         )
                 })
@@ -467,10 +461,10 @@ impl GameState {
                 .unwrap_or_else(|| NationId::new(0));
             let mut winner = competing[0];
             let mut winning_standing =
-                self.diplomacy.standings[self.civilian_units[winner].owner_nation][tile_owner];
+                self.diplomacy.standings[self.civilian_units[&winner].owner_nation][tile_owner];
             for &candidate in &competing[1..] {
                 let candidate_standing = self.diplomacy.standings
-                    [self.civilian_units[candidate].owner_nation][tile_owner];
+                    [self.civilian_units[&candidate].owner_nation][tile_owner];
                 if candidate_standing > winning_standing
                     || (candidate_standing == winning_standing && self.rng.next_crt_rand() & 1 != 0)
                 {
@@ -480,14 +474,15 @@ impl GameState {
             }
 
             let refund = self.developer_tile_purchase_cost(tile);
-            let winner_nation = self.civilian_units[winner].owner_nation;
-            let losers: Vec<usize> = competing
-                .into_iter()
-                .filter(|&index| index != winner)
-                .collect();
+            let winner_nation = self.civilian_units[&winner].owner_nation;
+            let losers: Vec<CivilianUnitId> =
+                competing.into_iter().filter(|&id| id != winner).collect();
             for loser in losers {
-                let loser_nation = self.civilian_units[loser].owner_nation;
-                self.civilian_units[loser].order = CivilianWorkOrder::Idle;
+                let loser_nation = self.civilian_units[&loser].owner_nation;
+                self.civilian_units
+                    .get_mut(&loser)
+                    .expect("civilian remains present")
+                    .order = CivilianWorkOrder::Idle;
                 if let Some(major) = MajorNationId::from_nation(loser_nation) {
                     self.nations.major_mut(major).common.treasury += refund;
                     if self.nations.major(major).economy.diplomacy_eligible {
@@ -527,8 +522,8 @@ impl GameState {
             .sum()
     }
 
-    fn complete_resource_development(&mut self, index: usize) {
-        let unit = &self.civilian_units[index];
+    fn complete_resource_development(&mut self, id: CivilianUnitId) {
+        let unit = &self.civilian_units[&id];
         let tile = unit
             .location
             .tile()
@@ -545,7 +540,10 @@ impl GameState {
         } else {
             tile_state.development.surface.advance();
         }
-        self.civilian_units[index].order = CivilianWorkOrder::Idle;
+        self.civilian_units
+            .get_mut(&id)
+            .expect("civilian remains present")
+            .order = CivilianWorkOrder::Idle;
     }
 
     /// Completes one retail `LayRail` order.
@@ -553,7 +551,7 @@ impl GameState {
     /// A completed rail section becomes a pair of permanent directional
     /// transport links. The pending rail links are placed when the order is
     /// issued and therefore remain unchanged here.
-    fn complete_rail_construction(&mut self, index: usize, segment: RailSegment) {
+    fn complete_rail_construction(&mut self, id: CivilianUnitId, segment: RailSegment) {
         let source = segment.origin();
         let destination = segment.destination();
         let direction = segment.direction();
@@ -561,11 +559,14 @@ impl GameState {
         self.map[destination]
             .transport_links
             .insert_direction(direction.opposite());
-        self.civilian_units[index].order = CivilianWorkOrder::Idle;
+        self.civilian_units
+            .get_mut(&id)
+            .expect("civilian remains present")
+            .order = CivilianWorkOrder::Idle;
     }
 
-    fn complete_prospecting(&mut self, index: usize) {
-        let unit = &self.civilian_units[index];
+    fn complete_prospecting(&mut self, id: CivilianUnitId) {
+        let unit = &self.civilian_units[&id];
         let tile = unit
             .location
             .tile()
@@ -573,11 +574,14 @@ impl GameState {
         let owner = MajorNationId::from_nation(unit.owner_nation)
             .expect("prospectors belong to a major nation");
         self.map[tile].development.resource_visible_to_majors[owner] = true;
-        self.civilian_units[index].order = CivilianWorkOrder::Idle;
+        self.civilian_units
+            .get_mut(&id)
+            .expect("civilian remains present")
+            .order = CivilianWorkOrder::Idle;
     }
 
-    fn complete_land_purchase(&mut self, index: usize) {
-        let unit = &self.civilian_units[index];
+    fn complete_land_purchase(&mut self, id: CivilianUnitId) {
+        let unit = &self.civilian_units[&id];
         let tile = unit
             .location
             .tile()
@@ -585,11 +589,14 @@ impl GameState {
         let owner = MajorNationId::from_nation(unit.owner_nation)
             .expect("developers belong to a major nation");
         self.map[tile].secondary_owner_nation = Some(owner);
-        self.civilian_units[index].order = CivilianWorkOrder::Idle;
+        self.civilian_units
+            .get_mut(&id)
+            .expect("civilian remains present")
+            .order = CivilianWorkOrder::Idle;
     }
 
-    fn complete_fort_construction(&mut self, index: usize) {
-        let tile = self.civilian_units[index]
+    fn complete_fort_construction(&mut self, id: CivilianUnitId) {
+        let tile = self.civilian_units[&id]
             .location
             .tile()
             .expect("fort orders are normalized with an on-map location");
@@ -601,11 +608,14 @@ impl GameState {
                 .insert(TileFlags::PROVINCE_CAPITAL_FORTIFICATION);
             self.map.provinces[province].increment_fort_level();
         }
-        self.civilian_units[index].order = CivilianWorkOrder::Idle;
+        self.civilian_units
+            .get_mut(&id)
+            .expect("civilian remains present")
+            .order = CivilianWorkOrder::Idle;
     }
 
-    fn complete_depot_construction(&mut self, index: usize) {
-        let unit = &self.civilian_units[index];
+    fn complete_depot_construction(&mut self, id: CivilianUnitId) {
+        let unit = &self.civilian_units[&id];
         let tile = unit
             .location
             .tile()
@@ -614,11 +624,14 @@ impl GameState {
             .expect("engineers belong to a major nation");
         self.queue_depot_construction(tile, nation);
         let _ = self.apply_town_transport_links(nation);
-        self.civilian_units[index].order = CivilianWorkOrder::Idle;
+        self.civilian_units
+            .get_mut(&id)
+            .expect("civilian remains present")
+            .order = CivilianWorkOrder::Idle;
     }
 
-    fn complete_port_construction(&mut self, index: usize) {
-        let unit = &self.civilian_units[index];
+    fn complete_port_construction(&mut self, id: CivilianUnitId) {
+        let unit = &self.civilian_units[&id];
         let tile = unit
             .location
             .tile()
@@ -627,7 +640,10 @@ impl GameState {
             .expect("engineers belong to a major nation");
         self.queue_port_construction(tile, nation);
         let _ = self.apply_town_transport_links(nation);
-        self.civilian_units[index].order = CivilianWorkOrder::Idle;
+        self.civilian_units
+            .get_mut(&id)
+            .expect("civilian remains present")
+            .order = CivilianWorkOrder::Idle;
     }
 
     fn queue_depot_construction(&mut self, tile: TileId, nation: MajorNationId) {
@@ -662,23 +678,19 @@ impl GameState {
     }
 
     fn push_new_town(&mut self, tile: TileId, nation: MajorNationId, enabled: u8) {
-        self.nations
-            .major_mut(nation)
-            .towns
-            .push(TownState::constructed(
+        self.nations.major_mut(nation).towns.insert(
+            tile,
+            TownState::constructed(
                 tile,
                 nation.nation(),
                 enabled,
                 self.turn.economic_turn as i16,
-            ));
+            ),
+        );
     }
 
     fn find_town_at_mut(&mut self, nation: MajorNationId, tile: TileId) -> Option<&mut TownState> {
-        self.nations
-            .major_mut(nation)
-            .towns
-            .iter_mut()
-            .find(|town| town.tile == tile)
+        self.nations.major_mut(nation).towns.get_mut(&tile)
     }
 
     fn flood_fill_region_marker(&mut self, tile: TileId, nation: MajorNationId) {
@@ -717,88 +729,103 @@ impl GameState {
         }
     }
 
-    pub(crate) fn move_civilian_to(&mut self, index: usize, tile: TileId) {
-        let id = self.civilian_units[index].id;
-        if let Some(old) = self.civilian_units[index].location.tile() {
+    pub(crate) fn move_civilian_to(&mut self, id: CivilianUnitId, tile: TileId) {
+        if let Some(old) = self.civilian_units[&id].location.tile() {
             self.unlink_civilian_from_tile_chain(id, old);
         }
-        self.civilian_units[index].location = CivilianLocation::OnMap(tile);
-        self.prepend_civilian_to_tile_chain(index, tile);
+        self.civilian_units
+            .get_mut(&id)
+            .expect("civilian remains present")
+            .location = CivilianLocation::OnMap(tile);
+        self.prepend_civilian_to_tile_chain(id, tile);
     }
 
     fn rebuild_civilian_tile_chains(&mut self) {
-        for unit in &mut self.civilian_units {
+        for unit in self.civilian_units.values_mut() {
             unit.next_on_tile = None;
         }
         let mut heads = vec![None; STRATEGIC_TILE_COUNT];
-        for index in 0..self.civilian_units.len() {
-            let Some(tile) = self.civilian_units[index].location.tile() else {
+        let locations: Vec<_> = self
+            .civilian_units
+            .iter()
+            .filter_map(|(&id, unit)| unit.location.tile().map(|tile| (id, tile)))
+            .collect();
+        for (id, tile) in locations {
+            let Some(unit) = self.civilian_units.get_mut(&id) else {
                 continue;
             };
-            let id = self.civilian_units[index].id;
-            self.civilian_units[index].next_on_tile = heads[usize::from(tile.get())];
+            unit.next_on_tile = heads[usize::from(tile.get())];
             heads[usize::from(tile.get())] = Some(id);
         }
     }
 
     fn unlink_civilian_from_tile_chain(&mut self, id: CivilianUnitId, tile: TileId) {
         let next = self
-            .civilian_index(id)
-            .and_then(|index| self.civilian_units[index].next_on_tile);
-        if let Some(prev) = self.civilian_units.iter().position(|unit| {
-            unit.location.tile() == Some(tile) && unit.id != id && unit.next_on_tile == Some(id)
-        }) {
-            self.civilian_units[prev].next_on_tile = next;
+            .civilian_units
+            .get(&id)
+            .and_then(|unit| unit.next_on_tile);
+        let previous = self.civilian_units.iter().find_map(|(&candidate, unit)| {
+            (candidate != id && unit.location.tile() == Some(tile) && unit.next_on_tile == Some(id))
+                .then_some(candidate)
+        });
+        if let Some(previous) = previous {
+            self.civilian_units
+                .get_mut(&previous)
+                .expect("chain predecessor remains present")
+                .next_on_tile = next;
         }
-        if let Some(index) = self.civilian_index(id) {
-            self.civilian_units[index].next_on_tile = None;
+        if let Some(unit) = self.civilian_units.get_mut(&id) {
+            unit.next_on_tile = None;
         }
     }
 
-    fn prepend_civilian_to_tile_chain(&mut self, index: usize, tile: TileId) {
-        let head = self
-            .chain_head_on_tile(tile)
-            .filter(|&head| head != index)
-            .map(|head| self.civilian_units[head].id);
-        self.civilian_units[index].next_on_tile = head;
+    fn prepend_civilian_to_tile_chain(&mut self, id: CivilianUnitId, tile: TileId) {
+        let head = self.chain_head_on_tile(tile).filter(|&head| head != id);
+        self.civilian_units
+            .get_mut(&id)
+            .expect("civilian remains present")
+            .next_on_tile = head;
     }
 
-    pub(crate) fn chain_head_on_tile(&self, tile: TileId) -> Option<usize> {
-        let on_tile: Vec<usize> = self
+    pub(crate) fn chain_head_on_tile(&self, tile: TileId) -> Option<CivilianUnitId> {
+        let on_tile: Vec<CivilianUnitId> = self
             .civilian_units
             .iter()
-            .enumerate()
             .filter(|(_, unit)| unit.location.tile() == Some(tile))
-            .map(|(index, _)| index)
+            .map(|(&id, _)| id)
             .collect();
         let pointed: Vec<CivilianUnitId> = on_tile
             .iter()
-            .filter_map(|&index| self.civilian_units[index].next_on_tile)
+            .filter_map(|id| {
+                self.civilian_units
+                    .get(id)
+                    .and_then(|unit| unit.next_on_tile)
+            })
             .collect();
-        on_tile.into_iter().find(|&index| {
-            !pointed
-                .iter()
-                .any(|&id| id == self.civilian_units[index].id)
-        })
+        on_tile.into_iter().find(|id| !pointed.contains(id))
     }
 
-    pub(crate) fn civilians_on_tile_chain(&self, tile: TileId) -> Vec<usize> {
+    pub(crate) fn civilians_on_tile_chain(&self, tile: TileId) -> Vec<CivilianUnitId> {
         let mut chain = Vec::new();
         let mut current = self.chain_head_on_tile(tile);
-        while let Some(index) = current {
-            if chain.contains(&index) {
+        while let Some(id) = current {
+            if chain.contains(&id) {
                 break;
             }
-            chain.push(index);
-            current = self.civilian_units[index]
-                .next_on_tile
-                .and_then(|id| self.civilian_index(id));
+            chain.push(id);
+            current = self
+                .civilian_units
+                .get(&id)
+                .and_then(|unit| unit.next_on_tile);
         }
         chain
     }
 
-    pub(crate) fn set_civilian_work_order(&mut self, index: usize, order: CivilianWorkOrder) {
-        self.civilian_units[index].order = order;
+    pub(crate) fn set_civilian_work_order(&mut self, id: CivilianUnitId, order: CivilianWorkOrder) {
+        self.civilian_units
+            .get_mut(&id)
+            .expect("civilian order requires a present unit")
+            .order = order;
     }
 }
 
@@ -854,9 +881,9 @@ mod tests {
         state.map[destination].owner_nation = owner;
         state.map[destination].terrain = TerrainKind::Plains;
         let id = CivilianUnitId::new(1);
-        state.civilian_units.push(
+        state.civilian_units.insert(
+            id,
             CivilianUnitState::new(
-                id,
                 nation,
                 CivilianUnitKind::Engineer,
                 CivilianLocation::OnMap(origin),
@@ -889,11 +916,11 @@ mod tests {
         let east = TileTransportLinks::for_direction(HexDirection::East);
         let west = TileTransportLinks::for_direction(HexDirection::West);
         assert_eq!(
-            state.civilian_units[0].location(),
+            state.civilian_units[&unit].location(),
             CivilianLocation::OnMap(destination)
         );
         assert_eq!(
-            state.civilian_units[0].order(),
+            state.civilian_units[&unit].order(),
             &CivilianWorkOrder::LayRail {
                 segment: RailSegment::between(state.map.topology, origin, destination).unwrap(),
                 turns: TurnsRemaining::try_new(1).unwrap(),
@@ -915,7 +942,10 @@ mod tests {
         state.advance_civilian_work(unit);
         assert!(state.map[origin].transport_links.contains(east));
         assert!(state.map[destination].transport_links.contains(west));
-        assert_eq!(state.civilian_units[0].order(), &CivilianWorkOrder::Idle);
+        assert_eq!(
+            state.civilian_units[&unit].order(),
+            &CivilianWorkOrder::Idle
+        );
     }
 
     #[test]
@@ -964,7 +994,7 @@ mod tests {
         );
         assert!(state.map[origin].pending_rail_links.is_empty());
         assert_eq!(
-            state.civilian_units[0].location(),
+            state.civilian_units[&unit].location(),
             CivilianLocation::OnMap(origin)
         );
     }
@@ -981,9 +1011,9 @@ mod tests {
             Err(RailOrderRejection::InvalidTarget)
         );
 
-        state.civilian_units[0].unit_type = CivilianUnitKind::Miner;
+        state.civilian_units[&unit].unit_type = CivilianUnitKind::Miner;
         let (_, destination) = interior();
-        state.civilian_units[0].location = CivilianLocation::OnMap(origin);
+        state.civilian_units[&unit].location = CivilianLocation::OnMap(origin);
         state.map[destination].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
         assert_eq!(
             state.order_rail_construction(unit, destination),
@@ -1046,9 +1076,9 @@ mod tests {
     ) -> CivilianUnitId {
         state.map[tile].owner_nation = Some(TileOwnerTag::from_nation(nation));
         let id = CivilianUnitId::new(id);
-        state.civilian_units.push(
+        state.civilian_units.insert(
+            id,
             CivilianUnitState::new(
-                id,
                 nation,
                 kind,
                 CivilianLocation::OnMap(tile),
@@ -1186,7 +1216,7 @@ mod tests {
         let province = Some(ProvinceId::new(0));
         state.map[TileId::new(1)].province = province;
         state.map[capital].province = province;
-        for unit in &state.civilian_units {
+        for unit in state.civilian_units.values() {
             if let Some(tile) = unit.location.tile() {
                 state.map[tile].province = province;
             }
@@ -1215,8 +1245,8 @@ mod tests {
                 .nations
                 .major(MajorNationId::new(0))
                 .towns
-                .iter()
-                .any(|town| town.tile == depot_tile && town.enabled == 0 && town.active)
+                .get(&depot_tile)
+                .is_some_and(|town| town.enabled == 0 && town.active)
         );
         assert!(state.map[port_tile].flags.contains(TileFlags::PORT));
         assert!(
@@ -1224,8 +1254,8 @@ mod tests {
                 .nations
                 .major(MajorNationId::new(0))
                 .towns
-                .iter()
-                .any(|town| town.tile == port_tile && town.enabled == 1 && !town.active)
+                .get(&port_tile)
+                .is_some_and(|town| town.enabled == 1 && !town.active)
         );
         assert!(
             matches!(
@@ -1244,18 +1274,18 @@ mod tests {
         assert!(
             state
                 .civilian_units
-                .iter()
+                .values()
                 .any(|unit| unit.unit_type == CivilianUnitKind::Farmer
                     && matches!(unit.order, CivilianWorkOrder::Sleep))
         );
         assert!(
             state
                 .civilian_units
-                .iter()
+                .values()
                 .any(|unit| unit.unit_type == CivilianUnitKind::Rancher
                     && matches!(unit.order, CivilianWorkOrder::Idle))
         );
-        assert!(state.civilian_units.iter().any(|unit| {
+        assert!(state.civilian_units.values().any(|unit| {
             unit.unit_type == CivilianUnitKind::Miner
                 && matches!(
                     unit.order,
@@ -1269,7 +1299,7 @@ mod tests {
         let mut state = crate::test_support::game_state();
         let (first, second) = interior();
         let nation = NationId::new(0);
-        civilian_on(
+        let farmer = civilian_on(
             &mut state,
             2,
             CivilianUnitKind::Farmer,
@@ -1277,7 +1307,7 @@ mod tests {
             CivilianWorkOrder::Idle,
             nation,
         );
-        civilian_on(
+        let miner = civilian_on(
             &mut state,
             3,
             CivilianUnitKind::Miner,
@@ -1288,16 +1318,25 @@ mod tests {
 
         state.set_country_status(nation, CountryStatus::ProtectorateOf(NationId::new(1)));
         state.do_civilians();
-        assert_eq!(state.civilian_units[0].unit_type, CivilianUnitKind::Farmer);
+        assert_eq!(
+            state.civilian_units[&farmer].unit_type,
+            CivilianUnitKind::Farmer
+        );
         assert!(matches!(
-            state.civilian_units[1].order,
+            state.civilian_units[&miner].order,
             CivilianWorkOrder::DevelopResource { .. }
         ));
 
         state.set_country_status(nation, CountryStatus::Independent);
         state.do_civilians();
-        assert_eq!(state.civilian_units[0].unit_type, CivilianUnitKind::Miner);
-        assert_eq!(state.civilian_units[1].unit_type, CivilianUnitKind::Farmer);
-        assert_eq!(state.civilian_units[0].order, CivilianWorkOrder::Idle);
+        assert_eq!(
+            state.civilian_units[&miner].unit_type,
+            CivilianUnitKind::Miner
+        );
+        assert_eq!(
+            state.civilian_units[&farmer].unit_type,
+            CivilianUnitKind::Farmer
+        );
+        assert_eq!(state.civilian_units[&miner].order, CivilianWorkOrder::Idle);
     }
 }

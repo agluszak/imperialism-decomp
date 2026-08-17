@@ -462,6 +462,7 @@ impl GameState {
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn create_event_stories(
     events: &[PendingNewspaperEvent],
     battle_reports: &[BattleReport],

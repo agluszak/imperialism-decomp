@@ -220,7 +220,7 @@ fn apply_civilian_selection_or_report(
     nation: NationId,
     input_flags: i32,
 ) -> bool {
-    let Some(unit) = session.game.civilian_on_tile_for_nation(tile, nation) else {
+    let Some((id, unit)) = session.game.civilian_on_tile_for_nation(tile, nation) else {
         return false;
     };
     let idle = matches!(
@@ -232,7 +232,6 @@ fn apply_civilian_selection_or_report(
         .contains(TileFlags::CITY_MARKER);
     if idle {
         if input_flags == 2 || !city {
-            let id = unit.id();
             set_map_interaction_mode(interaction, MapInteractionMode::Civilian);
             interaction.civilian = Some(id);
             return true;
@@ -261,9 +260,7 @@ fn apply_civilian_tile_order(
     };
     let Some(kind) = session
         .game
-        .civilian_units()
-        .iter()
-        .find(|candidate| candidate.id() == unit)
+        .civilian_unit(unit)
         .map(|candidate| candidate.unit_type())
     else {
         *civilian = None;

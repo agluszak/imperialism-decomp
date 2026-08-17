@@ -137,7 +137,6 @@ impl GameState {
         let unit_kind = self.technology.selected_capability_slots[nation][9];
         let id = self.unit_ids.next_military();
         let unit = MilitaryUnitState {
-            id,
             nation: nation_id,
             unit_type: unit_kind,
             stationed_province: Some(province),
@@ -151,10 +150,7 @@ impl GameState {
             experience: 0,
             battle_flags: 0,
         };
-        let insert_at = self
-            .military_units
-            .partition_point(|existing| existing.nation <= nation_id);
-        self.military_units.insert(insert_at, unit);
+        self.military_units.insert(id, unit);
         self.announce_later(nation, 3, unit_kind as i16, 1);
     }
 
@@ -186,15 +182,11 @@ impl GameState {
             .common
             .home_tile
             .expect("overseas-developer pending requires a home tile");
-        let Some(tile) =
-            self.map
-                .find_reachable_recruit_spawn_tile(&self.civilian_units, home, false)
-        else {
+        let Some(tile) = self.find_reachable_recruit_spawn_tile(home, false) else {
             return;
         };
         let id = self.unit_ids.next_civilian();
         let unit = CivilianUnitState {
-            id,
             nation: nation_id,
             unit_type: CivilianUnitKind::Developer,
             location: crate::CivilianLocation::OnMap(tile),
@@ -204,10 +196,7 @@ impl GameState {
             registered: false,
             next_on_tile: None,
         };
-        let insert_at = self
-            .civilian_units
-            .partition_point(|existing| existing.nation <= nation_id);
-        self.civilian_units.insert(insert_at, unit);
+        self.civilian_units.insert(id, unit);
     }
 
     fn name_units(&mut self, nation: MajorNationId) {
@@ -432,8 +421,7 @@ impl GameState {
             let location = self
                 .first_port_zone_for_nation(nation_id)
                 .expect("navy-growth pending requires a port zone for the nation");
-            Some(self.insert_ship_at_head(ShipState {
-                id: ShipId::new(0),
+            Some(self.insert_ship(ShipState {
                 ship_type,
                 location,
                 aggression: 1,
@@ -450,8 +438,9 @@ impl GameState {
         let count = &mut self.nations.city_mut(nation).ship_order_count_by_type[ship_type];
         *count = count.wrapping_add(1);
 
+        let admiral = self.object_ids.admiral();
         self.admirals.insert(
-            0,
+            admiral,
             AdmiralState {
                 nation: nation_id,
                 name: String::new(),
@@ -621,17 +610,19 @@ mod tests {
         state.execute_nation_pending_action_state_machine(nation);
 
         assert_eq!(state.ships.len(), 1);
-        assert_eq!(state.ships[0].ship_type, ShipType::ShipOfTheLine);
-        assert_eq!(state.ships[0].location, OceanZoneId::new(1));
-        assert_eq!(state.ships[0].nation, nation.nation());
-        assert_eq!(state.ships[0].strength, 1700);
+        let (ship_id, ship) = state.ships.first().expect("ship was created");
+        assert_eq!(ship.ship_type, ShipType::ShipOfTheLine);
+        assert_eq!(ship.location, OceanZoneId::new(1));
+        assert_eq!(ship.nation, nation.nation());
+        assert_eq!(ship.strength, 1700);
         assert_eq!(
             state.nations.city(nation).ship_order_count_by_type[ShipType::ShipOfTheLine],
             1
         );
         assert_eq!(state.admirals.len(), 1);
-        assert_eq!(state.admirals[0].nation, nation.nation());
-        assert_eq!(state.admirals[0].ship, Some(ShipId::new(0)));
+        let (_, admiral) = state.admirals.first().expect("admiral was created");
+        assert_eq!(admiral.nation, nation.nation());
+        assert_eq!(admiral.ship, Some(*ship_id));
         assert_eq!(
             state.pending.nations[nation].turn_summary,
             [
@@ -668,7 +659,10 @@ mod tests {
 
         state.execute_nation_pending_action_state_machine(nation);
 
-        assert_eq!(state.ships[0].ship_type, ShipType::Ironclad);
+        assert_eq!(
+            state.ships.first().expect("ship was created").1.ship_type,
+            ShipType::Ironclad
+        );
         assert_eq!(
             state.nations.city(nation).ship_order_count_by_type[ShipType::Ironclad],
             1
@@ -691,10 +685,23 @@ mod tests {
 
         assert_eq!(state.military_units.len(), 1);
         assert_eq!(
-            state.military_units[0].unit_type(),
+            state
+                .military_units
+                .first()
+                .expect("unit was created")
+                .1
+                .unit_type(),
             MilitaryUnitKind::GeneralEra2
         );
-        assert_eq!(state.military_units[0].stationed_province(), Some(province));
+        assert_eq!(
+            state
+                .military_units
+                .first()
+                .expect("unit was created")
+                .1
+                .stationed_province(),
+            Some(province)
+        );
     }
 
     #[test]
@@ -704,27 +711,30 @@ mod tests {
         let province = ProvinceId::new(0);
         let unnamed = |state: &mut GameState| {
             let id = state.unit_ids.next_military();
-            state.military_units.push(MilitaryUnitState::new(
+            state.military_units.insert(
                 id,
-                nation.nation(),
-                MilitaryUnitKind::Regulars,
-                Some(province),
-                MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
-                nation.nation(),
-                0,
-                true,
-                String::new(),
-                500,
-                MilitaryUnitKind::Regulars.spawn_era(),
-                0,
-                0,
-            ));
+                MilitaryUnitState::new(
+                    nation.nation(),
+                    MilitaryUnitKind::Regulars,
+                    Some(province),
+                    MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
+                    nation.nation(),
+                    0,
+                    true,
+                    String::new(),
+                    500,
+                    MilitaryUnitKind::Regulars.spawn_era(),
+                    0,
+                    0,
+                ),
+            );
         };
 
         unnamed(&mut state);
         state.execute_nation_pending_action_state_machine(nation);
-        assert_eq!(state.military_units[0].name(), "1st Regulars");
-        assert_eq!(state.military_units[0].roster_id(), 1);
+        let first = *state.military_units.first().expect("first unit").0;
+        assert_eq!(state.military_units[&first].name(), "1st Regulars");
+        assert_eq!(state.military_units[&first].roster_id(), 1);
         assert_eq!(
             state.nations.majors[nation]
                 .common
@@ -735,9 +745,10 @@ mod tests {
 
         unnamed(&mut state);
         state.execute_nation_pending_action_state_machine(nation);
-        assert_eq!(state.military_units[1].name(), "2nd Regulars");
-        assert_eq!(state.military_units[1].roster_id(), 2);
+        let second = *state.military_units.last().expect("second unit").0;
+        assert_eq!(state.military_units[&second].name(), "2nd Regulars");
+        assert_eq!(state.military_units[&second].roster_id(), 2);
         assert_eq!(state.nations.majors[nation].common.unit_name_counter, 3);
-        assert_eq!(state.military_units[0].roster_id(), 1);
+        assert_eq!(state.military_units[&first].roster_id(), 1);
     }
 }

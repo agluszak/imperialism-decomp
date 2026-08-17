@@ -198,7 +198,7 @@ pub(super) fn queue_map_action_missions_for_port_zone_candidates(
                 province,
                 army: ArmyMissionState {
                     required_equipage_bits: [0; 5],
-                    units: Vec::new(),
+                    units: Default::default(),
                 },
             },
             0,
@@ -266,7 +266,7 @@ pub(super) fn empty_navy_mission(
         task_force: None,
         state: 0,
         required_equipage_bits: [0; 4],
-        ships: Vec::new(),
+        ships: Default::default(),
     }
 }
 pub(super) fn mission_state(

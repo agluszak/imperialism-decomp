@@ -214,29 +214,33 @@ impl OceanZoneId {
 /// Stable identity of a ship. Retail ordinals are translated at the save boundary.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(transparent)]
-pub struct ShipId(usize);
+pub struct ShipId(pub(crate) u32);
 
 impl ShipId {
+    #[doc(hidden)]
     pub const fn new(value: usize) -> Self {
-        Self(value)
-    }
-
-    pub const fn get(self) -> usize {
-        self.0
+        Self(value as u32)
     }
 }
 
 /// Stable identity of a task force, independent of retail processing order.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(transparent)]
-pub struct TaskForceId(usize);
+pub struct TaskForceId(pub(crate) u32);
 
 impl TaskForceId {
+    #[doc(hidden)]
     pub const fn new(value: usize) -> Self {
-        Self(value)
-    }
-
-    pub const fn get(self) -> usize {
-        self.0
+        Self(value as u32)
     }
 }
+
+/// Stable identity of an admiral object.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct AdmiralId(pub(crate) u32);
+
+/// Stable identity of a mission object.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct MissionId(pub(crate) u32);

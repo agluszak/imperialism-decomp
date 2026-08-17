@@ -1,6 +1,7 @@
 //! Navy mission `GiveOrders`, hop-limited sail, and `CarryOutOrders` type 1/5/8.
 
 use crate::*;
+use indexmap::IndexMap;
 
 const UNREACHED: i16 = 0x29a;
 
@@ -195,7 +196,7 @@ impl GameState {
                 continue;
             }
             let mut wars = 0;
-            for ship in &self.ships {
+            for ship in self.ships.values() {
                 if ship.location == neighbor && self.at_war(nation, ship.nation) {
                     wars += 1;
                 }
@@ -227,11 +228,11 @@ impl GameState {
     }
 }
 
-fn assigned_navy_ships(missions: &[MissionState]) -> Vec<ShipId> {
+fn assigned_navy_ships(missions: &IndexMap<MissionId, MissionState>) -> Vec<ShipId> {
     let mut assigned = Vec::new();
-    for mission in missions {
+    for mission in missions.values() {
         if let Some(navy) = navy_state(&mission.data) {
-            assigned.extend(navy.ships.iter().map(|ship| ship.ship));
+            assigned.extend(navy.ships.keys().copied());
         }
     }
     assigned
@@ -335,7 +336,6 @@ pub(super) mod tests {
         ];
         let baselines = navy_category_baselines(&enabled);
         let ship = ShipState {
-            id: ShipId::new(0),
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
             aggression: 0,
@@ -362,17 +362,19 @@ pub(super) mod tests {
             }),
         ];
         assert!(!state.navy_capitol_threatened(MajorNationId::new(0)));
-        state.ships.push(ShipState {
-            id: ShipId::new(0),
-            ship_type: ShipType::Frigate,
-            location: OceanZoneId::new(0),
-            aggression: 0,
-            nation: NationId::new(1),
-            name: String::new(),
-            strength: 900,
-            experience: 0,
-            selection: 0,
-        });
+        state.ships.insert(
+            ShipId::new(0),
+            ShipState {
+                ship_type: ShipType::Frigate,
+                location: OceanZoneId::new(0),
+                aggression: 0,
+                nation: NationId::new(1),
+                name: String::new(),
+                strength: 900,
+                experience: 0,
+                selection: 0,
+            },
+        );
         state.diplomacy.relationships[NationId::new(0)][NationId::new(1)] =
             DiplomaticRelationship::War;
         assert!(state.navy_capitol_threatened(MajorNationId::new(0)));

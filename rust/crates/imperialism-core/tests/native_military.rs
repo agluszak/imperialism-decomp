@@ -456,11 +456,11 @@ struct NavyProvinceTargetCase {
 }
 
 fn first_task_force(state: &GameState) -> TaskForceId {
-    assert!(
-        !state.task_forces().is_empty(),
-        "native navy case expected a committed task force"
-    );
-    state.task_forces()[0].id
+    state
+        .task_forces()
+        .next()
+        .map(|(id, _)| id)
+        .expect("native navy case expected a committed task force")
 }
 
 #[test]

@@ -196,8 +196,7 @@ impl GameState {
             let nation_id = nation.nation();
             let strength = ship_stock_cap(ship_type);
             for _ in 0..quantity {
-                self.insert_ship_at_head(ShipState {
-                    id: ShipId::new(0),
+                self.insert_ship(ShipState {
                     ship_type,
                     location,
                     aggression: 1,
@@ -251,7 +250,7 @@ impl GameState {
         let nation_id = nation.nation();
         let arms: i32 = self
             .ships
-            .iter()
+            .values()
             .filter(|ship| ship.nation == nation_id)
             .map(|ship| i32::from(ship_order_costs(ship.ship_type).arms))
             .sum();
@@ -326,13 +325,13 @@ mod tests {
         state.produce_city_units(nation);
 
         assert_eq!(state.ships.len(), 1);
-        assert_eq!(state.ships[0].ship_type, ShipType::Frigate);
-        assert_eq!(state.ships[0].location, OceanZoneId::new(1));
+        let (_, ship) = state.ships.first().expect("frigate was launched");
+        assert_eq!(ship.ship_type, ShipType::Frigate);
+        assert_eq!(ship.location, OceanZoneId::new(1));
     }
 
     fn test_frigate(nation: MajorNationId) -> ShipState {
         ShipState {
-            id: ShipId::new(0),
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
             aggression: 0,
@@ -349,7 +348,7 @@ mod tests {
         let mut state = crate::test_support::game_state();
         let nation = MajorNationId::new(0);
         for _ in 0..13 {
-            state.insert_ship_at_head(test_frigate(nation));
+            state.insert_ship(test_frigate(nation));
         }
         assert_eq!(
             state.nations.majors[nation].economy.pending_actions
@@ -370,7 +369,7 @@ mod tests {
         assert_eq!(pending.growth_reward_level(), Some(1));
 
         for _ in 0..12 {
-            state.insert_ship_at_head(test_frigate(nation));
+            state.insert_ship(test_frigate(nation));
         }
         state.queue_navy_growth_pending(nation);
         let pending = state.nations.majors[nation].economy.pending_actions
@@ -385,7 +384,7 @@ mod tests {
         assert_eq!(pending.growth_reward_level(), Some(2));
 
         for _ in 0..25 {
-            state.insert_ship_at_head(test_frigate(nation));
+            state.insert_ship(test_frigate(nation));
         }
         state.queue_navy_growth_pending(nation);
         state.mark_all_pending_status_flags_handled();

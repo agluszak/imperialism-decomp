@@ -29,7 +29,7 @@ impl GameState {
 
         if MajorNationId::from_nation(subject).is_none() {
             self.reset_master_diplomacy_for_colony(master, subject);
-            for unit in &mut self.military_units {
+            for unit in self.military_units.values_mut() {
                 if unit.nation == subject {
                     unit.nation = master;
                     unit.owner_nation = master;
@@ -124,7 +124,7 @@ impl GameState {
             let other = MajorNationId::new(index as u8).nation();
             other != owner && self.nation_is_present(other) && self.at_war(owner, other)
         });
-        self.civilian_units.retain(|unit| {
+        self.civilian_units.retain(|_, unit| {
             let Some(tile) = unit.location.tile() else {
                 return true;
             };
@@ -153,37 +153,33 @@ impl GameState {
             let other = MajorNationId::new(index as u8).nation();
             other != owner && self.nation_is_present(other) && self.need_level_300(nation, other)
         });
-        let mut index = 0;
-        while index < self.civilian_units.len() {
-            let unit = &self.civilian_units[index];
+        for id in self.civilian_units.keys().copied().collect::<Vec<_>>() {
+            let Some(unit) = self.civilian_units.get(&id) else {
+                continue;
+            };
             let Some(tile) = unit.location.tile() else {
-                index += 1;
                 continue;
             };
             if !tiles.contains(&tile) {
-                index += 1;
                 continue;
             }
             let Some(owner) = MajorNationId::from_nation(unit.owner_nation) else {
-                index += 1;
                 continue;
             };
             if !targets[usize::from(owner.get())] {
-                index += 1;
                 continue;
             }
             let Some(home) = self.nations.majors[owner].common.home_tile else {
-                self.civilian_units.remove(index);
+                self.civilian_units.shift_remove(&id);
                 continue;
             };
-            if let Some(destination) =
-                self.map
-                    .find_reachable_recruit_spawn_tile(&self.civilian_units, home, false)
-            {
-                self.civilian_units[index].location = CivilianLocation::OnMap(destination);
-                index += 1;
+            if let Some(destination) = self.find_reachable_recruit_spawn_tile(home, false) {
+                self.civilian_units
+                    .get_mut(&id)
+                    .expect("civilian remains present")
+                    .location = CivilianLocation::OnMap(destination);
             } else {
-                self.civilian_units.remove(index);
+                self.civilian_units.shift_remove(&id);
             }
         }
     }

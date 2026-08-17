@@ -1,4 +1,5 @@
 use super::*;
+use indexmap::IndexMap;
 
 /// `g_abResourceTypeUsesHighNibbleFlag` — nonzero means extractive nibble / tech override.
 pub(super) const RESOURCE_USES_HIGH_NIBBLE: [u8; 24] = [
@@ -37,13 +38,19 @@ pub(super) fn place_initial_frog_cities(
         ensure_port_zone_for_tile(world, port_zones, home);
         let major = nations.major_mut(nation);
         major.common.home_tile = Some(home);
-        let home_town = major
+        let old_tile = major
             .towns
-            .first_mut()
+            .keys()
+            .next()
+            .copied()
+            .expect("random great power has its initial FrogCity marker");
+        let (_, mut home_town) = major
+            .towns
+            .shift_remove_entry(&old_tile)
             .expect("random great power has its initial FrogCity marker");
         home_town.name = "FrogCity".to_owned();
-        home_town.tile = home;
         home_town.owner_nation = nation.nation();
+        major.towns.insert(home, home_town);
         // `QueueMapActionMissionsForPortZoneCandidates` runs only for setup-mode-2 AI.
         if nation != human_nation {
             mission_queues[nation] = queue_map_action_missions_for_port_zone_candidates(
@@ -74,7 +81,7 @@ pub(super) fn bootstrap_minors(
     province_capitals: &mut [Option<TileId>],
     nations: &mut Nations,
     crt: &mut RetailCrtRng,
-    military_units: &mut Vec<MilitaryUnitState>,
+    military_units: &mut IndexMap<MilitaryUnitId, MilitaryUnitState>,
     unit_ids: &mut UnitIdAllocator,
     difficulty: Difficulty,
     port_zones: &mut PortZoneTable,
@@ -188,7 +195,7 @@ pub(super) fn spawn_initial_militia_for_minor(
     minor_id: MinorNationId,
     owned_provinces: &[ProvinceId],
     difficulty: Difficulty,
-    military_units: &mut Vec<MilitaryUnitState>,
+    military_units: &mut IndexMap<MilitaryUnitId, MilitaryUnitState>,
     unit_ids: &mut UnitIdAllocator,
     name_ordinals: &mut [i16],
     next_roster_id: &mut i16,
@@ -262,7 +269,7 @@ pub(super) fn spawn_initial_militia_for_minor(
     name_units_for_nation(military_units, nation, name_ordinals, next_roster_id);
 }
 pub(super) fn push_military_unit(
-    military_units: &mut Vec<MilitaryUnitState>,
+    military_units: &mut IndexMap<MilitaryUnitId, MilitaryUnitState>,
     unit_ids: &mut UnitIdAllocator,
     nation: NationId,
     unit_type: MilitaryUnitKind,
@@ -280,31 +287,34 @@ pub(super) fn push_military_unit(
             targets,
         )
     };
-    military_units.push(MilitaryUnitState::new(
-        unit_ids.next_military(),
-        nation,
-        unit_type,
-        stationed_province,
-        order,
-        nation,
-        0,
-        true,
-        String::new(),
-        500,
-        unit_type.spawn_era(),
-        0,
-        0,
-    ));
+    let id = unit_ids.next_military();
+    military_units.insert(
+        id,
+        MilitaryUnitState::new(
+            nation,
+            unit_type,
+            stationed_province,
+            order,
+            nation,
+            0,
+            true,
+            String::new(),
+            500,
+            unit_type.spawn_era(),
+            0,
+            0,
+        ),
+    );
 }
 /// `TCountry::NameUnits` for non-general land units (English STR# 0x2717 / 0x275f).
 pub(crate) fn name_units_for_nation(
-    military_units: &mut [MilitaryUnitState],
+    military_units: &mut IndexMap<MilitaryUnitId, MilitaryUnitState>,
     nation: NationId,
     name_ordinals: &mut [i16],
     next_roster_id: &mut i16,
 ) {
     for unit in military_units
-        .iter_mut()
+        .values_mut()
         .filter(|unit| unit.nation == nation)
     {
         if unit.roster_id != 0 {

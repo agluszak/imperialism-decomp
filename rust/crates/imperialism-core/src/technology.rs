@@ -610,21 +610,21 @@ impl GameState {
     }
 
     fn upgrade_matching_category_units(&mut self, nation: MajorNationId, group: i16) {
-        let mut indexes = Vec::new();
-        for (index, unit) in self.military_units.iter().enumerate() {
+        let mut ids = Vec::new();
+        for (&id, unit) in &self.military_units {
             if unit.nation() == nation.nation()
                 && crate::military_phase::tactical_category(unit.unit_type()) == group
             {
-                indexes.push(index);
+                ids.push(id);
             }
         }
-        for index in indexes {
-            self.upgrade_military_unit(nation, index);
+        for id in ids {
+            self.upgrade_military_unit(nation, id);
         }
     }
 
-    fn upgrade_military_unit(&mut self, nation: MajorNationId, index: usize) -> bool {
-        let Some(candidate) = self.upgrade_type(nation, self.military_units[index].unit_type())
+    fn upgrade_military_unit(&mut self, nation: MajorNationId, id: MilitaryUnitId) -> bool {
+        let Some(candidate) = self.upgrade_type(nation, self.military_units[&id].unit_type())
         else {
             return false;
         };
@@ -655,7 +655,10 @@ impl GameState {
             .stockpile
             .wrapping_add_and_verify(ResourceKind::Fuel, -fuel_cost);
         self.nations.majors[nation].common.treasury -= i32::from(cash_cost);
-        self.military_units[index].unit_type = candidate;
+        self.military_units
+            .get_mut(&id)
+            .expect("upgraded unit remains present")
+            .unit_type = candidate;
         true
     }
 
@@ -971,21 +974,23 @@ mod tests {
         let mut state = crate::test_support::game_state();
         let nation = MajorNationId::new(0);
         let province = ProvinceId::new(0);
-        state.military_units.push(MilitaryUnitState::new(
+        state.military_units.insert(
             MilitaryUnitId::new(1),
-            nation.nation(),
-            MilitaryUnitKind::GeneralEra1,
-            Some(province),
-            MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
-            nation.nation(),
-            1,
-            true,
-            String::new(),
-            500,
-            0,
-            0,
-            0,
-        ));
+            MilitaryUnitState::new(
+                nation.nation(),
+                MilitaryUnitKind::GeneralEra1,
+                Some(province),
+                MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
+                nation.nation(),
+                1,
+                true,
+                String::new(),
+                500,
+                0,
+                0,
+                0,
+            ),
+        );
         state.activate_slot_and_update_ui(nation, MilitaryUnitKind::GeneralEra2);
         assert_eq!(
             state.military_units[0].unit_type(),

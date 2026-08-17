@@ -630,7 +630,17 @@ mod tests {
             let tile = TileId::new(u16::from(major_id.get()) + 1);
             let nation = major_id.nation();
             let major = &mut state.nations.majors[major_id];
-            major.towns[0].tile = tile;
+            let old_tile = major
+                .towns
+                .keys()
+                .next()
+                .copied()
+                .expect("test major has its FrogCity marker");
+            let (_, town) = major
+                .towns
+                .shift_remove_entry(&old_tile)
+                .expect("test major has its FrogCity marker");
+            major.towns.insert(tile, town);
             major.common.home_tile = Some(tile);
             state.nations.append_owned_region_during_construction(
                 nation,

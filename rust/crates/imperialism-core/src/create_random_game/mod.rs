@@ -1,5 +1,6 @@
 use crate::*;
 use enum_map::EnumMap;
+use indexmap::IndexMap;
 
 mod city_placement;
 mod map_post_pass;
@@ -162,7 +163,7 @@ pub fn create_random_game(
         difficulty,
     );
 
-    let mut military_units = Vec::new();
+    let mut military_units = IndexMap::new();
     let mut unit_ids = UnitIdAllocator::default();
     // `TMinor::IMinor` snapshots these map resource counts before choosing and
     // resetting each minor's home tile.
@@ -217,7 +218,11 @@ pub fn create_random_game(
         zones: ocean_zones,
         routes: preview.map.ocean_routes.clone(),
     };
-    let missions = flatten_mission_queues(&mut mission_queues);
+    let mut object_ids = ObjectIdAllocator::default();
+    let missions = flatten_mission_queues(&mut mission_queues)
+        .into_iter()
+        .map(|mission| (object_ids.mission(), mission))
+        .collect();
     let mut provinces = build_province_state(
         &preview.map,
         &world,
@@ -275,11 +280,11 @@ pub fn create_random_game(
         diplomacy,
         nations,
         military_units,
-        civilian_units: Vec::new(),
-        navy_ids: NavyIdAllocator::default(),
-        ships: Vec::new(),
-        admirals: Vec::new(),
-        task_forces: Vec::new(),
+        civilian_units: Default::default(),
+        object_ids,
+        ships: Default::default(),
+        admirals: Default::default(),
+        task_forces: Default::default(),
         missions,
         news: NewsState::default(),
         pending,
