@@ -1,9 +1,20 @@
 //! Navy mission `GiveOrders`, hop-limited sail, and `CarryOutOrders` type 1/5/8.
 
 use crate::*;
+use enum_map::{Enum, EnumMap};
 use indexmap::IndexMap;
 
 const UNREACHED: i16 = 0x29a;
+
+#[derive(Clone, Copy, Debug, Enum, Eq, PartialEq)]
+pub(crate) enum NavyPriorityComponent {
+    Resolve,
+    Strength,
+    Descriptor,
+    Industry,
+}
+
+pub(crate) type NavyPriorityTable<T> = EnumMap<NavyPriorityComponent, T>;
 
 /// Recovered navy-order descriptor columns. One semantic record; not the C++
 /// dword-column layout.
@@ -89,8 +100,8 @@ pub(crate) fn ship_display_stats(ship_type: ShipType) -> [i16; 6] {
     ]
 }
 
-pub(crate) fn navy_category_baselines(enabled: &[bool; 14]) -> [i32; 4] {
-    let mut totals = [0_i32; 4];
+pub(crate) fn navy_category_baselines(enabled: &[bool; 14]) -> NavyPriorityTable<i32> {
+    let mut totals = NavyPriorityTable::default();
     let mut enabled_count = 0;
     for (type_index, &is_enabled) in enabled.iter().enumerate().skip(1) {
         let ship_type = ShipType::from_index(type_index as u8)
@@ -101,53 +112,52 @@ pub(crate) fn navy_category_baselines(enabled: &[bool; 14]) -> [i32; 4] {
         }
         enabled_count += 1;
         let calc = descriptor.calculate_weight;
-        totals[0] += descriptor.resolve_weight * calc * calc;
-        totals[1] += (calc * descriptor.stock_cap * 100) / descriptor.task_force_weight;
-        totals[2] += descriptor.navy_priority_weight;
-        totals[3] += i32::from(INDUSTRY_COST[ship_type]);
+        totals[NavyPriorityComponent::Resolve] += descriptor.resolve_weight * calc * calc;
+        totals[NavyPriorityComponent::Strength] +=
+            (calc * descriptor.stock_cap * 100) / descriptor.task_force_weight;
+        totals[NavyPriorityComponent::Descriptor] += descriptor.navy_priority_weight;
+        totals[NavyPriorityComponent::Industry] += i32::from(INDUSTRY_COST[ship_type]);
     }
     if enabled_count == 0 {
         return totals;
     }
     let half = enabled_count / 2;
-    [
-        (totals[0] + half) / enabled_count,
-        (totals[1] + half) / enabled_count,
-        (totals[2] + half) / enabled_count,
-        (totals[3] + half) / enabled_count,
-    ]
+    NavyPriorityTable::from_array(
+        totals
+            .as_array()
+            .map(|total| (total + half) / enabled_count),
+    )
 }
 
 pub(crate) fn ship_priority_contribution(
     ship: &ShipState,
-    category: i32,
-    baselines: &[i32; 4],
+    category: NavyPriorityComponent,
+    baselines: &NavyPriorityTable<i32>,
 ) -> i32 {
-    let divisor = baselines[category as usize];
+    let divisor = baselines[category];
     if divisor == 0 {
         return 0;
     }
     let descriptor = NAVY_DESCRIPTORS[ship.ship_type];
     match category {
-        0 => {
+        NavyPriorityComponent::Resolve => {
             let quantity_term =
                 i32::from(ship.experience / 100) + descriptor.resolve_weight * 10 + 5;
             let weight = descriptor.calculate_weight;
             (quantity_term / 10 * weight * weight * 100) / divisor
         }
-        1 => {
+        NavyPriorityComponent::Strength => {
             let weight = descriptor.calculate_weight;
             (weight * i32::from(ship.strength) * 10000) / (descriptor.task_force_weight * divisor)
         }
-        2 => (descriptor.descriptor_weight * 100) / divisor,
-        3 => {
+        NavyPriorityComponent::Descriptor => (descriptor.descriptor_weight * 100) / divisor,
+        NavyPriorityComponent::Industry => {
             if ship.strength < 1 {
                 0
             } else {
                 (i32::from(INDUSTRY_COST[ship.ship_type]) * 100) / divisor
             }
         }
-        _ => 0,
     }
 }
 
@@ -283,10 +293,16 @@ fn accumulate_ship_categories(ship: &ShipState, vector: &mut [f32; 4], enabled: 
     }
     let baselines = navy_category_baselines(enabled);
     let scale = f32::from(ship.strength) / f32::from(max_strength);
-    vector[0] += ship_priority_contribution(ship, 0, &baselines) as f32 * scale;
-    vector[1] += ship_priority_contribution(ship, 1, &baselines) as f32 * scale;
-    vector[2] += ship_priority_contribution(ship, 2, &baselines) as f32 * scale;
-    vector[3] += ship_priority_contribution(ship, 3, &baselines) as f32;
+    vector[0] +=
+        ship_priority_contribution(ship, NavyPriorityComponent::Resolve, &baselines) as f32 * scale;
+    vector[1] += ship_priority_contribution(ship, NavyPriorityComponent::Strength, &baselines)
+        as f32
+        * scale;
+    vector[2] += ship_priority_contribution(ship, NavyPriorityComponent::Descriptor, &baselines)
+        as f32
+        * scale;
+    vector[3] +=
+        ship_priority_contribution(ship, NavyPriorityComponent::Industry, &baselines) as f32;
 }
 
 #[derive(Clone, Copy)]
@@ -345,8 +361,10 @@ pub(super) mod tests {
             experience: 0,
             selection: 0,
         };
-        assert!(ship_priority_contribution(&ship, 0, &baselines) > 0);
-        assert!(ship_priority_contribution(&ship, 2, &baselines) > 0);
+        assert!(ship_priority_contribution(&ship, NavyPriorityComponent::Resolve, &baselines) > 0);
+        assert!(
+            ship_priority_contribution(&ship, NavyPriorityComponent::Descriptor, &baselines) > 0
+        );
     }
 
     #[test]

@@ -321,13 +321,29 @@ impl GameState {
                 continue;
             }
             let scale = f32::from(ship.strength) / f32::from(max_strength);
-            vector[0] +=
-                crate::navy_orders::ship_priority_contribution(ship, 0, &baselines) as f32 * scale;
-            vector[1] +=
-                crate::navy_orders::ship_priority_contribution(ship, 1, &baselines) as f32 * scale;
-            vector[2] +=
-                crate::navy_orders::ship_priority_contribution(ship, 2, &baselines) as f32 * scale;
-            vector[3] += crate::navy_orders::ship_priority_contribution(ship, 3, &baselines) as f32;
+            vector[0] += crate::navy_orders::ship_priority_contribution(
+                ship,
+                crate::navy_orders::NavyPriorityComponent::Resolve,
+                &baselines,
+            ) as f32
+                * scale;
+            vector[1] += crate::navy_orders::ship_priority_contribution(
+                ship,
+                crate::navy_orders::NavyPriorityComponent::Strength,
+                &baselines,
+            ) as f32
+                * scale;
+            vector[2] += crate::navy_orders::ship_priority_contribution(
+                ship,
+                crate::navy_orders::NavyPriorityComponent::Descriptor,
+                &baselines,
+            ) as f32
+                * scale;
+            vector[3] += crate::navy_orders::ship_priority_contribution(
+                ship,
+                crate::navy_orders::NavyPriorityComponent::Industry,
+                &baselines,
+            ) as f32;
         }
         let sum: f32 = vector.iter().sum();
         #[allow(clippy::float_cmp)]

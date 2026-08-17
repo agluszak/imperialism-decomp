@@ -3,7 +3,9 @@
 use crate::military::{
     ActionClassScores, PROVINCE_UNIT_ORDER_WEIGHT, TACTICAL_COMPOSITION, accumulate_unit_priority,
 };
-use crate::navy_orders::{navy_category_baselines, ship_priority_contribution};
+use crate::navy_orders::{
+    NavyPriorityComponent, navy_category_baselines, ship_priority_contribution,
+};
 use crate::*;
 
 const ATTACK_RESOURCE_SCALE: [[f32; 4]; 5] = [
@@ -79,10 +81,18 @@ impl GameState {
                 if ship.nation != nation.nation() {
                     continue;
                 }
-                category[0] += ship_priority_contribution(ship, 0, &baselines) as f32;
-                category[1] += ship_priority_contribution(ship, 1, &baselines) as f32;
-                category[2] += ship_priority_contribution(ship, 2, &baselines) as f32;
-                category[3] += ship_priority_contribution(ship, 3, &baselines) as f32;
+                category[0] +=
+                    ship_priority_contribution(ship, NavyPriorityComponent::Resolve, &baselines)
+                        as f32;
+                category[1] +=
+                    ship_priority_contribution(ship, NavyPriorityComponent::Strength, &baselines)
+                        as f32;
+                category[2] +=
+                    ship_priority_contribution(ship, NavyPriorityComponent::Descriptor, &baselines)
+                        as f32;
+                category[3] +=
+                    ship_priority_contribution(ship, NavyPriorityComponent::Industry, &baselines)
+                        as f32;
             }
             metrics.queue_divergence[slot] = queue_divergence(category);
 
