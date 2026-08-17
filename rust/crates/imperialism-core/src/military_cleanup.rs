@@ -563,7 +563,7 @@ mod tests {
     use super::*;
     use crate::test_support::game_state;
 
-    fn ship(id: usize, selection: i32) -> ShipState {
+    fn ship(_id: usize, selection: i32) -> ShipState {
         ShipState {
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
