@@ -180,7 +180,7 @@ impl GameState {
                         500
                     };
                     if let Some(major) = MajorNationId::from_nation(owner)
-                        && !self.nations.majors[major].economy.diplomacy_eligible
+                        && !self.nations.majors[&major].economy.diplomacy_eligible
                     {
                         set_unit_order(unit, MilitaryOrderCode::Sleep, None);
                     }

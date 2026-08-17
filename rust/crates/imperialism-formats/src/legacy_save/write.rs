@@ -9,7 +9,7 @@ impl LegacySaveV62 {
     }
 
     pub(super) fn has_city_tasks(&self) -> bool {
-        self.major_nations.iter().any(|nation| {
+        self.major_nations.values().any(|nation| {
             nation
                 .great_power()
                 .city
@@ -19,7 +19,7 @@ impl LegacySaveV62 {
     }
 
     pub(super) fn has_transport_requests(&self) -> bool {
-        self.major_nations.iter().any(|nation| {
+        self.major_nations.values().any(|nation| {
             nation
                 .great_power()
                 .city
@@ -83,7 +83,7 @@ impl LegacySaveV62 {
         write_army_reports(&mut writer, &self.army_reports);
 
         let mut archive = vec![None];
-        for nation in &self.major_nations {
+        for nation in self.major_nations.values() {
             match nation {
                 LegacyMajorNationState::Auto(auto) => {
                     write_great_power(&mut writer, &auto.great_power);

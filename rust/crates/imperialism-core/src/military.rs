@@ -56,7 +56,7 @@ impl GameState {
     /// `TGreatPower::GetMilitaryPower`.
     pub(crate) fn military_power(&self, nation: MajorNationId) -> f32 {
         let army = self.army_unit_power(nation.nation()) as f32;
-        let city = &self.nations.majors[nation].city;
+        let city = &self.nations.majors[&nation].city;
         let reinforcement = {
             let labor = i32::from(city.population.baseline_labor.low);
             let budget = i32::from(city.population.strength).min(labor);
@@ -72,7 +72,7 @@ impl GameState {
 
     /// `TGreatPower::GetTotalNavalForce`.
     pub(crate) fn naval_force(&self, nation: MajorNationId) -> f32 {
-        let city = &self.nations.majors[nation].city;
+        let city = &self.nations.majors[&nation].city;
         let ship_production = self.technology.naval_production_capacity(
             i32::from(city.production_orders[CityFacilitySlot::LumberMill]),
             i32::from(city.production_orders[CityFacilitySlot::SteelMill]),
@@ -109,7 +109,7 @@ impl GameState {
             common,
             economy: major,
             ..
-        } = &mut self.nations.majors[nation];
+        } = &mut self.nations.majors[&nation];
         major.military_expenses = charge;
         common.treasury -= charge;
     }

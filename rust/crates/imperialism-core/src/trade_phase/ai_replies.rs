@@ -16,7 +16,7 @@ impl GameState {
             self.base_reply_to_trade_offer(buyer, seller, amount, price, commodity, phase);
             return;
         }
-        match self.nations.majors[buyer]
+        match self.nations.majors[&buyer]
             .economy
             .foreign_minister_personality
         {

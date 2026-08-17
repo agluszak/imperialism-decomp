@@ -5,7 +5,7 @@ use crate::*;
 impl GameState {
     pub(super) fn set_ai_trade_bids(&mut self, nation: MajorNationId) {
         self.prepare_personality_trade_bids(nation);
-        let personality = self.nations.majors[nation]
+        let personality = self.nations.majors[&nation]
             .economy
             .foreign_minister_personality;
         if personality != ForeignMinisterPersonality::Base {
@@ -26,7 +26,7 @@ impl GameState {
     }
 
     pub(super) fn prepare_personality_trade_bids(&mut self, nation: MajorNationId) {
-        let treasury = self.nations.majors[nation].common.treasury;
+        let treasury = self.nations.majors[&nation].common.treasury;
         {
             let trade = self.foreign_trade_mut(nation);
             trade.trade_partner_enabled = [1; 7];
@@ -40,8 +40,8 @@ impl GameState {
             trade.phase_counter >= trade.refresh_interval || self.we_need_money(nation)
         };
         if needs_refresh {
-            if self.nations.majors[nation].economy.pending_ship.is_none() {
-                self.nations.majors[nation].economy.pending_ship =
+            if self.nations.majors[&nation].economy.pending_ship.is_none() {
+                self.nations.majors[&nation].economy.pending_ship =
                     Some(self.foreign_trade(nation).requested_ship);
             }
             self.foreign_trade_mut(nation).phase_counter = 0;
@@ -65,7 +65,7 @@ impl GameState {
     }
 
     pub(super) fn set_buy_priorities(&mut self, nation: MajorNationId) {
-        match self.nations.majors[nation]
+        match self.nations.majors[&nation]
             .economy
             .foreign_minister_personality
         {
@@ -193,7 +193,7 @@ impl GameState {
     pub(super) fn ted_set_trade_bids(&mut self, nation: MajorNationId) {
         let cap = self.trade_offer_cap(nation);
         let hardware = self.city_stock(nation, ResourceKind::Hardware);
-        if self.nations.majors[nation].common.treasury >= 0 && cap > hardware && hardware < 10 {
+        if self.nations.majors[&nation].common.treasury >= 0 && cap > hardware && hardware < 10 {
             self.offer_all_stock(nation, ResourceKind::Clothing);
             self.offer_all_stock(nation, ResourceKind::Furniture);
         } else {
@@ -310,14 +310,14 @@ impl GameState {
     pub(super) fn textile_set_trade_bids(&mut self, nation: MajorNationId) {
         let cap = self.trade_offer_cap(nation);
         let clothing = self.city_stock(nation, ResourceKind::Clothing);
-        if self.nations.majors[nation].common.treasury < 0
+        if self.nations.majors[&nation].common.treasury < 0
             || clothing >= cap
             || (clothing > 4 && self.market.rows[TradeCommodity::Clothing].price > 1000)
         {
             self.set_trade_potential(nation, ResourceKind::Clothing, clothing.min(cap));
         }
-        if self.nations.majors[nation].common.treasury < 0
-            || self.nations.majors[nation].economy.item_potentials[ResourceKind::Clothing] == 0
+        if self.nations.majors[&nation].common.treasury < 0
+            || self.nations.majors[&nation].economy.item_potentials[ResourceKind::Clothing] == 0
         {
             let budget = cap / 2;
             let (first, second) = if self.market.rows[TradeCommodity::Hardware].price
@@ -375,7 +375,7 @@ impl GameState {
 
     pub(super) fn trader_set_trade_bids(&mut self, nation: MajorNationId) {
         let prices = self.sorted_processed_prices();
-        let divisor = if self.nations.majors[nation].common.treasury < 0 {
+        let divisor = if self.nations.majors[&nation].common.treasury < 0 {
             1
         } else {
             4
@@ -419,7 +419,7 @@ impl GameState {
             allocated += amount;
             selected -= 1;
         }
-        if self.nations.majors[nation].common.treasury < 0 && !self.has_any_war(nation.nation()) {
+        if self.nations.majors[&nation].common.treasury < 0 && !self.has_any_war(nation.nation()) {
             let available = self.city_stock(nation, ResourceKind::Arms);
             let mut amount = available / 10;
             if amount > 10 {
@@ -448,7 +448,7 @@ impl GameState {
         half_capacity: bool,
     ) {
         let cap = self.trade_offer_cap(nation);
-        let target = if self.nations.majors[nation].common.treasury < 0 || !half_capacity {
+        let target = if self.nations.majors[&nation].common.treasury < 0 || !half_capacity {
             cap
         } else {
             cap / 2

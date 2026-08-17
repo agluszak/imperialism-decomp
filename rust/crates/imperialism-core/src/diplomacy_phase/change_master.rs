@@ -40,7 +40,7 @@ impl GameState {
             self.kill_enemy_civilians(subject);
             self.deport_civilians(subject);
             if let Some(major) = MajorNationId::from_nation(master) {
-                let pending = &mut self.nations.majors[major].economy.pending_actions
+                let pending = &mut self.nations.majors[&major].economy.pending_actions
                     [PendingActionKind::ColonyMonumentMerchantCapacity];
                 if !pending.status().has_reached(PendingActionStatus::HANDLED) {
                     pending.queue_with_payload(i16::from(subject.get()));
@@ -53,7 +53,7 @@ impl GameState {
             MajorNationId::from_nation(subject),
             MajorNationId::from_nation(master),
         ) {
-            let pending = &mut self.nations.majors[master_major].economy.pending_actions
+            let pending = &mut self.nations.majors[&master_major].economy.pending_actions
                 [PendingActionKind::AnnexedGreatPowerCapitalExpansion];
             if !pending.status().has_reached(PendingActionStatus::HANDLED) {
                 pending.queue_with_payload(i16::from(subject.get()));
@@ -99,7 +99,7 @@ impl GameState {
         for other in NationId::all() {
             let war = self.at_war(master, other);
             let flagged = MajorNationId::from_nation(master).is_some_and(|major| {
-                self.nations.majors[major].economy.colony_boycott_flags[other] != 0
+                self.nations.majors[&major].economy.colony_boycott_flags[other] != 0
             });
             let policy = if !war && (other == colony || !flagged) {
                 TradePolicyScore::NEUTRAL
@@ -169,7 +169,7 @@ impl GameState {
             if !targets[usize::from(owner.get())] {
                 continue;
             }
-            let Some(home) = self.nations.majors[owner].common.home_tile else {
+            let Some(home) = self.nations.majors[&owner].common.home_tile else {
                 self.civilian_units.shift_remove(&id);
                 continue;
             };

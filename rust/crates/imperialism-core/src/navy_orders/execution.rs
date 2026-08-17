@@ -1022,7 +1022,7 @@ impl GameState {
                     return;
                 }
                 if let Some(major) = MajorNationId::from_nation(nation)
-                    && self.nations.majors[major]
+                    && self.nations.majors[&major]
                         .economy
                         .diplomacy_policy_by_nation[owner]
                         != Some(DiplomacyPolicy::DeclareWar)

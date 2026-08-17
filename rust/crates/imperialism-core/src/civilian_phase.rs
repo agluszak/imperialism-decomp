@@ -16,7 +16,7 @@ impl GameState {
             .expect("resource-yield rebuild requires the nation's home town marker");
 
         let mut influence = vec![0_u8; STRATEGIC_TILE_COUNT];
-        let major = &self.nations.majors[nation];
+        let major = &self.nations.majors[&nation];
         for ((&town_tile, town), &linked) in major.towns.iter().zip(&town_transport_linked) {
             if !linked {
                 continue;
@@ -86,7 +86,7 @@ impl GameState {
             }
         }
 
-        let major = &mut self.nations.majors[nation];
+        let major = &mut self.nations.majors[&nation];
         for ((_, town), linked) in major.towns.iter_mut().zip(town_transport_linked) {
             town.transport_linked = linked;
         }
@@ -110,7 +110,7 @@ impl GameState {
 
     pub(crate) fn apply_town_transport_links(&mut self, nation: MajorNationId) -> Option<Vec<u8>> {
         let (influence, town_transport_linked) = self.transport_influence(nation)?;
-        for ((_, town), linked) in self.nations.majors[nation]
+        for ((_, town), linked) in self.nations.majors[&nation]
             .towns
             .iter_mut()
             .zip(town_transport_linked)
@@ -449,7 +449,7 @@ mod tests {
             .transport_links
             .insert(TileTransportLinks::for_direction(HexDirection::West));
 
-        let major = &mut state.nations.majors[nation];
+        let major = &mut state.nations.majors[&nation];
         major.common.home_tile = Some(home);
         major.towns = [
             (home, TownState::for_frog_city(home, nation.nation())),
@@ -473,7 +473,7 @@ mod tests {
         state.rebuild_nation_resource_yields(nation);
 
         assert_eq!(
-            state.nations.majors[nation]
+            state.nations.majors[&nation]
                 .towns
                 .iter()
                 .map(|(_, town)| town.transport_linked)

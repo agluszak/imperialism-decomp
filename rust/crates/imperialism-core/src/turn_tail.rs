@@ -51,71 +51,72 @@ impl GameState {
         }
 
         let difficulty = self.turn.difficulty;
-        let treasury = self.nations.majors[nation].common.treasury;
-        let mut base_pressure = sum_aid_allocation(&self.nations.majors[nation].economy);
-        let need = &self.nations.majors[nation].economy.need_target_by_type;
+        let treasury = self.nations.majors[&nation].common.treasury;
+        let mut base_pressure = sum_aid_allocation(&self.nations.majors[&nation].economy);
+        let need = &self.nations.majors[&nation].economy.need_target_by_type;
         base_pressure += i32::from(need[ResourceKind::Gold]) * 200;
         base_pressure += i32::from(need[ResourceKind::Gems]) * 500;
-        base_pressure += self.nations.majors[nation].economy.budget_pool_base;
+        base_pressure += self.nations.majors[&nation].economy.budget_pool_base;
         let floor = BASE_PRESSURE[difficulty];
         if base_pressure < floor {
             base_pressure = floor;
         }
 
-        let smoothed = (self.nations.majors[nation].economy.diplomacy_budget_base * 90
+        let smoothed = (self.nations.majors[&nation].economy.diplomacy_budget_base * 90
             + base_pressure * 1000)
             / 100;
-        self.nations.majors[nation].economy.diplomacy_budget_base = smoothed;
+        self.nations.majors[&nation].economy.diplomacy_budget_base = smoothed;
         let pressure_band = smoothed / 100;
         let mut hard_alert = false;
 
         if treasury < 0 {
             let half_band = pressure_band / 2;
             if -half_band == treasury || -treasury < half_band {
-                self.nations.majors[nation].economy.pressure_counter = 1;
+                self.nations.majors[&nation].economy.pressure_counter = 1;
             } else if -pressure_band == treasury || -treasury < pressure_band {
-                if self.nations.majors[nation].economy.pressure_counter > 1 {
-                    raise_escalation(&mut self.nations.majors[nation].economy, difficulty);
+                if self.nations.majors[&nation].economy.pressure_counter > 1 {
+                    raise_escalation(&mut self.nations.majors[&nation].economy, difficulty);
                 }
-                self.nations.majors[nation].economy.pressure_counter = 2;
+                self.nations.majors[&nation].economy.pressure_counter = 2;
             } else {
-                raise_escalation(&mut self.nations.majors[nation].economy, difficulty);
-                let pressure = &mut self.nations.majors[nation].economy.pressure_counter;
+                raise_escalation(&mut self.nations.majors[&nation].economy, difficulty);
+                let pressure = &mut self.nations.majors[&nation].economy.pressure_counter;
                 if *pressure < 3 {
                     *pressure = 3;
                 } else {
                     *pressure += 1;
                 }
-                let pressure_tier = i32::from(self.nations.majors[nation].economy.pressure_counter);
+                let pressure_tier =
+                    i32::from(self.nations.majors[&nation].economy.pressure_counter);
                 if PRESSURE_HARD_ALERT[difficulty] <= pressure_tier {
                     hard_alert = true;
                 } else if pressure_tier >= PRESSURE_COMPILE_THRESHOLD[difficulty] {
                     self.compile_great_power_relationship_delta_lines(nation);
                 }
             }
-        } else if self.nations.majors[nation].economy.pressure_counter != 0 {
-            let next = i32::from(self.nations.majors[nation].economy.escalation_counter)
+        } else if self.nations.majors[&nation].economy.pressure_counter != 0 {
+            let next = i32::from(self.nations.majors[&nation].economy.escalation_counter)
                 - PRESSURE_DECAY_STEP[difficulty];
-            self.nations.majors[nation].economy.escalation_counter =
+            self.nations.majors[&nation].economy.escalation_counter =
                 next.max(PRESSURE_MIN_FLOOR[difficulty]) as i16;
-            self.nations.majors[nation].economy.pressure_counter = 0;
+            self.nations.majors[&nation].economy.pressure_counter = 0;
         }
 
         if hard_alert {
             return true;
         }
 
-        let treasury = self.nations.majors[nation].common.treasury;
+        let treasury = self.nations.majors[&nation].common.treasury;
         if treasury >= 0 {
-            self.nations.majors[nation].economy.army_movement_budget = 0;
+            self.nations.majors[&nation].economy.army_movement_budget = 0;
             return false;
         }
 
         let drain = (199
-            - i32::from(self.nations.majors[nation].economy.escalation_counter) * treasury)
+            - i32::from(self.nations.majors[&nation].economy.escalation_counter) * treasury)
             / 200;
-        self.nations.majors[nation].economy.army_movement_budget = drain;
-        self.nations.majors[nation].common.treasury = treasury - drain;
+        self.nations.majors[&nation].economy.army_movement_budget = drain;
+        self.nations.majors[&nation].common.treasury = treasury - drain;
         false
     }
 
@@ -152,7 +153,7 @@ impl GameState {
         let empty_majors: Vec<_> = MajorNationId::all()
             .filter(|&nation| {
                 self.nations.major_is_present(nation)
-                    && self.nations.majors[nation]
+                    && self.nations.majors[&nation]
                         .common
                         .owned_regions()
                         .is_empty()
@@ -286,7 +287,7 @@ impl GameState {
             if self
                 .nations
                 .city(nation)
-                .forecast_population_food(&self.nations.majors[nation].economy.need_target_by_type)
+                .forecast_population_food(&self.nations.majors[&nation].economy.need_target_by_type)
                 .starvation_count
                 != 0
             {
@@ -306,7 +307,7 @@ impl GameState {
             return 0x25;
         }
         if i32::from(last_effort) - self.turn.economic_turn > 4
-            && self.nations.majors[nation].common.treasury >= 10_000
+            && self.nations.majors[&nation].common.treasury >= 10_000
         {
             return 0x27;
         }
@@ -326,7 +327,7 @@ impl GameState {
     }
 
     fn need_current_exceeds_target(&self, nation: MajorNationId) -> bool {
-        let economy = &self.nations.majors[nation].economy;
+        let economy = &self.nations.majors[&nation].economy;
         if economy.capacities.transport == economy.capacities.reserved_transport {
             return false;
         }
@@ -336,13 +337,13 @@ impl GameState {
     }
 
     fn new_status_for(&mut self, nation: MajorNationId, target: NationId, policy_code: i32) {
-        self.nations.majors[nation].common.trade_policy_by_nation[target] =
+        self.nations.majors[&nation].common.trade_policy_by_nation[target] =
             TradePolicyScore::NEUTRAL;
-        self.nations.majors[nation]
+        self.nations.majors[&nation]
             .economy
             .diplomacy_grants_by_nation[target] = None;
         if policy_code == 500 {
-            self.nations.majors[nation]
+            self.nations.majors[&nation]
                 .economy
                 .diplomacy_policy_by_nation[target] = None;
             return;
@@ -405,45 +406,51 @@ mod tests {
     fn modest_debt_sets_pressure_one_and_drains_treasury() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].auto = None;
-        state.nations.majors[nation].common.treasury = -100;
-        state.nations.majors[nation].economy.diplomacy_budget_base = 50_000;
-        state.nations.majors[nation].economy.escalation_counter = 10;
+        state.nations.majors[&nation].auto = None;
+        state.nations.majors[&nation].common.treasury = -100;
+        state.nations.majors[&nation].economy.diplomacy_budget_base = 50_000;
+        state.nations.majors[&nation].economy.escalation_counter = 10;
         state.turn.difficulty = Difficulty::Easy;
 
         assert!(!state.update_great_power_pressure(nation));
-        assert_eq!(state.nations.majors[nation].economy.pressure_counter, 1);
-        assert_eq!(state.nations.majors[nation].common.treasury, -105);
-        assert_eq!(state.nations.majors[nation].economy.army_movement_budget, 5);
+        assert_eq!(state.nations.majors[&nation].economy.pressure_counter, 1);
+        assert_eq!(state.nations.majors[&nation].common.treasury, -105);
+        assert_eq!(
+            state.nations.majors[&nation].economy.army_movement_budget,
+            5
+        );
     }
 
     #[test]
     fn auto_great_power_pressure_is_a_noop() {
         let mut state = game_state();
         let nation = MajorNationId::new(1);
-        state.nations.majors[nation].auto = Some(AutoGreatPowerState::default());
-        state.nations.majors[nation].common.treasury = -10_000;
-        state.nations.majors[nation].economy.pressure_counter = 4;
+        state.nations.majors[&nation].auto = Some(AutoGreatPowerState::default());
+        state.nations.majors[&nation].common.treasury = -10_000;
+        state.nations.majors[&nation].economy.pressure_counter = 4;
         assert!(!state.update_great_power_pressure(nation));
-        assert_eq!(state.nations.majors[nation].economy.pressure_counter, 4);
-        assert_eq!(state.nations.majors[nation].common.treasury, -10_000);
+        assert_eq!(state.nations.majors[&nation].economy.pressure_counter, 4);
+        assert_eq!(state.nations.majors[&nation].common.treasury, -10_000);
     }
 
     #[test]
     fn surplus_decays_existing_pressure() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].auto = None;
-        state.nations.majors[nation].common.treasury = 500;
-        state.nations.majors[nation].economy.pressure_counter = 2;
-        state.nations.majors[nation].economy.escalation_counter = 10;
-        state.nations.majors[nation].economy.army_movement_budget = 12;
+        state.nations.majors[&nation].auto = None;
+        state.nations.majors[&nation].common.treasury = 500;
+        state.nations.majors[&nation].economy.pressure_counter = 2;
+        state.nations.majors[&nation].economy.escalation_counter = 10;
+        state.nations.majors[&nation].economy.army_movement_budget = 12;
         state.turn.difficulty = Difficulty::Easy;
 
         assert!(!state.update_great_power_pressure(nation));
-        assert_eq!(state.nations.majors[nation].economy.pressure_counter, 0);
-        assert_eq!(state.nations.majors[nation].economy.escalation_counter, 8);
-        assert_eq!(state.nations.majors[nation].economy.army_movement_budget, 0);
+        assert_eq!(state.nations.majors[&nation].economy.pressure_counter, 0);
+        assert_eq!(state.nations.majors[&nation].economy.escalation_counter, 8);
+        assert_eq!(
+            state.nations.majors[&nation].economy.army_movement_budget,
+            0
+        );
     }
 
     #[test]
@@ -587,13 +594,8 @@ mod tests {
             .append_owned_region_during_construction(survivor.nation(), ProvinceId::new(0));
         assert_eq!(state.do_elimination_phase(), EliminationOutcome::Victory);
 
-        let eliminated = MajorNationId::new(1);
-        state.nations.majors[eliminated].auto = None;
-        state.nations.majors[eliminated].common.treasury = -10_000;
-        state.nations.majors[eliminated].economy.pressure_counter = 4;
+        assert!(!state.nations.major_is_present(MajorNationId::new(1)));
         assert!(!state.do_great_power_pressure_phase());
-        assert_eq!(state.nations.majors[eliminated].common.treasury, -10_000);
-        assert_eq!(state.nations.majors[eliminated].economy.pressure_counter, 4);
     }
 
     #[test]
@@ -613,13 +615,13 @@ mod tests {
             consortium_members: [minor; 4],
             trade: MinorTradeState::default(),
         });
-        state.nations.majors[MajorNationId::new(0)]
+        state.nations.majors[&MajorNationId::new(0)]
             .common
             .trade_policy_by_nation[NationId::new(0)] = TradePolicyScore::new(75);
 
         assert_eq!(state.do_elimination_phase(), EliminationOutcome::Continue);
         assert_eq!(
-            state.nations.majors[MajorNationId::new(0)]
+            state.nations.majors[&MajorNationId::new(0)]
                 .common
                 .trade_policy_by_nation[NationId::new(0)],
             TradePolicyScore::NEUTRAL

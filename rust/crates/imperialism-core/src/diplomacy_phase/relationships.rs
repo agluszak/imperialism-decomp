@@ -105,10 +105,10 @@ impl GameState {
                     self.set_relationship(source, target, 0x32);
                 }
                 if let Some(major) = MajorNationId::from_nation(source) {
-                    self.nations.majors[major].economy.candidate_nation_flags[target] = 0;
+                    self.nations.majors[&major].economy.candidate_nation_flags[target] = 0;
                 }
                 if let Some(major) = MajorNationId::from_nation(target) {
-                    self.nations.majors[major].economy.candidate_nation_flags[source] = 0;
+                    self.nations.majors[&major].economy.candidate_nation_flags[source] = 0;
                 }
                 if MajorNationId::from_nation(source).is_some()
                     && MajorNationId::from_nation(target).is_some()
@@ -210,7 +210,7 @@ impl GameState {
             self.inflict_war_penalty(source, target, false);
         }
         if let Some(major) = MajorNationId::from_nation(target)
-            && self.nations.majors[major].auto.is_none()
+            && self.nations.majors[&major].auto.is_none()
         {
             self.add_diplomacy_notice(major, source, 0x139);
         }

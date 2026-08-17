@@ -35,7 +35,7 @@ fn grant_to_a_peer_transfers_treasury_and_raises_embassy_standing() {
     let mut state = game_state();
     let source = major(0);
     let target = nation(1);
-    state.nations.majors[source].common.treasury = 20_000;
+    state.nations.majors[&source].common.treasury = 20_000;
     assert!(state.set_diplomacy_grant(
         source,
         target,
@@ -44,18 +44,18 @@ fn grant_to_a_peer_transfers_treasury_and_raises_embassy_standing() {
             recurring: false,
         }),
     ));
-    let source_treasury = state.nations.majors[source].common.treasury;
-    let target_treasury = state.nations.majors[major(1)].common.treasury;
+    let source_treasury = state.nations.majors[&source].common.treasury;
+    let target_treasury = state.nations.majors[&major(1)].common.treasury;
     let standing = state.diplomacy.standings[source.nation()][target];
 
     assert_eq!(state.do_diplomacy(), DiplomacyPhaseResult::Resolved);
 
     assert_eq!(
-        state.nations.majors[source].common.treasury,
+        state.nations.majors[&source].common.treasury,
         source_treasury
     );
     assert_eq!(
-        state.nations.majors[major(1)].common.treasury,
+        state.nations.majors[&major(1)].common.treasury,
         target_treasury + 1_000
     );
     assert_eq!(
@@ -63,12 +63,12 @@ fn grant_to_a_peer_transfers_treasury_and_raises_embassy_standing() {
         standing + 2
     );
     assert_eq!(
-        state.nations.majors[source]
+        state.nations.majors[&source]
             .economy
             .diplomacy_grants_by_nation[target],
         None
     );
-    assert_eq!(state.nations.majors[source].economy.grant_total_cost, 0);
+    assert_eq!(state.nations.majors[&source].economy.grant_total_cost, 0);
     assert_eq!(
         state.pending.nations[major(1)].turn_events,
         [DiplomacyNotice {
@@ -84,7 +84,7 @@ fn consulate_policy_sets_symmetric_mission_level_and_news() {
     let source = major(0);
     let target = nation(7);
     state.nations.minors[MinorNationId::new(7)] = Some(independent_minor(7));
-    state.nations.majors[source]
+    state.nations.majors[&source]
         .economy
         .diplomacy_policy_by_nation[target] = Some(DiplomacyPolicy::BuildConsulate);
 
@@ -99,7 +99,7 @@ fn consulate_policy_sets_symmetric_mission_level_and_news() {
         DiplomaticMissionLevel::TradeConsulate
     );
     assert_eq!(
-        state.nations.majors[source]
+        state.nations.majors[&source]
             .economy
             .diplomacy_policy_by_nation[target],
         None
@@ -124,7 +124,7 @@ fn minor_non_aggression_pact_is_accepted_immediately() {
     let source = major(0);
     let target = nation(7);
     state.nations.minors[MinorNationId::new(7)] = Some(independent_minor(7));
-    state.nations.majors[source]
+    state.nations.majors[&source]
         .economy
         .diplomacy_policy_by_nation[target] = Some(DiplomacyPolicy::NonAggressionPact);
     let standing = state.diplomacy.standings[source.nation()][target];
@@ -151,8 +151,8 @@ fn minor_non_aggression_pact_is_accepted_immediately() {
 #[test]
 fn human_offer_stops_for_a_reply_and_accepting_forms_the_alliance() {
     let mut state = game_state();
-    state.nations.majors[major(1)] = computer_major();
-    state.nations.majors[major(1)]
+    state.nations.majors[&major(1)] = computer_major();
+    state.nations.majors[&major(1)]
         .economy
         .diplomacy_policy_by_nation[nation(0)] = Some(DiplomacyPolicy::Alliance);
 
@@ -185,7 +185,7 @@ fn declare_war_processes_one_transition_and_posts_declare_war_news() {
     let mut state = game_state();
     let source = major(0);
     let target = nation(1);
-    state.nations.majors[source]
+    state.nations.majors[&source]
         .economy
         .diplomacy_policy_by_nation[target] = Some(DiplomacyPolicy::DeclareWar);
 
@@ -197,7 +197,7 @@ fn declare_war_processes_one_transition_and_posts_declare_war_news() {
     );
     assert!(state.pending.war_transitions.is_empty());
     assert_eq!(
-        state.nations.majors[source].common.trade_policy_by_nation[target],
+        state.nations.majors[&source].common.trade_policy_by_nation[target],
         TradePolicyScore::BOYCOTT
     );
     assert_eq!(
@@ -238,7 +238,7 @@ fn accepted_join_empire_makes_the_subject_a_colony() {
     state.nations.minors[MinorNationId::new(7)] = Some(independent_minor(7));
     state.diplomacy.standings[target][source.nation()] = 0xff;
     state.diplomacy.standings[source.nation()][target] = 0xff;
-    state.nations.majors[source]
+    state.nations.majors[&source]
         .economy
         .diplomacy_policy_by_nation[target] = Some(DiplomacyPolicy::JoinEmpire);
 
@@ -257,7 +257,7 @@ fn accepted_join_empire_makes_the_subject_a_colony() {
         DiplomaticRelationship::JoinedEmpire
     );
     assert_eq!(
-        state.nations.majors[source].economy.pending_actions
+        state.nations.majors[&source].economy.pending_actions
             [PendingActionKind::ColonyMonumentMerchantCapacity]
             .status(),
         PendingActionStatus::QUEUED
@@ -279,8 +279,8 @@ fn accepted_join_empire_makes_the_subject_a_colony() {
 #[test]
 fn accepted_great_power_join_empire_is_a_colony_not_a_protectorate() {
     let mut state = game_state();
-    state.nations.majors[major(1)] = computer_major();
-    state.nations.majors[major(1)]
+    state.nations.majors[&major(1)] = computer_major();
+    state.nations.majors[&major(1)]
         .economy
         .diplomacy_policy_by_nation[nation(0)] = Some(DiplomacyPolicy::JoinEmpire);
 
@@ -294,7 +294,7 @@ fn accepted_great_power_join_empire_is_a_colony_not_a_protectorate() {
         DiplomacyPhaseResult::Resolved
     );
     assert_eq!(
-        state.nations.majors[major(0)].common.status(),
+        state.nations.majors[&major(0)].common.status(),
         CountryStatus::ColonyOf(nation(1))
     );
     assert_eq!(
@@ -302,7 +302,7 @@ fn accepted_great_power_join_empire_is_a_colony_not_a_protectorate() {
         DiplomaticRelationship::JoinedEmpire
     );
     assert_eq!(
-        state.nations.majors[major(1)].economy.pending_actions
+        state.nations.majors[&major(1)].economy.pending_actions
             [PendingActionKind::AnnexedGreatPowerCapitalExpansion]
             .status(),
         PendingActionStatus::QUEUED
@@ -325,7 +325,7 @@ fn war_penalty_adjusts_independent_third_parties() {
     state.diplomacy.standings[nation(1)][nation(2)] = 0x20;
     state.diplomacy.standings[nation(2)][nation(1)] = 0x20;
     let before = state.diplomacy.standings[nation(0)][nation(2)];
-    state.nations.majors[major(0)]
+    state.nations.majors[&major(0)]
         .economy
         .diplomacy_policy_by_nation[nation(1)] = Some(DiplomacyPolicy::DeclareWar);
 
@@ -336,13 +336,13 @@ fn war_penalty_adjusts_independent_third_parties() {
 #[test]
 fn declaring_war_on_an_independent_minor_stops_for_the_favorite_human() {
     let mut state = game_state();
-    state.nations.majors[major(1)] = computer_major();
+    state.nations.majors[&major(1)] = computer_major();
     state.nations.minors[MinorNationId::new(7)] = Some(independent_minor(7));
     state.diplomacy.mission_levels[nation(0)][nation(7)] = DiplomaticMissionLevel::Embassy;
     state.diplomacy.mission_levels[nation(7)][nation(0)] = DiplomaticMissionLevel::Embassy;
     state.diplomacy.standings[nation(7)][nation(0)] = 0xff;
     state.diplomacy.standings[nation(0)][nation(7)] = 0xff;
-    state.nations.majors[major(1)]
+    state.nations.majors[&major(1)]
         .economy
         .diplomacy_policy_by_nation[nation(7)] = Some(DiplomacyPolicy::DeclareWar);
 
@@ -376,7 +376,7 @@ fn declaring_war_on_an_independent_minor_stops_for_the_favorite_human() {
 #[test]
 fn ai_posts_a_non_aggression_pact_to_a_peaceful_embassy_minor() {
     let mut state = game_state();
-    state.nations.majors[major(1)] = computer_major();
+    state.nations.majors[&major(1)] = computer_major();
     state.nations.minors[MinorNationId::new(7)] = Some(independent_minor(7));
     state.diplomacy.mission_levels[nation(1)][nation(7)] = DiplomaticMissionLevel::Embassy;
     state.diplomacy.mission_levels[nation(7)][nation(1)] = DiplomaticMissionLevel::Embassy;
@@ -434,7 +434,7 @@ fn colony_annex_clears_boycotted_companies_and_deports_civilians() {
     state.nations.minors[MinorNationId::new(7)] = Some(minor);
     state.map.provinces[ProvinceId::new(0)] = province(target, &[], &[20]);
     state.map[TileId::new(20)].secondary_owner_nation = Some(major(1));
-    state.nations.majors[source].economy.colony_boycott_flags[nation(1)] = 1;
+    state.nations.majors[&source].economy.colony_boycott_flags[nation(1)] = 1;
     state.civilian_units.insert(
         CivilianUnitId::new(1),
         CivilianUnitState::new(
@@ -450,7 +450,7 @@ fn colony_annex_clears_boycotted_companies_and_deports_civilians() {
     );
     state.diplomacy.standings[target][source.nation()] = 0xff;
     state.diplomacy.standings[source.nation()][target] = 0xff;
-    state.nations.majors[source]
+    state.nations.majors[&source]
         .economy
         .diplomacy_policy_by_nation[target] = Some(DiplomacyPolicy::JoinEmpire);
 
@@ -460,7 +460,7 @@ fn colony_annex_clears_boycotted_companies_and_deports_civilians() {
     assert_eq!(state.civilian_units.len(), 1);
     assert_eq!(
         state.civilian_units[0].location.tile(),
-        state.nations.majors[major(1)].common.home_tile
+        state.nations.majors[&major(1)].common.home_tile
     );
     assert!(
         state.pending.nations[major(1)]
@@ -487,8 +487,8 @@ fn colony_annex_clears_boycotted_companies_and_deports_civilians() {
 #[test]
 fn declaring_war_marks_the_target_first_port_zone_as_a_candidate() {
     let mut state = game_state();
-    state.nations.majors[major(1)] = computer_major();
-    state.nations.majors[major(1)]
+    state.nations.majors[&major(1)] = computer_major();
+    state.nations.majors[&major(1)]
         .auto
         .as_mut()
         .unwrap()
@@ -504,20 +504,20 @@ fn declaring_war_marks_the_target_first_port_zone_as_a_candidate() {
             port_tile: TileId::new(30),
         }),
     ];
-    state.nations.majors[major(1)]
+    state.nations.majors[&major(1)]
         .economy
         .diplomacy_policy_by_nation[nation(7)] = Some(DiplomacyPolicy::DeclareWar);
 
     assert_eq!(state.do_diplomacy(), DiplomacyPhaseResult::Resolved);
     assert_eq!(
-        state.nations.majors[major(1)]
+        state.nations.majors[&major(1)]
             .auto
             .as_ref()
             .map(|auto| &auto.zone_targets),
         Some(&vec![AiTargetState::Unmarked, AiTargetState::Candidate])
     );
     assert_eq!(
-        state.nations.majors[major(1)]
+        state.nations.majors[&major(1)]
             .economy
             .candidate_nation_flags[nation(7)],
         1
@@ -526,7 +526,7 @@ fn declaring_war_marks_the_target_first_port_zone_as_a_candidate() {
 
 fn peace_offer_from_human_to_ai() -> GameState {
     let mut state = game_state();
-    state.nations.majors[major(1)] = computer_major();
+    state.nations.majors[&major(1)] = computer_major();
     state.diplomacy.relationships[nation(0)][nation(1)] = DiplomaticRelationship::War;
     state.diplomacy.relationships[nation(1)][nation(0)] = DiplomaticRelationship::War;
     state.ships.extend((0..10).map(|index| {
@@ -544,7 +544,7 @@ fn peace_offer_from_human_to_ai() -> GameState {
             },
         )
     }));
-    state.nations.majors[major(0)]
+    state.nations.majors[&major(0)]
         .economy
         .diplomacy_policy_by_nation[nation(1)] = Some(DiplomacyPolicy::PeaceTreaty);
     state
@@ -563,7 +563,7 @@ fn ai_accepts_peace_when_the_enemy_capitol_is_safe() {
 #[test]
 fn ai_rejects_peace_when_the_enemy_capitol_is_threatened() {
     let mut state = peace_offer_from_human_to_ai();
-    state.nations.majors[major(0)].common.home_tile = Some(TileId::new(1));
+    state.nations.majors[&major(0)].common.home_tile = Some(TileId::new(1));
     state.map[TileId::new(1)].province = Some(ProvinceId::new(0));
     state.map.provinces[ProvinceId::new(0)] = province(nation(0), &[1], &[]);
     state.map.provinces[ProvinceId::new(1)] = province(nation(2), &[0], &[]);

@@ -9,27 +9,32 @@ pub(super) fn bootstrap_nations(
     localized_nation_names: Option<&NationTable<String>>,
 ) -> Nations {
     Nations::new(
-        MajorNationTable::from_fn(|nation| {
-            let owned_region_count = map
-                .provinces()
-                .iter()
-                .filter(|province| province.owner.nation() == Some(nation.nation()))
-                .count();
-            major_nation(
-                nation,
-                difficulty,
-                nation == human_nation,
-                foreign_ministers[nation],
-                owned_region_count,
-                if nation == human_nation {
-                    country_name.to_owned()
-                } else {
-                    localized_nation_names
-                        .map(|names| names[nation.nation()].clone())
-                        .unwrap_or_default()
-                },
-            )
-        }),
+        MajorNationId::all()
+            .map(|nation| {
+                let owned_region_count = map
+                    .provinces()
+                    .iter()
+                    .filter(|province| province.owner.nation() == Some(nation.nation()))
+                    .count();
+                (
+                    nation,
+                    major_nation(
+                        nation,
+                        difficulty,
+                        nation == human_nation,
+                        foreign_ministers[nation],
+                        owned_region_count,
+                        if nation == human_nation {
+                            country_name.to_owned()
+                        } else {
+                            localized_nation_names
+                                .map(|names| names[nation.nation()].clone())
+                                .unwrap_or_default()
+                        },
+                    ),
+                )
+            })
+            .collect::<IndexMap<_, _>>(),
         MinorNationTable::from_fn(|nation| {
             Some(minor_nation(
                 nation,

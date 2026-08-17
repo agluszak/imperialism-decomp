@@ -81,21 +81,26 @@ impl LegacySaveV62 {
         // MFC shares one class/object index space across all mission queues;
         // index zero is the null pointer.
         let mut archive = vec![None];
-        let mut major_nations = Vec::new();
-        for nation in 0..MAJOR_NATION_COUNT {
-            if simulation.nation_availability[nation] == 0 {
+        let mut major_nations = IndexMap::new();
+        for nation in MajorNationId::all() {
+            let slot = usize::from(nation.get());
+            if simulation.nation_availability[slot] == 0 {
                 continue;
             }
-            let foreign_policy_id = simulation.game_setup.foreign_minister_policy_ids[nation];
-            if simulation.game_setup.nation_control_modes[nation] == 2 {
-                major_nations.push(LegacyMajorNationState::Auto(Box::new(
-                    read_auto_great_power_record(&mut stream, foreign_policy_id, &mut archive),
-                )));
+            let foreign_policy_id = simulation.game_setup.foreign_minister_policy_ids[slot];
+            let major = if simulation.game_setup.nation_control_modes[slot] == 2 {
+                LegacyMajorNationState::Auto(Box::new(read_auto_great_power_record(
+                    &mut stream,
+                    foreign_policy_id,
+                    &mut archive,
+                )))
             } else {
-                major_nations.push(LegacyMajorNationState::Other(Box::new(
-                    read_great_power_record(&mut stream, foreign_policy_id),
-                )));
-            }
+                LegacyMajorNationState::Other(Box::new(read_great_power_record(
+                    &mut stream,
+                    foreign_policy_id,
+                )))
+            };
+            major_nations.insert(nation, major);
         }
 
         let mut minor_nations = Vec::new();

@@ -177,12 +177,12 @@ impl GameState {
             if force_full_clear || support >= owned * 2 / 3 {
                 self.diplomacy.last_processed_nation = Some(leader);
             } else if self.event_eligible(leader.nation())
-                && self.nations.majors[leader].economy.pending_actions
+                && self.nations.majors[&leader].economy.pending_actions
                     [PendingActionKind::CouncilLeadMonument]
                     .status()
                     < PendingActionStatus::HANDLED
             {
-                self.nations.majors[leader].economy.pending_actions
+                self.nations.majors[&leader].economy.pending_actions
                     [PendingActionKind::CouncilLeadMonument]
                     .queue();
             }
@@ -234,10 +234,10 @@ impl GameState {
             rows[nation][1] = relation_sum / relation_count;
             rows[nation][3] = ManufacturedItem::ALL[4..]
                 .iter()
-                .map(|&item| self.nations.majors[nation].city.orders.items[item].accumulated_value)
+                .map(|&item| self.nations.majors[&nation].city.orders.items[item].accumulated_value)
                 .sum();
-            territory[nation] = self.nations.majors[nation].common.owned_regions().len() as i32;
-            technology[nation] = i32::from(self.nations.majors[nation].city.population.count);
+            territory[nation] = self.nations.majors[&nation].common.owned_regions().len() as i32;
+            technology[nation] = i32::from(self.nations.majors[&nation].city.population.count);
             maxima[0] = maxima[0].max(rows[nation][0]);
             maxima[1] = maxima[1].max(rows[nation][1]);
             maxima[2] = maxima[2].max(territory[nation]);

@@ -14,7 +14,7 @@ impl GameState {
             for &minor in ranked.iter().rev() {
                 let favorite = self.favorite_trade_partner(MinorNationId::new(minor.get()));
                 let standing = self.diplomacy.standings[nation.nation()][minor];
-                let trade = self.nations.majors[nation].common.trade_policy_by_nation[minor];
+                let trade = self.nations.majors[&nation].common.trade_policy_by_nation[minor];
                 if favorite != Some(nation) && standing > 0x31 && trade != TradePolicyScore::BOYCOTT
                 {
                     self.decrement_trade_policy_score(nation, minor);
@@ -23,14 +23,14 @@ impl GameState {
             }
         }
 
-        if self.nations.majors[nation]
+        if self.nations.majors[&nation]
             .economy
             .capacities
             .available_merchant
             > 0
         {
             let shortage = RAW_TRADE.into_iter().find(|&commodity| {
-                self.nations.majors[nation]
+                self.nations.majors[&nation]
                     .economy
                     .unfilled_trade_turns_by_resource[commodity.resource()]
                     > 2
@@ -39,7 +39,7 @@ impl GameState {
                 let ranked = self.ranked_independents(nation.nation(), false);
                 let selected = ranked.iter().copied().rev().find(|&minor| {
                     self.market.rows[commodity].current_offer_by_nation[minor] != 0
-                        && self.nations.majors[nation].common.trade_policy_by_nation[minor]
+                        && self.nations.majors[&nation].common.trade_policy_by_nation[minor]
                             != TradePolicyScore::BOYCOTT
                 });
                 if let Some(minor) = selected {
@@ -55,7 +55,7 @@ impl GameState {
         }
 
         for minor in MinorNationId::all().map(MinorNationId::nation) {
-            let trade = self.nations.majors[nation].common.trade_policy_by_nation[minor];
+            let trade = self.nations.majors[&nation].common.trade_policy_by_nation[minor];
             if self.diplomacy.mission_levels[nation.nation()][minor] != DiplomaticMissionLevel::None
                 && trade.get() > 0x5f
                 && trade.get() < 300
@@ -65,9 +65,9 @@ impl GameState {
             }
         }
 
-        if self.nations.majors[nation].common.treasury < 0 {
+        if self.nations.majors[&nation].common.treasury < 0 {
             for minor in MinorNationId::all().map(MinorNationId::nation) {
-                if self.nations.majors[nation].common.trade_policy_by_nation[minor].get() < 0x4b {
+                if self.nations.majors[&nation].common.trade_policy_by_nation[minor].get() < 0x4b {
                     self.set_one_trade(nation.nation(), minor, TradePolicyScore::new(0x4b));
                 }
             }
@@ -171,7 +171,7 @@ impl GameState {
 
     pub(super) fn do_development_grants(&mut self, nation: MajorNationId) {
         let mut budget =
-            ((self.nations.majors[nation].common.treasury - 10_000) as f32 * 0.5) as i32;
+            ((self.nations.majors[&nation].common.treasury - 10_000) as f32 * 0.5) as i32;
         if budget <= 1000 {
             return;
         }
@@ -195,7 +195,7 @@ impl GameState {
                         recurring: false,
                     }),
                 );
-                self.nations.majors[nation]
+                self.nations.majors[&nation]
                     .economy
                     .development_grant_by_nation[minor] += amount as i16;
             }
@@ -219,7 +219,7 @@ impl GameState {
                         }),
                     );
                     let cumulative = {
-                        let slot = &mut self.nations.majors[nation]
+                        let slot = &mut self.nations.majors[&nation]
                             .economy
                             .development_grant_by_nation[minor];
                         *slot += amount as i16;
@@ -296,26 +296,26 @@ impl GameState {
                 {
                     self.post_policy(nation, master, DiplomacyPolicy::DeclareWar);
                 }
-                if self.nations.majors[nation].auto.is_none() {
+                if self.nations.majors[&nation].auto.is_none() {
                     let _ = self.set_diplomacy_grant(nation, target, None);
                 }
             }
             DiplomacyPolicy::BuildConsulate => {
                 apply = self.can_afford_diplomacy(nation, 500);
                 if apply {
-                    self.nations.majors[nation].common.treasury -= 500;
+                    self.nations.majors[&nation].common.treasury -= 500;
                 }
             }
             DiplomacyPolicy::BuildEmbassy => {
                 apply = self.can_afford_diplomacy(nation, 5000);
                 if apply {
-                    self.nations.majors[nation].common.treasury -= 5000;
+                    self.nations.majors[&nation].common.treasury -= 5000;
                 }
             }
             _ => {}
         }
         if apply {
-            self.nations.majors[nation]
+            self.nations.majors[&nation]
                 .economy
                 .diplomacy_policy_by_nation[target] = Some(policy);
         }

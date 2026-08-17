@@ -37,7 +37,7 @@ impl GameState {
                     ] {
                         self.set_trade_potential(nation, resource, -1);
                     }
-                    self.nations.majors[nation].economy.remember_trade_bids();
+                    self.nations.majors[&nation].economy.remember_trade_bids();
                 }
             } else {
                 self.set_ai_trade_bids(nation);
@@ -48,7 +48,7 @@ impl GameState {
 
     pub(super) fn reset_ai_trade_phase(&mut self, nation: MajorNationId) {
         self.refresh_merchant_capacity(nation);
-        let major = &mut self.nations.majors[nation].economy;
+        let major = &mut self.nations.majors[&nation].economy;
         major.unfilled_trade_offer_count = 0;
         major.budget_pool_delta = 0;
         major.budget_pool_base = 0;

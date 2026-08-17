@@ -513,7 +513,9 @@ mod tests {
         let mut state = normal_start();
         assert_eq!(state.turn.phase, crate::PhaseCode::CAPITAL_SELECTION);
         assert_eq!(
-            state.nations.majors[MajorNationId::new(6)].common.home_tile,
+            state.nations.majors[&MajorNationId::new(6)]
+                .common
+                .home_tile,
             None
         );
 
@@ -555,7 +557,7 @@ mod tests {
         ));
         assert_eq!(state.turn.economic_turn, 1);
         assert_eq!(
-            state.nations.majors[MajorNationId::new(6)]
+            state.nations.majors[&MajorNationId::new(6)]
                 .towns
                 .get(&tile)
                 .unwrap()
@@ -575,7 +577,9 @@ mod tests {
             );
         }
         assert_eq!(
-            state.nations.majors[MajorNationId::new(6)].common.home_tile,
+            state.nations.majors[&MajorNationId::new(6)]
+                .common
+                .home_tile,
             Some(tile)
         );
         assert!(
@@ -583,7 +587,7 @@ mod tests {
             "PlaceCity flood-fills a region"
         );
         assert_eq!(
-            state.nations.majors[MajorNationId::new(6)]
+            state.nations.majors[&MajorNationId::new(6)]
                 .towns
                 .keys()
                 .next()
@@ -598,7 +602,7 @@ mod tests {
             "SetHomeCityTileAndDisplayName runs InitialMilitia for the confirmed capital"
         );
         assert!(
-            state.nations.majors[MajorNationId::new(6)]
+            state.nations.majors[&MajorNationId::new(6)]
                 .common
                 .unit_name_counter
                 > 1,
@@ -628,14 +632,14 @@ mod tests {
             1,
             &crate::test_support::random_game_names(),
         );
-        let home = state.nations.majors[MajorNationId::new(6)]
+        let home = state.nations.majors[&MajorNationId::new(6)]
             .towns
             .keys()
             .next()
             .copied()
             .expect("Easy setup places the human Frog City");
         assert_eq!(
-            state.nations.majors[MajorNationId::new(6)]
+            state.nations.majors[&MajorNationId::new(6)]
                 .towns
                 .get(&home)
                 .unwrap()
@@ -660,7 +664,9 @@ mod tests {
         ));
         assert_eq!(state.turn.economic_turn, 1);
         assert_eq!(
-            state.nations.majors[MajorNationId::new(6)].common.home_tile,
+            state.nations.majors[&MajorNationId::new(6)]
+                .common
+                .home_tile,
             Some(home)
         );
         assert!(

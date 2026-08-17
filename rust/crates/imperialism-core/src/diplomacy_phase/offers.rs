@@ -2,7 +2,7 @@ use super::*;
 
 impl GameState {
     pub(super) fn give_grant_to(&mut self, source: MajorNationId, target: NationId) {
-        let Some(grant) = self.nations.majors[source]
+        let Some(grant) = self.nations.majors[&source]
             .economy
             .diplomacy_grants_by_nation[target]
         else {
@@ -15,7 +15,7 @@ impl GameState {
         if let Some(common) = self.nations.common_mut(target) {
             common.treasury += grant.amount;
         }
-        self.nations.majors[source].economy.grant_total_cost -= grant.amount;
+        self.nations.majors[&source].economy.grant_total_cost -= grant.amount;
 
         if self.diplomacy.mission_levels[target][source.nation()] != DiplomaticMissionLevel::Embassy
         {
@@ -127,7 +127,7 @@ impl GameState {
         source: NationId,
         code: i16,
     ) {
-        if self.nations.majors[nation].auto.is_none() {
+        if self.nations.majors[&nation].auto.is_none() {
             self.insert_sorted_notice(nation, DiplomacyNotice { source, code });
         }
 
@@ -171,11 +171,11 @@ impl GameState {
         index: usize,
     ) -> Option<DiplomacyOfferPrompt> {
         let DiplomacyProposal { source, policy } = self.pending.nations[nation].proposals[index];
-        let matching = self.nations.majors[nation]
+        let matching = self.nations.majors[&nation]
             .economy
             .diplomacy_policy_by_nation[source]
             == Some(policy);
-        let human = self.nations.majors[nation].auto.is_none();
+        let human = self.nations.majors[&nation].auto.is_none();
 
         if human {
             if matching {

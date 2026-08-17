@@ -354,7 +354,7 @@ impl GameState {
         if pending_delta == 0 {
             return;
         }
-        let major_nation = &self.nations.majors[nation];
+        let major_nation = &self.nations.majors[&nation];
         let major = &major_nation.economy;
         let military_start = if pending_delta > 0 {
             let home_tile = major_nation
@@ -397,14 +397,14 @@ impl GameState {
                 };
                 self.military_units.insert(id, unit);
 
-                let pending = self.nations.majors[nation].economy.pending_actions
+                let pending = self.nations.majors[&nation].economy.pending_actions
                     [PendingActionKind::ArmyGrowthReward];
                 if let Some(current_level) = pending.growth_reward_level() {
                     let military_power = self.selected_military_power_score(nation_id);
                     if let Some(payload) =
                         pending_military_action_payload(military_power, i32::from(current_level))
                     {
-                        let major = &mut self.nations.majors[nation].economy;
+                        let major = &mut self.nations.majors[&nation].economy;
                         major.pending_actions[PendingActionKind::ArmyGrowthReward]
                             .queue_with_payload(payload);
                     }
@@ -550,7 +550,7 @@ mod tests {
             map_generation: RetailLcg::from_state(0),
             zone_status: RetailLcg::from_state(0),
         };
-        state.nations.majors[MajorNationId::new(0)] = nation;
+        state.nations.majors[&MajorNationId::new(0)] = nation;
         state
     }
 

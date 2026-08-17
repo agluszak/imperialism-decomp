@@ -80,7 +80,7 @@ impl GameState {
                 } else {
                     DiplomacyWarJoinKind::DefendMinor
                 };
-                if self.nations.majors[favorite].auto.is_none() {
+                if self.nations.majors[&favorite].auto.is_none() {
                     return DiplomacyPhaseResult::WarJoin(DiplomacyWarJoinPrompt {
                         nation: favorite,
                         target: second,
@@ -106,7 +106,7 @@ impl GameState {
             {
                 continue;
             }
-            if self.nations.majors[other].auto.is_none() {
+            if self.nations.majors[&other].auto.is_none() {
                 return DiplomacyPhaseResult::WarJoin(DiplomacyWarJoinPrompt {
                     nation: other,
                     target: second,
@@ -128,7 +128,7 @@ impl GameState {
             {
                 continue;
             }
-            if self.nations.majors[other].auto.is_none() {
+            if self.nations.majors[&other].auto.is_none() {
                 return DiplomacyPhaseResult::WarJoin(DiplomacyWarJoinPrompt {
                     nation: other,
                     target: second,
@@ -318,7 +318,7 @@ impl GameState {
                 self.stop_being_enemies_with(nation, other);
             }
         }
-        self.nations.majors[nation].economy.candidate_nation_flags[target] = 1;
+        self.nations.majors[&nation].economy.candidate_nation_flags[target] = 1;
         if self
             .nations
             .common(target)
@@ -333,7 +333,7 @@ impl GameState {
     }
 
     pub(super) fn stop_being_enemies_with(&mut self, nation: MajorNationId, target: NationId) {
-        self.nations.majors[nation].economy.candidate_nation_flags[target] = 0;
+        self.nations.majors[&nation].economy.candidate_nation_flags[target] = 0;
         if self
             .nations
             .common(target)
@@ -353,7 +353,7 @@ impl GameState {
         let Some(zone) = self.first_port_zone_for_nation(target) else {
             return;
         };
-        let Some(targets) = self.nations.majors[nation]
+        let Some(targets) = self.nations.majors[&nation]
             .auto
             .as_mut()
             .map(|auto| &mut auto.zone_targets)

@@ -15,7 +15,7 @@ impl GameState {
             .expect("city production requires a present major nation");
         let mut produced_civilians = CivilianUnitTable::default();
         {
-            let MajorNation { economy, city, .. } = &mut self.nations.majors[nation];
+            let MajorNation { economy, city, .. } = &mut self.nations.majors[&nation];
 
             city.phase_counter += 1;
             city.stockpile.verify_stocks();
@@ -274,7 +274,7 @@ impl GameState {
         };
         if let Some(payload) = payload {
             set_pending_action(
-                &mut self.nations.majors[nation].economy,
+                &mut self.nations.majors[&nation].economy,
                 PendingActionKind::NavyGrowthReward,
                 payload,
             );
@@ -351,19 +351,19 @@ mod tests {
             state.insert_ship(test_frigate(nation));
         }
         assert_eq!(
-            state.nations.majors[nation].economy.pending_actions
+            state.nations.majors[&nation].economy.pending_actions
                 [PendingActionKind::NavyGrowthReward]
                 .growth_reward_level(),
             Some(0)
         );
         state.queue_navy_growth_pending(nation);
-        let pending = state.nations.majors[nation].economy.pending_actions
+        let pending = state.nations.majors[&nation].economy.pending_actions
             [PendingActionKind::NavyGrowthReward];
         assert_eq!(pending.status(), PendingActionStatus::QUEUED);
         assert_eq!(pending.payload(), Some(1));
 
         state.mark_all_pending_status_flags_handled();
-        let pending = state.nations.majors[nation].economy.pending_actions
+        let pending = state.nations.majors[&nation].economy.pending_actions
             [PendingActionKind::NavyGrowthReward];
         assert_eq!(pending.status(), PendingActionStatus::from_retail(0x34));
         assert_eq!(pending.growth_reward_level(), Some(1));
@@ -372,13 +372,13 @@ mod tests {
             state.insert_ship(test_frigate(nation));
         }
         state.queue_navy_growth_pending(nation);
-        let pending = state.nations.majors[nation].economy.pending_actions
+        let pending = state.nations.majors[&nation].economy.pending_actions
             [PendingActionKind::NavyGrowthReward];
         assert_eq!(pending.status(), PendingActionStatus::QUEUED);
         assert_eq!(pending.payload(), Some(2));
 
         state.mark_all_pending_status_flags_handled();
-        let pending = state.nations.majors[nation].economy.pending_actions
+        let pending = state.nations.majors[&nation].economy.pending_actions
             [PendingActionKind::NavyGrowthReward];
         assert_eq!(pending.status(), PendingActionStatus::from_retail(0x35));
         assert_eq!(pending.growth_reward_level(), Some(2));
@@ -388,7 +388,7 @@ mod tests {
         }
         state.queue_navy_growth_pending(nation);
         state.mark_all_pending_status_flags_handled();
-        let pending = state.nations.majors[nation].economy.pending_actions
+        let pending = state.nations.majors[&nation].economy.pending_actions
             [PendingActionKind::NavyGrowthReward];
         assert_eq!(pending.status(), PendingActionStatus::from_retail(0x36));
         assert_eq!(pending.growth_reward_level(), Some(3));

@@ -636,11 +636,11 @@ impl GameState {
         if fuel_cost > city.stockpile[ResourceKind::Fuel] {
             return false;
         }
-        let diplomacy_eligible = self.nations.majors[nation].economy.diplomacy_eligible;
-        let treasury = self.nations.majors[nation].common.treasury;
+        let diplomacy_eligible = self.nations.majors[&nation].economy.diplomacy_eligible;
+        let treasury = self.nations.majors[&nation].common.treasury;
         if diplomacy_eligible
             && i32::from(cash_cost)
-                > self.nations.majors[nation]
+                > self.nations.majors[&nation]
                     .economy
                     .available_diplomacy_budget(treasury)
         {
@@ -654,7 +654,7 @@ impl GameState {
             .city_mut(nation)
             .stockpile
             .wrapping_add_and_verify(ResourceKind::Fuel, -fuel_cost);
-        self.nations.majors[nation].common.treasury -= i32::from(cash_cost);
+        self.nations.majors[&nation].common.treasury -= i32::from(cash_cost);
         self.military_units
             .get_mut(&id)
             .expect("upgraded unit remains present")

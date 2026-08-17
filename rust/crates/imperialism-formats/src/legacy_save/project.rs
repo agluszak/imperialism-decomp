@@ -778,10 +778,10 @@ impl LegacySaveV62 {
         let map_view_origin = TileId::new(self.map.view_origin_tile as u16);
         let ocean = ocean_state(&self.ocean, &map);
         let live_ocean_context_count = ocean.zones.len();
-        let majors = MajorNationTable::from_array(std::array::from_fn(|slot| {
-            let major_id = MajorNationId::new(slot as u8);
+        let mut majors = IndexMap::new();
+        for (&major_id, nation) in &self.major_nations {
+            let slot = usize::from(major_id.get());
             let nation_id = major_id.nation();
-            let nation = &self.major_nations[slot];
             let great_power = nation.great_power();
             let city = great_power
                 .city
@@ -856,8 +856,8 @@ impl LegacySaveV62 {
                 diplomacy_notices(&great_power.prefix.turn_event_queue);
             pending.nations[major_id].proposals =
                 diplomacy_proposals(&great_power.prefix.proposal_queue);
-            major
-        }));
+            majors.insert(major_id, major);
+        }
         for nation in &self.minor_nations {
             let nation_id = NationId::new(nation.country.nation_slot as u8);
             let minor_id = MinorNationId::new(nation_id.get());

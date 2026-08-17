@@ -119,7 +119,7 @@ impl GameState {
                 if !self.nation_is_present(target) {
                     continue;
                 }
-                let grant = self.nations.majors[source]
+                let grant = self.nations.majors[&source]
                     .economy
                     .diplomacy_grants_by_nation[target];
                 if let Some(grant) = grant {
@@ -132,7 +132,7 @@ impl GameState {
                     }
                     self.give_grant_to(source, target);
                 }
-                let Some(policy) = self.nations.majors[source]
+                let Some(policy) = self.nations.majors[&source]
                     .economy
                     .diplomacy_policy_by_nation[target]
                 else {
@@ -204,9 +204,9 @@ impl GameState {
 
     pub(super) fn manufactured_offers_exhausted(&self, nation: MajorNationId) -> bool {
         !MANUFACTURED.into_iter().any(|resource| {
-            let potential = self.nations.majors[nation].economy.item_potentials[resource];
+            let potential = self.nations.majors[&nation].economy.item_potentials[resource];
             potential > 0
-                && self.nations.majors[nation]
+                && self.nations.majors[&nation]
                     .economy
                     .purchased_items_by_resource[resource]
                     + potential
@@ -215,7 +215,7 @@ impl GameState {
     }
 
     pub(crate) fn can_afford_diplomacy(&self, nation: MajorNationId, cost: i32) -> bool {
-        let major = &self.nations.majors[nation];
+        let major = &self.nations.majors[&nation];
         major
             .economy
             .available_diplomacy_budget(major.common.treasury)
@@ -231,7 +231,7 @@ impl GameState {
     }
 
     pub(super) fn owns_former_province_of(&self, owner: MajorNationId, former: NationId) -> bool {
-        let regions = self.nations.majors[owner].common.owned_regions();
+        let regions = self.nations.majors[&owner].common.owned_regions();
         regions
             .iter()
             .take(regions.len().saturating_sub(1))
@@ -239,7 +239,7 @@ impl GameState {
     }
 
     pub(super) fn recovered_province_count(&self, owner: MajorNationId, former: NationId) -> i32 {
-        let regions = self.nations.majors[owner].common.owned_regions();
+        let regions = self.nations.majors[&owner].common.owned_regions();
         regions
             .iter()
             .take(regions.len().saturating_sub(1))
@@ -288,8 +288,8 @@ impl GameState {
         let mut any = false;
         for candidate in majors() {
             let present = self.nations.major_is_present(candidate);
-            let flag =
-                &mut self.nations.majors[nation].economy.candidate_nation_flags[candidate.nation()];
+            let flag = &mut self.nations.majors[&nation].economy.candidate_nation_flags
+                [candidate.nation()];
             if !present {
                 *flag = 0;
             } else if *flag != 0 {
@@ -297,7 +297,7 @@ impl GameState {
             }
         }
         for minor in MinorNationId::all().map(MinorNationId::nation) {
-            if self.nations.majors[nation].economy.candidate_nation_flags[minor] == 0 {
+            if self.nations.majors[&nation].economy.candidate_nation_flags[minor] == 0 {
                 continue;
             }
             let empty = self
@@ -305,7 +305,7 @@ impl GameState {
                 .common(minor)
                 .is_none_or(|common| common.owned_regions().is_empty());
             if empty {
-                self.nations.majors[nation].economy.candidate_nation_flags[minor] = 0;
+                self.nations.majors[&nation].economy.candidate_nation_flags[minor] = 0;
                 if self.at_war(nation.nation(), minor) {
                     self.set_nation_pair_relationship(
                         nation.nation(),
@@ -327,7 +327,7 @@ impl GameState {
         target: NationId,
         enabled: bool,
     ) {
-        self.nations.majors[nation].economy.colony_boycott_flags[target] = u8::from(enabled);
+        self.nations.majors[&nation].economy.colony_boycott_flags[target] = u8::from(enabled);
         let policy = if enabled {
             TradePolicyScore::new(0x64 + 0xc8)
         } else {
@@ -349,7 +349,7 @@ impl GameState {
     }
 
     pub(crate) fn is_auto(&self, nation: MajorNationId) -> bool {
-        self.nations.major_is_present(nation) && self.nations.majors[nation].is_auto()
+        self.nations.major_is_present(nation) && self.nations.majors[&nation].is_auto()
     }
 
     pub(super) fn is_independent(&self, nation: NationId) -> bool {

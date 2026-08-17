@@ -95,7 +95,7 @@ impl GameState {
             );
         }
 
-        let gold = self.nations.majors[nation].economy.need_current_by_type[ResourceKind::Gold];
+        let gold = self.nations.majors[&nation].economy.need_current_by_type[ResourceKind::Gold];
         self.request_ai_resource(
             nation,
             ResourceKind::Gold,
@@ -104,7 +104,7 @@ impl GameState {
         );
         for index in ResourceKind::Food as u8..=ResourceKind::Arms as u8 {
             let resource = ResourceKind::from_index(index).expect("manufactured resource index");
-            let current = self.nations.majors[nation].economy.need_current_by_type[resource];
+            let current = self.nations.majors[&nation].economy.need_current_by_type[resource];
             self.request_ai_resource(
                 nation,
                 resource,
@@ -126,7 +126,7 @@ impl GameState {
             economy,
             city,
             ..
-        } = &mut self.nations.majors[nation];
+        } = &mut self.nations.majors[&nation];
         let mut remaining = requested;
         if policy.deduct_city_stock {
             if city.stockpile[resource] >= requested {
@@ -207,7 +207,7 @@ impl GameState {
 
     pub(crate) fn process_ai_pending_ship(&mut self, nation: MajorNationId) {
         let reserved_arms = {
-            let interior = self.nations.majors[nation]
+            let interior = self.nations.majors[&nation]
                 .economy
                 .interior_civilian
                 .as_mut();
@@ -217,7 +217,7 @@ impl GameState {
             .city_mut(nation)
             .adjust_stock(ResourceKind::Arms, reserved_arms);
 
-        let Some(ship_type) = self.nations.majors[nation].economy.pending_ship.take() else {
+        let Some(ship_type) = self.nations.majors[&nation].economy.pending_ship.take() else {
             return;
         };
         let Some(slot) = (0..enum_map::enum_len::<ShipOrderSlot>())
@@ -247,7 +247,7 @@ impl GameState {
     }
 
     pub(crate) fn rebalance_ai_labor(&mut self, nation: MajorNationId) -> i16 {
-        let average = self.nations.majors[nation]
+        let average = self.nations.majors[&nation]
             .economy
             .interior_civilian
             .average_development_order_allocation;
@@ -255,7 +255,7 @@ impl GameState {
         let baseline = self.nations.city(nation).population.baseline_labor;
         let capacity =
             self.nations.city(nation).production_accum[CityFacilitySlot::RegionalPopulation];
-        let interior = self.nations.majors[nation]
+        let interior = self.nations.majors[&nation]
             .economy
             .interior_civilian
             .as_mut();
@@ -266,7 +266,7 @@ impl GameState {
         interior.city_order_demand.population_growth = (target - baseline.low).clamp(0, remaining);
 
         for level in (0..enum_map::enum_len::<TrainingLevel>()).map(TrainingLevel::from_usize) {
-            let requested = self.nations.majors[nation]
+            let requested = self.nations.majors[&nation]
                 .economy
                 .interior_civilian
                 .city_order_demand
@@ -279,13 +279,13 @@ impl GameState {
                 self.set_city_order_quantity(nation, CityOrderId::Training(level), accepted),
                 CityOrderUpdate::Applied
             );
-            self.nations.majors[nation]
+            self.nations.majors[&nation]
                 .economy
                 .interior_civilian
                 .city_order_demand
                 .training[level] = 0;
         }
-        let requested = self.nations.majors[nation]
+        let requested = self.nations.majors[&nation]
             .economy
             .interior_civilian
             .city_order_demand
@@ -301,7 +301,7 @@ impl GameState {
             ),
             CityOrderUpdate::Applied
         );
-        self.nations.majors[nation]
+        self.nations.majors[&nation]
             .economy
             .interior_civilian
             .city_order_demand
@@ -325,7 +325,7 @@ impl GameState {
     pub(crate) fn choose_ai_expansion(&mut self, nation: MajorNationId) {
         let mut priority = ExpandableFacility::ALL;
         {
-            let deficits = &mut self.nations.majors[nation]
+            let deficits = &mut self.nations.majors[&nation]
                 .economy
                 .interior_civilian
                 .production_deficit_by_slot;
@@ -334,7 +334,7 @@ impl GameState {
         for destination in 0..6 {
             let mut best = destination;
             for candidate in destination + 1..7 {
-                let deficits = &self.nations.majors[nation]
+                let deficits = &self.nations.majors[&nation]
                     .economy
                     .interior_civilian
                     .production_deficit_by_slot;
@@ -350,7 +350,7 @@ impl GameState {
         }
 
         let best_facility = priority[0];
-        if self.nations.majors[nation]
+        if self.nations.majors[&nation]
             .economy
             .interior_civilian
             .production_deficit_by_slot[best_facility.slot()]
@@ -360,7 +360,7 @@ impl GameState {
             // Every supported building ratio is 0/0. VC5's unordered x87
             // comparison takes the primary member of the selected pair.
             let selected = ExpandableFacility::ALL[(self.rng.next_crt_rand() % 3) as usize];
-            self.nations.majors[nation]
+            self.nations.majors[&nation]
                 .economy
                 .interior_civilian
                 .city_order_demand
@@ -368,7 +368,7 @@ impl GameState {
         }
 
         for facility in ExpandableFacility::ALL {
-            let requested = self.nations.majors[nation]
+            let requested = self.nations.majors[&nation]
                 .economy
                 .interior_civilian
                 .city_order_demand
@@ -392,7 +392,7 @@ impl GameState {
                 self.set_city_order_quantity(nation, CityOrderId::Expansion(facility), accepted),
                 CityOrderUpdate::Applied
             );
-            let interior = self.nations.majors[nation]
+            let interior = self.nations.majors[&nation]
                 .economy
                 .interior_civilian
                 .as_mut();
@@ -409,7 +409,7 @@ impl GameState {
         let fabric = city.production_orders[CityFacilitySlot::TextileMill] + 1;
         let steel = city.production_orders[CityFacilitySlot::SteelMill] + 1;
         let needs_paper = city.stockpile[ResourceKind::Paper] < 3;
-        let metrics = &mut self.nations.majors[nation]
+        let metrics = &mut self.nations.majors[&nation]
             .economy
             .interior_civilian
             .resource_order_metrics;
@@ -445,7 +445,7 @@ impl GameState {
     }
 
     fn issue_ai_food_order(&mut self, nation: MajorNationId) {
-        let requested = self.nations.majors[nation]
+        let requested = self.nations.majors[&nation]
             .economy
             .interior_civilian
             .resource_order_metrics[ResourceKind::Food];
@@ -457,7 +457,7 @@ impl GameState {
             self.set_city_order_quantity(nation, CityOrderId::FoodProcessing, accepted),
             CityOrderUpdate::Applied
         );
-        let metric = &mut self.nations.majors[nation]
+        let metric = &mut self.nations.majors[&nation]
             .economy
             .interior_civilian
             .resource_order_metrics[ResourceKind::Food];
@@ -466,14 +466,14 @@ impl GameState {
 
     fn issue_ai_item_order(&mut self, nation: MajorNationId, output: ManufacturedItem) {
         let resource = output.resource();
-        let mut requested = self.nations.majors[nation]
+        let mut requested = self.nations.majors[&nation]
             .economy
             .interior_civilian
             .resource_order_metrics[resource];
         let facility = output.facility();
         let production_limit = self.nations.city(nation).production_orders[facility] * 2 + 2;
         requested = requested.min(production_limit);
-        self.nations.majors[nation]
+        self.nations.majors[&nation]
             .economy
             .interior_civilian
             .resource_order_metrics[resource] = requested;
@@ -525,7 +525,7 @@ impl GameState {
         let limit = self.city_order_limit(nation, CityOrderId::Item(output));
         let accepted = requested.min(limit.maximum);
         if accepted < requested && limit.constraint == ProductionConstraint::Capacity {
-            self.nations.majors[nation]
+            self.nations.majors[&nation]
                 .economy
                 .interior_civilian
                 .production_deficit_by_slot[facility] += requested - accepted;
@@ -534,7 +534,7 @@ impl GameState {
             self.set_city_order_quantity(nation, CityOrderId::Item(output), accepted),
             CityOrderUpdate::Applied
         );
-        let metric = &mut self.nations.majors[nation]
+        let metric = &mut self.nations.majors[&nation]
             .economy
             .interior_civilian
             .resource_order_metrics[resource];
@@ -552,8 +552,8 @@ impl GameState {
             );
         }
 
-        let mut remaining = self.nations.majors[nation].economy.capacities.transport
-            - self.nations.majors[nation]
+        let mut remaining = self.nations.majors[&nation].economy.capacities.transport
+            - self.nations.majors[&nation]
                 .economy
                 .capacities
                 .reserved_transport;
@@ -581,38 +581,38 @@ impl GameState {
             .map(CityFacilitySlot::from_usize)
             .map(|slot| allocation[slot])
             .fold(0_i16, i16::wrapping_add);
-        self.nations.majors[nation]
+        self.nations.majors[&nation]
             .economy
             .interior_civilian
             .average_development_order_allocation = i32::from(total / 20);
     }
 
     pub(crate) fn determine_ai_trade_bid(&mut self, nation: MajorNationId) {
-        let cotton = self.nations.majors[nation]
+        let cotton = self.nations.majors[&nation]
             .economy
             .interior_civilian
             .resource_order_metrics[ResourceKind::Cotton];
-        let wool = self.nations.majors[nation]
+        let wool = self.nations.majors[&nation]
             .economy
             .interior_civilian
             .resource_order_metrics[ResourceKind::Wool];
         if cotton != 0 || wool != 0 {
             let delta = i16::from(self.rng.next_crt_rand() % 100 >= 75);
-            self.nations.majors[nation]
+            self.nations.majors[&nation]
                 .economy
                 .foreign_trade
                 .purchase_priority[TradeCommodity::Cotton] += delta;
         }
         for index in ResourceKind::Timber as u8..=ResourceKind::Oil as u8 {
             let resource = ResourceKind::from_index(index).expect("raw trade resource");
-            let delta = self.nations.majors[nation]
+            let delta = self.nations.majors[&nation]
                 .economy
                 .interior_civilian
                 .resource_order_metrics[resource];
             if delta != 0 {
                 let commodity = TradeCommodity::from_retail(i16::from(index))
                     .expect("raw resource has a trade row");
-                self.nations.majors[nation]
+                self.nations.majors[&nation]
                     .economy
                     .foreign_trade
                     .purchase_priority[commodity] += delta;
@@ -620,7 +620,7 @@ impl GameState {
         }
 
         let food = {
-            let major = &self.nations.majors[nation];
+            let major = &self.nations.majors[&nation];
             major
                 .city
                 .forecast_population_food(&major.economy.need_target_by_type)
@@ -651,7 +651,7 @@ impl GameState {
             }
         };
         if let Some(bid) = bid {
-            self.nations.majors[nation]
+            self.nations.majors[&nation]
                 .economy
                 .foreign_trade
                 .interior_bid = Some(bid);

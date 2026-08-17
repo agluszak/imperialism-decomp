@@ -130,6 +130,14 @@ impl<T> MajorNationTable<T> {
     }
 }
 
+impl From<MajorNationTable<crate::MajorNation>>
+    for indexmap::IndexMap<MajorNationId, crate::MajorNation>
+{
+    fn from(majors: MajorNationTable<crate::MajorNation>) -> Self {
+        MajorNationId::all().zip(majors.0).collect()
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
 pub struct MinorNationTable<T>([T; MINOR_NATION_COUNT]);

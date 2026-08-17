@@ -235,7 +235,7 @@ impl GameState {
 
     fn initialize_deal_books(&mut self) {
         for nation in MajorNationId::all().rev() {
-            self.nations.majors[nation].economy.deal_book = TradeCommodityTable::default();
+            self.nations.majors[&nation].economy.deal_book = TradeCommodityTable::default();
         }
     }
 
@@ -252,41 +252,41 @@ impl GameState {
     }
 
     fn is_human(&self, nation: MajorNationId) -> bool {
-        self.nations.majors[nation].economy.diplomacy_eligible
+        self.nations.majors[&nation].economy.diplomacy_eligible
     }
 
     fn city_stock(&self, nation: MajorNationId, resource: ResourceKind) -> i16 {
-        self.nations.majors[nation].city.stockpile[resource]
+        self.nations.majors[&nation].city.stockpile[resource]
     }
 
     fn trade_offer_cap(&self, nation: MajorNationId) -> i16 {
-        self.nations.majors[nation].economy.capacities.trade_offer
+        self.nations.majors[&nation].economy.capacities.trade_offer
     }
 
     fn available_merchant(&self, nation: MajorNationId) -> i16 {
-        self.nations.majors[nation]
+        self.nations.majors[&nation]
             .economy
             .capacities
             .available_merchant
     }
 
     fn foreign_trade(&self, nation: MajorNationId) -> &ForeignTradeState {
-        &self.nations.majors[nation].economy.foreign_trade
+        &self.nations.majors[&nation].economy.foreign_trade
     }
 
     fn foreign_trade_mut(&mut self, nation: MajorNationId) -> &mut ForeignTradeState {
-        &mut self.nations.majors[nation].economy.foreign_trade
+        &mut self.nations.majors[&nation].economy.foreign_trade
     }
 
     fn set_trade_potential(&mut self, nation: MajorNationId, resource: ResourceKind, value: i16) {
-        self.nations.majors[nation]
+        self.nations.majors[&nation]
             .economy
             .set_item_potential(resource, value);
     }
 
     fn major_is_trade_eligible(&self, nation: MajorNationId) -> bool {
         !matches!(
-            self.nations.majors[nation].common.status(),
+            self.nations.majors[&nation].common.status(),
             CountryStatus::ColonyOf(_)
         )
     }
@@ -596,18 +596,18 @@ mod tests {
         let buyer = MajorNationId::new(0);
         let seller = MajorNationId::new(1);
         for nation in MajorNationId::all() {
-            seed_merchant_capacity(&mut state.nations.majors[nation].city);
-            state.nations.majors[nation].city.stockpile[ResourceKind::Clothing] = 10;
-            state.nations.majors[nation].city.stockpile[ResourceKind::Timber] = 12;
-            state.nations.majors[nation].common.treasury = 20_000;
+            seed_merchant_capacity(&mut state.nations.majors[&nation].city);
+            state.nations.majors[&nation].city.stockpile[ResourceKind::Clothing] = 10;
+            state.nations.majors[&nation].city.stockpile[ResourceKind::Timber] = 12;
+            state.nations.majors[&nation].common.treasury = 20_000;
         }
-        state.nations.majors[buyer]
+        state.nations.majors[&buyer]
             .economy
             .remembered_trade_offers_by_resource[ResourceKind::Clothing] = -1;
-        state.nations.majors[buyer]
+        state.nations.majors[&buyer]
             .economy
             .remembered_trade_offers_by_resource[ResourceKind::Timber] = 5;
-        state.nations.majors[seller]
+        state.nations.majors[&seller]
             .economy
             .remembered_trade_offers_by_resource[ResourceKind::Clothing] = 4;
         state
@@ -626,7 +626,7 @@ mod tests {
         assert!(offer.amount > 0);
         assert_eq!(state.pending_trade_offer(), Some(offer));
         assert_eq!(
-            state.nations.majors[MajorNationId::new(0)]
+            state.nations.majors[&MajorNationId::new(0)]
                 .economy
                 .purchased_items_by_resource[ResourceKind::Clothing],
             0
@@ -649,7 +649,7 @@ mod tests {
             crate::turn_flow::TurnContinuation::Trade(_)
         ));
         assert_eq!(
-            state.nations.majors[MajorNationId::new(0)]
+            state.nations.majors[&MajorNationId::new(0)]
                 .economy
                 .purchased_items_by_resource[ResourceKind::Clothing],
             0
@@ -668,7 +668,7 @@ mod tests {
         );
         assert_eq!(state.pending_trade_offer(), None);
         assert_eq!(
-            state.nations.majors[MajorNationId::new(0)]
+            state.nations.majors[&MajorNationId::new(0)]
                 .economy
                 .purchased_items_by_resource[ResourceKind::Clothing],
             offer.amount

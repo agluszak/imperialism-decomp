@@ -83,7 +83,7 @@ impl GameState {
 
         if let Some(target) = MajorNationId::from_nation(seller) {
             let relation =
-                self.nations.majors[target].common.trade_policy_by_nation[buyer].retail();
+                self.nations.majors[&target].common.trade_policy_by_nation[buyer].retail();
             if relation == 100 {
                 return price;
             }
@@ -95,7 +95,7 @@ impl GameState {
         let Some(source) = MajorNationId::from_nation(buyer) else {
             return price;
         };
-        let relation = self.nations.majors[source].common.trade_policy_by_nation[seller].retail();
+        let relation = self.nations.majors[&source].common.trade_policy_by_nation[seller].retail();
         if relation == 100 {
             return price;
         }
@@ -116,7 +116,7 @@ impl GameState {
         commodity: TradeCommodity,
     ) -> Option<PendingTradeOffer> {
         if let Some(major) = MajorNationId::from_nation(buyer) {
-            if self.nations.majors[major]
+            if self.nations.majors[&major]
                 .economy
                 .is_still_buying(commodity.resource())
             {
@@ -145,7 +145,7 @@ impl GameState {
 
     pub(super) fn amount_unsold(&self, nation: NationId, resource: ResourceKind) -> i16 {
         if let Some(major) = MajorNationId::from_nation(nation) {
-            self.nations.majors[major].economy.amount_unsold(resource)
+            self.nations.majors[&major].economy.amount_unsold(resource)
         } else {
             let minor = MinorNationId::new(nation.get());
             self.nations.minors[minor]
@@ -189,7 +189,7 @@ impl GameState {
         phase: &mut TradePhase,
     ) {
         if shortfall && let Some(major) = MajorNationId::from_nation(buyer) {
-            self.nations.majors[major]
+            self.nations.majors[&major]
                 .economy
                 .clear_trade_offer(commodity.resource());
         }
@@ -199,7 +199,7 @@ impl GameState {
             if let Some(seller_major) = MajorNationId::from_nation(seller)
                 && MajorNationId::from_nation(buyer).is_none()
             {
-                self.nations.majors[seller_major]
+                self.nations.majors[&seller_major]
                     .economy
                     .deliver_item(amount);
             }
@@ -250,7 +250,7 @@ impl GameState {
         if let Some(major) = MajorNationId::from_nation(nation) {
             if amount < 0
                 && let Some(processed) = ProcessedTradeCommodity::from_resource(resource)
-                && let Some(auto) = self.nations.majors[major].auto.as_mut()
+                && let Some(auto) = self.nations.majors[&major].auto.as_mut()
             {
                 auto.trade.temporary_processed_stock[processed] += amount;
             }
@@ -350,7 +350,7 @@ impl GameState {
         };
         let rng = &mut self.rng;
         insert_sorted(
-            &mut self.nations.majors[owner].economy.deal_book[commodity],
+            &mut self.nations.majors[&owner].economy.deal_book[commodity],
             entry,
             |a, b| compare_by_nation(a, b, rng),
         );
@@ -374,7 +374,7 @@ impl GameState {
     pub(super) fn clear_trade_offers(&mut self, nation: MajorNationId) {
         if !self.is_human(nation) {
             self.end_ai_trade_phase(nation);
-            if let Some(auto) = self.nations.majors[nation].auto.as_mut() {
+            if let Some(auto) = self.nations.majors[&nation].auto.as_mut() {
                 let pending = auto.trade.temporary_processed_stock;
                 for processed in [
                     ProcessedTradeCommodity::Food,
@@ -398,12 +398,12 @@ impl GameState {
                             .adjust_stock(resource, next - current);
                     }
                 }
-                if let Some(auto) = self.nations.majors[nation].auto.as_mut() {
+                if let Some(auto) = self.nations.majors[&nation].auto.as_mut() {
                     auto.trade.temporary_processed_stock = ProcessedTradeCommodityTable::default();
                 }
             }
         }
-        self.nations.majors[nation].economy.item_potentials = ResourceTable::default();
+        self.nations.majors[&nation].economy.item_potentials = ResourceTable::default();
     }
 
     pub(super) fn end_ai_trade_phase(&mut self, nation: MajorNationId) {

@@ -3,53 +3,52 @@ use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
 /// Every nation slot, split into the two populations that carry different
-/// domain state. Major slots retain their state after elimination so references
-/// remain stable, while `present_majors` mirrors retail's nullable live-slot table.
+/// domain state. Major entity membership mirrors retail's nullable live-slot table.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Nations {
-    pub(crate) majors: Box<MajorNationTable<MajorNation>>,
-    present_majors: MajorNationTable<bool>,
+    pub(crate) majors: IndexMap<MajorNationId, MajorNation>,
     pub(crate) minors: MinorNationTable<Option<MinorNation>>,
 }
 
 impl Nations {
     pub fn new(
-        majors: MajorNationTable<MajorNation>,
+        majors: impl Into<IndexMap<MajorNationId, MajorNation>>,
         minors: MinorNationTable<Option<MinorNation>>,
     ) -> Self {
         Self {
-            majors: Box::new(majors),
-            present_majors: MajorNationTable::from_array([true; MAJOR_NATION_COUNT]),
+            majors: majors.into(),
             minors,
         }
     }
 
     pub fn major(&self, nation: crate::MajorNationId) -> &MajorNation {
-        &self.majors[nation]
+        &self.majors[&nation]
     }
 
     pub(crate) fn major_mut(&mut self, nation: crate::MajorNationId) -> &mut MajorNation {
-        &mut self.majors[nation]
+        &mut self.majors[&nation]
     }
 
     pub fn major_is_present(&self, nation: MajorNationId) -> bool {
-        self.present_majors[nation]
+        self.majors.contains_key(&nation)
     }
 
-    pub(crate) fn remove_major(&mut self, nation: MajorNationId) {
-        self.present_majors[nation] = false;
+    pub(crate) fn remove_major(&mut self, nation: MajorNationId) -> MajorNation {
+        self.majors
+            .shift_remove(&nation)
+            .expect("removed major must exist")
     }
 
     pub(crate) fn city(&self, nation: crate::MajorNationId) -> &CityState {
-        &self.majors[nation].city
+        &self.majors[&nation].city
     }
 
     pub(crate) fn city_mut(&mut self, nation: crate::MajorNationId) -> &mut CityState {
-        &mut self.majors[nation].city
+        &mut self.majors[&nation].city
     }
 
     pub fn majors(&self) -> impl ExactSizeIterator<Item = &MajorNation> {
-        self.majors.iter()
+        self.majors.values()
     }
 
     pub fn minor(&self, nation: MinorNationId) -> Option<&MinorNation> {
@@ -81,7 +80,7 @@ impl Nations {
 
     pub(crate) fn common(&self, nation: NationId) -> Option<&NationCommonState> {
         if let Some(nation) = MajorNationId::from_nation(nation) {
-            self.present_majors[nation].then_some(&self.majors[nation].common)
+            self.majors.get(&nation).map(|nation| &nation.common)
         } else {
             self.minors[MinorNationId::new(nation.get())]
                 .as_ref()
@@ -91,7 +90,9 @@ impl Nations {
 
     pub(crate) fn common_mut(&mut self, nation: NationId) -> Option<&mut NationCommonState> {
         if let Some(nation) = MajorNationId::from_nation(nation) {
-            self.present_majors[nation].then_some(&mut self.majors[nation].common)
+            self.majors
+                .get_mut(&nation)
+                .map(|nation| &mut nation.common)
         } else {
             self.minors[MinorNationId::new(nation.get())]
                 .as_mut()

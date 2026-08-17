@@ -98,7 +98,7 @@ impl GameState {
         let Some(major) = MajorNationId::from_nation(nation) else {
             return 0;
         };
-        let mut need_cap = self.nations.majors[major].economy.capacities.transport;
+        let mut need_cap = self.nations.majors[&major].economy.capacities.transport;
         if need_cap == 0 {
             need_cap = 1;
         }
@@ -108,7 +108,7 @@ impl GameState {
         let Some(&cached) = self.zone(home).primary_neighbors.first() else {
             return 0;
         };
-        let merchant = self.nations.majors[major].economy.capacities.trade_offer;
+        let merchant = self.nations.majors[&major].economy.capacities.trade_offer;
         (self.sea_zone_importance(nation, cached) * f32::from(merchant) / f32::from(need_cap))
             .to_bits()
     }
@@ -315,7 +315,7 @@ mod tests {
     fn reassess_advances_navy_state_when_assigned_ships_are_on_the_target() {
         let mut state = game_state();
         let nation = NationId::new(0);
-        state.nations.majors[MajorNationId::new(0)].auto = Some(AutoGreatPowerState::default());
+        state.nations.majors[&MajorNationId::new(0)].auto = Some(AutoGreatPowerState::default());
         state.ocean.zones = vec![ZoneKind::Zone(zone(Vec::new()))];
         state.ships.insert(
             ShipId::new(0),
@@ -365,7 +365,7 @@ mod tests {
         let mut state = game_state();
         let nation = NationId::new(0);
         let hostile = NationId::new(1);
-        state.nations.majors[MajorNationId::new(0)].auto = Some(AutoGreatPowerState::default());
+        state.nations.majors[&MajorNationId::new(0)].auto = Some(AutoGreatPowerState::default());
         state.diplomacy.relationships[nation][hostile] = DiplomaticRelationship::War;
         state.ocean.zones = vec![ZoneKind::Zone(zone(Vec::new()))];
         state.ships.insert(

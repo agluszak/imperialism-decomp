@@ -591,7 +591,7 @@ impl GameState {
     pub fn all_humans_finished(&self) -> bool {
         MajorNationId::all()
             .filter(|&nation| self.nations.major_is_present(nation))
-            .all(|nation| self.nations.majors[nation].economy.turn_finished)
+            .all(|nation| self.nations.majors[&nation].economy.turn_finished)
     }
 
     /// Mirrors `TSimMgr::ResetTurnFlags`: only diplomacy-eligible live major nations
@@ -601,7 +601,7 @@ impl GameState {
             if !self.nations.major_is_present(nation) {
                 continue;
             }
-            let major = &mut self.nations.majors[nation];
+            let major = &mut self.nations.majors[&nation];
             reset_finished_flag(
                 major.economy.diplomacy_eligible,
                 &mut major.economy.turn_finished,
@@ -629,7 +629,7 @@ mod tests {
         for major_id in MajorNationId::all() {
             let tile = TileId::new(u16::from(major_id.get()) + 1);
             let nation = major_id.nation();
-            let major = &mut state.nations.majors[major_id];
+            let major = &mut state.nations.majors[&major_id];
             let old_tile = major
                 .towns
                 .keys()
@@ -653,8 +653,8 @@ mod tests {
     }
 
     fn pose_alliance_offer(state: &mut crate::GameState) {
-        state.nations.majors[MajorNationId::new(1)].auto = Some(AutoGreatPowerState::default());
-        state.nations.majors[MajorNationId::new(1)]
+        state.nations.majors[&MajorNationId::new(1)].auto = Some(AutoGreatPowerState::default());
+        state.nations.majors[&MajorNationId::new(1)]
             .economy
             .diplomacy_policy_by_nation[NationId::new(0)] = Some(DiplomacyPolicy::Alliance);
     }
@@ -664,19 +664,19 @@ mod tests {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
         {
-            let economy = &mut state.nations.majors[nation].economy;
+            let economy = &mut state.nations.majors[&nation].economy;
             economy.diplomacy_eligible = false;
             economy.turn_finished = true;
         }
         state.reset_turn_flags();
         assert!(
-            state.nations.majors[nation].economy.turn_finished,
+            state.nations.majors[&nation].economy.turn_finished,
             "ineligible nations keep their finished flag"
         );
 
-        state.nations.majors[nation].economy.diplomacy_eligible = true;
+        state.nations.majors[&nation].economy.diplomacy_eligible = true;
         state.reset_turn_flags();
-        assert!(!state.nations.majors[nation].economy.turn_finished);
+        assert!(!state.nations.majors[&nation].economy.turn_finished);
     }
 
     #[test]
@@ -804,20 +804,21 @@ mod tests {
         let buyer = MajorNationId::new(0);
         let seller = MajorNationId::new(1);
         for nation in MajorNationId::all() {
-            state.nations.majors[nation].city.ship_order_count_by_type[ShipType::Trader] = 2;
-            state.nations.majors[nation].city.ship_order_count_by_type[ShipType::Paddlewheeler] = 1;
-            state.nations.majors[nation].city.ship_order_count_by_type[ShipType::Freighter] = 1;
-            state.nations.majors[nation].city.stockpile[ResourceKind::Clothing] = 10;
-            state.nations.majors[nation].city.stockpile[ResourceKind::Timber] = 12;
-            state.nations.majors[nation].common.treasury = 20_000;
+            state.nations.majors[&nation].city.ship_order_count_by_type[ShipType::Trader] = 2;
+            state.nations.majors[&nation].city.ship_order_count_by_type[ShipType::Paddlewheeler] =
+                1;
+            state.nations.majors[&nation].city.ship_order_count_by_type[ShipType::Freighter] = 1;
+            state.nations.majors[&nation].city.stockpile[ResourceKind::Clothing] = 10;
+            state.nations.majors[&nation].city.stockpile[ResourceKind::Timber] = 12;
+            state.nations.majors[&nation].common.treasury = 20_000;
         }
-        state.nations.majors[buyer]
+        state.nations.majors[&buyer]
             .economy
             .remembered_trade_offers_by_resource[ResourceKind::Clothing] = -1;
-        state.nations.majors[buyer]
+        state.nations.majors[&buyer]
             .economy
             .remembered_trade_offers_by_resource[ResourceKind::Timber] = 5;
-        state.nations.majors[seller]
+        state.nations.majors[&seller]
             .economy
             .remembered_trade_offers_by_resource[ResourceKind::Clothing] = 4;
         let TradeProgress::Offer(_) = state.begin_trade_phase() else {
@@ -873,13 +874,13 @@ mod tests {
     fn newspaper_marks_queued_navy_growth_as_handled_reward_level() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].economy.pending_actions
+        state.nations.majors[&nation].economy.pending_actions
             [crate::PendingActionKind::NavyGrowthReward] =
             crate::PendingActionState::new(crate::PendingActionStatus::QUEUED, Some(1));
         state.turn.phase = crate::PhaseCode::NEWSPAPER;
         assert_eq!(state.advance_turn(&[]), crate::TurnStop::Newspaper);
         assert_eq!(
-            state.nations.majors[nation].economy.pending_actions
+            state.nations.majors[&nation].economy.pending_actions
                 [crate::PendingActionKind::NavyGrowthReward]
                 .status(),
             crate::PendingActionStatus::from_retail(0x34)

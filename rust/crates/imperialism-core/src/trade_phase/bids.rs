@@ -195,7 +195,7 @@ impl GameState {
                     continue;
                 }
                 let metric =
-                    self.nations.majors[nation].economy.item_potentials[commodity.resource()];
+                    self.nations.majors[&nation].economy.item_potentials[commodity.resource()];
                 self.market.rows[commodity].current_offer_by_nation[nation.nation()] = metric;
                 let row = &mut self.market.rows[commodity];
                 if metric < 0 {
@@ -217,13 +217,13 @@ impl GameState {
 
         let buying_processed = PROCESSED_NEED
             .into_iter()
-            .any(|resource| self.nations.majors[nation].economy.item_potentials[resource] < 0);
+            .any(|resource| self.nations.majors[&nation].economy.item_potentials[resource] < 0);
 
         if buying_processed {
             let ranked = self.build_independent_major_relationship_list(nation);
             let mut selected = None;
             for resource in PROCESSED_NEED {
-                if self.nations.majors[nation].economy.item_potentials[resource] >= 0 {
+                if self.nations.majors[&nation].economy.item_potentials[resource] >= 0 {
                     continue;
                 }
                 if selected.is_none() {
@@ -240,7 +240,7 @@ impl GameState {
             }
         }
 
-        if self.nations.majors[nation].economy.item_potentials[ResourceKind::Horses] == -1 {
+        if self.nations.majors[&nation].economy.item_potentials[ResourceKind::Horses] == -1 {
             loop {
                 if let Some(candidate) = self.random_eligible_peer(nation) {
                     self.set_trade_offers_for(candidate, ResourceKind::Horses, nation);
@@ -298,7 +298,7 @@ impl GameState {
             let stock = self.city_stock(seller, resource);
             let mut cap = 10_i16.min(stock);
             cap = cap.min(self.trade_offer_cap(seller));
-            if self.nations.majors[seller].economy.item_potentials[resource] == -1 {
+            if self.nations.majors[&seller].economy.item_potentials[resource] == -1 {
                 return;
             }
             self.set_trade_potential(seller, resource, cap);
@@ -307,7 +307,7 @@ impl GameState {
 
         let horses = self.city_stock(seller, ResourceKind::Horses);
         if horses != 0
-            && self.nations.majors[seller].economy.item_potentials[ResourceKind::Horses] != -1
+            && self.nations.majors[&seller].economy.item_potentials[ResourceKind::Horses] != -1
         {
             let mut amount = i16::from(horses != 1) + 1;
             amount = amount.min(self.trade_offer_cap(seller));
@@ -321,12 +321,12 @@ impl GameState {
         resource: ResourceKind,
     ) {
         if let Some(processed) = ProcessedTradeCommodity::from_resource(resource)
-            && let Some(auto) = self.nations.majors[nation].auto.as_mut()
+            && let Some(auto) = self.nations.majors[&nation].auto.as_mut()
         {
             auto.trade.temporary_processed_stock[processed] += 4;
         }
         self.nations.city_mut(nation).adjust_stock(resource, 4);
-        let potential = self.nations.majors[nation].economy.item_potentials[resource];
+        let potential = self.nations.majors[&nation].economy.item_potentials[resource];
         self.set_trade_potential(nation, resource, potential + 4);
     }
 
@@ -369,7 +369,7 @@ impl GameState {
             if !self.nation_present(candidate.nation()) || candidate == source {
                 continue;
             }
-            if self.nations.majors[candidate].common.status() != CountryStatus::Independent {
+            if self.nations.majors[&candidate].common.status() != CountryStatus::Independent {
                 continue;
             }
             let standing = self.diplomacy.standings[source.nation()][candidate.nation()];
