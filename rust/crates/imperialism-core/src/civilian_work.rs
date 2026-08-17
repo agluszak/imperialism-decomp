@@ -421,45 +421,17 @@ impl GameState {
     }
 
     fn sort_tracked_orders_by_type_priority(&mut self, nation: MajorNationId) {
-        let (start, end) = self.nation_civilian_range(nation);
-        for outer in start..end.saturating_sub(1) {
-            for inner in outer + 1..end {
-                let outer_priority = civilian_sort_priority(
-                    self.civilian_units
-                        .get_index(outer)
-                        .expect("civilian sort position exists")
-                        .1
-                        .unit_type,
-                );
-                let inner_priority = civilian_sort_priority(
-                    self.civilian_units
-                        .get_index(inner)
-                        .expect("civilian sort position exists")
-                        .1
-                        .unit_type,
-                );
-                if inner_priority < outer_priority {
-                    self.civilian_units.swap_indices(outer, inner);
-                }
-            }
-        }
-    }
-
-    fn nation_civilian_range(&self, nation: MajorNationId) -> (usize, usize) {
         let nation = nation.nation();
-        let start = self
-            .civilian_units
-            .iter()
-            .position(|(_, unit)| unit.nation == nation)
-            .unwrap_or(self.civilian_units.len());
-        let end = start
-            + self
-                .civilian_units
-                .iter()
-                .skip(start)
-                .take_while(|(_, unit)| unit.nation == nation)
-                .count();
-        (start, end)
+        let mut entries: Vec<_> = std::mem::take(&mut self.civilian_units)
+            .into_iter()
+            .collect();
+        entries.sort_by_key(|(_, unit)| {
+            (
+                unit.nation,
+                (unit.nation == nation).then(|| civilian_sort_priority(unit.unit_type)),
+            )
+        });
+        self.civilian_units = entries.into_iter().collect();
     }
 
     fn resolve_civilian_disputes(&mut self) {
