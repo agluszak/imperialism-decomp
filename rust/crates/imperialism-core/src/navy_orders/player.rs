@@ -261,8 +261,7 @@ impl GameState {
         let selected: Vec<ShipId> = entry
             .ships
             .iter()
-            .filter(|node| node.selected)
-            .map(|node| node.ship)
+            .filter_map(|(&ship, &selected)| selected.then_some(ship))
             .collect();
         for ship in selected {
             if let Some(state) = self.ship_mut(ship) {
@@ -272,25 +271,25 @@ impl GameState {
         let loose: Vec<ShipId> = self
             .ships
             .iter()
-            .filter(|ship| {
-                ship.location == location
+            .filter_map(|(&id, ship)| {
+                (ship.location == location
                     && ship.nation == nation
-                    && self.task_force_of_ship(ship.id).is_none()
+                    && self.task_force_of_ship(id).is_none())
+                .then_some(id)
             })
-            .map(|ship| ship.id)
             .collect();
         for ship in loose {
             self.reassign_ship_to_force(ship, force);
         }
         let available: Vec<ShipId> = self
             .ships
-            .iter()
-            .filter(|ship| ship.selection == 0)
-            .map(|ship| ship.id)
+            .keys()
+            .copied()
+            .filter(|ship| self.ships[ship].selection == 0)
             .collect();
         if let Some(entry) = self.task_force_mut(force) {
-            for node in &mut entry.ships {
-                node.selected = available.contains(&node.ship);
+            for (ship, selected) in &mut entry.ships {
+                *selected = available.contains(ship);
             }
         }
     }
@@ -305,13 +304,12 @@ impl GameState {
         while let Some(force) = self
             .task_forces
             .iter()
-            .find(|force| force.nation == nation)
-            .map(|force| force.id)
+            .find_map(|(&id, force)| (force.nation == nation).then_some(id))
         {
             self.destroy_task_force_ingot(force);
             self.free_task_force(force);
         }
-        for ship in &mut self.ships {
+        for ship in self.ships.values_mut() {
             if ship.nation == nation {
                 ship.selection = 0;
             }
@@ -363,20 +361,17 @@ impl GameState {
         zone: OceanZoneId,
         nation: NationId,
     ) -> Option<TaskForceId> {
-        if let Some(force) = self
-            .task_forces
-            .iter()
-            .find(|force| force.location == zone && force.nation == nation)
-            .map(|force| force.id)
-        {
+        if let Some(force) = self.task_forces.iter().find_map(|(&id, force)| {
+            (force.location == zone && force.nation == nation).then_some(id)
+        }) {
             self.fill_task_force_from_loose_ships(force, true);
             return Some(force);
         }
-        let ship = self.ships.iter().find_map(|ship| {
+        let ship = self.ships.iter().find_map(|(&id, ship)| {
             (ship.location == zone
                 && ship.nation == nation
-                && self.task_force_of_ship(ship.id).is_none())
-            .then_some(ship.id)
+                && self.task_force_of_ship(id).is_none())
+            .then_some(id)
         })?;
         let force = self.create_task_force(zone, nation, ship);
         self.fill_task_force_from_loose_ships(force, true);
@@ -666,10 +661,10 @@ impl GameState {
     }
 
     fn zone_can_display_map_order(&self, zone: OceanZoneId, nation: NationId) -> bool {
-        self.ships.iter().any(|ship| {
+        self.ships.iter().any(|(&id, ship)| {
             ship.location == zone
                 && ship.nation == nation
-                && self.task_force_of_ship(ship.id).is_none()
+                && self.task_force_of_ship(id).is_none()
                 && ship.selection == 0
         })
     }
@@ -678,8 +673,7 @@ impl GameState {
         let index = tile.get() as i16;
         self.task_forces
             .iter()
-            .find(|force| force.ingot_tile == index)
-            .map(|force| force.id)
+            .find_map(|(&id, force)| (force.ingot_tile == index).then_some(id))
     }
 
     fn fill_task_force_from_loose_ships(&mut self, force: TaskForceId, max_out: bool) {
@@ -691,12 +685,12 @@ impl GameState {
         let loose: Vec<ShipId> = self
             .ships
             .iter()
-            .filter(|ship| {
-                ship.location == location
+            .filter_map(|(&id, ship)| {
+                (ship.location == location
                     && ship.nation == nation
-                    && self.task_force_of_ship(ship.id).is_none()
+                    && self.task_force_of_ship(id).is_none())
+                .then_some(id)
             })
-            .map(|ship| ship.id)
             .collect();
         for ship in loose {
             self.reassign_ship_to_force(ship, force);
@@ -704,12 +698,11 @@ impl GameState {
         let available: Vec<ShipId> = self
             .ships
             .iter()
-            .filter(|ship| ship.selection == 0)
-            .map(|ship| ship.id)
+            .filter_map(|(&id, ship)| (ship.selection == 0).then_some(id))
             .collect();
         if max_out && let Some(entry) = self.task_force_mut(force) {
-            for node in &mut entry.ships {
-                node.selected = available.contains(&node.ship);
+            for (ship, selected) in &mut entry.ships {
+                *selected = available.contains(ship);
             }
         }
     }
@@ -721,8 +714,8 @@ impl GameState {
         };
         let mut sum = 0;
         let mut count = 0;
-        for node in &entry.ships {
-            let Some(ship) = self.ship(node.ship) else {
+        for (&ship_id, _) in &entry.ships {
+            let Some(ship) = self.ship(ship_id) else {
                 continue;
             };
             sum += ship.aggression;
@@ -819,8 +812,7 @@ impl GameState {
         let drop: Vec<ShipId> = entry
             .ships
             .iter()
-            .filter(|node| !node.selected)
-            .map(|node| node.ship)
+            .filter_map(|(&ship, &selected)| (!selected).then_some(ship))
             .collect();
         for ship in drop {
             self.remove_ship_from_force(ship, force);
