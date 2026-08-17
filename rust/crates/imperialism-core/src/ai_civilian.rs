@@ -239,13 +239,19 @@ impl GameState {
     }
 
     fn seek_lost_towns(&mut self, nation: MajorNationId, primary: &[i8], secondary: &[i8]) {
-        let target = self.nations.major(nation).towns.iter().find_map(|town| {
-            let primary_distance = primary[tile_index(town.tile)];
-            let secondary_distance = secondary[tile_index(town.tile)];
-            (!town.transport_linked
-                && (primary_distance < 12 || (secondary_distance < 8 && secondary_distance > 2)))
-                .then_some(town.tile)
-        });
+        let target = self
+            .nations
+            .major(nation)
+            .towns
+            .iter()
+            .find_map(|(&tile, town)| {
+                let primary_distance = primary[tile_index(tile)];
+                let secondary_distance = secondary[tile_index(tile)];
+                (!town.transport_linked
+                    && (primary_distance < 12
+                        || (secondary_distance < 8 && secondary_distance > 2)))
+                    .then_some(tile)
+            });
         self.nations.majors[nation]
             .economy
             .interior_civilian
@@ -577,7 +583,7 @@ impl GameState {
             .major(nation)
             .towns
             .iter()
-            .map(|town| town.tile)
+            .map(|(&tile, _)| tile)
             .collect();
         for town_tile in towns {
             candidates.push(town_tile);

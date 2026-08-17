@@ -126,7 +126,12 @@ pub(crate) fn major_nation() -> MajorNation {
         ),
         economy: great_power_state(),
         city: city(),
-        towns: vec![TownState::for_frog_city(TileId::new(1), NationId::new(0))],
+        towns: [(
+            TileId::new(1),
+            TownState::for_frog_city(TileId::new(1), NationId::new(0)),
+        )]
+        .into_iter()
+        .collect(),
     }
 }
 

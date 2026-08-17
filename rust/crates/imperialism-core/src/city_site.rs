@@ -286,8 +286,9 @@ pub fn enter_strategic_map_without_capital_selection(
         .nations
         .major(nation)
         .towns
-        .first()
-        .map(|town| town.tile)
+        .keys()
+        .next()
+        .copied()
         .expect("generated Introductory/Easy game has a home town tile");
     bind_home_city_tile(state, nation, home);
     state.advance_turn(story_ids)
@@ -296,13 +297,19 @@ pub fn enter_strategic_map_without_capital_selection(
 fn bind_home_city_tile(state: &mut GameState, nation: MajorNationId, tile: TileId) {
     let nation_state = state.nations.major_mut(nation);
     nation_state.common.home_tile = Some(tile);
-    let home_town = nation_state
+    let old_tile = nation_state
         .towns
-        .first_mut()
+        .keys()
+        .next()
+        .copied()
+        .expect("great power capital placement requires its FrogCity marker");
+    let (_, mut home_town) = nation_state
+        .towns
+        .shift_remove_entry(&old_tile)
         .expect("great power capital placement requires its FrogCity marker");
     home_town.name = "FrogCity".to_owned();
-    home_town.tile = tile;
     home_town.owner_nation = nation.nation();
+    nation_state.towns.insert(tile, home_town);
 }
 
 fn flood_fill_region_marker(world: &mut MapMgr, tile: TileId, owner_nation: TileOwnerTag) {
@@ -548,7 +555,11 @@ mod tests {
         ));
         assert_eq!(state.turn.economic_turn, 1);
         assert_eq!(
-            state.nations.majors[MajorNationId::new(6)].towns[0].name,
+            state.nations.majors[MajorNationId::new(6)]
+                .towns
+                .get(&tile)
+                .unwrap()
+                .name,
             "FrogCity"
         );
         assert!(state.map[tile].flags.is_city());
@@ -574,8 +585,9 @@ mod tests {
         assert_eq!(
             state.nations.majors[MajorNationId::new(6)]
                 .towns
-                .first()
-                .map(|town| town.tile),
+                .keys()
+                .next()
+                .copied(),
             Some(tile)
         );
         assert_opening_civilians(&state, MajorNationId::new(6), 2);
@@ -618,11 +630,16 @@ mod tests {
         );
         let home = state.nations.majors[MajorNationId::new(6)]
             .towns
-            .first()
-            .map(|town| town.tile)
+            .keys()
+            .next()
+            .copied()
             .expect("Easy setup places the human Frog City");
         assert_eq!(
-            state.nations.majors[MajorNationId::new(6)].towns[0].name,
+            state.nations.majors[MajorNationId::new(6)]
+                .towns
+                .get(&home)
+                .unwrap()
+                .name,
             "FrogCity"
         );
         assert_eq!(state.map[home].owner_nation, Some(TileOwnerTag::new(6)));

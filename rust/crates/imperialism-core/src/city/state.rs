@@ -9,7 +9,6 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TownState {
     pub name: String,
-    pub tile: TileId,
     pub created_turn: i16,
     pub owner_nation: NationId,
     pub resource_yield_by_type: ResourceTable<i16>,
@@ -23,14 +22,13 @@ pub struct TownState {
 
 impl TownState {
     pub(crate) fn constructed(
-        tile: TileId,
+        _tile: TileId,
         owner_nation: NationId,
         enabled: u8,
         created_turn: i16,
     ) -> Self {
         Self {
             name: String::new(),
-            tile,
             created_turn,
             owner_nation,
             resource_yield_by_type: ResourceTable::default(),
@@ -41,10 +39,9 @@ impl TownState {
         }
     }
 
-    pub(crate) fn for_frog_city(tile: TileId, owner_nation: NationId) -> Self {
+    pub(crate) fn for_frog_city(_tile: TileId, owner_nation: NationId) -> Self {
         Self {
             name: "FrogCity".to_owned(),
-            tile,
             created_turn: 0,
             owner_nation,
             resource_yield_by_type: ResourceTable::default(),

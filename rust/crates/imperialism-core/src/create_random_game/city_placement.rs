@@ -38,13 +38,19 @@ pub(super) fn place_initial_frog_cities(
         ensure_port_zone_for_tile(world, port_zones, home);
         let major = nations.major_mut(nation);
         major.common.home_tile = Some(home);
-        let home_town = major
+        let old_tile = major
             .towns
-            .first_mut()
+            .keys()
+            .next()
+            .copied()
+            .expect("random great power has its initial FrogCity marker");
+        let (_, mut home_town) = major
+            .towns
+            .shift_remove_entry(&old_tile)
             .expect("random great power has its initial FrogCity marker");
         home_town.name = "FrogCity".to_owned();
-        home_town.tile = home;
         home_town.owner_nation = nation.nation();
+        major.towns.insert(home, home_town);
         // `QueueMapActionMissionsForPortZoneCandidates` runs only for setup-mode-2 AI.
         if nation != human_nation {
             mission_queues[nation] = queue_map_action_missions_for_port_zone_candidates(

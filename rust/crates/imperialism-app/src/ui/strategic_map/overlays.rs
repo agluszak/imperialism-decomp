@@ -137,8 +137,7 @@ pub(super) fn town_transport_linked(state: &GameState, tile: TileId) -> bool {
         .nations()
         .major(major)
         .towns
-        .iter()
-        .find(|town| town.tile == tile)
+        .get(&tile)
         .map(|town| town.transport_linked)
         .unwrap_or(true)
 }

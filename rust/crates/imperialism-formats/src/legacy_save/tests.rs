@@ -515,7 +515,7 @@ fn retail_projection_preserves_minister_identity_and_direct_state() {
         state
             .nations()
             .majors()
-            .map(|nation| nation.towns.first().map(|town| town.tile))
+            .map(|nation| nation.towns.keys().next().copied())
             .collect::<Vec<_>>(),
         [3_494, 2_992, 2_862, 1_563, 1_420, 4_555, 1_685].map(|tile| Some(TileId::new(tile)))
     );

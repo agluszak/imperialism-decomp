@@ -773,17 +773,24 @@ impl LegacySaveV62 {
                 .post_city
                 .towns
                 .iter()
-                .map(|town| TownState {
-                    name: town.name.clone(),
-                    tile: optional_tile_id(i32::from(town.tile_index))
-                        .expect("retail town has a tile"),
-                    created_turn: town.created_turn,
-                    owner_nation: NationId::new(town.owner_nation as u8),
-                    resource_yield_by_type: ResourceTable::from_array(town.resource_yield_by_type),
-                    transport_linked: town.transport_linked != 0,
-                    enabled: town.enabled,
-                    has_adjacent_city: town.has_adjacent_city,
-                    active: town.active != 0,
+                .map(|town| {
+                    let tile = optional_tile_id(i32::from(town.tile_index))
+                        .expect("retail town has a tile");
+                    (
+                        tile,
+                        TownState {
+                            name: town.name.clone(),
+                            created_turn: town.created_turn,
+                            owner_nation: NationId::new(town.owner_nation as u8),
+                            resource_yield_by_type: ResourceTable::from_array(
+                                town.resource_yield_by_type,
+                            ),
+                            transport_linked: town.transport_linked != 0,
+                            enabled: town.enabled,
+                            has_adjacent_city: town.has_adjacent_city,
+                            active: town.active != 0,
+                        },
+                    )
                 })
                 .collect();
             let city = city.city_state();

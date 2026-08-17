@@ -531,12 +531,10 @@ mod tests {
                 Some(TileOwnerTag::from_nation(NationId::new(0)));
         }
         state.map[TileId::new(20)].flags = crate::TileFlags::from_bits_retain(0x14);
-        state.nations.majors[MajorNationId::new(0)]
-            .towns
-            .push(crate::TownState::for_frog_city(
-                TileId::new(20),
-                NationId::new(0),
-            ));
+        state.nations.majors[MajorNationId::new(0)].towns.insert(
+            TileId::new(20),
+            crate::TownState::for_frog_city(TileId::new(20), NationId::new(0)),
+        );
         state.map.provinces[ProvinceId::new(2)].linked_tiles =
             vec![TileId::new(20), TileId::new(21)];
         state.map[TileId::new(22)].province = Some(ProvinceId::new(5));
@@ -582,14 +580,12 @@ mod tests {
         assert!(
             !state.nations.majors[MajorNationId::new(0)]
                 .towns
-                .iter()
-                .any(|town| town.tile == TileId::new(20))
+                .contains_key(&TileId::new(20))
         );
         let moved_town = state.nations.majors[MajorNationId::new(1)]
             .towns
-            .last()
+            .get(&TileId::new(20))
             .unwrap();
-        assert_eq!(moved_town.tile, TileId::new(20));
         assert_eq!(moved_town.owner_nation, NationId::new(1));
         state.change_province_owner(ProvinceId::new(9), NationId::new(1));
         assert_eq!(
@@ -937,9 +933,9 @@ mod tests {
 
         assert!(state.civilian_units.is_empty());
         assert_eq!(state.military_units.len(), 1);
-        assert_eq!(state.military_units[0].id(), stationed);
+        assert!(state.military_units.contains_key(&stationed));
         assert_eq!(
-            state.military_units[0].stationed_province(),
+            state.military_units[&stationed].stationed_province(),
             Some(ProvinceId::new(2))
         );
     }

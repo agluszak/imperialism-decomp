@@ -661,10 +661,12 @@ mod tests {
             ),
             economy: major(),
             city: city(),
-            towns: vec![crate::TownState::for_frog_city(
+            towns: [(
                 crate::TileId::new(0),
-                nation.nation(),
-            )],
+                crate::TownState::for_frog_city(crate::TileId::new(0), nation.nation()),
+            )]
+            .into_iter()
+            .collect(),
         });
         let mut diplomacy_rng = RetailCrtRng::from_state(1);
         GameState {

@@ -515,12 +515,15 @@ fn city_orders_dto(orders: &CityOrders) -> LegacyCityOrders {
 
 fn post_city_dto(
     economy: &GreatPowerState,
-    towns: &[TownState],
+    towns: &indexmap::IndexMap<TileId, TownState>,
     civilians: &[(CivilianUnitId, CivilianUnitState)],
     topology: MapTopology,
 ) -> LegacyGreatPowerPostCity {
     LegacyGreatPowerPostCity {
-        towns: towns.iter().map(town_dto).collect(),
+        towns: towns
+            .iter()
+            .map(|(tile, town)| town_dto(*tile, town))
+            .collect(),
         civilian_units: civilians
             .iter()
             .map(|(id, unit)| civilian_unit_dto(*id, unit, topology))
@@ -539,10 +542,10 @@ fn post_city_dto(
     }
 }
 
-fn town_dto(town: &TownState) -> LegacyTown {
+fn town_dto(tile: TileId, town: &TownState) -> LegacyTown {
     LegacyTown {
         name: town.name.clone(),
-        tile_index: town.tile.get() as i16,
+        tile_index: tile.get() as i16,
         opaque_fields: [0; 2],
         created_turn: town.created_turn,
         owner_nation: i16::from(town.owner_nation.get()),

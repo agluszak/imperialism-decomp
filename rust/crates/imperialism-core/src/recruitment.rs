@@ -567,13 +567,12 @@ mod tests {
     }
 
     fn military_unit(
-        id: i32,
+        _id: i32,
         nation: u8,
         unit_type: MilitaryUnitKind,
         province: i16,
     ) -> MilitaryUnitState {
         MilitaryUnitState {
-            id: MilitaryUnitId::new(id),
             nation: NationId::new(nation),
             unit_type,
             stationed_province: u16::try_from(province)

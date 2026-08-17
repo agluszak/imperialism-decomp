@@ -678,23 +678,19 @@ impl GameState {
     }
 
     fn push_new_town(&mut self, tile: TileId, nation: MajorNationId, enabled: u8) {
-        self.nations
-            .major_mut(nation)
-            .towns
-            .push(TownState::constructed(
+        self.nations.major_mut(nation).towns.insert(
+            tile,
+            TownState::constructed(
                 tile,
                 nation.nation(),
                 enabled,
                 self.turn.economic_turn as i16,
-            ));
+            ),
+        );
     }
 
     fn find_town_at_mut(&mut self, nation: MajorNationId, tile: TileId) -> Option<&mut TownState> {
-        self.nations
-            .major_mut(nation)
-            .towns
-            .iter_mut()
-            .find(|town| town.tile == tile)
+        self.nations.major_mut(nation).towns.get_mut(&tile)
     }
 
     fn flood_fill_region_marker(&mut self, tile: TileId, nation: MajorNationId) {
@@ -1249,8 +1245,8 @@ mod tests {
                 .nations
                 .major(MajorNationId::new(0))
                 .towns
-                .iter()
-                .any(|town| town.tile == depot_tile && town.enabled == 0 && town.active)
+                .get(&depot_tile)
+                .is_some_and(|town| town.enabled == 0 && town.active)
         );
         assert!(state.map[port_tile].flags.contains(TileFlags::PORT));
         assert!(
@@ -1258,8 +1254,8 @@ mod tests {
                 .nations
                 .major(MajorNationId::new(0))
                 .towns
-                .iter()
-                .any(|town| town.tile == port_tile && town.enabled == 1 && !town.active)
+                .get(&port_tile)
+                .is_some_and(|town| town.enabled == 1 && !town.active)
         );
         assert!(
             matches!(

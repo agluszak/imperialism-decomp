@@ -17,17 +17,17 @@ impl GameState {
 
         let mut influence = vec![0_u8; STRATEGIC_TILE_COUNT];
         let major = &self.nations.majors[nation];
-        for (town, &linked) in major.towns.iter().zip(&town_transport_linked) {
+        for ((&town_tile, town), &linked) in major.towns.iter().zip(&town_transport_linked) {
             if !linked {
                 continue;
             }
             let level = u8::from(town.enabled != 0) + 1;
-            influence[usize::from(town.tile.get())] = level;
+            influence[usize::from(town_tile.get())] = level;
             let owner = Some(TileOwnerTag::from_nation(nation.nation()));
             for neighbor in self
                 .map
                 .geometry()
-                .neighbors(town.tile)
+                .neighbors(town_tile)
                 .into_iter()
                 .flatten()
             {
@@ -87,7 +87,7 @@ impl GameState {
         }
 
         let major = &mut self.nations.majors[nation];
-        for (town, linked) in major.towns.iter_mut().zip(town_transport_linked) {
+        for ((_, town), linked) in major.towns.iter_mut().zip(town_transport_linked) {
             town.transport_linked = linked;
         }
         major.economy.need_current_by_type = current;
@@ -152,34 +152,35 @@ impl GameState {
     ) -> Option<(Vec<u8>, Vec<bool>)> {
         let major = self.nations.major(nation);
         let home_tile = major.common.home_tile?;
-        let home_town = major.towns.iter().position(|town| town.tile == home_tile)?;
+        let home_town = major.towns.get(&home_tile)?;
         let unblocked_ports = major
             .towns
             .iter()
-            .map(|town| {
-                town.enabled != 0 && self.has_reachable_sea_outside_beginning_turn_mask(town.tile)
+            .map(|(&tile, town)| {
+                town.enabled != 0 && self.has_reachable_sea_outside_beginning_turn_mask(tile)
             })
             .collect::<Vec<_>>();
         let mut influence = vec![0_u8; STRATEGIC_TILE_COUNT];
 
-        let mut home_linked = unblocked_ports[home_town];
+        let mut home_linked =
+            home_town.enabled != 0 && self.has_reachable_sea_outside_beginning_turn_mask(home_tile);
         if !home_linked {
             self.mark_transport_component(nation, home_tile, &mut influence);
-            for (town, &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
-                if influence[usize::from(town.tile.get())] != 0 && unblocked_port {
+            for ((&tile, _), &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
+                if influence[usize::from(tile.get())] != 0 && unblocked_port {
                     home_linked = true;
                     break;
                 }
             }
         }
 
-        for (town, &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
+        for ((&tile, town), &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
             if unblocked_port
                 && home_linked
                 && town.active
-                && influence[usize::from(town.tile.get())] == 0
+                && influence[usize::from(tile.get())] == 0
             {
-                self.mark_transport_component(nation, town.tile, &mut influence);
+                self.mark_transport_component(nation, tile, &mut influence);
             }
         }
 
@@ -187,16 +188,16 @@ impl GameState {
             .towns
             .iter()
             .zip(&unblocked_ports)
-            .map(|(town, &unblocked_port)| {
-                !((influence[usize::from(town.tile.get())] == 0 || !town.active)
+            .map(|((&tile, town), &unblocked_port)| {
+                !((influence[usize::from(tile.get())] == 0 || !town.active)
                     && (!unblocked_port || !home_linked))
             })
             .collect::<Vec<_>>();
 
         if home_linked {
-            for (town, &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
+            for ((&tile, _), &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
                 if unblocked_port {
-                    influence[usize::from(town.tile.get())] = 1;
+                    influence[usize::from(tile.get())] = 1;
                 }
             }
         }
@@ -450,20 +451,24 @@ mod tests {
 
         let major = &mut state.nations.majors[nation];
         major.common.home_tile = Some(home);
-        major.towns = vec![
-            TownState::for_frog_city(home, nation.nation()),
-            TownState {
-                name: "Altown".to_owned(),
-                tile: second,
-                created_turn: 2,
-                owner_nation: nation.nation(),
-                resource_yield_by_type: ResourceTable::default(),
-                transport_linked: false,
-                enabled: 1,
-                has_adjacent_city: 0,
-                active: true,
-            },
-        ];
+        major.towns = [
+            (home, TownState::for_frog_city(home, nation.nation())),
+            (
+                second,
+                TownState {
+                    name: "Altown".to_owned(),
+                    created_turn: 2,
+                    owner_nation: nation.nation(),
+                    resource_yield_by_type: ResourceTable::default(),
+                    transport_linked: false,
+                    enabled: 1,
+                    has_adjacent_city: 0,
+                    active: true,
+                },
+            ),
+        ]
+        .into_iter()
+        .collect();
 
         state.rebuild_nation_resource_yields(nation);
 
@@ -471,7 +476,7 @@ mod tests {
             state.nations.majors[nation]
                 .towns
                 .iter()
-                .map(|town| town.transport_linked)
+                .map(|(_, town)| town.transport_linked)
                 .collect::<Vec<_>>(),
             [true, true]
         );

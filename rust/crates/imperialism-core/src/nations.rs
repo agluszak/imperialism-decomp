@@ -131,7 +131,7 @@ pub struct MajorNation {
     pub economy: GreatPowerState,
     pub city: CityState,
     /// Retail `TGreatPower::townMarkerList`, in its observable list order.
-    pub towns: Vec<TownState>,
+    pub towns: IndexMap<TileId, TownState>,
 }
 
 impl MajorNation {
@@ -172,7 +172,7 @@ impl MajorNation {
                 foreign_minister_personality,
             ),
             city,
-            towns: vec![town],
+            towns: [(TileId::new(0), town)].into_iter().collect(),
         }
     }
 
