@@ -1,3 +1,4 @@
+use crate::map::BorderInfluenceMode;
 use crate::*;
 use enum_map::EnumMap;
 use indexmap::IndexMap;
@@ -128,7 +129,7 @@ pub fn create_random_game(
     // Fresh-map BuildOrLoadGlobalMapStateForSession runs this mode-0 cache pass
     // once, in tile order, immediately after its final AssignPictToTile pass.
     for tile in TileId::all() {
-        world.update_tile_neighbor_border_influence_counters(tile, 0);
+        world.update_tile_neighbor_border_influence_counters(tile, BorderInfluenceMode::FreshMap);
     }
     let mut ocean_zones = initialize_sea_zone_map_markers(&mut world, preview.sea_zone_marker_crt);
     initialize_sea_zone_neighbors(&mut ocean_zones, &world, &preview.map.ocean_zone_links);

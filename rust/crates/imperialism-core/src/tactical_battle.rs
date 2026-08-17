@@ -8,9 +8,12 @@ use crate::military::{ActionClassScores, ActionClassWeights, TACTICAL_COMPOSITIO
 use crate::tactical_tables::*;
 use crate::*;
 
-const OUTCOME_IN_PROGRESS: i32 = 0;
-const OUTCOME_SIDE0: i32 = 1;
-const OUTCOME_SIDE1: i32 = 2;
+#[derive(Clone, Copy, Eq, PartialEq)]
+enum BattleOutcome {
+    InProgress,
+    AttackerWon,
+    DefenderWon,
+}
 
 #[derive(Clone, Copy)]
 struct Tile {
@@ -70,7 +73,7 @@ struct Battle {
     current_side: i32,
     selected: Option<usize>,
     column_count: i32,
-    outcome: i32,
+    outcome: BattleOutcome,
     pending_end: bool,
     fort_level: i32,
     fort_strength: [i32; 8],
@@ -153,7 +156,7 @@ impl Battle {
             current_side: 1,
             selected: None,
             column_count: 0,
-            outcome: OUTCOME_IN_PROGRESS,
+            outcome: BattleOutcome::InProgress,
             pending_end: false,
             fort_level,
             fort_strength: [0; 8],
@@ -500,8 +503,8 @@ impl Battle {
     }
 
     fn next_move(&mut self, state: &mut GameState) -> bool {
-        if self.outcome != OUTCOME_IN_PROGRESS {
-            let side0_won = self.outcome == OUTCOME_SIDE0;
+        if self.outcome != BattleOutcome::InProgress {
+            let side0_won = self.outcome == BattleOutcome::AttackerWon;
             self.apply_changes(state);
             state.resolve_land_battle(side0_won);
             return true;
@@ -1759,9 +1762,9 @@ impl Battle {
             return;
         }
         self.outcome = if live[0] && self.round < 0x23 {
-            OUTCOME_SIDE0
+            BattleOutcome::AttackerWon
         } else {
-            OUTCOME_SIDE1
+            BattleOutcome::DefenderWon
         };
     }
 }
@@ -2143,7 +2146,7 @@ impl Battle {
         if self.units[unit].unit_type.tactical_category() == ArmyUnitCategory::SiegeArtillery {
             self.units[unit].selected = false;
         }
-        if self.units[unit].state == 0 && self.outcome == OUTCOME_IN_PROGRESS {
+        if self.units[unit].state == 0 && self.outcome == BattleOutcome::InProgress {
             if self.units[unit].selected && self.has_followup(unit) {
                 return;
             }
@@ -2162,7 +2165,7 @@ impl Battle {
             ArmyUnitCategory::LightCavalry | ArmyUnitCategory::HeavyCavalry
         ) && self.has_adjacent_reachable(self.selected.unwrap_or(unit))
         {
-            if self.outcome != OUTCOME_IN_PROGRESS {
+            if self.outcome != BattleOutcome::InProgress {
                 self.finish_action();
             }
             return;

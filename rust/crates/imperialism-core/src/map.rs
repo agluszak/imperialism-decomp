@@ -3,6 +3,12 @@ use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::ops::{Index, IndexMut};
 
+#[derive(Clone, Copy, Eq, PartialEq)]
+pub(crate) enum BorderInfluenceMode {
+    FreshMap,
+    OwnerChanged,
+}
+
 /// Retail's authoritative `TMapMgr` state without its MFC/ABI scaffolding.
 ///
 /// The terrain and province tables deliberately live together: retail map
@@ -346,12 +352,18 @@ impl MapMgr {
 
         self[tile].owner_nation = new_owner_tag;
         self[tile].owner_border_mask = 0;
-        self.update_tile_neighbor_border_influence_counters(tile, 2);
+        self.update_tile_neighbor_border_influence_counters(
+            tile,
+            BorderInfluenceMode::OwnerChanged,
+        );
 
         let neighbors = self.geometry().neighbors(tile);
         for neighbor in neighbors.into_iter().flatten() {
             self[neighbor].owner_border_mask = 0;
-            self.update_tile_neighbor_border_influence_counters(neighbor, 2);
+            self.update_tile_neighbor_border_influence_counters(
+                neighbor,
+                BorderInfluenceMode::OwnerChanged,
+            );
         }
 
         if self[tile].flags.bits() & 0x14 == 0 {
@@ -374,13 +386,13 @@ impl MapMgr {
 
     /// Retail `TMapMgr::UpdateTileNeighborBorderInfluenceCounters`.
     ///
-    /// This is deliberately additive. Fresh-map construction calls mode 0 on
+    /// This is deliberately additive. Fresh-map construction calls it on
     /// zeroed records, while `SetOwner` clears only the owner-border byte before
-    /// calling mode 2 and leaves the other two caches untouched.
+    /// owner change and leaves the other two caches untouched.
     pub(crate) fn update_tile_neighbor_border_influence_counters(
         &mut self,
         tile: TileId,
-        mode: i16,
+        mode: BorderInfluenceMode,
     ) {
         const DIRECTION_BITS: [u8; 6] = [1, 2, 4, 8, 16, 32];
         const NEXT_DIRECTION: [usize; 6] = [1, 2, 3, 4, 5, 0];
@@ -399,7 +411,7 @@ impl MapMgr {
                 continue;
             };
             if terrain == TerrainKind::Water {
-                if mode == 0
+                if mode == BorderInfluenceMode::FreshMap
                     && self[neighbor].terrain == TerrainKind::Water
                     && self[neighbor].owner_nation != owner
                 {
@@ -411,7 +423,8 @@ impl MapMgr {
                 if self[neighbor].owner_nation != owner {
                     owner_border_mask = owner_border_mask.wrapping_add(DIRECTION_BITS[direction]);
                 }
-                if mode != 2 && self[neighbor].province != province {
+                if mode != BorderInfluenceMode::OwnerChanged && self[neighbor].province != province
+                {
                     city_border_mask = city_border_mask.wrapping_add(DIRECTION_BITS[direction]);
                 }
             }
@@ -431,14 +444,16 @@ impl MapMgr {
                         owner_border_mask =
                             owner_border_mask.wrapping_add(DIRECTION_BITS[direction]);
                     }
-                    if mode != 2 && self[neighbor_a].province != self[neighbor_b].province {
+                    if mode != BorderInfluenceMode::OwnerChanged
+                        && self[neighbor_a].province != self[neighbor_b].province
+                    {
                         city_border_mask = city_border_mask.wrapping_add(DIRECTION_BITS[direction]);
                     }
                 }
             }
         }
 
-        if mode != 2
+        if mode != BorderInfluenceMode::OwnerChanged
             && city_border_mask & 2 != 0
             && city_border_mask & 1 != 0
             && let (Some(east), Some(north_east)) = (neighbors[1], neighbors[0])
@@ -446,7 +461,7 @@ impl MapMgr {
         {
             city_border_mask = city_border_mask.wrapping_add(0x40);
         }
-        if mode != 2
+        if mode != BorderInfluenceMode::OwnerChanged
             && city_border_mask & 2 != 0
             && city_border_mask & 4 != 0
             && let (Some(east), Some(south_east)) = (neighbors[1], neighbors[2])
