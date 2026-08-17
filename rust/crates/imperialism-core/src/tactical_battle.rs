@@ -95,7 +95,7 @@ struct Side {
     has_artillery_or_engineers: bool,
     field_f: bool,
     last_stance: Option<TacticalStance>,
-    random_parity: u8,
+    retreat_toward_north: bool,
     cached_bombard_tile: i32,
 }
 
@@ -153,7 +153,7 @@ impl Battle {
         let composition = classify_city_gate_terrain(state, battle.province);
         let _ = composition;
 
-        let empty_side = |is_our: bool, nation: NationId, parity: u8| Side {
+        let empty_side = |is_our: bool, nation: NationId, retreat_toward_north: bool| Side {
             is_our,
             ready: false,
             nation,
@@ -168,11 +168,11 @@ impl Battle {
             has_artillery_or_engineers: false,
             field_f: false,
             last_stance: None,
-            random_parity: parity,
+            retreat_toward_north,
             cached_bombard_tile: -1,
         };
-        let our_parity = (state.rng.next_crt_rand() & 1) as u8;
-        let enemy_parity = (state.rng.next_crt_rand() & 1) as u8;
+        let our_retreat_toward_north = state.rng.next_crt_rand() & 1 != 0;
+        let enemy_retreat_toward_north = state.rng.next_crt_rand() & 1 != 0;
         let mut this = Self {
             tiles: [Tile {
                 terrain: 0,
@@ -187,8 +187,8 @@ impl Battle {
             distance_field: [0; TACTICAL_TILE_COUNT],
             units: Vec::new(),
             sides: BattleSideTable::from_array([
-                empty_side(true, battle.attacker_nation, our_parity),
-                empty_side(false, battle.defender_nation, enemy_parity),
+                empty_side(true, battle.attacker_nation, our_retreat_toward_north),
+                empty_side(false, battle.defender_nation, enemy_retreat_toward_north),
             ]),
             records: Vec::new(),
             current_side: BattleSide::Defender,
@@ -1627,7 +1627,7 @@ impl Battle {
 
     fn score_retreat_edge(&self, side: BattleSide, tile: i32) -> i32 {
         let row = tile / TACTICAL_STRIDE;
-        if self.sides[side].random_parity != 0 {
+        if self.sides[side].retreat_toward_north {
             if row <= 1 {
                 0x64
             } else {
