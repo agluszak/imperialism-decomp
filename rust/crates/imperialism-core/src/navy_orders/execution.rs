@@ -224,7 +224,7 @@ impl GameState {
     /// authoritative navy-order records in core, so the retail rebuild becomes
     /// a rebuild of only ships which are not already in the committed queue.
     fn make_sure_all_ships_have_orders(&mut self) {
-        for force in self.task_forces.keys().rev().copied().collect::<Vec<_>>() {
+        for force in self.task_forces.keys().copied().collect::<Vec<_>>() {
             if self.task_forces[&force].order == TaskForceOrder::None {
                 self.free_task_force(force);
             }
@@ -313,7 +313,7 @@ impl GameState {
     ) -> Option<NavyOrdersContinuation> {
         self.carry_out_navy_orders_from(
             NavyPass::PatrolAgainstBlockade,
-            self.task_forces.keys().rev().copied().collect(),
+            self.task_forces.keys().copied().collect(),
             0,
             0,
             allow_tactical_battles,
@@ -397,14 +397,14 @@ impl GameState {
                 return None;
             };
             pass = next;
-            forces = self.task_forces.keys().rev().copied().collect();
+            forces = self.task_forces.keys().copied().collect();
             outer = 0;
             inner = 0;
         }
     }
 
     fn execute_navy_order_pass(&mut self, pass: NavyPass) {
-        for id in self.task_forces.keys().rev().copied().collect::<Vec<_>>() {
+        for id in self.task_forces.keys().copied().collect::<Vec<_>>() {
             if self.task_forces[&id].defeated {
                 continue;
             }
@@ -1516,11 +1516,11 @@ mod tests {
         );
 
         let first = state.carry_out_navy_orders().expect("first encounter");
-        assert_eq!(first.battle.attacker, second_attacker);
-        assert_eq!(first.battle.defender, second_defender);
+        assert_eq!(first.battle.attacker, first_attacker);
+        assert_eq!(first.battle.defender, first_defender);
         let second = state.resume_navy_orders(first).expect("second encounter");
-        assert_eq!(second.battle.attacker, first_attacker);
-        assert_eq!(second.battle.defender, first_defender);
+        assert_eq!(second.battle.attacker, second_attacker);
+        assert_eq!(second.battle.defender, second_defender);
     }
 
     #[test]
