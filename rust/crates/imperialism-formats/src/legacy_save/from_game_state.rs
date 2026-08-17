@@ -699,7 +699,7 @@ fn navy_dto(state: &GameState) -> LegacyNavyState {
         .enumerate()
         .map(|(ordinal, (id, _))| {
             (
-                *id,
+                id,
                 i16::try_from(ordinal).expect("ship ordinal fits a save short"),
             )
         })
