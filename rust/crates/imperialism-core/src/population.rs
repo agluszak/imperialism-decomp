@@ -1,4 +1,5 @@
 use crate::*;
+use enum_map::EnumMap;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 const STRIKE_RESOURCES: [ResourceKind; 3] = [
@@ -129,17 +130,17 @@ impl CityState {
         let baseline = self.population.baseline_labor;
         let skilled = i32::from(baseline.medium) + i32::from(baseline.high);
         let mut cycles = (skilled / 10) as i16;
-        let mut consumption = [0_i16; 4];
+        let mut consumption = StrikePhaseTable::from_array([0; 4]);
 
         while cycles != 0 {
-            let amount = &mut consumption[self.population.strike_phase.index()];
+            let amount = &mut consumption[self.population.strike_phase];
             *amount += 1;
             self.population.strike_phase = self.population.strike_phase.next();
             cycles -= 1;
         }
 
         let mut shortage = false;
-        for (resource, amount) in STRIKE_RESOURCES.into_iter().zip(consumption) {
+        for (resource, amount) in STRIKE_RESOURCES.into_iter().zip(consumption.into_array()) {
             if self.stockpile[resource] < amount {
                 self.stockpile[resource] = 0;
                 self.stockpile.verify_stocks();
@@ -646,7 +647,7 @@ impl<'de> Deserialize<'de> for PopulationAccumulator {
     }
 }
 
-#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Default, Deserialize, enum_map::Enum, Eq, PartialEq, Serialize)]
 #[repr(u8)]
 pub enum StrikePhase {
     #[default]
@@ -655,6 +656,8 @@ pub enum StrikePhase {
     Hardware,
     Arms,
 }
+
+type StrikePhaseTable<T> = EnumMap<StrikePhase, T>;
 
 impl StrikePhase {
     pub const fn from_retail(value: i16) -> Option<Self> {
@@ -668,9 +671,6 @@ impl StrikePhase {
     }
     pub const fn retail(self) -> i16 {
         self as i16
-    }
-    pub(crate) const fn index(self) -> usize {
-        self as usize
     }
     pub(crate) const fn next(self) -> Self {
         match self {
