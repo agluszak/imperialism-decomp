@@ -1,42 +1,40 @@
 use crate::{
     CivilianLocation, CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, Difficulty,
-    GameState, MajorNationId, MapMgr, MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState,
-    NationId, OceanZoneId, PendingActionKind, ProvinceId, ShipState, ShipType, TileFlags, TileId,
+    GameState, MajorNationId, MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState, NationId,
+    OceanZoneId, PendingActionKind, ProvinceId, ShipState, ShipType, TileFlags, TileId,
     TileOwnerTag, TurnSummary,
 };
 #[cfg(test)]
-use crate::{CivilianUnitId, MilitaryUnitId};
+use crate::{CivilianUnitId, MapMgr, MilitaryUnitId};
 
-impl MapMgr {
-    pub fn find_reachable_recruit_spawn_tile<'a>(
+impl GameState {
+    pub(crate) fn find_reachable_recruit_spawn_tile(
         &mut self,
-        civilians: impl IntoIterator<Item = &'a CivilianUnitState>,
         start: TileId,
         allow_active_flag_2: bool,
     ) -> Option<TileId> {
-        let civilians: Vec<_> = civilians.into_iter().collect();
-        let owner = self[start].owner_nation;
-        let geometry = self.geometry();
+        let owner = self.map[start].owner_nation;
+        let geometry = self.map.geometry();
         for tile in TileId::all() {
-            self[tile].recruit_search_visited = 0;
+            self.map[tile].recruit_search_visited = 0;
         }
         let mut pending = vec![start];
 
         while let Some(tile_id) = pending.pop() {
-            if self[tile_id].recruit_search_visited != 0 {
+            if self.map[tile_id].recruit_search_visited != 0 {
                 continue;
             }
-            self[tile_id].recruit_search_visited = 1;
-            if self[tile_id].owner_nation != owner {
+            self.map[tile_id].recruit_search_visited = 1;
+            if self.map[tile_id].owner_nation != owner {
                 continue;
             }
 
-            let occupied = civilians.iter().any(|civilian| {
+            let occupied = self.civilian_units.values().any(|civilian| {
                 civilian.location.tile() == Some(tile_id)
                     && Some(civilian.owner_nation) == owner.and_then(TileOwnerTag::nation)
             });
             if !occupied
-                && (!self[tile_id]
+                && (!self.map[tile_id]
                     .flags
                     .contains(TileFlags::RECRUITMENT_RESERVED)
                     || allow_active_flag_2)
@@ -83,8 +81,7 @@ impl GameState {
 
         if pending_delta > 0 {
             for _ in 0..pending_delta {
-                let Some(tile) = self.map.find_reachable_recruit_spawn_tile(
-                    self.civilian_units.values(),
+                let Some(tile) = self.find_reachable_recruit_spawn_tile(
                     home_tile,
                     unit_kind == CivilianUnitKind::Engineer,
                 ) else {
@@ -149,8 +146,7 @@ impl GameState {
             .home_tile
             .expect("opening civilians require a home town tile");
         let location = self
-            .map
-            .find_reachable_recruit_spawn_tile(self.civilian_units.values(), home, allow_reserved)
+            .find_reachable_recruit_spawn_tile(home, allow_reserved)
             .map(CivilianLocation::OnMap)
             .unwrap_or(CivilianLocation::OffMap);
         self.insert_idle_civilian(nation_id, kind, location);
@@ -314,7 +310,7 @@ impl GameState {
         if !crate::city::ship_creates_navy_object(ShipType::Frigate) {
             return;
         }
-        self.insert_ship_at_head(ShipState {
+        self.insert_ship(ShipState {
             ship_type: ShipType::Frigate,
             location,
             aggression: 0,
@@ -591,46 +587,49 @@ mod tests {
 
     #[test]
     fn follows_retail_depth_first_neighbor_order() {
-        let mut state = world();
         let geometry = MapGeometry::new(MapTopology::Wrapping);
         let start = geometry.tile(2, 10).unwrap();
         let first_neighbor = geometry
             .neighbor(start, crate::HexDirection::NorthEast)
             .unwrap();
-        state[start].owner_nation = Some(crate::TileOwnerTag::new(0));
-        state[first_neighbor].owner_nation = Some(crate::TileOwnerTag::new(0));
+        let mut state = game(start);
+        state.map[start].owner_nation = Some(crate::TileOwnerTag::new(0));
+        state.map[first_neighbor].owner_nation = Some(crate::TileOwnerTag::new(0));
+        state
+            .civilian_units
+            .insert(CivilianUnitId::new(1), civilian(1, 0, start));
 
         assert_eq!(
-            state.find_reachable_recruit_spawn_tile([civilian(1, 0, start)].iter(), start, false),
+            state.find_reachable_recruit_spawn_tile(start, false),
             Some(first_neighbor)
         );
     }
 
     #[test]
     fn active_flag_two_is_allowed_only_for_the_retail_unit_type() {
-        let mut state = world();
         let start = TileId::new(200);
-        state[start].owner_nation = Some(crate::TileOwnerTag::new(0));
-        state[start].flags = TileFlags::RECRUITMENT_RESERVED;
+        let mut state = game(start);
+        state.map[start].owner_nation = Some(crate::TileOwnerTag::new(0));
+        state.map[start].flags = TileFlags::RECRUITMENT_RESERVED;
 
+        assert_eq!(state.find_reachable_recruit_spawn_tile(start, false), None);
         assert_eq!(
-            state.find_reachable_recruit_spawn_tile([].iter(), start, false),
-            None
-        );
-        assert_eq!(
-            state.find_reachable_recruit_spawn_tile([].iter(), start, true),
+            state.find_reachable_recruit_spawn_tile(start, true),
             Some(start)
         );
     }
 
     #[test]
     fn occupancy_checks_the_tile_owner_not_an_unrelated_civilian() {
-        let mut state = world();
         let start = TileId::new(200);
-        state[start].owner_nation = Some(crate::TileOwnerTag::new(0));
+        let mut state = game(start);
+        state.map[start].owner_nation = Some(crate::TileOwnerTag::new(0));
+        state
+            .civilian_units
+            .insert(CivilianUnitId::new(1), civilian(1, 1, start));
 
         assert_eq!(
-            state.find_reachable_recruit_spawn_tile([civilian(1, 1, start)].iter(), start, false),
+            state.find_reachable_recruit_spawn_tile(start, false),
             Some(start)
         );
     }

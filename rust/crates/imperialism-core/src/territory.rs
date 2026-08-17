@@ -1,6 +1,6 @@
 use crate::{
     AiTargetState, ArmyMissionState, GameState, MajorNationId, MajorNationTable, MapMgr,
-    MinorNationId, MissionData, MissionState, NationId, Nations, ProvinceId, ResourceTable, TileId,
+    MinorNationId, MissionData, MissionState, NationId, ProvinceId, ResourceTable, TileId,
 };
 use indexmap::IndexSet;
 use serde::{Deserialize, Serialize};
@@ -280,17 +280,11 @@ impl GameState {
             );
         } else {
             let old_owner = MinorNationId::new(old_owner.get());
-            let Nations { majors, minors, .. } = &mut self.nations;
-            minors[old_owner]
+            self.nations.minors[old_owner]
                 .as_mut()
                 .expect("owned province requires its minor nation to be present")
-                .lose_province(
-                    province,
-                    &mut self.map,
-                    majors,
-                    &self.diplomacy,
-                    &mut self.civilian_units,
-                );
+                .lose_province(province);
+            self.handle_minor_province_loss(&linked_tiles, new_owner);
         }
 
         if let Some(new_owner) = MajorNationId::from_nation(new_owner) {
@@ -339,6 +333,72 @@ impl GameState {
                 .as_mut()
                 .expect("province owner change requires the destination minor nation")
                 .add_province(province);
+        }
+    }
+
+    fn handle_minor_province_loss(&mut self, linked_tiles: &[TileId], new_owner: NationId) {
+        for &tile in linked_tiles {
+            self.map[tile].secondary_owner_nation = None;
+        }
+
+        // `KillEnemyCiviliansIn`: developers at war are sent home; other enemy
+        // civilian orders are freed. The remaining foreign majors are then deported.
+        for &tile in linked_tiles {
+            for id in self.civilian_units.keys().copied().collect::<Vec<_>>() {
+                let Some(unit) = self.civilian_units.get(&id) else {
+                    continue;
+                };
+                let Some(owner) = MajorNationId::from_nation(unit.owner_nation) else {
+                    continue;
+                };
+                if unit.location.tile() != Some(tile)
+                    || unit.owner_nation == new_owner
+                    || self.diplomacy.relationships[new_owner][unit.owner_nation]
+                        != DiplomaticRelationship::War
+                {
+                    continue;
+                }
+                if unit.unit_type == crate::CivilianUnitKind::Developer {
+                    let home = self.nations.majors[owner]
+                        .common
+                        .home_tile
+                        .expect("foreign developer requires its owner's home town");
+                    self.civilian_units
+                        .get_mut(&id)
+                        .expect("civilian remained present")
+                        .location = crate::CivilianLocation::OnMap(home);
+                } else {
+                    self.civilian_units.shift_remove(&id);
+                }
+            }
+        }
+
+        for &tile in linked_tiles {
+            for id in self.civilian_units.keys().copied().collect::<Vec<_>>() {
+                let Some(unit) = self.civilian_units.get(&id) else {
+                    continue;
+                };
+                let Some(owner) = MajorNationId::from_nation(unit.owner_nation) else {
+                    continue;
+                };
+                if unit.location.tile() != Some(tile) || unit.owner_nation == new_owner {
+                    continue;
+                }
+                let home = self.nations.majors[owner]
+                    .common
+                    .home_tile
+                    .expect("deported civilian requires its owner's home town");
+                if let Some(destination) = self.find_reachable_recruit_spawn_tile(home, false) {
+                    let unit = self
+                        .civilian_units
+                        .get_mut(&id)
+                        .expect("civilian remained present");
+                    unit.order = crate::CivilianWorkOrder::Idle;
+                    unit.location = crate::CivilianLocation::OnMap(destination);
+                } else {
+                    self.civilian_units.shift_remove(&id);
+                }
+            }
         }
     }
 

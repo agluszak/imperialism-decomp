@@ -86,13 +86,9 @@ fn center_current_selection(
     ocean: &mut OceanView,
 ) {
     let tile = match mode {
-        MapInteractionMode::Civilian => civilian.and_then(|id| {
-            session
-                .game
-                .civilian_units()
-                .find(|(candidate, _)| *candidate == id)
-                .and_then(|(_, unit)| unit.location().tile())
-        }),
+        MapInteractionMode::Civilian => civilian
+            .and_then(|id| session.game.civilian_unit(id))
+            .and_then(|unit| unit.location().tile()),
         MapInteractionMode::Army => {
             army.and_then(|province| session.game.map().provinces[province].city_tile())
         }

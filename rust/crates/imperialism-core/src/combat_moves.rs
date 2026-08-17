@@ -2,6 +2,7 @@
 
 use crate::military_phase::{combat_class, tactical_category};
 use crate::*;
+use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
 const STACK_COMPOSITION: [i16; 16] = [0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 3, 0, 0, 3, 4, 5];
@@ -40,7 +41,7 @@ struct ArmyStack {
     sort_key: i16,
 }
 
-struct StationedChains {
+struct StationedUnits {
     by_province: ProvinceTable<Vec<MilitaryUnitId>>,
 }
 
@@ -51,19 +52,19 @@ impl GameState {
     /// The first would-be tactical battle is returned with the remaining stacks
     /// for the turn driver to store as [`crate::TurnContinuation::LandBattle`].
     pub fn do_combat_moves(&mut self) -> Option<CombatMovesContinuation> {
-        let mut chains = StationedChains::from_units(&self.military_units);
-        let stacks = self.form_stacks(&mut chains);
+        let mut stationed = StationedUnits::from_units(&self.military_units);
+        let stacks = self.form_stacks(&mut stationed);
         let owner_cache = self.normalized_owner_cache();
-        self.resolve_next_move(&mut chains, stacks, 0, owner_cache)
+        self.resolve_next_move(&mut stationed, stacks, 0, owner_cache)
     }
 
     pub(crate) fn resume_combat_moves(
         &mut self,
         continuation: CombatMovesContinuation,
     ) -> Option<CombatMovesContinuation> {
-        let mut chains = StationedChains::from_units(&self.military_units);
+        let mut stationed = StationedUnits::from_units(&self.military_units);
         self.resolve_next_move(
-            &mut chains,
+            &mut stationed,
             continuation.stacks,
             continuation.next_stack,
             continuation.owner_cache,
@@ -118,10 +119,10 @@ impl GameState {
             attacker_won,
         );
 
-        let mut chains = StationedChains::from_units(&self.military_units);
+        let mut stationed = StationedUnits::from_units(&self.military_units);
         if attacker_won {
             self.redistribute_losers(&defender_ids, battle.province, &owner_cache);
-            self.apply_uncontested_units(&mut chains, &attacker_ids);
+            self.apply_uncontested_units(&mut stationed, &attacker_ids);
             self.grow_stack_experience(&attacker_ids, EXPERIENCE_WINNER);
             self.grow_stack_experience(&defender_ids, EXPERIENCE_LOSER);
             let crate::turn_flow::TurnContinuation::LandBattle(continuation) =
@@ -131,7 +132,7 @@ impl GameState {
             };
             continuation.owner_cache[battle.province] = Some(stack.owner);
         } else {
-            self.relocate_stack_to_source(&mut chains, &stack, &attacker_ids);
+            self.relocate_stack_to_source(&mut stationed, &stack, &attacker_ids);
             self.grow_stack_experience(&attacker_ids, EXPERIENCE_LOSER);
             self.grow_stack_experience(&defender_ids, EXPERIENCE_WINNER);
         }
@@ -156,13 +157,10 @@ impl GameState {
         self.advance_turn(story_ids)
     }
 
-    fn form_stacks(&mut self, chains: &mut StationedChains) -> Vec<ArmyStack> {
-        let mut stacks = Vec::new();
+    fn form_stacks(&mut self, stationed: &mut StationedUnits) -> Vec<ArmyStack> {
+        let mut stacks = IndexMap::<(ProvinceId, NationId), ArmyStack>::new();
         for province in ProvinceId::all() {
-            let unit_ids = chains.by_province[province].clone();
-            let mut previous_target: Option<ProvinceId> = None;
-            let mut previous_owner: Option<NationId> = None;
-            let mut current_stack: Option<usize> = None;
+            let unit_ids = stationed.by_province[province].clone();
             for id in unit_ids {
                 let unit = self
                     .military_units
@@ -189,37 +187,28 @@ impl GameState {
                     continue;
                 };
 
-                let reuse = current_stack
-                    .filter(|_| previous_target == Some(dest) && previous_owner == Some(owner));
-                let stack_index = if let Some(stack_index) = reuse {
-                    stack_index
-                } else {
-                    let existing = stacks
-                        .iter()
-                        .position(|stack: &ArmyStack| stack.dest == dest && stack.owner == owner);
-                    let stack_index = if let Some(existing) = existing {
-                        existing
-                    } else {
-                        stacks.insert(
-                            0,
-                            ArmyStack {
-                                dest,
-                                owner,
-                                source: province,
-                                units: Vec::new(),
-                                sort_key: 0,
-                            },
-                        );
-                        0
-                    };
-                    previous_target = Some(dest);
-                    previous_owner = Some(owner);
-                    stack_index
-                };
-                stacks[stack_index].units.insert(0, id);
-                current_stack = Some(stack_index);
+                stacks
+                    .entry((dest, owner))
+                    .or_insert_with(|| ArmyStack {
+                        dest,
+                        owner,
+                        source: province,
+                        units: Vec::new(),
+                        sort_key: 0,
+                    })
+                    .units
+                    .push(id);
             }
         }
+
+        let mut stacks = stacks
+            .into_values()
+            .map(|mut stack| {
+                stack.units.reverse();
+                stack
+            })
+            .collect::<Vec<_>>();
+        stacks.reverse();
 
         for stack in &mut stacks {
             let mut min_class = 3_i16;
@@ -243,7 +232,7 @@ impl GameState {
 
     fn resolve_next_move(
         &mut self,
-        chains: &mut StationedChains,
+        stationed: &mut StationedUnits,
         stacks: Vec<ArmyStack>,
         mut next_stack: usize,
         mut owner_cache: ProvinceTable<Option<NationId>>,
@@ -253,10 +242,10 @@ impl GameState {
             next_stack += 1;
             let stack = &stacks[index];
             if owner_cache[stack.dest] == Some(stack.owner) {
-                self.apply_uncontested_stack(chains, stack);
+                self.apply_uncontested_stack(stationed, stack);
                 continue;
             }
-            if let Some(battle) = self.try_create_land_battle(chains, stack, &mut owner_cache) {
+            if let Some(battle) = self.try_create_land_battle(stationed, stack, &mut owner_cache) {
                 return Some(CombatMovesContinuation {
                     stacks,
                     next_stack,
@@ -271,7 +260,7 @@ impl GameState {
 
     fn try_create_land_battle(
         &mut self,
-        chains: &mut StationedChains,
+        stationed: &mut StationedUnits,
         stack: &ArmyStack,
         owner_cache: &mut ProvinceTable<Option<NationId>>,
     ) -> Option<PendingLandBattle> {
@@ -282,17 +271,19 @@ impl GameState {
                 continue;
             };
             if unit.order.target() == Some(stack.dest) {
-                our_units.insert(0, id);
+                our_units.push(id);
             }
         }
         if our_units.is_empty() {
             return None;
         }
+        let our_units = our_units.into_iter().rev().collect::<Vec<_>>();
 
-        let mut enemy_units = Vec::new();
-        for &id in &chains.by_province[stack.dest] {
-            enemy_units.insert(0, id);
-        }
+        let enemy_units = stationed.by_province[stack.dest]
+            .iter()
+            .rev()
+            .copied()
+            .collect::<Vec<_>>();
 
         let attacker_ids = our_units.clone();
         let defender_ids = enemy_units.clone();
@@ -309,7 +300,7 @@ impl GameState {
                 &defender_ids,
                 false,
             );
-            self.relocate_stack_to_source(chains, stack, &our_units);
+            self.relocate_stack_to_source(stationed, stack, &our_units);
             return None;
         }
         if !enemy_units.is_empty() {
@@ -333,28 +324,32 @@ impl GameState {
             &[],
             true,
         );
-        self.apply_uncontested_units(chains, &our_units);
+        self.apply_uncontested_units(stationed, &our_units);
         owner_cache[stack.dest] = Some(stack.owner);
         None
     }
 
-    fn apply_uncontested_stack(&mut self, chains: &mut StationedChains, stack: &ArmyStack) {
+    fn apply_uncontested_stack(&mut self, stationed: &mut StationedUnits, stack: &ArmyStack) {
         let units: Vec<_> = stack
             .units
             .iter()
             .copied()
             .filter(|id| self.military_units.contains_key(id))
             .collect();
-        self.apply_uncontested_units(chains, &units);
+        self.apply_uncontested_units(stationed, &units);
     }
 
-    fn apply_uncontested_units(&mut self, chains: &mut StationedChains, units: &[MilitaryUnitId]) {
+    fn apply_uncontested_units(
+        &mut self,
+        stationed: &mut StationedUnits,
+        units: &[MilitaryUnitId],
+    ) {
         for &id in units {
             let dest = self.military_units[&id]
                 .order
                 .target()
                 .expect("moving stack units have a destination");
-            self.move_unit_to(chains, id, dest);
+            self.move_unit_to(stationed, id, dest);
             set_unit_order(
                 self.military_units
                     .get_mut(&id)
@@ -367,7 +362,7 @@ impl GameState {
 
     fn relocate_stack_to_source(
         &mut self,
-        chains: &mut StationedChains,
+        stationed: &mut StationedUnits,
         stack: &ArmyStack,
         units: &[MilitaryUnitId],
     ) {
@@ -380,15 +375,20 @@ impl GameState {
                 None,
             );
             if self.military_units[&id].stationed_province != Some(stack.source) {
-                self.move_unit_to(chains, id, stack.source);
+                self.move_unit_to(stationed, id, stack.source);
             }
         }
     }
 
-    fn move_unit_to(&mut self, chains: &mut StationedChains, id: MilitaryUnitId, dest: ProvinceId) {
+    fn move_unit_to(
+        &mut self,
+        stationed: &mut StationedUnits,
+        id: MilitaryUnitId,
+        dest: ProvinceId,
+    ) {
         let old_province = self.military_units[&id].stationed_province;
-        chains.unlink(id, old_province);
-        chains.link(&self.military_units, id, Some(dest));
+        stationed.unlink(id, old_province);
+        stationed.link(&self.military_units, id, Some(dest));
         let unit = self
             .military_units
             .get_mut(&id)
@@ -522,19 +522,19 @@ pub(crate) fn stationed_chain_ids(
     units: &indexmap::IndexMap<MilitaryUnitId, MilitaryUnitState>,
     province: ProvinceId,
 ) -> Vec<MilitaryUnitId> {
-    let chains = StationedChains::from_units(units);
-    chains.by_province[province].clone()
+    let stationed = StationedUnits::from_units(units);
+    stationed.by_province[province].clone()
 }
 
-impl StationedChains {
+impl StationedUnits {
     fn from_units(units: &indexmap::IndexMap<MilitaryUnitId, MilitaryUnitState>) -> Self {
-        let mut chains = Self {
+        let mut stationed = Self {
             by_province: ProvinceTable::default(),
         };
         for (&id, unit) in units {
-            chains.link(units, id, unit.stationed_province);
+            stationed.link(units, id, unit.stationed_province);
         }
-        chains
+        stationed
     }
 
     fn unlink(&mut self, id: MilitaryUnitId, province: Option<ProvinceId>) {

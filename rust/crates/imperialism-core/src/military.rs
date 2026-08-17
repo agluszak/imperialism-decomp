@@ -1,5 +1,4 @@
 use crate::city::ship_stock_cap;
-use crate::ids::ObjectId;
 use crate::*;
 use indexmap::{IndexMap, IndexSet};
 use serde::{Deserialize, Serialize};
@@ -12,41 +11,28 @@ const NAVY_ARMS_BY_SHIP_TYPE: ShipTypeTable<i32> =
 /// Shared process-local identity allocator for retail pointer-like objects.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
-pub(crate) struct ObjectIdAllocator(u32);
+pub struct ObjectIdAllocator(u32);
 
 impl ObjectIdAllocator {
-    pub(crate) fn from_existing(
-        ships: impl Iterator<Item = ShipId>,
-        forces: impl Iterator<Item = TaskForceId>,
-    ) -> Self {
-        Self(
-            ships
-                .map(|id| id.object().get())
-                .chain(forces.map(|id| id.object().get()))
-                .max()
-                .unwrap_or(0),
-        )
-    }
-
-    fn next(&mut self) -> ObjectId {
+    fn next(&mut self) -> u32 {
         self.0 += 1;
-        ObjectId::new(self.0)
+        self.0
     }
 
-    pub(crate) fn ship(&mut self) -> ShipId {
-        ShipId::from_object(self.next())
+    pub fn ship(&mut self) -> ShipId {
+        ShipId(self.next())
     }
 
-    pub(crate) fn task_force(&mut self) -> TaskForceId {
-        TaskForceId::from_object(self.next())
+    pub fn task_force(&mut self) -> TaskForceId {
+        TaskForceId(self.next())
     }
 
-    pub(crate) fn admiral(&mut self) -> AdmiralId {
-        AdmiralId::from_object(self.next())
+    pub fn admiral(&mut self) -> AdmiralId {
+        AdmiralId(self.next())
     }
 
-    pub(crate) fn mission(&mut self) -> MissionId {
-        MissionId::from_object(self.next())
+    pub fn mission(&mut self) -> MissionId {
+        MissionId(self.next())
     }
 }
 
@@ -128,10 +114,10 @@ impl GameState {
         common.treasury -= charge;
     }
 
-    /// Prepends a ship the way `TShip::TShip` prepends `g_pNavyPrimaryOrderListHead`.
-    pub(crate) fn insert_ship_at_head(&mut self, ship: ShipState) -> ShipId {
+    /// Inserts a ship. Retail newest-first traversal is explicit at its callers.
+    pub(crate) fn insert_ship(&mut self, ship: ShipState) -> ShipId {
         let id = self.object_ids.ship();
-        self.ships.shift_insert(0, id, ship);
+        self.ships.insert(id, ship);
         id
     }
 

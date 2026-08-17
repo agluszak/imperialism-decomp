@@ -676,6 +676,7 @@ fn army_dto(
     let unit_ordinals = army
         .units
         .iter()
+        .rev()
         .map(|id| {
             let index = military
                 .iter()
@@ -693,7 +694,7 @@ fn army_dto(
 
 fn navy_dto(state: &GameState) -> LegacyNavyState {
     let ships: Vec<LegacyShip> = state
-        .ships()
+        .ships_in_retail_order()
         .map(|(_, ship)| LegacyShip {
             ship_type: ship.ship_type as i16,
             aggression: ship.aggression,
@@ -708,7 +709,7 @@ fn navy_dto(state: &GameState) -> LegacyNavyState {
         .collect();
     let ship_count = i16::try_from(ships.len()).expect("ship count fits a save short");
     let ship_ordinals: std::collections::HashMap<ShipId, i16> = state
-        .ships()
+        .ships_in_retail_order()
         .enumerate()
         .map(|(ordinal, (id, _))| {
             (
@@ -718,7 +719,7 @@ fn navy_dto(state: &GameState) -> LegacyNavyState {
         })
         .collect();
     let admirals = state
-        .admirals()
+        .admirals_in_retail_order()
         .map(|(_, admiral)| LegacyAdmiral {
             nation: i16::from(admiral.nation.get()),
             name: admiral.name.clone(),

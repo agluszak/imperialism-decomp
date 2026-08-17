@@ -182,10 +182,7 @@ impl GameState {
             .common
             .home_tile
             .expect("overseas-developer pending requires a home tile");
-        let Some(tile) =
-            self.map
-                .find_reachable_recruit_spawn_tile(self.civilian_units.values(), home, false)
-        else {
+        let Some(tile) = self.find_reachable_recruit_spawn_tile(home, false) else {
             return;
         };
         let id = self.unit_ids.next_civilian();
@@ -424,7 +421,7 @@ impl GameState {
             let location = self
                 .first_port_zone_for_nation(nation_id)
                 .expect("navy-growth pending requires a port zone for the nation");
-            Some(self.insert_ship_at_head(ShipState {
+            Some(self.insert_ship(ShipState {
                 ship_type,
                 location,
                 aggression: 1,
@@ -442,10 +439,7 @@ impl GameState {
         *count = count.wrapping_add(1);
 
         let admiral = self.object_ids.admiral();
-        // Retail links new admirals at the head of its secondary navy list; this
-        // list order is serialized and therefore remains a positional semantic.
-        self.admirals.shift_insert(
-            0,
+        self.admirals.insert(
             admiral,
             AdmiralState {
                 nation: nation_id,

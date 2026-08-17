@@ -3,6 +3,7 @@ use super::conversions::*;
 use super::model::*;
 use super::*;
 use imperialism_core::*;
+use indexmap::IndexMap;
 
 fn optional_region_id(value: i8) -> Option<RegionId> {
     optional_u8(value).map(RegionId::new)
@@ -282,6 +283,7 @@ fn army_mission_state(
     let units = mission
         .unit_ordinals
         .iter()
+        .rev()
         .map(|ordinal| {
             let unit = &military_units[(*ordinal - 1) as usize];
             MilitaryUnitId::from_serialized(unit.persistent_id)
@@ -329,12 +331,15 @@ fn navy_mission_state(mission: &LegacyNavyMission) -> NavyMissionState {
     }
 }
 
-fn ship_states(navy: &LegacyNavyState) -> Vec<(ShipId, ShipState)> {
+fn ship_states(
+    navy: &LegacyNavyState,
+    object_ids: &mut ObjectIdAllocator,
+) -> IndexMap<ShipId, ShipState> {
     navy.ships
         .iter()
-        .enumerate()
-        .map(|(index, ship)| {
-            let id = ShipId::new(index);
+        .rev()
+        .map(|ship| {
+            let id = object_ids.ship();
             (
                 id,
                 ShipState {
@@ -356,15 +361,26 @@ fn ship_states(navy: &LegacyNavyState) -> Vec<(ShipId, ShipState)> {
         .collect()
 }
 
-fn admiral_states(navy: &LegacyNavyState, ship_count: usize) -> Vec<AdmiralState> {
+fn admiral_states(
+    navy: &LegacyNavyState,
+    ship_ids: &[ShipId],
+    object_ids: &mut ObjectIdAllocator,
+) -> IndexMap<AdmiralId, AdmiralState> {
     navy.admirals
         .iter()
-        .map(|admiral| AdmiralState {
-            nation: nation_id_from_retail_i16(admiral.nation),
-            name: admiral.name.clone(),
-            experience: admiral.experience,
-            ship: (admiral.ship_index >= 0 && (admiral.ship_index as usize) < ship_count)
-                .then(|| ShipId::new(admiral.ship_index as usize)),
+        .rev()
+        .map(|admiral| {
+            (
+                object_ids.admiral(),
+                AdmiralState {
+                    nation: nation_id_from_retail_i16(admiral.nation),
+                    name: admiral.name.clone(),
+                    experience: admiral.experience,
+                    ship: (admiral.ship_index >= 0)
+                        .then(|| ship_ids.get(admiral.ship_index as usize).copied())
+                        .flatten(),
+                },
+            )
         })
         .collect()
 }
@@ -748,13 +764,15 @@ impl LegacySaveV62 {
             "semantic projection of retail navy task forces is not implemented"
         );
 
-        let ships = ship_states(&self.navy);
-        let admirals = admiral_states(&self.navy, ships.len());
+        let mut object_ids = ObjectIdAllocator::default();
+        let ships = ship_states(&self.navy, &mut object_ids);
+        let ship_ids = ships.keys().rev().copied().collect::<Vec<_>>();
+        let admirals = admiral_states(&self.navy, &ship_ids, &mut object_ids);
 
         let mut minors = MinorNationTable::default();
-        let mut military_units = Vec::new();
-        let mut civilian_units = Vec::new();
-        let mut missions = Vec::new();
+        let mut military_units = IndexMap::new();
+        let mut civilian_units = IndexMap::new();
+        let mut missions = IndexMap::new();
         let mut pending = PendingWorkState::default();
         let map = self.map.map_mgr();
         let map_view_origin = TileId::new(self.map.view_origin_tile as u16);
@@ -828,7 +846,8 @@ impl LegacySaveV62 {
             );
             if let LegacyMajorNationState::Auto(auto) = nation {
                 for mission in &auto.missions {
-                    missions.push(
+                    missions.insert(
+                        object_ids.mission(),
                         mission.mission_state(nation_id, &great_power.country.military_units),
                     );
                 }
@@ -890,9 +909,10 @@ impl LegacySaveV62 {
             nations: Nations::new(majors, minors),
             military_units,
             civilian_units,
+            object_ids,
             ships,
             admirals,
-            task_forces: Vec::new(),
+            task_forces: IndexMap::new(),
             missions,
             news: NewsState::default(),
             pending,

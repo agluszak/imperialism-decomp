@@ -265,15 +265,15 @@ mod tests {
 
         let next = parts.unit_ids.current();
         parts.unit_ids = UnitIdAllocator::from_retail(next + 4);
-        parts.military_units.push((
+        parts.military_units.insert(
             MilitaryUnitId::from_serialized(next + 1),
             redeploy_unit(first.2, MilitaryUnitKind::Regulars, first.0, first.1, 500),
-        ));
-        parts.military_units.push((
+        );
+        parts.military_units.insert(
             MilitaryUnitId::from_serialized(next + 2),
             garrison_unit(first.3, MilitaryUnitKind::Militia, first.1, 100),
-        ));
-        parts.military_units.push((
+        );
+        parts.military_units.insert(
             MilitaryUnitId::from_serialized(next + 3),
             redeploy_unit(
                 second.2,
@@ -282,11 +282,11 @@ mod tests {
                 second.1,
                 500,
             ),
-        ));
-        parts.military_units.push((
+        );
+        parts.military_units.insert(
             MilitaryUnitId::from_serialized(next + 4),
             garrison_unit(second.3, MilitaryUnitKind::Militia, second.1, 100),
-        ));
+        );
 
         parts.turn = TurnState::new(
             parts.turn.scenario_map,

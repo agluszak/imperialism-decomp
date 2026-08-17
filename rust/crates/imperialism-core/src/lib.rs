@@ -122,10 +122,10 @@ pub use market::{
     DealBookEntryKind, ProcessedTradeCommodity, ProcessedTradeCommodityTable, TradeCommodity,
     TradeCommodityTable, TradeDealBookEntry, TradeMarketRow, TradeMarketState,
 };
-pub(crate) use military::ObjectIdAllocator;
 pub use military::{
     AdmiralState, ArmyMissionState, AttackMissionState, MissionData, MissionState,
-    NavyMissionState, ShipState, TaskForceOrder, TaskForceState, TaskForceTarget,
+    NavyMissionState, ObjectIdAllocator, ShipState, TaskForceOrder, TaskForceState,
+    TaskForceTarget,
 };
 pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,

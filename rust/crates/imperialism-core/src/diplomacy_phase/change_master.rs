@@ -173,11 +173,7 @@ impl GameState {
                 self.civilian_units.shift_remove(&id);
                 continue;
             };
-            if let Some(destination) = self.map.find_reachable_recruit_spawn_tile(
-                self.civilian_units.values(),
-                home,
-                false,
-            ) {
+            if let Some(destination) = self.find_reachable_recruit_spawn_tile(home, false) {
                 self.civilian_units
                     .get_mut(&id)
                     .expect("civilian remains present")

@@ -260,9 +260,8 @@ fn apply_civilian_tile_order(
     };
     let Some(kind) = session
         .game
-        .civilian_units()
-        .find(|(candidate, _)| *candidate == unit)
-        .map(|(_, candidate)| candidate.unit_type())
+        .civilian_unit(unit)
+        .map(|candidate| candidate.unit_type())
     else {
         *civilian = None;
         return false;

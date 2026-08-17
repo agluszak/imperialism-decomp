@@ -224,7 +224,7 @@ impl GameState {
     /// authoritative navy-order records in core, so the retail rebuild becomes
     /// a rebuild of only ships which are not already in the committed queue.
     fn make_sure_all_ships_have_orders(&mut self) {
-        for force in self.task_forces.keys().copied().collect::<Vec<_>>() {
+        for force in self.task_forces.keys().rev().copied().collect::<Vec<_>>() {
             if self.task_forces[&force].order == TaskForceOrder::None {
                 self.free_task_force(force);
             }
@@ -313,7 +313,7 @@ impl GameState {
     ) -> Option<NavyOrdersContinuation> {
         self.carry_out_navy_orders_from(
             NavyPass::PatrolAgainstBlockade,
-            self.task_forces.keys().copied().collect(),
+            self.task_forces.keys().rev().copied().collect(),
             0,
             0,
             allow_tactical_battles,
@@ -397,14 +397,14 @@ impl GameState {
                 return None;
             };
             pass = next;
-            forces = self.task_forces.keys().copied().collect();
+            forces = self.task_forces.keys().rev().copied().collect();
             outer = 0;
             inner = 0;
         }
     }
 
     fn execute_navy_order_pass(&mut self, pass: NavyPass) {
-        for id in self.task_forces.keys().copied().collect::<Vec<_>>() {
+        for id in self.task_forces.keys().rev().copied().collect::<Vec<_>>() {
             if self.task_forces[&id].defeated {
                 continue;
             }
@@ -1152,10 +1152,7 @@ impl GameState {
         ship: ShipId,
     ) -> TaskForceId {
         let id = self.object_ids.task_force();
-        // `TTaskForce` links itself at `orderQueueHead`; naval continuation
-        // traverses this queue, so its head position is retail state.
-        self.task_forces.shift_insert(
-            0,
+        self.task_forces.insert(
             id,
             TaskForceState {
                 // `TTaskForce(TZone*, short)` seeds aggression at 1, then

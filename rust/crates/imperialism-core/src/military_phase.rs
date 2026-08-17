@@ -79,7 +79,7 @@ impl GameState {
             match &mission.data {
                 MissionData::DefendProvince { province, army } => {
                     let province = *province;
-                    let units: Vec<_> = army.units.iter().copied().collect();
+                    let units: Vec<_> = army.units.iter().rev().copied().collect();
                     self.redeploy_units_not_stationed_in(&units, province);
                 }
                 MissionData::AttackProvince(attack) => {
@@ -116,7 +116,7 @@ impl GameState {
         };
 
         let mut projected = ActionClassScores::default();
-        for id in &attack.army.units {
+        for id in attack.army.units.iter().rev() {
             let Some(unit) = self.military_units.get(id) else {
                 continue;
             };
@@ -136,7 +136,7 @@ impl GameState {
             && let Some(owner) = self.map.provinces[attack.target_province].owner()
         {
             if self.war_stamp_stale(nation, owner) {
-                let units: Vec<_> = attack.army.units.iter().copied().collect();
+                let units: Vec<_> = attack.army.units.iter().rev().copied().collect();
                 self.redeploy_units_stationed_in(&units, present, attack.target_province);
             } else if !self.at_war(nation, owner)
                 && let Some(major) = MajorNationId::from_nation(nation)
@@ -149,7 +149,7 @@ impl GameState {
             }
         }
 
-        let units: Vec<_> = attack.army.units.iter().copied().collect();
+        let units: Vec<_> = attack.army.units.iter().rev().copied().collect();
         self.redeploy_units_not_stationed_in(&units, present);
     }
 

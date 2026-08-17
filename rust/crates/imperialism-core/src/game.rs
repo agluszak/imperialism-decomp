@@ -17,7 +17,6 @@ pub struct GameState {
     pub(crate) nations: Nations,
     pub(crate) military_units: IndexMap<MilitaryUnitId, MilitaryUnitState>,
     pub(crate) civilian_units: IndexMap<CivilianUnitId, CivilianUnitState>,
-    #[serde(default)]
     pub(crate) object_ids: ObjectIdAllocator,
     pub(crate) ships: IndexMap<ShipId, ShipState>,
     pub(crate) admirals: IndexMap<AdmiralId, AdmiralState>,
@@ -49,12 +48,13 @@ pub struct GameStateParts {
     pub technology: TechnologyState,
     pub diplomacy: DiplomacyState,
     pub nations: Nations,
-    pub military_units: Vec<(MilitaryUnitId, MilitaryUnitState)>,
-    pub civilian_units: Vec<(CivilianUnitId, CivilianUnitState)>,
-    pub ships: Vec<(ShipId, ShipState)>,
-    pub admirals: Vec<AdmiralState>,
-    pub task_forces: Vec<(TaskForceId, TaskForceState)>,
-    pub missions: Vec<MissionState>,
+    pub military_units: IndexMap<MilitaryUnitId, MilitaryUnitState>,
+    pub civilian_units: IndexMap<CivilianUnitId, CivilianUnitState>,
+    pub object_ids: ObjectIdAllocator,
+    pub ships: IndexMap<ShipId, ShipState>,
+    pub admirals: IndexMap<AdmiralId, AdmiralState>,
+    pub task_forces: IndexMap<TaskForceId, TaskForceState>,
+    pub missions: IndexMap<MissionId, MissionState>,
     pub news: NewsState,
     pub pending: PendingWorkState,
     pub battle_reports: Vec<crate::BattleReport>,
@@ -64,20 +64,6 @@ pub struct GameStateParts {
 impl GameState {
     /// Assembles authoritative state from loader-built parts.
     pub fn from_parts(parts: GameStateParts) -> Self {
-        let mut object_ids = ObjectIdAllocator::from_existing(
-            parts.ships.iter().map(|(id, _)| *id),
-            parts.task_forces.iter().map(|(id, _)| *id),
-        );
-        let admirals = parts
-            .admirals
-            .into_iter()
-            .map(|admiral| (object_ids.admiral(), admiral))
-            .collect();
-        let missions = parts
-            .missions
-            .into_iter()
-            .map(|mission| (object_ids.mission(), mission))
-            .collect();
         Self {
             turn: parts.turn,
             unit_ids: parts.unit_ids,
@@ -89,13 +75,13 @@ impl GameState {
             technology: parts.technology,
             diplomacy: parts.diplomacy,
             nations: parts.nations,
-            military_units: parts.military_units.into_iter().collect(),
-            civilian_units: parts.civilian_units.into_iter().collect(),
-            object_ids,
-            ships: parts.ships.into_iter().collect(),
-            admirals,
-            task_forces: parts.task_forces.into_iter().collect(),
-            missions,
+            military_units: parts.military_units,
+            civilian_units: parts.civilian_units,
+            object_ids: parts.object_ids,
+            ships: parts.ships,
+            admirals: parts.admirals,
+            task_forces: parts.task_forces,
+            missions: parts.missions,
             news: parts.news,
             pending: parts.pending,
             battle_reports: parts.battle_reports,
@@ -163,12 +149,37 @@ impl GameState {
         self.ships.iter().map(|(&id, ship)| (id, ship))
     }
 
+    /// Retail's primary ship list, whose newest link is visited first.
+    pub fn ships_in_retail_order(&self) -> impl ExactSizeIterator<Item = (ShipId, &ShipState)> {
+        self.ships.iter().rev().map(|(&id, ship)| (id, ship))
+    }
+
     pub fn admirals(&self) -> impl ExactSizeIterator<Item = (AdmiralId, &AdmiralState)> {
         self.admirals.iter().map(|(&id, admiral)| (id, admiral))
     }
 
+    /// Retail's secondary admiral list, whose newest link is visited first.
+    pub fn admirals_in_retail_order(
+        &self,
+    ) -> impl ExactSizeIterator<Item = (AdmiralId, &AdmiralState)> {
+        self.admirals
+            .iter()
+            .rev()
+            .map(|(&id, admiral)| (id, admiral))
+    }
+
     pub fn task_forces(&self) -> impl ExactSizeIterator<Item = (TaskForceId, &TaskForceState)> {
         self.task_forces.iter().map(|(&id, force)| (id, force))
+    }
+
+    /// Retail's order queue, whose newest force is traversed first.
+    pub fn task_forces_in_retail_order(
+        &self,
+    ) -> impl ExactSizeIterator<Item = (TaskForceId, &TaskForceState)> {
+        self.task_forces
+            .iter()
+            .rev()
+            .map(|(&id, force)| (id, force))
     }
 
     pub fn missions(&self) -> impl ExactSizeIterator<Item = (MissionId, &MissionState)> {

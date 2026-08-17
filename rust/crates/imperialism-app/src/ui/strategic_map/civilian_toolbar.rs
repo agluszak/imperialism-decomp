@@ -144,12 +144,9 @@ fn sync_civilian_toolbar(
     let Ok(mut page) = pages.single_mut() else {
         return;
     };
-    let unit = selected.civilian.and_then(|id| {
-        session
-            .game
-            .civilian_units()
-            .find(|(candidate, _)| *candidate == id)
-    });
+    let unit = selected
+        .civilian
+        .and_then(|id| session.game.civilian_unit(id).map(|unit| (id, unit)));
     let position = if selected.mode == MapInteractionMode::Civilian {
         CIVILIAN_PAGE_VISIBLE
     } else {

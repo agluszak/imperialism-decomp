@@ -242,88 +242,8 @@ pub struct MinorNation {
 
 impl MinorNation {
     /// Retail `TMinor::LoseProvince`.
-    pub(crate) fn lose_province(
-        &mut self,
-        province: ProvinceId,
-        map: &mut MapMgr,
-        major_nations: &MajorNationTable<MajorNation>,
-        diplomacy: &DiplomacyState,
-        civilian_units: &mut IndexMap<CivilianUnitId, CivilianUnitState>,
-    ) {
+    pub(crate) fn lose_province(&mut self, province: ProvinceId) {
         self.common.lose_province(province);
-        let new_owner = map.provinces[province]
-            .owner()
-            .expect("lost province requires its newly assigned owner");
-        let linked_tiles = map.provinces[province].linked_tiles.clone();
-
-        for &tile in &linked_tiles {
-            map[tile].secondary_owner_nation = None;
-        }
-
-        // `KillEnemyCiviliansIn`: developers at war are sent home; the other
-        // enemy civilian orders are freed. The following deport pass then acts
-        // on every remaining foreign major, matching includeAllPolicyTargets=1.
-        for &tile in &linked_tiles {
-            let ids: Vec<_> = civilian_units.keys().copied().collect();
-            for id in ids {
-                let Some(unit) = civilian_units.get(&id) else {
-                    continue;
-                };
-                let Some(owner) = MajorNationId::from_nation(unit.owner_nation) else {
-                    continue;
-                };
-                if unit.location.tile() != Some(tile)
-                    || unit.owner_nation == new_owner
-                    || diplomacy.relationships[new_owner][unit.owner_nation]
-                        != DiplomaticRelationship::War
-                {
-                    continue;
-                }
-                if unit.unit_type == CivilianUnitKind::Developer {
-                    civilian_units
-                        .get_mut(&id)
-                        .expect("civilian remained present")
-                        .location = CivilianLocation::OnMap(
-                        major_nations[owner]
-                            .common
-                            .home_tile
-                            .expect("foreign developer requires its owner's home town"),
-                    );
-                } else {
-                    civilian_units.shift_remove(&id);
-                }
-            }
-        }
-
-        for &tile in &linked_tiles {
-            let ids: Vec<_> = civilian_units.keys().copied().collect();
-            for id in ids {
-                let Some(unit) = civilian_units.get(&id) else {
-                    continue;
-                };
-                let Some(owner) = MajorNationId::from_nation(unit.owner_nation) else {
-                    continue;
-                };
-                if unit.location.tile() != Some(tile) || unit.owner_nation == new_owner {
-                    continue;
-                }
-                let home = major_nations[owner]
-                    .common
-                    .home_tile
-                    .expect("deported civilian requires its owner's home town");
-                if let Some(destination) =
-                    map.find_reachable_recruit_spawn_tile(civilian_units.values(), home, false)
-                {
-                    let unit = civilian_units
-                        .get_mut(&id)
-                        .expect("civilian remained present");
-                    unit.order = CivilianWorkOrder::Idle;
-                    unit.location = CivilianLocation::OnMap(destination);
-                } else {
-                    civilian_units.shift_remove(&id);
-                }
-            }
-        }
     }
 
     /// Retail `TMinor::AddProvince`.

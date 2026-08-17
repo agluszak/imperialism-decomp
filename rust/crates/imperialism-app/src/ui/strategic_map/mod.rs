@@ -396,9 +396,8 @@ pub(super) fn draw_city_site_selection(
 
 fn draw_rail_order_selection(state: &GameState, unit: CivilianUnitId, viewport: &mut [u8]) {
     let Some(origin) = state
-        .civilian_units()
-        .find(|(candidate, _)| *candidate == unit)
-        .and_then(|(_, candidate)| candidate.location().tile())
+        .civilian_unit(unit)
+        .and_then(|candidate| candidate.location().tile())
     else {
         return;
     };
