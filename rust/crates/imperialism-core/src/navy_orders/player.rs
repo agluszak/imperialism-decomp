@@ -134,9 +134,7 @@ impl GameState {
             return;
         };
         let Some(ship_id) = entry.ships.iter().find_map(|(&ship_id, &selected)| {
-            let Some(ship) = self.ship(ship_id) else {
-                return None;
-            };
+            let ship = self.ship(ship_id)?;
             (toolbar_bucket(ship.ship_type) == Some(class as usize) && selected != selecting)
                 .then_some(ship_id)
         }) else {

@@ -296,6 +296,7 @@ impl GameState {
             .order = order;
     }
 
+    #[cfg(test)]
     pub(crate) fn carry_out_navy_orders(&mut self) -> Option<NavyOrdersContinuation> {
         self.carry_out_navy_orders_with_tactical_battles(true)
     }
@@ -1212,10 +1213,10 @@ impl GameState {
         let was_flagship = self
             .task_force(force)
             .is_some_and(|force| force.flagship == Some(ship));
-        if let Some(force) = self.task_force_mut(force) {
-            if force.ships.contains_key(&ship) {
-                force.ships.shift_remove(&ship);
-            }
+        if let Some(force) = self.task_force_mut(force)
+            && force.ships.contains_key(&ship)
+        {
+            force.ships.shift_remove(&ship);
         }
         if was_flagship {
             self.elect_task_force_flagship(force);
