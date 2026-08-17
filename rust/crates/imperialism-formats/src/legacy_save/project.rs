@@ -1554,11 +1554,6 @@ fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
                             .collect(),
                     }
                 }),
-                marker_pixel_x: 0,
-                marker_pixel_y: 0,
-                placed: false,
-                marker_sprite: 0,
-                list_ordinal: 0,
             })
         })
         .collect()

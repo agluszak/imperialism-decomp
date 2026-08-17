@@ -910,11 +910,6 @@ mod tests {
                     children: Vec::new(),
                 },
             ],
-            marker_pixel_x: 0,
-            marker_pixel_y: 0,
-            placed: false,
-            marker_sprite: 0,
-            list_ordinal: 0,
         });
         state.turn.phase = crate::PhaseCode::DIPLOMACY_OFFER;
         assert_eq!(state.advance_turn(&[]), crate::TurnStop::PostCombatReports);
@@ -1048,11 +1043,6 @@ mod tests {
                     children: Vec::new(),
                 },
             ],
-            marker_pixel_x: 0,
-            marker_pixel_y: 0,
-            placed: false,
-            marker_sprite: 0,
-            list_ordinal: 0,
         });
         assert!(state.battle_reports_pending());
     }

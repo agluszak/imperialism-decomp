@@ -907,11 +907,6 @@ mod tests {
                     children: Vec::new(),
                 },
             ],
-            marker_pixel_x: 0,
-            marker_pixel_y: 0,
-            placed: false,
-            marker_sprite: 0,
-            list_ordinal: 0,
         });
         let mut templates = filler_table();
         templates[1] = -0x19;

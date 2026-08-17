@@ -22,7 +22,14 @@ enum BattleReportStep {
 }
 
 #[derive(Component)]
-struct BattleReportField(&'static str);
+enum BattleReportField {
+    Result,
+    Location,
+    FriendlyAdmiral,
+    EnemyAdmiral,
+    FriendlyShips,
+    EnemyShips,
+}
 
 #[derive(Component)]
 struct DetailRoot;
@@ -73,16 +80,14 @@ fn bind_battle_report(
         .insert((BattleReportStep::Next, ActivateOnPress))
         .observe(on_battle_report_step);
     for (tag, field) in [
-        (fourcc!("resu"), "resu"),
-        (fourcc!("loca"), "loca"),
-        (fourcc!("fadm"), "fadm"),
-        (fourcc!("eadm"), "eadm"),
-        (fourcc!("fshp"), "fshp"),
-        (fourcc!("eshp"), "eshp"),
+        (fourcc!("resu"), BattleReportField::Result),
+        (fourcc!("loca"), BattleReportField::Location),
+        (fourcc!("fadm"), BattleReportField::FriendlyAdmiral),
+        (fourcc!("eadm"), BattleReportField::EnemyAdmiral),
+        (fourcc!("fshp"), BattleReportField::FriendlyShips),
+        (fourcc!("eshp"), BattleReportField::EnemyShips),
     ] {
-        commands
-            .entity(tree.find(*root, tag))
-            .insert(BattleReportField(field));
+        commands.entity(tree.find(*root, tag)).insert(field);
     }
 }
 
@@ -110,24 +115,23 @@ fn project_battle_report(
         BattleReportLocation::Zone(id) => format!("zone {}", id.get()),
     };
     for (field, mut text) in &mut fields {
-        text.0 = match field.0 {
-            "resu" => report.sides[0].overlay.clone(),
-            "loca" => location.clone(),
-            "fadm" => report.sides[0].name.clone(),
-            "eadm" => report.sides[1].name.clone(),
-            "fshp" => report.sides[0]
+        text.0 = match field {
+            BattleReportField::Result => report.sides[0].overlay.clone(),
+            BattleReportField::Location => location.clone(),
+            BattleReportField::FriendlyAdmiral => report.sides[0].name.clone(),
+            BattleReportField::EnemyAdmiral => report.sides[1].name.clone(),
+            BattleReportField::FriendlyShips => report.sides[0]
                 .children
                 .iter()
                 .map(|row| row.name.as_str())
                 .collect::<Vec<_>>()
                 .join("\n"),
-            "eshp" => report.sides[1]
+            BattleReportField::EnemyShips => report.sides[1]
                 .children
                 .iter()
                 .map(|row| row.name.as_str())
                 .collect::<Vec<_>>()
                 .join("\n"),
-            _ => continue,
         };
     }
 }
