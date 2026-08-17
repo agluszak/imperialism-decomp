@@ -388,7 +388,6 @@ impl GameState {
                 let id = self.unit_ids.next_military();
                 let experience = if experienced { 100 } else { 0 };
                 let unit = MilitaryUnitState {
-                    id,
                     nation: nation_id,
                     unit_type: unit_kind,
                     stationed_province: Some(home_province),

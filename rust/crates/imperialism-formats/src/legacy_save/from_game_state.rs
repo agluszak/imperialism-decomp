@@ -27,12 +27,12 @@ impl LegacySaveV62 {
             let military = state
                 .military_units()
                 .filter(|(_, unit)| unit.nation() == major_id.nation())
-                .map(|(_, unit)| unit.clone())
+                .map(|(id, unit)| (id, unit.clone()))
                 .collect::<Vec<_>>();
             let civilians = state
                 .civilian_units()
                 .filter(|(_, unit)| unit.nation() == major_id.nation())
-                .map(|(_, unit)| unit.clone())
+                .map(|(id, unit)| (id, unit.clone()))
                 .collect::<Vec<_>>();
             let missions = state
                 .missions()
@@ -62,7 +62,7 @@ impl LegacySaveV62 {
             let military = state
                 .military_units()
                 .filter(|(_, unit)| unit.nation() == minor_id.nation())
-                .map(|(_, unit)| unit.clone())
+                .map(|(id, unit)| (id, unit.clone()))
                 .collect::<Vec<_>>();
             minor_nations.push(minor_nation_dto(minor, minor_id, &military));
         }
@@ -154,8 +154,8 @@ impl LegacySaveV62 {
 fn major_nation_dto(
     nation: &MajorNation,
     major_id: MajorNationId,
-    military: &[MilitaryUnitState],
-    civilians: &[CivilianUnitState],
+    military: &[(MilitaryUnitId, MilitaryUnitState)],
+    civilians: &[(CivilianUnitId, CivilianUnitState)],
     missions: &[MissionState],
     pending: &NationPendingWork,
     topology: MapTopology,
@@ -188,7 +188,7 @@ fn major_nation_dto(
 fn minor_nation_dto(
     nation: &MinorNation,
     minor_id: MinorNationId,
-    military: &[MilitaryUnitState],
+    military: &[(MilitaryUnitId, MilitaryUnitState)],
 ) -> LegacyMinorState {
     LegacyMinorState {
         country: country_dto(
@@ -222,7 +222,7 @@ fn minor_nation_dto(
 
 fn country_dto(
     common: &NationCommonState,
-    military: &[MilitaryUnitState],
+    military: &[(MilitaryUnitId, MilitaryUnitState)],
     identity: String,
     nation_slot: i16,
 ) -> LegacyCountryBase {
@@ -239,7 +239,10 @@ fn country_dto(
         need_level_by_nation: nation_i16_table(&common.trade_policy_by_nation, |score| {
             score.get() as i16
         }),
-        military_units: military.iter().map(military_unit_dto).collect(),
+        military_units: military
+            .iter()
+            .map(|(id, unit)| military_unit_dto(*id, unit))
+            .collect(),
         owned_regions: common
             .owned_regions()
             .iter()
@@ -248,7 +251,7 @@ fn country_dto(
     }
 }
 
-fn military_unit_dto(unit: &MilitaryUnitState) -> LegacyMilitaryUnit {
+fn military_unit_dto(id: MilitaryUnitId, unit: &MilitaryUnitState) -> LegacyMilitaryUnit {
     LegacyMilitaryUnit {
         unit_type: i16::from(unit.unit_type() as u8),
         stationed_province: option_i16(unit.stationed_province().map(ProvinceId::get)),
@@ -257,7 +260,7 @@ fn military_unit_dto(unit: &MilitaryUnitState) -> LegacyMilitaryUnit {
         roster_id: unit.roster_id(),
         registered: u8::from(unit.registered()),
         order: unit.order().code().get(),
-        persistent_id: unit.id().get(),
+        persistent_id: id.get(),
         name: unit.name().to_owned(),
         order_target_tiles: unit
             .order()
@@ -513,14 +516,14 @@ fn city_orders_dto(orders: &CityOrders) -> LegacyCityOrders {
 fn post_city_dto(
     economy: &GreatPowerState,
     towns: &[TownState],
-    civilians: &[CivilianUnitState],
+    civilians: &[(CivilianUnitId, CivilianUnitState)],
     topology: MapTopology,
 ) -> LegacyGreatPowerPostCity {
     LegacyGreatPowerPostCity {
         towns: towns.iter().map(town_dto).collect(),
         civilian_units: civilians
             .iter()
-            .map(|unit| civilian_unit_dto(unit, topology))
+            .map(|(id, unit)| civilian_unit_dto(*id, unit, topology))
             .collect(),
         candidate_nation_flags: *economy.candidate_nation_flags.as_array(),
         diplomacy_budget_base: economy.diplomacy_budget_base,
@@ -551,7 +554,11 @@ fn town_dto(town: &TownState) -> LegacyTown {
     }
 }
 
-fn civilian_unit_dto(unit: &CivilianUnitState, topology: MapTopology) -> LegacyCivilianUnit {
+fn civilian_unit_dto(
+    id: CivilianUnitId,
+    unit: &CivilianUnitState,
+    topology: MapTopology,
+) -> LegacyCivilianUnit {
     let tile = option_i16(unit.location().tile().map(TileId::get));
     let (order, target, remaining) = match unit.order() {
         CivilianWorkOrder::Idle => (0, -1, 0),
@@ -578,7 +585,7 @@ fn civilian_unit_dto(unit: &CivilianUnitState, topology: MapTopology) -> LegacyC
         roster_id: unit.roster_id(),
         registered: u8::from(unit.registered()),
         order,
-        persistent_id: unit.id().get(),
+        persistent_id: id.get(),
         remaining_turns: remaining,
     }
 }
@@ -601,7 +608,10 @@ fn auto_prefix_dto(auto: &AutoGreatPowerState) -> LegacyAutoGreatPowerPrefix {
     }
 }
 
-fn mission_dto(mission: &MissionState, military: &[MilitaryUnitState]) -> LegacyMission {
+fn mission_dto(
+    mission: &MissionState,
+    military: &[(MilitaryUnitId, MilitaryUnitState)],
+) -> LegacyMission {
     let common = LegacyMissionCommon {
         source_nation: i16::from(mission.nation.get()),
         state: mission.state,
@@ -658,7 +668,7 @@ fn mission_dto(mission: &MissionState, military: &[MilitaryUnitState]) -> Legacy
 fn army_dto(
     army: &ArmyMissionState,
     present: Option<ProvinceId>,
-    military: &[MilitaryUnitState],
+    military: &[(MilitaryUnitId, MilitaryUnitState)],
 ) -> LegacyArmyMission {
     let unit_ordinals = army
         .units
@@ -666,7 +676,7 @@ fn army_dto(
         .map(|id| {
             let index = military
                 .iter()
-                .position(|unit| unit.id() == *id)
+                .position(|(unit_id, _)| *unit_id == *id)
                 .expect("mission unit belongs to the owning nation");
             (index + 1) as i16
         })
