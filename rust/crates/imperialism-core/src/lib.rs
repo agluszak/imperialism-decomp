@@ -115,8 +115,8 @@ pub use map::{
     TileAction, TileDevelopment, TileFlags, TileRendering, TileState, TileTransportLinks,
 };
 pub use map_geometry::{
-    HexDirection, MapGeometry, MapTopology, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH,
-    STRATEGIC_TILE_COUNT,
+    HexDirection, HexDirectionTable, MapGeometry, MapTopology, STRATEGIC_MAP_HEIGHT,
+    STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT,
 };
 pub use market::{
     DealBookEntryKind, ProcessedTradeCommodity, ProcessedTradeCommodityTable, TradeCommodity,

@@ -380,7 +380,8 @@ pub(super) fn assign_picture_to_tile_for_rng(
         return false;
     }
 
-    let west = neighbors[HexDirection::West as usize].map(|tile| usize::from(tile.get()));
+    let neighbors = HexDirectionTable::from_array(neighbors);
+    let west = neighbors[HexDirection::West].map(|tile| usize::from(tile.get()));
     let Some(west) = west else {
         return false;
     };
@@ -388,10 +389,8 @@ pub(super) fn assign_picture_to_tile_for_rng(
         return false;
     }
 
-    let north_west =
-        neighbors[HexDirection::NorthWest as usize].map(|tile| usize::from(tile.get()));
-    let north_east =
-        neighbors[HexDirection::NorthEast as usize].map(|tile| usize::from(tile.get()));
+    let north_west = neighbors[HexDirection::NorthWest].map(|tile| usize::from(tile.get()));
+    let north_east = neighbors[HexDirection::NorthEast].map(|tile| usize::from(tile.get()));
     let north_west_variant = north_west.map_or(0, |neighbor| sprite_variants[neighbor]);
     let north_east_variant = north_east.map_or(0, |neighbor| sprite_variants[neighbor]);
 

@@ -394,10 +394,10 @@ impl MapMgr {
         tile: TileId,
         mode: BorderInfluenceMode,
     ) {
-        const DIRECTION_BITS: [u8; 6] = [1, 2, 4, 8, 16, 32];
-        const NEXT_DIRECTION: [usize; 6] = [1, 2, 3, 4, 5, 0];
+        const DIRECTION_BITS: HexDirectionTable<u8> =
+            HexDirectionTable::from_array([1, 2, 4, 8, 16, 32]);
 
-        let neighbors = self.geometry().neighbors(tile);
+        let neighbors = HexDirectionTable::from_array(self.geometry().neighbors(tile));
         let terrain = self[tile].terrain;
         let owner = self[tile].owner_nation;
         let province = self[tile].province;
@@ -405,7 +405,8 @@ impl MapMgr {
         let mut city_border_mask = self[tile].city_border_mask;
         let mut water_adjacency_mask = self[tile].water_adjacency_mask;
 
-        for (direction, neighbor) in neighbors.iter().copied().enumerate() {
+        for direction in HexDirection::ALL {
+            let neighbor = neighbors[direction];
             let Some(neighbor) = neighbor else {
                 owner_border_mask = owner_border_mask.wrapping_add(DIRECTION_BITS[direction]);
                 continue;
@@ -431,9 +432,9 @@ impl MapMgr {
         }
 
         if terrain == TerrainKind::Water {
-            for direction in 0..6 {
+            for direction in HexDirection::ALL {
                 let (Some(neighbor_a), Some(neighbor_b)) =
-                    (neighbors[direction], neighbors[NEXT_DIRECTION[direction]])
+                    (neighbors[direction], neighbors[direction.next_clockwise()])
                 else {
                     continue;
                 };
@@ -456,7 +457,10 @@ impl MapMgr {
         if mode != BorderInfluenceMode::OwnerChanged
             && city_border_mask & 2 != 0
             && city_border_mask & 1 != 0
-            && let (Some(east), Some(north_east)) = (neighbors[1], neighbors[0])
+            && let (Some(east), Some(north_east)) = (
+                neighbors[HexDirection::East],
+                neighbors[HexDirection::NorthEast],
+            )
             && self[east].province != self[north_east].province
         {
             city_border_mask = city_border_mask.wrapping_add(0x40);
@@ -464,7 +468,10 @@ impl MapMgr {
         if mode != BorderInfluenceMode::OwnerChanged
             && city_border_mask & 2 != 0
             && city_border_mask & 4 != 0
-            && let (Some(east), Some(south_east)) = (neighbors[1], neighbors[2])
+            && let (Some(east), Some(south_east)) = (
+                neighbors[HexDirection::East],
+                neighbors[HexDirection::SouthEast],
+            )
             && self[east].province != self[south_east].province
         {
             city_border_mask = city_border_mask.wrapping_add(0x80);
@@ -472,14 +479,20 @@ impl MapMgr {
 
         if owner_border_mask & 2 != 0
             && owner_border_mask & 1 != 0
-            && let (Some(east), Some(north_east)) = (neighbors[1], neighbors[0])
+            && let (Some(east), Some(north_east)) = (
+                neighbors[HexDirection::East],
+                neighbors[HexDirection::NorthEast],
+            )
             && self[east].owner_nation != self[north_east].owner_nation
         {
             owner_border_mask = owner_border_mask.wrapping_add(0x40);
         }
         if owner_border_mask & 2 != 0
             && owner_border_mask & 4 != 0
-            && let (Some(east), Some(south_east)) = (neighbors[1], neighbors[2])
+            && let (Some(east), Some(south_east)) = (
+                neighbors[HexDirection::East],
+                neighbors[HexDirection::SouthEast],
+            )
             && self[east].owner_nation != self[south_east].owner_nation
         {
             owner_border_mask = owner_border_mask.wrapping_add(0x80);

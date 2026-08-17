@@ -23,25 +23,24 @@ pub(super) fn compose_strategic_borders(state: &GameState, tile: TileId, pixels:
 fn draw_nation_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8]) {
     let mask = state.map()[tile].owner_border_mask;
     let owner = border_palette(state.map()[tile].owner_nation);
-    let neighbors = state.map().geometry().neighbors(tile);
+    let neighbors = HexDirectionTable::from_array(state.map().geometry().neighbors(tile));
     let direction1 = mask & 2 != 0;
 
     if direction1 {
-        let east = neighbor_palette(state, neighbors[HexDirection::East as usize]);
+        let east = neighbor_palette(state, neighbors[HexDirection::East]);
         if mask & 1 == 0 {
             draw_border(pixels, 2, owner, east);
         } else {
             draw_border(pixels, 1, owner, east);
             if mask & 0x40 != 0 {
-                let north_east =
-                    neighbor_palette(state, neighbors[HexDirection::NorthEast as usize]);
+                let north_east = neighbor_palette(state, neighbors[HexDirection::NorthEast]);
                 draw_border(pixels, 3, owner, north_east);
             }
         }
         if mask & 4 == 0 {
             draw_border(pixels, 6, owner, east);
         } else {
-            let south_east = neighbor_palette(state, neighbors[HexDirection::SouthEast as usize]);
+            let south_east = neighbor_palette(state, neighbors[HexDirection::SouthEast]);
             draw_border(pixels, 7, owner, south_east);
             if mask & 0x80 != 0 {
                 draw_border(pixels, 5, owner, south_east);
@@ -50,14 +49,14 @@ fn draw_nation_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8
     }
 
     if mask & 1 != 0 {
-        let north_east = neighbor_palette(state, neighbors[HexDirection::NorthEast as usize]);
+        let north_east = neighbor_palette(state, neighbors[HexDirection::NorthEast]);
         draw_border(pixels, 0, owner, north_east);
         if !direction1 {
             draw_border(pixels, 3, owner, north_east);
         }
     }
     if mask & 4 != 0 {
-        let south_east = neighbor_palette(state, neighbors[HexDirection::SouthEast as usize]);
+        let south_east = neighbor_palette(state, neighbors[HexDirection::SouthEast]);
         draw_border(pixels, 9, owner, south_east);
         if !direction1 {
             draw_border(pixels, 5, owner, south_east);
@@ -67,19 +66,17 @@ fn draw_nation_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8
     if state.map()[tile].terrain == TerrainKind::Water {
         return;
     }
-    if neighbor_is_water(state, neighbors[HexDirection::NorthEast as usize])
+    if neighbor_is_water(state, neighbors[HexDirection::NorthEast])
         && mask & 0x20 != 0
         && !direction1
     {
-        let north_west = neighbor_palette(state, neighbors[HexDirection::NorthWest as usize]);
+        let north_west = neighbor_palette(state, neighbors[HexDirection::NorthWest]);
         draw_border(pixels, 0, owner, north_west);
         draw_border(pixels, 3, owner, north_west);
     }
-    if neighbor_is_water(state, neighbors[HexDirection::SouthEast as usize])
-        && mask & 8 != 0
-        && !direction1
+    if neighbor_is_water(state, neighbors[HexDirection::SouthEast]) && mask & 8 != 0 && !direction1
     {
-        let south_west = neighbor_palette(state, neighbors[HexDirection::SouthWest as usize]);
+        let south_west = neighbor_palette(state, neighbors[HexDirection::SouthWest]);
         draw_border(pixels, 5, owner, south_west);
         draw_border(pixels, 9, owner, south_west);
     }
@@ -87,7 +84,7 @@ fn draw_nation_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8
 
 fn draw_city_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8]) {
     let mask = state.map()[tile].city_border_mask;
-    let neighbors = state.map().geometry().neighbors(tile);
+    let neighbors = HexDirectionTable::from_array(state.map().geometry().neighbors(tile));
     let direction1 = mask & 2 != 0;
 
     if direction1 {
@@ -125,16 +122,14 @@ fn draw_city_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8])
     if state.map()[tile].terrain == TerrainKind::Water {
         return;
     }
-    if neighbor_is_water(state, neighbors[HexDirection::NorthEast as usize])
+    if neighbor_is_water(state, neighbors[HexDirection::NorthEast])
         && mask & 0x20 != 0
         && !direction1
     {
         draw_guide_pattern(pixels, 0, 0, CITY_BORDER_PALETTE, 1);
         draw_guide_pattern(pixels, 3, 0, CITY_BORDER_PALETTE, 1);
     }
-    if neighbor_is_water(state, neighbors[HexDirection::SouthEast as usize])
-        && mask & 8 != 0
-        && !direction1
+    if neighbor_is_water(state, neighbors[HexDirection::SouthEast]) && mask & 8 != 0 && !direction1
     {
         draw_guide_pattern(pixels, 5, 0, CITY_BORDER_PALETTE, 1);
         draw_guide_pattern(pixels, 9, 0, CITY_BORDER_PALETTE, 1);
@@ -142,7 +137,7 @@ fn draw_city_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8])
 }
 
 fn draw_sea_zone_borders(state: &GameState, tile: TileId, pixels: &mut [u8]) {
-    let neighbors = state.map().geometry().neighbors(tile);
+    let neighbors = HexDirectionTable::from_array(state.map().geometry().neighbors(tile));
     let pairs = [
         (HexDirection::SouthWest, HexDirection::SouthEast),
         (HexDirection::SouthEast, HexDirection::East),
@@ -152,15 +147,11 @@ fn draw_sea_zone_borders(state: &GameState, tile: TileId, pixels: &mut [u8]) {
         (HexDirection::West, HexDirection::NorthWest),
     ];
     for (index, (first, second)) in pairs.into_iter().enumerate() {
-        if !land_tiles_have_different_owners(
-            state,
-            neighbors[first as usize],
-            neighbors[second as usize],
-        ) {
+        if !land_tiles_have_different_owners(state, neighbors[first], neighbors[second]) {
             continue;
         }
-        let first_color = neighbor_palette(state, neighbors[first as usize]);
-        let second_color = neighbor_palette(state, neighbors[second as usize]);
+        let first_color = neighbor_palette(state, neighbors[first]);
+        let second_color = neighbor_palette(state, neighbors[second]);
         match index {
             0 => {
                 stroke_guide(pixels, (0x16, 0x40), &[(0x16, 0x38)], first_color, 2);

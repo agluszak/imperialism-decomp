@@ -1,4 +1,5 @@
 use crate::TileId;
+use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Serialize};
 
 pub const STRATEGIC_MAP_WIDTH: u16 = 108;
@@ -19,7 +20,7 @@ impl MapTopology {
     }
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, PartialEq, Serialize)]
 #[repr(u8)]
 pub enum HexDirection {
     NorthEast = 0,
@@ -29,6 +30,8 @@ pub enum HexDirection {
     West = 4,
     NorthWest = 5,
 }
+
+pub type HexDirectionTable<T> = EnumMap<HexDirection, T>;
 
 impl HexDirection {
     pub const ALL: [Self; 6] = [
@@ -48,6 +51,17 @@ impl HexDirection {
             Self::SouthWest => Self::NorthEast,
             Self::West => Self::East,
             Self::NorthWest => Self::SouthEast,
+        }
+    }
+
+    pub(crate) const fn next_clockwise(self) -> Self {
+        match self {
+            Self::NorthEast => Self::East,
+            Self::East => Self::SouthEast,
+            Self::SouthEast => Self::SouthWest,
+            Self::SouthWest => Self::West,
+            Self::West => Self::NorthWest,
+            Self::NorthWest => Self::NorthEast,
         }
     }
 }
