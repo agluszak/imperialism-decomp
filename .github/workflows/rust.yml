@@ -1,12 +1,8 @@
-name: Check IndexMap entity storage
+name: Rust
 
 on:
   push:
-    branches:
-      - agent/indexmap-entity-storage
   pull_request:
-    branches:
-      - main
 
 permissions:
   contents: read
