@@ -2,7 +2,7 @@
 
 use crate::*;
 
-const DIFFICULTY_PERCENT: [i32; 5] = [10, 15, 20, 25, 30];
+const DIFFICULTY_PERCENT: DifficultyTable<i32> = DifficultyTable::from_array([10, 15, 20, 25, 30]);
 
 /// Twelve rows written to `gameScoreRows930` and shown by `TGameScorePicture`.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -99,7 +99,7 @@ impl GameState {
             + diplomacy
             + merchant_marine
             + year;
-        let difficulty_percent = DIFFICULTY_PERCENT[self.turn.difficulty as usize];
+        let difficulty_percent = DIFFICULTY_PERCENT[self.turn.difficulty];
         GameScore {
             labor,
             transport,

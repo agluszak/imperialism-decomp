@@ -3,6 +3,7 @@
 use crate::combat_moves::{set_unit_order, stationed_chain_ids};
 use crate::military_phase::tactical_category;
 use crate::*;
+use enum_map::{Enum, EnumMap};
 
 const UNIT_ORDER_IDLE: MilitaryOrderCode = MilitaryOrderCode::Idle;
 const UNIT_ORDER_REDEPLOY: MilitaryOrderCode = MilitaryOrderCode::Redeploy;
@@ -36,7 +37,7 @@ impl ArmyIdleOrderMode {
 }
 
 /// `TArmyMgr::ComputeMapCursorStateIndex` / `ComputeCivilianMapCursorStateIndex` results.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Enum, Eq, PartialEq)]
 #[repr(i32)]
 pub enum ArmyMapCursorState {
     None = 0,
@@ -71,13 +72,17 @@ impl ArmyMapCursorState {
     }
 
     /// `g_mapCursorTokenByStateIndex_00695668` (`LookupMapCursorTokenByStateIndex`).
-    pub const fn unselected_cursor_token(self) -> u16 {
-        [0, 0, 1000, 0, 0, 0, 1011, 1011, 1010][self as usize]
+    pub fn unselected_cursor_token(self) -> u16 {
+        const TOKENS: EnumMap<ArmyMapCursorState, u16> =
+            EnumMap::from_array([0, 0, 1000, 0, 0, 0, 1011, 1011, 1010]);
+        TOKENS[self]
     }
 
     /// `g_civilianMapCursorTokenByStateIndex_00695680`.
-    pub const fn selected_cursor_token(self) -> u16 {
-        [0, 1008, 1000, 1005, 1006, 1007, 1011, 1011, 1010][self as usize]
+    pub fn selected_cursor_token(self) -> u16 {
+        const TOKENS: EnumMap<ArmyMapCursorState, u16> =
+            EnumMap::from_array([0, 1008, 1000, 1005, 1006, 1007, 1011, 1011, 1010]);
+        TOKENS[self]
     }
 }
 

@@ -1,4 +1,4 @@
-use enum_map::Enum;
+use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Serialize};
 
 /// Random-game difficulty selected by `dif0` through `dif4`.
@@ -14,6 +14,8 @@ pub enum Difficulty {
     Hard,
     NighOnImpossible,
 }
+
+pub type DifficultyTable<T> = EnumMap<Difficulty, T>;
 
 impl TryFrom<u8> for Difficulty {
     type Error = ();

@@ -23,7 +23,8 @@ const COMPILE_DELTA_RESOURCE_ORDER: [ResourceKind; 17] = [
     ResourceKind::Food,
 ];
 
-const COMPILE_THRESHOLD_BY_DIFFICULTY: [i32; 5] = [5, 5, 5, 5, 5];
+const COMPILE_THRESHOLD_BY_DIFFICULTY: DifficultyTable<i32> =
+    DifficultyTable::from_array([5, 5, 5, 5, 5]);
 
 impl GameState {
     /// Retail `TSimMgr::DoCityAndTransport`.
@@ -359,7 +360,7 @@ impl GameState {
     /// `TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage`.
     pub(crate) fn compile_great_power_relationship_delta_lines(&mut self, nation: MajorNationId) {
         let pressure = i32::from(self.nations.major(nation).economy.pressure_counter);
-        let threshold = COMPILE_THRESHOLD_BY_DIFFICULTY[self.turn.difficulty as usize];
+        let threshold = COMPILE_THRESHOLD_BY_DIFFICULTY[self.turn.difficulty];
         if threshold > pressure {
             return;
         }

@@ -97,7 +97,7 @@ pub use deal_book::{
     DealBookHistory, DealBookHistoryGroup, DealBookHistoryRow, DealBookOfferRow, DealBookTotals,
     deal_book_tab_commodity, deal_book_tab_count,
 };
-pub use difficulty::Difficulty;
+pub use difficulty::{Difficulty, DifficultyTable};
 pub use diplomacy::{
     DiplomacyGrant, DiplomacyMapAction, DiplomacyOfferPrompt, DiplomacyPhaseResult,
     DiplomacyPolicy, DiplomacyState, DiplomacyWarJoinKind, DiplomacyWarJoinPrompt,
