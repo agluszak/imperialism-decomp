@@ -110,7 +110,7 @@ impl GameState {
 
     pub(crate) fn apply_town_transport_links(&mut self, nation: MajorNationId) -> Option<Vec<u8>> {
         let (influence, town_transport_linked) = self.transport_influence(nation)?;
-        for (town, linked) in self.nations.majors[nation]
+        for ((_, town), linked) in self.nations.majors[nation]
             .towns
             .iter_mut()
             .zip(town_transport_linked)
