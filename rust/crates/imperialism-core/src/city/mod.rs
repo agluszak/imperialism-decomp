@@ -4,7 +4,9 @@ mod buildings;
 mod production;
 mod state;
 
-pub use buildings::{CityFacilitySlot, CityWindowPosition};
+pub use buildings::{
+    CityFacilitySlot, CityWindowPosition, IndustryCapabilitySlot, IndustryCapabilityTable,
+};
 pub use production::{
     CIVILIAN_RESOURCE_SPECIALTIES, CityOrderId, CityOrderUpdate, CityOrders, ExpandableFacility,
     ExpansionOrderTable, ItemOrderTable, ManufacturedItem, MilitaryRecruitOrderState,

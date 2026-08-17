@@ -855,7 +855,10 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
         active_zone_index: technology.navy_growth_ship_type as i16,
         per_technology_unlock_flags: (*technology.global_unlocks_by_technology.as_array())
             .map(u8::from),
-        resource_type_enabled: technology.industry_enabled_by_slot.map(u8::from),
+        resource_type_enabled: std::array::from_fn(|index| {
+            let slot = IndustryCapabilitySlot::ALL[index];
+            u8::from(technology.industry_enabled_by_slot[slot])
+        }),
         init_flags_1ab: [0; 30],
         init_flags_1c9: [0; 9],
         active_prerequisite_pair: [0; 2],

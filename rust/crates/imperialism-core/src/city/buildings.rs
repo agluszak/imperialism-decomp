@@ -1,5 +1,5 @@
 use crate::*;
-use enum_map::Enum;
+use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Serialize};
 
 /// A fixed building position on the city production screen.
@@ -26,6 +26,70 @@ pub enum CityFacilitySlot {
     Warehouse,
     Transport,
     RegionalPopulation,
+}
+
+/// The fourteen city facilities represented by retail's industry-capability array.
+#[derive(Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, PartialEq, Serialize)]
+#[repr(u8)]
+pub enum IndustryCapabilitySlot {
+    TextileMill,
+    ClothingFactory,
+    SteelMill,
+    Metalworks,
+    LumberMill,
+    FurnitureFactory,
+    OilRefinery,
+    Shipyard,
+    Armory,
+    TradeSchool,
+    University,
+    PowerPlant,
+    FoodProcessing,
+    Warehouse,
+}
+
+pub type IndustryCapabilityTable<T> = EnumMap<IndustryCapabilitySlot, T>;
+
+impl IndustryCapabilitySlot {
+    pub const ALL: [Self; 14] = [
+        Self::TextileMill,
+        Self::ClothingFactory,
+        Self::SteelMill,
+        Self::Metalworks,
+        Self::LumberMill,
+        Self::FurnitureFactory,
+        Self::OilRefinery,
+        Self::Shipyard,
+        Self::Armory,
+        Self::TradeSchool,
+        Self::University,
+        Self::PowerPlant,
+        Self::FoodProcessing,
+        Self::Warehouse,
+    ];
+
+    pub const fn facility(self) -> CityFacilitySlot {
+        match self {
+            Self::TextileMill => CityFacilitySlot::TextileMill,
+            Self::ClothingFactory => CityFacilitySlot::ClothingFactory,
+            Self::SteelMill => CityFacilitySlot::SteelMill,
+            Self::Metalworks => CityFacilitySlot::Metalworks,
+            Self::LumberMill => CityFacilitySlot::LumberMill,
+            Self::FurnitureFactory => CityFacilitySlot::FurnitureFactory,
+            Self::OilRefinery => CityFacilitySlot::OilRefinery,
+            Self::Shipyard => CityFacilitySlot::Shipyard,
+            Self::Armory => CityFacilitySlot::Armory,
+            Self::TradeSchool => CityFacilitySlot::TradeSchool,
+            Self::University => CityFacilitySlot::University,
+            Self::PowerPlant => CityFacilitySlot::PowerPlant,
+            Self::FoodProcessing => CityFacilitySlot::FoodProcessing,
+            Self::Warehouse => CityFacilitySlot::Warehouse,
+        }
+    }
+
+    pub const fn retail(self) -> u8 {
+        self as u8
+    }
 }
 
 impl CityFacilitySlot {

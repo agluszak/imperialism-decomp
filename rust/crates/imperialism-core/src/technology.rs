@@ -186,7 +186,7 @@ pub struct TechnologyState {
     /// Retail `capRowsE4a6.completionYearOffsetByTechId`, stamped when a nation
     /// receives the technology and consumed by technology-history presentation.
     pub completion_year_by_nation: MajorNationTable<TechnologyTable<i16>>,
-    pub industry_enabled_by_slot: [bool; 14],
+    pub industry_enabled_by_slot: IndustryCapabilityTable<bool>,
     pub military_unit_ability_active_by_nation: MajorNationTable<MilitaryUnitTable<bool>>,
     /// Retail `TTechMgr::nationCapRows1e8`: the selected ability id in each
     /// tactical group. Generals are spawned by army-growth rewards.
@@ -220,10 +220,10 @@ impl Default for TechnologyState {
                 }))
             }),
             completion_year_by_nation: MajorNationTable::default(),
-            industry_enabled_by_slot: [
+            industry_enabled_by_slot: IndustryCapabilityTable::from_array([
                 true, true, true, true, true, false, false, false, false, false, false, false,
                 false, false,
-            ],
+            ]),
             military_unit_ability_active_by_nation: MajorNationTable::from_fn(|_| {
                 MilitaryUnitTable::from_array([
                     true, true, true, true, true, true, true, true, false, false, false, false,
@@ -747,27 +747,29 @@ fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id:
     technology.global_unlocks_by_technology[tech_id] = true;
     match tech_id {
         Technology::Paddlewheels => {
-            technology.industry_enabled_by_slot[7] = true;
-            technology.industry_enabled_by_slot[5] = true;
+            technology.industry_enabled_by_slot[IndustryCapabilitySlot::Shipyard] = true;
+            technology.industry_enabled_by_slot[IndustryCapabilitySlot::FurnitureFactory] = true;
         }
-        Technology::StreamlinedHulls => technology.industry_enabled_by_slot[6] = true,
+        Technology::StreamlinedHulls => {
+            technology.industry_enabled_by_slot[IndustryCapabilitySlot::OilRefinery] = true
+        }
         Technology::AdvancedIronWorking => {
-            technology.industry_enabled_by_slot[8] = true;
+            technology.industry_enabled_by_slot[IndustryCapabilitySlot::Armory] = true;
             technology.advanced_iron_working = true;
             technology.navy_growth_ship_type = ShipType::Ironclad;
         }
         Technology::SteelArmorPlate => {
-            technology.industry_enabled_by_slot[9] = true;
+            technology.industry_enabled_by_slot[IndustryCapabilitySlot::TradeSchool] = true;
             technology.navy_growth_ship_type = ShipType::AdvancedIronclad;
         }
         Technology::MarineEngineering => {
-            technology.industry_enabled_by_slot[0xb] = true;
-            technology.industry_enabled_by_slot[0xa] = true;
+            technology.industry_enabled_by_slot[IndustryCapabilitySlot::PowerPlant] = true;
+            technology.industry_enabled_by_slot[IndustryCapabilitySlot::University] = true;
             technology.marine_engineering = true;
         }
         Technology::ImprovedRangeFinding => {
-            technology.industry_enabled_by_slot[0xc] = true;
-            technology.industry_enabled_by_slot[0xd] = true;
+            technology.industry_enabled_by_slot[IndustryCapabilitySlot::FoodProcessing] = true;
+            technology.industry_enabled_by_slot[IndustryCapabilitySlot::Warehouse] = true;
             technology.navy_growth_ship_type = ShipType::Dreadnought;
         }
         _ => {}
@@ -836,7 +838,7 @@ mod tests {
         state.check_technology_advances();
 
         assert!(state.technology.global_unlocks_by_technology[Technology::StreamlinedHulls]);
-        assert!(state.technology.industry_enabled_by_slot[6]);
+        assert!(state.technology.industry_enabled_by_slot[IndustryCapabilitySlot::OilRefinery]);
         assert_eq!(
             state.pending.newspaper_events,
             [PendingNewspaperEvent::TechnologyDiscovery {

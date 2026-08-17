@@ -326,12 +326,12 @@ impl GameState {
 
     /// `GetEnabledIndustryCapabilitySlotByClass` then picture `slot + 0x5e6`.
     pub fn navy_toolbar_class_picture_id(&self, class: NavyToolbarClass) -> Option<i16> {
-        for slot in (1..14).rev() {
-            if ShipType::from_index(slot as u8)
+        for slot in IndustryCapabilitySlot::ALL.into_iter().rev().skip(1) {
+            if ShipType::from_index(slot.retail())
                 .is_some_and(|ship_type| NAVY_DESCRIPTORS[ship_type].toolbar_class == Some(class))
                 && self.technology.industry_enabled_by_slot[slot]
             {
-                return Some(slot as i16 + 0x5e6);
+                return Some(i16::from(slot.retail()) + 0x5e6);
             }
         }
         None

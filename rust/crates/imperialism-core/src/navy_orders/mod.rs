@@ -154,14 +154,16 @@ pub(crate) fn ship_display_stats(ship_type: ShipType) -> [i16; 6] {
     ]
 }
 
-pub(crate) fn navy_category_baselines(enabled: &[bool; 14]) -> NavyPriorityTable<i32> {
+pub(crate) fn navy_category_baselines(
+    enabled: &IndustryCapabilityTable<bool>,
+) -> NavyPriorityTable<i32> {
     let mut totals = NavyPriorityTable::default();
     let mut enabled_count = 0;
-    for (type_index, &is_enabled) in enabled.iter().enumerate().skip(1) {
-        let ship_type = ShipType::from_index(type_index as u8)
+    for slot in IndustryCapabilitySlot::ALL.into_iter().skip(1) {
+        let ship_type = ShipType::from_index(slot.retail())
             .expect("ship type index is inside the descriptor table");
         let descriptor = NAVY_DESCRIPTORS[ship_type];
-        if descriptor.resolve_weight <= 0 || !is_enabled {
+        if descriptor.resolve_weight <= 0 || !enabled[slot] {
             continue;
         }
         enabled_count += 1;
@@ -340,7 +342,11 @@ fn hop_distance(distances: &[i16], zone: OceanZoneId) -> i16 {
         .unwrap_or(UNREACHED)
 }
 
-fn accumulate_ship_categories(ship: &ShipState, vector: &mut [f32; 4], enabled: &[bool; 14]) {
+fn accumulate_ship_categories(
+    ship: &ShipState,
+    vector: &mut [f32; 4],
+    enabled: &IndustryCapabilityTable<bool>,
+) {
     let max_strength = ship_stock_cap(ship.ship_type);
     if max_strength == 0 {
         return;
@@ -400,10 +406,10 @@ pub(super) mod tests {
     }
     #[test]
     fn frigate_contribution_is_nonzero_for_enabled_types() {
-        let enabled = [
+        let enabled = IndustryCapabilityTable::from_array([
             true, true, true, true, true, false, false, false, false, false, false, false, false,
             false,
-        ];
+        ]);
         let baselines = navy_category_baselines(&enabled);
         let ship = ShipState {
             ship_type: ShipType::Frigate,
