@@ -17,7 +17,7 @@ pub use production::{
     resource_development_yield, ship_display_stats, ship_order_costs,
 };
 pub(crate) use production::{
-    EXPANSION_INPUTS, ItemInputs, UNIVERSITY_REQUIREMENT_LEVEL_BY_ID, ship_creates_navy_object,
-    ship_stock_cap,
+    EXPANSION_INPUTS, ItemInputs, UNIVERSITY_REQUIREMENT_LEVEL_BY_RETAIL_ID,
+    ship_creates_navy_object, ship_stock_cap,
 };
 pub use state::{CityState, Stockpile, TownState};

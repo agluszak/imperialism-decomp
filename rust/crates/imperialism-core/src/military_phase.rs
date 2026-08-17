@@ -1,6 +1,6 @@
 //! Military maintenance and order-preparation (`TSimMgr::DoMilitary`).
 
-use crate::city::UNIVERSITY_REQUIREMENT_LEVEL_BY_ID;
+use crate::city::UNIVERSITY_REQUIREMENT_LEVEL_BY_RETAIL_ID;
 use crate::combat_moves::set_unit_order;
 use crate::military::{ActionClassScores, PROVINCE_UNIT_ORDER_WEIGHT, accumulate_unit_priority};
 use crate::*;
@@ -364,7 +364,7 @@ fn heatmap_requirement_level(resource_type: usize, packed_development: i8) -> u8
     let flat_index = resource_type as i32 * 4 + i32::from(packed_development);
     const TABLE_BYTES: i32 = 96;
     if (0..TABLE_BYTES).contains(&flat_index) {
-        UNIVERSITY_REQUIREMENT_LEVEL_BY_ID[flat_index as usize / 4][flat_index as usize % 4]
+        UNIVERSITY_REQUIREMENT_LEVEL_BY_RETAIL_ID[flat_index as usize / 4][flat_index as usize % 4]
     } else if flat_index >= TABLE_BYTES {
         let overflow = (flat_index - TABLE_BYTES) as usize;
         HEATMAP_PACKED_DEVELOPMENT_OVERFLOW[overflow]
