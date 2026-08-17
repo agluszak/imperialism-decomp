@@ -3,7 +3,6 @@
 use crate::military_phase::{combat_class, tactical_category};
 use crate::*;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 
 const STACK_COMPOSITION: [i16; 16] = [0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 3, 0, 0, 3, 4, 5];
 const EXPERIENCE_WINNER: i16 = 0x23;
@@ -42,14 +41,7 @@ struct ArmyStack {
 }
 
 struct StationedChains {
-    head: ProvinceTable<Option<MilitaryUnitId>>,
-    links: HashMap<MilitaryUnitId, Links>,
-}
-
-#[derive(Clone, Copy, Default)]
-struct Links {
-    prev: Option<MilitaryUnitId>,
-    next: Option<MilitaryUnitId>,
+    by_province: ProvinceTable<Vec<MilitaryUnitId>>,
 }
 
 impl GameState {
@@ -167,12 +159,11 @@ impl GameState {
     fn form_stacks(&mut self, chains: &mut StationedChains) -> Vec<ArmyStack> {
         let mut stacks = Vec::new();
         for province in ProvinceId::all() {
-            let mut unit_id = chains.head[province];
+            let unit_ids = chains.by_province[province].clone();
             let mut previous_target: Option<ProvinceId> = None;
             let mut previous_owner: Option<NationId> = None;
             let mut current_stack: Option<usize> = None;
-            while let Some(id) = unit_id {
-                let next = chains.next(id);
+            for id in unit_ids {
                 let unit = self
                     .military_units
                     .get(&id)
@@ -195,7 +186,6 @@ impl GameState {
                     {
                         set_unit_order(unit, MilitaryOrderCode::Sleep, None);
                     }
-                    unit_id = next;
                     continue;
                 };
 
@@ -228,7 +218,6 @@ impl GameState {
                 };
                 stacks[stack_index].units.insert(0, id);
                 current_stack = Some(stack_index);
-                unit_id = next;
             }
         }
 
@@ -301,10 +290,8 @@ impl GameState {
         }
 
         let mut enemy_units = Vec::new();
-        let mut garrison = chains.head[stack.dest];
-        while let Some(id) = garrison {
+        for &id in &chains.by_province[stack.dest] {
             enemy_units.insert(0, id);
-            garrison = chains.next(id);
         }
 
         let attacker_ids = our_units.clone();
@@ -536,20 +523,13 @@ pub(crate) fn stationed_chain_ids(
     province: ProvinceId,
 ) -> Vec<MilitaryUnitId> {
     let chains = StationedChains::from_units(units);
-    let mut ids = Vec::new();
-    let mut cursor = chains.head[province];
-    while let Some(id) = cursor {
-        ids.push(id);
-        cursor = chains.next(id);
-    }
-    ids
+    chains.by_province[province].clone()
 }
 
 impl StationedChains {
     fn from_units(units: &indexmap::IndexMap<MilitaryUnitId, MilitaryUnitState>) -> Self {
         let mut chains = Self {
-            head: ProvinceTable::default(),
-            links: HashMap::new(),
+            by_province: ProvinceTable::default(),
         };
         for (&id, unit) in units {
             chains.link(units, id, unit.stationed_province);
@@ -557,26 +537,11 @@ impl StationedChains {
         chains
     }
 
-    fn next(&self, id: MilitaryUnitId) -> Option<MilitaryUnitId> {
-        self.links.get(&id).and_then(|links| links.next)
-    }
-
     fn unlink(&mut self, id: MilitaryUnitId, province: Option<ProvinceId>) {
         let Some(province) = province else {
             return;
         };
-        let links = self.links.remove(&id).unwrap_or_default();
-        if links.prev.is_none() {
-            self.head[province] = links.next;
-        } else if let Some(prev) = links.prev {
-            self.links
-                .get_mut(&prev)
-                .expect("chain previous exists")
-                .next = links.next;
-        }
-        if let Some(next) = links.next {
-            self.links.get_mut(&next).expect("chain next exists").prev = links.prev;
-        }
+        self.by_province[province].retain(|&candidate| candidate != id);
     }
 
     fn link(
@@ -589,48 +554,19 @@ impl StationedChains {
             return;
         };
         let priority = tactical_category(units[&id].unit_type);
-        let Some(head) = self.head[province] else {
-            self.head[province] = Some(id);
-            self.links.insert(id, Links::default());
+        let chain = &mut self.by_province[province];
+        let Some(&head) = chain.first() else {
+            chain.push(id);
             return;
         };
         if tactical_category(units[&head].unit_type) < priority {
-            let mut scan = head;
-            while let Some(next) = self.next(scan) {
-                if tactical_category(units[&next].unit_type) < priority {
-                    scan = next;
-                } else {
-                    break;
-                }
-            }
-            let after = self.next(scan);
-            self.links.insert(
-                id,
-                Links {
-                    prev: Some(scan),
-                    next: after,
-                },
-            );
-            self.links
-                .get_mut(&scan)
-                .expect("chain predecessor exists")
-                .next = Some(id);
-            if let Some(after) = after {
-                self.links
-                    .get_mut(&after)
-                    .expect("chain successor exists")
-                    .prev = Some(id);
-            }
+            let insertion = chain
+                .iter()
+                .position(|&candidate| tactical_category(units[&candidate].unit_type) >= priority)
+                .unwrap_or(chain.len());
+            chain.insert(insertion, id);
         } else {
-            self.head[province] = Some(id);
-            self.links.get_mut(&head).expect("chain head exists").prev = Some(id);
-            self.links.insert(
-                id,
-                Links {
-                    prev: None,
-                    next: Some(head),
-                },
-            );
+            chain.insert(0, id);
         }
     }
 }
