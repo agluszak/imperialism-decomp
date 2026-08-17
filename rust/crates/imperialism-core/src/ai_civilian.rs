@@ -392,7 +392,7 @@ impl GameState {
     fn continue_railhead_project(
         &mut self,
         nation: MajorNationId,
-        engineer: usize,
+        engineer: CivilianUnitId,
         primary: &[i8],
         secondary: &[i8],
     ) {

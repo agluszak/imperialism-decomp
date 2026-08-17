@@ -79,7 +79,7 @@ impl GameState {
             match &mission.data {
                 MissionData::DefendProvince { province, army } => {
                     let province = *province;
-                    let units = army.units.clone();
+                    let units: Vec<_> = army.units.iter().copied().collect();
                     self.redeploy_units_not_stationed_in(&units, province);
                 }
                 MissionData::AttackProvince(attack) => {
@@ -144,11 +144,8 @@ impl GameState {
             && let Some(owner) = self.map.provinces[attack.target_province].owner()
         {
             if self.war_stamp_stale(nation, owner) {
-                self.redeploy_units_stationed_in(
-                    &attack.army.units,
-                    present,
-                    attack.target_province,
-                );
+                let units: Vec<_> = attack.army.units.iter().copied().collect();
+                self.redeploy_units_stationed_in(&units, present, attack.target_province);
             } else if !self.at_war(nation, owner)
                 && let Some(major) = MajorNationId::from_nation(nation)
                 && self.nations.majors[major]
@@ -160,7 +157,8 @@ impl GameState {
             }
         }
 
-        self.redeploy_units_not_stationed_in(&attack.army.units, present);
+        let units: Vec<_> = attack.army.units.iter().copied().collect();
+        self.redeploy_units_not_stationed_in(&units, present);
     }
 
     fn redeploy_units_not_stationed_in(&mut self, units: &[MilitaryUnitId], province: ProvinceId) {

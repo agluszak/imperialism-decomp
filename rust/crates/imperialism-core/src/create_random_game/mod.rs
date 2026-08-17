@@ -218,7 +218,11 @@ pub fn create_random_game(
         zones: ocean_zones,
         routes: preview.map.ocean_routes.clone(),
     };
-    let missions = flatten_mission_queues(&mut mission_queues);
+    let mut object_ids = ObjectIdAllocator::default();
+    let missions = flatten_mission_queues(&mut mission_queues)
+        .into_iter()
+        .map(|mission| (object_ids.mission(), mission))
+        .collect();
     let mut provinces = build_province_state(
         &preview.map,
         &world,
@@ -275,12 +279,12 @@ pub fn create_random_game(
         technology,
         diplomacy,
         nations,
-        military_units: military_units.into_values().collect(),
-        civilian_units: Vec::new(),
-        object_ids: ObjectIdAllocator::default(),
-        ships: Vec::new(),
-        admirals: Vec::new(),
-        task_forces: Vec::new(),
+        military_units,
+        civilian_units: Default::default(),
+        object_ids,
+        ships: Default::default(),
+        admirals: Default::default(),
+        task_forces: Default::default(),
         missions,
         news: NewsState::default(),
         pending,

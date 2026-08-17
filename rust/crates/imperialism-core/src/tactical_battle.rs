@@ -23,7 +23,7 @@ struct Tile {
 }
 
 struct TacUnit {
-    source: usize,
+    source: MilitaryUnitId,
     unit_type: usize,
     tile: i32,
     selected: bool,
@@ -163,16 +163,16 @@ impl Battle {
         };
 
         for &id in &battle.attacker_units {
-            let Some(index) = state.military_index(id) else {
+            if !state.military_units.contains_key(&id) {
                 continue;
-            };
-            this.push_unit(state, index, 0, false);
+            }
+            this.push_unit(state, id, 0, false);
         }
         for &id in &battle.defender_units {
-            let Some(index) = state.military_index(id) else {
+            if !state.military_units.contains_key(&id) {
                 continue;
-            };
-            this.push_unit(state, index, 1, true);
+            }
+            this.push_unit(state, id, 1, true);
         }
 
         for unit in &mut this.units {
@@ -206,8 +206,14 @@ impl Battle {
         this
     }
 
-    fn push_unit(&mut self, state: &GameState, source: usize, side: i32, enemy_selected: bool) {
-        let unit = &state.military_units[source];
+    fn push_unit(
+        &mut self,
+        state: &GameState,
+        source: MilitaryUnitId,
+        side: i32,
+        enemy_selected: bool,
+    ) {
+        let unit = &state.military_units[&source];
         let unit_type = unit.unit_type as usize;
         let mut record = TacUnit {
             source,
@@ -571,7 +577,7 @@ impl Battle {
                 for idx in list {
                     let source = self.units[idx].source;
                     let strength = self.units[idx].strength as i16;
-                    state.military_units[source].strength = strength;
+                    state.military_units[&source].strength = strength;
                     if strength == 0 {
                         detach_unit(state, source);
                     }
@@ -581,17 +587,18 @@ impl Battle {
     }
 }
 
-fn detach_unit(state: &mut GameState, index: usize) {
-    let id = state.military_units[index].id;
-    state.military_units[index].stationed_province = None;
-    for mission in &mut state.missions {
+fn detach_unit(state: &mut GameState, id: MilitaryUnitId) {
+    state.military_units[&id].stationed_province = None;
+    for mission in state.missions.values_mut() {
         match &mut mission.data {
             MissionData::DefendProvince { army, .. }
             | MissionData::AttackProvince(AttackMissionState { army, .. })
             | MissionData::Invade {
                 attack: AttackMissionState { army, .. },
                 ..
-            } => army.units.retain(|&unit| unit != id),
+            } => {
+                army.units.shift_remove(&id);
+            }
             _ => {}
         }
     }
@@ -871,7 +878,7 @@ impl Battle {
     }
 
     fn compute_projection(&mut self, state: &GameState, idx: usize) {
-        let source = &state.military_units[self.units[idx].source];
+        let source = &state.military_units[&self.units[idx].source];
         let quality = source.experience / 100;
         let quality_factor = 1.0 - f64::from(quality) * -0.1;
         let strength_term = self.units[idx].strength as f32 * 0.002;

@@ -190,10 +190,10 @@ impl GameState {
 
     /// Neighbor tiles `DimByEngineering` would leave undimmed for a rail click.
     pub fn rail_construction_destinations(&self, unit: CivilianUnitId) -> [Option<TileId>; 6] {
-        let Some(unit) = self.civilian_units.get(&unit) else {
+        let Some(civilian) = self.civilian_units.get(&unit) else {
             return [None; 6];
         };
-        let Some(origin) = unit.location.tile() else {
+        let Some(origin) = civilian.location.tile() else {
             return [None; 6];
         };
         MapGeometry::new(MapTopology::Bounded)
