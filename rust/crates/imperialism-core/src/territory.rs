@@ -1,6 +1,7 @@
 use crate::{
-    AiTargetState, ArmyMissionState, GameState, MajorNationId, MajorNationTable, MapMgr,
-    MinorNationId, MissionData, MissionState, NationId, ProvinceId, ResourceTable, TileId,
+    AiTargetState, ArmyMissionState, DiplomaticRelationship, GameState, MajorNationId,
+    MajorNationTable, MapMgr, MinorNationId, MissionData, MissionState, NationId, ProvinceId,
+    ResourceTable, TileId,
 };
 use indexmap::IndexSet;
 use serde::{Deserialize, Serialize};
