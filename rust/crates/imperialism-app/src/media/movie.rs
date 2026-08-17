@@ -168,10 +168,11 @@ impl MovieBackend {
     }
 
     pub(crate) fn reached_eos(&self) -> bool {
-        self.playbin.bus().is_some_and(|bus| {
-            bus.timed_pop_filtered(gst::ClockTime::ZERO, &[gst::MessageType::Eos])
-                .is_some()
-        })
+        self.video_sink.is_eos()
+            || self.playbin.bus().is_some_and(|bus| {
+                bus.timed_pop_filtered(gst::ClockTime::ZERO, &[gst::MessageType::Eos])
+                    .is_some()
+            })
     }
 
     fn fail_if_error(&self) -> Result<(), MovieError> {
