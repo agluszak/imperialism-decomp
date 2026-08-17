@@ -18,6 +18,18 @@ enum TacticalUnitState {
 }
 
 #[derive(Clone, Copy, Eq, PartialEq)]
+enum TacticalStance {
+    Hold,
+    Retreat,
+    Bombard,
+    Siege,
+    Assault,
+    Standoff,
+    Unopposed,
+    Garrison,
+}
+
+#[derive(Clone, Copy, Eq, PartialEq)]
 enum BattleOutcome {
     InProgress,
     AttackerWon,
@@ -82,7 +94,7 @@ struct Side {
     field48: i32,
     field51: u8,
     field_f: bool,
-    last_cursor_mode: i32,
+    last_stance: Option<TacticalStance>,
     random_parity: u8,
     cached_bombard_tile: i32,
 }
@@ -155,7 +167,7 @@ impl Battle {
             field48: 0,
             field51: 0,
             field_f: false,
-            last_cursor_mode: -1,
+            last_stance: None,
             random_parity: parity,
             cached_bombard_tile: -1,
         };
@@ -297,7 +309,7 @@ impl Battle {
     fn start_side(&mut self, state: &mut GameState, side: BattleSide) {
         self.current_side = side;
         self.selected = self.select_next_undeployed(side);
-        self.select_and_apply_cursor_mode(state, side, 1);
+        self.select_and_apply_cursor_mode(state, side);
         self.auto_deploy(state, side);
     }
 
@@ -1010,7 +1022,7 @@ impl Battle {
         })
     }
 
-    fn select_and_apply_cursor_mode(&mut self, state: &GameState, side: BattleSide, _mode: i32) {
+    fn select_and_apply_cursor_mode(&mut self, state: &GameState, side: BattleSide) {
         let opponent = side.opponent();
         self.accumulate_metrics(state, side);
         self.accumulate_metrics(state, opponent);
@@ -1020,31 +1032,34 @@ impl Battle {
             .iter()
             .any(|&idx| self.units[idx].state == TacticalUnitState::Ready);
         self.sides[side].field48 = i32::from(!enemy_has_active);
-        let mut cursor_mode;
+        let mut stance;
         if !self.sides[side].is_our {
             if !enemy_has_active {
-                cursor_mode = 6;
+                stance = TacticalStance::Unopposed;
             } else if self.sides[opponent].field51 == 0 && !self.fort_breached() {
-                cursor_mode = 7;
+                stance = TacticalStance::Garrison;
             } else if self.sides[side].projection_sums[1] / opponent_metrics[1]
                 > CURSOR_STRONG_RATIO
             {
                 if self.fort_breached() {
-                    cursor_mode = 2;
+                    stance = TacticalStance::Bombard;
                 } else if self.sides[side].projection_sums[1] / opponent_metrics[1]
                     > CURSOR_OVERWHELM_RATIO
                 {
-                    cursor_mode = 2;
+                    stance = TacticalStance::Bombard;
                 } else {
-                    cursor_mode = 0;
+                    stance = TacticalStance::Hold;
                 }
             } else if self.sides[side].projection_sums[0] / opponent_metrics[1] < CURSOR_WEAK_RATIO
                 && !self.site_is_home_capital(state, side)
             {
-                cursor_mode = 1;
+                stance = TacticalStance::Retreat;
             } else {
-                cursor_mode =
-                    i32::from(self.sides[side].max_range < self.sides[opponent].max_range) * 2;
+                stance = if self.sides[side].max_range < self.sides[opponent].max_range {
+                    TacticalStance::Bombard
+                } else {
+                    TacticalStance::Hold
+                };
             }
         } else {
             let strength_ratio = self.sides[side].projection_sums[1] / opponent_metrics[0];
@@ -1058,59 +1073,58 @@ impl Battle {
             });
             if !self.fort_breached() {
                 if have_sapper {
-                    cursor_mode = 3;
+                    stance = TacticalStance::Siege;
                 } else if !have_artillery {
-                    cursor_mode = 1;
+                    stance = TacticalStance::Retreat;
                 } else if self.sides[side].projection_sums[3] / opponent_metrics[3]
                     < CURSOR_ARTILLERY_PARITY
                 {
-                    cursor_mode = 1;
+                    stance = TacticalStance::Retreat;
                 } else {
-                    cursor_mode = 3;
+                    stance = TacticalStance::Siege;
                 }
             } else if !enemy_has_active {
-                cursor_mode = 6;
+                stance = TacticalStance::Unopposed;
             } else if strength_ratio > CURSOR_STRONG_RATIO {
-                cursor_mode = 4;
+                stance = TacticalStance::Assault;
             } else if !(self.sides[side].projection_sums[3] / opponent_metrics[3]
                 < CURSOR_ARTILLERY_SUPERIORITY)
                 && have_artillery
             {
-                cursor_mode = 3;
+                stance = TacticalStance::Siege;
             } else if !(strength_ratio < CURSOR_ASSAULT_RATIO) {
-                cursor_mode = 4;
+                stance = TacticalStance::Assault;
             } else if strength_ratio < CURSOR_RETREAT_RATIO
                 && !self.site_is_home_capital(state, side)
             {
-                cursor_mode = 1;
+                stance = TacticalStance::Retreat;
             } else {
-                cursor_mode = 5;
+                stance = TacticalStance::Standoff;
             }
         }
         if self.sides[side].field_f {
-            cursor_mode = 1;
+            stance = TacticalStance::Retreat;
         }
-        if cursor_mode == 1 {
-            self.sides[side].field48 = cursor_mode;
+        if stance == TacticalStance::Retreat {
+            self.sides[side].field48 = 1;
         }
-        if cursor_mode == self.sides[side].last_cursor_mode {
+        if self.sides[side].last_stance == Some(stance) {
             return;
         }
-        self.sides[side].last_cursor_mode = cursor_mode;
-        self.apply_stance(side, cursor_mode);
+        self.sides[side].last_stance = Some(stance);
+        self.apply_stance(side, stance);
     }
 
-    fn apply_stance(&mut self, side: BattleSide, mode: i32) {
-        match mode {
-            0 => self.stance_hold(side),
-            1 => self.stance_retreat(side),
-            2 => self.stance_bombard(side),
-            3 => self.stance_siege(side),
-            4 => self.stance_assault(side),
-            5 => self.stance_standoff(side),
-            6 => self.stance_unopposed(side),
-            7 => self.stance_garrison(side),
-            _ => {}
+    fn apply_stance(&mut self, side: BattleSide, stance: TacticalStance) {
+        match stance {
+            TacticalStance::Hold => self.stance_hold(side),
+            TacticalStance::Retreat => self.stance_retreat(side),
+            TacticalStance::Bombard => self.stance_bombard(side),
+            TacticalStance::Siege => self.stance_siege(side),
+            TacticalStance::Assault => self.stance_assault(side),
+            TacticalStance::Standoff => self.stance_standoff(side),
+            TacticalStance::Unopposed => self.stance_unopposed(side),
+            TacticalStance::Garrison => self.stance_garrison(side),
         }
     }
 
@@ -1287,7 +1301,7 @@ impl Battle {
         if AI_CLASS[self.units[unit].unit_type] != 2
             || self.units[unit].side == BattleSide::Defender
         {
-            self.select_and_apply_cursor_mode(state, side, 0);
+            self.select_and_apply_cursor_mode(state, side);
         }
         let home = self.units[unit].tile;
         let category = self.units[unit].unit_type.tactical_category();
