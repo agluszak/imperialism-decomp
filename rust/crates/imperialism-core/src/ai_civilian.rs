@@ -812,7 +812,7 @@ impl GameState {
             }
 
             if prospectable_terrain(self.map[tile].terrain, oil) {
-                let has_active_prospecting = self.civilian_units.iter().rev().any(|unit| {
+                let has_active_prospecting = self.civilian_units.values().rev().any(|unit| {
                     unit.location.tile() == Some(tile)
                         && matches!(
                             unit.order,
@@ -934,7 +934,7 @@ impl GameState {
     }
 
     fn has_kind_with_develop(&self, tile: TileId, kind: CivilianUnitKind) -> bool {
-        self.civilian_units.iter().any(|unit| {
+        self.civilian_units.values().any(|unit| {
             unit.location.tile() == Some(tile)
                 && unit.unit_type == kind
                 && matches!(unit.order, CivilianWorkOrder::DevelopResource { .. })
