@@ -495,7 +495,7 @@ mod tests {
         let hostile = NationId::new(0);
         state.diplomacy.relationships[hostile][origin] = DiplomaticRelationship::War;
         state.diplomacy.relationship_turns[hostile][origin] = Some(9);
-        state.task_forces.push(TaskForceState {
+        state.task_forces.insert(TaskForceId::new(0), TaskForceState {
             id: TaskForceId::new(0),
             aggression: 1,
             order: TaskForceOrder::Patrol,
@@ -505,12 +505,9 @@ mod tests {
             defeated: false,
             ingot_tile: -1,
             flagship: None,
-            ships: vec![SelectedShip {
-                ship: ShipId::new(0),
-                selected: true,
-            }],
+            ships: [(ShipId::new(0), true)].into_iter().collect(),
         });
-        state.ships.push(ShipState {
+        state.ships.insert(ShipId::new(0), ShipState {
             id: ShipId::new(0),
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),

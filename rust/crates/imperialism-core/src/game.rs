@@ -1,4 +1,5 @@
 use crate::*;
+use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
@@ -14,14 +15,14 @@ pub struct GameState {
     pub(crate) technology: TechnologyState,
     pub(crate) diplomacy: DiplomacyState,
     pub(crate) nations: Nations,
-    pub(crate) military_units: Vec<MilitaryUnitState>,
-    pub(crate) civilian_units: Vec<CivilianUnitState>,
+    pub(crate) military_units: IndexMap<MilitaryUnitId, MilitaryUnitState>,
+    pub(crate) civilian_units: IndexMap<CivilianUnitId, CivilianUnitState>,
     #[serde(default)]
     pub(crate) object_ids: ObjectIdAllocator,
-    pub(crate) ships: Vec<ShipState>,
-    pub(crate) admirals: Vec<AdmiralState>,
-    pub(crate) task_forces: Vec<TaskForceState>,
-    pub(crate) missions: Vec<MissionState>,
+    pub(crate) ships: IndexMap<ShipId, ShipState>,
+    pub(crate) admirals: IndexMap<AdmiralId, AdmiralState>,
+    pub(crate) task_forces: IndexMap<TaskForceId, TaskForceState>,
+    pub(crate) missions: IndexMap<MissionId, MissionState>,
     pub(crate) news: NewsState,
     pub(crate) pending: PendingWorkState,
     /// `TArmyMgr::mapContextActionRecordList04`. Marker fields are omitted from `.imp`.
@@ -63,10 +64,20 @@ pub struct GameStateParts {
 impl GameState {
     /// Assembles authoritative state from loader-built parts.
     pub fn from_parts(parts: GameStateParts) -> Self {
-        let object_ids = ObjectIdAllocator::from_existing(
+        let mut object_ids = ObjectIdAllocator::from_existing(
             parts.ships.iter().map(|ship| ship.id),
             parts.task_forces.iter().map(|force| force.id),
         );
+        let admirals = parts
+            .admirals
+            .into_iter()
+            .map(|admiral| (object_ids.admiral(), admiral))
+            .collect();
+        let missions = parts
+            .missions
+            .into_iter()
+            .map(|mission| (object_ids.mission(), mission))
+            .collect();
         Self {
             turn: parts.turn,
             unit_ids: parts.unit_ids,
@@ -78,13 +89,25 @@ impl GameState {
             technology: parts.technology,
             diplomacy: parts.diplomacy,
             nations: parts.nations,
-            military_units: parts.military_units,
-            civilian_units: parts.civilian_units,
+            military_units: parts
+                .military_units
+                .into_iter()
+                .map(|unit| (unit.id, unit))
+                .collect(),
+            civilian_units: parts
+                .civilian_units
+                .into_iter()
+                .map(|unit| (unit.id, unit))
+                .collect(),
             object_ids,
-            ships: parts.ships,
-            admirals: parts.admirals,
-            task_forces: parts.task_forces,
-            missions: parts.missions,
+            ships: parts.ships.into_iter().map(|ship| (ship.id, ship)).collect(),
+            admirals,
+            task_forces: parts
+                .task_forces
+                .into_iter()
+                .map(|force| (force.id, force))
+                .collect(),
+            missions,
             news: parts.news,
             pending: parts.pending,
             battle_reports: parts.battle_reports,
@@ -128,24 +151,32 @@ impl GameState {
         self.nations.city(id)
     }
 
-    pub fn military_units(&self) -> &[MilitaryUnitState] {
-        &self.military_units
+    pub fn military_units(&self) -> impl ExactSizeIterator<Item = (MilitaryUnitId, &MilitaryUnitState)> {
+        self.military_units.iter().map(|(&id, unit)| (id, unit))
     }
 
-    pub fn civilian_units(&self) -> &[CivilianUnitState] {
-        &self.civilian_units
+    pub fn military_unit(&self, id: MilitaryUnitId) -> Option<&MilitaryUnitState> {
+        self.military_units.get(&id)
     }
 
-    pub fn ships(&self) -> &[ShipState] {
-        &self.ships
+    pub fn civilian_units(&self) -> impl ExactSizeIterator<Item = (CivilianUnitId, &CivilianUnitState)> {
+        self.civilian_units.iter().map(|(&id, unit)| (id, unit))
     }
 
-    pub fn admirals(&self) -> &[AdmiralState] {
-        &self.admirals
+    pub fn civilian_unit(&self, id: CivilianUnitId) -> Option<&CivilianUnitState> {
+        self.civilian_units.get(&id)
     }
 
-    pub fn task_forces(&self) -> &[TaskForceState] {
-        &self.task_forces
+    pub fn ships(&self) -> impl ExactSizeIterator<Item = (ShipId, &ShipState)> {
+        self.ships.iter().map(|(&id, ship)| (id, ship))
+    }
+
+    pub fn admirals(&self) -> impl ExactSizeIterator<Item = (AdmiralId, &AdmiralState)> {
+        self.admirals.iter().map(|(&id, admiral)| (id, admiral))
+    }
+
+    pub fn task_forces(&self) -> impl ExactSizeIterator<Item = (TaskForceId, &TaskForceState)> {
+        self.task_forces.iter().map(|(&id, force)| (id, force))
     }
 
     pub fn missions(&self) -> &[MissionState] {

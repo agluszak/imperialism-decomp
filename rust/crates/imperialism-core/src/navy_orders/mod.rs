@@ -1,6 +1,7 @@
 //! Navy mission `GiveOrders`, hop-limited sail, and `CarryOutOrders` type 1/5/8.
 
 use crate::*;
+use indexmap::IndexMap;
 
 const UNREACHED: i16 = 0x29a;
 
@@ -227,11 +228,11 @@ impl GameState {
     }
 }
 
-fn assigned_navy_ships(missions: &[MissionState]) -> Vec<ShipId> {
+fn assigned_navy_ships(missions: &IndexMap<MissionId, MissionState>) -> Vec<ShipId> {
     let mut assigned = Vec::new();
-    for mission in missions {
+    for mission in missions.values() {
         if let Some(navy) = navy_state(&mission.data) {
-            assigned.extend(navy.ships.iter().map(|ship| ship.ship));
+            assigned.extend(navy.ships.keys().copied());
         }
     }
     assigned

@@ -186,7 +186,7 @@ impl GameState {
         let target = navy.target_zone;
         let port = navy.resolved_port_zone;
         let required = navy.required_equipage_bits.map(f32::from_bits);
-        let ships: Vec<ShipId> = navy.ships.iter().map(|ship| ship.ship).collect();
+        let ships: Vec<ShipId> = navy.ships.keys().copied().collect();
         let mode = navy.state;
         let next = match mode {
             0 => {

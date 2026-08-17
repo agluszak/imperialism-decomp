@@ -729,9 +729,9 @@ mod tests {
     #[test]
     fn cleanup_removes_sail_and_empty_task_forces_and_keeps_patrol() {
         let mut state = game_state();
-        state.ships.push(ship(0, 0));
-        state.ships.push(ship(1, 0));
-        state.task_forces.push(TaskForceState {
+        state.ships.insert(ShipId::new(0), ship(0, 0));
+        state.ships.insert(ShipId::new(1), ship(1, 0));
+        state.task_forces.insert(TaskForceId::new(0), TaskForceState {
             id: TaskForceId::new(0),
             aggression: 0,
             order: TaskForceOrder::Patrol,
@@ -741,12 +741,9 @@ mod tests {
             defeated: false,
             ingot_tile: -1,
             flagship: Some(ShipId::new(0)),
-            ships: vec![SelectedShip {
-                ship: ShipId::new(0),
-                selected: true,
-            }],
+            ships: [(ShipId::new(0), true)].into_iter().collect(),
         });
-        state.task_forces.push(TaskForceState {
+        state.task_forces.insert(TaskForceId::new(1), TaskForceState {
             id: TaskForceId::new(1),
             aggression: 0,
             order: TaskForceOrder::Sail,
@@ -756,10 +753,7 @@ mod tests {
             defeated: false,
             ingot_tile: -1,
             flagship: Some(ShipId::new(1)),
-            ships: vec![SelectedShip {
-                ship: ShipId::new(1),
-                selected: true,
-            }],
+            ships: [(ShipId::new(1), true)].into_iter().collect(),
         });
 
         state.do_military_cleanup();

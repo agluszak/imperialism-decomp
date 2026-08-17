@@ -1,4 +1,5 @@
 use super::*;
+use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
 /// Strategic fleets handed to retail's modal naval battle view.
@@ -81,11 +82,11 @@ impl GameState {
         let navy_state_code = navy.state;
         let target = navy.target_zone;
         let mut port = navy.resolved_port_zone;
-        let ships: Vec<ShipId> = navy.ships.iter().map(|ship| ship.ship).collect();
+        let ships: Vec<ShipId> = navy.ships.keys().copied().collect();
         let kind = navy_action_kind(&self.missions[mission_index].data);
         if let Some(navy) = navy_state_mut(&mut self.missions[mission_index].data) {
-            for ship in &mut navy.ships {
-                ship.selected = false;
+            for selected in navy.ships.values_mut() {
+                *selected = false;
             }
         }
         if ships.is_empty() {
@@ -139,26 +140,23 @@ impl GameState {
     }
 
     pub(crate) fn assign_unassigned_ships_to_navy_missions(&mut self, nation: NationId) {
-        while let Some(mission_index) = self.missions.iter().position(|mission| {
+        while let Some(mission_id) = self.missions.iter().find_map(|(&id, mission)| {
             mission.nation == nation && !mission.held && navy_state(&mission.data).is_some()
-        }) {
+        .then_some(id) }) {
             let assigned = assigned_navy_ships(&self.missions);
             let Some(ship) = self
                 .ships
                 .iter()
-                .find(|ship| ship.nation == nation && !assigned.contains(&ship.id))
+                .find_map(|(&id, ship)| (ship.nation == nation && !assigned.contains(&id)).then_some(id))
             else {
                 break;
             };
-            let ship = ship.id;
-            if let Some(navy) = navy_state_mut(&mut self.missions[mission_index].data) {
-                navy.ships.insert(
-                    0,
-                    SelectedShip {
-                        ship,
-                        selected: false,
-                    },
-                );
+            if let Some(navy) = self
+                .missions
+                .get_mut(&mission_id)
+                .and_then(|mission| navy_state_mut(&mut mission.data))
+            {
+                navy.ships.shift_insert(0, ship, false);
             } else {
                 break;
             }
@@ -558,10 +556,10 @@ impl GameState {
         let Some(force) = self.task_force(force) else {
             return 0;
         };
-        for child in &force.ships {
-            if child.selected {
+        for (&ship, &selected) in &force.ships {
+            if selected {
                 sum += descriptor_weight(
-                    self.ship(child.ship)
+                    self.ship(ship)
                         .expect("task-force ship exists")
                         .ship_type,
                 );
@@ -576,8 +574,8 @@ impl GameState {
             .expect("battle task force exists")
             .ships
             .iter()
-            .map(|child| {
-                let ship = self.ship(child.ship).expect("task-force ship exists");
+            .map(|(&child, _)| {
+                let ship = self.ship(child).expect("task-force ship exists");
                 let descriptor = NAVY_DESCRIPTORS[ship.ship_type];
                 let quality = i32::from(ship.experience / 100);
                 let priority = (quality + descriptor.navy_priority_weight * 10 + 5) / 10;
@@ -894,10 +892,10 @@ impl GameState {
             .expect("battle task force exists")
             .ships
             .iter()
-            .filter_map(|child| {
-                self.ship(child.ship)
+            .filter_map(|(&child, _)| {
+                self.ship(child)
                     .is_some_and(|ship| ship.strength < 1)
-                    .then_some(child.ship)
+                    .then_some(child)
             })
             .collect::<Vec<_>>();
         for ship in sunk {
@@ -906,19 +904,19 @@ impl GameState {
     }
 
     fn remove_ship_completely(&mut self, ship: ShipId) {
-        let Some(index) = self.ship_index(ship) else {
+        if !self.ships.contains_key(&ship) {
             return;
-        };
+        }
         if let Some(force) = self.task_force_of_ship(ship) {
             self.remove_ship_from_force(ship, force);
         }
-        self.ships.remove(index);
-        for admiral in &mut self.admirals {
+        self.ships.shift_remove(&ship);
+        for admiral in self.admirals.values_mut() {
             if admiral.ship == Some(ship) {
                 admiral.ship = None;
             }
         }
-        for mission in &mut self.missions {
+        for mission in self.missions.values_mut() {
             remove_mission_ship_id(&mut mission.data, ship);
         }
     }
@@ -1086,16 +1084,16 @@ impl GameState {
     }
 
     fn order_sail_towards(&mut self, force: TaskForceId, destination: OceanZoneId) {
-        let Some(force_index) = self.task_force_index(force) else {
+        let Some(force_state) = self.task_force(force) else {
             return;
         };
-        let location = self.task_forces[force_index].location;
+        let location = force_state.location;
         let mut min_weight = 10_000;
-        for selected in &self.task_forces[force_index].ships {
-            if !selected.selected {
+        for (&ship, &selected) in &force_state.ships {
+            if !selected {
                 continue;
             }
-            if let Some(ship) = self.ship(selected.ship) {
+            if let Some(ship) = self.ship(ship) {
                 min_weight = min_weight.min(descriptor_weight(ship.ship_type));
             }
         }
@@ -1116,23 +1114,24 @@ impl GameState {
                 break;
             }
         }
-        self.task_forces[force_index].target = TaskForceTarget::Zone(current);
-        self.task_forces[force_index].order = TaskForceOrder::Sail;
+        let force_state = self.task_force_mut(force).expect("task force remains present");
+        force_state.target = TaskForceTarget::Zone(current);
+        force_state.order = TaskForceOrder::Sail;
         self.prune_inactive_ships(force);
     }
 
     fn prune_inactive_ships(&mut self, force: TaskForceId) {
-        let Some(force_index) = self.task_force_index(force) else {
+        let Some(force_state) = self.task_force_mut(force) else {
             return;
         };
-        let ships = self.task_forces[force_index].ships.clone();
-        let mut kept = Vec::new();
-        for selected in ships {
-            if selected.selected {
-                kept.push(selected);
+        let ships = force_state.ships.clone();
+        let mut kept = IndexMap::new();
+        for (ship, selected) in ships {
+            if selected {
+                kept.insert(ship, true);
             }
         }
-        self.task_forces[force_index].ships = kept;
+        force_state.ships = kept;
         self.elect_task_force_flagship(force);
     }
 
@@ -1166,8 +1165,9 @@ impl GameState {
         ship: ShipId,
     ) -> TaskForceId {
         let id = self.allocate_task_force_id();
-        self.task_forces.insert(
+        self.task_forces.shift_insert(
             0,
+            id,
             TaskForceState {
                 id,
                 // `TTaskForce(TZone*, short)` seeds aggression at 1, then
@@ -1180,10 +1180,7 @@ impl GameState {
                 defeated: false,
                 ingot_tile: -1,
                 flagship: Some(ship),
-                ships: vec![SelectedShip {
-                    ship,
-                    selected: true,
-                }],
+                ships: [(ship, true)].into_iter().collect(),
             },
         );
         id
@@ -1195,38 +1192,32 @@ impl GameState {
         {
             self.remove_ship_from_force(ship, previous);
         }
-        let Some(force_index) = self.task_force_index(force) else {
+        let Some(force_state) = self.task_force(force) else {
             return;
         };
-        let added = !self.task_forces[force_index]
-            .ships
-            .iter()
-            .any(|entry| entry.ship == ship);
+        let added = !force_state.ships.contains_key(&ship);
         if added {
             let bucket = usize::try_from(
                 NAVY_DESCRIPTORS[self.ship(ship).expect("task-force ship exists").ship_type]
                     .toolbar_bucket,
             )
             .expect("navy ship has a toolbar bucket");
-            let insert_at = self.task_forces[force_index]
+            let insert_at = force_state
                 .ships
                 .iter()
-                .position(|entry| {
+                .position(|(&member, _)| {
                     NAVY_DESCRIPTORS[self
-                        .ship(entry.ship)
+                        .ship(member)
                         .expect("task-force ship exists")
                         .ship_type]
                         .toolbar_bucket
                         >= bucket as i32
                 })
-                .unwrap_or(self.task_forces[force_index].ships.len());
-            self.task_forces[force_index].ships.insert(
-                insert_at,
-                SelectedShip {
-                    ship,
-                    selected: true,
-                },
-            );
+                .unwrap_or(force_state.ships.len());
+            self.task_force_mut(force)
+                .expect("task force remains present")
+                .ships
+                .shift_insert(insert_at, ship, true);
         }
         if added {
             self.consider_task_force_flagship(force, ship);
@@ -1238,8 +1229,8 @@ impl GameState {
             .task_force(force)
             .is_some_and(|force| force.flagship == Some(ship));
         if let Some(force) = self.task_force_mut(force) {
-            if force.ships.iter().any(|entry| entry.ship == ship) {
-                force.ships.retain(|entry| entry.ship != ship);
+            if force.ships.contains_key(&ship) {
+                force.ships.shift_remove(&ship);
             }
         }
         if was_flagship {
@@ -1261,25 +1252,27 @@ impl GameState {
     }
 
     fn elect_task_force_flagship(&mut self, force: TaskForceId) {
-        let Some(force_index) = self.task_force_index(force) else {
+        let Some(force_state) = self.task_force(force) else {
             return;
         };
-        let flagship = self.task_forces[force_index]
+        let flagship = force_state
             .ships
             .iter()
-            .map(|entry| entry.ship)
+            .map(|(&ship, _)| ship)
             .reduce(|candidate, ship| self.finest_ship(ship, candidate));
-        self.task_forces[force_index].flagship = flagship;
+        self.task_force_mut(force)
+            .expect("task force remains present")
+            .flagship = flagship;
     }
 
     fn finest_ship(&self, ship: ShipId, candidate: ShipId) -> ShipId {
         let ship_admiral = self
             .admirals
-            .iter()
+            .values()
             .find(|admiral| admiral.ship == Some(ship));
         let candidate_admiral = self
             .admirals
-            .iter()
+            .values()
             .find(|admiral| admiral.ship == Some(candidate));
         match (ship_admiral, candidate_admiral) {
             (Some(left), Some(right)) if left.experience != right.experience => {
@@ -1319,17 +1312,17 @@ impl GameState {
     }
 
     pub(super) fn free_task_force(&mut self, force: TaskForceId) {
-        let Some(index) = self.task_force_index(force) else {
+        if !self.task_forces.contains_key(&force) {
             return;
-        };
-        for mission in &mut self.missions {
+        }
+        for mission in self.missions.values_mut() {
             if let Some(navy) = navy_state_mut(&mut mission.data)
                 && navy.task_force == Some(force)
             {
                 navy.task_force = None;
             }
         }
-        self.task_forces.remove(index);
+        self.task_forces.shift_remove(&force);
     }
 }
 

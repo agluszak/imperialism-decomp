@@ -125,7 +125,7 @@ pub use market::{
 pub(crate) use military::ObjectIdAllocator;
 pub use military::{
     AdmiralState, ArmyMissionState, AttackMissionState, MissionData, MissionState,
-    NavyMissionState, SelectedShip, ShipState, TaskForceOrder, TaskForceState, TaskForceTarget,
+    NavyMissionState, ShipState, TaskForceOrder, TaskForceState, TaskForceTarget,
 };
 pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,

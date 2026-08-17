@@ -1,5 +1,6 @@
 use crate::city::ship_stock_cap;
 use crate::*;
+use indexmap::{IndexMap, IndexSet};
 use serde::{Deserialize, Serialize};
 
 const MILITARY_MAINTENANCE_MULTIPLIER: i32 = 25;
@@ -51,7 +52,7 @@ impl ObjectIdAllocator {
 impl GameState {
     pub(crate) fn army_unit_power(&self, nation: NationId) -> i32 {
         self.military_units
-            .iter()
+            .values()
             .filter(|unit| unit.nation == nation)
             .map(|unit| unit.unit_type.arms_required())
             .sum()
@@ -59,7 +60,7 @@ impl GameState {
 
     pub(crate) fn navy_arms(&self, nation: NationId) -> i32 {
         self.ships
-            .iter()
+            .values()
             .filter(|ship| ship.nation == nation)
             .map(|ship| NAVY_ARMS_BY_SHIP_TYPE[ship.ship_type])
             .sum()
@@ -99,13 +100,13 @@ impl GameState {
     pub(crate) fn military_power_score(&self, nation: MajorNationId) -> i32 {
         let nation_id = nation.nation();
         self.military_units
-            .iter()
+            .values()
             .filter(|unit| unit.nation == nation_id)
             .map(|unit| unit.unit_type.arms_required())
             .sum::<i32>()
             + self
                 .ships
-                .iter()
+                .values()
                 .filter(|ship| ship.nation == nation_id)
                 .map(|ship| NAVY_ARMS_BY_SHIP_TYPE[ship.ship_type])
                 .sum::<i32>()
@@ -130,7 +131,7 @@ impl GameState {
     pub(crate) fn insert_ship_at_head(&mut self, mut ship: ShipState) -> ShipId {
         ship.id = self.allocate_ship_id();
         let id = ship.id;
-        self.ships.insert(0, ship);
+        self.ships.shift_insert(0, id, ship);
         id
     }
 
@@ -138,41 +139,30 @@ impl GameState {
         self.object_ids.ship()
     }
 
-    pub(crate) fn ship_index(&self, id: ShipId) -> Option<usize> {
-        self.ships.iter().position(|ship| ship.id == id)
-    }
-
     pub fn ship(&self, id: ShipId) -> Option<&ShipState> {
-        self.ship_index(id).map(|index| &self.ships[index])
+        self.ships.get(&id)
     }
 
     pub(crate) fn ship_mut(&mut self, id: ShipId) -> Option<&mut ShipState> {
-        self.ship_index(id).map(|index| &mut self.ships[index])
+        self.ships.get_mut(&id)
     }
 
     pub(crate) fn allocate_task_force_id(&mut self) -> TaskForceId {
         self.object_ids.task_force()
     }
 
-    pub(crate) fn task_force_index(&self, id: TaskForceId) -> Option<usize> {
-        self.task_forces.iter().position(|force| force.id == id)
-    }
-
     pub fn task_force(&self, id: TaskForceId) -> Option<&TaskForceState> {
-        self.task_force_index(id)
-            .map(|index| &self.task_forces[index])
+        self.task_forces.get(&id)
     }
 
     pub(crate) fn task_force_of_ship(&self, ship: ShipId) -> Option<TaskForceId> {
         self.task_forces
             .iter()
-            .find(|force| force.ships.iter().any(|entry| entry.ship == ship))
-            .map(|force| force.id)
+            .find_map(|(&id, force)| force.ships.contains_key(&ship).then_some(id))
     }
 
     pub(crate) fn task_force_mut(&mut self, id: TaskForceId) -> Option<&mut TaskForceState> {
-        self.task_force_index(id)
-            .map(|index| &mut self.task_forces[index])
+        self.task_forces.get_mut(&id)
     }
 
     /// `TGreatPower::IsCapitolThreatened` for both land (mode 0) and navy (mode 1).
@@ -317,7 +307,7 @@ impl GameState {
                     && force.target == TaskForceTarget::Province(province)
             })
             .flat_map(|force| force.ships.iter())
-            .filter_map(|selected| self.ship(selected.ship))
+            .filter_map(|(&ship, _)| self.ship(ship))
             .map(|ship| {
                 if ship.strength > 0 {
                     NAVY_ARMS_BY_SHIP_TYPE[ship.ship_type]
@@ -719,7 +709,7 @@ pub struct TaskForceState {
     pub defeated: bool,
     pub ingot_tile: i16,
     pub(crate) flagship: Option<ShipId>,
-    pub(crate) ships: Vec<SelectedShip>,
+    pub(crate) ships: IndexMap<ShipId, bool>,
 }
 
 impl TaskForceState {
@@ -727,22 +717,16 @@ impl TaskForceState {
         self.flagship
     }
 
-    pub fn ships(&self) -> &[SelectedShip] {
-        &self.ships
+    pub fn ships(&self) -> impl ExactSizeIterator<Item = (ShipId, bool)> + '_ {
+        self.ships.iter().map(|(&ship, &selected)| (ship, selected))
     }
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct SelectedShip {
-    pub ship: ShipId,
-    pub selected: bool,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ArmyMissionState {
     /// Exact IEEE-754 bits retained for deterministic mission scoring.
     pub required_equipage_bits: [u32; 5],
-    pub units: Vec<MilitaryUnitId>,
+    pub units: IndexSet<MilitaryUnitId>,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -757,7 +741,7 @@ pub struct NavyMissionState {
     pub state: i32,
     /// Exact IEEE-754 bits retained for deterministic mission scoring.
     pub required_equipage_bits: [u32; 4],
-    pub ships: Vec<SelectedShip>,
+    pub ships: IndexMap<ShipId, bool>,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
