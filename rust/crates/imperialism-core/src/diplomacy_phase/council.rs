@@ -54,7 +54,10 @@ impl GameState {
             if self.nations.common(nation).is_none() {
                 chairman_side[nation] = self.rng.next_crt_rand() % 50 + 50;
                 counterpart_side[nation] = self.rng.next_crt_rand() % 50 + 50;
-            } else if nation.get() >= MinorNationId::FIRST {
+            } else if matches!(
+                self.nations.country_status(nation),
+                Some(CountryStatus::ProtectorateOf(_))
+            ) {
                 let home_owner = self
                     .nations
                     .home_tile(nation)

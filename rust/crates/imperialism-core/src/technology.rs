@@ -209,7 +209,7 @@ impl Default for TechnologyState {
                 false, false, false, false, false, false, false, false, false, false, false, false,
                 false, false, false, false, false,
             ]),
-            latest_global_unlock: None,
+            latest_global_unlock: Some(Technology::SeedDrill),
             research_status_by_nation: MajorNationTable::from_fn(|_| {
                 TechnologyTable::from_array(std::array::from_fn(|index| {
                     if index < 3 {
@@ -433,6 +433,8 @@ impl GameState {
         }
         self.technology.research_status_by_nation[nation][tech_id] =
             TechnologyResearchStatus::Researched;
+        self.technology.completion_year_by_nation[nation][tech_id] =
+            (self.turn.economic_turn / 4) as i16;
 
         let difficulty = self.turn.difficulty as u8;
         let era_offset =
@@ -843,6 +845,14 @@ mod tests {
     }
 
     #[test]
+    fn default_global_unlock_marker_matches_retail_initialization() {
+        assert_eq!(
+            TechnologyState::default().latest_global_unlock,
+            Some(Technology::SeedDrill)
+        );
+    }
+
+    #[test]
     fn check_for_advances_charges_ai_nations_for_already_unlocked_technology() {
         let mut state = crate::test_support::game_state();
         let ai = MajorNationId::new(1);
@@ -884,6 +894,10 @@ mod tests {
         assert_eq!(
             state.consume_interactive_technology_unlock(),
             Some(Technology::CottonGin)
+        );
+        assert_eq!(
+            state.technology.completion_year_by_nation[active][Technology::CottonGin],
+            (state.turn.economic_turn / 4) as i16
         );
     }
 
