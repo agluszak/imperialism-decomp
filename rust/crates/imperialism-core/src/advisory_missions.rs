@@ -17,10 +17,10 @@ const TIER_THRESHOLDS: [[f32; 6]; 5] = [
     [1.5, 1.5, 2.5, 0.0, 1.75, 1.75],
 ];
 
-const NEIGHBOR_UNIT_WEIGHT: [i32; 32] = [
+const NEIGHBOR_UNIT_WEIGHT: MilitaryUnitTable<i32> = MilitaryUnitTable::from_array([
     70, 137, 135, 164, 165, 211, 193, 300, 95, 243, 230, 265, 230, 275, 323, 549, 170, 450, 471,
-    495, 493, 1010, 715, 913, 193, 260, 360, 200, 200, 200, 0, 1000,
-];
+    495, 493, 1010, 715, 913, 193, 260, 360, 200, 200, 200,
+]);
 
 const MISSION_SCORE_DIVISOR: f32 = 5000.0;
 const PORT_FRIENDLY_MULTIPLIER: f32 = 1.5;
@@ -718,7 +718,7 @@ impl GameState {
         self.military_units
             .values()
             .filter(|unit| unit.stationed_province() == Some(province))
-            .map(|unit| NEIGHBOR_UNIT_WEIGHT[unit.unit_type as usize])
+            .map(|unit| NEIGHBOR_UNIT_WEIGHT[unit.unit_type])
             .sum()
     }
 
