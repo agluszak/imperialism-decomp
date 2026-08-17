@@ -1275,10 +1275,13 @@ impl GameState {
                 candidate
             };
         }
-        if candidate_state.strength < ship_state.strength {
-            ship
-        } else {
-            candidate
+        match ship_state.strength.cmp(&candidate_state.strength) {
+            std::cmp::Ordering::Greater => ship,
+            std::cmp::Ordering::Less => candidate,
+            // Retail's head-linked child order made a completely tied late
+            // arrival win. Runtime IDs preserve that creation tie-break without
+            // making task-force membership order a second source of truth.
+            std::cmp::Ordering::Equal => ship.max(candidate),
         }
     }
 
