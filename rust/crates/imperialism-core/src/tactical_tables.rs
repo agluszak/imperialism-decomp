@@ -1,6 +1,7 @@
 //! Numeric tables for headless land-battle Auto (`global_data_tables.cpp`).
 
 use crate::MilitaryUnitTable;
+use crate::units::TacticalCombatClass;
 
 pub(crate) const TACTICAL_TILE_COUNT: usize = 0x1b3;
 pub(crate) const TACTICAL_STRIDE: i32 = 0x1d;
@@ -17,9 +18,39 @@ pub(crate) const BASE_ACTION_POINTS: MilitaryUnitTable<i32> = MilitaryUnitTable:
 ]);
 
 /// `g_awTacticalUnitAiClassByUnitType_006693B8` / combat-category twin at 0x669858.
-pub(crate) const AI_CLASS: MilitaryUnitTable<i16> = MilitaryUnitTable::from_array([
-    0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4,
-]);
+pub(crate) const AI_CLASS: MilitaryUnitTable<TacticalCombatClass> =
+    MilitaryUnitTable::from_array([
+        TacticalCombatClass::Infantry,
+        TacticalCombatClass::Infantry,
+        TacticalCombatClass::Infantry,
+        TacticalCombatClass::Infantry,
+        TacticalCombatClass::Cavalry,
+        TacticalCombatClass::Cavalry,
+        TacticalCombatClass::Artillery,
+        TacticalCombatClass::Artillery,
+        TacticalCombatClass::Infantry,
+        TacticalCombatClass::Infantry,
+        TacticalCombatClass::Infantry,
+        TacticalCombatClass::Infantry,
+        TacticalCombatClass::Cavalry,
+        TacticalCombatClass::Cavalry,
+        TacticalCombatClass::Artillery,
+        TacticalCombatClass::Artillery,
+        TacticalCombatClass::Infantry,
+        TacticalCombatClass::Infantry,
+        TacticalCombatClass::Infantry,
+        TacticalCombatClass::Infantry,
+        TacticalCombatClass::Cavalry,
+        TacticalCombatClass::Armor,
+        TacticalCombatClass::Artillery,
+        TacticalCombatClass::Artillery,
+        TacticalCombatClass::Support,
+        TacticalCombatClass::Support,
+        TacticalCombatClass::Support,
+        TacticalCombatClass::Support,
+        TacticalCombatClass::Support,
+        TacticalCombatClass::Support,
+    ]);
 
 pub(crate) const DIRECT_FIRE: [f32; 10] = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0];
 
