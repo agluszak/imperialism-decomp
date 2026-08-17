@@ -99,7 +99,7 @@ impl LegacySaveV62 {
                 LegacyMajorNationState::Other(power) => write_great_power(&mut writer, power),
             }
         }
-        for nation in &self.minor_nations {
+        for nation in self.minor_nations.values() {
             write_minor(&mut writer, nation);
         }
         write_help(&mut writer, &self.help);

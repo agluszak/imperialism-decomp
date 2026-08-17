@@ -14,7 +14,7 @@ impl LegacySaveV62 {
         let mut foreign_minister_policy_ids = [0_i16; MAJOR_NATION_COUNT];
         let mut nation_names = vec![String::new(); NATION_COUNT];
         let mut major_nations = IndexMap::new();
-        let mut minor_nations = Vec::new();
+        let mut minor_nations = IndexMap::new();
 
         for slot in 0..MAJOR_NATION_COUNT {
             let major_id = MajorNationId::new(slot as u8);
@@ -73,7 +73,7 @@ impl LegacySaveV62 {
                 .filter(|(_, unit)| unit.nation() == minor_id.nation())
                 .map(|(id, unit)| (id, unit.clone()))
                 .collect::<Vec<_>>();
-            minor_nations.push(minor_nation_dto(minor, minor_id, &military));
+            minor_nations.insert(minor_id, minor_nation_dto(minor, minor_id, &military));
         }
 
         let active_name = state

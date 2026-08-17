@@ -94,7 +94,7 @@ pub(super) fn bootstrap_minors(
         reset_tile_to_base_transport_flag(world, province_capitals, home);
         // Retail calls `EnsurePortZoneForTile` after the minor home stamp.
         ensure_port_zone_for_tile(world, port_zones, home);
-        if let Some(minor) = nations.minors[minor_id].as_mut() {
+        if let Some(minor) = nations.minors.get_mut(&minor_id) {
             minor.common.home_tile = Some(home);
         }
 

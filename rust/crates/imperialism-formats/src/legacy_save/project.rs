@@ -769,7 +769,7 @@ impl LegacySaveV62 {
         let ship_ids = ships.keys().rev().copied().collect::<Vec<_>>();
         let admirals = admiral_states(&self.navy, &ship_ids, &mut object_ids);
 
-        let mut minors = MinorNationTable::default();
+        let mut minors = IndexMap::new();
         let mut military_units = IndexMap::new();
         let mut civilian_units = IndexMap::new();
         let mut missions = IndexMap::new();
@@ -858,16 +858,18 @@ impl LegacySaveV62 {
                 diplomacy_proposals(&great_power.prefix.proposal_queue);
             majors.insert(major_id, major);
         }
-        for nation in &self.minor_nations {
-            let nation_id = NationId::new(nation.country.nation_slot as u8);
-            let minor_id = MinorNationId::new(nation_id.get());
-            minors[minor_id] = Some(MinorNation {
-                common: country_common(&nation.country),
-                consortium_members: nation
-                    .diplomacy_save_fields
-                    .map(minor_nation_id_from_retail_i16),
-                trade: minor_trade_state(nation),
-            });
+        for (&minor_id, nation) in &self.minor_nations {
+            let nation_id = minor_id.nation();
+            minors.insert(
+                minor_id,
+                MinorNation {
+                    common: country_common(&nation.country),
+                    consortium_members: nation
+                        .diplomacy_save_fields
+                        .map(minor_nation_id_from_retail_i16),
+                    trade: minor_trade_state(nation),
+                },
+            );
             military_units.extend(nation.country.military_unit_states(nation_id));
         }
 

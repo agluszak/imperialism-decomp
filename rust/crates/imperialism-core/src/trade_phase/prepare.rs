@@ -16,7 +16,7 @@ impl GameState {
         }
 
         for minor in MinorNationId::all() {
-            if self.nations.minors[minor].is_some() {
+            if self.nations.minors.contains_key(&minor) {
                 self.initialize_minor_trade_status(minor, phase);
             }
         }
@@ -62,7 +62,7 @@ impl GameState {
         phase: &mut TradePhase,
     ) {
         {
-            let Some(state) = self.nations.minors[minor].as_mut() else {
+            let Some(state) = self.nations.minors.get_mut(&minor) else {
                 return;
             };
             state.trade.secondary_manufactured_request = None;
@@ -89,7 +89,7 @@ impl GameState {
                     phase.recurring_grant[minor][resource] += yield_level;
                     phase.status_by_major[minor][resource][usize::from(great_power.get())] +=
                         yield_level;
-                    if let Some(state) = self.nations.minors[minor].as_mut() {
+                    if let Some(state) = self.nations.minors.get_mut(&minor) {
                         state.trade.current_supply[resource] += yield_level;
                     }
                 }
@@ -98,7 +98,7 @@ impl GameState {
                     if tile.gate == 0x0f {
                         continue;
                     }
-                    if let Some(state) = self.nations.minors[minor].as_mut() {
+                    if let Some(state) = self.nations.minors.get_mut(&minor) {
                         state.trade.current_supply[resource] += 1;
                         state.trade.independent_resource_counts[resource] += 1;
                     }

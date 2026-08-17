@@ -35,14 +35,19 @@ pub(super) fn bootstrap_nations(
                 )
             })
             .collect::<IndexMap<_, _>>(),
-        MinorNationTable::from_fn(|nation| {
-            Some(minor_nation(
-                nation,
-                localized_nation_names
-                    .map(|names| names[nation.nation()].clone())
-                    .unwrap_or_default(),
-            ))
-        }),
+        MinorNationId::all()
+            .map(|nation| {
+                (
+                    nation,
+                    minor_nation(
+                        nation,
+                        localized_nation_names
+                            .map(|names| names[nation.nation()].clone())
+                            .unwrap_or_default(),
+                    ),
+                )
+            })
+            .collect::<IndexMap<_, _>>(),
     )
 }
 pub(super) fn major_nation(
@@ -209,9 +214,7 @@ pub(super) const fn minor_trade_thresholds(
 }
 pub(super) fn initialize_minor_trade_state(world: &MapMgr, nations: &mut Nations) {
     for nation in MinorNationId::all() {
-        let Some(minor) = nations.minors[nation].as_mut() else {
-            continue;
-        };
+        let minor = &mut nations.minors[&nation];
         let owner = TileOwnerTag::from_nation(nation.nation());
         let mut counts = ResourceTable::default();
         for tile in world.tiles.iter() {

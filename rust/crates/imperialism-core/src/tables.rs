@@ -147,12 +147,6 @@ impl<T> MinorNationTable<T> {
         Self(values)
     }
 
-    pub(crate) fn from_fn(mut function: impl FnMut(MinorNationId) -> T) -> Self {
-        Self(std::array::from_fn(|index| {
-            function(MinorNationId::new(MinorNationId::FIRST + index as u8))
-        }))
-    }
-
     pub(crate) fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
         self.0.iter()
     }

@@ -2388,6 +2388,7 @@ fn set_checked(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use indexmap::IndexMap;
 
     #[test]
     fn relationship_type_fill_uses_get_color_of_retail_relation_codes() {
@@ -2498,12 +2499,9 @@ mod tests {
             mutate(id, &mut major);
             major
         });
-        let minors = MinorNationTable::from_array(std::array::from_fn(|index| {
-            parts
-                .nations
-                .minor(MinorNationId::new(MajorNationId::COUNT + index as u8))
-                .cloned()
-        }));
+        let minors = MinorNationId::all()
+            .filter_map(|id| parts.nations.minor(id).cloned().map(|minor| (id, minor)))
+            .collect::<IndexMap<_, _>>();
         parts.nations = Nations::new(majors, minors);
     }
 

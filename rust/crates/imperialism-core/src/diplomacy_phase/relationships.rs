@@ -49,8 +49,10 @@ impl GameState {
 
     pub(super) fn copy_colony_standings_from(&mut self, master: NationId) {
         for minor in MinorNationId::all() {
-            if self.nations.minors[minor]
-                .as_ref()
+            if self
+                .nations
+                .minors
+                .get(&minor)
                 .is_some_and(|nation| nation.common.status() == CountryStatus::ColonyOf(master))
             {
                 self.set_relationships_to_match(minor.nation(), master);
@@ -172,8 +174,10 @@ impl GameState {
         relationship: DiplomaticRelationship,
     ) {
         for minor in MinorNationId::all() {
-            if !self.nations.minors[minor]
-                .as_ref()
+            if !self
+                .nations
+                .minors
+                .get(&minor)
                 .is_some_and(|nation| nation.common.status() == CountryStatus::ColonyOf(master))
             {
                 continue;

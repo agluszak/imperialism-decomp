@@ -7,17 +7,17 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Nations {
     pub(crate) majors: IndexMap<MajorNationId, MajorNation>,
-    pub(crate) minors: MinorNationTable<Option<MinorNation>>,
+    pub(crate) minors: IndexMap<MinorNationId, MinorNation>,
 }
 
 impl Nations {
     pub fn new(
         majors: impl Into<IndexMap<MajorNationId, MajorNation>>,
-        minors: MinorNationTable<Option<MinorNation>>,
+        minors: impl Into<IndexMap<MinorNationId, MinorNation>>,
     ) -> Self {
         Self {
             majors: majors.into(),
-            minors,
+            minors: minors.into(),
         }
     }
 
@@ -52,11 +52,11 @@ impl Nations {
     }
 
     pub fn minor(&self, nation: MinorNationId) -> Option<&MinorNation> {
-        self.minors[nation].as_ref()
+        self.minors.get(&nation)
     }
 
     pub fn minor_count(&self) -> usize {
-        self.minors.iter().flatten().count()
+        self.minors.len()
     }
 
     /// Returns the normalized display name used by retail nation-facing UI.
@@ -82,8 +82,8 @@ impl Nations {
         if let Some(nation) = MajorNationId::from_nation(nation) {
             self.majors.get(&nation).map(|nation| &nation.common)
         } else {
-            self.minors[MinorNationId::new(nation.get())]
-                .as_ref()
+            self.minors
+                .get(&MinorNationId::new(nation.get()))
                 .map(|nation| &nation.common)
         }
     }
@@ -94,8 +94,8 @@ impl Nations {
                 .get_mut(&nation)
                 .map(|nation| &mut nation.common)
         } else {
-            self.minors[MinorNationId::new(nation.get())]
-                .as_mut()
+            self.minors
+                .get_mut(&MinorNationId::new(nation.get()))
                 .map(|nation| &mut nation.common)
         }
     }

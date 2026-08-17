@@ -148,8 +148,9 @@ impl GameState {
             self.nations.majors[&major].economy.amount_unsold(resource)
         } else {
             let minor = MinorNationId::new(nation.get());
-            self.nations.minors[minor]
-                .as_ref()
+            self.nations
+                .minors
+                .get(&minor)
                 .map(|state| {
                     (state.trade.current_supply[resource] + state.trade.grant_deltas[resource])
                         .max(0)
@@ -159,7 +160,7 @@ impl GameState {
     }
 
     pub(super) fn minor_still_buying(&self, minor: MinorNationId, resource: ResourceKind) -> bool {
-        let Some(state) = self.nations.minors[minor].as_ref() else {
+        let Some(state) = self.nations.minors.get(&minor) else {
             return false;
         };
         let Some(commodity) = TradeCommodity::from_retail(resource as i16) else {
@@ -270,7 +271,7 @@ impl GameState {
         price: i16,
         phase: &TradePhase,
     ) {
-        let Some(state) = self.nations.minors[minor].as_mut() else {
+        let Some(state) = self.nations.minors.get_mut(&minor) else {
             return;
         };
         if amount >= 1

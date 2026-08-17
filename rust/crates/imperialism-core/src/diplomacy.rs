@@ -918,7 +918,7 @@ impl GameState {
             let select = if score > best_score {
                 true
             } else if score == best_score {
-                if self.nations.minors[minor].as_ref().is_some_and(|nation| {
+                if self.nations.minors.get(&minor).is_some_and(|nation| {
                     nation.common.status() == CountryStatus::ColonyOf(major.nation())
                 }) {
                     true

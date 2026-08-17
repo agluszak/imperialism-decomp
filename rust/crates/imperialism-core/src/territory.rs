@@ -281,8 +281,9 @@ impl GameState {
             );
         } else {
             let old_owner = MinorNationId::new(old_owner.get());
-            self.nations.minors[old_owner]
-                .as_mut()
+            self.nations
+                .minors
+                .get_mut(&old_owner)
                 .expect("owned province requires its minor nation to be present")
                 .lose_province(province);
             self.handle_minor_province_loss(&linked_tiles, new_owner);
@@ -330,8 +331,9 @@ impl GameState {
                 }
             }
         } else {
-            self.nations.minors[MinorNationId::new(new_owner.get())]
-                .as_mut()
+            self.nations
+                .minors
+                .get_mut(&MinorNationId::new(new_owner.get()))
                 .expect("province owner change requires the destination minor nation")
                 .add_province(province);
         }
@@ -545,21 +547,24 @@ mod tests {
 
     fn add_minor(state: &mut GameState, slot: u8, status: CountryStatus, owned: &[u16]) {
         let minor = MinorNationId::new(slot);
-        state.nations.minors[minor] = Some(MinorNation {
-            common: {
-                let template = &state.nations.majors[&crate::MajorNationId::new(0)].common;
-                crate::NationCommonState::from_parts(
-                    template.display_name.clone(),
-                    status,
-                    owned.iter().copied().map(ProvinceId::new).collect(),
-                    template.treasury,
-                    template.home_tile,
-                    template.trade_policy_by_nation.clone(),
-                )
+        state.nations.minors.insert(
+            minor,
+            MinorNation {
+                common: {
+                    let template = &state.nations.majors[&crate::MajorNationId::new(0)].common;
+                    crate::NationCommonState::from_parts(
+                        template.display_name.clone(),
+                        status,
+                        owned.iter().copied().map(ProvinceId::new).collect(),
+                        template.treasury,
+                        template.home_tile,
+                        template.trade_policy_by_nation.clone(),
+                    )
+                },
+                consortium_members: [minor; 4],
+                trade: Default::default(),
             },
-            consortium_members: [minor; 4],
-            trade: Default::default(),
-        });
+        );
     }
 
     #[test]
@@ -759,9 +764,7 @@ mod tests {
         state.change_province_owner(ProvinceId::new(2), NationId::new(1));
 
         assert!(
-            state.nations.minors[MinorNationId::new(7)]
-                .as_ref()
-                .unwrap()
+            state.nations.minors[&MinorNationId::new(7)]
                 .common
                 .owned_regions()
                 .is_empty()

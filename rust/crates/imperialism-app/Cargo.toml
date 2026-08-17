@@ -17,4 +17,5 @@ imperialism-formats = { path = "../imperialism-formats" }
 thiserror.workspace = true
 
 [dev-dependencies]
+indexmap.workspace = true
 tempfile = "3"

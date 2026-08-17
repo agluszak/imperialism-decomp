@@ -83,7 +83,10 @@ fn consulate_policy_sets_symmetric_mission_level_and_news() {
     let mut state = game_state();
     let source = major(0);
     let target = nation(7);
-    state.nations.minors[MinorNationId::new(7)] = Some(independent_minor(7));
+    state
+        .nations
+        .minors
+        .insert(MinorNationId::new(7), independent_minor(7));
     state.nations.majors[&source]
         .economy
         .diplomacy_policy_by_nation[target] = Some(DiplomacyPolicy::BuildConsulate);
@@ -123,7 +126,10 @@ fn minor_non_aggression_pact_is_accepted_immediately() {
     let mut state = game_state();
     let source = major(0);
     let target = nation(7);
-    state.nations.minors[MinorNationId::new(7)] = Some(independent_minor(7));
+    state
+        .nations
+        .minors
+        .insert(MinorNationId::new(7), independent_minor(7));
     state.nations.majors[&source]
         .economy
         .diplomacy_policy_by_nation[target] = Some(DiplomacyPolicy::NonAggressionPact);
@@ -235,7 +241,10 @@ fn accepted_join_empire_makes_the_subject_a_colony() {
     let mut state = game_state();
     let source = major(0);
     let target = nation(7);
-    state.nations.minors[MinorNationId::new(7)] = Some(independent_minor(7));
+    state
+        .nations
+        .minors
+        .insert(MinorNationId::new(7), independent_minor(7));
     state.diplomacy.standings[target][source.nation()] = 0xff;
     state.diplomacy.standings[source.nation()][target] = 0xff;
     state.nations.majors[&source]
@@ -245,11 +254,7 @@ fn accepted_join_empire_makes_the_subject_a_colony() {
     assert_eq!(state.do_diplomacy(), DiplomacyPhaseResult::Resolved);
 
     assert_eq!(
-        state.nations.minors[MinorNationId::new(7)]
-            .as_ref()
-            .unwrap()
-            .common
-            .status(),
+        state.nations.minors[&MinorNationId::new(7)].common.status(),
         CountryStatus::ColonyOf(source.nation())
     );
     assert_eq!(
@@ -337,7 +342,10 @@ fn war_penalty_adjusts_independent_third_parties() {
 fn declaring_war_on_an_independent_minor_stops_for_the_favorite_human() {
     let mut state = game_state();
     state.nations.majors[&major(1)] = computer_major();
-    state.nations.minors[MinorNationId::new(7)] = Some(independent_minor(7));
+    state
+        .nations
+        .minors
+        .insert(MinorNationId::new(7), independent_minor(7));
     state.diplomacy.mission_levels[nation(0)][nation(7)] = DiplomaticMissionLevel::Embassy;
     state.diplomacy.mission_levels[nation(7)][nation(0)] = DiplomaticMissionLevel::Embassy;
     state.diplomacy.standings[nation(7)][nation(0)] = 0xff;
@@ -360,11 +368,7 @@ fn declaring_war_on_an_independent_minor_stops_for_the_favorite_human() {
         DiplomacyPhaseResult::Resolved
     );
     assert_eq!(
-        state.nations.minors[MinorNationId::new(7)]
-            .as_ref()
-            .unwrap()
-            .common
-            .status(),
+        state.nations.minors[&MinorNationId::new(7)].common.status(),
         CountryStatus::ColonyOf(nation(0))
     );
     assert_eq!(
@@ -377,7 +381,10 @@ fn declaring_war_on_an_independent_minor_stops_for_the_favorite_human() {
 fn ai_posts_a_non_aggression_pact_to_a_peaceful_embassy_minor() {
     let mut state = game_state();
     state.nations.majors[&major(1)] = computer_major();
-    state.nations.minors[MinorNationId::new(7)] = Some(independent_minor(7));
+    state
+        .nations
+        .minors
+        .insert(MinorNationId::new(7), independent_minor(7));
     state.diplomacy.mission_levels[nation(1)][nation(7)] = DiplomaticMissionLevel::Embassy;
     state.diplomacy.mission_levels[nation(7)][nation(1)] = DiplomaticMissionLevel::Embassy;
     state.diplomacy.relationships[nation(1)][nation(7)] = DiplomaticRelationship::Peace;
@@ -431,7 +438,7 @@ fn colony_annex_clears_boycotted_companies_and_deports_civilians() {
     let target = nation(7);
     let mut minor = independent_minor(7);
     minor.add_province(ProvinceId::new(0));
-    state.nations.minors[MinorNationId::new(7)] = Some(minor);
+    state.nations.minors.insert(MinorNationId::new(7), minor);
     state.map.provinces[ProvinceId::new(0)] = province(target, &[], &[20]);
     state.map[TileId::new(20)].secondary_owner_nation = Some(major(1));
     state.nations.majors[&source].economy.colony_boycott_flags[nation(1)] = 1;
@@ -495,7 +502,7 @@ fn declaring_war_marks_the_target_first_port_zone_as_a_candidate() {
         .zone_targets = vec![AiTargetState::Unmarked; 2];
     let mut minor = independent_minor(7);
     minor.add_province(ProvinceId::new(0));
-    state.nations.minors[MinorNationId::new(7)] = Some(minor);
+    state.nations.minors.insert(MinorNationId::new(7), minor);
     state.map[TileId::new(30)].former_owner_nation = Some(TileOwnerTag::from_nation(nation(7)));
     state.ocean.zones = vec![
         ZoneKind::Zone(empty_zone(Vec::new())),

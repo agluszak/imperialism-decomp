@@ -5,7 +5,7 @@ use crate::*;
 impl GameState {
     pub(super) fn set_minors_trade_bids(&mut self, phase: &mut TradePhase) {
         for minor in MinorNationId::all() {
-            if self.nations.minors[minor].is_some() {
+            if self.nations.minors.contains_key(&minor) {
                 self.set_minor_trade_bids(minor, phase);
             }
         }
@@ -13,15 +13,10 @@ impl GameState {
     }
 
     pub(super) fn set_minor_trade_bids(&mut self, minor: MinorNationId, phase: &TradePhase) {
-        let offer_independent_resources = !matches!(
-            self.nations.minors[minor]
-                .as_ref()
-                .map(|state| state.common.status()),
-            Some(CountryStatus::ColonyOf(_))
-        );
-        let saved_primary = self.nations.minors[minor]
-            .as_ref()
-            .and_then(|state| state.trade.primary_manufactured_request);
+        let state = &self.nations.minors[&minor];
+        let offer_independent_resources =
+            !matches!(state.common.status(), CountryStatus::ColonyOf(_));
+        let saved_primary = state.trade.primary_manufactured_request;
 
         if offer_independent_resources {
             let roll = self.rng.next_crt_rand() % 100;
@@ -34,7 +29,7 @@ impl GameState {
             } else {
                 ResourceKind::Food
             };
-            let Some(state) = self.nations.minors[minor].as_mut() else {
+            let Some(state) = self.nations.minors.get_mut(&minor) else {
                 return;
             };
             if i32::from(state.trade.thresholds.random_offer_price)
@@ -77,7 +72,7 @@ impl GameState {
             }
         }
 
-        let Some(state) = self.nations.minors[minor].as_mut() else {
+        let Some(state) = self.nations.minors.get_mut(&minor) else {
             return;
         };
         if saved_primary == state.trade.primary_manufactured_request {
@@ -130,7 +125,7 @@ impl GameState {
         let base = minor_offer_base(self.turn.economic_turn);
         for commodity in RAW_COMMODITIES {
             for minor in MinorNationId::all() {
-                let Some(state) = self.nations.minors[minor].as_ref() else {
+                let Some(state) = self.nations.minors.get(&minor) else {
                     continue;
                 };
                 let metric = state.trade.offers[commodity.resource()];
@@ -153,7 +148,7 @@ impl GameState {
         }
 
         for minor in MinorNationId::all() {
-            let Some(state) = self.nations.minors[minor].as_ref() else {
+            let Some(state) = self.nations.minors.get(&minor) else {
                 continue;
             };
             let metric = state.trade.offers[ResourceKind::Food];
@@ -169,7 +164,7 @@ impl GameState {
 
         for commodity in MANUFACTURED_COMMODITIES {
             for minor in MinorNationId::all() {
-                let Some(state) = self.nations.minors[minor].as_ref() else {
+                let Some(state) = self.nations.minors.get(&minor) else {
                     continue;
                 };
                 let metric = state.trade.offers[commodity.resource()];

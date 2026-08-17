@@ -807,6 +807,29 @@ fn eliminated_major_slot_stays_absent_through_save_and_load() {
 }
 
 #[test]
+fn eliminated_minor_slot_stays_absent_through_save_and_load() {
+    let eliminated = MinorNationId::new(7);
+    let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
+    save.simulation.nation_availability[usize::from(eliminated.get())] = 0;
+    save.simulation.nation_count -= 1;
+    save.minor_nations.shift_remove(&eliminated);
+
+    let state = LegacySaveV62::parse(&save.to_bytes()).game_state(game_context());
+    assert!(state.nations().minor(eliminated).is_none());
+    assert!(state.nations().minor(MinorNationId::new(8)).is_some());
+
+    let bytes = LegacySaveV62::from_game_state(&state, "- Autosave -", 0).to_bytes();
+    let round_tripped = LegacySaveV62::parse(&bytes).game_state(game_context());
+    assert!(round_tripped.nations().minor(eliminated).is_none());
+    assert!(
+        round_tripped
+            .nations()
+            .minor(MinorNationId::new(8))
+            .is_some()
+    );
+}
+
+#[test]
 fn failed_load_leaves_an_existing_game_state_untouched() {
     let original = LegacySaveV62::parse(RETAIL_FIXTURE).game_state(game_context());
     let mut current = original.clone();

@@ -638,6 +638,7 @@ const fn is_special_nation_interaction_resource(resource: ResourceKind) -> bool 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use indexmap::IndexMap;
 
     fn major() -> GreatPowerState {
         let mut major = crate::test_support::great_power_state();
@@ -703,7 +704,7 @@ mod tests {
                 Difficulty::Normal,
                 &mut diplomacy_rng,
             ),
-            nations: Nations::new(majors, MinorNationTable::default()),
+            nations: Nations::new(majors, IndexMap::new()),
             military_units: Default::default(),
             civilian_units: Default::default(),
             object_ids: crate::ObjectIdAllocator::default(),

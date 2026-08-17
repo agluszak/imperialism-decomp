@@ -354,6 +354,7 @@ mod tests {
     use super::*;
     use crate::ui::test_support::beginning_of_game_parts;
     use bevy::state::app::StatesPlugin;
+    use indexmap::IndexMap;
 
     fn fixture_state() -> GameState {
         let mut parts = beginning_of_game_parts();
@@ -377,7 +378,7 @@ mod tests {
             }
             major
         });
-        parts.nations = Nations::new(majors, MinorNationTable::default());
+        parts.nations = Nations::new(majors, IndexMap::new());
         GameState::from_parts(parts)
     }
 

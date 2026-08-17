@@ -795,7 +795,7 @@ impl GameState {
             else {
                 continue;
             };
-            let Some(minor) = self.nations.minors[minor_id].as_ref() else {
+            let Some(minor) = self.nations.minors.get(&minor_id) else {
                 continue;
             };
             if !matches!(minor.common.status(), CountryStatus::Independent)

@@ -164,8 +164,10 @@ impl GameState {
         }
 
         for minor in MinorNationId::all() {
-            let empty = self.nations.minors[minor]
-                .as_ref()
+            let empty = self
+                .nations
+                .minors
+                .get(&minor)
                 .is_some_and(|nation| nation.common.owned_regions().is_empty());
             if !empty {
                 continue;
@@ -603,18 +605,21 @@ mod tests {
         let mut state = game_state();
         keep_all_majors_alive(&mut state);
         let minor = MinorNationId::new(7);
-        state.nations.minors[minor] = Some(MinorNation {
-            common: NationCommonState::from_parts(
-                "M".into(),
-                CountryStatus::Independent,
-                Vec::new(),
-                0,
-                None,
-                NationTable::default(),
-            ),
-            consortium_members: [minor; 4],
-            trade: MinorTradeState::default(),
-        });
+        state.nations.minors.insert(
+            minor,
+            MinorNation {
+                common: NationCommonState::from_parts(
+                    "M".into(),
+                    CountryStatus::Independent,
+                    Vec::new(),
+                    0,
+                    None,
+                    NationTable::default(),
+                ),
+                consortium_members: [minor; 4],
+                trade: MinorTradeState::default(),
+            },
+        );
         state.nations.majors[&MajorNationId::new(0)]
             .common
             .trade_policy_by_nation[NationId::new(0)] = TradePolicyScore::new(75);

@@ -380,8 +380,9 @@ impl GameState {
     }
 
     pub(super) fn in_consortium_with(&self, minor: NationId, source: NationId) -> bool {
-        self.nations.minors[MinorNationId::new(minor.get())]
-            .as_ref()
+        self.nations
+            .minors
+            .get(&MinorNationId::new(minor.get()))
             .is_some_and(|nation| {
                 nation
                     .consortium_members

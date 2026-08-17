@@ -103,10 +103,11 @@ impl LegacySaveV62 {
             major_nations.insert(nation, major);
         }
 
-        let mut minor_nations = Vec::new();
+        let mut minor_nations = IndexMap::new();
         for nation in MAJOR_NATION_COUNT..NATION_COUNT {
             if simulation.nation_availability[nation] != 0 {
-                minor_nations.push(read_minor_record(&mut stream));
+                let id = MinorNationId::new(nation as u8);
+                minor_nations.insert(id, read_minor_record(&mut stream));
             }
         }
 

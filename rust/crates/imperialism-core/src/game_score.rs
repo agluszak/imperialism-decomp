@@ -59,7 +59,7 @@ impl GameState {
         .sum();
         let mut provinces = major.common.owned_regions().len() as i32;
         for minor in MinorNationId::all() {
-            let Some(common) = self.nations.minors[minor].as_ref() else {
+            let Some(common) = self.nations.minors.get(&minor) else {
                 continue;
             };
             if common.common.status().is_colony_of(nation.nation()) {

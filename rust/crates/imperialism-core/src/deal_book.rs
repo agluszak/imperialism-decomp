@@ -597,18 +597,21 @@ mod tests {
     #[test]
     fn aid_groups_by_resource_and_skips_absent_minors() {
         let mut state = game_state();
-        state.nations.minors[MinorNationId::new(7)] = Some(MinorNation {
-            common: NationCommonState::from_parts(
-                "Konia".to_owned(),
-                CountryStatus::Independent,
-                Vec::new(),
-                0,
-                None,
-                NationTable::default(),
-            ),
-            consortium_members: [MinorNationId::new(7); 4],
-            trade: MinorTradeState::default(),
-        });
+        state.nations.minors.insert(
+            MinorNationId::new(7),
+            MinorNation {
+                common: NationCommonState::from_parts(
+                    "Konia".to_owned(),
+                    CountryStatus::Independent,
+                    Vec::new(),
+                    0,
+                    None,
+                    NationTable::default(),
+                ),
+                consortium_members: [MinorNationId::new(7); 4],
+                trade: MinorTradeState::default(),
+            },
+        );
         let economy = &mut state.nations.major_mut(major(0)).economy;
         economy.aid_allocation_by_minor_nation[MinorNationId::new(7)][ResourceKind::Grain] = 40;
         economy.aid_allocation_by_minor_nation[MinorNationId::new(8)][ResourceKind::Grain] = 15;

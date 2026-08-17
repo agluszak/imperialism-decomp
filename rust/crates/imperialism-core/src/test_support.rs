@@ -5,6 +5,7 @@
 //! full struct literals.
 
 use crate::*;
+use indexmap::IndexMap;
 
 pub(crate) fn random_game_names() -> RandomGameNames {
     let mut localized_nation_names = NationTable::default();
@@ -174,7 +175,7 @@ pub(crate) fn game_state() -> GameState {
         ),
         nations: Nations::new(
             MajorNationTable::from_fn(|_nation| major_nation()),
-            MinorNationTable::default(),
+            IndexMap::new(),
         ),
         military_units: Default::default(),
         civilian_units: Default::default(),
