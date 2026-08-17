@@ -923,7 +923,7 @@ mod tests {
             Some(ProvinceId::new(1)),
             "unresolved attackers stay put"
         );
-        assert_eq!(state.military_units[2].id, mover);
+        assert_eq!(state.military_units.keys().nth(2).copied(), Some(mover));
         assert_eq!(
             state.military_units[2].stationed_province,
             Some(ProvinceId::new(4))
@@ -939,7 +939,7 @@ mod tests {
         let (mut state, attacker, mover) = battle_then_later_uncontested_state();
         assert_eq!(state.advance_turn(&[]), crate::TurnStop::LandBattle);
         state.resolve_land_battle(true);
-        assert_eq!(state.military_units[0].id, attacker);
+        assert_eq!(state.military_units.keys().next().copied(), Some(attacker));
         assert_eq!(
             state.military_units[0].stationed_province,
             Some(ProvinceId::new(2))
@@ -961,7 +961,7 @@ mod tests {
             panic!("combat continuation");
         };
         assert!(state.resume_combat_moves(continuation).is_none());
-        assert_eq!(state.military_units[2].id, mover);
+        assert_eq!(state.military_units.keys().nth(2).copied(), Some(mover));
         assert_eq!(
             state.military_units[2].stationed_province,
             Some(ProvinceId::new(4))
@@ -1013,8 +1013,8 @@ mod tests {
             (attacker_strength, defender_strength),
             "ApplyChanges must write tactical strengths before post-battle"
         );
-        assert_eq!(state.military_units[0].id, attacker);
-        assert_eq!(state.military_units[2].id, mover);
+        assert_eq!(state.military_units.keys().next().copied(), Some(attacker));
+        assert_eq!(state.military_units.keys().nth(2).copied(), Some(mover));
         assert_eq!(
             state.military_units[2].stationed_province,
             Some(ProvinceId::new(4))
