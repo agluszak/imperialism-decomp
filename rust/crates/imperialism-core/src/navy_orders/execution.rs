@@ -1041,7 +1041,7 @@ impl GameState {
         location: OceanZoneId,
     ) -> Option<OceanZoneId> {
         let mut present_mask = 0_u8;
-        for ship in &self.ships {
+        for ship in self.ships.values() {
             if ship.location == location
                 && let Some(major) = MajorNationId::from_nation(ship.nation)
             {

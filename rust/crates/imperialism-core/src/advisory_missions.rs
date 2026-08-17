@@ -759,7 +759,7 @@ impl GameState {
 
     pub(crate) fn zone_nation_key_mask(&self, zone: OceanZoneId) -> u16 {
         let mut mask = 0u16;
-        for ship in &self.ships {
+        for ship in self.ships.values() {
             if ship.location == zone {
                 mask |= 1 << ship.nation.get();
             }

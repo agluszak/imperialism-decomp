@@ -139,10 +139,9 @@ impl GameState {
         let mut overlay = String::new();
         let mut children = Vec::new();
         for &id in units {
-            let Some(index) = self.military_units.iter().position(|unit| unit.id() == id) else {
+            let Some(unit) = self.military_units.get(&id) else {
                 continue;
             };
-            let unit = &self.military_units[index];
             let mut stock = unit.strength();
             if stock == -86 {
                 stock = 0;

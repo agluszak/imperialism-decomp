@@ -450,7 +450,7 @@ impl GameState {
     /// adoption. AI development replanning is not ported.
     fn adopt_unassigned_militia_into_defend_missions(&mut self, nation: NationId) {
         let mut adoptions = Vec::new();
-        for unit in &self.military_units {
+        for unit in self.military_units.values() {
             if unit.nation() != nation || !unit.unit_type().is_militia_category() {
                 continue;
             }
@@ -460,23 +460,24 @@ impl GameState {
             if self.mission_contains_unit(unit.id()) {
                 continue;
             }
-            let Some(index) = self.missions.iter().position(|mission| {
-                mission.nation == nation
+            let Some(mission_id) = self.missions.iter().find_map(|(&id, mission)| {
+                (mission.nation == nation
                     && matches!(
                         &mission.data,
                         MissionData::DefendProvince {
                             province: hold,
                             ..
                         } if *hold == province
-                    )
+                    ))
+                .then_some(id)
             }) else {
                 continue;
             };
-            adoptions.push((index, unit.id()));
+            adoptions.push((mission_id, unit.id()));
         }
-        for (index, id) in adoptions {
-            if let MissionData::DefendProvince { army, .. } = &mut self.missions[index].data {
-                army.units.insert(0, id);
+        for (mission_id, id) in adoptions {
+            if let MissionData::DefendProvince { army, .. } = &mut self.missions[&mission_id].data {
+                army.units.shift_insert(0, id);
             }
         }
     }
@@ -485,23 +486,23 @@ impl GameState {
     /// province is no longer owned by the mission nation.
     fn prune_invalid_defend_missions(&mut self, nation: NationId) {
         let mut remove = Vec::new();
-        for (index, mission) in self.missions.iter().enumerate() {
+        for (&id, mission) in &self.missions {
             if mission.nation != nation {
                 continue;
             }
             if let MissionData::DefendProvince { province, .. } = &mission.data
                 && self.normalized_province_owner(*province) != Some(nation)
             {
-                remove.push(index);
+                remove.push(id);
             }
         }
-        for index in remove.into_iter().rev() {
-            self.missions.remove(index);
+        for id in remove {
+            self.missions.shift_remove(&id);
         }
     }
 
     fn mission_contains_unit(&self, id: MilitaryUnitId) -> bool {
-        self.missions.iter().any(|mission| match &mission.data {
+        self.missions.values().any(|mission| match &mission.data {
             MissionData::DefendProvince { army, .. }
             | MissionData::AttackProvince(AttackMissionState { army, .. })
             | MissionData::Invade {

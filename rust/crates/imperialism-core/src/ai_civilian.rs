@@ -677,7 +677,7 @@ impl GameState {
 
     fn request_missing_civilian_order_types(&mut self, nation: MajorNationId) {
         let mut has_kind = CivilianUnitTable::default();
-        for unit in &self.civilian_units {
+        for unit in self.civilian_units.values() {
             if unit.nation == nation.nation() {
                 has_kind[unit.unit_type] = true;
             }
@@ -740,7 +740,7 @@ impl GameState {
 
         let mut prospector_count = 0;
         let mut developer_count = 0;
-        for unit in &self.civilian_units {
+        for unit in self.civilian_units.values() {
             if unit.nation != nation.nation() || !matches!(unit.order, CivilianWorkOrder::Idle) {
                 continue;
             }

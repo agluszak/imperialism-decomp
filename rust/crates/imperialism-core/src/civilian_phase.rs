@@ -265,7 +265,7 @@ impl GameState {
                 .expect("sea owner tag must name a base ocean zone"),
         ));
         let mut active_nations = 0_u32;
-        for ship in &self.ships {
+        for ship in self.ships.values() {
             if ship.location != zone {
                 continue;
             }
