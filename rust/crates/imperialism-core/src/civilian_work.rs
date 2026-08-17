@@ -948,11 +948,11 @@ mod tests {
         let east = TileTransportLinks::for_direction(HexDirection::East);
         let west = TileTransportLinks::for_direction(HexDirection::West);
         assert_eq!(
-            state.civilian_units[0].location(),
+            state.civilian_units[&unit].location(),
             CivilianLocation::OnMap(destination)
         );
         assert_eq!(
-            state.civilian_units[0].order(),
+            state.civilian_units[&unit].order(),
             &CivilianWorkOrder::LayRail {
                 segment: RailSegment::between(state.map.topology, origin, destination).unwrap(),
                 turns: TurnsRemaining::try_new(1).unwrap(),
@@ -974,7 +974,10 @@ mod tests {
         state.advance_civilian_work(unit);
         assert!(state.map[origin].transport_links.contains(east));
         assert!(state.map[destination].transport_links.contains(west));
-        assert_eq!(state.civilian_units[0].order(), &CivilianWorkOrder::Idle);
+        assert_eq!(
+            state.civilian_units[&unit].order(),
+            &CivilianWorkOrder::Idle
+        );
     }
 
     #[test]
@@ -1023,7 +1026,7 @@ mod tests {
         );
         assert!(state.map[origin].pending_rail_links.is_empty());
         assert_eq!(
-            state.civilian_units[0].location(),
+            state.civilian_units[&unit].location(),
             CivilianLocation::OnMap(origin)
         );
     }
@@ -1040,9 +1043,9 @@ mod tests {
             Err(RailOrderRejection::InvalidTarget)
         );
 
-        state.civilian_units[0].unit_type = CivilianUnitKind::Miner;
+        state.civilian_units[&unit].unit_type = CivilianUnitKind::Miner;
         let (_, destination) = interior();
-        state.civilian_units[0].location = CivilianLocation::OnMap(origin);
+        state.civilian_units[&unit].location = CivilianLocation::OnMap(origin);
         state.map[destination].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
         assert_eq!(
             state.order_rail_construction(unit, destination),

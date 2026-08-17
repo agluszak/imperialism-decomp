@@ -531,7 +531,7 @@ mod tests {
         assert!(state.has_reachable_sea_outside_beginning_turn_mask(home));
 
         state.diplomacy.relationship_turns[hostile][origin] = Some(9);
-        state.task_forces[0].defeated = true;
+        state.task_forces[&TaskForceId::new(0)].defeated = true;
         assert!(state.has_reachable_sea_outside_beginning_turn_mask(home));
     }
 }
