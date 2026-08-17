@@ -498,7 +498,6 @@ mod tests {
         state.task_forces.insert(
             TaskForceId::new(0),
             TaskForceState {
-                id: TaskForceId::new(0),
                 aggression: 1,
                 order: TaskForceOrder::Patrol,
                 target: TaskForceTarget::None,

@@ -751,7 +751,6 @@ mod tests {
         state.task_forces.insert(
             TaskForceId::new(0),
             TaskForceState {
-                id: TaskForceId::new(0),
                 aggression: 0,
                 order: TaskForceOrder::Patrol,
                 target: TaskForceTarget::Zone(OceanZoneId::new(0)),
@@ -766,7 +765,6 @@ mod tests {
         state.task_forces.insert(
             TaskForceId::new(1),
             TaskForceState {
-                id: TaskForceId::new(1),
                 aggression: 0,
                 order: TaskForceOrder::Sail,
                 target: TaskForceTarget::Zone(OceanZoneId::new(1)),

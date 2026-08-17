@@ -1157,7 +1157,6 @@ impl GameState {
             0,
             id,
             TaskForceState {
-                id,
                 // `TTaskForce(TZone*, short)` seeds aggression at 1, then
                 // `DemocraticallyDetermineAggressionLevel` may overwrite it.
                 aggression: 1,
@@ -1361,7 +1360,6 @@ mod tests {
         state.task_forces.insert(
             force,
             TaskForceState {
-                id: force,
                 aggression: 1,
                 order,
                 target: TaskForceTarget::None,

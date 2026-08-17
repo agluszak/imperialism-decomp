@@ -699,7 +699,6 @@ impl<'de> Deserialize<'de> for TaskForceOrder {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TaskForceState {
-    pub id: TaskForceId,
     pub aggression: i32,
     pub order: TaskForceOrder,
     pub target: TaskForceTarget,
