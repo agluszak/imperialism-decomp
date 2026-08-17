@@ -1394,8 +1394,9 @@ mod tests {
         state.prepare_to_carry_out_navy_orders();
 
         assert_eq!(state.task_forces.len(), 2);
-        let (_, escort) = state.task_forces.first().expect("escort force");
-        let (_, repair) = state.task_forces.last().expect("repair force");
+        let mut forces = state.task_forces_in_retail_order();
+        let (_, escort) = forces.next().expect("escort force");
+        let (_, repair) = forces.next().expect("repair force");
         assert_eq!(escort.order, TaskForceOrder::Escort);
         assert_eq!(
             escort.ships.first().map(|(ship, _)| *ship),
@@ -1515,11 +1516,11 @@ mod tests {
         );
 
         let first = state.carry_out_navy_orders().expect("first encounter");
-        assert_eq!(first.battle.attacker, first_attacker);
-        assert_eq!(first.battle.defender, first_defender);
+        assert_eq!(first.battle.attacker, second_attacker);
+        assert_eq!(first.battle.defender, second_defender);
         let second = state.resume_navy_orders(first).expect("second encounter");
-        assert_eq!(second.battle.attacker, second_attacker);
-        assert_eq!(second.battle.defender, second_defender);
+        assert_eq!(second.battle.attacker, first_attacker);
+        assert_eq!(second.battle.defender, first_defender);
     }
 
     #[test]
@@ -1573,7 +1574,7 @@ mod tests {
             },
         );
         let inserted = state.create_task_force(OceanZoneId::new(9), attacker, loose_ship);
-        assert_eq!(state.task_forces.first().map(|(id, _)| *id), Some(inserted));
+        assert_eq!(state.task_forces.last().map(|(id, _)| *id), Some(inserted));
 
         let second = state.resume_navy_orders(first).expect("second encounter");
         assert_eq!(second.battle.attacker, expected_attacker);
