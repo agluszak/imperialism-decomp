@@ -7,6 +7,7 @@
 use crate::military::{ActionClassScores, ActionClassWeights, TACTICAL_COMPOSITION};
 use crate::tactical_tables::*;
 use crate::*;
+use enum_map::{Enum, EnumMap};
 
 #[derive(Clone, Copy, Eq, PartialEq)]
 enum BattleOutcome {
@@ -14,6 +15,23 @@ enum BattleOutcome {
     AttackerWon,
     DefenderWon,
 }
+
+#[derive(Clone, Copy, Enum, Eq, PartialEq)]
+enum BattleSide {
+    Attacker,
+    Defender,
+}
+
+impl BattleSide {
+    const fn opponent(self) -> Self {
+        match self {
+            Self::Attacker => Self::Defender,
+            Self::Defender => Self::Attacker,
+        }
+    }
+}
+
+type BattleSideTable<T> = EnumMap<BattleSide, T>;
 
 #[derive(Clone, Copy)]
 struct Tile {
@@ -37,7 +55,7 @@ struct TacUnit {
     quality: i16,
     sap_target: i32,
     flag3c: bool,
-    side: i32,
+    side: BattleSide,
     field24: i16,
     projection: [f32; 5],
 }
@@ -68,9 +86,9 @@ struct Battle {
     candidate_scores: [i32; TACTICAL_TILE_COUNT],
     distance_field: [i32; TACTICAL_TILE_COUNT],
     units: Vec<TacUnit>,
-    sides: [Side; 2],
+    sides: BattleSideTable<Side>,
     records: Vec<usize>,
-    current_side: i32,
+    current_side: BattleSide,
     selected: Option<usize>,
     column_count: i32,
     outcome: BattleOutcome,
@@ -148,12 +166,12 @@ impl Battle {
             candidate_scores: [0; TACTICAL_TILE_COUNT],
             distance_field: [0; TACTICAL_TILE_COUNT],
             units: Vec::new(),
-            sides: [
+            sides: BattleSideTable::from_array([
                 empty_side(true, battle.attacker_nation, our_parity),
                 empty_side(false, battle.defender_nation, enemy_parity),
-            ],
+            ]),
             records: Vec::new(),
-            current_side: 1,
+            current_side: BattleSide::Defender,
             selected: None,
             column_count: 0,
             outcome: BattleOutcome::InProgress,
@@ -168,13 +186,13 @@ impl Battle {
             if !state.military_units.contains_key(&id) {
                 continue;
             }
-            this.push_unit(state, id, 0, false);
+            this.push_unit(state, id, BattleSide::Attacker, false);
         }
         for &id in &battle.defender_units {
             if !state.military_units.contains_key(&id) {
                 continue;
             }
-            this.push_unit(state, id, 1, true);
+            this.push_unit(state, id, BattleSide::Defender, true);
         }
 
         for unit in &mut this.units {
@@ -184,18 +202,18 @@ impl Battle {
             this.units
                 .iter()
                 .enumerate()
-                .filter(|(_, unit)| unit.side == 0)
+                .filter(|(_, unit)| unit.side == BattleSide::Attacker)
                 .map(|(idx, _)| idx),
         );
         this.records.extend(
             this.units
                 .iter()
                 .enumerate()
-                .filter(|(_, unit)| unit.side == 1)
+                .filter(|(_, unit)| unit.side == BattleSide::Defender)
                 .map(|(idx, _)| idx),
         );
 
-        this.selected = this.select_next_undeployed(1);
+        this.selected = this.select_next_undeployed(BattleSide::Defender);
         let mut max_range = 0;
         for &idx in &this.records {
             let range = this.unit_range(idx);
@@ -212,7 +230,7 @@ impl Battle {
         &mut self,
         state: &GameState,
         source: MilitaryUnitId,
-        side: i32,
+        side: BattleSide,
         enemy_selected: bool,
     ) {
         let unit = &state.military_units[&source];
@@ -238,7 +256,7 @@ impl Battle {
         record.action_points = record.base_action_points();
         let idx = self.units.len();
         self.units.push(record);
-        self.sides[side as usize].units.push(idx);
+        self.sides[side].units.push(idx);
     }
 
     fn load_setup(&mut self) {
@@ -263,35 +281,35 @@ impl Battle {
     }
 
     fn start(&mut self, state: &mut GameState) {
-        self.start_side(state, 1);
-        self.start_side(state, 0);
+        self.start_side(state, BattleSide::Defender);
+        self.start_side(state, BattleSide::Attacker);
         self.finalize_turn_state(state);
     }
 
-    fn start_side(&mut self, state: &mut GameState, side: i32) {
+    fn start_side(&mut self, state: &mut GameState, side: BattleSide) {
         self.current_side = side;
         self.selected = self.select_next_undeployed(side);
         self.select_and_apply_cursor_mode(state, side, 1);
         self.auto_deploy(state, side);
     }
 
-    fn auto_deploy(&mut self, state: &mut GameState, side: i32) {
+    fn auto_deploy(&mut self, state: &mut GameState, side: BattleSide) {
         self.current_side = side;
         let free = self.count_free_deploy_tiles();
-        if self.sides[side as usize].units.len() as i32 > free {
+        if self.sides[side].units.len() as i32 > free {
             self.prune_to(state, side, free);
         }
-        if self.sides[side as usize].is_our {
+        if self.sides[side].is_our {
             self.deploy_attacker(state, side);
         } else {
             self.deploy_defender(state, side);
         }
-        self.sides[side as usize].ready = true;
+        self.sides[side].ready = true;
     }
 
-    fn deploy_attacker(&mut self, state: &mut GameState, side: i32) {
+    fn deploy_attacker(&mut self, state: &mut GameState, side: BattleSide) {
         self.sort_side_units(state, side, compare_deploy_priority);
-        let units = self.sides[side as usize].units.clone();
+        let units = self.sides[side].units.clone();
         for idx in units {
             let mut best_score = 0;
             let mut best_tile = -1;
@@ -318,9 +336,9 @@ impl Battle {
         }
     }
 
-    fn deploy_defender(&mut self, state: &mut GameState, side: i32) {
+    fn deploy_defender(&mut self, state: &mut GameState, side: BattleSide) {
         self.sort_side_units(state, side, compare_deploy_priority);
-        let units = self.sides[side as usize].units.clone();
+        let units = self.sides[side].units.clone();
         for idx in units {
             let tile = match AI_CLASS[self.units[idx].unit_type] {
                 0 => self.select_defender_melee_tile(),
@@ -454,7 +472,7 @@ impl Battle {
         if self.tiles[tile as usize].occupant.is_some() {
             return;
         }
-        if self.current_side == 0 {
+        if self.current_side == BattleSide::Attacker {
             if !(3..=5).contains(&column) {
                 return;
             }
@@ -476,26 +494,24 @@ impl Battle {
     }
 
     fn finalize_turn_state(&mut self, state: &mut GameState) {
-        self.retire_undeployed(0);
-        self.retire_undeployed(1);
+        self.retire_undeployed(BattleSide::Attacker);
+        self.retire_undeployed(BattleSide::Defender);
         self.sort_records(state);
         self.selected = self.records.last().copied();
         self.pending_end = false;
     }
 
-    fn retire_undeployed(&mut self, side: i32) {
-        let mut ordinal = self.sides[side as usize].units.len() as i32;
+    fn retire_undeployed(&mut self, side: BattleSide) {
+        let mut ordinal = self.sides[side].units.len() as i32;
         while ordinal > 0 {
-            let idx = self.sides[side as usize].units[(ordinal - 1) as usize];
+            let idx = self.sides[side].units[(ordinal - 1) as usize];
             if self.units[idx].tile == -2 {
-                self.sides[side as usize]
-                    .units
-                    .remove((ordinal - 1) as usize);
-                self.sides[side as usize].secondary.insert(0, idx);
+                self.sides[side].units.remove((ordinal - 1) as usize);
+                self.sides[side].secondary.insert(0, idx);
             }
             ordinal -= 1;
         }
-        for &retired in &self.sides[side as usize].secondary {
+        for &retired in &self.sides[side].secondary {
             if let Some(pos) = self.records.iter().position(|&idx| idx == retired) {
                 self.records.remove(pos);
             }
@@ -570,7 +586,7 @@ impl Battle {
     }
 
     fn apply_changes(&mut self, state: &mut GameState) {
-        for side in 0..2 {
+        for side in [BattleSide::Attacker, BattleSide::Defender] {
             let lists = [
                 self.sides[side].units.clone(),
                 self.sides[side].secondary.clone(),
@@ -755,7 +771,9 @@ impl TacUnit {
 impl Battle {
     fn unit_range(&self, idx: usize) -> i32 {
         let mut range = UNIT_RANGE[self.units[idx].unit_type];
-        if self.units[idx].side == 1 && combat_category_of(self.units[idx].unit_type) == 2 {
+        if self.units[idx].side == BattleSide::Defender
+            && combat_category_of(self.units[idx].unit_type) == 2
+        {
             range += 1;
         }
         range
@@ -786,7 +804,7 @@ impl Battle {
         if record.terrain == 4 || record.occupant.is_some() {
             return 0;
         }
-        if self.current_side == 0 {
+        if self.current_side == BattleSide::Attacker {
             u8::from((3..=5).contains(&column))
         } else {
             u8::from(column <= self.column_count - 3 && column >= self.column_count - 5)
@@ -799,31 +817,31 @@ impl Battle {
             .count() as i32
     }
 
-    fn select_next_undeployed(&mut self, side: i32) -> Option<usize> {
-        let list = &self.sides[side as usize].units;
-        if list.is_empty() {
-            self.sides[side as usize].ready = true;
+    fn select_next_undeployed(&mut self, side: BattleSide) -> Option<usize> {
+        let list_len = self.sides[side].units.len();
+        if list_len == 0 {
+            self.sides[side].ready = true;
             return None;
         }
-        let start = self.sides[side as usize].cursor;
+        let start = self.sides[side].cursor;
         let mut scanned = 0;
         loop {
-            self.sides[side as usize].cursor += 1;
-            if self.sides[side as usize].cursor > list.len() as i32 {
-                self.sides[side as usize].cursor = 1;
+            self.sides[side].cursor += 1;
+            if self.sides[side].cursor > list_len as i32 {
+                self.sides[side].cursor = 1;
             }
-            let idx = list[(self.sides[side as usize].cursor - 1) as usize];
+            let idx = self.sides[side].units[(self.sides[side].cursor - 1) as usize];
             if self.units[idx].tile == -2 {
                 return Some(idx);
             }
             scanned += 1;
-            if self.sides[side as usize].cursor == start || scanned >= list.len() {
+            if self.sides[side].cursor == start || scanned >= list_len {
                 break;
             }
         }
-        let idx = list[(self.sides[side as usize].cursor.max(1) - 1) as usize];
+        let idx = self.sides[side].units[(self.sides[side].cursor.max(1) - 1) as usize];
         if self.units[idx].tile != -2 {
-            self.sides[side as usize].ready = true;
+            self.sides[side].ready = true;
         }
         Some(idx)
     }
@@ -831,14 +849,14 @@ impl Battle {
     fn sort_side_units(
         &mut self,
         state: &mut GameState,
-        side: i32,
+        side: BattleSide,
         cmp: fn(&TacUnit, &TacUnit) -> i16,
     ) {
-        let mut list = std::mem::take(&mut self.sides[side as usize].units);
+        let mut list = std::mem::take(&mut self.sides[side].units);
         retail_sort(&mut list, &mut state.rng, |a, b| {
             cmp(&self.units[a], &self.units[b])
         });
-        self.sides[side as usize].units = list;
+        self.sides[side].units = list;
     }
 
     fn sort_records(&mut self, state: &mut GameState) {
@@ -849,20 +867,20 @@ impl Battle {
         self.records = list;
     }
 
-    fn prune_to(&mut self, state: &GameState, side: i32, max_count: i32) {
-        let profile_row = if self.sides[side as usize].is_our {
+    fn prune_to(&mut self, state: &GameState, side: BattleSide, max_count: i32) {
+        let profile_row = if self.sides[side].is_our {
             usize::from(self.fort_level != 0) + 1
         } else {
             0
         };
         let mut secondary = Vec::new();
-        for ordinal in (1..=self.sides[side as usize].units.len()).rev() {
-            let idx = self.sides[side as usize].units[ordinal - 1];
+        for ordinal in (1..=self.sides[side].units.len()).rev() {
+            let idx = self.sides[side].units[ordinal - 1];
             self.compute_projection(state, idx);
             secondary.push(idx);
         }
         secondary.reverse();
-        self.sides[side as usize].units.clear();
+        self.sides[side].units.clear();
         let mut remaining = max_count;
         if remaining != 0
             && let Some(pos) = secondary.iter().position(|&idx| {
@@ -870,7 +888,7 @@ impl Battle {
             })
         {
             let kept = secondary.remove(pos);
-            self.sides[side as usize].units.push(kept);
+            self.sides[side].units.push(kept);
             remaining -= 1;
         }
         let mut kept_sum = [0.0f32; 5];
@@ -895,13 +913,13 @@ impl Battle {
                 continue;
             }
             let kept = secondary.remove((best_ordinal - 1) as usize);
-            self.sides[side as usize].units.push(kept);
+            self.sides[side].units.push(kept);
             for component in 0..5 {
                 kept_sum[component] += self.units[kept].projection[component];
             }
         }
-        self.sides[side as usize].secondary = secondary;
-        for &pruned in &self.sides[side as usize].secondary {
+        self.sides[side].secondary = secondary;
+        for &pruned in &self.sides[side].secondary {
             if let Some(pos) = self.records.iter().position(|&idx| idx == pruned) {
                 self.records.remove(pos);
             }
@@ -924,46 +942,45 @@ impl Battle {
         ];
     }
 
-    fn accumulate_metrics(&mut self, state: &GameState, side: i32) {
-        self.sides[side as usize].max_non_artillery_range = 0;
-        self.sides[side as usize].max_range = 0;
-        self.sides[side as usize].projection_sums = [0.0; 5];
-        self.sides[side as usize].field51 = 0;
-        let units = self.sides[side as usize].units.clone();
+    fn accumulate_metrics(&mut self, state: &GameState, side: BattleSide) {
+        self.sides[side].max_non_artillery_range = 0;
+        self.sides[side].max_range = 0;
+        self.sides[side].projection_sums = [0.0; 5];
+        self.sides[side].field51 = 0;
+        let units = self.sides[side].units.clone();
         for idx in units {
             if self.units[idx].state != 0 {
                 continue;
             }
             self.compute_projection(state, idx);
             for component in 0..5 {
-                self.sides[side as usize].projection_sums[component] +=
+                self.sides[side].projection_sums[component] +=
                     self.units[idx].projection[component];
             }
             let range = self.unit_range(idx) as i16;
-            if range > self.sides[side as usize].max_range {
-                self.sides[side as usize].max_range = range;
+            if range > self.sides[side].max_range {
+                self.sides[side].max_range = range;
             }
             if AI_CLASS[self.units[idx].unit_type] != 2
-                && range > self.sides[side as usize].max_non_artillery_range
+                && range > self.sides[side].max_non_artillery_range
             {
-                self.sides[side as usize].max_non_artillery_range = range;
+                self.sides[side].max_non_artillery_range = range;
             }
             if AI_CLASS[self.units[idx].unit_type] == 2
                 || self.units[idx].unit_type.tactical_category() == ArmyUnitCategory::Engineers
             {
-                self.sides[side as usize].field51 = 1;
+                self.sides[side].field51 = 1;
             }
         }
-        let sums = self.sides[side as usize].projection_sums;
+        let sums = self.sides[side].projection_sums;
         let baseline = scores_from(sums).similarity(TACTICAL_COMPOSITION.baseline);
         let row = if self.fort_level != 0 { 1 } else { 2 };
-        self.sides[side as usize].projection_sums[1] =
-            scores_from(sums).similarity(composition_row(row));
-        self.sides[side as usize].projection_sums[0] = baseline;
+        self.sides[side].projection_sums[1] = scores_from(sums).similarity(composition_row(row));
+        self.sides[side].projection_sums[0] = baseline;
     }
 
-    fn site_is_home_capital(&self, state: &GameState, side: i32) -> bool {
-        let Some(home) = state.nations.home_tile(self.sides[side as usize].nation) else {
+    fn site_is_home_capital(&self, state: &GameState, side: BattleSide) -> bool {
+        let Some(home) = state.nations.home_tile(self.sides[side].nation) else {
             return false;
         };
         state.map[home].province == Some(self.battle_site)
@@ -976,60 +993,58 @@ impl Battle {
         self.fort_strength.iter().any(|&pool| pool <= 0)
     }
 
-    fn opponent_has_artillery(&self, side: i32) -> bool {
-        let enemy = 1 - side;
-        self.sides[enemy as usize].units.iter().any(|&idx| {
+    fn opponent_has_artillery(&self, side: BattleSide) -> bool {
+        let enemy = side.opponent();
+        self.sides[enemy].units.iter().any(|&idx| {
             self.units[idx].tile >= 0
                 && AI_CLASS[self.units[idx].unit_type] == 2
                 && self.units[idx].state == 0
         })
     }
 
-    fn select_and_apply_cursor_mode(&mut self, state: &GameState, side: i32, _mode: i32) {
-        let opponent = 1 - side;
+    fn select_and_apply_cursor_mode(&mut self, state: &GameState, side: BattleSide, _mode: i32) {
+        let opponent = side.opponent();
         self.accumulate_metrics(state, side);
         self.accumulate_metrics(state, opponent);
-        let opponent_metrics = self.sides[opponent as usize].projection_sums;
-        let enemy_has_active = self.sides[opponent as usize]
+        let opponent_metrics = self.sides[opponent].projection_sums;
+        let enemy_has_active = self.sides[opponent]
             .units
             .iter()
             .any(|&idx| self.units[idx].state == 0);
-        self.sides[side as usize].field48 = i32::from(!enemy_has_active);
+        self.sides[side].field48 = i32::from(!enemy_has_active);
         let mut cursor_mode;
-        if !self.sides[side as usize].is_our {
+        if !self.sides[side].is_our {
             if !enemy_has_active {
                 cursor_mode = 6;
-            } else if self.sides[opponent as usize].field51 == 0 && !self.fort_breached() {
+            } else if self.sides[opponent].field51 == 0 && !self.fort_breached() {
                 cursor_mode = 7;
-            } else if self.sides[side as usize].projection_sums[1] / opponent_metrics[1]
+            } else if self.sides[side].projection_sums[1] / opponent_metrics[1]
                 > CURSOR_STRONG_RATIO
             {
                 if self.fort_breached() {
                     cursor_mode = 2;
-                } else if self.sides[side as usize].projection_sums[1] / opponent_metrics[1]
+                } else if self.sides[side].projection_sums[1] / opponent_metrics[1]
                     > CURSOR_OVERWHELM_RATIO
                 {
                     cursor_mode = 2;
                 } else {
                     cursor_mode = 0;
                 }
-            } else if self.sides[side as usize].projection_sums[0] / opponent_metrics[1]
-                < CURSOR_WEAK_RATIO
+            } else if self.sides[side].projection_sums[0] / opponent_metrics[1] < CURSOR_WEAK_RATIO
                 && !self.site_is_home_capital(state, side)
             {
                 cursor_mode = 1;
             } else {
-                cursor_mode = i32::from(
-                    self.sides[side as usize].max_range < self.sides[opponent as usize].max_range,
-                ) * 2;
+                cursor_mode =
+                    i32::from(self.sides[side].max_range < self.sides[opponent].max_range) * 2;
             }
         } else {
-            let strength_ratio = self.sides[side as usize].projection_sums[1] / opponent_metrics[0];
-            let have_sapper = self.sides[side as usize].units.iter().any(|&idx| {
+            let strength_ratio = self.sides[side].projection_sums[1] / opponent_metrics[0];
+            let have_sapper = self.sides[side].units.iter().any(|&idx| {
                 self.units[idx].unit_type.tactical_category() == ArmyUnitCategory::Engineers
                     && self.units[idx].state == 0
             });
-            let have_artillery = self.sides[side as usize]
+            let have_artillery = self.sides[side]
                 .units
                 .iter()
                 .any(|&idx| AI_CLASS[self.units[idx].unit_type] == 2 && self.units[idx].state == 0);
@@ -1038,7 +1053,7 @@ impl Battle {
                     cursor_mode = 3;
                 } else if !have_artillery {
                     cursor_mode = 1;
-                } else if self.sides[side as usize].projection_sums[3] / opponent_metrics[3]
+                } else if self.sides[side].projection_sums[3] / opponent_metrics[3]
                     < CURSOR_ARTILLERY_PARITY
                 {
                     cursor_mode = 1;
@@ -1049,7 +1064,7 @@ impl Battle {
                 cursor_mode = 6;
             } else if strength_ratio > CURSOR_STRONG_RATIO {
                 cursor_mode = 4;
-            } else if !(self.sides[side as usize].projection_sums[3] / opponent_metrics[3]
+            } else if !(self.sides[side].projection_sums[3] / opponent_metrics[3]
                 < CURSOR_ARTILLERY_SUPERIORITY)
                 && have_artillery
             {
@@ -1064,20 +1079,20 @@ impl Battle {
                 cursor_mode = 5;
             }
         }
-        if self.sides[side as usize].field_f {
+        if self.sides[side].field_f {
             cursor_mode = 1;
         }
         if cursor_mode == 1 {
-            self.sides[side as usize].field48 = cursor_mode;
+            self.sides[side].field48 = cursor_mode;
         }
-        if cursor_mode == self.sides[side as usize].last_cursor_mode {
+        if cursor_mode == self.sides[side].last_cursor_mode {
             return;
         }
-        self.sides[side as usize].last_cursor_mode = cursor_mode;
+        self.sides[side].last_cursor_mode = cursor_mode;
         self.apply_stance(side, cursor_mode);
     }
 
-    fn apply_stance(&mut self, side: i32, mode: i32) {
+    fn apply_stance(&mut self, side: BattleSide, mode: i32) {
         match mode {
             0 => self.stance_hold(side),
             1 => self.stance_retreat(side),
@@ -1091,8 +1106,8 @@ impl Battle {
         }
     }
 
-    fn stance_retreat(&mut self, side: i32) {
-        for &idx in &self.sides[side as usize].units.clone() {
+    fn stance_retreat(&mut self, side: BattleSide) {
+        for &idx in &self.sides[side].units.clone() {
             self.units[idx].ai_state =
                 if self.units[idx].unit_type.tactical_category() != ArmyUnitCategory::Garrison {
                     0xc
@@ -1102,14 +1117,14 @@ impl Battle {
         }
     }
 
-    fn stance_garrison(&mut self, side: i32) {
-        for &idx in &self.sides[side as usize].units.clone() {
+    fn stance_garrison(&mut self, side: BattleSide) {
+        for &idx in &self.sides[side].units.clone() {
             self.units[idx].ai_state = 0x13;
         }
     }
 
-    fn stance_hold(&mut self, side: i32) {
-        for &idx in &self.sides[side as usize].units.clone() {
+    fn stance_hold(&mut self, side: BattleSide) {
+        for &idx in &self.sides[side].units.clone() {
             if self.units[idx].state != 0 {
                 continue;
             }
@@ -1124,8 +1139,8 @@ impl Battle {
         }
     }
 
-    fn stance_bombard(&mut self, side: i32) {
-        for &idx in &self.sides[side as usize].units.clone() {
+    fn stance_bombard(&mut self, side: BattleSide) {
+        for &idx in &self.sides[side].units.clone() {
             if self.units[idx].state != 0 {
                 continue;
             }
@@ -1140,11 +1155,11 @@ impl Battle {
         }
     }
 
-    fn stance_siege(&mut self, side: i32) {
+    fn stance_siege(&mut self, side: BattleSide) {
         let enemy_artillery = self.opponent_has_artillery(side);
-        let opponent_range = self.sides[(1 - side) as usize].max_non_artillery_range;
+        let opponent_range = self.sides[side.opponent()].max_non_artillery_range;
         let wall_up = self.tiles[174].deploy_mark > 1;
-        for &idx in &self.sides[side as usize].units.clone() {
+        for &idx in &self.sides[side].units.clone() {
             if self.units[idx].unit_type.tactical_category() == ArmyUnitCategory::Engineers {
                 self.units[idx].ai_state = if wall_up { 0xd } else { 0xc };
                 continue;
@@ -1174,18 +1189,18 @@ impl Battle {
         }
     }
 
-    fn stance_assault(&mut self, side: i32) {
+    fn stance_assault(&mut self, side: BattleSide) {
         self.stance_assault_or_standoff(side, 5);
     }
 
-    fn stance_standoff(&mut self, side: i32) {
+    fn stance_standoff(&mut self, side: BattleSide) {
         self.stance_assault_or_standoff(side, 2);
     }
 
-    fn stance_assault_or_standoff(&mut self, side: i32, flank: i32) {
+    fn stance_assault_or_standoff(&mut self, side: BattleSide, flank: i32) {
         let enemy_artillery = self.opponent_has_artillery(side);
-        let opponent_range = self.sides[(1 - side) as usize].max_non_artillery_range;
-        for &idx in &self.sides[side as usize].units.clone() {
+        let opponent_range = self.sides[side.opponent()].max_non_artillery_range;
+        for &idx in &self.sides[side].units.clone() {
             self.units[idx].ai_state = match AI_CLASS[self.units[idx].unit_type] {
                 0 if self.unit_range(idx) > i32::from(opponent_range) => 0x11,
                 0 if self.units[idx].unit_type.tactical_category()
@@ -1216,8 +1231,8 @@ impl Battle {
         }
     }
 
-    fn stance_unopposed(&mut self, side: i32) {
-        for &idx in &self.sides[side as usize].units.clone() {
+    fn stance_unopposed(&mut self, side: BattleSide) {
+        for &idx in &self.sides[side].units.clone() {
             self.units[idx].ai_state = match AI_CLASS[self.units[idx].unit_type] {
                 0 => 7,
                 1 | 3 => 5,
@@ -1233,10 +1248,10 @@ impl Battle {
         }
     }
 
-    fn advance_auto_pulse(&mut self, state: &mut GameState, side: i32) {
-        if self.sides[side as usize].field20 {
+    fn advance_auto_pulse(&mut self, state: &mut GameState, side: BattleSide) {
+        if self.sides[side].field20 {
             let selected = self.selected;
-            for &idx in &self.sides[side as usize].units.clone() {
+            for &idx in &self.sides[side].units.clone() {
                 if self.units[idx].unit_type.tactical_category() == ArmyUnitCategory::Engineers
                     && self.units[idx].state == 0
                 {
@@ -1246,22 +1261,24 @@ impl Battle {
                         self.finish_action();
                         return;
                     }
-                    self.sides[side as usize].field20 = false;
+                    self.sides[side].field20 = false;
                     return;
                 }
             }
-            self.sides[side as usize].field20 = false;
+            self.sides[side].field20 = false;
             return;
         }
         self.run_auto_controller(state, side);
     }
 
-    fn run_auto_controller(&mut self, state: &mut GameState, side: i32) {
+    fn run_auto_controller(&mut self, state: &mut GameState, side: BattleSide) {
         let Some(unit) = self.selected else {
             self.finish_action();
             return;
         };
-        if AI_CLASS[self.units[unit].unit_type] != 2 || self.units[unit].side == 1 {
+        if AI_CLASS[self.units[unit].unit_type] != 2
+            || self.units[unit].side == BattleSide::Defender
+        {
             self.select_and_apply_cursor_mode(state, side, 0);
         }
         let home = self.units[unit].tile;
@@ -1384,7 +1401,7 @@ impl Battle {
         }
     }
 
-    fn best_tile(&mut self, state: &mut GameState, unit: usize, side: i32, row: i32) -> i32 {
+    fn best_tile(&mut self, state: &mut GameState, unit: usize, side: BattleSide, row: i32) -> i32 {
         let row = row.clamp(0, 19) as usize;
         self.select_best_tile(state, unit, side, HEURISTIC_WEIGHTS[row])
     }
@@ -1393,14 +1410,14 @@ impl Battle {
         &mut self,
         state: &mut GameState,
         unit: usize,
-        side: i32,
+        side: BattleSide,
         weights: [i32; 15],
     ) -> i32 {
         let mut best_tile = -1;
         let mut best_score = -99999;
         let mut distance_built = false;
         if weights[8] > 0 {
-            self.build_distance_field(self.sides[side as usize].is_our);
+            self.build_distance_field(self.sides[side].is_our);
             distance_built = true;
         }
         for tile in 0..TACTICAL_TILE_COUNT as i32 {
@@ -1434,7 +1451,7 @@ impl Battle {
         &mut self,
         state: &mut GameState,
         unit: usize,
-        side: i32,
+        side: BattleSide,
         tile: i32,
         heuristic: usize,
     ) -> i32 {
@@ -1468,7 +1485,7 @@ impl Battle {
         &mut self,
         state: &mut GameState,
         unit: usize,
-        side: i32,
+        side: BattleSide,
         tile: i32,
     ) -> i32 {
         let _ = self.unit_range(unit);
@@ -1477,7 +1494,7 @@ impl Battle {
         while score == 0 && scan < TACTICAL_TILE_COUNT as i32 {
             if let Some(occupant) = self.tiles[scan as usize].occupant
                 && self.units[occupant].side != self.units[unit].side
-                && (self.units[occupant].state == 0 || self.sides[side as usize].field48 == 1)
+                && (self.units[occupant].state == 0 || self.sides[side].field48 == 1)
             {
                 let category = self.units[unit].unit_type.tactical_category();
                 if self.reachable_for_action(
@@ -1522,14 +1539,14 @@ impl Battle {
         score
     }
 
-    fn score_adjacent_enemy(&self, unit: usize, side: i32, tile: i32) -> i32 {
+    fn score_adjacent_enemy(&self, unit: usize, side: BattleSide, tile: i32) -> i32 {
         for neighbor in self.neighbors(tile) {
             if neighbor == -1 {
                 continue;
             }
             if let Some(occupant) = self.tiles[neighbor as usize].occupant
                 && self.units[occupant].side != self.units[unit].side
-                && (self.units[occupant].state == 0 || self.sides[side as usize].field48 == 1)
+                && (self.units[occupant].state == 0 || self.sides[side].field48 == 1)
             {
                 return 0x64;
             }
@@ -1537,10 +1554,16 @@ impl Battle {
         0
     }
 
-    fn score_exposure(&self, _unit: usize, side: i32, tile: i32, artillery_only: bool) -> i32 {
-        let enemy = 1 - side;
+    fn score_exposure(
+        &self,
+        _unit: usize,
+        side: BattleSide,
+        tile: i32,
+        artillery_only: bool,
+    ) -> i32 {
+        let enemy = side.opponent();
         let mut count = 0;
-        for &idx in &self.sides[enemy as usize].units {
+        for &idx in &self.sides[enemy].units {
             if self.units[idx].tile < 0 {
                 continue;
             }
@@ -1560,9 +1583,9 @@ impl Battle {
         count
     }
 
-    fn score_retreat_edge(&self, side: i32, tile: i32) -> i32 {
+    fn score_retreat_edge(&self, side: BattleSide, tile: i32) -> i32 {
         let row = tile / TACTICAL_STRIDE;
-        if self.sides[side as usize].random_parity != 0 {
+        if self.sides[side].random_parity != 0 {
             if row <= 1 {
                 0x64
             } else {
@@ -1590,9 +1613,9 @@ impl Battle {
         0
     }
 
-    fn score_artillery_spacing(&self, side: i32, tile: i32) -> i32 {
+    fn score_artillery_spacing(&self, side: BattleSide, tile: i32) -> i32 {
         let mut best = 0;
-        for &idx in &self.sides[side as usize].units {
+        for &idx in &self.sides[side].units {
             if AI_CLASS[self.units[idx].unit_type] != 2 {
                 continue;
             }
@@ -1625,7 +1648,13 @@ impl Battle {
         column
     }
 
-    fn score_standoff(&mut self, state: &mut GameState, unit: usize, side: i32, tile: i32) -> i32 {
+    fn score_standoff(
+        &mut self,
+        state: &mut GameState,
+        unit: usize,
+        side: BattleSide,
+        tile: i32,
+    ) -> i32 {
         let range = self.unit_range(unit);
         let mut score = 0;
         let target = self.best_target(state, unit, side, false);
@@ -1678,15 +1707,15 @@ impl Battle {
         &mut self,
         state: &mut GameState,
         unit: usize,
-        side: i32,
+        side: BattleSide,
         require_reach: bool,
     ) -> i32 {
-        let enemy = 1 - side;
+        let enemy = side.opponent();
         let neighbors = self.neighbors(self.units[unit].tile);
         let mut best_tile = -1;
         let mut best_score = 0;
-        for &idx in &self.sides[enemy as usize].units.clone() {
-            let broken_ok = self.sides[side as usize].field48 == 1 && self.units[idx].state == 1;
+        for &idx in &self.sides[enemy].units.clone() {
+            let broken_ok = self.sides[side].field48 == 1 && self.units[idx].state == 1;
             if !broken_ok && self.units[idx].state != 0 {
                 continue;
             }
@@ -1703,7 +1732,7 @@ impl Battle {
             }
             let category = self.units[idx].unit_type.tactical_category();
             let mut score = category_value(category);
-            if self.sides[side as usize].field48 == 1 {
+            if self.sides[side].field48 == 1 {
                 score += 0x1f4 - self.units[idx].morale;
             } else {
                 score += self.units[idx].strength;
@@ -1724,20 +1753,20 @@ impl Battle {
             }
         }
         if best_tile == -1
-            && self.units[unit].side == 0
+            && self.units[unit].side == BattleSide::Attacker
             && !direct_fire(self.units[unit].unit_type.tactical_category())
             && !self.fort_breached()
         {
-            if self.sides[side as usize].cached_bombard_tile == -1 {
+            if self.sides[side].cached_bombard_tile == -1 {
                 loop {
                     let rolled = (state.rng.next_crt_rand() % 0xd) * 29 + self.column_count + 0x17;
-                    self.sides[side as usize].cached_bombard_tile = rolled;
+                    self.sides[side].cached_bombard_tile = rolled;
                     if self.fort_gun_slot(rolled) == 0 {
                         break;
                     }
                 }
             }
-            best_tile = self.sides[side as usize].cached_bombard_tile;
+            best_tile = self.sides[side].cached_bombard_tile;
         }
         best_tile
     }
@@ -1749,19 +1778,19 @@ impl Battle {
     }
 
     fn evaluate_outcome(&mut self) {
-        let mut live = [false; 2];
+        let mut live = BattleSideTable::default();
         for &idx in &self.records {
             if self.units[idx].state == 0 || self.units[idx].state == 1 {
-                live[self.units[idx].side as usize] = true;
-                if live[0] && live[1] {
+                live[self.units[idx].side] = true;
+                if live[BattleSide::Attacker] && live[BattleSide::Defender] {
                     break;
                 }
             }
         }
-        if live[0] && live[1] && self.round < 0x23 {
+        if live[BattleSide::Attacker] && live[BattleSide::Defender] && self.round < 0x23 {
             return;
         }
-        self.outcome = if live[0] && self.round < 0x23 {
+        self.outcome = if live[BattleSide::Attacker] && self.round < 0x23 {
             BattleOutcome::AttackerWon
         } else {
             BattleOutcome::DefenderWon
@@ -1900,7 +1929,7 @@ impl Battle {
         if start < 0 || start >= TACTICAL_TILE_COUNT as i32 {
             return;
         }
-        let edge_column = if self.units[unit].side == 0 {
+        let edge_column = if self.units[unit].side == BattleSide::Attacker {
             self.column_count - 1
         } else {
             0
@@ -1936,7 +1965,7 @@ impl Battle {
                             if ((wall_row & 1) + wall_column * 2) / 2 != self.column_count - 6 {
                                 continue;
                             }
-                            if self.units[unit].side != 1 {
+                            if self.units[unit].side != BattleSide::Defender {
                                 continue;
                             }
                         }
@@ -2201,8 +2230,8 @@ impl Battle {
         if category == ArmyUnitCategory::Engineers {
             return false;
         }
-        let enemy = 1 - self.units[unit].side;
-        self.sides[enemy as usize].units.iter().any(|&idx| {
+        let enemy = self.units[unit].side.opponent();
+        self.sides[enemy].units.iter().any(|&idx| {
             self.units[idx].tile >= 0
                 && self.units[unit].selected
                 && self.reachable_for_action(
@@ -2235,7 +2264,9 @@ impl Battle {
         let arrived = path[step_count as usize];
         let exit_column = (((arrived / 29) & 1) + 2 * (arrived % 29)) / 2;
         let side = self.units[unit].side;
-        if (side == 1 && exit_column >= self.column_count - 1) || (side == 0 && exit_column == 0) {
+        if (side == BattleSide::Defender && exit_column >= self.column_count - 1)
+            || (side == BattleSide::Attacker && exit_column == 0)
+        {
             // Headless unbroken-morale path leaves unitMayLeave uninitialized in retail.
             // Use 0 (do not leave) for determinism.
             let unit_may_leave = self.units[unit].state == 1;
@@ -2325,8 +2356,8 @@ impl Battle {
         let Some(occupant) = self.tiles[tile as usize].occupant else {
             return false;
         };
-        let reacting = 1 - self.units[occupant].side;
-        let reactors = self.sides[reacting as usize].units.clone();
+        let reacting = self.units[occupant].side.opponent();
+        let reactors = self.sides[reacting].units.clone();
         let mut fired = false;
         for reactor in reactors {
             if self.units[reactor].state == 0 && self.units[reactor].selected {
@@ -2404,7 +2435,7 @@ impl Battle {
         }
         let mut leader = 2.0f32;
         let defender_side = self.units[defender].side;
-        for &idx in &self.sides[defender_side as usize].units {
+        for &idx in &self.sides[defender_side].units {
             if general(self.units[idx].unit_type) && self.units[idx].state == 0 {
                 let value = (2.0 - f64::from(self.units[idx].quality) * 0.2 - 0.2) as f32;
                 if value < leader {
@@ -2414,7 +2445,7 @@ impl Battle {
         }
         let morale_damage = leader * damage;
         self.apply_damage(defender, damage as i32, morale_damage as i32);
-        self.sides[defender_side as usize].field20 = false;
+        self.sides[defender_side].field20 = false;
     }
 
     fn apply_damage(&mut self, target: usize, damage_a: i32, damage_b: i32) {
@@ -2443,7 +2474,7 @@ impl Battle {
 
     fn process_morale_broken(&mut self, state: &mut GameState, unit: usize) {
         let original = self.units[unit].tile;
-        self.build_distance_field(self.units[unit].side == 0);
+        self.build_distance_field(self.units[unit].side == BattleSide::Attacker);
         let mut best_distance = 999;
         let mut best_tile = original;
         for tile in 0..TACTICAL_TILE_COUNT as i32 {
@@ -2461,9 +2492,9 @@ impl Battle {
             self.move_toward(state, unit, best_tile);
         }
         if self.units[unit].state == 1 {
-            let enemy = 1 - self.units[unit].side;
+            let enemy = self.units[unit].side.opponent();
             let mut nearby = 0;
-            for &idx in &self.sides[enemy as usize].units {
+            for &idx in &self.sides[enemy].units {
                 if self.units[idx].state != 0 {
                     continue;
                 }
