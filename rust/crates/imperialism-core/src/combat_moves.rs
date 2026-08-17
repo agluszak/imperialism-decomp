@@ -492,7 +492,7 @@ impl GameState {
         }
         let chosen = candidates[(self.rng.next_crt_rand() % count) as usize];
         for &id in defender_ids {
-            if tactical_category(self.military_units[&id].unit_type) == 0 {
+            if tactical_category(self.military_units[&id].unit_type) == ArmyUnitCategory::Garrison {
                 continue;
             }
             set_unit_order(

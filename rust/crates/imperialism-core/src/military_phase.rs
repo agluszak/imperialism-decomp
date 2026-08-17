@@ -275,7 +275,7 @@ impl GameState {
                 .values()
                 .filter(|unit| {
                     unit.stationed_province == Some(province)
-                        && tactical_category(unit.unit_type) == 0
+                        && tactical_category(unit.unit_type) == ArmyUnitCategory::Garrison
                 })
                 .count();
             if garrison < threshold {
@@ -349,11 +349,8 @@ pub(crate) fn is_recruit_quarter_tick_gate(tick: i32) -> bool {
     mod4 == 2
 }
 
-pub(crate) fn tactical_category(kind: MilitaryUnitKind) -> i16 {
-    const CATEGORY: MilitaryUnitTable<i16> = MilitaryUnitTable::from_array([
-        0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9, 9, 9,
-    ]);
-    CATEGORY[kind]
+pub(crate) fn tactical_category(kind: MilitaryUnitKind) -> ArmyUnitCategory {
+    kind.tactical_category()
 }
 
 pub(crate) fn combat_class(kind: MilitaryUnitKind) -> i16 {

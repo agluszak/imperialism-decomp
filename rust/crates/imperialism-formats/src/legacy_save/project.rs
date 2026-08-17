@@ -747,7 +747,7 @@ fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
         selected_capability_slots: MajorNationTable::from_array(
             legacy
                 .nation_capability_slots
-                .map(|row| row.map(military_capability_kind)),
+                .map(|row| ArmyCategoryTable::from_array(row.map(military_capability_kind))),
         ),
         city_capabilities_by_nation: MajorNationTable::from_array(city_capabilities_by_nation),
         navy_growth_ship_type: ShipType::from_index(legacy.active_zone_index as u8)

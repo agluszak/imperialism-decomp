@@ -102,6 +102,61 @@ pub enum MilitaryUnitKind {
 
 pub type MilitaryUnitTable<T> = EnumMap<MilitaryUnitKind, T>;
 
+/// Retail's ten land-unit toolbar and tactical groups.
+#[derive(
+    Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
+#[repr(u8)]
+pub enum ArmyUnitCategory {
+    Garrison,
+    LightInfantry,
+    LineInfantry,
+    EliteInfantry,
+    LightCavalry,
+    HeavyCavalry,
+    FieldArtillery,
+    SiegeArtillery,
+    Engineers,
+    Generals,
+}
+
+pub type ArmyCategoryTable<T> = EnumMap<ArmyUnitCategory, T>;
+
+/// Dense retail-index array form used by the C++ army-toolbar capture.
+pub fn deserialize_army_category_table<'de, T, D>(
+    deserializer: D,
+) -> Result<ArmyCategoryTable<T>, D::Error>
+where
+    T: Deserialize<'de>,
+    D: serde::Deserializer<'de>,
+{
+    let values = <[T; ArmyUnitCategory::LENGTH]>::deserialize(deserializer)?;
+    Ok(EnumMap::from_array(values))
+}
+
+/// Retail tactical category ordinal used only by native-capture JSON.
+pub fn deserialize_army_unit_category<'de, D>(deserializer: D) -> Result<ArmyUnitCategory, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let ordinal = u8::deserialize(deserializer)?;
+    ArmyUnitCategory::from_index(ordinal)
+        .ok_or_else(|| serde::de::Error::custom("unknown retail army category"))
+}
+
+impl ArmyUnitCategory {
+    pub const LENGTH: usize = enum_map::enum_len::<Self>();
+
+    pub fn from_index(index: u8) -> Option<Self> {
+        let index = usize::from(index);
+        (index < Self::LENGTH).then(|| Self::from_usize(index))
+    }
+
+    pub fn all() -> impl DoubleEndedIterator<Item = Self> + ExactSizeIterator {
+        (0..Self::LENGTH).map(Self::from_usize)
+    }
+}
+
 const ARMS_BY_MILITARY_UNIT: MilitaryUnitTable<i32> = MilitaryUnitTable::from_array([
     0, 1, 1, 1, 1, 1, 2, 2, 0, 2, 2, 2, 2, 2, 4, 4, 0, 4, 4, 4, 4, 10, 6, 8, 2, 2, 3, 0, 0, 0,
 ]);
@@ -148,6 +203,42 @@ impl MilitaryUnitKind {
 
     pub(crate) fn arms_required(self) -> i32 {
         ARMS_BY_MILITARY_UNIT[self]
+    }
+
+    pub(crate) fn tactical_category(self) -> ArmyUnitCategory {
+        const CATEGORY: MilitaryUnitTable<ArmyUnitCategory> = MilitaryUnitTable::from_array([
+            ArmyUnitCategory::Garrison,
+            ArmyUnitCategory::LightInfantry,
+            ArmyUnitCategory::LineInfantry,
+            ArmyUnitCategory::EliteInfantry,
+            ArmyUnitCategory::LightCavalry,
+            ArmyUnitCategory::HeavyCavalry,
+            ArmyUnitCategory::FieldArtillery,
+            ArmyUnitCategory::SiegeArtillery,
+            ArmyUnitCategory::Garrison,
+            ArmyUnitCategory::LightInfantry,
+            ArmyUnitCategory::LineInfantry,
+            ArmyUnitCategory::EliteInfantry,
+            ArmyUnitCategory::LightCavalry,
+            ArmyUnitCategory::HeavyCavalry,
+            ArmyUnitCategory::FieldArtillery,
+            ArmyUnitCategory::SiegeArtillery,
+            ArmyUnitCategory::Garrison,
+            ArmyUnitCategory::LightInfantry,
+            ArmyUnitCategory::LineInfantry,
+            ArmyUnitCategory::EliteInfantry,
+            ArmyUnitCategory::LightCavalry,
+            ArmyUnitCategory::HeavyCavalry,
+            ArmyUnitCategory::FieldArtillery,
+            ArmyUnitCategory::SiegeArtillery,
+            ArmyUnitCategory::Engineers,
+            ArmyUnitCategory::Engineers,
+            ArmyUnitCategory::Engineers,
+            ArmyUnitCategory::Generals,
+            ArmyUnitCategory::Generals,
+            ArmyUnitCategory::Generals,
+        ]);
+        CATEGORY[self]
     }
 
     pub(crate) fn is_militia_category(self) -> bool {

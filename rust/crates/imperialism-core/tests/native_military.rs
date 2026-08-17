@@ -284,8 +284,10 @@ struct ArmyProvinceCase {
 
 #[derive(Debug, Deserialize, PartialEq)]
 struct ArmyToolbarResult {
-    totals: [i32; 10],
-    available: [i32; 10],
+    #[serde(deserialize_with = "deserialize_army_category_table")]
+    totals: ArmyCategoryTable<i32>,
+    #[serde(deserialize_with = "deserialize_army_category_table")]
+    available: ArmyCategoryTable<i32>,
     can_upgrade: bool,
 }
 
@@ -306,7 +308,8 @@ fn army_toolbar_counts() {
 #[derive(Debug, Deserialize)]
 struct ArmyCategoryCase {
     province: ProvinceId,
-    category: i16,
+    #[serde(deserialize_with = "deserialize_army_unit_category")]
+    category: ArmyUnitCategory,
 }
 
 #[test]

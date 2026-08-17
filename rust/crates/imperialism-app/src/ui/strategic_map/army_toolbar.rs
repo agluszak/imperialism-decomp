@@ -25,10 +25,10 @@ const COUNT_SHADOW_PALETTE: u8 = 0xd2;
 pub(super) struct ArmyToolbarPage;
 
 #[derive(Component, Clone, Copy)]
-struct ArmyPlacard(u8);
+struct ArmyPlacard(ArmyUnitCategory);
 
 #[derive(Component, Clone, Copy)]
-struct ArmyArrow(u8);
+struct ArmyArrow(ArmyUnitCategory);
 
 #[derive(Component, Clone, Copy)]
 enum ArmyCommand {
@@ -69,7 +69,7 @@ pub(crate) fn bind_army_toolbar(
     let arrow_atlas = assets
         .transparent_picture(PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)
         .expect("retail numbered-arrow atlas 804 must load");
-    for category in 0..10_u8 {
+    for category in ArmyUnitCategory::all() {
         let pic = tree.child(page, placard_tag(category));
         commands.entity(pic).insert(ArmyPlacard(category));
         spawn_count_label(commands, pic, assets, true);
@@ -160,26 +160,24 @@ fn sync_army_toolbar(
         .expect("army toolbar requires an active major nation");
     let counts_state = session.game.army_toolbar_counts(province);
     for (entity, placard, mut image) in &mut placards {
-        let category = usize::from(placard.0);
-        let picture_id = counts_state.placard_picture_id(nation, &session.game, category);
+        let picture_id = counts_state.placard_picture_id(nation, &session.game, placard.0);
         image.image = assets
             .picture(PictureId::new(picture_id))
             .expect("retail army placard picture must load");
         set_count_text(
             entity,
             &mut counts,
-            (counts_state.totals[category] != 0).then_some(counts_state.totals[category]),
+            (counts_state.totals[placard.0] != 0).then_some(counts_state.totals[placard.0]),
         );
     }
     for (entity, arrow, mut image, mut visibility) in &mut arrows {
-        let category = usize::from(arrow.0);
-        if counts_state.arrow_visible(category) {
+        if counts_state.arrow_visible(arrow.0) {
             *visibility = Visibility::Visible;
             image.rect = Some(Rect::from_corners(
                 Vec2::new(10.0, 0.0),
                 Vec2::new(21.0, 16.0),
             ));
-            set_count_text(entity, &mut counts, Some(counts_state.available[category]));
+            set_count_text(entity, &mut counts, Some(counts_state.available[arrow.0]));
         } else {
             *visibility = Visibility::Hidden;
             set_count_text(entity, &mut counts, None);
@@ -210,7 +208,7 @@ fn hide_empty_toolbar(
     };
     let empty = ArmyToolbarCounts::default();
     for (entity, placard, mut image) in placards.iter_mut() {
-        let picture_id = empty.placard_picture_id(nation, state, usize::from(placard.0));
+        let picture_id = empty.placard_picture_id(nation, state, placard.0);
         image.image = assets
             .picture(PictureId::new(picture_id))
             .expect("retail army placard picture must load");
@@ -342,46 +340,43 @@ fn on_army_arrow(
     if normalized.y == 0.0 {
         return;
     }
-    let category = i16::from(arrow.0);
     if normalized.y < 0.0 {
         session
             .game
-            .activate_first_active_unit_by_category(province, category);
+            .activate_first_active_unit_by_category(province, arrow.0);
     } else {
         session
             .game
-            .activate_first_idle_unit_by_category(province, category);
+            .activate_first_idle_unit_by_category(province, arrow.0);
     }
 }
 
-fn placard_tag(category: u8) -> FourCc {
-    const TAGS: [FourCc; 10] = [
-        fourcc!("pic0"),
-        fourcc!("pic1"),
-        fourcc!("pic2"),
-        fourcc!("pic3"),
-        fourcc!("pic4"),
-        fourcc!("pic5"),
-        fourcc!("pic6"),
-        fourcc!("pic7"),
-        fourcc!("pic8"),
-        fourcc!("pic9"),
-    ];
-    TAGS[usize::from(category)]
+fn placard_tag(category: ArmyUnitCategory) -> FourCc {
+    match category {
+        ArmyUnitCategory::Garrison => fourcc!("pic0"),
+        ArmyUnitCategory::LightInfantry => fourcc!("pic1"),
+        ArmyUnitCategory::LineInfantry => fourcc!("pic2"),
+        ArmyUnitCategory::EliteInfantry => fourcc!("pic3"),
+        ArmyUnitCategory::LightCavalry => fourcc!("pic4"),
+        ArmyUnitCategory::HeavyCavalry => fourcc!("pic5"),
+        ArmyUnitCategory::FieldArtillery => fourcc!("pic6"),
+        ArmyUnitCategory::SiegeArtillery => fourcc!("pic7"),
+        ArmyUnitCategory::Engineers => fourcc!("pic8"),
+        ArmyUnitCategory::Generals => fourcc!("pic9"),
+    }
 }
 
-fn arrow_tag(category: u8) -> FourCc {
-    const TAGS: [FourCc; 10] = [
-        fourcc!("arr0"),
-        fourcc!("arr1"),
-        fourcc!("arr2"),
-        fourcc!("arr3"),
-        fourcc!("arr4"),
-        fourcc!("arr5"),
-        fourcc!("arr6"),
-        fourcc!("arr7"),
-        fourcc!("arr8"),
-        fourcc!("arr9"),
-    ];
-    TAGS[usize::from(category)]
+fn arrow_tag(category: ArmyUnitCategory) -> FourCc {
+    match category {
+        ArmyUnitCategory::Garrison => fourcc!("arr0"),
+        ArmyUnitCategory::LightInfantry => fourcc!("arr1"),
+        ArmyUnitCategory::LineInfantry => fourcc!("arr2"),
+        ArmyUnitCategory::EliteInfantry => fourcc!("arr3"),
+        ArmyUnitCategory::LightCavalry => fourcc!("arr4"),
+        ArmyUnitCategory::HeavyCavalry => fourcc!("arr5"),
+        ArmyUnitCategory::FieldArtillery => fourcc!("arr6"),
+        ArmyUnitCategory::SiegeArtillery => fourcc!("arr7"),
+        ArmyUnitCategory::Engineers => fourcc!("arr8"),
+        ArmyUnitCategory::Generals => fourcc!("arr9"),
+    }
 }

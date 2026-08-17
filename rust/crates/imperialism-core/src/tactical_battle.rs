@@ -5,7 +5,6 @@
 #![allow(clippy::neg_cmp_op_on_partial_ord)] // retail `!(a < b)` form
 
 use crate::military::{ActionClassScores, ActionClassWeights, TACTICAL_COMPOSITION};
-use crate::military_phase::tactical_category;
 use crate::tactical_tables::*;
 use crate::*;
 
@@ -24,7 +23,7 @@ struct Tile {
 
 struct TacUnit {
     source: MilitaryUnitId,
-    unit_type: usize,
+    unit_type: MilitaryUnitKind,
     tile: i32,
     selected: bool,
     state: i32,
@@ -214,7 +213,7 @@ impl Battle {
         enemy_selected: bool,
     ) {
         let unit = &state.military_units[&source];
-        let unit_type = unit.unit_type as usize;
+        let unit_type = unit.unit_type;
         let mut record = TacUnit {
             source,
             unit_type,
@@ -549,7 +548,7 @@ impl Battle {
             self.process_morale_broken(state, candidate);
             return;
         }
-        if tactical_category_of(self.units[candidate].unit_type) == 8
+        if self.units[candidate].unit_type.tactical_category() == ArmyUnitCategory::Engineers
             && self.units[candidate].sap_target != -1
         {
             self.advance_mine_run(candidate);
@@ -605,12 +604,41 @@ fn detach_unit(state: &mut GameState, id: MilitaryUnitId) {
 }
 
 fn combat_category(kind: MilitaryUnitKind) -> i16 {
-    AI_CLASS[kind as usize]
+    AI_CLASS[kind]
 }
 
-fn tactical_category_of(unit_type: usize) -> i16 {
-    tactical_category(
-        MilitaryUnitKind::from_index(unit_type as u8).unwrap_or(MilitaryUnitKind::Minutemen),
+fn general(kind: MilitaryUnitKind) -> bool {
+    matches!(
+        kind,
+        MilitaryUnitKind::GeneralEra1
+            | MilitaryUnitKind::GeneralEra2
+            | MilitaryUnitKind::GeneralEra3
+    )
+}
+
+fn category_table_index(category: ArmyUnitCategory) -> usize {
+    usize::from(category as u8)
+}
+
+fn category_value(category: ArmyUnitCategory) -> i32 {
+    match category {
+        ArmyUnitCategory::Garrison
+        | ArmyUnitCategory::LightInfantry
+        | ArmyUnitCategory::LineInfantry
+        | ArmyUnitCategory::EliteInfantry => 0x1f4,
+        ArmyUnitCategory::LightCavalry => 0x258,
+        ArmyUnitCategory::HeavyCavalry => 0x2bc,
+        ArmyUnitCategory::FieldArtillery => 0x320,
+        ArmyUnitCategory::SiegeArtillery => 0x384,
+        ArmyUnitCategory::Engineers => 0x64,
+        ArmyUnitCategory::Generals => 0x190,
+    }
+}
+
+fn direct_fire(category: ArmyUnitCategory) -> bool {
+    !matches!(
+        category,
+        ArmyUnitCategory::FieldArtillery | ArmyUnitCategory::SiegeArtillery
     )
 }
 
@@ -834,9 +862,9 @@ impl Battle {
         self.sides[side as usize].units.clear();
         let mut remaining = max_count;
         if remaining != 0
-            && let Some(pos) = secondary
-                .iter()
-                .position(|&idx| tactical_category_of(self.units[idx].unit_type) == 9)
+            && let Some(pos) = secondary.iter().position(|&idx| {
+                self.units[idx].unit_type.tactical_category() == ArmyUnitCategory::Generals
+            })
         {
             let kept = secondary.remove(pos);
             self.sides[side as usize].units.push(kept);
@@ -918,7 +946,7 @@ impl Battle {
                 self.sides[side as usize].max_non_artillery_range = range;
             }
             if AI_CLASS[self.units[idx].unit_type] == 2
-                || tactical_category_of(self.units[idx].unit_type) == 8
+                || self.units[idx].unit_type.tactical_category() == ArmyUnitCategory::Engineers
             {
                 self.sides[side as usize].field51 = 1;
             }
@@ -995,7 +1023,8 @@ impl Battle {
         } else {
             let strength_ratio = self.sides[side as usize].projection_sums[1] / opponent_metrics[0];
             let have_sapper = self.sides[side as usize].units.iter().any(|&idx| {
-                tactical_category_of(self.units[idx].unit_type) == 8 && self.units[idx].state == 0
+                self.units[idx].unit_type.tactical_category() == ArmyUnitCategory::Engineers
+                    && self.units[idx].state == 0
             });
             let have_artillery = self.sides[side as usize]
                 .units
@@ -1061,11 +1090,12 @@ impl Battle {
 
     fn stance_retreat(&mut self, side: i32) {
         for &idx in &self.sides[side as usize].units.clone() {
-            self.units[idx].ai_state = if tactical_category_of(self.units[idx].unit_type) != 0 {
-                0xc
-            } else {
-                7
-            };
+            self.units[idx].ai_state =
+                if self.units[idx].unit_type.tactical_category() != ArmyUnitCategory::Garrison {
+                    0xc
+                } else {
+                    7
+                };
         }
     }
 
@@ -1084,7 +1114,7 @@ impl Battle {
                 0 => 0,
                 2 => 9,
                 1 | 3 => 0xe,
-                4 if self.units[idx].unit_type >= 0x1b => 0xb,
+                4 if general(self.units[idx].unit_type) => 0xb,
                 4 => 0xc,
                 _ => self.units[idx].ai_state,
             };
@@ -1100,7 +1130,7 @@ impl Battle {
                 0 => 7,
                 2 => 8,
                 1 | 3 => 5,
-                4 if self.units[idx].unit_type >= 0x1b => 0xb,
+                4 if general(self.units[idx].unit_type) => 0xb,
                 4 => 0xc,
                 _ => self.units[idx].ai_state,
             };
@@ -1112,23 +1142,32 @@ impl Battle {
         let opponent_range = self.sides[(1 - side) as usize].max_non_artillery_range;
         let wall_up = self.tiles[174].deploy_mark > 1;
         for &idx in &self.sides[side as usize].units.clone() {
-            if tactical_category_of(self.units[idx].unit_type) == 8 {
+            if self.units[idx].unit_type.tactical_category() == ArmyUnitCategory::Engineers {
                 self.units[idx].ai_state = if wall_up { 0xd } else { 0xc };
                 continue;
             }
-            self.units[idx].ai_state =
-                match AI_CLASS[self.units[idx].unit_type] {
-                    0 if self.unit_range(idx) > i32::from(opponent_range) => 0x11,
-                    0 if tactical_category_of(self.units[idx].unit_type) == 1 => {
-                        if enemy_artillery { 0x10 } else { 0xa }
+            self.units[idx].ai_state = match AI_CLASS[self.units[idx].unit_type] {
+                0 if self.unit_range(idx) > i32::from(opponent_range) => 0x11,
+                0 if self.units[idx].unit_type.tactical_category()
+                    == ArmyUnitCategory::LightInfantry =>
+                {
+                    if enemy_artillery {
+                        0x10
+                    } else {
+                        0xa
                     }
-                    0 => 1,
-                    1 | 3 => 0xe,
-                    2 if tactical_category_of(self.units[idx].unit_type) == 6 => 0x11,
-                    2 => 8,
-                    4 => 0xb,
-                    _ => self.units[idx].ai_state,
-                };
+                }
+                0 => 1,
+                1 | 3 => 0xe,
+                2 if self.units[idx].unit_type.tactical_category()
+                    == ArmyUnitCategory::FieldArtillery =>
+                {
+                    0x11
+                }
+                2 => 8,
+                4 => 0xb,
+                _ => self.units[idx].ai_state,
+            };
         }
     }
 
@@ -1144,20 +1183,33 @@ impl Battle {
         let enemy_artillery = self.opponent_has_artillery(side);
         let opponent_range = self.sides[(1 - side) as usize].max_non_artillery_range;
         for &idx in &self.sides[side as usize].units.clone() {
-            self.units[idx].ai_state =
-                match AI_CLASS[self.units[idx].unit_type] {
-                    0 if self.unit_range(idx) > i32::from(opponent_range) => 0x11,
-                    0 if tactical_category_of(self.units[idx].unit_type) == 1 => {
-                        if enemy_artillery { 0x10 } else { 0xa }
+            self.units[idx].ai_state = match AI_CLASS[self.units[idx].unit_type] {
+                0 if self.unit_range(idx) > i32::from(opponent_range) => 0x11,
+                0 if self.units[idx].unit_type.tactical_category()
+                    == ArmyUnitCategory::LightInfantry =>
+                {
+                    if enemy_artillery {
+                        0x10
+                    } else {
+                        0xa
                     }
-                    0 => 7,
-                    1 | 3 => flank,
-                    2 if tactical_category_of(self.units[idx].unit_type) == 6 => 0x11,
-                    2 => 8,
-                    4 if tactical_category_of(self.units[idx].unit_type) == 8 => 0xc,
-                    4 => 0xb,
-                    _ => self.units[idx].ai_state,
-                };
+                }
+                0 => 7,
+                1 | 3 => flank,
+                2 if self.units[idx].unit_type.tactical_category()
+                    == ArmyUnitCategory::FieldArtillery =>
+                {
+                    0x11
+                }
+                2 => 8,
+                4 if self.units[idx].unit_type.tactical_category()
+                    == ArmyUnitCategory::Engineers =>
+                {
+                    0xc
+                }
+                4 => 0xb,
+                _ => self.units[idx].ai_state,
+            };
         }
     }
 
@@ -1167,7 +1219,11 @@ impl Battle {
                 0 => 7,
                 1 | 3 => 5,
                 2 => 8,
-                4 if tactical_category_of(self.units[idx].unit_type) == 8 => 0xc,
+                4 if self.units[idx].unit_type.tactical_category()
+                    == ArmyUnitCategory::Engineers =>
+                {
+                    0xc
+                }
                 4 => 0xb,
                 _ => self.units[idx].ai_state,
             };
@@ -1178,12 +1234,12 @@ impl Battle {
         if self.sides[side as usize].field20 {
             let selected = self.selected;
             for &idx in &self.sides[side as usize].units.clone() {
-                if tactical_category_of(self.units[idx].unit_type) == 8
+                if self.units[idx].unit_type.tactical_category() == ArmyUnitCategory::Engineers
                     && self.units[idx].state == 0
                 {
-                    if selected
-                        .is_none_or(|sel| tactical_category_of(self.units[sel].unit_type) != 8)
-                    {
+                    if selected.is_none_or(|sel| {
+                        self.units[sel].unit_type.tactical_category() != ArmyUnitCategory::Engineers
+                    }) {
                         self.finish_action();
                         return;
                     }
@@ -1206,8 +1262,10 @@ impl Battle {
             self.select_and_apply_cursor_mode(state, side, 0);
         }
         let home = self.units[unit].tile;
-        let category = tactical_category_of(self.units[unit].unit_type);
-        let mut target = if category == 8 && self.units[unit].ai_state != 0xc {
+        let category = self.units[unit].unit_type.tactical_category();
+        let mut target = if category == ArmyUnitCategory::Engineers
+            && self.units[unit].ai_state != 0xc
+        {
             if self.fort_breached() {
                 self.best_tile(state, unit, side, 12)
             } else if self.tiles[home as usize].trench_mask != 0 || self.threat[home as usize] != 0
@@ -1218,11 +1276,11 @@ impl Battle {
             }
         } else if (self.units[unit].ai_state == 5
             || self.units[unit].ai_state == 2
-            || category == 4)
+            || category == ArmyUnitCategory::LightCavalry)
             && self.round < 2
         {
             home
-        } else if category == 6 && self.round < 2 {
+        } else if category == ArmyUnitCategory::FieldArtillery && self.round < 2 {
             self.best_tile(state, unit, side, 18)
         } else {
             self.best_tile(state, unit, side, self.units[unit].ai_state)
@@ -1242,7 +1300,7 @@ impl Battle {
             }
         }
         if self.pending_end && self.units[unit].state == 0 {
-            if self.units[unit].unit_type >= 0x1b {
+            if general(self.units[unit].unit_type) {
                 let neighbors = self.neighbors(self.units[unit].tile);
                 let mut rally = None;
                 for neighbor in neighbors {
@@ -1260,7 +1318,8 @@ impl Battle {
                 if let Some(target_unit) = rally {
                     self.rally(state, unit, target_unit);
                 }
-            } else if tactical_category_of(self.units[unit].unit_type) == 8 {
+            } else if self.units[unit].unit_type.tactical_category() == ArmyUnitCategory::Engineers
+            {
                 if self.units[unit].tile == home {
                     while self.units[unit].action_points
                         >= BASE_ACTION_POINTS[self.units[unit].unit_type] / 2
@@ -1417,11 +1476,11 @@ impl Battle {
                 && self.units[occupant].side != self.units[unit].side
                 && (self.units[occupant].state == 0 || self.sides[side as usize].field48 == 1)
             {
-                let category = tactical_category_of(self.units[unit].unit_type);
+                let category = self.units[unit].unit_type.tactical_category();
                 if self.reachable_for_action(
                     tile,
                     scan,
-                    DIRECT_FIRE[category as usize] != 0.0,
+                    direct_fire(category),
                     self.unit_range(unit),
                 ) {
                     score = 0x32;
@@ -1485,11 +1544,11 @@ impl Battle {
             if artillery_only && AI_CLASS[self.units[idx].unit_type] != 2 {
                 continue;
             }
-            let category = tactical_category_of(self.units[idx].unit_type);
+            let category = self.units[idx].unit_type.tactical_category();
             if self.reachable_for_action(
                 tile,
                 self.units[idx].tile,
-                DIRECT_FIRE[category as usize] != 0.0,
+                direct_fire(category),
                 self.unit_range(idx),
             ) {
                 count += 1;
@@ -1567,17 +1626,12 @@ impl Battle {
         let range = self.unit_range(unit);
         let mut score = 0;
         let target = self.best_target(state, unit, side, false);
-        let category = tactical_category_of(self.units[unit].unit_type);
+        let category = self.units[unit].unit_type.tactical_category();
         for scan in 0..TACTICAL_TILE_COUNT as i32 {
             if let Some(occupant) = self.tiles[scan as usize].occupant
                 && self.units[occupant].side != self.units[unit].side
                 && self.units[occupant].state == 0
-                && self.reachable_for_action(
-                    tile,
-                    scan,
-                    DIRECT_FIRE[category as usize] != 0.0,
-                    range,
-                )
+                && self.reachable_for_action(tile, scan, direct_fire(category), range)
             {
                 let candidate = hex_distance(tile, scan) + 0x32;
                 if score == 0 || candidate < score {
@@ -1586,13 +1640,7 @@ impl Battle {
             }
         }
         if score > 0 {
-            if target != -1
-                && self.reachable_for_action(
-                    tile,
-                    target,
-                    DIRECT_FIRE[category as usize] != 0.0,
-                    range,
-                )
+            if target != -1 && self.reachable_for_action(tile, target, direct_fire(category), range)
             {
                 score += 5;
             }
@@ -1609,18 +1657,13 @@ impl Battle {
 
     fn score_hunt_artillery(&self, unit: usize, tile: i32) -> i32 {
         let range = self.unit_range(unit);
-        let category = tactical_category_of(self.units[unit].unit_type);
+        let category = self.units[unit].unit_type.tactical_category();
         for scan in 0..TACTICAL_TILE_COUNT as i32 {
             if let Some(occupant) = self.tiles[scan as usize].occupant
                 && self.units[occupant].side != self.units[unit].side
                 && self.units[occupant].state == 0
                 && AI_CLASS[self.units[occupant].unit_type] == 2
-                && self.reachable_for_action(
-                    tile,
-                    scan,
-                    DIRECT_FIRE[category as usize] != 0.0,
-                    range,
-                )
+                && self.reachable_for_action(tile, scan, direct_fire(category), range)
             {
                 return 0x64;
             }
@@ -1639,27 +1682,24 @@ impl Battle {
         let neighbors = self.neighbors(self.units[unit].tile);
         let mut best_tile = -1;
         let mut best_score = 0;
-        const VALUE: [i32; 10] = [
-            0x1f4, 0x1f4, 0x1f4, 0x1f4, 0x258, 0x2bc, 0x320, 0x384, 0x64, 0x190,
-        ];
         for &idx in &self.sides[enemy as usize].units.clone() {
             let broken_ok = self.sides[side as usize].field48 == 1 && self.units[idx].state == 1;
             if !broken_ok && self.units[idx].state != 0 {
                 continue;
             }
             if require_reach {
-                let category = tactical_category_of(self.units[unit].unit_type);
+                let category = self.units[unit].unit_type.tactical_category();
                 if !self.reachable_for_action(
                     self.units[unit].tile,
                     self.units[idx].tile,
-                    DIRECT_FIRE[category as usize] != 0.0,
+                    direct_fire(category),
                     self.unit_range(unit),
                 ) {
                     continue;
                 }
             }
-            let category = tactical_category_of(self.units[idx].unit_type) as usize;
-            let mut score = VALUE[category.min(9)];
+            let category = self.units[idx].unit_type.tactical_category();
+            let mut score = category_value(category);
             if self.sides[side as usize].field48 == 1 {
                 score += 0x1f4 - self.units[idx].morale;
             } else {
@@ -1682,7 +1722,7 @@ impl Battle {
         }
         if best_tile == -1
             && self.units[unit].side == 0
-            && DIRECT_FIRE[tactical_category_of(self.units[unit].unit_type) as usize] == 0.0
+            && !direct_fire(self.units[unit].unit_type.tactical_category())
             && !self.fort_breached()
         {
             if self.sides[side as usize].cached_bombard_tile == -1 {
@@ -1726,7 +1766,7 @@ impl Battle {
     }
 }
 
-fn combat_category_of(unit_type: usize) -> i16 {
+fn combat_category_of(unit_type: MilitaryUnitKind) -> i16 {
     AI_CLASS[unit_type]
 }
 
@@ -1850,7 +1890,7 @@ fn retail_partition_core(
 
 impl Battle {
     fn compute_reachable(&mut self, unit: usize) {
-        let category = tactical_category_of(self.units[unit].unit_type) as usize;
+        let category = category_table_index(self.units[unit].unit_type.tactical_category());
         let action_points = self.units[unit].action_points;
         self.clear_move_costs();
         let start = self.units[unit].tile;
@@ -2039,7 +2079,7 @@ impl Battle {
         }
         let target = &self.tiles[target_tile as usize];
         if let Some(occupant) = target.occupant
-            && tactical_category_of(self.units[occupant].unit_type) == 8
+            && self.units[occupant].unit_type.tactical_category() == ArmyUnitCategory::Engineers
             && target.trench_mask != 0
         {
             let neighbors = self.neighbors(attacker_tile);
@@ -2100,7 +2140,7 @@ impl Battle {
 
     fn move_and_maybe_finish(&mut self, state: &mut GameState, unit: usize, target: i32) {
         self.move_toward(state, unit, target);
-        if tactical_category_of(self.units[unit].unit_type) == 7 {
+        if self.units[unit].unit_type.tactical_category() == ArmyUnitCategory::SiegeArtillery {
             self.units[unit].selected = false;
         }
         if self.units[unit].state == 0 && self.outcome == OUTCOME_IN_PROGRESS {
@@ -2116,9 +2156,11 @@ impl Battle {
 
     fn fire_and_maybe_finish(&mut self, state: &mut GameState, unit: usize, target: i32) {
         self.resolve_action(state, unit, target);
-        let category = tactical_category_of(self.units[unit].unit_type);
-        if (category == 4 || category == 5)
-            && self.has_adjacent_reachable(self.selected.unwrap_or(unit))
+        let category = self.units[unit].unit_type.tactical_category();
+        if matches!(
+            category,
+            ArmyUnitCategory::LightCavalry | ArmyUnitCategory::HeavyCavalry
+        ) && self.has_adjacent_reachable(self.selected.unwrap_or(unit))
         {
             if self.outcome != OUTCOME_IN_PROGRESS {
                 self.finish_action();
@@ -2141,8 +2183,8 @@ impl Battle {
     }
 
     fn has_followup(&self, unit: usize) -> bool {
-        let category = tactical_category_of(self.units[unit].unit_type);
-        if category == 9 {
+        let category = self.units[unit].unit_type.tactical_category();
+        if category == ArmyUnitCategory::Generals {
             return self
                 .neighbors(self.units[unit].tile)
                 .iter()
@@ -2153,7 +2195,7 @@ impl Battle {
                             .is_some_and(|occ| self.units[occ].side == self.units[unit].side)
                 });
         }
-        if category == 8 {
+        if category == ArmyUnitCategory::Engineers {
             return false;
         }
         let enemy = 1 - self.units[unit].side;
@@ -2163,7 +2205,7 @@ impl Battle {
                 && self.reachable_for_action(
                     self.units[unit].tile,
                     self.units[idx].tile,
-                    DIRECT_FIRE[tactical_category_of(self.units[unit].unit_type) as usize] != 0.0,
+                    direct_fire(self.units[unit].unit_type.tactical_category()),
                     self.unit_range(unit),
                 )
         })
@@ -2285,11 +2327,11 @@ impl Battle {
         let mut fired = false;
         for reactor in reactors {
             if self.units[reactor].state == 0 && self.units[reactor].selected {
-                let category = tactical_category_of(self.units[reactor].unit_type);
+                let category = self.units[reactor].unit_type.tactical_category();
                 if self.reachable_for_action(
                     self.units[reactor].tile,
                     tile,
-                    DIRECT_FIRE[category as usize] != 0.0,
+                    direct_fire(category),
                     self.unit_range(reactor),
                 ) {
                     self.resolve_action(state, reactor, tile);
@@ -2316,7 +2358,8 @@ impl Battle {
         {
             melee = false;
         }
-        let attacker_category = tactical_category_of(self.units[attacker].unit_type) as usize;
+        let attacker_category =
+            category_table_index(self.units[attacker].unit_type.tactical_category());
         let mut strength_factor = 1.0 - f64::from(self.units[attacker].quality) * -0.1;
         strength_factor *= f64::from(BASE_ATTACK_POWER[self.units[attacker].unit_type]);
         if melee {
@@ -2333,7 +2376,8 @@ impl Battle {
         let Some(defender) = defender else {
             return;
         };
-        let mut defender_category = tactical_category_of(self.units[defender].unit_type) as usize;
+        let mut defender_category =
+            category_table_index(self.units[defender].unit_type.tactical_category());
         let mut damage = DEFENSE_TERRAIN
             [defender_category * 5 + self.tiles[target as usize].terrain as usize]
             * DAMAGE_SCALE[self.units[defender].unit_type]
@@ -2345,7 +2389,8 @@ impl Battle {
             if DIRECT_FIRE[attacker_category] == 0.0 {
                 self.consume_fort(wall, (0.001 * attack_power) as i32);
             }
-            defender_category = tactical_category_of(self.units[defender].unit_type) as usize;
+            defender_category =
+                category_table_index(self.units[defender].unit_type.tactical_category());
             damage *= COVER_DAMAGE
                 [defender_category * 5 + self.tiles[wall as usize].deploy_mark as usize];
         }
@@ -2357,7 +2402,7 @@ impl Battle {
         let mut leader = 2.0f32;
         let defender_side = self.units[defender].side;
         for &idx in &self.sides[defender_side as usize].units {
-            if self.units[idx].unit_type >= 0x1b && self.units[idx].state == 0 {
+            if general(self.units[idx].unit_type) && self.units[idx].state == 0 {
                 let value = (2.0 - f64::from(self.units[idx].quality) * 0.2 - 0.2) as f32;
                 if value < leader {
                     leader = value;

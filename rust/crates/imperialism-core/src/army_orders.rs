@@ -84,8 +84,8 @@ impl ArmyMapCursorState {
 /// `TArmyToolbar::SetProvince` category totals and available (idle) counts.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct ArmyToolbarCounts {
-    pub totals: [i32; 10],
-    pub available: [i32; 10],
+    pub totals: ArmyCategoryTable<i32>,
+    pub available: ArmyCategoryTable<i32>,
     pub can_upgrade: bool,
 }
 
@@ -94,7 +94,7 @@ impl ArmyToolbarCounts {
         self,
         nation: MajorNationId,
         state: &GameState,
-        category: usize,
+        category: ArmyUnitCategory,
     ) -> i16 {
         let kind = state.technology().selected_capability_slots[nation][category];
         let mut picture = i16::from(kind as u8) + 0x4c4;
@@ -108,8 +108,8 @@ impl ArmyToolbarCounts {
         if self.can_upgrade { 0x24d5 } else { 0x04b5 }
     }
 
-    pub fn arrow_visible(self, category: usize) -> bool {
-        self.totals[category] != 0 && category != 0
+    pub fn arrow_visible(self, category: ArmyUnitCategory) -> bool {
+        self.totals[category] != 0 && category != ArmyUnitCategory::Garrison
     }
 }
 
@@ -149,10 +149,7 @@ impl GameState {
         let mut counts = ArmyToolbarCounts::default();
         for id in stationed_chain_ids(&self.military_units, province) {
             let unit = &self.military_units[&id];
-            let category = tactical_category(unit.unit_type()) as usize;
-            if category >= 10 {
-                continue;
-            }
+            let category = tactical_category(unit.unit_type());
             match unit.order.code() {
                 UNIT_ORDER_IDLE => {
                     counts.available[category] += 1;
@@ -200,7 +197,7 @@ impl GameState {
     pub fn activate_first_idle_unit_by_category(
         &mut self,
         province: ProvinceId,
-        category: i16,
+        category: ArmyUnitCategory,
     ) -> i16 {
         let ids = stationed_chain_ids(&self.military_units, province);
         let mut activated = false;
@@ -232,7 +229,7 @@ impl GameState {
     pub fn activate_first_active_unit_by_category(
         &mut self,
         province: ProvinceId,
-        category: i16,
+        category: ArmyUnitCategory,
     ) -> i16 {
         let ids = stationed_chain_ids(&self.military_units, province);
         let mut deactivated = false;
@@ -271,7 +268,8 @@ impl GameState {
         for id in ids {
             let order = self.military_units[&id].order.code();
             if matches!(order, UNIT_ORDER_LATR | UNIT_ORDER_DONE)
-                && tactical_category(self.military_units[&id].unit_type()) != 0
+                && tactical_category(self.military_units[&id].unit_type())
+                    != ArmyUnitCategory::Garrison
             {
                 set_unit_order(
                     self.military_units
@@ -915,13 +913,13 @@ mod tests {
         place_unit(&mut state, MilitaryUnitKind::Minutemen, province, 0);
         place_unit(&mut state, MilitaryUnitKind::Hussars, province, 1);
         let counts = state.army_toolbar_counts(province);
-        assert_eq!(counts.totals[2], 2);
-        assert_eq!(counts.available[2], 1);
-        assert_eq!(counts.totals[0], 1);
-        assert_eq!(counts.available[0], 1);
-        assert_eq!(counts.totals[4], 0);
-        assert!(!counts.arrow_visible(0));
-        assert!(counts.arrow_visible(2));
+        assert_eq!(counts.totals[ArmyUnitCategory::LineInfantry], 2);
+        assert_eq!(counts.available[ArmyUnitCategory::LineInfantry], 1);
+        assert_eq!(counts.totals[ArmyUnitCategory::Garrison], 1);
+        assert_eq!(counts.available[ArmyUnitCategory::Garrison], 1);
+        assert_eq!(counts.totals[ArmyUnitCategory::LightCavalry], 0);
+        assert!(!counts.arrow_visible(ArmyUnitCategory::Garrison));
+        assert!(counts.arrow_visible(ArmyUnitCategory::LineInfantry));
     }
 
     #[test]
@@ -961,7 +959,8 @@ mod tests {
         own(&mut state, province);
         place_unit(&mut state, MilitaryUnitKind::Regulars, province, 0);
         place_unit(&mut state, MilitaryUnitKind::Regulars, province, 0);
-        let remaining = state.activate_first_idle_unit_by_category(province, 2);
+        let remaining =
+            state.activate_first_idle_unit_by_category(province, ArmyUnitCategory::LineInfantry);
         assert_eq!(remaining, 1);
         let codes: Vec<MilitaryOrderCode> = state
             .military_units
@@ -982,7 +981,8 @@ mod tests {
                 .count(),
             1
         );
-        let idle = state.activate_first_active_unit_by_category(province, 2);
+        let idle =
+            state.activate_first_active_unit_by_category(province, ArmyUnitCategory::LineInfantry);
         assert_eq!(idle, 2);
         assert!(
             state

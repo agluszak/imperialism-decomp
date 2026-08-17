@@ -1,39 +1,41 @@
 //! Numeric tables for headless land-battle Auto (`global_data_tables.cpp`).
 
+use crate::MilitaryUnitTable;
+
 pub(crate) const TACTICAL_TILE_COUNT: usize = 0x1b3;
 pub(crate) const TACTICAL_STRIDE: i32 = 0x1d;
 pub(crate) const TACTICAL_ROWS: i32 = 15;
 
-pub(crate) const UNIT_RANGE: [i32; 30] = [
+pub(crate) const UNIT_RANGE: MilitaryUnitTable<i32> = MilitaryUnitTable::from_array([
     5, 5, 5, 5, 3, 3, 9, 11, 8, 8, 8, 8, 5, 5, 12, 14, 10, 10, 10, 10, 10, 12, 15, 17, 5, 8, 10, 0,
     0, 0,
-];
+]);
 
-pub(crate) const BASE_ACTION_POINTS: [i32; 30] = [
+pub(crate) const BASE_ACTION_POINTS: MilitaryUnitTable<i32> = MilitaryUnitTable::from_array([
     40, 60, 40, 40, 110, 90, 50, 30, 40, 60, 40, 40, 110, 90, 60, 30, 50, 70, 50, 40, 110, 90, 80,
     30, 40, 40, 50, 90, 90, 90,
-];
+]);
 
 /// `g_awTacticalUnitAiClassByUnitType_006693B8` / combat-category twin at 0x669858.
-pub(crate) const AI_CLASS: [i16; 30] = [
+pub(crate) const AI_CLASS: MilitaryUnitTable<i16> = MilitaryUnitTable::from_array([
     0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4,
-];
+]);
 
 pub(crate) const DIRECT_FIRE: [f32; 10] = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0];
 
-pub(crate) const BASE_ATTACK_POWER: [f32; 30] = [
+pub(crate) const BASE_ATTACK_POWER: MilitaryUnitTable<f32> = MilitaryUnitTable::from_array([
     50.0, 50.0, 100.0, 125.0, 75.0, 150.0, 100.0, 160.0, 75.0, 100.0, 150.0, 175.0, 100.0, 200.0,
     175.0, 300.0, 100.0, 150.0, 225.0, 250.0, 225.0, 450.0, 250.0, 500.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0,
-];
+]);
 
 pub(crate) const MELEE_MULTIPLIER: [f32; 8] = [1.0, 1.0, 1.0, 1.0, 1.3, 1.3, 0.2, 0.2];
 
-pub(crate) const DAMAGE_SCALE: [f32; 30] = [
+pub(crate) const DAMAGE_SCALE: MilitaryUnitTable<f32> = MilitaryUnitTable::from_array([
     0.0025, 0.0015, 0.002, 0.002, 0.0015, 0.002, 0.004, 0.005, 0.0025, 0.0015, 0.0015, 0.0015,
     0.0015, 0.002, 0.003, 0.0035, 0.001, 0.0005, 0.0005, 0.0005, 0.001, 0.0005, 0.0005, 0.0005,
     0.003, 0.0025, 0.001, 0.002, 0.0015, 0.0005,
-];
+]);
 
 pub(crate) const ATTACK_TERRAIN: [f32; 50] = [
     1.0, 0.75, 0.75, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.75, 0.75, 1.0, 0.0, 1.0, 0.75, 0.75,

@@ -861,6 +861,7 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
         active_prerequisite_pair: [0; 2],
         nation_capability_slots: std::array::from_fn(|slot| {
             technology.selected_capability_slots[MajorNationId::new(slot as u8)]
+                .as_array()
                 .map(|kind| kind as i16)
         }),
         research_status_by_nation,

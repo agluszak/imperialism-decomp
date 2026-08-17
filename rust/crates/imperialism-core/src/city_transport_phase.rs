@@ -134,7 +134,8 @@ impl GameState {
         let province = self.map[home]
             .province
             .expect("army-growth pending requires the home tile's province");
-        let unit_kind = self.technology.selected_capability_slots[nation][9];
+        let unit_kind =
+            self.technology.selected_capability_slots[nation][ArmyUnitCategory::Generals];
         let id = self.unit_ids.next_military();
         let unit = MilitaryUnitState {
             nation: nation_id,
@@ -677,7 +678,8 @@ mod tests {
         let province = ProvinceId::new(0);
         state.nations.majors[&nation].common.home_tile = Some(home);
         state.map[home].province = Some(province);
-        state.technology.selected_capability_slots[nation][9] = MilitaryUnitKind::GeneralEra2;
+        state.technology.selected_capability_slots[nation][ArmyUnitCategory::Generals] =
+            MilitaryUnitKind::GeneralEra2;
         state.nations.majors[&nation].economy.pending_actions[PendingActionKind::ArmyGrowthReward]
             .queue();
 

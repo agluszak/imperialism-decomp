@@ -189,8 +189,8 @@ pub struct TechnologyState {
     pub industry_enabled_by_slot: [bool; 14],
     pub military_unit_ability_active_by_nation: MajorNationTable<MilitaryUnitTable<bool>>,
     /// Retail `TTechMgr::nationCapRows1e8`: the selected ability id in each
-    /// tactical group. Slot 9 is the general spawned by army-growth rewards.
-    pub selected_capability_slots: MajorNationTable<[MilitaryUnitKind; 10]>,
+    /// tactical group. Generals are spawned by army-growth rewards.
+    pub selected_capability_slots: MajorNationTable<ArmyCategoryTable<MilitaryUnitKind>>,
     pub city_capabilities_by_nation: MajorNationTable<CityTechnologyCapabilities>,
     /// Retail `TTechMgr::activeZoneIndex1d4`: the hull spawned by a navy-growth reward.
     pub navy_growth_ship_type: ShipType,
@@ -597,11 +597,8 @@ impl GameState {
     fn activate_military_ability(&mut self, nation: MajorNationId, kind: MilitaryUnitKind) {
         self.technology.military_unit_ability_active_by_nation[nation][kind] = true;
         let group = crate::military_phase::tactical_category(kind);
-        if (0..10).contains(&group) {
-            self.technology.selected_capability_slots[nation][group as usize] = kind;
-        }
-        if (1..9).contains(&group) {
-            let category = MilitaryRecruitmentCategory::from_usize((group - 1) as usize);
+        self.technology.selected_capability_slots[nation][group] = kind;
+        if let Some(category) = military_recruitment_category(group) {
             let previous =
                 self.nations.city(nation).orders.military_recruitment[category].unit_kind;
             if previous != kind {
@@ -613,7 +610,7 @@ impl GameState {
         }
     }
 
-    fn upgrade_matching_category_units(&mut self, nation: MajorNationId, group: i16) {
+    fn upgrade_matching_category_units(&mut self, nation: MajorNationId, group: ArmyUnitCategory) {
         let mut ids = Vec::new();
         for (&id, unit) in &self.military_units {
             if unit.nation() == nation.nation()
@@ -702,8 +699,22 @@ impl GameState {
     }
 }
 
-pub(crate) const fn default_selected_capability_slots() -> [MilitaryUnitKind; 10] {
-    [
+fn military_recruitment_category(group: ArmyUnitCategory) -> Option<MilitaryRecruitmentCategory> {
+    match group {
+        ArmyUnitCategory::LightInfantry => Some(MilitaryRecruitmentCategory::LightInfantry),
+        ArmyUnitCategory::LineInfantry => Some(MilitaryRecruitmentCategory::RegularInfantry),
+        ArmyUnitCategory::EliteInfantry => Some(MilitaryRecruitmentCategory::HeavyInfantry),
+        ArmyUnitCategory::LightCavalry => Some(MilitaryRecruitmentCategory::LightCavalry),
+        ArmyUnitCategory::HeavyCavalry => Some(MilitaryRecruitmentCategory::HeavyCavalry),
+        ArmyUnitCategory::FieldArtillery => Some(MilitaryRecruitmentCategory::LightArtillery),
+        ArmyUnitCategory::SiegeArtillery => Some(MilitaryRecruitmentCategory::HeavyArtillery),
+        ArmyUnitCategory::Engineers => Some(MilitaryRecruitmentCategory::Demolitionist),
+        ArmyUnitCategory::Garrison | ArmyUnitCategory::Generals => None,
+    }
+}
+
+pub(crate) const fn default_selected_capability_slots() -> ArmyCategoryTable<MilitaryUnitKind> {
+    ArmyCategoryTable::from_array([
         MilitaryUnitKind::Minutemen,
         MilitaryUnitKind::Skirmishers,
         MilitaryUnitKind::Regulars,
@@ -714,7 +725,7 @@ pub(crate) const fn default_selected_capability_slots() -> [MilitaryUnitKind; 10
         MilitaryUnitKind::Artillery,
         MilitaryUnitKind::Sappers,
         MilitaryUnitKind::GeneralEra1,
-    ]
+    ])
 }
 
 fn upgrade_resource_costs(kind: MilitaryUnitKind) -> (i16, i16, i16) {
@@ -941,7 +952,7 @@ mod tests {
             Some(Technology::BessemerConverter)
         );
         assert_eq!(
-            state.technology.selected_capability_slots[nation][9],
+            state.technology.selected_capability_slots[nation][ArmyUnitCategory::Generals],
             MilitaryUnitKind::GeneralEra2
         );
         assert!(
