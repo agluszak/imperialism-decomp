@@ -130,13 +130,9 @@ impl GameState {
 
     /// Prepends a ship the way `TShip::TShip` prepends `g_pNavyPrimaryOrderListHead`.
     pub(crate) fn insert_ship_at_head(&mut self, ship: ShipState) -> ShipId {
-        let id = self.allocate_ship_id();
+        let id = self.object_ids.ship();
         self.ships.shift_insert(0, id, ship);
         id
-    }
-
-    pub(crate) fn allocate_ship_id(&mut self) -> ShipId {
-        self.object_ids.ship()
     }
 
     pub fn ship(&self, id: ShipId) -> Option<&ShipState> {

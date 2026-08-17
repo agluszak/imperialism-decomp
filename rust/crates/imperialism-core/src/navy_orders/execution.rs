@@ -1327,7 +1327,7 @@ mod tests {
         location: OceanZoneId,
         order: TaskForceOrder,
     ) -> (ShipId, TaskForceId) {
-        let ship = state.allocate_ship_id();
+        let ship = state.object_ids.ship();
         let force = state.allocate_task_force_id();
         state.ships.insert(
             ship,
@@ -1463,7 +1463,7 @@ mod tests {
             Some(survivor)
         );
 
-        let ship = state.allocate_ship_id();
+        let ship = state.object_ids.ship();
         state.ships.insert(
             ship,
             ShipState {
@@ -1556,7 +1556,7 @@ mod tests {
         let first: NavyOrdersContinuation =
             serde_json::from_str(&encoded).expect("deserialize continuation");
 
-        let loose_ship = state.allocate_ship_id();
+        let loose_ship = state.object_ids.ship();
         state.ships.insert(
             loose_ship,
             ShipState {
@@ -1614,7 +1614,7 @@ mod tests {
         );
         let mut ships = vec![first_ship];
         for _ in 0..3 {
-            let ship = state.allocate_ship_id();
+            let ship = state.object_ids.ship();
             state.ships.insert(
                 ship,
                 ShipState {
