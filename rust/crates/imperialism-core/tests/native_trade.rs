@@ -48,12 +48,11 @@ fn major_trade_settlement() {
         "major_trade_settlement",
         |state, case: MajorTradeSettlementCase| {
             for settlement in case.settlements {
-                state.purchase_item(
-                    case.nation,
-                    settlement.resource,
-                    settlement.amount,
-                    settlement.price,
-                );
+                state
+                    .nations_mut()
+                    .major_mut(case.nation)
+                    .unwrap()
+                    .purchase_item(settlement.resource, settlement.amount, settlement.price);
             }
         },
     )
@@ -66,16 +65,23 @@ fn purchased_items_phase() {
     compare_native(
         "purchased_items_phase",
         |state, case: PurchasedItemsPhaseCase| {
-            state.remember_trade_bids(case.nation);
+            state
+                .nations_mut()
+                .major_mut(case.nation)
+                .unwrap()
+                .remember_trade_bids();
             for purchase in case.purchases {
-                state.purchase_item(
-                    case.nation,
-                    purchase.resource,
-                    purchase.amount,
-                    purchase.price,
-                );
+                state
+                    .nations_mut()
+                    .major_mut(case.nation)
+                    .unwrap()
+                    .purchase_item(purchase.resource, purchase.amount, purchase.price);
             }
-            state.commit_purchased_items(case.nation);
+            state
+                .nations_mut()
+                .major_mut(case.nation)
+                .unwrap()
+                .commit_purchased_items();
         },
     )
     .unwrap();
@@ -85,7 +91,11 @@ fn purchased_items_phase() {
 #[ignore = "requires the native C++ oracle"]
 fn recall_trade_bids() {
     compare_native("recall_trade_bids", |state, case: NationCase| {
-        state.recall_trade_bids(case.nation);
+        state
+            .nations_mut()
+            .major_mut(case.nation)
+            .unwrap()
+            .recall_trade_bids();
     })
     .unwrap();
 }
@@ -94,7 +104,11 @@ fn recall_trade_bids() {
 #[ignore = "requires the native C++ oracle"]
 fn player_trade_phase_reset() {
     compare_native("player_trade_phase_reset", |state, case: NationCase| {
-        state.reset_player_trade_phase(case.nation);
+        state
+            .nations_mut()
+            .major_mut(case.nation)
+            .unwrap()
+            .reset_player_trade_phase();
     })
     .unwrap();
 }
@@ -103,7 +117,11 @@ fn player_trade_phase_reset() {
 #[ignore = "requires the native C++ oracle"]
 fn trade_capacity_refresh() {
     compare_native("trade_capacity_refresh", |state, case: NationCase| {
-        state.refresh_merchant_capacity(case.nation);
+        state
+            .nations_mut()
+            .major_mut(case.nation)
+            .unwrap()
+            .refresh_merchant_capacity();
     })
     .unwrap();
 }
@@ -121,7 +139,11 @@ fn trade_market_price() {
 #[ignore = "requires the native C++ oracle"]
 fn trade_policy_step() {
     compare_native("trade_policy_step", |state, case: TradePolicyStepCase| {
-        state.decrement_trade_policy_score(case.source, case.target);
+        state
+            .nations_mut()
+            .major_mut(case.source)
+            .unwrap()
+            .decrement_trade_policy_score(case.target);
     })
     .unwrap();
 }
@@ -130,7 +152,11 @@ fn trade_policy_step() {
 #[ignore = "requires the native C++ oracle"]
 fn trade_policy_set() {
     compare_native("trade_policy_set", |state, case: TradePolicySetCase| {
-        state.set_trade_policy(case.nation, case.target, case.policy);
+        state
+            .nations_mut()
+            .major_mut(case.nation)
+            .unwrap()
+            .set_trade_policy(case.nation, case.target, case.policy);
     })
     .unwrap();
 }

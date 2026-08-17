@@ -29,11 +29,11 @@ fn city_item_order_increase() {
         "city_item_order_increase",
         |state, case: CityItemOrderCase| {
             matches!(
-                state.set_city_order_quantity(
-                    case.nation,
-                    CityOrderId::Item(case.output),
-                    case.quantity,
-                ),
+                state
+                    .nations_mut()
+                    .major_mut(case.nation)
+                    .unwrap()
+                    .set_city_order_quantity(CityOrderId::Item(case.output), case.quantity),
                 CityOrderUpdate::Applied
             )
         },
@@ -48,11 +48,11 @@ fn city_item_order_decrease() {
         "city_item_order_decrease",
         |state, case: CityItemOrderCase| {
             matches!(
-                state.set_city_order_quantity(
-                    case.nation,
-                    CityOrderId::Item(case.output),
-                    case.quantity,
-                ),
+                state
+                    .nations_mut()
+                    .major_mut(case.nation)
+                    .unwrap()
+                    .set_city_order_quantity(CityOrderId::Item(case.output), case.quantity),
                 CityOrderUpdate::Applied
             )
         },
@@ -66,7 +66,11 @@ fn power_plant_upgrade() {
     compare_native(
         "power_plant_upgrade",
         |state, case: PowerPlantUpgradeCase| {
-            state.set_power_plant_upgrade(case.nation, case.enabled);
+            state
+                .nations_mut()
+                .major_mut(case.nation)
+                .unwrap()
+                .set_power_plant_upgrade(case.enabled);
         },
     )
     .unwrap();
@@ -76,7 +80,11 @@ fn power_plant_upgrade() {
 #[ignore = "requires the native C++ oracle"]
 fn created_items_phase() {
     compare_native("created_items_phase", |state, case: NationCase| {
-        state.add_created_items(case.nation);
+        state
+            .nations_mut()
+            .major_mut(case.nation)
+            .unwrap()
+            .add_created_items();
     })
     .unwrap();
 }

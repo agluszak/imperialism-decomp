@@ -183,21 +183,39 @@ impl GameState {
 
     pub(super) fn tally_major_trade_bids(&mut self) {
         let base = major_offer_base(self.turn.economic_turn);
-        for nation in MajorNationId::all() {
-            if self.major_is_trade_eligible(nation) {
-                self.assign_fallback_trade_offers(nation);
-            }
+        let nations: Vec<_> = self
+            .nations
+            .live_majors()
+            .filter(|(_, major)| Self::major_is_trade_eligible(major))
+            .map(|(nation, major)| {
+                (
+                    nation,
+                    major.economy.diplomacy_eligible,
+                    major.economy.item_potentials,
+                    major.economy.foreign_trade.interior_bid,
+                    major.economy.foreign_trade.purchase_priority[TradeCommodity::Horses],
+                )
+            })
+            .collect();
+        for &(nation, is_human, potentials, interior_bid, horse_priority) in &nations {
+            self.assign_fallback_trade_offers(
+                nation,
+                is_human,
+                potentials,
+                interior_bid,
+                horse_priority,
+            );
         }
 
+        let (nations, market) = (&self.nations, &mut self.market);
         for commodity in all_trade_commodities() {
-            for nation in MajorNationId::all() {
-                if !self.major_is_trade_eligible(nation) {
-                    continue;
-                }
-                let metric =
-                    self.nations.majors[nation].economy.item_potentials[commodity.resource()];
-                self.market.rows[commodity].current_offer_by_nation[nation.nation()] = metric;
-                let row = &mut self.market.rows[commodity];
+            for (nation, major) in nations
+                .live_majors()
+                .filter(|(_, major)| Self::major_is_trade_eligible(major))
+            {
+                let metric = major.economy.item_potentials[commodity.resource()];
+                market.rows[commodity].current_offer_by_nation[nation.nation()] = metric;
+                let row = &mut market.rows[commodity];
                 if metric < 0 {
                     row.request_count += 1;
                 } else if metric > 0 {
@@ -209,26 +227,37 @@ impl GameState {
         }
     }
 
-    pub(super) fn assign_fallback_trade_offers(&mut self, nation: MajorNationId) {
-        if !self.is_human(nation) {
-            self.arrange_materials_offers(nation);
+    pub(super) fn assign_fallback_trade_offers(
+        &mut self,
+        nation: MajorNationId,
+        is_human: bool,
+        potentials: ResourceTable<i16>,
+        interior_bid: Option<ForeignTradeBid>,
+        horse_priority: i16,
+    ) {
+        if !is_human {
+            self.arrange_materials_offers(nation, interior_bid, horse_priority);
             return;
         }
 
         let buying_processed = PROCESSED_NEED
             .into_iter()
-            .any(|resource| self.nations.majors[nation].economy.item_potentials[resource] < 0);
+            .any(|resource| potentials[resource] < 0);
 
         if buying_processed {
             let ranked = self.build_independent_major_relationship_list(nation);
             let mut selected = None;
             for resource in PROCESSED_NEED {
-                if self.nations.majors[nation].economy.item_potentials[resource] >= 0 {
+                if potentials[resource] >= 0 {
                     continue;
                 }
                 if selected.is_none() {
                     for &candidate in ranked.iter().rev() {
-                        if !self.is_human(candidate) {
+                        if self
+                            .nations
+                            .major(candidate)
+                            .is_some_and(|major| !major.economy.diplomacy_eligible)
+                        {
                             selected = Some(candidate);
                             break;
                         }
@@ -240,7 +269,7 @@ impl GameState {
             }
         }
 
-        if self.nations.majors[nation].economy.item_potentials[ResourceKind::Horses] == -1 {
+        if potentials[ResourceKind::Horses] == -1 {
             loop {
                 if let Some(candidate) = self.random_eligible_peer(nation) {
                     self.set_trade_offers_for(candidate, ResourceKind::Horses, nation);
@@ -250,8 +279,13 @@ impl GameState {
         }
     }
 
-    pub(super) fn arrange_materials_offers(&mut self, nation: MajorNationId) {
-        if let Some(bid) = self.foreign_trade(nation).interior_bid
+    pub(super) fn arrange_materials_offers(
+        &mut self,
+        nation: MajorNationId,
+        interior_bid: Option<ForeignTradeBid>,
+        horse_priority: i16,
+    ) {
+        if let Some(bid) = interior_bid
             && let Some(&selected) = self
                 .build_independent_major_relationship_list(nation)
                 .last()
@@ -259,7 +293,7 @@ impl GameState {
             self.set_trade_offers_for(selected, bid.commodity.resource(), nation);
         }
 
-        if self.foreign_trade(nation).purchase_priority[TradeCommodity::Horses] > 0 {
+        if horse_priority > 0 {
             let mut fallback = None;
             for _ in 1..=0x14 {
                 if let Some(candidate) = self.random_eligible_peer(nation) {
@@ -298,7 +332,11 @@ impl GameState {
             let stock = self.city_stock(seller, resource);
             let mut cap = 10_i16.min(stock);
             cap = cap.min(self.trade_offer_cap(seller));
-            if self.nations.majors[seller].economy.item_potentials[resource] == -1 {
+            if self
+                .nations
+                .major(seller)
+                .is_none_or(|major| major.economy.item_potentials[resource] == -1)
+            {
                 return;
             }
             self.set_trade_potential(seller, resource, cap);
@@ -307,7 +345,10 @@ impl GameState {
 
         let horses = self.city_stock(seller, ResourceKind::Horses);
         if horses != 0
-            && self.nations.majors[seller].economy.item_potentials[ResourceKind::Horses] != -1
+            && self
+                .nations
+                .major(seller)
+                .is_some_and(|major| major.economy.item_potentials[ResourceKind::Horses] != -1)
         {
             let mut amount = i16::from(horses != 1) + 1;
             amount = amount.min(self.trade_offer_cap(seller));
@@ -321,12 +362,23 @@ impl GameState {
         resource: ResourceKind,
     ) {
         if let Some(processed) = ProcessedTradeCommodity::from_resource(resource)
-            && let Some(auto) = self.nations.majors[nation].auto.as_mut()
+            && let Some(auto) = self
+                .nations
+                .major_mut(nation)
+                .and_then(|major| major.auto.as_mut())
         {
             auto.trade.temporary_processed_stock[processed] += 4;
         }
-        self.nations.city_mut(nation).adjust_stock(resource, 4);
-        let potential = self.nations.majors[nation].economy.item_potentials[resource];
+        if let Some(city) = self.nations.city_mut(nation) {
+            city.adjust_stock(resource, 4);
+        }
+        let Some(potential) = self
+            .nations
+            .major(nation)
+            .map(|major| major.economy.item_potentials[resource])
+        else {
+            return;
+        };
         self.set_trade_potential(nation, resource, potential + 4);
     }
 
@@ -365,15 +417,12 @@ impl GameState {
         source: MajorNationId,
     ) -> Vec<MajorNationId> {
         let mut list = Vec::new();
-        for candidate in MajorNationId::all() {
-            if !self.nation_present(candidate.nation()) || candidate == source {
-                continue;
-            }
-            if self.nations.majors[candidate].common.status() != CountryStatus::Independent {
+        let (nations, rng) = (&self.nations, &mut self.rng);
+        for (candidate, major) in nations.live_majors() {
+            if candidate == source || major.common.status() != CountryStatus::Independent {
                 continue;
             }
             let standing = self.diplomacy.standings[source.nation()][candidate.nation()];
-            let rng = &mut self.rng;
             insert_sorted(&mut list, (candidate, standing), |a, b| {
                 compare_relationship(a.1, b.1, rng)
             });

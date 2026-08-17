@@ -76,21 +76,18 @@ impl AdvisoryRoute {
 impl GameState {
     #[cfg(feature = "oracle")]
     pub(crate) fn select_and_queue_advisory_map_missions(&mut self) {
-        for nation in MajorNationId::all() {
-            if !self.nation_is_eligible_for_optional_phase(nation.nation()) {
-                continue;
-            }
-            if self.is_auto(nation) {
-                self.select_and_queue_advisory_map_missions_for(nation);
-            }
+        let nations: Vec<_> = self
+            .nations
+            .live_majors()
+            .filter(|(_, major)| major.is_auto())
+            .map(|(nation, _)| nation)
+            .collect();
+        for nation in nations {
+            self.select_and_queue_advisory_map_missions_for(nation);
         }
     }
 
     pub(crate) fn select_and_queue_advisory_map_missions_for(&mut self, nation: MajorNationId) {
-        if self.nations.majors[nation].auto.is_none() {
-            return;
-        }
-
         self.populate_case16_advisory_candidates(nation);
 
         let mut best: Option<AdvisoryCandidate> = None;
@@ -153,9 +150,10 @@ impl GameState {
         let mut queue_secondary = false;
         if let Some(best) = best {
             let tier = best.route.tier(&self.ocean.zones);
-            let skill = self.nations.majors[nation]
-                .economy
-                .defense_minister_skill_index;
+            let Some(major) = self.nations.major(nation) else {
+                return;
+            };
+            let skill = major.economy.defense_minister_skill_index;
             let skill = usize::try_from(skill).expect("defense minister skill is a table row");
             let accept = TIER_THRESHOLDS[skill][tier as usize] < best.score;
             if !accept && self.nation_has_war_relation(nation.nation()) {
@@ -268,8 +266,9 @@ impl GameState {
         let flagged_majors: Vec<MajorNationId> = MajorNationId::all()
             .filter(|&slot| {
                 self.nations.common(slot.nation()).is_some()
-                    && self.nations.majors[nation].economy.candidate_nation_flags[slot.nation()]
-                        != 0
+                    && self.nations.major(nation).is_some_and(|major| {
+                        major.economy.candidate_nation_flags[slot.nation()] != 0
+                    })
             })
             .collect();
         for slot in flagged_majors {
@@ -290,7 +289,11 @@ impl GameState {
 
         let flagged_minors: Vec<NationId> = MinorNationId::all()
             .map(MinorNationId::nation)
-            .filter(|&minor| self.nations.majors[nation].economy.candidate_nation_flags[minor] != 0)
+            .filter(|&minor| {
+                self.nations
+                    .major(nation)
+                    .is_some_and(|major| major.economy.candidate_nation_flags[minor] != 0)
+            })
             .collect();
         for minor in flagged_minors {
             let owned = self.owned_regions_of(minor).to_vec();
@@ -300,7 +303,10 @@ impl GameState {
         }
 
         if self.nation_has_war_relation(nation.nation()) {
-            let interior = &mut self.nations.majors[nation].economy.interior_civilian;
+            let Some(major) = self.nations.major_mut(nation) else {
+                return;
+            };
+            let interior = &mut major.economy.interior_civilian;
             for resource in ADVISORY_RESOURCE_KINDS {
                 interior.historical_need_by_resource[resource] = 0;
             }
@@ -308,10 +314,10 @@ impl GameState {
         }
 
         for resource in ADVISORY_RESOURCE_KINDS {
-            let need = self.nations.majors[nation]
-                .economy
-                .interior_civilian
-                .historical_need_by_resource[resource];
+            let Some(major) = self.nations.major(nation) else {
+                return;
+            };
+            let need = major.economy.interior_civilian.historical_need_by_resource[resource];
             if need < 5 {
                 continue;
             }
@@ -656,8 +662,15 @@ impl GameState {
     }
 
     fn map_action_context_score(&mut self, nation: MajorNationId, zone: OceanZoneId) -> f32 {
+        if self.nations.major(nation).is_none() {
+            return 0.0;
+        }
         let active: Vec<NationId> = NationId::all()
-            .filter(|&slot| self.nations.majors[nation].economy.candidate_nation_flags[slot] != 0)
+            .filter(|&slot| {
+                self.nations
+                    .major(nation)
+                    .is_some_and(|major| major.economy.candidate_nation_flags[slot] != 0)
+            })
             .collect();
         let mut selected = NationId::new(0);
         let mut composite = 0.0_f32;
@@ -685,9 +698,9 @@ impl GameState {
             _ => {
                 let mut best_priority = 0;
                 for slot in MajorNationId::all() {
-                    if self.nations.majors[nation].economy.candidate_nation_flags[slot.nation()]
-                        == 0
-                    {
+                    if self.nations.major(nation).is_none_or(|major| {
+                        major.economy.candidate_nation_flags[slot.nation()] == 0
+                    }) {
                         continue;
                     }
                     let priority = self.navy_priority_in_zone(slot, zone);
@@ -932,9 +945,9 @@ impl GameState {
         nation: MajorNationId,
         province: ProvinceId,
     ) -> Option<AiTargetState> {
-        self.nations.majors[nation]
-            .auto
-            .as_ref()
+        self.nations
+            .major(nation)
+            .and_then(|major| major.auto.as_ref())
             .map(|auto| auto.province_targets[province])
     }
 
@@ -944,20 +957,27 @@ impl GameState {
         province: ProvinceId,
         flag: AiTargetState,
     ) {
-        if let Some(auto) = self.nations.majors[nation].auto.as_mut() {
+        if let Some(auto) = self
+            .nations
+            .major_mut(nation)
+            .and_then(|major| major.auto.as_mut())
+        {
             auto.province_targets[province] = flag;
         }
     }
 
     fn zone_target(&self, nation: MajorNationId, ordinal: usize) -> Option<AiTargetState> {
-        self.nations.majors[nation]
-            .auto
-            .as_ref()
+        self.nations
+            .major(nation)
+            .and_then(|major| major.auto.as_ref())
             .and_then(|auto| auto.zone_targets.get(ordinal).copied())
     }
 
     fn set_zone_target(&mut self, nation: MajorNationId, ordinal: usize, flag: AiTargetState) {
-        if let Some(auto) = self.nations.majors[nation].auto.as_mut()
+        if let Some(auto) = self
+            .nations
+            .major_mut(nation)
+            .and_then(|major| major.auto.as_mut())
             && let Some(slot) = auto.zone_targets.get_mut(ordinal)
         {
             *slot = flag;

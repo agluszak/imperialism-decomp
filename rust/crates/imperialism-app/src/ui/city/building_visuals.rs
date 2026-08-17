@@ -154,14 +154,15 @@ pub(in crate::ui::city) fn bind_city_screen(
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
     bind_city_summary_values(&mut commands, *root, &tree, &nodes, &mut assets);
     bind_city_hover_title(&mut commands, *root, &tree, &mut assets);
+    let major = session.active_major();
     spawn_city_buildings(
         &mut commands,
         *root,
         &tree,
         generated::CITY_BUILDINGS,
         generated::CITY_BUILDING_ACTIONS,
-        &session.game,
-        nation,
+        major,
+        session.game.technology().city_capabilities_by_nation[nation].advanced_iron_working,
         &mut assets,
     );
     commands.entity(*root).insert(CityScreenRoot);
@@ -297,14 +298,14 @@ pub(in crate::ui::city) fn spawn_city_buildings(
     tree: &RetailTree,
     visuals: &[CityBuildingVisual],
     actions: &[CityBuildingActionVisual],
-    state: &GameState,
-    nation: MajorNationId,
+    major: &MajorNation,
+    advanced_iron_working: bool,
     assets: &mut RetailUiAssets,
 ) {
     let main = tree.find(root, fourcc!("main"));
     let mut hit_regions = Vec::new();
     for visual in visuals {
-        let level = city_building_level(state, nation, visual.slot);
+        let level = city_building_level(major, advanced_iron_working, visual.slot);
         let offset = i16::from(visual.slot as u8);
         let mask_picture = PictureId::new(7100 + level * 16 + offset);
         let mask = match assets.indexed_picture(mask_picture) {
@@ -362,7 +363,14 @@ pub(in crate::ui::city) fn spawn_city_buildings(
             RelativeCursorPosition::default(),
         ))
         .observe(on_city_canvas_click);
-    spawn_city_building_actions(commands, main, actions, state, nation, assets);
+    spawn_city_building_actions(
+        commands,
+        main,
+        actions,
+        major,
+        advanced_iron_working,
+        assets,
+    );
 }
 
 pub(in crate::ui::city) fn apply_city_action_transparency(
@@ -411,13 +419,16 @@ pub(in crate::ui::city) fn spawn_city_building_actions(
     commands: &mut Commands,
     main: Entity,
     actions: &[CityBuildingActionVisual],
-    state: &GameState,
-    nation: MajorNationId,
+    major: &MajorNation,
+    advanced_iron_working: bool,
     assets: &mut RetailUiAssets,
 ) {
     let active_actions: Vec<_> = actions
         .iter()
-        .filter(|action| city_building_level(state, nation, action.slot) == i16::from(action.level))
+        .filter(|action| {
+            city_building_level(major, advanced_iron_working, action.slot)
+                == i16::from(action.level)
+        })
         .collect();
     for (draw_order, action) in active_actions.iter().enumerate() {
         let indexed = match assets.indexed_picture(action.picture_id) {
@@ -523,8 +534,8 @@ pub(in crate::ui::city) fn sync_city_building_action_visibility(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let nation = session.active_major_nation();
-    let city = &session.game.nations().major(nation).city;
+    let major = session.active_major();
+    let city = &major.city;
     for (action, mut visibility) in &mut actions {
         *visibility = if city_building_action_enabled(city, action.slot) {
             Visibility::Visible
@@ -566,8 +577,7 @@ pub(in crate::ui::city) fn sync_city_summary(
     if !session.is_changed() && added.is_empty() {
         return;
     }
-    let nation = session.active_major_nation();
-    let major = session.game.nations().major(nation);
+    let major = session.active_major();
     let city = &major.city;
     let labor = city.population.baseline_labor();
     for (summary, mut text, mut visibility, parent) in &mut summaries {
@@ -654,9 +664,12 @@ pub(in crate::ui::city) fn sync_city_buildings(
         return;
     }
     let nation = session.active_major_nation();
-    let city = &session.game.nations().major(nation).city;
+    let major = session.active_major();
+    let city = &major.city;
+    let advanced_iron_working =
+        session.game.technology().city_capabilities_by_nation[nation].advanced_iron_working;
     for (mut sprite, mut image, mut visibility) in &mut pictures {
-        let level = city_building_level(&session.game, nation, sprite.slot);
+        let level = city_building_level(major, advanced_iron_working, sprite.slot);
         let Some(picture) = city_building_picture(city, sprite.slot, level) else {
             sprite.picture = None;
             *visibility = Visibility::Hidden;

@@ -708,11 +708,11 @@ fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
         secondary_civilian_hills: researched(nation, Technology::BessemerConverter),
         secondary_civilian_swamp: researched(nation, Technology::SquareSetTimbering),
         fort_level_cap: if status(nation, Technology::LargeArtillery) != 0 {
-            FortLevelCap::THREE
+            FortLevelCap::Three
         } else if status(nation, Technology::BessemerConverter) != 0 {
-            FortLevelCap::TWO
+            FortLevelCap::Two
         } else {
-            FortLevelCap::ONE
+            FortLevelCap::One
         },
     });
 
@@ -781,7 +781,9 @@ impl LegacySaveV62 {
         let majors = MajorNationTable::from_array(std::array::from_fn(|slot| {
             let major_id = MajorNationId::new(slot as u8);
             let nation_id = major_id.nation();
-            let nation = &self.major_nations[slot];
+            let Some(nation) = self.major_nations[major_id].as_ref() else {
+                return None;
+            };
             let great_power = nation.great_power();
             let city = great_power
                 .city
@@ -856,7 +858,7 @@ impl LegacySaveV62 {
                 diplomacy_notices(&great_power.prefix.turn_event_queue);
             pending.nations[major_id].proposals =
                 diplomacy_proposals(&great_power.prefix.proposal_queue);
-            major
+            Some(major)
         }));
         for nation in &self.minor_nations {
             let nation_id = NationId::new(nation.country.nation_slot as u8);
@@ -906,7 +908,7 @@ impl LegacySaveV62 {
             market: trade_market_state(&self.market),
             technology: technology_state(&self.technology),
             diplomacy: diplomacy_state(&self.diplomacy),
-            nations: Nations::new(majors, minors),
+            nations: Nations::from_slots(majors, minors),
             military_units,
             civilian_units,
             object_ids,
@@ -1552,11 +1554,6 @@ fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
                             .collect(),
                     }
                 }),
-                marker_pixel_x: 0,
-                marker_pixel_y: 0,
-                placed: false,
-                marker_sprite: 0,
-                list_ordinal: 0,
             })
         })
         .collect()

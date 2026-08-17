@@ -316,14 +316,14 @@ fn project_game_status_display(
     if super::projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let nation = session.active_major_nation();
+    let major = session.active_major();
     let date = {
         let season = retail
             .string(10_000, (session.game.turn().economic_turn % 4) as i16)
             .expect("retail season name must load");
         format!("{season}, {}", 1815 + session.game.turn().economic_turn / 4)
     };
-    let treasury = format_currency(session.game.nations().major(nation).common.treasury);
+    let treasury = format_currency(major.common.treasury);
     for (kind, mut text) in &mut displays {
         text.0 = match kind {
             GameStatusDisplay::Date => date.clone(),

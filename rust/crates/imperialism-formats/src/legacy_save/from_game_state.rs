@@ -13,12 +13,14 @@ impl LegacySaveV62 {
         let mut nation_control_modes = [0_i16; MAJOR_NATION_COUNT];
         let mut foreign_minister_policy_ids = [0_i16; MAJOR_NATION_COUNT];
         let mut nation_names = vec![String::new(); NATION_COUNT];
-        let mut major_nations = Vec::with_capacity(MAJOR_NATION_COUNT);
+        let mut major_nations = MajorNationTable::default();
         let mut minor_nations = Vec::new();
 
         for slot in 0..MAJOR_NATION_COUNT {
             let major_id = MajorNationId::new(slot as u8);
-            let nation = state.nations().major(major_id);
+            let Some(nation) = state.nations().major(major_id) else {
+                continue;
+            };
             nation_availability[slot] = 1;
             nation_names[slot] = nation.common.display_name.clone();
             nation_control_modes[slot] = if nation.auto.is_some() { 2 } else { 0 };
@@ -40,7 +42,7 @@ impl LegacySaveV62 {
                 .map(|(_, mission)| mission.clone())
                 .collect::<Vec<_>>();
             let pending = &state.pending().nations[major_id];
-            major_nations.push(major_nation_dto(
+            major_nations[major_id] = Some(major_nation_dto(
                 nation,
                 major_id,
                 &military,
@@ -101,8 +103,8 @@ impl LegacySaveV62 {
             previous_mode: 0,
             nation_count: state
                 .nations()
-                .majors()
-                .filter(|major| matches!(major.common.status(), CountryStatus::Independent))
+                .live_majors()
+                .filter(|(_, major)| matches!(major.common.status(), CountryStatus::Independent))
                 .count() as i32,
             minor_nation_count: MINOR_NATION_COUNT as i32,
             turn_flow_status_flags: turn.turn_flow_status_flags,

@@ -36,11 +36,8 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
-    state: &GameState,
+    city: &CityState,
 ) {
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
-        .expect("City active nation is a major nation");
-    let city = &state.nations().major(nation).city;
     let material_pictures = SHIPYARD_MATERIALS.map(|resource| {
         assets
             .transparent_picture(PictureId::new(700 + resource as i16), 0x10)
@@ -349,8 +346,8 @@ pub(in crate::ui::city) fn sync_shipyard_details(
     if !session.is_changed() && !selection.is_changed() && !selection.is_added() {
         return;
     }
-    let nation = session.active_major_nation();
-    let city = &session.game.nations().major(nation).city;
+    let major = session.active_major();
+    let city = &major.city;
     let row = rows
         .iter()
         .find(|(choice, _)| choice.order == selection.order)

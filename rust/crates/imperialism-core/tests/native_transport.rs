@@ -20,7 +20,11 @@ struct DirectTransportCase {
 #[ignore = "requires the native C++ oracle"]
 fn direct_transport() {
     compare_native("direct_transport", |state, case: DirectTransportCase| {
-        state.direct_transport(case.nation, case.resource, case.requested)
+        state
+            .nations_mut()
+            .major_mut(case.nation)
+            .unwrap()
+            .direct_transport(case.resource, case.requested)
     })
     .unwrap();
 }
@@ -29,7 +33,11 @@ fn direct_transport() {
 #[ignore = "requires the native C++ oracle"]
 fn transport_need_allocation() {
     compare_native("transport_need_allocation", |state, case: NationCase| {
-        state.allocate_transport_needs(case.nation);
+        state
+            .nations_mut()
+            .major_mut(case.nation)
+            .unwrap()
+            .allocate_transport_needs();
     })
     .unwrap();
 }
@@ -38,7 +46,11 @@ fn transport_need_allocation() {
 #[ignore = "requires the native C++ oracle"]
 fn transported_items_phase() {
     compare_native("transported_items_phase", |state, case: NationCase| {
-        state.settle_transported_items(case.nation);
+        state
+            .nations_mut()
+            .major_mut(case.nation)
+            .unwrap()
+            .settle_transported_items();
     })
     .unwrap();
 }
@@ -47,7 +59,11 @@ fn transported_items_phase() {
 #[ignore = "requires the native C++ oracle"]
 fn rolling_stock() {
     compare_native("rolling_stock", |state, case: NationCase| {
-        state.increase_rolling_stock(case.nation)
+        state
+            .nations_mut()
+            .major_mut(case.nation)
+            .unwrap()
+            .increase_rolling_stock()
     })
     .unwrap();
 }
@@ -57,7 +73,13 @@ fn rolling_stock() {
 fn rolling_stock_insufficient_resources() {
     compare_native(
         "rolling_stock_insufficient_resources",
-        |state, case: NationCase| state.increase_rolling_stock(case.nation),
+        |state, case: NationCase| {
+            state
+                .nations_mut()
+                .major_mut(case.nation)
+                .unwrap()
+                .increase_rolling_stock()
+        },
     )
     .unwrap();
 }
@@ -66,7 +88,11 @@ fn rolling_stock_insufficient_resources() {
 #[ignore = "requires the native C++ oracle"]
 fn merchant_marine() {
     compare_native("merchant_marine", |state, case: NationCase| {
-        state.increase_merchant_marine(case.nation)
+        state
+            .nations_mut()
+            .major_mut(case.nation)
+            .unwrap()
+            .increase_merchant_marine()
     })
     .unwrap();
 }

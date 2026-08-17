@@ -1,6 +1,6 @@
 use crate::{AppState, RetailAssetsResource, ReturnTo};
 use bevy::prelude::*;
-use imperialism_core::{GameState, MajorNationId, TurnStop};
+use imperialism_core::{GameState, MajorNation, MajorNationId, TurnStop};
 
 /// Authoritative in-memory game owned by the running Bevy app.
 #[derive(Resource, Debug, PartialEq)]
@@ -9,9 +9,33 @@ pub(crate) struct GameSession {
 }
 
 impl GameSession {
-    pub(crate) fn active_major_nation(&self) -> MajorNationId {
+    fn active_major_slot(&self) -> MajorNationId {
         MajorNationId::from_nation(self.game.turn().active_nation)
-            .expect("interactive screens require an active major nation")
+            .expect("interactive screens require a major nation slot")
+    }
+
+    pub(crate) fn active_major(&self) -> &MajorNation {
+        self.game
+            .nations()
+            .major(self.active_major_slot())
+            .expect("interactive screens require a live major nation")
+    }
+
+    pub(crate) fn active_major_mut(&mut self) -> &mut MajorNation {
+        let nation = self.active_major_slot();
+        self.game
+            .nations_mut()
+            .major_mut(nation)
+            .expect("interactive screens require a live major nation")
+    }
+
+    pub(crate) fn active_major_nation(&self) -> MajorNationId {
+        let nation = self.active_major_slot();
+        self.game
+            .nations()
+            .major(nation)
+            .expect("interactive screens require a live major nation");
+        nation
     }
 }
 

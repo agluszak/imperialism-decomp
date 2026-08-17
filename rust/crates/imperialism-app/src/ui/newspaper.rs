@@ -89,7 +89,11 @@ fn project_newspaper_chrome(
         return;
     }
     let date = project_newspaper_date(&assets, session.game.turn().economic_turn);
-    let spec = newspaper_spec_text(&assets, &session.game);
+    let spec = newspaper_spec_text(
+        &assets,
+        session.game.turn().economic_turn,
+        session.active_major(),
+    );
     for (display, mut text) in &mut displays {
         text.0 = match display {
             NewspaperDisplay::Date => date.clone(),
@@ -103,25 +107,15 @@ fn project_newspaper_date(assets: &RetailUiAssets, economic_turn: i32) -> String
     format!("{season}, {}", 1815 + economic_turn / 4)
 }
 
-fn newspaper_spec_text(assets: &RetailUiAssets, state: &GameState) -> String {
+fn newspaper_spec_text(assets: &RetailUiAssets, economic_turn: i32, major: &MajorNation) -> String {
     // FIXME: `TNewspaperView::StuffValues` switches on `economicTurn % 4`: 0 escalation,
     // 1 `GetMarketChange()`, 2/3 comparative-power rows. Only season 0 is implemented.
     // The opening paper is turn 1 after `AdvanceSeason`, so retail shows market change.
-    if state.turn().economic_turn % 4 != 0 {
+    if economic_turn % 4 != 0 {
         return String::new();
     }
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
-        .expect("newspaper requires an active major nation");
     let template = get_string(assets, 0x275e, 0);
-    fill_brackets(
-        &template,
-        &[&state
-            .nations()
-            .major(nation)
-            .economy
-            .escalation_counter
-            .to_string()],
-    )
+    fill_brackets(&template, &[&major.economy.escalation_counter.to_string()])
 }
 
 fn fill_newspaper_stories(

@@ -28,45 +28,68 @@ const COMPILE_THRESHOLD_BY_DIFFICULTY: [i32; 5] = [5, 5, 5, 5, 5];
 impl GameState {
     /// Retail `TSimMgr::DoCityAndTransport`.
     pub fn do_city_and_transport(&mut self) {
-        for nation in MajorNationId::all().rev() {
-            if !self.nation_eligible_for_optional_phase(nation) {
-                continue;
-            }
+        let nations: Vec<_> = self
+            .nations
+            .live_majors()
+            .filter(|(_, major)| Self::major_is_event_eligible(major))
+            .map(|(nation, _)| nation)
+            .collect();
+        for nation in nations.into_iter().rev() {
             self.fill_interior_minister_orders(nation);
-            self.calculate_potentials(nation);
+            self.nations
+                .major_mut(nation)
+                .expect("city-phase major must remain live")
+                .city
+                .refresh_local_summary_flags();
             self.execute_nation_pending_action_state_machine(nation);
             self.refresh_great_power_relation_panels_and_dispatch_delta_summary(nation);
-            self.refresh_merchant_capacity(nation);
+            self.nations
+                .major_mut(nation)
+                .expect("eligible city-phase nation must be live")
+                .refresh_merchant_capacity();
         }
-    }
-
-    pub(crate) fn nation_eligible_for_optional_phase(&self, nation: MajorNationId) -> bool {
-        !matches!(
-            self.nations.major(nation).common.status(),
-            CountryStatus::ProtectorateOf(_)
-        )
     }
 
     /// `TGreatPower::FillInteriorMinisterOrders` / `TAutoGreatPower` override.
     fn fill_interior_minister_orders(&mut self, nation: MajorNationId) {
-        if self.nations.major(nation).auto.is_none() {
+        if self
+            .nations
+            .major(nation)
+            .expect("city phase requires a live major")
+            .auto
+            .is_none()
+        {
             return;
         }
-        for resource in all_resources() {
-            self.nations.majors[nation]
-                .economy
-                .update_need_target(resource, 0);
+        {
+            let major = self
+                .nations
+                .major_mut(nation)
+                .expect("city phase requires a live major");
+            for resource in all_resources() {
+                major.economy.update_need_target(resource, 0);
+            }
         }
         self.rebalance_ai_transport(nation);
         self.end_city_phase(nation);
-        self.clear_ai_city_orders(nation);
+        Self::clear_ai_city_orders(
+            self.nations
+                .major_mut(nation)
+                .expect("interior minister requires a live major"),
+        );
         self.process_ai_pending_ship(nation);
-        let temporary_lumber = self.rebalance_ai_labor(nation);
+        let temporary_lumber = Self::rebalance_ai_labor(
+            self.nations
+                .major_mut(nation)
+                .expect("interior minister requires a live major"),
+        );
         self.choose_ai_expansion(nation);
         self.compute_ai_item_demands(nation);
         if temporary_lumber != 0 {
             self.nations
-                .city_mut(nation)
+                .major_mut(nation)
+                .expect("interior minister requires a live major")
+                .city
                 .adjust_stock(ResourceKind::Lumber, temporary_lumber);
         }
         self.issue_ai_item_orders(nation);
@@ -75,47 +98,51 @@ impl GameState {
         self.determine_ai_trade_bid(nation);
     }
 
-    fn calculate_potentials(&mut self, nation: MajorNationId) {
-        self.nations.city_mut(nation).refresh_local_summary_flags();
-    }
-
     /// `TGreatPower::ExecuteNationPendingActionStateMachine`.
     fn execute_nation_pending_action_state_machine(&mut self, nation: MajorNationId) {
-        self.produce_city_units(nation);
-
-        let army_queued = self.nations.major(nation).economy.pending_actions
-            [PendingActionKind::ArmyGrowthReward]
+        let major = self
+            .nations
+            .major(nation)
+            .expect("pending city actions require a live major");
+        let army_queued = major.economy.pending_actions[PendingActionKind::ArmyGrowthReward]
             .status()
             == PendingActionStatus::QUEUED;
+        let navy_queued = major.economy.pending_actions[PendingActionKind::NavyGrowthReward]
+            .status()
+            == PendingActionStatus::QUEUED;
+        let overseas =
+            major.economy.pending_actions[PendingActionKind::OverseasDeveloperReward].status();
+        let monument_queued = major.economy.pending_actions
+            [PendingActionKind::ColonyMonumentMerchantCapacity]
+            .status()
+            == PendingActionStatus::QUEUED;
+        self.produce_city_units(nation);
+
         if army_queued {
             self.spawn_pending_army_growth_unit(nation);
         }
 
-        let navy_queued = self.nations.major(nation).economy.pending_actions
-            [PendingActionKind::NavyGrowthReward]
-            .status()
-            == PendingActionStatus::QUEUED;
         if navy_queued {
             self.spawn_pending_navy_growth_unit(nation);
         }
 
-        let overseas = self.nations.major(nation).economy.pending_actions
-            [PendingActionKind::OverseasDeveloperReward]
-            .status();
         if overseas < PendingActionStatus::HANDLED && self.needs_overseas_developer(nation) {
             self.spawn_pending_overseas_developer(nation);
-            self.nations.majors[nation].economy.pending_actions
-                [PendingActionKind::OverseasDeveloperReward]
+            self.nations
+                .major_mut(nation)
+                .expect("pending city actions require a live major")
+                .economy
+                .pending_actions[PendingActionKind::OverseasDeveloperReward]
                 .queue();
         }
 
-        let monument_queued = self.nations.major(nation).economy.pending_actions
-            [PendingActionKind::ColonyMonumentMerchantCapacity]
-            .status()
-            == PendingActionStatus::QUEUED;
         if monument_queued {
-            let count =
-                &mut self.nations.city_mut(nation).ship_order_count_by_type[ShipType::Clipper];
+            let count = &mut self
+                .nations
+                .major_mut(nation)
+                .expect("pending city actions require a live major")
+                .city
+                .ship_order_count_by_type[ShipType::Clipper];
             *count = count.wrapping_add(2);
             self.announce_later(nation, 1, 6, 2);
         }
@@ -128,8 +155,7 @@ impl GameState {
         let home = self
             .nations
             .major(nation)
-            .common
-            .home_tile
+            .and_then(|major| major.common.home_tile)
             .expect("army-growth pending requires a home tile");
         let province = self.map[home]
             .province
@@ -179,8 +205,7 @@ impl GameState {
         let home = self
             .nations
             .major(nation)
-            .common
-            .home_tile
+            .and_then(|major| major.common.home_tile)
             .expect("overseas-developer pending requires a home tile");
         let Some(tile) = self.find_reachable_recruit_spawn_tile(home, false) else {
             return;
@@ -211,8 +236,15 @@ impl GameState {
     ) {
         self.rebuild_nation_resource_yields(nation);
         self.advance_owned_region_development_counters_and_handle_events(nation);
-        if self.nations.major(nation).auto.is_none() {
-            self.add_created_items(nation);
+        if self
+            .nations
+            .major(nation)
+            .is_some_and(|major| major.auto.is_none())
+        {
+            self.nations
+                .major_mut(nation)
+                .expect("player city phase requires a live major")
+                .add_created_items();
             self.compile_great_power_relationship_delta_lines(nation);
             self.end_city_phase(nation);
         }
@@ -223,19 +255,21 @@ impl GameState {
         &mut self,
         nation: MajorNationId,
     ) {
-        let home_tile = self.nations.major(nation).common.home_tile;
-        let owned: Vec<ProvinceId> = self.nations.major(nation).common.owned_regions().to_vec();
+        let major = self
+            .nations
+            .major(nation)
+            .expect("province development requires a live major");
+        let home_tile = major.common.home_tile;
+        let owned: Vec<ProvinceId> = major.common.owned_regions().to_vec();
         let economic_turn = self.turn.economic_turn;
         let oil_drilling = self.technology.oil_drilling_available();
-        let clothing_limit = building_type_limit(
-            self.nations.city(nation).production_orders[CityFacilitySlot::ClothingFactory],
-        );
-        let furniture_limit = building_type_limit(
-            self.nations.city(nation).production_orders[CityFacilitySlot::FurnitureFactory],
-        );
-        let steel_limit = building_type_limit(
-            self.nations.city(nation).production_orders[CityFacilitySlot::Metalworks],
-        );
+        let clothing_limit =
+            building_type_limit(major.city.production_orders[CityFacilitySlot::ClothingFactory]);
+        let furniture_limit =
+            building_type_limit(major.city.production_orders[CityFacilitySlot::FurnitureFactory]);
+        let steel_limit =
+            building_type_limit(major.city.production_orders[CityFacilitySlot::Metalworks]);
+        let mut development_events = Vec::new();
 
         for province_id in owned {
             let city_tile = self.map.provinces[province_id].city_tile();
@@ -335,21 +369,23 @@ impl GameState {
             }
 
             if pending_stage == 2 {
-                self.nations.majors[nation].economy.pending_actions
-                    [PendingActionKind::TownDevelopment]
-                    .queue_with_payload(province_id.get() as i16);
+                development_events.push((PendingActionKind::TownDevelopment, province_id));
             } else if pending_stage == 1 {
-                self.nations.majors[nation].economy.pending_actions
-                    [PendingActionKind::VillageDevelopment]
-                    .queue_with_payload(province_id.get() as i16);
-                if self.nations.majors[nation].economy.pending_actions
-                    [PendingActionKind::RailyardExpansion]
-                    .status()
+                development_events.push((PendingActionKind::VillageDevelopment, province_id));
+            }
+        }
+
+        let major = self
+            .nations
+            .major_mut(nation)
+            .expect("province development requires a live major");
+        for (kind, province) in development_events {
+            major.economy.pending_actions[kind].queue_with_payload(province.get() as i16);
+            if kind == PendingActionKind::VillageDevelopment {
+                if major.economy.pending_actions[PendingActionKind::RailyardExpansion].status()
                     < PendingActionStatus::HANDLED
                 {
-                    self.nations.majors[nation].economy.pending_actions
-                        [PendingActionKind::RailyardExpansion]
-                        .queue();
+                    major.economy.pending_actions[PendingActionKind::RailyardExpansion].queue();
                 }
             }
         }
@@ -357,36 +393,49 @@ impl GameState {
 
     /// `TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage`.
     pub(crate) fn compile_great_power_relationship_delta_lines(&mut self, nation: MajorNationId) {
-        let pressure = i32::from(self.nations.major(nation).economy.pressure_counter);
+        let major = self
+            .nations
+            .major_mut(nation)
+            .expect("relationship delta compilation requires a live major");
+        Self::compile_relationship_delta_lines(major, &self.market);
+    }
+
+    fn compile_relationship_delta_lines(major: &mut MajorNation, market: &TradeMarketState) {
+        let pressure = i32::from(major.economy.pressure_counter);
         let threshold = COMPILE_THRESHOLD_BY_DIFFICULTY[self.turn.difficulty as usize];
         if threshold > pressure {
             return;
         }
 
         let mut interaction_score = 0_i32;
-        let treasury = self.nations.major(nation).common.treasury;
+        let treasury = major.common.treasury;
         for resource in COMPILE_DELTA_RESOURCE_ORDER {
             if interaction_score + treasury >= 0 {
                 break;
             }
-            let stock = self.nations.city(nation).stockpile[resource];
+            let stock = major.city.stockpile[resource];
             if stock <= 0 {
                 continue;
             }
-            self.nations.city_mut(nation).stockpile[resource] = 0;
-            self.nations.city_mut(nation).stockpile.verify_stocks();
+            major.city.stockpile[resource] = 0;
+            major.city.stockpile.verify_stocks();
             let Some(commodity) = TradeCommodity::from_retail(resource as i16) else {
                 continue;
             };
-            let price = self.market.rows[commodity].price;
+            let price = market.rows[commodity].price;
             interaction_score =
                 (interaction_score as f32 - (price * i32::from(stock)) as f32 * -0.25) as i32;
         }
-        self.nations.majors[nation].common.treasury += interaction_score;
+        major.common.treasury += interaction_score;
     }
 
     fn announce_later(&mut self, nation: MajorNationId, order_kind: i16, payload: i16, flags: i16) {
-        if self.nations.major(nation).is_auto() {
+        if self
+            .nations
+            .major(nation)
+            .expect("city phase announcements require a live major")
+            .is_auto()
+        {
             return;
         }
         let turn_tick = self.turn.economic_turn;
@@ -435,8 +484,10 @@ impl GameState {
             None
         };
 
-        let count = &mut self.nations.city_mut(nation).ship_order_count_by_type[ship_type];
-        *count = count.wrapping_add(1);
+        if let Some(city) = self.nations.city_mut(nation) {
+            let count = &mut city.ship_order_count_by_type[ship_type];
+            *count = count.wrapping_add(1);
+        }
 
         let admiral = self.object_ids.admiral();
         self.admirals.insert(
@@ -506,9 +557,14 @@ mod tests {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
         let home = TileId::new(1);
-        state.nations.majors[nation].common.home_tile = Some(home);
+        state.nations.majors[nation]
+            .as_mut()
+            .unwrap()
+            .common
+            .home_tile = Some(home);
         state.turn.economic_turn = 10;
-        state.nations.city_mut(nation).production_orders[CityFacilitySlot::ClothingFactory] = 4;
+        state.nations.city_mut(nation).unwrap().production_orders
+            [CityFacilitySlot::ClothingFactory] = 4;
 
         let capital = ProvinceId::new(0);
         let other = ProvinceId::new(1);
@@ -535,12 +591,18 @@ mod tests {
             1
         );
         assert_eq!(state.map.provinces[other].development_stage(), 1);
-        let village = state.nations.majors[nation].economy.pending_actions
-            [PendingActionKind::VillageDevelopment];
+        let village = state.nations.majors[nation]
+            .as_mut()
+            .unwrap()
+            .economy
+            .pending_actions[PendingActionKind::VillageDevelopment];
         assert_eq!(village.status(), PendingActionStatus::QUEUED);
         assert_eq!(village.payload(), Some(1));
-        let railyard = state.nations.majors[nation].economy.pending_actions
-            [PendingActionKind::RailyardExpansion];
+        let railyard = state.nations.majors[nation]
+            .as_mut()
+            .unwrap()
+            .economy
+            .pending_actions[PendingActionKind::RailyardExpansion];
         assert_eq!(railyard.status(), PendingActionStatus::QUEUED);
         assert_eq!(railyard.payload(), None);
     }
@@ -550,7 +612,11 @@ mod tests {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
         let home = TileId::new(1);
-        state.nations.majors[nation].common.home_tile = Some(home);
+        state.nations.majors[nation]
+            .as_mut()
+            .unwrap()
+            .common
+            .home_tile = Some(home);
         state.turn.economic_turn = 20;
 
         let other = ProvinceId::new(1);
@@ -572,8 +638,11 @@ mod tests {
             1
         );
         assert_eq!(state.map.provinces[other].development_stage(), 2);
-        let town = state.nations.majors[nation].economy.pending_actions
-            [PendingActionKind::TownDevelopment];
+        let town = state.nations.majors[nation]
+            .as_mut()
+            .unwrap()
+            .economy
+            .pending_actions[PendingActionKind::TownDevelopment];
         assert_eq!(town.status(), PendingActionStatus::QUEUED);
         assert_eq!(town.payload(), Some(1));
     }
@@ -595,7 +664,11 @@ mod tests {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
         let home = TileId::new(1);
-        state.nations.majors[nation].common.home_tile = Some(home);
+        state.nations.majors[nation]
+            .as_mut()
+            .unwrap()
+            .common
+            .home_tile = Some(home);
         state.map[home].former_owner_nation = Some(TileOwnerTag::from_nation(nation.nation()));
         state.ocean.zones = vec![
             ZoneKind::Zone(empty_zone()),
@@ -604,7 +677,11 @@ mod tests {
                 port_tile: home,
             }),
         ];
-        state.nations.majors[nation].economy.pending_actions[PendingActionKind::NavyGrowthReward]
+        state.nations.majors[nation]
+            .as_mut()
+            .unwrap()
+            .economy
+            .pending_actions[PendingActionKind::NavyGrowthReward]
             .queue();
 
         state.execute_nation_pending_action_state_machine(nation);
@@ -616,7 +693,7 @@ mod tests {
         assert_eq!(ship.nation, nation.nation());
         assert_eq!(ship.strength, 1700);
         assert_eq!(
-            state.nations.city(nation).ship_order_count_by_type[ShipType::ShipOfTheLine],
+            state.nations.city(nation).unwrap().ship_order_count_by_type[ShipType::ShipOfTheLine],
             1
         );
         assert_eq!(state.admirals.len(), 1);
@@ -647,14 +724,22 @@ mod tests {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
         let home = TileId::new(1);
-        state.nations.majors[nation].common.home_tile = Some(home);
+        state.nations.majors[nation]
+            .as_mut()
+            .unwrap()
+            .common
+            .home_tile = Some(home);
         state.map[home].former_owner_nation = Some(TileOwnerTag::from_nation(nation.nation()));
         state.ocean.zones = vec![ZoneKind::PortZone(PortZone {
             zone: empty_zone(),
             port_tile: home,
         })];
         state.technology.navy_growth_ship_type = ShipType::Ironclad;
-        state.nations.majors[nation].economy.pending_actions[PendingActionKind::NavyGrowthReward]
+        state.nations.majors[nation]
+            .as_mut()
+            .unwrap()
+            .economy
+            .pending_actions[PendingActionKind::NavyGrowthReward]
             .queue();
 
         state.execute_nation_pending_action_state_machine(nation);
@@ -664,7 +749,7 @@ mod tests {
             ShipType::Ironclad
         );
         assert_eq!(
-            state.nations.city(nation).ship_order_count_by_type[ShipType::Ironclad],
+            state.nations.city(nation).unwrap().ship_order_count_by_type[ShipType::Ironclad],
             1
         );
     }
@@ -675,10 +760,18 @@ mod tests {
         let nation = MajorNationId::new(0);
         let home = TileId::new(1);
         let province = ProvinceId::new(0);
-        state.nations.majors[nation].common.home_tile = Some(home);
+        state.nations.majors[nation]
+            .as_mut()
+            .unwrap()
+            .common
+            .home_tile = Some(home);
         state.map[home].province = Some(province);
         state.technology.selected_capability_slots[nation][9] = MilitaryUnitKind::GeneralEra2;
-        state.nations.majors[nation].economy.pending_actions[PendingActionKind::ArmyGrowthReward]
+        state.nations.majors[nation]
+            .as_mut()
+            .unwrap()
+            .economy
+            .pending_actions[PendingActionKind::ArmyGrowthReward]
             .queue();
 
         state.execute_nation_pending_action_state_machine(nation);
@@ -737,18 +830,34 @@ mod tests {
         assert_eq!(state.military_units[&first].roster_id(), 1);
         assert_eq!(
             state.nations.majors[nation]
+                .as_ref()
+                .unwrap()
                 .common
                 .unit_name_ordinal_by_type[MilitaryUnitKind::Regulars as usize],
             2
         );
-        assert_eq!(state.nations.majors[nation].common.unit_name_counter, 2);
+        assert_eq!(
+            state.nations.majors[nation]
+                .as_mut()
+                .unwrap()
+                .common
+                .unit_name_counter,
+            2
+        );
 
         unnamed(&mut state);
         state.execute_nation_pending_action_state_machine(nation);
         let second = *state.military_units.last().expect("second unit").0;
         assert_eq!(state.military_units[&second].name(), "2nd Regulars");
         assert_eq!(state.military_units[&second].roster_id(), 2);
-        assert_eq!(state.nations.majors[nation].common.unit_name_counter, 3);
+        assert_eq!(
+            state.nations.majors[nation]
+                .as_mut()
+                .unwrap()
+                .common
+                .unit_name_counter,
+            3
+        );
         assert_eq!(state.military_units[&first].roster_id(), 1);
     }
 }

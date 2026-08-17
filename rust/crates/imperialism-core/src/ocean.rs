@@ -206,7 +206,10 @@ impl GameState {
         }));
 
         for nation in MajorNationId::all() {
-            if let Some(auto) = self.nations.major_mut(nation).auto.as_mut()
+            if let Some(auto) = self
+                .nations
+                .major_mut(nation)
+                .and_then(|major| major.auto.as_mut())
                 && auto.zone_targets.len() == usize::from(ordinal.get())
             {
                 auto.zone_targets.push(AiTargetState::Unmarked);

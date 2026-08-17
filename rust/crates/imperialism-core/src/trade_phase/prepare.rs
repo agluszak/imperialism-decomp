@@ -4,14 +4,15 @@ use crate::*;
 
 impl GameState {
     pub(super) fn run_nation_update_passes(&mut self, phase: &mut TradePhase) {
-        for nation in MajorNationId::all() {
-            if !self.major_is_trade_eligible(nation) {
-                continue;
-            }
-            if self.is_human(nation) {
-                self.reset_player_trade_phase(nation);
+        for (_, major) in self
+            .nations
+            .live_majors_mut()
+            .filter(|(_, major)| Self::major_is_trade_eligible(major))
+        {
+            if major.is_auto() {
+                Self::reset_ai_trade_phase(major);
             } else {
-                self.reset_ai_trade_phase(nation);
+                major.reset_player_trade_phase();
             }
         }
 
@@ -21,34 +22,65 @@ impl GameState {
             }
         }
 
-        for nation in MajorNationId::all() {
-            if !self.major_is_trade_eligible(nation) {
-                continue;
-            }
-            if self.is_human(nation) {
-                if self.turn.difficulty == Difficulty::Introductory
-                    && self.turn.phase == PhaseCode::CAPITAL_SELECTION
-                {
-                    for resource in [
-                        ResourceKind::Food,
-                        ResourceKind::Cotton,
-                        ResourceKind::Wool,
-                        ResourceKind::Timber,
-                    ] {
-                        self.set_trade_potential(nation, resource, -1);
-                    }
-                    self.nations.majors[nation].economy.remember_trade_bids();
+        if self.turn.difficulty == Difficulty::Introductory
+            && self.turn.phase == PhaseCode::CAPITAL_SELECTION
+        {
+            for (_, major) in self
+                .nations
+                .live_majors_mut()
+                .filter(|(_, major)| !major.is_auto() && Self::major_is_trade_eligible(major))
+            {
+                for resource in [
+                    ResourceKind::Food,
+                    ResourceKind::Cotton,
+                    ResourceKind::Wool,
+                    ResourceKind::Timber,
+                ] {
+                    major.economy.set_item_potential(resource, -1);
                 }
-            } else {
-                self.set_ai_trade_bids(nation);
-                self.do_usual_subsidy_rule(nation);
+                major.remember_trade_bids();
             }
+        }
+
+        let has_trade_candidate = MinorNationId::all().any(|minor| {
+            let nation = minor.nation();
+            self.nation_present(nation)
+                && (self.market.rows[TradeCommodity::Coal].maximum_offer_by_nation[nation] != 0
+                    || self.market.rows[TradeCommodity::Iron].maximum_offer_by_nation[nation] != 0)
+        });
+        let at_war = MajorNationTable::from_fn(|nation| self.has_any_war(nation.nation()));
+        let economic_turn = self.turn.economic_turn;
+        let (nations, rng, market, technology) = (
+            &mut self.nations,
+            &mut self.rng,
+            &self.market,
+            &self.technology,
+        );
+        for (nation, major) in nations
+            .live_majors_mut()
+            .filter(|(_, major)| major.is_auto() && Self::major_is_trade_eligible(major))
+        {
+            Self::set_ai_trade_bids(
+                major,
+                technology.city_capabilities_by_nation[nation].oil_drilling,
+                has_trade_candidate,
+                economic_turn,
+                at_war[nation],
+                rng,
+                market,
+            );
+            Self::do_usual_subsidy_rule(
+                major,
+                technology.city_capabilities_by_nation[nation].oil_drilling,
+                rng,
+                market,
+            );
         }
     }
 
-    pub(super) fn reset_ai_trade_phase(&mut self, nation: MajorNationId) {
-        self.refresh_merchant_capacity(nation);
-        let major = &mut self.nations.majors[nation].economy;
+    pub(super) fn reset_ai_trade_phase(major: &mut MajorNation) {
+        major.refresh_merchant_capacity();
+        let major = &mut major.economy;
         major.unfilled_trade_offer_count = 0;
         major.budget_pool_delta = 0;
         major.budget_pool_base = 0;
@@ -107,7 +139,7 @@ impl GameState {
         }
 
         let mut aid = Vec::new();
-        for major in MajorNationId::all() {
+        for major in self.nations.live_major_ids() {
             for (resource, scale) in [(ResourceKind::Gold, 200), (ResourceKind::Gems, 500)] {
                 let yield_level = phase.status_by_major[minor][resource][usize::from(major.get())];
                 if yield_level != 0 {

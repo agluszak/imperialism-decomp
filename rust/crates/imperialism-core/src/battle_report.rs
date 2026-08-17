@@ -67,7 +67,7 @@ pub struct BattleReportSide {
     pub children: Vec<BattleReportUnit>,
 }
 
-/// Authoritative combat/naval report. Marker fields are omitted from `.imp`.
+/// Authoritative combat/naval report.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct BattleReport {
     pub participant_index: u8,
@@ -75,16 +75,6 @@ pub struct BattleReport {
     pub kind: BattleReportKind,
     pub location: BattleReportLocation,
     pub sides: [BattleReportSide; 2],
-    #[serde(default)]
-    pub marker_pixel_x: i32,
-    #[serde(default)]
-    pub marker_pixel_y: i32,
-    #[serde(default)]
-    pub placed: bool,
-    #[serde(default)]
-    pub marker_sprite: i16,
-    #[serde(default)]
-    pub list_ordinal: i16,
 }
 
 /// `'army'` (`IMPERIALISM_FOURCC('a','r','m','y')`) written to land detail rows.
@@ -123,11 +113,6 @@ impl GameState {
             kind,
             location: BattleReportLocation::Province(province),
             sides: [attacker_side, defender_side],
-            marker_pixel_x: 0,
-            marker_pixel_y: 0,
-            placed: false,
-            marker_sprite: 0,
-            list_ordinal: 0,
         });
     }
 

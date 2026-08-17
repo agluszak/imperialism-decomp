@@ -2,9 +2,10 @@ use super::*;
 
 impl GameState {
     pub(super) fn give_grant_to(&mut self, source: MajorNationId, target: NationId) {
-        let Some(grant) = self.nations.majors[source]
-            .economy
-            .diplomacy_grants_by_nation[target]
+        let Some(grant) = self
+            .nations
+            .major(source)
+            .and_then(|major| major.economy.diplomacy_grants_by_nation[target])
         else {
             return;
         };
@@ -15,7 +16,9 @@ impl GameState {
         if let Some(common) = self.nations.common_mut(target) {
             common.treasury += grant.amount;
         }
-        self.nations.majors[source].economy.grant_total_cost -= grant.amount;
+        if let Some(major) = self.nations.major_mut(source) {
+            major.economy.grant_total_cost -= grant.amount;
+        }
 
         if self.diplomacy.mission_levels[target][source.nation()] != DiplomaticMissionLevel::Embassy
         {
@@ -39,7 +42,7 @@ impl GameState {
         policy: DiplomacyPolicy,
     ) {
         if let Some(major) = MajorNationId::from_nation(target) {
-            if self.is_auto(major) {
+            if self.nations.major(major).is_some_and(MajorNation::is_auto) {
                 match policy {
                     DiplomacyPolicy::JoinEmpire | DiplomacyPolicy::NonAggressionPact => return,
                     DiplomacyPolicy::Alliance | DiplomacyPolicy::JoinEmpireWithWarEntanglements
@@ -127,7 +130,11 @@ impl GameState {
         source: NationId,
         code: i16,
     ) {
-        if self.nations.majors[nation].auto.is_none() {
+        if self
+            .nations
+            .major(nation)
+            .is_some_and(|major| major.auto.is_none())
+        {
             self.insert_sorted_notice(nation, DiplomacyNotice { source, code });
         }
 
@@ -148,7 +155,12 @@ impl GameState {
         start_nation: u8,
         start_index: usize,
     ) -> DiplomacyPhaseResult {
-        for nation in MajorNationId::all().skip(usize::from(start_nation)) {
+        let nations: Vec<_> = self
+            .nations
+            .live_major_ids()
+            .filter(|nation| nation.get() >= start_nation)
+            .collect();
+        for nation in nations {
             let first = if nation.get() == start_nation {
                 start_index
             } else {
@@ -160,7 +172,10 @@ impl GameState {
                     return DiplomacyPhaseResult::Offer(prompt);
                 }
             }
-            self.reset_diplomacy_commitments(nation);
+            self.nations
+                .major_mut(nation)
+                .expect("diplomacy offer recipient must remain live")
+                .reset_diplomacy_commitments();
         }
         self.process_one_queued_war()
     }
@@ -171,11 +186,11 @@ impl GameState {
         index: usize,
     ) -> Option<DiplomacyOfferPrompt> {
         let DiplomacyProposal { source, policy } = self.pending.nations[nation].proposals[index];
-        let matching = self.nations.majors[nation]
-            .economy
-            .diplomacy_policy_by_nation[source]
-            == Some(policy);
-        let human = self.nations.majors[nation].auto.is_none();
+        let Some(major) = self.nations.major(nation) else {
+            return None;
+        };
+        let matching = major.economy.diplomacy_policy_by_nation[source] == Some(policy);
+        let human = major.auto.is_none();
 
         if human {
             if matching {

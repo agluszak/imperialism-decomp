@@ -136,10 +136,8 @@ pub(super) fn town_transport_linked(state: &GameState, tile: TileId) -> bool {
     state
         .nations()
         .major(major)
-        .towns
-        .get(&tile)
-        .map(|town| town.transport_linked)
-        .unwrap_or(true)
+        .and_then(|major| major.towns.get(&tile))
+        .is_none_or(|town| town.transport_linked)
 }
 
 fn blit_improvement_sprite(pictures: &[IndexedPicture], offset: u16, pixels: &mut [u8]) {

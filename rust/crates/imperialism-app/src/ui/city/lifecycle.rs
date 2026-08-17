@@ -52,7 +52,8 @@ pub(in crate::ui::city) fn on_city_canvas_click(
     {
         return;
     }
-    match city_building_click(&session.game, nation, building.slot) {
+    let oil_drilling = session.game.technology().city_capabilities_by_nation[nation].oil_drilling;
+    match city_building_click(session.active_major(), oil_drilling, building.slot) {
         Some(CityBuildingClick::Construction) => {
             open_city_construction_dialog(&mut commands, &mut assets, &mut session, building.slot);
         }
@@ -165,15 +166,32 @@ pub(in crate::ui::city) fn bind_city_dialogs(
             CityDialogKind::Training => {
                 configure_training_dialog(&mut commands, &assets, root, &tree)
             }
-            CityDialogKind::Armory => {
-                configure_armory_dialog(&mut commands, &mut assets, root, &tree, &session.game)
-            }
+            CityDialogKind::Armory => configure_armory_dialog(
+                &mut commands,
+                &mut assets,
+                root,
+                &tree,
+                &session.active_major().city,
+            ),
             CityDialogKind::University => {
-                configure_university_dialog(&mut commands, &mut assets, root, &tree, &session.game)
+                let nation = session.active_major_nation();
+                configure_university_dialog(
+                    &mut commands,
+                    &mut assets,
+                    root,
+                    &tree,
+                    session.game.technology().city_capabilities_by_nation[nation]
+                        .university
+                        .available,
+                )
             }
-            CityDialogKind::Shipyard => {
-                configure_shipyard_dialog(&mut commands, &mut assets, root, &tree, &session.game)
-            }
+            CityDialogKind::Shipyard => configure_shipyard_dialog(
+                &mut commands,
+                &mut assets,
+                root,
+                &tree,
+                &session.active_major().city,
+            ),
             CityDialogKind::Warehouse => {
                 configure_warehouse_dialog(&mut commands, &mut assets, root, &tree, &session.game)
             }
@@ -201,8 +219,8 @@ pub(in crate::ui::city) fn restore_city_dialogs(
     if roots.is_empty() {
         return;
     }
-    let nation = session.active_major_nation();
-    let city = &session.game.nations().major(nation).city;
+    let major = session.active_major();
+    let city = &major.city;
     let mut next_z = 1;
     for slot in (0..enum_map::enum_len::<CityFacilitySlot>()).map(CityFacilitySlot::from_usize) {
         let state = city.building_windows[slot];

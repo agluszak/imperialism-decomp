@@ -230,7 +230,9 @@ impl GameState {
         nation: MajorNationId,
         windows: ProductionTable<Option<CityWindowPosition>>,
     ) {
-        self.nations.city_mut(nation).building_windows = windows;
+        if let Some(city) = self.nations.city_mut(nation) {
+            city.building_windows = windows;
+        }
     }
 }
 

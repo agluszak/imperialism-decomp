@@ -1,7 +1,8 @@
 use serde::{Deserialize, Serialize};
 
 macro_rules! bounded_id {
-    ($name:ident, $inner:ty, $count:expr, $label:literal) => {
+    ($(#[$meta:meta])* $name:ident, $inner:ty, $count:expr, $label:literal) => {
+        $(#[$meta])*
         #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
         #[serde(transparent)]
         pub struct $name($inner);
@@ -49,11 +50,25 @@ macro_rules! bounded_id {
 }
 
 bounded_id!(NationId, u8, 23, "nation ID");
-bounded_id!(MajorNationId, u8, 7, "major-nation ID");
+bounded_id!(
+    /// One of the seven stable major-nation slots.
+    ///
+    /// This identifies a slot only; it does not prove that the slot currently
+    /// contains a live [`crate::MajorNation`]. Eliminated major nations retain
+    /// their slot ID while their entry in [`crate::Nations`] is absent.
+    MajorNationId,
+    u8,
+    7,
+    "major-nation ID"
+);
 bounded_id!(TileId, u16, 6_480, "strategic tile ID");
 bounded_id!(ProvinceId, u16, 0x180, "province ID");
 
 impl MajorNationId {
+    /// Converts a nation ID in the major-slot range.
+    ///
+    /// The result identifies a slot and does not establish that a live major
+    /// nation occupies it.
     pub const fn from_nation(nation: NationId) -> Option<Self> {
         if nation.get() < Self::COUNT {
             Some(Self(nation.get()))

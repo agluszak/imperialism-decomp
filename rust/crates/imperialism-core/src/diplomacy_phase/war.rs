@@ -8,7 +8,7 @@ impl GameState {
         annex: Option<NationId>,
     ) {
         if let Some(major) = MajorNationId::from_nation(source)
-            && self.is_auto(major)
+            && self.nations.major(major).is_some_and(MajorNation::is_auto)
         {
             self.set_enemy(major, target);
         }
@@ -41,7 +41,7 @@ impl GameState {
             );
         }
         if let Some(target) = MajorNationId::from_nation(pair.second) {
-            if self.is_auto(target) {
+            if self.nations.major(target).is_some_and(MajorNation::is_auto) {
                 self.set_enemy(target, pair.first);
             }
             self.add_diplomacy_notice(target, pair.first, DiplomacyPolicy::DeclareWar.retail());
@@ -80,7 +80,11 @@ impl GameState {
                 } else {
                     DiplomacyWarJoinKind::DefendMinor
                 };
-                if self.nations.majors[favorite].auto.is_none() {
+                if self
+                    .nations
+                    .major(favorite)
+                    .is_some_and(|major| major.auto.is_none())
+                {
                     return DiplomacyPhaseResult::WarJoin(DiplomacyWarJoinPrompt {
                         nation: favorite,
                         target: second,
@@ -106,7 +110,11 @@ impl GameState {
             {
                 continue;
             }
-            if self.nations.majors[other].auto.is_none() {
+            if self
+                .nations
+                .major(other)
+                .is_some_and(|major| major.auto.is_none())
+            {
                 return DiplomacyPhaseResult::WarJoin(DiplomacyWarJoinPrompt {
                     nation: other,
                     target: second,
@@ -128,7 +136,11 @@ impl GameState {
             {
                 continue;
             }
-            if self.nations.majors[other].auto.is_none() {
+            if self
+                .nations
+                .major(other)
+                .is_some_and(|major| major.auto.is_none())
+            {
                 return DiplomacyPhaseResult::WarJoin(DiplomacyWarJoinPrompt {
                     nation: other,
                     target: second,
@@ -318,7 +330,10 @@ impl GameState {
                 self.stop_being_enemies_with(nation, other);
             }
         }
-        self.nations.majors[nation].economy.candidate_nation_flags[target] = 1;
+        let Some(major) = self.nations.major_mut(nation) else {
+            return;
+        };
+        major.economy.candidate_nation_flags[target] = 1;
         if self
             .nations
             .common(target)
@@ -333,7 +348,10 @@ impl GameState {
     }
 
     pub(super) fn stop_being_enemies_with(&mut self, nation: MajorNationId, target: NationId) {
-        self.nations.majors[nation].economy.candidate_nation_flags[target] = 0;
+        let Some(major) = self.nations.major_mut(nation) else {
+            return;
+        };
+        major.economy.candidate_nation_flags[target] = 0;
         if self
             .nations
             .common(target)
@@ -353,9 +371,10 @@ impl GameState {
         let Some(zone) = self.first_port_zone_for_nation(target) else {
             return;
         };
-        let Some(targets) = self.nations.majors[nation]
-            .auto
-            .as_mut()
+        let Some(targets) = self
+            .nations
+            .major_mut(nation)
+            .and_then(|major| major.auto.as_mut())
             .map(|auto| &mut auto.zone_targets)
         else {
             return;

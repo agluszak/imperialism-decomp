@@ -23,7 +23,10 @@ impl GameState {
         let primary = self.create_sea_distance_map(nation, &owned_tiles);
         let secondary = self.build_frog_city_distance_map(nation, &owned_tiles);
         self.seek_resources(nation, &owned_tiles, &primary);
-        if self.nations.majors[nation]
+        if self
+            .nations
+            .major(nation)
+            .expect("AI civilian phase requires a live major")
             .economy
             .interior_civilian
             .railhead_target
@@ -32,60 +35,48 @@ impl GameState {
             self.seek_lost_towns(nation, &primary, &secondary);
         }
 
-        let mut selected = Some(ResourceKind::Cotton);
-        while self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .railhead_target
-            .is_none()
-            && selected.is_some()
-        {
-            selected = None;
-            for resource in all_resources() {
-                if !railhead_resource(resource) {
-                    continue;
-                }
-                let priority = self.nations.majors[nation]
-                    .economy
-                    .interior_civilian
-                    .railhead_priority_by_resource[resource];
-                if priority == 0 {
-                    continue;
-                }
-                if selected.is_none_or(|current| {
-                    self.nations.majors[nation]
-                        .economy
-                        .interior_civilian
-                        .railhead_priority_by_resource[current]
-                        < priority
-                }) {
-                    selected = Some(resource);
-                }
+        loop {
+            let interior = &self
+                .nations
+                .major(nation)
+                .expect("AI civilian phase requires a live major")
+                .economy
+                .interior_civilian;
+            if interior.railhead_target.is_some() {
+                break;
             }
-            if let Some(resource) = selected {
-                self.start_railhead_project(nation, resource, &owned_tiles, &primary, &secondary);
-                if self.nations.majors[nation]
-                    .economy
-                    .interior_civilian
-                    .railhead_target
-                    .is_none()
-                {
-                    self.nations.majors[nation]
-                        .economy
-                        .interior_civilian
-                        .railhead_priority_by_resource[resource] = 0;
-                }
+            let priorities = interior.railhead_priority_by_resource.clone();
+            let Some(resource) = all_resources()
+                .filter(|&resource| railhead_resource(resource) && priorities[resource] != 0)
+                .max_by_key(|&resource| priorities[resource])
+            else {
+                break;
+            };
+            self.start_railhead_project(nation, resource, &owned_tiles, &primary, &secondary);
+            let interior = &mut self
+                .nations
+                .major_mut(nation)
+                .expect("AI civilian phase requires a live major")
+                .economy
+                .interior_civilian;
+            if interior.railhead_target.is_none() {
+                interior.railhead_priority_by_resource[resource] = 0;
             }
         }
 
-        match self.nations.majors[nation]
+        let railhead_target = self
+            .nations
+            .major(nation)
+            .expect("AI civilian phase requires a live major")
             .economy
             .interior_civilian
-            .railhead_target
-        {
+            .railhead_target;
+        match railhead_target {
             None => self.dispatch_builders(nation),
             Some(target) if !self.tile_owned_by(target, nation) => {
-                self.nations.majors[nation]
+                self.nations
+                    .major_mut(nation)
+                    .expect("AI civilian phase requires a live major")
                     .economy
                     .interior_civilian
                     .railhead_target = None;
@@ -106,7 +97,9 @@ impl GameState {
                     }
                 }
                 if !has_engineer {
-                    self.nations.majors[nation]
+                    self.nations
+                        .major_mut(nation)
+                        .expect("AI civilian phase requires a live major")
                         .economy
                         .interior_civilian
                         .pending_recruitment = Some(CivilianUnitKind::Engineer);
@@ -159,10 +152,10 @@ impl GameState {
         let mut unclaimed = ResourceTable::<i16>::default();
         let mut work_delta = ResourceTable::<i16>::default();
         {
-            let interior = self.nations.majors[nation]
-                .economy
-                .interior_civilian
-                .as_mut();
+            let Some(major) = self.nations.major_mut(nation) else {
+                return;
+            };
+            let interior = &mut major.economy.interior_civilian;
             for resource in all_resources() {
                 interior.civilian_order_demand_by_resource[resource] = 0;
                 interior.exterior_need_by_resource[resource] = 0;
@@ -207,10 +200,10 @@ impl GameState {
             }
         }
 
-        let interior = self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .as_mut();
+        let Some(major) = self.nations.major_mut(nation) else {
+            return;
+        };
+        let interior = &mut major.economy.interior_civilian;
         for resource in all_resources() {
             if traded_resource(resource) && interior.resource_order_metrics[resource] != 0 {
                 let demand = work_delta[resource];
@@ -242,8 +235,8 @@ impl GameState {
         let target = self
             .nations
             .major(nation)
-            .towns
-            .iter()
+            .into_iter()
+            .flat_map(|major| major.towns.iter())
             .find_map(|(&tile, town)| {
                 let primary_distance = primary[tile_index(tile)];
                 let secondary_distance = secondary[tile_index(tile)];
@@ -252,10 +245,9 @@ impl GameState {
                         || (secondary_distance < 8 && secondary_distance > 2)))
                     .then_some(tile)
             });
-        self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .railhead_target = target;
+        if let Some(major) = self.nations.major_mut(nation) {
+            major.economy.interior_civilian.railhead_target = target;
+        }
     }
 
     fn start_railhead_project(
@@ -296,22 +288,33 @@ impl GameState {
             }
         }
         if let Some(tile) = best_tile {
-            self.nations.majors[nation]
-                .economy
-                .interior_civilian
-                .railhead_target = Some(tile);
+            if let Some(major) = self.nations.major_mut(nation) {
+                major.economy.interior_civilian.railhead_target = Some(tile);
+            }
         }
     }
 
     fn evaluate_resources(&mut self, nation: MajorNationId, tile: TileId) -> i16 {
-        let order_quantity = self.nations.city(nation).orders.population_growth.quantity;
-        let summary = *self
+        let Some(order_quantity) = self
+            .nations
+            .city(nation)
+            .map(|city| city.orders.population_growth.quantity)
+        else {
+            return 0;
+        };
+        let Some(summary) = self
             .nations
             .city_mut(nation)
-            .refresh_unreserved_city_needs(order_quantity);
+            .map(|city| *city.refresh_unreserved_city_needs(order_quantity))
+        else {
+            return 0;
+        };
         let yields = self.projected_town_yield(nation, tile);
-        let interior = &self.nations.majors[nation].economy.interior_civilian;
-        let need_current = &self.nations.majors[nation].economy.need_current_by_type;
+        let Some(major) = self.nations.major(nation) else {
+            return 0;
+        };
+        let interior = &major.economy.interior_civilian;
+        let need_current = &major.economy.need_current_by_type;
         let mut score = 0_i16;
         for resource in [
             ResourceKind::Cotton,
@@ -402,18 +405,19 @@ impl GameState {
         primary: &[i8],
         secondary: &[i8],
     ) {
-        let target = self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .railhead_target
-            .expect("railhead continuation requires a target");
+        let Some(target) = self
+            .nations
+            .major(nation)
+            .and_then(|major| major.economy.interior_civilian.railhead_target)
+        else {
+            return;
+        };
         let primary_distance = primary[tile_index(target)];
         if (primary_distance == 0 || primary_distance > 9) && !self.can_build_port_at_tile(target) {
             if secondary[tile_index(target)] < 3 {
-                self.nations.majors[nation]
-                    .economy
-                    .interior_civilian
-                    .railhead_target = None;
+                if let Some(major) = self.nations.major_mut(nation) {
+                    major.economy.interior_civilian.railhead_target = None;
+                }
                 return;
             }
             let (source, _) = trace_descending(target, secondary);
@@ -468,10 +472,10 @@ impl GameState {
             );
         }
         let yields = self.projected_town_yield(nation, target);
-        let interior = self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .as_mut();
+        let Some(major) = self.nations.major_mut(nation) else {
+            return;
+        };
+        let interior = &mut major.economy.interior_civilian;
         for resource in all_resources() {
             if harvested_or_raw_trade(resource) && yields[resource] != 0 {
                 interior.railhead_priority_by_resource[resource] = 0;
@@ -504,7 +508,11 @@ impl GameState {
             .get(usize::try_from(fort_level).unwrap_or(usize::MAX))
             .copied()
             .unwrap_or(0);
-        if cost > self.nations.major(nation).common.treasury {
+        if self
+            .nations
+            .major(nation)
+            .is_none_or(|major| cost > major.common.treasury)
+        {
             return;
         }
         self.move_civilian_to(engineer, city_tile);
@@ -512,7 +520,8 @@ impl GameState {
     }
 
     fn best_fort_province(&self, nation: MajorNationId) -> Option<ProvinceId> {
-        if self.nations.major(nation).economy.diplomacy_eligible {
+        let major = self.nations.major(nation)?;
+        if major.economy.diplomacy_eligible {
             return None;
         }
         let average = 1.0_f32;
@@ -523,7 +532,7 @@ impl GameState {
             .get();
         let mut best_region = None;
         let mut best_score = -1.0_f32;
-        for &province in self.nations.major(nation).common.owned_regions() {
+        for &province in major.common.owned_regions() {
             let record = &self.map.provinces[province];
             if record.fort_level() >= cap {
                 continue;
@@ -556,7 +565,10 @@ impl GameState {
     }
 
     fn province_is_compatible(&self, province: ProvinceId, nation: MajorNationId) -> bool {
-        if let Some(home) = self.nations.major(nation).common.home_tile
+        if let Some(home) = self
+            .nations
+            .major(nation)
+            .and_then(|major| major.common.home_tile)
             && self.map[home].province == Some(province)
         {
             return true;
@@ -581,8 +593,8 @@ impl GameState {
         let towns: Vec<TileId> = self
             .nations
             .major(nation)
-            .towns
-            .iter()
+            .into_iter()
+            .flat_map(|major| major.towns.iter())
             .map(|(&tile, _)| tile)
             .collect();
         for town_tile in towns {
@@ -595,10 +607,10 @@ impl GameState {
                 }
             }
         }
-        if let Some(railhead) = self.nations.majors[nation]
-            .economy
-            .interior_civilian
-            .railhead_target
+        if let Some(railhead) = self
+            .nations
+            .major(nation)
+            .and_then(|major| major.economy.interior_civilian.railhead_target)
         {
             candidates.push(railhead);
             for direction in HexDirection::ALL {
@@ -663,7 +675,9 @@ impl GameState {
                                 .copied()
                                 .unwrap_or(0)
                         };
-                        self.nations.major_mut(nation).common.treasury -= cost;
+                        if let Some(major) = self.nations.major_mut(nation) {
+                            major.common.treasury -= cost;
+                        }
                         assigned = true;
                         break;
                     }
@@ -697,17 +711,18 @@ impl GameState {
             }
             let needed = all_resources().any(|resource| {
                 required_civilian_kind(resource) == Some(kind)
-                    && self.nations.majors[nation]
-                        .economy
-                        .interior_civilian
-                        .civilian_order_demand_by_resource[resource]
-                        != 0
+                    && self.nations.major(nation).is_some_and(|major| {
+                        major
+                            .economy
+                            .interior_civilian
+                            .civilian_order_demand_by_resource[resource]
+                            != 0
+                    })
             });
             if needed {
-                self.nations.majors[nation]
-                    .economy
-                    .interior_civilian
-                    .pending_recruitment = Some(kind);
+                if let Some(major) = self.nations.major_mut(nation) {
+                    major.economy.interior_civilian.pending_recruitment = Some(kind);
+                }
             }
         }
     }
@@ -753,11 +768,12 @@ impl GameState {
 
         let mut prospecting_tiles = vec![-1_i16; prospector_count];
         let mut prospecting_scores = vec![0.0_f32; prospector_count];
-        let mut affordable = self
-            .nations
-            .major(nation)
+        let Some(major) = self.nations.major(nation) else {
+            return;
+        };
+        let mut affordable = major
             .economy
-            .available_diplomacy_budget(self.nations.major(nation).common.treasury)
+            .available_diplomacy_budget(major.common.treasury)
             / 2_000;
         if affordable < 0 {
             affordable = 0;
@@ -770,10 +786,13 @@ impl GameState {
 
         let mut resource_weights = ResourceTable::<i32>::default();
         {
-            let exterior = &self.nations.majors[nation]
-                .economy
-                .interior_civilian
-                .exterior_need_by_resource;
+            let Some(exterior) = self
+                .nations
+                .major(nation)
+                .map(|major| &major.economy.interior_civilian.exterior_need_by_resource)
+            else {
+                return;
+            };
             resource_weights[ResourceKind::Cotton] = i32::from(exterior[ResourceKind::Cotton]) + 1;
             resource_weights[ResourceKind::Wool] = i32::from(exterior[ResourceKind::Wool]) + 1;
             resource_weights[ResourceKind::Timber] = i32::from(exterior[ResourceKind::Timber]);
@@ -890,7 +909,9 @@ impl GameState {
                     );
                     self.move_civilian_to(unit_id, tile);
                     let cost = self.developer_tile_purchase_cost(tile);
-                    self.nations.major_mut(nation).common.treasury -= cost;
+                    if let Some(major) = self.nations.major_mut(nation) {
+                        major.common.treasury -= cost;
+                    }
                 }
                 _ => {}
             }

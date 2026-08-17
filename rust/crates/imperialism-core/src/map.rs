@@ -361,13 +361,18 @@ impl MapMgr {
         let Some(old_owner) = MajorNationId::from_nation(old_owner) else {
             return;
         };
-        let Some((_, mut town)) = nations.majors[old_owner].towns.shift_remove_entry(&tile) else {
+        let Some(old_owner) = nations.major_mut(old_owner) else {
+            return;
+        };
+        let Some((_, mut town)) = old_owner.towns.shift_remove_entry(&tile) else {
             return;
         };
         town.owner_nation = new_owner;
         let new_owner = MajorNationId::from_nation(new_owner)
             .expect("town-bearing tile transfer requires a great-power destination");
-        nations.majors[new_owner].towns.insert(tile, town);
+        if let Some(new_owner) = nations.major_mut(new_owner) {
+            new_owner.towns.insert(tile, town);
+        }
     }
 
     /// Retail `TMapMgr::UpdateTileNeighborBorderInfluenceCounters`.

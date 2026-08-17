@@ -40,10 +40,12 @@ impl GameState {
             self.kill_enemy_civilians(subject);
             self.deport_civilians(subject);
             if let Some(major) = MajorNationId::from_nation(master) {
-                let pending = &mut self.nations.majors[major].economy.pending_actions
-                    [PendingActionKind::ColonyMonumentMerchantCapacity];
-                if !pending.status().has_reached(PendingActionStatus::HANDLED) {
-                    pending.queue_with_payload(i16::from(subject.get()));
+                if let Some(major) = self.nations.major_mut(major) {
+                    let pending = &mut major.economy.pending_actions
+                        [PendingActionKind::ColonyMonumentMerchantCapacity];
+                    if !pending.status().has_reached(PendingActionStatus::HANDLED) {
+                        pending.queue_with_payload(i16::from(subject.get()));
+                    }
                 }
             }
             self.add_treaty_event(InterNationNewsKind::NationJoinedEmpire, master, subject);
@@ -53,10 +55,12 @@ impl GameState {
             MajorNationId::from_nation(subject),
             MajorNationId::from_nation(master),
         ) {
-            let pending = &mut self.nations.majors[master_major].economy.pending_actions
-                [PendingActionKind::AnnexedGreatPowerCapitalExpansion];
-            if !pending.status().has_reached(PendingActionStatus::HANDLED) {
-                pending.queue_with_payload(i16::from(subject.get()));
+            if let Some(major) = self.nations.major_mut(master_major) {
+                let pending = &mut major.economy.pending_actions
+                    [PendingActionKind::AnnexedGreatPowerCapitalExpansion];
+                if !pending.status().has_reached(PendingActionStatus::HANDLED) {
+                    pending.queue_with_payload(i16::from(subject.get()));
+                }
             }
         }
     }
@@ -64,7 +68,9 @@ impl GameState {
     pub(super) fn reset_master_diplomacy_for_colony(&mut self, master: NationId, colony: NationId) {
         self.set_one_trade(master, colony, TradePolicyScore::NEUTRAL);
         if let Some(major) = MajorNationId::from_nation(master) {
-            let _ = self.set_diplomacy_grant(major, colony, None);
+            if let Some(major) = self.nations.major_mut(major) {
+                let _ = major.set_diplomacy_grant(colony, None);
+            }
         }
         let enemies: Vec<_> = NationId::all()
             .filter(|&other| self.at_war(master, other))
@@ -87,7 +93,7 @@ impl GameState {
             self.set_nation_pair_relationship(minor, enemy, DiplomaticRelationship::War, false);
             if let Some(target) = MajorNationId::from_nation(enemy)
                 && self.event_eligible(enemy)
-                && self.is_auto(target)
+                && self.nations.major(target).is_some_and(MajorNation::is_auto)
             {
                 self.add_diplomacy_notice(target, minor, DiplomacyPolicy::DeclareWar.retail());
             }
@@ -99,7 +105,9 @@ impl GameState {
         for other in NationId::all() {
             let war = self.at_war(master, other);
             let flagged = MajorNationId::from_nation(master).is_some_and(|major| {
-                self.nations.majors[major].economy.colony_boycott_flags[other] != 0
+                self.nations
+                    .major(major)
+                    .is_some_and(|major| major.economy.colony_boycott_flags[other] != 0)
             });
             let policy = if !war && (other == colony || !flagged) {
                 TradePolicyScore::NEUTRAL
@@ -169,7 +177,11 @@ impl GameState {
             if !targets[usize::from(owner.get())] {
                 continue;
             }
-            let Some(home) = self.nations.majors[owner].common.home_tile else {
+            let Some(home) = self
+                .nations
+                .major(owner)
+                .and_then(|major| major.common.home_tile)
+            else {
                 self.civilian_units.shift_remove(&id);
                 continue;
             };

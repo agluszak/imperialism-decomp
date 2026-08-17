@@ -1,6 +1,6 @@
 use crate::*;
 use enum_map::{Enum, EnumMap};
-use serde::{Deserialize, Deserializer, Serialize};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 const TECH_ITEM_PURCHASE_COST: TechnologyTable<i32> = TechnologyTable::from_array([
     0, 0, 1000, 1000, 1500, 1500, 1500, 1500, 3000, 3000, 3000, 6000, 7000, 10000, 12000, 12000,
@@ -77,7 +77,7 @@ impl Default for CityTechnologyCapabilities {
             primary_civilian_distance_terrain: CivilianTerrainAccess::default(),
             secondary_civilian_hills: false,
             secondary_civilian_swamp: false,
-            fort_level_cap: FortLevelCap::ONE,
+            fort_level_cap: FortLevelCap::One,
         }
     }
 }
@@ -247,17 +247,26 @@ pub struct CivilianTerrainAccess {
     pub swamp: bool,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct FortLevelCap(i8);
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[repr(i8)]
+pub enum FortLevelCap {
+    One = 1,
+    Two = 2,
+    Three = 3,
+}
 
 impl FortLevelCap {
-    pub const ONE: Self = Self(1);
-    pub const TWO: Self = Self(2);
-    pub const THREE: Self = Self(3);
-
     pub const fn get(self) -> i8 {
-        self.0
+        self as i8
+    }
+}
+
+impl Serialize for FortLevelCap {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        self.get().serialize(serializer)
     }
 }
 
@@ -267,9 +276,9 @@ impl<'de> Deserialize<'de> for FortLevelCap {
         D: Deserializer<'de>,
     {
         match i8::deserialize(deserializer)? {
-            1 => Ok(Self::ONE),
-            2 => Ok(Self::TWO),
-            3 => Ok(Self::THREE),
+            1 => Ok(Self::One),
+            2 => Ok(Self::Two),
+            3 => Ok(Self::Three),
             value => Err(serde::de::Error::custom(format!(
                 "fort level cap {value} is outside 1..=3"
             ))),
@@ -279,7 +288,7 @@ impl<'de> Deserialize<'de> for FortLevelCap {
 
 impl Default for FortLevelCap {
     fn default() -> Self {
-        Self::ONE
+        Self::One
     }
 }
 
@@ -350,7 +359,11 @@ impl GameState {
                 if !self.nation_slot_eligible_for_event_processing(nation) {
                     continue;
                 }
-                if self.nations.major(nation).economy.diplomacy_eligible {
+                if self
+                    .nations
+                    .major(nation)
+                    .is_none_or(|major| major.economy.diplomacy_eligible)
+                {
                     continue;
                 }
                 if self.technology.research_status_by_nation[nation][tech_id]
@@ -358,7 +371,10 @@ impl GameState {
                 {
                     continue;
                 }
-                self.nations.major_mut(nation).common.treasury -= TECH_ITEM_PURCHASE_COST[tech_id];
+                let Some(major) = self.nations.major_mut(nation) else {
+                    continue;
+                };
+                major.common.treasury -= TECH_ITEM_PURCHASE_COST[tech_id];
                 self.technology.research_status_by_nation[nation][tech_id] =
                     TechnologyResearchStatus::Pending;
                 self.technology.completion_year_by_nation[nation][tech_id] =
@@ -369,6 +385,7 @@ impl GameState {
 
     pub fn first_pending_technology_unlock(&self, nation: NationId) -> Option<Technology> {
         let nation = MajorNationId::from_nation(nation)?;
+        self.nations.major(nation)?;
         Technology::all().find(|&tech| {
             self.technology.research_status_by_nation[nation][tech]
                 == TechnologyResearchStatus::Pending
@@ -417,10 +434,9 @@ impl GameState {
     }
 
     fn nation_slot_eligible_for_event_processing(&self, nation: MajorNationId) -> bool {
-        !matches!(
-            self.nations.major(nation).common.status(),
-            CountryStatus::ProtectorateOf(_)
-        )
+        self.nations
+            .major(nation)
+            .is_some_and(|major| !matches!(major.common.status(), CountryStatus::ProtectorateOf(_)))
     }
 
     fn apply_ability_unlock(&mut self, tech_id: Technology, nation: MajorNationId) {
@@ -438,12 +454,16 @@ impl GameState {
             (self.turn.economic_turn / 4) as i16;
 
         let difficulty = self.turn.difficulty as u8;
-        let era_offset =
-            if difficulty >= 3 && !self.nations.major(nation).economy.diplomacy_eligible {
-                i16::from(difficulty) - 2
-            } else {
-                0
-            };
+        let era_offset = if difficulty >= 3
+            && self
+                .nations
+                .major(nation)
+                .is_some_and(|major| !major.economy.diplomacy_eligible)
+        {
+            i16::from(difficulty) - 2
+        } else {
+            0
+        };
 
         match tech_id {
             Technology::CottonGin => self.set_requirement_level(nation, ResourceKind::Cotton, 1),
@@ -591,6 +611,9 @@ impl GameState {
     }
 
     fn activate_military_ability(&mut self, nation: MajorNationId, kind: MilitaryUnitKind) {
+        if self.nations.major(nation).is_none() {
+            return;
+        }
         self.technology.military_unit_ability_active_by_nation[nation][kind] = true;
         let group = crate::military_phase::tactical_category(kind);
         if (0..10).contains(&group) {
@@ -598,12 +621,16 @@ impl GameState {
         }
         if (1..9).contains(&group) {
             let category = MilitaryRecruitmentCategory::from_usize((group - 1) as usize);
-            let previous =
-                self.nations.city(nation).orders.military_recruitment[category].unit_kind;
+            let Some(city) = self.nations.city(nation) else {
+                return;
+            };
+            let previous = city.orders.military_recruitment[category].unit_kind;
             if previous != kind {
                 self.technology.military_unit_ability_active_by_nation[nation][previous] = false;
             }
-            self.nations.city_mut(nation).orders.military_recruitment[category].unit_kind = kind;
+            if let Some(city) = self.nations.city_mut(nation) {
+                city.orders.military_recruitment[category].unit_kind = kind;
+            }
         } else if self.nation_is_eligible_for_optional_phase(nation.nation()) {
             self.upgrade_matching_category_units(nation, group);
         }
@@ -629,32 +656,33 @@ impl GameState {
             return false;
         };
         let (arms_cost, cash_cost, fuel_cost) = upgrade_resource_costs(candidate);
-        let city = self.nations.city(nation);
-        if arms_cost > city.stockpile[ResourceKind::Arms] {
+        let major = self
+            .nations
+            .major_mut(nation)
+            .expect("unit upgrades require a live major");
+        if arms_cost > major.city.stockpile[ResourceKind::Arms] {
             return false;
         }
-        if fuel_cost > city.stockpile[ResourceKind::Fuel] {
+        if fuel_cost > major.city.stockpile[ResourceKind::Fuel] {
             return false;
         }
-        let diplomacy_eligible = self.nations.majors[nation].economy.diplomacy_eligible;
-        let treasury = self.nations.majors[nation].common.treasury;
-        if diplomacy_eligible
+        if major.economy.diplomacy_eligible
             && i32::from(cash_cost)
-                > self.nations.majors[nation]
+                > major
                     .economy
-                    .available_diplomacy_budget(treasury)
+                    .available_diplomacy_budget(major.common.treasury)
         {
             return false;
         }
-        self.nations
-            .city_mut(nation)
+        major
+            .city
             .stockpile
             .wrapping_add_and_verify(ResourceKind::Arms, -arms_cost);
-        self.nations
-            .city_mut(nation)
+        major
+            .city
             .stockpile
             .wrapping_add_and_verify(ResourceKind::Fuel, -fuel_cost);
-        self.nations.majors[nation].common.treasury -= i32::from(cash_cost);
+        major.common.treasury -= i32::from(cash_cost);
         self.military_units
             .get_mut(&id)
             .expect("upgraded unit remains present")
@@ -691,10 +719,10 @@ impl GameState {
         if era_offset == 0 {
             return;
         }
-        self.nations
-            .city_mut(nation)
-            .stockpile
-            .wrapping_add_and_verify(ResourceKind::Arms, era_offset * scale);
+        if let Some(city) = self.nations.city_mut(nation) {
+            city.stockpile
+                .wrapping_add_and_verify(ResourceKind::Arms, era_offset * scale);
+        }
     }
 }
 
@@ -774,11 +802,11 @@ fn sync_city_capabilities_from_research(technology: &mut TechnologyState, nation
     capabilities.secondary_civilian_hills = researched(Technology::BessemerConverter);
     capabilities.secondary_civilian_swamp = researched(Technology::SquareSetTimbering);
     capabilities.fort_level_cap = if started(Technology::LargeArtillery) {
-        FortLevelCap::THREE
+        FortLevelCap::Three
     } else if started(Technology::BessemerConverter) {
-        FortLevelCap::TWO
+        FortLevelCap::Two
     } else {
-        FortLevelCap::ONE
+        FortLevelCap::One
     };
 }
 
@@ -860,13 +888,18 @@ mod tests {
     fn check_for_advances_charges_ai_nations_for_already_unlocked_technology() {
         let mut state = crate::test_support::game_state();
         let ai = MajorNationId::new(1);
-        state.nations.major_mut(ai).economy.diplomacy_eligible = false;
-        state.nations.major_mut(ai).common.treasury = 50_000;
+        state
+            .nations
+            .major_mut(ai)
+            .unwrap()
+            .economy
+            .diplomacy_eligible = false;
+        state.nations.major_mut(ai).unwrap().common.treasury = 50_000;
         state.turn.economic_turn = 44;
         state.technology.global_unlocks_by_technology[Technology::CottonGin] = true;
         state.check_technology_advances();
 
-        assert_eq!(state.nations.major(ai).common.treasury, 49_000);
+        assert_eq!(state.nations.major(ai).unwrap().common.treasury, 49_000);
         assert_eq!(
             state.technology.research_status_by_nation[ai][Technology::CottonGin],
             TechnologyResearchStatus::Pending
@@ -886,7 +919,12 @@ mod tests {
     fn active_technology_report_uses_cooldown_not_diplomacy_eligibility() {
         let mut state = crate::test_support::game_state();
         let active = MajorNationId::new(0);
-        state.nations.major_mut(active).economy.diplomacy_eligible = false;
+        state
+            .nations
+            .major_mut(active)
+            .unwrap()
+            .economy
+            .diplomacy_eligible = false;
         state.technology.research_status_by_nation[active][Technology::CottonGin] =
             TechnologyResearchStatus::Pending;
 
@@ -951,15 +989,23 @@ mod tests {
         let mut state = crate::test_support::game_state();
         let nation = MajorNationId::new(0);
         assert_eq!(
-            state.nations.city(nation).orders.military_recruitment
-                [MilitaryRecruitmentCategory::LightInfantry]
+            state
+                .nations
+                .city(nation)
+                .unwrap()
+                .orders
+                .military_recruitment[MilitaryRecruitmentCategory::LightInfantry]
                 .unit_kind,
             MilitaryUnitKind::Skirmishers
         );
         state.activate_slot_and_update_ui(nation, MilitaryUnitKind::Sharpshooters);
         assert_eq!(
-            state.nations.city(nation).orders.military_recruitment
-                [MilitaryRecruitmentCategory::LightInfantry]
+            state
+                .nations
+                .city(nation)
+                .unwrap()
+                .orders
+                .military_recruitment[MilitaryRecruitmentCategory::LightInfantry]
                 .unit_kind,
             MilitaryUnitKind::Sharpshooters
         );

@@ -398,72 +398,62 @@ impl GameState {
     }
 
     pub(super) fn war_number(&self, nation: MajorNationId) -> f32 {
-        coeff(
-            &WAR_FOREIGN,
-            self.nations.majors[nation]
-                .economy
-                .foreign_minister_skill_index,
-        ) + coeff(
-            &WAR_DEFENSE,
-            self.nations.majors[nation]
-                .economy
-                .defense_minister_skill_index,
-        )
+        let Some(major) = self.nations.major(nation) else {
+            return 0.0;
+        };
+        coeff(&WAR_FOREIGN, major.economy.foreign_minister_skill_index)
+            + coeff(&WAR_DEFENSE, major.economy.defense_minister_skill_index)
     }
 
     pub(super) fn seek_alliance_number(&self, nation: MajorNationId) -> f32 {
+        let Some(major) = self.nations.major(nation) else {
+            return 0.0;
+        };
         coeff(
             &SEEK_ALLIANCE_DEFENSE,
-            self.nations.majors[nation]
-                .economy
-                .defense_minister_skill_index,
+            major.economy.defense_minister_skill_index,
         ) + coeff(
             &SEEK_ALLIANCE_FOREIGN,
-            self.nations.majors[nation]
-                .economy
-                .foreign_minister_skill_index,
+            major.economy.foreign_minister_skill_index,
         )
     }
 
     pub(super) fn accept_alliance_number(&self, nation: MajorNationId) -> f32 {
+        let Some(major) = self.nations.major(nation) else {
+            return 0.0;
+        };
         coeff(
             &ACCEPT_ALLIANCE_DEFENSE,
-            self.nations.majors[nation]
-                .economy
-                .defense_minister_skill_index,
+            major.economy.defense_minister_skill_index,
         ) + coeff(
             &ACCEPT_ALLIANCE_FOREIGN,
-            self.nations.majors[nation]
-                .economy
-                .foreign_minister_skill_index,
+            major.economy.foreign_minister_skill_index,
         )
     }
 
     pub(super) fn seek_peace_number(&self, nation: MajorNationId) -> f32 {
+        let Some(major) = self.nations.major(nation) else {
+            return 0.0;
+        };
         coeff(
             &SEEK_PEACE_FOREIGN,
-            self.nations.majors[nation]
-                .economy
-                .foreign_minister_skill_index,
+            major.economy.foreign_minister_skill_index,
         ) + coeff(
             &SEEK_PEACE_DEFENSE,
-            self.nations.majors[nation]
-                .economy
-                .defense_minister_skill_index,
+            major.economy.defense_minister_skill_index,
         )
     }
 
     pub(super) fn accept_peace_number(&self, nation: MajorNationId) -> f32 {
+        let Some(major) = self.nations.major(nation) else {
+            return 0.0;
+        };
         coeff(
             &ACCEPT_PEACE_FOREIGN,
-            self.nations.majors[nation]
-                .economy
-                .foreign_minister_skill_index,
+            major.economy.foreign_minister_skill_index,
         ) + coeff(
             &ACCEPT_PEACE_DEFENSE,
-            self.nations.majors[nation]
-                .economy
-                .defense_minister_skill_index,
+            major.economy.defense_minister_skill_index,
         )
     }
 

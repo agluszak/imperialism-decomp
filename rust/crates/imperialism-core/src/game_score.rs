@@ -42,8 +42,7 @@ impl GameScore {
 
 impl GameState {
     /// `TGreatPower::GenerateGameScore`. Row 11 is `subtotal * difficulty percent / 10`.
-    pub fn generate_game_score(&self, nation: MajorNationId) -> GameScore {
-        let major = &self.nations.majors[nation];
+    pub fn generate_game_score(&self, nation: MajorNationId, major: &MajorNation) -> GameScore {
         let labor = i32::from(major.city.population.baseline_labor.strength());
         let transport = i32::from(major.economy.capacities.transport);
         let industry = [
@@ -125,7 +124,8 @@ mod tests {
     #[test]
     fn score_total_scales_subtotal_by_difficulty_percent() {
         let state = game_state();
-        let score = state.generate_game_score(MajorNationId::new(0));
+        let nation = MajorNationId::new(0);
+        let score = state.generate_game_score(nation, state.nations.major(nation).unwrap());
         assert_eq!(score.difficulty_percent, 15);
         assert_eq!(score.total, score.subtotal * 15 / 10);
         assert_eq!(score.year, 1000);

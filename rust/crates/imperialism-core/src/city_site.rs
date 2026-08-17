@@ -285,8 +285,8 @@ pub fn enter_strategic_map_without_capital_selection(
     let home = state
         .nations
         .major(nation)
-        .towns
-        .keys()
+        .into_iter()
+        .flat_map(|major| major.towns.keys())
         .next()
         .copied()
         .expect("generated Introductory/Easy game has a home town tile");
@@ -295,7 +295,9 @@ pub fn enter_strategic_map_without_capital_selection(
 }
 
 fn bind_home_city_tile(state: &mut GameState, nation: MajorNationId, tile: TileId) {
-    let nation_state = state.nations.major_mut(nation);
+    let Some(nation_state) = state.nations.major_mut(nation) else {
+        return;
+    };
     nation_state.common.home_tile = Some(tile);
     let old_tile = nation_state
         .towns
@@ -457,7 +459,7 @@ mod tests {
         };
         let kinds: Vec<_> = units.iter().map(|unit| unit.unit_type()).collect();
         assert_eq!(kinds, expected_kinds);
-        let trader = state.nations.city(nation).ship_order_count_by_type[ShipType::Trader];
+        let trader = state.nations.city(nation).unwrap().ship_order_count_by_type[ShipType::Trader];
         assert_eq!(trader, if count == 5 { 8 } else { 2 });
     }
 
@@ -474,6 +476,7 @@ mod tests {
                 MajorNationId::from_nation(state.turn().active_nation)
                     .expect("active nation is a great power"),
             )
+            .unwrap()
             .common
             .home_tile
             .expect("opening map centering requires a home tile");
@@ -513,7 +516,11 @@ mod tests {
         let mut state = normal_start();
         assert_eq!(state.turn.phase, crate::PhaseCode::CAPITAL_SELECTION);
         assert_eq!(
-            state.nations.majors[MajorNationId::new(6)].common.home_tile,
+            state.nations.majors[MajorNationId::new(6)]
+                .as_mut()
+                .unwrap()
+                .common
+                .home_tile,
             None
         );
 
@@ -556,6 +563,8 @@ mod tests {
         assert_eq!(state.turn.economic_turn, 1);
         assert_eq!(
             state.nations.majors[MajorNationId::new(6)]
+                .as_ref()
+                .unwrap()
                 .towns
                 .get(&tile)
                 .unwrap()
@@ -575,7 +584,11 @@ mod tests {
             );
         }
         assert_eq!(
-            state.nations.majors[MajorNationId::new(6)].common.home_tile,
+            state.nations.majors[MajorNationId::new(6)]
+                .as_mut()
+                .unwrap()
+                .common
+                .home_tile,
             Some(tile)
         );
         assert!(
@@ -584,6 +597,8 @@ mod tests {
         );
         assert_eq!(
             state.nations.majors[MajorNationId::new(6)]
+                .as_ref()
+                .unwrap()
                 .towns
                 .keys()
                 .next()
@@ -599,6 +614,8 @@ mod tests {
         );
         assert!(
             state.nations.majors[MajorNationId::new(6)]
+                .as_ref()
+                .unwrap()
                 .common
                 .unit_name_counter
                 > 1,
@@ -606,7 +623,15 @@ mod tests {
         );
         for nation in (0..MajorNationId::COUNT)
             .map(MajorNationId::new)
-            .filter(|nation| state.nations.major(*nation).common.home_tile.is_some())
+            .filter(|nation| {
+                state
+                    .nations
+                    .major(*nation)
+                    .unwrap()
+                    .common
+                    .home_tile
+                    .is_some()
+            })
         {
             assert_eq!(
                 state.diplomacy.standings[nation.nation()][nation.nation()],
@@ -629,6 +654,8 @@ mod tests {
             &crate::test_support::random_game_names(),
         );
         let home = state.nations.majors[MajorNationId::new(6)]
+            .as_ref()
+            .unwrap()
             .towns
             .keys()
             .next()
@@ -636,6 +663,8 @@ mod tests {
             .expect("Easy setup places the human Frog City");
         assert_eq!(
             state.nations.majors[MajorNationId::new(6)]
+                .as_ref()
+                .unwrap()
                 .towns
                 .get(&home)
                 .unwrap()
@@ -660,7 +689,11 @@ mod tests {
         ));
         assert_eq!(state.turn.economic_turn, 1);
         assert_eq!(
-            state.nations.majors[MajorNationId::new(6)].common.home_tile,
+            state.nations.majors[MajorNationId::new(6)]
+                .as_mut()
+                .unwrap()
+                .common
+                .home_tile,
             Some(home)
         );
         assert!(
@@ -690,7 +723,13 @@ mod tests {
         assert_opening_civilians(&state, MajorNationId::new(6), 5);
         for nation in MajorNationId::all() {
             if nation == MajorNationId::new(6)
-                || state.nations.major(nation).common.home_tile.is_none()
+                || state
+                    .nations
+                    .major(nation)
+                    .unwrap()
+                    .common
+                    .home_tile
+                    .is_none()
             {
                 continue;
             }

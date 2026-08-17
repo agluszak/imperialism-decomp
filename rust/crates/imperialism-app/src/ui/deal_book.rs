@@ -334,8 +334,9 @@ fn on_deal_book_page(
 
 fn deal_book_last_page(screen: &DealBookScreen, session: &GameSession) -> u16 {
     let nation = session.active_major_nation();
+    let major = session.active_major();
     match screen.mode {
-        DealBookMode::History => session.game.deal_book_history(nation).last_page_index(),
+        DealBookMode::History => session.game.deal_book_history(major).last_page_index(),
         DealBookMode::Category(tab) => session
             .game
             .deal_book_category(
@@ -434,12 +435,13 @@ fn sync_deal_book(
         return;
     };
     let nation = session.active_major_nation();
+    let major = session.active_major();
     let last_page = match screen.mode {
         DealBookMode::History => project_history(
             &mut commands,
             &mut assets,
             &session.game,
-            nation,
+            major,
             *screen,
             &hosts,
             &titles,
@@ -498,7 +500,7 @@ fn project_history(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     state: &GameState,
-    nation: MajorNationId,
+    major: &MajorNation,
     screen: &DealBookScreen,
     hosts: &Query<(Entity, &DealBookHost)>,
     titles: &Query<(Entity, &DealBookTitle)>,
@@ -545,7 +547,7 @@ fn project_history(
         bought_title,
     );
 
-    let history_rows = state.deal_book_history(nation);
+    let history_rows = state.deal_book_history(major);
     let sold_pages = history_rows.sold_pages();
     let bought_pages = history_rows.bought_pages();
     let last_page = history_rows.last_page_index();

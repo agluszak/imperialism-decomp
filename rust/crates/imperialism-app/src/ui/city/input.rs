@@ -13,10 +13,10 @@ pub(in crate::ui::city) fn on_city_amount_bar_click(
     };
     click.propagate(false);
 
-    let nation = session.active_major_nation();
+    let major = session.active_major_mut();
     let x = (((normalized.x + 0.5) * f32::from(INDUSTRY_BAR_WIDTH)).floor() as i16)
         .clamp(0, INDUSTRY_BAR_WIDTH - 1);
-    let city = &session.game.nations().major(nation).city;
+    let city = &major.city;
     let capacity = city.production_orders[bar.slot];
     let previous = match bar.order {
         CityOrderId::Item(output) => city.orders.items[output].progress.quantity,
@@ -34,9 +34,7 @@ pub(in crate::ui::city) fn on_city_amount_bar_click(
     if quantity == 0 && x != 0 && previous == 0 {
         quantity = 1;
     }
-    session
-        .game
-        .set_city_order_quantity(nation, bar.order, quantity);
+    major.set_city_order_quantity(bar.order, quantity);
 }
 
 pub(in crate::ui::city) fn on_city_order_adjust(
@@ -47,8 +45,6 @@ pub(in crate::ui::city) fn on_city_order_adjust(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let nation = session.active_major_nation();
-    session
-        .game
-        .adjust_city_order(nation, action.order, action.delta);
+    let major = session.active_major_mut();
+    major.adjust_city_order(action.order, action.delta);
 }

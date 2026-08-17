@@ -594,13 +594,18 @@ impl GameState {
         let Some(major) = MajorNationId::from_nation(nation) else {
             return ArmyOrderIssue::NoMovableUnits;
         };
-        let budget = self.nations.majors[major].economy.army_movement_budget;
+        let Some(major_state) = self.nations.major(major) else {
+            return ArmyOrderIssue::NoMovableUnits;
+        };
+        let budget = major_state.economy.army_movement_budget;
         if cost > budget {
             return ArmyOrderIssue::InsufficientMovementBudget { budget, cost };
         }
         let issued = self.select_movable_units_on_province(from, to, false);
         if issued == ArmyOrderIssue::Issued {
-            self.nations.majors[major].economy.army_movement_budget -= cost;
+            if let Some(major) = self.nations.major_mut(major) {
+                major.economy.army_movement_budget -= cost;
+            }
         }
         issued
     }
@@ -674,7 +679,9 @@ impl GameState {
         if refund != 0
             && let Some(major) = MajorNationId::from_nation(nation)
         {
-            self.nations.majors[major].economy.army_movement_budget += refund;
+            if let Some(major) = self.nations.major_mut(major) {
+                major.economy.army_movement_budget += refund;
+            }
         }
         let neighbors = self.map.geometry().neighbors(tile);
         for (i, neighbor) in neighbors.iter().copied().enumerate() {

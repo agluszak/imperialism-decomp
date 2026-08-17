@@ -146,11 +146,8 @@ pub(in crate::ui::city) fn configure_armory_dialog(
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
-    state: &GameState,
+    city: &CityState,
 ) {
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
-        .expect("City active nation is a major nation");
-    let city = &state.nations().major(nation).city;
     let normal_color = assets.palette_color(0xd2);
     let warning_color = assets.palette_color(0xcb);
     let (title_font, _, title_line_height, _) = assets
@@ -273,8 +270,7 @@ pub(in crate::ui::city) fn sync_training_dialog(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let nation = session.active_major_nation();
-    let major = session.game.nations().major(nation);
+    let major = session.active_major();
     let city = &major.city;
     let production = city.population.production_labor();
     let strength = city.population.strength();
@@ -316,8 +312,7 @@ pub(in crate::ui::city) fn sync_armory_details(
     if !session.is_changed() && !selection.is_changed() && !selection.is_added() {
         return;
     }
-    let nation = session.active_major_nation();
-    let major = session.game.nations().major(nation);
+    let major = session.active_major();
     let city = &major.city;
     let order = &city.orders.military_recruitment[category];
     let spec = military_recruitment_spec(order.unit_kind)
@@ -439,7 +434,7 @@ mod tests {
     fn beginning_armory_rows_use_the_retail_unit_picture_sequence() {
         let state = beginning_of_game();
         let nation = MajorNationId::from_nation(state.turn().selected_nation).unwrap();
-        let city = &state.nations().major(nation).city;
+        let city = &state.nations().major(nation).unwrap().city;
         let pictures: Vec<_> = (0..enum_map::enum_len::<MilitaryRecruitmentCategory>())
             .map(MilitaryRecruitmentCategory::from_usize)
             .map(|category| {

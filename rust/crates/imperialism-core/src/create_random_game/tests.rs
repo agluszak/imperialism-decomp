@@ -237,18 +237,28 @@ fn normal_random_start_reaches_capital_selection() {
     assert_eq!(state.turn.phase, crate::PhaseCode::CAPITAL_SELECTION);
     assert_eq!(state.turn.difficulty, Difficulty::Normal);
     assert!(state.map.map_data_ready);
-    assert!(state.nations.majors[human].auto.is_none());
+    assert!(state.nations.majors[human].as_mut().unwrap().auto.is_none());
     assert!(
-        state.nations.majors[human].common.home_tile.is_none(),
+        state.nations.majors[human]
+            .as_mut()
+            .unwrap()
+            .common
+            .home_tile
+            .is_none(),
         "human capital awaits selection"
     );
 
     for nation in MajorNationId::all().filter(|&nation| nation != human) {
         assert!(
-            state.nations.majors[nation].common.home_tile.is_some(),
+            state.nations.majors[nation]
+                .as_mut()
+                .unwrap()
+                .common
+                .home_tile
+                .is_some(),
             "AI majors place a capital before capital selection"
         );
-        assert!(state.nations.majors[nation].is_auto());
+        assert!(state.nations.majors[nation].as_mut().unwrap().is_auto());
     }
 
     assert!(state.nations.minor_count() > 0);

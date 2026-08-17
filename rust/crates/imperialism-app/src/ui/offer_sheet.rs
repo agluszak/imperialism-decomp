@@ -216,14 +216,11 @@ fn apply_offer_sheet_pose(
         fill_brackets(&get_string(assets, OFFER_STRING_GROUP, 0xf), &[&commodity]),
     );
 
-    let nation = session.active_major_nation();
     set_text(
         commands,
         tree.find(root, fourcc!("mCap")),
         session
-            .game
-            .nations()
-            .major(nation)
+            .active_major()
             .economy
             .capacities
             .available_merchant
@@ -361,7 +358,7 @@ mod tests {
             .expect("active nation is a major");
         let seller = MajorNationId::new(if buyer.get() == 0 { 1 } else { 0 });
         let majors = MajorNationTable::from_fn(|nation| {
-            let mut major = parts.nations.major(nation).clone();
+            let mut major = parts.nations.major(nation).unwrap().clone();
             major.city.ship_order_count_by_type[ShipType::Trader] = 2;
             major.city.ship_order_count_by_type[ShipType::Paddlewheeler] = 1;
             major.city.ship_order_count_by_type[ShipType::Freighter] = 1;

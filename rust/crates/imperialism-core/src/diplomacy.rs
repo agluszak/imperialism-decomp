@@ -505,6 +505,17 @@ impl DiplomacyPolicy {
     }
 }
 
+impl MajorNation {
+    fn clear_player_diplomacy_policy(&mut self, target: NationId) {
+        match self.economy.diplomacy_policy_by_nation[target] {
+            Some(DiplomacyPolicy::BuildConsulate) => self.common.treasury += 500,
+            Some(DiplomacyPolicy::BuildEmbassy) => self.common.treasury += 5000,
+            _ => {}
+        }
+        self.economy.diplomacy_policy_by_nation[target] = None;
+    }
+}
+
 impl GameState {
     /// Toggles one grant selected on the player diplomacy map.
     ///
@@ -516,8 +527,12 @@ impl GameState {
         target: NationId,
         grant: DiplomacyGrant,
     ) -> PlayerDiplomacyOrderResult {
+        let source_major = self
+            .nations
+            .major(source)
+            .expect("player diplomacy requires a live major");
         assert!(
-            self.nations.majors[source].economy.diplomacy_eligible,
+            source_major.economy.diplomacy_eligible,
             "player diplomacy orders require a diplomacy-eligible major nation"
         );
         assert!(
@@ -528,23 +543,31 @@ impl GameState {
             return PlayerDiplomacyOrderResult::SelectedNation;
         }
 
-        if self.nations.majors[source]
-            .economy
-            .diplomacy_grants_by_nation[target]
-            == Some(grant)
-        {
-            let removed = self.set_diplomacy_grant(source, target, None);
+        if source_major.economy.diplomacy_grants_by_nation[target] == Some(grant) {
+            let removed = self
+                .nations
+                .major_mut(source)
+                .expect("player diplomacy requires a live major")
+                .set_diplomacy_grant(target, None);
             debug_assert!(removed, "removing a grant cannot fail");
             return PlayerDiplomacyOrderResult::Applied;
         }
 
-        if let Err(rejection) =
-            self.validate_player_diplomacy_action(source, target, PlayerDiplomacyAction::Grant)
-        {
+        if let Err(rejection) = self.validate_player_diplomacy_action(
+            source,
+            source_major,
+            target,
+            PlayerDiplomacyAction::Grant,
+        ) {
             return self.reject_player_diplomacy(rejection);
         }
 
-        if self.set_diplomacy_grant(source, target, Some(grant)) {
+        if self
+            .nations
+            .major_mut(source)
+            .expect("player diplomacy requires a live major")
+            .set_diplomacy_grant(target, Some(grant))
+        {
             PlayerDiplomacyOrderResult::Applied
         } else {
             self.reject_player_diplomacy(PlayerDiplomacyRejection::InsufficientGrantFunds)
@@ -558,8 +581,12 @@ impl GameState {
         target: NationId,
         policy: TradePolicyScore,
     ) -> PlayerDiplomacyOrderResult {
+        let source_major = self
+            .nations
+            .major(source)
+            .expect("player diplomacy requires a live major");
         assert!(
-            self.nations.majors[source].economy.diplomacy_eligible,
+            source_major.economy.diplomacy_eligible,
             "player diplomacy orders require a diplomacy-eligible major nation"
         );
         assert!(
@@ -574,17 +601,22 @@ impl GameState {
         } else {
             PlayerDiplomacyAction::TradeSubsidy
         };
-        if let Err(rejection) = self.validate_player_diplomacy_action(source, target, action) {
+        if let Err(rejection) =
+            self.validate_player_diplomacy_action(source, source_major, target, action)
+        {
             return self.reject_player_diplomacy(rejection);
         }
 
-        let current = self.nations.majors[source].common.trade_policy_by_nation[target];
+        let current = source_major.common.trade_policy_by_nation[target];
         let next = if current == policy {
             TradePolicyScore::NEUTRAL
         } else {
             policy
         };
-        self.set_trade_policy(source, target, next);
+        self.nations
+            .major_mut(source)
+            .expect("player diplomacy requires a live major")
+            .set_trade_policy(source, target, next);
         PlayerDiplomacyOrderResult::Applied
     }
 
@@ -600,8 +632,12 @@ impl GameState {
         policy: DiplomacyPolicy,
         confirm_entanglements: bool,
     ) -> PlayerDiplomacyOrderResult {
+        let source_major = self
+            .nations
+            .major(source)
+            .expect("player diplomacy requires a live major");
         assert!(
-            self.nations.majors[source].economy.diplomacy_eligible,
+            source_major.economy.diplomacy_eligible,
             "player diplomacy orders require a diplomacy-eligible major nation"
         );
         let action = policy
@@ -611,16 +647,17 @@ impl GameState {
             return PlayerDiplomacyOrderResult::SelectedNation;
         }
 
-        if self.nations.majors[source]
-            .economy
-            .diplomacy_policy_by_nation[target]
-            == Some(policy)
-        {
-            self.clear_player_diplomacy_policy(source, target);
+        if source_major.economy.diplomacy_policy_by_nation[target] == Some(policy) {
+            self.nations
+                .major_mut(source)
+                .expect("player diplomacy requires a live major")
+                .clear_player_diplomacy_policy(target);
             return PlayerDiplomacyOrderResult::Applied;
         }
 
-        if let Err(rejection) = self.validate_player_diplomacy_action(source, target, action) {
+        if let Err(rejection) =
+            self.validate_player_diplomacy_action(source, source_major, target, action)
+        {
             return self.reject_player_diplomacy(rejection);
         }
         if policy.requires_entanglement_check()
@@ -641,8 +678,12 @@ impl GameState {
         source: MajorNationId,
         target: NationId,
     ) -> PlayerDiplomacyOrderResult {
+        let source_major = self
+            .nations
+            .major(source)
+            .expect("player diplomacy requires a live major");
         assert!(
-            self.nations.majors[source].economy.diplomacy_eligible,
+            source_major.economy.diplomacy_eligible,
             "player diplomacy orders require a diplomacy-eligible major nation"
         );
         if source.nation() == target {
@@ -651,7 +692,7 @@ impl GameState {
         if self.owner_slot(target) == source.nation() {
             return PlayerDiplomacyOrderResult::Applied;
         }
-        let enabled = self.nations.majors[source].economy.colony_boycott_flags[target] == 0;
+        let enabled = source_major.economy.colony_boycott_flags[target] == 0;
         self.set_colony_boycott(source, target, enabled);
         PlayerDiplomacyOrderResult::Applied
     }
@@ -692,6 +733,7 @@ impl GameState {
     pub fn player_diplomacy_map_action_is_valid(
         &self,
         source: MajorNationId,
+        source_major: &MajorNation,
         target: NationId,
         action: DiplomacyMapAction,
     ) -> bool {
@@ -701,7 +743,7 @@ impl GameState {
         match action.player_action() {
             None => matches!(self.status_of(target), CountryStatus::Independent),
             Some(action) => self
-                .validate_player_diplomacy_action(source, target, action)
+                .validate_player_diplomacy_action(source, source_major, target, action)
                 .is_ok(),
         }
     }
@@ -709,6 +751,7 @@ impl GameState {
     fn validate_player_diplomacy_action(
         &self,
         source: MajorNationId,
+        source_major: &MajorNation,
         target: NationId,
         action: PlayerDiplomacyAction,
     ) -> Result<(), PlayerDiplomacyRejection> {
@@ -726,7 +769,7 @@ impl GameState {
         let mission = self.diplomacy.mission_levels[source_nation][target];
         let relationship = self.diplomacy.relationships[source_nation][target];
         let at_war = relationship == DiplomaticRelationship::War;
-        let treasury = self.nations.majors[source].common.treasury;
+        let treasury = source_major.common.treasury;
         match action {
             PlayerDiplomacyAction::JoinEmpire => {
                 if mission != DiplomaticMissionLevel::Embassy {
@@ -818,24 +861,6 @@ impl GameState {
         Ok(())
     }
 
-    fn clear_player_diplomacy_policy(&mut self, source: MajorNationId, target: NationId) {
-        let previous = self.nations.majors[source]
-            .economy
-            .diplomacy_policy_by_nation[target];
-        match previous {
-            Some(DiplomacyPolicy::BuildConsulate) => {
-                self.nations.majors[source].common.treasury += 500;
-            }
-            Some(DiplomacyPolicy::BuildEmbassy) => {
-                self.nations.majors[source].common.treasury += 5000;
-            }
-            _ => {}
-        }
-        self.nations.majors[source]
-            .economy
-            .diplomacy_policy_by_nation[target] = None;
-    }
-
     /// `TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks` while the
     /// diplomacy map is open (`TSimMgr::mode != 6`), so declare-war does not
     /// queue a war transition.
@@ -847,51 +872,59 @@ impl GameState {
     ) -> bool {
         let embassy = self.diplomacy.mission_levels[source.nation()][target]
             == DiplomaticMissionLevel::Embassy;
-        let mut apply = true;
-        match policy {
+        if matches!(
+            policy,
             DiplomacyPolicy::JoinEmpire
-            | DiplomacyPolicy::Alliance
-            | DiplomacyPolicy::NonAggressionPact
-                if !embassy =>
-            {
-                apply = false;
-            }
+                | DiplomacyPolicy::Alliance
+                | DiplomacyPolicy::NonAggressionPact
+        ) && !embassy
+        {
+            return false;
+        }
+
+        if policy == DiplomacyPolicy::DeclareWar
+            && self.diplomacy.relationships[target][source.nation()]
+                == DiplomaticRelationship::Alliance
+        {
+            self.apply_peace_relationship(source.nation(), target, true);
+        }
+
+        let major = self
+            .nations
+            .major_mut(source)
+            .expect("player diplomacy policy requires a live major");
+        match policy {
             DiplomacyPolicy::DeclareWar => {
-                if self.diplomacy.relationships[target][source.nation()]
-                    == DiplomaticRelationship::Alliance
-                {
-                    self.apply_peace_relationship(source.nation(), target, true);
-                }
-                if self.nations.majors[source].economy.diplomacy_eligible {
-                    let _ = self.set_diplomacy_grant(source, target, None);
+                if major.economy.diplomacy_eligible {
+                    let _ = major.set_diplomacy_grant(target, None);
                 }
             }
             DiplomacyPolicy::BuildConsulate => {
-                apply = self.can_afford_diplomacy(source, 500);
-                if apply {
-                    self.nations.majors[source].common.treasury -= 500;
+                if !Self::can_afford_diplomacy(major, 500) {
+                    return false;
                 }
+                major.common.treasury -= 500;
             }
             DiplomacyPolicy::BuildEmbassy => {
-                apply = self.can_afford_diplomacy(source, 5000);
-                if apply {
-                    self.nations.majors[source].common.treasury -= 5000;
+                if !Self::can_afford_diplomacy(major, 5000) {
+                    return false;
                 }
+                major.common.treasury -= 5000;
             }
             _ => {}
         }
-        if apply {
-            self.nations.majors[source]
-                .economy
-                .diplomacy_policy_by_nation[target] = Some(policy);
-        }
-        apply
+        major.economy.diplomacy_policy_by_nation[target] = Some(policy);
+        true
     }
 
     /// Retail nation information panel military classification.
     pub fn diplomacy_military_power_band(&self, nation: MajorNationId) -> u8 {
         let scores = MajorNationId::all()
-            .filter(|&candidate| self.major_is_event_eligible(candidate))
+            .filter(|&candidate| {
+                self.nations
+                    .major(candidate)
+                    .is_some_and(Self::major_is_event_eligible)
+            })
             .map(|candidate| self.military_power_score(candidate) as f32)
             .collect::<Vec<_>>();
         classify_diplomacy_information_band(self.military_power_score(nation) as f32, &scores)
@@ -900,10 +933,18 @@ impl GameState {
     /// Retail nation information panel industry classification.
     pub fn diplomacy_industry_band(&self, nation: MajorNationId) -> u8 {
         let scores = MajorNationId::all()
-            .filter(|&candidate| self.major_is_event_eligible(candidate))
-            .map(|candidate| self.diplomacy_industry_score(candidate) as f32)
+            .filter_map(|candidate| {
+                self.nations
+                    .major(candidate)
+                    .filter(|major| Self::major_is_event_eligible(major))
+                    .map(|major| Self::diplomacy_industry_score(major) as f32)
+            })
             .collect::<Vec<_>>();
-        classify_diplomacy_information_band(self.diplomacy_industry_score(nation) as f32, &scores)
+        let own_score = self
+            .nations
+            .major(nation)
+            .map_or(0.0, |major| Self::diplomacy_industry_score(major) as f32);
+        classify_diplomacy_information_band(own_score, &scores)
     }
 
     /// Retail `TDiplomacyMgr::GetFavoriteTradePartner` read model.
@@ -911,8 +952,18 @@ impl GameState {
         let minor_nation = minor.nation();
         let mut best_score = 0;
         let mut selected = None;
-        for major in MajorNationId::all().filter(|&major| self.major_is_event_eligible(major)) {
-            let policy = self.nations.majors[major].common.trade_policy_by_nation[minor_nation];
+        for major in MajorNationId::all().filter(|&major| {
+            self.nations
+                .major(major)
+                .is_some_and(Self::major_is_event_eligible)
+        }) {
+            let Some(policy) = self
+                .nations
+                .major(major)
+                .map(|major| major.common.trade_policy_by_nation[minor_nation])
+            else {
+                continue;
+            };
             let score = (200 - policy.retail())
                 * i32::from(self.diplomacy.standings[minor_nation][major.nation()]);
             let select = if score > best_score {
@@ -944,15 +995,11 @@ impl GameState {
         selected
     }
 
-    pub(crate) fn major_is_event_eligible(&self, nation: MajorNationId) -> bool {
-        !matches!(
-            self.nations.majors[nation].common.status(),
-            CountryStatus::ProtectorateOf(_)
-        )
+    pub(crate) fn major_is_event_eligible(major: &MajorNation) -> bool {
+        !matches!(major.common.status(), CountryStatus::ProtectorateOf(_))
     }
 
-    fn diplomacy_industry_score(&self, nation: MajorNationId) -> i32 {
-        let major = &self.nations.majors[nation];
+    fn diplomacy_industry_score(major: &MajorNation) -> i32 {
         4 + [
             CityFacilitySlot::TextileMill,
             CityFacilitySlot::ClothingFactory,

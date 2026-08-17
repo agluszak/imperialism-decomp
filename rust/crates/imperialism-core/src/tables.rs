@@ -125,8 +125,12 @@ fixed_table!(
 );
 
 impl<T> MajorNationTable<T> {
-    pub(crate) fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
+    pub fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
         self.0.iter()
+    }
+
+    pub fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = &mut T> {
+        self.0.iter_mut()
     }
 }
 

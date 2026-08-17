@@ -36,7 +36,9 @@ pub(super) fn place_initial_frog_cities(
         };
         place_ai_capital(world, province_capitals, home, nation);
         ensure_port_zone_for_tile(world, port_zones, home);
-        let major = nations.major_mut(nation);
+        let Some(major) = nations.major_mut(nation) else {
+            continue;
+        };
         major.common.home_tile = Some(home);
         let old_tile = major
             .towns

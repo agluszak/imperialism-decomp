@@ -316,11 +316,7 @@ pub(in crate::ui::city) fn sync_warehouse_dialog(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let city = &session
-        .game
-        .nations()
-        .major(session.active_major_nation())
-        .city;
+    let city = &session.active_major().city;
     for (display, mut text) in &mut displays {
         text.0 = match *display {
             WarehouseDisplay::Stock(resource) => {
@@ -345,11 +341,7 @@ pub(in crate::ui::city) fn sync_food_dialog(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let city = &session
-        .game
-        .nations()
-        .major(session.active_major_nation())
-        .city;
+    let city = &session.active_major().city;
     for (indicator, mut visibility) in &mut indicators {
         let visible = match indicator {
             FoodIndicator::Labor => city.population.strength() >= 2,
@@ -375,11 +367,7 @@ pub(in crate::ui::city) fn sync_transport_capacity_dialog(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let city = &session
-        .game
-        .nations()
-        .major(session.active_major_nation())
-        .city;
+    let city = &session.active_major().city;
     for (indicator, mut visibility) in &mut indicators {
         let visible = match indicator {
             TransportCapacityIndicator::Labor => city.population.strength() >= 2,
@@ -403,8 +391,7 @@ pub(in crate::ui::city) fn sync_population_dialog(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let nation = session.active_major_nation();
-    let major = session.game.nations().major(nation);
+    let major = session.active_major();
     let city = &major.city;
     for (PopulationGood(resource), mut visibility) in &mut goods {
         *visibility = if city.stockpile[*resource] >= 1 {

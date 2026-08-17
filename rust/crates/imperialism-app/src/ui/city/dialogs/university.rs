@@ -63,10 +63,8 @@ pub(in crate::ui::city) fn configure_university_dialog(
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
-    state: &GameState,
+    available: bool,
 ) {
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
-        .expect("City active nation is a major nation");
     let (detail_font, _, detail_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
@@ -92,9 +90,7 @@ pub(in crate::ui::city) fn configure_university_dialog(
         })
         .expect("retail University unit-name fallback text style");
     let data = UniversityDialogData {
-        available: state.technology().city_capabilities_by_nation[nation]
-            .university
-            .available,
+        available,
         rows: UNIVERSITY_ROWS.map(|row| {
             let kind = row.civilian_kind();
             UniversityRowText {
@@ -390,8 +386,7 @@ pub(in crate::ui::city) fn sync_university_details(
     let CityOrderId::CivilianRecruit(kind) = selection.order else {
         return;
     };
-    let nation = session.active_major_nation();
-    let major = session.game.nations().major(nation);
+    let major = session.active_major();
     let city = &major.city;
     let row = rows
         .iter()

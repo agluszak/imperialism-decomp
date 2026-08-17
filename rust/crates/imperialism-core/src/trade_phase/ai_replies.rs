@@ -11,15 +11,24 @@ impl GameState {
         commodity: TradeCommodity,
         phase: &mut TradePhase,
     ) {
+        let Some(personality) = self
+            .nations
+            .major(buyer)
+            .map(|major| major.economy.foreign_minister_personality)
+        else {
+            return;
+        };
         let resource = commodity.resource();
-        if self.foreign_trade(buyer).purchase_priority[commodity] != 0 {
+        if self
+            .nations
+            .major(buyer)
+            .map(Self::foreign_trade)
+            .is_some_and(|trade| trade.purchase_priority[commodity] != 0)
+        {
             self.base_reply_to_trade_offer(buyer, seller, amount, price, commodity, phase);
             return;
         }
-        match self.nations.majors[buyer]
-            .economy
-            .foreign_minister_personality
-        {
+        match personality {
             ForeignMinisterPersonality::Ted => {
                 self.ted_reply(buyer, seller, amount, price, commodity, phase);
             }
@@ -70,16 +79,13 @@ impl GameState {
     ) {
         let resource = commodity.resource();
         let mut dispatch = amount;
-        if self
-            .foreign_trade(buyer)
-            .interior_bid
-            .is_some_and(|bid| bid.commodity == commodity)
-        {
-            let interior_amount = self
-                .foreign_trade(buyer)
-                .interior_bid
-                .expect("interior bid")
-                .amount;
+        let interior_bid = self
+            .nations
+            .major(buyer)
+            .map(Self::foreign_trade)
+            .and_then(|trade| trade.interior_bid);
+        if interior_bid.is_some_and(|bid| bid.commodity == commodity) {
+            let interior_amount = interior_bid.expect("checked above").amount;
             if interior_amount < dispatch {
                 dispatch = interior_amount;
             }
@@ -97,7 +103,11 @@ impl GameState {
                 return;
             }
         } else {
-            let ledger = self.foreign_trade(buyer).purchase_priority[commodity];
+            let ledger = self
+                .nations
+                .major(buyer)
+                .map(Self::foreign_trade)
+                .map_or(0, |trade| trade.purchase_priority[commodity]);
             if ledger < 1 {
                 dispatch = 0;
             } else if ledger < dispatch {
@@ -107,7 +117,9 @@ impl GameState {
             if available < dispatch {
                 dispatch = available;
             }
-            self.foreign_trade_mut(buyer).purchase_priority[commodity] -= dispatch;
+            if let Some(major) = self.nations.major_mut(buyer) {
+                Self::foreign_trade_mut(major).purchase_priority[commodity] -= dispatch;
+            }
         }
         self.set_deal_results(
             buyer.nation(),
@@ -183,8 +195,10 @@ impl GameState {
                         (self.available_merchant(buyer) / 3).max(2),
                     );
                     let take = self
-                        .foreign_trade(buyer)
-                        .capability_flag_16
+                        .nations
+                        .major(buyer)
+                        .map(Self::foreign_trade)
+                        .map_or(0, |trade| trade.capability_flag_16)
                         .min(self.available_merchant(buyer));
                     if take >= amount {
                         self.set_deal_results(
@@ -196,10 +210,9 @@ impl GameState {
                             false,
                             phase,
                         );
-                        let flag = &mut self.foreign_trade_mut(buyer).capability_flag_16;
-                        *flag -= amount;
-                        if *flag < 0 {
-                            *flag = 0;
+                        if let Some(major) = self.nations.major_mut(buyer) {
+                            let flag = &mut Self::foreign_trade_mut(major).capability_flag_16;
+                            *flag = (*flag - amount).max(0);
                         }
                     } else {
                         self.set_deal_results(
@@ -211,7 +224,9 @@ impl GameState {
                             true,
                             phase,
                         );
-                        self.foreign_trade_mut(buyer).capability_flag_16 = 0;
+                        if let Some(major) = self.nations.major_mut(buyer) {
+                            Self::foreign_trade_mut(major).capability_flag_16 = 0;
+                        }
                     }
                 } else {
                     self.accept_offer(
@@ -231,7 +246,10 @@ impl GameState {
                 let mut take = if self.market.rows[TradeCommodity::Iron].price < 105 {
                     amount
                 } else {
-                    self.foreign_trade(buyer).capability_flag_16
+                    self.nations
+                        .major(buyer)
+                        .map(Self::foreign_trade)
+                        .map_or(0, |trade| trade.capability_flag_16)
                 };
                 take = take.min(amount);
                 let available = self.available_merchant(buyer);
@@ -245,7 +263,9 @@ impl GameState {
                         false,
                         phase,
                     );
-                    self.foreign_trade_mut(buyer).capability_flag_16 -= take;
+                    if let Some(major) = self.nations.major_mut(buyer) {
+                        Self::foreign_trade_mut(major).capability_flag_16 -= take;
+                    }
                 } else {
                     self.set_deal_results(
                         buyer.nation(),
@@ -256,7 +276,9 @@ impl GameState {
                         false,
                         phase,
                     );
-                    self.foreign_trade_mut(buyer).capability_flag_16 = 0;
+                    if let Some(major) = self.nations.major_mut(buyer) {
+                        Self::foreign_trade_mut(major).capability_flag_16 = 0;
+                    }
                 }
             }
             TradeCommodity::Iron | TradeCommodity::Oil => {
@@ -272,9 +294,13 @@ impl GameState {
                 );
                 if commodity == TradeCommodity::Iron {
                     if take == amount {
-                        self.foreign_trade_mut(buyer).capability_flag_16 -= amount;
+                        if let Some(major) = self.nations.major_mut(buyer) {
+                            Self::foreign_trade_mut(major).capability_flag_16 -= amount;
+                        }
                     } else {
-                        self.foreign_trade_mut(buyer).capability_flag_16 = 0;
+                        if let Some(major) = self.nations.major_mut(buyer) {
+                            Self::foreign_trade_mut(major).capability_flag_16 = 0;
+                        }
                     }
                 }
             }
@@ -298,15 +324,24 @@ impl GameState {
                 commodity,
                 TradeCommodity::Timber | TradeCommodity::Coal | TradeCommodity::Iron
             ) {
-                self.foreign_trade_mut(buyer).capability_flag_16 = cap;
-            } else if resource < 7 && self.foreign_trade(buyer).trade_partner_enabled[resource] != 0
+                if let Some(major) = self.nations.major_mut(buyer) {
+                    Self::foreign_trade_mut(major).capability_flag_16 = cap;
+                }
+            } else if resource < 7
+                && self
+                    .nations
+                    .major(buyer)
+                    .map(Self::foreign_trade)
+                    .is_some_and(|trade| trade.trade_partner_enabled[resource] != 0)
             {
-                self.foreign_trade_mut(buyer).capability_flag_16 = if phase.arms_advanced_split == 0
-                {
-                    cap / 3
-                } else {
-                    cap / 2
-                };
+                if let Some(major) = self.nations.major_mut(buyer) {
+                    Self::foreign_trade_mut(major).capability_flag_16 =
+                        if phase.arms_advanced_split == 0 {
+                            cap / 3
+                        } else {
+                            cap / 2
+                        };
+                }
                 phase.arms_advanced_split += 1;
             }
         } else if !matches!(
@@ -316,17 +351,29 @@ impl GameState {
                 | TradeCommodity::Timber
                 | TradeCommodity::Coal
         ) {
-            self.foreign_trade_mut(buyer).capability_flag_16 = cap;
-        } else if resource < 7 && self.foreign_trade(buyer).trade_partner_enabled[resource] != 0 {
-            self.foreign_trade_mut(buyer).capability_flag_16 = if phase.arms_basic_split == 0 {
-                cap / 3
-            } else {
-                cap / 2
-            };
+            if let Some(major) = self.nations.major_mut(buyer) {
+                Self::foreign_trade_mut(major).capability_flag_16 = cap;
+            }
+        } else if resource < 7
+            && self
+                .nations
+                .major(buyer)
+                .map(Self::foreign_trade)
+                .is_some_and(|trade| trade.trade_partner_enabled[resource] != 0)
+        {
+            if let Some(major) = self.nations.major_mut(buyer) {
+                Self::foreign_trade_mut(major).capability_flag_16 = if phase.arms_basic_split == 0 {
+                    cap / 3
+                } else {
+                    cap / 2
+                };
+            }
             phase.arms_basic_split += 1;
         }
         if resource < 7 {
-            self.foreign_trade_mut(buyer).trade_partner_enabled[resource] = 0;
+            if let Some(major) = self.nations.major_mut(buyer) {
+                Self::foreign_trade_mut(major).trade_partner_enabled[resource] = 0;
+            }
         }
         self.accept_from_capability_flag(buyer, seller, amount, price, commodity, true, phase);
     }
@@ -351,7 +398,11 @@ impl GameState {
             self.reserved_capacity_for_priority(nation, proposal, TradeCommodity::Coal)
         {
             if proposal == 3
-                && self.foreign_trade(nation).purchase_priority[TradeCommodity::Iron] != 0
+                && self
+                    .nations
+                    .major(nation)
+                    .map(Self::foreign_trade)
+                    .is_some_and(|trade| trade.purchase_priority[TradeCommodity::Iron] != 0)
             {
                 return (i32::from(self.available_merchant(nation)) - 1).max(0) as i16;
             }
@@ -366,7 +417,11 @@ impl GameState {
         proposal: i16,
         commodity: TradeCommodity,
     ) -> Option<i16> {
-        if self.foreign_trade(nation).purchase_priority[commodity] == 0
+        if self
+            .nations
+            .major(nation)
+            .map(Self::foreign_trade)
+            .is_none_or(|trade| trade.purchase_priority[commodity] == 0)
             || self.market.rows[commodity].amount_offered == 0
         {
             return None;

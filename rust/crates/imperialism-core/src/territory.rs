@@ -257,7 +257,11 @@ impl GameState {
         self.map.provinces[province].set_owner(Some(new_owner));
 
         if let Some(old_owner) = MajorNationId::from_nation(old_owner) {
-            if let Some(auto) = self.nations.majors[old_owner].auto.as_mut() {
+            if let Some(auto) = self
+                .nations
+                .major_mut(old_owner)
+                .and_then(|major| major.auto.as_mut())
+            {
                 if let Some(id) = self.missions.iter().find_map(|(&id, mission)| {
                     (mission.nation == old_owner.nation()
                         && matches!(
@@ -271,14 +275,16 @@ impl GameState {
                 }
                 auto.province_targets[province] = AiTargetState::Unmarked;
             }
-            self.nations.majors[old_owner].lose_province(
-                old_owner,
-                province,
-                &self.map,
-                &mut self.civilian_units,
-                &mut self.military_units,
-                &mut self.missions,
-            );
+            if let Some(major) = self.nations.major_mut(old_owner) {
+                major.lose_province(
+                    old_owner,
+                    province,
+                    &self.map,
+                    &mut self.civilian_units,
+                    &mut self.military_units,
+                    &mut self.missions,
+                );
+            }
         } else {
             let old_owner = MinorNationId::new(old_owner.get());
             self.nations.minors[old_owner]
@@ -289,19 +295,26 @@ impl GameState {
         }
 
         if let Some(new_owner) = MajorNationId::from_nation(new_owner) {
-            self.nations.majors[new_owner].add_province(province);
-            if self.nations.majors[new_owner].is_auto() {
+            if let Some(major) = self.nations.major_mut(new_owner) {
+                major.add_province(province);
+            }
+            if self
+                .nations
+                .major(new_owner)
+                .is_some_and(|major| major.is_auto())
+            {
                 let available = self.province_mission_node_available(province, new_owner);
-                let targets = &mut self.nations.majors[new_owner]
-                    .auto
-                    .as_mut()
-                    .expect("automatic great power requires auto state")
-                    .province_targets;
-                targets[province] = if available {
-                    AiTargetState::Candidate
-                } else {
-                    AiTargetState::Unmarked
-                };
+                if let Some(auto) = self
+                    .nations
+                    .major_mut(new_owner)
+                    .and_then(|major| major.auto.as_mut())
+                {
+                    auto.province_targets[province] = if available {
+                        AiTargetState::Candidate
+                    } else {
+                        AiTargetState::Unmarked
+                    };
+                }
                 if available {
                     let id = self.object_ids.mission();
                     self.missions.insert(
@@ -322,11 +335,13 @@ impl GameState {
                             marker: 0,
                         },
                     );
-                    self.nations.majors[new_owner]
-                        .auto
-                        .as_mut()
-                        .expect("automatic great power requires auto state")
-                        .province_targets[province] = AiTargetState::MissionQueued;
+                    if let Some(auto) = self
+                        .nations
+                        .major_mut(new_owner)
+                        .and_then(|major| major.auto.as_mut())
+                    {
+                        auto.province_targets[province] = AiTargetState::MissionQueued;
+                    }
                 }
             }
         } else {
@@ -360,10 +375,14 @@ impl GameState {
                     continue;
                 }
                 if unit.unit_type == crate::CivilianUnitKind::Developer {
-                    let home = self.nations.majors[owner]
-                        .common
-                        .home_tile
-                        .expect("foreign developer requires its owner's home town");
+                    let Some(home) = self
+                        .nations
+                        .major(owner)
+                        .and_then(|major| major.common.home_tile)
+                    else {
+                        self.civilian_units.shift_remove(&id);
+                        continue;
+                    };
                     self.civilian_units
                         .get_mut(&id)
                         .expect("civilian remained present")
@@ -385,10 +404,14 @@ impl GameState {
                 if unit.location.tile() != Some(tile) || unit.owner_nation == new_owner {
                     continue;
                 }
-                let home = self.nations.majors[owner]
-                    .common
-                    .home_tile
-                    .expect("deported civilian requires its owner's home town");
+                let Some(home) = self
+                    .nations
+                    .major(owner)
+                    .and_then(|major| major.common.home_tile)
+                else {
+                    self.civilian_units.shift_remove(&id);
+                    continue;
+                };
                 if let Some(destination) = self.find_reachable_recruit_spawn_tile(home, false) {
                     let unit = self
                         .civilian_units
@@ -547,7 +570,10 @@ mod tests {
         let minor = MinorNationId::new(slot);
         state.nations.minors[minor] = Some(MinorNation {
             common: {
-                let template = &state.nations.majors[crate::MajorNationId::new(0)].common;
+                let template = &state.nations.majors[crate::MajorNationId::new(0)]
+                    .as_mut()
+                    .unwrap()
+                    .common;
                 crate::NationCommonState::from_parts(
                     template.display_name.clone(),
                     status,
@@ -578,10 +604,14 @@ mod tests {
                 Some(TileOwnerTag::from_nation(NationId::new(0)));
         }
         state.map[TileId::new(20)].flags = crate::TileFlags::from_bits_retain(0x14);
-        state.nations.majors[MajorNationId::new(0)].towns.insert(
-            TileId::new(20),
-            crate::TownState::for_frog_city(TileId::new(20), NationId::new(0)),
-        );
+        state.nations.majors[MajorNationId::new(0)]
+            .as_mut()
+            .unwrap()
+            .towns
+            .insert(
+                TileId::new(20),
+                crate::TownState::for_frog_city(TileId::new(20), NationId::new(0)),
+            );
         state.map.provinces[ProvinceId::new(2)].linked_tiles =
             vec![TileId::new(20), TileId::new(21)];
         state.map[TileId::new(22)].province = Some(ProvinceId::new(5));
@@ -593,6 +623,7 @@ mod tests {
             state
                 .nations
                 .major(crate::MajorNationId::new(0))
+                .unwrap()
                 .common
                 .owned_regions(),
             [ProvinceId::new(5)]
@@ -601,6 +632,7 @@ mod tests {
             state
                 .nations
                 .major(crate::MajorNationId::new(1))
+                .unwrap()
                 .common
                 .owned_regions(),
             [ProvinceId::new(9), ProvinceId::new(2)]
@@ -626,10 +658,14 @@ mod tests {
         assert_eq!(state.map[TileId::new(20)].owner_border_mask, 0x3d);
         assert!(
             !state.nations.majors[MajorNationId::new(0)]
+                .as_ref()
+                .unwrap()
                 .towns
                 .contains_key(&TileId::new(20))
         );
         let moved_town = state.nations.majors[MajorNationId::new(1)]
+            .as_ref()
+            .unwrap()
             .towns
             .get(&TileId::new(20))
             .unwrap();
@@ -639,6 +675,7 @@ mod tests {
             state
                 .nations
                 .major(crate::MajorNationId::new(1))
+                .unwrap()
                 .common
                 .owned_regions(),
             [ProvinceId::new(2), ProvinceId::new(9)]
@@ -669,7 +706,9 @@ mod tests {
         for province in destination_regions {
             set_province(&mut state, province, Some(1), &[], Some(0));
         }
-        let destination = &mut state.nations.majors[MajorNationId::new(1)];
+        let destination = state.nations.majors[MajorNationId::new(1)]
+            .as_mut()
+            .unwrap();
         destination.auto = Some(AutoGreatPowerState::default());
         destination.economy.pending_actions
             [crate::PendingActionKind::ConqueredCapitalArmoryUpgrade] =
@@ -693,6 +732,8 @@ mod tests {
         assert!(state.civilian_units.is_empty());
         assert_eq!(
             state.nations.majors[MajorNationId::new(1)]
+                .as_ref()
+                .unwrap()
                 .common
                 .owned_regions(),
             [
@@ -708,12 +749,16 @@ mod tests {
             ]
         );
         let reward = state.nations.majors[MajorNationId::new(1)]
+            .as_ref()
+            .unwrap()
             .economy
             .pending_actions[crate::PendingActionKind::ConquestMonumentArmory];
         assert_eq!(reward.status(), crate::PendingActionStatus::QUEUED);
         assert_eq!(reward.payload(), None);
         assert_eq!(
             state.nations.majors[MajorNationId::new(1)]
+                .as_ref()
+                .unwrap()
                 .auto
                 .as_ref()
                 .unwrap()
@@ -857,12 +902,16 @@ mod tests {
         state.map[TileId::new(20)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
         set_owned(&mut state, NationId::new(1), &[10]);
         set_province(&mut state, 10, Some(1), &[], Some(0));
-        let destination = &mut state.nations.majors[MajorNationId::new(1)];
+        let destination = state.nations.majors[MajorNationId::new(1)]
+            .as_mut()
+            .unwrap();
         destination.auto = Some(AutoGreatPowerState::default());
 
         state.change_province_owner(ProvinceId::new(2), NationId::new(1));
         assert_eq!(
             state.nations.majors[MajorNationId::new(1)]
+                .as_ref()
+                .unwrap()
                 .auto
                 .as_ref()
                 .unwrap()
@@ -883,7 +932,9 @@ mod tests {
         state.map[TileId::new(20)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
         set_owned(&mut state, NationId::new(1), &[10]);
         set_province(&mut state, 10, Some(1), &[], Some(0));
-        let destination = &mut state.nations.majors[MajorNationId::new(1)];
+        let destination = state.nations.majors[MajorNationId::new(1)]
+            .as_mut()
+            .unwrap();
         destination.auto = Some(AutoGreatPowerState::default());
         state.ocean.zones.push(crate::ZoneKind::Zone(crate::Zone {
             display_name: String::new(),
@@ -898,6 +949,8 @@ mod tests {
         state.change_province_owner(ProvinceId::new(2), NationId::new(1));
         assert_eq!(
             state.nations.majors[MajorNationId::new(1)]
+                .as_ref()
+                .unwrap()
                 .auto
                 .as_ref()
                 .unwrap()

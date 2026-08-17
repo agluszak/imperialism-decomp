@@ -99,7 +99,10 @@ impl GameState {
             let ironworking_researched = self.technology.research_status_by_nation[nation]
                 [Technology::AdvancedIronWorking]
                 == TechnologyResearchStatus::Researched;
-            let actions = &mut self.nations.majors[nation].economy.pending_actions;
+            let Some(major) = self.nations.major_mut(nation) else {
+                continue;
+            };
+            let actions = &mut major.economy.pending_actions;
             mark_pending_status_flags_handled(actions, ironworking_researched);
         }
     }

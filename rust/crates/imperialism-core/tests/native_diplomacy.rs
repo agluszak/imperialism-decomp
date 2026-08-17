@@ -30,14 +30,17 @@ fn diplomacy_grant_entry_updates_treasury() {
     compare_native(
         "diplomacy_grant_entry_updates_treasury",
         |state, case: DiplomacyGrantCase| {
-            state.set_diplomacy_grant(
-                case.nation,
-                case.target,
-                Some(DiplomacyGrant {
-                    amount: case.amount,
-                    recurring: false,
-                }),
-            )
+            state
+                .nations_mut()
+                .major_mut(case.nation)
+                .unwrap()
+                .set_diplomacy_grant(
+                    case.target,
+                    Some(DiplomacyGrant {
+                        amount: case.amount,
+                        recurring: false,
+                    }),
+                )
         },
     )
     .unwrap();
@@ -49,7 +52,11 @@ fn diplomacy_reset_preserves_recurring_grants() {
     compare_native(
         "diplomacy_reset_preserves_recurring_grants",
         |state, case: NationCase| {
-            state.reset_diplomacy_commitments(case.nation);
+            state
+                .nations_mut()
+                .major_mut(case.nation)
+                .unwrap()
+                .reset_diplomacy_commitments();
         },
     )
     .unwrap();

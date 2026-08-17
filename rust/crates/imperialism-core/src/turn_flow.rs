@@ -430,8 +430,15 @@ impl GameState {
                         self.finalize_home_city_setup(nation);
                     }
                     if let Some(active) = MajorNationId::from_nation(self.turn.active_nation) {
-                        self.reset_diplomacy_need_scores_and_clear_aid_allocation_matrix(active);
-                        self.reset_diplomacy_need_slots_7012_if_mode_gate_matches(active);
+                        let introductory = self.turn.difficulty == Difficulty::Introductory;
+                        let major = self
+                            .nations
+                            .major_mut(active)
+                            .expect("capital selection requires a live active major");
+                        major.reset_diplomacy_need_scores_and_clear_aid_allocation_matrix();
+                        if introductory && !major.is_auto() {
+                            major.reset_introductory_diplomacy_needs();
+                        }
                     }
                     self.turn.phase = PhaseCode::SEASON_ADVANCE;
                 }
@@ -589,19 +596,15 @@ impl GameState {
 
     /// Mirrors `TSimMgr::AllHumansFinished` across all live major nations.
     pub fn all_humans_finished(&self) -> bool {
-        MajorNationId::all()
-            .filter(|&nation| self.nations.major_is_present(nation))
-            .all(|nation| self.nations.majors[nation].economy.turn_finished)
+        self.nations
+            .live_majors()
+            .all(|(_, major)| major.economy.turn_finished)
     }
 
     /// Mirrors `TSimMgr::ResetTurnFlags`: only diplomacy-eligible live major nations
     /// have their completion flag cleared.
     pub fn reset_turn_flags(&mut self) {
-        for nation in MajorNationId::all() {
-            if !self.nations.major_is_present(nation) {
-                continue;
-            }
-            let major = &mut self.nations.majors[nation];
+        for (_, major) in self.nations.live_majors_mut() {
             reset_finished_flag(
                 major.economy.diplomacy_eligible,
                 &mut major.economy.turn_finished,
@@ -653,8 +656,13 @@ mod tests {
     }
 
     fn pose_alliance_offer(state: &mut crate::GameState) {
-        state.nations.majors[MajorNationId::new(1)].auto = Some(AutoGreatPowerState::default());
         state.nations.majors[MajorNationId::new(1)]
+            .as_mut()
+            .unwrap()
+            .auto = Some(AutoGreatPowerState::default());
+        state.nations.majors[MajorNationId::new(1)]
+            .as_mut()
+            .unwrap()
             .economy
             .diplomacy_policy_by_nation[NationId::new(0)] = Some(DiplomacyPolicy::Alliance);
     }
@@ -664,19 +672,33 @@ mod tests {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
         {
-            let economy = &mut state.nations.majors[nation].economy;
+            let economy = &mut state.nations.majors[nation].as_mut().unwrap().economy;
             economy.diplomacy_eligible = false;
             economy.turn_finished = true;
         }
         state.reset_turn_flags();
         assert!(
-            state.nations.majors[nation].economy.turn_finished,
+            state.nations.majors[nation]
+                .as_mut()
+                .unwrap()
+                .economy
+                .turn_finished,
             "ineligible nations keep their finished flag"
         );
 
-        state.nations.majors[nation].economy.diplomacy_eligible = true;
+        state.nations.majors[nation]
+            .as_mut()
+            .unwrap()
+            .economy
+            .diplomacy_eligible = true;
         state.reset_turn_flags();
-        assert!(!state.nations.majors[nation].economy.turn_finished);
+        assert!(
+            !state.nations.majors[nation]
+                .as_mut()
+                .unwrap()
+                .economy
+                .turn_finished
+        );
     }
 
     #[test]
@@ -804,20 +826,50 @@ mod tests {
         let buyer = MajorNationId::new(0);
         let seller = MajorNationId::new(1);
         for nation in MajorNationId::all() {
-            state.nations.majors[nation].city.ship_order_count_by_type[ShipType::Trader] = 2;
-            state.nations.majors[nation].city.ship_order_count_by_type[ShipType::Paddlewheeler] = 1;
-            state.nations.majors[nation].city.ship_order_count_by_type[ShipType::Freighter] = 1;
-            state.nations.majors[nation].city.stockpile[ResourceKind::Clothing] = 10;
-            state.nations.majors[nation].city.stockpile[ResourceKind::Timber] = 12;
-            state.nations.majors[nation].common.treasury = 20_000;
+            state.nations.majors[nation]
+                .as_mut()
+                .unwrap()
+                .city
+                .ship_order_count_by_type[ShipType::Trader] = 2;
+            state.nations.majors[nation]
+                .as_mut()
+                .unwrap()
+                .city
+                .ship_order_count_by_type[ShipType::Paddlewheeler] = 1;
+            state.nations.majors[nation]
+                .as_mut()
+                .unwrap()
+                .city
+                .ship_order_count_by_type[ShipType::Freighter] = 1;
+            state.nations.majors[nation]
+                .as_mut()
+                .unwrap()
+                .city
+                .stockpile[ResourceKind::Clothing] = 10;
+            state.nations.majors[nation]
+                .as_mut()
+                .unwrap()
+                .city
+                .stockpile[ResourceKind::Timber] = 12;
+            state.nations.majors[nation]
+                .as_mut()
+                .unwrap()
+                .common
+                .treasury = 20_000;
         }
         state.nations.majors[buyer]
+            .as_mut()
+            .unwrap()
             .economy
             .remembered_trade_offers_by_resource[ResourceKind::Clothing] = -1;
         state.nations.majors[buyer]
+            .as_mut()
+            .unwrap()
             .economy
             .remembered_trade_offers_by_resource[ResourceKind::Timber] = 5;
         state.nations.majors[seller]
+            .as_mut()
+            .unwrap()
             .economy
             .remembered_trade_offers_by_resource[ResourceKind::Clothing] = 4;
         let TradeProgress::Offer(_) = state.begin_trade_phase() else {
@@ -873,14 +925,20 @@ mod tests {
     fn newspaper_marks_queued_navy_growth_as_handled_reward_level() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].economy.pending_actions
-            [crate::PendingActionKind::NavyGrowthReward] =
+        state.nations.majors[nation]
+            .as_mut()
+            .unwrap()
+            .economy
+            .pending_actions[crate::PendingActionKind::NavyGrowthReward] =
             crate::PendingActionState::new(crate::PendingActionStatus::QUEUED, Some(1));
         state.turn.phase = crate::PhaseCode::NEWSPAPER;
         assert_eq!(state.advance_turn(&[]), crate::TurnStop::Newspaper);
         assert_eq!(
-            state.nations.majors[nation].economy.pending_actions
-                [crate::PendingActionKind::NavyGrowthReward]
+            state.nations.majors[nation]
+                .as_mut()
+                .unwrap()
+                .economy
+                .pending_actions[crate::PendingActionKind::NavyGrowthReward]
                 .status(),
             crate::PendingActionStatus::from_retail(0x34)
         );
@@ -909,11 +967,6 @@ mod tests {
                     children: Vec::new(),
                 },
             ],
-            marker_pixel_x: 0,
-            marker_pixel_y: 0,
-            placed: false,
-            marker_sprite: 0,
-            list_ordinal: 0,
         });
         state.turn.phase = crate::PhaseCode::DIPLOMACY_OFFER;
         assert_eq!(state.advance_turn(&[]), crate::TurnStop::PostCombatReports);
@@ -1047,11 +1100,6 @@ mod tests {
                     children: Vec::new(),
                 },
             ],
-            marker_pixel_x: 0,
-            marker_pixel_y: 0,
-            placed: false,
-            marker_sprite: 0,
-            list_ordinal: 0,
         });
         assert!(state.battle_reports_pending());
     }

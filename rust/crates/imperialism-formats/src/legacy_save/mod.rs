@@ -9,7 +9,7 @@ mod write;
 #[cfg(test)]
 mod tests;
 
-use imperialism_core::{CityWindowPosition, NationId, ProductionTable};
+use imperialism_core::{CityWindowPosition, MajorNationTable, NationId, ProductionTable};
 use model::{
     LegacyDiplomacyState, LegacyHelpState, LegacyMajorNationState, LegacyMapState,
     LegacyMinorState, LegacyNavyState, LegacyOceanState, LegacySaveHeader, LegacySimulationPrefix,
@@ -46,7 +46,7 @@ pub struct LegacySaveV62 {
     ocean: LegacyOceanState,
     navy: LegacyNavyState,
     army_reports: Vec<model::LegacyBattleReport>,
-    major_nations: Vec<LegacyMajorNationState>,
+    major_nations: MajorNationTable<Option<LegacyMajorNationState>>,
     minor_nations: Vec<LegacyMinorState>,
     help: LegacyHelpState,
 }

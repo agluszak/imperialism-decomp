@@ -375,9 +375,9 @@ pub(in crate::ui::city) fn sync_city_order_quantities(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let nation = session.active_major_nation();
+    let major = session.active_major();
     for (CityOrderQuantity(order), mut text) in &mut quantities {
-        text.0 = session.game.city_order_quantity(nation, *order).to_string();
+        text.0 = major.city_order_quantity(*order).to_string();
     }
 }
 
@@ -389,8 +389,8 @@ pub(in crate::ui::city) fn sync_industry_texts(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let nation = session.active_major_nation();
-    let city = &session.game.nations().major(nation).city;
+    let major = session.active_major();
+    let city = &major.city;
     for (capacity, mut text) in &mut capacities {
         text.0 = format_retail_number(&capacity.template, city.production_orders[capacity.slot]);
     }
@@ -404,8 +404,8 @@ pub(in crate::ui::city) fn sync_industry_indicators(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let nation = session.active_major_nation();
-    let city = &session.game.nations().major(nation).city;
+    let major = session.active_major();
+    let city = &major.city;
     for (indicator, mut visibility) in &mut indicators {
         let visible = match *indicator {
             IndustryIndicator::Labor => city.population.strength() >= 2,
@@ -428,8 +428,8 @@ pub(in crate::ui::city) fn sync_industry_bars(
     if city_projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let nation = session.active_major_nation();
-    let city = &session.game.nations().major(nation).city;
+    let major = session.active_major();
+    let city = &major.city;
     let scale = |value: i16, capacity: i16| {
         if capacity > 0 {
             (i32::from(value) * i32::from(INDUSTRY_BAR_WIDTH) / i32::from(capacity))
@@ -442,17 +442,17 @@ pub(in crate::ui::city) fn sync_industry_bars(
         match *bar {
             IndustryBar::Fill(amount) => {
                 let capacity = city.production_orders[amount.slot];
-                let quantity = session.game.city_order_quantity(nation, amount.order);
+                let quantity = major.city_order_quantity(amount.order);
                 node.width = Val::Px(f32::from(scale(quantity, capacity)));
             }
             IndustryBar::Maximum(amount) => {
                 let capacity = city.production_orders[amount.slot];
-                let maximum = session.game.city_order_limit(nation, amount.order).maximum;
+                let maximum = major.city_order_limit(amount.order).maximum;
                 node.left = Val::Px(f32::from(scale(maximum, capacity)));
             }
             IndustryBar::Quantity(amount) => {
                 let capacity = city.production_orders[amount.slot];
-                let quantity = session.game.city_order_quantity(nation, amount.order);
+                let quantity = major.city_order_quantity(amount.order);
                 node.left = Val::Px(INDUSTRY_BAR_X + f32::from(scale(quantity, capacity)) - 2.0);
                 node.top = Val::Px(INDUSTRY_BAR_Y + 6.0);
             }

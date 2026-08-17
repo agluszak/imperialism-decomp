@@ -1402,6 +1402,7 @@ fn sync_diplomacy_map_cursor(
         return;
     };
     let source = session.active_major_nation();
+    let source_major = session.active_major();
     let Some(target) = tile_at_diplomacy_position(normalized).and_then(|tile| {
         session.game.map()[tile]
             .owner_nation
@@ -1414,9 +1415,10 @@ fn sync_diplomacy_map_cursor(
     if action != DiplomacyMapAction::InspectNation && target == source.nation() {
         action = DiplomacyMapAction::SelectedNation;
     }
-    let valid = session
-        .game
-        .player_diplomacy_map_action_is_valid(source, target, action);
+    let valid =
+        session
+            .game
+            .player_diplomacy_map_action_is_valid(source, source_major, target, action);
     request_turn_event_cursor(
         &mut requested,
         diplomacy_map_cursor_resource_id(true, action, screen.cursor_row(), valid),
@@ -1893,10 +1895,9 @@ fn project_diplomacy_text(
     if !session.is_changed() && !screen.is_added() && !screen.is_changed() {
         return;
     }
+    let source = session.active_major_nation();
+    let major = session.active_major();
     let state = &session.game;
-    let source = MajorNationId::from_nation(state.turn().active_nation)
-        .expect("Diplomacy screen requires an active major nation");
-    let major = state.nations().major(source);
     let (name, labels_by_row, values_by_row) = diplomacy_information(state, screen.framed_nation);
     let offer = diplomacy_offer_message(state, &assets)
         .or_else(|| diplomacy_war_join_message(state, &assets));
@@ -2047,19 +2048,18 @@ fn sync_diplomacy_information(
             DiplomacyNationIconKind::Order => {
                 let atlas_offset = match mode {
                     4 => framed_major.and_then(|major| {
-                        state
-                            .nations()
-                            .major(major)
-                            .economy
-                            .diplomacy_policy_by_nation[icon.nation]
-                            .and_then(diplomacy_policy_icon_offset)
+                        state.nations().major(major).and_then(|major| {
+                            major.economy.diplomacy_policy_by_nation[icon.nation]
+                                .and_then(diplomacy_policy_icon_offset)
+                        })
                     }),
                     2 => framed_trade.and_then(|common| {
                         let policy = common.trade_policy_by_nation[icon.nation];
-                        let colony_boycott = framed_major.is_some_and(|major| {
-                            state.nations().major(major).economy.colony_boycott_flags[icon.nation]
-                                != 0
-                        });
+                        let colony_boycott = framed_major
+                            .and_then(|major| state.nations().major(major))
+                            .is_some_and(|major| {
+                                major.economy.colony_boycott_flags[icon.nation] != 0
+                            });
                         if policy == TradePolicyScore::BOYCOTT && colony_boycott {
                             Some(0x190)
                         } else {
@@ -2067,12 +2067,10 @@ fn sync_diplomacy_information(
                         }
                     }),
                     1 => framed_major.and_then(|major| {
-                        state
-                            .nations()
-                            .major(major)
-                            .economy
-                            .diplomacy_grants_by_nation[icon.nation]
-                            .and_then(diplomacy_grant_icon_offset)
+                        state.nations().major(major).and_then(|major| {
+                            major.economy.diplomacy_grants_by_nation[icon.nation]
+                                .and_then(diplomacy_grant_icon_offset)
+                        })
                     }),
                     _ => None,
                 };
@@ -2086,9 +2084,9 @@ fn sync_diplomacy_information(
             DiplomacyNationIconKind::Boycott => {
                 let mut offset_overlay = false;
                 let show = mode == 2
-                    && framed_major.is_some_and(|major| {
-                        state.nations().major(major).economy.colony_boycott_flags[icon.nation] != 0
-                    })
+                    && framed_major
+                        .and_then(|major| state.nations().major(major))
+                        .is_some_and(|major| major.economy.colony_boycott_flags[icon.nation] != 0)
                     && !framed_trade.is_some_and(|common| {
                         common.trade_policy_by_nation[icon.nation] == TradePolicyScore::BOYCOTT
                     });
@@ -2494,7 +2492,7 @@ mod tests {
         mutate: impl Fn(MajorNationId, &mut MajorNation),
     ) {
         let majors = MajorNationTable::from_fn(|id| {
-            let mut major = parts.nations.major(id).clone();
+            let mut major = parts.nations.major(id).unwrap().clone();
             mutate(id, &mut major);
             major
         });

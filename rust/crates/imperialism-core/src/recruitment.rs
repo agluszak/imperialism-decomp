@@ -71,13 +71,15 @@ impl GameState {
         }
         let home_tile = self
             .nations
-            .major(nation)
-            .common
-            .home_tile
-            .expect("civilian recruit production requires a home town tile");
-
-        let metric = &mut self.nations.city_mut(nation).civilian_recruit_count_by_kind[unit_kind];
-        *metric += pending_delta;
+            .major_mut(nation)
+            .map(|major| {
+                major.city.civilian_recruit_count_by_kind[unit_kind] += pending_delta;
+                major
+                    .common
+                    .home_tile
+                    .expect("civilian recruitment requires a home tile")
+            })
+            .expect("civilian recruitment requires a live major");
 
         if pending_delta > 0 {
             for _ in 0..pending_delta {
@@ -92,8 +94,11 @@ impl GameState {
         }
 
         if unit_kind == CivilianUnitKind::Miner {
-            let city = self.nations.city_mut(nation);
-            city.serialized_state += 1;
+            self.nations
+                .major_mut(nation)
+                .expect("civilian recruitment requires a live major")
+                .city
+                .serialized_state += 1;
         }
     }
 
@@ -102,54 +107,66 @@ impl GameState {
     /// Scenario maps skip only the random-map civilian grant, not yields, transport
     /// allocation, the self relationship, or `InitialMilitia`.
     pub fn finalize_home_city_setup(&mut self, nation: MajorNationId) {
-        if self.nations.major(nation).common.home_tile.is_none() {
-            return;
-        }
+        let (home, diplomacy_eligible) = self
+            .nations
+            .major(nation)
+            .map(|major| {
+                (
+                    major
+                        .common
+                        .home_tile
+                        .expect("home city setup requires a home tile"),
+                    major.economy.diplomacy_eligible,
+                )
+            })
+            .expect("home city setup requires a live major");
         self.rebuild_nation_resource_yields(nation);
-        self.allocate_transport_needs(nation);
+        self.nations
+            .major_mut(nation)
+            .expect("home city setup requires a live major")
+            .allocate_transport_needs();
         if self.turn.scenario_map.is_none() {
-            self.grant_opening_civilians_for_nation(nation);
+            self.grant_opening_civilians_for_nation(nation, home, diplomacy_eligible);
         }
         self.set_relationship(nation.nation(), nation.nation(), 0x100);
         self.initial_militia(nation.nation());
     }
 
     /// One nation's prospector/engineer pair, plus the Introductory human extras.
-    pub fn grant_opening_civilians_for_nation(&mut self, nation: MajorNationId) {
-        if self.nations.major(nation).common.home_tile.is_none() {
-            return;
+    fn grant_opening_civilians_for_nation(
+        &mut self,
+        nation: MajorNationId,
+        home: TileId,
+        diplomacy_eligible: bool,
+    ) {
+        self.spawn_opening_civilian(nation.nation(), home, CivilianUnitKind::Prospector, false);
+        self.spawn_opening_civilian(nation.nation(), home, CivilianUnitKind::Engineer, true);
+        let introductory = self.turn.difficulty == Difficulty::Introductory && diplomacy_eligible;
+        if introductory {
+            self.spawn_opening_civilian(nation.nation(), home, CivilianUnitKind::Prospector, false);
+            self.spawn_opening_civilian(nation.nation(), home, CivilianUnitKind::Miner, false);
+            self.spawn_opening_civilian(nation.nation(), home, CivilianUnitKind::Farmer, false);
         }
-        self.spawn_opening_civilian(nation, CivilianUnitKind::Prospector, false);
-        self.spawn_opening_civilian(nation, CivilianUnitKind::Engineer, true);
-        self.nations.city_mut(nation).ship_order_count_by_type[ShipType::Trader] += 2;
-        if self.turn.difficulty == Difficulty::Introductory
-            && self.nations.major(nation).economy.diplomacy_eligible
-        {
-            self.nations.city_mut(nation).ship_order_count_by_type[ShipType::Trader] += 6;
-            self.spawn_opening_civilian(nation, CivilianUnitKind::Prospector, false);
-            self.spawn_opening_civilian(nation, CivilianUnitKind::Miner, false);
-            self.spawn_opening_civilian(nation, CivilianUnitKind::Farmer, false);
-        }
+        let city = &mut self
+            .nations
+            .major_mut(nation)
+            .expect("opening civilian grant requires a live major")
+            .city;
+        city.ship_order_count_by_type[ShipType::Trader] += if introductory { 8 } else { 2 };
     }
 
     fn spawn_opening_civilian(
         &mut self,
-        nation: MajorNationId,
+        nation: NationId,
+        home: TileId,
         kind: CivilianUnitKind,
         allow_reserved: bool,
     ) {
-        let nation_id = nation.nation();
-        let home = self
-            .nations
-            .major(nation)
-            .common
-            .home_tile
-            .expect("opening civilians require a home town tile");
         let location = self
             .find_reachable_recruit_spawn_tile(home, allow_reserved)
             .map(CivilianLocation::OnMap)
             .unwrap_or(CivilianLocation::OffMap);
-        self.insert_idle_civilian(nation_id, kind, location);
+        self.insert_idle_civilian(nation, kind, location);
     }
 
     fn insert_idle_civilian(
@@ -183,12 +200,10 @@ impl GameState {
             return;
         }
 
-        let owned = self
-            .nations
-            .common(nation)
-            .expect("initial militia requires a present nation")
-            .owned_regions()
-            .to_vec();
+        let Some(common) = self.nations.common(nation) else {
+            return;
+        };
+        let owned = common.owned_regions().to_vec();
         let garrison_orders = matches!(
             self.turn.difficulty,
             Difficulty::Introductory | Difficulty::Easy
@@ -199,8 +214,11 @@ impl GameState {
             MilitaryOrderCode::Idle
         };
         let major = MajorNationId::from_nation(nation);
-        let diplomacy_eligible =
-            major.is_some_and(|major| self.nations.major(major).economy.diplomacy_eligible);
+        let diplomacy_eligible = major.is_some_and(|major| {
+            self.nations
+                .major(major)
+                .is_some_and(|major| major.economy.diplomacy_eligible)
+        });
         let extra_ai_army = major.is_some()
             && !diplomacy_eligible
             && self.turn.difficulty == Difficulty::NighOnImpossible;
@@ -354,18 +372,20 @@ impl GameState {
         if pending_delta == 0 {
             return;
         }
-        let major_nation = &self.nations.majors[nation];
-        let major = &major_nation.economy;
+        let Some(major) = self.nations.major_mut(nation) else {
+            return;
+        };
         let military_start = if pending_delta > 0 {
-            let home_tile = major_nation
+            let home_tile = major
                 .common
                 .home_tile
                 .expect("military recruit production requires a home town tile");
             let province = self.map[home_tile]
                 .province
                 .expect("military recruit production requires the home town's province");
-            let action_6 =
-                major.pending_actions[PendingActionKind::ConqueredCapitalArmoryUpgrade].status();
+            let action_6 = major.economy.pending_actions
+                [PendingActionKind::ConqueredCapitalArmoryUpgrade]
+                .status();
             Some((
                 province,
                 action_6.has_reached(crate::PendingActionStatus::HANDLED),
@@ -397,15 +417,18 @@ impl GameState {
                 };
                 self.military_units.insert(id, unit);
 
-                let pending = self.nations.majors[nation].economy.pending_actions
-                    [PendingActionKind::ArmyGrowthReward];
+                let pending = major.economy.pending_actions[PendingActionKind::ArmyGrowthReward];
                 if let Some(current_level) = pending.growth_reward_level() {
-                    let military_power = self.selected_military_power_score(nation_id);
+                    let military_power = self
+                        .military_units
+                        .values()
+                        .filter(|unit| unit.nation == nation_id)
+                        .map(|unit| unit.unit_type.arms_required())
+                        .sum();
                     if let Some(payload) =
                         pending_military_action_payload(military_power, i32::from(current_level))
                     {
-                        let major = &mut self.nations.majors[nation].economy;
-                        major.pending_actions[PendingActionKind::ArmyGrowthReward]
+                        major.economy.pending_actions[PendingActionKind::ArmyGrowthReward]
                             .queue_with_payload(payload);
                     }
                 }
@@ -422,8 +445,7 @@ impl GameState {
             },
         );
         if unit_kind == MilitaryUnitKind::Minutemen {
-            let city = self.nations.city_mut(nation);
-            city.serialized_state += 1;
+            major.city.serialized_state += 1;
         }
     }
 }
@@ -550,7 +572,7 @@ mod tests {
             map_generation: RetailLcg::from_state(0),
             zone_status: RetailLcg::from_state(0),
         };
-        state.nations.majors[MajorNationId::new(0)] = nation;
+        state.nations.majors[MajorNationId::new(0)] = Some(nation);
         state
     }
 
@@ -661,6 +683,7 @@ mod tests {
             state
                 .nations
                 .city(MajorNationId::new(0))
+                .unwrap()
                 .civilian_recruit_count_by_kind[CivilianUnitKind::Forester],
             2
         );
@@ -678,11 +701,16 @@ mod tests {
             state
                 .nations
                 .city(MajorNationId::new(0))
+                .unwrap()
                 .civilian_recruit_count_by_kind[CivilianUnitKind::Miner],
             -2
         );
         assert_eq!(
-            state.nations.city(MajorNationId::new(0)).serialized_state,
+            state
+                .nations
+                .city(MajorNationId::new(0))
+                .unwrap()
+                .serialized_state,
             1
         );
     }
@@ -707,7 +735,7 @@ mod tests {
         assert_eq!(state.selected_military_power_score(NationId::new(0)), 16);
         assert!(state.military_units.contains_key(&MilitaryUnitId::new(55)));
         assert!(state.military_units.contains_key(&MilitaryUnitId::new(56)));
-        let major = &state.nations.major(MajorNationId::new(0)).economy;
+        let major = &state.nations.major(MajorNationId::new(0)).unwrap().economy;
         assert_eq!(
             major.pending_actions[PendingActionKind::ArmyGrowthReward].status(),
             crate::PendingActionStatus::QUEUED
@@ -736,6 +764,7 @@ mod tests {
         state
             .nations
             .major_mut(MajorNationId::new(0))
+            .unwrap()
             .economy
             .pending_actions[PendingActionKind::ArmyGrowthReward] =
             crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, Some(6));
@@ -744,6 +773,7 @@ mod tests {
         let pending = state
             .nations
             .major(MajorNationId::new(0))
+            .unwrap()
             .economy
             .pending_actions[PendingActionKind::ArmyGrowthReward];
         assert_eq!(pending.status(), crate::PendingActionStatus::QUEUED);
@@ -785,7 +815,11 @@ mod tests {
 
         assert!(state.military_units.is_empty());
         assert_eq!(
-            state.nations.city(MajorNationId::new(0)).serialized_state,
+            state
+                .nations
+                .city(MajorNationId::new(0))
+                .unwrap()
+                .serialized_state,
             1
         );
         assert_eq!(

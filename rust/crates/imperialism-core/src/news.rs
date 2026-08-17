@@ -373,7 +373,10 @@ impl GameState {
         self.news.pages = MajorNationTable::default();
         let active = MajorNationId::from_nation(self.turn.active_nation);
         for nation in MajorNationId::all() {
-            let eligible = self.nations.major(nation).economy.diplomacy_eligible;
+            let Some(major) = self.nations.major(nation) else {
+                continue;
+            };
+            let eligible = major.economy.diplomacy_eligible;
             if eligible || active == Some(nation) {
                 let page = self.create_newspaper(nation, story_ids);
                 if page.stories.iter().flatten().any(Option::is_some) {
@@ -442,7 +445,9 @@ impl GameState {
             } else if id != 1 {
                 continue;
             }
-            let other = random_other_major(&mut self.rng, nation);
+            let Some(other) = random_other_live_major(&mut self.rng, &self.nations, nation) else {
+                return page;
+            };
             page.stories[column][row] = Some(NewsStory {
                 template_index: pick as u16,
                 story_id: id as i16,
@@ -803,11 +808,18 @@ fn advance_page_cursor(column: &mut usize, row: &mut usize) {
     }
 }
 
-fn random_other_major(rng: &mut RngState, nation: MajorNationId) -> MajorNationId {
+fn random_other_live_major(
+    rng: &mut RngState,
+    nations: &Nations,
+    nation: MajorNationId,
+) -> Option<MajorNationId> {
+    if !MajorNationId::all().any(|other| other != nation && nations.major(other).is_some()) {
+        return None;
+    }
     loop {
         let other = MajorNationId::new((rng.next_crt_rand() % 7) as u8);
-        if other != nation {
-            return other;
+        if other != nation && nations.major(other).is_some() {
+            return Some(other);
         }
     }
 }
@@ -907,11 +919,6 @@ mod tests {
                     children: Vec::new(),
                 },
             ],
-            marker_pixel_x: 0,
-            marker_pixel_y: 0,
-            placed: false,
-            marker_sprite: 0,
-            list_ordinal: 0,
         });
         let mut templates = filler_table();
         templates[1] = -0x19;

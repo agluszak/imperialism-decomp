@@ -162,7 +162,9 @@ impl GameState {
     ) -> Result<(), RailOrderRejection> {
         let (segment, nation) = self.rail_construction_target(unit, destination)?;
         let cost = rail_cost(self.map[segment.destination()].terrain);
-        let major = self.nations.major(nation);
+        let Some(major) = self.nations.major(nation) else {
+            return Err(RailOrderRejection::InsufficientFunds);
+        };
         if major
             .economy
             .available_diplomacy_budget(major.common.treasury)
@@ -170,7 +172,9 @@ impl GameState {
         {
             return Err(RailOrderRejection::InsufficientFunds);
         }
-        self.nations.major_mut(nation).common.treasury -= cost;
+        if let Some(major) = self.nations.major_mut(nation) {
+            major.common.treasury -= cost;
+        }
         self.map[segment.origin()]
             .pending_rail_links
             .insert_direction(segment.direction());
@@ -291,15 +295,18 @@ impl GameState {
     pub fn do_civilians(&mut self) {
         self.rebuild_civilian_tile_chains();
         self.resolve_civilian_disputes();
-        for nation in MajorNationId::all() {
-            if !self.civilian_nation_is_eligible(nation) {
-                continue;
-            }
-            if self.nations.major(nation).auto.is_none() {
+        let nations: Vec<_> = self
+            .nations
+            .live_majors()
+            .filter(|(_, major)| Self::major_is_event_eligible(major))
+            .map(|(nation, major)| (nation, major.is_auto()))
+            .collect();
+        for (nation, is_auto) in nations {
+            if is_auto {
+                self.process_ai_civilian_orders(nation);
+            } else {
                 self.continue_civilian_orders(nation);
                 self.sort_tracked_orders_by_type_priority(nation);
-            } else {
-                self.process_ai_civilian_orders(nation);
             }
         }
     }
@@ -310,13 +317,6 @@ impl GameState {
             "work advances a present unit"
         );
         self.continue_civilian_order(civilian);
-    }
-
-    fn civilian_nation_is_eligible(&self, nation: MajorNationId) -> bool {
-        !matches!(
-            self.nations.major(nation).common.status(),
-            CountryStatus::ProtectorateOf(_)
-        )
     }
 
     pub(crate) fn continue_civilian_orders(&mut self, nation: MajorNationId) {
@@ -484,8 +484,14 @@ impl GameState {
                     .expect("civilian remains present")
                     .order = CivilianWorkOrder::Idle;
                 if let Some(major) = MajorNationId::from_nation(loser_nation) {
-                    self.nations.major_mut(major).common.treasury += refund;
-                    if self.nations.major(major).economy.diplomacy_eligible {
+                    if let Some(major) = self.nations.major_mut(major) {
+                        major.common.treasury += refund;
+                    }
+                    if self
+                        .nations
+                        .major(major)
+                        .is_some_and(|major| major.economy.diplomacy_eligible)
+                    {
                         self.pending.nations[major].turn_start_events.push(
                             TurnStartEvent::LandSale {
                                 tag: LAND_SALE_TAG,
@@ -655,8 +661,14 @@ impl GameState {
             self.push_new_town(tile, nation, 0);
             self.flood_fill_region_marker(tile, nation);
         }
-        if !self.nations.major(nation).economy.diplomacy_eligible {
-            self.nations.major_mut(nation).common.treasury -= 2_000;
+        if self
+            .nations
+            .major(nation)
+            .is_some_and(|major| !major.economy.diplomacy_eligible)
+        {
+            if let Some(major) = self.nations.major_mut(nation) {
+                major.common.treasury -= 2_000;
+            }
         }
         self.map[tile].flags.insert(TileFlags::DEPOT);
     }
@@ -670,27 +682,37 @@ impl GameState {
             self.push_new_town(tile, nation, 1);
             self.flood_fill_region_marker(tile, nation);
         }
-        if !self.nations.major(nation).economy.diplomacy_eligible {
-            self.nations.major_mut(nation).common.treasury -= 3_000;
+        if self
+            .nations
+            .major(nation)
+            .is_some_and(|major| !major.economy.diplomacy_eligible)
+        {
+            if let Some(major) = self.nations.major_mut(nation) {
+                major.common.treasury -= 3_000;
+            }
         }
         self.map[tile].flags.insert(TileFlags::PORT);
         self.ensure_port_zone_for_tile(tile);
     }
 
     fn push_new_town(&mut self, tile: TileId, nation: MajorNationId, enabled: u8) {
-        self.nations.major_mut(nation).towns.insert(
-            tile,
-            TownState::constructed(
+        if let Some(major) = self.nations.major_mut(nation) {
+            major.towns.insert(
                 tile,
-                nation.nation(),
-                enabled,
-                self.turn.economic_turn as i16,
-            ),
-        );
+                TownState::constructed(
+                    tile,
+                    nation.nation(),
+                    enabled,
+                    self.turn.economic_turn as i16,
+                ),
+            );
+        }
     }
 
     fn find_town_at_mut(&mut self, nation: MajorNationId, tile: TileId) -> Option<&mut TownState> {
-        self.nations.major_mut(nation).towns.get_mut(&tile)
+        self.nations
+            .major_mut(nation)
+            .and_then(|major| major.towns.get_mut(&tile))
     }
 
     fn flood_fill_region_marker(&mut self, tile: TileId, nation: MajorNationId) {
@@ -905,6 +927,7 @@ mod tests {
         state
             .nations
             .major_mut(MajorNationId::new(0))
+            .unwrap()
             .common
             .treasury = 1_000;
         state.map[origin]
@@ -935,7 +958,12 @@ mod tests {
         assert!(state.map[destination].pending_rail_links.contains(west));
         assert!(!state.map[origin].transport_links.contains(east));
         assert_eq!(
-            state.nations.major(MajorNationId::new(0)).common.treasury,
+            state
+                .nations
+                .major(MajorNationId::new(0))
+                .unwrap()
+                .common
+                .treasury,
             900
         );
 
@@ -956,6 +984,7 @@ mod tests {
         state
             .nations
             .major_mut(MajorNationId::new(0))
+            .unwrap()
             .common
             .treasury = 0;
         assert_eq!(
@@ -966,6 +995,7 @@ mod tests {
         state
             .nations
             .major_mut(MajorNationId::new(0))
+            .unwrap()
             .common
             .treasury = 1_000;
         state.map[destination].terrain = TerrainKind::Water;
@@ -1061,7 +1091,12 @@ mod tests {
             .hills = true;
         state.order_rail_construction(unit, destination).unwrap();
         assert_eq!(
-            state.nations.major(MajorNationId::new(0)).common.treasury,
+            state
+                .nations
+                .major(MajorNationId::new(0))
+                .unwrap()
+                .common
+                .treasury,
             800
         );
     }
@@ -1244,6 +1279,7 @@ mod tests {
             state
                 .nations
                 .major(MajorNationId::new(0))
+                .unwrap()
                 .towns
                 .get(&depot_tile)
                 .is_some_and(|town| town.enabled == 0 && town.active)
@@ -1253,6 +1289,7 @@ mod tests {
             state
                 .nations
                 .major(MajorNationId::new(0))
+                .unwrap()
                 .towns
                 .get(&port_tile)
                 .is_some_and(|town| town.enabled == 1 && !town.active)

@@ -117,11 +117,15 @@ impl GameState {
         &self.nations
     }
 
+    pub fn nations_mut(&mut self) -> &mut Nations {
+        &mut self.nations
+    }
+
     pub fn nation(&self, id: NationId) -> Option<&NationCommonState> {
         self.nations.common(id)
     }
 
-    pub fn city(&self, id: MajorNationId) -> &CityState {
+    pub fn city(&self, id: MajorNationId) -> Option<&CityState> {
         self.nations.city(id)
     }
 

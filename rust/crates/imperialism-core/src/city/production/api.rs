@@ -3,13 +3,12 @@
 use super::*;
 use crate::*;
 
-impl GameState {
+impl MajorNation {
     /// Calculates the current retail maximum without changing authoritative state.
-    pub fn city_order_limit(&self, nation: MajorNationId, order: CityOrderId) -> OrderLimit {
-        let major = self.nations.major(nation);
-        let city = &major.city;
-        let owner = &major.economy;
-        let treasury = major.common.treasury;
+    pub fn city_order_limit(&self, order: CityOrderId) -> OrderLimit {
+        let city = &self.city;
+        let owner = &self.economy;
+        let treasury = self.common.treasury;
         match order {
             CityOrderId::Item(output) => {
                 let state = &city.orders.items[output];
@@ -64,8 +63,8 @@ impl GameState {
     }
 
     /// Current ordered quantity for a city production row.
-    pub fn city_order_quantity(&self, nation: MajorNationId, order: CityOrderId) -> i16 {
-        let city = self.nations.city(nation);
+    pub fn city_order_quantity(&self, order: CityOrderId) -> i16 {
+        let city = &self.city;
         match order {
             CityOrderId::Item(output) => city.orders.items[output].progress.quantity,
             CityOrderId::CivilianRecruit(kind) => city.orders.civilian_recruitment[kind].quantity,
@@ -85,12 +84,11 @@ impl GameState {
     /// Applies an absolute retail city-order quantity and reports whether retail accepted it.
     pub fn set_city_order_quantity(
         &mut self,
-        nation: MajorNationId,
         order: CityOrderId,
         quantity: i16,
     ) -> CityOrderUpdate {
-        let limit = self.city_order_limit(nation, order);
-        let MajorNation { common, city, .. } = self.nations.major_mut(nation);
+        let limit = self.city_order_limit(order);
+        let MajorNation { common, city, .. } = self;
         let CityState {
             orders,
             stockpile,
@@ -198,13 +196,8 @@ impl GameState {
     }
 
     /// Applies a signed quantity step through the same absolute retail setter.
-    pub fn adjust_city_order(
-        &mut self,
-        nation: MajorNationId,
-        order: CityOrderId,
-        delta: i16,
-    ) -> CityOrderUpdate {
-        let quantity = self.city_order_quantity(nation, order);
-        self.set_city_order_quantity(nation, order, quantity + delta)
+    pub fn adjust_city_order(&mut self, order: CityOrderId, delta: i16) -> CityOrderUpdate {
+        let quantity = self.city_order_quantity(order);
+        self.set_city_order_quantity(order, quantity + delta)
     }
 }

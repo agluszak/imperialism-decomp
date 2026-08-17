@@ -105,18 +105,11 @@ pub(crate) fn cycle_map_interaction_selection(
     session: &mut GameSession,
     interaction: &mut StrategicInteraction,
 ) {
-    let nation = session.game.turn().active_nation;
+    let nation = session.active_major_nation().nation();
     let mut cursor = interaction.mode;
     let mut previous = interaction.mode;
     let mut visited = 0_u8;
-    if MajorNationId::from_nation(nation).is_none_or(|major| {
-        !session
-            .game
-            .nations()
-            .major(major)
-            .economy
-            .diplomacy_eligible
-    }) {
+    if !session.active_major().economy.diplomacy_eligible {
         visited = 7;
     }
 

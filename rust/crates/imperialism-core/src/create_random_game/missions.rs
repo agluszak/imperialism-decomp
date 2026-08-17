@@ -236,7 +236,10 @@ pub(super) fn initialize_ai_targets(
     live_zone_count: u16,
 ) {
     for nation in MajorNationId::all() {
-        let Some(auto) = nations.major_mut(nation).auto.as_mut() else {
+        let Some(auto) = nations
+            .major_mut(nation)
+            .and_then(|major| major.auto.as_mut())
+        else {
             continue;
         };
         auto.zone_targets

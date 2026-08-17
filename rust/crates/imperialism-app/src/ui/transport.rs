@@ -17,81 +17,81 @@ use imperialism_formats::*;
 #[derive(Clone, Copy)]
 struct TransportRowBinding {
     tag: FourCc,
-    allocation: TransportAllocation,
+    allocation: TransportRow,
 }
 
 const TRANSPORT_ROWS: [TransportRowBinding; 18] = [
     TransportRowBinding {
         tag: fourcc!("fish"),
-        allocation: TransportAllocation::FISH_AND_LIVESTOCK,
+        allocation: TransportRow::FishAndLivestock,
     },
     TransportRowBinding {
         tag: fourcc!("prod"),
-        allocation: TransportAllocation::FRUIT,
+        allocation: TransportRow::Fruit,
     },
     TransportRowBinding {
         tag: fourcc!("grai"),
-        allocation: TransportAllocation::GRAIN,
+        allocation: TransportRow::Grain,
     },
     TransportRowBinding {
         tag: fourcc!("timb"),
-        allocation: TransportAllocation::TIMBER,
+        allocation: TransportRow::Timber,
     },
     TransportRowBinding {
         tag: fourcc!("lumb"),
-        allocation: TransportAllocation::LUMBER,
+        allocation: TransportRow::Lumber,
     },
     TransportRowBinding {
         tag: fourcc!("furn"),
-        allocation: TransportAllocation::FURNITURE,
+        allocation: TransportRow::Furniture,
     },
     TransportRowBinding {
         tag: fourcc!("coal"),
-        allocation: TransportAllocation::COAL,
+        allocation: TransportRow::Coal,
     },
     TransportRowBinding {
         tag: fourcc!("iron"),
-        allocation: TransportAllocation::IRON,
+        allocation: TransportRow::Iron,
     },
     TransportRowBinding {
         tag: fourcc!("stee"),
-        allocation: TransportAllocation::STEEL,
+        allocation: TransportRow::Steel,
     },
     TransportRowBinding {
         tag: fourcc!("hard"),
-        allocation: TransportAllocation::HARDWARE,
+        allocation: TransportRow::Hardware,
     },
     TransportRowBinding {
         tag: fourcc!("cott"),
-        allocation: TransportAllocation::COTTON_AND_WOOL,
+        allocation: TransportRow::CottonAndWool,
     },
     TransportRowBinding {
         tag: fourcc!("fabr"),
-        allocation: TransportAllocation::FABRIC,
+        allocation: TransportRow::Fabric,
     },
     TransportRowBinding {
         tag: fourcc!("clot"),
-        allocation: TransportAllocation::CLOTHING,
+        allocation: TransportRow::Clothing,
     },
     TransportRowBinding {
         tag: fourcc!("oil "),
-        allocation: TransportAllocation::OIL,
+        allocation: TransportRow::Oil,
     },
     TransportRowBinding {
         tag: fourcc!("fuel"),
-        allocation: TransportAllocation::FUEL,
+        allocation: TransportRow::Fuel,
     },
     TransportRowBinding {
         tag: fourcc!("hors"),
-        allocation: TransportAllocation::HORSES,
+        allocation: TransportRow::Horses,
     },
     TransportRowBinding {
         tag: fourcc!("gold"),
-        allocation: TransportAllocation::GOLD,
+        allocation: TransportRow::Gold,
     },
     TransportRowBinding {
         tag: fourcc!("gems"),
-        allocation: TransportAllocation::GEMS,
+        allocation: TransportRow::Gems,
     },
 ];
 
@@ -110,16 +110,16 @@ struct TransportScreen;
 
 #[derive(Component, Clone, Copy)]
 struct TransportAdjust {
-    allocation: TransportAllocation,
+    allocation: TransportRow,
     delta: i16,
 }
 
 #[derive(Component, Clone, Copy)]
-struct TransportHover(TransportAllocation);
+struct TransportHover(TransportRow);
 
 #[derive(Clone, Copy)]
 enum TransportGaugeKind {
-    Allocation(TransportAllocation),
+    Allocation(TransportRow),
     Capacity,
 }
 
@@ -128,9 +128,9 @@ struct TransportCursor;
 
 #[derive(Component, Clone, Copy)]
 enum TransportDisplay {
-    Row(TransportAllocation),
-    RowCaption(TransportAllocation),
-    Track(TransportAllocation),
+    Row(TransportRow),
+    RowCaption(TransportRow),
+    Track(TransportRow),
     CapacityCaption,
     Money {
         resource: ResourceKind,
@@ -142,7 +142,7 @@ enum TransportDisplay {
         full_color: Color,
     },
     Limit {
-        allocation: TransportAllocation,
+        allocation: TransportRow,
         below_color: Color,
         reached_color: Color,
     },
@@ -325,9 +325,9 @@ fn bind_transport_controls(
                 line_height,
                 colors,
             ));
-        if let Some((resource, unit_value)) = if binding.allocation == TransportAllocation::GOLD {
+        if let Some((resource, unit_value)) = if binding.allocation == TransportRow::Gold {
             Some((ResourceKind::Gold, 200))
-        } else if binding.allocation == TransportAllocation::GEMS {
+        } else if binding.allocation == TransportRow::Gems {
             Some((ResourceKind::Gems, 500))
         } else {
             None
@@ -379,7 +379,7 @@ fn bind_transport_controls(
     ));
 }
 
-fn transport_track(left: i32, color: Color, allocation: Option<TransportAllocation>) -> impl Scene {
+fn transport_track(left: i32, color: Color, allocation: Option<TransportRow>) -> impl Scene {
     let display = allocation.map(|allocation| {
         bsn! {
             template(move |_context| Ok(TransportDisplay::Track(allocation)))
@@ -400,7 +400,7 @@ fn transport_track(left: i32, color: Color, allocation: Option<TransportAllocati
 }
 
 fn transport_row_overlay(
-    allocation: TransportAllocation,
+    allocation: TransportRow,
     track_left: i32,
     font: TextFont,
     layout: TextLayout,
@@ -549,10 +549,10 @@ fn on_transport_arrow_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let nation = session.active_major_nation();
-    session
-        .game
-        .step_transport_allocation(nation, action.allocation, action.delta);
+    let cotton_first = session.game.market().rows[TradeCommodity::Cotton].price
+        > session.game.market().rows[TradeCommodity::Wool].price;
+    let major = session.active_major_mut();
+    major.step_transport_allocation(cotton_first, action.allocation, action.delta);
 }
 
 fn sync_transport_text(
@@ -563,13 +563,12 @@ fn sync_transport_text(
     if !session.is_changed() && screens.is_empty() {
         return;
     }
-    let nation = session.active_major_nation();
-    let major = session.game.nations().major(nation);
+    let major = session.active_major();
     let economy = &major.economy;
     for (display, mut text) in &mut texts {
         match *display {
             TransportDisplay::RowCaption(allocation) => {
-                let status = session.game.transport_row_status(nation, allocation);
+                let status = major.transport_row_status(allocation);
                 text.0 = format!("{}  /  {}", status.allocated, status.available);
             }
             TransportDisplay::CapacityCaption => {
@@ -604,8 +603,8 @@ fn sync_transport_visual(
     if !session.is_changed() && screens.is_empty() {
         return;
     }
-    let nation = session.active_major_nation();
-    let economy = &session.game.nations().major(nation).economy;
+    let major = session.active_major();
+    let economy = &major.economy;
     for (display, mut node, mut visibility, mut color) in &mut displays {
         match *display {
             TransportDisplay::Gauge {
@@ -615,7 +614,7 @@ fn sync_transport_visual(
             } => {
                 let (value, total) = match kind {
                     TransportGaugeKind::Allocation(allocation) => {
-                        let status = session.game.transport_row_status(nation, allocation);
+                        let status = major.transport_row_status(allocation);
                         *visibility = if status.adjustable {
                             Visibility::Visible
                         } else {
@@ -640,7 +639,7 @@ fn sync_transport_visual(
                 below_color,
                 reached_color,
             } => {
-                let status = session.game.transport_row_status(nation, allocation);
+                let status = major.transport_row_status(allocation);
                 if !status.adjustable {
                     *visibility = Visibility::Hidden;
                     continue;
@@ -676,20 +675,20 @@ fn sync_transport_presence(
     if !session.is_changed() && screens.is_empty() {
         return;
     }
-    let nation = session.active_major_nation();
+    let major = session.active_major();
     for (entity, display, mut visibility, disabled) in &mut rows {
         let allocation = match *display {
             TransportDisplay::Row(allocation)
             | TransportDisplay::RowCaption(allocation)
             | TransportDisplay::Track(allocation) => allocation,
             TransportDisplay::Money { resource, .. } => match resource {
-                ResourceKind::Gold => TransportAllocation::GOLD,
-                ResourceKind::Gems => TransportAllocation::GEMS,
+                ResourceKind::Gold => TransportRow::Gold,
+                ResourceKind::Gems => TransportRow::Gems,
                 _ => unreachable!("only gold and gems have transport money captions"),
             },
             _ => continue,
         };
-        let status = session.game.transport_row_status(nation, allocation);
+        let status = major.transport_row_status(allocation);
         *visibility = if status.adjustable {
             Visibility::Visible
         } else {
@@ -704,7 +703,7 @@ fn sync_transport_presence(
         }
     }
     for (entity, action, disabled) in &actions {
-        let status = session.game.transport_row_status(nation, action.allocation);
+        let status = major.transport_row_status(action.allocation);
         let enabled = if action.delta < 0 {
             status.can_decrease
         } else {
@@ -734,30 +733,28 @@ fn sync_transport_cursor(
     let Ok(mut text) = cursor.single_mut() else {
         return;
     };
-    let nation = session.active_major_nation();
+    let major = session.active_major();
     text.0 = rows
         .iter()
         .find_map(|(hover, hovered)| {
             hovered
                 .get()
-                .then(|| transport_hover_text(&assets, &session.game, nation, hover.0))
+                .then(|| transport_hover_text(&assets, major, hover.0))
         })
         .unwrap_or_default();
 }
 
 fn transport_hover_text(
     assets: &RetailUiAssets,
-    state: &GameState,
-    nation: MajorNationId,
-    allocation: TransportAllocation,
+    major: &MajorNation,
+    allocation: TransportRow,
 ) -> String {
-    let major = state.nations().major(nation);
     let city = &major.city;
     let economy = &major.economy;
     let (resource, _) = allocation.resources();
-    let name = if allocation == TransportAllocation::COTTON_AND_WOOL {
+    let name = if allocation == TransportRow::CottonAndWool {
         transport_string(assets, 2)
-    } else if allocation == TransportAllocation::FISH_AND_LIVESTOCK {
+    } else if allocation == TransportRow::FishAndLivestock {
         transport_string(assets, 3)
     } else {
         assets
@@ -765,8 +762,8 @@ fn transport_hover_text(
             .expect("retail transport commodity name must load")
     };
 
-    if allocation == TransportAllocation::GOLD || allocation == TransportAllocation::GEMS {
-        let unit_value = if allocation == TransportAllocation::GOLD {
+    if allocation == TransportRow::Gold || allocation == TransportRow::Gems {
+        let unit_value = if allocation == TransportRow::Gold {
             200
         } else {
             500
@@ -779,27 +776,27 @@ fn transport_hover_text(
 
     let stock = allocation_amount(allocation, |resource| city.stockpile[resource]);
     let building = |slot| city.building_type(slot, economy, major.common.owned_region_count());
-    let needed = if allocation == TransportAllocation::COTTON_AND_WOOL {
+    let needed = if allocation == TransportRow::CottonAndWool {
         Some(building(CityFacilitySlot::TextileMill) * 2)
-    } else if allocation == TransportAllocation::TIMBER {
+    } else if allocation == TransportRow::Timber {
         Some(building(CityFacilitySlot::LumberMill) * 2)
-    } else if allocation == TransportAllocation::COAL || allocation == TransportAllocation::IRON {
+    } else if allocation == TransportRow::Coal || allocation == TransportRow::Iron {
         Some(building(CityFacilitySlot::SteelMill))
-    } else if allocation == TransportAllocation::OIL {
+    } else if allocation == TransportRow::Oil {
         Some(building(CityFacilitySlot::OilRefinery) * 2)
-    } else if allocation == TransportAllocation::FABRIC {
+    } else if allocation == TransportRow::Fabric {
         Some(building(CityFacilitySlot::ClothingFactory) * 2)
-    } else if allocation == TransportAllocation::LUMBER {
+    } else if allocation == TransportRow::Lumber {
         Some(building(CityFacilitySlot::FurnitureFactory) * 2)
-    } else if allocation == TransportAllocation::STEEL {
+    } else if allocation == TransportRow::Steel {
         Some(building(CityFacilitySlot::Metalworks) * 2)
-    } else if allocation == TransportAllocation::FUEL {
+    } else if allocation == TransportRow::Fuel {
         Some(building(CityFacilitySlot::PowerPlant) * 2)
-    } else if allocation == TransportAllocation::GRAIN {
+    } else if allocation == TransportRow::Grain {
         Some(city.population.predicted_need(ResourceKind::Grain))
-    } else if allocation == TransportAllocation::FRUIT {
+    } else if allocation == TransportRow::Fruit {
         Some(city.population.predicted_need(ResourceKind::Fruit))
-    } else if allocation == TransportAllocation::FISH_AND_LIVESTOCK {
+    } else if allocation == TransportRow::FishAndLivestock {
         Some(city.population.predicted_need(ResourceKind::Livestock))
     } else {
         None
@@ -811,7 +808,7 @@ fn transport_hover_text(
             &[&name, &stock.to_string(), &needed.to_string()],
         )
     } else {
-        let available = state.transport_row_status(nation, allocation).available;
+        let available = major.transport_row_status(allocation).available;
         fill_brackets(
             &transport_string(assets, 8),
             &[&name, &available.to_string()],
@@ -825,10 +822,7 @@ fn transport_string(assets: &RetailUiAssets, offset: i16) -> String {
         .expect("retail transport string must load")
 }
 
-fn allocation_amount(
-    allocation: TransportAllocation,
-    mut amount: impl FnMut(ResourceKind) -> i16,
-) -> i16 {
+fn allocation_amount(allocation: TransportRow, mut amount: impl FnMut(ResourceKind) -> i16) -> i16 {
     let (primary, secondary) = allocation.resources();
     amount(primary) + secondary.map_or(0, amount)
 }
@@ -966,11 +960,18 @@ mod tests {
             .into_iter()
             .find(|binding| {
                 state
-                    .transport_row_status(nation, binding.allocation)
+                    .nations()
+                    .major(nation)
+                    .unwrap()
+                    .transport_row_status(binding.allocation)
                     .can_increase
             })
             .expect("retail beginning-of-game fixture has an adjustable transport row");
-        let before = state.transport_row_status(nation, binding.allocation);
+        let before = state
+            .nations()
+            .major(nation)
+            .unwrap()
+            .transport_row_status(binding.allocation);
 
         let mut app = App::new();
         app.add_plugins((MinimalPlugins, AssetPlugin::default(), ScenePlugin))
@@ -1020,11 +1021,11 @@ mod tests {
 
         activate(&mut app, right);
 
-        let after = app
-            .world()
-            .resource::<GameSession>()
-            .game
-            .transport_row_status(nation, binding.allocation);
+        let session = app.world().resource::<GameSession>();
+        let after = session
+            .active_major()
+            .1
+            .transport_row_status(binding.allocation);
         assert_eq!(after.allocated, before.allocated + 1);
         let (gauge, visibility, color) = app
             .world_mut()
@@ -1061,11 +1062,11 @@ mod tests {
         );
 
         activate(&mut app, left);
-        let restored = app
-            .world()
-            .resource::<GameSession>()
-            .game
-            .transport_row_status(nation, binding.allocation);
+        let session = app.world().resource::<GameSession>();
+        let restored = session
+            .active_major()
+            .1
+            .transport_row_status(binding.allocation);
         assert_eq!(restored.allocated, before.allocated);
         let caption = app
             .world_mut()

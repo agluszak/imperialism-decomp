@@ -274,7 +274,10 @@ fn reads_the_exact_v62_diplomacy_payload_and_endianness() {
 }
 
 fn first_great_power_mut(save: &mut LegacySaveV62) -> &mut LegacyGreatPowerState {
-    match &mut save.major_nations[0] {
+    match save.major_nations[0]
+        .as_mut()
+        .expect("fixture has a first great-power slot")
+    {
         LegacyMajorNationState::Auto(nation) => &mut nation.great_power,
         LegacyMajorNationState::Other(nation) => nation,
     }
@@ -457,8 +460,8 @@ fn retail_projection_preserves_minister_identity_and_direct_state() {
     assert_eq!(
         state
             .nations()
-            .majors()
-            .map(|nation| nation.economy.foreign_minister_personality)
+            .live_majors()
+            .map(|(_, nation)| nation.economy.foreign_minister_personality)
             .collect::<Vec<_>>(),
         [
             ForeignMinisterPersonality::Trader,
@@ -473,13 +476,13 @@ fn retail_projection_preserves_minister_identity_and_direct_state() {
     assert_eq!(
         state
             .nations()
-            .majors()
-            .map(|nation| nation.economy.foreign_minister_skill_index)
+            .live_majors()
+            .map(|(_, nation)| nation.economy.foreign_minister_skill_index)
             .collect::<Vec<_>>(),
         [0, 4, 0, 4, 0, 5, 0]
     );
-    assert!(state.nations().majors().enumerate().all(|(index, nation)| {
-        let expansions = if index < 6 {
+    assert!(state.nations().live_majors().all(|(slot, nation)| {
+        let expansions = if slot.get() < 6 {
             ExpansionOrderTable::from_array([2, 1, 2, 0, 2, 0, 0])
         } else {
             ExpansionOrderTable::default()
@@ -514,8 +517,8 @@ fn retail_projection_preserves_minister_identity_and_direct_state() {
     assert_eq!(
         state
             .nations()
-            .majors()
-            .map(|nation| nation.towns.keys().next().copied())
+            .live_majors()
+            .map(|(_, nation)| nation.towns.keys().next().copied())
             .collect::<Vec<_>>(),
         [3_494, 2_992, 2_862, 1_563, 1_420, 4_555, 1_685].map(|tile| Some(TileId::new(tile)))
     );
@@ -523,6 +526,7 @@ fn retail_projection_preserves_minister_identity_and_direct_state() {
         state
             .nations()
             .major(MajorNationId::new(6))
+            .unwrap()
             .economy
             .foreign_minister_personality,
         ForeignMinisterPersonality::Base,
@@ -551,6 +555,7 @@ fn projects_mission_holds_and_ordered_pending_development_actions() {
         &*state
             .nations()
             .major(MajorNationId::new(0))
+            .unwrap()
             .economy
             .interior_civilian,
     )
@@ -577,7 +582,7 @@ fn retail_projection_preserves_country_and_province_semantics() {
     let save = LegacySaveV62::parse(RETAIL_FIXTURE);
     let state = save.game_state(game_context());
 
-    let nation_zero = &state.nations().major(MajorNationId::new(0)).common;
+    let nation_zero = &state.nations().major(MajorNationId::new(0)).unwrap().common;
     assert_eq!(nation_zero.status(), CountryStatus::Independent);
     assert_eq!(
         nation_zero.owned_regions(),
@@ -675,7 +680,8 @@ fn semantic_projection_preserves_inactive_pending_action_payload() {
     assert_eq!(
         state
             .nations()
-            .majors()
+            .live_majors()
+            .map(|(_, major)| major)
             .next()
             .unwrap()
             .economy
@@ -697,6 +703,7 @@ fn navy_growth_handled_reward_levels_round_trip_through_retail_save() {
     let pending = state
         .nations()
         .major(MajorNationId::new(0))
+        .unwrap()
         .economy
         .pending_actions[PendingActionKind::NavyGrowthReward];
     assert_eq!(pending.status(), PendingActionStatus::from_retail(0x34));
@@ -709,6 +716,7 @@ fn navy_growth_handled_reward_levels_round_trip_through_retail_save() {
     let pending = round_tripped
         .nations()
         .major(MajorNationId::new(0))
+        .unwrap()
         .economy
         .pending_actions[PendingActionKind::NavyGrowthReward];
     assert_eq!(pending.status(), PendingActionStatus::from_retail(0x34));
@@ -725,6 +733,7 @@ fn navy_growth_handled_reward_levels_round_trip_through_retail_save() {
     let pending = level_six
         .nations()
         .major(MajorNationId::new(0))
+        .unwrap()
         .economy
         .pending_actions[PendingActionKind::NavyGrowthReward];
     assert_eq!(pending.status(), PendingActionStatus::from_retail(0x39));
@@ -753,6 +762,7 @@ fn deal_book_projection_reconstructs_retail_sorted_load_order() {
         state
             .nations()
             .major(MajorNationId::new(0))
+            .unwrap()
             .economy
             .deal_book[TradeCommodity::Cotton],
         vec![
@@ -787,6 +797,23 @@ fn game_state_write_round_trips_semantically_through_the_parser() {
     let round_tripped =
         load_game_from_bytes(&bytes, game_context()).expect("rust-written save loads");
     assert_eq!(round_tripped, original);
+}
+
+#[test]
+fn eliminated_major_slot_stays_absent_through_save_and_load() {
+    let eliminated = MajorNationId::new(0);
+    let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
+    save.simulation.nation_availability[usize::from(eliminated.get())] = 0;
+    save.simulation.nation_count -= 1;
+    save.major_nations[eliminated] = None;
+
+    let state = LegacySaveV62::parse(&save.to_bytes()).game_state(game_context());
+    assert!(state.nations().major(eliminated).is_none());
+    assert!(state.nations().major(MajorNationId::new(1)).is_some());
+
+    let bytes = LegacySaveV62::from_game_state(&state, "- Autosave -", 0).to_bytes();
+    let round_tripped = LegacySaveV62::parse(&bytes).game_state(game_context());
+    assert!(round_tripped.nations().major(eliminated).is_none());
 }
 
 #[test]

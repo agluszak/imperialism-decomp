@@ -42,14 +42,15 @@ impl GameState {
         self.clear_all_transient_navy_orders();
         self.apply_military_cleanup_supported_subset();
         let metrics = self.recompute_nation_order_priority_metrics();
-        for nation in MajorNationId::all() {
-            if !self.nation_is_eligible_for_optional_phase(nation.nation()) {
-                continue;
-            }
-            if self.is_auto(nation) {
-                self.reassess_missions_with_metrics(nation.nation(), Some(&metrics));
-                self.prune_invalid_defend_missions(nation.nation());
-            }
+        let nations: Vec<_> = self
+            .nations
+            .live_majors()
+            .filter(|(_, major)| major.is_auto())
+            .map(|(nation, _)| nation)
+            .collect();
+        for nation in nations {
+            self.reassess_missions_with_metrics(nation.nation(), Some(&metrics));
+            self.prune_invalid_defend_missions(nation.nation());
         }
         let decade = self.turn.economic_turn / 40;
         if self.turn.economic_turn % 40 == 0
@@ -111,11 +112,13 @@ impl GameState {
             }
             metrics.weighted_military[slot] = metrics.mobile_score[slot] * power_ratio;
         }
-        for nation in MajorNationId::all() {
-            if !self.nation_is_eligible_for_optional_phase(nation.nation()) || !self.is_auto(nation)
-            {
-                continue;
-            }
+        let nations: Vec<_> = self
+            .nations
+            .live_majors()
+            .filter(|(_, major)| major.is_auto())
+            .map(|(nation, _)| nation)
+            .collect();
+        for nation in nations {
             self.write_ai_pressure_scores(nation, &mut metrics);
         }
         metrics
@@ -248,13 +251,13 @@ impl GameState {
     /// AutoGreatPower pressure scores.
     #[cfg(feature = "oracle")]
     pub(crate) fn reassess_control_sea_missions(&mut self) {
-        for nation in MajorNationId::all() {
-            if !self.nation_is_eligible_for_optional_phase(nation.nation()) {
-                continue;
-            }
-            if !self.is_auto(nation) {
-                continue;
-            }
+        let nations: Vec<_> = self
+            .nations
+            .live_majors()
+            .filter(|(_, major)| major.is_auto())
+            .map(|(nation, _)| nation)
+            .collect();
+        for nation in nations {
             let missions: Vec<_> = self
                 .missions
                 .iter()
@@ -444,15 +447,21 @@ impl GameState {
             }
         }
         self.recompute_tile_strategic_score_heatmap();
-        for nation in MajorNationId::all() {
-            if !self.nation_is_eligible_for_optional_phase(nation.nation()) {
-                continue;
-            }
-            if self.is_auto(nation) {
+        let nations: Vec<_> = self.nations.live_major_ids().collect();
+        for nation in nations {
+            let auto = self
+                .nations
+                .major(nation)
+                .expect("live major ID remains occupied")
+                .is_auto();
+            if auto {
                 self.adopt_unassigned_militia_into_defend_missions(nation.nation());
                 self.assign_unassigned_ships_to_navy_missions(nation.nation());
             }
-            self.commit_purchased_items(nation);
+            self.nations
+                .major_mut(nation)
+                .expect("eligible cleanup nation must be live")
+                .commit_purchased_items();
         }
     }
 
@@ -630,13 +639,25 @@ mod tests {
         let eligible = MajorNationId::new(0);
         let ineligible = MajorNationId::new(1);
         state.nations.majors[eligible]
+            .as_mut()
+            .unwrap()
             .economy
             .purchased_items_by_resource[ResourceKind::Food] = 5;
-        state.nations.majors[eligible].city.stockpile[ResourceKind::Food] = 1;
+        state.nations.majors[eligible]
+            .as_mut()
+            .unwrap()
+            .city
+            .stockpile[ResourceKind::Food] = 1;
         state.nations.majors[ineligible]
+            .as_mut()
+            .unwrap()
             .economy
             .purchased_items_by_resource[ResourceKind::Food] = 7;
-        state.nations.majors[ineligible].city.stockpile[ResourceKind::Food] = 2;
+        state.nations.majors[ineligible]
+            .as_mut()
+            .unwrap()
+            .city
+            .stockpile[ResourceKind::Food] = 2;
         state.set_country_status(
             ineligible.nation(),
             CountryStatus::ProtectorateOf(NationId::new(0)),
@@ -665,22 +686,34 @@ mod tests {
             );
         }
         assert_eq!(
-            state.nations.majors[eligible].city.stockpile[ResourceKind::Food],
+            state.nations.majors[eligible]
+                .as_mut()
+                .unwrap()
+                .city
+                .stockpile[ResourceKind::Food],
             6
         );
         assert_eq!(
             state.nations.majors[eligible]
+                .as_mut()
+                .unwrap()
                 .economy
                 .purchased_items_by_resource[ResourceKind::Food],
             0
         );
         assert_eq!(
-            state.nations.majors[ineligible].city.stockpile[ResourceKind::Food],
+            state.nations.majors[ineligible]
+                .as_mut()
+                .unwrap()
+                .city
+                .stockpile[ResourceKind::Food],
             2,
             "protectorates skip purchase commit"
         );
         assert_eq!(
             state.nations.majors[ineligible]
+                .as_mut()
+                .unwrap()
                 .economy
                 .purchased_items_by_resource[ResourceKind::Food],
             7
@@ -691,7 +724,7 @@ mod tests {
     fn cleanup_adopts_unassigned_militia_into_the_defend_mission() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].auto = Some(AutoGreatPowerState::default());
+        state.nations.majors[nation].as_mut().unwrap().auto = Some(AutoGreatPowerState::default());
         let province = ProvinceId::new(3);
         seed_owned_province(&mut state, province, nation.nation());
         let id = state.unit_ids.next_military();
@@ -729,7 +762,7 @@ mod tests {
     fn cleanup_prunes_a_defend_mission_whose_province_changed_owner() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].auto = Some(AutoGreatPowerState::default());
+        state.nations.majors[nation].as_mut().unwrap().auto = Some(AutoGreatPowerState::default());
         let province = ProvinceId::new(3);
         seed_owned_province(&mut state, province, NationId::new(1));
         let mission = state.object_ids.mission();
@@ -814,7 +847,7 @@ mod tests {
     fn reassess_writes_defend_needs_from_the_baseline_profile() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].auto = Some(AutoGreatPowerState::default());
+        state.nations.majors[nation].as_mut().unwrap().auto = Some(AutoGreatPowerState::default());
         let province = ProvinceId::new(3);
         seed_owned_province(&mut state, province, nation.nation());
         state.map.provinces[province].set_city_score(2500);
@@ -847,7 +880,7 @@ mod tests {
     fn reassess_writes_attack_needs_from_the_unfortified_output_profile() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].auto = Some(AutoGreatPowerState::default());
+        state.nations.majors[nation].as_mut().unwrap().auto = Some(AutoGreatPowerState::default());
         let target = ProvinceId::new(4);
         seed_owned_province(&mut state, target, NationId::new(1));
         state.map.provinces[target].set_city_score(1000);
@@ -876,7 +909,7 @@ mod tests {
     fn reassess_fills_control_sea_needs_when_the_zone_has_no_hostiles() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].auto = Some(AutoGreatPowerState::default());
+        state.nations.majors[nation].as_mut().unwrap().auto = Some(AutoGreatPowerState::default());
         let tile = TileId::new(1);
         state.map[tile].former_owner_nation = Some(TileOwnerTag::from_nation(nation.nation()));
         state.ocean.zones = vec![

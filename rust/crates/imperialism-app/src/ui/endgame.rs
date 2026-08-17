@@ -326,10 +326,9 @@ fn project_game_score(
     if super::projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let Some(nation) = MajorNationId::from_nation(session.game.turn().active_nation) else {
-        return;
-    };
-    let rows = session.game.generate_game_score(nation).rows();
+    let nation = session.active_major_nation();
+    let major = session.active_major();
+    let rows = session.game.generate_game_score(nation, major).rows();
     for (slot, mut text) in &mut values {
         text.0 = rows[slot.0].to_string();
     }
@@ -341,20 +340,23 @@ fn on_game_score_close(
     save_dir: Res<SaveDirectory>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    if let Some(nation) = MajorNationId::from_nation(session.game.turn().active_nation) {
-        persist_high_score(&session.game, nation, &save_dir.0);
-    }
+    let nation = session.active_major_nation();
+    persist_high_score(&session.game, nation, session.active_major(), &save_dir.0);
     apply_turn_stop(session.game.close_game_score(), &mut next_state);
 }
 
-fn persist_high_score(state: &GameState, nation: MajorNationId, directory: &std::path::Path) {
+fn persist_high_score(
+    state: &GameState,
+    nation: MajorNationId,
+    major: &MajorNation,
+    directory: &std::path::Path,
+) {
     let path = directory.join("scores.dat");
     let mut table = std::fs::read(&path)
         .map(|bytes| read_scores_dat(&bytes))
         .unwrap_or_else(|_| empty_high_score_table());
-    let score = state.generate_game_score(nation);
-    let name = state.nations().display_name(nation.nation()).unwrap_or("");
-    insert_high_score(&mut table, score.total, name);
+    let score = state.generate_game_score(nation, major);
+    insert_high_score(&mut table, score.total, &major.common.display_name);
     let _ = std::fs::write(&path, write_scores_dat(&table));
 }
 

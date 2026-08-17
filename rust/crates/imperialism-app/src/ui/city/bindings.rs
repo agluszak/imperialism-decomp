@@ -378,17 +378,16 @@ pub(in crate::ui::city) enum CityBuildingClick {
 }
 
 pub(in crate::ui::city) fn city_building_click(
-    state: &GameState,
-    nation: MajorNationId,
+    major: &MajorNation,
+    oil_drilling: bool,
     slot: CityFacilitySlot,
 ) -> Option<CityBuildingClick> {
-    let major = state.nations().major(nation);
     city_building_click_action(
         slot,
         major
             .city
             .building_type(slot, &major.economy, major.common.owned_region_count()),
-        state.technology().city_capabilities_by_nation[nation].oil_drilling,
+        oil_drilling,
     )
 }
 
@@ -405,16 +404,15 @@ fn city_building_click_action(
 }
 
 pub(in crate::ui::city) fn city_building_level(
-    state: &GameState,
-    nation: MajorNationId,
+    major: &MajorNation,
+    advanced_iron_working: bool,
     slot: CityFacilitySlot,
 ) -> i16 {
-    let major = state.nations().major(nation);
     major.city.next_building_type(
         slot,
         &major.economy,
         major.common.owned_region_count(),
-        state.technology().city_capabilities_by_nation[nation].advanced_iron_working,
+        advanced_iron_working,
     )
 }
 
@@ -516,12 +514,13 @@ mod tests {
     fn beginning_of_game_does_not_open_unbuilt_oil_or_power() {
         let state = crate::ui::test_support::beginning_of_game();
         let nation = MajorNationId::from_nation(state.turn().selected_nation).unwrap();
+        let major = state.nations().major(nation).unwrap();
         assert_eq!(
-            city_building_click(&state, nation, CityFacilitySlot::OilRefinery),
+            city_building_click(major, false, CityFacilitySlot::OilRefinery),
             None
         );
         assert_eq!(
-            city_building_click(&state, nation, CityFacilitySlot::PowerPlant),
+            city_building_click(major, false, CityFacilitySlot::PowerPlant),
             None
         );
         assert!(!city_oil_industry_unlocked(
@@ -530,7 +529,7 @@ mod tests {
             CityFacilitySlot::OilRefinery
         ));
         assert_eq!(
-            city_building_click(&state, nation, CityFacilitySlot::TextileMill),
+            city_building_click(major, false, CityFacilitySlot::TextileMill),
             Some(CityBuildingClick::Production)
         );
     }

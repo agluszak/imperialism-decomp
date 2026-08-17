@@ -167,7 +167,7 @@ pub use technology::{
     TechnologyResearchStatus, TechnologyState, TechnologyTable, UniversityTechnologyState,
 };
 pub use territory::{CountryStatus, ProvinceState};
-pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};
+pub use trade::{PlayerTradeOrder, TransportRow, TransportRowStatus};
 pub use trade_phase::{PendingTradeOffer, TradeProgress, TradeSession};
 pub use turn_flow::{
     CinematicKind, PhaseCode, ScenarioMapId, TurnContinuation, TurnState, TurnStop,

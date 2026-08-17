@@ -51,9 +51,12 @@ impl GameState {
                 continue;
             }
             self.pay_for_military(nation);
-            if self.nations.major(nation).auto.is_none() {
-                self.nations.majors[nation].economy.army_movement_budget =
-                    i32::from(self.nations.majors[nation].economy.capacities.transport) / 5;
+            let Some(major) = self.nations.major_mut(nation) else {
+                continue;
+            };
+            if major.auto.is_none() {
+                major.economy.army_movement_budget =
+                    i32::from(major.economy.capacities.transport) / 5;
             } else {
                 self.select_and_queue_advisory_map_missions_for(nation);
                 self.give_auto_great_power_army_orders(nation.nation());
@@ -140,10 +143,10 @@ impl GameState {
                 self.redeploy_units_stationed_in(&units, present, attack.target_province);
             } else if !self.at_war(nation, owner)
                 && let Some(major) = MajorNationId::from_nation(nation)
-                && self.nations.majors[major]
-                    .economy
-                    .diplomacy_policy_by_nation[owner]
-                    != Some(DiplomacyPolicy::DeclareWar)
+                && self.nations.major(major).is_some_and(|major| {
+                    major.economy.diplomacy_policy_by_nation[owner]
+                        != Some(DiplomacyPolicy::DeclareWar)
+                })
             {
                 self.post_policy(major, owner, DiplomacyPolicy::DeclareWar);
             }
@@ -418,7 +421,10 @@ mod tests {
         assert_eq!(unit.order.code(), MilitaryOrderCode::Sleep);
         assert_eq!(unit.strength, 500);
         assert_eq!(
-            state.nations.majors[MajorNationId::new(0)]
+            state
+                .nations
+                .major(MajorNationId::new(0))
+                .expect("test state has every major")
                 .economy
                 .army_movement_budget,
             0
@@ -429,7 +435,11 @@ mod tests {
     fn auto_great_power_defend_orders_redeploy_units_off_the_held_province() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[nation].auto = Some(AutoGreatPowerState::default());
+        state
+            .nations
+            .major_mut(nation)
+            .expect("test state has every major")
+            .auto = Some(AutoGreatPowerState::default());
         let hold = ProvinceId::new(0);
         let away = ProvinceId::new(1);
         let id = state.unit_ids.next_military();
@@ -533,10 +543,17 @@ mod tests {
         let mut state = game_state();
         let attacker = MajorNationId::new(0);
         let defender = MajorNationId::new(1);
-        state.nations.majors[attacker].auto = Some(AutoGreatPowerState::default());
+        state
+            .nations
+            .major_mut(attacker)
+            .expect("test state has every major")
+            .auto = Some(AutoGreatPowerState::default());
         set_owned_province(&mut state, 0, 0, &[1]);
         set_owned_province(&mut state, 1, 1, &[0]);
-        state.nations.majors[attacker]
+        state
+            .nations
+            .major_mut(attacker)
+            .expect("test state has every major")
             .economy
             .candidate_nation_flags[defender.nation()] = 1;
         for _ in 0..20 {
@@ -560,7 +577,10 @@ mod tests {
             other => panic!("expected a direct attack mission, got {other:?}"),
         }
         assert_eq!(
-            state.nations.majors[attacker]
+            state
+                .nations
+                .major(attacker)
+                .expect("test state has every major")
                 .auto
                 .as_ref()
                 .unwrap()
@@ -574,10 +594,17 @@ mod tests {
         let mut state = game_state();
         let attacker = MajorNationId::new(0);
         let defender = MajorNationId::new(1);
-        state.nations.majors[attacker].auto = None;
+        state
+            .nations
+            .major_mut(attacker)
+            .expect("test state has every major")
+            .auto = None;
         set_owned_province(&mut state, 0, 0, &[1]);
         set_owned_province(&mut state, 1, 1, &[0]);
-        state.nations.majors[attacker]
+        state
+            .nations
+            .major_mut(attacker)
+            .expect("test state has every major")
             .economy
             .candidate_nation_flags[defender.nation()] = 1;
         for _ in 0..20 {

@@ -216,8 +216,8 @@ impl DealBookCategory {
 }
 
 impl GameState {
-    pub fn deal_book_history(&self, nation: MajorNationId) -> DealBookHistory {
-        let economy = &self.nations.major(nation).economy;
+    pub fn deal_book_history(&self, major: &MajorNation) -> DealBookHistory {
+        let economy = &major.economy;
         let mut sold = Vec::new();
         let mut bought = Vec::new();
         for commodity in all_trade_commodities() {
@@ -363,14 +363,18 @@ fn bidders_for(state: &GameState, commodity: TradeCommodity, seller: NationId) -
             continue;
         }
         let from_seller = MajorNationId::from_nation(seller).is_some_and(|seller| {
-            state.nations.major(seller).economy.deal_book[commodity]
-                .iter()
-                .any(|entry| entry.kind == DealBookEntryKind::Accept && entry.nation == buyer)
+            state.nations.major(seller).is_some_and(|major| {
+                major.economy.deal_book[commodity]
+                    .iter()
+                    .any(|entry| entry.kind == DealBookEntryKind::Accept && entry.nation == buyer)
+            })
         });
         let from_buyer = MajorNationId::from_nation(buyer).is_some_and(|buyer| {
-            state.nations.major(buyer).economy.deal_book[commodity]
-                .iter()
-                .any(|entry| entry.kind == DealBookEntryKind::Offer && entry.nation == seller)
+            state.nations.major(buyer).is_some_and(|major| {
+                major.economy.deal_book[commodity]
+                    .iter()
+                    .any(|entry| entry.kind == DealBookEntryKind::Offer && entry.nation == seller)
+            })
         });
         if from_seller || from_buyer {
             bidders.push(buyer);
@@ -527,7 +531,7 @@ mod tests {
     #[test]
     fn first_entry_kind_splits_bought_from_sold_and_keeps_the_commodity_together() {
         let mut state = game_state();
-        let economy = &mut state.nations.major_mut(major(0)).economy;
+        let economy = &mut state.nations.major_mut(major(0)).unwrap().economy;
         economy.deal_book[TradeCommodity::Cotton] = vec![
             entry(DealBookEntryKind::Accept, 3, 2, 100),
             entry(DealBookEntryKind::Offer, 4, 1, 100),
@@ -536,7 +540,7 @@ mod tests {
         economy.deal_book[TradeCommodity::Arms] =
             vec![entry(DealBookEntryKind::Accept, 1, 0, -123_456)];
 
-        let history = state.deal_book_history(major(0));
+        let history = state.deal_book_history(state.nations.major(major(0)).unwrap());
         assert!(matches!(
             &history.sold[..],
             [
@@ -565,7 +569,7 @@ mod tests {
     #[test]
     fn empty_bought_page_still_exists_and_sold_always_has_totals() {
         let state = game_state();
-        let history = state.deal_book_history(major(0));
+        let history = state.deal_book_history(state.nations.major(major(0)).unwrap());
         assert!(history.bought.is_empty());
         assert_eq!(history.bought_pages().len(), 1);
         assert!(history.bought_pages()[0].is_empty());
@@ -580,7 +584,7 @@ mod tests {
     #[test]
     fn totals_include_the_pressure_line_and_remaining_budget() {
         let mut state = game_state();
-        let economy = &mut state.nations.major_mut(major(0)).economy;
+        let economy = &mut state.nations.major_mut(major(0)).unwrap().economy;
         economy.budget_pool_base = 200;
         economy.budget_pool_delta = 50;
         economy.military_expenses = 20;
@@ -588,7 +592,9 @@ mod tests {
         economy.pressure_counter = 1;
         economy.escalation_counter = 8;
         economy.diplomacy_budget_base = 50_000;
-        let totals = state.deal_book_history(major(0)).totals;
+        let totals = state
+            .deal_book_history(state.nations.major(major(0)).unwrap())
+            .totals;
         assert_eq!(totals.remaining, 220);
         assert_eq!(totals.height(), 150);
         assert_eq!(totals.diplomacy_budget_base, 50_000);
@@ -609,11 +615,11 @@ mod tests {
             consortium_members: [MinorNationId::new(7); 4],
             trade: MinorTradeState::default(),
         });
-        let economy = &mut state.nations.major_mut(major(0)).economy;
+        let economy = &mut state.nations.major_mut(major(0)).unwrap().economy;
         economy.aid_allocation_by_minor_nation[MinorNationId::new(7)][ResourceKind::Grain] = 40;
         economy.aid_allocation_by_minor_nation[MinorNationId::new(8)][ResourceKind::Grain] = 15;
 
-        let history = state.deal_book_history(major(0));
+        let history = state.deal_book_history(state.nations.major(major(0)).unwrap());
         assert!(matches!(
             &history.sold[..],
             [
@@ -634,11 +640,13 @@ mod tests {
     #[test]
     fn commodity_headers_repeat_when_a_group_continues_on_the_next_page() {
         let mut state = game_state();
-        let economy = &mut state.nations.major_mut(major(0)).economy;
+        let economy = &mut state.nations.major_mut(major(0)).unwrap().economy;
         economy.deal_book[TradeCommodity::Cotton] = (0..12)
             .map(|index| entry(DealBookEntryKind::Accept, 1, index + 1, 100))
             .collect();
-        let pages = state.deal_book_history(major(0)).sold_pages();
+        let pages = state
+            .deal_book_history(state.nations.major(major(0)).unwrap())
+            .sold_pages();
         assert!(pages.len() >= 2);
         assert!(matches!(
             pages[0][0],
