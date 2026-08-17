@@ -141,14 +141,14 @@ impl GameState {
 
     pub(crate) fn assign_unassigned_ships_to_navy_missions(&mut self, nation: NationId) {
         while let Some(mission_id) = self.missions.iter().find_map(|(&id, mission)| {
-            mission.nation == nation && !mission.held && navy_state(&mission.data).is_some()
-        .then_some(id) }) {
+            mission.nation == nation
+                && !mission.held
+                && navy_state(&mission.data).is_some().then_some(id)
+        }) {
             let assigned = assigned_navy_ships(&self.missions);
-            let Some(ship) = self
-                .ships
-                .iter()
-                .find_map(|(&id, ship)| (ship.nation == nation && !assigned.contains(&id)).then_some(id))
-            else {
+            let Some(ship) = self.ships.iter().find_map(|(&id, ship)| {
+                (ship.nation == nation && !assigned.contains(&id)).then_some(id)
+            }) else {
                 break;
             };
             if let Some(navy) = self
@@ -558,11 +558,8 @@ impl GameState {
         };
         for (&ship, &selected) in &force.ships {
             if selected {
-                sum += descriptor_weight(
-                    self.ship(ship)
-                        .expect("task-force ship exists")
-                        .ship_type,
-                );
+                sum +=
+                    descriptor_weight(self.ship(ship).expect("task-force ship exists").ship_type);
                 count += 1;
             }
         }
@@ -1114,7 +1111,9 @@ impl GameState {
                 break;
             }
         }
-        let force_state = self.task_force_mut(force).expect("task force remains present");
+        let force_state = self
+            .task_force_mut(force)
+            .expect("task force remains present");
         force_state.target = TaskForceTarget::Zone(current);
         force_state.order = TaskForceOrder::Sail;
         self.prune_inactive_ships(force);
@@ -1206,10 +1205,7 @@ impl GameState {
                 .ships
                 .iter()
                 .position(|(&member, _)| {
-                    NAVY_DESCRIPTORS[self
-                        .ship(member)
-                        .expect("task-force ship exists")
-                        .ship_type]
+                    NAVY_DESCRIPTORS[self.ship(member).expect("task-force ship exists").ship_type]
                         .toolbar_bucket
                         >= bucket as i32
                 })

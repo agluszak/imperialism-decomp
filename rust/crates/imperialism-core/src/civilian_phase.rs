@@ -495,29 +495,35 @@ mod tests {
         let hostile = NationId::new(0);
         state.diplomacy.relationships[hostile][origin] = DiplomaticRelationship::War;
         state.diplomacy.relationship_turns[hostile][origin] = Some(9);
-        state.task_forces.insert(TaskForceId::new(0), TaskForceState {
-            id: TaskForceId::new(0),
-            aggression: 1,
-            order: TaskForceOrder::Patrol,
-            target: TaskForceTarget::None,
-            location: OceanZoneId::new(0),
-            nation: hostile,
-            defeated: false,
-            ingot_tile: -1,
-            flagship: None,
-            ships: [(ShipId::new(0), true)].into_iter().collect(),
-        });
-        state.ships.insert(ShipId::new(0), ShipState {
-            id: ShipId::new(0),
-            ship_type: ShipType::Frigate,
-            location: OceanZoneId::new(0),
-            aggression: 1,
-            nation: hostile,
-            name: String::new(),
-            strength: 1,
-            experience: 0,
-            selection: 0,
-        });
+        state.task_forces.insert(
+            TaskForceId::new(0),
+            TaskForceState {
+                id: TaskForceId::new(0),
+                aggression: 1,
+                order: TaskForceOrder::Patrol,
+                target: TaskForceTarget::None,
+                location: OceanZoneId::new(0),
+                nation: hostile,
+                defeated: false,
+                ingot_tile: -1,
+                flagship: None,
+                ships: [(ShipId::new(0), true)].into_iter().collect(),
+            },
+        );
+        state.ships.insert(
+            ShipId::new(0),
+            ShipState {
+                id: ShipId::new(0),
+                ship_type: ShipType::Frigate,
+                location: OceanZoneId::new(0),
+                aggression: 1,
+                nation: hostile,
+                name: String::new(),
+                strength: 1,
+                experience: 0,
+                selection: 0,
+            },
+        );
 
         assert!(!state.has_reachable_sea_outside_beginning_turn_mask(home));
 

@@ -100,7 +100,11 @@ impl GameState {
                 .map(|unit| (unit.id, unit))
                 .collect(),
             object_ids,
-            ships: parts.ships.into_iter().map(|ship| (ship.id, ship)).collect(),
+            ships: parts
+                .ships
+                .into_iter()
+                .map(|ship| (ship.id, ship))
+                .collect(),
             admirals,
             task_forces: parts
                 .task_forces
@@ -151,7 +155,9 @@ impl GameState {
         self.nations.city(id)
     }
 
-    pub fn military_units(&self) -> impl ExactSizeIterator<Item = (MilitaryUnitId, &MilitaryUnitState)> {
+    pub fn military_units(
+        &self,
+    ) -> impl ExactSizeIterator<Item = (MilitaryUnitId, &MilitaryUnitState)> {
         self.military_units.iter().map(|(&id, unit)| (id, unit))
     }
 
@@ -159,7 +165,9 @@ impl GameState {
         self.military_units.get(&id)
     }
 
-    pub fn civilian_units(&self) -> impl ExactSizeIterator<Item = (CivilianUnitId, &CivilianUnitState)> {
+    pub fn civilian_units(
+        &self,
+    ) -> impl ExactSizeIterator<Item = (CivilianUnitId, &CivilianUnitState)> {
         self.civilian_units.iter().map(|(&id, unit)| (id, unit))
     }
 

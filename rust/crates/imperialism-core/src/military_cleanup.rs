@@ -731,30 +731,36 @@ mod tests {
         let mut state = game_state();
         state.ships.insert(ShipId::new(0), ship(0, 0));
         state.ships.insert(ShipId::new(1), ship(1, 0));
-        state.task_forces.insert(TaskForceId::new(0), TaskForceState {
-            id: TaskForceId::new(0),
-            aggression: 0,
-            order: TaskForceOrder::Patrol,
-            target: TaskForceTarget::Zone(OceanZoneId::new(0)),
-            location: OceanZoneId::new(0),
-            nation: NationId::new(0),
-            defeated: false,
-            ingot_tile: -1,
-            flagship: Some(ShipId::new(0)),
-            ships: [(ShipId::new(0), true)].into_iter().collect(),
-        });
-        state.task_forces.insert(TaskForceId::new(1), TaskForceState {
-            id: TaskForceId::new(1),
-            aggression: 0,
-            order: TaskForceOrder::Sail,
-            target: TaskForceTarget::Zone(OceanZoneId::new(1)),
-            location: OceanZoneId::new(0),
-            nation: NationId::new(0),
-            defeated: false,
-            ingot_tile: -1,
-            flagship: Some(ShipId::new(1)),
-            ships: [(ShipId::new(1), true)].into_iter().collect(),
-        });
+        state.task_forces.insert(
+            TaskForceId::new(0),
+            TaskForceState {
+                id: TaskForceId::new(0),
+                aggression: 0,
+                order: TaskForceOrder::Patrol,
+                target: TaskForceTarget::Zone(OceanZoneId::new(0)),
+                location: OceanZoneId::new(0),
+                nation: NationId::new(0),
+                defeated: false,
+                ingot_tile: -1,
+                flagship: Some(ShipId::new(0)),
+                ships: [(ShipId::new(0), true)].into_iter().collect(),
+            },
+        );
+        state.task_forces.insert(
+            TaskForceId::new(1),
+            TaskForceState {
+                id: TaskForceId::new(1),
+                aggression: 0,
+                order: TaskForceOrder::Sail,
+                target: TaskForceTarget::Zone(OceanZoneId::new(1)),
+                location: OceanZoneId::new(0),
+                nation: NationId::new(0),
+                defeated: false,
+                ingot_tile: -1,
+                flagship: Some(ShipId::new(1)),
+                ships: [(ShipId::new(1), true)].into_iter().collect(),
+            },
+        );
 
         state.do_military_cleanup();
 
