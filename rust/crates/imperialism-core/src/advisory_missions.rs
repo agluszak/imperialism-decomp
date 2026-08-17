@@ -26,13 +26,25 @@ const MISSION_SCORE_DIVISOR: f32 = 5000.0;
 const PORT_FRIENDLY_MULTIPLIER: f32 = 1.5;
 const PORT_FOREIGN_MULTIPLIER: f32 = 1.25;
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Eq, PartialEq)]
 enum AdvisoryMissionKind {
-    Attack = 0,
-    Amass = 1,
-    Invade = 2,
-    Defend = 3,
-    Blockade = 4,
+    Attack,
+    Amass,
+    Invade,
+    Defend,
+    Blockade,
+}
+
+impl AdvisoryMissionKind {
+    fn threshold(self, row: &[f32; 6]) -> f32 {
+        match self {
+            Self::Attack => row[0],
+            Self::Amass => row[1],
+            Self::Invade => row[2],
+            Self::Defend => row[3],
+            Self::Blockade => row[4],
+        }
+    }
 }
 
 #[derive(Clone, Copy)]
@@ -55,18 +67,18 @@ enum AdvisoryRoute {
 }
 
 impl AdvisoryRoute {
-    fn tier(self, zones: &[ZoneKind]) -> i32 {
+    fn mission_kind(self, zones: &[ZoneKind]) -> AdvisoryMissionKind {
         match self {
-            Self::Direct(_) => 0,
-            Self::Via { .. } => 1,
+            Self::Direct(_) => AdvisoryMissionKind::Attack,
+            Self::Via { .. } => AdvisoryMissionKind::Amass,
             Self::Sea {
                 target: Some(_), ..
-            } => 2,
+            } => AdvisoryMissionKind::Invade,
             Self::Sea { zone, target: None } => {
                 if matches!(zones[usize::from(zone.get())], ZoneKind::PortZone(_)) {
-                    4
+                    AdvisoryMissionKind::Blockade
                 } else {
-                    2
+                    AdvisoryMissionKind::Invade
                 }
             }
         }
@@ -152,12 +164,12 @@ impl GameState {
 
         let mut queue_secondary = false;
         if let Some(best) = best {
-            let tier = best.route.tier(&self.ocean.zones);
+            let kind = best.route.mission_kind(&self.ocean.zones);
             let skill = self.nations.majors[&nation]
                 .economy
                 .defense_minister_skill_index;
             let skill = usize::try_from(skill).expect("defense minister skill is a table row");
-            let accept = TIER_THRESHOLDS[skill][tier as usize] < best.score;
+            let accept = kind.threshold(&TIER_THRESHOLDS[skill]) < best.score;
             if !accept && self.nation_has_war_relation(nation.nation()) {
                 let has_attack_mission = self
                     .missions
@@ -170,13 +182,7 @@ impl GameState {
             if accept {
                 match best.route {
                     AdvisoryRoute::Sea { zone, target: None } => {
-                        self.create_advisory_mission(
-                            nation,
-                            kind_from_tier(tier),
-                            None,
-                            Some(zone),
-                            None,
-                        );
+                        self.create_advisory_mission(nation, kind, None, Some(zone), None);
                     }
                     AdvisoryRoute::Sea {
                         zone,
@@ -191,22 +197,10 @@ impl GameState {
                         );
                     }
                     AdvisoryRoute::Via { target, link } => {
-                        self.create_advisory_mission(
-                            nation,
-                            kind_from_tier(tier),
-                            Some(link),
-                            None,
-                            Some(target),
-                        );
+                        self.create_advisory_mission(nation, kind, Some(link), None, Some(target));
                     }
                     AdvisoryRoute::Direct(region) => {
-                        self.create_advisory_mission(
-                            nation,
-                            kind_from_tier(tier),
-                            Some(region),
-                            None,
-                            None,
-                        );
+                        self.create_advisory_mission(nation, kind, Some(region), None, None);
                     }
                 }
             }
@@ -964,16 +958,6 @@ impl GameState {
         {
             *slot = flag;
         }
-    }
-}
-
-fn kind_from_tier(tier: i32) -> AdvisoryMissionKind {
-    match tier {
-        1 => AdvisoryMissionKind::Amass,
-        2 => AdvisoryMissionKind::Invade,
-        3 => AdvisoryMissionKind::Defend,
-        4 => AdvisoryMissionKind::Blockade,
-        _ => AdvisoryMissionKind::Attack,
     }
 }
 
