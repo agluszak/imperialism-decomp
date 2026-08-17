@@ -847,9 +847,7 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
             *technology.completion_year_by_nation[MajorNationId::new(slot as u8)].as_array()
         }),
         capability_value_by_nation_and_resource,
-        marker: technology
-            .latest_global_unlock
-            .map_or(-1, |technology| technology as i16),
+        marker: technology.latest_global_unlock as i16,
     }
 }
 

@@ -181,7 +181,7 @@ pub struct TechnologyState {
     pub scheduled_unlock_turn_by_technology: TechnologyTable<i16>,
     pub global_unlocks_by_technology: TechnologyTable<bool>,
     /// Retail `marker262`, the most recently applied global capability unlock.
-    pub latest_global_unlock: Option<Technology>,
+    pub latest_global_unlock: Technology,
     pub research_status_by_nation: MajorNationTable<TechnologyTable<TechnologyResearchStatus>>,
     /// Retail `capRowsE4a6.completionYearOffsetByTechId`, stamped when a nation
     /// receives the technology and consumed by technology-history presentation.
@@ -209,7 +209,7 @@ impl Default for TechnologyState {
                 false, false, false, false, false, false, false, false, false, false, false, false,
                 false, false, false, false, false,
             ]),
-            latest_global_unlock: Some(Technology::SeedDrill),
+            latest_global_unlock: Technology::SeedDrill,
             research_status_by_nation: MajorNationTable::from_fn(|_| {
                 TechnologyTable::from_array(std::array::from_fn(|index| {
                     if index < 3 {
@@ -336,11 +336,12 @@ impl GameState {
                     == economic_turn
                 {
                     apply_city_order_capability_unlock(&mut self.technology, tech_id);
-                    self.pending
-                        .queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
+                    self.pending.queue_newspaper_event(
+                        PendingNewspaperEvent::TechnologyDiscovery {
                             audience: None,
-                            story_code: i32::from(tech_id as u8),
-                        });
+                            technology: tech_id,
+                        },
+                    );
                 }
                 continue;
             }
@@ -724,7 +725,7 @@ fn upgrade_resource_costs(kind: MilitaryUnitKind) -> (i16, i16, i16) {
 }
 
 fn apply_city_order_capability_unlock(technology: &mut TechnologyState, tech_id: Technology) {
-    technology.latest_global_unlock = Some(tech_id);
+    technology.latest_global_unlock = tech_id;
     technology.global_unlocks_by_technology[tech_id] = true;
     match tech_id {
         Technology::Paddlewheels => {
@@ -820,9 +821,9 @@ mod tests {
         assert!(state.technology.industry_enabled_by_slot[6]);
         assert_eq!(
             state.pending.newspaper_events,
-            [PendingNewspaperEvent::Miscellaneous {
+            [PendingNewspaperEvent::TechnologyDiscovery {
                 audience: None,
-                story_code: 4,
+                technology: Technology::StreamlinedHulls,
             }]
         );
     }
@@ -839,7 +840,7 @@ mod tests {
         unlocked.apply_technology_advances_phase();
         assert_eq!(
             unlocked.technology.latest_global_unlock,
-            Some(Technology::CottonGin)
+            Technology::CottonGin
         );
         assert_eq!(unlocked.turn.turn_flow_status_flags & 0x40, 0);
     }
@@ -848,7 +849,7 @@ mod tests {
     fn default_global_unlock_marker_matches_retail_initialization() {
         assert_eq!(
             TechnologyState::default().latest_global_unlock,
-            Some(Technology::SeedDrill)
+            Technology::SeedDrill
         );
     }
 

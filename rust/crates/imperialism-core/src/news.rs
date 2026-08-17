@@ -296,6 +296,10 @@ pub enum PendingNewspaperEvent {
         audience: Option<MajorNationId>,
         story_code: i32,
     },
+    TechnologyDiscovery {
+        audience: Option<MajorNationId>,
+        technology: Technology,
+    },
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -633,8 +637,11 @@ fn create_event_stories(
                 return;
             }
             match find_event(events, ordinal, |event| {
-                matches!(event, PendingNewspaperEvent::Miscellaneous { .. })
-                    && event_subject(event) == target
+                matches!(
+                    event,
+                    PendingNewspaperEvent::Miscellaneous { .. }
+                        | PendingNewspaperEvent::TechnologyDiscovery { .. }
+                ) && event_subject(event) == target
             }) {
                 None => break,
                 Some((index, event)) => {
@@ -681,7 +688,8 @@ fn event_code(event: &PendingNewspaperEvent) -> i32 {
     match event {
         PendingNewspaperEvent::InterNation { event, .. } => event.retail(),
         PendingNewspaperEvent::Shortage { .. } => 0x0f,
-        PendingNewspaperEvent::Miscellaneous { .. } => 0x11,
+        PendingNewspaperEvent::Miscellaneous { .. }
+        | PendingNewspaperEvent::TechnologyDiscovery { .. } => 0x11,
     }
 }
 
@@ -692,8 +700,13 @@ fn event_subject(event: &PendingNewspaperEvent) -> i32 {
         PendingNewspaperEvent::Miscellaneous {
             audience: Some(nation),
             ..
+        }
+        | PendingNewspaperEvent::TechnologyDiscovery {
+            audience: Some(nation),
+            ..
         } => i32::from(nation.get()),
-        PendingNewspaperEvent::Miscellaneous { audience: None, .. } => 999,
+        PendingNewspaperEvent::Miscellaneous { audience: None, .. }
+        | PendingNewspaperEvent::TechnologyDiscovery { audience: None, .. } => 999,
     }
 }
 
@@ -706,6 +719,7 @@ fn event_mask(event: &PendingNewspaperEvent) -> i32 {
             affected_nations, ..
         } => nations_to_bits(affected_nations),
         PendingNewspaperEvent::Miscellaneous { story_code, .. } => *story_code,
+        PendingNewspaperEvent::TechnologyDiscovery { technology, .. } => *technology as i32,
     }
 }
 
@@ -719,6 +733,7 @@ fn event_related(event: &PendingNewspaperEvent) -> i32 {
 fn event_story_code(event: &PendingNewspaperEvent) -> i32 {
     match event {
         PendingNewspaperEvent::Miscellaneous { story_code, .. } => *story_code,
+        PendingNewspaperEvent::TechnologyDiscovery { technology, .. } => *technology as i32,
         _ => 0,
     }
 }
