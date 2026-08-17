@@ -1,5 +1,6 @@
 use crate::city::ship_stock_cap;
 use crate::*;
+use enum_map::{Enum, EnumMap};
 use indexmap::{IndexMap, IndexSet};
 use serde::{Deserialize, Serialize};
 
@@ -601,12 +602,39 @@ pub(crate) fn accumulate_unit_priority(
 pub struct ShipState {
     pub ship_type: ShipType,
     pub location: OceanZoneId,
-    pub aggression: i32,
+    pub aggression: NavalAggression,
     pub nation: NationId,
     pub name: String,
     pub strength: i16,
     pub experience: i16,
     pub selection: i32,
+}
+
+/// The three retail `agr0`–`agr2` navy engagement levels.
+#[derive(Clone, Copy, Debug, Deserialize, Enum, Eq, PartialEq, Serialize)]
+#[repr(i32)]
+#[serde(rename_all = "snake_case")]
+pub enum NavalAggression {
+    Cautious,
+    Balanced,
+    Aggressive,
+}
+
+pub type NavalAggressionTable<T> = EnumMap<NavalAggression, T>;
+
+impl NavalAggression {
+    pub const fn retail(self) -> i32 {
+        self as i32
+    }
+
+    pub fn from_retail(value: i32) -> Option<Self> {
+        match value {
+            0 => Some(Self::Cautious),
+            1 => Some(Self::Balanced),
+            2 => Some(Self::Aggressive),
+            _ => None,
+        }
+    }
 }
 
 /// A navy secondary-order node (`TAdmiral`) in head-first list order.
@@ -693,7 +721,7 @@ impl<'de> Deserialize<'de> for TaskForceOrder {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TaskForceState {
-    pub aggression: i32,
+    pub aggression: NavalAggression,
     pub order: TaskForceOrder,
     pub target: TaskForceTarget,
     pub location: OceanZoneId,

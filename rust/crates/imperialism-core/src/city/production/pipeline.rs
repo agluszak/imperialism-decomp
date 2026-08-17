@@ -199,7 +199,7 @@ impl GameState {
                 self.insert_ship(ShipState {
                     ship_type,
                     location,
-                    aggression: 1,
+                    aggression: NavalAggression::Balanced,
                     nation: nation_id,
                     name: String::new(),
                     strength,
@@ -334,7 +334,7 @@ mod tests {
         ShipState {
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
-            aggression: 0,
+            aggression: NavalAggression::Cautious,
             nation: nation.nation(),
             name: String::new(),
             strength: 100,

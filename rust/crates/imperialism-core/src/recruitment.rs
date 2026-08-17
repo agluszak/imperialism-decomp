@@ -1,8 +1,8 @@
 use crate::{
     CivilianLocation, CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, Difficulty,
     GameState, MajorNationId, MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState, NationId,
-    OceanZoneId, PendingActionKind, ProvinceId, ShipState, ShipType, TileFlags, TileId,
-    TileOwnerTag, TurnSummary,
+    NavalAggression, OceanZoneId, PendingActionKind, ProvinceId, ShipState, ShipType, TileFlags,
+    TileId, TileOwnerTag, TurnSummary,
 };
 #[cfg(test)]
 use crate::{CivilianUnitId, MapMgr, MilitaryUnitId};
@@ -313,7 +313,7 @@ impl GameState {
         self.insert_ship(ShipState {
             ship_type: ShipType::Frigate,
             location,
-            aggression: 0,
+            aggression: NavalAggression::Cautious,
             nation,
             name: String::new(),
             strength: crate::city::ship_stock_cap(ShipType::Frigate),

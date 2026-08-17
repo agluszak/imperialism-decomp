@@ -542,7 +542,7 @@ fn peace_offer_from_human_to_ai() -> GameState {
             ShipState {
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(0),
-                aggression: 0,
+                aggression: NavalAggression::Cautious,
                 nation: nation(1),
                 name: String::new(),
                 strength: 900,

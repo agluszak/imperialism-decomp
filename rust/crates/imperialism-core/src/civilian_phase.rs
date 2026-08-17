@@ -503,7 +503,7 @@ mod tests {
         state.task_forces.insert(
             TaskForceId::new(0),
             TaskForceState {
-                aggression: 1,
+                aggression: NavalAggression::Balanced,
                 order: TaskForceOrder::Patrol,
                 target: TaskForceTarget::None,
                 location: OceanZoneId::new(0),
@@ -519,7 +519,7 @@ mod tests {
             ShipState {
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(0),
-                aggression: 1,
+                aggression: NavalAggression::Balanced,
                 nation: hostile,
                 name: String::new(),
                 strength: 1,

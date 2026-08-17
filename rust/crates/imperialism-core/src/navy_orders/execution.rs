@@ -1,4 +1,5 @@
 use super::*;
+use crate::military::NavalAggressionTable;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
@@ -130,7 +131,7 @@ impl GameState {
                         let force = self
                             .task_force_mut(force)
                             .expect("mission task force exists");
-                        force.aggression = 0;
+                        force.aggression = NavalAggression::Cautious;
                         force.order = TaskForceOrder::Patrol;
                     }
                 }
@@ -586,13 +587,11 @@ impl GameState {
         else {
             return false;
         };
-        const WEIGHT: [i32; 3] = [200, 100, 50];
+        let weight = NavalAggressionTable::from_array([200, 100, 50]);
         let this = self.task_force_battle_strength(outer) as i16 as i32;
         let other = self.task_force_battle_strength(inner) as i16 as i32;
-        let this_aggression = outer_force.aggression as usize;
-        let other_aggression = inner_force.aggression as usize;
-        if this * 100 < WEIGHT[this_aggression] * other {
-            if other * 100 < WEIGHT[other_aggression] * this || inner_force.defeated {
+        if this * 100 < weight[outer_force.aggression] * other {
+            if other * 100 < weight[inner_force.aggression] * this || inner_force.defeated {
                 return false;
             }
             let worst = outer_force
@@ -614,7 +613,7 @@ impl GameState {
             }
             return true;
         }
-        if other * 100 < WEIGHT[other_aggression] * this {
+        if other * 100 < weight[inner_force.aggression] * this {
             let worst = inner_force
                 .ships
                 .iter()
@@ -656,9 +655,9 @@ impl GameState {
             .max()
             .unwrap_or(1)
             .max(1);
-        let thresholds = [1.1_f32, 0.95, 0.8];
-        let left_threshold = thresholds[left.aggression as usize];
-        let right_threshold = thresholds[right.aggression as usize];
+        let thresholds = NavalAggressionTable::from_array([1.1_f32, 0.95, 0.8]);
+        let left_threshold = thresholds[left.aggression];
+        let right_threshold = thresholds[right.aggression];
         let mut tier = max_tier;
         let mut unreachable = false;
 
@@ -985,7 +984,7 @@ impl GameState {
                     .location;
                 self.task_force_mut(force)
                     .expect("navy action force exists")
-                    .aggression = 1;
+                    .aggression = NavalAggression::Balanced;
                 let blockade = self.control_sea_blockade_port(nation, location);
                 if let Some(port) = blockade {
                     let force = self
@@ -1157,7 +1156,7 @@ impl GameState {
             TaskForceState {
                 // `TTaskForce(TZone*, short)` seeds aggression at 1, then
                 // `DemocraticallyDetermineAggressionLevel` may overwrite it.
-                aggression: 1,
+                aggression: NavalAggression::Balanced,
                 order: TaskForceOrder::None,
                 target: TaskForceTarget::None,
                 location,
@@ -1336,7 +1335,7 @@ mod tests {
             ShipState {
                 ship_type: ShipType::Frigate,
                 location,
-                aggression: 1,
+                aggression: NavalAggression::Balanced,
                 nation,
                 name: String::new(),
                 strength: 900,
@@ -1347,7 +1346,7 @@ mod tests {
         state.task_forces.insert(
             force,
             TaskForceState {
-                aggression: 1,
+                aggression: NavalAggression::Balanced,
                 order,
                 target: TaskForceTarget::None,
                 location,
@@ -1381,7 +1380,7 @@ mod tests {
                 ShipState {
                     ship_type,
                     location: OceanZoneId::new(0),
-                    aggression: 1,
+                    aggression: NavalAggression::Balanced,
                     nation,
                     name: String::new(),
                     strength,
@@ -1472,7 +1471,7 @@ mod tests {
             ShipState {
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(2),
-                aggression: 1,
+                aggression: NavalAggression::Balanced,
                 nation,
                 name: String::new(),
                 strength: 900,
@@ -1565,7 +1564,7 @@ mod tests {
             ShipState {
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(9),
-                aggression: 1,
+                aggression: NavalAggression::Balanced,
                 nation: attacker,
                 name: String::new(),
                 strength: 900,
@@ -1623,7 +1622,7 @@ mod tests {
                 ShipState {
                     ship_type: ShipType::Frigate,
                     location: OceanZoneId::new(0),
-                    aggression: 1,
+                    aggression: NavalAggression::Balanced,
                     nation,
                     name: String::new(),
                     strength: 900,
@@ -1754,7 +1753,7 @@ mod tests {
             ShipState {
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(0),
-                aggression: 0,
+                aggression: NavalAggression::Cautious,
                 nation,
                 name: String::new(),
                 strength: 900,

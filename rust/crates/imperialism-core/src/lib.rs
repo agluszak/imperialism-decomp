@@ -123,7 +123,7 @@ pub use market::{
     TradeCommodityTable, TradeDealBookEntry, TradeMarketRow, TradeMarketState,
 };
 pub use military::{
-    AdmiralState, ArmyMissionState, AttackMissionState, MissionData, MissionState,
+    AdmiralState, ArmyMissionState, AttackMissionState, MissionData, MissionState, NavalAggression,
     NavyMissionState, ObjectIdAllocator, ShipState, TaskForceOrder, TaskForceState,
     TaskForceTarget,
 };

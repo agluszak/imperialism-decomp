@@ -176,10 +176,7 @@ impl GameState {
     }
 
     /// `TTaskForce::SetAggression`.
-    pub fn set_task_force_aggression(&mut self, force: TaskForceId, aggression: i32) {
-        if !(0..=2).contains(&aggression) {
-            return;
-        }
+    pub fn set_task_force_aggression(&mut self, force: TaskForceId, aggression: NavalAggression) {
         if let Some(entry) = self.task_force_mut(force) {
             entry.aggression = aggression;
         }
@@ -716,14 +713,15 @@ impl GameState {
             let Some(ship) = self.ship(ship_id) else {
                 continue;
             };
-            sum += ship.aggression;
+            sum += ship.aggression.retail();
             count += 1;
         }
         if let Some(entry) = self.task_force_mut(force) {
             entry.aggression = if count == 0 {
-                0
+                NavalAggression::Cautious
             } else {
-                (count / 2 + sum) / count
+                NavalAggression::from_retail((count / 2 + sum) / count)
+                    .expect("average of valid navy aggression levels remains valid")
             };
         }
     }

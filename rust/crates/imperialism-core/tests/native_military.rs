@@ -505,7 +505,11 @@ fn navy_select_ship() {
 #[ignore = "requires the native C++ oracle"]
 fn navy_set_aggression() {
     compare_native("navy_set_aggression", |state, case: NavyAggressionCase| {
-        state.set_task_force_aggression(first_task_force(state), case.aggression);
+        state.set_task_force_aggression(
+            first_task_force(state),
+            NavalAggression::from_retail(case.aggression)
+                .expect("native navy aggression fixture is in 0..=2"),
+        );
     })
     .unwrap();
 }

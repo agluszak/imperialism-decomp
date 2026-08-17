@@ -426,7 +426,7 @@ impl GameState {
             Some(self.insert_ship(ShipState {
                 ship_type,
                 location,
-                aggression: 1,
+                aggression: NavalAggression::Balanced,
                 nation: nation_id,
                 name: String::new(),
                 strength: crate::city::ship_stock_cap(ship_type),

@@ -10,6 +10,7 @@ use crate::ui::GameSession;
 use bevy::prelude::*;
 use bevy::ui::{Checked, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, ActivateOnPress};
+use imperialism_core::NavalAggression;
 use imperialism_formats::*;
 
 const PAGE_TAG: FourCc = fourcc!("unav");
@@ -36,7 +37,7 @@ enum NavyCommand {
     Done,
     Next,
     Bomb,
-    Aggression(i32),
+    Aggression(NavalAggression),
 }
 
 #[derive(Component)]
@@ -108,9 +109,18 @@ pub(crate) fn bind_navy_toolbar(
         (fourcc!("done"), NavyCommand::Done),
         (fourcc!("next"), NavyCommand::Next),
         (fourcc!("bomb"), NavyCommand::Bomb),
-        (fourcc!("agr0"), NavyCommand::Aggression(0)),
-        (fourcc!("agr1"), NavyCommand::Aggression(1)),
-        (fourcc!("agr2"), NavyCommand::Aggression(2)),
+        (
+            fourcc!("agr0"),
+            NavyCommand::Aggression(NavalAggression::Cautious),
+        ),
+        (
+            fourcc!("agr1"),
+            NavyCommand::Aggression(NavalAggression::Balanced),
+        ),
+        (
+            fourcc!("agr2"),
+            NavyCommand::Aggression(NavalAggression::Aggressive),
+        ),
     ] {
         commands
             .entity(tree.child(page, tag))

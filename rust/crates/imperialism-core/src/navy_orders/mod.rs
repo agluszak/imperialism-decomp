@@ -354,7 +354,7 @@ pub(super) mod tests {
         let ship = ShipState {
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
-            aggression: 0,
+            aggression: NavalAggression::Cautious,
             nation: NationId::new(0),
             name: String::new(),
             strength: 900,
@@ -385,7 +385,7 @@ pub(super) mod tests {
             ShipState {
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(0),
-                aggression: 0,
+                aggression: NavalAggression::Cautious,
                 nation: NationId::new(1),
                 name: String::new(),
                 strength: 900,

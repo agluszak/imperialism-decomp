@@ -706,7 +706,7 @@ fn navy_dto(state: &GameState) -> LegacyNavyState {
         .ships_in_retail_order()
         .map(|(_, ship)| LegacyShip {
             ship_type: ship.ship_type as i16,
-            aggression: ship.aggression,
+            aggression: ship.aggression.retail(),
             nation: i16::from(ship.nation.get()),
             name: ship.name.clone(),
             strength: ship.strength,

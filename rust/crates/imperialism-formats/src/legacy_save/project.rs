@@ -349,7 +349,8 @@ fn ship_states(
                         u16::try_from(ship.zone_ordinal)
                             .expect("retail ship zone ordinal is non-negative"),
                     ),
-                    aggression: ship.aggression,
+                    aggression: NavalAggression::from_retail(ship.aggression)
+                        .expect("retail ship aggression is in 0..=2"),
                     nation: nation_id_from_retail_i16(ship.nation),
                     name: ship.name.clone(),
                     strength: ship.strength,

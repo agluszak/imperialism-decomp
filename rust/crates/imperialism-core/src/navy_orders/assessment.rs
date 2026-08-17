@@ -322,7 +322,7 @@ mod tests {
             ShipState {
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(0),
-                aggression: 0,
+                aggression: NavalAggression::Cautious,
                 nation,
                 name: String::new(),
                 strength: 900,
@@ -373,7 +373,7 @@ mod tests {
             ShipState {
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(0),
-                aggression: 0,
+                aggression: NavalAggression::Cautious,
                 nation: hostile,
                 name: String::new(),
                 strength: 899,

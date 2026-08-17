@@ -577,7 +577,7 @@ mod tests {
         ShipState {
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
-            aggression: 0,
+            aggression: NavalAggression::Cautious,
             nation: NationId::new(0),
             name: String::new(),
             strength: 100,
@@ -760,7 +760,7 @@ mod tests {
         state.task_forces.insert(
             TaskForceId::new(0),
             TaskForceState {
-                aggression: 0,
+                aggression: NavalAggression::Cautious,
                 order: TaskForceOrder::Patrol,
                 target: TaskForceTarget::Zone(OceanZoneId::new(0)),
                 location: OceanZoneId::new(0),
@@ -774,7 +774,7 @@ mod tests {
         state.task_forces.insert(
             TaskForceId::new(1),
             TaskForceState {
-                aggression: 0,
+                aggression: NavalAggression::Cautious,
                 order: TaskForceOrder::Sail,
                 target: TaskForceTarget::Zone(OceanZoneId::new(1)),
                 location: OceanZoneId::new(0),
