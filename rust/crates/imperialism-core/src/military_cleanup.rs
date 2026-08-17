@@ -428,7 +428,7 @@ impl GameState {
     /// Selection-bit clear, heatmap, militia adoption, ship assignment, and
     /// `AddPurchasedItems`. Does not prune missions or remove navy stragglers.
     pub(crate) fn apply_military_cleanup_supported_subset(&mut self) {
-        for ship in &mut self.ships {
+        for ship in self.ships.values_mut() {
             if ship.selection == 1 {
                 ship.selection = 0;
             }

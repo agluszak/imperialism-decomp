@@ -728,7 +728,7 @@ impl GameState {
     }
 
     fn rebuild_civilian_tile_chains(&mut self) {
-        for unit in &mut self.civilian_units {
+        for unit in self.civilian_units.values_mut() {
             unit.next_on_tile = None;
         }
         let mut heads = vec![None; STRATEGIC_TILE_COUNT];

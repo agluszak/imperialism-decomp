@@ -510,19 +510,17 @@ impl GameState {
     }
 
     fn navy_try_to_spot(&mut self, outer: TaskForceId, inner: TaskForceId) -> bool {
-        let (Some(outer_index), Some(inner_index)) =
-            (self.task_force_index(outer), self.task_force_index(inner))
+        let (Some(outer_force), Some(inner_force)) =
+            (self.task_force(outer), self.task_force(inner))
         else {
             return false;
         };
-        if self.task_forces[outer_index].ships.is_empty()
-            || self.task_forces[inner_index].ships.is_empty()
-        {
+        if outer_force.ships.is_empty() || inner_force.ships.is_empty() {
             return false;
         }
-        if self.task_forces[outer_index].order == TaskForceOrder::Blockade
+        if outer_force.order == TaskForceOrder::Blockade
             || matches!(
-                self.task_forces[inner_index].order,
+                inner_force.order,
                 TaskForceOrder::Blockade | TaskForceOrder::Marines
             )
         {
@@ -530,9 +528,7 @@ impl GameState {
         }
         let threshold = self.task_force_deci_speed(outer) - self.task_force_deci_speed(inner)
             + 50
-            + (self.task_forces[outer_index].ships.len()
-                + self.task_forces[inner_index].ships.len())
-            .saturating_sub(10) as i32;
+            + (outer_force.ships.len() + inner_force.ships.len()).saturating_sub(10) as i32;
         self.rng.next_crt_rand() % 100 < threshold
     }
 
@@ -583,59 +579,55 @@ impl GameState {
     }
 
     fn navy_resolve_encounter(&mut self, outer: TaskForceId, inner: TaskForceId) -> bool {
-        let (Some(outer_index), Some(inner_index)) =
-            (self.task_force_index(outer), self.task_force_index(inner))
+        let (Some(outer_force), Some(inner_force)) =
+            (self.task_force(outer), self.task_force(inner))
         else {
             return false;
         };
         const WEIGHT: [i32; 3] = [200, 100, 50];
         let this = self.task_force_battle_strength(outer) as i16 as i32;
         let other = self.task_force_battle_strength(inner) as i16 as i32;
-        let this_aggression = self.task_forces[outer_index].aggression as usize;
-        let other_aggression = self.task_forces[inner_index].aggression as usize;
+        let this_aggression = outer_force.aggression as usize;
+        let other_aggression = inner_force.aggression as usize;
         if this * 100 < WEIGHT[this_aggression] * other {
-            if other * 100 < WEIGHT[other_aggression] * this
-                || self.task_forces[inner_index].defeated
-            {
+            if other * 100 < WEIGHT[other_aggression] * this || inner_force.defeated {
                 return false;
             }
-            let worst = self.task_forces[outer_index]
+            let worst = outer_force
                 .ships
                 .iter()
-                .filter(|child| child.selected)
+                .filter_map(|(&child, &selected)| selected.then_some(child))
                 .map(|child| {
-                    descriptor_weight(
-                        self.ship(child.ship)
-                            .expect("task-force ship exists")
-                            .ship_type,
-                    )
+                    descriptor_weight(self.ship(child).expect("task-force ship exists").ship_type)
                 })
                 .min()
                 .unwrap_or(0);
             if self.rng.next_crt_rand() % 100 < (worst + 5) * 10 - self.task_force_deci_speed(inner)
             {
-                self.task_forces[outer_index].defeated = true;
+                self.task_forces
+                    .get_mut(&outer)
+                    .expect("task force remains queued")
+                    .defeated = true;
                 return false;
             }
             return true;
         }
         if other * 100 < WEIGHT[other_aggression] * this {
-            let worst = self.task_forces[inner_index]
+            let worst = inner_force
                 .ships
                 .iter()
-                .filter(|child| child.selected)
+                .filter_map(|(&child, &selected)| selected.then_some(child))
                 .map(|child| {
-                    descriptor_weight(
-                        self.ship(child.ship)
-                            .expect("task-force ship exists")
-                            .ship_type,
-                    )
+                    descriptor_weight(self.ship(child).expect("task-force ship exists").ship_type)
                 })
                 .min()
                 .unwrap_or(0);
             if self.rng.next_crt_rand() % 100 < (worst + 5) * 10 - self.task_force_deci_speed(outer)
             {
-                self.task_forces[inner_index].defeated = true;
+                self.task_forces
+                    .get_mut(&inner)
+                    .expect("task force remains queued")
+                    .defeated = true;
                 return false;
             }
         }
@@ -645,31 +637,26 @@ impl GameState {
     /// Retail `TNavyMgr::ResolveStrategicBattle`, used when neither force belongs
     /// to the active nation. The tactical view is only a player-facing boundary.
     fn resolve_strategic_naval_battle(&mut self, left_id: TaskForceId, right_id: TaskForceId) {
-        let (Some(left), Some(right)) = (
-            self.task_force_index(left_id),
-            self.task_force_index(right_id),
-        ) else {
+        let (Some(left), Some(right)) = (self.task_force(left_id), self.task_force(right_id))
+        else {
             return;
         };
-        let left_start = self.task_forces[left].ships.len();
-        let right_start = self.task_forces[right].ships.len();
-        let max_tier = self.task_forces[left]
+        let left_start = left.ships.len();
+        let right_start = right.ships.len();
+        let max_tier = left
             .ships
             .iter()
-            .chain(&self.task_forces[right].ships)
-            .map(|child| {
-                NAVY_DESCRIPTORS[self
-                    .ship(child.ship)
-                    .expect("task-force ship exists")
-                    .ship_type]
+            .chain(&right.ships)
+            .map(|(&child, _)| {
+                NAVY_DESCRIPTORS[self.ship(child).expect("task-force ship exists").ship_type]
                     .priority_tier
             })
             .max()
             .unwrap_or(1)
             .max(1);
         let thresholds = [1.1_f32, 0.95, 0.8];
-        let left_threshold = thresholds[self.task_forces[left].aggression as usize];
-        let right_threshold = thresholds[self.task_forces[right].aggression as usize];
+        let left_threshold = thresholds[left.aggression as usize];
+        let right_threshold = thresholds[right.aggression as usize];
         let mut tier = max_tier;
         let mut unreachable = false;
 
