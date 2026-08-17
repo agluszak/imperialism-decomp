@@ -306,7 +306,6 @@ impl GameState {
             MilitaryOrder::retail(order_code, None, [province; 3], [province; 3])
         };
         let unit = MilitaryUnitState::new(
-            id,
             nation,
             unit_type,
             province,
@@ -450,7 +449,6 @@ mod tests {
         state.military_units.insert(
             id,
             MilitaryUnitState::new(
-                id,
                 nation.nation(),
                 MilitaryUnitKind::Minutemen,
                 Some(away),
@@ -527,7 +525,6 @@ mod tests {
         state.military_units.insert(
             id,
             MilitaryUnitState::new(
-                id,
                 nation,
                 MilitaryUnitKind::Armor,
                 Some(province),

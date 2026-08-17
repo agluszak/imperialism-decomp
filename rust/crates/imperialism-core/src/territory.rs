@@ -901,7 +901,6 @@ mod tests {
         state.military_units.insert(
             stationed,
             crate::MilitaryUnitState::new(
-                stationed,
                 NationId::new(0),
                 crate::MilitaryUnitKind::Minutemen,
                 Some(ProvinceId::new(2)),
@@ -919,7 +918,6 @@ mod tests {
         state.military_units.insert(
             detached,
             crate::MilitaryUnitState::new(
-                detached,
                 NationId::new(0),
                 crate::MilitaryUnitKind::Minutemen,
                 None,

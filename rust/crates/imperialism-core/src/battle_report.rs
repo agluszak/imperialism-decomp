@@ -182,7 +182,6 @@ mod tests {
         state.military_units.insert(
             id,
             MilitaryUnitState::new(
-                id,
                 attacker,
                 MilitaryUnitKind::Regulars,
                 Some(province),

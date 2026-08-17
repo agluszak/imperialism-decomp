@@ -49,7 +49,7 @@ pub struct GameStateParts {
     pub technology: TechnologyState,
     pub diplomacy: DiplomacyState,
     pub nations: Nations,
-    pub military_units: Vec<MilitaryUnitState>,
+    pub military_units: Vec<(MilitaryUnitId, MilitaryUnitState)>,
     pub civilian_units: Vec<(CivilianUnitId, CivilianUnitState)>,
     pub ships: Vec<(ShipId, ShipState)>,
     pub admirals: Vec<AdmiralState>,
@@ -89,11 +89,7 @@ impl GameState {
             technology: parts.technology,
             diplomacy: parts.diplomacy,
             nations: parts.nations,
-            military_units: parts
-                .military_units
-                .into_iter()
-                .map(|unit| (unit.id, unit))
-                .collect(),
+            military_units: parts.military_units.into_iter().collect(),
             civilian_units: parts.civilian_units.into_iter().collect(),
             object_ids,
             ships: parts.ships.into_iter().collect(),

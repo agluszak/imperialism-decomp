@@ -184,7 +184,6 @@ impl UnitIdAllocator {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MilitaryUnitState {
-    pub(crate) id: MilitaryUnitId,
     pub(crate) nation: NationId,
     pub(crate) unit_type: MilitaryUnitKind,
     pub(crate) stationed_province: Option<ProvinceId>,
@@ -202,7 +201,6 @@ pub struct MilitaryUnitState {
 impl MilitaryUnitState {
     #[allow(clippy::too_many_arguments)]
     pub fn new(
-        id: MilitaryUnitId,
         nation: NationId,
         unit_type: MilitaryUnitKind,
         stationed_province: Option<ProvinceId>,
@@ -217,7 +215,6 @@ impl MilitaryUnitState {
         battle_flags: i16,
     ) -> Self {
         Self {
-            id,
             nation,
             unit_type,
             stationed_province,
@@ -231,10 +228,6 @@ impl MilitaryUnitState {
             experience,
             battle_flags,
         }
-    }
-
-    pub const fn id(&self) -> MilitaryUnitId {
-        self.id
     }
 
     pub const fn nation(&self) -> NationId {

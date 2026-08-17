@@ -285,7 +285,6 @@ pub(super) fn push_military_unit(
     military_units.insert(
         id,
         MilitaryUnitState::new(
-            id,
             nation,
             unit_type,
             stationed_province,

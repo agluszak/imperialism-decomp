@@ -144,7 +144,6 @@ mod tests {
     fn idle_unit(unit: &MilitaryUnitState) -> MilitaryUnitState {
         let stationed = unit.stationed_province();
         MilitaryUnitState::new(
-            unit.id(),
             unit.nation(),
             unit.unit_type(),
             stationed,
@@ -169,7 +168,6 @@ mod tests {
         strength: i16,
     ) -> MilitaryUnitState {
         MilitaryUnitState::new(
-            id,
             nation,
             kind,
             Some(from),
@@ -198,7 +196,6 @@ mod tests {
         strength: i16,
     ) -> MilitaryUnitState {
         MilitaryUnitState::new(
-            id,
             nation,
             kind,
             Some(province),

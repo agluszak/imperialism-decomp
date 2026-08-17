@@ -117,10 +117,11 @@ fn normalize_nation_display_name(raw: &str) -> String {
 }
 
 impl LegacyCountryBase {
-    fn military_unit_states(&self, nation: NationId) -> Vec<MilitaryUnitState> {
+    fn military_unit_states(&self, nation: NationId) -> Vec<(MilitaryUnitId, MilitaryUnitState)> {
         self.military_units
             .iter()
             .map(|unit| {
+                let id = MilitaryUnitId::from_serialized(unit.persistent_id);
                 let unit_type = MilitaryUnitKind::from_index(unit.unit_type as u8)
                     .expect("retail military unit type");
                 let targets = optional_province_array(unit.order_target_tiles);
@@ -136,8 +137,7 @@ impl LegacyCountryBase {
                         target_mirrors,
                     )
                 };
-                MilitaryUnitState::new(
-                    MilitaryUnitId::from_serialized(unit.persistent_id),
+                let state = MilitaryUnitState::new(
                     nation,
                     unit_type,
                     optional_province_id(unit.stationed_province),
@@ -150,7 +150,8 @@ impl LegacyCountryBase {
                     unit.era,
                     unit.experience,
                     unit.battle_flags,
-                )
+                );
+                (id, state)
             })
             .collect()
     }

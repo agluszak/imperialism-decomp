@@ -572,7 +572,6 @@ fn ai_rejects_peace_when_the_enemy_capitol_is_threatened() {
     state.military_units.insert(
         MilitaryUnitId::new(1),
         MilitaryUnitState::new(
-            MilitaryUnitId::new(1),
             nation(2),
             MilitaryUnitKind::Regulars,
             Some(ProvinceId::new(1)),

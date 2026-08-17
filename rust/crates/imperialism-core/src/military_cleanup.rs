@@ -460,14 +460,14 @@ impl GameState {
     /// adoption. AI development replanning is not ported.
     fn adopt_unassigned_militia_into_defend_missions(&mut self, nation: NationId) {
         let mut adoptions = Vec::new();
-        for unit in self.military_units.values() {
+        for (&unit_id, unit) in &self.military_units {
             if unit.nation() != nation || !unit.unit_type().is_militia_category() {
                 continue;
             }
             let Some(province) = unit.stationed_province() else {
                 continue;
             };
-            if self.mission_contains_unit(unit.id()) {
+            if self.mission_contains_unit(unit_id) {
                 continue;
             }
             let Some(mission_id) = self.missions.iter().find_map(|(&id, mission)| {
@@ -483,7 +483,7 @@ impl GameState {
             }) else {
                 continue;
             };
-            adoptions.push((mission_id, unit.id()));
+            adoptions.push((mission_id, unit_id));
         }
         for (mission_id, id) in adoptions {
             if let MissionData::DefendProvince { army, .. } = &mut self.missions[&mission_id].data {
@@ -698,7 +698,6 @@ mod tests {
         state.military_units.insert(
             id,
             MilitaryUnitState::new(
-                id,
                 nation.nation(),
                 MilitaryUnitKind::Minutemen,
                 Some(province),
