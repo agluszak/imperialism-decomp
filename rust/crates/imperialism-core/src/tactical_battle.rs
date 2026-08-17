@@ -91,8 +91,8 @@ struct Side {
     max_range: i16,
     max_non_artillery_range: i16,
     field20: bool,
-    field48: i32,
-    field51: u8,
+    allow_broken_targets: bool,
+    has_artillery_or_engineers: bool,
     field_f: bool,
     last_stance: Option<TacticalStance>,
     random_parity: u8,
@@ -164,8 +164,8 @@ impl Battle {
             max_range: 0,
             max_non_artillery_range: 0,
             field20: false,
-            field48: 0,
-            field51: 0,
+            allow_broken_targets: false,
+            has_artillery_or_engineers: false,
             field_f: false,
             last_stance: None,
             random_parity: parity,
@@ -968,7 +968,7 @@ impl Battle {
         self.sides[side].max_non_artillery_range = 0;
         self.sides[side].max_range = 0;
         self.sides[side].projection_sums = [0.0; 5];
-        self.sides[side].field51 = 0;
+        self.sides[side].has_artillery_or_engineers = false;
         let units = self.sides[side].units.clone();
         for idx in units {
             if self.units[idx].state != TacticalUnitState::Ready {
@@ -991,7 +991,7 @@ impl Battle {
             if AI_CLASS[self.units[idx].unit_type] == TacticalCombatClass::Artillery
                 || self.units[idx].unit_type.tactical_category() == ArmyUnitCategory::Engineers
             {
-                self.sides[side].field51 = 1;
+                self.sides[side].has_artillery_or_engineers = true;
             }
         }
         let sums = self.sides[side].projection_sums;
@@ -1033,12 +1033,12 @@ impl Battle {
             .units
             .iter()
             .any(|&idx| self.units[idx].state == TacticalUnitState::Ready);
-        self.sides[side].field48 = i32::from(!enemy_has_active);
+        self.sides[side].allow_broken_targets = !enemy_has_active;
         let mut stance;
         if !self.sides[side].is_our {
             if !enemy_has_active {
                 stance = TacticalStance::Unopposed;
-            } else if self.sides[opponent].field51 == 0 && !self.fort_breached() {
+            } else if !self.sides[opponent].has_artillery_or_engineers && !self.fort_breached() {
                 stance = TacticalStance::Garrison;
             } else if self.sides[side].projection_sums[1] / opponent_metrics[1]
                 > CURSOR_STRONG_RATIO
@@ -1108,7 +1108,7 @@ impl Battle {
             stance = TacticalStance::Retreat;
         }
         if stance == TacticalStance::Retreat {
-            self.sides[side].field48 = 1;
+            self.sides[side].allow_broken_targets = true;
         }
         if self.sides[side].last_stance == Some(stance) {
             return;
@@ -1530,7 +1530,7 @@ impl Battle {
             if let Some(occupant) = self.tiles[scan as usize].occupant
                 && self.units[occupant].side != self.units[unit].side
                 && (self.units[occupant].state == TacticalUnitState::Ready
-                    || self.sides[side].field48 == 1)
+                    || self.sides[side].allow_broken_targets)
             {
                 let category = self.units[unit].unit_type.tactical_category();
                 if self.reachable_for_action(
@@ -1586,7 +1586,7 @@ impl Battle {
             if let Some(occupant) = self.tiles[neighbor as usize].occupant
                 && self.units[occupant].side != self.units[unit].side
                 && (self.units[occupant].state == TacticalUnitState::Ready
-                    || self.sides[side].field48 == 1)
+                    || self.sides[side].allow_broken_targets)
             {
                 return 0x64;
             }
@@ -1757,7 +1757,7 @@ impl Battle {
         let mut best_tile = -1;
         let mut best_score = 0;
         for &idx in &self.sides[enemy].units.clone() {
-            let broken_ok = self.sides[side].field48 == 1
+            let broken_ok = self.sides[side].allow_broken_targets
                 && self.units[idx].state == TacticalUnitState::MoraleBroken;
             if !broken_ok && self.units[idx].state != TacticalUnitState::Ready {
                 continue;
@@ -1775,7 +1775,7 @@ impl Battle {
             }
             let category = self.units[idx].unit_type.tactical_category();
             let mut score = category_value(category);
-            if self.sides[side].field48 == 1 {
+            if self.sides[side].allow_broken_targets {
                 score += 0x1f4 - self.units[idx].morale;
             } else {
                 score += self.units[idx].strength;
