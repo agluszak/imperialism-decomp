@@ -281,7 +281,7 @@ impl GameState {
 
     fn hostile_navy_vector(&self, nation: NationId, zone: OceanZoneId) -> [f32; 4] {
         let mut vector = [0.0_f32; 4];
-        for ship in &self.ships {
+        for ship in self.ships.values() {
             if ship.location != zone || !self.at_war(nation, ship.nation) {
                 continue;
             }

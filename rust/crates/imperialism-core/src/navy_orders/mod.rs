@@ -196,7 +196,7 @@ impl GameState {
                 continue;
             }
             let mut wars = 0;
-            for ship in &self.ships {
+            for ship in self.ships.values() {
                 if ship.location == neighbor && self.at_war(nation, ship.nation) {
                     wars += 1;
                 }

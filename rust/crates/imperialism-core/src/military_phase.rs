@@ -68,12 +68,15 @@ impl GameState {
     }
 
     fn give_auto_great_power_army_orders(&mut self, nation: NationId) {
-        let mission_count = self.missions.len();
-        for mission_index in 0..mission_count {
-            if self.missions[mission_index].nation != nation {
+        let mission_ids: Vec<_> = self.missions.keys().copied().collect();
+        for mission_id in mission_ids {
+            let Some(mission) = self.missions.get(&mission_id) else {
+                continue;
+            };
+            if mission.nation != nation {
                 continue;
             }
-            match &self.missions[mission_index].data {
+            match &mission.data {
                 MissionData::DefendProvince { province, army } => {
                     let province = *province;
                     let units = army.units.clone();
@@ -84,8 +87,12 @@ impl GameState {
                     self.give_attack_province_orders(nation, &attack);
                 }
                 MissionData::Invade { .. } => {
+                    let mission_index = self
+                        .missions
+                        .get_index_of(&mission_id)
+                        .expect("mission remains present");
                     self.give_navy_mission_orders(mission_index);
-                    let attack = match &self.missions[mission_index].data {
+                    let attack = match &self.missions[&mission_id].data {
                         MissionData::Invade { attack, .. } => attack.clone(),
                         _ => continue,
                     };
@@ -101,6 +108,10 @@ impl GameState {
                 | MissionData::ScatteredShips(_)
                 | MissionData::BlockadePort { .. }
                 | MissionData::Beachhead(_) => {
+                    let mission_index = self
+                        .missions
+                        .get_index_of(&mission_id)
+                        .expect("mission remains present");
                     self.give_navy_mission_orders(mission_index);
                 }
             }
@@ -114,7 +125,7 @@ impl GameState {
 
         let mut projected = ActionClassScores::default();
         for id in &attack.army.units {
-            let Some(unit) = self.military_units.iter().find(|unit| unit.id() == *id) else {
+            let Some(unit) = self.military_units.get(id) else {
                 continue;
             };
             if unit.stationed_province() == Some(present) {
@@ -154,7 +165,7 @@ impl GameState {
 
     fn redeploy_units_not_stationed_in(&mut self, units: &[MilitaryUnitId], province: ProvinceId) {
         for id in units {
-            let Some(unit) = self.military_units.iter_mut().find(|unit| unit.id() == *id) else {
+            let Some(unit) = self.military_units.get_mut(id) else {
                 continue;
             };
             if unit.stationed_province() != Some(province) {
@@ -170,7 +181,7 @@ impl GameState {
         target: ProvinceId,
     ) {
         for id in units {
-            let Some(unit) = self.military_units.iter_mut().find(|unit| unit.id() == *id) else {
+            let Some(unit) = self.military_units.get_mut(id) else {
                 continue;
             };
             if unit.stationed_province() == Some(present) {
@@ -271,7 +282,7 @@ impl GameState {
         for province in owned {
             let garrison = self
                 .military_units
-                .iter()
+                .values()
                 .filter(|unit| {
                     unit.stationed_province == Some(province)
                         && tactical_category(unit.unit_type) == 0
@@ -313,8 +324,10 @@ impl GameState {
         );
         let insert_at = self
             .military_units
-            .partition_point(|existing| existing.nation <= nation);
-        self.military_units.insert(insert_at, unit);
+            .values()
+            .position(|existing| existing.nation > nation)
+            .unwrap_or(self.military_units.len());
+        self.military_units.shift_insert(insert_at, id, unit);
     }
 
     fn add_militia(&mut self, nation: NationId, province: ProvinceId) {
