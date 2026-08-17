@@ -40,10 +40,16 @@ semantics.
   comparison must not force unknown save bytes into the domain model.
 - Prefer semantic Rust types, typed IDs, and `Option` over raw retail storage conventions.
 - Keep a fixed retail domain in its existing typed ordinal table or array. Store a dynamic game
-  object in `IndexMap<Id, State>`: the key is its stable identity and map order is the retail
-  list order. Use `IndexSet<Id>` for ordered, unique object references and `IndexMap<Id, Flag>`
-  for ordered references with per-link state. Do not use a Rust collection index as object
-  identity, add sidecar order vectors, or introduce an entity/arena framework.
+  object in `IndexMap<Id, State>`: the key is its stable identity. Use `IndexSet<Id>` for unique
+  object references and `IndexMap<Id, Flag>` for references with per-link state. Do not use a
+  Rust collection index as object identity, add sidecar order vectors, or introduce an
+  entity/arena framework.
+- Choose collections by their native domain semantics. `IndexMap` owns keyed entities; it is not
+  a universal replacement for C++ lists. Use `BTreeMap`/`BTreeSet` only when the maintained order
+  is genuinely sorted by a stable semantic key. For ordering derived by one operation, collect IDs
+  into a local `Vec` and sort it there. Do not manually maintain `IndexMap` positions with
+  `shift_insert`, `swap_indices`, `move_index`, or `get_index*` merely to imitate list topology.
+  A survivor requires a documented retail-visible positional semantic.
 - Keep retail-sized semantic IDs when their width is natural. Use `Option` instead of integer
   sentinels. Use `EnumMap` for closed-enum tables. Do not add collection wrappers or widen IDs
   merely to eliminate casts; explicit boundary conversions are fine.
