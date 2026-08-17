@@ -26,25 +26,26 @@ impl PlayerTradeOrder {
 /// Cotton and wool share a row, as do fish and livestock. The remaining
 /// visible rows each address one resource directly.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[allow(non_camel_case_types)]
 pub enum TransportAllocation {
-    CottonAndWool,
-    Timber,
-    Coal,
-    Iron,
-    Horses,
-    Oil,
-    Fabric,
-    Lumber,
-    Steel,
-    Fuel,
-    Clothing,
-    Furniture,
-    Hardware,
-    Grain,
-    Fruit,
-    FishAndLivestock,
-    Gems,
-    Gold,
+    COTTON_AND_WOOL,
+    TIMBER,
+    COAL,
+    IRON,
+    HORSES,
+    OIL,
+    FABRIC,
+    LUMBER,
+    STEEL,
+    FUEL,
+    CLOTHING,
+    FURNITURE,
+    HARDWARE,
+    GRAIN,
+    FRUIT,
+    FISH_AND_LIVESTOCK,
+    GEMS,
+    GOLD,
 }
 
 /// The authoritative values displayed by one retail transport-ledger row.
@@ -59,45 +60,26 @@ pub struct TransportRowStatus {
 }
 
 impl TransportAllocation {
-    pub const COTTON_AND_WOOL: Self = Self::CottonAndWool;
-    pub const TIMBER: Self = Self::Timber;
-    pub const COAL: Self = Self::Coal;
-    pub const IRON: Self = Self::Iron;
-    pub const HORSES: Self = Self::Horses;
-    pub const OIL: Self = Self::Oil;
-    pub const FABRIC: Self = Self::Fabric;
-    pub const LUMBER: Self = Self::Lumber;
-    pub const STEEL: Self = Self::Steel;
-    pub const FUEL: Self = Self::Fuel;
-    pub const CLOTHING: Self = Self::Clothing;
-    pub const FURNITURE: Self = Self::Furniture;
-    pub const HARDWARE: Self = Self::Hardware;
-    pub const GRAIN: Self = Self::Grain;
-    pub const FRUIT: Self = Self::Fruit;
-    pub const FISH_AND_LIVESTOCK: Self = Self::FishAndLivestock;
-    pub const GEMS: Self = Self::Gems;
-    pub const GOLD: Self = Self::Gold;
-
     pub const fn resources(self) -> (ResourceKind, Option<ResourceKind>) {
         match self {
-            Self::CottonAndWool => (ResourceKind::Cotton, Some(ResourceKind::Wool)),
-            Self::Timber => (ResourceKind::Timber, None),
-            Self::Coal => (ResourceKind::Coal, None),
-            Self::Iron => (ResourceKind::Iron, None),
-            Self::Horses => (ResourceKind::Horses, None),
-            Self::Oil => (ResourceKind::Oil, None),
-            Self::Fabric => (ResourceKind::Fabric, None),
-            Self::Lumber => (ResourceKind::Lumber, None),
-            Self::Steel => (ResourceKind::Steel, None),
-            Self::Fuel => (ResourceKind::Fuel, None),
-            Self::Clothing => (ResourceKind::Clothing, None),
-            Self::Furniture => (ResourceKind::Furniture, None),
-            Self::Hardware => (ResourceKind::Hardware, None),
-            Self::Grain => (ResourceKind::Grain, None),
-            Self::Fruit => (ResourceKind::Fruit, None),
-            Self::FishAndLivestock => (ResourceKind::Fish, Some(ResourceKind::Livestock)),
-            Self::Gems => (ResourceKind::Gems, None),
-            Self::Gold => (ResourceKind::Gold, None),
+            Self::COTTON_AND_WOOL => (ResourceKind::Cotton, Some(ResourceKind::Wool)),
+            Self::TIMBER => (ResourceKind::Timber, None),
+            Self::COAL => (ResourceKind::Coal, None),
+            Self::IRON => (ResourceKind::Iron, None),
+            Self::HORSES => (ResourceKind::Horses, None),
+            Self::OIL => (ResourceKind::Oil, None),
+            Self::FABRIC => (ResourceKind::Fabric, None),
+            Self::LUMBER => (ResourceKind::Lumber, None),
+            Self::STEEL => (ResourceKind::Steel, None),
+            Self::FUEL => (ResourceKind::Fuel, None),
+            Self::CLOTHING => (ResourceKind::Clothing, None),
+            Self::FURNITURE => (ResourceKind::Furniture, None),
+            Self::HARDWARE => (ResourceKind::Hardware, None),
+            Self::GRAIN => (ResourceKind::Grain, None),
+            Self::FRUIT => (ResourceKind::Fruit, None),
+            Self::FISH_AND_LIVESTOCK => (ResourceKind::Fish, Some(ResourceKind::Livestock)),
+            Self::GEMS => (ResourceKind::Gems, None),
+            Self::GOLD => (ResourceKind::Gold, None),
         }
     }
 }
