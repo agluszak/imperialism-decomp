@@ -137,6 +137,7 @@ pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,
 };
 pub use nations::{AutoGreatPowerState, MajorNation, MinorNation, NationCommonState, Nations};
+pub use navy_orders::{NavyBattle, NavyTargeting, NavyUnitView};
 pub use navy_orders::{
     NavyOrder, NavySelectionClick, NavyTileClick, NavyToolbarClass, NavyToolbarCounts,
 };
@@ -169,6 +170,10 @@ pub use tables::{
     MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNationTable, MinorNationTable, NATION_COUNT,
     NationCapacities, NationTable, PENDING_ACTION_COUNT, PROVINCE_COUNT, PendingActionKind,
     PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable,
+};
+pub use tactical_battle::{
+    ArmyAction, ArmyActionRejection, ArmyBattle, ArmyBattleStage, ArmyUnitId, ArmyUnitView,
+    BattleSide, MoveResult, TacticalHex,
 };
 pub use technology::{
     CityTechnologyCapabilities, CivilianTerrainAccess, FortLevelCap, Technology,
