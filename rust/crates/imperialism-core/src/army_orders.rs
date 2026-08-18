@@ -102,7 +102,7 @@ impl ArmyToolbarCounts {
         category: ArmyUnitCategory,
     ) -> i16 {
         let kind = state.technology().selected_capability_slots[nation][category];
-        let mut picture = i16::from(kind as u8) + 0x4c4;
+        let mut picture = kind.army_placard_picture_id();
         if self.totals[category] <= 0 {
             picture += 0x1e;
         }
