@@ -1572,7 +1572,35 @@ fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
                             .children
                             .iter()
                             .map(|child| BattleReportUnit {
-                                resource_type: child.resource_type,
+                                kind: match kind {
+                                    BattleReportKind::LandBattle
+                                    | BattleReportKind::PreemptedLandBattle
+                                    | BattleReportKind::UncontestedTakeover => {
+                                        BattleReportUnitKind::Military(
+                                            MilitaryUnitKind::from_index(
+                                                u8::try_from(child.resource_type)
+                                                    .expect("retail military report type"),
+                                            )
+                                            .expect("retail military report type"),
+                                        )
+                                    }
+                                    BattleReportKind::SeaBattle => BattleReportUnitKind::Ship(
+                                        ShipType::from_index(
+                                            u8::try_from(child.resource_type)
+                                                .expect("retail ship report type"),
+                                        )
+                                        .expect("retail ship report type"),
+                                    ),
+                                    BattleReportKind::MerchantInterception => {
+                                        BattleReportUnitKind::Resource(
+                                            ResourceKind::from_index(
+                                                u8::try_from(child.resource_type)
+                                                    .expect("retail merchant report type"),
+                                            )
+                                            .expect("retail merchant report type"),
+                                        )
+                                    }
+                                },
                                 stock_or_required: child.stock_or_required,
                                 name: child.name.clone(),
                                 strength_bucket: child.strength_bucket,

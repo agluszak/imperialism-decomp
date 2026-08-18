@@ -1256,7 +1256,11 @@ fn army_reports_from_state(state: &GameState) -> Vec<LegacyBattleReport> {
                     .children
                     .iter()
                     .map(|child| LegacyBattleReportChild {
-                        resource_type: child.resource_type,
+                        resource_type: match child.kind {
+                            BattleReportUnitKind::Military(kind) => i16::from(kind.retail()),
+                            BattleReportUnitKind::Ship(kind) => i16::from(kind.retail()),
+                            BattleReportUnitKind::Resource(kind) => i16::from(kind.retail()),
+                        },
                         stock_or_required: child.stock_or_required,
                         name: child.name.clone(),
                         strength_bucket: child.strength_bucket,

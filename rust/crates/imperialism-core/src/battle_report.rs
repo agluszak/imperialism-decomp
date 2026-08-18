@@ -57,12 +57,21 @@ pub enum BattleReportLocation {
 /// `MapOrderBattleSideChildRecord` (0x2c). Aliased as the detailed battle-report row.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct BattleReportUnit {
-    pub resource_type: i16,
+    pub kind: BattleReportUnitKind,
     pub stock_or_required: i16,
     pub name: String,
     pub strength_bucket: i16,
     /// `kControlTagArmy` (`'army'`) for land rows; ship type identity for sea rows.
     pub detail_identity: u32,
+}
+
+/// The report-row identity domain selected by the containing report kind.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", content = "value", rename_all = "snake_case")]
+pub enum BattleReportUnitKind {
+    Military(MilitaryUnitKind),
+    Ship(ShipType),
+    Resource(ResourceKind),
 }
 
 /// One participating side of a `BattleRecord`.
@@ -175,7 +184,7 @@ impl GameState {
             }
             overlay.push_str(unit.name());
             children.push(BattleReportUnit {
-                resource_type: i16::from(unit.unit_type().retail()),
+                kind: BattleReportUnitKind::Military(unit.unit_type()),
                 stock_or_required: stock,
                 name: unit.name().to_string(),
                 strength_bucket: unit.experience() / 100,
