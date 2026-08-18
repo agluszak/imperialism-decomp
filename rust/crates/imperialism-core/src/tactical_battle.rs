@@ -392,7 +392,7 @@ impl Battle {
             score += row_distance;
             let mut adjacent_artillery = 0;
             let neighbors = self.neighbors(tile);
-            for neighbor in neighbors {
+            for &neighbor in neighbors.values() {
                 if neighbor == -1 {
                     continue;
                 }
@@ -429,7 +429,7 @@ impl Battle {
             score += row_distance;
             let neighbors = self.neighbors(tile);
             let mut adjacency = 0;
-            for neighbor in neighbors {
+            for &neighbor in neighbors.values() {
                 if neighbor == -1 {
                     continue;
                 }
@@ -465,7 +465,7 @@ impl Battle {
             score += row;
             let neighbors = self.neighbors(tile);
             let mut occupied = 0;
-            for neighbor in neighbors {
+            for &neighbor in neighbors.values() {
                 if occupied != 0 {
                     break;
                 }
@@ -809,7 +809,7 @@ impl Battle {
         self.move_costs = [-1; TACTICAL_TILE_COUNT + 1];
     }
 
-    fn neighbors(&self, tile: i32) -> [i32; 6] {
+    fn neighbors(&self, tile: i32) -> HexDirectionTable<i32> {
         neighbor_list(tile)
     }
 
@@ -1354,7 +1354,7 @@ impl Battle {
             if general(self.units[unit].unit_type) {
                 let neighbors = self.neighbors(self.units[unit].tile);
                 let mut rally = None;
-                for neighbor in neighbors {
+                for &neighbor in neighbors.values() {
                     if neighbor == -1 {
                         continue;
                     }
@@ -1575,7 +1575,7 @@ impl Battle {
     }
 
     fn score_adjacent_enemy(&self, unit: usize, side: BattleSide, tile: i32) -> i32 {
-        for neighbor in self.neighbors(tile) {
+        for &neighbor in self.neighbors(tile).values() {
             if neighbor == -1 {
                 continue;
             }
@@ -1637,7 +1637,7 @@ impl Battle {
     }
 
     fn score_rally(&self, unit: usize, tile: i32) -> i32 {
-        for neighbor in self.neighbors(tile) {
+        for &neighbor in self.neighbors(tile).values() {
             if neighbor == -1 {
                 continue;
             }
@@ -1777,7 +1777,7 @@ impl Battle {
                 score += self.units[idx].strength;
             }
             let record_tile = self.units[idx].tile;
-            let adjacent = neighbors.contains(&record_tile);
+            let adjacent = neighbors.values().any(|&neighbor| neighbor == record_tile);
             if adjacent {
                 if self.tiles[record_tile as usize].deploy_mark == 1 {
                     score += score;
@@ -1843,8 +1843,8 @@ fn combat_category_of(unit_type: MilitaryUnitKind) -> TacticalCombatClass {
     AI_CLASS[unit_type]
 }
 
-fn neighbor_list(tile: i32) -> [i32; 6] {
-    let mut out = if (tile / TACTICAL_STRIDE) & 1 != 0 {
+fn neighbor_list(tile: i32) -> HexDirectionTable<i32> {
+    let mut out = HexDirectionTable::from_array(if (tile / TACTICAL_STRIDE) & 1 != 0 {
         [
             tile - TACTICAL_STRIDE + 1,
             tile + 1,
@@ -1862,26 +1862,26 @@ fn neighbor_list(tile: i32) -> [i32; 6] {
             tile - 1,
             tile - TACTICAL_STRIDE - 1,
         ]
-    };
+    });
     if (tile + 1) % TACTICAL_STRIDE == 0 {
-        out[1] = -1;
+        out[HexDirection::East] = -1;
         if (tile / TACTICAL_STRIDE) & 1 != 0 {
-            out[0] = -1;
-            out[2] = -1;
+            out[HexDirection::NorthEast] = -1;
+            out[HexDirection::SouthEast] = -1;
         }
     } else if tile % TACTICAL_STRIDE == 0 {
-        out[4] = -1;
+        out[HexDirection::West] = -1;
         if (tile / TACTICAL_STRIDE) & 1 == 0 {
-            out[3] = -1;
-            out[5] = -1;
+            out[HexDirection::SouthWest] = -1;
+            out[HexDirection::NorthWest] = -1;
         }
     }
     if tile >= TACTICAL_TILE_COUNT as i32 - TACTICAL_STRIDE {
-        out[2] = -1;
-        out[3] = -1;
+        out[HexDirection::SouthEast] = -1;
+        out[HexDirection::SouthWest] = -1;
     } else if tile < TACTICAL_STRIDE {
-        out[0] = -1;
-        out[5] = -1;
+        out[HexDirection::NorthEast] = -1;
+        out[HexDirection::NorthWest] = -1;
     }
     out
 }
@@ -1985,7 +1985,7 @@ impl Battle {
                     && self.cost(tile) >= cost_level as i16
                 {
                     let neighbors = self.neighbors(tile);
-                    for direction in 0..6 {
+                    for direction in HexDirection::ALL {
                         let neighbor = neighbors[direction];
                         let neighbor_index = neighbor as i16;
                         if neighbor_index == -1 {
@@ -2020,16 +2020,14 @@ impl Battle {
                             continue;
                         }
                         let mut blocked = false;
-                        let prev_direction = if direction > 0 { direction - 1 } else { 5 };
-                        let prev_neighbor = neighbors[prev_direction];
+                        let prev_neighbor = neighbors[direction.previous_clockwise()];
                         if prev_neighbor != -1
                             && let Some(prev) = self.tiles[prev_neighbor as usize].occupant
                             && self.units[prev].side != self.units[unit].side
                         {
                             blocked = true;
                         }
-                        let next_direction = if direction >= 5 { 0 } else { 1 };
-                        let next_neighbor = neighbors[next_direction];
+                        let next_neighbor = neighbors[direction.next_clockwise()];
                         if next_neighbor != -1
                             && let Some(next) = self.tiles[next_neighbor as usize].occupant
                             && self.units[next].side != self.units[unit].side
@@ -2067,7 +2065,7 @@ impl Battle {
         for level in (1..=0x13).rev() {
             for tile in 0..TACTICAL_TILE_COUNT {
                 if self.threat[tile] == level {
-                    for neighbor in self.neighbors(tile as i32) {
+                    for &neighbor in self.neighbors(tile as i32).values() {
                         if neighbor != -1 && self.threat[neighbor as usize] < level - 1 {
                             self.threat[neighbor as usize] = level - 1;
                         }
@@ -2104,7 +2102,7 @@ impl Battle {
                 if self.distance_field[tile] != distance {
                     continue;
                 }
-                for neighbor in self.neighbors(tile as i32) {
+                for &neighbor in self.neighbors(tile as i32).values() {
                     if neighbor == -1 || self.distance_field[neighbor as usize] != -1 {
                         continue;
                     }
@@ -2156,7 +2154,7 @@ impl Battle {
             && target.trench_mask != 0
         {
             let neighbors = self.neighbors(attacker_tile);
-            if !neighbors.contains(&target_tile) {
+            if !neighbors.values().any(|&neighbor| neighbor == target_tile) {
                 return false;
             }
         }
@@ -2246,7 +2244,7 @@ impl Battle {
     }
 
     fn has_adjacent_reachable(&self, unit: usize) -> bool {
-        for neighbor in self.neighbors(self.units[unit].tile) {
+        for &neighbor in self.neighbors(self.units[unit].tile).values() {
             if neighbor != -1 {
                 let cost = self.cost(neighbor);
                 if cost != -1 && i32::from(cost) <= self.units[unit].action_points {
@@ -2262,7 +2260,7 @@ impl Battle {
         if category == ArmyUnitCategory::Generals {
             return self
                 .neighbors(self.units[unit].tile)
-                .iter()
+                .values()
                 .any(|&neighbor| {
                     neighbor != -1
                         && self.tiles[neighbor as usize]
@@ -2343,7 +2341,7 @@ impl Battle {
         let neighbors = self.neighbors(walk);
         let mut candidates = [0; 6];
         let mut count = 0;
-        for neighbor in neighbors {
+        for &neighbor in neighbors.values() {
             let neighbor_cost = self.cost(neighbor);
             if neighbor_cost != -1 && neighbor_cost < walk_cost {
                 candidates[count] = neighbor;
@@ -2429,7 +2427,10 @@ impl Battle {
             && self.fort_strength[(target / TACTICAL_STRIDE / 2) as usize] > 0
             && defender.is_none();
         let wall = self.wall_on_firing_line(target, self.units[attacker].tile);
-        let mut melee = self.neighbors(self.units[attacker].tile).contains(&target);
+        let mut melee = self
+            .neighbors(self.units[attacker].tile)
+            .values()
+            .any(|&neighbor| neighbor == target);
         if wall != 0
             && self.tiles[wall as usize].deploy_mark > 1
             && self.fort_strength[(wall / TACTICAL_STRIDE / 2) as usize] > 0
@@ -2627,26 +2628,22 @@ impl Battle {
     fn dig_trench(&mut self, unit: usize, target: i32) {
         let from = self.units[unit].tile;
         let neighbors = self.neighbors(from);
-        let mut direction = 0;
-        while direction < 6 && neighbors[direction] != target {
-            direction += 1;
-        }
+        let direction = HexDirection::ALL
+            .into_iter()
+            .find(|&direction| neighbors[direction] == target)
+            .expect("trench target must neighbor its source");
         let src = self.tiles[from as usize].trench_mask;
         if src == 0 {
             self.tiles[from as usize].trench_mask = 0x80;
         } else {
             self.tiles[from as usize].trench_mask = (src & 0x7f) | 0x40;
         }
-        self.tiles[from as usize].trench_mask |= 1 << direction;
-        direction += 3;
-        if direction > 5 {
-            direction -= 6;
-        }
+        self.tiles[from as usize].trench_mask |= direction.bit();
         let dst = self.tiles[target as usize].trench_mask;
         if dst != 0 {
             self.tiles[target as usize].trench_mask = (dst & 0x7f) | 0x40;
         }
-        self.tiles[target as usize].trench_mask |= 1 << direction;
+        self.tiles[target as usize].trench_mask |= direction.opposite().bit();
     }
 
     fn rally(&mut self, state: &mut GameState, rallier: usize, target: usize) {
