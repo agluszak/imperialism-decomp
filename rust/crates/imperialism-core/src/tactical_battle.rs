@@ -18,6 +18,13 @@ enum TacticalUnitState {
 }
 
 #[derive(Clone, Copy, Eq, PartialEq)]
+enum MineRun {
+    None,
+    First,
+    Second,
+}
+
+#[derive(Clone, Copy, Eq, PartialEq)]
 enum TacticalStance {
     Hold,
     Retreat,
@@ -58,7 +65,7 @@ struct Tile {
     terrain: TacticalTerrain,
     occupant: Option<usize>,
     deploy_mark: i32,
-    mine_run: i32,
+    mine_run: MineRun,
     trench_mask: u8,
 }
 
@@ -178,7 +185,7 @@ impl Battle {
                 terrain: TacticalTerrain::Class0,
                 occupant: None,
                 deploy_mark: 0,
-                mine_run: -1,
+                mine_run: MineRun::None,
                 trench_mask: 0,
             }; TACTICAL_TILE_COUNT],
             move_costs: [-1; TACTICAL_TILE_COUNT + 1],
@@ -285,7 +292,7 @@ impl Battle {
                 terrain: TacticalTerrain::Class0,
                 occupant: None,
                 deploy_mark: 0,
-                mine_run: -1,
+                mine_run: MineRun::None,
                 trench_mask: 0,
             };
         }
@@ -2570,7 +2577,7 @@ impl Battle {
         let mut run = self.units[unit].tile;
         if run != target {
             loop {
-                if self.tiles[run as usize].mine_run == -1 {
+                if self.tiles[run as usize].mine_run == MineRun::None {
                     break;
                 }
                 run -= TACTICAL_STRIDE;
@@ -2583,9 +2590,9 @@ impl Battle {
             self.tiles[self.units[unit].sap_target as usize].deploy_mark = 0;
             self.units[unit].sap_target = -1;
         } else if ((run / TACTICAL_STRIDE) & 1) != 0 {
-            self.tiles[run as usize].mine_run = 0;
+            self.tiles[run as usize].mine_run = MineRun::First;
         } else {
-            self.tiles[run as usize].mine_run = 1;
+            self.tiles[run as usize].mine_run = MineRun::Second;
         }
         if self.units[unit].action_points == 0 {
             self.finish_action();
