@@ -10,10 +10,10 @@ use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
 use imperialism_formats::{PictureId, fourcc};
 
-const ABILITY_STATUS_PICTURE_INDEX: [i16; Technology::LENGTH] = [
+const ABILITY_STATUS_PICTURE_INDEX: TechnologyTable<i16> = TechnologyTable::from_array([
     0, 1, 3, 2, 7, 5, 6, 9, 10, 4, 8, 16, 12, 19, 22, 11, 17, 13, 14, 21, 15, 18, 26, 20, 23, 28,
     24, 25, 27,
-];
+]);
 
 #[derive(Component)]
 struct TechnologyAdvanceRoot;
@@ -83,7 +83,7 @@ fn project_technology_advance(
     let Some(tech) = session.game.current_technology_report() else {
         return;
     };
-    let picture_id = PictureId::new(ABILITY_STATUS_PICTURE_INDEX[tech as usize] + 0x897);
+    let picture_id = PictureId::new(ABILITY_STATUS_PICTURE_INDEX[tech] + 0x897);
     let picture = assets
         .picture(picture_id)
         .expect("technology status picture must load");
