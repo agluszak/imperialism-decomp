@@ -172,8 +172,8 @@ pub use tables::{
 };
 pub use technology::{
     CityTechnologyCapabilities, CivilianTerrainAccess, FortLevelCap, Technology,
-    TechnologyResearchStatus, TechnologyState, TechnologyTable, UniversityRequirementLevel,
-    UniversityTechnologyState,
+    TechnologyResearchRejection, TechnologyResearchStatus, TechnologyResearchToggle,
+    TechnologyState, TechnologyTable, UniversityRequirementLevel, UniversityTechnologyState,
 };
 pub use territory::{
     CountryStatus, FortLevel, FortLevelTable, ProvinceDevelopmentStage, ProvinceState,

@@ -1,13 +1,14 @@
-use super::RetailUiAssets;
 use super::generated;
 use super::retail::{ModalDialog, RetailTree, ancestor_with};
-use crate::AppState;
-use crate::RetailAssetsResource;
+use super::{RetailUiAssets, fill_brackets};
+use crate::{AppState, RetailAssetsResource};
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
 use imperialism_formats::{FourCc, RetailTextStylePreset, fourcc};
 
+const TERRAIN_HELP_SETS: [i16; 5] = [0x0bc2, 0x0bcc, 0x0c94, 0x0c9e, 0x0ca8];
+const TECHNOLOGY_HELP_SETS: [i16; 1] = [0x0c08];
 const TOPICS: [FourCc; 5] = [
     fourcc!("nam1"),
     fourcc!("nam2"),
@@ -15,108 +16,148 @@ const TOPICS: [FourCc; 5] = [
     fourcc!("nam4"),
     fourcc!("nam5"),
 ];
-const BODIES: [&str; 5] = [
-    "Your civilian units work to expand the pool of available resources on the Terrain Map.\n\nProspectors look for minerals in barren hills and mountains. Later, they can search for oil.\nMiners open mines after the minerals are found.\nFarmers improve the output of fruit, grain, and cotton.\nForesters improve the output of timber\nRanchers improve the output of livestock and wool.\n\nUnlike these units, Engineers are used to connect the resources to a transport network so they may be used to feed your workers and supply your industries. If a terrain tile is within one tile of a connected rail depot, a port, or the capital city, the resources in that tile are available to the transport network.",
-    "Whenever a civilian is selected you will see a white flashing outline around him, and his picture will be shown in the toolbar.\n\nIn the toolbar you see a picture of the selected civilian along with information about him. On the map you see your civilian units, a variety of terrain, towns, and defensive military encampments (small tents).\n\nThere are nine types of terrain that always supply a resource: fertile hills(wool), plantations(cotton), open range(livestock), farms(grain), orchards(fruit), hardwood forest(timber), dry plains(grain), ranches(horses), and scrub forests(timber). The last three types cannot be improved to produce more than one unit per turn.\n\nThere are two types of terrain that might conceal mineral resources: barren hills(coal or iron), and mountains (coal, iron, gold, gems).\n\nSome of the other types of terrain on the map become valuable later in the game, like deserts and tundra.\n\n",
-    "As you move your cursor across the map it will alter according to what will happen if you click in that location. You can safely experiment because any order you give can be canceled at no cost.\n\nOnce you give an order to a civilian a question mark will appear when you place the cursor over the ordered unit. Click on the unit and a dialog box informs you what he is doing and lets you cancel or confirm his orders.\n\nYou can be sure a civilian is working when the unit animates.",
-    "Cursors tell you what will happen if you send your civilian to that terrain tile. For most units, a hammer cursor appears over spaces where that unit could move and do work.\n\nThe Prospector has a special cursor, an eye that appears over places he can search for minerals. The Engineer also has a special cursor, the railroad track cursor which appears over spaces to which he could build rail. When the hammer cursor appears over the Engineer, it indicates that he could construct a depot, port or fort in his current space.\n\nIf you see a green arrow, the civilian can move there, but he will accomplish no work this turn.",
-    "You may cycle through your units using the next unit button on the toolbar (a small arrow).\n\nIf you wish to select a civilian unit without waiting for it in the cycle, move the cursor over a unit on the map. When the cursor becomes a small hammer with a flag, click to select the unit.\n\nThis allows you to select units that are not currently in the automatic cycle, or to command units in a different order than presented by the cycle.",
-];
+const LINK_BLUE: Color = Color::srgb(0.05, 0.08, 0.65);
 
 #[derive(Component)]
-struct MapHelpRoot;
+struct MapHelpRoot {
+    context: MapHelpContext,
+    set: usize,
+    topic: Option<usize>,
+}
+
+#[derive(Clone, Copy)]
+enum MapHelpContext {
+    TerrainMap,
+    TechnologyStore,
+}
+
+impl MapHelpContext {
+    const fn sets(self) -> &'static [i16] {
+        match self {
+            Self::TerrainMap => &TERRAIN_HELP_SETS,
+            Self::TechnologyStore => &TECHNOLOGY_HELP_SETS,
+        }
+    }
+
+    const fn event_code(self) -> i16 {
+        match self {
+            Self::TerrainMap => 0x07dd,
+            Self::TechnologyStore => 0x08fc,
+        }
+    }
+
+    const fn topic_count(self) -> usize {
+        match self {
+            Self::TerrainMap => 5,
+            Self::TechnologyStore => 4,
+        }
+    }
+
+    const fn app_state(self) -> AppState {
+        match self {
+            Self::TerrainMap => AppState::StrategicMap,
+            Self::TechnologyStore => AppState::TechnologyStore,
+        }
+    }
+}
 
 #[derive(Component, Clone, Copy)]
 enum MapHelpAction {
     Topic(usize),
     Topics,
+    Previous,
+    Next,
     Close,
 }
 
-#[derive(Component)]
-struct MapHelpBody;
-
 pub(crate) fn register(app: &mut App) {
-    app.add_systems(
-        Update,
-        bind_added_help.run_if(in_state(AppState::StrategicMap)),
-    );
+    app.add_systems(Update, bind_added_help);
 }
 
-pub(crate) fn bind(commands: &mut Commands, control: Entity) {
-    commands
-        .entity(control)
-        .insert(ActivateOnPress)
-        .observe(open_help);
+pub(crate) fn spawn(commands: &mut Commands) {
+    spawn_for_context(commands, MapHelpContext::TerrainMap);
 }
 
-fn open_help(
-    _activate: On<Activate>,
-    existing: Query<(), With<MapHelpRoot>>,
-    modals: Query<(), With<ModalDialog>>,
-    mut commands: Commands,
-) {
-    if !existing.is_empty() || !modals.is_empty() {
-        return;
-    }
+pub(crate) fn spawn_technology(commands: &mut Commands) {
+    spawn_for_context(commands, MapHelpContext::TechnologyStore);
+}
+
+fn spawn_for_context(commands: &mut Commands, context: MapHelpContext) {
     let root = commands.spawn_scene(generated::linger_3000()).id();
     commands.entity(root).insert((
-        MapHelpRoot,
+        MapHelpRoot {
+            context,
+            set: 0,
+            topic: None,
+        },
         ModalDialog,
         TabGroup::modal(),
         GlobalZIndex(30),
-        DespawnOnExit(AppState::StrategicMap),
+        DespawnOnExit(context.app_state()),
     ));
 }
 
 fn bind_added_help(
     mut commands: Commands,
-    roots: Query<Entity, Added<MapHelpRoot>>,
+    roots: Query<(Entity, &MapHelpRoot), Added<MapHelpRoot>>,
     tree: RetailTree,
     mut assets: RetailUiAssets,
+    retail: Res<RetailAssetsResource>,
+    mut nodes: Query<&mut Node>,
 ) {
-    for root in &roots {
+    for (root, state) in &roots {
         let view = tree.view(root);
+        let window = view.find(fourcc!("WIND"));
+        nodes.get_mut(window).expect("help window node").height = px(339);
+        nodes
+            .get_mut(view.find(fourcc!("DLOG")))
+            .expect("help dialog node")
+            .top = px(24);
+        let context = state.context;
+        let title = fill_brackets(
+            &retail.get_string(0x2749, 6),
+            &[&retail.get_string(0x2749, context.event_code())],
+        );
         set_text(
             &mut commands,
             &mut assets,
             view.find(fourcc!("titl")),
-            "Help from your\nForeign Minister",
+            &title,
             12,
+            1,
+            Color::BLACK,
         );
-        let subject = assets.string(0x0bc2, 1).expect("retail map help subject");
         set_text(
             &mut commands,
             &mut assets,
             view.find(fourcc!("subj")),
-            &subject,
+            "",
             12,
+            1,
+            Color::BLACK,
+        );
+        set_text(
+            &mut commands,
+            &mut assets,
+            view.find(fourcc!("swin")),
+            "",
+            12,
+            3,
+            Color::BLACK,
         );
         for (index, tag) in TOPICS.into_iter().enumerate() {
-            let label = assets
-                .string(0x0bc2, index as i16 + 2)
-                .expect("retail map help topic");
-            let entity = view.find(tag);
-            set_text(&mut commands, &mut assets, entity, &label, 12);
-            commands
-                .entity(entity)
-                .insert((Button, ActivateOnPress, MapHelpAction::Topic(index)))
-                .observe(on_action);
+            spawn_link_button(&mut commands, view.find(tag), MapHelpAction::Topic(index));
         }
-        let body = view.find(fourcc!("swin"));
-        set_text(&mut commands, &mut assets, body, "", 12);
+        for (tag, action) in [
+            (fourcc!("togl"), MapHelpAction::Topics),
+            (fourcc!("prev"), MapHelpAction::Previous),
+            (fourcc!("next"), MapHelpAction::Next),
+        ] {
+            spawn_link_button(&mut commands, view.find(tag), action);
+        }
         commands
-            .entity(body)
-            .insert((MapHelpBody, Visibility::Hidden));
-        commands
-            .entity(view.find(fourcc!("togl")))
-            .insert((
-                Button,
-                ActivateOnPress,
-                MapHelpAction::Topics,
-                Visibility::Hidden,
-            ))
-            .observe(on_action);
+            .entity(view.find(fourcc!("more")))
+            .insert(Visibility::Hidden);
         let topics_label = assets.string(0x2749, 9).expect("retail show-topics label");
         set_text(
             &mut commands,
@@ -124,39 +165,77 @@ fn bind_added_help(
             view.find(fourcc!("togl")),
             &topics_label,
             12,
+            3,
+            LINK_BLUE,
         );
-        for tag in [fourcc!("prev"), fourcc!("next"), fourcc!("more")] {
-            commands.entity(view.find(tag)).insert(Visibility::Hidden);
-        }
-        commands
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(365),
-                    top: px(4),
-                    width: px(20),
-                    height: px(20),
-                    ..default()
-                },
-                Button,
-                Text::new("×"),
-                ActivateOnPress,
-                MapHelpAction::Close,
-                ChildOf(view.find(fourcc!("DLOG"))),
-            ))
-            .observe(on_action);
+
+        let (close_font, close_layout, close_line_height, _) = assets
+            .text_style(RetailTextStylePreset {
+                font_family: 1,
+                face_flags: 0,
+                point_size: 12,
+                alignment: 1,
+            })
+            .expect("retail help close-box style");
+
+        commands.entity(window).with_children(|parent| {
+            parent
+                .spawn((
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: px(0),
+                        top: px(0),
+                        width: px(390),
+                        height: px(24),
+                        border: UiRect::all(px(2)),
+                        ..default()
+                    },
+                    BackgroundColor(Color::srgb(0.52, 0.52, 0.52)),
+                    BorderColor::all(Color::WHITE),
+                    Pickable::IGNORE,
+                ))
+                .with_children(|title| {
+                    title
+                        .spawn((
+                            Node {
+                                position_type: PositionType::Absolute,
+                                right: px(4),
+                                top: px(3),
+                                width: px(18),
+                                height: px(17),
+                                border: UiRect::all(px(1)),
+                                justify_content: JustifyContent::Center,
+                                align_items: AlignItems::Center,
+                                ..default()
+                            },
+                            UiButton,
+                            ActivateOnPress,
+                            MapHelpAction::Close,
+                            ZIndex(1),
+                            BackgroundColor(Color::srgb(0.82, 0.82, 0.82)),
+                            BorderColor::all(Color::srgb(0.25, 0.25, 0.25)),
+                        ))
+                        .observe(on_action)
+                        .with_child((
+                            Text::new("×"),
+                            close_font.clone(),
+                            close_layout,
+                            close_line_height,
+                            TextColor(Color::BLACK),
+                            Pickable::IGNORE,
+                        ));
+                });
+        });
+        show_topic_list_raw(root, context, 0, &tree, &retail, &mut commands);
     }
 }
 
-#[allow(clippy::too_many_arguments)]
 fn on_action(
     activate: On<Activate>,
     actions: Query<&MapHelpAction>,
     parents: Query<&ChildOf>,
-    roots: Query<(), With<MapHelpRoot>>,
-    bodies: Query<Entity, With<MapHelpBody>>,
+    mut roots: Query<&mut MapHelpRoot>,
     assets: Res<RetailAssetsResource>,
-    mut texts: Query<&mut Text>,
     tree: RetailTree,
     mut commands: Commands,
 ) {
@@ -170,22 +249,45 @@ fn on_action(
         commands.entity(root).despawn();
         return;
     }
-    let view = tree.view(root);
-    let Ok(body) = bodies.single() else {
-        return;
-    };
+    let mut state = roots
+        .get_mut(root)
+        .expect("help action belongs to help root");
+    apply_action(action, root, &mut state, &assets, &tree, &mut commands);
+}
+
+fn apply_action(
+    action: MapHelpAction,
+    root: Entity,
+    state: &mut MapHelpRoot,
+    assets: &RetailAssetsResource,
+    tree: &RetailTree,
+    commands: &mut Commands,
+) {
     match action {
-        MapHelpAction::Topic(index) => {
-            texts
-                .get_mut(view.find(fourcc!("subj")))
-                .expect("map help has a subject")
-                .0 = assets
-                .string(0x0bc2, index as i16 + 2)
-                .expect("retail map help topic");
+        MapHelpAction::Topic(topic) => {
+            let view = tree.view(root);
+            let group = state.context.sets()[state.set];
+            state.topic = Some(topic);
             commands
-                .entity(body)
-                .insert((Text::new(BODIES[index]), Visibility::Visible));
+                .entity(view.find(fourcc!("subj")))
+                .insert(Text::new(
+                    assets
+                        .string(group, topic as i16 + 2)
+                        .expect("retail map-help topic"),
+                ));
+            commands.entity(view.find(fourcc!("swin"))).insert((
+                Text::new(
+                    assets
+                        .text(group as u16 + topic as u16 + 1)
+                        .expect("retail map-help body"),
+                ),
+                TextColor(Color::BLACK),
+                Visibility::Visible,
+            ));
             for tag in TOPICS {
+                commands.entity(view.find(tag)).insert(Visibility::Hidden);
+            }
+            for tag in [fourcc!("prev"), fourcc!("next")] {
                 commands.entity(view.find(tag)).insert(Visibility::Hidden);
             }
             commands
@@ -193,20 +295,86 @@ fn on_action(
                 .insert(Visibility::Visible);
         }
         MapHelpAction::Topics => {
-            texts
-                .get_mut(view.find(fourcc!("subj")))
-                .expect("map help has a subject")
-                .0 = assets.string(0x0bc2, 1).expect("retail map help subject");
-            commands.entity(body).insert(Visibility::Hidden);
-            for tag in TOPICS {
-                commands.entity(view.find(tag)).insert(Visibility::Visible);
-            }
-            commands
-                .entity(view.find(fourcc!("togl")))
-                .insert(Visibility::Hidden);
+            state.topic = None;
+            show_topic_list_raw(root, state.context, state.set, tree, assets, commands);
+        }
+        MapHelpAction::Previous => {
+            state.set = state.set.saturating_sub(1);
+            state.topic = None;
+            show_topic_list_raw(root, state.context, state.set, tree, assets, commands);
+        }
+        MapHelpAction::Next => {
+            state.set = (state.set + 1).min(state.context.sets().len() - 1);
+            state.topic = None;
+            show_topic_list_raw(root, state.context, state.set, tree, assets, commands);
         }
         MapHelpAction::Close => unreachable!(),
     }
+}
+
+fn spawn_link_button(commands: &mut Commands, label: Entity, action: MapHelpAction) {
+    commands
+        .entity(label)
+        .insert((UiButton, Pickable::default(), ActivateOnPress, action))
+        .observe(on_action);
+}
+
+fn show_topic_list_raw(
+    root: Entity,
+    context: MapHelpContext,
+    set: usize,
+    tree: &RetailTree,
+    assets: &RetailAssetsResource,
+    commands: &mut Commands,
+) {
+    let view = tree.view(root);
+    let group = context.sets()[set];
+    commands
+        .entity(view.find(fourcc!("subj")))
+        .insert(Text::new(
+            assets.string(group, 1).expect("retail map-help subject"),
+        ));
+    commands
+        .entity(view.find(fourcc!("swin")))
+        .insert(Visibility::Hidden);
+    for (index, tag) in TOPICS.into_iter().enumerate() {
+        commands.entity(view.find(tag)).insert((
+            Text::new(
+                assets
+                    .string(group, index as i16 + 2)
+                    .expect("retail map-help topic"),
+            ),
+            TextColor(LINK_BLUE),
+            Underline,
+            if index < context.topic_count() {
+                Visibility::Visible
+            } else {
+                Visibility::Hidden
+            },
+        ));
+    }
+    for (tag, index, visible) in [
+        (fourcc!("prev"), 14, set > 0),
+        (fourcc!("next"), 15, set + 1 < context.sets().len()),
+    ] {
+        commands.entity(view.find(tag)).insert((
+            Text::new(
+                assets
+                    .string(0x2749, index)
+                    .expect("retail map-help navigation label"),
+            ),
+            TextColor(LINK_BLUE),
+            Underline,
+            if visible {
+                Visibility::Visible
+            } else {
+                Visibility::Hidden
+            },
+        ));
+    }
+    commands
+        .entity(view.find(fourcc!("togl")))
+        .insert(Visibility::Hidden);
 }
 
 fn set_text(
@@ -215,20 +383,18 @@ fn set_text(
     entity: Entity,
     text: &str,
     size: i32,
+    font_family: i32,
+    color: Color,
 ) {
     let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset {
-            font_family: 3,
+            font_family,
             face_flags: 0,
             point_size: size,
             alignment: -2,
         })
-        .expect("retail map help text style");
-    commands.entity(entity).insert((
-        Text::new(text),
-        font,
-        layout,
-        line_height,
-        TextColor(Color::BLACK),
-    ));
+        .expect("retail map-help text style");
+    commands
+        .entity(entity)
+        .insert((Text::new(text), font, layout, line_height, TextColor(color)));
 }

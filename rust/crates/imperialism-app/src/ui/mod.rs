@@ -24,6 +24,7 @@ mod retail;
 mod session;
 mod strategic_map;
 mod technology;
+mod technology_store;
 #[cfg(test)]
 mod test_support;
 mod trade;
@@ -51,6 +52,7 @@ pub(crate) use random_setup_map::MapPreviewPlugin;
 pub(crate) use retail::{RetailUiAssets, RetailUiPlugin};
 pub(crate) use session::GameSession;
 pub(crate) use technology::TechnologyAdvancePlugin;
+pub(crate) use technology_store::TechnologyStorePlugin;
 pub(crate) use trade::TradePlugin;
 pub(crate) use transport::TransportPlugin;
 pub(crate) use viewport::RetailViewportPlugin;

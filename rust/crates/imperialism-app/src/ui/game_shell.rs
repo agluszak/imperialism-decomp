@@ -166,7 +166,7 @@ fn bind_strategic_map(
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None, false);
+    bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None, true);
     bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &tree);
     commands
         .entity(tree.find(*root, fourcc!("DONE")))
@@ -181,12 +181,12 @@ fn bind_strategic_map(
         &mut pictures,
         tree.find(*root, fourcc!("quer")),
     );
-    map_help::bind(&mut commands, tree.find(*root, fourcc!("quer")));
     bind_pressed_overlay(
         &mut commands,
         &mut pictures,
         tree.find(*root, fourcc!("ZmOt")),
     );
+    super::technology_store::bind_open_control(&mut commands, tree.find(*root, fourcc!("mmap")));
     commands
         .entity(tree.find(*root, fourcc!("send")))
         .insert(Visibility::Hidden);
@@ -468,7 +468,8 @@ pub(crate) fn bind_native_game_screen_nav(
     ] {
         commands
             .entity(entity)
-            .insert(action)
+            .insert((action, ActivateOnPress))
+            .remove::<InteractionDisabled>()
             .observe(on_game_screen_activate);
     }
     if let Some(leave_toolbar_tag) = leave_toolbar_tag {
