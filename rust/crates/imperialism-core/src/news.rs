@@ -726,7 +726,7 @@ fn event_mask(event: &PendingNewspaperEvent) -> i32 {
 
 fn event_related(event: &PendingNewspaperEvent) -> i32 {
     match event {
-        PendingNewspaperEvent::Shortage { resource, .. } => 1 << (*resource as u8),
+        PendingNewspaperEvent::Shortage { resource, .. } => 1 << resource.retail(),
         _ => 0,
     }
 }
