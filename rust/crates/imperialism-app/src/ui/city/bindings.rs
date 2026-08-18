@@ -442,7 +442,7 @@ pub(in crate::ui::city) fn city_building_picture(
             7027
         }));
     }
-    let offset = i16::from(slot as u8);
+    let offset = i16::from(slot.retail());
     let normal = level == 0 || offset > 5 || !expanding || !slot.is_capacity_center();
     Some(PictureId::new(
         (if normal { 7000 } else { 7300 }) + level * 16 + offset,

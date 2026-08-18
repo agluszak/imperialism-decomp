@@ -66,7 +66,7 @@ pub(in crate::ui::city) fn city_building_name(
     assets: &RetailUiAssets,
     slot: CityFacilitySlot,
 ) -> String {
-    city_string(assets, CITY_BUILDING_STRING_GROUP, slot as i16)
+    city_string(assets, CITY_BUILDING_STRING_GROUP, i16::from(slot.retail()))
 }
 
 pub(in crate::ui::city) fn configure_industry_dialog(
@@ -466,8 +466,17 @@ mod tests {
 
     #[test]
     fn specialized_city_buildings_use_the_one_based_retail_name_indexes() {
-        assert_eq!(city_string_index(CityFacilitySlot::OilRefinery as i16), 7);
-        assert_eq!(city_string_index(CityFacilitySlot::Shipyard as i16), 8);
-        assert_eq!(city_string_index(CityFacilitySlot::Armory as i16), 9);
+        assert_eq!(
+            city_string_index(i16::from(CityFacilitySlot::OilRefinery.retail())),
+            7
+        );
+        assert_eq!(
+            city_string_index(i16::from(CityFacilitySlot::Shipyard.retail())),
+            8
+        );
+        assert_eq!(
+            city_string_index(i16::from(CityFacilitySlot::Armory.retail())),
+            9
+        );
     }
 }

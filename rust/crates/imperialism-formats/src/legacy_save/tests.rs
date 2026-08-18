@@ -167,7 +167,8 @@ fn technology_decoder_reads_retail_resource_type_fields() {
     bytes[4 * std::mem::size_of::<i16>()..5 * std::mem::size_of::<i16>()]
         .copy_from_slice(&17_i16.to_be_bytes());
     bytes[TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62 + TECH_OIL_DRILLING_ID] = 1;
-    bytes[TECH_INDUSTRY_ENABLED_OFFSET_V62 + CityFacilitySlot::OilRefinery as usize] = 1;
+    bytes[TECH_INDUSTRY_ENABLED_OFFSET_V62
+        + usize::from(IndustryCapabilitySlot::OilRefinery.retail())] = 1;
     bytes[TECH_ABILITY_ACTIVE_ROWS_OFFSET_V62
         + 2 * TECH_ABILITY_ACTIVE_ROW_SIZE
         + MilitaryUnitKind::SiegeArtillery as usize] = 1;
@@ -191,7 +192,7 @@ fn technology_decoder_reads_retail_resource_type_fields() {
         1
     );
     assert_eq!(
-        technology.resource_type_enabled[CityFacilitySlot::OilRefinery as usize],
+        technology.resource_type_enabled[usize::from(IndustryCapabilitySlot::OilRefinery.retail())],
         1
     );
     assert_eq!(

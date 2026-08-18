@@ -633,7 +633,7 @@ pub(in crate::ui::city) fn sync_city_hover_title(
             assets
                 .string(
                     CITY_BUILDING_STRING_GROUP,
-                    city_string_index(building.slot as i16),
+                    city_string_index(i16::from(building.slot.retail())),
                 )
                 .expect("retail English City string")
         } else {

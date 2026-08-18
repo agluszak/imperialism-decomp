@@ -721,8 +721,11 @@ fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
     });
 
     TechnologyState {
-        advanced_iron_working: legacy.resource_type_enabled[CityFacilitySlot::Armory as usize] != 0,
-        marine_engineering: legacy.resource_type_enabled[CityFacilitySlot::PowerPlant as usize]
+        advanced_iron_working: legacy.resource_type_enabled
+            [usize::from(IndustryCapabilitySlot::Armory.retail())]
+            != 0,
+        marine_engineering: legacy.resource_type_enabled
+            [usize::from(IndustryCapabilitySlot::PowerPlant.retail())]
             != 0,
         scheduled_unlock_turn_by_technology: TechnologyTable::from_array(legacy.priority_slots),
         global_unlocks_by_technology: TechnologyTable::from_array(
@@ -1365,8 +1368,10 @@ fn interior_civilian_state(minister: &LegacyInteriorMinisterState) -> InteriorCi
                     .expect("retail pending military development action"),
             },
             30..=43 => PendingDevelopmentAction::Industry {
-                slot: CityFacilitySlot::from_index((value - 30) as u8)
-                    .expect("retail pending industry development action"),
+                slot: CityFacilitySlot::from_index(
+                    u8::try_from(value - 30).expect("retail city facility slot fits u8"),
+                )
+                .expect("retail pending industry development action"),
             },
             _ => panic!("unrecovered pending development action {value}"),
         })
@@ -1477,8 +1482,11 @@ fn province_state(province: &LegacyProvince) -> ProvinceState {
         .copied()
         .enumerate()
     {
-        let resource = ResourceKind::from_index((ResourceKind::Food as usize + offset) as u8)
-            .expect("province resource-development table spans food through arms");
+        let resource = ResourceKind::from_index(
+            ResourceKind::Food.retail()
+                + u8::try_from(offset).expect("province resource-development index fits u8"),
+        )
+        .expect("province resource-development table spans food through arms");
         resource_development_by_type[resource] = amount;
     }
     let explored_by_majors = MajorNationTable::from_fn(|nation| {

@@ -15,19 +15,32 @@ use bevy::ui_widgets::{
     Activate, Button, Checkbox, Slider, SliderOrientation, SliderPrecision, SliderRange,
     SliderValue, TrackClick, ValueChange, slider_self_update,
 };
+use enum_map::{Enum, EnumMap};
 use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
 
 /// `g_anGamePreferenceIndexByRow` and the controls for each displayed row.
 const PREFERENCE_ROWS: [(
-    i16,
+    PreferenceSlot,
     imperialism_formats::FourCc,
     imperialism_formats::FourCc,
 ); 5] = [
-    (3, fourcc!("opta"), fourcc!("txta")),
-    (2, fourcc!("optb"), fourcc!("txtb")),
-    (8, fourcc!("optc"), fourcc!("txtc")),
-    (10, fourcc!("optd"), fourcc!("txtd")),
-    (0, fourcc!("opte"), fourcc!("txte")),
+    (
+        PreferenceSlot::MusicVolume,
+        fourcc!("opta"),
+        fourcc!("txta"),
+    ),
+    (
+        PreferenceSlot::SoundVolume,
+        fourcc!("optb"),
+        fourcc!("txtb"),
+    ),
+    (PreferenceSlot::TurnAlerts, fourcc!("optc"), fourcc!("txtc")),
+    (PreferenceSlot::Unknown10, fourcc!("optd"), fourcc!("txtd")),
+    (
+        PreferenceSlot::TacticalBattle,
+        fourcc!("opte"),
+        fourcc!("txte"),
+    ),
 ];
 const SLIDER_SPLIT_PAD: i16 = 0x0c;
 const MUSIC_SLIDER_SCALE: i16 = 0xff;
@@ -38,40 +51,54 @@ const TACTICAL_BATTLE_ON_PICTURE: i16 = 4158;
 const TACTICAL_BATTLE_OFF_PICTURE: i16 = 4160;
 
 /// Retail `TSimMgr::preferenceValues[14]`.
+#[derive(Clone, Copy, Debug, Enum, Eq, PartialEq)]
+enum PreferenceSlot {
+    TacticalBattle,
+    Unknown1,
+    SoundVolume,
+    MusicVolume,
+    Unknown4,
+    Unknown5,
+    Unknown6,
+    Unknown7,
+    TurnAlerts,
+    Unknown9,
+    Unknown10,
+    Unknown11,
+    Unknown12,
+    Unknown13,
+}
+
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
 pub(crate) struct GamePreferences {
-    values: [i16; 14],
+    values: EnumMap<PreferenceSlot, i16>,
 }
 
 impl Default for GamePreferences {
     fn default() -> Self {
         // `TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(false)` before the INI overlay.
-        let mut values = [0x101; 14];
-        values[0] = 0;
-        values[1] = 0;
-        values[2] = 100;
-        values[3] = 0xff;
-        values[10] = 0;
-        values[11] = 0;
-        values[12] = 0;
-        Self { values }
+        Self {
+            values: EnumMap::from_array([
+                0, 0, 100, 0xff, 0x101, 0x101, 0x101, 0x101, 0x101, 0x101, 0, 0, 0, 0x101,
+            ]),
+        }
     }
 }
 
 impl GamePreferences {
     /// Preference slot 2: DirectSound master percent, 0..=100.
     pub(crate) fn sound_volume_percent(&self) -> i16 {
-        self.values[2]
+        self.values[PreferenceSlot::SoundVolume]
     }
 
     /// Preference slot 3: CD/aux music scalar, 0..=255.
     pub(crate) fn music_volume(&self) -> i16 {
-        self.values[3]
+        self.values[PreferenceSlot::MusicVolume]
     }
 
     /// Preference slot 8 gates `ShowTurnAlertsForActiveNation`.
     pub(crate) fn turn_alerts_enabled(&self) -> bool {
-        self.values[8] != 0
+        self.values[PreferenceSlot::TurnAlerts] != 0
     }
 }
 
@@ -79,12 +106,15 @@ impl GamePreferences {
 struct PreferencesRoot;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-struct PreferenceRow(usize);
+struct PreferenceRow {
+    ui_row: usize,
+    slot: PreferenceSlot,
+}
 
 /// Preference slot Okay writes after the checkboxes.
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 struct PreferenceSlider {
-    slot: usize,
+    slot: PreferenceSlot,
 }
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -160,7 +190,7 @@ fn bind_preferences(
         .expect("retail preferences caption style");
     let color = TextColor(assets.palette_color(0x38));
 
-    for (row, &(_, checkbox_tag, label_tag)) in PREFERENCE_ROWS.iter().enumerate() {
+    for (row, &(slot, checkbox_tag, label_tag)) in PREFERENCE_ROWS.iter().enumerate() {
         let checkbox = tree.try_find(root, checkbox_tag);
         // Missing opta/optb: label-only row always uses the "on" caption.
         let caption_on = checkbox.is_none() || preference_row_is_on(&prefs, row);
@@ -177,7 +207,7 @@ fn bind_preferences(
         let mut entity = commands.entity(checkbox);
         entity
             .insert((
-                PreferenceRow(row),
+                PreferenceRow { ui_row: row, slot },
                 HoverHelpText(ui_string(&assets, 0x2743, row as i16 + 0x26)),
                 DirectlyHovered::default(),
             ))
@@ -215,9 +245,9 @@ fn bind_preferences(
         tree.find(root, fourcc!("musi")),
         &nodes,
         MUSIC_PICTURE_BASE,
-        3,
+        PreferenceSlot::MusicVolume,
         MUSIC_SLIDER_SCALE,
-        prefs.values[3],
+        prefs.values[PreferenceSlot::MusicVolume],
         music_hover,
     );
     bind_volume_slider(
@@ -226,9 +256,9 @@ fn bind_preferences(
         tree.find(root, fourcc!("soun")),
         &nodes,
         SOUND_PICTURE_BASE,
-        2,
+        PreferenceSlot::SoundVolume,
         SOUND_SLIDER_SCALE,
-        prefs.values[2],
+        prefs.values[PreferenceSlot::SoundVolume],
         sound_hover,
     );
 
@@ -294,7 +324,7 @@ fn bind_volume_slider(
     slider: Entity,
     nodes: &Query<&mut Node>,
     picture_base: i16,
-    slot: usize,
+    slot: PreferenceSlot,
     scale: i16,
     value: i16,
     hover: String,
@@ -452,11 +482,7 @@ fn node_px_width(nodes: &Query<&mut Node>, entity: Entity) -> Option<f32> {
 }
 
 fn preference_row_is_on(prefs: &GamePreferences, row: usize) -> bool {
-    let index = PREFERENCE_ROWS[row].0;
-    if index < 0 {
-        return false;
-    }
-    prefs.values[index as usize] as u8 != 0
+    prefs.values[PREFERENCE_ROWS[row].0] != 0
 }
 
 fn preference_caption(assets: &RetailUiAssets, row: usize, is_on: bool) -> String {
@@ -489,8 +515,12 @@ fn on_preference_slider_change(
         return;
     };
     match slider.slot {
-        3 => prefs.values[3] = change.value as i16,
-        2 if change.is_final => prefs.values[2] = change.value as i16,
+        PreferenceSlot::MusicVolume => {
+            prefs.values[PreferenceSlot::MusicVolume] = change.value as i16
+        }
+        PreferenceSlot::SoundVolume if change.is_final => {
+            prefs.values[PreferenceSlot::SoundVolume] = change.value as i16
+        }
         _ => {}
     }
 }
@@ -504,7 +534,7 @@ fn on_sound_slider_released(
     let Ok(slider) = sliders.get(change.source) else {
         return;
     };
-    if slider.slot != 2 || !change.is_final {
+    if slider.slot != PreferenceSlot::SoundVolume || !change.is_final {
         return;
     }
     audio.play(&mut commands, SoundId::UI_CLICK);
@@ -578,12 +608,12 @@ fn on_preference_checked<E: EntityEvent, C: Component>(
     };
     let Some((label, _)) = labels
         .iter()
-        .find(|(_, tag)| tag.0 == PREFERENCE_ROWS[row.0].2)
+        .find(|(_, tag)| tag.0 == PREFERENCE_ROWS[row.ui_row].2)
     else {
         return;
     };
     if let Ok(mut text) = texts.get_mut(label) {
-        text.0 = preference_caption(&assets, row.0, E::is::<Add>());
+        text.0 = preference_caption(&assets, row.ui_row, E::is::<Add>());
     }
 }
 
@@ -598,7 +628,7 @@ fn on_preferences_activate(
     // `TGamePreferencesPicture::DoEvent` writes `preferenceValues[row] = IsOn`
     // for each present opta+row checkbox, then overwrites [3]/[2] from the sliders.
     for (row, checked) in &rows {
-        prefs.values[row.0] = i16::from(checked);
+        prefs.values[row.slot] = i16::from(checked);
     }
     for (slider, value) in &sliders {
         prefs.values[slider.slot] = value.0 as i16;
@@ -623,7 +653,12 @@ mod tests {
         app.add_plugins(MinimalPlugins)
             .init_resource::<GamePreferences>()
             .add_observer(on_preference_slider_change);
-        let slider = app.world_mut().spawn(PreferenceSlider { slot: 2 }).id();
+        let slider = app
+            .world_mut()
+            .spawn(PreferenceSlider {
+                slot: PreferenceSlot::SoundVolume,
+            })
+            .id();
         app.world_mut().commands().trigger(ValueChange {
             source: slider,
             value: 40.0_f32,

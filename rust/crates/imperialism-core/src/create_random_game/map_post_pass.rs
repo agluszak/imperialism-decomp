@@ -142,7 +142,7 @@ fn build_province_resource_presence_masks(tiles: &[TileState]) -> Vec<i8> {
         };
         let mask = &mut masks[usize::from(province.get())];
         for resource in tile.edge_resources.into_iter().flatten() {
-            let resource = resource as u8;
+            let resource = resource.retail();
             if resource < 8 {
                 *mask |= 1 << resource;
             }

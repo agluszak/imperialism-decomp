@@ -110,6 +110,27 @@ impl IndustryCapabilitySlot {
 impl CityFacilitySlot {
     pub const COUNT: usize = enum_map::enum_len::<Self>();
 
+    pub const fn retail(self) -> u8 {
+        match self {
+            Self::TextileMill => 0,
+            Self::ClothingFactory => 1,
+            Self::SteelMill => 2,
+            Self::Metalworks => 3,
+            Self::LumberMill => 4,
+            Self::FurnitureFactory => 5,
+            Self::OilRefinery => 6,
+            Self::Shipyard => 7,
+            Self::Armory => 8,
+            Self::TradeSchool => 9,
+            Self::University => 10,
+            Self::PowerPlant => 11,
+            Self::FoodProcessing => 12,
+            Self::Warehouse => 13,
+            Self::Transport => 14,
+            Self::RegionalPopulation => 15,
+        }
+    }
+
     pub fn from_index(value: u8) -> Option<Self> {
         let index = usize::from(value);
         (index < Self::COUNT).then(|| Self::from_usize(index))

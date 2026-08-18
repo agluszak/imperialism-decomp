@@ -961,8 +961,11 @@ fn province_dto(province: &ProvinceState) -> LegacyProvince {
         linked_tile_indices[index] = tile.get() as i16;
     }
     let resource_development_by_type = std::array::from_fn(|offset| {
-        let resource = ResourceKind::from_index((ResourceKind::Food as usize + offset) as u8)
-            .expect("province resource-development table spans food through arms");
+        let resource = ResourceKind::from_index(
+            ResourceKind::Food.retail()
+                + u8::try_from(offset).expect("province resource-development index fits u8"),
+        )
+        .expect("province resource-development table spans food through arms");
         province.resource_development_by_type()[resource]
     });
     let mut explored_by_nation_mask = 0_u8;
