@@ -216,6 +216,12 @@ impl GameState {
             .representative_tile_index_for_nation(nation, self.nations.home_tile(nation), false)
     }
 
+    /// `TCountry::GetOrComputeOverlayAnchorTileIndex` uses the wrapped-world bias.
+    pub fn ocean_overlay_anchor_for_nation(&self, nation: NationId) -> Option<TileId> {
+        self.map
+            .representative_tile_index_for_nation(nation, self.nations.home_tile(nation), true)
+    }
+
     /// Sets whether a civilian unit kind is unlocked in the nation's University.
     pub fn set_university_civilian_available(
         &mut self,
