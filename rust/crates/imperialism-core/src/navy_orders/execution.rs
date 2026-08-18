@@ -94,7 +94,11 @@ impl GameState {
             && port.is_none()
             && let Some(target) = target
         {
-            port = self.safest_nearby_zone(target, nation);
+            port = if matches!(self.missions[&mission].data, MissionData::ControlSeaZone(_)) {
+                self.control_sea_port_zone(target, nation)
+            } else {
+                self.safest_nearby_zone(target, nation)
+            };
             if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
                 navy.resolved_port_zone = port;
             }
@@ -137,6 +141,17 @@ impl GameState {
                     }
                 }
             }
+        }
+    }
+
+    /// `TControlSeaZoneMission::RefreshMissionPortZoneContextForNation` reuses the
+    /// nation's first port when its cached primary context is this target.
+    fn control_sea_port_zone(&self, target: OceanZoneId, nation: NationId) -> Option<OceanZoneId> {
+        let home = self.first_port_zone_for_nation(nation)?;
+        if self.zone(home).primary_neighbors.first().copied() == Some(target) {
+            Some(home)
+        } else {
+            self.safest_nearby_zone(target, nation)
         }
     }
 
