@@ -668,19 +668,7 @@ impl GameState {
         nation: MajorNationId,
         unit_type: MilitaryUnitKind,
     ) -> Option<MilitaryUnitKind> {
-        let candidate = if (unit_type as u8) < MilitaryUnitKind::Conscripts as u8 {
-            MilitaryUnitKind::from_index(unit_type as u8 + 8)
-        } else if matches!(
-            unit_type,
-            MilitaryUnitKind::Sappers
-                | MilitaryUnitKind::CombatEngineers
-                | MilitaryUnitKind::GeneralEra1
-                | MilitaryUnitKind::GeneralEra2
-        ) {
-            MilitaryUnitKind::from_index(unit_type as u8 + 1)
-        } else {
-            None
-        }?;
+        let candidate = unit_type.upgrade_successor()?;
         let active = &self.technology.military_unit_ability_active_by_nation[nation];
         if !active[candidate] && active[unit_type] {
             return None;

@@ -227,6 +227,41 @@ impl MilitaryUnitKind {
         }
     }
 
+    pub(crate) const fn upgrade_successor(self) -> Option<Self> {
+        match self {
+            Self::Minutemen => Some(Self::Militia),
+            Self::Skirmishers => Some(Self::Sharpshooters),
+            Self::Regulars => Some(Self::RifleInfantry),
+            Self::Grenadiers => Some(Self::Guards),
+            Self::Hussars => Some(Self::Scouts),
+            Self::Cuirassiers => Some(Self::CarbineCavalry),
+            Self::LightArtillery => Some(Self::FieldArtillery),
+            Self::Artillery => Some(Self::SiegeArtillery),
+            Self::Militia => Some(Self::Conscripts),
+            Self::Sharpshooters => Some(Self::Rangers),
+            Self::RifleInfantry => Some(Self::Infantry),
+            Self::Guards => Some(Self::MachineGunners),
+            Self::Scouts => Some(Self::MechanizedInfantry),
+            Self::CarbineCavalry => Some(Self::Armor),
+            Self::FieldArtillery => Some(Self::MobileArtillery),
+            Self::SiegeArtillery => Some(Self::RailroadGuns),
+            Self::Sappers => Some(Self::CombatEngineers),
+            Self::CombatEngineers => Some(Self::Saboteurs),
+            Self::GeneralEra1 => Some(Self::GeneralEra2),
+            Self::GeneralEra2 => Some(Self::GeneralEra3),
+            Self::Conscripts
+            | Self::Rangers
+            | Self::Infantry
+            | Self::MachineGunners
+            | Self::MechanizedInfantry
+            | Self::Armor
+            | Self::MobileArtillery
+            | Self::RailroadGuns
+            | Self::Saboteurs
+            | Self::GeneralEra3 => None,
+        }
+    }
+
     pub(crate) fn arms_required(self) -> i32 {
         ARMS_BY_MILITARY_UNIT[self]
     }
