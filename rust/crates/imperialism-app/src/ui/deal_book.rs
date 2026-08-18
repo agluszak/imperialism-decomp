@@ -796,7 +796,7 @@ fn spawn_commodity_header(
     resource: ResourceKind,
     market_price: i32,
 ) {
-    let name = get_string(assets, 0x2711, resource as i16);
+    let name = get_string(assets, 0x2711, i16::from(resource.retail()));
     spawn_icon(
         commands,
         screen.pictures.commodities[resource].clone(),

@@ -244,7 +244,7 @@ fn blit_resource_icon(
 ) {
     blit_indexed(
         atlas,
-        i32::from(resource as u8) * RESOURCE_ICON_WIDTH,
+        i32::from(resource.retail()) * RESOURCE_ICON_WIDTH,
         0,
         RESOURCE_ICON_WIDTH,
         RESOURCE_ICON_HEIGHT,
@@ -265,7 +265,7 @@ fn blit_resource_overlay(
     if level == 0 {
         return;
     }
-    let source_base = RESOURCE_OVERLAY_SOURCE_X[resource as usize];
+    let source_base = RESOURCE_OVERLAY_SOURCE_X[usize::from(resource.retail())];
     if source_base < 0 {
         return;
     }
