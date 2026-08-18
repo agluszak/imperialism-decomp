@@ -288,7 +288,10 @@ impl GameState {
         for resource in [ResourceKind::Coal, ResourceKind::Iron, ResourceKind::Timber] {
             insert_sorted(
                 &mut prices,
-                (resource as i16, self.city_stock(nation, resource)),
+                (
+                    i16::from(resource.retail()),
+                    self.city_stock(nation, resource),
+                ),
                 compare_by_price,
             );
         }
