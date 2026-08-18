@@ -124,15 +124,6 @@ RuntimeActionResult RunNavyGrowthPending(NativeTransition& transition) {
   }
 
   g_pSimMgr->DoCityAndTransport();
-
-  // GenerateEthnicName is CRT mapped-flavor text, not yet a Rust rule. Empty the
-  // display names so this differential covers ship/admiral identity and counters.
-  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
-    ship->name.Empty();
-  }
-  for (TAdmiral* admiral = g_pNavySecondaryOrderListHead; admiral != 0; admiral = admiral->next) {
-    admiral->displayName.Empty();
-  }
   return transition.Finish();
 }
 
@@ -152,18 +143,5 @@ RuntimeActionResult RunArmyGrowthSelectedGeneral(NativeTransition& transition) {
 
   g_pTechMgr->ActivateSlotAndUpdateUI(kMilitaryUnitGeneralEra2, ActiveNationSlot());
   g_pSimMgr->DoCityAndTransport();
-
-  // GenerateEthnicName / mapped-flavor general names are not yet a Rust rule.
-  TCountry* country = g_apTerrainTypeDescriptorTable[ActiveNationSlot()];
-  if (country != 0 && country->militaryUnitList44 != 0) {
-    CIterator cursor(country->militaryUnitList44);
-    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
-    while (cursor.More() != 0) {
-      if (unit->orderType >= EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1)) {
-        unit->name24.Empty();
-      }
-      unit = static_cast<TMilitaryUnit*>(cursor.Advance());
-    }
-  }
   return transition.Finish();
 }

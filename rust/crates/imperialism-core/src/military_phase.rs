@@ -305,6 +305,11 @@ impl GameState {
         } else {
             MilitaryOrder::retail(order_code, None, [province; 3], [province; 3])
         };
+        let name = if unit_type.tactical_category() == ArmyUnitCategory::Generals {
+            crate::mapped_flavor_text::generate_ethnic_name(&mut self.rng.zone_status, nation)
+        } else {
+            String::new()
+        };
         let unit = MilitaryUnitState::new(
             nation,
             unit_type,
@@ -313,7 +318,7 @@ impl GameState {
             nation,
             0,
             true,
-            String::new(),
+            name,
             500,
             unit_type.spawn_era(),
             0,

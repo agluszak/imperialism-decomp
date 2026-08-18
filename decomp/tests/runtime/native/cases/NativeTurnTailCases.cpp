@@ -378,10 +378,6 @@ RuntimeActionResult RunOpeningHomeCitySetup(NativeTransition& transition) {
     nation->SetHomeCityTileAndDisplayName(-1, 0);
   }
 
-  // GenerateEthnicName is CRT mapped-flavor text, not yet a Rust rule.
-  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
-    ship->name.Empty();
-  }
   return transition.Finish();
 }
 

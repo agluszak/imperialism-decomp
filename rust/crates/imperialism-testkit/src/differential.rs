@@ -2,8 +2,8 @@
 
 use anyhow::{Context, Result, bail};
 use imperialism_core::{
-    GameState, MajorNationId, NewsState, PendingWorkState, RngState, Technology, TurnContinuation,
-    TurnState, UnitIdAllocator,
+    DecadeTable, Difficulty, GameState, MajorNationId, NationId, NewsState, PendingWorkState,
+    PhaseCode, RngState, ScenarioMapId, Technology, TurnContinuation, TurnState, UnitIdAllocator,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 use serde::de::{DeserializeOwned, Error};
@@ -27,7 +27,7 @@ struct SaveBackedCapture {
 
 #[derive(Debug, Deserialize)]
 struct EphemeralGameState {
-    turn: TurnState,
+    turn: NativeTurnState,
     unit_ids: UnitIdAllocator,
     rng: RngState,
     news: NewsState,
@@ -36,6 +36,38 @@ struct EphemeralGameState {
     last_processed_nation: Option<MajorNationId>,
     #[serde(default, deserialize_with = "deserialize_native_continuation")]
     continuation: TurnContinuation,
+}
+
+#[derive(Debug, Deserialize)]
+struct NativeTurnState {
+    scenario_map: Option<ScenarioMapId>,
+    economic_turn: i32,
+    diplomacy_year_term_raw: i16,
+    phase: PhaseCode,
+    turn_flow_status_flags: u32,
+    quarter_gate_by_decade: [u8; 10],
+    difficulty: Difficulty,
+    active_nation: NationId,
+    selected_nation: NationId,
+    last_turn_alert_tick: i32,
+}
+
+impl NativeTurnState {
+    fn into_core(self) -> TurnState {
+        let mut turn = TurnState::new(
+            self.scenario_map,
+            self.economic_turn,
+            self.diplomacy_year_term_raw,
+            self.phase,
+            self.turn_flow_status_flags,
+            DecadeTable::from_array(self.quarter_gate_by_decade.map(|value| value != 0)),
+            self.difficulty,
+            self.active_nation,
+            self.selected_nation,
+        );
+        turn.last_turn_alert_tick = self.last_turn_alert_tick;
+        turn
+    }
 }
 
 fn deserialize_native_continuation<'de, D>(deserializer: D) -> Result<TurnContinuation, D::Error>
@@ -147,14 +179,15 @@ where
 }
 
 pub fn load_save_backed_state(capture: SaveBackedState) -> Result<GameState> {
+    let turn = capture.ephemeral.turn.into_core();
     let save = LegacySaveV62::parse(&capture.save);
     let mut parts = save.game_state_parts(LegacyGameStateContext {
         crt_rand_state: capture.ephemeral.rng.crt_rand.state(),
         map_generation_lcg: capture.ephemeral.rng.map_generation.state(),
         zone_status_lcg: capture.ephemeral.rng.zone_status.state(),
-        selected_nation: capture.ephemeral.turn.selected_nation,
+        selected_nation: turn.selected_nation,
     });
-    parts.turn = capture.ephemeral.turn;
+    parts.turn = turn;
     parts.unit_ids = capture.ephemeral.unit_ids;
     parts.rng = capture.ephemeral.rng;
     parts.news = capture.ephemeral.news;

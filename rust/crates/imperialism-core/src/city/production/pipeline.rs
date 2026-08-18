@@ -196,7 +196,7 @@ impl GameState {
             let nation_id = nation.nation();
             let strength = ship_stock_cap(ship_type);
             for _ in 0..quantity {
-                self.insert_ship(ShipState {
+                self.insert_named_ship(ShipState {
                     ship_type,
                     location,
                     aggression: NavalAggression::Balanced,

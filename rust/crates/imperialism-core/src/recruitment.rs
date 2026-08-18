@@ -310,7 +310,7 @@ impl GameState {
         if !crate::city::ship_creates_navy_object(ShipType::Frigate) {
             return;
         }
-        self.insert_ship(ShipState {
+        self.insert_named_ship(ShipState {
             ship_type: ShipType::Frigate,
             location,
             aggression: NavalAggression::Cautious,
@@ -348,14 +348,16 @@ impl GameState {
                     crate::create_random_game::english_ordinal(ordinal)
                 )
             } else {
-                loop {
-                    let candidate =
-                        crate::generate_english_random_setup_name(&mut self.rng.zone_status);
-                    if candidate.len() <= 7 {
-                        break;
+                let candidate = loop {
+                    let candidate = crate::mapped_flavor_text::generate_ethnic_name(
+                        &mut self.rng.zone_status,
+                        nation,
+                    );
+                    if candidate.chars().count() <= 7 {
+                        break candidate;
                     }
-                }
-                String::new()
+                };
+                format!("General  {candidate}")
             };
             let unit = self
                 .military_units

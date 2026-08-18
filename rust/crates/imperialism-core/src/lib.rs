@@ -29,6 +29,7 @@ mod game_score;
 mod ids;
 mod map;
 mod map_geometry;
+mod mapped_flavor_text;
 mod market;
 mod military;
 mod military_cleanup;

@@ -295,14 +295,11 @@ RuntimeActionResult RunArmyClickHostile(NativeTransition& transition) {
   if (!started.Succeeded()) {
     return started;
   }
-  TMilitaryUnit* unit = g_pGlobalMapState->GetMilitaryMaster(province);
-  for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
-    if (unit->unitOrder == 0 &&
-        unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
-      unit->SetOrders(kUnitOrderRedeploy, dest);
-    }
-  }
-  g_pGlobalMapState->MarkAdjacentHexOrderDirectionAndSelectTile(province, dest, 1);
+  short mapViewOrigin = g_pGlobalMapState->field6;
+  g_pMapContextActionManager->ValidateOrderPlacementPrerequisitesForSelectedTile(dest);
+  // NoticeTile recenters the retail view after a successful order. Camera position is
+  // presentation state; keep the differential focused on the validated order transition.
+  g_pGlobalMapState->field6 = mapViewOrigin;
   return transition.Finish();
 }
 
