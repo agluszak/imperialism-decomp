@@ -278,7 +278,7 @@ void TInfoPanelView::SetInfoCountry(short countryId) {
   short indices[7];
   short valueIndex = 0;
   do {
-    values[valueIndex] = secondary->diplomacySaveExt13c[valueIndex];
+    values[valueIndex] = secondary->independentResourceCountByType[valueIndex];
     if (valueIndex == 6 &&
         g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
       values[6] = 0;

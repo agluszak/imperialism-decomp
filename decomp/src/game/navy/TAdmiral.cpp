@@ -6,7 +6,7 @@
 
 #include "game/military/mapped_flavor_text.h"
 #include "game/navy/TShip.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/navy_order.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/navy/TTaskForce.h"
@@ -265,16 +265,16 @@ void TAdmiral::GetFleetReport(CString* out, TZone* zone, NationSlot nation) cons
   short total = EstimateEnemyForces(estimates, zone, nation);
 
   if (total == 0) {
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(out, 0x2762, 0x1e);
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(out, 0x2762, 0x1e);
     return;
   }
 
   CString comma;
   CString conjunction;
   CString itemTemplate;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&comma, 0x2762, 0x1f);
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&conjunction, 0x2762, 0x20);
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&itemTemplate, 0x2762, 0x21);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&comma, 0x2762, 0x1f);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&conjunction, 0x2762, 0x20);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&itemTemplate, 0x2762, 0x21);
   *out = g_szEmptyString;
 
   short remaining = total;
@@ -304,7 +304,7 @@ void TAdmiral::GetFleetReport(CString* out, TZone* zone, NationSlot nation) cons
     CString number;
     number.Format(g_szDecimalFormat, static_cast<int>(estimates[4]));
     CString unknownTemplate;
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(
         &unknownTemplate, 0x2762, static_cast<short>(estimates[4] > 1 ? 0x23 : 0x22));
     CString item;
     scanBracketExpressions(g_pSimMgr, &item, static_cast<LPCSTR>(unknownTemplate),
@@ -315,8 +315,8 @@ void TAdmiral::GetFleetReport(CString* out, TZone* zone, NationSlot nation) cons
   int skill = this == 0 ? 0 : experiencePoints / 100 + 1;
   CString observedComposition = *out;
   CString certaintyTemplate;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&certaintyTemplate, 0x2762,
-                                                                  static_cast<short>(skill + 0x24));
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&certaintyTemplate, 0x2762,
+                                                      static_cast<short>(skill + 0x24));
   scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(certaintyTemplate),
                          static_cast<LPCSTR>(observedComposition));
 }

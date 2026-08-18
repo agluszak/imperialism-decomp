@@ -75,7 +75,7 @@ void TNavyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileInde
   unit->tileIndex8 = tileIndex;
   tileGrid4[tileIndex].occupant4 = unit;
   if (battleView8 != 0) {
-    battleView8->InvalidateTacticalUnitTileRect(unit);
+    battleView8->InvalidateUnit(unit);
   }
 
   selectedUnit1c = (&tacticalPlayer14)[currentSideC]->SelectNextTacticalUnitForDoneCommand();
@@ -138,8 +138,7 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
                                           g_fNavyHitChanceNumerator_00669f04 / denominator);
 
   if (battleView8 != 0) {
-    battleView8->PlayTacticalTileEffect(attackerUnit->tileIndex8, attackerUnit->unitTypeC + 0xf5a,
-                                        1);
+    battleView8->PlayAni(attackerUnit->tileIndex8, attackerUnit->unitTypeC + 0xf5a, 1);
   }
 
   if (static_cast<float>(rand() % 100) < hitThreshold) {
@@ -152,18 +151,18 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
     float damageAmount = damageScale * scaledStrength;
     defenderUnit->ApplyNavalDamage(damageAmount, targeting);
     if (battleView8 != 0) {
-      battleView8->InvalidateTacticalUnitTileRect(defenderUnit);
+      battleView8->InvalidateUnit(defenderUnit);
     }
     if (defenderUnit->state1c == 3) {
       tileGrid4[defenderUnit->tileIndex8].occupant4 = 0;
       defenderUnit->tileIndex8 = -1;
       if (battleView8 != 0) {
-        battleView8->PlayTacticalTileEffect(targetTileIndex, 0xf42, 12);
+        battleView8->PlayAni(targetTileIndex, 0xf42, 12);
       }
     }
   } else {
     if (battleView8 != 0) {
-      battleView8->PlayTacticalTileEffect(targetTileIndex, 0xf3c, 6);
+      battleView8->PlayAni(targetTileIndex, 0xf3c, 6);
     }
   }
 

@@ -5,7 +5,7 @@
 #include "game/gfx/CDibPal.h"
 #include "game/ui_core/ScopedMapQuickDrawContext.h"
 #include "game/ui_core/TView.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
@@ -45,7 +45,7 @@ TPicture::TPicture(const TPicture& source)
     : TControl(source), glyphBase84(source.glyphBase84), bitmapId(source.bitmapId),
       resourceNamespaceId(source.resourceNamespaceId), cachedBitmap(source.cachedBitmap) {
   if (glyphBase84 != -1) {
-    g_pModuleLibraryCacheState->IncrementRecordRefCountById(glyphBase84);
+    g_pResourceMgr->IncrementRecordRefCountById(glyphBase84);
   }
 }
 
@@ -62,7 +62,7 @@ void TPicture::CopyPictureStateFromSource(TPicture* source) {
   resourceNamespaceId = source->resourceNamespaceId;
   cachedBitmap = source->cachedBitmap;
   if (glyphBase84 != -1) {
-    g_pModuleLibraryCacheState->IncrementRecordRefCountById(glyphBase84);
+    g_pResourceMgr->IncrementRecordRefCountById(glyphBase84);
   }
 }
 
@@ -76,7 +76,7 @@ void TPicture::CopyPictureStateFromSource(TPicture* source) {
 // FUNCTION: IMPERIALISM 0x0048f250
 TPicture::~TPicture() {
   if (glyphBase84 != -1) {
-    g_pModuleLibraryCacheState->ReleaseRecordById(glyphBase84);
+    g_pResourceMgr->ReleaseRecordById(glyphBase84);
   }
   glyphBase84 = -1;
   bitmapId = 0;
@@ -131,8 +131,7 @@ void TPicture::Draw(RECT* rectBuffer) {
     return;
   }
 
-  g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(
-      GetActiveQuickDrawDc(), 0);
+  g_pResourceMgr->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(GetActiveQuickDrawDc(), 0);
 
   int srcHeight = this->cachedBitmap->m_pInfoHeader->bmiHeader.biHeight;
   if (srcHeight <= 0) {
@@ -153,7 +152,7 @@ void TPicture::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x0048f520
 void TPicture::ResetPictureResourceEntry() {
   if (this->glyphBase84 != -1) {
-    g_pModuleLibraryCacheState->ReleaseRecordById(this->glyphBase84);
+    g_pResourceMgr->ReleaseRecordById(this->glyphBase84);
   }
   this->glyphBase84 = -1;
   this->bitmapId = 0;
@@ -166,13 +165,13 @@ void TPicture::SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fR
   this->ResetPictureResourceEntry();
   this->glyphBase84 = nPictureId;
   if (nPictureId != -1) {
-    this->cachedBitmap = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(nPictureId);
+    this->cachedBitmap = g_pResourceMgr->LoadBmpResourceByIdCached(nPictureId);
   }
   if (this->cachedBitmap == 0) {
     PictureFallbackSizeScratch sizeScratch;
     sizeScratch.Set(this->frameWidth34, this->frameHeight38);
-    this->cachedBitmap = g_pModuleLibraryCacheState->BuildIndexedBmpResourceById(
-        nPictureId, this->frameWidth34, this->frameHeight38, 0);
+    this->cachedBitmap = g_pResourceMgr->BuildIndexedBmpResourceById(nPictureId, this->frameWidth34,
+                                                                     this->frameHeight38, 0);
   }
   if (fRefreshNow) {
     this->RefreshControl();
@@ -198,7 +197,7 @@ TObject* TPicture::ShallowClone() {
   clone->resourceNamespaceId = resourceNamespaceId;
   clone->cachedBitmap = cachedBitmap;
   if (glyphBase84 != -1) {
-    g_pModuleLibraryCacheState->IncrementRecordRefCountById(glyphBase84);
+    g_pResourceMgr->IncrementRecordRefCountById(glyphBase84);
   }
   return clone;
 }

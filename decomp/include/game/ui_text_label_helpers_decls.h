@@ -31,7 +31,7 @@ TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int 
 
 // 0x5c4180 -- same shape as ApplyControlThemeStyleAndOptionalCaption, but the caption
 // text is loaded from a string-table resource (group/index) via
-// g_pModuleLibraryCacheState instead of being passed as a literal pointer.
+// g_pResourceMgr instead of being passed as a literal pointer.
 TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(TStaticText* control,
                                                                       int unused2, int pointSize,
                                                                       int themeCode, int themeCode2,

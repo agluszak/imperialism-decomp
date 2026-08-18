@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "game/map/TMapMgr.h"
 #include <mbstring.h>
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/ui_core/TLanguageMgr.h"
 #include "game/ui_screens/TScenarioChooser.h"
 #include "game/ui_tags_common.h"
@@ -45,7 +45,7 @@ IMPLEMENT_DYNCREATE(TScenarioChooser, TNoHilitePicture)
 void TScenarioChooser::DoPostCreate(int arg) {
   TNoHilitePicture::DoPostCreate(arg);
   g_bMultiplayerScenarioSetupActive = 0;
-  scenarioListRowCount114 = 0;
+  scenarioListRowCount = 0;
 
   TTextList* scenarioList = static_cast<TTextList*>(ResolveControlByTag(kControlTagList));
   scenarioList->AssertValid();
@@ -86,8 +86,8 @@ void TScenarioChooser::DoPostCreate(int arg) {
       *destination = 0;
       ++scenarioList->totalItems;
     }
-    scenarioIndexByListRow94[scenarioListRowCount114] = static_cast<short>(scenarioIndex);
-    ++scenarioListRowCount114;
+    scenarioIndexByListRow[scenarioListRowCount] = static_cast<short>(scenarioIndex);
+    ++scenarioListRowCount;
   }
   scenarioList->RefreshControl();
 
@@ -117,10 +117,10 @@ void TScenarioChooser::DoPostCreate(int arg) {
   nationDescription->AssertValid();
   nationDescription->SetTextStyle(bodyStyle, 0);
 
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    nationDescriptionTextByMapSelection118[nationSlot] = new char[0x400];
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
+    nationDescriptionTextByNation[nationSlot] = new char[0x400];
   }
-  selectedScenarioIndex142 = -1;
+  selectedScenarioIndex = -1;
 
   TInfoBarText* cursorPanel = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs));
   g_pCursorControlPanel = cursorPanel;
@@ -146,14 +146,13 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     // sourceHandler is the 'list' TTextList itself (confirmed by size: TTextList's
     // selectedIndex lands at exactly +0x1068).
     TTextList* scenarioList = static_cast<TTextList*>(sourceHandler);
-    LoadScenarioMetadataByIndexIntoUiControlCore(
-        scenarioIndexByListRow94[scenarioList->selectedIndex]);
+    ShowInfo(scenarioIndexByListRow[scenarioList->selectedIndex]);
     SetCursor(LoadCursorA(nullptr, IDC_ARROW));
   } else if (commandId == kControlTagPick) { // 'pick'
     TMapPreviewView* mapPreview =
         static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap)); // 'pmap'
     mapPreview->AssertValid();
-    if (nationStateCodesByMapSelection144[mapPreview->pendingNation6C] != -1 &&
+    if (difficultyLevelByNation[mapPreview->pendingNation6C] != -1 &&
         mapPreview->pendingNation6C != mapPreview->selectedNation68) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
       mapPreview->selectedNation68 = mapPreview->pendingNation6C;
@@ -163,8 +162,8 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
           static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCountryDescription));
       descControl->AssertValid();
       descControl->SetTextEntryFromChars(
-          nationDescriptionTextByMapSelection118[mapPreview->pendingNation6C],
-          nationDescriptionLengthByMapSelection134[mapPreview->pendingNation6C]);
+          nationDescriptionTextByNation[mapPreview->pendingNation6C],
+          nationDescriptionLengthByNation[mapPreview->pendingNation6C]);
       descControl->Show(1, 0);
       descControl->RefreshControl();
     }
@@ -212,13 +211,13 @@ static const int kScenarioLanguageTagByIndex[16] = {1, 3, 0, 2, 0, 0, 0, 0, 0, 0
 
 // FUNCTION: IMPERIALISM 0x0057a350
 void TScenarioChooser::StartGame() {
-  if (selectedScenarioIndex142 == -1) {
+  if (selectedScenarioIndex == -1) {
     return;
   }
 
   int languageTag = 1;
-  if (selectedScenarioIndex142 < 16) {
-    languageTag = kScenarioLanguageTagByIndex[selectedScenarioIndex142];
+  if (selectedScenarioIndex < 16) {
+    languageTag = kScenarioLanguageTagByIndex[selectedScenarioIndex];
   }
   g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(languageTag);
 
@@ -226,8 +225,8 @@ void TScenarioChooser::StartGame() {
       static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap));
   mapControl->AssertValid();
   g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
-  g_pSimMgr->RecreateActiveMapContextAndInitializeGlobalMapState(selectedScenarioIndex142);
-  g_pSimMgr->SetDifficultyLevel(nationStateCodesByMapSelection144[mapControl->selectedNation68]);
+  g_pSimMgr->RecreateActiveMapContextAndInitializeGlobalMapState(selectedScenarioIndex);
+  g_pSimMgr->SetDifficultyLevel(difficultyLevelByNation[mapControl->selectedNation68]);
 
   if (g_pSimMgr->multiplayerSessionRole != 0) {
     // Ask for the session's save name until it differs from the one already published,
@@ -237,7 +236,7 @@ void TScenarioChooser::StartGame() {
       g_cstrCountryNameSettingValue006A4220 =
           g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&g_pGameFlowState->playerNameString);
       CString promptText;
-      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2742, 3);
+      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2742, 3);
       g_pViewMgr->MakePlanetSeedDialog(promptText, g_cstrCountryNameSettingValue006A4220, 0, 0, 0,
                                        0);
     } while (g_cstrCountryNameSettingValue006A4220.Compare(g_szEmptyString) == 0);
@@ -249,11 +248,11 @@ void TScenarioChooser::StartGame() {
     g_pGameFlowState->playerNameString = g_cstrCountryNameSettingValue006A4220;
     g_pGameFlowState->activeNationTagIndex =
         static_cast<unsigned char>(mapControl->selectedNation68);
-    g_pGameFlowState->scenarioSelectionTag = kControlTagScn0 + selectedScenarioIndex142;
+    g_pGameFlowState->scenarioSelectionTag = kControlTagScn0 + selectedScenarioIndex;
     g_pAmbitApplication->PostTurnEventCodeMessage2420(kTurnEventNetworkGameOptions);
   } else {
     g_pSimMgr->SetActiveNationSlotAndRefreshCityCapabilityUiHandles(mapControl->selectedNation68);
-    for (int i = 0; i < 7; ++i) {
+    for (int i = 0; i < kMajorNationCount; ++i) {
       g_pSimMgr->nationControlModes[i] = 2;
     }
     g_pSimMgr->nationControlModes[mapControl->selectedNation68] = 1;
@@ -262,9 +261,9 @@ void TScenarioChooser::StartGame() {
 }
 
 // FUNCTION: IMPERIALISM 0x0057a6e0
-void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenarioIndex) {
+void TScenarioChooser::ShowInfo(int scenarioIndex) {
   CString path;
-  selectedScenarioIndex142 = scenarioIndex;
+  selectedScenarioIndex = static_cast<short>(scenarioIndex);
   g_pAssetMgr->BuildScenarioPathForModeAndIndex(scenarioIndex, 0, &path);
 
   char* fieldBuffer = new char[0x1950];
@@ -303,8 +302,8 @@ void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenar
   scenarioDescription->Show(1, 0);
   scenarioDescription->RefreshControl();
 
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    char* nationText = nationDescriptionTextByMapSelection118[nationSlot];
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
+    char* nationText = nationDescriptionTextByNation[nationSlot];
     char* nationTextEnd = nationText;
     for (;;) {
       ch = fgetc(metadataStream);
@@ -324,24 +323,21 @@ void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenar
       }
     }
     *nationTextEnd++ = 0;
-    nationDescriptionLengthByMapSelection134[nationSlot] =
-        static_cast<short>(nationTextEnd - nationText);
+    nationDescriptionLengthByNation[nationSlot] = static_cast<short>(nationTextEnd - nationText);
   }
 
   int previewNationSlot = 0;
-  fscanf(metadataStream, "%d %d %d %d %d %d %d %d", &nationStateCodesByMapSelection144[0],
-         &nationStateCodesByMapSelection144[1], &nationStateCodesByMapSelection144[2],
-         &nationStateCodesByMapSelection144[3], &nationStateCodesByMapSelection144[4],
-         &nationStateCodesByMapSelection144[5], &nationStateCodesByMapSelection144[6],
+  fscanf(metadataStream, "%d %d %d %d %d %d %d %d", &difficultyLevelByNation[0],
+         &difficultyLevelByNation[1], &difficultyLevelByNation[2], &difficultyLevelByNation[3],
+         &difficultyLevelByNation[4], &difficultyLevelByNation[5], &difficultyLevelByNation[6],
          &previewNationSlot);
   fclose(metadataStream);
 
   TDeluxeText* nationDescription =
       static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCountryDescription));
   nationDescription->AssertValid();
-  nationDescription->SetTextEntryFromChars(
-      nationDescriptionTextByMapSelection118[previewNationSlot],
-      nationDescriptionLengthByMapSelection134[previewNationSlot]);
+  nationDescription->SetTextEntryFromChars(nationDescriptionTextByNation[previewNationSlot],
+                                           nationDescriptionLengthByNation[previewNationSlot]);
   nationDescription->Show(1, 0);
   nationDescription->RefreshControl();
 
@@ -382,9 +378,9 @@ void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenar
 
 // FUNCTION: IMPERIALISM 0x0057ab30
 void TScenarioChooser::Free() {
-  for (int i = 0; i < 7; ++i) {
-    if (nationDescriptionTextByMapSelection118[i] != 0) {
-      delete[] nationDescriptionTextByMapSelection118[i];
+  for (int i = 0; i < kMajorNationCount; ++i) {
+    if (nationDescriptionTextByNation[i] != 0) {
+      delete[] nationDescriptionTextByNation[i];
     }
   }
   TView::Free();

@@ -7,7 +7,7 @@
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_core/TControl.h"
 #include "game/ui_widgets/TDropShadowText.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TViewMgr.h"
@@ -77,7 +77,7 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
       TWindow* owner = GetWindow();
       owner->Dismiss(tag, 0);
       if (g_pSimMgr->multiplayerSessionRole == 2) {
-        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&text, 0x2742, 0x13);
+        g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&text, 0x2742, 0x13);
         g_pViewMgr->ModalMessage(text, g_ptQueryFloaterModalMessage, 0, 0);
       } else {
         g_pSimMgr->EnterOptionalPhase(0x6f);

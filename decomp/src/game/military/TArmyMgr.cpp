@@ -448,7 +448,7 @@ void TArmyMgr::FormStacks() {
         unit = nullptr;
       }
     }
-    item->field4 = g_abStackCompositionClassTable[minClass + maxClass * 4];
+    item->field4 = g_abStackCompositionClassTable[maxClass][minClass];
     int roll = rand();
     item->field6 = static_cast<short>((item->field4 << 8) + (roll & 0xff));
   }

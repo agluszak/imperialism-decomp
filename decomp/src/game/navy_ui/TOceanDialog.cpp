@@ -10,7 +10,7 @@
 #include "game/ui_core/TMacViewMgr.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/navy/TOcean.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -37,8 +37,7 @@ class ScopedOceanMapPaletteSelection {
 public:
   ScopedOceanMapPaletteSelection()
       : m_dc(GetActiveQuickDrawDc()),
-        m_previousPalette(
-            m_dc->SelectPalette(g_pModuleLibraryCacheState->EnsureDefaultDibPalette(), FALSE)) {}
+        m_previousPalette(m_dc->SelectPalette(g_pResourceMgr->EnsureDefaultDibPalette(), FALSE)) {}
 
   ~ScopedOceanMapPaletteSelection() {
     m_dc->SelectPalette(m_previousPalette, FALSE);

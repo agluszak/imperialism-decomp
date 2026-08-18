@@ -4,7 +4,7 @@
 
 #include <mbstring.h>
 #include "game/ui_tags_common.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
@@ -114,8 +114,8 @@ void TStaticText::IStaticText(TView* panel, int* offsetLayout, int* sizeLayout, 
   this->stringResourceIndex = stringResourceIndex;
   if (stringResourceGroup != -1) {
     CString loadedString;
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
-        &loadedString, stringResourceGroup, stringResourceIndex);
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&loadedString, stringResourceGroup,
+                                                        stringResourceIndex);
     SetTextAndMaybeRefresh(&loadedString, 0);
   }
   DoSetCursor(0, 0);
@@ -136,8 +136,8 @@ void TStaticText::SetTextAndMaybeRefresh(CString* sharedString, char refreshNow)
 void TStaticText::SetTextFromStringResource(short stringResourceGroup, short stringResourceIndex,
                                             char refreshNow) {
   CString loadedString;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
-      &loadedString, stringResourceGroup, stringResourceIndex);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&loadedString, stringResourceGroup,
+                                                      stringResourceIndex);
   SetTextAndMaybeRefresh(&loadedString, refreshNow);
 }
 

@@ -14,24 +14,10 @@ class TTransFocusAnimation : public TFocusAnimation {
 
 public:
   // Default constructor for MFC dynamic creation
-  TTransFocusAnimation() : TFocusAnimation() {
-    ownerView = nullptr;
-    frameIndex = 0;
-    frameCount = 0;
-    frameResourceBaseId = 0;
-    ticksSinceFrameChange = 0;
-    ticksPerFrame = 0;
-    registryTag = 0;
-    screenRect.left = 0;
-    screenRect.top = 0;
-    screenRect.right = 0;
-    screenRect.bottom = 0;
-    enabledFlag = 1;
-    transientSurfaceContext = 0;
-    insetBitmapSurface = 0;
-  }
+  TTransFocusAnimation() : TFocusAnimation(), transientSurfaceContext(0), insetBitmapSurface(0) {}
 
-  TTransFocusAnimation(TView* target, RECT* bounds, short f0a, short f0c, int tickLimit, int f18);
+  void ITransFocusAnimation(TView* target, RECT* bounds, short frameCount,
+                            short frameResourceBaseId, int ticksPerFrame, int registryTag);
   // FUNCTION: IMPERIALISM 0x004a0460
   virtual ~TTransFocusAnimation() override {}
 

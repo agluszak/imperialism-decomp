@@ -1,7 +1,7 @@
 #include "game/gfx/TBackdropWindow.h"
 
 #include "game/ui_core/CMainFrame.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/app_init_globals.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/global_types.h"
@@ -40,7 +40,7 @@ void CreateBackdropWindowIfSplashEnabled(CWnd* parent) {
   TBackdropWindow* window = new TBackdropWindow();
   g_pActiveBackdropWindow = window;
 
-  window->m_backdropBmp = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(0x3b6);
+  window->m_backdropBmp = g_pResourceMgr->LoadBmpResourceByIdCached(0x3b6);
   if (window->m_backdropBmp != NULL) {
     CPoint size;
     window->m_backdropBmp->CopyBitmapDimensionsToPoint(&size);
@@ -86,7 +86,7 @@ void RefreshBackdropOnInputMessages(MSG* msg) {
 
 // FUNCTION: IMPERIALISM 0x0049ce90
 void TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6(CWnd* parent) {
-  m_backdropBmp = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(0x3b6);
+  m_backdropBmp = g_pResourceMgr->LoadBmpResourceByIdCached(0x3b6);
   if (m_backdropBmp == NULL) {
     return;
   }
@@ -113,7 +113,7 @@ void TBackdropWindow::DestroyAndRefreshMainWindow() {
 
 // FUNCTION: IMPERIALISM 0x0049cfa0
 void TBackdropWindow::PostNcDestroy() {
-  g_pModuleLibraryCacheState->ReleaseRecordByHandle(m_backdropBmp);
+  g_pResourceMgr->ReleaseRecordByHandle(m_backdropBmp);
   m_backdropBmp = NULL;
   delete this;
   g_pActiveBackdropWindow = NULL;

@@ -1,6 +1,6 @@
 #include "game/ui_core/TBitmapResourceLoader.h"
 
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -40,10 +40,9 @@ void TBitmapResourceLoader::SetLoaderFlags(unsigned char newFlags) {
 // FUNCTION: IMPERIALISM 0x00495b70
 void TBitmapResourceLoader::EnsureBitmapResourceLoadedAndCopyRectSize() {
   if (bitmapResource == NULL) {
-    bitmapResource = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(bitmapResourceId);
+    bitmapResource = g_pResourceMgr->LoadBmpResourceByIdCached(bitmapResourceId);
     if (bitmapResource == NULL) {
-      bitmapResource =
-          g_pModuleLibraryCacheState->BuildIndexedBmpResourceById(bitmapResourceId, 0x42, 0x42, 0);
+      bitmapResource = g_pResourceMgr->BuildIndexedBmpResourceById(bitmapResourceId, 0x42, 0x42, 0);
     }
   }
 
@@ -58,7 +57,7 @@ void TBitmapResourceLoader::EnsureBitmapResourceLoadedAndCopyRectSize() {
 // FUNCTION: IMPERIALISM 0x00495c00
 void TBitmapResourceLoader::ReleaseBitmapResource() {
   if (bitmapResource != NULL) {
-    g_pModuleLibraryCacheState->ReleaseRecordById(bitmapResourceId);
+    g_pResourceMgr->ReleaseRecordById(bitmapResourceId);
   }
   bitmapResource = NULL;
 }

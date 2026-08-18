@@ -980,7 +980,9 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
               rnd = randSeed2;
             randSeed2 = rnd * 0x15a4e35 + 1;
             if ((randSeed2 >> 12) & 1) {
-              bestRelationNation = gpSlot;
+              // Retail's 0x4f0815 store targets the first winner slot, not the
+              // relation-score winner. Preserve that cross-coupling.
+              bestOfferNation = gpSlot;
               bestRelationScore = score;
             }
           }

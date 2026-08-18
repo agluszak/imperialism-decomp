@@ -1,6 +1,6 @@
 #include "game/gfx/TAutoResolutionDialog.h"
 
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
@@ -65,9 +65,9 @@ END_MESSAGE_MAP()
 BOOL TAutoResolutionDialog::OnInitDialog() {
   CDialog::OnInitDialog();
   CString text;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&text, 0x2763, 0x11);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&text, 0x2763, 0x11);
   primaryDialogControl.SetWindowText(static_cast<LPCSTR>(text));
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&text, 0x2763, 0x13);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&text, 0x2763, 0x13);
   SetWindowText(static_cast<LPCSTR>(text));
   UpdateData(FALSE);
   return TRUE;

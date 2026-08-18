@@ -33,7 +33,7 @@
 #include "game/net/TNetMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/core/TStream.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/military/TArmyMgr.h"
 #include "game/navy/TOcean.h"
 #include "game/map/TZone.h"
@@ -136,7 +136,7 @@ void TMultiplayerMgr::IMultiplayerMgr(int idleFrequency) {
   g_pNetMgr006a6014->StartMultiplayerSupport();
 
   CString loadedString;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2759, 1);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2759, 1);
 
   for (int i = 0; i < kMajorNationSessionSlotCount; ++i) {
     nationSessionIds[i] = 0;
@@ -583,7 +583,7 @@ unsigned char TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(T
   for (int i = 0; i < kMajorNationSessionSlotCount; ++i) {
     nationSessionIds[i] = 0;
     nationStatusTags[i] = kSessionTagUnas; // 'unas'
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2759, 1);
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2759, 1);
     TStaticText* nameControl =
         static_cast<TStaticText*>(panel->ResolveControlByTag(kControlTagNam0 + i)); // 'nam0'-'nam6'
     nameControl->AssertValid();

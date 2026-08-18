@@ -8,7 +8,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/mfc.h"
 
@@ -33,7 +33,7 @@ void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bo
     targetDc = g_pScopedMapQuickDrawDcHandleObject;
   }
 
-  g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(targetDc, FALSE);
+  g_pResourceMgr->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(targetDc, FALSE);
 
   POINT destination = {bounds->left, bounds->top};
   targetDc = g_pQuickDrawMemoryDc;

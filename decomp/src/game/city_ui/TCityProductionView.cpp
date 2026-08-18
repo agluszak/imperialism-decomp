@@ -31,7 +31,7 @@
 #include "game/quickdraw_guards.h"
 #include "game/gfx/CTemporaryRegion.h"
 #include "game/gfx/quickdraw_regions.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/gfx/CDib.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -90,20 +90,23 @@ void TCityProductionView::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);
   g_pAmbitApplication->cursorRegionInvalid = 1;
 
+  TGreatPower* actionNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  TCity* actionCity = (actionNation != 0) ? actionNation->city : 0;
+
   // Per building slot: build a mouse clip region from the slot bitmap's outline polygon.
   for (int slot = 0; slot < 16; ++slot) {
+    buildingClipRegionsEC[slot] = NewRgn();
     TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
     TCity* city = (nation != 0) ? nation->city : 0;
     short level = city->GetNextBuildingType(slot);
-    CDib* bitmap = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(
+    CDib* bitmap = g_pResourceMgr->LoadBmpResourceByIdCached(
         static_cast<unsigned short>(level * 0x10 + 0x1bbc + slot));
     POINT* outlinePolygon = bitmap->BuildNonTransparentOutlinePolygon(0xffffffff);
-    buildingClipRegionsEC[slot] = NewRgn();
     (*buildingClipRegionsEC[slot])->rgn.DeleteObject();
     HRGN polygonRegion = ::CreatePolygonRgn(outlinePolygon + 1, outlinePolygon[0].x, WINDING);
     (*buildingClipRegionsEC[slot])->rgn.Attach(polygonRegion);
     delete[] outlinePolygon;
-    g_pModuleLibraryCacheState->ReleaseRecordByHandle(bitmap);
+    g_pResourceMgr->ReleaseRecordByHandle(bitmap);
 
     short x = g_anCityBuildingSlotCoords[g_nCityBuildingSlotXOffsetIndex + slot * 2];
     short y = g_anCityBuildingSlotCoords[g_nCityBuildingSlotYOffsetIndex + slot * 2];
@@ -113,14 +116,15 @@ void TCityProductionView::DoPostCreate(int arg) {
   TWindow* window = GetWindow();
   window->nativeWindow50->ModifyStyle(0, 0x02000000, 0);
 
-  TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
-  TCity* city = (nation != 0) ? nation->city : 0;
-
   // Build eight groups of three action-focus animations from the layout/resource tables.
   int tableOffset = 0;
   for (int buildingSlot = 0; tableOffset < 0x18; ++buildingSlot, tableOffset += 3) {
-    short actionCount =
-        city->GetNextBuildingType(static_cast<short>(tableOffset < 0x15 ? buildingSlot : 0xb));
+    short actionCount;
+    if (tableOffset < 0x15) {
+      actionCount = actionCity->GetNextBuildingType(static_cast<short>(buildingSlot));
+    } else {
+      actionCount = actionCity->GetNextBuildingType(0xb);
+    }
     if (actionCount <= 0) {
       continue;
     }
@@ -134,9 +138,9 @@ void TCityProductionView::DoPostCreate(int arg) {
       OffsetRect(&bounds, 0x32, 0x23);
       short resourceId = g_awCityBuildingActionResourceIds[row * 3 + action];
       int animationId = (actionCount - 1) * 3 + action + (buildingSlot + 0x5dc) * 10;
-      TTransFocusAnimation* animation =
-          new TTransFocusAnimation(this, &bounds, resourceId, static_cast<short>(animationId),
-                                   (buildingSlot != 7 ? 2 : 0) + 5, 0);
+      TTransFocusAnimation* animation = new TTransFocusAnimation;
+      animation->ITransFocusAnimation(this, &bounds, resourceId, static_cast<short>(animationId),
+                                      (buildingSlot != 7 ? 2 : 0) + 5, 0);
       g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
       buildingActionAnimations12C[buildingSlot][action] = animation;
       InvalidateCityDialogRectRegion(&bounds, 1);
@@ -293,7 +297,7 @@ void TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette(
   if (g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib != nullptr) {
     int surfaceHeight =
         g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
-    if (surfaceHeight < 1) {
+    if (surfaceHeight <= 0) {
       surfaceHeight = -surfaceHeight;
     }
     OffsetRect(&dest, 0, (surfaceHeight - dest.top) - dest.bottom);
@@ -480,13 +484,15 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
 
 // FUNCTION: IMPERIALISM 0x004bb7a0
 void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dialogRoot) {
-  CString template1;
-  CString value1;
-  CString value2;
-  CString value3;
   CString assembled;
-
   TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  CString templateText;
+  CString value3;
+  CString value2;
+  CString value1;
+
+  int starvationPopulationLoss = city->starvationPopulationLoss08;
+  int foodSubstitutionCount = city->foodSubstitutionCount06;
 
   this->city94 = city;
   this->dialogRoot98 = dialogRoot;
@@ -504,68 +510,110 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
 
   short* summary = city->GetCitySummaryRecordSlot74();
 
-  // Value blocks: bracket-expand a template with a summary count and the owner's need targets.
-  static const struct {
-    unsigned int tag;
-    short assertLine;
-    short summaryIndex;
-    short needIndexA;
-    short needIndexB;
-    short templateIndex;
-    short preludeIndex;
-  } kValueBlocks[] = {
-      {IMPERIALISM_FOURCC('m', 'e', 'a', 't'), 0x440, 0x14, 0x14, 0x13, 0x1e, 0x12},
-      {IMPERIALISM_FOURCC('p', 'r', 'o', 'd'), 0x44e, 0x12, 0x12, -1, 0x1f, 0x12},
-      {IMPERIALISM_FOURCC('g', 'r', 'a', 'i'), 0x459, 0x11, 0x11, -1, 0x1f, 0x11},
-  };
-  for (int i = 0; i < 3; ++i) {
-    TStaticText* control =
-        static_cast<TStaticText*>(dialogRoot->ResolveControlByTag(kValueBlocks[i].tag));
-    if (control == nullptr) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8,
-                                                   kValueBlocks[i].assertLine);
-    }
-    value1.Format(g_szDecimalFormat, summary[kValueBlocks[i].summaryIndex]);
-    int needTotal = nation->GetNeedTargetByType(kValueBlocks[i].needIndexA);
-    if (kValueBlocks[i].needIndexB != -1) {
-      needTotal += nation->GetNeedTargetByType(kValueBlocks[i].needIndexB);
-    }
-    value2.Format(g_szDecimalFormat, needTotal);
-    g_pSimMgr->GetStringPrelude(kValueBlocks[i].preludeIndex, &value3);
-    g_pSimMgr->GetString(0x2734, kValueBlocks[i].templateIndex, &template1);
-    scanBracketExpressions(g_pSimMgr, &assembled, static_cast<LPCSTR>(template1),
-                           static_cast<LPCSTR>(value1), static_cast<LPCSTR>(value2),
-                           static_cast<LPCSTR>(value3));
-    SetControlHoverHelpText(assembled, control);
+  TStaticText* control = static_cast<TStaticText*>(
+      dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('m', 'e', 'a', 't')));
+  if (control == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x440);
   }
+  g_pSimMgr->GetString(0x2734, 0x1e, &templateText);
+  g_pSimMgr->GetString(0x2734, 0x1f, &value3);
+  value1.Format(g_szDecimalFormat, summary[0x14]);
+  int needTotal = nation->GetNeedTargetByType(0x14);
+  needTotal += nation->GetNeedTargetByType(0x13);
+  value2.Format(g_szDecimalFormat, needTotal);
+  scanBracketExpressions(g_pSimMgr, &assembled, static_cast<LPCSTR>(templateText),
+                         static_cast<LPCSTR>(value1), static_cast<LPCSTR>(value2),
+                         static_cast<LPCSTR>(value3));
+  SetControlHoverHelpText(assembled, control);
 
-  // Flag blocks: pick one of two localized strings by the control's actionable state.
-  static const struct {
-    unsigned int tag;
-    short assertLine;
-    short trueIndex;
-    short falseIndex;
-  } kFlagBlocks[] = {
-      {IMPERIALISM_FOURCC('u', 'n', 't', 'r'), 0x465, 0xd, 0xe},
-      {IMPERIALISM_FOURCC('t', 'r', 'a', 'i'), 0x46d, 0xf, 0x10},
-      {IMPERIALISM_FOURCC('p', 'r', 'o', 'f'), 0x475, 0x11, 0x12},
-      {IMPERIALISM_FOURCC('p', 'o', 'w', 'e'), 0x47d, 0x13, 0x14},
-      {IMPERIALISM_FOURCC('s', 'i', 'c', 'k'), 0x489, 0x1, 0x2},
-      {IMPERIALISM_FOURCC('d', 'e', 'a', 'd'), 0x492, 0x15, 0x16},
-      {IMPERIALISM_FOURCC('l', 'a', 'b', 'P'), 0x49e, 0x17, 0x18},
-  };
-  for (int j = 0; j < 7; ++j) {
-    TView* control = dialogRoot->ResolveControlByTag(kFlagBlocks[j].tag);
-    if (control == nullptr) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8,
-                                                   kFlagBlocks[j].assertLine);
-    }
-    short index = control->IsActionable() ? kFlagBlocks[j].trueIndex : kFlagBlocks[j].falseIndex;
-    g_pSimMgr->GetString(0x2734, index, &template1);
-    SetControlHoverHelpText(template1, control);
+  control = static_cast<TStaticText*>(
+      dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('p', 'r', 'o', 'd')));
+  if (control == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x44e);
   }
+  value1.Format(g_szDecimalFormat, summary[0x12]);
+  value2.Format(g_szDecimalFormat, nation->GetNeedTargetByType(0x12));
+  g_pSimMgr->GetStringPrelude(0x12, &value3);
+  scanBracketExpressions(g_pSimMgr, &assembled, static_cast<LPCSTR>(templateText),
+                         static_cast<LPCSTR>(value1), static_cast<LPCSTR>(value2),
+                         static_cast<LPCSTR>(value3));
+  SetControlHoverHelpText(assembled, control);
+
+  control = static_cast<TStaticText*>(
+      dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('g', 'r', 'a', 'i')));
+  if (control == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x459);
+  }
+  value1.Format(g_szDecimalFormat, summary[0x11]);
+  value2.Format(g_szDecimalFormat, nation->GetNeedTargetByType(0x11));
+  g_pSimMgr->GetStringPrelude(0x11, &value3);
+  scanBracketExpressions(g_pSimMgr, &assembled, static_cast<LPCSTR>(templateText),
+                         static_cast<LPCSTR>(value1), static_cast<LPCSTR>(value2),
+                         static_cast<LPCSTR>(value3));
+  SetControlHoverHelpText(assembled, control);
+
+  TView* flagControl = dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('u', 'n', 't', 'r'));
+  if (flagControl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x465);
+  }
+  g_pSimMgr->GetString(0x2734, flagControl->IsActionable() ? 0xd : 0xe, &assembled);
+  SetControlHoverHelpText(assembled, flagControl);
+
+  flagControl = dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('t', 'r', 'a', 'i'));
+  if (flagControl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x46d);
+  }
+  g_pSimMgr->GetString(0x2734, flagControl->IsActionable() ? 0xf : 0x10, &assembled);
+  SetControlHoverHelpText(assembled, flagControl);
+
+  flagControl = dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('p', 'r', 'o', 'f'));
+  if (flagControl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x475);
+  }
+  g_pSimMgr->GetString(0x2734, flagControl->IsActionable() ? 0x11 : 0x12, &assembled);
+  SetControlHoverHelpText(assembled, flagControl);
+
+  flagControl = dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('p', 'o', 'w', 'e'));
+  if (flagControl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x47d);
+  }
+  g_pSimMgr->GetString(0x2734, flagControl->IsActionable() ? 0x13 : 0x14, &assembled);
+  SetControlHoverHelpText(assembled, flagControl);
+
+  TPlacard* placard = static_cast<TPlacard*>(
+      dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('s', 'i', 'c', 'k')));
+  if (placard == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x489);
+  }
+  placard->SetValue(static_cast<short>(foodSubstitutionCount), true);
+  g_pSimMgr->GetString(0x2734, foodSubstitutionCount != 0 ? 1 : 2, &assembled);
+  SetControlHoverHelpText(assembled, placard);
+
+  placard = static_cast<TPlacard*>(
+      dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('d', 'e', 'a', 'd')));
+  if (placard == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x492);
+  }
+  placard->SetValue(static_cast<short>(starvationPopulationLoss), true);
+  g_pSimMgr->GetString(0x2734, starvationPopulationLoss != 0 ? 3 : 4, &assembled);
+  SetControlHoverHelpText(assembled, placard);
+
+  flagControl = dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('l', 'a', 'b', 'P'));
+  if (flagControl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x49e);
+  }
+  g_pSimMgr->GetString(0x2734, 0xb, &assembled);
+  SetControlHoverHelpText(assembled, flagControl);
 }
 
 // FUNCTION: IMPERIALISM 0x004bc0b0

@@ -16,7 +16,7 @@
 #include "game/ui_screens/TTwoPicSlider.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/gfx/TDisplayMgr.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/ui_core/THelpMgr.h"
 #include "game/ui_widgets/TInfoBarText.h"
@@ -139,7 +139,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   autoResPrompt->Show(1, 0);
 
   CString promptText;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2763, 0x18);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2763, 0x18);
   TDeluxeText* promptLabel = static_cast<TDeluxeText*>(autoResPrompt);
   promptLabel->SetTextStyle(0, 0xc, 0x38);
   promptLabel->SetTextAlignmentAndMaybeRefresh(1, 0);
@@ -148,13 +148,13 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
 
   TDropShadowText* yesOption = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagYess));
   yesOption->AssertValid();
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2763, 0x16);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2763, 0x16);
   yesOption->SetTextAndMaybeRefresh(&promptText, 0);
   ApplyUiTextStyleAndThemeFlags(yesOption, 0, 0xc, 0x2b6a, 0x2b6c);
 
   TDropShadowText* noOption = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagNooo));
   noOption->AssertValid();
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2763, 0x17);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2763, 0x17);
   noOption->SetTextAndMaybeRefresh(&promptText, 0);
   ApplyUiTextStyleAndThemeFlags(noOption, 0, 0xc, 0x2b6a, 0x2b6c);
 

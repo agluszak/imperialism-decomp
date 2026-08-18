@@ -11,7 +11,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include <mbstring.h>
 #include <stdio.h>
 #include <string.h>
@@ -477,7 +477,7 @@ void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
 
   if (mode == 0xa1) {
     CString scenarioName;
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&scenarioName, 0x2758, 9);
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&scenarioName, 0x2758, 9);
     strcpy(g_ScenarioSaveNameBuffer_006A2178, scenarioName);
   }
 

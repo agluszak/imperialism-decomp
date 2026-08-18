@@ -1,6 +1,6 @@
 #include "game/app/TModalTemplateDialog.h"
 
-#include "game/gfx/TModuleLibraryCacheTableStateB.h" // g_pModuleLibraryCacheState
+#include "game/gfx/TResourceMgr.h" // g_pResourceMgr
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
@@ -31,7 +31,7 @@ END_MESSAGE_MAP()
 BOOL TLowDiskWarningDialog::OnInitDialog() {
   CDialog::OnInitDialog();
   CString caption;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&caption, 0x275c, 1);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&caption, 0x275c, 1);
   SetWindowText(static_cast<LPCSTR>(caption));
   return TRUE;
 }

@@ -38,38 +38,65 @@ void TLaborPool::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004b2270
 short TLaborPool::TransferToLowSkillFirst(TLaborPool* destination, short amount) {
-  short remaining = amount;
-  short moved = lowSkillCount04 < remaining ? lowSkillCount04 : remaining;
-  lowSkillCount04 = static_cast<short>(lowSkillCount04 - moved);
-  destination->lowSkillCount04 = static_cast<short>(destination->lowSkillCount04 + moved);
-  remaining = static_cast<short>(remaining - moved);
+  if (lowSkillCount04 >= amount) {
+    lowSkillCount04 = static_cast<short>(lowSkillCount04 - amount);
+    destination->lowSkillCount04 = static_cast<short>(destination->lowSkillCount04 + amount);
+    return 1;
+  }
 
-  moved = mediumSkillCount06 < remaining ? mediumSkillCount06 : remaining;
-  mediumSkillCount06 = static_cast<short>(mediumSkillCount06 - moved);
-  destination->mediumSkillCount06 = static_cast<short>(destination->mediumSkillCount06 + moved);
-  remaining = static_cast<short>(remaining - moved);
+  destination->lowSkillCount04 = static_cast<short>(destination->lowSkillCount04 + lowSkillCount04);
+  amount = static_cast<short>(amount - lowSkillCount04);
+  lowSkillCount04 = 0;
+  if (mediumSkillCount06 >= amount) {
+    mediumSkillCount06 = static_cast<short>(mediumSkillCount06 - amount);
+    destination->mediumSkillCount06 = static_cast<short>(destination->mediumSkillCount06 + amount);
+    return 1;
+  }
 
-  moved = highSkillCount08 < remaining ? highSkillCount08 : remaining;
-  highSkillCount08 = static_cast<short>(highSkillCount08 - moved);
-  destination->highSkillCount08 = static_cast<short>(destination->highSkillCount08 + moved);
-  return remaining == 0;
+  destination->mediumSkillCount06 =
+      static_cast<short>(destination->mediumSkillCount06 + mediumSkillCount06);
+  amount = static_cast<short>(amount - mediumSkillCount06);
+  mediumSkillCount06 = 0;
+  if (highSkillCount08 >= amount) {
+    highSkillCount08 = static_cast<short>(highSkillCount08 - amount);
+    destination->highSkillCount08 = static_cast<short>(destination->highSkillCount08 + amount);
+    return 1;
+  }
+
+  destination->highSkillCount08 = highSkillCount08;
+  highSkillCount08 = 0;
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b2340
 short TLaborPool::TransferToHighSkillFirst(TLaborPool* destination, short amount) {
-  short remaining = amount;
-  short moved = highSkillCount08 < remaining ? highSkillCount08 : remaining;
-  highSkillCount08 = static_cast<short>(highSkillCount08 - moved);
-  destination->highSkillCount08 = static_cast<short>(destination->highSkillCount08 + moved);
-  remaining = static_cast<short>(remaining - moved);
+  if (highSkillCount08 >= amount) {
+    highSkillCount08 = static_cast<short>(highSkillCount08 - amount);
+    destination->highSkillCount08 = static_cast<short>(destination->highSkillCount08 + amount);
+    return 1;
+  }
 
-  moved = mediumSkillCount06 < remaining ? mediumSkillCount06 : remaining;
-  mediumSkillCount06 = static_cast<short>(mediumSkillCount06 - moved);
-  destination->mediumSkillCount06 = static_cast<short>(destination->mediumSkillCount06 + moved);
-  remaining = static_cast<short>(remaining - moved);
+  destination->highSkillCount08 =
+      static_cast<short>(destination->highSkillCount08 + highSkillCount08);
+  amount = static_cast<short>(amount - highSkillCount08);
+  highSkillCount08 = 0;
+  if (mediumSkillCount06 >= amount) {
+    mediumSkillCount06 = static_cast<short>(mediumSkillCount06 - amount);
+    destination->mediumSkillCount06 = static_cast<short>(destination->mediumSkillCount06 + amount);
+    return 1;
+  }
 
-  moved = lowSkillCount04 < remaining ? lowSkillCount04 : remaining;
-  lowSkillCount04 = static_cast<short>(lowSkillCount04 - moved);
-  destination->lowSkillCount04 = static_cast<short>(destination->lowSkillCount04 + moved);
-  return remaining == 0;
+  destination->mediumSkillCount06 =
+      static_cast<short>(destination->mediumSkillCount06 + mediumSkillCount06);
+  amount = static_cast<short>(amount - mediumSkillCount06);
+  mediumSkillCount06 = 0;
+  if (lowSkillCount04 >= amount) {
+    lowSkillCount04 = static_cast<short>(lowSkillCount04 - amount);
+    destination->lowSkillCount04 = static_cast<short>(destination->lowSkillCount04 + amount);
+    return 1;
+  }
+
+  destination->lowSkillCount04 = lowSkillCount04;
+  lowSkillCount04 = 0;
+  return 0;
 }

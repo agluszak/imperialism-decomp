@@ -32,7 +32,7 @@
 #include "game/ui_core/TStaticText.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/global_types.h"

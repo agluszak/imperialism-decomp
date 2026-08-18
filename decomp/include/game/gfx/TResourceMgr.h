@@ -10,21 +10,20 @@
 // Asset-pack cache. Loads .gob data packs as Windows DLL datafiles
 // (LoadLibraryExA(..., LOAD_LIBRARY_AS_DATAFILE)) into per-slot HMODULE handles; resources
 // are then pulled via the Win32 resource API. The global instance is
-// g_pModuleLibraryCacheState (0x006a134c). Constructed at 0x00498f60; destroyed (with
+// g_pResourceMgr (0x006a134c). Constructed at 0x00498f60; destroyed (with
 // FreeLibrary on every slot) at 0x00498fe0.
 //
 // The two embedded tables at +0x04 / +0x20 are MFC CMap template specializations (NOT the
 // concrete CMapStringToPtr/CMapPtrToPtr classes): their vtable slot 0 is the *inherited*
 // CObject::GetRuntimeClass (0x00606fba), they default-construct with hash size 17 / block
 // size 10 (the CMap defaults), and their destructors free the hash buffer + CPlex chain with
-// no per-element key/value destruction — so both key and value are scalar. The two have
-// distinct vtables (0x0064ba80 / 0x0064ba68), i.e. two distinct instantiations. The
-// resource lookup/insert sites have not yet identified the exact scalar key/value types;
-// this distinction affects the per-instantiation vtable but not the recovered layout.
+// no per-element key/value destruction. Retail operations and the compiler-emitted template
+// bodies establish the exact specializations: resource ids are short keys and object addresses
+// are void* keys; both maps store CacheRecord* values.
 //
 // Their destructors are compiler-emitted at 0x0049ae30 and 0x0049b270. The real
 // `CMap<K,ARG_K,V,ARG_V>` members below emit them naturally; TEMPLATE markers claim
-// those entities in TModuleLibraryCacheTableStateB.cpp.
+// those entities in TResourceMgr.cpp.
 struct CacheRecord {
   // NOOP: verified empty in original allocation sites, including 0x00499ed0.
   CacheRecord() {}
@@ -36,10 +35,10 @@ struct CacheRecord {
   int refCount;
 };
 
-class TModuleLibraryCacheTableStateB {
+class TResourceMgr {
 public:
-  TModuleLibraryCacheTableStateB();
-  ~TModuleLibraryCacheTableStateB(); // 0x00498fe0
+  TResourceMgr();
+  ~TResourceMgr(); // 0x00498fe0
 
   // Load a required .gob pack as a DLL datafile into slot `slot` (0..3), freeing any
   // previous handle first; shows the missing-file dialog on failure. Returns nonzero if
@@ -56,7 +55,7 @@ public:
   void IncrementRecordRefCountById(short id);
 
   // Load a localized UI string by (group, index) into `out`. Reached via the global
-  // g_pModuleLibraryCacheState from many call sites (e.g. TMultiplayerMgr init, low-disk
+  // g_pResourceMgr from many call sites (e.g. TMultiplayerMgr init, low-disk
   // warning). Real __thiscall method (ECX = this on entry at 0x4994c0).
   int LoadUiStringResourceByGroupAndIndex(CString* out, int group, int index);        // 0x004994c0
   CString LoadLocalizedStringByPackedGroupAndIndex(unsigned int packedGroupAndIndex); // 0x0049a590
@@ -97,12 +96,12 @@ public:
   // Retail-only empty cache hook reached by a dead global wrapper. 0x00499280
   void NoOpRetailCacheHook();
 
-  CDibPal* m_dibPalette;                                   // 0x00 global DIB palette companion
-  CMap<short, short, CacheRecord*, CacheRecord*> m_tableA; // 0x04 (vtable 0x0064ba80)
-  CMap<void*, void*, CacheRecord*, CacheRecord*> m_tableB; // 0x20 (vtable 0x0064ba68)
-  HMODULE m_slots[4];                                      // 0x3c (gob pack slots 0..3)
-  HMODULE m_primaryModule;                                 // 0x4c
+  CDibPal* m_dibPalette; // 0x00 global DIB palette companion
+  CMap<short, short, CacheRecord*, CacheRecord*> m_recordsByResourceId; // 0x04
+  CMap<void*, void*, CacheRecord*, CacheRecord*> m_recordsByObject;     // 0x20
+  HMODULE m_slots[4];                                                  // 0x3c
+  HMODULE m_primaryModule;                                             // 0x4c
 };
 
-// g_pModuleLibraryCacheState is declared in game/global_data_tables.h (single
+// g_pResourceMgr is declared in game/global_data_tables.h (single
 // authoritative declaration; the extern "C" copy here had drifted in linkage).

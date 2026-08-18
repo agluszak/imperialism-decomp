@@ -5,7 +5,7 @@
 #include "game/ImperialismApp.h"
 #include "game/city_ui/TCountry.h"
 #include "game/gfx/TAmbitApplication.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TViewMgr.h"
@@ -194,7 +194,7 @@ void TDDTemplateDialog::OnPaint() {
                                                      ? picture->m_pInfoHeader->bmiHeader.biHeight
                                                      : -picture->m_pInfoHeader->bmiHeader.biHeight);
   } else if (g_useCompatibleBitmapBlit != 0) {
-    CDibPal* palette = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();
+    CDibPal* palette = g_pResourceMgr->EnsureDefaultDibPalette();
     palette->SelectIntoDcAndRealize(&dc, FALSE);
     HDC memoryDc = ::CreateCompatibleDC(dc.GetSafeHdc());
     HGDIOBJ oldBitmap = ::SelectObject(memoryDc, bitmap);

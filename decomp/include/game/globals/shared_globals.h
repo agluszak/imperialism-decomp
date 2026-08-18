@@ -92,7 +92,7 @@ extern "C" short g_infoPanelLabelYByRow_006969c0[4];
 extern "C" COLORREF g_defaultDropShadowTextColor;
 
 // Shared empty-string literal (ImperialismApp/TCountry/TIncludeView/
-// TLowDiskWarningDialog/TModuleLibraryCacheTableStateB/TSimMgr).
+// TLowDiskWarningDialog/TResourceMgr/TSimMgr).
 extern char g_szEmptyString[];
 
 extern int g_adwEngineerRailBuildCostByTerrainType[kStrategicTerrainCount];

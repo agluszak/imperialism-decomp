@@ -7,8 +7,6 @@
 #include "game/map_domain_types.h"
 #include "game/mfc.h"
 
-// Forward declarations for types referenced by generated signatures.
-class astruct_13;
 class TTacticalBattle;
 class TTacticalUnit;
 class TTacticalToolbar;
@@ -27,29 +25,24 @@ public:
       RgnHandle hitArg) override;              // slot 0x35 0x5a8d40
   virtual void DoPostCreate(int arg) override; // slot 0x37 0x5a84d0
   virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event,
-                              CPoint origin) override;              // slot 0x47 0x5a8660
-  virtual void TacticalBattleViewSlot68(int param_1);               // slot 0x68 0x5a8900
-  virtual void InvalidateTacticalUnitTileRect(TTacticalUnit* unit); // slot 0x69 0x5a89a0
+                              CPoint origin) override;  // slot 0x47 0x5a8660
+  virtual void UpdateTile(TacticalTileIndex tileIndex); // slot 0x68 0x5a8900
+  virtual void InvalidateUnit(TTacticalUnit* unit);     // slot 0x69 0x5a89a0
   // Writes the on-screen RECT of a unit's tile (grown 0x18 px upward, bottom-4;
-  // zero RECT when tileIndex8 == -1). Hedged name.
-  virtual void ComputeTacticalUnitTileScreenRect(TTacticalUnit* unit,
-                                                 RECT* rectOut); // slot 0x6a 0x5a89f0
+  // zero RECT when tileIndex8 == -1).
+  virtual void UnitRect(TTacticalUnit* unit, RECT* rectOut);     // slot 0x6a 0x5a89f0
   virtual void Scroll(MapScrollEdgeMaskStorage scrollDirection); // slot 0x6b 0x5a8be0
   // Per-tile drawer for the rect applier's 0..0x1b2 pass (base = no-op; the army view
   // override renders the tile). Old OrphanRetStub name was junk; ret 8 = 2 args.
-  virtual void DrawTacticalTileInClipRect(TacticalTileIndex tileIndex,
-                                          RECT* clipRect); // slot 0x6c 0x5a83c0
-  virtual void
-  RunOneTimeAnimationModalWaitAndInvalidateCityDialog(RECT* rect, int effectId, int frameCount,
-                                                      TacticalTileIndex tileIndex,
-                                                      int mode); // slot 0x6d 0x5a9170 (ret 0x14)
-  virtual void PlayTacticalTileEffect(TacticalTileIndex tileIndex, int effectId,
-                                      int frameCount); // slot 0x6e 0x5a9090
-  virtual void
-  AnimateTacticalUnitMoveBetweenTiles(TTacticalUnit* unit, TacticalTileIndex fromTileIndex,
-                                      TacticalTileIndex toTileIndex); // slot 0x6f 0x5a9240
-  // Takes no args (bare ret; the old astruct_13* param was a Ghidra artifact).
-  virtual void DrawUiTilesAndOverlay(); // slot 0x70 0x5a9550
+  virtual void DrawTile(TacticalTileIndex tileIndex, RECT* clipRect); // slot 0x6c 0x5a83c0
+  virtual void PlayAni(TacticalTileIndex tileIndex, int effectId,
+                       int frameCount); // slot 0x6d 0x5a9090
+  virtual void PlayAni(RECT* rect, int effectId, int frameCount, TacticalTileIndex tileIndex,
+                       int mode); // slot 0x6e 0x5a9170 (ret 0x14)
+  virtual void GlideUnit(TTacticalUnit* unit, TacticalTileIndex fromTileIndex,
+                         TacticalTileIndex toTileIndex); // slot 0x6f 0x5a9240
+  // Takes no args (bare ret; a decompiler-synthesized pointer argument was spurious).
+  virtual void DoGlideAni(); // slot 0x70 0x5a9550
   // View-local slice (+0x60..; TView ends at +0x5c). Offsets verified in the tile-rect
   // and move-animation bodies; gaps unobserved.
   TTacticalBattle* tacticalBattle60; // +0x60 the battle this view renders
@@ -64,7 +57,7 @@ public:
   short scrollableContentWidth7A;        // +0x7a total content width (scroll clamp max)
   unsigned char pad7c[4];                // +0x7c
   int tileColumnsPerRow80;               // +0x80 = 0x1d (grid stride)
-  int field84;                           // +0x84 set -1 by 0x5a9d90; use unobserved
+  int hoveredTileIndex;                  // +0x84 currently highlighted tile, -1 when none
   int tileWidthPx88;                     // +0x88 tile width in pixels
   int tileRowHeightPx8C;                 // +0x8c tile row height in pixels
   int unitSpriteCellWidth90;             // +0x90 sprite-sheet cell width
@@ -86,33 +79,31 @@ public:
 
   // Tactical-battle UI helpers dispatched from the TTacticalBattle command handlers
   // (all __thiscall on the live view; verified at every call site).
-  void UpdateTacticalActionControlBitmapForCurrentUnit(char side);        // 0x5a9b40
-  void InvalidateTacticalHexTileRect(TacticalTileIndex tileIndex);        // 0x5a8860
-  void CenterViewportAroundGridIndexAndSnap(TacticalTileIndex tileIndex); // 0x5a8ac0
-  void SpawnTacticalUiMarkerAtUnitTile();                                 // 0x5a9bb0
+  void SetCurrentPlayer(unsigned char side);         // 0x5a9b40
+  void InvalidateTile(TacticalTileIndex tileIndex);  // 0x5a8860
+  void MakeTileVisible(TacticalTileIndex tileIndex); // 0x5a8ac0
+  void UpdateSelectionBlink();                       // 0x5a9bb0
   // Maps a screen point to a clamped hex (row, col) on this battle's grid. 0x5a86d0.
   void ConvertScreenPointToHexGridCoordClamped(POINT* screenPoint, int* outRow, int* outCol);
   // Validates the full local `{0,0,width,height}` bounds through TView's slot 0x32.
-  void SyncStatusPanelBounds();       // 0x5a8790
-  void TriggerTacticalUiUpdate2711(); // 0x5a9cc0
+  void SyncStatusPanelBounds(); // 0x5a8790
+  void KillSelectionBlink();    // 0x5a9cc0
   // Writes the on-screen RECT of a bare hex tile (no unit growth). 0x5a87d0.
   void ComputeTacticalHexTileScreenRect(RECT* rectOut, TacticalTileIndex tileIndex);
   // Writes unit's on-screen sprite rect (tile rect grown 0x14px upward), then applies
-  // a trench-facing pixel offset (unrecovered table) when the unit's tile is a fresh
+  // a trench-facing pixel offset when the unit's tile is a fresh
   // trench-deploy mark, or clips the rect off-screen for a specific hidden-in-trench
   // case. 0x5aa7d0.
   void ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(TTacticalUnit* unit, RECT* rectOut);
-  // Orientation-index lookup (0-6ish) for a unit sprite at tileIndex, based on which
+  // Orientation-index lookup (0..6) for a unit sprite at tileIndex, based on which
   // of the two "opposite" hex neighbors (by parity of tileIndex) are trench-deploy
-  // tiles; indexes an unrecovered 20-short table. 0x5aa670.
+  // tiles; maps the resulting three-bit code through {6,3,5,1,6,0,2,4}. 0x5aa670.
   short
   ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(TacticalTileIndex tileIndex);
 
-  // +0xd4 -- never touched by this class's own ctor; the only subclass (TTacArmyView,
-  // 0x5a9d90) writes a battlefield x-origin offset here as a short. +0xd6 is still
-  // unconfirmed padding.
-  short battlefieldOriginOffsetXD4;
-  unsigned char padD6[2];
+  // Never touched by this class's own ctor; the only subclass (TTacArmyView, 0x5a9d90)
+  // writes the battlefield x-origin offset here. Natural tail alignment follows at +0xd6.
+  short battlefieldOriginOffsetX; // +0xd4
 };
 ASSERT_SIZE(TTacticalBattleView, 0xd8);
 

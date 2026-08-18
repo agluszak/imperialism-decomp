@@ -1431,29 +1431,29 @@ address|name|symbol|size|type|prototype|provenance
 498e00|TQuickDrawPaletteSelectionState::SelectDefaultDibPalette||31|function|TQuickDrawPaletteSelectionState* SelectDefaultDibPalette()|
 498e30|TQuickDrawPaletteSelectionState::SelectDefaultDibPalette||39|function|TQuickDrawPaletteSelectionState* SelectDefaultDibPalette(CDC* dc)|
 498f10|TQuickDrawOwnedObjectRecord::~TQuickDrawOwnedObjectRecord||15|function|void ~TQuickDrawOwnedObjectRecord()|
-498f60|TModuleLibraryCacheTableStateB::TModuleLibraryCacheTableStateB||87|function|undefined TModuleLibraryCacheTableStateB()|
-498fe0|TModuleLibraryCacheTableStateB::~TModuleLibraryCacheTableStateB||527|function|undefined ~TModuleLibraryCacheTableStateB()|
-499280|TModuleLibraryCacheTableStateB::NoOpRetailCacheHook||1|function|void NoOpRetailCacheHook()|
-4992a0|TModuleLibraryCacheTableStateB::LoadModuleLibrarySlotWithErrorDialog||174|function|undefined LoadModuleLibrarySlotWithErrorDialog()|
-499380|TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog||143|function|undefined LoadPrimaryDataLibraryWithErrorDialog()|
-499440|TModuleLibraryCacheTableStateB::LoadUiStringResourceById||91|function|undefined4 LoadUiStringResourceById(class CString * out, unsigned int stringId)|
+498f60|TResourceMgr::TResourceMgr||87|function|undefined TResourceMgr()|
+498fe0|TResourceMgr::~TResourceMgr||527|function|undefined ~TResourceMgr()|
+499280|TResourceMgr::NoOpRetailCacheHook||1|function|void NoOpRetailCacheHook()|
+4992a0|TResourceMgr::LoadModuleLibrarySlotWithErrorDialog||174|function|undefined LoadModuleLibrarySlotWithErrorDialog()|
+499380|TResourceMgr::LoadPrimaryDataLibraryWithErrorDialog||143|function|undefined LoadPrimaryDataLibraryWithErrorDialog()|
+499440|TResourceMgr::LoadUiStringResourceById||91|function|undefined4 LoadUiStringResourceById(class CString * out, unsigned int stringId)|
 4994c0|LoadUiStringResourceByGroupAndIndex||170|function|undefined LoadUiStringResourceByGroupAndIndex()|
-4995a0|TModuleLibraryCacheTableStateB::ResolveDefaultLogPalette||9|function|LOGPALETTE* TModuleLibraryCacheTableStateB::ResolveDefaultLogPalette()|
-4995c0|TModuleLibraryCacheTableStateB::EnsureDefaultDibPalette||429|function|undefined EnsureDefaultDibPalette()|
-4997e0|TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached||678|function|CDib * LoadBmpResourceByIdCached(unsigned short bmpId)|
-499b40|TModuleLibraryCacheTableStateB::BuildIndexedBmpResourceById||642|function|CDib * BuildIndexedBmpResourceById(short bmpId, int width, int height, int patternMode)|
-499e80|TModuleLibraryCacheTableStateB::RetainOrRegisterObject||434|function|void __thiscall RetainOrRegisterObject(short id, CObject * object)|curated
+4995a0|TResourceMgr::ResolveDefaultLogPalette||9|function|LOGPALETTE* TResourceMgr::ResolveDefaultLogPalette()|
+4995c0|TResourceMgr::EnsureDefaultDibPalette||429|function|undefined EnsureDefaultDibPalette()|
+4997e0|TResourceMgr::LoadBmpResourceByIdCached||678|function|CDib * LoadBmpResourceByIdCached(unsigned short bmpId)|
+499b40|TResourceMgr::BuildIndexedBmpResourceById||642|function|CDib * BuildIndexedBmpResourceById(short bmpId, int width, int height, int patternMode)|
+499e80|TResourceMgr::RetainOrRegisterObject||434|function|void __thiscall RetainOrRegisterObject(short id, CObject * object)|curated
 49a0b0|IncrementDialogResourceRefCountByShortIdInRegistry||70|function|undefined IncrementDialogResourceRefCountByShortIdInRegistry()|
-49a120|TModuleLibraryCacheTableStateB::IncrementRecordRefCountByHandleOrRecord||67|function|void IncrementRecordRefCountByHandleOrRecord(CacheRecord* recordOrHandle)|
-49a190|TModuleLibraryCacheTableStateB::ReleaseRecordById||395|function|void ReleaseRecordById(short id)|
-49a390|TModuleLibraryCacheTableStateB::ReleaseRecordByHandle||400|function|undefined ReleaseRecordByHandle()|
+49a120|TResourceMgr::IncrementRecordRefCountByHandleOrRecord||67|function|void IncrementRecordRefCountByHandleOrRecord(CacheRecord* recordOrHandle)|
+49a190|TResourceMgr::ReleaseRecordById||395|function|void ReleaseRecordById(short id)|
+49a390|TResourceMgr::ReleaseRecordByHandle||400|function|undefined ReleaseRecordByHandle()|
 49a590|LoadLocalizedStringByGroupAndIndexToSharedRef||234|function|undefined LoadLocalizedStringByGroupAndIndexToSharedRef()|
 49a6c0|TToolBarCluster::LoadStringOrThrow||227|function|undefined4 __thiscall LoadStringOrThrow(undefined4 this_ptr, int return_value, int string_table_index)|
 49a7f0|FilterStringByCharacterTypeFlag4AndAppend||220|function|undefined FilterStringByCharacterTypeFlag4AndAppend()|
 49a910|renderTemplateOrExpandTokens||326|function|undefined4 __stdcall renderTemplateOrExpandTokens(undefined4 ctx_or_stream, undefined4 result_or_handle, undefined4 input_str_arg)|
-49aac0|TModuleLibraryCacheTableStateB::LoadPaletteResourceByName||205|function|BOOL LoadPaletteResourceByName(CPalette* palette, LPCSTR resourceName)|
-49abd0|TModuleLibraryCacheTableStateB::LoadPaletteResource||198|function|BOOL LoadPaletteResource(CPalette* palette, unsigned long resourceId)|
-49ace0|TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor||69|function|ulong __thiscall ResolvePaletteIndexColor(uint packedColor)|
+49aac0|TResourceMgr::LoadPaletteResourceByName||205|function|BOOL LoadPaletteResourceByName(CPalette* palette, LPCSTR resourceName)|
+49abd0|TResourceMgr::LoadPaletteResource||198|function|BOOL LoadPaletteResource(CPalette* palette, unsigned long resourceId)|
+49ace0|TResourceMgr::ResolvePaletteIndexColor||69|function|ulong __thiscall ResolvePaletteIndexColor(uint packedColor)|
 49ad50|CMap<short,short,CacheRecord*,CacheRecord*>::RemoveKey|?RemoveKey@?$CMap@FFPAUCacheRecord@@PAU1@@@QAEHF@Z|171|function|int RemoveKey(short key)|curated
 49ae30|CMap<short,short,CacheRecord*,CacheRecord*>::~CMap|??1?$CMap@FFPAUCacheRecord@@PAU1@@@UAE@XZ|132|function|void ~CMap()|curated
 49aef0|CMap<short,short,CacheRecord*,CacheRecord*>::Serialize|?Serialize@?$CMap@FFPAUCacheRecord@@PAU1@@@UAEXAAVCArchive@@@Z|522|function|void Serialize(CArchive& archive)|curated
@@ -1631,7 +1631,7 @@ address|name|symbol|size|type|prototype|provenance
 4a0430|TTransFocusAnimation::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a0460|TTransFocusAnimation::CreateTTransFocusAnimationInstance||7|function|undefined CreateTTransFocusAnimationInstance()|
 4a0480|TTransFocusAnimation::GetRuntimeClass||6|function|undefined GetTTransFocusAnimationClassNamePointer()|rtti
-4a04a0|TTransFocusAnimation::ConstructTTransFocusAnimationBaseState||158|function|undefined ConstructTTransFocusAnimationBaseState()|
+4a04a0|TTransFocusAnimation::ITransFocusAnimation||158|function|void __thiscall ITransFocusAnimation(TView * target, RECT * bounds, short frameCount, short frameResourceBaseId, int ticksPerFrame, int registryTag)|mac-symbol
 4a0570|TTransFocusAnimation::Free||62|function|undefined DestructTTransFocusAnimationAndMaybeFree()|
 4a05c0|TTransFocusAnimation::UpdateBackground||336|function|void __thiscall UpdateBackground(void)|mac-symbol
 4a0770|TTransFocusAnimation::IdleDraw||120|function|void __thiscall IdleDraw(void)|mac-symbol
@@ -2140,13 +2140,13 @@ address|name|symbol|size|type|prototype|provenance
 4ba2e0|TCityProductionView::TCityProductionView||85|function|undefined TCityProductionView()|
 4ba360|TCityProductionView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ba390|TCityProductionView::~TCityProductionView||5|function|void __thiscall ~TCityProductionView(void)|
-4ba3b0|TTransFocusAnimation::InitializeCityBuildingControlRegions||718|function|void __thiscall InitializeCityBuildingControlRegions(void * pInitContext)|
+4ba3b0|TCityProductionView::DoPostCreate||718|function|void __thiscall DoPostCreate(int arg)|source-recovery
 4ba740|TCityProductionView::Free||70|function|void __thiscall Free(void)|
 4ba7b0|THQButton::RenderCityBuildingIcons||929|function|void __thiscall RenderCityBuildingIcons(tagRECT * pTargetRect)|
 4bac50|BlitBitmapResourceRectWithScreenOffsetAndPalette||294|function|undefined BlitBitmapResourceRectWithScreenOffsetAndPalette(RECT* sourceRect, int surface, short offsetY, short offsetX, undefined4 context, undefined4 flags, undefined4 palette)|
 4badd0|TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh||356|function|undefined RenderNationHeaderDateLabelWithPeriodicRefresh()|
-4bafa0|TToolBarCluster::HandleCityBuildingHoverSelection||1629|function|void __thiscall HandleCityBuildingHoverSelection(int * pCursorPoint, int nEventFlags)|
-4bb7a0|TToolBarCluster::InitializeCityProductionDialog||1849|function|undefined InitializeCityProductionDialog(int arg1, int* arg2)|
+4bafa0|TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback||1629|function|void __thiscall HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint * point, Region * * hitArg)|source-recovery
+4bb7a0|TCityProductionView::InitializeCityProductionDialog||1849|function|void __thiscall InitializeCityProductionDialog(TCity * city, TView * dialogRoot)|source-recovery
 4bc0b0|TCityProductionView::UpdateUnits||871|function|void __thiscall UpdateUnits(void)|mac_oracle
 4bc500|TCityProductionView::UpdateToolbar||199|function|void __thiscall UpdateToolbar(void)|mac_oracle
 4bc610|TCityProductionView::DoEvent||62|function|void __thiscall DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|mac_oracle
@@ -10151,7 +10151,7 @@ address|name|symbol|size|type|prototype|provenance
 69be08|afxDataNil|||global||xref_oracle
 6a1344|g_pAmbitApplication|||global||
 6a1348|g_pImperialismApp|||global||
-6a134c|g_pModuleLibraryCacheState|||global||
+6a134c|g_pResourceMgr|||global||
 6a1350|g_nStartupAutoResolutionMode|||global||
 6a1354|g_pfnPreviousNewHandler|||global||
 6a1358|g_pAmbitDeveloperAssertProbe_006A1358|||global||

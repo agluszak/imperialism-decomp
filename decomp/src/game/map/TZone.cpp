@@ -15,7 +15,7 @@
 #include "game/navy/TAdmiral.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/navy/TOcean.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/ui_screens/TPortZone.h"
@@ -867,7 +867,7 @@ void TZone::BuildNavalIntelligenceSourceDescription(CString* out, short nation) 
   }
 
   if (selected == 0) {
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(out, 0x2762, 0x10);
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(out, 0x2762, 0x10);
     return;
   }
 
@@ -875,7 +875,7 @@ void TZone::BuildNavalIntelligenceSourceDescription(CString* out, short nation) 
     CString admiralName;
     CString shipName;
     CString reportTemplate;
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0xe);
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0xe);
     admiralName = s_szAdmiralPrefix_0069578c + selected->admiral->displayName;
     shipName = selected->name;
     scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(reportTemplate),
@@ -884,7 +884,7 @@ void TZone::BuildNavalIntelligenceSourceDescription(CString* out, short nation) 
     CString shipName;
     CString reportTemplate;
     shipName = selected->name;
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0xf);
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0xf);
     scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(reportTemplate),
                            static_cast<LPCSTR>(shipName));
   }

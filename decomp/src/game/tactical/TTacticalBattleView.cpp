@@ -908,7 +908,7 @@ TTacticalBattleView::TTacticalBattleView() : TView() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a83c0
-void TTacticalBattleView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT* clipRect) {
+void TTacticalBattleView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
   (void)tileIndex;
   (void)clipRect;
 }
@@ -1031,7 +1031,7 @@ void TTacticalBattleView::ComputeTacticalHexTileScreenRect(RECT* rectOut,
 }
 
 // FUNCTION: IMPERIALISM 0x005a8860
-void TTacticalBattleView::InvalidateTacticalHexTileRect(TacticalTileIndex tileIndex) {
+void TTacticalBattleView::InvalidateTile(TacticalTileIndex tileIndex) {
   RECT tileRect;
   int row = tileIndex / tileColumnsPerRow80;
   int tileWidth = tileWidthPx88;
@@ -1050,7 +1050,7 @@ void TTacticalBattleView::InvalidateTacticalHexTileRect(TacticalTileIndex tileIn
 }
 
 // FUNCTION: IMPERIALISM 0x005a8900
-void TTacticalBattleView::TacticalBattleViewSlot68(int tileIndex) {
+void TTacticalBattleView::UpdateTile(TacticalTileIndex tileIndex) {
   int row = tileIndex / tileColumnsPerRow80;
   int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
   RECT tileRect;
@@ -1066,16 +1066,16 @@ void TTacticalBattleView::TacticalBattleViewSlot68(int tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a89a0
-void TTacticalBattleView::InvalidateTacticalUnitTileRect(TTacticalUnit* unit) {
+void TTacticalBattleView::InvalidateUnit(TTacticalUnit* unit) {
   RECT unitRect;
   if (unit->tileIndex8 != -1) {
-    ComputeTacticalUnitTileScreenRect(unit, &unitRect);
+    UnitRect(unit, &unitRect);
     InvalidateCityDialogRectRegion(&unitRect, 1);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005a89f0
-void TTacticalBattleView::ComputeTacticalUnitTileScreenRect(TTacticalUnit* unit, RECT* rectOut) {
+void TTacticalBattleView::UnitRect(TTacticalUnit* unit, RECT* rectOut) {
   TacticalTileIndex tileIndex = unit->tileIndex8;
   if (tileIndex == -1) {
     rectOut->left = 0;
@@ -1104,7 +1104,7 @@ void TTacticalBattleView::ComputeTacticalUnitTileScreenRect(TTacticalUnit* unit,
 }
 
 // FUNCTION: IMPERIALISM 0x005a8ac0
-void TTacticalBattleView::CenterViewportAroundGridIndexAndSnap(TacticalTileIndex tileIndex) {
+void TTacticalBattleView::MakeTileVisible(TacticalTileIndex tileIndex) {
   int firstVisibleColumn = viewOriginX78 / tileWidthPx88;
   int visibleColumnCount = frameWidth34 / tileWidthPx88;
   int lastVisibleColumn = firstVisibleColumn + visibleColumnCount;
@@ -1138,7 +1138,7 @@ void TTacticalBattleView::Scroll(MapScrollEdgeMaskStorage scrollDirection) {
       if (viewOriginX78 > 0) {
         viewOriginX78 = viewOriginX78 - static_cast<short>(tileWidthPx88);
         RefreshControl();
-        SpawnTacticalUiMarkerAtUnitTile();
+        UpdateSelectionBlink();
         return;
       }
     } else if (scrollDirection == kMapScrollEdgeRight &&
@@ -1147,7 +1147,7 @@ void TTacticalBattleView::Scroll(MapScrollEdgeMaskStorage scrollDirection) {
       viewOriginX78 = static_cast<short>(tileWidthPx88) + viewOriginX78;
       RefreshControl();
     }
-    SpawnTacticalUiMarkerAtUnitTile();
+    UpdateSelectionBlink();
   }
 }
 
@@ -1190,14 +1190,14 @@ void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
             ->turnEventCursors[static_cast<short>(cursorToken) - TViewMgr::kCursorResourceIdBase];
   }
   SetCursor(cursor);
-  if (tileIndex == field84) {
+  if (tileIndex == hoveredTileIndex) {
     return;
   }
   ScopedMapQuickDrawContext guard(this);
   CTemporaryRegion savedClip;
   GetClip(savedClip.tempRgn);
-  int previousTile = field84;
-  field84 = tileIndex;
+  int previousTile = hoveredTileIndex;
+  hoveredTileIndex = tileIndex;
   ResetQuickDrawStrokeState();
   if (previousTile != -1) {
     int row = previousTile / tileColumnsPerRow80;
@@ -1232,7 +1232,7 @@ void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
     SetQuickDrawStrokeColor(0xffffff);
     SetQuickDrawFillColorFromPaletteIndex(0);
     DrawHexSelectionOutlineSegments(&tileRect);
-    DrawTacticalTileInClipRect(static_cast<short>(tileIndex), &tileRect);
+    DrawTile(static_cast<short>(tileIndex), &tileRect);
   }
   SetClip(savedClip.tempRgn);
   if (toolbarD0 != 0 && tacticalBattle60->battleOutcome44 == kTacticalBattleInProgress) {
@@ -1242,12 +1242,11 @@ void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
 }
 
 // FUNCTION: IMPERIALISM 0x005a9090
-void TTacticalBattleView::PlayTacticalTileEffect(TacticalTileIndex tileIndex, int effectId,
-                                                 int frameCount) {
+void TTacticalBattleView::PlayAni(TacticalTileIndex tileIndex, int effectId, int frameCount) {
   RECT effectRect;
   TTacticalUnit* occupant = tacticalBattle60->tileGrid4[tileIndex].occupant4;
   if (occupant != 0) {
-    ComputeTacticalUnitTileScreenRect(occupant, &effectRect);
+    UnitRect(occupant, &effectRect);
   } else {
     int row = tileIndex / tileColumnsPerRow80;
     int tileWidth = tileWidthPx88;
@@ -1262,8 +1261,7 @@ void TTacticalBattleView::PlayTacticalTileEffect(TacticalTileIndex tileIndex, in
     effectRect.right = x + tileWidth;
     effectRect.bottom = effectRect.top + rowHeight;
   }
-  RunOneTimeAnimationModalWaitAndInvalidateCityDialog(&effectRect, effectId, frameCount, tileIndex,
-                                                      2);
+  PlayAni(&effectRect, effectId, frameCount, tileIndex, 2);
 }
 
 // 1-byte no-op pair bracketing the modal animation wait (possible Mac
@@ -1275,8 +1273,8 @@ void TTacticalBattleView::PlayTacticalTileEffect(TacticalTileIndex tileIndex, in
 // invalidates the rect and drops the registry entry.
 
 // FUNCTION: IMPERIALISM 0x005a9170
-void TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog(
-    RECT* rect, int effectId, int frameCount, TacticalTileIndex tileIndex, int mode) {
+void TTacticalBattleView::PlayAni(RECT* rect, int effectId, int frameCount,
+                                  TacticalTileIndex tileIndex, int mode) {
   TOneTimeAnimation* animation = new TOneTimeAnimation;
   // The original calls the init body unconditionally on the new-result (no null guard).
   animation->InitializeOneTimeAnimation(this, rect, static_cast<short>(frameCount),
@@ -1297,9 +1295,8 @@ void TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog(
 }
 
 // FUNCTION: IMPERIALISM 0x005a9240
-void TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles(TTacticalUnit* unit,
-                                                              TacticalTileIndex fromTileIndex,
-                                                              TacticalTileIndex toTileIndex) {
+void TTacticalBattleView::GlideUnit(TTacticalUnit* unit, TacticalTileIndex fromTileIndex,
+                                    TacticalTileIndex toTileIndex) {
   // VERIFIED: 0x5a9248 reads word [g_pSimMgr + 0x52] = preferenceValues[5]
   // (preferenceValues[0] is at +0x48), the animation-enable preference gate.
   if (g_pSimMgr->preferenceValues[5] == 0) {
@@ -1371,7 +1368,7 @@ void TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles(TTacticalUnit* uni
 }
 
 // FUNCTION: IMPERIALISM 0x005a9550
-void TTacticalBattleView::DrawUiTilesAndOverlay() {
+void TTacticalBattleView::DoGlideAni() {
   if (moveAnimUnitOffsetXA4 == -1) {
     return;
   }
@@ -1514,7 +1511,7 @@ void __stdcall DrawHexSelectionOutlineSegments(RECT* rect) {
 // Promoted tactical-UI helpers (called from the TTacticalBattle command handlers).
 
 // FUNCTION: IMPERIALISM 0x005a9b40
-void TTacticalBattleView::UpdateTacticalActionControlBitmapForCurrentUnit(char side) {
+void TTacticalBattleView::SetCurrentPlayer(unsigned char side) {
   (void)side; // parameter is dead in the original: the side is read from the battle state
   TPicture* coatControl =
       static_cast<TPicture*>(ownerContext->ResolveControlByTag(kControlTagCoat));
@@ -1527,7 +1524,7 @@ void TTacticalBattleView::UpdateTacticalActionControlBitmapForCurrentUnit(char s
 }
 
 // FUNCTION: IMPERIALISM 0x005a9bb0
-void TTacticalBattleView::SpawnTacticalUiMarkerAtUnitTile() {
+void TTacticalBattleView::UpdateSelectionBlink() {
   g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(0x2711);
   TTacticalUnit* selectedUnit = tacticalBattle60->selectedUnit1c;
   if (selectedUnit == 0) {
@@ -1557,7 +1554,7 @@ void TTacticalBattleView::SpawnTacticalUiMarkerAtUnitTile() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a9cc0
-void TTacticalBattleView::TriggerTacticalUiUpdate2711() {
+void TTacticalBattleView::KillSelectionBlink() {
   g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(0x2711);
 }
 

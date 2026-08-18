@@ -6,7 +6,7 @@
 // out-of-line calls.
 
 #include "game/gfx/TAmbitApplication.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/ui_screens/TLoadSavePicture.h"
 #include "game/ui_screens/TNewsMgr.h"
 #include "game/ui_core/THelpMgr.h"
@@ -197,7 +197,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     bool continueTurn = true;
     while (multiplayerSessionRole != 2 && ReturnTrueStub() == 0) {
       CString message;
-      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2745, 10);
+      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2745, 10);
       if (g_pViewMgr->ModalMessage(message, g_ptTurnTransitionModalMessage, 1, 1) == 0) {
         continueTurn = false;
         break;

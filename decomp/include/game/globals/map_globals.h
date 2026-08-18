@@ -2,6 +2,7 @@
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
+#include "game/civilian_domain_types.h"
 
 extern POINT g_ptMapModeModalMessage; // @ 0x6a45c0
 
@@ -51,10 +52,9 @@ extern char g_szFmtYear_00697248[];
 
 extern "C" {
 
-// Per-civilian-order-type map-improvement sprite class (0x697040), read by
-// TMapMgr::GetMapImprovementSpriteBaseOffset via TCivUnit::orderType; only indices 0-8 are
-// non-zero (values 0-8), true bound beyond that unconfirmed.
-extern short g_anMapImprovementSpriteClassByOrderType[9];
+// Per-civilian-unit-kind map-improvement sprite class (0x697040), read by
+// TMapMgr::GetMapImprovementSpriteBaseOffset via TCivUnit::orderType.
+extern short g_anMapImprovementSpriteClassByOrderType[kCivilianUnitKindCount];
 
 extern "C" const char s_szDoubleNewline_00699438[];
 
@@ -74,9 +74,9 @@ extern unsigned char g_abResourceTypeUsesHighNibbleFlag[24];
 extern char g_abResourceTypeCapabilityCategory[24];
 
 // TMapMgr.cpp — hex-area neighbor lookup tables.
-extern short g_Build_Hex_Area_LookupTable_00696E70[];
+extern short g_Build_Hex_Area_LookupTable_00696E70[6];
 
-extern short g_Build_Hex_Area_LookupTable_00696E80[];
+extern short g_Build_Hex_Area_LookupTable_00696E80[6];
 
 // TMapMgr.cpp — per-StrategicTerrainKind capability table at 0x00696f08, read by
 // MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA for both the origin tile and each

@@ -19,7 +19,7 @@
 #include "game/city_ui/TTradeSchoolView.h"
 #include "game/city_ui/TUniversityView.h"
 #include "game/core/global_data_tables.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_globals.h"
@@ -452,8 +452,8 @@ RuntimeActionResult CityBuildingScreen::VerifyArmoryState() const {
   TView* unitName = buildingView->ResolveControlByTag(kControlTagUnit);
   TView* firepower = buildingView->ResolveControlByTag(kControlTagSta0);
   CString expectedUnitName;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
-      &expectedUnitName, kUnitNameStringGroup, static_cast<short>(selectedUnitType + 1));
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&expectedUnitName, kUnitNameStringGroup,
+                                                      static_cast<short>(selectedUnitType + 1));
   TStaticText* nameLabel = unitName != 0 && unitName->IsKindOf(RUNTIME_CLASS(TStaticText)) != 0
                                ? static_cast<TStaticText*>(unitName)
                                : 0;

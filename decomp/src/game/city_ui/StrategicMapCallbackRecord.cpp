@@ -6,7 +6,7 @@
 #include "game/gfx/CDib.h"
 #include "game/gfx/quickdraw_regions.h"
 #include "game/diplomacy_ui/TDiplomacyMapView.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/pointer_representation.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/globals/global_types.h"
@@ -111,8 +111,7 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
     unsigned char transparentPixel) {
   destinationRowStride2c = destinationRowStride;
 
-  CDib* dib = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(
-      static_cast<unsigned short>(resourceId));
+  CDib* dib = g_pResourceMgr->LoadBmpResourceByIdCached(static_cast<unsigned short>(resourceId));
   unsigned char* row = static_cast<unsigned char*>(dib->m_dibBits);
   int sourceRowStride = (dib->m_pInfoHeader->bmiHeader.biWidth + 3) & 0xfffffffc;
   int generatedBaseOffset = 0;
@@ -189,7 +188,7 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
     remainingHeight = remainingHeight - 1;
   }
 
-  g_pModuleLibraryCacheState->ReleaseRecordById(static_cast<short>(resourceId));
+  g_pResourceMgr->ReleaseRecordById(static_cast<short>(resourceId));
   unsigned int opcodeIndex = static_cast<unsigned int>(opcodeAppendCursor10);
   opcodeAppendCursor10 = static_cast<int>(opcodeIndex) + 1;
   opcodeBytes00[opcodeIndex] = 0xc3;

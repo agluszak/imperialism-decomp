@@ -8,7 +8,7 @@
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_core/TStaticText.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -425,7 +425,7 @@ void SetGlobalBlitTransparentColorRaw(COLORREF transparentColor) {
 // FUNCTION: IMPERIALISM 0x004950f0
 void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex) {
   if (g_pQuickDrawMemoryDc != nullptr) {
-    CDibPal* palette = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();
+    CDibPal* palette = g_pResourceMgr->EnsureDefaultDibPalette();
     PALETTEENTRY entries[2];
     palette->GetPaletteEntries(static_cast<short>(paletteIndex), 1, entries);
     SetQuickDrawFillColor(RGB(entries[0].peRed, entries[0].peGreen, entries[0].peBlue));
@@ -443,7 +443,7 @@ void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex) {
 // FUNCTION: IMPERIALISM 0x004951e0
 void UpdatePaletteIndexWithDefaultFallback(QuickDrawPaletteIndex paletteIndex) {
   if (static_cast<short>(paletteIndex) == -1) {
-    CDibPal* palette = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();
+    CDibPal* palette = g_pResourceMgr->EnsureDefaultDibPalette();
     paletteIndex = palette->GetNearestPaletteIndex(RGB(0xff, 0xff, 0xff));
   }
   g_QuickDrawBackgroundColor = PALETTEINDEX(paletteIndex);
@@ -613,8 +613,7 @@ void __cdecl BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurface,
 
   if (dstSurface == g_defaultQuickDrawSurfaceSentinel.GetBlitSurface() || clipRegion != 0) {
     CDC* destinationDc = ResolveActiveQuickDrawDc();
-    g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(destinationDc,
-                                                                                  FALSE);
+    g_pResourceMgr->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(destinationDc, FALSE);
 
     if ((blitFlags & 0x24) == 0x24) {
       srcSurface->surfaceDib->StretchDibitsWithCopiedPaletteTable(

@@ -43,7 +43,7 @@ class TInfoBarText;
 #include "game/app/TAnimator.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/quickdraw_types.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/gfx/TBackdropWindow.h"
 #include "game/gfx/TTemplateDialogs.h"
 #include "game/ui_screens/TSetupRandomMapPicture.h"
@@ -1554,7 +1554,7 @@ HRGN g_hOpenRgnAccumulator = nullptr;
 // GLOBAL: IMPERIALISM 0x006a24d4
 char g_Sanitize_City_Counter_Value_006A24D4 = 0;
 // GLOBAL: IMPERIALISM 0x6a134c
-TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState = nullptr;
+TResourceMgr* g_pResourceMgr = nullptr;
 // GLOBAL: IMPERIALISM 0x00694150
 LPCSTR g_apFontFiles[] = {"data\\WeBeBd__.ttf", "data\\Antqua.ttf", "data\\Antqua.ttf",
                           "data\\AntquaB.ttf", nullptr};
@@ -2099,7 +2099,8 @@ short g_awUnitCombatClassBySlot[32] = {1, 2, 1, 1, 3, 2, 2, 1, 1, 2, 1, 1, 3, 2,
                                        1, 2, 1, 1, 3, 3, 2, 1, 1, 2, 3, 2, 2, 2, 0, 0};
 // Stack composition class lookup (byte table at 0x6953c0); indexed [minClass + maxClass*4].
 // GLOBAL: IMPERIALISM 0x006953c0
-unsigned char g_abStackCompositionClassTable[16] = {0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 3, 0, 0, 3, 4, 5};
+unsigned char g_abStackCompositionClassTable[4][4] = {
+    {0, 0, 0, 0}, {0, 1, 0, 0}, {0, 2, 3, 0}, {0, 3, 4, 5}};
 // Per-unit-type strength-weighting percent (short table at 0x6953e8, 30 unit types + 2
 // pad), read by TDefenseMinister::CreateEnemyPowerMap as
 // weightPercent * TMilitaryUnit::strength34 / 100.
@@ -2109,7 +2110,8 @@ short g_anUnitStrengthWeightPercentBySlot[32] = {
     100, 150, 225, 250, 225, 600, 0, 0, 0,  0,   0,   0,   0,   0,   0, 0};
 
 // Per-civilian-order-type map-improvement sprite class (short table at 0x697040).
-short g_anMapImprovementSpriteClassByOrderType[9] = {2, 3, 1, 6, 0, 7, 5, 4, 8};
+short g_anMapImprovementSpriteClassByOrderType[kCivilianUnitKindCount] = {2, 3, 1, 6, 0,
+                                                                          7, 5, 4, 8};
 
 // Per-fort-level attacker penalty percent; indexed by Province::fortLevel03.
 // GLOBAL: IMPERIALISM 0x00695568
@@ -2117,30 +2119,31 @@ int g_anFortLevelAttackerPenaltyPercentByLevel[4] = {100, 85, 75, 65};
 // Per-unit-type blink/boost eligibility flag (byte table at 0x64c808); indexed by
 // TUnit::orderType.
 // GLOBAL: IMPERIALISM 0x0064c808
-unsigned char g_abUnitTypeBlinkEligibilityFlag[30] = {1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1,
-                                                      1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0};
+unsigned char g_abUnitTypeBlinkEligibilityFlag[kMilitaryUnitKindCount] = {
+    1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0};
 
 // Four per-unit-type meter-scoring tables, indexed by TUnit::orderType.
 // GLOBAL: IMPERIALISM 0x0064c790
-int g_anWeightClassByOrderType[30] = {5,  5,  5,  5,  3,  3,  9,  11, 8,  8, 8, 8,  5, 5, 12,
-                                      14, 10, 10, 10, 10, 10, 12, 15, 17, 5, 8, 10, 0, 0, 0};
+int g_anWeightClassByOrderType[kMilitaryUnitKindCount] = {5,  5,  5,  5,  3,  3,  9,  11, 8,  8,
+                                                          8,  8,  5,  5,  12, 14, 10, 10, 10, 10,
+                                                          10, 12, 15, 17, 5,  8,  10, 0,  0,  0};
 // GLOBAL: IMPERIALISM 0x0064c660
-short g_anScaledFactorByOrderType[30] = {40,  60, 40,  40, 110, 90, 50, 30, 40, 60,
-                                         40,  40, 110, 90, 60,  30, 50, 70, 50, 40,
-                                         110, 90, 80,  30, 40,  40, 50, 90, 90, 90};
+short g_anScaledFactorByOrderType[kMilitaryUnitKindCount] = {
+    40, 60, 40, 40, 110, 90,  50, 30, 40, 60, 40, 40, 110, 90, 60,
+    30, 50, 70, 50, 40,  110, 90, 80, 30, 40, 40, 50, 90,  90, 90};
 // GLOBAL: IMPERIALISM 0x0064c6a0
-float g_afPercentEfficiencyByOrderType[30] = {
+float g_afPercentEfficiencyByOrderType[kMilitaryUnitKindCount] = {
     50.0f,  50.0f,  100.0f, 125.0f, 75.0f,  150.0f, 100.0f, 160.0f, 75.0f,  100.0f,
     150.0f, 175.0f, 100.0f, 200.0f, 175.0f, 300.0f, 100.0f, 150.0f, 225.0f, 250.0f,
     225.0f, 450.0f, 250.0f, 500.0f, 0.0f,   0.0f,   0.0f,   0.0f,   0.0f,   0.0f};
 // GLOBAL: IMPERIALISM 0x0064c718
-float g_afRandomizedMeterDecayByOrderType[30] = {
+float g_afRandomizedMeterDecayByOrderType[kMilitaryUnitKindCount] = {
     0.0025f, 0.0015f, 0.0020f, 0.0020f, 0.0015f, 0.0020f, 0.0040f, 0.0050f, 0.0025f, 0.0015f,
     0.0015f, 0.0015f, 0.0015f, 0.0020f, 0.0030f, 0.0035f, 0.0010f, 0.0005f, 0.0005f, 0.0005f,
     0.0010f, 0.0005f, 0.0005f, 0.0005f, 0.0030f, 0.0025f, 0.0010f, 0.0020f, 0.0015f, 0.0005f};
 // GLOBAL: IMPERIALISM 0x00695578
-int g_anCountWeightByOrderType[30] = {0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 2,
-                                      2, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 0, 0, 0};
+int g_anCountWeightByOrderType[kMilitaryUnitKindCount] = {
+    0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 0, 0, 0};
 
 // Per-resourceType requirement table (4 columns per resourceType, 0-23). Read by
 // TMapMgr::FindResourceCapabilityRequirementLevel (0x513610).

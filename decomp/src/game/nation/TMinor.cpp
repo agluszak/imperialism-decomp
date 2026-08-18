@@ -55,9 +55,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     tradeOffersByResource[i] = 0;
     grantAmountsByResource[i] = 0;
     needCurrentByType[i] = 0;
-    diplomacySaveExt13c[i] = 0;
-    recurringGrantByResource[i] = 0;
-    memset(&statusRows[i], 0, sizeof(TMinorRuntimeStatusEntry));
+    independentResourceCountByType[i] = 0;
+    foreignControlledResourceYieldByType[i] = 0;
+    memset(&foreignControlledResourceYieldByTypeAndMajorNation[i], 0,
+           sizeof(TMinorForeignResourceYieldByMajorNation));
   }
 
   // Recount the need tables from the map: every non-depleted resource edge on a tile
@@ -73,7 +74,7 @@ void TMinor::IMinor(NationSlot nationSlot) {
             g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[edge]);
         if (g_pGlobalMapState->terrainStateTable[tileIndex].gateFlag != 0xf && resourceType != -1) {
           ++needCurrentByType[resourceType];
-          ++diplomacySaveExt13c[resourceType];
+          ++independentResourceCountByType[resourceType];
         }
         ++edge;
       }
@@ -351,8 +352,8 @@ void TMinor::ReadFrom(TStream* stream) {
   stream->ReadBytes(diplomacySaveFields134, 8);
   SwapShortArrayBytes(diplomacySaveFields134, 4);
   if (g_nSaveFormatVersion >= 0x3a) {
-    stream->ReadBytes(diplomacySaveExt13c, 0x2e);
-    SwapShortArrayBytes(diplomacySaveExt13c, 0x17);
+    stream->ReadBytes(independentResourceCountByType, 0x2e);
+    SwapShortArrayBytes(independentResourceCountByType, 0x17);
   }
 }
 
@@ -374,7 +375,7 @@ void TMinor::WriteTo(TStream* stream) {
   stream->WriteBytes(&this->diplomacyPolicyGate130, 2);
   stream->WriteBytes(&this->diplomacyPolicyGate132, 2);
   WriteShortArrayElems(stream, diplomacySaveFields134, 4);
-  WriteShortArrayElems(stream, diplomacySaveExt13c, 0x17);
+  WriteShortArrayElems(stream, independentResourceCountByType, 0x17);
 }
 
 // True when `policyCode` matches one of the four saved diplomacy nation slots.
@@ -417,16 +418,17 @@ void TMinor::InitializeTradeStatus(void) {
   for (i = 0; i < kResourceKindCount; ++i) {
     tradeOffersByResource[i] = 0;
     grantAmountsByResource[i] = 0;
-    diplomacySaveExt13c[i] = 0;
-    recurringGrantByResource[i] = 0;
+    independentResourceCountByType[i] = 0;
+    foreignControlledResourceYieldByType[i] = 0;
     needCurrentByType[i] = 0;
-    memset(&statusRows[i], 0, sizeof(TMinorRuntimeStatusEntry));
+    memset(&foreignControlledResourceYieldByTypeAndMajorNation[i], 0,
+           sizeof(TMinorForeignResourceYieldByMajorNation));
   }
   needCurrentByType[7] = 2;
 
   // Recount from the map: every resource edge on a tile this nation owns feeds the
-  // need counters; when a great power also holds the tile (secondaryOwnerNationTag18)
-  // the capability-requirement level accrues as recurring grants and per-power rows.
+  // need counters; when a great power also holds the tile (secondaryOwnerNationTag18),
+  // the capability-requirement level accrues to that resource and controlling power.
   int tileIndex;
   for (tileIndex = 0; static_cast<short>(tileIndex) < 0x1950; ++tileIndex) {
     if (g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04 == this->nationSlot) {
@@ -441,7 +443,7 @@ void TMinor::InitializeTradeStatus(void) {
           if (g_pGlobalMapState->terrainStateTable[tileIndex].gateFlag != 0xf &&
               resourceType != -1) {
             ++needCurrentByType[static_cast<int>(resourceType)];
-            ++diplomacySaveExt13c[static_cast<int>(resourceType)];
+            ++independentResourceCountByType[static_cast<int>(resourceType)];
           }
           ++edge;
         }
@@ -455,8 +457,9 @@ void TMinor::InitializeTradeStatus(void) {
             short yieldLevel =
                 static_cast<char>(g_pGlobalMapState->FindResourceCapabilityRequirementLevelByType(
                     static_cast<short>(tileIndex), resourceType));
-            recurringGrantByResource[static_cast<int>(resourceType)] += yieldLevel;
-            statusRows[static_cast<int>(resourceType)].fields[tileGreatPower] += yieldLevel;
+            foreignControlledResourceYieldByType[static_cast<int>(resourceType)] += yieldLevel;
+            foreignControlledResourceYieldByTypeAndMajorNation[static_cast<int>(resourceType)]
+                .amountByMajorNation[tileGreatPower] += yieldLevel;
             needCurrentByType[static_cast<int>(resourceType)] += yieldLevel;
           }
           ++edge;
@@ -465,27 +468,31 @@ void TMinor::InitializeTradeStatus(void) {
     }
   }
 
-  // Convert the last two status rows into aid pressure on each great power, scaled by
-  // the standing-score matrix and normalized by 255.
+  // Convert the gold and gems controlled by each great power into aid pressure, scaled
+  // by the standing-score matrix and normalized by 255.
   int powerCount;
   int power = 0;
   for (powerCount = 7; powerCount != 0; --powerCount) {
     if (g_apTerrainTypeDescriptorTable[power] != 0) {
-      short pressure16 = statusRows[0x16].fields[power];
-      if (pressure16 != 0) {
+      short goldYieldControlledByPower =
+          foreignControlledResourceYieldByTypeAndMajorNation[kResourceGold]
+              .amountByMajorNation[power];
+      if (goldYieldControlledByPower != 0) {
         g_apNationStates[power]->AddAmountToAidAllocationMatrixCellAndTotal(
             g_pDiplomacyTurnStateManager
                     ->relationStandingScores[this->nationSlot * kNationSlotCount + power] *
-                pressure16 * 200 / 255,
-            0x16, this->nationSlot);
+                goldYieldControlledByPower * 200 / 255,
+            kResourceGold, this->nationSlot);
       }
-      short pressure15 = statusRows[0x15].fields[power];
-      if (pressure15 != 0) {
+      short gemYieldControlledByPower =
+          foreignControlledResourceYieldByTypeAndMajorNation[kResourceGems]
+              .amountByMajorNation[power];
+      if (gemYieldControlledByPower != 0) {
         g_apNationStates[power]->AddAmountToAidAllocationMatrixCellAndTotal(
             g_pDiplomacyTurnStateManager
                     ->relationStandingScores[this->nationSlot * kNationSlotCount + power] *
-                pressure15 * 500 / 255,
-            0x15, this->nationSlot);
+                gemYieldControlledByPower * 500 / 255,
+            kResourceGems, this->nationSlot);
       }
     }
     ++power;
@@ -511,12 +518,13 @@ void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
   } else {
     this->grantAmountsByResource[resourceSlot] =
         static_cast<short>(this->grantAmountsByResource[resourceSlot] + deltaShort);
-    if (this->recurringGrantByResource[resourceSlot] != 0) {
+    if (this->foreignControlledResourceYieldByType[resourceSlot] != 0) {
       for (int majorNationSlot = 0; majorNationSlot < 7; ++majorNationSlot) {
         if (g_apTerrainTypeDescriptorTable[majorNationSlot] == 0) {
           continue;
         }
-        short linkValue = this->statusRows[resourceSlot].fields[majorNationSlot];
+        short linkValue = this->foreignControlledResourceYieldByTypeAndMajorNation[resourceSlot]
+                              .amountByMajorNation[majorNationSlot];
         if (linkValue == 0) {
           continue;
         }
@@ -580,32 +588,32 @@ void TMinor::SetTradeBids(void) {
     proposalWeight = g_pTradeMgr->GetPrice(3);
     if (this->diplomacyRandomThreshold126 < proposalWeight) {
       this->tradeOffersByResource[3] = this->needCurrentByType[3];
-    } else if (this->recurringGrantByResource[3] != 0) {
-      this->tradeOffersByResource[3] = this->recurringGrantByResource[3];
+    } else if (this->foreignControlledResourceYieldByType[3] != 0) {
+      this->tradeOffersByResource[3] = this->foreignControlledResourceYieldByType[3];
     }
 
     proposalWeight = g_pTradeMgr->GetPrice(4);
     if (this->diplomacyRandomThreshold128 < proposalWeight) {
       this->tradeOffersByResource[4] = this->needCurrentByType[4];
-    } else if (this->recurringGrantByResource[4] != 0) {
-      this->tradeOffersByResource[4] = this->recurringGrantByResource[4];
+    } else if (this->foreignControlledResourceYieldByType[4] != 0) {
+      this->tradeOffersByResource[4] = this->foreignControlledResourceYieldByType[4];
     }
 
     proposalWeight = g_pTradeMgr->GetPrice(6);
     if (this->diplomacyRandomThreshold12a < proposalWeight) {
       this->tradeOffersByResource[6] = this->needCurrentByType[6];
-    } else if (this->recurringGrantByResource[6] != 0) {
-      this->tradeOffersByResource[6] = this->recurringGrantByResource[6];
+    } else if (this->foreignControlledResourceYieldByType[6] != 0) {
+      this->tradeOffersByResource[6] = this->foreignControlledResourceYieldByType[6];
     }
 
     if (this->tradeOffersByResource[0] == 0) {
-      this->tradeOffersByResource[0] = this->recurringGrantByResource[0];
+      this->tradeOffersByResource[0] = this->foreignControlledResourceYieldByType[0];
     }
     if (this->tradeOffersByResource[1] == 0) {
-      this->tradeOffersByResource[1] = this->recurringGrantByResource[1];
+      this->tradeOffersByResource[1] = this->foreignControlledResourceYieldByType[1];
     }
     if (this->tradeOffersByResource[2] == 0) {
-      this->tradeOffersByResource[2] = this->recurringGrantByResource[2];
+      this->tradeOffersByResource[2] = this->foreignControlledResourceYieldByType[2];
     }
   }
 

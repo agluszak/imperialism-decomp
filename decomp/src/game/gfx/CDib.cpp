@@ -1,7 +1,7 @@
 #include "game/gfx/CDib.h"
 #include "game/gfx/CDibPal.h"
 
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
@@ -1505,7 +1505,7 @@ void BlitBitmapResourceToTemporaryCompatibleDcAndPresent(CDC* destDc, CDib* sour
                                                          short width, short height) {
   CDib* surface = new CDib(width, height, sourceDib->m_pInfoHeader->bmiHeader.biBitCount);
   surface->EnsureDibSectionCreated(destDc);
-  surface->CopyRgbQuadTableFrom(g_pModuleLibraryCacheState->ResolveDefaultLogPalette());
+  surface->CopyRgbQuadTableFrom(g_pResourceMgr->ResolveDefaultLogPalette());
 
   HDC tempDc = ::CreateCompatibleDC(destDc != NULL ? destDc->m_hDC : NULL);
   HGDIOBJ oldBitmap = ::SelectObject(tempDc, surface->m_hBitmap);

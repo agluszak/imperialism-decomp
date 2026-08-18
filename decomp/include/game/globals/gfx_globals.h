@@ -16,7 +16,7 @@ struct GlobalViewportRectDefaultsRecord {
 
 extern "C" TBackdropWindow* g_pActiveBackdropWindow;
 extern "C" TAmbitApplication* g_pAmbitApplication;
-extern "C" TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
+extern "C" TResourceMgr* g_pResourceMgr;
 
 // Heap-owned MFC wait cursor kept alive while the startup backdrop is visible.
 extern "C" CWaitCursor* g_pBackdropWaitCursor;

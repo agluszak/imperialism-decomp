@@ -4,7 +4,7 @@
 
 #include "game/app/CAmbitDocument.h"
 #include "game/ImperialismApp.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/assets/TMovieView.h"
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
@@ -164,7 +164,7 @@ void TAssetMgr::EnsurePictWvDataGobLoadedBySlot(int languageTag) {
   CString path;
   path.Format(s_PictWvGobPathFormat_00698BF4, languageTag);
 
-  if (g_pModuleLibraryCacheState->LoadModuleLibrarySlotWithErrorDialog(path, 2)) {
+  if (g_pResourceMgr->LoadModuleLibrarySlotWithErrorDialog(path, 2)) {
     return;
   }
 

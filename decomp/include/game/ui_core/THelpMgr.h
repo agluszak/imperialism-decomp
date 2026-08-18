@@ -95,9 +95,8 @@ public:
   // to rebuild the action menu for the selected nation/tile context. 0x503ac0.
   void EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextIndex);
 
-  // 2-byte packed (like TControl's Mac-heritage records): the field suffixes are the real
-  // offsets only under pack(2) — field1a is an int AT 0x1a, and helpIndexReady sits at
-  // 0x2e (ctor 0x5005f3 writes word [this+0x2e]; read at 0x5bfae6 as the help detail level).
+  // 2-byte packed like the other Mac-heritage records. helpIndexReady sits at +0x2e
+  // (ctor 0x5005f3; read at 0x5bfae6 as the help detail level).
   TPtrList* indexList;
   TWindow* pendingDialogView8;
   TWindow* pendingDialogViewC;
@@ -107,12 +106,15 @@ public:
   THelpCompletionCounterPair civilianCompletionCounters10;
   THelpCompletionCounterPair civilianCompletionCounters14;
   short civilianCompletionCounter18;
-  int field1a;
-  int field1e;
-  int field22;
-  int field26;
-  short field2a;
-  short field2c;
+  // Retail initializes +0x1a..+0x2c to zero in the ctor and has no other access to this
+  // region. The final write is one byte at +0x2c; +0x2d is natural alignment, not part of
+  // that field.
+  int unusedInitializedState1A;
+  int unusedInitializedState1E;
+  int unusedInitializedState22;
+  int unusedInitializedState26;
+  short unusedInitializedState2A;
+  unsigned char unusedInitializedState2C;
   // Help/advisor detail level for info texts: 0 minimal, 1 concise verdict, >= 2 detailed
   // numbers ("indexReady" name is historic; hedged).
   short helpIndexReady;
