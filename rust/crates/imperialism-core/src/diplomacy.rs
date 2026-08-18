@@ -704,7 +704,6 @@ impl GameState {
         &mut self,
         rejection: PlayerDiplomacyRejection,
     ) -> PlayerDiplomacyOrderResult {
-        self.diplomacy.proposal_rejection = Some(rejection);
         PlayerDiplomacyOrderResult::Rejected(rejection)
     }
 
