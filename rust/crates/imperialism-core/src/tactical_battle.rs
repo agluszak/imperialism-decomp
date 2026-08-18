@@ -28,12 +28,17 @@ enum MineRun {
 enum DeployMark {
     Clear,
     UnitCover,
-    FortWall(i32),
+    FortWallLevelOne,
+    FortWallLevelTwo,
+    FortWallLevelThree,
 }
 
 impl DeployMark {
     const fn is_fort_wall(self) -> bool {
-        matches!(self, Self::FortWall(_))
+        matches!(
+            self,
+            Self::FortWallLevelOne | Self::FortWallLevelTwo | Self::FortWallLevelThree
+        )
     }
 
     const fn is_present(self) -> bool {
@@ -316,7 +321,12 @@ impl Battle {
         if self.fort_level != 0 {
             let mut tile = self.column_count - 6;
             while tile < TACTICAL_TILE_COUNT as i32 {
-                self.tiles[tile as usize].deploy_mark = DeployMark::FortWall(self.fort_level);
+                self.tiles[tile as usize].deploy_mark = match self.fort_level {
+                    2 => DeployMark::FortWallLevelOne,
+                    3 => DeployMark::FortWallLevelTwo,
+                    4 => DeployMark::FortWallLevelThree,
+                    level => panic!("unsupported tactical fort wall level {level}"),
+                };
                 tile += TACTICAL_STRIDE;
             }
             let points = FORT_STRENGTH_BY_LEVEL[self.fort_level.clamp(0, 5) as usize];
@@ -706,10 +716,9 @@ fn cover_damage(category: ArmyUnitCategory, mark: DeployMark) -> f32 {
     match mark {
         DeployMark::Clear => COVER_DAMAGE[category][0],
         DeployMark::UnitCover => COVER_DAMAGE[category][1],
-        DeployMark::FortWall(2) => COVER_DAMAGE[category][2],
-        DeployMark::FortWall(3) => COVER_DAMAGE[category][3],
-        DeployMark::FortWall(4) => COVER_DAMAGE[category][4],
-        DeployMark::FortWall(level) => panic!("unsupported tactical fort wall level {level}"),
+        DeployMark::FortWallLevelOne => COVER_DAMAGE[category][2],
+        DeployMark::FortWallLevelTwo => COVER_DAMAGE[category][3],
+        DeployMark::FortWallLevelThree => COVER_DAMAGE[category][4],
     }
 }
 
