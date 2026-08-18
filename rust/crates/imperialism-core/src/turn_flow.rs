@@ -621,8 +621,9 @@ mod tests {
     use crate::test_support::game_state;
     use crate::{
         AutoGreatPowerState, BattleReport, BattleReportKind, BattleReportLocation,
-        BattleReportSide, DiplomacyPolicy, DiplomaticRelationship, MajorNationId, NationId,
-        ProvinceId, ResourceKind, ShipType, TileId, TileOwnerTag, TradeProgress,
+        BattleReportSide, BattleReportSideSlot, BattleReportSideTable, DiplomacyPolicy,
+        DiplomaticRelationship, MajorNationId, NationId, ProvinceId, ResourceKind, ShipType,
+        TileId, TileOwnerTag, TradeProgress,
     };
 
     fn seed_town_tiles(state: &mut crate::GameState) {
@@ -892,11 +893,11 @@ mod tests {
         let mut state = game_state();
         seed_town_tiles(&mut state);
         state.append_battle_report(BattleReport {
-            participant_index: 0,
-            displayed_participant: 0,
+            participant: BattleReportSideSlot::Left,
+            displayed_participant: BattleReportSideSlot::Left,
             kind: BattleReportKind::LandBattle,
             location: BattleReportLocation::Province(ProvinceId::new(0)),
-            sides: [
+            sides: BattleReportSideTable::from_array([
                 BattleReportSide {
                     nation: NationId::new(0),
                     name: String::new(),
@@ -909,7 +910,7 @@ mod tests {
                     overlay: String::new(),
                     children: Vec::new(),
                 },
-            ],
+            ]),
         });
         state.turn.phase = crate::PhaseCode::DIPLOMACY_OFFER;
         assert_eq!(state.advance_turn(&[]), crate::TurnStop::PostCombatReports);
@@ -1025,11 +1026,11 @@ mod tests {
         let mut state = game_state();
         assert!(!state.battle_reports_pending());
         state.append_battle_report(BattleReport {
-            participant_index: 0,
-            displayed_participant: 0,
+            participant: BattleReportSideSlot::Left,
+            displayed_participant: BattleReportSideSlot::Left,
             kind: BattleReportKind::LandBattle,
             location: BattleReportLocation::Province(ProvinceId::new(0)),
-            sides: [
+            sides: BattleReportSideTable::from_array([
                 BattleReportSide {
                     nation: NationId::new(0),
                     name: String::new(),
@@ -1042,7 +1043,7 @@ mod tests {
                     overlay: String::new(),
                     children: Vec::new(),
                 },
-            ],
+            ]),
         });
         assert!(state.battle_reports_pending());
     }

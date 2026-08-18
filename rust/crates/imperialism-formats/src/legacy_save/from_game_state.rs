@@ -1219,31 +1219,32 @@ fn army_reports_from_state(state: &GameState) -> Vec<LegacyBattleReport> {
         .battle_reports()
         .iter()
         .map(|report| LegacyBattleReport {
-            participant_index: report.participant_index,
-            displayed_participant: report.displayed_participant,
+            participant_index: report.participant.retail(),
+            displayed_participant: report.displayed_participant.retail(),
             kind: report.kind.retail(),
             node_id: match report.location {
                 BattleReportLocation::Province(province) => province.get() as i16,
                 BattleReportLocation::Zone(zone) => zone.get() as i16,
             },
-            sides: std::array::from_fn(|side| {
-                let side = &report.sides[side];
-                LegacyBattleReportSide {
-                    nation: side.nation.get(),
-                    name: side.name.clone(),
-                    overlay: side.overlay.clone(),
-                    children: side
-                        .children
-                        .iter()
-                        .map(|child| LegacyBattleReportChild {
-                            resource_type: child.resource_type,
-                            stock_or_required: child.stock_or_required,
-                            name: child.name.clone(),
-                            strength_bucket: child.strength_bucket,
-                            detail_identity: child.detail_identity,
-                        })
-                        .collect(),
-                }
+            sides: [
+                &report.sides[BattleReportSideSlot::Left],
+                &report.sides[BattleReportSideSlot::Right],
+            ]
+            .map(|side| LegacyBattleReportSide {
+                nation: side.nation.get(),
+                name: side.name.clone(),
+                overlay: side.overlay.clone(),
+                children: side
+                    .children
+                    .iter()
+                    .map(|child| LegacyBattleReportChild {
+                        resource_type: child.resource_type,
+                        stock_or_required: child.stock_or_required,
+                        name: child.name.clone(),
+                        strength_bucket: child.strength_bucket,
+                        detail_identity: child.detail_identity,
+                    })
+                    .collect(),
             }),
         })
         .collect()

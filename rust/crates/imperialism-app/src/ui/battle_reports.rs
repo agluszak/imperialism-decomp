@@ -116,17 +116,21 @@ fn project_battle_report(
     };
     for (field, mut text) in &mut fields {
         text.0 = match field {
-            BattleReportField::Result => report.sides[0].overlay.clone(),
+            BattleReportField::Result => report.sides[BattleReportSideSlot::Left].overlay.clone(),
             BattleReportField::Location => location.clone(),
-            BattleReportField::FriendlyAdmiral => report.sides[0].name.clone(),
-            BattleReportField::EnemyAdmiral => report.sides[1].name.clone(),
-            BattleReportField::FriendlyShips => report.sides[0]
+            BattleReportField::FriendlyAdmiral => {
+                report.sides[BattleReportSideSlot::Left].name.clone()
+            }
+            BattleReportField::EnemyAdmiral => {
+                report.sides[BattleReportSideSlot::Right].name.clone()
+            }
+            BattleReportField::FriendlyShips => report.sides[BattleReportSideSlot::Left]
                 .children
                 .iter()
                 .map(|row| row.name.as_str())
                 .collect::<Vec<_>>()
                 .join("\n"),
-            BattleReportField::EnemyShips => report.sides[1]
+            BattleReportField::EnemyShips => report.sides[BattleReportSideSlot::Right]
                 .children
                 .iter()
                 .map(|row| row.name.as_str())
@@ -221,10 +225,10 @@ fn project_detail(
     let left = tree.find(root, fourcc!("natL"));
     let right = tree.find(root, fourcc!("natR"));
     if let Ok(mut text) = texts.get_mut(left) {
-        text.0 = report.sides[0].name.clone();
+        text.0 = report.sides[BattleReportSideSlot::Left].name.clone();
     }
     if let Ok(mut text) = texts.get_mut(right) {
-        text.0 = report.sides[1].name.clone();
+        text.0 = report.sides[BattleReportSideSlot::Right].name.clone();
     }
 }
 

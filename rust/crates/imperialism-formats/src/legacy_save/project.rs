@@ -1536,13 +1536,15 @@ fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
             } else {
                 BattleReportLocation::Zone(OceanZoneId::new(report.node_id as u16))
             };
+            let [left, right] = &report.sides;
             Some(BattleReport {
-                participant_index: report.participant_index,
-                displayed_participant: report.displayed_participant,
+                participant: BattleReportSideSlot::from_retail(report.participant_index)?,
+                displayed_participant: BattleReportSideSlot::from_retail(
+                    report.displayed_participant,
+                )?,
                 kind,
                 location,
-                sides: std::array::from_fn(|side| {
-                    let side = &report.sides[side];
+                sides: BattleReportSideTable::from_array([left, right].map(|side| {
                     BattleReportSide {
                         nation: NationId::try_new(side.nation).unwrap_or(NationId::new(0)),
                         name: side.name.clone(),
@@ -1559,7 +1561,7 @@ fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
                             })
                             .collect(),
                     }
-                }),
+                })),
             })
         })
         .collect()

@@ -69,7 +69,7 @@ pub use army_orders::{
 };
 pub use battle_report::{
     BATTLE_REPORT_ARMY_IDENTITY, BattleReport, BattleReportKind, BattleReportLocation,
-    BattleReportSide, BattleReportUnit,
+    BattleReportSide, BattleReportSideSlot, BattleReportSideTable, BattleReportUnit,
 };
 pub use calendar::TurnCalendar;
 pub use city::{

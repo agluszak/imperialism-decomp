@@ -1,6 +1,7 @@
 //! Retail `MapContextActionRecord` / `BattleRecord` (`TArmyMgr.cpp` 0x004a13c0).
 
 use crate::*;
+use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Serialize};
 
 /// `MapContextReportKind` (`map_order_battle_snapshot.h`).
@@ -67,14 +68,39 @@ pub struct BattleReportSide {
     pub children: Vec<BattleReportUnit>,
 }
 
+/// Fixed left/right participant slot in a retail battle report.
+#[derive(Clone, Copy, Debug, Deserialize, Enum, Eq, PartialEq, Serialize)]
+#[repr(u8)]
+#[serde(rename_all = "snake_case")]
+pub enum BattleReportSideSlot {
+    Left,
+    Right,
+}
+
+impl BattleReportSideSlot {
+    pub const fn retail(self) -> u8 {
+        self as u8
+    }
+
+    pub const fn from_retail(value: u8) -> Option<Self> {
+        match value {
+            0 => Some(Self::Left),
+            1 => Some(Self::Right),
+            _ => None,
+        }
+    }
+}
+
+pub type BattleReportSideTable<T> = EnumMap<BattleReportSideSlot, T>;
+
 /// Authoritative combat/naval report.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct BattleReport {
-    pub participant_index: u8,
-    pub displayed_participant: u8,
+    pub participant: BattleReportSideSlot,
+    pub displayed_participant: BattleReportSideSlot,
     pub kind: BattleReportKind,
     pub location: BattleReportLocation,
-    pub sides: [BattleReportSide; 2],
+    pub sides: BattleReportSideTable<BattleReportSide>,
 }
 
 /// `'army'` (`IMPERIALISM_FOURCC('a','r','m','y')`) written to land detail rows.
@@ -108,11 +134,15 @@ impl GameState {
         let attacker_side = self.land_report_side(attacker, attacker_units);
         let defender_side = self.land_report_side(defender, defender_units);
         self.append_battle_report(BattleReport {
-            participant_index: u8::from(!attacker_won),
-            displayed_participant: 0,
+            participant: if attacker_won {
+                BattleReportSideSlot::Left
+            } else {
+                BattleReportSideSlot::Right
+            },
+            displayed_participant: BattleReportSideSlot::Left,
             kind,
             location: BattleReportLocation::Province(province),
-            sides: [attacker_side, defender_side],
+            sides: BattleReportSideTable::from_array([attacker_side, defender_side]),
         });
     }
 
@@ -193,13 +223,23 @@ mod tests {
         assert!(state.battle_reports_pending());
         let report = &state.battle_reports[0];
         assert_eq!(report.kind, BattleReportKind::LandBattle);
-        assert_eq!(report.participant_index, 0);
-        assert_eq!(report.sides[0].children[0].name, "1st Regulars");
-        assert_eq!(report.sides[0].children[0].strength_bucket, 1);
+        assert_eq!(report.participant, BattleReportSideSlot::Left);
         assert_eq!(
-            report.sides[0].children[0].detail_identity,
+            report.sides[BattleReportSideSlot::Left].children[0].name,
+            "1st Regulars"
+        );
+        assert_eq!(
+            report.sides[BattleReportSideSlot::Left].children[0].strength_bucket,
+            1
+        );
+        assert_eq!(
+            report.sides[BattleReportSideSlot::Left].children[0].detail_identity,
             BATTLE_REPORT_ARMY_IDENTITY
         );
-        assert!(report.sides[1].children.is_empty());
+        assert!(
+            report.sides[BattleReportSideSlot::Right]
+                .children
+                .is_empty()
+        );
     }
 }
