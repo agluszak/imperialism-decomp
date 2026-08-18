@@ -532,16 +532,14 @@ impl MilitaryUnitKind {
         self.stats().class_costs()
     }
 
-    pub(crate) fn tactical_attribute(self, index: usize) -> i16 {
+    pub(crate) fn tactical_attribute(self, class: TacticalCombatClass) -> i16 {
         let stats = self.stats().attributes();
-        match index {
-            0 => stats.infantry,
-            1 => stats.cavalry,
-            2 => stats.artillery,
-            3 => stats.armor,
-            4 => stats.support,
-            5 => stats.dampen,
-            _ => 0,
+        match class {
+            TacticalCombatClass::Infantry => stats.infantry,
+            TacticalCombatClass::Cavalry => stats.cavalry,
+            TacticalCombatClass::Artillery => stats.artillery,
+            TacticalCombatClass::Armor => stats.armor,
+            TacticalCombatClass::Support => stats.support,
         }
     }
 }
@@ -556,6 +554,22 @@ pub(crate) struct ActionClassScores {
 }
 
 impl ActionClassScores {
+    pub(crate) fn add_assign(&mut self, other: Self) {
+        self.infantry += other.infantry;
+        self.cavalry += other.cavalry;
+        self.artillery += other.artillery;
+        self.armor += other.armor;
+        self.support += other.support;
+    }
+
+    pub(crate) fn subtract_assign(&mut self, other: Self) {
+        self.infantry -= other.infantry;
+        self.cavalry -= other.cavalry;
+        self.artillery -= other.artillery;
+        self.armor -= other.armor;
+        self.support -= other.support;
+    }
+
     pub(crate) fn components(self) -> [f32; 5] {
         [
             self.infantry,

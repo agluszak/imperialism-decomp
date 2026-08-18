@@ -77,7 +77,7 @@ struct TacUnit {
     flag3c: bool,
     side: BattleSide,
     field24: i16,
-    projection: [f32; 5],
+    projection: ActionClassScores,
 }
 
 struct Side {
@@ -87,7 +87,7 @@ struct Side {
     cursor: i32,
     units: Vec<usize>,
     secondary: Vec<usize>,
-    projection_sums: [f32; 5],
+    projection_sums: ActionClassScores,
     max_range: i16,
     max_non_artillery_range: i16,
     field20: bool,
@@ -160,7 +160,7 @@ impl Battle {
             cursor: 0,
             units: Vec::new(),
             secondary: Vec::new(),
-            projection_sums: [0.0; 5],
+            projection_sums: ActionClassScores::default(),
             max_range: 0,
             max_non_artillery_range: 0,
             field20: false,
@@ -271,7 +271,7 @@ impl Battle {
                 && combat_category(unit.unit_type) == TacticalCombatClass::Infantry,
             side,
             field24: 0,
-            projection: [0.0; 5],
+            projection: ActionClassScores::default(),
         };
         record.action_points = record.base_action_points();
         let idx = self.units.len();
@@ -720,16 +720,6 @@ fn composition_row(row: usize) -> ActionClassWeights {
     }
 }
 
-fn scores_from(vector: [f32; 5]) -> ActionClassScores {
-    ActionClassScores {
-        infantry: vector[0],
-        cavalry: vector[1],
-        artillery: vector[2],
-        armor: vector[3],
-        support: vector[4],
-    }
-}
-
 fn compare_deploy_priority(a: &TacUnit, b: &TacUnit) -> i16 {
     const PRIORITY: TacticalCombatClassTable<i16> =
         TacticalCombatClassTable::from_array([1, 0, 2, 0, 0]);
@@ -909,32 +899,26 @@ impl Battle {
             self.sides[side].units.push(kept);
             remaining -= 1;
         }
-        let mut kept_sum = [0.0f32; 5];
+        let mut kept_sum = ActionClassScores::default();
         for _ in 0..remaining {
             let mut best_ordinal = 0;
             let mut best_score = 0.0f32;
             for candidate_ordinal in 1..secondary.len() {
                 let candidate = secondary[candidate_ordinal - 1];
-                for component in 0..5 {
-                    kept_sum[component] += self.units[candidate].projection[component];
-                }
-                let score = scores_from(kept_sum).similarity(composition_row(profile_row));
+                kept_sum.add_assign(self.units[candidate].projection);
+                let score = kept_sum.similarity(composition_row(profile_row));
                 if score > best_score {
                     best_score = score;
                     best_ordinal = candidate_ordinal as i32;
                 }
-                for component in 0..5 {
-                    kept_sum[component] -= self.units[candidate].projection[component];
-                }
+                kept_sum.subtract_assign(self.units[candidate].projection);
             }
             if best_ordinal == 0 || best_ordinal as usize > secondary.len() {
                 continue;
             }
             let kept = secondary.remove((best_ordinal - 1) as usize);
             self.sides[side].units.push(kept);
-            for component in 0..5 {
-                kept_sum[component] += self.units[kept].projection[component];
-            }
+            kept_sum.add_assign(self.units[kept].projection);
         }
         self.sides[side].secondary = secondary;
         for &pruned in &self.sides[side].secondary {
@@ -951,19 +935,21 @@ impl Battle {
         let strength_term = self.units[idx].strength as f32 * 0.002;
         let scale = strength_term * quality_factor as f32;
         let kind = source.unit_type;
-        self.units[idx].projection = [
-            f32::from(kind.tactical_attribute(0)) * scale * strength_term,
-            f32::from(kind.tactical_attribute(1)) * scale,
-            f32::from(kind.tactical_attribute(2)) * scale,
-            f32::from(kind.tactical_attribute(3)) * scale,
-            f32::from(kind.tactical_attribute(4)) * scale,
-        ];
+        self.units[idx].projection = ActionClassScores {
+            infantry: f32::from(kind.tactical_attribute(TacticalCombatClass::Infantry))
+                * scale
+                * strength_term,
+            cavalry: f32::from(kind.tactical_attribute(TacticalCombatClass::Cavalry)) * scale,
+            artillery: f32::from(kind.tactical_attribute(TacticalCombatClass::Artillery)) * scale,
+            armor: f32::from(kind.tactical_attribute(TacticalCombatClass::Armor)) * scale,
+            support: f32::from(kind.tactical_attribute(TacticalCombatClass::Support)) * scale,
+        };
     }
 
     fn accumulate_metrics(&mut self, state: &GameState, side: BattleSide) {
         self.sides[side].max_non_artillery_range = 0;
         self.sides[side].max_range = 0;
-        self.sides[side].projection_sums = [0.0; 5];
+        self.sides[side].projection_sums = ActionClassScores::default();
         self.sides[side].has_artillery_or_engineers = false;
         let units = self.sides[side].units.clone();
         for idx in units {
@@ -971,10 +957,9 @@ impl Battle {
                 continue;
             }
             self.compute_projection(state, idx);
-            for component in 0..5 {
-                self.sides[side].projection_sums[component] +=
-                    self.units[idx].projection[component];
-            }
+            self.sides[side]
+                .projection_sums
+                .add_assign(self.units[idx].projection);
             let range = self.unit_range(idx) as i16;
             if range > self.sides[side].max_range {
                 self.sides[side].max_range = range;
@@ -991,10 +976,10 @@ impl Battle {
             }
         }
         let sums = self.sides[side].projection_sums;
-        let baseline = scores_from(sums).similarity(TACTICAL_COMPOSITION.baseline);
+        let baseline = sums.similarity(TACTICAL_COMPOSITION.baseline);
         let row = if self.fort_level != 0 { 1 } else { 2 };
-        self.sides[side].projection_sums[1] = scores_from(sums).similarity(composition_row(row));
-        self.sides[side].projection_sums[0] = baseline;
+        self.sides[side].projection_sums.cavalry = sums.similarity(composition_row(row));
+        self.sides[side].projection_sums.infantry = baseline;
     }
 
     fn site_is_home_capital(&self, state: &GameState, side: BattleSide) -> bool {
@@ -1036,19 +1021,20 @@ impl Battle {
                 stance = TacticalStance::Unopposed;
             } else if !self.sides[opponent].has_artillery_or_engineers && !self.fort_breached() {
                 stance = TacticalStance::Garrison;
-            } else if self.sides[side].projection_sums[1] / opponent_metrics[1]
+            } else if self.sides[side].projection_sums.cavalry / opponent_metrics.cavalry
                 > CURSOR_STRONG_RATIO
             {
                 if self.fort_breached() {
                     stance = TacticalStance::Bombard;
-                } else if self.sides[side].projection_sums[1] / opponent_metrics[1]
+                } else if self.sides[side].projection_sums.cavalry / opponent_metrics.cavalry
                     > CURSOR_OVERWHELM_RATIO
                 {
                     stance = TacticalStance::Bombard;
                 } else {
                     stance = TacticalStance::Hold;
                 }
-            } else if self.sides[side].projection_sums[0] / opponent_metrics[1] < CURSOR_WEAK_RATIO
+            } else if self.sides[side].projection_sums.infantry / opponent_metrics.cavalry
+                < CURSOR_WEAK_RATIO
                 && !self.site_is_home_capital(state, side)
             {
                 stance = TacticalStance::Retreat;
@@ -1060,7 +1046,8 @@ impl Battle {
                 };
             }
         } else {
-            let strength_ratio = self.sides[side].projection_sums[1] / opponent_metrics[0];
+            let strength_ratio =
+                self.sides[side].projection_sums.cavalry / opponent_metrics.infantry;
             let have_sapper = self.sides[side].units.iter().any(|&idx| {
                 self.units[idx].unit_type.tactical_category() == ArmyUnitCategory::Engineers
                     && self.units[idx].state == TacticalUnitState::Ready
@@ -1074,7 +1061,7 @@ impl Battle {
                     stance = TacticalStance::Siege;
                 } else if !have_artillery {
                     stance = TacticalStance::Retreat;
-                } else if self.sides[side].projection_sums[3] / opponent_metrics[3]
+                } else if self.sides[side].projection_sums.armor / opponent_metrics.armor
                     < CURSOR_ARTILLERY_PARITY
                 {
                     stance = TacticalStance::Retreat;
@@ -1085,7 +1072,7 @@ impl Battle {
                 stance = TacticalStance::Unopposed;
             } else if strength_ratio > CURSOR_STRONG_RATIO {
                 stance = TacticalStance::Assault;
-            } else if !(self.sides[side].projection_sums[3] / opponent_metrics[3]
+            } else if !(self.sides[side].projection_sums.armor / opponent_metrics.armor
                 < CURSOR_ARTILLERY_SUPERIORITY)
                 && have_artillery
             {
