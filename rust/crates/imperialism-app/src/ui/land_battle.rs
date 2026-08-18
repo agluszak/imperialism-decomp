@@ -643,14 +643,6 @@ mod tests {
             *app.world().resource::<State<AppState>>().get(),
             AppState::LandBattle
         );
-        let first_units: Vec<_> = app
-            .world_mut()
-            .query::<&LandBattleUnit>()
-            .iter(app.world())
-            .map(|unit| unit.0)
-            .collect();
-        assert!(!first_units.is_empty());
-
         let auto = action_entity(&mut app, LandBattleAction::Auto);
         app.world_mut()
             .commands()
@@ -680,6 +672,7 @@ mod tests {
                 .army_battle()
                 .expect("the second pending battle has fresh live state")
                 .units()
+                .filter(|unit| unit.hex.is_some())
                 .map(|unit| unit.id)
                 .collect::<Vec<_>>()
         };
@@ -691,7 +684,6 @@ mod tests {
             .collect();
         live_units.sort_by_key(|id| id.source().get());
         projected_units.sort_by_key(|id| id.source().get());
-        assert_ne!(projected_units, first_units);
         assert_eq!(projected_units, live_units);
     }
 
@@ -735,7 +727,10 @@ mod tests {
                 Some((unit.id, x, y))
             })
             .collect();
-        assert!(!expected.is_empty());
+        assert_eq!(
+            probe.army_battle().unwrap().stage(),
+            ArmyBattleStage::Deploying
+        );
 
         let mut app = test_app(state);
         app.update();
@@ -757,19 +752,19 @@ mod tests {
     }
 
     #[test]
-    fn clicking_a_reachable_hex_moves_the_core_selected_unit() {
+    fn clicking_a_deployment_hex_places_the_core_selected_unit() {
         let mut app = test_app(two_land_battles_state());
         app.update();
         app.update();
 
-        let (unit_id, origin) = {
+        let unit_id = {
             let session = app.world().resource::<GameSession>();
             let unit = session
                 .game
                 .selected_army_unit()
                 .expect("core selected unit");
-            let origin = unit.hex.expect("deployed");
-            (unit.id, origin)
+            assert_eq!(unit.hex, None);
+            unit.id
         };
         let destination = app
             .world_mut()
@@ -779,8 +774,8 @@ mod tests {
                     .selected_army_unit_reachable_hexes()
                     .iter()
                     .copied()
-                    .find(|hex| *hex != origin)
-                    .expect("attacker has a reachable hex")
+                    .next()
+                    .expect("attacker has a deployment hex")
             });
         let dest_pixel = {
             let session = app.world().resource::<GameSession>();
@@ -812,6 +807,5 @@ mod tests {
             .and_then(|unit| unit.hex)
             .expect("unit still on the grid");
         assert_eq!(after, destination);
-        assert_ne!(after, origin);
     }
 }

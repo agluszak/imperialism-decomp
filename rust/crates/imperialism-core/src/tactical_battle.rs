@@ -85,12 +85,22 @@ pub struct MoveResult {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum ArmyAction {
+    Deploy {
+        unit: ArmyUnitId,
+        target: TacticalHex,
+    },
     Move(MoveResult),
     Attack {
         attacker: ArmyUnitId,
         target: TacticalHex,
     },
     Done,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum ArmyBattleStage {
+    Deploying,
+    Live,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -159,6 +169,14 @@ impl ArmyBattle {
         self.inner.composition_class
     }
 
+    pub fn stage(&self) -> ArmyBattleStage {
+        if self.inner.live {
+            ArmyBattleStage::Live
+        } else {
+            ArmyBattleStage::Deploying
+        }
+    }
+
     fn selected_unit_reachable_hexes(&self, active_nation: NationId) -> Vec<TacticalHex> {
         let Some(idx) = self.inner.selected else {
             return Vec::new();
@@ -166,8 +184,16 @@ impl ArmyBattle {
         if self.inner.units[idx].side != self.inner.current_side
             || self.inner.sides[self.inner.current_side].nation != active_nation
             || self.inner.sides[self.inner.current_side].auto_play
-            || self.inner.units[idx].tile < 0
         {
+            return Vec::new();
+        }
+        if !self.inner.live {
+            return (0..TACTICAL_TILE_COUNT as i32)
+                .filter(|&tile| self.inner.deploy_guard(tile) != 0)
+                .filter_map(TacticalHex::from_index)
+                .collect();
+        }
+        if self.inner.units[idx].tile < 0 {
             return Vec::new();
         }
         (0..TACTICAL_TILE_COUNT as i32)
@@ -200,6 +226,14 @@ impl ArmyBattle {
         state: &mut GameState,
     ) -> Result<ArmyAction, ArmyActionRejection> {
         let idx = self.selected_unit_for_action(active_nation)?;
+        if !self.inner.live {
+            if self.inner.deploy_guard(target.index) == 0 {
+                return Err(ArmyActionRejection::InvalidTarget);
+            }
+            let unit = ArmyUnitId(self.inner.units[idx].source);
+            self.inner.deploy_to_tile(idx, target.index);
+            return Ok(ArmyAction::Deploy { unit, target });
+        }
         let from = TacticalHex::from_index(self.inner.units[idx].tile)
             .ok_or(ArmyActionRejection::Unplaced)?;
         self.inner.compute_reachable(idx);
@@ -417,6 +451,24 @@ struct Battle {
 
 impl GameState {
     #[cfg(feature = "oracle")]
+    pub(crate) fn auto_deploy_army_battle_for_differential(&mut self) {
+        self.ensure_army_battle();
+        let mut battle = self.take_army_battle().expect("live army battle");
+        while !battle.inner.live {
+            let side = battle.inner.current_side;
+            battle.inner.sides[side].auto_play = true;
+            battle.inner.auto_deploy(self, side);
+            battle.inner.handover_deployment(self);
+        }
+        for side in [BattleSide::Attacker, BattleSide::Defender] {
+            battle.inner.sides[side].auto_play =
+                battle.inner.sides[side].nation != self.turn.active_nation;
+        }
+        assert!(!battle.inner.pump_until_active_input(self));
+        self.store_army_battle(battle);
+    }
+
+    #[cfg(feature = "oracle")]
     pub(crate) fn army_battle_differential_snapshot(
         &self,
     ) -> Option<crate::differential::ArmyBattleSnapshot> {
@@ -471,13 +523,22 @@ impl GameState {
         };
         let mut battle = match self.take_army_battle() {
             Some(mut live) => {
-                if live.inner.live && live.inner.outcome == BattleOutcome::InProgress {
+                let was_live = live.inner.live;
+                if !was_live {
+                    let side = live.inner.current_side;
+                    live.inner.sides[side].auto_play = true;
+                    live.inner.auto_deploy(self, side);
+                    live.inner.handover_deployment(self);
+                }
+                if was_live && live.inner.outcome == BattleOutcome::InProgress {
                     live.inner.advance_auto_pulse(self, live.inner.current_side);
                 }
                 live.inner
             }
             None => {
                 let mut battle = Battle::init(self);
+                battle.sides[BattleSide::Attacker].auto_play = true;
+                battle.sides[BattleSide::Defender].auto_play = true;
                 battle.start(self);
                 battle
             }
@@ -512,7 +573,7 @@ impl GameState {
         }
     }
 
-    /// Opens the pending land battle with auto-deploy, then pumps to local input.
+    /// Opens the pending land battle and pumps to local deployment or live input.
     pub fn ensure_army_battle(&mut self) -> &ArmyBattle {
         let stop = self.synchronize_army_battle(&[]);
         assert!(
@@ -536,8 +597,7 @@ impl GameState {
         };
         let mut inner = Battle::init(self);
         inner.start(self);
-        inner.live = true;
-        if inner.pump_until_active_input(self) {
+        if inner.live && inner.pump_until_active_input(self) {
             return Some(self.resume_after_land_battle(story_ids));
         }
         self.store_army_battle(ArmyBattle { inner });
@@ -573,6 +633,15 @@ impl GameState {
                 return Err(error);
             }
         };
+        if !battle.inner.live {
+            if battle.inner.sides[battle.inner.current_side].ready {
+                battle.inner.handover_deployment(self);
+            }
+            if !battle.inner.live {
+                self.store_army_battle(battle);
+                return Ok((result, None));
+            }
+        }
         let stop = self.finish_interactive_army_action(battle, story_ids);
         Ok((result, stop))
     }
@@ -589,6 +658,13 @@ impl GameState {
             self.store_army_battle(battle);
             return Err(error);
         }
+        if !battle.inner.live {
+            let side = battle.inner.current_side;
+            battle.inner.selected = battle.inner.select_next_undeployed(side);
+            battle.inner.clear_move_costs();
+            self.store_army_battle(battle);
+            return Ok(None);
+        }
         battle.inner.finish_action();
         Ok(self.finish_interactive_army_action(battle, story_ids))
     }
@@ -604,6 +680,14 @@ impl GameState {
         if let Err(error) = battle.selected_unit_for_action(active_nation) {
             self.store_army_battle(battle);
             return Err(error);
+        }
+        if !battle.inner.live {
+            battle.inner.handover_deployment(self);
+            if !battle.inner.live {
+                self.store_army_battle(battle);
+                return Ok(None);
+            }
+            return Ok(self.finish_interactive_army_action(battle, story_ids));
         }
         let side = battle.inner.current_side;
         battle.inner.sides[side].field_f = true;
@@ -841,15 +925,37 @@ impl Battle {
 
     fn start(&mut self, state: &mut GameState) {
         self.start_side(state, BattleSide::Defender);
-        self.start_side(state, BattleSide::Attacker);
-        self.finalize_turn_state(state);
+        if self.sides[BattleSide::Defender].ready {
+            self.handover_deployment(state);
+        }
     }
 
     fn start_side(&mut self, state: &mut GameState, side: BattleSide) {
         self.current_side = side;
         self.selected = self.select_next_undeployed(side);
-        self.select_and_apply_cursor_mode(state, side);
-        self.auto_deploy(state, side);
+        if self.sides[side].auto_play {
+            self.select_and_apply_cursor_mode(state, side);
+            self.auto_deploy(state, side);
+        }
+    }
+
+    fn handover_deployment(&mut self, state: &mut GameState) {
+        let incoming = self.current_side.opponent();
+        self.current_side = incoming;
+        self.selected = self.select_next_undeployed(incoming);
+        if self.sides[incoming].ready {
+            self.finalize_turn_state(state);
+            return;
+        }
+        self.start_side(state, incoming);
+        if self.sides[incoming].ready {
+            let next = incoming.opponent();
+            self.current_side = next;
+            self.selected = self.select_next_undeployed(next);
+            if self.sides[next].ready {
+                self.finalize_turn_state(state);
+            }
+        }
     }
 
     fn auto_deploy(&mut self, state: &mut GameState, side: BattleSide) {
@@ -1058,6 +1164,7 @@ impl Battle {
         self.retire_undeployed(BattleSide::Defender);
         self.sort_records(state);
         self.selected = self.records.last().copied();
+        self.live = true;
         self.pending_end = false;
     }
 
@@ -3454,8 +3561,20 @@ mod tests {
         (state, attacker, defender)
     }
 
+    fn deploy_local_side(state: &mut GameState) {
+        state.ensure_army_battle();
+        while state.army_battle().unwrap().stage() == ArmyBattleStage::Deploying {
+            let target = state
+                .selected_army_unit_reachable_hexes()
+                .into_iter()
+                .next()
+                .expect("local unit has a deployment tile");
+            state.army_action_at(target, &[]).unwrap();
+        }
+    }
+
     #[test]
-    fn interactive_battle_deploys_both_sides_onto_retail_columns() {
+    fn interactive_battle_waits_for_local_deployment() {
         let (mut state, attacker, defender) = pending_regulars_vs_militia();
         let battle = state.ensure_army_battle();
         let units: Vec<_> = battle.units().collect();
@@ -3470,10 +3589,10 @@ mod tests {
             .unwrap();
         assert_eq!(attacker_unit.side, BattleSide::Attacker);
         assert_eq!(defender_unit.side, BattleSide::Defender);
-        let attacker_hex = attacker_unit.hex.expect("attacker deploys");
+        assert_eq!(battle.stage(), ArmyBattleStage::Deploying);
+        assert_eq!(battle.active_side(), BattleSide::Attacker);
+        assert_eq!(attacker_unit.hex, None);
         let defender_hex = defender_unit.hex.expect("defender deploys");
-        assert!((3..=5).contains(&attacker_hex.column()));
-        assert!(attacker_hex.row() >= 1);
         let columns = battle.column_count();
         assert!(
             defender_hex.column() <= columns - 3 && defender_hex.column() >= columns - 5,
@@ -3483,9 +3602,53 @@ mod tests {
     }
 
     #[test]
+    fn deployment_done_keeps_core_selection_on_an_undeployed_unit() {
+        let (mut state, attacker, _) = pending_regulars_vs_militia();
+        state.ensure_army_battle();
+
+        assert_eq!(state.finish_selected_army_unit_action(&[]), Ok(None));
+        let selected = state
+            .selected_army_unit()
+            .expect("deployment selection remains");
+        assert_eq!(selected.id.source(), attacker);
+        assert_eq!(selected.hex, None);
+        assert_eq!(
+            state.army_battle().unwrap().stage(),
+            ArmyBattleStage::Deploying
+        );
+    }
+
+    #[test]
+    fn pre_live_retreat_hands_deployment_to_the_other_side() {
+        let (mut state, _, defender) = pending_regulars_vs_militia();
+        state.turn.active_nation = NationId::new(1);
+        state.ensure_army_battle();
+        assert_eq!(
+            state.army_battle().unwrap().active_side(),
+            BattleSide::Defender
+        );
+
+        assert_eq!(state.retreat_from_army_battle(&[]), Ok(None));
+
+        let battle = state.army_battle().expect("deployment remains interactive");
+        assert_eq!(battle.stage(), ArmyBattleStage::Deploying);
+        assert_eq!(battle.active_side(), BattleSide::Defender);
+        assert_eq!(
+            battle.unit(ArmyUnitId(defender)).and_then(|unit| unit.hex),
+            None
+        );
+        assert!(
+            battle
+                .units()
+                .any(|unit| unit.side == BattleSide::Attacker && unit.hex.is_some()),
+            "unwatched attacker auto-deploys during the handoff"
+        );
+    }
+
+    #[test]
     fn reachable_hexes_include_a_legal_step_and_move_updates_the_unit_tile() {
         let (mut state, _, _) = pending_regulars_vs_militia();
-        state.ensure_army_battle();
+        deploy_local_side(&mut state);
         let selected = state
             .selected_army_unit()
             .expect("the active nation receives a selected unit");
@@ -3520,7 +3683,7 @@ mod tests {
     #[test]
     fn unreachable_hex_is_rejected_without_moving() {
         let (mut state, _, _) = pending_regulars_vs_militia();
-        state.ensure_army_battle();
+        deploy_local_side(&mut state);
         let selected = state.selected_army_unit().expect("selected unit");
         let origin = selected.hex.expect("selected unit is on the grid");
         let far = TacticalHex::from_row_column(1, 20).expect("grid contains column 20");
@@ -3539,7 +3702,7 @@ mod tests {
     #[test]
     fn occupied_enemy_hex_does_not_change_the_core_selection() {
         let (mut state, _, _) = pending_regulars_vs_militia();
-        state.ensure_army_battle();
+        deploy_local_side(&mut state);
         let selected = state.selected_army_unit().expect("selected unit");
         let enemy_hex = state
             .army_battle()
@@ -3559,7 +3722,7 @@ mod tests {
     #[test]
     fn reachable_enemy_hex_attacks_with_the_core_selected_unit() {
         let (mut state, _, _) = pending_regulars_vs_militia();
-        state.ensure_army_battle();
+        deploy_local_side(&mut state);
         let (attacker, target) = {
             let battle = state.army_battle_mut().expect("live battle");
             let attacker = battle.inner.selected.expect("selected unit");
@@ -3596,7 +3759,7 @@ mod tests {
     #[test]
     fn active_nation_cannot_move_the_other_tactical_controller() {
         let (mut state, _, _) = pending_regulars_vs_militia();
-        state.ensure_army_battle();
+        deploy_local_side(&mut state);
         let selected = state.selected_army_unit().expect("selected unit");
         let destination = state
             .selected_army_unit_reachable_hexes()
@@ -3619,7 +3782,7 @@ mod tests {
     #[test]
     fn movement_ending_an_action_advances_to_exactly_the_next_unit() {
         let (mut state, _, _) = pending_regulars_vs_militia();
-        state.ensure_army_battle();
+        deploy_local_side(&mut state);
         let active_nation = state.turn.active_nation;
         let (before, expected, destination) = {
             let battle = state.army_battle_mut().expect("live battle");
@@ -3662,7 +3825,7 @@ mod tests {
     #[test]
     fn done_advances_to_exactly_the_next_unit() {
         let (mut state, _, _) = pending_regulars_vs_militia();
-        state.ensure_army_battle();
+        deploy_local_side(&mut state);
         let active_nation = state.turn.active_nation;
         let expected = {
             let battle = state.army_battle_mut().expect("live battle");
@@ -3687,7 +3850,7 @@ mod tests {
     #[test]
     fn retreat_uses_the_tactical_players_retreat_stance() {
         let (mut state, _, _) = pending_regulars_vs_militia();
-        state.ensure_army_battle();
+        deploy_local_side(&mut state);
         let active_nation = state.turn.active_nation;
         let reports_before = state.battle_reports().len();
 

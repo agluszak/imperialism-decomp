@@ -242,7 +242,7 @@ fn interactive_army_battle_done() {
         .do_combat_moves()
         .expect("hostile stack creates a battle");
     state.enter_land_battle(continuation);
-    state.ensure_army_battle();
+    differential::auto_deploy_army_battle(&mut state);
     let mut snapshots = vec![differential::army_battle_snapshot(&state).unwrap()];
     assert_eq!(state.finish_selected_army_unit_action(&[]), Ok(None));
     snapshots.push(differential::army_battle_snapshot(&state).unwrap());
@@ -263,7 +263,7 @@ fn interactive_army_battle_move() {
         .do_combat_moves()
         .expect("hostile stack creates a battle");
     state.enter_land_battle(continuation);
-    state.ensure_army_battle();
+    differential::auto_deploy_army_battle(&mut state);
     let mut snapshots = vec![differential::army_battle_snapshot(&state).unwrap()];
     assert_eq!(native.result.targets.len(), native.result.actuals.len());
     for (&target, &actual) in native.result.targets.iter().zip(&native.result.actuals) {
@@ -290,7 +290,7 @@ fn compare_interactive_army_battle_attack(case_name: &str) {
         .do_combat_moves()
         .expect("hostile stack creates a battle");
     state.enter_land_battle(continuation);
-    state.ensure_army_battle();
+    differential::auto_deploy_army_battle(&mut state);
     let mut snapshots = vec![differential::army_battle_snapshot(&state).unwrap()];
     for ((&kind, &target), &actual) in native
         .result
@@ -352,7 +352,7 @@ fn interactive_army_battle_retreat() {
         .do_combat_moves()
         .expect("hostile stack creates a battle");
     state.enter_land_battle(continuation);
-    state.ensure_army_battle();
+    differential::auto_deploy_army_battle(&mut state);
     assert_eq!(
         differential::army_battle_snapshot(&state),
         Some(native.result)

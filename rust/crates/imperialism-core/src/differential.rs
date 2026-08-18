@@ -63,6 +63,10 @@ pub fn army_battle_snapshot(state: &GameState) -> Option<ArmyBattleSnapshot> {
     state.army_battle_differential_snapshot()
 }
 
+pub fn auto_deploy_army_battle(state: &mut GameState) {
+    state.auto_deploy_army_battle_for_differential();
+}
+
 pub fn reassess_control_sea_missions(state: &mut GameState) {
     state.reassess_control_sea_missions();
 }
