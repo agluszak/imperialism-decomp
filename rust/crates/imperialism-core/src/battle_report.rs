@@ -149,8 +149,8 @@ impl GameState {
         defender_units: &[MilitaryUnitId],
         attacker_won: bool,
     ) {
-        let attacker_side = self.land_report_side(attacker, attacker_units);
-        let defender_side = self.land_report_side(defender, defender_units);
+        let attacker_side = self.land_report_side(attacker, attacker_units, "Units Attacking");
+        let defender_side = self.land_report_side(defender, defender_units, "Defensive Muster");
         self.append_battle_report(BattleReport {
             participant: if attacker_won {
                 BattleReportSideSlot::Left
@@ -164,12 +164,38 @@ impl GameState {
         });
     }
 
-    fn land_report_side(&self, nation: NationId, units: &[MilitaryUnitId]) -> BattleReportSide {
-        let name = self
+    fn land_report_side(
+        &self,
+        nation: NationId,
+        units: &[MilitaryUnitId],
+        role: &str,
+    ) -> BattleReportSide {
+        let nation_name = self
             .nation(nation)
             .map(|common| common.display_name.clone())
             .unwrap_or_default();
+        let name = format!("{nation_name}: {role}");
         let mut overlay = String::new();
+        for kind_index in 0..MilitaryUnitKind::LENGTH {
+            let kind = MilitaryUnitKind::from_index(kind_index as u8).expect("military kind index");
+            let matching = units
+                .iter()
+                .filter_map(|id| self.military_units.get(id))
+                .filter(|unit| unit.unit_type() == kind)
+                .collect::<Vec<_>>();
+            if matching.is_empty() {
+                continue;
+            }
+            if !overlay.is_empty() {
+                overlay.push_str(", ");
+            }
+            let unit_name = kind.roster_name().unwrap_or_else(|| matching[0].name());
+            overlay.push_str(&format!("{} {unit_name}", matching.len()));
+            let active_count = matching.iter().filter(|unit| unit.strength() > 0).count();
+            if active_count != matching.len() {
+                overlay.push_str(&format!(" ({} Inactive)", matching.len() - active_count));
+            }
+        }
         let mut children = Vec::new();
         for &id in units {
             let Some(unit) = self.military_units.get(&id) else {
@@ -179,10 +205,6 @@ impl GameState {
             if stock == -86 {
                 stock = 0;
             }
-            if !overlay.is_empty() {
-                overlay.push(' ');
-            }
-            overlay.push_str(unit.name());
             children.push(BattleReportUnit {
                 kind: BattleReportUnitKind::Military(unit.unit_type()),
                 stock_or_required: stock,
