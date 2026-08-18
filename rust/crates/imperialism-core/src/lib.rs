@@ -170,6 +170,9 @@ pub use tables::{
     NationCapacities, NationTable, PENDING_ACTION_COUNT, PROVINCE_COUNT, PendingActionKind,
     PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable,
 };
+pub use tactical_battle::{
+    ArmyBattle, ArmyMoveRejection, ArmyUnitId, ArmyUnitView, BattleSide, MoveResult, TacticalHex,
+};
 pub use technology::{
     CityTechnologyCapabilities, CivilianTerrainAccess, FortLevelCap, Technology,
     TechnologyResearchRejection, TechnologyResearchStatus, TechnologyResearchToggle,

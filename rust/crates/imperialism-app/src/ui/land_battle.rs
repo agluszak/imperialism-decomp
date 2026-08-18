@@ -3,11 +3,22 @@ use super::retail::RetailTree;
 use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
 use crate::media::MusicDirector;
+use bevy::picking::events::{Click, Pointer};
+use bevy::picking::pointer::PointerButton;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
+use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
 use imperialism_formats::{MusicTrack, fourcc};
+
+/// `TTacArmyView` battlefield surface is 0x5dc×0x1c2; 15 rows fill the 450px DLOG height.
+const TACTICAL_TILE_WIDTH_PX: i32 = 50;
+const TACTICAL_TILE_ROW_HEIGHT_PX: i32 = 30;
+/// `TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset` grows the tile up by 0x14.
+const UNIT_SPRITE_LIFT_PX: i32 = 0x14;
+const BATTLEFIELD_WIDTH_PX: i32 = 575;
+const BATTLEFIELD_HEIGHT_PX: i32 = 450;
 
 #[derive(Component)]
 struct LandBattleRoot;
@@ -21,6 +32,79 @@ enum LandBattleAction {
 #[derive(Component)]
 struct LandBattleCaption;
 
+#[derive(Component)]
+struct LandBattlefield;
+
+#[derive(Component, Clone, Copy)]
+#[allow(dead_code)]
+struct LandBattleUnit(ArmyUnitId);
+
+#[derive(Component, Clone, Copy)]
+#[allow(dead_code)]
+struct LandBattleReachable(TacticalHex);
+
+/// Pixel↔hex for this screen (`TTacticalBattleView` 0x5a86d0 / 0x5a87d0, viewOriginX = 0).
+struct LandBattleHexMap {
+    column_count: i32,
+}
+
+impl LandBattleHexMap {
+    fn new(column_count: i32) -> Self {
+        Self { column_count }
+    }
+
+    fn tile_rect(&self, hex: TacticalHex) -> (i32, i32, i32, i32) {
+        let row = hex.row();
+        let mut x = hex.column() * TACTICAL_TILE_WIDTH_PX;
+        if row & 1 != 0 {
+            x += TACTICAL_TILE_WIDTH_PX / 2;
+        }
+        let y = row * TACTICAL_TILE_ROW_HEIGHT_PX;
+        (x, y, TACTICAL_TILE_WIDTH_PX, TACTICAL_TILE_ROW_HEIGHT_PX)
+    }
+
+    fn unit_anchor(&self, hex: TacticalHex) -> (i32, i32, i32, i32) {
+        let (x, y, width, height) = self.tile_rect(hex);
+        (
+            x,
+            y - UNIT_SPRITE_LIFT_PX,
+            width,
+            height + UNIT_SPRITE_LIFT_PX,
+        )
+    }
+
+    fn hex_at_pixel(&self, x: i32, y: i32) -> Option<TacticalHex> {
+        let mut row = y / TACTICAL_TILE_ROW_HEIGHT_PX;
+        if row < 0 {
+            row = 0;
+        }
+        let max_row = BATTLEFIELD_HEIGHT_PX / TACTICAL_TILE_ROW_HEIGHT_PX - 1;
+        if row >= max_row {
+            row = max_row;
+        }
+        let mut col = x;
+        if row & 1 != 0 {
+            col -= TACTICAL_TILE_WIDTH_PX / 2;
+        }
+        col /= TACTICAL_TILE_WIDTH_PX;
+        if col < 0 {
+            col = 0;
+        }
+        if col >= self.column_count {
+            col = self.column_count - 1;
+        }
+        TacticalHex::from_row_column(row, col)
+    }
+}
+
+fn battlefield_cursor_pixel(cursor: &RelativeCursorPosition) -> Option<(i32, i32)> {
+    let position = cursor.normalized.filter(|_| cursor.cursor_over())?;
+    Some((
+        ((position.x + 0.5) * BATTLEFIELD_WIDTH_PX as f32).floor() as i32,
+        ((position.y + 0.5) * BATTLEFIELD_HEIGHT_PX as f32).floor() as i32,
+    ))
+}
+
 pub(crate) struct LandBattlePlugin;
 
 impl Plugin for LandBattlePlugin {
@@ -31,9 +115,26 @@ impl Plugin for LandBattlePlugin {
         )
         .add_systems(
             Update,
-            project_land_battle
+            (synchronize_interactive_army_battle, project_land_battle)
+                .chain()
                 .run_if(in_state(AppState::LandBattle).and_then(resource_exists::<GameSession>)),
         );
+    }
+}
+
+fn synchronize_interactive_army_battle(
+    mut session: ResMut<GameSession>,
+    mut next_state: ResMut<NextState<AppState>>,
+    assets: Option<Res<crate::RetailAssetsResource>>,
+) {
+    if session.game.pending_land_battle().is_some()
+        && session.game.army_battle().is_none()
+        && let Some(stop) = session
+            .game
+            .synchronize_army_battle(super::session::news_story_ids(assets.as_deref()))
+        && stop != TurnStop::LandBattle
+    {
+        apply_turn_stop(stop, &mut next_state);
     }
 }
 
@@ -68,22 +169,89 @@ fn bind_land_battle_controls(commands: &mut Commands, root: Entity, tree: &Retai
         .insert((LandBattleAction::Retreat, ActivateOnPress))
         .observe(on_land_battle_activate)
         .remove::<InteractionDisabled>();
+    commands
+        .entity(tree.find(root, fourcc!("DLOG")))
+        .insert((LandBattlefield, RelativeCursorPosition::default()))
+        .observe(on_battlefield_click);
 }
 
+#[allow(clippy::type_complexity)]
 fn project_land_battle(
+    mut commands: Commands,
     session: Res<GameSession>,
     added: Query<(), Added<LandBattleCaption>>,
     mut captions: Query<&mut Text, With<LandBattleCaption>>,
+    battlefields: Query<(Entity, Option<&Children>), With<LandBattlefield>>,
+    projected: Query<Entity, Or<(With<LandBattleUnit>, With<LandBattleReachable>)>>,
 ) {
     if super::projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let Some(battle) = session.game.pending_land_battle() else {
+    let Some(pending) = session.game.pending_land_battle() else {
         return;
     };
-    let caption = land_battle_caption(&session.game, battle);
+    let caption = land_battle_caption(&session.game, pending);
     for mut text in &mut captions {
         text.0.clone_from(&caption);
+    }
+    let selected = session.game.selected_army_unit().map(|unit| unit.id);
+    let reachable = session.game.selected_army_unit_reachable_hexes();
+    let Some(battle) = session.game.army_battle() else {
+        return;
+    };
+    let hex_map = LandBattleHexMap::new(battle.column_count());
+    for (field, children) in &battlefields {
+        if let Some(children) = children {
+            for child in children.iter() {
+                if projected.contains(child) {
+                    commands.entity(child).despawn();
+                }
+            }
+        }
+        for hex in &reachable {
+            let (x, y, width, height) = hex_map.tile_rect(*hex);
+            commands.spawn((
+                LandBattleReachable(*hex),
+                ChildOf(field),
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(x),
+                    top: px(y),
+                    width: px(width),
+                    height: px(height),
+                    ..default()
+                },
+                BackgroundColor(Color::srgba(1.0, 1.0, 0.2, 0.35)),
+            ));
+        }
+        for unit in battle.units() {
+            let Some(hex) = unit.hex else {
+                continue;
+            };
+            let (x, y, width, height) = hex_map.unit_anchor(hex);
+            let color = match unit.side {
+                BattleSide::Attacker => Color::srgb(0.75, 0.2, 0.15),
+                BattleSide::Defender => Color::srgb(0.15, 0.3, 0.75),
+            };
+            let selected = selected == Some(unit.id);
+            commands.spawn((
+                LandBattleUnit(unit.id),
+                ChildOf(field),
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(x),
+                    top: px(y),
+                    width: px(width),
+                    height: px(height),
+                    border: UiRect::all(px(if selected { 2 } else { 0 })),
+                    ..default()
+                },
+                BackgroundColor(color),
+                BorderColor::all(Color::WHITE),
+                Text::new(unit.strength.to_string()),
+                TextColor(Color::WHITE),
+            ));
+        }
     }
 }
 
@@ -98,6 +266,49 @@ fn land_battle_caption(state: &GameState, battle: &PendingLandBattle) -> String 
         .unwrap_or("");
     let province = state.map().provinces[battle.province].name.as_str();
     format!("{attacker} attacks {defender} in {province}")
+}
+
+fn on_battlefield_click(
+    click: On<Pointer<Click>>,
+    fields: Query<&RelativeCursorPosition, With<LandBattlefield>>,
+    mut session: ResMut<GameSession>,
+    mut next_state: ResMut<NextState<AppState>>,
+    assets: Option<Res<crate::RetailAssetsResource>>,
+) {
+    if click.event.button != PointerButton::Primary {
+        return;
+    }
+    let Ok(cursor) = fields.get(click.entity) else {
+        return;
+    };
+    let Some((x, y)) = battlefield_cursor_pixel(cursor) else {
+        return;
+    };
+    if let Some(stop) = apply_battlefield_click(
+        &mut session,
+        x,
+        y,
+        super::session::news_story_ids(assets.as_deref()),
+    ) && stop != TurnStop::LandBattle
+    {
+        apply_turn_stop(stop, &mut next_state);
+    }
+}
+
+fn apply_battlefield_click(
+    session: &mut GameSession,
+    x: i32,
+    y: i32,
+    story_ids: &[i32],
+) -> Option<TurnStop> {
+    let column_count = session.game.army_battle().map(ArmyBattle::column_count)?;
+    let hex_map = LandBattleHexMap::new(column_count);
+    let hex = hex_map.hex_at_pixel(x, y)?;
+    session
+        .game
+        .move_selected_army_unit(hex, story_ids)
+        .ok()
+        .and_then(|(_, stop)| stop)
 }
 
 fn on_land_battle_activate(
@@ -340,9 +551,11 @@ mod tests {
             )
             .add_systems(
                 Update,
-                project_land_battle.run_if(
-                    in_state(AppState::LandBattle).and_then(resource_exists::<GameSession>),
-                ),
+                (synchronize_interactive_army_battle, project_land_battle)
+                    .chain()
+                    .run_if(
+                        in_state(AppState::LandBattle).and_then(resource_exists::<GameSession>),
+                    ),
             );
         app
     }
@@ -358,6 +571,16 @@ mod tests {
         commands.spawn((RetailTag(fourcc!("curs")), Node::default(), ChildOf(root)));
         commands.spawn((RetailTag(fourcc!("auto")), Node::default(), ChildOf(root)));
         commands.spawn((RetailTag(fourcc!("retr")), Node::default(), ChildOf(root)));
+        commands.spawn((
+            RetailTag(fourcc!("DLOG")),
+            Node {
+                position_type: PositionType::Absolute,
+                width: px(BATTLEFIELD_WIDTH_PX),
+                height: px(BATTLEFIELD_HEIGHT_PX),
+                ..default()
+            },
+            ChildOf(root),
+        ));
     }
 
     fn bind_test_land_battle(
@@ -381,10 +604,10 @@ mod tests {
 
     fn caption(app: &mut App) -> String {
         app.world_mut()
-            .query::<&Text>()
+            .query::<(&Text, &LandBattleCaption)>()
             .iter(app.world())
             .next()
-            .map(|text| text.0.clone())
+            .map(|(text, _)| text.0.clone())
             .expect("land-battle caption is bound")
     }
 
@@ -405,6 +628,13 @@ mod tests {
             *app.world().resource::<State<AppState>>().get(),
             AppState::LandBattle
         );
+        let first_units: Vec<_> = app
+            .world_mut()
+            .query::<&LandBattleUnit>()
+            .iter(app.world())
+            .map(|unit| unit.0)
+            .collect();
+        assert!(!first_units.is_empty());
 
         let auto = action_entity(&mut app, LandBattleAction::Auto);
         app.world_mut()
@@ -428,5 +658,145 @@ mod tests {
         };
         assert_ne!(second_province, first.province);
         assert_eq!(caption(&mut app), expected_second);
+        let mut live_units = {
+            let session = app.world().resource::<GameSession>();
+            session
+                .game
+                .army_battle()
+                .expect("the second pending battle has fresh live state")
+                .units()
+                .map(|unit| unit.id)
+                .collect::<Vec<_>>()
+        };
+        let mut projected_units: Vec<_> = app
+            .world_mut()
+            .query::<&LandBattleUnit>()
+            .iter(app.world())
+            .map(|unit| unit.0)
+            .collect();
+        live_units.sort_by_key(|id| id.source().get());
+        projected_units.sort_by_key(|id| id.source().get());
+        assert_ne!(projected_units, first_units);
+        assert_eq!(projected_units, live_units);
+    }
+
+    fn node_left_top(node: &Node) -> (i32, i32) {
+        let Val::Px(left) = node.left else {
+            panic!("unit node uses pixel left");
+        };
+        let Val::Px(top) = node.top else {
+            panic!("unit node uses pixel top");
+        };
+        (left as i32, top as i32)
+    }
+
+    #[test]
+    fn hex_pixel_round_trip_uses_retail_stagger() {
+        let map = LandBattleHexMap::new(16);
+        let hex = TacticalHex::from_row_column(2, 4).unwrap();
+        let (x, y, width, height) = map.tile_rect(hex);
+        let center = (x + width / 2, y + height / 2);
+        assert_eq!(map.hex_at_pixel(center.0, center.1), Some(hex));
+        let odd = TacticalHex::from_row_column(3, 4).unwrap();
+        let (ox, oy, ow, oh) = map.tile_rect(odd);
+        assert_eq!(ox, 4 * TACTICAL_TILE_WIDTH_PX + TACTICAL_TILE_WIDTH_PX / 2);
+        assert_eq!(map.hex_at_pixel(ox + ow / 2, oy + oh / 2), Some(odd));
+    }
+
+    #[test]
+    fn land_battle_projects_units_onto_retail_hex_anchors() {
+        let state = two_land_battles_state();
+        let mut probe = state.clone();
+        probe.ensure_army_battle();
+        let expected: Vec<_> = probe
+            .army_battle()
+            .expect("interactive battle starts on enter")
+            .units()
+            .filter_map(|unit| {
+                let hex = unit.hex?;
+                let (x, y, _, _) =
+                    LandBattleHexMap::new(probe.army_battle().unwrap().column_count())
+                        .unit_anchor(hex);
+                Some((unit.id, x, y))
+            })
+            .collect();
+        assert!(!expected.is_empty());
+
+        let mut app = test_app(state);
+        app.update();
+        app.update();
+
+        let mut projected: Vec<_> = app
+            .world_mut()
+            .query::<(&LandBattleUnit, &Node)>()
+            .iter(app.world())
+            .map(|(unit, node)| {
+                let (left, top) = node_left_top(node);
+                (unit.0, left, top)
+            })
+            .collect();
+        projected.sort_by_key(|(id, _, _)| id.source().get());
+        let mut expected = expected;
+        expected.sort_by_key(|(id, _, _)| id.source().get());
+        assert_eq!(projected, expected);
+    }
+
+    #[test]
+    fn clicking_a_reachable_hex_moves_the_core_selected_unit() {
+        let mut app = test_app(two_land_battles_state());
+        app.update();
+        app.update();
+
+        let (unit_id, origin) = {
+            let session = app.world().resource::<GameSession>();
+            let unit = session
+                .game
+                .selected_army_unit()
+                .expect("core selected unit");
+            let origin = unit.hex.expect("deployed");
+            (unit.id, origin)
+        };
+        let destination = app
+            .world_mut()
+            .resource_scope(|_, session: Mut<GameSession>| {
+                session
+                    .game
+                    .selected_army_unit_reachable_hexes()
+                    .iter()
+                    .copied()
+                    .find(|hex| *hex != origin)
+                    .expect("attacker has a reachable hex")
+            });
+        let dest_pixel = {
+            let session = app.world().resource::<GameSession>();
+            let map = LandBattleHexMap::new(
+                session
+                    .game
+                    .army_battle()
+                    .expect("live battle")
+                    .column_count(),
+            );
+            let (x, y, w, h) = map.tile_rect(destination);
+            (x + w / 2, y + h / 2)
+        };
+
+        app.world_mut()
+            .resource_scope(|_, mut session: Mut<GameSession>| {
+                assert_eq!(
+                    apply_battlefield_click(&mut session, dest_pixel.0, dest_pixel.1, &[]),
+                    None
+                );
+            });
+        app.update();
+        let after = app
+            .world()
+            .resource::<GameSession>()
+            .game
+            .army_battle()
+            .and_then(|battle| battle.unit(unit_id))
+            .and_then(|unit| unit.hex)
+            .expect("unit still on the grid");
+        assert_eq!(after, destination);
+        assert_ne!(after, origin);
     }
 }

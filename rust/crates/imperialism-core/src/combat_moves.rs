@@ -29,12 +29,23 @@ pub struct PendingLandBattle {
 ///
 /// Retail keeps `pendingUnitPool0c` and `nextStackOrdinal10` so later stacks
 /// continue without reforming or re-rolling sort keys.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct CombatMovesContinuation {
     stacks: Vec<ArmyStack>,
     next_stack: usize,
     owner_cache: ProvinceTable<Option<NationId>>,
     pub battle: PendingLandBattle,
+    #[serde(skip)]
+    pub(crate) army_battle: Option<Box<ArmyBattle>>,
+}
+
+impl PartialEq for CombatMovesContinuation {
+    fn eq(&self, other: &Self) -> bool {
+        self.stacks == other.stacks
+            && self.next_stack == other.next_stack
+            && self.owner_cache == other.owner_cache
+            && self.battle == other.battle
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
@@ -256,6 +267,7 @@ impl GameState {
                     next_stack,
                     owner_cache,
                     battle,
+                    army_battle: None,
                 });
             }
         }
