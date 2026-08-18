@@ -381,14 +381,14 @@ impl GameState {
             4
         };
         let budget = self.trade_offer_cap(nation) / divisor;
-        let mut selected = 3_i16;
         let mut allocated = 0_i16;
-        while budget > allocated && selected >= 1 {
-            let resource = prices[(selected as usize) - 1];
+        for resource in prices.into_iter().rev() {
+            if budget <= allocated {
+                break;
+            }
             let stock = self.city_stock(nation, resource);
             self.set_trade_potential(nation, resource, stock);
             allocated += stock;
-            selected -= 1;
         }
         self.offer_surplus_arms(nation);
     }
@@ -409,15 +409,15 @@ impl GameState {
     pub(super) fn arms_set_trade_bids(&mut self, nation: MajorNationId) {
         let prices = self.sorted_processed_prices();
         let budget = self.trade_offer_cap(nation) / 2;
-        let mut selected = 3_i16;
         let mut allocated = 0_i16;
-        while allocated < budget && selected >= 1 {
-            let resource = prices[(selected as usize) - 1];
+        for resource in prices.into_iter().rev() {
+            if allocated >= budget {
+                break;
+            }
             let stock = self.city_stock(nation, resource);
             let amount = stock.min(budget - allocated);
             self.set_trade_potential(nation, resource, amount);
             allocated += amount;
-            selected -= 1;
         }
         if self.nations.majors[&nation].common.treasury < 0 && !self.has_any_war(nation.nation()) {
             let available = self.city_stock(nation, ResourceKind::Arms);
@@ -454,22 +454,23 @@ impl GameState {
             cap / 2
         };
         let prices = self.sorted_processed_prices();
-        let mut amounts = [0_i16; 17];
-        let mut selected = 3_i16;
+        let mut amounts = ResourceTable::<i16>::default();
+        let mut selected_prices = prices.into_iter().rev().cycle();
         let mut iteration = 0_i32;
         while target > 0 && iteration < i32::from(target) * 3 {
-            let resource = prices[(selected as usize) - 1];
-            let index = resource as usize;
-            if amounts[index] < self.city_stock(nation, resource) {
-                amounts[index] += 1;
-                self.set_trade_potential(nation, resource, amounts[index]);
+            let resource = selected_prices
+                .next()
+                .expect("cycled processed prices are never empty");
+            if amounts[resource] < self.city_stock(nation, resource) {
+                amounts[resource] += 1;
+                self.set_trade_potential(nation, resource, amounts[resource]);
             }
-            if amounts[0x0d] + amounts[0x0e] + amounts[0x0f] >= target {
+            if amounts[ResourceKind::Clothing]
+                + amounts[ResourceKind::Furniture]
+                + amounts[ResourceKind::Hardware]
+                >= target
+            {
                 break;
-            }
-            selected -= 1;
-            if selected == 0 {
-                selected = 3;
             }
             iteration += 1;
         }
