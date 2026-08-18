@@ -383,9 +383,7 @@ impl GameState {
             if let Some(province) = self.map[harvest_tile].province
                 && self.map.provinces[province].city_tile() == Some(harvest_tile)
             {
-                for index in ResourceKind::Food as u8..=ResourceKind::Arms as u8 {
-                    let resource =
-                        ResourceKind::from_index(index).expect("manufactured resource index");
+                for resource in ResourceKind::CITY_PRODUCTION {
                     yields[resource] = yields[resource].wrapping_add(
                         self.map.provinces[province].resource_development_by_type()[resource],
                     );
@@ -1058,9 +1056,19 @@ pub(crate) fn extractive_resource(resource: ResourceKind) -> bool {
 }
 
 fn traded_resource(resource: ResourceKind) -> bool {
-    (resource as u8) < ResourceKind::Food as u8
-        || (resource as u8) > ResourceKind::Arms as u8
-            && (resource as u8) < ResourceKind::LENGTH as u8
+    !matches!(
+        resource,
+        ResourceKind::Food
+            | ResourceKind::Fabric
+            | ResourceKind::Lumber
+            | ResourceKind::Paper
+            | ResourceKind::Steel
+            | ResourceKind::Fuel
+            | ResourceKind::Clothing
+            | ResourceKind::Furniture
+            | ResourceKind::Hardware
+            | ResourceKind::Arms
+    )
 }
 
 fn railhead_resource(resource: ResourceKind) -> bool {

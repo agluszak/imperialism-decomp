@@ -38,6 +38,27 @@ impl ResourceKind {
     pub const LENGTH: usize = enum_map::enum_len::<Self>();
     pub const PURCHASED_COUNT: usize = Self::Grain as usize;
 
+    pub const CITY_PRODUCTION: [Self; 10] = [
+        Self::Food,
+        Self::Fabric,
+        Self::Lumber,
+        Self::Paper,
+        Self::Steel,
+        Self::Fuel,
+        Self::Clothing,
+        Self::Furniture,
+        Self::Hardware,
+        Self::Arms,
+    ];
+
+    pub const INDUSTRIAL_RAW: [Self; 5] = [
+        Self::Timber,
+        Self::Coal,
+        Self::Iron,
+        Self::Horses,
+        Self::Oil,
+    ];
+
     pub fn from_index(index: u8) -> Option<Self> {
         (usize::from(index) < Self::LENGTH).then(|| Self::from_usize(usize::from(index)))
     }

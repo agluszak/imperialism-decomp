@@ -76,9 +76,7 @@ impl GameState {
             if let Some(province) = tile.province
                 && self.map.provinces[province].city_tile() == Some(tile_id)
             {
-                for index in ResourceKind::Food as u8..=ResourceKind::Arms as u8 {
-                    let resource = ResourceKind::from_index(index)
-                        .expect("the manufactured resource range is semantic");
+                for resource in ResourceKind::CITY_PRODUCTION {
                     current[resource] = current[resource].wrapping_add(
                         self.map.provinces[province].resource_development_by_type()[resource],
                     );

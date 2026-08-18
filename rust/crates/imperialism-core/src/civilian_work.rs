@@ -507,9 +507,7 @@ impl GameState {
             .into_iter()
             .flatten()
             .map(|resource| {
-                if (resource as u8) < ResourceKind::Grain as u8 {
-                    let commodity = TradeCommodity::from_retail(i16::from(resource as u8))
-                        .expect("manufactured-range resources have market rows");
+                if let Some(commodity) = TradeCommodity::from_resource(resource) {
                     self.market.rows[commodity].price * 20
                 } else if resource == ResourceKind::Gems {
                     10_000

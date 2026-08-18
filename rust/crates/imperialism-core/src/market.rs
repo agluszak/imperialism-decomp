@@ -77,6 +77,34 @@ impl TradeCommodity {
             Self::Arms => ResourceKind::Arms,
         }
     }
+
+    pub const fn from_resource(resource: ResourceKind) -> Option<Self> {
+        match resource {
+            ResourceKind::Cotton => Some(Self::Cotton),
+            ResourceKind::Wool => Some(Self::Wool),
+            ResourceKind::Timber => Some(Self::Timber),
+            ResourceKind::Coal => Some(Self::Coal),
+            ResourceKind::Iron => Some(Self::Iron),
+            ResourceKind::Horses => Some(Self::Horses),
+            ResourceKind::Oil => Some(Self::Oil),
+            ResourceKind::Food => Some(Self::Food),
+            ResourceKind::Fabric => Some(Self::Fabric),
+            ResourceKind::Lumber => Some(Self::Lumber),
+            ResourceKind::Paper => Some(Self::Paper),
+            ResourceKind::Steel => Some(Self::Steel),
+            ResourceKind::Fuel => Some(Self::Fuel),
+            ResourceKind::Clothing => Some(Self::Clothing),
+            ResourceKind::Furniture => Some(Self::Furniture),
+            ResourceKind::Hardware => Some(Self::Hardware),
+            ResourceKind::Arms => Some(Self::Arms),
+            ResourceKind::Grain
+            | ResourceKind::Fruit
+            | ResourceKind::Fish
+            | ResourceKind::Livestock
+            | ResourceKind::Gems
+            | ResourceKind::Gold => None,
+        }
+    }
 }
 
 pub type TradeCommodityTable<T> = EnumMap<TradeCommodity, T>;

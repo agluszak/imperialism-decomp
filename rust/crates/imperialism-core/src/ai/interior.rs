@@ -102,8 +102,7 @@ impl GameState {
             gold,
             AiResourcePolicy::FOR_TRANSPORT,
         );
-        for index in ResourceKind::Food as u8..=ResourceKind::Arms as u8 {
-            let resource = ResourceKind::from_index(index).expect("manufactured resource index");
+        for resource in ResourceKind::CITY_PRODUCTION {
             let current = self.nations.majors[&nation].economy.need_current_by_type[resource];
             self.request_ai_resource(
                 nation,
@@ -604,15 +603,14 @@ impl GameState {
                 .foreign_trade
                 .purchase_priority[TradeCommodity::Cotton] += delta;
         }
-        for index in ResourceKind::Timber as u8..=ResourceKind::Oil as u8 {
-            let resource = ResourceKind::from_index(index).expect("raw trade resource");
+        for resource in ResourceKind::INDUSTRIAL_RAW {
             let delta = self.nations.majors[&nation]
                 .economy
                 .interior_civilian
                 .resource_order_metrics[resource];
             if delta != 0 {
-                let commodity = TradeCommodity::from_retail(i16::from(index))
-                    .expect("raw resource has a trade row");
+                let commodity = TradeCommodity::from_resource(resource)
+                    .expect("industrial raw resource has a trade row");
                 self.nations.majors[&nation]
                     .economy
                     .foreign_trade

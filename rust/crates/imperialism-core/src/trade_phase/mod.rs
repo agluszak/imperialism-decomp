@@ -424,7 +424,7 @@ pub(super) fn offer_or_grant(
 }
 
 pub(super) fn trade_commodity(resource: ResourceKind) -> TradeCommodity {
-    TradeCommodity::from_retail(resource as i16).expect("market commodity")
+    TradeCommodity::from_resource(resource).expect("market commodity")
 }
 
 pub(super) fn resource_code(commodity: Option<TradeCommodity>) -> i16 {
