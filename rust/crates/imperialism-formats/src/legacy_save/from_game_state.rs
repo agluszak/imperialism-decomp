@@ -5,7 +5,12 @@ use enum_map::Enum;
 use imperialism_core::*;
 
 impl LegacySaveV62 {
-    pub fn from_game_state(state: &GameState, label: &str, session_slot: i32) -> Self {
+    pub fn from_game_state(
+        state: &GameState,
+        city_windows: &CityWindowLayout,
+        label: &str,
+        session_slot: i32,
+    ) -> Self {
         let turn = state.turn();
         let loaded_unit_count =
             (state.military_units().len() + state.civilian_units().len()) as i32;
@@ -56,6 +61,7 @@ impl LegacySaveV62 {
                     &missions,
                     pending,
                     state.map().topology,
+                    &city_windows[major_id],
                 ),
             );
         }
@@ -173,6 +179,7 @@ fn major_nation_dto(
     missions: &[MissionState],
     pending: &NationPendingWork,
     topology: MapTopology,
+    city_windows: &ProductionTable<Option<CityWindowPosition>>,
 ) -> LegacyMajorNationState {
     let power = LegacyGreatPowerState {
         country: country_dto(
@@ -183,7 +190,7 @@ fn major_nation_dto(
         ),
         prefix: great_power_prefix_dto(&nation.economy, pending),
         ministers: ministers_dto(&nation.economy),
-        city: Some(city_dto(&nation.city)),
+        city: Some(city_dto(&nation.city, city_windows)),
         post_city: post_city_dto(&nation.economy, &nation.towns, civilians, topology),
     };
     match &nation.auto {
@@ -448,10 +455,13 @@ fn ministers_dto(economy: &GreatPowerState) -> LegacyGreatPowerMinisters {
     }
 }
 
-fn city_dto(city: &CityState) -> LegacyCityState {
+fn city_dto(
+    city: &CityState,
+    city_windows: &ProductionTable<Option<CityWindowPosition>>,
+) -> LegacyCityState {
     let orders = &city.orders;
     let (production_flags, production_current, production_progress) =
-        city_windows_to_retail(&city.building_windows);
+        city_windows_to_retail(city_windows);
     LegacyCityState {
         power_plant_upgrade_queued: u8::from(city.power_plant_upgrade_queued),
         low_production: u8::from(city.low_production),
@@ -1272,7 +1282,7 @@ fn army_reports_from_state(state: &GameState) -> Vec<LegacyBattleReport> {
         .iter()
         .map(|report| LegacyBattleReport {
             participant_index: report.participant.retail(),
-            displayed_participant: report.displayed_participant.retail(),
+            displayed_participant: BattleReportSideSlot::Left.retail(),
             kind: report.kind.retail(),
             node_id: match report.location {
                 BattleReportLocation::Province(province) => province.get() as i16,

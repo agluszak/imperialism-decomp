@@ -333,7 +333,7 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_plugins(StatesPlugin)
-            .insert_resource(GameSession { game: state })
+            .insert_resource(GameSession::new(state))
             .insert_state(AppState::LandBattle)
             .add_systems(
                 OnEnter(AppState::LandBattle),

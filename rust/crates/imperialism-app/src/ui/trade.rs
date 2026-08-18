@@ -1010,7 +1010,7 @@ mod tests {
             StatesPlugin,
         ))
         .insert_state(AppState::Trade)
-        .insert_resource(GameSession { game: state })
+        .insert_resource(GameSession::new(state))
         .add_systems(
             Update,
             (bind_test_trade, sync_trade_visual, sync_trade_presence).chain(),

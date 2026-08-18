@@ -568,11 +568,6 @@ impl LegacyCityState {
             stockpile: Stockpile::from_table(ResourceTable::from_array(self.stockpile)),
             production_orders: ProductionTable::from_array(self.production_orders),
             production_accum: ProductionTable::from_array(self.production_accum),
-            building_windows: city_windows_from_retail(
-                self.production_flags,
-                self.production_current,
-                self.production_progress,
-            ),
             // This constructed cache is not persisted by TCity::ReadFrom.
             population_growth_penalty_ticks: 0,
             unmet_resource_retries: ResourceTable::from_array(self.unmet_resource_retries),
@@ -746,7 +741,6 @@ fn diplomacy_state(diplomacy: &LegacyDiplomacyState) -> DiplomacyState {
         ),
         // The retail constructor restores both values before ReadFrom consumes the payload.
         last_processed_nation: None,
-        proposal_rejection: None,
     }
 }
 
@@ -839,6 +833,23 @@ fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
 }
 
 impl LegacySaveV62 {
+    pub fn city_window_layout(&self) -> CityWindowLayout {
+        MajorNationTable::from_fn(|nation| {
+            let Some(city) = self
+                .major_nations
+                .get(&nation)
+                .and_then(|state| state.great_power().city.as_ref())
+            else {
+                return ProductionTable::default();
+            };
+            city_windows_from_retail(
+                city.production_flags,
+                city.production_current,
+                city.production_progress,
+            )
+        })
+    }
+
     /// Projects persistable save fields into construction parts. Runtime-only RNG and
     /// selection state must be supplied because the retail stream does not contain them.
     pub fn game_state_parts(&self, context: LegacyGameStateContext) -> GameStateParts {
@@ -1623,9 +1634,6 @@ fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
             let [left, right] = &report.sides;
             Some(BattleReport {
                 participant: BattleReportSideSlot::from_retail(report.participant_index)?,
-                displayed_participant: BattleReportSideSlot::from_retail(
-                    report.displayed_participant,
-                )?,
                 kind,
                 location,
                 sides: BattleReportSideTable::from_array([left, right].map(|side| {

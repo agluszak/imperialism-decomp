@@ -202,10 +202,9 @@ pub(in crate::ui::city) fn restore_city_dialogs(
         return;
     }
     let nation = session.active_major_nation();
-    let city = &session.game.nations().major(nation).city;
     let mut next_z = 1;
     for slot in (0..enum_map::enum_len::<CityFacilitySlot>()).map(CityFacilitySlot::from_usize) {
-        let state = city.building_windows[slot];
+        let state = session.city_windows[nation][slot];
         let Some(position) = state else {
             continue;
         };
@@ -247,7 +246,7 @@ pub(in crate::ui::city) fn leave_city_screen(
                 .expect("City window coordinate fits retail short storage"),
         });
     }
-    session.game.set_city_building_windows(nation, positions);
+    session.city_windows[nation] = positions;
 }
 
 pub(in crate::ui::city) fn on_city_dialog_pressed(

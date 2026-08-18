@@ -6,8 +6,8 @@ mod ui;
 use bevy::input_focus::tab_navigation::TabNavigationPlugin;
 use bevy::prelude::*;
 use bevy::window::WindowPlugin;
-use imperialism_core::{GameState, RandomGameNames};
-use imperialism_formats::RetailAssets;
+use imperialism_core::RandomGameNames;
+use imperialism_formats::{LoadedGame, RetailAssets};
 use std::path::PathBuf;
 
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, PartialEq, States)]
@@ -110,7 +110,7 @@ fn add_game_plugins(app: &mut App) {
 
 pub fn run(
     retail_assets: RetailAssets,
-    initial_game: Option<GameState>,
+    initial_game: Option<LoadedGame>,
     save_directory: PathBuf,
 ) -> anyhow::Result<()> {
     let random_game_names = retail_assets.random_game_names()?;
@@ -129,13 +129,13 @@ pub fn run(
                 ..default()
             }),
     );
-    if let Some(game) = initial_game {
+    if let Some(loaded) = initial_game {
         assert_eq!(
-            game.turn().phase(),
+            loaded.game.turn().phase(),
             imperialism_core::PhaseCode::STRATEGIC_MAP,
             "Bevy may only start from a strategic-map core phase"
         );
-        app.insert_resource(ui::GameSession { game })
+        app.insert_resource(ui::GameSession::from_loaded(loaded))
             .insert_state(AppState::StrategicMap);
     } else {
         app.insert_state(AppState::OpeningCinematic);

@@ -392,7 +392,7 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_plugins(StatesPlugin)
-            .insert_resource(GameSession { game: state })
+            .insert_resource(GameSession::new(state))
             .insert_state(AppState::OfferSheet)
             .add_systems(OnEnter(AppState::OfferSheet), enter_offer_sheet_phase)
             .add_systems(

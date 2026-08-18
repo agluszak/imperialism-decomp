@@ -875,7 +875,6 @@ mod tests {
         let mut state = game_state();
         state.append_battle_report(BattleReport {
             participant: BattleReportSideSlot::Right,
-            displayed_participant: BattleReportSideSlot::Left,
             kind: BattleReportKind::LandBattle,
             location: BattleReportLocation::Province(ProvinceId::new(4)),
             sides: BattleReportSideTable::from_array([

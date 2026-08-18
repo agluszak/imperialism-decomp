@@ -3,7 +3,6 @@
 use crate::combat_moves::{set_unit_order, stationed_chain_ids};
 use crate::military_phase::tactical_category;
 use crate::*;
-use enum_map::{Enum, EnumMap};
 
 const UNIT_ORDER_IDLE: MilitaryOrderCode = MilitaryOrderCode::Idle;
 const UNIT_ORDER_REDEPLOY: MilitaryOrderCode = MilitaryOrderCode::Redeploy;
@@ -37,7 +36,7 @@ impl ArmyIdleOrderMode {
 }
 
 /// `TArmyMgr::ComputeMapCursorStateIndex` / `ComputeCivilianMapCursorStateIndex` results.
-#[derive(Clone, Copy, Debug, Enum, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 #[repr(i32)]
 pub enum ArmyMapCursorState {
     None = 0,
@@ -80,20 +79,6 @@ impl ArmyMapCursorState {
             _ => return None,
         })
     }
-
-    /// `g_mapCursorTokenByStateIndex_00695668` (`LookupMapCursorTokenByStateIndex`).
-    pub fn unselected_cursor_token(self) -> u16 {
-        const TOKENS: EnumMap<ArmyMapCursorState, u16> =
-            EnumMap::from_array([0, 0, 1000, 0, 0, 0, 1011, 1011, 1010]);
-        TOKENS[self]
-    }
-
-    /// `g_civilianMapCursorTokenByStateIndex_00695680`.
-    pub fn selected_cursor_token(self) -> u16 {
-        const TOKENS: EnumMap<ArmyMapCursorState, u16> =
-            EnumMap::from_array([0, 1008, 1000, 1005, 1006, 1007, 1011, 1011, 1010]);
-        TOKENS[self]
-    }
 }
 
 /// `TArmyToolbar::SetProvince` category totals and available (idle) counts.
@@ -102,30 +87,6 @@ pub struct ArmyToolbarCounts {
     pub totals: ArmyCategoryTable<i32>,
     pub available: ArmyCategoryTable<i32>,
     pub can_upgrade: bool,
-}
-
-impl ArmyToolbarCounts {
-    pub fn placard_picture_id(
-        self,
-        nation: MajorNationId,
-        state: &GameState,
-        category: ArmyUnitCategory,
-    ) -> i16 {
-        let kind = state.technology().selected_capability_slots[nation][category];
-        let mut picture = kind.army_placard_picture_id();
-        if self.totals[category] <= 0 {
-            picture += 0x1e;
-        }
-        picture
-    }
-
-    pub fn garrison_picture_id(self) -> i16 {
-        if self.can_upgrade { 0x24d5 } else { 0x04b5 }
-    }
-
-    pub fn arrow_visible(self, category: ArmyUnitCategory) -> bool {
-        self.totals[category] != 0 && category != ArmyUnitCategory::Garrison
-    }
 }
 
 /// Outcome of `SelectMovableUnitOnCurrentTileAndPlaySfx` / sea-lift validation.
@@ -931,8 +892,6 @@ mod tests {
         assert_eq!(counts.totals[ArmyUnitCategory::Garrison], 1);
         assert_eq!(counts.available[ArmyUnitCategory::Garrison], 1);
         assert_eq!(counts.totals[ArmyUnitCategory::LightCavalry], 0);
-        assert!(!counts.arrow_visible(ArmyUnitCategory::Garrison));
-        assert!(counts.arrow_visible(ArmyUnitCategory::LineInfantry));
     }
 
     #[test]

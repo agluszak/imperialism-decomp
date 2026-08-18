@@ -49,7 +49,6 @@ pub(crate) fn city() -> CityState {
         stockpile: crate::Stockpile::default(),
         production_orders: ProductionTable::default(),
         production_accum: ProductionTable::default(),
-        building_windows: ProductionTable::default(),
         population_growth_penalty_ticks: 0,
         unmet_resource_retries: ResourceTable::default(),
         consumed_production_input_by_type: ResourceTable::default(),

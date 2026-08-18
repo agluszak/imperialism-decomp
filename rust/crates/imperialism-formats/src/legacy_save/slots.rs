@@ -1,5 +1,5 @@
 use super::{ACTIVE_NATION_NAME_LENGTH, SAVE_LABEL_LENGTH};
-use super::{LegacyGameStateContext, LegacySaveV62};
+use super::{CityWindowLayout, LegacyGameStateContext, LegacySaveV62, LoadedGame};
 use imperialism_core::{GameState, PhaseCode, STRATEGIC_TILE_COUNT, TileOwnerTag};
 use std::fs::OpenOptions;
 use std::io::{self, Write};
@@ -208,7 +208,7 @@ pub fn write_save_file(
 pub fn load_game_from_bytes(
     bytes: &[u8],
     context: LegacyGameStateContext,
-) -> Result<GameState, LoadGameError> {
+) -> Result<LoadedGame, LoadGameError> {
     if bytes.len() < 8 {
         return Err(LoadGameError::Truncated);
     }
@@ -230,9 +230,12 @@ pub fn load_game_from_bytes(
     if save.has_transport_requests() {
         return Err(LoadGameError::UnsupportedTransportRequests);
     }
+    let city_windows = save.city_window_layout();
     let game = save.game_state(context);
     match game.turn().phase() {
-        PhaseCode::STRATEGIC_MAP | PhaseCode::CAPITAL_SELECTION => Ok(game),
+        PhaseCode::STRATEGIC_MAP | PhaseCode::CAPITAL_SELECTION => {
+            Ok(LoadedGame { game, city_windows })
+        }
         phase => Err(LoadGameError::UnsupportedPhase { phase }),
     }
 }
@@ -240,13 +243,18 @@ pub fn load_game_from_bytes(
 pub fn load_game_from_path(
     path: impl AsRef<Path>,
     context: LegacyGameStateContext,
-) -> Result<GameState, LoadGameError> {
+) -> Result<LoadedGame, LoadGameError> {
     let bytes = std::fs::read(path)?;
     load_game_from_bytes(&bytes, context)
 }
 
-pub fn write_game_state(state: &GameState, label: &str, session_slot: i32) -> Vec<u8> {
-    LegacySaveV62::from_game_state(state, label, session_slot).to_bytes()
+pub fn write_game_state(
+    state: &GameState,
+    city_windows: &CityWindowLayout,
+    label: &str,
+    session_slot: i32,
+) -> Vec<u8> {
+    LegacySaveV62::from_game_state(state, city_windows, label, session_slot).to_bytes()
 }
 
 fn fixed_text(bytes: &[u8]) -> String {

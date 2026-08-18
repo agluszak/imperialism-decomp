@@ -3,7 +3,7 @@
 use anyhow::Context;
 use clap::Parser;
 use imperialism_core::NationId;
-use imperialism_formats::{LegacyGameStateContext, LegacySaveV62, RetailAssets};
+use imperialism_formats::{LegacyGameStateContext, LegacySaveV62, LoadedGame, RetailAssets};
 use std::path::PathBuf;
 
 #[derive(Debug, Parser)]
@@ -37,7 +37,9 @@ fn main() -> anyhow::Result<()> {
                 .ok()
                 .and_then(NationId::try_new)
                 .context("selected nation is outside the retail nation range")?;
-            let game = LegacySaveV62::parse(&bytes).game_state(LegacyGameStateContext {
+            let save = LegacySaveV62::parse(&bytes);
+            let city_windows = save.city_window_layout();
+            let game = save.game_state(LegacyGameStateContext {
                 crt_rand_state: context[0],
                 map_generation_lcg: context[1],
                 zone_status_lcg: context[2],
@@ -48,7 +50,7 @@ fn main() -> anyhow::Result<()> {
                 "loaded save is in unsupported phase {:?}; only strategic-map saves can start the app",
                 game.turn().phase()
             );
-            Some(game)
+            Some(LoadedGame { game, city_windows })
         }
         (None, None) => None,
         _ => unreachable!("clap enforces the paired load-save and game-state arguments"),

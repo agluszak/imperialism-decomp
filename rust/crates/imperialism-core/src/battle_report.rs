@@ -115,7 +115,6 @@ pub type BattleReportSideTable<T> = EnumMap<BattleReportSideSlot, T>;
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct BattleReport {
     pub participant: BattleReportSideSlot,
-    pub displayed_participant: BattleReportSideSlot,
     pub kind: BattleReportKind,
     pub location: BattleReportLocation,
     pub sides: BattleReportSideTable<BattleReportSide>,
@@ -157,7 +156,6 @@ impl GameState {
             } else {
                 BattleReportSideSlot::Right
             },
-            displayed_participant: BattleReportSideSlot::Left,
             kind,
             location: BattleReportLocation::Province(province),
             sides: BattleReportSideTable::from_array([attacker_side, defender_side]),
