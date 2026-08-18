@@ -9,10 +9,9 @@
 use crate::random_map_terrain::GeneratedTerrainTileScratch;
 use crate::{
     HexDirection, MapGeometry, OceanRoute, OceanZoneId, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH,
-    TileId,
+    TerrainKind, TileId,
 };
 
-const WATER: i8 = 5;
 const SEA_OWNER_BIAS: i32 = 0x17;
 const OVERLAY_WIDTH: i32 = 0xd8;
 const MERGE_SIZE_THRESHOLD: i32 = 0x20;
@@ -264,7 +263,7 @@ fn city_region_count(tiles: &[GeneratedTerrainTileScratch]) -> i32 {
 }
 
 fn water_region_id(tile: &GeneratedTerrainTileScratch) -> i32 {
-    if tile.terrain_kind != WATER {
+    if tile.terrain_kind != TerrainKind::Water {
         return -1;
     }
     i32::from(tile.owner_nation as u8) - SEA_OWNER_BIAS
@@ -579,7 +578,7 @@ mod tests {
 
     fn water_tile(region: i32) -> GeneratedTerrainTileScratch {
         GeneratedTerrainTileScratch {
-            terrain_kind: WATER,
+            terrain_kind: TerrainKind::Water,
             river_sprite_code: 0,
             owner_nation: (region + SEA_OWNER_BIAS) as i8,
             gate_flag: -1,
@@ -589,7 +588,7 @@ mod tests {
 
     fn land_tile(owner: i8) -> GeneratedTerrainTileScratch {
         GeneratedTerrainTileScratch {
-            terrain_kind: 0,
+            terrain_kind: TerrainKind::Plains,
             river_sprite_code: 0,
             owner_nation: owner,
             gate_flag: -1,

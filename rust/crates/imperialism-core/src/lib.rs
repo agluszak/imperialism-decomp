@@ -112,7 +112,8 @@ pub use ids::{
 };
 pub use map::{
     DevelopmentLevel, MapEdges, MapMgr, RegionId, RiverSegment, RiverSprite, TerrainKind,
-    TileAction, TileDevelopment, TileFlags, TileRendering, TileState, TileTransportLinks,
+    TerrainKindTable, TileAction, TileDevelopment, TileFlags, TileRendering, TileState,
+    TileTransportLinks,
 };
 pub use map_geometry::{
     HexDirection, HexDirectionTable, MapGeometry, MapTopology, STRATEGIC_MAP_HEIGHT,

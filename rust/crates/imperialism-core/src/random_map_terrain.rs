@@ -3,20 +3,16 @@ use crate::random_map::trace_coarse_random_map;
 use crate::random_map::{CoarseMap, generate_coarse_random_map};
 use crate::{
     EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, MapGeometry, MapTopology, OceanRoute, OceanZoneId,
-    ProvinceId, RANDOM_MAP_CLASS_COUNT, RetailCrtRng, RetailLcg, RiverSegment, TerrainKind, TileId,
-    TileOwnerTag, hash_retail_scenario_tag,
+    ProvinceId, RANDOM_MAP_CLASS_COUNT, RetailCrtRng, RetailLcg, RiverSegment, TerrainKind,
+    TerrainKindTable, TileId, TileOwnerTag, hash_retail_scenario_tag,
 };
 use serde::{Deserialize, Deserializer, Serialize};
 
 const TILE_COUNT: usize = EXPANDED_MAP_WIDTH * EXPANDED_MAP_HEIGHT;
-const PLAINS: i8 = 0;
-const FOREST: i8 = 1;
-const HILLS: i8 = 2;
-const MOUNTAIN: i8 = 3;
-const SWAMP: i8 = 4;
-const WATER: i8 = 5;
-const DESERT: i8 = 6;
-const FARMLAND: i8 = 7;
+use TerrainKind::{
+    Desert as DESERT, Farmland as FARMLAND, Forest as FOREST, Hills as HILLS, Mountain as MOUNTAIN,
+    Plains as PLAINS, Swamp as SWAMP, Water as WATER,
+};
 const RIVER_CONNECTION: [[u8; 6]; 6] = [
     [0, 0, 1, 2, 3, 0],
     [0, 0, 0, 4, 5, 6],
@@ -115,9 +111,9 @@ impl RandomMapTuning {
     }
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) struct GeneratedTerrainTileScratch {
-    pub terrain_kind: i8,
+    pub terrain_kind: TerrainKind,
     pub river_sprite_code: u8,
     pub owner_nation: i8,
     pub gate_flag: i8,
@@ -562,7 +558,7 @@ fn summarize_stage_with_water_ownership(
     include_water_ownership: bool,
 ) -> RandomMapTerrainStageTrace {
     let mut tile_hash = 0x811c_9dc5_u32;
-    let mut terrain_counts = [0_u32; 8];
+    let mut terrain_counts = TerrainKindTable::default();
     let mut river_tile_count = 0;
     for tile in tiles {
         let owner = if include_water_ownership || tile.terrain_kind != WATER {
@@ -577,7 +573,7 @@ fn summarize_stage_with_water_ownership(
         };
         let province = province_index.to_le_bytes();
         for byte in [
-            tile.terrain_kind as u8,
+            tile.terrain_kind.retail() as u8,
             tile.river_sprite_code,
             owner as u8,
             tile.gate_flag as u8,
@@ -586,11 +582,7 @@ fn summarize_stage_with_water_ownership(
         ] {
             tile_hash = (tile_hash ^ u32::from(byte)).wrapping_mul(0x0100_0193);
         }
-        if let Ok(terrain) = usize::try_from(tile.terrain_kind)
-            && let Some(count) = terrain_counts.get_mut(terrain)
-        {
-            *count += 1;
-        }
+        terrain_counts[tile.terrain_kind] += 1;
         if tile.river_sprite_code != 0 {
             river_tile_count += 1;
         }
@@ -598,7 +590,7 @@ fn summarize_stage_with_water_ownership(
     RandomMapTerrainStageTrace {
         map_lcg,
         tile_hash,
-        terrain_counts,
+        terrain_counts: terrain_counts.into_array(),
         river_tile_count,
     }
 }
@@ -1060,8 +1052,7 @@ fn grow_river(
 
 fn normalize_generated_tile(tile: GeneratedTerrainTileScratch) -> GeneratedTerrainTile {
     GeneratedTerrainTile {
-        terrain: TerrainKind::from_retail(tile.terrain_kind)
-            .expect("accepted generator terrain is semantic"),
+        terrain: tile.terrain_kind,
         river: RiverSegment::from_connection_code(tile.river_sprite_code),
         owner: u8::try_from(tile.owner_nation).ok().map(TileOwnerTag::new),
         gate: (tile.gate_flag != -1).then_some(GenerationGate(tile.gate_flag)),
@@ -1279,9 +1270,9 @@ fn apply_scenario_keyword_override(
     rng: &mut RetailLcg,
 ) {
     enum Override {
-        Ninety(i8, Option<i8>),
+        Ninety(TerrainKind, Option<i8>),
         Mirkwood,
-        Eighty(i8),
+        Eighty(TerrainKind),
         Eclectia,
     }
     let override_kind = if keyword_matches(tag, b"Dune") {
@@ -1313,12 +1304,14 @@ fn apply_scenario_keyword_override(
         return;
     };
     for tile in tiles {
-        let bucket = {
-            let mut value = tile.owner_nation % 7;
-            if value > 4 {
-                value += 1;
-            }
-            value
+        let bucket = match tile.owner_nation % 7 {
+            0 => PLAINS,
+            1 => FOREST,
+            2 => HILLS,
+            3 => MOUNTAIN,
+            4 => SWAMP,
+            5 => DESERT,
+            _ => FARMLAND,
         };
         if tile.terrain_kind == WATER {
             continue;

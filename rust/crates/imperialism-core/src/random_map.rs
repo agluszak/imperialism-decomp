@@ -1,4 +1,4 @@
-use crate::RetailLcg;
+use crate::{RetailLcg, TerrainKind};
 use serde::{Deserialize, Serialize};
 
 pub const COARSE_MAP_WIDTH: usize = 27;
@@ -10,8 +10,6 @@ pub const EXPANDED_MAP_HEIGHT: usize = 60;
 
 const UNASSIGNED: i8 = -1;
 const DISCONNECTED_OCEAN: i8 = 100;
-const PLAINS: i8 = 0;
-const WATER: i8 = 5;
 const COLUMN_OFFSETS_EVEN: [i32; 6] = [1, 1, 1, 0, -1, 0];
 const COLUMN_OFFSETS_ODD: [i32; 6] = [0, 1, 0, -1, -1, -1];
 const ROW_OFFSETS: [i32; 6] = [-1, 0, 1, 1, 0, -1];
@@ -40,7 +38,7 @@ impl CoarseMapGrid {
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub(crate) struct ExpandedMapSeedTile {
-    pub(crate) terrain_kind: i8,
+    pub(crate) terrain_kind: TerrainKind,
     pub(crate) owner_nation: i8,
     pub(crate) province_index: i16,
 }
@@ -68,7 +66,7 @@ impl CoarseMap {
     ) -> (Vec<ExpandedMapSeedTile>, Vec<ExpandedProvinceSeed>) {
         let mut tiles = vec![
             ExpandedMapSeedTile {
-                terrain_kind: WATER,
+                terrain_kind: TerrainKind::Water,
                 owner_nation: -1,
                 province_index: -1,
             };
@@ -80,14 +78,14 @@ impl CoarseMap {
                 self.grid.cells[coarse_index / COARSE_MAP_WIDTH][coarse_index % COARSE_MAP_WIDTH];
             let (terrain_kind, owner_nation, province_index) =
                 if class == UNASSIGNED || class == DISCONNECTED_OCEAN {
-                    (WATER, -1, -1)
+                    (TerrainKind::Water, -1, -1)
                 } else {
                     let province_index = provinces.len() as i16;
                     provinces.push(ExpandedProvinceSeed {
                         owner_nation: class,
                         region_class: self.region_classes[class as usize],
                     });
-                    (PLAINS, class, province_index)
+                    (TerrainKind::Plains, class, province_index)
                 };
             let coarse_row = coarse_index / COARSE_MAP_WIDTH;
             let coarse_column = coarse_index % COARSE_MAP_WIDTH;
