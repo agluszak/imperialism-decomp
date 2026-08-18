@@ -6,7 +6,7 @@
 #include "game/turn_event_codes.h"
 #include "game/ImperialismApp.h"
 #include "game/gfx/TBackdropWindow.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/gfx/TTemplateDialogs.h"
 #include "game/city_ui/TCountry.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -95,7 +95,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     return -1;
   }
   CreateBackdropWindowIfSplashEnabled(this);
-  field_BC = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();
+  field_BC = g_pResourceMgr->EnsureDefaultDibPalette();
   OnQueryNewPalette();
   return 0;
 }
@@ -189,7 +189,7 @@ CDibPal* CMainFrame::ReplacePaletteAndRealize(CDibPal* palette) {
 
 // FUNCTION: IMPERIALISM 0x00485180
 void CMainFrame::OnCommand8009() {
-  field_BC = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();
+  field_BC = g_pResourceMgr->EnsureDefaultDibPalette();
   OnQueryNewPalette();
 }
 
@@ -310,7 +310,7 @@ COLORREF CMainFrame::SetBackgroundColorAndInvalidate(COLORREF color) {
 // FUNCTION: IMPERIALISM 0x004859d0
 BOOL CMainFrame::OnEraseBkgnd(CDC* pDC) {
   if (m_backgroundColor != kTiledBackdropSentinelColor) {
-    g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(pDC, FALSE);
+    g_pResourceMgr->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(pDC, FALSE);
     RECT solidRect;
     GetClientRect(&solidRect);
     pDC->FillSolidRect(&solidRect, m_backgroundColor);

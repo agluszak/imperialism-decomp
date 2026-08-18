@@ -31,7 +31,7 @@
 #include "game/quickdraw_guards.h"
 #include "game/gfx/CTemporaryRegion.h"
 #include "game/gfx/quickdraw_regions.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/gfx/CDib.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -95,7 +95,7 @@ void TCityProductionView::DoPostCreate(int arg) {
     TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
     TCity* city = (nation != 0) ? nation->city : 0;
     short level = city->GetNextBuildingType(slot);
-    CDib* bitmap = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(
+    CDib* bitmap = g_pResourceMgr->LoadBmpResourceByIdCached(
         static_cast<unsigned short>(level * 0x10 + 0x1bbc + slot));
     POINT* outlinePolygon = bitmap->BuildNonTransparentOutlinePolygon(0xffffffff);
     buildingClipRegionsEC[slot] = NewRgn();
@@ -103,7 +103,7 @@ void TCityProductionView::DoPostCreate(int arg) {
     HRGN polygonRegion = ::CreatePolygonRgn(outlinePolygon + 1, outlinePolygon[0].x, WINDING);
     (*buildingClipRegionsEC[slot])->rgn.Attach(polygonRegion);
     delete[] outlinePolygon;
-    g_pModuleLibraryCacheState->ReleaseRecordByHandle(bitmap);
+    g_pResourceMgr->ReleaseRecordByHandle(bitmap);
 
     short x = g_anCityBuildingSlotCoords[g_nCityBuildingSlotXOffsetIndex + slot * 2];
     short y = g_anCityBuildingSlotCoords[g_nCityBuildingSlotYOffsetIndex + slot * 2];

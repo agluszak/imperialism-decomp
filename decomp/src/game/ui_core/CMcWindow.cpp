@@ -4,7 +4,7 @@
 #include "game/ImperialismApp.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_core/TControl.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/ui_core/TUiEvent.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TWindow.h"
@@ -254,13 +254,13 @@ HBRUSH CMcWindow::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
     TControl* control = static_cast<TControl*>(
         PointerFromAddressLong32(::GetWindowLong(controlWindow, GWL_USERDATA)));
     if (control != NULL) {
-      g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(pDC, FALSE);
+      g_pResourceMgr->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(pDC, FALSE);
       pDC->SetBkColor(0x000000ff);
       unsigned int packedTextColor =
           control->stylePayload48 != NULL
               ? static_cast<unsigned int>(control->stylePayload48->styleWord)
               : static_cast<unsigned int>(control->textStyle78.textColor);
-      pDC->SetTextColor(g_pModuleLibraryCacheState->ResolvePaletteIndexColor(packedTextColor));
+      pDC->SetTextColor(g_pResourceMgr->ResolvePaletteIndexColor(packedTextColor));
     }
   }
   pDC->SetBkMode(TRANSPARENT);

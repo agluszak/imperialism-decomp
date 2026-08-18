@@ -1431,29 +1431,29 @@ address|name|symbol|size|type|prototype|provenance
 498e00|TQuickDrawPaletteSelectionState::SelectDefaultDibPalette||31|function|TQuickDrawPaletteSelectionState* SelectDefaultDibPalette()|
 498e30|TQuickDrawPaletteSelectionState::SelectDefaultDibPalette||39|function|TQuickDrawPaletteSelectionState* SelectDefaultDibPalette(CDC* dc)|
 498f10|TQuickDrawOwnedObjectRecord::~TQuickDrawOwnedObjectRecord||15|function|void ~TQuickDrawOwnedObjectRecord()|
-498f60|TModuleLibraryCacheTableStateB::TModuleLibraryCacheTableStateB||87|function|undefined TModuleLibraryCacheTableStateB()|
-498fe0|TModuleLibraryCacheTableStateB::~TModuleLibraryCacheTableStateB||527|function|undefined ~TModuleLibraryCacheTableStateB()|
-499280|TModuleLibraryCacheTableStateB::NoOpRetailCacheHook||1|function|void NoOpRetailCacheHook()|
-4992a0|TModuleLibraryCacheTableStateB::LoadModuleLibrarySlotWithErrorDialog||174|function|undefined LoadModuleLibrarySlotWithErrorDialog()|
-499380|TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog||143|function|undefined LoadPrimaryDataLibraryWithErrorDialog()|
-499440|TModuleLibraryCacheTableStateB::LoadUiStringResourceById||91|function|undefined4 LoadUiStringResourceById(class CString * out, unsigned int stringId)|
+498f60|TResourceMgr::TResourceMgr||87|function|undefined TResourceMgr()|
+498fe0|TResourceMgr::~TResourceMgr||527|function|undefined ~TResourceMgr()|
+499280|TResourceMgr::NoOpRetailCacheHook||1|function|void NoOpRetailCacheHook()|
+4992a0|TResourceMgr::LoadModuleLibrarySlotWithErrorDialog||174|function|undefined LoadModuleLibrarySlotWithErrorDialog()|
+499380|TResourceMgr::LoadPrimaryDataLibraryWithErrorDialog||143|function|undefined LoadPrimaryDataLibraryWithErrorDialog()|
+499440|TResourceMgr::LoadUiStringResourceById||91|function|undefined4 LoadUiStringResourceById(class CString * out, unsigned int stringId)|
 4994c0|LoadUiStringResourceByGroupAndIndex||170|function|undefined LoadUiStringResourceByGroupAndIndex()|
-4995a0|TModuleLibraryCacheTableStateB::ResolveDefaultLogPalette||9|function|LOGPALETTE* TModuleLibraryCacheTableStateB::ResolveDefaultLogPalette()|
-4995c0|TModuleLibraryCacheTableStateB::EnsureDefaultDibPalette||429|function|undefined EnsureDefaultDibPalette()|
-4997e0|TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached||678|function|CDib * LoadBmpResourceByIdCached(unsigned short bmpId)|
-499b40|TModuleLibraryCacheTableStateB::BuildIndexedBmpResourceById||642|function|CDib * BuildIndexedBmpResourceById(short bmpId, int width, int height, int patternMode)|
-499e80|TModuleLibraryCacheTableStateB::RetainOrRegisterObject||434|function|void __thiscall RetainOrRegisterObject(short id, CObject * object)|curated
+4995a0|TResourceMgr::ResolveDefaultLogPalette||9|function|LOGPALETTE* TResourceMgr::ResolveDefaultLogPalette()|
+4995c0|TResourceMgr::EnsureDefaultDibPalette||429|function|undefined EnsureDefaultDibPalette()|
+4997e0|TResourceMgr::LoadBmpResourceByIdCached||678|function|CDib * LoadBmpResourceByIdCached(unsigned short bmpId)|
+499b40|TResourceMgr::BuildIndexedBmpResourceById||642|function|CDib * BuildIndexedBmpResourceById(short bmpId, int width, int height, int patternMode)|
+499e80|TResourceMgr::RetainOrRegisterObject||434|function|void __thiscall RetainOrRegisterObject(short id, CObject * object)|curated
 49a0b0|IncrementDialogResourceRefCountByShortIdInRegistry||70|function|undefined IncrementDialogResourceRefCountByShortIdInRegistry()|
-49a120|TModuleLibraryCacheTableStateB::IncrementRecordRefCountByHandleOrRecord||67|function|void IncrementRecordRefCountByHandleOrRecord(CacheRecord* recordOrHandle)|
-49a190|TModuleLibraryCacheTableStateB::ReleaseRecordById||395|function|void ReleaseRecordById(short id)|
-49a390|TModuleLibraryCacheTableStateB::ReleaseRecordByHandle||400|function|undefined ReleaseRecordByHandle()|
+49a120|TResourceMgr::IncrementRecordRefCountByHandleOrRecord||67|function|void IncrementRecordRefCountByHandleOrRecord(CacheRecord* recordOrHandle)|
+49a190|TResourceMgr::ReleaseRecordById||395|function|void ReleaseRecordById(short id)|
+49a390|TResourceMgr::ReleaseRecordByHandle||400|function|undefined ReleaseRecordByHandle()|
 49a590|LoadLocalizedStringByGroupAndIndexToSharedRef||234|function|undefined LoadLocalizedStringByGroupAndIndexToSharedRef()|
 49a6c0|TToolBarCluster::LoadStringOrThrow||227|function|undefined4 __thiscall LoadStringOrThrow(undefined4 this_ptr, int return_value, int string_table_index)|
 49a7f0|FilterStringByCharacterTypeFlag4AndAppend||220|function|undefined FilterStringByCharacterTypeFlag4AndAppend()|
 49a910|renderTemplateOrExpandTokens||326|function|undefined4 __stdcall renderTemplateOrExpandTokens(undefined4 ctx_or_stream, undefined4 result_or_handle, undefined4 input_str_arg)|
-49aac0|TModuleLibraryCacheTableStateB::LoadPaletteResourceByName||205|function|BOOL LoadPaletteResourceByName(CPalette* palette, LPCSTR resourceName)|
-49abd0|TModuleLibraryCacheTableStateB::LoadPaletteResource||198|function|BOOL LoadPaletteResource(CPalette* palette, unsigned long resourceId)|
-49ace0|TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor||69|function|ulong __thiscall ResolvePaletteIndexColor(uint packedColor)|
+49aac0|TResourceMgr::LoadPaletteResourceByName||205|function|BOOL LoadPaletteResourceByName(CPalette* palette, LPCSTR resourceName)|
+49abd0|TResourceMgr::LoadPaletteResource||198|function|BOOL LoadPaletteResource(CPalette* palette, unsigned long resourceId)|
+49ace0|TResourceMgr::ResolvePaletteIndexColor||69|function|ulong __thiscall ResolvePaletteIndexColor(uint packedColor)|
 49ad50|CMap<short,short,CacheRecord*,CacheRecord*>::RemoveKey|?RemoveKey@?$CMap@FFPAUCacheRecord@@PAU1@@@QAEHF@Z|171|function|int RemoveKey(short key)|curated
 49ae30|CMap<short,short,CacheRecord*,CacheRecord*>::~CMap|??1?$CMap@FFPAUCacheRecord@@PAU1@@@UAE@XZ|132|function|void ~CMap()|curated
 49aef0|CMap<short,short,CacheRecord*,CacheRecord*>::Serialize|?Serialize@?$CMap@FFPAUCacheRecord@@PAU1@@@UAEXAAVCArchive@@@Z|522|function|void Serialize(CArchive& archive)|curated
@@ -10151,7 +10151,7 @@ address|name|symbol|size|type|prototype|provenance
 69be08|afxDataNil|||global||xref_oracle
 6a1344|g_pAmbitApplication|||global||
 6a1348|g_pImperialismApp|||global||
-6a134c|g_pModuleLibraryCacheState|||global||
+6a134c|g_pResourceMgr|||global||
 6a1350|g_nStartupAutoResolutionMode|||global||
 6a1354|g_pfnPreviousNewHandler|||global||
 6a1358|g_pAmbitDeveloperAssertProbe_006A1358|||global||

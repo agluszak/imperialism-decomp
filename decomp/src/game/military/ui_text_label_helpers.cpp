@@ -1,6 +1,6 @@
 #include "game/core/CString.h"
 #include "game/gfx/TDisplayMgr.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/ui_widgets/TDropShadowText.h"
 #include "game/ui_widgets/TDropShadowNumberText.h"
 #include "game/CSubViewIterator.h"
@@ -123,8 +123,8 @@ TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(TStaticTex
                                                                       short stringResourceIndex) {
   (void)unused2;
   CString caption;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&caption, stringResourceGroup,
-                                                                  stringResourceIndex);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&caption, stringResourceGroup,
+                                                      stringResourceIndex);
   control->AssertValid();
   TextStyle styleDescriptor;
   styleDescriptor.fontFamily = 0;
@@ -219,7 +219,7 @@ void __cdecl ApplyUiNumberTextStyleAndThemeColor(TDropShadowNumberText* control,
 void LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(short group, short index,
                                                            unsigned int controlTag) {
   CString text;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&text, group, index);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&text, group, index);
   TView* control = g_pDisplayMgr->activeDialog->ResolveControlByTag(controlTag);
   SetControlHoverHelpText(text, control);
 }
@@ -228,7 +228,7 @@ void LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(short group, short in
 void LoadUiStringByGroupAndIndexToGlobalControlTag(short group, short index,
                                                    unsigned int controlTag) {
   CString text;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&text, group, index);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&text, group, index);
   TView* control = g_pDisplayMgr->activeDialog->ResolveControlByTag(controlTag);
   SetControlHoverHelpTextAltEntry(text, control);
 }
@@ -236,14 +236,14 @@ void LoadUiStringByGroupAndIndexToGlobalControlTag(short group, short index,
 // FUNCTION: IMPERIALISM 0x005c4850
 void LoadUiStringByGroupAndIndexToControlObject(short group, short index, TView* control) {
   CString text;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&text, group, index);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&text, group, index);
   SetControlHoverHelpText(text, control);
 }
 
 // FUNCTION: IMPERIALISM 0x005c4910
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control) {
   CString text;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&text, group, index);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&text, group, index);
   SetControlHoverHelpTextAltEntry(text, control);
 }
 

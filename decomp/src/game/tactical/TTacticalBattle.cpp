@@ -78,7 +78,9 @@ void TTacticalBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTile
 }
 
 // FUNCTION: IMPERIALISM 0x0059f730
-void TTacticalBattle::EndBattle(unsigned char) {}
+void TTacticalBattle::EndBattle(unsigned char) {
+  battleOutcome44 = kTacticalBattleSide0Victory;
+}
 
 // SYNTHETIC: IMPERIALISM 0x0059f750
 // TTacticalBattle::GetRuntimeClass
@@ -291,10 +293,10 @@ void TTacticalBattle::ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit
     int column = ((row & 1) + tileIndex % 29 * 2) / 2;
     if (tileIndex >= 0 && row >= 0 && row < 15 && column >= 0 &&
         column < battlefieldColumnCount34) {
-      battleView8->CenterViewportAroundGridIndexAndSnap(tileIndex);
+      battleView8->MakeTileVisible(tileIndex);
     }
     battleView8->RefreshControl();
-    battleView8->SpawnTacticalUiMarkerAtUnitTile();
+    battleView8->UpdateSelectionBlink();
   }
 }
 
@@ -824,13 +826,13 @@ void TTacticalBattle::SetCurrentTacticalUnitSelection(TTacticalUnit* unit, char 
     currentSideC = currentSideC == 0;
   }
   if (battleView8 != 0) {
-    battleView8->UpdateTacticalActionControlBitmapForCurrentUnit(static_cast<char>(unit->side20));
+    battleView8->SetCurrentPlayer(static_cast<unsigned char>(unit->side20));
   }
   if (battleView8 != 0) {
-    battleView8->InvalidateTacticalUnitTileRect(selectedUnit1c);
+    battleView8->InvalidateUnit(selectedUnit1c);
   }
   if (battleView8 != 0) {
-    battleView8->InvalidateTacticalUnitTileRect(unit);
+    battleView8->InvalidateUnit(unit);
   }
   unit->actionPoints28 = unit->GetBaseActionPoints();
   unit->selectedFlag18 = 1;
@@ -892,13 +894,13 @@ void TTacticalBattle::ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit) {
 
     if (shouldDestroy) {
       if (battleView8 != 0) {
-        battleView8->PlayTacticalTileEffect(unit->tileIndex8, 0xf8c, 10);
+        battleView8->PlayAni(unit->tileIndex8, 0xf8c, 10);
       }
       unit->ApplyTacticalDamage(unit->strength4, 0);
       tileGrid4[unit->tileIndex8].occupant4 = 0;
       unit->tileIndex8 = -1;
       if (battleView8 != 0) {
-        battleView8->InvalidateTacticalUnitTileRect(unit);
+        battleView8->InvalidateUnit(unit);
       }
     }
   }
@@ -941,7 +943,7 @@ unsigned char TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection(
 void TTacticalBattle::UndeployUnit(TacticalTileIndex tileIndex) {
   TTacticalUnit* unit = tileGrid4[tileIndex].occupant4;
   if (battleView8 != 0) {
-    battleView8->InvalidateTacticalUnitTileRect(unit);
+    battleView8->InvalidateUnit(unit);
   }
   unit->tileIndex8 = -2;
   tileGrid4[tileIndex].occupant4 = 0;
@@ -978,7 +980,7 @@ void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit,
 
   unit->actionPoints28 -= tileMoveCostArray24[pathTiles[stepCount]];
   if (battleView8 != 0) {
-    battleView8->InvalidateTacticalUnitTileRect(unit);
+    battleView8->InvalidateUnit(unit);
   }
   if (battleView8 != 0) {
     battleView8->ForceRedraw();
@@ -1119,27 +1121,27 @@ void TTacticalBattle::MoveTacticalUnitBetweenTiles(TTacticalUnit* unit,
     }
   }
   if (battleView8 != 0) {
-    battleView8->InvalidateTacticalUnitTileRect(unit);
+    battleView8->InvalidateUnit(unit);
   }
   tileGrid4[fromTileIndex].occupant4 = 0;
   if (battleView8 != 0) {
-    battleView8->TriggerTacticalUiUpdate2711();
+    battleView8->KillSelectionBlink();
   }
   if (currentTacticalActionCode4c != 7) {
     if (battleView8 != 0) {
-      battleView8->AnimateTacticalUnitMoveBetweenTiles(unit, fromTileIndex, toTileIndex);
+      battleView8->GlideUnit(unit, fromTileIndex, toTileIndex);
     }
   }
   unit->tileIndex8 = toTileIndex;
   tileGrid4[toTileIndex].occupant4 = unit;
   if (battleView8 != 0) {
-    battleView8->InvalidateTacticalUnitTileRect(unit);
+    battleView8->InvalidateUnit(unit);
   }
   if (battleView8 != 0) {
-    battleView8->InvalidateTacticalHexTileRect(toTileIndex);
+    battleView8->InvalidateTile(toTileIndex);
   }
   if (battleView8 != 0) {
-    battleView8->SpawnTacticalUiMarkerAtUnitTile();
+    battleView8->UpdateSelectionBlink();
   }
 }
 
@@ -1167,7 +1169,7 @@ unsigned char TTacticalBattle::ResolveTacticalReactionChecksForTile(TacticalTile
               reactor->GetUnitRange()) != 0) {
         EvaluateAndResolveTacticalActionAgainstTileOccupant(reactor, tileIndex);
         if (battleView8 != 0) {
-          battleView8->InvalidateTacticalUnitTileRect(reactor);
+          battleView8->InvalidateUnit(reactor);
         }
         reactionFired = 1;
       }
@@ -1393,14 +1395,13 @@ void TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
     ConsumeFortStrengthPointsAndInvalidateIfDepleted(fortWallTileOnLine,
                                                      (int)(0.001f * attackPower));
     if (battleView8 != 0) {
-      battleView8->CenterViewportAroundGridIndexAndSnap(targetTileIndex);
+      battleView8->MakeTileVisible(targetTileIndex);
       g_pSfxPlaybackSystem->PlaySoundEffect(
           g_awTacticalFireSfxTokenByUnitType[attackerUnit->unitTypeC], 0, 1);
       RECT effectRect;
       battleView8->ComputeTacticalHexTileScreenRect(&effectRect, targetTileIndex);
       effectRect.top -= 0x14;
-      battleView8->RunOneTimeAnimationModalWaitAndInvalidateCityDialog(&effectRect, 0xf98, 6,
-                                                                       targetTileIndex, 2);
+      battleView8->PlayAni(&effectRect, 0xf98, 6, targetTileIndex, 2);
     }
     return;
   }
@@ -1504,30 +1505,30 @@ void TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit(
   }
   targetUnit->ApplyTacticalDamage(damageA, damageB);
   if (battleView8 != 0) {
-    battleView8->CenterViewportAroundGridIndexAndSnap(targetTileIndex);
+    battleView8->MakeTileVisible(targetTileIndex);
     short sfxToken = g_awTacticalFireSfxTokenByUnitType[attackerUnit->unitTypeC];
     g_pSfxPlaybackSystem->PlaySoundEffect(sfxToken, 0, 1);
     short categoryCode = g_awTacticalUnitCategoryCodeBySlot[attackerUnit->unitTypeC];
     if (categoryCode == 6 || categoryCode == 7 || attackerUnit->unitTypeC == 0x15) {
       if (battleView8 != 0) {
         // effect-id + frame-count pair: 0xf6e/6 here, 0xf78/3 in the else branch (verified).
-        battleView8->PlayTacticalTileEffect(targetTileIndex, 0xf6e, 6);
+        battleView8->PlayAni(targetTileIndex, 0xf6e, 6);
       }
     } else {
       if (battleView8 != 0) {
-        battleView8->PlayTacticalTileEffect(targetTileIndex, 0xf78, 3);
+        battleView8->PlayAni(targetTileIndex, 0xf78, 3);
       }
     }
     if (battleView8 != 0) {
-      battleView8->InvalidateTacticalHexTileRect(targetTileIndex);
+      battleView8->InvalidateTile(targetTileIndex);
     }
   }
   if (targetUnit->state1c == 3) {
     if (battleView8 != 0) {
-      battleView8->InvalidateTacticalHexTileRect(targetUnit->tileIndex8);
+      battleView8->InvalidateTile(targetUnit->tileIndex8);
     }
     if (battleView8 != 0) {
-      battleView8->InvalidateTacticalUnitTileRect(targetUnit);
+      battleView8->InvalidateUnit(targetUnit);
     }
     tileGrid4[targetUnit->tileIndex8].occupant4 = 0;
     targetUnit->tileIndex8 = -1;
@@ -1760,7 +1761,7 @@ void TTacticalBattle::MarkTacticalTileStateQueuedAndMaybeDispatchPacket(
   unit->AssertValid();
   unit->sapTargetTileIndex40 = targetTileIndex;
   if (battleView8 != 0) {
-    battleView8->InvalidateTacticalHexTileRect(unitTileIndex);
+    battleView8->InvalidateTile(unitTileIndex);
   }
   if (unit->actionPoints28 != 0) {
     unit->actionPoints28 = 0;
@@ -1795,11 +1796,11 @@ void TTacticalBattle::AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket(T
   }
   if (runTileIndex == targetTileIndex) {
     if (battleView8 != 0) {
-      battleView8->PlayTacticalTileEffect(runTileIndex, 0xf6e, 6);
+      battleView8->PlayAni(runTileIndex, 0xf6e, 6);
     }
     tileGrid4[unit->sapTargetTileIndex40].deployMark8 = 0;
     if (battleView8 != 0) {
-      battleView8->InvalidateTacticalHexTileRect(unit->sapTargetTileIndex40);
+      battleView8->InvalidateTile(unit->sapTargetTileIndex40);
     }
     unit->sapTargetTileIndex40 = -1;
   } else if (((runTileIndex / tacticalTileStride40) & 1) != 0) {
@@ -1827,7 +1828,7 @@ void TTacticalBattle::ClearTacticalTileStateRunByStride(TacticalTileIndex tileIn
     }
     *runState = -1;
     if (battleView8 != 0) {
-      battleView8->InvalidateTacticalHexTileRect(runTileIndex);
+      battleView8->InvalidateTile(runTileIndex);
     }
   }
 }
@@ -1867,7 +1868,7 @@ void TTacticalBattle::DispatchTacticalActionByHoverStateIndex(TacticalTileIndex 
   case 0xc: {
     TTacticalUnit* occupant = tileGrid4[tileIndex].occupant4;
     if (battleView8 != 0) {
-      battleView8->InvalidateTacticalUnitTileRect(occupant);
+      battleView8->InvalidateUnit(occupant);
     }
     occupant->tileIndex8 = -2;
     tileGrid4[tileIndex].occupant4 = 0;
@@ -1894,7 +1895,7 @@ void TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* uni
   ConsumeFortStrengthPointsAndInvalidateIfDepleted(tileIndex, amount);
   if (battleView8 != 0) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3a9d, 0, 1);
-    battleView8->PlayTacticalTileEffect(tileIndex, 0xf98, 6);
+    battleView8->PlayAni(tileIndex, 0xf98, 6);
   }
   FinishTacticalActionAndPostNextMoveCommand();
 }
@@ -1913,7 +1914,7 @@ void TTacticalBattle::HandleTacticalCommandTag_mine(TacticalTileIndex tileIndex,
   ConsumeFortStrengthPointsAndInvalidateIfDepleted(tileIndex, amount);
   if (battleView8 != 0) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3a9d, 0, 1);
-    battleView8->PlayTacticalTileEffect(tileIndex, 0xf98, 6);
+    battleView8->PlayAni(tileIndex, 0xf98, 6);
   }
 }
 
@@ -2023,7 +2024,7 @@ void TTacticalBattle::HandleTacticalCommandTag_raly(TArmyTacUnit* unit, int newM
     unit->morale34 = newMorale;
   }
   if (battleView8 != 0) {
-    battleView8->InvalidateTacticalUnitTileRect(unit);
+    battleView8->InvalidateUnit(unit);
   }
   if (battleView8 != 0) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3aae, 0, 1);
@@ -2087,13 +2088,13 @@ void TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted(TacticalT
     fortStrengthPoints54[poolIndex] = 0;
     TacticalTileIndex poolTileIndex = battlefieldColumnCount34 + poolIndex * 58 - 6;
     if (battleView8 != 0) {
-      battleView8->InvalidateTacticalHexTileRect(poolTileIndex);
+      battleView8->InvalidateTile(poolTileIndex);
     }
     if (battleView8 != 0) {
-      battleView8->InvalidateTacticalHexTileRect(poolTileIndex + 1);
+      battleView8->InvalidateTile(poolTileIndex + 1);
     }
     if (battleView8 != 0) {
-      battleView8->InvalidateTacticalHexTileRect(poolTileIndex + 29);
+      battleView8->InvalidateTile(poolTileIndex + 29);
     }
   }
 }
@@ -2226,7 +2227,7 @@ void TTacticalBattle::HandleTacticalCommandTag_targ() {
           selectedUnit1c->GetUnitRange());
     }
     if (reachable != 0) {
-      battleView8->CenterViewportAroundGridIndexAndSnap(marker->tileIndex8);
+      battleView8->MakeTileVisible(marker->tileIndex8);
     }
   }
 
@@ -2255,7 +2256,7 @@ void TTacticalBattle::HandleTacticalCommandTag_targ() {
       }
       if (reachable != 0) {
         if (marker == NULL) {
-          battleView8->CenterViewportAroundGridIndexAndSnap(candidate->tileIndex8);
+          battleView8->MakeTileVisible(candidate->tileIndex8);
           marker = candidate;
         } else {
           result = candidate;
@@ -2377,7 +2378,7 @@ void TTacticalBattle::HandleTacticalCommandTag_depl(TArmyTacUnit* unit, Tactical
       int remaining = 6;
       do {
         if (*neighborCursor != -1) {
-          battleView8->InvalidateTacticalHexTileRect(*neighborCursor);
+          battleView8->InvalidateTile(*neighborCursor);
         }
         ++neighborCursor;
         --remaining;
@@ -2385,7 +2386,7 @@ void TTacticalBattle::HandleTacticalCommandTag_depl(TArmyTacUnit* unit, Tactical
     }
   }
   if (battleView8 != 0) {
-    battleView8->InvalidateTacticalUnitTileRect(unit);
+    battleView8->InvalidateUnit(unit);
   }
 }
 

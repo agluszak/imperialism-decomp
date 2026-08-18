@@ -3,7 +3,7 @@
 #include "game/ui_tags_common.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/net/TMultiplayerMgr.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/nation/TGreatPower.h"
 #include "game/ui_screens/TRadioTextCluster.h"
 
@@ -405,7 +405,7 @@ unsigned char TNetMgr::CheckConnectivityOrShowLocalizedWarningAndReturnReady() {
     return 1;
   }
   CString message;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2742, 0x19);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2742, 0x19);
   g_pViewMgr->ModalMessage(message, g_ptNetworkModalMessage006a5ed8, 0, 0);
   return 0;
 }

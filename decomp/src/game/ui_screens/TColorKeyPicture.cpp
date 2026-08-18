@@ -5,7 +5,7 @@
 #include "game/gfx/CDib.h"
 #include "game/gfx/CDibPal.h"
 #include "game/ui_core/ScopedMapQuickDrawContext.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/ui_core/TPicture.h"
 #include "game/ui_core/TWindow.h"
 #include "game/globals/global_types.h"
@@ -51,8 +51,7 @@ void TColorKeyPicture::Draw(RECT* rectBuffer) {
   cachedBitmap->BlitSurfaceRectSkippingTransparentColor(g_pColorKeyCompositeDib, 0, 0, frameWidth34,
                                                         frameHeight38, 0, 0, 0x1000010);
 
-  g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(
-      GetActiveQuickDrawDc(), FALSE);
+  g_pResourceMgr->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(GetActiveQuickDrawDc(), FALSE);
   int width = frameWidth34;
   int height = frameHeight38;
   g_pColorKeyCompositeDib->StretchDibitsFromStoredBitmapToHdcSimple(

@@ -13,7 +13,7 @@
 #include "game/ui_core/TApplication.h"
 #include "game/nation/TGreatPower.h"
 #include "game/ui_screens/TMapPreviewView.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/net/TPoseMessageDialog.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -229,8 +229,7 @@ char TLoungeDialog::DoIdle(int action) {
   }
 
   CString messageText;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageText, 0x2742,
-                                                                  messageStringIndex);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&messageText, 0x2742, messageStringIndex);
   TStaticText* messageControl = static_cast<TStaticText*>(ResolveControlByTag(kSessionTagMess));
   messageControl->AssertValid();
   messageControl->SetTextAndMaybeRefresh(&messageText, 1);
@@ -261,7 +260,7 @@ void TLoungeDialog::TryReplaceRemoteNationSlot(int nationSlot) {
   CString formattedText;
   CString nationName;
   nation->FormatOverlayTerrainLabelText(&nationName);
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&templateText, 0x2742, 0x1b);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&templateText, 0x2742, 0x1b);
   scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
                          static_cast<LPCSTR>(nationName));
   if (g_pViewMgr->ModalMessage(formattedText, g_ptLoungeNationReplacementModalMessage, 0, 1)) {
@@ -358,7 +357,7 @@ void TLoungeDialog::RefreshMapAndMessageControlsForCurrentContext() {
   TStaticText* messControl = (TStaticText*)ResolveControlByTag(kSessionTagMess);
   messControl->AssertValid();
   CString messageText;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageText, 0x2742, 0x10);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&messageText, 0x2742, 0x10);
   messControl->SetTextAndMaybeRefresh(&messageText, 1);
   RefreshControl();
 }

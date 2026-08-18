@@ -118,7 +118,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/net/TNetMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/core/TStream.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/military/TArmyMgr.h"
 #include "game/navy/TOcean.h"
 #include "game/map/TZone.h"
@@ -439,7 +439,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         kick.toNetworkId = announce8->fromNetworkId;
         kick.kickerNationId119 = -1;
         CString kickText;
-        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&kickText, 0x2759, 2);
+        g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&kickText, 0x2759, 2);
         strcpy(kick.messageText18, kickText);
         g_pNetMgr006a6014->Send(&kick, 0);
         return 1;
@@ -513,7 +513,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       }
       CString statusText;
       if (sessionId == 0) {
-        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&statusText, 0x2759, 1);
+        g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&statusText, 0x2759, 1);
         nationStatusTags[slot9] = kSessionTagUnas; // 'suna'
       } else {
         statusText = nationDisplayNameSlots[slot9];
@@ -589,7 +589,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
               (TTextPictureButton*)lounge->ResolveControlByTag(kControlTagOkay);
           okayButton->AssertValid();
           CString startText;
-          g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&startText, 0x2759, 3);
+          g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&startText, 0x2759, 3);
           if (canStart != 0) {
             okayButton->buttonText = startText;
             okayButton->RefreshControl();
@@ -762,8 +762,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           BuildSaveSlotPathAndProbeMetadata(queueSyncDword, g_pszClientSavePrefix_0065BF5C);
       if (probed == 0) {
         CString messageTextE;
-        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageTextE, 0x2742,
-                                                                        0x14);
+        g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&messageTextE, 0x2742, 0x14);
         g_pViewMgr->ModalMessage(messageTextE, g_ptNationAwolModalMessage, 0, 0);
         TCancelGameOptionsCommand* cancelCommand = new TCancelGameOptionsCommand();
         cancelCommand->ICommand(kSessionTagCgop, g_pAmbitApplication, 0, 0, 0);
@@ -784,7 +783,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           scenarioSelectionTag - kControlTagScn0);
       if (rebuilt == 0) {
         CString messageTextE2;
-        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageTextE2, 0x2742, 2);
+        g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&messageTextE2, 0x2742, 2);
         g_pViewMgr->ModalMessage(messageTextE2, g_ptNationAwolModalMessage, 0, 0);
         TCancelGameOptionsCommand* cancelCommand2 = new TCancelGameOptionsCommand();
         cancelCommand2->ICommand(kSessionTagCgop, g_pAmbitApplication, 0, 0, 0);
@@ -1265,8 +1264,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       CString templateTextAbdi;
       CString formattedAbdi;
       CString nationNameAbdi;
-      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&templateTextAbdi, 0x2737,
-                                                                      0x32);
+      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&templateTextAbdi, 0x2737, 0x32);
       g_apTerrainTypeDescriptorTable[gameState->value1C]->FormatOverlayTerrainLabelText(
           &nationNameAbdi);
       scanBracketExpressions(g_pSimMgr, &formattedAbdi, static_cast<const char*>(templateTextAbdi),
@@ -1283,8 +1281,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       CString templateTextAced;
       CString formattedAced;
       CString nationNameAced;
-      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
-          &templateTextAced, 0x2742, isLocalNationAced != 0 ? 0x23 : 0x1c);
+      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&templateTextAced, 0x2742,
+                                                          isLocalNationAced != 0 ? 0x23 : 0x1c);
       g_apTerrainTypeDescriptorTable[gameState->value1C]->FormatOverlayTerrainLabelText(
           &nationNameAced);
       scanBracketExpressions(g_pSimMgr, &formattedAced, static_cast<const char*>(templateTextAced),
@@ -1303,7 +1301,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       cancelCommandCgam->ICommand(kSessionTagCgop, g_pAmbitApplication, 0, 0, 0);
       g_pAmbitApplication->DispatchUiSelectionToHandler(cancelCommandCgam);
       CString messageCgam;
-      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageCgam, 0x2742, 0x27);
+      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&messageCgam, 0x2742, 0x27);
       g_pViewMgr->CreateModalMessageCommandAndQueue(&messageCgam, 0);
       return 1;
     }
@@ -1312,8 +1310,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       return 1;
     case kSessionTagFoff: { // 'foff' - seat refused: show string[value1C], post the cancel command
       CString messageFoff;
-      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageFoff, 0x2742,
-                                                                      gameState->value1C);
+      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&messageFoff, 0x2742, gameState->value1C);
       g_pViewMgr->CreateModalMessageCommandAndQueue(&messageFoff, 0);
       TCancelGameOptionsCommand* cancelCommandFoff = new TCancelGameOptionsCommand();
       cancelCommandFoff->ICommand(kSessionTagCgop, g_pAmbitApplication, 0, 0, 0);
@@ -1331,7 +1328,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       CString templateTextLost;
       CString formattedLost;
       CString nationNameLost;
-      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
+      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(
           &templateTextLost, 0x2742,
           (droppedFlag != 0 ? 2 : 0) + (isLocalNationLost != 0 ? 1 : 0) + 0x1f);
       g_apTerrainTypeDescriptorTable[lostNationSlot]->FormatOverlayTerrainLabelText(
@@ -1354,11 +1351,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       if (clientSessionQuit != 0) {
         CString messageQuit;
         if (restartFlag != 0) {
-          g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageQuit, 0x2742,
-                                                                          0x1d);
+          g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&messageQuit, 0x2742, 0x1d);
         } else {
-          g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageQuit, 0x2742,
-                                                                          0x1e);
+          g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&messageQuit, 0x2742, 0x1e);
         }
         g_pViewMgr->CreateModalMessageCommandAndQueue(&messageQuit, 0);
       }
@@ -1407,8 +1402,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         g_pNetMgr006a6014->Send(&seatAnnounce, 1);
         CString formattedRepo;
         CString templateTextRepo;
-        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&templateTextRepo, 0x2759,
-                                                                        0xa);
+        g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&templateTextRepo, 0x2759, 0xa);
         CString nationNameRepo(defaultNationTextSlots[repoSlot]);
         scanBracketExpressions(g_pSimMgr, &formattedRepo,
                                static_cast<const char*>(templateTextRepo),
@@ -2327,8 +2321,7 @@ void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused
   }
   if (mySlotIndex == -1) {
     CString notSeatedMessage;
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&notSeatedMessage, 0x2742,
-                                                                    0x16);
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&notSeatedMessage, 0x2742, 0x16);
     g_pViewMgr->ModalMessage(notSeatedMessage, g_ptNationAwolModalMessage, 0, 0);
     return;
   }
@@ -2524,7 +2517,7 @@ void TMultiplayerMgr::SetNationStatusAwolByNationIdAndDispatchNotices(int networ
         CString nationName;
         nationName = defaultNationTextSlots[slot];
         CString templateText;
-        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&templateText, 0x2759, 4);
+        g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&templateText, 0x2759, 4);
         scanBracketExpressions(g_pSimMgr, &formatted, static_cast<LPCSTR>(templateText),
                                static_cast<LPCSTR>(nationName));
         g_pViewMgr->ModalMessage(formatted, g_ptNationAwolModalMessage, 0, 0);
@@ -2652,7 +2645,7 @@ void TMultiplayerMgr::SendTacticalBattle(TTacticalBattle* battle) {
 // FUNCTION: IMPERIALISM 0x0054c6e0
 void TMultiplayerMgr::ResetNationStatusArraysAndTurnEventContext() {
   CString statusText;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&statusText, 0x2759, 1);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&statusText, 0x2759, 1);
   for (int nationSlot = 0; nationSlot < kMajorNationSessionSlotCount; ++nationSlot) {
     nationSessionIds[nationSlot] = 0;
     nationStatusTags[nationSlot] = kSessionTagUnas; // 'suna'
@@ -2977,7 +2970,7 @@ unsigned char TMultiplayerMgr::TrySaveGameAndMaybeShowFailureDialog(int mode, ch
   }
   if (showFailureDialog != 0 && allReachable == 0) {
     CString message;
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2742, 0x28);
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2742, 0x28);
     g_pViewMgr->CreateModalMessageCommandAndQueue(&message, 0);
   }
   return allReachable;

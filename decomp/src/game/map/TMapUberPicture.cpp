@@ -27,7 +27,7 @@
 #include "game/ui_widgets/TToolBarCluster.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/ui_core/TNumberText.h"
 #include "game/globals/global_types.h"
 #include "game/globals/map_globals.h"
@@ -562,7 +562,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
     break;
   case 6:
     static_cast<TZone*>(taskForce->target)->AssignZoneDisplayNameToOutputRef(&value);
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0x39);
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0x39);
     scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
                            static_cast<LPCSTR>(value));
     break;
@@ -862,7 +862,7 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagAdam)); // adam
   control->AssertValid();
   if (cachedTaskForce != 0) {
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0x34);
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0x34);
     scanBracketExpressions(
         g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
         static_cast<LPCSTR>(static_cast<Province*>(cachedTaskForce->target)->cityNameA4));

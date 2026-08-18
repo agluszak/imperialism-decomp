@@ -3,11 +3,11 @@
 #include "game/city_ui/TCountry.h"
 #include "game/resource_domain_types.h"
 
-struct TMinorRuntimeStatusEntry {
-  short fields[7];
+struct TMinorForeignResourceYieldByMajorNation {
+  short amountByMajorNation[kMajorNationCount];
 };
 
-ASSERT_SIZE(TMinorRuntimeStatusEntry, 0x0e);
+ASSERT_SIZE(TMinorForeignResourceYieldByMajorNation, 0x0e);
 
 // Minor-power nation row (g_apTerrainTypeDescriptorTable[7..], g_apSecondaryNationStateSlots).
 // Inherits the TCountry prefix (0x94) and extends with minor-only tail state to 0x2dc.
@@ -101,7 +101,7 @@ public:
   }
   short GetIndependentResourceCount(ResourceKindStorage resourceKind) const {
     ASSERT(resourceKind >= 0 && resourceKind < kResourceKindCount);
-    return diplomacySaveExt13c[resourceKind];
+    return independentResourceCountByType[resourceKind];
   }
   NationSlot GetConsortiumMember(int index) const {
     ASSERT(index >= 0 && index < 4);
@@ -114,8 +114,8 @@ public:
   virtual void ChangeArmyOwnership(int destinationNationSlot);           // slot 0x34 0x4e6520
 
   // Full (re)initialization of a minor nation's per-session state: nation identity +
-  // owned-region list, diplomacy policy defaults, the five per-resource/per-nation
-  // short tables and all 23 status rows cleared, need counters recounted from owned
+  // owned-region list, diplomacy policy defaults, the five per-resource tables and
+  // all 23 resource-by-major-nation yield rows cleared, need counters recounted from owned
   // map tiles, home tile selected (flagged tile, else a random valid candidate) with
   // its port zone ensured, and the per-slot diplomacy random thresholds and save
   // fields set from the 16-way nation-slot table. 0x4e3830, __thiscall, RET 4.
@@ -139,20 +139,17 @@ private:
   // The four persisted consortium nation slots consumed by IsInConsortiumWith.
   short diplomacySaveFields134[4]; // 0x134
 public:
-  // Serialized as a unit by ReadFrom/WriteTo (byte-order swapped via
-  // SwapAdjacentBytesInShortArray on load) when g_nSaveFormatVersion > 0x39. This has the
-  // same 0x17-short size as the sibling grantAmountsByResource/recurringGrantByResource
-  // tables, but its indexed meaning is not yet confirmed.
-  short diplomacySaveExt13c[0x17]; // 0x13c
+  // Resource-edge counts on this minor's independently controlled tiles. Serialized
+  // starting with save format 0x3a and ranked by TInfoPanelView::SetInfoCountry when
+  // displaying the minor's principal raw resources.
+  short independentResourceCountByType[kResourceKindCount]; // 0x13c
 private:
-  short recurringGrantByResource[kResourceKindCount];
-  // +0x198. 23 rows of seven shorts, cleared row-by-row (as one 0x0e-byte memset per
-  // row) by the same 0x17-iteration loop that clears the five short tables above
-  // (0x4e3830). Rows 0..6 form the relation/grant/link matrix indexed
-  // [relationSlot][majorNationSlot]; the individual meanings of rows 7..22 are not
-  // yet recovered.
-  TMinorRuntimeStatusEntry statusRows[0x17];
-  short runtimeStatusTail2da;
+  // Resource output on this minor's territory whose secondary owner is a great power.
+  // The first table is the per-resource total; the second preserves the same output
+  // split by resource kind and controlling major nation.
+  short foreignControlledResourceYieldByType[kResourceKindCount]; // 0x16a
+  TMinorForeignResourceYieldByMajorNation
+      foreignControlledResourceYieldByTypeAndMajorNation[kResourceKindCount]; // 0x198
 
 protected:
   // Inline so network minor subclasses reproduce the original direct CString teardown.

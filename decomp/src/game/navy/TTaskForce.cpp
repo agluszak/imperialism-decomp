@@ -11,7 +11,7 @@
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/navy/TNavyMgr.h"
 #include "game/navy/TOcean.h"
@@ -1487,8 +1487,8 @@ void TTaskForce::GetSnooperDescription(CString* out) const {
   CString orderKindLabel;
 
   // Singular/plural unit-count template ("1 <unit>" vs "N <unit>s").
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&unitCountTemplate, 0x2762,
-                                                                  (childCount != 1) + 0x11);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&unitCountTemplate, 0x2762,
+                                                      (childCount != 1) + 0x11);
 
   // Nation/terrain name for nation (reused here as a nation slot index; same
   // pattern as TNavyMgr.cpp and BuildMapOrderBattleSideSnapshot).
@@ -1502,8 +1502,8 @@ void TTaskForce::GetSnooperDescription(CString* out) const {
 
   // Order-kind label. The original reads only the low 16 bits of `shipOrders` here
   // (a `movsx ax` load), so truncate through `short` to match exactly.
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
-      &orderKindLabel, 0x2762, static_cast<short>(shipOrders) + 0x13);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&orderKindLabel, 0x2762,
+                                                      static_cast<short>(shipOrders) + 0x13);
 
   scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(unitCountTemplate),
                          static_cast<LPCSTR>(terrainOwnerLabel), static_cast<LPCSTR>(contextLabel),
@@ -1620,7 +1620,7 @@ TAdmiral* TTaskForce::GetSeniorOfficer() const {
 // FUNCTION: IMPERIALISM 0x005551d0
 void TTaskForce::GetAuthority(CString* out) const {
   if (this == 0 || flagship == 0) {
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(out, 0x2762, 0xd);
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(out, 0x2762, 0xd);
     return;
   }
 
@@ -1628,13 +1628,11 @@ void TTaskForce::GetAuthority(CString* out) const {
   CString shipName = flagship->name;
   if (flagship->admiral != 0) {
     CString admiralName = CString(s_szAdmiralPrefix_0069578c) + flagship->admiral->displayName;
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&authorityTemplate, 0x2762,
-                                                                    0xe);
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&authorityTemplate, 0x2762, 0xe);
     scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(authorityTemplate),
                            static_cast<LPCSTR>(admiralName), static_cast<LPCSTR>(shipName));
   } else {
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&authorityTemplate, 0x2762,
-                                                                    0xf);
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&authorityTemplate, 0x2762, 0xf);
     scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(authorityTemplate),
                            static_cast<LPCSTR>(shipName));
   }

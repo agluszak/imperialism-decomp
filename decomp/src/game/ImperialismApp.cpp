@@ -10,7 +10,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/gfx/TBackdropWindow.h" // RefreshBackdropOnInputMessages
 #include "game/ui_widgets/TSoundPlayer.h"
@@ -246,27 +246,26 @@ BOOL ImperialismApp::InitInstance() {
 
   if (!cmdInfo.m_bClearRegistrySettings34 &&
       cmdInfo.m_nShellCommand != CCommandLineInfo::AppUnregister) {
-    g_pModuleLibraryCacheState = new TModuleLibraryCacheTableStateB();
+    g_pResourceMgr = new TResourceMgr();
 
     if (!LoadLanguageResourcesFromIrgFiles()) {
       return FALSE;
     }
 
-    if (!g_pModuleLibraryCacheState->LoadPrimaryDataLibraryWithErrorDialog(primaryDataLibNameD8)) {
+    if (!g_pResourceMgr->LoadPrimaryDataLibraryWithErrorDialog(primaryDataLibNameD8)) {
       return FALSE;
     }
 
     g_nStartupAutoResolutionMode = ShowAutoResolutionDialogIfNeeded();
     ApplyAutoResolutionModeAndPersist(g_nStartupAutoResolutionMode);
 
-    if (!g_pModuleLibraryCacheState->LoadModuleLibrarySlotWithErrorDialog(localizedPictGobNameD0,
-                                                                          0)) {
+    if (!g_pResourceMgr->LoadModuleLibrarySlotWithErrorDialog(localizedPictGobNameD0, 0)) {
       return FALSE;
     }
-    if (!g_pModuleLibraryCacheState->LoadModuleLibrarySlotWithErrorDialog("Data/PictPaid.gob", 1)) {
+    if (!g_pResourceMgr->LoadModuleLibrarySlotWithErrorDialog("Data/PictPaid.gob", 1)) {
       return FALSE;
     }
-    if (!g_pModuleLibraryCacheState->LoadModuleLibrarySlotWithErrorDialog("Data/PictUniv.gob", 3)) {
+    if (!g_pResourceMgr->LoadModuleLibrarySlotWithErrorDialog("Data/PictUniv.gob", 3)) {
       return FALSE;
     }
 
@@ -345,9 +344,9 @@ int ImperialismApp::ExitInstance() {
     g_pDisplayMgr->Free();
     g_pDisplayMgr = nullptr;
   }
-  if (g_pModuleLibraryCacheState != nullptr) {
-    delete g_pModuleLibraryCacheState;
-    g_pModuleLibraryCacheState = nullptr;
+  if (g_pResourceMgr != nullptr) {
+    delete g_pResourceMgr;
+    g_pResourceMgr = nullptr;
   }
   if (g_pMacViewMgr != nullptr) {
     g_pMacViewMgr->Free();
@@ -420,9 +419,12 @@ BOOL ImperialismApp::PreTranslateMessage(MSG* pMsg) {
   return CWinThread::PreTranslateMessage(pMsg);
 }
 
-// The developer command is intentionally empty in retail.
+// The retail handler tail-calls the resource manager's empty cache hook. The hook itself
+// deliberately does nothing, but retaining the call preserves the original command path.
 // FUNCTION: IMPERIALISM 0x00413d00
-void ImperialismApp::OnDeveloperCommand8014() {}
+void ImperialismApp::OnDeveloperCommand8014() {
+  g_pResourceMgr->NoOpRetailCacheHook();
+}
 
 // Let the developer choose the active nation, rebuild the active nation's derived resource
 // state when the simulation is in setup mode, then redispatch the currently displayed turn
@@ -499,8 +501,7 @@ void ImperialismApp::OnPreviewDibResource() {
   int inputValue = inputDialog.editValue5c;
   CDib* dib;
   if (inputValue < 20000) {
-    dib = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(
-        static_cast<unsigned short>(inputValue));
+    dib = g_pResourceMgr->LoadBmpResourceByIdCached(static_cast<unsigned short>(inputValue));
   } else {
     dib = static_cast<CDib*>(PointerFromAddressLong32(inputValue));
   }
@@ -522,7 +523,7 @@ void ImperialismApp::OnPreviewDibResource() {
   }
 
   if (inputValue < 20000 && dib != 0) {
-    g_pModuleLibraryCacheState->ReleaseRecordById(static_cast<short>(inputValue));
+    g_pResourceMgr->ReleaseRecordById(static_cast<short>(inputValue));
   }
 }
 
@@ -849,8 +850,8 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
   CString templateText;
   CString formattedText;
   CString scratch;
-  if (g_pModuleLibraryCacheState != nullptr) {
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&templateText, 0x2763, 0x19);
+  if (g_pResourceMgr != nullptr) {
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&templateText, 0x2763, 0x19);
   }
   scratch.Format(g_szDecimalFormat, freeMegabytes);
   scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),

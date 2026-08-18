@@ -18,7 +18,7 @@
 #include "game/ui_core/THelpMgr.h"
 #include "game/ui_core/TMacViewMgr.h"
 #include "game/net/TMultiplayerMgr.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/navy_order.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_widgets/TTradeMgr.h"
@@ -1181,8 +1181,7 @@ void TSimMgr::ReinitializeRandomSeed() {
 
 // FUNCTION: IMPERIALISM 0x00580760
 void TSimMgr::GetString(short codeGroup, short offset, CString* destString) {
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(destString, codeGroup,
-                                                                  offset + 1);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(destString, codeGroup, offset + 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00580790

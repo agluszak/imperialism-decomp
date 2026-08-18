@@ -6,7 +6,7 @@
 #include "game/ui_core/TEventHandler.h"
 
 #include "game/trade_ui/TDealBookPicture.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 
 #include "game/unreachable_turn_event_dialog.h"
 
@@ -675,8 +675,7 @@ void TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView() {
 char TViewMgr::ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStringIndex,
                                                     int overlayMode, int arg4) {
   CString message;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, uiStringGroup,
-                                                                  uiStringIndex);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, uiStringGroup, uiStringIndex);
   return ModalMessage(message, g_ptUiPromptModalMessage, overlayMode, arg4);
 }
 
@@ -695,23 +694,23 @@ char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
   int sessionRole = g_pSimMgr->multiplayerSessionRole;
   unsigned char isClientSession = sessionRole == 2;
   if (isClientSession != 0) {
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x31);
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x31);
   } else {
     unsigned char hosting = sessionRole == 1;
     if (hosting != 0) {
       if (actionTag == kControlTagCgam) { // 'cgam'
-        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x37);
+        g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x37);
       } else {
-        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2f);
+        g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2f);
       }
     } else if (actionTag == kControlTagNewg) { // 'newg'
-      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2b);
+      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2b);
     } else if (actionTag == kControlTagQuit) { // 'quit'
-      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2a);
+      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2a);
     } else if (actionTag == kControlTagLoad) { // 'load'
-      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x33);
+      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x33);
     } else {
-      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2b);
+      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2b);
     }
   }
   char accepted = g_pViewMgr->ModalMessage(message, g_ptUiPromptModalMessage, 0, 1);

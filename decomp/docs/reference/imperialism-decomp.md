@@ -69,7 +69,7 @@ is accepted, not faked). Subclass fields begin at `+0xC0`: `int field_C0`, `CStr
 
 - **`InitInstance @ 0x00412dc0`** (vtable slot +0x58; Ghidra mislabels it `CMainFrame::OnEndPrintPreview`):
   `SetRegistryKey(*(LPCSTR*)0x0063e038)` → `CCommandLineInfo` + `ParseCommandLine` → (if not the
-  registry-unregister path) construct `g_pModuleLibraryCacheState` (asset loader, below), load
+  registry-unregister path) construct `g_pResourceMgr` (asset loader, below), load
   language `.irg` resources, load the primary data lib + `Data/PictPaid.gob` (slot 1) +
   `Data/PictUniv.gob` (slot 3), `AddFontResourceA("data\WeBeBd__.ttf")`, broadcast `WM_FONTCHANGE`,
   `new CSingleDocTemplate(0x80, &CAmbitDocument::classRuntimeClass /*0x63e7f8*/,
@@ -131,7 +131,7 @@ Full retail fidelity (GROUP_ICON, BITMAP, dialogs) can be grafted later from
 `ORIGINAL_BINARY` using `uv run python -m tools.workflow.pe_resources inventory`.
 
 - **`ExitInstance @ 0x00413780`** (vtable slot +0x70): restore display mode if `field_C8`, then free the
-  global subsystems via their slot-+0x1c destroy virtual — `DAT_006a2158`, `g_pModuleLibraryCacheState`
+  global subsystems via their slot-+0x1c destroy virtual — `DAT_006a2158`, `g_pResourceMgr`
   (`0x6a134c`), `g_pStrategicMapViewSystem` (`0x6a21a8`), `g_pUiViewManager` (`0x6a2148`, `TAssetMgr`),
   `g_pSfxPlaybackSystem` (`0x6a43ec`, `TSoundPlayer`), `g_pGlobalUiRootController` (`0x6a1344`,
   `TApplication`) — `RemoveFontResourceA` the custom fonts, broadcast `WM_FONTCHANGE`, chain to
@@ -140,9 +140,9 @@ Full retail fidelity (GROUP_ICON, BITMAP, dialogs) can be grafted later from
 ### Asset Loader — `.gob` packs as DLL datafiles
 
 The data packs (`.gob`) are loaded as **Windows DLL datafiles**, then resources are pulled via the
-Win32 resource API. Owned by `g_pModuleLibraryCacheState` (`0x006a134c`), class
-`TModuleLibraryCacheTableStateB` (ctor `0x00498f60`; secondary tables at `+0x04` vtable `0x0064ba80`
-and `+0x24` vtable `0x0064ba68` — embedded resource-index sub-tables).
+Win32 resource API. Owned by `g_pResourceMgr` (`0x006a134c`), class
+`TResourceMgr` (ctor `0x00498f60`; secondary tables at `+0x04` vtable `0x0064ba80`
+and `+0x20` vtable `0x0064ba68` — embedded resource-index sub-tables).
 
 - **`LoadModuleLibrarySlotWithErrorDialog @ 0x004992a0`** — `FreeLibrary` the old handle in the slot,
   then `LoadLibraryExA(path, NULL, LOAD_LIBRARY_AS_DATAFILE)` into the per-slot `HMODULE` array at

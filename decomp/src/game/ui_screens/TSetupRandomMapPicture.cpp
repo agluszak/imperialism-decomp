@@ -17,7 +17,7 @@
 #include "game/ui_core/TMacViewMgr.h"
 #include "game/map/TMapMgr.h"
 #include "game/ui_screens/TMapPreviewView.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/ui_core/TPicture.h"
 #include "game/ui_screens/TRadioText.h"
@@ -170,13 +170,13 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   difficultyTitle->AssertValid();
   ApplyUiTextStyleAndThemeFlags(difficultyTitle, 0, 0xe, 0x2b6a, 0x2b6c);
   CString labelText;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 2);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 2);
   difficultyTitle->SetTextAndMaybeRefresh(&labelText, 0);
 
   TDropShadowText* namesTitle = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTnam));
   namesTitle->AssertValid();
   ApplyUiTextStyleAndThemeFlags(namesTitle, 0, 0xe, 0x2b6a, 0x2b6c);
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 3);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 3);
   namesTitle->SetTextAndMaybeRefresh(&labelText, 0);
 
   TRadioTextCluster* namesCluster =
@@ -191,7 +191,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   historicalNames->AssertValid();
   ApplyUiTextStyleAndThemeFlags(historicalNames, 0, 0xc, 0x2b6b, 0x2b6c);
   historicalNames->SetTextAlignmentAndMaybeRefresh(1, 0);
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 4);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 4);
   historicalNames->SetTextAndMaybeRefresh(&labelText, 0);
   historicalNames->controlValue3c = kControlTagHist;
 
@@ -200,7 +200,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   randomNames->AssertValid();
   ApplyUiTextStyleAndThemeFlags(randomNames, 0, 0xc, 0x2b6b, 0x2b6c);
   randomNames->SetTextAlignmentAndMaybeRefresh(1, 0);
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 5);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 5);
   randomNames->SetTextAndMaybeRefresh(&labelText, 0);
   randomNames->controlValue3c = kControlTagRand;
 
@@ -210,8 +210,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
     option->AssertValid();
     ApplyUiTextStyleAndThemeFlags(option, 0, 0xc, 0x2b6b, 0x2b6c);
     option->SetTextAlignmentAndMaybeRefresh(1, 0);
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2737,
-                                                                    difficulty + 0xe);
+    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2737, difficulty + 0xe);
     option->SetTextAndMaybeRefresh(&labelText, 0);
     option->controlValue3c = difficulty;
   }
@@ -264,11 +263,9 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
       CString instruction;
       CString unusedOptionText;
       CString unusedCancelText;
-      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&instruction, 0x2758, 6);
-      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&unusedOptionText, 0x2758,
-                                                                      10);
-      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&unusedCancelText, 0x2758,
-                                                                      11);
+      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&instruction, 0x2758, 6);
+      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&unusedOptionText, 0x2758, 10);
+      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&unusedCancelText, 0x2758, 11);
       int resultTag = g_pViewMgr->MakePlanetSeedDialog(static_cast<LPCSTR>(instruction), planetSeed,
                                                        0, 0, 0, 0);
       wrapHorizontally98 = resultTag == kControlTagOne1;
@@ -395,7 +392,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   TInfoBarText* infoBar = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagHot));
   infoBar->AssertValid();
   CString generatingText;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&generatingText, 0x2758, 7);
+  g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&generatingText, 0x2758, 7);
   infoBar->UpdateTextEntrySharedStringAndMaybeNotify(&generatingText, 1);
   infoBar->CenterVertically(1);
 

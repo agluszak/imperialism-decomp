@@ -22,7 +22,7 @@
 #include "game/ui_core/TControl.h"
 #include "game/gfx/CDib.h"
 #include "game/map/TMapMgr.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/ui_widgets/TInfoBarText.h"
 #include "game/city_ui/TCountry.h"
 #include "game/diplomacy_ui/TInfoPanelView.h"
@@ -54,8 +54,7 @@ class ScopedDefaultDibPaletteSelection {
 public:
   explicit ScopedDefaultDibPaletteSelection(CDC* dc) : m_dc(dc), m_previousPalette(NULL) {
     if (m_dc != NULL) {
-      m_previousPalette =
-          m_dc->SelectPalette(g_pModuleLibraryCacheState->EnsureDefaultDibPalette(), FALSE);
+      m_previousPalette = m_dc->SelectPalette(g_pResourceMgr->EnsureDefaultDibPalette(), FALSE);
     }
   }
 
@@ -1371,8 +1370,7 @@ void TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int e
 void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex, int bmpId) {
   TQuickDrawSurfaceContext* surface = g_pActiveQuickDrawSurfaceContext;
   DiplomacyMaskBufferRun* maskRun = &maskRuns[maskIndex];
-  CDib* bmpHandle =
-      g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(static_cast<unsigned short>(bmpId));
+  CDib* bmpHandle = g_pResourceMgr->LoadBmpResourceByIdCached(static_cast<unsigned short>(bmpId));
 
   unsigned char* maskCursor = maskRun->maskBytesAt00;
   if (maskCursor != 0) {
@@ -1430,7 +1428,7 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
     }
   }
 
-  g_pModuleLibraryCacheState->ReleaseRecordByHandle(bmpHandle);
+  g_pResourceMgr->ReleaseRecordByHandle(bmpHandle);
   int packedColor = g_pViewMgr->GetColor(0x3f);
   StrategicMapCallbackRecord* packedRun = &packedColorRuns[maskIndex];
   packedRun->AppendPackedColorDword(surface->GetBlitSurface()->pixelBits, packedColor);

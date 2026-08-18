@@ -2,6 +2,7 @@
 
 #include "compat.h"
 
+#include "game/nation_domain_types.h"
 #include "game/ui_screens/TNoHilitePicture.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_screens.h"
@@ -20,34 +21,26 @@ public:
   virtual void StartGame();                               // slot 0x74 0x57a350
   virtual void ExitScreen();                              // slot 0x75 0x57a2d0
 
-  // 0x57a6e0, RET 4 (non-virtual thiscall, 1 arg). Confirmed receiver via the write to
-  // selectedScenarioIndex142 at +0x1e (MOV word ptr [ecx+0x142],ax) in its opening bytes.
-  void LoadScenarioMetadataByIndexIntoUiControlCore(short scenarioIndex);
+  // ORACLE: Mac names TScenarioChooser::ShowInfo(int). The Windows body loads the
+  // argument as a full dword, stores its low word as the selected scenario, and RET 4.
+  // IMPERIALISM 0x0057a6e0.
+  void ShowInfo(int scenarioIndex);
 
   TScenarioChooser();
 
-  // Own fields at +0x94..+0x160 (RTTI m_nObjectSize 0x160 vs TNoHilitePicture's 0x94).
-  // Ctor (0x45ae60) only chains the base ctor and installs the vtable -- nothing here
-  // is written at construction, so most of this block is still unrecovered scenario-
-  // selection state.
-  // Per-list-row scenario index, indexed by the 'list' TTextList's selectedIndex in
-  // DoEvent's commandId==4 branch and passed to
-  // LoadScenarioMetadataByIndexIntoUiControlCore.
-  short scenarioIndexByListRow94[(0x114 - 0x94) / 2];
-  // +0x114 -- how many rows DoPostCreate actually appended to the 'list' control.
-  short scenarioListRowCount114;
-  unsigned char padding116[2];
-  // Per-nation-slot description text + length, passed to the 'cdes' TDeluxeText's
-  // SetTextEntryFromChars(textChars, textLength) in DoEvent's 'pick' branch, indexed
-  // by TMapPreviewView::pendingNation6C.
-  char* nationDescriptionTextByMapSelection118[(0x134 - 0x118) / 4];
-  short nationDescriptionLengthByMapSelection134[(0x142 - 0x134) / 2];
+  enum { kScenarioSlotCount = 64 };
+
+  // Scenario slots appended to the list can be sparse when files are absent or the
+  // multiplayer-only filter skips a slot, so selection maps through this compact row table.
+  short scenarioIndexByListRow[kScenarioSlotCount]; // 0x94
+  short scenarioListRowCount;                       // 0x114
+  // +0x116..+0x117: natural alignment before the pointer table.
+  char* nationDescriptionTextByNation[kMajorNationCount];   // 0x118
+  short nationDescriptionLengthByNation[kMajorNationCount]; // 0x134
   // Selected scenario index (-1 = none); read by StartGame and ExitScreen. -1 also
   // short-circuits the whole
   // apply flow.
-  short selectedScenarioIndex142;
-  // Per-nation-slot state codes, indexed by TMapPreviewView::selectedNation68 and applied
-  // via TSimMgr::SetDifficultyLevel.
-  int nationStateCodesByMapSelection144[(0x160 - 0x144) / 4];
+  short selectedScenarioIndex;                    // 0x142
+  int difficultyLevelByNation[kMajorNationCount]; // 0x144
 };
 ASSERT_SIZE(TScenarioChooser, 0x160);

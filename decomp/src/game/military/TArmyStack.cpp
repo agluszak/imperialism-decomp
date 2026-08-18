@@ -237,7 +237,7 @@ void TArmyStack::ComputeStackCompositionClassCode() {
       unit = nullptr;
     }
   }
-  field4 = g_abStackCompositionClassTable[minClass + maxClass * 4];
+  field4 = g_abStackCompositionClassTable[maxClass][minClass];
   int roll = rand();
   field6 = static_cast<short>((field4 << 8) + (roll & 0xff));
 }

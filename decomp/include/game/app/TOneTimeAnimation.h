@@ -5,7 +5,7 @@
 class TView;
 
 // One-shot tile-effect animation (explosions, sap blasts) pumped modally by
-// TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog (0x5a9170).
+// TTacticalBattleView::PlayAni (0x5a9170).
 //
 // A TAnimation subclass (RTTI base descriptor 0x64c1f0, CRuntimeClass 0x64c238) with its own
 // vtable 0x64c3d0 — DYNCREATE (CreateObject 0x49fcc0). It reuses TAnimation's frame/rect

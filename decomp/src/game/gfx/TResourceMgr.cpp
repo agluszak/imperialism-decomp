@@ -1,4 +1,4 @@
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include <new.h>
 #include <ctype.h>
 // The retail body emits `CALL _isdigit`; undo the <ctype.h> macro so the function-call
@@ -23,7 +23,7 @@ struct LockedPaletteResourceHeader {
 // m_dibPalette is zeroed first (declaration order), matching the original's [obj]=0 then map A,
 // map B init sequence.
 // FUNCTION: IMPERIALISM 0x00498f60
-TModuleLibraryCacheTableStateB::TModuleLibraryCacheTableStateB() : m_dibPalette(0) {
+TResourceMgr::TResourceMgr() : m_dibPalette(0) {
   m_primaryModule = 0;
   m_slots[0] = 0;
   m_slots[1] = 0;
@@ -32,18 +32,18 @@ TModuleLibraryCacheTableStateB::TModuleLibraryCacheTableStateB() : m_dibPalette(
 }
 
 // FUNCTION: IMPERIALISM 0x00498fe0
-TModuleLibraryCacheTableStateB::~TModuleLibraryCacheTableStateB() {
-  while (m_tableA.GetCount() > 0) {
-    POSITION pos = m_tableA.GetStartPosition();
+TResourceMgr::~TResourceMgr() {
+  while (m_recordsByResourceId.GetCount() > 0) {
+    POSITION pos = m_recordsByResourceId.GetStartPosition();
     short key;
     CacheRecord* record;
-    m_tableA.GetNextAssoc(pos, key, record);
+    m_recordsByResourceId.GetNextAssoc(pos, key, record);
 
     if (record->pObject != NULL) {
       delete record->pObject;
     }
-    m_tableB.RemoveKey(record->pObject);
-    m_tableA.RemoveKey(key);
+    m_recordsByObject.RemoveKey(record->pObject);
+    m_recordsByResourceId.RemoveKey(key);
     delete record;
   }
 
@@ -62,10 +62,10 @@ TModuleLibraryCacheTableStateB::~TModuleLibraryCacheTableStateB() {
 // ??1?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAE@XZ
 
 // FUNCTION: IMPERIALISM 0x00499280
-void TModuleLibraryCacheTableStateB::NoOpRetailCacheHook() {}
+void TResourceMgr::NoOpRetailCacheHook() {}
 
 // FUNCTION: IMPERIALISM 0x004992a0
-BOOL TModuleLibraryCacheTableStateB::LoadModuleLibrarySlotWithErrorDialog(LPCSTR path, int slot) {
+BOOL TResourceMgr::LoadModuleLibrarySlotWithErrorDialog(LPCSTR path, int slot) {
   if (m_slots[slot] != NULL) {
     FreeLibrary(m_slots[slot]);
     m_slots[slot] = NULL;
@@ -82,7 +82,7 @@ BOOL TModuleLibraryCacheTableStateB::LoadModuleLibrarySlotWithErrorDialog(LPCSTR
 }
 
 // FUNCTION: IMPERIALISM 0x00499380
-BOOL TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog(const CString& path) {
+BOOL TResourceMgr::LoadPrimaryDataLibraryWithErrorDialog(const CString& path) {
   m_primaryModule = LoadLibraryExA(path, NULL, LOAD_LIBRARY_AS_DATAFILE);
   if (m_primaryModule == NULL) {
     CString message;
@@ -94,7 +94,7 @@ BOOL TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog(const
 
 // Loads a localized UI string by (group, index) into *out using resource id
 // FUNCTION: IMPERIALISM 0x00499440
-int TModuleLibraryCacheTableStateB::LoadUiStringResourceById(CString* out, unsigned int stringId) {
+int TResourceMgr::LoadUiStringResourceById(CString* out, unsigned int stringId) {
   LPSTR buffer = out->GetBuffer(0x1000);
   int length = LoadStringA(m_primaryModule, stringId, buffer, 0x1000);
   if (length == 0) {
@@ -109,7 +109,7 @@ int TModuleLibraryCacheTableStateB::LoadUiStringResourceById(CString* out, unsig
 // (group * 100 + index) from the primary data module. On load failure falls back to the
 // shared empty string. Resource id = group*100 + index matches LoadStringA's id arithmetic.
 // FUNCTION: IMPERIALISM 0x004994c0
-int TModuleLibraryCacheTableStateB::LoadUiStringResourceByGroupAndIndex(CString* out, int group,
+int TResourceMgr::LoadUiStringResourceByGroupAndIndex(CString* out, int group,
                                                                         int index) {
   LPSTR buffer = out->GetBuffer(0x100);
   int length = LoadStringA(m_primaryModule, index + group * 100, buffer, 0x100);
@@ -122,12 +122,12 @@ int TModuleLibraryCacheTableStateB::LoadUiStringResourceByGroupAndIndex(CString*
 }
 
 // FUNCTION: IMPERIALISM 0x004995a0
-LOGPALETTE* TModuleLibraryCacheTableStateB::ResolveDefaultLogPalette() {
+LOGPALETTE* TResourceMgr::ResolveDefaultLogPalette() {
   return EnsureDefaultDibPalette()->m_pLogPalette;
 }
 
 // FUNCTION: IMPERIALISM 0x004995c0
-CDibPal* TModuleLibraryCacheTableStateB::EnsureDefaultDibPalette() {
+CDibPal* TResourceMgr::EnsureDefaultDibPalette() {
   if (m_dibPalette == NULL) {
     CDib* paletteDib = LoadBmpResourceByIdCached(0x3b6);
     m_dibPalette = new CDibPal();
@@ -141,9 +141,9 @@ CDibPal* TModuleLibraryCacheTableStateB::EnsureDefaultDibPalette() {
 }
 
 // FUNCTION: IMPERIALISM 0x004997e0
-CDib* TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached(short bmpId) {
+CDib* TResourceMgr::LoadBmpResourceByIdCached(short bmpId) {
   CacheRecord* record = NULL;
-  if (m_tableA.Lookup(bmpId, record)) {
+  if (m_recordsByResourceId.Lookup(bmpId, record)) {
     record->refCount++;
     return static_cast<CDib*>(record->pObject);
   }
@@ -165,8 +165,8 @@ CDib* TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached(short bmpId) {
       record->id = static_cast<short>(bmpId);
       record->pObject = dib;
       record->refCount = 1;
-      m_tableA.SetAt(bmpId, record);
-      m_tableB.SetAt(dib, record);
+      m_recordsByResourceId.SetAt(bmpId, record);
+      m_recordsByObject.SetAt(dib, record);
       return dib;
     }
   }
@@ -181,8 +181,8 @@ CDib* TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached(short bmpId) {
       record->id = static_cast<short>(bmpId);
       record->pObject = dib;
       record->refCount = 1;
-      m_tableA.SetAt(bmpId, record);
-      m_tableB.SetAt(dib, record);
+      m_recordsByResourceId.SetAt(bmpId, record);
+      m_recordsByObject.SetAt(dib, record);
       return dib;
     }
   }
@@ -192,7 +192,7 @@ CDib* TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached(short bmpId) {
 }
 
 // FUNCTION: IMPERIALISM 0x00499b40
-CDib* TModuleLibraryCacheTableStateB::BuildIndexedBmpResourceById(short bmpId, int width,
+CDib* TResourceMgr::BuildIndexedBmpResourceById(short bmpId, int width,
                                                                   int height, int patternMode) {
   CDib* dib = new CDib(width, height, 8);
   if (dib == NULL) {
@@ -236,59 +236,59 @@ CDib* TModuleLibraryCacheTableStateB::BuildIndexedBmpResourceById(short bmpId, i
   }
 
   CacheRecord* record = NULL;
-  if (m_tableA.Lookup(bmpId, record)) {
+  if (m_recordsByResourceId.Lookup(bmpId, record)) {
     record->refCount++;
   } else {
     record = new CacheRecord;
     record->id = bmpId;
     record->pObject = dib;
     record->refCount = 1;
-    m_tableA.SetAt(bmpId, record);
-    m_tableB.SetAt(dib, record);
+    m_recordsByResourceId.SetAt(bmpId, record);
+    m_recordsByObject.SetAt(dib, record);
   }
 
   return dib;
 }
 
 // FUNCTION: IMPERIALISM 0x00499e80
-void TModuleLibraryCacheTableStateB::RetainOrRegisterObject(short id, CObject* object) {
+void TResourceMgr::RetainOrRegisterObject(short id, CObject* object) {
   CacheRecord* record = NULL;
-  if (m_tableA.Lookup(id, record)) {
+  if (m_recordsByResourceId.Lookup(id, record)) {
     record->refCount++;
     return;
   }
 
   record = new CacheRecord(id, object);
 
-  m_tableA.SetAt(id, record);
-  m_tableB.SetAt(object, record);
+  m_recordsByResourceId.SetAt(id, record);
+  m_recordsByObject.SetAt(object, record);
 }
 
 // Retail receives a genuine short: all three callers write only the low half of the
 // argument register before pushing it. TPicture resource loading registers every
-// non-negative id in m_tableA before a picture can be copied, so those callers cannot
+// non-negative id in m_recordsByResourceId before a picture can be copied, so those callers cannot
 // reach the miss path. The lookup result is therefore intentionally ignored: on the
 // impossible miss path the local remains uninitialized, and VC5 reuses the argument
 // slot for it. That explains the retail full-slot load without inventing a pointer-or-id
 // source API.
 // FUNCTION: IMPERIALISM 0x0049a0b0
-void TModuleLibraryCacheTableStateB::IncrementRecordRefCountById(short id) {
+void TResourceMgr::IncrementRecordRefCountById(short id) {
   CacheRecord* record;
-  m_tableA.Lookup(id, record);
+  m_recordsByResourceId.Lookup(id, record);
   record->refCount++;
 }
 
 // FUNCTION: IMPERIALISM 0x0049a120
-void TModuleLibraryCacheTableStateB::IncrementRecordRefCountByHandle(void* handle) {
+void TResourceMgr::IncrementRecordRefCountByHandle(void* handle) {
   CacheRecord* record;
-  m_tableB.Lookup(handle, record);
+  m_recordsByObject.Lookup(handle, record);
   record->refCount++;
 }
 
 // FUNCTION: IMPERIALISM 0x0049a190
-void TModuleLibraryCacheTableStateB::ReleaseRecordById(short id) {
+void TResourceMgr::ReleaseRecordById(short id) {
   CacheRecord* record = NULL;
-  m_tableA.Lookup(id, record);
+  m_recordsByResourceId.Lookup(id, record);
 
   record->refCount--;
   if (record->refCount <= 0) {
@@ -296,20 +296,20 @@ void TModuleLibraryCacheTableStateB::ReleaseRecordById(short id) {
       delete record->pObject;
     }
 
-    m_tableB.RemoveKey(record->pObject);
-    m_tableA.RemoveKey(record->id);
+    m_recordsByObject.RemoveKey(record->pObject);
+    m_recordsByResourceId.RemoveKey(record->id);
     delete record;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0049a390
-void TModuleLibraryCacheTableStateB::ReleaseRecordByHandle(void* handle) {
+void TResourceMgr::ReleaseRecordByHandle(void* handle) {
   if (handle == NULL) {
     return;
   }
 
   CacheRecord* record;
-  m_tableB.Lookup(handle, record);
+  m_recordsByObject.Lookup(handle, record);
 
   record->refCount--;
   if (record->refCount <= 0) {
@@ -317,14 +317,14 @@ void TModuleLibraryCacheTableStateB::ReleaseRecordByHandle(void* handle) {
       delete record->pObject;
     }
 
-    m_tableB.RemoveKey(record->pObject);
-    m_tableA.RemoveKey(record->id);
+    m_recordsByObject.RemoveKey(record->pObject);
+    m_recordsByResourceId.RemoveKey(record->id);
     delete record;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0049a590
-CString TModuleLibraryCacheTableStateB::LoadLocalizedStringByPackedGroupAndIndex(
+CString TResourceMgr::LoadLocalizedStringByPackedGroupAndIndex(
     unsigned int packedGroupAndIndex) {
   CString result;
   char* buffer = result.GetBuffer(0x100);
@@ -342,7 +342,7 @@ CString TModuleLibraryCacheTableStateB::LoadLocalizedStringByPackedGroupAndIndex
 // Ghidra attributed this to TToolBarCluster, but the +0x4c receiver field is the module
 // cache's m_primaryModule and matches the packed-argument sibling immediately above.
 // FUNCTION: IMPERIALISM 0x0049a6c0
-CString TModuleLibraryCacheTableStateB::LoadLocalizedStringByGroupAndIndex(int group, int index) {
+CString TResourceMgr::LoadLocalizedStringByGroupAndIndex(int group, int index) {
   CString result;
   char* buffer = result.GetBuffer(0x100);
   if (LoadStringA(m_primaryModule, group * 100 + index, buffer, 0x100) == 0) {
@@ -359,7 +359,7 @@ CString TModuleLibraryCacheTableStateB::LoadLocalizedStringByGroupAndIndex(int g
 // (counting from `templateId`: [0] = templateId, [1] = first vararg) through the same cache
 // and appending the localized result. Non-digit bracket groups are skipped through ']'.
 // FUNCTION: IMPERIALISM 0x0049a910
-CString* renderTemplateOrExpandTokens(TModuleLibraryCacheTableStateB* cache, CString* out,
+CString* renderTemplateOrExpandTokens(TResourceMgr* cache, CString* out,
                                       unsigned int templateId, ...) {
   CString result;
   CString templateText = cache->LoadLocalizedStringByPackedGroupAndIndex(templateId);
@@ -399,7 +399,7 @@ CString* renderTemplateOrExpandTokens(TModuleLibraryCacheTableStateB* cache, CSt
 }
 
 // FUNCTION: IMPERIALISM 0x0049aac0
-BOOL TModuleLibraryCacheTableStateB::LoadPaletteResourceByName(CPalette* palette,
+BOOL TResourceMgr::LoadPaletteResourceByName(CPalette* palette,
                                                                LPCSTR resourceName) {
   if (g_paletteResourceNameAssertGate == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szResourceMgrSourcePath, 0x22f);
@@ -441,7 +441,7 @@ BOOL TModuleLibraryCacheTableStateB::LoadPaletteResourceByName(CPalette* palette
 }
 
 // FUNCTION: IMPERIALISM 0x0049abd0
-BOOL TModuleLibraryCacheTableStateB::LoadPaletteResource(CPalette* palette,
+BOOL TResourceMgr::LoadPaletteResource(CPalette* palette,
                                                          unsigned long resourceId) {
   if (g_paletteResourceIdAssertGate == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szResourceMgrSourcePath, 0x252);
@@ -460,7 +460,7 @@ BOOL TModuleLibraryCacheTableStateB::LoadPaletteResource(CPalette* palette,
 // entry in the shared DIB palette. Native edit controls need an RGB-bearing palette color,
 // so resolve that entry and return PALETTERGB; ordinary COLORREF values pass through.
 // FUNCTION: IMPERIALISM 0x0049ace0
-COLORREF TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor(unsigned int packedColor) {
+COLORREF TResourceMgr::ResolvePaletteIndexColor(unsigned int packedColor) {
   if (m_dibPalette != NULL && (packedColor & 0xff000000) == 0x01000000) {
     // Reads green then blue then red off one PALETTEENTRY& binding. This scores 82.61%;
     // the residual is a load-order difference, not a layout error. The original loads
@@ -489,9 +489,9 @@ COLORREF TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor(unsigned int p
   return packedColor;
 }
 
-// Compiler-emitted destructors for the two embedded CMap<> members above (m_tableA,
-// m_tableB); MSVC500 instantiates and calls these automatically as part of
-// ~TModuleLibraryCacheTableStateB(), so there is no source body to write.
+// Compiler-emitted destructors for the two embedded CMap<> members above (m_recordsByResourceId,
+// m_recordsByObject); MSVC500 instantiates and calls these automatically as part of
+// ~TResourceMgr(), so there is no source body to write.
 // TEMPLATE: IMPERIALISM 0x0049ae30
 // ??1?$CMap@FFPAUCacheRecord@@PAU1@@@UAE@XZ
 
@@ -501,7 +501,7 @@ COLORREF TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor(unsigned int p
 // TEMPLATE: IMPERIALISM 0x0049aef0
 // ?Serialize@?$CMap@FFPAUCacheRecord@@PAU1@@@UAEXAAVCArchive@@@Z
 
-// VC5 afxtempl.h body for the pointer-key m_tableB member.
+// VC5 afxtempl.h body for the pointer-key m_recordsByObject member.
 // TEMPLATE: IMPERIALISM 0x0049b190
 // ?RemoveKey@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@QAEHPAX@Z
 template BOOL CMap<void*, void*, CacheRecord*, CacheRecord*>::RemoveKey(void*);
@@ -514,7 +514,7 @@ template BOOL CMap<void*, void*, CacheRecord*, CacheRecord*>::RemoveKey(void*);
 // TEMPLATE: IMPERIALISM 0x0049b330
 // ?Serialize@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAEXAAVCArchive@@@Z
 
-// VC5 afxtempl.h CPlex teardown for the short-key m_tableA member.
+// VC5 afxtempl.h CPlex teardown for the short-key m_recordsByResourceId member.
 // TEMPLATE: IMPERIALISM 0x0049b630
 // ?RemoveAll@?$CMap@FFPAUCacheRecord@@PAU1@@@QAEXXZ
 

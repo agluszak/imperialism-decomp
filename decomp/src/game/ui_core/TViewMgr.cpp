@@ -20,7 +20,7 @@
 
 #include "game/trade_ui/TDealBookPicture.h"
 #include "game/trade_ui/TOfferDeskPicture.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 
 #include "game/resource_domain_types.h"
 

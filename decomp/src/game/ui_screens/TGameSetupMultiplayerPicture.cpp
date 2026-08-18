@@ -9,7 +9,7 @@
 #include "game/ui_core/TControl.h"
 #include "game/ui_widgets/TDropShadowText.h"
 #include "game/ui_widgets/TInfoBarText.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/ui_screens/TRadioTextCluster.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -115,7 +115,7 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
           g_pGameFlowState->ValidateGameFlowNameAndSelectionContext(protocolValue, isNotJoin);
       if (!accepted) {
         CString errorMsg;
-        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&errorMsg, 0x2737, 0x28);
+        g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&errorMsg, 0x2737, 0x28);
         g_pViewMgr->ModalMessage(errorMsg, g_ptGameSetupModalMessage, 0, 0);
         g_pGameFlowState->ResetGameFlowStateAndPostTurnEvent5DC();
         return;
@@ -160,7 +160,7 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
         int deletedCount = g_pAssetMgr->DeleteLegacyCliSaveImpFiles();
 
         CString message;
-        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2759, 9);
+        g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2759, 9);
         CString formattedMessage;
         scanBracketExpressions(g_pSimMgr, &formattedMessage, static_cast<LPCSTR>(message),
                                deletedCount);

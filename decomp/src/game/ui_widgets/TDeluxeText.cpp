@@ -1,6 +1,6 @@
 #include "game/ui_widgets/TDeluxeText.h"
 
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
@@ -47,7 +47,7 @@ void TDeluxeText::SetSelectedFlagAndState(char param_1) {
 // FUNCTION: IMPERIALISM 0x005b60d0
 void TDeluxeText::SetTextFromUiStringResourceId(short stringId) {
   CString text;
-  g_pModuleLibraryCacheState->LoadUiStringResourceById(&text, stringId);
+  g_pResourceMgr->LoadUiStringResourceById(&text, stringId);
   this->UpdateTextEntrySharedStringAndMaybeNotify(&text, 1);
 }
 

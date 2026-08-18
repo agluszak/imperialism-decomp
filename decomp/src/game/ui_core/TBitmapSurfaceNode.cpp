@@ -1,7 +1,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 
 #include "game/gfx/CDib.h"
-#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TResourceMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
@@ -19,7 +19,7 @@ TBitmapSurfaceNode::TBitmapSurfaceNode()
 // FUNCTION: IMPERIALISM 0x00495d00
 TBitmapSurfaceNode::TBitmapSurfaceNode(int width, int height, int bitDepth) {
   dib = new CDib(width, height, bitDepth);
-  dib->CopyRgbQuadTableFrom(g_pModuleLibraryCacheState->ResolveDefaultLogPalette());
+  dib->CopyRgbQuadTableFrom(g_pResourceMgr->ResolveDefaultLogPalette());
   dib->BuildPaletteFromRgbQuadBuffer();
   dib->EnsureDibSectionCreated(nullptr);
   pixelBits = static_cast<unsigned char*>(dib->m_dibBits);

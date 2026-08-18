@@ -31,7 +31,7 @@ class THelpMgr;
 class TInfoBarText;
 class TLanguageMgr;
 class TMapMgr;
-class TModuleLibraryCacheTableStateB;
+class TResourceMgr;
 class TMultiplayerMgr;
 class TNavyMgr;
 class TNetMgr;

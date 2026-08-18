@@ -161,13 +161,13 @@ void TTacArmyView::InitializeBattlefieldView(int compositionClass, TArmyBattle* 
     bounds.top = 0;
     g_pDisplayMgr->MakeNewGWorld(tileScratchSurface70, 8, bounds);
 
-    field84 = -1;
+    hoveredTileIndex = -1;
     tacticalBattle60 = battle;
     battlefieldColumnCountD8 = static_cast<short>(battle->battlefieldColumnCount34);
     scrollableContentWidth7A = static_cast<short>((battle->battlefieldColumnCount34 + 1) *
                                                   static_cast<short>(tileWidthPx88));
-    battlefieldOriginOffsetXD4 = static_cast<short>((0x1d - battle->battlefieldColumnCount34) *
-                                                    static_cast<short>(tileWidthPx88));
+    battlefieldOriginOffsetX = static_cast<short>((0x1d - battle->battlefieldColumnCount34) *
+                                                  static_cast<short>(tileWidthPx88));
 
     TTacticalToolbar* toolbar =
         static_cast<TTacticalToolbar*>(ownerContext->ResolveControlByTag(kControlTagTool));
@@ -218,9 +218,9 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
 
   // Backdrop source-x origin: the battlefield bitmap is right-aligned inside the
   // 0x1d-column grid, shifted by the current horizontal scroll.
-  battlefieldOriginOffsetXD4 = static_cast<short>(
+  battlefieldOriginOffsetX = static_cast<short>(
       (0x1d - tacticalBattle60->battlefieldColumnCount34) * static_cast<short>(tileWidthPx88));
-  int sourceOffsetX = battlefieldOriginOffsetXD4 + viewOriginX78;
+  int sourceOffsetX = battlefieldOriginOffsetX + viewOriginX78;
 
   RECT backdropSrcRect;
   backdropSrcRect.left = clipRect.left + sourceOffsetX;
@@ -272,7 +272,7 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
     GetClip(savedClip.tempRgn);
     TacticalTileIndex tileIndex;
     for (tileIndex = 0; tileIndex < 0x1b3; tileIndex++) {
-      DrawTacticalTileInClipRect(tileIndex, &clipRect);
+      DrawTile(tileIndex, &clipRect);
     }
     SetClip(savedClip.tempRgn);
   }
@@ -284,13 +284,13 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
   BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &clipRect,
                         &presentDstRect, 0);
-  DrawUiTilesAndOverlay();
+  DoGlideAni();
   UnlockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
   UnlockPixels(GetGWorldPixMap(battlefieldSurface64));
 }
 
 // FUNCTION: IMPERIALISM 0x005aa900
-void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT* clipRect) {
+void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
   // Ground truth clears these three byte locals in the prologue (0x5aa90a's
   // mov byte ptr [esp+0x13]/[esp+0x27]/[esp+0x53], al off a single xor eax,eax),
   // so they are function-scope zero-initialized rather than declared at first use.
