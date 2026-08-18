@@ -209,7 +209,7 @@ impl GameState {
                         continue;
                     }
                     region_scores[province] += i32::from(heatmap_requirement_level(
-                        *resource as usize,
+                        *resource,
                         self.map[tile].development.packed_byte(),
                     )) * resource_weights[*resource];
                 }
@@ -360,8 +360,33 @@ pub(crate) fn combat_class(kind: MilitaryUnitKind) -> i16 {
     CLASS[kind]
 }
 
-fn heatmap_requirement_level(resource_type: usize, packed_development: i8) -> u8 {
-    let flat_index = resource_type as i32 * 4 + i32::from(packed_development);
+fn heatmap_requirement_level(resource: ResourceKind, packed_development: i8) -> u8 {
+    let resource_type = match resource {
+        ResourceKind::Cotton => 0,
+        ResourceKind::Wool => 1,
+        ResourceKind::Timber => 2,
+        ResourceKind::Coal => 3,
+        ResourceKind::Iron => 4,
+        ResourceKind::Horses => 5,
+        ResourceKind::Oil => 6,
+        ResourceKind::Food => 7,
+        ResourceKind::Fabric => 8,
+        ResourceKind::Lumber => 9,
+        ResourceKind::Paper => 10,
+        ResourceKind::Steel => 11,
+        ResourceKind::Fuel => 12,
+        ResourceKind::Clothing => 13,
+        ResourceKind::Furniture => 14,
+        ResourceKind::Hardware => 15,
+        ResourceKind::Arms => 16,
+        ResourceKind::Grain => 17,
+        ResourceKind::Fruit => 18,
+        ResourceKind::Fish => 19,
+        ResourceKind::Livestock => 20,
+        ResourceKind::Gems => 21,
+        ResourceKind::Gold => 22,
+    };
+    let flat_index = resource_type * 4 + i32::from(packed_development);
     const TABLE_BYTES: i32 = 96;
     if (0..TABLE_BYTES).contains(&flat_index) {
         UNIVERSITY_REQUIREMENT_LEVEL_BY_RETAIL_ID[flat_index as usize / 4][flat_index as usize % 4]
