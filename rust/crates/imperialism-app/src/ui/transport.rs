@@ -189,6 +189,7 @@ fn bind_transport_screen(
         &tree,
         fourcc!("topB"),
         Some(fourcc!("tool")),
+        true,
     );
 
     let nation = session.active_major_nation();

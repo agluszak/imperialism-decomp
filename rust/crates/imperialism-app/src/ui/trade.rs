@@ -235,6 +235,7 @@ fn bind_trade_screen(
         &tree,
         fourcc!("topB"),
         Some(fourcc!("tool")),
+        true,
     );
     let nation = session.active_major_nation();
     session.game.refresh_merchant_capacity(nation);

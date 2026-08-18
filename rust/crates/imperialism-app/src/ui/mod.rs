@@ -13,6 +13,7 @@ mod land_battle;
 mod linger;
 pub(crate) mod load_save;
 mod main_menu;
+mod map_help;
 mod newspaper;
 mod offer_sheet;
 mod preferences;

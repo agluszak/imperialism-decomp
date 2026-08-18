@@ -529,7 +529,14 @@ fn bind_diplomacy_controls(
     let posing = session.game.current_diplomacy_offer().is_some()
         || session.game.current_diplomacy_war_join().is_some();
     if !posing {
-        bind_native_game_screen_nav(commands, root, tree, fourcc!("topB"), Some(fourcc!("too3")));
+        bind_native_game_screen_nav(
+            commands,
+            root,
+            tree,
+            fourcc!("topB"),
+            Some(fourcc!("too3")),
+            true,
+        );
     }
     let top = tree.find(root, fourcc!("topB"));
     let selected = tree.find(top, fourcc!("dipl"));

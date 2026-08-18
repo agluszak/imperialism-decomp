@@ -561,7 +561,7 @@ fn compose_unit_sprite(
                     6,
                     &mut picture,
                     28,
-                    TILE_SIZE - 8,
+                    2,
                 );
             }
             if framed {
@@ -580,7 +580,7 @@ fn compose_unit_sprite(
                 count.height as i32,
                 &mut picture,
                 0,
-                TILE_SIZE - 0x26,
+                0,
             );
             blit_indexed(
                 &sprites.owner_flags,
@@ -590,7 +590,7 @@ fn compose_unit_sprite(
                 6,
                 &mut picture,
                 7,
-                TILE_SIZE - 8,
+                2,
             );
             Some(picture)
         }
@@ -1199,6 +1199,43 @@ mod tests {
         assert!(garrison_filler(MilitaryUnitKind::Militia));
         assert!(garrison_filler(MilitaryUnitKind::Conscripts));
         assert!(!garrison_filler(MilitaryUnitKind::Regulars));
+    }
+
+    #[test]
+    fn army_badge_uses_the_displayed_top_down_coordinates() {
+        let count = IndexedPicture {
+            width: 18,
+            height: 38,
+            pixels: vec![2; 18 * 38],
+        };
+        let flags = IndexedPicture {
+            width: 9 * 8,
+            height: 6,
+            pixels: vec![3; 9 * 8 * 6],
+        };
+        let sprites = StrategicUnitSprites {
+            civilians: HashMap::new(),
+            army_counts: std::array::from_fn(|_| count.clone()),
+            owner_flags: flags,
+            fleet_frames: Vec::new(),
+            fleet_atlas_id: 0,
+            composed: HashMap::new(),
+        };
+
+        let picture = compose_unit_sprite(
+            &sprites,
+            StrategicUnitSprite::Army {
+                bucket: 0,
+                owner_slot: 0,
+            },
+        )
+        .unwrap();
+        assert_eq!(picture.pixels[0], 2);
+        assert_eq!(picture.pixels[2 * TILE_SIZE as usize + 7], 3);
+        assert_eq!(
+            picture.pixels[56 * TILE_SIZE as usize + 7],
+            UNIT_TRANSPARENT_INDEX
+        );
     }
 
     #[test]

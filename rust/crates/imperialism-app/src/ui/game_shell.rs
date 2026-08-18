@@ -10,8 +10,9 @@ use crate::ui::hover_help::{
     HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, get_string,
 };
 use crate::ui::load_save::bind_open_flag_menu;
+use crate::ui::map_help;
 use crate::ui::query_floater::bind_query_floater_control;
-use crate::ui::retail::{RetailPictureSwap, RetailTree, ancestor_with};
+use crate::ui::retail::{RetailPictureSwap, RetailPressedOverlay, RetailTree, ancestor_with};
 use crate::ui::strategic_map::{
     MapEdges, MapInteractionMode, StrategicInteraction, animate_civilian_selection,
     animate_civilian_work, bind_army_toolbar, bind_civilian_toolbar, bind_minimap,
@@ -55,6 +56,7 @@ impl Plugin for GameShellPlugin {
         register_map_keys(app);
         register_map_modals(app);
         register_ocean_view(app);
+        map_help::register(app);
         app.add_systems(
             OnEnter(AppState::StrategicMap),
             (
@@ -160,10 +162,11 @@ fn bind_strategic_map(
     root: Single<Entity, Added<StrategicMapRoot>>,
     tree: RetailTree,
     mut nodes: Query<&mut Node>,
+    mut pictures: Query<&mut ImageNode>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None);
+    bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None, false);
     bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &tree);
     commands
         .entity(tree.find(*root, fourcc!("DONE")))
@@ -171,7 +174,22 @@ fn bind_strategic_map(
         .remove::<InteractionDisabled>()
         .observe(on_end_turn);
     let flag = tree.find(*root, fourcc!("Flag"));
+    bind_pressed_overlay(&mut commands, &mut pictures, flag);
     bind_open_flag_menu(&mut commands, flag);
+    bind_pressed_overlay(
+        &mut commands,
+        &mut pictures,
+        tree.find(*root, fourcc!("quer")),
+    );
+    map_help::bind(&mut commands, tree.find(*root, fourcc!("quer")));
+    bind_pressed_overlay(
+        &mut commands,
+        &mut pictures,
+        tree.find(*root, fourcc!("ZmOt")),
+    );
+    commands
+        .entity(tree.find(*root, fourcc!("send")))
+        .insert(Visibility::Hidden);
     let land = bind_strategic_base_terrain(&mut commands, *root, &tree, &mut assets, &session);
     commands.entity(land).observe(on_strategic_map_click);
     let ocean = bind_ocean_view(&mut commands, &mut assets, *root, &tree);
@@ -182,6 +200,22 @@ fn bind_strategic_map(
     bind_navy_toolbar(&mut commands, &mut assets, *root, &tree);
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
     bind_strategic_hover(&mut commands, &mut assets, *root, &tree, &mut nodes);
+}
+
+fn bind_pressed_overlay(
+    commands: &mut Commands,
+    pictures: &mut Query<&mut ImageNode>,
+    entity: Entity,
+) {
+    commands
+        .entity(entity)
+        .insert(RetailPressedOverlay)
+        .remove::<InteractionDisabled>();
+    pictures
+        .get_mut(entity)
+        .expect("retail picture button has an image")
+        .color
+        .set_alpha(0.0);
 }
 
 fn on_end_turn(
@@ -416,8 +450,11 @@ pub(crate) fn bind_native_game_screen_nav(
     tree: &RetailTree,
     toolbar_tag: FourCc,
     leave_toolbar_tag: Option<FourCc>,
+    query_floater: bool,
 ) {
-    bind_query_floater_control(commands, root, tree);
+    if query_floater {
+        bind_query_floater_control(commands, root, tree);
+    }
     let toolbar = tree.find(root, toolbar_tag);
     let trade = tree.find(toolbar, TRADE);
     let transport = tree.find(toolbar, fourcc!("tran"));

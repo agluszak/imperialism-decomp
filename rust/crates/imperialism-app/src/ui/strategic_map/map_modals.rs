@@ -13,6 +13,7 @@ use crate::ui::retail::{ModalDialog, RetailTree};
 use crate::ui::{RetailUiAssets, fill_brackets, format_currency};
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
+use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
 use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
@@ -192,6 +193,7 @@ fn bind_added_civilian_modals(
                 commands
                     .entity(linger.cancel)
                     .insert((ActivateOnPress, CivilianModalAction::Close))
+                    .remove::<InteractionDisabled>()
                     .observe(on_civilian_modal_action);
             }
             CivilianModal::Notice { title, body } => {
