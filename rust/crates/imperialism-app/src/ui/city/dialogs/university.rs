@@ -458,7 +458,7 @@ pub(in crate::ui::city) fn sync_university_details(
             UniversityDisplay::Preview => image.image.clone_from(&row.preview),
             UniversityDisplay::RequirementIcon(row) => {
                 if let Some(resource) = specialties[row] {
-                    let source_left = f32::from(resource as u8) * 20.0;
+                    let source_left = f32::from(resource.retail()) * 20.0;
                     image.rect = Some(Rect::new(source_left, 0.0, source_left + 20.0, 24.0));
                 }
             }

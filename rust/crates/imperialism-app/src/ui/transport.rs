@@ -761,7 +761,7 @@ fn transport_hover_text(
         transport_string(assets, 3)
     } else {
         assets
-            .string(0x2711, resource as i16 + 1)
+            .string(0x2711, i16::from(resource.retail()) + 1)
             .expect("retail transport commodity name must load")
     };
 

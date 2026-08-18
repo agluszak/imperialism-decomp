@@ -571,7 +571,7 @@ fn spawn_developer_legend(
             atlases.resources.clone(),
             Vec2::new(dest.x as f32, dest.y as f32),
             RESOURCE_ICON_SIZE,
-            Vec2::new(f32::from(resource as u8) * 20.0, 0.0),
+            Vec2::new(f32::from(resource.retail()) * 20.0, 0.0),
         );
         spawn_legend_text(
             commands,
