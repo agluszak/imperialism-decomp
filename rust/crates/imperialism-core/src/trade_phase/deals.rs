@@ -163,7 +163,7 @@ impl GameState {
         let Some(state) = self.nations.minors.get(&minor) else {
             return false;
         };
-        let Some(commodity) = TradeCommodity::from_retail(resource as i16) else {
+        let Some(commodity) = TradeCommodity::from_resource(resource) else {
             return true;
         };
         if !MANUFACTURED_COMMODITIES.contains(&commodity) {
@@ -275,7 +275,7 @@ impl GameState {
             return;
         };
         if amount >= 1
-            && let Some(commodity) = TradeCommodity::from_retail(resource as i16)
+            && let Some(commodity) = TradeCommodity::from_resource(resource)
             && MANUFACTURED_COMMODITIES.contains(&commodity)
         {
             if state.trade.primary_manufactured_request == Some(commodity) {

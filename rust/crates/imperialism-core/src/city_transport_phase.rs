@@ -377,7 +377,7 @@ impl GameState {
             }
             self.nations.city_mut(nation).stockpile[resource] = 0;
             self.nations.city_mut(nation).stockpile.verify_stocks();
-            let Some(commodity) = TradeCommodity::from_retail(resource as i16) else {
+            let Some(commodity) = TradeCommodity::from_resource(resource) else {
                 continue;
             };
             let price = self.market.rows[commodity].price;

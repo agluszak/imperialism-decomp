@@ -331,7 +331,7 @@ impl GameState {
 }
 
 fn header_price(state: &GameState, resource: ResourceKind) -> i32 {
-    if let Some(commodity) = TradeCommodity::from_retail(resource as i16) {
+    if let Some(commodity) = TradeCommodity::from_resource(resource) {
         state.market.rows[commodity].price
     } else if resource == ResourceKind::Gems {
         500
