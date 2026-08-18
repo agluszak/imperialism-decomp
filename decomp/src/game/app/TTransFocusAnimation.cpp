@@ -28,27 +28,21 @@ IMPLEMENT_DYNCREATE(TTransFocusAnimation, TFocusAnimation)
 // TTransFocusAnimation::GetRuntimeClass
 
 // FUNCTION: IMPERIALISM 0x004a04a0
-TTransFocusAnimation::TTransFocusAnimation(TView* target, RECT* bounds, short f0a, short f0c,
-                                           int tickLimit, int f18)
-    : TFocusAnimation() {
+void TTransFocusAnimation::ITransFocusAnimation(TView* target, RECT* bounds, short frameCountArg,
+                                                short frameResourceBaseIdArg, int ticksPerFrameArg,
+                                                int registryTagArg) {
   ownerView = target;
+  screenRect = *bounds;
+  frameResourceBaseId = frameResourceBaseIdArg;
+  frameCount = frameCountArg;
+  ticksPerFrame = ticksPerFrameArg;
+  registryTag = registryTagArg;
   frameIndex = 0;
-  frameCount = f0a;
-  frameResourceBaseId = f0c;
   ticksSinceFrameChange = 0;
-  ticksPerFrame = tickLimit;
-  registryTag = f18;
-  screenRect.left = bounds->left;
-  screenRect.top = bounds->top;
-  screenRect.right = bounds->right;
-  screenRect.bottom = bounds->bottom;
-  enabledFlag = 1;
-  transientSurfaceContext = 0;
-  insetBitmapSurface = 0;
 
   RECT local_bounds = {0, 0, bounds->right - bounds->left, bounds->bottom - bounds->top};
   g_pDisplayMgr->MakeNewGWorld(transientSurfaceContext, 8, local_bounds);
-  insetBitmapSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(f0c);
+  insetBitmapSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(frameResourceBaseIdArg);
 }
 
 // FUNCTION: IMPERIALISM 0x004a0570

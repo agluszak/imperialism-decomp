@@ -1631,7 +1631,7 @@ address|name|symbol|size|type|prototype|provenance
 4a0430|TTransFocusAnimation::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a0460|TTransFocusAnimation::CreateTTransFocusAnimationInstance||7|function|undefined CreateTTransFocusAnimationInstance()|
 4a0480|TTransFocusAnimation::GetRuntimeClass||6|function|undefined GetTTransFocusAnimationClassNamePointer()|rtti
-4a04a0|TTransFocusAnimation::ConstructTTransFocusAnimationBaseState||158|function|undefined ConstructTTransFocusAnimationBaseState()|
+4a04a0|TTransFocusAnimation::ITransFocusAnimation||158|function|void __thiscall ITransFocusAnimation(TView * target, RECT * bounds, short frameCount, short frameResourceBaseId, int ticksPerFrame, int registryTag)|mac-symbol
 4a0570|TTransFocusAnimation::Free||62|function|undefined DestructTTransFocusAnimationAndMaybeFree()|
 4a05c0|TTransFocusAnimation::UpdateBackground||336|function|void __thiscall UpdateBackground(void)|mac-symbol
 4a0770|TTransFocusAnimation::IdleDraw||120|function|void __thiscall IdleDraw(void)|mac-symbol
@@ -2140,13 +2140,13 @@ address|name|symbol|size|type|prototype|provenance
 4ba2e0|TCityProductionView::TCityProductionView||85|function|undefined TCityProductionView()|
 4ba360|TCityProductionView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ba390|TCityProductionView::~TCityProductionView||5|function|void __thiscall ~TCityProductionView(void)|
-4ba3b0|TTransFocusAnimation::InitializeCityBuildingControlRegions||718|function|void __thiscall InitializeCityBuildingControlRegions(void * pInitContext)|
+4ba3b0|TCityProductionView::DoPostCreate||718|function|void __thiscall DoPostCreate(int arg)|source-recovery
 4ba740|TCityProductionView::Free||70|function|void __thiscall Free(void)|
 4ba7b0|THQButton::RenderCityBuildingIcons||929|function|void __thiscall RenderCityBuildingIcons(tagRECT * pTargetRect)|
 4bac50|BlitBitmapResourceRectWithScreenOffsetAndPalette||294|function|undefined BlitBitmapResourceRectWithScreenOffsetAndPalette(RECT* sourceRect, int surface, short offsetY, short offsetX, undefined4 context, undefined4 flags, undefined4 palette)|
 4badd0|TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh||356|function|undefined RenderNationHeaderDateLabelWithPeriodicRefresh()|
-4bafa0|TToolBarCluster::HandleCityBuildingHoverSelection||1629|function|void __thiscall HandleCityBuildingHoverSelection(int * pCursorPoint, int nEventFlags)|
-4bb7a0|TToolBarCluster::InitializeCityProductionDialog||1849|function|undefined InitializeCityProductionDialog(int arg1, int* arg2)|
+4bafa0|TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback||1629|function|void __thiscall HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint * point, Region * * hitArg)|source-recovery
+4bb7a0|TCityProductionView::InitializeCityProductionDialog||1849|function|void __thiscall InitializeCityProductionDialog(TCity * city, TView * dialogRoot)|source-recovery
 4bc0b0|TCityProductionView::UpdateUnits||871|function|void __thiscall UpdateUnits(void)|mac_oracle
 4bc500|TCityProductionView::UpdateToolbar||199|function|void __thiscall UpdateToolbar(void)|mac_oracle
 4bc610|TCityProductionView::DoEvent||62|function|void __thiscall DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|mac_oracle
