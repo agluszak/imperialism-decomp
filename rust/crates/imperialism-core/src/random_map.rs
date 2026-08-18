@@ -1,4 +1,4 @@
-use crate::{RetailLcg, TerrainKind};
+use crate::{HexDirection, HexDirectionTable, RetailLcg, TerrainKind};
 use serde::{Deserialize, Serialize};
 
 pub const COARSE_MAP_WIDTH: usize = 27;
@@ -10,9 +10,11 @@ pub const EXPANDED_MAP_HEIGHT: usize = 60;
 
 const UNASSIGNED: i8 = -1;
 const DISCONNECTED_OCEAN: i8 = 100;
-const COLUMN_OFFSETS_EVEN: [i32; 6] = [1, 1, 1, 0, -1, 0];
-const COLUMN_OFFSETS_ODD: [i32; 6] = [0, 1, 0, -1, -1, -1];
-const ROW_OFFSETS: [i32; 6] = [-1, 0, 1, 1, 0, -1];
+const COLUMN_OFFSETS_EVEN: HexDirectionTable<i32> =
+    HexDirectionTable::from_array([1, 1, 1, 0, -1, 0]);
+const COLUMN_OFFSETS_ODD: HexDirectionTable<i32> =
+    HexDirectionTable::from_array([0, 1, 0, -1, -1, -1]);
+const ROW_OFFSETS: HexDirectionTable<i32> = HexDirectionTable::from_array([-1, 0, 1, 1, 0, -1]);
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CoarseMapGrid {
@@ -223,7 +225,7 @@ impl GeneratorScratch {
                         break candidate;
                     }
                 };
-                if self.assign(cell_index, 8, class_index, 5, rng) == 8 {
+                if self.assign(cell_index, 8, class_index, HexDirection::NorthWest, rng) == 8 {
                     break;
                 }
             }
@@ -244,14 +246,14 @@ impl GeneratorScratch {
                     cell_index = roll1 / 2
                         + if parity & 1 != 0 { 13 } else { 0 }
                         + (roll2 / 2 + if parity < 2 { 0 } else { 7 }) * COARSE_MAP_WIDTH as i32;
-                    for direction in 0..6 {
+                    for direction in HexDirection::ALL {
                         let neighbor = adjacent_cell(cell_index, direction);
                         if neighbor != -1 && self.cell(neighbor) != UNASSIGNED {
                             has_assigned_neighbor = true;
                         }
                     }
                 }
-                if self.assign(cell_index, 4, class_index, 5, rng) == 4 {
+                if self.assign(cell_index, 4, class_index, HexDirection::NorthWest, rng) == 4 {
                     break;
                 }
             }
@@ -277,7 +279,7 @@ impl GeneratorScratch {
         cell_index: i32,
         mode: i32,
         class_index: usize,
-        retry_budget: i32,
+        excluded_direction: HexDirection,
         rng: &mut RetailLcg,
     ) -> i32 {
         let row = cell_index / COARSE_MAP_WIDTH as i32;
@@ -295,24 +297,24 @@ impl GeneratorScratch {
 
         self.set_cell(cell_index, class_index as i8);
         let mut remaining = mode - 1;
-        let mut excluded = [false; 6];
+        let mut excluded = HexDirectionTable::default();
         let mut available_count = 6;
-        for (direction, is_excluded) in excluded.iter_mut().enumerate() {
-            if adjacent_cell(cell_index, direction) == -1 || direction as i32 == retry_budget {
-                *is_excluded = true;
+        for direction in HexDirection::ALL {
+            if adjacent_cell(cell_index, direction) == -1 || direction == excluded_direction {
+                excluded[direction] = true;
                 available_count -= 1;
             }
         }
 
         let mut last_cell = cell_index;
         while remaining != 0 && available_count != 0 {
-            let mut weights = [0; 6];
+            let mut weights = HexDirectionTable::default();
             let mut total_weight = 0;
-            for direction in 0..6 {
+            for direction in HexDirection::ALL {
                 if !excluded[direction] {
                     let neighbor = adjacent_cell(last_cell, direction);
                     let mut weight = 10;
-                    for neighbor_direction in 0..6 {
+                    for neighbor_direction in HexDirection::ALL {
                         let neighbor_of_neighbor = adjacent_cell(neighbor, neighbor_direction);
                         if neighbor_of_neighbor != -1
                             && self.cell(neighbor_of_neighbor) == class_index as i8
@@ -326,28 +328,17 @@ impl GeneratorScratch {
             }
 
             let roll = (self.draw(rng) % total_weight as u32) as i32;
-            let mut selected_direction = 0;
-            if weights[0] < roll {
-                let mut cumulative = weights[0];
-                loop {
-                    let next_weight = weights[selected_direction + 1];
-                    weights[selected_direction + 1] = next_weight + cumulative;
-                    cumulative += next_weight;
-                    selected_direction += 1;
-                    if cumulative >= roll {
-                        break;
-                    }
-                }
-            }
+            let mut cumulative = 0;
+            let selected_direction = HexDirection::ALL
+                .into_iter()
+                .find(|&direction| {
+                    cumulative += weights[direction];
+                    cumulative >= roll
+                })
+                .expect("positive direction weights select a neighbor");
 
             let neighbor = adjacent_cell(last_cell, selected_direction);
-            let assigned = self.assign(
-                neighbor,
-                remaining,
-                class_index,
-                selected_direction as i32,
-                rng,
-            );
+            let assigned = self.assign(neighbor, remaining, class_index, selected_direction, rng);
             remaining -= assigned;
             excluded[selected_direction] = true;
             available_count -= 1;
@@ -357,7 +348,7 @@ impl GeneratorScratch {
     }
 
     fn merge_major_neighbors(&mut self, cell_index: i32, class_index: usize) -> bool {
-        for direction in 0..6 {
+        for direction in HexDirection::ALL {
             let neighbor = adjacent_cell(cell_index, direction);
             let neighbor_class = if neighbor == -1 {
                 UNASSIGNED
@@ -407,7 +398,7 @@ impl GeneratorScratch {
     }
 
     fn merge_neighbors(&mut self, cell_index: i32, class_index: usize) -> bool {
-        for direction in 0..6 {
+        for direction in HexDirection::ALL {
             let neighbor = adjacent_cell(cell_index, direction);
             let neighbor_class = if neighbor == -1 {
                 UNASSIGNED
@@ -451,7 +442,7 @@ impl GeneratorScratch {
 
     fn erase_ocean(&mut self, cell_index: i32) {
         self.set_cell(cell_index, -9);
-        for direction in 0..6 {
+        for direction in HexDirection::ALL {
             let neighbor = adjacent_cell(cell_index, direction);
             if neighbor != -1 && self.cell(neighbor) == UNASSIGNED {
                 self.erase_ocean(neighbor);
@@ -470,7 +461,7 @@ impl GeneratorScratch {
         for cell_index in COARSE_MAP_WIDTH as i32..(14 * COARSE_MAP_WIDTH) as i32 {
             let class = self.cell(cell_index);
             if class != UNASSIGNED {
-                for direction in 0..6 {
+                for direction in HexDirection::ALL {
                     if self.cell(adjacent_cell(cell_index, direction)) == UNASSIGNED {
                         mask |= 1 << class;
                         break;
@@ -605,7 +596,7 @@ fn generate_coarse_random_map_impl(
     }
 }
 
-fn adjacent_cell(cell: i32, direction: usize) -> i32 {
+fn adjacent_cell(cell: i32, direction: HexDirection) -> i32 {
     let mut column = cell % COARSE_MAP_WIDTH as i32;
     let mut row = cell / COARSE_MAP_WIDTH as i32;
     column += if row & 1 == 0 {
@@ -743,7 +734,7 @@ mod tests {
     fn coarse_adjacency_always_wraps_without_a_topology_input() {
         // TMapMaker::GetAdjacentRegionGridCell (retail 0x00528ce0) wraps the
         // 27-column coarse grid unconditionally in both row parities.
-        assert_eq!(adjacent_cell(27, 4), 53);
-        assert_eq!(adjacent_cell(80, 1), 54);
+        assert_eq!(adjacent_cell(27, HexDirection::West), 53);
+        assert_eq!(adjacent_cell(80, HexDirection::East), 54);
     }
 }
