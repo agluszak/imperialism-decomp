@@ -1501,7 +1501,8 @@ fn province_state(province: &LegacyProvince) -> ProvinceState {
     ProvinceState::new(
         optional_owner(province.owner_nation),
         optional_owner(province.former_owner_nation),
-        province.development_stage,
+        ProvinceDevelopmentStage::from_retail(province.development_stage)
+            .expect("retail province development stage"),
         adjacency,
         adjacency_anchor_tiles,
         region_class,

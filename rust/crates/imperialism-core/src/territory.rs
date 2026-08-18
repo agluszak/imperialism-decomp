@@ -9,6 +9,36 @@ use serde::{Deserialize, Serialize};
 
 const REGION_CLASS_COUNT: usize = 24;
 
+#[derive(
+    Clone, Copy, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
+#[serde(rename_all = "snake_case")]
+pub enum ProvinceDevelopmentStage {
+    #[default]
+    None,
+    Village,
+    Town,
+}
+
+impl ProvinceDevelopmentStage {
+    pub const fn from_retail(value: i8) -> Option<Self> {
+        match value {
+            0 => Some(Self::None),
+            1 => Some(Self::Village),
+            2 => Some(Self::Town),
+            _ => None,
+        }
+    }
+
+    pub const fn retail(self) -> i8 {
+        match self {
+            Self::None => 0,
+            Self::Village => 1,
+            Self::Town => 2,
+        }
+    }
+}
+
 /// Retail province fort levels.
 #[derive(
     Clone, Copy, Debug, Default, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
@@ -81,7 +111,7 @@ pub struct ProvinceState {
     owner: Option<NationId>,
     #[serde(deserialize_with = "deserialize_required_option")]
     former_owner: Option<NationId>,
-    development_stage: i8,
+    development_stage: ProvinceDevelopmentStage,
     adjacency: Vec<ProvinceId>,
     pub adjacency_anchor_tiles: Vec<TileId>,
     #[serde(deserialize_with = "deserialize_required_option")]
@@ -109,7 +139,7 @@ impl Default for ProvinceState {
         Self {
             owner: None,
             former_owner: None,
-            development_stage: 0,
+            development_stage: ProvinceDevelopmentStage::None,
             adjacency: Vec::new(),
             adjacency_anchor_tiles: Vec::new(),
             region_class: None,
@@ -134,7 +164,7 @@ impl ProvinceState {
     pub fn new(
         owner: Option<NationId>,
         former_owner: Option<NationId>,
-        development_stage: i8,
+        development_stage: ProvinceDevelopmentStage,
         adjacency: Vec<ProvinceId>,
         adjacency_anchor_tiles: Vec<TileId>,
         region_class: Option<u8>,
@@ -181,7 +211,7 @@ impl ProvinceState {
         self.former_owner
     }
 
-    pub const fn development_stage(&self) -> i8 {
+    pub const fn development_stage(&self) -> ProvinceDevelopmentStage {
         self.development_stage
     }
 
@@ -212,7 +242,7 @@ impl ProvinceState {
         &mut self.resource_development_by_type
     }
 
-    pub(crate) fn set_development_stage(&mut self, stage: i8) {
+    pub(crate) fn set_development_stage(&mut self, stage: ProvinceDevelopmentStage) {
         self.development_stage = stage;
     }
 
@@ -575,7 +605,7 @@ mod tests {
         state.map.provinces[ProvinceId::new(province)] = ProvinceState::new(
             owner.map(NationId::new),
             owner.map(NationId::new),
-            0,
+            ProvinceDevelopmentStage::None,
             adjacency.iter().copied().map(ProvinceId::new).collect(),
             vec![TileId::new(0); adjacency.len()],
             region_class,

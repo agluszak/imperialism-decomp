@@ -587,7 +587,7 @@ mod tests {
         state.map.provinces[province] = ProvinceState::new(
             Some(owner),
             Some(owner),
-            0,
+            ProvinceDevelopmentStage::None,
             Vec::new(),
             Vec::new(),
             None,

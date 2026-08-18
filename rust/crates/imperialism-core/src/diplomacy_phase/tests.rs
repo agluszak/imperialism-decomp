@@ -412,7 +412,7 @@ fn province(owner: NationId, adjacency: &[u16], linked: &[u16]) -> ProvinceState
     ProvinceState::new(
         Some(owner),
         Some(owner),
-        0,
+        ProvinceDevelopmentStage::None,
         adjacency.iter().copied().map(ProvinceId::new).collect(),
         vec![TileId::new(0); adjacency.len()],
         None,

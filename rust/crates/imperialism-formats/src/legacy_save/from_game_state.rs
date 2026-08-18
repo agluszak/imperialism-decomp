@@ -982,7 +982,7 @@ fn province_dto(province: &ProvinceState) -> LegacyProvince {
     LegacyProvince {
         owner_nation: option_i8(province.owner().map(NationId::get)),
         former_owner_nation: option_i8(province.former_owner().map(NationId::get)),
-        development_stage: province.development_stage(),
+        development_stage: province.development_stage().retail(),
         fort_level: province.fort_level().retail(),
         city_tile: option_i16(province.city_tile().map(TileId::get)),
         last_turn_tick: province.last_turn_tick,

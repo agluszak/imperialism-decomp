@@ -371,7 +371,10 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
     assert!(human.auto.is_none());
     assert_eq!(human.economy.army_movement_budget, 15);
     for province in ProvinceId::all() {
-        assert_eq!(state.map().provinces[province].development_stage(), 0);
+        assert_eq!(
+            state.map().provinces[province].development_stage(),
+            ProvinceDevelopmentStage::None
+        );
         assert!(
             MajorNationId::all()
                 .all(|nation| !state.map().provinces[province].explored_by_majors()[nation])

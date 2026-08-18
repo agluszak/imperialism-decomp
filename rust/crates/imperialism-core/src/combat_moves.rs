@@ -664,7 +664,7 @@ mod tests {
         state.map.provinces[ProvinceId::new(province)] = ProvinceState::new(
             Some(NationId::new(owner)),
             Some(NationId::new(owner)),
-            0,
+            ProvinceDevelopmentStage::None,
             adjacency.iter().copied().map(ProvinceId::new).collect(),
             vec![TileId::new(0); adjacency.len()],
             Some(0),

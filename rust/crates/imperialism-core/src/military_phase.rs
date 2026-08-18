@@ -218,7 +218,7 @@ impl GameState {
 
         for province in ProvinceId::all() {
             region_scores[province] +=
-                i32::from(self.map.provinces[province].development_stage() + 3) * 1000;
+                (i32::from(self.map.provinces[province].development_stage().retail()) + 3) * 1000;
         }
 
         for nation in NationId::all() {
@@ -511,7 +511,7 @@ mod tests {
         state.map.provinces[id] = ProvinceState::new(
             Some(owner),
             Some(owner),
-            0,
+            ProvinceDevelopmentStage::None,
             adjacent.iter().copied().map(ProvinceId::new).collect(),
             vec![TileId::new(0); adjacent.len()],
             None,

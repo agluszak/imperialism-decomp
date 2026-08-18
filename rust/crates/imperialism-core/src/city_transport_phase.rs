@@ -263,7 +263,7 @@ impl GameState {
                 }
             }
 
-            let mut pending_stage: i8 = 0;
+            let mut pending_stage = ProvinceDevelopmentStage::None;
             let current_stage = self.map.provinces[province_id].development_stage();
             {
                 let development =
@@ -276,7 +276,7 @@ impl GameState {
                         && i32::from(development[ResourceKind::Fabric]) < clothing_limit
                         && i32::from(development[ResourceKind::Fabric]) < cotton_wool / 2
                     {
-                        pending_stage = 1;
+                        pending_stage = ProvinceDevelopmentStage::Village;
                         development[ResourceKind::Fabric] += 1;
                     }
                     if resource_sums[ResourceKind::Timber] != 0
@@ -284,7 +284,7 @@ impl GameState {
                         && i32::from(development[ResourceKind::Lumber])
                             < resource_sums[ResourceKind::Timber] / 2
                     {
-                        pending_stage = 1;
+                        pending_stage = ProvinceDevelopmentStage::Village;
                         development[ResourceKind::Lumber] += 1;
                     }
                     if resource_sums[ResourceKind::Coal] != 0
@@ -292,7 +292,7 @@ impl GameState {
                         && i32::from(development[ResourceKind::Steel])
                             < resource_sums[ResourceKind::Coal] / 2
                     {
-                        pending_stage = 1;
+                        pending_stage = ProvinceDevelopmentStage::Village;
                         development[ResourceKind::Steel] += 1;
                     }
                     if resource_sums[ResourceKind::Oil] != 0
@@ -300,7 +300,7 @@ impl GameState {
                         && i32::from(development[ResourceKind::Fuel])
                             < resource_sums[ResourceKind::Oil] / 2
                     {
-                        pending_stage = 1;
+                        pending_stage = ProvinceDevelopmentStage::Village;
                         development[ResourceKind::Fuel] += 1;
                     }
                 }
@@ -310,21 +310,21 @@ impl GameState {
                         && i32::from(development[ResourceKind::Clothing])
                             < i32::from(development[ResourceKind::Fabric]) / 2
                     {
-                        pending_stage = 2;
+                        pending_stage = ProvinceDevelopmentStage::Town;
                         development[ResourceKind::Clothing] += 1;
                     }
                     if development[ResourceKind::Lumber] != 0
                         && i32::from(development[ResourceKind::Furniture])
                             < i32::from(development[ResourceKind::Lumber]) / 2
                     {
-                        pending_stage = 2;
+                        pending_stage = ProvinceDevelopmentStage::Town;
                         development[ResourceKind::Furniture] += 1;
                     }
                     if development[ResourceKind::Steel] != 0
                         && i32::from(development[ResourceKind::Hardware])
                             < i32::from(development[ResourceKind::Steel]) / 2
                     {
-                        pending_stage = 2;
+                        pending_stage = ProvinceDevelopmentStage::Town;
                         development[ResourceKind::Hardware] += 1;
                     }
                 }
@@ -333,14 +333,14 @@ impl GameState {
             if current_stage < pending_stage {
                 self.map.provinces[province_id].set_development_stage(pending_stage);
             } else {
-                pending_stage = 0;
+                pending_stage = ProvinceDevelopmentStage::None;
             }
 
-            if pending_stage == 2 {
+            if pending_stage == ProvinceDevelopmentStage::Town {
                 self.nations.majors[&nation].economy.pending_actions
                     [PendingActionKind::TownDevelopment]
                     .queue_with_payload(province_id.get() as i16);
-            } else if pending_stage == 1 {
+            } else if pending_stage == ProvinceDevelopmentStage::Village {
                 self.nations.majors[&nation].economy.pending_actions
                     [PendingActionKind::VillageDevelopment]
                     .queue_with_payload(province_id.get() as i16);
@@ -481,7 +481,7 @@ mod tests {
         state.map.provinces[province] = ProvinceState::new(
             Some(nation.nation()),
             Some(nation.nation()),
-            0,
+            ProvinceDevelopmentStage::None,
             Vec::new(),
             Vec::new(),
             Some(0),
@@ -536,7 +536,10 @@ mod tests {
             state.map.provinces[other].resource_development_by_type()[ResourceKind::Fabric],
             1
         );
-        assert_eq!(state.map.provinces[other].development_stage(), 1);
+        assert_eq!(
+            state.map.provinces[other].development_stage(),
+            ProvinceDevelopmentStage::Village
+        );
         let village = state.nations.majors[&nation].economy.pending_actions
             [PendingActionKind::VillageDevelopment];
         assert_eq!(village.status(), PendingActionStatus::QUEUED);
@@ -573,7 +576,10 @@ mod tests {
             state.map.provinces[other].resource_development_by_type()[ResourceKind::Clothing],
             1
         );
-        assert_eq!(state.map.provinces[other].development_stage(), 2);
+        assert_eq!(
+            state.map.provinces[other].development_stage(),
+            ProvinceDevelopmentStage::Town
+        );
         let town = state.nations.majors[&nation].economy.pending_actions
             [PendingActionKind::TownDevelopment];
         assert_eq!(town.status(), PendingActionStatus::QUEUED);

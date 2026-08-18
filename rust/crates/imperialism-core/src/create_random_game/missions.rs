@@ -123,7 +123,7 @@ pub(super) fn build_province_state(
         provinces[province] = ProvinceState::new(
             Some(owner),
             Some(owner),
-            0,
+            ProvinceDevelopmentStage::None,
             adjacency[index].clone(),
             adjacency_anchor_tiles,
             Some(generated.region_class),

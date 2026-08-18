@@ -83,12 +83,11 @@ pub(super) fn city_marker_offset(state: &GameState, tile: TileId) -> Option<u16>
             let stage = tile_state
                 .province
                 .map(|province| state.map().provinces[province].development_stage())
-                .unwrap_or(0);
+                .unwrap_or(ProvinceDevelopmentStage::None);
             return match stage {
-                0 => Some(0x700),
-                1 => Some(0x740),
-                2 => Some(0x780),
-                _ => None,
+                ProvinceDevelopmentStage::None => Some(0x700),
+                ProvinceDevelopmentStage::Village => Some(0x740),
+                ProvinceDevelopmentStage::Town => Some(0x780),
             };
         }
         return None;

@@ -1113,7 +1113,7 @@ mod tests {
         state.map.provinces[ProvinceId::new(0)] = ProvinceState::new(
             Some(nation),
             Some(nation),
-            0,
+            ProvinceDevelopmentStage::None,
             Vec::new(),
             Vec::new(),
             Some(0),

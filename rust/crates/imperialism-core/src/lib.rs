@@ -171,7 +171,9 @@ pub use technology::{
     TechnologyResearchStatus, TechnologyState, TechnologyTable, UniversityRequirementLevel,
     UniversityTechnologyState,
 };
-pub use territory::{CountryStatus, FortLevel, FortLevelTable, ProvinceState};
+pub use territory::{
+    CountryStatus, FortLevel, FortLevelTable, ProvinceDevelopmentStage, ProvinceState,
+};
 pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};
 pub use trade_phase::{PendingTradeOffer, TradeProgress, TradeSession};
 pub use turn_flow::{
