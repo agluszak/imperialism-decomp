@@ -280,7 +280,7 @@ fn military_unit_dto(id: MilitaryUnitId, unit: &MilitaryUnitState) -> LegacyMili
             .target_mirrors()
             .map(|province| option_i16(province.map(ProvinceId::get))),
         strength: unit.strength(),
-        era: unit.era(),
+        era: unit.era().retail(),
         experience: unit.experience(),
         battle_flags: unit.battle_flags(),
     }

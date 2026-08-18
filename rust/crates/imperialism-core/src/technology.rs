@@ -991,7 +991,7 @@ mod tests {
                 true,
                 String::new(),
                 500,
-                0,
+                MilitaryEra::First,
                 0,
                 0,
             ),

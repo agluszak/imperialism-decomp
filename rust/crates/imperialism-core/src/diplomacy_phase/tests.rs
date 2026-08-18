@@ -588,7 +588,7 @@ fn ai_rejects_peace_when_the_enemy_capitol_is_threatened() {
             false,
             String::new(),
             500,
-            0,
+            MilitaryEra::First,
             0,
             0,
         ),

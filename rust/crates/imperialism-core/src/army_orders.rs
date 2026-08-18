@@ -893,7 +893,7 @@ mod tests {
                 true,
                 String::new(),
                 0x1f4,
-                0,
+                MilitaryEra::First,
                 0,
                 0,
             ),

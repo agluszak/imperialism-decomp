@@ -148,7 +148,7 @@ impl LegacyCountryBase {
                     unit.registered != 0,
                     unit.name.clone(),
                     unit.strength,
-                    unit.era,
+                    MilitaryEra::from_retail(unit.era).expect("retail military era"),
                     unit.experience,
                     unit.battle_flags,
                 );

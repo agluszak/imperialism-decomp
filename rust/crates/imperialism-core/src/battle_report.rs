@@ -206,7 +206,7 @@ mod tests {
                 true,
                 "1st Regulars".to_string(),
                 0x1f4,
-                0,
+                MilitaryEra::First,
                 150,
                 0,
             ),

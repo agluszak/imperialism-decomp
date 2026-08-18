@@ -179,7 +179,7 @@ pub use turn_flow::{
 pub use turn_tail::{EliminationOutcome, QuarterGateResult};
 pub use units::{
     ArmyCategoryTable, ArmyUnitCategory, CivilianLocation, CivilianUnitKind, CivilianUnitState,
-    CivilianUnitTable, MilitaryOrder, MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState,
-    MilitaryUnitTable, TacticalCombatClass, TacticalCombatClassTable, UnitIdAllocator,
-    deserialize_army_category_table, deserialize_army_unit_category,
+    CivilianUnitTable, MilitaryEra, MilitaryOrder, MilitaryOrderCode, MilitaryUnitKind,
+    MilitaryUnitState, MilitaryUnitTable, TacticalCombatClass, TacticalCombatClassTable,
+    UnitIdAllocator, deserialize_army_category_table, deserialize_army_unit_category,
 };

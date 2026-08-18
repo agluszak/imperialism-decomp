@@ -181,7 +181,7 @@ mod tests {
             true,
             String::new(),
             strength,
-            0,
+            MilitaryEra::First,
             0,
             0,
         )
@@ -203,7 +203,7 @@ mod tests {
             true,
             String::new(),
             strength,
-            0,
+            MilitaryEra::First,
             0,
             0,
         )

@@ -209,8 +209,39 @@ impl MilitaryUnitKind {
         (index < Self::LENGTH).then(|| Self::from_usize(index))
     }
 
-    pub(crate) fn spawn_era(self) -> i16 {
-        (self as i16) / 8
+    pub(crate) const fn spawn_era(self) -> MilitaryEra {
+        match self {
+            Self::Minutemen
+            | Self::Skirmishers
+            | Self::Regulars
+            | Self::Grenadiers
+            | Self::Hussars
+            | Self::Cuirassiers
+            | Self::LightArtillery
+            | Self::Artillery => MilitaryEra::First,
+            Self::Militia
+            | Self::Sharpshooters
+            | Self::RifleInfantry
+            | Self::Guards
+            | Self::Scouts
+            | Self::CarbineCavalry
+            | Self::FieldArtillery
+            | Self::SiegeArtillery => MilitaryEra::Second,
+            Self::Conscripts
+            | Self::Rangers
+            | Self::Infantry
+            | Self::MachineGunners
+            | Self::MechanizedInfantry
+            | Self::Armor
+            | Self::MobileArtillery
+            | Self::RailroadGuns => MilitaryEra::Third,
+            Self::Sappers
+            | Self::CombatEngineers
+            | Self::Saboteurs
+            | Self::GeneralEra1
+            | Self::GeneralEra2
+            | Self::GeneralEra3 => MilitaryEra::Fourth,
+        }
     }
 
     pub(crate) const fn roster_name(self) -> Option<&'static str> {
@@ -323,6 +354,31 @@ impl MilitaryUnitKind {
     }
 }
 
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[repr(i16)]
+pub enum MilitaryEra {
+    First = 0,
+    Second = 1,
+    Third = 2,
+    Fourth = 3,
+}
+
+impl MilitaryEra {
+    pub const fn from_retail(value: i16) -> Option<Self> {
+        match value {
+            0 => Some(Self::First),
+            1 => Some(Self::Second),
+            2 => Some(Self::Third),
+            3 => Some(Self::Fourth),
+            _ => None,
+        }
+    }
+
+    pub const fn retail(self) -> i16 {
+        self as i16
+    }
+}
+
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
 pub struct UnitIdAllocator(i32);
@@ -354,7 +410,7 @@ pub struct MilitaryUnitState {
     pub(crate) registered: bool,
     pub(crate) name: String,
     pub(crate) strength: i16,
-    pub(crate) era: i16,
+    pub(crate) era: MilitaryEra,
     pub(crate) experience: i16,
     pub(crate) battle_flags: i16,
 }
@@ -371,7 +427,7 @@ impl MilitaryUnitState {
         registered: bool,
         name: String,
         strength: i16,
-        era: i16,
+        era: MilitaryEra,
         experience: i16,
         battle_flags: i16,
     ) -> Self {
@@ -427,7 +483,7 @@ impl MilitaryUnitState {
         self.strength
     }
 
-    pub const fn era(&self) -> i16 {
+    pub const fn era(&self) -> MilitaryEra {
         self.era
     }
 
