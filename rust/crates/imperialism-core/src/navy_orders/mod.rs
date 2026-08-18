@@ -14,6 +14,15 @@ pub(crate) enum NavyPriorityComponent {
     Industry,
 }
 
+impl NavyPriorityComponent {
+    pub(crate) const ALL: [Self; 4] = [
+        Self::Resolve,
+        Self::Strength,
+        Self::Descriptor,
+        Self::Industry,
+    ];
+}
+
 pub(crate) type NavyPriorityTable<T> = EnumMap<NavyPriorityComponent, T>;
 
 /// Retail navy toolbar classes `cls0` through `cls3`.
@@ -328,11 +337,13 @@ fn navy_state_mut(data: &mut MissionData) -> Option<&mut NavyMissionState> {
     }
 }
 
-const NAVY_CONTROL_PROFILE: [i16; 4] = [40, 40, 20, 0];
-const NAVY_ESCORT_PROFILE: [i16; 4] = [40, 30, 30, 0];
+const NAVY_CONTROL_PROFILE: NavyPriorityTable<i16> = NavyPriorityTable::from_array([40, 40, 20, 0]);
+const NAVY_ESCORT_PROFILE: NavyPriorityTable<i16> = NavyPriorityTable::from_array([40, 30, 30, 0]);
 
-fn navy_required_from_profile(profile: [i16; 4], total: f32) -> [u32; 4] {
-    profile.map(|weight| (f32::from(weight) * total * 0.01).to_bits())
+fn navy_required_from_profile(profile: NavyPriorityTable<i16>, total: f32) -> [u32; 4] {
+    profile
+        .as_array()
+        .map(|weight| (f32::from(weight) * total * 0.01).to_bits())
 }
 
 fn hop_distance(distances: &[i16], zone: OceanZoneId) -> i16 {
@@ -344,7 +355,7 @@ fn hop_distance(distances: &[i16], zone: OceanZoneId) -> i16 {
 
 fn accumulate_ship_categories(
     ship: &ShipState,
-    vector: &mut [f32; 4],
+    vector: &mut NavyPriorityTable<f32>,
     enabled: &IndustryCapabilityTable<bool>,
 ) {
     let max_strength = ship_stock_cap(ship.ship_type);
@@ -353,15 +364,15 @@ fn accumulate_ship_categories(
     }
     let baselines = navy_category_baselines(enabled);
     let scale = f32::from(ship.strength) / f32::from(max_strength);
-    vector[0] +=
+    vector[NavyPriorityComponent::Resolve] +=
         ship_priority_contribution(ship, NavyPriorityComponent::Resolve, &baselines) as f32 * scale;
-    vector[1] += ship_priority_contribution(ship, NavyPriorityComponent::Strength, &baselines)
-        as f32
-        * scale;
-    vector[2] += ship_priority_contribution(ship, NavyPriorityComponent::Descriptor, &baselines)
-        as f32
-        * scale;
-    vector[3] +=
+    vector[NavyPriorityComponent::Strength] +=
+        ship_priority_contribution(ship, NavyPriorityComponent::Strength, &baselines) as f32
+            * scale;
+    vector[NavyPriorityComponent::Descriptor] +=
+        ship_priority_contribution(ship, NavyPriorityComponent::Descriptor, &baselines) as f32
+            * scale;
+    vector[NavyPriorityComponent::Industry] +=
         ship_priority_contribution(ship, NavyPriorityComponent::Industry, &baselines) as f32;
 }
 

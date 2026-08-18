@@ -311,7 +311,7 @@ impl GameState {
     ) -> f32 {
         let baselines =
             crate::navy_orders::navy_category_baselines(&self.technology.industry_enabled_by_slot);
-        let mut vector = [0.0_f32; 4];
+        let mut vector = crate::navy_orders::NavyPriorityTable::default();
         for ship in self
             .ships
             .values()
@@ -322,38 +322,43 @@ impl GameState {
                 continue;
             }
             let scale = f32::from(ship.strength) / f32::from(max_strength);
-            vector[0] += crate::navy_orders::ship_priority_contribution(
-                ship,
-                crate::navy_orders::NavyPriorityComponent::Resolve,
-                &baselines,
-            ) as f32
-                * scale;
-            vector[1] += crate::navy_orders::ship_priority_contribution(
-                ship,
-                crate::navy_orders::NavyPriorityComponent::Strength,
-                &baselines,
-            ) as f32
-                * scale;
-            vector[2] += crate::navy_orders::ship_priority_contribution(
-                ship,
-                crate::navy_orders::NavyPriorityComponent::Descriptor,
-                &baselines,
-            ) as f32
-                * scale;
-            vector[3] += crate::navy_orders::ship_priority_contribution(
-                ship,
-                crate::navy_orders::NavyPriorityComponent::Industry,
-                &baselines,
-            ) as f32;
+            vector[crate::navy_orders::NavyPriorityComponent::Resolve] +=
+                crate::navy_orders::ship_priority_contribution(
+                    ship,
+                    crate::navy_orders::NavyPriorityComponent::Resolve,
+                    &baselines,
+                ) as f32
+                    * scale;
+            vector[crate::navy_orders::NavyPriorityComponent::Strength] +=
+                crate::navy_orders::ship_priority_contribution(
+                    ship,
+                    crate::navy_orders::NavyPriorityComponent::Strength,
+                    &baselines,
+                ) as f32
+                    * scale;
+            vector[crate::navy_orders::NavyPriorityComponent::Descriptor] +=
+                crate::navy_orders::ship_priority_contribution(
+                    ship,
+                    crate::navy_orders::NavyPriorityComponent::Descriptor,
+                    &baselines,
+                ) as f32
+                    * scale;
+            vector[crate::navy_orders::NavyPriorityComponent::Industry] +=
+                crate::navy_orders::ship_priority_contribution(
+                    ship,
+                    crate::navy_orders::NavyPriorityComponent::Industry,
+                    &baselines,
+                ) as f32;
         }
-        let sum: f32 = vector.iter().sum();
+        let sum: f32 = vector.values().sum();
         #[allow(clippy::float_cmp)]
         if sum == 0.0 {
             return 0.0;
         }
         let mut accum = 0.0;
-        for (component, &target) in vector.iter().zip(&NAVY_DISTRIBUTION_PROFILE) {
-            let mut diff = *component / sum - f32::from(target) * 0.01;
+        for component in crate::navy_orders::NavyPriorityComponent::ALL {
+            let mut diff =
+                vector[component] / sum - f32::from(NAVY_DISTRIBUTION_PROFILE[component]) * 0.01;
             if diff <= 0.0 {
                 diff = -diff;
             }
@@ -414,7 +419,8 @@ pub(crate) const TACTICAL_COMPOSITION: TacticalCompositions = TacticalCompositio
     fort_garrison: ActionClassWeights::new(40, 22, 0, 38, 0),
 };
 
-const NAVY_DISTRIBUTION_PROFILE: [i16; 4] = [40, 40, 20, 0];
+const NAVY_DISTRIBUTION_PROFILE: crate::navy_orders::NavyPriorityTable<i16> =
+    crate::navy_orders::NavyPriorityTable::from_array([40, 40, 20, 0]);
 
 /// Per-unit-type `GetAttribute` record (`g_UnitTypeStatTable_0066EB88`).
 /// The seventh retail short is unused (divisor 0) and omitted.

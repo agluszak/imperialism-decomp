@@ -184,7 +184,8 @@ impl GameState {
         let nation = self.missions[&mission].nation;
         let target = navy.target_zone;
         let port = navy.resolved_port_zone;
-        let required = navy.required_equipage_bits.map(f32::from_bits);
+        let required =
+            NavyPriorityTable::from_array(navy.required_equipage_bits.map(f32::from_bits));
         let ships: Vec<ShipId> = navy.ships.keys().copied().collect();
         let selection = navy.state;
         let next = match selection {
@@ -225,7 +226,7 @@ impl GameState {
     fn assigned_navy_readiness(
         &self,
         ships: &[ShipId],
-        required: [f32; 4],
+        required: NavyPriorityTable<f32>,
         near: Option<OceanZoneId>,
         distance_threshold: i16,
         far: Option<OceanZoneId>,
@@ -233,9 +234,9 @@ impl GameState {
         let vector = self.assigned_navy_category_vector(ships, near, distance_threshold, far);
         let mut numerator = 0.0;
         let mut denominator = 0.0;
-        for index in 0..4 {
-            numerator += (required[index] * vector[index]).sqrt();
-            denominator += required[index];
+        for component in NavyPriorityComponent::ALL {
+            numerator += (required[component] * vector[component]).sqrt();
+            denominator += required[component];
         }
         if denominator == 0.0 {
             0.0
@@ -250,11 +251,11 @@ impl GameState {
         near: Option<OceanZoneId>,
         distance_threshold: i16,
         far: Option<OceanZoneId>,
-    ) -> [f32; 4] {
+    ) -> NavyPriorityTable<f32> {
         let far = far.filter(|&zone| Some(zone) != near);
         let near_distances = near.map(|zone| self.zone_hop_distances_from(zone));
         let far_distances = far.map(|zone| self.zone_hop_distances_from(zone));
-        let mut vector = [0.0_f32; 4];
+        let mut vector = NavyPriorityTable::default();
         for &id in ships {
             let Some(ship) = self.ship(id) else {
                 continue;
@@ -281,8 +282,8 @@ impl GameState {
         self.navy_profile_similarity(self.hostile_navy_vector(nation, zone), NAVY_CONTROL_PROFILE)
     }
 
-    fn hostile_navy_vector(&self, nation: NationId, zone: OceanZoneId) -> [f32; 4] {
-        let mut vector = [0.0_f32; 4];
+    fn hostile_navy_vector(&self, nation: NationId, zone: OceanZoneId) -> NavyPriorityTable<f32> {
+        let mut vector = NavyPriorityTable::default();
         for ship in self.ships.values() {
             if ship.location != zone || !self.at_war(nation, ship.nation) {
                 continue;
@@ -296,14 +297,18 @@ impl GameState {
         vector
     }
 
-    fn navy_profile_similarity(&self, vector: [f32; 4], profile: [i16; 4]) -> f32 {
-        let sum: f32 = vector.iter().sum();
+    fn navy_profile_similarity(
+        &self,
+        vector: NavyPriorityTable<f32>,
+        profile: NavyPriorityTable<i16>,
+    ) -> f32 {
+        let sum: f32 = vector.values().sum();
         if sum == 0.0 {
             return 0.0;
         }
         let mut divergence = 0.0;
-        for (component, &target) in vector.iter().zip(&profile) {
-            divergence += (*component / sum - f32::from(target) * 0.01).abs();
+        for component in NavyPriorityComponent::ALL {
+            divergence += (vector[component] / sum - f32::from(profile[component]) * 0.01).abs();
         }
         sum * (1.0 - divergence * 0.5)
     }

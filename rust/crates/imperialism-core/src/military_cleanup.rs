@@ -4,7 +4,7 @@ use crate::military::{
     ActionClassScores, PROVINCE_UNIT_ORDER_WEIGHT, TACTICAL_COMPOSITION, accumulate_unit_priority,
 };
 use crate::navy_orders::{
-    NavyPriorityComponent, navy_category_baselines, ship_priority_contribution,
+    NavyPriorityComponent, NavyPriorityTable, navy_category_baselines, ship_priority_contribution,
 };
 use crate::*;
 
@@ -15,7 +15,7 @@ const ATTACK_RESOURCE_SCALE: DifficultyTable<[f32; 4]> = DifficultyTable::from_a
     [2.1, 2.3, 2.5, 2.7],
     [2.3, 2.5, 2.7, 2.9],
 ]);
-const NAVY_QUEUE_PROFILE: [i16; 4] = [40, 40, 20, 0];
+const NAVY_QUEUE_PROFILE: NavyPriorityTable<i16> = NavyPriorityTable::from_array([40, 40, 20, 0]);
 const UNIT_PRIORITY_WEIGHT: f32 = 0.33;
 const PRESSURE_UNSET: f32 = -1.0;
 const PRESSURE_RATIO_CAP: f32 = 1.0;
@@ -71,21 +71,21 @@ impl GameState {
                 continue;
             }
             let slot = usize::from(nation.get());
-            let mut category = [0.0_f32; 4];
+            let mut category = NavyPriorityTable::default();
             for ship in self.ships.values() {
                 if ship.nation != nation.nation() {
                     continue;
                 }
-                category[0] +=
+                category[NavyPriorityComponent::Resolve] +=
                     ship_priority_contribution(ship, NavyPriorityComponent::Resolve, &baselines)
                         as f32;
-                category[1] +=
+                category[NavyPriorityComponent::Strength] +=
                     ship_priority_contribution(ship, NavyPriorityComponent::Strength, &baselines)
                         as f32;
-                category[2] +=
+                category[NavyPriorityComponent::Descriptor] +=
                     ship_priority_contribution(ship, NavyPriorityComponent::Descriptor, &baselines)
                         as f32;
-                category[3] +=
+                category[NavyPriorityComponent::Industry] +=
                     ship_priority_contribution(ship, NavyPriorityComponent::Industry, &baselines)
                         as f32;
             }
@@ -528,13 +528,16 @@ impl GameState {
     }
 }
 
-fn queue_divergence(category: [f32; 4]) -> f32 {
-    let sum = category[0] + category[1] + category[2] + category[3];
+fn queue_divergence(category: NavyPriorityTable<f32>) -> f32 {
+    let sum: f32 = category.values().sum();
     if sum == 0.0 {
         return 0.0;
     }
-    let accum = (0..4)
-        .map(|index| (category[index] / sum - f32::from(NAVY_QUEUE_PROFILE[index]) * 0.01).abs())
+    let accum = NavyPriorityComponent::ALL
+        .into_iter()
+        .map(|component| {
+            (category[component] / sum - f32::from(NAVY_QUEUE_PROFILE[component]) * 0.01).abs()
+        })
         .sum::<f32>();
     sum * (1.0 - accum * 0.5)
 }
