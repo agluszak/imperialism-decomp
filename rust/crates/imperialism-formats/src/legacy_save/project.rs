@@ -57,6 +57,8 @@ fn civilian_work_order(
             turns: turns(),
         },
         2 => CivilianWorkOrder::Sleep,
+        3 => CivilianWorkOrder::Later,
+        4 => CivilianWorkOrder::Done,
         5 => CivilianWorkOrder::LayRail {
             segment: RailSegment::between(
                 topology,

@@ -7,6 +7,8 @@ pub enum CivilianWorkOrder {
     Idle,
     Redeploy { source: TileId, turns: i16 },
     Sleep,
+    Later,
+    Done,
     LayRail { segment: RailSegment, turns: i16 },
     BuildDepot { source: TileId, turns: i16 },
     BuildPort { source: TileId, turns: i16 },
@@ -26,7 +28,7 @@ impl CivilianWorkOrder {
             | Self::DevelopResource { turns, .. }
             | Self::BuildFort { turns, .. }
             | Self::PurchaseLand { turns, .. } => turns,
-            Self::Idle | Self::Redeploy { .. } | Self::Sleep => {
+            Self::Idle | Self::Redeploy { .. } | Self::Sleep | Self::Later | Self::Done => {
                 unreachable!("only civilian work orders advance")
             }
         };
@@ -137,6 +139,15 @@ pub enum EngineerConstructionChoice {
     Fort,
     Rail,
     Port,
+}
+
+/// Idle civilian modes assigned by `TCivToolbar::DoEvent`.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[repr(i32)]
+pub enum CivilianIdleOrderMode {
+    Sleep = 2,
+    Later = 3,
+    Done = 4,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -523,7 +534,10 @@ impl GameState {
             .ok_or(CivilianOrderRejection::Blocked)?;
         let order = civilian.order.clone();
         let (source, refund) = match order {
-            CivilianWorkOrder::Idle | CivilianWorkOrder::Sleep => {
+            CivilianWorkOrder::Idle
+            | CivilianWorkOrder::Sleep
+            | CivilianWorkOrder::Later
+            | CivilianWorkOrder::Done => {
                 return Err(CivilianOrderRejection::Blocked);
             }
             CivilianWorkOrder::Redeploy { source, .. } => (source, 0),
@@ -859,11 +873,60 @@ impl GameState {
             if unit.nation() != nation {
                 continue;
             }
-            // Retail resets unitOrder 2/3/4. Sleep is the recovered idle-mode 2.
-            if matches!(unit.order, CivilianWorkOrder::Sleep) {
+            if matches!(
+                unit.order,
+                CivilianWorkOrder::Sleep | CivilianWorkOrder::Later | CivilianWorkOrder::Done
+            ) {
                 unit.order = CivilianWorkOrder::Idle;
             }
         }
+    }
+
+    /// `TCivMgr::OrderAndCycle` world-state mutation; selection cycling is app-side.
+    pub fn set_civilian_idle_order(
+        &mut self,
+        id: CivilianUnitId,
+        mode: CivilianIdleOrderMode,
+    ) -> bool {
+        let Some(unit) = self.civilian_units.get_mut(&id) else {
+            return false;
+        };
+        if !idle_selectable(&unit.order) {
+            return false;
+        }
+        unit.order = match mode {
+            CivilianIdleOrderMode::Sleep => CivilianWorkOrder::Sleep,
+            CivilianIdleOrderMode::Later => CivilianWorkOrder::Later,
+            CivilianIdleOrderMode::Done => CivilianWorkOrder::Done,
+        };
+        true
+    }
+
+    /// `TCivUnit::ResetCivWorkOrderAndRefreshCounters` used by confirmed disband.
+    pub fn disband_civilian(&mut self, id: CivilianUnitId) -> bool {
+        let Some(unit) = self.civilian_units.get(&id) else {
+            return false;
+        };
+        let tile = unit.location.tile();
+        let kind = unit.unit_type;
+        let nation = unit.owner_nation;
+        if let Some(tile) = tile {
+            self.unlink_civilian_from_tile_chain(id, tile);
+        }
+        self.civilian_units.shift_remove(&id);
+        if kind == CivilianUnitKind::Developer {
+            let audience = MajorNationId::from_nation(self.turn.active_nation);
+            self.pending
+                .queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
+                    audience,
+                    story_code: 0,
+                });
+        } else {
+            let nation = MajorNationId::from_nation(nation)
+                .expect("civilian specialists belong to a major nation");
+            self.nations.city_mut(nation).population.add_expert(1);
+        }
+        true
     }
 
     fn rail_construction_target(
@@ -973,7 +1036,10 @@ impl GameState {
             .order;
         let completion = match order {
             CivilianWorkOrder::Sleep => Completion::None,
-            CivilianWorkOrder::Idle | CivilianWorkOrder::Redeploy { .. } => Completion::Idle,
+            CivilianWorkOrder::Idle
+            | CivilianWorkOrder::Later
+            | CivilianWorkOrder::Done
+            | CivilianWorkOrder::Redeploy { .. } => Completion::Idle,
             CivilianWorkOrder::LayRail { segment, .. } => {
                 let segment = *segment;
                 if order.advance() {
@@ -1445,7 +1511,10 @@ fn civilian_sort_priority(kind: CivilianUnitKind) -> i16 {
 }
 
 fn idle_selectable(order: &CivilianWorkOrder) -> bool {
-    matches!(order, CivilianWorkOrder::Idle | CivilianWorkOrder::Sleep)
+    matches!(
+        order,
+        CivilianWorkOrder::Idle | CivilianWorkOrder::Sleep | CivilianWorkOrder::Later
+    )
 }
 
 fn civilian_gate_qualifies(gate: i8) -> bool {
@@ -2205,5 +2274,58 @@ mod tests {
             CivilianUnitKind::Farmer
         );
         assert_eq!(state.civilian_units[&miner].order, CivilianWorkOrder::Idle);
+    }
+
+    #[test]
+    fn civilian_toolbar_orders_preserve_retail_idle_modes() {
+        let mut state = crate::test_support::game_state();
+        let tile = interior().0;
+        let nation = NationId::new(0);
+        let unit = civilian_on(
+            &mut state,
+            2,
+            CivilianUnitKind::Engineer,
+            tile,
+            CivilianWorkOrder::Idle,
+            nation,
+        );
+
+        assert!(state.set_civilian_idle_order(unit, CivilianIdleOrderMode::Later));
+        assert_eq!(state.civilian_units[&unit].order, CivilianWorkOrder::Later);
+        assert!(state.set_civilian_idle_order(unit, CivilianIdleOrderMode::Done));
+        assert_eq!(state.civilian_units[&unit].order, CivilianWorkOrder::Done);
+        assert!(!state.set_civilian_idle_order(unit, CivilianIdleOrderMode::Sleep));
+    }
+
+    #[test]
+    fn disbanding_specialist_returns_expert_and_unlinks_unit() {
+        let mut state = crate::test_support::game_state();
+        let tile = interior().0;
+        let nation = NationId::new(0);
+        let major = MajorNationId::new(0);
+        let before = state.nations.city(major).population.clone();
+        let unit = civilian_on(
+            &mut state,
+            2,
+            CivilianUnitKind::Engineer,
+            tile,
+            CivilianWorkOrder::Idle,
+            nation,
+        );
+
+        assert!(state.disband_civilian(unit));
+        assert!(state.civilian_unit(unit).is_none());
+        assert!(!state.civilians_on_tile_chain(tile).contains(&unit));
+        let after = &state.nations.city(major).population;
+        assert_eq!(after.count(), before.count() + 1);
+        assert_eq!(after.strength(), before.strength() + 4);
+        assert_eq!(
+            after.baseline_labor().high,
+            before.baseline_labor().high + 1
+        );
+        assert_eq!(
+            after.production_labor().high,
+            before.production_labor().high + 1
+        );
     }
 }

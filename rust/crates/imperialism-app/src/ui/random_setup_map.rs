@@ -371,7 +371,12 @@ fn owner_tag(
     tile: Option<TileId>,
 ) -> PreviewOwner {
     match tile {
-        Some(tile) => owner_at(tile).map_or(PreviewOwner::Unowned, PreviewOwner::Tagged),
+        // TMapPreviewView::TakeSatellitePhoto changes every owner tag outside
+        // the 23 nations to -1 before comparing neighboring cells. Distinct
+        // sea-zone tags therefore remain one uninterrupted ocean.
+        Some(tile) => owner_at(tile)
+            .filter(|owner| owner.nation().is_some())
+            .map_or(PreviewOwner::Unowned, PreviewOwner::Tagged),
         None => PreviewOwner::Unowned,
     }
 }
@@ -529,6 +534,17 @@ mod tests {
 
         assert_eq!(pixels.len(), PREVIEW_PIXEL_COUNT);
         assert_eq!(pixels[90 * PREVIEW_WIDTH + 90], 0x16);
+    }
+
+    #[test]
+    fn distinct_sea_zones_render_as_one_unbordered_ocean() {
+        let mut map = tiles(Some(TileOwnerTag::new(NationId::COUNT)));
+        map[usize::from(TileId::new(1000).get())].owner =
+            Some(TileOwnerTag::new(NationId::COUNT + 1));
+
+        let pixels = compose_preview_indices(&map, MajorNationId::new(1));
+
+        assert!(pixels.iter().all(|&pixel| pixel == OFF_MAP_PALETTE));
     }
 
     #[test]

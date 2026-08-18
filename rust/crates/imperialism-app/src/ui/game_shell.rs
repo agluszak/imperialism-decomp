@@ -165,7 +165,11 @@ fn bind_strategic_map(
 ) {
     bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None);
     bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &tree);
-    disable_native_control(&mut commands, *root, &tree, fourcc!("DONE"));
+    commands
+        .entity(tree.find(*root, fourcc!("DONE")))
+        .insert(ActivateOnPress)
+        .remove::<InteractionDisabled>()
+        .observe(on_end_turn);
     let flag = tree.find(*root, fourcc!("Flag"));
     bind_open_flag_menu(&mut commands, flag);
     let land = bind_strategic_base_terrain(&mut commands, *root, &tree, &mut assets, &session);
@@ -178,6 +182,19 @@ fn bind_strategic_map(
     bind_navy_toolbar(&mut commands, &mut assets, *root, &tree);
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
     bind_strategic_hover(&mut commands, &mut assets, *root, &tree, &mut nodes);
+}
+
+fn on_end_turn(
+    _activate: On<Activate>,
+    mut session: ResMut<GameSession>,
+    prefs: Res<super::preferences::GamePreferences>,
+    assets: Res<RetailAssetsResource>,
+    mut next_state: ResMut<NextState<AppState>>,
+) {
+    let stop = session
+        .game
+        .finish_player_orders(prefs.turn_alerts_enabled(), assets.news_story_ids());
+    apply_turn_stop(stop, &mut next_state);
 }
 
 fn bind_strategic_hover(
@@ -426,12 +443,6 @@ pub(crate) fn bind_native_game_screen_nav(
             .remove::<InteractionDisabled>()
             .observe(on_game_screen_activate);
     }
-}
-
-fn disable_native_control(commands: &mut Commands, root: Entity, tree: &RetailTree, tag: FourCc) {
-    commands
-        .entity(tree.find(root, tag))
-        .insert(InteractionDisabled);
 }
 
 fn on_game_screen_activate(

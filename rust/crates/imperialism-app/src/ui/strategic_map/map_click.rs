@@ -325,7 +325,7 @@ fn apply_civilian_selection_or_report(
     };
     let idle = matches!(
         unit.order(),
-        CivilianWorkOrder::Idle | CivilianWorkOrder::Sleep
+        CivilianWorkOrder::Idle | CivilianWorkOrder::Sleep | CivilianWorkOrder::Later
     );
     let city = session.game.map()[tile]
         .flags

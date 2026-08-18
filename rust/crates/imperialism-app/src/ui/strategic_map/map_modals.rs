@@ -25,6 +25,7 @@ enum CivilianModal {
     Engineer(CivilianUnitId),
     Purchase(CivilianUnitId, TileId),
     Report(CivilianUnitId),
+    Disband(CivilianUnitId),
     Notice { title: String, body: String },
 }
 
@@ -34,6 +35,7 @@ enum CivilianModalAction {
     CancelOrder(CivilianUnitId),
     Engineer(CivilianUnitId, EngineerConstructionChoice),
     ConfirmPurchase(CivilianUnitId, TileId),
+    ConfirmDisband(CivilianUnitId),
 }
 
 pub(crate) fn register(app: &mut App) {
@@ -98,6 +100,15 @@ pub(crate) fn spawn_civilian_report(commands: &mut Commands, unit: CivilianUnitI
     commands.entity(root).insert(CivilianModal::Report(unit));
 }
 
+pub(crate) fn spawn_civilian_disband(commands: &mut Commands, unit: CivilianUnitId) {
+    spawn_linger_dialog(
+        commands,
+        CivilianModal::Disband(unit),
+        AppState::StrategicMap,
+        31,
+    );
+}
+
 fn spawn_modal(commands: &mut Commands, root: Entity) {
     commands
         .entity(root)
@@ -155,6 +166,34 @@ fn bind_added_civilian_modals(
                 &mut assets,
                 &session.game,
             ),
+            CivilianModal::Disband(unit) => {
+                let linger = bind_linger_dialog(root, &tree);
+                let kind = session
+                    .game
+                    .civilian_unit(*unit)
+                    .expect("disband dialog retains its civilian")
+                    .unit_type();
+                let title = get_string(&assets, 0x274d, 3);
+                let body = get_string(
+                    &assets,
+                    0x274d,
+                    if kind == CivilianUnitKind::Developer {
+                        5
+                    } else {
+                        4
+                    },
+                );
+                linger.set_title(&mut commands, &mut assets, title);
+                linger.set_body(&mut commands, &mut assets, body);
+                commands
+                    .entity(linger.okay)
+                    .insert((ActivateOnPress, CivilianModalAction::ConfirmDisband(*unit)))
+                    .observe(on_civilian_modal_action);
+                commands
+                    .entity(linger.cancel)
+                    .insert((ActivateOnPress, CivilianModalAction::Close))
+                    .observe(on_civilian_modal_action);
+            }
             CivilianModal::Notice { title, body } => {
                 let linger = bind_linger_dialog(root, &tree);
                 linger.set_title(&mut commands, &mut assets, title);
@@ -472,7 +511,10 @@ fn civilian_report_text(
         }
         CivilianWorkOrder::BuildFort { turns, .. }
         | CivilianWorkOrder::PurchaseLand { turns, .. } => (String::new(), Some(*turns)),
-        CivilianWorkOrder::Idle | CivilianWorkOrder::Sleep => (String::new(), None),
+        CivilianWorkOrder::Idle
+        | CivilianWorkOrder::Sleep
+        | CivilianWorkOrder::Later
+        | CivilianWorkOrder::Done => (String::new(), None),
     };
     report.push_str(&line);
     if let Some(turns) = turns {
@@ -587,6 +629,9 @@ fn on_civilian_modal_action(
             if completed {
                 audio.play(&mut commands, SoundId::new(0x2335));
             }
+        }
+        CivilianModalAction::ConfirmDisband(unit) => {
+            completed = session.game.disband_civilian(unit);
         }
     }
     commands.entity(root).despawn();

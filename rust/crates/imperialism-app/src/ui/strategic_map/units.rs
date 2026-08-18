@@ -905,13 +905,20 @@ fn civilian_pose(order: &CivilianWorkOrder, foreign: bool, selected: bool) -> Ci
 }
 
 fn civilian_is_idle_selection(order: &CivilianWorkOrder) -> bool {
-    matches!(order, CivilianWorkOrder::Idle | CivilianWorkOrder::Sleep)
+    matches!(
+        order,
+        CivilianWorkOrder::Idle | CivilianWorkOrder::Sleep | CivilianWorkOrder::Later
+    )
 }
 
 fn civilian_uses_work_animation(order: &CivilianWorkOrder) -> bool {
     !matches!(
         order,
-        CivilianWorkOrder::Idle | CivilianWorkOrder::Sleep | CivilianWorkOrder::Redeploy { .. }
+        CivilianWorkOrder::Idle
+            | CivilianWorkOrder::Sleep
+            | CivilianWorkOrder::Later
+            | CivilianWorkOrder::Done
+            | CivilianWorkOrder::Redeploy { .. }
     )
 }
 

@@ -92,8 +92,8 @@ pub use city_site::{
     validate_capital_site_selection,
 };
 pub use civilian_work::{
-    CivilianOrderRejection, CivilianTileAction, CivilianWorkOrder, EngineerConstructionChoice,
-    EngineerConstructionOption, RailOrderRejection, RailSegment,
+    CivilianIdleOrderMode, CivilianOrderRejection, CivilianTileAction, CivilianWorkOrder,
+    EngineerConstructionChoice, EngineerConstructionOption, RailOrderRejection, RailSegment,
 };
 pub use combat_moves::{CombatMovesContinuation, PendingLandBattle};
 pub use create_random_game::{RandomGameNames, capital_selection_view_origin, create_random_game};

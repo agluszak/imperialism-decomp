@@ -593,6 +593,8 @@ fn civilian_unit_dto(
         CivilianWorkOrder::Idle => (0, -1, 0),
         CivilianWorkOrder::Redeploy { source, turns } => (1, source.get() as i16, *turns),
         CivilianWorkOrder::Sleep => (2, -1, 0),
+        CivilianWorkOrder::Later => (3, -1, 0),
+        CivilianWorkOrder::Done => (4, -1, 0),
         CivilianWorkOrder::LayRail { segment, turns } => {
             let _ = topology;
             (5, segment.origin().get() as i16, *turns)
