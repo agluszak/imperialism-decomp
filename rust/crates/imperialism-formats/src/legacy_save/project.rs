@@ -677,7 +677,7 @@ fn diplomacy_state(diplomacy: &LegacyDiplomacyState) -> DiplomacyState {
         ),
         // The retail constructor restores both values before ReadFrom consumes the payload.
         last_processed_nation: None,
-        proposal_mode_raw: 0,
+        proposal_rejection: None,
     }
 }
 

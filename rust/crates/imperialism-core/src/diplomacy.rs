@@ -93,9 +93,8 @@ pub struct DiplomacyState {
     pub special_relation_sources: MinorNationTable<Option<MajorNationId>>,
     pub special_relation_targets: MinorNationTable<Option<MajorNationId>>,
     pub last_processed_nation: Option<MajorNationId>,
-    /// UI action-validation discriminator. Its meanings are recovered, but core rules do not
-    /// interpret it yet, so the retail numeric domain remains visible.
-    pub proposal_mode_raw: i16,
+    /// UI action-validation rejection, if the last player diplomacy action failed.
+    pub proposal_rejection: Option<PlayerDiplomacyRejection>,
 }
 
 impl DiplomacyState {
@@ -213,7 +212,7 @@ impl DiplomacyState {
             special_relation_sources: MinorNationTable::default(),
             special_relation_targets: MinorNationTable::default(),
             last_processed_nation: None,
-            proposal_mode_raw: 0,
+            proposal_rejection: None,
         }
     }
 }
@@ -379,7 +378,8 @@ pub enum PlayerDiplomacyOrderResult {
 /// Retail `proposalArrayMode` values written by
 /// `ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode` and the grant-funds
 /// failure path, then shown through string group `0x2754` at index `mode - 1`.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
 pub enum PlayerDiplomacyRejection {
     EmbassyRequired,
     AlreadyAtWar,
@@ -684,7 +684,7 @@ impl GameState {
         &mut self,
         rejection: PlayerDiplomacyRejection,
     ) -> PlayerDiplomacyOrderResult {
-        self.diplomacy.proposal_mode_raw = rejection.proposal_mode();
+        self.diplomacy.proposal_rejection = Some(rejection);
         PlayerDiplomacyOrderResult::Rejected(rejection)
     }
 
