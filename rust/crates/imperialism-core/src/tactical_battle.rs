@@ -656,10 +656,6 @@ fn general(kind: MilitaryUnitKind) -> bool {
     )
 }
 
-fn category_table_index(category: ArmyUnitCategory) -> usize {
-    usize::from(category as u8)
-}
-
 fn category_value(category: ArmyUnitCategory) -> i32 {
     match category {
         ArmyUnitCategory::Garrison
@@ -1967,7 +1963,7 @@ fn retail_partition_core(
 
 impl Battle {
     fn compute_reachable(&mut self, unit: usize) {
-        let category = category_table_index(self.units[unit].unit_type.tactical_category());
+        let category = self.units[unit].unit_type.tactical_category();
         let action_points = self.units[unit].action_points;
         self.clear_move_costs();
         let start = self.units[unit].tile;
@@ -2015,7 +2011,7 @@ impl Battle {
                             }
                         }
                         let new_cost =
-                            MOVE_COST[category * 5 + record.terrain as usize] + self.cost(tile);
+                            MOVE_COST[category][record.terrain as usize] + self.cost(tile);
                         if i32::from(new_cost) > action_points {
                             continue;
                         }
@@ -2441,16 +2437,15 @@ impl Battle {
             melee = false;
         }
         let attacker_category = self.units[attacker].unit_type.tactical_category();
-        let attacker_category_index = category_table_index(attacker_category);
         let mut strength_factor = 1.0 - f64::from(self.units[attacker].quality) * -0.1;
         strength_factor *= f64::from(BASE_ATTACK_POWER[self.units[attacker].unit_type]);
         if melee {
-            strength_factor *= f64::from(MELEE_MULTIPLIER[attacker_category_index.min(7)]);
+            strength_factor *= f64::from(MELEE_MULTIPLIER[attacker_category]);
         }
         let attack_power = self.units[attacker].strength as f32
             * strength_factor as f32
-            * ATTACK_TERRAIN[attacker_category_index * 5
-                + self.tiles[self.units[attacker].tile as usize].terrain as usize];
+            * ATTACK_TERRAIN[attacker_category]
+                [self.tiles[self.units[attacker].tile as usize].terrain as usize];
         if fort_wall_targeted {
             self.consume_fort(wall, (0.001 * attack_power) as i32);
             return;
@@ -2459,9 +2454,8 @@ impl Battle {
             return;
         };
         let defender_category = self.units[defender].unit_type.tactical_category();
-        let mut defender_category_index = category_table_index(defender_category);
-        let mut damage = DEFENSE_TERRAIN
-            [defender_category_index * 5 + self.tiles[target as usize].terrain as usize]
+        let mut damage = DEFENSE_TERRAIN[defender_category]
+            [self.tiles[target as usize].terrain as usize]
             * DAMAGE_SCALE[self.units[defender].unit_type]
             * attack_power;
         if wall != 0
@@ -2471,14 +2465,13 @@ impl Battle {
             if !direct_fire(attacker_category) {
                 self.consume_fort(wall, (0.001 * attack_power) as i32);
             }
-            defender_category_index = category_table_index(defender_category);
-            damage *= COVER_DAMAGE
-                [defender_category_index * 5 + self.tiles[wall as usize].deploy_mark as usize];
+            damage *=
+                COVER_DAMAGE[defender_category][self.tiles[wall as usize].deploy_mark as usize];
         }
         if self.tiles[target as usize].deploy_mark == 1
             && hex_distance(self.units[attacker].tile, target) > 1
         {
-            damage *= COVER_DAMAGE[defender_category_index * 5 + 1];
+            damage *= COVER_DAMAGE[defender_category][1];
         }
         let mut leader = 2.0f32;
         let defender_side = self.units[defender].side;

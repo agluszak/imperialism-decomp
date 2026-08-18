@@ -1,7 +1,7 @@
 //! Numeric tables for headless land-battle Auto (`global_data_tables.cpp`).
 
 use crate::units::TacticalCombatClass;
-use crate::{MilitaryUnitTable, TacticalCombatClassTable};
+use crate::{ArmyCategoryTable, MilitaryUnitTable, TacticalCombatClassTable};
 
 pub(crate) const TACTICAL_TILE_COUNT: usize = 0x1b3;
 pub(crate) const TACTICAL_STRIDE: i32 = 0x1d;
@@ -58,7 +58,8 @@ pub(crate) const BASE_ATTACK_POWER: MilitaryUnitTable<f32> = MilitaryUnitTable::
     0.0,
 ]);
 
-pub(crate) const MELEE_MULTIPLIER: [f32; 8] = [1.0, 1.0, 1.0, 1.0, 1.3, 1.3, 0.2, 0.2];
+pub(crate) const MELEE_MULTIPLIER: ArmyCategoryTable<f32> =
+    ArmyCategoryTable::from_array([1.0, 1.0, 1.0, 1.0, 1.3, 1.3, 0.2, 0.2, 0.2, 0.2]);
 
 pub(crate) const DAMAGE_SCALE: MilitaryUnitTable<f32> = MilitaryUnitTable::from_array([
     0.0025, 0.0015, 0.002, 0.002, 0.0015, 0.002, 0.004, 0.005, 0.0025, 0.0015, 0.0015, 0.0015,
@@ -66,29 +67,57 @@ pub(crate) const DAMAGE_SCALE: MilitaryUnitTable<f32> = MilitaryUnitTable::from_
     0.003, 0.0025, 0.001, 0.002, 0.0015, 0.0005,
 ]);
 
-pub(crate) const ATTACK_TERRAIN: [f32; 50] = [
-    1.0, 0.75, 0.75, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.75, 0.75, 1.0, 0.0, 1.0, 0.75, 0.75,
-    1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.75, 0.75, 1.0, 0.0, 1.0, 0.75, 0.75, 1.0, 0.0, 1.0,
-    0.75, 0.75, 1.0, 0.0, 1.0, 0.75, 0.75, 1.0, 0.0, 1.0, 0.75, 0.75, 1.0, 0.0,
-];
+pub(crate) const ATTACK_TERRAIN: ArmyCategoryTable<[f32; 5]> = ArmyCategoryTable::from_array([
+    [1.0, 0.75, 0.75, 1.0, 0.0],
+    [1.0, 1.0, 1.0, 1.0, 0.0],
+    [1.0, 0.75, 0.75, 1.0, 0.0],
+    [1.0, 0.75, 0.75, 1.0, 0.0],
+    [1.0, 1.0, 1.0, 1.0, 0.0],
+    [1.0, 0.75, 0.75, 1.0, 0.0],
+    [1.0, 0.75, 0.75, 1.0, 0.0],
+    [1.0, 0.75, 0.75, 1.0, 0.0],
+    [1.0, 0.75, 0.75, 1.0, 0.0],
+    [1.0, 0.75, 0.75, 1.0, 0.0],
+]);
 
-pub(crate) const DEFENSE_TERRAIN: [f32; 50] = [
-    1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.8, 0.8, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0,
-    0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0,
-    1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0,
-];
+pub(crate) const DEFENSE_TERRAIN: ArmyCategoryTable<[f32; 5]> = ArmyCategoryTable::from_array([
+    [1.0, 1.0, 1.0, 1.0, 0.0],
+    [1.0, 0.8, 0.8, 1.0, 0.0],
+    [1.0, 1.0, 1.0, 1.0, 0.0],
+    [1.0, 1.0, 1.0, 1.0, 0.0],
+    [1.0, 1.0, 1.0, 1.0, 0.0],
+    [1.0, 1.0, 1.0, 1.0, 0.0],
+    [1.0, 1.0, 1.0, 1.0, 0.0],
+    [1.0, 1.0, 1.0, 1.0, 0.0],
+    [1.0, 1.0, 1.0, 1.0, 0.0],
+    [1.0, 1.0, 1.0, 1.0, 0.0],
+]);
 
-pub(crate) const COVER_DAMAGE: [f32; 50] = [
-    1.0, 0.8, 0.7, 0.6, 0.5, 1.0, 0.8, 0.7, 0.6, 0.5, 1.0, 0.8, 0.7, 0.6, 0.5, 1.0, 0.8, 0.7, 0.6,
-    0.5, 1.0, 1.0, 0.7, 0.6, 0.5, 1.0, 1.0, 0.7, 0.6, 0.5, 1.0, 0.8, 0.7, 0.6, 0.5, 1.0, 0.8, 0.7,
-    0.6, 0.5, 1.0, 0.8, 0.7, 0.6, 0.5, 1.0, 0.8, 0.7, 0.6, 0.5,
-];
+pub(crate) const COVER_DAMAGE: ArmyCategoryTable<[f32; 5]> = ArmyCategoryTable::from_array([
+    [1.0, 0.8, 0.7, 0.6, 0.5],
+    [1.0, 0.8, 0.7, 0.6, 0.5],
+    [1.0, 0.8, 0.7, 0.6, 0.5],
+    [1.0, 0.8, 0.7, 0.6, 0.5],
+    [1.0, 1.0, 0.7, 0.6, 0.5],
+    [1.0, 1.0, 0.7, 0.6, 0.5],
+    [1.0, 0.8, 0.7, 0.6, 0.5],
+    [1.0, 0.8, 0.7, 0.6, 0.5],
+    [1.0, 0.8, 0.7, 0.6, 0.5],
+    [1.0, 0.8, 0.7, 0.6, 0.5],
+]);
 
-pub(crate) const MOVE_COST: [i16; 50] = [
-    10, 20, 30, 15, 999, 10, 10, 10, 10, 999, 10, 20, 30, 15, 999, 10, 20, 30, 15, 999, 10, 10, 10,
-    10, 999, 10, 20, 30, 15, 999, 10, 20, 30, 15, 999, 10, 20, 30, 15, 999, 10, 20, 30, 15, 999,
-    10, 20, 30, 15, 999,
-];
+pub(crate) const MOVE_COST: ArmyCategoryTable<[i16; 5]> = ArmyCategoryTable::from_array([
+    [10, 20, 30, 15, 999],
+    [10, 10, 10, 10, 999],
+    [10, 20, 30, 15, 999],
+    [10, 20, 30, 15, 999],
+    [10, 10, 10, 10, 999],
+    [10, 20, 30, 15, 999],
+    [10, 20, 30, 15, 999],
+    [10, 20, 30, 15, 999],
+    [10, 20, 30, 15, 999],
+    [10, 20, 30, 15, 999],
+]);
 
 pub(crate) const FORT_STRENGTH_BY_LEVEL: [i32; 6] = [0, 0, 500, 750, 1000, 0];
 
