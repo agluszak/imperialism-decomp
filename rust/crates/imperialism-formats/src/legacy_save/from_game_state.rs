@@ -92,7 +92,7 @@ impl LegacySaveV62 {
                 .map(|tile| option_i8(tile.owner_nation.map(TileOwnerTag::get)))
                 .collect(),
             preview_economic_year_offset: turn.economic_turn as i16,
-            preview_difficulty: turn.difficulty as u8,
+            preview_difficulty: turn.difficulty.retail(),
             preview_active_nation: turn.active_nation.get(),
             preview_active_nation_name: active_name,
         };
@@ -120,7 +120,7 @@ impl LegacySaveV62 {
                 .count() as i32,
             minor_nation_count: MINOR_NATION_COUNT as i32,
             turn_flow_status_flags: turn.turn_flow_status_flags,
-            difficulty: turn.difficulty as u8,
+            difficulty: turn.difficulty.retail(),
             game_setup: LegacyGameSetup {
                 multiplayer_game_active: 0,
                 nation_control_modes,
@@ -496,7 +496,7 @@ fn city_orders_dto(orders: &CityOrders) -> LegacyCityOrders {
         food_processing: production_from_progress(&orders.food_processing, 0),
         items: std::array::from_fn(|index| {
             let item = ManufacturedItem::from_usize(index);
-            item_from_requested(&orders.items[item], item.resource() as i16)
+            item_from_requested(&orders.items[item], i16::from(item.resource().retail()))
         }),
         training: std::array::from_fn(|index| {
             production_from_progress(&orders.training[TrainingLevel::from_usize(index)], 0)
@@ -509,7 +509,7 @@ fn city_orders_dto(orders: &CityOrders) -> LegacyCityOrders {
         civilian_recruitment: std::array::from_fn(|index| {
             unit_from_progress(
                 &orders.civilian_recruitment[CivilianUnitKind::from_usize(index)],
-                index as i16,
+                i16::from(CivilianUnitKind::from_usize(index).retail()),
             )
         }),
         ships: std::array::from_fn(|index| {
@@ -1220,7 +1220,7 @@ fn flatten_nation_pairs<T: Copy, U: Copy>(
 }
 
 fn trade_commodity_i16(commodity: TradeCommodity) -> i16 {
-    commodity.into_usize() as i16
+    i16::from(commodity.resource().retail())
 }
 
 fn optional_commodity_i16(commodity: Option<TradeCommodity>) -> i16 {

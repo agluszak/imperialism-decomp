@@ -475,7 +475,7 @@ impl GameState {
         self.technology.completion_year_by_nation[nation][tech_id] =
             (self.turn.economic_turn / 4) as i16;
 
-        let difficulty = self.turn.difficulty as u8;
+        let difficulty = self.turn.difficulty.retail();
         let era_offset =
             if difficulty >= 3 && !self.nations.major(nation).economy.diplomacy_eligible {
                 i16::from(difficulty) - 2

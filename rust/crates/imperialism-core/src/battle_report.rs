@@ -166,7 +166,7 @@ impl GameState {
             }
             overlay.push_str(unit.name());
             children.push(BattleReportUnit {
-                resource_type: i16::from(unit.unit_type() as u8),
+                resource_type: i16::from(unit.unit_type().retail()),
                 stock_or_required: stock,
                 name: unit.name().to_string(),
                 strength_bucket: unit.experience() / 100,
