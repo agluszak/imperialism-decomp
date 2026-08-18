@@ -137,23 +137,12 @@ impl GameState {
             .expect("army-growth pending requires the home tile's province");
         let unit_kind =
             self.technology.selected_capability_slots[nation][ArmyUnitCategory::Generals];
-        let id = self.unit_ids.next_military();
-        let name = crate::generate_english_random_setup_name(&mut self.rng.zone_status);
-        let unit = MilitaryUnitState {
-            nation: nation_id,
-            unit_type: unit_kind,
-            stationed_province: Some(province),
-            order: crate::MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
-            owner_nation: nation_id,
-            roster_id: 0,
-            registered: true,
-            name,
-            strength: 500,
-            era: unit_kind.spawn_era(),
-            experience: 0,
-            battle_flags: 0,
-        };
-        self.military_units.insert(id, unit);
+        self.insert_land_unit(
+            nation_id,
+            unit_kind,
+            Some(province),
+            MilitaryOrderCode::Idle,
+        );
         self.announce_later(nation, 3, i16::from(unit_kind.retail()), 1);
     }
 
@@ -424,8 +413,7 @@ impl GameState {
             let location = self
                 .first_port_zone_for_nation(nation_id)
                 .expect("navy-growth pending requires a port zone for the nation");
-            let _ = crate::generate_english_random_setup_name(&mut self.rng.zone_status);
-            let ship = self.insert_ship(ShipState {
+            let ship = self.insert_named_ship(ShipState {
                 ship_type,
                 location,
                 aggression: NavalAggression::Balanced,
@@ -444,17 +432,7 @@ impl GameState {
         let count = &mut self.nations.city_mut(nation).ship_order_count_by_type[ship_type];
         *count = count.wrapping_add(1);
 
-        let _ = crate::generate_english_random_setup_name(&mut self.rng.zone_status);
-        let admiral = self.object_ids.admiral();
-        self.admirals.insert(
-            admiral,
-            AdmiralState {
-                nation: nation_id,
-                name: String::new(),
-                experience: 0,
-                ship,
-            },
-        );
+        self.insert_named_admiral(nation_id, ship);
 
         self.announce_later(nation, 3, 0x2508, 1);
         self.announce_later(nation, 0, i16::from(ship_type.retail()), 1);

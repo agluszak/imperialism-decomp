@@ -139,6 +139,54 @@ impl GameState {
         id
     }
 
+    /// Retail `CreateNavyPrimaryOrderNodeAndAssignDisplayName` / `TShip::IShip`.
+    pub(crate) fn insert_named_ship(&mut self, mut ship: ShipState) -> ShipId {
+        loop {
+            ship.name = crate::mapped_flavor_text::generate_ethnic_name(
+                &mut self.rng.zone_status,
+                ship.nation,
+            );
+            if !self
+                .ships
+                .values()
+                .any(|existing| existing.name == ship.name)
+            {
+                break;
+            }
+        }
+        self.insert_ship(ship)
+    }
+
+    /// Retail `TAdmiral` construction and `NameThyself` duplicate retry.
+    pub(crate) fn insert_named_admiral(
+        &mut self,
+        nation: NationId,
+        ship: Option<ShipId>,
+    ) -> AdmiralId {
+        let name = loop {
+            let candidate =
+                crate::mapped_flavor_text::generate_ethnic_name(&mut self.rng.zone_status, nation);
+            if !self
+                .admirals
+                .values()
+                .any(|existing| existing.name == candidate)
+            {
+                break candidate;
+            }
+        };
+        let id = self.object_ids.admiral();
+        self.admirals.insert(
+            id,
+            AdmiralState {
+                nation,
+                name,
+                experience: 0,
+                ship,
+            },
+        );
+        id
+    }
+
     pub fn ship(&self, id: ShipId) -> Option<&ShipState> {
         self.ships.get(&id)
     }
