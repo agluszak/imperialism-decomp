@@ -151,11 +151,11 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     capValue.Format(g_szDecimalFormat, 1);
   }
   g_pSimMgr->GetString(0x2738, 0x10, &capTemplate);
-  scanBracketExpressions(g_pSimMgr, &capValue, static_cast<LPCSTR>(capTemplate),
+  scanBracketExpressions(g_pSimMgr, &textBuffer, static_cast<LPCSTR>(capTemplate),
                          static_cast<LPCSTR>(capValue));
   capTCtrl->InstallTextStyle(style.desc, 0);
   capTCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
-  capTCtrl->SetTextAndMaybeRefresh(&capValue, 0);
+  capTCtrl->SetTextAndMaybeRefresh(&textBuffer, 0);
 
   // 'or  ' — connective label, hidden except for slots 0/3/4 where it is repositioned.
   TStaticText* orCtrl =
