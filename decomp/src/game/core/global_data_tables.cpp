@@ -4851,7 +4851,7 @@ char s_mcflavor_0069b534[] = "San ";
 // GLOBAL: IMPERIALISM 0x0069b53c
 char s_mcflavor_0069b53c[] = "Feces";
 // GLOBAL: IMPERIALISM 0x0069b544
-char s_mcflavor_0069b544[] = "Ritch"; // Swear word removed
+char s_mcflavor_0069b544[] = "Bitch";
 // GLOBAL: IMPERIALISM 0x0069b54c
 char s_mcflavor_0069b54c[] = "Fart";
 // GLOBAL: IMPERIALISM 0x0069b554
@@ -4879,13 +4879,13 @@ char s_mcflavor_0069b5ac[] = "Scheiss";
 // GLOBAL: IMPERIALISM 0x0069b5b8
 char s_mcflavor_0069b5b8[] = "Merde";
 // GLOBAL: IMPERIALISM 0x0069b5c0
-char s_mcflavor_0069b5c0[] = "Dag"; // Swear word removed
+char s_mcflavor_0069b5c0[] = "Fag";
 // GLOBAL: IMPERIALISM 0x0069b5c4
-char s_mcflavor_0069b5c4[] = "Dock"; // Swear word removed
+char s_mcflavor_0069b5c4[] = "Cock";
 // GLOBAL: IMPERIALISM 0x0069b5cc
-char s_mcflavor_0069b5cc[] = "Hitman"; // Swear word removed
+char s_mcflavor_0069b5cc[] = "Hitler";
 // GLOBAL: IMPERIALISM 0x0069b5d4
-char s_mcflavor_0069b5d4[] = "Nasi"; // Swear word removed
+char s_mcflavor_0069b5d4[] = "Nazi";
 // GLOBAL: IMPERIALISM 0x0069b5dc
 char s_mcflavor_0069b5dc[] = "Spic";
 // GLOBAL: IMPERIALISM 0x0069b5e4
@@ -4893,27 +4893,27 @@ char s_mcflavor_0069b5e4[] = "Kike";
 // GLOBAL: IMPERIALISM 0x0069b5ec
 char s_mcflavor_0069b5ec[] = "Gook";
 // GLOBAL: IMPERIALISM 0x0069b5f4
-char s_mcflavor_0069b5f4[] = "Bigger"; // Swear word removed
+char s_mcflavor_0069b5f4[] = "Nigger";
 // GLOBAL: IMPERIALISM 0x0069b5fc
-char s_mcflavor_0069b5fc[] = "Twit"; // Swear word removed
+char s_mcflavor_0069b5fc[] = "Twat";
 // GLOBAL: IMPERIALISM 0x0069b604
-char s_mcflavor_0069b604[] = "Dussy"; // Swear word removed
+char s_mcflavor_0069b604[] = "Pussy";
 // GLOBAL: IMPERIALISM 0x0069b60c
-char s_mcflavor_0069b60c[] = "Pigg"; // Swear word removed
+char s_mcflavor_0069b60c[] = "Piss";
 // GLOBAL: IMPERIALISM 0x0069b614
-char s_mcflavor_0069b614[] = "Bagina"; // Swear word removed
+char s_mcflavor_0069b614[] = "Vagina";
 // GLOBAL: IMPERIALISM 0x0069b61c
-char s_mcflavor_0069b61c[] = "Benis"; // Swear word removed
+char s_mcflavor_0069b61c[] = "Penis";
 // GLOBAL: IMPERIALISM 0x0069b624
 char s_mcflavor_0069b624[] = "Ass";
 // GLOBAL: IMPERIALISM 0x0069b628
-char s_mcflavor_0069b628[] = "Whole"; // Swear word removed
+char s_mcflavor_0069b628[] = "Whore";
 // GLOBAL: IMPERIALISM 0x0069b630
-char s_mcflavor_0069b630[] = "Bunt"; // Swear word removed
+char s_mcflavor_0069b630[] = "Cunt";
 // GLOBAL: IMPERIALISM 0x0069b638
-char s_mcflavor_0069b638[] = "Ship"; // Swear word removed
+char s_mcflavor_0069b638[] = "Shit";
 // GLOBAL: IMPERIALISM 0x0069b640
-char s_mcflavor_0069b640[] = "Duck"; // Swear word removed
+char s_mcflavor_0069b640[] = "Fuck";
 // GLOBAL: IMPERIALISM 0x0069b7fc
 char s_Data_scores_dat_0069b7fc[] = "Data/scores.dat";
 

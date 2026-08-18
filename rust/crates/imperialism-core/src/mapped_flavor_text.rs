@@ -2926,24 +2926,24 @@ fn variant_d(rng: &mut RetailLcg) -> String {
 }
 
 const BANNED: &[&str] = &[
-    "Duck",
-    "Ship",
-    "Bunt",
-    "Whole",
+    "Fuck",
+    "Shit",
+    "Cunt",
+    "Whore",
     "Ass",
-    "Benis",
-    "Bagina",
-    "Pigg",
-    "Dussy",
-    "Twit",
-    "Bigger",
+    "Penis",
+    "Vagina",
+    "Piss",
+    "Pussy",
+    "Twat",
+    "Nigger",
     "Gook",
     "Kike",
     "Spic",
-    "Nasi",
-    "Hitman",
-    "Dock",
-    "Dag",
+    "Nazi",
+    "Hitler",
+    "Cock",
+    "Fag",
     "Merde",
     "Scheiss",
     "Chinga",
@@ -2957,7 +2957,7 @@ const BANNED: &[&str] = &[
     "Turd",
     "Jism",
     "Fart",
-    "Ritch",
+    "Bitch",
     "Feces",
 ];
 
@@ -2993,12 +2993,31 @@ fn generate_variant(rng: &mut RetailLcg, variant: u8) -> String {
             17 => grammar_a(rng),
             _ => unreachable!(),
         };
-        if !BANNED.iter().any(|banned| out.contains(banned)) {
+        if !should_retry_mapped_flavor_text(&out) {
             return out;
         }
     }
 }
 
+fn should_retry_mapped_flavor_text(text: &str) -> bool {
+    BANNED.iter().any(|banned| text.contains(banned))
+}
+
+pub(crate) fn generate_english_name(rng: &mut RetailLcg) -> String {
+    generate_variant(rng, 2)
+}
+
 pub(crate) fn generate_ethnic_name(rng: &mut RetailLcg, nation: NationId) -> String {
     generate_variant(rng, NATION_VARIANTS[usize::from(nation.get())])
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn rejects_the_retail_banned_word_instead_of_the_sanitized_replacement() {
+        assert!(should_retry_mapped_flavor_text("New Hitlerburg"));
+        assert!(!should_retry_mapped_flavor_text("Hitman"));
+    }
 }
