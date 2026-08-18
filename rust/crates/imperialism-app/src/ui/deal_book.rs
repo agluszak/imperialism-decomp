@@ -35,7 +35,7 @@ const TEXT_INSET: f32 = 40.0;
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum DealBookMode {
     History,
-    Category(u8),
+    Category(TradeCommodity),
 }
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -336,12 +336,9 @@ fn deal_book_last_page(screen: &DealBookScreen, session: &GameSession) -> u16 {
     let nation = session.active_major_nation();
     match screen.mode {
         DealBookMode::History => session.game.deal_book_history(nation).last_page_index(),
-        DealBookMode::Category(tab) => session
+        DealBookMode::Category(commodity) => session
             .game
-            .deal_book_category(
-                nation,
-                deal_book_tab_commodity(screen.oil_drilling, tab).unwrap(),
-            )
+            .deal_book_category(nation, commodity)
             .last_page_index(),
     }
 }
@@ -357,14 +354,11 @@ fn on_deal_book_tabs_click(
     let Ok(cursor) = tabs.get(click.entity) else {
         return;
     };
-    let Some(row) = tab_row(cursor, screen.oil_drilling) else {
-        return;
-    };
-    if deal_book_tab_commodity(screen.oil_drilling, row).is_none() {
+    let Some(commodity) = tab_row(cursor, screen.oil_drilling) else {
         return;
     };
     click.propagate(false);
-    screen.mode = DealBookMode::Category(row);
+    screen.mode = DealBookMode::Category(commodity);
     screen.page = 0;
 }
 
@@ -382,21 +376,23 @@ fn hover_deal_book_tabs(
     let Ok((mut node, mut image, mut visibility)) = highlights.single_mut() else {
         return;
     };
-    let row = tab_row(*cursor, screen.oil_drilling).or(match screen.mode {
+    let commodity = tab_row(*cursor, screen.oil_drilling).or(match screen.mode {
         DealBookMode::History => None,
-        DealBookMode::Category(tab) => Some(tab),
+        DealBookMode::Category(commodity) => Some(commodity),
     });
-    let Some(row) = row else {
+    let Some(commodity) = commodity else {
         *visibility = Visibility::Hidden;
         return;
     };
+    let row = deal_book_tab_index(screen.oil_drilling, commodity)
+        .expect("displayed deal-book commodity has a visible tab");
     let top = f32::from(row) * TAB_ROW_HEIGHT;
     node.top = Val::Px(top);
     image.rect = Some(Rect::new(0.0, top, 31.0, top + TAB_ROW_HEIGHT));
     *visibility = Visibility::Visible;
 }
 
-fn tab_row(cursor: &RelativeCursorPosition, oil_drilling: bool) -> Option<u8> {
+fn tab_row(cursor: &RelativeCursorPosition, oil_drilling: bool) -> Option<TradeCommodity> {
     let normalized = cursor.normalized.filter(|_| cursor.cursor_over())?;
     let y = (normalized.y + 0.5) * TAB_STRIP_HEIGHT;
     if y < 0.0 {
@@ -404,7 +400,9 @@ fn tab_row(cursor: &RelativeCursorPosition, oil_drilling: bool) -> Option<u8> {
     }
     let row = (y / TAB_ROW_HEIGHT).floor() as i32;
     let count = i32::from(deal_book_tab_count(oil_drilling));
-    (row >= 0 && row < count).then_some(row as u8)
+    (row >= 0 && row < count)
+        .then(|| u8::try_from(row).expect("retail deal-book tab row fits in u8"))
+        .and_then(|row| deal_book_tab_commodity(oil_drilling, row))
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -451,12 +449,12 @@ fn sync_deal_book(
             &mut pictures,
             &mut visibilities,
         ),
-        DealBookMode::Category(tab) => project_category(
+        DealBookMode::Category(commodity) => project_category(
             &mut commands,
             &mut assets,
             &session.game,
             nation,
-            deal_book_tab_commodity(screen.oil_drilling, tab).unwrap(),
+            commodity,
             *screen,
             &hosts,
             &titles,

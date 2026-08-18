@@ -95,7 +95,7 @@ pub use create_random_game::{RandomGameNames, create_random_game};
 pub use deal_book::{
     DealBookAidLine, DealBookBidRow, DealBookCategory, DealBookCategoryRow, DealBookDealLine,
     DealBookHistory, DealBookHistoryGroup, DealBookHistoryRow, DealBookOfferRow, DealBookTotals,
-    deal_book_tab_commodity, deal_book_tab_count,
+    deal_book_tab_commodity, deal_book_tab_count, deal_book_tab_index,
 };
 pub use difficulty::{Difficulty, DifficultyTable};
 pub use diplomacy::{

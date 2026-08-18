@@ -171,6 +171,17 @@ pub fn deal_book_tab_commodity(oil_drilling: bool, tab: u8) -> Option<TradeCommo
     }
 }
 
+pub fn deal_book_tab_index(oil_drilling: bool, commodity: TradeCommodity) -> Option<u8> {
+    let tabs = if oil_drilling {
+        &TABS_WITH_OIL[..]
+    } else {
+        &TABS_WITHOUT_OIL[..]
+    };
+    tabs.iter()
+        .position(|&tab_commodity| tab_commodity == commodity)
+        .and_then(|index| u8::try_from(index).ok())
+}
+
 impl DealBookHistory {
     pub fn bought_pages(&self) -> Vec<Vec<DealBookHistoryRow>> {
         paginate_history(&self.bought, None)
