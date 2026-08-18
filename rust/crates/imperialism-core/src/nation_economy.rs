@@ -252,7 +252,7 @@ impl GreatPowerState {
     pub(crate) fn settle_transported_items(&mut self, city: &mut CityState) {
         for resource in all_resources() {
             let amount = self.transported_items_by_resource[resource];
-            city.adjust_stock(resource, amount);
+            city.stockpile.wrapping_add_and_verify(resource, amount);
             self.transported_items_by_resource[resource] = 0;
         }
     }
@@ -260,7 +260,7 @@ impl GreatPowerState {
     pub(crate) fn settle_purchased_items(&mut self, city: &mut CityState) {
         for resource in all_resources() {
             let purchased = self.purchased_items_by_resource[resource];
-            city.adjust_stock(resource, purchased);
+            city.stockpile.wrapping_add_and_verify(resource, purchased);
             if self.remembered_trade_offers_by_resource[resource] == -1 && purchased == 0 {
                 self.unfilled_trade_turns_by_resource[resource] += 1;
             } else {
