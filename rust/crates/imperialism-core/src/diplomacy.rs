@@ -13,22 +13,6 @@ pub enum DiplomaticRelationship {
     War,
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Enum, Eq, PartialEq, Serialize)]
-#[serde(rename_all = "snake_case")]
-pub enum DiplomacyRelationshipNotch {
-    Hostile,
-    VeryUnfriendly,
-    Unfriendly,
-    Reserved,
-    Neutral,
-    Friendly,
-    VeryFriendly,
-    Allied,
-    Devoted,
-}
-
-pub type DiplomacyRelationshipNotchTable<T> = enum_map::EnumMap<DiplomacyRelationshipNotch, T>;
-
 impl DiplomaticRelationship {
     pub const fn try_from_retail(value: i16) -> Option<Self> {
         match value {
@@ -109,8 +93,6 @@ pub struct DiplomacyState {
     pub special_relation_sources: MinorNationTable<Option<MajorNationId>>,
     pub special_relation_targets: MinorNationTable<Option<MajorNationId>>,
     pub last_processed_nation: Option<MajorNationId>,
-    /// UI action-validation rejection, if the last player diplomacy action failed.
-    pub proposal_rejection: Option<PlayerDiplomacyRejection>,
 }
 
 impl DiplomacyState {
@@ -228,7 +210,6 @@ impl DiplomacyState {
             special_relation_sources: MinorNationTable::default(),
             special_relation_targets: MinorNationTable::default(),
             last_processed_nation: None,
-            proposal_rejection: None,
         }
     }
 }
@@ -557,13 +538,13 @@ impl GameState {
         if let Err(rejection) =
             self.validate_player_diplomacy_action(source, target, PlayerDiplomacyAction::Grant)
         {
-            return self.reject_player_diplomacy(rejection);
+            return Self::reject_player_diplomacy(rejection);
         }
 
         if self.set_diplomacy_grant(source, target, Some(grant)) {
             PlayerDiplomacyOrderResult::Applied
         } else {
-            self.reject_player_diplomacy(PlayerDiplomacyRejection::InsufficientGrantFunds)
+            Self::reject_player_diplomacy(PlayerDiplomacyRejection::InsufficientGrantFunds)
         }
     }
 
@@ -591,7 +572,7 @@ impl GameState {
             PlayerDiplomacyAction::TradeSubsidy
         };
         if let Err(rejection) = self.validate_player_diplomacy_action(source, target, action) {
-            return self.reject_player_diplomacy(rejection);
+            return Self::reject_player_diplomacy(rejection);
         }
 
         let current = self.nations.majors[&source].common.trade_policy_by_nation[target];
@@ -637,7 +618,7 @@ impl GameState {
         }
 
         if let Err(rejection) = self.validate_player_diplomacy_action(source, target, action) {
-            return self.reject_player_diplomacy(rejection);
+            return Self::reject_player_diplomacy(rejection);
         }
         if policy.requires_entanglement_check()
             && !confirm_entanglements
@@ -672,38 +653,11 @@ impl GameState {
         PlayerDiplomacyOrderResult::Applied
     }
 
-    /// Retail standing-score classifier used by the diplomacy relationship overlay.
-    pub fn diplomacy_relationship_notch(
-        &self,
-        source: NationId,
-        target: NationId,
-    ) -> DiplomacyRelationshipNotch {
-        let standing = self.diplomacy.standings[source][target];
-        if standing <= 0x14 {
-            DiplomacyRelationshipNotch::Hostile
-        } else if standing <= 0x31 {
-            DiplomacyRelationshipNotch::VeryUnfriendly
-        } else if standing <= 0x4f {
-            DiplomacyRelationshipNotch::Unfriendly
-        } else if standing <= 0x64 {
-            DiplomacyRelationshipNotch::Reserved
-        } else if standing <= 0x87 {
-            DiplomacyRelationshipNotch::Neutral
-        } else if standing <= 0xaa {
-            DiplomacyRelationshipNotch::Friendly
-        } else if standing <= 0xcd {
-            DiplomacyRelationshipNotch::VeryFriendly
-        } else if standing <= 0xf0 {
-            DiplomacyRelationshipNotch::Allied
-        } else {
-            DiplomacyRelationshipNotch::Devoted
-        }
+    pub fn diplomacy_standing(&self, source: NationId, target: NationId) -> i16 {
+        self.diplomacy.standings[source][target]
     }
 
-    fn reject_player_diplomacy(
-        &mut self,
-        rejection: PlayerDiplomacyRejection,
-    ) -> PlayerDiplomacyOrderResult {
+    fn reject_player_diplomacy(rejection: PlayerDiplomacyRejection) -> PlayerDiplomacyOrderResult {
         PlayerDiplomacyOrderResult::Rejected(rejection)
     }
 

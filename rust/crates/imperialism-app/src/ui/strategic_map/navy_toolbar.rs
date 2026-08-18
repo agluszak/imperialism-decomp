@@ -182,7 +182,10 @@ fn sync_navy_toolbar(
     for (entity, class) in &classes {
         let available = toolbar.available[class.0];
         let selected = toolbar.selected[class.0];
-        let picture = session.game.navy_toolbar_class_picture_id(class.0);
+        let picture = session
+            .game
+            .navy_toolbar_class_ship_type(class.0)
+            .map(|ship_type| i16::from(ship_type.retail()) + 0x5e6);
         for (child_of, mut image, mut visibility) in &mut ships {
             if child_of.parent() != entity {
                 continue;

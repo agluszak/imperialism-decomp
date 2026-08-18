@@ -86,17 +86,6 @@ fn boxed_strategic_tiles(
         })
 }
 
-bitflags::bitflags! {
-    /// Retail strategic-map edge-scroll bits (`TMapDialog` cursor-edge mask).
-    #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-    pub struct MapEdges: u8 {
-        const TOP = 0x01;
-        const BOTTOM = 0x02;
-        const RIGHT = 0x04;
-        const LEFT = 0x08;
-    }
-}
-
 impl MapMgr {
     pub fn new(topology: MapTopology, tiles: impl Into<Box<[TileState]>>) -> Self {
         Self::from_parts(topology, tiles, ProvinceTable::default())
@@ -154,27 +143,20 @@ impl MapMgr {
             .expect("retail strategic-map viewport origin is inside the map")
     }
 
-    /// Applies the retail map edge-scroll mask to a strategic viewport origin.
-    pub fn scrolled_viewport_origin(&self, origin: TileId, edges: MapEdges) -> TileId {
+    /// Applies a one-cell row and column delta to a strategic viewport origin.
+    pub fn scrolled_viewport_origin(
+        &self,
+        origin: TileId,
+        row_delta: i32,
+        column_delta: i32,
+    ) -> TileId {
         const VIEWPORT_TILE_SPAN: i32 = 9;
         const MAX_ORIGIN_ROW: i32 = 0x35;
 
         let geometry = self.geometry();
         let (row, column) = geometry.row_column(origin);
-        let row_delta = if edges.contains(MapEdges::TOP) {
-            -1
-        } else if edges.contains(MapEdges::BOTTOM) {
-            1
-        } else {
-            0
-        };
-        let column_delta = if edges.contains(MapEdges::RIGHT) {
-            1
-        } else if edges.contains(MapEdges::LEFT) {
-            -1
-        } else {
-            0
-        };
+        debug_assert!((-1..=1).contains(&row_delta));
+        debug_assert!((-1..=1).contains(&column_delta));
         let row = (i32::from(row) + row_delta).clamp(0, MAX_ORIGIN_ROW);
         let column = if self.topology.wraps_horizontally() {
             (i32::from(column) + column_delta).rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
@@ -1106,28 +1088,22 @@ mod tests {
         let tiles = vec![TileState::default(); STRATEGIC_TILE_COUNT];
         let wrapping = MapMgr::new(MapTopology::Wrapping, tiles.clone());
         let origin = wrapping.geometry().tile(0, 0).unwrap();
-        let next = wrapping.scrolled_viewport_origin(origin, MapEdges::TOP | MapEdges::LEFT);
+        let next = wrapping.scrolled_viewport_origin(origin, -1, -1);
         assert_eq!(
             wrapping.geometry().row_column(next),
             (0, STRATEGIC_MAP_WIDTH - 1)
         );
         let origin = wrapping.geometry().tile(53, 107).unwrap();
-        let next = wrapping.scrolled_viewport_origin(origin, MapEdges::BOTTOM | MapEdges::RIGHT);
+        let next = wrapping.scrolled_viewport_origin(origin, 1, 1);
         assert_eq!(wrapping.geometry().row_column(next), (53, 0));
 
         let bounded = MapMgr::new(MapTopology::Bounded, tiles);
         let origin = bounded.geometry().tile(0, 1).unwrap();
-        assert_eq!(
-            bounded.scrolled_viewport_origin(origin, MapEdges::TOP | MapEdges::LEFT),
-            origin
-        );
+        assert_eq!(bounded.scrolled_viewport_origin(origin, -1, -1), origin);
         let origin = bounded.geometry().tile(53, 101).unwrap();
-        assert_eq!(
-            bounded.scrolled_viewport_origin(origin, MapEdges::BOTTOM | MapEdges::RIGHT),
-            origin
-        );
+        assert_eq!(bounded.scrolled_viewport_origin(origin, 1, 1), origin);
         let origin = bounded.geometry().tile(52, 100).unwrap();
-        let next = bounded.scrolled_viewport_origin(origin, MapEdges::BOTTOM | MapEdges::RIGHT);
+        let next = bounded.scrolled_viewport_origin(origin, 1, 1);
         assert_eq!(bounded.geometry().row_column(next), (53, 101));
     }
 

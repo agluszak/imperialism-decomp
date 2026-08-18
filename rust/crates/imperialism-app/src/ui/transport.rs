@@ -974,7 +974,7 @@ mod tests {
 
         let mut app = App::new();
         app.add_plugins((MinimalPlugins, AssetPlugin::default(), ScenePlugin))
-            .insert_resource(GameSession { game: state })
+            .insert_resource(GameSession::new(state))
             .add_systems(
                 Update,
                 (

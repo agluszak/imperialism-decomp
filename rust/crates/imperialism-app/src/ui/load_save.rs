@@ -1,5 +1,6 @@
 use crate::RetailAssetsResource;
 use crate::ui::GameSession;
+use crate::ui::battle_reports::battle_report_texts_for_save;
 use crate::ui::generated;
 use crate::ui::hover_help::get_string;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
@@ -200,24 +201,19 @@ impl Plugin for LoadSavePlugin {
 /// global seeded by `TSimMgr::ISimMgr` via `srand(time(0))`; the map LCG is BSS-zero
 /// until map generation; the zone LCG starts as `GetTickCountDiv16()`. A later load
 /// leaves whatever the process currently has.
-fn runtime_context_for_load(
-    existing: Option<&GameState>,
-    selected_nation: NationId,
-) -> LegacyGameStateContext {
+fn runtime_context_for_load(existing: Option<&GameState>) -> LegacyGameStateContext {
     if let Some(state) = existing {
         let rng = state.rng();
         return LegacyGameStateContext {
             crt_rand_state: rng.crt_rand.state(),
             map_generation_lcg: rng.map_generation.state(),
             zone_status_lcg: rng.zone_status.state(),
-            selected_nation,
         };
     }
     LegacyGameStateContext {
         crt_rand_state: clock_derived_crt_seed(),
         map_generation_lcg: 0,
         zone_status_lcg: tick_derived_zone_seed(),
-        selected_nation,
     }
 }
 
@@ -236,7 +232,7 @@ fn tick_derived_zone_seed() -> u32 {
 pub(crate) fn save_current_game(
     directory: &Path,
     slot: SaveSlot,
-    state: &GameState,
+    session: &GameSession,
     label: &str,
 ) -> Result<(), SaveFileError> {
     let label = normalize_save_label(label);
@@ -244,7 +240,15 @@ pub(crate) fn save_current_game(
         SaveSlot::Numbered(index) => i32::from(index),
         SaveSlot::Autosave => AUTOSAVE_SESSION_SLOT,
     };
-    let bytes = write_game_state(state, &label, session_slot);
+    let battle_report_text = battle_report_texts_for_save(session);
+    let bytes = write_game_state(
+        &session.game,
+        session.map_view_origin,
+        &session.city_windows,
+        &battle_report_text,
+        &label,
+        session_slot,
+    );
     write_save_file(
         retail_save_path(directory, slot),
         &bytes,
@@ -686,13 +690,7 @@ fn confirm_or_apply(
                 typed
             };
             apply_save(
-                commands,
-                save_dir,
-                slot,
-                &session.game,
-                &label,
-                returning,
-                next_state,
+                commands, save_dir, slot, session, &label, returning, next_state,
             );
         }
     }
@@ -713,16 +711,13 @@ fn apply_load(
     }
     let load = (|| {
         let bytes = std::fs::read(&path)?;
-        let selected = peek_save_header(&bytes)
-            .and_then(|header| NationId::try_new(header.active_nation))
-            .ok_or(LoadGameError::Truncated)?;
-        let context = runtime_context_for_load(existing, selected);
+        let context = runtime_context_for_load(existing);
         load_game_from_bytes(&bytes, context)
     })();
     match load {
-        Ok(game) => {
-            let destination = loaded_game_destination(&game);
-            commands.insert_resource(GameSession { game });
+        Ok(loaded) => {
+            let destination = loaded_game_destination(&loaded.game);
+            commands.insert_resource(GameSession::from_loaded(loaded));
             next_state.set(destination);
         }
         Err(error) => spawn_notice(
@@ -741,12 +736,12 @@ fn apply_save(
     commands: &mut Commands,
     save_dir: &Path,
     slot: SaveSlot,
-    state: &GameState,
+    session: &GameSession,
     label: &str,
     returning: AppState,
     next_state: &mut NextState<AppState>,
 ) {
-    match save_current_game(save_dir, slot, state, label) {
+    match save_current_game(save_dir, slot, session, label) {
         Ok(()) => next_state.set(returning),
         Err(error) => spawn_notice(commands, LoadSaveNotice::Error(error.to_string())),
     }
@@ -1164,9 +1159,7 @@ mod tests {
     #[test]
     fn accepting_new_game_drops_the_session_and_returns_to_the_main_menu() {
         let mut app = test_app(AppState::StrategicMap);
-        app.insert_resource(GameSession {
-            game: fixture_state(),
-        });
+        app.insert_resource(GameSession::new(fixture_state()));
         app.add_systems(Startup, spawn_test_flag_menu);
         app.add_systems(Startup, |commands: Commands| {
             spawn_test_flag_prompt(commands, FlagMenuPending::NewGame)
@@ -1270,31 +1263,32 @@ mod tests {
     #[test]
     fn successful_load_replaces_the_session_and_enters_the_saved_phase() {
         let original = fixture_state();
+        let session = GameSession::new(original.clone());
         let dir = tempfile::tempdir().unwrap();
-        save_current_game(dir.path(), SaveSlot::Numbered(1), &original, "England").unwrap();
+        save_current_game(dir.path(), SaveSlot::Numbered(1), &session, "England").unwrap();
         let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(1))).unwrap();
-        let selected = peek_save_header(&bytes)
-            .and_then(|header| NationId::try_new(header.active_nation))
-            .expect("saved header names a nation in range");
-        let game =
-            load_game_from_bytes(&bytes, runtime_context_for_load(Some(&original), selected))
-                .unwrap();
-        assert_eq!(game, original);
-        assert_eq!(loaded_game_destination(&game), AppState::StrategicMap);
+        let loaded =
+            load_game_from_bytes(&bytes, runtime_context_for_load(Some(&original))).unwrap();
+        assert_eq!(loaded.game, original);
+        assert_eq!(
+            loaded_game_destination(&loaded.game),
+            AppState::StrategicMap
+        );
     }
 
     #[test]
     fn save_helper_overwrites_an_existing_slot_file() {
         let original = fixture_state();
+        let session = GameSession::new(original.clone());
         let dir = tempfile::tempdir().unwrap();
-        save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "First").unwrap();
-        save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "Second").unwrap();
+        save_current_game(dir.path(), SaveSlot::Numbered(0), &session, "First").unwrap();
+        save_current_game(dir.path(), SaveSlot::Numbered(0), &session, "Second").unwrap();
         let loaded = load_game_from_path(
             retail_save_path(dir.path(), SaveSlot::Numbered(0)),
-            runtime_context_for_load(Some(&original), original.turn().selected_nation),
+            runtime_context_for_load(Some(&original)),
         )
         .unwrap();
-        assert_eq!(loaded, original);
+        assert_eq!(loaded.game, original);
         let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(0))).unwrap();
         assert_eq!(
             peek_save_header(&bytes).map(|header| header.label),
@@ -1305,8 +1299,9 @@ mod tests {
     #[test]
     fn save_header_owners_compose_the_retail_satellite_preview() {
         let original = fixture_state();
+        let session = GameSession::new(original.clone());
         let dir = tempfile::tempdir().unwrap();
-        save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "Preview").unwrap();
+        save_current_game(dir.path(), SaveSlot::Numbered(0), &session, "Preview").unwrap();
         let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(0))).unwrap();
         let owners = peek_save_preview_owners(&bytes).expect("written save has preview tiles");
         for (index, owner) in owners.iter().enumerate() {
@@ -1329,38 +1324,40 @@ mod tests {
     #[test]
     fn in_game_load_inherits_the_live_session_rng() {
         let original = fixture_state();
+        let session = GameSession::new(original.clone());
         let dir = tempfile::tempdir().unwrap();
-        save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "England").unwrap();
+        save_current_game(dir.path(), SaveSlot::Numbered(0), &session, "England").unwrap();
         let loaded = load_game_from_path(
             retail_save_path(dir.path(), SaveSlot::Numbered(0)),
-            runtime_context_for_load(Some(&original), original.turn().selected_nation),
+            runtime_context_for_load(Some(&original)),
         )
         .unwrap();
-        assert_eq!(loaded.rng(), original.rng());
+        assert_eq!(loaded.game.rng(), original.rng());
     }
 
     #[test]
     fn main_menu_load_uses_retail_startup_rng_context() {
         let original = fixture_state();
+        let session = GameSession::new(original.clone());
         let dir = tempfile::tempdir().unwrap();
-        save_current_game(dir.path(), SaveSlot::Numbered(0), &original, "England").unwrap();
+        save_current_game(dir.path(), SaveSlot::Numbered(0), &session, "England").unwrap();
         let loaded = load_game_from_path(
             retail_save_path(dir.path(), SaveSlot::Numbered(0)),
-            runtime_context_for_load(None, original.turn().selected_nation),
+            runtime_context_for_load(None),
         )
         .unwrap();
         assert_eq!(
-            loaded.rng().map_generation.state(),
+            loaded.game.rng().map_generation.state(),
             0,
             "main-menu load leaves the map LCG at its BSS-zero startup value"
         );
         assert_ne!(
-            loaded.rng().crt_rand,
+            loaded.game.rng().crt_rand,
             original.rng().crt_rand,
             ".imp does not persist CRT rand; a main-menu load uses the clock-seeded stream"
         );
         assert_ne!(
-            loaded.rng().zone_status,
+            loaded.game.rng().zone_status,
             original.rng().zone_status,
             ".imp does not persist the zone LCG; a main-menu load uses the tick-derived stream"
         );

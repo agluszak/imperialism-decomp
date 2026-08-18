@@ -145,24 +145,6 @@ pub struct EngineerConstructionOption {
     pub cost: i32,
 }
 
-impl CivilianTileAction {
-    pub const fn cursor_token(self) -> u16 {
-        match self {
-            Self::None | Self::SelectUnit => 0,
-            Self::Blocked => 1008,
-            Self::MoveUnit => 1004,
-            Self::EngineerSameTile => 1003,
-            Self::EngineerDirection14 => 1002,
-            Self::EngineerDirection03 => 1018,
-            Self::EngineerDirection25 => 1019,
-            Self::Prospect => 1001,
-            Self::DevelopResource => 1003,
-            Self::ShowOrderReport => 1011,
-            Self::PurchaseLand => 1025,
-        }
-    }
-}
-
 const fn rail_cost(terrain: TerrainKind) -> i32 {
     match terrain {
         TerrainKind::Plains => 100,

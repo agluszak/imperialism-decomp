@@ -8,7 +8,7 @@ use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::fourcc;
+use imperialism_formats::{BattleReportSideText, BattleReportText, fourcc};
 
 #[derive(Component)]
 struct BattleReportRoot {
@@ -110,19 +110,20 @@ fn project_battle_report(
         }
         return;
     };
+    let report_text = battle_report_text(&session, root.selected);
     let location = match report.location {
         BattleReportLocation::Province(id) => session.game.map().provinces[id].name.clone(),
         BattleReportLocation::Zone(id) => format!("zone {}", id.get()),
     };
     for (field, mut text) in &mut fields {
         text.0 = match field {
-            BattleReportField::Result => report.sides[BattleReportSideSlot::Left].overlay.clone(),
+            BattleReportField::Result => report_text[BattleReportSideSlot::Left].overlay.clone(),
             BattleReportField::Location => location.clone(),
             BattleReportField::FriendlyAdmiral => {
-                report.sides[BattleReportSideSlot::Left].name.clone()
+                report_text[BattleReportSideSlot::Left].name.clone()
             }
             BattleReportField::EnemyAdmiral => {
-                report.sides[BattleReportSideSlot::Right].name.clone()
+                report_text[BattleReportSideSlot::Right].name.clone()
             }
             BattleReportField::FriendlyShips => report.sides[BattleReportSideSlot::Left]
                 .children
@@ -146,6 +147,7 @@ fn on_battle_report_close(
     mut next_state: ResMut<NextState<AppState>>,
     assets: Option<Res<crate::RetailAssetsResource>>,
 ) {
+    session.battle_report_text.clear();
     apply_turn_stop(
         session
             .game
@@ -219,17 +221,96 @@ fn project_detail(
     let Ok(root) = root.single() else {
         return;
     };
-    let Some(report) = session.game.battle_reports().get(selected.selected) else {
+    let Some(_) = session.game.battle_reports().get(selected.selected) else {
         return;
     };
+    let report_text = battle_report_text(&session, selected.selected);
     let left = tree.find(root, fourcc!("natL"));
     let right = tree.find(root, fourcc!("natR"));
     if let Ok(mut text) = texts.get_mut(left) {
-        text.0 = report.sides[BattleReportSideSlot::Left].name.clone();
+        text.0 = report_text[BattleReportSideSlot::Left].name.clone();
     }
     if let Ok(mut text) = texts.get_mut(right) {
-        text.0 = report.sides[BattleReportSideSlot::Right].name.clone();
+        text.0 = report_text[BattleReportSideSlot::Right].name.clone();
     }
+}
+
+pub(crate) fn battle_report_texts_for_save(session: &GameSession) -> Vec<BattleReportText> {
+    session
+        .game
+        .battle_reports()
+        .iter()
+        .enumerate()
+        .map(|(index, _)| battle_report_text(session, index))
+        .collect()
+}
+
+fn battle_report_text(session: &GameSession, index: usize) -> BattleReportText {
+    if let Some(text) = session.battle_report_text.get(index) {
+        return text.clone();
+    }
+    let report = &session.game.battle_reports()[index];
+    BattleReportText::from_array([
+        generated_battle_report_side_text(&session.game, report, BattleReportSideSlot::Left),
+        generated_battle_report_side_text(&session.game, report, BattleReportSideSlot::Right),
+    ])
+}
+
+fn generated_battle_report_side_text(
+    state: &GameState,
+    report: &BattleReport,
+    slot: BattleReportSideSlot,
+) -> BattleReportSideText {
+    let side = &report.sides[slot];
+    let nation_name = state
+        .nation(side.nation)
+        .map(|nation| nation.display_name.as_str())
+        .unwrap_or("");
+    let role = match (report.kind.is_land(), slot) {
+        (true, BattleReportSideSlot::Left) => "Units Attacking",
+        (true, BattleReportSideSlot::Right) => "Defensive Muster",
+        (false, _) => "",
+    };
+    let name = if role.is_empty() {
+        nation_name.to_owned()
+    } else {
+        format!("{nation_name}: {role}")
+    };
+    let mut overlay = String::new();
+    for kind_index in 0..MilitaryUnitKind::LENGTH {
+        let kind = MilitaryUnitKind::from_index(kind_index as u8).expect("military kind index");
+        let matching = side
+            .children
+            .iter()
+            .filter(|row| row.kind == BattleReportUnitKind::Military(kind))
+            .collect::<Vec<_>>();
+        if matching.is_empty() {
+            continue;
+        }
+        if !overlay.is_empty() {
+            overlay.push_str(", ");
+        }
+        let unit_name = match kind {
+            MilitaryUnitKind::Minutemen => "Minutemen",
+            MilitaryUnitKind::Skirmishers => "Skirmishers",
+            MilitaryUnitKind::Regulars => "Regulars",
+            MilitaryUnitKind::Grenadiers => "Grenadiers",
+            MilitaryUnitKind::Hussars => "Hussars",
+            MilitaryUnitKind::Cuirassiers => "Cuirassiers",
+            MilitaryUnitKind::LightArtillery => "Light Artillery",
+            MilitaryUnitKind::Artillery => "Artillery",
+            _ => &matching[0].name,
+        };
+        overlay.push_str(&format!("{} {unit_name}", matching.len()));
+        let inactive = matching
+            .iter()
+            .filter(|row| row.stock_or_required <= 0)
+            .count();
+        if inactive != 0 {
+            overlay.push_str(&format!(" ({inactive} Inactive)"));
+        }
+    }
+    BattleReportSideText { name, overlay }
 }
 
 fn on_detail_close(
@@ -239,5 +320,58 @@ fn on_detail_close(
 ) {
     for detail in &details {
         commands.entity(detail).despawn();
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::ui::test_support::beginning_of_game;
+
+    #[test]
+    fn generated_land_report_text_preserves_retail_caption_and_summary_order() {
+        let state = beginning_of_game();
+        let nation = state.turn().active_nation;
+        let report = BattleReport {
+            participant: BattleReportSideSlot::Left,
+            kind: BattleReportKind::LandBattle,
+            location: BattleReportLocation::Province(ProvinceId::new(0)),
+            sides: BattleReportSideTable::from_array([
+                BattleReportSide {
+                    nation,
+                    children: vec![
+                        BattleReportUnit {
+                            kind: BattleReportUnitKind::Military(MilitaryUnitKind::Regulars),
+                            stock_or_required: 100,
+                            name: "1st Regulars".to_owned(),
+                            strength_bucket: 1,
+                            detail_identity: BATTLE_REPORT_ARMY_IDENTITY,
+                        },
+                        BattleReportUnit {
+                            kind: BattleReportUnitKind::Military(MilitaryUnitKind::Regulars),
+                            stock_or_required: 0,
+                            name: "2nd Regulars".to_owned(),
+                            strength_bucket: 1,
+                            detail_identity: BATTLE_REPORT_ARMY_IDENTITY,
+                        },
+                    ],
+                },
+                BattleReportSide {
+                    nation: NationId::new(1),
+                    children: Vec::new(),
+                },
+            ]),
+        };
+
+        let text = generated_battle_report_side_text(&state, &report, BattleReportSideSlot::Left);
+
+        assert_eq!(
+            text.name,
+            format!(
+                "{}: Units Attacking",
+                state.nation(nation).unwrap().display_name
+            )
+        );
+        assert_eq!(text.overlay, "2 Regulars (1 Inactive)");
     }
 }

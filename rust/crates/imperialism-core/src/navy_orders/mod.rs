@@ -151,16 +151,16 @@ pub(crate) fn ship_creates_navy_object(ship_type: ShipType) -> bool {
     NAVY_DESCRIPTORS[ship_type].toolbar_class.is_some()
 }
 
-pub(crate) fn ship_display_stats(ship_type: ShipType) -> [i16; 6] {
+pub(crate) fn ship_capabilities(ship_type: ShipType) -> ShipCapabilities {
     let descriptor = NAVY_DESCRIPTORS[ship_type];
-    [
-        descriptor.resolve_weight as i16,
-        descriptor.calculate_weight as i16,
-        descriptor.task_force_weight as i16,
-        descriptor.stock_cap as i16,
-        descriptor.navy_priority_weight as i16,
-        descriptor.resource_weight as i16,
-    ]
+    ShipCapabilities {
+        resolve_weight: descriptor.resolve_weight as i16,
+        calculation_weight: descriptor.calculate_weight as i16,
+        task_force_weight: descriptor.task_force_weight as i16,
+        stock_capacity: descriptor.stock_cap as i16,
+        navy_priority_weight: descriptor.navy_priority_weight as i16,
+        resource_weight: descriptor.resource_weight as i16,
+    }
 }
 
 pub(crate) fn navy_category_baselines(

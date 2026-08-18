@@ -364,8 +364,8 @@ mod tests {
 
     fn fixture_state() -> GameState {
         let mut parts = beginning_of_game_parts();
-        let buyer = MajorNationId::from_nation(parts.turn.selected_nation)
-            .expect("active nation is a major");
+        let buyer =
+            MajorNationId::from_nation(parts.turn.active_nation).expect("active nation is a major");
         let seller = MajorNationId::new(if buyer.get() == 0 { 1 } else { 0 });
         let majors = MajorNationTable::from_fn(|nation| {
             let mut major = parts.nations.major(nation).clone();
@@ -392,7 +392,7 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_plugins(StatesPlugin)
-            .insert_resource(GameSession { game: state })
+            .insert_resource(GameSession::new(state))
             .insert_state(AppState::OfferSheet)
             .add_systems(OnEnter(AppState::OfferSheet), enter_offer_sheet_phase)
             .add_systems(

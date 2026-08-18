@@ -21,6 +21,20 @@ const TRANSPARENT_INDEX: u8 = 0x10;
 const COUNT_PALETTE: u8 = 0x28;
 const COUNT_SHADOW_PALETTE: u8 = 0xd2;
 
+fn placard_picture_id(
+    counts: ArmyToolbarCounts,
+    nation: MajorNationId,
+    state: &GameState,
+    category: ArmyUnitCategory,
+) -> i16 {
+    let kind = state.technology().selected_capability_slots[nation][category];
+    let mut picture = 0x4c4 + i16::from(kind.retail());
+    if counts.totals[category] <= 0 {
+        picture += 0x1e;
+    }
+    picture
+}
+
 #[derive(Component)]
 pub(super) struct ArmyToolbarPage;
 
@@ -160,7 +174,7 @@ fn sync_army_toolbar(
         .expect("army toolbar requires an active major nation");
     let counts_state = session.game.army_toolbar_counts(province);
     for (entity, placard, mut image) in &mut placards {
-        let picture_id = counts_state.placard_picture_id(nation, &session.game, placard.0);
+        let picture_id = placard_picture_id(counts_state, nation, &session.game, placard.0);
         image.image = assets
             .picture(PictureId::new(picture_id))
             .expect("retail army placard picture must load");
@@ -171,7 +185,7 @@ fn sync_army_toolbar(
         );
     }
     for (entity, arrow, mut image, mut visibility) in &mut arrows {
-        if counts_state.arrow_visible(arrow.0) {
+        if counts_state.totals[arrow.0] != 0 && arrow.0 != ArmyUnitCategory::Garrison {
             *visibility = Visibility::Visible;
             image.rect = Some(Rect::from_corners(
                 Vec2::new(10.0, 0.0),
@@ -186,7 +200,11 @@ fn sync_army_toolbar(
     for (command, mut image) in &mut garrisons {
         if matches!(*command, ArmyCommand::Garrison) {
             image.image = assets
-                .picture(PictureId::new(counts_state.garrison_picture_id()))
+                .picture(PictureId::new(if counts_state.can_upgrade {
+                    0x24d5
+                } else {
+                    0x04b5
+                }))
                 .expect("retail garrison picture must load");
         }
     }
@@ -208,7 +226,7 @@ fn hide_empty_toolbar(
     };
     let empty = ArmyToolbarCounts::default();
     for (entity, placard, mut image) in placards.iter_mut() {
-        let picture_id = empty.placard_picture_id(nation, state, placard.0);
+        let picture_id = placard_picture_id(empty, nation, state, placard.0);
         image.image = assets
             .picture(PictureId::new(picture_id))
             .expect("retail army placard picture must load");

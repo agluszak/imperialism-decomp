@@ -239,9 +239,18 @@ pub(crate) fn ship_creates_navy_object(ship_type: ShipType) -> bool {
     crate::navy_orders::ship_creates_navy_object(ship_type)
 }
 
-/// Shipyard `sta0`..`sta5`: descriptor columns 0–5.
-pub fn ship_display_stats(ship_type: ShipType) -> [i16; 6] {
-    crate::navy_orders::ship_display_stats(ship_type)
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct ShipCapabilities {
+    pub resolve_weight: i16,
+    pub calculation_weight: i16,
+    pub task_force_weight: i16,
+    pub stock_capacity: i16,
+    pub navy_priority_weight: i16,
+    pub resource_weight: i16,
+}
+
+pub fn ship_capabilities(ship_type: ShipType) -> ShipCapabilities {
+    crate::navy_orders::ship_capabilities(ship_type)
 }
 
 /// The one authoritative mutable order set for a city. Collection keys are

@@ -62,7 +62,6 @@ pub struct TurnState {
     pub quarter_gate_by_decade: DecadeTable<bool>,
     pub difficulty: Difficulty,
     pub active_nation: NationId,
-    pub selected_nation: NationId,
     /// Process-local last tick that showed turn alerts. Not stored in `.imp`.
     #[serde(default)]
     pub last_turn_alert_tick: i32,
@@ -85,7 +84,6 @@ impl TurnState {
         quarter_gate_by_decade: DecadeTable<bool>,
         difficulty: Difficulty,
         active_nation: NationId,
-        selected_nation: NationId,
     ) -> Self {
         Self {
             scenario_map,
@@ -96,7 +94,6 @@ impl TurnState {
             quarter_gate_by_decade,
             difficulty,
             active_nation,
-            selected_nation,
             last_turn_alert_tick: 0,
             turn_alert_mask: 0,
             turn_cooldown_defer_counter: 0,
@@ -929,20 +926,15 @@ mod tests {
         seed_town_tiles(&mut state);
         state.append_battle_report(BattleReport {
             participant: BattleReportSideSlot::Left,
-            displayed_participant: BattleReportSideSlot::Left,
             kind: BattleReportKind::LandBattle,
             location: BattleReportLocation::Province(ProvinceId::new(0)),
             sides: BattleReportSideTable::from_array([
                 BattleReportSide {
                     nation: NationId::new(0),
-                    name: String::new(),
-                    overlay: String::new(),
                     children: Vec::new(),
                 },
                 BattleReportSide {
                     nation: NationId::new(1),
-                    name: String::new(),
-                    overlay: String::new(),
                     children: Vec::new(),
                 },
             ]),
@@ -1062,20 +1054,15 @@ mod tests {
         assert!(!state.battle_reports_pending());
         state.append_battle_report(BattleReport {
             participant: BattleReportSideSlot::Left,
-            displayed_participant: BattleReportSideSlot::Left,
             kind: BattleReportKind::LandBattle,
             location: BattleReportLocation::Province(ProvinceId::new(0)),
             sides: BattleReportSideTable::from_array([
                 BattleReportSide {
                     nation: NationId::new(0),
-                    name: String::new(),
-                    overlay: String::new(),
                     children: Vec::new(),
                 },
                 BattleReportSide {
                     nation: NationId::new(1),
-                    name: String::new(),
-                    overlay: String::new(),
                     children: Vec::new(),
                 },
             ]),

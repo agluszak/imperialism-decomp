@@ -170,6 +170,7 @@ pub(super) fn bind_strategic_units(
     map: Entity,
     assets: &mut RetailUiAssets,
     state: &GameState,
+    view_origin: TileId,
 ) {
     let mut sprites = load_strategic_unit_sprites(assets, state);
     let layer = commands
@@ -187,11 +188,19 @@ pub(super) fn bind_strategic_units(
             ChildOf(map),
         ))
         .id();
-    project_strategic_units_onto(commands, layer, &mut sprites, assets, state, None);
+    project_strategic_units_onto(
+        commands,
+        layer,
+        &mut sprites,
+        assets,
+        state,
+        view_origin,
+        None,
+    );
     commands.entity(layer).insert((
         StrategicUnitLayer {
             map,
-            projected: Some(strategic_unit_project_key(state, None)),
+            projected: Some(strategic_unit_project_key(state, view_origin, None)),
         },
         sprites,
     ));
@@ -222,7 +231,7 @@ pub(crate) fn sync_strategic_units(
             sprites.fleet_atlas_id = fleet_id;
             sprites.composed.clear();
         }
-        let key = strategic_unit_project_key(state, selected);
+        let key = strategic_unit_project_key(state, session.map_view_origin, selected);
         if projection.projected == Some(key) {
             continue;
         }
@@ -233,6 +242,7 @@ pub(crate) fn sync_strategic_units(
             &mut sprites,
             &mut assets,
             state,
+            session.map_view_origin,
             selected,
         );
         projection.projected = Some(key);
@@ -260,10 +270,11 @@ fn project_strategic_units_onto(
     sprites: &mut StrategicUnitSprites,
     assets: &mut RetailUiAssets,
     state: &GameState,
+    view_origin: TileId,
     selected: Option<CivilianUnitId>,
 ) {
     let palette = *assets.default_dib_palette();
-    for unit in visible_strategic_units(state, selected) {
+    for unit in visible_strategic_units(state, view_origin, selected) {
         let selected_kind = match unit.sprite {
             StrategicUnitSprite::Civilian {
                 kind,
@@ -684,14 +695,15 @@ fn indexed_rgba_image(picture: &IndexedPicture, palette: &DibPalette, transparen
 
 fn strategic_unit_project_key(
     state: &GameState,
+    view_origin: TileId,
     selected: Option<CivilianUnitId>,
 ) -> StrategicUnitProjectKey {
     let mut hasher = std::collections::hash_map::DefaultHasher::new();
-    for unit in visible_strategic_units(state, selected) {
+    for unit in visible_strategic_units(state, view_origin, selected) {
         unit.hash(&mut hasher);
     }
     StrategicUnitProjectKey {
-        view_origin: state.map_view_origin(),
+        view_origin,
         active_nation: state.turn().active_nation,
         fleet_atlas: fleet_atlas_picture_id(state).get(),
         visible: hasher.finish(),
@@ -714,10 +726,11 @@ fn fleet_atlas_picture_id(state: &GameState) -> PictureId {
 
 fn visible_strategic_units(
     state: &GameState,
+    view_origin: TileId,
     selected: Option<CivilianUnitId>,
 ) -> Vec<VisibleStrategicUnit> {
     let mut units = Vec::new();
-    for_each_visible_strategic_tile(state, |tile, screen_x, screen_y| {
+    for_each_visible_strategic_tile(state, view_origin, |tile, screen_x, screen_y| {
         if let Some(unit) = army_badge_on_tile(state, tile) {
             units.push(VisibleStrategicUnit {
                 identity: unit.identity,
@@ -947,7 +960,9 @@ fn naval_action_frame(action: Option<TileAction>) -> Option<u16> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::test_support::{beginning_of_game_with, strategic_map_beginning_context};
+    use crate::ui::test_support::{
+        beginning_map_view_origin, beginning_of_game_with, strategic_map_beginning_context,
+    };
 
     fn fixture_state() -> GameState {
         beginning_of_game_with(strategic_map_beginning_context())
@@ -1034,7 +1049,7 @@ mod tests {
 
     #[test]
     fn selected_civilian_projection_uses_the_white_outline_sprite() {
-        let mut state = fixture_state();
+        let state = fixture_state();
         let active = state.turn().active_nation;
         let (selected, tile) = state
             .civilian_units()
@@ -1046,9 +1061,9 @@ mod tests {
                 .flatten()
             })
             .expect("opening save has an idle field civilian");
-        state.center_map_on(tile);
+        let view_origin = state.map().viewport_origin_centered_on(tile);
 
-        let projected = visible_strategic_units(&state, Some(selected))
+        let projected = visible_strategic_units(&state, view_origin, Some(selected))
             .into_iter()
             .find(|unit| unit.identity == StrategicUnitIdentity::Civilian(selected))
             .expect("selected civilian is visible");
@@ -1205,18 +1220,19 @@ mod tests {
     #[test]
     fn viewport_iterator_matches_tile_screen_origins_and_clips_offscreen_rows() {
         let state = fixture_state();
+        let view_origin = beginning_map_view_origin();
         let mut seen = Vec::new();
-        for_each_visible_strategic_tile(&state, |tile, x, y| {
+        for_each_visible_strategic_tile(&state, view_origin, |tile, x, y| {
             seen.push((tile, x, y));
             assert_eq!(
-                super::super::strategic_tile_screen_origin(&state, tile),
+                super::super::strategic_tile_screen_origin(&state, view_origin, tile),
                 (x, y)
             );
             assert!(x < VIEWPORT_WIDTH as i32);
             assert!(x + TILE_SIZE > 0);
         });
         assert!(!seen.is_empty());
-        let (origin_row, _) = state.map().geometry().row_column(state.map_view_origin());
+        let (origin_row, _) = state.map().geometry().row_column(view_origin);
         let outside = state
             .map()
             .geometry()
@@ -1229,16 +1245,19 @@ mod tests {
 
     #[test]
     fn beginning_of_game_projects_civilians_armies_and_fleets() {
-        let mut state = fixture_state();
-        state.center_map_on_first_idle_civilian();
+        let state = fixture_state();
         assert!(
             state
                 .first_idle_civilian_tile(state.turn().active_nation)
                 .is_some(),
             "opening save has an idle civilian"
         );
+        let civilian_tile = state
+            .first_idle_civilian_tile(state.turn().active_nation)
+            .unwrap();
+        let civilian_origin = state.map().viewport_origin_centered_on(civilian_tile);
         assert!(
-            visible_strategic_units(&state, None)
+            visible_strategic_units(&state, civilian_origin, None)
                 .iter()
                 .any(|unit| matches!(unit.identity, StrategicUnitIdentity::Civilian(_))),
             "opening save should show field civilians"
@@ -1251,9 +1270,9 @@ mod tests {
                     .and_then(|province| state.map().provinces[province].city_tile())
             })
             .expect("opening save has a stationed army");
-        state.center_map_on(army_tile);
+        let army_origin = state.map().viewport_origin_centered_on(army_tile);
         assert!(
-            visible_strategic_units(&state, None)
+            visible_strategic_units(&state, army_origin, None)
                 .iter()
                 .any(|unit| matches!(unit.identity, StrategicUnitIdentity::Army(_))),
             "opening save should show capital army badges"
@@ -1265,9 +1284,9 @@ mod tests {
                     && naval_action_frame(state.map()[tile].action).is_some()
             })
             .expect("opening save has an ocean action marker");
-        state.center_map_on(naval_tile);
+        let naval_origin = state.map().viewport_origin_centered_on(naval_tile);
         assert!(
-            visible_strategic_units(&state, None)
+            visible_strategic_units(&state, naval_origin, None)
                 .iter()
                 .any(|unit| matches!(unit.identity, StrategicUnitIdentity::Naval(_))),
             "opening save should show ocean action fleet markers"

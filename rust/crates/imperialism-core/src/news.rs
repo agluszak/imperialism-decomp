@@ -875,20 +875,15 @@ mod tests {
         let mut state = game_state();
         state.append_battle_report(BattleReport {
             participant: BattleReportSideSlot::Right,
-            displayed_participant: BattleReportSideSlot::Left,
             kind: BattleReportKind::LandBattle,
             location: BattleReportLocation::Province(ProvinceId::new(4)),
             sides: BattleReportSideTable::from_array([
                 BattleReportSide {
                     nation: MajorNationId::new(1).nation(),
-                    name: String::new(),
-                    overlay: String::new(),
                     children: Vec::new(),
                 },
                 BattleReportSide {
                     nation: MajorNationId::new(2).nation(),
-                    name: String::new(),
-                    overlay: String::new(),
                     children: Vec::new(),
                 },
             ]),

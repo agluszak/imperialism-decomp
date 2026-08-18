@@ -491,18 +491,17 @@ fn accept_random_setup(
     next_state: &mut NextState<AppState>,
 ) {
     // Live play still uses a fixed Accept CRT seed until wall-clock CRT wiring lands.
-    let mut session = GameSession {
-        game: create_random_game(
-            &preview.0,
-            setup.nation,
-            setup.difficulty,
-            &setup.country_name,
-            setup.name_mode == NationNameMode::Historical,
-            1,
-            names,
-        ),
-    };
+    let mut session = GameSession::new(create_random_game(
+        &preview.0,
+        setup.nation,
+        setup.difficulty,
+        &setup.country_name,
+        setup.name_mode == NationNameMode::Historical,
+        1,
+        names,
+    ));
     if requires_capital_site_selection(setup.difficulty) {
+        session.map_view_origin = capital_selection_view_origin(session.game.map(), setup.nation);
         commands.insert_resource(session);
         next_state.set(AppState::CitySite);
     } else {

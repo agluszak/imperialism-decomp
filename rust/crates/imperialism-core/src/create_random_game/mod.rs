@@ -180,12 +180,9 @@ pub fn create_random_game(
         difficulty,
         &mut port_zones,
     );
-    let map_view_origin = if requires_capital_site_selection(difficulty) {
+    if requires_capital_site_selection(difficulty) {
         world.seed_valid_city_site_candidate_tiles_for_nation(human_nation);
-        capital_selection_view_origin(&world, human_nation)
-    } else {
-        TileId::new(1)
-    };
+    }
     let diplomacy = DiplomacyState::for_random_start(human_nation, difficulty, &mut crt_rand);
 
     initialize_ai_targets(&mut nations, &mission_queues, port_zones.next_ordinal);
@@ -262,14 +259,12 @@ pub fn create_random_game(
             ]),
             difficulty,
             active_nation: human_nation.nation(),
-            selected_nation: human_nation.nation(),
             last_turn_alert_tick: 0,
             turn_alert_mask: 0,
             turn_cooldown_defer_counter: 0,
         },
         unit_ids,
         map: world,
-        map_view_origin,
         ocean,
         rng: RngState {
             crt_rand,
@@ -295,3 +290,4 @@ pub fn create_random_game(
         continuation: crate::turn_flow::TurnContinuation::None,
     }
 }
+pub use map_post_pass::capital_selection_view_origin;

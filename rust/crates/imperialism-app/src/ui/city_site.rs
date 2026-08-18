@@ -108,8 +108,8 @@ fn bind_city_site(
         return;
     }
     bind_city_site_controls(&mut commands, root, &tree, &mut nodes, &mut assets);
-    let map = bind_strategic_base_terrain(&mut commands, root, &tree, &mut assets, &session.game);
-    bind_minimap(&mut commands, root, &tree, &mut assets, &session.game);
+    let map = bind_strategic_base_terrain(&mut commands, root, &tree, &mut assets, &session);
+    bind_minimap(&mut commands, root, &tree, &mut assets, &session);
     commands
         .entity(map)
         .insert(CitySiteHover::default())
@@ -226,7 +226,8 @@ fn sync_city_site_hover(
     }
     let nation = session.active_major_nation();
     for (canvas, cursor, image_node, mut hover) in &mut maps {
-        let tile = strategic_base_terrain_tile_at_cursor(&session.game, cursor);
+        let tile =
+            strategic_base_terrain_tile_at_cursor(&session.game, session.map_view_origin, cursor);
         if hover.0 == tile && !session.is_changed() {
             continue;
         }
@@ -235,6 +236,7 @@ fn sync_city_site_hover(
             tile.filter(|&tile| highlights_city_site_candidate(&session.game, nation, tile));
         let image = compose_city_site_terrain(
             &session.game,
+            session.map_view_origin,
             canvas,
             nation,
             highlighted,
@@ -288,7 +290,9 @@ fn on_city_site_map_click(
     let cursor = maps
         .get(click.entity)
         .expect("city-site map click is bound on the strategic canvas");
-    let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.game, cursor) else {
+    let Some(tile) =
+        strategic_base_terrain_tile_at_cursor(&session.game, session.map_view_origin, cursor)
+    else {
         return;
     };
     let nation = session.active_major_nation();

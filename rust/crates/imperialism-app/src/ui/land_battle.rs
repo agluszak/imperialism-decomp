@@ -320,7 +320,6 @@ mod tests {
             parts.turn.quarter_gate_by_decade,
             parts.turn.difficulty,
             parts.turn.active_nation,
-            parts.turn.selected_nation,
         );
 
         let mut state = GameState::from_parts(parts);
@@ -333,7 +332,7 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_plugins(StatesPlugin)
-            .insert_resource(GameSession { game: state })
+            .insert_resource(GameSession::new(state))
             .insert_state(AppState::LandBattle)
             .add_systems(
                 OnEnter(AppState::LandBattle),

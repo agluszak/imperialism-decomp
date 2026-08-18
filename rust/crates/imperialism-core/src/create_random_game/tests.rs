@@ -233,7 +233,6 @@ fn normal_random_start_reaches_capital_selection() {
     let human = MajorNationId::new(6);
     let state = normal_start();
 
-    assert_eq!(state.turn.selected_nation, human.nation());
     assert_eq!(state.turn.phase, crate::PhaseCode::CAPITAL_SELECTION);
     assert_eq!(state.turn.difficulty, Difficulty::Normal);
     assert!(state.map.map_data_ready);

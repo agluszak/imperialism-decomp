@@ -568,11 +568,6 @@ impl LegacyCityState {
             stockpile: Stockpile::from_table(ResourceTable::from_array(self.stockpile)),
             production_orders: ProductionTable::from_array(self.production_orders),
             production_accum: ProductionTable::from_array(self.production_accum),
-            building_windows: city_windows_from_retail(
-                self.production_flags,
-                self.production_current,
-                self.production_progress,
-            ),
             // This constructed cache is not persisted by TCity::ReadFrom.
             population_growth_penalty_ticks: 0,
             unmet_resource_retries: ResourceTable::from_array(self.unmet_resource_retries),
@@ -746,7 +741,6 @@ fn diplomacy_state(diplomacy: &LegacyDiplomacyState) -> DiplomacyState {
         ),
         // The retail constructor restores both values before ReadFrom consumes the payload.
         last_processed_nation: None,
-        proposal_rejection: None,
     }
 }
 
@@ -839,6 +833,41 @@ fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
 }
 
 impl LegacySaveV62 {
+    pub fn map_view_origin(&self) -> TileId {
+        TileId::new(self.map.view_origin_tile as u16)
+    }
+
+    pub fn city_window_layout(&self) -> CityWindowLayout {
+        MajorNationTable::from_fn(|nation| {
+            let Some(city) = self
+                .major_nations
+                .get(&nation)
+                .and_then(|state| state.great_power().city.as_ref())
+            else {
+                return ProductionTable::default();
+            };
+            city_windows_from_retail(
+                city.production_flags,
+                city.production_current,
+                city.production_progress,
+            )
+        })
+    }
+
+    pub fn battle_report_text(&self) -> Vec<BattleReportText> {
+        self.army_reports
+            .iter()
+            .map(|report| {
+                BattleReportText::from_array(report.sides.each_ref().map(|side| {
+                    BattleReportSideText {
+                        name: side.name.clone(),
+                        overlay: side.overlay.clone(),
+                    }
+                }))
+            })
+            .collect()
+    }
+
     /// Projects persistable save fields into construction parts. Runtime-only RNG and
     /// selection state must be supplied because the retail stream does not contain them.
     pub fn game_state_parts(&self, context: LegacyGameStateContext) -> GameStateParts {
@@ -854,7 +883,6 @@ impl LegacySaveV62 {
         let mut missions = IndexMap::new();
         let mut pending = PendingWorkState::default();
         let map = self.map.map_mgr();
-        let map_view_origin = TileId::new(self.map.view_origin_tile as u16);
         let ocean = ocean_state(&self.ocean, &map);
         let live_ocean_context_count = ocean.zones.len();
         let mut majors = IndexMap::new();
@@ -975,11 +1003,9 @@ impl LegacySaveV62 {
                 })),
                 Difficulty::try_from(self.simulation.difficulty).expect("retail difficulty"),
                 nation_id_from_retail_i16(self.simulation.active_nation),
-                context.selected_nation,
             ),
             unit_ids: UnitIdAllocator::from_retail(persistent_unit_id_counter),
             map,
-            map_view_origin,
             ocean,
             rng: RngState {
                 crt_rand: RetailCrtRng::from_state(context.crt_rand_state),
@@ -1623,16 +1649,11 @@ fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
             let [left, right] = &report.sides;
             Some(BattleReport {
                 participant: BattleReportSideSlot::from_retail(report.participant_index)?,
-                displayed_participant: BattleReportSideSlot::from_retail(
-                    report.displayed_participant,
-                )?,
                 kind,
                 location,
                 sides: BattleReportSideTable::from_array([left, right].map(|side| {
                     BattleReportSide {
                         nation: NationId::try_new(side.nation).unwrap_or(NationId::new(0)),
-                        name: side.name.clone(),
-                        overlay: side.overlay.clone(),
                         children: side
                             .children
                             .iter()

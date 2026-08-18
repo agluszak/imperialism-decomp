@@ -101,7 +101,17 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
                         })
                     })
                     .collect(),
-                stats: ship_display_stats(ship_type),
+                stats: {
+                    let capabilities = ship_capabilities(ship_type);
+                    [
+                        capabilities.resolve_weight,
+                        capabilities.calculation_weight,
+                        capabilities.task_force_weight,
+                        capabilities.stock_capacity,
+                        capabilities.navy_priority_weight,
+                        capabilities.resource_weight,
+                    ]
+                },
             }),
         )
     });

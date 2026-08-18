@@ -23,6 +23,79 @@ use imperialism_formats::SoundId;
 
 const CIVILIAN_SELECTED_SOUND: SoundId = SoundId::new(0x2338);
 
+const fn civilian_cursor_token(action: CivilianTileAction) -> u16 {
+    match action {
+        CivilianTileAction::None | CivilianTileAction::SelectUnit => 0,
+        CivilianTileAction::Blocked => 1008,
+        CivilianTileAction::MoveUnit => 1004,
+        CivilianTileAction::EngineerSameTile => 1003,
+        CivilianTileAction::EngineerDirection14 => 1002,
+        CivilianTileAction::EngineerDirection03 => 1018,
+        CivilianTileAction::EngineerDirection25 => 1019,
+        CivilianTileAction::Prospect => 1001,
+        CivilianTileAction::DevelopResource => 1003,
+        CivilianTileAction::ShowOrderReport => 1011,
+        CivilianTileAction::PurchaseLand => 1025,
+    }
+}
+
+const fn army_unselected_cursor_token(state: ArmyMapCursorState) -> u16 {
+    match state {
+        ArmyMapCursorState::SelectProvince => 1000,
+        ArmyMapCursorState::MarchOverlay | ArmyMapCursorState::SameProvinceCity => 1011,
+        ArmyMapCursorState::SpyReport => 1010,
+        _ => 0,
+    }
+}
+
+const fn army_selected_cursor_token(state: ArmyMapCursorState) -> u16 {
+    match state {
+        ArmyMapCursorState::None => 0,
+        ArmyMapCursorState::EmptyOrBlocked => 1008,
+        ArmyMapCursorState::SelectProvince => 1000,
+        ArmyMapCursorState::FriendlyAdjacent => 1005,
+        ArmyMapCursorState::FriendlyNonAdjacent => 1006,
+        ArmyMapCursorState::Hostile => 1007,
+        ArmyMapCursorState::MarchOverlay | ArmyMapCursorState::SameProvinceCity => 1011,
+        ArmyMapCursorState::SpyReport => 1010,
+    }
+}
+
+fn navy_cursor_token(action_code: i32) -> u16 {
+    const TOKENS: [u16; 17] = [
+        0, 0x3f0, 0x3f2, 0x3f2, 0x3f2, 0x3f2, 0x3f2, 0x3f2, 0x3f2, 0x3f1, 0x3f3, 0x3f3, 0x3f6,
+        0x3f8, 0x3f4, 0x3f5, 0x3f7,
+    ];
+    TOKENS
+        .get(usize::try_from(action_code).unwrap_or(0))
+        .copied()
+        .unwrap_or(0)
+}
+
+fn navy_action_cursor_token(
+    state: &GameState,
+    tile: TileId,
+    selected_zone: Option<OceanZoneId>,
+) -> u16 {
+    navy_cursor_token(state.navy_map_action_code(tile, selected_zone))
+}
+
+fn navy_selection_cursor_token(
+    state: &GameState,
+    tile: TileId,
+    force: Option<TaskForceId>,
+    selected_zone: Option<OceanZoneId>,
+) -> u16 {
+    let action = state.navy_map_action_code(tile, selected_zone);
+    if action != 0 {
+        return navy_cursor_token(action);
+    }
+    let Some(force) = force else {
+        return navy_cursor_token(0);
+    };
+    navy_cursor_token(state.navy_command_for_tile(force, tile))
+}
+
 pub(crate) fn register(app: &mut App) {
     app.add_systems(
         Update,
@@ -46,7 +119,7 @@ pub(crate) fn on_strategic_map_click(
         return;
     }
     let tile = if let Ok((cursor, _)) = land.get(click.entity) {
-        strategic_base_terrain_tile_at_cursor(&session.game, cursor)
+        strategic_base_terrain_tile_at_cursor(&session.game, session.map_view_origin, cursor)
     } else if let Ok(cursor) = ocean_maps.get(click.entity) {
         let Ok((_, interaction)) = land.single() else {
             return;
@@ -374,7 +447,7 @@ fn apply_navy_selection(
             interaction.navy.zone = Some(zone);
             interaction.navy.force = force;
             if let Some(center) = navy_zone_center_tile(&session.game, zone) {
-                session.game.center_map_on(center);
+                session.center_map_on(center);
             }
             true
         }
@@ -444,8 +517,9 @@ fn sync_strategic_map_cursor(
             .iter()
             .find_map(|cursor| ocean_tile_at_cursor(&session.game, cursor, &interaction.ocean))
     } else {
-        land.iter()
-            .find_map(|cursor| strategic_base_terrain_tile_at_cursor(&session.game, cursor))
+        land.iter().find_map(|cursor| {
+            strategic_base_terrain_tile_at_cursor(&session.game, session.map_view_origin, cursor)
+        })
     };
     let Some(tile) = tile else {
         request_arrow_cursor(&mut requested);
@@ -453,63 +527,73 @@ fn sync_strategic_map_cursor(
     };
     let has_selection = has_active_map_interaction_selection(&interaction);
     let nation = session.game.turn().active_nation;
-    let token = match interaction.mode {
-        MapInteractionMode::Civilian => {
-            if let Some(unit) = interaction.civilian {
-                session.game.civilian_tile_action(unit, tile).cursor_token()
-            } else {
-                let army_token = session
-                    .game
-                    .army_map_cursor_state(nation, None, tile, 0, has_selection)
-                    .unselected_cursor_token();
+    let token =
+        match interaction.mode {
+            MapInteractionMode::Civilian => {
+                if let Some(unit) = interaction.civilian {
+                    civilian_cursor_token(session.game.civilian_tile_action(unit, tile))
+                } else {
+                    let army_token = army_unselected_cursor_token(
+                        session
+                            .game
+                            .army_map_cursor_state(nation, None, tile, 0, has_selection),
+                    );
+                    if army_token != 0 {
+                        army_token
+                    } else {
+                        let navy_token =
+                            navy_action_cursor_token(&session.game, tile, interaction.navy.zone);
+                        if navy_token != 0 { navy_token } else { 0 }
+                    }
+                }
+            }
+            MapInteractionMode::Army => {
+                let army_token = army_unselected_cursor_token(session.game.army_map_cursor_state(
+                    nation,
+                    None,
+                    tile,
+                    0,
+                    has_selection,
+                ));
+                if army_token != 0 {
+                    army_token
+                } else if let Some(pending) = interaction.army {
+                    army_selected_cursor_token(session.game.army_map_cursor_state(
+                        nation,
+                        Some(pending),
+                        tile,
+                        0,
+                        has_selection,
+                    ))
+                } else {
+                    navy_action_cursor_token(&session.game, tile, interaction.navy.zone)
+                }
+            }
+            MapInteractionMode::Navy => {
+                let army_token = army_unselected_cursor_token(session.game.army_map_cursor_state(
+                    nation,
+                    None,
+                    tile,
+                    0,
+                    has_selection,
+                ));
                 if army_token != 0 {
                     army_token
                 } else {
-                    let navy_token = session
-                        .game
-                        .navy_action_cursor_token(tile, interaction.navy.zone);
-                    if navy_token != 0 { navy_token } else { 0 }
+                    navy_selection_cursor_token(
+                        &session.game,
+                        tile,
+                        interaction.navy.force,
+                        interaction.navy.zone,
+                    )
                 }
             }
-        }
-        MapInteractionMode::Army => {
-            let army_token = session
-                .game
-                .army_map_cursor_state(nation, None, tile, 0, has_selection)
-                .unselected_cursor_token();
-            if army_token != 0 {
-                army_token
-            } else if let Some(pending) = interaction.army {
+            MapInteractionMode::None => army_unselected_cursor_token(
                 session
                     .game
-                    .army_map_cursor_state(nation, Some(pending), tile, 0, has_selection)
-                    .selected_cursor_token()
-            } else {
-                session
-                    .game
-                    .navy_action_cursor_token(tile, interaction.navy.zone)
-            }
-        }
-        MapInteractionMode::Navy => {
-            let army_token = session
-                .game
-                .army_map_cursor_state(nation, None, tile, 0, has_selection)
-                .unselected_cursor_token();
-            if army_token != 0 {
-                army_token
-            } else {
-                session.game.navy_selection_cursor_token(
-                    tile,
-                    interaction.navy.force,
-                    interaction.navy.zone,
-                )
-            }
-        }
-        MapInteractionMode::None => session
-            .game
-            .army_map_cursor_state(nation, None, tile, 0, has_selection)
-            .unselected_cursor_token(),
-    };
+                    .army_map_cursor_state(nation, None, tile, 0, has_selection),
+            ),
+        };
     if token == 0 || token == 0x3e7 {
         request_arrow_cursor(&mut requested);
     } else {

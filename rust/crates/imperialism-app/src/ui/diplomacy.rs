@@ -60,10 +60,6 @@ const TREATY_POLICIES: [DiplomacyPolicy; 7] = [
     DiplomacyPolicy::BuildConsulate,
     DiplomacyPolicy::BuildEmbassy,
 ];
-const RELATIONSHIP_NOTCH_PALETTES: DiplomacyRelationshipNotchTable<u8> =
-    DiplomacyRelationshipNotchTable::from_array([
-        0x20, 0x2d, 0x30, 0x2e, 0x27, 0x24, 0x26, 0x18, 0x14,
-    ]);
 const RELATIONSHIP_SELF_PALETTE: u8 = 0x22;
 const TREATY_LABEL_CENTERS: [(f32, f32); 7] = [
     (74.0, 63.0),
@@ -75,6 +71,58 @@ const TREATY_LABEL_CENTERS: [(f32, f32); 7] = [
     (386.0, 63.0),
 ];
 const INFORMATION_BAND_NAMES: [&str; 5] = ["Poor", "Fair", "Good", "Excellent", "Awesome"];
+
+#[derive(Clone, Copy)]
+enum DiplomacyRelationshipNotch {
+    Hostile,
+    VeryUnfriendly,
+    Unfriendly,
+    Reserved,
+    Neutral,
+    Friendly,
+    VeryFriendly,
+    Allied,
+    Devoted,
+}
+
+impl DiplomacyRelationshipNotch {
+    fn from_standing(standing: i16) -> Self {
+        if standing <= 0x14 {
+            Self::Hostile
+        } else if standing <= 0x31 {
+            Self::VeryUnfriendly
+        } else if standing <= 0x4f {
+            Self::Unfriendly
+        } else if standing <= 0x64 {
+            Self::Reserved
+        } else if standing <= 0x87 {
+            Self::Neutral
+        } else if standing <= 0xaa {
+            Self::Friendly
+        } else if standing <= 0xcd {
+            Self::VeryFriendly
+        } else if standing <= 0xf0 {
+            Self::Allied
+        } else {
+            Self::Devoted
+        }
+    }
+
+    fn palette(self) -> u8 {
+        match self {
+            Self::Hostile => 0x20,
+            Self::VeryUnfriendly => 0x2d,
+            Self::Unfriendly => 0x30,
+            Self::Reserved => 0x2e,
+            Self::Neutral => 0x27,
+            Self::Friendly => 0x24,
+            Self::VeryFriendly => 0x26,
+            Self::Allied => 0x18,
+            Self::Devoted => 0x14,
+        }
+    }
+}
+
 const DIPLOMACY_MAP_KEY_MAJOR_NAME_TAGS: [FourCc; 7] = [
     fourcc!("nam0"),
     fourcc!("nam1"),
@@ -2150,7 +2198,8 @@ fn render_diplomacy_map(
             |tile| state.map()[tile].owner_nation,
             framed,
             |nation| {
-                RELATIONSHIP_NOTCH_PALETTES[state.diplomacy_relationship_notch(framed, nation)]
+                DiplomacyRelationshipNotch::from_standing(state.diplomacy_standing(framed, nation))
+                    .palette()
             },
         ),
         4 => compose_owner_preview_indices_with_fill(
@@ -2572,7 +2621,7 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_plugins(bevy::state::app::StatesPlugin)
-            .insert_resource(GameSession { game: state })
+            .insert_resource(GameSession::new(state))
             .insert_state(AppState::Diplomacy);
         app.world_mut().spawn(DiplomacyScreen {
             framed_nation: framed,

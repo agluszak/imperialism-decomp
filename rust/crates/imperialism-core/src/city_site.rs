@@ -461,40 +461,6 @@ mod tests {
         assert_eq!(trader, if count == 5 { 8 } else { 2 });
     }
 
-    fn assert_map_centers_on_first_idle_civilian(state: &mut GameState) {
-        let civilian = state
-            .first_idle_civilian_tile(state.turn().active_nation)
-            .expect("opening civilians include an idle unit on the map");
-        let expected = state.map().viewport_origin_centered_on(civilian);
-        state.center_map_on_first_idle_civilian();
-        assert_eq!(state.map_view_origin(), expected);
-        let home = state
-            .nations
-            .major(
-                MajorNationId::from_nation(state.turn().active_nation)
-                    .expect("active nation is a great power"),
-            )
-            .common
-            .home_tile
-            .expect("opening map centering requires a home tile");
-        let geometry = state.map().geometry();
-        let (home_row, home_column) = geometry.row_column(home);
-        let (origin_row, origin_column) = geometry.row_column(state.map_view_origin());
-        let row_delta = i32::from(home_row) - i32::from(origin_row);
-        let mut column_delta = i32::from(home_column) - i32::from(origin_column);
-        if column_delta < 0 {
-            column_delta += i32::from(STRATEGIC_MAP_WIDTH);
-        }
-        assert!(
-            (0..7).contains(&row_delta),
-            "capital row {home_row} is outside the 7-row viewport from {origin_row}"
-        );
-        assert!(
-            (0..9).contains(&column_delta),
-            "capital column {home_column} is outside the 9-column viewport from {origin_column}"
-        );
-    }
-
     fn normal_start() -> GameState {
         let preview = initial_seed_one_preview();
         create_random_game(
@@ -617,7 +583,6 @@ mod tests {
                 0x100
             );
         }
-        assert_map_centers_on_first_idle_civilian(&mut state);
     }
 
     #[test]
@@ -677,7 +642,6 @@ mod tests {
         );
         state.rebuild_nation_resource_yields(MajorNationId::new(6));
         assert_opening_civilians(&state, MajorNationId::new(6), 2);
-        assert_map_centers_on_first_idle_civilian(&mut state);
     }
 
     #[test]
@@ -702,7 +666,6 @@ mod tests {
             }
             assert_opening_civilians(&state, nation, 2);
         }
-        assert_map_centers_on_first_idle_civilian(&mut state);
     }
 
     #[test]

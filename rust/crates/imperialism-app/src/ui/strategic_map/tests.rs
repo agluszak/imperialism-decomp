@@ -10,7 +10,9 @@ use super::terrain::{
     uses_river_mouth_coast_frame,
 };
 use super::*;
-use crate::ui::test_support::{beginning_of_game_parts_with, strategic_map_beginning_context};
+use crate::ui::test_support::{
+    beginning_map_view_origin, beginning_of_game_parts_with, strategic_map_beginning_context,
+};
 use imperialism_core::{
     GameState, GameStateParts, MapMgr, MapTopology, NationId, STRATEGIC_TILE_COUNT, TerrainKind,
     TileId, TileOwnerTag, TileRendering, TileState,
@@ -109,7 +111,8 @@ fn fixture_state() -> GameState {
 fn engineer_same_tile_hover_frames_the_tile_and_construction_neighbors() {
     let mut parts = fixture_parts();
     let active = parts.turn.active_nation;
-    let (row, column) = parts.map.geometry().row_column(parts.map_view_origin);
+    let view_origin = beginning_map_view_origin();
+    let (row, column) = parts.map.geometry().row_column(view_origin);
     let hovered = parts
         .map
         .geometry()
@@ -151,9 +154,9 @@ fn engineer_same_tile_hover_frames_the_tile_and_construction_neighbors() {
     );
 
     let mut viewport = vec![0xff; VIEWPORT_WIDTH * VIEWPORT_HEIGHT];
-    draw_civilian_hover_highlight(&state, engineer, hovered, &mut viewport);
+    draw_civilian_hover_highlight(&state, view_origin, engineer, hovered, &mut viewport);
 
-    let (hover_x, hover_y) = strategic_tile_screen_origin(&state, hovered);
+    let (hover_x, hover_y) = strategic_tile_screen_origin(&state, view_origin, hovered);
     assert_eq!(
         viewport[hover_y as usize * VIEWPORT_WIDTH + hover_x as usize],
         MAP_SELECTION_PALETTE_INDEX,
@@ -172,6 +175,7 @@ fn engineer_same_tile_hover_frames_the_tile_and_construction_neighbors() {
 
     let overlay = compose_strategic_selection(
         &state,
+        view_origin,
         Some(engineer),
         Some(hovered),
         &DibPalette::default(),
@@ -197,7 +201,7 @@ struct MapFixture {
 impl MapFixture {
     fn new() -> Self {
         let parts = fixture_parts();
-        let origin = parts.map_view_origin;
+        let origin = beginning_map_view_origin();
         Self { parts, origin }
     }
 
@@ -206,9 +210,7 @@ impl MapFixture {
     }
 
     fn state(&self) -> GameState {
-        let mut state = GameState::from_parts(self.parts.clone());
-        state.set_map_view_origin(self.origin);
-        state
+        GameState::from_parts(self.parts.clone())
     }
 }
 
@@ -241,7 +243,7 @@ fn water_coast_corners_pull_distinct_frame_inks() {
     });
     let state = fixture.state();
 
-    let pixels = compose_strategic_base_tile(&state, origin, &terrain, &rivers);
+    let pixels = compose_strategic_base_tile(&state, origin, origin, &terrain, &rivers);
     let base_ink = frame_for_offset(BASE_WATER_OFFSETS[0]) as u8;
     assert!(pixels.contains(&base_ink));
     assert!(pixels.iter().any(|&pixel| pixel >= 22));
@@ -260,7 +262,7 @@ fn river_masks_replace_opaque_destination_indexes() {
     });
     let state = fixture.state();
 
-    let pixels = compose_strategic_base_tile(&state, origin, &terrain, &rivers);
+    let pixels = compose_strategic_base_tile(&state, origin, origin, &terrain, &rivers);
     assert!(pixels.iter().all(|&pixel| pixel == 0x80));
 }
 
@@ -274,10 +276,9 @@ fn bounded_seam_tiles_use_the_dedicated_seam_frame() {
     let seam = world.geometry().tile(10, 0).unwrap();
     let mut parts = fixture_parts();
     parts.map = world;
-    parts.map_view_origin = origin;
     let state = GameState::from_parts(parts);
 
-    let pixels = compose_strategic_base_tile(&state, seam, &terrain, &rivers);
+    let pixels = compose_strategic_base_tile(&state, origin, seam, &terrain, &rivers);
     assert!(
         pixels
             .iter()
@@ -305,12 +306,13 @@ fn city_site_selection_draws_retail_frame_and_neighbor_outline() {
     let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
     let mut indices = compose_strategic_map_indices(
         &state,
+        origin,
         sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
     );
     let before = indices.clone();
-    draw_city_site_selection(&state, nation, origin, &mut indices);
+    draw_city_site_selection(&state, origin, nation, origin, &mut indices);
     assert_ne!(indices, before);
-    let (x, y) = strategic_tile_screen_origin(&state, origin);
+    let (x, y) = strategic_tile_screen_origin(&state, origin, origin);
     let top_left = (y * VIEWPORT_WIDTH as i32 + x) as usize;
     assert_eq!(indices[top_left], MAP_SELECTION_PALETTE_INDEX);
 }
@@ -371,6 +373,7 @@ fn completed_rails_use_the_later_mask_family_than_pending_rails() {
     let completed = compose_strategic_tile(
         &fixture.state(),
         origin,
+        origin,
         sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
     );
     assert!(completed.contains(&(0x80 | 0x19)));
@@ -381,6 +384,7 @@ fn completed_rails_use_the_later_mask_family_than_pending_rails() {
     });
     let pending = compose_strategic_tile(
         &fixture.state(),
+        origin,
         origin,
         sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
     );
@@ -406,6 +410,7 @@ fn prospectable_resources_use_extractive_overlay_or_undeveloped_icon() {
     let undeveloped = compose_strategic_tile(
         &fixture.state(),
         origin,
+        origin,
         sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
     );
     assert!(
@@ -419,6 +424,7 @@ fn prospectable_resources_use_extractive_overlay_or_undeveloped_icon() {
     });
     let developed = compose_strategic_tile(
         &fixture.state(),
+        origin,
         origin,
         sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
     );
@@ -440,6 +446,7 @@ fn city_tiles_blit_the_capital_improvement_ink() {
 
     let pixels = compose_strategic_tile(
         &fixture.state(),
+        origin,
         origin,
         sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
     );
@@ -471,12 +478,16 @@ fn nation_borders_use_the_owner_palette() {
 
 #[test]
 fn beginning_of_game_viewport_paints_settlements_borders_and_resources() {
-    let mut state = fixture_state();
-    state.center_map_on_first_idle_civilian();
+    let state = fixture_state();
+    let focus = state
+        .first_idle_civilian_tile(state.turn().active_nation)
+        .expect("opening save has an idle civilian");
+    let view_origin = state.map().viewport_origin_centered_on(focus);
 
     let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
     let indices = compose_strategic_map_indices(
         &state,
+        view_origin,
         sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
     );
     assert!(

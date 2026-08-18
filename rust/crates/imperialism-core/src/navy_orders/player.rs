@@ -300,7 +300,7 @@ impl GameState {
         }
     }
 
-    pub fn cancel_task_force(&mut self, force: TaskForceId) {
+    pub fn cancel_task_force(&mut self, force: TaskForceId) -> Option<TileId> {
         let context = self.task_force(force).and_then(|entry| {
             let zone = entry.location;
             let target = self
@@ -313,16 +313,17 @@ impl GameState {
         });
         self.destroy_task_force_ingot(force);
         self.free_task_force(force);
-        if let Some((zone, nation, target)) = context {
+        let target = if let Some((zone, nation, target)) = context {
             self.refresh_zone_focus(zone, nation);
-            if let Some(target) = target {
-                self.center_map_on(target);
-            }
-        }
+            target
+        } else {
+            None
+        };
         self.map.recruit_search_active = false;
         for tile in self.map.tiles.iter_mut() {
             tile.recruit_search_visited = 0;
         }
+        target
     }
 
     /// `TNavyMgr::FreeShipsOf` (0x00556f60): cancel every queued force for `nation`.
@@ -352,14 +353,14 @@ impl GameState {
         self.clear_all_transient_navy_orders();
     }
 
-    /// `GetEnabledIndustryCapabilitySlotByClass` then picture `slot + 0x5e6`.
-    pub fn navy_toolbar_class_picture_id(&self, class: NavyToolbarClass) -> Option<i16> {
+    /// Highest enabled ship type in one retail navy-toolbar class.
+    pub fn navy_toolbar_class_ship_type(&self, class: NavyToolbarClass) -> Option<ShipType> {
         for slot in IndustryCapabilitySlot::ALL.into_iter().rev().skip(1) {
-            if ShipType::from_index(slot.retail())
-                .is_some_and(|ship_type| NAVY_DESCRIPTORS[ship_type].toolbar_class == Some(class))
+            if let Some(ship_type) = ShipType::from_index(slot.retail())
+                && NAVY_DESCRIPTORS[ship_type].toolbar_class == Some(class)
                 && self.technology.industry_enabled_by_slot[slot]
             {
-                return Some(i16::from(slot.retail()) + 0x5e6);
+                return Some(ship_type);
             }
         }
         None
@@ -560,44 +561,6 @@ impl GameState {
                 self.navy_mouse_code_for_province(force, province)
             }
         }
-    }
-
-    /// `TNavyMgr::ActionCursor`.
-    pub fn navy_action_cursor_token(
-        &self,
-        tile: TileId,
-        selected_zone: Option<OceanZoneId>,
-    ) -> u16 {
-        Self::navy_cursor_token(self.navy_map_action_code(tile, selected_zone))
-    }
-
-    /// `TNavyMgr::SelectionCursor`.
-    pub fn navy_selection_cursor_token(
-        &self,
-        tile: TileId,
-        force: Option<TaskForceId>,
-        selected_zone: Option<OceanZoneId>,
-    ) -> u16 {
-        let action = self.navy_map_action_code(tile, selected_zone);
-        if action != 0 {
-            return Self::navy_cursor_token(action);
-        }
-        let Some(force) = force else {
-            return Self::navy_cursor_token(0);
-        };
-        Self::navy_cursor_token(self.navy_command_for_tile(force, tile))
-    }
-
-    /// `g_awMapContextActionLabelTokenByCommand`.
-    pub fn navy_cursor_token(action_code: i32) -> u16 {
-        const TOKENS: [u16; 17] = [
-            0, 0x3f0, 0x3f2, 0x3f2, 0x3f2, 0x3f2, 0x3f2, 0x3f2, 0x3f2, 0x3f1, 0x3f3, 0x3f3, 0x3f6,
-            0x3f8, 0x3f4, 0x3f5, 0x3f7,
-        ];
-        TOKENS
-            .get(usize::try_from(action_code).unwrap_or(0))
-            .copied()
-            .unwrap_or(0)
     }
 
     fn navy_mouse_code_for_zone(&self, force: TaskForceId, candidate: OceanZoneId) -> i32 {

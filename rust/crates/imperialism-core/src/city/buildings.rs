@@ -151,13 +151,6 @@ impl CityFacilitySlot {
     }
 }
 
-/// Client origin of an open city-screen building dialog.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct CityWindowPosition {
-    pub left: i16,
-    pub top: i16,
-}
-
 impl CityState {
     pub fn max_building_capacity(
         &self,
@@ -320,17 +313,6 @@ impl CityState {
             *treasury += 5_000;
             self.power_plant_upgrade_queued = false;
         }
-    }
-}
-
-impl GameState {
-    /// Replaces the open city-screen building dialog origins for one nation.
-    pub fn set_city_building_windows(
-        &mut self,
-        nation: MajorNationId,
-        windows: ProductionTable<Option<CityWindowPosition>>,
-    ) {
-        self.nations.city_mut(nation).building_windows = windows;
     }
 }
 

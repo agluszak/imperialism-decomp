@@ -7,8 +7,6 @@ pub struct GameState {
     pub(crate) turn: TurnState,
     pub(crate) unit_ids: UnitIdAllocator,
     pub(crate) map: MapMgr,
-    /// Persisted strategic-map viewport origin. Retail saves this with the map blob.
-    pub(crate) map_view_origin: TileId,
     pub(crate) ocean: Ocean,
     pub(crate) rng: RngState,
     pub(crate) market: TradeMarketState,
@@ -41,7 +39,6 @@ pub struct GameStateParts {
     pub turn: TurnState,
     pub unit_ids: UnitIdAllocator,
     pub map: MapMgr,
-    pub map_view_origin: TileId,
     pub ocean: Ocean,
     pub rng: RngState,
     pub market: TradeMarketState,
@@ -68,7 +65,6 @@ impl GameState {
             turn: parts.turn,
             unit_ids: parts.unit_ids,
             map: parts.map,
-            map_view_origin: parts.map_view_origin,
             ocean: parts.ocean,
             rng: parts.rng,
             market: parts.market,
@@ -210,38 +206,8 @@ impl GameState {
         &self.map
     }
 
-    pub const fn map_view_origin(&self) -> TileId {
-        self.map_view_origin
-    }
-
     pub const fn ocean(&self) -> &Ocean {
         &self.ocean
-    }
-
-    /// Applies the retail map edge-scroll mask to the strategic viewport.
-    pub fn scroll_map_viewport(&mut self, edges: MapEdges) -> bool {
-        let next = self
-            .map
-            .scrolled_viewport_origin(self.map_view_origin, edges);
-        if next == self.map_view_origin {
-            return false;
-        }
-        self.map_view_origin = next;
-        true
-    }
-
-    pub fn set_map_view_origin(&mut self, origin: TileId) {
-        self.map_view_origin = origin;
-    }
-
-    /// Retail mini-map `SetUpperLeft`: commit a toolbar-minimap click as the viewport origin.
-    pub fn set_map_viewport_upper_left(&mut self, column: i32, row: i32) {
-        self.map_view_origin = self.map.viewport_origin_from_upper_left(column, row);
-    }
-
-    /// Centers the strategic viewport on `tile` using retail 9-by-7 origin math.
-    pub fn center_map_on(&mut self, tile: TileId) {
-        self.map_view_origin = self.map.viewport_origin_centered_on(tile);
     }
 
     /// `ComputeRepresentativeTileIndexForNation` used by the strategic `X` key and mode-3 `C`.
@@ -277,15 +243,5 @@ impl GameState {
             (unit.nation() == nation && *unit.order() == CivilianWorkOrder::Idle)
                 .then_some((id, unit))
         })
-    }
-
-    /// Centers the strategic viewport on the first idle civilian for `nation`.
-    ///
-    /// Retail uses this from `TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick`,
-    /// not from every strategic-map enter.
-    pub fn center_map_on_first_idle_civilian(&mut self) {
-        if let Some(tile) = self.first_idle_civilian_tile(self.turn.active_nation) {
-            self.center_map_on(tile);
-        }
     }
 }

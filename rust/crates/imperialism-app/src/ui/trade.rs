@@ -921,7 +921,7 @@ mod tests {
     fn fixture_state() -> GameState {
         let mut state = beginning_of_game();
         state.recall_player_trade_orders(
-            MajorNationId::from_nation(state.turn().selected_nation).unwrap(),
+            MajorNationId::from_nation(state.turn().active_nation).unwrap(),
         );
         state
     }
@@ -1010,7 +1010,7 @@ mod tests {
             StatesPlugin,
         ))
         .insert_state(AppState::Trade)
-        .insert_resource(GameSession { game: state })
+        .insert_resource(GameSession::new(state))
         .add_systems(
             Update,
             (bind_test_trade, sync_trade_visual, sync_trade_presence).chain(),
