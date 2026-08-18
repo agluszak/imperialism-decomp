@@ -16,9 +16,23 @@ pub enum CivilianWorkOrder {
     PurchaseLand { turns: i16 },
 }
 
-fn advance_turns(turns: &mut i16) -> bool {
-    *turns -= 1;
-    *turns == 0
+impl CivilianWorkOrder {
+    fn advance(&mut self) -> bool {
+        let turns = match self {
+            Self::LayRail { turns, .. }
+            | Self::BuildDepot { turns }
+            | Self::BuildPort { turns }
+            | Self::Prospect { turns }
+            | Self::DevelopResource { turns }
+            | Self::BuildFort { turns }
+            | Self::PurchaseLand { turns } => turns,
+            Self::Idle | Self::Redeploy { .. } | Self::Sleep => {
+                unreachable!("only civilian work orders advance")
+            }
+        };
+        *turns -= 1;
+        *turns == 0
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Serialize)]
@@ -296,59 +310,59 @@ impl GameState {
             Fort,
             Purchase,
         }
-        let completion = match &mut self
+        let order = &mut self
             .civilian_units
             .get_mut(&id)
             .expect("civilian remains present")
-            .order
-        {
+            .order;
+        let completion = match order {
             CivilianWorkOrder::Sleep => Completion::None,
             CivilianWorkOrder::Idle | CivilianWorkOrder::Redeploy { .. } => Completion::Idle,
-            CivilianWorkOrder::LayRail { segment, turns } => {
+            CivilianWorkOrder::LayRail { segment, .. } => {
                 let segment = *segment;
-                if advance_turns(turns) {
+                if order.advance() {
                     Completion::Rail(segment)
                 } else {
                     Completion::None
                 }
             }
-            CivilianWorkOrder::BuildDepot { turns } => {
-                if advance_turns(turns) {
+            CivilianWorkOrder::BuildDepot { .. } => {
+                if order.advance() {
                     Completion::Depot
                 } else {
                     Completion::None
                 }
             }
-            CivilianWorkOrder::BuildPort { turns } => {
-                if advance_turns(turns) {
+            CivilianWorkOrder::BuildPort { .. } => {
+                if order.advance() {
                     Completion::Port
                 } else {
                     Completion::None
                 }
             }
-            CivilianWorkOrder::Prospect { turns } => {
-                if advance_turns(turns) {
+            CivilianWorkOrder::Prospect { .. } => {
+                if order.advance() {
                     Completion::Prospect
                 } else {
                     Completion::None
                 }
             }
-            CivilianWorkOrder::DevelopResource { turns } => {
-                if advance_turns(turns) {
+            CivilianWorkOrder::DevelopResource { .. } => {
+                if order.advance() {
                     Completion::Develop
                 } else {
                     Completion::None
                 }
             }
-            CivilianWorkOrder::BuildFort { turns } => {
-                if advance_turns(turns) {
+            CivilianWorkOrder::BuildFort { .. } => {
+                if order.advance() {
                     Completion::Fort
                 } else {
                     Completion::None
                 }
             }
-            CivilianWorkOrder::PurchaseLand { turns } => {
-                if advance_turns(turns) {
+            CivilianWorkOrder::PurchaseLand { .. } => {
+                if order.advance() {
                     Completion::Purchase
                 } else {
                     Completion::None
