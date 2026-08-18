@@ -26,6 +26,8 @@
 #include "game/nation/TGreatPower_internal.h"
 #include "game/nation_domain_types.h"
 #include "game/navy/TShip.h"
+#include "game/navy/TNavyMgr.h"
+#include "game/navy/TOcean.h"
 #include "game/navy/TTaskForce.h"
 #include "game/tactical/TArmyBattle.h"
 #include "game/ui_core/CIterator.h"

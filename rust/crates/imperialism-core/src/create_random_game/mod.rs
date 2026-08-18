@@ -241,13 +241,13 @@ pub fn create_random_game(
         names,
     );
     let mut pending = PendingWorkState::default();
-    pending.queue_newspaper_event(PendingNewspaperEvent::TechnologyDiscovery {
+    pending.queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
         audience: None,
-        technology: Technology::HighPressureSteamEngine,
+        story_code: Technology::HighPressureSteamEngine as i32,
     });
-    pending.queue_newspaper_event(PendingNewspaperEvent::TechnologyDiscovery {
+    pending.queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
         audience: None,
-        technology: Technology::SeedDrill,
+        story_code: Technology::SeedDrill as i32,
     });
 
     GameState {

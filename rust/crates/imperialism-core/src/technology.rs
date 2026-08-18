@@ -428,12 +428,11 @@ impl GameState {
                     == economic_turn
                 {
                     apply_city_order_capability_unlock(&mut self.technology, tech_id);
-                    self.pending.queue_newspaper_event(
-                        PendingNewspaperEvent::TechnologyDiscovery {
+                    self.pending
+                        .queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
                             audience: None,
-                            technology: tech_id,
-                        },
-                    );
+                            story_code: tech_id as i32,
+                        });
                 }
                 continue;
             }
@@ -1026,9 +1025,9 @@ mod tests {
         assert!(state.technology.industry_enabled_by_slot[IndustryCapabilitySlot::OilRefinery]);
         assert_eq!(
             state.pending.newspaper_events,
-            [PendingNewspaperEvent::TechnologyDiscovery {
+            [PendingNewspaperEvent::Miscellaneous {
                 audience: None,
-                technology: Technology::StreamlinedHulls,
+                story_code: Technology::StreamlinedHulls as i32,
             }]
         );
     }
