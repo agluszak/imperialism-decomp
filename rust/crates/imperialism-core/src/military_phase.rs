@@ -29,6 +29,14 @@ impl GameState {
         self.carry_out_navy_orders_without_tactical_battles()
     }
 
+    #[cfg(feature = "oracle")]
+    pub(crate) fn do_military_with_tactical_battles(&mut self) -> Option<NavyOrdersContinuation> {
+        self.apply_military_orders();
+        self.clean_up_army_stacks();
+        self.prepare_to_carry_out_navy_orders();
+        self.carry_out_navy_orders()
+    }
+
     /// Semantic effects of `TArmyMgr::CleanUpStacks`. Core's battle reports are
     /// the copied map-context records; dropping them also drops their owned side
     /// arrays. The C++ transient flag is derived here from whether records exist.

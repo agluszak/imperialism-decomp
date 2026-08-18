@@ -384,7 +384,7 @@ impl GameState {
                 };
                 if available {
                     let id = self.object_ids.mission();
-                    self.missions.insert(
+                    self.insert_mission(
                         id,
                         MissionState {
                             nation: new_owner.nation(),

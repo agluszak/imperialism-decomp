@@ -746,10 +746,44 @@ fn navy_dto(state: &GameState) -> LegacyNavyState {
                 .unwrap_or(ship_count),
         })
         .collect();
+    let task_forces = state
+        .task_forces_in_retail_order()
+        .map(|(_, force)| {
+            let target_ordinal = match force.target {
+                TaskForceTarget::None => -1,
+                TaskForceTarget::Zone(zone) => {
+                    i16::try_from(zone.get()).expect("task-force zone ordinal fits a save short")
+                }
+                TaskForceTarget::Province(province) => i16::try_from(province.get())
+                    .expect("task-force province ordinal fits a save short"),
+            };
+            LegacyTaskForce {
+                aggression: force.aggression.retail(),
+                order: force.order.get(),
+                target_ordinal,
+                location_ordinal: i16::try_from(force.location.get())
+                    .expect("task-force location ordinal fits a save short"),
+                nation: i16::from(force.nation.get()),
+                defeated: u8::from(force.defeated),
+                ingot_tile: force.ingot_tile,
+                ships: force
+                    .ships()
+                    .map(|(ship, selected)| {
+                        [
+                            *ship_ordinals
+                                .get(&ship)
+                                .expect("task-force ship is present in the retail ship list"),
+                            i16::from(selected),
+                        ]
+                    })
+                    .collect(),
+            }
+        })
+        .collect();
     LegacyNavyState {
         ships,
         admirals,
-        task_forces: Vec::new(),
+        task_forces,
     }
 }
 

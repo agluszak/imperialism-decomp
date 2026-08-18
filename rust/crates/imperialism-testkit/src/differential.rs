@@ -6,8 +6,9 @@ use imperialism_core::{
     TurnState, UnitIdAllocator,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
-use serde::Deserialize;
 use serde::de::{DeserializeOwned, Error};
+use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 use std::fmt::Debug;
 use std::fs;
 use std::path::Path;
@@ -164,17 +165,146 @@ pub fn load_save_backed_state(capture: SaveBackedState) -> Result<GameState> {
 }
 
 pub fn assert_game_state_eq(expected: &GameState, actual: &GameState) -> Result<()> {
-    if expected == actual {
-        return Ok(());
-    }
-    match first_serialized_difference(expected, actual).context("comparing game states")? {
-        None => bail!("game states differ only in non-serialized state"),
+    let mut expected_json =
+        serde_json::to_value(expected).context("serializing native game state")?;
+    let mut actual_json = serde_json::to_value(actual).context("serializing Rust game state")?;
+    discard_process_local_allocator_state(&mut expected_json, expected);
+    discard_process_local_allocator_state(&mut actual_json, actual);
+    match first_serialized_difference(&expected_json, &actual_json)
+        .context("comparing game states")?
+    {
+        None => Ok(()),
         Some(difference) => bail!(
             "{} differs: expected {:?}, actual {:?}",
             difference.path,
             difference.original,
             difference.reimplementation
         ),
+    }
+}
+
+fn discard_process_local_allocator_state(state: &mut serde_json::Value, game: &GameState) {
+    let state = state
+        .as_object_mut()
+        .expect("GameState serializes as an object");
+    state.remove("object_ids");
+
+    // Retail saves these ordered lists but not their object pointers. Loader-assigned numeric
+    // keys therefore depend on how many other pointer-like objects the capture contains; list
+    // order, contents, and relationships are the complete persisted semantics.
+    let mut ship_ordinals = HashMap::new();
+    let ships = game
+        .ships()
+        .enumerate()
+        .map(|(ordinal, (id, ship))| {
+            let id = serialized_id(id, "ship");
+            ship_ordinals.insert(id, ordinal as u64);
+            serde_json::to_value(ship).expect("ship serializes")
+        })
+        .collect();
+    state.insert("ships".to_owned(), serde_json::Value::Array(ships));
+
+    let admirals = game
+        .admirals()
+        .map(|(_, admiral)| {
+            let mut admiral = serde_json::to_value(admiral).expect("admiral serializes");
+            replace_ship_ids(&mut admiral, &ship_ordinals);
+            admiral
+        })
+        .collect();
+    state.insert("admirals".to_owned(), serde_json::Value::Array(admirals));
+
+    let mut task_force_ordinals = HashMap::new();
+    let task_forces = game
+        .task_forces()
+        .enumerate()
+        .map(|(ordinal, (id, force))| {
+            let id = serialized_id(id, "task-force");
+            task_force_ordinals.insert(id, ordinal as u64);
+            let mut force = serde_json::to_value(force).expect("task force serializes");
+            replace_ship_ids(&mut force, &ship_ordinals);
+            force
+        })
+        .collect();
+    state.insert(
+        "task_forces".to_owned(),
+        serde_json::Value::Array(task_forces),
+    );
+
+    let missions = game
+        .missions()
+        .map(|(_, mission)| {
+            let mut mission = serde_json::to_value(mission).expect("mission serializes");
+            replace_ship_ids(&mut mission, &ship_ordinals);
+            replace_task_force_ids(&mut mission, &task_force_ordinals);
+            mission
+        })
+        .collect();
+    state.insert("missions".to_owned(), serde_json::Value::Array(missions));
+}
+
+fn serialized_id(id: impl Serialize, kind: &str) -> u64 {
+    serde_json::to_value(id)
+        .unwrap_or_else(|_| panic!("{kind} id serializes"))
+        .as_u64()
+        .unwrap_or_else(|| panic!("{kind} id serializes as an integer"))
+}
+
+fn replace_ship_ids(value: &mut serde_json::Value, ordinals: &HashMap<u64, u64>) {
+    match value {
+        serde_json::Value::Array(values) => {
+            for value in values {
+                replace_ship_ids(value, ordinals);
+            }
+        }
+        serde_json::Value::Object(object) => {
+            for field in ["ship", "selected_ship", "flagship"] {
+                if let Some(ship) = object.get_mut(field)
+                    && let Some(id) = ship.as_u64()
+                    && let Some(&ordinal) = ordinals.get(&id)
+                {
+                    *ship = serde_json::Value::from(ordinal);
+                }
+            }
+            if let Some(serde_json::Value::Object(ships)) = object.get_mut("ships") {
+                let mut canonical = serde_json::Map::new();
+                for (id, selected) in std::mem::take(ships) {
+                    let id = id
+                        .parse::<u64>()
+                        .ok()
+                        .and_then(|id| ordinals.get(&id).copied())
+                        .map_or(id, |ordinal| ordinal.to_string());
+                    canonical.insert(id, selected);
+                }
+                *ships = canonical;
+            }
+            for value in object.values_mut() {
+                replace_ship_ids(value, ordinals);
+            }
+        }
+        _ => {}
+    }
+}
+
+fn replace_task_force_ids(value: &mut serde_json::Value, ordinals: &HashMap<u64, u64>) {
+    match value {
+        serde_json::Value::Array(values) => {
+            for value in values {
+                replace_task_force_ids(value, ordinals);
+            }
+        }
+        serde_json::Value::Object(object) => {
+            if let Some(task_force) = object.get_mut("task_force")
+                && let Some(id) = task_force.as_u64()
+                && let Some(&ordinal) = ordinals.get(&id)
+            {
+                *task_force = serde_json::Value::from(ordinal);
+            }
+            for value in object.values_mut() {
+                replace_task_force_ids(value, ordinals);
+            }
+        }
+        _ => {}
     }
 }
 

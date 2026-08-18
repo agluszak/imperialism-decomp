@@ -8,6 +8,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_globals.h"
 #include "game/map/TMapMgr.h"
+#include "game/map/TMapUberPicture.h"
 #include "game/map/map_records.h"
 #include "game/military/TArmyMgr.h"
 #include "game/military/TMilitaryUnit.h"
@@ -16,6 +17,7 @@
 #include "game/nation/TGreatPower.h"
 #include "game/nation_domain_types.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/unit_domain_types.h"
 
 namespace {
@@ -60,6 +62,22 @@ short AdjacentForeignProvince(short province) {
     }
   }
   return -1;
+}
+
+bool FindOwnedForeignProvincePair(short* source, short* target) {
+  short province;
+  for (province = 0; province < 0x180; ++province) {
+    if (g_pGlobalMapState->cityScoreTable[province].ownerNationCode00 != ActiveNationSlot()) {
+      continue;
+    }
+    short adjacent = AdjacentForeignProvince(province);
+    if (adjacent >= 0) {
+      *source = province;
+      *target = adjacent;
+      return true;
+    }
+  }
+  return false;
 }
 
 short EmptyTileIndex() {
@@ -202,6 +220,7 @@ RuntimeActionResult RunArmySelectProvince(NativeTransition& transition) {
   latr->SetOrders(static_cast<UnitOrder>(3), -1);
   done->SetOrders(static_cast<UnitOrder>(4), -1);
   militia->SetOrders(static_cast<UnitOrder>(4), -1);
+  g_pViewMgr->mapUberPictureF0->SetMapInteractionMode(1);
 
   args.Set("province", static_cast<int>(province));
   RuntimeActionResult started = transition.Begin(args.Release());
@@ -255,10 +274,10 @@ RuntimeActionResult RunArmyClickFriendly(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunArmyClickHostile(NativeTransition& transition) {
-  const short province = FirstOwnedProvince();
-  const short dest = province < 0 ? -1 : AdjacentForeignProvince(province);
+  short province;
+  short dest;
   JsonObject args;
-  if (province < 0 || dest < 0) {
+  if (!FindOwnedForeignProvincePair(&province, &dest)) {
     return RuntimeActionResult::Failure("the fixture has no adjacent foreign province");
   }
   SpawnStationed(kMilitaryUnitRegulars, province);
@@ -276,7 +295,14 @@ RuntimeActionResult RunArmyClickHostile(NativeTransition& transition) {
   if (!started.Succeeded()) {
     return started;
   }
-  g_pMapContextActionManager->ValidateOrderPlacementPrerequisitesForSelectedTile(dest);
+  TMilitaryUnit* unit = g_pGlobalMapState->GetMilitaryMaster(province);
+  for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
+    if (unit->unitOrder == 0 &&
+        unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
+      unit->SetOrders(kUnitOrderRedeploy, dest);
+    }
+  }
+  g_pGlobalMapState->MarkAdjacentHexOrderDirectionAndSelectTile(province, dest, 1);
   return transition.Finish();
 }
 

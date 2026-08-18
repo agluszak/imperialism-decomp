@@ -363,6 +363,8 @@ RuntimeActionResult RunOpeningHomeCitySetup(NativeTransition& transition) {
     return RuntimeActionResult::Failure("turn state is unavailable");
   }
 
+  g_bMultiplayerScenarioSetupActive = 0;
+
   RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {
     return started;

@@ -38,6 +38,23 @@ impl ObjectIdAllocator {
 }
 
 impl GameState {
+    pub(crate) fn insert_mission(&mut self, id: MissionId, mission: MissionState) {
+        let nation = mission.nation;
+        let position = self
+            .missions
+            .iter()
+            .enumerate()
+            .filter_map(|(index, (_, queued))| (queued.nation == nation).then_some(index + 1))
+            .last()
+            .unwrap_or_else(|| {
+                self.missions
+                    .values()
+                    .position(|queued| queued.nation.get() > nation.get())
+                    .unwrap_or(self.missions.len())
+            });
+        self.missions.shift_insert(position, id, mission);
+    }
+
     pub(crate) fn army_unit_power(&self, nation: NationId) -> i32 {
         self.military_units
             .values()
@@ -364,7 +381,7 @@ impl GameState {
             }
             accum += diff;
         }
-        sum * (1.0 - accum * 0.5)
+        (f64::from(sum) * (1.0 - f64::from(accum) * 0.5)) as f32
     }
 }
 
@@ -585,17 +602,18 @@ impl ActionClassScores {
         if sum == 0.0 {
             return 0.0;
         }
-        let accum = class_diff(self.infantry, profile.infantry, sum)
-            + class_diff(self.cavalry, profile.cavalry, sum)
-            + class_diff(self.artillery, profile.artillery, sum)
-            + class_diff(self.armor, profile.armor, sum)
-            + class_diff(self.support, profile.support, sum);
-        sum * (1.0 - accum * 0.5)
+        let accum = f64::from(class_diff(self.infantry, profile.infantry, sum))
+            + f64::from(class_diff(self.cavalry, profile.cavalry, sum))
+            + f64::from(class_diff(self.artillery, profile.artillery, sum))
+            + f64::from(class_diff(self.armor, profile.armor, sum))
+            + f64::from(class_diff(self.support, profile.support, sum));
+        (f64::from(sum) * (1.0 - accum * 0.5)) as f32
     }
 }
 
 fn class_diff(component: f32, target: i16, sum: f32) -> f32 {
-    (component / sum - f32::from(target) * 0.01).abs()
+    let diff = (f64::from(component / sum) - f64::from(target) * 0.01) as f32;
+    diff.abs()
 }
 
 pub(crate) fn accumulate_unit_priority(
@@ -796,6 +814,29 @@ pub struct TaskForceState {
 }
 
 impl TaskForceState {
+    pub fn from_parts(
+        aggression: NavalAggression,
+        order: TaskForceOrder,
+        target: TaskForceTarget,
+        location: OceanZoneId,
+        nation: NationId,
+        defeated: bool,
+        ingot_tile: i16,
+        ships: IndexMap<ShipId, bool>,
+    ) -> Self {
+        Self {
+            aggression,
+            order,
+            target,
+            location,
+            nation,
+            defeated,
+            ingot_tile,
+            flagship: None,
+            ships,
+        }
+    }
+
     pub const fn flagship(&self) -> Option<ShipId> {
         self.flagship
     }

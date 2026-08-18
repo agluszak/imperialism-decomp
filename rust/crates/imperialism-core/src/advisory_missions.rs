@@ -434,7 +434,7 @@ impl GameState {
             _ => 0,
         };
         let id = self.object_ids.mission();
-        self.missions.insert(
+        self.insert_mission(
             id,
             MissionState {
                 nation: nation.nation(),

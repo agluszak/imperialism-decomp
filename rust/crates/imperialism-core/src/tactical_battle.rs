@@ -359,12 +359,18 @@ impl Battle {
         for row in 0..TACTICAL_ROWS as usize {
             for column in 0..self.column_count as usize {
                 let source_column = margin + column;
-                self.tiles[row * TACTICAL_STRIDE as usize + column].terrain = if self.fort_level > 1
-                    && source_column > 23
-                {
-                    0
+                let terrain = if self.fort_level != FortLevel::None && source_column > 23 {
+                    b'0'
                 } else {
-                    i32::from(terrain[row * (TACTICAL_STRIDE as usize + 1) + source_column] - b'0')
+                    terrain[row * (TACTICAL_STRIDE as usize + 1) + source_column]
+                };
+                self.tiles[row * TACTICAL_STRIDE as usize + column].terrain = match terrain {
+                    b'0' => TacticalTerrain::Class0,
+                    b'1' => TacticalTerrain::Class1,
+                    b'2' => TacticalTerrain::Class2,
+                    b'3' => TacticalTerrain::Class3,
+                    b'4' => TacticalTerrain::Impassable,
+                    _ => unreachable!("retail tactical terrain uses classes 0 through 4"),
                 };
             }
         }

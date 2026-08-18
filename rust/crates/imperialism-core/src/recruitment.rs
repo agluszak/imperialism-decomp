@@ -330,12 +330,41 @@ impl GameState {
                 .expect("naming units requires a present nation");
             (common.unit_name_ordinal_by_type, common.unit_name_counter)
         };
-        crate::create_random_game::name_units_for_nation(
-            &mut self.military_units,
-            nation,
-            &mut ordinals,
-            &mut counter,
-        );
+        let units = self
+            .military_units
+            .iter()
+            .filter_map(|(&id, unit)| (unit.nation == nation).then_some(id))
+            .collect::<Vec<_>>();
+        for id in units {
+            let unit = &self.military_units[&id];
+            if unit.roster_id != 0 {
+                continue;
+            }
+            let name = if let Some(type_name) = unit.unit_type.roster_name() {
+                let ordinal = ordinals[unit.unit_type];
+                ordinals[unit.unit_type] = ordinal + 1;
+                format!(
+                    "{} {type_name}",
+                    crate::create_random_game::english_ordinal(ordinal)
+                )
+            } else {
+                loop {
+                    let candidate =
+                        crate::generate_english_random_setup_name(&mut self.rng.zone_status);
+                    if candidate.len() <= 7 {
+                        break;
+                    }
+                }
+                String::new()
+            };
+            let unit = self
+                .military_units
+                .get_mut(&id)
+                .expect("unit selected for naming remains present");
+            unit.name = name;
+            unit.roster_id = counter;
+            counter += 1;
+        }
         let common = self
             .nations
             .common_mut(nation)

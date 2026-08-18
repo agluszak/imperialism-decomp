@@ -341,9 +341,11 @@ const NAVY_CONTROL_PROFILE: NavyPriorityTable<i16> = NavyPriorityTable::from_arr
 const NAVY_ESCORT_PROFILE: NavyPriorityTable<i16> = NavyPriorityTable::from_array([40, 30, 30, 0]);
 
 fn navy_required_from_profile(profile: NavyPriorityTable<i16>, total: f32) -> [u32; 4] {
-    profile
-        .as_array()
-        .map(|weight| (f32::from(weight) * total * 0.01).to_bits())
+    profile.as_array().map(|weight| {
+        // Retail multiplies the two float operands first, then promotes that product for
+        // the final multiply by the double-precision 0.01 global.
+        ((f64::from(f32::from(weight) * total) * 0.01) as f32).to_bits()
+    })
 }
 
 fn hop_distance(distances: &[i16], zone: OceanZoneId) -> i16 {
