@@ -201,7 +201,7 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 
       CPoint placement;
       g_pViewMgr->ComputeTurnEventDialogPlacementByCode(node, &placement);
-      historyView->Locate(placement, 0);
+      node->Locate(placement, 0);
       node->SetModality(1);
       TDialogBehavior* behavior = node->GetDialogBehavior();
       if (behavior != nullptr) {
