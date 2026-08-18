@@ -1,5 +1,5 @@
 use crate::{HexDirection, HexDirectionTable, RetailLcg, TerrainKind};
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 
 pub const COARSE_MAP_WIDTH: usize = 27;
 pub const COARSE_MAP_HEIGHT: usize = 15;
@@ -40,9 +40,29 @@ impl CoarseMapGrid {
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub(crate) struct ExpandedMapSeedTile {
+    #[serde(deserialize_with = "deserialize_retail_terrain_kind")]
     pub(crate) terrain_kind: TerrainKind,
     pub(crate) owner_nation: i8,
     pub(crate) province_index: i16,
+}
+
+fn deserialize_retail_terrain_kind<'de, D>(deserializer: D) -> Result<TerrainKind, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    #[derive(Deserialize)]
+    #[serde(untagged)]
+    enum TerrainKindCapture {
+        Named(TerrainKind),
+        Retail(i8),
+    }
+
+    match TerrainKindCapture::deserialize(deserializer)? {
+        TerrainKindCapture::Named(kind) => Ok(kind),
+        TerrainKindCapture::Retail(value) => TerrainKind::from_retail(value).ok_or_else(|| {
+            serde::de::Error::custom(format!("invalid retail terrain kind {value}"))
+        }),
+    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
