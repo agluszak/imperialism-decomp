@@ -2,11 +2,14 @@
 
 use super::super::format_currency;
 use super::super::retail::{RetailTree, RetailUiAssets};
+use super::map_interaction::cycle_map_interaction_selection;
 use super::map_interaction::{MapInteractionMode, StrategicInteraction};
+use super::map_modals::{spawn_civilian_disband, spawn_civilian_roster};
 use crate::AppState;
 use crate::ui::GameSession;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
+use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -77,6 +80,14 @@ struct CivilianLegendItem;
 #[derive(Component)]
 struct CivilianCommandButton;
 
+#[derive(Component, Clone, Copy)]
+enum CivilianCommand {
+    Defend,
+    Later,
+    Done,
+    Disband,
+}
+
 #[derive(Component, Clone)]
 struct LegendAtlases {
     resources: Handle<Image>,
@@ -111,15 +122,58 @@ pub(crate) fn bind_civilian_toolbar(
             terrain: transparent_atlas(assets, TERRAIN_ICON_ATLAS),
         },
     ));
-    for tag in [
-        fourcc!("dfnd"),
-        fourcc!("done"),
-        fourcc!("garr"),
-        fourcc!("latr"),
+    for (tag, command) in [
+        (fourcc!("dfnd"), CivilianCommand::Defend),
+        (fourcc!("latr"), CivilianCommand::Later),
+        (fourcc!("done"), CivilianCommand::Done),
+        (fourcc!("garr"), CivilianCommand::Disband),
     ] {
         commands
             .entity(tree.child(page, tag))
-            .insert((CivilianCommandButton, InteractionDisabled));
+            .insert((
+                CivilianCommandButton,
+                command,
+                ActivateOnPress,
+                InteractionDisabled,
+            ))
+            .observe(on_civilian_command);
+    }
+}
+
+fn on_civilian_command(
+    activate: On<Activate>,
+    commands_query: Query<&CivilianCommand>,
+    mut commands: Commands,
+    mut session: ResMut<GameSession>,
+    mut interactions: Query<&mut StrategicInteraction>,
+    keys: Res<ButtonInput<KeyCode>>,
+) {
+    let Ok(command) = commands_query.get(activate.entity).copied() else {
+        return;
+    };
+    let Ok(mut interaction) = interactions.single_mut() else {
+        return;
+    };
+    let Some(unit) = interaction.civilian else {
+        return;
+    };
+    let mode = match command {
+        CivilianCommand::Defend => Some(CivilianIdleOrderMode::Sleep),
+        CivilianCommand::Later => Some(CivilianIdleOrderMode::Later),
+        CivilianCommand::Done => Some(CivilianIdleOrderMode::Done),
+        CivilianCommand::Disband => {
+            if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
+                spawn_civilian_roster(&mut commands);
+            } else {
+                spawn_civilian_disband(&mut commands, unit);
+            }
+            None
+        }
+    };
+    if let Some(mode) = mode
+        && session.game.set_civilian_idle_order(unit, mode)
+    {
+        cycle_map_interaction_selection(&mut session, &mut interaction);
     }
 }
 

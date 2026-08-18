@@ -149,6 +149,24 @@ impl RetailAssets {
     /// Loads one direct `LoadStringA` index from the English retail string library.
     pub fn string(&self, group: i16, direct_index: i16) -> Result<String, RetailAssetError> {
         let string_id = group.wrapping_mul(100).wrapping_add(direct_index) as u16;
+        self.string_id(string_id).map_err(|error| match error {
+            RetailAssetError::StringIdNotFound(_) => RetailAssetError::StringNotFound {
+                group,
+                direct_index,
+            },
+            error => error,
+        })
+    }
+
+    /// Loads one direct Windows `RT_STRING` identifier.
+    ///
+    /// Retail's long-form help `TEXT` resources were assigned the same numeric
+    /// identifiers when the Windows string library was built.
+    pub fn text(&self, resource_id: u16) -> Result<String, RetailAssetError> {
+        self.string_id(resource_id)
+    }
+
+    fn string_id(&self, string_id: u16) -> Result<String, RetailAssetError> {
         let block_id = u32::from((string_id >> 4) + 1);
         let slot = usize::from(string_id & 0xf);
         let block = self
@@ -157,10 +175,7 @@ impl RetailAssets {
                 ResourceName::Id(STRING_RESOURCE_TYPE),
                 ResourceName::Id(block_id),
             )
-            .ok_or(RetailAssetError::StringNotFound {
-                group,
-                direct_index,
-            })?;
+            .ok_or(RetailAssetError::StringIdNotFound(string_id))?;
         decode_string_table_entry(&self.strings.path, block, slot)
     }
 
@@ -533,6 +548,8 @@ pub enum RetailAssetError {
     CursorNotFound { resource_id: u16 },
     #[error("no English string is available for group {group:#06x}, direct index {direct_index}")]
     StringNotFound { group: i16, direct_index: i16 },
+    #[error("no English text resource {0} is available")]
+    StringIdNotFound(u16),
     #[error("Data/pictenu.gob has no English BITMAP resource 950.BMP")]
     DefaultDibPaletteNotFound,
     #[error("news.tab / news.tex are unavailable in Data/tabsenu.gob or as Data files")]

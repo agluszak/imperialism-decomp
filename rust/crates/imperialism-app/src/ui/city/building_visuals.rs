@@ -148,6 +148,7 @@ pub(in crate::ui::city) fn bind_city_screen(
         &tree,
         fourcc!("topB"),
         Some(fourcc!("tool")),
+        true,
     );
 
     let nation = session.active_major_nation();

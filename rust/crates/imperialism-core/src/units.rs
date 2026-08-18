@@ -732,6 +732,8 @@ impl CivilianUnitState {
         let valid_location = match order {
             CivilianWorkOrder::Idle
             | CivilianWorkOrder::Sleep
+            | CivilianWorkOrder::Later
+            | CivilianWorkOrder::Done
             | CivilianWorkOrder::Redeploy { .. } => true,
             CivilianWorkOrder::LayRail { segment, .. } => {
                 location.tile() == Some(segment.destination())

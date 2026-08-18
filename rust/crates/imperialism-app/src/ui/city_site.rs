@@ -330,6 +330,7 @@ fn bind_new_city_dialog(
     dialogs: Query<(Entity, &NewCityDialogRoot), Without<CitySiteWired>>,
     tree: RetailTree,
     mut nodes: Query<&mut Node>,
+    mut pictures: Query<&mut ImageNode>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
@@ -340,7 +341,15 @@ fn bind_new_city_dialog(
         return;
     }
     let report = capital_site_report(&session.game, dialog.0);
-    stuff_new_city_dialog(&mut commands, root, &tree, &mut nodes, &mut assets, &report);
+    stuff_new_city_dialog(
+        &mut commands,
+        root,
+        &tree,
+        &mut nodes,
+        &mut pictures,
+        &mut assets,
+        &report,
+    );
     for (tag, action) in [
         (OKAY, NewCityAction::Accept),
         (fourcc!("cncl"), NewCityAction::Cancel),
@@ -360,6 +369,7 @@ fn stuff_new_city_dialog(
     root: Entity,
     tree: &RetailTree,
     nodes: &mut Query<&mut Node>,
+    pictures: &mut Query<&mut ImageNode>,
     assets: &mut RetailUiAssets,
     report: &CapitalSiteReport,
 ) {
@@ -373,6 +383,16 @@ fn stuff_new_city_dialog(
             node.height = Val::Px(height + extra_height as f32);
         }
     }
+    let dialog_height = (175 + extra_height) as f32;
+    pictures
+        .get_mut(tree.find(root, fourcc!("DLOG")))
+        .expect("new-city dialog background has ImageNode")
+        .rect = Some(Rect::new(
+        0.0,
+        0.0,
+        NEW_CITY_DIALOG_WIDTH as f32,
+        dialog_height,
+    ));
     for tag in [OKAY, fourcc!("cncl")] {
         let entity = tree.find(root, tag);
         let mut node = nodes

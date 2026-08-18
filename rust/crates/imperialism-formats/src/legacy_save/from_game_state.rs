@@ -592,7 +592,9 @@ fn civilian_unit_dto(
     let (order, target, remaining) = match unit.order() {
         CivilianWorkOrder::Idle => (0, -1, 0),
         CivilianWorkOrder::Redeploy { source, turns } => (1, source.get() as i16, *turns),
-        CivilianWorkOrder::Sleep => (2, -1, 0),
+        CivilianWorkOrder::Sleep => (2, 0, 0),
+        CivilianWorkOrder::Later => (3, 0, 0),
+        CivilianWorkOrder::Done => (4, 0, 0),
         CivilianWorkOrder::LayRail { segment, turns } => {
             let _ = topology;
             (5, segment.origin().get() as i16, *turns)
@@ -1332,4 +1334,36 @@ fn army_reports_from_state(
             }),
         })
         .collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn idle_cycle_orders_serialize_retail_zero_target() {
+        for (order, retail_order) in [
+            (CivilianWorkOrder::Sleep, 2),
+            (CivilianWorkOrder::Later, 3),
+            (CivilianWorkOrder::Done, 4),
+        ] {
+            let unit = CivilianUnitState::new(
+                NationId::new(0),
+                CivilianUnitKind::Engineer,
+                CivilianLocation::OffMap,
+                order,
+                NationId::new(0),
+                0,
+                false,
+            )
+            .unwrap();
+            let projected = civilian_unit_dto(
+                CivilianUnitId::from_serialized(1),
+                &unit,
+                MapTopology::Bounded,
+            );
+            assert_eq!(projected.order, retail_order);
+            assert_eq!(projected.order_target, 0);
+        }
+    }
 }

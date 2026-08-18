@@ -25,6 +25,10 @@ pub struct RetailPictureSwap {
     pub active: Handle<Image>,
 }
 
+/// A `TPictureButton` down-state bitmap drawn only while the control is pressed.
+#[derive(Component, Debug, Default)]
+pub struct RetailPressedOverlay;
+
 pub fn retail_view(name: &'static str) -> impl Scene {
     bsn! {
         Node {
@@ -385,6 +389,8 @@ impl Plugin for RetailUiPlugin {
             .add_observer(on_retail_picture_swap_state::<Remove, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Add, Checked>)
             .add_observer(on_retail_picture_swap_state::<Remove, Checked>)
+            .add_observer(on_retail_pressed_overlay_state::<Add>)
+            .add_observer(on_retail_pressed_overlay_state::<Remove>)
             .add_observer(on_radio_text_fill_state::<Add, Pressed>)
             .add_observer(on_radio_text_fill_state::<Remove, Pressed>)
             .add_observer(on_radio_text_fill_state::<Add, Checked>)
@@ -392,6 +398,17 @@ impl Plugin for RetailUiPlugin {
             .add_observer(on_radio_text_fill_state::<Add, RetailRadioTextFill>);
         super::hover_help::register_hover_help(app);
     }
+}
+
+fn on_retail_pressed_overlay_state<E: EntityEvent>(
+    event: On<E, Pressed>,
+    mut nodes: Query<(&mut ImageNode, Has<Pressed>), With<RetailPressedOverlay>>,
+) {
+    let Ok((mut image, pressed)) = nodes.get_mut(event.event_target()) else {
+        return;
+    };
+    let pressed = pressed && !E::is::<Remove>();
+    image.color.set_alpha(if pressed { 1.0 } else { 0.0 });
 }
 
 fn on_retail_picture_swap_state<E: EntityEvent, C: Component>(
@@ -682,6 +699,33 @@ mod tests {
 
         app.world_mut().entity_mut(entity).remove::<Checked>();
         assert_eq!(app.world().get::<ImageNode>(entity).unwrap().image, idle);
+    }
+
+    #[test]
+    fn picture_button_overlay_is_visible_only_while_pressed() {
+        let mut app = App::new();
+        app.add_plugins(RetailUiPlugin);
+        let entity = app
+            .world_mut()
+            .spawn((ImageNode::default(), RetailPressedOverlay))
+            .id();
+        app.world_mut()
+            .get_mut::<ImageNode>(entity)
+            .unwrap()
+            .color
+            .set_alpha(0.0);
+
+        app.world_mut().entity_mut(entity).insert(Pressed);
+        assert_eq!(
+            app.world().get::<ImageNode>(entity).unwrap().color.alpha(),
+            1.0
+        );
+
+        app.world_mut().entity_mut(entity).remove::<Pressed>();
+        assert_eq!(
+            app.world().get::<ImageNode>(entity).unwrap().color.alpha(),
+            0.0
+        );
     }
 
     #[test]

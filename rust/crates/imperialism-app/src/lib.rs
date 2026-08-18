@@ -25,6 +25,7 @@ pub(crate) enum AppState {
     DealBook,
     OfferSheet,
     TechnologyAdvance,
+    TechnologyStore,
     Newspaper,
     LandBattle,
     NavalBattle,
@@ -60,6 +61,13 @@ impl RetailAssetsResource {
         direct_index: i16,
     ) -> Result<String, imperialism_formats::RetailAssetError> {
         self.0.string(group, direct_index)
+    }
+
+    pub(crate) fn text(
+        &self,
+        resource_id: u16,
+    ) -> Result<String, imperialism_formats::RetailAssetError> {
+        self.0.text(resource_id)
     }
 
     /// `TSimMgr::GetString`: adds one before the direct lookup.
@@ -98,6 +106,7 @@ fn add_game_plugins(app: &mut App) {
         media::ImperialismMediaPlugin,
         ui::CursorPlugin,
         ui::TechnologyAdvancePlugin,
+        ui::TechnologyStorePlugin,
         ui::NewspaperPlugin,
         ui::LandBattlePlugin,
         ui::EndgamePlugin,

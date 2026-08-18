@@ -14,9 +14,10 @@ use bevy::input::keyboard::KeyboardInput;
 use bevy::input_focus::AutoFocus;
 use bevy::input_focus::tab_navigation::{TabGroup, TabIndex};
 use bevy::prelude::*;
+use bevy::text::TextCursorStyle;
 use bevy::text::{EditableText, TextEditChange};
 use bevy::ui::{Checked, InteractionDisabled};
-use bevy::ui_widgets::{Activate, SelectAllOnFocus, ValueChange};
+use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus, ValueChange};
 use imperialism_core::*;
 use imperialism_formats::{OKAY, fourcc};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -32,6 +33,7 @@ pub(crate) struct RandomGameSetup {
     pub(crate) country_name: String,
     pub(crate) difficulty: Difficulty,
     pub(crate) name_mode: NationNameMode,
+    name_rng: RetailLcg,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -54,6 +56,7 @@ impl FromWorld for RandomGameSetup {
             country_name: generate_english_random_setup_name(&mut name_rng),
             difficulty: Difficulty::Introductory,
             name_mode: NationNameMode::Historical,
+            name_rng,
         }
     }
 }
@@ -93,9 +96,11 @@ impl Default for RandomSetupClockSeed {
 enum RandomSetupAction {
     Accept,
     Cancel,
-    RegeneratePlanet,
     OpenPlanetSeed,
 }
+
+#[derive(Component)]
+struct RandomSetupGlobe;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 struct DifficultyChoice(Difficulty);
@@ -229,7 +234,14 @@ fn bind_random_setup_controls(
         .insert((
             CountryNameField,
             SelectAllOnFocus,
+            AutoFocus,
+            TabIndex(0),
             Pickable::default(),
+            TextCursorStyle {
+                color: Color::BLACK,
+                selected_text_color: Some(Color::BLACK),
+                ..default()
+            },
             EditableText {
                 max_characters: Some(COUNTRY_NAME_MAX_CHARS),
                 allow_newlines: false,
@@ -249,15 +261,18 @@ fn bind_random_setup_controls(
 
     for (tag, action) in [
         (fourcc!("cncl"), RandomSetupAction::Cancel),
-        (fourcc!("glob"), RandomSetupAction::RegeneratePlanet),
         (fourcc!("key "), RandomSetupAction::OpenPlanetSeed),
     ] {
         let entity = tree.find(root, tag);
         commands
             .entity(entity)
-            .insert(action)
+            .insert((action, ActivateOnPress))
             .observe(on_random_setup_activate);
     }
+    commands
+        .entity(tree.find(root, fourcc!("glob")))
+        .insert((RandomSetupGlobe, ActivateOnPress))
+        .observe(on_random_setup_globe);
 }
 
 fn bind_random_setup_labels(
@@ -285,6 +300,34 @@ fn bind_random_setup_labels(
         commands
             .entity(entity)
             .insert(Text::new(ui_string(assets, group, index)));
+    }
+    let title_color = TextColor(assets.palette_color(0x5c));
+    let title_shadow = TextShadow {
+        offset: Vec2::new(-1.0, -1.0),
+        color: assets.palette_color(0x28),
+    };
+    for tag in [fourcc!("tcou"), fourcc!("dift"), fourcc!("tnam")] {
+        commands
+            .entity(tree.find(root, tag))
+            .insert((title_color, title_shadow));
+    }
+    let option_color = TextColor(assets.palette_color(0xd2));
+    let option_shadow = TextShadow {
+        offset: Vec2::new(-1.0, -1.0),
+        color: assets.palette_color(0x28),
+    };
+    for tag in [
+        fourcc!("hist"),
+        fourcc!("rand"),
+        fourcc!("dif0"),
+        fourcc!("dif1"),
+        fourcc!("dif2"),
+        fourcc!("dif3"),
+        fourcc!("dif4"),
+    ] {
+        commands
+            .entity(tree.find(root, tag))
+            .insert((option_color, option_shadow));
     }
     let frame = BorderColor::all(assets.palette_color(RADIO_CLUSTER_FRAME_PALETTE));
     for tag in [fourcc!("diff"), fourcc!("name")] {
@@ -395,7 +438,6 @@ fn sync_country_name_from_setup(
 struct RandomSetupActivation<'w, 's> {
     actions: Query<'w, 's, &'static RandomSetupAction>,
     dialog_open: Query<'w, 's, (), With<ModalDialog>>,
-    clock_seed: Res<'w, RandomSetupClockSeed>,
     setup: ResMut<'w, RandomGameSetup>,
     preview: ResMut<'w, RandomSetupPreview>,
     names: Res<'w, RandomGameNamesResource>,
@@ -424,16 +466,21 @@ fn on_random_setup_activate(activate: On<Activate>, mut random_setup: RandomSetu
             );
         }
         RandomSetupAction::Cancel => random_setup.next_state.set(AppState::MainMenu),
-        RandomSetupAction::RegeneratePlanet => {
-            regenerate_random_setup_planet(
-                random_setup.clock_seed.0,
-                &mut random_setup.setup,
-                &mut random_setup.preview,
-            );
-        }
         RandomSetupAction::OpenPlanetSeed => {
             open_planet_seed_dialog(&mut random_setup.commands);
         }
+    }
+}
+
+fn on_random_setup_globe(
+    _activate: On<Activate>,
+    dialogs: Query<(), With<ModalDialog>>,
+    clock_seed: Res<RandomSetupClockSeed>,
+    mut setup: ResMut<RandomGameSetup>,
+    mut preview: ResMut<RandomSetupPreview>,
+) {
+    if dialogs.is_empty() {
+        regenerate_random_setup_planet(clock_seed.0, &mut setup, &mut preview);
     }
 }
 
@@ -520,8 +567,7 @@ fn regenerate_random_setup_planet(
     setup: &mut RandomGameSetup,
     preview: &mut RandomSetupPreview,
 ) {
-    let mut name_rng = RetailLcg::from_state(clock_seed);
-    setup.planet_seed = generate_english_random_setup_name(&mut name_rng);
+    setup.planet_seed = generate_english_random_setup_name(&mut setup.name_rng);
     update_random_setup_preview(
         preview,
         generate_random_setup_preview_with_clock_seed(
@@ -665,6 +711,7 @@ mod tests {
             country_name: "Country".to_owned(),
             difficulty: Difficulty::Hard,
             name_mode: NationNameMode::Random,
+            name_rng: RetailLcg::from_state(1),
         };
         let mut app = App::new();
         app.insert_resource(setup).add_systems(
@@ -696,9 +743,71 @@ mod tests {
         );
         let mut fields = app
             .world_mut()
-            .query_filtered::<&EditableText, With<CountryNameField>>();
-        let field = fields.single(app.world()).unwrap();
+            .query_filtered::<(&EditableText, Has<AutoFocus>, &TextCursorStyle), With<CountryNameField>>();
+        let (field, auto_focus, cursor) = fields.single(app.world()).unwrap();
         assert_eq!(field.value(), "Country");
         assert_eq!(field.max_characters, Some(COUNTRY_NAME_MAX_CHARS));
+        assert!(auto_focus);
+        assert_eq!(cursor.selected_text_color, Some(Color::BLACK));
+        let mut globe = app
+            .world_mut()
+            .query_filtered::<Has<ActivateOnPress>, With<RandomSetupGlobe>>();
+        assert!(
+            globe
+                .iter(app.world())
+                .any(|activate_on_press| activate_on_press)
+        );
+    }
+
+    #[test]
+    fn activating_globe_advances_name_stream_and_rebuilds_preview() {
+        let clock_seed = 1;
+        let setup = RandomGameSetup {
+            planet_seed: "Initial".to_owned(),
+            topology: MapTopology::Wrapping,
+            nation: MajorNationId::new(0),
+            country_name: "Country".to_owned(),
+            difficulty: Difficulty::Hard,
+            name_mode: NationNameMode::Random,
+            name_rng: RetailLcg::from_state(clock_seed),
+        };
+        let preview = RandomSetupPreview(generate_random_setup_preview_with_clock_seed(
+            setup.planet_seed.as_bytes(),
+            setup.topology,
+            clock_seed,
+            RetailCrtRng::from_state(clock_seed),
+        ));
+        let initial_preview = preview.clone();
+        let mut app = App::new();
+        app.insert_resource(RandomSetupClockSeed(clock_seed))
+            .insert_resource(setup)
+            .insert_resource(preview);
+        let globe = app
+            .world_mut()
+            .spawn(RandomSetupGlobe)
+            .observe(on_random_setup_globe)
+            .id();
+
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: globe });
+        app.world_mut().flush();
+        assert_eq!(
+            app.world().resource::<RandomGameSetup>().planet_seed,
+            "Woopnist"
+        );
+        assert_ne!(
+            app.world().resource::<RandomSetupPreview>().clone(),
+            initial_preview
+        );
+
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: globe });
+        app.world_mut().flush();
+        assert_eq!(
+            app.world().resource::<RandomGameSetup>().planet_seed,
+            "Purtast"
+        );
     }
 }

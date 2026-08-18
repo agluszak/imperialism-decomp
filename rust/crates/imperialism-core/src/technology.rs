@@ -6,6 +6,37 @@ const TECH_ITEM_PURCHASE_COST: TechnologyTable<i32> = TechnologyTable::from_arra
     0, 0, 1000, 1000, 1500, 1500, 1500, 1500, 3000, 3000, 3000, 6000, 7000, 10000, 12000, 12000,
     12000, 12000, 12000, 25000, 20000, 40000, 40000, 40000, 40000, 100000, 120000, 150000, 150000,
 ]);
+const TECH_ITEM_PREREQUISITES: TechnologyTable<(u8, u8)> = TechnologyTable::from_array([
+    (0, 0),
+    (0, 0),
+    (0, 0),
+    (0, 0),
+    (0, 0),
+    (1, 0),
+    (1, 0),
+    (0, 0),
+    (7, 3),
+    (0, 0),
+    (2, 0),
+    (0, 0),
+    (6, 0),
+    (0, 0),
+    (11, 0),
+    (0, 0),
+    (8, 0),
+    (10, 0),
+    (10, 0),
+    (0, 0),
+    (7, 0),
+    (15, 0),
+    (13, 0),
+    (5, 12),
+    (9, 10),
+    (14, 0),
+    (19, 0),
+    (24, 0),
+    (26, 0),
+]);
 
 /// Per-nation University capability state used by city production and recruitment.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
@@ -253,6 +284,20 @@ pub enum TechnologyResearchStatus {
     Researched,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum TechnologyResearchToggle {
+    Purchased,
+    Refunded,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum TechnologyResearchRejection {
+    Locked,
+    MissingPrerequisite,
+    AlreadyResearched,
+    InsufficientFunds,
+}
+
 /// Global technology milestones and the city capabilities of every major nation.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TechnologyState {
@@ -419,6 +464,82 @@ impl TechnologyState {
 }
 
 impl GameState {
+    pub fn technology_purchase_cost(technology: Technology) -> i32 {
+        TECH_ITEM_PURCHASE_COST[technology]
+    }
+
+    pub fn missing_technology_prerequisites(
+        &self,
+        nation: MajorNationId,
+        technology: Technology,
+    ) -> [Option<Technology>; 2] {
+        let (primary, secondary) = TECH_ITEM_PREREQUISITES[technology];
+        let mut missing = [None, None];
+        for (output, id) in missing.iter_mut().zip([primary, secondary]) {
+            let prerequisite = Technology::from_index(id).expect("retail prerequisite id");
+            if self.technology.research_status_by_nation[nation][prerequisite]
+                != TechnologyResearchStatus::Researched
+            {
+                *output = Some(prerequisite);
+            }
+        }
+        missing
+    }
+
+    pub fn technology_prerequisites_completed(
+        &self,
+        nation: MajorNationId,
+        technology: Technology,
+    ) -> bool {
+        self.missing_technology_prerequisites(nation, technology)
+            .into_iter()
+            .all(|prerequisite| prerequisite.is_none())
+    }
+
+    /// Mirrors `TTechItemView::DoEvent` and the paired `TTechMgr`
+    /// purchase/refund operations used by the technology store.
+    pub fn toggle_technology_research(
+        &mut self,
+        nation: MajorNationId,
+        technology: Technology,
+    ) -> Result<TechnologyResearchToggle, TechnologyResearchRejection> {
+        if !self.technology.global_unlocks_by_technology[technology] {
+            return Err(TechnologyResearchRejection::Locked);
+        }
+        match self.technology.research_status_by_nation[nation][technology] {
+            TechnologyResearchStatus::Researched => {
+                return Err(TechnologyResearchRejection::AlreadyResearched);
+            }
+            TechnologyResearchStatus::Pending => {
+                self.nations.major_mut(nation).common.treasury +=
+                    TECH_ITEM_PURCHASE_COST[technology];
+                self.technology.research_status_by_nation[nation][technology] =
+                    TechnologyResearchStatus::NotStarted;
+                self.technology.completion_year_by_nation[nation][technology] = 0;
+                return Ok(TechnologyResearchToggle::Refunded);
+            }
+            TechnologyResearchStatus::NotStarted => {}
+        }
+        if !self.technology_prerequisites_completed(nation, technology) {
+            return Err(TechnologyResearchRejection::MissingPrerequisite);
+        }
+        let cost = TECH_ITEM_PURCHASE_COST[technology];
+        let major = self.nations.major(nation);
+        if cost
+            > major
+                .economy
+                .available_diplomacy_budget(major.common.treasury)
+        {
+            return Err(TechnologyResearchRejection::InsufficientFunds);
+        }
+        self.nations.major_mut(nation).common.treasury -= cost;
+        self.technology.research_status_by_nation[nation][technology] =
+            TechnologyResearchStatus::Pending;
+        self.technology.completion_year_by_nation[nation][technology] =
+            (self.turn.economic_turn / 4) as i16;
+        Ok(TechnologyResearchToggle::Purchased)
+    }
+
     /// Mirrors `TTechMgr::CheckForAdvances`.
     pub fn check_technology_advances(&mut self) {
         let economic_turn = self.turn.economic_turn;
@@ -1055,6 +1176,64 @@ mod tests {
             TechnologyState::default().latest_global_unlock,
             Technology::SeedDrill
         );
+    }
+
+    #[test]
+    fn technology_store_purchase_and_refund_are_inverse_operations() {
+        let mut state = crate::test_support::game_state();
+        let nation = MajorNationId::new(0);
+        let technology = Technology::CottonGin;
+        state.technology.global_unlocks_by_technology[technology] = true;
+        state.nations.major_mut(nation).common.treasury = 10_000;
+        state.turn.economic_turn = 8;
+
+        assert_eq!(
+            state.toggle_technology_research(nation, technology),
+            Ok(TechnologyResearchToggle::Purchased)
+        );
+        assert_eq!(state.nations.major(nation).common.treasury, 9_000);
+        assert_eq!(
+            state.technology.research_status_by_nation[nation][technology],
+            TechnologyResearchStatus::Pending
+        );
+        assert_eq!(
+            state.technology.completion_year_by_nation[nation][technology],
+            2
+        );
+
+        assert_eq!(
+            state.toggle_technology_research(nation, technology),
+            Ok(TechnologyResearchToggle::Refunded)
+        );
+        assert_eq!(state.nations.major(nation).common.treasury, 10_000);
+        assert_eq!(
+            state.technology.research_status_by_nation[nation][technology],
+            TechnologyResearchStatus::NotStarted
+        );
+        assert_eq!(
+            state.technology.completion_year_by_nation[nation][technology],
+            0
+        );
+    }
+
+    #[test]
+    fn technology_store_rejects_an_unaffordable_purchase() {
+        let mut state = crate::test_support::game_state();
+        let nation = MajorNationId::new(0);
+        let technology = Technology::CottonGin;
+        state.technology.global_unlocks_by_technology[technology] = true;
+        state.nations.major_mut(nation).common.treasury = 999;
+        state
+            .nations
+            .major_mut(nation)
+            .economy
+            .diplomacy_budget_base = 0;
+
+        assert_eq!(
+            state.toggle_technology_research(nation, technology),
+            Err(TechnologyResearchRejection::InsufficientFunds)
+        );
+        assert_eq!(state.nations.major(nation).common.treasury, 999);
     }
 
     #[test]

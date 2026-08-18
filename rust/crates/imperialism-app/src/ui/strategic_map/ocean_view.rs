@@ -15,7 +15,6 @@ use imperialism_core::*;
 use imperialism_formats::*;
 
 const LAND_POS: Vec2 = Vec2::new(5.0, 0x1b as f32);
-const PARKED_POS: Vec2 = Vec2::new(1001.0, 27.0);
 const OCEAN_TILE: i32 = 16;
 
 #[derive(Component)]
@@ -47,11 +46,12 @@ pub(crate) fn bind_ocean_view(
     commands.entity(ocean).insert((
         OceanMapCanvas,
         ImageNode::new(image),
+        Visibility::Hidden,
         RelativeCursorPosition::default(),
         Node {
             position_type: PositionType::Absolute,
-            left: Val::Px(PARKED_POS.x),
-            top: Val::Px(PARKED_POS.y),
+            left: Val::Px(LAND_POS.x),
+            top: Val::Px(LAND_POS.y),
             width: Val::Px(VIEWPORT_WIDTH as f32),
             height: Val::Px(VIEWPORT_HEIGHT as f32),
             ..default()
@@ -61,30 +61,23 @@ pub(crate) fn bind_ocean_view(
 }
 
 fn sync_ocean_view_frames(
-    mut interactions: Query<&mut super::map_interaction::StrategicInteraction>,
-    mut land: Query<&mut Node, (With<LandMapFrame>, Without<OceanMapCanvas>)>,
-    mut sea: Query<&mut Node, (With<OceanMapCanvas>, Without<LandMapFrame>)>,
+    interactions: Query<&super::map_interaction::StrategicInteraction>,
+    mut land: Query<&mut Visibility, (With<LandMapFrame>, Without<OceanMapCanvas>)>,
+    mut sea: Query<&mut Visibility, (With<OceanMapCanvas>, Without<LandMapFrame>)>,
 ) {
-    let Ok(mut interaction) = interactions.single_mut() else {
+    let Ok(interaction) = interactions.single() else {
         return;
     };
-    if interaction.mode == super::map_interaction::MapInteractionMode::Civilian
-        && interaction.ocean.active
-    {
-        interaction.ocean.active = false;
-    }
-    let (land_pos, sea_pos) = if interaction.ocean.active {
-        (PARKED_POS, LAND_POS)
+    let (land_visibility, sea_visibility) = if interaction.ocean.active {
+        (Visibility::Hidden, Visibility::Visible)
     } else {
-        (LAND_POS, PARKED_POS)
+        (Visibility::Visible, Visibility::Hidden)
     };
-    if let Ok(mut node) = land.single_mut() {
-        node.left = Val::Px(land_pos.x);
-        node.top = Val::Px(land_pos.y);
+    if let Ok(mut visibility) = land.single_mut() {
+        *visibility = land_visibility;
     }
-    if let Ok(mut node) = sea.single_mut() {
-        node.left = Val::Px(sea_pos.x);
-        node.top = Val::Px(sea_pos.y);
+    if let Ok(mut visibility) = sea.single_mut() {
+        *visibility = sea_visibility;
     }
 }
 
@@ -222,4 +215,53 @@ fn indexed_image(indices: &[u8], palette: &DibPalette) -> Image {
     );
     image.sampler = ImageSampler::nearest();
     image
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::ui::strategic_map::StrategicInteraction;
+
+    #[test]
+    fn alternate_map_is_hidden_instead_of_rendered_at_its_parked_coordinate() {
+        let mut app = App::new();
+        app.add_systems(Update, sync_ocean_view_frames);
+        let land = app
+            .world_mut()
+            .spawn((
+                LandMapFrame,
+                Visibility::Visible,
+                StrategicInteraction::default(),
+            ))
+            .id();
+        let sea = app
+            .world_mut()
+            .spawn((OceanMapCanvas, Visibility::Hidden))
+            .id();
+
+        app.update();
+        assert_eq!(
+            app.world().get::<Visibility>(land),
+            Some(&Visibility::Visible)
+        );
+        assert_eq!(
+            app.world().get::<Visibility>(sea),
+            Some(&Visibility::Hidden)
+        );
+
+        app.world_mut()
+            .get_mut::<StrategicInteraction>(land)
+            .unwrap()
+            .ocean
+            .active = true;
+        app.update();
+        assert_eq!(
+            app.world().get::<Visibility>(land),
+            Some(&Visibility::Hidden)
+        );
+        assert_eq!(
+            app.world().get::<Visibility>(sea),
+            Some(&Visibility::Visible)
+        );
+    }
 }

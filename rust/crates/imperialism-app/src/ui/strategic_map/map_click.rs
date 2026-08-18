@@ -14,6 +14,7 @@ use crate::AppState;
 use crate::media::RetailAudioAssets;
 use crate::ui::GameSession;
 use crate::ui::cursor::{RequestedCursor, request_arrow_cursor, request_turn_event_cursor};
+use crate::ui::retail::ModalDialog;
 use bevy::picking::events::{Click, Pointer};
 use bevy::picking::pointer::PointerButton;
 use bevy::prelude::*;
@@ -325,7 +326,7 @@ fn apply_civilian_selection_or_report(
     };
     let idle = matches!(
         unit.order(),
-        CivilianWorkOrder::Idle | CivilianWorkOrder::Sleep
+        CivilianWorkOrder::Idle | CivilianWorkOrder::Sleep | CivilianWorkOrder::Later
     );
     let city = session.game.map()[tile]
         .flags
@@ -507,8 +508,13 @@ fn sync_strategic_map_cursor(
     interactions: Query<Ref<StrategicInteraction>>,
     land: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
     ocean: Query<&RelativeCursorPosition, With<OceanMapCanvas>>,
+    modals: Query<(), With<ModalDialog>>,
     mut requested: ResMut<RequestedCursor>,
 ) {
+    if !modals.is_empty() {
+        request_arrow_cursor(&mut requested);
+        return;
+    }
     let Ok(interaction) = interactions.single() else {
         return;
     };

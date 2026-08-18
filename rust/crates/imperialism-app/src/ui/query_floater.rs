@@ -1,6 +1,5 @@
 use super::generated;
-use super::retail::{ModalDialog, RetailTree, ancestor_with};
-use crate::RetailAssetsResource;
+use super::retail::{ModalDialog, RetailTree, RetailUiAssets, ancestor_with};
 use crate::{AppState, ReturnTo};
 use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
@@ -27,6 +26,7 @@ struct QueryFloaterRoot;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum QueryFloaterAction {
+    Advice,
     DealBook,
     Cancel,
 }
@@ -72,16 +72,35 @@ fn bind_query_floaters(
     mut commands: Commands,
     roots: Query<Entity, Added<QueryFloaterRoot>>,
     tree: RetailTree,
-    assets: Res<RetailAssetsResource>,
+    mut assets: RetailUiAssets,
 ) {
     for root in &roots {
         let view = tree.view(root);
+        let (font, layout, line_height, _) = assets
+            .text_style(imperialism_formats::RetailTextStylePreset {
+                font_family: 1,
+                face_flags: 0,
+                point_size: 12,
+                alignment: -2,
+            })
+            .expect("retail query-floater label style");
         for (tag, index) in QUERY_LABELS {
             let text = assets
                 .string(0x2757, index)
                 .expect("retail query-floater label must load");
-            commands.entity(view.find(tag)).insert(Text::new(text));
+            commands.entity(view.find(tag)).insert((
+                Text::new(text),
+                font.clone(),
+                layout,
+                line_height,
+                TextColor(Color::WHITE),
+            ));
         }
+        commands
+            .entity(view.find(fourcc!("advi")))
+            .insert((QueryFloaterAction::Advice, ActivateOnPress))
+            .remove::<InteractionDisabled>()
+            .observe(on_query_floater_activate);
         commands
             .entity(view.find(fourcc!("deal")))
             .insert((QueryFloaterAction::DealBook, ActivateOnPress))
@@ -93,7 +112,6 @@ fn bind_query_floaters(
             .remove::<InteractionDisabled>()
             .observe(on_query_floater_activate);
         for tag in [
-            fourcc!("advi"),
             fourcc!("oref"),
             fourcc!("news"),
             fourcc!("batt"),
@@ -119,6 +137,10 @@ fn on_query_floater_activate(
     let root = ancestor_with(activate.entity, &parents, &roots)
         .expect("query floater action belongs to its dialog");
     match *action {
+        QueryFloaterAction::Advice => {
+            commands.entity(root).despawn();
+            super::map_help::spawn(&mut commands, *state.get());
+        }
         QueryFloaterAction::DealBook => {
             commands.entity(root).despawn();
             commands.insert_resource(ReturnTo(*state.get()));
