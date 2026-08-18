@@ -48,8 +48,7 @@ fn civilian_work_order(
     remaining: i16,
     topology: MapTopology,
 ) -> CivilianWorkOrder {
-    let turns =
-        || TurnsRemaining::try_new(remaining).expect("retail work order has turns remaining");
+    let turns = || remaining;
     let required_tile = || tile.expect("retail work order has a tile");
     match value {
         0 => CivilianWorkOrder::Idle,

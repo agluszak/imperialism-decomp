@@ -418,10 +418,7 @@ impl GameState {
             let (source, _) = trace_descending(target, secondary);
             if self.owner_civilian_on_tile(source, nation).is_none() {
                 self.move_civilian_to(engineer, source);
-                self.set_civilian_work_order(
-                    engineer,
-                    CivilianWorkOrder::BuildPort { turns: turns(3) },
-                );
+                self.set_civilian_work_order(engineer, CivilianWorkOrder::BuildPort { turns: 3 });
             }
             return;
         }
@@ -434,20 +431,14 @@ impl GameState {
             let flags = self.map[source].flags;
             if flags.contains(TileFlags::PORT) && !flags.contains(TileFlags::DEPOT) {
                 self.move_civilian_to(engineer, source);
-                self.set_civilian_work_order(
-                    engineer,
-                    CivilianWorkOrder::BuildDepot { turns: turns(3) },
-                );
+                self.set_civilian_work_order(engineer, CivilianWorkOrder::BuildDepot { turns: 3 });
             } else {
                 self.move_civilian_to(engineer, previous);
                 if let Some(segment) = RailSegment::between(MapTopology::Wrapping, source, previous)
                 {
                     self.set_civilian_work_order(
                         engineer,
-                        CivilianWorkOrder::LayRail {
-                            segment,
-                            turns: turns(1),
-                        },
+                        CivilianWorkOrder::LayRail { segment, turns: 1 },
                     );
                 }
             }
@@ -456,15 +447,9 @@ impl GameState {
 
         self.move_civilian_to(engineer, target);
         if primary_distance == 1 {
-            self.set_civilian_work_order(
-                engineer,
-                CivilianWorkOrder::BuildDepot { turns: turns(3) },
-            );
+            self.set_civilian_work_order(engineer, CivilianWorkOrder::BuildDepot { turns: 3 });
         } else {
-            self.set_civilian_work_order(
-                engineer,
-                CivilianWorkOrder::BuildPort { turns: turns(3) },
-            );
+            self.set_civilian_work_order(engineer, CivilianWorkOrder::BuildPort { turns: 3 });
         }
         let yields = self.projected_town_yield(nation, target);
         let interior = self.nations.majors[&nation]
@@ -504,7 +489,7 @@ impl GameState {
             return;
         }
         self.move_civilian_to(engineer, city_tile);
-        self.set_civilian_work_order(engineer, CivilianWorkOrder::BuildFort { turns: turns(4) });
+        self.set_civilian_work_order(engineer, CivilianWorkOrder::BuildFort { turns: 4 });
     }
 
     fn best_fort_province(&self, nation: MajorNationId) -> Option<ProvinceId> {
@@ -649,7 +634,7 @@ impl GameState {
                         self.move_civilian_to(unit_id, tile);
                         self.set_civilian_work_order(
                             unit_id,
-                            CivilianWorkOrder::DevelopResource { turns: turns(3) },
+                            CivilianWorkOrder::DevelopResource { turns: 3 },
                         );
                         let cost = if current == 0 {
                             0
@@ -812,7 +797,7 @@ impl GameState {
                     unit.location.tile() == Some(tile)
                         && matches!(
                             unit.order,
-                            CivilianWorkOrder::PurchaseLand { turns } if turns.get() == 8
+                            CivilianWorkOrder::PurchaseLand { turns } if turns == 8
                         )
                 });
                 let visible = self.map[tile].development.resource_visible_to_majors[nation];
@@ -868,10 +853,7 @@ impl GameState {
                 {
                     let tile = TileId::new(prospecting_tiles[prospecting_index] as u16);
                     prospecting_index += 1;
-                    self.set_civilian_work_order(
-                        unit_id,
-                        CivilianWorkOrder::Prospect { turns: turns(1) },
-                    );
+                    self.set_civilian_work_order(unit_id, CivilianWorkOrder::Prospect { turns: 1 });
                     self.move_civilian_to(unit_id, tile);
                 }
                 CivilianUnitKind::Developer
@@ -882,7 +864,7 @@ impl GameState {
                     developer_index += 1;
                     self.set_civilian_work_order(
                         unit_id,
-                        CivilianWorkOrder::PurchaseLand { turns: turns(1) },
+                        CivilianWorkOrder::PurchaseLand { turns: 1 },
                     );
                     self.move_civilian_to(unit_id, tile);
                     let cost = self.developer_tile_purchase_cost(tile);
@@ -1037,10 +1019,6 @@ fn insert_scored_candidate(
 
 fn tile_index(tile: TileId) -> usize {
     usize::from(tile.get())
-}
-
-fn turns(value: i16) -> TurnsRemaining {
-    TurnsRemaining::try_new(value).expect("work orders use a positive remaining-turn count")
 }
 
 pub(crate) fn extractive_resource(resource: ResourceKind) -> bool {

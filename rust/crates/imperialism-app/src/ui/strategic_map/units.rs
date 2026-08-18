@@ -747,28 +747,18 @@ mod tests {
             civilian_pose(
                 &CivilianWorkOrder::Redeploy {
                     destination: TileId::new(1),
-                    turns: TurnsRemaining::try_new(1).unwrap(),
+                    turns: 1,
                 },
                 false
             ),
             CivilianPose::Working
         );
         assert_eq!(
-            civilian_pose(
-                &CivilianWorkOrder::Prospect {
-                    turns: TurnsRemaining::try_new(1).unwrap(),
-                },
-                false
-            ),
+            civilian_pose(&CivilianWorkOrder::Prospect { turns: 1 }, false),
             CivilianPose::Animated
         );
         assert_eq!(
-            civilian_pose(
-                &CivilianWorkOrder::Prospect {
-                    turns: TurnsRemaining::try_new(1).unwrap(),
-                },
-                true
-            ),
+            civilian_pose(&CivilianWorkOrder::Prospect { turns: 1 }, true),
             CivilianPose::Working
         );
     }

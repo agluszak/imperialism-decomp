@@ -5,62 +5,20 @@ use crate::*;
 #[serde(rename_all = "snake_case")]
 pub enum CivilianWorkOrder {
     Idle,
-    Redeploy {
-        destination: TileId,
-        turns: TurnsRemaining,
-    },
+    Redeploy { destination: TileId, turns: i16 },
     Sleep,
-    LayRail {
-        segment: RailSegment,
-        turns: TurnsRemaining,
-    },
-    BuildDepot {
-        turns: TurnsRemaining,
-    },
-    BuildPort {
-        turns: TurnsRemaining,
-    },
-    Prospect {
-        turns: TurnsRemaining,
-    },
-    DevelopResource {
-        turns: TurnsRemaining,
-    },
-    BuildFort {
-        turns: TurnsRemaining,
-    },
-    PurchaseLand {
-        turns: TurnsRemaining,
-    },
+    LayRail { segment: RailSegment, turns: i16 },
+    BuildDepot { turns: i16 },
+    BuildPort { turns: i16 },
+    Prospect { turns: i16 },
+    DevelopResource { turns: i16 },
+    BuildFort { turns: i16 },
+    PurchaseLand { turns: i16 },
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Serialize)]
-#[serde(transparent)]
-pub struct TurnsRemaining(i16);
-
-impl<'de> serde::Deserialize<'de> for TurnsRemaining {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        let value = <i16 as serde::Deserialize>::deserialize(deserializer)?;
-        Self::try_new(value).ok_or_else(|| {
-            serde::de::Error::custom("civilian work orders require a positive turn count")
-        })
-    }
-}
-impl TurnsRemaining {
-    pub const fn try_new(value: i16) -> Option<Self> {
-        if value > 0 { Some(Self(value)) } else { None }
-    }
-
-    pub const fn get(self) -> i16 {
-        self.0
-    }
-    fn advance(&mut self) -> bool {
-        self.0 -= 1;
-        self.0 == 0
-    }
+fn advance_turns(turns: &mut i16) -> bool {
+    *turns -= 1;
+    *turns == 0
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Serialize)]
@@ -134,8 +92,6 @@ pub enum RailOrderRejection {
     InsufficientFunds,
 }
 
-const RAIL_TURNS: i16 = 1;
-
 const fn rail_cost(terrain: TerrainKind) -> i32 {
     match terrain {
         TerrainKind::Plains => 100,
@@ -180,10 +136,7 @@ impl GameState {
         self.civilian_units
             .get_mut(&unit)
             .expect("rail construction unit remains present")
-            .order = CivilianWorkOrder::LayRail {
-            segment,
-            turns: TurnsRemaining::try_new(RAIL_TURNS).expect("rail construction lasts one turn"),
-        };
+            .order = CivilianWorkOrder::LayRail { segment, turns: 1 };
         self.move_civilian_to(unit, segment.destination());
         Ok(())
     }
@@ -353,49 +306,49 @@ impl GameState {
             CivilianWorkOrder::Idle | CivilianWorkOrder::Redeploy { .. } => Completion::Idle,
             CivilianWorkOrder::LayRail { segment, turns } => {
                 let segment = *segment;
-                if turns.advance() {
+                if advance_turns(turns) {
                     Completion::Rail(segment)
                 } else {
                     Completion::None
                 }
             }
             CivilianWorkOrder::BuildDepot { turns } => {
-                if turns.advance() {
+                if advance_turns(turns) {
                     Completion::Depot
                 } else {
                     Completion::None
                 }
             }
             CivilianWorkOrder::BuildPort { turns } => {
-                if turns.advance() {
+                if advance_turns(turns) {
                     Completion::Port
                 } else {
                     Completion::None
                 }
             }
             CivilianWorkOrder::Prospect { turns } => {
-                if turns.advance() {
+                if advance_turns(turns) {
                     Completion::Prospect
                 } else {
                     Completion::None
                 }
             }
             CivilianWorkOrder::DevelopResource { turns } => {
-                if turns.advance() {
+                if advance_turns(turns) {
                     Completion::Develop
                 } else {
                     Completion::None
                 }
             }
             CivilianWorkOrder::BuildFort { turns } => {
-                if turns.advance() {
+                if advance_turns(turns) {
                     Completion::Fort
                 } else {
                     Completion::None
                 }
             }
             CivilianWorkOrder::PurchaseLand { turns } => {
-                if turns.advance() {
+                if advance_turns(turns) {
                     Completion::Purchase
                 } else {
                     Completion::None
@@ -921,7 +874,7 @@ mod tests {
             state.civilian_units[&unit].order(),
             &CivilianWorkOrder::LayRail {
                 segment: RailSegment::between(state.map.topology, origin, destination).unwrap(),
-                turns: TurnsRemaining::try_new(1).unwrap(),
+                turns: 1,
             }
         );
         assert!(state.map[origin].pending_rail_links.contains(east));
@@ -1090,10 +1043,6 @@ mod tests {
         id
     }
 
-    fn one_turn() -> TurnsRemaining {
-        TurnsRemaining::try_new(1).unwrap()
-    }
-
     #[test]
     fn do_civilians_completes_remaining_work_orders_and_idles_redeploy() {
         let mut state = crate::test_support::game_state();
@@ -1137,7 +1086,7 @@ mod tests {
             2,
             CivilianUnitKind::Prospector,
             prospect_tile,
-            CivilianWorkOrder::Prospect { turns: one_turn() },
+            CivilianWorkOrder::Prospect { turns: 1 },
             nation,
         );
         civilian_on(
@@ -1145,7 +1094,7 @@ mod tests {
             3,
             CivilianUnitKind::Developer,
             purchase_tile,
-            CivilianWorkOrder::PurchaseLand { turns: one_turn() },
+            CivilianWorkOrder::PurchaseLand { turns: 1 },
             nation,
         );
         civilian_on(
@@ -1153,7 +1102,7 @@ mod tests {
             4,
             CivilianUnitKind::Engineer,
             fort_tile,
-            CivilianWorkOrder::BuildFort { turns: one_turn() },
+            CivilianWorkOrder::BuildFort { turns: 1 },
             nation,
         );
         civilian_on(
@@ -1161,7 +1110,7 @@ mod tests {
             5,
             CivilianUnitKind::Engineer,
             depot_tile,
-            CivilianWorkOrder::BuildDepot { turns: one_turn() },
+            CivilianWorkOrder::BuildDepot { turns: 1 },
             nation,
         );
         civilian_on(
@@ -1169,7 +1118,7 @@ mod tests {
             6,
             CivilianUnitKind::Engineer,
             port_tile,
-            CivilianWorkOrder::BuildPort { turns: one_turn() },
+            CivilianWorkOrder::BuildPort { turns: 1 },
             nation,
         );
         state.map[port_tile].flags.insert(TileFlags::BASE_TRANSPORT);
@@ -1196,7 +1145,7 @@ mod tests {
             redeploy_tile,
             CivilianWorkOrder::Redeploy {
                 destination: purchase_tile,
-                turns: one_turn(),
+                turns: 1,
             },
             nation,
         );
@@ -1205,9 +1154,7 @@ mod tests {
             9,
             CivilianUnitKind::Miner,
             develop_tile,
-            CivilianWorkOrder::DevelopResource {
-                turns: TurnsRemaining::try_new(3).unwrap(),
-            },
+            CivilianWorkOrder::DevelopResource { turns: 3 },
             nation,
         );
 
@@ -1290,7 +1237,7 @@ mod tests {
             unit.unit_type == CivilianUnitKind::Miner
                 && matches!(
                     unit.order,
-                    CivilianWorkOrder::DevelopResource { turns } if turns.get() == 2
+                    CivilianWorkOrder::DevelopResource { turns } if turns == 2
                 )
         }));
     }
@@ -1313,7 +1260,7 @@ mod tests {
             3,
             CivilianUnitKind::Miner,
             second,
-            CivilianWorkOrder::DevelopResource { turns: one_turn() },
+            CivilianWorkOrder::DevelopResource { turns: 1 },
             nation,
         );
 
