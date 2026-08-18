@@ -117,6 +117,8 @@ struct Side {
     units: Vec<usize>,
     secondary: Vec<usize>,
     projection_sums: ActionClassScores,
+    baseline_similarity: f32,
+    composition_similarity: f32,
     max_range: i16,
     max_non_artillery_range: i16,
     field20: bool,
@@ -187,6 +189,8 @@ impl Battle {
             units: Vec::new(),
             secondary: Vec::new(),
             projection_sums: ActionClassScores::default(),
+            baseline_similarity: 0.0,
+            composition_similarity: 0.0,
             max_range: 0,
             max_non_artillery_range: 0,
             field20: false,
@@ -1032,8 +1036,8 @@ impl Battle {
         } else {
             2
         };
-        self.sides[side].projection_sums.cavalry = sums.similarity(composition_row(row));
-        self.sides[side].projection_sums.infantry = baseline;
+        self.sides[side].baseline_similarity = baseline;
+        self.sides[side].composition_similarity = sums.similarity(composition_row(row));
     }
 
     fn site_is_home_capital(&self, state: &GameState, side: BattleSide) -> bool {
@@ -1063,7 +1067,9 @@ impl Battle {
         let opponent = side.opponent();
         self.accumulate_metrics(state, side);
         self.accumulate_metrics(state, opponent);
-        let opponent_metrics = self.sides[opponent].projection_sums;
+        let opponent_projection = self.sides[opponent].projection_sums;
+        let opponent_baseline_similarity = self.sides[opponent].baseline_similarity;
+        let opponent_composition_similarity = self.sides[opponent].composition_similarity;
         let enemy_has_active = self.sides[opponent]
             .units
             .iter()
@@ -1075,19 +1081,19 @@ impl Battle {
                 stance = TacticalStance::Unopposed;
             } else if !self.sides[opponent].has_artillery_or_engineers && !self.fort_breached() {
                 stance = TacticalStance::Garrison;
-            } else if self.sides[side].projection_sums.cavalry / opponent_metrics.cavalry
+            } else if self.sides[side].composition_similarity / opponent_composition_similarity
                 > CURSOR_STRONG_RATIO
             {
                 if self.fort_breached() {
                     stance = TacticalStance::Bombard;
-                } else if self.sides[side].projection_sums.cavalry / opponent_metrics.cavalry
+                } else if self.sides[side].composition_similarity / opponent_composition_similarity
                     > CURSOR_OVERWHELM_RATIO
                 {
                     stance = TacticalStance::Bombard;
                 } else {
                     stance = TacticalStance::Hold;
                 }
-            } else if self.sides[side].projection_sums.infantry / opponent_metrics.cavalry
+            } else if self.sides[side].baseline_similarity / opponent_composition_similarity
                 < CURSOR_WEAK_RATIO
                 && !self.site_is_home_capital(state, side)
             {
@@ -1101,7 +1107,7 @@ impl Battle {
             }
         } else {
             let strength_ratio =
-                self.sides[side].projection_sums.cavalry / opponent_metrics.infantry;
+                self.sides[side].composition_similarity / opponent_baseline_similarity;
             let have_sapper = self.sides[side].units.iter().any(|&idx| {
                 self.units[idx].unit_type.tactical_category() == ArmyUnitCategory::Engineers
                     && self.units[idx].state == TacticalUnitState::Ready
@@ -1115,7 +1121,7 @@ impl Battle {
                     stance = TacticalStance::Siege;
                 } else if !have_artillery {
                     stance = TacticalStance::Retreat;
-                } else if self.sides[side].projection_sums.armor / opponent_metrics.armor
+                } else if self.sides[side].projection_sums.armor / opponent_projection.armor
                     < CURSOR_ARTILLERY_PARITY
                 {
                     stance = TacticalStance::Retreat;
@@ -1126,7 +1132,7 @@ impl Battle {
                 stance = TacticalStance::Unopposed;
             } else if strength_ratio > CURSOR_STRONG_RATIO {
                 stance = TacticalStance::Assault;
-            } else if !(self.sides[side].projection_sums.armor / opponent_metrics.armor
+            } else if !(self.sides[side].projection_sums.armor / opponent_projection.armor
                 < CURSOR_ARTILLERY_SUPERIORITY)
                 && have_artillery
             {
@@ -1887,6 +1893,15 @@ fn combat_category_of(unit_type: MilitaryUnitKind) -> TacticalCombatClass {
     AI_CLASS[unit_type]
 }
 
+/// Retail's second flanking lookup is asymmetric: every direction except north-west
+/// checks the east slot. This is confirmed compiled behavior, not normal hex rotation.
+const fn retail_second_flank_direction(direction: HexDirection) -> HexDirection {
+    match direction {
+        HexDirection::NorthWest => HexDirection::NorthEast,
+        _ => HexDirection::East,
+    }
+}
+
 fn neighbor_list(tile: i32) -> HexDirectionTable<i32> {
     let mut out = HexDirectionTable::from_array(if (tile / TACTICAL_STRIDE) & 1 != 0 {
         [
@@ -2070,7 +2085,7 @@ impl Battle {
                         {
                             blocked = true;
                         }
-                        let next_neighbor = neighbors[direction.next_clockwise()];
+                        let next_neighbor = neighbors[retail_second_flank_direction(direction)];
                         if next_neighbor != -1
                             && let Some(next) = self.tiles[next_neighbor as usize].occupant
                             && self.units[next].side != self.units[unit].side
@@ -2704,5 +2719,105 @@ impl Battle {
         self.units[target].state = new_state;
         self.units[target].morale = new_morale.min(strength);
         self.finish_action();
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn side(is_our: bool) -> Side {
+        Side {
+            is_our,
+            ready: false,
+            nation: NationId::new(0),
+            cursor: 0,
+            units: Vec::new(),
+            secondary: Vec::new(),
+            projection_sums: ActionClassScores::default(),
+            baseline_similarity: 0.0,
+            composition_similarity: 0.0,
+            max_range: 0,
+            max_non_artillery_range: 0,
+            field20: false,
+            allow_broken_targets: false,
+            has_artillery_or_engineers: false,
+            field_f: false,
+            last_stance: None,
+            retreat_toward_north: false,
+            cached_bombard_tile: -1,
+        }
+    }
+
+    fn unit(tile: i32, side: BattleSide) -> TacUnit {
+        TacUnit {
+            source: MilitaryUnitId::from_serialized(0),
+            unit_type: MilitaryUnitKind::Minutemen,
+            tile,
+            selected: false,
+            state: TacticalUnitState::Ready,
+            action_points: 10,
+            ai_state: 0,
+            strength: 100,
+            morale: 100,
+            quality: 0,
+            sap_target: -1,
+            flag3c: false,
+            side,
+            field24: 0,
+            projection: ActionClassScores::default(),
+        }
+    }
+
+    fn battle() -> Battle {
+        Battle {
+            tiles: [Tile {
+                terrain: TacticalTerrain::Class0,
+                occupant: None,
+                deploy_mark: DeployMark::Clear,
+                mine_run: MineRun::None,
+                trench_mask: 0,
+            }; TACTICAL_TILE_COUNT],
+            move_costs: [-1; TACTICAL_TILE_COUNT + 1],
+            threat: [0; TACTICAL_TILE_COUNT],
+            candidate_scores: [0; TACTICAL_TILE_COUNT],
+            distance_field: [0; TACTICAL_TILE_COUNT],
+            units: Vec::new(),
+            sides: BattleSideTable::from_array([side(true), side(false)]),
+            records: Vec::new(),
+            current_side: BattleSide::Defender,
+            selected: None,
+            column_count: TACTICAL_STRIDE,
+            outcome: BattleOutcome::InProgress,
+            pending_end: false,
+            fort_level: FortLevel::None,
+            fort_strength: [0; 8],
+            battle_site: ProvinceId::new(0),
+            round: 0,
+        }
+    }
+
+    #[test]
+    fn retail_second_flank_bug_blocks_reachability_from_the_east_slot() {
+        let source = TACTICAL_STRIDE * 8 + 10;
+        let direction = HexDirection::SouthWest;
+        let neighbors = neighbor_list(source);
+        let target = neighbors[direction];
+        let east_blocker = neighbors[HexDirection::East];
+
+        assert_ne!(
+            retail_second_flank_direction(direction),
+            direction.next_clockwise()
+        );
+
+        let mut battle = battle();
+        battle.units.push(unit(source, BattleSide::Defender));
+        battle.units.push(unit(east_blocker, BattleSide::Attacker));
+        battle.tiles[source as usize].occupant = Some(0);
+        battle.tiles[east_blocker as usize].occupant = Some(1);
+
+        battle.compute_reachable(0);
+
+        assert_eq!(battle.cost(target), -1);
     }
 }
