@@ -496,7 +496,7 @@ fn find_nearest_active_port_zone_tile(
     let mut row = i32::from(row);
     let mut column = i32::from(column);
     let mut ring = 0_i32;
-    let mut direction = 5_i32;
+    let mut direction = HexDirection::NorthWest;
     let mut step_in_ring = 1_i32;
 
     advance_spiral(
@@ -546,36 +546,44 @@ fn advance_spiral(
     row: &mut i32,
     column: &mut i32,
     ring: &mut i32,
-    direction: &mut i32,
+    direction: &mut HexDirection,
     step_in_ring: &mut i32,
     topology: MapTopology,
 ) {
     *step_in_ring += 1;
     if *ring <= *step_in_ring {
-        *direction += 1;
+        *direction = direction.next_clockwise();
         *step_in_ring = 0;
-        if *direction > 5 {
+        if *direction == HexDirection::NorthEast {
             *ring += 1;
-            *direction = 0;
-            step_row_column(row, column, 4, topology);
+            step_row_column(row, column, HexDirection::West, topology);
         }
     }
     step_row_column(row, column, *direction, topology);
 }
 
-fn step_row_column(row: &mut i32, column: &mut i32, direction: i32, topology: MapTopology) {
+fn step_row_column(
+    row: &mut i32,
+    column: &mut i32,
+    direction: HexDirection,
+    topology: MapTopology,
+) {
     let odd_row = *row & 1 != 0;
-    if direction == 4 || (direction > 2 && !odd_row) {
+    if direction == HexDirection::West
+        || (matches!(direction, HexDirection::SouthWest | HexDirection::NorthWest) && !odd_row)
+    {
         *column -= 1;
-    } else if direction == 1 || (direction < 3 && odd_row) {
+    } else if direction == HexDirection::East
+        || (matches!(direction, HexDirection::NorthEast | HexDirection::SouthEast) && odd_row)
+    {
         *column += 1;
     }
     if topology == MapTopology::Wrapping {
         *column = column.rem_euclid(i32::from(STRATEGIC_MAP_WIDTH));
     }
-    if matches!(direction, 5 | 0) {
+    if matches!(direction, HexDirection::NorthWest | HexDirection::NorthEast) {
         *row -= 1;
-    } else if matches!(direction, 3 | 2) {
+    } else if matches!(direction, HexDirection::SouthWest | HexDirection::SouthEast) {
         *row += 1;
     }
 }
@@ -586,8 +594,12 @@ pub(super) fn select_port_sea_tile(
     nation_seed: u8,
 ) -> Option<TileId> {
     let tile_index = usize::from(tile.get());
-    for offset in 0..6 {
-        let direction = HexDirection::ALL[(tile_index + offset) % 6];
+    for direction in HexDirection::ALL
+        .into_iter()
+        .cycle()
+        .skip(tile_index % HexDirection::ALL.len())
+        .take(HexDirection::ALL.len())
+    {
         let Some(candidate) = geometry.neighbor(tile, direction) else {
             continue;
         };
