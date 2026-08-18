@@ -1,7 +1,7 @@
 //! Map-triggered recovered report/roster/garrison dialogs.
 
 use super::map_interaction::{
-    MapInteractionMode, StrategicInteraction, cycle_map_interaction_selection,
+    MapInteractionMode, StrategicInteraction, center_active_map, cycle_map_interaction_selection,
     set_map_interaction_mode,
 };
 use crate::AppState;
@@ -360,7 +360,9 @@ fn on_civilian_ledger_action(
                 (ledger.current_column + CIVILIAN_LEDGER_VISIBLE_COLUMNS).min(ledger.last_column);
         }
         CivilianLedgerAction::Select(tile) => {
-            session.center_map_on(tile);
+            if let Ok(mut interaction) = interactions.single_mut() {
+                center_active_map(&mut session, &mut interaction, tile);
+            }
             let nation = session.game.turn().active_nation;
             let selectable = session
                 .game
@@ -377,7 +379,11 @@ fn on_civilian_ledger_action(
             if let Some(unit) = selectable
                 && let Ok(mut interaction) = interactions.single_mut()
             {
-                set_map_interaction_mode(&mut interaction, MapInteractionMode::Civilian);
+                set_map_interaction_mode(
+                    &mut session,
+                    &mut interaction,
+                    MapInteractionMode::Civilian,
+                );
                 interaction.civilian = Some(unit);
                 session.game.activate_civilian_selection(unit);
                 audio.play(&mut commands, SoundId::new(0x2338));
@@ -859,7 +865,11 @@ fn on_civilian_modal_action(
             if session.game.cancel_civilian_work_order(unit).is_ok()
                 && let Ok(mut interaction) = interactions.single_mut()
             {
-                set_map_interaction_mode(&mut interaction, MapInteractionMode::Civilian);
+                set_map_interaction_mode(
+                    &mut session,
+                    &mut interaction,
+                    MapInteractionMode::Civilian,
+                );
                 interaction.civilian = Some(unit);
             }
         }

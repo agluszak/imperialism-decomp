@@ -1,7 +1,7 @@
 //! `TWorldView::HandleMapClickByInteractionMode` (0x005964b0).
 
 use super::map_interaction::{
-    MapInteractionMode, StrategicInteraction, cycle_map_interaction_selection,
+    MapInteractionMode, StrategicInteraction, center_active_map, cycle_map_interaction_selection,
     has_active_map_interaction_selection, navy_zone_center_tile, set_map_interaction_mode,
 };
 use super::map_modals::{
@@ -333,7 +333,7 @@ fn apply_civilian_selection_or_report(
         .contains(TileFlags::CITY_MARKER);
     if idle {
         if input_flags == 2 || !city {
-            set_map_interaction_mode(interaction, MapInteractionMode::Civilian);
+            set_map_interaction_mode(session, interaction, MapInteractionMode::Civilian);
             interaction.civilian = Some(id);
             session.game.activate_civilian_selection(id);
             audio.play(commands, CIVILIAN_SELECTED_SOUND);
@@ -444,11 +444,11 @@ fn apply_navy_selection(
     {
         NavySelectionClick::Ignored => false,
         NavySelectionClick::SelectZone { zone, force } => {
-            set_map_interaction_mode(interaction, MapInteractionMode::Navy);
+            set_map_interaction_mode(session, interaction, MapInteractionMode::Navy);
             interaction.navy.zone = Some(zone);
             interaction.navy.force = force;
             if let Some(center) = navy_zone_center_tile(&session.game, zone) {
-                session.center_map_on(center);
+                center_active_map(session, interaction, center);
             }
             true
         }
@@ -484,7 +484,7 @@ fn apply_navy_tile_click(
         NavyTileClick::Selection(selection) => {
             match selection {
                 NavySelectionClick::SelectZone { zone, force } => {
-                    set_map_interaction_mode(interaction, MapInteractionMode::Navy);
+                    set_map_interaction_mode(session, interaction, MapInteractionMode::Navy);
                     interaction.navy.zone = Some(zone);
                     interaction.navy.force = force;
                 }

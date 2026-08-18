@@ -12,14 +12,17 @@ use crate::ui::hover_help::{
 use crate::ui::load_save::bind_open_flag_menu;
 use crate::ui::map_help;
 use crate::ui::query_floater::bind_query_floater_control;
-use crate::ui::retail::{RetailPictureSwap, RetailPressedOverlay, RetailTree, ancestor_with};
+use crate::ui::retail::{
+    RetailPictureSwap, RetailPressedOverlay, RetailTag, RetailTree, ancestor_with,
+};
 use crate::ui::strategic_map::{
-    MapEdges, MapInteractionMode, StrategicInteraction, animate_civilian_selection,
+    MapEdges, MapInteractionMode, MapZoomControl, StrategicInteraction, animate_civilian_selection,
     animate_civilian_work, bind_army_toolbar, bind_civilian_toolbar, bind_minimap,
     bind_navy_toolbar, bind_ocean_view, bind_strategic_base_terrain, on_strategic_map_click,
     register_army_toolbar, register_civilian_toolbar, register_map_click, register_map_keys,
-    register_map_modals, register_navy_toolbar, register_ocean_view, sync_minimap,
-    sync_strategic_base_terrain, sync_strategic_selection, sync_strategic_units,
+    register_map_modals, register_navy_toolbar, register_ocean_view, scroll_active_map,
+    sync_minimap, sync_strategic_base_terrain, sync_strategic_selection, sync_strategic_units,
+    toggle_zoom,
 };
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -81,8 +84,10 @@ impl Plugin for GameShellPlugin {
                 animate_civilian_selection,
                 animate_civilian_work,
                 sync_minimap,
+                sync_zoom_control,
                 spawn_turn_alerts_if_pending,
                 bind_turn_alert_notice,
+                bind_turn_summary_notice,
             )
                 .chain()
                 .run_if(in_state(AppState::StrategicMap)),
@@ -112,11 +117,7 @@ fn scroll_strategic_map(
         return;
     }
     *last_scroll_tick = Some(tick16);
-    if interaction.ocean.active {
-        interaction.ocean.nudge(edges);
-    } else {
-        session.scroll_map_viewport(edges.row_delta(), edges.column_delta());
-    }
+    scroll_active_map(&mut session, &mut interaction, edges);
 }
 
 fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> MapEdges {
@@ -264,26 +265,52 @@ fn bind_strategic_hover(
     );
     commands
         .entity(tree.find(root, fourcc!("ZmOt")))
+        .insert(MapZoomControl)
         .insert(ActivateOnPress)
         .observe(on_ocean_toggle);
 }
 
 fn on_ocean_toggle(
     _activate: On<Activate>,
-    session: Res<GameSession>,
+    keys: Res<ButtonInput<KeyCode>>,
+    mut commands: Commands,
+    assets: RetailUiAssets,
+    mut session: ResMut<GameSession>,
     mut interactions: Query<&mut StrategicInteraction>,
 ) {
     let Ok(mut interaction) = interactions.single_mut() else {
         return;
     };
-    if interaction.ocean.active {
-        interaction.ocean.active = false;
-    } else {
-        interaction
-            .ocean
-            .center_on(session.map_view_origin, &session.game.map().geometry());
-        interaction.ocean.active = true;
+    if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
+        let tag = session.game.map().scenario_tag.as_str();
+        let body = if tag.is_empty() {
+            String::from("Imperialism")
+        } else {
+            crate::ui::fill_brackets(&get_string(&assets, 0x273f, 1), &[tag])
+        };
+        spawn_linger_dialog(
+            &mut commands,
+            TurnSummaryNotice(body),
+            AppState::StrategicMap,
+            20,
+        );
+        return;
     }
+    toggle_zoom(&mut session, &mut interaction);
+}
+
+fn sync_zoom_control(
+    interactions: Query<&StrategicInteraction>,
+    mut controls: Query<&mut RetailTag, With<MapZoomControl>>,
+) {
+    let (Ok(interaction), Ok(mut tag)) = (interactions.single(), controls.single_mut()) else {
+        return;
+    };
+    tag.0 = if interaction.ocean.active {
+        fourcc!("ZmIn")
+    } else {
+        fourcc!("ZmOt")
+    };
 }
 
 fn bind_strategic_map_management_pictures(
@@ -507,6 +534,9 @@ fn on_game_screen_activate(
 #[derive(Component)]
 struct TurnAlertNotice;
 
+#[derive(Component)]
+struct TurnSummaryNotice(String);
+
 fn spawn_turn_alerts_if_pending(
     mut commands: Commands,
     session: Res<GameSession>,
@@ -541,6 +571,38 @@ fn bind_turn_alert_notice(
         .remove::<InteractionDisabled>()
         .observe(on_turn_alert_dismiss);
     commands.entity(linger.cancel).insert(Visibility::Hidden);
+}
+
+fn bind_turn_summary_notice(
+    mut commands: Commands,
+    notice: Option<Single<(Entity, &TurnSummaryNotice), Added<TurnSummaryNotice>>>,
+    tree: RetailTree,
+    mut assets: RetailUiAssets,
+) {
+    let Some(notice) = notice else {
+        return;
+    };
+    let (root, notice) = notice.into_inner();
+    let linger = bind_linger_dialog(root, &tree);
+    linger.set_title(&mut commands, &mut assets, "Imperialism");
+    linger.set_body(&mut commands, &mut assets, &notice.0);
+    commands
+        .entity(linger.okay)
+        .insert(ActivateOnPress)
+        .remove::<InteractionDisabled>()
+        .observe(on_turn_summary_dismiss);
+    commands.entity(linger.cancel).insert(Visibility::Hidden);
+}
+
+fn on_turn_summary_dismiss(
+    activate: On<Activate>,
+    parents: Query<&ChildOf>,
+    notices: Query<Entity, With<TurnSummaryNotice>>,
+    mut commands: Commands,
+) {
+    let root = ancestor_with(activate.entity, &parents, &notices)
+        .expect("turn summary belongs to its dialog");
+    commands.entity(root).despawn();
 }
 
 #[allow(clippy::too_many_arguments)]

@@ -50,6 +50,7 @@ public:
   RuntimeActionResult OpenTransport();
   RuntimeActionResult ZoomOut();
   RuntimeActionResult ZoomIn();
+  RuntimeActionResult ActivateZoomWithControl();
   RuntimeActionResult CancelToSetup();
   // Re-enter the map through the game's own turn-event dispatch, for a script that left it by
   // dispatching some other screen and so has no control to click its way back with.
@@ -63,6 +64,9 @@ public:
   // so they are actions only in the sense that a script sequences them.
   RuntimeActionResult ScrollBy(int direction);
   RuntimeActionResult SetViewportCell(short cellX, short cellY);
+  RuntimeActionResult SetOceanViewportCellForTopology(short cellX, short cellY, bool wraps);
+  RuntimeActionResult CenterOceanOn(int tile);
+  RuntimeActionResult ShowArmyToolbar();
 
   // The civilian category page of the map toolbar. Showing it is a mode change on the map, not a
   // control activation: the page is already built and the mode decides which one is placed.
@@ -120,6 +124,12 @@ public:
   bool IsZoomedIn() const;
   int ViewportOriginX() const;
   int ViewportOriginY() const;
+  int DetailedCenterTile() const;
+  int OceanOriginColumn() const;
+  int OceanOriginRow() const;
+  int OceanCenterTile() const;
+  int MiniMapMarkerWidth() const;
+  int MiniMapMarkerHeight() const;
 
 private:
   // Widget resolution stays on this side of the boundary. These were public until the semantic

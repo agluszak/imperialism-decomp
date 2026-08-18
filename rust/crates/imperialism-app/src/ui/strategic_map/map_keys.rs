@@ -1,8 +1,8 @@
 //! Confirmed `TWorldView::DoKeyEvent` bindings: N/W/C/Z/X/A.
 
 use super::map_interaction::{
-    MapInteractionMode, OceanView, StrategicInteraction, cycle_map_interaction_selection,
-    has_active_map_interaction_selection, navy_zone_center_tile,
+    MapInteractionMode, StrategicInteraction, center_active_map, cycle_map_interaction_selection,
+    has_active_map_interaction_selection, navy_zone_center_tile, toggle_zoom,
 };
 use crate::AppState;
 use crate::ui::GameSession;
@@ -41,39 +41,20 @@ fn map_hotkeys(
             interaction.civilian,
             interaction.army,
             interaction.navy.zone,
-            &mut interaction.ocean,
+            &mut interaction,
         );
     }
     if keys.just_pressed(KeyCode::KeyX)
         && let Some(tile) = session.game.representative_tile_for_nation(nation)
     {
-        center_on(&mut session, &mut interaction.ocean, tile);
+        center_active_map(&mut session, &mut interaction, tile);
     }
     if keys.just_pressed(KeyCode::KeyA) {
         session.game.free_ships_of(nation);
         interaction.navy.force = None;
     }
     if keys.just_pressed(KeyCode::KeyZ) {
-        toggle_ocean_view(&mut session, &mut interaction.ocean);
-    }
-}
-
-fn toggle_ocean_view(session: &mut GameSession, ocean: &mut OceanView) {
-    if ocean.active {
-        let geometry = session.game.map().geometry();
-        let column = ocean.origin_column + 0x10;
-        let row = ocean.origin_row + 0x0e;
-        if let Some(tile) = geometry.tile(
-            row.max(0) as u16,
-            column.rem_euclid(i32::from(STRATEGIC_MAP_WIDTH)) as u16,
-        ) {
-            session.center_map_on(tile);
-        }
-        ocean.active = false;
-    } else {
-        let origin = session.map_view_origin;
-        ocean.center_on(origin, &session.game.map().geometry());
-        ocean.active = true;
+        toggle_zoom(&mut session, &mut interaction);
     }
 }
 
@@ -83,7 +64,7 @@ fn center_current_selection(
     civilian: Option<CivilianUnitId>,
     army: Option<ProvinceId>,
     navy_zone: Option<OceanZoneId>,
-    ocean: &mut OceanView,
+    interaction: &mut StrategicInteraction,
 ) {
     let tile = match mode {
         MapInteractionMode::Civilian => civilian
@@ -100,14 +81,6 @@ fn center_current_selection(
             .representative_tile_for_nation(session.game.turn().active_nation),
     };
     if let Some(tile) = tile {
-        center_on(session, ocean, tile);
-    }
-}
-
-fn center_on(session: &mut GameSession, ocean: &mut OceanView, tile: TileId) {
-    if ocean.active {
-        ocean.center_on(tile, &session.game.map().geometry());
-    } else {
-        session.center_map_on(tile);
+        center_active_map(session, interaction, tile);
     }
 }
