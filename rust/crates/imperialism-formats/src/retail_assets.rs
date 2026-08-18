@@ -777,6 +777,9 @@ mod tests {
         let assets = RetailAssets::open(&root).unwrap();
 
         assert_eq!(assets.string(0x2719, 1).unwrap(), "Textile Mill");
+        assert_eq!(assets.string(0x2724, 12).unwrap(), "Civilian Report");
+        assert_eq!(assets.string(0x2724, 13).unwrap(), "Rescind Orders");
+        assert_eq!(assets.string(0x2724, 14).unwrap(), "Confirm Orders");
         let names = assets.random_game_names().unwrap();
         assert_eq!(names.localized_nation_names[NationId::new(0)], "Zimm");
         assert_eq!(names.localized_nation_names[NationId::new(22)], "Sindel");
@@ -890,6 +893,27 @@ mod tests {
         );
         let backdrop = assets.chrome_backdrop().unwrap();
         assert!(backdrop.starts_with(b"BM"));
+    }
+
+    #[test]
+    #[ignore = "requires IMPERIALISM_RETAIL_DIR pointing at the English GOG installation"]
+    fn loads_recovered_civilian_order_sounds() {
+        let root = PathBuf::from(
+            std::env::var_os("IMPERIALISM_RETAIL_DIR")
+                .expect("IMPERIALISM_RETAIL_DIR must name the English GOG installation"),
+        );
+        let assets = RetailAssets::open(&root).unwrap();
+        for id in [
+            0x2328, 0x2329, 0x232a, 0x232b, 0x232c, 0x232d, 0x232e, 0x2331, 0x2332, 0x2333, 0x2335,
+            0x2338, 0x2339,
+        ] {
+            assert!(
+                assets
+                    .sound(SoundId::new(id))
+                    .unwrap_or_else(|_| panic!("civilian WAVE {id}"))
+                    .starts_with(b"RIFF")
+            );
+        }
     }
 
     fn temporary_root() -> TempDir {

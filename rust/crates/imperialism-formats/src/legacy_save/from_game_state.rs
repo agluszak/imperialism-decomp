@@ -579,18 +579,18 @@ fn civilian_unit_dto(
     let tile = option_i16(unit.location().tile().map(TileId::get));
     let (order, target, remaining) = match unit.order() {
         CivilianWorkOrder::Idle => (0, -1, 0),
-        CivilianWorkOrder::Redeploy { destination, turns } => (1, destination.get() as i16, *turns),
+        CivilianWorkOrder::Redeploy { source, turns } => (1, source.get() as i16, *turns),
         CivilianWorkOrder::Sleep => (2, -1, 0),
         CivilianWorkOrder::LayRail { segment, turns } => {
             let _ = topology;
             (5, segment.origin().get() as i16, *turns)
         }
-        CivilianWorkOrder::BuildDepot { turns } => (6, -1, *turns),
-        CivilianWorkOrder::BuildPort { turns } => (7, -1, *turns),
-        CivilianWorkOrder::Prospect { turns } => (8, -1, *turns),
-        CivilianWorkOrder::DevelopResource { turns } => (10, -1, *turns),
-        CivilianWorkOrder::BuildFort { turns } => (12, -1, *turns),
-        CivilianWorkOrder::PurchaseLand { turns } => (13, -1, *turns),
+        CivilianWorkOrder::BuildDepot { source, turns } => (6, source.get() as i16, *turns),
+        CivilianWorkOrder::BuildPort { source, turns } => (7, source.get() as i16, *turns),
+        CivilianWorkOrder::Prospect { source, turns } => (8, source.get() as i16, *turns),
+        CivilianWorkOrder::DevelopResource { source, turns } => (10, source.get() as i16, *turns),
+        CivilianWorkOrder::BuildFort { source, turns } => (12, source.get() as i16, *turns),
+        CivilianWorkOrder::PurchaseLand { source, turns } => (13, source.get() as i16, *turns),
     };
     LegacyCivilianUnit {
         unit_type: i16::from(unit.unit_type().retail()),

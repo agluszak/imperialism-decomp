@@ -5,27 +5,27 @@ use crate::*;
 #[serde(rename_all = "snake_case")]
 pub enum CivilianWorkOrder {
     Idle,
-    Redeploy { destination: TileId, turns: i16 },
+    Redeploy { source: TileId, turns: i16 },
     Sleep,
     LayRail { segment: RailSegment, turns: i16 },
-    BuildDepot { turns: i16 },
-    BuildPort { turns: i16 },
-    Prospect { turns: i16 },
-    DevelopResource { turns: i16 },
-    BuildFort { turns: i16 },
-    PurchaseLand { turns: i16 },
+    BuildDepot { source: TileId, turns: i16 },
+    BuildPort { source: TileId, turns: i16 },
+    Prospect { source: TileId, turns: i16 },
+    DevelopResource { source: TileId, turns: i16 },
+    BuildFort { source: TileId, turns: i16 },
+    PurchaseLand { source: TileId, turns: i16 },
 }
 
 impl CivilianWorkOrder {
     fn advance(&mut self) -> bool {
         let turns = match self {
             Self::LayRail { turns, .. }
-            | Self::BuildDepot { turns }
-            | Self::BuildPort { turns }
-            | Self::Prospect { turns }
-            | Self::DevelopResource { turns }
-            | Self::BuildFort { turns }
-            | Self::PurchaseLand { turns } => turns,
+            | Self::BuildDepot { turns, .. }
+            | Self::BuildPort { turns, .. }
+            | Self::Prospect { turns, .. }
+            | Self::DevelopResource { turns, .. }
+            | Self::BuildFort { turns, .. }
+            | Self::PurchaseLand { turns, .. } => turns,
             Self::Idle | Self::Redeploy { .. } | Self::Sleep => {
                 unreachable!("only civilian work orders advance")
             }
@@ -132,6 +132,19 @@ pub enum CivilianOrderRejection {
     PurchaseLandRequiresConfirmation,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum EngineerConstructionChoice {
+    Fort,
+    Rail,
+    Port,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct EngineerConstructionOption {
+    pub choice: EngineerConstructionChoice,
+    pub cost: i32,
+}
+
 impl CivilianTileAction {
     pub const fn cursor_token(self) -> u16 {
         match self {
@@ -160,6 +173,15 @@ const fn rail_cost(terrain: TerrainKind) -> i32 {
         TerrainKind::Water => 0,
         TerrainKind::Desert => 150,
         TerrainKind::Farmland => 100,
+    }
+}
+
+const fn fort_cost(level: FortLevel) -> i32 {
+    match level {
+        FortLevel::None => 5_000,
+        FortLevel::One => 7_500,
+        FortLevel::Two => 10_000,
+        FortLevel::Three => 0,
     }
 }
 
@@ -274,12 +296,13 @@ impl GameState {
                 if !self.can_assign_civilian_to_tile(unit, tile) {
                     return Err(CivilianOrderRejection::Blocked);
                 }
+                let source = self.civilian_units[&unit]
+                    .location
+                    .tile()
+                    .expect("selected civilian is on the strategic map");
                 self.set_civilian_work_order(
                     unit,
-                    CivilianWorkOrder::Redeploy {
-                        destination: tile,
-                        turns: 0,
-                    },
+                    CivilianWorkOrder::Redeploy { source, turns: 0 },
                 );
                 self.move_civilian_to(unit, tile);
                 Ok(CivilianTileAction::MoveUnit)
@@ -301,11 +324,22 @@ impl GameState {
                     }
                 }),
             CivilianTileAction::Prospect => {
+                let source = self.civilian_units[&unit]
+                    .location
+                    .tile()
+                    .expect("selected civilian is on the strategic map");
                 self.move_civilian_to(unit, tile);
-                self.set_civilian_work_order(unit, CivilianWorkOrder::Prospect { turns: 1 });
+                self.set_civilian_work_order(
+                    unit,
+                    CivilianWorkOrder::Prospect { source, turns: 1 },
+                );
                 Ok(CivilianTileAction::Prospect)
             }
             CivilianTileAction::DevelopResource => {
+                let source = self.civilian_units[&unit]
+                    .location
+                    .tile()
+                    .expect("selected civilian is on the strategic map");
                 let nation = MajorNationId::from_nation(self.civilian_units[&unit].owner_nation)
                     .expect("civilian orders belong to major nations");
                 let extractive = matches!(
@@ -330,13 +364,240 @@ impl GameState {
                 }
                 self.nations.major_mut(nation).common.treasury -= cost;
                 self.move_civilian_to(unit, tile);
-                self.set_civilian_work_order(unit, CivilianWorkOrder::DevelopResource { turns: 3 });
+                self.set_civilian_work_order(
+                    unit,
+                    CivilianWorkOrder::DevelopResource { source, turns: 3 },
+                );
                 Ok(CivilianTileAction::DevelopResource)
             }
             CivilianTileAction::PurchaseLand => {
                 Err(CivilianOrderRejection::PurchaseLandRequiresConfirmation)
             }
         }
+    }
+
+    /// Retail `TEngineerDialog::BuildCityViewProductionControls` choices for a
+    /// same-tile engineer click.
+    pub fn engineer_construction_options(
+        &self,
+        unit: CivilianUnitId,
+    ) -> Vec<EngineerConstructionOption> {
+        let Some(engineer) = self.civilian_units.get(&unit) else {
+            return Vec::new();
+        };
+        if engineer.unit_type != CivilianUnitKind::Engineer || !idle_selectable(&engineer.order) {
+            return Vec::new();
+        }
+        let Some(tile) = engineer.location.tile() else {
+            return Vec::new();
+        };
+        let nation = MajorNationId::from_nation(engineer.owner_nation)
+            .expect("engineers belong to major nations");
+        let mut options = Vec::new();
+        if let Some(province) = self.map[tile].province
+            && self.map.provinces[province].city_tile() == Some(tile)
+            && self.map.provinces[province].fort_level()
+                < self.technology.city_capabilities_by_nation[nation]
+                    .fort_level_cap
+                    .level()
+        {
+            options.push(EngineerConstructionOption {
+                choice: EngineerConstructionChoice::Fort,
+                cost: fort_cost(self.map.provinces[province].fort_level()),
+            });
+        }
+
+        let flags = self.map[tile].flags;
+        let depot_allowed = !flags.contains(TileFlags::DEPOT);
+        let port_allowed = !flags.contains(TileFlags::PORT);
+        let production_allowed = if depot_allowed && port_allowed {
+            self.map
+                .geometry()
+                .neighbors(tile)
+                .into_iter()
+                .flatten()
+                .all(|neighbor| {
+                    !self.map[neighbor]
+                        .flags
+                        .intersects(TileFlags::PORT | TileFlags::DEPOT)
+                })
+        } else {
+            true
+        };
+        if depot_allowed && production_allowed {
+            options.push(EngineerConstructionOption {
+                choice: EngineerConstructionChoice::Rail,
+                cost: 2_000,
+            });
+        }
+        if port_allowed && production_allowed && self.can_build_port_at_tile(tile) {
+            options.push(EngineerConstructionOption {
+                choice: EngineerConstructionChoice::Port,
+                cost: 3_000,
+            });
+        }
+        options
+    }
+
+    /// Executes one choice returned by [`Self::engineer_construction_options`].
+    pub fn queue_engineer_construction(
+        &mut self,
+        unit: CivilianUnitId,
+        choice: EngineerConstructionChoice,
+    ) -> Result<(), CivilianOrderRejection> {
+        let option = self
+            .engineer_construction_options(unit)
+            .into_iter()
+            .find(|option| option.choice == choice)
+            .ok_or(CivilianOrderRejection::Blocked)?;
+        let engineer = &self.civilian_units[&unit];
+        let source = engineer
+            .location
+            .tile()
+            .expect("construction engineer is on the strategic map");
+        let nation = MajorNationId::from_nation(engineer.owner_nation)
+            .expect("engineers belong to major nations");
+        if self.civilian_construction_available_cash(nation) < option.cost {
+            return Err(CivilianOrderRejection::InsufficientFunds);
+        }
+        self.nations.major_mut(nation).common.treasury -= option.cost;
+        // HandleEngineerConstructionAction maps these dialog choices to the
+        // retail order codes this way, despite their surprising names.
+        let order = match choice {
+            EngineerConstructionChoice::Fort => CivilianWorkOrder::BuildDepot { source, turns: 3 },
+            EngineerConstructionChoice::Rail => CivilianWorkOrder::BuildFort { source, turns: 4 },
+            EngineerConstructionChoice::Port => CivilianWorkOrder::BuildPort { source, turns: 3 },
+        };
+        self.set_civilian_work_order(unit, order);
+        Ok(())
+    }
+
+    pub fn developer_tile_purchase_cost(&self, tile: TileId) -> i32 {
+        self.map[tile]
+            .edge_resources
+            .into_iter()
+            .flatten()
+            .map(|resource| {
+                if let Some(commodity) = TradeCommodity::from_resource(resource) {
+                    self.market.rows[commodity].price * 20
+                } else if resource == ResourceKind::Gems {
+                    10_000
+                } else if resource == ResourceKind::Gold {
+                    4_000
+                } else {
+                    0
+                }
+            })
+            .sum()
+    }
+
+    pub fn can_afford_developer_tile_purchase(&self, unit: CivilianUnitId, tile: TileId) -> bool {
+        let Some(developer) = self.civilian_units.get(&unit) else {
+            return false;
+        };
+        let Some(nation) = MajorNationId::from_nation(developer.owner_nation) else {
+            return false;
+        };
+        self.civilian_construction_available_cash(nation) >= self.developer_tile_purchase_cost(tile)
+    }
+
+    pub fn confirm_developer_tile_purchase(
+        &mut self,
+        unit: CivilianUnitId,
+        tile: TileId,
+    ) -> Result<(), CivilianOrderRejection> {
+        if self.civilian_tile_action(unit, tile) != CivilianTileAction::PurchaseLand {
+            return Err(CivilianOrderRejection::Blocked);
+        }
+        let source = self.civilian_units[&unit]
+            .location
+            .tile()
+            .expect("selected developer is on the strategic map");
+        let nation = MajorNationId::from_nation(self.civilian_units[&unit].owner_nation)
+            .expect("developers belong to major nations");
+        let cost = self.developer_tile_purchase_cost(tile);
+        if self.civilian_construction_available_cash(nation) < cost {
+            return Err(CivilianOrderRejection::InsufficientFunds);
+        }
+        self.nations.major_mut(nation).common.treasury -= cost;
+        self.move_civilian_to(unit, tile);
+        self.set_civilian_work_order(unit, CivilianWorkOrder::PurchaseLand { source, turns: 1 });
+        Ok(())
+    }
+
+    /// Retail `TCivMgr::HandleCivilianReportDecision` cancel branch.
+    pub fn cancel_civilian_work_order(
+        &mut self,
+        unit: CivilianUnitId,
+    ) -> Result<(), CivilianOrderRejection> {
+        let Some(civilian) = self.civilian_units.get(&unit) else {
+            return Err(CivilianOrderRejection::Blocked);
+        };
+        let nation = MajorNationId::from_nation(civilian.owner_nation)
+            .expect("civilian work orders belong to major nations");
+        let tile = civilian
+            .location
+            .tile()
+            .ok_or(CivilianOrderRejection::Blocked)?;
+        let order = civilian.order.clone();
+        let (source, refund) = match order {
+            CivilianWorkOrder::Idle | CivilianWorkOrder::Sleep => {
+                return Err(CivilianOrderRejection::Blocked);
+            }
+            CivilianWorkOrder::Redeploy { source, .. } => (source, 0),
+            CivilianWorkOrder::LayRail { segment, .. } => {
+                self.map[segment.origin()]
+                    .pending_rail_links
+                    .remove(TileTransportLinks::for_direction(segment.direction()));
+                self.map[segment.destination()].pending_rail_links.remove(
+                    TileTransportLinks::for_direction(segment.direction().opposite()),
+                );
+                (segment.origin(), rail_cost(self.map[tile].terrain))
+            }
+            CivilianWorkOrder::BuildDepot { source, .. } => (source, 2_000),
+            CivilianWorkOrder::BuildPort { source, .. } => (source, 3_000),
+            CivilianWorkOrder::Prospect { source, .. } => (source, 0),
+            CivilianWorkOrder::DevelopResource { source, .. } => {
+                let extractive = matches!(
+                    civilian.unit_type,
+                    CivilianUnitKind::Miner | CivilianUnitKind::Driller
+                );
+                let class = if extractive {
+                    self.map[tile].development.extractive.get()
+                } else {
+                    self.map[tile].development.surface.get()
+                };
+                let refund = match class {
+                    0 => 100,
+                    1 => 1_000,
+                    _ => 5_000,
+                };
+                (source, refund)
+            }
+            CivilianWorkOrder::BuildFort { source, .. } => {
+                let refund = self.map[tile]
+                    .province
+                    .map(|province| fort_cost(self.map.provinces[province].fort_level()))
+                    .unwrap_or(0);
+                (source, refund)
+            }
+            CivilianWorkOrder::PurchaseLand { source, .. } => {
+                (source, self.developer_tile_purchase_cost(tile))
+            }
+        };
+        self.nations.major_mut(nation).common.treasury += refund;
+        self.civilian_units
+            .get_mut(&unit)
+            .expect("civilian remains present")
+            .order = CivilianWorkOrder::Idle;
+        self.move_civilian_to(unit, source);
+        self.activate_civilian_selection(unit);
+        Ok(())
+    }
+
+    fn civilian_construction_available_cash(&self, nation: MajorNationId) -> i32 {
+        let major = self.nations.major(nation);
+        (major.common.treasury + major.economy.diplomacy_budget_base / 100).max(0)
     }
 
     fn civilian_target_eligible(
@@ -879,25 +1140,6 @@ impl GameState {
                 }
             }
         }
-    }
-
-    pub(crate) fn developer_tile_purchase_cost(&self, tile: TileId) -> i32 {
-        self.map[tile]
-            .edge_resources
-            .into_iter()
-            .flatten()
-            .map(|resource| {
-                if let Some(commodity) = TradeCommodity::from_resource(resource) {
-                    self.market.rows[commodity].price * 20
-                } else if resource == ResourceKind::Gems {
-                    10_000
-                } else if resource == ResourceKind::Gold {
-                    4_000
-                } else {
-                    0
-                }
-            })
-            .sum()
     }
 
     fn complete_resource_development(&mut self, id: CivilianUnitId) {
@@ -1546,9 +1788,148 @@ mod tests {
         assert_eq!(
             state.civilian_units[&miner].order,
             CivilianWorkOrder::Redeploy {
-                destination: move_tile,
+                source: worker_origin,
                 turns: 0,
             }
+        );
+    }
+
+    #[test]
+    fn civilian_modal_orders_queue_and_rescind_with_retail_payloads_and_refunds() {
+        let mut state = crate::test_support::game_state();
+        let geometry = MapGeometry::new(MapTopology::Bounded);
+        let origin = geometry.tile(4, 10).unwrap();
+        let rail_target = geometry
+            .neighbor(origin, HexDirection::East)
+            .expect("interior tile has an eastern neighbor");
+        let nation = NationId::new(0);
+        let major = MajorNationId::new(0);
+        state.map[origin].owner_nation = Some(TileOwnerTag::from_nation(nation));
+        state.map[origin].terrain = TerrainKind::Plains;
+        state.map[origin].gate = 1;
+        state.map[rail_target].owner_nation = Some(TileOwnerTag::from_nation(nation));
+        state.map[rail_target].terrain = TerrainKind::Plains;
+        state.map[rail_target].gate = 1;
+        state.map.provinces[ProvinceId::new(0)] = ProvinceState::new(
+            Some(nation),
+            Some(nation),
+            ProvinceDevelopmentStage::None,
+            Vec::new(),
+            Vec::new(),
+            Some(0),
+            FortLevel::None,
+            Some(origin),
+            0,
+            None,
+            None,
+            Vec::new(),
+            ResourceTable::default(),
+            MajorNationTable::default(),
+            0,
+            false,
+            0,
+            "Capital".to_owned(),
+        );
+        state.map[origin].province = Some(ProvinceId::new(0));
+        state.nations.major_mut(major).common.treasury = 10_000;
+        let engineer = civilian_on(
+            &mut state,
+            20,
+            CivilianUnitKind::Engineer,
+            origin,
+            CivilianWorkOrder::Idle,
+            nation,
+        );
+
+        assert!(
+            state
+                .engineer_construction_options(engineer)
+                .iter()
+                .any(|option| option.choice == EngineerConstructionChoice::Fort
+                    && option.cost == 5_000)
+        );
+        state
+            .queue_engineer_construction(engineer, EngineerConstructionChoice::Fort)
+            .unwrap();
+        assert_eq!(state.nations.major(major).common.treasury, 5_000);
+        assert_eq!(
+            state.civilian_units[&engineer].order,
+            CivilianWorkOrder::BuildDepot {
+                source: origin,
+                turns: 3,
+            }
+        );
+        state.cancel_civilian_work_order(engineer).unwrap();
+        assert_eq!(state.nations.major(major).common.treasury, 7_000);
+        assert_eq!(
+            state.civilian_units[&engineer].order,
+            CivilianWorkOrder::Idle
+        );
+
+        state
+            .order_rail_construction(engineer, rail_target)
+            .unwrap();
+        assert!(!state.map[origin].pending_rail_links.is_empty());
+        state.cancel_civilian_work_order(engineer).unwrap();
+        assert_eq!(
+            state.civilian_units[&engineer].location.tile(),
+            Some(origin)
+        );
+        assert!(state.map[origin].pending_rail_links.is_empty());
+        assert!(state.map[rail_target].pending_rail_links.is_empty());
+        assert_eq!(state.nations.major(major).common.treasury, 7_000);
+    }
+
+    #[test]
+    fn confirmed_land_purchase_uses_retail_cost_and_rescinds_to_the_source_tile() {
+        let mut state = crate::test_support::game_state();
+        let geometry = MapGeometry::new(MapTopology::Bounded);
+        let source = geometry.tile(5, 10).unwrap();
+        let target = geometry.tile(5, 12).unwrap();
+        let nation = NationId::new(0);
+        let major = MajorNationId::new(0);
+        let minor = NationId::new(7);
+        state.map[source].owner_nation = Some(TileOwnerTag::from_nation(nation));
+        state.map[target].owner_nation = Some(TileOwnerTag::from_nation(minor));
+        state.map[target].terrain = TerrainKind::Plains;
+        state.map[target].gate = 8;
+        state.map[target].edge_resources[0] = Some(ResourceKind::Gems);
+        state.map[target].development.resource_visible_to_majors[major] = true;
+        state.diplomacy.mission_levels[nation][minor] = DiplomaticMissionLevel::Embassy;
+        state.nations.major_mut(major).common.treasury = 10_000;
+        let developer = civilian_on(
+            &mut state,
+            21,
+            CivilianUnitKind::Developer,
+            source,
+            CivilianWorkOrder::Idle,
+            nation,
+        );
+        state.activate_civilian_selection(developer);
+
+        assert_eq!(state.developer_tile_purchase_cost(target), 10_000);
+        assert!(state.can_afford_developer_tile_purchase(developer, target));
+        state
+            .confirm_developer_tile_purchase(developer, target)
+            .unwrap();
+        assert_eq!(state.nations.major(major).common.treasury, 0);
+        assert_eq!(
+            state.civilian_units[&developer].location.tile(),
+            Some(target)
+        );
+        assert_eq!(
+            state.civilian_units[&developer].order,
+            CivilianWorkOrder::PurchaseLand { source, turns: 1 }
+        );
+        state.cancel_civilian_work_order(developer).unwrap();
+        assert_eq!(state.nations.major(major).common.treasury, 10_000);
+        assert_eq!(
+            state.civilian_units[&developer].location.tile(),
+            Some(source)
+        );
+        assert_eq!(
+            state.civilian_units[&developer].order,
+            CivilianWorkOrder::Idle
         );
     }
 
@@ -1621,7 +2002,10 @@ mod tests {
             2,
             CivilianUnitKind::Prospector,
             prospect_tile,
-            CivilianWorkOrder::Prospect { turns: 1 },
+            CivilianWorkOrder::Prospect {
+                source: prospect_tile,
+                turns: 1,
+            },
             nation,
         );
         civilian_on(
@@ -1629,7 +2013,10 @@ mod tests {
             3,
             CivilianUnitKind::Developer,
             purchase_tile,
-            CivilianWorkOrder::PurchaseLand { turns: 1 },
+            CivilianWorkOrder::PurchaseLand {
+                source: purchase_tile,
+                turns: 1,
+            },
             nation,
         );
         civilian_on(
@@ -1637,7 +2024,10 @@ mod tests {
             4,
             CivilianUnitKind::Engineer,
             fort_tile,
-            CivilianWorkOrder::BuildFort { turns: 1 },
+            CivilianWorkOrder::BuildFort {
+                source: fort_tile,
+                turns: 1,
+            },
             nation,
         );
         civilian_on(
@@ -1645,7 +2035,10 @@ mod tests {
             5,
             CivilianUnitKind::Engineer,
             depot_tile,
-            CivilianWorkOrder::BuildDepot { turns: 1 },
+            CivilianWorkOrder::BuildDepot {
+                source: depot_tile,
+                turns: 1,
+            },
             nation,
         );
         civilian_on(
@@ -1653,7 +2046,10 @@ mod tests {
             6,
             CivilianUnitKind::Engineer,
             port_tile,
-            CivilianWorkOrder::BuildPort { turns: 1 },
+            CivilianWorkOrder::BuildPort {
+                source: port_tile,
+                turns: 1,
+            },
             nation,
         );
         state.map[port_tile].flags.insert(TileFlags::BASE_TRANSPORT);
@@ -1679,7 +2075,7 @@ mod tests {
             CivilianUnitKind::Rancher,
             redeploy_tile,
             CivilianWorkOrder::Redeploy {
-                destination: purchase_tile,
+                source: redeploy_tile,
                 turns: 1,
             },
             nation,
@@ -1689,7 +2085,10 @@ mod tests {
             9,
             CivilianUnitKind::Miner,
             develop_tile,
-            CivilianWorkOrder::DevelopResource { turns: 3 },
+            CivilianWorkOrder::DevelopResource {
+                source: develop_tile,
+                turns: 3,
+            },
             nation,
         );
 
@@ -1772,7 +2171,7 @@ mod tests {
             unit.unit_type == CivilianUnitKind::Miner
                 && matches!(
                     unit.order,
-                    CivilianWorkOrder::DevelopResource { turns } if turns == 2
+                    CivilianWorkOrder::DevelopResource { turns, .. } if turns == 2
                 )
         }));
     }
@@ -1795,7 +2194,10 @@ mod tests {
             3,
             CivilianUnitKind::Miner,
             second,
-            CivilianWorkOrder::DevelopResource { turns: 1 },
+            CivilianWorkOrder::DevelopResource {
+                source: second,
+                turns: 1,
+            },
             nation,
         );
 

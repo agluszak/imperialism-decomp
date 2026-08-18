@@ -6,7 +6,10 @@
 
 use super::super::GameSession;
 use super::RetailUiAssets;
-use super::{TILE_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH, for_each_visible_strategic_tile};
+use super::{
+    StrategicInteraction, TILE_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH,
+    for_each_visible_strategic_tile,
+};
 use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
 use bevy::prelude::*;
@@ -16,6 +19,7 @@ use imperialism_core::*;
 use imperialism_formats::*;
 use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
+use std::time::Duration;
 
 const UNIT_TRANSPARENT_INDEX: u8 = 0x10;
 const FOREIGN_CIVILIAN_FRAME_INDEX: u8 = 0x13;
@@ -36,6 +40,8 @@ const CIVILIAN_ANIMATION_LOGICAL_COUNTS: CivilianUnitTable<u8> =
     CivilianUnitTable::from_array([9, 7, 2, 5, 6, 2, 5, 9, 5]);
 const CIVILIAN_ANIMATION_TICKS_PER_FRAME: CivilianUnitTable<u8> =
     CivilianUnitTable::from_array([5, 15, 10, 7, 15, 15, 7, 10, 10]);
+const CIVILIAN_SELECTION_PULSE_TICKS: u32 = 30;
+const RETAIL_UI_TICK_MILLIS: u64 = 16;
 const CIVILIAN_ANIMATION_FRAME_MAP: CivilianUnitTable<[u8; 12]> = CivilianUnitTable::from_array([
     [0, 1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0],
     [0, 1, 2, 3, 1, 1, 1, 1, 0, 0, 0, 0],
@@ -51,6 +57,7 @@ const CIVILIAN_ANIMATION_FRAME_MAP: CivilianUnitTable<[u8; 12]> = CivilianUnitTa
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 enum CivilianPose {
     Idle,
+    Selected,
     Working,
     Animated,
 }
@@ -99,6 +106,7 @@ struct StrategicUnitProjectKey {
 
 #[derive(Component)]
 pub(crate) struct StrategicUnitLayer {
+    map: Entity,
     projected: Option<StrategicUnitProjectKey>,
 }
 
@@ -110,6 +118,41 @@ pub(crate) struct CivilianWorkAnimation {
     kind: CivilianUnitKind,
     logical_frame: u8,
     timer: Timer,
+}
+
+#[derive(Component)]
+pub(crate) struct CivilianSelectionAnimation {
+    kind: CivilianUnitKind,
+}
+
+pub(crate) struct CivilianSelectionPulse {
+    timer: Timer,
+    phase: bool,
+}
+
+impl Default for CivilianSelectionPulse {
+    fn default() -> Self {
+        Self {
+            timer: Timer::new(
+                Duration::from_millis(
+                    u64::from(CIVILIAN_SELECTION_PULSE_TICKS) * RETAIL_UI_TICK_MILLIS,
+                ),
+                TimerMode::Repeating,
+            ),
+            phase: false,
+        }
+    }
+}
+
+impl CivilianSelectionPulse {
+    fn tick(&mut self, delta: Duration) -> Option<bool> {
+        self.timer.tick(delta);
+        self.timer.just_finished().then(|| {
+            let rendered_phase = self.phase;
+            self.phase = !self.phase;
+            rendered_phase
+        })
+    }
 }
 
 #[derive(Component)]
@@ -144,10 +187,11 @@ pub(super) fn bind_strategic_units(
             ChildOf(map),
         ))
         .id();
-    project_strategic_units_onto(commands, layer, &mut sprites, assets, state);
+    project_strategic_units_onto(commands, layer, &mut sprites, assets, state, None);
     commands.entity(layer).insert((
         StrategicUnitLayer {
-            projected: Some(strategic_unit_project_key(state)),
+            map,
+            projected: Some(strategic_unit_project_key(state, None)),
         },
         sprites,
     ));
@@ -157,6 +201,7 @@ pub(crate) fn sync_strategic_units(
     mut commands: Commands,
     session: Res<GameSession>,
     mut assets: RetailUiAssets,
+    interactions: Query<Ref<StrategicInteraction>>,
     mut layers: Query<(
         Entity,
         &mut StrategicUnitLayer,
@@ -165,23 +210,31 @@ pub(crate) fn sync_strategic_units(
     )>,
     units: Query<Entity, With<StrategicMapUnit>>,
 ) {
-    if !session.is_changed() {
-        return;
-    }
     let state = &session.game;
     for (layer, mut projection, mut sprites, children) in &mut layers {
+        let Ok(interaction) = interactions.get(projection.map) else {
+            continue;
+        };
+        let selected = interaction.civilian;
         let fleet_id = fleet_atlas_picture_id(state).get();
         if sprites.fleet_atlas_id != fleet_id {
             sprites.fleet_frames = load_fleet_frames(&assets, state);
             sprites.fleet_atlas_id = fleet_id;
             sprites.composed.clear();
         }
-        let key = strategic_unit_project_key(state);
+        let key = strategic_unit_project_key(state, selected);
         if projection.projected == Some(key) {
             continue;
         }
         despawn_projected_units(&mut commands, children, &units);
-        project_strategic_units_onto(&mut commands, layer, &mut sprites, &mut assets, state);
+        project_strategic_units_onto(
+            &mut commands,
+            layer,
+            &mut sprites,
+            &mut assets,
+            state,
+            selected,
+        );
         projection.projected = Some(key);
     }
 }
@@ -207,10 +260,22 @@ fn project_strategic_units_onto(
     sprites: &mut StrategicUnitSprites,
     assets: &mut RetailUiAssets,
     state: &GameState,
+    selected: Option<CivilianUnitId>,
 ) {
     let palette = *assets.default_dib_palette();
-    for unit in visible_strategic_units(state) {
-        let Some(image) = unit_sprite_image(sprites, assets, &palette, unit.sprite) else {
+    for unit in visible_strategic_units(state, selected) {
+        let selected_kind = match unit.sprite {
+            StrategicUnitSprite::Civilian {
+                kind,
+                pose: CivilianPose::Selected,
+                ..
+            } => Some(kind),
+            _ => None,
+        };
+        let rendered_sprite = selected_kind
+            .map(|kind| civilian_selection_sprite(kind, false))
+            .unwrap_or(unit.sprite);
+        let Some(image) = unit_sprite_image(sprites, assets, &palette, rendered_sprite) else {
             continue;
         };
         let (width, height) = (TILE_SIZE, TILE_SIZE);
@@ -243,6 +308,36 @@ fn project_strategic_units_onto(
                     TimerMode::Repeating,
                 ),
             });
+        }
+        if let Some(kind) = selected_kind {
+            entity.insert(CivilianSelectionAnimation { kind });
+        }
+    }
+}
+
+pub(crate) fn animate_civilian_selection(
+    time: Res<Time>,
+    mut pulse: Local<CivilianSelectionPulse>,
+    mut assets: RetailUiAssets,
+    mut layers: Query<(&mut StrategicUnitSprites, &Children)>,
+    mut units: Query<(&CivilianSelectionAnimation, &mut ImageNode)>,
+) {
+    if units.is_empty() {
+        return;
+    }
+    let Some(outlined) = pulse.tick(time.delta()) else {
+        return;
+    };
+    let palette = *assets.default_dib_palette();
+    for (mut sprites, children) in &mut layers {
+        for child in children {
+            let Ok((selection, mut image)) = units.get_mut(*child) else {
+                continue;
+            };
+            let sprite = civilian_selection_sprite(selection.kind, outlined);
+            if let Some(handle) = unit_sprite_image(&mut sprites, &mut assets, &palette, sprite) {
+                image.image = handle;
+            }
         }
     }
 }
@@ -299,6 +394,7 @@ fn load_strategic_unit_sprites(assets: &RetailUiAssets, state: &GameState) -> St
     for kind in (0..CivilianUnitKind::LENGTH).map(CivilianUnitKind::from_usize) {
         for pose in [
             CivilianPose::Idle,
+            CivilianPose::Selected,
             CivilianPose::Working,
             CivilianPose::Animated,
         ] {
@@ -352,6 +448,9 @@ fn load_civilian_pictures(
 fn civilian_picture_id(kind: CivilianUnitKind, pose: CivilianPose) -> i16 {
     match pose {
         CivilianPose::Idle => CIVILIAN_IDLE_PICTURE_BASE + i16::from(civilian_sprite_class(kind)),
+        CivilianPose::Selected => {
+            CIVILIAN_IDLE_PICTURE_BASE + 9 + i16::from(civilian_sprite_class(kind))
+        }
         CivilianPose::Working => {
             CIVILIAN_WORKING_PICTURE_BASE + i16::from(civilian_sprite_class(kind))
         }
@@ -583,9 +682,12 @@ fn indexed_rgba_image(picture: &IndexedPicture, palette: &DibPalette, transparen
     image
 }
 
-fn strategic_unit_project_key(state: &GameState) -> StrategicUnitProjectKey {
+fn strategic_unit_project_key(
+    state: &GameState,
+    selected: Option<CivilianUnitId>,
+) -> StrategicUnitProjectKey {
     let mut hasher = std::collections::hash_map::DefaultHasher::new();
-    for unit in visible_strategic_units(state) {
+    for unit in visible_strategic_units(state, selected) {
         unit.hash(&mut hasher);
     }
     StrategicUnitProjectKey {
@@ -610,7 +712,10 @@ fn fleet_atlas_picture_id(state: &GameState) -> PictureId {
     PictureId::new(FLEET_ATLAS_PICTURE_BASE + i16::from(nation.get()) + variant * 7)
 }
 
-fn visible_strategic_units(state: &GameState) -> Vec<VisibleStrategicUnit> {
+fn visible_strategic_units(
+    state: &GameState,
+    selected: Option<CivilianUnitId>,
+) -> Vec<VisibleStrategicUnit> {
     let mut units = Vec::new();
     for_each_visible_strategic_tile(state, |tile, screen_x, screen_y| {
         if let Some(unit) = army_badge_on_tile(state, tile) {
@@ -631,7 +736,7 @@ fn visible_strategic_units(state: &GameState) -> Vec<VisibleStrategicUnit> {
                 z: 1,
             });
         }
-        if let Some(unit) = civilian_on_tile(state, tile) {
+        if let Some(unit) = civilian_on_tile(state, tile, selected) {
             units.push(VisibleStrategicUnit {
                 identity: unit.identity,
                 screen_x,
@@ -650,7 +755,11 @@ struct ProjectedUnit {
     sprite: StrategicUnitSprite,
 }
 
-fn civilian_on_tile(state: &GameState, tile: TileId) -> Option<ProjectedUnit> {
+fn civilian_on_tile(
+    state: &GameState,
+    tile: TileId,
+    selected: Option<CivilianUnitId>,
+) -> Option<ProjectedUnit> {
     if state.map()[tile].terrain == TerrainKind::Water {
         return None;
     }
@@ -660,7 +769,7 @@ fn civilian_on_tile(state: &GameState, tile: TileId) -> Option<ProjectedUnit> {
     let (id, unit) = chained_civilian_on_tile(state, tile, state.turn().active_nation)?;
     Some(ProjectedUnit {
         identity: StrategicUnitIdentity::Civilian(id),
-        sprite: civilian_sprite(unit, state.turn().active_nation),
+        sprite: civilian_sprite(unit, state.turn().active_nation, selected == Some(id)),
     })
 }
 
@@ -740,11 +849,15 @@ fn stacked_civilian_on_tile<'a>(
     (!selected.1.registered()).then_some(selected)
 }
 
-fn civilian_sprite(unit: &CivilianUnitState, active: NationId) -> StrategicUnitSprite {
+fn civilian_sprite(
+    unit: &CivilianUnitState,
+    active: NationId,
+    selected: bool,
+) -> StrategicUnitSprite {
     let foreign = unit.owner_nation() != active;
     StrategicUnitSprite::Civilian {
         kind: unit.unit_type(),
-        pose: civilian_pose(unit.order(), foreign),
+        pose: civilian_pose(unit.order(), foreign, selected),
         frame: 0,
         owner_badge: foreign
             .then(|| owner_flag_slot(Some(TileOwnerTag::from_nation(unit.owner_nation())))),
@@ -752,8 +865,24 @@ fn civilian_sprite(unit: &CivilianUnitState, active: NationId) -> StrategicUnitS
     }
 }
 
-fn civilian_pose(order: &CivilianWorkOrder, foreign: bool) -> CivilianPose {
-    if civilian_uses_work_animation(order) && !foreign {
+fn civilian_selection_sprite(kind: CivilianUnitKind, outlined: bool) -> StrategicUnitSprite {
+    StrategicUnitSprite::Civilian {
+        kind,
+        pose: if outlined {
+            CivilianPose::Selected
+        } else {
+            CivilianPose::Idle
+        },
+        frame: 0,
+        owner_badge: None,
+        framed: false,
+    }
+}
+
+fn civilian_pose(order: &CivilianWorkOrder, foreign: bool, selected: bool) -> CivilianPose {
+    if selected && civilian_is_idle_selection(order) && !foreign {
+        CivilianPose::Selected
+    } else if civilian_uses_work_animation(order) && !foreign {
         CivilianPose::Animated
     } else if civilian_is_idle_selection(order) {
         CivilianPose::Idle
@@ -849,30 +978,114 @@ mod tests {
     #[test]
     fn idle_and_sleeping_civilians_use_the_idle_atlas_class() {
         assert_eq!(
-            civilian_pose(&CivilianWorkOrder::Idle, false),
+            civilian_pose(&CivilianWorkOrder::Idle, false, false),
             CivilianPose::Idle
         );
         assert_eq!(
-            civilian_pose(&CivilianWorkOrder::Sleep, false),
+            civilian_pose(&CivilianWorkOrder::Sleep, false, false),
             CivilianPose::Idle
         );
         assert_eq!(
             civilian_pose(
                 &CivilianWorkOrder::Redeploy {
-                    destination: TileId::new(1),
+                    source: TileId::new(1),
                     turns: 1,
                 },
-                false
+                false,
+                false,
             ),
             CivilianPose::Working
         );
         assert_eq!(
-            civilian_pose(&CivilianWorkOrder::Prospect { turns: 1 }, false),
+            civilian_pose(
+                &CivilianWorkOrder::Prospect {
+                    source: TileId::new(1),
+                    turns: 1,
+                },
+                false,
+                false,
+            ),
             CivilianPose::Animated
         );
         assert_eq!(
-            civilian_pose(&CivilianWorkOrder::Prospect { turns: 1 }, true),
+            civilian_pose(
+                &CivilianWorkOrder::Prospect {
+                    source: TileId::new(1),
+                    turns: 1,
+                },
+                true,
+                false,
+            ),
             CivilianPose::Working
+        );
+    }
+
+    #[test]
+    fn selected_idle_civilian_uses_the_white_outline_atlas_group() {
+        assert_eq!(
+            civilian_pose(&CivilianWorkOrder::Idle, false, true),
+            CivilianPose::Selected
+        );
+        assert_eq!(
+            civilian_picture_id(CivilianUnitKind::Engineer, CivilianPose::Selected),
+            409
+        );
+    }
+
+    #[test]
+    fn selected_civilian_projection_uses_the_white_outline_sprite() {
+        let mut state = fixture_state();
+        let active = state.turn().active_nation;
+        let (selected, tile) = state
+            .civilian_units()
+            .find_map(|(id, unit)| {
+                (unit.owner_nation() == active
+                    && civilian_is_idle_selection(unit.order())
+                    && !unit.registered())
+                .then(|| unit.location().tile().map(|tile| (id, tile)))
+                .flatten()
+            })
+            .expect("opening save has an idle field civilian");
+        state.center_map_on(tile);
+
+        let projected = visible_strategic_units(&state, Some(selected))
+            .into_iter()
+            .find(|unit| unit.identity == StrategicUnitIdentity::Civilian(selected))
+            .expect("selected civilian is visible");
+        assert!(matches!(
+            projected.sprite,
+            StrategicUnitSprite::Civilian {
+                pose: CivilianPose::Selected,
+                ..
+            }
+        ));
+    }
+
+    #[test]
+    fn selected_civilian_pulse_matches_the_retail_thirty_tick_phase_flip() {
+        let mut pulse = CivilianSelectionPulse::default();
+        assert_eq!(pulse.tick(Duration::from_millis(479)), None);
+        assert_eq!(pulse.tick(Duration::from_millis(1)), Some(false));
+        assert_eq!(pulse.tick(Duration::from_millis(480)), Some(true));
+        assert_eq!(
+            civilian_selection_sprite(CivilianUnitKind::Engineer, false),
+            StrategicUnitSprite::Civilian {
+                kind: CivilianUnitKind::Engineer,
+                pose: CivilianPose::Idle,
+                frame: 0,
+                owner_badge: None,
+                framed: false,
+            }
+        );
+        assert_eq!(
+            civilian_selection_sprite(CivilianUnitKind::Engineer, true),
+            StrategicUnitSprite::Civilian {
+                kind: CivilianUnitKind::Engineer,
+                pose: CivilianPose::Selected,
+                frame: 0,
+                owner_badge: None,
+                framed: false,
+            }
         );
     }
 
@@ -1025,7 +1238,7 @@ mod tests {
             "opening save has an idle civilian"
         );
         assert!(
-            visible_strategic_units(&state)
+            visible_strategic_units(&state, None)
                 .iter()
                 .any(|unit| matches!(unit.identity, StrategicUnitIdentity::Civilian(_))),
             "opening save should show field civilians"
@@ -1040,7 +1253,7 @@ mod tests {
             .expect("opening save has a stationed army");
         state.center_map_on(army_tile);
         assert!(
-            visible_strategic_units(&state)
+            visible_strategic_units(&state, None)
                 .iter()
                 .any(|unit| matches!(unit.identity, StrategicUnitIdentity::Army(_))),
             "opening save should show capital army badges"
@@ -1054,7 +1267,7 @@ mod tests {
             .expect("opening save has an ocean action marker");
         state.center_map_on(naval_tile);
         assert!(
-            visible_strategic_units(&state)
+            visible_strategic_units(&state, None)
                 .iter()
                 .any(|unit| matches!(unit.identity, StrategicUnitIdentity::Naval(_))),
             "opening save should show ocean action fleet markers"

@@ -39,13 +39,14 @@ use overlays::{
     town_transport_linked,
 };
 use terrain::{compose_strategic_base_tile, frame_for_offset};
-pub(crate) use units::{animate_civilian_work, sync_strategic_units};
+pub(crate) use units::{animate_civilian_selection, animate_civilian_work, sync_strategic_units};
 
 const MAP_TAG: FourCc = fourcc!("DLOG");
 pub(super) const VIEWPORT_WIDTH: usize = 512;
 pub(super) const VIEWPORT_HEIGHT: usize = 448;
 pub(super) const TILE_SIZE: i32 = 64;
 pub(super) const VIEWPORT_TILE_SPAN: i32 = 9;
+const MAP_SELECTION_PALETTE_INDEX: u8 = 0x20;
 const TERRAIN_ATLAS_FRAME_COUNT: usize = 51;
 pub(super) const RIVER_MASK_PICTURE_COUNT: usize = 36;
 pub(super) const RIVER_MASK_TRANSPARENT_INDEX: u8 = 0x10;
@@ -59,6 +60,12 @@ struct StrategicMapComposeKey {
     selected_civilian: Option<CivilianUnitId>,
     hovered_tile: Option<TileId>,
     visible_tiles: u64,
+}
+
+#[derive(Component)]
+pub(crate) struct StrategicSelectionCanvas {
+    map: Entity,
+    composed: Option<StrategicMapComposeKey>,
 }
 
 /// The bounded strategic map: retail bases, transitions, rivers, borders, and static infrastructure.
@@ -102,13 +109,7 @@ pub(crate) fn bind_strategic_base_terrain(
         resource_overlays,
         composed: Some(strategic_map_compose_key(state, None, None)),
     };
-    let image = compose_strategic_map(
-        state,
-        canvas.sprites(),
-        assets.default_dib_palette(),
-        None,
-        None,
-    );
+    let image = compose_strategic_map(state, canvas.sprites(), assets.default_dib_palette());
     let image = assets.add_image(image);
     commands.entity(map).insert((
         ImageNode::new(image),
@@ -117,7 +118,40 @@ pub(crate) fn bind_strategic_base_terrain(
         StrategicInteraction::default(),
     ));
     units::bind_strategic_units(commands, map, assets, state);
+    bind_strategic_selection(commands, map, assets, state);
     map
+}
+
+fn bind_strategic_selection(
+    commands: &mut Commands,
+    map: Entity,
+    assets: &mut RetailUiAssets,
+    state: &GameState,
+) {
+    let image = assets.add_image(compose_strategic_selection(
+        state,
+        None,
+        None,
+        assets.default_dib_palette(),
+    ));
+    commands.spawn((
+        Node {
+            position_type: PositionType::Absolute,
+            left: px(0),
+            top: px(0),
+            width: px(VIEWPORT_WIDTH),
+            height: px(VIEWPORT_HEIGHT),
+            ..default()
+        },
+        ImageNode::new(image),
+        ZIndex(3),
+        Pickable::IGNORE,
+        StrategicSelectionCanvas {
+            map,
+            composed: Some(strategic_map_compose_key(state, None, None)),
+        },
+        ChildOf(map),
+    ));
 }
 
 impl StrategicBaseTerrainCanvas {
@@ -136,16 +170,10 @@ pub(crate) fn sync_strategic_base_terrain(
     session: Res<GameSession>,
     retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
-    mut maps: Query<(
-        &mut StrategicBaseTerrainCanvas,
-        &ImageNode,
-        Ref<StrategicInteraction>,
-        &RelativeCursorPosition,
-    )>,
+    mut maps: Query<(&mut StrategicBaseTerrainCanvas, &ImageNode)>,
 ) {
-    for (mut canvas, image_node, selected, cursor) in &mut maps {
-        let hovered = strategic_base_terrain_tile_at_cursor(&session.game, cursor);
-        let key = strategic_map_compose_key(&session.game, selected.civilian, hovered);
+    for (mut canvas, image_node) in &mut maps {
+        let key = strategic_map_compose_key(&session.game, None, None);
         if canvas.composed == Some(key) {
             continue;
         }
@@ -153,14 +181,42 @@ pub(crate) fn sync_strategic_base_terrain(
             &session.game,
             canvas.sprites(),
             retail_assets.assets().default_dib_palette(),
-            selected.civilian,
-            hovered,
         );
         let Some(mut existing) = images.get_mut(&image_node.image) else {
             continue;
         };
         *existing = image;
         canvas.composed = Some(key);
+    }
+}
+
+pub(crate) fn sync_strategic_selection(
+    session: Res<GameSession>,
+    retail_assets: Res<RetailAssetsResource>,
+    mut images: ResMut<Assets<Image>>,
+    maps: Query<(&StrategicInteraction, &RelativeCursorPosition)>,
+    mut overlays: Query<(&mut StrategicSelectionCanvas, &ImageNode)>,
+) {
+    for (mut overlay, image_node) in &mut overlays {
+        let Ok((selected, cursor)) = maps.get(overlay.map) else {
+            continue;
+        };
+        let hovered = strategic_base_terrain_tile_at_cursor(&session.game, cursor);
+        let key = strategic_map_compose_key(&session.game, selected.civilian, hovered);
+        if overlay.composed == Some(key) {
+            continue;
+        }
+        let image = compose_strategic_selection(
+            &session.game,
+            selected.civilian,
+            hovered,
+            retail_assets.assets().default_dib_palette(),
+        );
+        let Some(mut existing) = images.get_mut(&image_node.image) else {
+            continue;
+        };
+        *existing = image;
+        overlay.composed = Some(key);
     }
 }
 
@@ -248,14 +304,22 @@ fn compose_strategic_map(
     state: &GameState,
     sprites: StrategicMapSprites<'_>,
     palette: &DibPalette,
+) -> Image {
+    let indices = compose_strategic_map_indices(state, sprites);
+    indexed_viewport_image(&indices, palette)
+}
+
+fn compose_strategic_selection(
+    state: &GameState,
     selected_civilian: Option<CivilianUnitId>,
     hovered_tile: Option<TileId>,
+    palette: &DibPalette,
 ) -> Image {
-    let mut indices = compose_strategic_map_indices(state, sprites);
+    let mut indices = vec![0_u8; VIEWPORT_WIDTH * VIEWPORT_HEIGHT];
     if let (Some(unit), Some(tile)) = (selected_civilian, hovered_tile) {
         draw_civilian_hover_highlight(state, unit, tile, &mut indices);
     }
-    indexed_viewport_image(&indices, palette)
+    transparent_indexed_viewport_image(&indices, palette)
 }
 
 fn strategic_map_compose_key(
@@ -300,7 +364,7 @@ fn draw_civilian_hover_highlight(
     }
 
     let (x, y) = strategic_tile_screen_origin(state, hovered);
-    draw_frame(viewport, x, y, 0);
+    draw_frame(viewport, x, y, MAP_SELECTION_PALETTE_INDEX);
     if civilian.unit_type() != CivilianUnitKind::Engineer
         || action != CivilianTileAction::EngineerSameTile
         || state.map()[hovered].region.is_some()
@@ -428,7 +492,7 @@ pub(super) fn draw_city_site_selection(
     viewport: &mut [u8],
 ) {
     let (x, y) = strategic_tile_screen_origin(state, tile);
-    draw_frame(viewport, x, y, 0);
+    draw_frame(viewport, x, y, MAP_SELECTION_PALETTE_INDEX);
 
     let active_owner = TileOwnerTag::from_nation(nation.nation());
     let neighbors = state.map().geometry().neighbors(tile).map(|neighbor| {
@@ -454,7 +518,7 @@ fn draw_city_site_neighbor_outline(
     neighbors: [Option<TileId>; 6],
     viewport: &mut [u8],
 ) {
-    const OUTLINE_COLOR: u8 = 0x20;
+    const OUTLINE_COLOR: u8 = MAP_SELECTION_PALETTE_INDEX;
     for (index, neighbor) in neighbors.iter().copied().enumerate() {
         let Some(neighbor) = neighbor else {
             continue;
@@ -620,6 +684,26 @@ fn indexed_viewport_image(indices: &[u8], palette: &DibPalette) -> Image {
     let mut rgba = Vec::with_capacity(indices.len() * 4);
     for &palette_index in indices {
         palette[palette_index].write_rgba(0xff, &mut rgba);
+    }
+    let mut image = Image::new(
+        Extent3d {
+            width: VIEWPORT_WIDTH as u32,
+            height: VIEWPORT_HEIGHT as u32,
+            depth_or_array_layers: 1,
+        },
+        TextureDimension::D2,
+        rgba,
+        TextureFormat::Rgba8UnormSrgb,
+        RenderAssetUsages::default(),
+    );
+    image.sampler = ImageSampler::nearest();
+    image
+}
+
+fn transparent_indexed_viewport_image(indices: &[u8], palette: &DibPalette) -> Image {
+    let mut rgba = Vec::with_capacity(indices.len() * 4);
+    for &palette_index in indices {
+        palette[palette_index].write_rgba(if palette_index == 0 { 0 } else { 0xff }, &mut rgba);
     }
     let mut image = Image::new(
         Extent3d {

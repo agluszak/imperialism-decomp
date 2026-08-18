@@ -156,7 +156,7 @@ fn engineer_same_tile_hover_frames_the_tile_and_construction_neighbors() {
     let (hover_x, hover_y) = strategic_tile_screen_origin(&state, hovered);
     assert_eq!(
         viewport[hover_y as usize * VIEWPORT_WIDTH + hover_x as usize],
-        0,
+        MAP_SELECTION_PALETTE_INDEX,
         "the hovered tile must be framed"
     );
     assert!(
@@ -168,6 +168,24 @@ fn engineer_same_tile_hover_frames_the_tile_and_construction_neighbors() {
                     && (hover_y..hover_y + TILE_SIZE).contains(&y))
         }),
         "the hover frame must include the retail construction-neighbor outline"
+    );
+
+    let overlay = compose_strategic_selection(
+        &state,
+        Some(engineer),
+        Some(hovered),
+        &DibPalette::default(),
+    );
+    let pixels = overlay.data.as_ref().expect("selection overlay pixels");
+    let frame = (hover_y as usize * VIEWPORT_WIDTH + hover_x as usize) * 4;
+    let center = ((hover_y + TILE_SIZE / 2) as usize * VIEWPORT_WIDTH
+        + (hover_x + TILE_SIZE / 2) as usize)
+        * 4;
+    assert_eq!(pixels[frame + 3], 0xff, "the retail frame must be opaque");
+    assert_eq!(
+        pixels[center + 3],
+        0,
+        "the overlay must leave the already-rendered unit visible"
     );
 }
 
@@ -268,7 +286,7 @@ fn bounded_seam_tiles_use_the_dedicated_seam_frame() {
 }
 
 #[test]
-fn city_site_selection_draws_black_frame_and_neighbor_outline() {
+fn city_site_selection_draws_retail_frame_and_neighbor_outline() {
     let mut fixture = MapFixture::new();
     let nation = MajorNationId::new(6);
     let owner = TileOwnerTag::from_nation(nation.nation());
@@ -294,7 +312,7 @@ fn city_site_selection_draws_black_frame_and_neighbor_outline() {
     assert_ne!(indices, before);
     let (x, y) = strategic_tile_screen_origin(&state, origin);
     let top_left = (y * VIEWPORT_WIDTH as i32 + x) as usize;
-    assert_eq!(indices[top_left], 0);
+    assert_eq!(indices[top_left], MAP_SELECTION_PALETTE_INDEX);
 }
 
 #[test]

@@ -53,7 +53,7 @@ fn civilian_work_order(
     match value {
         0 => CivilianWorkOrder::Idle,
         1 => CivilianWorkOrder::Redeploy {
-            destination: target.expect("retail redeploy order has a destination"),
+            source: target.expect("retail redeploy order has a source"),
             turns: turns(),
         },
         2 => CivilianWorkOrder::Sleep,
@@ -68,27 +68,45 @@ fn civilian_work_order(
         },
         6 => {
             required_tile();
-            CivilianWorkOrder::BuildDepot { turns: turns() }
+            CivilianWorkOrder::BuildDepot {
+                source: target.expect("retail depot order has a source"),
+                turns: turns(),
+            }
         }
         7 => {
             required_tile();
-            CivilianWorkOrder::BuildPort { turns: turns() }
+            CivilianWorkOrder::BuildPort {
+                source: target.expect("retail port order has a source"),
+                turns: turns(),
+            }
         }
         8 => {
             required_tile();
-            CivilianWorkOrder::Prospect { turns: turns() }
+            CivilianWorkOrder::Prospect {
+                source: target.expect("retail prospecting order has a source"),
+                turns: turns(),
+            }
         }
         10 => {
             required_tile();
-            CivilianWorkOrder::DevelopResource { turns: turns() }
+            CivilianWorkOrder::DevelopResource {
+                source: target.expect("retail development order has a source"),
+                turns: turns(),
+            }
         }
         12 => {
             required_tile();
-            CivilianWorkOrder::BuildFort { turns: turns() }
+            CivilianWorkOrder::BuildFort {
+                source: target.expect("retail fort order has a source"),
+                turns: turns(),
+            }
         }
         13 => {
             required_tile();
-            CivilianWorkOrder::PurchaseLand { turns: turns() }
+            CivilianWorkOrder::PurchaseLand {
+                source: target.expect("retail land-purchase order has a source"),
+                turns: turns(),
+            }
         }
         _ => panic!("unrecovered civilian work order {value}"),
     }

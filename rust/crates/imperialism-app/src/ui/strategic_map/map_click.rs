@@ -4,10 +4,14 @@ use super::map_interaction::{
     MapInteractionMode, StrategicInteraction, cycle_map_interaction_selection,
     has_active_map_interaction_selection, navy_zone_center_tile, set_map_interaction_mode,
 };
-use super::map_modals::{spawn_army_report, spawn_fleet_report, spawn_garrison, spawn_navy_roster};
+use super::map_modals::{
+    spawn_army_report, spawn_civilian_report, spawn_developer_purchase,
+    spawn_engineer_construction, spawn_fleet_report, spawn_garrison, spawn_navy_roster,
+};
 use super::ocean_view::{OceanMapCanvas, ocean_tile_at_cursor};
 use super::{StrategicBaseTerrainCanvas, strategic_base_terrain_tile_at_cursor};
 use crate::AppState;
+use crate::media::RetailAudioAssets;
 use crate::ui::GameSession;
 use crate::ui::cursor::{RequestedCursor, request_arrow_cursor, request_turn_event_cursor};
 use bevy::picking::events::{Click, Pointer};
@@ -15,6 +19,9 @@ use bevy::picking::pointer::PointerButton;
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
 use imperialism_core::*;
+use imperialism_formats::SoundId;
+
+const CIVILIAN_SELECTED_SOUND: SoundId = SoundId::new(0x2338);
 
 pub(crate) fn register(app: &mut App) {
     app.add_systems(
@@ -33,6 +40,7 @@ pub(crate) fn on_strategic_map_click(
     >,
     ocean_maps: Query<&RelativeCursorPosition, With<OceanMapCanvas>>,
     mut session: ResMut<GameSession>,
+    mut audio: RetailAudioAssets,
 ) {
     if click.event.button != PointerButton::Primary {
         return;
@@ -53,13 +61,21 @@ pub(crate) fn on_strategic_map_click(
     let Ok((_, mut interaction)) = land.single_mut() else {
         return;
     };
-    handle_map_click_by_interaction_mode(&mut commands, &mut session, &mut interaction, tile, 0);
+    handle_map_click_by_interaction_mode(
+        &mut commands,
+        &mut session,
+        &mut interaction,
+        &mut audio,
+        tile,
+        0,
+    );
 }
 
 fn handle_map_click_by_interaction_mode(
     commands: &mut Commands,
     session: &mut GameSession,
     interaction: &mut StrategicInteraction,
+    audio: &mut RetailAudioAssets,
     tile: TileId,
     input_flags: i32,
 ) {
@@ -78,7 +94,14 @@ fn handle_map_click_by_interaction_mode(
             {
                 return;
             }
-            if apply_civilian_tile_order(session, &mut interaction.civilian, tile, nation) {
+            if apply_civilian_tile_order(
+                commands,
+                session,
+                &mut interaction.civilian,
+                audio,
+                tile,
+                nation,
+            ) {
                 cycle_map_interaction_selection(session, interaction);
             }
         }
@@ -94,6 +117,7 @@ fn handle_map_click_by_interaction_mode(
                 commands,
                 session,
                 interaction,
+                audio,
                 tile,
                 nation,
                 input_flags,
@@ -126,6 +150,7 @@ fn handle_map_click_by_interaction_mode(
                 commands,
                 session,
                 interaction,
+                audio,
                 tile,
                 nation,
                 input_flags,
@@ -148,6 +173,7 @@ fn handle_map_click_by_interaction_mode(
                 commands,
                 session,
                 interaction,
+                audio,
                 tile,
                 nation,
                 input_flags,
@@ -216,6 +242,7 @@ fn apply_civilian_selection_or_report(
     commands: &mut Commands,
     session: &mut GameSession,
     interaction: &mut StrategicInteraction,
+    audio: &mut RetailAudioAssets,
     tile: TileId,
     nation: NationId,
     input_flags: i32,
@@ -235,20 +262,20 @@ fn apply_civilian_selection_or_report(
             set_map_interaction_mode(interaction, MapInteractionMode::Civilian);
             interaction.civilian = Some(id);
             session.game.activate_civilian_selection(id);
+            audio.play(commands, CIVILIAN_SELECTED_SOUND);
             return true;
         }
         return false;
     }
-    let Some(province) = session.game.map()[tile].province else {
-        return true;
-    };
-    spawn_army_report(commands, province);
+    spawn_civilian_report(commands, id);
     true
 }
 
 fn apply_civilian_tile_order(
+    commands: &mut Commands,
     session: &mut GameSession,
     civilian: &mut Option<CivilianUnitId>,
+    audio: &mut RetailAudioAssets,
     tile: TileId,
     nation: NationId,
 ) -> bool {
@@ -257,6 +284,7 @@ fn apply_civilian_tile_order(
     {
         *civilian = Some(unit);
         session.game.activate_civilian_selection(unit);
+        audio.play(commands, CIVILIAN_SELECTED_SOUND);
         return false;
     }
     let Some(unit) = *civilian else {
@@ -266,8 +294,34 @@ fn apply_civilian_tile_order(
         *civilian = None;
         return false;
     }
+    let action = session.game.civilian_tile_action(unit, tile);
+    match action {
+        CivilianTileAction::ShowOrderReport => {
+            let Some((clicked, _)) = session.game.civilian_on_tile_for_nation(tile, nation) else {
+                return false;
+            };
+            spawn_civilian_report(commands, clicked);
+            return false;
+        }
+        CivilianTileAction::EngineerSameTile => {
+            spawn_engineer_construction(commands, unit);
+            return false;
+        }
+        CivilianTileAction::PurchaseLand => {
+            spawn_developer_purchase(commands, unit, tile);
+            return false;
+        }
+        _ => {}
+    }
+    let kind = session
+        .game
+        .civilian_unit(unit)
+        .map(|unit| unit.unit_type());
     match session.game.issue_civilian_tile_order(unit, tile) {
         Ok(_) => {
+            if let Some(sound) = civilian_order_sound(action, kind) {
+                audio.play(commands, sound);
+            }
             *civilian = None;
             true
         }
@@ -277,6 +331,29 @@ fn apply_civilian_tile_order(
             | CivilianOrderRejection::ConstructionRequiresChoice
             | CivilianOrderRejection::PurchaseLandRequiresConfirmation,
         ) => false,
+    }
+}
+
+const fn civilian_order_sound(
+    action: CivilianTileAction,
+    kind: Option<CivilianUnitKind>,
+) -> Option<SoundId> {
+    match action {
+        CivilianTileAction::MoveUnit => Some(SoundId::new(0x2328)),
+        CivilianTileAction::EngineerDirection14
+        | CivilianTileAction::EngineerDirection03
+        | CivilianTileAction::EngineerDirection25 => Some(SoundId::new(0x2329)),
+        CivilianTileAction::Prospect => Some(SoundId::new(0x232e)),
+        CivilianTileAction::DevelopResource => match kind {
+            Some(CivilianUnitKind::Miner) => Some(SoundId::new(0x232d)),
+            Some(CivilianUnitKind::Farmer) => Some(SoundId::new(0x2332)),
+            Some(CivilianUnitKind::Forester) => Some(SoundId::new(0x2331)),
+            Some(CivilianUnitKind::Rancher) => Some(SoundId::new(0x2333)),
+            Some(CivilianUnitKind::Developer) => Some(SoundId::new(0x2335)),
+            Some(CivilianUnitKind::Driller) => Some(SoundId::new(0x2339)),
+            _ => None,
+        },
+        _ => None,
     }
 }
 
@@ -437,5 +514,46 @@ fn sync_strategic_map_cursor(
         request_arrow_cursor(&mut requested);
     } else {
         request_turn_event_cursor(&mut requested, token);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn civilian_order_sounds_match_tcivmgr_order_acceptance_cues() {
+        assert_eq!(
+            civilian_order_sound(CivilianTileAction::MoveUnit, None),
+            Some(SoundId::new(0x2328))
+        );
+        assert_eq!(
+            civilian_order_sound(
+                CivilianTileAction::EngineerDirection14,
+                Some(CivilianUnitKind::Engineer),
+            ),
+            Some(SoundId::new(0x2329))
+        );
+        assert_eq!(
+            civilian_order_sound(
+                CivilianTileAction::DevelopResource,
+                Some(CivilianUnitKind::Miner),
+            ),
+            Some(SoundId::new(0x232d))
+        );
+        assert_eq!(
+            civilian_order_sound(
+                CivilianTileAction::DevelopResource,
+                Some(CivilianUnitKind::Fisherman),
+            ),
+            None
+        );
+        assert_eq!(
+            civilian_order_sound(
+                CivilianTileAction::DevelopResource,
+                Some(CivilianUnitKind::Driller),
+            ),
+            Some(SoundId::new(0x2339))
+        );
     }
 }
