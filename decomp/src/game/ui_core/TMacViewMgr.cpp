@@ -313,9 +313,12 @@ void TMacViewMgr::LoadStrategicMapMarkerAtlas1372() {
   atlas684 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x55c);
 }
 
+// Listing 0x0050a470 inlines the loaders' exact-type non-virtual destructors.
+IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x0050a470
 void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
   RECT atlasBounds;
+  RECT blitRect;
   TQuickDrawSurfaceContext* savedContext;
   int savedFlags;
   atlasBounds.left = 0;
@@ -327,11 +330,38 @@ void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
   SetGWorld(atlas688, savedFlags);
   LockPixels(GetGWorldPixMap(atlas688));
   ResetQuickDrawStrokeState();
-  ResolveAndBlitBitmapResourceToActiveAtlas(0x58e, &atlasBounds);
-  ResolveAndBlitBitmapResourceToActiveAtlas(0x58f, &atlasBounds);
+
+  TBitmapResourceLoader** firstLoaderHandle = CreateBitmapResourceLoaderHandle(0x58e);
+  TBitmapResourceLoader* firstLoader = *firstLoaderHandle;
+  if (firstLoader != 0) {
+    firstLoader->EnsureBitmapResourceLoadedAndCopyRectSize();
+    firstLoader->flags |= 1;
+    CopyRect(&blitRect, &firstLoader->bitmapRect);
+    BlitBitmapResourceLoaderToActiveDc(firstLoaderHandle, &blitRect);
+    firstLoader->ReleaseBitmapResource();
+    firstLoader->flags &= static_cast<unsigned char>(~1);
+  }
+  delete *firstLoaderHandle;
+  delete firstLoaderHandle;
+
+  TBitmapResourceLoader** secondLoaderHandle = CreateBitmapResourceLoaderHandle(0x58f);
+  TBitmapResourceLoader* secondLoader = *secondLoaderHandle;
+  if (secondLoader != 0) {
+    secondLoader->EnsureBitmapResourceLoadedAndCopyRectSize();
+    secondLoader->flags |= 1;
+    CopyRect(&blitRect, &secondLoader->bitmapRect);
+    OffsetRect(&blitRect, 0x400, 0);
+    BlitBitmapResourceLoaderToActiveDc(secondLoaderHandle, &blitRect);
+    secondLoader->ReleaseBitmapResource();
+    secondLoader->flags &= static_cast<unsigned char>(~1);
+  }
+  delete *secondLoaderHandle;
+  delete secondLoaderHandle;
+
   UnlockPixels(GetGWorldPixMap(atlas688));
   SetGWorld(savedContext, savedFlags);
 }
+IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 // FUNCTION: IMPERIALISM 0x0050a6a0
 void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
