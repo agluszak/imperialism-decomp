@@ -127,7 +127,7 @@ impl GameState {
         source: NationId,
         code: i16,
     ) {
-        if self.nations.majors[&nation].auto.is_none() {
+        if self.nations.majors[&nation].economy.diplomacy_eligible {
             self.insert_sorted_notice(nation, DiplomacyNotice { source, code });
         }
 
