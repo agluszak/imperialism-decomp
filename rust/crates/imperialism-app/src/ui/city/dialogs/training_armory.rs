@@ -330,12 +330,12 @@ pub(in crate::ui::city) fn sync_armory_details(
         SkillBand::High => (production.high, 4),
     };
     let secondary = spec.secondary;
-    let unit_index = order.unit_kind as usize;
+    let unit_index = usize::from(order.unit_kind.retail());
     let unit_name = assets
-        .string(0x2717, order.unit_kind as i16 + 1)
+        .string(0x2717, i16::from(order.unit_kind.retail()) + 1)
         .expect("retail military unit name");
     let description = assets
-        .string(0x2750, order.unit_kind as i16 + 1)
+        .string(0x2750, i16::from(order.unit_kind.retail()) + 1)
         .expect("retail military unit description");
     let static_text = assets
         .string(
@@ -391,7 +391,7 @@ pub(in crate::ui::city) fn sync_armory_details(
         .single_mut()
         .expect("Armory dialog has one unit placard")
         .image = assets
-        .picture(PictureId::new(0x1d9c + order.unit_kind as i16))
+        .picture(PictureId::new(0x1d9c + i16::from(order.unit_kind.retail())))
         .expect("retail Armory unit placard");
     let secondary_visible = if secondary.is_some() {
         Visibility::Visible

@@ -267,7 +267,7 @@ fn country_dto(
 
 fn military_unit_dto(id: MilitaryUnitId, unit: &MilitaryUnitState) -> LegacyMilitaryUnit {
     LegacyMilitaryUnit {
-        unit_type: i16::from(unit.unit_type() as u8),
+        unit_type: i16::from(unit.unit_type().retail()),
         stationed_province: option_i16(unit.stationed_province().map(ProvinceId::get)),
         order_target: option_i16(unit.order().target().map(ProvinceId::get)),
         owner_nation: i16::from(unit.owner_nation().get()),
@@ -504,7 +504,7 @@ fn city_orders_dto(orders: &CityOrders) -> LegacyCityOrders {
         military_recruitment: std::array::from_fn(|index| {
             let order =
                 &orders.military_recruitment[MilitaryRecruitmentCategory::from_usize(index)];
-            unit_from_progress(&order.progress, i16::from(order.unit_kind as u8))
+            unit_from_progress(&order.progress, i16::from(order.unit_kind.retail()))
         }),
         civilian_recruitment: std::array::from_fn(|index| {
             unit_from_progress(
@@ -595,7 +595,7 @@ fn civilian_unit_dto(
         CivilianWorkOrder::PurchaseLand { turns } => (13, -1, turns.get()),
     };
     LegacyCivilianUnit {
-        unit_type: i16::from(unit.unit_type() as u8),
+        unit_type: i16::from(unit.unit_type().retail()),
         tile_index: tile,
         order_target: target,
         owner_nation: i16::from(unit.owner_nation().get()),
@@ -710,7 +710,7 @@ fn navy_dto(state: &GameState) -> LegacyNavyState {
     let ships: Vec<LegacyShip> = state
         .ships_in_retail_order()
         .map(|(_, ship)| LegacyShip {
-            ship_type: ship.ship_type as i16,
+            ship_type: i16::from(ship.ship_type.retail()),
             aggression: ship.aggression.retail(),
             nation: i16::from(ship.nation.get()),
             name: ship.name.clone(),
@@ -857,7 +857,7 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
         initial_capability_value_by_nation_and_resource: [[0; RESOURCE_KIND_COUNT];
             MAJOR_NATION_COUNT],
         tech_selector: 0,
-        active_zone_index: technology.navy_growth_ship_type as i16,
+        active_zone_index: i16::from(technology.navy_growth_ship_type.retail()),
         per_technology_unlock_flags: (*technology.global_unlocks_by_technology.as_array())
             .map(u8::from),
         resource_type_enabled: std::array::from_fn(|index| {
@@ -870,7 +870,7 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
         nation_capability_slots: std::array::from_fn(|slot| {
             technology.selected_capability_slots[MajorNationId::new(slot as u8)]
                 .as_array()
-                .map(|kind| kind as i16)
+                .map(|kind| i16::from(kind.retail()))
         }),
         research_status_by_nation,
         selected_resource_type_by_nation: [[0; 14]; MAJOR_NATION_COUNT],
@@ -932,7 +932,7 @@ fn tile_dto(tile: &TileState) -> LegacyTerrainTile {
         marker_slot_index: tile.marker_slot_index,
         edge_resources: tile
             .edge_resources
-            .map(|resource| option_i8(resource.map(|kind| kind as u8))),
+            .map(|resource| option_i8(resource.map(|kind| kind.retail()))),
         gate: tile.gate,
         rail_flags: tile.pending_rail_links.bits(),
         action_state: tile
@@ -1049,9 +1049,14 @@ fn production_from_progress(
 fn production_from_ship(order: &ShipOrderState) -> LegacyProductionOrder {
     let mut tracking_slots = [0_i16; RESOURCE_KIND_COUNT];
     for (kind, amount) in order.materials.iter() {
-        tracking_slots[kind as usize] = amount;
+        tracking_slots[usize::from(kind.retail())] = amount;
     }
-    production_order(&order.progress, order.ship_type as i16, tracking_slots, 0)
+    production_order(
+        &order.progress,
+        i16::from(order.ship_type.retail()),
+        tracking_slots,
+        0,
+    )
 }
 
 fn production_order(

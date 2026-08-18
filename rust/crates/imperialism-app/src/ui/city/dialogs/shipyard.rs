@@ -81,13 +81,13 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             Some(ShipyardRowData {
                 ship_type,
                 ship_name: assets
-                    .string(0x2716, ship_type as i16 + 1)
+                    .string(0x2716, i16::from(ship_type.retail()) + 1)
                     .expect("retail ship name"),
                 description: assets
-                    .string(0x2752, ship_type as i16)
+                    .string(0x2752, i16::from(ship_type.retail()))
                     .expect("retail ship description"),
                 picture: assets
-                    .picture(PictureId::new(9834 + ship_type as i16))
+                    .picture(PictureId::new(9834 + i16::from(ship_type.retail())))
                     .expect("retail Shipyard detail picture"),
                 materials: SHIPYARD_MATERIALS
                     .iter()
@@ -135,7 +135,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             Visibility::Hidden
         });
         if let Some(row_data) = details.as_ref() {
-            let source_left = f32::from(row_data.ship_type as u8 - 1) * 80.0;
+            let source_left = f32::from(row_data.ship_type.retail() - 1) * 80.0;
             commands.spawn((
                 Node {
                     position_type: PositionType::Absolute,

@@ -602,7 +602,7 @@ fn project_category(
     set_picture(pictures, background, screen.pictures.category.clone());
     commands.entity(history).remove::<InteractionDisabled>();
     let template = get_string(assets, 0x2741, 3);
-    let commodity_name = get_string(assets, 0x2711, commodity.resource() as i16);
+    let commodity_name = get_string(assets, 0x2711, i16::from(commodity.resource().retail()));
     set_text(
         texts,
         deal_book_title(titles, DealBookTitle::Left),
@@ -1143,7 +1143,11 @@ fn format_deal_line(
     deal: DealBookDealLine,
 ) -> String {
     let counterparty = nation_name(state, deal.counterparty);
-    let commodity = get_string(assets, 0x2711, deal.commodity.resource() as i16);
+    let commodity = get_string(
+        assets,
+        0x2711,
+        i16::from(deal.commodity.resource().retail()),
+    );
     if deal.amount != 0 {
         let amount = deal.amount.to_string();
         if deal.unit_price != deal.market_price {

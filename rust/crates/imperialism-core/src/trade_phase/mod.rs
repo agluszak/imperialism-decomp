@@ -450,7 +450,9 @@ pub(super) fn trade_commodity(resource: ResourceKind) -> TradeCommodity {
 }
 
 pub(super) fn resource_code(commodity: Option<TradeCommodity>) -> i16 {
-    commodity.map_or(NO_RESOURCE, |commodity| commodity as i16)
+    commodity.map_or(NO_RESOURCE, |commodity| {
+        i16::from(commodity.resource().retail())
+    })
 }
 
 pub(super) fn preferred_nation(status: CountryStatus, own: NationId) -> NationId {

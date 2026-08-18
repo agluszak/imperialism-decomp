@@ -189,7 +189,11 @@ fn apply_offer_sheet_pose(
         .display_name(offer.seller)
         .unwrap_or("")
         .to_owned();
-    let commodity = get_string(assets, 0x2711, offer.commodity as i16);
+    let commodity = get_string(
+        assets,
+        0x2711,
+        i16::from(offer.commodity.resource().retail()),
+    );
     let amount = offer.amount.to_string();
     let price = format_currency(i32::from(offer.price));
     set_text(
@@ -238,7 +242,9 @@ fn apply_offer_sheet_pose(
         };
     }
 
-    if let Ok(icon) = assets.picture(PictureId::new(COMMODITY_ICON_BASE + offer.commodity as i16)) {
+    if let Ok(icon) = assets.picture(PictureId::new(
+        COMMODITY_ICON_BASE + i16::from(offer.commodity.resource().retail()),
+    )) {
         commands
             .entity(tree.find(root, fourcc!("icon")))
             .insert(ImageNode::new(icon));

@@ -153,7 +153,7 @@ impl GameState {
             battle_flags: 0,
         };
         self.military_units.insert(id, unit);
-        self.announce_later(nation, 3, unit_kind as i16, 1);
+        self.announce_later(nation, 3, i16::from(unit_kind.retail()), 1);
     }
 
     fn needs_overseas_developer(&self, nation: MajorNationId) -> bool {
@@ -452,7 +452,7 @@ impl GameState {
         );
 
         self.announce_later(nation, 3, 0x2508, 1);
-        self.announce_later(nation, 0, ship_type as i16, 1);
+        self.announce_later(nation, 0, i16::from(ship_type.retail()), 1);
     }
 }
 

@@ -196,7 +196,7 @@ fn sync_civilian_toolbar(
 }
 
 fn portrait_picture_id(kind: CivilianUnitKind) -> i16 {
-    PORTRAIT_PICTURE_BASE + i16::from(kind as u8)
+    PORTRAIT_PICTURE_BASE + i16::from(kind.retail())
 }
 
 fn civilian_legend_target_counts(state: &GameState, unit: &CivilianUnitState) -> [i16; 5] {
@@ -241,7 +241,7 @@ fn spawn_civilian_legend(
 ) {
     let kind = unit.unit_type();
     let name = assets
-        .string(CIVILIAN_NAME_GROUP, i16::from(kind as u8) + 1)
+        .string(CIVILIAN_NAME_GROUP, i16::from(kind.retail()) + 1)
         .expect("retail civilian class name must load");
     let (name_font, name_layout, name_line_height, _) = assets
         .text_style(RetailTextStylePreset {

@@ -102,10 +102,10 @@ pub(in crate::ui::city) fn configure_university_dialog(
                 // recruitment category once and reuses that 1-based index for
                 // both `0x2718` (name) and `0x2751` (description).
                 unit_name: assets
-                    .string(0x2718, i16::from(kind as u8) + 1)
+                    .string(0x2718, i16::from(kind.retail()) + 1)
                     .expect("retail civilian name"),
                 description: assets
-                    .string(0x2751, i16::from(kind as u8) + 1)
+                    .string(0x2751, i16::from(kind.retail()) + 1)
                     .expect("retail civilian description"),
                 preview: assets
                     .transparent_picture(PictureId::new(university_preview_picture(kind)), 0x10)
