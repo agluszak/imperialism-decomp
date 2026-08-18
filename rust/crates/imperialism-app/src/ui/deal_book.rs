@@ -77,7 +77,7 @@ struct DealBookPictures {
     tab_empty: Handle<Image>,
     tab_filled: Handle<Image>,
     flags: Handle<Image>,
-    commodities: [Handle<Image>; ResourceKind::LENGTH],
+    commodities: ResourceTable<Handle<Image>>,
 }
 
 #[derive(Clone)]
@@ -159,11 +159,11 @@ fn bind_deal_book(
         flags: assets
             .transparent_picture(PictureId::new(FLAG_ATLAS), 0x10)
             .expect("retail deal-book flag atlas must load"),
-        commodities: std::array::from_fn(|index| {
+        commodities: ResourceTable::from_array(std::array::from_fn(|index| {
             assets
                 .transparent_picture(PictureId::new(COMMODITY_ICON_BASE + index as i16), 0x10)
                 .expect("retail deal-book commodity icon must load")
-        }),
+        })),
     };
     let (body, body_layout, body_line_height, _) = assets
         .text_style(RetailTextStylePreset {
@@ -799,7 +799,7 @@ fn spawn_commodity_header(
     let name = get_string(assets, 0x2711, resource as i16);
     spawn_icon(
         commands,
-        screen.pictures.commodities[resource as usize].clone(),
+        screen.pictures.commodities[resource].clone(),
         None,
         host,
         0.0,
