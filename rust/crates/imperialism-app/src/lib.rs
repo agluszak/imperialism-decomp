@@ -93,9 +93,6 @@ fn add_game_plugins(app: &mut App) {
         ui::TradePlugin,
         ui::DiplomacyPlugin,
         ui::DealBookPlugin,
-    ))
-    .add_plugins(ui::OfferSheetPlugin)
-    .add_plugins((
         media::ImperialismMediaPlugin,
         ui::CursorPlugin,
         ui::TechnologyAdvancePlugin,
@@ -124,6 +121,7 @@ pub fn run(
                 primary_window: Some(Window {
                     title: "Imperialism".to_owned(),
                     resolution: (logical_resolution[0], logical_resolution[1]).into(),
+                    decorations: false,
                     ..default()
                 }),
                 ..default()

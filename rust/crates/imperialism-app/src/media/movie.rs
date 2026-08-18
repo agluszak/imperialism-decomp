@@ -149,6 +149,17 @@ impl MovieBackend {
         let _ = self.playbin.set_state(gst::State::Null);
     }
 
+    #[cfg(test)]
+    fn seek_near_end(&self) -> bool {
+        let Some(duration) = self.playbin.query_duration::<gst::ClockTime>() else {
+            return false;
+        };
+        let position = duration.saturating_sub(gst::ClockTime::from_mseconds(250));
+        self.playbin
+            .seek_simple(gst::SeekFlags::FLUSH | gst::SeekFlags::KEY_UNIT, position)
+            .is_ok()
+    }
+
     pub(crate) fn pull_video_frame(
         &self,
         timeout: Duration,
@@ -365,18 +376,85 @@ mod tests {
 
     #[test]
     #[ignore = "requires IMPERIALISM_RETAIL_DIR pointing at the English GOG installation"]
-    fn decodes_untouched_retail_open_avi() {
+    fn decodes_untouched_retail_cinematics() {
         let root = PathBuf::from(
             std::env::var_os("IMPERIALISM_RETAIL_DIR")
                 .expect("IMPERIALISM_RETAIL_DIR must name the English GOG installation"),
         );
         let assets = imperialism_formats::RetailAssets::open(&root).unwrap();
-        let path = assets.movie_path(MovieId::Open);
+        for movie_id in [MovieId::Open, MovieId::Vote, MovieId::Win, MovieId::Lose] {
+            decode_retail_cinematic(&assets, movie_id);
+        }
+    }
+
+    fn decode_retail_cinematic(assets: &imperialism_formats::RetailAssets, movie_id: MovieId) {
+        let path = assets.movie_path(movie_id);
+        assert!(
+            path.is_file(),
+            "expected GOG cinematic {} at {}",
+            movie_id.file_stem(),
+            path.display()
+        );
+
         let movie = MovieBackend::open_observed(&path).unwrap();
         movie.play().unwrap();
         let frame = wait_for_video_frame(&movie);
-        assert!(frame.width > 0 && frame.height > 0);
-        let _image = rgba_frame_to_image(&frame);
+        assert!(
+            frame.width > 0 && frame.height > 0,
+            "{movie_id} decoded an empty frame"
+        );
+        let aspect = f64::from(frame.width) / f64::from(frame.height);
+        assert!(
+            (aspect - 4.0 / 3.0).abs() < 0.05,
+            "{movie_id} aspect {aspect} ({}x{}) is not 4:3",
+            frame.width,
+            frame.height
+        );
+        assert!(
+            wait_for_audio(&movie),
+            "{movie_id} should deliver movie audio buffers"
+        );
+
         movie.stop();
+        assert!(
+            movie
+                .pull_video_frame(Duration::from_millis(50))
+                .unwrap()
+                .is_none(),
+            "{movie_id} skip/stop must halt frames"
+        );
+
+        let movie = MovieBackend::open_observed(&path).unwrap();
+        movie.play().unwrap();
+        let _ = wait_for_video_frame(&movie);
+        assert!(
+            movie.seek_near_end(),
+            "{movie_id} playbin should report a duration for EOS seek"
+        );
+        let mut eos = false;
+        let deadline = std::time::Instant::now() + Duration::from_secs(8);
+        while deadline.elapsed() < Duration::from_secs(8) {
+            let _ = movie.pull_audio_buffer(Duration::from_millis(10));
+            let _ = movie.pull_video_frame(Duration::from_millis(50));
+            if movie.reached_eos() {
+                eos = true;
+                break;
+            }
+        }
+        movie.stop();
+        assert!(
+            eos,
+            "{movie_id} should reach EOS after seeking near the end"
+        );
+    }
+
+    fn wait_for_audio(movie: &MovieBackend) -> bool {
+        let deadline = std::time::Instant::now() + Duration::from_secs(3);
+        while deadline.elapsed() < Duration::from_secs(3) {
+            if movie.pull_audio_buffer(Duration::from_millis(100)) {
+                return true;
+            }
+        }
+        false
     }
 }

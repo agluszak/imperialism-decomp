@@ -91,6 +91,17 @@ impl MusicDirector {
         self.queue_cue(cue, fade, now_tick16);
     }
 
+    /// Load/save and the player-orders map use the same 2+3 pool. Re-entering the map
+    /// while that pool is already playing must not reshuffle (city/trade overlays).
+    pub(crate) fn start_turn_flow_pool(&mut self, now_tick16: u32) {
+        const POOL: [MusicTrack; 2] = [MusicTrack::TURN_FLOW_2, MusicTrack::TURN_FLOW_3];
+        if self.pool.as_slice() == POOL.as_slice() && self.active.is_some() {
+            return;
+        }
+        self.set_pool(&POOL);
+        self.schedule_random(now_tick16);
+    }
+
     /// `SelectAndScheduleRandomAudioCue`.
     pub(crate) fn schedule_random(&mut self, now_tick16: u32) {
         if self.remaining.is_empty() {
@@ -196,6 +207,23 @@ fn start_load_save_music(mut music: ResMut<MusicDirector>, time: Option<Res<Time
     music.schedule_random(now);
 }
 
+fn start_turn_flow_music(mut music: ResMut<MusicDirector>, time: Option<Res<Time>>) {
+    let now = time.as_ref().map_or(0, |time| tick16(time));
+    music.start_turn_flow_pool(now);
+}
+
+fn start_battle_report_music(mut music: ResMut<MusicDirector>, time: Option<Res<Time>>) {
+    let now = time.as_ref().map_or(0, |time| tick16(time));
+    music.set_pool(&[MusicTrack::BATTLE_REPORT]);
+    music.schedule_random(now);
+}
+
+fn start_score_music(mut music: ResMut<MusicDirector>, time: Option<Res<Time>>) {
+    let now = time.as_ref().map_or(0, |time| tick16(time));
+    music.set_pool(&[MusicTrack::HIGH_SCORE]);
+    music.schedule_random(now);
+}
+
 fn start_credits_music(mut music: ResMut<MusicDirector>, time: Option<Res<Time>>) {
     let now = time.as_ref().map_or(0, |time| tick16(time));
     music.set_pool(&[MusicTrack::CREDITS]);
@@ -210,6 +238,10 @@ pub(crate) fn register(app: &mut App) {
         .add_systems(OnEnter(AppState::DealBook), start_diplomacy_music)
         .add_systems(OnEnter(AppState::OfferSheet), start_offer_sheet_music)
         .add_systems(OnEnter(AppState::LoadSave), start_load_save_music)
+        .add_systems(OnEnter(AppState::StrategicMap), start_turn_flow_music)
+        .add_systems(OnEnter(AppState::BattleReport), start_battle_report_music)
+        .add_systems(OnEnter(AppState::GameScore), start_score_music)
+        .add_systems(OnEnter(AppState::HighScore), start_score_music)
         .add_systems(OnEnter(AppState::Credits), start_credits_music)
         .add_systems(Update, (sync_music, apply_music_volume).chain());
 }
@@ -386,6 +418,21 @@ mod tests {
         let mut music = MusicDirector::default();
         music.set_active_cue(MusicTrack::MAIN_MENU, false, 0);
         assert_eq!(music.output_volume(0, 0), 0);
+    }
+
+    #[test]
+    fn turn_flow_pool_does_not_reshuffle_while_already_playing() {
+        let mut music = director_with_rng(1);
+        music.start_turn_flow_pool(0);
+        let first = music.active.unwrap();
+        let remaining = music.remaining.clone();
+        music.start_turn_flow_pool(40);
+        assert_eq!(music.active, Some(first));
+        assert_eq!(music.remaining, remaining);
+        assert_eq!(
+            music.pool,
+            [MusicTrack::TURN_FLOW_2, MusicTrack::TURN_FLOW_3]
+        );
     }
 
     #[test]

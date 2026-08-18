@@ -25,11 +25,13 @@ immediately.
 
 A movie also stops CD/music, tears down DirectSound so AVI audio can open the wave device, and
 paints the host frame black (`PALETTEINDEX(0)`). Destruction restores the tiled BITMAP `0x119`
-surround and DirectSound.
+surround and DirectSound. Rust stops `MusicDirector`, despawns in-flight WAVE one-shots, and
+skips new SFX while `AppState::OpeningCinematic` is active.
 
 This checkout's GStreamer 1.24 stack decodes Cinepak (`cvid`) plus PCM via `playbin` /
 `avdec_cinepak`. Untouched GOG `Movies/*.avi` codecs still need a machine with
-`IMPERIALISM_RETAIL_DIR`; the ignored `decodes_untouched_retail_open_avi` test is that proof.
+`IMPERIALISM_RETAIL_DIR`; the ignored `decodes_untouched_retail_cinematics` test
+opens `open`, `vote`, `win`, and `lose` and checks sound, 4:3 frames, skip/stop, and EOS.
 
 ## Music
 
@@ -55,7 +57,9 @@ replacement. Volume is preference slot 3 (0..=255). Rust keeps that policy in `M
 and drives one Bevy `AudioSink`. Presentation RNG is independent of the gameplay CRT stream;
 native semantic captures do not pump `SelectAndScheduleRandomAudioCue`. Screen wiring today:
 main menu cue 6, diplomacy/deal book `set_cue(4, fade)`, offer sheet `request_preset(4, fade)`,
-load/save pool 2+3, credits cue 12. Missing GOG `MUSIC/TrackNN` files are skipped.
+load/save pool 2+3, player-orders map pool 2+3 (does not reshuffle if that pool is already
+playing), battle report cue 5, game/high score cue 11, tactical result 9/10 after Auto/Retreat,
+credits cue 12. Missing GOG `MUSIC/TrackNN` files are skipped.
 
 ## Sound effects
 
@@ -74,6 +78,7 @@ DIB. Movie construction replaces that with black.
 
 ## Follow-up order
 
-Persistent tiled chrome and a centered 640×480 `RetailViewport`, then wire `MovieBackend` to
-`AppState::Cinematic`, then opening / decade / victory sequences. DirectSound's six-voice steal,
-the millibel SFX curve, and exact CD fade tick timing stay evidence-driven.
+Remaining host-frame work is captionless maximize (done: `decorations: false`) vs. focus-loss
+minimize and the initial splash bitmap `0x3b6`. DirectSound's six-voice steal, the millibel
+SFX curve, and wiring additional `PlaySoundEffect` call sites for already-ported actions stay
+evidence-driven. Untouched GOG AVI playback still needs `IMPERIALISM_RETAIL_DIR`.

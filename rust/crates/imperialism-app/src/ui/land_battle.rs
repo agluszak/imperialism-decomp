@@ -2,11 +2,12 @@ use super::generated;
 use super::retail::RetailTree;
 use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
+use crate::media::MusicDirector;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::fourcc;
+use imperialism_formats::{MusicTrack, fourcc};
 
 #[derive(Component)]
 struct LandBattleRoot;
@@ -104,6 +105,8 @@ fn on_land_battle_activate(
     actions: Query<&LandBattleAction>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
+    mut music: Option<ResMut<MusicDirector>>,
+    time: Option<Res<Time>>,
     assets: Option<Res<crate::RetailAssetsResource>>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
@@ -128,6 +131,26 @@ fn on_land_battle_activate(
             }
         }
     }
+    if let Some(music) = music.as_mut() {
+        cue_tactical_result(&session.game, music, time.as_deref());
+    }
+}
+
+/// `TTacticalBattle` result dialog: `RequestAudioPresetChangeWithDeferredApply(9 or 10, 0)`.
+fn cue_tactical_result(game: &GameState, music: &mut MusicDirector, time: Option<&Time>) {
+    let Some(report) = game.battle_reports().last() else {
+        return;
+    };
+    let winner = report.sides[usize::from(report.participant_index)].nation;
+    let cue = if winner == game.turn().active_nation {
+        MusicTrack::BATTLE_VICTORY
+    } else {
+        MusicTrack::BATTLE_DEFEAT
+    };
+    let now = time.map_or(0, |time| {
+        u32::try_from(time.elapsed().as_millis() / 16).unwrap_or(u32::MAX)
+    });
+    music.request_preset(cue, false, now);
 }
 
 #[cfg(test)]
