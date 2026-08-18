@@ -35,7 +35,6 @@ pub struct CombatMovesContinuation {
     next_stack: usize,
     owner_cache: ProvinceTable<Option<NationId>>,
     pub battle: PendingLandBattle,
-    #[serde(skip)]
     pub(crate) army_battle: Option<Box<ArmyBattle>>,
 }
 

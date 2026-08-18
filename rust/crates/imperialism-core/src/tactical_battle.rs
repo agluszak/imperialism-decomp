@@ -8,6 +8,7 @@ use crate::military::{ActionClassScores, ActionClassWeights, TACTICAL_COMPOSITIO
 use crate::tactical_tables::*;
 use crate::*;
 use enum_map::{Enum, EnumMap};
+use serde::{Deserialize, Deserializer, Serialize, Serializer, de::Error as _};
 
 /// Stable identity for a unit inside one army battle (`TTacticalUnit` source id).
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
@@ -59,7 +60,7 @@ impl TacticalHex {
 }
 
 /// Attacker is side 0 (`TTacticalBattle::currentSideC`).
-#[derive(Clone, Copy, Debug, Enum, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Enum, Eq, PartialEq, Serialize)]
 pub enum BattleSide {
     Attacker,
     Defender,
@@ -336,7 +337,7 @@ const TACTICAL_TERRAIN: [&str; 4] = [
     ),
 ];
 
-#[derive(Clone, Copy, Eq, PartialEq)]
+#[derive(Clone, Copy, Deserialize, Eq, PartialEq, Serialize)]
 enum TacticalUnitState {
     Ready,
     MoraleBroken,
@@ -344,14 +345,14 @@ enum TacticalUnitState {
     Destroyed,
 }
 
-#[derive(Clone, Copy, Eq, PartialEq)]
+#[derive(Clone, Copy, Deserialize, Eq, PartialEq, Serialize)]
 enum MineRun {
     None,
     First,
     Second,
 }
 
-#[derive(Clone, Copy, Eq, PartialEq)]
+#[derive(Clone, Copy, Deserialize, Eq, PartialEq, Serialize)]
 enum DeployMark {
     Clear,
     UnitCover,
@@ -373,7 +374,7 @@ impl DeployMark {
     }
 }
 
-#[derive(Clone, Copy, Eq, PartialEq)]
+#[derive(Clone, Copy, Deserialize, Eq, PartialEq, Serialize)]
 enum TacticalStance {
     Hold,
     Retreat,
@@ -385,7 +386,7 @@ enum TacticalStance {
     Garrison,
 }
 
-#[derive(Clone, Copy, Eq, PartialEq)]
+#[derive(Clone, Copy, Deserialize, Eq, PartialEq, Serialize)]
 enum BattleOutcome {
     InProgress,
     AttackerWon,
@@ -403,16 +404,17 @@ impl BattleSide {
 
 type BattleSideTable<T> = EnumMap<BattleSide, T>;
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Deserialize, Serialize)]
 struct Tile {
     terrain: TacticalTerrain,
+    #[serde(skip)]
     occupant: Option<usize>,
     deploy_mark: DeployMark,
     mine_run: MineRun,
     trench_mask: u8,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Deserialize, Serialize)]
 struct TacUnit {
     source: MilitaryUnitId,
     unit_type: MilitaryUnitKind,
@@ -431,14 +433,16 @@ struct TacUnit {
     projection: ActionClassScores,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Deserialize, Serialize)]
 struct Side {
     is_our: bool,
     ready: bool,
     auto_play: bool,
     nation: NationId,
     cursor: i32,
+    #[serde(skip)]
     units: Vec<usize>,
+    #[serde(skip)]
     secondary: Vec<usize>,
     projection_sums: ActionClassScores,
     baseline_similarity: f32,
@@ -454,17 +458,24 @@ struct Side {
     cached_bombard_tile: i32,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Deserialize, Serialize)]
 struct Battle {
+    #[serde(with = "tile_array")]
     tiles: [Tile; TACTICAL_TILE_COUNT],
+    #[serde(skip, default = "empty_move_costs")]
     move_costs: [i16; TACTICAL_TILE_COUNT + 1],
+    #[serde(skip, default = "empty_threat")]
     threat: [i8; TACTICAL_TILE_COUNT],
+    #[serde(skip, default = "empty_i32_grid")]
     candidate_scores: [i32; TACTICAL_TILE_COUNT],
+    #[serde(skip, default = "empty_i32_grid")]
     distance_field: [i32; TACTICAL_TILE_COUNT],
     units: Vec<TacUnit>,
     sides: BattleSideTable<Side>,
+    #[serde(skip)]
     records: Vec<usize>,
     current_side: BattleSide,
+    #[serde(skip)]
     selected: Option<usize>,
     column_count: i32,
     outcome: BattleOutcome,
@@ -475,6 +486,143 @@ struct Battle {
     round: i32,
     composition_class: i32,
     live: bool,
+}
+
+const fn empty_move_costs() -> [i16; TACTICAL_TILE_COUNT + 1] {
+    [0; TACTICAL_TILE_COUNT + 1]
+}
+
+const fn empty_threat() -> [i8; TACTICAL_TILE_COUNT] {
+    [0; TACTICAL_TILE_COUNT]
+}
+
+const fn empty_i32_grid() -> [i32; TACTICAL_TILE_COUNT] {
+    [0; TACTICAL_TILE_COUNT]
+}
+
+mod tile_array {
+    use super::*;
+    use serde::{Deserializer, Serializer};
+
+    pub fn serialize<S>(
+        tiles: &[Tile; TACTICAL_TILE_COUNT],
+        serializer: S,
+    ) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        tiles.as_slice().serialize(serializer)
+    }
+
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<[Tile; TACTICAL_TILE_COUNT], D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        Vec::<Tile>::deserialize(deserializer)?
+            .try_into()
+            .map_err(|_: Vec<Tile>| D::Error::custom("army battle tile count is not retail-sized"))
+    }
+}
+
+#[derive(Deserialize, Serialize)]
+struct ArmyBattleState {
+    battle: Battle,
+    selected_unit: Option<MilitaryUnitId>,
+    tile_occupants: Vec<Option<MilitaryUnitId>>,
+    side_units: BattleSideTable<Vec<MilitaryUnitId>>,
+    side_secondary: BattleSideTable<Vec<MilitaryUnitId>>,
+    action_order: Vec<MilitaryUnitId>,
+}
+
+impl Serialize for ArmyBattle {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let source = |index: usize| self.inner.units[index].source;
+        ArmyBattleState {
+            battle: self.inner.clone(),
+            selected_unit: self.inner.selected.map(source),
+            tile_occupants: self
+                .inner
+                .tiles
+                .iter()
+                .map(|tile| tile.occupant.map(source))
+                .collect(),
+            side_units: BattleSideTable::from_fn(|side| {
+                self.inner.sides[side]
+                    .units
+                    .iter()
+                    .copied()
+                    .map(source)
+                    .collect()
+            }),
+            side_secondary: BattleSideTable::from_fn(|side| {
+                self.inner.sides[side]
+                    .secondary
+                    .iter()
+                    .copied()
+                    .map(source)
+                    .collect()
+            }),
+            action_order: self.inner.records.iter().copied().map(source).collect(),
+        }
+        .serialize(serializer)
+    }
+}
+
+impl<'de> Deserialize<'de> for ArmyBattle {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let ArmyBattleState {
+            mut battle,
+            selected_unit,
+            tile_occupants,
+            side_units,
+            side_secondary,
+            action_order,
+        } = ArmyBattleState::deserialize(deserializer)?;
+        if tile_occupants.len() != TACTICAL_TILE_COUNT {
+            return Err(D::Error::custom(
+                "army battle tile occupant count is not retail-sized",
+            ));
+        }
+        let resolve = |source: MilitaryUnitId| {
+            battle
+                .units
+                .iter()
+                .position(|unit| unit.source == source)
+                .ok_or_else(|| D::Error::custom("army battle references an unknown source unit"))
+        };
+        battle.selected = selected_unit.map(resolve).transpose()?;
+        for (tile, occupant) in battle.tiles.iter_mut().zip(tile_occupants) {
+            tile.occupant = occupant.map(resolve).transpose()?;
+        }
+        for side in [BattleSide::Attacker, BattleSide::Defender] {
+            battle.sides[side].units = side_units[side]
+                .iter()
+                .copied()
+                .map(resolve)
+                .collect::<Result<_, _>>()?;
+            battle.sides[side].secondary = side_secondary[side]
+                .iter()
+                .copied()
+                .map(resolve)
+                .collect::<Result<_, _>>()?;
+        }
+        battle.records = action_order
+            .into_iter()
+            .map(resolve)
+            .collect::<Result<_, _>>()?;
+        if battle.live
+            && let Some(selected) = battle.selected
+        {
+            battle.compute_reachable(selected);
+        }
+        Ok(Self { inner: battle })
+    }
 }
 
 impl GameState {
@@ -3599,6 +3747,69 @@ mod tests {
                 .expect("local unit has a deployment tile");
             state.army_action_at(target, &[]).unwrap();
         }
+    }
+
+    #[test]
+    fn live_army_battle_round_trip_preserves_semantic_state_and_continuation() {
+        let (mut state, _, _) = pending_regulars_vs_militia();
+        deploy_local_side(&mut state);
+        {
+            let battle = state.army_battle_mut().expect("live battle");
+            let selected = battle.inner.selected.expect("selected source unit");
+            battle.inner.units[selected].ai_state = 7;
+            battle.inner.units[selected].field24 = 19;
+            battle.inner.units[selected].morale -= 3;
+            battle.inner.tiles[31].trench_mask = 0x81;
+            battle.inner.fort_level = FortLevel::Two;
+            battle.inner.fort_strength = [123; 8];
+            battle.inner.composition_class = 3;
+        }
+        let expected_selected = state.selected_army_unit().unwrap().id.source();
+        let encoded = serde_json::to_vec(&state).expect("serialize live battle");
+        let mut restored: GameState =
+            serde_json::from_slice(&encoded).expect("deserialize live battle");
+
+        let restored_battle = restored.army_battle().expect("restored live battle");
+        assert_eq!(restored_battle.stage(), ArmyBattleStage::Live);
+        assert_eq!(
+            restored_battle.active_side(),
+            state.army_battle().unwrap().active_side()
+        );
+        assert_eq!(
+            restored.selected_army_unit().unwrap().id.source(),
+            expected_selected
+        );
+        assert_eq!(
+            restored_battle.inner.units[restored_battle.inner.selected.unwrap()].ai_state,
+            7
+        );
+        assert_eq!(
+            restored_battle.inner.units[restored_battle.inner.selected.unwrap()].field24,
+            19
+        );
+        assert_eq!(restored_battle.inner.tiles[31].trench_mask, 0x81);
+        assert_eq!(restored_battle.inner.fort_level, FortLevel::Two);
+        assert_eq!(restored_battle.inner.fort_strength, [123; 8]);
+        assert_eq!(restored_battle.inner.composition_class, 3);
+        assert_eq!(
+            state.selected_army_unit_reachable_hexes(),
+            restored.selected_army_unit_reachable_hexes()
+        );
+
+        let target = state
+            .selected_army_unit_reachable_hexes()
+            .into_iter()
+            .next()
+            .expect("restored selection remains actionable");
+        assert_eq!(
+            state.army_action_at(target, &[]),
+            restored.army_action_at(target, &[])
+        );
+        assert_eq!(
+            state.army_battle_differential_snapshot(),
+            restored.army_battle_differential_snapshot()
+        );
+        assert_eq!(state.rng, restored.rng);
     }
 
     #[test]
