@@ -76,6 +76,16 @@ pub struct ArmyUnitView {
     pub action_points: i32,
 }
 
+/// Presentation state read by `TTacArmyView::DrawTacticalTileInClipRect`.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct ArmyTileView {
+    pub hex: TacticalHex,
+    pub trench_mask: u8,
+    pub fort_wall: bool,
+    pub fort_wall_intact: bool,
+    pub occupied: bool,
+}
+
 /// Result of `MoveTacticalUnitTowardTile` for the UI (no animation yet).
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct MoveResult {
@@ -151,6 +161,20 @@ impl ArmyBattle {
         self.units().find(|unit| unit.id == id)
     }
 
+    pub fn tiles(&self) -> impl Iterator<Item = ArmyTileView> + '_ {
+        self.inner.tiles.iter().enumerate().map(|(index, tile)| {
+            let fort_wall = tile.deploy_mark.is_fort_wall();
+            ArmyTileView {
+                hex: TacticalHex::from_index(index as i32).expect("tactical grid index is valid"),
+                trench_mask: tile.trench_mask,
+                fort_wall,
+                fort_wall_intact: fort_wall
+                    && self.inner.fort_strength[index / TACTICAL_STRIDE as usize / 2] > 0,
+                occupied: tile.occupant.is_some(),
+            }
+        })
+    }
+
     pub fn active_side(&self) -> BattleSide {
         self.inner.current_side
     }
@@ -167,6 +191,10 @@ impl ArmyBattle {
 
     pub fn composition_class(&self) -> i32 {
         self.inner.composition_class
+    }
+
+    pub fn fort_level(&self) -> FortLevel {
+        self.inner.fort_level
     }
 
     pub fn stage(&self) -> ArmyBattleStage {

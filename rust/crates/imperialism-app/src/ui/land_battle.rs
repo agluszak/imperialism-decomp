@@ -1,3 +1,4 @@
+use super::RetailUiAssets;
 use super::generated;
 use super::retail::RetailTree;
 use super::session::{GameSession, apply_turn_stop};
@@ -9,16 +10,28 @@ use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::window::PrimaryWindow;
 use imperialism_core::*;
-use imperialism_formats::{MusicTrack, fourcc};
+use imperialism_formats::{MusicTrack, PictureId, fourcc};
 
-/// `TTacArmyView` battlefield surface is 0x5dc×0x1c2; 15 rows fill the 450px DLOG height.
-const TACTICAL_TILE_WIDTH_PX: i32 = 50;
-const TACTICAL_TILE_ROW_HEIGHT_PX: i32 = 30;
+/// Retail setters 0x5a6830, 0x5a6860 and 0x5a6890.
+const TACTICAL_TILE_WIDTH_PX: i32 = 0x32;
+const TACTICAL_TILE_ROW_HEIGHT_PX: i32 = 0x1e;
+const TACTICAL_SURFACE_WIDTH_PX: i32 = 0x5dc;
+const TACTICAL_SURFACE_HEIGHT_PX: i32 = 0x1c2;
+const TACTICAL_UNIT_CELL_PX: i32 = 0x32;
 /// `TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset` grows the tile up by 0x14.
 const UNIT_SPRITE_LIFT_PX: i32 = 0x14;
 const BATTLEFIELD_WIDTH_PX: i32 = 575;
 const BATTLEFIELD_HEIGHT_PX: i32 = 450;
+const FORT_STRIP_WIDTH_PX: i32 = 0x11e;
+const TACTICAL_COMPOSITION_PICTURE_BASE: i16 = 0xf0a;
+const TACTICAL_FORT_STRIP_PICTURE: i16 = 0xf0e;
+const TACTICAL_UNIT_ATLAS_PICTURE: i16 = 0xee2;
+const TACTICAL_FORT_ATLAS_BASE: i16 = 0xee6;
+const TACTICAL_NO_FORT_ATLAS_PICTURE: i16 = 0xee7;
+const TACTICAL_EFFECT_ATLAS_PICTURE: i16 = 0xeeb;
+const TACTICAL_TRANSPARENT_INDEX: u8 = 0x24;
 
 #[derive(Component)]
 struct LandBattleRoot;
@@ -34,7 +47,30 @@ enum LandBattleAction {
 struct LandBattleCaption;
 
 #[derive(Component)]
-struct LandBattlefield;
+struct LandBattlefield {
+    battle: Option<PendingLandBattle>,
+    view_origin_x: i32,
+    centered_unit: Option<ArmyUnitId>,
+}
+
+#[derive(Component)]
+struct LandBattleVisuals {
+    composition_class: i32,
+    backdrop: Handle<Image>,
+    fort_strip: Handle<Image>,
+    unit_atlas: Handle<Image>,
+    fort_atlas: Handle<Image>,
+    effect_atlas: Handle<Image>,
+}
+
+#[derive(Component)]
+struct LandBattleBackdrop;
+
+#[derive(Component)]
+struct LandBattleFortStrip;
+
+#[derive(Component)]
+struct LandBattleTileOverlay;
 
 #[derive(Component, Clone, Copy)]
 #[allow(dead_code)]
@@ -44,19 +80,23 @@ struct LandBattleUnit(ArmyUnitId);
 #[allow(dead_code)]
 struct LandBattleReachable(TacticalHex);
 
-/// Pixel↔hex for this screen (`TTacticalBattleView` 0x5a86d0 / 0x5a87d0, viewOriginX = 0).
+/// Pixel↔hex for this screen (`TTacticalBattleView` 0x5a86d0 / 0x5a87d0).
 struct LandBattleHexMap {
     column_count: i32,
+    view_origin_x: i32,
 }
 
 impl LandBattleHexMap {
-    fn new(column_count: i32) -> Self {
-        Self { column_count }
+    fn new(column_count: i32, view_origin_x: i32) -> Self {
+        Self {
+            column_count,
+            view_origin_x,
+        }
     }
 
     fn tile_rect(&self, hex: TacticalHex) -> (i32, i32, i32, i32) {
         let row = hex.row();
-        let mut x = hex.column() * TACTICAL_TILE_WIDTH_PX;
+        let mut x = hex.column() * TACTICAL_TILE_WIDTH_PX - self.view_origin_x;
         if row & 1 != 0 {
             x += TACTICAL_TILE_WIDTH_PX / 2;
         }
@@ -83,7 +123,7 @@ impl LandBattleHexMap {
         if row >= max_row {
             row = max_row;
         }
-        let mut col = x;
+        let mut col = self.view_origin_x + x;
         if row & 1 != 0 {
             col -= TACTICAL_TILE_WIDTH_PX / 2;
         }
@@ -112,11 +152,21 @@ impl Plugin for LandBattlePlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             OnEnter(AppState::LandBattle),
-            (spawn_land_battle, bind_land_battle).chain(),
+            (
+                spawn_land_battle,
+                bind_land_battle,
+                load_land_battle_visuals,
+            )
+                .chain(),
         )
         .add_systems(
             Update,
-            (synchronize_interactive_army_battle, project_land_battle)
+            (
+                synchronize_interactive_army_battle,
+                synchronize_land_battle_visuals,
+                scroll_land_battle,
+                project_land_battle,
+            )
                 .chain()
                 .run_if(in_state(AppState::LandBattle).and_then(resource_exists::<GameSession>)),
         );
@@ -175,10 +225,96 @@ fn bind_land_battle_controls(commands: &mut Commands, root: Entity, tree: &Retai
         .insert((LandBattleAction::Retreat, ActivateOnPress))
         .observe(on_land_battle_activate)
         .remove::<InteractionDisabled>();
+    let field = tree.find(root, fourcc!("DLOG"));
     commands
-        .entity(tree.find(root, fourcc!("DLOG")))
-        .insert((LandBattlefield, RelativeCursorPosition::default()))
+        .entity(field)
+        .insert((
+            LandBattlefield {
+                battle: None,
+                view_origin_x: 0,
+                centered_unit: None,
+            },
+            RelativeCursorPosition::default(),
+        ))
         .observe(on_battlefield_click);
+    commands
+        .entity(field)
+        .entry::<Node>()
+        .and_modify(|mut node| node.overflow = Overflow::clip());
+}
+
+fn load_land_battle_visuals(
+    mut commands: Commands,
+    session: Res<GameSession>,
+    fields: Query<Entity, Added<LandBattlefield>>,
+    mut assets: RetailUiAssets,
+) {
+    let Some(battle) = session.game.army_battle() else {
+        return;
+    };
+    for field in &fields {
+        insert_land_battle_visuals(&mut commands, field, battle, &mut assets);
+    }
+}
+
+fn synchronize_land_battle_visuals(
+    mut commands: Commands,
+    session: Res<GameSession>,
+    fields: Query<(Entity, Option<&LandBattleVisuals>), With<LandBattlefield>>,
+    mut assets: RetailUiAssets,
+) {
+    let Some(battle) = session.game.army_battle() else {
+        return;
+    };
+    for (field, visuals) in &fields {
+        if visuals.is_none_or(|visuals| visuals.composition_class != battle.composition_class()) {
+            insert_land_battle_visuals(&mut commands, field, battle, &mut assets);
+        }
+    }
+}
+
+fn insert_land_battle_visuals(
+    commands: &mut Commands,
+    field: Entity,
+    battle: &ArmyBattle,
+    assets: &mut RetailUiAssets,
+) {
+    let composition_class = battle.composition_class();
+    let picture = i16::try_from(composition_class)
+        .expect("retail tactical composition class fits i16")
+        + TACTICAL_COMPOSITION_PICTURE_BASE;
+    let visuals = LandBattleVisuals {
+        composition_class,
+        backdrop: assets
+            .picture(PictureId::new(picture))
+            .expect("retail tactical composition backdrop must load"),
+        fort_strip: assets
+            .picture(PictureId::new(TACTICAL_FORT_STRIP_PICTURE))
+            .expect("retail tactical fort strip must load"),
+        unit_atlas: assets
+            .transparent_picture(
+                PictureId::new(TACTICAL_UNIT_ATLAS_PICTURE),
+                TACTICAL_TRANSPARENT_INDEX,
+            )
+            .expect("retail tactical unit atlas must load"),
+        fort_atlas: assets
+            .transparent_picture(
+                PictureId::new(if battle.fort_level() == FortLevel::None {
+                    TACTICAL_NO_FORT_ATLAS_PICTURE
+                } else {
+                    TACTICAL_FORT_ATLAS_BASE + i16::from(battle.fort_level().retail())
+                }),
+                TACTICAL_TRANSPARENT_INDEX,
+            )
+            .expect("retail tactical fort atlas must load"),
+        effect_atlas: assets
+            .transparent_picture(
+                PictureId::new(TACTICAL_EFFECT_ATLAS_PICTURE),
+                TACTICAL_TRANSPARENT_INDEX,
+            )
+            .expect("retail tactical effect atlas must load"),
+    };
+    commands.entity(field).insert(visuals);
 }
 
 #[allow(clippy::type_complexity)]
@@ -187,8 +323,22 @@ fn project_land_battle(
     session: Res<GameSession>,
     added: Query<(), Added<LandBattleCaption>>,
     mut captions: Query<&mut Text, With<LandBattleCaption>>,
-    battlefields: Query<(Entity, Option<&Children>), With<LandBattlefield>>,
-    projected: Query<Entity, Or<(With<LandBattleUnit>, With<LandBattleReachable>)>>,
+    mut battlefields: Query<(
+        Entity,
+        &mut LandBattlefield,
+        Option<&LandBattleVisuals>,
+        Option<&Children>,
+    )>,
+    projected: Query<
+        Entity,
+        Or<(
+            With<LandBattleBackdrop>,
+            With<LandBattleFortStrip>,
+            With<LandBattleTileOverlay>,
+            With<LandBattleUnit>,
+            With<LandBattleReachable>,
+        )>,
+    >,
 ) {
     if super::projection_idle(&session, !added.is_empty()) {
         return;
@@ -205,14 +355,66 @@ fn project_land_battle(
     let Some(battle) = session.game.army_battle() else {
         return;
     };
-    let hex_map = LandBattleHexMap::new(battle.column_count());
-    for (field, children) in &battlefields {
+    for (field, mut view, visuals, children) in &mut battlefields {
+        if view.battle.as_ref() != Some(pending) {
+            view.battle = Some(pending.clone());
+            view.view_origin_x = 0;
+            view.centered_unit = None;
+        }
+        if view.centered_unit != selected {
+            if let Some(unit) = selected.and_then(|id| battle.unit(id))
+                && let Some(hex) = unit.hex
+            {
+                view.view_origin_x =
+                    centered_view_origin(view.view_origin_x, battle.column_count(), hex);
+            }
+            view.centered_unit = selected;
+        }
+        let hex_map = LandBattleHexMap::new(battle.column_count(), view.view_origin_x);
         if let Some(children) = children {
             for child in children.iter() {
                 if projected.contains(child) {
                     commands.entity(child).despawn();
                 }
             }
+        }
+        if let Some(visuals) = visuals {
+            let source_offset = (TacticalHex::COLUMNS - battle.column_count())
+                * TACTICAL_TILE_WIDTH_PX
+                + view.view_origin_x;
+            commands.spawn((
+                LandBattleBackdrop,
+                ChildOf(field),
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(-source_offset),
+                    top: px(0),
+                    width: px(TACTICAL_SURFACE_WIDTH_PX),
+                    height: px(TACTICAL_SURFACE_HEIGHT_PX),
+                    ..default()
+                },
+                ImageNode::new(visuals.backdrop.clone()),
+                Pickable::IGNORE,
+                ZIndex(-2),
+            ));
+            if battle.fort_level() != FortLevel::None {
+                commands.spawn((
+                    LandBattleFortStrip,
+                    ChildOf(field),
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: px(TACTICAL_SURFACE_WIDTH_PX - FORT_STRIP_WIDTH_PX - source_offset),
+                        top: px(0),
+                        width: px(FORT_STRIP_WIDTH_PX),
+                        height: px(TACTICAL_SURFACE_HEIGHT_PX),
+                        ..default()
+                    },
+                    ImageNode::new(visuals.fort_strip.clone()),
+                    Pickable::IGNORE,
+                    ZIndex(-1),
+                ));
+            }
+            project_tile_atlases(&mut commands, field, battle, &hex_map, visuals);
         }
         for hex in &reachable {
             let (x, y, width, height) = hex_map.tile_rect(*hex);
@@ -240,7 +442,7 @@ fn project_land_battle(
                 BattleSide::Defender => Color::srgb(0.15, 0.3, 0.75),
             };
             let selected = selected == Some(unit.id);
-            commands.spawn((
+            let mut entity = commands.spawn((
                 LandBattleUnit(unit.id),
                 ChildOf(field),
                 Node {
@@ -252,13 +454,243 @@ fn project_land_battle(
                     border: UiRect::all(px(if selected { 2 } else { 0 })),
                     ..default()
                 },
-                BackgroundColor(color),
                 BorderColor::all(Color::WHITE),
-                Text::new(unit.strength.to_string()),
-                TextColor(Color::WHITE),
+                Pickable::IGNORE,
             ));
+            if let Some(visuals) = visuals {
+                let source = Vec2::new(
+                    f32::from(unit.unit_type.retail()) * TACTICAL_UNIT_CELL_PX as f32,
+                    match unit.side {
+                        BattleSide::Attacker => 0.0,
+                        BattleSide::Defender => TACTICAL_UNIT_CELL_PX as f32,
+                    },
+                );
+                entity.insert(ImageNode {
+                    image: visuals.unit_atlas.clone(),
+                    rect: Some(Rect::from_corners(
+                        source,
+                        source + Vec2::splat(TACTICAL_UNIT_CELL_PX as f32),
+                    )),
+                    ..default()
+                });
+            } else {
+                entity.insert(BackgroundColor(color));
+            }
         }
     }
+}
+
+fn project_tile_atlases(
+    commands: &mut Commands,
+    field: Entity,
+    battle: &ArmyBattle,
+    hex_map: &LandBattleHexMap,
+    visuals: &LandBattleVisuals,
+) {
+    let tiles: Vec<_> = battle.tiles().collect();
+    for tile in &tiles {
+        if tile.trench_mask != 0 {
+            if tile.trench_mask & 0x80 != 0 {
+                spawn_tile_atlas_cell(
+                    commands,
+                    field,
+                    hex_map,
+                    tile.hex,
+                    &visuals.effect_atlas,
+                    0,
+                    0,
+                );
+            }
+            if let Some(cell) = trench_sprite_cell(tile.trench_mask) {
+                spawn_tile_atlas_cell(
+                    commands,
+                    field,
+                    hex_map,
+                    tile.hex,
+                    &visuals.effect_atlas,
+                    cell,
+                    0,
+                );
+            }
+        }
+
+        let index = tile.hex.index() as usize;
+        let edge = if tile.hex.row() & 1 == 0 {
+            if tile.fort_wall {
+                1
+            } else if index > 0 && tiles[index - 1].fort_wall {
+                2
+            } else {
+                0
+            }
+        } else if tile.fort_wall {
+            3
+        } else {
+            0
+        };
+        if edge == 0 {
+            continue;
+        }
+        let wall_index = match edge {
+            2 => index - 1,
+            _ => index,
+        };
+        let breached = !tiles[wall_index].fort_wall_intact;
+        if edge == 2 || breached {
+            let cell = if breached { edge + 0xb } else { 1 };
+            spawn_tile_atlas_cell(
+                commands,
+                field,
+                hex_map,
+                tile.hex,
+                &visuals.fort_atlas,
+                cell,
+                0,
+            );
+        }
+        if edge != 2 {
+            let wall_neighbor = match edge {
+                1 => tile.hex.index() + TacticalHex::COLUMNS,
+                3 => tile.hex.index(),
+                _ => unreachable!(),
+            };
+            let gun_slot = fort_gun_slot(battle.column_count(), wall_neighbor);
+            let gun_occupied = usize::try_from(wall_neighbor)
+                .ok()
+                .and_then(|neighbor| tiles.get(neighbor))
+                .is_some_and(|neighbor| gun_slot && neighbor.occupied);
+            let cell = if breached {
+                edge + 0xe
+            } else if gun_slot && !gun_occupied {
+                edge + 2
+            } else if gun_occupied {
+                edge + 8
+            } else {
+                edge - 1
+            };
+            spawn_tile_atlas_cell(
+                commands,
+                field,
+                hex_map,
+                tile.hex,
+                &visuals.fort_atlas,
+                cell,
+                1,
+            );
+        }
+    }
+}
+
+fn spawn_tile_atlas_cell(
+    commands: &mut Commands,
+    field: Entity,
+    hex_map: &LandBattleHexMap,
+    hex: TacticalHex,
+    atlas: &Handle<Image>,
+    cell: i32,
+    layer: i32,
+) {
+    let (x, y, width, height) = hex_map.tile_rect(hex);
+    let source = Vec2::new((cell * TACTICAL_TILE_WIDTH_PX) as f32, 0.0);
+    commands.spawn((
+        LandBattleTileOverlay,
+        ChildOf(field),
+        Node {
+            position_type: PositionType::Absolute,
+            left: px(x),
+            top: px(y),
+            width: px(width),
+            height: px(height),
+            ..default()
+        },
+        ImageNode {
+            image: atlas.clone(),
+            rect: Some(Rect::from_corners(
+                source,
+                source
+                    + Vec2::new(
+                        TACTICAL_TILE_WIDTH_PX as f32,
+                        TACTICAL_TILE_ROW_HEIGHT_PX as f32,
+                    ),
+            )),
+            ..default()
+        },
+        Pickable::IGNORE,
+        ZIndex(layer),
+    ));
+}
+
+fn trench_sprite_cell(mask: u8) -> Option<i32> {
+    const PAIRS: [i32; 36] = [
+        0, 0x0e, 0x0a, 0x07, 0x14, 0x0d, 0x0e, 0, 0x13, 0x11, 0x09, 0x15, 0x0a, 0x13, 0, 0x0c,
+        0x10, 0x08, 0x07, 0x11, 0x0c, 0, 0x12, 0x0b, 0x14, 0x09, 0x10, 0x12, 0, 0x0f, 0x0d, 0x15,
+        0x08, 0x0b, 0x0f, 0,
+    ];
+    const SINGLES: [i32; 6] = [0x19, 0x1a, 0x1b, 0x16, 0x17, 0x18];
+    let bits: Vec<_> = (0..6).filter(|bit| mask & (1 << bit) != 0).collect();
+    let first = *bits.first()?;
+    if mask & 0x80 != 0 {
+        Some(first + 1)
+    } else if let Some(&second) = bits.get(1) {
+        Some(PAIRS[second as usize + first as usize * 6])
+    } else {
+        Some(SINGLES[first as usize])
+    }
+}
+
+fn fort_gun_slot(column_count: i32, tile: i32) -> bool {
+    let row = tile / TacticalHex::COLUMNS;
+    let doubled = (row & 1) + (tile % TacticalHex::COLUMNS) * 2;
+    (row == 5 || row == 7 || row == 9) && doubled / 2 == column_count - 6
+}
+
+fn centered_view_origin(current: i32, column_count: i32, selected: TacticalHex) -> i32 {
+    let first_visible = current / TACTICAL_TILE_WIDTH_PX;
+    let visible_columns = BATTLEFIELD_WIDTH_PX / TACTICAL_TILE_WIDTH_PX;
+    let last_visible = first_visible + visible_columns;
+    let column = selected.column();
+    if column >= first_visible + 2 && column <= last_visible - 2 {
+        return current;
+    }
+    let max_origin = ((column_count + 1) * TACTICAL_TILE_WIDTH_PX - BATTLEFIELD_WIDTH_PX).max(0);
+    let centered =
+        (column * TACTICAL_TILE_WIDTH_PX - BATTLEFIELD_WIDTH_PX / 2).clamp(0, max_origin);
+    centered / TACTICAL_TILE_WIDTH_PX * TACTICAL_TILE_WIDTH_PX
+}
+
+fn scroll_land_battle(
+    time: Res<Time>,
+    mut last_scroll_tick: Local<Option<u128>>,
+    window: Single<&Window, With<PrimaryWindow>>,
+    mut fields: Query<&mut LandBattlefield>,
+    session: Res<GameSession>,
+) {
+    let Ok(mut view) = fields.single_mut() else {
+        return;
+    };
+    let Some(cursor) = window.cursor_position() else {
+        return;
+    };
+    let direction = if cursor.x <= 4.0 {
+        -1
+    } else if cursor.x >= window.width() - 4.0 {
+        1
+    } else {
+        return;
+    };
+    let tick16 = time.elapsed().as_millis() / 16;
+    if last_scroll_tick.is_some_and(|last| last + 3 >= tick16) {
+        return;
+    }
+    *last_scroll_tick = Some(tick16);
+    let Some(battle) = session.game.army_battle() else {
+        return;
+    };
+    let max_origin =
+        ((battle.column_count() + 1) * TACTICAL_TILE_WIDTH_PX - BATTLEFIELD_WIDTH_PX).max(0);
+    view.view_origin_x =
+        (view.view_origin_x + direction * TACTICAL_TILE_WIDTH_PX).clamp(0, max_origin);
+    view.centered_unit = session.game.selected_army_unit().map(|unit| unit.id);
 }
 
 fn land_battle_caption(state: &GameState, battle: &PendingLandBattle) -> String {
@@ -276,7 +708,7 @@ fn land_battle_caption(state: &GameState, battle: &PendingLandBattle) -> String 
 
 fn on_battlefield_click(
     click: On<Pointer<Click>>,
-    fields: Query<&RelativeCursorPosition, With<LandBattlefield>>,
+    fields: Query<(&RelativeCursorPosition, &LandBattlefield)>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     assets: Option<Res<crate::RetailAssetsResource>>,
@@ -284,7 +716,7 @@ fn on_battlefield_click(
     if click.event.button != PointerButton::Primary {
         return;
     }
-    let Ok(cursor) = fields.get(click.entity) else {
+    let Ok((cursor, view)) = fields.get(click.entity) else {
         return;
     };
     let Some((x, y)) = battlefield_cursor_pixel(cursor) else {
@@ -294,6 +726,7 @@ fn on_battlefield_click(
         &mut session,
         x,
         y,
+        view.view_origin_x,
         super::session::news_story_ids(assets.as_deref()),
     ) && stop != TurnStop::LandBattle
     {
@@ -305,10 +738,11 @@ fn apply_battlefield_click(
     session: &mut GameSession,
     x: i32,
     y: i32,
+    view_origin_x: i32,
     story_ids: &[i32],
 ) -> Option<TurnStop> {
     let column_count = session.game.army_battle().map(ArmyBattle::column_count)?;
-    let hex_map = LandBattleHexMap::new(column_count);
+    let hex_map = LandBattleHexMap::new(column_count, view_origin_x);
     let hex = hex_map.hex_at_pixel(x, y)?;
     session
         .game
@@ -699,15 +1133,37 @@ mod tests {
 
     #[test]
     fn hex_pixel_round_trip_uses_retail_stagger() {
-        let map = LandBattleHexMap::new(16);
+        let map = LandBattleHexMap::new(16, 100);
         let hex = TacticalHex::from_row_column(2, 4).unwrap();
         let (x, y, width, height) = map.tile_rect(hex);
         let center = (x + width / 2, y + height / 2);
         assert_eq!(map.hex_at_pixel(center.0, center.1), Some(hex));
         let odd = TacticalHex::from_row_column(3, 4).unwrap();
         let (ox, oy, ow, oh) = map.tile_rect(odd);
-        assert_eq!(ox, 4 * TACTICAL_TILE_WIDTH_PX + TACTICAL_TILE_WIDTH_PX / 2);
+        assert_eq!(
+            ox,
+            4 * TACTICAL_TILE_WIDTH_PX + TACTICAL_TILE_WIDTH_PX / 2 - 100
+        );
         assert_eq!(map.hex_at_pixel(ox + ow / 2, oy + oh / 2), Some(odd));
+    }
+
+    #[test]
+    fn center_selected_snaps_and_clamps_the_retail_view_origin() {
+        let selected = TacticalHex::from_row_column(4, 14).unwrap();
+        let origin = centered_view_origin(0, 20, selected);
+        assert_eq!(origin % TACTICAL_TILE_WIDTH_PX, 0);
+        assert_eq!(origin, 400);
+        assert_eq!(
+            centered_view_origin(origin, 20, TacticalHex::from_row_column(4, 10).unwrap()),
+            origin
+        );
+    }
+
+    #[test]
+    fn trench_cells_follow_the_retail_direction_tables() {
+        assert_eq!(trench_sprite_cell(1), Some(0x19));
+        assert_eq!(trench_sprite_cell(1 | 4), Some(0x0a));
+        assert_eq!(trench_sprite_cell(0x80 | 8), Some(4));
     }
 
     #[test]
@@ -722,7 +1178,7 @@ mod tests {
             .filter_map(|unit| {
                 let hex = unit.hex?;
                 let (x, y, _, _) =
-                    LandBattleHexMap::new(probe.army_battle().unwrap().column_count())
+                    LandBattleHexMap::new(probe.army_battle().unwrap().column_count(), 0)
                         .unit_anchor(hex);
                 Some((unit.id, x, y))
             })
@@ -785,6 +1241,7 @@ mod tests {
                     .army_battle()
                     .expect("live battle")
                     .column_count(),
+                0,
             );
             let (x, y, w, h) = map.tile_rect(destination);
             (x + w / 2, y + h / 2)
@@ -793,7 +1250,7 @@ mod tests {
         app.world_mut()
             .resource_scope(|_, mut session: Mut<GameSession>| {
                 assert_eq!(
-                    apply_battlefield_click(&mut session, dest_pixel.0, dest_pixel.1, &[]),
+                    apply_battlefield_click(&mut session, dest_pixel.0, dest_pixel.1, 0, &[]),
                     None
                 );
             });

@@ -75,10 +75,10 @@ enum FortWallEdgeKind {
 // FUNCTION: IMPERIALISM 0x005a9d90
 void TTacArmyView::InitializeBattlefieldView(int compositionClass, TArmyBattle* battle) {
   int savedFlags = 0;
-  tileWidthPx88 = g_nTacticalTileWidthPx_006A5430;
-  tileRowHeightPx8C = g_nTacticalTileRowHeightPx_006A5434;
-  unitSpriteCellWidth90 = g_nTacticalUnitSpriteCellWidth_006A5498;
-  unitSpriteCellHeight94 = g_nTacticalUnitSpriteCellHeight_006A549C;
+  tileWidthPx88 = g_tacticalTileSize_006A5430.cx;
+  tileRowHeightPx8C = g_tacticalTileSize_006A5430.cy;
+  unitSpriteCellWidth90 = g_tacticalUnitSpriteCellSize_006A5498.cx;
+  unitSpriteCellHeight94 = g_tacticalUnitSpriteCellSize_006A5498.cy;
   tileColumnsPerRow80 = 0x1d;
   // Release order in the original: +0x64, +0x68, +0xbc, +0x6c, +0x70, +0x74.
   if (battlefieldSurface64 != 0) {
@@ -107,9 +107,9 @@ void TTacArmyView::InitializeBattlefieldView(int compositionClass, TArmyBattle* 
   RECT bounds;
   RECT overlayBounds;
   bounds.top = 0;
-  bounds.right = g_nTacticalBattlefieldSurfaceWidth_006A5448;
+  bounds.right = g_tacticalBattlefieldSurfaceSize_006A5448.cx;
   bounds.left = 0;
-  bounds.bottom = g_nTacticalBattlefieldSurfaceHeight_006A544C;
+  bounds.bottom = g_tacticalBattlefieldSurfaceSize_006A5448.cy;
   g_pDisplayMgr->MakeNewGWorld(battlefieldSurface64, 8, bounds);
   TBitmapResourceLoader** loaderHandle =
       CreateBitmapResourceLoaderHandle(static_cast<unsigned short>(compositionClass + 0xf0a));
@@ -137,9 +137,9 @@ void TTacArmyView::InitializeBattlefieldView(int compositionClass, TArmyBattle* 
       bounds.top = 0;
       bounds.right = 0x11e;
       bounds.bottom = 0x1c2;
-      overlayBounds.left = g_nTacticalBattlefieldSurfaceWidth_006A5448 - 0x11e;
+      overlayBounds.left = g_tacticalBattlefieldSurfaceSize_006A5448.cx - 0x11e;
       overlayBounds.top = 0;
-      overlayBounds.right = g_nTacticalBattlefieldSurfaceWidth_006A5448;
+      overlayBounds.right = g_tacticalBattlefieldSurfaceSize_006A5448.cx;
       overlayBounds.bottom = 0x1c2;
       ResetQuickDrawStrokeState();
       UpdatePaletteIndexWithDefaultFallback(0x13);

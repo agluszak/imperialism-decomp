@@ -2058,23 +2058,24 @@ short g_mapCursorTokenByStateIndex_00695668[12] = {0, 0, 1000, 0, 0, 0, 1011, 10
 short g_civilianMapCursorTokenByStateIndex_00695680[12] = {0,    1008, 1000, 1005, 1006, 1007,
                                                            1011, 1011, 1010, 0,    0,    0};
 
-// Per-unit-type tactical category code (short table at 0x695528, 30 unit types + 2
-// pad); category 0 counts as garrison strength in TGreatPower slot 0x11 (0x004d87e0),
-// category 8 marks the sapper/engineer types (24-26), 9 the last tier (27-29).
-// Tactical view metrics (bss; written by the tactical-view metric setters
-// 0x5a6830 / 0x5a6860 / 0x5a6895, read by the live-battle initializer 0x5a9d90).
+// These are CSize dynamic initializers, not ordinary callable setters. Their inlined
+// constructors are the tiny bodies at 0x5a6830, 0x5a6860 and 0x5a6890.
+// SYNTHETIC: IMPERIALISM 0x005a6830
+// name: InitializeTacticalTileSize
+// prototype: void __cdecl InitializeTacticalTileSize(void)
 // GLOBAL: IMPERIALISM 0x006a5430
-int g_nTacticalTileWidthPx_006A5430 = 0;
-// GLOBAL: IMPERIALISM 0x006a5434
-int g_nTacticalTileRowHeightPx_006A5434 = 0;
+CSize g_tacticalTileSize_006A5430(0x32, 0x1e);
+// SYNTHETIC: IMPERIALISM 0x005a6860
+// name: InitializeTacticalBattlefieldSurfaceSize
+// prototype: void __cdecl InitializeTacticalBattlefieldSurfaceSize(void)
 // GLOBAL: IMPERIALISM 0x006a5448
-int g_nTacticalBattlefieldSurfaceWidth_006A5448 = 0;
-// GLOBAL: IMPERIALISM 0x006a544c
-int g_nTacticalBattlefieldSurfaceHeight_006A544C = 0;
+CSize g_tacticalBattlefieldSurfaceSize_006A5448(0x5dc, 0x1c2);
+// The first store is at 0x5a6895; the initializer entry is 0x5a6890.
+// SYNTHETIC: IMPERIALISM 0x005a6890
+// name: InitializeTacticalUnitSpriteCellSize
+// prototype: void __cdecl InitializeTacticalUnitSpriteCellSize(void)
 // GLOBAL: IMPERIALISM 0x006a5498
-int g_nTacticalUnitSpriteCellWidth_006A5498 = 0;
-// GLOBAL: IMPERIALISM 0x006a549c
-int g_nTacticalUnitSpriteCellHeight_006A549C = 0;
+CSize g_tacticalUnitSpriteCellSize_006A5498(0x32, 0x32);
 
 // Per-unit-type tactical range (int table at 0x6699e8, 30 unit types); artillery on
 // the defending side (side20 == 1, combat category 2) gets +1 from the fort walls.
@@ -2083,6 +2084,9 @@ int g_anUnitTypeTacticalRangeByType_006699E8[30] = {5,  5,  5,  5,  3,  3,  9,  
                                                     8,  8,  5,  5,  12, 14, 10, 10, 10, 10,
                                                     10, 12, 15, 17, 5,  8,  10, 0,  0,  0};
 
+// Per-unit-type tactical category code (short table at 0x695528, 30 unit types + 2
+// pad); category 0 counts as garrison strength in TGreatPower slot 0x11 (0x004d87e0),
+// category 8 marks the sapper/engineer types (24-26), 9 the last tier (27-29).
 // Resource/order-slot -> unit-category code. Also read by TArmoryView::DoStartup
 // (0x4cee20) as g[order->resourceTypeIndex]: for the land-unit class (value 8) it
 // selects the button picture-variant (types 0x18/0x19/other -> 8/0x10/0x18); indices
