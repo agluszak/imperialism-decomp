@@ -3,6 +3,7 @@ use crate::{
     EliminationOutcome, GameState, MajorNationId, NationId, QuarterGateResult, Technology,
     TradeProgress,
 };
+use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -10,6 +11,40 @@ pub enum CinematicKind {
     Vote,
     Win,
     Lose,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Enum, Eq, PartialEq, Serialize)]
+pub enum Decade {
+    First,
+    Second,
+    Third,
+    Fourth,
+    Fifth,
+    Sixth,
+    Seventh,
+    Eighth,
+    Ninth,
+    Tenth,
+}
+
+pub type DecadeTable<T> = EnumMap<Decade, T>;
+
+impl Decade {
+    pub const fn for_economic_turn(turn: i32) -> Option<Self> {
+        match turn / 40 {
+            0 => Some(Self::First),
+            1 => Some(Self::Second),
+            2 => Some(Self::Third),
+            3 => Some(Self::Fourth),
+            4 => Some(Self::Fifth),
+            5 => Some(Self::Sixth),
+            6 => Some(Self::Seventh),
+            7 => Some(Self::Eighth),
+            8 => Some(Self::Ninth),
+            9 => Some(Self::Tenth),
+            _ => None,
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -23,8 +58,8 @@ pub struct TurnState {
     pub(crate) phase: PhaseCode,
     /// Persisted turn-flow status bits consumed by the alert and technology phases.
     pub turn_flow_status_flags: u32,
-    /// Retail's decade-boundary presentation state, indexed by `economic_turn / 40`.
-    pub quarter_gate_by_decade: [u8; 10],
+    /// Retail's decade-boundary presentation state, keyed by `economic_turn / 40`.
+    pub quarter_gate_by_decade: DecadeTable<bool>,
     pub difficulty: Difficulty,
     pub active_nation: NationId,
     pub selected_nation: NationId,
@@ -47,7 +82,7 @@ impl TurnState {
         diplomacy_year_term_raw: i16,
         phase: PhaseCode,
         turn_flow_status_flags: u32,
-        quarter_gate_by_decade: [u8; 10],
+        quarter_gate_by_decade: DecadeTable<bool>,
         difficulty: Difficulty,
         active_nation: NationId,
         selected_nation: NationId,
@@ -951,7 +986,7 @@ mod tests {
         let mut state = game_state();
         seed_town_tiles(&mut state);
         state.turn.economic_turn = 40;
-        state.turn.quarter_gate_by_decade[1] = 1;
+        state.turn.quarter_gate_by_decade[crate::Decade::Second] = true;
         state.turn.phase = crate::PhaseCode::QUARTER_GATE;
         assert_eq!(state.advance_turn(&[]), crate::TurnStop::DecadeCinematic);
         assert_eq!(state.turn.phase(), crate::PhaseCode::SEASON_ADVANCE);

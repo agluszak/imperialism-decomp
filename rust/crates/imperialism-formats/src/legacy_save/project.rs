@@ -896,7 +896,9 @@ impl LegacySaveV62 {
                 self.simulation.diplomacy_year_term_raw,
                 PhaseCode::from_retail(i32::from(self.simulation.turn_state_code)),
                 self.simulation.turn_flow_status_flags,
-                std::array::from_fn(|index| self.simulation.phase_state_by_decade[index]),
+                DecadeTable::from_array(std::array::from_fn(|index| {
+                    self.simulation.phase_state_by_decade[index] != 0
+                })),
                 Difficulty::try_from(self.simulation.difficulty).expect("retail difficulty"),
                 nation_id_from_retail_i16(self.simulation.active_nation),
                 context.selected_nation,

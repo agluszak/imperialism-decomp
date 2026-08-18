@@ -257,7 +257,9 @@ pub fn create_random_game(
             diplomacy_year_term_raw: 1914,
             phase: crate::PhaseCode::CAPITAL_SELECTION,
             turn_flow_status_flags: 0,
-            quarter_gate_by_decade: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            quarter_gate_by_decade: DecadeTable::from_array([
+                false, true, true, true, true, true, true, true, true, true,
+            ]),
             difficulty,
             active_nation: human_nation.nation(),
             selected_nation: human_nation.nation(),

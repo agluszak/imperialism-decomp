@@ -98,7 +98,12 @@ impl LegacySaveV62 {
         };
 
         let mut phase_state_by_decade = [0_u8; 12];
-        phase_state_by_decade[..10].copy_from_slice(&turn.quarter_gate_by_decade);
+        for (destination, &enabled) in phase_state_by_decade
+            .iter_mut()
+            .zip(turn.quarter_gate_by_decade.values())
+        {
+            *destination = u8::from(enabled);
+        }
 
         let simulation = LegacySimulationPrefix {
             language_code: 0,

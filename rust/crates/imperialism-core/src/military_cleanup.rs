@@ -53,14 +53,9 @@ impl GameState {
                 self.prune_invalid_defend_missions(nation.nation());
             }
         }
-        let decade = self.turn.economic_turn / 40;
         if self.turn.economic_turn % 40 == 0
-            && decade >= 0
-            && self
-                .turn
-                .quarter_gate_by_decade
-                .get(decade as usize)
-                .is_some_and(|&gate| gate != 0)
+            && Decade::for_economic_turn(self.turn.economic_turn)
+                .is_some_and(|decade| self.turn.quarter_gate_by_decade[decade])
         {
             self.rebuild_council_ballot(false);
         }

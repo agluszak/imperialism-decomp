@@ -206,11 +206,9 @@ impl GameState {
         }
 
         let tick = self.turn.economic_turn;
-        let decade = tick / 40;
+        let decade = Decade::for_economic_turn(tick);
         if tick % 40 != 0
-            || decade < 0
-            || decade >= self.turn.quarter_gate_by_decade.len() as i32
-            || self.turn.quarter_gate_by_decade[decade as usize] == 0
+            || !matches!(decade, Some(decade) if self.turn.quarter_gate_by_decade[decade])
         {
             QuarterGateResult::Continue
         } else {
@@ -521,10 +519,10 @@ mod tests {
         assert_eq!(state.turn.phase, PhaseCode::TOP_TEN_SCORES);
 
         state.turn.economic_turn = 40;
-        state.turn.quarter_gate_by_decade[1] = 1;
+        state.turn.quarter_gate_by_decade[Decade::Second] = true;
         assert_eq!(state.quarter_gate(), QuarterGateResult::DecadeCinematic);
 
-        state.turn.quarter_gate_by_decade[1] = 0;
+        state.turn.quarter_gate_by_decade[Decade::Second] = false;
         assert_eq!(state.quarter_gate(), QuarterGateResult::Continue);
     }
 

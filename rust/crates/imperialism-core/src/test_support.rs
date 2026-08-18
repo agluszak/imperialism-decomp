@@ -146,7 +146,9 @@ pub(crate) fn game_state() -> GameState {
             diplomacy_year_term_raw: 1914,
             phase: crate::PhaseCode::STRATEGIC_MAP,
             turn_flow_status_flags: 0,
-            quarter_gate_by_decade: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            quarter_gate_by_decade: DecadeTable::from_array([
+                false, true, true, true, true, true, true, true, true, true,
+            ]),
             difficulty: Difficulty::Easy,
             active_nation: NationId::new(0),
             selected_nation: NationId::new(0),
