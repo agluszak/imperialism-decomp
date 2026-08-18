@@ -15,6 +15,26 @@ struct CouncilPower {
     commodity: i32,
 }
 
+struct CouncilMaxima {
+    military: i32,
+    relations: i32,
+    territory: i32,
+    population: i32,
+    commodity: i32,
+}
+
+impl Default for CouncilMaxima {
+    fn default() -> Self {
+        Self {
+            military: 1,
+            relations: 1,
+            territory: 1,
+            population: 1,
+            commodity: 1,
+        }
+    }
+}
+
 impl CouncilPower {
     const fn total(self) -> i32 {
         self.military + self.relations + self.territory_and_population + self.commodity
@@ -210,7 +230,7 @@ impl GameState {
         let mut rows: MajorNationTable<CouncilPower> = MajorNationTable::default();
         let mut territory: MajorNationTable<i32> = MajorNationTable::default();
         let mut technology: MajorNationTable<i32> = MajorNationTable::default();
-        let mut maxima = [1; 5];
+        let mut maxima = CouncilMaxima::default();
         for nation in MajorNationId::all() {
             if !self.event_eligible(nation.nation()) {
                 continue;
@@ -250,21 +270,21 @@ impl GameState {
                 .sum();
             territory[nation] = self.nations.majors[&nation].common.owned_regions().len() as i32;
             technology[nation] = i32::from(self.nations.majors[&nation].city.population.count);
-            maxima[0] = maxima[0].max(rows[nation].military);
-            maxima[1] = maxima[1].max(rows[nation].relations);
-            maxima[2] = maxima[2].max(territory[nation]);
-            maxima[3] = maxima[3].max(technology[nation]);
-            maxima[4] = maxima[4].max(rows[nation].commodity);
+            maxima.military = maxima.military.max(rows[nation].military);
+            maxima.relations = maxima.relations.max(rows[nation].relations);
+            maxima.territory = maxima.territory.max(territory[nation]);
+            maxima.population = maxima.population.max(technology[nation]);
+            maxima.commodity = maxima.commodity.max(rows[nation].commodity);
         }
         for nation in MajorNationId::all() {
             if !self.event_eligible(nation.nation()) {
                 continue;
             }
-            rows[nation].military = rows[nation].military * 100 / maxima[0];
-            rows[nation].relations = rows[nation].relations * 100 / maxima[1];
-            rows[nation].territory_and_population =
-                territory[nation] * 50 / maxima[2] + technology[nation] * 50 / maxima[3];
-            rows[nation].commodity = rows[nation].commodity * 100 / maxima[4];
+            rows[nation].military = rows[nation].military * 100 / maxima.military;
+            rows[nation].relations = rows[nation].relations * 100 / maxima.relations;
+            rows[nation].territory_and_population = territory[nation] * 50 / maxima.territory
+                + technology[nation] * 50 / maxima.population;
+            rows[nation].commodity = rows[nation].commodity * 100 / maxima.commodity;
         }
         rows
     }

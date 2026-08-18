@@ -595,14 +595,6 @@ pub(super) fn compare_relationship(a_key: i16, b_key: i16, rng: &mut RngState) -
     }
 }
 
-pub(super) fn compare_index_and_rank(a: &(i16, i16), b: &(i16, i16)) -> i16 {
-    if a.1 <= b.1 { 1 } else { -1 }
-}
-
-pub(super) fn compare_by_price(a: &(i16, i16), b: &(i16, i16)) -> i16 {
-    if a.1 <= b.1 { -1 } else { 1 }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;

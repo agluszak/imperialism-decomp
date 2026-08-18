@@ -87,25 +87,24 @@ impl GameState {
             if priority != 0 {
                 insert_sorted(
                     &mut priorities,
-                    (resource_code(Some(commodity)), priority + 1),
-                    compare_index_and_rank,
+                    (commodity, priority + 1),
+                    compare_commodity_rank,
                 );
             }
         }
         let preferred = self.foreign_trade(nation).preferred_resources;
         for resource in preferred {
-            let code = resource_code(resource);
-            if !priorities.iter().any(|&(existing, _)| existing == code) {
-                insert_sorted(&mut priorities, (code, 1), compare_index_and_rank);
+            if let Some(commodity) = resource
+                && !priorities
+                    .iter()
+                    .any(|&(existing, _)| existing == commodity)
+            {
+                insert_sorted(&mut priorities, (commodity, 1), compare_commodity_rank);
             }
         }
         for index in 0..4 {
-            let code = priorities
-                .get(index)
-                .map(|(code, _)| *code)
-                .unwrap_or(NO_RESOURCE);
-            self.foreign_trade_mut(nation).preferred_resources[index] =
-                TradeCommodity::from_retail(code);
+            let commodity = priorities.get(index).map(|(commodity, _)| *commodity);
+            self.foreign_trade_mut(nation).preferred_resources[index] = commodity;
         }
     }
 
@@ -144,49 +143,65 @@ impl GameState {
             let iron_first = stock(ResourceKind::Iron) < stock(ResourceKind::Coal);
             let fourth = self.cotton_or_wool_roll();
             if iron_first {
-                self.set_preferred(nation, [4, 2, 3, fourth]);
+                self.set_preferred(
+                    nation,
+                    [
+                        Some(TradeCommodity::Iron),
+                        Some(TradeCommodity::Timber),
+                        Some(TradeCommodity::Coal),
+                        Some(fourth),
+                    ],
+                );
             } else {
-                self.set_preferred(nation, [3, 2, 4, fourth]);
+                self.set_preferred(
+                    nation,
+                    [
+                        Some(TradeCommodity::Coal),
+                        Some(TradeCommodity::Timber),
+                        Some(TradeCommodity::Iron),
+                        Some(fourth),
+                    ],
+                );
             }
             return;
         }
-        let mut preferred = [0_i16; 4];
+        let mut preferred = [None; 4];
         if stock(ResourceKind::Iron) < stock(ResourceKind::Coal) {
-            preferred[0] = 4;
+            preferred[0] = Some(TradeCommodity::Iron);
             if stock(ResourceKind::Oil) < stock(ResourceKind::Coal) {
-                preferred[1] = 6;
-                preferred[2] = if stock(ResourceKind::Timber) < stock(ResourceKind::Coal) {
-                    2
+                preferred[1] = Some(TradeCommodity::Oil);
+                preferred[2] = Some(if stock(ResourceKind::Timber) < stock(ResourceKind::Coal) {
+                    TradeCommodity::Timber
                 } else {
-                    3
-                };
+                    TradeCommodity::Coal
+                });
             } else {
-                preferred[1] = 3;
-                preferred[2] = if stock(ResourceKind::Oil) > stock(ResourceKind::Timber) {
-                    2
+                preferred[1] = Some(TradeCommodity::Coal);
+                preferred[2] = Some(if stock(ResourceKind::Oil) > stock(ResourceKind::Timber) {
+                    TradeCommodity::Timber
                 } else {
-                    6
-                };
+                    TradeCommodity::Oil
+                });
             }
         } else {
-            preferred[0] = 3;
+            preferred[0] = Some(TradeCommodity::Coal);
             if stock(ResourceKind::Oil) < stock(ResourceKind::Iron) {
-                preferred[1] = 6;
-                preferred[2] = if stock(ResourceKind::Iron) > stock(ResourceKind::Timber) {
-                    2
+                preferred[1] = Some(TradeCommodity::Oil);
+                preferred[2] = Some(if stock(ResourceKind::Iron) > stock(ResourceKind::Timber) {
+                    TradeCommodity::Timber
                 } else {
-                    4
-                };
+                    TradeCommodity::Iron
+                });
             } else {
-                preferred[1] = 4;
-                preferred[2] = if stock(ResourceKind::Oil) > stock(ResourceKind::Timber) {
-                    2
+                preferred[1] = Some(TradeCommodity::Iron);
+                preferred[2] = Some(if stock(ResourceKind::Oil) > stock(ResourceKind::Timber) {
+                    TradeCommodity::Timber
                 } else {
-                    6
-                };
+                    TradeCommodity::Oil
+                });
             }
         }
-        preferred[3] = self.cotton_or_wool_roll();
+        preferred[3] = Some(self.cotton_or_wool_roll());
         self.set_preferred(nation, preferred);
     }
 
@@ -211,14 +226,46 @@ impl GameState {
         let stock = |resource| self.city_stock(nation, resource);
         if self.has_oil(nation) {
             if stock(ResourceKind::Iron) < stock(ResourceKind::Coal) {
-                self.set_preferred(nation, [4, 2, 6, 3]);
+                self.set_preferred(
+                    nation,
+                    [
+                        Some(TradeCommodity::Iron),
+                        Some(TradeCommodity::Timber),
+                        Some(TradeCommodity::Oil),
+                        Some(TradeCommodity::Coal),
+                    ],
+                );
             } else {
-                self.set_preferred(nation, [3, 2, 6, 4]);
+                self.set_preferred(
+                    nation,
+                    [
+                        Some(TradeCommodity::Coal),
+                        Some(TradeCommodity::Timber),
+                        Some(TradeCommodity::Oil),
+                        Some(TradeCommodity::Iron),
+                    ],
+                );
             }
         } else if stock(ResourceKind::Iron) < stock(ResourceKind::Coal) {
-            self.set_preferred(nation, [4, 2, 3, NO_RESOURCE]);
+            self.set_preferred(
+                nation,
+                [
+                    Some(TradeCommodity::Iron),
+                    Some(TradeCommodity::Timber),
+                    Some(TradeCommodity::Coal),
+                    None,
+                ],
+            );
         } else {
-            self.set_preferred(nation, [3, 2, 4, NO_RESOURCE]);
+            self.set_preferred(
+                nation,
+                [
+                    Some(TradeCommodity::Coal),
+                    Some(TradeCommodity::Timber),
+                    Some(TradeCommodity::Iron),
+                    None,
+                ],
+            );
         }
     }
 
@@ -235,14 +282,38 @@ impl GameState {
         let wool = self.city_stock(nation, ResourceKind::Wool);
         if self.has_oil(nation) {
             let fourth = if self.rng.next_crt_rand() % 2 == 0 {
-                1
+                TradeCommodity::Wool
             } else {
-                0
+                TradeCommodity::Cotton
             };
             if iron < coal {
-                self.set_preferred(nation, [2, 4, if oil < coal { 6 } else { 3 }, fourth]);
+                self.set_preferred(
+                    nation,
+                    [
+                        Some(TradeCommodity::Timber),
+                        Some(TradeCommodity::Iron),
+                        Some(if oil < coal {
+                            TradeCommodity::Oil
+                        } else {
+                            TradeCommodity::Coal
+                        }),
+                        Some(fourth),
+                    ],
+                );
             } else {
-                self.set_preferred(nation, [2, 3, if oil < iron { 6 } else { 4 }, fourth]);
+                self.set_preferred(
+                    nation,
+                    [
+                        Some(TradeCommodity::Timber),
+                        Some(TradeCommodity::Coal),
+                        Some(if oil < iron {
+                            TradeCommodity::Oil
+                        } else {
+                            TradeCommodity::Iron
+                        }),
+                        Some(fourth),
+                    ],
+                );
             }
             return;
         }
@@ -256,25 +327,61 @@ impl GameState {
         });
         if !has_trade_candidate {
             let fourth = if self.rng.next_crt_rand() < 0x3ffe {
-                3
+                TradeCommodity::Coal
             } else {
-                4
+                TradeCommodity::Iron
             };
-            self.set_preferred(nation, [2, 0, 1, fourth]);
+            self.set_preferred(
+                nation,
+                [
+                    Some(TradeCommodity::Timber),
+                    Some(TradeCommodity::Cotton),
+                    Some(TradeCommodity::Wool),
+                    Some(fourth),
+                ],
+            );
         } else if (self.turn.economic_turn / 4) & 1 != 0 {
-            let (second, third) = if iron < coal { (4, 3) } else { (3, 4) };
+            let (second, third) = if iron < coal {
+                (TradeCommodity::Iron, TradeCommodity::Coal)
+            } else {
+                (TradeCommodity::Coal, TradeCommodity::Iron)
+            };
             let fourth = if self.market.rows[TradeCommodity::Cotton].price
                 > self.market.rows[TradeCommodity::Wool].price
             {
-                0
+                TradeCommodity::Cotton
             } else {
-                1
+                TradeCommodity::Wool
             };
-            self.set_preferred(nation, [2, second, third, fourth]);
+            self.set_preferred(
+                nation,
+                [
+                    Some(TradeCommodity::Timber),
+                    Some(second),
+                    Some(third),
+                    Some(fourth),
+                ],
+            );
         } else {
-            let (second, third) = if cotton < wool { (0, 1) } else { (1, 0) };
-            let fourth = if iron < coal { 4 } else { 3 };
-            self.set_preferred(nation, [2, second, third, fourth]);
+            let (second, third) = if cotton < wool {
+                (TradeCommodity::Cotton, TradeCommodity::Wool)
+            } else {
+                (TradeCommodity::Wool, TradeCommodity::Cotton)
+            };
+            let fourth = if iron < coal {
+                TradeCommodity::Iron
+            } else {
+                TradeCommodity::Coal
+            };
+            self.set_preferred(
+                nation,
+                [
+                    Some(TradeCommodity::Timber),
+                    Some(second),
+                    Some(third),
+                    Some(fourth),
+                ],
+            );
         }
     }
 
@@ -289,25 +396,33 @@ impl GameState {
             insert_sorted(
                 &mut prices,
                 (
-                    i16::from(resource.retail()),
+                    TradeCommodity::from_resource(resource).expect("textile input is tradable"),
                     self.city_stock(nation, resource),
                 ),
-                compare_by_price,
+                compare_commodity_price,
             );
         }
         if self.has_oil(nation) {
             insert_sorted(
                 &mut prices,
                 (
-                    i16::from(ResourceKind::Oil.retail()),
+                    TradeCommodity::Oil,
                     self.city_stock(nation, ResourceKind::Oil),
                 ),
-                compare_by_price,
+                compare_commodity_price,
             );
         }
-        let third = prices.first().map(|(code, _)| *code).unwrap_or(NO_RESOURCE);
-        let fourth = prices.get(1).map(|(code, _)| *code).unwrap_or(NO_RESOURCE);
-        self.set_preferred(nation, [0, 1, third, fourth]);
+        let third = prices.first().map(|(commodity, _)| *commodity);
+        let fourth = prices.get(1).map(|(commodity, _)| *commodity);
+        self.set_preferred(
+            nation,
+            [
+                Some(TradeCommodity::Cotton),
+                Some(TradeCommodity::Wool),
+                third,
+                fourth,
+            ],
+        );
     }
 
     pub(super) fn textile_set_trade_bids(&mut self, nation: MajorNationId) {
@@ -353,25 +468,21 @@ impl GameState {
             if matches!(commodity, TradeCommodity::Coal | TradeCommodity::Iron) {
                 priority -= 15;
             }
-            insert_sorted(
-                &mut prices,
-                (resource_code(Some(commodity)), priority),
-                compare_by_price,
-            );
+            insert_sorted(&mut prices, (commodity, priority), compare_commodity_price);
         }
         if self.has_oil(nation) {
             insert_sorted(
                 &mut prices,
                 (
-                    i16::from(ResourceKind::Oil.retail()),
+                    TradeCommodity::Oil,
                     self.market.rows[TradeCommodity::Oil].price as i16 - 15,
                 ),
-                compare_by_price,
+                compare_commodity_price,
             );
         }
-        let mut preferred = [NO_RESOURCE; 4];
-        for (index, &(code, _)) in prices.iter().take(4).enumerate() {
-            preferred[index] = code;
+        let mut preferred = [None; 4];
+        for (index, &(commodity, _)) in prices.iter().take(4).enumerate() {
+            preferred[index] = Some(commodity);
         }
         self.set_preferred(nation, preferred);
     }
@@ -398,14 +509,30 @@ impl GameState {
 
     pub(super) fn arms_set_buy_priorities(&mut self, nation: MajorNationId) {
         if self.has_oil(nation) {
-            self.set_preferred(nation, [6, 2, 3, 4]);
+            self.set_preferred(
+                nation,
+                [
+                    Some(TradeCommodity::Oil),
+                    Some(TradeCommodity::Timber),
+                    Some(TradeCommodity::Coal),
+                    Some(TradeCommodity::Iron),
+                ],
+            );
         } else {
             let fourth = if self.rng.next_crt_rand() % 2 != 0 {
-                0
+                TradeCommodity::Cotton
             } else {
-                1
+                TradeCommodity::Wool
             };
-            self.set_preferred(nation, [2, 3, 4, fourth]);
+            self.set_preferred(
+                nation,
+                [
+                    Some(TradeCommodity::Timber),
+                    Some(TradeCommodity::Coal),
+                    Some(TradeCommodity::Iron),
+                    Some(fourth),
+                ],
+            );
         }
     }
 
@@ -492,7 +619,7 @@ impl GameState {
                     resource,
                     self.market.rows[trade_commodity(resource)].price as i16,
                 ),
-                |a, b| compare_by_price(&(a.0 as i16, a.1), &(b.0 as i16, b.1)),
+                compare_resource_price,
             );
         }
         [prices[0].0, prices[1].0, prices[2].0]
@@ -517,15 +644,31 @@ impl GameState {
         self.set_trade_potential(nation, resource, stock);
     }
 
-    pub(super) fn cotton_or_wool_roll(&mut self) -> i16 {
+    pub(super) fn cotton_or_wool_roll(&mut self) -> TradeCommodity {
         if self.rng.next_crt_rand() < 0x3ffe {
-            0
+            TradeCommodity::Cotton
         } else {
-            1
+            TradeCommodity::Wool
         }
     }
 
-    pub(super) fn set_preferred(&mut self, nation: MajorNationId, codes: [i16; 4]) {
-        self.foreign_trade_mut(nation).preferred_resources = codes.map(TradeCommodity::from_retail);
+    pub(super) fn set_preferred(
+        &mut self,
+        nation: MajorNationId,
+        resources: [Option<TradeCommodity>; 4],
+    ) {
+        self.foreign_trade_mut(nation).preferred_resources = resources;
     }
+}
+
+fn compare_commodity_rank(a: &(TradeCommodity, i16), b: &(TradeCommodity, i16)) -> i16 {
+    if a.1 <= b.1 { 1 } else { -1 }
+}
+
+fn compare_commodity_price(a: &(TradeCommodity, i16), b: &(TradeCommodity, i16)) -> i16 {
+    if a.1 <= b.1 { -1 } else { 1 }
+}
+
+fn compare_resource_price(a: &(ResourceKind, i16), b: &(ResourceKind, i16)) -> i16 {
+    if a.1 <= b.1 { -1 } else { 1 }
 }
