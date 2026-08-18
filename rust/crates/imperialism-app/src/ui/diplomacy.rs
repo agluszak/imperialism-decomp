@@ -60,7 +60,10 @@ const TREATY_POLICIES: [DiplomacyPolicy; 7] = [
     DiplomacyPolicy::BuildConsulate,
     DiplomacyPolicy::BuildEmbassy,
 ];
-const RELATIONSHIP_NOTCH_PALETTES: [u8; 9] = [0x20, 0x2d, 0x30, 0x2e, 0x27, 0x24, 0x26, 0x18, 0x14];
+const RELATIONSHIP_NOTCH_PALETTES: DiplomacyRelationshipNotchTable<u8> =
+    DiplomacyRelationshipNotchTable::from_array([
+        0x20, 0x2d, 0x30, 0x2e, 0x27, 0x24, 0x26, 0x18, 0x14,
+    ]);
 const RELATIONSHIP_SELF_PALETTE: u8 = 0x22;
 const TREATY_LABEL_CENTERS: [(f32, f32); 7] = [
     (74.0, 63.0),
@@ -2147,8 +2150,7 @@ fn render_diplomacy_map(
             |tile| state.map()[tile].owner_nation,
             framed,
             |nation| {
-                RELATIONSHIP_NOTCH_PALETTES
-                    [usize::from(state.diplomacy_relationship_notch(framed, nation))]
+                RELATIONSHIP_NOTCH_PALETTES[state.diplomacy_relationship_notch(framed, nation)]
             },
         ),
         4 => compose_owner_preview_indices_with_fill(

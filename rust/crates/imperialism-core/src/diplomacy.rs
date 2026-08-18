@@ -13,6 +13,22 @@ pub enum DiplomaticRelationship {
     War,
 }
 
+#[derive(Clone, Copy, Debug, Deserialize, Enum, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum DiplomacyRelationshipNotch {
+    Hostile,
+    VeryUnfriendly,
+    Unfriendly,
+    Reserved,
+    Neutral,
+    Friendly,
+    VeryFriendly,
+    Allied,
+    Devoted,
+}
+
+pub type DiplomacyRelationshipNotchTable<T> = enum_map::EnumMap<DiplomacyRelationshipNotch, T>;
+
 impl DiplomaticRelationship {
     pub const fn try_from_retail(value: i16) -> Option<Self> {
         match value {
@@ -657,26 +673,30 @@ impl GameState {
     }
 
     /// Retail standing-score classifier used by the diplomacy relationship overlay.
-    pub fn diplomacy_relationship_notch(&self, source: NationId, target: NationId) -> u8 {
+    pub fn diplomacy_relationship_notch(
+        &self,
+        source: NationId,
+        target: NationId,
+    ) -> DiplomacyRelationshipNotch {
         let standing = self.diplomacy.standings[source][target];
         if standing <= 0x14 {
-            0
+            DiplomacyRelationshipNotch::Hostile
         } else if standing <= 0x31 {
-            1
+            DiplomacyRelationshipNotch::VeryUnfriendly
         } else if standing <= 0x4f {
-            2
+            DiplomacyRelationshipNotch::Unfriendly
         } else if standing <= 0x64 {
-            3
+            DiplomacyRelationshipNotch::Reserved
         } else if standing <= 0x87 {
-            4
+            DiplomacyRelationshipNotch::Neutral
         } else if standing <= 0xaa {
-            5
+            DiplomacyRelationshipNotch::Friendly
         } else if standing <= 0xcd {
-            6
+            DiplomacyRelationshipNotch::VeryFriendly
         } else if standing <= 0xf0 {
-            7
+            DiplomacyRelationshipNotch::Allied
         } else {
-            8
+            DiplomacyRelationshipNotch::Devoted
         }
     }
 
