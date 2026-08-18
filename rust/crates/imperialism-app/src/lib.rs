@@ -123,6 +123,7 @@ pub fn run(
                 primary_window: Some(Window {
                     title: "Imperialism".to_owned(),
                     resolution: (logical_resolution[0], logical_resolution[1]).into(),
+                    decorations: false,
                     ..default()
                 }),
                 ..default()

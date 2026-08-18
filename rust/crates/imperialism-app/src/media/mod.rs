@@ -15,8 +15,7 @@ pub(crate) struct ImperialismMediaPlugin;
 impl Plugin for ImperialismMediaPlugin {
     fn build(&self, app: &mut App) {
         movie::ensure_initialized();
-        app.init_resource::<sfx::RetailAudioHandles>()
-            .add_observer(sfx::on_picture_button_activate);
+        sfx::register(app);
         music::register(app);
     }
 }

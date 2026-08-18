@@ -4,6 +4,7 @@
 //! Missing archives or ids are skipped, matching a failed `FindResourceA`. Slot 2 at 0
 //! is silence (`preferenceValues[kSoundEffectsVolumePreference] == 0`).
 
+use crate::AppState;
 use crate::RetailAssetsResource;
 use crate::ui::GamePreferences;
 use bevy::audio::{AudioPlayer, AudioSource, PlaybackSettings, Volume};
@@ -27,10 +28,14 @@ pub(crate) struct RetailAudioAssets<'w> {
     sources: ResMut<'w, Assets<AudioSource>>,
     handles: ResMut<'w, RetailAudioHandles>,
     prefs: Res<'w, GamePreferences>,
+    app_state: Option<Res<'w, State<AppState>>>,
 }
 
 impl RetailAudioAssets<'_> {
     pub(crate) fn play(&mut self, commands: &mut Commands, sound: SoundId) {
+        if movie_blocks_sfx(self.app_state.as_ref().map(|state| *state.get())) {
+            return;
+        }
         play_cached_or_retail_sound(
             commands,
             Some(self.retail_assets.assets()),
@@ -40,6 +45,23 @@ impl RetailAudioAssets<'_> {
             sound,
         );
     }
+}
+
+/// Retail tears DirectSound down for AVI audio. Keep game WAVE silent while a movie plays.
+fn movie_blocks_sfx(state: Option<AppState>) -> bool {
+    state == Some(AppState::OpeningCinematic)
+}
+
+fn stop_sfx_for_movie(mut commands: Commands, playback: Query<Entity, With<SoundEffect>>) {
+    for entity in &playback {
+        commands.entity(entity).despawn();
+    }
+}
+
+pub(super) fn register(app: &mut App) {
+    app.init_resource::<RetailAudioHandles>()
+        .add_observer(on_picture_button_activate)
+        .add_systems(OnEnter(AppState::OpeningCinematic), stop_sfx_for_movie);
 }
 
 fn play_cached_or_retail_sound(
@@ -194,6 +216,24 @@ mod tests {
     fn missing_wave_does_not_strand() {
         let mut app = audio_app();
         play_click(&mut app, 100);
+        assert!(spawned_volumes(app.world_mut()).is_empty());
+    }
+
+    #[test]
+    fn opening_cinematic_blocks_new_sfx() {
+        assert!(movie_blocks_sfx(Some(AppState::OpeningCinematic)));
+        assert!(!movie_blocks_sfx(Some(AppState::MainMenu)));
+        assert!(!movie_blocks_sfx(None));
+    }
+
+    #[test]
+    fn movie_enter_despawns_existing_one_shots() {
+        let mut app = audio_app();
+        seed_click(app.world_mut());
+        play_click(&mut app, 100);
+        assert_eq!(spawned_volumes(app.world_mut()).len(), 1);
+        app.add_systems(Update, stop_sfx_for_movie);
+        app.update();
         assert!(spawned_volumes(app.world_mut()).is_empty());
     }
 }
