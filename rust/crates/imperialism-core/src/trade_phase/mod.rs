@@ -10,8 +10,25 @@ use crate::market::all_trade_commodities;
 use crate::*;
 use serde::{Deserialize, Serialize};
 
-pub(super) const DEAL_CATEGORY_ORDER: [u8; TradeCommodity::LENGTH] =
-    [13, 14, 15, 16, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6];
+pub(super) const DEAL_CATEGORY_ORDER: [TradeCommodity; TradeCommodity::LENGTH] = [
+    TradeCommodity::Clothing,
+    TradeCommodity::Furniture,
+    TradeCommodity::Hardware,
+    TradeCommodity::Arms,
+    TradeCommodity::Food,
+    TradeCommodity::Fabric,
+    TradeCommodity::Lumber,
+    TradeCommodity::Paper,
+    TradeCommodity::Steel,
+    TradeCommodity::Fuel,
+    TradeCommodity::Cotton,
+    TradeCommodity::Wool,
+    TradeCommodity::Timber,
+    TradeCommodity::Coal,
+    TradeCommodity::Iron,
+    TradeCommodity::Horses,
+    TradeCommodity::Oil,
+];
 pub(super) const NO_RESOURCE: i16 = -10;
 pub(super) const GRANT_DELTA_SCALE: f32 = -1.0 / 255.0;
 pub(super) const RELATION_SCALE: f64 = 1.0 / 255.0;
@@ -91,35 +108,39 @@ impl TradePhase {
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct TradeSession {
     phase: TradePhase,
-    category_index: usize,
+    category: Option<TradeCommodity>,
     entry_ordinal: usize,
     pending: Option<PendingTradeOffer>,
 }
 
 impl TradeSession {
     fn skip_empty_categories(&mut self) {
-        while self.category_index <= 0x10 {
-            if !self.phase.deals[deal_commodity(self.category_index)].is_empty() {
+        while let Some(category) = self.category {
+            if !self.phase.deals[category].is_empty() {
                 break;
             }
-            self.category_index += 1;
+            self.category = next_deal_commodity(category);
         }
     }
 
     fn advance_deal_cursor(&mut self) {
-        let size = self.phase.deals[deal_commodity(self.category_index)].len();
+        let category = self.category.expect("active deal cursor has a commodity");
+        let size = self.phase.deals[category].len();
         self.entry_ordinal += 1;
         if self.entry_ordinal > size {
-            self.category_index += 1;
+            self.category = next_deal_commodity(category);
             self.skip_empty_categories();
             self.entry_ordinal = 1;
         }
     }
 }
 
-fn deal_commodity(category_index: usize) -> TradeCommodity {
-    TradeCommodity::from_retail(i16::from(DEAL_CATEGORY_ORDER[category_index]))
-        .expect("deal commodity")
+fn next_deal_commodity(current: TradeCommodity) -> Option<TradeCommodity> {
+    DEAL_CATEGORY_ORDER
+        .iter()
+        .skip_while(|&&commodity| commodity != current)
+        .nth(1)
+        .copied()
 }
 
 impl GameState {
@@ -138,7 +159,7 @@ impl GameState {
         self.calculate_deal_order(&mut phase);
         let mut session = TradeSession {
             phase,
-            category_index: 0,
+            category: DEAL_CATEGORY_ORDER.first().copied(),
             entry_ordinal: 1,
             pending: None,
         };
@@ -191,11 +212,7 @@ impl GameState {
 
     fn continue_trade_deals(&mut self, session: &mut TradeSession) -> TradeProgress {
         let mut blocked = false;
-        loop {
-            if session.category_index > 0x10 {
-                break;
-            }
-            let commodity = deal_commodity(session.category_index);
+        while let Some(commodity) = session.category {
             let deal = session.phase.deals[commodity][session.entry_ordinal - 1];
             let mut transfer = self.amount_unsold(deal.seller, commodity.resource());
             if let Some(seller_major) = MajorNationId::from_nation(deal.seller)
@@ -504,13 +521,12 @@ pub(super) fn subsidy_from_stock(stock: i16) -> i16 {
     }
 }
 
-pub(super) fn trades_first(proposal: i16, category: i16) -> i16 {
-    for &slot in &DEAL_CATEGORY_ORDER {
-        let slot = i16::from(slot);
-        if slot == proposal {
+pub(super) fn trades_first(proposal: TradeCommodity, category: TradeCommodity) -> TradeCommodity {
+    for &commodity in &DEAL_CATEGORY_ORDER {
+        if commodity == proposal {
             return proposal;
         }
-        if slot == category {
+        if commodity == category {
             return category;
         }
     }

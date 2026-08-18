@@ -335,7 +335,8 @@ impl GameState {
         nation: MajorNationId,
         resource: ResourceKind,
     ) -> i16 {
-        let proposal = resource as i16;
+        let proposal = TradeCommodity::from_resource(resource)
+            .expect("merchant-capacity proposal is a market commodity");
         if let Some(capacity) =
             self.reserved_capacity_for_priority(nation, proposal, TradeCommodity::Iron)
         {
@@ -349,7 +350,7 @@ impl GameState {
         if let Some(capacity) =
             self.reserved_capacity_for_priority(nation, proposal, TradeCommodity::Coal)
         {
-            if proposal == 3
+            if proposal == TradeCommodity::Coal
                 && self.foreign_trade(nation).purchase_priority[TradeCommodity::Iron] != 0
             {
                 return (i32::from(self.available_merchant(nation)) - 1).max(0) as i16;
@@ -362,7 +363,7 @@ impl GameState {
     fn reserved_capacity_for_priority(
         &self,
         nation: MajorNationId,
-        proposal: i16,
+        proposal: TradeCommodity,
         commodity: TradeCommodity,
     ) -> Option<i16> {
         if self.foreign_trade(nation).purchase_priority[commodity] == 0
@@ -371,10 +372,9 @@ impl GameState {
             return None;
         }
         let available = self.available_merchant(nation);
-        let code = commodity as i16;
-        Some(if proposal == code {
+        Some(if proposal == commodity {
             available
-        } else if trades_first(proposal, code) == proposal {
+        } else if trades_first(proposal, commodity) == proposal {
             (i32::from(available) - 2).max(0) as i16
         } else {
             available
