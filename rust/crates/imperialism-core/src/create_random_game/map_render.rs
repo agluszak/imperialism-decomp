@@ -16,7 +16,6 @@ pub(super) fn tile_from_generated(tile: GeneratedTerrainTile) -> TileState {
         gate: tile.gate.map_or(-1, |gate| gate.code()),
         recruit_search_visited: 0,
         per_tile_visited: 0,
-        marker_slot_index: -1,
         tile_action_ordinal: -1,
         development: Default::default(),
         edge_resources: [None, None],

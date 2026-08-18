@@ -321,11 +321,28 @@ fn read_save_backed_capture(
     name: &str,
 ) -> Result<SaveBackedState> {
     let capture: SaveBackedCapture = read_capture(captures, name)?;
-    let save_path = run_dir.join(&capture.save);
+    let published_path = run_dir.join(&capture.save);
+    let runtime_path = run_dir
+        .join("game")
+        .join("Save")
+        .join(format!("rt_native_{name}.imp"));
+    let save_path = if published_path.is_file() {
+        published_path
+    } else {
+        runtime_path
+    };
     let save = fs::read(&save_path)
         .with_context(|| format!("reading save-backed capture {}", save_path.display()))?;
     Ok(SaveBackedState {
         save,
         ephemeral: capture.ephemeral,
     })
+}
+
+pub(crate) fn load_save_backed_capture(
+    run_dir: &Path,
+    captures: &serde_json::Value,
+    name: &str,
+) -> Result<GameState> {
+    load_save_backed_state(read_save_backed_capture(run_dir, captures, name)?)
 }

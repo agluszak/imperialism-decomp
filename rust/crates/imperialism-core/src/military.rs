@@ -45,7 +45,7 @@ impl GameState {
             .iter()
             .enumerate()
             .filter_map(|(index, (_, queued))| (queued.nation == nation).then_some(index + 1))
-            .last()
+            .next_back()
             .unwrap_or_else(|| {
                 self.missions
                     .values()

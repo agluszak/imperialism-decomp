@@ -4,6 +4,9 @@ version = "0.1.0"
 edition.workspace = true
 rust-version.workspace = true
 
+[lints]
+workspace = true
+
 [dependencies]
 imperialism-core = { path = "../imperialism-core" }
 enum-map.workspace = true

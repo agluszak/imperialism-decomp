@@ -514,7 +514,6 @@ mod tests {
             gate: 0,
             recruit_search_visited: 0,
             per_tile_visited: 0,
-            marker_slot_index: -1,
             tile_action_ordinal: -1,
             development: Default::default(),
             edge_resources: [None; 2],

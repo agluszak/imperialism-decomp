@@ -11,6 +11,9 @@ resolver = "2"
 edition = "2024"
 rust-version = "1.97.1"
 
+[workspace.lints.clippy]
+too_many_arguments = "allow"
+
 [workspace.dependencies]
 anyhow = "1"
 bitflags = { version = "2", features = ["serde"] }

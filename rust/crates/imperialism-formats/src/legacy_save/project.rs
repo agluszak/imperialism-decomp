@@ -616,7 +616,6 @@ impl LegacyTerrainTile {
             gate: self.gate,
             recruit_search_visited: self.recruit_search_visited,
             per_tile_visited: self.per_tile_visited,
-            marker_slot_index: self.marker_slot_index,
             tile_action_ordinal: self.tile_action_ordinal,
             development: TileDevelopment {
                 surface: DevelopmentLevel::new((self.development_classes as u8) & 0x0f),

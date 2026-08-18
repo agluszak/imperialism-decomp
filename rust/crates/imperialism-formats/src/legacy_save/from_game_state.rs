@@ -966,7 +966,9 @@ fn tile_dto(tile: &TileState) -> LegacyTerrainTile {
         pending_development_visibility: visibility,
         recruit_search_visited: tile.recruit_search_visited,
         per_tile_visited: tile.per_tile_visited,
-        marker_slot_index: tile.marker_slot_index,
+        // The map dialog owns this transient sprite-atlas slot and resets every tile to
+        // the retail sentinel when it builds the loaded map.
+        marker_slot_index: -1,
         edge_resources: tile
             .edge_resources
             .map(|resource| option_i8(resource.map(|kind| kind.retail()))),
