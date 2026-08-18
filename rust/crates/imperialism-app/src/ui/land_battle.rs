@@ -25,6 +25,7 @@ struct LandBattleRoot;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum LandBattleAction {
+    Done,
     Auto,
     Retreat,
 }
@@ -159,6 +160,11 @@ fn bind_land_battle_controls(commands: &mut Commands, root: Entity, tree: &Retai
         Text::default(),
         TextColor(Color::WHITE),
     ));
+    commands
+        .entity(tree.find(root, fourcc!("done")))
+        .insert((LandBattleAction::Done, ActivateOnPress))
+        .observe(on_land_battle_activate)
+        .remove::<InteractionDisabled>();
     commands
         .entity(tree.find(root, fourcc!("auto")))
         .insert((LandBattleAction::Auto, ActivateOnPress))
@@ -306,7 +312,7 @@ fn apply_battlefield_click(
     let hex = hex_map.hex_at_pixel(x, y)?;
     session
         .game
-        .move_selected_army_unit(hex, story_ids)
+        .army_action_at(hex, story_ids)
         .ok()
         .and_then(|(_, stop)| stop)
 }
@@ -324,6 +330,15 @@ fn on_land_battle_activate(
         return;
     };
     match *action {
+        LandBattleAction::Done => {
+            if let Ok(Some(stop)) = session
+                .game
+                .finish_selected_army_unit_action(super::session::news_story_ids(assets.as_deref()))
+                && stop != TurnStop::LandBattle
+            {
+                apply_turn_stop(stop, &mut next_state);
+            }
+        }
         LandBattleAction::Auto => match session
             .game
             .auto_resolve_land_battle(super::session::news_story_ids(assets.as_deref()))
@@ -332,13 +347,12 @@ fn on_land_battle_activate(
             stop => apply_turn_stop(stop, &mut next_state),
         },
         LandBattleAction::Retreat => {
-            session.game.resolve_land_battle(false);
-            match session
+            if let Ok(Some(stop)) = session
                 .game
-                .resume_after_land_battle(super::session::news_story_ids(assets.as_deref()))
+                .retreat_from_army_battle(super::session::news_story_ids(assets.as_deref()))
+                && stop != TurnStop::LandBattle
             {
-                TurnStop::LandBattle => {}
-                stop => apply_turn_stop(stop, &mut next_state),
+                apply_turn_stop(stop, &mut next_state);
             }
         }
     }
@@ -569,6 +583,7 @@ mod tests {
             ))
             .id();
         commands.spawn((RetailTag(fourcc!("curs")), Node::default(), ChildOf(root)));
+        commands.spawn((RetailTag(fourcc!("done")), Node::default(), ChildOf(root)));
         commands.spawn((RetailTag(fourcc!("auto")), Node::default(), ChildOf(root)));
         commands.spawn((RetailTag(fourcc!("retr")), Node::default(), ChildOf(root)));
         commands.spawn((
