@@ -52,13 +52,16 @@ fn movie_blocks_sfx(state: Option<AppState>) -> bool {
     state == Some(AppState::OpeningCinematic)
 }
 
-pub(crate) fn stop_sfx_for_movie(
-    mut commands: Commands,
-    playback: Query<Entity, With<SoundEffect>>,
-) {
+fn stop_sfx_for_movie(mut commands: Commands, playback: Query<Entity, With<SoundEffect>>) {
     for entity in &playback {
         commands.entity(entity).despawn();
     }
+}
+
+pub(super) fn register(app: &mut App) {
+    app.init_resource::<RetailAudioHandles>()
+        .add_observer(on_picture_button_activate)
+        .add_systems(OnEnter(AppState::OpeningCinematic), stop_sfx_for_movie);
 }
 
 fn play_cached_or_retail_sound(
