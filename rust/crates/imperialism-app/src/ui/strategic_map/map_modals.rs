@@ -21,6 +21,28 @@ use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
 #[derive(Component)]
 struct MapModal;
 
+const CIVILIANS_PER_COLUMN: usize = 4;
+const CIVILIAN_LEDGER_VISIBLE_COLUMNS: usize = 2;
+
+#[derive(Component)]
+struct CivilianLedger {
+    current_column: usize,
+    last_column: usize,
+}
+
+#[derive(Component)]
+struct CivilianLedgerRow {
+    column: usize,
+    row: usize,
+}
+
+#[derive(Clone, Copy, Component)]
+enum CivilianLedgerAction {
+    Previous,
+    Next,
+    Select(TileId),
+}
+
 #[derive(Component)]
 enum CivilianModal {
     Engineer(CivilianUnitId),
@@ -42,7 +64,12 @@ enum CivilianModalAction {
 pub(crate) fn register(app: &mut App) {
     app.add_systems(
         Update,
-        (bind_added_map_modals, bind_added_civilian_modals)
+        (
+            bind_added_map_modals,
+            bind_added_civilian_ledgers,
+            bind_added_civilian_modals,
+            project_civilian_ledger,
+        )
             .run_if(in_state(AppState::StrategicMap)),
     );
 }
@@ -74,6 +101,15 @@ pub(crate) fn spawn_navy_roster(commands: &mut Commands) {
 pub(crate) fn spawn_army_roster(commands: &mut Commands) {
     let root = commands.spawn_scene(generated::mapview_9460()).id();
     spawn_modal(commands, root);
+}
+
+pub(crate) fn spawn_civilian_roster(commands: &mut Commands) {
+    let root = commands.spawn_scene(generated::mapview_3500()).id();
+    spawn_modal(commands, root);
+    commands.entity(root).insert(CivilianLedger {
+        current_column: 0,
+        last_column: 0,
+    });
 }
 
 pub(crate) fn spawn_engineer_construction(commands: &mut Commands, unit: CivilianUnitId) {
@@ -131,6 +167,238 @@ fn bind_added_map_modals(
             }
         }
     }
+}
+
+fn bind_added_civilian_ledgers(
+    mut commands: Commands,
+    added: Query<Entity, Added<CivilianLedger>>,
+    tree: RetailTree,
+    mut assets: RetailUiAssets,
+    session: Res<GameSession>,
+) {
+    for root in &added {
+        let view = tree.view(root);
+        let page = view.find(fourcc!("page"));
+        let active_nation = session.game.turn().active_nation;
+        let civilians = session
+            .game
+            .civilian_units()
+            .filter(|(_, unit)| unit.owner_nation() == active_nation)
+            .filter_map(|(_, unit)| unit.location().tile().map(|tile| (unit.unit_type(), tile)))
+            .collect::<Vec<_>>();
+        let last_column = civilians.len().saturating_sub(1) / CIVILIANS_PER_COLUMN;
+        commands.entity(root).insert(CivilianLedger {
+            current_column: 0,
+            last_column,
+        });
+
+        let (font, layout, line_height, _) = assets
+            .text_style(RetailTextStylePreset {
+                font_family: 3,
+                face_flags: 0,
+                point_size: 12,
+                alignment: -2,
+            })
+            .expect("retail civilian-ledger text style");
+        let title = commands
+            .spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: Val::Px(77.0),
+                    top: Val::Px(17.0),
+                    width: Val::Px(128.0),
+                    height: Val::Px(18.0),
+                    ..default()
+                },
+                Text::new(
+                    assets
+                        .string(0x2746, 11)
+                        .expect("retail civilian-ledger title"),
+                ),
+                font.clone(),
+                layout,
+                line_height,
+                TextColor(Color::BLACK),
+                Pickable::IGNORE,
+            ))
+            .id();
+        commands.entity(view.find(fourcc!("DLOG"))).add_child(title);
+
+        for (index, (kind, tile)) in civilians.into_iter().enumerate() {
+            let column = index / CIVILIANS_PER_COLUMN;
+            let row_in_column = index % CIVILIANS_PER_COLUMN;
+            let name = assets
+                .string(0x2718, i16::from(kind.retail()) + 1)
+                .expect("retail civilian class name");
+            let location = city_name(&session.game, tile);
+            let row = commands
+                .spawn((
+                    CivilianLedgerRow {
+                        column,
+                        row: row_in_column,
+                    },
+                    CivilianLedgerAction::Select(tile),
+                    Button,
+                    ActivateOnPress,
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: Val::Px(column as f32 * 229.0),
+                        top: Val::Px(row_in_column as f32 * 64.0),
+                        width: Val::Px(229.0),
+                        height: Val::Px(64.0),
+                        padding: UiRect::all(Val::Px(4.0)),
+                        ..default()
+                    },
+                    Text::new(format!("{name}\n{location}")),
+                    font.clone(),
+                    layout,
+                    line_height,
+                    TextColor(Color::BLACK),
+                    if column < CIVILIAN_LEDGER_VISIBLE_COLUMNS {
+                        Visibility::Inherited
+                    } else {
+                        Visibility::Hidden
+                    },
+                ))
+                .observe(on_civilian_ledger_action)
+                .id();
+            commands.entity(page).add_child(row);
+        }
+        for (tag, action) in [
+            (fourcc!("lcor"), CivilianLedgerAction::Previous),
+            (fourcc!("rcor"), CivilianLedgerAction::Next),
+        ] {
+            commands
+                .entity(view.find(tag))
+                .insert((
+                    Button,
+                    ActivateOnPress,
+                    action,
+                    match action {
+                        CivilianLedgerAction::Previous => Visibility::Hidden,
+                        CivilianLedgerAction::Next
+                            if CIVILIAN_LEDGER_VISIBLE_COLUMNS <= last_column =>
+                        {
+                            Visibility::Inherited
+                        }
+                        CivilianLedgerAction::Next | CivilianLedgerAction::Select(_) => {
+                            Visibility::Hidden
+                        }
+                    },
+                ))
+                .observe(on_civilian_ledger_action);
+        }
+    }
+}
+
+fn project_civilian_ledger(
+    ledgers: Query<&CivilianLedger, Changed<CivilianLedger>>,
+    mut rows: Query<(&CivilianLedgerRow, &mut Node, &mut Visibility)>,
+    mut arrows: Query<(&CivilianLedgerAction, &mut Visibility), Without<CivilianLedgerRow>>,
+) {
+    let Ok(ledger) = ledgers.single() else {
+        return;
+    };
+    for (row, mut node, mut visibility) in &mut rows {
+        let visible = (ledger.current_column
+            ..ledger.current_column + CIVILIAN_LEDGER_VISIBLE_COLUMNS)
+            .contains(&row.column);
+        *visibility = if visible {
+            Visibility::Inherited
+        } else {
+            Visibility::Hidden
+        };
+        if visible {
+            node.left = Val::Px((row.column - ledger.current_column) as f32 * 229.0);
+            node.top = Val::Px(row.row as f32 * 64.0);
+        }
+    }
+    for (action, mut visibility) in &mut arrows {
+        let visible = match action {
+            CivilianLedgerAction::Previous => ledger.current_column > 0,
+            CivilianLedgerAction::Next => {
+                ledger.current_column + CIVILIAN_LEDGER_VISIBLE_COLUMNS <= ledger.last_column
+            }
+            CivilianLedgerAction::Select(_) => continue,
+        };
+        *visibility = if visible {
+            Visibility::Inherited
+        } else {
+            Visibility::Hidden
+        };
+    }
+}
+
+#[allow(clippy::too_many_arguments)]
+fn on_civilian_ledger_action(
+    activate: On<Activate>,
+    actions: Query<&CivilianLedgerAction>,
+    parents: Query<&ChildOf>,
+    roots: Query<(), With<CivilianLedger>>,
+    mut ledgers: Query<&mut CivilianLedger>,
+    mut interactions: Query<&mut StrategicInteraction>,
+    mut session: ResMut<GameSession>,
+    mut commands: Commands,
+    mut audio: RetailAudioAssets,
+) {
+    let Ok(action) = actions.get(activate.entity).copied() else {
+        return;
+    };
+    let Some(root) = ancestor_with_component(activate.entity, &parents, &roots) else {
+        return;
+    };
+    match action {
+        CivilianLedgerAction::Previous => {
+            let mut ledger = ledgers.get_mut(root).expect("civilian ledger action root");
+            ledger.current_column = ledger
+                .current_column
+                .saturating_sub(CIVILIAN_LEDGER_VISIBLE_COLUMNS);
+        }
+        CivilianLedgerAction::Next => {
+            let mut ledger = ledgers.get_mut(root).expect("civilian ledger action root");
+            ledger.current_column =
+                (ledger.current_column + CIVILIAN_LEDGER_VISIBLE_COLUMNS).min(ledger.last_column);
+        }
+        CivilianLedgerAction::Select(tile) => {
+            session.center_map_on(tile);
+            let nation = session.game.turn().active_nation;
+            let selectable = session
+                .game
+                .civilian_on_tile_for_nation(tile, nation)
+                .and_then(|(unit, state)| {
+                    matches!(
+                        state.order(),
+                        CivilianWorkOrder::Idle
+                            | CivilianWorkOrder::Sleep
+                            | CivilianWorkOrder::Later
+                    )
+                    .then_some(unit)
+                });
+            if let Some(unit) = selectable
+                && let Ok(mut interaction) = interactions.single_mut()
+            {
+                set_map_interaction_mode(&mut interaction, MapInteractionMode::Civilian);
+                interaction.civilian = Some(unit);
+                session.game.activate_civilian_selection(unit);
+                audio.play(&mut commands, SoundId::new(0x2338));
+            }
+            commands.entity(root).despawn();
+        }
+    }
+}
+
+fn ancestor_with_component<T: Component>(
+    mut entity: Entity,
+    parents: &Query<&ChildOf>,
+    components: &Query<(), With<T>>,
+) -> Option<Entity> {
+    for _ in 0..10 {
+        if components.contains(entity) {
+            return Some(entity);
+        }
+        entity = parents.get(entity).ok()?.parent();
+    }
+    None
 }
 
 fn bind_added_civilian_modals(

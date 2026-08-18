@@ -4,7 +4,7 @@ use super::super::format_currency;
 use super::super::retail::{RetailTree, RetailUiAssets};
 use super::map_interaction::cycle_map_interaction_selection;
 use super::map_interaction::{MapInteractionMode, StrategicInteraction};
-use super::map_modals::spawn_civilian_disband;
+use super::map_modals::{spawn_civilian_disband, spawn_civilian_roster};
 use crate::AppState;
 use crate::ui::GameSession;
 use bevy::prelude::*;
@@ -146,6 +146,7 @@ fn on_civilian_command(
     mut commands: Commands,
     mut session: ResMut<GameSession>,
     mut interactions: Query<&mut StrategicInteraction>,
+    keys: Res<ButtonInput<KeyCode>>,
 ) {
     let Ok(command) = commands_query.get(activate.entity).copied() else {
         return;
@@ -161,7 +162,11 @@ fn on_civilian_command(
         CivilianCommand::Later => Some(CivilianIdleOrderMode::Later),
         CivilianCommand::Done => Some(CivilianIdleOrderMode::Done),
         CivilianCommand::Disband => {
-            spawn_civilian_disband(&mut commands, unit);
+            if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
+                spawn_civilian_roster(&mut commands);
+            } else {
+                spawn_civilian_disband(&mut commands, unit);
+            }
             None
         }
     };

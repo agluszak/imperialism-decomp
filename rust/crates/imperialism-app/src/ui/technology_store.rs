@@ -708,7 +708,7 @@ mod tests {
         app.add_plugins(MinimalPlugins)
             .add_plugins(bevy::state::app::StatesPlugin)
             .insert_state(AppState::StrategicMap)
-            .insert_resource(GameSession { game })
+            .insert_resource(GameSession::new(game))
             .add_observer(on_open_technology_store);
         let control = app.world_mut().spawn(OpenTechnologyStore).id();
 

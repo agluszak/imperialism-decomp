@@ -1,8 +1,7 @@
 use super::generated;
-use super::retail::{ModalDialog, RetailTree, ancestor_with};
+use super::retail::{RetailTree, ancestor_with};
 use super::{RetailUiAssets, fill_brackets};
 use crate::{AppState, RetailAssetsResource};
-use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
 use imperialism_formats::{FourCc, RetailTextStylePreset, fourcc};
@@ -125,8 +124,6 @@ fn spawn_for_context(commands: &mut Commands, context: HelpContext) {
             set: 0,
             topic: None,
         },
-        ModalDialog,
-        TabGroup::modal(),
         GlobalZIndex(30),
         DespawnOnExit(context.app_state()),
     ));
