@@ -90,7 +90,9 @@ pub use city_site::{
     place_city, requires_capital_site_selection, supports_city_site_terrain,
     validate_capital_site_selection,
 };
-pub use civilian_work::{CivilianWorkOrder, RailOrderRejection, RailSegment};
+pub use civilian_work::{
+    CivilianOrderRejection, CivilianTileAction, CivilianWorkOrder, RailOrderRejection, RailSegment,
+};
 pub use combat_moves::{CombatMovesContinuation, PendingLandBattle};
 pub use create_random_game::{RandomGameNames, create_random_game};
 pub use deal_book::{

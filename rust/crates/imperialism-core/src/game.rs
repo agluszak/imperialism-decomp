@@ -101,6 +101,12 @@ impl GameState {
         &self.rng
     }
 
+    /// Retail UI animations consume the same process-global CRT `rand()` stream
+    /// as gameplay code rather than owning a presentation-only generator.
+    pub fn next_civilian_animation_rand(&mut self) -> i32 {
+        self.rng.next_crt_rand()
+    }
+
     pub const fn market(&self) -> &TradeMarketState {
         &self.market
     }

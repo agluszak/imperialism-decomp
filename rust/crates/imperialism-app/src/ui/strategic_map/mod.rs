@@ -39,7 +39,7 @@ use overlays::{
     town_transport_linked,
 };
 use terrain::{compose_strategic_base_tile, frame_for_offset};
-pub(crate) use units::sync_strategic_units;
+pub(crate) use units::{animate_civilian_work, sync_strategic_units};
 
 const MAP_TAG: FourCc = fourcc!("DLOG");
 pub(super) const VIEWPORT_WIDTH: usize = 512;
@@ -57,6 +57,7 @@ struct StrategicMapComposeKey {
     topology: MapTopology,
     active_nation: NationId,
     selected_civilian: Option<CivilianUnitId>,
+    hovered_tile: Option<TileId>,
     visible_tiles: u64,
 }
 
@@ -99,9 +100,15 @@ pub(crate) fn bind_strategic_base_terrain(
         improvement_pictures,
         resource_icons,
         resource_overlays,
-        composed: Some(strategic_map_compose_key(state, None)),
+        composed: Some(strategic_map_compose_key(state, None, None)),
     };
-    let image = compose_strategic_map(state, canvas.sprites(), assets.default_dib_palette(), None);
+    let image = compose_strategic_map(
+        state,
+        canvas.sprites(),
+        assets.default_dib_palette(),
+        None,
+        None,
+    );
     let image = assets.add_image(image);
     commands.entity(map).insert((
         ImageNode::new(image),
@@ -133,13 +140,12 @@ pub(crate) fn sync_strategic_base_terrain(
         &mut StrategicBaseTerrainCanvas,
         &ImageNode,
         Ref<StrategicInteraction>,
+        &RelativeCursorPosition,
     )>,
 ) {
-    for (mut canvas, image_node, selected) in &mut maps {
-        if !session.is_changed() && !selected.is_changed() {
-            continue;
-        }
-        let key = strategic_map_compose_key(&session.game, selected.civilian);
+    for (mut canvas, image_node, selected, cursor) in &mut maps {
+        let hovered = strategic_base_terrain_tile_at_cursor(&session.game, cursor);
+        let key = strategic_map_compose_key(&session.game, selected.civilian, hovered);
         if canvas.composed == Some(key) {
             continue;
         }
@@ -148,6 +154,7 @@ pub(crate) fn sync_strategic_base_terrain(
             canvas.sprites(),
             retail_assets.assets().default_dib_palette(),
             selected.civilian,
+            hovered,
         );
         let Some(mut existing) = images.get_mut(&image_node.image) else {
             continue;
@@ -242,14 +249,11 @@ fn compose_strategic_map(
     sprites: StrategicMapSprites<'_>,
     palette: &DibPalette,
     selected_civilian: Option<CivilianUnitId>,
+    hovered_tile: Option<TileId>,
 ) -> Image {
     let mut indices = compose_strategic_map_indices(state, sprites);
-    if let Some(unit) = selected_civilian.filter(|&unit| {
-        state.civilian_units().any(|(candidate, state)| {
-            candidate == unit && state.unit_type() == CivilianUnitKind::Engineer
-        })
-    }) {
-        draw_rail_order_selection(state, unit, &mut indices);
+    if let (Some(unit), Some(tile)) = (selected_civilian, hovered_tile) {
+        draw_civilian_hover_highlight(state, unit, tile, &mut indices);
     }
     indexed_viewport_image(&indices, palette)
 }
@@ -257,6 +261,7 @@ fn compose_strategic_map(
 fn strategic_map_compose_key(
     state: &GameState,
     selected_civilian: Option<CivilianUnitId>,
+    hovered_tile: Option<TileId>,
 ) -> StrategicMapComposeKey {
     use std::hash::Hasher;
 
@@ -269,8 +274,48 @@ fn strategic_map_compose_key(
         topology: state.map().topology,
         active_nation: state.turn().active_nation,
         selected_civilian,
+        hovered_tile,
         visible_tiles: hasher.finish(),
     }
+}
+
+/// `TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights`: an actionable
+/// civilian cursor frames its hovered tile. The engineer's same-tile construction
+/// cursor also outlines the adjacent water or domestic non-city construction choices.
+fn draw_civilian_hover_highlight(
+    state: &GameState,
+    unit: CivilianUnitId,
+    hovered: TileId,
+    viewport: &mut [u8],
+) {
+    let Some(civilian) = state.civilian_unit(unit) else {
+        return;
+    };
+    let action = state.civilian_tile_action(unit, hovered);
+    if matches!(
+        action,
+        CivilianTileAction::None | CivilianTileAction::Blocked | CivilianTileAction::SelectUnit
+    ) {
+        return;
+    }
+
+    let (x, y) = strategic_tile_screen_origin(state, hovered);
+    draw_frame(viewport, x, y, 0);
+    if civilian.unit_type() != CivilianUnitKind::Engineer
+        || action != CivilianTileAction::EngineerSameTile
+        || state.map()[hovered].region.is_some()
+    {
+        return;
+    }
+    let owner = TileOwnerTag::from_nation(state.turn().active_nation);
+    let neighbors = state.map().geometry().neighbors(hovered).map(|neighbor| {
+        neighbor.filter(|&neighbor| {
+            let neighbor = state.map()[neighbor];
+            neighbor.region.is_none()
+                && (neighbor.terrain == TerrainKind::Water || neighbor.owner_nation == Some(owner))
+        })
+    });
+    draw_city_site_neighbor_outline(state, neighbors, viewport);
 }
 
 fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl std::hash::Hasher) {
@@ -280,6 +325,7 @@ fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl st
     tile.get().hash(hasher);
     tile_state.terrain.hash(hasher);
     tile_state.gate.hash(hasher);
+    tile_state.recruit_search_visited.hash(hasher);
     tile_state.rendering.sprite_variant.hash(hasher);
     tile_state
         .rendering
@@ -392,18 +438,6 @@ pub(super) fn draw_city_site_selection(
         })
     });
     draw_city_site_neighbor_outline(state, neighbors, viewport);
-}
-
-fn draw_rail_order_selection(state: &GameState, unit: CivilianUnitId, viewport: &mut [u8]) {
-    let Some(origin) = state
-        .civilian_unit(unit)
-        .and_then(|candidate| candidate.location().tile())
-    else {
-        return;
-    };
-    let (x, y) = strategic_tile_screen_origin(state, origin);
-    draw_frame(viewport, x, y, 0);
-    draw_city_site_neighbor_outline(state, state.rail_construction_destinations(unit), viewport);
 }
 
 fn draw_frame(viewport: &mut [u8], x: i32, y: i32, color: u8) {

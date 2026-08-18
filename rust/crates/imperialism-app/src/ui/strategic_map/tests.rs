@@ -105,6 +105,72 @@ fn fixture_state() -> GameState {
     GameState::from_parts(fixture_parts())
 }
 
+#[test]
+fn engineer_same_tile_hover_frames_the_tile_and_construction_neighbors() {
+    let mut parts = fixture_parts();
+    let active = parts.turn.active_nation;
+    let (row, column) = parts.map.geometry().row_column(parts.map_view_origin);
+    let hovered = parts
+        .map
+        .geometry()
+        .tile(row + 2, column + 2)
+        .expect("interior visible tile");
+    parts.map[hovered].owner_nation = Some(TileOwnerTag::from_nation(active));
+    parts.map[hovered].terrain = TerrainKind::Plains;
+    parts.map[hovered].region = None;
+    parts.map[hovered].province = None;
+    for neighbor in parts
+        .map
+        .geometry()
+        .neighbors(hovered)
+        .into_iter()
+        .flatten()
+    {
+        parts.map[neighbor].terrain = TerrainKind::Water;
+        parts.map[neighbor].region = None;
+    }
+    let engineer = CivilianUnitId::from_serialized(9_999);
+    parts.civilian_units.insert(
+        engineer,
+        CivilianUnitState::new(
+            active,
+            CivilianUnitKind::Engineer,
+            CivilianLocation::OnMap(hovered),
+            CivilianWorkOrder::Idle,
+            active,
+            0,
+            false,
+        )
+        .unwrap(),
+    );
+    let mut state = GameState::from_parts(parts);
+    state.activate_civilian_selection(engineer);
+    assert_eq!(
+        state.civilian_tile_action(engineer, hovered),
+        CivilianTileAction::EngineerSameTile
+    );
+
+    let mut viewport = vec![0xff; VIEWPORT_WIDTH * VIEWPORT_HEIGHT];
+    draw_civilian_hover_highlight(&state, engineer, hovered, &mut viewport);
+
+    let (hover_x, hover_y) = strategic_tile_screen_origin(&state, hovered);
+    assert_eq!(
+        viewport[hover_y as usize * VIEWPORT_WIDTH + hover_x as usize],
+        0,
+        "the hovered tile must be framed"
+    );
+    assert!(
+        viewport.iter().enumerate().any(|(index, &pixel)| {
+            let x = (index % VIEWPORT_WIDTH) as i32;
+            let y = (index / VIEWPORT_WIDTH) as i32;
+            pixel == 0x20
+                && !((hover_x..hover_x + TILE_SIZE).contains(&x)
+                    && (hover_y..hover_y + TILE_SIZE).contains(&y))
+        }),
+        "the hover frame must include the retail construction-neighbor outline"
+    );
+}
+
 struct MapFixture {
     parts: GameStateParts,
     origin: TileId,

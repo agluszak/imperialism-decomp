@@ -106,6 +106,50 @@ pub enum RailOrderRejection {
     InsufficientFunds,
 }
 
+/// Retail `CivilianTileActionCode` (0x004d2960).
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[repr(u8)]
+pub enum CivilianTileAction {
+    None,
+    Blocked,
+    SelectUnit,
+    MoveUnit,
+    EngineerSameTile,
+    EngineerDirection14,
+    EngineerDirection03,
+    EngineerDirection25,
+    Prospect,
+    DevelopResource,
+    ShowOrderReport,
+    PurchaseLand,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum CivilianOrderRejection {
+    Blocked,
+    InsufficientFunds,
+    ConstructionRequiresChoice,
+    PurchaseLandRequiresConfirmation,
+}
+
+impl CivilianTileAction {
+    pub const fn cursor_token(self) -> u16 {
+        match self {
+            Self::None | Self::SelectUnit => 0,
+            Self::Blocked => 1008,
+            Self::MoveUnit => 1004,
+            Self::EngineerSameTile => 1003,
+            Self::EngineerDirection14 => 1002,
+            Self::EngineerDirection03 => 1018,
+            Self::EngineerDirection25 => 1019,
+            Self::Prospect => 1001,
+            Self::DevelopResource => 1003,
+            Self::ShowOrderReport => 1011,
+            Self::PurchaseLand => 1025,
+        }
+    }
+}
+
 const fn rail_cost(terrain: TerrainKind) -> i32 {
     match terrain {
         TerrainKind::Plains => 100,
@@ -120,6 +164,257 @@ const fn rail_cost(terrain: TerrainKind) -> i32 {
 }
 
 impl GameState {
+    /// `TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler`.
+    ///
+    /// The retail map stores the current selected civilian's eligible targets in
+    /// `recruitSearchVisited0e`; both click dispatch and cursor selection consume it.
+    pub fn prepare_civilian_order_targets(&mut self, unit: CivilianUnitId) {
+        let Some(unit) = self.civilian_units.get(&unit) else {
+            return;
+        };
+        let kind = unit.unit_type;
+        let nation = MajorNationId::from_nation(unit.owner_nation)
+            .expect("civilian orders belong to major nations");
+        let origin = unit.location.tile();
+        for index in 0..STRATEGIC_TILE_COUNT {
+            let tile = TileId::new(index as u16);
+            self.map[tile].recruit_search_visited =
+                u8::from(!self.civilian_target_eligible(kind, nation, origin, tile));
+        }
+    }
+
+    /// `TCivMgr::SetActiveCivilianSelection`: move the selected entry to the
+    /// head of its tile chain, then refresh its eligible order targets.
+    pub fn activate_civilian_selection(&mut self, unit: CivilianUnitId) {
+        let tile = self
+            .civilian_units
+            .get(&unit)
+            .and_then(|unit| unit.location.tile());
+        if let Some(tile) = tile {
+            self.move_civilian_to(unit, tile);
+        }
+        self.prepare_civilian_order_targets(unit);
+    }
+
+    /// `TCivMgr::ResolveCivilianTileOrderActionCode` for a selected civilian.
+    pub fn civilian_tile_action(&self, unit: CivilianUnitId, tile: TileId) -> CivilianTileAction {
+        let Some(selected) = self.civilian_units.get(&unit) else {
+            return CivilianTileAction::Blocked;
+        };
+        if bounded_seam_tile(&self.map, tile) {
+            return CivilianTileAction::Blocked;
+        }
+        if let Some((clicked, state)) =
+            self.civilian_on_tile_for_nation(tile, selected.owner_nation)
+            && clicked != unit
+        {
+            return if matches!(state.order, CivilianWorkOrder::Idle) {
+                CivilianTileAction::SelectUnit
+            } else {
+                CivilianTileAction::ShowOrderReport
+            };
+        }
+        if self.map[tile].recruit_search_visited != 0 {
+            if let Some((_, state)) = self.civilian_on_tile_for_nation(tile, selected.owner_nation)
+            {
+                return if idle_selectable(&state.order) {
+                    CivilianTileAction::SelectUnit
+                } else {
+                    CivilianTileAction::ShowOrderReport
+                };
+            }
+            return if self.can_assign_civilian_to_tile(unit, tile) {
+                CivilianTileAction::MoveUnit
+            } else {
+                CivilianTileAction::Blocked
+            };
+        }
+        match selected.unit_type {
+            CivilianUnitKind::Engineer => match selected.location().tile() {
+                Some(origin) if tile == origin => CivilianTileAction::EngineerSameTile,
+                Some(origin) => {
+                    match MapGeometry::new(MapTopology::Bounded).direction_to(origin, tile) {
+                        Some(HexDirection::East | HexDirection::West) => {
+                            CivilianTileAction::EngineerDirection14
+                        }
+                        Some(HexDirection::NorthEast | HexDirection::SouthWest) => {
+                            CivilianTileAction::EngineerDirection03
+                        }
+                        Some(HexDirection::SouthEast | HexDirection::NorthWest) => {
+                            CivilianTileAction::EngineerDirection25
+                        }
+                        None => CivilianTileAction::Blocked,
+                    }
+                }
+                None => CivilianTileAction::Blocked,
+            },
+            CivilianUnitKind::Prospector => CivilianTileAction::Prospect,
+            CivilianUnitKind::Developer => CivilianTileAction::PurchaseLand,
+            CivilianUnitKind::Miner
+            | CivilianUnitKind::Farmer
+            | CivilianUnitKind::Forester
+            | CivilianUnitKind::Rancher
+            | CivilianUnitKind::Fisherman
+            | CivilianUnitKind::Driller => CivilianTileAction::DevelopResource,
+        }
+    }
+
+    /// Executes the non-modal branches of `TCivMgr::HandleCivilianTileOrderAction`.
+    pub fn issue_civilian_tile_order(
+        &mut self,
+        unit: CivilianUnitId,
+        tile: TileId,
+    ) -> Result<CivilianTileAction, CivilianOrderRejection> {
+        match self.civilian_tile_action(unit, tile) {
+            CivilianTileAction::Blocked
+            | CivilianTileAction::None
+            | CivilianTileAction::SelectUnit
+            | CivilianTileAction::ShowOrderReport => Err(CivilianOrderRejection::Blocked),
+            CivilianTileAction::MoveUnit => {
+                if !self.can_assign_civilian_to_tile(unit, tile) {
+                    return Err(CivilianOrderRejection::Blocked);
+                }
+                self.set_civilian_work_order(
+                    unit,
+                    CivilianWorkOrder::Redeploy {
+                        destination: tile,
+                        turns: 0,
+                    },
+                );
+                self.move_civilian_to(unit, tile);
+                Ok(CivilianTileAction::MoveUnit)
+            }
+            CivilianTileAction::EngineerSameTile => {
+                Err(CivilianOrderRejection::ConstructionRequiresChoice)
+            }
+            CivilianTileAction::EngineerDirection14
+            | CivilianTileAction::EngineerDirection03
+            | CivilianTileAction::EngineerDirection25 => self
+                .order_rail_construction(unit, tile)
+                .map(|_| self.civilian_tile_action(unit, tile))
+                .map_err(|error| match error {
+                    RailOrderRejection::InsufficientFunds => {
+                        CivilianOrderRejection::InsufficientFunds
+                    }
+                    RailOrderRejection::IneligibleUnit | RailOrderRejection::InvalidTarget => {
+                        CivilianOrderRejection::Blocked
+                    }
+                }),
+            CivilianTileAction::Prospect => {
+                self.move_civilian_to(unit, tile);
+                self.set_civilian_work_order(unit, CivilianWorkOrder::Prospect { turns: 1 });
+                Ok(CivilianTileAction::Prospect)
+            }
+            CivilianTileAction::DevelopResource => {
+                let nation = MajorNationId::from_nation(self.civilian_units[&unit].owner_nation)
+                    .expect("civilian orders belong to major nations");
+                let extractive = matches!(
+                    self.civilian_units[&unit].unit_type,
+                    CivilianUnitKind::Miner | CivilianUnitKind::Driller
+                );
+                let class = if extractive {
+                    self.map[tile].development.extractive.get()
+                } else {
+                    self.map[tile].development.surface.get()
+                };
+                let cost = match class {
+                    0 => 100,
+                    1 => 1_000,
+                    _ => 5_000,
+                };
+                let major = self.nations.major(nation);
+                let available =
+                    (major.common.treasury + major.economy.diplomacy_budget_base / 10).max(0);
+                if available < cost {
+                    return Err(CivilianOrderRejection::InsufficientFunds);
+                }
+                self.nations.major_mut(nation).common.treasury -= cost;
+                self.move_civilian_to(unit, tile);
+                self.set_civilian_work_order(unit, CivilianWorkOrder::DevelopResource { turns: 3 });
+                Ok(CivilianTileAction::DevelopResource)
+            }
+            CivilianTileAction::PurchaseLand => {
+                Err(CivilianOrderRejection::PurchaseLandRequiresConfirmation)
+            }
+        }
+    }
+
+    fn civilian_target_eligible(
+        &self,
+        kind: CivilianUnitKind,
+        nation: MajorNationId,
+        origin: Option<TileId>,
+        tile: TileId,
+    ) -> bool {
+        let state = &self.map[tile];
+        match kind {
+            CivilianUnitKind::Engineer => origin.is_some_and(|origin| {
+                if tile == origin {
+                    let access = self.technology.city_capabilities_by_nation[nation]
+                        .primary_civilian_distance_terrain;
+                    return rail_terrain_allowed(state.terrain, access)
+                        && (state.region.is_none()
+                            || state.province.is_some_and(|province| {
+                                self.map.provinces[province].fort_level() < FortLevel::Three
+                            }));
+                }
+                self.rail_construction_target_from(origin, nation, tile)
+                    .is_ok()
+            }),
+            CivilianUnitKind::Prospector => {
+                state.terrain != TerrainKind::Water
+                    && self.civilian_order_compatible(nation, tile)
+                    && (matches!(state.gate, 8 | 9)
+                        || (self.technology.city_capabilities_by_nation[nation].oil_drilling
+                            && matches!(state.gate, 10..=12)))
+                    && !state.development.resource_visible_to_majors[nation]
+            }
+            CivilianUnitKind::Developer => {
+                state.terrain != TerrainKind::Water
+                    && state
+                        .owner_nation
+                        .is_some_and(|owner| owner.get() >= MajorNationId::COUNT)
+                    && self.civilian_order_compatible(nation, tile)
+                    && state.secondary_owner_nation.is_none()
+                    && civilian_gate_qualifies(state.gate)
+                    && state.edge_resources.into_iter().flatten().any(|resource| {
+                        matches!(
+                            resource,
+                            ResourceKind::Cotton | ResourceKind::Wool | ResourceKind::Timber
+                        ) || (state.development.resource_visible_to_majors[nation]
+                            && matches!(
+                                resource,
+                                ResourceKind::Coal
+                                    | ResourceKind::Iron
+                                    | ResourceKind::Gems
+                                    | ResourceKind::Gold
+                            ))
+                            || (resource == ResourceKind::Oil
+                                && self.technology.city_capabilities_by_nation[nation].oil_drilling
+                                && state.development.resource_visible_to_majors[nation])
+                    })
+            }
+            CivilianUnitKind::Miner | CivilianUnitKind::Driller => {
+                self.civilian_owned_by(nation, tile)
+                    && state.development.resource_visible_to_majors[nation]
+                    && self.max_resource_capability_for_order(tile, kind, nation)
+                        > i16::from(state.development.extractive.get())
+            }
+            CivilianUnitKind::Fisherman => self.fishing_target_eligible(nation, tile),
+            CivilianUnitKind::Farmer | CivilianUnitKind::Forester | CivilianUnitKind::Rancher => {
+                self.civilian_owned_by(nation, tile)
+                    && civilian_gate_qualifies(state.gate)
+                    && state.edge_resources.into_iter().flatten().any(|resource| {
+                        civilian_required_kind(resource) == Some(kind)
+                            && (civilian_resource_always_qualifies(resource)
+                                || self.map[tile].owner_nation
+                                    == Some(TileOwnerTag::from_nation(nation.nation())))
+                    })
+                    && self.max_resource_capability_for_order(tile, kind, nation)
+                        > i16::from(state.development.surface.get())
+            }
+        }
+    }
     /// Issues one player rail-construction order.
     ///
     /// Retail `HandleEngineerConstructionAction` for an adjacent click: charge
@@ -171,17 +466,133 @@ impl GameState {
             })
     }
 
+    fn rail_construction_target_from(
+        &self,
+        origin: TileId,
+        nation: MajorNationId,
+        destination: TileId,
+    ) -> Result<RailSegment, RailOrderRejection> {
+        let segment = RailSegment::between(MapTopology::Bounded, origin, destination)
+            .ok_or(RailOrderRejection::InvalidTarget)?;
+        if bounded_seam_tile(&self.map, destination) {
+            return Err(RailOrderRejection::InvalidTarget);
+        }
+        let access =
+            self.technology.city_capabilities_by_nation[nation].primary_civilian_distance_terrain;
+        if !rail_terrain_allowed(self.map[origin].terrain, access)
+            || !rail_terrain_allowed(self.map[destination].terrain, access)
+            || self.map[destination].owner_nation
+                != Some(TileOwnerTag::from_nation(nation.nation()))
+            || self.map[origin]
+                .transport_links
+                .contains(TileTransportLinks::for_direction(segment.direction()))
+        {
+            return Err(RailOrderRejection::InvalidTarget);
+        }
+        Ok(segment)
+    }
+
+    fn civilian_owned_by(&self, nation: MajorNationId, tile: TileId) -> bool {
+        let state = &self.map[tile];
+        state.owner_nation == Some(TileOwnerTag::from_nation(nation.nation()))
+            || state.secondary_owner_nation == Some(nation)
+    }
+
+    fn can_assign_civilian_to_tile(&self, unit: CivilianUnitId, tile: TileId) -> bool {
+        let Some(unit) = self.civilian_units.get(&unit) else {
+            return false;
+        };
+        if unit.location.tile() == Some(tile)
+            || self.map[tile].gate == 0
+            || (self.map[tile].flags.contains(TileFlags::BASE_TRANSPORT)
+                && unit.unit_type != CivilianUnitKind::Engineer)
+        {
+            return false;
+        }
+        let Some(owner) = self.map[tile].owner_nation.and_then(TileOwnerTag::nation) else {
+            return false;
+        };
+        if MajorNationId::from_nation(owner).is_some() {
+            return owner == unit.owner_nation;
+        }
+        unit.unit_type != CivilianUnitKind::Engineer
+            && (self.diplomacy.mission_levels[unit.owner_nation][owner]
+                == DiplomaticMissionLevel::Embassy
+                || self.nations.country_status(owner)
+                    == Some(CountryStatus::ColonyOf(unit.owner_nation)))
+    }
+
+    fn civilian_order_compatible(&self, nation: MajorNationId, tile: TileId) -> bool {
+        let Some(owner) = self.map[tile].owner_nation.and_then(TileOwnerTag::nation) else {
+            return false;
+        };
+        owner == nation.nation()
+            || (MajorNationId::from_nation(owner).is_none()
+                && self.diplomacy.mission_levels[nation.nation()][owner]
+                    == DiplomaticMissionLevel::Embassy)
+    }
+
+    fn max_resource_capability_for_order(
+        &self,
+        tile: TileId,
+        kind: CivilianUnitKind,
+        nation: MajorNationId,
+    ) -> i16 {
+        self.map[tile]
+            .edge_resources
+            .into_iter()
+            .flatten()
+            .filter(|&resource| civilian_required_kind(resource) == Some(kind))
+            .map(|resource| {
+                i16::from(
+                    self.technology.city_capabilities_by_nation[nation]
+                        .university
+                        .requirement_levels[resource]
+                        .retail(),
+                )
+            })
+            .max()
+            .unwrap_or(0)
+    }
+
+    fn fishing_target_eligible(&self, nation: MajorNationId, tile: TileId) -> bool {
+        self.map[tile].terrain == TerrainKind::Water
+            && self
+                .nations
+                .major(nation)
+                .towns
+                .iter()
+                .any(|(&town, state)| {
+                    state.enabled != 0
+                        && self
+                            .map
+                            .geometry()
+                            .neighbors(town)
+                            .into_iter()
+                            .flatten()
+                            .any(|neighbor| {
+                                neighbor == tile
+                                    && self.map[neighbor].region == self.map[town].region
+                            })
+                })
+            && i16::from(
+                self.technology.city_capabilities_by_nation[nation]
+                    .university
+                    .requirement_levels[ResourceKind::Fish]
+                    .retail(),
+            ) > i16::from(self.map[tile].development.extractive.get()) * 16
+                + i16::from(self.map[tile].development.surface.get())
+    }
+
     /// The idle-selectable civilian of `nation` standing on `tile`, if any.
     pub fn selectable_civilian_on_tile(
         &self,
         tile: TileId,
         nation: NationId,
     ) -> Option<CivilianUnitId> {
-        self.civilian_units.iter().find_map(|(&id, unit)| {
-            (unit.owner_nation() == nation
-                && unit.location().tile() == Some(tile)
-                && idle_selectable(unit.order()))
-            .then_some(id)
+        self.civilians_on_tile_chain(tile).into_iter().find(|id| {
+            let unit = &self.civilian_units[id];
+            unit.owner_nation() == nation && idle_selectable(unit.order())
         })
     }
 
@@ -191,10 +602,12 @@ impl GameState {
         tile: TileId,
         nation: NationId,
     ) -> Option<(CivilianUnitId, &CivilianUnitState)> {
-        self.civilian_units.iter().find_map(|(&id, unit)| {
-            (unit.owner_nation() == nation && unit.location().tile() == Some(tile))
-                .then_some((id, unit))
-        })
+        self.civilians_on_tile_chain(tile)
+            .into_iter()
+            .find_map(|id| {
+                let unit = &self.civilian_units[&id];
+                (unit.owner_nation() == nation).then_some((id, unit))
+            })
     }
 
     /// `TCivMgr::ClearNationCivilianActionModesAndCycleSelection` unit walk (cycle is app-side).
@@ -770,6 +1183,10 @@ impl GameState {
         on_tile.into_iter().find(|id| !pointed.contains(id))
     }
 
+    pub fn civilian_chain_head_on_tile(&self, tile: TileId) -> Option<CivilianUnitId> {
+        self.chain_head_on_tile(tile)
+    }
+
     pub(crate) fn civilians_on_tile_chain(&self, tile: TileId) -> Vec<CivilianUnitId> {
         let mut chain = Vec::new();
         let mut current = self.chain_head_on_tile(tile);
@@ -805,6 +1222,40 @@ fn civilian_sort_priority(kind: CivilianUnitKind) -> i16 {
 
 fn idle_selectable(order: &CivilianWorkOrder) -> bool {
     matches!(order, CivilianWorkOrder::Idle | CivilianWorkOrder::Sleep)
+}
+
+fn civilian_gate_qualifies(gate: i8) -> bool {
+    matches!(gate, 2 | 3 | 5..=13 | 16..=23)
+}
+
+fn civilian_required_kind(resource: ResourceKind) -> Option<CivilianUnitKind> {
+    match resource {
+        ResourceKind::Cotton | ResourceKind::Grain | ResourceKind::Fruit => {
+            Some(CivilianUnitKind::Farmer)
+        }
+        ResourceKind::Wool | ResourceKind::Livestock => Some(CivilianUnitKind::Rancher),
+        ResourceKind::Timber => Some(CivilianUnitKind::Forester),
+        ResourceKind::Coal | ResourceKind::Iron | ResourceKind::Gems | ResourceKind::Gold => {
+            Some(CivilianUnitKind::Miner)
+        }
+        ResourceKind::Oil => Some(CivilianUnitKind::Driller),
+        ResourceKind::Fish => Some(CivilianUnitKind::Fisherman),
+        _ => None,
+    }
+}
+
+fn civilian_resource_always_qualifies(resource: ResourceKind) -> bool {
+    matches!(
+        resource,
+        ResourceKind::Cotton
+            | ResourceKind::Wool
+            | ResourceKind::Timber
+            | ResourceKind::Coal
+            | ResourceKind::Iron
+            | ResourceKind::Oil
+            | ResourceKind::Gems
+            | ResourceKind::Gold
+    )
 }
 
 fn bounded_seam_tile(map: &MapMgr, tile: TileId) -> bool {
@@ -1028,6 +1479,76 @@ mod tests {
         assert_eq!(
             state.nations.major(MajorNationId::new(0)).common.treasury,
             800
+        );
+    }
+
+    #[test]
+    fn civilian_target_dispatch_keeps_retail_kind_specific_branches() {
+        let mut state = crate::test_support::game_state();
+        let (origin, destination) = interior();
+        let engineer = engineer_on(&mut state, origin, destination);
+        state.map[origin].region = None;
+        state.map[origin].province = None;
+
+        state.activate_civilian_selection(engineer);
+        assert_eq!(
+            state.civilian_tile_action(engineer, origin),
+            CivilianTileAction::EngineerSameTile
+        );
+        assert_eq!(
+            state.issue_civilian_tile_order(engineer, origin),
+            Err(CivilianOrderRejection::ConstructionRequiresChoice)
+        );
+        assert_eq!(
+            state.civilian_tile_action(engineer, destination),
+            CivilianTileAction::EngineerDirection14
+        );
+
+        let miner_tile = state.map.geometry().tile(3, 10).unwrap();
+        let worker_origin = state.map.geometry().tile(3, 9).unwrap();
+        let miner = civilian_on(
+            &mut state,
+            2,
+            CivilianUnitKind::Miner,
+            worker_origin,
+            CivilianWorkOrder::Idle,
+            NationId::new(0),
+        );
+        state.map[miner_tile].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
+        state.map[miner_tile].edge_resources = [Some(ResourceKind::Oil), None];
+        state.map[miner_tile].development.resource_visible_to_majors[MajorNationId::new(0)] = true;
+        state.activate_civilian_selection(miner);
+        assert_eq!(
+            state.civilian_tile_action(miner, miner_tile),
+            CivilianTileAction::Blocked
+        );
+        state.civilian_units[&miner].unit_type = CivilianUnitKind::Driller;
+        state.technology.city_capabilities_by_nation[MajorNationId::new(0)]
+            .university
+            .requirement_levels[ResourceKind::Oil] = UniversityRequirementLevel::One;
+        state.activate_civilian_selection(miner);
+        assert_eq!(
+            state.civilian_tile_action(miner, miner_tile),
+            CivilianTileAction::DevelopResource
+        );
+
+        let move_tile = state.map.geometry().tile(3, 12).unwrap();
+        state.map[move_tile].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
+        state.map[move_tile].gate = 1;
+        assert_eq!(
+            state.civilian_tile_action(miner, move_tile),
+            CivilianTileAction::MoveUnit
+        );
+        assert_eq!(
+            state.issue_civilian_tile_order(miner, move_tile),
+            Ok(CivilianTileAction::MoveUnit)
+        );
+        assert_eq!(
+            state.civilian_units[&miner].order,
+            CivilianWorkOrder::Redeploy {
+                destination: move_tile,
+                turns: 0,
+            }
         );
     }
 

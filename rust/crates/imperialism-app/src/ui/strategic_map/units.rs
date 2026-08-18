@@ -30,6 +30,23 @@ const CIVILIAN_SPRITE_CLASS: CivilianUnitTable<u8> =
 const CIVILIAN_ANIMATION_PICTURE_IDS: CivilianUnitTable<i16> = CivilianUnitTable::from_array([
     14_000, 14_005, 14_011, 14_015, 14_021, 14_026, 14_030, 14_035, 14_040,
 ]);
+const CIVILIAN_ANIMATION_FRAME_COUNTS: CivilianUnitTable<u8> =
+    CivilianUnitTable::from_array([5, 4, 2, 4, 3, 2, 3, 3, 2]);
+const CIVILIAN_ANIMATION_LOGICAL_COUNTS: CivilianUnitTable<u8> =
+    CivilianUnitTable::from_array([9, 7, 2, 5, 6, 2, 5, 9, 5]);
+const CIVILIAN_ANIMATION_TICKS_PER_FRAME: CivilianUnitTable<u8> =
+    CivilianUnitTable::from_array([5, 15, 10, 7, 15, 15, 7, 10, 10]);
+const CIVILIAN_ANIMATION_FRAME_MAP: CivilianUnitTable<[u8; 12]> = CivilianUnitTable::from_array([
+    [0, 1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 2, 3, 1, 1, 1, 1, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 1, 2, 0, 0, 0, 0],
+    [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+]);
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 enum CivilianPose {
@@ -50,6 +67,7 @@ enum StrategicUnitSprite {
     Civilian {
         kind: CivilianUnitKind,
         pose: CivilianPose,
+        frame: u8,
         owner_badge: Option<u8>,
         framed: bool,
     },
@@ -88,8 +106,15 @@ pub(crate) struct StrategicUnitLayer {
 pub(crate) struct StrategicMapUnit;
 
 #[derive(Component)]
+pub(crate) struct CivilianWorkAnimation {
+    kind: CivilianUnitKind,
+    logical_frame: u8,
+    timer: Timer,
+}
+
+#[derive(Component)]
 pub(crate) struct StrategicUnitSprites {
-    civilians: HashMap<(CivilianUnitKind, CivilianPose), IndexedPicture>,
+    civilians: HashMap<(CivilianUnitKind, CivilianPose), Vec<IndexedPicture>>,
     army_counts: [IndexedPicture; 4],
     owner_flags: IndexedPicture,
     fleet_frames: Vec<IndexedPicture>,
@@ -189,7 +214,7 @@ fn project_strategic_units_onto(
             continue;
         };
         let (width, height) = (TILE_SIZE, TILE_SIZE);
-        commands.spawn((
+        let mut entity = commands.spawn((
             Node {
                 position_type: PositionType::Absolute,
                 left: Val::Px(unit.screen_x as f32),
@@ -204,6 +229,68 @@ fn project_strategic_units_onto(
             StrategicMapUnit,
             ChildOf(layer),
         ));
+        if let StrategicUnitSprite::Civilian {
+            kind,
+            pose: CivilianPose::Animated,
+            ..
+        } = unit.sprite
+        {
+            entity.insert(CivilianWorkAnimation {
+                kind,
+                logical_frame: 0,
+                timer: Timer::from_seconds(
+                    f32::from(CIVILIAN_ANIMATION_TICKS_PER_FRAME[kind]) * 0.016,
+                    TimerMode::Repeating,
+                ),
+            });
+        }
+    }
+}
+
+pub(crate) fn animate_civilian_work(
+    time: Res<Time>,
+    mut session: ResMut<GameSession>,
+    mut assets: RetailUiAssets,
+    mut layers: Query<(&mut StrategicUnitSprites, &Children)>,
+    mut units: Query<(&mut CivilianWorkAnimation, &mut ImageNode)>,
+) {
+    let palette = *assets.default_dib_palette();
+    for (mut sprites, children) in &mut layers {
+        for child in children {
+            let Ok((mut animation, mut image)) = units.get_mut(*child) else {
+                continue;
+            };
+            animation.timer.tick(time.delta());
+            if !animation.timer.just_finished() {
+                continue;
+            }
+            let kind = animation.kind;
+            let next = animation.logical_frame + 1;
+            animation.logical_frame = if kind == CivilianUnitKind::Rancher {
+                if next == 2
+                    || (next == 1 && session.game.next_civilian_animation_rand() % 100 <= 49)
+                {
+                    0
+                } else {
+                    next
+                }
+            } else if next == CIVILIAN_ANIMATION_LOGICAL_COUNTS[kind] {
+                0
+            } else {
+                next
+            };
+            let frame = CIVILIAN_ANIMATION_FRAME_MAP[kind][usize::from(animation.logical_frame)];
+            let sprite = StrategicUnitSprite::Civilian {
+                kind,
+                pose: CivilianPose::Animated,
+                frame,
+                owner_badge: None,
+                framed: false,
+            };
+            if let Some(handle) = unit_sprite_image(&mut sprites, &mut assets, &palette, sprite) {
+                image.image = handle;
+            }
+        }
     }
 }
 
@@ -215,8 +302,8 @@ fn load_strategic_unit_sprites(assets: &RetailUiAssets, state: &GameState) -> St
             CivilianPose::Working,
             CivilianPose::Animated,
         ] {
-            if let Some(picture) = load_civilian_picture(assets, kind, pose) {
-                civilians.insert((kind, pose), picture);
+            if let Some(pictures) = load_civilian_pictures(assets, kind, pose) {
+                civilians.insert((kind, pose), pictures);
             }
         }
     }
@@ -234,17 +321,24 @@ fn load_strategic_unit_sprites(assets: &RetailUiAssets, state: &GameState) -> St
     }
 }
 
-fn load_civilian_picture(
+fn load_civilian_pictures(
     assets: &RetailUiAssets,
     kind: CivilianUnitKind,
     pose: CivilianPose,
-) -> Option<IndexedPicture> {
+) -> Option<Vec<IndexedPicture>> {
     let picture_id = civilian_picture_id(kind, pose);
-    if let Ok(picture) = assets.indexed_picture(PictureId::new(picture_id)) {
-        return Some(first_tile_frame(picture));
-    }
     if pose == CivilianPose::Animated {
-        return None;
+        return (0..CIVILIAN_ANIMATION_FRAME_COUNTS[kind])
+            .map(|frame| {
+                assets
+                    .indexed_picture(PictureId::new(picture_id + i16::from(frame)))
+                    .ok()
+                    .map(first_tile_frame)
+            })
+            .collect();
+    }
+    if let Ok(picture) = assets.indexed_picture(PictureId::new(picture_id)) {
+        return Some(vec![first_tile_frame(picture)]);
     }
     assets
         .indexed_picture(PictureId::new(civilian_picture_id(
@@ -252,7 +346,7 @@ fn load_civilian_picture(
             CivilianPose::Animated,
         )))
         .ok()
-        .map(first_tile_frame)
+        .map(|picture| vec![first_tile_frame(picture)])
 }
 
 fn civilian_picture_id(kind: CivilianUnitKind, pose: CivilianPose) -> i16 {
@@ -339,10 +433,15 @@ fn compose_unit_sprite(
         StrategicUnitSprite::Civilian {
             kind,
             pose,
+            frame,
             owner_badge,
             framed,
         } => {
-            let mut picture = sprites.civilians.get(&(kind, pose))?.clone();
+            let mut picture = sprites
+                .civilians
+                .get(&(kind, pose))?
+                .get(usize::from(frame))?
+                .clone();
             if let Some(slot) = owner_badge {
                 blit_indexed(
                     &sprites.owner_flags,
@@ -558,8 +657,7 @@ fn civilian_on_tile(state: &GameState, tile: TileId) -> Option<ProjectedUnit> {
     if !civilian_tile_is_visible(state.map()[tile].owner_nation, state.turn().active_nation) {
         return None;
     }
-    let (id, unit) =
-        stacked_civilian_on_tile(state.civilian_units(), tile, state.turn().active_nation)?;
+    let (id, unit) = chained_civilian_on_tile(state, tile, state.turn().active_nation)?;
     Some(ProjectedUnit {
         identity: StrategicUnitIdentity::Civilian(id),
         sprite: civilian_sprite(unit, state.turn().active_nation),
@@ -606,6 +704,20 @@ fn naval_marker_on_tile(state: &GameState, tile: TileId) -> Option<ProjectedUnit
     })
 }
 
+fn chained_civilian_on_tile(
+    state: &GameState,
+    tile: TileId,
+    active: NationId,
+) -> Option<(CivilianUnitId, &CivilianUnitState)> {
+    if let Some(id) = state.civilian_chain_head_on_tile(tile) {
+        let unit = state.civilian_unit(id)?;
+        if !unit.registered() {
+            return Some((id, unit));
+        }
+    }
+    stacked_civilian_on_tile(state.civilian_units(), tile, active)
+}
+
 fn stacked_civilian_on_tile<'a>(
     units: impl IntoIterator<Item = (CivilianUnitId, &'a CivilianUnitState)>,
     tile: TileId,
@@ -633,6 +745,7 @@ fn civilian_sprite(unit: &CivilianUnitState, active: NationId) -> StrategicUnitS
     StrategicUnitSprite::Civilian {
         kind: unit.unit_type(),
         pose: civilian_pose(unit.order(), foreign),
+        frame: 0,
         owner_badge: foreign
             .then(|| owner_flag_slot(Some(TileOwnerTag::from_nation(unit.owner_nation())))),
         framed: foreign,

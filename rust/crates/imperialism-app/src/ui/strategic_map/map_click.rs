@@ -234,6 +234,7 @@ fn apply_civilian_selection_or_report(
         if input_flags == 2 || !city {
             set_map_interaction_mode(interaction, MapInteractionMode::Civilian);
             interaction.civilian = Some(id);
+            session.game.activate_civilian_selection(id);
             return true;
         }
         return false;
@@ -251,34 +252,31 @@ fn apply_civilian_tile_order(
     tile: TileId,
     nation: NationId,
 ) -> bool {
-    if let Some(unit) = session.game.selectable_civilian_on_tile(tile, nation) {
+    if let Some(unit) = session.game.selectable_civilian_on_tile(tile, nation)
+        && Some(unit) != *civilian
+    {
         *civilian = Some(unit);
+        session.game.activate_civilian_selection(unit);
         return false;
     }
     let Some(unit) = *civilian else {
         return false;
     };
-    let Some(kind) = session
-        .game
-        .civilian_unit(unit)
-        .map(|candidate| candidate.unit_type())
-    else {
+    if session.game.civilian_unit(unit).is_none() {
         *civilian = None;
         return false;
-    };
-    if kind != CivilianUnitKind::Engineer {
-        return false;
     }
-    match session.game.order_rail_construction(unit, tile) {
-        Ok(()) => {
+    match session.game.issue_civilian_tile_order(unit, tile) {
+        Ok(_) => {
             *civilian = None;
             true
         }
-        Err(RailOrderRejection::InsufficientFunds | RailOrderRejection::InvalidTarget) => false,
-        Err(RailOrderRejection::IneligibleUnit) => {
-            *civilian = None;
-            false
-        }
+        Err(
+            CivilianOrderRejection::Blocked
+            | CivilianOrderRejection::InsufficientFunds
+            | CivilianOrderRejection::ConstructionRequiresChoice
+            | CivilianOrderRejection::PurchaseLandRequiresConfirmation,
+        ) => false,
     }
 }
 
@@ -380,17 +378,21 @@ fn sync_strategic_map_cursor(
     let nation = session.game.turn().active_nation;
     let token = match interaction.mode {
         MapInteractionMode::Civilian => {
-            let army_token = session
-                .game
-                .army_map_cursor_state(nation, None, tile, 0, has_selection)
-                .unselected_cursor_token();
-            if army_token != 0 {
-                army_token
+            if let Some(unit) = interaction.civilian {
+                session.game.civilian_tile_action(unit, tile).cursor_token()
             } else {
-                let navy_token = session
+                let army_token = session
                     .game
-                    .navy_action_cursor_token(tile, interaction.navy.zone);
-                if navy_token != 0 { navy_token } else { 0 }
+                    .army_map_cursor_state(nation, None, tile, 0, has_selection)
+                    .unselected_cursor_token();
+                if army_token != 0 {
+                    army_token
+                } else {
+                    let navy_token = session
+                        .game
+                        .navy_action_cursor_token(tile, interaction.navy.zone);
+                    if navy_token != 0 { navy_token } else { 0 }
+                }
             }
         }
         MapInteractionMode::Army => {
