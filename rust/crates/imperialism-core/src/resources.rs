@@ -36,7 +36,6 @@ pub type ResourceTable<T> = EnumMap<ResourceKind, T>;
 
 impl ResourceKind {
     pub const LENGTH: usize = enum_map::enum_len::<Self>();
-    pub const PURCHASED_COUNT: usize = Self::Grain as usize;
 
     pub const CITY_PRODUCTION: [Self; 10] = [
         Self::Food,
