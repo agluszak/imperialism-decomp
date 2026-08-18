@@ -25,6 +25,23 @@ enum MineRun {
 }
 
 #[derive(Clone, Copy, Eq, PartialEq)]
+enum DeployMark {
+    Clear,
+    UnitCover,
+    FortWall(i32),
+}
+
+impl DeployMark {
+    const fn is_fort_wall(self) -> bool {
+        matches!(self, Self::FortWall(_))
+    }
+
+    const fn is_present(self) -> bool {
+        !matches!(self, Self::Clear)
+    }
+}
+
+#[derive(Clone, Copy, Eq, PartialEq)]
 enum TacticalStance {
     Hold,
     Retreat,
@@ -64,7 +81,7 @@ type BattleSideTable<T> = EnumMap<BattleSide, T>;
 struct Tile {
     terrain: TacticalTerrain,
     occupant: Option<usize>,
-    deploy_mark: i32,
+    deploy_mark: DeployMark,
     mine_run: MineRun,
     trench_mask: u8,
 }
@@ -184,7 +201,7 @@ impl Battle {
             tiles: [Tile {
                 terrain: TacticalTerrain::Class0,
                 occupant: None,
-                deploy_mark: 0,
+                deploy_mark: DeployMark::Clear,
                 mine_run: MineRun::None,
                 trench_mask: 0,
             }; TACTICAL_TILE_COUNT],
@@ -291,7 +308,7 @@ impl Battle {
             *tile = Tile {
                 terrain: TacticalTerrain::Class0,
                 occupant: None,
-                deploy_mark: 0,
+                deploy_mark: DeployMark::Clear,
                 mine_run: MineRun::None,
                 trench_mask: 0,
             };
@@ -299,7 +316,7 @@ impl Battle {
         if self.fort_level != 0 {
             let mut tile = self.column_count - 6;
             while tile < TACTICAL_TILE_COUNT as i32 {
-                self.tiles[tile as usize].deploy_mark = self.fort_level;
+                self.tiles[tile as usize].deploy_mark = DeployMark::FortWall(self.fort_level);
                 tile += TACTICAL_STRIDE;
             }
             let points = FORT_STRENGTH_BY_LEVEL[self.fort_level.clamp(0, 5) as usize];
@@ -517,7 +534,7 @@ impl Battle {
         self.units[unit].tile = tile;
         self.tiles[tile as usize].occupant = Some(unit);
         if self.units[unit].flag3c && self.fort_level == 0 {
-            self.tiles[tile as usize].deploy_mark = 1;
+            self.tiles[tile as usize].deploy_mark = DeployMark::UnitCover;
         }
     }
 
@@ -683,6 +700,17 @@ fn direct_fire(category: ArmyUnitCategory) -> bool {
         category,
         ArmyUnitCategory::FieldArtillery | ArmyUnitCategory::SiegeArtillery
     )
+}
+
+fn cover_damage(category: ArmyUnitCategory, mark: DeployMark) -> f32 {
+    match mark {
+        DeployMark::Clear => COVER_DAMAGE[category][0],
+        DeployMark::UnitCover => COVER_DAMAGE[category][1],
+        DeployMark::FortWall(2) => COVER_DAMAGE[category][2],
+        DeployMark::FortWall(3) => COVER_DAMAGE[category][3],
+        DeployMark::FortWall(4) => COVER_DAMAGE[category][4],
+        DeployMark::FortWall(level) => panic!("unsupported tactical fort wall level {level}"),
+    }
 }
 
 fn classify_city_gate_terrain(state: &GameState, province: ProvinceId) -> i32 {
@@ -1170,7 +1198,7 @@ impl Battle {
     fn stance_siege(&mut self, side: BattleSide) {
         let enemy_artillery = self.opponent_has_artillery(side);
         let opponent_range = self.sides[side.opponent()].max_non_artillery_range;
-        let wall_up = self.tiles[174].deploy_mark > 1;
+        let wall_up = self.tiles[174].deploy_mark.is_fort_wall();
         for &idx in &self.sides[side].units.clone() {
             if self.units[idx].unit_type.tactical_category() == ArmyUnitCategory::Engineers {
                 self.units[idx].ai_state = if wall_up { 0xd } else { 0xc };
@@ -1373,7 +1401,7 @@ impl Battle {
                         if wall < 0 || wall >= TACTICAL_TILE_COUNT as i32 {
                             break;
                         }
-                        if self.tiles[wall as usize].deploy_mark > 1 {
+                        if self.tiles[wall as usize].deploy_mark.is_fort_wall() {
                             self.mine(state, unit, wall);
                             return;
                         }
@@ -1551,7 +1579,7 @@ impl Battle {
         if tile % TACTICAL_STRIDE != 6 {
             return 0;
         }
-        let mut score = if self.tiles[tile as usize].deploy_mark != 0 {
+        let mut score = if self.tiles[tile as usize].deploy_mark.is_present() {
             0x14
         } else {
             0
@@ -1776,7 +1804,7 @@ impl Battle {
             let record_tile = self.units[idx].tile;
             let adjacent = neighbors.values().any(|&neighbor| neighbor == record_tile);
             if adjacent {
-                if self.tiles[record_tile as usize].deploy_mark == 1 {
+                if self.tiles[record_tile as usize].deploy_mark == DeployMark::UnitCover {
                     score += score;
                 }
                 if AI_CLASS[self.units[unit].unit_type] == TacticalCombatClass::Cavalry {
@@ -1992,7 +2020,7 @@ impl Battle {
                         if record.occupant.is_some() || neighbor < TACTICAL_STRIDE {
                             continue;
                         }
-                        if record.deploy_mark > 1
+                        if record.deploy_mark.is_fort_wall()
                             && self.fort_strength[(neighbor / TACTICAL_STRIDE / 2) as usize] > 0
                         {
                             let wall_row = neighbor / TACTICAL_STRIDE;
@@ -2106,7 +2134,7 @@ impl Battle {
                     if record.occupant.is_some() {
                         continue;
                     }
-                    if record.deploy_mark > 1 {
+                    if record.deploy_mark.is_fort_wall() {
                         let wall_row = neighbor / TACTICAL_STRIDE;
                         if self.fort_strength[(wall_row / 2) as usize] > 0 {
                             let doubled = (wall_row & 1) + (neighbor % TACTICAL_STRIDE) * 2;
@@ -2161,7 +2189,7 @@ impl Battle {
         if wall == 0 {
             return true;
         }
-        if self.tiles[wall as usize].deploy_mark <= 1 {
+        if !self.tiles[wall as usize].deploy_mark.is_fort_wall() {
             return true;
         }
         if self.fort_strength[(wall / TACTICAL_STRIDE / 2) as usize] <= 0 {
@@ -2419,7 +2447,7 @@ impl Battle {
 
     fn resolve_action(&mut self, _state: &mut GameState, attacker: usize, target: i32) {
         let defender = self.tiles[target as usize].occupant;
-        let fort_wall_targeted = self.tiles[target as usize].deploy_mark > 1
+        let fort_wall_targeted = self.tiles[target as usize].deploy_mark.is_fort_wall()
             && self.fort_strength[(target / TACTICAL_STRIDE / 2) as usize] > 0
             && defender.is_none();
         let wall = self.wall_on_firing_line(target, self.units[attacker].tile);
@@ -2428,7 +2456,7 @@ impl Battle {
             .values()
             .any(|&neighbor| neighbor == target);
         if wall != 0
-            && self.tiles[wall as usize].deploy_mark > 1
+            && self.tiles[wall as usize].deploy_mark.is_fort_wall()
             && self.fort_strength[(wall / TACTICAL_STRIDE / 2) as usize] > 0
         {
             melee = false;
@@ -2455,16 +2483,15 @@ impl Battle {
             * DAMAGE_SCALE[self.units[defender].unit_type]
             * attack_power;
         if wall != 0
-            && self.tiles[wall as usize].deploy_mark > 1
+            && self.tiles[wall as usize].deploy_mark.is_fort_wall()
             && self.fort_strength[(wall / TACTICAL_STRIDE / 2) as usize] > 0
         {
             if !direct_fire(attacker_category) {
                 self.consume_fort(wall, (0.001 * attack_power) as i32);
             }
-            damage *=
-                COVER_DAMAGE[defender_category][self.tiles[wall as usize].deploy_mark as usize];
+            damage *= cover_damage(defender_category, self.tiles[wall as usize].deploy_mark);
         }
-        if self.tiles[target as usize].deploy_mark == 1
+        if self.tiles[target as usize].deploy_mark == DeployMark::UnitCover
             && hex_distance(self.units[attacker].tile, target) > 1
         {
             damage *= COVER_DAMAGE[defender_category][1];
@@ -2570,7 +2597,7 @@ impl Battle {
 
     fn advance_mine_run(&mut self, unit: usize) {
         let target = self.units[unit].sap_target;
-        if self.tiles[target as usize].deploy_mark <= 1 {
+        if !self.tiles[target as usize].deploy_mark.is_fort_wall() {
             self.units[unit].sap_target = -1;
             return;
         }
@@ -2587,7 +2614,7 @@ impl Battle {
             }
         }
         if run == target {
-            self.tiles[self.units[unit].sap_target as usize].deploy_mark = 0;
+            self.tiles[self.units[unit].sap_target as usize].deploy_mark = DeployMark::Clear;
             self.units[unit].sap_target = -1;
         } else if ((run / TACTICAL_STRIDE) & 1) != 0 {
             self.tiles[run as usize].mine_run = MineRun::First;
