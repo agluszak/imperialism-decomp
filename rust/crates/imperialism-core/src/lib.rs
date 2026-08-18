@@ -122,6 +122,7 @@ pub use map_geometry::{
 pub use market::{
     DealBookEntryKind, ProcessedTradeCommodity, ProcessedTradeCommodityTable, TradeCommodity,
     TradeCommodityTable, TradeDealBookEntry, TradeMarketRow, TradeMarketState,
+    TradePartnerCommodity, TradePartnerCommodityTable,
 };
 pub use military::{
     AdmiralState, ArmyMissionState, AttackMissionState, MissionData, MissionState, NavalAggression,

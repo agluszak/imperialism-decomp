@@ -41,7 +41,7 @@ pub struct ForeignTradeState {
     pub preferred_resources: [Option<TradeCommodity>; 4],
     pub capability_flag_14: i16,
     pub capability_flag_16: i16,
-    pub trade_partner_enabled: [bool; 7],
+    pub trade_partner_enabled: TradePartnerCommodityTable<bool>,
 }
 
 impl ForeignTradeState {
@@ -65,7 +65,7 @@ impl ForeignTradeState {
             preferred_resources: [None; 4],
             capability_flag_14: 0,
             capability_flag_16: 0,
-            trade_partner_enabled: [true; 7],
+            trade_partner_enabled: TradePartnerCommodityTable::from_array([true; 7]),
         }
     }
 }

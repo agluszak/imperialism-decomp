@@ -406,7 +406,7 @@ fn ministers_dto(economy: &GreatPowerState) -> LegacyGreatPowerMinisters {
             purchase_priority_by_resource: enum_i16(&trade.purchase_priority),
             preferred_resource_slots: trade.preferred_resources.map(optional_commodity_i16),
             status_flag: 0,
-            trade_partner_enabled: trade.trade_partner_enabled.map(u8::from),
+            trade_partner_enabled: trade.trade_partner_enabled.into_array().map(u8::from),
             development_grant_by_nation: *economy.development_grant_by_nation.as_array(),
             bill_order_flag: matches!(
                 economy.foreign_minister_personality,

@@ -133,7 +133,7 @@ impl GameState {
             TradeCommodity::Coal => {
                 self.enable_partner_split(
                     buyer,
-                    3,
+                    TradePartnerCommodity::Coal,
                     self.merchant_capacity_for_proposal(buyer, ResourceKind::Coal) / 2,
                 );
                 self.accept_from_capability_flag(
@@ -179,7 +179,7 @@ impl GameState {
                 {
                     self.enable_partner_split(
                         buyer,
-                        2,
+                        TradePartnerCommodity::Timber,
                         (self.available_merchant(buyer) / 3).max(2),
                     );
                     let take = self
@@ -227,7 +227,11 @@ impl GameState {
                 }
             }
             TradeCommodity::Coal => {
-                self.enable_partner_split(buyer, 3, self.available_merchant(buyer) / 2);
+                self.enable_partner_split(
+                    buyer,
+                    TradePartnerCommodity::Coal,
+                    self.available_merchant(buyer) / 2,
+                );
                 let mut take = if self.market.rows[TradeCommodity::Iron].price < 105 {
                     amount
                 } else {
@@ -291,7 +295,7 @@ impl GameState {
         commodity: TradeCommodity,
         phase: &mut TradePhase,
     ) {
-        let resource = commodity.resource() as usize;
+        let partner = TradePartnerCommodity::from_commodity(commodity);
         let cap = self.available_merchant(buyer);
         if self.has_oil(buyer) {
             if !matches!(
@@ -299,7 +303,9 @@ impl GameState {
                 TradeCommodity::Timber | TradeCommodity::Coal | TradeCommodity::Iron
             ) {
                 self.foreign_trade_mut(buyer).capability_flag_16 = cap;
-            } else if resource < 7 && self.foreign_trade(buyer).trade_partner_enabled[resource] {
+            } else if partner
+                .is_some_and(|partner| self.foreign_trade(buyer).trade_partner_enabled[partner])
+            {
                 self.foreign_trade_mut(buyer).capability_flag_16 = if phase.arms_advanced_split == 0
                 {
                     cap / 3
@@ -316,7 +322,9 @@ impl GameState {
                 | TradeCommodity::Coal
         ) {
             self.foreign_trade_mut(buyer).capability_flag_16 = cap;
-        } else if resource < 7 && self.foreign_trade(buyer).trade_partner_enabled[resource] {
+        } else if partner
+            .is_some_and(|partner| self.foreign_trade(buyer).trade_partner_enabled[partner])
+        {
             self.foreign_trade_mut(buyer).capability_flag_16 = if phase.arms_basic_split == 0 {
                 cap / 3
             } else {
@@ -324,8 +332,8 @@ impl GameState {
             };
             phase.arms_basic_split += 1;
         }
-        if resource < 7 {
-            self.foreign_trade_mut(buyer).trade_partner_enabled[resource] = false;
+        if let Some(partner) = partner {
+            self.foreign_trade_mut(buyer).trade_partner_enabled[partner] = false;
         }
         self.accept_from_capability_flag(buyer, seller, amount, price, commodity, true, phase);
     }

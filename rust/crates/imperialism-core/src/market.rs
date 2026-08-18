@@ -109,6 +109,36 @@ impl TradeCommodity {
 
 pub type TradeCommodityTable<T> = EnumMap<TradeCommodity, T>;
 
+/// Commodities represented by the seven retail trade-partner flags.
+#[derive(Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum TradePartnerCommodity {
+    Cotton,
+    Wool,
+    Timber,
+    Coal,
+    Iron,
+    Horses,
+    Oil,
+}
+
+impl TradePartnerCommodity {
+    pub const fn from_commodity(commodity: TradeCommodity) -> Option<Self> {
+        match commodity {
+            TradeCommodity::Cotton => Some(Self::Cotton),
+            TradeCommodity::Wool => Some(Self::Wool),
+            TradeCommodity::Timber => Some(Self::Timber),
+            TradeCommodity::Coal => Some(Self::Coal),
+            TradeCommodity::Iron => Some(Self::Iron),
+            TradeCommodity::Horses => Some(Self::Horses),
+            TradeCommodity::Oil => Some(Self::Oil),
+            _ => None,
+        }
+    }
+}
+
+pub type TradePartnerCommodityTable<T> = EnumMap<TradePartnerCommodity, T>;
+
 /// The six processed-resource slots retained by automated trade planning.
 #[derive(
     Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,

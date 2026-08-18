@@ -380,11 +380,16 @@ impl GameState {
         take
     }
 
-    fn enable_partner_split(&mut self, buyer: MajorNationId, resource_index: usize, split: i16) {
-        if self.foreign_trade(buyer).trade_partner_enabled[resource_index] {
+    fn enable_partner_split(
+        &mut self,
+        buyer: MajorNationId,
+        commodity: TradePartnerCommodity,
+        split: i16,
+    ) {
+        if self.foreign_trade(buyer).trade_partner_enabled[commodity] {
             let trade = self.foreign_trade_mut(buyer);
             trade.capability_flag_16 = split;
-            trade.trade_partner_enabled[resource_index] = false;
+            trade.trade_partner_enabled[commodity] = false;
         }
     }
 
