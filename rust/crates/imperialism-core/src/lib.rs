@@ -96,7 +96,7 @@ pub use civilian_work::{
     EngineerConstructionOption, RailOrderRejection, RailSegment,
 };
 pub use combat_moves::{CombatMovesContinuation, PendingLandBattle};
-pub use create_random_game::{RandomGameNames, create_random_game};
+pub use create_random_game::{RandomGameNames, capital_selection_view_origin, create_random_game};
 pub use deal_book::{
     DealBookAidLine, DealBookBidRow, DealBookCategory, DealBookCategoryRow, DealBookDealLine,
     DealBookHistory, DealBookHistoryGroup, DealBookHistoryRow, DealBookOfferRow, DealBookTotals,
@@ -116,9 +116,8 @@ pub use ids::{
     OceanZoneId, ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,
 };
 pub use map::{
-    DevelopmentLevel, MapEdges, MapMgr, RegionId, RiverSegment, RiverSprite, TerrainKind,
-    TerrainKindTable, TileAction, TileDevelopment, TileFlags, TileRendering, TileState,
-    TileTransportLinks,
+    DevelopmentLevel, MapMgr, RegionId, RiverSegment, RiverSprite, TerrainKind, TerrainKindTable,
+    TileAction, TileDevelopment, TileFlags, TileRendering, TileState, TileTransportLinks,
 };
 pub use map_geometry::{
     HexDirection, HexDirectionTable, MapGeometry, MapTopology, STRATEGIC_MAP_HEIGHT,

@@ -300,7 +300,7 @@ impl GameState {
         }
     }
 
-    pub fn cancel_task_force(&mut self, force: TaskForceId) {
+    pub fn cancel_task_force(&mut self, force: TaskForceId) -> Option<TileId> {
         let context = self.task_force(force).and_then(|entry| {
             let zone = entry.location;
             let target = self
@@ -313,16 +313,17 @@ impl GameState {
         });
         self.destroy_task_force_ingot(force);
         self.free_task_force(force);
-        if let Some((zone, nation, target)) = context {
+        let target = if let Some((zone, nation, target)) = context {
             self.refresh_zone_focus(zone, nation);
-            if let Some(target) = target {
-                self.center_map_on(target);
-            }
-        }
+            target
+        } else {
+            None
+        };
         self.map.recruit_search_active = false;
         for tile in self.map.tiles.iter_mut() {
             tile.recruit_search_visited = 0;
         }
+        target
     }
 
     /// `TNavyMgr::FreeShipsOf` (0x00556f60): cancel every queued force for `nation`.

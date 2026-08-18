@@ -364,8 +364,8 @@ mod tests {
 
     fn fixture_state() -> GameState {
         let mut parts = beginning_of_game_parts();
-        let buyer = MajorNationId::from_nation(parts.turn.selected_nation)
-            .expect("active nation is a major");
+        let buyer =
+            MajorNationId::from_nation(parts.turn.active_nation).expect("active nation is a major");
         let seller = MajorNationId::new(if buyer.get() == 0 { 1 } else { 0 });
         let majors = MajorNationTable::from_fn(|nation| {
             let mut major = parts.nations.major(nation).clone();

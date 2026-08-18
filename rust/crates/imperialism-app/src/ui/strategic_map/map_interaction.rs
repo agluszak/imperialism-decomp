@@ -3,6 +3,64 @@
 use crate::ui::GameSession;
 use bevy::prelude::*;
 use imperialism_core::*;
+use std::ops::{BitOr, BitOrAssign};
+
+/// Retail strategic-map edge-scroll bits (`TMapDialog` cursor-edge mask).
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub(crate) struct MapEdges(u8);
+
+impl MapEdges {
+    pub(crate) const TOP: Self = Self(0x01);
+    pub(crate) const BOTTOM: Self = Self(0x02);
+    pub(crate) const RIGHT: Self = Self(0x04);
+    pub(crate) const LEFT: Self = Self(0x08);
+
+    pub(crate) const fn empty() -> Self {
+        Self(0)
+    }
+
+    pub(crate) const fn is_empty(self) -> bool {
+        self.0 == 0
+    }
+
+    pub(crate) const fn contains(self, other: Self) -> bool {
+        self.0 & other.0 == other.0
+    }
+
+    pub(crate) const fn row_delta(self) -> i32 {
+        if self.contains(Self::TOP) {
+            -1
+        } else if self.contains(Self::BOTTOM) {
+            1
+        } else {
+            0
+        }
+    }
+
+    pub(crate) const fn column_delta(self) -> i32 {
+        if self.contains(Self::RIGHT) {
+            1
+        } else if self.contains(Self::LEFT) {
+            -1
+        } else {
+            0
+        }
+    }
+}
+
+impl BitOr for MapEdges {
+    type Output = Self;
+
+    fn bitor(self, rhs: Self) -> Self::Output {
+        Self(self.0 | rhs.0)
+    }
+}
+
+impl BitOrAssign for MapEdges {
+    fn bitor_assign(&mut self, rhs: Self) {
+        self.0 |= rhs.0;
+    }
+}
 
 /// Retail `activeUnitCategoryIndex96`: 0 civilian, 1 army, 2 navy, 3 none.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
@@ -135,7 +193,7 @@ pub(crate) fn cycle_map_interaction_selection(
                     interaction.civilian = Some(id);
                     session.game.activate_civilian_selection(id);
                     if let Some(tile) = tile {
-                        session.game.center_map_on(tile);
+                        session.center_map_on(tile);
                     }
                     return;
                 }
@@ -160,7 +218,7 @@ pub(crate) fn cycle_map_interaction_selection(
                     session.game.apply_army_province_selection(Some(province));
                     interaction.army = Some(province);
                     if let Some(tile) = session.game.map().provinces[province].city_tile() {
-                        session.game.center_map_on(tile);
+                        session.center_map_on(tile);
                     }
                     return;
                 }
@@ -179,7 +237,7 @@ pub(crate) fn cycle_map_interaction_selection(
                     interaction.navy.zone = Some(zone);
                     interaction.navy.force = session.game.demand_task_force_for_zone(zone, nation);
                     if let Some(tile) = navy_zone_center_tile(&session.game, zone) {
-                        session.game.center_map_on(tile);
+                        session.center_map_on(tile);
                     }
                     return;
                 }

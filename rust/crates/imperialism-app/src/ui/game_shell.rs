@@ -13,18 +13,17 @@ use crate::ui::load_save::bind_open_flag_menu;
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailPictureSwap, RetailTree, ancestor_with};
 use crate::ui::strategic_map::{
-    MapInteractionMode, StrategicInteraction, animate_civilian_selection, animate_civilian_work,
-    bind_army_toolbar, bind_civilian_toolbar, bind_minimap, bind_navy_toolbar, bind_ocean_view,
-    bind_strategic_base_terrain, on_strategic_map_click, register_army_toolbar,
-    register_civilian_toolbar, register_map_click, register_map_keys, register_map_modals,
-    register_navy_toolbar, register_ocean_view, sync_minimap, sync_strategic_base_terrain,
-    sync_strategic_selection, sync_strategic_units,
+    MapEdges, MapInteractionMode, StrategicInteraction, animate_civilian_selection,
+    animate_civilian_work, bind_army_toolbar, bind_civilian_toolbar, bind_minimap,
+    bind_navy_toolbar, bind_ocean_view, bind_strategic_base_terrain, on_strategic_map_click,
+    register_army_toolbar, register_civilian_toolbar, register_map_click, register_map_keys,
+    register_map_modals, register_navy_toolbar, register_ocean_view, sync_minimap,
+    sync_strategic_base_terrain, sync_strategic_selection, sync_strategic_units,
 };
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
-use imperialism_core::MapEdges;
 use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -114,7 +113,7 @@ fn scroll_strategic_map(
     if interaction.ocean.active {
         interaction.ocean.nudge(edges);
     } else {
-        session.game.scroll_map_viewport(edges);
+        session.scroll_map_viewport(edges.row_delta(), edges.column_delta());
     }
 }
 
@@ -148,7 +147,12 @@ fn spawn_strategic_map(mut commands: Commands) {
 }
 
 fn enter_strategic_map_view(mut session: ResMut<GameSession>) {
-    session.game.center_map_on_first_idle_civilian();
+    if let Some(tile) = session
+        .game
+        .first_idle_civilian_tile(session.game.turn().active_nation)
+    {
+        session.center_map_on(tile);
+    }
 }
 
 fn bind_strategic_map(
@@ -164,11 +168,11 @@ fn bind_strategic_map(
     disable_native_control(&mut commands, *root, &tree, fourcc!("DONE"));
     let flag = tree.find(*root, fourcc!("Flag"));
     bind_open_flag_menu(&mut commands, flag);
-    let land = bind_strategic_base_terrain(&mut commands, *root, &tree, &mut assets, &session.game);
+    let land = bind_strategic_base_terrain(&mut commands, *root, &tree, &mut assets, &session);
     commands.entity(land).observe(on_strategic_map_click);
     let ocean = bind_ocean_view(&mut commands, &mut assets, *root, &tree);
     commands.entity(ocean).observe(on_strategic_map_click);
-    bind_minimap(&mut commands, *root, &tree, &mut assets, &session.game);
+    bind_minimap(&mut commands, *root, &tree, &mut assets, &session);
     bind_civilian_toolbar(&mut commands, &mut assets, *root, &tree);
     bind_army_toolbar(&mut commands, &mut assets, *root, &tree);
     bind_navy_toolbar(&mut commands, &mut assets, *root, &tree);
@@ -224,10 +228,9 @@ fn on_ocean_toggle(
     if interaction.ocean.active {
         interaction.ocean.active = false;
     } else {
-        interaction.ocean.center_on(
-            session.game.map_view_origin(),
-            &session.game.map().geometry(),
-        );
+        interaction
+            .ocean
+            .center_on(session.map_view_origin, &session.game.map().geometry());
         interaction.ocean.active = true;
     }
 }

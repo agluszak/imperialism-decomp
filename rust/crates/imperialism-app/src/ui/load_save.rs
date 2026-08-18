@@ -1,5 +1,6 @@
 use crate::RetailAssetsResource;
 use crate::ui::GameSession;
+use crate::ui::battle_reports::battle_report_texts_for_save;
 use crate::ui::generated;
 use crate::ui::hover_help::get_string;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
@@ -200,24 +201,19 @@ impl Plugin for LoadSavePlugin {
 /// global seeded by `TSimMgr::ISimMgr` via `srand(time(0))`; the map LCG is BSS-zero
 /// until map generation; the zone LCG starts as `GetTickCountDiv16()`. A later load
 /// leaves whatever the process currently has.
-fn runtime_context_for_load(
-    existing: Option<&GameState>,
-    selected_nation: NationId,
-) -> LegacyGameStateContext {
+fn runtime_context_for_load(existing: Option<&GameState>) -> LegacyGameStateContext {
     if let Some(state) = existing {
         let rng = state.rng();
         return LegacyGameStateContext {
             crt_rand_state: rng.crt_rand.state(),
             map_generation_lcg: rng.map_generation.state(),
             zone_status_lcg: rng.zone_status.state(),
-            selected_nation,
         };
     }
     LegacyGameStateContext {
         crt_rand_state: clock_derived_crt_seed(),
         map_generation_lcg: 0,
         zone_status_lcg: tick_derived_zone_seed(),
-        selected_nation,
     }
 }
 
@@ -244,7 +240,15 @@ pub(crate) fn save_current_game(
         SaveSlot::Numbered(index) => i32::from(index),
         SaveSlot::Autosave => AUTOSAVE_SESSION_SLOT,
     };
-    let bytes = write_game_state(&session.game, &session.city_windows, &label, session_slot);
+    let battle_report_text = battle_report_texts_for_save(session);
+    let bytes = write_game_state(
+        &session.game,
+        session.map_view_origin,
+        &session.city_windows,
+        &battle_report_text,
+        &label,
+        session_slot,
+    );
     write_save_file(
         retail_save_path(directory, slot),
         &bytes,
@@ -707,10 +711,7 @@ fn apply_load(
     }
     let load = (|| {
         let bytes = std::fs::read(&path)?;
-        let selected = peek_save_header(&bytes)
-            .and_then(|header| NationId::try_new(header.active_nation))
-            .ok_or(LoadGameError::Truncated)?;
-        let context = runtime_context_for_load(existing, selected);
+        let context = runtime_context_for_load(existing);
         load_game_from_bytes(&bytes, context)
     })();
     match load {
@@ -1266,12 +1267,8 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         save_current_game(dir.path(), SaveSlot::Numbered(1), &session, "England").unwrap();
         let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(1))).unwrap();
-        let selected = peek_save_header(&bytes)
-            .and_then(|header| NationId::try_new(header.active_nation))
-            .expect("saved header names a nation in range");
         let loaded =
-            load_game_from_bytes(&bytes, runtime_context_for_load(Some(&original), selected))
-                .unwrap();
+            load_game_from_bytes(&bytes, runtime_context_for_load(Some(&original))).unwrap();
         assert_eq!(loaded.game, original);
         assert_eq!(
             loaded_game_destination(&loaded.game),
@@ -1288,7 +1285,7 @@ mod tests {
         save_current_game(dir.path(), SaveSlot::Numbered(0), &session, "Second").unwrap();
         let loaded = load_game_from_path(
             retail_save_path(dir.path(), SaveSlot::Numbered(0)),
-            runtime_context_for_load(Some(&original), original.turn().selected_nation),
+            runtime_context_for_load(Some(&original)),
         )
         .unwrap();
         assert_eq!(loaded.game, original);
@@ -1332,7 +1329,7 @@ mod tests {
         save_current_game(dir.path(), SaveSlot::Numbered(0), &session, "England").unwrap();
         let loaded = load_game_from_path(
             retail_save_path(dir.path(), SaveSlot::Numbered(0)),
-            runtime_context_for_load(Some(&original), original.turn().selected_nation),
+            runtime_context_for_load(Some(&original)),
         )
         .unwrap();
         assert_eq!(loaded.game.rng(), original.rng());
@@ -1346,7 +1343,7 @@ mod tests {
         save_current_game(dir.path(), SaveSlot::Numbered(0), &session, "England").unwrap();
         let loaded = load_game_from_path(
             retail_save_path(dir.path(), SaveSlot::Numbered(0)),
-            runtime_context_for_load(None, original.turn().selected_nation),
+            runtime_context_for_load(None),
         )
         .unwrap();
         assert_eq!(

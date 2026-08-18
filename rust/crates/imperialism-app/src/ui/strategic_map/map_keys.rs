@@ -67,11 +67,11 @@ fn toggle_ocean_view(session: &mut GameSession, ocean: &mut OceanView) {
             row.max(0) as u16,
             column.rem_euclid(i32::from(STRATEGIC_MAP_WIDTH)) as u16,
         ) {
-            session.game.center_map_on(tile);
+            session.center_map_on(tile);
         }
         ocean.active = false;
     } else {
-        let origin = session.game.map_view_origin();
+        let origin = session.map_view_origin;
         ocean.center_on(origin, &session.game.map().geometry());
         ocean.active = true;
     }
@@ -108,6 +108,6 @@ fn center_on(session: &mut GameSession, ocean: &mut OceanView, tile: TileId) {
     if ocean.active {
         ocean.center_on(tile, &session.game.map().geometry());
     } else {
-        session.game.center_map_on(tile);
+        session.center_map_on(tile);
     }
 }

@@ -47,10 +47,15 @@ pub(crate) fn bind_minimap(
     root: Entity,
     tree: &RetailTree,
     assets: &mut RetailUiAssets,
-    state: &GameState,
+    session: &GameSession,
 ) {
     let toolbar = tree.find(root, TOOL_TAG);
-    let (image, window) = compose_minimap(state, assets.default_dib_palette(), None);
+    let (image, window) = compose_minimap(
+        &session.game,
+        session.map_view_origin,
+        assets.default_dib_palette(),
+        None,
+    );
     let image = assets.add_image(image);
     commands.entity(toolbar).with_children(|parent| {
         parent
@@ -97,6 +102,7 @@ pub(crate) fn sync_minimap(
             image_node,
             &mut images,
             &session.game,
+            session.map_view_origin,
             palette,
             drag_pixel,
         );
@@ -125,6 +131,7 @@ fn on_minimap_press(
         image_node,
         &mut images,
         &session.game,
+        session.map_view_origin,
         retail_assets.assets().default_dib_palette(),
         Some(pixel),
     );
@@ -152,6 +159,7 @@ fn on_minimap_drag(
         image_node,
         &mut images,
         &session.game,
+        session.map_view_origin,
         retail_assets.assets().default_dib_palette(),
         Some(pixel),
     );
@@ -216,9 +224,17 @@ fn commit_minimap_track(
     };
     let pixel = cursor_pixel_unclamped(cursor).unwrap_or(drag_pixel);
     let (column, row) = minimap_release_cell(pixel, minimap.scroll_column, minimap.scroll_row);
-    session.game.set_map_viewport_upper_left(column, row);
+    session.set_map_viewport_upper_left(column, row);
     minimap.drag_pixel = None;
-    write_minimap(minimap, image_node, images, &session.game, palette, None);
+    write_minimap(
+        minimap,
+        image_node,
+        images,
+        &session.game,
+        session.map_view_origin,
+        palette,
+        None,
+    );
 }
 
 fn write_minimap(
@@ -226,10 +242,11 @@ fn write_minimap(
     image_node: &ImageNode,
     images: &mut Assets<Image>,
     state: &GameState,
+    view_origin: TileId,
     palette: &DibPalette,
     drag_pixel: Option<(i32, i32)>,
 ) {
-    let (image, window) = compose_minimap(state, palette, drag_pixel);
+    let (image, window) = compose_minimap(state, view_origin, palette, drag_pixel);
     minimap.scroll_column = window.source_column;
     minimap.scroll_row = window.source_row;
     let Some(mut existing) = images.get_mut(&image_node.image) else {
@@ -257,11 +274,12 @@ fn cursor_pixel_unclamped(cursor: &RelativeCursorPosition) -> Option<(i32, i32)>
 
 pub(super) fn compose_minimap(
     state: &GameState,
+    view_origin: TileId,
     palette: &DibPalette,
     drag_pixel: Option<(i32, i32)>,
 ) -> (Image, MiniMapWindow) {
     let atlas = compose_minimap_atlas(state);
-    let window = minimap_window(state.map_view_origin());
+    let window = minimap_window(view_origin);
     let mut indices = vec![0_u8; (FRAME_WIDTH * FRAME_HEIGHT) as usize];
     blit_minimap_window(&atlas, window, state.map().topology, &mut indices);
     let mut rgba = Vec::with_capacity(indices.len() * 4);
@@ -630,10 +648,10 @@ mod tests {
 
     #[test]
     fn interior_compose_draws_the_white_viewport_rect() {
-        let mut state = fixture_state();
-        state.set_map_view_origin(TileId::new(20 * 108 + 40));
+        let state = fixture_state();
+        let mut view_origin = TileId::new(20 * 108 + 40);
         let palette = nation_preview_palette();
-        let (image, window) = compose_minimap(&state, &palette, None);
+        let (image, window) = compose_minimap(&state, view_origin, &palette, None);
         assert_eq!(viewport_marker(window, None), (47, 24));
         let pixels = image
             .data
@@ -658,8 +676,8 @@ mod tests {
         assert_ne!(sample(48, 25), WHITE_RGBA);
 
         let (column, row) = minimap_release_cell((60, 40), window.source_column, window.source_row);
-        state.set_map_viewport_upper_left(column, row);
-        let window = minimap_window(state.map_view_origin());
+        view_origin = state.map().viewport_origin_from_upper_left(column, row);
+        let window = minimap_window(view_origin);
         assert_eq!(
             viewport_marker(window, None).0,
             FRAME_WIDTH / 2 - MARKER_WIDTH
@@ -715,13 +733,14 @@ mod tests {
             ]
             .contains(&pixel)
         }));
-        let window = minimap_window(state.map_view_origin());
+        let view_origin = TileId::new(1);
+        let window = minimap_window(view_origin);
         let mut indices = vec![0_u8; (FRAME_WIDTH * FRAME_HEIGHT) as usize];
         blit_minimap_window(&atlas, window, state.map().topology, &mut indices);
         let (mx, my) = viewport_marker(window, None);
         assert!((0..FRAME_WIDTH).contains(&(mx + MARKER_WIDTH * 2)));
         assert!((0..FRAME_HEIGHT).contains(&(my + MARKER_HEIGHT * 2)) || my < 0);
-        let (image, window) = compose_minimap(&state, &nation_preview_palette(), None);
+        let (image, window) = compose_minimap(&state, view_origin, &nation_preview_palette(), None);
         let (mx, my) = viewport_marker(window, None);
         let pixels = image
             .data

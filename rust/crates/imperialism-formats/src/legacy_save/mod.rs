@@ -10,7 +10,8 @@ mod write;
 mod tests;
 
 use imperialism_core::{
-    GameState, MajorNationId, MajorNationTable, MinorNationId, NationId, ProductionTable,
+    BattleReportSideTable, GameState, MajorNationId, MajorNationTable, MinorNationId,
+    ProductionTable, TileId,
 };
 use indexmap::IndexMap;
 use model::{
@@ -60,7 +61,6 @@ pub struct LegacyGameStateContext {
     pub crt_rand_state: u32,
     pub map_generation_lcg: u32,
     pub zone_status_lcg: u32,
-    pub selected_nation: NationId,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -71,10 +71,20 @@ pub struct CityWindowPosition {
 
 pub type CityWindowLayout = MajorNationTable<ProductionTable<Option<CityWindowPosition>>>;
 
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
+pub struct BattleReportSideText {
+    pub name: String,
+    pub overlay: String,
+}
+
+pub type BattleReportText = BattleReportSideTable<BattleReportSideText>;
+
 #[derive(Debug, PartialEq)]
 pub struct LoadedGame {
     pub game: GameState,
+    pub map_view_origin: TileId,
     pub city_windows: CityWindowLayout,
+    pub battle_report_text: Vec<BattleReportText>,
 }
 
 fn city_windows_from_retail(

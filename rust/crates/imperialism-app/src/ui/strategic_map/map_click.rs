@@ -119,7 +119,7 @@ pub(crate) fn on_strategic_map_click(
         return;
     }
     let tile = if let Ok((cursor, _)) = land.get(click.entity) {
-        strategic_base_terrain_tile_at_cursor(&session.game, cursor)
+        strategic_base_terrain_tile_at_cursor(&session.game, session.map_view_origin, cursor)
     } else if let Ok(cursor) = ocean_maps.get(click.entity) {
         let Ok((_, interaction)) = land.single() else {
             return;
@@ -447,7 +447,7 @@ fn apply_navy_selection(
             interaction.navy.zone = Some(zone);
             interaction.navy.force = force;
             if let Some(center) = navy_zone_center_tile(&session.game, zone) {
-                session.game.center_map_on(center);
+                session.center_map_on(center);
             }
             true
         }
@@ -517,8 +517,9 @@ fn sync_strategic_map_cursor(
             .iter()
             .find_map(|cursor| ocean_tile_at_cursor(&session.game, cursor, &interaction.ocean))
     } else {
-        land.iter()
-            .find_map(|cursor| strategic_base_terrain_tile_at_cursor(&session.game, cursor))
+        land.iter().find_map(|cursor| {
+            strategic_base_terrain_tile_at_cursor(&session.game, session.map_view_origin, cursor)
+        })
     };
     let Some(tile) = tile else {
         request_arrow_cursor(&mut requested);

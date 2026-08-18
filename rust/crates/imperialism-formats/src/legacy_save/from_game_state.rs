@@ -7,7 +7,9 @@ use imperialism_core::*;
 impl LegacySaveV62 {
     pub fn from_game_state(
         state: &GameState,
+        map_view_origin: TileId,
         city_windows: &CityWindowLayout,
+        battle_report_text: &[BattleReportText],
         label: &str,
         session_slot: i32,
     ) -> Self {
@@ -156,10 +158,10 @@ impl LegacySaveV62 {
             market: market_dto(state.market()),
             diplomacy: diplomacy_dto(state.diplomacy()),
             technology: technology_dto(state.technology()),
-            map: map_dto(state.map(), state.map_view_origin()),
+            map: map_dto(state.map(), map_view_origin),
             ocean: ocean_dto(state.ocean()),
             navy: navy_dto(state),
-            army_reports: army_reports_from_state(state),
+            army_reports: army_reports_from_state(state, battle_report_text),
             major_nations,
             minor_nations,
             help: LegacyHelpState {
@@ -1276,11 +1278,15 @@ fn optional_commodity_i16(commodity: Option<TradeCommodity>) -> i16 {
     commodity.map(trade_commodity_i16).unwrap_or(-10)
 }
 
-fn army_reports_from_state(state: &GameState) -> Vec<LegacyBattleReport> {
+fn army_reports_from_state(
+    state: &GameState,
+    battle_report_text: &[BattleReportText],
+) -> Vec<LegacyBattleReport> {
     state
         .battle_reports()
         .iter()
-        .map(|report| LegacyBattleReport {
+        .enumerate()
+        .map(|(index, report)| LegacyBattleReport {
             participant_index: report.participant.retail(),
             displayed_participant: BattleReportSideSlot::Left.retail(),
             kind: report.kind.retail(),
@@ -1289,13 +1295,25 @@ fn army_reports_from_state(state: &GameState) -> Vec<LegacyBattleReport> {
                 BattleReportLocation::Zone(zone) => zone.get() as i16,
             },
             sides: [
-                &report.sides[BattleReportSideSlot::Left],
-                &report.sides[BattleReportSideSlot::Right],
+                (
+                    BattleReportSideSlot::Left,
+                    &report.sides[BattleReportSideSlot::Left],
+                ),
+                (
+                    BattleReportSideSlot::Right,
+                    &report.sides[BattleReportSideSlot::Right],
+                ),
             ]
-            .map(|side| LegacyBattleReportSide {
+            .map(|(slot, side)| LegacyBattleReportSide {
                 nation: side.nation.get(),
-                name: side.name.clone(),
-                overlay: side.overlay.clone(),
+                name: battle_report_text
+                    .get(index)
+                    .map(|text| text[slot].name.clone())
+                    .unwrap_or_default(),
+                overlay: battle_report_text
+                    .get(index)
+                    .map(|text| text[slot].overlay.clone())
+                    .unwrap_or_default(),
                 children: side
                     .children
                     .iter()

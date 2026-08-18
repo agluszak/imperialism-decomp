@@ -320,7 +320,6 @@ mod tests {
             parts.turn.quarter_gate_by_decade,
             parts.turn.difficulty,
             parts.turn.active_nation,
-            parts.turn.selected_nation,
         );
 
         let mut state = GameState::from_parts(parts);

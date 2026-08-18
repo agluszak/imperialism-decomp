@@ -501,6 +501,7 @@ fn accept_random_setup(
         names,
     ));
     if requires_capital_site_selection(setup.difficulty) {
+        session.map_view_origin = capital_selection_view_origin(session.game.map(), setup.nation);
         commands.insert_resource(session);
         next_state.set(AppState::CitySite);
     } else {

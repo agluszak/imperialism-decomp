@@ -33,24 +33,30 @@ fn main() -> anyhow::Result<()> {
         (Some(path), Some(context)) => {
             let bytes = std::fs::read(&path)
                 .with_context(|| format!("failed to read retail save {}", path.display()))?;
-            let selected = u8::try_from(context[3])
+            let _selected = u8::try_from(context[3])
                 .ok()
                 .and_then(NationId::try_new)
                 .context("selected nation is outside the retail nation range")?;
             let save = LegacySaveV62::parse(&bytes);
+            let map_view_origin = save.map_view_origin();
             let city_windows = save.city_window_layout();
+            let battle_report_text = save.battle_report_text();
             let game = save.game_state(LegacyGameStateContext {
                 crt_rand_state: context[0],
                 map_generation_lcg: context[1],
                 zone_status_lcg: context[2],
-                selected_nation: selected,
             });
             anyhow::ensure!(
                 game.turn().phase() == imperialism_core::PhaseCode::STRATEGIC_MAP,
                 "loaded save is in unsupported phase {:?}; only strategic-map saves can start the app",
                 game.turn().phase()
             );
-            Some(LoadedGame { game, city_windows })
+            Some(LoadedGame {
+                game,
+                map_view_origin,
+                city_windows,
+                battle_report_text,
+            })
         }
         (None, None) => None,
         _ => unreachable!("clap enforces the paired load-save and game-state arguments"),

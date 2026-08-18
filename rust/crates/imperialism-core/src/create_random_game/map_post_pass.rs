@@ -4,7 +4,7 @@ use super::*;
 /// `TCitySiteView` owned-territory clamp and the base `TMapDialog` viewport clamp.
 /// At the Normal+ start boundary the human nation has no home tile, so retail includes
 /// every tile it owns in both the representative and CitySite bounds.
-pub(super) fn capital_selection_view_origin(world: &MapMgr, human_nation: MajorNationId) -> TileId {
+pub fn capital_selection_view_origin(world: &MapMgr, human_nation: MajorNationId) -> TileId {
     const VIEWPORT_TILE_SPAN: i32 = 9;
 
     let owner = TileOwnerTag::from_nation(human_nation.nation());

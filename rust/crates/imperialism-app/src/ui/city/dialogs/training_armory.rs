@@ -438,7 +438,7 @@ mod tests {
     #[test]
     fn beginning_armory_rows_use_the_retail_unit_picture_sequence() {
         let state = beginning_of_game();
-        let nation = MajorNationId::from_nation(state.turn().selected_nation).unwrap();
+        let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
         let city = &state.nations().major(nation).city;
         let pictures: Vec<_> = (0..enum_map::enum_len::<MilitaryRecruitmentCategory>())
             .map(MilitaryRecruitmentCategory::from_usize)

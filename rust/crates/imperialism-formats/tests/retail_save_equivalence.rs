@@ -15,14 +15,12 @@ fn beginning_save_projection_matches_cpp_loaded_state() -> anyhow::Result<()> {
         crt_rand_state: expected.rng().crt_rand.state(),
         map_generation_lcg: expected.rng().map_generation.state(),
         zone_status_lcg: expected.rng().zone_status.state(),
-        selected_nation: expected.turn().selected_nation,
     });
 
     // Reproduce the strategic-map entry that the runtime oracle completed before capture:
     // retail selects the first idle civilian, prepares its targets, and centers on it.
     if let Some((unit, _)) = actual.first_idle_civilian(actual.turn().active_nation) {
         actual.activate_civilian_selection(unit);
-        actual.center_map_on_first_idle_civilian();
     }
 
     assert_game_state_eq(&expected, &actual)

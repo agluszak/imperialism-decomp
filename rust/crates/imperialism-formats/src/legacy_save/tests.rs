@@ -35,7 +35,6 @@ fn game_context() -> LegacyGameStateContext {
         crt_rand_state: 1,
         map_generation_lcg: 0,
         zone_status_lcg: 3_916_827_792,
-        selected_nation: NationId::new(6),
     }
 }
 
@@ -707,9 +706,15 @@ fn navy_growth_handled_reward_levels_round_trip_through_retail_save() {
     assert_eq!(pending.growth_reward_level(), Some(1));
     assert_eq!(pending.payload(), Some(1));
 
-    let bytes =
-        LegacySaveV62::from_game_state(&state, &CityWindowLayout::default(), "- Autosave -", 0)
-            .to_bytes();
+    let bytes = LegacySaveV62::from_game_state(
+        &state,
+        TileId::new(1),
+        &CityWindowLayout::default(),
+        &[],
+        "- Autosave -",
+        0,
+    )
+    .to_bytes();
     let round_tripped =
         load_game_from_bytes(&bytes, game_context()).expect("rust-written save loads");
     let pending = round_tripped
@@ -790,9 +795,15 @@ fn fixture_dto_write_round_trips_projected_game_state() {
 #[test]
 fn game_state_write_round_trips_semantically_through_the_parser() {
     let original = LegacySaveV62::parse(RETAIL_FIXTURE).game_state(game_context());
-    let bytes =
-        LegacySaveV62::from_game_state(&original, &CityWindowLayout::default(), "- Autosave -", 0)
-            .to_bytes();
+    let bytes = LegacySaveV62::from_game_state(
+        &original,
+        TileId::new(1),
+        &CityWindowLayout::default(),
+        &[],
+        "- Autosave -",
+        0,
+    )
+    .to_bytes();
     let round_tripped =
         load_game_from_bytes(&bytes, game_context()).expect("rust-written save loads");
     assert_eq!(round_tripped.game, original);
@@ -801,16 +812,66 @@ fn game_state_write_round_trips_semantically_through_the_parser() {
 #[test]
 fn city_window_layout_round_trips_without_entering_game_state() {
     let original = LegacySaveV62::parse(RETAIL_FIXTURE).game_state(game_context());
+    let map_view_origin = TileId::new(2_345);
     let mut city_windows = CityWindowLayout::default();
     city_windows[MajorNationId::new(0)][CityFacilitySlot::Shipyard] =
         Some(CityWindowPosition { left: 12, top: 34 });
 
-    let bytes =
-        LegacySaveV62::from_game_state(&original, &city_windows, "- Autosave -", 0).to_bytes();
+    let bytes = LegacySaveV62::from_game_state(
+        &original,
+        map_view_origin,
+        &city_windows,
+        &[],
+        "- Autosave -",
+        0,
+    )
+    .to_bytes();
     let loaded = load_game_from_bytes(&bytes, game_context()).expect("rust-written save loads");
 
     assert_eq!(loaded.game, original);
+    assert_eq!(loaded.map_view_origin, map_view_origin);
     assert_eq!(loaded.city_windows, city_windows);
+}
+
+#[test]
+fn battle_report_text_round_trips_outside_game_state() {
+    let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
+    save.army_reports = vec![LegacyBattleReport {
+        participant_index: BattleReportSideSlot::Left.retail(),
+        displayed_participant: BattleReportSideSlot::Right.retail(),
+        kind: BattleReportKind::LandBattle.retail(),
+        node_id: 0,
+        sides: [
+            LegacyBattleReportSide {
+                nation: 0,
+                name: "Attacker caption".to_owned(),
+                overlay: "Attacker summary".to_owned(),
+                children: Vec::new(),
+            },
+            LegacyBattleReportSide {
+                nation: 1,
+                name: "Defender caption".to_owned(),
+                overlay: "Defender summary".to_owned(),
+                children: Vec::new(),
+            },
+        ],
+    }];
+    let game = save.game_state(game_context());
+    let report_text = save.battle_report_text();
+
+    let bytes = LegacySaveV62::from_game_state(
+        &game,
+        TileId::new(1),
+        &CityWindowLayout::default(),
+        &report_text,
+        "- Autosave -",
+        0,
+    )
+    .to_bytes();
+    let loaded = load_game_from_bytes(&bytes, game_context()).expect("rust-written save loads");
+
+    assert_eq!(loaded.game, game);
+    assert_eq!(loaded.battle_report_text, report_text);
 }
 
 #[test]
@@ -825,9 +886,15 @@ fn eliminated_major_slot_stays_absent_through_save_and_load() {
     assert!(!state.nations().major_is_present(eliminated));
     assert!(state.nations().major_is_present(MajorNationId::new(1)));
 
-    let bytes =
-        LegacySaveV62::from_game_state(&state, &CityWindowLayout::default(), "- Autosave -", 0)
-            .to_bytes();
+    let bytes = LegacySaveV62::from_game_state(
+        &state,
+        TileId::new(1),
+        &CityWindowLayout::default(),
+        &[],
+        "- Autosave -",
+        0,
+    )
+    .to_bytes();
     let round_tripped = LegacySaveV62::parse(&bytes).game_state(game_context());
     assert!(!round_tripped.nations().major_is_present(eliminated));
 }
@@ -844,9 +911,15 @@ fn eliminated_minor_slot_stays_absent_through_save_and_load() {
     assert!(state.nations().minor(eliminated).is_none());
     assert!(state.nations().minor(MinorNationId::new(8)).is_some());
 
-    let bytes =
-        LegacySaveV62::from_game_state(&state, &CityWindowLayout::default(), "- Autosave -", 0)
-            .to_bytes();
+    let bytes = LegacySaveV62::from_game_state(
+        &state,
+        TileId::new(1),
+        &CityWindowLayout::default(),
+        &[],
+        "- Autosave -",
+        0,
+    )
+    .to_bytes();
     let round_tripped = LegacySaveV62::parse(&bytes).game_state(game_context());
     assert!(round_tripped.nations().minor(eliminated).is_none());
     assert!(

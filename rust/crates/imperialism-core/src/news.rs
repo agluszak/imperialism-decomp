@@ -880,14 +880,10 @@ mod tests {
             sides: BattleReportSideTable::from_array([
                 BattleReportSide {
                     nation: MajorNationId::new(1).nation(),
-                    name: String::new(),
-                    overlay: String::new(),
                     children: Vec::new(),
                 },
                 BattleReportSide {
                     nation: MajorNationId::new(2).nation(),
-                    name: String::new(),
-                    overlay: String::new(),
                     children: Vec::new(),
                 },
             ]),

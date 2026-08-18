@@ -54,6 +54,7 @@ struct NativeTurnState {
 
 impl NativeTurnState {
     fn into_core(self) -> TurnState {
+        let _ = self.selected_nation;
         let mut turn = TurnState::new(
             self.scenario_map,
             self.economic_turn,
@@ -63,7 +64,6 @@ impl NativeTurnState {
             DecadeTable::from_array(self.quarter_gate_by_decade.map(|value| value != 0)),
             self.difficulty,
             self.active_nation,
-            self.selected_nation,
         );
         turn.last_turn_alert_tick = self.last_turn_alert_tick;
         turn
@@ -185,7 +185,6 @@ pub fn load_save_backed_state(capture: SaveBackedState) -> Result<GameState> {
         crt_rand_state: capture.ephemeral.rng.crt_rand.state(),
         map_generation_lcg: capture.ephemeral.rng.map_generation.state(),
         zone_status_lcg: capture.ephemeral.rng.zone_status.state(),
-        selected_nation: turn.selected_nation,
     });
     parts.turn = turn;
     parts.unit_ids = capture.ephemeral.unit_ids;
