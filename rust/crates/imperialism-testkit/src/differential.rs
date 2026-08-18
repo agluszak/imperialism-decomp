@@ -2,11 +2,12 @@
 
 use anyhow::{Context, Result, bail};
 use imperialism_core::{
-    GameState, NewsState, PendingWorkState, RngState, TurnContinuation, TurnState, UnitIdAllocator,
+    GameState, MajorNationId, NewsState, PendingWorkState, RngState, Technology, TurnContinuation,
+    TurnState, UnitIdAllocator,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 use serde::Deserialize;
-use serde::de::DeserializeOwned;
+use serde::de::{DeserializeOwned, Error};
 use std::fmt::Debug;
 use std::fs;
 use std::path::Path;
@@ -31,7 +32,27 @@ struct EphemeralGameState {
     news: NewsState,
     pending: PendingWorkState,
     #[serde(default)]
+    last_processed_nation: Option<MajorNationId>,
+    #[serde(default, deserialize_with = "deserialize_native_continuation")]
     continuation: TurnContinuation,
+}
+
+fn deserialize_native_continuation<'de, D>(deserializer: D) -> Result<TurnContinuation, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let value = serde_json::Value::deserialize(deserializer)?;
+    if let Some(technology) = value
+        .get("TechnologyReport")
+        .and_then(serde_json::Value::as_u64)
+    {
+        let technology = u8::try_from(technology)
+            .ok()
+            .and_then(Technology::from_index)
+            .ok_or_else(|| D::Error::custom("invalid C++ technology report id"))?;
+        return Ok(TurnContinuation::TechnologyReport(technology));
+    }
+    serde_json::from_value(value).map_err(D::Error::custom)
 }
 
 /// Save bytes plus the runtime-only overlay the `.imp` does not store.
@@ -137,6 +158,7 @@ pub fn load_save_backed_state(capture: SaveBackedState) -> Result<GameState> {
     parts.rng = capture.ephemeral.rng;
     parts.news = capture.ephemeral.news;
     parts.pending = capture.ephemeral.pending;
+    parts.diplomacy.last_processed_nation = capture.ephemeral.last_processed_nation;
     parts.continuation = capture.ephemeral.continuation;
     Ok(GameState::from_parts(parts))
 }
