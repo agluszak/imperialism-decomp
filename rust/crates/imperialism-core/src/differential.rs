@@ -5,7 +5,9 @@
 //! `pay_for_military`, and `finish_player_orders` from production code.
 
 use crate::military_cleanup::NationOrderPriorityMetrics as Metrics;
-use crate::{CombatMovesContinuation, GameState, MajorNationId, NavyOrdersContinuation};
+use crate::{
+    CombatMovesContinuation, GameState, MajorNationId, MilitaryUnitId, NavyOrdersContinuation,
+};
 use serde::{Deserialize, Serialize};
 
 pub use crate::random_map::{
@@ -33,6 +35,32 @@ pub fn resume_combat_moves(
     continuation: CombatMovesContinuation,
 ) -> Option<CombatMovesContinuation> {
     state.resume_combat_moves(continuation)
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ArmyBattleUnitSnapshot {
+    pub source: MilitaryUnitId,
+    pub side: u8,
+    pub tile: i32,
+    pub action_points: i32,
+    pub strength: i32,
+    pub morale: i32,
+    pub state: i32,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ArmyBattleSnapshot {
+    pub selected: Option<MilitaryUnitId>,
+    pub current_side: u8,
+    pub round: i32,
+    pub outcome: i32,
+    pub units: Vec<ArmyBattleUnitSnapshot>,
+    pub fort_strength: [i32; 8],
+    pub crt_rand: u32,
+}
+
+pub fn army_battle_snapshot(state: &GameState) -> Option<ArmyBattleSnapshot> {
+    state.army_battle_differential_snapshot()
 }
 
 pub fn reassess_control_sea_missions(state: &mut GameState) {

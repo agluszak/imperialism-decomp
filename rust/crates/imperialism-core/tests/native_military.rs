@@ -2,7 +2,9 @@
 
 use imperialism_core::differential;
 use imperialism_core::*;
-use imperialism_testkit::compare_native;
+use imperialism_testkit::{
+    assert_game_state_eq, compare_native, load_save_backed_state, run_native,
+};
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
@@ -105,6 +107,21 @@ fn civilians_phase() {
 
 #[derive(Debug, Deserialize)]
 struct EmptyCase {}
+
+#[derive(Debug, Deserialize)]
+struct InteractiveMoveResult {
+    targets: Vec<i32>,
+    actuals: Vec<i32>,
+    snapshots: Vec<differential::ArmyBattleSnapshot>,
+}
+
+#[derive(Debug, Deserialize)]
+struct InteractiveAttackResult {
+    kinds: Vec<i32>,
+    targets: Vec<i32>,
+    actuals: Vec<i32>,
+    snapshots: Vec<differential::ArmyBattleSnapshot>,
+}
 
 #[derive(Debug, Deserialize, PartialEq)]
 struct NavalBattleResult {
@@ -210,6 +227,138 @@ fn auto_resolve_land_battle() {
         let _ = state.auto_resolve_land_battle(&[]);
     })
     .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn interactive_army_battle_done() {
+    let native = run_native::<EmptyCase, Vec<differential::ArmyBattleSnapshot>>(
+        "interactive_army_battle_done",
+    )
+    .unwrap();
+    let mut state = load_save_backed_state(native.before).unwrap();
+    let expected = load_save_backed_state(native.after).unwrap();
+    let continuation = state
+        .do_combat_moves()
+        .expect("hostile stack creates a battle");
+    state.enter_land_battle(continuation);
+    state.ensure_army_battle();
+    let mut snapshots = vec![differential::army_battle_snapshot(&state).unwrap()];
+    assert_eq!(state.finish_selected_army_unit_action(&[]), Ok(None));
+    snapshots.push(differential::army_battle_snapshot(&state).unwrap());
+    let _ = state.auto_resolve_land_battle(&[]);
+
+    assert_eq!(snapshots, native.result);
+    assert_game_state_eq(&expected, &state).unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn interactive_army_battle_move() {
+    let native =
+        run_native::<EmptyCase, InteractiveMoveResult>("interactive_army_battle_move").unwrap();
+    let mut state = load_save_backed_state(native.before).unwrap();
+    let expected = load_save_backed_state(native.after).unwrap();
+    let continuation = state
+        .do_combat_moves()
+        .expect("hostile stack creates a battle");
+    state.enter_land_battle(continuation);
+    state.ensure_army_battle();
+    let mut snapshots = vec![differential::army_battle_snapshot(&state).unwrap()];
+    assert_eq!(native.result.targets.len(), native.result.actuals.len());
+    for (&target, &actual) in native.result.targets.iter().zip(&native.result.actuals) {
+        let target = TacticalHex::from_index(target).unwrap();
+        let (action, _) = state.army_action_at(target, &[]).unwrap();
+        let ArmyAction::Move(moved) = action else {
+            panic!("native move target must classify as Move");
+        };
+        assert_eq!(moved.to.index(), actual);
+        snapshots.push(differential::army_battle_snapshot(&state).unwrap());
+    }
+    assert_ne!(native.result.targets.last(), native.result.actuals.last());
+    let _ = state.auto_resolve_land_battle(&[]);
+
+    assert_eq!(snapshots, native.result.snapshots);
+    assert_game_state_eq(&expected, &state).unwrap();
+}
+
+fn compare_interactive_army_battle_attack(case_name: &str) {
+    let native = run_native::<EmptyCase, InteractiveAttackResult>(case_name).unwrap();
+    let mut state = load_save_backed_state(native.before).unwrap();
+    let expected = load_save_backed_state(native.after).unwrap();
+    let continuation = state
+        .do_combat_moves()
+        .expect("hostile stack creates a battle");
+    state.enter_land_battle(continuation);
+    state.ensure_army_battle();
+    let mut snapshots = vec![differential::army_battle_snapshot(&state).unwrap()];
+    for ((&kind, &target), &actual) in native
+        .result
+        .kinds
+        .iter()
+        .zip(&native.result.targets)
+        .zip(&native.result.actuals)
+    {
+        match kind {
+            0 => assert_eq!(state.finish_selected_army_unit_action(&[]), Ok(None)),
+            1 => {
+                let target = TacticalHex::from_index(target).unwrap();
+                let (action, _) = state.army_action_at(target, &[]).unwrap();
+                let ArmyAction::Move(moved) = action else {
+                    panic!("native move target must classify as Move");
+                };
+                assert_eq!(moved.to.index(), actual);
+            }
+            2 => {
+                let target = TacticalHex::from_index(target).unwrap();
+                let (action, _) = state.army_action_at(target, &[]).unwrap();
+                assert!(matches!(action, ArmyAction::Attack { .. }));
+            }
+            _ => panic!("unknown native tactical input kind {kind}"),
+        }
+        if let Some(snapshot) = differential::army_battle_snapshot(&state) {
+            snapshots.push(snapshot);
+        }
+    }
+    if state.pending_land_battle().is_some() {
+        let _ = state.auto_resolve_land_battle(&[]);
+    }
+    assert_eq!(snapshots, native.result.snapshots);
+    assert_game_state_eq(&expected, &state).unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn interactive_army_battle_melee() {
+    compare_interactive_army_battle_attack("interactive_army_battle_melee");
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn interactive_army_battle_ranged() {
+    compare_interactive_army_battle_attack("interactive_army_battle_ranged");
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn interactive_army_battle_retreat() {
+    let native = run_native::<EmptyCase, differential::ArmyBattleSnapshot>(
+        "interactive_army_battle_retreat",
+    )
+    .unwrap();
+    let mut state = load_save_backed_state(native.before).unwrap();
+    let expected = load_save_backed_state(native.after).unwrap();
+    let continuation = state
+        .do_combat_moves()
+        .expect("hostile stack creates a battle");
+    state.enter_land_battle(continuation);
+    state.ensure_army_battle();
+    assert_eq!(
+        differential::army_battle_snapshot(&state),
+        Some(native.result)
+    );
+    assert!(state.retreat_from_army_battle(&[]).unwrap().is_some());
+    assert_game_state_eq(&expected, &state).unwrap();
 }
 
 #[derive(Debug, Deserialize, PartialEq)]

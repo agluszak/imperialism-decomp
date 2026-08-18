@@ -416,6 +416,53 @@ struct Battle {
 }
 
 impl GameState {
+    #[cfg(feature = "oracle")]
+    pub(crate) fn army_battle_differential_snapshot(
+        &self,
+    ) -> Option<crate::differential::ArmyBattleSnapshot> {
+        use crate::differential::{ArmyBattleSnapshot, ArmyBattleUnitSnapshot};
+
+        let battle = &self.army_battle()?.inner;
+        let mut units = battle
+            .units
+            .iter()
+            .map(|unit| ArmyBattleUnitSnapshot {
+                source: unit.source,
+                side: match unit.side {
+                    BattleSide::Attacker => 0,
+                    BattleSide::Defender => 1,
+                },
+                tile: unit.tile,
+                action_points: unit.action_points,
+                strength: unit.strength,
+                morale: unit.morale,
+                state: match unit.state {
+                    TacticalUnitState::Ready => 0,
+                    TacticalUnitState::MoraleBroken => 1,
+                    TacticalUnitState::Retreated => 2,
+                    TacticalUnitState::Destroyed => 3,
+                },
+            })
+            .collect::<Vec<_>>();
+        units.sort_by_key(|unit| unit.source.get());
+        Some(ArmyBattleSnapshot {
+            selected: battle.selected.map(|unit| battle.units[unit].source),
+            current_side: match battle.current_side {
+                BattleSide::Attacker => 0,
+                BattleSide::Defender => 1,
+            },
+            round: battle.round,
+            outcome: match battle.outcome {
+                BattleOutcome::InProgress => 0,
+                BattleOutcome::AttackerWon => 1,
+                BattleOutcome::DefenderWon => 2,
+            },
+            units,
+            fort_strength: battle.fort_strength,
+            crt_rand: self.rng.crt_rand.state(),
+        })
+    }
+
     /// Headless retail Auto: TArmyPlayer auto-deploy + Auto turn pump + ApplyChanges
     /// + ApplyPostBattleStackOutcomeAndGrowUnitMeters, then remaining combat-moves.
     pub fn auto_resolve_land_battle(&mut self, story_ids: &[i32]) -> TurnStop {
@@ -1111,8 +1158,11 @@ impl Battle {
 
     fn commit_outcome(&mut self, state: &mut GameState) {
         let attacker_won = self.outcome == BattleOutcome::AttackerWon;
-        self.apply_changes(state);
+        let destroyed = self.apply_changes(state);
         state.resolve_land_battle(attacker_won);
+        for source in destroyed {
+            detach_unit(state, source);
+        }
     }
 
     fn finish_action(&mut self) {
@@ -1149,7 +1199,8 @@ impl Battle {
         self.compute_reachable(unit);
     }
 
-    fn apply_changes(&mut self, state: &mut GameState) {
+    fn apply_changes(&mut self, state: &mut GameState) -> Vec<MilitaryUnitId> {
+        let mut destroyed = Vec::new();
         for side in [BattleSide::Attacker, BattleSide::Defender] {
             let lists = [
                 self.sides[side].units.clone(),
@@ -1161,16 +1212,16 @@ impl Battle {
                     let strength = self.units[idx].strength as i16;
                     state.military_units[&source].strength = strength;
                     if strength == 0 {
-                        detach_unit(state, source);
+                        destroyed.push(source);
                     }
                 }
             }
         }
+        destroyed
     }
 }
 
 fn detach_unit(state: &mut GameState, id: MilitaryUnitId) {
-    state.military_units[&id].stationed_province = None;
     for mission in state.missions.values_mut() {
         match &mut mission.data {
             MissionData::DefendProvince { army, .. }
@@ -1184,6 +1235,7 @@ fn detach_unit(state: &mut GameState, id: MilitaryUnitId) {
             _ => {}
         }
     }
+    state.military_units.shift_remove(&id);
 }
 
 fn combat_category(kind: MilitaryUnitKind) -> TacticalCombatClass {
