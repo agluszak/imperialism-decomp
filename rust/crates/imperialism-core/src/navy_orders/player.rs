@@ -29,7 +29,14 @@ pub enum NavyOrder {
 
 impl NavyOrder {
     pub const fn retail(self) -> i32 {
-        self as i32
+        match self {
+            Self::Sail => ORDER_SAIL,
+            Self::Patrol => ORDER_PATROL,
+            Self::Marines => ORDER_MARINES,
+            Self::Blockade => ORDER_BLOCKADE,
+            Self::Repair => ORDER_REPAIR,
+            Self::Evade => ORDER_EVADE,
+        }
     }
 
     pub fn from_retail(value: i32) -> Option<Self> {

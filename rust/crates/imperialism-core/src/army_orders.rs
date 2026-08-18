@@ -53,7 +53,17 @@ pub enum ArmyMapCursorState {
 
 impl ArmyMapCursorState {
     pub const fn retail(self) -> i32 {
-        self as i32
+        match self {
+            Self::None => 0,
+            Self::EmptyOrBlocked => 1,
+            Self::SelectProvince => 2,
+            Self::FriendlyAdjacent => 3,
+            Self::FriendlyNonAdjacent => 4,
+            Self::Hostile => 5,
+            Self::MarchOverlay => 6,
+            Self::SameProvinceCity => 7,
+            Self::SpyReport => 8,
+        }
     }
 
     pub fn from_retail(value: i32) -> Option<Self> {

@@ -440,7 +440,12 @@ impl MilitaryEra {
     }
 
     pub const fn retail(self) -> i16 {
-        self as i16
+        match self {
+            Self::First => 0,
+            Self::Second => 1,
+            Self::Third => 2,
+            Self::Fourth => 3,
+        }
     }
 }
 
@@ -654,7 +659,13 @@ impl MilitaryOrderCode {
     }
 
     pub const fn get(self) -> i32 {
-        self as i32
+        match self {
+            Self::Idle => 0,
+            Self::Redeploy => 1,
+            Self::Sleep => 2,
+            Self::Latr => 3,
+            Self::Done => 4,
+        }
     }
 }
 

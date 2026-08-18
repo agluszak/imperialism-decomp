@@ -642,7 +642,11 @@ pub enum ShipSelection {
 
 impl ShipSelection {
     pub const fn retail(self) -> i32 {
-        self as i32
+        match self {
+            Self::Available => 0,
+            Self::Transient => 1,
+            Self::Reserved => 2,
+        }
     }
 
     pub fn from_retail(value: i32) -> Option<Self> {
@@ -669,7 +673,11 @@ pub type NavalAggressionTable<T> = EnumMap<NavalAggression, T>;
 
 impl NavalAggression {
     pub const fn retail(self) -> i32 {
-        self as i32
+        match self {
+            Self::Cautious => 0,
+            Self::Balanced => 1,
+            Self::Aggressive => 2,
+        }
     }
 
     pub fn from_retail(value: i32) -> Option<Self> {
@@ -730,7 +738,17 @@ impl TaskForceOrder {
     }
 
     pub const fn get(self) -> i32 {
-        self as i32
+        match self {
+            Self::None => 0,
+            Self::Sail => 1,
+            Self::Patrol => 3,
+            Self::Transit => 4,
+            Self::Marines => 5,
+            Self::Blockade => 6,
+            Self::Escort => 7,
+            Self::Repair => 8,
+            Self::Evade => 9,
+        }
     }
 }
 
@@ -806,7 +824,11 @@ pub enum NavyMissionSelection {
 
 impl NavyMissionSelection {
     pub const fn retail(self) -> i32 {
-        self as i32
+        match self {
+            Self::AssembleAtPort => 0,
+            Self::EvadeAtTarget => 1,
+            Self::ExecuteAtTarget => 2,
+        }
     }
 
     pub fn from_retail(value: i32) -> Option<Self> {

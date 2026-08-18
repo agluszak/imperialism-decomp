@@ -18,7 +18,13 @@ pub enum BattleReportKind {
 
 impl BattleReportKind {
     pub const fn retail(self) -> i32 {
-        self as i32
+        match self {
+            Self::LandBattle => 0,
+            Self::SeaBattle => 1,
+            Self::MerchantInterception => 2,
+            Self::PreemptedLandBattle => 3,
+            Self::UncontestedTakeover => 4,
+        }
     }
 
     pub fn from_retail(value: i32) -> Option<Self> {
@@ -79,7 +85,10 @@ pub enum BattleReportSideSlot {
 
 impl BattleReportSideSlot {
     pub const fn retail(self) -> u8 {
-        self as u8
+        match self {
+            Self::Left => 0,
+            Self::Right => 1,
+        }
     }
 
     pub const fn from_retail(value: u8) -> Option<Self> {

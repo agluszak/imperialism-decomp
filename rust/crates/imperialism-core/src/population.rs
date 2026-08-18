@@ -670,7 +670,12 @@ impl StrikePhase {
         }
     }
     pub const fn retail(self) -> i16 {
-        self as i16
+        match self {
+            Self::Clothing => 0,
+            Self::Furniture => 1,
+            Self::Hardware => 2,
+            Self::Arms => 3,
+        }
     }
     pub(crate) const fn next(self) -> Self {
         match self {
