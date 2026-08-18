@@ -142,7 +142,7 @@ struct Battle {
     column_count: i32,
     outcome: BattleOutcome,
     pending_end: bool,
-    fort_level: i32,
+    fort_level: FortLevel,
     fort_strength: [i32; 8],
     battle_site: ProvinceId,
     round: i32,
@@ -175,10 +175,7 @@ impl Battle {
             .pending_land_battle()
             .cloned()
             .expect("auto-resolve requires a pending land battle");
-        let mut fort_level = i32::from(state.map.provinces[battle.province].fort_level().retail());
-        if fort_level > 0 {
-            fort_level += 1;
-        }
+        let fort_level = state.map.provinces[battle.province].fort_level();
         let composition = classify_city_gate_terrain(state, battle.province);
         let _ = composition;
 
@@ -318,18 +315,27 @@ impl Battle {
                 trench_mask: 0,
             };
         }
-        if self.fort_level != 0 {
+        let (wall, points) = match self.fort_level {
+            FortLevel::None => return,
+            FortLevel::One => (
+                DeployMark::FortWallLevelOne,
+                FORT_STRENGTH_BY_LEVEL[FortLevel::One],
+            ),
+            FortLevel::Two => (
+                DeployMark::FortWallLevelTwo,
+                FORT_STRENGTH_BY_LEVEL[FortLevel::Two],
+            ),
+            FortLevel::Three => (
+                DeployMark::FortWallLevelThree,
+                FORT_STRENGTH_BY_LEVEL[FortLevel::Three],
+            ),
+        };
+        {
             let mut tile = self.column_count - 6;
             while tile < TACTICAL_TILE_COUNT as i32 {
-                self.tiles[tile as usize].deploy_mark = match self.fort_level {
-                    2 => DeployMark::FortWallLevelOne,
-                    3 => DeployMark::FortWallLevelTwo,
-                    4 => DeployMark::FortWallLevelThree,
-                    level => panic!("unsupported tactical fort wall level {level}"),
-                };
+                self.tiles[tile as usize].deploy_mark = wall;
                 tile += TACTICAL_STRIDE;
             }
-            let points = FORT_STRENGTH_BY_LEVEL[self.fort_level.clamp(0, 5) as usize];
             self.fort_strength = [points; 8];
         }
     }
@@ -543,7 +549,7 @@ impl Battle {
     fn place_deployed(&mut self, unit: usize, tile: i32) {
         self.units[unit].tile = tile;
         self.tiles[tile as usize].occupant = Some(unit);
-        if self.units[unit].flag3c && self.fort_level == 0 {
+        if self.units[unit].flag3c && self.fort_level == FortLevel::None {
             self.tiles[tile as usize].deploy_mark = DeployMark::UnitCover;
         }
     }
@@ -921,7 +927,7 @@ impl Battle {
 
     fn prune_to(&mut self, state: &GameState, side: BattleSide, max_count: i32) {
         let profile_row = if self.sides[side].is_our {
-            usize::from(self.fort_level != 0) + 1
+            usize::from(self.fort_level != FortLevel::None) + 1
         } else {
             0
         };
@@ -1021,7 +1027,11 @@ impl Battle {
         }
         let sums = self.sides[side].projection_sums;
         let baseline = sums.similarity(TACTICAL_COMPOSITION.baseline);
-        let row = if self.fort_level != 0 { 1 } else { 2 };
+        let row = if self.fort_level != FortLevel::None {
+            1
+        } else {
+            2
+        };
         self.sides[side].projection_sums.cavalry = sums.similarity(composition_row(row));
         self.sides[side].projection_sums.infantry = baseline;
     }
@@ -1034,7 +1044,7 @@ impl Battle {
     }
 
     fn fort_breached(&self) -> bool {
-        if self.fort_level == 0 {
+        if self.fort_level == FortLevel::None {
             return true;
         }
         self.fort_strength.iter().any(|&pool| pool <= 0)

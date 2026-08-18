@@ -1,7 +1,7 @@
 //! Numeric tables for headless land-battle Auto (`global_data_tables.cpp`).
 
 use crate::units::TacticalCombatClass;
-use crate::{ArmyCategoryTable, MilitaryUnitTable, TacticalCombatClassTable};
+use crate::{ArmyCategoryTable, FortLevelTable, MilitaryUnitTable, TacticalCombatClassTable};
 use enum_map::{Enum, EnumMap};
 
 pub(crate) const TACTICAL_TILE_COUNT: usize = 0x1b3;
@@ -136,7 +136,8 @@ pub(crate) const MOVE_COST: ArmyCategoryTable<TacticalTerrainTable<i16>> =
         TacticalTerrainTable::from_array([10, 20, 30, 15, 999]),
     ]);
 
-pub(crate) const FORT_STRENGTH_BY_LEVEL: [i32; 6] = [0, 0, 500, 750, 1000, 0];
+pub(crate) const FORT_STRENGTH_BY_LEVEL: FortLevelTable<i32> =
+    FortLevelTable::from_array([0, 500, 750, 1000]);
 
 pub(crate) const GATE_FLAG_SCORE_BUCKET: [u8; 15] = [0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 4, 2, 2, 7, 2];
 
