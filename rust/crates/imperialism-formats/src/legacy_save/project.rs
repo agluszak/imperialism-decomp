@@ -1500,7 +1500,7 @@ fn province_state(province: &LegacyProvince) -> ProvinceState {
         adjacency,
         adjacency_anchor_tiles,
         region_class,
-        province.fort_level,
+        FortLevel::from_retail(province.fort_level).expect("retail province fort level"),
         optional_tile_id(i32::from(province.city_tile)),
         province.last_turn_tick,
         optional_tile_id(i32::from(province.secondary_neighbor_tile)),

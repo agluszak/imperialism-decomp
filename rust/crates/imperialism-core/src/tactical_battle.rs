@@ -146,7 +146,7 @@ impl Battle {
             .pending_land_battle()
             .cloned()
             .expect("auto-resolve requires a pending land battle");
-        let mut fort_level = i32::from(state.map.provinces[battle.province].fort_level());
+        let mut fort_level = i32::from(state.map.provinces[battle.province].fort_level().retail());
         if fort_level > 0 {
             fort_level += 1;
         }

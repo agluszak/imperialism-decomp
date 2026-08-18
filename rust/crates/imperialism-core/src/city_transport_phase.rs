@@ -485,7 +485,7 @@ mod tests {
             Vec::new(),
             Vec::new(),
             Some(0),
-            0,
+            FortLevel::None,
             Some(city_tile),
             last_turn_tick,
             None,

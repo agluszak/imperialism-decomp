@@ -3,10 +3,56 @@ use crate::{
     MajorNationTable, MapMgr, MinorNationId, MissionData, MissionState, NationId, ProvinceId,
     ResourceTable, TileId,
 };
+use enum_map::{Enum, EnumMap};
 use indexmap::IndexSet;
 use serde::{Deserialize, Serialize};
 
 const REGION_CLASS_COUNT: usize = 24;
+
+/// Retail province fort levels.
+#[derive(
+    Clone, Copy, Debug, Default, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
+#[serde(rename_all = "snake_case")]
+pub enum FortLevel {
+    #[default]
+    None,
+    One,
+    Two,
+    Three,
+}
+
+pub type FortLevelTable<T> = EnumMap<FortLevel, T>;
+
+impl FortLevel {
+    pub const fn from_retail(value: i8) -> Option<Self> {
+        match value {
+            0 => Some(Self::None),
+            1 => Some(Self::One),
+            2 => Some(Self::Two),
+            3 => Some(Self::Three),
+            _ => None,
+        }
+    }
+
+    pub const fn retail(self) -> i8 {
+        match self {
+            Self::None => 0,
+            Self::One => 1,
+            Self::Two => 2,
+            Self::Three => 3,
+        }
+    }
+
+    pub const fn next(self) -> Option<Self> {
+        match self {
+            Self::None => Some(Self::One),
+            Self::One => Some(Self::Two),
+            Self::Two => Some(Self::Three),
+            Self::Three => None,
+        }
+    }
+}
 
 /// A country's current relationship to an imperial master.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
@@ -40,7 +86,7 @@ pub struct ProvinceState {
     pub adjacency_anchor_tiles: Vec<TileId>,
     #[serde(deserialize_with = "deserialize_required_option")]
     pub region_class: Option<u8>,
-    fort_level: i8,
+    fort_level: FortLevel,
     #[serde(deserialize_with = "deserialize_required_option")]
     city_tile: Option<TileId>,
     pub last_turn_tick: i16,
@@ -67,7 +113,7 @@ impl Default for ProvinceState {
             adjacency: Vec::new(),
             adjacency_anchor_tiles: Vec::new(),
             region_class: None,
-            fort_level: 0,
+            fort_level: FortLevel::None,
             city_tile: None,
             last_turn_tick: 999,
             secondary_neighbor_tile: None,
@@ -92,7 +138,7 @@ impl ProvinceState {
         adjacency: Vec<ProvinceId>,
         adjacency_anchor_tiles: Vec<TileId>,
         region_class: Option<u8>,
-        fort_level: i8,
+        fort_level: FortLevel,
         city_tile: Option<TileId>,
         last_turn_tick: i16,
         secondary_neighbor_tile: Option<TileId>,
@@ -143,12 +189,15 @@ impl ProvinceState {
         &self.adjacency
     }
 
-    pub const fn fort_level(&self) -> i8 {
+    pub const fn fort_level(&self) -> FortLevel {
         self.fort_level
     }
 
     pub(crate) fn increment_fort_level(&mut self) {
-        self.fort_level += 1;
+        self.fort_level = self
+            .fort_level
+            .next()
+            .expect("cannot build beyond the maximum retail fort level");
     }
 
     pub const fn city_tile(&self) -> Option<TileId> {
@@ -530,7 +579,7 @@ mod tests {
             adjacency.iter().copied().map(ProvinceId::new).collect(),
             vec![TileId::new(0); adjacency.len()],
             region_class,
-            0,
+            FortLevel::None,
             None,
             0,
             None,

@@ -592,7 +592,7 @@ fn retail_projection_preserves_country_and_province_semantics() {
     assert_eq!(province_zero.former_owner(), Some(NationId::new(12)));
     assert_eq!(province_zero.adjacency(), [8, 1, 17].map(ProvinceId::new));
     assert_eq!(province_zero.region_class, Some(0));
-    assert_eq!(province_zero.fort_level(), 0);
+    assert_eq!(province_zero.fort_level(), FortLevel::None);
     assert_eq!(province_zero.city_tile(), Some(TileId::new(695)));
     assert_eq!(
         province_zero.resource_development_by_type(),
@@ -607,7 +607,7 @@ fn retail_projection_preserves_country_and_province_semantics() {
         [71, 72, 80, 78, 89, 90].map(ProvinceId::new)
     );
     assert_eq!(province_seventy_nine.region_class, Some(4));
-    assert_eq!(province_seventy_nine.fort_level(), 0);
+    assert_eq!(province_seventy_nine.fort_level(), FortLevel::None);
     assert_eq!(province_seventy_nine.city_tile(), Some(TileId::new(3_706)));
     assert_eq!(
         province_seventy_nine.resource_development_by_type(),

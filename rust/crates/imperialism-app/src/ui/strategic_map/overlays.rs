@@ -120,11 +120,14 @@ fn fort_marker_offset(state: &GameState, tile: TileId) -> Option<u16> {
     let fort_level = state.map()[tile]
         .province
         .map(|province| state.map().provinces[province].fort_level())
-        .unwrap_or(0);
-    if fort_level == 0 {
-        return None;
-    }
-    Some(((fort_level - 1 + 0x23) as u16) << 6)
+        .unwrap_or(FortLevel::None);
+    let picture = match fort_level {
+        FortLevel::None => return None,
+        FortLevel::One => 0x23,
+        FortLevel::Two => 0x24,
+        FortLevel::Three => 0x25,
+    };
+    Some(picture << 6)
 }
 
 pub(super) fn town_transport_linked(state: &GameState, tile: TileId) -> bool {

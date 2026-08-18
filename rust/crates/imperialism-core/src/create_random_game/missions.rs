@@ -88,13 +88,15 @@ pub(super) fn build_province_state(
             .owner
             .nation()
             .expect("accepted generated provinces have nation owners");
-        let fort_level = province_capitals[index]
-            .is_some_and(|capital| {
-                world[capital]
-                    .flags
-                    .contains(TileFlags::PROVINCE_CAPITAL_FORTIFICATION)
-            })
-            .into();
+        let fort_level = if province_capitals[index].is_some_and(|capital| {
+            world[capital]
+                .flags
+                .contains(TileFlags::PROVINCE_CAPITAL_FORTIFICATION)
+        }) {
+            FortLevel::One
+        } else {
+            FortLevel::None
+        };
         let linked_tiles = world
             .tiles
             .iter()

@@ -8,12 +8,12 @@ use crate::navy_orders::{
 };
 use crate::*;
 
-const ATTACK_RESOURCE_SCALE: DifficultyTable<[f32; 4]> = DifficultyTable::from_array([
-    [1.9, 2.3, 2.5, 2.7],
-    [1.9, 2.3, 2.5, 2.7],
-    [2.0, 2.3, 2.5, 2.7],
-    [2.1, 2.3, 2.5, 2.7],
-    [2.3, 2.5, 2.7, 2.9],
+const ATTACK_RESOURCE_SCALE: DifficultyTable<FortLevelTable<f32>> = DifficultyTable::from_array([
+    FortLevelTable::from_array([1.9, 2.3, 2.5, 2.7]),
+    FortLevelTable::from_array([1.9, 2.3, 2.5, 2.7]),
+    FortLevelTable::from_array([2.0, 2.3, 2.5, 2.7]),
+    FortLevelTable::from_array([2.1, 2.3, 2.5, 2.7]),
+    FortLevelTable::from_array([2.3, 2.5, 2.7, 2.9]),
 ]);
 const NAVY_QUEUE_PROFILE: NavyPriorityTable<i16> = NavyPriorityTable::from_array([40, 40, 20, 0]);
 const UNIT_PRIORITY_WEIGHT: f32 = 0.33;
@@ -362,7 +362,7 @@ impl GameState {
                 scale = cross;
             }
         }
-        let profile = if self.map.provinces[province].fort_level() < 1 {
+        let profile = if self.map.provinces[province].fort_level() == FortLevel::None {
             TACTICAL_COMPOSITION.baseline
         } else {
             TACTICAL_COMPOSITION.fort_garrison
@@ -377,7 +377,8 @@ impl GameState {
         for unit in self.units_stationed_in(target) {
             accumulate_unit_priority(unit, &mut scores, 1.0, PROVINCE_UNIT_ORDER_WEIGHT);
         }
-        let fort = self.map.provinces[target].fort_level() > 0;
+        let fort_level = self.map.provinces[target].fort_level();
+        let fort = fort_level != FortLevel::None;
         let mut similarity = scores.similarity(if fort {
             TACTICAL_COMPOSITION.fort_garrison
         } else {
@@ -386,8 +387,7 @@ impl GameState {
         if similarity == 0.0 {
             similarity = 1.0;
         }
-        let fort_column = (self.map.provinces[target].fort_level().max(0) as usize).min(3);
-        let scale = ATTACK_RESOURCE_SCALE[self.turn.difficulty][fort_column] * similarity;
+        let scale = ATTACK_RESOURCE_SCALE[self.turn.difficulty][fort_level] * similarity;
         let profile = if fort {
             TACTICAL_COMPOSITION.open_field
         } else {
@@ -591,7 +591,7 @@ mod tests {
             Vec::new(),
             Vec::new(),
             None,
-            0,
+            FortLevel::None,
             None,
             0,
             None,

@@ -260,7 +260,7 @@ impl GameState {
         }
         // IsCapitolThreatened inverts the fort/open-field row sense used by the
         // tactical projection scorer: fort present uses the open-field profile.
-        let profile = if self.map.provinces[province].fort_level() > 0 {
+        let profile = if self.map.provinces[province].fort_level() != FortLevel::None {
             TACTICAL_COMPOSITION.open_field
         } else {
             TACTICAL_COMPOSITION.fort_siege

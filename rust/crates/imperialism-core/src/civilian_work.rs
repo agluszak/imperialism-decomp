@@ -1117,7 +1117,7 @@ mod tests {
             Vec::new(),
             Vec::new(),
             Some(0),
-            0,
+            FortLevel::None,
             Some(capital),
             0,
             None,
@@ -1236,7 +1236,10 @@ mod tests {
                 .flags
                 .contains(TileFlags::PROVINCE_CAPITAL_FORTIFICATION)
         );
-        assert_eq!(state.map.provinces[ProvinceId::new(0)].fort_level(), 1);
+        assert_eq!(
+            state.map.provinces[ProvinceId::new(0)].fort_level(),
+            FortLevel::One
+        );
         assert!(state.map[depot_tile].flags.contains(TileFlags::DEPOT));
         assert!(
             state

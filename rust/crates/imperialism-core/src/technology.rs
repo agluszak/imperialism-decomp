@@ -291,12 +291,16 @@ pub enum FortLevelCap {
 }
 
 impl FortLevelCap {
-    pub const fn get(self) -> i8 {
+    pub const fn level(self) -> FortLevel {
         match self {
-            Self::One => 1,
-            Self::Two => 2,
-            Self::Three => 3,
+            Self::One => FortLevel::One,
+            Self::Two => FortLevel::Two,
+            Self::Three => FortLevel::Three,
         }
+    }
+
+    pub const fn get(self) -> i8 {
+        self.level().retail()
     }
 }
 

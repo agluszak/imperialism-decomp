@@ -4,7 +4,8 @@ use crate::civilian_phase::civilian_sea_scan_neighbor;
 use crate::*;
 use enum_map::Enum;
 
-const FORT_COST_BY_LEVEL: [i32; 5] = [5_000, 7_500, 10_000, 0, 0];
+const FORT_COST_BY_LEVEL: FortLevelTable<i32> =
+    FortLevelTable::from_array([5_000, 7_500, 10_000, 0]);
 const WORK_ORDER_COST_BY_CLASS: [i32; 3] = [100, 1_000, 5_000];
 const GATE_QUALIFIES: [u8; 24] = [
     0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
@@ -498,10 +499,7 @@ impl GameState {
             return;
         }
         let fort_level = self.map.provinces[province].fort_level();
-        let cost = FORT_COST_BY_LEVEL
-            .get(usize::try_from(fort_level).unwrap_or(usize::MAX))
-            .copied()
-            .unwrap_or(0);
+        let cost = FORT_COST_BY_LEVEL[fort_level];
         if cost > self.nations.major(nation).common.treasury {
             return;
         }
@@ -518,7 +516,7 @@ impl GameState {
         let at_war = self.nation_has_war(nation.nation());
         let cap = self.technology.city_capabilities_by_nation[nation]
             .fort_level_cap
-            .get();
+            .level();
         let mut best_region = None;
         let mut best_score = -1.0_f32;
         for &province in self.nations.major(nation).common.owned_regions() {

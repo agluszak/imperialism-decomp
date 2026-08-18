@@ -170,7 +170,7 @@ pub use technology::{
     CityTechnologyCapabilities, CivilianTerrainAccess, FortLevelCap, Technology,
     TechnologyResearchStatus, TechnologyState, TechnologyTable, UniversityTechnologyState,
 };
-pub use territory::{CountryStatus, ProvinceState};
+pub use territory::{CountryStatus, FortLevel, FortLevelTable, ProvinceState};
 pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};
 pub use trade_phase::{PendingTradeOffer, TradeProgress, TradeSession};
 pub use turn_flow::{

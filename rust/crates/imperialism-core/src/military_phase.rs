@@ -515,7 +515,7 @@ mod tests {
             adjacent.iter().copied().map(ProvinceId::new).collect(),
             vec![TileId::new(0); adjacent.len()],
             None,
-            0,
+            FortLevel::None,
             None,
             0,
             None,
