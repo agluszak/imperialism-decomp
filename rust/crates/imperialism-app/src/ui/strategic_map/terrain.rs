@@ -106,8 +106,8 @@ pub(super) fn compose_strategic_base_tile(
         let subtype = usize::try_from(tile_state.gate)
             .expect("rendered land tile subtype must not be negative");
         let variant = usize::from(rendering.sprite_variant);
-        for direction in 0..6 {
-            let direction_bit = 1 << direction;
+        for direction in HexDirection::ALL {
+            let direction_bit = direction.bit();
             let transition_offset = if rendering.transition_mask & direction_bit != 0 {
                 PRIMARY_TRANSITION_OFFSETS[subtype][variant]
             } else if rendering.coast_or_secondary_mask & direction_bit != 0
@@ -210,14 +210,14 @@ pub(super) fn frame_for_offset(offset: u16) -> usize {
     usize::from(offset / TILE_SIZE as u16)
 }
 
-fn copy_transition_wedge(direction: usize, source: &[u8], destination: &mut [u8]) {
+fn copy_transition_wedge(direction: HexDirection, source: &[u8], destination: &mut [u8]) {
     match direction {
-        0 => {
+        HexDirection::NorthEast => {
             for row in 0x20..0x40 {
                 copy_tile_span(source, destination, row, 0x20, row - 0x1f);
             }
         }
-        1 => {
+        HexDirection::East => {
             for row in 1..0x20 {
                 copy_tile_span(source, destination, row, 0x40 - row, row);
             }
@@ -225,17 +225,17 @@ fn copy_transition_wedge(direction: usize, source: &[u8], destination: &mut [u8]
                 copy_tile_span(source, destination, row, row + 1, 0x3f - row);
             }
         }
-        2 => {
+        HexDirection::SouthEast => {
             for row in 0..0x20 {
                 copy_tile_span(source, destination, row, 0x20, 0x20 - row);
             }
         }
-        3 => {
+        HexDirection::SouthWest => {
             for row in 0..0x20 {
                 copy_tile_span(source, destination, row, row, 0x20 - row);
             }
         }
-        4 => {
+        HexDirection::West => {
             for row in 0..0x20 {
                 copy_tile_span(source, destination, row, 0, row + 1);
             }
@@ -243,12 +243,11 @@ fn copy_transition_wedge(direction: usize, source: &[u8], destination: &mut [u8]
                 copy_tile_span(source, destination, row, 0, 0x40 - row);
             }
         }
-        5 => {
+        HexDirection::NorthWest => {
             for row in 0x21..0x40 {
                 copy_tile_span(source, destination, row, 0x40 - row, row - 0x20);
             }
         }
-        _ => unreachable!("strategic tile has six transition directions"),
     }
 }
 

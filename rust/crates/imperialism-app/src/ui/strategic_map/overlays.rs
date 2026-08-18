@@ -24,12 +24,16 @@ pub(super) fn compose_strategic_railways(
     if tile_state.transport_links.is_empty() && tile_state.pending_rail_links.is_empty() {
         return;
     }
-    for direction in 0..6 {
-        let direction_bit = 1 << direction;
+    const COMPLETED_MASK: HexDirectionTable<usize> =
+        HexDirectionTable::from_array([0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d]);
+    const PENDING_MASK: HexDirectionTable<usize> =
+        HexDirectionTable::from_array([0x1e, 0x1f, 0x20, 0x21, 0x22, 0x23]);
+    for direction in HexDirection::ALL {
+        let direction_bit = direction.bit();
         let mask = if tile_state.transport_links.bits() & direction_bit != 0 {
-            0x18 + direction
+            COMPLETED_MASK[direction]
         } else if tile_state.pending_rail_links.bits() & direction_bit != 0 {
-            0x1e + direction
+            PENDING_MASK[direction]
         } else {
             continue;
         };

@@ -2,9 +2,10 @@
 use crate::random_map::trace_coarse_random_map;
 use crate::random_map::{CoarseMap, generate_coarse_random_map};
 use crate::{
-    EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, MapGeometry, MapTopology, OceanRoute, OceanZoneId,
-    ProvinceId, RANDOM_MAP_CLASS_COUNT, RetailCrtRng, RetailLcg, RiverSegment, TerrainKind,
-    TerrainKindTable, TileId, TileOwnerTag, hash_retail_scenario_tag,
+    EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, HexDirection, HexDirectionTable, MapGeometry,
+    MapTopology, OceanRoute, OceanZoneId, ProvinceId, RANDOM_MAP_CLASS_COUNT, RetailCrtRng,
+    RetailLcg, RiverSegment, TerrainKind, TerrainKindTable, TileId, TileOwnerTag,
+    hash_retail_scenario_tag,
 };
 use serde::{Deserialize, Deserializer, Serialize};
 
@@ -13,14 +14,14 @@ use TerrainKind::{
     Desert as DESERT, Farmland as FARMLAND, Forest as FOREST, Hills as HILLS, Mountain as MOUNTAIN,
     Plains as PLAINS, Swamp as SWAMP, Water as WATER,
 };
-const RIVER_CONNECTION: [[u8; 6]; 6] = [
-    [0, 0, 1, 2, 3, 0],
-    [0, 0, 0, 4, 5, 6],
-    [1, 0, 0, 0, 7, 8],
-    [2, 4, 0, 0, 0, 9],
-    [3, 5, 7, 0, 0, 0],
-    [0, 6, 8, 9, 0, 0],
-];
+const RIVER_CONNECTION: HexDirectionTable<HexDirectionTable<u8>> = HexDirectionTable::from_array([
+    HexDirectionTable::from_array([0, 0, 1, 2, 3, 0]),
+    HexDirectionTable::from_array([0, 0, 0, 4, 5, 6]),
+    HexDirectionTable::from_array([1, 0, 0, 0, 7, 8]),
+    HexDirectionTable::from_array([2, 4, 0, 0, 0, 9]),
+    HexDirectionTable::from_array([3, 5, 7, 0, 0, 0]),
+    HexDirectionTable::from_array([0, 6, 8, 9, 0, 0]),
+]);
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RandomMapTuning {
@@ -603,9 +604,15 @@ fn randomize_templates_and_smooth(
 ) {
     for coarse_index in 0..378_i32 {
         let base = coarse_class(coarse, coarse_index);
-        let class1 = coarse_class(coarse, coarse_neighbor(coarse_index, 1));
-        let class2 = coarse_class(coarse, coarse_neighbor(coarse_index, 2));
-        let class3 = coarse_class(coarse, coarse_neighbor(coarse_index, 3));
+        let class1 = coarse_class(coarse, coarse_neighbor(coarse_index, HexDirection::East));
+        let class2 = coarse_class(
+            coarse,
+            coarse_neighbor(coarse_index, HexDirection::SouthEast),
+        );
+        let class3 = coarse_class(
+            coarse,
+            coarse_neighbor(coarse_index, HexDirection::SouthWest),
+        );
         randomize_template_banks(tiles, coarse_index, base, class1, class3, class2, rng);
     }
     smooth_ownership(tiles, geometry, rng);
@@ -660,7 +667,7 @@ fn smooth_ownership(
         let owner = tiles[tile_index].owner_nation;
         let mut same_owner_count = 0;
         let mut differing_neighbor = None;
-        for direction in 0..6 {
+        for direction in HexDirection::ALL {
             let neighbor = full_neighbor(geometry, tile_index, direction);
             let neighbor_owner = neighbor.map_or(-1, |index| tiles[index].owner_nation);
             if neighbor_owner == owner {
@@ -681,12 +688,12 @@ fn smooth_ownership(
     }
     for tile_index in 108..TILE_COUNT - 108 {
         let owner = tiles[tile_index].owner_nation;
-        let has_same_owner = (0..6).any(|direction| {
+        let has_same_owner = HexDirection::ALL.into_iter().any(|direction| {
             full_neighbor(geometry, tile_index, direction)
                 .is_some_and(|neighbor| tiles[neighbor].owner_nation == owner)
         });
         if !has_same_owner {
-            let direction = (rng.next_sample_15() % 6) as usize;
+            let direction = sampled_hex_direction(rng);
             if let Some(neighbor) = full_neighbor(geometry, tile_index, direction) {
                 tiles[tile_index] = tiles[neighbor];
             }
@@ -709,7 +716,7 @@ fn place_terrain_features(
                 break candidate;
             }
         };
-        let direction = (rng.next_sample_15() % 6) as usize;
+        let direction = sampled_hex_direction(rng);
         mountains -= seed_mountain_range(tiles, geometry, tile, retry_budget, direction, rng);
     }
 
@@ -718,7 +725,7 @@ fn place_terrain_features(
         if tiles[source].terrain_kind != MOUNTAIN {
             continue;
         }
-        for direction in 0..6 {
+        for direction in HexDirection::ALL {
             if let Some(neighbor) = full_neighbor(geometry, source, direction)
                 && tiles[neighbor].terrain_kind == PLAINS
                 && rng.next_sample_15() % 100 < 40
@@ -757,7 +764,7 @@ fn place_terrain_features(
                 break candidate;
             }
         };
-        let clear = (0..6).all(|direction| {
+        let clear = HexDirection::ALL.into_iter().all(|direction| {
             full_neighbor(geometry, tile, direction)
                 .is_none_or(|neighbor| tiles[neighbor].terrain_kind != DESERT)
         });
@@ -780,11 +787,11 @@ fn seed_mountain_range(
     geometry: MapGeometry,
     tile: usize,
     retry_budget: i32,
-    direction: usize,
+    direction: HexDirection,
     rng: &mut RetailLcg,
 ) -> i32 {
     if tiles[tile].terrain_kind != PLAINS
-        || (0..6).any(|dir| {
+        || HexDirection::ALL.into_iter().any(|dir| {
             full_neighbor(geometry, tile, dir)
                 .is_some_and(|neighbor| tiles[neighbor].terrain_kind == WATER)
         })
@@ -793,12 +800,12 @@ fn seed_mountain_range(
     }
     tiles[tile].terrain_kind = MOUNTAIN;
     let roll = rng.next_sample_15() % 100;
-    let threshold = if direction == 1 || direction == 4 {
+    let threshold = if matches!(direction, HexDirection::East | HexDirection::West) {
         39
     } else {
         59
     };
-    let upper = if direction == 1 || direction == 4 {
+    let upper = if matches!(direction, HexDirection::East | HexDirection::West) {
         70
     } else {
         80
@@ -806,11 +813,9 @@ fn seed_mountain_range(
     let mut next_direction = direction;
     if roll > threshold {
         next_direction = if roll < upper {
-            if direction == 0 { 5 } else { direction - 1 }
-        } else if direction == 5 {
-            0
+            direction.previous_clockwise()
         } else {
-            direction + 1
+            direction.next_clockwise()
         };
     }
     let next_tile = full_neighbor(geometry, tile, next_direction);
@@ -896,7 +901,7 @@ fn desert_ring(
                     marked += 1;
                     if spreads {
                         let logical_tile = row_start + column;
-                        for direction in [5, 3] {
+                        for direction in [HexDirection::NorthWest, HexDirection::SouthWest] {
                             let Some(neighbor) = full_neighbor(geometry, logical_tile, direction)
                             else {
                                 continue;
@@ -929,7 +934,7 @@ fn place_forest(
     rng: &mut RetailLcg,
 ) -> i32 {
     if tiles[tile].terrain_kind != PLAINS
-        || (0..6).any(|direction| {
+        || HexDirection::ALL.into_iter().any(|direction| {
             full_neighbor(geometry, tile, direction)
                 .is_some_and(|neighbor| tiles[neighbor].terrain_kind == DESERT)
         })
@@ -939,7 +944,7 @@ fn place_forest(
     tiles[tile].terrain_kind = FOREST;
     tiles[tile].gate_flag = if urgent { 15 } else { 13 };
     let mut remaining = retry_budget - 1;
-    for direction in 0..6 {
+    for direction in HexDirection::ALL {
         let neighbor = full_neighbor(geometry, tile, direction);
         // Retail always draws, then spreads when the roll hits, even if the hex
         // neighbor is off the north or south edge.
@@ -972,10 +977,10 @@ fn create_rivers(
                 break candidate;
             }
         };
-        let first_direction = (rng.next_sample_15() % 5) as usize;
+        let first_direction = sampled_river_direction(rng);
         let mut direction = first_direction;
         loop {
-            direction = if direction == 5 { 0 } else { direction + 1 };
+            direction = direction.next_clockwise();
             let mountain_neighbor = full_neighbor(geometry, tile, direction)
                 .is_some_and(|neighbor| tiles[neighbor].terrain_kind == MOUNTAIN);
             if !mountain_neighbor || direction == first_direction {
@@ -983,7 +988,7 @@ fn create_rivers(
             }
         }
         if direction != first_direction
-            && grow_river(tiles, geometry, tile, direction, 6, 0, true, rng)
+            && grow_river(tiles, geometry, tile, direction, None, 0, true, rng)
         {
             remaining -= 1;
         }
@@ -995,8 +1000,8 @@ fn grow_river(
     tiles: &mut [GeneratedTerrainTileScratch],
     geometry: MapGeometry,
     tile: usize,
-    incoming_direction: usize,
-    outgoing_direction: usize,
+    incoming_direction: HexDirection,
+    outgoing_direction: Option<HexDirection>,
     depth: i32,
     started_on_hills: bool,
     rng: &mut RetailLcg,
@@ -1013,16 +1018,22 @@ fn grow_river(
         if depth < 5 {
             return false;
         }
-        tiles[tile].river_sprite_code = outgoing_direction as u8 + 0x10;
+        tiles[tile].river_sprite_code =
+            outgoing_direction.map_or(0x16, |direction| direction.retail() + 0x10);
         return true;
     }
-    let mut opposite = outgoing_direction;
+    let mut opposite = None;
     let mut next_direction = incoming_direction;
-    if outgoing_direction < 6 {
-        opposite = (outgoing_direction + 3) % 6;
+    if let Some(outgoing_direction) = outgoing_direction {
+        opposite = Some(outgoing_direction.opposite());
         loop {
-            next_direction = (incoming_direction + 7 - (rng.next_sample_15() % 3) as usize) % 6;
-            if RIVER_CONNECTION[next_direction][opposite] != 0 {
+            next_direction = match rng.next_sample_15() % 3 {
+                0 => incoming_direction.next_clockwise(),
+                1 => incoming_direction,
+                2 => incoming_direction.previous_clockwise(),
+                _ => unreachable!(),
+            };
+            if RIVER_CONNECTION[next_direction][opposite.expect("river has an opposite")] != 0 {
                 break;
             }
         }
@@ -1035,7 +1046,7 @@ fn grow_river(
         geometry,
         neighbor,
         incoming_direction,
-        next_direction,
+        Some(next_direction),
         depth + 1,
         began_on_hills,
         rng,
@@ -1043,9 +1054,9 @@ fn grow_river(
         return false;
     }
     tiles[tile].river_sprite_code = if depth == 0 {
-        next_direction as u8 + 10
+        next_direction.retail() + 10
     } else {
-        RIVER_CONNECTION[next_direction][opposite]
+        RIVER_CONNECTION[next_direction][opposite.expect("river has an opposite")]
     };
     true
 }
@@ -1158,8 +1169,13 @@ fn generate_water_region_ids(
                     }
                     let mut radius = 0;
                     let mut ring = 1;
-                    let mut direction = 0;
-                    step_water_seed(&mut row, &mut column, 4, geometry.wraps_horizontally());
+                    let mut direction = HexDirection::NorthEast;
+                    step_water_seed(
+                        &mut row,
+                        &mut column,
+                        HexDirection::West,
+                        geometry.wraps_horizontally(),
+                    );
                     step_water_seed(
                         &mut row,
                         &mut column,
@@ -1182,14 +1198,13 @@ fn generate_water_region_ids(
                         radius += 1;
                         if ring <= radius {
                             radius = 0;
-                            direction += 1;
-                            if direction > 5 {
+                            direction = direction.next_clockwise();
+                            if direction == HexDirection::NorthEast {
                                 ring += 1;
-                                direction = 0;
                                 step_water_seed(
                                     &mut row,
                                     &mut column,
-                                    4,
+                                    HexDirection::West,
                                     geometry.wraps_horizontally(),
                                 );
                             }
@@ -1212,7 +1227,7 @@ fn generate_water_region_ids(
         let mut changed = 0;
         for tile in 0..TILE_COUNT {
             if labels[tile] == -1 {
-                for direction in 0..6 {
+                for direction in HexDirection::ALL {
                     if let Some(neighbor) = full_neighbor(geometry, tile, direction) {
                         let label = labels[neighbor];
                         if (0..0x400).contains(&label) {
@@ -1239,28 +1254,55 @@ fn generate_water_region_ids(
     }
 }
 
-fn step_water_seed(row: &mut i32, column: &mut i32, direction: i32, wraps_horizontally: bool) {
-    if direction == 4 || (direction > 2 && *row & 1 == 0) {
-        *column -= 1;
-        if *column < 0 {
-            if !wraps_horizontally {
-                return;
+fn step_water_seed(
+    row: &mut i32,
+    column: &mut i32,
+    direction: HexDirection,
+    wraps_horizontally: bool,
+) {
+    match direction {
+        HexDirection::West => {
+            *column -= 1;
+            if *column < 0 {
+                if !wraps_horizontally {
+                    return;
+                }
+                *column = 107;
             }
-            *column = 107;
         }
-    } else if direction == 1 || (direction < 3 && *row & 1 != 0) {
-        *column += 1;
-        if *column > 107 {
-            if !wraps_horizontally {
-                return;
+        HexDirection::SouthWest | HexDirection::NorthWest if *row & 1 == 0 => {
+            *column -= 1;
+            if *column < 0 {
+                if !wraps_horizontally {
+                    return;
+                }
+                *column = 107;
             }
-            *column = 0;
         }
+        HexDirection::East => {
+            *column += 1;
+            if *column > 107 {
+                if !wraps_horizontally {
+                    return;
+                }
+                *column = 0;
+            }
+        }
+        HexDirection::NorthEast | HexDirection::SouthEast if *row & 1 != 0 => {
+            *column += 1;
+            if *column > 107 {
+                if !wraps_horizontally {
+                    return;
+                }
+                *column = 0;
+            }
+        }
+        _ => {}
     }
-    if direction == 5 || direction == 0 {
-        *row -= 1;
-    } else if direction == 3 || direction == 2 {
-        *row += 1;
+    match direction {
+        HexDirection::NorthEast | HexDirection::NorthWest => *row -= 1,
+        HexDirection::SouthEast | HexDirection::SouthWest => *row += 1,
+        HexDirection::East | HexDirection::West => {}
     }
 }
 
@@ -1361,7 +1403,7 @@ fn validate_seed_candidates(
             continue;
         }
         let mut has_candidate = false;
-        for direction in 0..6 {
+        for direction in HexDirection::ALL {
             let Some(neighbor) = full_neighbor(geometry, tile_index, direction) else {
                 continue;
             };
@@ -1369,7 +1411,7 @@ fn validate_seed_candidates(
                 continue;
             }
             has_candidate = true;
-            for water_direction in 0..6 {
+            for water_direction in HexDirection::ALL {
                 if let Some(water_neighbor) = full_neighbor(geometry, neighbor, water_direction) {
                     let neighbor_class = tiles[water_neighbor].owner_nation;
                     if neighbor_class < RANDOM_MAP_CLASS_COUNT as i8 && neighbor_class != class {
@@ -1397,11 +1439,33 @@ fn keyword_matches(text: &[u8], keyword: &[u8]) -> bool {
     text.starts_with(keyword) && matches!(text.get(keyword.len()).copied().unwrap_or(0), 0 | b' ')
 }
 
-fn full_neighbor(geometry: MapGeometry, tile: usize, direction: usize) -> Option<usize> {
-    let direction = crate::HexDirection::ALL[direction];
+fn full_neighbor(geometry: MapGeometry, tile: usize, direction: HexDirection) -> Option<usize> {
     geometry
         .neighbor(TileId::new(tile as u16), direction)
         .map(|tile| usize::from(tile.get()))
+}
+
+fn sampled_hex_direction(rng: &mut RetailLcg) -> HexDirection {
+    match rng.next_sample_15() % 6 {
+        0 => HexDirection::NorthEast,
+        1 => HexDirection::East,
+        2 => HexDirection::SouthEast,
+        3 => HexDirection::SouthWest,
+        4 => HexDirection::West,
+        5 => HexDirection::NorthWest,
+        _ => unreachable!(),
+    }
+}
+
+fn sampled_river_direction(rng: &mut RetailLcg) -> HexDirection {
+    match rng.next_sample_15() % 5 {
+        0 => HexDirection::NorthEast,
+        1 => HexDirection::East,
+        2 => HexDirection::SouthEast,
+        3 => HexDirection::SouthWest,
+        4 => HexDirection::West,
+        _ => unreachable!(),
+    }
 }
 
 fn coarse_class(coarse: &CoarseMap, index: i32) -> i16 {
@@ -1413,10 +1477,10 @@ fn coarse_class(coarse: &CoarseMap, index: i32) -> i16 {
         .expect("retail coarse neighbor index is valid")
 }
 
-fn coarse_neighbor(cell: i32, direction: usize) -> i32 {
-    const EVEN: [i32; 6] = [1, 1, 1, 0, -1, 0];
-    const ODD: [i32; 6] = [0, 1, 0, -1, -1, -1];
-    const ROW: [i32; 6] = [-1, 0, 1, 1, 0, -1];
+fn coarse_neighbor(cell: i32, direction: HexDirection) -> i32 {
+    const EVEN: HexDirectionTable<i32> = HexDirectionTable::from_array([1, 1, 1, 0, -1, 0]);
+    const ODD: HexDirectionTable<i32> = HexDirectionTable::from_array([0, 1, 0, -1, -1, -1]);
+    const ROW: HexDirectionTable<i32> = HexDirectionTable::from_array([-1, 0, 1, 1, 0, -1]);
     let row = cell / 27;
     let mut column = cell % 27
         + if row & 1 == 0 {

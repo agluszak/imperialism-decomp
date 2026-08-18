@@ -367,7 +367,7 @@ pub(super) fn assign_picture_to_tile_for_rng(
         }) {
             has_land_neighbor = true;
             if map_lcg.next_sample_15() & 1 != 0 {
-                sprite_variants[index] |= 1 << direction as u8;
+                sprite_variants[index] |= direction.bit();
             }
         }
     }
@@ -429,12 +429,12 @@ pub(super) fn fresh_picture_masks(
     let mut transition_mask = 0;
     let mut coast_or_secondary_mask = 0;
     let tile = TileId::new(index as u16);
-    for (direction, neighbor) in geometry.neighbors(tile).into_iter().enumerate() {
+    for (direction, neighbor) in HexDirection::ALL.into_iter().zip(geometry.neighbors(tile)) {
         let Some(neighbor) = neighbor else {
             continue;
         };
         let neighbor = usize::from(neighbor.get());
-        let direction_bit = 1 << direction;
+        let direction_bit = direction.bit();
         if terrain == TerrainKind::Water {
             if tiles[neighbor].terrain != TerrainKind::Water {
                 coast_or_secondary_mask |= direction_bit;

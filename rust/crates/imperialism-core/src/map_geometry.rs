@@ -65,6 +65,39 @@ impl HexDirection {
         }
     }
 
+    pub(crate) const fn previous_clockwise(self) -> Self {
+        match self {
+            Self::NorthEast => Self::NorthWest,
+            Self::East => Self::NorthEast,
+            Self::SouthEast => Self::East,
+            Self::SouthWest => Self::SouthEast,
+            Self::West => Self::SouthWest,
+            Self::NorthWest => Self::West,
+        }
+    }
+
+    pub(crate) const fn retail(self) -> u8 {
+        match self {
+            Self::NorthEast => 0,
+            Self::East => 1,
+            Self::SouthEast => 2,
+            Self::SouthWest => 3,
+            Self::West => 4,
+            Self::NorthWest => 5,
+        }
+    }
+
+    pub const fn bit(self) -> u8 {
+        match self {
+            Self::NorthEast => 1,
+            Self::East => 2,
+            Self::SouthEast => 4,
+            Self::SouthWest => 8,
+            Self::West => 16,
+            Self::NorthWest => 32,
+        }
+    }
+
     pub(crate) fn from_retail(value: i32) -> Option<Self> {
         match value {
             0 => Some(Self::NorthEast),

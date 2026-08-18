@@ -299,7 +299,7 @@ impl MapMgr {
         let neighbors = self.geometry().neighbors(city_tile);
         let mut primary = None;
         let mut primary_priority = 1_i16;
-        for (direction, neighbor) in neighbors.iter().copied().enumerate() {
+        for (direction, neighbor) in HexDirection::ALL.into_iter().zip(neighbors) {
             let Some(neighbor) = neighbor else {
                 continue;
             };
@@ -315,7 +315,7 @@ impl MapMgr {
 
         let mut secondary = None;
         let mut secondary_priority = -1_i16;
-        for (direction, neighbor) in neighbors.iter().copied().enumerate() {
+        for (direction, neighbor) in HexDirection::ALL.into_iter().zip(neighbors) {
             let Some(neighbor) = neighbor else {
                 continue;
             };
