@@ -80,12 +80,14 @@ fn trade_offer_dispatch_precedes_the_offer_sheet_phase() {
     let pending = actual
         .pending_trade_offer()
         .expect("trade stop requires a pending offer");
-    let continuation = serde_json::to_value(&actual).unwrap()["continuation"]["Trade"].clone();
+    let (category_index, entry_ordinal) = actual
+        .pending_trade_offer_cursor()
+        .expect("trade stop requires an active deal cursor");
     let result = TradeBoundaryResult {
         stop: "trade_offer".to_owned(),
         phase: actual.turn().phase().retail(),
-        category_index: continuation["category_index"].as_u64().unwrap() as usize,
-        entry_ordinal: continuation["entry_ordinal"].as_u64().unwrap() as usize,
+        category_index,
+        entry_ordinal,
         buyer: pending.buyer.get(),
         seller: pending.seller.get(),
         amount: pending.amount,

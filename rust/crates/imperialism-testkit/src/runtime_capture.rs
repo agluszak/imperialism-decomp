@@ -1,7 +1,7 @@
 use anyhow::{Context, Result, bail};
 use serde::de::DeserializeOwned;
 use std::fs;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 
 pub(crate) fn repository_root() -> Result<&'static Path> {
@@ -14,6 +14,7 @@ pub(crate) fn repository_root() -> Result<&'static Path> {
 /// One native runtime invocation and the unique output directory it wrote.
 pub struct RuntimeRun {
     captures: serde_json::Value,
+    capture_dir: PathBuf,
     _output_dir: tempfile::TempDir,
 }
 
@@ -25,6 +26,10 @@ impl RuntimeRun {
             .with_context(|| format!("runtime captures.json is missing {name}"))?;
         serde_json::from_value(value.clone())
             .with_context(|| format!("decoding runtime {name} capture"))
+    }
+
+    pub fn save_backed_game_state(&self, name: &str) -> Result<imperialism_core::GameState> {
+        crate::differential::load_save_backed_capture(&self.capture_dir, &self.captures, name)
     }
 }
 
@@ -70,9 +75,14 @@ pub fn run_runtime(scenario: &str) -> Result<RuntimeRun> {
             .with_context(|| format!("reading native captures {}", captures_path.display()))?,
     )
     .with_context(|| format!("parsing native captures {}", captures_path.display()))?;
+    let capture_dir = captures_path
+        .parent()
+        .context("native captures path has no parent directory")?
+        .to_owned();
 
     Ok(RuntimeRun {
         captures,
+        capture_dir,
         _output_dir: output_dir,
     })
 }

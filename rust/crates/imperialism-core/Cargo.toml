@@ -4,6 +4,9 @@ version = "0.1.0"
 edition.workspace = true
 rust-version.workspace = true
 
+[lints]
+workspace = true
+
 [features]
 # C++ oracle integration: substep facades and map-generation traces.
 # Production gameplay must not enable this feature.

@@ -10,16 +10,16 @@ namespace {
 
 class NativeTransitionOracleCase : public RuntimeScenario {
 public:
-  bool RequiresFixture() const {
+  bool RequiresFixture() const override {
     return true;
   }
 
 protected:
-  RuntimeFlow* NavigationFlow() {
+  RuntimeFlow* NavigationFlow() override {
     return &loadGameFlow;
   }
 
-  void OnCombinedMapReady() {
+  void OnCombinedMapReady() override {
     const char* name = getenv("IMPERIALISM_NATIVE_CASE");
     if (name == 0 || name[0] == '\0') {
       FailScenario("IMPERIALISM_NATIVE_CASE is unset");

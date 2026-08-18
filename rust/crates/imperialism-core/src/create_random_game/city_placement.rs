@@ -331,7 +331,7 @@ pub(crate) fn name_units_for_nation(
         name_ordinals[unit.unit_type] = ordinal + 1;
     }
 }
-pub(super) fn english_ordinal(value: i16) -> String {
+pub(crate) fn english_ordinal(value: i16) -> String {
     let value = i32::from(value);
     let suffix = match value % 10 {
         1 if value != 11 => "st",

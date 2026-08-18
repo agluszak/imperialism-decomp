@@ -284,15 +284,31 @@ impl GameState {
 
     fn hostile_navy_vector(&self, nation: NationId, zone: OceanZoneId) -> NavyPriorityTable<f32> {
         let mut vector = NavyPriorityTable::default();
+        let baselines = navy_category_baselines(&self.technology.industry_enabled_by_slot);
         for ship in self.ships.values() {
             if ship.location != zone || !self.at_war(nation, ship.nation) {
                 continue;
             }
-            accumulate_ship_categories(
-                ship,
-                &mut vector,
-                &self.technology.industry_enabled_by_slot,
-            );
+            let max_strength = ship_stock_cap(ship.ship_type);
+            let scale = if max_strength == 0 {
+                0.0
+            } else {
+                f32::from(ship.strength / max_strength)
+            };
+            vector[NavyPriorityComponent::Resolve] +=
+                ship_priority_contribution(ship, NavyPriorityComponent::Resolve, &baselines) as f32
+                    * scale;
+            vector[NavyPriorityComponent::Strength] +=
+                ship_priority_contribution(ship, NavyPriorityComponent::Strength, &baselines)
+                    as f32
+                    * scale;
+            vector[NavyPriorityComponent::Descriptor] +=
+                ship_priority_contribution(ship, NavyPriorityComponent::Descriptor, &baselines)
+                    as f32
+                    * scale;
+            vector[NavyPriorityComponent::Industry] +=
+                ship_priority_contribution(ship, NavyPriorityComponent::Industry, &baselines)
+                    as f32;
         }
         vector
     }
@@ -369,7 +385,7 @@ mod tests {
     }
 
     #[test]
-    fn damaged_hostile_frigate_scales_control_sea_needs_by_float_strength_ratio() {
+    fn damaged_hostile_frigate_uses_retail_integer_strength_ratio() {
         let mut state = game_state();
         let nation = NationId::new(0);
         let hostile = NationId::new(1);
@@ -417,9 +433,6 @@ mod tests {
             panic!("expected a control-sea mission");
         };
         let empty_zone = [40.0_f32, 40.0, 20.0, 0.0].map(|weight| weight.to_bits());
-        assert_ne!(
-            navy.required_equipage_bits, empty_zone,
-            "integer strength/max_strength would treat 899/900 as 0.0 and keep the empty-zone needs"
-        );
+        assert_eq!(navy.required_equipage_bits, empty_zone);
     }
 }

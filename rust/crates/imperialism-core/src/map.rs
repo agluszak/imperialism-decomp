@@ -535,8 +535,6 @@ pub struct TileState {
     pub recruit_search_visited: u8,
     /// Retail `TTerrainStateRecord::perTileVisitedFlag0f`.
     pub per_tile_visited: i8,
-    /// Retail `TTerrainStateRecord::markerSlotIndex10`.
-    pub marker_slot_index: i8,
     /// Retail `TTerrainStateRecord::tileActionOrdinal1a`.
     pub tile_action_ordinal: i16,
     pub development: TileDevelopment,
@@ -921,7 +919,6 @@ impl Default for TileState {
             gate: 0,
             recruit_search_visited: 0,
             per_tile_visited: 0,
-            marker_slot_index: -1,
             tile_action_ordinal: -1,
             development: TileDevelopment::default(),
             edge_resources: [None; 2],

@@ -14,7 +14,7 @@ mod tests;
 
 use city_placement::*;
 pub(crate) use city_placement::{
-    calculate_city_resources, name_units_for_nation, resource_capability_level,
+    calculate_city_resources, english_ordinal, resource_capability_level,
     resource_capability_requirement_level,
 };
 use map_post_pass::*;
@@ -241,13 +241,13 @@ pub fn create_random_game(
         names,
     );
     let mut pending = PendingWorkState::default();
-    pending.queue_newspaper_event(PendingNewspaperEvent::TechnologyDiscovery {
+    pending.queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
         audience: None,
-        technology: Technology::HighPressureSteamEngine,
+        story_code: Technology::HighPressureSteamEngine as i32,
     });
-    pending.queue_newspaper_event(PendingNewspaperEvent::TechnologyDiscovery {
+    pending.queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
         audience: None,
-        technology: Technology::SeedDrill,
+        story_code: Technology::SeedDrill as i32,
     });
 
     GameState {

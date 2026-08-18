@@ -88,6 +88,7 @@ RuntimeActionResult RunNavyCreateForce(NativeTransition& transition) {
   if (force == 0) {
     return RuntimeActionResult::Failure("CreateTaskForceFromNavyOrdersForNationIfEligible returned null");
   }
+  force->defeated = 0;
   force->SubmitOrders(9, 0);
   return transition.Finish();
 }
@@ -176,6 +177,7 @@ RuntimeActionResult RunNavySubmitOrder(NativeTransition& transition) {
   if (force == 0) {
     return RuntimeActionResult::Failure("CreateTaskForceFromNavyOrdersForNationIfEligible returned null");
   }
+  force->defeated = 0;
   force->SubmitOrders(9, 0);
   return transition.Finish();
 }

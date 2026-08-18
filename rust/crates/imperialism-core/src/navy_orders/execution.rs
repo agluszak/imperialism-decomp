@@ -90,6 +90,19 @@ impl GameState {
                 *selected = false;
             }
         }
+        if selection == NavyMissionSelection::AssembleAtPort
+            && port.is_none()
+            && let Some(target) = target
+        {
+            port = if matches!(self.missions[&mission].data, MissionData::ControlSeaZone(_)) {
+                self.control_sea_port_zone(target, nation)
+            } else {
+                self.safest_nearby_zone(target, nation)
+            };
+            if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
+                navy.resolved_port_zone = port;
+            }
+        }
         if ships.is_empty() {
             return;
         }
@@ -116,14 +129,6 @@ impl GameState {
                 }
             }
             NavyMissionSelection::AssembleAtPort => {
-                if port.is_none()
-                    && let Some(target) = target
-                {
-                    port = self.safest_nearby_zone(target, nation);
-                    if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
-                        navy.resolved_port_zone = port;
-                    }
-                }
                 if let Some(port) = port {
                     self.consolidate_mission_ships_to(&ships, port);
                     let force = self.combine_force_at(mission, nation, &ships, port);
@@ -136,6 +141,17 @@ impl GameState {
                     }
                 }
             }
+        }
+    }
+
+    /// `TControlSeaZoneMission::RefreshMissionPortZoneContextForNation` reuses the
+    /// nation's first port when its cached primary context is this target.
+    fn control_sea_port_zone(&self, target: OceanZoneId, nation: NationId) -> Option<OceanZoneId> {
+        let home = self.first_port_zone_for_nation(nation)?;
+        if self.zone(home).primary_neighbors.first().copied() == Some(target) {
+            Some(home)
+        } else {
+            self.safest_nearby_zone(target, nation)
         }
     }
 
@@ -296,7 +312,7 @@ impl GameState {
             .order = order;
     }
 
-    #[cfg(test)]
+    #[cfg(any(test, feature = "oracle"))]
     pub(crate) fn carry_out_navy_orders(&mut self) -> Option<NavyOrdersContinuation> {
         self.carry_out_navy_orders_with_tactical_battles(true)
     }

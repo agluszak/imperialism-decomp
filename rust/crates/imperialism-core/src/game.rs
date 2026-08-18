@@ -64,7 +64,7 @@ pub struct GameStateParts {
 impl GameState {
     /// Assembles authoritative state from loader-built parts.
     pub fn from_parts(parts: GameStateParts) -> Self {
-        Self {
+        let mut state = Self {
             turn: parts.turn,
             unit_ids: parts.unit_ids,
             map: parts.map,
@@ -86,7 +86,13 @@ impl GameState {
             pending: parts.pending,
             battle_reports: parts.battle_reports,
             continuation: parts.continuation,
+        };
+        for force in state.task_forces.keys().copied().collect::<Vec<_>>() {
+            if state.task_forces[&force].flagship.is_none() {
+                state.elect_task_force_flagship(force);
+            }
         }
+        state
     }
 
     pub const fn turn(&self) -> &TurnState {

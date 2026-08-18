@@ -9,6 +9,41 @@ use crate::tactical_tables::*;
 use crate::*;
 use enum_map::{Enum, EnumMap};
 
+const TACTICAL_TERRAIN: [&str; 4] = [
+    concat!(
+        "333433333333333333333333333333300000033443333333333343333333133330000440000333333000044",
+        "333333333300440003333333111043333133333300000333003333333000033100000000001110000000000",
+        "000000100000000000000000000000010000000000000000000000000000000011010000000000000000000",
+        "000000011100000000000000001000000000000000400000000000001000000000000004000000000000000",
+        "000100000000100000000000000000001100044000000000000000000000000000040000000000000000000",
+        "000000000000000"
+    ),
+    concat!(
+        "100000000000000000000111111111110000000011100000000001111111100000000000100000000211111",
+        "111001000000000000000022111111111001000001000000000022011111111000100011000000002220000",
+        "111111100000000000000020000000011111000000000000110200000001111111000000000000002200000",
+        "010111111000000000000222100000001111111000001000000222000100440011111000000001000000000",
+        "000400001111000000000000000010110000001111110110011100001110000000011111110011111110010",
+        "110101111101111"
+    ),
+    concat!(
+        "000000000000400100000000000001000000000000001100000000000011110000001000011000000000000",
+        "000000000000000100000000000004001000000004400100044000000000001000010004401010444000000",
+        "000011040011000000010444044000000011000000000000010000000000000111100000000001000000000",
+        "000000011100100000000000000110000000011110001100000000000010000000000111111000000004400",
+        "000000000000111111110110000000410000000000111111110001000444144000040001111111111100011",
+        "111110000100111"
+    ),
+    concat!(
+        "041111140444414400444440440440011111404004000001000000001100001414404000000000000000000",
+        "000001100000000000000040000000000000000000400000004000000000000000000044000000000000000",
+        "010000410000040000000040004000000000414000044000100004000000001100114000000000444000000",
+        "000000011040004000004000000000000000000440004000000140010000000000000400000000000014004",
+        "001001100000040000011000000004000000000000440110000000400004000400000011100000000001110",
+        "000001110000011"
+    ),
+];
+
 #[derive(Clone, Copy, Eq, PartialEq)]
 enum TacticalUnitState {
     Ready,
@@ -272,7 +307,7 @@ impl Battle {
             }
         }
         this.column_count = max_range + 11;
-        this.load_setup();
+        this.load_setup(composition);
         this
     }
 
@@ -309,7 +344,7 @@ impl Battle {
         self.sides[side].units.push(idx);
     }
 
-    fn load_setup(&mut self) {
+    fn load_setup(&mut self, composition: i32) {
         for tile in &mut self.tiles {
             *tile = Tile {
                 terrain: TacticalTerrain::Class0,
@@ -318,6 +353,26 @@ impl Battle {
                 mine_run: MineRun::None,
                 trench_mask: 0,
             };
+        }
+        let terrain = TACTICAL_TERRAIN[composition as usize].as_bytes();
+        let margin = (TACTICAL_STRIDE - self.column_count) as usize;
+        for row in 0..TACTICAL_ROWS as usize {
+            for column in 0..self.column_count as usize {
+                let source_column = margin + column;
+                let terrain = if self.fort_level != FortLevel::None && source_column > 23 {
+                    b'0'
+                } else {
+                    terrain[row * (TACTICAL_STRIDE as usize + 1) + source_column]
+                };
+                self.tiles[row * TACTICAL_STRIDE as usize + column].terrain = match terrain {
+                    b'0' => TacticalTerrain::Class0,
+                    b'1' => TacticalTerrain::Class1,
+                    b'2' => TacticalTerrain::Class2,
+                    b'3' => TacticalTerrain::Class3,
+                    b'4' => TacticalTerrain::Impassable,
+                    _ => unreachable!("retail tactical terrain uses classes 0 through 4"),
+                };
+            }
         }
         let (wall, points) = match self.fort_level {
             FortLevel::None => return,
@@ -2085,6 +2140,9 @@ impl Battle {
                         {
                             blocked = true;
                         }
+                        // The retail code mistakenly checks East for directions 0..4,
+                        // and NorthEast only for direction 5, rather than the next
+                        // clockwise neighbor.
                         let next_neighbor = neighbors[retail_second_flank_direction(direction)];
                         if next_neighbor != -1
                             && let Some(next) = self.tiles[next_neighbor as usize].occupant
@@ -2544,6 +2602,7 @@ impl Battle {
         }
         let morale_damage = leader * damage;
         self.apply_damage(defender, damage as i32, morale_damage as i32);
+        self.units[attacker].selected = false;
         self.sides[defender_side].field20 = false;
     }
 
@@ -2564,9 +2623,6 @@ impl Battle {
                 self.tiles[tile as usize].occupant = None;
             }
             self.units[target].tile = -1;
-        }
-        if let Some(selected) = self.selected {
-            self.units[selected].selected = false;
         }
         self.evaluate_outcome();
     }

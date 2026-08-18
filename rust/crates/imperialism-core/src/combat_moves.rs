@@ -1018,15 +1018,21 @@ mod tests {
             (attacker_strength, defender_strength),
             "ApplyChanges must write tactical strengths before post-battle"
         );
-        assert_eq!(state.military_units.keys().next().copied(), Some(attacker));
-        assert_eq!(state.military_units.keys().nth(2).copied(), Some(mover));
+        assert!(state.military_units.contains_key(&attacker));
+        assert!(state.military_units.contains_key(&mover));
         assert_eq!(
-            state.military_units[2].stationed_province,
+            state.military_units[&mover].stationed_province,
             Some(ProvinceId::new(4))
         );
         assert!(state.pending_land_battle().is_none());
-        let attacker_xp = state.military_units[0].experience;
-        let defender_xp = state.military_units[1].experience;
+        let attacker_xp = state
+            .military_units
+            .get(&attacker)
+            .map_or(0, |unit| unit.experience);
+        let defender_xp = state
+            .military_units
+            .get(&_defender)
+            .map_or(0, |unit| unit.experience);
         assert!(
             attacker_xp == EXPERIENCE_WINNER && defender_xp == EXPERIENCE_LOSER
                 || attacker_xp == EXPERIENCE_LOSER && defender_xp == EXPERIENCE_WINNER

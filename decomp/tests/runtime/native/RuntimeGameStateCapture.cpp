@@ -3077,7 +3077,7 @@ bool CaptureGameState(RuntimeRun& run, const char* name) {
 }
 
 bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
-  if (state == 0 || g_pSimMgr == 0) {
+  if (state == 0 || g_pSimMgr == 0 || g_pDiplomacyTurnStateManager == 0) {
     return false;
   }
 
@@ -3087,6 +3087,8 @@ bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("rng", CaptureRng());
   object.Set("news", CaptureNews());
   object.Set("pending", CapturePending());
+  SetOptionalMajorNation(object, "last_processed_nation",
+                         g_pDiplomacyTurnStateManager->lastProcessedNationSlot);
   *state = object.Release();
   return true;
 }

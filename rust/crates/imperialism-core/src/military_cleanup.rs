@@ -265,7 +265,12 @@ impl GameState {
                 .iter()
                 .filter_map(|(&id, mission)| {
                     (mission.nation == nation.nation()
-                        && matches!(mission.data, MissionData::ControlSeaZone(_)))
+                        && matches!(
+                            mission.data,
+                            MissionData::ControlSeaZone(_)
+                                | MissionData::Escort(_)
+                                | MissionData::ScatteredShips(_)
+                        ))
                     .then_some(id)
                 })
                 .collect();

@@ -26,6 +26,8 @@
 #include "game/nation/TGreatPower_internal.h"
 #include "game/nation_domain_types.h"
 #include "game/navy/TShip.h"
+#include "game/navy/TNavyMgr.h"
+#include "game/navy/TOcean.h"
 #include "game/navy/TTaskForce.h"
 #include "game/tactical/TArmyBattle.h"
 #include "game/ui_core/CIterator.h"
@@ -492,12 +494,7 @@ RuntimeActionResult RunMilitaryPhaseNavalEncounter(NativeTransition& transition)
   JsonObject battle;
   battle.Set("attacker", attackerIndex);
   battle.Set("defender", defenderIndex);
-  JsonObject continuation;
-  continuation.Set("pass", 0);
-  continuation.Set("outer", attackerIndex);
-  continuation.Set("inner", defenderIndex + 1);
-  continuation.Set("battle", battle.Release());
-  return transition.Finish(continuation.Release());
+  return transition.Finish(battle.Release());
 }
 
 RuntimeActionResult RunAdvisoryMapMissionsCase16(NativeTransition& transition) {

@@ -236,6 +236,7 @@ impl GameState {
             return false;
         }
         self.create_task_force_ingot(force);
+        self.refresh_task_force_zone_focus(force);
         true
     }
 
@@ -300,8 +301,28 @@ impl GameState {
     }
 
     pub fn cancel_task_force(&mut self, force: TaskForceId) {
+        let context = self.task_force(force).and_then(|entry| {
+            let zone = entry.location;
+            let target = self
+                .ocean
+                .zones
+                .get(usize::from(zone.get()))?
+                .zone()
+                .target_tile;
+            Some((zone, entry.nation, target))
+        });
         self.destroy_task_force_ingot(force);
         self.free_task_force(force);
+        if let Some((zone, nation, target)) = context {
+            self.refresh_zone_focus(zone, nation);
+            if let Some(target) = target {
+                self.center_map_on(target);
+            }
+        }
+        self.map.recruit_search_active = false;
+        for tile in self.map.tiles.iter_mut() {
+            tile.recruit_search_visited = 0;
+        }
     }
 
     /// `TNavyMgr::FreeShipsOf` (0x00556f60): cancel every queued force for `nation`.
@@ -789,6 +810,51 @@ impl GameState {
             entry.ingot_tile = tile.get() as i16;
         }
         self.map[tile].action = TileAction::try_from_retail(marker);
+    }
+
+    /// `TOcean::FinalizeQueuedMapOrderEntry` / `TZone::ShowFocusIngot`.
+    fn refresh_task_force_zone_focus(&mut self, force: TaskForceId) {
+        let Some((zone, nation)) = self
+            .task_force(force)
+            .map(|entry| (entry.location, entry.nation))
+        else {
+            return;
+        };
+        self.refresh_zone_focus(zone, nation);
+    }
+
+    pub(crate) fn refresh_zone_focus(&mut self, zone: OceanZoneId, nation: NationId) {
+        let has_loose_ship = self.ships.iter().any(|(&ship_id, ship)| {
+            ship.location == zone
+                && ship.nation == nation
+                && self.task_force_of_ship(ship_id).is_none()
+        });
+        let Some(zone) = self.ocean.zones.get(usize::from(zone.get())) else {
+            return;
+        };
+        let Some(active_tile) = zone.zone().active_tile else {
+            return;
+        };
+        let currently_shown = self.map[active_tile]
+            .action
+            .is_some_and(|action| action.retail() >= 0);
+        if currently_shown == has_loose_ship {
+            return;
+        }
+        let sign = if has_loose_ship { 1 } else { -1 };
+        if matches!(zone, ZoneKind::PortZone(_)) {
+            self.map[active_tile].action = TileAction::try_from_retail(sign * 14);
+            return;
+        }
+        self.map[active_tile].action = TileAction::try_from_retail(sign * 16);
+        let geometry = self.map.geometry();
+        let Some(north_west) = geometry.neighbor(active_tile, HexDirection::NorthWest) else {
+            return;
+        };
+        self.map[north_west].action = TileAction::try_from_retail(sign * 18);
+        if let Some(north_east) = geometry.neighbor(north_west, HexDirection::NorthEast) {
+            self.map[north_east].action = TileAction::try_from_retail(sign * 20);
+        }
     }
 
     /// `TTaskForce::DestroyIngot` (0x005564f0).

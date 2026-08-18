@@ -4,7 +4,7 @@ use crate::{
     TradeProgress,
 };
 use enum_map::{Enum, EnumMap};
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum CinematicKind {
@@ -28,6 +28,26 @@ pub enum Decade {
 }
 
 pub type DecadeTable<T> = EnumMap<Decade, T>;
+
+fn serialize_decade_table<S>(table: &DecadeTable<bool>, serializer: S) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    table
+        .values()
+        .map(|&value| u8::from(value))
+        .collect::<Vec<_>>()
+        .serialize(serializer)
+}
+
+fn deserialize_decade_table<'de, D>(deserializer: D) -> Result<DecadeTable<bool>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    Ok(EnumMap::from_array(
+        <[u8; 10]>::deserialize(deserializer)?.map(|value| value != 0),
+    ))
+}
 
 impl Decade {
     pub const fn for_economic_turn(turn: i32) -> Option<Self> {
@@ -59,6 +79,10 @@ pub struct TurnState {
     /// Persisted turn-flow status bits consumed by the alert and technology phases.
     pub turn_flow_status_flags: u32,
     /// Retail's decade-boundary presentation state, keyed by `economic_turn / 40`.
+    #[serde(
+        serialize_with = "serialize_decade_table",
+        deserialize_with = "deserialize_decade_table"
+    )]
     pub quarter_gate_by_decade: DecadeTable<bool>,
     pub difficulty: Difficulty,
     pub active_nation: NationId,

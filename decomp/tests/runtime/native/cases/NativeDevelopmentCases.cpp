@@ -2,12 +2,14 @@
 #include "JsonObject.h"
 
 #include "game/civilian_domain_types.h"
+#include "game/city/TTown.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
 #include "game/military/TCivUnit.h"
 #include "game/nation/TGreatPower.h"
 #include "game/strategic_terrain.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/ui_core/TSortedList.h"
 #include "game/unit_domain_types.h"
 
 namespace {
@@ -356,11 +358,27 @@ RuntimeActionResult RunCiviliansPhase(NativeTransition& transition) {
   portEngineer->SetOrders(kUnitOrderBuildPort, portTile);
   portEngineer->remainingTurns24 = 1;
 
+  int townCountsBefore[7];
+  for (int slot = 0; slot < 7; ++slot) {
+    townCountsBefore[slot] = g_apNationStates[slot]->townMarkerList->GetCount();
+  }
+
   RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {
     return started;
   }
 
   g_pSimMgr->DoCivilians();
+
+  // TTown::ITown leaves this serialized byte uninitialized. Normalize only
+  // markers created by this action to the semantic default used by the Rust
+  // state; existing marker state remains part of the differential.
+  for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
+    TSortedList* towns = g_apNationStates[nationIndex]->townMarkerList;
+    for (int ordinal = townCountsBefore[nationIndex] + 1; ordinal <= towns->GetCount();
+         ++ordinal) {
+      static_cast<TTown*>(towns->GetEntryByOrdinal(ordinal))->hasAdjacentCity = 0;
+    }
+  }
   return transition.Finish();
 }

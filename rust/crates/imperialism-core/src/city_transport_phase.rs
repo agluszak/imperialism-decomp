@@ -138,6 +138,7 @@ impl GameState {
         let unit_kind =
             self.technology.selected_capability_slots[nation][ArmyUnitCategory::Generals];
         let id = self.unit_ids.next_military();
+        let name = crate::generate_english_random_setup_name(&mut self.rng.zone_status);
         let unit = MilitaryUnitState {
             nation: nation_id,
             unit_type: unit_kind,
@@ -146,7 +147,7 @@ impl GameState {
             owner_nation: nation_id,
             roster_id: 0,
             registered: true,
-            name: String::new(),
+            name,
             strength: 500,
             era: unit_kind.spawn_era(),
             experience: 0,
@@ -423,7 +424,8 @@ impl GameState {
             let location = self
                 .first_port_zone_for_nation(nation_id)
                 .expect("navy-growth pending requires a port zone for the nation");
-            Some(self.insert_ship(ShipState {
+            let _ = crate::generate_english_random_setup_name(&mut self.rng.zone_status);
+            let ship = self.insert_ship(ShipState {
                 ship_type,
                 location,
                 aggression: NavalAggression::Balanced,
@@ -432,7 +434,9 @@ impl GameState {
                 strength: crate::city::ship_stock_cap(ship_type),
                 experience: 0,
                 selection: ShipSelection::Available,
-            }))
+            });
+            self.refresh_zone_focus(location, nation_id);
+            Some(ship)
         } else {
             None
         };
@@ -440,6 +444,7 @@ impl GameState {
         let count = &mut self.nations.city_mut(nation).ship_order_count_by_type[ship_type];
         *count = count.wrapping_add(1);
 
+        let _ = crate::generate_english_random_setup_name(&mut self.rng.zone_status);
         let admiral = self.object_ids.admiral();
         self.admirals.insert(
             admiral,

@@ -210,6 +210,18 @@ impl GameState {
         }
     }
 
+    pub fn pending_trade_offer_cursor(&self) -> Option<(usize, usize)> {
+        let crate::turn_flow::TurnContinuation::Trade(session) = &self.continuation else {
+            return None;
+        };
+        let category = session.category?;
+        let category_index = DEAL_CATEGORY_ORDER
+            .iter()
+            .position(|&candidate| candidate == category)
+            .expect("active trade commodity belongs to the retail deal order");
+        Some((category_index, session.entry_ordinal))
+    }
+
     fn continue_trade_deals(&mut self, session: &mut TradeSession) -> TradeProgress {
         let mut blocked = false;
         while let Some(commodity) = session.category {

@@ -405,6 +405,59 @@ fn admiral_states(
         .collect()
 }
 
+fn task_force_states(
+    navy: &LegacyNavyState,
+    ship_ids: &[ShipId],
+    object_ids: &mut ObjectIdAllocator,
+) -> IndexMap<TaskForceId, TaskForceState> {
+    navy.task_forces
+        .iter()
+        .rev()
+        .filter_map(|force| {
+            let ships = force
+                .ships
+                .iter()
+                .map(|pair| {
+                    let ship = ship_ids
+                        .get(usize::try_from(pair[0]).expect("retail ship ordinal is non-negative"))
+                        .copied()
+                        .expect("task-force ship ordinal is in the primary ship list");
+                    (ship, pair[1] != 0)
+                })
+                .collect::<IndexMap<_, _>>();
+            if ships.is_empty() {
+                return None;
+            }
+            let order = TaskForceOrder::from_retail(force.order);
+            let target = if order == TaskForceOrder::Marines {
+                TaskForceTarget::Province(
+                    optional_province_id(force.target_ordinal)
+                        .expect("retail marines order has a province target"),
+                )
+            } else {
+                optional_ocean_zone_id(force.target_ordinal)
+                    .map(TaskForceTarget::Zone)
+                    .unwrap_or(TaskForceTarget::None)
+            };
+            Some((
+                object_ids.task_force(),
+                TaskForceState::from_parts(
+                    NavalAggression::from_retail(force.aggression)
+                        .expect("retail task-force aggression is in 0..=2"),
+                    order,
+                    target,
+                    optional_ocean_zone_id(force.location_ordinal)
+                        .expect("retail task force has a location"),
+                    nation_id_from_retail_i16(force.nation),
+                    force.defeated != 0,
+                    force.ingot_tile,
+                    ships,
+                ),
+            ))
+        })
+        .collect()
+}
+
 fn production_progress(order: &LegacyProductionOrder) -> ProductionProgress {
     ProductionProgress {
         quantity: order.quantity,
@@ -563,7 +616,6 @@ impl LegacyTerrainTile {
             gate: self.gate,
             recruit_search_visited: self.recruit_search_visited,
             per_tile_visited: self.per_tile_visited,
-            marker_slot_index: self.marker_slot_index,
             tile_action_ordinal: self.tile_action_ordinal,
             development: TileDevelopment {
                 surface: DevelopmentLevel::new((self.development_classes as u8) & 0x0f),
@@ -790,15 +842,11 @@ impl LegacySaveV62 {
     /// Projects persistable save fields into construction parts. Runtime-only RNG and
     /// selection state must be supplied because the retail stream does not contain them.
     pub fn game_state_parts(&self, context: LegacyGameStateContext) -> GameStateParts {
-        assert!(
-            self.navy.task_forces.is_empty(),
-            "semantic projection of retail navy task forces is not implemented"
-        );
-
         let mut object_ids = ObjectIdAllocator::default();
         let ships = ship_states(&self.navy, &mut object_ids);
         let ship_ids = ships.keys().rev().copied().collect::<Vec<_>>();
         let admirals = admiral_states(&self.navy, &ship_ids, &mut object_ids);
+        let task_forces = task_force_states(&self.navy, &ship_ids, &mut object_ids);
 
         let mut minors = IndexMap::new();
         let mut military_units = IndexMap::new();
@@ -947,7 +995,7 @@ impl LegacySaveV62 {
             object_ids,
             ships,
             admirals,
-            task_forces: IndexMap::new(),
+            task_forces,
             missions,
             news: NewsState::default(),
             pending,
