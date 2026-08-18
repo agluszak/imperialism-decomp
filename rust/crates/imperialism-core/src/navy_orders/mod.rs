@@ -270,12 +270,12 @@ impl GameState {
             if self.is_port_zone(neighbor) && !self.port_owned_by(neighbor, nation) {
                 continue;
             }
-            let mut wars = 0;
-            for ship in self.ships.values() {
-                if ship.location == neighbor && self.at_war(nation, ship.nation) {
-                    wars += 1;
-                }
-            }
+            let mask = self.zone_nation_key_mask(neighbor);
+            let wars = MajorNationId::all()
+                .filter(|other| {
+                    mask & (1 << other.get()) != 0 && self.at_war(nation, other.nation())
+                })
+                .count() as i32;
             if wars > best_wars {
                 best_wars = wars;
                 best = Some(neighbor);

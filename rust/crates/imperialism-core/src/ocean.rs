@@ -113,7 +113,8 @@ impl GameState {
         const ACTION_STATE_PORT_ZONE_MARKER: i16 = -14;
         const SEA_OWNER_BIAS: u8 = 0x17;
         const PORT_ZONE_STATUS_CATEGORY: i16 = 5;
-        const PORT_ZONE_HEADLINES: [&str; 4] = ["[1] Bay", "[1] Gulf", "Bay of [1]", "Gulf of [1]"];
+        const PORT_ZONE_HEADLINES: [&str; 4] =
+            ["Port of [1]", "Port of [1]", "Port [1]", "Port [1]"];
 
         if !self.map[tile].flags.has_base_transport() {
             return;

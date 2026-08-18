@@ -90,6 +90,15 @@ impl GameState {
                 *selected = false;
             }
         }
+        if selection == NavyMissionSelection::AssembleAtPort
+            && port.is_none()
+            && let Some(target) = target
+        {
+            port = self.safest_nearby_zone(target, nation);
+            if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
+                navy.resolved_port_zone = port;
+            }
+        }
         if ships.is_empty() {
             return;
         }
@@ -116,14 +125,6 @@ impl GameState {
                 }
             }
             NavyMissionSelection::AssembleAtPort => {
-                if port.is_none()
-                    && let Some(target) = target
-                {
-                    port = self.safest_nearby_zone(target, nation);
-                    if let Some(navy) = navy_state_mut(&mut self.missions[&mission].data) {
-                        navy.resolved_port_zone = port;
-                    }
-                }
                 if let Some(port) = port {
                     self.consolidate_mission_ships_to(&ships, port);
                     let force = self.combine_force_at(mission, nation, &ships, port);
