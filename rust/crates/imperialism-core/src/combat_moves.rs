@@ -1,11 +1,16 @@
 //! Combat-movement phase (`TArmyMgr::DoCombatMoves`) without tactical battle UI.
 
-use crate::military_phase::{combat_class, tactical_category};
+use crate::military_phase::{strategic_combat_class, tactical_category};
 use crate::*;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
-const STACK_COMPOSITION: [i16; 16] = [0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 3, 0, 0, 3, 4, 5];
+const STACK_COMPOSITION: StrategicCombatClassTable<StrategicCombatClassTable<i16>> =
+    StrategicCombatClassTable::from_array([
+        StrategicCombatClassTable::from_array([1, 0, 0]),
+        StrategicCombatClassTable::from_array([2, 3, 0]),
+        StrategicCombatClassTable::from_array([3, 4, 5]),
+    ]);
 const EXPERIENCE_WINNER: i16 = 0x23;
 const EXPERIENCE_LOSER: i16 = 0x14;
 const EXPERIENCE_CAP: i16 = 0x190;
@@ -211,18 +216,18 @@ impl GameState {
         stacks.reverse();
 
         for stack in &mut stacks {
-            let mut min_class = 3_i16;
-            let mut max_class = 1_i16;
+            let mut min_class = StrategicCombatClass::Third;
+            let mut max_class = StrategicCombatClass::First;
             for &id in &stack.units {
                 let unit = self
                     .military_units
                     .get(&id)
                     .expect("formed stacks only contain live units");
-                let class = combat_class(unit.unit_type);
+                let class = strategic_combat_class(unit.unit_type);
                 min_class = min_class.min(class);
                 max_class = max_class.max(class);
             }
-            let composition = STACK_COMPOSITION[(min_class + max_class * 4) as usize];
+            let composition = STACK_COMPOSITION[max_class][min_class];
             let roll = self.rng.next_crt_rand();
             stack.sort_key = (composition << 8) + (roll & 0xff) as i16;
         }

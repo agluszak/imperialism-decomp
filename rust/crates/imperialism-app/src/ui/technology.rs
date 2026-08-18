@@ -87,8 +87,8 @@ fn project_technology_advance(
     let picture = assets
         .picture(picture_id)
         .expect("technology status picture must load");
-    let status = get_string(&assets, 0x2712, i16::from(tech as u8));
-    let prefix = get_string(&assets, 0x274e, i16::from(tech as u8) - 1);
+    let status = get_string(&assets, 0x2712, i16::from(tech.retail()));
+    let prefix = get_string(&assets, 0x274e, i16::from(tech.retail()) - 1);
     let body = format!("{status}\n\n{prefix}");
     for (display, mut image) in &mut pictures {
         if matches!(*display, TechnologyAdvanceDisplay::Picture) {

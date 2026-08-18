@@ -762,7 +762,16 @@ impl TerrainKind {
     }
 
     pub const fn retail(self) -> i8 {
-        self as i8
+        match self {
+            Self::Plains => 0,
+            Self::Forest => 1,
+            Self::Hills => 2,
+            Self::Mountain => 3,
+            Self::Swamp => 4,
+            Self::Water => 5,
+            Self::Desert => 6,
+            Self::Farmland => 7,
+        }
     }
 }
 

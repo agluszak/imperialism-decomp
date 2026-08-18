@@ -83,6 +83,25 @@ pub enum ShipType {
 impl ShipType {
     pub const LENGTH: usize = enum_map::enum_len::<Self>();
 
+    pub const fn retail(self) -> u8 {
+        match self {
+            Self::NoShip => 0,
+            Self::Trader => 1,
+            Self::Indiaman => 2,
+            Self::Frigate => 3,
+            Self::ShipOfTheLine => 4,
+            Self::Paddlewheeler => 5,
+            Self::Clipper => 6,
+            Self::Raider => 7,
+            Self::Ironclad => 8,
+            Self::AdvancedIronclad => 9,
+            Self::Freighter => 10,
+            Self::ArmoredCruiser => 11,
+            Self::Dreadnought => 12,
+            Self::Battlecruiser => 13,
+        }
+    }
+
     pub fn from_index(index: u8) -> Option<Self> {
         (usize::from(index) < Self::LENGTH).then(|| Self::from_usize(usize::from(index)))
     }
@@ -261,6 +280,24 @@ pub enum PendingActionKind {
 }
 impl PendingActionKind {
     pub const LENGTH: usize = enum_map::enum_len::<Self>();
+
+    pub const fn retail(self) -> u8 {
+        match self {
+            Self::NavyGrowthReward => 0,
+            Self::ArmyGrowthReward => 1,
+            Self::OverseasDeveloperReward => 2,
+            Self::VillageDevelopment => 3,
+            Self::TownDevelopment => 4,
+            Self::ShipyardIronworkingUpgrade => 5,
+            Self::ConqueredCapitalArmoryUpgrade => 6,
+            Self::UniversityExpansion => 7,
+            Self::RailyardExpansion => 8,
+            Self::AnnexedGreatPowerCapitalExpansion => 9,
+            Self::ColonyMonumentMerchantCapacity => 10,
+            Self::CouncilLeadMonument => 11,
+            Self::ConquestMonumentArmory => 12,
+        }
+    }
 }
 pub const PENDING_ACTION_COUNT: usize = PendingActionKind::LENGTH;
 pub type PendingActionTable<T> = EnumMap<PendingActionKind, T>;

@@ -299,7 +299,7 @@ impl GameState {
             insert_sorted(
                 &mut prices,
                 (
-                    ResourceKind::Oil as i16,
+                    i16::from(ResourceKind::Oil.retail()),
                     self.city_stock(nation, ResourceKind::Oil),
                 ),
                 compare_by_price,
@@ -363,7 +363,7 @@ impl GameState {
             insert_sorted(
                 &mut prices,
                 (
-                    ResourceKind::Oil as i16,
+                    i16::from(ResourceKind::Oil.retail()),
                     self.market.rows[TradeCommodity::Oil].price as i16 - 15,
                 ),
                 compare_by_price,

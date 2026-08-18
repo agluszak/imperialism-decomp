@@ -88,7 +88,22 @@ impl IndustryCapabilitySlot {
     }
 
     pub const fn retail(self) -> u8 {
-        self as u8
+        match self {
+            Self::TextileMill => 0,
+            Self::ClothingFactory => 1,
+            Self::SteelMill => 2,
+            Self::Metalworks => 3,
+            Self::LumberMill => 4,
+            Self::FurnitureFactory => 5,
+            Self::OilRefinery => 6,
+            Self::Shipyard => 7,
+            Self::Armory => 8,
+            Self::TradeSchool => 9,
+            Self::University => 10,
+            Self::PowerPlant => 11,
+            Self::FoodProcessing => 12,
+            Self::Warehouse => 13,
+        }
     }
 }
 

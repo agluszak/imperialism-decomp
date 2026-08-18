@@ -114,6 +114,20 @@ pub enum TacticalCombatClass {
 
 pub type TacticalCombatClassTable<T> = EnumMap<TacticalCombatClass, T>;
 
+/// Retail's three strategic stack-composition classes.
+///
+/// Their numeric labels have not been recovered; unlike
+/// [`TacticalCombatClass`], they are only used to select strategic stack
+/// ordering scores.
+#[derive(Clone, Copy, Debug, Enum, Eq, Ord, PartialEq, PartialOrd)]
+pub enum StrategicCombatClass {
+    First,
+    Second,
+    Third,
+}
+
+pub type StrategicCombatClassTable<T> = EnumMap<StrategicCombatClass, T>;
+
 /// Retail's ten land-unit toolbar and tactical groups.
 #[derive(
     Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,

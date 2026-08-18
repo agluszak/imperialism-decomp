@@ -353,9 +353,13 @@ pub(crate) fn tactical_category(kind: MilitaryUnitKind) -> ArmyUnitCategory {
     kind.tactical_category()
 }
 
-pub(crate) fn combat_class(kind: MilitaryUnitKind) -> i16 {
-    const CLASS: MilitaryUnitTable<i16> = MilitaryUnitTable::from_array([
-        1, 2, 1, 1, 3, 2, 2, 1, 1, 2, 1, 1, 3, 2, 2, 1, 1, 2, 1, 1, 3, 3, 2, 1, 1, 2, 3, 2, 2, 2,
+pub(crate) fn strategic_combat_class(kind: MilitaryUnitKind) -> StrategicCombatClass {
+    use StrategicCombatClass::*;
+
+    const CLASS: MilitaryUnitTable<StrategicCombatClass> = MilitaryUnitTable::from_array([
+        First, Second, First, First, Third, Second, Second, First, First, Second, First, First,
+        Third, Second, Second, First, First, Second, First, First, Third, Third, Second, First,
+        First, Second, Third, Second, Second, Second,
     ]);
     CLASS[kind]
 }

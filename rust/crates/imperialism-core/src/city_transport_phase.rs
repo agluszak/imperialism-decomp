@@ -631,7 +631,7 @@ mod tests {
                 TurnSummary::Retail {
                     turn_tick: 1,
                     order_kind: 0,
-                    payload: ShipType::ShipOfTheLine as i16,
+                    payload: i16::from(ShipType::ShipOfTheLine.retail()),
                     flags: 1,
                 },
                 TurnSummary::Retail {

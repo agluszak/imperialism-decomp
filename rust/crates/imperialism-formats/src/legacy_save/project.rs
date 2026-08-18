@@ -689,8 +689,9 @@ fn military_capability_kind(value: i16) -> MilitaryUnitKind {
 }
 
 fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
-    let status =
-        |nation: usize, tech: Technology| legacy.research_status_by_nation[nation][tech as usize];
+    let status = |nation: usize, tech: Technology| {
+        legacy.research_status_by_nation[nation][usize::from(tech.retail())]
+    };
     let researched = |nation: usize, tech: Technology| status(nation, tech) == 2;
     let city_capabilities_by_nation = std::array::from_fn(|nation| CityTechnologyCapabilities {
         advanced_iron_working: researched(nation, Technology::AdvancedIronWorking),
