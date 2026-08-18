@@ -94,7 +94,6 @@ fn add_game_plugins(app: &mut App) {
         ui::DiplomacyPlugin,
         ui::DealBookPlugin,
     ))
-    .add_plugins(ui::OfferSheetPlugin)
     .add_plugins((
         media::ImperialismMediaPlugin,
         ui::CursorPlugin,
