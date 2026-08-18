@@ -8,6 +8,10 @@ use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
 use imperialism_formats::{FourCc, RetailTextStylePreset, fourcc};
 
 const TERRAIN_HELP_SETS: [i16; 5] = [0x0bc2, 0x0bcc, 0x0c94, 0x0c9e, 0x0ca8];
+const CITY_HELP_SETS: [i16; 3] = [0x0bd6, 0x0c44, 0x0c4e];
+const TRADE_HELP_SETS: [i16; 2] = [0x0bea, 0x0bf4];
+const DIPLOMACY_HELP_SETS: [i16; 2] = [0x0bfe, 0x0c26];
+const TRANSPORT_HELP_SETS: [i16; 1] = [0x0c3a];
 const TECHNOLOGY_HELP_SETS: [i16; 1] = [0x0c08];
 const TOPICS: [FourCc; 5] = [
     fourcc!("nam1"),
@@ -20,21 +24,41 @@ const LINK_BLUE: Color = Color::srgb(0.05, 0.08, 0.65);
 
 #[derive(Component)]
 struct MapHelpRoot {
-    context: MapHelpContext,
+    context: HelpContext,
     set: usize,
     topic: Option<usize>,
 }
 
 #[derive(Clone, Copy)]
-enum MapHelpContext {
+enum HelpContext {
     TerrainMap,
+    City,
+    Trade,
+    Diplomacy,
+    Transport,
     TechnologyStore,
 }
 
-impl MapHelpContext {
+impl HelpContext {
+    const fn for_app_state(state: AppState) -> Option<Self> {
+        match state {
+            AppState::StrategicMap => Some(Self::TerrainMap),
+            AppState::City => Some(Self::City),
+            AppState::Trade => Some(Self::Trade),
+            AppState::Diplomacy => Some(Self::Diplomacy),
+            AppState::Transport => Some(Self::Transport),
+            AppState::TechnologyStore => Some(Self::TechnologyStore),
+            _ => None,
+        }
+    }
+
     const fn sets(self) -> &'static [i16] {
         match self {
             Self::TerrainMap => &TERRAIN_HELP_SETS,
+            Self::City => &CITY_HELP_SETS,
+            Self::Trade => &TRADE_HELP_SETS,
+            Self::Diplomacy => &DIPLOMACY_HELP_SETS,
+            Self::Transport => &TRANSPORT_HELP_SETS,
             Self::TechnologyStore => &TECHNOLOGY_HELP_SETS,
         }
     }
@@ -42,13 +66,19 @@ impl MapHelpContext {
     const fn event_code(self) -> i16 {
         match self {
             Self::TerrainMap => 0x07dd,
+            Self::City => 0x07db,
+            Self::Trade => 0x07d9,
+            Self::Diplomacy => 0x07d8,
+            Self::Transport => 0x07de,
             Self::TechnologyStore => 0x08fc,
         }
     }
 
-    const fn topic_count(self) -> usize {
+    const fn topic_count(self, set: usize) -> usize {
         match self {
-            Self::TerrainMap => 5,
+            Self::TerrainMap | Self::City | Self::Diplomacy | Self::Transport => 5,
+            Self::Trade if set == 1 => 4,
+            Self::Trade => 5,
             Self::TechnologyStore => 4,
         }
     }
@@ -56,6 +86,10 @@ impl MapHelpContext {
     const fn app_state(self) -> AppState {
         match self {
             Self::TerrainMap => AppState::StrategicMap,
+            Self::City => AppState::City,
+            Self::Trade => AppState::Trade,
+            Self::Diplomacy => AppState::Diplomacy,
+            Self::Transport => AppState::Transport,
             Self::TechnologyStore => AppState::TechnologyStore,
         }
     }
@@ -74,15 +108,16 @@ pub(crate) fn register(app: &mut App) {
     app.add_systems(Update, bind_added_help);
 }
 
-pub(crate) fn spawn(commands: &mut Commands) {
-    spawn_for_context(commands, MapHelpContext::TerrainMap);
+pub(crate) fn spawn(commands: &mut Commands, state: AppState) {
+    let context = HelpContext::for_app_state(state).expect("game screen has a retail help context");
+    spawn_for_context(commands, context);
 }
 
 pub(crate) fn spawn_technology(commands: &mut Commands) {
-    spawn_for_context(commands, MapHelpContext::TechnologyStore);
+    spawn_for_context(commands, HelpContext::TechnologyStore);
 }
 
-fn spawn_for_context(commands: &mut Commands, context: MapHelpContext) {
+fn spawn_for_context(commands: &mut Commands, context: HelpContext) {
     let root = commands.spawn_scene(generated::linger_3000()).id();
     commands.entity(root).insert((
         MapHelpRoot {
@@ -321,7 +356,7 @@ fn spawn_link_button(commands: &mut Commands, label: Entity, action: MapHelpActi
 
 fn show_topic_list_raw(
     root: Entity,
-    context: MapHelpContext,
+    context: HelpContext,
     set: usize,
     tree: &RetailTree,
     assets: &RetailAssetsResource,
@@ -346,7 +381,7 @@ fn show_topic_list_raw(
             ),
             TextColor(LINK_BLUE),
             Underline,
-            if index < context.topic_count() {
+            if index < context.topic_count(set) {
                 Visibility::Visible
             } else {
                 Visibility::Hidden
@@ -397,4 +432,61 @@ fn set_text(
     commands
         .entity(entity)
         .insert((Text::new(text), font, layout, line_height, TextColor(color)));
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn game_screens_select_the_recovered_help_mgr_sets() {
+        for (state, event_code, sets, topic_counts) in [
+            (
+                AppState::StrategicMap,
+                0x07dd,
+                TERRAIN_HELP_SETS.as_slice(),
+                &[5, 5, 5, 5, 5][..],
+            ),
+            (
+                AppState::City,
+                0x07db,
+                CITY_HELP_SETS.as_slice(),
+                &[5, 5, 5][..],
+            ),
+            (
+                AppState::Trade,
+                0x07d9,
+                TRADE_HELP_SETS.as_slice(),
+                &[5, 4][..],
+            ),
+            (
+                AppState::Diplomacy,
+                0x07d8,
+                DIPLOMACY_HELP_SETS.as_slice(),
+                &[5, 5][..],
+            ),
+            (
+                AppState::Transport,
+                0x07de,
+                TRANSPORT_HELP_SETS.as_slice(),
+                &[5][..],
+            ),
+            (
+                AppState::TechnologyStore,
+                0x08fc,
+                TECHNOLOGY_HELP_SETS.as_slice(),
+                &[4][..],
+            ),
+        ] {
+            let context = HelpContext::for_app_state(state).unwrap();
+            assert_eq!(context.event_code(), event_code);
+            assert_eq!(context.sets(), sets);
+            assert_eq!(
+                (0..sets.len())
+                    .map(|set| context.topic_count(set))
+                    .collect::<Vec<_>>(),
+                topic_counts
+            );
+        }
+    }
 }

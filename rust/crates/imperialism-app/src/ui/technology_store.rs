@@ -2,15 +2,21 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
+use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::map_help;
-use super::retail::{RetailPictureSwap, RetailTree, RetailUiAssets};
+use super::retail::{ModalDialog, RetailPictureSwap, RetailTree, RetailUiAssets, ancestor_with};
 use super::session::GameSession;
 use crate::{AppState, RetailAssetsResource};
+use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
-use imperialism_core::{CountryStatus, MajorNationId, Technology, TechnologyResearchStatus};
+use bevy::ui_widgets::{Activate, ActivateOnPress, ScrollArea};
+use imperialism_core::{
+    CountryStatus, MajorNationId, Technology, TechnologyResearchRejection, TechnologyResearchStatus,
+};
 use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc};
+
+const TECHNOLOGIES_PER_PAGE: usize = 6;
 
 #[derive(Component)]
 struct TechnologyStoreRoot;
@@ -24,6 +30,33 @@ struct TechnologyPurchase(Technology);
 #[derive(Component, Clone, Copy)]
 struct TechnologyStatusText(Technology);
 
+#[derive(Component)]
+struct TechnologyStorePage {
+    current: usize,
+    last: usize,
+}
+
+#[derive(Component)]
+struct TechnologyStoreRow(usize);
+
+#[derive(Component, Clone, Copy)]
+enum TechnologyPageAction {
+    Previous,
+    Next,
+}
+
+#[derive(Component, Clone, Copy)]
+struct TechnologyHistory(Technology);
+
+#[derive(Component)]
+struct TechnologyHistoryRoot(Technology);
+
+#[derive(Component)]
+struct TechnologyNoticeRoot;
+
+#[derive(Component)]
+struct CloseTechnologyModal;
+
 pub(crate) struct TechnologyStorePlugin;
 
 impl Plugin for TechnologyStorePlugin {
@@ -34,7 +67,12 @@ impl Plugin for TechnologyStorePlugin {
         )
         .add_systems(
             Update,
-            project_technology_status.run_if(in_state(AppState::TechnologyStore)),
+            (
+                bind_technology_modals,
+                project_technology_status,
+                project_technology_page,
+            )
+                .run_if(in_state(AppState::TechnologyStore)),
         );
     }
 }
@@ -145,14 +183,27 @@ fn bind_technology_store(
             alignment: -2,
         })
         .expect("retail technology-store row style");
-    for (row, technology) in Technology::all()
+    let technologies = Technology::all()
         .rev()
         .filter(|&technology| {
             technology != Technology::ScientistsHaveDiscovered
                 && session.game.technology().global_unlocks_by_technology[technology]
         })
-        .enumerate()
-    {
+        .collect::<Vec<_>>();
+    commands.entity(root).insert(TechnologyStorePage {
+        current: 0,
+        last: technologies.len().saturating_sub(1) / TECHNOLOGIES_PER_PAGE,
+    });
+    for (tag, action) in [
+        (fourcc!("lcor"), TechnologyPageAction::Previous),
+        (fourcc!("rcor"), TechnologyPageAction::Next),
+    ] {
+        commands
+            .entity(tree.find(root, tag))
+            .insert((Button, ActivateOnPress, action))
+            .observe(on_technology_page);
+    }
+    for (row, technology) in technologies.into_iter().enumerate() {
         spawn_technology_row(
             &mut commands,
             &mut assets,
@@ -177,7 +228,7 @@ fn spawn_technology_row(
     game: &imperialism_core::GameState,
     row_style: &(TextFont, TextLayout, bevy::text::LineHeight, bool),
 ) {
-    let y = row as f32 * 63.0;
+    let y = (row % TECHNOLOGIES_PER_PAGE) as f32 * 63.0;
     let row_entity = commands
         .spawn((
             Node {
@@ -188,24 +239,37 @@ fn spawn_technology_row(
                 height: px(63),
                 ..default()
             },
+            TechnologyStoreRow(row / TECHNOLOGIES_PER_PAGE),
             ChildOf(page),
         ))
         .id();
     let picture = assets
         .picture(PictureId::new(0x08ff + i16::from(technology.retail()) * 2))
         .expect("retail technology illustration");
-    commands.spawn((
-        Node {
-            position_type: PositionType::Absolute,
-            left: px(0),
-            top: px(0),
-            width: px(64),
-            height: px(63),
-            ..default()
-        },
-        ImageNode::new(picture),
-        ChildOf(row_entity),
-    ));
+    let active_picture = assets
+        .picture(PictureId::new(0x0900 + i16::from(technology.retail()) * 2))
+        .unwrap_or_else(|_| picture.clone());
+    commands
+        .spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(0),
+                top: px(0),
+                width: px(64),
+                height: px(63),
+                ..default()
+            },
+            Button,
+            ActivateOnPress,
+            TechnologyHistory(technology),
+            ImageNode::new(picture.clone()),
+            RetailPictureSwap {
+                idle: picture,
+                active: active_picture,
+            },
+            ChildOf(row_entity),
+        ))
+        .observe(on_technology_history);
 
     let name = assets
         .string(0x2712, i16::from(technology.retail()) + 1)
@@ -308,12 +372,203 @@ fn on_technology_purchase(
     activate: On<Activate>,
     purchases: Query<&TechnologyPurchase>,
     mut session: ResMut<GameSession>,
+    mut commands: Commands,
 ) {
     let Ok(purchase) = purchases.get(activate.entity) else {
         return;
     };
     let nation = session.active_major_nation();
-    let _ = session.game.toggle_technology_research(nation, purchase.0);
+    if matches!(
+        session.game.toggle_technology_research(nation, purchase.0),
+        Err(TechnologyResearchRejection::InsufficientFunds)
+    ) {
+        spawn_linger_dialog(
+            &mut commands,
+            TechnologyNoticeRoot,
+            AppState::TechnologyStore,
+            30,
+        );
+    }
+}
+
+fn on_technology_page(
+    activate: On<Activate>,
+    actions: Query<&TechnologyPageAction>,
+    mut pages: Query<&mut TechnologyStorePage>,
+) {
+    let Ok(action) = actions.get(activate.entity).copied() else {
+        return;
+    };
+    let Ok(mut page) = pages.single_mut() else {
+        return;
+    };
+    page.current = match action {
+        TechnologyPageAction::Previous => page.current.saturating_sub(1),
+        TechnologyPageAction::Next => (page.current + 1).min(page.last),
+    };
+}
+
+fn project_technology_page(
+    mut commands: Commands,
+    pages: Query<&TechnologyStorePage, Changed<TechnologyStorePage>>,
+    mut rows: Query<(&TechnologyStoreRow, &mut Visibility), Without<TechnologyPageAction>>,
+    mut buttons: Query<
+        (Entity, &TechnologyPageAction, &mut Visibility),
+        Without<TechnologyStoreRow>,
+    >,
+) {
+    let Ok(page) = pages.single() else {
+        return;
+    };
+    for (row, mut visibility) in &mut rows {
+        *visibility = if row.0 == page.current {
+            Visibility::Inherited
+        } else {
+            Visibility::Hidden
+        };
+    }
+    for (entity, action, mut visibility) in &mut buttons {
+        let enabled = match action {
+            TechnologyPageAction::Previous => page.current > 0,
+            TechnologyPageAction::Next => page.current < page.last,
+        };
+        *visibility = if enabled {
+            Visibility::Inherited
+        } else {
+            Visibility::Hidden
+        };
+        if enabled {
+            commands.entity(entity).remove::<InteractionDisabled>();
+        } else {
+            commands.entity(entity).insert(InteractionDisabled);
+        }
+    }
+}
+
+fn on_technology_history(
+    activate: On<Activate>,
+    histories: Query<&TechnologyHistory>,
+    mut commands: Commands,
+) {
+    let Ok(history) = histories.get(activate.entity).copied() else {
+        return;
+    };
+    let root = commands.spawn_scene(generated::techstore_2370()).id();
+    commands.entity(root).insert((
+        TechnologyHistoryRoot(history.0),
+        ModalDialog,
+        TabGroup::modal(),
+        GlobalZIndex(30),
+        Pickable::default(),
+        DespawnOnExit(AppState::TechnologyStore),
+    ));
+}
+
+fn bind_technology_modals(
+    mut commands: Commands,
+    histories: Query<(Entity, &TechnologyHistoryRoot), Added<TechnologyHistoryRoot>>,
+    notices: Query<Entity, Added<TechnologyNoticeRoot>>,
+    tree: RetailTree,
+    mut assets: RetailUiAssets,
+    retail: Res<RetailAssetsResource>,
+    mut nodes: Query<&mut Node>,
+) {
+    for (root, history) in &histories {
+        let view = tree.view(root);
+        let technology = history.0;
+        let (title_font, title_layout, title_line_height, _) = assets
+            .text_style(RetailTextStylePreset {
+                font_family: 1,
+                face_flags: 0,
+                point_size: 18,
+                alignment: 1,
+            })
+            .expect("retail technology-history title style");
+        commands.entity(view.find(fourcc!("titl"))).insert((
+            Text::new(
+                assets
+                    .string(0x2712, i16::from(technology.retail()) + 1)
+                    .expect("retail technology-history title"),
+            ),
+            title_font,
+            title_layout,
+            title_line_height,
+            TextColor(Color::BLACK),
+        ));
+        let picture = assets
+            .picture(PictureId::new(0x0944 + i16::from(technology.retail())))
+            .expect("retail technology-history picture");
+        commands
+            .entity(view.find(fourcc!("pict")))
+            .insert(ImageNode::new(picture));
+
+        let scroll = view.find(fourcc!("scvw"));
+        nodes
+            .get_mut(scroll)
+            .expect("technology-history scroll view")
+            .overflow = Overflow::scroll_y();
+        commands
+            .entity(scroll)
+            .insert((ScrollArea, Pickable::default()));
+        let (body_font, body_layout, body_line_height, _) = assets
+            .text_style(RetailTextStylePreset {
+                font_family: 1,
+                face_flags: 0,
+                point_size: 12,
+                alignment: -2,
+            })
+            .expect("retail technology-history body style");
+        commands.spawn((
+            Node {
+                width: percent(100),
+                ..default()
+            },
+            Text::new(
+                retail
+                    .text(u16::from(technology.retail()) + 0x08fc)
+                    .expect("retail technology-history body"),
+            ),
+            body_font,
+            body_layout,
+            body_line_height,
+            TextColor(Color::BLACK),
+            Pickable::IGNORE,
+            ChildOf(scroll),
+        ));
+        commands
+            .entity(view.find(fourcc!("okay")))
+            .insert((ActivateOnPress, CloseTechnologyModal))
+            .observe(on_close_technology_modal);
+    }
+    for root in &notices {
+        let linger = bind_linger_dialog(root, &tree);
+        let body = assets
+            .string(0x2745, 4)
+            .expect("retail insufficient-funds message");
+        linger.set_title(&mut commands, &mut assets, "");
+        linger.set_body(&mut commands, &mut assets, body);
+        commands
+            .entity(linger.okay)
+            .insert((ActivateOnPress, CloseTechnologyModal))
+            .observe(on_close_technology_modal);
+        commands.entity(linger.cancel).insert(Visibility::Hidden);
+    }
+}
+
+#[allow(clippy::type_complexity)]
+fn on_close_technology_modal(
+    activate: On<Activate>,
+    actions: Query<(), With<CloseTechnologyModal>>,
+    parents: Query<&ChildOf>,
+    roots: Query<(), Or<(With<TechnologyHistoryRoot>, With<TechnologyNoticeRoot>)>>,
+    mut commands: Commands,
+) {
+    if actions.get(activate.entity).is_err() {
+        return;
+    }
+    if let Some(root) = ancestor_with(activate.entity, &parents, &roots) {
+        commands.entity(root).despawn();
+    }
 }
 
 fn project_technology_status(
@@ -388,6 +643,63 @@ fn on_technology_help(_activate: On<Activate>, mut commands: Commands) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn page_controls_reveal_later_technology_rows() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_observer(on_technology_page)
+            .add_systems(Update, project_technology_page);
+        app.world_mut().spawn(TechnologyStorePage {
+            current: 0,
+            last: 1,
+        });
+        let previous = app
+            .world_mut()
+            .spawn((TechnologyPageAction::Previous, Visibility::Inherited))
+            .id();
+        let next = app
+            .world_mut()
+            .spawn((TechnologyPageAction::Next, Visibility::Inherited))
+            .id();
+        let first_page = app
+            .world_mut()
+            .spawn((TechnologyStoreRow(0), Visibility::Inherited))
+            .id();
+        let second_page = app
+            .world_mut()
+            .spawn((TechnologyStoreRow(1), Visibility::Inherited))
+            .id();
+
+        app.update();
+        assert_eq!(
+            app.world().get::<Visibility>(first_page),
+            Some(&Visibility::Inherited)
+        );
+        assert_eq!(
+            app.world().get::<Visibility>(second_page),
+            Some(&Visibility::Hidden)
+        );
+        assert!(app.world().get::<InteractionDisabled>(previous).is_some());
+        assert!(app.world().get::<InteractionDisabled>(next).is_none());
+
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: next });
+        app.world_mut().flush();
+        app.update();
+
+        assert_eq!(
+            app.world().get::<Visibility>(first_page),
+            Some(&Visibility::Hidden)
+        );
+        assert_eq!(
+            app.world().get::<Visibility>(second_page),
+            Some(&Visibility::Inherited)
+        );
+        assert!(app.world().get::<InteractionDisabled>(previous).is_none());
+        assert!(app.world().get::<InteractionDisabled>(next).is_some());
+    }
 
     #[test]
     fn microscope_control_enters_the_technology_store() {

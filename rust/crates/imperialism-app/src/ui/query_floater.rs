@@ -139,7 +139,7 @@ fn on_query_floater_activate(
     match *action {
         QueryFloaterAction::Advice => {
             commands.entity(root).despawn();
-            super::map_help::spawn(&mut commands);
+            super::map_help::spawn(&mut commands, *state.get());
         }
         QueryFloaterAction::DealBook => {
             commands.entity(root).despawn();
