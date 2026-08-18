@@ -701,7 +701,12 @@ fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
                 legacy.university_recruitment_availability[nation].map(|value| value != 0),
             ),
             requirement_levels: ResourceTable::from_array(
-                legacy.capability_value_by_nation_and_resource[nation].map(|value| value as u8),
+                legacy.capability_value_by_nation_and_resource[nation].map(|value| {
+                    UniversityRequirementLevel::from_retail(
+                        u8::try_from(value).expect("retail university requirement level"),
+                    )
+                    .expect("retail university requirement level")
+                }),
             ),
         },
         primary_civilian_distance_terrain: CivilianTerrainAccess {

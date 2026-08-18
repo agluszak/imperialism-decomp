@@ -907,7 +907,8 @@ impl GameState {
             let value = i16::from(
                 self.technology.city_capabilities_by_nation[nation]
                     .university
-                    .requirement_levels[resource],
+                    .requirement_levels[resource]
+                    .retail(),
             );
             if value > max_value {
                 max_value = value;

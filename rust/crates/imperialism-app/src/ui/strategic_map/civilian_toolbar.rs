@@ -522,7 +522,7 @@ fn spawn_developer_legend(
         let Some(resource) = resource else {
             continue;
         };
-        let reached = i16::from(levels[resource]) - 1;
+        let reached = i16::from(levels[resource].retail()) - 1;
         if strip_level <= reached {
             strip_level = reached;
         }
@@ -576,7 +576,7 @@ fn spawn_developer_legend(
         spawn_legend_text(
             commands,
             legend,
-            resource_development_yield(resource, levels[resource]).to_string(),
+            resource_development_yield(resource, levels[resource].retail()).to_string(),
             dest.x as f32 + 24.0,
             dest.y as f32 + 20.0,
             24.0,
@@ -588,7 +588,9 @@ fn spawn_developer_legend(
         );
     }
     let mut row_limit = DEVELOPER_MAX_ROWS[kind];
-    if kind == CivilianUnitKind::Farmer && levels[ResourceKind::Cotton] == 0 {
+    if kind == CivilianUnitKind::Farmer
+        && levels[ResourceKind::Cotton] == UniversityRequirementLevel::None
+    {
         row_limit -= 1;
     }
     let counts = civilian_legend_target_counts(state, unit);

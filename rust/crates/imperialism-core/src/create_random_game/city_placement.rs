@@ -424,7 +424,7 @@ pub(crate) fn calculate_city_resources(
                 let gate = state.gate;
                 if (0..24).contains(&gate) && RESOURCE_USES_HIGH_NIBBLE[gate as usize] != 0 {
                     let capability = university.requirement_levels[resource];
-                    amount = resource_development_yield(resource, capability);
+                    amount = resource_development_yield(resource, capability.retail());
                 }
             }
             yields[resource] += amount;

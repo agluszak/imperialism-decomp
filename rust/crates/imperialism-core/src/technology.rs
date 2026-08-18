@@ -12,7 +12,40 @@ const TECH_ITEM_PURCHASE_COST: TechnologyTable<i32> = TechnologyTable::from_arra
 pub struct UniversityTechnologyState {
     pub available: CivilianUnitTable<bool>,
     /// Highest unlocked requirement column (0..=3) for each resource.
-    pub requirement_levels: ResourceTable<u8>,
+    pub requirement_levels: ResourceTable<UniversityRequirementLevel>,
+}
+
+#[derive(
+    Clone, Copy, Debug, Default, Deserialize, Enum, Eq, Ord, PartialEq, PartialOrd, Serialize,
+)]
+#[serde(rename_all = "snake_case")]
+pub enum UniversityRequirementLevel {
+    #[default]
+    None,
+    One,
+    Two,
+    Three,
+}
+
+impl UniversityRequirementLevel {
+    pub const fn from_retail(value: u8) -> Option<Self> {
+        match value {
+            0 => Some(Self::None),
+            1 => Some(Self::One),
+            2 => Some(Self::Two),
+            3 => Some(Self::Three),
+            _ => None,
+        }
+    }
+
+    pub const fn retail(self) -> u8 {
+        match self {
+            Self::None => 0,
+            Self::One => 1,
+            Self::Two => 2,
+            Self::Three => 3,
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for UniversityTechnologyState {
@@ -23,19 +56,10 @@ impl<'de> Deserialize<'de> for UniversityTechnologyState {
         #[derive(Deserialize)]
         struct SerializedUniversityTechnologyState {
             available: CivilianUnitTable<bool>,
-            requirement_levels: ResourceTable<u8>,
+            requirement_levels: ResourceTable<UniversityRequirementLevel>,
         }
 
         let serialized = SerializedUniversityTechnologyState::deserialize(deserializer)?;
-        if serialized
-            .requirement_levels
-            .values()
-            .any(|level| *level > 3)
-        {
-            return Err(serde::de::Error::custom(
-                "university requirement levels must be in 0..=3",
-            ));
-        }
         Ok(Self {
             available: serialized.available,
             requirement_levels: serialized.requirement_levels,
@@ -50,7 +74,29 @@ impl Default for UniversityTechnologyState {
                 true, true, true, false, true, false, false, true, false,
             ]),
             requirement_levels: ResourceTable::from_array([
-                0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::One,
+                UniversityRequirementLevel::One,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::One,
+                UniversityRequirementLevel::One,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::None,
+                UniversityRequirementLevel::One,
+                UniversityRequirementLevel::One,
             ]),
         }
     }
@@ -492,43 +538,103 @@ impl GameState {
             };
 
         match tech_id {
-            Technology::CottonGin => self.set_requirement_level(nation, ResourceKind::Cotton, 1),
-            Technology::SeedDrill => self.set_requirement_level(nation, ResourceKind::Grain, 1),
+            Technology::CottonGin => self.set_requirement_level(
+                nation,
+                ResourceKind::Cotton,
+                UniversityRequirementLevel::One,
+            ),
+            Technology::SeedDrill => self.set_requirement_level(
+                nation,
+                ResourceKind::Grain,
+                UniversityRequirementLevel::One,
+            ),
             Technology::SquareSetTimbering => {
-                self.set_requirement_level(nation, ResourceKind::Coal, 2);
-                self.set_requirement_level(nation, ResourceKind::Iron, 2);
-                self.set_requirement_level(nation, ResourceKind::Gold, 2);
-                self.set_requirement_level(nation, ResourceKind::Gems, 2);
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Coal,
+                    UniversityRequirementLevel::Two,
+                );
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Iron,
+                    UniversityRequirementLevel::Two,
+                );
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Gold,
+                    UniversityRequirementLevel::Two,
+                );
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Gems,
+                    UniversityRequirementLevel::Two,
+                );
             }
             Technology::IronRailroadBridge => {
-                self.set_requirement_level(nation, ResourceKind::Timber, 1);
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Timber,
+                    UniversityRequirementLevel::One,
+                );
                 self.set_university_available(nation, CivilianUnitKind::Forester, true);
             }
             Technology::SteelPlows => {
-                self.set_requirement_level(nation, ResourceKind::Fruit, 2);
-                self.set_requirement_level(nation, ResourceKind::Grain, 2);
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Fruit,
+                    UniversityRequirementLevel::Two,
+                );
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Grain,
+                    UniversityRequirementLevel::Two,
+                );
             }
             Technology::FeedGrasses => {
-                self.set_requirement_level(nation, ResourceKind::Livestock, 1);
-                self.set_requirement_level(nation, ResourceKind::Wool, 1);
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Livestock,
+                    UniversityRequirementLevel::One,
+                );
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Wool,
+                    UniversityRequirementLevel::One,
+                );
                 self.set_university_available(nation, CivilianUnitKind::Rancher, true);
             }
             Technology::SpinningJenny => {
-                self.set_requirement_level(nation, ResourceKind::Cotton, 2);
-                self.set_requirement_level(nation, ResourceKind::Wool, 2);
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Cotton,
+                    UniversityRequirementLevel::Two,
+                );
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Wool,
+                    UniversityRequirementLevel::Two,
+                );
             }
-            Technology::CompoundSteamEngine => {
-                self.set_requirement_level(nation, ResourceKind::Timber, 2)
-            }
-            Technology::MechanicalReaper => {
-                self.set_requirement_level(nation, ResourceKind::Grain, 3)
-            }
-            Technology::CommercialFertilizer => {
-                self.set_requirement_level(nation, ResourceKind::Fruit, 3)
-            }
-            Technology::BarbedWire => {
-                self.set_requirement_level(nation, ResourceKind::Livestock, 2)
-            }
+            Technology::CompoundSteamEngine => self.set_requirement_level(
+                nation,
+                ResourceKind::Timber,
+                UniversityRequirementLevel::Two,
+            ),
+            Technology::MechanicalReaper => self.set_requirement_level(
+                nation,
+                ResourceKind::Grain,
+                UniversityRequirementLevel::Three,
+            ),
+            Technology::CommercialFertilizer => self.set_requirement_level(
+                nation,
+                ResourceKind::Fruit,
+                UniversityRequirementLevel::Three,
+            ),
+            Technology::BarbedWire => self.set_requirement_level(
+                nation,
+                ResourceKind::Livestock,
+                UniversityRequirementLevel::Two,
+            ),
             Technology::BessemerConverter => {
                 self.activate_military_ability(nation, MilitaryUnitKind::Scouts);
                 self.activate_military_ability(nation, MilitaryUnitKind::Sharpshooters);
@@ -536,8 +642,16 @@ impl GameState {
                 self.activate_military_ability(nation, MilitaryUnitKind::GeneralEra2);
             }
             Technology::PowerLoom => {
-                self.set_requirement_level(nation, ResourceKind::Cotton, 3);
-                self.set_requirement_level(nation, ResourceKind::Wool, 3);
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Cotton,
+                    UniversityRequirementLevel::Three,
+                );
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Wool,
+                    UniversityRequirementLevel::Three,
+                );
             }
             Technology::RifledArtillery => {
                 self.activate_military_ability(nation, MilitaryUnitKind::FieldArtillery);
@@ -545,15 +659,39 @@ impl GameState {
                 self.add_era_arms(nation, era_offset, 10);
             }
             Technology::Dynamite => {
-                self.set_requirement_level(nation, ResourceKind::Coal, 3);
-                self.set_requirement_level(nation, ResourceKind::Iron, 3);
-                self.set_requirement_level(nation, ResourceKind::Gold, 3);
-                self.set_requirement_level(nation, ResourceKind::Gems, 3);
-                self.set_requirement_level(nation, ResourceKind::Timber, 3);
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Coal,
+                    UniversityRequirementLevel::Three,
+                );
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Iron,
+                    UniversityRequirementLevel::Three,
+                );
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Gold,
+                    UniversityRequirementLevel::Three,
+                );
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Gems,
+                    UniversityRequirementLevel::Three,
+                );
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Timber,
+                    UniversityRequirementLevel::Three,
+                );
                 self.activate_military_ability(nation, MilitaryUnitKind::Saboteurs);
             }
             Technology::OilDrilling => {
-                self.set_requirement_level(nation, ResourceKind::Oil, 1);
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Oil,
+                    UniversityRequirementLevel::One,
+                );
                 self.set_university_available(nation, CivilianUnitKind::Driller, true);
             }
             Technology::BreechLoadingRifles => {
@@ -564,8 +702,16 @@ impl GameState {
                 self.add_era_arms(nation, era_offset, 10);
             }
             Technology::Chemistry => {
-                self.set_requirement_level(nation, ResourceKind::Oil, 2);
-                self.set_requirement_level(nation, ResourceKind::Livestock, 3);
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Oil,
+                    UniversityRequirementLevel::Two,
+                );
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Livestock,
+                    UniversityRequirementLevel::Three,
+                );
             }
             Technology::LargeArtillery => {
                 self.activate_military_ability(nation, MilitaryUnitKind::MobileArtillery);
@@ -573,7 +719,11 @@ impl GameState {
                 self.add_era_arms(nation, era_offset, 20);
             }
             Technology::InternalCombustion => {
-                self.set_requirement_level(nation, ResourceKind::Oil, 3);
+                self.set_requirement_level(
+                    nation,
+                    ResourceKind::Oil,
+                    UniversityRequirementLevel::Three,
+                );
                 self.activate_military_ability(nation, MilitaryUnitKind::MechanizedInfantry);
                 self.activate_military_ability(nation, MilitaryUnitKind::Armor);
             }
@@ -607,14 +757,19 @@ impl GameState {
                 .filter(|resource| !crate::ai_civilian::extractive_resource(*resource))
                 .map(|resource| requirements[resource])
                 .max()
-                .unwrap_or(0);
-            if tile.development.surface.get() < level {
-                tile.development.surface = DevelopmentLevel::new(level);
+                .unwrap_or(UniversityRequirementLevel::None);
+            if tile.development.surface.get() < level.retail() {
+                tile.development.surface = DevelopmentLevel::new(level.retail());
             }
         }
     }
 
-    fn set_requirement_level(&mut self, nation: MajorNationId, resource: ResourceKind, level: u8) {
+    fn set_requirement_level(
+        &mut self,
+        nation: MajorNationId,
+        resource: ResourceKind,
+        level: UniversityRequirementLevel,
+    ) {
         self.technology.city_capabilities_by_nation[nation]
             .university
             .requirement_levels[resource] = level;

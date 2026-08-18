@@ -849,8 +849,13 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
             enum_u8(&technology.military_unit_ability_active_by_nation[nation]);
         let capabilities = &technology.city_capabilities_by_nation[nation];
         university_recruitment_availability[slot] = enum_u8(&capabilities.university.available);
-        capability_value_by_nation_and_resource[slot] =
-            resource_i16(&capabilities.university.requirement_levels);
+        capability_value_by_nation_and_resource[slot] = std::array::from_fn(|index| {
+            i16::from(
+                capabilities.university.requirement_levels
+                    [ResourceKind::from_index(index as u8).expect("resource index")]
+                .retail(),
+            )
+        });
     }
     LegacyTechnologyState {
         priority_slots: *technology.scheduled_unlock_turn_by_technology.as_array(),

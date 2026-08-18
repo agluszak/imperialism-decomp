@@ -410,7 +410,7 @@ pub(in crate::ui::city) fn sync_university_details(
         .flatten()
         .map(|resource| levels[*resource])
         .max()
-        .unwrap_or(0);
+        .unwrap_or(UniversityRequirementLevel::None);
 
     for (display, mut text) in &mut texts {
         match *display {
@@ -431,8 +431,8 @@ pub(in crate::ui::city) fn sync_university_details(
                     .flatten()
                     .map(|resource| levels[*resource])
                     .max()
-                    .unwrap_or(0);
-                let visible = resource.is_some() && level <= running_max;
+                    .unwrap_or(UniversityRequirementLevel::None);
+                let visible = resource.is_some() && level <= running_max.retail();
                 if let Some(resource) = resource
                     && visible
                 {
@@ -481,15 +481,15 @@ pub(in crate::ui::city) fn sync_university_details(
                     .flatten()
                     .map(|resource| levels[*resource])
                     .max()
-                    .unwrap_or(0);
-                if resource.is_some() && level <= running_max {
+                    .unwrap_or(UniversityRequirementLevel::None);
+                if resource.is_some() && level <= running_max.retail() {
                     Visibility::Visible
                 } else {
                     Visibility::Hidden
                 }
             }
             UniversityDisplay::TierLabel(index) => {
-                if (index as u8) < maximum {
+                if (index as u8) < maximum.retail() {
                     Visibility::Visible
                 } else {
                     Visibility::Hidden

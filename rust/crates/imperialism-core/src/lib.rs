@@ -168,7 +168,8 @@ pub use tables::{
 };
 pub use technology::{
     CityTechnologyCapabilities, CivilianTerrainAccess, FortLevelCap, Technology,
-    TechnologyResearchStatus, TechnologyState, TechnologyTable, UniversityTechnologyState,
+    TechnologyResearchStatus, TechnologyState, TechnologyTable, UniversityRequirementLevel,
+    UniversityTechnologyState,
 };
 pub use territory::{CountryStatus, FortLevel, FortLevelTable, ProvinceState};
 pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};
