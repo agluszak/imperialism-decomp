@@ -55,7 +55,7 @@ type BattleSideTable<T> = EnumMap<BattleSide, T>;
 
 #[derive(Clone, Copy)]
 struct Tile {
-    terrain: i32,
+    terrain: TacticalTerrain,
     occupant: Option<usize>,
     deploy_mark: i32,
     mine_run: i32,
@@ -175,7 +175,7 @@ impl Battle {
         let enemy_retreat_toward_north = state.rng.next_crt_rand() & 1 != 0;
         let mut this = Self {
             tiles: [Tile {
-                terrain: 0,
+                terrain: TacticalTerrain::Class0,
                 occupant: None,
                 deploy_mark: 0,
                 mine_run: -1,
@@ -282,7 +282,7 @@ impl Battle {
     fn load_setup(&mut self) {
         for tile in &mut self.tiles {
             *tile = Tile {
-                terrain: 0,
+                terrain: TacticalTerrain::Class0,
                 occupant: None,
                 deploy_mark: 0,
                 mine_run: -1,
@@ -487,7 +487,7 @@ impl Battle {
         if tile < TACTICAL_STRIDE {
             return;
         }
-        if self.tiles[tile as usize].terrain == 4 {
+        if self.tiles[tile as usize].terrain == TacticalTerrain::Impassable {
             return;
         }
         if self.tiles[tile as usize].occupant.is_some() {
@@ -809,7 +809,7 @@ impl Battle {
             return 0;
         }
         let record = &self.tiles[tile as usize];
-        if record.terrain == 4 || record.occupant.is_some() {
+        if record.terrain == TacticalTerrain::Impassable || record.occupant.is_some() {
             return 0;
         }
         if self.current_side == BattleSide::Attacker {
@@ -1482,7 +1482,10 @@ impl Battle {
             5 => self.score_retreat_edge(side, tile),
             6 => {
                 let terrain = self.tiles[tile as usize].terrain;
-                i32::from(terrain == 1 || terrain == 2) * 0x64
+                i32::from(matches!(
+                    terrain,
+                    TacticalTerrain::Class1 | TacticalTerrain::Class2
+                )) * 0x64
             }
             7 => self.score_rally(unit, tile),
             8 => {
@@ -1662,7 +1665,7 @@ impl Battle {
         if column < wall {
             for scan in column..wall {
                 let scan_tile = tile - column + scan;
-                if self.tiles[scan_tile as usize].terrain == 4 {
+                if self.tiles[scan_tile as usize].terrain == TacticalTerrain::Impassable {
                     return 0;
                 }
             }
@@ -1997,8 +2000,7 @@ impl Battle {
                                 continue;
                             }
                         }
-                        let new_cost =
-                            MOVE_COST[category][record.terrain as usize] + self.cost(tile);
+                        let new_cost = MOVE_COST[category][record.terrain] + self.cost(tile);
                         if i32::from(new_cost) > action_points {
                             continue;
                         }
@@ -2067,7 +2069,7 @@ impl Battle {
         if our_side {
             let mut row_start = 0;
             while row_start < TACTICAL_TILE_COUNT as i32 {
-                if self.tiles[row_start as usize].terrain != 4 {
+                if self.tiles[row_start as usize].terrain != TacticalTerrain::Impassable {
                     self.distance_field[row_start as usize] = 0;
                 }
                 row_start += TACTICAL_STRIDE;
@@ -2076,7 +2078,7 @@ impl Battle {
             let mut row_start = 0;
             while row_start < TACTICAL_TILE_COUNT as i32 {
                 let edge = self.column_count + row_start - 1;
-                if self.tiles[edge as usize].terrain != 4 {
+                if self.tiles[edge as usize].terrain != TacticalTerrain::Impassable {
                     self.distance_field[edge as usize] = 0;
                 }
                 row_start += TACTICAL_STRIDE;
@@ -2112,7 +2114,7 @@ impl Battle {
                             }
                         }
                     }
-                    if record.terrain != 4 {
+                    if record.terrain != TacticalTerrain::Impassable {
                         expanded = true;
                         self.distance_field[neighbor as usize] = distance + 1;
                     }
@@ -2433,7 +2435,7 @@ impl Battle {
         let attack_power = self.units[attacker].strength as f32
             * strength_factor as f32
             * ATTACK_TERRAIN[attacker_category]
-                [self.tiles[self.units[attacker].tile as usize].terrain as usize];
+                [self.tiles[self.units[attacker].tile as usize].terrain];
         if fort_wall_targeted {
             self.consume_fort(wall, (0.001 * attack_power) as i32);
             return;
@@ -2442,8 +2444,7 @@ impl Battle {
             return;
         };
         let defender_category = self.units[defender].unit_type.tactical_category();
-        let mut damage = DEFENSE_TERRAIN[defender_category]
-            [self.tiles[target as usize].terrain as usize]
+        let mut damage = DEFENSE_TERRAIN[defender_category][self.tiles[target as usize].terrain]
             * DAMAGE_SCALE[self.units[defender].unit_type]
             * attack_power;
         if wall != 0

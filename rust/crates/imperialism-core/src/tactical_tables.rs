@@ -2,10 +2,24 @@
 
 use crate::units::TacticalCombatClass;
 use crate::{ArmyCategoryTable, MilitaryUnitTable, TacticalCombatClassTable};
+use enum_map::{Enum, EnumMap};
 
 pub(crate) const TACTICAL_TILE_COUNT: usize = 0x1b3;
 pub(crate) const TACTICAL_STRIDE: i32 = 0x1d;
 pub(crate) const TACTICAL_ROWS: i32 = 15;
+
+/// Five unrecovered tactical-map terrain classes. Class four is impassable in every
+/// recovered deployment, pathing, and combat-table use.
+#[derive(Clone, Copy, Debug, Enum, Eq, PartialEq)]
+pub(crate) enum TacticalTerrain {
+    Class0,
+    Class1,
+    Class2,
+    Class3,
+    Impassable,
+}
+
+pub(crate) type TacticalTerrainTable<T> = EnumMap<TacticalTerrain, T>;
 
 pub(crate) const UNIT_RANGE: MilitaryUnitTable<i32> = MilitaryUnitTable::from_array([
     5, 5, 5, 5, 3, 3, 9, 11, 8, 8, 8, 8, 5, 5, 12, 14, 10, 10, 10, 10, 10, 12, 15, 17, 5, 8, 10, 0,
@@ -67,31 +81,33 @@ pub(crate) const DAMAGE_SCALE: MilitaryUnitTable<f32> = MilitaryUnitTable::from_
     0.003, 0.0025, 0.001, 0.002, 0.0015, 0.0005,
 ]);
 
-pub(crate) const ATTACK_TERRAIN: ArmyCategoryTable<[f32; 5]> = ArmyCategoryTable::from_array([
-    [1.0, 0.75, 0.75, 1.0, 0.0],
-    [1.0, 1.0, 1.0, 1.0, 0.0],
-    [1.0, 0.75, 0.75, 1.0, 0.0],
-    [1.0, 0.75, 0.75, 1.0, 0.0],
-    [1.0, 1.0, 1.0, 1.0, 0.0],
-    [1.0, 0.75, 0.75, 1.0, 0.0],
-    [1.0, 0.75, 0.75, 1.0, 0.0],
-    [1.0, 0.75, 0.75, 1.0, 0.0],
-    [1.0, 0.75, 0.75, 1.0, 0.0],
-    [1.0, 0.75, 0.75, 1.0, 0.0],
-]);
+pub(crate) const ATTACK_TERRAIN: ArmyCategoryTable<TacticalTerrainTable<f32>> =
+    ArmyCategoryTable::from_array([
+        TacticalTerrainTable::from_array([1.0, 0.75, 0.75, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 1.0, 1.0, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 0.75, 0.75, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 0.75, 0.75, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 1.0, 1.0, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 0.75, 0.75, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 0.75, 0.75, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 0.75, 0.75, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 0.75, 0.75, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 0.75, 0.75, 1.0, 0.0]),
+    ]);
 
-pub(crate) const DEFENSE_TERRAIN: ArmyCategoryTable<[f32; 5]> = ArmyCategoryTable::from_array([
-    [1.0, 1.0, 1.0, 1.0, 0.0],
-    [1.0, 0.8, 0.8, 1.0, 0.0],
-    [1.0, 1.0, 1.0, 1.0, 0.0],
-    [1.0, 1.0, 1.0, 1.0, 0.0],
-    [1.0, 1.0, 1.0, 1.0, 0.0],
-    [1.0, 1.0, 1.0, 1.0, 0.0],
-    [1.0, 1.0, 1.0, 1.0, 0.0],
-    [1.0, 1.0, 1.0, 1.0, 0.0],
-    [1.0, 1.0, 1.0, 1.0, 0.0],
-    [1.0, 1.0, 1.0, 1.0, 0.0],
-]);
+pub(crate) const DEFENSE_TERRAIN: ArmyCategoryTable<TacticalTerrainTable<f32>> =
+    ArmyCategoryTable::from_array([
+        TacticalTerrainTable::from_array([1.0, 1.0, 1.0, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 0.8, 0.8, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 1.0, 1.0, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 1.0, 1.0, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 1.0, 1.0, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 1.0, 1.0, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 1.0, 1.0, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 1.0, 1.0, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 1.0, 1.0, 1.0, 0.0]),
+        TacticalTerrainTable::from_array([1.0, 1.0, 1.0, 1.0, 0.0]),
+    ]);
 
 pub(crate) const COVER_DAMAGE: ArmyCategoryTable<[f32; 5]> = ArmyCategoryTable::from_array([
     [1.0, 0.8, 0.7, 0.6, 0.5],
@@ -106,18 +122,19 @@ pub(crate) const COVER_DAMAGE: ArmyCategoryTable<[f32; 5]> = ArmyCategoryTable::
     [1.0, 0.8, 0.7, 0.6, 0.5],
 ]);
 
-pub(crate) const MOVE_COST: ArmyCategoryTable<[i16; 5]> = ArmyCategoryTable::from_array([
-    [10, 20, 30, 15, 999],
-    [10, 10, 10, 10, 999],
-    [10, 20, 30, 15, 999],
-    [10, 20, 30, 15, 999],
-    [10, 10, 10, 10, 999],
-    [10, 20, 30, 15, 999],
-    [10, 20, 30, 15, 999],
-    [10, 20, 30, 15, 999],
-    [10, 20, 30, 15, 999],
-    [10, 20, 30, 15, 999],
-]);
+pub(crate) const MOVE_COST: ArmyCategoryTable<TacticalTerrainTable<i16>> =
+    ArmyCategoryTable::from_array([
+        TacticalTerrainTable::from_array([10, 20, 30, 15, 999]),
+        TacticalTerrainTable::from_array([10, 10, 10, 10, 999]),
+        TacticalTerrainTable::from_array([10, 20, 30, 15, 999]),
+        TacticalTerrainTable::from_array([10, 20, 30, 15, 999]),
+        TacticalTerrainTable::from_array([10, 10, 10, 10, 999]),
+        TacticalTerrainTable::from_array([10, 20, 30, 15, 999]),
+        TacticalTerrainTable::from_array([10, 20, 30, 15, 999]),
+        TacticalTerrainTable::from_array([10, 20, 30, 15, 999]),
+        TacticalTerrainTable::from_array([10, 20, 30, 15, 999]),
+        TacticalTerrainTable::from_array([10, 20, 30, 15, 999]),
+    ]);
 
 pub(crate) const FORT_STRENGTH_BY_LEVEL: [i32; 6] = [0, 0, 500, 750, 1000, 0];
 
