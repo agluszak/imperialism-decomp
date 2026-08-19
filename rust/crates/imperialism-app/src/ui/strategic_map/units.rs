@@ -10,10 +10,8 @@ use super::{
     StrategicInteraction, TILE_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH,
     for_each_visible_strategic_tile,
 };
-use bevy::asset::RenderAssetUsages;
-use bevy::image::ImageSampler;
+use crate::ui::retail_raster::IndexedSurface;
 use bevy::prelude::*;
-use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use enum_map::Enum;
 use imperialism_core::*;
 use imperialism_formats::*;
@@ -526,11 +524,9 @@ fn unit_sprite_image(
         return Some(handle.clone());
     }
     let picture = compose_unit_sprite(sprites, sprite)?;
-    let handle = assets.add_image(indexed_rgba_image(
-        &picture,
-        palette,
-        UNIT_TRANSPARENT_INDEX,
-    ));
+    let surface =
+        IndexedSurface::from_pixels(picture.width as i32, picture.height as i32, picture.pixels);
+    let handle = assets.add_image(surface.to_keyed_image(palette, UNIT_TRANSPARENT_INDEX));
     sprites.composed.insert(sprite, handle.clone());
     Some(handle)
 }
@@ -547,150 +543,53 @@ fn compose_unit_sprite(
             owner_badge,
             framed,
         } => {
-            let mut picture = sprites
+            let picture = sprites
                 .civilians
                 .get(&(kind, pose))?
                 .get(usize::from(frame))?
                 .clone();
+            let width = picture.width as i32;
+            let height = picture.height as i32;
+            let mut surface = IndexedSurface::from_pixels(width, height, picture.pixels);
             if let Some(slot) = owner_badge {
-                blit_indexed(
+                let source_x = i32::from(slot) * 9;
+                surface.blit_keyed(
                     &sprites.owner_flags,
-                    i32::from(slot) * 9,
-                    0,
-                    9,
-                    6,
-                    &mut picture,
-                    28,
-                    2,
+                    IRect::new(source_x, 0, source_x + 9, 6),
+                    IVec2::new(28, 2),
+                    UNIT_TRANSPARENT_INDEX,
                 );
             }
             if framed {
-                draw_unit_frame(&mut picture, FOREIGN_CIVILIAN_FRAME_INDEX);
+                surface.frame_rect(
+                    IRect::new(0, 0, width, height),
+                    FOREIGN_CIVILIAN_FRAME_INDEX,
+                );
             }
-            Some(picture)
+            Some(surface.into_picture())
         }
         StrategicUnitSprite::Army { bucket, owner_slot } => {
             let count = sprites.army_counts.get(usize::from(bucket))?;
-            let mut picture = transparent_tile();
-            blit_indexed(
+            let mut surface = IndexedSurface::new(TILE_SIZE, TILE_SIZE, UNIT_TRANSPARENT_INDEX);
+            surface.blit_keyed(
                 count,
-                0,
-                0,
-                count.width as i32,
-                count.height as i32,
-                &mut picture,
-                0,
-                0,
+                IRect::new(0, 0, count.width as i32, count.height as i32),
+                IVec2::ZERO,
+                UNIT_TRANSPARENT_INDEX,
             );
-            blit_indexed(
+            let source_x = i32::from(owner_slot) * 9;
+            surface.blit_keyed(
                 &sprites.owner_flags,
-                i32::from(owner_slot) * 9,
-                0,
-                9,
-                6,
-                &mut picture,
-                7,
-                2,
+                IRect::new(source_x, 0, source_x + 9, 6),
+                IVec2::new(7, 2),
+                UNIT_TRANSPARENT_INDEX,
             );
-            Some(picture)
+            Some(surface.into_picture())
         }
         StrategicUnitSprite::Naval { frame } => {
             sprites.fleet_frames.get(usize::from(frame)).cloned()
         }
     }
-}
-
-fn transparent_tile() -> IndexedPicture {
-    IndexedPicture {
-        width: TILE_SIZE as u32,
-        height: TILE_SIZE as u32,
-        pixels: vec![UNIT_TRANSPARENT_INDEX; (TILE_SIZE * TILE_SIZE) as usize],
-    }
-}
-
-#[allow(clippy::too_many_arguments)]
-fn blit_indexed(
-    source: &IndexedPicture,
-    src_x: i32,
-    src_y: i32,
-    width: i32,
-    height: i32,
-    destination: &mut IndexedPicture,
-    dest_x: i32,
-    dest_y: i32,
-) {
-    let dest_width = destination.width as i32;
-    let dest_height = destination.height as i32;
-    for row in 0..height {
-        let destination_y = dest_y + row;
-        let source_row = src_y + row;
-        if !(0..dest_height).contains(&destination_y)
-            || !(0..source.height as i32).contains(&source_row)
-        {
-            continue;
-        }
-        for column in 0..width {
-            let destination_x = dest_x + column;
-            let source_column = src_x + column;
-            if !(0..dest_width).contains(&destination_x)
-                || !(0..source.width as i32).contains(&source_column)
-            {
-                continue;
-            }
-            let pixel =
-                source.pixels[source_row as usize * source.width as usize + source_column as usize];
-            if pixel == UNIT_TRANSPARENT_INDEX {
-                continue;
-            }
-            destination.pixels
-                [destination_y as usize * destination.width as usize + destination_x as usize] =
-                pixel;
-        }
-    }
-}
-
-fn draw_unit_frame(picture: &mut IndexedPicture, color: u8) {
-    let width = picture.width as i32;
-    let height = picture.height as i32;
-    for x in 0..width {
-        put_index(picture, x, 0, color);
-        put_index(picture, x, height - 1, color);
-    }
-    for y in 0..height {
-        put_index(picture, 0, y, color);
-        put_index(picture, width - 1, y, color);
-    }
-}
-
-fn put_index(picture: &mut IndexedPicture, x: i32, y: i32, color: u8) {
-    if (0..picture.width as i32).contains(&x) && (0..picture.height as i32).contains(&y) {
-        picture.pixels[y as usize * picture.width as usize + x as usize] = color;
-    }
-}
-
-fn indexed_rgba_image(picture: &IndexedPicture, palette: &DibPalette, transparent: u8) -> Image {
-    let mut rgba = Vec::with_capacity(picture.pixels.len() * 4);
-    for &palette_index in &picture.pixels {
-        let alpha = if palette_index == transparent {
-            0
-        } else {
-            0xff
-        };
-        palette[palette_index].write_rgba(alpha, &mut rgba);
-    }
-    let mut image = Image::new(
-        Extent3d {
-            width: picture.width,
-            height: picture.height,
-            depth_or_array_layers: 1,
-        },
-        TextureDimension::D2,
-        rgba,
-        TextureFormat::Rgba8UnormSrgb,
-        RenderAssetUsages::default(),
-    );
-    image.sampler = ImageSampler::nearest();
-    image
 }
 
 fn strategic_unit_project_key(

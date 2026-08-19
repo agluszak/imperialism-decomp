@@ -69,8 +69,8 @@ impl OceanRaster {
         Self { pixels }
     }
 
-    pub(super) fn pixels(&self) -> &[u8] {
-        &self.pixels
+    pub(super) fn into_pixels(self) -> Vec<u8> {
+        self.pixels
     }
 }
 

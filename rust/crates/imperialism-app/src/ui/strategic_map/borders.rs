@@ -1,12 +1,16 @@
 use imperialism_core::*;
 
-use super::TILE_SIZE;
+use crate::ui::retail_raster::IndexedSurface;
 
 pub(super) const CITY_BORDER_PALETTE: u8 = 0x13;
 pub(super) const MINOR_NATION_BORDER_PALETTE: u8 = 0x0a;
 pub(super) const MAJOR_NATION_BORDER_PALETTES: [u8; MAJOR_NATION_COUNT] =
     [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
-pub(super) fn compose_strategic_borders(state: &GameState, tile: TileId, pixels: &mut [u8]) {
+pub(super) fn compose_strategic_borders(
+    state: &GameState,
+    tile: TileId,
+    pixels: &mut IndexedSurface,
+) {
     let tile_state = state.map()[tile];
     if tile_state.owner_border_mask != 0 {
         if tile_state.terrain != TerrainKind::Water {
@@ -20,7 +24,7 @@ pub(super) fn compose_strategic_borders(state: &GameState, tile: TileId, pixels:
     }
 }
 
-fn draw_nation_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8]) {
+fn draw_nation_border_segments(state: &GameState, tile: TileId, pixels: &mut IndexedSurface) {
     let mask = state.map()[tile].owner_border_mask;
     let owner = border_palette(state.map()[tile].owner_nation);
     let neighbors = HexDirectionTable::from_array(state.map().geometry().neighbors(tile));
@@ -82,7 +86,7 @@ fn draw_nation_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8
     }
 }
 
-fn draw_city_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8]) {
+fn draw_city_border_segments(state: &GameState, tile: TileId, pixels: &mut IndexedSurface) {
     let mask = state.map()[tile].city_border_mask;
     let neighbors = HexDirectionTable::from_array(state.map().geometry().neighbors(tile));
     let direction1 = mask & 2 != 0;
@@ -136,7 +140,7 @@ fn draw_city_border_segments(state: &GameState, tile: TileId, pixels: &mut [u8])
     }
 }
 
-fn draw_sea_zone_borders(state: &GameState, tile: TileId, pixels: &mut [u8]) {
+fn draw_sea_zone_borders(state: &GameState, tile: TileId, pixels: &mut IndexedSurface) {
     let neighbors = HexDirectionTable::from_array(state.map().geometry().neighbors(tile));
     let pairs = [
         (HexDirection::SouthWest, HexDirection::SouthEast),
@@ -252,12 +256,18 @@ fn border_palette(owner: Option<TileOwnerTag>) -> u8 {
         .unwrap_or(MINOR_NATION_BORDER_PALETTE)
 }
 
-pub(super) fn draw_border(pixels: &mut [u8], relation: u8, nation_a: u8, nation_b: u8) {
+pub(super) fn draw_border(pixels: &mut IndexedSurface, relation: u8, nation_a: u8, nation_b: u8) {
     draw_guide_pattern(pixels, relation, 1, nation_a, 2);
     draw_guide_pattern(pixels, relation, 2, nation_b, 2);
 }
 
-fn draw_guide_pattern(pixels: &mut [u8], relation: u8, variant: i32, color: u8, pen: i32) {
+fn draw_guide_pattern(
+    pixels: &mut IndexedSurface,
+    relation: u8,
+    variant: i32,
+    color: u8,
+    pen: i32,
+) {
     match relation {
         0 => draw_guide_set_a(pixels, variant, color, pen),
         1 => draw_guide_set_b(pixels, variant, color, pen),
@@ -273,7 +283,7 @@ fn draw_guide_pattern(pixels: &mut [u8], relation: u8, variant: i32, color: u8, 
     }
 }
 
-fn draw_guide_set_a(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_a(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
     if variant == 0 {
         stroke_guide(
             pixels,
@@ -305,7 +315,7 @@ fn draw_guide_set_a(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
     }
 }
 
-fn draw_guide_set_b(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_b(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
     if variant == 0 {
         stroke_guide(
             pixels,
@@ -337,7 +347,7 @@ fn draw_guide_set_b(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
     }
 }
 
-fn draw_guide_set_c(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_c(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
     let (x1, x2, x3) = if variant == 1 {
         (0x36, 0x34, 0x38)
     } else if variant == 2 {
@@ -354,7 +364,7 @@ fn draw_guide_set_c(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
     );
 }
 
-fn draw_guide_set_d(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_d(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
     if variant == 1 {
         stroke_guide(pixels, (0x2c, 10), &[(0x39, 0)], color, pen);
         return;
@@ -366,12 +376,12 @@ fn draw_guide_set_d(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
     stroke_guide(pixels, (0x2c, 8), &[(0x38, 0)], color, pen);
 }
 
-fn draw_guide_set_tile(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_tile(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
     draw_guide_set_b(pixels, variant, color, pen);
     draw_guide_set_d(pixels, variant, color, pen);
 }
 
-fn draw_guide_set_e(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_e(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
     if variant == 1 {
         stroke_guide(pixels, (0x2c, 0x36), &[(0x39, 0x3e)], color, pen);
         return;
@@ -383,7 +393,7 @@ fn draw_guide_set_e(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
     stroke_guide(pixels, (0x2c, 0x38), &[(0x39, 0x40)], color, pen);
 }
 
-fn draw_guide_set_f(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_f(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
     let (x1, x2, x3) = if variant == 1 {
         (0x36, 0x34, 0x38)
     } else if variant == 2 {
@@ -400,7 +410,7 @@ fn draw_guide_set_f(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
     );
 }
 
-fn draw_guide_set_g(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_g(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
     if variant == 0 {
         stroke_guide(
             pixels,
@@ -432,12 +442,12 @@ fn draw_guide_set_g(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
     }
 }
 
-fn draw_guide_set_h(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_h(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
     draw_guide_set_g(pixels, variant, color, pen);
     draw_guide_set_e(pixels, variant, color, pen);
 }
 
-fn draw_guide_set_i(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_i(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
     if variant == 0 {
         stroke_guide(
             pixels,
@@ -469,7 +479,13 @@ fn draw_guide_set_i(pixels: &mut [u8], variant: i32, color: u8, pen: i32) {
     }
 }
 
-fn stroke_guide(pixels: &mut [u8], origin: (i32, i32), points: &[(i32, i32)], color: u8, pen: i32) {
+fn stroke_guide(
+    pixels: &mut IndexedSurface,
+    origin: (i32, i32),
+    points: &[(i32, i32)],
+    color: u8,
+    pen: i32,
+) {
     let mut x = origin.0;
     let mut y = origin.1;
     for &(next_x, next_y) in points {
@@ -479,46 +495,12 @@ fn stroke_guide(pixels: &mut [u8], origin: (i32, i32), points: &[(i32, i32)], co
     }
 }
 
-fn draw_pen_line(pixels: &mut [u8], start: (i32, i32), end: (i32, i32), color: u8, pen: i32) {
-    let offset = pen / 2;
-    let x0 = start.0 + offset;
-    let y0 = start.1 + offset;
-    let x1 = end.0 + offset;
-    let y1 = end.1 + offset;
-    let dx = (x1 - x0).abs();
-    let dy = (y1 - y0).abs();
-    let sx = (x1 - x0).signum();
-    let sy = (y1 - y0).signum();
-    let mut err = dx - dy;
-    let mut x = x0;
-    let mut y = y0;
-    loop {
-        if x == x1 && y == y1 {
-            break;
-        }
-        stamp_pen(pixels, x, y, color, pen);
-        let twice_err = err * 2;
-        if twice_err > -dy {
-            err -= dy;
-            x += sx;
-        }
-        if twice_err < dx {
-            err += dx;
-            y += sy;
-        }
-    }
-}
-
-fn stamp_pen(pixels: &mut [u8], x: i32, y: i32, color: u8, pen: i32) {
-    for row in 0..pen {
-        for column in 0..pen {
-            put_tile_pixel(pixels, x + column, y + row, color);
-        }
-    }
-}
-
-fn put_tile_pixel(pixels: &mut [u8], x: i32, y: i32, color: u8) {
-    if (0..TILE_SIZE).contains(&x) && (0..TILE_SIZE).contains(&y) {
-        pixels[y as usize * TILE_SIZE as usize + x as usize] = color;
-    }
+fn draw_pen_line(
+    pixels: &mut IndexedSurface,
+    start: (i32, i32),
+    end: (i32, i32),
+    color: u8,
+    pen: i32,
+) {
+    pixels.line_to_gdi(start.into(), end.into(), color, pen);
 }

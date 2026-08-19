@@ -153,8 +153,9 @@ fn engineer_same_tile_hover_frames_the_tile_and_construction_neighbors() {
         CivilianTileAction::EngineerSameTile
     );
 
-    let mut viewport = vec![0xff; VIEWPORT_WIDTH * VIEWPORT_HEIGHT];
-    draw_civilian_hover_highlight(&state, view_origin, engineer, hovered, &mut viewport);
+    let mut surface = IndexedSurface::new(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0xff);
+    draw_civilian_hover_highlight(&state, view_origin, engineer, hovered, &mut surface);
+    let viewport = surface.into_pixels();
 
     let (hover_x, hover_y) = strategic_tile_screen_origin(&state, view_origin, hovered);
     assert_eq!(
@@ -304,13 +305,18 @@ fn city_site_selection_draws_retail_frame_and_neighbor_outline() {
     let state = fixture.state();
 
     let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
-    let mut indices = compose_strategic_map_indices(
-        &state,
-        origin,
-        sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
+    let mut surface = IndexedSurface::from_pixels(
+        VIEWPORT_WIDTH as i32,
+        VIEWPORT_HEIGHT as i32,
+        compose_strategic_map_indices(
+            &state,
+            origin,
+            sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
+        ),
     );
-    let before = indices.clone();
-    draw_city_site_selection(&state, origin, nation, origin, &mut indices);
+    let before = surface.pixels_mut().to_vec();
+    draw_city_site_selection(&state, origin, nation, origin, &mut surface);
+    let indices = surface.into_pixels();
     assert_ne!(indices, before);
     let (x, y) = strategic_tile_screen_origin(&state, origin, origin);
     let top_left = (y * VIEWPORT_WIDTH as i32 + x) as usize;
@@ -464,8 +470,9 @@ fn nation_borders_use_the_owner_palette() {
         map[origin].city_border_mask = 0;
     });
 
-    let mut pixels = vec![1_u8; (TILE_SIZE * TILE_SIZE) as usize];
-    compose_strategic_borders(&fixture.state(), origin, &mut pixels);
+    let mut surface = IndexedSurface::new(TILE_SIZE, TILE_SIZE, 1);
+    compose_strategic_borders(&fixture.state(), origin, &mut surface);
+    let pixels = surface.into_pixels();
     assert!(
         pixels.contains(&MAJOR_NATION_BORDER_PALETTES[usize::from(MajorNationId::new(6).get())]),
         "major nation 6 must stroke with retail palette 0x2e"

@@ -22,6 +22,7 @@ mod query_floater;
 mod random_setup;
 mod random_setup_map;
 mod retail;
+mod retail_raster;
 mod session;
 mod strategic_map;
 mod technology;

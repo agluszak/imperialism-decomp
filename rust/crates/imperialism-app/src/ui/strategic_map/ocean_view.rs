@@ -9,10 +9,8 @@ use crate::AppState;
 use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
 use crate::ui::retail::RetailTree;
-use bevy::asset::RenderAssetUsages;
-use bevy::image::ImageSampler;
+use crate::ui::retail_raster::IndexedSurface;
 use bevy::prelude::*;
-use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::text::LineHeight;
 use bevy::ui::RelativeCursorPosition;
 use imperialism_core::*;
@@ -79,10 +77,9 @@ pub(crate) fn bind_ocean_view(
 
     let ocean = tree.find(root, fourcc!("DOOG"));
     let palette = *assets.default_dib_palette();
-    let image = assets.add_image(indexed_image(
-        &vec![0; VIEWPORT_WIDTH * VIEWPORT_HEIGHT],
-        &palette,
-    ));
+    let image = assets.add_image(
+        IndexedSurface::new(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0).to_image(&palette),
+    );
     commands.entity(ocean).insert((
         OceanMapCanvas { composed: None },
         ImageNode::new(image),
@@ -158,7 +155,12 @@ fn sync_ocean_canvas(
             &render_assets.0,
         );
         if let Some(mut existing) = images.get_mut(&node.image) {
-            *existing = indexed_image(raster.pixels(), retail.assets().default_dib_palette());
+            *existing = IndexedSurface::from_pixels(
+                VIEWPORT_WIDTH as i32,
+                VIEWPORT_HEIGHT as i32,
+                raster.into_pixels(),
+            )
+            .to_image(retail.assets().default_dib_palette());
             canvas.composed = Some(key);
         }
     }
@@ -352,26 +354,6 @@ fn ocean_tile_at_position(state: &GameState, normalized: Vec2, origin: IVec2) ->
         return None;
     };
     state.map().geometry().tile(row as u16, column as u16)
-}
-
-fn indexed_image(indices: &[u8], palette: &DibPalette) -> Image {
-    let mut rgba = Vec::with_capacity(indices.len() * 4);
-    for &palette_index in indices {
-        palette[palette_index].write_rgba(0xff, &mut rgba);
-    }
-    let mut image = Image::new(
-        Extent3d {
-            width: VIEWPORT_WIDTH as u32,
-            height: VIEWPORT_HEIGHT as u32,
-            depth_or_array_layers: 1,
-        },
-        TextureDimension::D2,
-        rgba,
-        TextureFormat::Rgba8UnormSrgb,
-        RenderAssetUsages::default(),
-    );
-    image.sampler = ImageSampler::nearest();
-    image
 }
 
 #[cfg(test)]

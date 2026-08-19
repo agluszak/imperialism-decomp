@@ -4,15 +4,13 @@
 use super::super::GameSession;
 use super::super::RetailUiAssets;
 use super::super::retail::RetailTree;
+use super::super::retail_raster::IndexedSurface;
 use super::map_interaction::{
     MapProjection, MapTransition, StrategicInteraction, StrategicViewport, apply_map_transition,
 };
 use crate::RetailAssetsResource;
-use bevy::asset::RenderAssetUsages;
-use bevy::image::ImageSampler;
 use bevy::picking::events::{Click, Drag, DragEnd, Pointer, Press};
 use bevy::prelude::*;
-use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
 use imperialism_core::*;
 use imperialism_formats::*;
@@ -369,23 +367,28 @@ pub(super) fn compose_minimap(
     drag_pixel: Option<(i32, i32)>,
     marker: ViewportMarker,
 ) -> (Image, MiniMapWindow) {
-    let atlas = compose_minimap_atlas(state);
+    let atlas = IndexedPicture {
+        width: ATLAS_WIDTH as u32,
+        height: ATLAS_HEIGHT as u32,
+        pixels: compose_minimap_atlas(state),
+    };
     let window = minimap_window(view_origin, marker);
-    let mut indices = vec![0_u8; (FRAME_WIDTH * FRAME_HEIGHT) as usize];
-    blit_minimap_window(&atlas, window, state.map().topology, &mut indices);
-    let mut rgba = Vec::with_capacity(indices.len() * 4);
-    for &palette_index in &indices {
-        palette[palette_index].write_rgba(0xff, &mut rgba);
-    }
+    let mut surface = IndexedSurface::new(FRAME_WIDTH, FRAME_HEIGHT, 0);
+    blit_minimap_window(&atlas, window, state.map().topology, &mut surface);
+    let mut image = surface.to_image(palette);
+    let rgba = image
+        .data
+        .as_mut()
+        .expect("composed minimap keeps CPU pixels");
     let marker_origin = viewport_marker(window, drag_pixel, marker);
     draw_white_rect(
-        &mut rgba,
+        rgba,
         marker_origin.0,
         marker_origin.1,
         marker_origin.0 + marker.half_width * 2,
         marker_origin.1 + marker.half_height * 2,
     );
-    (rgba_image(&rgba), window)
+    (image, window)
 }
 
 pub(super) fn compose_minimap_atlas(state: &GameState) -> Vec<u8> {
@@ -472,10 +475,10 @@ pub(super) fn minimap_window(origin: TileId, marker: ViewportMarker) -> MiniMapW
 }
 
 fn blit_minimap_window(
-    atlas: &[u8],
+    atlas: &IndexedPicture,
     window: MiniMapWindow,
     topology: MapTopology,
-    dest: &mut [u8],
+    destination: &mut IndexedSurface,
 ) {
     let src_left = window.source_column * 2;
     let src_top = window.source_row * 2;
@@ -483,72 +486,36 @@ fn blit_minimap_window(
     let src_bottom = src_top + FRAME_HEIGHT;
     let overflow = src_right - ATLAS_SEAM;
     if overflow <= 0 {
-        copy_atlas_rect(
+        destination.copy_rect(
             atlas,
-            (src_left, src_top, src_right, src_bottom),
-            dest,
-            (0, 0),
+            IRect::new(src_left, src_top, src_right, src_bottom),
+            IVec2::ZERO,
         );
         return;
     }
 
     let first_dest_right = ATLAS_SEAM - src_left;
     if !topology.wraps_horizontally() && first_dest_right <= FRAME_WIDTH / 2 {
-        fill_rect(dest, 0, 0, first_dest_right, FRAME_HEIGHT, 0);
+        destination.fill_rect(IRect::new(0, 0, first_dest_right, FRAME_HEIGHT), 0);
     } else {
-        copy_atlas_rect(
+        destination.copy_rect(
             atlas,
-            (src_left, src_top, ATLAS_SEAM, src_bottom),
-            dest,
-            (0, 0),
+            IRect::new(src_left, src_top, ATLAS_SEAM, src_bottom),
+            IVec2::ZERO,
         );
     }
     let second_dest_left = FRAME_WIDTH - overflow;
     if !topology.wraps_horizontally() && overflow <= FRAME_WIDTH / 2 {
-        fill_rect(dest, second_dest_left, 0, FRAME_WIDTH, FRAME_HEIGHT, 0);
-    } else {
-        copy_atlas_rect(
-            atlas,
-            (0, src_top, overflow, src_bottom),
-            dest,
-            (second_dest_left, 0),
+        destination.fill_rect(
+            IRect::new(second_dest_left, 0, FRAME_WIDTH, FRAME_HEIGHT),
+            0,
         );
-    }
-}
-
-fn copy_atlas_rect(
-    atlas: &[u8],
-    src: (i32, i32, i32, i32),
-    dest: &mut [u8],
-    dest_origin: (i32, i32),
-) {
-    let (src_left, src_top, src_right, src_bottom) = src;
-    let (dest_left, dest_top) = dest_origin;
-    let width = src_right - src_left;
-    let height = src_bottom - src_top;
-    for y in 0..height {
-        let src_y = src_top + y;
-        let dest_y = dest_top + y;
-        if !(0..ATLAS_HEIGHT as i32).contains(&src_y) || !(0..FRAME_HEIGHT).contains(&dest_y) {
-            continue;
-        }
-        for x in 0..width {
-            let src_x = src_left + x;
-            let dest_x = dest_left + x;
-            if !(0..ATLAS_WIDTH as i32).contains(&src_x) || !(0..FRAME_WIDTH).contains(&dest_x) {
-                continue;
-            }
-            dest[(dest_y * FRAME_WIDTH + dest_x) as usize] =
-                atlas[(src_y as usize) * ATLAS_WIDTH + src_x as usize];
-        }
-    }
-}
-
-fn fill_rect(dest: &mut [u8], left: i32, top: i32, right: i32, bottom: i32, color: u8) {
-    for y in top.max(0)..bottom.min(FRAME_HEIGHT) {
-        for x in left.max(0)..right.min(FRAME_WIDTH) {
-            dest[(y * FRAME_WIDTH + x) as usize] = color;
-        }
+    } else {
+        destination.copy_rect(
+            atlas,
+            IRect::new(0, src_top, overflow, src_bottom),
+            IVec2::new(second_dest_left, 0),
+        );
     }
 }
 
@@ -599,22 +566,6 @@ fn put_rgba(rgba: &mut [u8], x: i32, y: i32) {
     }
     let start = ((y * FRAME_WIDTH + x) as usize) * 4;
     rgba[start..start + 4].copy_from_slice(&WHITE_RGBA);
-}
-
-fn rgba_image(rgba: &[u8]) -> Image {
-    let mut image = Image::new(
-        Extent3d {
-            width: FRAME_WIDTH as u32,
-            height: FRAME_HEIGHT as u32,
-            depth_or_array_layers: 1,
-        },
-        TextureDimension::D2,
-        rgba.to_vec(),
-        TextureFormat::Rgba8UnormSrgb,
-        RenderAssetUsages::default(),
-    );
-    image.sampler = ImageSampler::nearest();
-    image
 }
 
 /// Retail `TViewMgr::GetColor`.
@@ -867,8 +818,13 @@ mod tests {
         }));
         let view_origin = TileId::new(1);
         let window = minimap_window(view_origin, DETAILED_MARKER);
-        let mut indices = vec![0_u8; (FRAME_WIDTH * FRAME_HEIGHT) as usize];
-        blit_minimap_window(&atlas, window, state.map().topology, &mut indices);
+        let atlas = IndexedPicture {
+            width: ATLAS_WIDTH as u32,
+            height: ATLAS_HEIGHT as u32,
+            pixels: atlas,
+        };
+        let mut surface = IndexedSurface::new(FRAME_WIDTH, FRAME_HEIGHT, 0);
+        blit_minimap_window(&atlas, window, state.map().topology, &mut surface);
         let (mx, my) = viewport_marker(window, None, DETAILED_MARKER);
         assert!((0..FRAME_WIDTH).contains(&(mx + MARKER_WIDTH * 2)));
         assert!((0..FRAME_HEIGHT).contains(&(my + MARKER_HEIGHT * 2)) || my < 0);
