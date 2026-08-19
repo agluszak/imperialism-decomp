@@ -9,9 +9,9 @@ use crate::media::RetailAudioAssets;
 use crate::ui::GameSession;
 use crate::ui::generated;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
-use crate::ui::retail::{ModalDialog, RetailTree};
+use crate::ui::retail::RetailTree;
+use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
 use crate::ui::{RetailUiAssets, fill_brackets, format_currency};
-use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -127,7 +127,6 @@ pub(crate) fn spawn_developer_purchase(
         commands,
         CivilianModal::Purchase(unit, tile),
         AppState::StrategicMap,
-        30,
     );
 }
 
@@ -142,14 +141,15 @@ pub(crate) fn spawn_civilian_disband(commands: &mut Commands, unit: CivilianUnit
         commands,
         CivilianModal::Disband(unit),
         AppState::StrategicMap,
-        31,
     );
 }
 
 fn spawn_modal(commands: &mut Commands, root: Entity) {
-    commands
-        .entity(root)
-        .insert((MapModal, ModalDialog, TabGroup::modal(), GlobalZIndex(30)));
+    commands.entity(root).insert((
+        MapModal,
+        ModalWindow::default(),
+        DespawnOnExit(AppState::StrategicMap),
+    ));
 }
 
 fn bind_added_map_modals(
@@ -162,8 +162,8 @@ fn bind_added_map_modals(
             if let Some(entity) = tree.try_find(root, tag) {
                 commands
                     .entity(entity)
-                    .insert(ActivateOnPress)
-                    .observe(on_map_modal_close);
+                    .insert((ActivateOnPress, ModalDefault, DismissWindow));
+                break;
             }
         }
     }
@@ -394,7 +394,7 @@ fn on_civilian_ledger_action(
                 session.game.activate_civilian_selection(unit);
                 audio.play(&mut commands, SoundId::new(0x2338));
             }
-            commands.entity(root).despawn();
+            commands.entity(root).try_despawn();
         }
     }
 }
@@ -448,7 +448,7 @@ fn bind_added_civilian_modals(
                 &session.game,
             ),
             CivilianModal::Disband(unit) => {
-                let linger = bind_linger_dialog(root, &tree);
+                let linger = bind_linger_dialog(&mut commands, root, &tree);
                 let kind = session
                     .game
                     .civilian_unit(*unit)
@@ -477,7 +477,7 @@ fn bind_added_civilian_modals(
                     .observe(on_civilian_modal_action);
             }
             CivilianModal::Notice { title, body } => {
-                let linger = bind_linger_dialog(root, &tree);
+                let linger = bind_linger_dialog(&mut commands, root, &tree);
                 linger.set_title(&mut commands, &mut assets, title);
                 linger.set_body(&mut commands, &mut assets, body);
                 commands
@@ -645,7 +645,7 @@ fn bind_purchase_dialog(
     assets: &mut RetailUiAssets,
     state: &GameState,
 ) {
-    let linger = bind_linger_dialog(root, tree);
+    let linger = bind_linger_dialog(commands, root, tree);
     let title = get_string(assets, 0x274d, 0);
     let city = city_name(state, tile);
     let cost = format_currency(state.developer_tile_purchase_cost(tile));
@@ -709,11 +709,21 @@ fn bind_civilian_report(
     );
     commands
         .entity(tree.find(root, fourcc!("okay")))
-        .insert((ActivateOnPress, CivilianModalAction::Close))
+        .insert((
+            ActivateOnPress,
+            CivilianModalAction::Close,
+            ModalDefault,
+            DismissWindow,
+        ))
         .observe(on_civilian_modal_action);
     commands
         .entity(tree.find(root, fourcc!("canc")))
-        .insert((ActivateOnPress, CivilianModalAction::CancelOrder(unit)))
+        .insert((
+            ActivateOnPress,
+            CivilianModalAction::CancelOrder(unit),
+            ModalCancel,
+            DismissWindow,
+        ))
         .observe(on_civilian_modal_action);
 }
 
@@ -921,7 +931,7 @@ fn on_civilian_modal_action(
             completed = session.game.disband_civilian(unit);
         }
     }
-    commands.entity(root).despawn();
+    commands.entity(root).try_despawn();
     if completed && let Ok((mut interaction, mut viewport)) = interactions.single_mut() {
         cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
     }
@@ -932,7 +942,6 @@ fn spawn_notice(commands: &mut Commands, title: String, body: String) {
         commands,
         CivilianModal::Notice { title, body },
         AppState::StrategicMap,
-        31,
     );
 }
 
@@ -948,23 +957,4 @@ fn modal_root(
         entity = child_of.get(entity).ok()?.parent();
     }
     None
-}
-
-fn on_map_modal_close(
-    activate: On<Activate>,
-    mut commands: Commands,
-    child_of: Query<&ChildOf>,
-    modals: Query<Entity, With<MapModal>>,
-) {
-    let mut entity = activate.entity;
-    for _ in 0..8 {
-        if modals.contains(entity) {
-            commands.entity(entity).despawn();
-            return;
-        }
-        let Ok(parent) = child_of.get(entity) else {
-            return;
-        };
-        entity = parent.parent();
-    }
 }

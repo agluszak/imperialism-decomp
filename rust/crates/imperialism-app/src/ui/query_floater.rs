@@ -1,7 +1,7 @@
 use super::generated;
-use super::retail::{ModalDialog, RetailTree, RetailUiAssets, ancestor_with};
+use super::retail::{RetailTree, RetailUiAssets};
+use super::window::{DismissWindow, ModalCancel, ModalWindow, WindowManager};
 use crate::{AppState, ReturnTo};
-use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -50,20 +50,18 @@ pub(crate) fn bind_query_floater_control(commands: &mut Commands, root: Entity, 
 fn on_open_query_floater(
     activate: On<Activate>,
     controls: Query<(), With<OpenQueryFloater>>,
-    modals: Query<(), With<ModalDialog>>,
+    windows: Option<Res<WindowManager>>,
     state: Res<State<AppState>>,
     mut commands: Commands,
 ) {
-    if controls.get(activate.entity).is_err() || !modals.is_empty() {
+    if controls.get(activate.entity).is_err() || windows.is_some_and(|windows| windows.has_modal())
+    {
         return;
     }
     let root = commands.spawn_scene(generated::linger_4122()).id();
     commands.entity(root).insert((
         QueryFloaterRoot,
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
-        Pickable::default(),
+        ModalWindow::default(),
         DespawnOnExit(*state.get()),
     ));
 }
@@ -98,17 +96,22 @@ fn bind_query_floaters(
         }
         commands
             .entity(view.find(fourcc!("advi")))
-            .insert((QueryFloaterAction::Advice, ActivateOnPress))
+            .insert((QueryFloaterAction::Advice, ActivateOnPress, DismissWindow))
             .remove::<InteractionDisabled>()
             .observe(on_query_floater_activate);
         commands
             .entity(view.find(fourcc!("deal")))
-            .insert((QueryFloaterAction::DealBook, ActivateOnPress))
+            .insert((QueryFloaterAction::DealBook, ActivateOnPress, DismissWindow))
             .remove::<InteractionDisabled>()
             .observe(on_query_floater_activate);
         commands
             .entity(view.find(fourcc!("cncl")))
-            .insert((QueryFloaterAction::Cancel, ActivateOnPress))
+            .insert((
+                QueryFloaterAction::Cancel,
+                ActivateOnPress,
+                ModalCancel,
+                DismissWindow,
+            ))
             .remove::<InteractionDisabled>()
             .observe(on_query_floater_activate);
         for tag in [
@@ -125,8 +128,6 @@ fn bind_query_floaters(
 fn on_query_floater_activate(
     activate: On<Activate>,
     actions: Query<&QueryFloaterAction>,
-    parents: Query<&ChildOf>,
-    roots: Query<(), With<QueryFloaterRoot>>,
     state: Res<State<AppState>>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
@@ -134,21 +135,15 @@ fn on_query_floater_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let root = ancestor_with(activate.entity, &parents, &roots)
-        .expect("query floater action belongs to its dialog");
     match *action {
         QueryFloaterAction::Advice => {
-            commands.entity(root).despawn();
             super::map_help::spawn(&mut commands, *state.get());
         }
         QueryFloaterAction::DealBook => {
-            commands.entity(root).despawn();
             commands.insert_resource(ReturnTo(*state.get()));
             next_state.set(AppState::DealBook);
         }
-        QueryFloaterAction::Cancel => {
-            commands.entity(root).despawn();
-        }
+        QueryFloaterAction::Cancel => {}
     }
 }
 
@@ -161,12 +156,16 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_plugins(bevy::state::app::StatesPlugin)
+            .add_plugins(crate::ui::UiWindowPlugin)
             .insert_state(AppState::Trade)
             .add_observer(on_query_floater_activate);
-        let root = app.world_mut().spawn(QueryFloaterRoot).id();
+        let root = app
+            .world_mut()
+            .spawn((QueryFloaterRoot, ModalWindow::default()))
+            .id();
         let action = app
             .world_mut()
-            .spawn((QueryFloaterAction::DealBook, ChildOf(root)))
+            .spawn((QueryFloaterAction::DealBook, DismissWindow, ChildOf(root)))
             .id();
 
         app.world_mut()

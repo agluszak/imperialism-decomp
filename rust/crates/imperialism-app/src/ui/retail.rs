@@ -374,9 +374,6 @@ impl RetailUiAssets<'_> {
     }
 }
 
-#[derive(Component, Debug, Default)]
-pub struct ModalDialog;
-
 pub struct RetailUiPlugin;
 
 impl Plugin for RetailUiPlugin {

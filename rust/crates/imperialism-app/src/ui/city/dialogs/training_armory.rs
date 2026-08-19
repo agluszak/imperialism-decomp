@@ -95,7 +95,6 @@ pub(in crate::ui::city) fn bind_training_dialog(
     tree: &RetailTree,
     building_name: String,
 ) {
-    bind_city_dialog_root(commands, root, tree, CityFacilitySlot::TradeSchool);
     let name = tree.find(root, fourcc!("name"));
     commands.entity(name).insert(Text::new(building_name));
     for (tag, text) in [(fourcc!("cos1"), "$100"), (fourcc!("cos2"), "$1,000")] {
@@ -165,7 +164,6 @@ pub(in crate::ui::city) fn configure_armory_dialog(
     let title = assets
         .string(0x271c, 0x20)
         .expect("retail English Armory title");
-    bind_city_dialog_root(commands, root, tree, CityFacilitySlot::Armory);
     let title_control = tree.find(root, fourcc!("titl"));
     commands.entity(title_control).insert((
         Text::new(title),

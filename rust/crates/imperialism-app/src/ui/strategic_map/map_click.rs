@@ -15,7 +15,7 @@ use crate::AppState;
 use crate::media::RetailAudioAssets;
 use crate::ui::GameSession;
 use crate::ui::cursor::{RequestedCursor, request_arrow_cursor, request_turn_event_cursor};
-use crate::ui::retail::ModalDialog;
+use crate::ui::window::WindowManager;
 use bevy::picking::events::{Click, Pointer};
 use bevy::picking::pointer::PointerButton;
 use bevy::prelude::*;
@@ -120,8 +120,11 @@ pub(crate) fn on_strategic_map_click(
     ocean_maps: Query<&RelativeCursorPosition, With<OceanMapCanvas>>,
     mut session: ResMut<GameSession>,
     mut audio: RetailAudioAssets,
+    windows: Option<Res<WindowManager>>,
 ) {
-    if click.event.button != PointerButton::Primary {
+    if click.event.button != PointerButton::Primary
+        || windows.is_some_and(|windows| windows.has_modal())
+    {
         return;
     }
     let tile = if let Ok((cursor, _, _)) = land.get(click.entity) {
@@ -541,10 +544,10 @@ fn sync_strategic_map_cursor(
     maps: Query<(Ref<StrategicInteraction>, &StrategicViewport)>,
     land: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
     ocean: Query<&RelativeCursorPosition, With<OceanMapCanvas>>,
-    modals: Query<(), With<ModalDialog>>,
+    windows: Option<Res<WindowManager>>,
     mut requested: ResMut<RequestedCursor>,
 ) {
-    if !modals.is_empty() {
+    if windows.is_some_and(|windows| windows.has_modal()) {
         request_arrow_cursor(&mut requested);
         return;
     }

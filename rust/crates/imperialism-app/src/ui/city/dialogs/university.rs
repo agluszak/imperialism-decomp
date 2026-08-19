@@ -152,7 +152,6 @@ pub(in crate::ui::city) fn bind_university_dialog(
         normal_color,
         warning_color,
     } = data;
-    bind_city_dialog_root(commands, root, tree, CityFacilitySlot::University);
     for (spec, row_text) in UNIVERSITY_ROWS.iter().zip(rows) {
         let kind = spec.civilian_kind();
         let button = tree.find(root, spec.button_tag);

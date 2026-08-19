@@ -6,10 +6,11 @@ use crate::ui::hover_help::get_string;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::{ModalDialog, RetailPictureSwap, RetailTree, RetailUiAssets};
 use crate::ui::satellite_preview::SatellitePreview;
+use crate::ui::retail::{RetailPictureSwap, RetailTree, RetailUiAssets};
+use crate::ui::window::{DismissWindow, ModalCancel, ModalWindow, WindowManager};
 use crate::{AppState, ReturnTo};
 use bevy::app::AppExit;
 use bevy::input_focus::AutoFocus;
-use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::InteractionDisabled;
@@ -758,7 +759,7 @@ fn load_error_text(assets: &RetailAssetsResource, error: &LoadGameError) -> Stri
 }
 
 fn spawn_notice(commands: &mut Commands, notice: LoadSaveNotice) {
-    spawn_linger_dialog(commands, notice, AppState::LoadSave, 20);
+    spawn_linger_dialog(commands, notice, AppState::LoadSave);
 }
 
 fn bind_load_save_notice(
@@ -768,7 +769,7 @@ fn bind_load_save_notice(
     mut assets: RetailUiAssets,
 ) {
     let (root, notice) = notice.into_inner();
-    let linger = bind_linger_dialog(root, &tree);
+    let linger = bind_linger_dialog(&mut commands, root, &tree);
     let body = match notice {
         LoadSaveNotice::PickSlot => assets
             .string(PICK_SLOT_STRING_GROUP, PICK_SLOT_STRING_INDEX)
@@ -818,7 +819,7 @@ fn on_load_save_notice_activate(
     };
     match (*action, notice) {
         (LoadSaveNoticeAction::Accept, LoadSaveNotice::ConfirmLoad) => {
-            commands.entity(notice_entity).despawn();
+            commands.entity(notice_entity).try_despawn();
             let Ok(root) = roots.single() else {
                 return;
             };
@@ -835,7 +836,7 @@ fn on_load_save_notice_activate(
             );
         }
         (LoadSaveNoticeAction::Accept, _) | (LoadSaveNoticeAction::Dismiss, _) => {
-            commands.entity(notice_entity).despawn();
+            commands.entity(notice_entity).try_despawn();
         }
     }
 }
@@ -852,19 +853,19 @@ fn on_open_flag_menu(
     activate: On<Activate>,
     openers: Query<&OpenFlagMenu>,
     existing: Query<(), With<FlagMenuRoot>>,
-    dialogs: Query<(), With<ModalDialog>>,
+    windows: Option<Res<WindowManager>>,
     mut commands: Commands,
 ) {
-    if openers.get(activate.entity).is_err() || !existing.is_empty() || !dialogs.is_empty() {
+    if openers.get(activate.entity).is_err()
+        || !existing.is_empty()
+        || windows.is_some_and(|windows| windows.has_modal())
+    {
         return;
     }
     let root = commands.spawn_scene(generated::linger_4140()).id();
     commands.entity(root).insert((
         FlagMenuRoot,
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
-        Pickable::default(),
+        ModalWindow::default(),
         DespawnOnExit(AppState::StrategicMap),
     ));
 }
@@ -912,18 +913,23 @@ fn bind_flag_menu(
         (fourcc!("cred"), FlagMenuAction::Credits),
         (fourcc!("quit"), FlagMenuAction::Quit),
     ] {
+        let control = tree.find(root, tag);
         commands
-            .entity(tree.find(root, tag))
+            .entity(control)
             .insert(action)
             .remove::<InteractionDisabled>()
             .observe(on_flag_menu_activate);
+        if action == FlagMenuAction::Cancel {
+            commands
+                .entity(control)
+                .insert((ModalCancel, DismissWindow));
+        }
     }
 }
 
 fn on_flag_menu_activate(
     activate: On<Activate>,
     actions: Query<&FlagMenuAction>,
-    menus: Query<Entity, With<FlagMenuRoot>>,
     prompts: Query<(), With<FlagMenuPrompt>>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
@@ -935,11 +941,7 @@ fn on_flag_menu_activate(
         return;
     };
     match *action {
-        FlagMenuAction::Cancel => {
-            for entity in &menus {
-                commands.entity(entity).despawn();
-            }
-        }
+        FlagMenuAction::Cancel => {}
         FlagMenuAction::Save => {
             open_load_save(
                 &mut commands,
@@ -978,7 +980,6 @@ fn open_flag_menu_prompt(commands: &mut Commands, pending: FlagMenuPending) {
         commands,
         FlagMenuPrompt { kind: pending },
         AppState::StrategicMap,
-        21,
     );
 }
 
@@ -997,7 +998,7 @@ fn bind_flag_menu_prompt(
     let body = assets
         .string(0x2737, index)
         .expect("retail flag-menu confirm string");
-    let linger = bind_linger_dialog(root, &tree);
+    let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_body(&mut commands, &mut assets, body);
     commands
         .entity(linger.okay)
@@ -1014,7 +1015,7 @@ fn bind_flag_menu_prompt(
 fn on_flag_menu_prompt_activate(
     activate: On<Activate>,
     actions: Query<&FlagMenuPromptAction>,
-    prompts: Query<(Entity, &FlagMenuPrompt)>,
+    prompts: Query<&FlagMenuPrompt>,
     menus: Query<Entity, With<FlagMenuRoot>>,
     mut next_state: ResMut<NextState<AppState>>,
     mut exit: MessageWriter<AppExit>,
@@ -1023,17 +1024,14 @@ fn on_flag_menu_prompt_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let Ok((prompt_entity, prompt)) = prompts.single() else {
+    let Ok(prompt) = prompts.single() else {
         return;
     };
     match *action {
-        FlagMenuPromptAction::Dismiss => {
-            commands.entity(prompt_entity).despawn();
-        }
+        FlagMenuPromptAction::Dismiss => {}
         FlagMenuPromptAction::Accept => {
-            commands.entity(prompt_entity).despawn();
             for entity in &menus {
-                commands.entity(entity).despawn();
+                commands.entity(entity).try_despawn();
             }
             match prompt.kind {
                 FlagMenuPending::NewGame => {
@@ -1063,6 +1061,7 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_plugins(bevy::state::app::StatesPlugin)
+            .add_plugins(crate::ui::UiWindowPlugin)
             .add_message::<AppExit>()
             .insert_state(initial)
             .insert_resource(ReturnTo(AppState::MainMenu));
@@ -1109,18 +1108,22 @@ mod tests {
     }
 
     fn spawn_test_flag_menu(mut commands: Commands) {
-        commands.spawn((FlagMenuRoot, Node::default()));
+        commands.spawn((FlagMenuRoot, ModalWindow::default(), Node::default()));
     }
 
     fn spawn_test_flag_prompt(mut commands: Commands, kind: FlagMenuPending) {
         let root = commands
-            .spawn((FlagMenuPrompt { kind }, Node::default()))
+            .spawn((
+                FlagMenuPrompt { kind },
+                ModalWindow::default(),
+                Node::default(),
+            ))
             .id();
         commands
-            .spawn((FlagMenuPromptAction::Accept, ChildOf(root)))
+            .spawn((FlagMenuPromptAction::Accept, DismissWindow, ChildOf(root)))
             .observe(on_flag_menu_prompt_activate);
         commands
-            .spawn((FlagMenuPromptAction::Dismiss, ChildOf(root)))
+            .spawn((FlagMenuPromptAction::Dismiss, DismissWindow, ChildOf(root)))
             .observe(on_flag_menu_prompt_activate);
     }
 

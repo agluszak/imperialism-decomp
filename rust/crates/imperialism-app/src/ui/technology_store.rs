@@ -4,10 +4,10 @@ use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::map_help;
-use super::retail::{ModalDialog, RetailPictureSwap, RetailTree, RetailUiAssets, ancestor_with};
+use super::retail::{RetailPictureSwap, RetailTree, RetailUiAssets};
 use super::session::GameSession;
+use super::window::{DismissWindow, ModalDefault, ModalWindow};
 use crate::{AppState, RetailAssetsResource};
-use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress, ScrollArea};
@@ -53,9 +53,6 @@ struct TechnologyHistoryRoot(Technology);
 
 #[derive(Component)]
 struct TechnologyNoticeRoot;
-
-#[derive(Component)]
-struct CloseTechnologyModal;
 
 pub(crate) struct TechnologyStorePlugin;
 
@@ -386,7 +383,6 @@ fn on_technology_purchase(
             &mut commands,
             TechnologyNoticeRoot,
             AppState::TechnologyStore,
-            30,
         );
     }
 }
@@ -456,10 +452,7 @@ fn on_technology_history(
     let root = commands.spawn_scene(generated::techstore_2370()).id();
     commands.entity(root).insert((
         TechnologyHistoryRoot(history.0),
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(30),
-        Pickable::default(),
+        ModalWindow::default(),
         DespawnOnExit(AppState::TechnologyStore),
     ));
 }
@@ -535,39 +528,21 @@ fn bind_technology_modals(
             Pickable::IGNORE,
             ChildOf(scroll),
         ));
-        commands
-            .entity(view.find(fourcc!("okay")))
-            .insert((ActivateOnPress, CloseTechnologyModal))
-            .observe(on_close_technology_modal);
+        commands.entity(view.find(fourcc!("okay"))).insert((
+            ActivateOnPress,
+            ModalDefault,
+            DismissWindow,
+        ));
     }
     for root in &notices {
-        let linger = bind_linger_dialog(root, &tree);
+        let linger = bind_linger_dialog(&mut commands, root, &tree);
         let body = assets
             .string(0x2745, 4)
             .expect("retail insufficient-funds message");
         linger.set_title(&mut commands, &mut assets, "");
         linger.set_body(&mut commands, &mut assets, body);
-        commands
-            .entity(linger.okay)
-            .insert((ActivateOnPress, CloseTechnologyModal))
-            .observe(on_close_technology_modal);
+        commands.entity(linger.okay).insert(ActivateOnPress);
         commands.entity(linger.cancel).insert(Visibility::Hidden);
-    }
-}
-
-#[allow(clippy::type_complexity)]
-fn on_close_technology_modal(
-    activate: On<Activate>,
-    actions: Query<(), With<CloseTechnologyModal>>,
-    parents: Query<&ChildOf>,
-    roots: Query<(), Or<(With<TechnologyHistoryRoot>, With<TechnologyNoticeRoot>)>>,
-    mut commands: Commands,
-) {
-    if actions.get(activate.entity).is_err() {
-        return;
-    }
-    if let Some(root) = ancestor_with(activate.entity, &parents, &roots) {
-        commands.entity(root).despawn();
     }
 }
 
