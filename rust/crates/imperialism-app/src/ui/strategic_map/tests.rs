@@ -1,6 +1,4 @@
-use super::borders::{
-    CITY_BORDER_PALETTE, MAJOR_NATION_BORDER_PALETTES, compose_strategic_borders,
-};
+use super::borders::{CITY_BORDER_PALETTE, compose_strategic_borders};
 use super::overlays::{
     IMPROVEMENT_PICTURE_IDS, RESOURCE_ICON_HEIGHT, RESOURCE_ICON_WIDTH, RESOURCE_OVERLAY_HEIGHT,
     RESOURCE_OVERLAY_WIDTH, city_marker_offset, transport_marker_offset,
@@ -10,6 +8,7 @@ use super::terrain::{
     uses_river_mouth_coast_frame,
 };
 use super::*;
+use crate::ui::retail_palette::major_nation_palette;
 use crate::ui::test_support::{
     beginning_map_view_origin, beginning_of_game_parts_with, strategic_map_beginning_context,
 };
@@ -153,10 +152,14 @@ fn engineer_same_tile_hover_frames_the_tile_and_construction_neighbors() {
         CivilianTileAction::EngineerSameTile
     );
 
-    let mut viewport = vec![0xff; VIEWPORT_WIDTH * VIEWPORT_HEIGHT];
-    draw_civilian_hover_highlight(&state, view_origin, engineer, hovered, &mut viewport);
+    let mut surface = indexed_picture(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0xff);
+    draw_civilian_hover_highlight(&state, view_origin, engineer, hovered, &mut surface);
+    let viewport = surface.pixels;
 
-    let (hover_x, hover_y) = strategic_tile_screen_origin(&state, view_origin, hovered);
+    let hover_origin = DetailedMapProjection::new(state.map().geometry(), view_origin)
+        .tile_origin(hovered)
+        .unwrap();
+    let (hover_x, hover_y) = (hover_origin.x, hover_origin.y);
     assert_eq!(
         viewport[hover_y as usize * VIEWPORT_WIDTH + hover_x as usize],
         MAP_SELECTION_PALETTE_INDEX,
@@ -245,8 +248,8 @@ fn water_coast_corners_pull_distinct_frame_inks() {
 
     let pixels = compose_strategic_base_tile(&state, origin, origin, &terrain, &rivers);
     let base_ink = frame_for_offset(BASE_WATER_OFFSETS[0]) as u8;
-    assert!(pixels.contains(&base_ink));
-    assert!(pixels.iter().any(|&pixel| pixel >= 22));
+    assert!(pixels.pixels.contains(&base_ink));
+    assert!(pixels.pixels.iter().any(|&pixel| pixel >= 22));
 }
 
 #[test]
@@ -263,7 +266,7 @@ fn river_masks_replace_opaque_destination_indexes() {
     let state = fixture.state();
 
     let pixels = compose_strategic_base_tile(&state, origin, origin, &terrain, &rivers);
-    assert!(pixels.iter().all(|&pixel| pixel == 0x80));
+    assert!(pixels.pixels.iter().all(|&pixel| pixel == 0x80));
 }
 
 #[test]
@@ -281,6 +284,7 @@ fn bounded_seam_tiles_use_the_dedicated_seam_frame() {
     let pixels = compose_strategic_base_tile(&state, origin, seam, &terrain, &rivers);
     assert!(
         pixels
+            .pixels
             .iter()
             .all(|&pixel| pixel == frame_for_offset(0xc80) as u8)
     );
@@ -304,15 +308,19 @@ fn city_site_selection_draws_retail_frame_and_neighbor_outline() {
     let state = fixture.state();
 
     let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
-    let mut indices = compose_strategic_map_indices(
+    let mut surface = compose_strategic_map_picture(
         &state,
         origin,
         sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
     );
-    let before = indices.clone();
-    draw_city_site_selection(&state, origin, nation, origin, &mut indices);
+    let before = surface.pixels.clone();
+    draw_city_site_selection(&state, origin, nation, origin, &mut surface);
+    let indices = surface.pixels;
     assert_ne!(indices, before);
-    let (x, y) = strategic_tile_screen_origin(&state, origin, origin);
+    let projected_origin = DetailedMapProjection::new(state.map().geometry(), origin)
+        .tile_origin(origin)
+        .unwrap();
+    let (x, y) = (projected_origin.x, projected_origin.y);
     let top_left = (y * VIEWPORT_WIDTH as i32 + x) as usize;
     assert_eq!(indices[top_left], MAP_SELECTION_PALETTE_INDEX);
 }
@@ -376,7 +384,7 @@ fn completed_rails_use_the_later_mask_family_than_pending_rails() {
         origin,
         sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
     );
-    assert!(completed.contains(&(0x80 | 0x19)));
+    assert!(completed.pixels.contains(&(0x80 | 0x19)));
 
     fixture.edit(|map, origin| {
         map[origin].transport_links = TileTransportLinks::empty();
@@ -388,7 +396,7 @@ fn completed_rails_use_the_later_mask_family_than_pending_rails() {
         origin,
         sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
     );
-    assert!(pending.contains(&(0x80 | 0x1f)));
+    assert!(pending.pixels.contains(&(0x80 | 0x1f)));
 }
 
 #[test]
@@ -415,6 +423,7 @@ fn prospectable_resources_use_extractive_overlay_or_undeveloped_icon() {
     );
     assert!(
         undeveloped
+            .pixels
             .iter()
             .any(|&pixel| (0xa0..0xb0).contains(&pixel))
     );
@@ -428,7 +437,7 @@ fn prospectable_resources_use_extractive_overlay_or_undeveloped_icon() {
         origin,
         sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
     );
-    assert!(developed.contains(&0xb0));
+    assert!(developed.pixels.contains(&0xb0));
 }
 
 #[test]
@@ -450,7 +459,7 @@ fn city_tiles_blit_the_capital_improvement_ink() {
         origin,
         sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
     );
-    assert!(pixels.contains(&0x90));
+    assert!(pixels.pixels.contains(&0x90));
 }
 
 #[test]
@@ -464,14 +473,15 @@ fn nation_borders_use_the_owner_palette() {
         map[origin].city_border_mask = 0;
     });
 
-    let mut pixels = vec![1_u8; (TILE_SIZE * TILE_SIZE) as usize];
-    compose_strategic_borders(&fixture.state(), origin, &mut pixels);
+    let mut surface = indexed_picture(TILE_SIZE, TILE_SIZE, 1);
+    compose_strategic_borders(&fixture.state(), origin, &mut surface);
+    let pixels = surface.pixels;
     assert!(
-        pixels.contains(&MAJOR_NATION_BORDER_PALETTES[usize::from(MajorNationId::new(6).get())]),
+        pixels.contains(&major_nation_palette(MajorNationId::new(6))),
         "major nation 6 must stroke with retail palette 0x2e"
     );
     assert!(
-        !pixels.contains(&MAJOR_NATION_BORDER_PALETTES[usize::from(MajorNationId::new(0).get())]),
+        !pixels.contains(&major_nation_palette(MajorNationId::new(0))),
         "a nation-6 border must not use another major's palette"
     );
 }
@@ -485,11 +495,12 @@ fn beginning_of_game_viewport_paints_settlements_borders_and_resources() {
     let view_origin = state.map().viewport_origin_centered_on(focus);
 
     let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
-    let indices = compose_strategic_map_indices(
+    let indices = compose_strategic_map_picture(
         &state,
         view_origin,
         sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
-    );
+    )
+    .pixels;
     assert!(
         (0x90..=0x93)
             .chain(0x9c..=0x9d)
@@ -502,9 +513,7 @@ fn beginning_of_game_viewport_paints_settlements_borders_and_resources() {
     );
     assert!(
         indices.contains(&CITY_BORDER_PALETTE)
-            || MAJOR_NATION_BORDER_PALETTES
-                .iter()
-                .any(|palette| indices.contains(palette)),
+            || MajorNationId::all().any(|nation| indices.contains(&major_nation_palette(nation))),
         "ownership borders should copy nation or city palette ink"
     );
     assert!(

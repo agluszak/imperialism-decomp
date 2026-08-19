@@ -1,5 +1,8 @@
+use bevy::prelude::IVec2;
 use imperialism_core::*;
 use imperialism_formats::*;
+
+use crate::ui::retail_raster::IndexedRasterExt;
 
 use super::{RIVER_MASK_TRANSPARENT_INDEX, TILE_SIZE, VIEWPORT_TILE_SPAN};
 
@@ -65,20 +68,10 @@ pub(super) fn compose_strategic_base_tile(
     tile: TileId,
     terrain_pictures: &[IndexedPicture],
     river_masks: &[IndexedPicture],
-) -> Vec<u8> {
+) -> IndexedPicture {
     let tile_state = state.map()[tile];
-    let center_column = {
-        let (_, origin_column) = state.map().geometry().row_column(view_origin);
-        (i32::from(origin_column) + VIEWPORT_TILE_SPAN / 2)
-            .rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
-    };
-    let (_, tile_column) = state.map().geometry().row_column(tile);
-    // Retail's stored flag is inverted: this seam substitution belongs to Rust's bounded map.
-    let wrapped_seam = state.map().topology == MapTopology::Bounded
-        && ((tile_column == 0 && center_column > 54)
-            || (tile_column == STRATEGIC_MAP_WIDTH - 1 && center_column < 54));
-    if wrapped_seam {
-        return terrain_pictures[frame_for_offset(0xc80)].pixels.clone();
+    if uses_bounded_seam_frame(state, view_origin, tile) {
+        return terrain_pictures[frame_for_offset(0xc80)].clone();
     }
 
     let rendering = tile_state.rendering;
@@ -99,9 +92,7 @@ pub(super) fn compose_strategic_base_tile(
         };
         BASE_LAND_OFFSETS[subtype][variant]
     };
-    let mut pixels = terrain_pictures[frame_for_offset(base_offset)]
-        .pixels
-        .clone();
+    let mut picture = terrain_pictures[frame_for_offset(base_offset)].clone();
 
     if tile_state.terrain != TerrainKind::Water {
         let subtype = usize::try_from(tile_state.gate)
@@ -119,16 +110,33 @@ pub(super) fn compose_strategic_base_tile(
                 continue;
             };
             let source = &terrain_pictures[frame_for_offset(transition_offset)].pixels;
-            copy_transition_wedge(direction, source, &mut pixels);
+            copy_transition_wedge(direction, source, &mut picture.pixels);
         }
     }
 
     if tile_state.terrain == TerrainKind::Water && rendering.coast_or_secondary_mask != 0 {
-        compose_water_coast_corners(rendering, terrain_pictures, &mut pixels);
+        compose_water_coast_corners(rendering, terrain_pictures, &mut picture.pixels);
     } else if let Some(river_sprite) = rendering.river_sprite {
-        compose_river(river_sprite, river_masks, &mut pixels);
+        compose_river(river_sprite, river_masks, &mut picture);
     }
-    pixels
+    picture
+}
+
+pub(super) fn uses_bounded_seam_frame(
+    state: &GameState,
+    view_origin: TileId,
+    tile: TileId,
+) -> bool {
+    let center_column = {
+        let (_, origin_column) = state.map().geometry().row_column(view_origin);
+        (i32::from(origin_column) + VIEWPORT_TILE_SPAN / 2)
+            .rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
+    };
+    let (_, tile_column) = state.map().geometry().row_column(tile);
+    // Retail's stored flag is inverted: this seam substitution belongs to Rust's bounded map.
+    state.map().topology == MapTopology::Bounded
+        && ((tile_column == 0 && center_column > 54)
+            || (tile_column == STRATEGIC_MAP_WIDTH - 1 && center_column < 54))
 }
 
 fn compose_water_coast_corners(
@@ -190,21 +198,21 @@ pub(super) fn uses_river_mouth_coast_frame(corner: usize, river_sprite: Option<u
     )
 }
 
-fn compose_river(river_sprite: RiverSprite, river_masks: &[IndexedPicture], pixels: &mut [u8]) {
+fn compose_river(
+    river_sprite: RiverSprite,
+    river_masks: &[IndexedPicture],
+    picture: &mut IndexedPicture,
+) {
     let mut normalized = river_sprite.retail();
     if normalized > 0x1a {
         normalized -= 0x10;
     }
     let mask = usize::from(normalized - 0x0b);
-    apply_tile_mask(&river_masks[mask].pixels, pixels);
-}
-
-pub(super) fn apply_tile_mask(source: &[u8], pixels: &mut [u8]) {
-    for (&source_pixel, destination_pixel) in source.iter().zip(pixels) {
-        if source_pixel != RIVER_MASK_TRANSPARENT_INDEX {
-            *destination_pixel = source_pixel;
-        }
-    }
+    picture.blit_keyed_at(
+        &river_masks[mask],
+        IVec2::ZERO,
+        RIVER_MASK_TRANSPARENT_INDEX,
+    );
 }
 pub(super) fn frame_for_offset(offset: u16) -> usize {
     assert_eq!(offset % TILE_SIZE as u16, 0);
@@ -215,38 +223,38 @@ fn copy_transition_wedge(direction: HexDirection, source: &[u8], destination: &m
     match direction {
         HexDirection::NorthEast => {
             for row in 0x20..0x40 {
-                copy_tile_span(source, destination, row, 0x20, row - 0x1f);
+                copy_dib_span(source, destination, row, 0x20, row - 0x1f);
             }
         }
         HexDirection::East => {
             for row in 1..0x20 {
-                copy_tile_span(source, destination, row, 0x40 - row, row);
+                copy_dib_span(source, destination, row, 0x40 - row, row);
             }
             for row in 0x20..0x3f {
-                copy_tile_span(source, destination, row, row + 1, 0x3f - row);
+                copy_dib_span(source, destination, row, row + 1, 0x3f - row);
             }
         }
         HexDirection::SouthEast => {
             for row in 0..0x20 {
-                copy_tile_span(source, destination, row, 0x20, 0x20 - row);
+                copy_dib_span(source, destination, row, 0x20, 0x20 - row);
             }
         }
         HexDirection::SouthWest => {
             for row in 0..0x20 {
-                copy_tile_span(source, destination, row, row, 0x20 - row);
+                copy_dib_span(source, destination, row, row, 0x20 - row);
             }
         }
         HexDirection::West => {
             for row in 0..0x20 {
-                copy_tile_span(source, destination, row, 0, row + 1);
+                copy_dib_span(source, destination, row, 0, row + 1);
             }
             for row in 0x20..0x40 {
-                copy_tile_span(source, destination, row, 0, 0x40 - row);
+                copy_dib_span(source, destination, row, 0, 0x40 - row);
             }
         }
         HexDirection::NorthWest => {
             for row in 0x21..0x40 {
-                copy_tile_span(source, destination, row, 0x40 - row, row - 0x20);
+                copy_dib_span(source, destination, row, 0x40 - row, row - 0x20);
             }
         }
     }
@@ -257,13 +265,13 @@ fn copy_coast_corner(corner: usize, source: &[u8], destination: &mut [u8]) {
         0 => {
             for row in 0x20..0x40 {
                 let half_row = (row - 0x20) / 2;
-                copy_tile_span(source, destination, row, 0x1f - half_row, 2 + half_row * 2);
+                copy_dib_span(source, destination, row, 0x1f - half_row, 2 + half_row * 2);
             }
         }
         1 => {
             for row in 0x20..0x40 {
                 let first_column = 0x20 + (row - 0x20) / 2;
-                copy_tile_span(source, destination, row, first_column, 0x40 - first_column);
+                copy_dib_span(source, destination, row, first_column, 0x40 - first_column);
             }
         }
         2 => {
@@ -272,7 +280,7 @@ fn copy_coast_corner(corner: usize, source: &[u8], destination: &mut [u8]) {
                 if row & 2 != 0 {
                     first_column -= 1;
                 }
-                copy_tile_span(source, destination, row, first_column, 0x40 - first_column);
+                copy_dib_span(source, destination, row, first_column, 0x40 - first_column);
             }
         }
         3 => {
@@ -280,7 +288,7 @@ fn copy_coast_corner(corner: usize, source: &[u8], destination: &mut [u8]) {
                 let first_column = 0x10 + row / 2;
                 let pair_in_group = (row / 2) & 3;
                 let end_column = 0x30 + ((4 - pair_in_group) & 3);
-                copy_tile_span(
+                copy_dib_span(
                     source,
                     destination,
                     row,
@@ -291,19 +299,19 @@ fn copy_coast_corner(corner: usize, source: &[u8], destination: &mut [u8]) {
         }
         4 => {
             for row in 0..0x20 {
-                copy_tile_span(source, destination, row, 0, 0x10 + row / 2);
+                copy_dib_span(source, destination, row, 0, 0x10 + row / 2);
             }
         }
         5 => {
             for row in 0x20..0x40 {
-                copy_tile_span(source, destination, row, 0, 0x20 - (row - 0x20) / 2);
+                copy_dib_span(source, destination, row, 0, 0x20 - (row - 0x20) / 2);
             }
         }
         _ => unreachable!("strategic tile has six coast corners"),
     }
 }
 
-fn copy_tile_span(
+fn copy_dib_span(
     source: &[u8],
     destination: &mut [u8],
     dib_row: usize,

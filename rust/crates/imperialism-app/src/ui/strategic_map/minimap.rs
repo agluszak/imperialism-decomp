@@ -4,15 +4,14 @@
 use super::super::GameSession;
 use super::super::RetailUiAssets;
 use super::super::retail::RetailTree;
+use super::super::retail_raster::{IndexedRasterExt, indexed_picture};
 use super::map_interaction::{
     MapProjection, MapTransition, StrategicInteraction, StrategicViewport, apply_map_transition,
 };
 use crate::RetailAssetsResource;
-use bevy::asset::RenderAssetUsages;
-use bevy::image::ImageSampler;
+use crate::ui::retail_palette::view_mgr_color;
 use bevy::picking::events::{Click, Drag, DragEnd, Pointer, Press};
 use bevy::prelude::*;
-use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
 use imperialism_core::*;
 use imperialism_formats::*;
@@ -45,6 +44,8 @@ const OCEAN_MARKER: ViewportMarker = ViewportMarker {
 const MARKER_WIDTH: i32 = DETAILED_MARKER.half_width;
 #[cfg(test)]
 const MARKER_HEIGHT: i32 = DETAILED_MARKER.half_height;
+const MARKER_PALETTE: u8 = 0x13;
+#[cfg(test)]
 const WHITE_RGBA: [u8; 4] = [0xff, 0xff, 0xff, 0xff];
 
 #[derive(Component)]
@@ -371,26 +372,24 @@ pub(super) fn compose_minimap(
 ) -> (Image, MiniMapWindow) {
     let atlas = compose_minimap_atlas(state);
     let window = minimap_window(view_origin, marker);
-    let mut indices = vec![0_u8; (FRAME_WIDTH * FRAME_HEIGHT) as usize];
-    blit_minimap_window(&atlas, window, state.map().topology, &mut indices);
-    let mut rgba = Vec::with_capacity(indices.len() * 4);
-    for &palette_index in &indices {
-        palette[palette_index].write_rgba(0xff, &mut rgba);
-    }
-    let marker_origin = viewport_marker(window, drag_pixel, marker);
-    draw_white_rect(
-        &mut rgba,
-        marker_origin.0,
-        marker_origin.1,
-        marker_origin.0 + marker.half_width * 2,
-        marker_origin.1 + marker.half_height * 2,
+    let mut picture = indexed_picture(FRAME_WIDTH, FRAME_HEIGHT, 0);
+    blit_minimap_window(&atlas, window, state.map().topology, &mut picture);
+    let (x, y) = viewport_marker(window, drag_pixel, marker);
+    picture.frame_rect(
+        IRect::new(
+            x,
+            y,
+            x + marker.half_width * 2 + 1,
+            y + marker.half_height * 2 + 1,
+        ),
+        MARKER_PALETTE,
     );
-    (rgba_image(&rgba), window)
+    (picture.to_image(palette), window)
 }
 
-pub(super) fn compose_minimap_atlas(state: &GameState) -> Vec<u8> {
+pub(super) fn compose_minimap_atlas(state: &GameState) -> IndexedPicture {
     let fill = view_mgr_color(0x32);
-    let mut atlas = vec![fill; ATLAS_WIDTH * ATLAS_HEIGHT];
+    let mut atlas = indexed_picture(ATLAS_WIDTH as i32, ATLAS_HEIGHT as i32, fill);
     for index in 0..STRATEGIC_TILE_COUNT {
         let tile = TileId::new(index as u16);
         let Some(palette_index) = atlas_owner_palette(state.map()[tile].owner_nation) else {
@@ -398,36 +397,29 @@ pub(super) fn compose_minimap_atlas(state: &GameState) -> Vec<u8> {
         };
         let column = (index % MAP_COLUMNS as usize) * 2;
         let row = (index / MAP_COLUMNS as usize) * 2;
-        atlas[row * ATLAS_WIDTH + column] = palette_index;
-        atlas[row * ATLAS_WIDTH + column + 1] = palette_index;
-        atlas[(row + 1) * ATLAS_WIDTH + column] = palette_index;
-        atlas[(row + 1) * ATLAS_WIDTH + column + 1] = palette_index;
+        atlas.fill_rect(
+            IRect::new(column as i32, row as i32, column as i32 + 2, row as i32 + 2),
+            palette_index,
+        );
     }
-    smooth_minimap_atlas(&mut atlas);
+    smooth_minimap_atlas(&mut atlas.pixels);
     atlas
 }
 
 fn smooth_minimap_atlas(atlas: &mut [u8]) {
     let mut scratch = atlas.to_vec();
-    let stride = ATLAS_WIDTH as i32;
-    let mut compare = stride * 2 + 1;
-    let mut scratch_pos = 0x1b1;
-    for _ in 0..0x70 {
-        for _ in 0..0xd6 {
-            let center = atlas[compare as usize];
-            let left = atlas[(compare - 1) as usize];
-            let right = atlas[(compare + 1) as usize];
-            if atlas[(compare - stride) as usize] != center && (left != center || right != center) {
-                scratch[scratch_pos] = if left != center { left } else { right };
+    for y in 2..114 {
+        for x in 1..215 {
+            let index = y * ATLAS_WIDTH + x;
+            let center = atlas[index];
+            let left = atlas[index - 1];
+            let right = atlas[index + 1];
+            if (atlas[index - ATLAS_WIDTH] != center || atlas[index + ATLAS_WIDTH] != center)
+                && (left != center || right != center)
+            {
+                scratch[index] = if left != center { left } else { right };
             }
-            if atlas[(compare + stride) as usize] != center && (left != center || right != center) {
-                scratch[scratch_pos] = if left != center { left } else { right };
-            }
-            compare += 1;
-            scratch_pos += 1;
         }
-        compare += stride - 0xd6;
-        scratch_pos += 2;
     }
     atlas.copy_from_slice(&scratch);
 }
@@ -472,10 +464,10 @@ pub(super) fn minimap_window(origin: TileId, marker: ViewportMarker) -> MiniMapW
 }
 
 fn blit_minimap_window(
-    atlas: &[u8],
+    atlas: &IndexedPicture,
     window: MiniMapWindow,
     topology: MapTopology,
-    dest: &mut [u8],
+    destination: &mut IndexedPicture,
 ) {
     let src_left = window.source_column * 2;
     let src_top = window.source_row * 2;
@@ -483,72 +475,36 @@ fn blit_minimap_window(
     let src_bottom = src_top + FRAME_HEIGHT;
     let overflow = src_right - ATLAS_SEAM;
     if overflow <= 0 {
-        copy_atlas_rect(
+        destination.copy_rect(
             atlas,
-            (src_left, src_top, src_right, src_bottom),
-            dest,
-            (0, 0),
+            IRect::new(src_left, src_top, src_right, src_bottom),
+            IVec2::ZERO,
         );
         return;
     }
 
     let first_dest_right = ATLAS_SEAM - src_left;
     if !topology.wraps_horizontally() && first_dest_right <= FRAME_WIDTH / 2 {
-        fill_rect(dest, 0, 0, first_dest_right, FRAME_HEIGHT, 0);
+        destination.fill_rect(IRect::new(0, 0, first_dest_right, FRAME_HEIGHT), 0);
     } else {
-        copy_atlas_rect(
+        destination.copy_rect(
             atlas,
-            (src_left, src_top, ATLAS_SEAM, src_bottom),
-            dest,
-            (0, 0),
+            IRect::new(src_left, src_top, ATLAS_SEAM, src_bottom),
+            IVec2::ZERO,
         );
     }
     let second_dest_left = FRAME_WIDTH - overflow;
     if !topology.wraps_horizontally() && overflow <= FRAME_WIDTH / 2 {
-        fill_rect(dest, second_dest_left, 0, FRAME_WIDTH, FRAME_HEIGHT, 0);
-    } else {
-        copy_atlas_rect(
-            atlas,
-            (0, src_top, overflow, src_bottom),
-            dest,
-            (second_dest_left, 0),
+        destination.fill_rect(
+            IRect::new(second_dest_left, 0, FRAME_WIDTH, FRAME_HEIGHT),
+            0,
         );
-    }
-}
-
-fn copy_atlas_rect(
-    atlas: &[u8],
-    src: (i32, i32, i32, i32),
-    dest: &mut [u8],
-    dest_origin: (i32, i32),
-) {
-    let (src_left, src_top, src_right, src_bottom) = src;
-    let (dest_left, dest_top) = dest_origin;
-    let width = src_right - src_left;
-    let height = src_bottom - src_top;
-    for y in 0..height {
-        let src_y = src_top + y;
-        let dest_y = dest_top + y;
-        if !(0..ATLAS_HEIGHT as i32).contains(&src_y) || !(0..FRAME_HEIGHT).contains(&dest_y) {
-            continue;
-        }
-        for x in 0..width {
-            let src_x = src_left + x;
-            let dest_x = dest_left + x;
-            if !(0..ATLAS_WIDTH as i32).contains(&src_x) || !(0..FRAME_WIDTH).contains(&dest_x) {
-                continue;
-            }
-            dest[(dest_y * FRAME_WIDTH + dest_x) as usize] =
-                atlas[(src_y as usize) * ATLAS_WIDTH + src_x as usize];
-        }
-    }
-}
-
-fn fill_rect(dest: &mut [u8], left: i32, top: i32, right: i32, bottom: i32, color: u8) {
-    for y in top.max(0)..bottom.min(FRAME_HEIGHT) {
-        for x in left.max(0)..right.min(FRAME_WIDTH) {
-            dest[(y * FRAME_WIDTH + x) as usize] = color;
-        }
+    } else {
+        destination.copy_rect(
+            atlas,
+            IRect::new(0, src_top, overflow, src_bottom),
+            IVec2::new(second_dest_left, 0),
+        );
     }
 }
 
@@ -580,124 +536,6 @@ pub(super) fn minimap_release_cell(
         column -= MAP_COLUMNS;
     }
     (column, row.clamp(0, MAP_ROWS))
-}
-
-fn draw_white_rect(rgba: &mut [u8], left: i32, top: i32, right: i32, bottom: i32) {
-    for x in left..=right {
-        put_rgba(rgba, x, top);
-        put_rgba(rgba, x, bottom);
-    }
-    for y in top..=bottom {
-        put_rgba(rgba, left, y);
-        put_rgba(rgba, right, y);
-    }
-}
-
-fn put_rgba(rgba: &mut [u8], x: i32, y: i32) {
-    if !(0..FRAME_WIDTH).contains(&x) || !(0..FRAME_HEIGHT).contains(&y) {
-        return;
-    }
-    let start = ((y * FRAME_WIDTH + x) as usize) * 4;
-    rgba[start..start + 4].copy_from_slice(&WHITE_RGBA);
-}
-
-fn rgba_image(rgba: &[u8]) -> Image {
-    let mut image = Image::new(
-        Extent3d {
-            width: FRAME_WIDTH as u32,
-            height: FRAME_HEIGHT as u32,
-            depth_or_array_layers: 1,
-        },
-        TextureDimension::D2,
-        rgba.to_vec(),
-        TextureFormat::Rgba8UnormSrgb,
-        RenderAssetUsages::default(),
-    );
-    image.sampler = ImageSampler::nearest();
-    image
-}
-
-/// Retail `TViewMgr::GetColor`.
-pub(super) fn view_mgr_color(event_code: i16) -> u8 {
-    if event_code > 200 {
-        if event_code < 0x2b68 {
-            if event_code == 0x2b67 {
-                return 0;
-            }
-            return match event_code {
-                0xc9 => 0x2d,
-                0xca => 0x30,
-                0xcb => 0x2e,
-                0xcc => 0x27,
-                0xcd => 0x24,
-                0xce => 0x26,
-                0xcf => 0x18,
-                0xd0 => 0x14,
-                _ => 0xff,
-            };
-        }
-        return match event_code {
-            0x2b68 => 0x13,
-            0x2b69 => 0xcb,
-            0x2b6a => 0x5c,
-            0x2b6b => 0xd2,
-            0x2b6c => 0x28,
-            0x2b6d => 1,
-            _ => 0xff,
-        };
-    }
-    if event_code == 200 {
-        return 0x20;
-    }
-    match event_code {
-        0 => 0x16,
-        1 => 0x2a,
-        2 | 0x40 => 0x22,
-        3 | 0x3c | 0x4e => 0x1c,
-        4 => 0x2b,
-        5 => 0x1e,
-        6 => 0x2e,
-        7 | 0x35 => 10,
-        8 | 0x3d => 0xb,
-        9 => 0xd,
-        10 | 0x43 => 0x29,
-        0xb => 0xde,
-        0xc | 0x47 => 0xdf,
-        0xd | 0x49 => 0xfa,
-        0xe | 0x38 => 0x2c,
-        0xf | 0x4a => 0x31,
-        0x10 => 0x33,
-        0x11 => 0x41,
-        0x12 => 0x48,
-        0x13 => 0xd0,
-        0x14 => 0xcd,
-        0x15 => 0xce,
-        0x16 => 0xcf,
-        0x25 | 0x3f => 0x20,
-        0x32 => 0x1a,
-        0x33 => 0x2d,
-        0x34 => 0x18,
-        0x37 => 0xbd,
-        0x3a => 0xc6,
-        0x3b => 0x27,
-        0x3e => 0x15,
-        0x41 => 0x1b,
-        0x42 => 0x21,
-        0x44 => 0x17,
-        0x45 => 0x5f,
-        0x46 => 0xbe,
-        0x48 => 100,
-        0x4b => 0x66,
-        0x4c => 0x89,
-        0x4d => 0xad,
-        0x4f => 0xe7,
-        0x50 => 0xe6,
-        0x51 => 0xf6,
-        0x52 => 0xc,
-        0x53 => 0xef,
-        0x54 => 0xf9,
-        _ => 0xff,
-    }
 }
 
 #[cfg(test)]
@@ -836,8 +674,8 @@ mod tests {
         parts.map[sea].owner_nation = Some(TileOwnerTag::new(0x17));
         let state = GameState::from_parts(parts);
         let atlas = compose_minimap_atlas(&state);
-        assert_eq!(atlas[20 * ATLAS_WIDTH + 20], view_mgr_color(0x3e));
-        assert_eq!(atlas[20 * ATLAS_WIDTH + 80], view_mgr_color(0x32));
+        assert_eq!(atlas.pixels[20 * ATLAS_WIDTH + 20], view_mgr_color(0x3e));
+        assert_eq!(atlas.pixels[20 * ATLAS_WIDTH + 80], view_mgr_color(0x32));
         assert_eq!(atlas_owner_palette(Some(TileOwnerTag::new(0))), Some(0x15));
         assert_eq!(atlas_owner_palette(Some(TileOwnerTag::new(0x17))), None);
         assert_eq!(atlas_owner_palette(None), Some(0xff));
@@ -852,8 +690,8 @@ mod tests {
     fn beginning_of_game_atlas_paints_nations_and_ocean_fill() {
         let state = fixture_state();
         let atlas = compose_minimap_atlas(&state);
-        assert!(atlas.contains(&view_mgr_color(0x32)));
-        assert!(atlas.iter().any(|&pixel| {
+        assert!(atlas.pixels.contains(&view_mgr_color(0x32)));
+        assert!(atlas.pixels.iter().any(|&pixel| {
             [
                 view_mgr_color(0x3e),
                 view_mgr_color(1),
@@ -867,8 +705,8 @@ mod tests {
         }));
         let view_origin = TileId::new(1);
         let window = minimap_window(view_origin, DETAILED_MARKER);
-        let mut indices = vec![0_u8; (FRAME_WIDTH * FRAME_HEIGHT) as usize];
-        blit_minimap_window(&atlas, window, state.map().topology, &mut indices);
+        let mut surface = indexed_picture(FRAME_WIDTH, FRAME_HEIGHT, 0);
+        blit_minimap_window(&atlas, window, state.map().topology, &mut surface);
         let (mx, my) = viewport_marker(window, None, DETAILED_MARKER);
         assert!((0..FRAME_WIDTH).contains(&(mx + MARKER_WIDTH * 2)));
         assert!((0..FRAME_HEIGHT).contains(&(my + MARKER_HEIGHT * 2)) || my < 0);
@@ -918,6 +756,7 @@ mod tests {
         palette[view_mgr_color(4)] = Rgb::new(0xc4, 0xc4, 0x2a);
         palette[view_mgr_color(5)] = Rgb::new(0x8b, 0x3a, 0x8b);
         palette[view_mgr_color(6)] = Rgb::new(0x2a, 0xc4, 0xa6);
+        palette[MARKER_PALETTE] = Rgb::new(0xff, 0xff, 0xff);
         palette
     }
 }

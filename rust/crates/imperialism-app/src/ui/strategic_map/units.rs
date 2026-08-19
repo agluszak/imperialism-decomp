@@ -6,14 +6,10 @@
 
 use super::super::GameSession;
 use super::RetailUiAssets;
-use super::{
-    StrategicInteraction, TILE_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH,
-    for_each_visible_strategic_tile,
-};
-use bevy::asset::RenderAssetUsages;
-use bevy::image::ImageSampler;
+use super::map_projection::DetailedMapProjection;
+use super::{StrategicInteraction, TILE_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
+use crate::ui::retail_raster::{IndexedRasterExt, indexed_picture};
 use bevy::prelude::*;
-use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use enum_map::Enum;
 use imperialism_core::*;
 use imperialism_formats::*;
@@ -475,7 +471,7 @@ fn load_fleet_frames(assets: &RetailUiAssets, state: &GameState) -> Vec<IndexedP
         .filter_map(|frame| {
             let x = frame * TILE_SIZE as u32;
             (x + TILE_SIZE as u32 <= atlas.width)
-                .then(|| crop_indexed(&atlas, x, 0, TILE_SIZE as u32, TILE_SIZE as u32))
+                .then(|| atlas.crop(IRect::new(x as i32, 0, x as i32 + TILE_SIZE, TILE_SIZE)))
         })
         .collect()
 }
@@ -493,26 +489,7 @@ fn first_tile_frame(picture: IndexedPicture) -> IndexedPicture {
     if picture.width == width && picture.height == height {
         picture
     } else {
-        crop_indexed(&picture, 0, 0, width, height)
-    }
-}
-
-fn crop_indexed(
-    source: &IndexedPicture,
-    x: u32,
-    y: u32,
-    width: u32,
-    height: u32,
-) -> IndexedPicture {
-    let mut pixels = Vec::with_capacity((width * height) as usize);
-    for row in 0..height {
-        let start = ((y + row) * source.width + x) as usize;
-        pixels.extend_from_slice(&source.pixels[start..start + width as usize]);
-    }
-    IndexedPicture {
-        width,
-        height,
-        pixels,
+        picture.crop(IRect::new(0, 0, width as i32, height as i32))
     }
 }
 
@@ -526,11 +503,7 @@ fn unit_sprite_image(
         return Some(handle.clone());
     }
     let picture = compose_unit_sprite(sprites, sprite)?;
-    let handle = assets.add_image(indexed_rgba_image(
-        &picture,
-        palette,
-        UNIT_TRANSPARENT_INDEX,
-    ));
+    let handle = assets.add_image(picture.to_keyed_image(palette, UNIT_TRANSPARENT_INDEX));
     sprites.composed.insert(sprite, handle.clone());
     Some(handle)
 }
@@ -553,44 +526,32 @@ fn compose_unit_sprite(
                 .get(usize::from(frame))?
                 .clone();
             if let Some(slot) = owner_badge {
-                blit_indexed(
+                let source_x = i32::from(slot) * 9;
+                picture.blit_keyed(
                     &sprites.owner_flags,
-                    i32::from(slot) * 9,
-                    0,
-                    9,
-                    6,
-                    &mut picture,
-                    28,
-                    2,
+                    IRect::new(source_x, 0, source_x + 9, 6),
+                    IVec2::new(28, 2),
+                    UNIT_TRANSPARENT_INDEX,
                 );
             }
             if framed {
-                draw_unit_frame(&mut picture, FOREIGN_CIVILIAN_FRAME_INDEX);
+                picture.frame_rect(
+                    IRect::new(0, 0, picture.width as i32, picture.height as i32),
+                    FOREIGN_CIVILIAN_FRAME_INDEX,
+                );
             }
             Some(picture)
         }
         StrategicUnitSprite::Army { bucket, owner_slot } => {
             let count = sprites.army_counts.get(usize::from(bucket))?;
-            let mut picture = transparent_tile();
-            blit_indexed(
-                count,
-                0,
-                0,
-                count.width as i32,
-                count.height as i32,
-                &mut picture,
-                0,
-                0,
-            );
-            blit_indexed(
+            let mut picture = indexed_picture(TILE_SIZE, TILE_SIZE, UNIT_TRANSPARENT_INDEX);
+            picture.blit_keyed_at(count, IVec2::ZERO, UNIT_TRANSPARENT_INDEX);
+            let source_x = i32::from(owner_slot) * 9;
+            picture.blit_keyed(
                 &sprites.owner_flags,
-                i32::from(owner_slot) * 9,
-                0,
-                9,
-                6,
-                &mut picture,
-                7,
-                2,
+                IRect::new(source_x, 0, source_x + 9, 6),
+                IVec2::new(7, 2),
+                UNIT_TRANSPARENT_INDEX,
             );
             Some(picture)
         }
@@ -598,99 +559,6 @@ fn compose_unit_sprite(
             sprites.fleet_frames.get(usize::from(frame)).cloned()
         }
     }
-}
-
-fn transparent_tile() -> IndexedPicture {
-    IndexedPicture {
-        width: TILE_SIZE as u32,
-        height: TILE_SIZE as u32,
-        pixels: vec![UNIT_TRANSPARENT_INDEX; (TILE_SIZE * TILE_SIZE) as usize],
-    }
-}
-
-#[allow(clippy::too_many_arguments)]
-fn blit_indexed(
-    source: &IndexedPicture,
-    src_x: i32,
-    src_y: i32,
-    width: i32,
-    height: i32,
-    destination: &mut IndexedPicture,
-    dest_x: i32,
-    dest_y: i32,
-) {
-    let dest_width = destination.width as i32;
-    let dest_height = destination.height as i32;
-    for row in 0..height {
-        let destination_y = dest_y + row;
-        let source_row = src_y + row;
-        if !(0..dest_height).contains(&destination_y)
-            || !(0..source.height as i32).contains(&source_row)
-        {
-            continue;
-        }
-        for column in 0..width {
-            let destination_x = dest_x + column;
-            let source_column = src_x + column;
-            if !(0..dest_width).contains(&destination_x)
-                || !(0..source.width as i32).contains(&source_column)
-            {
-                continue;
-            }
-            let pixel =
-                source.pixels[source_row as usize * source.width as usize + source_column as usize];
-            if pixel == UNIT_TRANSPARENT_INDEX {
-                continue;
-            }
-            destination.pixels
-                [destination_y as usize * destination.width as usize + destination_x as usize] =
-                pixel;
-        }
-    }
-}
-
-fn draw_unit_frame(picture: &mut IndexedPicture, color: u8) {
-    let width = picture.width as i32;
-    let height = picture.height as i32;
-    for x in 0..width {
-        put_index(picture, x, 0, color);
-        put_index(picture, x, height - 1, color);
-    }
-    for y in 0..height {
-        put_index(picture, 0, y, color);
-        put_index(picture, width - 1, y, color);
-    }
-}
-
-fn put_index(picture: &mut IndexedPicture, x: i32, y: i32, color: u8) {
-    if (0..picture.width as i32).contains(&x) && (0..picture.height as i32).contains(&y) {
-        picture.pixels[y as usize * picture.width as usize + x as usize] = color;
-    }
-}
-
-fn indexed_rgba_image(picture: &IndexedPicture, palette: &DibPalette, transparent: u8) -> Image {
-    let mut rgba = Vec::with_capacity(picture.pixels.len() * 4);
-    for &palette_index in &picture.pixels {
-        let alpha = if palette_index == transparent {
-            0
-        } else {
-            0xff
-        };
-        palette[palette_index].write_rgba(alpha, &mut rgba);
-    }
-    let mut image = Image::new(
-        Extent3d {
-            width: picture.width,
-            height: picture.height,
-            depth_or_array_layers: 1,
-        },
-        TextureDimension::D2,
-        rgba,
-        TextureFormat::Rgba8UnormSrgb,
-        RenderAssetUsages::default(),
-    );
-    image.sampler = ImageSampler::nearest();
-    image
 }
 
 fn strategic_unit_project_key(
@@ -730,7 +598,11 @@ fn visible_strategic_units(
     selected: Option<CivilianUnitId>,
 ) -> Vec<VisibleStrategicUnit> {
     let mut units = Vec::new();
-    for_each_visible_strategic_tile(state, view_origin, |tile, screen_x, screen_y| {
+    let projection = DetailedMapProjection::new(state.map().geometry(), view_origin);
+    for projected in projection.visible_tiles() {
+        let tile = projected.tile;
+        let screen_x = projected.origin.x;
+        let screen_y = projected.origin.y;
         if let Some(unit) = army_badge_on_tile(state, tile) {
             units.push(VisibleStrategicUnit {
                 identity: unit.identity,
@@ -758,7 +630,7 @@ fn visible_strategic_units(
                 z: 2,
             });
         }
-    });
+    }
     units
 }
 
@@ -1265,16 +1137,16 @@ mod tests {
     fn viewport_iterator_matches_tile_screen_origins_and_clips_offscreen_rows() {
         let state = fixture_state();
         let view_origin = beginning_map_view_origin();
-        let mut seen = Vec::new();
-        for_each_visible_strategic_tile(&state, view_origin, |tile, x, y| {
-            seen.push((tile, x, y));
+        let projection = DetailedMapProjection::new(state.map().geometry(), view_origin);
+        let seen = projection.visible_tiles().collect::<Vec<_>>();
+        for projected in &seen {
             assert_eq!(
-                super::super::strategic_tile_screen_origin(&state, view_origin, tile),
-                (x, y)
+                projection.tile_origin(projected.tile),
+                Some(projected.origin)
             );
-            assert!(x < VIEWPORT_WIDTH as i32);
-            assert!(x + TILE_SIZE > 0);
-        });
+            assert!(projected.origin.x < VIEWPORT_WIDTH as i32);
+            assert!(projected.origin.x + TILE_SIZE > 0);
+        }
         assert!(!seen.is_empty());
         let (origin_row, _) = state.map().geometry().row_column(view_origin);
         let outside = state
@@ -1283,7 +1155,7 @@ mod tests {
             .tile(origin_row.saturating_add(8), 0)
             .or_else(|| state.map().geometry().tile(origin_row.saturating_sub(1), 0));
         if let Some(outside) = outside {
-            assert!(seen.iter().all(|(tile, _, _)| *tile != outside));
+            assert!(seen.iter().all(|projected| projected.tile != outside));
         }
     }
 

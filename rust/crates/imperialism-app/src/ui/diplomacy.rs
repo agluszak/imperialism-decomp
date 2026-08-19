@@ -7,11 +7,8 @@ use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::hover_help::get_string;
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
-use super::random_setup_map::{
-    compose_owner_preview_indices, compose_owner_preview_indices_with_fill,
-    preview_image_from_indices,
-};
 use super::retail::{ModalDialog, RetailTree, ancestor_with};
+use super::satellite_preview::SatellitePreview;
 use super::session::apply_turn_stop;
 use crate::AppState;
 use crate::RetailAssetsResource;
@@ -497,11 +494,8 @@ fn bind_diplomacy_screen(
         shadow: assets.palette_color(0xd2),
     };
     let icon_picture = PictureId::new(802);
-    let transparent_rgb = assets.default_dib_palette()[0x10].to_array();
     let icon_atlas = assets
-        .transformed_picture(icon_picture, |image| {
-            apply_diplomacy_atlas_transparency(image, transparent_rgb);
-        })
+        .transparent_picture(icon_picture, 0x10)
         .expect("retail diplomacy icon atlas transparency must apply");
     bind_diplomacy_controls(
         &mut commands,
@@ -817,17 +811,6 @@ fn spawn_diplomacy_map_labels(
                 ChildOf(map),
                 DiplomacyNationIcon { nation, kind },
             ));
-        }
-    }
-}
-
-fn apply_diplomacy_atlas_transparency(image: &mut Image, transparent_rgb: [u8; 3]) {
-    let Some(pixels) = image.data.as_mut() else {
-        return;
-    };
-    for pixel in pixels.chunks_exact_mut(4) {
-        if pixel[..3] == transparent_rgb {
-            pixel[3] = 0;
         }
     }
 }
@@ -2200,23 +2183,24 @@ fn render_diplomacy_map(
     let (entity, image_node) = map.into_inner();
     let state = &session.game;
     let framed = screen.framed_nation;
-    let pixels = match screen.interaction_mode() {
-        1 => compose_owner_preview_indices_with_fill(
+    // Fidelity debt predating the raster extraction: retail TDiplomacyMapView has
+    // its own 540x300 region renderer. Keep the existing approximation explicit.
+    let mut preview = match screen.interaction_mode() {
+        1 => SatellitePreview::compose_diplomacy_approximation(
             |tile| state.map()[tile].owner_nation,
-            framed,
             |nation| {
                 DiplomacyRelationshipNotch::from_standing(state.diplomacy_standing(framed, nation))
                     .palette()
             },
         ),
-        4 => compose_owner_preview_indices_with_fill(
+        4 => SatellitePreview::compose_diplomacy_approximation(
             |tile| state.map()[tile].owner_nation,
-            framed,
             |nation| diplomacy_relationship_fill(state, framed, nation),
         ),
-        _ => compose_owner_preview_indices(|tile| state.map()[tile].owner_nation, framed),
+        _ => SatellitePreview::compose(|tile| state.map()[tile].owner_nation),
     };
-    let image = preview_image_from_indices(&pixels, assets.default_dib_palette());
+    preview.enhance(framed);
+    let image = preview.to_image(assets.default_dib_palette());
     if let Some(image_node) = image_node {
         assets.replace_image(&image_node.image, image);
     } else {

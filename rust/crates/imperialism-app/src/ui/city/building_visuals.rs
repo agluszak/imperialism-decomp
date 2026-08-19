@@ -1,5 +1,6 @@
 use super::*;
 use crate::ui::retail::apply_index_transparency;
+use crate::ui::retail_raster::IndexedRasterExt;
 
 pub(crate) struct CityBuildingVisual {
     pub(crate) slot: CityFacilitySlot,
@@ -373,24 +374,17 @@ pub(in crate::ui::city) fn apply_city_action_transparency(
     frame_count: u8,
     occlusions: &[[i32; 4]],
 ) {
-    if !apply_index_transparency(image, indexed, 0x10) {
-        return;
-    }
-    let width = image.width() as usize;
-    let Some(pixels) = image.data.as_mut() else {
-        return;
-    };
-    let frame_width = frame_size[0] as usize;
+    let mut mask = indexed.clone();
     for &[left, top, right, bottom] in occlusions {
-        for frame in 0..usize::from(frame_count) {
-            for y in top as usize..bottom as usize {
-                for x in left as usize..right as usize {
-                    let alpha = ((y * width + frame * frame_width + x) * 4) + 3;
-                    pixels[alpha] = 0;
-                }
-            }
+        for frame in 0..i32::from(frame_count) {
+            let frame_x = frame * frame_size[0];
+            mask.fill_rect(
+                IRect::new(left + frame_x, top, right + frame_x, bottom),
+                0x10,
+            );
         }
     }
+    apply_index_transparency(image, &mask, 0x10);
 }
 
 pub(in crate::ui::city) fn city_building_action_enabled(
@@ -695,6 +689,31 @@ pub(in crate::ui::city) fn sync_city_buildings(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use imperialism_formats::DibPalette;
+
+    #[test]
+    fn action_occlusions_clear_the_same_rectangle_in_every_frame() {
+        let indexed = IndexedPicture {
+            width: 6,
+            height: 2,
+            pixels: vec![1; 12],
+        };
+        let mut image = indexed.to_image(&DibPalette::default());
+
+        apply_city_action_transparency(&mut image, &indexed, [3, 2], 2, &[[1, 0, 2, 2]]);
+
+        let alpha = image
+            .data
+            .as_ref()
+            .unwrap()
+            .chunks_exact(4)
+            .map(|pixel| pixel[3])
+            .collect::<Vec<_>>();
+        assert_eq!(
+            alpha,
+            [0xff, 0, 0xff, 0xff, 0, 0xff, 0xff, 0, 0xff, 0xff, 0, 0xff]
+        );
+    }
 
     #[test]
     fn city_production_placard_values_use_book_antiqua_10pt() {

@@ -1,11 +1,9 @@
 use super::GameSession;
 use super::RetailUiAssets;
 use super::retail::RetailTree;
+use super::retail_raster::{IndexedRasterExt, indexed_picture};
 use crate::RetailAssetsResource;
-use bevy::asset::RenderAssetUsages;
-use bevy::image::ImageSampler;
 use bevy::prelude::*;
-use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
 use imperialism_core::*;
 use imperialism_formats::*;
@@ -17,6 +15,7 @@ mod map_click;
 mod map_interaction;
 mod map_keys;
 mod map_modals;
+mod map_projection;
 mod minimap;
 mod navy_toolbar;
 mod ocean_raster;
@@ -35,6 +34,7 @@ pub(crate) use map_interaction::{
 };
 pub(crate) use map_keys::register as register_map_keys;
 pub(crate) use map_modals::register as register_map_modals;
+use map_projection::DetailedMapProjection;
 pub(crate) use minimap::{bind_minimap, sync_minimap};
 pub(crate) use navy_toolbar::{bind_navy_toolbar, register as register_navy_toolbar};
 pub(crate) use ocean_view::{bind_ocean_view, register as register_ocean_view};
@@ -42,7 +42,7 @@ use overlays::{
     IMPROVEMENT_PICTURE_IDS, compose_strategic_improvements, compose_strategic_railways,
     town_transport_linked,
 };
-use terrain::{compose_strategic_base_tile, frame_for_offset};
+use terrain::{compose_strategic_base_tile, uses_bounded_seam_frame};
 pub(crate) use units::{animate_civilian_selection, animate_civilian_work, sync_strategic_units};
 
 const MAP_TAG: FourCc = fourcc!("DLOG");
@@ -328,8 +328,7 @@ fn compose_strategic_map(
     sprites: StrategicMapSprites<'_>,
     palette: &DibPalette,
 ) -> Image {
-    let indices = compose_strategic_map_indices(state, view_origin, sprites);
-    indexed_viewport_image(&indices, palette)
+    compose_strategic_map_picture(state, view_origin, sprites).to_image(palette)
 }
 
 fn compose_strategic_selection(
@@ -339,11 +338,11 @@ fn compose_strategic_selection(
     hovered_tile: Option<TileId>,
     palette: &DibPalette,
 ) -> Image {
-    let mut indices = vec![0_u8; VIEWPORT_WIDTH * VIEWPORT_HEIGHT];
+    let mut picture = indexed_picture(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0);
     if let (Some(unit), Some(tile)) = (selected_civilian, hovered_tile) {
-        draw_civilian_hover_highlight(state, view_origin, unit, tile, &mut indices);
+        draw_civilian_hover_highlight(state, view_origin, unit, tile, &mut picture);
     }
-    transparent_indexed_viewport_image(&indices, palette)
+    picture.to_keyed_image(palette, 0)
 }
 
 fn strategic_map_compose_key(
@@ -355,9 +354,10 @@ fn strategic_map_compose_key(
     use std::hash::Hasher;
 
     let mut hasher = std::collections::hash_map::DefaultHasher::new();
-    for_each_visible_strategic_tile(state, view_origin, |tile, _screen_x, _screen_y| {
-        hash_visible_tile_facts(state, tile, &mut hasher);
-    });
+    let projection = DetailedMapProjection::new(state.map().geometry(), view_origin);
+    for projected in projection.visible_tiles() {
+        hash_visible_tile_facts(state, projected.tile, &mut hasher);
+    }
     StrategicMapComposeKey {
         view_origin,
         topology: state.map().topology,
@@ -376,7 +376,7 @@ fn draw_civilian_hover_highlight(
     view_origin: TileId,
     unit: CivilianUnitId,
     hovered: TileId,
-    viewport: &mut [u8],
+    surface: &mut IndexedPicture,
 ) {
     let Some(civilian) = state.civilian_unit(unit) else {
         return;
@@ -389,8 +389,11 @@ fn draw_civilian_hover_highlight(
         return;
     }
 
-    let (x, y) = strategic_tile_screen_origin(state, view_origin, hovered);
-    draw_frame(viewport, x, y, MAP_SELECTION_PALETTE_INDEX);
+    let projection = DetailedMapProjection::new(state.map().geometry(), view_origin);
+    let Some(origin) = projection.tile_origin(hovered) else {
+        return;
+    };
+    draw_frame(surface, origin.x, origin.y, MAP_SELECTION_PALETTE_INDEX);
     if civilian.unit_type() != CivilianUnitKind::Engineer
         || action != CivilianTileAction::EngineerSameTile
         || state.map()[hovered].region.is_some()
@@ -405,7 +408,7 @@ fn draw_civilian_hover_highlight(
                 && (neighbor.terrain == TerrainKind::Water || neighbor.owner_nation == Some(owner))
         })
     });
-    draw_city_site_neighbor_outline(state, view_origin, neighbors, viewport);
+    draw_city_site_neighbor_outline(&projection, neighbors, surface);
 }
 
 fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl std::hash::Hasher) {
@@ -455,48 +458,18 @@ fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl st
     }
 }
 
-pub(super) fn for_each_visible_strategic_tile(
-    state: &GameState,
-    view_origin: TileId,
-    mut visit: impl FnMut(TileId, i32, i32),
-) {
-    let (origin_row, origin_column) = state.map().geometry().row_column(view_origin);
-    let origin_row = i32::from(origin_row);
-    let origin_column = i32::from(origin_column);
-
-    for row_delta in 0..=7 {
-        let row = origin_row + row_delta;
-        if !(0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&row) {
-            continue;
-        }
-        let odd_row_offset = if row & 1 != 0 { TILE_SIZE / 2 } else { 0 };
-        let screen_y = row_delta * TILE_SIZE;
-        for column_delta in -1..=8 {
-            let unwrapped_column = origin_column + column_delta;
-            let screen_x = column_delta * TILE_SIZE + odd_row_offset;
-            if screen_x >= VIEWPORT_WIDTH as i32 || screen_x + TILE_SIZE <= 0 {
-                continue;
-            }
-            let column = normalize_map_column(unwrapped_column);
-            let Some(tile) = state.map().geometry().tile(row as u16, column as u16) else {
-                continue;
-            };
-            visit(tile, screen_x, screen_y);
-        }
-    }
-}
-
-pub(super) fn compose_strategic_map_indices(
+pub(super) fn compose_strategic_map_picture(
     state: &GameState,
     view_origin: TileId,
     sprites: StrategicMapSprites<'_>,
-) -> Vec<u8> {
-    let mut indices = vec![0_u8; VIEWPORT_WIDTH * VIEWPORT_HEIGHT];
-    for_each_visible_strategic_tile(state, view_origin, |tile, screen_x, screen_y| {
-        let tile_pixels = compose_strategic_tile(state, view_origin, tile, sprites);
-        copy_clipped_tile(&tile_pixels, screen_x, screen_y, &mut indices);
-    });
-    indices
+) -> IndexedPicture {
+    let mut picture = indexed_picture(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0);
+    let projection = DetailedMapProjection::new(state.map().geometry(), view_origin);
+    for projected in projection.visible_tiles() {
+        let tile_picture = compose_strategic_tile(state, view_origin, projected.tile, sprites);
+        picture.copy_at(&tile_picture, projected.origin);
+    }
+    picture
 }
 
 pub(crate) fn compose_city_site_terrain(
@@ -507,11 +480,11 @@ pub(crate) fn compose_city_site_terrain(
     highlighted_tile: Option<TileId>,
     palette: &DibPalette,
 ) -> Image {
-    let mut indices = compose_strategic_map_indices(state, view_origin, canvas.sprites());
+    let mut picture = compose_strategic_map_picture(state, view_origin, canvas.sprites());
     if let Some(tile) = highlighted_tile {
-        draw_city_site_selection(state, view_origin, nation, tile, &mut indices);
+        draw_city_site_selection(state, view_origin, nation, tile, &mut picture);
     }
-    indexed_viewport_image(&indices, palette)
+    picture.to_image(palette)
 }
 
 pub(super) fn draw_city_site_selection(
@@ -519,10 +492,13 @@ pub(super) fn draw_city_site_selection(
     view_origin: TileId,
     nation: MajorNationId,
     tile: TileId,
-    viewport: &mut [u8],
+    surface: &mut IndexedPicture,
 ) {
-    let (x, y) = strategic_tile_screen_origin(state, view_origin, tile);
-    draw_frame(viewport, x, y, MAP_SELECTION_PALETTE_INDEX);
+    let projection = DetailedMapProjection::new(state.map().geometry(), view_origin);
+    let Some(origin) = projection.tile_origin(tile) else {
+        return;
+    };
+    draw_frame(surface, origin.x, origin.y, MAP_SELECTION_PALETTE_INDEX);
 
     let active_owner = TileOwnerTag::from_nation(nation.nation());
     let neighbors = state.map().geometry().neighbors(tile).map(|neighbor| {
@@ -531,30 +507,27 @@ pub(super) fn draw_city_site_selection(
             neighbor.terrain == TerrainKind::Water || neighbor.owner_nation == Some(active_owner)
         })
     });
-    draw_city_site_neighbor_outline(state, view_origin, neighbors, viewport);
+    draw_city_site_neighbor_outline(&projection, neighbors, surface);
 }
 
-fn draw_frame(viewport: &mut [u8], x: i32, y: i32, color: u8) {
-    for offset in 0..TILE_SIZE {
-        put_viewport_pixel(viewport, x + offset, y, color);
-        put_viewport_pixel(viewport, x + offset, y + TILE_SIZE - 1, color);
-        put_viewport_pixel(viewport, x, y + offset, color);
-        put_viewport_pixel(viewport, x + TILE_SIZE - 1, y + offset, color);
-    }
+fn draw_frame(surface: &mut IndexedPicture, x: i32, y: i32, color: u8) {
+    surface.frame_rect(IRect::new(x, y, x + TILE_SIZE, y + TILE_SIZE), color);
 }
 
 fn draw_city_site_neighbor_outline(
-    state: &GameState,
-    view_origin: TileId,
+    projection: &DetailedMapProjection,
     neighbors: [Option<TileId>; 6],
-    viewport: &mut [u8],
+    viewport: &mut IndexedPicture,
 ) {
     const OUTLINE_COLOR: u8 = MAP_SELECTION_PALETTE_INDEX;
     for (index, neighbor) in neighbors.iter().copied().enumerate() {
         let Some(neighbor) = neighbor else {
             continue;
         };
-        let (x, y) = strategic_tile_screen_origin(state, view_origin, neighbor);
+        let Some(origin) = projection.tile_origin(neighbor) else {
+            continue;
+        };
+        let (x, y) = (origin.x, origin.y);
         match index {
             0 => {
                 draw_line(viewport, (x, y), (x + 63, y), OUTLINE_COLOR);
@@ -623,42 +596,8 @@ fn draw_city_site_neighbor_outline(
     }
 }
 
-pub(super) fn strategic_tile_screen_origin(
-    state: &GameState,
-    view_origin: TileId,
-    tile: TileId,
-) -> (i32, i32) {
-    let (origin_row, origin_column) = state.map().geometry().row_column(view_origin);
-    let (row, column) = state.map().geometry().row_column(tile);
-    let y = (i32::from(row) - i32::from(origin_row)) * TILE_SIZE;
-    let mut x = (i32::from(column) - i32::from(origin_column)) * TILE_SIZE;
-    if row & 1 != 0 {
-        x += TILE_SIZE / 2;
-        if x >= 0x1ae0 {
-            x -= 0x1b00;
-        }
-    }
-    while x < -TILE_SIZE {
-        x += 0x1b00;
-    }
-    (x, y)
-}
-
-fn draw_line(viewport: &mut [u8], start: (i32, i32), end: (i32, i32), color: u8) {
-    let (mut x, mut y) = start;
-    let x_step = (end.0 - x).signum();
-    let y_step = (end.1 - y).signum();
-    while (x, y) != end {
-        put_viewport_pixel(viewport, x, y, color);
-        x += x_step;
-        y += y_step;
-    }
-}
-
-fn put_viewport_pixel(viewport: &mut [u8], x: i32, y: i32, color: u8) {
-    if (0..VIEWPORT_WIDTH as i32).contains(&x) && (0..VIEWPORT_HEIGHT as i32).contains(&y) {
-        viewport[y as usize * VIEWPORT_WIDTH + x as usize] = color;
-    }
+fn draw_line(surface: &mut IndexedPicture, start: (i32, i32), end: (i32, i32), color: u8) {
+    surface.line_to_gdi(start.into(), end.into(), color, 1);
 }
 
 pub(super) fn compose_strategic_tile(
@@ -666,100 +605,30 @@ pub(super) fn compose_strategic_tile(
     view_origin: TileId,
     tile: TileId,
     sprites: StrategicMapSprites<'_>,
-) -> Vec<u8> {
+) -> IndexedPicture {
     let tile_state = state.map()[tile];
-    let center_column = {
-        let (_, origin_column) = state.map().geometry().row_column(view_origin);
-        (i32::from(origin_column) + VIEWPORT_TILE_SPAN / 2)
-            .rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
-    };
-    let (_, tile_column) = state.map().geometry().row_column(tile);
-    // Retail's stored flag is inverted: this seam substitution belongs to Rust's bounded map.
-    let wrapped_seam = state.map().topology == MapTopology::Bounded
-        && ((tile_column == 0 && center_column > 54)
-            || (tile_column == STRATEGIC_MAP_WIDTH - 1 && center_column < 54));
-    let mut pixels = if wrapped_seam {
-        sprites.terrain[frame_for_offset(0xc80)].pixels.clone()
-    } else {
-        compose_strategic_base_tile(
-            state,
-            view_origin,
-            tile,
-            sprites.terrain,
-            sprites.river_masks,
-        )
-    };
+    let wrapped_seam = uses_bounded_seam_frame(state, view_origin, tile);
+    let mut picture = compose_strategic_base_tile(
+        state,
+        view_origin,
+        tile,
+        sprites.terrain,
+        sprites.river_masks,
+    );
 
     if !wrapped_seam {
-        compose_strategic_borders(state, tile, &mut pixels);
+        compose_strategic_borders(state, tile, &mut picture);
     }
-    compose_strategic_railways(&tile_state, sprites.river_masks, &mut pixels);
-    compose_strategic_improvements(state, tile, sprites, &mut pixels);
-    pixels
+    compose_strategic_railways(&tile_state, sprites.river_masks, &mut picture);
+    compose_strategic_improvements(state, tile, sprites, &mut picture);
+    picture
 }
 
-fn normalize_map_column(column: i32) -> i32 {
-    // Draw and ConvertPoint modulo the column even when the viewport itself is bounded.
-    column.rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
-}
-
-fn copy_clipped_tile(source: &[u8], screen_x: i32, screen_y: i32, destination: &mut [u8]) {
-    for source_y in 0..TILE_SIZE {
-        let destination_y = screen_y + source_y;
-        if !(0..VIEWPORT_HEIGHT as i32).contains(&destination_y) {
-            continue;
-        }
-        let source_left = (-screen_x).max(0);
-        let source_right = (VIEWPORT_WIDTH as i32 - screen_x).min(TILE_SIZE);
-        if source_left >= source_right {
-            continue;
-        }
-        let source_start = (source_y * TILE_SIZE + source_left) as usize;
-        let source_end = (source_y * TILE_SIZE + source_right) as usize;
-        let destination_start =
-            destination_y as usize * VIEWPORT_WIDTH + (screen_x + source_left) as usize;
-        destination[destination_start..destination_start + source_end - source_start]
-            .copy_from_slice(&source[source_start..source_end]);
-    }
-}
-fn indexed_viewport_image(indices: &[u8], palette: &DibPalette) -> Image {
-    let mut rgba = Vec::with_capacity(indices.len() * 4);
-    for &palette_index in indices {
-        palette[palette_index].write_rgba(0xff, &mut rgba);
-    }
-    let mut image = Image::new(
-        Extent3d {
-            width: VIEWPORT_WIDTH as u32,
-            height: VIEWPORT_HEIGHT as u32,
-            depth_or_array_layers: 1,
-        },
-        TextureDimension::D2,
-        rgba,
-        TextureFormat::Rgba8UnormSrgb,
-        RenderAssetUsages::default(),
-    );
-    image.sampler = ImageSampler::nearest();
-    image
-}
-
-fn transparent_indexed_viewport_image(indices: &[u8], palette: &DibPalette) -> Image {
-    let mut rgba = Vec::with_capacity(indices.len() * 4);
-    for &palette_index in indices {
-        palette[palette_index].write_rgba(if palette_index == 0 { 0 } else { 0xff }, &mut rgba);
-    }
-    let mut image = Image::new(
-        Extent3d {
-            width: VIEWPORT_WIDTH as u32,
-            height: VIEWPORT_HEIGHT as u32,
-            depth_or_array_layers: 1,
-        },
-        TextureDimension::D2,
-        rgba,
-        TextureFormat::Rgba8UnormSrgb,
-        RenderAssetUsages::default(),
-    );
-    image.sampler = ImageSampler::nearest();
-    image
+fn viewport_point(normalized: Vec2) -> IVec2 {
+    IVec2::new(
+        ((normalized.x + 0.5) * VIEWPORT_WIDTH as f32).floor() as i32,
+        ((normalized.y + 0.5) * VIEWPORT_HEIGHT as f32).floor() as i32,
+    )
 }
 
 fn strategic_tile_at_position(
@@ -767,24 +636,8 @@ fn strategic_tile_at_position(
     view_origin: TileId,
     normalized: Vec2,
 ) -> Option<TileId> {
-    let x = ((normalized.x + 0.5) * VIEWPORT_WIDTH as f32).floor() as i32;
-    let y = ((normalized.y + 0.5) * VIEWPORT_HEIGHT as f32).floor() as i32;
-    if !(0..VIEWPORT_WIDTH as i32).contains(&x) || !(0..VIEWPORT_HEIGHT as i32).contains(&y) {
-        return None;
-    }
-    let (origin_row, origin_column) = state.map().geometry().row_column(view_origin);
-    let row = i32::from(origin_row) + y / TILE_SIZE;
-    if !(0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&row) {
-        return None;
-    }
-    let absolute_x = i32::from(origin_column) * TILE_SIZE + x;
-    let column = if row & 1 != 0 {
-        (absolute_x + TILE_SIZE / 2) / TILE_SIZE - 1
-    } else {
-        absolute_x / TILE_SIZE
-    };
-    let column = normalize_map_column(column);
-    state.map().geometry().tile(row as u16, column as u16)
+    DetailedMapProjection::new(state.map().geometry(), view_origin)
+        .tile_at(viewport_point(normalized))
 }
 
 pub(crate) fn strategic_base_terrain_tile_at_cursor(

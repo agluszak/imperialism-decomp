@@ -8,7 +8,7 @@ use crate::ui::hover_help::{
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::ModalDialog;
-use crate::ui::retail::{RetailTree, ancestor_with, apply_index_transparency};
+use crate::ui::retail::{RetailTree, ancestor_with};
 use crate::ui::session::apply_turn_stop;
 use crate::ui::strategic_map::{
     StrategicBaseTerrainCanvas, bind_minimap, bind_strategic_base_terrain,
@@ -671,13 +671,8 @@ fn scene_has_children(root: Entity, children: &Query<&Children>) -> bool {
 
 fn commodity_icon(assets: &mut RetailUiAssets, resource_index: i16) -> Handle<Image> {
     let picture_id = PictureId::new(COMMODITY_ICON_PICTURE_BASE + resource_index);
-    let indexed = assets
-        .indexed_picture(picture_id)
-        .expect("retail commodity icon must have indexed pixels");
     assets
-        .transformed_picture(picture_id, |image| {
-            apply_index_transparency(image, &indexed, 0x10);
-        })
+        .transparent_picture(picture_id, 0x10)
         .expect("retail commodity icon must load")
 }
 
