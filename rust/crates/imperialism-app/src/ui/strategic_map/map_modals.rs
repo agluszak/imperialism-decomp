@@ -228,9 +228,7 @@ fn bind_added_civilian_ledgers(
         for (index, (kind, tile)) in civilians.into_iter().enumerate() {
             let column = index / CIVILIANS_PER_COLUMN;
             let row_in_column = index % CIVILIANS_PER_COLUMN;
-            let name = assets
-                .string(0x2718, i16::from(kind.retail()) + 1)
-                .expect("retail civilian class name");
+            let name = assets.catalog_string(RetailString::CivilianName(kind));
             let location = city_name(&session.game, tile);
             let row = commands
                 .spawn((
@@ -730,7 +728,7 @@ fn civilian_report_text(
         .location()
         .tile()
         .expect("reported civilian is on the strategic map");
-    let kind = get_string(assets, 0x2718, i16::from(civilian.unit_type().retail()));
+    let kind = catalog_string(assets, RetailString::CivilianName(civilian.unit_type()));
     let city = city_name(state, tile);
     let mut report = fill_brackets(&get_string(assets, 0x2724, 0), &[&kind, &city]);
     report.push('\n');

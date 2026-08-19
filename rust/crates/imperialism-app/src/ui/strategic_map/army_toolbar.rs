@@ -26,13 +26,12 @@ fn placard_picture_id(
     nation: MajorNationId,
     state: &GameState,
     category: ArmyUnitCategory,
-) -> i16 {
+) -> PictureId {
     let kind = state.technology().selected_capability_slots[nation][category];
-    let mut picture = 0x4c4 + i16::from(kind.retail());
-    if counts.totals[category] <= 0 {
-        picture += 0x1e;
-    }
-    picture
+    retail_picture(RetailPicture::ArmyToolbar {
+        kind,
+        empty: counts.totals[category] <= 0,
+    })
 }
 
 #[derive(Component)]
@@ -176,7 +175,7 @@ fn sync_army_toolbar(
     for (entity, placard, mut image) in &mut placards {
         let picture_id = placard_picture_id(counts_state, nation, &session.game, placard.0);
         image.image = assets
-            .picture(PictureId::new(picture_id))
+            .picture(picture_id)
             .expect("retail army placard picture must load");
         set_count_text(
             entity,
@@ -228,7 +227,7 @@ fn hide_empty_toolbar(
     for (entity, placard, mut image) in placards.iter_mut() {
         let picture_id = placard_picture_id(empty, nation, state, placard.0);
         image.image = assets
-            .picture(PictureId::new(picture_id))
+            .picture(picture_id)
             .expect("retail army placard picture must load");
         set_count_text(entity, counts, None);
     }

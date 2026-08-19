@@ -467,15 +467,18 @@ mod tests {
     #[test]
     fn specialized_city_buildings_use_the_one_based_retail_name_indexes() {
         assert_eq!(
-            city_string_index(i16::from(CityFacilitySlot::OilRefinery.retail())),
+            retail_string(RetailString::CityBuildingName(
+                CityFacilitySlot::OilRefinery
+            ))
+            .index,
             7
         );
         assert_eq!(
-            city_string_index(i16::from(CityFacilitySlot::Shipyard.retail())),
+            retail_string(RetailString::CityBuildingName(CityFacilitySlot::Shipyard)).index,
             8
         );
         assert_eq!(
-            city_string_index(i16::from(CityFacilitySlot::Armory.retail())),
+            retail_string(RetailString::CityBuildingName(CityFacilitySlot::Armory)).index,
             9
         );
     }

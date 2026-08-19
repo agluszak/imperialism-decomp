@@ -7,8 +7,8 @@ use crate::PictureId;
 use enum_map::{Enum, EnumMap};
 use imperialism_core::{
     CityFacilitySlot, CivilianUnitKind, CivilianUnitTable, MajorNationId, MajorNationTable,
-    MinorNationTable, NationId, ProductionTable, ResourceKind, ResourceTable, ShipType,
-    ShipTypeTable, TileContext, TileFlags,
+    MilitaryUnitKind, MilitaryUnitTable, MinorNationTable, NationId, ProductionTable, ResourceKind,
+    ResourceTable, ShipType, ShipTypeTable, Technology, TechnologyTable, TileContext, TileFlags,
 };
 
 const OWNER_FLAG_CELL_WIDTH: i32 = 9;
@@ -202,6 +202,326 @@ const SHIP_PORTRAITS: ShipTypeTable<PictureId> = ShipTypeTable::from_array([
 
 const SHIPYARD_QUEUE_STRIP: PictureId = PictureId::new(9807);
 const DEAL_BOOK_FLAG_STRIP: PictureId = PictureId::new(680);
+const RESOURCE_SPECIALTY_STRIP: PictureId = PictureId::new(750);
+
+const CIVILIAN_PORTRAITS: CivilianUnitTable<PictureId> = CivilianUnitTable::from_array([
+    PictureId::new(1080),
+    PictureId::new(1081),
+    PictureId::new(1082),
+    PictureId::new(1083),
+    PictureId::new(1084),
+    PictureId::new(1085),
+    PictureId::new(1086),
+    PictureId::new(1087),
+    PictureId::new(1088),
+]);
+
+const NAVY_CLASS_PICTURES: ShipTypeTable<PictureId> = ShipTypeTable::from_array([
+    PictureId::new(1510),
+    PictureId::new(1511),
+    PictureId::new(1512),
+    PictureId::new(1513),
+    PictureId::new(1514),
+    PictureId::new(1515),
+    PictureId::new(1516),
+    PictureId::new(1517),
+    PictureId::new(1518),
+    PictureId::new(1519),
+    PictureId::new(1520),
+    PictureId::new(1521),
+    PictureId::new(1522),
+    PictureId::new(1523),
+]);
+
+const TECH_STORE_IDLE: TechnologyTable<PictureId> = TechnologyTable::from_array([
+    PictureId::new(2303),
+    PictureId::new(2305),
+    PictureId::new(2307),
+    PictureId::new(2309),
+    PictureId::new(2311),
+    PictureId::new(2313),
+    PictureId::new(2315),
+    PictureId::new(2317),
+    PictureId::new(2319),
+    PictureId::new(2321),
+    PictureId::new(2323),
+    PictureId::new(2325),
+    PictureId::new(2327),
+    PictureId::new(2329),
+    PictureId::new(2331),
+    PictureId::new(2333),
+    PictureId::new(2335),
+    PictureId::new(2337),
+    PictureId::new(2339),
+    PictureId::new(2341),
+    PictureId::new(2343),
+    PictureId::new(2345),
+    PictureId::new(2347),
+    PictureId::new(2349),
+    PictureId::new(2351),
+    PictureId::new(2353),
+    PictureId::new(2355),
+    PictureId::new(2357),
+    PictureId::new(2359),
+]);
+const TECH_STORE_ACTIVE: TechnologyTable<PictureId> = TechnologyTable::from_array([
+    PictureId::new(2304),
+    PictureId::new(2306),
+    PictureId::new(2308),
+    PictureId::new(2310),
+    PictureId::new(2312),
+    PictureId::new(2314),
+    PictureId::new(2316),
+    PictureId::new(2318),
+    PictureId::new(2320),
+    PictureId::new(2322),
+    PictureId::new(2324),
+    PictureId::new(2326),
+    PictureId::new(2328),
+    PictureId::new(2330),
+    PictureId::new(2332),
+    PictureId::new(2334),
+    PictureId::new(2336),
+    PictureId::new(2338),
+    PictureId::new(2340),
+    PictureId::new(2342),
+    PictureId::new(2344),
+    PictureId::new(2346),
+    PictureId::new(2348),
+    PictureId::new(2350),
+    PictureId::new(2352),
+    PictureId::new(2354),
+    PictureId::new(2356),
+    PictureId::new(2358),
+    PictureId::new(2360),
+]);
+const TECH_HISTORY_PICTURES: TechnologyTable<PictureId> = TechnologyTable::from_array([
+    PictureId::new(2372),
+    PictureId::new(2373),
+    PictureId::new(2374),
+    PictureId::new(2375),
+    PictureId::new(2376),
+    PictureId::new(2377),
+    PictureId::new(2378),
+    PictureId::new(2379),
+    PictureId::new(2380),
+    PictureId::new(2381),
+    PictureId::new(2382),
+    PictureId::new(2383),
+    PictureId::new(2384),
+    PictureId::new(2385),
+    PictureId::new(2386),
+    PictureId::new(2387),
+    PictureId::new(2388),
+    PictureId::new(2389),
+    PictureId::new(2390),
+    PictureId::new(2391),
+    PictureId::new(2392),
+    PictureId::new(2393),
+    PictureId::new(2394),
+    PictureId::new(2395),
+    PictureId::new(2396),
+    PictureId::new(2397),
+    PictureId::new(2398),
+    PictureId::new(2399),
+    PictureId::new(2400),
+]);
+const TECH_ADVANCE_PICTURES: TechnologyTable<PictureId> = TechnologyTable::from_array([
+    PictureId::new(2199),
+    PictureId::new(2200),
+    PictureId::new(2202),
+    PictureId::new(2201),
+    PictureId::new(2206),
+    PictureId::new(2204),
+    PictureId::new(2205),
+    PictureId::new(2208),
+    PictureId::new(2209),
+    PictureId::new(2203),
+    PictureId::new(2207),
+    PictureId::new(2215),
+    PictureId::new(2211),
+    PictureId::new(2218),
+    PictureId::new(2221),
+    PictureId::new(2210),
+    PictureId::new(2216),
+    PictureId::new(2212),
+    PictureId::new(2213),
+    PictureId::new(2220),
+    PictureId::new(2214),
+    PictureId::new(2217),
+    PictureId::new(2225),
+    PictureId::new(2219),
+    PictureId::new(2222),
+    PictureId::new(2227),
+    PictureId::new(2223),
+    PictureId::new(2224),
+    PictureId::new(2226),
+]);
+const TECH_HISTORY_TEXT: TechnologyTable<u16> = TechnologyTable::from_array([
+    2300, 2301, 2302, 2303, 2304, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 2312, 2313, 2314, 2315,
+    2316, 2317, 2318, 2319, 2320, 2321, 2322, 2323, 2324, 2325, 2326, 2327, 2328,
+]);
+
+const ARMORY_ROW_IDLE: MilitaryUnitTable<PictureId> = MilitaryUnitTable::from_array([
+    PictureId::new(7520),
+    PictureId::new(7522),
+    PictureId::new(7524),
+    PictureId::new(7526),
+    PictureId::new(7528),
+    PictureId::new(7530),
+    PictureId::new(7532),
+    PictureId::new(7534),
+    PictureId::new(7536),
+    PictureId::new(7538),
+    PictureId::new(7540),
+    PictureId::new(7542),
+    PictureId::new(7544),
+    PictureId::new(7546),
+    PictureId::new(7548),
+    PictureId::new(7550),
+    PictureId::new(7552),
+    PictureId::new(7554),
+    PictureId::new(7556),
+    PictureId::new(7558),
+    PictureId::new(7560),
+    PictureId::new(7562),
+    PictureId::new(7564),
+    PictureId::new(7566),
+    PictureId::new(7536),
+    PictureId::new(7552),
+    PictureId::new(7568),
+    PictureId::new(7574),
+    PictureId::new(7576),
+    PictureId::new(7578),
+]);
+const ARMORY_ROW_SELECTED: MilitaryUnitTable<PictureId> = MilitaryUnitTable::from_array([
+    PictureId::new(7521),
+    PictureId::new(7523),
+    PictureId::new(7525),
+    PictureId::new(7527),
+    PictureId::new(7529),
+    PictureId::new(7531),
+    PictureId::new(7533),
+    PictureId::new(7535),
+    PictureId::new(7537),
+    PictureId::new(7539),
+    PictureId::new(7541),
+    PictureId::new(7543),
+    PictureId::new(7545),
+    PictureId::new(7547),
+    PictureId::new(7549),
+    PictureId::new(7551),
+    PictureId::new(7553),
+    PictureId::new(7555),
+    PictureId::new(7557),
+    PictureId::new(7559),
+    PictureId::new(7561),
+    PictureId::new(7563),
+    PictureId::new(7565),
+    PictureId::new(7567),
+    PictureId::new(7537),
+    PictureId::new(7553),
+    PictureId::new(7569),
+    PictureId::new(7575),
+    PictureId::new(7577),
+    PictureId::new(7579),
+]);
+const ARMORY_PLACARDS: MilitaryUnitTable<PictureId> = MilitaryUnitTable::from_array([
+    PictureId::new(7580),
+    PictureId::new(7581),
+    PictureId::new(7582),
+    PictureId::new(7583),
+    PictureId::new(7584),
+    PictureId::new(7585),
+    PictureId::new(7586),
+    PictureId::new(7587),
+    PictureId::new(7588),
+    PictureId::new(7589),
+    PictureId::new(7590),
+    PictureId::new(7591),
+    PictureId::new(7592),
+    PictureId::new(7593),
+    PictureId::new(7594),
+    PictureId::new(7595),
+    PictureId::new(7596),
+    PictureId::new(7597),
+    PictureId::new(7598),
+    PictureId::new(7599),
+    PictureId::new(7600),
+    PictureId::new(7601),
+    PictureId::new(7602),
+    PictureId::new(7603),
+    PictureId::new(7604),
+    PictureId::new(7605),
+    PictureId::new(7606),
+    PictureId::new(7607),
+    PictureId::new(7608),
+    PictureId::new(7609),
+]);
+const ARMY_TOOLBAR: MilitaryUnitTable<PictureId> = MilitaryUnitTable::from_array([
+    PictureId::new(1220),
+    PictureId::new(1221),
+    PictureId::new(1222),
+    PictureId::new(1223),
+    PictureId::new(1224),
+    PictureId::new(1225),
+    PictureId::new(1226),
+    PictureId::new(1227),
+    PictureId::new(1228),
+    PictureId::new(1229),
+    PictureId::new(1230),
+    PictureId::new(1231),
+    PictureId::new(1232),
+    PictureId::new(1233),
+    PictureId::new(1234),
+    PictureId::new(1235),
+    PictureId::new(1236),
+    PictureId::new(1237),
+    PictureId::new(1238),
+    PictureId::new(1239),
+    PictureId::new(1240),
+    PictureId::new(1241),
+    PictureId::new(1242),
+    PictureId::new(1243),
+    PictureId::new(1244),
+    PictureId::new(1245),
+    PictureId::new(1246),
+    PictureId::new(1247),
+    PictureId::new(1248),
+    PictureId::new(1249),
+]);
+const ARMY_TOOLBAR_EMPTY: MilitaryUnitTable<PictureId> = MilitaryUnitTable::from_array([
+    PictureId::new(1250),
+    PictureId::new(1251),
+    PictureId::new(1252),
+    PictureId::new(1253),
+    PictureId::new(1254),
+    PictureId::new(1255),
+    PictureId::new(1256),
+    PictureId::new(1257),
+    PictureId::new(1258),
+    PictureId::new(1259),
+    PictureId::new(1260),
+    PictureId::new(1261),
+    PictureId::new(1262),
+    PictureId::new(1263),
+    PictureId::new(1264),
+    PictureId::new(1265),
+    PictureId::new(1266),
+    PictureId::new(1267),
+    PictureId::new(1268),
+    PictureId::new(1269),
+    PictureId::new(1270),
+    PictureId::new(1271),
+    PictureId::new(1272),
+    PictureId::new(1273),
+    PictureId::new(1274),
+    PictureId::new(1275),
+    PictureId::new(1276),
+    PictureId::new(1277),
+    PictureId::new(1278),
+    PictureId::new(1279),
+]);
 
 const CITY_BUILDING_COLUMN: ProductionTable<i16> =
     ProductionTable::from_array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
@@ -257,6 +577,39 @@ const NEWS_NATION_NAME_MAJOR: MajorNationTable<i16> =
     MajorNationTable::from_array([1, 2, 3, 4, 5, 6, 7]);
 const NEWS_NATION_NAME_MINOR: MinorNationTable<i16> =
     MinorNationTable::from_array([8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]);
+const CIVILIAN_NAME_INDEX: CivilianUnitTable<i16> =
+    CivilianUnitTable::from_array([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+const CIVILIAN_DESCRIPTION_INDEX: CivilianUnitTable<i16> =
+    CivilianUnitTable::from_array([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+const MILITARY_UNIT_NAME_INDEX: MilitaryUnitTable<i16> = MilitaryUnitTable::from_array([
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+    27, 28, 29, 30,
+]);
+const MILITARY_UNIT_DESCRIPTION_INDEX: MilitaryUnitTable<i16> = MilitaryUnitTable::from_array([
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+    27, 28, 29, 30,
+]);
+const TECHNOLOGY_NAME_INDEX: TechnologyTable<i16> = TechnologyTable::from_array([
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+    27, 28, 29,
+]);
+const TECHNOLOGY_BENEFIT_INDEX: TechnologyTable<i16> = TechnologyTable::from_array([
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+    26, 27, 28,
+]);
+
+const RESOURCE_SPECIALTY_WIDTH: f32 = 20.0;
+const RESOURCE_SPECIALTY_HEIGHT: f32 = 24.0;
+const RESOURCE_SPECIALTY_X: ResourceTable<f32> = ResourceTable::from_array([
+    0.0, 20.0, 40.0, 60.0, 80.0, 100.0, 120.0, 140.0, 160.0, 180.0, 200.0, 220.0, 240.0, 260.0,
+    280.0, 300.0, 320.0, 340.0, 360.0, 380.0, 400.0, 420.0, 440.0,
+]);
+const RESOURCE_OVERLAY_WIDTH: f32 = 38.0;
+const RESOURCE_OVERLAY_HEIGHT: f32 = 26.0;
+const RESOURCE_OVERLAY_BASE_X: ResourceTable<i16> = ResourceTable::from_array([
+    0, 798, 114, 228, 342, -114, 684, -114, -114, -114, -114, -114, -114, -114, -114, -114, -114,
+    0, 0, -114, 798, 570, 456,
+]);
 
 /// Fleet sprite sheet chosen from researched naval-construction techs.
 #[derive(Clone, Copy, Debug, Enum, Eq, Hash, PartialEq)]
@@ -369,6 +722,24 @@ pub enum RetailPicture {
     PowerPlant {
         upgrade_queued: bool,
     },
+    CivilianPortrait(CivilianUnitKind),
+    ResourceSpecialtyStrip,
+    TechnologyStore {
+        technology: Technology,
+        selected: bool,
+    },
+    TechnologyHistory(Technology),
+    TechnologyAdvance(Technology),
+    ArmoryRow {
+        unit: MilitaryUnitKind,
+        selected: bool,
+    },
+    ArmoryPlacard(MilitaryUnitKind),
+    ArmyToolbar {
+        kind: MilitaryUnitKind,
+        empty: bool,
+    },
+    NavyClass(ShipType),
 }
 
 pub fn retail_picture(picture: RetailPicture) -> PictureId {
@@ -407,6 +778,36 @@ pub fn retail_picture(picture: RetailPicture) -> PictureId {
         RetailPicture::PowerPlant { upgrade_queued } => {
             PictureId::new(if upgrade_queued { 7011 } else { 7027 })
         }
+        RetailPicture::CivilianPortrait(kind) => CIVILIAN_PORTRAITS[kind],
+        RetailPicture::ResourceSpecialtyStrip => RESOURCE_SPECIALTY_STRIP,
+        RetailPicture::TechnologyStore {
+            technology,
+            selected,
+        } => {
+            if selected {
+                TECH_STORE_ACTIVE[technology]
+            } else {
+                TECH_STORE_IDLE[technology]
+            }
+        }
+        RetailPicture::TechnologyHistory(technology) => TECH_HISTORY_PICTURES[technology],
+        RetailPicture::TechnologyAdvance(technology) => TECH_ADVANCE_PICTURES[technology],
+        RetailPicture::ArmoryRow { unit, selected } => {
+            if selected {
+                ARMORY_ROW_SELECTED[unit]
+            } else {
+                ARMORY_ROW_IDLE[unit]
+            }
+        }
+        RetailPicture::ArmoryPlacard(unit) => ARMORY_PLACARDS[unit],
+        RetailPicture::ArmyToolbar { kind, empty } => {
+            if empty {
+                ARMY_TOOLBAR_EMPTY[kind]
+            } else {
+                ARMY_TOOLBAR[kind]
+            }
+        }
+        RetailPicture::NavyClass(ship) => NAVY_CLASS_PICTURES[ship],
     }
 }
 
@@ -466,6 +867,35 @@ pub fn shipyard_queue_cell(ship: ShipType) -> RetailAtlasCell {
         width: SHIPYARD_QUEUE_WIDTH,
         height: SHIPYARD_QUEUE_HEIGHT,
     }
+}
+
+pub fn resource_specialty_icon_cell(resource: ResourceKind) -> RetailAtlasCell {
+    RetailAtlasCell {
+        x: RESOURCE_SPECIALTY_X[resource],
+        y: 0.0,
+        width: RESOURCE_SPECIALTY_WIDTH,
+        height: RESOURCE_SPECIALTY_HEIGHT,
+    }
+}
+
+pub fn resource_overlay_cell(resource: ResourceKind, level: u8) -> Option<RetailAtlasCell> {
+    if level == 0 {
+        return None;
+    }
+    let base = RESOURCE_OVERLAY_BASE_X[resource];
+    if base < 0 {
+        return None;
+    }
+    Some(RetailAtlasCell {
+        x: f32::from(base) - RESOURCE_OVERLAY_WIDTH + f32::from(level) * RESOURCE_OVERLAY_WIDTH,
+        y: 0.0,
+        width: RESOURCE_OVERLAY_WIDTH,
+        height: RESOURCE_OVERLAY_HEIGHT,
+    })
+}
+
+pub fn technology_history_text_id(technology: Technology) -> u16 {
+    TECH_HISTORY_TEXT[technology]
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -530,6 +960,12 @@ pub enum RetailString {
     ShipDescription(ShipType),
     CityBuildingName(CityFacilitySlot),
     NewsNationName(NationId),
+    CivilianName(CivilianUnitKind),
+    CivilianDescription(CivilianUnitKind),
+    MilitaryUnitName(MilitaryUnitKind),
+    MilitaryUnitDescription(MilitaryUnitKind),
+    TechnologyName(Technology),
+    TechnologyBenefit(Technology),
 }
 
 pub fn retail_string(string: RetailString) -> RetailStringId {
@@ -556,6 +992,30 @@ pub fn retail_string(string: RetailString) -> RetailStringId {
                 NationId::Major(id) => NEWS_NATION_NAME_MAJOR[id],
                 NationId::Minor(id) => NEWS_NATION_NAME_MINOR[id],
             },
+        },
+        RetailString::CivilianName(kind) => RetailStringId {
+            group: 0x2718,
+            index: CIVILIAN_NAME_INDEX[kind],
+        },
+        RetailString::CivilianDescription(kind) => RetailStringId {
+            group: 0x2751,
+            index: CIVILIAN_DESCRIPTION_INDEX[kind],
+        },
+        RetailString::MilitaryUnitName(kind) => RetailStringId {
+            group: 0x2717,
+            index: MILITARY_UNIT_NAME_INDEX[kind],
+        },
+        RetailString::MilitaryUnitDescription(kind) => RetailStringId {
+            group: 0x2750,
+            index: MILITARY_UNIT_DESCRIPTION_INDEX[kind],
+        },
+        RetailString::TechnologyName(technology) => RetailStringId {
+            group: 0x2712,
+            index: TECHNOLOGY_NAME_INDEX[technology],
+        },
+        RetailString::TechnologyBenefit(technology) => RetailStringId {
+            group: 0x274e,
+            index: TECHNOLOGY_BENEFIT_INDEX[technology],
         },
     }
 }
@@ -725,6 +1185,39 @@ mod tests {
             PictureId::new(9837)
         );
         assert_eq!(shipyard_queue_cell(ShipType::Frigate).x, 160.0);
+        assert_eq!(
+            retail_picture(RetailPicture::ArmoryRow {
+                unit: MilitaryUnitKind::CombatEngineers,
+                selected: false,
+            }),
+            PictureId::new(7552)
+        );
+        assert_eq!(
+            retail_picture(RetailPicture::ArmoryRow {
+                unit: MilitaryUnitKind::Saboteurs,
+                selected: false,
+            }),
+            PictureId::new(7568)
+        );
+        assert_eq!(
+            retail_picture(RetailPicture::TechnologyStore {
+                technology: Technology::CottonGin,
+                selected: false,
+            }),
+            PictureId::new(2309)
+        );
+        assert_eq!(
+            retail_string(RetailString::CivilianName(CivilianUnitKind::Engineer)),
+            RetailStringId {
+                group: 0x2718,
+                index: 5,
+            }
+        );
+        assert_eq!(resource_specialty_icon_cell(ResourceKind::Cotton).x, 0.0);
+        assert_eq!(
+            resource_overlay_cell(ResourceKind::Iron, 1).map(|cell| cell.x),
+            Some(228.0)
+        );
         assert_eq!(
             retail_string(RetailString::ResourceName(ResourceKind::Cotton)),
             RetailStringId {

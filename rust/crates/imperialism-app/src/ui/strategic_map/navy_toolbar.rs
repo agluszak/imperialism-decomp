@@ -185,7 +185,7 @@ fn sync_navy_toolbar(
         let picture = session
             .game
             .navy_toolbar_class_ship_type(class.0)
-            .map(|ship_type| i16::from(ship_type.retail()) + 0x5e6);
+            .map(|ship_type| retail_picture(RetailPicture::NavyClass(ship_type)));
         for (child_of, mut image, mut visibility) in &mut ships {
             if child_of.parent() != entity {
                 continue;
@@ -193,7 +193,7 @@ fn sync_navy_toolbar(
             if available > 0 {
                 if let Some(picture_id) = picture {
                     image.image = assets
-                        .picture(PictureId::new(picture_id))
+                        .picture(picture_id)
                         .expect("retail navy class picture must load");
                 }
                 *visibility = Visibility::Visible;

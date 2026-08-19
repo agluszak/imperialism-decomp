@@ -44,20 +44,6 @@ pub(in crate::ui::city) struct UniversityDialogData {
     pub(in crate::ui::city) warning_color: Color,
 }
 
-pub(in crate::ui::city) const fn university_preview_picture(kind: CivilianUnitKind) -> i16 {
-    match kind {
-        CivilianUnitKind::Miner => 402,
-        CivilianUnitKind::Prospector => 403,
-        CivilianUnitKind::Farmer => 401,
-        CivilianUnitKind::Forester => 406,
-        CivilianUnitKind::Engineer => 400,
-        CivilianUnitKind::Rancher => 407,
-        CivilianUnitKind::Fisherman => 405,
-        CivilianUnitKind::Developer => 404,
-        CivilianUnitKind::Driller => 408,
-    }
-}
-
 pub(in crate::ui::city) fn configure_university_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
@@ -101,19 +87,21 @@ pub(in crate::ui::city) fn configure_university_dialog(
                 // Retail `TUniversityView::SetUnit` pre-increments the 0-based
                 // recruitment category once and reuses that 1-based index for
                 // both `0x2718` (name) and `0x2751` (description).
-                unit_name: assets
-                    .string(0x2718, i16::from(kind.retail()) + 1)
-                    .expect("retail civilian name"),
-                description: assets
-                    .string(0x2751, i16::from(kind.retail()) + 1)
-                    .expect("retail civilian description"),
+                unit_name: catalog_string(assets, RetailString::CivilianName(kind)),
+                description: catalog_string(assets, RetailString::CivilianDescription(kind)),
                 preview: assets
-                    .transparent_picture(PictureId::new(university_preview_picture(kind)), 0x10)
+                    .transparent_picture(
+                        retail_picture(RetailPicture::Civilian {
+                            kind,
+                            pose: CivilianPosePicture::Idle,
+                        }),
+                        0x10,
+                    )
                     .expect("retail University preview picture must load"),
             }
         }),
         resource_icons: assets
-            .transparent_picture(PictureId::new(750), 0x10)
+            .transparent_picture(retail_picture(RetailPicture::ResourceSpecialtyStrip), 0x10)
             .expect("retail University resource icons must load"),
         tier_labels: std::array::from_fn(|level| {
             assets
@@ -458,8 +446,13 @@ pub(in crate::ui::city) fn sync_university_details(
             UniversityDisplay::Preview => image.image.clone_from(&row.preview),
             UniversityDisplay::RequirementIcon(row) => {
                 if let Some(resource) = specialties[row] {
-                    let source_left = f32::from(resource.retail()) * 20.0;
-                    image.rect = Some(Rect::new(source_left, 0.0, source_left + 20.0, 24.0));
+                    let cell = resource_specialty_icon_cell(resource);
+                    image.rect = Some(Rect::new(
+                        cell.x,
+                        cell.y,
+                        cell.x + cell.width,
+                        cell.y + cell.height,
+                    ));
                 }
             }
             _ => {}

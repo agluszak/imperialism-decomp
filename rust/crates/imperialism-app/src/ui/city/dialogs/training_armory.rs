@@ -66,17 +66,8 @@ const ARMORY_DETAIL_TEXT_STYLE: RetailTextStylePreset = RetailTextStylePreset {
     alignment: 0,
 };
 
-const fn armory_picture_variant(unit: MilitaryUnitKind) -> i16 {
-    match unit {
-        MilitaryUnitKind::Sappers => 8,
-        MilitaryUnitKind::CombatEngineers => 0x10,
-        MilitaryUnitKind::Saboteurs => 0x18,
-        _ => unit as i16,
-    }
-}
-
-const fn armory_row_picture(unit: MilitaryUnitKind) -> PictureId {
-    PictureId::new(0x1d60 + 2 * armory_picture_variant(unit))
+fn armory_row_picture(unit: MilitaryUnitKind, selected: bool) -> PictureId {
+    retail_picture(RetailPicture::ArmoryRow { unit, selected })
 }
 
 pub(in crate::ui::city) fn configure_training_dialog(
@@ -189,10 +180,10 @@ pub(in crate::ui::city) fn configure_armory_dialog(
         let category = row.military_category();
         let unit = city.orders.military_recruitment[category].unit_kind;
         let idle = assets
-            .picture(armory_row_picture(unit))
+            .picture(armory_row_picture(unit, false))
             .expect("retail Armory row picture");
         let active = assets
-            .picture(PictureId::new(armory_row_picture(unit).get() + 1))
+            .picture(armory_row_picture(unit, true))
             .expect("retail Armory selected row picture");
         let mut button = commands.entity(button);
         button.insert((
@@ -331,12 +322,8 @@ pub(in crate::ui::city) fn sync_armory_details(
     };
     let secondary = spec.secondary;
     let unit_index = usize::from(order.unit_kind.retail());
-    let unit_name = assets
-        .string(0x2717, i16::from(order.unit_kind.retail()) + 1)
-        .expect("retail military unit name");
-    let description = assets
-        .string(0x2750, i16::from(order.unit_kind.retail()) + 1)
-        .expect("retail military unit description");
+    let unit_name = assets.catalog_string(RetailString::MilitaryUnitName(order.unit_kind));
+    let description = assets.catalog_string(RetailString::MilitaryUnitDescription(order.unit_kind));
     let static_text = assets
         .string(
             0x271c,
@@ -391,7 +378,9 @@ pub(in crate::ui::city) fn sync_armory_details(
         .single_mut()
         .expect("Armory dialog has one unit placard")
         .image = assets
-        .picture(PictureId::new(0x1d9c + i16::from(order.unit_kind.retail())))
+        .picture(retail_picture(RetailPicture::ArmoryPlacard(
+            order.unit_kind,
+        )))
         .expect("retail Armory unit placard");
     let secondary_visible = if secondary.is_some() {
         Visibility::Visible
@@ -443,15 +432,19 @@ mod tests {
         let pictures: Vec<_> = (0..enum_map::enum_len::<MilitaryRecruitmentCategory>())
             .map(MilitaryRecruitmentCategory::from_usize)
             .map(|category| {
-                armory_row_picture(city.orders.military_recruitment[category].unit_kind).get()
+                armory_row_picture(city.orders.military_recruitment[category].unit_kind, false)
+                    .get()
             })
             .collect();
 
         assert_eq!(pictures, [7522, 7524, 7526, 7528, 7530, 7532, 7534, 7536]);
         assert_eq!(
-            armory_row_picture(MilitaryUnitKind::CombatEngineers).get(),
+            armory_row_picture(MilitaryUnitKind::CombatEngineers, false).get(),
             7552
         );
-        assert_eq!(armory_row_picture(MilitaryUnitKind::Saboteurs).get(), 7568);
+        assert_eq!(
+            armory_row_picture(MilitaryUnitKind::Saboteurs, false).get(),
+            7568
+        );
     }
 }

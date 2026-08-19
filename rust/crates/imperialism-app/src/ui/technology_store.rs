@@ -15,7 +15,10 @@ use imperialism_core::{
     CountryStatus, MajorNationId, NationId, Technology, TechnologyResearchRejection,
     TechnologyResearchStatus,
 };
-use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc};
+use imperialism_formats::{
+    PictureId, RetailPicture, RetailString, RetailTextStylePreset, fourcc, retail_picture,
+    technology_history_text_id,
+};
 
 const TECHNOLOGIES_PER_PAGE: usize = 6;
 
@@ -245,10 +248,16 @@ fn spawn_technology_row(
         ))
         .id();
     let picture = assets
-        .picture(PictureId::new(0x08ff + i16::from(technology.retail()) * 2))
+        .picture(retail_picture(RetailPicture::TechnologyStore {
+            technology,
+            selected: false,
+        }))
         .expect("retail technology illustration");
     let active_picture = assets
-        .picture(PictureId::new(0x0900 + i16::from(technology.retail()) * 2))
+        .picture(retail_picture(RetailPicture::TechnologyStore {
+            technology,
+            selected: true,
+        }))
         .unwrap_or_else(|_| picture.clone());
     commands
         .spawn((
@@ -272,9 +281,7 @@ fn spawn_technology_row(
         ))
         .observe(on_technology_history);
 
-    let name = assets
-        .string(0x2712, i16::from(technology.retail()) + 1)
-        .expect("retail technology name");
+    let name = assets.catalog_string(RetailString::TechnologyName(technology));
     let available_year =
         1815 + game.technology().scheduled_unlock_turn_by_technology[technology] / 4;
     spawn_row_text(
@@ -285,9 +292,7 @@ fn spawn_technology_row(
         format!("{name}\n{available_year}"),
         row_style,
     );
-    let description = assets
-        .string(0x274e, i16::from(technology.retail()))
-        .expect("retail technology benefit");
+    let description = assets.catalog_string(RetailString::TechnologyBenefit(technology));
     spawn_row_text(commands, row_entity, 295.0, 269.0, description, row_style);
 
     let status = game.technology().research_status_by_nation[nation][technology];
@@ -486,18 +491,14 @@ fn bind_technology_modals(
             })
             .expect("retail technology-history title style");
         commands.entity(view.find(fourcc!("titl"))).insert((
-            Text::new(
-                assets
-                    .string(0x2712, i16::from(technology.retail()) + 1)
-                    .expect("retail technology-history title"),
-            ),
+            Text::new(assets.catalog_string(RetailString::TechnologyName(technology))),
             title_font,
             title_layout,
             title_line_height,
             TextColor(Color::BLACK),
         ));
         let picture = assets
-            .picture(PictureId::new(0x0944 + i16::from(technology.retail())))
+            .picture(retail_picture(RetailPicture::TechnologyHistory(technology)))
             .expect("retail technology-history picture");
         commands
             .entity(view.find(fourcc!("pict")))
@@ -526,7 +527,7 @@ fn bind_technology_modals(
             },
             Text::new(
                 retail
-                    .text(u16::from(technology.retail()) + 0x08fc)
+                    .text(technology_history_text_id(technology))
                     .expect("retail technology-history body"),
             ),
             body_font,
@@ -614,9 +615,7 @@ fn project_technology_status(
                     .into_iter()
                     .flatten()
                     .map(|prerequisite| {
-                        retail
-                            .string(0x2712, i16::from(prerequisite.retail()) + 1)
-                            .expect("retail prerequisite technology name")
+                        retail.catalog_string(RetailString::TechnologyName(prerequisite))
                     })
                     .collect::<Vec<_>>();
                 let template = retail

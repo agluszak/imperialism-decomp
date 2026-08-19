@@ -31,7 +31,8 @@ pub use retail_catalog::{
     ArmyCountBucket, CivilianPosePicture, FleetVisualEra, OceanImprovementKind, OwnerBadge,
     RetailAtlasCell, RetailPicture, RetailString, RetailStringId, deal_book_flag_cell,
     ocean_border_palette, ocean_fill_palette, ocean_improvement_source_x, owner_flag_cell_width,
-    owner_flag_source_x, retail_picture, retail_string, setup_flag_cell, shipyard_queue_cell,
+    owner_flag_source_x, resource_overlay_cell, resource_specialty_icon_cell, retail_picture,
+    retail_string, setup_flag_cell, shipyard_queue_cell, technology_history_text_id,
 };
 pub use retail_fonts::{
     ResolvedRetailTextStyle, RetailFontCellMetrics, RetailFontFace, RetailFontMetricsError,

@@ -1,6 +1,7 @@
 //! Right-hand civilian command page (`uciv` / `TCivToolbar` + `TCivDescription`).
 
 use super::super::format_currency;
+use super::super::hover_help::catalog_string;
 use super::super::retail::{RetailTree, RetailUiAssets};
 use super::map_interaction::cycle_map_interaction_selection;
 use super::map_interaction::{MapInteractionMode, StrategicInteraction, StrategicViewport};
@@ -18,10 +19,7 @@ const PORTRAIT_TAG: FourCc = fourcc!("unit");
 const LEGEND_TAG: FourCc = fourcc!("back");
 const CIVILIAN_PAGE_VISIBLE: Vec2 = Vec2::new(0.0, 0x8f as f32);
 const CIVILIAN_PAGE_PARKED: Vec2 = Vec2::new(-1000.0, -1000.0);
-const PORTRAIT_PICTURE_BASE: i16 = 0x438;
-const CIVILIAN_NAME_GROUP: i16 = 0x2718;
 const CIVILIAN_LEGEND_GROUP: i16 = 0x272d;
-const RESOURCE_ICON_ATLAS: i16 = 750;
 const DEVELOPMENT_STRIP_ATLAS: i16 = 751;
 const TERRAIN_ICON_ATLAS: i16 = 801;
 const RESOURCE_ICON_SIZE: Vec2 = Vec2::new(20.0, 24.0);
@@ -117,7 +115,12 @@ pub(crate) fn bind_civilian_toolbar(
     commands.entity(tree.child(page, LEGEND_TAG)).insert((
         CivilianLegend,
         LegendAtlases {
-            resources: transparent_atlas(assets, RESOURCE_ICON_ATLAS),
+            resources: assets
+                .transparent_picture(
+                    retail_picture(RetailPicture::ResourceSpecialtyStrip),
+                    TRANSPARENT_INDEX,
+                )
+                .expect("retail civilian legend atlas must load"),
             development: transparent_atlas(assets, DEVELOPMENT_STRIP_ATLAS),
             terrain: transparent_atlas(assets, TERRAIN_ICON_ATLAS),
         },
@@ -221,7 +224,9 @@ fn sync_civilian_toolbar(
         match unit {
             Some((_, unit)) => {
                 let picture = assets
-                    .picture(PictureId::new(portrait_picture_id(unit.unit_type())))
+                    .picture(retail_picture(RetailPicture::CivilianPortrait(
+                        unit.unit_type(),
+                    )))
                     .expect("retail civilian toolbar portrait must load");
                 commands
                     .entity(portrait)
@@ -247,10 +252,6 @@ fn sync_civilian_toolbar(
         unit,
         atlases.clone(),
     );
-}
-
-fn portrait_picture_id(kind: CivilianUnitKind) -> i16 {
-    PORTRAIT_PICTURE_BASE + i16::from(kind.retail())
 }
 
 fn civilian_legend_target_counts(state: &GameState, unit: &CivilianUnitState) -> [i16; 5] {
@@ -291,9 +292,7 @@ fn spawn_civilian_legend(
     atlases: LegendAtlases,
 ) {
     let kind = unit.unit_type();
-    let name = assets
-        .string(CIVILIAN_NAME_GROUP, i16::from(kind.retail()) + 1)
-        .expect("retail civilian class name must load");
+    let name = catalog_string(assets, RetailString::CivilianName(kind));
     let (name_font, name_layout, name_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
@@ -622,7 +621,7 @@ fn spawn_developer_legend(
             atlases.resources.clone(),
             Vec2::new(dest.x as f32, dest.y as f32),
             RESOURCE_ICON_SIZE,
-            Vec2::new(f32::from(resource.retail()) * 20.0, 0.0),
+            Vec2::new(resource_specialty_icon_cell(resource).x, 0.0),
         );
         spawn_legend_text(
             commands,

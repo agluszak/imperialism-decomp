@@ -8,10 +8,6 @@ pub(super) const RESOURCE_ICON_WIDTH: i32 = 0x14;
 pub(super) const RESOURCE_ICON_HEIGHT: i32 = 0x18;
 pub(super) const RESOURCE_OVERLAY_WIDTH: i32 = 0x26;
 pub(super) const RESOURCE_OVERLAY_HEIGHT: i32 = 0x1a;
-const RESOURCE_OVERLAY_SOURCE_X: [i16; 28] = [
-    0, 798, 114, 228, 342, -114, 684, -114, -114, -114, -114, -114, -114, -114, -114, -114, -114,
-    0, 0, -114, 798, 570, 456, 0, 0, 0, 0, 0,
-];
 const IMPROVEMENT_ATLAS_BASE_OFFSET: u16 = 0x6c0;
 pub(super) const IMPROVEMENT_PICTURE_IDS: [i16; 15] = [
     550, 551, 552, 553, 554, 555, 556, 557, 560, 561, 562, 10_104, 10_105, 578, 579,
@@ -243,7 +239,7 @@ fn blit_resource_icon(
 ) {
     blit_indexed(
         atlas,
-        i32::from(resource.retail()) * RESOURCE_ICON_WIDTH,
+        resource_specialty_icon_cell(resource).x as i32,
         0,
         RESOURCE_ICON_WIDTH,
         RESOURCE_ICON_HEIGHT,
@@ -261,18 +257,12 @@ fn blit_resource_overlay(
     dest_y: i32,
     pixels: &mut [u8],
 ) {
-    if level == 0 {
+    let Some(cell) = resource_overlay_cell(resource, level) else {
         return;
-    }
-    let source_base = RESOURCE_OVERLAY_SOURCE_X[usize::from(resource.retail())];
-    if source_base < 0 {
-        return;
-    }
-    let source_x =
-        i32::from(source_base) - RESOURCE_OVERLAY_WIDTH + i32::from(level) * RESOURCE_OVERLAY_WIDTH;
+    };
     blit_indexed(
         atlas,
-        source_x,
+        cell.x as i32,
         0,
         RESOURCE_OVERLAY_WIDTH,
         RESOURCE_OVERLAY_HEIGHT,
