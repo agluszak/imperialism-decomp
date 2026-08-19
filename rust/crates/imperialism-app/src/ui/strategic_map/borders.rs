@@ -1,12 +1,11 @@
 use imperialism_core::*;
 use imperialism_formats::IndexedPicture;
 
+use crate::ui::retail_palette::major_nation_palette;
 use crate::ui::retail_raster::IndexedRasterExt;
 
 pub(super) const CITY_BORDER_PALETTE: u8 = 0x13;
 pub(super) const MINOR_NATION_BORDER_PALETTE: u8 = 0x0a;
-pub(super) const MAJOR_NATION_BORDER_PALETTES: [u8; MAJOR_NATION_COUNT] =
-    [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
 pub(super) fn compose_strategic_borders(
     state: &GameState,
     tile: TileId,
@@ -207,7 +206,7 @@ fn border_palette(owner: Option<TileOwnerTag>) -> u8 {
     owner
         .and_then(TileOwnerTag::nation)
         .and_then(MajorNationId::from_nation)
-        .map(|nation| MAJOR_NATION_BORDER_PALETTES[usize::from(nation.get())])
+        .map(major_nation_palette)
         .unwrap_or(MINOR_NATION_BORDER_PALETTE)
 }
 
@@ -223,8 +222,15 @@ fn draw_guide_pattern(
     color: u8,
     pen: i32,
 ) {
-    for path in guide_paths(relation, variant) {
-        stroke_guide(pixels, path.origin, path.points, color, pen);
+    let families: &[u8] = match relation {
+        4 => &[1, 3],
+        8 => &[7, 5],
+        _ => std::slice::from_ref(&relation),
+    };
+    for &family in families {
+        for path in guide_paths(family, variant) {
+            stroke_guide(pixels, path.origin, path.points, color, pen);
+        }
     }
 }
 
@@ -283,36 +289,6 @@ fn guide_paths(relation: u8, variant: i32) -> &'static [GuidePath] {
             origin: (0x2c, 5),
             points: &[(0x37, -3)],
         }],
-        (4, 0) => &[
-            GuidePath {
-                origin: (0x2c, 8),
-                points: &[(0x36, 0xd), (0x34, 0x14), (0x3a, 0x19), (0x38, 0x20)],
-            },
-            GuidePath {
-                origin: (0x2c, 8),
-                points: &[(0x38, 0)],
-            },
-        ],
-        (4, 1) => &[
-            GuidePath {
-                origin: (0x2c, 10),
-                points: &[(0x34, 0xf), (0x31, 0x14), (0x38, 0x19), (0x36, 0x20)],
-            },
-            GuidePath {
-                origin: (0x2c, 10),
-                points: &[(0x39, 0)],
-            },
-        ],
-        (4, 2) => &[
-            GuidePath {
-                origin: (0x2c, 6),
-                points: &[(0x37, 0xb), (0x36, 0x13), (0x3c, 0x19), (0x3a, 0x20)],
-            },
-            GuidePath {
-                origin: (0x2c, 5),
-                points: &[(0x37, -3)],
-            },
-        ],
         (5, 0) => &[GuidePath {
             origin: (0x2c, 0x38),
             points: &[(0x39, 0x40)],
@@ -349,36 +325,6 @@ fn guide_paths(relation: u8, variant: i32) -> &'static [GuidePath] {
             origin: (0x2c, 0x3a),
             points: &[(0x37, 0x35), (0x36, 0x2d), (0x3c, 0x27), (0x3a, 0x20)],
         }],
-        (8, 0) => &[
-            GuidePath {
-                origin: (0x2c, 0x38),
-                points: &[(0x36, 0x33), (0x34, 0x2c), (0x3a, 0x27), (0x38, 0x20)],
-            },
-            GuidePath {
-                origin: (0x2c, 0x38),
-                points: &[(0x39, 0x40)],
-            },
-        ],
-        (8, 1) => &[
-            GuidePath {
-                origin: (0x2c, 0x36),
-                points: &[(0x34, 0x31), (0x30, 0x2c), (0x37, 0x27), (0x36, 0x20)],
-            },
-            GuidePath {
-                origin: (0x2c, 0x36),
-                points: &[(0x39, 0x3e)],
-            },
-        ],
-        (8, 2) => &[
-            GuidePath {
-                origin: (0x2c, 0x3a),
-                points: &[(0x37, 0x35), (0x36, 0x2d), (0x3c, 0x27), (0x3a, 0x20)],
-            },
-            GuidePath {
-                origin: (0x2c, 0x3a),
-                points: &[(0x3a, 0x42)],
-            },
-        ],
         (9, 0) => &[GuidePath {
             origin: (0x18, 0x40),
             points: &[(0x1a, 0x3b), (0x24, 0x36), (0x2a, 0x38), (0x2c, 0x38)],
@@ -402,11 +348,9 @@ fn stroke_guide(
     color: u8,
     pen: i32,
 ) {
-    let mut x = origin.0;
-    let mut y = origin.1;
-    for &(next_x, next_y) in points {
-        pixels.line_to_gdi((x, y).into(), (next_x, next_y).into(), color, pen);
-        x = next_x;
-        y = next_y;
-    }
+    pixels.stroke_polyline_gdi(
+        std::iter::once(origin.into()).chain(points.iter().copied().map(Into::into)),
+        color,
+        pen,
+    );
 }

@@ -7,8 +7,8 @@ use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::hover_help::get_string;
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
-use super::owner_map::OwnerMap;
 use super::retail::{ModalDialog, RetailTree, ancestor_with};
+use super::satellite_preview::SatellitePreview;
 use super::session::apply_turn_stop;
 use crate::AppState;
 use crate::RetailAssetsResource;
@@ -2183,23 +2183,24 @@ fn render_diplomacy_map(
     let (entity, image_node) = map.into_inner();
     let state = &session.game;
     let framed = screen.framed_nation;
-    let owner_map = match screen.interaction_mode() {
-        1 => OwnerMap::compose_with_fill(
+    // Fidelity debt: retail TDiplomacyMapView has its own 540x300 region renderer.
+    // This satellite preview remains temporary until imperialism-decomp-7lk3 replaces it.
+    let mut preview = match screen.interaction_mode() {
+        1 => SatellitePreview::compose_with_fill(
             |tile| state.map()[tile].owner_nation,
-            framed,
             |nation| {
                 DiplomacyRelationshipNotch::from_standing(state.diplomacy_standing(framed, nation))
                     .palette()
             },
         ),
-        4 => OwnerMap::compose_with_fill(
+        4 => SatellitePreview::compose_with_fill(
             |tile| state.map()[tile].owner_nation,
-            framed,
             |nation| diplomacy_relationship_fill(state, framed, nation),
         ),
-        _ => OwnerMap::compose(|tile| state.map()[tile].owner_nation, framed),
+        _ => SatellitePreview::compose(|tile| state.map()[tile].owner_nation),
     };
-    let image = owner_map.to_image(assets.default_dib_palette());
+    preview.enhance(framed);
+    let image = preview.to_image(assets.default_dib_palette());
     if let Some(image_node) = image_node {
         assets.replace_image(&image_node.image, image);
     } else {

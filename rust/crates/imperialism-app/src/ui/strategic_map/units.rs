@@ -6,10 +6,8 @@
 
 use super::super::GameSession;
 use super::RetailUiAssets;
-use super::{
-    StrategicInteraction, TILE_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH,
-    for_each_visible_strategic_tile,
-};
+use super::map_projection::DetailedMapProjection;
+use super::{StrategicInteraction, TILE_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 use crate::ui::retail_raster::{IndexedRasterExt, indexed_picture};
 use bevy::prelude::*;
 use enum_map::Enum;
@@ -473,7 +471,7 @@ fn load_fleet_frames(assets: &RetailUiAssets, state: &GameState) -> Vec<IndexedP
         .filter_map(|frame| {
             let x = frame * TILE_SIZE as u32;
             (x + TILE_SIZE as u32 <= atlas.width)
-                .then(|| crop_indexed(&atlas, x, 0, TILE_SIZE as u32, TILE_SIZE as u32))
+                .then(|| atlas.crop(IRect::new(x as i32, 0, x as i32 + TILE_SIZE, TILE_SIZE)))
         })
         .collect()
 }
@@ -491,26 +489,7 @@ fn first_tile_frame(picture: IndexedPicture) -> IndexedPicture {
     if picture.width == width && picture.height == height {
         picture
     } else {
-        crop_indexed(&picture, 0, 0, width, height)
-    }
-}
-
-fn crop_indexed(
-    source: &IndexedPicture,
-    x: u32,
-    y: u32,
-    width: u32,
-    height: u32,
-) -> IndexedPicture {
-    let mut pixels = Vec::with_capacity((width * height) as usize);
-    for row in 0..height {
-        let start = ((y + row) * source.width + x) as usize;
-        pixels.extend_from_slice(&source.pixels[start..start + width as usize]);
-    }
-    IndexedPicture {
-        width,
-        height,
-        pixels,
+        picture.crop(IRect::new(0, 0, width as i32, height as i32))
     }
 }
 
@@ -619,7 +598,11 @@ fn visible_strategic_units(
     selected: Option<CivilianUnitId>,
 ) -> Vec<VisibleStrategicUnit> {
     let mut units = Vec::new();
-    for_each_visible_strategic_tile(state, view_origin, |tile, screen_x, screen_y| {
+    let projection = DetailedMapProjection::new(state.map().geometry(), view_origin);
+    for projected in projection.visible_tiles() {
+        let tile = projected.tile;
+        let screen_x = projected.origin.x;
+        let screen_y = projected.origin.y;
         if let Some(unit) = army_badge_on_tile(state, tile) {
             units.push(VisibleStrategicUnit {
                 identity: unit.identity,
@@ -647,7 +630,7 @@ fn visible_strategic_units(
                 z: 2,
             });
         }
-    });
+    }
     units
 }
 
@@ -1154,16 +1137,16 @@ mod tests {
     fn viewport_iterator_matches_tile_screen_origins_and_clips_offscreen_rows() {
         let state = fixture_state();
         let view_origin = beginning_map_view_origin();
-        let mut seen = Vec::new();
-        for_each_visible_strategic_tile(&state, view_origin, |tile, x, y| {
-            seen.push((tile, x, y));
+        let projection = DetailedMapProjection::new(state.map().geometry(), view_origin);
+        let seen = projection.visible_tiles();
+        for projected in &seen {
             assert_eq!(
-                super::super::strategic_tile_screen_origin(&state, view_origin, tile),
-                (x, y)
+                projection.tile_origin(projected.tile),
+                Some(projected.origin)
             );
-            assert!(x < VIEWPORT_WIDTH as i32);
-            assert!(x + TILE_SIZE > 0);
-        });
+            assert!(projected.origin.x < VIEWPORT_WIDTH as i32);
+            assert!(projected.origin.x + TILE_SIZE > 0);
+        }
         assert!(!seen.is_empty());
         let (origin_row, _) = state.map().geometry().row_column(view_origin);
         let outside = state
@@ -1172,7 +1155,7 @@ mod tests {
             .tile(origin_row.saturating_add(8), 0)
             .or_else(|| state.map().geometry().tile(origin_row.saturating_sub(1), 0));
         if let Some(outside) = outside {
-            assert!(seen.iter().all(|(tile, _, _)| *tile != outside));
+            assert!(seen.iter().all(|projected| projected.tile != outside));
         }
     }
 

@@ -1,7 +1,7 @@
 use super::RetailUiAssets;
-use super::owner_map::OwnerMap;
 use super::random_setup::{RandomGameSetup, RandomSetupPreview};
 use super::retail::RetailTree;
+use super::satellite_preview::SatellitePreview;
 use crate::RetailAssetsResource;
 use bevy::log::warn;
 use bevy::math::Rect;
@@ -23,7 +23,7 @@ const OFF_MAP_PALETTE: u8 = 0x10;
 /// The retail 8-bit map surface retained for both display and click sampling.
 #[derive(Component, Default)]
 struct RandomSetupMapPreview {
-    owner_map: OwnerMap,
+    preview: SatellitePreview,
     rendered: bool,
 }
 
@@ -171,9 +171,9 @@ fn render_map_preview(
 
         let generated = &generated_preview.0;
 
-        map_preview.owner_map = compose_preview(generated.map.tiles(), setup.nation);
+        map_preview.preview = compose_preview(generated.map.tiles(), setup.nation);
         let palette = retail_assets.assets().default_dib_palette();
-        let image = map_preview.owner_map.to_image(palette);
+        let image = map_preview.preview.to_image(palette);
         if let Some(mut image_node) = image_node {
             if let Some(mut existing) = images.get_mut(&image_node.image) {
                 *existing = image;
@@ -203,7 +203,7 @@ fn on_map_preview_click(
         return;
     };
     let Some(nation) = map_preview
-        .owner_map
+        .preview
         .nation_at(normalized)
         .and_then(MajorNationId::from_nation)
     else {
@@ -217,11 +217,10 @@ fn on_map_preview_click(
 fn compose_preview(
     tiles: &[imperialism_core::GeneratedTerrainTile],
     selected_nation: MajorNationId,
-) -> OwnerMap {
-    OwnerMap::compose(
-        |tile| tiles[usize::from(tile.get())].owner,
-        selected_nation.nation(),
-    )
+) -> SatellitePreview {
+    let mut preview = SatellitePreview::compose(|tile| tiles[usize::from(tile.get())].owner);
+    preview.enhance(selected_nation.nation());
+    preview
 }
 
 #[cfg(test)]

@@ -221,119 +221,106 @@ pub(super) fn frame_for_offset(offset: u16) -> usize {
 
 fn copy_transition_wedge(direction: HexDirection, source: &[u8], destination: &mut [u8]) {
     match direction {
-        HexDirection::NorthEast => copy_dib_spans(
-            source,
-            destination,
-            (0x20..0x40).map(|row| DibSpan::new(row, 0x20, row - 0x1f)),
-        ),
-        HexDirection::East => copy_dib_spans(
-            source,
-            destination,
-            (1..0x20)
-                .map(|row| DibSpan::new(row, 0x40 - row, row))
-                .chain((0x20..0x3f).map(|row| DibSpan::new(row, row + 1, 0x3f - row))),
-        ),
-        HexDirection::SouthEast => copy_dib_spans(
-            source,
-            destination,
-            (0..0x20).map(|row| DibSpan::new(row, 0x20, 0x20 - row)),
-        ),
-        HexDirection::SouthWest => copy_dib_spans(
-            source,
-            destination,
-            (0..0x20).map(|row| DibSpan::new(row, row, 0x20 - row)),
-        ),
-        HexDirection::West => copy_dib_spans(
-            source,
-            destination,
-            (0..0x20)
-                .map(|row| DibSpan::new(row, 0, row + 1))
-                .chain((0x20..0x40).map(|row| DibSpan::new(row, 0, 0x40 - row))),
-        ),
-        HexDirection::NorthWest => copy_dib_spans(
-            source,
-            destination,
-            (0x21..0x40).map(|row| DibSpan::new(row, 0x40 - row, row - 0x20)),
-        ),
+        HexDirection::NorthEast => {
+            for row in 0x20..0x40 {
+                copy_dib_span(source, destination, row, 0x20, row - 0x1f);
+            }
+        }
+        HexDirection::East => {
+            for row in 1..0x20 {
+                copy_dib_span(source, destination, row, 0x40 - row, row);
+            }
+            for row in 0x20..0x3f {
+                copy_dib_span(source, destination, row, row + 1, 0x3f - row);
+            }
+        }
+        HexDirection::SouthEast => {
+            for row in 0..0x20 {
+                copy_dib_span(source, destination, row, 0x20, 0x20 - row);
+            }
+        }
+        HexDirection::SouthWest => {
+            for row in 0..0x20 {
+                copy_dib_span(source, destination, row, row, 0x20 - row);
+            }
+        }
+        HexDirection::West => {
+            for row in 0..0x20 {
+                copy_dib_span(source, destination, row, 0, row + 1);
+            }
+            for row in 0x20..0x40 {
+                copy_dib_span(source, destination, row, 0, 0x40 - row);
+            }
+        }
+        HexDirection::NorthWest => {
+            for row in 0x21..0x40 {
+                copy_dib_span(source, destination, row, 0x40 - row, row - 0x20);
+            }
+        }
     }
 }
 
 fn copy_coast_corner(corner: usize, source: &[u8], destination: &mut [u8]) {
     match corner {
-        0 => copy_dib_spans(
-            source,
-            destination,
-            (0x20..0x40).map(|row| {
+        0 => {
+            for row in 0x20..0x40 {
                 let half_row = (row - 0x20) / 2;
-                DibSpan::new(row, 0x1f - half_row, 2 + half_row * 2)
-            }),
-        ),
-        1 => copy_dib_spans(
-            source,
-            destination,
-            (0x20..0x40).map(|row| {
+                copy_dib_span(source, destination, row, 0x1f - half_row, 2 + half_row * 2);
+            }
+        }
+        1 => {
+            for row in 0x20..0x40 {
                 let first_column = 0x20 + (row - 0x20) / 2;
-                DibSpan::new(row, first_column, 0x40 - first_column)
-            }),
-        ),
-        2 => copy_dib_spans(
-            source,
-            destination,
-            (0..0x20).map(|row| {
+                copy_dib_span(source, destination, row, first_column, 0x40 - first_column);
+            }
+        }
+        2 => {
+            for row in 0..0x20 {
                 let mut first_column = 0x30 - (row / 8) * 4;
                 if row & 2 != 0 {
                     first_column -= 1;
                 }
-                DibSpan::new(row, first_column, 0x40 - first_column)
-            }),
-        ),
-        3 => copy_dib_spans(
-            source,
-            destination,
-            (0..0x20).map(|row| {
+                copy_dib_span(source, destination, row, first_column, 0x40 - first_column);
+            }
+        }
+        3 => {
+            for row in 0..0x20 {
                 let first_column = 0x10 + row / 2;
                 let pair_in_group = (row / 2) & 3;
                 let end_column = 0x30 + ((4 - pair_in_group) & 3);
-                DibSpan::new(row, first_column, end_column - first_column)
-            }),
-        ),
-        4 => copy_dib_spans(
-            source,
-            destination,
-            (0..0x20).map(|row| DibSpan::new(row, 0, 0x10 + row / 2)),
-        ),
-        5 => copy_dib_spans(
-            source,
-            destination,
-            (0x20..0x40).map(|row| DibSpan::new(row, 0, 0x20 - (row - 0x20) / 2)),
-        ),
+                copy_dib_span(
+                    source,
+                    destination,
+                    row,
+                    first_column,
+                    end_column - first_column,
+                );
+            }
+        }
+        4 => {
+            for row in 0..0x20 {
+                copy_dib_span(source, destination, row, 0, 0x10 + row / 2);
+            }
+        }
+        5 => {
+            for row in 0x20..0x40 {
+                copy_dib_span(source, destination, row, 0, 0x20 - (row - 0x20) / 2);
+            }
+        }
         _ => unreachable!("strategic tile has six coast corners"),
     }
 }
 
-struct DibSpan {
-    row: usize,
+fn copy_dib_span(
+    source: &[u8],
+    destination: &mut [u8],
+    dib_row: usize,
     first_column: usize,
     pixel_count: usize,
-}
-
-impl DibSpan {
-    fn new(row: usize, first_column: usize, pixel_count: usize) -> Self {
-        Self {
-            row,
-            first_column,
-            pixel_count,
-        }
-    }
-}
-
-fn copy_dib_spans(source: &[u8], destination: &mut [u8], spans: impl IntoIterator<Item = DibSpan>) {
+) {
     // Retail's atlas and map surface are positive-height DIBs, so its span routines count rows
     // bottom-up. IndexedPicture normalizes both to top-down order.
-    for span in spans {
-        let row = TILE_SIZE as usize - 1 - span.row;
-        let start = row * TILE_SIZE as usize + span.first_column;
-        destination[start..start + span.pixel_count]
-            .copy_from_slice(&source[start..start + span.pixel_count]);
-    }
+    let row = TILE_SIZE as usize - 1 - dib_row;
+    let start = row * TILE_SIZE as usize + first_column;
+    destination[start..start + pixel_count].copy_from_slice(&source[start..start + pixel_count]);
 }

@@ -3,8 +3,9 @@
 use super::map_interaction::{
     MapProjection, OceanViewport, StrategicInteraction, StrategicViewport,
 };
+use super::map_projection::OceanProjection;
 use super::ocean_raster::{OceanRenderAssets, compose_ocean_raster};
-use super::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
+use super::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH, viewport_point};
 use crate::AppState;
 use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
@@ -17,9 +18,6 @@ use imperialism_core::*;
 use imperialism_formats::*;
 
 const LAND_POS: Vec2 = Vec2::new(5.0, 0x1b as f32);
-const OCEAN_CELL_PIXELS: i32 = 0x10;
-const RETAIL_MAP_COLUMNS: i32 = 108;
-
 #[derive(Component)]
 pub(crate) struct LandMapFrame;
 
@@ -284,11 +282,10 @@ fn sync_ocean_labels(
     if !viewport.is_changed() {
         return;
     }
+    let projection = OceanProjection::new(session.game.map().geometry(), &viewport.ocean);
     for (anchor, mut node, mut visibility) in &mut labels {
         let position = (viewport.projection == MapProjection::Overview)
-            .then(|| {
-                ocean_label_position(session.game.map().geometry(), anchor.tile, &viewport.ocean)
-            })
+            .then(|| projection.tile_center(anchor.tile))
             .flatten();
         let Some(position) = position else {
             *visibility = Visibility::Hidden;
@@ -298,19 +295,6 @@ fn sync_ocean_labels(
         node.left = Val::Px(position.x + anchor.offset.x - 150.0);
         node.top = Val::Px(position.y + anchor.offset.y);
     }
-}
-
-fn ocean_label_position(
-    geometry: MapGeometry,
-    tile: TileId,
-    ocean: &OceanViewport,
-) -> Option<Vec2> {
-    let (row, column) = geometry.row_column(tile);
-    let y = (i32::from(row) - ocean.origin.y) * OCEAN_CELL_PIXELS + 8;
-    let x = (i32::from(column) - ocean.origin.x).rem_euclid(RETAIL_MAP_COLUMNS) * OCEAN_CELL_PIXELS
-        + i32::from(row & 1) * 8;
-    ((0..=VIEWPORT_WIDTH as i32).contains(&x) && (0..=VIEWPORT_HEIGHT as i32).contains(&y))
-        .then_some(Vec2::new(x as f32, y as f32))
 }
 
 fn palette_color(palette: &DibPalette, index: u8) -> Color {
@@ -326,29 +310,9 @@ pub(crate) fn ocean_tile_at_cursor(
     cursor
         .normalized
         .filter(|_| cursor.cursor_over())
-        .and_then(|position| ocean_tile_at_position(state, position, ocean.origin))
-}
-
-fn ocean_tile_at_position(state: &GameState, normalized: Vec2, origin: IVec2) -> Option<TileId> {
-    let x = ((normalized.x + 0.5) * VIEWPORT_WIDTH as f32).floor() as i32;
-    let y = ((normalized.y + 0.5) * VIEWPORT_HEIGHT as f32).floor() as i32;
-    if !(0..VIEWPORT_WIDTH as i32).contains(&x) || !(0..VIEWPORT_HEIGHT as i32).contains(&y) {
-        return None;
-    }
-    let row = origin.y + y / OCEAN_CELL_PIXELS;
-    if !(0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&row) {
-        return None;
-    }
-    let adjusted = x + if row & 1 == 0 { 8 } else { 0 };
-    let column = origin.x + adjusted / OCEAN_CELL_PIXELS;
-    let column = if state.map().geometry().wraps_horizontally() {
-        column.rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
-    } else if (0..i32::from(STRATEGIC_MAP_WIDTH)).contains(&column) {
-        column
-    } else {
-        return None;
-    };
-    state.map().geometry().tile(row as u16, column as u16)
+        .and_then(|position| {
+            OceanProjection::new(state.map().geometry(), ocean).tile_at(viewport_point(position))
+        })
 }
 
 #[cfg(test)]
@@ -410,7 +374,13 @@ mod tests {
         let state = GameState::from_parts(parts);
 
         assert_eq!(
-            ocean_tile_at_position(&state, Vec2::new(0.499, -0.49), IVec2::new(76, 0)),
+            OceanProjection::new(
+                state.map().geometry(),
+                &OceanViewport {
+                    origin: IVec2::new(76, 0),
+                },
+            )
+            .tile_at(viewport_point(Vec2::new(0.499, -0.49))),
             None
         );
     }

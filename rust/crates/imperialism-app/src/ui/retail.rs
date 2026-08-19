@@ -346,9 +346,7 @@ impl RetailUiAssets<'_> {
         picture_id: PictureId,
         palette_index: u8,
     ) -> Result<Handle<Image>, RetailPictureError> {
-        let indexed = self
-            .indexed_picture(picture_id)
-            .expect("retail picture must have indexed pixels");
+        let indexed = self.indexed_picture(picture_id)?;
         self.transformed_picture(picture_id, move |image| {
             apply_index_transparency(image, &indexed, palette_index);
         })

@@ -9,6 +9,7 @@ use super::map_interaction::{
     MapProjection, MapTransition, StrategicInteraction, StrategicViewport, apply_map_transition,
 };
 use crate::RetailAssetsResource;
+use crate::ui::retail_palette::view_mgr_color;
 use bevy::picking::events::{Click, Drag, DragEnd, Pointer, Press};
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
@@ -535,89 +536,6 @@ pub(super) fn minimap_release_cell(
         column -= MAP_COLUMNS;
     }
     (column, row.clamp(0, MAP_ROWS))
-}
-
-/// Retail `TViewMgr::GetColor`.
-pub(super) fn view_mgr_color(event_code: i16) -> u8 {
-    if event_code > 200 {
-        if event_code < 0x2b68 {
-            if event_code == 0x2b67 {
-                return 0;
-            }
-            return match event_code {
-                0xc9 => 0x2d,
-                0xca => 0x30,
-                0xcb => 0x2e,
-                0xcc => 0x27,
-                0xcd => 0x24,
-                0xce => 0x26,
-                0xcf => 0x18,
-                0xd0 => 0x14,
-                _ => 0xff,
-            };
-        }
-        return match event_code {
-            0x2b68 => 0x13,
-            0x2b69 => 0xcb,
-            0x2b6a => 0x5c,
-            0x2b6b => 0xd2,
-            0x2b6c => 0x28,
-            0x2b6d => 1,
-            _ => 0xff,
-        };
-    }
-    if event_code == 200 {
-        return 0x20;
-    }
-    match event_code {
-        0 => 0x16,
-        1 => 0x2a,
-        2 | 0x40 => 0x22,
-        3 | 0x3c | 0x4e => 0x1c,
-        4 => 0x2b,
-        5 => 0x1e,
-        6 => 0x2e,
-        7 | 0x35 => 10,
-        8 | 0x3d => 0xb,
-        9 => 0xd,
-        10 | 0x43 => 0x29,
-        0xb => 0xde,
-        0xc | 0x47 => 0xdf,
-        0xd | 0x49 => 0xfa,
-        0xe | 0x38 => 0x2c,
-        0xf | 0x4a => 0x31,
-        0x10 => 0x33,
-        0x11 => 0x41,
-        0x12 => 0x48,
-        0x13 => 0xd0,
-        0x14 => 0xcd,
-        0x15 => 0xce,
-        0x16 => 0xcf,
-        0x25 | 0x3f => 0x20,
-        0x32 => 0x1a,
-        0x33 => 0x2d,
-        0x34 => 0x18,
-        0x37 => 0xbd,
-        0x3a => 0xc6,
-        0x3b => 0x27,
-        0x3e => 0x15,
-        0x41 => 0x1b,
-        0x42 => 0x21,
-        0x44 => 0x17,
-        0x45 => 0x5f,
-        0x46 => 0xbe,
-        0x48 => 100,
-        0x4b => 0x66,
-        0x4c => 0x89,
-        0x4d => 0xad,
-        0x4f => 0xe7,
-        0x50 => 0xe6,
-        0x51 => 0xf6,
-        0x52 => 0xc,
-        0x53 => 0xef,
-        0x54 => 0xf9,
-        _ => 0xff,
-    }
 }
 
 #[cfg(test)]

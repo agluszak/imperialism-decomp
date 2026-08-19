@@ -4,6 +4,7 @@ use bevy::prelude::*;
 use imperialism_core::*;
 use imperialism_formats::{DibPalette, IndexedPicture};
 
+use super::retail_palette::major_nation_palette;
 use super::retail_raster::{IndexedRasterExt, indexed_picture};
 
 pub(crate) const OWNER_MAP_WIDTH: usize = 324;
@@ -11,14 +12,13 @@ pub(crate) const OWNER_MAP_HEIGHT: usize = 180;
 const OWNER_MAP_PIXEL_COUNT: usize = OWNER_MAP_WIDTH * OWNER_MAP_HEIGHT;
 const OFF_MAP_PALETTE: u8 = 0x10;
 const SELECTED_EDGE_PALETTE: u8 = 0x13;
-const MAJOR_NATION_PALETTES: [u8; MAJOR_NATION_COUNT] = [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
 
-pub(crate) struct OwnerMap {
+pub(crate) struct SatellitePreview {
     pub(crate) picture: IndexedPicture,
     owners: Vec<Option<NationId>>,
 }
 
-impl Default for OwnerMap {
+impl Default for SatellitePreview {
     fn default() -> Self {
         Self {
             picture: indexed_picture(
@@ -31,17 +31,13 @@ impl Default for OwnerMap {
     }
 }
 
-impl OwnerMap {
-    pub(crate) fn compose(
-        owner_at: impl Fn(TileId) -> Option<TileOwnerTag>,
-        selected_nation: NationId,
-    ) -> Self {
-        Self::compose_with_fill(owner_at, selected_nation, nation_owner_palette)
+impl SatellitePreview {
+    pub(crate) fn compose(owner_at: impl Fn(TileId) -> Option<TileOwnerTag>) -> Self {
+        Self::compose_with_fill(owner_at, nation_owner_palette)
     }
 
     pub(crate) fn compose_with_fill(
         owner_at: impl Fn(TileId) -> Option<TileOwnerTag>,
-        selected_nation: NationId,
         fill: impl Fn(NationId) -> u8,
     ) -> Self {
         let mut map = Self::default();
@@ -104,7 +100,6 @@ impl OwnerMap {
                 }
             }
         }
-        map.enhance_selection(selected_nation);
         map
     }
 
@@ -143,7 +138,7 @@ impl OwnerMap {
         }
     }
 
-    fn enhance_selection(&mut self, selected_nation: NationId) {
+    pub(crate) fn enhance(&mut self, selected_nation: NationId) {
         for row in 1..OWNER_MAP_HEIGHT - 1 {
             for column in 1..OWNER_MAP_WIDTH - 1 {
                 let index = row * OWNER_MAP_WIDTH + column;
@@ -204,7 +199,7 @@ fn preview_palette(owner: PreviewOwner, fill: &impl Fn(NationId) -> u8) -> u8 {
 
 fn nation_owner_palette(nation: NationId) -> u8 {
     MajorNationId::from_nation(nation)
-        .map(|major| MAJOR_NATION_PALETTES[usize::from(major.get())])
+        .map(major_nation_palette)
         .unwrap_or(0x0b)
 }
 
@@ -234,10 +229,7 @@ mod tests {
     #[test]
     fn renders_major_nation_palette_indices() {
         let tiles = tiles(Some(TileOwnerTag::new(0)));
-        let map = OwnerMap::compose(
-            |tile| tiles[usize::from(tile.get())].owner,
-            MajorNationId::new(1).nation(),
-        );
+        let map = SatellitePreview::compose(|tile| tiles[usize::from(tile.get())].owner);
 
         assert_eq!(map.picture.pixels.len(), OWNER_MAP_PIXEL_COUNT);
         assert_eq!(map.picture.pixels[90 * OWNER_MAP_WIDTH + 90], 0x16);
@@ -249,10 +241,7 @@ mod tests {
         tiles[usize::from(TileId::new(1000).get())].owner =
             Some(TileOwnerTag::new(NationId::COUNT + 1));
 
-        let map = OwnerMap::compose(
-            |tile| tiles[usize::from(tile.get())].owner,
-            MajorNationId::new(1).nation(),
-        );
+        let map = SatellitePreview::compose(|tile| tiles[usize::from(tile.get())].owner);
 
         assert!(
             map.picture
@@ -264,15 +253,30 @@ mod tests {
 
     #[test]
     fn selection_enhancement_uses_the_retail_white_palette_index() {
-        let mut map = OwnerMap::default();
+        let mut map = SatellitePreview::default();
         let index = 90 * OWNER_MAP_WIDTH + 90;
         map.picture.pixels[index] = 0;
         map.picture.pixels[index + 1] = nation_owner_palette(MajorNationId::new(4).nation());
         map.owners[index + 1] = Some(MajorNationId::new(4).nation());
 
-        map.enhance_selection(MajorNationId::new(4).nation());
+        map.enhance(MajorNationId::new(4).nation());
 
         assert_eq!(map.picture.pixels[index], SELECTED_EDGE_PALETTE);
+    }
+
+    #[test]
+    fn composition_and_selection_enhancement_are_separate_retail_operations() {
+        let mut tiles = tiles(Some(TileOwnerTag::new(0)));
+        for tile in &mut tiles[STRATEGIC_MAP_WIDTH as usize..] {
+            tile.owner = Some(TileOwnerTag::new(1));
+        }
+        let mut preview = SatellitePreview::compose(|tile| tiles[usize::from(tile.get())].owner);
+
+        assert!(preview.picture.pixels.contains(&0));
+        assert!(!preview.picture.pixels.contains(&SELECTED_EDGE_PALETTE));
+
+        preview.enhance(MajorNationId::new(0).nation());
+        assert!(preview.picture.pixels.contains(&SELECTED_EDGE_PALETTE));
     }
 
     #[test]
@@ -280,10 +284,7 @@ mod tests {
         let mut tiles = tiles(None);
         tiles[STRATEGIC_MAP_WIDTH as usize + 107].owner = Some(TileOwnerTag::new(0));
 
-        let map = OwnerMap::compose(
-            |tile| tiles[usize::from(tile.get())].owner,
-            MajorNationId::new(1).nation(),
-        );
+        let map = SatellitePreview::compose(|tile| tiles[usize::from(tile.get())].owner);
 
         assert_eq!(map.picture.pixels[5 * OWNER_MAP_WIDTH], 0x16);
     }
@@ -291,11 +292,8 @@ mod tests {
     #[test]
     fn hit_testing_uses_semantic_owners_not_palette_colors() {
         let nation = MajorNationId::new(4).nation();
-        let map = OwnerMap::compose_with_fill(
-            |_| Some(TileOwnerTag::from_nation(nation)),
-            MajorNationId::new(1).nation(),
-            |_| 0,
-        );
+        let map =
+            SatellitePreview::compose_with_fill(|_| Some(TileOwnerTag::from_nation(nation)), |_| 0);
 
         assert_eq!(map.nation_at(Vec2::ZERO), Some(nation));
         assert_eq!(map.nation_at(Vec2::new(0.5, 0.0)), None);
@@ -308,7 +306,7 @@ mod tests {
         palette[0] = Rgb::new(0, 0, 0);
         palette[SELECTED_EDGE_PALETTE] = Rgb::new(0xff, 0xff, 0xff);
         palette[0x16] = Rgb::new(0x57, 0x8b, 0xa6);
-        let mut map = OwnerMap::default();
+        let mut map = SatellitePreview::default();
         map.picture.pixels[..4].copy_from_slice(&[OFF_MAP_PALETTE, 0, SELECTED_EDGE_PALETTE, 0x16]);
         let image = map.to_image(&palette);
 

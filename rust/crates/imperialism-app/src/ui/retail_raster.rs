@@ -19,6 +19,13 @@ pub(in crate::ui) trait IndexedRasterExt {
     fn put(&mut self, point: IVec2, color: u8);
     fn fill_rect(&mut self, rect: IRect, color: u8);
     fn copy_rect(&mut self, source: &IndexedPicture, source_rect: IRect, destination: IVec2);
+    fn copy_at(&mut self, source: &IndexedPicture, destination: IVec2) {
+        self.copy_rect(
+            source,
+            IRect::new(0, 0, source.width as i32, source.height as i32),
+            destination,
+        );
+    }
     fn blit_keyed(
         &mut self,
         source: &IndexedPicture,
@@ -35,8 +42,24 @@ pub(in crate::ui) trait IndexedRasterExt {
         );
     }
     fn line_to_gdi(&mut self, start: IVec2, end: IVec2, color: u8, pen_width: i32);
+    fn stroke_polyline_gdi(
+        &mut self,
+        points: impl IntoIterator<Item = IVec2>,
+        color: u8,
+        pen_width: i32,
+    ) {
+        let mut points = points.into_iter();
+        let Some(mut start) = points.next() else {
+            return;
+        };
+        for end in points {
+            self.line_to_gdi(start, end, color, pen_width);
+            start = end;
+        }
+    }
     fn line_bresenham_inclusive(&mut self, start: IVec2, end: IVec2, color: u8);
     fn frame_rect(&mut self, rect: IRect, color: u8);
+    fn crop(&self, rect: IRect) -> IndexedPicture;
     fn to_image(&self, palette: &DibPalette) -> Image;
     fn to_keyed_image(&self, palette: &DibPalette, transparent: u8) -> Image;
 }
@@ -174,6 +197,18 @@ impl IndexedRasterExt for IndexedPicture {
         );
     }
 
+    fn crop(&self, rect: IRect) -> IndexedPicture {
+        assert!(
+            rect.min.x >= 0
+                && rect.min.y >= 0
+                && rect.max.x <= self.width as i32
+                && rect.max.y <= self.height as i32
+        );
+        let mut picture = indexed_picture(rect.width(), rect.height(), 0);
+        picture.copy_rect(self, rect, IVec2::ZERO);
+        picture
+    }
+
     fn to_image(&self, palette: &DibPalette) -> Image {
         indexed_pixels_to_image(self.width, self.height, &self.pixels, palette, None)
     }
@@ -305,6 +340,18 @@ mod tests {
         let mut destination = indexed_picture(3, 2, 9);
         destination.copy_rect(&source, IRect::new(1, 0, 4, 2), IVec2::new(-1, 0));
         assert_eq!(destination.pixels, [3, 4, 9, 7, 8, 9]);
+    }
+
+    #[test]
+    fn crop_copies_the_requested_rows_into_a_new_picture() {
+        let source = IndexedPicture {
+            width: 4,
+            height: 3,
+            pixels: (0..12).collect(),
+        };
+        let cropped = source.crop(IRect::new(1, 1, 4, 3));
+        assert_eq!((cropped.width, cropped.height), (3, 2));
+        assert_eq!(cropped.pixels, [5, 6, 7, 9, 10, 11]);
     }
 
     #[test]

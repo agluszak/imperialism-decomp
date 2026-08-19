@@ -1,6 +1,7 @@
 //! Retail `TOceanDialog::Draw` indexed-pixel compositor.
 
 use super::map_interaction::{MapInteractionMode, OceanViewport, StrategicInteraction};
+use super::map_projection::{OceanCell, OceanProjection, ProjectedTile};
 use super::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 use bevy::prelude::{IRect, IVec2};
 use imperialism_core::*;
@@ -59,12 +60,13 @@ pub(super) fn compose_ocean_raster(
     hovered: Option<TileId>,
     assets: &OceanRenderAssets,
 ) -> IndexedPicture {
-    let cells = visible_ocean_cells(state.map().geometry(), ocean);
+    let projection = OceanProjection::new(state.map().geometry(), ocean);
+    let cells = projection.visible_cells();
     let mut picture = draw_base_ownership_and_borders(state, &cells);
     draw_improvements(&mut picture, state, &cells, assets);
-    draw_unit_overlays(&mut picture, state, ocean, assets);
+    draw_unit_overlays(&mut picture, state, &projection, assets);
     draw_routes(&mut picture, state, ocean);
-    draw_selection(&mut picture, state, ocean, interaction, hovered);
+    draw_selection(&mut picture, state, &projection, interaction, hovered);
     picture
 }
 
@@ -86,48 +88,6 @@ fn blit_ocean_sprite(
     );
 }
 
-#[derive(Clone, Copy)]
-enum OceanCell {
-    Tile { tile: TileId, origin: IVec2 },
-    BoundedBlank { origin: IVec2 },
-}
-
-fn visible_ocean_cells(geometry: MapGeometry, ocean: &OceanViewport) -> Vec<OceanCell> {
-    let bounded = !geometry.wraps_horizontally();
-    let blank_wrapped_left = bounded && (ocean.origin.x < 2 || ocean.origin.x > 100);
-    let blank_wrapped_right = bounded && ocean.origin.x <= 100 && ocean.origin.x > 70;
-    let mut cells = Vec::with_capacity(28 * 33);
-    for row_delta in 0..28 {
-        let row = ocean.origin.y + row_delta;
-        if !(0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&row) {
-            continue;
-        }
-        for column_delta in 0..=32 {
-            let origin = IVec2::new(
-                column_delta * OCEAN_TILE - if row & 1 == 0 { 8 } else { 0 },
-                row_delta * OCEAN_TILE,
-            );
-            let unwrapped_column = ocean.origin.x + column_delta;
-            let column = if unwrapped_column >= i32::from(STRATEGIC_MAP_WIDTH) {
-                if blank_wrapped_right {
-                    cells.push(OceanCell::BoundedBlank { origin });
-                    continue;
-                }
-                unwrapped_column - i32::from(STRATEGIC_MAP_WIDTH)
-            } else if blank_wrapped_left && unwrapped_column > 60 {
-                cells.push(OceanCell::BoundedBlank { origin });
-                continue;
-            } else {
-                unwrapped_column
-            };
-            if let Some(tile) = geometry.tile(row as u16, column as u16) {
-                cells.push(OceanCell::Tile { tile, origin });
-            }
-        }
-    }
-    cells
-}
-
 fn draw_base_ownership_and_borders(state: &GameState, cells: &[OceanCell]) -> IndexedPicture {
     let mut picture = indexed_picture(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, OCEAN_FILL);
     for &cell in cells {
@@ -135,7 +95,7 @@ fn draw_base_ownership_and_borders(state: &GameState, cells: &[OceanCell]) -> In
             OceanCell::BoundedBlank { origin } => {
                 picture.fill_rect(ocean_cell(origin.x, origin.y), BOUNDED_MAP_BLANK);
             }
-            OceanCell::Tile { tile, origin } => {
+            OceanCell::Tile(ProjectedTile { tile, origin }) => {
                 let tile_state = state.map()[tile];
                 let owner = ocean_owner(tile_state.owner_nation);
                 let water = tile_state.terrain == TerrainKind::Water;
@@ -184,7 +144,7 @@ fn draw_improvements(
         assets.active(nation, variant)
     });
     for &cell in cells {
-        let OceanCell::Tile { tile, origin } = cell else {
+        let OceanCell::Tile(ProjectedTile { tile, origin }) = cell else {
             continue;
         };
         let tile_state = state.map()[tile];
@@ -267,21 +227,21 @@ fn draw_routes(picture: &mut IndexedPicture, state: &GameState, ocean: &OceanVie
 fn draw_unit_overlays(
     picture: &mut IndexedPicture,
     state: &GameState,
-    ocean: &OceanViewport,
+    projection: &OceanProjection,
     assets: &OceanRenderAssets,
 ) {
     for (_, civilian) in state.civilian_units() {
         let Some(tile) = civilian.location().tile() else {
             continue;
         };
-        let Some((x, y)) = ocean_tile_screen_origin(state.map().geometry(), tile, ocean) else {
+        let Some(origin) = projection.tile_origin(tile) else {
             continue;
         };
         picture.fill_rect(
-            ocean_cell(x, y),
+            ocean_cell(origin.x, origin.y),
             OWNER_PALETTE[ocean_owner(state.map()[tile].owner_nation)],
         );
-        blit_ocean_sprite(picture, &assets.base_a, 0xe0, IVec2::new(x, y));
+        blit_ocean_sprite(picture, &assets.base_a, 0xe0, origin);
     }
 
     let mut drawn_provinces = Vec::new();
@@ -296,39 +256,26 @@ fn draw_unit_overlays(
         let Some(tile) = state.map().provinces[province].city_tile() else {
             continue;
         };
-        let Some((x, y)) = ocean_tile_screen_origin(state.map().geometry(), tile, ocean) else {
+        let Some(origin) = projection.tile_origin(tile) else {
             continue;
         };
         picture.fill_rect(
-            ocean_cell(x, y),
+            ocean_cell(origin.x, origin.y),
             OWNER_PALETTE[ocean_owner(state.map()[tile].owner_nation)],
         );
         let source_x = ocean_improvement_source_x(&state.map()[tile]);
         if source_x < 1024 {
-            blit_ocean_sprite(picture, &assets.base_a, source_x, IVec2::new(x, y));
+            blit_ocean_sprite(picture, &assets.base_a, source_x, origin);
         } else {
-            blit_ocean_sprite(picture, &assets.base_b, source_x - 1024, IVec2::new(x, y));
+            blit_ocean_sprite(picture, &assets.base_b, source_x - 1024, origin);
         }
     }
-}
-
-fn ocean_tile_screen_origin(
-    geometry: MapGeometry,
-    tile: TileId,
-    ocean: &OceanViewport,
-) -> Option<(i32, i32)> {
-    let (row, column) = geometry.row_column(tile);
-    let x = (i32::from(column) - ocean.origin.x).rem_euclid(108) * 16
-        - if row & 1 == 0 { 8 } else { 0 };
-    let y = (i32::from(row) - ocean.origin.y) * 16;
-    (x < VIEWPORT_WIDTH as i32 && x + 16 > 0 && y < VIEWPORT_HEIGHT as i32 && y + 16 > 0)
-        .then_some((x, y))
 }
 
 fn draw_selection(
     picture: &mut IndexedPicture,
     state: &GameState,
-    ocean: &OceanViewport,
+    projection: &OceanProjection,
     interaction: &StrategicInteraction,
     hovered: Option<TileId>,
 ) {
@@ -348,7 +295,7 @@ fn draw_selection(
     ) {
         return;
     }
-    draw_ocean_tile_frame(picture, state.map().geometry(), hovered, ocean);
+    draw_ocean_tile_frame(picture, projection, hovered);
     if civilian.unit_type() != CivilianUnitKind::Engineer
         || action != CivilianTileAction::EngineerSameTile
         || state.map()[hovered].region.is_some()
@@ -367,21 +314,16 @@ fn draw_selection(
         if tile.region.is_none()
             && (tile.terrain == TerrainKind::Water || tile.owner_nation == Some(owner))
         {
-            draw_ocean_tile_frame(picture, state.map().geometry(), neighbor, ocean);
+            draw_ocean_tile_frame(picture, projection, neighbor);
         }
     }
 }
 
-fn draw_ocean_tile_frame(
-    picture: &mut IndexedPicture,
-    geometry: MapGeometry,
-    tile: TileId,
-    ocean: &OceanViewport,
-) {
-    let Some((x, y)) = ocean_tile_screen_origin(geometry, tile, ocean) else {
+fn draw_ocean_tile_frame(picture: &mut IndexedPicture, projection: &OceanProjection, tile: TileId) {
+    let Some(origin) = projection.tile_origin(tile) else {
         return;
     };
-    picture.frame_rect(ocean_cell(x, y), 0x20);
+    picture.frame_rect(ocean_cell(origin.x, origin.y), 0x20);
 }
 
 fn draw_ocean_borders(
@@ -608,7 +550,7 @@ mod tests {
     }
 
     fn render_base(state: &GameState, ocean: &OceanViewport) -> IndexedPicture {
-        let cells = visible_ocean_cells(state.map().geometry(), ocean);
+        let cells = OceanProjection::new(state.map().geometry(), ocean).visible_cells();
         draw_base_ownership_and_borders(state, &cells)
     }
 
@@ -718,6 +660,23 @@ mod tests {
         let indices = render_base(&state, &ocean);
 
         assert_eq!(pixel(&indices, 511, 4), BOUNDED_MAP_BLANK);
+    }
+
+    #[test]
+    fn bounded_projection_hides_opposite_edge_overlay_tiles() {
+        let mut parts = beginning_of_game_parts_with(strategic_map_beginning_context());
+        make_bounded(&mut parts);
+        let tile = parts.map.geometry().tile(3, 0).unwrap();
+        let ocean = OceanViewport {
+            origin: IVec2::new(76, 0),
+        };
+        let projection = OceanProjection::new(parts.map.geometry(), &ocean);
+
+        assert_eq!(projection.tile_origin(tile), None);
+        assert!(projection.visible_cells().iter().any(|cell| matches!(
+            cell,
+            OceanCell::BoundedBlank { origin } if origin.x + OCEAN_TILE > VIEWPORT_WIDTH as i32
+        )));
     }
 
     #[test]
