@@ -587,10 +587,26 @@ fn read_city(stream: &mut LegacyStream<'_>) -> LegacyCityState {
             (0..count)
                 .map(|_| {
                     let kind = stream.read_u8();
-                    let payload_size = if kind == 1 { 8 } else { 12 };
-                    LegacyCityTask {
-                        kind,
-                        payload: stream.read_bytes(payload_size).to_vec(),
+                    let order_slot = stream.read_le_i16();
+                    let remaining_attempts = stream.read_le_i16();
+                    let requested_amount = stream.read_le_i16();
+                    let already_queued = stream.read_le_i16();
+                    if kind == 1 {
+                        LegacyCityTask::ProductionOrder {
+                            order_slot,
+                            remaining_attempts,
+                            requested_amount,
+                            already_queued,
+                        }
+                    } else {
+                        LegacyCityTask::ShipConstruction {
+                            order_slot,
+                            remaining_attempts,
+                            requested_amount,
+                            already_queued,
+                            requested_ship_type: stream.read_le_i16(),
+                            waiting_for_order_advance: stream.read_le_i16(),
+                        }
                     }
                 })
                 .collect()

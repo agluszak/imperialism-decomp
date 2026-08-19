@@ -544,10 +544,6 @@ impl LegacyCityOrders {
 impl LegacyCityState {
     fn city_state(&self) -> CityState {
         assert!(
-            self.tasks.is_empty(),
-            "semantic projection of city tasks is not implemented"
-        );
-        assert!(
             self.transport_requests.records.is_empty(),
             "semantic projection of city transport requests is not implemented"
         );
@@ -560,6 +556,7 @@ impl LegacyCityState {
 
         CityState {
             orders: self.orders.city_orders(),
+            tasks: self.tasks.iter().map(LegacyCityTask::task_state).collect(),
             power_plant_upgrade_queued: self.power_plant_upgrade_queued != 0,
             food_substitution_count: self.food_substitution_count,
             starvation_population_loss: self.starvation_population_loss,
@@ -597,6 +594,53 @@ impl LegacyCityState {
                 LaborPool::from(self.population.pending_labor_delta),
                 ResourceTable::from_array(self.population.predicted_need_by_resource),
             ),
+        }
+    }
+}
+
+impl LegacyCityTask {
+    fn task_state(&self) -> CityTaskState {
+        let (order_slot, remaining_attempts, requested_amount, already_queued, operation) =
+            match self {
+                Self::ProductionOrder {
+                    order_slot,
+                    remaining_attempts,
+                    requested_amount,
+                    already_queued,
+                } => (
+                    *order_slot,
+                    *remaining_attempts,
+                    *requested_amount,
+                    *already_queued,
+                    CityTaskOperation::ProductionOrder,
+                ),
+                Self::ShipConstruction {
+                    order_slot,
+                    remaining_attempts,
+                    requested_amount,
+                    already_queued,
+                    requested_ship_type,
+                    waiting_for_order_advance,
+                } => (
+                    *order_slot,
+                    *remaining_attempts,
+                    *requested_amount,
+                    *already_queued,
+                    CityTaskOperation::ShipConstruction {
+                        ship_type: ShipType::from_index(
+                            u8::try_from(*requested_ship_type).expect("retail ship task type"),
+                        )
+                        .expect("retail ship task type"),
+                        waiting_for_order_advance: *waiting_for_order_advance != 0,
+                    },
+                ),
+            };
+        CityTaskState {
+            order_slot,
+            remaining_attempts,
+            requested_amount,
+            already_queued: already_queued != 0,
+            operation,
         }
     }
 }

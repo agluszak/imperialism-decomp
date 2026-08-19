@@ -33,6 +33,7 @@ pub(crate) fn random_game_names() -> RandomGameNames {
 pub(crate) fn city() -> CityState {
     CityState {
         orders: CityOrders::default(),
+        tasks: Vec::new(),
         power_plant_upgrade_queued: false,
         food_substitution_count: 0,
         starvation_population_loss: 0,

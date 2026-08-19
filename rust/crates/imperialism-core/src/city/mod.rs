@@ -18,4 +18,4 @@ pub(crate) use production::{
     EXPANSION_INPUTS, ItemInputs, UNIVERSITY_REQUIREMENT_LEVEL_BY_RETAIL_ID,
     ship_creates_navy_object, ship_stock_cap,
 };
-pub use state::{CityState, Stockpile, TownState};
+pub use state::{CityState, CityTaskOperation, CityTaskState, Stockpile, TownState};

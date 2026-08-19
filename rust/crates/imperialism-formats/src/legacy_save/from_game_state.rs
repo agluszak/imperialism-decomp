@@ -510,8 +510,30 @@ fn city_dto(
             pending_labor_delta: city.population.pending_labor_delta().into(),
         },
         orders: city_orders_dto(orders),
-        tasks: Vec::new(),
+        tasks: city.tasks.iter().map(city_task_dto).collect(),
         transport_requests: empty_records(),
+    }
+}
+
+fn city_task_dto(task: &CityTaskState) -> LegacyCityTask {
+    match task.operation {
+        CityTaskOperation::ProductionOrder => LegacyCityTask::ProductionOrder {
+            order_slot: task.order_slot,
+            remaining_attempts: task.remaining_attempts,
+            requested_amount: task.requested_amount,
+            already_queued: i16::from(task.already_queued),
+        },
+        CityTaskOperation::ShipConstruction {
+            ship_type,
+            waiting_for_order_advance,
+        } => LegacyCityTask::ShipConstruction {
+            order_slot: task.order_slot,
+            remaining_attempts: task.remaining_attempts,
+            requested_amount: task.requested_amount,
+            already_queued: i16::from(task.already_queued),
+            requested_ship_type: i16::from(ship_type.retail()),
+            waiting_for_order_advance: i16::from(waiting_for_order_advance),
+        },
     }
 }
 
