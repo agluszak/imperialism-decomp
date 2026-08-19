@@ -51,6 +51,21 @@ pub struct NavyOrdersContinuation {
     pub(crate) navy_battle: Option<Box<NavyBattle>>,
 }
 
+impl NavyOrdersContinuation {
+    /// Player encounter waiting for the tactical navy battle, with the scan
+    /// cursor past this pair so a later resume continues or finishes orders.
+    pub fn player_encounter(attacker: TaskForceId, defender: TaskForceId) -> Self {
+        Self {
+            pass: NavyPass::MarinesAndRepair,
+            forces: vec![attacker, defender],
+            outer: usize::MAX,
+            inner: 0,
+            battle: PendingNavalBattle { attacker, defender },
+            navy_battle: None,
+        }
+    }
+}
+
 impl GameState {
     pub fn pending_naval_battle(&self) -> Option<&PendingNavalBattle> {
         match &self.continuation {
@@ -1571,6 +1586,15 @@ mod tests {
         assert_eq!(
             battle.units().map(|unit| unit.ship).collect::<Vec<_>>(),
             vec![attacker_ship, defender_ship]
+        );
+        assert_eq!(battle.current_side(), crate::BattleSide::Attacker);
+        assert_eq!(battle.stage(), crate::NavyBattleStage::Deploying);
+        assert_eq!(battle.selected_ship(), Some(attacker_ship));
+        let units: Vec<_> = battle.units().collect();
+        assert_eq!(units[0].tile, -2);
+        assert_eq!(
+            units[1].tile, -2,
+            "auto-deploy origin 0x29 is row 1 under tile/29, not defender rows 5..=6"
         );
         assert_eq!(battle.battlefield_column_count(), 16);
         assert_eq!(battle.move_cost_rotation_start(), rotation);

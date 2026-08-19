@@ -7,6 +7,7 @@
 use crate::military_cleanup::NationOrderPriorityMetrics as Metrics;
 use crate::{
     CombatMovesContinuation, GameState, MajorNationId, MilitaryUnitId, NavyOrdersContinuation,
+    TaskForceId,
 };
 use serde::{Deserialize, Serialize};
 
@@ -61,6 +62,26 @@ pub struct ArmyBattleSnapshot {
 
 pub fn army_battle_snapshot(state: &GameState) -> Option<ArmyBattleSnapshot> {
     state.army_battle_differential_snapshot()
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct NavyTacticalInitSnapshot {
+    pub column_count: i32,
+    pub current_side: i32,
+    pub side0_nation: i32,
+    pub side1_nation: i32,
+    pub side0_selected: i32,
+    pub side1_selected: i32,
+    pub side0_tiles: Vec<i32>,
+    pub side1_tiles: Vec<i32>,
+}
+
+pub fn navy_tactical_init_snapshot(
+    state: &mut GameState,
+    our: TaskForceId,
+    enemy: TaskForceId,
+) -> NavyTacticalInitSnapshot {
+    state.navy_tactical_init_snapshot(our, enemy)
 }
 
 pub fn auto_deploy_army_battle(state: &mut GameState) {

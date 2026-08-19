@@ -19,13 +19,15 @@ impl GameState {
     /// grow militia, then pay maintenance, select advisory missions, and issue
     /// orders in major-nation order. Army map-context records are released
     /// before navy preparation and execution. The caller owns any returned
-    /// naval-battle continuation. Tactical naval presentation is not available
-    /// yet, so production resolves those encounters strategically rather than
-    /// stopping the turn in an unusable screen state.
+    /// naval-battle continuation.
     pub fn do_military(&mut self) -> Option<NavyOrdersContinuation> {
         self.apply_military_orders();
         self.clean_up_army_stacks();
         self.prepare_to_carry_out_navy_orders();
+        // TODO(navy-tactical): `NavalBattlePlugin` can project `TurnStop::NavalBattle`,
+        // but production still skips the modal battle so a real turn never opens that
+        // screen. Switch this to `carry_out_navy_orders()` once native `military_phase`
+        // fixtures and mid-game saves are ready to stop on player naval encounters.
         self.carry_out_navy_orders_without_tactical_battles()
     }
 

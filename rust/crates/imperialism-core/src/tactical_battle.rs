@@ -394,7 +394,7 @@ enum BattleOutcome {
 }
 
 impl BattleSide {
-    const fn opponent(self) -> Self {
+    pub(crate) const fn opponent(self) -> Self {
         match self {
             Self::Attacker => Self::Defender,
             Self::Defender => Self::Attacker,
