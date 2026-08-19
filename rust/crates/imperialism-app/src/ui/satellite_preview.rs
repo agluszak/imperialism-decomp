@@ -4,18 +4,16 @@ use bevy::prelude::*;
 use imperialism_core::*;
 use imperialism_formats::{DibPalette, IndexedPicture};
 
-use super::retail_palette::major_nation_palette;
+use super::retail_palette::{major_nation_palette, view_mgr_color};
 use super::retail_raster::{IndexedRasterExt, indexed_picture};
 
 pub(crate) const OWNER_MAP_WIDTH: usize = 324;
 pub(crate) const OWNER_MAP_HEIGHT: usize = 180;
-const OWNER_MAP_PIXEL_COUNT: usize = OWNER_MAP_WIDTH * OWNER_MAP_HEIGHT;
 const OFF_MAP_PALETTE: u8 = 0x10;
 const SELECTED_EDGE_PALETTE: u8 = 0x13;
 
 pub(crate) struct SatellitePreview {
-    pub(crate) picture: IndexedPicture,
-    owners: Vec<Option<NationId>>,
+    picture: IndexedPicture,
 }
 
 impl Default for SatellitePreview {
@@ -26,7 +24,6 @@ impl Default for SatellitePreview {
                 OWNER_MAP_HEIGHT as i32,
                 OFF_MAP_PALETTE,
             ),
-            owners: vec![None; OWNER_MAP_PIXEL_COUNT],
         }
     }
 }
@@ -36,7 +33,14 @@ impl SatellitePreview {
         Self::compose_with_fill(owner_at, nation_owner_palette)
     }
 
-    pub(crate) fn compose_with_fill(
+    pub(crate) fn compose_diplomacy_approximation(
+        owner_at: impl Fn(TileId) -> Option<TileOwnerTag>,
+        fill: impl Fn(NationId) -> u8,
+    ) -> Self {
+        Self::compose_with_fill(owner_at, fill)
+    }
+
+    fn compose_with_fill(
         owner_at: impl Fn(TileId) -> Option<TileOwnerTag>,
         fill: impl Fn(NationId) -> u8,
     ) -> Self {
@@ -103,7 +107,7 @@ impl SatellitePreview {
         map
     }
 
-    pub(crate) fn nation_at(&self, normalized_position: Vec2) -> Option<NationId> {
+    pub(crate) fn major_nation_at(&self, normalized_position: Vec2) -> Option<MajorNationId> {
         let column = ((normalized_position.x + 0.5) * OWNER_MAP_WIDTH as f32).floor();
         let row = ((normalized_position.y + 0.5) * OWNER_MAP_HEIGHT as f32).floor();
         if !(0.0..OWNER_MAP_WIDTH as f32).contains(&column)
@@ -111,10 +115,8 @@ impl SatellitePreview {
         {
             return None;
         }
-        self.owners
-            .get(row as usize * OWNER_MAP_WIDTH + column as usize)
-            .copied()
-            .flatten()
+        let pixel = self.picture.pixels[row as usize * OWNER_MAP_WIDTH + column as usize];
+        MajorNationId::all().find(|&nation| major_nation_palette(nation) == pixel)
     }
 
     pub(crate) fn to_image(&self, palette: &DibPalette) -> Image {
@@ -134,21 +136,21 @@ impl SatellitePreview {
         let index = row * OWNER_MAP_WIDTH + column;
         if let Some(pixel) = self.picture.pixels.get_mut(index) {
             *pixel = preview_palette(owner, fill);
-            self.owners[index] = owner.nation();
         }
     }
 
     pub(crate) fn enhance(&mut self, selected_nation: NationId) {
+        let selected_palette = view_mgr_color(i16::from(selected_nation.get()));
         for row in 1..OWNER_MAP_HEIGHT - 1 {
             for column in 1..OWNER_MAP_WIDTH - 1 {
                 let index = row * OWNER_MAP_WIDTH + column;
                 if !is_selection_maskable(self.picture.pixels[index]) {
                     continue;
                 }
-                self.picture.pixels[index] = if self.owners[index - 1] == Some(selected_nation)
-                    || self.owners[index + 1] == Some(selected_nation)
-                    || self.owners[index - OWNER_MAP_WIDTH] == Some(selected_nation)
-                    || self.owners[index + OWNER_MAP_WIDTH] == Some(selected_nation)
+                self.picture.pixels[index] = if self.picture.pixels[index - 1] == selected_palette
+                    || self.picture.pixels[index + 1] == selected_palette
+                    || self.picture.pixels[index - OWNER_MAP_WIDTH] == selected_palette
+                    || self.picture.pixels[index + OWNER_MAP_WIDTH] == selected_palette
                 {
                     SELECTED_EDGE_PALETTE
                 } else {
@@ -164,15 +166,6 @@ enum PreviewOwner {
     Border,
     Unowned,
     Tagged(TileOwnerTag),
-}
-
-impl PreviewOwner {
-    fn nation(self) -> Option<NationId> {
-        match self {
-            Self::Tagged(tag) => tag.nation(),
-            Self::Border | Self::Unowned => None,
-        }
-    }
 }
 
 fn owner_tag(
@@ -200,7 +193,7 @@ fn preview_palette(owner: PreviewOwner, fill: &impl Fn(NationId) -> u8) -> u8 {
 fn nation_owner_palette(nation: NationId) -> u8 {
     MajorNationId::from_nation(nation)
         .map(major_nation_palette)
-        .unwrap_or(0x0b)
+        .unwrap_or_else(|| view_mgr_color(0x0b))
 }
 
 fn is_selection_maskable(palette: u8) -> bool {
@@ -231,7 +224,7 @@ mod tests {
         let tiles = tiles(Some(TileOwnerTag::new(0)));
         let map = SatellitePreview::compose(|tile| tiles[usize::from(tile.get())].owner);
 
-        assert_eq!(map.picture.pixels.len(), OWNER_MAP_PIXEL_COUNT);
+        assert_eq!(map.picture.pixels.len(), OWNER_MAP_WIDTH * OWNER_MAP_HEIGHT);
         assert_eq!(map.picture.pixels[90 * OWNER_MAP_WIDTH + 90], 0x16);
     }
 
@@ -257,11 +250,19 @@ mod tests {
         let index = 90 * OWNER_MAP_WIDTH + 90;
         map.picture.pixels[index] = 0;
         map.picture.pixels[index + 1] = nation_owner_palette(MajorNationId::new(4).nation());
-        map.owners[index + 1] = Some(MajorNationId::new(4).nation());
 
         map.enhance(MajorNationId::new(4).nation());
 
         assert_eq!(map.picture.pixels[index], SELECTED_EDGE_PALETTE);
+    }
+
+    #[test]
+    fn minor_nations_use_the_retail_view_manager_color() {
+        let tiles = tiles(Some(TileOwnerTag::from_nation(NationId::new(7))));
+        let map = SatellitePreview::compose(|tile| tiles[usize::from(tile.get())].owner);
+
+        assert_eq!(view_mgr_color(0x0b), 0xde);
+        assert_eq!(map.picture.pixels[90 * OWNER_MAP_WIDTH + 90], 0xde);
     }
 
     #[test]
@@ -290,13 +291,12 @@ mod tests {
     }
 
     #[test]
-    fn hit_testing_uses_semantic_owners_not_palette_colors() {
-        let nation = MajorNationId::new(4).nation();
-        let map =
-            SatellitePreview::compose_with_fill(|_| Some(TileOwnerTag::from_nation(nation)), |_| 0);
+    fn hit_testing_samples_the_retail_major_nation_palette() {
+        let nation = MajorNationId::new(4);
+        let map = SatellitePreview::compose(|_| Some(TileOwnerTag::from_nation(nation.nation())));
 
-        assert_eq!(map.nation_at(Vec2::ZERO), Some(nation));
-        assert_eq!(map.nation_at(Vec2::new(0.5, 0.0)), None);
+        assert_eq!(map.major_nation_at(Vec2::ZERO), Some(nation));
+        assert_eq!(map.major_nation_at(Vec2::new(0.5, 0.0)), None);
     }
 
     #[test]

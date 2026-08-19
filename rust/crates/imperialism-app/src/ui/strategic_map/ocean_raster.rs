@@ -1,7 +1,7 @@
 //! Retail `TOceanDialog::Draw` indexed-pixel compositor.
 
 use super::map_interaction::{MapInteractionMode, OceanViewport, StrategicInteraction};
-use super::map_projection::{OceanCell, OceanProjection, ProjectedTile};
+use super::map_projection::{OCEAN_CELL_SIZE, OceanCell, OceanProjection, ProjectedTile};
 use super::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 use bevy::prelude::{IRect, IVec2};
 use imperialism_core::*;
@@ -9,7 +9,6 @@ use imperialism_formats::IndexedPicture;
 
 use crate::ui::retail_raster::{IndexedRasterExt, indexed_picture};
 
-const OCEAN_TILE: i32 = 16;
 const OCEAN_FILL: u8 = 0x1a;
 const BOUNDED_MAP_BLANK: u8 = 0x16;
 const OWNER_PALETTE: [u8; 24] = [
@@ -65,13 +64,13 @@ pub(super) fn compose_ocean_raster(
     let mut picture = draw_base_ownership_and_borders(state, &cells);
     draw_improvements(&mut picture, state, &cells, assets);
     draw_unit_overlays(&mut picture, state, &projection, assets);
-    draw_routes(&mut picture, state, ocean);
+    draw_routes(&mut picture, state, &projection);
     draw_selection(&mut picture, state, &projection, interaction, hovered);
     picture
 }
 
 fn ocean_cell(x: i32, y: i32) -> IRect {
-    IRect::new(x, y, x + OCEAN_TILE, y + OCEAN_TILE)
+    IRect::new(x, y, x + OCEAN_CELL_SIZE, y + OCEAN_CELL_SIZE)
 }
 
 fn blit_ocean_sprite(
@@ -82,7 +81,7 @@ fn blit_ocean_sprite(
 ) {
     destination.blit_keyed(
         source,
-        IRect::new(source_x, 0, source_x + OCEAN_TILE, OCEAN_TILE),
+        IRect::new(source_x, 0, source_x + OCEAN_CELL_SIZE, OCEAN_CELL_SIZE),
         at,
         0x10,
     );
@@ -204,23 +203,15 @@ fn ocean_improvement_source_x(tile: &TileState) -> i32 {
     0
 }
 
-fn draw_routes(picture: &mut IndexedPicture, state: &GameState, ocean: &OceanViewport) {
-    let viewport_column_x2 = ocean.origin.x * 2 + 1;
+fn draw_routes(picture: &mut IndexedPicture, state: &GameState, projection: &OceanProjection) {
     for route in &state.ocean().routes {
-        let mut start_x = (route.start_column - viewport_column_x2 + 216).rem_euclid(216);
-        let mut end_x = (route.end_column - viewport_column_x2 + 216).rem_euclid(216);
-        if (start_x - end_x).abs() > 108 {
-            if start_x > 108 {
-                start_x -= 216;
-            } else if end_x > 108 {
-                end_x -= 216;
-            }
-        }
-        picture.line_bresenham_inclusive(
-            IVec2::new(start_x * 8, (route.start_row - ocean.origin.y) * 16),
-            IVec2::new(end_x * 8, (route.end_row - ocean.origin.y) * 16),
-            BORDER_PALETTE[23],
+        let (start, end) = projection.route_segment(
+            route.start_column,
+            route.start_row,
+            route.end_column,
+            route.end_row,
         );
+        picture.line_bresenham_inclusive(start, end, BORDER_PALETTE[23]);
     }
 }
 
@@ -675,7 +666,8 @@ mod tests {
         assert_eq!(projection.tile_origin(tile), None);
         assert!(projection.visible_cells().iter().any(|cell| matches!(
             cell,
-            OceanCell::BoundedBlank { origin } if origin.x + OCEAN_TILE > VIEWPORT_WIDTH as i32
+            OceanCell::BoundedBlank { origin }
+                if origin.x + OCEAN_CELL_SIZE > VIEWPORT_WIDTH as i32
         )));
     }
 
@@ -706,7 +698,8 @@ mod tests {
         let state = GameState::from_parts(parts);
         let ocean = OceanViewport::default();
         let mut indices = indexed_picture(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0);
-        draw_routes(&mut indices, &state, &ocean);
+        let projection = OceanProjection::new(state.map().geometry(), &ocean);
+        draw_routes(&mut indices, &state, &projection);
         assert_eq!(pixel(&indices, 0, 32), BORDER_PALETTE[23]);
         assert_eq!(pixel(&indices, 8, 32), BORDER_PALETTE[23]);
         assert_eq!(pixel(&indices, 16, 32), 0);

@@ -1,9 +1,7 @@
 use imperialism_core::MajorNationId;
 
-const MAJOR_NATION_PALETTES: [u8; 7] = [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
-
 pub(in crate::ui) fn major_nation_palette(nation: MajorNationId) -> u8 {
-    MAJOR_NATION_PALETTES[usize::from(nation.get())]
+    view_mgr_color(i16::from(nation.get()))
 }
 
 /// Retail `TViewMgr::GetColor`.

@@ -202,11 +202,7 @@ fn on_map_preview_click(
     let Some(normalized) = cursor.normalized else {
         return;
     };
-    let Some(nation) = map_preview
-        .preview
-        .nation_at(normalized)
-        .and_then(MajorNationId::from_nation)
-    else {
+    let Some(nation) = map_preview.preview.major_nation_at(normalized) else {
         return;
     };
     if setup.nation != nation {

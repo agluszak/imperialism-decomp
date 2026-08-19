@@ -282,7 +282,7 @@ fn clipped_blit(
     })
 }
 
-pub(in crate::ui) fn indexed_pixels_to_image(
+fn indexed_pixels_to_image(
     width: u32,
     height: u32,
     pixels: &[u8],

@@ -1053,7 +1053,7 @@ mod tests {
     use super::*;
     use crate::ui::retail::RetailTag;
     use crate::ui::test_support::beginning_of_game;
-    use imperialism_formats::load_game_from_path;
+    use imperialism_formats::{DibPalette, load_game_from_path};
 
     fn fixture_state() -> GameState {
         beginning_of_game()
@@ -1315,9 +1315,16 @@ mod tests {
             |tile| owners.get(usize::from(tile.get())).copied().flatten(),
             original.turn().active_nation,
         );
-        assert_eq!(preview.picture.pixels.len(), 324 * 180);
+        let image = preview.to_image(&DibPalette::default());
+        assert_eq!(image.texture_descriptor.size.width, 324);
+        assert_eq!(image.texture_descriptor.size.height, 180);
         assert!(
-            preview.picture.pixels.iter().any(|&index| index != 0x10),
+            image
+                .data
+                .as_ref()
+                .unwrap()
+                .chunks_exact(4)
+                .any(|pixel| pixel[3] != 0),
             "satellite preview should paint claimed land, not only the off-map key"
         );
     }

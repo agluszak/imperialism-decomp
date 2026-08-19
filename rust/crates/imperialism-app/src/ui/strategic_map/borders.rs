@@ -112,64 +112,94 @@ fn draw_sea_zone_borders(state: &GameState, tile: TileId, pixels: &mut IndexedPi
         let second_color = neighbor_palette(state, neighbors[second]);
         match index {
             0 => {
-                stroke_guide(pixels, (0x16, 0x40), &[(0x16, 0x38)], first_color, 2);
-                stroke_guide(pixels, (0x1a, 0x40), &[(0x1a, 0x38)], second_color, 2);
-                stroke_guide(
-                    pixels,
-                    (0x18, 0x40),
-                    &[(0x18, 0x38)],
+                pixels.stroke_polyline_gdi(
+                    [(0x16, 0x40).into(), (0x16, 0x38).into()],
+                    first_color,
+                    2,
+                );
+                pixels.stroke_polyline_gdi(
+                    [(0x1a, 0x40).into(), (0x1a, 0x38).into()],
+                    second_color,
+                    2,
+                );
+                pixels.stroke_polyline_gdi(
+                    [(0x18, 0x40).into(), (0x18, 0x38).into()],
                     CITY_BORDER_PALETTE,
                     1,
                 );
             }
             1 => {
-                stroke_guide(
-                    pixels,
-                    (0x36, 0x40),
-                    &[(0x36, 0x36), (0x31, 0x2e)],
+                pixels.stroke_polyline_gdi(
+                    [
+                        (0x36, 0x40).into(),
+                        (0x36, 0x36).into(),
+                        (0x31, 0x2e).into(),
+                    ],
                     first_color,
                     2,
                 );
-                stroke_guide(
-                    pixels,
-                    (0x39, 0x40),
-                    &[(0x39, 0x36), (0x34, 0x2a)],
+                pixels.stroke_polyline_gdi(
+                    [
+                        (0x39, 0x40).into(),
+                        (0x39, 0x36).into(),
+                        (0x34, 0x2a).into(),
+                    ],
                     second_color,
                     2,
                 );
-                stroke_guide(
-                    pixels,
-                    (0x38, 0x40),
-                    &[(0x38, 0x36), (0x33, 0x2c)],
+                pixels.stroke_polyline_gdi(
+                    [
+                        (0x38, 0x40).into(),
+                        (0x38, 0x36).into(),
+                        (0x33, 0x2c).into(),
+                    ],
                     CITY_BORDER_PALETTE,
                     1,
                 );
             }
             2 => {
-                stroke_guide(pixels, (0x16, 0x40), &[(0x16, 0x38)], first_color, 2);
-                stroke_guide(pixels, (0x19, 0x40), &[(0x19, 0x38)], second_color, 2);
-                stroke_guide(
-                    pixels,
-                    (0x18, 0x40),
-                    &[(0x18, 0x38)],
+                pixels.stroke_polyline_gdi(
+                    [(0x16, 0x40).into(), (0x16, 0x38).into()],
+                    first_color,
+                    2,
+                );
+                pixels.stroke_polyline_gdi(
+                    [(0x19, 0x40).into(), (0x19, 0x38).into()],
+                    second_color,
+                    2,
+                );
+                pixels.stroke_polyline_gdi(
+                    [(0x18, 0x40).into(), (0x18, 0x38).into()],
                     CITY_BORDER_PALETTE,
                     1,
                 );
             }
             3 => {
-                stroke_guide(pixels, (0x16, 0), &[(0x16, 8)], first_color, 2);
-                stroke_guide(pixels, (0x1a, 0), &[(0x1a, 8)], second_color, 2);
-                stroke_guide(pixels, (0x18, 0), &[(0x18, 8)], CITY_BORDER_PALETTE, 1);
+                pixels.stroke_polyline_gdi([(0x16, 0).into(), (0x16, 8).into()], first_color, 2);
+                pixels.stroke_polyline_gdi([(0x1a, 0).into(), (0x1a, 8).into()], second_color, 2);
+                pixels.stroke_polyline_gdi(
+                    [(0x18, 0).into(), (0x18, 8).into()],
+                    CITY_BORDER_PALETTE,
+                    1,
+                );
             }
             4 => {
-                stroke_guide(pixels, (0x36, 0), &[(0x36, 8)], first_color, 2);
-                stroke_guide(pixels, (0x3a, 0), &[(0x3a, 8)], second_color, 2);
-                stroke_guide(pixels, (0x38, 0), &[(0x38, 8)], CITY_BORDER_PALETTE, 1);
+                pixels.stroke_polyline_gdi([(0x36, 0).into(), (0x36, 8).into()], first_color, 2);
+                pixels.stroke_polyline_gdi([(0x3a, 0).into(), (0x3a, 8).into()], second_color, 2);
+                pixels.stroke_polyline_gdi(
+                    [(0x38, 0).into(), (0x38, 8).into()],
+                    CITY_BORDER_PALETTE,
+                    1,
+                );
             }
             5 => {
-                stroke_guide(pixels, (0x16, 0), &[(0x16, 8)], first_color, 2);
-                stroke_guide(pixels, (0x1a, 0), &[(0x1a, 8)], second_color, 2);
-                stroke_guide(pixels, (0x18, 0), &[(0x18, 8)], CITY_BORDER_PALETTE, 1);
+                pixels.stroke_polyline_gdi([(0x16, 0).into(), (0x16, 8).into()], first_color, 2);
+                pixels.stroke_polyline_gdi([(0x1a, 0).into(), (0x1a, 8).into()], second_color, 2);
+                pixels.stroke_polyline_gdi(
+                    [(0x18, 0).into(), (0x18, 8).into()],
+                    CITY_BORDER_PALETTE,
+                    1,
+                );
             }
             _ => {}
         }
@@ -228,129 +258,130 @@ fn draw_guide_pattern(
         _ => std::slice::from_ref(&relation),
     };
     for &family in families {
-        for path in guide_paths(family, variant) {
-            stroke_guide(pixels, path.origin, path.points, color, pen);
-        }
+        pixels.stroke_polyline_gdi(
+            guide_path(family, variant).iter().copied().map(Into::into),
+            color,
+            pen,
+        );
     }
 }
 
-struct GuidePath {
-    origin: (i32, i32),
-    points: &'static [(i32, i32)],
-}
-
-fn guide_paths(relation: u8, variant: i32) -> &'static [GuidePath] {
+fn guide_path(relation: u8, variant: i32) -> &'static [(i32, i32)] {
     match (relation, variant) {
-        (0, 0) => &[GuidePath {
-            origin: (0x18, 0),
-            points: &[(0x20, 9), (0x26, 6), (0x2c, 8)],
-        }],
-        (0, 1) => &[GuidePath {
-            origin: (0x16, 0),
-            points: &[(0x1e, 10), (0x26, 8), (0x2c, 10)],
-        }],
-        (0, 2) => &[GuidePath {
-            origin: (0x1a, 0),
-            points: &[(0x22, 6), (0x26, 4), (0x2c, 6)],
-        }],
-        (1, 0) => &[GuidePath {
-            origin: (0x2c, 8),
-            points: &[(0x36, 0xd), (0x34, 0x14), (0x3a, 0x19), (0x38, 0x20)],
-        }],
-        (1, 1) => &[GuidePath {
-            origin: (0x2c, 10),
-            points: &[(0x34, 0xf), (0x31, 0x14), (0x38, 0x19), (0x36, 0x20)],
-        }],
-        (1, 2) => &[GuidePath {
-            origin: (0x2c, 6),
-            points: &[(0x37, 0xb), (0x36, 0x13), (0x3c, 0x19), (0x3a, 0x20)],
-        }],
-        (2, 0) => &[GuidePath {
-            origin: (0x38, 0),
-            points: &[(0x36, 9), (0x3a, 0x12), (0x36, 0x19), (0x38, 0x20)],
-        }],
-        (2, 1) => &[GuidePath {
-            origin: (0x36, 0),
-            points: &[(0x34, 9), (0x38, 0x12), (0x34, 0x19), (0x36, 0x20)],
-        }],
-        (2, 2) => &[GuidePath {
-            origin: (0x3a, 0),
-            points: &[(0x38, 9), (0x3c, 0x12), (0x38, 0x19), (0x3a, 0x20)],
-        }],
-        (3, 0) => &[GuidePath {
-            origin: (0x2c, 8),
-            points: &[(0x38, 0)],
-        }],
-        (3, 1) => &[GuidePath {
-            origin: (0x2c, 10),
-            points: &[(0x39, 0)],
-        }],
-        (3, 2) => &[GuidePath {
-            origin: (0x2c, 5),
-            points: &[(0x37, -3)],
-        }],
-        (5, 0) => &[GuidePath {
-            origin: (0x2c, 0x38),
-            points: &[(0x39, 0x40)],
-        }],
-        (5, 1) => &[GuidePath {
-            origin: (0x2c, 0x36),
-            points: &[(0x39, 0x3e)],
-        }],
-        (5, 2) => &[GuidePath {
-            origin: (0x2c, 0x3a),
-            points: &[(0x3a, 0x42)],
-        }],
-        (6, 0) => &[GuidePath {
-            origin: (0x38, 0x20),
-            points: &[(0x36, 0x29), (0x3a, 0x32), (0x36, 0x39), (0x38, 0x40)],
-        }],
-        (6, 1) => &[GuidePath {
-            origin: (0x36, 0x20),
-            points: &[(0x34, 0x29), (0x38, 0x32), (0x34, 0x39), (0x36, 0x40)],
-        }],
-        (6, 2) => &[GuidePath {
-            origin: (0x3a, 0x20),
-            points: &[(0x38, 0x29), (0x3c, 0x32), (0x38, 0x39), (0x3a, 0x40)],
-        }],
-        (7, 0) => &[GuidePath {
-            origin: (0x2c, 0x38),
-            points: &[(0x36, 0x33), (0x34, 0x2c), (0x3a, 0x27), (0x38, 0x20)],
-        }],
-        (7, 1) => &[GuidePath {
-            origin: (0x2c, 0x36),
-            points: &[(0x34, 0x31), (0x30, 0x2c), (0x37, 0x27), (0x36, 0x20)],
-        }],
-        (7, 2) => &[GuidePath {
-            origin: (0x2c, 0x3a),
-            points: &[(0x37, 0x35), (0x36, 0x2d), (0x3c, 0x27), (0x3a, 0x20)],
-        }],
-        (9, 0) => &[GuidePath {
-            origin: (0x18, 0x40),
-            points: &[(0x1a, 0x3b), (0x24, 0x36), (0x2a, 0x38), (0x2c, 0x38)],
-        }],
-        (9, 1) => &[GuidePath {
-            origin: (0x16, 0x3f),
-            points: &[(0x18, 0x39), (0x24, 0x33), (0x2a, 0x36), (0x2c, 0x36)],
-        }],
-        (9, 2) => &[GuidePath {
-            origin: (0x1a, 0x40),
-            points: &[(0x1c, 0x3b), (0x24, 0x38), (0x2a, 0x3a), (0x2c, 0x3a)],
-        }],
+        (0, 0) => &[(0x18, 0), (0x20, 9), (0x26, 6), (0x2c, 8)],
+        (0, 1) => &[(0x16, 0), (0x1e, 10), (0x26, 8), (0x2c, 10)],
+        (0, 2) => &[(0x1a, 0), (0x22, 6), (0x26, 4), (0x2c, 6)],
+        (1, 0) => &[
+            (0x2c, 8),
+            (0x36, 0xd),
+            (0x34, 0x14),
+            (0x3a, 0x19),
+            (0x38, 0x20),
+        ],
+        (1, 1) => &[
+            (0x2c, 10),
+            (0x34, 0xf),
+            (0x31, 0x14),
+            (0x38, 0x19),
+            (0x36, 0x20),
+        ],
+        (1, 2) => &[
+            (0x2c, 6),
+            (0x37, 0xb),
+            (0x36, 0x13),
+            (0x3c, 0x19),
+            (0x3a, 0x20),
+        ],
+        (2, 0) => &[
+            (0x38, 0),
+            (0x36, 9),
+            (0x3a, 0x12),
+            (0x36, 0x19),
+            (0x38, 0x20),
+        ],
+        (2, 1) => &[
+            (0x36, 0),
+            (0x34, 9),
+            (0x38, 0x12),
+            (0x34, 0x19),
+            (0x36, 0x20),
+        ],
+        (2, 2) => &[
+            (0x3a, 0),
+            (0x38, 9),
+            (0x3c, 0x12),
+            (0x38, 0x19),
+            (0x3a, 0x20),
+        ],
+        (3, 0) => &[(0x2c, 8), (0x38, 0)],
+        (3, 1) => &[(0x2c, 10), (0x39, 0)],
+        (3, 2) => &[(0x2c, 5), (0x37, -3)],
+        (5, 0) => &[(0x2c, 0x38), (0x39, 0x40)],
+        (5, 1) => &[(0x2c, 0x36), (0x39, 0x3e)],
+        (5, 2) => &[(0x2c, 0x3a), (0x3a, 0x42)],
+        (6, 0) => &[
+            (0x38, 0x20),
+            (0x36, 0x29),
+            (0x3a, 0x32),
+            (0x36, 0x39),
+            (0x38, 0x40),
+        ],
+        (6, 1) => &[
+            (0x36, 0x20),
+            (0x34, 0x29),
+            (0x38, 0x32),
+            (0x34, 0x39),
+            (0x36, 0x40),
+        ],
+        (6, 2) => &[
+            (0x3a, 0x20),
+            (0x38, 0x29),
+            (0x3c, 0x32),
+            (0x38, 0x39),
+            (0x3a, 0x40),
+        ],
+        (7, 0) => &[
+            (0x2c, 0x38),
+            (0x36, 0x33),
+            (0x34, 0x2c),
+            (0x3a, 0x27),
+            (0x38, 0x20),
+        ],
+        (7, 1) => &[
+            (0x2c, 0x36),
+            (0x34, 0x31),
+            (0x30, 0x2c),
+            (0x37, 0x27),
+            (0x36, 0x20),
+        ],
+        (7, 2) => &[
+            (0x2c, 0x3a),
+            (0x37, 0x35),
+            (0x36, 0x2d),
+            (0x3c, 0x27),
+            (0x3a, 0x20),
+        ],
+        (9, 0) => &[
+            (0x18, 0x40),
+            (0x1a, 0x3b),
+            (0x24, 0x36),
+            (0x2a, 0x38),
+            (0x2c, 0x38),
+        ],
+        (9, 1) => &[
+            (0x16, 0x3f),
+            (0x18, 0x39),
+            (0x24, 0x33),
+            (0x2a, 0x36),
+            (0x2c, 0x36),
+        ],
+        (9, 2) => &[
+            (0x1a, 0x40),
+            (0x1c, 0x3b),
+            (0x24, 0x38),
+            (0x2a, 0x3a),
+            (0x2c, 0x3a),
+        ],
         _ => &[],
     }
-}
-
-fn stroke_guide(
-    pixels: &mut IndexedPicture,
-    origin: (i32, i32),
-    points: &[(i32, i32)],
-    color: u8,
-    pen: i32,
-) {
-    pixels.stroke_polyline_gdi(
-        std::iter::once(origin.into()).chain(points.iter().copied().map(Into::into)),
-        color,
-        pen,
-    );
 }

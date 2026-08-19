@@ -2183,17 +2183,17 @@ fn render_diplomacy_map(
     let (entity, image_node) = map.into_inner();
     let state = &session.game;
     let framed = screen.framed_nation;
-    // Fidelity debt: retail TDiplomacyMapView has its own 540x300 region renderer.
-    // This satellite preview remains temporary until imperialism-decomp-7lk3 replaces it.
+    // Fidelity debt predating the raster extraction: retail TDiplomacyMapView has
+    // its own 540x300 region renderer. Keep the existing approximation explicit.
     let mut preview = match screen.interaction_mode() {
-        1 => SatellitePreview::compose_with_fill(
+        1 => SatellitePreview::compose_diplomacy_approximation(
             |tile| state.map()[tile].owner_nation,
             |nation| {
                 DiplomacyRelationshipNotch::from_standing(state.diplomacy_standing(framed, nation))
                     .palette()
             },
         ),
-        4 => SatellitePreview::compose_with_fill(
+        4 => SatellitePreview::compose_diplomacy_approximation(
             |tile| state.map()[tile].owner_nation,
             |nation| diplomacy_relationship_fill(state, framed, nation),
         ),

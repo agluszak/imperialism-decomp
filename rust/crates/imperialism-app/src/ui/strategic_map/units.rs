@@ -1138,7 +1138,7 @@ mod tests {
         let state = fixture_state();
         let view_origin = beginning_map_view_origin();
         let projection = DetailedMapProjection::new(state.map().geometry(), view_origin);
-        let seen = projection.visible_tiles();
+        let seen = projection.visible_tiles().collect::<Vec<_>>();
         for projected in &seen {
             assert_eq!(
                 projection.tile_origin(projected.tile),
