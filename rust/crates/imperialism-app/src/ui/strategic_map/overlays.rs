@@ -2,9 +2,8 @@ use bevy::prelude::{IRect, IVec2};
 use imperialism_core::*;
 use imperialism_formats::*;
 
-use crate::ui::retail_raster::IndexedSurface;
+use crate::ui::retail_raster::IndexedRasterExt;
 
-use super::terrain::apply_tile_mask;
 use super::{RIVER_MASK_TRANSPARENT_INDEX, StrategicMapSprites, TILE_SIZE};
 
 pub(super) const RESOURCE_ICON_WIDTH: i32 = 0x14;
@@ -22,7 +21,7 @@ pub(super) const IMPROVEMENT_PICTURE_IDS: [i16; 15] = [
 pub(super) fn compose_strategic_railways(
     tile_state: &TileState,
     river_masks: &[IndexedPicture],
-    surface: &mut IndexedSurface,
+    surface: &mut IndexedPicture,
 ) {
     if tile_state.transport_links.is_empty() && tile_state.pending_rail_links.is_empty() {
         return;
@@ -40,7 +39,11 @@ pub(super) fn compose_strategic_railways(
         } else {
             continue;
         };
-        apply_tile_mask(&river_masks[mask].pixels, surface.pixels_mut());
+        surface.blit_keyed_at(
+            &river_masks[mask],
+            IVec2::ZERO,
+            RIVER_MASK_TRANSPARENT_INDEX,
+        );
     }
 }
 
@@ -48,7 +51,7 @@ pub(super) fn compose_strategic_improvements(
     state: &GameState,
     tile: TileId,
     sprites: StrategicMapSprites<'_>,
-    surface: &mut IndexedSurface,
+    surface: &mut IndexedPicture,
 ) {
     let tile_state = state.map()[tile];
     let flags = tile_state.flags.bits();
@@ -151,21 +154,16 @@ pub(super) fn town_transport_linked(state: &GameState, tile: TileId) -> bool {
         .unwrap_or(true)
 }
 
-fn blit_improvement_sprite(pictures: &[IndexedPicture], offset: u16, surface: &mut IndexedSurface) {
+fn blit_improvement_sprite(pictures: &[IndexedPicture], offset: u16, surface: &mut IndexedPicture) {
     let index = usize::from((offset - IMPROVEMENT_ATLAS_BASE_OFFSET) / TILE_SIZE as u16);
-    surface.blit_keyed(
-        &pictures[index],
-        IRect::new(0, 0, TILE_SIZE, TILE_SIZE),
-        IVec2::ZERO,
-        RIVER_MASK_TRANSPARENT_INDEX,
-    );
+    surface.blit_keyed_at(&pictures[index], IVec2::ZERO, RIVER_MASK_TRANSPARENT_INDEX);
 }
 
 fn compose_strategic_resource_indicators(
     state: &GameState,
     tile: TileId,
     sprites: StrategicMapSprites<'_>,
-    surface: &mut IndexedSurface,
+    surface: &mut IndexedPicture,
 ) {
     let tile_state = state.map()[tile];
     let surface_level = tile_state.development.surface.get();
@@ -250,7 +248,7 @@ fn blit_resource_icon(
     resource: ResourceKind,
     dest_x: i32,
     dest_y: i32,
-    surface: &mut IndexedSurface,
+    surface: &mut IndexedPicture,
 ) {
     let source_x = i32::from(resource.retail()) * RESOURCE_ICON_WIDTH;
     surface.blit_keyed(
@@ -272,7 +270,7 @@ fn blit_resource_overlay(
     level: u8,
     dest_x: i32,
     dest_y: i32,
-    surface: &mut IndexedSurface,
+    surface: &mut IndexedPicture,
 ) {
     if level == 0 {
         return;

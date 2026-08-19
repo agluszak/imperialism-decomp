@@ -9,7 +9,7 @@ use crate::AppState;
 use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
 use crate::ui::retail::RetailTree;
-use crate::ui::retail_raster::IndexedSurface;
+use crate::ui::retail_raster::{IndexedRasterExt, indexed_picture};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::RelativeCursorPosition;
@@ -78,7 +78,7 @@ pub(crate) fn bind_ocean_view(
     let ocean = tree.find(root, fourcc!("DOOG"));
     let palette = *assets.default_dib_palette();
     let image = assets.add_image(
-        IndexedSurface::new(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0).to_image(&palette),
+        indexed_picture(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0).to_image(&palette),
     );
     commands.entity(ocean).insert((
         OceanMapCanvas { composed: None },
@@ -155,12 +155,9 @@ fn sync_ocean_canvas(
             &render_assets.0,
         );
         if let Some(mut existing) = images.get_mut(&node.image) {
-            *existing = IndexedSurface::from_pixels(
-                VIEWPORT_WIDTH as i32,
-                VIEWPORT_HEIGHT as i32,
-                raster.into_pixels(),
-            )
-            .to_image(retail.assets().default_dib_palette());
+            *existing = raster
+                .into_picture()
+                .to_image(retail.assets().default_dib_palette());
             canvas.composed = Some(key);
         }
     }

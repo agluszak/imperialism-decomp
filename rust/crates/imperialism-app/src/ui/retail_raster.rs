@@ -6,121 +6,103 @@ use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use imperialism_formats::{DibPalette, IndexedPicture};
 
-pub(in crate::ui) struct IndexedSurface {
-    width: i32,
-    height: i32,
-    pixels: Vec<u8>,
+pub(in crate::ui) fn indexed_picture(width: i32, height: i32, fill: u8) -> IndexedPicture {
+    assert!(width >= 0 && height >= 0);
+    IndexedPicture {
+        width: width as u32,
+        height: height as u32,
+        pixels: vec![fill; (width * height) as usize],
+    }
 }
 
-impl IndexedSurface {
-    pub(in crate::ui) fn new(width: i32, height: i32, fill: u8) -> Self {
-        assert!(width >= 0 && height >= 0);
-        Self {
-            width,
-            height,
-            pixels: vec![fill; (width * height) as usize],
-        }
-    }
-
-    pub(in crate::ui) fn from_pixels(width: i32, height: i32, pixels: Vec<u8>) -> Self {
-        assert!(width >= 0 && height >= 0);
-        assert_eq!(pixels.len(), (width * height) as usize);
-        Self {
-            width,
-            height,
-            pixels,
-        }
-    }
-
-    pub(in crate::ui) fn pixels_mut(&mut self) -> &mut [u8] {
-        &mut self.pixels
-    }
-
-    pub(in crate::ui) fn into_pixels(self) -> Vec<u8> {
-        self.pixels
-    }
-
-    pub(in crate::ui) fn into_picture(self) -> IndexedPicture {
-        IndexedPicture {
-            width: self.width as u32,
-            height: self.height as u32,
-            pixels: self.pixels,
-        }
-    }
-
-    pub(in crate::ui) fn fill_rect(&mut self, rect: IRect, color: u8) {
-        let left = rect.min.x.max(0);
-        let top = rect.min.y.max(0);
-        let right = rect.max.x.min(self.width);
-        let bottom = rect.max.y.min(self.height);
-        if left >= right || top >= bottom {
-            return;
-        }
-        for y in top..bottom {
-            self.pixels[(y * self.width + left) as usize..(y * self.width + right) as usize]
-                .fill(color);
-        }
-    }
-
-    pub(in crate::ui) fn copy_rect(
+pub(in crate::ui) trait IndexedRasterExt {
+    fn put(&mut self, point: IVec2, color: u8);
+    fn fill_rect(&mut self, rect: IRect, color: u8);
+    fn copy_rect(&mut self, source: &IndexedPicture, source_rect: IRect, destination: IVec2);
+    fn blit_keyed(
         &mut self,
         source: &IndexedPicture,
         source_rect: IRect,
         destination: IVec2,
-    ) {
-        self.blit(source, source_rect, destination, None);
+        transparent: u8,
+    );
+    fn blit_keyed_at(&mut self, source: &IndexedPicture, destination: IVec2, transparent: u8) {
+        self.blit_keyed(
+            source,
+            IRect::new(0, 0, source.width as i32, source.height as i32),
+            destination,
+            transparent,
+        );
+    }
+    fn line_to_gdi(&mut self, start: IVec2, end: IVec2, color: u8, pen_width: i32);
+    fn frame_rect(&mut self, rect: IRect, color: u8);
+    fn to_image(&self, palette: &DibPalette) -> Image;
+    fn to_keyed_image(&self, palette: &DibPalette, transparent: u8) -> Image;
+}
+
+impl IndexedRasterExt for IndexedPicture {
+    fn put(&mut self, point: IVec2, color: u8) {
+        if (0..self.width as i32).contains(&point.x) && (0..self.height as i32).contains(&point.y) {
+            self.pixels[(point.y * self.width as i32 + point.x) as usize] = color;
+        }
     }
 
-    pub(in crate::ui) fn blit_keyed(
+    fn fill_rect(&mut self, rect: IRect, color: u8) {
+        let left = rect.min.x.max(0);
+        let top = rect.min.y.max(0);
+        let right = rect.max.x.min(self.width as i32);
+        let bottom = rect.max.y.min(self.height as i32);
+        if left >= right || top >= bottom {
+            return;
+        }
+        for y in top..bottom {
+            self.pixels
+                [(y * self.width as i32 + left) as usize..(y * self.width as i32 + right) as usize]
+                .fill(color);
+        }
+    }
+
+    fn copy_rect(&mut self, source: &IndexedPicture, source_rect: IRect, destination: IVec2) {
+        let Some(blit) = clipped_blit(self, source, source_rect, destination) else {
+            return;
+        };
+        for row in 0..blit.height {
+            let source_start =
+                ((blit.source.y + row) * source.width as i32 + blit.source.x) as usize;
+            let destination_start =
+                ((blit.destination.y + row) * self.width as i32 + blit.destination.x) as usize;
+            self.pixels[destination_start..destination_start + blit.width as usize]
+                .copy_from_slice(&source.pixels[source_start..source_start + blit.width as usize]);
+        }
+    }
+
+    fn blit_keyed(
         &mut self,
         source: &IndexedPicture,
         source_rect: IRect,
         destination: IVec2,
         transparent: u8,
     ) {
-        self.blit(source, source_rect, destination, Some(transparent));
-    }
-
-    fn blit(
-        &mut self,
-        source: &IndexedPicture,
-        source_rect: IRect,
-        destination: IVec2,
-        transparent: Option<u8>,
-    ) {
-        let source_width = source.width as i32;
-        let source_height = source.height as i32;
-        for y in 0..source_rect.height() {
-            let source_y = source_rect.min.y + y;
-            let destination_y = destination.y + y;
-            if !(0..source_height).contains(&source_y) || !(0..self.height).contains(&destination_y)
-            {
-                continue;
-            }
-            for x in 0..source_rect.width() {
-                let source_x = source_rect.min.x + x;
-                let destination_x = destination.x + x;
-                if !(0..source_width).contains(&source_x)
-                    || !(0..self.width).contains(&destination_x)
-                {
-                    continue;
-                }
-                let pixel = source.pixels[(source_y * source_width + source_x) as usize];
-                if transparent != Some(pixel) {
-                    self.pixels[(destination_y * self.width + destination_x) as usize] = pixel;
+        let Some(blit) = clipped_blit(self, source, source_rect, destination) else {
+            return;
+        };
+        for row in 0..blit.height {
+            for column in 0..blit.width {
+                let source_index =
+                    ((blit.source.y + row) * source.width as i32 + blit.source.x + column) as usize;
+                let pixel = source.pixels[source_index];
+                if pixel != transparent {
+                    let destination_index = ((blit.destination.y + row) * self.width as i32
+                        + blit.destination.x
+                        + column) as usize;
+                    self.pixels[destination_index] = pixel;
                 }
             }
         }
     }
 
     /// Integer Bresenham stroke with Win32 `LineTo`'s excluded endpoint.
-    pub(in crate::ui) fn line_to_gdi(
-        &mut self,
-        start: IVec2,
-        end: IVec2,
-        color: u8,
-        pen_width: i32,
-    ) {
+    fn line_to_gdi(&mut self, start: IVec2, end: IVec2, color: u8, pen_width: i32) {
         assert!(pen_width > 0);
         let offset = pen_width / 2;
         let end = end + IVec2::splat(offset);
@@ -145,7 +127,7 @@ impl IndexedSurface {
         }
     }
 
-    pub(in crate::ui) fn frame_rect(&mut self, rect: IRect, color: u8) {
+    fn frame_rect(&mut self, rect: IRect, color: u8) {
         if rect.is_empty() {
             return;
         }
@@ -167,12 +149,12 @@ impl IndexedSurface {
         );
     }
 
-    pub(in crate::ui) fn to_image(&self, palette: &DibPalette) -> Image {
-        indexed_image(self.width, self.height, &self.pixels, palette, None)
+    fn to_image(&self, palette: &DibPalette) -> Image {
+        indexed_pixels_to_image(self.width, self.height, &self.pixels, palette, None)
     }
 
-    pub(in crate::ui) fn to_keyed_image(&self, palette: &DibPalette, transparent: u8) -> Image {
-        indexed_image(
+    fn to_keyed_image(&self, palette: &DibPalette, transparent: u8) -> Image {
+        indexed_pixels_to_image(
             self.width,
             self.height,
             &self.pixels,
@@ -182,13 +164,72 @@ impl IndexedSurface {
     }
 }
 
-fn indexed_image(
+struct ClippedBlit {
+    source: IVec2,
+    destination: IVec2,
     width: i32,
     height: i32,
+}
+
+fn clipped_blit(
+    destination: &IndexedPicture,
+    source: &IndexedPicture,
+    source_rect: IRect,
+    destination_origin: IVec2,
+) -> Option<ClippedBlit> {
+    let mut source_x = source_rect.min.x;
+    let mut source_y = source_rect.min.y;
+    let mut destination_x = destination_origin.x;
+    let mut destination_y = destination_origin.y;
+    let mut width = source_rect.width();
+    let mut height = source_rect.height();
+
+    if source_x < 0 {
+        let clipped = -source_x;
+        source_x = 0;
+        destination_x += clipped;
+        width -= clipped;
+    }
+    if source_y < 0 {
+        let clipped = -source_y;
+        source_y = 0;
+        destination_y += clipped;
+        height -= clipped;
+    }
+    if destination_x < 0 {
+        let clipped = -destination_x;
+        destination_x = 0;
+        source_x += clipped;
+        width -= clipped;
+    }
+    if destination_y < 0 {
+        let clipped = -destination_y;
+        destination_y = 0;
+        source_y += clipped;
+        height -= clipped;
+    }
+    width = width
+        .min(source.width as i32 - source_x)
+        .min(destination.width as i32 - destination_x);
+    height = height
+        .min(source.height as i32 - source_y)
+        .min(destination.height as i32 - destination_y);
+    (width > 0 && height > 0).then_some(ClippedBlit {
+        source: IVec2::new(source_x, source_y),
+        destination: IVec2::new(destination_x, destination_y),
+        width,
+        height,
+    })
+}
+
+pub(in crate::ui) fn indexed_pixels_to_image(
+    width: u32,
+    height: u32,
     pixels: &[u8],
     palette: &DibPalette,
     transparent: Option<u8>,
 ) -> Image {
+    assert_eq!(pixels.len(), width as usize * height as usize);
     let mut rgba = Vec::with_capacity(pixels.len() * 4);
     for &palette_index in pixels {
         let alpha = if transparent == Some(palette_index) {
@@ -200,8 +241,8 @@ fn indexed_image(
     }
     let mut image = Image::new(
         Extent3d {
-            width: width as u32,
-            height: height as u32,
+            width,
+            height,
             depth_or_array_layers: 1,
         },
         TextureDimension::D2,
@@ -218,21 +259,33 @@ mod tests {
     use super::*;
 
     #[test]
-    fn keyed_blit_clips_both_surfaces() {
+    fn keyed_blit_clips_both_pictures() {
         let source = IndexedPicture {
             width: 3,
             height: 2,
             pixels: vec![1, 2, 3, 4, 0x10, 6],
         };
-        let mut destination = IndexedSurface::new(3, 2, 9);
+        let mut destination = indexed_picture(3, 2, 9);
         destination.blit_keyed(&source, IRect::new(0, 0, 3, 2), IVec2::new(-1, 0), 0x10);
         assert_eq!(destination.pixels, [2, 3, 9, 9, 6, 9]);
     }
 
     #[test]
+    fn opaque_copy_clips_once_then_copies_rows() {
+        let source = IndexedPicture {
+            width: 4,
+            height: 2,
+            pixels: vec![1, 2, 3, 4, 5, 6, 7, 8],
+        };
+        let mut destination = indexed_picture(3, 2, 9);
+        destination.copy_rect(&source, IRect::new(1, 0, 4, 2), IVec2::new(-1, 0));
+        assert_eq!(destination.pixels, [3, 4, 9, 7, 8, 9]);
+    }
+
+    #[test]
     fn gdi_line_excludes_endpoint() {
-        let mut surface = IndexedSurface::new(4, 2, 0);
-        surface.line_to_gdi(IVec2::new(0, 0), IVec2::new(3, 0), 7, 1);
-        assert_eq!(surface.pixels, [7, 7, 7, 0, 0, 0, 0, 0]);
+        let mut picture = indexed_picture(4, 2, 0);
+        picture.line_to_gdi(IVec2::new(0, 0), IVec2::new(3, 0), 7, 1);
+        assert_eq!(picture.pixels, [7, 7, 7, 0, 0, 0, 0, 0]);
     }
 }

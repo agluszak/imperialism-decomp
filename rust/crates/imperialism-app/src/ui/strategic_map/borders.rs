@@ -1,6 +1,7 @@
 use imperialism_core::*;
+use imperialism_formats::IndexedPicture;
 
-use crate::ui::retail_raster::IndexedSurface;
+use crate::ui::retail_raster::IndexedRasterExt;
 
 pub(super) const CITY_BORDER_PALETTE: u8 = 0x13;
 pub(super) const MINOR_NATION_BORDER_PALETTE: u8 = 0x0a;
@@ -9,7 +10,7 @@ pub(super) const MAJOR_NATION_BORDER_PALETTES: [u8; MAJOR_NATION_COUNT] =
 pub(super) fn compose_strategic_borders(
     state: &GameState,
     tile: TileId,
-    pixels: &mut IndexedSurface,
+    pixels: &mut IndexedPicture,
 ) {
     let tile_state = state.map()[tile];
     if tile_state.owner_border_mask != 0 {
@@ -24,123 +25,77 @@ pub(super) fn compose_strategic_borders(
     }
 }
 
-fn draw_nation_border_segments(state: &GameState, tile: TileId, pixels: &mut IndexedSurface) {
+fn draw_nation_border_segments(state: &GameState, tile: TileId, pixels: &mut IndexedPicture) {
     let mask = state.map()[tile].owner_border_mask;
     let owner = border_palette(state.map()[tile].owner_nation);
-    let neighbors = HexDirectionTable::from_array(state.map().geometry().neighbors(tile));
-    let direction1 = mask & 2 != 0;
-
-    if direction1 {
-        let east = neighbor_palette(state, neighbors[HexDirection::East]);
-        if mask & 1 == 0 {
-            draw_border(pixels, 2, owner, east);
-        } else {
-            draw_border(pixels, 1, owner, east);
-            if mask & 0x40 != 0 {
-                let north_east = neighbor_palette(state, neighbors[HexDirection::NorthEast]);
-                draw_border(pixels, 3, owner, north_east);
-            }
-        }
-        if mask & 4 == 0 {
-            draw_border(pixels, 6, owner, east);
-        } else {
-            let south_east = neighbor_palette(state, neighbors[HexDirection::SouthEast]);
-            draw_border(pixels, 7, owner, south_east);
-            if mask & 0x80 != 0 {
-                draw_border(pixels, 5, owner, south_east);
-            }
-        }
-    }
-
-    if mask & 1 != 0 {
-        let north_east = neighbor_palette(state, neighbors[HexDirection::NorthEast]);
-        draw_border(pixels, 0, owner, north_east);
-        if !direction1 {
-            draw_border(pixels, 3, owner, north_east);
-        }
-    }
-    if mask & 4 != 0 {
-        let south_east = neighbor_palette(state, neighbors[HexDirection::SouthEast]);
-        draw_border(pixels, 9, owner, south_east);
-        if !direction1 {
-            draw_border(pixels, 5, owner, south_east);
-        }
-    }
-
-    if state.map()[tile].terrain == TerrainKind::Water {
-        return;
-    }
-    if neighbor_is_water(state, neighbors[HexDirection::NorthEast])
-        && mask & 0x20 != 0
-        && !direction1
-    {
-        let north_west = neighbor_palette(state, neighbors[HexDirection::NorthWest]);
-        draw_border(pixels, 0, owner, north_west);
-        draw_border(pixels, 3, owner, north_west);
-    }
-    if neighbor_is_water(state, neighbors[HexDirection::SouthEast]) && mask & 8 != 0 && !direction1
-    {
-        let south_west = neighbor_palette(state, neighbors[HexDirection::SouthWest]);
-        draw_border(pixels, 5, owner, south_west);
-        draw_border(pixels, 9, owner, south_west);
-    }
+    for_each_land_border_segment(state, tile, mask, |relation, neighbor| {
+        draw_border(pixels, relation, owner, neighbor_palette(state, neighbor));
+    });
 }
 
-fn draw_city_border_segments(state: &GameState, tile: TileId, pixels: &mut IndexedSurface) {
+fn draw_city_border_segments(state: &GameState, tile: TileId, pixels: &mut IndexedPicture) {
     let mask = state.map()[tile].city_border_mask;
+    for_each_land_border_segment(state, tile, mask, |relation, _neighbor| {
+        draw_guide_pattern(pixels, relation, 0, CITY_BORDER_PALETTE, 1);
+    });
+}
+
+fn for_each_land_border_segment(
+    state: &GameState,
+    tile: TileId,
+    mask: u8,
+    mut visit: impl FnMut(u8, Option<TileId>),
+) {
     let neighbors = HexDirectionTable::from_array(state.map().geometry().neighbors(tile));
     let direction1 = mask & 2 != 0;
 
     if direction1 {
         if mask & 1 == 0 {
-            draw_guide_pattern(pixels, 2, 0, CITY_BORDER_PALETTE, 1);
+            visit(2, neighbors[HexDirection::East]);
         } else {
-            draw_guide_pattern(pixels, 1, 0, CITY_BORDER_PALETTE, 1);
+            visit(1, neighbors[HexDirection::East]);
             if mask & 0x40 != 0 {
-                draw_guide_pattern(pixels, 3, 0, CITY_BORDER_PALETTE, 1);
+                visit(3, neighbors[HexDirection::NorthEast]);
             }
         }
         if mask & 4 == 0 {
-            draw_guide_pattern(pixels, 6, 0, CITY_BORDER_PALETTE, 1);
+            visit(6, neighbors[HexDirection::East]);
         } else {
-            draw_guide_pattern(pixels, 7, 0, CITY_BORDER_PALETTE, 1);
+            visit(7, neighbors[HexDirection::SouthEast]);
             if mask & 0x80 != 0 {
-                draw_guide_pattern(pixels, 5, 0, CITY_BORDER_PALETTE, 1);
+                visit(5, neighbors[HexDirection::SouthEast]);
             }
         }
     }
 
     if mask & 1 != 0 {
-        draw_guide_pattern(pixels, 0, 0, CITY_BORDER_PALETTE, 1);
+        visit(0, neighbors[HexDirection::NorthEast]);
         if !direction1 {
-            draw_guide_pattern(pixels, 3, 0, CITY_BORDER_PALETTE, 1);
+            visit(3, neighbors[HexDirection::NorthEast]);
         }
     }
     if mask & 4 != 0 {
-        draw_guide_pattern(pixels, 9, 0, CITY_BORDER_PALETTE, 1);
+        visit(9, neighbors[HexDirection::SouthEast]);
         if !direction1 {
-            draw_guide_pattern(pixels, 5, 0, CITY_BORDER_PALETTE, 1);
+            visit(5, neighbors[HexDirection::SouthEast]);
         }
     }
 
-    if state.map()[tile].terrain == TerrainKind::Water {
-        return;
-    }
     if neighbor_is_water(state, neighbors[HexDirection::NorthEast])
         && mask & 0x20 != 0
         && !direction1
     {
-        draw_guide_pattern(pixels, 0, 0, CITY_BORDER_PALETTE, 1);
-        draw_guide_pattern(pixels, 3, 0, CITY_BORDER_PALETTE, 1);
+        visit(0, neighbors[HexDirection::NorthWest]);
+        visit(3, neighbors[HexDirection::NorthWest]);
     }
     if neighbor_is_water(state, neighbors[HexDirection::SouthEast]) && mask & 8 != 0 && !direction1
     {
-        draw_guide_pattern(pixels, 5, 0, CITY_BORDER_PALETTE, 1);
-        draw_guide_pattern(pixels, 9, 0, CITY_BORDER_PALETTE, 1);
+        visit(5, neighbors[HexDirection::SouthWest]);
+        visit(9, neighbors[HexDirection::SouthWest]);
     }
 }
 
-fn draw_sea_zone_borders(state: &GameState, tile: TileId, pixels: &mut IndexedSurface) {
+fn draw_sea_zone_borders(state: &GameState, tile: TileId, pixels: &mut IndexedPicture) {
     let neighbors = HexDirectionTable::from_array(state.map().geometry().neighbors(tile));
     let pairs = [
         (HexDirection::SouthWest, HexDirection::SouthEast),
@@ -256,13 +211,13 @@ fn border_palette(owner: Option<TileOwnerTag>) -> u8 {
         .unwrap_or(MINOR_NATION_BORDER_PALETTE)
 }
 
-pub(super) fn draw_border(pixels: &mut IndexedSurface, relation: u8, nation_a: u8, nation_b: u8) {
+pub(super) fn draw_border(pixels: &mut IndexedPicture, relation: u8, nation_a: u8, nation_b: u8) {
     draw_guide_pattern(pixels, relation, 1, nation_a, 2);
     draw_guide_pattern(pixels, relation, 2, nation_b, 2);
 }
 
 fn draw_guide_pattern(
-    pixels: &mut IndexedSurface,
+    pixels: &mut IndexedPicture,
     relation: u8,
     variant: i32,
     color: u8,
@@ -283,7 +238,7 @@ fn draw_guide_pattern(
     }
 }
 
-fn draw_guide_set_a(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_a(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
     if variant == 0 {
         stroke_guide(
             pixels,
@@ -315,7 +270,7 @@ fn draw_guide_set_a(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i
     }
 }
 
-fn draw_guide_set_b(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_b(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
     if variant == 0 {
         stroke_guide(
             pixels,
@@ -347,7 +302,7 @@ fn draw_guide_set_b(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i
     }
 }
 
-fn draw_guide_set_c(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_c(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
     let (x1, x2, x3) = if variant == 1 {
         (0x36, 0x34, 0x38)
     } else if variant == 2 {
@@ -364,7 +319,7 @@ fn draw_guide_set_c(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i
     );
 }
 
-fn draw_guide_set_d(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_d(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
     if variant == 1 {
         stroke_guide(pixels, (0x2c, 10), &[(0x39, 0)], color, pen);
         return;
@@ -376,12 +331,12 @@ fn draw_guide_set_d(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i
     stroke_guide(pixels, (0x2c, 8), &[(0x38, 0)], color, pen);
 }
 
-fn draw_guide_set_tile(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_tile(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
     draw_guide_set_b(pixels, variant, color, pen);
     draw_guide_set_d(pixels, variant, color, pen);
 }
 
-fn draw_guide_set_e(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_e(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
     if variant == 1 {
         stroke_guide(pixels, (0x2c, 0x36), &[(0x39, 0x3e)], color, pen);
         return;
@@ -393,7 +348,7 @@ fn draw_guide_set_e(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i
     stroke_guide(pixels, (0x2c, 0x38), &[(0x39, 0x40)], color, pen);
 }
 
-fn draw_guide_set_f(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_f(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
     let (x1, x2, x3) = if variant == 1 {
         (0x36, 0x34, 0x38)
     } else if variant == 2 {
@@ -410,7 +365,7 @@ fn draw_guide_set_f(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i
     );
 }
 
-fn draw_guide_set_g(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_g(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
     if variant == 0 {
         stroke_guide(
             pixels,
@@ -442,12 +397,12 @@ fn draw_guide_set_g(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i
     }
 }
 
-fn draw_guide_set_h(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_h(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
     draw_guide_set_g(pixels, variant, color, pen);
     draw_guide_set_e(pixels, variant, color, pen);
 }
 
-fn draw_guide_set_i(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i32) {
+fn draw_guide_set_i(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
     if variant == 0 {
         stroke_guide(
             pixels,
@@ -480,7 +435,7 @@ fn draw_guide_set_i(pixels: &mut IndexedSurface, variant: i32, color: u8, pen: i
 }
 
 fn stroke_guide(
-    pixels: &mut IndexedSurface,
+    pixels: &mut IndexedPicture,
     origin: (i32, i32),
     points: &[(i32, i32)],
     color: u8,
@@ -489,18 +444,8 @@ fn stroke_guide(
     let mut x = origin.0;
     let mut y = origin.1;
     for &(next_x, next_y) in points {
-        draw_pen_line(pixels, (x, y), (next_x, next_y), color, pen);
+        pixels.line_to_gdi((x, y).into(), (next_x, next_y).into(), color, pen);
         x = next_x;
         y = next_y;
     }
-}
-
-fn draw_pen_line(
-    pixels: &mut IndexedSurface,
-    start: (i32, i32),
-    end: (i32, i32),
-    color: u8,
-    pen: i32,
-) {
-    pixels.line_to_gdi(start.into(), end.into(), color, pen);
 }

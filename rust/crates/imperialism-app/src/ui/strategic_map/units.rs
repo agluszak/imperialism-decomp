@@ -10,7 +10,7 @@ use super::{
     StrategicInteraction, TILE_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH,
     for_each_visible_strategic_tile,
 };
-use crate::ui::retail_raster::IndexedSurface;
+use crate::ui::retail_raster::{IndexedRasterExt, indexed_picture};
 use bevy::prelude::*;
 use enum_map::Enum;
 use imperialism_core::*;
@@ -524,9 +524,7 @@ fn unit_sprite_image(
         return Some(handle.clone());
     }
     let picture = compose_unit_sprite(sprites, sprite)?;
-    let surface =
-        IndexedSurface::from_pixels(picture.width as i32, picture.height as i32, picture.pixels);
-    let handle = assets.add_image(surface.to_keyed_image(palette, UNIT_TRANSPARENT_INDEX));
+    let handle = assets.add_image(picture.to_keyed_image(palette, UNIT_TRANSPARENT_INDEX));
     sprites.composed.insert(sprite, handle.clone());
     Some(handle)
 }
@@ -543,17 +541,14 @@ fn compose_unit_sprite(
             owner_badge,
             framed,
         } => {
-            let picture = sprites
+            let mut picture = sprites
                 .civilians
                 .get(&(kind, pose))?
                 .get(usize::from(frame))?
                 .clone();
-            let width = picture.width as i32;
-            let height = picture.height as i32;
-            let mut surface = IndexedSurface::from_pixels(width, height, picture.pixels);
             if let Some(slot) = owner_badge {
                 let source_x = i32::from(slot) * 9;
-                surface.blit_keyed(
+                picture.blit_keyed(
                     &sprites.owner_flags,
                     IRect::new(source_x, 0, source_x + 9, 6),
                     IVec2::new(28, 2),
@@ -561,30 +556,25 @@ fn compose_unit_sprite(
                 );
             }
             if framed {
-                surface.frame_rect(
-                    IRect::new(0, 0, width, height),
+                picture.frame_rect(
+                    IRect::new(0, 0, picture.width as i32, picture.height as i32),
                     FOREIGN_CIVILIAN_FRAME_INDEX,
                 );
             }
-            Some(surface.into_picture())
+            Some(picture)
         }
         StrategicUnitSprite::Army { bucket, owner_slot } => {
             let count = sprites.army_counts.get(usize::from(bucket))?;
-            let mut surface = IndexedSurface::new(TILE_SIZE, TILE_SIZE, UNIT_TRANSPARENT_INDEX);
-            surface.blit_keyed(
-                count,
-                IRect::new(0, 0, count.width as i32, count.height as i32),
-                IVec2::ZERO,
-                UNIT_TRANSPARENT_INDEX,
-            );
+            let mut picture = indexed_picture(TILE_SIZE, TILE_SIZE, UNIT_TRANSPARENT_INDEX);
+            picture.blit_keyed_at(count, IVec2::ZERO, UNIT_TRANSPARENT_INDEX);
             let source_x = i32::from(owner_slot) * 9;
-            surface.blit_keyed(
+            picture.blit_keyed(
                 &sprites.owner_flags,
                 IRect::new(source_x, 0, source_x + 9, 6),
                 IVec2::new(7, 2),
                 UNIT_TRANSPARENT_INDEX,
             );
-            Some(surface.into_picture())
+            Some(picture)
         }
         StrategicUnitSprite::Naval { frame } => {
             sprites.fleet_frames.get(usize::from(frame)).cloned()

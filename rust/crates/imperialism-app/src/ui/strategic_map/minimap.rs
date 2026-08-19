@@ -4,7 +4,7 @@
 use super::super::GameSession;
 use super::super::RetailUiAssets;
 use super::super::retail::RetailTree;
-use super::super::retail_raster::IndexedSurface;
+use super::super::retail_raster::{IndexedRasterExt, indexed_picture};
 use super::map_interaction::{
     MapProjection, MapTransition, StrategicInteraction, StrategicViewport, apply_map_transition,
 };
@@ -367,15 +367,11 @@ pub(super) fn compose_minimap(
     drag_pixel: Option<(i32, i32)>,
     marker: ViewportMarker,
 ) -> (Image, MiniMapWindow) {
-    let atlas = IndexedPicture {
-        width: ATLAS_WIDTH as u32,
-        height: ATLAS_HEIGHT as u32,
-        pixels: compose_minimap_atlas(state),
-    };
+    let atlas = compose_minimap_atlas(state);
     let window = minimap_window(view_origin, marker);
-    let mut surface = IndexedSurface::new(FRAME_WIDTH, FRAME_HEIGHT, 0);
-    blit_minimap_window(&atlas, window, state.map().topology, &mut surface);
-    let mut image = surface.to_image(palette);
+    let mut picture = indexed_picture(FRAME_WIDTH, FRAME_HEIGHT, 0);
+    blit_minimap_window(&atlas, window, state.map().topology, &mut picture);
+    let mut image = picture.to_image(palette);
     let rgba = image
         .data
         .as_mut()
@@ -391,9 +387,9 @@ pub(super) fn compose_minimap(
     (image, window)
 }
 
-pub(super) fn compose_minimap_atlas(state: &GameState) -> Vec<u8> {
+pub(super) fn compose_minimap_atlas(state: &GameState) -> IndexedPicture {
     let fill = view_mgr_color(0x32);
-    let mut atlas = vec![fill; ATLAS_WIDTH * ATLAS_HEIGHT];
+    let mut atlas = indexed_picture(ATLAS_WIDTH as i32, ATLAS_HEIGHT as i32, fill);
     for index in 0..STRATEGIC_TILE_COUNT {
         let tile = TileId::new(index as u16);
         let Some(palette_index) = atlas_owner_palette(state.map()[tile].owner_nation) else {
@@ -401,12 +397,12 @@ pub(super) fn compose_minimap_atlas(state: &GameState) -> Vec<u8> {
         };
         let column = (index % MAP_COLUMNS as usize) * 2;
         let row = (index / MAP_COLUMNS as usize) * 2;
-        atlas[row * ATLAS_WIDTH + column] = palette_index;
-        atlas[row * ATLAS_WIDTH + column + 1] = palette_index;
-        atlas[(row + 1) * ATLAS_WIDTH + column] = palette_index;
-        atlas[(row + 1) * ATLAS_WIDTH + column + 1] = palette_index;
+        atlas.pixels[row * ATLAS_WIDTH + column] = palette_index;
+        atlas.pixels[row * ATLAS_WIDTH + column + 1] = palette_index;
+        atlas.pixels[(row + 1) * ATLAS_WIDTH + column] = palette_index;
+        atlas.pixels[(row + 1) * ATLAS_WIDTH + column + 1] = palette_index;
     }
-    smooth_minimap_atlas(&mut atlas);
+    smooth_minimap_atlas(&mut atlas.pixels);
     atlas
 }
 
@@ -478,7 +474,7 @@ fn blit_minimap_window(
     atlas: &IndexedPicture,
     window: MiniMapWindow,
     topology: MapTopology,
-    destination: &mut IndexedSurface,
+    destination: &mut IndexedPicture,
 ) {
     let src_left = window.source_column * 2;
     let src_top = window.source_row * 2;
@@ -787,8 +783,8 @@ mod tests {
         parts.map[sea].owner_nation = Some(TileOwnerTag::new(0x17));
         let state = GameState::from_parts(parts);
         let atlas = compose_minimap_atlas(&state);
-        assert_eq!(atlas[20 * ATLAS_WIDTH + 20], view_mgr_color(0x3e));
-        assert_eq!(atlas[20 * ATLAS_WIDTH + 80], view_mgr_color(0x32));
+        assert_eq!(atlas.pixels[20 * ATLAS_WIDTH + 20], view_mgr_color(0x3e));
+        assert_eq!(atlas.pixels[20 * ATLAS_WIDTH + 80], view_mgr_color(0x32));
         assert_eq!(atlas_owner_palette(Some(TileOwnerTag::new(0))), Some(0x15));
         assert_eq!(atlas_owner_palette(Some(TileOwnerTag::new(0x17))), None);
         assert_eq!(atlas_owner_palette(None), Some(0xff));
@@ -803,8 +799,8 @@ mod tests {
     fn beginning_of_game_atlas_paints_nations_and_ocean_fill() {
         let state = fixture_state();
         let atlas = compose_minimap_atlas(&state);
-        assert!(atlas.contains(&view_mgr_color(0x32)));
-        assert!(atlas.iter().any(|&pixel| {
+        assert!(atlas.pixels.contains(&view_mgr_color(0x32)));
+        assert!(atlas.pixels.iter().any(|&pixel| {
             [
                 view_mgr_color(0x3e),
                 view_mgr_color(1),
@@ -818,12 +814,7 @@ mod tests {
         }));
         let view_origin = TileId::new(1);
         let window = minimap_window(view_origin, DETAILED_MARKER);
-        let atlas = IndexedPicture {
-            width: ATLAS_WIDTH as u32,
-            height: ATLAS_HEIGHT as u32,
-            pixels: atlas,
-        };
-        let mut surface = IndexedSurface::new(FRAME_WIDTH, FRAME_HEIGHT, 0);
+        let mut surface = indexed_picture(FRAME_WIDTH, FRAME_HEIGHT, 0);
         blit_minimap_window(&atlas, window, state.map().topology, &mut surface);
         let (mx, my) = viewport_marker(window, None, DETAILED_MARKER);
         assert!((0..FRAME_WIDTH).contains(&(mx + MARKER_WIDTH * 2)));

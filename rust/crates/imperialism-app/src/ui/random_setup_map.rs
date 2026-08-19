@@ -2,18 +2,23 @@ use super::RetailUiAssets;
 use super::random_setup::{RandomGameSetup, RandomSetupPreview};
 use super::retail::RetailTree;
 use crate::RetailAssetsResource;
+#[cfg(test)]
 use bevy::asset::RenderAssetUsages;
+#[cfg(test)]
 use bevy::image::ImageSampler;
 use bevy::log::warn;
 use bevy::math::Rect;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
+#[cfg(test)]
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
 use imperialism_core::{
     MAJOR_NATION_COUNT, MajorNationId, MapGeometry, MapTopology, NationId, TileId, TileOwnerTag,
 };
 use imperialism_formats::{DibPalette, FourCc, PictureId, Rgb, fourcc};
+
+use super::retail_raster::indexed_pixels_to_image;
 
 const MAP_TAG: FourCc = fourcc!("map ");
 const COAT_TAG: FourCc = fourcc!("coat");
@@ -479,32 +484,16 @@ pub(crate) fn preview_image_from_indices(palette_indices: &[u8], palette: &DibPa
 }
 
 fn preview_image(palette_indices: &[u8], palette: &DibPalette) -> Image {
-    let mut rgba = Vec::with_capacity(PREVIEW_PIXEL_COUNT * 4);
-    for &palette_index in palette_indices {
-        // TMapPreviewView uses the QuickDraw transparent blit mode with
-        // palette entry 0x10 as its background key.  This is an index-based
-        // rule: only that entry is transparent, even if another palette entry
-        // happens to share its RGB value.
-        let alpha = if palette_index == OFF_MAP_PALETTE {
-            0
-        } else {
-            0xff
-        };
-        palette[palette_index].write_rgba(alpha, &mut rgba);
-    }
-    let mut image = Image::new(
-        Extent3d {
-            width: PREVIEW_WIDTH as u32,
-            height: PREVIEW_HEIGHT as u32,
-            depth_or_array_layers: 1,
-        },
-        TextureDimension::D2,
-        rgba,
-        TextureFormat::Rgba8UnormSrgb,
-        RenderAssetUsages::default(),
-    );
-    image.sampler = ImageSampler::nearest();
-    image
+    // TMapPreviewView uses the QuickDraw transparent blit mode with palette
+    // entry 0x10 as its background key. This is index-based even when another
+    // palette entry happens to share its RGB value.
+    indexed_pixels_to_image(
+        PREVIEW_WIDTH as u32,
+        PREVIEW_HEIGHT as u32,
+        palette_indices,
+        palette,
+        Some(OFF_MAP_PALETTE),
+    )
 }
 
 #[cfg(test)]

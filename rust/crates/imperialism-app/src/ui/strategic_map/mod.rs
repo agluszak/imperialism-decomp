@@ -1,7 +1,7 @@
 use super::GameSession;
 use super::RetailUiAssets;
 use super::retail::RetailTree;
-use super::retail_raster::IndexedSurface;
+use super::retail_raster::{IndexedRasterExt, indexed_picture};
 use crate::RetailAssetsResource;
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
@@ -40,7 +40,7 @@ use overlays::{
     IMPROVEMENT_PICTURE_IDS, compose_strategic_improvements, compose_strategic_railways,
     town_transport_linked,
 };
-use terrain::{compose_strategic_base_tile, frame_for_offset};
+use terrain::{compose_strategic_base_tile, uses_bounded_seam_frame};
 pub(crate) use units::{animate_civilian_selection, animate_civilian_work, sync_strategic_units};
 
 const MAP_TAG: FourCc = fourcc!("DLOG");
@@ -326,8 +326,7 @@ fn compose_strategic_map(
     sprites: StrategicMapSprites<'_>,
     palette: &DibPalette,
 ) -> Image {
-    let indices = compose_strategic_map_indices(state, view_origin, sprites);
-    indexed_viewport_image(indices, palette)
+    compose_strategic_map_picture(state, view_origin, sprites).to_image(palette)
 }
 
 fn compose_strategic_selection(
@@ -337,11 +336,11 @@ fn compose_strategic_selection(
     hovered_tile: Option<TileId>,
     palette: &DibPalette,
 ) -> Image {
-    let mut surface = IndexedSurface::new(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0);
+    let mut picture = indexed_picture(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0);
     if let (Some(unit), Some(tile)) = (selected_civilian, hovered_tile) {
-        draw_civilian_hover_highlight(state, view_origin, unit, tile, &mut surface);
+        draw_civilian_hover_highlight(state, view_origin, unit, tile, &mut picture);
     }
-    surface.to_keyed_image(palette, 0)
+    picture.to_keyed_image(palette, 0)
 }
 
 fn strategic_map_compose_key(
@@ -374,7 +373,7 @@ fn draw_civilian_hover_highlight(
     view_origin: TileId,
     unit: CivilianUnitId,
     hovered: TileId,
-    surface: &mut IndexedSurface,
+    surface: &mut IndexedPicture,
 ) {
     let Some(civilian) = state.civilian_unit(unit) else {
         return;
@@ -484,26 +483,21 @@ pub(super) fn for_each_visible_strategic_tile(
     }
 }
 
-pub(super) fn compose_strategic_map_indices(
+pub(super) fn compose_strategic_map_picture(
     state: &GameState,
     view_origin: TileId,
     sprites: StrategicMapSprites<'_>,
-) -> Vec<u8> {
-    let mut surface = IndexedSurface::new(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0);
+) -> IndexedPicture {
+    let mut picture = indexed_picture(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0);
     for_each_visible_strategic_tile(state, view_origin, |tile, screen_x, screen_y| {
-        let tile_pixels = compose_strategic_tile(state, view_origin, tile, sprites);
-        let tile_picture = IndexedPicture {
-            width: TILE_SIZE as u32,
-            height: TILE_SIZE as u32,
-            pixels: tile_pixels,
-        };
-        surface.copy_rect(
+        let tile_picture = compose_strategic_tile(state, view_origin, tile, sprites);
+        picture.copy_rect(
             &tile_picture,
             IRect::new(0, 0, TILE_SIZE, TILE_SIZE),
             IVec2::new(screen_x, screen_y),
         );
     });
-    surface.into_pixels()
+    picture
 }
 
 pub(crate) fn compose_city_site_terrain(
@@ -514,15 +508,11 @@ pub(crate) fn compose_city_site_terrain(
     highlighted_tile: Option<TileId>,
     palette: &DibPalette,
 ) -> Image {
-    let mut surface = IndexedSurface::from_pixels(
-        VIEWPORT_WIDTH as i32,
-        VIEWPORT_HEIGHT as i32,
-        compose_strategic_map_indices(state, view_origin, canvas.sprites()),
-    );
+    let mut picture = compose_strategic_map_picture(state, view_origin, canvas.sprites());
     if let Some(tile) = highlighted_tile {
-        draw_city_site_selection(state, view_origin, nation, tile, &mut surface);
+        draw_city_site_selection(state, view_origin, nation, tile, &mut picture);
     }
-    surface.to_image(palette)
+    picture.to_image(palette)
 }
 
 pub(super) fn draw_city_site_selection(
@@ -530,7 +520,7 @@ pub(super) fn draw_city_site_selection(
     view_origin: TileId,
     nation: MajorNationId,
     tile: TileId,
-    surface: &mut IndexedSurface,
+    surface: &mut IndexedPicture,
 ) {
     let (x, y) = strategic_tile_screen_origin(state, view_origin, tile);
     draw_frame(surface, x, y, MAP_SELECTION_PALETTE_INDEX);
@@ -545,7 +535,7 @@ pub(super) fn draw_city_site_selection(
     draw_city_site_neighbor_outline(state, view_origin, neighbors, surface);
 }
 
-fn draw_frame(surface: &mut IndexedSurface, x: i32, y: i32, color: u8) {
+fn draw_frame(surface: &mut IndexedPicture, x: i32, y: i32, color: u8) {
     surface.frame_rect(IRect::new(x, y, x + TILE_SIZE, y + TILE_SIZE), color);
 }
 
@@ -553,7 +543,7 @@ fn draw_city_site_neighbor_outline(
     state: &GameState,
     view_origin: TileId,
     neighbors: [Option<TileId>; 6],
-    viewport: &mut IndexedSurface,
+    viewport: &mut IndexedPicture,
 ) {
     const OUTLINE_COLOR: u8 = MAP_SELECTION_PALETTE_INDEX;
     for (index, neighbor) in neighbors.iter().copied().enumerate() {
@@ -650,7 +640,7 @@ pub(super) fn strategic_tile_screen_origin(
     (x, y)
 }
 
-fn draw_line(surface: &mut IndexedSurface, start: (i32, i32), end: (i32, i32), color: u8) {
+fn draw_line(surface: &mut IndexedPicture, start: (i32, i32), end: (i32, i32), color: u8) {
     surface.line_to_gdi(start.into(), end.into(), color, 1);
 }
 
@@ -659,47 +649,28 @@ pub(super) fn compose_strategic_tile(
     view_origin: TileId,
     tile: TileId,
     sprites: StrategicMapSprites<'_>,
-) -> Vec<u8> {
+) -> IndexedPicture {
     let tile_state = state.map()[tile];
-    let center_column = {
-        let (_, origin_column) = state.map().geometry().row_column(view_origin);
-        (i32::from(origin_column) + VIEWPORT_TILE_SPAN / 2)
-            .rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
-    };
-    let (_, tile_column) = state.map().geometry().row_column(tile);
-    // Retail's stored flag is inverted: this seam substitution belongs to Rust's bounded map.
-    let wrapped_seam = state.map().topology == MapTopology::Bounded
-        && ((tile_column == 0 && center_column > 54)
-            || (tile_column == STRATEGIC_MAP_WIDTH - 1 && center_column < 54));
-    let pixels = if wrapped_seam {
-        sprites.terrain[frame_for_offset(0xc80)].pixels.clone()
-    } else {
-        compose_strategic_base_tile(
-            state,
-            view_origin,
-            tile,
-            sprites.terrain,
-            sprites.river_masks,
-        )
-    };
-    let mut surface = IndexedSurface::from_pixels(TILE_SIZE, TILE_SIZE, pixels);
+    let wrapped_seam = uses_bounded_seam_frame(state, view_origin, tile);
+    let mut picture = compose_strategic_base_tile(
+        state,
+        view_origin,
+        tile,
+        sprites.terrain,
+        sprites.river_masks,
+    );
 
     if !wrapped_seam {
-        compose_strategic_borders(state, tile, &mut surface);
+        compose_strategic_borders(state, tile, &mut picture);
     }
-    compose_strategic_railways(&tile_state, sprites.river_masks, &mut surface);
-    compose_strategic_improvements(state, tile, sprites, &mut surface);
-    surface.into_pixels()
+    compose_strategic_railways(&tile_state, sprites.river_masks, &mut picture);
+    compose_strategic_improvements(state, tile, sprites, &mut picture);
+    picture
 }
 
 fn normalize_map_column(column: i32) -> i32 {
     // Draw and ConvertPoint modulo the column even when the viewport itself is bounded.
     column.rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
-}
-
-fn indexed_viewport_image(indices: Vec<u8>, palette: &DibPalette) -> Image {
-    IndexedSurface::from_pixels(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, indices)
-        .to_image(palette)
 }
 
 fn strategic_tile_at_position(
