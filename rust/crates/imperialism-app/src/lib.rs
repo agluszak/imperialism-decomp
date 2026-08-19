@@ -70,6 +70,12 @@ impl RetailAssetsResource {
         self.0.text(resource_id)
     }
 
+    pub(crate) fn catalog_string(&self, string: imperialism_formats::RetailString) -> String {
+        let id = imperialism_formats::retail_string(string);
+        self.string(id.group, id.index)
+            .unwrap_or_else(|_| panic!("retail string {:#x}:{} must load", id.group, id.index))
+    }
+
     /// `TSimMgr::GetString`: adds one before the direct lookup.
     pub(crate) fn get_string(&self, group: i16, offset: i16) -> String {
         self.string(group, offset + 1)

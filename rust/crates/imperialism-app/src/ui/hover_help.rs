@@ -1,7 +1,7 @@
 use super::retail::{RetailTree, RetailUiAssets};
 use bevy::picking::hover::DirectlyHovered;
 use bevy::prelude::*;
-use imperialism_formats::{FourCc, RetailString, RetailTextStylePreset, retail_string};
+use imperialism_formats::{FourCc, RetailString, RetailTextStylePreset};
 
 /// Hover-help string shown in the screen's info bar while this control is the cursor hit.
 ///
@@ -127,10 +127,7 @@ pub(crate) fn get_string(assets: &RetailUiAssets, group: i16, offset: i16) -> St
 }
 
 pub(crate) fn catalog_string(assets: &RetailUiAssets, string: RetailString) -> String {
-    let id = retail_string(string);
-    assets
-        .string(id.group, id.index)
-        .unwrap_or_else(|_| panic!("retail string {:#x}:{} must load", id.group, id.index))
+    assets.catalog_string(string)
 }
 
 /// `LoadUiStringResourceByGroupAndIndex`: direct `LoadStringA` group/index.

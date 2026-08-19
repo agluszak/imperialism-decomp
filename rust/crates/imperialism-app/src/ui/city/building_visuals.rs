@@ -633,7 +633,7 @@ pub(in crate::ui::city) fn sync_city_hover_title(
     let nation = session.active_major_nation();
     let text = hovered.map_or_else(String::new, |building| {
         if city_oil_industry_unlocked(&session.game, nation, building.slot) {
-            city_building_name(assets, building.slot)
+            assets.catalog_string(RetailString::CityBuildingName(building.slot))
         } else {
             String::new()
         }

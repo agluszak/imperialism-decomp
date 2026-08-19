@@ -317,6 +317,10 @@ impl RetailUiAssets<'_> {
         self.retail_assets.assets().string(group, direct_index)
     }
 
+    pub fn catalog_string(&self, string: RetailString) -> String {
+        self.retail_assets.catalog_string(string)
+    }
+
     pub fn picture(&mut self, picture_id: PictureId) -> Result<Handle<Image>, RetailPictureError> {
         load_retail_picture(
             picture_id,
