@@ -1,5 +1,7 @@
 #include "StrategicMapScreen.h"
 
+#include "ModalScreen.h"
+#include "RuntimeUiDriver.h"
 #include "UiAnimationRegistry.h"
 
 #include "game/app/TAnimation.h"
@@ -7,8 +9,11 @@
 #include "game/core/global_data_tables.h"
 #include "game/core/TMouseCaptureState.h"
 #include "game/globals/ui_core_globals.h"
+#include "game/globals/game_session_globals.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/map/TMapUberPicture.h"
+#include "game/map/TMiniMapView.h"
+#include "game/map/TMapMgr.h"
 #include "game/military/TArmyMgr.h"
 #include "game/ui_widgets/TArmyPlacard.h"
 #include "game/ui_widgets/TArmyToolbar.h"
@@ -70,6 +75,19 @@ RuntimeActionResult StrategicMapScreen::ZoomIn() {
   return Activate(kControlTagZmIn, "zoom the map in");
 }
 
+RuntimeActionResult StrategicMapScreen::ActivateZoomWithControl() {
+  RuntimeActionResult armed = ModalScreen::PreArmDismiss(RuntimeControlSelector(kControlTagOkay));
+  if (!armed.Succeeded()) {
+    return armed;
+  }
+  keybd_event(VK_CONTROL, 0, 0, 0);
+  RuntimeActionResult result = IsZoomedOut()
+                                   ? Activate(kControlTagZmIn, "inspect the turn summary")
+                                   : Activate(kControlTagZmOt, "inspect the turn summary");
+  keybd_event(VK_CONTROL, 0, KEYEVENTF_KEYUP, 0);
+  return result;
+}
+
 RuntimeActionResult StrategicMapScreen::CancelToSetup() {
   return Activate(kControlTagCanc, "cancel back to random setup");
 }
@@ -129,6 +147,26 @@ RuntimeActionResult StrategicMapScreen::SetViewportCell(short cellX, short cellY
   return RuntimeActionResult::Success();
 }
 
+RuntimeActionResult StrategicMapScreen::SetOceanViewportCellForTopology(short cellX, short cellY,
+                                                                        bool wraps) {
+  if (mapView == 0 || mapView->goodGoldTagControlA4 == 0 || g_pGlobalMapState == 0) {
+    return InvalidScreen("set the overview viewport cell");
+  }
+  const char previous = g_pGlobalMapState->hexNeighborWrapHorizontally;
+  g_pGlobalMapState->hexNeighborWrapHorizontally = wraps ? 0 : 1;
+  mapView->goodGoldTagControlA4->SetMapViewCellCoordinates(cellX, cellY);
+  g_pGlobalMapState->hexNeighborWrapHorizontally = previous;
+  return RuntimeActionResult::Success();
+}
+
+RuntimeActionResult StrategicMapScreen::CenterOceanOn(int tile) {
+  if (mapView == 0 || mapView->goodGoldTagControlA4 == 0) {
+    return InvalidScreen("center the overview");
+  }
+  mapView->goodGoldTagControlA4->CenterOn(tile);
+  return RuntimeActionResult::Success();
+}
+
 namespace {
 
 // TMapUberPicture::categoryPages index for the army page. 0 is civilian, 1 army, 2 navy.
@@ -143,6 +181,14 @@ const int kCivilianToolbarX = 0;
 const int kCivilianToolbarY = 0x8f;
 
 } // namespace
+
+RuntimeActionResult StrategicMapScreen::ShowArmyToolbar() {
+  if (mapView == 0) {
+    return InvalidScreen("show the army toolbar");
+  }
+  mapView->SetMapInteractionMode(kArmyInteractionMode);
+  return RuntimeActionResult::Success();
+}
 
 RuntimeActionResult StrategicMapScreen::ShowCivilianToolbar() {
   if (mapView == 0) {
@@ -371,4 +417,37 @@ int StrategicMapScreen::ViewportOriginX() const {
 int StrategicMapScreen::ViewportOriginY() const {
   TMapDialog* dialog = Dialog();
   return dialog != 0 ? dialog->viewportOrigin.y : -1;
+}
+
+int StrategicMapScreen::DetailedCenterTile() const {
+  TMapDialog* dialog = Dialog();
+  return dialog != 0 ? dialog->GetCenterTile() : -1;
+}
+
+int StrategicMapScreen::OceanOriginColumn() const {
+  return mapView != 0 && mapView->goodGoldTagControlA4 != 0
+             ? mapView->goodGoldTagControlA4->scrollColOffset7e
+             : -1;
+}
+
+int StrategicMapScreen::OceanOriginRow() const {
+  return mapView != 0 && mapView->goodGoldTagControlA4 != 0
+             ? mapView->goodGoldTagControlA4->scrollRowOffset7c
+             : -1;
+}
+
+int StrategicMapScreen::OceanCenterTile() const {
+  return mapView != 0 && mapView->goodGoldTagControlA4 != 0
+             ? mapView->goodGoldTagControlA4->ComputeWrappedTileIndexFromObjectOffset7C7E()
+             : -1;
+}
+
+int StrategicMapScreen::MiniMapMarkerWidth() const {
+  return mapView != 0 && mapView->miniMapViewC0 != 0 ? mapView->miniMapViewC0->markerBoxWidth98
+                                                     : -1;
+}
+
+int StrategicMapScreen::MiniMapMarkerHeight() const {
+  return mapView != 0 && mapView->miniMapViewC0 != 0 ? mapView->miniMapViewC0->markerBoxHeight9c
+                                                     : -1;
 }

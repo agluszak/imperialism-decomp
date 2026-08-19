@@ -2,7 +2,7 @@
 
 use super::super::retail::{RetailTree, RetailUiAssets};
 use super::map_interaction::{
-    MapInteractionMode, StrategicInteraction, cycle_map_interaction_selection,
+    MapInteractionMode, StrategicInteraction, StrategicViewport, cycle_map_interaction_selection,
 };
 use super::map_modals::spawn_navy_roster;
 use crate::AppState;
@@ -275,12 +275,12 @@ fn on_navy_command(
     commands_query: Query<&NavyCommand>,
     mut commands: Commands,
     mut session: ResMut<GameSession>,
-    mut interactions: Query<&mut StrategicInteraction>,
+    mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
 ) {
     let Ok(command) = commands_query.get(activate.entity) else {
         return;
     };
-    let Ok(mut interaction) = interactions.single_mut() else {
+    let Ok((mut interaction, mut viewport)) = interactions.single_mut() else {
         return;
     };
     match *command {
@@ -293,16 +293,16 @@ fn on_navy_command(
             if let Some(force) = interaction.navy.force {
                 session.game.drop_task_force_ships(force, false);
             }
-            cycle_map_interaction_selection(&mut session, &mut interaction);
+            cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
         }
         NavyCommand::Done => {
             if let Some(force) = interaction.navy.force {
                 session.game.drop_task_force_ships(force, true);
             }
-            cycle_map_interaction_selection(&mut session, &mut interaction);
+            cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
         }
         NavyCommand::Next => {
-            cycle_map_interaction_selection(&mut session, &mut interaction);
+            cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
         }
         NavyCommand::Bomb => {
             spawn_navy_roster(&mut commands);

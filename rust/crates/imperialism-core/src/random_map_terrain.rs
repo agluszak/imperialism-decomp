@@ -1,11 +1,12 @@
 #[cfg(feature = "oracle")]
+use crate::TerrainKindTable;
+#[cfg(feature = "oracle")]
 use crate::random_map::trace_coarse_random_map;
 use crate::random_map::{CoarseMap, generate_coarse_random_map};
 use crate::{
     EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, HexDirection, HexDirectionTable, MapGeometry,
     MapTopology, OceanRoute, OceanZoneId, ProvinceId, RANDOM_MAP_CLASS_COUNT, RetailCrtRng,
-    RetailLcg, RiverSegment, TerrainKind, TerrainKindTable, TileId, TileOwnerTag,
-    hash_retail_scenario_tag,
+    RetailLcg, RiverSegment, TerrainKind, TileId, TileOwnerTag, hash_retail_scenario_tag,
 };
 use serde::{Deserialize, Deserializer, Serialize};
 

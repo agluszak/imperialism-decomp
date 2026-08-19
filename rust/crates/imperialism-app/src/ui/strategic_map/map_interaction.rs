@@ -79,46 +79,69 @@ pub(crate) struct NavySelection {
     pub force: Option<TaskForceId>,
 }
 
-/// `TMapUberPicture::invalidationFlag94 == 0` is the `DOOG` ocean view.
-#[derive(Clone, Copy, Debug, Default)]
-pub(crate) struct OceanView {
-    pub active: bool,
-    pub origin_column: i32,
-    pub origin_row: i32,
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub(crate) enum MapProjection {
+    #[default]
+    Detailed,
+    Overview,
 }
 
-impl OceanView {
+/// Retail `DOOG` upper-left map cell coordinates.
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub(crate) struct OceanViewport {
+    pub origin: IVec2,
+}
+
+impl OceanViewport {
     pub(crate) fn center_on(&mut self, tile: TileId, geometry: &MapGeometry) {
         let (row, column) = geometry.row_column(tile);
-        self.origin_column = i32::from(column) - 0x10;
-        self.origin_row = i32::from(row) - 0x0e;
-        self.clamp();
+        self.set_upper_left(
+            IVec2::new(i32::from(column) - 0x10, i32::from(row) - 0x0e),
+            geometry,
+        );
     }
 
-    pub(crate) fn nudge(&mut self, edges: MapEdges) {
+    pub(crate) fn nudge(&mut self, edges: MapEdges, geometry: &MapGeometry) {
         if edges.contains(MapEdges::TOP) {
-            self.origin_row -= 4;
+            self.origin.y -= 4;
         } else if edges.contains(MapEdges::BOTTOM) {
-            self.origin_row += 4;
+            self.origin.y += 4;
         }
         if edges.contains(MapEdges::RIGHT) {
-            self.origin_column += 4;
+            self.origin.x += 4;
         } else if edges.contains(MapEdges::LEFT) {
-            self.origin_column -= 4;
+            self.origin.x -= 4;
         }
-        self.clamp();
+        self.set_upper_left(self.origin, geometry);
     }
 
-    fn clamp(&mut self) {
-        while self.origin_column < 0 {
-            self.origin_column += i32::from(STRATEGIC_MAP_WIDTH);
-        }
-        while self.origin_column >= i32::from(STRATEGIC_MAP_WIDTH) {
-            self.origin_column -= i32::from(STRATEGIC_MAP_WIDTH);
-        }
-        self.origin_row = self.origin_row.clamp(0, 0x20);
+    pub(crate) fn set_upper_left(&mut self, origin: IVec2, geometry: &MapGeometry) {
+        self.origin.x = if geometry.wraps_horizontally() {
+            origin.x.rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
+        } else {
+            origin.x.clamp(0, 0x4c)
+        };
+        self.origin.y = origin.y.clamp(0, 0x20);
+    }
+
+    pub(crate) fn center_tile(self, geometry: &MapGeometry) -> TileId {
+        geometry
+            .tile(
+                (self.origin.y + 0x0e) as u16,
+                (self.origin.x + 0x10).rem_euclid(i32::from(STRATEGIC_MAP_WIDTH)) as u16,
+            )
+            .expect("retail ocean center is inside the map")
     }
 }
+
+#[derive(Component, Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub(crate) struct StrategicViewport {
+    pub projection: MapProjection,
+    pub ocean: OceanViewport,
+}
+
+#[derive(Component)]
+pub(crate) struct MapZoomControl;
 
 #[derive(Component, Default)]
 pub(crate) struct StrategicInteraction {
@@ -127,26 +150,78 @@ pub(crate) struct StrategicInteraction {
     /// `TArmyMgr::pendingMapActionIndex`. Transient; not saved.
     pub army: Option<ProvinceId>,
     pub navy: NavySelection,
-    pub ocean: OceanView,
 }
 
-/// `TMapUberPicture::SetMapInteractionMode` (0x00596cb0).
-///
-/// Does not mutate `GameState`. Leaving civilian clears civilian selection; leaving
-/// army clears the selected province without touching units.
-pub(crate) fn set_map_interaction_mode(
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) enum MapTransition {
+    ToggleZoom,
+    Center(TileId),
+    SetUpperLeft(IVec2),
+    Scroll(MapEdges),
+    SetMode(MapInteractionMode),
+}
+
+pub(crate) fn detailed_center_tile(session: &GameSession) -> TileId {
+    let geometry = session.game.map().geometry();
+    let (row, column) = geometry.row_column(session.map_view_origin);
+    geometry
+        .tile(row + 4, (column + 4) % STRATEGIC_MAP_WIDTH)
+        .expect("retail detailed-map center is inside the map")
+}
+
+/// Applies the strategic map's semantic viewport operations in one place.
+pub(crate) fn apply_map_transition(
+    session: &mut GameSession,
     interaction: &mut StrategicInteraction,
-    next: MapInteractionMode,
+    viewport: &mut StrategicViewport,
+    transition: MapTransition,
 ) {
-    if interaction.mode == next {
-        return;
+    let geometry = session.game.map().geometry();
+    match transition {
+        MapTransition::ToggleZoom => match viewport.projection {
+            MapProjection::Detailed => {
+                viewport
+                    .ocean
+                    .center_on(detailed_center_tile(session), &geometry);
+                viewport.projection = MapProjection::Overview;
+            }
+            MapProjection::Overview => {
+                session.center_map_on(viewport.ocean.center_tile(&geometry));
+                viewport.projection = MapProjection::Detailed;
+            }
+        },
+        MapTransition::Center(tile) => match viewport.projection {
+            MapProjection::Detailed => session.center_map_on(tile),
+            MapProjection::Overview => viewport.ocean.center_on(tile, &geometry),
+        },
+        MapTransition::SetUpperLeft(origin) => match viewport.projection {
+            MapProjection::Detailed => session.set_map_viewport_upper_left(origin.x, origin.y),
+            MapProjection::Overview => viewport.ocean.set_upper_left(origin, &geometry),
+        },
+        MapTransition::Scroll(edges) => match viewport.projection {
+            MapProjection::Detailed => {
+                session.scroll_map_viewport(edges.row_delta(), edges.column_delta());
+            }
+            MapProjection::Overview => viewport.ocean.nudge(edges, &geometry),
+        },
+        MapTransition::SetMode(next) => {
+            if interaction.mode == next {
+                return;
+            }
+            match interaction.mode {
+                MapInteractionMode::Civilian => interaction.civilian = None,
+                MapInteractionMode::Army => interaction.army = None,
+                MapInteractionMode::Navy | MapInteractionMode::None => {}
+            }
+            interaction.mode = next;
+            if next == MapInteractionMode::Civilian
+                && viewport.projection == MapProjection::Overview
+            {
+                session.center_map_on(viewport.ocean.center_tile(&geometry));
+                viewport.projection = MapProjection::Detailed;
+            }
+        }
     }
-    match interaction.mode {
-        MapInteractionMode::Civilian => interaction.civilian = None,
-        MapInteractionMode::Army => interaction.army = None,
-        MapInteractionMode::Navy | MapInteractionMode::None => {}
-    }
-    interaction.mode = next;
 }
 
 pub(crate) fn has_active_map_interaction_selection(interaction: &StrategicInteraction) -> bool {
@@ -162,6 +237,7 @@ pub(crate) fn has_active_map_interaction_selection(interaction: &StrategicIntera
 pub(crate) fn cycle_map_interaction_selection(
     session: &mut GameSession,
     interaction: &mut StrategicInteraction,
+    viewport: &mut StrategicViewport,
 ) {
     let nation = session.game.turn().active_nation;
     let mut cursor = interaction.mode;
@@ -189,11 +265,21 @@ pub(crate) fn cycle_map_interaction_selection(
                 }
                 if let Some((id, unit)) = session.game.first_idle_civilian(nation) {
                     let tile = unit.location().tile();
-                    set_map_interaction_mode(interaction, MapInteractionMode::Civilian);
+                    apply_map_transition(
+                        session,
+                        interaction,
+                        viewport,
+                        MapTransition::SetMode(MapInteractionMode::Civilian),
+                    );
                     interaction.civilian = Some(id);
                     session.game.activate_civilian_selection(id);
                     if let Some(tile) = tile {
-                        session.center_map_on(tile);
+                        apply_map_transition(
+                            session,
+                            interaction,
+                            viewport,
+                            MapTransition::Center(tile),
+                        );
                     }
                     return;
                 }
@@ -214,11 +300,21 @@ pub(crate) fn cycle_map_interaction_selection(
                     .game
                     .find_next_selectable_army_province(nation, None)
                 {
-                    set_map_interaction_mode(interaction, MapInteractionMode::Army);
+                    apply_map_transition(
+                        session,
+                        interaction,
+                        viewport,
+                        MapTransition::SetMode(MapInteractionMode::Army),
+                    );
                     session.game.apply_army_province_selection(Some(province));
                     interaction.army = Some(province);
                     if let Some(tile) = session.game.map().provinces[province].city_tile() {
-                        session.center_map_on(tile);
+                        apply_map_transition(
+                            session,
+                            interaction,
+                            viewport,
+                            MapTransition::Center(tile),
+                        );
                     }
                     return;
                 }
@@ -233,11 +329,21 @@ pub(crate) fn cycle_map_interaction_selection(
                     .game
                     .next_navy_order_zone(nation, interaction.navy.zone)
                 {
-                    set_map_interaction_mode(interaction, MapInteractionMode::Navy);
+                    apply_map_transition(
+                        session,
+                        interaction,
+                        viewport,
+                        MapTransition::SetMode(MapInteractionMode::Navy),
+                    );
                     interaction.navy.zone = Some(zone);
                     interaction.navy.force = session.game.demand_task_force_for_zone(zone, nation);
                     if let Some(tile) = navy_zone_center_tile(&session.game, zone) {
-                        session.center_map_on(tile);
+                        apply_map_transition(
+                            session,
+                            interaction,
+                            viewport,
+                            MapTransition::Center(tile),
+                        );
                     }
                     return;
                 }
@@ -257,7 +363,12 @@ pub(crate) fn cycle_map_interaction_selection(
     if visited == 7
         && let Some(zone) = session.game.next_navy_order_zone(nation, None)
     {
-        set_map_interaction_mode(interaction, MapInteractionMode::Navy);
+        apply_map_transition(
+            session,
+            interaction,
+            viewport,
+            MapTransition::SetMode(MapInteractionMode::Navy),
+        );
         interaction.navy.zone = Some(zone);
         interaction.navy.force = session.game.demand_task_force_for_zone(zone, nation);
         return;
@@ -267,12 +378,22 @@ pub(crate) fn cycle_map_interaction_selection(
         MapInteractionMode::Civilian => interaction.civilian = None,
         MapInteractionMode::Army => {
             interaction.army = None;
-            set_map_interaction_mode(interaction, MapInteractionMode::None);
+            apply_map_transition(
+                session,
+                interaction,
+                viewport,
+                MapTransition::SetMode(MapInteractionMode::None),
+            );
         }
         MapInteractionMode::Navy => {
             interaction.navy.zone = None;
             interaction.navy.force = None;
-            set_map_interaction_mode(interaction, MapInteractionMode::None);
+            apply_map_transition(
+                session,
+                interaction,
+                viewport,
+                MapTransition::SetMode(MapInteractionMode::None),
+            );
         }
         MapInteractionMode::None => {}
     }
@@ -285,5 +406,87 @@ pub(crate) fn navy_zone_center_tile(state: &GameState, zone: OceanZoneId) -> Opt
             port.zone.target_tile.or(Some(port.port_tile))
         }
         imperialism_core::ZoneKind::Zone(zone) => zone.target_tile.or(zone.active_tile),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::ui::test_support::{beginning_of_game_with, strategic_map_beginning_context};
+
+    fn session() -> GameSession {
+        GameSession::new(beginning_of_game_with(strategic_map_beginning_context()))
+    }
+
+    #[test]
+    fn zoom_transfers_retail_dialog_centers_and_civilian_transition_only() {
+        let mut session = session();
+        session.set_map_viewport_upper_left(10, 10);
+        let mut interaction = StrategicInteraction::default();
+        let mut viewport = StrategicViewport::default();
+        let detailed_center = detailed_center_tile(&session);
+
+        apply_map_transition(
+            &mut session,
+            &mut interaction,
+            &mut viewport,
+            MapTransition::ToggleZoom,
+        );
+        assert_eq!(viewport.projection, MapProjection::Overview);
+        assert_eq!(
+            viewport.ocean.center_tile(&session.game.map().geometry()),
+            detailed_center
+        );
+
+        viewport
+            .ocean
+            .nudge(MapEdges::RIGHT, &session.game.map().geometry());
+        let ocean_center = viewport.ocean.center_tile(&session.game.map().geometry());
+        apply_map_transition(
+            &mut session,
+            &mut interaction,
+            &mut viewport,
+            MapTransition::ToggleZoom,
+        );
+        assert_eq!(viewport.projection, MapProjection::Detailed);
+        let (ocean_row, ocean_column) = session.game.map().geometry().row_column(ocean_center);
+        let (detailed_row, detailed_column) = session
+            .game
+            .map()
+            .geometry()
+            .row_column(detailed_center_tile(&session));
+        assert_eq!(detailed_column, ocean_column);
+        assert_eq!(detailed_row, ocean_row + 1);
+
+        for transition in [
+            MapTransition::SetMode(MapInteractionMode::Army),
+            MapTransition::ToggleZoom,
+            MapTransition::SetMode(MapInteractionMode::Civilian),
+        ] {
+            apply_map_transition(&mut session, &mut interaction, &mut viewport, transition);
+        }
+        assert_eq!(viewport.projection, MapProjection::Detailed);
+        apply_map_transition(
+            &mut session,
+            &mut interaction,
+            &mut viewport,
+            MapTransition::ToggleZoom,
+        );
+        apply_map_transition(
+            &mut session,
+            &mut interaction,
+            &mut viewport,
+            MapTransition::SetMode(MapInteractionMode::Civilian),
+        );
+        assert_eq!(viewport.projection, MapProjection::Overview);
+    }
+
+    #[test]
+    fn ocean_upper_left_wraps_or_clamps_like_retail() {
+        let mut ocean = OceanViewport::default();
+        ocean.set_upper_left(IVec2::new(-4, -4), &MapGeometry::new(MapTopology::Wrapping));
+        assert_eq!(ocean.origin, IVec2::new(104, 0));
+        ocean.set_upper_left(IVec2::new(100, 60), &MapGeometry::new(MapTopology::Bounded));
+        assert_eq!(ocean.origin, IVec2::new(0x4c, 0x20));
     }
 }

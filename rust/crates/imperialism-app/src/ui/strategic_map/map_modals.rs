@@ -1,8 +1,8 @@
 //! Map-triggered recovered report/roster/garrison dialogs.
 
 use super::map_interaction::{
-    MapInteractionMode, StrategicInteraction, cycle_map_interaction_selection,
-    set_map_interaction_mode,
+    MapInteractionMode, MapTransition, StrategicInteraction, StrategicViewport,
+    apply_map_transition, cycle_map_interaction_selection,
 };
 use crate::AppState;
 use crate::media::RetailAudioAssets;
@@ -336,7 +336,7 @@ fn on_civilian_ledger_action(
     parents: Query<&ChildOf>,
     roots: Query<(), With<CivilianLedger>>,
     mut ledgers: Query<&mut CivilianLedger>,
-    mut interactions: Query<&mut StrategicInteraction>,
+    mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
     mut session: ResMut<GameSession>,
     mut commands: Commands,
     mut audio: RetailAudioAssets,
@@ -360,7 +360,14 @@ fn on_civilian_ledger_action(
                 (ledger.current_column + CIVILIAN_LEDGER_VISIBLE_COLUMNS).min(ledger.last_column);
         }
         CivilianLedgerAction::Select(tile) => {
-            session.center_map_on(tile);
+            if let Ok((mut interaction, mut viewport)) = interactions.single_mut() {
+                apply_map_transition(
+                    &mut session,
+                    &mut interaction,
+                    &mut viewport,
+                    MapTransition::Center(tile),
+                );
+            }
             let nation = session.game.turn().active_nation;
             let selectable = session
                 .game
@@ -375,9 +382,14 @@ fn on_civilian_ledger_action(
                     .then_some(unit)
                 });
             if let Some(unit) = selectable
-                && let Ok(mut interaction) = interactions.single_mut()
+                && let Ok((mut interaction, mut viewport)) = interactions.single_mut()
             {
-                set_map_interaction_mode(&mut interaction, MapInteractionMode::Civilian);
+                apply_map_transition(
+                    &mut session,
+                    &mut interaction,
+                    &mut viewport,
+                    MapTransition::SetMode(MapInteractionMode::Civilian),
+                );
                 interaction.civilian = Some(unit);
                 session.game.activate_civilian_selection(unit);
                 audio.play(&mut commands, SoundId::new(0x2338));
@@ -840,7 +852,7 @@ fn on_civilian_modal_action(
     actions: Query<&CivilianModalAction>,
     child_of: Query<&ChildOf>,
     roots: Query<(), With<CivilianModal>>,
-    mut interactions: Query<&mut StrategicInteraction>,
+    mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
     mut session: ResMut<GameSession>,
     mut commands: Commands,
     assets: RetailUiAssets,
@@ -857,9 +869,14 @@ fn on_civilian_modal_action(
         CivilianModalAction::Close => {}
         CivilianModalAction::CancelOrder(unit) => {
             if session.game.cancel_civilian_work_order(unit).is_ok()
-                && let Ok(mut interaction) = interactions.single_mut()
+                && let Ok((mut interaction, mut viewport)) = interactions.single_mut()
             {
-                set_map_interaction_mode(&mut interaction, MapInteractionMode::Civilian);
+                apply_map_transition(
+                    &mut session,
+                    &mut interaction,
+                    &mut viewport,
+                    MapTransition::SetMode(MapInteractionMode::Civilian),
+                );
                 interaction.civilian = Some(unit);
             }
         }
@@ -905,8 +922,8 @@ fn on_civilian_modal_action(
         }
     }
     commands.entity(root).despawn();
-    if completed && let Ok(mut interaction) = interactions.single_mut() {
-        cycle_map_interaction_selection(&mut session, &mut interaction);
+    if completed && let Ok((mut interaction, mut viewport)) = interactions.single_mut() {
+        cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
     }
 }
 
