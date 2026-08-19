@@ -153,7 +153,8 @@ fn reads_phase_six_inputs_from_their_exact_v62_offsets() {
     assert!(state.technology().advanced_iron_working);
     assert!(state.technology().marine_engineering);
     assert_eq!(
-        state.market().rows[TradeCommodity::Oil].maximum_offer_by_nation[MinorNationId::new(1)],
+        state.market().rows[TradeCommodity::Oil].maximum_offer_by_nation
+            [NationId::from_retail_slot(22).unwrap()],
         321
     );
 }
@@ -632,7 +633,7 @@ fn retail_projection_preserves_country_and_province_semantics() {
 
     assert!(state.do_nation_territories_share_region_class(
         MajorNationId::new(0).nation(),
-        MinorNationId::new(5).nation()
+        MinorNationId::new(12).nation()
     ));
     assert!(!state.do_nation_territories_share_region_class(
         MajorNationId::new(0).nation(),
@@ -640,7 +641,7 @@ fn retail_projection_preserves_country_and_province_semantics() {
     ));
     assert!(state.are_nations_border_linked(
         MajorNationId::new(0).nation(),
-        MinorNationId::new(5).nation()
+        MinorNationId::new(12).nation()
     ));
     assert!(!state.are_nations_border_linked(
         MajorNationId::new(0).nation(),
@@ -930,7 +931,7 @@ fn eliminated_major_slot_stays_absent_through_save_and_load() {
 fn eliminated_minor_slot_stays_absent_through_save_and_load() {
     let eliminated = MinorNationId::new(0);
     let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
-    save.simulation.nation_availability[eliminated.get()] = 0;
+    save.simulation.nation_availability[usize::from(eliminated.nation().retail_slot())] = 0;
     save.simulation.nation_count -= 1;
     save.minor_nations.shift_remove(&eliminated);
 
