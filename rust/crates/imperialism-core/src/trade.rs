@@ -220,7 +220,7 @@ impl GameState {
 
         for resource in all_resources() {
             city.stockpile
-                .wrapping_add_and_verify(resource, major.need_target_by_type[resource]);
+                .add_and_verify(resource, major.need_target_by_type[resource]);
         }
     }
 

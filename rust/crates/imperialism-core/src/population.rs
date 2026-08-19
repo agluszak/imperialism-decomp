@@ -146,8 +146,7 @@ impl CityState {
                 self.stockpile.verify_stocks();
                 shortage = true;
             } else {
-                self.stockpile
-                    .wrapping_add_and_verify(resource, amount.wrapping_neg());
+                self.stockpile.add_and_verify(resource, -amount);
             }
         }
         shortage
@@ -312,7 +311,7 @@ impl PopulationState {
         if unmet != 0 {
             let canned = stocks[ResourceKind::Food];
             if unmet < canned {
-                stocks.wrapping_add_and_verify(ResourceKind::Food, unmet.wrapping_neg());
+                stocks.add_and_verify(ResourceKind::Food, -unmet);
                 unmet = 0;
             } else {
                 unmet -= canned;

@@ -1,8 +1,8 @@
 use crate::{
     CivilianLocation, CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, Difficulty,
     GameState, MajorNationId, MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState, NationId,
-    NavalAggression, OceanZoneId, PendingActionKind, ProvinceId, ShipSelection, ShipState,
-    ShipType, TileContext, TileFlags, TileId, TurnSummary,
+    NavalAggression, OceanZoneId, ProvinceId, ShipSelection, ShipState, ShipType, TileContext,
+    TileFlags, TileId, TurnSummary,
 };
 #[cfg(test)]
 use crate::{CivilianUnitId, MapMgr, MapPosition, MilitaryUnitId};
@@ -395,11 +395,9 @@ impl GameState {
             let province = self.map[home_tile]
                 .province
                 .expect("military recruit production requires the home town's province");
-            let action_6 =
-                major.pending_actions[PendingActionKind::ConqueredCapitalArmoryUpgrade].status();
             Some((
                 province,
-                action_6.has_reached(crate::PendingActionStatus::HANDLED),
+                major.pending_actions.conquered_capital_armory.is_handled(),
             ))
         } else {
             None
@@ -428,16 +426,20 @@ impl GameState {
                 };
                 self.military_units.insert(id, unit);
 
-                let pending = self.nations.majors[&nation].economy.pending_actions
-                    [PendingActionKind::ArmyGrowthReward];
-                if let Some(current_level) = pending.growth_reward_level() {
+                let pending = self.nations.majors[&nation]
+                    .economy
+                    .pending_actions
+                    .army_growth;
+                if let Some(current_level) = pending.granted_level() {
                     let military_power = self.selected_military_power_score(nation_id);
                     if let Some(payload) =
                         pending_military_action_payload(military_power, current_level)
                     {
-                        let major = &mut self.nations.majors[&nation].economy;
-                        major.pending_actions[PendingActionKind::ArmyGrowthReward]
-                            .queue_with_payload(payload);
+                        self.nations.majors[&nation]
+                            .economy
+                            .pending_actions
+                            .army_growth
+                            .queue_level(payload);
                     }
                 }
             }
@@ -736,12 +738,8 @@ mod tests {
         assert!(state.military_units.contains_key(&MilitaryUnitId::new(56)));
         let major = &state.nations.major(MajorNationId::new(0)).economy;
         assert_eq!(
-            major.pending_actions[PendingActionKind::ArmyGrowthReward].status(),
-            crate::PendingActionStatus::QUEUED
-        );
-        assert_eq!(
-            major.pending_actions[PendingActionKind::ArmyGrowthReward].payload(),
-            Some(1)
+            major.pending_actions.army_growth,
+            crate::GrowthReward::Queued { level: Some(1) }
         );
     }
 
@@ -764,17 +762,17 @@ mod tests {
             .nations
             .major_mut(MajorNationId::new(0))
             .economy
-            .pending_actions[PendingActionKind::ArmyGrowthReward] =
-            crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, Some(6));
+            .pending_actions
+            .army_growth = crate::GrowthReward::Granted { level: 0 };
         state.produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Skirmishers, 1);
 
         let pending = state
             .nations
             .major(MajorNationId::new(0))
             .economy
-            .pending_actions[PendingActionKind::ArmyGrowthReward];
-        assert_eq!(pending.status(), crate::PendingActionStatus::QUEUED);
-        assert_eq!(pending.payload(), Some(1));
+            .pending_actions
+            .army_growth;
+        assert_eq!(pending, crate::GrowthReward::Queued { level: Some(1) });
     }
 
     #[test]

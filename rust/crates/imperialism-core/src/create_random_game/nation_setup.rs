@@ -106,23 +106,19 @@ pub(super) fn choose_foreign_ministers(
         ForeignMinisterPersonality::Bill,
     ];
 
-    let mut region_class_by_nation = [None; NATION_COUNT];
+    let mut region_class_by_nation = NationTable::<Option<_>>::default();
     for province in map.provinces() {
-        region_class_by_nation[province.owner.nation().unwrap().table_index()] =
-            Some(province.region_class);
+        region_class_by_nation[province.owner.nation().unwrap()] = Some(province.region_class);
     }
 
-    let major_count = MajorNationId::COUNT;
     let isolation_by_major = MajorNationTable::from_fn(|nation| {
-        let class = region_class_by_nation[nation.get()]
+        let class = region_class_by_nation[nation]
             .expect("accepted random maps assign a region class to every major nation");
-        if (0..major_count)
-            .any(|other| other != nation.get() && region_class_by_nation[other] == Some(class))
+        if MajorNationId::all()
+            .any(|other| other != nation && region_class_by_nation[other] == Some(class))
         {
             0
-        } else if (major_count..NATION_COUNT)
-            .any(|other| region_class_by_nation[other] == Some(class))
-        {
+        } else if MinorNationId::all().any(|other| region_class_by_nation[other] == Some(class)) {
             1
         } else {
             2
@@ -130,16 +126,14 @@ pub(super) fn choose_foreign_ministers(
     });
 
     let mut profile_by_major = MajorNationTable::from_fn(|_| None);
-    for &profile in PROFILE_ORDER.iter().take(major_count - 1) {
+    for &profile in PROFILE_ORDER.iter().take(MajorNationId::COUNT - 1) {
         let nation = PREFERRED_ISOLATION_BY_PROFILE[profile]
             .iter()
             .find_map(|&isolation| {
-                (0..major_count).find_map(|slot| {
-                    let nation = MajorNationId::new(slot);
-                    (nation != human_nation
-                        && profile_by_major[nation].is_none()
-                        && isolation_by_major[nation] == isolation)
-                        .then_some(nation)
+                MajorNationId::all().find(|nation| {
+                    *nation != human_nation
+                        && profile_by_major[*nation].is_none()
+                        && isolation_by_major[*nation] == isolation
                 })
             })
             .expect("each generated-map AI profile has an eligible open nation slot");

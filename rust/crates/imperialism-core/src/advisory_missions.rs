@@ -263,7 +263,6 @@ impl GameState {
             .filter(|&slot| {
                 self.nations.common(slot.nation()).is_some()
                     && self.nations.majors[&nation].economy.candidate_nation_flags[slot.nation()]
-                        != 0
             })
             .collect();
         for slot in flagged_majors {
@@ -284,9 +283,7 @@ impl GameState {
 
         let flagged_minors: Vec<NationId> = MinorNationId::all()
             .map(MinorNationId::nation)
-            .filter(|&minor| {
-                self.nations.majors[&nation].economy.candidate_nation_flags[minor] != 0
-            })
+            .filter(|&minor| self.nations.majors[&nation].economy.candidate_nation_flags[minor])
             .collect();
         for minor in flagged_minors {
             let owned = self.owned_regions_of(minor).to_vec();
@@ -349,9 +346,9 @@ impl GameState {
                 } else {
                     continue;
                 };
-                score = score.wrapping_add(link_bonus);
+                score += link_bonus;
                 if NationId::as_major(owner).is_some() && self.event_eligible(owner) {
-                    score = score.wrapping_add(0x14);
+                    score += 0x14;
                 }
                 candidates.push((score, rec));
             }
@@ -649,7 +646,7 @@ impl GameState {
 
     fn map_action_context_score(&mut self, nation: MajorNationId, zone: OceanZoneId) -> f32 {
         let active: Vec<NationId> = NationId::all()
-            .filter(|&slot| self.nations.majors[&nation].economy.candidate_nation_flags[slot] != 0)
+            .filter(|&slot| self.nations.majors[&nation].economy.candidate_nation_flags[slot])
             .collect();
         let mut selected = MajorNationId::new(0).nation();
         let mut composite = 0.0_f32;
@@ -677,9 +674,7 @@ impl GameState {
             _ => {
                 let mut best_priority = 0;
                 for slot in MajorNationId::all() {
-                    if self.nations.majors[&nation].economy.candidate_nation_flags[slot.nation()]
-                        == 0
-                    {
+                    if !self.nations.majors[&nation].economy.candidate_nation_flags[slot.nation()] {
                         continue;
                     }
                     let priority = self.navy_priority_in_zone(slot, zone);
@@ -755,7 +750,7 @@ impl GameState {
         let mut mask = 0u16;
         for ship in self.ships.values() {
             if ship.location == zone {
-                mask |= 1 << ship.nation.table_index();
+                mask |= 1u16 << ship.nation.retail_slot();
             }
         }
         mask

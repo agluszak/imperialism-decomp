@@ -6,9 +6,8 @@ use crate::{NationId, RetailLcg};
 // draw order are part of gameplay state because ships, admirals, and generals persist
 // these names and share the zone-status RNG with later operations.
 
-const NATION_VARIANTS: [u8; 23] = [
-    0, 9, 16, 14, 17, 8, 2, 5, 12, 11, 13, 6, 6, 6, 6, 4, 7, 1, 1, 10, 15, 10, 10,
-];
+const MAJOR_NATION_VARIANTS: [u8; 7] = [0, 9, 16, 14, 17, 8, 2];
+const MINOR_NATION_VARIANTS: [u8; 16] = [5, 12, 11, 13, 6, 6, 6, 6, 4, 7, 1, 1, 10, 15, 10, 10];
 
 fn pick_weighted<'a>(
     rng: &mut RetailLcg,
@@ -3008,7 +3007,11 @@ pub(crate) fn generate_english_name(rng: &mut RetailLcg) -> String {
 }
 
 pub(crate) fn generate_ethnic_name(rng: &mut RetailLcg, nation: NationId) -> String {
-    generate_variant(rng, NATION_VARIANTS[nation.table_index()])
+    let variant = match nation {
+        NationId::Major(id) => MAJOR_NATION_VARIANTS[id.get()],
+        NationId::Minor(id) => MINOR_NATION_VARIANTS[id.get()],
+    };
+    generate_variant(rng, variant)
 }
 
 #[cfg(test)]

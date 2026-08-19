@@ -134,12 +134,8 @@ impl GameState {
         let allowed = primary_distance_terrain(
             self.technology.city_capabilities_by_nation[nation].primary_civilian_distance_terrain,
         );
-        let transport = self
-            .apply_town_transport_links(nation)
-            .unwrap_or_else(|| vec![0; STRATEGIC_TILE_COUNT]);
-        expand_distance_map(self, owned_tiles, allowed, |tile| {
-            transport[tile.get()] != 0
-        })
+        let transport = self.apply_town_transport_links(nation).unwrap_or_default();
+        expand_distance_map(self, owned_tiles, allowed, |tile| transport[tile])
     }
 
     fn build_frog_city_distance_map(
@@ -182,7 +178,7 @@ impl GameState {
                     } else {
                         current_capability - current_cost
                     };
-                    work_delta[resource] = work_delta[resource].wrapping_add(gain << 2);
+                    work_delta[resource] += gain << 2;
                 }
             } else {
                 let distance = primary[tile.get()];
@@ -202,7 +198,7 @@ impl GameState {
                 }
                 if reachable {
                     for resource in self.map[tile].edge_resources.into_iter().flatten() {
-                        unclaimed[resource] = unclaimed[resource].wrapping_add(1);
+                        unclaimed[resource] += 1;
                     }
                 }
             }
@@ -219,12 +215,9 @@ impl GameState {
                 let need = interior.resource_order_metrics[resource];
                 if need - demand > 2 {
                     if unclaimed[resource] == 0 {
-                        interior.exterior_need_by_resource[resource] =
-                            interior.exterior_need_by_resource[resource].wrapping_add(need);
+                        interior.exterior_need_by_resource[resource] += need;
                     } else {
-                        interior.railhead_priority_by_resource[resource] = interior
-                            .railhead_priority_by_resource[resource]
-                            .wrapping_add(need - demand);
+                        interior.railhead_priority_by_resource[resource] += need - demand;
                     }
                 }
                 interior.resource_order_metrics[resource] = 0;
@@ -232,8 +225,7 @@ impl GameState {
             if interior.exterior_need_by_resource[resource] == 0 {
                 interior.historical_need_by_resource[resource] = 0;
             } else {
-                interior.historical_need_by_resource[resource] =
-                    interior.historical_need_by_resource[resource].wrapping_add(1);
+                interior.historical_need_by_resource[resource] += 1;
             }
         }
         interior.railhead_priority_by_resource[ResourceKind::Gold] = 2;
@@ -323,26 +315,22 @@ impl GameState {
             ResourceKind::Horses,
             ResourceKind::Oil,
         ] {
-            score = score.wrapping_add(
-                yields[resource].wrapping_mul(interior.railhead_priority_by_resource[resource]),
-            );
+            score += yields[resource] * interior.railhead_priority_by_resource[resource];
         }
         let grain_shortage = summary[ResourceKind::Grain] - need_current[ResourceKind::Grain];
         if grain_shortage > 0 {
-            score = score.wrapping_add(yields[ResourceKind::Grain].wrapping_mul(grain_shortage));
+            score += yields[ResourceKind::Grain] * grain_shortage;
         }
         let fruit_shortage = summary[ResourceKind::Fruit] - need_current[ResourceKind::Fruit];
         if fruit_shortage > 0 {
-            score = score.wrapping_add(yields[ResourceKind::Fruit].wrapping_mul(fruit_shortage));
+            score += yields[ResourceKind::Fruit] * fruit_shortage;
         }
         let livestock_shortage = summary[ResourceKind::Livestock]
             - need_current[ResourceKind::Livestock]
             - need_current[ResourceKind::Fish];
         if livestock_shortage > 0 {
-            score = score.wrapping_add(
-                (yields[ResourceKind::Livestock] + yields[ResourceKind::Gems])
-                    .wrapping_mul(livestock_shortage),
-            );
+            score +=
+                (yields[ResourceKind::Livestock] + yields[ResourceKind::Gems]) * livestock_shortage;
         }
         score
     }
@@ -378,16 +366,14 @@ impl GameState {
                     level = 1;
                 }
                 let _ = edge;
-                yields[resource] =
-                    yields[resource].wrapping_add(resource_development_yield(resource, level));
+                yields[resource] += resource_development_yield(resource, level);
             }
             if let Some(province) = self.map[harvest_tile].province
                 && self.map.provinces[province].city_tile() == Some(harvest_tile)
             {
                 for resource in ResourceKind::CITY_PRODUCTION {
-                    yields[resource] = yields[resource].wrapping_add(
-                        self.map.provinces[province].resource_development_by_type()[resource],
-                    );
+                    yields[resource] +=
+                        self.map.provinces[province].resource_development_by_type()[resource];
                 }
             }
         }
@@ -727,9 +713,9 @@ impl GameState {
             return;
         }
 
-        let mut relation_scale = [0.0_f32; NATION_COUNT];
-        for minor_nation in MinorNationId::all().map(MinorNationId::nation) {
-            if self.nation_has_war(minor_nation) {
+        let mut relation_scale = NationTable::splat(0.0_f32);
+        for minor_nation in MinorNationId::all() {
+            if self.nation_has_war(minor_nation.nation()) {
                 continue;
             }
             let mut strongest = 0.1_f32;
@@ -737,13 +723,15 @@ impl GameState {
                 if major == nation {
                     continue;
                 }
-                let standing = self.diplomacy.standings[major.nation()][minor_nation] as f32;
+                let standing =
+                    self.diplomacy.standings[major.nation()][minor_nation.nation()] as f32;
                 if standing > strongest {
                     strongest = standing;
                 }
             }
-            relation_scale[minor_nation.table_index()] =
-                (self.diplomacy.standings[nation.nation()][minor_nation] as f32) / strongest;
+            relation_scale[minor_nation] = (self.diplomacy.standings[nation.nation()]
+                [minor_nation.nation()] as f32)
+                / strongest;
         }
 
         let mut prospector_count = 0;
@@ -829,10 +817,10 @@ impl GameState {
                 if !has_active_prospecting
                     && !visible
                     && prospector_count != 0
-                    && relation_scale[owner.table_index()] != 0.0
+                    && relation_scale[owner] != 0.0
                 {
                     insert_scored_candidate(
-                        relation_scale[owner.table_index()],
+                        relation_scale[owner],
                         tile.get() as i32,
                         &mut prospecting_scores,
                         &mut prospecting_tiles,
@@ -846,7 +834,7 @@ impl GameState {
                 for resource in self.map[tile].edge_resources.into_iter().flatten() {
                     score += resource_weights[resource] as f32;
                 }
-                score *= relation_scale[owner.table_index()];
+                score *= relation_scale[owner];
                 if score != 0.0 {
                     insert_scored_candidate(
                         score,

@@ -84,40 +84,54 @@ impl GameState {
     fn execute_nation_pending_action_state_machine(&mut self, nation: MajorNationId) {
         self.produce_city_units(nation);
 
-        let army_queued = self.nations.major(nation).economy.pending_actions
-            [PendingActionKind::ArmyGrowthReward]
-            .status()
-            == PendingActionStatus::QUEUED;
+        let army_queued = self
+            .nations
+            .major(nation)
+            .economy
+            .pending_actions
+            .army_growth
+            .is_queued();
         if army_queued {
             self.spawn_pending_army_growth_unit(nation);
         }
 
-        let navy_queued = self.nations.major(nation).economy.pending_actions
-            [PendingActionKind::NavyGrowthReward]
-            .status()
-            == PendingActionStatus::QUEUED;
+        let navy_queued = self
+            .nations
+            .major(nation)
+            .economy
+            .pending_actions
+            .navy_growth
+            .is_queued();
         if navy_queued {
             self.spawn_pending_navy_growth_unit(nation);
         }
 
-        let overseas = self.nations.major(nation).economy.pending_actions
-            [PendingActionKind::OverseasDeveloperReward]
-            .status();
-        if overseas < PendingActionStatus::HANDLED && self.needs_overseas_developer(nation) {
+        let overseas = self
+            .nations
+            .major(nation)
+            .economy
+            .pending_actions
+            .overseas_developer;
+        if !overseas.is_handled() && self.needs_overseas_developer(nation) {
             self.spawn_pending_overseas_developer(nation);
-            self.nations.majors[&nation].economy.pending_actions
-                [PendingActionKind::OverseasDeveloperReward]
+            self.nations.majors[&nation]
+                .economy
+                .pending_actions
+                .overseas_developer
                 .queue();
         }
 
-        let monument_queued = self.nations.major(nation).economy.pending_actions
-            [PendingActionKind::ColonyMonumentMerchantCapacity]
-            .status()
-            == PendingActionStatus::QUEUED;
+        let monument_queued = self
+            .nations
+            .major(nation)
+            .economy
+            .pending_actions
+            .colony_monument
+            .is_queued();
         if monument_queued {
             let count =
                 &mut self.nations.city_mut(nation).ship_order_count_by_type[ShipType::Clipper];
-            *count = count.wrapping_add(2);
+            *count += 2;
             self.announce_later(nation, 1, 6, 2);
         }
 
@@ -236,7 +250,7 @@ impl GameState {
             }
 
             let last_turn_tick = self.map.provinces[province_id].last_turn_tick;
-            let turn_delta = economic_turn.wrapping_sub(last_turn_tick) as u32;
+            let turn_delta = (economic_turn - last_turn_tick) as u32;
             if turn_delta <= 4 {
                 continue;
             }
@@ -325,22 +339,22 @@ impl GameState {
             }
 
             if pending_stage == ProvinceDevelopmentStage::Town {
-                self.nations.majors[&nation].economy.pending_actions
-                    [PendingActionKind::TownDevelopment]
-                    .queue_with_payload(province_id.get() as i32);
+                self.nations.majors[&nation]
+                    .economy
+                    .pending_actions
+                    .town_development
+                    .queue(province_id);
             } else if pending_stage == ProvinceDevelopmentStage::Village {
-                self.nations.majors[&nation].economy.pending_actions
-                    [PendingActionKind::VillageDevelopment]
-                    .queue_with_payload(province_id.get() as i32);
-                if self.nations.majors[&nation].economy.pending_actions
-                    [PendingActionKind::RailyardExpansion]
-                    .status()
-                    < PendingActionStatus::HANDLED
-                {
-                    self.nations.majors[&nation].economy.pending_actions
-                        [PendingActionKind::RailyardExpansion]
-                        .queue();
-                }
+                self.nations.majors[&nation]
+                    .economy
+                    .pending_actions
+                    .village_development
+                    .queue(province_id);
+                self.nations.majors[&nation]
+                    .economy
+                    .pending_actions
+                    .railyard_expansion
+                    .queue();
             }
         }
     }
@@ -427,7 +441,7 @@ impl GameState {
         };
 
         let count = &mut self.nations.city_mut(nation).ship_order_count_by_type[ship_type];
-        *count = count.wrapping_add(1);
+        *count += 1;
 
         self.insert_named_admiral(nation_id, ship);
 
@@ -520,14 +534,21 @@ mod tests {
             state.map.provinces[other].development_stage(),
             ProvinceDevelopmentStage::Village
         );
-        let village = state.nations.majors[&nation].economy.pending_actions
-            [PendingActionKind::VillageDevelopment];
-        assert_eq!(village.status(), PendingActionStatus::QUEUED);
-        assert_eq!(village.payload(), Some(1));
-        let railyard = state.nations.majors[&nation].economy.pending_actions
-            [PendingActionKind::RailyardExpansion];
-        assert_eq!(railyard.status(), PendingActionStatus::QUEUED);
-        assert_eq!(railyard.payload(), None);
+        let village = state.nations.majors[&nation]
+            .economy
+            .pending_actions
+            .village_development;
+        assert_eq!(
+            village,
+            crate::SettlementPending::Queued {
+                province: ProvinceId::new(1)
+            }
+        );
+        let railyard = state.nations.majors[&nation]
+            .economy
+            .pending_actions
+            .railyard_expansion;
+        assert_eq!(railyard, crate::FlagPending::Queued);
     }
 
     #[test]
@@ -560,10 +581,16 @@ mod tests {
             state.map.provinces[other].development_stage(),
             ProvinceDevelopmentStage::Town
         );
-        let town = state.nations.majors[&nation].economy.pending_actions
-            [PendingActionKind::TownDevelopment];
-        assert_eq!(town.status(), PendingActionStatus::QUEUED);
-        assert_eq!(town.payload(), Some(1));
+        let town = state.nations.majors[&nation]
+            .economy
+            .pending_actions
+            .town_development;
+        assert_eq!(
+            town,
+            crate::SettlementPending::Queued {
+                province: ProvinceId::new(1)
+            }
+        );
     }
 
     fn empty_zone() -> Zone {
@@ -592,7 +619,10 @@ mod tests {
                 port_tile: home,
             }),
         ];
-        state.nations.majors[&nation].economy.pending_actions[PendingActionKind::NavyGrowthReward]
+        state.nations.majors[&nation]
+            .economy
+            .pending_actions
+            .navy_growth
             .queue();
 
         state.execute_nation_pending_action_state_machine(nation);
@@ -642,7 +672,10 @@ mod tests {
             port_tile: home,
         })];
         state.technology.navy_growth_ship_type = ShipType::Ironclad;
-        state.nations.majors[&nation].economy.pending_actions[PendingActionKind::NavyGrowthReward]
+        state.nations.majors[&nation]
+            .economy
+            .pending_actions
+            .navy_growth
             .queue();
 
         state.execute_nation_pending_action_state_machine(nation);
@@ -667,7 +700,10 @@ mod tests {
         state.map[home].province = Some(province);
         state.technology.selected_capability_slots[nation][ArmyUnitCategory::Generals] =
             MilitaryUnitKind::GeneralEra2;
-        state.nations.majors[&nation].economy.pending_actions[PendingActionKind::ArmyGrowthReward]
+        state.nations.majors[&nation]
+            .economy
+            .pending_actions
+            .army_growth
             .queue();
 
         state.execute_nation_pending_action_state_machine(nation);

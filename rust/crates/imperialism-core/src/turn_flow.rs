@@ -906,16 +906,18 @@ mod tests {
     fn newspaper_marks_queued_navy_growth_as_handled_reward_level() {
         let mut state = game_state();
         let nation = MajorNationId::new(0);
-        state.nations.majors[&nation].economy.pending_actions
-            [crate::PendingActionKind::NavyGrowthReward] =
-            crate::PendingActionState::new(crate::PendingActionStatus::QUEUED, Some(1));
+        state.nations.majors[&nation]
+            .economy
+            .pending_actions
+            .navy_growth = crate::GrowthReward::Queued { level: Some(1) };
         state.turn.phase = crate::PhaseCode::NEWSPAPER;
         assert_eq!(state.advance_turn(&[]), crate::TurnStop::Newspaper);
         assert_eq!(
-            state.nations.majors[&nation].economy.pending_actions
-                [crate::PendingActionKind::NavyGrowthReward]
-                .status(),
-            crate::PendingActionStatus::from_retail(0x34)
+            state.nations.majors[&nation]
+                .economy
+                .pending_actions
+                .navy_growth,
+            crate::GrowthReward::Granted { level: 1 }
         );
     }
 

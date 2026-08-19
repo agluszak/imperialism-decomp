@@ -31,9 +31,9 @@ pub(crate) fn set_population_growth_quantity(
     let Some(delta) = progress.try_set(limit, quantity) else {
         return false;
     };
-    stockpile.wrapping_add_and_verify(ResourceKind::Furniture, delta.wrapping_neg());
-    stockpile.wrapping_add_and_verify(ResourceKind::Clothing, delta.wrapping_neg());
-    stockpile.wrapping_add_and_verify(ResourceKind::Food, delta.wrapping_neg());
+    stockpile.add_and_verify(ResourceKind::Furniture, -delta);
+    stockpile.add_and_verify(ResourceKind::Clothing, -delta);
+    stockpile.add_and_verify(ResourceKind::Food, -delta);
     production_accum[CityFacilitySlot::RegionalPopulation] -= delta;
     true
 }
@@ -81,17 +81,17 @@ pub(crate) fn set_food_processing_quantity(
     progress.quantity = quantity;
 
     let half_delta = (quantity - previous_quantity) / 2;
-    stockpile.wrapping_add_and_verify(ResourceKind::Grain, (half_delta * 2).wrapping_neg());
-    stockpile.wrapping_add_and_verify(ResourceKind::Fruit, half_delta.wrapping_neg());
+    stockpile.add_and_verify(ResourceKind::Grain, -(half_delta * 2));
+    stockpile.add_and_verify(ResourceKind::Fruit, -half_delta);
     population.strength -= half_delta * 2;
 
     let livestock = stockpile[ResourceKind::Livestock];
     if livestock < half_delta {
         stockpile[ResourceKind::Livestock] = 0;
         stockpile.verify_stocks();
-        stockpile.wrapping_add(ResourceKind::Fish, (half_delta - livestock).wrapping_neg());
+        stockpile.add(ResourceKind::Fish, -(half_delta - livestock));
     } else {
-        stockpile.wrapping_add(ResourceKind::Livestock, half_delta.wrapping_neg());
+        stockpile.add(ResourceKind::Livestock, -half_delta);
     }
     stockpile.verify_stocks();
     true
@@ -101,7 +101,7 @@ pub(crate) fn produce_food_processing(
     progress: &mut ProductionProgress,
     stockpile: &mut Stockpile,
 ) {
-    stockpile.wrapping_add_and_verify(ResourceKind::Food, progress.quantity);
+    stockpile.add_and_verify(ResourceKind::Food, progress.quantity);
     progress.quantity = 0;
 }
 
@@ -252,7 +252,7 @@ pub(crate) fn set_power_plant_quantity(
     }
 
     state.desired_quantity = quantity;
-    stockpile.wrapping_add_and_verify(ResourceKind::Fuel, -(delta / 6));
+    stockpile.add_and_verify(ResourceKind::Fuel, -(delta / 6));
     let previous_power = population.extra;
     *power_available = quantity;
     population.extra = quantity;
@@ -294,10 +294,7 @@ pub(crate) fn restock_power_plant(
 }
 
 pub(crate) fn retail_region_capacity(owner: &GreatPowerState, owned_region_count: usize) -> i32 {
-    let divisor = if owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
-        .status()
-        .has_reached(crate::PendingActionStatus::HANDLED)
-    {
+    let divisor = if owner.pending_actions.annexed_capital.is_handled() {
         3
     } else {
         4

@@ -212,13 +212,16 @@ impl GameState {
             if force_full_clear || support >= owned * 2 / 3 {
                 self.diplomacy.last_processed_nation = Some(leader);
             } else if self.event_eligible(leader.nation())
-                && self.nations.majors[&leader].economy.pending_actions
-                    [PendingActionKind::CouncilLeadMonument]
-                    .status()
-                    < PendingActionStatus::HANDLED
+                && !self.nations.majors[&leader]
+                    .economy
+                    .pending_actions
+                    .council_lead_monument
+                    .is_handled()
             {
-                self.nations.majors[&leader].economy.pending_actions
-                    [PendingActionKind::CouncilLeadMonument]
+                self.nations.majors[&leader]
+                    .economy
+                    .pending_actions
+                    .council_lead_monument
                     .queue();
             }
         } else if force_full_clear {

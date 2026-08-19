@@ -275,8 +275,8 @@ impl GameState {
             row.offer_count = 0;
             row.amount_offered = 0;
             row.adjusted_offer_count = 0.0;
-            row.current_offer_by_nation = NationTable::from_array([0; NATION_COUNT]);
-            row.accumulated_offer_by_nation = NationTable::from_array([0; NATION_COUNT]);
+            row.current_offer_by_nation = NationTable::splat(0);
+            row.accumulated_offer_by_nation = NationTable::splat(0);
         }
     }
 
@@ -556,6 +556,14 @@ pub(super) fn insert_sorted<T>(list: &mut Vec<T>, item: T, mut cmp: impl FnMut(&
     }
 }
 
+/// Recovered retail deal-sort key: majors first, then minors in id order.
+fn deal_nation_key(id: NationId) -> i32 {
+    match id {
+        NationId::Major(id) => id.get() as i32,
+        NationId::Minor(id) => (MajorNationId::COUNT + id.get()) as i32,
+    }
+}
+
 pub(super) fn compare_deals(a: &RankedDeal, b: &RankedDeal) -> i32 {
     let invert = MANUFACTURED_COMMODITIES.contains(&a.category);
     let mut score_a = if invert {
@@ -569,15 +577,15 @@ pub(super) fn compare_deals(a: &RankedDeal, b: &RankedDeal) -> i32 {
         -(b.price * b.standing)
     };
     if score_a == score_b {
-        score_a = (a.offer_amount * (a.buyer.table_index() as i32)
+        score_a = (a.offer_amount * deal_nation_key(a.buyer)
             + a.price
-            + (a.seller.table_index() as i32) * a.standing
+            + deal_nation_key(a.seller) * a.standing
             + i32::from(a.category as u8))
             % 7;
         score_b = (i32::from(b.category as u8)
-            + b.offer_amount * (b.buyer.table_index() as i32)
+            + b.offer_amount * deal_nation_key(b.buyer)
             + b.price
-            + (b.seller.table_index() as i32) * b.standing)
+            + deal_nation_key(b.seller) * b.standing)
             % 7;
     }
     if score_a <= score_b { -1 } else { 1 }
@@ -588,11 +596,7 @@ pub(super) fn compare_by_nation(
     b: &TradeDealBookEntry,
     rng: &mut RngState,
 ) -> i32 {
-    compare_relationship(
-        a.nation.table_index() as i32,
-        b.nation.table_index() as i32,
-        rng,
-    )
+    compare_relationship(deal_nation_key(a.nation), deal_nation_key(b.nation), rng)
 }
 
 pub(super) fn compare_relationship(a_key: i32, b_key: i32, rng: &mut RngState) -> i32 {

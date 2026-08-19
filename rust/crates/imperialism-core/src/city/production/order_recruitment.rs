@@ -55,15 +55,9 @@ pub(crate) fn set_recruit_quantity(
         return false;
     };
 
-    stockpile.wrapping_add_and_verify(
-        spec.primary.resource,
-        (spec.primary.per_unit() * delta).wrapping_neg(),
-    );
+    stockpile.add_and_verify(spec.primary.resource, -(spec.primary.per_unit() * delta));
     if let Some(secondary) = spec.secondary {
-        stockpile.wrapping_add_and_verify(
-            secondary.resource,
-            (secondary.per_unit() * delta).wrapping_neg(),
-        );
+        stockpile.add_and_verify(secondary.resource, -(secondary.per_unit() * delta));
     }
     population.remove_population(spec.workforce, delta);
     let cash_change = spec.cash_per_unit * delta;

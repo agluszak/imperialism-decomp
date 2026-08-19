@@ -40,11 +40,11 @@ impl GameState {
             self.kill_enemy_civilians(subject);
             self.deport_civilians(subject);
             if let Some(major) = NationId::as_major(master) {
-                let pending = &mut self.nations.majors[&major].economy.pending_actions
-                    [PendingActionKind::ColonyMonumentMerchantCapacity];
-                if !pending.status().has_reached(PendingActionStatus::HANDLED) {
-                    pending.queue_with_payload(subject.table_index() as i32);
-                }
+                self.nations.majors[&major]
+                    .economy
+                    .pending_actions
+                    .colony_monument
+                    .queue(subject);
             }
             self.add_treaty_event(InterNationNewsKind::NationJoinedEmpire, master, subject);
         }
@@ -52,11 +52,11 @@ impl GameState {
         if let (Some(_), Some(master_major)) =
             (NationId::as_major(subject), NationId::as_major(master))
         {
-            let pending = &mut self.nations.majors[&master_major].economy.pending_actions
-                [PendingActionKind::AnnexedGreatPowerCapitalExpansion];
-            if !pending.status().has_reached(PendingActionStatus::HANDLED) {
-                pending.queue_with_payload(subject.table_index() as i32);
-            }
+            self.nations.majors[&master_major]
+                .economy
+                .pending_actions
+                .annexed_capital
+                .queue(subject);
         }
     }
 
@@ -98,7 +98,7 @@ impl GameState {
         for other in NationId::all() {
             let war = self.at_war(master, other);
             let flagged = NationId::as_major(master).is_some_and(|major| {
-                self.nations.majors[&major].economy.colony_boycott_flags[other] != 0
+                self.nations.majors[&major].economy.colony_boycott_flags[other]
             });
             let policy = if !war && (other == colony || !flagged) {
                 TradePolicyScore::NEUTRAL
@@ -119,8 +119,8 @@ impl GameState {
             .iter()
             .flat_map(|&province| self.map.provinces[province].linked_tiles.iter().copied())
             .collect();
-        let enemies: [bool; MAJOR_NATION_COUNT] = std::array::from_fn(|index| {
-            let other = MajorNationId::new(index).nation();
+        let enemies = MajorNationTable::from_fn(|index| {
+            let other = index.nation();
             other != owner && self.nation_is_present(other) && self.at_war(owner, other)
         });
         self.civilian_units.retain(|_, unit| {
@@ -133,7 +133,7 @@ impl GameState {
             let Some(owner) = NationId::as_major(unit.owner_nation) else {
                 return true;
             };
-            !enemies[owner.get()]
+            !enemies[owner]
         });
     }
 
@@ -148,8 +148,8 @@ impl GameState {
             .iter()
             .flat_map(|&province| self.map.provinces[province].linked_tiles.iter().copied())
             .collect();
-        let targets: [bool; MAJOR_NATION_COUNT] = std::array::from_fn(|index| {
-            let other = MajorNationId::new(index).nation();
+        let targets = MajorNationTable::from_fn(|index| {
+            let other = index.nation();
             other != owner && self.nation_is_present(other) && self.need_level_300(nation, other)
         });
         for id in self.civilian_units.keys().copied().collect::<Vec<_>>() {
@@ -165,7 +165,7 @@ impl GameState {
             let Some(owner) = NationId::as_major(unit.owner_nation) else {
                 continue;
             };
-            if !targets[owner.get()] {
+            if !targets[owner] {
                 continue;
             }
             let Some(home) = self.nations.majors[&owner].common.home_tile else {
@@ -187,31 +187,28 @@ impl GameState {
         let Some(common) = self.nations.common(nation) else {
             return;
         };
-        let boycott: [bool; MAJOR_NATION_COUNT] = std::array::from_fn(|index| {
-            common.trade_policy_by_nation[MajorNationId::new(index).nation()]
-                == TradePolicyScore::BOYCOTT
+        let boycott = MajorNationTable::from_fn(|index| {
+            common.trade_policy_by_nation[index.nation()] == TradePolicyScore::BOYCOTT
         });
         let tiles: Vec<_> = common
             .owned_regions()
             .iter()
             .flat_map(|&province| self.map.provinces[province].linked_tiles.iter().copied())
             .collect();
-        let mut notify = [false; MAJOR_NATION_COUNT];
+        let mut notify = MajorNationTable::from_fn(|_| false);
         for tile in tiles {
             let Some(owner) = self.map[tile].secondary_owner_nation else {
                 continue;
             };
-            let index = owner.get();
-            if boycott[index] {
-                notify[index] = true;
+            if boycott[owner] {
+                notify[owner] = true;
                 self.map[tile].secondary_owner_nation = None;
             }
         }
-        for (index, flagged) in notify.into_iter().enumerate() {
-            if !flagged {
+        for major in MajorNationId::all() {
+            if !notify[major] {
                 continue;
             }
-            let major = MajorNationId::new(index);
             self.add_diplomacy_notice(major, nation, 0x137);
             self.add_treaty_event(
                 InterNationNewsKind::MinorTerritoryRelationshipAffected,

@@ -581,7 +581,7 @@ mod tests {
         set_owned_province(&mut state, 1, 1, &[0]);
         state.nations.majors[&attacker]
             .economy
-            .candidate_nation_flags[defender.nation()] = 1;
+            .candidate_nation_flags[defender.nation()] = true;
         for _ in 0..20 {
             add_armor(&mut state, attacker.nation(), ProvinceId::new(0));
         }
@@ -622,7 +622,7 @@ mod tests {
         set_owned_province(&mut state, 1, 1, &[0]);
         state.nations.majors[&attacker]
             .economy
-            .candidate_nation_flags[defender.nation()] = 1;
+            .candidate_nation_flags[defender.nation()] = true;
         for _ in 0..20 {
             add_armor(&mut state, attacker.nation(), ProvinceId::new(0));
         }

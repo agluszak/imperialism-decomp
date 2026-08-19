@@ -645,7 +645,7 @@ impl GameState {
         if self.owner_slot(target) == source.nation() {
             return PlayerDiplomacyOrderResult::Applied;
         }
-        let enabled = self.nations.majors[&source].economy.colony_boycott_flags[target] == 0;
+        let enabled = !self.nations.majors[&source].economy.colony_boycott_flags[target];
         self.set_colony_boycott(source, target, enabled);
         PlayerDiplomacyOrderResult::Applied
     }

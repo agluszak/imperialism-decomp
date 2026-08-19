@@ -1,4 +1,5 @@
 mod conversions;
+pub use conversions::LegacyEncodeError;
 mod from_game_state;
 mod model;
 mod parse;

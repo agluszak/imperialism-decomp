@@ -78,6 +78,26 @@ impl TradeCommodity {
         }
     }
 
+    pub const RAW: [Self; 7] = [
+        Self::Cotton,
+        Self::Wool,
+        Self::Timber,
+        Self::Coal,
+        Self::Iron,
+        Self::Horses,
+        Self::Oil,
+    ];
+    pub const PROCESSED: [Self; 6] = [
+        Self::Food,
+        Self::Fabric,
+        Self::Lumber,
+        Self::Paper,
+        Self::Steel,
+        Self::Fuel,
+    ];
+    pub const MANUFACTURED: [Self; 4] =
+        [Self::Clothing, Self::Furniture, Self::Hardware, Self::Arms];
+
     pub const fn from_resource(resource: ResourceKind) -> Option<Self> {
         match resource {
             ResourceKind::Cotton => Some(Self::Cotton),
@@ -220,9 +240,9 @@ impl TradeMarketRow {
             offer_count: 0,
             amount_offered: 0,
             adjusted_offer_count: 0.0,
-            current_offer_by_nation: NationTable::from_array([0; NATION_COUNT]),
-            accumulated_offer_by_nation: NationTable::from_array([0; NATION_COUNT]),
-            maximum_offer_by_nation: NationTable::from_array([0; NATION_COUNT]),
+            current_offer_by_nation: NationTable::splat(0),
+            accumulated_offer_by_nation: NationTable::splat(0),
+            maximum_offer_by_nation: NationTable::splat(0),
         }
     }
 }

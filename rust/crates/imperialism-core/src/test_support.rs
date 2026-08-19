@@ -99,7 +99,7 @@ pub(crate) fn great_power_state() -> GreatPowerState {
         special_resource_trade_balance: 0,
         scenario_initialized: false,
         turn_finished: false,
-        pending_actions: PendingActionTable::default(),
+        pending_actions: PendingActions::default(),
         candidate_nation_flags: NationTable::default(),
         colony_boycott_flags: NationTable::default(),
         diplomacy_budget_base: 0,

@@ -318,7 +318,7 @@ impl GameState {
                 self.stop_being_enemies_with(nation, other);
             }
         }
-        self.nations.majors[&nation].economy.candidate_nation_flags[target] = 1;
+        self.nations.majors[&nation].economy.candidate_nation_flags[target] = true;
         if self
             .nations
             .common(target)
@@ -333,7 +333,7 @@ impl GameState {
     }
 
     pub(super) fn stop_being_enemies_with(&mut self, nation: MajorNationId, target: NationId) {
-        self.nations.majors[&nation].economy.candidate_nation_flags[target] = 0;
+        self.nations.majors[&nation].economy.candidate_nation_flags[target] = false;
         if self
             .nations
             .common(target)

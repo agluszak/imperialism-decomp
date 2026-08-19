@@ -695,7 +695,7 @@ fn preserves_and_projects_the_one_based_scenario_map_index() {
 }
 
 #[test]
-fn semantic_projection_preserves_inactive_pending_action_payload() {
+fn inactive_pending_growth_does_not_keep_a_leftover_payload() {
     let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
     let prefix = &mut first_great_power_mut(&mut save).prefix;
     let action = PendingActionKind::NavyGrowthReward as usize;
@@ -710,9 +710,9 @@ fn semantic_projection_preserves_inactive_pending_action_payload() {
             .next()
             .unwrap()
             .economy
-            .pending_actions[PendingActionKind::NavyGrowthReward]
-            .payload(),
-        Some(0)
+            .pending_actions
+            .navy_growth,
+        GrowthReward::Idle
     );
 }
 
@@ -729,10 +729,10 @@ fn navy_growth_handled_reward_levels_round_trip_through_retail_save() {
         .nations()
         .major(MajorNationId::new(0))
         .economy
-        .pending_actions[PendingActionKind::NavyGrowthReward];
-    assert_eq!(pending.status(), PendingActionStatus::from_retail(0x34));
-    assert_eq!(pending.growth_reward_level(), Some(1));
-    assert_eq!(pending.payload(), Some(1));
+        .pending_actions
+        .navy_growth;
+    assert_eq!(pending, GrowthReward::Granted { level: 1 });
+    assert_eq!(pending.granted_level(), Some(1));
 
     let bytes = LegacySaveV62::from_game_state(
         &state,
@@ -742,6 +742,7 @@ fn navy_growth_handled_reward_levels_round_trip_through_retail_save() {
         "- Autosave -",
         0,
     )
+    .expect("v62 encode")
     .to_bytes();
     let round_tripped =
         load_game_from_bytes(&bytes, game_context()).expect("rust-written save loads");
@@ -750,9 +751,10 @@ fn navy_growth_handled_reward_levels_round_trip_through_retail_save() {
         .nations()
         .major(MajorNationId::new(0))
         .economy
-        .pending_actions[PendingActionKind::NavyGrowthReward];
-    assert_eq!(pending.status(), PendingActionStatus::from_retail(0x34));
-    assert_eq!(pending.growth_reward_level(), Some(1));
+        .pending_actions
+        .navy_growth;
+    assert_eq!(pending, GrowthReward::Granted { level: 1 });
+    assert_eq!(pending.granted_level(), Some(1));
 
     let mut save = LegacySaveV62::parse(&bytes);
     first_great_power_mut(&mut save)
@@ -766,9 +768,10 @@ fn navy_growth_handled_reward_levels_round_trip_through_retail_save() {
         .nations()
         .major(MajorNationId::new(0))
         .economy
-        .pending_actions[PendingActionKind::NavyGrowthReward];
-    assert_eq!(pending.status(), PendingActionStatus::from_retail(0x39));
-    assert_eq!(pending.growth_reward_level(), Some(6));
+        .pending_actions
+        .navy_growth;
+    assert_eq!(pending, GrowthReward::Granted { level: 6 });
+    assert_eq!(pending.granted_level(), Some(6));
 }
 
 #[test]
@@ -831,6 +834,7 @@ fn game_state_write_round_trips_semantically_through_the_parser() {
         "- Autosave -",
         0,
     )
+    .expect("v62 encode")
     .to_bytes();
     let round_tripped =
         load_game_from_bytes(&bytes, game_context()).expect("rust-written save loads");
@@ -853,6 +857,7 @@ fn city_window_layout_round_trips_without_entering_game_state() {
         "- Autosave -",
         0,
     )
+    .expect("v62 encode")
     .to_bytes();
     let loaded = load_game_from_bytes(&bytes, game_context()).expect("rust-written save loads");
 
@@ -895,6 +900,7 @@ fn battle_report_text_round_trips_outside_game_state() {
         "- Autosave -",
         0,
     )
+    .expect("v62 encode")
     .to_bytes();
     let loaded = load_game_from_bytes(&bytes, game_context()).expect("rust-written save loads");
 
@@ -922,6 +928,7 @@ fn eliminated_major_slot_stays_absent_through_save_and_load() {
         "- Autosave -",
         0,
     )
+    .expect("v62 encode")
     .to_bytes();
     let round_tripped = LegacySaveV62::parse(&bytes).game_state(game_context());
     assert!(!round_tripped.nations().major_is_present(eliminated));
@@ -947,6 +954,7 @@ fn eliminated_minor_slot_stays_absent_through_save_and_load() {
         "- Autosave -",
         0,
     )
+    .expect("v62 encode")
     .to_bytes();
     let round_tripped = LegacySaveV62::parse(&bytes).game_state(game_context());
     assert!(round_tripped.nations().minor(eliminated).is_none());

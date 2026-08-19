@@ -64,7 +64,7 @@ pub(crate) fn set_training_quantity(
         TrainingLevel::Medium => (delta, delta * 100),
         TrainingLevel::High => (delta * 2, delta * 1_000),
     };
-    stockpile.wrapping_add_and_verify(ResourceKind::Paper, paper_change.wrapping_neg());
+    stockpile.add_and_verify(ResourceKind::Paper, -paper_change);
     *treasury -= cash_change;
     population.make_unavailable(level.input_band(), delta);
     true
@@ -89,21 +89,23 @@ pub(crate) fn produce_training(
         TrainingLevel::High => {
             let new_level = baseline.high + progress.quantity;
             if new_level >= 10 {
-                let payload = if owner.pending_actions[PendingActionKind::UniversityExpansion]
-                    .status()
-                    < crate::PendingActionStatus::QUEUED
-                {
+                let stage = if owner.pending_actions.university_expansion.is_idle() {
                     Some(2)
                 } else if new_level >= 30
-                    && owner.pending_actions[PendingActionKind::UniversityExpansion].status()
-                        <= crate::PendingActionStatus::HANDLED
+                    && !matches!(
+                        owner.pending_actions.university_expansion,
+                        crate::UniversityExpansion::Level3
+                    )
                 {
                     Some(3)
                 } else {
                     None
                 };
-                if let Some(payload) = payload {
-                    set_pending_action(owner, PendingActionKind::UniversityExpansion, payload);
+                if let Some(stage) = stage {
+                    owner
+                        .pending_actions
+                        .university_expansion
+                        .queue_stage(stage);
                 }
             }
             baseline.medium -= progress.quantity;

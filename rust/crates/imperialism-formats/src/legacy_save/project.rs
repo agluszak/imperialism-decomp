@@ -681,11 +681,15 @@ fn trade_market_state(market: &LegacyTradeMarketState) -> TradeMarketState {
                 offer_count: i32::from(row.offer_count),
                 amount_offered: i32::from(row.amount_offered),
                 adjusted_offer_count: row.adjusted_offer_count,
-                current_offer_by_nation: NationTable::from_array(ns(row.current_offer_by_nation)),
-                accumulated_offer_by_nation: NationTable::from_array(ns(
+                current_offer_by_nation: NationTable::from_retail_array(ns(
+                    row.current_offer_by_nation
+                )),
+                accumulated_offer_by_nation: NationTable::from_retail_array(ns(
                     row.accumulated_offer_by_nation
                 )),
-                maximum_offer_by_nation: NationTable::from_array(ns(row.maximum_offer_by_nation)),
+                maximum_offer_by_nation: NationTable::from_retail_array(ns(
+                    row.maximum_offer_by_nation
+                )),
             }
         })),
     }
@@ -694,11 +698,12 @@ fn trade_market_state(market: &LegacyTradeMarketState) -> TradeMarketState {
 fn nation_pair_table<T: Copy>(
     values: [T; NATION_COUNT * NATION_COUNT],
 ) -> NationTable<NationTable<T>> {
-    NationTable::from_array(std::array::from_fn(|source| {
-        NationTable::from_array(std::array::from_fn(|target| {
-            values[source * NATION_COUNT + target]
-        }))
-    }))
+    NationTable::from_fn(|source| {
+        NationTable::from_fn(|target| {
+            values[usize::from(source.retail_slot()) * NATION_COUNT
+                + usize::from(target.retail_slot())]
+        })
+    })
 }
 
 fn optional_major_nation_from_i16(value: i16) -> Option<MajorNationId> {
@@ -918,8 +923,8 @@ impl LegacySaveV62 {
                                 town.resource_yield_by_type
                             )),
                             transport_linked: town.transport_linked != 0,
-                            enabled: town.enabled,
-                            has_adjacent_city: town.has_adjacent_city,
+                            enabled: town.enabled != 0,
+                            has_adjacent_city: town.has_adjacent_city != 0,
                             active: town.active != 0,
                         },
                     )
@@ -1380,7 +1385,7 @@ fn great_power_state(
         foreign_minister_personality,
         foreign_minister_skill_index: n(foreign_minister.skill_index),
         foreign_trade: foreign_trade_state(foreign_minister),
-        development_grant_by_nation: NationTable::from_array(ns(
+        development_grant_by_nation: NationTable::from_retail_array(ns(
             foreign_minister.development_grant_by_nation
         )),
         defense_minister_skill_index: n(defense_minister.skill_index),
@@ -1423,14 +1428,16 @@ fn great_power_state(
         // scenarioInitFlag is constructed as zero and is not part of the save stream.
         scenario_initialized: false,
         turn_finished: post.turn_finished_flag != 0,
-        pending_actions: PendingActionTable::from_array(std::array::from_fn(|action| {
-            pending_action_from_retail(
-                prefix.pending_action_status[action],
-                prefix.pending_action_payload_by_action[action],
-            )
-        })),
-        candidate_nation_flags: NationTable::from_array(post.candidate_nation_flags),
-        colony_boycott_flags: NationTable::from_array(post.colony_boycott_flags),
+        pending_actions: pending_actions_from_retail(
+            prefix.pending_action_status,
+            prefix.pending_action_payload_by_action,
+        ),
+        candidate_nation_flags: NationTable::from_retail_array(
+            post.candidate_nation_flags.map(|flag| flag != 0),
+        ),
+        colony_boycott_flags: NationTable::from_retail_array(
+            post.colony_boycott_flags.map(|flag| flag != 0),
+        ),
         diplomacy_budget_base: post.diplomacy_budget_base,
         escalation_counter: i32::from(post.escalation_counter),
         pending_commitment_cost: post.pending_commitment_cost,
@@ -1507,17 +1514,10 @@ fn interior_civilian_state(minister: &LegacyInteriorMinisterState) -> InteriorCi
     )
 }
 
-fn pending_action_from_retail(status: i8, payload: i16) -> PendingActionState {
-    PendingActionState::new(
-        PendingActionStatus::from_retail(status),
-        (payload != -1).then_some(n(payload)),
-    )
-}
-
 fn diplomacy_grants_from_retail_entries(
     entries: [i16; NATION_COUNT],
 ) -> NationTable<Option<DiplomacyGrant>> {
-    NationTable::from_array(entries.map(|entry| {
+    NationTable::from_retail_array(entries.map(|entry| {
         if entry == -1 {
             None
         } else {
@@ -1532,7 +1532,7 @@ fn diplomacy_grants_from_retail_entries(
 fn diplomacy_policies_from_retail_entries(
     entries: [i16; NATION_COUNT],
 ) -> NationTable<Option<DiplomacyPolicy>> {
-    NationTable::from_array(entries.map(|entry| match entry {
+    NationTable::from_retail_array(entries.map(|entry| match entry {
         -1 => None,
         _ => Some(diplomacy_policy_from_retail(entry)),
     }))
@@ -1640,7 +1640,7 @@ fn country_common(country: &LegacyCountryBase) -> NationCommonState {
             .collect(),
         country.treasury,
         optional_tile_id(country.home_tile),
-        NationTable::from_array(
+        NationTable::from_retail_array(
             country
                 .need_level_by_nation
                 .map(|score| TradePolicyScore::new(i32::from(score))),

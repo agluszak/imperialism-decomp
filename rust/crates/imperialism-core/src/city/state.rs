@@ -13,10 +13,8 @@ pub struct TownState {
     pub owner_nation: NationId,
     pub resource_yield_by_type: ResourceTable<i32>,
     pub transport_linked: bool,
-    /// Retail's verbatim one-byte `enabledFlag`.
-    pub enabled: u8,
-    /// Persisted verbatim because older states may contain a noncanonical true byte.
-    pub has_adjacent_city: u8,
+    pub enabled: bool,
+    pub has_adjacent_city: bool,
     pub active: bool,
 }
 
@@ -24,7 +22,7 @@ impl TownState {
     pub(crate) fn constructed(
         _tile: TileId,
         owner_nation: NationId,
-        enabled: u8,
+        enabled: bool,
         created_turn: i32,
     ) -> Self {
         Self {
@@ -34,8 +32,8 @@ impl TownState {
             resource_yield_by_type: ResourceTable::default(),
             transport_linked: false,
             enabled,
-            has_adjacent_city: 0,
-            active: enabled == 0,
+            has_adjacent_city: false,
+            active: !enabled,
         }
     }
 
@@ -46,8 +44,8 @@ impl TownState {
             owner_nation,
             resource_yield_by_type: ResourceTable::default(),
             transport_linked: false,
-            enabled: 1,
-            has_adjacent_city: 0,
+            enabled: true,
+            has_adjacent_city: false,
             active: true,
         }
     }
@@ -147,11 +145,7 @@ impl Stockpile {
         self.0[resource] += amount;
     }
 
-    pub(crate) fn wrapping_add(&mut self, resource: crate::ResourceKind, amount: i32) {
-        self.add(resource, amount);
-    }
-
-    pub(crate) fn wrapping_add_and_verify(&mut self, resource: crate::ResourceKind, amount: i32) {
+    pub(crate) fn add_and_verify(&mut self, resource: crate::ResourceKind, amount: i32) {
         self.add(resource, amount);
         self.verify_stocks();
     }

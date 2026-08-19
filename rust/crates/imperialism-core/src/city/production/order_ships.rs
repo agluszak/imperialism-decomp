@@ -25,7 +25,7 @@ pub(crate) fn set_ship_quantity(
     };
     let costs = ship_order_costs(state.ship_type);
     for (resource, cost) in costs.iter() {
-        stockpile.wrapping_add_and_verify(resource, -(cost * delta));
+        stockpile.add_and_verify(resource, -(cost * delta));
     }
     true
 }

@@ -962,11 +962,11 @@ impl GameState {
         self.nations
             .city_mut(nation)
             .stockpile
-            .wrapping_add_and_verify(ResourceKind::Arms, -arms_cost);
+            .add_and_verify(ResourceKind::Arms, -arms_cost);
         self.nations
             .city_mut(nation)
             .stockpile
-            .wrapping_add_and_verify(ResourceKind::Fuel, -fuel_cost);
+            .add_and_verify(ResourceKind::Fuel, -fuel_cost);
         self.nations.majors[&nation].common.treasury -= cash_cost;
         self.military_units
             .get_mut(&id)
@@ -995,7 +995,7 @@ impl GameState {
         self.nations
             .city_mut(nation)
             .stockpile
-            .wrapping_add_and_verify(ResourceKind::Arms, era_offset * scale);
+            .add_and_verify(ResourceKind::Arms, era_offset * scale);
     }
 }
 

@@ -577,10 +577,10 @@ impl GameState {
             let order = &self.nations.city(nation).orders.items[output];
             allocation[output.facility()] += order.progress.quantity;
         }
-        let total = (0..CityFacilitySlot::COUNT)
+        let total: i32 = (0..CityFacilitySlot::COUNT)
             .map(CityFacilitySlot::from_usize)
             .map(|slot| allocation[slot])
-            .fold(0, i32::wrapping_add);
+            .sum();
         self.nations.majors[&nation]
             .economy
             .interior_civilian

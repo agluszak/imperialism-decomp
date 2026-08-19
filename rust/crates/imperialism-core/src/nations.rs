@@ -214,14 +214,21 @@ impl MajorNation {
     pub(crate) fn add_province(&mut self, province: ProvinceId) {
         self.common.add_province(province);
         if self.common.owned_regions.len() >= 9
-            && self.economy.pending_actions[PendingActionKind::ConqueredCapitalArmoryUpgrade]
-                .status()
-                .has_reached(PendingActionStatus::HANDLED)
-            && !self.economy.pending_actions[PendingActionKind::ConquestMonumentArmory]
-                .status()
-                .has_reached(PendingActionStatus::HANDLED)
+            && self
+                .economy
+                .pending_actions
+                .conquered_capital_armory
+                .is_handled()
+            && !self
+                .economy
+                .pending_actions
+                .conquest_monument_armory
+                .is_handled()
         {
-            self.economy.pending_actions[PendingActionKind::ConquestMonumentArmory].queue();
+            self.economy
+                .pending_actions
+                .conquest_monument_armory
+                .queue();
         }
     }
 }

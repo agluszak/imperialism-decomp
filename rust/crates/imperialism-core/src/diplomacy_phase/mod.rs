@@ -290,13 +290,13 @@ impl GameState {
             let flag = &mut self.nations.majors[&nation].economy.candidate_nation_flags
                 [candidate.nation()];
             if !present {
-                *flag = 0;
-            } else if *flag != 0 {
+                *flag = false;
+            } else if *flag {
                 any = true;
             }
         }
         for minor in MinorNationId::all().map(MinorNationId::nation) {
-            if self.nations.majors[&nation].economy.candidate_nation_flags[minor] == 0 {
+            if !self.nations.majors[&nation].economy.candidate_nation_flags[minor] {
                 continue;
             }
             let empty = self
@@ -304,7 +304,7 @@ impl GameState {
                 .common(minor)
                 .is_none_or(|common| common.owned_regions().is_empty());
             if empty {
-                self.nations.majors[&nation].economy.candidate_nation_flags[minor] = 0;
+                self.nations.majors[&nation].economy.candidate_nation_flags[minor] = false;
                 if self.at_war(nation.nation(), minor) {
                     self.set_nation_pair_relationship(
                         nation.nation(),
@@ -326,7 +326,7 @@ impl GameState {
         target: NationId,
         enabled: bool,
     ) {
-        self.nations.majors[&nation].economy.colony_boycott_flags[target] = u8::from(enabled);
+        self.nations.majors[&nation].economy.colony_boycott_flags[target] = enabled;
         let policy = if enabled {
             TradePolicyScore::new(0x64 + 0xc8)
         } else {
@@ -403,7 +403,7 @@ impl GameState {
             &mut self.rng,
             &mut self.pending.nations[nation].proposals,
             proposal,
-            |entry| entry.source.table_index() as i32,
+            |entry| entry.source,
         );
     }
 
@@ -412,7 +412,7 @@ impl GameState {
             &mut self.rng,
             &mut self.pending.nations[nation].turn_events,
             notice,
-            |entry| entry.source.table_index() as i32,
+            |entry| entry.source,
         );
     }
 }
@@ -484,11 +484,11 @@ pub(super) fn grant_notice_code(grant: DiplomacyGrant) -> i32 {
     }
 }
 
-fn insert_sorted_by_key<T>(
+fn insert_sorted_by_key<T, K: Ord>(
     rng: &mut RngState,
     items: &mut Vec<T>,
     new_item: T,
-    key: impl Fn(&T) -> i32,
+    key: impl Fn(&T) -> K,
 ) {
     let new_key = key(&new_item);
     let mut ordinal = 0;

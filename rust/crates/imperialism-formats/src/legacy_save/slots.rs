@@ -1,3 +1,4 @@
+use super::LegacyEncodeError;
 use super::{ACTIVE_NATION_NAME_LENGTH, SAVE_LABEL_LENGTH};
 use super::{
     BattleReportText, CityWindowLayout, LegacyGameStateContext, LegacySaveV62, LoadedGame,
@@ -67,6 +68,8 @@ pub enum OverwritePolicy {
 pub enum SaveFileError {
     #[error("a save already exists at {}", .0.display())]
     AlreadyExists(PathBuf),
+    #[error(transparent)]
+    Unrepresentable(#[from] LegacyEncodeError),
     #[error(transparent)]
     Io(#[from] io::Error),
 }
@@ -262,16 +265,16 @@ pub fn write_game_state(
     battle_report_text: &[BattleReportText],
     label: &str,
     session_slot: i32,
-) -> Vec<u8> {
-    LegacySaveV62::from_game_state(
+) -> Result<Vec<u8>, LegacyEncodeError> {
+    Ok(LegacySaveV62::from_game_state(
         state,
         map_view_origin,
         city_windows,
         battle_report_text,
         label,
         session_slot,
-    )
-    .to_bytes()
+    )?
+    .to_bytes())
 }
 
 fn fixed_text(bytes: &[u8]) -> String {

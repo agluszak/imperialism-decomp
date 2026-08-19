@@ -2116,7 +2116,6 @@ fn sync_diplomacy_information(
                         let policy = common.trade_policy_by_nation[icon.nation];
                         let colony_boycott = framed_major.is_some_and(|major| {
                             state.nations().major(major).economy.colony_boycott_flags[icon.nation]
-                                != 0
                         });
                         if policy == TradePolicyScore::BOYCOTT && colony_boycott {
                             Some(0x190)
@@ -2145,7 +2144,7 @@ fn sync_diplomacy_information(
                 let mut offset_overlay = false;
                 let show = mode == 2
                     && framed_major.is_some_and(|major| {
-                        state.nations().major(major).economy.colony_boycott_flags[icon.nation] != 0
+                        state.nations().major(major).economy.colony_boycott_flags[icon.nation]
                     })
                     && !framed_trade.is_some_and(|common| {
                         common.trade_policy_by_nation[icon.nation] == TradePolicyScore::BOYCOTT

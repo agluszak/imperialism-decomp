@@ -18,7 +18,6 @@ pub(crate) use order_items::*;
 pub(crate) use order_recruitment::*;
 pub(crate) use order_ships::*;
 pub(crate) use order_training::*;
-pub(crate) use pipeline::*;
 pub(crate) use specs::UNIVERSITY_REQUIREMENT_LEVEL_BY_RETAIL_ID;
 pub use specs::*;
 pub use types::*;

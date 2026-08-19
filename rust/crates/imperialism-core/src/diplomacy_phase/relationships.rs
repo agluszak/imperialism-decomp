@@ -107,10 +107,10 @@ impl GameState {
                     self.set_relationship(source, target, 0x32);
                 }
                 if let Some(major) = NationId::as_major(source) {
-                    self.nations.majors[&major].economy.candidate_nation_flags[target] = 0;
+                    self.nations.majors[&major].economy.candidate_nation_flags[target] = false;
                 }
                 if let Some(major) = NationId::as_major(target) {
-                    self.nations.majors[&major].economy.candidate_nation_flags[source] = 0;
+                    self.nations.majors[&major].economy.candidate_nation_flags[source] = false;
                 }
                 if NationId::as_major(source).is_some() && NationId::as_major(target).is_some() {
                     self.set_mission_level(source, target, DiplomaticMissionLevel::Embassy);

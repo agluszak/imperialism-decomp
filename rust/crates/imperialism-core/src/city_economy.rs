@@ -4,7 +4,7 @@ impl CityState {
     /// Mirrors the pointer-taking `TCity::AddTransportedItems` overload.
     pub fn add_transported_items(&mut self, amounts: &ResourceTable<i32>) {
         for (resource, amount) in amounts {
-            self.stockpile.wrapping_add(resource, *amount);
+            self.stockpile.add(resource, *amount);
         }
         self.clear_precious_metal_stock();
     }
@@ -32,7 +32,7 @@ impl CityState {
             amount = available_capacity;
         }
 
-        self.stockpile.wrapping_add(resource, amount);
+        self.stockpile.add(resource, amount);
         nation.update_need_target(resource, nation.need_target_by_type[resource] + amount);
         amount
     }
@@ -44,10 +44,8 @@ impl CityState {
             return false;
         }
 
-        self.stockpile
-            .wrapping_add_and_verify(ResourceKind::Lumber, -1);
-        self.stockpile
-            .wrapping_add_and_verify(ResourceKind::Steel, -1);
+        self.stockpile.add_and_verify(ResourceKind::Lumber, -1);
+        self.stockpile.add_and_verify(ResourceKind::Steel, -1);
         nation.capacities.transport += 1;
         true
     }
@@ -59,10 +57,8 @@ impl CityState {
             return false;
         }
 
-        self.stockpile
-            .wrapping_add_and_verify(ResourceKind::Lumber, -3);
-        self.stockpile
-            .wrapping_add_and_verify(ResourceKind::Fabric, -1);
+        self.stockpile.add_and_verify(ResourceKind::Lumber, -3);
+        self.stockpile.add_and_verify(ResourceKind::Fabric, -1);
         nation.capacities.trade_offer += 1;
         true
     }
@@ -116,7 +112,7 @@ impl CityState {
     }
 
     pub(crate) fn adjust_stock(&mut self, resource: ResourceKind, delta: i32) {
-        self.stockpile.wrapping_add(resource, delta);
+        self.stockpile.add(resource, delta);
     }
 }
 

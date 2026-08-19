@@ -22,13 +22,13 @@ impl GameState {
             if !economy.diplomacy_eligible {
                 for resource in all_resources() {
                     city.stockpile
-                        .wrapping_add(resource, city.reserved_by_type[resource]);
+                        .add(resource, city.reserved_by_type[resource]);
                 }
             }
             city.stockpile.verify_stocks();
             for resource in all_resources() {
                 city.stockpile
-                    .wrapping_add(resource, city.consumed_production_input_by_type[resource]);
+                    .add(resource, city.consumed_production_input_by_type[resource]);
                 city.consumed_production_input_by_type[resource] = 0;
             }
 
@@ -188,7 +188,7 @@ impl GameState {
 
         {
             let count = &mut self.nations.city_mut(nation).ship_order_count_by_type[ship_type];
-            *count = count.wrapping_add(quantity);
+            *count += quantity;
         }
 
         if ship_creates_navy_object(ship_type) {
@@ -242,9 +242,13 @@ impl GameState {
     }
 
     fn queue_navy_growth_pending(&mut self, nation: MajorNationId) {
-        let pending =
-            self.nations.major(nation).economy.pending_actions[PendingActionKind::NavyGrowthReward];
-        let Some(desired) = pending.growth_reward_level() else {
+        let pending = self
+            .nations
+            .major(nation)
+            .economy
+            .pending_actions
+            .navy_growth;
+        let Some(desired) = pending.granted_level() else {
             return;
         };
         let nation_id = nation.nation();
@@ -273,21 +277,13 @@ impl GameState {
             None
         };
         if let Some(payload) = payload {
-            set_pending_action(
-                &mut self.nations.majors[&nation].economy,
-                PendingActionKind::NavyGrowthReward,
-                payload,
-            );
+            self.nations.majors[&nation]
+                .economy
+                .pending_actions
+                .navy_growth
+                .queue_level(payload);
         }
     }
-}
-
-pub(crate) fn set_pending_action(
-    owner: &mut GreatPowerState,
-    action: PendingActionKind,
-    payload: i32,
-) {
-    owner.pending_actions[action].queue_with_payload(payload);
 }
 
 #[cfg(test)]
@@ -351,46 +347,63 @@ mod tests {
             state.insert_ship(test_frigate(nation));
         }
         assert_eq!(
-            state.nations.majors[&nation].economy.pending_actions
-                [PendingActionKind::NavyGrowthReward]
-                .growth_reward_level(),
+            state.nations.majors[&nation]
+                .economy
+                .pending_actions
+                .navy_growth
+                .granted_level(),
             Some(0)
         );
         state.queue_navy_growth_pending(nation);
-        let pending = state.nations.majors[&nation].economy.pending_actions
-            [PendingActionKind::NavyGrowthReward];
-        assert_eq!(pending.status(), PendingActionStatus::QUEUED);
-        assert_eq!(pending.payload(), Some(1));
+        assert_eq!(
+            state.nations.majors[&nation]
+                .economy
+                .pending_actions
+                .navy_growth,
+            crate::GrowthReward::Queued { level: Some(1) }
+        );
 
         state.mark_all_pending_status_flags_handled();
-        let pending = state.nations.majors[&nation].economy.pending_actions
-            [PendingActionKind::NavyGrowthReward];
-        assert_eq!(pending.status(), PendingActionStatus::from_retail(0x34));
-        assert_eq!(pending.growth_reward_level(), Some(1));
+        assert_eq!(
+            state.nations.majors[&nation]
+                .economy
+                .pending_actions
+                .navy_growth,
+            crate::GrowthReward::Granted { level: 1 }
+        );
 
         for _ in 0..12 {
             state.insert_ship(test_frigate(nation));
         }
         state.queue_navy_growth_pending(nation);
-        let pending = state.nations.majors[&nation].economy.pending_actions
-            [PendingActionKind::NavyGrowthReward];
-        assert_eq!(pending.status(), PendingActionStatus::QUEUED);
-        assert_eq!(pending.payload(), Some(2));
+        assert_eq!(
+            state.nations.majors[&nation]
+                .economy
+                .pending_actions
+                .navy_growth,
+            crate::GrowthReward::Queued { level: Some(2) }
+        );
 
         state.mark_all_pending_status_flags_handled();
-        let pending = state.nations.majors[&nation].economy.pending_actions
-            [PendingActionKind::NavyGrowthReward];
-        assert_eq!(pending.status(), PendingActionStatus::from_retail(0x35));
-        assert_eq!(pending.growth_reward_level(), Some(2));
+        assert_eq!(
+            state.nations.majors[&nation]
+                .economy
+                .pending_actions
+                .navy_growth,
+            crate::GrowthReward::Granted { level: 2 }
+        );
 
         for _ in 0..25 {
             state.insert_ship(test_frigate(nation));
         }
         state.queue_navy_growth_pending(nation);
         state.mark_all_pending_status_flags_handled();
-        let pending = state.nations.majors[&nation].economy.pending_actions
-            [PendingActionKind::NavyGrowthReward];
-        assert_eq!(pending.status(), PendingActionStatus::from_retail(0x36));
-        assert_eq!(pending.growth_reward_level(), Some(3));
+        assert_eq!(
+            state.nations.majors[&nation]
+                .economy
+                .pending_actions
+                .navy_growth,
+            crate::GrowthReward::Granted { level: 3 }
+        );
     }
 }

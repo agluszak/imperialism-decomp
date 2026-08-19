@@ -818,7 +818,7 @@ impl GameState {
                 .towns
                 .iter()
                 .any(|(&town, state)| {
-                    state.enabled != 0
+                    state.enabled
                         && self
                             .map
                             .geometry()
@@ -1317,7 +1317,7 @@ impl GameState {
                 town.active = true;
             }
         } else {
-            self.push_new_town(tile, nation, 0);
+            self.push_new_town(tile, nation, false);
             self.flood_fill_region_marker(tile, nation);
         }
         if !self.nations.major(nation).economy.diplomacy_eligible {
@@ -1329,10 +1329,10 @@ impl GameState {
     fn queue_port_construction(&mut self, tile: TileId, nation: MajorNationId) {
         if self.map[tile].flags.contains(TileFlags::DEPOT) {
             if let Some(town) = self.find_town_at_mut(nation, tile) {
-                town.enabled = 1;
+                town.enabled = true;
             }
         } else {
-            self.push_new_town(tile, nation, 1);
+            self.push_new_town(tile, nation, true);
             self.flood_fill_region_marker(tile, nation);
         }
         if !self.nations.major(nation).economy.diplomacy_eligible {
@@ -1342,7 +1342,7 @@ impl GameState {
         self.ensure_port_zone_for_tile(tile);
     }
 
-    fn push_new_town(&mut self, tile: TileId, nation: MajorNationId, enabled: u8) {
+    fn push_new_town(&mut self, tile: TileId, nation: MajorNationId, enabled: bool) {
         self.nations.major_mut(nation).towns.insert(
             tile,
             TownState::constructed(tile, nation.nation(), enabled, self.turn.economic_turn),
@@ -2168,7 +2168,7 @@ mod tests {
                 .major(MajorNationId::new(0))
                 .towns
                 .get(&depot_tile)
-                .is_some_and(|town| town.enabled == 0 && town.active)
+                .is_some_and(|town| !town.enabled && town.active)
         );
         assert!(state.map[port_tile].flags.contains(TileFlags::PORT));
         assert!(
@@ -2177,7 +2177,7 @@ mod tests {
                 .major(MajorNationId::new(0))
                 .towns
                 .get(&port_tile)
-                .is_some_and(|town| town.enabled == 1 && !town.active)
+                .is_some_and(|town| town.enabled && !town.active)
         );
         assert!(
             matches!(

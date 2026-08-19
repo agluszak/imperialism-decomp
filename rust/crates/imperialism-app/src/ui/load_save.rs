@@ -248,7 +248,7 @@ pub(crate) fn save_current_game(
         &battle_report_text,
         &label,
         session_slot,
-    );
+    )?;
     write_save_file(
         retail_save_path(directory, slot),
         &bytes,

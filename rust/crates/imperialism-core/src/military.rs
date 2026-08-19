@@ -49,7 +49,7 @@ impl GameState {
             .unwrap_or_else(|| {
                 self.missions
                     .values()
-                    .position(|queued| queued.nation.table_index() > nation.table_index())
+                    .position(|queued| queued.nation > nation)
                     .unwrap_or(self.missions.len())
             });
         self.missions.shift_insert(position, id, mission);

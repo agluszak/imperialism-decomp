@@ -101,9 +101,9 @@ pub struct GreatPowerState {
     pub special_resource_trade_balance: i32,
     pub scenario_initialized: bool,
     pub turn_finished: bool,
-    pub pending_actions: PendingActionTable<PendingActionState>,
-    pub candidate_nation_flags: NationTable<u8>,
-    pub colony_boycott_flags: NationTable<u8>,
+    pub pending_actions: PendingActions,
+    pub candidate_nation_flags: NationTable<bool>,
+    pub colony_boycott_flags: NationTable<bool>,
     pub diplomacy_budget_base: i32,
     pub escalation_counter: i32,
     pub pending_commitment_cost: i32,
@@ -158,7 +158,7 @@ impl GreatPowerState {
             special_resource_trade_balance: 0,
             scenario_initialized: false,
             turn_finished: true,
-            pending_actions: PendingActionTable::default(),
+            pending_actions: PendingActions::default(),
             candidate_nation_flags: NationTable::default(),
             colony_boycott_flags: NationTable::default(),
             diplomacy_budget_base,
@@ -250,7 +250,7 @@ impl GreatPowerState {
     pub(crate) fn settle_transported_items(&mut self, city: &mut CityState) {
         for resource in all_resources() {
             let amount = self.transported_items_by_resource[resource];
-            city.stockpile.wrapping_add_and_verify(resource, amount);
+            city.stockpile.add_and_verify(resource, amount);
             self.transported_items_by_resource[resource] = 0;
         }
     }
@@ -258,7 +258,7 @@ impl GreatPowerState {
     pub(crate) fn settle_purchased_items(&mut self, city: &mut CityState) {
         for resource in all_resources() {
             let purchased = self.purchased_items_by_resource[resource];
-            city.stockpile.wrapping_add_and_verify(resource, purchased);
+            city.stockpile.add_and_verify(resource, purchased);
             if self.remembered_trade_offers_by_resource[resource] == -1 && purchased == 0 {
                 self.unfilled_trade_turns_by_resource[resource] += 1;
             } else {

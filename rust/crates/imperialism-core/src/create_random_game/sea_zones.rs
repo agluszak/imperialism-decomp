@@ -191,7 +191,7 @@ pub(super) fn generate_province_names(
     provinces: &mut ProvinceTable<ProvinceState>,
     names: &RandomGameNames,
 ) {
-    let mut next_ordinal = [0_usize; NATION_COUNT];
+    let mut next_ordinal = NationTable::<usize>::default();
     for province_id in ProvinceId::all() {
         let province = &mut provinces[province_id];
         if province.linked_tiles.is_empty() {
@@ -200,7 +200,7 @@ pub(super) fn generate_province_names(
         let owner = province
             .owner()
             .expect("a populated fresh-map province has an owner");
-        let ordinal = &mut next_ordinal[owner.table_index()];
+        let ordinal = &mut next_ordinal[owner];
         province.name = names.province_names_by_nation[owner]
             .get(*ordinal)
             .expect("retail province-name table covers every generated province")

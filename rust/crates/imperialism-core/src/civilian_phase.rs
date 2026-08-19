@@ -2,6 +2,14 @@
 
 use crate::*;
 
+#[derive(Clone, Copy, Default, Eq, Ord, PartialEq, PartialOrd)]
+enum TownTransportInfluence {
+    #[default]
+    None,
+    Neighbor,
+    Town,
+}
+
 impl GameState {
     /// Rebuilds one major nation's transportable resource supply from its
     /// currently linked city territory.
@@ -15,14 +23,18 @@ impl GameState {
             .transport_influence(nation)
             .expect("resource-yield rebuild requires the nation's home town marker");
 
-        let mut influence = vec![0_u8; STRATEGIC_TILE_COUNT];
+        let mut influence = TileTable::default();
         let major = &self.nations.majors[&nation];
         for ((&town_tile, town), &linked) in major.towns.iter().zip(&town_transport_linked) {
             if !linked {
                 continue;
             }
-            let level = u8::from(town.enabled != 0) + 1;
-            influence[town_tile.get()] = level;
+            let level = if town.enabled {
+                TownTransportInfluence::Town
+            } else {
+                TownTransportInfluence::Neighbor
+            };
+            influence[town_tile] = level;
             let owner = Some(TileContext::from(nation));
             for neighbor in self
                 .map
@@ -32,7 +44,7 @@ impl GameState {
                 .flatten()
             {
                 let tile = &self.map[neighbor];
-                let entry = &mut influence[neighbor.get()];
+                let entry = &mut influence[neighbor];
                 if (tile.owner_nation == owner || tile.gate == 0) && *entry < level {
                     *entry = level;
                 }
@@ -40,15 +52,14 @@ impl GameState {
         }
 
         let mut current = ResourceTable::<i32>::default();
-        for (index, &level) in influence.iter().enumerate() {
-            if level == 0 {
+        for (tile_id, &level) in influence.iter() {
+            if level == TownTransportInfluence::None {
                 continue;
             }
-            let tile_id = TileId::new(index);
             let tile = &self.map[tile_id];
             if tile.gate == 0 {
-                if level == 2 {
-                    current[ResourceKind::Fish] = current[ResourceKind::Fish].wrapping_add(1);
+                if level == TownTransportInfluence::Town {
+                    current[ResourceKind::Fish] += 1;
                 }
                 continue;
             }
@@ -66,20 +77,18 @@ impl GameState {
                 } else {
                     tile.development.surface.get()
                 };
-                let contribution = resource_development_yield(resource, development);
-                current[resource] = current[resource].wrapping_add(contribution);
+                current[resource] += resource_development_yield(resource, development);
             }
 
-            if tile.river().is_some() && level == 2 {
-                current[ResourceKind::Fish] = current[ResourceKind::Fish].wrapping_add(1);
+            if tile.river().is_some() && level == TownTransportInfluence::Town {
+                current[ResourceKind::Fish] += 1;
             }
             if let Some(province) = tile.province
                 && self.map.provinces[province].city_tile() == Some(tile_id)
             {
                 for resource in ResourceKind::CITY_PRODUCTION {
-                    current[resource] = current[resource].wrapping_add(
-                        self.map.provinces[province].resource_development_by_type()[resource],
-                    );
+                    current[resource] +=
+                        self.map.provinces[province].resource_development_by_type()[resource];
                 }
             }
         }
@@ -101,12 +110,14 @@ impl GameState {
         if major.is_auto() {
             let fish = major.economy.need_current_by_type[ResourceKind::Fish];
             major.economy.need_current_by_type[ResourceKind::Fish] = 0;
-            major.economy.need_current_by_type[ResourceKind::Livestock] =
-                major.economy.need_current_by_type[ResourceKind::Livestock].wrapping_add(fish);
+            major.economy.need_current_by_type[ResourceKind::Livestock] += fish;
         }
     }
 
-    pub(crate) fn apply_town_transport_links(&mut self, nation: MajorNationId) -> Option<Vec<u8>> {
+    pub(crate) fn apply_town_transport_links(
+        &mut self,
+        nation: MajorNationId,
+    ) -> Option<TileTable<bool>> {
         let (influence, town_transport_linked) = self.transport_influence(nation)?;
         for ((_, town), linked) in self.nations.majors[&nation]
             .towns
@@ -147,7 +158,7 @@ impl GameState {
     pub(crate) fn transport_influence(
         &self,
         nation: MajorNationId,
-    ) -> Option<(Vec<u8>, Vec<bool>)> {
+    ) -> Option<(TileTable<bool>, Vec<bool>)> {
         let major = self.nations.major(nation);
         let home_tile = major.common.home_tile?;
         let home_town = major.towns.get(&home_tile)?;
@@ -155,17 +166,17 @@ impl GameState {
             .towns
             .iter()
             .map(|(&tile, town)| {
-                town.enabled != 0 && self.has_reachable_sea_outside_beginning_turn_mask(tile)
+                town.enabled && self.has_reachable_sea_outside_beginning_turn_mask(tile)
             })
             .collect::<Vec<_>>();
-        let mut influence = vec![0_u8; STRATEGIC_TILE_COUNT];
+        let mut influence = TileTable::default();
 
         let mut home_linked =
-            home_town.enabled != 0 && self.has_reachable_sea_outside_beginning_turn_mask(home_tile);
+            home_town.enabled && self.has_reachable_sea_outside_beginning_turn_mask(home_tile);
         if !home_linked {
             self.mark_transport_component(nation, home_tile, &mut influence);
             for ((&tile, _), &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
-                if influence[tile.get()] != 0 && unblocked_port {
+                if influence[tile] && unblocked_port {
                     home_linked = true;
                     break;
                 }
@@ -173,7 +184,7 @@ impl GameState {
         }
 
         for ((&tile, town), &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
-            if unblocked_port && home_linked && town.active && influence[tile.get()] == 0 {
+            if unblocked_port && home_linked && town.active && !influence[tile] {
                 self.mark_transport_component(nation, tile, &mut influence);
             }
         }
@@ -183,30 +194,34 @@ impl GameState {
             .iter()
             .zip(&unblocked_ports)
             .map(|((&tile, town), &unblocked_port)| {
-                !((influence[tile.get()] == 0 || !town.active) && (!unblocked_port || !home_linked))
+                !((!influence[tile] || !town.active) && (!unblocked_port || !home_linked))
             })
             .collect::<Vec<_>>();
 
         if home_linked {
             for ((&tile, _), &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
                 if unblocked_port {
-                    influence[tile.get()] = 1;
+                    influence[tile] = true;
                 }
             }
         }
         Some((influence, linked))
     }
 
-    fn mark_transport_component(&self, nation: MajorNationId, start: TileId, influence: &mut [u8]) {
+    fn mark_transport_component(
+        &self,
+        nation: MajorNationId,
+        start: TileId,
+        influence: &mut TileTable<bool>,
+    ) {
         let owner = Some(TileContext::from(nation));
         let geometry = self.map.geometry();
         let mut pending = vec![start];
         while let Some(tile) = pending.pop() {
-            let index = tile.get();
-            if influence[index] != 0 {
+            if influence[tile] {
                 continue;
             }
-            influence[index] = 1;
+            influence[tile] = true;
             for direction in HexDirection::ALL.into_iter().rev() {
                 if !self.map[tile]
                     .transport_links
@@ -215,7 +230,7 @@ impl GameState {
                     continue;
                 }
                 if let Some(neighbor) = geometry.neighbor(tile, direction)
-                    && influence[neighbor.get()] == 0
+                    && !influence[neighbor]
                     && self.map[neighbor].owner_nation == owner
                 {
                     pending.push(neighbor);
@@ -251,7 +266,7 @@ impl GameState {
             .owner_nation
             .and_then(TileContext::ocean)
             .expect("reachable sea tile must name its ocean context");
-        let mut active_nations = 0_u32;
+        let mut active_nations = NationTable::from_fn(|_| false);
         for (&ship_id, ship) in &self.ships {
             if ship.location != zone {
                 continue;
@@ -268,16 +283,15 @@ impl GameState {
                     TaskForceOrder::Patrol | TaskForceOrder::Transit
                 )
             {
-                active_nations |= ship.nation.bit();
+                active_nations[ship.nation] = true;
             }
         }
 
-        let origin_bit = origin_nation.bit();
-        if active_nations & origin_bit != 0 {
+        if active_nations[origin_nation] {
             return true;
         }
         for candidate in MajorNationId::all().map(MajorNationId::nation) {
-            if active_nations & candidate.bit() == 0 {
+            if !active_nations[candidate] {
                 continue;
             }
             if self.diplomacy.relationships[candidate][origin_nation] == DiplomaticRelationship::War
@@ -447,8 +461,8 @@ mod tests {
                     owner_nation: nation.nation(),
                     resource_yield_by_type: ResourceTable::default(),
                     transport_linked: false,
-                    enabled: 1,
-                    has_adjacent_city: 0,
+                    enabled: true,
+                    has_adjacent_city: false,
                     active: true,
                 },
             ),

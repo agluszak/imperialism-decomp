@@ -444,8 +444,8 @@ impl GameState {
                 story_id: id,
                 feature: true,
                 arguments: [
-                    nation_mask_arg(nation.nation().bit() as i32),
-                    nation_mask_arg(other.nation().bit() as i32),
+                    nation_mask_arg(1 << nation.nation().retail_slot()),
+                    nation_mask_arg(1 << other.nation().retail_slot()),
                     NewsArgument::Empty,
                     NewsArgument::Empty,
                 ],
@@ -527,7 +527,7 @@ fn create_event_stories(
             }
             Some((index, event)) => {
                 let mask = event_mask(event);
-                if mask == nation.nation().bit() as i32 {
+                if mask == 1 << nation.nation().retail_slot() {
                     ordinal = 0;
                     code += 1;
                     continue;
@@ -617,12 +617,12 @@ fn create_event_stories(
                     nation_mask_arg(
                         1 << report.sides[BattleReportSideSlot::Left]
                             .nation
-                            .table_index(),
+                            .retail_slot(),
                     ),
                     nation_mask_arg(
                         1 << report.sides[BattleReportSideSlot::Right]
                             .nation
-                            .table_index(),
+                            .retail_slot(),
                     ),
                     NewsArgument::Empty,
                 ],
@@ -736,7 +736,7 @@ fn nations_to_bits(nations: &NationTable<bool>) -> i32 {
     let mut bits = 0;
     for nation in NationId::all() {
         if nations[nation] {
-            bits |= nation.bit() as i32;
+            bits |= 1 << nation.retail_slot() as i32;
         }
     }
     bits
@@ -745,7 +745,7 @@ fn nations_to_bits(nations: &NationTable<bool>) -> i32 {
 fn bits_to_nations(bits: i32) -> NationTable<bool> {
     let mut nations = NationTable::default();
     for nation in NationId::all() {
-        nations[nation] = bits & nation.bit() as i32 != 0;
+        nations[nation] = bits & (1 << nation.retail_slot() as i32) != 0;
     }
     nations
 }

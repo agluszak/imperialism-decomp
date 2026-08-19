@@ -262,10 +262,11 @@ fn accepted_join_empire_makes_the_subject_a_colony() {
         DiplomaticRelationship::JoinedEmpire
     );
     assert_eq!(
-        state.nations.majors[&source].economy.pending_actions
-            [PendingActionKind::ColonyMonumentMerchantCapacity]
-            .status(),
-        PendingActionStatus::QUEUED
+        state.nations.majors[&source]
+            .economy
+            .pending_actions
+            .colony_monument,
+        crate::NationPending::Queued { nation: target }
     );
     assert!(
         state.pending.newspaper_events.iter().any(|event| matches!(
@@ -307,10 +308,11 @@ fn accepted_great_power_join_empire_is_a_colony_not_a_protectorate() {
         DiplomaticRelationship::JoinedEmpire
     );
     assert_eq!(
-        state.nations.majors[&major(1)].economy.pending_actions
-            [PendingActionKind::AnnexedGreatPowerCapitalExpansion]
-            .status(),
-        PendingActionStatus::QUEUED
+        state.nations.majors[&major(1)]
+            .economy
+            .pending_actions
+            .annexed_capital,
+        crate::NationPending::Queued { nation: nation(0) }
     );
     assert_eq!(
         state
@@ -449,7 +451,7 @@ fn colony_annex_clears_boycotted_companies_and_deports_civilians() {
     state.nations.minors.insert(MinorNationId::new(0), minor);
     state.map.provinces[ProvinceId::new(0)] = province(target, &[], &[20]);
     state.map[TileId::new(20)].secondary_owner_nation = Some(major(1));
-    state.nations.majors[&source].economy.colony_boycott_flags[nation(1)] = 1;
+    state.nations.majors[&source].economy.colony_boycott_flags[nation(1)] = true;
     state.civilian_units.insert(
         CivilianUnitId::new(1),
         CivilianUnitState::new(
@@ -531,11 +533,10 @@ fn declaring_war_marks_the_target_first_port_zone_as_a_candidate() {
             .map(|auto| &auto.zone_targets),
         Some(&vec![AiTargetState::Unmarked, AiTargetState::Candidate])
     );
-    assert_eq!(
+    assert!(
         state.nations.majors[&major(1)]
             .economy
-            .candidate_nation_flags[nation(7)],
-        1
+            .candidate_nation_flags[nation(7)]
     );
 }
 

@@ -148,7 +148,7 @@ pub(crate) fn produce_item(
 ) {
     let production = &mut production_accum[item.facility()];
     *production += state.progress.quantity;
-    stockpile.wrapping_add(item.resource(), state.progress.quantity);
+    stockpile.add(item.resource(), state.progress.quantity);
     stockpile.verify_stocks();
     *rolling_item_production_score += state.progress.quantity;
     match item.inputs() {
@@ -207,9 +207,9 @@ pub(crate) fn apply_tracked_input_change(
     resource: ResourceKind,
     change: i32,
 ) {
-    stockpile.wrapping_add(resource, change.wrapping_neg());
+    stockpile.add(resource, -change);
     stockpile.verify_stocks();
-    tracking[resource] = tracking[resource].wrapping_add(change);
+    tracking[resource] += change;
 }
 
 pub(crate) fn reserve_primary_and_secondary(

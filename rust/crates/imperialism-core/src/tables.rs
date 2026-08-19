@@ -1,4 +1,4 @@
-use crate::{CityFacilitySlot, MajorNationId, MinorNationId, NationId, ProvinceId};
+use crate::{CityFacilitySlot, MajorNationId, MinorNationId, NationId, ProvinceId, TileId};
 use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::ops::{Index, IndexMut};
@@ -130,28 +130,65 @@ impl NationCapacities {
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct NationTable<T>([T; NATION_COUNT]);
+pub struct NationTable<T> {
+    majors: MajorNationTable<T>,
+    minors: MinorNationTable<T>,
+}
 
 impl<T> NationTable<T> {
-    pub const fn from_array(values: [T; NATION_COUNT]) -> Self {
-        Self(values)
-    }
-
     pub fn from_fn(mut function: impl FnMut(NationId) -> T) -> Self {
-        Self(std::array::from_fn(|index| {
-            function(NationId::from_table_index(index))
-        }))
+        Self {
+            majors: MajorNationTable::from_fn(|id| function(id.nation())),
+            minors: MinorNationTable::from_fn(|id| function(id.nation())),
+        }
     }
 
-    pub const fn as_array(&self) -> &[T; NATION_COUNT] {
-        &self.0
+    pub fn from_retail_array(values: [T; NATION_COUNT]) -> Self
+    where
+        T: Copy,
+    {
+        Self::splat_from_retail(values)
+    }
+
+    pub const fn splat(value: T) -> Self
+    where
+        T: Copy,
+    {
+        Self {
+            majors: MajorNationTable::from_array([value; MAJOR_NATION_COUNT]),
+            minors: MinorNationTable::from_array([value; MINOR_NATION_COUNT]),
+        }
+    }
+
+    fn splat_from_retail(values: [T; NATION_COUNT]) -> Self
+    where
+        T: Copy,
+    {
+        let mut values = values.into_iter();
+        Self {
+            majors: MajorNationTable::from_fn(|_| values.next().expect("major retail slots")),
+            minors: MinorNationTable::from_fn(|_| values.next().expect("minor retail slots")),
+        }
+    }
+
+    pub fn to_retail_array(&self) -> [T; NATION_COUNT]
+    where
+        T: Copy,
+    {
+        let mut values = [self.majors[MajorNationId::new(0)]; NATION_COUNT];
+        for (slot, nation) in NationId::all().enumerate() {
+            values[slot] = self[nation];
+        }
+        values
     }
 }
 
 impl<T: Default> Default for NationTable<T> {
     fn default() -> Self {
-        Self(std::array::from_fn(|_| T::default()))
+        Self {
+            majors: MajorNationTable::default(),
+            minors: MinorNationTable::default(),
+        }
     }
 }
 
@@ -159,13 +196,19 @@ impl<T> Index<NationId> for NationTable<T> {
     type Output = T;
 
     fn index(&self, id: NationId) -> &Self::Output {
-        &self.0[id.table_index()]
+        match id {
+            NationId::Major(id) => &self.majors[id],
+            NationId::Minor(id) => &self.minors[id],
+        }
     }
 }
 
 impl<T> IndexMut<NationId> for NationTable<T> {
     fn index_mut(&mut self, id: NationId) -> &mut Self::Output {
-        &mut self.0[id.table_index()]
+        match id {
+            NationId::Major(id) => &mut self.majors[id],
+            NationId::Minor(id) => &mut self.minors[id],
+        }
     }
 }
 
@@ -204,6 +247,43 @@ fixed_table!(
     MAJOR_NATION_COUNT
 );
 
+/// Per-tile values indexed by [`TileId`].
+pub struct TileTable<T>(Box<[T; 6_480]>);
+
+impl<T> TileTable<T> {
+    pub fn from_fn(mut function: impl FnMut(TileId) -> T) -> Self {
+        Self(Box::new(std::array::from_fn(|index| {
+            function(TileId::new(index))
+        })))
+    }
+}
+
+impl<T: Default> Default for TileTable<T> {
+    fn default() -> Self {
+        Self::from_fn(|_| T::default())
+    }
+}
+
+impl<T> Index<TileId> for TileTable<T> {
+    type Output = T;
+
+    fn index(&self, tile: TileId) -> &Self::Output {
+        &self.0[tile.get()]
+    }
+}
+
+impl<T> IndexMut<TileId> for TileTable<T> {
+    fn index_mut(&mut self, tile: TileId) -> &mut Self::Output {
+        &mut self.0[tile.get()]
+    }
+}
+
+impl<T> TileTable<T> {
+    pub fn iter(&self) -> impl Iterator<Item = (TileId, &T)> {
+        TileId::all().zip(self.0.iter())
+    }
+}
+
 impl<T> MajorNationTable<T> {
     pub(crate) fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
         self.0.iter()
@@ -225,6 +305,12 @@ pub struct MinorNationTable<T>([T; MINOR_NATION_COUNT]);
 impl<T> MinorNationTable<T> {
     pub const fn from_array(values: [T; MINOR_NATION_COUNT]) -> Self {
         Self(values)
+    }
+
+    pub fn from_fn(mut function: impl FnMut(MinorNationId) -> T) -> Self {
+        Self(std::array::from_fn(|index| {
+            function(MinorNationId::new(index))
+        }))
     }
 
     pub(crate) fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
@@ -361,6 +447,5 @@ impl PendingActionKind {
     }
 }
 pub const PENDING_ACTION_COUNT: usize = PendingActionKind::LENGTH;
-pub type PendingActionTable<T> = EnumMap<PendingActionKind, T>;
 
 pub type ProductionTable<T> = EnumMap<CityFacilitySlot, T>;

@@ -148,7 +148,10 @@ pub use news::{
     PendingWorkState, TurnStartEvent, TurnSummary, WarTransition,
 };
 pub use ocean::{Ocean, OceanRoute, PortZone, Zone, ZoneKind};
-pub use pending::{PendingActionState, PendingActionStatus};
+pub use pending::{
+    FlagPending, GrowthReward, NationPending, PendingActions, SettlementPending,
+    UniversityExpansion,
+};
 pub use population::{
     FoodOutcome, LaborPool, PopulationAccumulator, PopulationState, SkillBand, StrikePhase,
 };
@@ -169,7 +172,7 @@ pub use rng::{RetailCrtRng, RetailLcg, RngState, hash_retail_scenario_tag};
 pub use tables::{
     MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNationTable, MinorNationTable, NATION_COUNT,
     NationCapacities, NationTable, PENDING_ACTION_COUNT, PROVINCE_COUNT, PendingActionKind,
-    PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable,
+    ProductionTable, ProvinceTable, ShipType, ShipTypeTable, TileTable,
 };
 pub use tactical_battle::{
     ArmyAction, ArmyActionRejection, ArmyBattle, ArmyBattleStage, ArmyUnitId, ArmyUnitView,

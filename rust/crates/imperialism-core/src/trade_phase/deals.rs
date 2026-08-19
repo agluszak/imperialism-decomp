@@ -4,21 +4,20 @@ use crate::*;
 
 impl GameState {
     pub(super) fn calculate_deal_order(&mut self, phase: &mut TradePhase) {
-        for row in 0..7 {
-            let commodity = TradeCommodity::from_retail(row).expect("raw commodity");
-            self.pair_deals(phase, commodity, 0..7, 0..7);
-            self.pair_deals(phase, commodity, 7..NATION_COUNT as u8, 0..7);
+        let majors = NationId::majors();
+        let minors = NationId::minors();
+        for commodity in TradeCommodity::RAW {
+            self.pair_deals(phase, commodity, majors, majors);
+            self.pair_deals(phase, commodity, minors, majors);
         }
-        for row in 7..0x0d {
-            let commodity = TradeCommodity::from_retail(row).expect("processed commodity");
-            self.pair_deals(phase, commodity, 0..7, 0..7);
-            if row == 7 {
-                self.pair_deals(phase, commodity, 7..NATION_COUNT as u8, 0..7);
+        for commodity in TradeCommodity::PROCESSED {
+            self.pair_deals(phase, commodity, majors, majors);
+            if commodity == TradeCommodity::Food {
+                self.pair_deals(phase, commodity, minors, majors);
             }
         }
-        for row in 0x0d..0x11 {
-            let commodity = TradeCommodity::from_retail(row).expect("manufactured commodity");
-            self.pair_deals(phase, commodity, 0..7, 0..NATION_COUNT as u8);
+        for commodity in TradeCommodity::MANUFACTURED {
+            self.pair_deals(phase, commodity, majors, majors.into_iter().chain(minors));
         }
     }
 
@@ -26,11 +25,10 @@ impl GameState {
         &mut self,
         phase: &mut TradePhase,
         commodity: TradeCommodity,
-        sellers: std::ops::Range<u8>,
-        buyers: std::ops::Range<u8>,
+        sellers: impl IntoIterator<Item = NationId>,
+        buyers: impl IntoIterator<Item = NationId> + Clone,
     ) {
-        for seller_slot in sellers {
-            let seller = NationId::from_retail_slot(seller_slot).expect("deal seller slot");
+        for seller in sellers {
             if !self.nation_present(seller) {
                 continue;
             }
@@ -39,8 +37,7 @@ impl GameState {
                 continue;
             }
             self.market.rows[commodity].accumulated_offer_by_nation[seller] += cell;
-            for buyer_slot in buyers.clone() {
-                let buyer = NationId::from_retail_slot(buyer_slot).expect("deal buyer slot");
+            for buyer in buyers.clone() {
                 if !self.nation_present(buyer) {
                     continue;
                 }

@@ -111,42 +111,38 @@ impl NationId {
         self.as_minor().expect("nation must be a minor")
     }
 
-    pub(crate) const fn from_table_index(index: usize) -> Self {
-        if index < MajorNationId::COUNT {
-            Self::Major(MajorNationId(index))
-        } else {
-            Self::Minor(MinorNationId(index - MajorNationId::COUNT))
-        }
+    pub fn majors() -> [Self; MajorNationId::COUNT] {
+        std::array::from_fn(|index| Self::Major(MajorNationId::new(index)))
     }
 
-    pub(crate) const fn table_index(self) -> usize {
-        match self {
-            Self::Major(id) => id.0,
-            Self::Minor(id) => MajorNationId::COUNT + id.0,
-        }
+    pub fn minors() -> [Self; MinorNationId::COUNT] {
+        std::array::from_fn(|index| Self::Minor(MinorNationId::new(index)))
     }
 
-    pub(crate) const fn bit(self) -> u32 {
-        1 << self.table_index()
+    pub fn all() -> impl DoubleEndedIterator<Item = Self> {
+        Self::majors().into_iter().chain(Self::minors())
     }
 
-    pub fn all() -> impl DoubleEndedIterator<Item = Self> + ExactSizeIterator {
-        (0..Self::COUNT).map(Self::from_table_index)
-    }
-
-    /// Retail combined slot `0..23`. Call only at the format/oracle boundary.
+    /// Retail combined slot `0..23`. Format/oracle boundary only.
     pub const fn from_retail_slot(slot: u8) -> Option<Self> {
         let index = slot as usize;
-        if index < Self::COUNT {
-            Some(Self::from_table_index(index))
+        if index < MajorNationId::COUNT {
+            Some(Self::Major(MajorNationId::new(index)))
+        } else if index < Self::COUNT {
+            Some(Self::Minor(MinorNationId::new(
+                index - MajorNationId::COUNT,
+            )))
         } else {
             None
         }
     }
 
-    /// Retail combined slot `0..23`. Call only at the format/oracle boundary.
+    /// Retail combined slot `0..23`. Format/oracle boundary only.
     pub const fn retail_slot(self) -> u8 {
-        self.table_index() as u8
+        match self {
+            Self::Major(id) => id.get() as u8,
+            Self::Minor(id) => (MajorNationId::COUNT + id.get()) as u8,
+        }
     }
 }
 
