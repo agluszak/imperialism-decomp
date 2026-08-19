@@ -3,7 +3,7 @@
 use super::super::format_currency;
 use super::super::retail::{RetailTree, RetailUiAssets};
 use super::map_interaction::cycle_map_interaction_selection;
-use super::map_interaction::{MapInteractionMode, StrategicInteraction};
+use super::map_interaction::{MapInteractionMode, StrategicInteraction, StrategicViewport};
 use super::map_modals::{spawn_civilian_disband, spawn_civilian_roster};
 use crate::AppState;
 use crate::ui::GameSession;
@@ -145,13 +145,13 @@ fn on_civilian_command(
     commands_query: Query<&CivilianCommand>,
     mut commands: Commands,
     mut session: ResMut<GameSession>,
-    mut interactions: Query<&mut StrategicInteraction>,
+    mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
     keys: Res<ButtonInput<KeyCode>>,
 ) {
     let Ok(command) = commands_query.get(activate.entity).copied() else {
         return;
     };
-    let Ok(mut interaction) = interactions.single_mut() else {
+    let Ok((mut interaction, mut viewport)) = interactions.single_mut() else {
         return;
     };
     let Some(unit) = interaction.civilian else {
@@ -173,7 +173,7 @@ fn on_civilian_command(
     if let Some(mode) = mode
         && session.game.set_civilian_idle_order(unit, mode)
     {
-        cycle_map_interaction_selection(&mut session, &mut interaction);
+        cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
     }
 }
 

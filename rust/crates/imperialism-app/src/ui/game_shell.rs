@@ -16,13 +16,13 @@ use crate::ui::retail::{
     RetailPictureSwap, RetailPressedOverlay, RetailTag, RetailTree, ancestor_with,
 };
 use crate::ui::strategic_map::{
-    MapEdges, MapInteractionMode, MapZoomControl, StrategicInteraction, animate_civilian_selection,
-    animate_civilian_work, bind_army_toolbar, bind_civilian_toolbar, bind_minimap,
+    MapEdges, MapInteractionMode, MapProjection, MapTransition, MapZoomControl,
+    StrategicInteraction, StrategicViewport, animate_civilian_selection, animate_civilian_work,
+    apply_map_transition, bind_army_toolbar, bind_civilian_toolbar, bind_minimap,
     bind_navy_toolbar, bind_ocean_view, bind_strategic_base_terrain, on_strategic_map_click,
     register_army_toolbar, register_civilian_toolbar, register_map_click, register_map_keys,
-    register_map_modals, register_navy_toolbar, register_ocean_view, scroll_active_map,
-    sync_minimap, sync_strategic_base_terrain, sync_strategic_selection, sync_strategic_units,
-    toggle_zoom,
+    register_map_modals, register_navy_toolbar, register_ocean_view, sync_minimap,
+    sync_strategic_base_terrain, sync_strategic_selection, sync_strategic_units,
 };
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -100,9 +100,9 @@ fn scroll_strategic_map(
     mut last_scroll_tick: Local<Option<u128>>,
     window: Single<&Window, With<PrimaryWindow>>,
     mut session: ResMut<GameSession>,
-    mut interactions: Query<&mut StrategicInteraction>,
+    mut maps: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
 ) {
-    let Ok(mut interaction) = interactions.single_mut() else {
+    let Ok((mut interaction, mut viewport)) = maps.single_mut() else {
         return;
     };
     let Some(cursor) = window.cursor_position() else {
@@ -117,7 +117,12 @@ fn scroll_strategic_map(
         return;
     }
     *last_scroll_tick = Some(tick16);
-    scroll_active_map(&mut session, &mut interaction, edges);
+    apply_map_transition(
+        &mut session,
+        &mut interaction,
+        &mut viewport,
+        MapTransition::Scroll(edges),
+    );
 }
 
 fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> MapEdges {
@@ -193,7 +198,7 @@ fn bind_strategic_map(
         .insert(Visibility::Hidden);
     let land = bind_strategic_base_terrain(&mut commands, *root, &tree, &mut assets, &session);
     commands.entity(land).observe(on_strategic_map_click);
-    let ocean = bind_ocean_view(&mut commands, &mut assets, *root, &tree);
+    let ocean = bind_ocean_view(&mut commands, &mut assets, *root, &tree, &session);
     commands.entity(ocean).observe(on_strategic_map_click);
     bind_minimap(&mut commands, *root, &tree, &mut assets, &session);
     bind_civilian_toolbar(&mut commands, &mut assets, *root, &tree);
@@ -276,9 +281,9 @@ fn on_ocean_toggle(
     mut commands: Commands,
     assets: RetailUiAssets,
     mut session: ResMut<GameSession>,
-    mut interactions: Query<&mut StrategicInteraction>,
+    mut maps: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
 ) {
-    let Ok(mut interaction) = interactions.single_mut() else {
+    let Ok((mut interaction, mut viewport)) = maps.single_mut() else {
         return;
     };
     if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
@@ -296,17 +301,22 @@ fn on_ocean_toggle(
         );
         return;
     }
-    toggle_zoom(&mut session, &mut interaction);
+    apply_map_transition(
+        &mut session,
+        &mut interaction,
+        &mut viewport,
+        MapTransition::ToggleZoom,
+    );
 }
 
 fn sync_zoom_control(
-    interactions: Query<&StrategicInteraction>,
+    viewports: Query<&StrategicViewport>,
     mut controls: Query<&mut RetailTag, With<MapZoomControl>>,
 ) {
-    let (Ok(interaction), Ok(mut tag)) = (interactions.single(), controls.single_mut()) else {
+    let (Ok(viewport), Ok(mut tag)) = (viewports.single(), controls.single_mut()) else {
         return;
     };
-    tag.0 = if interaction.ocean.active {
+    tag.0 = if viewport.projection == MapProjection::Overview {
         fourcc!("ZmIn")
     } else {
         fourcc!("ZmOt")

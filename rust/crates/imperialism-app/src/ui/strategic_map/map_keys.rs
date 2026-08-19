@@ -1,8 +1,9 @@
 //! Confirmed `TWorldView::DoKeyEvent` bindings: N/W/C/Z/X/A.
 
 use super::map_interaction::{
-    MapInteractionMode, StrategicInteraction, center_active_map, cycle_map_interaction_selection,
-    has_active_map_interaction_selection, navy_zone_center_tile, toggle_zoom,
+    MapInteractionMode, MapTransition, StrategicInteraction, StrategicViewport,
+    apply_map_transition, cycle_map_interaction_selection, has_active_map_interaction_selection,
+    navy_zone_center_tile,
 };
 use crate::AppState;
 use crate::ui::GameSession;
@@ -16,22 +17,22 @@ pub(crate) fn register(app: &mut App) {
 fn map_hotkeys(
     keys: Res<ButtonInput<KeyCode>>,
     mut session: ResMut<GameSession>,
-    mut interactions: Query<&mut StrategicInteraction>,
+    mut maps: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
 ) {
-    let Ok(mut interaction) = interactions.single_mut() else {
+    let Ok((mut interaction, mut viewport)) = maps.single_mut() else {
         return;
     };
     let nation = session.game.turn().active_nation;
     if keys.just_pressed(KeyCode::KeyN) {
         session.game.clear_nation_army_action_modes(nation);
         if !has_active_map_interaction_selection(&interaction) {
-            cycle_map_interaction_selection(&mut session, &mut interaction);
+            cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
         }
     }
     if keys.just_pressed(KeyCode::KeyW) {
         session.game.clear_nation_civilian_action_modes(nation);
         if !has_active_map_interaction_selection(&interaction) {
-            cycle_map_interaction_selection(&mut session, &mut interaction);
+            cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
         }
     }
     if keys.just_pressed(KeyCode::KeyC) {
@@ -42,19 +43,30 @@ fn map_hotkeys(
             interaction.army,
             interaction.navy.zone,
             &mut interaction,
+            &mut viewport,
         );
     }
     if keys.just_pressed(KeyCode::KeyX)
         && let Some(tile) = session.game.representative_tile_for_nation(nation)
     {
-        center_active_map(&mut session, &mut interaction, tile);
+        apply_map_transition(
+            &mut session,
+            &mut interaction,
+            &mut viewport,
+            MapTransition::Center(tile),
+        );
     }
     if keys.just_pressed(KeyCode::KeyA) {
         session.game.free_ships_of(nation);
         interaction.navy.force = None;
     }
     if keys.just_pressed(KeyCode::KeyZ) {
-        toggle_zoom(&mut session, &mut interaction);
+        apply_map_transition(
+            &mut session,
+            &mut interaction,
+            &mut viewport,
+            MapTransition::ToggleZoom,
+        );
     }
 }
 
@@ -65,6 +77,7 @@ fn center_current_selection(
     army: Option<ProvinceId>,
     navy_zone: Option<OceanZoneId>,
     interaction: &mut StrategicInteraction,
+    viewport: &mut StrategicViewport,
 ) {
     let tile = match mode {
         MapInteractionMode::Civilian => civilian
@@ -81,6 +94,6 @@ fn center_current_selection(
             .representative_tile_for_nation(session.game.turn().active_nation),
     };
     if let Some(tile) = tile {
-        center_active_map(session, interaction, tile);
+        apply_map_transition(session, interaction, viewport, MapTransition::Center(tile));
     }
 }

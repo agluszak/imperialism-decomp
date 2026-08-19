@@ -19,6 +19,7 @@ mod map_keys;
 mod map_modals;
 mod minimap;
 mod navy_toolbar;
+mod ocean_raster;
 mod ocean_view;
 mod overlays;
 mod terrain;
@@ -29,8 +30,8 @@ use borders::compose_strategic_borders;
 pub(crate) use civilian_toolbar::{bind_civilian_toolbar, register_civilian_toolbar};
 pub(crate) use map_click::{on_strategic_map_click, register as register_map_click};
 pub(crate) use map_interaction::{
-    MapEdges, MapInteractionMode, MapZoomControl, StrategicInteraction, scroll_active_map,
-    toggle_zoom,
+    MapEdges, MapInteractionMode, MapProjection, MapTransition, MapZoomControl,
+    StrategicInteraction, StrategicViewport, apply_map_transition,
 };
 pub(crate) use map_keys::register as register_map_keys;
 pub(crate) use map_modals::register as register_map_modals;
@@ -126,6 +127,7 @@ pub(crate) fn bind_strategic_base_terrain(
         RelativeCursorPosition::default(),
         canvas,
         StrategicInteraction::default(),
+        StrategicViewport::default(),
     ));
     units::bind_strategic_units(commands, map, assets, state, view_origin);
     bind_strategic_selection(commands, map, assets, state, view_origin);
