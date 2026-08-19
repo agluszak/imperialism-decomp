@@ -27,12 +27,12 @@ impl GameState {
             return;
         }
 
-        if let Some(subject) = MajorNationId::from_nation(nation_a) {
+        if let Some(subject) = NationId::as_major(nation_a) {
             self.pending
                 .queue_newspaper_event(inter_nation_event(event, subject, nation_b));
         }
-        if MajorNationId::from_nation(nation_b).is_some() && event.also_queues_for_second_major() {
-            let subject = MajorNationId::from_nation(nation_b).expect("checked major");
+        if NationId::as_major(nation_b).is_some() && event.also_queues_for_second_major() {
+            let subject = NationId::as_major(nation_b).expect("checked major");
             self.pending
                 .queue_newspaper_event(inter_nation_event(event, subject, nation_a));
         }
@@ -44,8 +44,8 @@ impl GameState {
         nation_a: NationId,
         nation_b: NationId,
     ) {
-        let mut nation_a_handled = MajorNationId::from_nation(nation_a).is_none();
-        let mut nation_b_handled = MajorNationId::from_nation(nation_b).is_none();
+        let mut nation_a_handled = NationId::as_major(nation_a).is_none();
+        let mut nation_b_handled = NationId::as_major(nation_b).is_none();
         if event.concatenate_skips_second_major() {
             nation_b_handled = true;
         }
@@ -73,12 +73,12 @@ impl GameState {
         }
 
         if !nation_a_handled {
-            let subject = MajorNationId::from_nation(nation_a).expect("major subject");
+            let subject = NationId::as_major(nation_a).expect("major subject");
             self.pending
                 .queue_newspaper_event(inter_nation_event(event, subject, nation_b));
         }
         if !nation_b_handled {
-            let subject = MajorNationId::from_nation(nation_b).expect("major subject");
+            let subject = NationId::as_major(nation_b).expect("major subject");
             self.pending
                 .queue_newspaper_event(inter_nation_event(event, subject, nation_a));
         }
@@ -132,7 +132,7 @@ pub const NEWS_TEMPLATE_COUNT: usize = 360;
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct NewsState {
     pub pages: MajorNationTable<Option<NewsPage>>,
-    pub last_used_turn_by_nation_and_template: MajorNationTable<Vec<i16>>,
+    pub last_used_turn_by_nation_and_template: MajorNationTable<Vec<i32>>,
 }
 
 impl Default for NewsState {
@@ -155,7 +155,7 @@ pub struct NewsPage {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct NewsStory {
     pub template_index: u16,
-    pub story_id: i16,
+    pub story_id: i32,
     pub feature: bool,
     pub arguments: [NewsArgument; 4],
 }
@@ -175,7 +175,7 @@ pub enum NewsArgument {
         province: ProvinceId,
     },
     Zone {
-        ordinal: i16,
+        ordinal: i32,
     },
 }
 
@@ -315,7 +315,7 @@ pub struct NationPendingWork {
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct DiplomacyNotice {
     pub source: NationId,
-    pub code: i16,
+    pub code: i32,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -330,19 +330,19 @@ pub enum TurnSummary {
     MilitaryRecruit {
         turn_tick: i32,
         unit_type: MilitaryUnitKind,
-        count: i16,
+        count: i32,
     },
     /// A recovered queue record whose presentation meaning has not yet been
     /// interpreted by a Rust rule.
     Retail {
         turn_tick: i32,
-        order_kind: i16,
-        payload: i16,
-        flags: i16,
+        order_kind: i32,
+        payload: i32,
+        flags: i32,
     },
 }
 impl TurnSummary {
-    pub(crate) const fn order_key(self) -> i16 {
+    pub(crate) const fn order_key(self) -> i32 {
         match self {
             Self::MilitaryRecruit { .. } => 3,
             Self::Retail { order_kind, .. } => order_kind,
@@ -367,7 +367,7 @@ impl GameState {
     /// Mirrors `TNewsMgr::StartNewsPhase` page construction without loading `news.tab`.
     pub fn construct_newspaper_pages(&mut self, story_ids: &[i32]) {
         self.news.pages = MajorNationTable::default();
-        let active = MajorNationId::from_nation(self.turn.active_nation);
+        let active = NationId::as_major(self.turn.active_nation);
         for nation in MajorNationId::all() {
             let eligible = self.nations.major(nation).economy.diplomacy_eligible;
             if eligible || active == Some(nation) {
@@ -410,8 +410,8 @@ impl GameState {
             }
         }
 
-        let cur_tick = self.turn.economic_turn as i16;
-        let year = (self.turn.economic_turn / 4) as i16;
+        let cur_tick = self.turn.economic_turn as i32;
+        let year = (self.turn.economic_turn / 4) as i32;
         let mut misses = 0;
         while row < 3 && misses < 4 {
             let mut pick;
@@ -432,7 +432,7 @@ impl GameState {
             }
             let id = story_ids[pick];
             if id > 9 && id % 10 == 0 {
-                if year < id as i16 - 10 || year >= id as i16 {
+                if year < id as i32 - 10 || year >= id as i32 {
                     continue;
                 }
             } else if id != 1 {
@@ -441,11 +441,11 @@ impl GameState {
             let other = random_other_major(&mut self.rng, nation);
             page.stories[column][row] = Some(NewsStory {
                 template_index: pick as u16,
-                story_id: id as i16,
+                story_id: id as i32,
                 feature: true,
                 arguments: [
-                    nation_mask_arg(1 << nation.get()),
-                    nation_mask_arg(1 << other.get()),
+                    nation_mask_arg(nation.nation().bit() as i32),
+                    nation_mask_arg(other.nation().bit() as i32),
                     NewsArgument::Empty,
                     NewsArgument::Empty,
                 ],
@@ -469,7 +469,7 @@ fn create_event_stories(
     column: &mut usize,
     row: &mut usize,
 ) {
-    let nation_slot = i32::from(nation.get());
+    let nation_slot = (nation.get() as i32);
     let mut ordinal = 0;
     let mut code = 0;
     while code <= 0x18 {
@@ -527,7 +527,7 @@ fn create_event_stories(
             }
             Some((index, event)) => {
                 let mask = event_mask(event);
-                if mask == 1 << nation.get() {
+                if mask == nation.nation().bit() as i32 {
                     ordinal = 0;
                     code += 1;
                     continue;
@@ -603,14 +603,14 @@ fn create_event_stories(
             (
                 -0x1b - i32::from(report.kind != BattleReportKind::SeaBattle),
                 NewsArgument::Zone {
-                    ordinal: zone.get() as i16,
+                    ordinal: zone.get() as i32,
                 },
             )
         };
         if let Some(template) = find_template(story_ids, want_id) {
             page.stories[*column][*row] = Some(NewsStory {
                 template_index: template as u16,
-                story_id: want_id as i16,
+                story_id: want_id as i32,
                 feature: true,
                 arguments: [
                     location,
@@ -649,7 +649,7 @@ fn create_event_stories(
                         };
                         page.stories[*column][*row] = Some(NewsStory {
                             template_index: template as u16,
-                            story_id: want_id as i16,
+                            story_id: want_id as i32,
                             feature: false,
                             arguments: [
                                 parm0,
@@ -689,11 +689,11 @@ fn event_code(event: &PendingNewspaperEvent) -> i32 {
 fn event_subject(event: &PendingNewspaperEvent) -> i32 {
     match event {
         PendingNewspaperEvent::InterNation { subject, .. }
-        | PendingNewspaperEvent::Shortage { subject, .. } => i32::from(subject.get()),
+        | PendingNewspaperEvent::Shortage { subject, .. } => (subject.get() as i32),
         PendingNewspaperEvent::Miscellaneous {
             audience: Some(nation),
             ..
-        } => i32::from(nation.get()),
+        } => (nation.get() as i32),
         PendingNewspaperEvent::Miscellaneous { audience: None, .. } => 999,
     }
 }
@@ -728,7 +728,7 @@ fn nations_to_bits(nations: &NationTable<bool>) -> i32 {
     let mut bits = 0;
     for nation in NationId::all() {
         if nations[nation] {
-            bits |= 1 << nation.get();
+            bits |= nation.bit() as i32;
         }
     }
     bits
@@ -737,7 +737,7 @@ fn nations_to_bits(nations: &NationTable<bool>) -> i32 {
 fn bits_to_nations(bits: i32) -> NationTable<bool> {
     let mut nations = NationTable::default();
     for nation in NationId::all() {
-        nations[nation] = bits & (1 << nation.get()) != 0;
+        nations[nation] = bits & nation.bit() as i32 != 0;
     }
     nations
 }
@@ -773,7 +773,7 @@ fn place_event_story(
 ) {
     page.stories[*column][*row] = Some(NewsStory {
         template_index: template as u16,
-        story_id: want_id as i16,
+        story_id: want_id as i32,
         feature: false,
         arguments: [parm0, parm1, NewsArgument::Empty, NewsArgument::Empty],
     });
@@ -790,7 +790,7 @@ fn advance_page_cursor(column: &mut usize, row: &mut usize) {
 
 fn random_other_major(rng: &mut RngState, nation: MajorNationId) -> MajorNationId {
     loop {
-        let other = MajorNationId::new((rng.next_crt_rand() % 7) as u8);
+        let other = MajorNationId::new((rng.next_crt_rand() % 7) as usize);
         if other != nation {
             return other;
         }

@@ -33,7 +33,7 @@ pub enum TradeCommodity {
 impl TradeCommodity {
     pub const LENGTH: usize = enum_map::enum_len::<Self>();
 
-    pub const fn from_retail(value: i16) -> Option<Self> {
+    pub const fn from_retail(value: i32) -> Option<Self> {
         match value {
             0 => Some(Self::Cotton),
             1 => Some(Self::Wool),
@@ -192,7 +192,7 @@ pub enum DealBookEntryKind {
 pub struct TradeDealBookEntry {
     pub kind: DealBookEntryKind,
     pub nation: NationId,
-    pub amount: i16,
+    pub amount: i32,
     pub unit_price: i32,
 }
 
@@ -205,9 +205,9 @@ pub struct TradeMarketRow {
     pub offer_count: i32,
     pub amount_offered: i32,
     pub adjusted_offer_count: f64,
-    pub current_offer_by_nation: NationTable<i16>,
-    pub accumulated_offer_by_nation: NationTable<i16>,
-    pub maximum_offer_by_nation: NationTable<i16>,
+    pub current_offer_by_nation: NationTable<i32>,
+    pub accumulated_offer_by_nation: NationTable<i32>,
+    pub maximum_offer_by_nation: NationTable<i32>,
 }
 
 impl TradeMarketRow {

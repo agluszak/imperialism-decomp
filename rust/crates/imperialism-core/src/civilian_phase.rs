@@ -23,7 +23,7 @@ impl GameState {
             }
             let level = u8::from(town.enabled != 0) + 1;
             influence[usize::from(town_tile.get())] = level;
-            let owner = Some(TileOwnerTag::from_nation(nation.nation()));
+            let owner = Some(TileContext::from_nation(nation.nation()));
             for neighbor in self
                 .map
                 .geometry()
@@ -39,12 +39,12 @@ impl GameState {
             }
         }
 
-        let mut current = ResourceTable::<i16>::default();
+        let mut current = ResourceTable::<i32>::default();
         for (index, &level) in influence.iter().enumerate() {
             if level == 0 {
                 continue;
             }
-            let tile_id = TileId::new(index as u16);
+            let tile_id = TileId::new(index);
             let tile = &self.map[tile_id];
             if tile.gate == 0 {
                 if level == 2 {
@@ -165,7 +165,7 @@ impl GameState {
         if !home_linked {
             self.mark_transport_component(nation, home_tile, &mut influence);
             for ((&tile, _), &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
-                if influence[usize::from(tile.get())] != 0 && unblocked_port {
+                if influence[tile.index()] != 0 && unblocked_port {
                     home_linked = true;
                     break;
                 }
@@ -173,11 +173,7 @@ impl GameState {
         }
 
         for ((&tile, town), &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
-            if unblocked_port
-                && home_linked
-                && town.active
-                && influence[usize::from(tile.get())] == 0
-            {
+            if unblocked_port && home_linked && town.active && influence[tile.index()] == 0 {
                 self.mark_transport_component(nation, tile, &mut influence);
             }
         }
@@ -187,7 +183,7 @@ impl GameState {
             .iter()
             .zip(&unblocked_ports)
             .map(|((&tile, town), &unblocked_port)| {
-                !((influence[usize::from(tile.get())] == 0 || !town.active)
+                !((influence[tile.index()] == 0 || !town.active)
                     && (!unblocked_port || !home_linked))
             })
             .collect::<Vec<_>>();
@@ -195,7 +191,7 @@ impl GameState {
         if home_linked {
             for ((&tile, _), &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
                 if unblocked_port {
-                    influence[usize::from(tile.get())] = 1;
+                    influence[tile.index()] = 1;
                 }
             }
         }
@@ -203,11 +199,11 @@ impl GameState {
     }
 
     fn mark_transport_component(&self, nation: MajorNationId, start: TileId, influence: &mut [u8]) {
-        let owner = Some(TileOwnerTag::from_nation(nation.nation()));
+        let owner = Some(TileContext::from_nation(nation.nation()));
         let geometry = self.map.geometry();
         let mut pending = vec![start];
         while let Some(tile) = pending.pop() {
-            let index = usize::from(tile.get());
+            let index = tile.index();
             if influence[index] != 0 {
                 continue;
             }
@@ -232,7 +228,7 @@ impl GameState {
     pub(crate) fn has_reachable_sea_outside_beginning_turn_mask(&self, tile: TileId) -> bool {
         let origin_nation = self.map[tile]
             .owner_nation
-            .and_then(TileOwnerTag::nation)
+            .and_then(TileContext::nation)
             .expect("a town marker must remain on nation-owned territory");
         for direction in HexDirection::ALL {
             let neighbor = civilian_sea_scan_neighbor(tile, direction);
@@ -252,17 +248,10 @@ impl GameState {
 
     /// `TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask`.
     fn sea_zone_allows_port_access(&self, sea_tile: TileId, origin_nation: NationId) -> bool {
-        const SEA_OWNER_BIAS: u8 = 0x17;
-
-        let owner = self.map[sea_tile]
+        let zone = self.map[sea_tile]
             .owner_nation
-            .expect("reachable sea tile must name its ocean context")
-            .get();
-        let zone = OceanZoneId::new(u16::from(
-            owner
-                .checked_sub(SEA_OWNER_BIAS)
-                .expect("sea owner tag must name a base ocean zone"),
-        ));
+            .and_then(TileContext::ocean)
+            .expect("reachable sea tile must name its ocean context");
         let mut active_nations = 0_u32;
         for (&ship_id, ship) in &self.ships {
             if ship.location != zone {
@@ -280,11 +269,11 @@ impl GameState {
                     TaskForceOrder::Patrol | TaskForceOrder::Transit
                 )
             {
-                active_nations |= 1_u32 << ship.nation.get();
+                active_nations |= ship.nation.bit();
             }
         }
 
-        let origin_bit = 1_u32 << origin_nation.get();
+        let origin_bit = origin_nation.bit();
         if active_nations & origin_bit != 0 {
             return true;
         }
@@ -311,17 +300,17 @@ pub(crate) fn civilian_sea_scan_neighbor(tile: TileId, direction: HexDirection) 
     const ROW_DELTAS: HexDirectionTable<i32> = HexDirectionTable::from_array([-1, 0, 1, 1, 0, -1]);
     const RASTER_WIDTH: i32 = STRATEGIC_MAP_WIDTH as i32 * 2;
 
-    let row = i32::from(tile.get() / STRATEGIC_MAP_WIDTH);
-    let column = i32::from(tile.get() % STRATEGIC_MAP_WIDTH);
+    let row = tile.get() as i32 / STRATEGIC_MAP_WIDTH;
+    let column = tile.get() as i32 % STRATEGIC_MAP_WIDTH;
     let mut column_x2 = row % 2 + column * 2 + COLUMN_X2_DELTAS[direction];
-    let row = (row + ROW_DELTAS[direction]).clamp(0, i32::from(STRATEGIC_MAP_HEIGHT) - 1);
+    let row = (row + ROW_DELTAS[direction]).clamp(0, STRATEGIC_MAP_HEIGHT - 1);
     if column_x2 >= RASTER_WIDTH {
         column_x2 -= RASTER_WIDTH + 1;
     } else if column_x2 < 0 {
         column_x2 += RASTER_WIDTH;
     }
-    let index = column_x2 / 2 + row * i32::from(STRATEGIC_MAP_WIDTH);
-    TileId::new(u16::try_from(index).expect("retail sea scan produced a valid tile"))
+    let index = column_x2 / 2 + row * STRATEGIC_MAP_WIDTH;
+    TileId::new(index as usize)
 }
 
 fn river_reaches_sea_without_crossing_nation(world: &MapMgr, start: TileId) -> bool {
@@ -437,7 +426,7 @@ mod tests {
             .geometry()
             .neighbor(home, HexDirection::East)
             .unwrap();
-        let owner = Some(TileOwnerTag::from_nation(nation.nation()));
+        let owner = Some(TileContext::from_nation(nation.nation()));
         state.map[home].owner_nation = owner;
         state.map[second].owner_nation = owner;
         state.map[home]
@@ -484,18 +473,18 @@ mod tests {
     fn port_access_obeys_active_type_three_and_four_war_orders() {
         let mut state = crate::test_support::game_state();
         let home = TileId::new(2_210);
-        let origin = NationId::new(6);
-        state.map[home].owner_nation = Some(TileOwnerTag::from_nation(origin));
+        let origin = MajorNationId::new(6);
+        state.map[home].owner_nation = Some(TileContext::from_nation(origin));
         for direction in HexDirection::ALL {
             let neighbor = civilian_sea_scan_neighbor(home, direction);
             state.map[neighbor].terrain = TerrainKind::Plains;
         }
         let sea = civilian_sea_scan_neighbor(home, HexDirection::NorthEast);
         state.map[sea].terrain = TerrainKind::Water;
-        state.map[sea].owner_nation = Some(TileOwnerTag::new(0x17));
+        state.map[sea].owner_nation = Some(TileContext::new(0x17));
 
         state.turn.economic_turn = 10;
-        let hostile = NationId::new(0);
+        let hostile = MajorNationId::new(0);
         state.diplomacy.relationships[hostile][origin] = DiplomaticRelationship::War;
         state.diplomacy.relationship_turns[hostile][origin] = Some(9);
         state.task_forces.insert(
@@ -505,7 +494,7 @@ mod tests {
                 order: TaskForceOrder::Patrol,
                 target: TaskForceTarget::None,
                 location: OceanZoneId::new(0),
-                nation: hostile,
+                nation: hostile.nation(),
                 defeated: false,
                 ingot_tile: -1,
                 flagship: None,
@@ -518,7 +507,7 @@ mod tests {
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(0),
                 aggression: NavalAggression::Balanced,
-                nation: hostile,
+                nation: hostile.nation(),
                 name: String::new(),
                 strength: 1,
                 experience: 0,

@@ -10,8 +10,8 @@ const UNIT_ORDER_SLEEP: MilitaryOrderCode = MilitaryOrderCode::Sleep;
 const UNIT_ORDER_LATR: MilitaryOrderCode = MilitaryOrderCode::Latr;
 const UNIT_ORDER_DONE: MilitaryOrderCode = MilitaryOrderCode::Done;
 
-const HEX_COL_DELTA: HexDirectionTable<i16> = HexDirectionTable::from_array([1, 2, 1, -1, -2, -1]);
-const HEX_ROW_DELTA: HexDirectionTable<i16> = HexDirectionTable::from_array([-1, 0, 1, 1, 0, -1]);
+const HEX_COL_DELTA: HexDirectionTable<i32> = HexDirectionTable::from_array([1, 2, 1, -1, -2, -1]);
+const HEX_ROW_DELTA: HexDirectionTable<i32> = HexDirectionTable::from_array([-1, 0, 1, 1, 0, -1]);
 
 /// Idle-unit modes applied by `TArmyToolbar::DoEvent` (`dfnd`/`latr`/`done`).
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -145,7 +145,7 @@ impl GameState {
 
     /// `TMilitaryUnit::CanUpgrade` (`UpgradeType() != -1`); costs are not part of eligibility.
     pub fn unit_can_upgrade(&self, unit: &MilitaryUnitState) -> bool {
-        MajorNationId::from_nation(unit.owner_nation())
+        NationId::as_major(unit.owner_nation())
             .is_some_and(|nation| self.upgrade_type(nation, unit.unit_type()).is_some())
     }
 
@@ -174,10 +174,10 @@ impl GameState {
         &mut self,
         province: ProvinceId,
         category: ArmyUnitCategory,
-    ) -> i16 {
+    ) -> i32 {
         let ids = stationed_chain_ids(&self.military_units, province);
         let mut activated = false;
-        let mut remaining = 0_i16;
+        let mut remaining = 0;
         for id in ids {
             let unit = &self.military_units[&id];
             if tactical_category(unit.unit_type()) != category
@@ -206,10 +206,10 @@ impl GameState {
         &mut self,
         province: ProvinceId,
         category: ArmyUnitCategory,
-    ) -> i16 {
+    ) -> i32 {
         let ids = stationed_chain_ids(&self.military_units, province);
         let mut deactivated = false;
-        let mut idle = 0_i16;
+        let mut idle = 0;
         for id in ids {
             if tactical_category(self.military_units[&id].unit_type()) != category {
                 continue;
@@ -450,7 +450,7 @@ impl GameState {
         if !self.event_eligible(nation) {
             return ArmyMapCursorState::SpyReport;
         }
-        let Some(owner) = rec.owner_nation.and_then(TileOwnerTag::nation) else {
+        let Some(owner) = rec.owner_nation.and_then(TileContext::nation) else {
             return ArmyMapCursorState::SpyReport;
         };
         if owner != nation && !self.status_of(owner).is_colony_of(nation) {
@@ -519,7 +519,7 @@ impl GameState {
             return ArmyMapCursorState::EmptyOrBlocked;
         }
         if self.provinces_are_adjacent(pending, city)
-            || MajorNationId::from_nation(pending_owner)
+            || NationId::as_major(pending_owner)
                 .is_some_and(|major| self.map.provinces[city].explored_by_majors()[major])
         {
             return ArmyMapCursorState::Hostile;
@@ -565,7 +565,7 @@ impl GameState {
         if cost == 0 {
             return ArmyOrderIssue::NoMovableUnits;
         }
-        let Some(major) = MajorNationId::from_nation(nation) else {
+        let Some(major) = NationId::as_major(nation) else {
             return ArmyOrderIssue::NoMovableUnits;
         };
         let budget = self.nations.majors[&major].economy.army_movement_budget;
@@ -645,7 +645,7 @@ impl GameState {
             );
         }
         if refund != 0
-            && let Some(major) = MajorNationId::from_nation(nation)
+            && let Some(major) = NationId::as_major(nation)
         {
             self.nations.majors[&major].economy.army_movement_budget += refund;
         }
@@ -764,7 +764,7 @@ impl GameState {
                 self.map[tile].flags.contains(TileFlags::PORT)
                     && self.map[tile]
                         .owner_nation
-                        .and_then(TileOwnerTag::nation)
+                        .and_then(TileContext::nation)
                         .is_some()
                     && self.has_reachable_sea_outside_beginning_turn_mask(tile)
             })
@@ -778,13 +778,13 @@ impl GameState {
 }
 
 fn direction_from_tiles(source: TileId, dest: TileId) -> HexDirection {
-    let source = i32::from(source.get());
-    let dest = i32::from(dest.get());
-    let row_from = source / i32::from(STRATEGIC_MAP_WIDTH);
-    let col_from = source % i32::from(STRATEGIC_MAP_WIDTH);
+    let source = source.get() as i32;
+    let dest = dest.get() as i32;
+    let row_from = source / STRATEGIC_MAP_WIDTH;
+    let col_from = source % STRATEGIC_MAP_WIDTH;
     let diag_from = row_from % 2 + col_from * 2;
-    let row_to = dest / i32::from(STRATEGIC_MAP_WIDTH);
-    let col_to = dest % i32::from(STRATEGIC_MAP_WIDTH);
+    let row_to = dest / STRATEGIC_MAP_WIDTH;
+    let col_to = dest % STRATEGIC_MAP_WIDTH;
     let diag_to = row_to % 2 + col_to * 2;
     if diag_from < diag_to && diag_to < diag_from + 0xd7 {
         if row_to <= row_from {
@@ -815,19 +815,19 @@ fn direction_from_tiles(source: TileId, dest: TileId) -> HexDirection {
 }
 
 fn hex_area_tile(anchor: TileId, direction: HexDirection) -> Option<TileId> {
-    let index = i32::from(anchor.get());
-    let row = index / i32::from(STRATEGIC_MAP_WIDTH);
-    let col = index % i32::from(STRATEGIC_MAP_WIDTH);
-    let mut hex_x = row % 2 + col * 2 + i32::from(HEX_COL_DELTA[direction]);
-    let mut hex_y = i32::from(HEX_ROW_DELTA[direction]) + row;
+    let index = (anchor.get() as i32);
+    let row = index / STRATEGIC_MAP_WIDTH;
+    let col = index % STRATEGIC_MAP_WIDTH;
+    let mut hex_x = row % 2 + col * 2 + HEX_COL_DELTA[direction];
+    let mut hex_y = HEX_ROW_DELTA[direction] + row;
     if hex_x > 0xd7 {
         hex_x -= 0xd9;
     } else if hex_x < 0 {
         hex_x += 0xd8;
     }
     hex_y = hex_y.clamp(0, 0x3b);
-    let final_index = hex_x / 2 + hex_y * i32::from(STRATEGIC_MAP_WIDTH);
-    TileId::try_new(u16::try_from(final_index).ok()?)
+    let final_index = hex_x / 2 + hex_y * STRATEGIC_MAP_WIDTH;
+    TileId::try_new(usize::try_from(final_index).ok()?)
 }
 
 #[cfg(test)]
@@ -1071,7 +1071,7 @@ mod tests {
         let nation = state.turn.active_nation;
         let tile = TileId::new(10);
         state.map[tile].flags.insert(TileFlags::CITY_MARKER);
-        state.map[tile].owner_nation = Some(TileOwnerTag::from_nation(nation));
+        state.map[tile].owner_nation = Some(TileContext::from_nation(nation));
         state.map[tile].province = Some(ProvinceId::new(3));
         own(&mut state, ProvinceId::new(3));
         assert_eq!(

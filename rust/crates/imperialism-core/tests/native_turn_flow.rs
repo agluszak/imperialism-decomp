@@ -20,9 +20,9 @@ struct TradeBoundaryResult {
     entry_ordinal: usize,
     buyer: u8,
     seller: u8,
-    amount: i16,
-    price: i16,
-    commodity: i16,
+    amount: i32,
+    price: i32,
+    commodity: i32,
 }
 
 #[test]
@@ -92,7 +92,7 @@ fn trade_offer_dispatch_precedes_the_offer_sheet_phase() {
         seller: pending.seller.get(),
         amount: pending.amount,
         price: pending.price,
-        commodity: pending.commodity.resource() as i16,
+        commodity: pending.commodity.resource() as i32,
     };
     assert_eq!(result, native.result);
     assert_state_except_continuation(&expected, &actual);

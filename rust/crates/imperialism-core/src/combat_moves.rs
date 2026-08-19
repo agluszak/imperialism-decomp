@@ -5,15 +5,15 @@ use crate::*;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
-const STACK_COMPOSITION: StrategicCombatClassTable<StrategicCombatClassTable<i16>> =
+const STACK_COMPOSITION: StrategicCombatClassTable<StrategicCombatClassTable<i32>> =
     StrategicCombatClassTable::from_array([
         StrategicCombatClassTable::from_array([1, 0, 0]),
         StrategicCombatClassTable::from_array([2, 3, 0]),
         StrategicCombatClassTable::from_array([3, 4, 5]),
     ]);
-const EXPERIENCE_WINNER: i16 = 0x23;
-const EXPERIENCE_LOSER: i16 = 0x14;
-const EXPERIENCE_CAP: i16 = 0x190;
+const EXPERIENCE_WINNER: i32 = 0x23;
+const EXPERIENCE_LOSER: i32 = 0x14;
+const EXPERIENCE_CAP: i32 = 0x190;
 
 /// Land battle that retail would open as a modal tactical view.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -53,7 +53,7 @@ struct ArmyStack {
     owner: NationId,
     source: ProvinceId,
     units: Vec<MilitaryUnitId>,
-    sort_key: i16,
+    sort_key: i32,
 }
 
 struct StationedUnits {
@@ -194,7 +194,7 @@ impl GameState {
                     } else {
                         500
                     };
-                    if let Some(major) = MajorNationId::from_nation(owner)
+                    if let Some(major) = NationId::as_major(owner)
                         && !self.nations.majors[&major].economy.diplomacy_eligible
                     {
                         set_unit_order(unit, MilitaryOrderCode::Sleep, None);
@@ -239,7 +239,7 @@ impl GameState {
             }
             let composition = STACK_COMPOSITION[max_class][min_class];
             let roll = self.rng.next_crt_rand();
-            stack.sort_key = (composition << 8) + (roll & 0xff) as i16;
+            stack.sort_key = (composition << 8) + (roll & 0xff) as i32;
         }
         sort_stacks_descending(&mut stacks, &mut self.rng);
         stacks
@@ -439,7 +439,7 @@ impl GameState {
         if self.diplomacy.relationships[source][target] != DiplomaticRelationship::War {
             return false;
         }
-        self.diplomacy.relationship_turns[source][target] != Some(self.turn.economic_turn as i16)
+        self.diplomacy.relationship_turns[source][target] != Some(self.turn.economic_turn as i32)
     }
 
     fn finalize_military_units_without_ui(
@@ -521,7 +521,7 @@ impl GameState {
         }
     }
 
-    fn grow_stack_experience(&mut self, ids: &[MilitaryUnitId], amount: i16) {
+    fn grow_stack_experience(&mut self, ids: &[MilitaryUnitId], amount: i32) {
         for &id in ids {
             let unit = self
                 .military_units
@@ -656,7 +656,7 @@ fn partition_stacks_core(stacks: &mut [ArmyStack], lo: i32, hi: i32) -> i32 {
     }
 }
 
-fn compare_stack_keys(a: i16, b: i16) -> i16 {
+fn compare_stack_keys(a: i32, b: i32) -> i32 {
     if a < b {
         1
     } else if a > b {
@@ -672,11 +672,15 @@ mod tests {
     use crate::test_support::game_state;
 
     fn seed_province(state: &mut GameState, province: u16, owner: u8, adjacency: &[u16]) {
-        state.map.provinces[ProvinceId::new(province)] = ProvinceState::new(
-            Some(NationId::new(owner)),
-            Some(NationId::new(owner)),
+        state.map.provinces[ProvinceId::new(usize::from(province))] = ProvinceState::new(
+            Some(NationId::from_retail_slot(owner).unwrap()),
+            Some(NationId::from_retail_slot(owner).unwrap()),
             ProvinceDevelopmentStage::None,
-            adjacency.iter().copied().map(ProvinceId::new).collect(),
+            adjacency
+                .iter()
+                .copied()
+                .map(|id| ProvinceId::new(usize::from(id)))
+                .collect(),
             vec![TileId::new(0); adjacency.len()],
             Some(0),
             FortLevel::None,
@@ -702,11 +706,11 @@ mod tests {
         dest: Option<u16>,
     ) -> MilitaryUnitId {
         let id = state.unit_ids.next_military();
-        let province = ProvinceId::new(province);
+        let province = ProvinceId::new(usize::from(province));
         let order = match dest {
             Some(dest) => MilitaryOrder::retail(
                 MilitaryOrderCode::Redeploy,
-                Some(ProvinceId::new(dest)),
+                Some(ProvinceId::new(usize::from(dest))),
                 [Some(province); 3],
                 [Some(province); 3],
             ),
@@ -715,11 +719,11 @@ mod tests {
         state.military_units.insert(
             id,
             MilitaryUnitState::new(
-                NationId::new(nation),
+                NationId::from_retail_slot(nation).unwrap(),
                 kind,
                 Some(province),
                 order,
-                NationId::new(nation),
+                NationId::from_retail_slot(nation).unwrap(),
                 0,
                 true,
                 String::new(),
@@ -755,9 +759,9 @@ mod tests {
         seed_province(&mut state, 2, 1, &[1]);
         let attacker = push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
         let defender = push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);
-        state.diplomacy.relationships[NationId::new(0)][NationId::new(1)] =
+        state.diplomacy.relationships[MajorNationId::new(0)][MajorNationId::new(1)] =
             DiplomaticRelationship::War;
-        state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
+        state.diplomacy.relationships[MajorNationId::new(1)][MajorNationId::new(0)] =
             DiplomaticRelationship::War;
         let battle = state
             .do_combat_moves()
@@ -767,8 +771,8 @@ mod tests {
             battle,
             PendingLandBattle {
                 province: ProvinceId::new(2),
-                attacker_nation: NationId::new(0),
-                defender_nation: NationId::new(1),
+                attacker_nation: MajorNationId::new(0).nation(),
+                defender_nation: MajorNationId::new(1).nation(),
                 attacker_units: vec![attacker],
                 defender_units: vec![defender],
             }
@@ -801,14 +805,14 @@ mod tests {
         seed_province(&mut state, 2, 1, &[1]);
         let attacker = push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
         let defender = push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);
-        state.diplomacy.relationships[NationId::new(0)][NationId::new(1)] =
+        state.diplomacy.relationships[MajorNationId::new(0)][MajorNationId::new(1)] =
             DiplomaticRelationship::War;
-        state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
+        state.diplomacy.relationships[MajorNationId::new(1)][MajorNationId::new(0)] =
             DiplomaticRelationship::War;
         let expected = PendingLandBattle {
             province: ProvinceId::new(2),
-            attacker_nation: NationId::new(0),
-            defender_nation: NationId::new(1),
+            attacker_nation: MajorNationId::new(0).nation(),
+            defender_nation: MajorNationId::new(1).nation(),
             attacker_units: vec![attacker],
             defender_units: vec![defender],
         };
@@ -838,9 +842,9 @@ mod tests {
         let first_defender = push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);
         let second_attacker = push_unit(&mut state, 0, 3, MilitaryUnitKind::Regulars, Some(4));
         let second_defender = push_unit(&mut state, 1, 4, MilitaryUnitKind::Militia, None);
-        state.diplomacy.relationships[NationId::new(0)][NationId::new(1)] =
+        state.diplomacy.relationships[MajorNationId::new(0)][MajorNationId::new(1)] =
             DiplomaticRelationship::War;
-        state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
+        state.diplomacy.relationships[MajorNationId::new(1)][MajorNationId::new(0)] =
             DiplomaticRelationship::War;
 
         assert_eq!(state.advance_turn(&[]), crate::TurnStop::LandBattle);
@@ -878,9 +882,9 @@ mod tests {
     }
 
     fn seed_war(state: &mut GameState) {
-        state.diplomacy.relationships[NationId::new(0)][NationId::new(1)] =
+        state.diplomacy.relationships[MajorNationId::new(0)][MajorNationId::new(1)] =
             DiplomaticRelationship::War;
-        state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
+        state.diplomacy.relationships[MajorNationId::new(1)][MajorNationId::new(0)] =
             DiplomaticRelationship::War;
     }
 
@@ -892,18 +896,22 @@ mod tests {
         seed_province(&mut state, 2, 1, &[1]);
         seed_province(&mut state, 3, 0, &[4]);
         seed_province(&mut state, 4, 0, &[3]);
-        state
-            .nations
-            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(1));
-        state
-            .nations
-            .append_owned_region_during_construction(NationId::new(1), ProvinceId::new(2));
-        state
-            .nations
-            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(3));
-        state
-            .nations
-            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(4));
+        state.nations.append_owned_region_during_construction(
+            MajorNationId::new(0).nation(),
+            ProvinceId::new(1),
+        );
+        state.nations.append_owned_region_during_construction(
+            MajorNationId::new(1).nation(),
+            ProvinceId::new(2),
+        );
+        state.nations.append_owned_region_during_construction(
+            MajorNationId::new(0).nation(),
+            ProvinceId::new(3),
+        );
+        state.nations.append_owned_region_during_construction(
+            MajorNationId::new(0).nation(),
+            ProvinceId::new(4),
+        );
         let attacker = push_unit(&mut state, 0, 1, MilitaryUnitKind::Hussars, Some(2));
         let _defender = push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);
         let mover = push_unit(&mut state, 0, 3, MilitaryUnitKind::Regulars, Some(4));
@@ -984,7 +992,7 @@ mod tests {
         );
         assert_eq!(
             state.map.provinces[ProvinceId::new(2)].owner(),
-            Some(NationId::new(0))
+            Some(MajorNationId::new(0).nation())
         );
     }
 
@@ -997,18 +1005,22 @@ mod tests {
         seed_province(&mut state, 2, 1, &[1]);
         seed_province(&mut state, 3, 0, &[4]);
         seed_province(&mut state, 4, 0, &[3]);
-        state
-            .nations
-            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(1));
-        state
-            .nations
-            .append_owned_region_during_construction(NationId::new(1), ProvinceId::new(2));
-        state
-            .nations
-            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(3));
-        state
-            .nations
-            .append_owned_region_during_construction(NationId::new(0), ProvinceId::new(4));
+        state.nations.append_owned_region_during_construction(
+            MajorNationId::new(0).nation(),
+            ProvinceId::new(1),
+        );
+        state.nations.append_owned_region_during_construction(
+            MajorNationId::new(1).nation(),
+            ProvinceId::new(2),
+        );
+        state.nations.append_owned_region_during_construction(
+            MajorNationId::new(0).nation(),
+            ProvinceId::new(3),
+        );
+        state.nations.append_owned_region_during_construction(
+            MajorNationId::new(0).nation(),
+            ProvinceId::new(4),
+        );
         let attacker = push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
         state.military_units[0].strength = 500;
         let _defender = push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);

@@ -425,11 +425,11 @@ struct TacUnit {
     ai_state: i32,
     strength: i32,
     morale: i32,
-    quality: i16,
+    quality: i32,
     sap_target: i32,
     flag3c: bool,
     side: BattleSide,
-    field24: i16,
+    field24: i32,
     projection: ActionClassScores,
 }
 
@@ -447,8 +447,8 @@ struct Side {
     projection_sums: ActionClassScores,
     baseline_similarity: f32,
     composition_similarity: f32,
-    max_range: i16,
-    max_non_artillery_range: i16,
+    max_range: i32,
+    max_non_artillery_range: i32,
     field20: bool,
     allow_broken_targets: bool,
     has_artillery_or_engineers: bool,
@@ -463,7 +463,7 @@ struct Battle {
     #[serde(with = "tile_array")]
     tiles: [Tile; TACTICAL_TILE_COUNT],
     #[serde(skip, default = "empty_move_costs")]
-    move_costs: [i16; TACTICAL_TILE_COUNT + 1],
+    move_costs: [i32; TACTICAL_TILE_COUNT + 1],
     #[serde(skip, default = "empty_threat")]
     threat: [i8; TACTICAL_TILE_COUNT],
     #[serde(skip, default = "empty_i32_grid")]
@@ -488,7 +488,7 @@ struct Battle {
     live: bool,
 }
 
-const fn empty_move_costs() -> [i16; TACTICAL_TILE_COUNT + 1] {
+const fn empty_move_costs() -> [i32; TACTICAL_TILE_COUNT + 1] {
     [0; TACTICAL_TILE_COUNT + 1]
 }
 
@@ -981,7 +981,7 @@ impl Battle {
         }
 
         for unit in &mut this.units {
-            unit.field24 = state.rng.next_crt_rand() as i16;
+            unit.field24 = state.rng.next_crt_rand() as i32;
         }
         this.records.extend(
             this.units
@@ -1492,7 +1492,7 @@ impl Battle {
             for list in lists {
                 for idx in list {
                     let source = self.units[idx].source;
-                    let strength = self.units[idx].strength as i16;
+                    let strength = self.units[idx].strength as i32;
                     state.military_units[&source].strength = strength;
                     if strength == 0 {
                         destroyed.push(source);
@@ -1608,19 +1608,19 @@ fn composition_row(row: usize) -> ActionClassWeights {
     }
 }
 
-fn compare_deploy_priority(a: &TacUnit, b: &TacUnit) -> i16 {
-    const PRIORITY: TacticalCombatClassTable<i16> =
+fn compare_deploy_priority(a: &TacUnit, b: &TacUnit) -> i32 {
+    const PRIORITY: TacticalCombatClassTable<i32> =
         TacticalCombatClassTable::from_array([1, 0, 2, 0, 0]);
     let priority_a = PRIORITY[AI_CLASS[a.unit_type]];
     let priority_b = PRIORITY[AI_CLASS[b.unit_type]];
     if priority_a < priority_b {
         1
     } else {
-        -i16::from(priority_a != priority_b)
+        -i32::from(priority_a != priority_b)
     }
 }
 
-fn compare_turn_order(a: &TacUnit, b: &TacUnit) -> i16 {
+fn compare_turn_order(a: &TacUnit, b: &TacUnit) -> i32 {
     let ap_a = a.base_action_points();
     let ap_b = b.base_action_points();
     if ap_b < ap_a {
@@ -1635,7 +1635,7 @@ fn compare_turn_order(a: &TacUnit, b: &TacUnit) -> i16 {
     if b.quality > a.quality {
         return 1;
     }
-    i16::from(a.field24 <= b.field24) * 2 - 1
+    i32::from(a.field24 <= b.field24) * 2 - 1
 }
 
 fn hex_distance(a: i32, b: i32) -> i32 {
@@ -1675,11 +1675,11 @@ impl Battle {
         range
     }
 
-    fn cost(&self, tile: i32) -> i16 {
+    fn cost(&self, tile: i32) -> i32 {
         self.move_costs[(tile + 1) as usize]
     }
 
-    fn set_cost(&mut self, tile: i32, value: i16) {
+    fn set_cost(&mut self, tile: i32, value: i32) {
         self.move_costs[(tile + 1) as usize] = value;
     }
 
@@ -1746,7 +1746,7 @@ impl Battle {
         &mut self,
         state: &mut GameState,
         side: BattleSide,
-        cmp: fn(&TacUnit, &TacUnit) -> i16,
+        cmp: fn(&TacUnit, &TacUnit) -> i32,
     ) {
         let mut list = std::mem::take(&mut self.sides[side].units);
         retail_sort(&mut list, &mut state.rng, |a, b| {
@@ -1824,13 +1824,13 @@ impl Battle {
         let scale = strength_term * quality_factor as f32;
         let kind = source.unit_type;
         self.units[idx].projection = ActionClassScores {
-            infantry: f32::from(kind.tactical_attribute(TacticalCombatClass::Infantry))
+            infantry: (kind.tactical_attribute(TacticalCombatClass::Infantry) as f32)
                 * scale
                 * strength_term,
-            cavalry: f32::from(kind.tactical_attribute(TacticalCombatClass::Cavalry)) * scale,
-            artillery: f32::from(kind.tactical_attribute(TacticalCombatClass::Artillery)) * scale,
-            armor: f32::from(kind.tactical_attribute(TacticalCombatClass::Armor)) * scale,
-            support: f32::from(kind.tactical_attribute(TacticalCombatClass::Support)) * scale,
+            cavalry: (kind.tactical_attribute(TacticalCombatClass::Cavalry) as f32) * scale,
+            artillery: (kind.tactical_attribute(TacticalCombatClass::Artillery) as f32) * scale,
+            armor: (kind.tactical_attribute(TacticalCombatClass::Armor) as f32) * scale,
+            support: (kind.tactical_attribute(TacticalCombatClass::Support) as f32) * scale,
         };
     }
 
@@ -1848,7 +1848,7 @@ impl Battle {
             self.sides[side]
                 .projection_sums
                 .add_assign(self.units[idx].projection);
-            let range = self.unit_range(idx) as i16;
+            let range = self.unit_range(idx) as i32;
             if range > self.sides[side].max_range {
                 self.sides[side].max_range = range;
             }
@@ -2782,7 +2782,7 @@ fn neighbor_list(tile: i32) -> HexDirectionTable<i32> {
 fn retail_sort(
     list: &mut [usize],
     rng: &mut crate::rng::RngState,
-    cmp: impl Fn(usize, usize) -> i16,
+    cmp: impl Fn(usize, usize) -> i32,
 ) {
     if !list.is_empty() {
         // TSortedList comparators return 0 for the same object; without that, Hoare
@@ -2798,7 +2798,7 @@ fn retail_quicksort(
     lo: i32,
     hi: i32,
     rng: &mut crate::rng::RngState,
-    cmp: &impl Fn(usize, usize) -> i16,
+    cmp: &impl Fn(usize, usize) -> i32,
 ) {
     if lo < hi {
         let pivot = retail_partition(list, lo, hi, rng, cmp);
@@ -2812,7 +2812,7 @@ fn retail_partition(
     lo: i32,
     hi: i32,
     rng: &mut crate::rng::RngState,
-    cmp: &impl Fn(usize, usize) -> i16,
+    cmp: &impl Fn(usize, usize) -> i32,
 ) -> i32 {
     let mut pivot_ordinal = lo;
     if lo != hi {
@@ -2826,7 +2826,7 @@ fn retail_partition_core(
     list: &mut [usize],
     lo: i32,
     hi: i32,
-    cmp: &impl Fn(usize, usize) -> i16,
+    cmp: &impl Fn(usize, usize) -> i32,
 ) -> i32 {
     if lo >= hi {
         return hi;
@@ -2875,12 +2875,12 @@ impl Battle {
             for tile in TACTICAL_STRIDE..TACTICAL_TILE_COUNT as i32 {
                 if column < self.column_count
                     && column != edge_column
-                    && self.cost(tile) >= cost_level as i16
+                    && self.cost(tile) >= cost_level as i32
                 {
                     let neighbors = self.neighbors(tile);
                     for direction in HexDirection::ALL {
                         let neighbor = neighbors[direction];
-                        let neighbor_index = neighbor as i16;
+                        let neighbor_index = neighbor as i32;
                         if neighbor_index == -1 {
                             continue;
                         }
@@ -3567,7 +3567,7 @@ mod tests {
             is_our,
             ready: false,
             auto_play: false,
-            nation: NationId::new(0),
+            nation: MajorNationId::new(0).nation(),
             cursor: 0,
             units: Vec::new(),
             secondary: Vec::new(),
@@ -3661,11 +3661,15 @@ mod tests {
     }
 
     fn seed_province(state: &mut GameState, province: u16, owner: u8, adjacency: &[u16]) {
-        state.map.provinces[ProvinceId::new(province)] = ProvinceState::new(
-            Some(NationId::new(owner)),
-            Some(NationId::new(owner)),
+        state.map.provinces[ProvinceId::new(usize::from(province))] = ProvinceState::new(
+            Some(NationId::from_retail_slot(owner).unwrap()),
+            Some(NationId::from_retail_slot(owner).unwrap()),
             ProvinceDevelopmentStage::None,
-            adjacency.iter().copied().map(ProvinceId::new).collect(),
+            adjacency
+                .iter()
+                .copied()
+                .map(|id| ProvinceId::new(usize::from(id)))
+                .collect(),
             vec![TileId::new(0); adjacency.len()],
             Some(0),
             FortLevel::None,
@@ -3691,11 +3695,11 @@ mod tests {
         dest: Option<u16>,
     ) -> MilitaryUnitId {
         let id = state.unit_ids.next_military();
-        let province = ProvinceId::new(province);
+        let province = ProvinceId::new(usize::from(province));
         let order = match dest {
             Some(dest) => MilitaryOrder::retail(
                 MilitaryOrderCode::Redeploy,
-                Some(ProvinceId::new(dest)),
+                Some(ProvinceId::new(usize::from(dest))),
                 [Some(province); 3],
                 [Some(province); 3],
             ),
@@ -3704,11 +3708,11 @@ mod tests {
         state.military_units.insert(
             id,
             MilitaryUnitState::new(
-                NationId::new(nation),
+                NationId::from_retail_slot(nation).unwrap(),
                 kind,
                 Some(province),
                 order,
-                NationId::new(nation),
+                NationId::from_retail_slot(nation).unwrap(),
                 0,
                 true,
                 String::new(),
@@ -3729,9 +3733,9 @@ mod tests {
         seed_province(&mut state, 2, 1, &[1]);
         let attacker = push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
         let defender = push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);
-        state.diplomacy.relationships[NationId::new(0)][NationId::new(1)] =
+        state.diplomacy.relationships[MajorNationId::new(0)][MajorNationId::new(1)] =
             DiplomaticRelationship::War;
-        state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
+        state.diplomacy.relationships[MajorNationId::new(1)][MajorNationId::new(0)] =
             DiplomaticRelationship::War;
         assert_eq!(state.advance_turn(&[]), crate::TurnStop::LandBattle);
         (state, attacker, defender)
@@ -3860,7 +3864,7 @@ mod tests {
     #[test]
     fn pre_live_retreat_hands_deployment_to_the_other_side() {
         let (mut state, _, defender) = pending_regulars_vs_militia();
-        state.turn.active_nation = NationId::new(1);
+        state.turn.active_nation = MajorNationId::new(1).nation();
         state.ensure_army_battle();
         assert_eq!(
             state.army_battle().unwrap().active_side(),

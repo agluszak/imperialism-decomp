@@ -34,10 +34,22 @@ impl Ocean {
             zone.zone()
                 .secondary_neighbors
                 .contains(&province)
-                .then_some(OceanZoneId::new(
-                    u16::try_from(ordinal).expect("ocean zone ordinal fits a zone id"),
-                ))
+                .then_some(OceanZoneId::new(ordinal))
         })
+    }
+}
+
+impl std::ops::Index<OceanZoneId> for Ocean {
+    type Output = ZoneKind;
+
+    fn index(&self, id: OceanZoneId) -> &Self::Output {
+        &self.zones[id.index()]
+    }
+}
+
+impl std::ops::IndexMut<OceanZoneId> for Ocean {
+    fn index_mut(&mut self, id: OceanZoneId) -> &mut Self::Output {
+        &mut self.zones[id.index()]
     }
 }
 
@@ -45,9 +57,9 @@ impl Ocean {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Zone {
     pub display_name: String,
-    pub status_code: Option<i16>,
+    pub status_code: Option<i32>,
     pub target_tile: Option<TileId>,
-    pub seed_owner: Option<TileOwnerTag>,
+    pub seed_owner: Option<TileContext>,
     pub active_tile: Option<TileId>,
     pub primary_neighbors: Vec<OceanZoneId>,
     pub secondary_neighbors: Vec<ProvinceId>,
@@ -82,9 +94,9 @@ impl GameState {
                 };
                 (self.map[port.port_tile]
                     .former_owner_nation
-                    .and_then(TileOwnerTag::nation)
+                    .and_then(TileContext::nation)
                     == Some(nation))
-                .then(|| OceanZoneId::new(index as u16))
+                .then(|| OceanZoneId::new(index))
             })
     }
 
@@ -102,17 +114,16 @@ impl GameState {
                 (port.zone.target_tile == Some(home)
                     || port.zone.active_tile == Some(home)
                     || port.port_tile == home)
-                    .then(|| OceanZoneId::new(index as u16))
+                    .then(|| OceanZoneId::new(index))
             })
     }
 
     /// `TOcean::EnsurePortZoneForTile` (0x005635e0).
     pub(crate) fn ensure_port_zone_for_tile(&mut self, tile: TileId) {
-        const ACTION_STATE_ANCHOR: i16 = 3;
-        const ACTION_STATE_DOCKED_FLEET: i16 = 14;
-        const ACTION_STATE_PORT_ZONE_MARKER: i16 = -14;
-        const SEA_OWNER_BIAS: u8 = 0x17;
-        const PORT_ZONE_STATUS_CATEGORY: i16 = 5;
+        const ACTION_STATE_ANCHOR: i32 = 3;
+        const ACTION_STATE_DOCKED_FLEET: i32 = 14;
+        const ACTION_STATE_PORT_ZONE_MARKER: i32 = -14;
+        const PORT_ZONE_STATUS_CATEGORY: i32 = 5;
         const PORT_ZONE_HEADLINES: [&str; 4] =
             ["Port of [1]", "Port of [1]", "Port [1]", "Port [1]"];
 
@@ -125,7 +136,6 @@ impl GameState {
         let Some(seed_owner) = self.map[tile].owner_nation else {
             return;
         };
-        let nation_seed = seed_owner.get();
         if let Some(nation) = seed_owner.nation() {
             let home = self.nations.home_tile(nation);
             if let Some(representative) = self
@@ -138,7 +148,7 @@ impl GameState {
         }
 
         let geometry = self.map.geometry();
-        let Some(best_sea) = select_live_port_sea_tile(&self.map, geometry, tile, nation_seed)
+        let Some(best_sea) = select_live_port_sea_tile(&self.map, geometry, tile, seed_owner)
         else {
             return;
         };
@@ -150,16 +160,12 @@ impl GameState {
             )
         }) {
             self.port_zone_index_for_tile(best_sea)
-                .map(|index| OceanZoneId::new(index as u16))
+                .map(|index| OceanZoneId::new(index))
         } else {
-            self.map[best_sea]
-                .owner_nation
-                .map(TileOwnerTag::get)
-                .filter(|&tag| tag >= SEA_OWNER_BIAS)
-                .map(|tag| OceanZoneId::new(u16::from(tag - SEA_OWNER_BIAS)))
+            self.map[best_sea].owner_nation.and_then(TileContext::ocean)
         };
 
-        let ordinal = OceanZoneId::new(self.ocean.zones.len() as u16);
+        let ordinal = OceanZoneId::new(self.ocean.zones.len());
         if let Some(linked) = linked {
             let linked_index = usize::from(linked.get());
             if linked_index < self.ocean.zones.len() {
@@ -182,7 +188,7 @@ impl GameState {
             primary_neighbors.first().copied(),
         );
         let status_code =
-            PORT_ZONE_STATUS_CATEGORY * 4 + (self.rng.next_zone_status_sample_15() & 3) as i16;
+            PORT_ZONE_STATUS_CATEGORY * 4 + (self.rng.next_zone_status_sample_15() & 3) as i32;
         let province_name = self.map[tile]
             .province
             .map(|province| self.map.provinces[province].name.clone())
@@ -237,11 +243,9 @@ fn select_live_port_sea_tile(
     world: &MapMgr,
     geometry: MapGeometry,
     tile: TileId,
-    nation_seed: u8,
+    seed_owner: TileContext,
 ) -> Option<TileId> {
-    const SEA_OWNER_BIAS: u8 = 0x17;
-
-    let tile_index = usize::from(tile.get());
+    let tile_index = tile.index();
     for offset in 0..6 {
         let direction = HexDirection::ALL[(tile_index + offset) % 6];
         let Some(candidate) = geometry.neighbor(tile, direction) else {
@@ -254,7 +258,7 @@ fn select_live_port_sea_tile(
             let neighbor = civilian_sea_scan_neighbor(candidate, neighbor_dir);
             !matches!(
                 world[neighbor].owner_nation,
-                Some(owner) if owner.get() < SEA_OWNER_BIAS && owner.get() != nation_seed
+                Some(TileContext::Nation(nation)) if seed_owner.nation() != Some(nation)
             )
         });
         if all_neighbors_qualify {
@@ -270,14 +274,14 @@ fn find_nearest_active_sea_context_tile(
     origin: TileId,
     expected: Option<OceanZoneId>,
 ) -> Option<TileId> {
-    const ACTION_STATE_ANCHOR: i16 = 3;
-    const ACTION_STATE_DOCKED_FLEET: i16 = 14;
-    const SEA_OWNER_BIAS: u8 = 0x17;
+    const ACTION_STATE_ANCHOR: i32 = 3;
+    const ACTION_STATE_DOCKED_FLEET: i32 = 14;
 
     let geometry = world.geometry();
-    let (row, column) = geometry.row_column(origin);
-    let mut row = i32::from(row);
-    let mut column = i32::from(column);
+    let MapPosition {
+        mut row,
+        mut column,
+    } = geometry.position(origin);
     let mut ring = 0_i32;
     let mut direction = HexDirection::NorthWest;
     let mut step_in_ring = 1_i32;
@@ -291,11 +295,9 @@ fn find_nearest_active_sea_context_tile(
         world.topology,
     );
     while ring < 10 {
-        if (0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&row)
-            && (0..i32::from(STRATEGIC_MAP_WIDTH)).contains(&column)
-        {
+        if (0..STRATEGIC_MAP_HEIGHT).contains(&row) && (0..STRATEGIC_MAP_WIDTH).contains(&column) {
             let candidate = geometry
-                .tile(row as u16, column as u16)
+                .tile(MapPosition::new(row, column))
                 .expect("checked spiral coordinates are on the strategic map");
             let candidate_context = if world[candidate].action.is_some_and(|action| {
                 matches!(
@@ -315,14 +317,10 @@ fn find_nearest_active_sea_context_tile(
                         (port.port_tile == candidate
                             || port.zone.target_tile == Some(candidate)
                             || port.zone.active_tile == Some(candidate))
-                        .then(|| OceanZoneId::new(index as u16))
+                        .then(|| OceanZoneId::new(index))
                     })
             } else {
-                world[candidate]
-                    .owner_nation
-                    .map(TileOwnerTag::get)
-                    .filter(|&tag| tag >= SEA_OWNER_BIAS)
-                    .map(|tag| OceanZoneId::new(u16::from(tag - SEA_OWNER_BIAS)))
+                world[candidate].owner_nation.and_then(TileContext::ocean)
             };
             if candidate_context == expected && world[candidate].action.is_none() {
                 return Some(candidate);
@@ -377,7 +375,7 @@ fn step_port_zone_row_column(
         *column += 1;
     }
     if topology == MapTopology::Wrapping {
-        *column = column.rem_euclid(i32::from(STRATEGIC_MAP_WIDTH));
+        *column = column.rem_euclid(STRATEGIC_MAP_WIDTH);
     }
     if matches!(direction, HexDirection::NorthWest | HexDirection::NorthEast) {
         *row -= 1;

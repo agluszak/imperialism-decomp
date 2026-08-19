@@ -94,7 +94,7 @@ pub(crate) struct OceanViewport {
 
 impl OceanViewport {
     pub(crate) fn center_on(&mut self, tile: TileId, geometry: &MapGeometry) {
-        let (row, column) = geometry.row_column(tile);
+        let MapPosition { row, column } = geometry.position(tile);
         self.set_upper_left(
             IVec2::new(i32::from(column) - 0x10, i32::from(row) - 0x0e),
             geometry,
@@ -126,10 +126,10 @@ impl OceanViewport {
 
     pub(crate) fn center_tile(self, geometry: &MapGeometry) -> TileId {
         geometry
-            .tile(
-                (self.origin.y + 0x0e) as u16,
-                (self.origin.x + 0x10).rem_euclid(i32::from(STRATEGIC_MAP_WIDTH)) as u16,
-            )
+            .tile(MapPosition::new(
+                self.origin.y + 0x0e,
+                (self.origin.x + 0x10).rem_euclid(STRATEGIC_MAP_WIDTH),
+            ))
             .expect("retail ocean center is inside the map")
     }
 }
@@ -163,9 +163,12 @@ pub(crate) enum MapTransition {
 
 pub(crate) fn detailed_center_tile(session: &GameSession) -> TileId {
     let geometry = session.game.map().geometry();
-    let (row, column) = geometry.row_column(session.map_view_origin);
+    let MapPosition { row, column } = geometry.position(session.map_view_origin);
     geometry
-        .tile(row + 4, (column + 4) % STRATEGIC_MAP_WIDTH)
+        .tile(MapPosition::new(
+            row + 4,
+            (column + 4) % STRATEGIC_MAP_WIDTH,
+        ))
         .expect("retail detailed-map center is inside the map")
 }
 
@@ -243,7 +246,7 @@ pub(crate) fn cycle_map_interaction_selection(
     let mut cursor = interaction.mode;
     let mut previous = interaction.mode;
     let mut visited = 0_u8;
-    if MajorNationId::from_nation(nation).is_none_or(|major| {
+    if NationId::as_major(nation).is_none_or(|major| {
         !session
             .game
             .nations()
@@ -449,12 +452,18 @@ mod tests {
             MapTransition::ToggleZoom,
         );
         assert_eq!(viewport.projection, MapProjection::Detailed);
-        let (ocean_row, ocean_column) = session.game.map().geometry().row_column(ocean_center);
-        let (detailed_row, detailed_column) = session
+        let MapPosition {
+            row: ocean_row,
+            column: ocean_column,
+        } = session.game.map().geometry().position(ocean_center);
+        let MapPosition {
+            row: detailed_row,
+            column: detailed_column,
+        } = session
             .game
             .map()
             .geometry()
-            .row_column(detailed_center_tile(&session));
+            .position(detailed_center_tile(&session));
         assert_eq!(detailed_column, ocean_column);
         assert_eq!(detailed_row, ocean_row + 1);
 

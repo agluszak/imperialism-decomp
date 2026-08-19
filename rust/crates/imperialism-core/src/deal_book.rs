@@ -50,7 +50,7 @@ pub struct DealBookDealLine {
     pub commodity: TradeCommodity,
     pub kind: DealBookEntryKind,
     pub counterparty: NationId,
-    pub amount: i16,
+    pub amount: i32,
     pub unit_price: i32,
     pub market_price: i32,
 }
@@ -88,8 +88,8 @@ pub struct DealBookTotals {
     pub budget_pool_delta: i32,
     pub military_expenses: i32,
     pub aid_total: i32,
-    pub pressure_counter: i16,
-    pub escalation_counter: i16,
+    pub pressure_counter: i32,
+    pub escalation_counter: i32,
     pub pending_commitment_cost: i32,
     pub remaining: i32,
     pub diplomacy_budget_base: i32,
@@ -131,7 +131,7 @@ pub enum DealBookHistoryRow {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct DealBookOfferRow {
     pub nation: NationId,
-    pub amount: i16,
+    pub amount: i32,
     pub bidder_nations: Vec<NationId>,
 }
 
@@ -373,12 +373,12 @@ fn bidders_for(state: &GameState, commodity: TradeCommodity, seller: NationId) -
         if buyer == seller || bidders.len() == MAX_BIDDER_FLAGS {
             continue;
         }
-        let from_seller = MajorNationId::from_nation(seller).is_some_and(|seller| {
+        let from_seller = NationId::as_major(seller).is_some_and(|seller| {
             state.nations.major(seller).economy.deal_book[commodity]
                 .iter()
                 .any(|entry| entry.kind == DealBookEntryKind::Accept && entry.nation == buyer)
         });
-        let from_buyer = MajorNationId::from_nation(buyer).is_some_and(|buyer| {
+        let from_buyer = NationId::as_major(buyer).is_some_and(|buyer| {
             state.nations.major(buyer).economy.deal_book[commodity]
                 .iter()
                 .any(|entry| entry.kind == DealBookEntryKind::Offer && entry.nation == seller)
@@ -514,17 +514,17 @@ mod tests {
     use crate::test_support::game_state;
 
     fn nation(slot: u8) -> NationId {
-        NationId::new(slot)
+        NationId::from_retail_slot(slot).unwrap()
     }
 
     fn major(slot: u8) -> MajorNationId {
-        MajorNationId::new(slot)
+        MajorNationId::new(usize::from(slot))
     }
 
     fn entry(
         kind: DealBookEntryKind,
         counterparty: u8,
-        amount: i16,
+        amount: i32,
         unit_price: i32,
     ) -> TradeDealBookEntry {
         TradeDealBookEntry {
@@ -609,7 +609,7 @@ mod tests {
     fn aid_groups_by_resource_and_skips_absent_minors() {
         let mut state = game_state();
         state.nations.minors.insert(
-            MinorNationId::new(7),
+            MinorNationId::new(0),
             MinorNation {
                 common: NationCommonState::from_parts(
                     "Konia".to_owned(),
@@ -619,13 +619,13 @@ mod tests {
                     None,
                     NationTable::default(),
                 ),
-                consortium_members: [MinorNationId::new(7); 4],
+                consortium_members: [MinorNationId::new(0); 4],
                 trade: MinorTradeState::default(),
             },
         );
         let economy = &mut state.nations.major_mut(major(0)).economy;
-        economy.aid_allocation_by_minor_nation[MinorNationId::new(7)][ResourceKind::Grain] = 40;
-        economy.aid_allocation_by_minor_nation[MinorNationId::new(8)][ResourceKind::Grain] = 15;
+        economy.aid_allocation_by_minor_nation[MinorNationId::new(0)][ResourceKind::Grain] = 40;
+        economy.aid_allocation_by_minor_nation[MinorNationId::new(1)][ResourceKind::Grain] = 15;
 
         let history = state.deal_book_history(major(0));
         assert!(matches!(

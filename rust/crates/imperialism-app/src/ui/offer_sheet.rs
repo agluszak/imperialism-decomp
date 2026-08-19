@@ -287,7 +287,7 @@ fn on_offer_sheet_activate(
         OfferSheetAction::Reject => 0,
         OfferSheetAction::Accept => {
             let Some(amount) =
-                amount.and_then(|editable| editable.value().to_string().parse::<i16>().ok())
+                amount.and_then(|editable| editable.value().to_string().parse::<i32>().ok())
             else {
                 spawn_offer_quantity_error(
                     &mut commands,
@@ -364,8 +364,7 @@ mod tests {
 
     fn fixture_state() -> GameState {
         let mut parts = beginning_of_game_parts();
-        let buyer =
-            MajorNationId::from_nation(parts.turn.active_nation).expect("active nation is a major");
+        let buyer = NationId::as_major(parts.turn.active_nation).expect("active nation is a major");
         let seller = MajorNationId::new(if buyer.get() == 0 { 1 } else { 0 });
         let majors = MajorNationTable::from_fn(|nation| {
             let mut major = parts.nations.major(nation).clone();

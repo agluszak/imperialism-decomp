@@ -24,9 +24,9 @@ pub(crate) fn population_growth_limit(
 pub(crate) fn set_population_growth_quantity(
     progress: &mut ProductionProgress,
     stockpile: &mut Stockpile,
-    production_accum: &mut ProductionTable<i16>,
+    production_accum: &mut ProductionTable<i32>,
     limit: OrderLimit,
-    quantity: i16,
+    quantity: i32,
 ) -> bool {
     let Some(delta) = progress.try_set(limit, quantity) else {
         return false;
@@ -41,7 +41,7 @@ pub(crate) fn set_population_growth_quantity(
 pub(crate) fn produce_population_growth(
     progress: &mut ProductionProgress,
     population: &mut PopulationState,
-    production_accum: &mut ProductionTable<i16>,
+    production_accum: &mut ProductionTable<i32>,
     owner: &GreatPowerState,
     owned_region_count: usize,
 ) {
@@ -54,7 +54,7 @@ pub(crate) fn produce_population_growth(
     progress.quantity = 0;
 }
 
-pub(crate) fn food_processing_max_order(progress: &ProductionProgress, city: &CityState) -> i16 {
+pub(crate) fn food_processing_max_order(progress: &ProductionProgress, city: &CityState) -> i32 {
     let mut limit = city.stockpile[ResourceKind::Grain] / 2;
     let animal_food = city.stockpile[ResourceKind::Fish] + city.stockpile[ResourceKind::Livestock];
     let workforce_limit = city.population.strength / 2;
@@ -68,8 +68,8 @@ pub(crate) fn set_food_processing_quantity(
     progress: &mut ProductionProgress,
     stockpile: &mut Stockpile,
     population: &mut PopulationState,
-    maximum: i16,
-    mut quantity: i16,
+    maximum: i32,
+    mut quantity: i32,
 ) -> bool {
     if quantity & 1 != 0 {
         quantity += 1;
@@ -130,9 +130,9 @@ pub(crate) fn set_transport_capacity_quantity(
     state: &mut RequestedCityOrderState,
     stockpile: &mut Stockpile,
     population: &mut PopulationState,
-    production_accum: &mut ProductionTable<i16>,
+    production_accum: &mut ProductionTable<i32>,
     limit: OrderLimit,
-    quantity: i16,
+    quantity: i32,
 ) -> bool {
     let (primary_input, secondary_input) = TRANSPORT_CAPACITY_INPUTS;
     let Some(delta) = state.progress.try_set(limit, quantity) else {
@@ -177,7 +177,7 @@ pub(crate) fn expansion_max_order(
     city: &CityState,
     primary_input: ResourceKind,
     secondary_input: ResourceKind,
-) -> i16 {
+) -> i32 {
     (state.tracking_by_resource[primary_input] + city.stockpile[primary_input])
         .min(state.tracking_by_resource[secondary_input] + city.stockpile[secondary_input])
 }
@@ -187,8 +187,8 @@ pub(crate) fn set_expansion_quantity(
     stockpile: &mut Stockpile,
     primary_input: ResourceKind,
     secondary_input: ResourceKind,
-    maximum: i16,
-    quantity: i16,
+    maximum: i32,
+    quantity: i32,
 ) -> bool {
     let Some(delta) = state.progress.try_set_within(maximum, quantity) else {
         return false;
@@ -207,8 +207,8 @@ pub(crate) fn set_expansion_quantity(
 
 pub(crate) fn produce_expansion(
     state: &mut RequestedCityOrderState,
-    production_orders: &mut ProductionTable<i16>,
-    production_accum: &mut ProductionTable<i16>,
+    production_orders: &mut ProductionTable<i32>,
+    production_accum: &mut ProductionTable<i32>,
     facility: ExpandableFacility,
     primary_input: ResourceKind,
     secondary_input: ResourceKind,
@@ -230,7 +230,7 @@ pub(crate) fn produce_expansion(
     state.tracking_by_resource[secondary_input] = 0;
 }
 
-pub(crate) fn power_plant_max_order(state: &PowerPlantOrderState, city: &CityState) -> i16 {
+pub(crate) fn power_plant_max_order(state: &PowerPlantOrderState, city: &CityState) -> i32 {
     state.progress.quantity + city.stockpile[ResourceKind::Fuel] * 6
 }
 
@@ -238,9 +238,9 @@ pub(crate) fn set_power_plant_quantity(
     state: &mut PowerPlantOrderState,
     stockpile: &mut Stockpile,
     population: &mut PopulationState,
-    power_available: &mut i16,
-    maximum: i16,
-    quantity: i16,
+    power_available: &mut i32,
+    maximum: i32,
+    quantity: i32,
 ) -> bool {
     let Some(delta) = state.progress.try_set_within(maximum, quantity) else {
         return false;
@@ -265,7 +265,7 @@ pub(crate) fn restock_power_plant(
     state: &mut PowerPlantOrderState,
     stockpile: &mut Stockpile,
     population: &mut PopulationState,
-    power_available: &mut i16,
+    power_available: &mut i32,
 ) -> bool {
     let max_order = state.progress.quantity + stockpile[ResourceKind::Fuel] * 6;
     let saved_desired_quantity = state.desired_quantity;
@@ -293,7 +293,7 @@ pub(crate) fn restock_power_plant(
     }
 }
 
-pub(crate) fn retail_region_capacity(owner: &GreatPowerState, owned_region_count: usize) -> i16 {
+pub(crate) fn retail_region_capacity(owner: &GreatPowerState, owned_region_count: usize) -> i32 {
     let divisor = if owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
         .status()
         .has_reached(crate::PendingActionStatus::HANDLED)
@@ -303,5 +303,5 @@ pub(crate) fn retail_region_capacity(owner: &GreatPowerState, owned_region_count
         4
     };
     let capacity = owned_region_count / divisor;
-    if capacity > 1 { capacity as i16 } else { 1 }
+    if capacity > 1 { capacity as i32 } else { 1 }
 }

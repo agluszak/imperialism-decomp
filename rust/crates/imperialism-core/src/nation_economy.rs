@@ -3,44 +3,44 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MinorTradeThresholds {
-    pub primary_manufactured_price: i16,
-    pub secondary_manufactured_price: i16,
-    pub general_offer_price: i16,
-    pub random_offer_price: i16,
-    pub coal_offer_price: i16,
-    pub iron_offer_price: i16,
-    pub oil_offer_price: i16,
+    pub primary_manufactured_price: i32,
+    pub secondary_manufactured_price: i32,
+    pub general_offer_price: i32,
+    pub random_offer_price: i32,
+    pub coal_offer_price: i32,
+    pub iron_offer_price: i32,
+    pub oil_offer_price: i32,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MinorTradeState {
-    pub current_supply: ResourceTable<i16>,
-    pub offers: ResourceTable<i16>,
-    pub grant_deltas: ResourceTable<i16>,
+    pub current_supply: ResourceTable<i32>,
+    pub offers: ResourceTable<i32>,
+    pub grant_deltas: ResourceTable<i32>,
     pub thresholds: MinorTradeThresholds,
     pub primary_manufactured_request: Option<TradeCommodity>,
     pub secondary_manufactured_request: Option<TradeCommodity>,
-    pub primary_request_fulfilled: i16,
-    pub secondary_request_fulfilled: i16,
-    pub independent_resource_counts: ResourceTable<i16>,
+    pub primary_request_fulfilled: i32,
+    pub secondary_request_fulfilled: i32,
+    pub independent_resource_counts: ResourceTable<i32>,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ForeignTradeBid {
     pub commodity: TradeCommodity,
-    pub amount: i16,
+    pub amount: i32,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ForeignTradeState {
     pub interior_bid: Option<ForeignTradeBid>,
-    pub phase_counter: i16,
-    pub refresh_interval: i16,
+    pub phase_counter: i32,
+    pub refresh_interval: i32,
     pub requested_ship: ShipType,
-    pub purchase_priority: TradeCommodityTable<i16>,
+    pub purchase_priority: TradeCommodityTable<i32>,
     pub preferred_resources: [Option<TradeCommodity>; 4],
-    pub capability_flag_14: i16,
-    pub capability_flag_16: i16,
+    pub capability_flag_14: i32,
+    pub capability_flag_16: i32,
     pub trade_partner_enabled: TradePartnerCommodityTable<bool>,
 }
 
@@ -75,23 +75,23 @@ pub struct GreatPowerState {
     /// Retail `TGreatPower::diplomacyEligibilityA0`. Independent of auto-vs-human subclass.
     pub diplomacy_eligible: bool,
     pub foreign_minister_personality: ForeignMinisterPersonality,
-    pub foreign_minister_skill_index: i16,
+    pub foreign_minister_skill_index: i32,
     pub foreign_trade: ForeignTradeState,
-    pub development_grant_by_nation: NationTable<i16>,
-    pub defense_minister_skill_index: i16,
+    pub development_grant_by_nation: NationTable<i32>,
+    pub defense_minister_skill_index: i32,
     pub capacities: NationCapacities,
     pub grant_total_cost: i32,
-    pub unfilled_trade_offer_count: i16,
+    pub unfilled_trade_offer_count: i32,
     pub diplomacy_policy_by_nation: NationTable<Option<DiplomacyPolicy>>,
     pub diplomacy_grants_by_nation: NationTable<Option<DiplomacyGrant>>,
-    pub need_current_by_type: ResourceTable<i16>,
-    pub need_target_by_type: ResourceTable<i16>,
-    pub relation_delta_current: ResourceTable<i16>,
-    pub purchased_items_by_resource: ResourceTable<i16>,
-    pub item_potentials: ResourceTable<i16>,
-    pub unfilled_trade_turns_by_resource: ResourceTable<i16>,
-    pub transported_items_by_resource: ResourceTable<i16>,
-    pub remembered_trade_offers_by_resource: ResourceTable<i16>,
+    pub need_current_by_type: ResourceTable<i32>,
+    pub need_target_by_type: ResourceTable<i32>,
+    pub relation_delta_current: ResourceTable<i32>,
+    pub purchased_items_by_resource: ResourceTable<i32>,
+    pub item_potentials: ResourceTable<i32>,
+    pub unfilled_trade_turns_by_resource: ResourceTable<i32>,
+    pub transported_items_by_resource: ResourceTable<i32>,
+    pub remembered_trade_offers_by_resource: ResourceTable<i32>,
     pub deal_book: TradeCommodityTable<Vec<TradeDealBookEntry>>,
     pub pending_ship: Option<ShipType>,
     pub interior_civilian: Box<InteriorCivilianState>,
@@ -105,9 +105,9 @@ pub struct GreatPowerState {
     pub candidate_nation_flags: NationTable<u8>,
     pub colony_boycott_flags: NationTable<u8>,
     pub diplomacy_budget_base: i32,
-    pub escalation_counter: i16,
+    pub escalation_counter: i32,
     pub pending_commitment_cost: i32,
-    pub pressure_counter: i16,
+    pub pressure_counter: i32,
     pub army_movement_budget: i32,
     pub aid_allocation_total: i32,
     pub military_expenses: i32,
@@ -191,7 +191,7 @@ impl GreatPowerState {
         (treasury + self.diplomacy_budget_base / 100).max(0)
     }
 
-    pub(crate) fn update_need_target(&mut self, resource: ResourceKind, value: i16) {
+    pub(crate) fn update_need_target(&mut self, resource: ResourceKind, value: i32) {
         let target = &mut self.need_target_by_type[resource];
         self.capacities.reserved_transport += value - *target;
         *target = value;
@@ -207,11 +207,11 @@ impl GreatPowerState {
         }
     }
 
-    pub fn deliver_item(&mut self, amount: i16) {
+    pub fn deliver_item(&mut self, amount: i32) {
         self.capacities.available_merchant -= amount;
     }
 
-    pub fn amount_unsold(&self, resource: ResourceKind) -> i16 {
+    pub fn amount_unsold(&self, resource: ResourceKind) -> i32 {
         self.item_potentials[resource] + self.purchased_items_by_resource[resource]
     }
 
@@ -232,7 +232,7 @@ impl GreatPowerState {
         true
     }
 
-    pub(crate) fn set_item_potential(&mut self, resource: ResourceKind, value: i16) {
+    pub(crate) fn set_item_potential(&mut self, resource: ResourceKind, value: i32) {
         self.item_potentials[resource] = value.min(self.capacities.trade_offer);
     }
 

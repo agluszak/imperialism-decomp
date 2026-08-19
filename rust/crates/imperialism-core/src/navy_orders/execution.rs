@@ -250,9 +250,7 @@ impl GameState {
         // `g_pMapActionContextListHead` is newest-first; context ordinals grow
         // at construction, so retail visits them in descending ordinal order.
         for zone_index in (0..self.ocean.zones.len()).rev() {
-            let zone = OceanZoneId::new(
-                u16::try_from(zone_index).expect("ocean context ordinal fits a zone id"),
-            );
+            let zone = OceanZoneId::new(zone_index);
             let in_port = self.is_port_zone(zone);
             for nation in MajorNationId::all() {
                 let ships = self
@@ -451,8 +449,7 @@ impl GameState {
                 }
                 TaskForceOrder::Marines => {
                     if let TaskForceTarget::Province(province) = self.task_forces[&id].target
-                        && let Some(major) =
-                            MajorNationId::from_nation(self.task_forces[&id].nation)
+                        && let Some(major) = NationId::as_major(self.task_forces[&id].nation)
                     {
                         self.map.provinces[province].explored_by_majors_mut()[major] = true;
                     }
@@ -605,8 +602,8 @@ impl GameState {
             return false;
         };
         let weight = NavalAggressionTable::from_array([200, 100, 50]);
-        let this = self.task_force_battle_strength(outer) as i16 as i32;
-        let other = self.task_force_battle_strength(inner) as i16 as i32;
+        let this = self.task_force_battle_strength(outer) as i32 as i32;
+        let other = self.task_force_battle_strength(inner) as i32 as i32;
         if this * 100 < weight[outer_force.aggression] * other {
             if other * 100 < weight[inner_force.aggression] * this || inner_force.defeated {
                 return false;
@@ -740,8 +737,8 @@ impl GameState {
                 (right_id, left_id, right_start)
             };
             let remaining = self.task_forces[&loser].ships.len();
-            let bump = ((loser_start - remaining) * 5 + remaining) as i16;
-            let winner_count = self.task_forces[&winner].ships.len() as i16;
+            let bump = ((loser_start - remaining) * 5 + remaining) as i32;
+            let winner_count = self.task_forces[&winner].ships.len() as i32;
             if winner_count > 0 {
                 if let Some(flagship) = self.task_forces[&winner].flagship
                     && let Some(admiral) = self
@@ -881,7 +878,7 @@ impl GameState {
                         - NAVY_DESCRIPTORS[ship.ship_type].task_force_weight as f32
                             * (roll as f32 * 0.005)
                             * favor_ratio
-                            * -0.01) as i16;
+                            * -0.01) as i32;
                     ship.strength -= damage;
                 }
             }
@@ -1037,7 +1034,7 @@ impl GameState {
                 if self.at_war(nation, owner) {
                     return;
                 }
-                if let Some(major) = MajorNationId::from_nation(nation)
+                if let Some(major) = NationId::as_major(nation)
                     && self.nations.majors[&major]
                         .economy
                         .diplomacy_policy_by_nation[owner]
@@ -1058,7 +1055,7 @@ impl GameState {
         let mut present_mask = 0_u8;
         for ship in self.ships.values() {
             if ship.location == location
-                && let Some(major) = MajorNationId::from_nation(ship.nation)
+                && let Some(major) = NationId::as_major(ship.nation)
             {
                 present_mask |= 1 << major.get();
             }
@@ -1380,14 +1377,14 @@ mod tests {
     #[test]
     fn preparation_splits_unordered_port_ships_into_escort_then_repair() {
         let mut state = game_state();
-        let nation = NationId::new(0);
+        let nation = MajorNationId::new(0);
         state.ocean.zones = vec![ZoneKind::PortZone(PortZone {
             zone: zone(Vec::new()),
             port_tile: TileId::new(0),
         })];
         for (index, (ship_type, strength)) in [
             (ShipType::Frigate, 1),
-            (ShipType::AdvancedIronclad, i16::MAX),
+            (ShipType::AdvancedIronclad, i32::MAX),
         ]
         .into_iter()
         .enumerate()
@@ -1398,7 +1395,7 @@ mod tests {
                     ship_type,
                     location: OceanZoneId::new(0),
                     aggression: NavalAggression::Balanced,
-                    nation,
+                    nation: nation.nation(),
                     name: String::new(),
                     strength,
                     experience: 0,
@@ -1436,16 +1433,16 @@ mod tests {
     #[test]
     fn freeing_a_task_force_does_not_retarget_later_references_or_reuse_its_id() {
         let mut state = game_state();
-        let nation = NationId::new(0);
+        let nation = MajorNationId::new(0);
         let (_, removed) = encounter_force(
             &mut state,
-            nation,
+            nation.nation(),
             OceanZoneId::new(0),
             TaskForceOrder::Patrol,
         );
         let (survivor_ship, survivor) = encounter_force(
             &mut state,
-            nation,
+            nation.nation(),
             OceanZoneId::new(1),
             TaskForceOrder::Patrol,
         );
@@ -1453,7 +1450,7 @@ mod tests {
         state.missions.insert(
             mission,
             MissionState {
-                nation,
+                nation: nation.nation(),
                 data: MissionData::ControlSeaZone(NavyMissionState {
                     target_zone: Some(OceanZoneId::new(1)),
                     resolved_port_zone: None,
@@ -1489,44 +1486,44 @@ mod tests {
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(2),
                 aggression: NavalAggression::Balanced,
-                nation,
+                nation: nation.nation(),
                 name: String::new(),
                 strength: 900,
                 experience: 0,
                 selection: ShipSelection::Available,
             },
         );
-        let replacement = state.create_task_force(OceanZoneId::new(2), nation, ship);
+        let replacement = state.create_task_force(OceanZoneId::new(2), nation.nation(), ship);
         assert_ne!(replacement, removed);
     }
 
     #[test]
     fn naval_encounters_resume_from_the_retained_pair_cursor() {
         let mut state = game_state();
-        let attacker = NationId::new(0);
-        let defender = NationId::new(1);
+        let attacker = MajorNationId::new(0);
+        let defender = MajorNationId::new(1);
         state.diplomacy.relationships[defender][attacker] = DiplomaticRelationship::War;
         let (_, first_attacker) = encounter_force(
             &mut state,
-            attacker,
+            attacker.nation(),
             OceanZoneId::new(0),
             TaskForceOrder::Patrol,
         );
         let (_, first_defender) = encounter_force(
             &mut state,
-            defender,
+            defender.nation(),
             OceanZoneId::new(0),
             TaskForceOrder::Blockade,
         );
         let (_, second_attacker) = encounter_force(
             &mut state,
-            attacker,
+            attacker.nation(),
             OceanZoneId::new(1),
             TaskForceOrder::Patrol,
         );
         let (_, second_defender) = encounter_force(
             &mut state,
-            defender,
+            defender.nation(),
             OceanZoneId::new(1),
             TaskForceOrder::Blockade,
         );
@@ -1542,19 +1539,19 @@ mod tests {
     #[test]
     fn pending_encounter_initializes_the_recovered_headless_navy_battle_once() {
         let mut state = game_state();
-        let attacker = NationId::new(0);
-        let defender = NationId::new(1);
-        state.turn.active_nation = attacker;
+        let attacker = MajorNationId::new(0);
+        let defender = MajorNationId::new(1);
+        state.turn.active_nation = attacker.nation();
         state.diplomacy.relationships[defender][attacker] = DiplomaticRelationship::War;
         let (attacker_ship, attacker_force) = encounter_force(
             &mut state,
-            attacker,
+            attacker.nation(),
             OceanZoneId::new(0),
             TaskForceOrder::Patrol,
         );
         let (defender_ship, defender_force) = encounter_force(
             &mut state,
-            defender,
+            defender.nation(),
             OceanZoneId::new(0),
             TaskForceOrder::Blockade,
         );
@@ -1596,30 +1593,30 @@ mod tests {
     #[test]
     fn serialized_naval_resume_survives_task_force_queue_mutation() {
         let mut state = game_state();
-        let attacker = NationId::new(0);
-        let defender = NationId::new(1);
+        let attacker = MajorNationId::new(0);
+        let defender = MajorNationId::new(1);
         state.diplomacy.relationships[defender][attacker] = DiplomaticRelationship::War;
         encounter_force(
             &mut state,
-            attacker,
+            attacker.nation(),
             OceanZoneId::new(0),
             TaskForceOrder::Patrol,
         );
         encounter_force(
             &mut state,
-            defender,
+            defender.nation(),
             OceanZoneId::new(0),
             TaskForceOrder::Blockade,
         );
         let (_, expected_attacker) = encounter_force(
             &mut state,
-            attacker,
+            attacker.nation(),
             OceanZoneId::new(1),
             TaskForceOrder::Patrol,
         );
         let (_, expected_defender) = encounter_force(
             &mut state,
-            defender,
+            defender.nation(),
             OceanZoneId::new(1),
             TaskForceOrder::Blockade,
         );
@@ -1636,14 +1633,14 @@ mod tests {
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(9),
                 aggression: NavalAggression::Balanced,
-                nation: attacker,
+                nation: attacker.nation(),
                 name: String::new(),
                 strength: 900,
                 experience: 0,
                 selection: ShipSelection::Available,
             },
         );
-        let inserted = state.create_task_force(OceanZoneId::new(9), attacker, loose_ship);
+        let inserted = state.create_task_force(OceanZoneId::new(9), attacker.nation(), loose_ship);
         assert_eq!(state.task_forces.last().map(|(id, _)| *id), Some(inserted));
 
         let second = state.resume_navy_orders(first).expect("second encounter");
@@ -1654,18 +1651,18 @@ mod tests {
     #[test]
     fn invalid_navy_pass_cannot_deserialize_as_completed_execution() {
         let mut state = game_state();
-        let attacker = NationId::new(0);
-        let defender = NationId::new(1);
+        let attacker = MajorNationId::new(0);
+        let defender = MajorNationId::new(1);
         state.diplomacy.relationships[defender][attacker] = DiplomaticRelationship::War;
         encounter_force(
             &mut state,
-            attacker,
+            attacker.nation(),
             OceanZoneId::new(0),
             TaskForceOrder::Patrol,
         );
         encounter_force(
             &mut state,
-            defender,
+            defender.nation(),
             OceanZoneId::new(0),
             TaskForceOrder::Blockade,
         );
@@ -1678,10 +1675,10 @@ mod tests {
     #[test]
     fn sinking_non_contiguous_ships_preserves_survivor_identity() {
         let mut state = game_state();
-        let nation = NationId::new(1);
+        let nation = MajorNationId::new(1);
         let (first_ship, force) = encounter_force(
             &mut state,
-            nation,
+            nation.nation(),
             OceanZoneId::new(0),
             TaskForceOrder::Patrol,
         );
@@ -1694,7 +1691,7 @@ mod tests {
                     ship_type: ShipType::Frigate,
                     location: OceanZoneId::new(0),
                     aggression: NavalAggression::Balanced,
-                    nation,
+                    nation: nation.nation(),
                     name: String::new(),
                     strength: 900,
                     experience: 0,
@@ -1712,7 +1709,7 @@ mod tests {
                 (
                     admiral,
                     AdmiralState {
-                        nation,
+                        nation: nation.nation(),
                         name: String::new(),
                         experience: 0,
                         ship: Some(ship),
@@ -1724,7 +1721,7 @@ mod tests {
         state.missions.insert(
             mission,
             MissionState {
-                nation,
+                nation: nation.nation(),
                 data: MissionData::ControlSeaZone(NavyMissionState {
                     target_zone: Some(OceanZoneId::new(0)),
                     resolved_port_zone: None,
@@ -1787,18 +1784,18 @@ mod tests {
     #[test]
     fn naval_encounter_between_inactive_nations_resolves_without_a_turn_stop() {
         let mut state = game_state();
-        let left = NationId::new(1);
-        let right = NationId::new(2);
+        let left = MajorNationId::new(1);
+        let right = MajorNationId::new(2);
         state.diplomacy.relationships[right][left] = DiplomaticRelationship::War;
         encounter_force(
             &mut state,
-            left,
+            left.nation(),
             OceanZoneId::new(0),
             TaskForceOrder::Patrol,
         );
         encounter_force(
             &mut state,
-            right,
+            right.nation(),
             OceanZoneId::new(0),
             TaskForceOrder::Blockade,
         );
@@ -1811,7 +1808,7 @@ mod tests {
     #[test]
     fn control_sea_give_orders_sails_an_assigned_frigate_one_descriptor_hop() {
         let mut state = game_state();
-        let nation = NationId::new(0);
+        let nation = MajorNationId::new(0);
         state.ocean.zones = vec![
             ZoneKind::Zone(zone(vec![OceanZoneId::new(1)])),
             ZoneKind::Zone(zone(vec![OceanZoneId::new(0), OceanZoneId::new(2)])),
@@ -1825,7 +1822,7 @@ mod tests {
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(0),
                 aggression: NavalAggression::Cautious,
-                nation,
+                nation: nation.nation(),
                 name: String::new(),
                 strength: 900,
                 experience: 0,
@@ -1836,7 +1833,7 @@ mod tests {
         state.missions.insert(
             mission,
             MissionState {
-                nation,
+                nation: nation.nation(),
                 data: MissionData::ControlSeaZone(NavyMissionState {
                     target_zone: Some(OceanZoneId::new(4)),
                     resolved_port_zone: None,

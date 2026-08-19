@@ -54,7 +54,7 @@ impl GameState {
     /// processed and may return [`DiplomacyPhaseResult::WarJoin`].
     pub fn do_diplomacy(&mut self) -> DiplomacyPhaseResult {
         self.apply_diplomacy_inter_nation_states();
-        let result = self.reply_to_diplomacy_offers_from(0, 0);
+        let result = self.reply_to_diplomacy_offers_from(MajorNationId::new(0), 0);
         self.record_diplomacy_result(result)
     }
 
@@ -68,7 +68,7 @@ impl GameState {
         };
         self.continuation = crate::turn_flow::TurnContinuation::None;
         self.apply_human_offer_decision(nation, usize::from(index), accept);
-        let result = self.reply_to_diplomacy_offers_from(nation.get(), usize::from(index) + 1);
+        let result = self.reply_to_diplomacy_offers_from(nation, usize::from(index) + 1);
         self.record_diplomacy_result(result)
     }
 
@@ -123,10 +123,10 @@ impl GameState {
                     .economy
                     .diplomacy_grants_by_nation[target];
                 if let Some(grant) = grant {
-                    if let Some(major) = MajorNationId::from_nation(target) {
+                    if let Some(major) = NationId::as_major(target) {
                         self.add_diplomacy_notice(
                             major,
-                            NationId::new(0),
+                            MajorNationId::new(0).nation(),
                             grant_notice_code(grant),
                         );
                     }
@@ -227,7 +227,7 @@ impl GameState {
     pub(crate) fn war_stamp_stale(&self, source: NationId, target: NationId) -> bool {
         self.at_war(source, target)
             && self.diplomacy.relationship_turns[source][target]
-                != Some(self.turn.economic_turn as i16)
+                != Some(self.turn.economic_turn as i32)
     }
 
     pub(super) fn owns_former_province_of(&self, owner: MajorNationId, former: NationId) -> bool {
@@ -281,7 +281,7 @@ impl GameState {
             .find(|&nation| {
                 self.diplomacy.mission_levels[minor][nation] == DiplomaticMissionLevel::Embassy
             })
-            .and_then(MajorNationId::from_nation)
+            .and_then(NationId::as_major)
     }
 
     pub(super) fn has_active_candidates(&mut self, nation: MajorNationId) -> bool {
@@ -376,13 +376,13 @@ impl GameState {
         if !self.nation_is_present(nation) {
             return false;
         }
-        MajorNationId::from_nation(nation).is_none_or(|major| self.major_is_event_eligible(major))
+        NationId::as_major(nation).is_none_or(|major| self.major_is_event_eligible(major))
     }
 
     pub(super) fn in_consortium_with(&self, minor: NationId, source: NationId) -> bool {
         self.nations
             .minors
-            .get(&MinorNationId::new(minor.get()))
+            .get(&minor.expect_minor())
             .is_some_and(|nation| {
                 nation
                     .consortium_members
@@ -404,7 +404,7 @@ impl GameState {
             &mut self.rng,
             &mut self.pending.nations[nation].proposals,
             proposal,
-            |entry| i16::from(entry.source.get()),
+            |entry| (entry.source.get() as i32),
         );
     }
 
@@ -413,7 +413,7 @@ impl GameState {
             &mut self.rng,
             &mut self.pending.nations[nation].turn_events,
             notice,
-            |entry| i16::from(entry.source.get()),
+            |entry| (entry.source.get() as i32),
         );
     }
 }
@@ -460,7 +460,7 @@ pub(super) fn year_divisor(difficulty: Difficulty, year: i32) -> i32 {
     }
 }
 
-pub(super) fn coeff(table: &[f32], index: i16) -> f32 {
+pub(super) fn coeff(table: &[f32], index: i32) -> f32 {
     table.get(index as usize).copied().unwrap_or(0.0)
 }
 
@@ -476,8 +476,8 @@ pub(super) fn select_grant_amount(budget: i32) -> i32 {
     }
 }
 
-pub(super) fn grant_notice_code(grant: DiplomacyGrant) -> i16 {
-    let amount = grant.amount as i16;
+pub(super) fn grant_notice_code(grant: DiplomacyGrant) -> i32 {
+    let amount = grant.amount as i32;
     if grant.recurring {
         amount | 0x4000
     } else {
@@ -489,7 +489,7 @@ fn insert_sorted_by_key<T>(
     rng: &mut RngState,
     items: &mut Vec<T>,
     new_item: T,
-    key: impl Fn(&T) -> i16,
+    key: impl Fn(&T) -> i32,
 ) {
     let new_key = key(&new_item);
     let mut ordinal = 0;

@@ -10,22 +10,22 @@ const STRIKE_RESOURCES: [ResourceKind; 3] = [
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct LaborPool {
-    pub low: i16,
-    pub medium: i16,
-    pub high: i16,
+    pub low: i32,
+    pub medium: i32,
+    pub high: i32,
 }
 
 impl LaborPool {
-    pub const fn new(low: i16, medium: i16, high: i16) -> Self {
+    pub const fn new(low: i32, medium: i32, high: i32) -> Self {
         Self { low, medium, high }
     }
 
-    pub(crate) const fn strength(self) -> i16 {
+    pub(crate) const fn strength(self) -> i32 {
         self.low + (self.medium + self.high * 2) * 2
     }
 
     /// Mirrors `TLaborPool::TransferToLowSkillFirst`.
-    pub fn transfer_low_skill_first(&mut self, destination: &mut Self, amount: i16) -> bool {
+    pub fn transfer_low_skill_first(&mut self, destination: &mut Self, amount: i32) -> bool {
         let mut remaining = amount;
         transfer_band(&mut self.low, &mut destination.low, &mut remaining);
         transfer_band(&mut self.medium, &mut destination.medium, &mut remaining);
@@ -34,7 +34,7 @@ impl LaborPool {
     }
 
     /// Mirrors `TLaborPool::TransferToHighSkillFirst`.
-    pub fn transfer_high_skill_first(&mut self, destination: &mut Self, amount: i16) -> bool {
+    pub fn transfer_high_skill_first(&mut self, destination: &mut Self, amount: i32) -> bool {
         let mut remaining = amount;
         transfer_band(&mut self.high, &mut destination.high, &mut remaining);
         transfer_band(&mut self.medium, &mut destination.medium, &mut remaining);
@@ -42,7 +42,7 @@ impl LaborPool {
         remaining == 0
     }
 
-    const fn band(self, band: SkillBand) -> i16 {
+    const fn band(self, band: SkillBand) -> i32 {
         match band {
             SkillBand::Low => self.low,
             SkillBand::Medium => self.medium,
@@ -50,7 +50,7 @@ impl LaborPool {
         }
     }
 
-    fn band_mut(&mut self, band: SkillBand) -> &mut i16 {
+    fn band_mut(&mut self, band: SkillBand) -> &mut i32 {
         match band {
             SkillBand::Low => &mut self.low,
             SkillBand::Medium => &mut self.medium,
@@ -59,20 +59,20 @@ impl LaborPool {
     }
 }
 
-impl From<[i16; 3]> for LaborPool {
-    fn from([low, medium, high]: [i16; 3]) -> Self {
+impl From<[i32; 3]> for LaborPool {
+    fn from([low, medium, high]: [i32; 3]) -> Self {
         Self::new(low, medium, high)
     }
 }
 
-impl From<LaborPool> for [i16; 3] {
+impl From<LaborPool> for [i32; 3] {
     fn from(value: LaborPool) -> Self {
         [value.low, value.medium, value.high]
     }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[repr(i16)]
+#[repr(i32)]
 #[serde(rename_all = "snake_case")]
 pub enum SkillBand {
     Low = 1,
@@ -81,7 +81,7 @@ pub enum SkillBand {
 }
 
 impl SkillBand {
-    const fn weight(self) -> i16 {
+    const fn weight(self) -> i32 {
         match self {
             Self::Low => 1,
             Self::Medium => 2,
@@ -92,8 +92,8 @@ impl SkillBand {
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct FoodOutcome {
-    pub substitution_count: i16,
-    pub starvation_count: i16,
+    pub substitution_count: i32,
+    pub starvation_count: i32,
 }
 
 impl CityState {
@@ -118,7 +118,7 @@ impl CityState {
     /// Mirrors `TPopulationMgr::PretendToEat` without mutating either input.
     pub fn forecast_population_food(
         &self,
-        nation_need_targets: &ResourceTable<i16>,
+        nation_need_targets: &ResourceTable<i32>,
     ) -> FoodOutcome {
         self.population
             .forecast_food(nation_need_targets, self.stockpile[ResourceKind::Food])
@@ -129,7 +129,7 @@ impl CityState {
     pub fn apply_population_strike(&mut self) -> bool {
         let baseline = self.population.baseline_labor;
         let skilled = i32::from(baseline.medium) + i32::from(baseline.high);
-        let mut cycles = (skilled / 10) as i16;
+        let mut cycles = (skilled / 10) as i32;
         let mut consumption = StrikePhaseTable::from_array([0; 4]);
 
         while cycles != 0 {
@@ -161,7 +161,7 @@ impl PopulationState {
 
     /// Mirrors the one-argument `TPopulationMgr::SetPopulation` overload. The
     /// original only replaces the low-skill bands and leaves the others alone.
-    pub fn set_untrained_population(&mut self, count: i16) {
+    pub fn set_untrained_population(&mut self, count: i32) {
         self.baseline_labor.low = count;
         self.production_labor.low = count;
         self.strength = count;
@@ -172,7 +172,7 @@ impl PopulationState {
     }
 
     /// Mirrors the three-argument `TPopulationMgr::SetPopulation` overload.
-    pub fn set_population(&mut self, low: i16, medium: i16, high: i16) {
+    pub fn set_population(&mut self, low: i32, medium: i32, high: i32) {
         let labor = LaborPool::new(low, medium, high);
         self.baseline_labor = labor;
         self.production_labor = labor;
@@ -185,7 +185,7 @@ impl PopulationState {
 
     /// Mirrors the retail growth table and its signed penalty constants. The
     /// recovered constants are negative, so retry ticks increase this result.
-    pub fn growth_rate(&self, penalty_ticks: i16) -> f32 {
+    pub fn growth_rate(&self, penalty_ticks: i32) -> f32 {
         let base = if self.count < 10 {
             1.2_f32
         } else if self.count < 15 {
@@ -218,14 +218,14 @@ impl PopulationState {
     /// Grain, fruit, and livestock are rebuilt from current population plus the
     /// city's population-growth order. Hardware, clothing, and furniture are
     /// cleared. Other slots keep their stored table entry.
-    pub fn predicted_need_after_refresh(&self, resource: ResourceKind, order_quantity: i16) -> i16 {
+    pub fn predicted_need_after_refresh(&self, resource: ResourceKind, order_quantity: i32) -> i32 {
         if STRIKE_RESOURCES.contains(&resource) {
             return 0;
         }
         let supported = self.count + order_quantity;
         match resource {
-            ResourceKind::Grain => ((i32::from(supported) + 1) / 2) as i16,
-            ResourceKind::Fruit => ((i32::from(supported) + 2) / 4) as i16,
+            ResourceKind::Grain => ((i32::from(supported) + 1) / 2) as i32,
+            ResourceKind::Fruit => ((i32::from(supported) + 2) / 4) as i32,
             ResourceKind::Livestock => supported / 4,
             _ => self.predicted_need_by_resource[resource],
         }
@@ -233,7 +233,7 @@ impl PopulationState {
 
     /// Mirrors `TPopulationMgr::PredictedNeeds`; the order quantity is the
     /// city's trailing order slot 9 contribution to supported population.
-    pub fn refresh_predicted_needs(&mut self, order_quantity: i16) -> &mut ResourceTable<i16> {
+    pub fn refresh_predicted_needs(&mut self, order_quantity: i32) -> &mut ResourceTable<i32> {
         for resource in STRIKE_RESOURCES {
             self.predicted_need_by_resource[resource] = 0;
         }
@@ -248,7 +248,7 @@ impl PopulationState {
 
     /// Mirrors `TPopulationMgr::RemovePopulation`, including its unusual use
     /// of the post-band remainder in the strength adjustments.
-    pub fn remove_population(&mut self, starting_band: SkillBand, amount: i16) {
+    pub fn remove_population(&mut self, starting_band: SkillBand, amount: i32) {
         let mut remaining = amount;
         let mut band = Some(starting_band);
 
@@ -279,19 +279,19 @@ impl PopulationState {
         self.accumulator.remove(removed);
     }
 
-    pub fn make_unavailable(&mut self, band: SkillBand, amount: i16) {
+    pub fn make_unavailable(&mut self, band: SkillBand, amount: i32) {
         let production = self.production_labor.band_mut(band);
         *production -= amount;
         self.strength -= amount * band.weight();
     }
 
-    pub fn add_untrained(&mut self, count: i16) {
+    pub fn add_untrained(&mut self, count: i32) {
         self.baseline_labor.low += count;
         self.production_labor.low += count;
         self.count += count;
     }
 
-    pub fn add_expert(&mut self, count: i16) {
+    pub fn add_expert(&mut self, count: i32) {
         self.baseline_labor.high += count;
         self.production_labor.high += count;
         self.count += count;
@@ -353,7 +353,7 @@ impl PopulationState {
         }
     }
 
-    fn forecast_food(&self, available: &ResourceTable<i16>, canned_food: i16) -> FoodOutcome {
+    fn forecast_food(&self, available: &ResourceTable<i32>, canned_food: i32) -> FoodOutcome {
         let mut food = FoodRemainders {
             grain: available[ResourceKind::Grain],
             fruit: available[ResourceKind::Fruit],
@@ -386,11 +386,11 @@ impl PopulationState {
 
 #[derive(Clone, Copy, Debug)]
 struct FoodRemainders {
-    grain: i16,
-    fruit: i16,
-    animal: i16,
-    original_fish: i16,
-    original_livestock: i16,
+    grain: i32,
+    fruit: i32,
+    animal: i32,
+    original_fish: i32,
+    original_livestock: i32,
 }
 
 impl FoodRemainders {
@@ -404,10 +404,10 @@ impl FoodRemainders {
         }
     }
 
-    fn consume_normal_needs(&mut self, population: i16) -> i16 {
-        let grain_need = ((i32::from(population) + 1) / 2) as i16;
-        let fruit_need = ((i32::from(population) + 2) / 4) as i16;
-        let animal_need = (i32::from(population) / 4) as i16;
+    fn consume_normal_needs(&mut self, population: i32) -> i32 {
+        let grain_need = ((i32::from(population) + 1) / 2) as i32;
+        let fruit_need = ((i32::from(population) + 2) / 4) as i32;
+        let animal_need = (i32::from(population) / 4) as i32;
         let mut unmet = 0;
         consume_need(&mut self.grain, grain_need, &mut unmet);
         consume_need(&mut self.fruit, fruit_need, &mut unmet);
@@ -415,7 +415,7 @@ impl FoodRemainders {
         unmet
     }
 
-    fn substitute_surpluses(&mut self, unmet: &mut i16) {
+    fn substitute_surpluses(&mut self, unmet: &mut i32) {
         consume_surplus(&mut self.grain, unmet);
         if *unmet != 0 {
             consume_surplus(&mut self.fruit, unmet);
@@ -465,7 +465,7 @@ impl FoodRemainders {
     }
 }
 
-fn consume_need(remaining: &mut i16, need: i16, unmet: &mut i16) {
+fn consume_need(remaining: &mut i32, need: i32, unmet: &mut i32) {
     if *remaining < need {
         *unmet += need - *remaining;
         *remaining = 0;
@@ -474,7 +474,7 @@ fn consume_need(remaining: &mut i16, need: i16, unmet: &mut i16) {
     }
 }
 
-fn consume_surplus(remaining: &mut i16, unmet: &mut i16) {
+fn consume_surplus(remaining: &mut i32, unmet: &mut i32) {
     if *remaining < *unmet {
         *unmet -= *remaining;
         *remaining = 0;
@@ -484,7 +484,7 @@ fn consume_surplus(remaining: &mut i16, unmet: &mut i16) {
     }
 }
 
-fn transfer_band(source: &mut i16, destination: &mut i16, remaining: &mut i16) {
+fn transfer_band(source: &mut i32, destination: &mut i32, remaining: &mut i32) {
     let moved = if *source < *remaining {
         *source
     } else {
@@ -497,29 +497,29 @@ fn transfer_band(source: &mut i16, destination: &mut i16, remaining: &mut i16) {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct PopulationState {
-    pub(crate) count: i16,
+    pub(crate) count: i32,
     pub(crate) accumulator: PopulationAccumulator,
-    pub(crate) strength: i16,
-    pub(crate) extra: i16,
+    pub(crate) strength: i32,
+    pub(crate) extra: i32,
     pub(crate) strike_phase: StrikePhase,
     pub(crate) baseline_labor: LaborPool,
     pub(crate) production_labor: LaborPool,
     pub(crate) pending_labor_delta: LaborPool,
-    pub(crate) predicted_need_by_resource: ResourceTable<i16>,
+    pub(crate) predicted_need_by_resource: ResourceTable<i32>,
 }
 
 impl PopulationState {
     #[allow(clippy::too_many_arguments)]
     pub fn new(
-        count: i16,
+        count: i32,
         accumulator: PopulationAccumulator,
-        strength: i16,
-        extra: i16,
+        strength: i32,
+        extra: i32,
         strike_phase: StrikePhase,
         baseline_labor: LaborPool,
         production_labor: LaborPool,
         pending_labor_delta: LaborPool,
-        predicted_need_by_resource: ResourceTable<i16>,
+        predicted_need_by_resource: ResourceTable<i32>,
     ) -> Self {
         Self {
             count,
@@ -552,7 +552,7 @@ impl PopulationState {
         )
     }
 
-    pub const fn count(&self) -> i16 {
+    pub const fn count(&self) -> i32 {
         self.count
     }
 
@@ -560,7 +560,7 @@ impl PopulationState {
         self.accumulator
     }
 
-    pub const fn strength(&self) -> i16 {
+    pub const fn strength(&self) -> i32 {
         self.strength
     }
 
@@ -572,7 +572,7 @@ impl PopulationState {
         self.production_labor
     }
 
-    pub const fn extra(&self) -> i16 {
+    pub const fn extra(&self) -> i32 {
         self.extra
     }
 
@@ -584,11 +584,11 @@ impl PopulationState {
         self.pending_labor_delta
     }
 
-    pub const fn predicted_need_by_resource(&self) -> &ResourceTable<i16> {
+    pub const fn predicted_need_by_resource(&self) -> &ResourceTable<i32> {
         &self.predicted_need_by_resource
     }
 
-    pub fn predicted_need(&self, resource: ResourceKind) -> i16 {
+    pub fn predicted_need(&self, resource: ResourceKind) -> i32 {
         self.predicted_need_by_resource[resource]
     }
 }
@@ -610,8 +610,8 @@ impl PopulationAccumulator {
         Self::new(f32::from_bits(bits)).expect("population accumulator stays finite")
     }
 
-    pub(crate) fn from_count(count: i16) -> Self {
-        Self(f32::from(count).to_bits())
+    pub(crate) fn from_count(count: i32) -> Self {
+        Self((count as f32).to_bits())
     }
 
     pub fn get(self) -> f32 {
@@ -622,8 +622,8 @@ impl PopulationAccumulator {
         self.0
     }
 
-    pub(crate) fn remove(&mut self, amount: i16) {
-        self.0 = (self.get() - f32::from(amount)).to_bits();
+    pub(crate) fn remove(&mut self, amount: i32) {
+        self.0 = (self.get() - (amount as f32)).to_bits();
     }
 }
 
@@ -660,7 +660,7 @@ pub enum StrikePhase {
 type StrikePhaseTable<T> = EnumMap<StrikePhase, T>;
 
 impl StrikePhase {
-    pub const fn from_retail(value: i16) -> Option<Self> {
+    pub const fn from_retail(value: i32) -> Option<Self> {
         match value {
             0 => Some(Self::Clothing),
             1 => Some(Self::Furniture),
@@ -669,7 +669,7 @@ impl StrikePhase {
             _ => None,
         }
     }
-    pub const fn retail(self) -> i16 {
+    pub const fn retail(self) -> i32 {
         match self {
             Self::Clothing => 0,
             Self::Furniture => 1,
@@ -718,11 +718,11 @@ mod tests {
 
     fn stock_food(
         city: &mut CityState,
-        canned: i16,
-        grain: i16,
-        fruit: i16,
-        fish: i16,
-        livestock: i16,
+        canned: i32,
+        grain: i32,
+        fruit: i32,
+        fish: i32,
+        livestock: i32,
     ) {
         city.stockpile[ResourceKind::Food] = canned;
         city.stockpile[ResourceKind::Grain] = grain;
@@ -753,7 +753,7 @@ mod tests {
         assert_eq!(state.pending_labor_delta, LaborPool::default());
         assert_eq!(state.strength, 20);
         assert_eq!(state.count, 9);
-        assert_eq!(state.count_float(), f32::from(state.count));
+        assert_eq!(state.count_float(), (state.count as f32));
         assert_eq!(state.strike_phase, crate::StrikePhase::default());
     }
 

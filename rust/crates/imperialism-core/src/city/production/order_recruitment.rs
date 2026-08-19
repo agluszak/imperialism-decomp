@@ -34,7 +34,7 @@ pub(crate) fn recruit_limit(
         let affordable =
             (owner.available_diplomacy_budget(treasury) / i32::from(spec.cash_per_unit)).max(0);
         if affordable < i32::from(limit.maximum) {
-            limit.min_with(affordable as i16, ProductionConstraint::Treasury);
+            limit.min_with(affordable as i32, ProductionConstraint::Treasury);
         }
     }
     OrderLimit {
@@ -50,7 +50,7 @@ pub(crate) fn set_recruit_quantity(
     population: &mut PopulationState,
     treasury: &mut i32,
     limit: OrderLimit,
-    quantity: i16,
+    quantity: i32,
 ) -> bool {
     let Some(delta) = progress.try_set(limit, quantity) else {
         return false;

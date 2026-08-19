@@ -50,9 +50,15 @@ semantics.
   into a local `Vec` and sort it there. Do not manually maintain `IndexMap` positions with
   `shift_insert`, `swap_indices`, `move_index`, or `get_index*` merely to imitate list topology.
   A survivor requires a documented retail-visible positional semantic.
-- Keep retail-sized semantic IDs when their width is natural. Use `Option` instead of integer
-  sentinels. Use `EnumMap` for closed-enum tables. Do not add collection wrappers or widen IDs
-  merely to eliminate casts; explicit boundary conversions are fine.
+- Ordinary game integers are `i32` unless their semantics—not retail storage—require otherwise.
+  Non-negativity is an invariant, not a reason to use unsigned types. Dense collection identity uses
+  opaque `usize`-backed IDs; `NationId` is `Major`/`Minor` with independently zero-based IDs, and
+  retail slots such as minor `7..23` exist only at the format boundary. Coordinates are signed `i32`
+  (`MapPosition`). Use `bool`, enums, and `Option` for meaning; unsigned integers for bit patterns;
+  exact C++ widths only in `imperialism-formats`. Do not add `GameInt` aliases or quantity newtypes.
+  Do not emulate 16-bit field overflow in core unless a reachable retail algorithm depends on it.
+  Collections understand their IDs; do not add public `index()`/`from_index()` on gameplay types.
+  Tile ownership is `TileContext`, not a raw owner byte. Use `EnumMap` for closed-enum tables.
 - `GameState` map and ocean are crate-private. Inspect with `map()` / `ocean()`; change the
   viewport through named methods.
 - Return ordinary values or narrow typed outcomes. Represent effects only for ordered observable
@@ -62,8 +68,8 @@ semantics.
 - Treat supported retail files and repository-owned fixtures as trusted inputs. Use `Result` for
   genuinely recoverable I/O/decoding failures, typed outcomes for legal gameplay rejection, and
   assertions/`expect` for broken internal invariants.
-- Use ordinary Rust arithmetic and widths unless retail-visible overflow or storage width is
-  proven to matter to behavior.
+- Use ordinary `i32` arithmetic in core. Retail storage width and 16-bit wrap are format-boundary
+  concerns unless a reachable algorithm is proven to depend on that truncation.
 - Do not clone `GameState` to answer a query.
 - Separate planning from mutation for order UI: compare the needed quantity against
   `city_order_limit`; do not mutate-and-rollback authoritative state as a probe.

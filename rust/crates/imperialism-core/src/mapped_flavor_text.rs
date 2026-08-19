@@ -3008,7 +3008,7 @@ pub(crate) fn generate_english_name(rng: &mut RetailLcg) -> String {
 }
 
 pub(crate) fn generate_ethnic_name(rng: &mut RetailLcg, nation: NationId) -> String {
-    generate_variant(rng, NATION_VARIANTS[usize::from(nation.get())])
+    generate_variant(rng, NATION_VARIANTS[nation.table_index()])
 }
 
 #[cfg(test)]

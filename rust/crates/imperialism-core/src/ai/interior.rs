@@ -49,7 +49,7 @@ impl GameState {
             *city.refresh_unreserved_city_needs(population_order)
         };
 
-        let mut unfilled = 0_i16;
+        let mut unfilled = 0;
         for resource in [ResourceKind::Grain, ResourceKind::Fruit] {
             let requested = summary[resource];
             let allocated = self.request_ai_resource(
@@ -117,9 +117,9 @@ impl GameState {
         &mut self,
         nation: MajorNationId,
         resource: ResourceKind,
-        requested: i16,
+        requested: i32,
         policy: AiResourcePolicy,
-    ) -> i16 {
+    ) -> i32 {
         let MajorNation {
             common,
             economy,
@@ -139,7 +139,7 @@ impl GameState {
         let current_target = economy.need_target_by_type[resource];
         let available_supply =
             (economy.need_current_by_type[resource] - current_target).min(remaining);
-        let mut unavailable_supply = 0_i16;
+        let mut unavailable_supply = 0;
         if available_supply > available_capacity {
             unavailable_supply = available_supply - available_capacity;
             if policy.request_extra_transport {
@@ -245,12 +245,12 @@ impl GameState {
         );
     }
 
-    pub(crate) fn rebalance_ai_labor(&mut self, nation: MajorNationId) -> i16 {
+    pub(crate) fn rebalance_ai_labor(&mut self, nation: MajorNationId) -> i32 {
         let average = self.nations.majors[&nation]
             .economy
             .interior_civilian
             .average_development_order_allocation;
-        let target = average as i16 + 2;
+        let target = average as i32 + 2;
         let baseline = self.nations.city(nation).population.baseline_labor;
         let capacity =
             self.nations.city(nation).production_accum[CityFacilitySlot::RegionalPopulation];
@@ -557,7 +557,7 @@ impl GameState {
                 .economy
                 .capacities
                 .reserved_transport;
-        let mut previous = -1_i16;
+        let mut previous = -1;
         while remaining > 0 && previous != remaining {
             previous = remaining;
             for resource in all_resources() {
@@ -572,7 +572,7 @@ impl GameState {
     }
 
     pub(crate) fn rebuild_ai_allocation_average(&mut self, nation: MajorNationId) {
-        let mut allocation = ProductionTable::<i16>::default();
+        let mut allocation = ProductionTable::<i32>::default();
         for output in ManufacturedItem::ALL {
             let order = &self.nations.city(nation).orders.items[output];
             allocation[output.facility()] += order.progress.quantity;
@@ -580,7 +580,7 @@ impl GameState {
         let total = (0..CityFacilitySlot::COUNT)
             .map(CityFacilitySlot::from_usize)
             .map(|slot| allocation[slot])
-            .fold(0_i16, i16::wrapping_add);
+            .fold(0, i32::wrapping_add);
         self.nations.majors[&nation]
             .economy
             .interior_civilian
@@ -597,7 +597,7 @@ impl GameState {
             .interior_civilian
             .resource_order_metrics[ResourceKind::Wool];
         if cotton != 0 || wool != 0 {
-            let delta = i16::from(self.rng.next_crt_rand() % 100 >= 75);
+            let delta = i32::from(self.rng.next_crt_rand() % 100 >= 75);
             self.nations.majors[&nation]
                 .economy
                 .foreign_trade

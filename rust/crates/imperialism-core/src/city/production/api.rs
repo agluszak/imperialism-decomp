@@ -64,7 +64,7 @@ impl GameState {
     }
 
     /// Current ordered quantity for a city production row.
-    pub fn city_order_quantity(&self, nation: MajorNationId, order: CityOrderId) -> i16 {
+    pub fn city_order_quantity(&self, nation: MajorNationId, order: CityOrderId) -> i32 {
         let city = self.nations.city(nation);
         match order {
             CityOrderId::Item(output) => city.orders.items[output].progress.quantity,
@@ -87,7 +87,7 @@ impl GameState {
         &mut self,
         nation: MajorNationId,
         order: CityOrderId,
-        quantity: i16,
+        quantity: i32,
     ) -> CityOrderUpdate {
         let limit = self.city_order_limit(nation, order);
         let MajorNation { common, city, .. } = self.nations.major_mut(nation);
@@ -202,7 +202,7 @@ impl GameState {
         &mut self,
         nation: MajorNationId,
         order: CityOrderId,
-        delta: i16,
+        delta: i32,
     ) -> CityOrderUpdate {
         let quantity = self.city_order_quantity(nation, order);
         self.set_city_order_quantity(nation, order, quantity + delta)

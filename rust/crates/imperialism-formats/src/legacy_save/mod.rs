@@ -108,8 +108,8 @@ fn city_windows_to_retail(
     [i16; CITY_PRODUCTION_SLOT_COUNT],
 ) {
     let mut flags = [0_u8; CITY_PRODUCTION_SLOT_COUNT];
-    let mut left = [0_i16; CITY_PRODUCTION_SLOT_COUNT];
-    let mut top = [0_i16; CITY_PRODUCTION_SLOT_COUNT];
+    let mut left = [0; CITY_PRODUCTION_SLOT_COUNT];
+    let mut top = [0; CITY_PRODUCTION_SLOT_COUNT];
     for (index, window) in windows.as_array().iter().enumerate() {
         if let Some(position) = window {
             flags[index] = 1;

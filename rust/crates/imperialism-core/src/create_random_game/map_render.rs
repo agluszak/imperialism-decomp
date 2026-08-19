@@ -37,12 +37,12 @@ pub(super) fn update_strategic_map_tile_icon_variant_state(
     let terrain = tiles[index].terrain;
     let major_owner = tiles[index]
         .owner_nation
-        .and_then(TileOwnerTag::nation)
-        .and_then(MajorNationId::from_nation)
+        .and_then(TileContext::nation)
+        .and_then(NationId::as_major)
         .is_some();
     match terrain {
         TerrainKind::Water => {
-            let tile_id = TileId::new(index as u16);
+            let tile_id = TileId::new(index);
             let found_land = geometry
                 .neighbors(tile_id)
                 .into_iter()
@@ -160,7 +160,7 @@ pub(super) fn resolve_region_tile_subtype_code(tile: &TileState, index: usize) -
             if tile.gate != -1 {
                 tile.gate
             } else {
-                let row = index / usize::from(STRATEGIC_MAP_WIDTH);
+                let row = index / STRATEGIC_MAP_WIDTH as usize;
                 if !(0xf..=0x2d).contains(&row) {
                     0xc
                 } else {
@@ -175,7 +175,7 @@ pub(super) fn resolve_region_tile_subtype_code(tile: &TileState, index: usize) -
 /// `TMapMgr::GuaranteeResources` (0x00511a70).
 pub(super) fn guarantee_resources(tiles: &mut [TileState], map_lcg: &mut RetailLcg) {
     for nation in MajorNationId::all() {
-        let owner = TileOwnerTag::from_nation(nation.nation());
+        let owner = TileContext::from_nation(nation.nation());
         let linked: Vec<usize> = tiles
             .iter()
             .enumerate()
@@ -185,7 +185,7 @@ pub(super) fn guarantee_resources(tiles: &mut [TileState], map_lcg: &mut RetailL
             continue;
         }
 
-        let mut resource_tally: ResourceTable<i16> = ResourceTable::default();
+        let mut resource_tally: ResourceTable<i32> = ResourceTable::default();
         for &index in &linked {
             for edge in 0..2 {
                 if let Some(resource) = tiles[index].edge_resources[edge] {
@@ -291,7 +291,7 @@ pub(super) fn assign_fresh_map_pictures(
             map_lcg,
         );
         if selected_pending_tile && pending_river_mouth_tile.is_none() {
-            pending_river_mouth_tile = Some(TileId::new(index as u16));
+            pending_river_mouth_tile = Some(TileId::new(index));
         }
         let (transition_mask, coast_or_secondary_mask) =
             fresh_picture_masks(tiles, geometry, index);
@@ -324,7 +324,7 @@ pub(super) fn assign_picture_to_tile_for_rng(
         }
 
         if tiles[index].gate == 0x0b {
-            let tile = TileId::new(index as u16);
+            let tile = TileId::new(index);
             let neighbors = geometry.neighbors(tile);
             for direction in 0..HexDirection::ALL.len() {
                 let neighbor_has_profile = neighbors[direction]
@@ -357,7 +357,7 @@ pub(super) fn assign_picture_to_tile_for_rng(
         return false;
     }
 
-    let tile = TileId::new(index as u16);
+    let tile = TileId::new(index);
     let neighbors = geometry.neighbors(tile);
     let mut has_land_neighbor = false;
     for (direction, neighbor) in HexDirection::ALL.into_iter().zip(neighbors) {
@@ -380,7 +380,7 @@ pub(super) fn assign_picture_to_tile_for_rng(
     }
 
     let neighbors = HexDirectionTable::from_array(neighbors);
-    let west = neighbors[HexDirection::West].map(|tile| usize::from(tile.get()));
+    let west = neighbors[HexDirection::West].map(|tile| tile.index());
     let Some(west) = west else {
         return false;
     };
@@ -388,8 +388,8 @@ pub(super) fn assign_picture_to_tile_for_rng(
         return false;
     }
 
-    let north_west = neighbors[HexDirection::NorthWest].map(|tile| usize::from(tile.get()));
-    let north_east = neighbors[HexDirection::NorthEast].map(|tile| usize::from(tile.get()));
+    let north_west = neighbors[HexDirection::NorthWest].map(|tile| tile.index());
+    let north_east = neighbors[HexDirection::NorthEast].map(|tile| tile.index());
     let north_west_variant = north_west.map_or(0, |neighbor| sprite_variants[neighbor]);
     let north_east_variant = north_east.map_or(0, |neighbor| sprite_variants[neighbor]);
 
@@ -427,7 +427,7 @@ pub(super) fn fresh_picture_masks(
     let terrain = tiles[index].terrain;
     let mut transition_mask = 0;
     let mut coast_or_secondary_mask = 0;
-    let tile = TileId::new(index as u16);
+    let tile = TileId::new(index);
     for (direction, neighbor) in HexDirection::ALL.into_iter().zip(geometry.neighbors(tile)) {
         let Some(neighbor) = neighbor else {
             continue;
@@ -461,8 +461,7 @@ pub(super) fn resolve_picture_river_sprite(
     map_lcg: &mut RetailLcg,
 ) -> u8 {
     let code = river_sprite_codes[index];
-    let last_column =
-        index % usize::from(STRATEGIC_MAP_WIDTH) == usize::from(STRATEGIC_MAP_WIDTH) - 1;
+    let last_column = index % STRATEGIC_MAP_WIDTH as usize == STRATEGIC_MAP_WIDTH as usize - 1;
     let west_code = || {
         river_sprite_codes[index
             .checked_sub(1)
@@ -470,7 +469,7 @@ pub(super) fn resolve_picture_river_sprite(
     };
     let north_run_code = || {
         river_sprite_codes[index
-            .checked_sub(usize::from(STRATEGIC_MAP_WIDTH) - 1)
+            .checked_sub(STRATEGIC_MAP_WIDTH as usize - 1)
             .expect("fresh-map river north-run lookup is in bounds")]
     };
     let random_bit = |rng: &mut RetailLcg| (rng.next_sample_15() & 1) as u8;

@@ -43,7 +43,7 @@ pub(crate) struct ExpandedMapSeedTile {
     #[serde(deserialize_with = "deserialize_retail_terrain_kind")]
     pub(crate) terrain_kind: TerrainKind,
     pub(crate) owner_nation: i8,
-    pub(crate) province_index: i16,
+    pub(crate) province_index: i32,
 }
 
 fn deserialize_retail_terrain_kind<'de, D>(deserializer: D) -> Result<TerrainKind, D::Error>
@@ -102,7 +102,7 @@ impl CoarseMap {
                 if class == UNASSIGNED || class == DISCONNECTED_OCEAN {
                     (TerrainKind::Water, -1, -1)
                 } else {
-                    let province_index = provinces.len() as i16;
+                    let province_index = provinces.len() as i32;
                     provinces.push(ExpandedProvinceSeed {
                         owner_nation: class,
                         region_class: self.region_classes[class as usize],

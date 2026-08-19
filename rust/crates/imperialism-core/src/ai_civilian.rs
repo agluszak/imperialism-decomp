@@ -17,7 +17,7 @@ impl GameState {
         self.continue_civilian_orders(nation);
 
         let owned_tiles: Vec<TileId> = (0..STRATEGIC_TILE_COUNT)
-            .map(|index| TileId::new(index as u16))
+            .map(|index| TileId::new(index))
             .filter(|&tile| self.tile_owned_by(tile, nation))
             .collect();
 
@@ -123,7 +123,7 @@ impl GameState {
     }
 
     fn tile_owned_by(&self, tile: TileId, nation: MajorNationId) -> bool {
-        self.map[tile].owner_nation == Some(TileOwnerTag::from_nation(nation.nation()))
+        self.map[tile].owner_nation == Some(TileContext::from_nation(nation.nation()))
     }
 
     fn create_sea_distance_map(
@@ -157,8 +157,8 @@ impl GameState {
     }
 
     fn seek_resources(&mut self, nation: MajorNationId, owned_tiles: &[TileId], primary: &[i8]) {
-        let mut unclaimed = ResourceTable::<i16>::default();
-        let mut work_delta = ResourceTable::<i16>::default();
+        let mut unclaimed = ResourceTable::<i32>::default();
+        let mut work_delta = ResourceTable::<i32>::default();
         {
             let interior = self.nations.majors[&nation]
                 .economy
@@ -173,9 +173,9 @@ impl GameState {
         for &tile in owned_tiles {
             if self.map[tile].region.is_some() {
                 let developed_capability = self.max_resource_capability(tile, true, nation);
-                let developed_cost = i16::from(self.map[tile].development.extractive.get());
+                let developed_cost = i32::from(self.map[tile].development.extractive.get());
                 let current_capability = self.max_resource_capability(tile, false, nation);
-                let current_cost = i16::from(self.map[tile].development.surface.get());
+                let current_cost = i32::from(self.map[tile].development.surface.get());
                 for resource in self.map[tile].edge_resources.into_iter().flatten() {
                     let gain = if extractive_resource(resource) {
                         developed_capability - developed_cost
@@ -287,7 +287,7 @@ impl GameState {
                 candidates.push(tile);
             }
         }
-        let mut best_score = -1_i16;
+        let mut best_score = -1;
         let mut best_tile = None;
         for tile in candidates {
             let score = self.evaluate_resources(nation, tile);
@@ -304,7 +304,7 @@ impl GameState {
         }
     }
 
-    fn evaluate_resources(&mut self, nation: MajorNationId, tile: TileId) -> i16 {
+    fn evaluate_resources(&mut self, nation: MajorNationId, tile: TileId) -> i32 {
         let order_quantity = self.nations.city(nation).orders.population_growth.quantity;
         let summary = *self
             .nations
@@ -313,7 +313,7 @@ impl GameState {
         let yields = self.projected_town_yield(nation, tile);
         let interior = &self.nations.majors[&nation].economy.interior_civilian;
         let need_current = &self.nations.majors[&nation].economy.need_current_by_type;
-        let mut score = 0_i16;
+        let mut score: i32 = 0;
         for resource in [
             ResourceKind::Cotton,
             ResourceKind::Wool,
@@ -347,9 +347,9 @@ impl GameState {
         score
     }
 
-    fn projected_town_yield(&self, nation: MajorNationId, tile: TileId) -> ResourceTable<i16> {
+    fn projected_town_yield(&self, nation: MajorNationId, tile: TileId) -> ResourceTable<i32> {
         let town_region = self.map[tile].region;
-        let mut yields = ResourceTable::<i16>::default();
+        let mut yields = ResourceTable::<i32>::default();
         let mut harvest = HexDirection::ALL
             .into_iter()
             .map(|direction| civilian_sea_scan_neighbor(tile, direction))
@@ -573,7 +573,7 @@ impl GameState {
             .any(|&adjacent| {
                 let neighbor_owner = self.map.provinces[adjacent].owner();
                 neighbor_owner.is_some_and(|candidate| {
-                    MajorNationId::from_nation(candidate).is_some() && neighbor_owner != owner
+                    NationId::as_major(candidate).is_some() && neighbor_owner != owner
                 })
             })
     }
@@ -614,7 +614,7 @@ impl GameState {
             }
         }
         for index in 0..STRATEGIC_TILE_COUNT {
-            let tile = TileId::new(index as u16);
+            let tile = TileId::new(index);
             if self.map[tile].secondary_owner_nation == Some(nation) {
                 candidates.push(tile);
             }
@@ -650,9 +650,9 @@ impl GameState {
                     }
                     let available = self.max_resource_capability(tile, extractive, nation);
                     let current = if extractive {
-                        i16::from(self.map[tile].development.extractive.get())
+                        i32::from(self.map[tile].development.extractive.get())
                     } else {
-                        i16::from(self.map[tile].development.surface.get())
+                        i32::from(self.map[tile].development.surface.get())
                     };
                     if available > current {
                         self.move_civilian_to(unit_id, tile);
@@ -737,13 +737,13 @@ impl GameState {
                 if major == nation {
                     continue;
                 }
-                let standing = f32::from(self.diplomacy.standings[major.nation()][minor_nation]);
+                let standing = (self.diplomacy.standings[major.nation()][minor_nation] as f32);
                 if standing > strongest {
                     strongest = standing;
                 }
             }
             relation_scale[usize::from(minor_nation.get())] =
-                f32::from(self.diplomacy.standings[nation.nation()][minor_nation]) / strongest;
+                (self.diplomacy.standings[nation.nation()][minor_nation] as f32) / strongest;
         }
 
         let mut prospector_count = 0;
@@ -759,7 +759,7 @@ impl GameState {
             }
         }
 
-        let mut prospecting_tiles = vec![-1_i16; prospector_count];
+        let mut prospecting_tiles = vec![-1; prospector_count];
         let mut prospecting_scores = vec![0.0_f32; prospector_count];
         let mut affordable = self
             .nations
@@ -773,7 +773,7 @@ impl GameState {
         if affordable < developer_count as i32 {
             developer_count = affordable as usize;
         }
-        let mut developer_tiles = vec![-1_i16; developer_count];
+        let mut developer_tiles = vec![-1; developer_count];
         let mut developer_scores = vec![0.0_f32; developer_count];
 
         let mut resource_weights = ResourceTable::<i32>::default();
@@ -794,13 +794,11 @@ impl GameState {
         let oil = self.technology.city_capabilities_by_nation[nation].oil_drilling;
 
         for index in 0..STRATEGIC_TILE_COUNT {
-            let tile = TileId::new(index as u16);
-            let Some(owner) = self.map[tile].owner_nation.and_then(TileOwnerTag::nation) else {
+            let tile = TileId::new(index);
+            let Some(owner) = self.map[tile].owner_nation.and_then(TileContext::nation) else {
                 continue;
             };
-            let Some(minor_id) =
-                (owner.get() >= MinorNationId::FIRST).then(|| MinorNationId::new(owner.get()))
-            else {
+            let Some(minor_id) = owner.as_minor() else {
                 continue;
             };
             let Some(minor) = self.nations.minors.get(&minor_id) else {
@@ -835,7 +833,7 @@ impl GameState {
                 {
                     insert_scored_candidate(
                         relation_scale[usize::from(owner.get())],
-                        tile.get() as i16,
+                        tile.get() as i32,
                         &mut prospecting_scores,
                         &mut prospecting_tiles,
                         &mut self.rng,
@@ -852,7 +850,7 @@ impl GameState {
                 if score != 0.0 {
                     insert_scored_candidate(
                         score,
-                        tile.get() as i16,
+                        tile.get() as i32,
                         &mut developer_scores,
                         &mut developer_tiles,
                         &mut self.rng,
@@ -878,7 +876,7 @@ impl GameState {
                     if prospecting_index < prospector_count
                         && prospecting_scores[prospecting_index] != 0.0 =>
                 {
-                    let tile = TileId::new(prospecting_tiles[prospecting_index] as u16);
+                    let tile = TileId::new(prospecting_tiles[prospecting_index] as usize);
                     prospecting_index += 1;
                     let source = self.civilian_units[&unit_id]
                         .location
@@ -894,7 +892,7 @@ impl GameState {
                     if developer_index < developer_count
                         && developer_scores[developer_index] != 0.0 =>
                 {
-                    let tile = TileId::new(developer_tiles[developer_index] as u16);
+                    let tile = TileId::new(developer_tiles[developer_index] as usize);
                     developer_index += 1;
                     let source = self.civilian_units[&unit_id]
                         .location
@@ -918,13 +916,13 @@ impl GameState {
         tile: TileId,
         extractive: bool,
         nation: MajorNationId,
-    ) -> i16 {
-        let mut max_value = 0_i16;
+    ) -> i32 {
+        let mut max_value = 0;
         for resource in self.map[tile].edge_resources.into_iter().flatten() {
             if extractive_resource(resource) != extractive {
                 continue;
             }
-            let value = i16::from(
+            let value = i32::from(
                 self.technology.city_capabilities_by_nation[nation]
                     .university
                     .requirement_levels[resource]
@@ -985,7 +983,7 @@ fn expand_distance_map(
         }
     }
     while remaining != 0 {
-        let previous = remaining as i16;
+        let previous = remaining as i32;
         for &tile in owned_tiles {
             if distance[tile_index(tile)] != 0 || !terrain_allowed(state.map[tile].terrain, allowed)
             {
@@ -1003,7 +1001,7 @@ fn expand_distance_map(
                 remaining -= 1;
             }
         }
-        if previous == remaining as i16 {
+        if previous == remaining as i32 {
             remaining = 0;
         }
     }
@@ -1032,9 +1030,9 @@ fn trace_descending(start: TileId, scores: &[i8]) -> (TileId, TileId) {
 
 fn insert_scored_candidate(
     score: f32,
-    tile: i16,
+    tile: i32,
     scores: &mut [f32],
-    tiles: &mut [i16],
+    tiles: &mut [i32],
     rng: &mut RngState,
 ) {
     let mut insertion = None;
@@ -1056,7 +1054,7 @@ fn insert_scored_candidate(
 }
 
 fn tile_index(tile: TileId) -> usize {
-    usize::from(tile.get())
+    tile.index()
 }
 
 pub(crate) fn extractive_resource(resource: ResourceKind) -> bool {

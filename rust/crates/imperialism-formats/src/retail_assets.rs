@@ -3,7 +3,7 @@ use crate::media::{MovieId, MusicTrack, SoundId};
 use crate::retail_resources::*;
 use crate::{PictureId, RetailCursor, RetailFontFace};
 use imperialism_core::{
-    MajorNationId, NEWS_TEMPLATE_COUNT, NationId, NationTable, RandomGameNames,
+    MajorNationId, MinorNationId, NEWS_TEMPLATE_COUNT, NationId, NationTable, RandomGameNames,
 };
 use pelite::pe32::{Pe, PeFile};
 use pelite::resources::{FindError, Name};
@@ -189,7 +189,7 @@ impl RetailAssets {
 
         let mut province_names_by_nation: NationTable<Vec<String>> = NationTable::default();
         for nation in NationId::all() {
-            let name_count = if MajorNationId::from_nation(nation).is_some() {
+            let name_count = if NationId::as_major(nation).is_some() {
                 8
             } else {
                 4
@@ -798,14 +798,17 @@ mod tests {
         assert_eq!(assets.string(0x2724, 13).unwrap(), "Rescind Orders");
         assert_eq!(assets.string(0x2724, 14).unwrap(), "Confirm Orders");
         let names = assets.random_game_names().unwrap();
-        assert_eq!(names.localized_nation_names[NationId::new(0)], "Zimm");
-        assert_eq!(names.localized_nation_names[NationId::new(22)], "Sindel");
+        assert_eq!(names.localized_nation_names[MajorNationId::new(0)], "Zimm");
         assert_eq!(
-            names.province_names_by_nation[NationId::new(0)][0],
+            names.localized_nation_names[MinorNationId::new(1)],
+            "Sindel"
+        );
+        assert_eq!(
+            names.province_names_by_nation[MajorNationId::new(0)][0],
             "Bergen"
         );
         assert_eq!(
-            names.province_names_by_nation[NationId::new(22)][0],
+            names.province_names_by_nation[MinorNationId::new(1)][0],
             "Vershire"
         );
         assert_eq!(names.zone_headline_templates[0], "[1] Lake");

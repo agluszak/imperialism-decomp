@@ -357,7 +357,7 @@ mod tests {
                     ],
                 },
                 BattleReportSide {
-                    nation: NationId::new(1),
+                    nation: MajorNationId::new(1).nation(),
                     children: Vec::new(),
                 },
             ]),

@@ -258,10 +258,7 @@ fn civilian_legend_target_counts(state: &GameState, unit: &CivilianUnitState) ->
     let Some(tile) = unit.location().tile() else {
         return counts;
     };
-    let Some(owner) = state.map()[tile]
-        .owner_nation
-        .and_then(TileOwnerTag::nation)
-    else {
+    let Some(owner) = state.map()[tile].owner_nation.and_then(TileContext::nation) else {
         return counts;
     };
     let Some(common) = state.nation(owner) else {
@@ -409,7 +406,7 @@ fn spawn_engineer_legend(
         color,
         None,
     );
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
+    let nation = NationId::as_major(state.turn().active_nation)
         .expect("civilian toolbar requires an active major nation");
     let status = state.technology().research_status_by_nation[nation];
     let cannot_build = [
@@ -418,7 +415,7 @@ fn spawn_engineer_legend(
         status[Technology::CompoundSteamEngine] != TechnologyResearchStatus::Researched,
         status[Technology::Dynamite] != TechnologyResearchStatus::Researched,
     ];
-    let terrain_icons = [10_i16, 7, 8, 9];
+    let terrain_icons = [10, 7, 8, 9];
     let mut icon_x = 10.0;
     let mut icon_y = 216.0;
     for (slot, blocked) in cannot_build.into_iter().enumerate() {
@@ -431,7 +428,7 @@ fn spawn_engineer_legend(
             atlases.terrain.clone(),
             Vec2::new(icon_x, icon_y),
             TERRAIN_ICON_SIZE,
-            Vec2::new(f32::from(terrain_icons[slot]) * 20.0, 0.0),
+            Vec2::new(terrain_icons[slot] as f32 * 20.0, 0.0),
         );
         if icon_x < 94.0 {
             icon_x += 28.0;
@@ -465,7 +462,7 @@ fn spawn_prospector_legend(
         color,
         None,
     );
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
+    let nation = NationId::as_major(state.turn().active_nation)
         .expect("civilian toolbar requires an active major nation");
     let streamlined_hulls_researched = state.technology().research_status_by_nation[nation]
         [Technology::StreamlinedHulls]
@@ -551,7 +548,7 @@ fn spawn_developer_legend(
     let Some(strip_base) = DEVELOPMENT_STRIP_BASE_X[kind] else {
         return;
     };
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
+    let nation = NationId::as_major(state.turn().active_nation)
         .expect("civilian toolbar requires an active major nation");
     let levels = state.technology().city_capabilities_by_nation[nation]
         .university
@@ -571,7 +568,7 @@ fn spawn_developer_legend(
         color,
         None,
     );
-    let mut strip_level = 0_i16;
+    let mut strip_level = 0;
     for resource in CIVILIAN_RESOURCE_SPECIALTIES[kind] {
         let Some(resource) = resource else {
             continue;

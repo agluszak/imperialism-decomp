@@ -79,24 +79,16 @@ impl Nations {
     }
 
     pub(crate) fn common(&self, nation: NationId) -> Option<&NationCommonState> {
-        if let Some(nation) = MajorNationId::from_nation(nation) {
-            self.majors.get(&nation).map(|nation| &nation.common)
-        } else {
-            self.minors
-                .get(&MinorNationId::new(nation.get()))
-                .map(|nation| &nation.common)
+        match nation {
+            NationId::Major(id) => self.majors.get(&id).map(|nation| &nation.common),
+            NationId::Minor(id) => self.minors.get(&id).map(|nation| &nation.common),
         }
     }
 
     pub(crate) fn common_mut(&mut self, nation: NationId) -> Option<&mut NationCommonState> {
-        if let Some(nation) = MajorNationId::from_nation(nation) {
-            self.majors
-                .get_mut(&nation)
-                .map(|nation| &mut nation.common)
-        } else {
-            self.minors
-                .get_mut(&MinorNationId::new(nation.get()))
-                .map(|nation| &mut nation.common)
+        match nation {
+            NationId::Major(id) => self.majors.get_mut(&id).map(|nation| &mut nation.common),
+            NationId::Minor(id) => self.minors.get_mut(&id).map(|nation| &mut nation.common),
         }
     }
 
@@ -261,8 +253,8 @@ pub struct NationCommonState {
     pub treasury: i32,
     pub home_tile: Option<TileId>,
     pub trade_policy_by_nation: NationTable<TradePolicyScore>,
-    pub unit_name_ordinal_by_type: crate::MilitaryUnitTable<i16>,
-    pub unit_name_counter: i16,
+    pub unit_name_ordinal_by_type: crate::MilitaryUnitTable<i32>,
+    pub unit_name_counter: i32,
 }
 
 impl NationCommonState {

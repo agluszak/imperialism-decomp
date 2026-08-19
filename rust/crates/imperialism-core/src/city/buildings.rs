@@ -157,7 +157,7 @@ impl CityState {
         slot: CityFacilitySlot,
         owner: &GreatPowerState,
         owned_region_count: usize,
-    ) -> i16 {
+    ) -> i32 {
         if slot == CityFacilitySlot::RegionalPopulation {
             return region_capacity(owner, owned_region_count);
         }
@@ -219,7 +219,7 @@ impl CityState {
         slot: CityFacilitySlot,
         owner: &GreatPowerState,
         owned_region_count: usize,
-    ) -> i16 {
+    ) -> i32 {
         if slot == CityFacilitySlot::RegionalPopulation {
             region_capacity(owner, owned_region_count)
         } else {
@@ -233,7 +233,7 @@ impl CityState {
         owner: &GreatPowerState,
         owned_region_count: usize,
         active_nation_has_technology_15: bool,
-    ) -> i16 {
+    ) -> i32 {
         let building_type = self.building_type(slot, owner, owned_region_count);
         let status = &owner.pending_actions;
         match slot {
@@ -245,7 +245,7 @@ impl CityState {
                 } else if building_type < 16 {
                     1
                 } else {
-                    i16::from(building_type >= 32) + 2
+                    i32::from(building_type >= 32) + 2
                 }
             }
             CityFacilitySlot::ClothingFactory
@@ -256,20 +256,20 @@ impl CityState {
                 } else if building_type < 8 {
                     1
                 } else {
-                    i16::from(building_type >= 16) + 2
+                    i32::from(building_type >= 16) + 2
                 }
             }
             CityFacilitySlot::OilRefinery | CityFacilitySlot::PowerPlant => {
-                i16::from(building_type != 0)
+                i32::from(building_type != 0)
             }
-            CityFacilitySlot::Shipyard => i16::from(active_nation_has_technology_15) + 1,
+            CityFacilitySlot::Shipyard => i32::from(active_nation_has_technology_15) + 1,
             CityFacilitySlot::Armory => {
                 if status[PendingActionKind::ConquestMonumentArmory].status()
                     == crate::PendingActionStatus::HANDLED
                 {
                     3
                 } else {
-                    i16::from(
+                    i32::from(
                         status[PendingActionKind::ConqueredCapitalArmoryUpgrade].status()
                             == crate::PendingActionStatus::HANDLED,
                     ) + 1
@@ -281,21 +281,21 @@ impl CityState {
                 {
                     1
                 } else {
-                    i16::from(
+                    i32::from(
                         status[PendingActionKind::UniversityExpansion].status()
                             != crate::PendingActionStatus::HANDLED,
                     ) + 2
                 }
             }
             CityFacilitySlot::Transport => {
-                i16::from(
+                i32::from(
                     status[PendingActionKind::RailyardExpansion]
                         .status()
                         .has_reached(crate::PendingActionStatus::HANDLED),
                 ) + 1
             }
             CityFacilitySlot::RegionalPopulation => {
-                i16::from(
+                i32::from(
                     status[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
                         .status()
                         .has_reached(crate::PendingActionStatus::HANDLED),
@@ -316,7 +316,7 @@ impl CityState {
     }
 }
 
-fn region_capacity(owner: &GreatPowerState, owned_region_count: usize) -> i16 {
+fn region_capacity(owner: &GreatPowerState, owned_region_count: usize) -> i32 {
     let divisor = if owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
         .status()
         .has_reached(crate::PendingActionStatus::HANDLED)
@@ -326,7 +326,7 @@ fn region_capacity(owner: &GreatPowerState, owned_region_count: usize) -> i16 {
         4
     };
     let capacity = owned_region_count / divisor;
-    if capacity > 1 { capacity as i16 } else { 1 }
+    if capacity > 1 { capacity as i32 } else { 1 }
 }
 
 #[cfg(test)]

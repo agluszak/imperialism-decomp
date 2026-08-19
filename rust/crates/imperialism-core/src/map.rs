@@ -114,7 +114,7 @@ impl MapMgr {
     /// stores `(short)id + 1`. The start tile is stamped with the low 8 bits.
     pub(crate) fn allocate_region_marker(&mut self) -> RegionId {
         let marker = RegionId::new(self.next_region_marker_id as u8);
-        self.next_region_marker_id = i32::from(self.next_region_marker_id as i16) + 1;
+        self.next_region_marker_id = i32::from(self.next_region_marker_id as i32) + 1;
         marker
     }
 
@@ -127,19 +127,19 @@ impl MapMgr {
         const VIEWPORT_TILE_SPAN: i32 = 9;
 
         let geometry = self.geometry();
-        let (row, column) = geometry.row_column(tile);
+        let MapPosition { row, column } = geometry.position(tile);
         let mut column = i32::from(column) - VIEWPORT_TILE_SPAN / 2;
         if self.topology == MapTopology::Bounded {
             column = column.clamp(1, 0x6e - VIEWPORT_TILE_SPAN);
         }
         if column < 0 {
-            column += i32::from(STRATEGIC_MAP_WIDTH);
-        } else if column >= i32::from(STRATEGIC_MAP_WIDTH) {
-            column -= i32::from(STRATEGIC_MAP_WIDTH);
+            column += STRATEGIC_MAP_WIDTH;
+        } else if column >= STRATEGIC_MAP_WIDTH {
+            column -= STRATEGIC_MAP_WIDTH;
         }
         let row = (i32::from(row) - 3).clamp(0, 0x35);
         geometry
-            .tile(row as u16, column as u16)
+            .tile(MapPosition::new(row, column))
             .expect("retail strategic-map viewport origin is inside the map")
     }
 
@@ -154,17 +154,17 @@ impl MapMgr {
         const MAX_ORIGIN_ROW: i32 = 0x35;
 
         let geometry = self.geometry();
-        let (row, column) = geometry.row_column(origin);
+        let MapPosition { row, column } = geometry.position(origin);
         debug_assert!((-1..=1).contains(&row_delta));
         debug_assert!((-1..=1).contains(&column_delta));
         let row = (i32::from(row) + row_delta).clamp(0, MAX_ORIGIN_ROW);
         let column = if self.topology.wraps_horizontally() {
-            (i32::from(column) + column_delta).rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
+            (i32::from(column) + column_delta).rem_euclid(STRATEGIC_MAP_WIDTH)
         } else {
             (i32::from(column) + column_delta).clamp(1, 0x6e - VIEWPORT_TILE_SPAN)
         };
         geometry
-            .tile(row as u16, column as u16)
+            .tile(MapPosition::new(row, column))
             .expect("retail strategic viewport origin is inside the map")
     }
 
@@ -179,13 +179,13 @@ impl MapMgr {
             column = column.clamp(1, 0x6e - VIEWPORT_TILE_SPAN);
         }
         if column < 0 {
-            column += i32::from(STRATEGIC_MAP_WIDTH);
-        } else if column >= i32::from(STRATEGIC_MAP_WIDTH) {
-            column -= i32::from(STRATEGIC_MAP_WIDTH);
+            column += STRATEGIC_MAP_WIDTH;
+        } else if column >= STRATEGIC_MAP_WIDTH {
+            column -= STRATEGIC_MAP_WIDTH;
         }
         row = row.clamp(0, MAX_ORIGIN_ROW);
         self.geometry()
-            .tile(row as u16, column as u16)
+            .tile(MapPosition::new(row, column))
             .expect("retail strategic viewport origin is inside the map")
     }
 
@@ -197,7 +197,7 @@ impl MapMgr {
         home_tile: Option<TileId>,
         wrap_bias: bool,
     ) -> Option<TileId> {
-        let owner = TileOwnerTag::from_nation(nation);
+        let owner = TileContext::from_nation(nation);
         let home_region_class = home_tile.map(|home| {
             let province = self[home]
                 .province
@@ -224,17 +224,17 @@ impl MapMgr {
                     continue;
                 }
             }
-            let (row, column) = self.geometry().row_column(tile);
+            let MapPosition { row, column } = self.geometry().position(tile);
             west_count += u32::from(column < 0x19);
             east_count += u32::from(column > 0x53);
-            column_sum += u32::from(column);
-            row_sum += u32::from(row);
+            column_sum += column as u32;
+            row_sum += row as u32;
             tile_count += 1;
         }
 
         if west_count != 0 && east_count != 0 {
             if wrap_bias {
-                column_sum += west_count * u32::from(STRATEGIC_MAP_WIDTH);
+                column_sum += west_count * STRATEGIC_MAP_WIDTH as u32;
             } else {
                 column_sum = 0;
                 row_sum = 0;
@@ -243,30 +243,35 @@ impl MapMgr {
                     if self[tile].owner_nation != Some(owner) {
                         continue;
                     }
-                    let (row, mut column) = self.geometry().row_column(tile);
+                    let MapPosition {
+                        row,
+                        column: mut column,
+                    } = self.geometry().position(tile);
                     if column < 0x36 && west_count < east_count {
                         column = 0x6b;
                     }
                     if column > 0x36 && east_count < west_count {
                         column = 0;
                     }
-                    column_sum += u32::from(column);
-                    row_sum += u32::from(row);
+                    column_sum += column as u32;
+                    row_sum += row as u32;
                     tile_count += 1;
                 }
             }
         }
 
         if tile_count != 0 {
-            let column = column_sum / tile_count % u32::from(STRATEGIC_MAP_WIDTH);
+            let column = column_sum / tile_count % STRATEGIC_MAP_WIDTH as u32;
             let row = row_sum / tile_count;
-            return self.geometry().tile(row as u16, column as u16);
+            return self
+                .geometry()
+                .tile(MapPosition::new(row as i32, column as i32));
         }
 
         self.tiles
             .iter()
             .rposition(|tile| tile.owner_nation == Some(owner))
-            .map(|index| TileId::new(index as u16))
+            .map(|index| TileId::new(index))
     }
 
     /// Retail `UpdateTilePrimaryAndSecondaryNeighborLinksByPriority`.
@@ -275,12 +280,12 @@ impl MapMgr {
         province: ProvinceId,
         city_tile: TileId,
     ) -> (TileId, TileId) {
-        const PRIORITY: TerrainKindTable<i16> =
+        const PRIORITY: TerrainKindTable<i32> =
             TerrainKindTable::from_array([10, 4, 7, 6, 8, 0, 9, 5]);
 
         let neighbors = self.geometry().neighbors(city_tile);
         let mut primary = None;
-        let mut primary_priority = 1_i16;
+        let mut primary_priority = 1;
         for (direction, neighbor) in HexDirection::ALL.into_iter().zip(neighbors) {
             let Some(neighbor) = neighbor else {
                 continue;
@@ -296,7 +301,7 @@ impl MapMgr {
             primary.expect("province capital requires one same-province neighbor");
 
         let mut secondary = None;
-        let mut secondary_priority = -1_i16;
+        let mut secondary_priority = -1;
         for (direction, neighbor) in HexDirection::ALL.into_iter().zip(neighbors) {
             let Some(neighbor) = neighbor else {
                 continue;
@@ -327,7 +332,7 @@ impl MapMgr {
     /// great powers' ordered town lists before province-level country dispatch.
     pub fn set_owner(&mut self, nations: &mut Nations, tile: TileId, new_owner: NationId) {
         let old_owner = self[tile].owner_nation;
-        let new_owner_tag = Some(TileOwnerTag::from_nation(new_owner));
+        let new_owner_tag = Some(TileContext::from_nation(new_owner));
         if old_owner == new_owner_tag {
             return;
         }
@@ -351,17 +356,17 @@ impl MapMgr {
         if self[tile].flags.bits() & 0x14 == 0 {
             return;
         }
-        let Some(old_owner) = old_owner.and_then(TileOwnerTag::nation) else {
+        let Some(old_owner) = old_owner.and_then(TileContext::nation) else {
             return;
         };
-        let Some(old_owner) = MajorNationId::from_nation(old_owner) else {
+        let Some(old_owner) = NationId::as_major(old_owner) else {
             return;
         };
         let Some((_, mut town)) = nations.majors[&old_owner].towns.shift_remove_entry(&tile) else {
             return;
         };
         town.owner_nation = new_owner;
-        let new_owner = MajorNationId::from_nation(new_owner)
+        let new_owner = NationId::as_major(new_owner)
             .expect("town-bearing tile transfer requires a great-power destination");
         nations.majors[&new_owner].towns.insert(tile, town);
     }
@@ -490,13 +495,13 @@ impl Index<TileId> for MapMgr {
     type Output = TileState;
 
     fn index(&self, index: TileId) -> &Self::Output {
-        &self.tiles[usize::from(index.get())]
+        &self.tiles[index.index()]
     }
 }
 
 impl IndexMut<TileId> for MapMgr {
     fn index_mut(&mut self, index: TileId) -> &mut Self::Output {
-        &mut self.tiles[usize::from(index.get())]
+        &mut self.tiles[index.index()]
     }
 }
 
@@ -504,8 +509,8 @@ impl IndexMut<TileId> for MapMgr {
 pub struct TileState {
     pub terrain: TerrainKind,
     pub rendering: TileRendering,
-    pub owner_nation: Option<TileOwnerTag>,
-    pub former_owner_nation: Option<TileOwnerTag>,
+    pub owner_nation: Option<TileContext>,
+    pub former_owner_nation: Option<TileContext>,
     pub secondary_owner_nation: Option<MajorNationId>,
     pub owner_border_mask: u8,
     pub city_border_mask: u8,
@@ -518,7 +523,7 @@ pub struct TileState {
     /// Retail `TTerrainStateRecord::perTileVisitedFlag0f`.
     pub per_tile_visited: i8,
     /// Retail `TTerrainStateRecord::tileActionOrdinal1a`.
-    pub tile_action_ordinal: i16,
+    pub tile_action_ordinal: i32,
     pub development: TileDevelopment,
     pub edge_resources: [Option<crate::ResourceKind>; 2],
     /// Completed directional transport links from this tile.
@@ -757,25 +762,25 @@ impl TerrainKind {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
-pub struct TileAction(i16);
+pub struct TileAction(i32);
 
 impl<'de> Deserialize<'de> for TileAction {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: Deserializer<'de>,
     {
-        let value = i16::deserialize(deserializer)?;
+        let value = i32::deserialize(deserializer)?;
         Self::try_from_retail(value)
             .ok_or_else(|| serde::de::Error::custom("tile action -1 is represented by None"))
     }
 }
 
 impl TileAction {
-    pub const fn try_from_retail(value: i16) -> Option<Self> {
+    pub const fn try_from_retail(value: i32) -> Option<Self> {
         if value == -1 { None } else { Some(Self(value)) }
     }
 
-    pub const fn retail(self) -> i16 {
+    pub const fn retail(self) -> i32 {
         self.0
     }
 }
@@ -1087,24 +1092,24 @@ mod tests {
     fn strategic_viewport_scroll_wraps_and_clamps_at_retail_edges() {
         let tiles = vec![TileState::default(); STRATEGIC_TILE_COUNT];
         let wrapping = MapMgr::new(MapTopology::Wrapping, tiles.clone());
-        let origin = wrapping.geometry().tile(0, 0).unwrap();
+        let origin = wrapping.geometry().tile(MapPosition::new(0, 0)).unwrap();
         let next = wrapping.scrolled_viewport_origin(origin, -1, -1);
         assert_eq!(
-            wrapping.geometry().row_column(next),
-            (0, STRATEGIC_MAP_WIDTH - 1)
+            wrapping.geometry().position(next),
+            MapPosition::new(0, STRATEGIC_MAP_WIDTH - 1),
         );
-        let origin = wrapping.geometry().tile(53, 107).unwrap();
+        let origin = wrapping.geometry().tile(MapPosition::new(53, 107)).unwrap();
         let next = wrapping.scrolled_viewport_origin(origin, 1, 1);
-        assert_eq!(wrapping.geometry().row_column(next), (53, 0));
+        assert_eq!(wrapping.geometry().position(next), MapPosition::new(53, 0));
 
         let bounded = MapMgr::new(MapTopology::Bounded, tiles);
-        let origin = bounded.geometry().tile(0, 1).unwrap();
+        let origin = bounded.geometry().tile(MapPosition::new(0, 1)).unwrap();
         assert_eq!(bounded.scrolled_viewport_origin(origin, -1, -1), origin);
-        let origin = bounded.geometry().tile(53, 101).unwrap();
+        let origin = bounded.geometry().tile(MapPosition::new(53, 101)).unwrap();
         assert_eq!(bounded.scrolled_viewport_origin(origin, 1, 1), origin);
-        let origin = bounded.geometry().tile(52, 100).unwrap();
+        let origin = bounded.geometry().tile(MapPosition::new(52, 100)).unwrap();
         let next = bounded.scrolled_viewport_origin(origin, 1, 1);
-        assert_eq!(bounded.geometry().row_column(next), (53, 101));
+        assert_eq!(bounded.geometry().position(next), MapPosition::new(53, 101));
     }
 
     #[test]
@@ -1114,28 +1119,28 @@ mod tests {
         assert_eq!(
             wrapping
                 .geometry()
-                .row_column(wrapping.viewport_origin_from_upper_left(-1, -4)),
-            (0, STRATEGIC_MAP_WIDTH - 1)
+                .position(wrapping.viewport_origin_from_upper_left(-1, -4)),
+            MapPosition::new(0, STRATEGIC_MAP_WIDTH - 1)
         );
         assert_eq!(
             wrapping
                 .geometry()
-                .row_column(wrapping.viewport_origin_from_upper_left(108, 60)),
-            (53, 0)
+                .position(wrapping.viewport_origin_from_upper_left(108, 60)),
+            MapPosition::new(53, 0)
         );
 
         let bounded = MapMgr::new(MapTopology::Bounded, tiles);
         assert_eq!(
             bounded
                 .geometry()
-                .row_column(bounded.viewport_origin_from_upper_left(0, 60)),
-            (53, 1)
+                .position(bounded.viewport_origin_from_upper_left(0, 60)),
+            MapPosition::new(53, 1)
         );
         assert_eq!(
             bounded
                 .geometry()
-                .row_column(bounded.viewport_origin_from_upper_left(107, 0)),
-            (0, 101)
+                .position(bounded.viewport_origin_from_upper_left(107, 0)),
+            MapPosition::new(0, 101)
         );
     }
 }

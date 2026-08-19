@@ -12,8 +12,8 @@ struct NationCase {
 #[derive(Debug, Deserialize)]
 struct TradeSettlement {
     resource: ResourceKind,
-    amount: i16,
-    price: i16,
+    amount: i32,
+    price: i32,
 }
 
 #[derive(Debug, Deserialize)]

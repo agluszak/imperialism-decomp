@@ -65,7 +65,7 @@ pub(in crate::ui::city) fn configure_university_dialog(
     tree: &RetailTree,
     state: &GameState,
 ) {
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
+    let nation = NationId::as_major(state.turn().active_nation)
         .expect("City active nation is a major nation");
     let (detail_font, _, detail_line_height, _) = assets
         .text_style(RetailTextStylePreset {

@@ -175,7 +175,7 @@ enum TradeAction {
     },
     Step {
         commodity: TradeCommodity,
-        delta: i16,
+        delta: i32,
     },
     Amount(TradeCommodity),
 }
@@ -496,7 +496,7 @@ fn on_trade_activate(
                 (TradeCardKind::Bid, PlayerTradeOrder::Buy)
                 | (TradeCardKind::Offer, PlayerTradeOrder::Sell(_)) => PlayerTradeOrder::None,
                 (TradeCardKind::Bid, _) => PlayerTradeOrder::Buy,
-                (TradeCardKind::Offer, _) => PlayerTradeOrder::Sell(i16::MAX),
+                (TradeCardKind::Offer, _) => PlayerTradeOrder::Sell(i32::from(i16::MAX)),
             };
             session
                 .game
@@ -565,7 +565,7 @@ fn on_trade_amount_bar_click(
     let quantity = i32::from(x) * i32::from(capacity) / 100 + 1;
     session
         .game
-        .set_player_trade_order(nation, commodity, PlayerTradeOrder::Sell(quantity as i16));
+        .set_player_trade_order(nation, commodity, PlayerTradeOrder::Sell(quantity));
 }
 
 fn sync_trade_text(
@@ -892,18 +892,18 @@ fn bind_trade_card(
 /// With capacity, C++ hides the tab unless the row is selling or has stockpile.
 const fn trade_offer_tab_visible(
     row_available: bool,
-    capacity: i16,
+    capacity: i32,
     active: bool,
-    stockpile: i16,
+    stockpile: i32,
 ) -> bool {
     row_available && (capacity == 0 || active || stockpile > 0)
 }
 
-fn trade_gauge_width(quantity: i16, capacity: i16) -> f32 {
+fn trade_gauge_width(quantity: i32, capacity: i32) -> f32 {
     if quantity <= 0 || capacity <= 0 {
         0.0
     } else {
-        f32::from((i32::from(quantity) * 100 / i32::from(capacity)).clamp(0, 100) as i16)
+        (quantity * 100 / capacity).clamp(0, 100) as f32
     }
 }
 
@@ -921,9 +921,7 @@ mod tests {
 
     fn fixture_state() -> GameState {
         let mut state = beginning_of_game();
-        state.recall_player_trade_orders(
-            MajorNationId::from_nation(state.turn().active_nation).unwrap(),
-        );
+        state.recall_player_trade_orders(NationId::as_major(state.turn().active_nation).unwrap());
         state
     }
 
@@ -992,7 +990,7 @@ mod tests {
     #[test]
     fn activating_generated_trade_offer_and_arrow_preserves_controls_and_updates_order() {
         let state = fixture_state();
-        let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
+        let nation = NationId::as_major(state.turn().active_nation).unwrap();
         let major = state.nations().major(nation);
         let capacity = major.economy.capacities.trade_offer;
         let commodity = TRADE_ROWS

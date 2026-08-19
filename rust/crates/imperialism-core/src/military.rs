@@ -281,7 +281,7 @@ impl GameState {
             let Some(candidate_owner) = self.map.provinces[candidate].owner() else {
                 continue;
             };
-            let Some(candidate_major) = MajorNationId::from_nation(candidate_owner) else {
+            let Some(candidate_major) = NationId::as_major(candidate_owner) else {
                 continue;
             };
             if candidate_owner == owner
@@ -386,7 +386,7 @@ impl GameState {
             if max_strength == 0 {
                 continue;
             }
-            let scale = f32::from(ship.strength) / f32::from(max_strength);
+            let scale = (ship.strength as f32) / (max_strength as f32);
             vector[crate::navy_orders::NavyPriorityComponent::Resolve] +=
                 crate::navy_orders::ship_priority_contribution(
                     ship,
@@ -423,7 +423,7 @@ impl GameState {
         let mut accum = 0.0;
         for component in crate::navy_orders::NavyPriorityComponent::ALL {
             let mut diff =
-                vector[component] / sum - f32::from(NAVY_DISTRIBUTION_PROFILE[component]) * 0.01;
+                vector[component] / sum - (NAVY_DISTRIBUTION_PROFILE[component] as f32) * 0.01;
             if diff <= 0.0 {
                 diff = -diff;
             }
@@ -440,15 +440,15 @@ pub(crate) const PROVINCE_UNIT_ORDER_WEIGHT: f32 = 33.0;
 /// armor, and support (sappers, engineers, generals).
 #[derive(Clone, Copy, Default)]
 pub(crate) struct ActionClassWeights {
-    infantry: i16,
-    cavalry: i16,
-    artillery: i16,
-    armor: i16,
-    support: i16,
+    infantry: i32,
+    cavalry: i32,
+    artillery: i32,
+    armor: i32,
+    support: i32,
 }
 
 impl ActionClassWeights {
-    const fn new(infantry: i16, cavalry: i16, artillery: i16, armor: i16, support: i16) -> Self {
+    const fn new(infantry: i32, cavalry: i32, artillery: i32, armor: i32, support: i32) -> Self {
         Self {
             infantry,
             cavalry,
@@ -458,7 +458,7 @@ impl ActionClassWeights {
         }
     }
 
-    pub(crate) const fn components(self) -> [i16; 5] {
+    pub(crate) const fn components(self) -> [i32; 5] {
         [
             self.infantry,
             self.cavalry,
@@ -484,29 +484,29 @@ pub(crate) const TACTICAL_COMPOSITION: TacticalCompositions = TacticalCompositio
     fort_garrison: ActionClassWeights::new(40, 22, 0, 38, 0),
 };
 
-const NAVY_DISTRIBUTION_PROFILE: crate::navy_orders::NavyPriorityTable<i16> =
+const NAVY_DISTRIBUTION_PROFILE: crate::navy_orders::NavyPriorityTable<i32> =
     crate::navy_orders::NavyPriorityTable::from_array([40, 40, 20, 0]);
 
 /// Per-unit-type `GetAttribute` record (`g_UnitTypeStatTable_0066EB88`).
 /// The seventh retail short is unused (divisor 0) and omitted.
 #[derive(Clone, Copy)]
 struct UnitTypeStats {
-    infantry: i16,
-    cavalry: i16,
-    artillery: i16,
-    armor: i16,
-    support: i16,
-    dampen: i16,
+    infantry: i32,
+    cavalry: i32,
+    artillery: i32,
+    armor: i32,
+    support: i32,
+    dampen: i32,
 }
 
 impl UnitTypeStats {
     const fn new(
-        infantry: i16,
-        cavalry: i16,
-        artillery: i16,
-        armor: i16,
-        support: i16,
-        dampen: i16,
+        infantry: i32,
+        cavalry: i32,
+        artillery: i32,
+        armor: i32,
+        support: i32,
+        dampen: i32,
     ) -> Self {
         Self {
             infantry,
@@ -518,7 +518,7 @@ impl UnitTypeStats {
         }
     }
 
-    fn class_costs(self) -> [i16; 5] {
+    fn class_costs(self) -> [i32; 5] {
         let scaled = self.attributes();
         [
             scaled.infantry,
@@ -543,15 +543,15 @@ impl UnitTypeStats {
 
 #[derive(Clone, Copy)]
 struct ScaledUnitStats {
-    infantry: i16,
-    cavalry: i16,
-    artillery: i16,
-    armor: i16,
-    support: i16,
-    dampen: i16,
+    infantry: i32,
+    cavalry: i32,
+    artillery: i32,
+    armor: i32,
+    support: i32,
+    dampen: i32,
 }
 
-const fn scale_attribute(raw: i16, divisor: i16) -> i16 {
+const fn scale_attribute(raw: i32, divisor: i32) -> i32 {
     (raw * 100) / divisor
 }
 
@@ -593,11 +593,11 @@ impl MilitaryUnitKind {
         UNIT_TYPE_STATS[self]
     }
 
-    pub(crate) fn class_costs(self) -> [i16; 5] {
+    pub(crate) fn class_costs(self) -> [i32; 5] {
         self.stats().class_costs()
     }
 
-    pub(crate) fn tactical_attribute(self, class: TacticalCombatClass) -> i16 {
+    pub(crate) fn tactical_attribute(self, class: TacticalCombatClass) -> i32 {
         let stats = self.stats().attributes();
         match class {
             TacticalCombatClass::Infantry => stats.infantry,
@@ -659,7 +659,7 @@ impl ActionClassScores {
     }
 }
 
-fn class_diff(component: f32, target: i16, sum: f32) -> f32 {
+fn class_diff(component: f32, target: i32, sum: f32) -> f32 {
     let diff = (f64::from(component / sum) - f64::from(target) * 0.01) as f32;
     diff.abs()
 }
@@ -673,13 +673,13 @@ pub(crate) fn accumulate_unit_priority(
     let stats = unit.unit_type().stats().attributes();
     let quality = unit.experience();
     let strength = unit.strength();
-    let dampen = 1.0 - f32::from(stats.dampen) * weight * -0.0001;
-    scale *= f32::from(strength) * 0.002 * (1.0 - f32::from(quality / 100) * -0.1);
-    scores.infantry += f32::from(strength) * 0.002 * f32::from(stats.infantry) * scale * dampen;
-    scores.cavalry += f32::from(stats.cavalry) * scale * dampen;
-    scores.artillery += f32::from(stats.artillery) * scale;
-    scores.armor += f32::from(stats.armor) * scale;
-    scores.support += f32::from(stats.support) * scale * dampen;
+    let dampen = 1.0 - (stats.dampen as f32) * weight * -0.0001;
+    scale *= (strength as f32) * 0.002 * (1.0 - (quality as f32 / 100.0) * -0.1);
+    scores.infantry += (strength as f32) * 0.002 * (stats.infantry as f32) * scale * dampen;
+    scores.cavalry += (stats.cavalry as f32) * scale * dampen;
+    scores.artillery += (stats.artillery as f32) * scale;
+    scores.armor += (stats.armor as f32) * scale;
+    scores.support += (stats.support as f32) * scale * dampen;
 }
 
 /// A ship in primary-list order. Runtime relationships use stable IDs; retail
@@ -691,8 +691,8 @@ pub struct ShipState {
     pub aggression: NavalAggression,
     pub nation: NationId,
     pub name: String,
-    pub strength: i16,
-    pub experience: i16,
+    pub strength: i32,
+    pub experience: i32,
     pub selection: ShipSelection,
 }
 
@@ -761,7 +761,7 @@ impl NavalAggression {
 pub struct AdmiralState {
     pub nation: NationId,
     pub name: String,
-    pub experience: i16,
+    pub experience: i32,
     pub ship: Option<ShipId>,
 }
 
@@ -856,7 +856,7 @@ pub struct TaskForceState {
     pub location: OceanZoneId,
     pub nation: NationId,
     pub defeated: bool,
-    pub ingot_tile: i16,
+    pub ingot_tile: i32,
     pub(crate) flagship: Option<ShipId>,
     pub(crate) ships: IndexMap<ShipId, bool>,
 }
@@ -869,7 +869,7 @@ impl TaskForceState {
         location: OceanZoneId,
         nation: NationId,
         defeated: bool,
-        ingot_tile: i16,
+        ingot_tile: i32,
         ships: IndexMap<ShipId, bool>,
     ) -> Self {
         Self {

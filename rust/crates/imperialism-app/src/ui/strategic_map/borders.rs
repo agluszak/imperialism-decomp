@@ -244,11 +244,11 @@ fn neighbor_palette(state: &GameState, neighbor: Option<TileId>) -> u8 {
     border_palette(neighbor.and_then(|neighbor| state.map()[neighbor].owner_nation))
 }
 
-fn border_palette(owner: Option<TileOwnerTag>) -> u8 {
+fn border_palette(owner: Option<TileContext>) -> u8 {
     owner
-        .and_then(TileOwnerTag::nation)
-        .and_then(MajorNationId::from_nation)
-        .map(|nation| MAJOR_NATION_BORDER_PALETTES[usize::from(nation.get())])
+        .and_then(TileContext::nation)
+        .and_then(NationId::as_major)
+        .map(|nation| MAJOR_NATION_BORDER_PALETTES[nation.get()])
         .unwrap_or(MINOR_NATION_BORDER_PALETTE)
 }
 

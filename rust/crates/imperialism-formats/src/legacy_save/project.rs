@@ -13,16 +13,16 @@ fn optional_resource_kind(value: i8) -> Option<ResourceKind> {
     optional_u8(value).map(|value| ResourceKind::from_index(value).expect("retail resource kind"))
 }
 
-fn optional_tile_owner_tag(value: i8) -> Option<TileOwnerTag> {
-    optional_u8(value).map(TileOwnerTag::new)
+fn optional_tile_owner_tag(value: i8) -> Option<TileContext> {
+    optional_u8(value).map(TileContext::from_retail_tag)
 }
 
 fn optional_major_nation_id(value: i8) -> Option<MajorNationId> {
-    optional_u8(value).map(MajorNationId::new)
+    optional_u8(value).and_then(|value| MajorNationId::try_new(usize::from(value)))
 }
 
 fn optional_province_id(value: i16) -> Option<ProvinceId> {
-    optional_u16(value).map(ProvinceId::new)
+    optional_u16(value).and_then(|value| ProvinceId::try_new(usize::from(value)))
 }
 
 fn optional_province_array(values: [i16; 3]) -> [Option<ProvinceId>; 3] {
@@ -30,15 +30,15 @@ fn optional_province_array(values: [i16; 3]) -> [Option<ProvinceId>; 3] {
 }
 
 fn optional_ocean_zone_id(value: i16) -> Option<OceanZoneId> {
-    optional_u16(value).map(OceanZoneId::new)
+    optional_u16(value).map(|value| OceanZoneId::new(usize::from(value)))
 }
 
 fn optional_nation_id(value: i16) -> Option<NationId> {
-    optional_u16(value).map(|value| NationId::new(value as u8))
+    optional_u16(value).and_then(|value| NationId::from_retail_slot(value as u8))
 }
 
 fn optional_tile_id(value: i32) -> Option<TileId> {
-    optional_u16_from_i32(value).map(TileId::new)
+    optional_u16_from_i32(value).and_then(|value| TileId::try_new(usize::from(value)))
 }
 
 fn civilian_work_order(
@@ -48,7 +48,7 @@ fn civilian_work_order(
     remaining: i16,
     topology: MapTopology,
 ) -> CivilianWorkOrder {
-    let turns = || remaining;
+    let turns = || i32::from(remaining);
     let required_tile = || tile.expect("retail work order has a tile");
     match value {
         0 => CivilianWorkOrder::Idle,
@@ -115,11 +115,13 @@ fn civilian_work_order(
 }
 
 fn nation_id_from_retail_i16(value: i16) -> NationId {
-    NationId::new(value as u8)
+    NationId::from_retail_slot(value as u8).expect("retail nation slot")
 }
 
 fn minor_nation_id_from_retail_i16(value: i16) -> MinorNationId {
-    MinorNationId::new(value as u8)
+    NationId::from_retail_slot(value as u8)
+        .and_then(NationId::as_minor)
+        .expect("retail minor-nation slot")
 }
 
 /// Mirrors the live, language-table-loaded `NormalizeRuntimeCredentialNameToken`
@@ -151,7 +153,7 @@ impl LegacyCountryBase {
                     MilitaryOrder::idle(targets, target_mirrors)
                 } else {
                     MilitaryOrder::retail(
-                        MilitaryOrderCode::from_retail(unit.order),
+                        MilitaryOrderCode::from_retail(i32::from(unit.order)),
                         target,
                         targets,
                         target_mirrors,
@@ -163,13 +165,13 @@ impl LegacyCountryBase {
                     optional_province_id(unit.stationed_province),
                     order,
                     nation_id_from_retail_i16(unit.owner_nation),
-                    unit.roster_id,
+                    n(unit.roster_id),
                     unit.registered != 0,
                     unit.name.clone(),
-                    unit.strength,
-                    MilitaryEra::from_retail(unit.era).expect("retail military era"),
-                    unit.experience,
-                    unit.battle_flags,
+                    n(unit.strength),
+                    MilitaryEra::from_retail(n(unit.era)).expect("retail military era"),
+                    n(unit.experience),
+                    n(unit.battle_flags),
                 );
                 (id, state)
             })
@@ -195,9 +197,15 @@ impl LegacyGreatPowerPostCity {
                     nation,
                     unit_type,
                     tile.map_or(CivilianLocation::OffMap, CivilianLocation::OnMap),
-                    civilian_work_order(unit.order, tile, target, unit.remaining_turns, topology),
+                    civilian_work_order(
+                        i32::from(unit.order),
+                        tile,
+                        target,
+                        unit.remaining_turns,
+                        topology,
+                    ),
                     nation_id_from_retail_i16(unit.owner_nation),
-                    unit.roster_id,
+                    n(unit.roster_id),
                     unit.registered != 0,
                 )
                 .expect("retail civilian order agrees with its location");
@@ -366,15 +374,15 @@ fn ship_states(
                     ship_type: ShipType::from_index(ship.ship_type as u8)
                         .expect("retail ship type is in the descriptor table"),
                     location: OceanZoneId::new(
-                        u16::try_from(ship.zone_ordinal)
+                        usize::try_from(ship.zone_ordinal)
                             .expect("retail ship zone ordinal is non-negative"),
                     ),
                     aggression: NavalAggression::from_retail(ship.aggression)
                         .expect("retail ship aggression is in 0..=2"),
                     nation: nation_id_from_retail_i16(ship.nation),
                     name: ship.name.clone(),
-                    strength: ship.strength,
-                    experience: ship.experience,
+                    strength: n(ship.strength),
+                    experience: n(ship.experience),
                     selection: ShipSelection::from_retail(ship.selection)
                         .expect("retail ship selection"),
                 },
@@ -397,7 +405,7 @@ fn admiral_states(
                 AdmiralState {
                     nation: nation_id_from_retail_i16(admiral.nation),
                     name: admiral.name.clone(),
-                    experience: admiral.experience,
+                    experience: n(admiral.experience),
                     ship: (admiral.ship_index >= 0)
                         .then(|| ship_ids.get(admiral.ship_index as usize).copied())
                         .flatten(),
@@ -452,7 +460,7 @@ fn task_force_states(
                         .expect("retail task force has a location"),
                     nation_id_from_retail_i16(force.nation),
                     force.defeated != 0,
-                    force.ingot_tile,
+                    i32::from(force.ingot_tile),
                     ships,
                 ),
             ))
@@ -462,7 +470,7 @@ fn task_force_states(
 
 fn production_progress(order: &LegacyProductionOrder) -> ProductionProgress {
     ProductionProgress {
-        quantity: order.quantity,
+        quantity: n(order.quantity),
         limiting_constraint: production_constraint_from_retail(order.limiting_constraint),
     }
 }
@@ -470,8 +478,8 @@ fn production_progress(order: &LegacyProductionOrder) -> ProductionProgress {
 fn requested_city_order(order: &LegacyItemOrder) -> RequestedCityOrderState {
     RequestedCityOrderState {
         progress: production_progress(&order.order),
-        requested_quantity: order.requested_quantity,
-        tracking_by_resource: ResourceTable::from_array(order.order.tracking_slots),
+        requested_quantity: n(order.requested_quantity),
+        tracking_by_resource: ResourceTable::from_array(ns(order.order.tracking_slots)),
         accumulated_value: order.order.accumulated_value,
     }
 }
@@ -497,7 +505,7 @@ impl LegacyCityOrders {
             )),
             ships: ShipOrderTable::from_array(std::array::from_fn(|index| {
                 let order = &self.ships[index];
-                let tracking = ResourceTable::from_array(order.tracking_slots);
+                let tracking = ResourceTable::from_array(ns(order.tracking_slots));
                 ShipOrderState {
                     ship_type: ShipType::from_index(
                         u8::try_from(order.resource_type_index).expect("retail ship type"),
@@ -523,7 +531,7 @@ impl LegacyCityOrders {
             food_processing: production_progress(&self.food_processing),
             power_plant: PowerPlantOrderState {
                 progress: production_progress(&self.power_plant.order),
-                desired_quantity: self.power_plant.desired_quantity,
+                desired_quantity: n(self.power_plant.desired_quantity),
             },
             transport_capacity: requested_city_order(&self.transport_capacity),
             population_growth: production_progress(&self.population_growth),
@@ -542,7 +550,7 @@ impl LegacyCityState {
             "semantic projection of city transport requests is not implemented"
         );
 
-        let strike_phase = StrikePhase::from_retail(self.population.phase_value)
+        let strike_phase = StrikePhase::from_retail(n(self.population.phase_value))
             .expect("retail population strike phase");
         let accumulator =
             PopulationAccumulator::new(f32::from_bits(self.population.count_float_bits))
@@ -551,41 +559,41 @@ impl LegacyCityState {
         CityState {
             orders: self.orders.city_orders(),
             power_plant_upgrade_queued: self.power_plant_upgrade_queued != 0,
-            food_substitution_count: self.food_substitution_count,
-            starvation_population_loss: self.starvation_population_loss,
-            serialized_state: self.serialized_state,
-            phase_counter: self.phase_counter,
-            military_recruit_count_by_kind: MilitaryUnitTable::from_array(
-                self.military_recruit_count_by_kind,
-            ),
-            civilian_recruit_count_by_kind: CivilianUnitTable::from_array(
-                self.civilian_recruit_count_by_kind,
-            ),
-            ship_order_count_by_type: ShipTypeTable::from_array(self.order_count_by_type),
+            food_substitution_count: n(self.food_substitution_count),
+            starvation_population_loss: n(self.starvation_population_loss),
+            serialized_state: n(self.serialized_state),
+            phase_counter: n(self.phase_counter),
+            military_recruit_count_by_kind: MilitaryUnitTable::from_array(ns(
+                self.military_recruit_count_by_kind
+            )),
+            civilian_recruit_count_by_kind: CivilianUnitTable::from_array(ns(
+                self.civilian_recruit_count_by_kind
+            )),
+            ship_order_count_by_type: ShipTypeTable::from_array(ns(self.order_count_by_type)),
             rolling_item_production_score: self.rolling_item_production_score,
             low_production: self.low_production != 0,
             low_stock: self.low_stock != 0,
-            reserved_by_type: ResourceTable::from_array(self.reserved_by_type),
-            power_available: self.power_available,
-            stockpile: Stockpile::from_table(ResourceTable::from_array(self.stockpile)),
-            production_orders: ProductionTable::from_array(self.production_orders),
-            production_accum: ProductionTable::from_array(self.production_accum),
+            reserved_by_type: ResourceTable::from_array(ns(self.reserved_by_type)),
+            power_available: n(self.power_available),
+            stockpile: Stockpile::from_table(ResourceTable::from_array(ns(self.stockpile))),
+            production_orders: ProductionTable::from_array(ns(self.production_orders)),
+            production_accum: ProductionTable::from_array(ns(self.production_accum)),
             // This constructed cache is not persisted by TCity::ReadFrom.
             population_growth_penalty_ticks: 0,
-            unmet_resource_retries: ResourceTable::from_array(self.unmet_resource_retries),
-            consumed_production_input_by_type: ResourceTable::from_array(
-                self.consumed_production_input_by_type,
-            ),
+            unmet_resource_retries: ResourceTable::from_array(ns(self.unmet_resource_retries)),
+            consumed_production_input_by_type: ResourceTable::from_array(ns(
+                self.consumed_production_input_by_type
+            )),
             population: PopulationState::new(
-                self.population.count,
+                n(self.population.count),
                 accumulator,
-                self.population.strength,
-                self.population.extra,
+                n(self.population.strength),
+                n(self.population.extra),
                 strike_phase,
-                LaborPool::from(self.population.baseline_labor),
-                LaborPool::from(self.population.production_labor),
-                LaborPool::from(self.population.pending_labor_delta),
-                ResourceTable::from_array(self.population.predicted_need_by_resource),
+                labor(self.population.baseline_labor),
+                labor(self.population.production_labor),
+                labor(self.population.pending_labor_delta),
+                ResourceTable::from_array(ns(self.population.predicted_need_by_resource)),
             ),
         }
     }
@@ -613,7 +621,7 @@ impl LegacyTerrainTile {
             gate: self.gate,
             recruit_search_visited: self.recruit_search_visited,
             per_tile_visited: self.per_tile_visited,
-            tile_action_ordinal: self.tile_action_ordinal,
+            tile_action_ordinal: n(self.tile_action_ordinal),
             development: TileDevelopment {
                 surface: DevelopmentLevel::new((self.development_classes as u8) & 0x0f),
                 extractive: DevelopmentLevel::new((self.development_classes as u8) >> 4),
@@ -627,7 +635,7 @@ impl LegacyTerrainTile {
             ],
             transport_links: TileTransportLinks::from_bits_retain(self.adjacency_bits),
             pending_rail_links: TileTransportLinks::from_bits_retain(self.rail_flags),
-            action: TileAction::try_from_retail(i16::from(self.action_state)),
+            action: TileAction::try_from_retail(i32::from(self.action_state)),
             flags: TileFlags::from_bits_retain(self.active_flags),
             region: optional_region_id(self.region),
         }
@@ -679,11 +687,11 @@ fn trade_market_state(market: &LegacyTradeMarketState) -> TradeMarketState {
                 offer_count: i32::from(row.offer_count),
                 amount_offered: i32::from(row.amount_offered),
                 adjusted_offer_count: row.adjusted_offer_count,
-                current_offer_by_nation: NationTable::from_array(row.current_offer_by_nation),
-                accumulated_offer_by_nation: NationTable::from_array(
-                    row.accumulated_offer_by_nation,
-                ),
-                maximum_offer_by_nation: NationTable::from_array(row.maximum_offer_by_nation),
+                current_offer_by_nation: NationTable::from_array(ns(row.current_offer_by_nation)),
+                accumulated_offer_by_nation: NationTable::from_array(ns(
+                    row.accumulated_offer_by_nation
+                )),
+                maximum_offer_by_nation: NationTable::from_array(ns(row.maximum_offer_by_nation)),
             }
         })),
     }
@@ -700,36 +708,38 @@ fn nation_pair_table<T: Copy>(
 }
 
 fn optional_major_nation_from_i16(value: i16) -> Option<MajorNationId> {
-    optional_u16(value).map(|value| MajorNationId::new(value as u8))
+    optional_u16(value).and_then(|value| MajorNationId::try_new(usize::from(value)))
 }
 
 fn diplomacy_state(diplomacy: &LegacyDiplomacyState) -> DiplomacyState {
     DiplomacyState {
-        standings: nation_pair_table(diplomacy.relation_standing_scores),
+        standings: nation_pair_table(ns(diplomacy.relation_standing_scores)),
         relationships: nation_pair_table(diplomacy.relation_propagation_matrix.map(|value| {
-            DiplomaticRelationship::try_from_retail(value).expect("retail diplomatic relationship")
+            DiplomaticRelationship::try_from_retail(n(value))
+                .expect("retail diplomatic relationship")
         })),
         relationship_turns: nation_pair_table(
             diplomacy
                 .relation_turn_stamp_matrix
-                .map(|value| (value != -1).then_some(value)),
+                .map(|value| (value != -1).then_some(n(value))),
         ),
-        influence_thresholds: ProvinceTable::from_array(diplomacy.relation_code_matrix),
+        influence_thresholds: ProvinceTable::from_array(ns(diplomacy.relation_code_matrix)),
         influence_sides: ProvinceTable::from_array(
             diplomacy
                 .pending_policy_code_matrix
                 .map(optional_major_nation_id),
         ),
-        last_diplomatic_effort_turn: diplomacy.last_diplomatic_effort_turn,
+        last_diplomatic_effort_turn: n(diplomacy.last_diplomatic_effort_turn),
         mission_levels: nation_pair_table(diplomacy.relation_side_effect_matrix.map(|value| {
-            DiplomaticMissionLevel::try_from_retail(value).expect("retail diplomatic mission level")
+            DiplomaticMissionLevel::try_from_retail(n(value))
+                .expect("retail diplomatic mission level")
         })),
         congress: DiplomaticCongressState {
             chairman: optional_major_nation_from_i16(diplomacy.congress_leadership[0]),
             counterpart: optional_major_nation_from_i16(diplomacy.congress_leadership[1]),
-            chairman_support: diplomacy.congress_support[0],
-            counterpart_support: diplomacy.congress_support[1],
-            neutral_support: diplomacy.congress_support[2],
+            chairman_support: n(diplomacy.congress_support[0]),
+            counterpart_support: n(diplomacy.congress_support[1]),
+            neutral_support: n(diplomacy.congress_support[2]),
         },
         special_relation_sources: MinorNationTable::from_array(
             diplomacy
@@ -797,7 +807,7 @@ fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
         marine_engineering: legacy.resource_type_enabled
             [usize::from(IndustryCapabilitySlot::PowerPlant.retail())]
             != 0,
-        scheduled_unlock_turn_by_technology: TechnologyTable::from_array(legacy.priority_slots),
+        scheduled_unlock_turn_by_technology: TechnologyTable::from_array(ns(legacy.priority_slots)),
         global_unlocks_by_technology: TechnologyTable::from_array(
             legacy.per_technology_unlock_flags.map(|value| value != 0),
         ),
@@ -813,7 +823,7 @@ fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
         completion_year_by_nation: MajorNationTable::from_array(
             legacy
                 .completion_year_offsets
-                .map(TechnologyTable::from_array),
+                .map(|row| TechnologyTable::from_array(ns(row))),
         ),
         industry_enabled_by_slot: IndustryCapabilityTable::from_array(
             legacy.resource_type_enabled.map(|value| value != 0),
@@ -836,7 +846,7 @@ fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
 
 impl LegacySaveV62 {
     pub fn map_view_origin(&self) -> TileId {
-        TileId::new(self.map.view_origin_tile as u16)
+        TileId::new(self.map.view_origin_tile as usize)
     }
 
     pub fn city_window_layout(&self) -> CityWindowLayout {
@@ -907,11 +917,12 @@ impl LegacySaveV62 {
                         tile,
                         TownState {
                             name: town.name.clone(),
-                            created_turn: town.created_turn,
-                            owner_nation: NationId::new(town.owner_nation as u8),
-                            resource_yield_by_type: ResourceTable::from_array(
-                                town.resource_yield_by_type,
-                            ),
+                            created_turn: n(town.created_turn),
+                            owner_nation: NationId::from_retail_slot(town.owner_nation as u8)
+                                .expect("retail town owner"),
+                            resource_yield_by_type: ResourceTable::from_array(ns(
+                                town.resource_yield_by_type
+                            )),
                             transport_linked: town.transport_linked != 0,
                             enabled: town.enabled,
                             has_adjacent_city: town.has_adjacent_city,
@@ -933,9 +944,9 @@ impl LegacySaveV62 {
                     ),
                     province_targets: ai_province_targets(&auto.auto_prefix.map_node_state_flags),
                     trade: AiTradeState {
-                        temporary_processed_stock: ProcessedTradeCommodityTable::from_array(
+                        temporary_processed_stock: ProcessedTradeCommodityTable::from_array(ns(
                             auto.auto_prefix.action_metric_by_quarter,
-                        ),
+                        )),
                     },
                 }),
                 LegacyMajorNationState::Other(_) => None,
@@ -997,7 +1008,7 @@ impl LegacySaveV62 {
                     )
                 }),
                 i32::from(self.simulation.economic_turn),
-                self.simulation.diplomacy_year_term_raw,
+                n(self.simulation.diplomacy_year_term_raw),
                 PhaseCode::from_retail(i32::from(self.simulation.turn_state_code)),
                 self.simulation.turn_flow_status_flags,
                 DecadeTable::from_array(std::array::from_fn(|index| {
@@ -1040,7 +1051,10 @@ impl LegacySaveV62 {
 fn diplomacy_notices(list: &LegacyFixedRecordList) -> Vec<DiplomacyNotice> {
     relationship_records(list)
         .into_iter()
-        .map(|(code, source)| DiplomacyNotice { source, code })
+        .map(|(code, source)| DiplomacyNotice {
+            source,
+            code: n(code),
+        })
         .collect()
 }
 
@@ -1085,7 +1099,7 @@ fn deal_book_entries(list: &LegacyFixedRecordList) -> Vec<TradeDealBookEntry> {
             TradeDealBookEntry {
                 kind: deal_book_entry_kind_from_retail(i16::from_le_bytes([record[0], record[1]])),
                 nation,
-                amount,
+                amount: n(amount),
                 unit_price: i32::from_le_bytes([record[8], record[9], record[10], record[11]]),
             }
         })
@@ -1150,11 +1164,11 @@ fn ocean_state(ocean: &LegacyOceanState, map: &MapMgr) -> Ocean {
 fn zone_state(context: &LegacyZone) -> Zone {
     let seed_owner = match context.seed_nation_id {
         -1 => None,
-        value => Some(TileOwnerTag::new(value as u8)),
+        value => Some(TileContext::from_retail_tag(value as u8)),
     };
     Zone {
         display_name: context.display_name.clone(),
-        status_code: (context.status_code != -1).then_some(context.status_code),
+        status_code: (context.status_code != -1).then_some(n(context.status_code)),
         target_tile: optional_tile_id(context.tile_or_terrain_id),
         seed_owner,
         active_tile: optional_tile_id(i32::from(context.active_tile_index)),
@@ -1184,12 +1198,12 @@ fn rebuild_ocean_neighbors(ocean: &mut Ocean, map: &MapMgr) {
             .expect("retail port zone has a target tile");
             let owner = map[target_tile]
                 .owner_nation
-                .map(TileOwnerTag::get)
+                .map(TileContext::get)
                 .filter(|&owner| owner >= 0x17)
                 .expect("retail port-zone target tile has a base ocean zone");
             let base_index = usize::from(owner - 0x17);
-            let port_id = OceanZoneId::new(zone_index as u16);
-            let base_id = OceanZoneId::new(base_index as u16);
+            let port_id = OceanZoneId::new(zone_index);
+            let base_id = OceanZoneId::new(base_index);
             let ZoneKind::PortZone(port) = &mut ocean.zones[zone_index] else {
                 unreachable!()
             };
@@ -1217,7 +1231,7 @@ fn rebuild_ocean_neighbors(ocean: &mut Ocean, map: &MapMgr) {
             if candidate == zone_index || matches!(ocean.zones[candidate], ZoneKind::PortZone(_)) {
                 continue;
             }
-            let candidate = OceanZoneId::new(candidate as u16);
+            let candidate = OceanZoneId::new(candidate);
             let ZoneKind::Zone(zone) = &mut ocean.zones[zone_index] else {
                 unreachable!()
             };
@@ -1251,7 +1265,7 @@ fn ocean_zone_for_tile(ocean: &Ocean, map: &MapMgr, tile: TileId) -> Option<usiz
     }
     let ordinal = map[tile]
         .owner_nation
-        .map(TileOwnerTag::get)?
+        .map(TileContext::get)?
         .checked_sub(0x17)?;
     let ordinal = usize::from(ordinal);
     matches!(ocean.zones.get(ordinal), Some(ZoneKind::Zone(_))).then_some(ordinal)
@@ -1268,7 +1282,7 @@ fn foreign_minister_personality(
 }
 
 fn trade_commodity_from_retail(value: i16) -> TradeCommodity {
-    TradeCommodity::from_retail(value).expect("retail trade commodity")
+    TradeCommodity::from_retail(n(value)).expect("retail trade commodity")
 }
 
 fn optional_trade_commodity_from_retail(value: i16) -> Option<TradeCommodity> {
@@ -1283,7 +1297,7 @@ fn foreign_trade_state(minister: &LegacyForeignMinisterState) -> ForeignTradeSta
         optional_trade_commodity_from_retail(minister.scalar_fields[0]).map(|commodity| {
             ForeignTradeBid {
                 commodity,
-                amount: minister.scalar_fields[1],
+                amount: n(minister.scalar_fields[1]),
             }
         });
     let requested_ship = match minister.scalar_fields[6] {
@@ -1296,13 +1310,15 @@ fn foreign_trade_state(minister: &LegacyForeignMinisterState) -> ForeignTradeSta
         .map(optional_trade_commodity_from_retail);
     ForeignTradeState {
         interior_bid,
-        phase_counter: minister.scalar_fields[4],
-        refresh_interval: minister.scalar_fields[5],
+        phase_counter: n(minister.scalar_fields[4]),
+        refresh_interval: n(minister.scalar_fields[5]),
         requested_ship,
-        purchase_priority: TradeCommodityTable::from_array(minister.purchase_priority_by_resource),
+        purchase_priority: TradeCommodityTable::from_array(ns(
+            minister.purchase_priority_by_resource
+        )),
         preferred_resources,
-        capability_flag_14: minister.scalar_fields[2],
-        capability_flag_16: minister.scalar_fields[3],
+        capability_flag_14: n(minister.scalar_fields[2]),
+        capability_flag_16: n(minister.scalar_fields[3]),
         trade_partner_enabled: TradePartnerCommodityTable::from_array(
             minister.trade_partner_enabled.map(|flag| flag != 0),
         ),
@@ -1320,17 +1336,17 @@ fn pending_ship(minister: &LegacyInteriorMinisterState) -> Option<ShipType> {
 
 fn minor_trade_state(nation: &LegacyMinorState) -> MinorTradeState {
     MinorTradeState {
-        current_supply: ResourceTable::from_array(nation.need_current_by_type),
-        offers: ResourceTable::from_array(nation.trade_offers_by_resource),
-        grant_deltas: ResourceTable::from_array(nation.grant_amounts_by_resource),
+        current_supply: ResourceTable::from_array(ns(nation.need_current_by_type)),
+        offers: ResourceTable::from_array(ns(nation.trade_offers_by_resource)),
+        grant_deltas: ResourceTable::from_array(ns(nation.grant_amounts_by_resource)),
         thresholds: MinorTradeThresholds {
-            primary_manufactured_price: nation.diplomacy_thresholds[0],
-            secondary_manufactured_price: nation.diplomacy_thresholds[1],
-            general_offer_price: nation.diplomacy_thresholds[2],
-            random_offer_price: nation.diplomacy_thresholds[3],
-            coal_offer_price: nation.diplomacy_thresholds[4],
-            iron_offer_price: nation.diplomacy_thresholds[5],
-            oil_offer_price: nation.diplomacy_thresholds[6],
+            primary_manufactured_price: n(nation.diplomacy_thresholds[0]),
+            secondary_manufactured_price: n(nation.diplomacy_thresholds[1]),
+            general_offer_price: n(nation.diplomacy_thresholds[2]),
+            random_offer_price: n(nation.diplomacy_thresholds[3]),
+            coal_offer_price: n(nation.diplomacy_thresholds[4]),
+            iron_offer_price: n(nation.diplomacy_thresholds[5]),
+            oil_offer_price: n(nation.diplomacy_thresholds[6]),
         },
         primary_manufactured_request: optional_trade_commodity_from_retail(
             nation.diplomacy_policy_fields[0],
@@ -1338,9 +1354,9 @@ fn minor_trade_state(nation: &LegacyMinorState) -> MinorTradeState {
         secondary_manufactured_request: optional_trade_commodity_from_retail(
             nation.diplomacy_policy_fields[1],
         ),
-        primary_request_fulfilled: nation.diplomacy_policy_fields[2],
-        secondary_request_fulfilled: nation.diplomacy_policy_fields[3],
-        independent_resource_counts: ResourceTable::from_array(nation.diplomacy_save_extension),
+        primary_request_fulfilled: n(nation.diplomacy_policy_fields[2]),
+        secondary_request_fulfilled: n(nation.diplomacy_policy_fields[3]),
+        independent_resource_counts: ResourceTable::from_array(ns(nation.diplomacy_save_extension)),
     }
 }
 
@@ -1368,35 +1384,37 @@ fn great_power_state(
     GreatPowerState {
         diplomacy_eligible: prefix.diplomacy_eligible != 0,
         foreign_minister_personality,
-        foreign_minister_skill_index: foreign_minister.skill_index,
+        foreign_minister_skill_index: n(foreign_minister.skill_index),
         foreign_trade: foreign_trade_state(foreign_minister),
-        development_grant_by_nation: NationTable::from_array(
-            foreign_minister.development_grant_by_nation,
-        ),
-        defense_minister_skill_index: defense_minister.skill_index,
-        capacities: NationCapacities::from_array(prefix.capacities),
+        development_grant_by_nation: NationTable::from_array(ns(
+            foreign_minister.development_grant_by_nation
+        )),
+        defense_minister_skill_index: n(defense_minister.skill_index),
+        capacities: NationCapacities::from_array(ns(prefix.capacities)),
         grant_total_cost: prefix.grant_total_cost,
-        unfilled_trade_offer_count: prefix.unfilled_trade_offer_count,
+        unfilled_trade_offer_count: n(prefix.unfilled_trade_offer_count),
         diplomacy_policy_by_nation: diplomacy_policies_from_retail_entries(
             prefix.diplomacy_policy_by_nation,
         ),
         diplomacy_grants_by_nation: diplomacy_grants_from_retail_entries(
             prefix.diplomacy_grant_by_nation,
         ),
-        need_current_by_type: ResourceTable::from_array(prefix.need_current_by_type),
-        need_target_by_type: ResourceTable::from_array(prefix.need_target_by_type),
-        relation_delta_current: ResourceTable::from_array(prefix.relation_delta_current),
-        purchased_items_by_resource: ResourceTable::from_array(prefix.purchased_items_by_resource),
-        item_potentials: ResourceTable::from_array(prefix.item_potentials),
-        unfilled_trade_turns_by_resource: ResourceTable::from_array(
-            prefix.unfilled_trade_turns_by_resource,
-        ),
-        transported_items_by_resource: ResourceTable::from_array(
-            prefix.transported_items_by_resource,
-        ),
-        remembered_trade_offers_by_resource: ResourceTable::from_array(
-            prefix.remembered_trade_offers_by_resource,
-        ),
+        need_current_by_type: ResourceTable::from_array(ns(prefix.need_current_by_type)),
+        need_target_by_type: ResourceTable::from_array(ns(prefix.need_target_by_type)),
+        relation_delta_current: ResourceTable::from_array(ns(prefix.relation_delta_current)),
+        purchased_items_by_resource: ResourceTable::from_array(ns(
+            prefix.purchased_items_by_resource
+        )),
+        item_potentials: ResourceTable::from_array(ns(prefix.item_potentials)),
+        unfilled_trade_turns_by_resource: ResourceTable::from_array(ns(
+            prefix.unfilled_trade_turns_by_resource
+        )),
+        transported_items_by_resource: ResourceTable::from_array(ns(
+            prefix.transported_items_by_resource
+        )),
+        remembered_trade_offers_by_resource: ResourceTable::from_array(ns(
+            prefix.remembered_trade_offers_by_resource
+        )),
         deal_book: deal_book_state(&prefix.diplomacy_tracked_slots),
         pending_ship: pending_ship(interior_minister),
         interior_civilian: Box::new(interior_civilian_state(interior_minister)),
@@ -1420,9 +1438,9 @@ fn great_power_state(
         candidate_nation_flags: NationTable::from_array(post.candidate_nation_flags),
         colony_boycott_flags: NationTable::from_array(post.colony_boycott_flags),
         diplomacy_budget_base: post.diplomacy_budget_base,
-        escalation_counter: i16::from(post.escalation_counter),
+        escalation_counter: i32::from(post.escalation_counter),
         pending_commitment_cost: post.pending_commitment_cost,
-        pressure_counter: i16::from(post.pressure_counter),
+        pressure_counter: i32::from(post.pressure_counter),
         army_movement_budget: post.army_movement_budget,
         aid_allocation_total: post.aid_allocation_total,
         military_expenses: post.military_expenses,
@@ -1438,25 +1456,27 @@ fn interior_civilian_state(minister: &LegacyInteriorMinisterState) -> InteriorCi
         ),
     };
     let resource_order_metrics =
-        ResourceTable::from_array(std::array::from_fn(|index| minister.order_metrics[index]));
+        ResourceTable::from_array(std::array::from_fn(
+            |index| n(minister.order_metrics[index]),
+        ));
     let city_order_demand = AiCityOrderDemand::from_parts(
         TrainingOrderTable::from_array(std::array::from_fn(|index| {
-            minister.order_metrics[23 + index]
+            n(minister.order_metrics[23 + index])
         })),
         MilitaryRecruitOrderTable::from_array(std::array::from_fn(|index| {
-            minister.order_metrics[25 + index]
+            n(minister.order_metrics[25 + index])
         })),
         CivilianUnitTable::from_array(std::array::from_fn(|index| {
-            minister.order_metrics[34 + index]
+            n(minister.order_metrics[34 + index])
         })),
         ShipOrderTable::from_array(std::array::from_fn(|index| {
-            minister.order_metrics[43 + index]
+            n(minister.order_metrics[43 + index])
         })),
-        minister.order_metrics[51],
+        n(minister.order_metrics[51]),
         ExpansionOrderTable::from_array(std::array::from_fn(|index| {
-            minister.order_metrics[53 + index]
+            n(minister.order_metrics[53 + index])
         })),
-        minister.order_metrics[60],
+        n(minister.order_metrics[60]),
     );
     let pending_development_actions = minister.integer_lists[2]
         .iter()
@@ -1479,13 +1499,13 @@ fn interior_civilian_state(minister: &LegacyInteriorMinisterState) -> InteriorCi
         optional_tile_id(i32::from(minister.order_scalars[6])),
         resource_order_metrics,
         city_order_demand,
-        minister.deferred_labor_shortfall,
-        ProductionTable::from_array(minister.order_short_table),
-        minister.temporarily_reserved_ship_arms,
-        ResourceTable::from_array(minister.order_type_tables[0]),
-        ResourceTable::from_array(minister.order_type_tables[1]),
-        ResourceTable::from_array(minister.order_type_tables[2]),
-        ResourceTable::from_array(minister.civilian_order_demand_by_resource),
+        n(minister.deferred_labor_shortfall),
+        ProductionTable::from_array(ns(minister.order_short_table)),
+        n(minister.temporarily_reserved_ship_arms),
+        ResourceTable::from_array(ns(minister.order_type_tables[0])),
+        ResourceTable::from_array(ns(minister.order_type_tables[1])),
+        ResourceTable::from_array(ns(minister.order_type_tables[2])),
+        ResourceTable::from_array(ns(minister.civilian_order_demand_by_resource)),
         // Retail constructs this transient table as zero and does not deserialize it.
         // The city-and-transport phase rebuilds it only after this loaded-save turn slice.
         0,
@@ -1496,7 +1516,7 @@ fn interior_civilian_state(minister: &LegacyInteriorMinisterState) -> InteriorCi
 fn pending_action_from_retail(status: i8, payload: i16) -> PendingActionState {
     PendingActionState::new(
         PendingActionStatus::from_retail(status),
-        (payload != -1).then_some(payload),
+        (payload != -1).then_some(n(payload)),
     )
 }
 
@@ -1539,7 +1559,7 @@ fn diplomacy_policy_from_retail(entry: i16) -> DiplomacyPolicy {
 }
 
 fn owned_region_id_from_retail(value: i32) -> ProvinceId {
-    ProvinceId::new(value as u16)
+    ProvinceId::new(value as usize)
 }
 
 fn province_state(province: &LegacyProvince) -> ProvinceState {
@@ -1547,7 +1567,7 @@ fn province_state(province: &LegacyProvince) -> ProvinceState {
     let adjacency = province.adjacent_region_ids[..count]
         .iter()
         .copied()
-        .map(|value| ProvinceId::new(value as u16))
+        .map(|value| ProvinceId::new(value as usize))
         .collect();
     let adjacency_anchor_tiles = province.adjacent_region_anchor_tiles[..count]
         .iter()
@@ -1567,7 +1587,7 @@ fn province_state(province: &LegacyProvince) -> ProvinceState {
         if value == -1 {
             return None;
         }
-        Some(NationId::new(value as u8))
+        Some(NationId::from_retail_slot(value as u8).expect("retail province owner"))
     };
     let region_class = match province.region_class {
         -1 => None,
@@ -1585,7 +1605,7 @@ fn province_state(province: &LegacyProvince) -> ProvinceState {
                 + u8::try_from(offset).expect("province resource-development index fits u8"),
         )
         .expect("province resource-development table spans food through arms");
-        resource_development_by_type[resource] = amount;
+        resource_development_by_type[resource] = n(amount);
     }
     let explored_by_majors = MajorNationTable::from_fn(|nation| {
         province.explored_by_nation_mask & (1 << nation.get()) != 0
@@ -1601,7 +1621,7 @@ fn province_state(province: &LegacyProvince) -> ProvinceState {
         region_class,
         FortLevel::from_retail(province.fort_level).expect("retail province fort level"),
         optional_tile_id(i32::from(province.city_tile)),
-        province.last_turn_tick,
+        n(province.last_turn_tick),
         optional_tile_id(i32::from(province.secondary_neighbor_tile)),
         optional_tile_id(i32::from(province.primary_neighbor_tile)),
         linked_tiles,
@@ -1633,8 +1653,8 @@ fn country_common(country: &LegacyCountryBase) -> NationCommonState {
         ),
     );
     common.unit_name_ordinal_by_type =
-        MilitaryUnitTable::from_array(country.unit_name_ordinal_by_type);
-    common.unit_name_counter = country.unit_name_counter;
+        MilitaryUnitTable::from_array(ns(country.unit_name_ordinal_by_type));
+    common.unit_name_counter = n(country.unit_name_counter);
     common
 }
 
@@ -1644,9 +1664,9 @@ fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
         .filter_map(|report| {
             let kind = BattleReportKind::from_retail(report.kind)?;
             let location = if kind.is_land() {
-                BattleReportLocation::Province(ProvinceId::try_new(report.node_id as u16)?)
+                BattleReportLocation::Province(ProvinceId::try_new(report.node_id as usize)?)
             } else {
-                BattleReportLocation::Zone(OceanZoneId::new(report.node_id as u16))
+                BattleReportLocation::Zone(OceanZoneId::new(report.node_id as usize))
             };
             let [left, right] = &report.sides;
             Some(BattleReport {
@@ -1655,7 +1675,8 @@ fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
                 location,
                 sides: BattleReportSideTable::from_array([left, right].map(|side| {
                     BattleReportSide {
-                        nation: NationId::try_new(side.nation).unwrap_or(NationId::new(0)),
+                        nation: NationId::from_retail_slot(side.nation)
+                            .unwrap_or(MajorNationId::new(0).nation()),
                         children: side
                             .children
                             .iter()
@@ -1689,9 +1710,9 @@ fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
                                         )
                                     }
                                 },
-                                stock_or_required: child.stock_or_required,
+                                stock_or_required: n(child.stock_or_required),
                                 name: child.name.clone(),
-                                strength_bucket: child.strength_bucket,
+                                strength_bucket: n(child.strength_bucket),
                                 detail_identity: child.detail_identity,
                             })
                             .collect(),

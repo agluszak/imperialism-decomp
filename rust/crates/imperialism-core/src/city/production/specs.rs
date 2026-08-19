@@ -8,7 +8,7 @@ use enum_map::EnumMap;
 pub struct RecruitmentOrderSpec {
     pub primary: ResourceCost,
     pub secondary: Option<ResourceCost>,
-    pub cash_per_unit: i16,
+    pub cash_per_unit: i32,
     pub workforce: SkillBand,
 }
 
@@ -123,9 +123,9 @@ const UNIVERSITY_REQUIREMENT_LEVEL_BY_RESOURCE: ResourceTable<[u8; 4]> =
     ]);
 
 /// `g_abUniversityRequirementLevelById` over the semantic resource domain.
-pub fn resource_development_yield(resource: ResourceKind, level: u8) -> i16 {
+pub fn resource_development_yield(resource: ResourceKind, level: u8) -> i32 {
     assert!(level <= 3, "resource development level must be in 0..=3");
-    i16::from(UNIVERSITY_REQUIREMENT_LEVEL_BY_RESOURCE[resource][usize::from(level)])
+    i32::from(UNIVERSITY_REQUIREMENT_LEVEL_BY_RESOURCE[resource][usize::from(level)])
 }
 
 pub const fn military_recruitment_spec(
@@ -188,12 +188,12 @@ pub const fn military_recruitment_spec(
 }
 
 const fn ship_materials(
-    lumber: i16,
-    fabric: i16,
-    arms: i16,
-    steel: i16,
-    coal: i16,
-    fuel: i16,
+    lumber: i32,
+    fabric: i32,
+    arms: i32,
+    steel: i32,
+    coal: i32,
+    fuel: i32,
 ) -> ShipMaterials {
     ShipMaterials {
         lumber,

@@ -30,7 +30,7 @@ impl GameState {
         buyers: std::ops::Range<u8>,
     ) {
         for seller_slot in sellers {
-            let seller = NationId::new(seller_slot);
+            let seller = NationId::from_retail_slot(seller_slot).expect("deal seller slot");
             if !self.nation_present(seller) {
                 continue;
             }
@@ -40,7 +40,7 @@ impl GameState {
             }
             self.market.rows[commodity].accumulated_offer_by_nation[seller] += cell;
             for buyer_slot in buyers.clone() {
-                let buyer = NationId::new(buyer_slot);
+                let buyer = NationId::from_retail_slot(buyer_slot).expect("deal buyer slot");
                 if !self.nation_present(buyer) {
                     continue;
                 }
@@ -81,7 +81,7 @@ impl GameState {
             return price.max(base);
         }
 
-        if let Some(target) = MajorNationId::from_nation(seller) {
+        if let Some(target) = NationId::as_major(seller) {
             let relation =
                 self.nations.majors[&target].common.trade_policy_by_nation[buyer].retail();
             if relation == 100 {
@@ -92,7 +92,7 @@ impl GameState {
             }
             return (f64::from(price * relation) * 0.01) as i32;
         }
-        let Some(source) = MajorNationId::from_nation(buyer) else {
+        let Some(source) = NationId::as_major(buyer) else {
             return price;
         };
         let relation = self.nations.majors[&source].common.trade_policy_by_nation[seller].retail();
@@ -111,11 +111,11 @@ impl GameState {
         phase: &mut TradePhase,
         buyer: NationId,
         seller: NationId,
-        amount: i16,
-        price: i16,
+        amount: i32,
+        price: i32,
         commodity: TradeCommodity,
     ) -> Option<PendingTradeOffer> {
-        if let Some(major) = MajorNationId::from_nation(buyer) {
+        if let Some(major) = NationId::as_major(buyer) {
             if self.nations.majors[&major]
                 .economy
                 .is_still_buying(commodity.resource())
@@ -136,18 +136,18 @@ impl GameState {
             return None;
         }
 
-        let minor = MinorNationId::new(buyer.get());
+        let minor = buyer.expect_minor();
         if self.minor_still_buying(minor, commodity.resource()) {
             self.set_deal_results(buyer, seller, amount, price, commodity, true, phase);
         }
         None
     }
 
-    pub(super) fn amount_unsold(&self, nation: NationId, resource: ResourceKind) -> i16 {
-        if let Some(major) = MajorNationId::from_nation(nation) {
+    pub(super) fn amount_unsold(&self, nation: NationId, resource: ResourceKind) -> i32 {
+        if let Some(major) = NationId::as_major(nation) {
             self.nations.majors[&major].economy.amount_unsold(resource)
         } else {
-            let minor = MinorNationId::new(nation.get());
+            let minor = nation.expect_minor();
             self.nations
                 .minors
                 .get(&minor)
@@ -183,13 +183,13 @@ impl GameState {
         &mut self,
         buyer: NationId,
         seller: NationId,
-        amount: i16,
-        price: i16,
+        amount: i32,
+        price: i32,
         commodity: TradeCommodity,
         shortfall: bool,
         phase: &mut TradePhase,
     ) {
-        if shortfall && let Some(major) = MajorNationId::from_nation(buyer) {
+        if shortfall && let Some(major) = NationId::as_major(buyer) {
             self.nations.majors[&major]
                 .economy
                 .clear_trade_offer(commodity.resource());
@@ -197,8 +197,8 @@ impl GameState {
         if amount > 0 {
             self.purchase_for_nation(buyer, commodity.resource(), amount, price, phase);
             self.purchase_for_nation(seller, commodity.resource(), -amount, price, phase);
-            if let Some(seller_major) = MajorNationId::from_nation(seller)
-                && MajorNationId::from_nation(buyer).is_none()
+            if let Some(seller_major) = NationId::as_major(seller)
+                && NationId::as_major(buyer).is_none()
             {
                 self.nations.majors[&seller_major]
                     .economy
@@ -208,7 +208,7 @@ impl GameState {
                 let standing = self.diplomacy.standings[buyer][seller];
                 self.set_relationship(buyer, seller, standing + 1);
             }
-            if let Some(seller_major) = MajorNationId::from_nation(seller) {
+            if let Some(seller_major) = NationId::as_major(seller) {
                 self.add_to_deal_book(
                     seller_major,
                     DealBookEntryKind::Accept,
@@ -218,7 +218,7 @@ impl GameState {
                     i32::from(price),
                 );
             }
-            if let Some(buyer_major) = MajorNationId::from_nation(buyer) {
+            if let Some(buyer_major) = NationId::as_major(buyer) {
                 self.add_to_deal_book(
                     buyer_major,
                     DealBookEntryKind::Offer,
@@ -228,7 +228,7 @@ impl GameState {
                     i32::from(price),
                 );
             }
-        } else if let Some(buyer_major) = MajorNationId::from_nation(buyer) {
+        } else if let Some(buyer_major) = NationId::as_major(buyer) {
             self.add_to_deal_book(
                 buyer_major,
                 DealBookEntryKind::Offer,
@@ -244,11 +244,11 @@ impl GameState {
         &mut self,
         nation: NationId,
         resource: ResourceKind,
-        amount: i16,
-        price: i16,
+        amount: i32,
+        price: i32,
         phase: &TradePhase,
     ) {
-        if let Some(major) = MajorNationId::from_nation(nation) {
+        if let Some(major) = NationId::as_major(nation) {
             if amount < 0
                 && let Some(processed) = ProcessedTradeCommodity::from_resource(resource)
                 && let Some(auto) = self.nations.majors[&major].auto.as_mut()
@@ -259,7 +259,7 @@ impl GameState {
             return;
         }
 
-        let minor = MinorNationId::new(nation.get());
+        let minor = nation.expect_minor();
         self.purchase_minor_item(minor, resource, amount, price, phase);
     }
 
@@ -267,8 +267,8 @@ impl GameState {
         &mut self,
         minor: MinorNationId,
         resource: ResourceKind,
-        amount: i16,
-        price: i16,
+        amount: i32,
+        price: i32,
         phase: &TradePhase,
     ) {
         let Some(state) = self.nations.minors.get_mut(&minor) else {
@@ -316,10 +316,10 @@ impl GameState {
             } else {
                 neg_delta
             };
-            let mut float_amount = f32::from(link) / f32::from(need_current);
-            float_amount *= f32::from(standing);
-            float_amount *= f32::from(price);
-            float_amount *= f32::from(amount);
+            let mut float_amount = (link as f32) / (need_current as f32);
+            float_amount *= (standing as f32);
+            float_amount *= (price as f32);
+            float_amount *= (amount as f32);
             float_amount *= GRANT_DELTA_SCALE;
             let integer_amount = (int_factor * i32::from(standing) * i32::from(price) / 255) as f32;
             let mut grant_amount = float_amount as i32;
@@ -339,7 +339,7 @@ impl GameState {
         owner: MajorNationId,
         kind: DealBookEntryKind,
         counterparty: NationId,
-        amount: i16,
+        amount: i32,
         commodity: TradeCommodity,
         price: i32,
     ) {

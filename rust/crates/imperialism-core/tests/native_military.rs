@@ -16,7 +16,7 @@ struct NationCase {
 struct SpecialistRecruitmentCase {
     nation: MajorNationId,
     unit_kind: MilitaryUnitKind,
-    quantity: i16,
+    quantity: i32,
 }
 
 #[derive(Debug, Deserialize)]
@@ -578,7 +578,7 @@ fn army_selection_cycling() {
     compare_native("army_selection_cycling", |state, case: ArmyProvinceCase| {
         state
             .find_next_selectable_army_province(state.turn().active_nation, Some(case.province))
-            .map(|province| i32::from(province.get()))
+            .map(|province| (province.get() as i32))
             .unwrap_or(-1)
     })
     .unwrap();
@@ -591,7 +591,7 @@ struct NavyZoneCase {
 
 #[derive(Debug, Deserialize)]
 struct NavySelectCase {
-    class: i16,
+    class: i32,
     selecting: bool,
 }
 
@@ -602,8 +602,8 @@ struct NavyAggressionCase {
 
 #[derive(Debug, Deserialize, PartialEq)]
 struct NavyToolbarResult {
-    available: [i16; 4],
-    selected: [i16; 4],
+    available: [i32; 4],
+    selected: [i32; 4],
 }
 
 #[derive(Debug, Deserialize)]
@@ -737,7 +737,7 @@ fn navy_selection_cycling() {
     compare_native("navy_selection_cycling", |state, case: NavyZoneCase| {
         state
             .next_navy_order_zone(state.turn().active_nation, Some(case.zone))
-            .map(|zone| i32::from(zone.get()))
+            .map(|zone| (zone.get() as i32))
             .unwrap_or(-1)
     })
     .unwrap();

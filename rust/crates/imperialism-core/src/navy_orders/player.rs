@@ -6,8 +6,8 @@ const ORDER_MARINES: i32 = 5;
 const ORDER_BLOCKADE: i32 = 6;
 const ORDER_REPAIR: i32 = 8;
 const ORDER_EVADE: i32 = 9;
-const ACTION_STATE_ANCHOR: i16 = 3;
-const ACTION_STATE_DOCKED_FLEET: i16 = 14;
+const ACTION_STATE_ANCHOR: i32 = 3;
+const ACTION_STATE_DOCKED_FLEET: i32 = 14;
 
 /// Proven retail navy order kinds. Remaining codes stay as raw `TaskForceState.order`.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -55,8 +55,8 @@ impl NavyOrder {
 /// `TNavyToolbarCluster` class buckets (`cls0..cls3`).
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct NavyToolbarCounts {
-    pub available: NavyToolbarClassTable<i16>,
-    pub selected: NavyToolbarClassTable<i16>,
+    pub available: NavyToolbarClassTable<i32>,
+    pub selected: NavyToolbarClassTable<i32>,
 }
 
 /// `TNavyMgr::SelectionClick` outcomes.
@@ -206,7 +206,7 @@ impl GameState {
             };
             worst = worst.min(descriptor_weight(ship.ship_type));
         }
-        let limit = if worst == 10_000 { 0 } else { worst as i16 };
+        let limit = if worst == 10_000 { 0 } else { worst as i32 };
         hop_distance(&self.zone_hop_distances_from(entry.location), zone) <= limit
     }
 
@@ -345,7 +345,7 @@ impl GameState {
 
     pub fn set_task_force_ingot_tile(&mut self, force: TaskForceId, tile: Option<TileId>) {
         if let Some(entry) = self.task_force_mut(force) {
-            entry.ingot_tile = tile.map(|tile| tile.get() as i16).unwrap_or(-1);
+            entry.ingot_tile = tile.map(|tile| tile.get() as i32).unwrap_or(-1);
         }
     }
 
@@ -373,12 +373,8 @@ impl GameState {
         if action == ACTION_STATE_ANCHOR || action == ACTION_STATE_DOCKED_FLEET {
             return self.port_zone_matching_tile(tile);
         }
-        let owner = rec.owner_nation?;
-        if owner.get() < 0x17 {
-            return None;
-        }
-        let ordinal = u16::from(owner.get() - 0x17);
-        (usize::from(ordinal) < self.ocean.zones.len()).then(|| OceanZoneId::new(ordinal))
+        let zone = rec.owner_nation.and_then(TileContext::ocean)?;
+        (zone.get() < self.ocean.zones.len()).then_some(zone)
     }
 
     /// `TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh` /
@@ -419,7 +415,7 @@ impl GameState {
         let start = from.map(|zone| usize::from(zone.get()));
         let mut index = start.unwrap_or(len).wrapping_sub(1);
         while index < len {
-            let zone = OceanZoneId::new(index as u16);
+            let zone = OceanZoneId::new(index);
             if self.zone_can_display_map_order(zone, nation) {
                 return Some(zone);
             }
@@ -616,7 +612,7 @@ impl GameState {
         let Some(ZoneKind::PortZone(port)) = self.ocean.zones.get(usize::from(zone.get())) else {
             return false;
         };
-        self.map[port.port_tile].owner_nation == Some(TileOwnerTag::from_nation(nation))
+        self.map[port.port_tile].owner_nation == Some(TileContext::from_nation(nation))
     }
 
     fn port_zone_hostile_to(&self, zone: OceanZoneId, nation: NationId) -> bool {
@@ -625,7 +621,7 @@ impl GameState {
         };
         let Some(owner) = self.map[port.port_tile]
             .owner_nation
-            .and_then(TileOwnerTag::nation)
+            .and_then(TileContext::nation)
         else {
             return false;
         };
@@ -645,7 +641,7 @@ impl GameState {
                 (port.zone.target_tile == Some(tile)
                     || port.zone.active_tile == Some(tile)
                     || port.port_tile == tile)
-                    .then_some(OceanZoneId::new(index as u16))
+                    .then_some(OceanZoneId::new(index))
             })
     }
 
@@ -659,7 +655,7 @@ impl GameState {
     }
 
     fn task_force_whose_ingot_is_at(&self, tile: TileId) -> Option<TaskForceId> {
-        let index = tile.get() as i16;
+        let index = tile.get() as i32;
         self.task_forces
             .iter()
             .find_map(|(&id, force)| (force.ingot_tile == index).then_some(id))
@@ -734,27 +730,27 @@ impl GameState {
                 let TaskForceTarget::Zone(zone) = target else {
                     return;
                 };
-                Some((4_i16, zone))
+                Some((4, zone))
             }
             TaskForceOrder::Blockade => {
                 let TaskForceTarget::Zone(zone) = target else {
                     return;
                 };
-                Some((2_i16, zone))
+                Some((2, zone))
             }
-            TaskForceOrder::Patrol => Some((5_i16, location)),
+            TaskForceOrder::Patrol => Some((5, location)),
             TaskForceOrder::Marines => {
                 let TaskForceTarget::Province(province) = target else {
                     return;
                 };
                 if let Some(tile) = self.map.provinces[province].city_tile() {
                     if let Some(entry) = self.task_force_mut(force) {
-                        entry.ingot_tile = tile.get() as i16;
+                        entry.ingot_tile = tile.get() as i32;
                     }
                     self.map[tile].action = TileAction::try_from_retail(6);
                     return;
                 }
-                Some((6_i16, location))
+                Some((6, location))
             }
             _ => None,
         };
@@ -770,7 +766,7 @@ impl GameState {
             return;
         };
         if let Some(entry) = self.task_force_mut(force) {
-            entry.ingot_tile = tile.get() as i16;
+            entry.ingot_tile = tile.get() as i32;
         }
         self.map[tile].action = TileAction::try_from_retail(marker);
     }
@@ -829,7 +825,7 @@ impl GameState {
             if entry.ingot_tile < 0 {
                 return;
             }
-            let tile = TileId::try_new(entry.ingot_tile as u16);
+            let tile = TileId::try_new(entry.ingot_tile as usize);
             entry.ingot_tile = -1;
             let Some(tile) = tile else {
                 return;

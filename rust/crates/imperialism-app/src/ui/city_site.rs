@@ -188,7 +188,7 @@ fn bind_city_site_intro(
         &title,
         &body,
         Some(CITY_SITE_INTRO_GOLD_PICTURE),
-        Some(COAT_PICTURE_BASE + i16::from(nation.get())),
+        Some(COAT_PICTURE_BASE + nation.get() as i16),
         true,
     );
     let okay = tree.find(root, OKAY);
@@ -251,7 +251,7 @@ fn sync_city_site_hover(
 
 fn highlights_city_site_candidate(state: &GameState, nation: MajorNationId, tile: TileId) -> bool {
     let tile_state = state.map()[tile];
-    tile_state.owner_nation == Some(TileOwnerTag::from_nation(nation.nation()))
+    tile_state.owner_nation == Some(TileContext::from_nation(nation.nation()))
         && !matches!(
             tile_state.terrain,
             TerrainKind::Hills | TerrainKind::Mountain | TerrainKind::Swamp
@@ -302,7 +302,7 @@ fn on_city_site_map_click(
             let body = get_string(
                 &assets,
                 BAD_CITY_SITE_STRING_GROUP,
-                error.message_offset(&session.game, tile),
+                error.message_offset(&session.game, tile) as i16,
             );
             open_city_site_notice(&mut commands, body);
         }
@@ -454,7 +454,7 @@ fn spawn_numbered_resource_item(
     x: i32,
     y: i32,
     resource_index: i16,
-    count: i16,
+    count: i32,
 ) {
     let icon = commodity_icon(assets, resource_index);
     let (font, layout, line_height, _) = assets
@@ -510,7 +510,7 @@ fn spawn_numbered_resource_item(
     ));
 }
 
-fn new_city_extra_height(visible: i16) -> i32 {
+fn new_city_extra_height(visible: i32) -> i32 {
     ((i32::from(visible) * RESOURCE_ITEM_WIDTH) / (NEW_CITY_DIALOG_WIDTH - 0x20) + 1)
         * RESOURCE_ITEM_HEIGHT
 }
@@ -537,7 +537,7 @@ fn bind_city_site_notice(
         "",
         &notice.0,
         None,
-        Some(COAT_PICTURE_BASE + i16::from(nation.get())),
+        Some(COAT_PICTURE_BASE + nation.get() as i16),
         true,
     );
     let okay = tree.find(root, OKAY);

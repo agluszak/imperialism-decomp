@@ -54,7 +54,7 @@ pub struct TurnState {
     /// Raw persisted `TSimMgr` term consumed by diplomacy scaling.
     ///
     /// This is not the 1815-based display calendar.
-    pub diplomacy_year_term_raw: i16,
+    pub diplomacy_year_term_raw: i32,
     pub(crate) phase: PhaseCode,
     /// Persisted turn-flow status bits consumed by the alert and technology phases.
     pub turn_flow_status_flags: u32,
@@ -70,7 +70,7 @@ pub struct TurnState {
     pub(crate) turn_alert_mask: u8,
     /// Retail `g_nTurnCooldownDeferCounter006A43C4`. Not stored in `.imp`.
     #[serde(default)]
-    pub turn_cooldown_defer_counter: i16,
+    pub turn_cooldown_defer_counter: i32,
 }
 
 impl TurnState {
@@ -78,7 +78,7 @@ impl TurnState {
     pub const fn new(
         scenario_map: Option<ScenarioMapId>,
         economic_turn: i32,
-        diplomacy_year_term_raw: i16,
+        diplomacy_year_term_raw: i32,
         phase: PhaseCode,
         turn_flow_status_flags: u32,
         quarter_gate_by_decade: DecadeTable<bool>,
@@ -293,7 +293,7 @@ impl GameState {
     /// Applies the Offer Sheet decision and resumes ranked trade deals.
     pub fn answer_trade_offer(
         &mut self,
-        quantity: i16,
+        quantity: i32,
         stop_buying: bool,
         story_ids: &[i32],
     ) -> TurnStop {
@@ -461,7 +461,7 @@ impl GameState {
                     for nation in MajorNationId::all() {
                         self.finalize_home_city_setup(nation);
                     }
-                    if let Some(active) = MajorNationId::from_nation(self.turn.active_nation) {
+                    if let Some(active) = NationId::as_major(self.turn.active_nation) {
                         self.reset_diplomacy_need_scores_and_clear_aid_allocation_matrix(active);
                         self.reset_diplomacy_need_slots_7012_if_mode_gate_matches(active);
                     }
@@ -655,12 +655,12 @@ mod tests {
         AutoGreatPowerState, BattleReport, BattleReportKind, BattleReportLocation,
         BattleReportSide, BattleReportSideSlot, BattleReportSideTable, DiplomacyPolicy,
         DiplomaticRelationship, MajorNationId, NationId, ProvinceId, ResourceKind, ShipType,
-        TileId, TileOwnerTag, TradeProgress,
+        TileContext, TileId, TradeProgress,
     };
 
     fn seed_town_tiles(state: &mut crate::GameState) {
         for major_id in MajorNationId::all() {
-            let tile = TileId::new(u16::from(major_id.get()) + 1);
+            let tile = TileId::new(major_id.get() + 1);
             let nation = major_id.nation();
             let major = &mut state.nations.majors[&major_id];
             let old_tile = major
@@ -677,11 +677,10 @@ mod tests {
             major.common.home_tile = Some(tile);
             state.nations.append_owned_region_during_construction(
                 nation,
-                crate::ProvinceId::new(u16::from(major_id.get())),
+                crate::ProvinceId::new(major_id.get()),
             );
-            state.map.provinces[crate::ProvinceId::new(u16::from(major_id.get()))].region_class =
-                Some(0);
-            state.map[tile].owner_nation = Some(TileOwnerTag::from_nation(nation));
+            state.map.provinces[crate::ProvinceId::new(major_id.get())].region_class = Some(0);
+            state.map[tile].owner_nation = Some(TileContext::from_nation(nation));
         }
     }
 
@@ -689,7 +688,7 @@ mod tests {
         state.nations.majors[&MajorNationId::new(1)].auto = Some(AutoGreatPowerState::default());
         state.nations.majors[&MajorNationId::new(1)]
             .economy
-            .diplomacy_policy_by_nation[NationId::new(0)] = Some(DiplomacyPolicy::Alliance);
+            .diplomacy_policy_by_nation[MajorNationId::new(0)] = Some(DiplomacyPolicy::Alliance);
     }
 
     #[test]
@@ -784,7 +783,7 @@ mod tests {
             "unexpected stop {stop:?}"
         );
         assert_eq!(
-            state.diplomacy.relationships[NationId::new(0)][NationId::new(1)],
+            state.diplomacy.relationships[MajorNationId::new(0)][MajorNationId::new(1)],
             DiplomaticRelationship::Alliance
         );
     }
@@ -930,11 +929,11 @@ mod tests {
             location: BattleReportLocation::Province(ProvinceId::new(0)),
             sides: BattleReportSideTable::from_array([
                 BattleReportSide {
-                    nation: NationId::new(0),
+                    nation: MajorNationId::new(0).nation(),
                     children: Vec::new(),
                 },
                 BattleReportSide {
-                    nation: NationId::new(1),
+                    nation: MajorNationId::new(1).nation(),
                     children: Vec::new(),
                 },
             ]),
@@ -950,7 +949,7 @@ mod tests {
         seed_town_tiles(&mut eliminated);
         eliminated.nations.set_country_status(
             eliminated.turn.active_nation,
-            crate::CountryStatus::ProtectorateOf(NationId::new(1)),
+            crate::CountryStatus::ProtectorateOf(MajorNationId::new(1).nation()),
         );
         eliminated.turn.phase = crate::PhaseCode::ELIMINATION;
         assert_eq!(
@@ -1058,11 +1057,11 @@ mod tests {
             location: BattleReportLocation::Province(ProvinceId::new(0)),
             sides: BattleReportSideTable::from_array([
                 BattleReportSide {
-                    nation: NationId::new(0),
+                    nation: MajorNationId::new(0).nation(),
                     children: Vec::new(),
                 },
                 BattleReportSide {
-                    nation: NationId::new(1),
+                    nation: MajorNationId::new(1).nation(),
                     children: Vec::new(),
                 },
             ]),

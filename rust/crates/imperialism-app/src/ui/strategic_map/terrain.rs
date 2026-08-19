@@ -68,11 +68,17 @@ pub(super) fn compose_strategic_base_tile(
 ) -> Vec<u8> {
     let tile_state = state.map()[tile];
     let center_column = {
-        let (_, origin_column) = state.map().geometry().row_column(view_origin);
+        let MapPosition {
+            column: origin_column,
+            ..
+        } = state.map().geometry().position(view_origin);
         (i32::from(origin_column) + VIEWPORT_TILE_SPAN / 2)
             .rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
     };
-    let (_, tile_column) = state.map().geometry().row_column(tile);
+    let MapPosition {
+        column: tile_column,
+        ..
+    } = state.map().geometry().position(tile);
     // Retail's stored flag is inverted: this seam substitution belongs to Rust's bounded map.
     let wrapped_seam = state.map().topology == MapTopology::Bounded
         && ((tile_column == 0 && center_column > 54)

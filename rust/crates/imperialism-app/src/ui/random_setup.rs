@@ -46,8 +46,7 @@ impl FromWorld for RandomGameSetup {
     fn from_world(world: &mut World) -> Self {
         let clock_seed = world.resource::<RandomSetupClockSeed>().0;
         let mut crt_rng = RetailCrtRng::from_state(clock_seed);
-        let nation =
-            MajorNationId::new((crt_rng.next_rand() % i32::from(MajorNationId::COUNT)) as u8);
+        let nation = MajorNationId::new((crt_rng.next_rand() as usize) % MajorNationId::COUNT);
         let mut name_rng = RetailLcg::from_state(clock_seed);
         Self {
             planet_seed: generate_english_random_setup_name(&mut name_rng),

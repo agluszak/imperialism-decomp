@@ -85,8 +85,8 @@ fn newspaper_navy_growth_reward_levels() {
 #[ignore = "requires the native C++ oracle"]
 fn opening_civilian_grant() {
     compare_native("opening_civilian_grant", |state, (): ()| {
-        let nation = MajorNationId::from_nation(state.turn().active_nation)
-            .expect("active nation is a great power");
+        let nation =
+            NationId::as_major(state.turn().active_nation).expect("active nation is a great power");
         state.grant_opening_civilians_for_nation(nation);
     })
     .unwrap();

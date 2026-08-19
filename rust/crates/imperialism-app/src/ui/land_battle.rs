@@ -846,7 +846,7 @@ mod tests {
         kind: MilitaryUnitKind,
         from: ProvinceId,
         to: ProvinceId,
-        strength: i16,
+        strength: i32,
     ) -> MilitaryUnitState {
         MilitaryUnitState::new(
             nation,
@@ -873,7 +873,7 @@ mod tests {
         nation: NationId,
         kind: MilitaryUnitKind,
         province: ProvinceId,
-        strength: i16,
+        strength: i32,
     ) -> MilitaryUnitState {
         MilitaryUnitState::new(
             nation,
@@ -897,7 +897,7 @@ mod tests {
             let Some(owner) = map.provinces[province].owner() else {
                 continue;
             };
-            if MajorNationId::from_nation(owner).is_none() {
+            if NationId::as_major(owner).is_none() {
                 continue;
             }
             for &neighbor in map.provinces[province].adjacency() {
@@ -907,7 +907,7 @@ mod tests {
                 let Some(other) = map.provinces[neighbor].owner() else {
                     continue;
                 };
-                if other == owner || MajorNationId::from_nation(other).is_none() {
+                if other == owner || NationId::as_major(other).is_none() {
                     continue;
                 }
                 pairs.push((province, neighbor, owner, other));

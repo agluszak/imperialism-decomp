@@ -3,10 +3,10 @@ use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::ops::{Index, IndexMut};
 
-pub const NATION_COUNT: usize = NationId::COUNT as usize;
-pub const MAJOR_NATION_COUNT: usize = MajorNationId::COUNT as usize;
-pub const MINOR_NATION_COUNT: usize = MinorNationId::COUNT as usize;
-pub const PROVINCE_COUNT: usize = ProvinceId::COUNT as usize;
+pub const NATION_COUNT: usize = NationId::COUNT;
+pub const MAJOR_NATION_COUNT: usize = MajorNationId::COUNT;
+pub const MINOR_NATION_COUNT: usize = MinorNationId::COUNT;
+pub const PROVINCE_COUNT: usize = ProvinceId::COUNT;
 
 macro_rules! fixed_table {
     (
@@ -24,7 +24,7 @@ macro_rules! fixed_table {
 
             pub fn from_fn(mut function: impl FnMut($id) -> T) -> Self {
                 Self(std::array::from_fn(|index| {
-                    function(<$id>::new(index as u8))
+                    function(<$id>::new(index))
                 }))
             }
 
@@ -43,13 +43,13 @@ macro_rules! fixed_table {
             type Output = T;
 
             fn index(&self, id: $id) -> &Self::Output {
-                &self.0[usize::from(id.get())]
+                &self.0[id.index()]
             }
         }
 
         impl<T> IndexMut<$id> for $name<T> {
             fn index_mut(&mut self, id: $id) -> &mut Self::Output {
-                &mut self.0[usize::from(id.get())]
+                &mut self.0[id.index()]
             }
         }
     };
@@ -112,14 +112,14 @@ pub type ShipTypeTable<T> = EnumMap<ShipType, T>;
 /// Fixed capacities maintained for every major nation.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct NationCapacities {
-    pub available_merchant: i16,
-    pub trade_offer: i16,
-    pub transport: i16,
-    pub reserved_transport: i16,
+    pub available_merchant: i32,
+    pub trade_offer: i32,
+    pub transport: i32,
+    pub reserved_transport: i32,
 }
 
 impl NationCapacities {
-    pub const fn from_array(values: [i16; 4]) -> Self {
+    pub const fn from_array(values: [i32; 4]) -> Self {
         Self {
             available_merchant: values[0],
             trade_offer: values[1],
@@ -129,12 +129,73 @@ impl NationCapacities {
     }
 }
 
-fixed_table!(
-    #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-    NationTable,
-    NationId,
-    NATION_COUNT
-);
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct NationTable<T>([T; NATION_COUNT]);
+
+impl<T> NationTable<T> {
+    pub const fn from_array(values: [T; NATION_COUNT]) -> Self {
+        Self(values)
+    }
+
+    pub fn from_fn(mut function: impl FnMut(NationId) -> T) -> Self {
+        Self(std::array::from_fn(|index| {
+            function(NationId::from_table_index(index))
+        }))
+    }
+
+    pub const fn as_array(&self) -> &[T; NATION_COUNT] {
+        &self.0
+    }
+}
+
+impl<T: Default> Default for NationTable<T> {
+    fn default() -> Self {
+        Self(std::array::from_fn(|_| T::default()))
+    }
+}
+
+impl<T> Index<NationId> for NationTable<T> {
+    type Output = T;
+
+    fn index(&self, id: NationId) -> &Self::Output {
+        &self.0[id.table_index()]
+    }
+}
+
+impl<T> IndexMut<NationId> for NationTable<T> {
+    fn index_mut(&mut self, id: NationId) -> &mut Self::Output {
+        &mut self.0[id.table_index()]
+    }
+}
+
+impl<T> Index<MajorNationId> for NationTable<T> {
+    type Output = T;
+
+    fn index(&self, id: MajorNationId) -> &Self::Output {
+        &self[id.nation()]
+    }
+}
+
+impl<T> IndexMut<MajorNationId> for NationTable<T> {
+    fn index_mut(&mut self, id: MajorNationId) -> &mut Self::Output {
+        &mut self[id.nation()]
+    }
+}
+
+impl<T> Index<MinorNationId> for NationTable<T> {
+    type Output = T;
+
+    fn index(&self, id: MinorNationId) -> &Self::Output {
+        &self[id.nation()]
+    }
+}
+
+impl<T> IndexMut<MinorNationId> for NationTable<T> {
+    fn index_mut(&mut self, id: MinorNationId) -> &mut Self::Output {
+        &mut self[id.nation()]
+    }
+}
 
 fixed_table!(
     #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -185,13 +246,13 @@ impl<T> Index<MinorNationId> for MinorNationTable<T> {
     type Output = T;
 
     fn index(&self, nation: MinorNationId) -> &Self::Output {
-        &self.0[nation.table_index()]
+        &self.0[nation.index()]
     }
 }
 
 impl<T> IndexMut<MinorNationId> for MinorNationTable<T> {
     fn index_mut(&mut self, nation: MinorNationId) -> &mut Self::Output {
-        &mut self.0[nation.table_index()]
+        &mut self.0[nation.index()]
     }
 }
 
@@ -206,7 +267,7 @@ impl<T> ProvinceTable<T> {
 
     pub fn from_fn(mut function: impl FnMut(ProvinceId) -> T) -> Self {
         Self::from_array(std::array::from_fn(|index| {
-            function(ProvinceId::new(index as u16))
+            function(ProvinceId::new(index))
         }))
     }
 
@@ -225,13 +286,13 @@ impl<T> Index<ProvinceId> for ProvinceTable<T> {
     type Output = T;
 
     fn index(&self, province: ProvinceId) -> &Self::Output {
-        &self.0[usize::from(province.get())]
+        &self.0[province.index()]
     }
 }
 
 impl<T> IndexMut<ProvinceId> for ProvinceTable<T> {
     fn index_mut(&mut self, province: ProvinceId) -> &mut Self::Output {
-        &mut self.0[usize::from(province.get())]
+        &mut self.0[province.index()]
     }
 }
 

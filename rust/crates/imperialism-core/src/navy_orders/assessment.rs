@@ -58,7 +58,7 @@ impl GameState {
             | MissionData::Beachhead(navy)
             | MissionData::BlockadePort { navy, .. } => {
                 if let Some(target) = navy.target_zone
-                    && let Some(major) = MajorNationId::from_nation(nation)
+                    && let Some(major) = NationId::as_major(nation)
                 {
                     self.missions[&mission].importance_bits =
                         self.control_sea_zone_importance_bits(major, target);
@@ -95,7 +95,7 @@ impl GameState {
     }
 
     fn escort_importance_bits(&self, nation: NationId) -> u32 {
-        let Some(major) = MajorNationId::from_nation(nation) else {
+        let Some(major) = NationId::as_major(nation) else {
             return 0;
         };
         let mut need_cap = self.nations.majors[&major].economy.capacities.transport;
@@ -109,8 +109,7 @@ impl GameState {
             return 0;
         };
         let merchant = self.nations.majors[&major].economy.capacities.trade_offer;
-        (self.sea_zone_importance(nation, cached) * f32::from(merchant) / f32::from(need_cap))
-            .to_bits()
+        (self.sea_zone_importance(nation, cached) * (merchant as f32) / (need_cap as f32)).to_bits()
     }
 
     fn write_control_sea_needs(&mut self, mission: MissionId) {
@@ -166,7 +165,7 @@ impl GameState {
         match self.status_of(minor) {
             CountryStatus::ProtectorateOf(master) => master == mission_nation,
             CountryStatus::Independent | CountryStatus::ColonyOf(_) => {
-                f32::from(self.diplomacy.standings[minor][mission_nation]) > year_threshold
+                (self.diplomacy.standings[minor][mission_nation] as f32) > year_threshold
             }
         }
     }
@@ -228,7 +227,7 @@ impl GameState {
         ships: &[ShipId],
         required: NavyPriorityTable<f32>,
         near: Option<OceanZoneId>,
-        distance_threshold: i16,
+        distance_threshold: i32,
         far: Option<OceanZoneId>,
     ) -> f32 {
         let vector = self.assigned_navy_category_vector(ships, near, distance_threshold, far);
@@ -249,7 +248,7 @@ impl GameState {
         &self,
         ships: &[ShipId],
         near: Option<OceanZoneId>,
-        distance_threshold: i16,
+        distance_threshold: i32,
         far: Option<OceanZoneId>,
     ) -> NavyPriorityTable<f32> {
         let far = far.filter(|&zone| Some(zone) != near);
@@ -293,7 +292,7 @@ impl GameState {
             let scale = if max_strength == 0 {
                 0.0
             } else {
-                f32::from(ship.strength / max_strength)
+                (ship.strength as f32 / max_strength as f32)
             };
             vector[NavyPriorityComponent::Resolve] +=
                 ship_priority_contribution(ship, NavyPriorityComponent::Resolve, &baselines) as f32
@@ -316,7 +315,7 @@ impl GameState {
     fn navy_profile_similarity(
         &self,
         vector: NavyPriorityTable<f32>,
-        profile: NavyPriorityTable<i16>,
+        profile: NavyPriorityTable<i32>,
     ) -> f32 {
         let sum: f32 = vector.values().sum();
         if sum == 0.0 {
@@ -324,7 +323,7 @@ impl GameState {
         }
         let mut divergence = 0.0;
         for component in NavyPriorityComponent::ALL {
-            divergence += (vector[component] / sum - f32::from(profile[component]) * 0.01).abs();
+            divergence += (vector[component] / sum - (profile[component] as f32) * 0.01).abs();
         }
         sum * (1.0 - divergence * 0.5)
     }
@@ -338,7 +337,7 @@ mod tests {
     #[test]
     fn reassess_advances_navy_state_when_assigned_ships_are_on_the_target() {
         let mut state = game_state();
-        let nation = NationId::new(0);
+        let nation = MajorNationId::new(0);
         state.nations.majors[&MajorNationId::new(0)].auto = Some(AutoGreatPowerState::default());
         state.ocean.zones = vec![ZoneKind::Zone(zone(Vec::new()))];
         state.ships.insert(
@@ -347,7 +346,7 @@ mod tests {
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(0),
                 aggression: NavalAggression::Cautious,
-                nation,
+                nation: nation.nation(),
                 name: String::new(),
                 strength: 900,
                 experience: 0,
@@ -358,7 +357,7 @@ mod tests {
         state.missions.insert(
             mission,
             MissionState {
-                nation,
+                nation: nation.nation(),
                 data: MissionData::ControlSeaZone(NavyMissionState {
                     target_zone: Some(OceanZoneId::new(0)),
                     resolved_port_zone: None,
@@ -387,8 +386,8 @@ mod tests {
     #[test]
     fn damaged_hostile_frigate_uses_retail_integer_strength_ratio() {
         let mut state = game_state();
-        let nation = NationId::new(0);
-        let hostile = NationId::new(1);
+        let nation = MajorNationId::new(0);
+        let hostile = MajorNationId::new(1);
         state.nations.majors[&MajorNationId::new(0)].auto = Some(AutoGreatPowerState::default());
         state.diplomacy.relationships[nation][hostile] = DiplomaticRelationship::War;
         state.ocean.zones = vec![ZoneKind::Zone(zone(Vec::new()))];
@@ -398,7 +397,7 @@ mod tests {
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(0),
                 aggression: NavalAggression::Cautious,
-                nation: hostile,
+                nation: hostile.nation(),
                 name: String::new(),
                 strength: 899,
                 experience: 0,
@@ -409,7 +408,7 @@ mod tests {
         state.missions.insert(
             mission,
             MissionState {
-                nation,
+                nation: nation.nation(),
                 data: MissionData::ControlSeaZone(NavyMissionState {
                     target_zone: Some(OceanZoneId::new(0)),
                     resolved_port_zone: None,

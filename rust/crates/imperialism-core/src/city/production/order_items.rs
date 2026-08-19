@@ -21,7 +21,7 @@ pub(crate) fn item_limit_from_fields(
     state: &RequestedCityOrderState,
     stockpile: &Stockpile,
     population: &PopulationState,
-    production_accum: &ProductionTable<i16>,
+    production_accum: &ProductionTable<i32>,
     item: ManufacturedItem,
 ) -> OrderLimit {
     let workforce_limit = population.strength / 2 + state.progress.quantity;
@@ -57,10 +57,10 @@ pub(crate) fn set_item_quantity(
     state: &mut RequestedCityOrderState,
     stockpile: &mut Stockpile,
     population: &mut PopulationState,
-    production_accum: &mut ProductionTable<i16>,
+    production_accum: &mut ProductionTable<i32>,
     item: ManufacturedItem,
     limit: OrderLimit,
-    quantity: i16,
+    quantity: i32,
 ) -> bool {
     let Some(delta) = state.progress.try_set(limit, quantity) else {
         return false;
@@ -142,7 +142,7 @@ pub(crate) fn set_item_quantity(
 pub(crate) fn produce_item(
     state: &mut RequestedCityOrderState,
     stockpile: &mut Stockpile,
-    production_accum: &mut ProductionTable<i16>,
+    production_accum: &mut ProductionTable<i32>,
     rolling_item_production_score: &mut i32,
     item: ManufacturedItem,
 ) {
@@ -167,7 +167,7 @@ pub(crate) fn restock_item(
     state: &mut RequestedCityOrderState,
     stockpile: &mut Stockpile,
     population: &mut PopulationState,
-    production_accum: &mut ProductionTable<i16>,
+    production_accum: &mut ProductionTable<i32>,
     item: ManufacturedItem,
 ) -> bool {
     let limit = item_limit_from_fields(state, stockpile, population, production_accum, item);
@@ -203,9 +203,9 @@ pub(crate) fn restock_item(
 
 pub(crate) fn apply_tracked_input_change(
     stockpile: &mut Stockpile,
-    tracking: &mut ResourceTable<i16>,
+    tracking: &mut ResourceTable<i32>,
     resource: ResourceKind,
-    change: i16,
+    change: i32,
 ) {
     stockpile.wrapping_add(resource, change.wrapping_neg());
     stockpile.verify_stocks();
@@ -214,10 +214,10 @@ pub(crate) fn apply_tracked_input_change(
 
 pub(crate) fn reserve_primary_and_secondary(
     stockpile: &mut Stockpile,
-    tracking: &mut ResourceTable<i16>,
+    tracking: &mut ResourceTable<i32>,
     primary: ResourceKind,
     secondary: Option<ResourceKind>,
-    change: i16,
+    change: i32,
 ) {
     apply_tracked_input_change(stockpile, tracking, primary, change);
     if let Some(secondary) = secondary {

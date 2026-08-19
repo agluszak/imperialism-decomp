@@ -15,7 +15,7 @@ use crate::ui::test_support::{
 };
 use imperialism_core::{
     GameState, GameStateParts, MapMgr, MapTopology, NationId, STRATEGIC_TILE_COUNT, TerrainKind,
-    TileId, TileOwnerTag, TileRendering, TileState,
+    TileContext, TileId, TileRendering, TileState,
 };
 
 fn fixture_parts() -> GameStateParts {
@@ -112,13 +112,13 @@ fn engineer_same_tile_hover_frames_the_tile_and_construction_neighbors() {
     let mut parts = fixture_parts();
     let active = parts.turn.active_nation;
     let view_origin = beginning_map_view_origin();
-    let (row, column) = parts.map.geometry().row_column(view_origin);
+    let MapPosition { row, column } = parts.map.geometry().position(view_origin);
     let hovered = parts
         .map
         .geometry()
-        .tile(row + 2, column + 2)
+        .tile(MapPosition::new(row + 2, column + 2))
         .expect("interior visible tile");
-    parts.map[hovered].owner_nation = Some(TileOwnerTag::from_nation(active));
+    parts.map[hovered].owner_nation = Some(TileContext::from_nation(active));
     parts.map[hovered].terrain = TerrainKind::Plains;
     parts.map[hovered].region = None;
     parts.map[hovered].province = None;
@@ -272,8 +272,8 @@ fn bounded_seam_tiles_use_the_dedicated_seam_frame() {
     let rivers = synthetic_river_masks();
     let tiles = vec![TileState::default(); STRATEGIC_TILE_COUNT];
     let world = MapMgr::new(MapTopology::Bounded, tiles);
-    let origin = world.geometry().tile(10, 51).unwrap();
-    let seam = world.geometry().tile(10, 0).unwrap();
+    let origin = world.geometry().tile(MapPosition::new(10, 51)).unwrap();
+    let seam = world.geometry().tile(MapPosition::new(10, 0)).unwrap();
     let mut parts = fixture_parts();
     parts.map = world;
     let state = GameState::from_parts(parts);
@@ -290,7 +290,7 @@ fn bounded_seam_tiles_use_the_dedicated_seam_frame() {
 fn city_site_selection_draws_retail_frame_and_neighbor_outline() {
     let mut fixture = MapFixture::new();
     let nation = MajorNationId::new(6);
-    let owner = TileOwnerTag::from_nation(nation.nation());
+    let owner = TileContext::from_nation(nation.nation());
     let origin = fixture.origin;
     fixture.edit(|map, origin| {
         map[origin].owner_nation = Some(owner);
@@ -323,7 +323,7 @@ fn city_marker_offsets_follow_former_owner_and_development_stage() {
     let origin = fixture.origin;
     fixture.edit(|map, origin| {
         map[origin].flags = TileFlags::from_bits_retain(1);
-        map[origin].former_owner_nation = Some(TileOwnerTag::from_nation(NationId::new(6)));
+        map[origin].former_owner_nation = Some(TileContext::from_nation(MajorNationId::new(6)));
     });
     assert_eq!(city_marker_offset(&fixture.state(), origin), Some(0x6c0));
 
@@ -334,7 +334,7 @@ fn city_marker_offsets_follow_former_owner_and_development_stage() {
     assert_eq!(city_marker_offset(&fixture.state(), origin), Some(0x700));
 
     fixture.edit(|map, origin| {
-        map[origin].former_owner_nation = Some(TileOwnerTag::new(8));
+        map[origin].former_owner_nation = Some(TileContext::new(8));
         map[origin].flags = TileFlags::from_bits_retain(1);
     });
     assert_eq!(city_marker_offset(&fixture.state(), origin), Some(0x9c0));
@@ -396,7 +396,7 @@ fn prospectable_resources_use_extractive_overlay_or_undeveloped_icon() {
     let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
     let mut fixture = MapFixture::new();
     let origin = fixture.origin;
-    let nation = MajorNationId::from_nation(fixture.state().turn().active_nation).unwrap();
+    let nation = NationId::as_major(fixture.state().turn().active_nation).unwrap();
     fixture.edit(|map, origin| {
         map[origin].terrain = TerrainKind::Hills;
         map[origin].gate = 2;
@@ -440,7 +440,7 @@ fn city_tiles_blit_the_capital_improvement_ink() {
         map[origin].terrain = TerrainKind::Plains;
         map[origin].gate = 1;
         map[origin].flags = TileFlags::from_bits_retain(1);
-        map[origin].former_owner_nation = Some(TileOwnerTag::from_nation(NationId::new(6)));
+        map[origin].former_owner_nation = Some(TileContext::from_nation(MajorNationId::new(6)));
         map[origin].edge_resources = [None, None];
     });
 
@@ -459,7 +459,7 @@ fn nation_borders_use_the_owner_palette() {
     let origin = fixture.origin;
     fixture.edit(|map, origin| {
         map[origin].terrain = TerrainKind::Plains;
-        map[origin].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(6)));
+        map[origin].owner_nation = Some(TileContext::from_nation(MajorNationId::new(6)));
         map[origin].owner_border_mask = 1;
         map[origin].city_border_mask = 0;
     });

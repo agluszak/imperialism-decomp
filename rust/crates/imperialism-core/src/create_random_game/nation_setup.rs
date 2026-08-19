@@ -113,10 +113,10 @@ pub(super) fn choose_foreign_ministers(
 
     let major_count = usize::from(MajorNationId::COUNT);
     let isolation_by_major = MajorNationTable::from_fn(|nation| {
-        let class = region_class_by_nation[usize::from(nation.get())]
+        let class = region_class_by_nation[nation.table_index()]
             .expect("accepted random maps assign a region class to every major nation");
         if (0..major_count).any(|other| {
-            other != usize::from(nation.get()) && region_class_by_nation[other] == Some(class)
+            other != nation.table_index() && region_class_by_nation[other] == Some(class)
         }) {
             0
         } else if (major_count..NATION_COUNT)
@@ -134,7 +134,7 @@ pub(super) fn choose_foreign_ministers(
             .iter()
             .find_map(|&isolation| {
                 (0..major_count).find_map(|slot| {
-                    let nation = MajorNationId::new(slot as u8);
+                    let nation = MajorNationId::new(slot);
                     (nation != human_nation
                         && profile_by_major[nation].is_none()
                         && isolation_by_major[nation] == isolation)
@@ -156,7 +156,7 @@ pub(super) fn choose_foreign_ministers(
     })
 }
 pub(super) fn minor_nation(nation: MinorNationId, display_name: String) -> MinorNation {
-    let first_member = MinorNationId::FIRST + (nation.get() - MinorNationId::FIRST) / 4 * 4;
+    let first_member = nation.get() / 4 * 4;
     MinorNation {
         common: NationCommonState::from_parts(
             display_name,
@@ -166,9 +166,7 @@ pub(super) fn minor_nation(nation: MinorNationId, display_name: String) -> Minor
             None,
             NationTable::default(),
         ),
-        consortium_members: std::array::from_fn(|offset| {
-            MinorNationId::new(first_member + offset as u8)
-        }),
+        consortium_members: std::array::from_fn(|offset| MinorNationId::new(first_member + offset)),
         trade: MinorTradeState {
             thresholds: MINOR_TRADE_THRESHOLDS[nation.table_index()],
             ..MinorTradeState::default()
@@ -194,13 +192,13 @@ pub(super) const MINOR_TRADE_THRESHOLDS: [MinorTradeThresholds; MINOR_NATION_COU
     minor_trade_thresholds(0x73a, 0x311, 0x78, 0x3c, 0x96, 0x87, 0x6c),
 ];
 pub(super) const fn minor_trade_thresholds(
-    primary_manufactured_price: i16,
-    secondary_manufactured_price: i16,
-    general_offer_price: i16,
-    random_offer_price: i16,
-    coal_offer_price: i16,
-    iron_offer_price: i16,
-    oil_offer_price: i16,
+    primary_manufactured_price: i32,
+    secondary_manufactured_price: i32,
+    general_offer_price: i32,
+    random_offer_price: i32,
+    coal_offer_price: i32,
+    iron_offer_price: i32,
+    oil_offer_price: i32,
 ) -> MinorTradeThresholds {
     MinorTradeThresholds {
         primary_manufactured_price,
@@ -215,7 +213,7 @@ pub(super) const fn minor_trade_thresholds(
 pub(super) fn initialize_minor_trade_state(world: &MapMgr, nations: &mut Nations) {
     for nation in MinorNationId::all() {
         let minor = &mut nations.minors[&nation];
-        let owner = TileOwnerTag::from_nation(nation.nation());
+        let owner = TileContext::from_nation(nation.nation());
         let mut counts = ResourceTable::default();
         for tile in world.tiles.iter() {
             if tile.owner_nation != Some(owner) || tile.gate == 0xf {
@@ -256,6 +254,6 @@ pub(super) fn scenario_city(
     // ordered owned-region list. Pending action 9 starts below the upgraded threshold,
     // so the initial divisor is four regions per capacity point.
     city.production_accum[CityFacilitySlot::RegionalPopulation] =
-        (owned_region_count / 4).max(1) as i16;
+        (owned_region_count / 4).max(1) as i32;
     city
 }

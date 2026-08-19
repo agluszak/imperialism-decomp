@@ -12,7 +12,7 @@ pub(crate) fn random_game_names() -> RandomGameNames {
     let mut province_names_by_nation = NationTable::default();
     for nation in NationId::all() {
         localized_nation_names[nation] = format!("N{}", nation.get());
-        let count = if MajorNationId::from_nation(nation).is_some() {
+        let count = if NationId::as_major(nation).is_some() {
             8
         } else {
             4
@@ -128,7 +128,7 @@ pub(crate) fn major_nation() -> MajorNation {
         city: city(),
         towns: [(
             TileId::new(1),
-            TownState::for_frog_city(TileId::new(1), NationId::new(0)),
+            TownState::for_frog_city(TileId::new(1), MajorNationId::new(0).nation()),
         )]
         .into_iter()
         .collect(),
@@ -149,7 +149,7 @@ pub(crate) fn game_state() -> GameState {
                 false, true, true, true, true, true, true, true, true, true,
             ]),
             difficulty: Difficulty::Easy,
-            active_nation: NationId::new(0),
+            active_nation: MajorNationId::new(0).nation(),
             last_turn_alert_tick: 0,
             turn_alert_mask: 0,
             turn_cooldown_defer_counter: 0,
@@ -190,6 +190,6 @@ pub(crate) fn game_state() -> GameState {
     };
     // Town markers must sit on owned land. The turn loop reaches city/transport
     // on this fixture, and that phase rebuilds yields from those markers.
-    state.map[TileId::new(1)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
+    state.map[TileId::new(1)].owner_nation = Some(TileContext::from_nation(MajorNationId::new(0)));
     state
 }

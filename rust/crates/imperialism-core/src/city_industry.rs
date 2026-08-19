@@ -2,9 +2,9 @@ use crate::{CityState, RngState, ShipTypeTable};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct ShipTypeWeights {
-    random_draw_block: i16,
-    allocation: i16,
-    average: i16,
+    random_draw_block: i32,
+    allocation: i32,
+    average: i32,
 }
 
 // Columns 0, 5, and 7 from g_NavyOrderResourceDescriptorTable. These are the
@@ -26,7 +26,7 @@ const SHIP_TYPE_WEIGHTS: ShipTypeTable<ShipTypeWeights> = ShipTypeTable::from_ar
     weights(1800, 0, 6),
 ]);
 
-const fn weights(random_draw_block: i16, allocation: i16, average: i16) -> ShipTypeWeights {
+const fn weights(random_draw_block: i32, allocation: i32, average: i32) -> ShipTypeWeights {
     ShipTypeWeights {
         random_draw_block,
         allocation,
@@ -35,7 +35,7 @@ const fn weights(random_draw_block: i16, allocation: i16, average: i16) -> ShipT
 }
 
 impl CityState {
-    pub(crate) fn merchant_capacity(&self) -> i16 {
+    pub(crate) fn merchant_capacity(&self) -> i32 {
         SHIP_TYPE_WEIGHTS
             .iter()
             .map(|(ship_type, weights)| {
@@ -54,8 +54,8 @@ impl CityState {
 
     pub fn allocate_random_resource_counts(
         &mut self,
-        max_weight: i16,
-        output_counts: &mut ShipTypeTable<i16>,
+        max_weight: i32,
+        output_counts: &mut ShipTypeTable<i32>,
         rng: &mut RngState,
     ) -> i32 {
         let mut allocated_weight = 0_i32;

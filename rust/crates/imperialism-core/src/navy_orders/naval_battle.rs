@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 const TILE_COUNT: usize = 0xb4;
 const TILE_STRIDE: i32 = 6;
-const MOVE_COSTS: [i16; 6] = [15, 10, 20, 40, 20, 10];
+const MOVE_COSTS: [i32; 6] = [15, 10, 20, 40, 20, 10];
 const UNIT_TYPE_BY_SHIP_TYPE: [i8; 14] = [-1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7];
 const ATTACK_POWER: [f32; 8] = [3.0, 3.5, 4.0, 4.0, 8.0, 8.0, 15.0, 15.0];
 const DAMAGE_SCALE: [f32; 8] = [0.045, 0.04, 0.04, 0.022, 0.02, 0.025, 0.015, 0.022];
@@ -39,8 +39,8 @@ struct NavyUnit {
     secondary_strength: i32,
     base_action_points: i32,
     action_points: i32,
-    quality: i16,
-    order_seed: i16,
+    quality: i32,
+    order_seed: i32,
     destroyed: bool,
 }
 
@@ -50,14 +50,14 @@ pub struct NavyBattle {
     nations: [NationId; 2],
     units: Vec<NavyUnit>,
     occupants: Vec<Option<usize>>,
-    move_costs: Vec<i16>,
+    move_costs: Vec<i32>,
     current_side: u8,
     selected: Option<usize>,
     round: i32,
     outcome: Option<u8>,
     battlefield_column_count: i32,
     move_cost_rotation_start: usize,
-    move_cost_by_direction: [i16; 6],
+    move_cost_by_direction: [i32; 6],
     targeting: [NavyTargeting; 2],
 }
 
@@ -101,7 +101,7 @@ impl NavyBattle {
                     action_points: speed * 10,
                     // `TNavyTacUnit::InitializeFromSourceShip` never writes +0x10.
                     quality: 0,
-                    order_seed: state.rng.next_crt_rand() as i16,
+                    order_seed: state.rng.next_crt_rand() as i32,
                     destroyed: false,
                 });
             }
@@ -154,7 +154,7 @@ impl NavyBattle {
         self.move_cost_rotation_start
     }
 
-    pub const fn move_costs_by_direction(&self) -> [i16; 6] {
+    pub const fn move_costs_by_direction(&self) -> [i32; 6] {
         self.move_cost_by_direction
     }
 
@@ -186,7 +186,7 @@ impl NavyBattle {
         true
     }
 
-    pub fn reachable_tiles(&mut self, ship: ShipId) -> &[i16] {
+    pub fn reachable_tiles(&mut self, ship: ShipId) -> &[i32] {
         self.move_costs.fill(-1);
         let Some(unit) = self.units.iter().position(|unit| unit.ship == ship) else {
             return &self.move_costs;
@@ -200,7 +200,7 @@ impl NavyBattle {
         for band in (0..=action_points).step_by(10) {
             for tile in 0..TILE_COUNT as i32 {
                 let cost = self.move_costs[tile as usize];
-                if cost < band as i16 {
+                if cost < band as i32 {
                     continue;
                 }
                 for (direction, neighbor) in navy_neighbors(tile).into_iter().enumerate() {
@@ -213,7 +213,7 @@ impl NavyBattle {
                         10
                     };
                     let next = cost + step;
-                    if next <= action_points as i16
+                    if next <= action_points as i32
                         && (self.move_costs[neighbor as usize] == -1
                             || next < self.move_costs[neighbor as usize])
                     {
@@ -342,7 +342,7 @@ impl GameState {
         deployed
     }
 
-    pub fn navy_unit_reachable_costs(&mut self, ship: ShipId) -> Vec<i16> {
+    pub fn navy_unit_reachable_costs(&mut self, ship: ShipId) -> Vec<i32> {
         let Some(mut battle) = self.take_navy_battle() else {
             return Vec::new();
         };
@@ -375,7 +375,7 @@ impl GameState {
         }
         for unit in &battle.units {
             if let Some(ship) = self.ships.get_mut(&unit.ship) {
-                ship.strength = unit.strength.clamp(0, i32::from(i16::MAX)) as i16;
+                ship.strength = unit.strength.clamp(0, i32::from(i32::MAX)) as i32;
             }
         }
         for force in battle.forces {
@@ -501,7 +501,10 @@ mod tests {
         }
         NavyBattle {
             forces: [TaskForceId::new(1), TaskForceId::new(2)],
-            nations: [NationId::new(0), NationId::new(1)],
+            nations: [
+                MajorNationId::new(0).nation(),
+                MajorNationId::new(1).nation(),
+            ],
             units,
             occupants,
             move_costs: vec![-1; TILE_COUNT],

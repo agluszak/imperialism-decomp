@@ -58,9 +58,9 @@ pub enum BattleReportLocation {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct BattleReportUnit {
     pub kind: BattleReportUnitKind,
-    pub stock_or_required: i16,
+    pub stock_or_required: i32,
     pub name: String,
-    pub strength_bucket: i16,
+    pub strength_bucket: i32,
     /// `kControlTagArmy` (`'army'`) for land rows; ship type identity for sea rows.
     pub detail_identity: u32,
 }
@@ -192,7 +192,7 @@ mod tests {
         let mut state = game_state();
         let province = ProvinceId::new(3);
         let attacker = state.turn.active_nation;
-        let defender = NationId::new(1);
+        let defender = MajorNationId::new(1);
         let id = MilitaryUnitId::new(1);
         state.military_units.insert(
             id,
@@ -215,7 +215,7 @@ mod tests {
             BattleReportKind::LandBattle,
             province,
             attacker,
-            defender,
+            defender.nation(),
             &[id],
             &[],
             true,

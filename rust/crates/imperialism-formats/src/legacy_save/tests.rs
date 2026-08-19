@@ -38,8 +38,8 @@ fn game_context() -> LegacyGameStateContext {
     }
 }
 
-fn push_be_i16(bytes: &mut Vec<u8>, value: i16) {
-    bytes.extend_from_slice(&value.to_be_bytes());
+fn push_be_i16(bytes: &mut Vec<u8>, value: i32) {
+    bytes.extend_from_slice(&(value as i16).to_be_bytes());
 }
 
 fn nonzero_steel_order_payload() -> Vec<u8> {
@@ -52,11 +52,11 @@ fn nonzero_steel_order_payload() -> Vec<u8> {
     for resource in 0..RESOURCE_KIND_COUNT {
         let tracked =
             if resource == ResourceKind::Coal as usize || resource == ResourceKind::Iron as usize {
-                3_i16
+                3
             } else {
-                0_i16
+                0
             };
-        bytes.extend_from_slice(&tracked.to_le_bytes());
+        bytes.extend_from_slice(&(tracked as i16).to_le_bytes());
     }
     bytes.extend_from_slice(&27_i32.to_le_bytes());
     for value in [5_i16, 4, 3, 2] {
@@ -153,7 +153,7 @@ fn reads_phase_six_inputs_from_their_exact_v62_offsets() {
     assert!(state.technology().advanced_iron_working);
     assert!(state.technology().marine_engineering);
     assert_eq!(
-        state.market().rows[TradeCommodity::Oil].maximum_offer_by_nation[NationId::new(22)],
+        state.market().rows[TradeCommodity::Oil].maximum_offer_by_nation[MinorNationId::new(1)],
         321
     );
 }
@@ -266,7 +266,7 @@ fn reads_the_exact_v62_diplomacy_payload_and_endianness() {
     assert_eq!(diplomacy.last_diplomatic_effort_turn, 0x3456);
     assert_eq!(
         diplomacy.relation_side_effect_matrix[1],
-        DiplomaticMissionLevel::Embassy.retail()
+        DiplomaticMissionLevel::Embassy.retail() as i16
     );
     assert_eq!(diplomacy.congress_leadership, [6, -1]);
     assert_eq!(diplomacy.congress_support, [1, 2, 3]);
@@ -300,11 +300,11 @@ fn projects_typed_relationship_queues_in_retail_source_order_without_rng_draws()
         pending.turn_events,
         vec![
             DiplomacyNotice {
-                source: NationId::new(0),
+                source: MajorNationId::new(0).nation(),
                 code: 9,
             },
             DiplomacyNotice {
-                source: NationId::new(2),
+                source: MajorNationId::new(2).nation(),
                 code: -7,
             },
         ]
@@ -313,11 +313,11 @@ fn projects_typed_relationship_queues_in_retail_source_order_without_rng_draws()
         pending.proposals,
         vec![
             DiplomacyProposal {
-                source: NationId::new(1),
+                source: MajorNationId::new(1).nation(),
                 policy: DiplomacyPolicy::JoinEmpire,
             },
             DiplomacyProposal {
-                source: NationId::new(5),
+                source: MajorNationId::new(5).nation(),
                 policy: DiplomacyPolicy::BuildEmbassy,
             },
         ]
@@ -345,7 +345,7 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
         .zip(expected_provinces)
         .enumerate()
     {
-        let major = state.nations().major(MajorNationId::new(slot as u8));
+        let major = state.nations().major(MajorNationId::new(slot));
         let auto = major.auto.as_ref().unwrap();
         let targets = &auto.zone_targets;
         assert_eq!(targets.len(), 83);
@@ -392,7 +392,7 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
             panic!("saved port zone projected as a base zone")
         };
         assert_projected_zone(&port.zone, &saved.zone);
-        assert_eq!(port.port_tile.get(), saved.port_tile_index as u16);
+        assert_eq!(port.port_tile.get(), saved.port_tile_index as usize);
         assert_eq!(port.zone.primary_neighbors.len(), 1);
         let linked = usize::from(port.zone.primary_neighbors[0].get());
         let ZoneKind::Zone(linked_zone) = &state.ocean().zones[linked] else {
@@ -401,13 +401,13 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
         assert!(
             linked_zone
                 .primary_neighbors
-                .contains(&OceanZoneId::new(saved.zone.context_ordinal as u16))
+                .contains(&OceanZoneId::new(saved.zone.context_ordinal as usize))
         );
         let tile = usize::from(port.port_tile.get());
         assert_eq!(
             state.map()[port.port_tile]
                 .former_owner_nation
-                .and_then(TileOwnerTag::nation)
+                .and_then(TileContext::nation)
                 .unwrap()
                 .get(),
             save.map.tiles[tile].former_owner_nation as u8,
@@ -433,19 +433,19 @@ fn assert_projected_zone(zone: &Zone, saved: &LegacyZone) {
     assert_eq!(zone.display_name, saved.display_name);
     assert_eq!(
         zone.status_code,
-        (saved.status_code != -1).then_some(saved.status_code)
+        (saved.status_code != -1).then_some(i32::from(saved.status_code))
     );
     assert_eq!(
         zone.target_tile.map(TileId::get),
-        (saved.tile_or_terrain_id != -1).then_some(saved.tile_or_terrain_id as u16)
+        (saved.tile_or_terrain_id != -1).then_some(saved.tile_or_terrain_id as usize)
     );
     assert_eq!(
-        zone.seed_owner.map(TileOwnerTag::get),
+        zone.seed_owner.map(TileContext::get),
         (saved.seed_nation_id != -1).then_some(saved.seed_nation_id as u8)
     );
     assert_eq!(
         zone.active_tile.map(TileId::get),
-        (saved.active_tile_index != -1).then_some(saved.active_tile_index as u16)
+        (saved.active_tile_index != -1).then_some(saved.active_tile_index as usize)
     );
 }
 
@@ -510,7 +510,7 @@ fn retail_projection_preserves_minister_identity_and_direct_state() {
             0,
             Vec::new(),
         );
-        nation.economy.development_grant_by_nation == NationTable::<i16>::default()
+        nation.economy.development_grant_by_nation == NationTable::<i32>::default()
             && nation.economy.defense_minister_skill_index == 0
             && *nation.economy.interior_civilian == expected_interior
     }));
@@ -590,8 +590,11 @@ fn retail_projection_preserves_country_and_province_semantics() {
     );
 
     let province_zero = &state.map().provinces[ProvinceId::new(0)];
-    assert_eq!(province_zero.owner(), Some(NationId::new(12)));
-    assert_eq!(province_zero.former_owner(), Some(NationId::new(12)));
+    assert_eq!(province_zero.owner(), Some(MinorNationId::new(5).nation()));
+    assert_eq!(
+        province_zero.former_owner(),
+        Some(MinorNationId::new(5).nation())
+    );
     assert_eq!(province_zero.adjacency(), [8, 1, 17].map(ProvinceId::new));
     assert_eq!(province_zero.region_class, Some(0));
     assert_eq!(province_zero.fort_level(), FortLevel::None);
@@ -603,7 +606,10 @@ fn retail_projection_preserves_country_and_province_semantics() {
     assert_eq!(province_zero.city_score(), 0);
 
     let province_seventy_nine = &state.map().provinces[ProvinceId::new(79)];
-    assert_eq!(province_seventy_nine.owner(), Some(NationId::new(0)));
+    assert_eq!(
+        province_seventy_nine.owner(),
+        Some(MajorNationId::new(0).nation())
+    );
     assert_eq!(
         province_seventy_nine.adjacency(),
         [71, 72, 80, 78, 89, 90].map(ProvinceId::new)
@@ -619,25 +625,46 @@ fn retail_projection_preserves_country_and_province_semantics() {
 
     for province in 120..PROVINCE_COUNT {
         assert_eq!(
-            state.map().provinces[ProvinceId::new(province as u16)],
+            state.map().provinces[ProvinceId::new(province)],
             ProvinceState::default()
         );
     }
 
-    assert!(state.do_nation_territories_share_region_class(NationId::new(0), NationId::new(19)));
-    assert!(!state.do_nation_territories_share_region_class(NationId::new(0), NationId::new(1)));
-    assert!(state.are_nations_border_linked(NationId::new(0), NationId::new(19)));
-    assert!(!state.are_nations_border_linked(NationId::new(0), NationId::new(1)));
+    assert!(state.do_nation_territories_share_region_class(
+        MajorNationId::new(0).nation(),
+        MinorNationId::new(5).nation()
+    ));
+    assert!(!state.do_nation_territories_share_region_class(
+        MajorNationId::new(0).nation(),
+        MajorNationId::new(1).nation()
+    ));
+    assert!(state.are_nations_border_linked(
+        MajorNationId::new(0).nation(),
+        MinorNationId::new(5).nation()
+    ));
+    assert!(!state.are_nations_border_linked(
+        MajorNationId::new(0).nation(),
+        MajorNationId::new(1).nation()
+    ));
 }
 
 #[test]
 fn country_status_projection_decodes_retail_encodings() {
     for (encoded, expected) in [
         (-1, CountryStatus::Independent),
-        (100, CountryStatus::ProtectorateOf(NationId::new(0))),
-        (122, CountryStatus::ProtectorateOf(NationId::new(22))),
-        (200, CountryStatus::ColonyOf(NationId::new(0))),
-        (222, CountryStatus::ColonyOf(NationId::new(22))),
+        (
+            100,
+            CountryStatus::ProtectorateOf(MajorNationId::new(0).nation()),
+        ),
+        (
+            122,
+            CountryStatus::ProtectorateOf(MinorNationId::new(15).nation()),
+        ),
+        (200, CountryStatus::ColonyOf(MajorNationId::new(0).nation())),
+        (
+            222,
+            CountryStatus::ColonyOf(MinorNationId::new(15).nation()),
+        ),
     ] {
         assert_eq!(country_status_from_retail(encoded), expected);
     }
@@ -770,13 +797,13 @@ fn deal_book_projection_reconstructs_retail_sorted_load_order() {
         vec![
             TradeDealBookEntry {
                 kind: DealBookEntryKind::Accept,
-                nation: NationId::new(0),
+                nation: MajorNationId::new(0).nation(),
                 amount: 22,
                 unit_price: 456,
             },
             TradeDealBookEntry {
                 kind: DealBookEntryKind::Offer,
-                nation: NationId::new(8),
+                nation: MinorNationId::new(1).nation(),
                 amount: 11,
                 unit_price: 123,
             },
@@ -901,7 +928,7 @@ fn eliminated_major_slot_stays_absent_through_save_and_load() {
 
 #[test]
 fn eliminated_minor_slot_stays_absent_through_save_and_load() {
-    let eliminated = MinorNationId::new(7);
+    let eliminated = MinorNationId::new(0);
     let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
     save.simulation.nation_availability[usize::from(eliminated.get())] = 0;
     save.simulation.nation_count -= 1;
@@ -909,7 +936,7 @@ fn eliminated_minor_slot_stays_absent_through_save_and_load() {
 
     let state = LegacySaveV62::parse(&save.to_bytes()).game_state(game_context());
     assert!(state.nations().minor(eliminated).is_none());
-    assert!(state.nations().minor(MinorNationId::new(8)).is_some());
+    assert!(state.nations().minor(MinorNationId::new(1)).is_some());
 
     let bytes = LegacySaveV62::from_game_state(
         &state,
@@ -925,7 +952,7 @@ fn eliminated_minor_slot_stays_absent_through_save_and_load() {
     assert!(
         round_tripped
             .nations()
-            .minor(MinorNationId::new(8))
+            .minor(MinorNationId::new(1))
             .is_some()
     );
 }

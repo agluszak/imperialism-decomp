@@ -143,7 +143,7 @@ impl GameState {
             Some(province),
             MilitaryOrderCode::Idle,
         );
-        self.announce_later(nation, 3, i16::from(unit_kind.retail()), 1);
+        self.announce_later(nation, 3, i32::from(unit_kind.retail()), 1);
     }
 
     fn needs_overseas_developer(&self, nation: MajorNationId) -> bool {
@@ -329,11 +329,11 @@ impl GameState {
             if pending_stage == ProvinceDevelopmentStage::Town {
                 self.nations.majors[&nation].economy.pending_actions
                     [PendingActionKind::TownDevelopment]
-                    .queue_with_payload(province_id.get() as i16);
+                    .queue_with_payload(province_id.get() as i32);
             } else if pending_stage == ProvinceDevelopmentStage::Village {
                 self.nations.majors[&nation].economy.pending_actions
                     [PendingActionKind::VillageDevelopment]
-                    .queue_with_payload(province_id.get() as i16);
+                    .queue_with_payload(province_id.get() as i32);
                 if self.nations.majors[&nation].economy.pending_actions
                     [PendingActionKind::RailyardExpansion]
                     .status()
@@ -377,7 +377,7 @@ impl GameState {
         self.nations.majors[&nation].common.treasury += interaction_score;
     }
 
-    fn announce_later(&mut self, nation: MajorNationId, order_kind: i16, payload: i16, flags: i16) {
+    fn announce_later(&mut self, nation: MajorNationId, order_kind: i32, payload: i32, flags: i32) {
         if self.nations.major(nation).is_auto() {
             return;
         }
@@ -435,11 +435,11 @@ impl GameState {
         self.insert_named_admiral(nation_id, ship);
 
         self.announce_later(nation, 3, 0x2508, 1);
-        self.announce_later(nation, 0, i16::from(ship_type.retail()), 1);
+        self.announce_later(nation, 0, i32::from(ship_type.retail()), 1);
     }
 }
 
-fn building_type_limit(production: i16) -> i32 {
+fn building_type_limit(production: i32) -> i32 {
     i32::from(production) / 4
 }
 
@@ -454,7 +454,7 @@ mod tests {
         province: ProvinceId,
         city_tile: TileId,
         linked: TileId,
-        last_turn_tick: i16,
+        last_turn_tick: i32,
     ) {
         state
             .nations
@@ -587,7 +587,7 @@ mod tests {
         let nation = MajorNationId::new(0);
         let home = TileId::new(1);
         state.nations.majors[&nation].common.home_tile = Some(home);
-        state.map[home].former_owner_nation = Some(TileOwnerTag::from_nation(nation.nation()));
+        state.map[home].former_owner_nation = Some(TileContext::from_nation(nation.nation()));
         state.ocean.zones = vec![
             ZoneKind::Zone(empty_zone()),
             ZoneKind::PortZone(PortZone {
@@ -620,7 +620,7 @@ mod tests {
                 TurnSummary::Retail {
                     turn_tick: 1,
                     order_kind: 0,
-                    payload: i16::from(ShipType::ShipOfTheLine.retail()),
+                    payload: i32::from(ShipType::ShipOfTheLine.retail()),
                     flags: 1,
                 },
                 TurnSummary::Retail {
@@ -639,7 +639,7 @@ mod tests {
         let nation = MajorNationId::new(0);
         let home = TileId::new(1);
         state.nations.majors[&nation].common.home_tile = Some(home);
-        state.map[home].former_owner_nation = Some(TileOwnerTag::from_nation(nation.nation()));
+        state.map[home].former_owner_nation = Some(TileContext::from_nation(nation.nation()));
         state.ocean.zones = vec![ZoneKind::PortZone(PortZone {
             zone: empty_zone(),
             port_tile: home,

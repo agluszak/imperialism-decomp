@@ -14,7 +14,7 @@ use bevy::prelude::*;
 use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, SelectAllOnFocus};
-use imperialism_core::{GameState, NationId, PhaseCode, TileId, TileOwnerTag};
+use imperialism_core::{GameState, NationId, PhaseCode, TileContext, TileId};
 use imperialism_formats::{
     FourCc, LegacyGameStateContext, LoadGameError, NUMBERED_SAVE_SLOT_COUNT, OverwritePolicy,
     PictureId, SAVE_LABEL_MAX_CHARS, SaveDirectoryListing, SaveFileError, SaveHeaderInfo, SaveSlot,
@@ -447,7 +447,7 @@ fn apply_load_okay_pictures(
 }
 
 fn satellite_preview_indices(
-    owners: impl Fn(TileId) -> Option<TileOwnerTag>,
+    owners: impl Fn(TileId) -> Option<TileContext>,
     selected_nation: NationId,
 ) -> Vec<u8> {
     compose_owner_preview_indices(owners, selected_nation)
@@ -512,13 +512,13 @@ fn sync_load_save_preview(
             let Some(owners) = peek_save_preview_owners(&bytes) else {
                 return;
             };
-            let Some(selected) =
-                peek_save_header(&bytes).and_then(|header| NationId::try_new(header.active_nation))
+            let Some(selected) = peek_save_header(&bytes)
+                .and_then(|header| NationId::from_retail_slot(header.active_nation))
             else {
                 return;
             };
             let pixels = satellite_preview_indices(
-                |tile| owners.get(usize::from(tile.get())).copied().flatten(),
+                |tile| owners.get(tile.get()).copied().flatten(),
                 selected,
             );
             apply_satellite_preview(&mut commands, &mut assets, entity, image_node, &pixels);
@@ -1305,13 +1305,10 @@ mod tests {
         let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(0))).unwrap();
         let owners = peek_save_preview_owners(&bytes).expect("written save has preview tiles");
         for (index, owner) in owners.iter().enumerate() {
-            assert_eq!(
-                *owner,
-                original.map()[TileId::new(index as u16)].owner_nation
-            );
+            assert_eq!(*owner, original.map()[TileId::new(index)].owner_nation);
         }
         let pixels = satellite_preview_indices(
-            |tile| owners.get(usize::from(tile.get())).copied().flatten(),
+            |tile| owners.get(tile.get()).copied().flatten(),
             original.turn().active_nation,
         );
         assert_eq!(pixels.len(), 324 * 180);

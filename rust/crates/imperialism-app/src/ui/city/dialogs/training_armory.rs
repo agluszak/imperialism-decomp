@@ -3,7 +3,7 @@ use crate::ui::retail::RetailPictureSwap;
 
 #[derive(Component, Clone, Copy)]
 pub(in crate::ui::city) enum TrainingIndicator {
-    Paper { minimum: i16 },
+    Paper { minimum: i32 },
     Money { minimum: i32 },
     UntrainedAvailable,
     TrainedAvailable,
@@ -148,7 +148,7 @@ pub(in crate::ui::city) fn configure_armory_dialog(
     tree: &RetailTree,
     state: &GameState,
 ) {
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
+    let nation = NationId::as_major(state.turn().active_nation)
         .expect("City active nation is a major nation");
     let city = &state.nations().major(nation).city;
     let normal_color = assets.palette_color(0xd2);
@@ -438,7 +438,7 @@ mod tests {
     #[test]
     fn beginning_armory_rows_use_the_retail_unit_picture_sequence() {
         let state = beginning_of_game();
-        let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
+        let nation = NationId::as_major(state.turn().active_nation).unwrap();
         let city = &state.nations().major(nation).city;
         let pictures: Vec<_> = (0..enum_map::enum_len::<MilitaryRecruitmentCategory>())
             .map(MilitaryRecruitmentCategory::from_usize)

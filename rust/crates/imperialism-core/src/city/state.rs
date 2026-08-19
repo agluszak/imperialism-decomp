@@ -9,9 +9,9 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TownState {
     pub name: String,
-    pub created_turn: i16,
+    pub created_turn: i32,
     pub owner_nation: NationId,
-    pub resource_yield_by_type: ResourceTable<i16>,
+    pub resource_yield_by_type: ResourceTable<i32>,
     pub transport_linked: bool,
     /// Retail's verbatim one-byte `enabledFlag`.
     pub enabled: u8,
@@ -25,7 +25,7 @@ impl TownState {
         _tile: TileId,
         owner_nation: NationId,
         enabled: u8,
-        created_turn: i16,
+        created_turn: i32,
     ) -> Self {
         Self {
             name: String::new(),
@@ -57,34 +57,34 @@ impl TownState {
 pub struct CityState {
     pub orders: CityOrders,
     pub power_plant_upgrade_queued: bool,
-    pub food_substitution_count: i16,
-    pub starvation_population_loss: i16,
-    pub serialized_state: i16,
-    pub phase_counter: i16,
+    pub food_substitution_count: i32,
+    pub starvation_population_loss: i32,
+    pub serialized_state: i32,
+    pub phase_counter: i32,
     /// Cumulative military recruit deltas by [`MilitaryUnitKind`].
     #[serde(
         serialize_with = "crate::units::serialize_military_unit_table",
         deserialize_with = "crate::units::deserialize_military_unit_table"
     )]
-    pub military_recruit_count_by_kind: MilitaryUnitTable<i16>,
+    pub military_recruit_count_by_kind: MilitaryUnitTable<i32>,
     /// Cumulative civilian recruit deltas by [`CivilianUnitKind`].
     #[serde(
         serialize_with = "crate::units::serialize_civilian_unit_table",
         deserialize_with = "crate::units::deserialize_civilian_unit_table"
     )]
-    pub civilian_recruit_count_by_kind: CivilianUnitTable<i16>,
-    pub ship_order_count_by_type: ShipTypeTable<i16>,
+    pub civilian_recruit_count_by_kind: CivilianUnitTable<i32>,
+    pub ship_order_count_by_type: ShipTypeTable<i32>,
     pub rolling_item_production_score: i32,
     pub low_production: bool,
     pub low_stock: bool,
-    pub reserved_by_type: ResourceTable<i16>,
-    pub power_available: i16,
+    pub reserved_by_type: ResourceTable<i32>,
+    pub power_available: i32,
     pub stockpile: Stockpile,
-    pub production_orders: ProductionTable<i16>,
-    pub production_accum: ProductionTable<i16>,
-    pub population_growth_penalty_ticks: i16,
-    pub unmet_resource_retries: ResourceTable<i16>,
-    pub consumed_production_input_by_type: ResourceTable<i16>,
+    pub production_orders: ProductionTable<i32>,
+    pub production_accum: ProductionTable<i32>,
+    pub population_growth_penalty_ticks: i32,
+    pub unmet_resource_retries: ResourceTable<i32>,
+    pub consumed_production_input_by_type: ResourceTable<i32>,
     pub population: PopulationState,
 }
 
@@ -93,8 +93,8 @@ impl CityState {
     /// the difficulty presets, `labor` is the `SetPopulation` triple, and only
     /// the human capital gets the Frog City marker at tile 0.
     pub(crate) fn for_random_start(
-        stockpile: ResourceTable<i16>,
-        production: ProductionTable<i16>,
+        stockpile: ResourceTable<i32>,
+        production: ProductionTable<i32>,
         labor: LaborPool,
         _human: bool,
     ) -> Self {
@@ -124,14 +124,13 @@ impl CityState {
     }
 }
 
-/// City stock counters. Retail stores these as `short` and uses 16-bit wrap;
-/// [`Self::verify_stocks`] is the explicit clamp from `TCity::VerifyStocks`.
+/// City stock counters. Negative values are clamped by [`Self::verify_stocks`].
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
-pub struct Stockpile(ResourceTable<i16>);
+pub struct Stockpile(ResourceTable<i32>);
 
 impl Stockpile {
-    pub fn from_table(amounts: ResourceTable<i16>) -> Self {
+    pub fn from_table(amounts: ResourceTable<i32>) -> Self {
         Self(amounts)
     }
 
@@ -144,20 +143,22 @@ impl Stockpile {
         }
     }
 
-    pub(crate) fn wrapping_add(&mut self, resource: crate::ResourceKind, amount: i16) {
-        self.0[resource] = self.0[resource].wrapping_add(amount);
+    pub(crate) fn add(&mut self, resource: crate::ResourceKind, amount: i32) {
+        self.0[resource] += amount;
     }
 
-    /// Wrap, then clamp every negative stock. Retail `AddToCityStockCounterAndRefresh`
-    /// and each `SetQuantity` / `Produce` stock mutation.
-    pub(crate) fn wrapping_add_and_verify(&mut self, resource: crate::ResourceKind, amount: i16) {
-        self.wrapping_add(resource, amount);
+    pub(crate) fn wrapping_add(&mut self, resource: crate::ResourceKind, amount: i32) {
+        self.add(resource, amount);
+    }
+
+    pub(crate) fn wrapping_add_and_verify(&mut self, resource: crate::ResourceKind, amount: i32) {
+        self.add(resource, amount);
         self.verify_stocks();
     }
 }
 
 impl std::ops::Index<crate::ResourceKind> for Stockpile {
-    type Output = i16;
+    type Output = i32;
     fn index(&self, resource: crate::ResourceKind) -> &Self::Output {
         &self.0[resource]
     }
@@ -174,18 +175,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn stockpile_wraps_and_verify_stocks_clamps_negatives() {
+    fn verify_stocks_clamps_negatives() {
         let mut stockpile = Stockpile::from_table(ResourceTable::from_array([-1; 23]));
         assert_eq!(stockpile[ResourceKind::Paper], -1);
-
-        stockpile.wrapping_add(ResourceKind::Paper, 1);
+        stockpile.add(ResourceKind::Paper, 1);
         assert_eq!(stockpile[ResourceKind::Paper], 0);
-        stockpile.wrapping_add(ResourceKind::Paper, -1);
+        stockpile.add(ResourceKind::Paper, -1);
         assert_eq!(stockpile[ResourceKind::Paper], -1);
-        stockpile[ResourceKind::Paper] = i16::MAX;
-        stockpile.wrapping_add(ResourceKind::Paper, 1);
-        assert_eq!(stockpile[ResourceKind::Paper], i16::MIN);
-
         stockpile.verify_stocks();
         assert_eq!(stockpile[ResourceKind::Paper], 0);
         assert!(crate::all_resources().all(|resource| stockpile[resource] >= 0));

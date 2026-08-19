@@ -23,7 +23,7 @@ use std::time::Duration;
 
 const UNIT_TRANSPARENT_INDEX: u8 = 0x10;
 const FOREIGN_CIVILIAN_FRAME_INDEX: u8 = 0x13;
-const STRATEGIC_NAVAL_FRAME_COUNT: i16 = 18;
+const STRATEGIC_NAVAL_FRAME_COUNT: i32 = 18;
 const CIVILIAN_IDLE_PICTURE_BASE: i16 = 400;
 const CIVILIAN_WORKING_PICTURE_BASE: i16 = 418;
 const ARMY_COUNT_PICTURE_IDS: [i16; 4] = [570, 572, 574, 576];
@@ -711,17 +711,17 @@ fn strategic_unit_project_key(
 }
 
 fn fleet_atlas_picture_id(state: &GameState) -> PictureId {
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
+    let nation = NationId::as_major(state.turn().active_nation)
         .expect("strategic map requires an active major nation");
     let status = &state.technology().research_status_by_nation[nation];
-    let mut variant = 0_i16;
+    let mut variant = 0;
     if status[Technology::AdvancedIronWorking] == TechnologyResearchStatus::Researched {
         variant = 1;
     }
     if status[Technology::MarineEngineering] == TechnologyResearchStatus::Researched {
         variant = 2;
     }
-    PictureId::new(FLEET_ATLAS_PICTURE_BASE + i16::from(nation.get()) + variant * 7)
+    PictureId::new(FLEET_ATLAS_PICTURE_BASE + nation.get() as i16 + variant * 7)
 }
 
 fn visible_strategic_units(
@@ -873,7 +873,7 @@ fn civilian_sprite(
         pose: civilian_pose(unit.order(), foreign, selected),
         frame: 0,
         owner_badge: foreign
-            .then(|| owner_flag_slot(Some(TileOwnerTag::from_nation(unit.owner_nation())))),
+            .then(|| owner_flag_slot(Some(TileContext::from_nation(unit.owner_nation())))),
         framed: foreign,
     }
 }
@@ -926,9 +926,9 @@ fn civilian_sprite_class(kind: CivilianUnitKind) -> u8 {
     CIVILIAN_SPRITE_CLASS[kind]
 }
 
-fn civilian_tile_is_visible(owner: Option<TileOwnerTag>, active: NationId) -> bool {
+fn civilian_tile_is_visible(owner: Option<TileContext>, active: NationId) -> bool {
     match owner {
-        Some(owner) if owner.get() >= MajorNationId::COUNT => true,
+        Some(owner) if usize::from(owner.get()) >= MajorNationId::COUNT => true,
         Some(owner) => owner.nation() == Some(active),
         None => false,
     }
@@ -950,10 +950,13 @@ fn army_count_bucket(displayed: u16) -> u8 {
     }
 }
 
-fn owner_flag_slot(owner: Option<TileOwnerTag>) -> u8 {
-    match owner {
-        Some(owner) if owner.get() < MajorNationId::COUNT => owner.get(),
-        _ => MajorNationId::COUNT,
+fn owner_flag_slot(owner: Option<TileContext>) -> u8 {
+    match owner
+        .and_then(TileContext::nation)
+        .and_then(NationId::as_major)
+    {
+        Some(id) => id.get() as u8,
+        None => MajorNationId::COUNT as u8,
     }
 }
 
@@ -1127,13 +1130,13 @@ mod tests {
     #[test]
     fn stacking_prefers_the_active_nations_unregistered_civilian() {
         let tile = TileId::new(10);
-        let active = NationId::new(6);
-        let foreign = NationId::new(0);
+        let active = MajorNationId::new(6);
+        let foreign = MajorNationId::new(0);
         let units = [
             civilian(
                 1,
                 CivilianUnitKind::Miner,
-                foreign,
+                foreign.nation(),
                 tile,
                 CivilianWorkOrder::Idle,
                 false,
@@ -1141,15 +1144,18 @@ mod tests {
             civilian(
                 2,
                 CivilianUnitKind::Engineer,
-                active,
+                active.nation(),
                 tile,
                 CivilianWorkOrder::Idle,
                 false,
             ),
         ];
-        let (id, selected) =
-            stacked_civilian_on_tile(units.iter().map(|(id, unit)| (*id, unit)), tile, active)
-                .unwrap();
+        let (id, selected) = stacked_civilian_on_tile(
+            units.iter().map(|(id, unit)| (*id, unit)),
+            tile,
+            active.nation(),
+        )
+        .unwrap();
         assert_eq!(id, CivilianUnitId::from_serialized(2));
         assert_eq!(selected.unit_type(), CivilianUnitKind::Engineer);
     }
@@ -1157,34 +1163,41 @@ mod tests {
     #[test]
     fn registered_civilians_are_not_drawn_as_field_units() {
         let tile = TileId::new(10);
-        let active = NationId::new(6);
+        let active = MajorNationId::new(6);
         let units = [civilian(
             1,
             CivilianUnitKind::Miner,
-            active,
+            active.nation(),
             tile,
             CivilianWorkOrder::Idle,
             true,
         )];
         assert!(
-            stacked_civilian_on_tile(units.iter().map(|(id, unit)| (*id, unit)), tile, active)
-                .is_none()
+            stacked_civilian_on_tile(
+                units.iter().map(|(id, unit)| (*id, unit)),
+                tile,
+                active.nation()
+            )
+            .is_none()
         );
     }
 
     #[test]
     fn civilians_are_hidden_on_foreign_great_power_land() {
-        let active = NationId::new(6);
+        let active = MajorNationId::new(6);
         assert!(civilian_tile_is_visible(
-            Some(TileOwnerTag::from_nation(active)),
-            active
+            Some(TileContext::from_nation(active)),
+            active.nation()
         ));
         assert!(!civilian_tile_is_visible(
-            Some(TileOwnerTag::from_nation(NationId::new(0))),
-            active
+            Some(TileContext::from_nation(MajorNationId::new(0))),
+            active.nation()
         ));
-        assert!(civilian_tile_is_visible(Some(TileOwnerTag::new(8)), active));
-        assert!(!civilian_tile_is_visible(None, active));
+        assert!(civilian_tile_is_visible(
+            Some(TileContext::new(8)),
+            active.nation()
+        ));
+        assert!(!civilian_tile_is_visible(None, active.nation()));
     }
 
     #[test]
@@ -1241,10 +1254,10 @@ mod tests {
     #[test]
     fn owner_flag_slots_collapse_minor_nations() {
         assert_eq!(
-            owner_flag_slot(Some(TileOwnerTag::from_nation(NationId::new(3)))),
+            owner_flag_slot(Some(TileContext::from_nation(MajorNationId::new(3)))),
             3
         );
-        assert_eq!(owner_flag_slot(Some(TileOwnerTag::new(8))), 7);
+        assert_eq!(owner_flag_slot(Some(TileContext::new(8))), 7);
         assert_eq!(owner_flag_slot(None), 7);
     }
 
@@ -1276,12 +1289,19 @@ mod tests {
             assert!(x + TILE_SIZE > 0);
         });
         assert!(!seen.is_empty());
-        let (origin_row, _) = state.map().geometry().row_column(view_origin);
+        let MapPosition {
+            row: origin_row, ..
+        } = state.map().geometry().position(view_origin);
         let outside = state
             .map()
             .geometry()
-            .tile(origin_row.saturating_add(8), 0)
-            .or_else(|| state.map().geometry().tile(origin_row.saturating_sub(1), 0));
+            .tile(MapPosition::new(origin_row.saturating_add(8), 0))
+            .or_else(|| {
+                state
+                    .map()
+                    .geometry()
+                    .tile(MapPosition::new(origin_row.saturating_sub(1), 0))
+            });
         if let Some(outside) = outside {
             assert!(seen.iter().all(|(tile, _, _)| *tile != outside));
         }

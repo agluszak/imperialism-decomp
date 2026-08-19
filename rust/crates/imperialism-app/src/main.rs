@@ -35,7 +35,7 @@ fn main() -> anyhow::Result<()> {
                 .with_context(|| format!("failed to read retail save {}", path.display()))?;
             let _selected = u8::try_from(context[3])
                 .ok()
-                .and_then(NationId::try_new)
+                .and_then(NationId::from_retail_slot)
                 .context("selected nation is outside the retail nation range")?;
             let save = LegacySaveV62::parse(&bytes);
             let map_view_origin = save.map_view_origin();

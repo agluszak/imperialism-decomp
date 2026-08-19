@@ -6,8 +6,8 @@ impl GameState {
         &mut self,
         buyer: MajorNationId,
         seller: NationId,
-        amount: i16,
-        price: i16,
+        amount: i32,
+        price: i32,
         commodity: TradeCommodity,
         phase: &mut TradePhase,
     ) {
@@ -63,8 +63,8 @@ impl GameState {
         &mut self,
         buyer: MajorNationId,
         seller: NationId,
-        amount: i16,
-        price: i16,
+        amount: i32,
+        price: i32,
         commodity: TradeCommodity,
         phase: &mut TradePhase,
     ) {
@@ -124,8 +124,8 @@ impl GameState {
         &mut self,
         buyer: MajorNationId,
         seller: NationId,
-        amount: i16,
-        price: i16,
+        amount: i32,
+        price: i32,
         commodity: TradeCommodity,
         phase: &mut TradePhase,
     ) {
@@ -167,8 +167,8 @@ impl GameState {
         &mut self,
         buyer: MajorNationId,
         seller: NationId,
-        amount: i16,
-        price: i16,
+        amount: i32,
+        price: i32,
         commodity: TradeCommodity,
         phase: &mut TradePhase,
     ) {
@@ -290,8 +290,8 @@ impl GameState {
         &mut self,
         buyer: MajorNationId,
         seller: NationId,
-        amount: i16,
-        price: i16,
+        amount: i32,
+        price: i32,
         commodity: TradeCommodity,
         phase: &mut TradePhase,
     ) {
@@ -342,7 +342,7 @@ impl GameState {
         &self,
         nation: MajorNationId,
         resource: ResourceKind,
-    ) -> i16 {
+    ) -> i32 {
         let proposal = TradeCommodity::from_resource(resource)
             .expect("merchant-capacity proposal is a market commodity");
         if let Some(capacity) =
@@ -361,7 +361,7 @@ impl GameState {
             if proposal == TradeCommodity::Coal
                 && self.foreign_trade(nation).purchase_priority[TradeCommodity::Iron] != 0
             {
-                return (i32::from(self.available_merchant(nation)) - 1).max(0) as i16;
+                return (i32::from(self.available_merchant(nation)) - 1).max(0) as i32;
             }
             return capacity;
         }
@@ -373,7 +373,7 @@ impl GameState {
         nation: MajorNationId,
         proposal: TradeCommodity,
         commodity: TradeCommodity,
-    ) -> Option<i16> {
+    ) -> Option<i32> {
         if self.foreign_trade(nation).purchase_priority[commodity] == 0
             || self.market.rows[commodity].amount_offered == 0
         {
@@ -383,7 +383,7 @@ impl GameState {
         Some(if proposal == commodity {
             available
         } else if trades_first(proposal, commodity) == proposal {
-            (i32::from(available) - 2).max(0) as i16
+            (i32::from(available) - 2).max(0) as i32
         } else {
             available
         })

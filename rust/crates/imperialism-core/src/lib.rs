@@ -113,14 +113,14 @@ pub use game::{GameState, GameStateParts};
 pub use game_score::GameScore;
 pub use ids::{
     AdmiralId, CivilianUnitId, MajorNationId, MilitaryUnitId, MinorNationId, MissionId, NationId,
-    OceanZoneId, ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,
+    OceanZoneId, ProvinceId, ShipId, TaskForceId, TileContext, TileId,
 };
 pub use map::{
     DevelopmentLevel, MapMgr, RegionId, RiverSegment, RiverSprite, TerrainKind, TerrainKindTable,
     TileAction, TileDevelopment, TileFlags, TileRendering, TileState, TileTransportLinks,
 };
 pub use map_geometry::{
-    HexDirection, HexDirectionTable, MapGeometry, MapTopology, STRATEGIC_MAP_HEIGHT,
+    HexDirection, HexDirectionTable, MapGeometry, MapPosition, MapTopology, STRATEGIC_MAP_HEIGHT,
     STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT,
 };
 pub use market::{

@@ -162,7 +162,7 @@ pub(in crate::ui::city) fn bind_rail_dialog(
     slot: CityFacilitySlot,
     building_name: String,
     binding: CityOrderBinding,
-    step: i16,
+    step: i32,
 ) {
     bind_city_dialog_root(commands, root, tree, slot);
     let name_control = tree.find(root, fourcc!("name"));
@@ -423,7 +423,7 @@ pub(in crate::ui::city) fn sync_population_dialog(
         text.0 = match text_kind {
             PopulationText::Capacity(template) => format_retail_number(template, building),
             PopulationText::Provinces(template) => {
-                format_retail_number(template, owned_regions as i16)
+                format_retail_number(template, owned_regions as i32)
             }
         };
     }

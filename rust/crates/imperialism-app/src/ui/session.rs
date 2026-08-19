@@ -1,6 +1,6 @@
 use crate::{AppState, RetailAssetsResource, ReturnTo};
 use bevy::prelude::*;
-use imperialism_core::{GameState, MajorNationId, TileId, TurnStop};
+use imperialism_core::{GameState, MajorNationId, NationId, TileId, TurnStop};
 use imperialism_formats::{BattleReportText, CityWindowLayout, LoadedGame};
 
 /// Authoritative in-memory game owned by the running Bevy app.
@@ -52,7 +52,7 @@ impl GameSession {
     }
 
     pub(crate) fn active_major_nation(&self) -> MajorNationId {
-        MajorNationId::from_nation(self.game.turn().active_nation)
+        NationId::as_major(self.game.turn().active_nation)
             .expect("interactive screens require an active major nation")
     }
 }

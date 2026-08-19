@@ -12,9 +12,9 @@ pub(crate) fn training_limit(
 ) -> OrderLimit {
     let production = &city.population.production_labor;
     let (paper_per_unit, cash_per_unit, workforce_limit) = match level {
-        TrainingLevel::Medium => (1_i16, 100_i32, production.low.min(city.population.strength)),
+        TrainingLevel::Medium => (1, 100_i32, production.low.min(city.population.strength)),
         TrainingLevel::High => (
-            2_i16,
+            2,
             1_000_i32,
             production.medium.min(city.population.strength / 2),
         ),
@@ -25,7 +25,7 @@ pub(crate) fn training_limit(
     } else {
         let affordable = (treasury + owner.diplomacy_budget_base / 100).max(0) / cash_per_unit;
         if affordable < i32::from(workforce_limit) {
-            affordable as i16
+            affordable as i32
         } else {
             workforce_limit
         }
@@ -54,7 +54,7 @@ pub(crate) fn set_training_quantity(
     population: &mut PopulationState,
     treasury: &mut i32,
     limit: OrderLimit,
-    quantity: i16,
+    quantity: i32,
 ) -> bool {
     let Some(delta) = progress.try_set(limit, quantity) else {
         return false;

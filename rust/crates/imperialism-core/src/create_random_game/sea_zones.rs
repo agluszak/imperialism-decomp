@@ -6,7 +6,7 @@ use super::*;
 /// creation order. `ports` is newest-first so `FindFirstPortZone*` walks match retail's
 /// `g_pMapActionContextListHead`/`prev18` chain.
 pub(super) struct PortZoneTable {
-    pub(super) next_ordinal: u16,
+    pub(super) next_ordinal: usize,
     pub(super) ports: Vec<PendingPortZone>,
 }
 #[derive(Clone, Copy, Debug)]
@@ -15,12 +15,12 @@ pub(super) struct PendingPortZone {
     pub(super) port_tile: TileId,
     pub(super) sea_tile: TileId,
     pub(super) active_tile: Option<TileId>,
-    pub(super) seed_owner: TileOwnerTag,
+    pub(super) seed_owner: TileContext,
     /// `primaryNeighbors[0]` ordinal (sea zone or another port).
     pub(super) primary_neighbor: Option<OceanZoneId>,
 }
 impl PortZoneTable {
-    pub(super) fn new(sea_zone_count: u16) -> Self {
+    pub(super) fn new(sea_zone_count: usize) -> Self {
         Self {
             next_ordinal: sea_zone_count,
             ports: Vec::new(),
@@ -41,20 +41,18 @@ impl PortZoneTable {
         self.ports.iter().find(|port| {
             world[port.port_tile]
                 .former_owner_nation
-                .and_then(TileOwnerTag::nation)
+                .and_then(TileContext::nation)
                 == Some(nation)
         })
     }
 }
-pub(super) fn sea_zone_count(world: &MapMgr) -> u16 {
+pub(super) fn sea_zone_count(world: &MapMgr) -> usize {
     world
         .tiles
         .iter()
         .filter(|tile| tile.terrain == TerrainKind::Water)
-        .filter_map(|tile| tile.owner_nation)
-        .map(TileOwnerTag::get)
-        .filter(|&tag| tag >= SEA_OWNER_BIAS)
-        .map(|tag| u16::from(tag - SEA_OWNER_BIAS) + 1)
+        .filter_map(|tile| tile.owner_nation.and_then(TileContext::ocean))
+        .map(|zone| zone.get() + 1)
         .max()
         .unwrap_or(0)
 }
@@ -68,12 +66,10 @@ pub(super) fn initialize_sea_zone_map_markers(
 ) -> Vec<ZoneKind> {
     let geometry = world.geometry();
     let costs = build_sea_zone_cost_field(world, geometry);
-    let mut zones = Vec::with_capacity(usize::from(sea_zone_count(world)));
+    let mut zones = Vec::with_capacity(sea_zone_count(world));
 
     for zone in 0..sea_zone_count(world) {
-        let owner = TileOwnerTag::new(
-            SEA_OWNER_BIAS + u8::try_from(zone).expect("fresh-map sea-zone tag fits in one byte"),
-        );
+        let owner = TileContext::Ocean(OceanZoneId::new(zone));
         let center = select_sea_zone_seed_tile(world, geometry, &costs, owner, &mut map_build_crt);
         world[center].action = TileAction::try_from_retail(ACTION_STATE_ZONE_CENTER);
 
@@ -117,14 +113,10 @@ pub(super) fn initialize_sea_zone_neighbors(
 
     let geometry = world.geometry();
     for tile in TileId::all() {
-        let Some(owner) = world[tile]
-            .owner_nation
-            .map(TileOwnerTag::get)
-            .filter(|&owner| owner >= SEA_OWNER_BIAS)
-        else {
+        let Some(zone) = world[tile].owner_nation.and_then(TileContext::ocean) else {
             continue;
         };
-        let ordinal = usize::from(owner - SEA_OWNER_BIAS);
+        let ordinal = zone.get();
         let ZoneKind::Zone(zone) = &mut zones[ordinal] else {
             unreachable!("water owner tags name base zones")
         };
@@ -159,7 +151,7 @@ pub(super) fn generate_base_zone_status_codes(
 
     for ordinal in (0..zones.len()).rev() {
         let category = base_zone_status_category(zones, ordinal);
-        let status_code = i16::try_from((rng.next_sample_15() & 3) + category * 4)
+        let status_code = i32::try_from((rng.next_sample_15() & 3) + category * 4)
             .expect("zone status code fits in a short");
 
         let ZoneKind::Zone(zone) = &zones[ordinal] else {
@@ -258,8 +250,8 @@ pub(super) fn generate_zone_display_names(
                     Some(zone.secondary_neighbors[index])
                 };
                 match selected_city {
-                    Some(province) if !used_cities[usize::from(province.get())] => {
-                        used_cities[usize::from(province.get())] = true;
+                    Some(province) if !used_cities[province.index()] => {
+                        used_cities[province.index()] = true;
                         world.provinces[province].name.clone()
                     }
                     _ => {
@@ -330,15 +322,15 @@ fn base_zone_status_category(zones: &[ZoneKind], ordinal: usize) -> u32 {
 }
 
 /// `RelaxMapTileCostFieldByNeighborTerrain` to its fixed point.
-pub(super) fn build_sea_zone_cost_field(world: &MapMgr, geometry: MapGeometry) -> Vec<i16> {
-    let mut costs = vec![0_i16; STRATEGIC_TILE_COUNT];
+pub(super) fn build_sea_zone_cost_field(world: &MapMgr, geometry: MapGeometry) -> Vec<i32> {
+    let mut costs = vec![0; STRATEGIC_TILE_COUNT];
     loop {
         let mut changed = 0;
         for index in 0..STRATEGIC_TILE_COUNT {
             if costs[index] != 0 {
                 continue;
             }
-            let tile = TileId::new(index as u16);
+            let tile = TileId::new(index);
             for neighbor in geometry.neighbors(tile) {
                 let current = costs[index];
                 let Some(neighbor) = neighbor else {
@@ -375,17 +367,17 @@ pub(super) fn build_sea_zone_cost_field(world: &MapMgr, geometry: MapGeometry) -
 pub(super) fn select_sea_zone_seed_tile(
     world: &MapMgr,
     geometry: MapGeometry,
-    costs: &[i16],
-    owner: TileOwnerTag,
+    costs: &[i32],
+    owner: TileContext,
     crt: &mut RetailCrtRng,
 ) -> TileId {
     let mut best_tile = -1_i32;
     let mut best_score = -1_i32;
-    let mut equal_best_count = 0_i16;
+    let mut equal_best_count = 0;
 
     // Retail deliberately excludes the final two map rows from seed selection.
     for index in 0..0x1878_usize {
-        let tile = TileId::new(index as u16);
+        let tile = TileId::new(index);
         if world[tile].owner_nation != Some(owner) {
             continue;
         }
@@ -421,7 +413,7 @@ pub(super) fn select_sea_zone_seed_tile(
         }
     }
 
-    TileId::new(u16::try_from(best_tile).expect("fresh-map sea zone has one seed tile"))
+    TileId::new(best_tile as usize)
 }
 /// `TOcean::EnsurePortZoneForTile` side effects needed for Accept missions / tile action state.
 pub(super) fn ensure_port_zone_for_tile(
@@ -441,7 +433,6 @@ pub(super) fn ensure_port_zone_for_tile(
     let Some(owner) = seed_owner.nation() else {
         return;
     };
-    let nation_seed = owner.get();
 
     // TPortZone first resolves its inherited TZone target from the owning
     // nation's home-region class and leaves this overlay marker in place even
@@ -452,7 +443,7 @@ pub(super) fn ensure_port_zone_for_tile(
     world[representative].action = TileAction::try_from_retail(ACTION_STATE_PORT_ZONE_MARKER);
 
     let geometry = world.geometry();
-    let best_sea = select_port_sea_tile(world, geometry, tile, nation_seed)
+    let best_sea = select_port_sea_tile(world, geometry, tile, owner)
         .expect("port zone requires a reachable sea tile");
 
     let primary_neighbor = if world[best_sea]
@@ -461,11 +452,7 @@ pub(super) fn ensure_port_zone_for_tile(
     {
         ports.find_port_by_tile(best_sea).map(|port| port.ordinal)
     } else {
-        world[best_sea]
-            .owner_nation
-            .map(|owner| owner.get())
-            .filter(|&tag| tag >= SEA_OWNER_BIAS)
-            .map(|tag| OceanZoneId::new(u16::from(tag - SEA_OWNER_BIAS)))
+        world[best_sea].owner_nation.and_then(TileContext::ocean)
     };
 
     let ordinal = OceanZoneId::new(ports.next_ordinal);
@@ -492,9 +479,10 @@ fn find_nearest_active_port_zone_tile(
     primary_neighbor: Option<OceanZoneId>,
 ) -> Option<TileId> {
     let geometry = world.geometry();
-    let (row, column) = geometry.row_column(origin);
-    let mut row = i32::from(row);
-    let mut column = i32::from(column);
+    let MapPosition {
+        mut row,
+        mut column,
+    } = geometry.position(origin);
     let mut ring = 0_i32;
     let mut direction = HexDirection::NorthWest;
     let mut step_in_ring = 1_i32;
@@ -508,11 +496,9 @@ fn find_nearest_active_port_zone_tile(
         world.topology,
     );
     while ring < 10 {
-        if (0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&row)
-            && (0..i32::from(STRATEGIC_MAP_WIDTH)).contains(&column)
-        {
+        if (0..STRATEGIC_MAP_HEIGHT).contains(&row) && (0..STRATEGIC_MAP_WIDTH).contains(&column) {
             let candidate = geometry
-                .tile(row as u16, column as u16)
+                .tile(MapPosition::new(row, column))
                 .expect("checked spiral coordinates are on the strategic map");
             let candidate_context = if world[candidate]
                 .action
@@ -520,11 +506,7 @@ fn find_nearest_active_port_zone_tile(
             {
                 ports.find_port_by_tile(candidate).map(|port| port.ordinal)
             } else {
-                world[candidate]
-                    .owner_nation
-                    .map(TileOwnerTag::get)
-                    .filter(|&tag| tag >= SEA_OWNER_BIAS)
-                    .map(|tag| OceanZoneId::new(u16::from(tag - SEA_OWNER_BIAS)))
+                world[candidate].owner_nation.and_then(TileContext::ocean)
             };
             if candidate_context == primary_neighbor && world[candidate].action.is_none() {
                 return Some(candidate);
@@ -579,7 +561,7 @@ fn step_row_column(
         *column += 1;
     }
     if topology == MapTopology::Wrapping {
-        *column = column.rem_euclid(i32::from(STRATEGIC_MAP_WIDTH));
+        *column = column.rem_euclid(STRATEGIC_MAP_WIDTH);
     }
     if matches!(direction, HexDirection::NorthWest | HexDirection::NorthEast) {
         *row -= 1;
@@ -591,9 +573,9 @@ pub(super) fn select_port_sea_tile(
     world: &MapMgr,
     geometry: MapGeometry,
     tile: TileId,
-    nation_seed: u8,
+    seed_nation: NationId,
 ) -> Option<TileId> {
-    let tile_index = usize::from(tile.get());
+    let tile_index = tile.index();
     for direction in HexDirection::ALL
         .into_iter()
         .cycle()
@@ -612,10 +594,9 @@ pub(super) fn select_port_sea_tile(
                 .into_iter()
                 .flatten()
                 .all(|neighbor| {
-                    let neighbor_owner = world[neighbor].owner_nation;
                     !matches!(
-                        neighbor_owner,
-                        Some(owner) if owner.get() < SEA_OWNER_BIAS && owner.get() != nation_seed
+                        world[neighbor].owner_nation,
+                        Some(TileContext::Nation(nation)) if nation != seed_nation
                     )
                 });
         if all_neighbors_qualify {

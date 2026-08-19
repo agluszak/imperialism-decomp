@@ -42,7 +42,7 @@ struct EphemeralGameState {
 struct NativeTurnState {
     scenario_map: Option<ScenarioMapId>,
     economic_turn: i32,
-    diplomacy_year_term_raw: i16,
+    diplomacy_year_term_raw: i32,
     phase: PhaseCode,
     turn_flow_status_flags: u32,
     quarter_gate_by_decade: [u8; 10],

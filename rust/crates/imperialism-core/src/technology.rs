@@ -246,7 +246,7 @@ impl Technology {
 
 pub type TechnologyTable<T> = EnumMap<Technology, T>;
 
-const RANDOM_START_PRIORITY_RANGES: [(i16, i16); Technology::LENGTH - 3] = [
+const RANDOM_START_PRIORITY_RANGES: [(i32, i32); Technology::LENGTH - 3] = [
     (1, 5),
     (6, 10),
     (6, 10),
@@ -303,14 +303,14 @@ pub enum TechnologyResearchRejection {
 pub struct TechnologyState {
     pub advanced_iron_working: bool,
     pub marine_engineering: bool,
-    pub scheduled_unlock_turn_by_technology: TechnologyTable<i16>,
+    pub scheduled_unlock_turn_by_technology: TechnologyTable<i32>,
     pub global_unlocks_by_technology: TechnologyTable<bool>,
     /// Retail `marker262`, the most recently applied global capability unlock.
     pub latest_global_unlock: Technology,
     pub research_status_by_nation: MajorNationTable<TechnologyTable<TechnologyResearchStatus>>,
     /// Retail `capRowsE4a6.completionYearOffsetByTechId`, stamped when a nation
     /// receives the technology and consumed by technology-history presentation.
-    pub completion_year_by_nation: MajorNationTable<TechnologyTable<i16>>,
+    pub completion_year_by_nation: MajorNationTable<TechnologyTable<i32>>,
     pub industry_enabled_by_slot: IndustryCapabilityTable<bool>,
     pub military_unit_ability_active_by_nation: MajorNationTable<MilitaryUnitTable<bool>>,
     /// Retail `TTechMgr::nationCapRows1e8`: the selected ability id in each
@@ -430,7 +430,7 @@ impl TechnologyState {
             let range_start = start_group * 4;
             let range_span = (end_group - start_group) * 4 + 1;
             loop {
-                let candidate = (rng.next_sample_15() % range_span as u32) as i16 + range_start;
+                let candidate = (rng.next_sample_15() % range_span as u32) as i32 + range_start;
                 if !Technology::all()
                     .take_while(|&prior| prior != technology)
                     .any(|prior| state.scheduled_unlock_turn_by_technology[prior] == candidate)
@@ -536,7 +536,7 @@ impl GameState {
         self.technology.research_status_by_nation[nation][technology] =
             TechnologyResearchStatus::Pending;
         self.technology.completion_year_by_nation[nation][technology] =
-            (self.turn.economic_turn / 4) as i16;
+            (self.turn.economic_turn / 4) as i32;
         Ok(TechnologyResearchToggle::Purchased)
     }
 
@@ -574,13 +574,13 @@ impl GameState {
                 self.technology.research_status_by_nation[nation][tech_id] =
                     TechnologyResearchStatus::Pending;
                 self.technology.completion_year_by_nation[nation][tech_id] =
-                    (economic_turn / 4) as i16;
+                    (economic_turn / 4) as i32;
             }
         }
     }
 
     pub fn first_pending_technology_unlock(&self, nation: NationId) -> Option<Technology> {
-        let nation = MajorNationId::from_nation(nation)?;
+        let nation = NationId::as_major(nation)?;
         Technology::all().find(|&tech| {
             self.technology.research_status_by_nation[nation][tech]
                 == TechnologyResearchStatus::Pending
@@ -604,7 +604,7 @@ impl GameState {
     }
 
     pub(crate) fn consume_interactive_technology_unlock(&mut self) -> Option<Technology> {
-        let nation = MajorNationId::from_nation(self.turn.active_nation)?;
+        let nation = NationId::as_major(self.turn.active_nation)?;
         if self.turn.turn_cooldown_defer_counter < 1
             && self.nation_slot_eligible_for_event_processing(nation)
         {
@@ -616,7 +616,7 @@ impl GameState {
     }
 
     pub(crate) fn consume_non_interactive_technology_unlocks(&mut self) {
-        let active = MajorNationId::from_nation(self.turn.active_nation);
+        let active = NationId::as_major(self.turn.active_nation);
         for nation in MajorNationId::all() {
             let interactive = active == Some(nation)
                 && self.turn.turn_cooldown_defer_counter < 1
@@ -647,12 +647,12 @@ impl GameState {
         self.technology.research_status_by_nation[nation][tech_id] =
             TechnologyResearchStatus::Researched;
         self.technology.completion_year_by_nation[nation][tech_id] =
-            (self.turn.economic_turn / 4) as i16;
+            (self.turn.economic_turn / 4) as i32;
 
         let difficulty = self.turn.difficulty.retail();
         let era_offset =
             if difficulty >= 3 && !self.nations.major(nation).economy.diplomacy_eligible {
-                i16::from(difficulty) - 2
+                i32::from(difficulty) - 2
             } else {
                 0
             };
@@ -865,7 +865,7 @@ impl GameState {
         let requirements = self.technology.city_capabilities_by_nation[nation]
             .university
             .requirement_levels;
-        let owner = TileOwnerTag::from_nation(nation.nation());
+        let owner = TileContext::from_nation(nation.nation());
         for tile in self.map.tiles.iter_mut() {
             if tile.owner_nation != Some(owner) || !tile.flags.contains(TileFlags::BASE_TRANSPORT) {
                 continue;
@@ -993,7 +993,7 @@ impl GameState {
         Some(candidate)
     }
 
-    fn add_era_arms(&mut self, nation: MajorNationId, era_offset: i16, scale: i16) {
+    fn add_era_arms(&mut self, nation: MajorNationId, era_offset: i32, scale: i32) {
         if era_offset == 0 {
             return;
         }
@@ -1033,7 +1033,7 @@ pub(crate) const fn default_selected_capability_slots() -> ArmyCategoryTable<Mil
     ])
 }
 
-fn upgrade_resource_costs(kind: MilitaryUnitKind) -> (i16, i16, i16) {
+fn upgrade_resource_costs(kind: MilitaryUnitKind) -> (i32, i32, i32) {
     match military_recruitment_spec(kind) {
         Some(spec) => {
             let fuel = spec
@@ -1281,7 +1281,7 @@ mod tests {
         );
         assert_eq!(
             state.technology.completion_year_by_nation[active][Technology::CottonGin],
-            (state.turn.economic_turn / 4) as i16
+            (state.turn.economic_turn / 4) as i32
         );
     }
 

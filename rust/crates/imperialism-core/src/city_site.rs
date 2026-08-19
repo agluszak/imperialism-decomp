@@ -3,7 +3,7 @@
 use crate::{
     Difficulty, GameState, HexDirection, HexDirectionTable, MajorNationId, MapGeometry, MapMgr,
     NationId, ResourceKind, ResourceTable, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, TerrainKind,
-    TileFlags, TileId, TileOwnerTag, all_resources,
+    TileContext, TileFlags, TileId, all_resources,
 };
 
 const TERRAIN_FLOW_DIRECTIONS: [[HexDirection; 2]; 9] = [
@@ -46,22 +46,22 @@ impl CapitalSite {
 /// Neighbor-tile yields and food capacity shown by `TPlaceCityDialog::StuffValues`.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct CapitalSiteReport {
-    pub yields: ResourceTable<i16>,
-    pub total_food: i16,
-    pub sustainable_population: i16,
+    pub yields: ResourceTable<i32>,
+    pub total_food: i32,
+    pub sustainable_population: i32,
 }
 
 impl CapitalSiteReport {
-    pub fn visible_resource_count(self) -> i16 {
+    pub fn visible_resource_count(self) -> i32 {
         all_resources()
             .filter(|&resource| self.yields[resource] != 0)
-            .count() as i16
+            .count() as i32
     }
 }
 
 impl CitySiteError {
     /// `TSimMgr::GetString` offset into group `0x273b` for a rejected map click.
-    pub fn message_offset(self, state: &GameState, tile: TileId) -> i16 {
+    pub fn message_offset(self, state: &GameState, tile: TileId) -> i32 {
         match self {
             Self::NotOwned => {
                 if state.map()[tile].terrain == TerrainKind::Water {
@@ -105,7 +105,7 @@ impl MapMgr {
         &mut self,
         nation: MajorNationId,
     ) {
-        let owner = TileOwnerTag::from_nation(nation.nation());
+        let owner = TileContext::from_nation(nation.nation());
         self.recruit_search_active = true;
         for tile in TileId::all() {
             let is_candidate = {
@@ -173,23 +173,23 @@ fn home_site_scan_neighbor(tile: TileId, direction: HexDirection) -> TileId {
     const ROW_DELTAS: HexDirectionTable<i32> = HexDirectionTable::from_array([-1, 0, 1, 1, 0, -1]);
     const RASTER_WIDTH: i32 = STRATEGIC_MAP_WIDTH as i32 * 2;
 
-    let row = i32::from(tile.get() / STRATEGIC_MAP_WIDTH);
-    let column = i32::from(tile.get() % STRATEGIC_MAP_WIDTH);
+    let row = tile.get() as i32 / STRATEGIC_MAP_WIDTH;
+    let column = tile.get() as i32 % STRATEGIC_MAP_WIDTH;
     let mut column_x2 = row % 2 + column * 2 + COLUMN_X2_DELTAS[direction];
-    let row = (row + ROW_DELTAS[direction]).clamp(0, i32::from(STRATEGIC_MAP_HEIGHT) - 1);
+    let row = (row + ROW_DELTAS[direction]).clamp(0, STRATEGIC_MAP_HEIGHT - 1);
     if column_x2 >= RASTER_WIDTH {
         column_x2 -= RASTER_WIDTH + 1;
     } else if column_x2 < 0 {
         column_x2 += RASTER_WIDTH;
     }
-    let tile = column_x2 / 2 + row * i32::from(STRATEGIC_MAP_WIDTH);
-    TileId::new(u16::try_from(tile).expect("retail home-site scan produced a valid tile"))
+    let tile = column_x2 / 2 + row * STRATEGIC_MAP_WIDTH;
+    TileId::new(tile as usize)
 }
 
-fn home_site_neighbor_conflicts(owner: Option<TileOwnerTag>, home: Option<TileOwnerTag>) -> bool {
+fn home_site_neighbor_conflicts(owner: Option<TileContext>, home: Option<TileContext>) -> bool {
     match owner {
         None => home.is_some(),
-        Some(owner) => owner.get() < NationId::COUNT && Some(owner) != home,
+        Some(owner) => owner.nation().is_some() && Some(owner) != home,
     }
 }
 
@@ -201,7 +201,7 @@ pub fn validate_capital_site_selection(
     tile: TileId,
 ) -> Result<CapitalSite, CitySiteError> {
     let tile_state = &state.map[tile];
-    let active = TileOwnerTag::from_nation(nation.nation());
+    let active = TileContext::from_nation(nation.nation());
     if tile_state.owner_nation != Some(active) {
         return Err(CitySiteError::NotOwned);
     }
@@ -231,12 +231,12 @@ pub fn capital_site_report(state: &GameState, site: CapitalSite) -> CapitalSiteR
     }
 }
 
-fn sustainable_food_population(yields: &ResourceTable<i16>) -> (i16, i16) {
+fn sustainable_food_population(yields: &ResourceTable<i32>) -> (i32, i32) {
     let mut primary_food = yields[ResourceKind::Grain];
     let mut secondary_food = yields[ResourceKind::Fruit];
     let mut alternate_food = yields[ResourceKind::Fish] + yields[ResourceKind::Livestock];
     let total_food = primary_food + secondary_food + alternate_food;
-    let mut sustainable_population = 0_i16;
+    let mut sustainable_population = 0;
     for unit in 0..total_food {
         let food_pool = if unit % 4 == 1 {
             &mut secondary_food
@@ -254,7 +254,7 @@ fn sustainable_food_population(yields: &ResourceTable<i16>) -> (i16, i16) {
 }
 
 /// Tile marking from `TMapMgr::PlaceCity` that fits the current [`TileState`] fields.
-pub fn place_city(world: &mut MapMgr, tile: TileId, owner_nation: TileOwnerTag) {
+pub fn place_city(world: &mut MapMgr, tile: TileId, owner_nation: TileContext) {
     world[tile].flags = TileFlags::PLACED_CITY_STATE;
     flood_fill_region_marker(world, tile, owner_nation);
 }
@@ -269,7 +269,7 @@ pub fn confirm_capital_site(
     story_ids: &[i32],
 ) -> crate::TurnStop {
     let tile = site.tile();
-    let owner = TileOwnerTag::from_nation(site.nation().nation());
+    let owner = TileContext::from_nation(site.nation().nation());
     place_city(&mut state.map, tile, owner);
     bind_home_city_tile(state, site.nation(), tile);
     state.advance_turn(story_ids)
@@ -312,7 +312,7 @@ fn bind_home_city_tile(state: &mut GameState, nation: MajorNationId, tile: TileI
     nation_state.towns.insert(tile, home_town);
 }
 
-fn flood_fill_region_marker(world: &mut MapMgr, tile: TileId, owner_nation: TileOwnerTag) {
+fn flood_fill_region_marker(world: &mut MapMgr, tile: TileId, owner_nation: TileContext) {
     let geometry = world.geometry();
     let marker = world.allocate_region_marker();
     world[tile].region = Some(marker);
@@ -488,8 +488,7 @@ mod tests {
         let tile = TileId::all()
             .find(|&tile| {
                 let t = &state.map[tile];
-                t.owner_nation == Some(TileOwnerTag::new(6))
-                    && supports_city_site_terrain(t.terrain)
+                t.owner_nation == Some(TileContext::new(6)) && supports_city_site_terrain(t.terrain)
             })
             .expect("human owns some city-capable terrain");
 
@@ -502,11 +501,11 @@ mod tests {
             .next()
             .expect("interior tiles still have neighbors on a wrapping map");
         state.map[sea].terrain = TerrainKind::Water;
-        state.map[sea].owner_nation = Some(TileOwnerTag::new(0x17));
+        state.map[sea].owner_nation = Some(TileContext::new(0x17));
         state.map[sea].action = None;
         for direction in HexDirection::ALL {
             let around = home_site_scan_neighbor(sea, direction);
-            state.map[around].owner_nation = Some(TileOwnerTag::new(6));
+            state.map[around].owner_nation = Some(TileContext::new(6));
         }
 
         let site = validate_capital_site_selection(&state, MajorNationId::new(6), tile).unwrap();
@@ -611,7 +610,7 @@ mod tests {
                 .name,
             "FrogCity"
         );
-        assert_eq!(state.map[home].owner_nation, Some(TileOwnerTag::new(6)));
+        assert_eq!(state.map[home].owner_nation, Some(TileContext::new(6)));
         assert!(state.map[home].flags.is_city());
         let mut story_ids = vec![1; 360];
         story_ids[0] = -1003;
@@ -694,7 +693,7 @@ mod tests {
 
     #[test]
     fn home_site_sea_scan_uses_its_retail_edge_wrap_and_owner_test() {
-        let owner = TileOwnerTag::new(6);
+        let owner = TileContext::new(6);
         let mut world = MapMgr::new(
             MapTopology::Bounded,
             vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
@@ -723,10 +722,10 @@ mod tests {
             vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
         );
         let geometry = world.geometry();
-        let start = geometry.tile(10, 10).unwrap();
+        let start = geometry.tile(MapPosition::new(10, 10)).unwrap();
         let south_east = geometry.neighbor(start, HexDirection::SouthEast).unwrap();
         let water = geometry.neighbor(south_east, HexDirection::East).unwrap();
-        let owner = TileOwnerTag::new(6);
+        let owner = TileContext::new(6);
         world[start].owner_nation = Some(owner);
         world[start].rendering.river_sprite = crate::RiverSprite::canonical_for_connection(1);
         world[south_east].owner_nation = Some(owner);
@@ -737,7 +736,7 @@ mod tests {
             &world, &geometry, start
         ));
 
-        world[south_east].owner_nation = Some(TileOwnerTag::new(5));
+        world[south_east].owner_nation = Some(TileContext::new(5));
         assert!(!river_reaches_sea_without_crossing_nation(
             &world, &geometry, start
         ));

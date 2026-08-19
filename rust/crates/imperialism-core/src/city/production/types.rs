@@ -15,14 +15,14 @@ pub enum ProductionConstraint {
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct OrderLimit {
-    pub maximum: i16,
+    pub maximum: i32,
     pub constraint: ProductionConstraint,
 }
 
 impl OrderLimit {
     /// Keep this limit when `maximum` is not strictly smaller, matching retail
     /// tie-breaking that preserves the earlier constraint.
-    pub fn min_with(&mut self, maximum: i16, constraint: ProductionConstraint) {
+    pub fn min_with(&mut self, maximum: i32, constraint: ProductionConstraint) {
         if maximum < self.maximum {
             self.maximum = maximum;
             self.constraint = constraint;
@@ -39,7 +39,7 @@ pub enum CityOrderUpdate {
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ProductionProgress {
-    pub quantity: i16,
+    pub quantity: i32,
     pub limiting_constraint: ProductionConstraint,
 }
 
@@ -55,13 +55,13 @@ impl Default for ProductionProgress {
 impl ProductionProgress {
     /// Record `limit.constraint` and commit `quantity` when it is in `0..=limit.maximum`.
     /// Returns the signed delta on success. Rejection still updates the constraint.
-    pub(crate) fn try_set(&mut self, limit: OrderLimit, quantity: i16) -> Option<i16> {
+    pub(crate) fn try_set(&mut self, limit: OrderLimit, quantity: i32) -> Option<i32> {
         self.limiting_constraint = limit.constraint;
         self.try_set_within(limit.maximum, quantity)
     }
 
     /// Commit `quantity` when it is in `0..=maximum`. Returns the signed delta on success.
-    pub(crate) fn try_set_within(&mut self, maximum: i16, quantity: i16) -> Option<i16> {
+    pub(crate) fn try_set_within(&mut self, maximum: i32, quantity: i32) -> Option<i32> {
         let delta = quantity - self.quantity;
         if quantity > maximum || quantity < 0 {
             return None;
@@ -84,15 +84,15 @@ pub(crate) enum ItemInputs {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RequestedCityOrderState {
     pub progress: ProductionProgress,
-    pub requested_quantity: i16,
-    pub tracking_by_resource: ResourceTable<i16>,
+    pub requested_quantity: i32,
+    pub tracking_by_resource: ResourceTable<i32>,
     pub accumulated_value: i32,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct PowerPlantOrderState {
     pub progress: ProductionProgress,
-    pub desired_quantity: i16,
+    pub desired_quantity: i32,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, PartialEq, Serialize)]
@@ -116,14 +116,14 @@ pub type TrainingOrderTable<T> = EnumMap<TrainingLevel, T>;
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ResourceCost {
     pub resource: ResourceKind,
-    per_unit: i16,
+    per_unit: i32,
 }
 impl ResourceCost {
-    pub const fn new(resource: ResourceKind, per_unit: i16) -> Self {
+    pub const fn new(resource: ResourceKind, per_unit: i32) -> Self {
         assert!(per_unit != 0, "resource cost per unit must be nonzero");
         Self { resource, per_unit }
     }
-    pub const fn per_unit(self) -> i16 {
+    pub const fn per_unit(self) -> i32 {
         self.per_unit
     }
 }
@@ -172,16 +172,16 @@ pub type ShipOrderTable<T> = EnumMap<ShipOrderSlot, T>;
 /// The six resources retail spends on a ship order.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ShipMaterials {
-    pub lumber: i16,
-    pub fabric: i16,
-    pub arms: i16,
-    pub steel: i16,
-    pub coal: i16,
-    pub fuel: i16,
+    pub lumber: i32,
+    pub fabric: i32,
+    pub arms: i32,
+    pub steel: i32,
+    pub coal: i32,
+    pub fuel: i32,
 }
 
 impl ShipMaterials {
-    pub const fn iter(self) -> [(ResourceKind, i16); 6] {
+    pub const fn iter(self) -> [(ResourceKind, i32); 6] {
         [
             (ResourceKind::Lumber, self.lumber),
             (ResourceKind::Fabric, self.fabric),
@@ -194,7 +194,7 @@ impl ShipMaterials {
 }
 
 impl std::ops::Index<ResourceKind> for ShipMaterials {
-    type Output = i16;
+    type Output = i32;
     fn index(&self, resource: ResourceKind) -> &Self::Output {
         match resource {
             ResourceKind::Lumber => &self.lumber,
@@ -230,7 +230,7 @@ pub struct ShipOrderState {
 }
 
 /// Retail `TNavyOrderResourceDescriptor::StockCap`.
-pub(crate) fn ship_stock_cap(ship_type: ShipType) -> i16 {
+pub(crate) fn ship_stock_cap(ship_type: ShipType) -> i32 {
     crate::navy_orders::ship_stock_cap(ship_type)
 }
 
@@ -241,12 +241,12 @@ pub(crate) fn ship_creates_navy_object(ship_type: ShipType) -> bool {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ShipCapabilities {
-    pub resolve_weight: i16,
-    pub calculation_weight: i16,
-    pub task_force_weight: i16,
-    pub stock_capacity: i16,
-    pub navy_priority_weight: i16,
-    pub resource_weight: i16,
+    pub resolve_weight: i32,
+    pub calculation_weight: i32,
+    pub task_force_weight: i32,
+    pub stock_capacity: i32,
+    pub navy_priority_weight: i32,
+    pub resource_weight: i32,
 }
 
 pub fn ship_capabilities(ship_type: ShipType) -> ShipCapabilities {

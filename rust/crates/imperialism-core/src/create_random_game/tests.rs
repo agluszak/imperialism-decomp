@@ -16,7 +16,7 @@ fn picture_assignment_consumes_ordered_mountain_and_river_draws_without_rewritin
     let geometry = MapGeometry::new(MapTopology::Bounded);
     let mut tiles = vec![TileState::default(); STRATEGIC_TILE_COUNT];
     tiles[0].terrain = TerrainKind::Mountain;
-    let first_river = geometry.tile(10, 10).unwrap();
+    let first_river = geometry.tile(MapPosition::new(10, 10)).unwrap();
     let second_river = geometry.neighbor(first_river, HexDirection::East).unwrap();
     let mut river_connections = vec![0u8; STRATEGIC_TILE_COUNT];
     river_connections[usize::from(first_river.get())] = 4;
@@ -41,7 +41,7 @@ fn picture_assignment_consumes_ordered_mountain_and_river_draws_without_rewritin
 #[test]
 fn picture_assignment_draws_in_direction_order_for_each_land_edge_on_water() {
     let geometry = MapGeometry::new(MapTopology::Bounded);
-    let target = geometry.tile(10, 10).unwrap();
+    let target = geometry.tile(MapPosition::new(10, 10)).unwrap();
     let mut tiles = vec![TileState::default(); STRATEGIC_TILE_COUNT];
     for tile in &mut tiles {
         tile.terrain = TerrainKind::Water;
@@ -73,7 +73,7 @@ fn picture_assignment_draws_in_direction_order_for_each_land_edge_on_water() {
 #[test]
 fn open_water_variant_draws_depend_on_already_processed_northern_tiles() {
     let geometry = MapGeometry::new(MapTopology::Bounded);
-    let target = geometry.tile(10, 10).unwrap();
+    let target = geometry.tile(MapPosition::new(10, 10)).unwrap();
     let north_west = geometry.neighbor(target, HexDirection::NorthWest).unwrap();
     let tiles = vec![
         TileState {
@@ -121,7 +121,7 @@ fn fallback_capital_stamps_the_province_anchor_state() {
         };
         STRATEGIC_TILE_COUNT
     ];
-    tiles[usize::from(tile.get())].province = Some(ProvinceId::new(0));
+    tiles[tile.index()].province = Some(ProvinceId::new(0));
     let capitals = assign_province_fallback_capitals(
         &mut tiles,
         MapGeometry::new(MapTopology::Bounded),
@@ -129,10 +129,7 @@ fn fallback_capital_stamps_the_province_anchor_state() {
     );
 
     assert_eq!(capitals, vec![Some(tile)]);
-    assert_eq!(
-        tiles[usize::from(tile.get())].flags,
-        TileFlags::PROVINCE_ANCHOR_STATE
-    );
+    assert_eq!(tiles[tile.index()].flags, TileFlags::PROVINCE_ANCHOR_STATE);
 }
 
 #[test]
@@ -196,7 +193,7 @@ fn minor_home_garrison_preserves_the_base_state_and_marks_the_capital() {
     spawn_initial_militia_for_minor(
         &mut world,
         &capitals,
-        MinorNationId::new(MinorNationId::FIRST),
+        MinorNationId::new(0),
         &[province],
         Difficulty::Normal,
         &mut units,
@@ -259,7 +256,7 @@ fn normal_random_start_reaches_capital_selection() {
         state
             .military_units
             .values()
-            .all(|unit| unit.nation().get() >= MinorNationId::FIRST),
+            .all(|unit| unit.nation().as_minor().is_some()),
         "pre-capital military units are minor-owned only"
     );
     assert!(

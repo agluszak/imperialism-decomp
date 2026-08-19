@@ -7,7 +7,7 @@ pub(in crate::ui::city) const INDUSTRY_BAR_Y: f32 = 8.0;
 #[derive(Component)]
 pub(in crate::ui::city) struct CityOrderAdjust {
     pub(in crate::ui::city) order: CityOrderId,
-    pub(in crate::ui::city) delta: i16,
+    pub(in crate::ui::city) delta: i32,
     pub(in crate::ui::city) selection: Option<Entity>,
 }
 
@@ -44,7 +44,7 @@ pub(in crate::ui::city) enum IndustryIndicator {
     Labor,
     Stock {
         resource: ResourceKind,
-        minimum: i16,
+        minimum: i32,
     },
     Expansion(CityFacilitySlot),
 }
@@ -124,7 +124,7 @@ pub(in crate::ui::city) fn bind_city_order_row(
     decrease_tag: FourCc,
     increase_tag: FourCc,
     quantity_tag: FourCc,
-    step: i16,
+    step: i32,
     selection: Option<Entity>,
 ) -> CityOrderRow {
     let row = tree.find(root, binding.tag);
@@ -430,10 +430,10 @@ pub(in crate::ui::city) fn sync_industry_bars(
     }
     let nation = session.active_major_nation();
     let city = &session.game.nations().major(nation).city;
-    let scale = |value: i16, capacity: i16| {
+    let scale = |value: i32, capacity: i32| {
         if capacity > 0 {
-            (i32::from(value) * i32::from(INDUSTRY_BAR_WIDTH) / i32::from(capacity))
-                .clamp(0, i32::from(INDUSTRY_BAR_WIDTH)) as i16
+            (value * i32::from(INDUSTRY_BAR_WIDTH) / capacity)
+                .clamp(0, i32::from(INDUSTRY_BAR_WIDTH))
         } else {
             0
         }
@@ -443,17 +443,17 @@ pub(in crate::ui::city) fn sync_industry_bars(
             IndustryBar::Fill(amount) => {
                 let capacity = city.production_orders[amount.slot];
                 let quantity = session.game.city_order_quantity(nation, amount.order);
-                node.width = Val::Px(f32::from(scale(quantity, capacity)));
+                node.width = Val::Px(scale(quantity, capacity) as f32);
             }
             IndustryBar::Maximum(amount) => {
                 let capacity = city.production_orders[amount.slot];
                 let maximum = session.game.city_order_limit(nation, amount.order).maximum;
-                node.left = Val::Px(f32::from(scale(maximum, capacity)));
+                node.left = Val::Px(scale(maximum, capacity) as f32);
             }
             IndustryBar::Quantity(amount) => {
                 let capacity = city.production_orders[amount.slot];
                 let quantity = session.game.city_order_quantity(nation, amount.order);
-                node.left = Val::Px(INDUSTRY_BAR_X + f32::from(scale(quantity, capacity)) - 2.0);
+                node.left = Val::Px(INDUSTRY_BAR_X + scale(quantity, capacity) as f32 - 2.0);
                 node.top = Val::Px(INDUSTRY_BAR_Y + 6.0);
             }
         }

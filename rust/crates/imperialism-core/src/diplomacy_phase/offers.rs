@@ -38,7 +38,7 @@ impl GameState {
         source: NationId,
         policy: DiplomacyPolicy,
     ) {
-        if let Some(major) = MajorNationId::from_nation(target) {
+        if let Some(major) = NationId::as_major(target) {
             if self.is_auto(major) {
                 match policy {
                     DiplomacyPolicy::JoinEmpire | DiplomacyPolicy::NonAggressionPact => return,
@@ -69,7 +69,7 @@ impl GameState {
                     && self.minor_would_accept_join_empire(target, source);
                 if accepted {
                     if self.has_alliance_guard(target, source) {
-                        if let Some(major) = MajorNationId::from_nation(source) {
+                        if let Some(major) = NationId::as_major(source) {
                             self.insert_sorted_proposal(
                                 major,
                                 DiplomacyProposal {
@@ -84,7 +84,7 @@ impl GameState {
                     self.add_treaty_event(InterNationNewsKind::JoinEmpireAccepted, target, source);
                     return;
                 }
-                if let Some(major) = MajorNationId::from_nation(source) {
+                if let Some(major) = NationId::as_major(source) {
                     self.add_diplomacy_notice(major, target, -policy.retail());
                 }
                 self.add_treaty_event(InterNationNewsKind::JoinEmpireRejected, source, target);
@@ -96,7 +96,7 @@ impl GameState {
                     DiplomaticRelationship::NonAggressionPact,
                     true,
                 );
-                if let Some(major) = MajorNationId::from_nation(source) {
+                if let Some(major) = NationId::as_major(source) {
                     self.add_diplomacy_notice(major, target, policy.retail());
                 }
                 self.add_treaty_event(
@@ -112,7 +112,7 @@ impl GameState {
                     DiplomaticRelationship::Peace,
                     true,
                 );
-                if let Some(major) = MajorNationId::from_nation(source) {
+                if let Some(major) = NationId::as_major(source) {
                     self.add_diplomacy_notice(major, target, policy.retail());
                 }
                 self.add_treaty_event(InterNationNewsKind::PeaceTreatyAccepted, target, source);
@@ -125,15 +125,13 @@ impl GameState {
         &mut self,
         nation: MajorNationId,
         source: NationId,
-        code: i16,
+        code: i32,
     ) {
         if self.nations.majors[&nation].economy.diplomacy_eligible {
             self.insert_sorted_notice(nation, DiplomacyNotice { source, code });
         }
 
-        if code == DiplomacyPolicy::PeaceTreaty.retail()
-            && MajorNationId::from_nation(source).is_some()
-        {
+        if code == DiplomacyPolicy::PeaceTreaty.retail() && NationId::as_major(source).is_some() {
             self.peace_allies_fighting(nation.nation(), source);
         }
 
@@ -145,11 +143,11 @@ impl GameState {
 
     pub(super) fn reply_to_diplomacy_offers_from(
         &mut self,
-        start_nation: u8,
+        start_nation: MajorNationId,
         start_index: usize,
     ) -> DiplomacyPhaseResult {
-        for nation in MajorNationId::all().skip(usize::from(start_nation)) {
-            let first = if nation.get() == start_nation {
+        for nation in MajorNationId::all().skip(start_nation.get()) {
+            let first = if nation == start_nation {
                 start_index
             } else {
                 0
@@ -301,7 +299,7 @@ impl GameState {
                     nation.nation(),
                     source,
                 );
-                if MajorNationId::from_nation(source).is_some() {
+                if NationId::as_major(source).is_some() {
                     self.peace_allies_fighting(nation.nation(), source);
                 }
             }
@@ -316,7 +314,7 @@ impl GameState {
             _ => {}
         }
 
-        if let Some(source_major) = MajorNationId::from_nation(source)
+        if let Some(source_major) = NationId::as_major(source)
             && self.event_eligible(source)
         {
             self.add_diplomacy_notice(source_major, nation.nation(), policy.retail());
@@ -325,7 +323,7 @@ impl GameState {
 
     pub(super) fn reject_diplomacy_offer(&mut self, nation: MajorNationId, index: usize) {
         let DiplomacyProposal { source, policy } = self.pending.nations[nation].proposals[index];
-        if let Some(source_major) = MajorNationId::from_nation(source) {
+        if let Some(source_major) = NationId::as_major(source) {
             self.add_diplomacy_notice(source_major, nation.nation(), -policy.retail());
         }
         let news = match policy {

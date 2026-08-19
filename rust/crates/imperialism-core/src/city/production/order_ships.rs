@@ -3,9 +3,9 @@
 use super::*;
 use crate::*;
 
-pub(crate) fn ship_max_order(state: &ShipOrderState, city: &CityState) -> i16 {
+pub(crate) fn ship_max_order(state: &ShipOrderState, city: &CityState) -> i32 {
     let costs = ship_order_costs(state.ship_type);
-    let mut limit = 10_000_i16;
+    let mut limit = 10_000;
     for (resource, cost) in costs.iter() {
         if cost != 0 {
             limit = limit.min(city.stockpile[resource] / cost);
@@ -17,8 +17,8 @@ pub(crate) fn ship_max_order(state: &ShipOrderState, city: &CityState) -> i16 {
 pub(crate) fn set_ship_quantity(
     state: &mut ShipOrderState,
     stockpile: &mut Stockpile,
-    maximum: i16,
-    quantity: i16,
+    maximum: i32,
+    quantity: i32,
 ) -> bool {
     let Some(delta) = state.progress.try_set_within(maximum, quantity) else {
         return false;

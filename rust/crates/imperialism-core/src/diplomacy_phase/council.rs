@@ -49,14 +49,14 @@ impl GameState {
                 let Some(former) = self.map.provinces[province].former_owner() else {
                     continue;
                 };
-                let mut threshold = if MajorNationId::from_nation(former).is_some() {
+                let mut threshold = if NationId::as_major(former).is_some() {
                     14
                 } else {
                     8
                 };
                 let die = if threshold == 14 { 6 } else { 4 };
                 for _ in 0..3 {
-                    threshold += (self.rng.next_crt_rand() % die) as i16;
+                    threshold += (self.rng.next_crt_rand() % die) as i32;
                 }
                 self.diplomacy.influence_thresholds[province] = threshold;
             }
@@ -97,7 +97,7 @@ impl GameState {
                     .nations
                     .home_tile(nation)
                     .and_then(|tile| self.map[tile].owner_nation)
-                    .and_then(TileOwnerTag::nation);
+                    .and_then(TileContext::nation);
                 chairman_side[nation] = if home_owner == Some(chairman.nation()) {
                     1
                 } else {
@@ -124,7 +124,7 @@ impl GameState {
         let mut chairman_support = 0;
         let mut counterpart_support = 0;
         let mut owned = 0;
-        let mut vote_residual: ProvinceTable<Option<i16>> = ProvinceTable::default();
+        let mut vote_residual: ProvinceTable<Option<i32>> = ProvinceTable::default();
         let mut max_residual = 0;
         for province in ProvinceId::all() {
             let Some(owner) = self.map.provinces[province].owner() else {
@@ -145,7 +145,7 @@ impl GameState {
             } else {
                 let former_major = self.map.provinces[province]
                     .former_owner()
-                    .and_then(MajorNationId::from_nation)
+                    .and_then(NationId::as_major)
                     .is_some();
                 let (mut chairman_score, mut counterpart_score) = if former_major {
                     (
@@ -155,7 +155,7 @@ impl GameState {
                 } else {
                     (chairman_side[owner], counterpart_side[owner])
                 };
-                if owner.get() >= MinorNationId::FIRST {
+                if owner.as_minor().is_some() {
                     for &tile in &self.map.provinces[province].linked_tiles {
                         if self.map[tile].secondary_owner_nation == Some(chairman) {
                             chairman_score += 2;
@@ -166,12 +166,12 @@ impl GameState {
                 }
                 let threshold = i32::from(self.diplomacy.influence_thresholds[province]);
                 if chairman_score - counterpart_score >= threshold {
-                    let residual = (chairman_score - counterpart_score - threshold) as i16;
+                    let residual = (chairman_score - counterpart_score - threshold) as i32;
                     vote_residual[province] = Some(residual);
                     max_residual = max_residual.max(residual);
                     Some(chairman)
                 } else if counterpart_score - chairman_score >= threshold {
-                    let residual = (counterpart_score - chairman_score - threshold) as i16;
+                    let residual = (counterpart_score - chairman_score - threshold) as i32;
                     vote_residual[province] = Some(residual);
                     max_residual = max_residual.max(residual);
                     Some(counterpart)
@@ -180,8 +180,8 @@ impl GameState {
                 }
             };
             self.diplomacy.influence_sides[province] = side;
-            chairman_support += i16::from(side == Some(chairman));
-            counterpart_support += i16::from(side == Some(counterpart));
+            chairman_support += i32::from(side == Some(chairman));
+            counterpart_support += i32::from(side == Some(counterpart));
         }
         // Retail derives animation tiers after every vote. The tiers are transient,
         // but the direct-winner dice are authoritative CRT RNG consumption.

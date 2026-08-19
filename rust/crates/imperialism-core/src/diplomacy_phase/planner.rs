@@ -12,7 +12,7 @@ impl GameState {
         if self.turn.planning_quarter() == 0 && !self.manufactured_offers_exhausted(nation) {
             let ranked = self.ranked_independents(nation.nation(), false);
             for &minor in ranked.iter().rev() {
-                let favorite = self.favorite_trade_partner(MinorNationId::new(minor.get()));
+                let favorite = self.favorite_trade_partner(minor.expect_minor());
                 let standing = self.diplomacy.standings[nation.nation()][minor];
                 let trade = self.nations.majors[&nation].common.trade_policy_by_nation[minor];
                 if favorite != Some(nation) && standing > 0x31 && trade != TradePolicyScore::BOYCOTT
@@ -197,7 +197,7 @@ impl GameState {
                 );
                 self.nations.majors[&nation]
                     .economy
-                    .development_grant_by_nation[minor] += amount as i16;
+                    .development_grant_by_nation[minor] += amount as i32;
             }
         }
         if budget > 1000 {
@@ -222,7 +222,7 @@ impl GameState {
                         let slot = &mut self.nations.majors[&nation]
                             .economy
                             .development_grant_by_nation[minor];
-                        *slot += amount as i16;
+                        *slot += amount as i32;
                         *slot
                     };
                     if cumulative >= 5000 {

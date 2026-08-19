@@ -17,14 +17,14 @@ impl LegacySaveV62 {
         let loaded_unit_count =
             (state.military_units().len() + state.civilian_units().len()) as i32;
         let mut nation_availability = [0_u8; NATION_COUNT];
-        let mut nation_control_modes = [0_i16; MAJOR_NATION_COUNT];
-        let mut foreign_minister_policy_ids = [0_i16; MAJOR_NATION_COUNT];
+        let mut nation_control_modes = [0; MAJOR_NATION_COUNT];
+        let mut foreign_minister_policy_ids = [0; MAJOR_NATION_COUNT];
         let mut nation_names = vec![String::new(); NATION_COUNT];
         let mut major_nations = IndexMap::new();
         let mut minor_nations = IndexMap::new();
 
         for slot in 0..MAJOR_NATION_COUNT {
-            let major_id = MajorNationId::new(slot as u8);
+            let major_id = MajorNationId::new(slot);
             let Some(nation) = state
                 .nations()
                 .major_is_present(major_id)
@@ -69,11 +69,11 @@ impl LegacySaveV62 {
         }
 
         for index in 0..MINOR_NATION_COUNT {
-            let minor_id = MinorNationId::new(MajorNationId::COUNT + index as u8);
+            let minor_id = MinorNationId::new(index);
             let Some(minor) = state.nations().minor(minor_id) else {
                 continue;
             };
-            let slot = usize::from(minor_id.get());
+            let slot = usize::from(minor_id.nation().retail_slot());
             nation_availability[slot] = 1;
             nation_names[slot] = minor.common.display_name.clone();
             let military = state
@@ -97,7 +97,7 @@ impl LegacySaveV62 {
                 .map()
                 .tiles
                 .iter()
-                .map(|tile| option_i8(tile.owner_nation.map(TileOwnerTag::get)))
+                .map(|tile| option_i8(tile.owner_nation.map(TileContext::get)))
                 .collect(),
             preview_economic_year_offset: turn.economic_turn as i16,
             preview_difficulty: turn.difficulty.retail(),
@@ -146,7 +146,7 @@ impl LegacySaveV62 {
             saved_multiplayer_role: 0,
             preference_slot_10: 0,
             selected_asset_set: 0,
-            diplomacy_year_term_raw: turn.diplomacy_year_term_raw,
+            diplomacy_year_term_raw: r16(turn.diplomacy_year_term_raw),
             phase_state_by_decade,
             nation_names,
         };
@@ -188,7 +188,7 @@ fn major_nation_dto(
             &nation.common,
             military,
             nation.common.display_name.clone(),
-            i16::from(major_id.get()),
+            i16::from(major_id.nation().retail_slot()),
         ),
         prefix: great_power_prefix_dto(&nation.economy, pending),
         ministers: ministers_dto(&nation.economy),
@@ -218,7 +218,7 @@ fn minor_nation_dto(
             &nation.common,
             military,
             nation.common.display_name.clone(),
-            i16::from(minor_id.get()),
+            i16::from(minor_id.nation().retail_slot()),
         ),
         need_current_by_type: resource_i16(&nation.trade.current_supply),
         trade_offers_by_resource: resource_i16(&nation.trade.offers),
@@ -231,14 +231,17 @@ fn minor_nation_dto(
             nation.trade.thresholds.coal_offer_price,
             nation.trade.thresholds.iron_offer_price,
             nation.trade.thresholds.oil_offer_price,
-        ],
+        ]
+        .map(r16),
         diplomacy_policy_fields: [
             optional_commodity_i16(nation.trade.primary_manufactured_request),
             optional_commodity_i16(nation.trade.secondary_manufactured_request),
-            nation.trade.primary_request_fulfilled,
-            nation.trade.secondary_request_fulfilled,
+            r16(nation.trade.primary_request_fulfilled),
+            r16(nation.trade.secondary_request_fulfilled),
         ],
-        diplomacy_save_fields: nation.consortium_members.map(|id| i16::from(id.get())),
+        diplomacy_save_fields: nation
+            .consortium_members
+            .map(|id| i16::from(id.nation().retail_slot())),
         diplomacy_save_extension: resource_i16(&nation.trade.independent_resource_counts),
     }
 }
@@ -254,8 +257,8 @@ fn country_dto(
         alternate_identity: identity,
         nation_slot,
         encoded_country_status: country_status_to_retail(common.status()),
-        unit_name_ordinal_by_type: common.unit_name_ordinal_by_type.into_array(),
-        unit_name_counter: common.unit_name_counter,
+        unit_name_ordinal_by_type: r16s(common.unit_name_ordinal_by_type.into_array()),
+        unit_name_counter: r16(common.unit_name_counter),
         treasury: common.treasury,
         home_tile: option_i32(common.home_tile.map(TileId::get)),
         overlay_anchor_tile: -1,
@@ -269,7 +272,7 @@ fn country_dto(
         owned_regions: common
             .owned_regions()
             .iter()
-            .map(|province| i32::from(province.get()))
+            .map(|province| province.get() as i32)
             .collect(),
     }
 }
@@ -280,7 +283,7 @@ fn military_unit_dto(id: MilitaryUnitId, unit: &MilitaryUnitState) -> LegacyMili
         stationed_province: option_i16(unit.stationed_province().map(ProvinceId::get)),
         order_target: option_i16(unit.order().target().map(ProvinceId::get)),
         owner_nation: i16::from(unit.owner_nation().get()),
-        roster_id: unit.roster_id(),
+        roster_id: r16(unit.roster_id()),
         registered: u8::from(unit.registered()),
         order: unit.order().code().get(),
         persistent_id: id.get(),
@@ -293,10 +296,10 @@ fn military_unit_dto(id: MilitaryUnitId, unit: &MilitaryUnitState) -> LegacyMili
             .order()
             .target_mirrors()
             .map(|province| option_i16(province.map(ProvinceId::get))),
-        strength: unit.strength(),
-        era: unit.era().retail(),
-        experience: unit.experience(),
-        battle_flags: unit.battle_flags(),
+        strength: r16(unit.strength()),
+        era: r16(unit.era().retail()),
+        experience: r16(unit.experience()),
+        battle_flags: r16(unit.battle_flags()),
     }
 }
 
@@ -307,16 +310,16 @@ fn great_power_prefix_dto(
     LegacyGreatPowerPrefix {
         diplomacy_eligible: u8::from(economy.diplomacy_eligible),
         capacities: [
-            economy.capacities.available_merchant,
-            economy.capacities.trade_offer,
-            economy.capacities.transport,
-            economy.capacities.reserved_transport,
+            r16(economy.capacities.available_merchant),
+            r16(economy.capacities.trade_offer),
+            r16(economy.capacities.transport),
+            r16(economy.capacities.reserved_transport),
         ],
         grant_total_cost: economy.grant_total_cost,
-        unfilled_trade_offer_count: economy.unfilled_trade_offer_count,
+        unfilled_trade_offer_count: r16(economy.unfilled_trade_offer_count),
         diplomacy_policy_by_nation: nation_i16_table(
             &economy.diplomacy_policy_by_nation,
-            |policy| policy.map(DiplomacyPolicy::retail).unwrap_or(-1),
+            |policy| policy.map(|policy| r16(policy.retail())).unwrap_or(-1),
         ),
         diplomacy_grant_by_nation: nation_i16_table(&economy.diplomacy_grants_by_nation, |grant| {
             grant.map(grant_to_retail).unwrap_or(-1)
@@ -334,7 +337,7 @@ fn great_power_prefix_dto(
         budget_pool_base: economy.budget_pool_base,
         budget_pool_delta: economy.budget_pool_delta,
         aid_allocation_by_minor_nation: std::array::from_fn(|index| {
-            let id = MinorNationId::new(MajorNationId::COUNT + index as u8);
+            let id = MinorNationId::new(index);
             resource_i32(&economy.aid_allocation_by_minor_nation[id])
         }),
         pending_action_status: std::array::from_fn(|index| {
@@ -345,7 +348,7 @@ fn great_power_prefix_dto(
         pending_action_payload_by_action: std::array::from_fn(|index| {
             economy.pending_actions[PendingActionKind::from_usize(index)]
                 .payload()
-                .unwrap_or(-1)
+                .map_or(-1, r16)
         }),
         turn_event_queue: notices_to_records(&pending.turn_events),
         proposal_queue: proposals_to_records(&pending.proposals),
@@ -358,23 +361,23 @@ fn great_power_prefix_dto(
 fn ministers_dto(economy: &GreatPowerState) -> LegacyGreatPowerMinisters {
     let trade = &economy.foreign_trade;
     let interior = economy.interior_civilian.as_ref();
-    let mut scalar_fields = [0_i16; 7];
+    let mut scalar_fields = [0; 7];
     match trade.interior_bid {
         Some(bid) => {
             scalar_fields[0] = trade_commodity_i16(bid.commodity);
-            scalar_fields[1] = bid.amount;
+            scalar_fields[1] = r16(bid.amount);
         }
         None => scalar_fields[0] = -10,
     }
-    scalar_fields[2] = trade.capability_flag_14;
-    scalar_fields[3] = trade.capability_flag_16;
-    scalar_fields[4] = trade.phase_counter;
-    scalar_fields[5] = trade.refresh_interval;
+    scalar_fields[2] = r16(trade.capability_flag_14);
+    scalar_fields[3] = r16(trade.capability_flag_16);
+    scalar_fields[4] = r16(trade.phase_counter);
+    scalar_fields[5] = r16(trade.refresh_interval);
     scalar_fields[6] = match trade.requested_ship {
         ShipType::Trader => 1,
         _ => 2,
     };
-    let mut order_scalars = [0_i16; 8];
+    let mut order_scalars = [0; 8];
     order_scalars[1] = match economy.pending_ship {
         None => 0,
         Some(ShipType::Trader) => 1,
@@ -386,25 +389,25 @@ fn ministers_dto(economy: &GreatPowerState) -> LegacyGreatPowerMinisters {
         Some(kind) => kind.into_usize() as i16,
     };
     order_scalars[6] = option_i16(interior.railhead_target().map(TileId::get));
-    let mut order_metrics = [0_i16; 61];
+    let mut order_metrics = [0; 61];
     let resources = resource_i16(interior.resource_order_metrics());
     order_metrics[..RESOURCE_KIND_COUNT].copy_from_slice(&resources);
     let demand = interior.city_order_demand();
     for (index, value) in demand.training().values().copied().enumerate() {
-        order_metrics[23 + index] = value;
+        order_metrics[23 + index] = r16(value);
     }
     for (index, value) in demand.military_recruitment().values().copied().enumerate() {
-        order_metrics[25 + index] = value;
+        order_metrics[25 + index] = r16(value);
     }
     for (index, value) in demand.civilian_recruitment().values().copied().enumerate() {
-        order_metrics[34 + index] = value;
+        order_metrics[34 + index] = r16(value);
     }
     for (index, value) in demand.ships().values().copied().enumerate() {
-        order_metrics[43 + index] = value;
+        order_metrics[43 + index] = r16(value);
     }
-    order_metrics[51] = demand.transport_capacity();
-    order_metrics[53..60].copy_from_slice(demand.expansions().as_array());
-    order_metrics[60] = demand.population_growth();
+    order_metrics[51] = r16(demand.transport_capacity());
+    order_metrics[53..60].copy_from_slice(&demand.expansions().as_array().map(r16));
+    order_metrics[60] = r16(demand.population_growth());
     let pending_development = interior
         .pending_development_actions()
         .iter()
@@ -415,13 +418,13 @@ fn ministers_dto(economy: &GreatPowerState) -> LegacyGreatPowerMinisters {
         .collect();
     LegacyGreatPowerMinisters {
         foreign: Some(LegacyForeignMinisterState {
-            skill_index: economy.foreign_minister_skill_index,
+            skill_index: r16(economy.foreign_minister_skill_index),
             scalar_fields,
             purchase_priority_by_resource: enum_i16(&trade.purchase_priority),
             preferred_resource_slots: trade.preferred_resources.map(optional_commodity_i16),
             status_flag: 0,
             trade_partner_enabled: trade.trade_partner_enabled.into_array().map(u8::from),
-            development_grant_by_nation: *economy.development_grant_by_nation.as_array(),
+            development_grant_by_nation: r16s(*economy.development_grant_by_nation.as_array()),
             bill_order_flag: matches!(
                 economy.foreign_minister_personality,
                 ForeignMinisterPersonality::Bill
@@ -434,21 +437,21 @@ fn ministers_dto(economy: &GreatPowerState) -> LegacyGreatPowerMinisters {
             trailing_table: [0; 7],
             order_scalars,
             order_metrics,
-            deferred_labor_shortfall: interior.deferred_labor_shortfall(),
-            order_short_table: *interior.production_deficit_by_slot().as_array(),
+            deferred_labor_shortfall: r16(interior.deferred_labor_shortfall()),
+            order_short_table: r16s(*interior.production_deficit_by_slot().as_array()),
             order_type_tables: [
                 resource_i16(interior.railhead_priority_by_resource()),
                 resource_i16(interior.exterior_need_by_resource()),
                 resource_i16(interior.historical_need_by_resource()),
             ],
-            temporarily_reserved_ship_arms: interior.temporarily_reserved_ship_arms(),
+            temporarily_reserved_ship_arms: r16(interior.temporarily_reserved_ship_arms()),
             integer_lists: [Vec::new(), Vec::new(), pending_development],
             civilian_order_demand_by_resource: resource_i16(
                 interior.civilian_order_demand_by_resource(),
             ),
         }),
         defense: Some(LegacyDefenseMinisterState {
-            skill_index: economy.defense_minister_skill_index,
+            skill_index: r16(economy.defense_minister_skill_index),
             scalar_fields: [0; 2],
             recruit_order_count_by_type: [0; 30],
             order_weight_by_type: [0; 30],
@@ -469,17 +472,17 @@ fn city_dto(
         low_production: u8::from(city.low_production),
         low_stock: u8::from(city.low_stock),
         production_flags,
-        food_substitution_count: city.food_substitution_count,
-        starvation_population_loss: city.starvation_population_loss,
-        serialized_state: city.serialized_state,
-        phase_counter: city.phase_counter,
-        power_available: city.power_available,
+        food_substitution_count: r16(city.food_substitution_count),
+        starvation_population_loss: r16(city.starvation_population_loss),
+        serialized_state: r16(city.serialized_state),
+        phase_counter: r16(city.phase_counter),
+        power_available: r16(city.power_available),
         military_recruit_count_by_kind: enum_i16(&city.military_recruit_count_by_kind),
         civilian_recruit_count_by_kind: enum_i16(&city.civilian_recruit_count_by_kind),
         order_count_by_type: enum_i16(&city.ship_order_count_by_type),
         stockpile: resource_i16_from_stockpile(&city.stockpile),
-        production_orders: *city.production_orders.as_array(),
-        production_accum: *city.production_accum.as_array(),
+        production_orders: r16s(*city.production_orders.as_array()),
+        production_accum: r16s(*city.production_accum.as_array()),
         unmet_resource_retries: resource_i16(&city.unmet_resource_retries),
         reserved_by_type: resource_i16(&city.reserved_by_type),
         production_current,
@@ -487,15 +490,15 @@ fn city_dto(
         consumed_production_input_by_type: resource_i16(&city.consumed_production_input_by_type),
         rolling_item_production_score: city.rolling_item_production_score,
         population: LegacyPopulationState {
-            count: city.population.count(),
-            strength: city.population.strength(),
-            extra: city.population.extra(),
-            phase_value: city.population.strike_phase().retail(),
+            count: r16(city.population.count()),
+            strength: r16(city.population.strength()),
+            extra: r16(city.population.extra()),
+            phase_value: r16(city.population.strike_phase().retail()),
             predicted_need_by_resource: resource_i16(city.population.predicted_need_by_resource()),
             count_float_bits: city.population.accumulator().to_bits(),
-            baseline_labor: city.population.baseline_labor().into(),
-            production_labor: city.population.production_labor().into(),
-            pending_labor_delta: city.population.pending_labor_delta().into(),
+            baseline_labor: labor_i16(city.population.baseline_labor()),
+            production_labor: labor_i16(city.population.production_labor()),
+            pending_labor_delta: labor_i16(city.population.pending_labor_delta()),
         },
         orders: city_orders_dto(orders),
         tasks: Vec::new(),
@@ -530,7 +533,7 @@ fn city_orders_dto(orders: &CityOrders) -> LegacyCityOrders {
         transport_capacity: item_from_requested(&orders.transport_capacity, 0),
         power_plant: LegacyPowerPlantOrder {
             order: production_from_progress(&orders.power_plant.progress, 0),
-            desired_quantity: orders.power_plant.desired_quantity,
+            desired_quantity: r16(orders.power_plant.desired_quantity),
         },
         expansions: std::array::from_fn(|index| {
             item_from_requested(&orders.expansions[ExpandableFacility::from_usize(index)], 0)
@@ -573,7 +576,7 @@ fn town_dto(tile: TileId, town: &TownState) -> LegacyTown {
         name: town.name.clone(),
         tile_index: tile.get() as i16,
         opaque_fields: [0; 2],
-        created_turn: town.created_turn,
+        created_turn: r16(town.created_turn),
         owner_nation: i16::from(town.owner_nation.get()),
         resource_yield_by_type: resource_i16(&town.resource_yield_by_type),
         transport_linked: u8::from(town.transport_linked),
@@ -591,27 +594,29 @@ fn civilian_unit_dto(
     let tile = option_i16(unit.location().tile().map(TileId::get));
     let (order, target, remaining) = match unit.order() {
         CivilianWorkOrder::Idle => (0, -1, 0),
-        CivilianWorkOrder::Redeploy { source, turns } => (1, source.get() as i16, *turns),
+        CivilianWorkOrder::Redeploy { source, turns } => (1, source.get() as i16, r16(*turns)),
         CivilianWorkOrder::Sleep => (2, 0, 0),
         CivilianWorkOrder::Later => (3, 0, 0),
         CivilianWorkOrder::Done => (4, 0, 0),
         CivilianWorkOrder::LayRail { segment, turns } => {
             let _ = topology;
-            (5, segment.origin().get() as i16, *turns)
+            (5, segment.origin().get() as i16, r16(*turns))
         }
-        CivilianWorkOrder::BuildDepot { source, turns } => (6, source.get() as i16, *turns),
-        CivilianWorkOrder::BuildPort { source, turns } => (7, source.get() as i16, *turns),
-        CivilianWorkOrder::Prospect { source, turns } => (8, source.get() as i16, *turns),
-        CivilianWorkOrder::DevelopResource { source, turns } => (10, source.get() as i16, *turns),
-        CivilianWorkOrder::BuildFort { source, turns } => (12, source.get() as i16, *turns),
-        CivilianWorkOrder::PurchaseLand { source, turns } => (13, source.get() as i16, *turns),
+        CivilianWorkOrder::BuildDepot { source, turns } => (6, source.get() as i16, r16(*turns)),
+        CivilianWorkOrder::BuildPort { source, turns } => (7, source.get() as i16, r16(*turns)),
+        CivilianWorkOrder::Prospect { source, turns } => (8, source.get() as i16, r16(*turns)),
+        CivilianWorkOrder::DevelopResource { source, turns } => {
+            (10, source.get() as i16, r16(*turns))
+        }
+        CivilianWorkOrder::BuildFort { source, turns } => (12, source.get() as i16, r16(*turns)),
+        CivilianWorkOrder::PurchaseLand { source, turns } => (13, source.get() as i16, r16(*turns)),
     };
     LegacyCivilianUnit {
         unit_type: i16::from(unit.unit_type().retail()),
         tile_index: tile,
         order_target: target,
         owner_nation: i16::from(unit.owner_nation().get()),
-        roster_id: unit.roster_id(),
+        roster_id: r16(unit.roster_id()),
         registered: u8::from(unit.registered()),
         order,
         persistent_id: id.get(),
@@ -622,7 +627,7 @@ fn civilian_unit_dto(
 fn auto_prefix_dto(auto: &AutoGreatPowerState) -> LegacyAutoGreatPowerPrefix {
     let mut map_node_state_flags = [0_u8; super::PROVINCE_COUNT];
     for (index, flag) in map_node_state_flags.iter_mut().enumerate() {
-        *flag = ai_target_to_retail(auto.province_targets[ProvinceId::new(index as u16)]);
+        *flag = ai_target_to_retail(auto.province_targets[ProvinceId::new(index)]);
     }
     let mut port_zone_state_flags = [0_u8; AI_ZONE_TARGET_CAPACITY];
     for (index, target) in auto.zone_targets.iter().enumerate() {
@@ -646,7 +651,7 @@ fn mission_dto(
         state: mission.state,
         importance_bits: mission.importance_bits,
         flag: u8::from(mission.held),
-        path_marker: option_i16(mission.path_nation.map(|id| u16::from(id.get()))),
+        path_marker: option_i16(mission.path_nation.map(|id| usize::from(id.retail_slot()))),
         marker: mission.marker,
     };
     match &mission.data {
@@ -726,9 +731,9 @@ fn navy_dto(state: &GameState) -> LegacyNavyState {
             aggression: ship.aggression.retail(),
             nation: i16::from(ship.nation.get()),
             name: ship.name.clone(),
-            strength: ship.strength,
+            strength: r16(ship.strength),
             selection: ship.selection.retail(),
-            experience: ship.experience,
+            experience: r16(ship.experience),
             zone_ordinal: i16::try_from(ship.location.get())
                 .expect("ship zone ordinal fits a save short"),
         })
@@ -749,7 +754,7 @@ fn navy_dto(state: &GameState) -> LegacyNavyState {
         .map(|(_, admiral)| LegacyAdmiral {
             nation: i16::from(admiral.nation.get()),
             name: admiral.name.clone(),
-            experience: admiral.experience,
+            experience: r16(admiral.experience),
             ship_index: admiral
                 .ship
                 .map(|id| {
@@ -779,7 +784,7 @@ fn navy_dto(state: &GameState) -> LegacyNavyState {
                     .expect("task-force location ordinal fits a save short"),
                 nation: i16::from(force.nation.get()),
                 defeated: u8::from(force.defeated),
-                ingot_tile: force.ingot_tile,
+                ingot_tile: r16(force.ingot_tile),
                 ships: force
                     .ships()
                     .map(|(ship, selected)| {
@@ -833,9 +838,9 @@ fn market_dto(market: &TradeMarketState) -> LegacyTradeMarketState {
                 adjusted_offer_count: row.adjusted_offer_count,
                 amount_offered: row.amount_offered as i16,
                 base_price: row.base_price as i16,
-                current_offer_by_nation: *row.current_offer_by_nation.as_array(),
-                accumulated_offer_by_nation: *row.accumulated_offer_by_nation.as_array(),
-                maximum_offer_by_nation: *row.maximum_offer_by_nation.as_array(),
+                current_offer_by_nation: r16s(*row.current_offer_by_nation.as_array()),
+                accumulated_offer_by_nation: r16s(*row.accumulated_offer_by_nation.as_array()),
+                maximum_offer_by_nation: r16s(*row.maximum_offer_by_nation.as_array()),
             }
         }),
         history: std::array::from_fn(|_| empty_records()),
@@ -844,39 +849,39 @@ fn market_dto(market: &TradeMarketState) -> LegacyTradeMarketState {
 
 fn diplomacy_dto(diplomacy: &DiplomacyState) -> LegacyDiplomacyState {
     LegacyDiplomacyState {
-        relation_standing_scores: flatten_nation_pairs(&diplomacy.standings, |value| value),
+        relation_standing_scores: flatten_nation_pairs(&diplomacy.standings, r16),
         relation_propagation_matrix: flatten_nation_pairs(&diplomacy.relationships, |value| {
-            value.retail()
+            r16(value.retail())
         }),
         relation_turn_stamp_matrix: flatten_nation_pairs(&diplomacy.relationship_turns, |value| {
-            value.unwrap_or(-1)
+            r16(value.unwrap_or(-1))
         }),
-        relation_code_matrix: *diplomacy.influence_thresholds.as_array(),
+        relation_code_matrix: r16s(*diplomacy.influence_thresholds.as_array()),
         pending_policy_code_matrix: diplomacy
             .influence_sides
             .as_array()
-            .map(|side| option_i8(side.map(MajorNationId::get))),
-        last_diplomatic_effort_turn: diplomacy.last_diplomatic_effort_turn,
+            .map(|side| option_i8(side.map(|id| id.get() as u8))),
+        last_diplomatic_effort_turn: r16(diplomacy.last_diplomatic_effort_turn),
         relation_side_effect_matrix: flatten_nation_pairs(&diplomacy.mission_levels, |value| {
-            value.retail()
+            r16(value.retail())
         }),
         congress_leadership: [
-            option_i16(diplomacy.congress.chairman.map(|id| u16::from(id.get()))),
-            option_i16(diplomacy.congress.counterpart.map(|id| u16::from(id.get()))),
+            option_i16(diplomacy.congress.chairman.map(|id| id.get())),
+            option_i16(diplomacy.congress.counterpart.map(|id| id.get())),
         ],
         congress_support: [
-            diplomacy.congress.chairman_support,
-            diplomacy.congress.counterpart_support,
-            diplomacy.congress.neutral_support,
+            r16(diplomacy.congress.chairman_support),
+            r16(diplomacy.congress.counterpart_support),
+            r16(diplomacy.congress.neutral_support),
         ],
         special_relation_source_slots: diplomacy
             .special_relation_sources
             .as_array()
-            .map(|id| option_i16(id.map(|major| u16::from(major.get())))),
+            .map(|id| option_i16(id.map(|major| major.get()))),
         special_relation_target_slots: diplomacy
             .special_relation_targets
             .as_array()
-            .map(|id| option_i16(id.map(|major| u16::from(major.get())))),
+            .map(|id| option_i16(id.map(|major| major.get()))),
     }
 }
 
@@ -885,9 +890,9 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
     let mut ability_active_by_nation = [[0_u8; 30]; MAJOR_NATION_COUNT];
     let mut university_recruitment_availability = [[0_u8; 9]; MAJOR_NATION_COUNT];
     let mut capability_value_by_nation_and_resource =
-        [[0_i16; RESOURCE_KIND_COUNT]; MAJOR_NATION_COUNT];
+        [[0; RESOURCE_KIND_COUNT]; MAJOR_NATION_COUNT];
     for slot in 0..MAJOR_NATION_COUNT {
-        let nation = MajorNationId::new(slot as u8);
+        let nation = MajorNationId::new(slot);
         research_status_by_nation[slot] = (*technology.research_status_by_nation[nation]
             .as_array())
         .map(technology_research_status_to_retail);
@@ -904,7 +909,7 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
         });
     }
     LegacyTechnologyState {
-        priority_slots: *technology.scheduled_unlock_turn_by_technology.as_array(),
+        priority_slots: r16s(*technology.scheduled_unlock_turn_by_technology.as_array()),
         initial_capability_value_by_nation_and_resource: [[0; RESOURCE_KIND_COUNT];
             MAJOR_NATION_COUNT],
         tech_selector: 0,
@@ -919,7 +924,7 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
         init_flags_1c9: [0; 9],
         active_prerequisite_pair: [0; 2],
         nation_capability_slots: std::array::from_fn(|slot| {
-            technology.selected_capability_slots[MajorNationId::new(slot as u8)]
+            technology.selected_capability_slots[MajorNationId::new(slot)]
                 .as_array()
                 .map(|kind| i16::from(kind.retail()))
         }),
@@ -928,7 +933,7 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
         ability_active_by_nation,
         university_recruitment_availability,
         completion_year_offsets: std::array::from_fn(|slot| {
-            *technology.completion_year_by_nation[MajorNationId::new(slot as u8)].as_array()
+            r16s(*technology.completion_year_by_nation[MajorNationId::new(slot)].as_array())
         }),
         capability_value_by_nation_and_resource,
         marker: technology.latest_global_unlock as i16,
@@ -952,7 +957,7 @@ fn map_dto(map: &MapMgr, view_origin: TileId) -> LegacyMapState {
 fn tile_dto(tile: &TileState) -> LegacyTerrainTile {
     let mut visibility = 0_u8;
     for slot in 0..MAJOR_NATION_COUNT {
-        if tile.development.resource_visible_to_majors[MajorNationId::new(slot as u8)] {
+        if tile.development.resource_visible_to_majors[MajorNationId::new(slot)] {
             visibility |= 1 << slot;
         }
     }
@@ -964,9 +969,9 @@ fn tile_dto(tile: &TileState) -> LegacyTerrainTile {
             .river_sprite
             .map(RiverSprite::retail)
             .unwrap_or(0),
-        owner_nation: option_i8(tile.owner_nation.map(TileOwnerTag::get)),
-        former_owner_nation: option_i8(tile.former_owner_nation.map(TileOwnerTag::get)),
-        secondary_owner_nation: option_i8(tile.secondary_owner_nation.map(MajorNationId::get)),
+        owner_nation: option_i8(tile.owner_nation.map(TileContext::get)),
+        former_owner_nation: option_i8(tile.former_owner_nation.map(TileContext::get)),
+        secondary_owner_nation: option_i8(tile.secondary_owner_nation.map(|id| id.get() as u8)),
         owner_border_mask: tile.owner_border_mask,
         city_border_mask: tile.city_border_mask,
         water_adjacency_mask: tile.water_adjacency_mask,
@@ -992,14 +997,14 @@ fn tile_dto(tile: &TileState) -> LegacyTerrainTile {
             .action
             .map(|action| action.retail() as i8)
             .unwrap_or(-1),
-        tile_action_ordinal: tile.tile_action_ordinal,
+        tile_action_ordinal: r16(tile.tile_action_ordinal),
         active_flags: tile.flags.bits(),
     }
 }
 
 fn province_dto(province: &ProvinceState) -> LegacyProvince {
-    let mut adjacent_region_ids = [-1_i16; 12];
-    let mut adjacent_region_anchor_tiles = [-1_i16; 12];
+    let mut adjacent_region_ids = [-1; 12];
+    let mut adjacent_region_anchor_tiles = [-1; 12];
     for (index, (id, tile)) in province
         .adjacency()
         .iter()
@@ -1009,7 +1014,7 @@ fn province_dto(province: &ProvinceState) -> LegacyProvince {
         adjacent_region_ids[index] = id.get() as i16;
         adjacent_region_anchor_tiles[index] = tile.get() as i16;
     }
-    let mut linked_tile_indices = [-1_i16; 32];
+    let mut linked_tile_indices = [-1; 32];
     for (index, tile) in province.linked_tiles.iter().enumerate() {
         linked_tile_indices[index] = tile.get() as i16;
     }
@@ -1019,11 +1024,11 @@ fn province_dto(province: &ProvinceState) -> LegacyProvince {
                 + u8::try_from(offset).expect("province resource-development index fits u8"),
         )
         .expect("province resource-development table spans food through arms");
-        province.resource_development_by_type()[resource]
+        r16(province.resource_development_by_type()[resource])
     });
     let mut explored_by_nation_mask = 0_u8;
     for slot in 0..MAJOR_NATION_COUNT {
-        if province.explored_by_majors()[MajorNationId::new(slot as u8)] {
+        if province.explored_by_majors()[MajorNationId::new(slot)] {
             explored_by_nation_mask |= 1 << slot;
         }
     }
@@ -1033,7 +1038,7 @@ fn province_dto(province: &ProvinceState) -> LegacyProvince {
         development_stage: province.development_stage().retail(),
         fort_level: province.fort_level().retail(),
         city_tile: option_i16(province.city_tile().map(TileId::get)),
-        last_turn_tick: province.last_turn_tick,
+        last_turn_tick: r16(province.last_turn_tick),
         adjacent_region_count: province.adjacency().len() as i8,
         adjacent_region_ids,
         adjacent_region_anchor_tiles,
@@ -1084,9 +1089,9 @@ fn ocean_dto(ocean: &Ocean) -> LegacyOceanState {
 fn zone_dto(zone: &Zone, ordinal: i16) -> LegacyZone {
     LegacyZone {
         display_name: zone.display_name.clone(),
-        status_code: zone.status_code.unwrap_or(-1),
+        status_code: zone.status_code.map_or(-1, r16),
         tile_or_terrain_id: option_i32(zone.target_tile.map(TileId::get)),
-        seed_nation_id: option_i16(zone.seed_owner.map(|tag| u16::from(tag.get()))),
+        seed_nation_id: option_i16(zone.seed_owner.map(|tag| tag.get() as usize)),
         active_tile_index: option_i16(zone.active_tile.map(TileId::get)),
         context_ordinal: ordinal,
     }
@@ -1100,9 +1105,9 @@ fn production_from_progress(
 }
 
 fn production_from_ship(order: &ShipOrderState) -> LegacyProductionOrder {
-    let mut tracking_slots = [0_i16; RESOURCE_KIND_COUNT];
+    let mut tracking_slots = [0; RESOURCE_KIND_COUNT];
     for (kind, amount) in order.materials.iter() {
-        tracking_slots[usize::from(kind.retail())] = amount;
+        tracking_slots[usize::from(kind.retail())] = r16(amount);
     }
     production_order(
         &order.progress,
@@ -1120,7 +1125,7 @@ fn production_order(
 ) -> LegacyProductionOrder {
     LegacyProductionOrder {
         resource_type_index,
-        quantity: progress.quantity,
+        quantity: r16(progress.quantity),
         limiting_constraint: production_constraint_to_retail(progress.limiting_constraint),
         tracking_slots,
         accumulated_value,
@@ -1138,7 +1143,7 @@ fn item_from_requested(
             resource_i16(&order.tracking_by_resource),
             order.accumulated_value,
         ),
-        requested_quantity: order.requested_quantity,
+        requested_quantity: r16(order.requested_quantity),
         primary_input_resource_id: 0,
         secondary_input_resource_id: 0,
         production_slot: 0,
@@ -1163,7 +1168,7 @@ fn notices_to_records(notices: &[DiplomacyNotice]) -> LegacyFixedRecordList {
         .iter()
         .map(|notice| {
             let mut record = vec![0_u8; 4];
-            record[..2].copy_from_slice(&notice.code.to_le_bytes());
+            record[..2].copy_from_slice(&r16(notice.code).to_le_bytes());
             record[2..4].copy_from_slice(&i16::from(notice.source.get()).to_le_bytes());
             record
         })
@@ -1200,7 +1205,7 @@ fn deal_book_records(entries: &[TradeDealBookEntry]) -> LegacyFixedRecordList {
             let kind = deal_book_entry_kind_to_retail(entry.kind);
             record[..2].copy_from_slice(&kind.to_le_bytes());
             record[2..4].copy_from_slice(&i16::from(entry.nation.get()).to_le_bytes());
-            record[4..6].copy_from_slice(&entry.amount.to_le_bytes());
+            record[4..6].copy_from_slice(&r16(entry.amount).to_le_bytes());
             record[8..12].copy_from_slice(&entry.unit_price.to_le_bytes());
             record
         })
@@ -1228,15 +1233,17 @@ fn grant_to_retail(grant: DiplomacyGrant) -> i16 {
     }
 }
 
-fn resource_i16<T: Copy + Into<i16>>(table: &ResourceTable<T>) -> [i16; RESOURCE_KIND_COUNT] {
+fn resource_i16(table: &ResourceTable<i32>) -> [i16; RESOURCE_KIND_COUNT] {
     std::array::from_fn(|index| {
-        table[ResourceKind::from_index(index as u8).expect("resource index")].into()
+        i16::try_from(table[ResourceKind::from_index(index as u8).expect("resource index")])
+            .expect("resource amount fits retail i16")
     })
 }
 
 fn resource_i16_from_stockpile(stockpile: &Stockpile) -> [i16; RESOURCE_KIND_COUNT] {
     std::array::from_fn(|index| {
-        stockpile[ResourceKind::from_index(index as u8).expect("resource index")]
+        i16::try_from(stockpile[ResourceKind::from_index(index as u8).expect("resource index")])
+            .expect("stockpile amount fits retail i16")
     })
 }
 
@@ -1246,8 +1253,10 @@ fn resource_i32(table: &ResourceTable<i32>) -> [i32; RESOURCE_KIND_COUNT] {
     })
 }
 
-fn enum_i16<K: Enum + Copy, const N: usize>(table: &enum_map::EnumMap<K, i16>) -> [i16; N] {
-    std::array::from_fn(|index| table[K::from_usize(index)])
+fn enum_i16<K: Enum + Copy, const N: usize>(table: &enum_map::EnumMap<K, i32>) -> [i16; N] {
+    std::array::from_fn(|index| {
+        i16::try_from(table[K::from_usize(index)]).expect("enum table amount fits retail i16")
+    })
 }
 
 fn enum_u8<K: Enum + Copy, const N: usize>(table: &enum_map::EnumMap<K, bool>) -> [u8; N] {
@@ -1266,8 +1275,8 @@ fn flatten_nation_pairs<T: Copy, U: Copy>(
     map: impl Fn(T) -> U,
 ) -> [U; NATION_COUNT * NATION_COUNT] {
     std::array::from_fn(|index| {
-        let source = NationId::new((index / NATION_COUNT) as u8);
-        let target = NationId::new((index % NATION_COUNT) as u8);
+        let source = NationId::from_retail_slot((index / NATION_COUNT) as u8).expect("pair source");
+        let target = NationId::from_retail_slot((index % NATION_COUNT) as u8).expect("pair target");
         map(table[source][target])
     })
 }
@@ -1325,9 +1334,9 @@ fn army_reports_from_state(
                             BattleReportUnitKind::Ship(kind) => i16::from(kind.retail()),
                             BattleReportUnitKind::Resource(kind) => i16::from(kind.retail()),
                         },
-                        stock_or_required: child.stock_or_required,
+                        stock_or_required: r16(child.stock_or_required),
                         name: child.name.clone(),
-                        strength_bucket: child.strength_bucket,
+                        strength_bucket: r16(child.strength_bucket),
                         detail_identity: child.detail_identity,
                     })
                     .collect(),
@@ -1348,11 +1357,11 @@ mod tests {
             (CivilianWorkOrder::Done, 4),
         ] {
             let unit = CivilianUnitState::new(
-                NationId::new(0),
+                MajorNationId::new(0).nation(),
                 CivilianUnitKind::Engineer,
                 CivilianLocation::OffMap,
                 order,
-                NationId::new(0),
+                MajorNationId::new(0).nation(),
                 0,
                 false,
             )

@@ -2,7 +2,7 @@ use crate::{CityFacilitySlot, CityState, GreatPowerState, ResourceKind, Resource
 
 impl CityState {
     /// Mirrors the pointer-taking `TCity::AddTransportedItems` overload.
-    pub fn add_transported_items(&mut self, amounts: &ResourceTable<i16>) {
+    pub fn add_transported_items(&mut self, amounts: &ResourceTable<i32>) {
         for (resource, amount) in amounts {
             self.stockpile.wrapping_add(resource, *amount);
         }
@@ -20,8 +20,8 @@ impl CityState {
         &mut self,
         nation: &mut GreatPowerState,
         resource: ResourceKind,
-        requested: i16,
-    ) -> i16 {
+        requested: i32,
+    ) -> i32 {
         let mut amount = requested;
         let surplus = nation.need_current_by_type[resource] - nation.need_target_by_type[resource];
         if surplus < amount {
@@ -71,8 +71,8 @@ impl CityState {
     /// vector has been refreshed.
     pub fn refresh_unreserved_city_needs(
         &mut self,
-        supported_order_quantity: i16,
-    ) -> &ResourceTable<i16> {
+        supported_order_quantity: i32,
+    ) -> &ResourceTable<i32> {
         let summary = self
             .population
             .refresh_predicted_needs(supported_order_quantity);
@@ -97,9 +97,9 @@ impl CityState {
     pub fn refresh_local_summary_flags(&mut self) {
         self.low_stock = self.population.strength >= 2;
         let mut shortage_count = if self.production_accum[CityFacilitySlot::LumberMill] > 0 {
-            2_i16
+            2
         } else {
-            3_i16
+            3
         };
         if self.production_accum[CityFacilitySlot::SteelMill] > 0 {
             shortage_count -= 1;
@@ -115,7 +115,7 @@ impl CityState {
         self.stockpile[ResourceKind::Gems] = 0;
     }
 
-    pub(crate) fn adjust_stock(&mut self, resource: ResourceKind, delta: i16) {
+    pub(crate) fn adjust_stock(&mut self, resource: ResourceKind, delta: i32) {
         self.stockpile.wrapping_add(resource, delta);
     }
 }

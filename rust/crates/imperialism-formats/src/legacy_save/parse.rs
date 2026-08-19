@@ -83,7 +83,7 @@ impl LegacySaveV62 {
         let mut archive = vec![None];
         let mut major_nations = IndexMap::new();
         for nation in MajorNationId::all() {
-            let slot = usize::from(nation.get());
+            let slot = nation.get();
             if simulation.nation_availability[slot] == 0 {
                 continue;
             }
@@ -106,7 +106,7 @@ impl LegacySaveV62 {
         let mut minor_nations = IndexMap::new();
         for nation in MAJOR_NATION_COUNT..NATION_COUNT {
             if simulation.nation_availability[nation] != 0 {
-                let id = MinorNationId::new(nation as u8);
+                let id = MinorNationId::new(nation - MAJOR_NATION_COUNT);
                 minor_nations.insert(id, read_minor_record(&mut stream));
             }
         }

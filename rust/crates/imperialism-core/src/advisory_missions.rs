@@ -152,7 +152,7 @@ impl GameState {
             if self.zone_target(nation, ordinal) != Some(AiTargetState::Candidate) {
                 continue;
             }
-            let zone = OceanZoneId::new(ordinal as u16);
+            let zone = OceanZoneId::new(ordinal);
             let score = self.map_action_context_score(nation, zone);
             if score > best.map_or(0.0, |best| best.score) {
                 best = Some(AdvisoryCandidate {
@@ -225,7 +225,7 @@ impl GameState {
             if self.zone_target(nation, ordinal) == Some(AiTargetState::MissionQueued) {
                 continue;
             }
-            let zone = OceanZoneId::new(ordinal as u16);
+            let zone = OceanZoneId::new(ordinal);
             if !self.zone_has_secondary_neighbor_owner(zone, nation.nation()) {
                 continue;
             }
@@ -350,7 +350,7 @@ impl GameState {
                     continue;
                 };
                 score = score.wrapping_add(link_bonus);
-                if MajorNationId::from_nation(owner).is_some() && self.event_eligible(owner) {
+                if NationId::as_major(owner).is_some() && self.event_eligible(owner) {
                     score = score.wrapping_add(0x14);
                 }
                 candidates.push((score, rec));
@@ -521,7 +521,7 @@ impl GameState {
         let Some(owner) = self.map.provinces[province].owner() else {
             return 0.0;
         };
-        if MajorNationId::from_nation(owner).is_some() {
+        if NationId::as_major(owner).is_some() {
             let f1 = self.army_power_factor(owner);
             let f3 = self.province_strength_factor(province, owner);
             let f5 = self.standing_factor(nation, owner);
@@ -552,7 +552,7 @@ impl GameState {
         let f5 = self.standing_factor(nation, owner);
         let f6 = self.province_score_factor(nation, province);
         let f3_link = self.province_strength_factor(link, owner);
-        if MajorNationId::from_nation(owner).is_some() {
+        if NationId::as_major(owner).is_some() {
             let score = f3_link * f6 * f5 * f3 * f1;
             score * score
         } else {
@@ -570,7 +570,7 @@ impl GameState {
         let f5 = self.standing_factor(nation, owner);
         let f6 = self.province_score_factor(nation, province);
         let f7 = zone.map_or(0.0, |zone| self.zone_value_factor(zone));
-        if MajorNationId::from_nation(owner).is_some() {
+        if NationId::as_major(owner).is_some() {
             let f2 = self.navy_power_factor(owner);
             let f4 = zone.map_or(0.0, |zone| self.navy_zone_factor(zone, owner));
             f7 * f6 * f4 * f5 * f2 * f3 * f1
@@ -618,7 +618,7 @@ impl GameState {
     }
 
     fn navy_zone_factor(&self, zone: OceanZoneId, selected: NationId) -> f32 {
-        let Some(major) = MajorNationId::from_nation(selected) else {
+        let Some(major) = NationId::as_major(selected) else {
             return 0.0;
         };
         let in_zone = self.navy_priority_in_zone(major, zone) as f32
@@ -627,7 +627,7 @@ impl GameState {
     }
 
     fn standing_factor(&self, nation: MajorNationId, selected: NationId) -> f32 {
-        100.0 / f32::from(self.diplomacy.standings[nation.nation()][selected])
+        100.0 / (self.diplomacy.standings[nation.nation()][selected] as f32)
     }
 
     fn province_score_factor(&self, nation: MajorNationId, province: ProvinceId) -> f32 {
@@ -655,7 +655,7 @@ impl GameState {
         let active: Vec<NationId> = NationId::all()
             .filter(|&slot| self.nations.majors[&nation].economy.candidate_nation_flags[slot] != 0)
             .collect();
-        let mut selected = NationId::new(0);
+        let mut selected = MajorNationId::new(0).nation();
         let mut composite = 0.0_f32;
         match active.len() {
             0 => {
@@ -751,9 +751,7 @@ impl GameState {
             .zones
             .iter()
             .enumerate()
-            .filter(|(ordinal, _)| {
-                self.zone_nation_key_mask(OceanZoneId::new(*ordinal as u16)) & bit != 0
-            })
+            .filter(|(ordinal, _)| self.zone_nation_key_mask(OceanZoneId::new(*ordinal)) & bit != 0)
             .count() as i32
     }
 
@@ -772,7 +770,7 @@ impl GameState {
             ZoneKind::PortZone(port) => {
                 let Some(owner) = self.map[port.port_tile]
                     .owner_nation
-                    .and_then(TileOwnerTag::nation)
+                    .and_then(TileContext::nation)
                 else {
                     return 0;
                 };
@@ -804,7 +802,7 @@ impl GameState {
             return 0;
         }
         let sum: i32 = (0..self.ocean.zones.len())
-            .map(|ordinal| self.zone_value_average(OceanZoneId::new(ordinal as u16)))
+            .map(|ordinal| self.zone_value_average(OceanZoneId::new(ordinal)))
             .sum();
         sum / self.ocean.zones.len() as i32
     }
@@ -828,7 +826,7 @@ impl GameState {
             }
             let owner = self.map[port.port_tile]
                 .owner_nation
-                .and_then(TileOwnerTag::nation);
+                .and_then(TileContext::nation);
             score *= if owner == Some(nation) {
                 PORT_FRIENDLY_MULTIPLIER
             } else {
@@ -846,7 +844,7 @@ impl GameState {
         {
             return true;
         }
-        if MajorNationId::from_nation(nation).is_none() {
+        if NationId::as_major(nation).is_none() {
             return false;
         }
         adjacency.iter().any(|&neighbor| {
@@ -862,7 +860,7 @@ impl GameState {
         nation: NationId,
     ) -> Option<ProvinceId> {
         let mut found = collect_second_degree_links(&self.map, province, nation);
-        if found.is_empty() && MajorNationId::from_nation(nation).is_none() {
+        if found.is_empty() && NationId::as_major(nation).is_none() {
             for minor in MinorNationId::all() {
                 if !self.status_of(minor.nation()).is_colony_of(nation) {
                     continue;
@@ -900,7 +898,7 @@ impl GameState {
                 zone.zone()
                     .secondary_neighbors
                     .contains(&province)
-                    .then_some(OceanZoneId::new(ordinal as u16))
+                    .then_some(OceanZoneId::new(ordinal))
             })
     }
 
@@ -961,7 +959,7 @@ impl GameState {
     }
 }
 
-fn insert_scored<T>(list: &mut Vec<(i16, T)>, candidate: (i16, T), rng: &mut RngState) {
+fn insert_scored<T>(list: &mut Vec<(i32, T)>, candidate: (i32, T), rng: &mut RngState) {
     for index in 0..list.len() {
         let ordering = match candidate.0.cmp(&list[index].0) {
             std::cmp::Ordering::Greater => std::cmp::Ordering::Greater,

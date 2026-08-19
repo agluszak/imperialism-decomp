@@ -236,7 +236,7 @@ impl GameState {
                 (port.port_tile == home
                     || port.zone.active_tile == Some(home)
                     || port.zone.target_tile == Some(home))
-                .then(|| OceanZoneId::new(index as u16))
+                .then(|| OceanZoneId::new(index))
             })
             .expect("a city that launches a warship has a port zone for its home tile")
     }
@@ -285,7 +285,7 @@ impl GameState {
 pub(crate) fn set_pending_action(
     owner: &mut GreatPowerState,
     action: PendingActionKind,
-    payload: i16,
+    payload: i32,
 ) {
     owner.pending_actions[action].queue_with_payload(payload);
 }

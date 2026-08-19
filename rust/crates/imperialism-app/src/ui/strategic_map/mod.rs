@@ -397,7 +397,7 @@ fn draw_civilian_hover_highlight(
     {
         return;
     }
-    let owner = TileOwnerTag::from_nation(state.turn().active_nation);
+    let owner = TileContext::from_nation(state.turn().active_nation);
     let neighbors = state.map().geometry().neighbors(hovered).map(|neighbor| {
         neighbor.filter(|&neighbor| {
             let neighbor = state.map()[neighbor];
@@ -460,7 +460,10 @@ pub(super) fn for_each_visible_strategic_tile(
     view_origin: TileId,
     mut visit: impl FnMut(TileId, i32, i32),
 ) {
-    let (origin_row, origin_column) = state.map().geometry().row_column(view_origin);
+    let MapPosition {
+        row: origin_row,
+        column: origin_column,
+    } = state.map().geometry().position(view_origin);
     let origin_row = i32::from(origin_row);
     let origin_column = i32::from(origin_column);
 
@@ -478,7 +481,7 @@ pub(super) fn for_each_visible_strategic_tile(
                 continue;
             }
             let column = normalize_map_column(unwrapped_column);
-            let Some(tile) = state.map().geometry().tile(row as u16, column as u16) else {
+            let Some(tile) = state.map().geometry().tile(MapPosition::new(row, column)) else {
                 continue;
             };
             visit(tile, screen_x, screen_y);
@@ -524,7 +527,7 @@ pub(super) fn draw_city_site_selection(
     let (x, y) = strategic_tile_screen_origin(state, view_origin, tile);
     draw_frame(viewport, x, y, MAP_SELECTION_PALETTE_INDEX);
 
-    let active_owner = TileOwnerTag::from_nation(nation.nation());
+    let active_owner = TileContext::from_nation(nation.nation());
     let neighbors = state.map().geometry().neighbors(tile).map(|neighbor| {
         neighbor.filter(|&neighbor| {
             let neighbor = state.map()[neighbor];
@@ -628,8 +631,11 @@ pub(super) fn strategic_tile_screen_origin(
     view_origin: TileId,
     tile: TileId,
 ) -> (i32, i32) {
-    let (origin_row, origin_column) = state.map().geometry().row_column(view_origin);
-    let (row, column) = state.map().geometry().row_column(tile);
+    let MapPosition {
+        row: origin_row,
+        column: origin_column,
+    } = state.map().geometry().position(view_origin);
+    let MapPosition { row, column } = state.map().geometry().position(tile);
     let y = (i32::from(row) - i32::from(origin_row)) * TILE_SIZE;
     let mut x = (i32::from(column) - i32::from(origin_column)) * TILE_SIZE;
     if row & 1 != 0 {
@@ -669,11 +675,17 @@ pub(super) fn compose_strategic_tile(
 ) -> Vec<u8> {
     let tile_state = state.map()[tile];
     let center_column = {
-        let (_, origin_column) = state.map().geometry().row_column(view_origin);
+        let MapPosition {
+            column: origin_column,
+            ..
+        } = state.map().geometry().position(view_origin);
         (i32::from(origin_column) + VIEWPORT_TILE_SPAN / 2)
             .rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
     };
-    let (_, tile_column) = state.map().geometry().row_column(tile);
+    let MapPosition {
+        column: tile_column,
+        ..
+    } = state.map().geometry().position(tile);
     // Retail's stored flag is inverted: this seam substitution belongs to Rust's bounded map.
     let wrapped_seam = state.map().topology == MapTopology::Bounded
         && ((tile_column == 0 && center_column > 54)
@@ -772,7 +784,10 @@ fn strategic_tile_at_position(
     if !(0..VIEWPORT_WIDTH as i32).contains(&x) || !(0..VIEWPORT_HEIGHT as i32).contains(&y) {
         return None;
     }
-    let (origin_row, origin_column) = state.map().geometry().row_column(view_origin);
+    let MapPosition {
+        row: origin_row,
+        column: origin_column,
+    } = state.map().geometry().position(view_origin);
     let row = i32::from(origin_row) + y / TILE_SIZE;
     if !(0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&row) {
         return None;
@@ -784,7 +799,7 @@ fn strategic_tile_at_position(
         absolute_x / TILE_SIZE
     };
     let column = normalize_map_column(column);
-    state.map().geometry().tile(row as u16, column as u16)
+    state.map().geometry().tile(MapPosition::new(row, column))
 }
 
 pub(crate) fn strategic_base_terrain_tile_at_cursor(

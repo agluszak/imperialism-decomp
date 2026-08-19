@@ -45,7 +45,7 @@ impl OceanRenderAssets {
     }
 
     fn active(&self, nation: MajorNationId, variant: usize) -> &IndexedPicture {
-        &self.active[variant * usize::from(MajorNationId::COUNT) + usize::from(nation.get())]
+        &self.active[variant * MajorNationId::COUNT + nation.get()]
     }
 }
 
@@ -94,14 +94,14 @@ fn draw_base_ownership_and_borders(state: &GameState, ocean: &OceanViewport) -> 
                     fill_ocean_cell(&mut indices, screen_x, screen_y, BOUNDED_MAP_BLANK);
                     continue;
                 }
-                unwrapped_column - i32::from(STRATEGIC_MAP_WIDTH)
+                unwrapped_column - STRATEGIC_MAP_WIDTH
             } else if blank_wrapped_left && unwrapped_column > 60 {
                 fill_ocean_cell(&mut indices, screen_x, screen_y, BOUNDED_MAP_BLANK);
                 continue;
             } else {
                 unwrapped_column
             };
-            let Some(tile) = geometry.tile(row as u16, column as u16) else {
+            let Some(tile) = geometry.tile(MapPosition::new(row, column)) else {
                 continue;
             };
             let tile_state = state.map()[tile];
@@ -127,7 +127,7 @@ fn draw_base_ownership_and_borders(state: &GameState, ocean: &OceanViewport) -> 
     indices
 }
 
-fn ocean_owner(owner: Option<TileOwnerTag>) -> usize {
+fn ocean_owner(owner: Option<TileContext>) -> usize {
     owner.map_or(23, |owner| usize::from(owner.get().min(23)))
 }
 
@@ -137,7 +137,7 @@ fn draw_improvements(
     ocean: &OceanViewport,
     assets: &OceanRenderAssets,
 ) {
-    let active = MajorNationId::from_nation(state.turn().active_nation).map(|nation| {
+    let active = NationId::as_major(state.turn().active_nation).map(|nation| {
         let status = &state.technology().research_status_by_nation[nation];
         let variant = if status[Technology::MarineEngineering]
             == TechnologyResearchStatus::Researched
@@ -166,13 +166,13 @@ fn draw_improvements(
                 if blank_wrapped_right {
                     continue;
                 }
-                unwrapped_column - i32::from(STRATEGIC_MAP_WIDTH)
+                unwrapped_column - STRATEGIC_MAP_WIDTH
             } else if blank_wrapped_left && unwrapped_column > 60 {
                 continue;
             } else {
                 unwrapped_column
             };
-            let Some(tile) = geometry.tile(row as u16, column as u16) else {
+            let Some(tile) = geometry.tile(MapPosition::new(row, column)) else {
                 continue;
             };
             let tile_state = state.map()[tile];
@@ -211,7 +211,7 @@ fn draw_improvements(
 }
 
 fn ocean_improvement_source_x(tile: &TileState) -> i32 {
-    let owner = tile.owner_nation.map(TileOwnerTag::get).unwrap_or(23);
+    let owner = tile.owner_nation.map(TileContext::get).unwrap_or(23);
     if tile.flags.contains(TileFlags::BASE_TRANSPORT) {
         return if owner < 7 {
             i32::from(owner + 0x16) * 16
@@ -337,7 +337,7 @@ fn ocean_tile_screen_origin(
     tile: TileId,
     ocean: &OceanViewport,
 ) -> Option<(i32, i32)> {
-    let (row, column) = geometry.row_column(tile);
+    let MapPosition { row, column } = geometry.position(tile);
     let x = (i32::from(column) - ocean.origin.x).rem_euclid(108) * 16
         - if row & 1 == 0 { 8 } else { 0 };
     let y = (i32::from(row) - ocean.origin.y) * 16;
@@ -398,7 +398,7 @@ fn draw_selection(
     {
         return;
     }
-    let owner = TileOwnerTag::from_nation(state.turn().active_nation);
+    let owner = TileContext::from_nation(state.turn().active_nation);
     for neighbor in state
         .map()
         .geometry()
@@ -678,7 +678,7 @@ mod tests {
 
     fn clear_map(parts: &mut GameStateParts) {
         for index in 0..STRATEGIC_TILE_COUNT {
-            let tile = TileId::new(index as u16);
+            let tile = TileId::new(index);
             parts.map[tile].terrain = TerrainKind::Water;
             parts.map[tile].owner_nation = None;
             parts.map[tile].province = None;
@@ -696,9 +696,9 @@ mod tests {
     fn political_map_fills_land_by_owner_and_leaves_water_as_ocean() {
         let mut parts = beginning_of_game_parts_with(strategic_map_beginning_context());
         clear_map(&mut parts);
-        let land = parts.map.geometry().tile(2, 10).unwrap();
+        let land = parts.map.geometry().tile(MapPosition::new(2, 10)).unwrap();
         parts.map[land].terrain = TerrainKind::Plains;
-        parts.map[land].owner_nation = Some(TileOwnerTag::new(3));
+        parts.map[land].owner_nation = Some(TileContext::new(3));
         let state = GameState::from_parts(parts);
         let indices = draw_base_ownership_and_borders(&state, &OceanViewport::default());
 
@@ -710,17 +710,17 @@ mod tests {
     fn city_boundary_is_a_straight_owner_colored_edge() {
         let mut parts = beginning_of_game_parts_with(strategic_map_beginning_context());
         clear_map(&mut parts);
-        let tile = parts.map.geometry().tile(2, 10).unwrap();
+        let tile = parts.map.geometry().tile(MapPosition::new(2, 10)).unwrap();
         let west = parts
             .map
             .geometry()
             .neighbor(tile, HexDirection::West)
             .unwrap();
         parts.map[tile].terrain = TerrainKind::Plains;
-        parts.map[tile].owner_nation = Some(TileOwnerTag::new(2));
+        parts.map[tile].owner_nation = Some(TileContext::new(2));
         parts.map[tile].province = Some(ProvinceId::new(1));
         parts.map[west].terrain = TerrainKind::Plains;
-        parts.map[west].owner_nation = Some(TileOwnerTag::new(2));
+        parts.map[west].owner_nation = Some(TileContext::new(2));
         parts.map[west].province = Some(ProvinceId::new(2));
         let state = GameState::from_parts(parts);
         let indices = draw_base_ownership_and_borders(&state, &OceanViewport::default());
@@ -734,15 +734,15 @@ mod tests {
     fn different_owner_and_water_edges_use_the_retail_stipple_and_thickness() {
         let mut parts = beginning_of_game_parts_with(strategic_map_beginning_context());
         clear_map(&mut parts);
-        let tile = parts.map.geometry().tile(2, 10).unwrap();
+        let tile = parts.map.geometry().tile(MapPosition::new(2, 10)).unwrap();
         let west = parts
             .map
             .geometry()
             .neighbor(tile, HexDirection::West)
             .unwrap();
-        parts.map[tile].owner_nation = Some(TileOwnerTag::new(1));
+        parts.map[tile].owner_nation = Some(TileContext::new(1));
         parts.map[west].terrain = TerrainKind::Plains;
-        parts.map[west].owner_nation = Some(TileOwnerTag::new(2));
+        parts.map[west].owner_nation = Some(TileContext::new(2));
         let state = GameState::from_parts(parts);
         let indices = draw_base_ownership_and_borders(&state, &OceanViewport::default());
 
@@ -757,12 +757,12 @@ mod tests {
         let mut parts = beginning_of_game_parts_with(strategic_map_beginning_context());
         clear_map(&mut parts);
         assert!(parts.map.geometry().wraps_horizontally());
-        let left = parts.map.geometry().tile(3, 0).unwrap();
-        let right = parts.map.geometry().tile(3, 107).unwrap();
+        let left = parts.map.geometry().tile(MapPosition::new(3, 0)).unwrap();
+        let right = parts.map.geometry().tile(MapPosition::new(3, 107)).unwrap();
         parts.map[left].terrain = TerrainKind::Plains;
-        parts.map[left].owner_nation = Some(TileOwnerTag::new(0));
+        parts.map[left].owner_nation = Some(TileContext::new(0));
         parts.map[right].terrain = TerrainKind::Plains;
-        parts.map[right].owner_nation = Some(TileOwnerTag::new(1));
+        parts.map[right].owner_nation = Some(TileContext::new(1));
         let state = GameState::from_parts(parts);
         let indices = draw_base_ownership_and_borders(&state, &OceanViewport::default());
 

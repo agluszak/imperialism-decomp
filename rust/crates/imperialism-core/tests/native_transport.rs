@@ -13,7 +13,7 @@ struct NationCase {
 struct DirectTransportCase {
     nation: MajorNationId,
     resource: ResourceKind,
-    requested: i16,
+    requested: i32,
 }
 
 #[test]

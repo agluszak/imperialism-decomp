@@ -98,7 +98,7 @@ impl GameState {
             let next = i32::from(self.nations.majors[&nation].economy.escalation_counter)
                 - PRESSURE_DECAY_STEP[difficulty];
             self.nations.majors[&nation].economy.escalation_counter =
-                next.max(PRESSURE_MIN_FLOOR[difficulty]) as i16;
+                next.max(PRESSURE_MIN_FLOOR[difficulty]) as i32;
             self.nations.majors[&nation].economy.pressure_counter = 0;
         }
 
@@ -174,7 +174,7 @@ impl GameState {
             }
             for nation in MajorNationId::all() {
                 if self.event_eligible(nation.nation()) {
-                    self.new_status_for(nation, NationId::new(0), 100);
+                    self.new_status_for(nation, MajorNationId::new(0).nation(), 100);
                 }
             }
         }
@@ -249,7 +249,7 @@ impl GameState {
         if tick == 1 || self.turn.last_turn_alert_tick == tick {
             return false;
         }
-        let Some(nation) = MajorNationId::from_nation(self.turn.active_nation) else {
+        let Some(nation) = NationId::as_major(self.turn.active_nation) else {
             self.turn.last_turn_alert_tick = tick;
             return false;
         };
@@ -300,9 +300,9 @@ impl GameState {
         mask != 0
     }
 
-    fn treasury_status_prompt_code(&self, nation: MajorNationId) -> i16 {
+    fn treasury_status_prompt_code(&self, nation: MajorNationId) -> i32 {
         let last_effort = self.diplomacy.last_diplomatic_effort_turn;
-        let tick = self.turn.economic_turn as i16;
+        let tick = self.turn.economic_turn as i32;
         if last_effort == 0 && tick == 3 {
             return 0x25;
         }
@@ -355,7 +355,7 @@ impl GameState {
 
     fn remove_nation_slot(&mut self, removed: NationId) {
         let removed_major =
-            MajorNationId::from_nation(removed).expect("elimination removes a great-power slot");
+            NationId::as_major(removed).expect("elimination removes a great-power slot");
         for peer in MajorNationId::all() {
             if peer.nation() == removed || !self.event_eligible(peer.nation()) {
                 continue;
@@ -385,7 +385,7 @@ fn sum_aid_allocation(economy: &GreatPowerState) -> i32 {
 
 fn raise_escalation(economy: &mut GreatPowerState, difficulty: Difficulty) {
     let next = i32::from(economy.escalation_counter) + PRESSURE_RISE_STEP[difficulty];
-    economy.escalation_counter = next.min(PRESSURE_RISE_CAP[difficulty]) as i16;
+    economy.escalation_counter = next.min(PRESSURE_RISE_CAP[difficulty]) as i32;
 }
 
 #[cfg(test)]
@@ -397,7 +397,7 @@ mod tests {
         for nation in MajorNationId::all() {
             state.nations.append_owned_region_during_construction(
                 nation.nation(),
-                ProvinceId::new(u16::from(nation.get())),
+                ProvinceId::new(nation.get()),
             );
         }
     }
@@ -493,7 +493,7 @@ mod tests {
             BattleReportKind::UncontestedTakeover,
             ProvinceId::new(0),
             state.turn.active_nation,
-            NationId::new(1),
+            MajorNationId::new(1).nation(),
             &[],
             &[],
             true,
@@ -501,7 +501,7 @@ mod tests {
         assert!(state.diplomacy_offer_gate());
         state.nations.set_country_status(
             state.turn.active_nation,
-            CountryStatus::ProtectorateOf(NationId::new(1)),
+            CountryStatus::ProtectorateOf(MajorNationId::new(1).nation()),
         );
         assert!(!state.diplomacy_offer_gate());
     }
@@ -514,7 +514,7 @@ mod tests {
         assert_eq!(state.turn.phase, PhaseCode::SEASON_ADVANCE);
 
         state.diplomacy.last_processed_nation = Some(MajorNationId::new(0));
-        state.turn.active_nation = NationId::new(0);
+        state.turn.active_nation = MajorNationId::new(0).nation();
         assert_eq!(state.quarter_gate(), QuarterGateResult::Continue);
         assert_eq!(state.turn.phase, PhaseCode::TOP_TEN_SCORES);
 
@@ -544,7 +544,7 @@ mod tests {
         state.pending.nations[nation]
             .turn_events
             .push(DiplomacyNotice {
-                source: NationId::new(1),
+                source: MajorNationId::new(1).nation(),
                 code: 3,
             });
         state.pending.nations[nation]
@@ -602,7 +602,7 @@ mod tests {
     fn empty_minor_resets_trade_policy_toward_nation_zero() {
         let mut state = game_state();
         keep_all_majors_alive(&mut state);
-        let minor = MinorNationId::new(7);
+        let minor = MinorNationId::new(0);
         state.nations.minors.insert(
             minor,
             MinorNation {
@@ -620,13 +620,13 @@ mod tests {
         );
         state.nations.majors[&MajorNationId::new(0)]
             .common
-            .trade_policy_by_nation[NationId::new(0)] = TradePolicyScore::new(75);
+            .trade_policy_by_nation[MajorNationId::new(0)] = TradePolicyScore::new(75);
 
         assert_eq!(state.do_elimination_phase(), EliminationOutcome::Continue);
         assert_eq!(
             state.nations.majors[&MajorNationId::new(0)]
                 .common
-                .trade_policy_by_nation[NationId::new(0)],
+                .trade_policy_by_nation[MajorNationId::new(0)],
             TradePolicyScore::NEUTRAL
         );
     }
@@ -636,7 +636,7 @@ mod tests {
         let mut state = game_state();
         state.nations.set_country_status(
             state.turn.active_nation,
-            CountryStatus::ProtectorateOf(NationId::new(1)),
+            CountryStatus::ProtectorateOf(MajorNationId::new(1).nation()),
         );
         assert_eq!(
             state.do_elimination_phase(),

@@ -27,10 +27,10 @@ struct Seapoint {
 
 #[derive(Clone, Copy, Debug)]
 struct SeaSegment {
-    x0: i16,
-    y0: i16,
-    x1: i16,
-    y1: i16,
+    x0: i32,
+    y0: i32,
+    x1: i32,
+    y1: i32,
     region_a: u8,
     region_b: u8,
 }
@@ -69,10 +69,10 @@ impl Seapoint {
 
 impl SeaSegment {
     fn init_from_points(p0: Seapoint, p1: Seapoint) -> Self {
-        let mut x0 = (p0.coord % OVERLAY_WIDTH) as i16;
-        let mut y0 = (p0.coord / OVERLAY_WIDTH) as i16;
-        let mut x1 = (p1.coord % OVERLAY_WIDTH) as i16;
-        let mut y1 = (p1.coord / OVERLAY_WIDTH) as i16;
+        let mut x0 = (p0.coord % OVERLAY_WIDTH) as i32;
+        let mut y0 = (p0.coord / OVERLAY_WIDTH) as i32;
+        let mut x1 = (p1.coord % OVERLAY_WIDTH) as i32;
+        let mut y1 = (p1.coord / OVERLAY_WIDTH) as i32;
         let region_a = p0.lo as u8;
         let region_b = p0.hi as u8;
         if y1 < y0 || (y0 == y1 && x1 < x0) {
@@ -141,8 +141,8 @@ pub(crate) fn merge_small_water_regions(
                 .iter()
                 .map(|link| {
                     [
-                        OceanZoneId::new(u16::from(link.region_a)),
-                        OceanZoneId::new(u16::from(link.region_b)),
+                        OceanZoneId::new(usize::from(link.region_a)),
+                        OceanZoneId::new(usize::from(link.region_b)),
                     ]
                 })
                 .collect();
@@ -195,7 +195,7 @@ pub(crate) fn merge_small_water_regions(
                     if water_region_id(tile) != region {
                         continue;
                     }
-                    let tile_id = TileId::new(tile_idx as u16);
+                    let tile_id = TileId::new(tile_idx);
                     for direction in HexDirection::ALL {
                         let Some(neighbor) = geometry.neighbor(tile_id, direction) else {
                             continue;
@@ -288,15 +288,15 @@ fn hex_neighbor(geometry: MapGeometry, tile_index: i32, direction: HexDirection)
     if tile_index < 0 {
         return -1;
     }
-    let Some(neighbor) = geometry.neighbor(TileId::new(tile_index as u16), direction) else {
+    let Some(neighbor) = geometry.neighbor(TileId::new(tile_index as usize), direction) else {
         return -1;
     };
-    i32::from(neighbor.get())
+    (neighbor.get() as i32)
 }
 
 fn overlay_coord_from_tile_edge(tile_index: i32, lower: bool) -> i32 {
-    let mut row = tile_index / i32::from(STRATEGIC_MAP_WIDTH);
-    let column = (row & 1) + (tile_index % i32::from(STRATEGIC_MAP_WIDTH)) * 2;
+    let mut row = tile_index / STRATEGIC_MAP_WIDTH;
+    let column = (row & 1) + (tile_index % STRATEGIC_MAP_WIDTH) * 2;
     let mut result = column;
     if lower {
         result = column + 2;
@@ -357,7 +357,7 @@ fn build_city_region_border_overlay_segments(
     geometry: MapGeometry,
 ) -> Vec<Seapoint> {
     let mut quads = Vec::new();
-    let width = i32::from(STRATEGIC_MAP_WIDTH);
+    let width = STRATEGIC_MAP_WIDTH;
     let tile_count = (STRATEGIC_MAP_WIDTH as usize * STRATEGIC_MAP_HEIGHT as usize) as i32;
 
     // Phase 1: row 0 tiles, direction-4 edges.

@@ -119,14 +119,14 @@ pub struct ProvinceState {
     fort_level: FortLevel,
     #[serde(deserialize_with = "deserialize_required_option")]
     city_tile: Option<TileId>,
-    pub last_turn_tick: i16,
+    pub last_turn_tick: i32,
     #[serde(deserialize_with = "deserialize_required_option")]
     pub secondary_neighbor_tile: Option<TileId>,
     #[serde(deserialize_with = "deserialize_required_option")]
     pub primary_neighbor_tile: Option<TileId>,
     /// Retail `Province::linkedTileIndices42`, in table-construction order.
     pub linked_tiles: Vec<TileId>,
-    resource_development_by_type: Box<ResourceTable<i16>>,
+    resource_development_by_type: Box<ResourceTable<i32>>,
     explored_by_majors: MajorNationTable<bool>,
     city_score: i32,
     pub navy_order_reachable: bool,
@@ -170,11 +170,11 @@ impl ProvinceState {
         region_class: Option<u8>,
         fort_level: FortLevel,
         city_tile: Option<TileId>,
-        last_turn_tick: i16,
+        last_turn_tick: i32,
         secondary_neighbor_tile: Option<TileId>,
         primary_neighbor_tile: Option<TileId>,
         linked_tiles: Vec<TileId>,
-        resource_development_by_type: ResourceTable<i16>,
+        resource_development_by_type: ResourceTable<i32>,
         explored_by_majors: MajorNationTable<bool>,
         city_score: i32,
         navy_order_reachable: bool,
@@ -234,11 +234,11 @@ impl ProvinceState {
         self.city_tile
     }
 
-    pub const fn resource_development_by_type(&self) -> &ResourceTable<i16> {
+    pub const fn resource_development_by_type(&self) -> &ResourceTable<i32> {
         &self.resource_development_by_type
     }
 
-    pub(crate) fn resource_development_by_type_mut(&mut self) -> &mut ResourceTable<i16> {
+    pub(crate) fn resource_development_by_type_mut(&mut self) -> &mut ResourceTable<i32> {
         &mut self.resource_development_by_type
     }
 
@@ -335,7 +335,7 @@ impl GameState {
         }
         self.map.provinces[province].set_owner(Some(new_owner));
 
-        if let Some(old_owner) = MajorNationId::from_nation(old_owner) {
+        if let Some(old_owner) = NationId::as_major(old_owner) {
             if let Some(auto) = self.nations.majors[&old_owner].auto.as_mut() {
                 if let Some(id) = self.missions.iter().find_map(|(&id, mission)| {
                     (mission.nation == old_owner.nation()
@@ -359,7 +359,7 @@ impl GameState {
                 &mut self.missions,
             );
         } else {
-            let old_owner = MinorNationId::new(old_owner.get());
+            let old_owner = old_owner.expect_minor();
             self.nations
                 .minors
                 .get_mut(&old_owner)
@@ -368,7 +368,7 @@ impl GameState {
             self.handle_minor_province_loss(&linked_tiles, new_owner);
         }
 
-        if let Some(new_owner) = MajorNationId::from_nation(new_owner) {
+        if let Some(new_owner) = NationId::as_major(new_owner) {
             self.nations.majors[&new_owner].add_province(province);
             if self.nations.majors[&new_owner].is_auto() {
                 let available = self.province_mission_node_available(province, new_owner);
@@ -412,7 +412,7 @@ impl GameState {
         } else {
             self.nations
                 .minors
-                .get_mut(&MinorNationId::new(new_owner.get()))
+                .get_mut(&new_owner.expect_minor())
                 .expect("province owner change requires the destination minor nation")
                 .add_province(province);
         }
@@ -430,7 +430,7 @@ impl GameState {
                 let Some(unit) = self.civilian_units.get(&id) else {
                     continue;
                 };
-                let Some(owner) = MajorNationId::from_nation(unit.owner_nation) else {
+                let Some(owner) = NationId::as_major(unit.owner_nation) else {
                     continue;
                 };
                 if unit.location.tile() != Some(tile)
@@ -460,7 +460,7 @@ impl GameState {
                 let Some(unit) = self.civilian_units.get(&id) else {
                     continue;
                 };
-                let Some(owner) = MajorNationId::from_nation(unit.owner_nation) else {
+                let Some(owner) = NationId::as_major(unit.owner_nation) else {
                     continue;
                 };
                 if unit.location.tile() != Some(tile) || unit.owner_nation == new_owner {
@@ -580,7 +580,7 @@ impl GameState {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{AutoGreatPowerState, MinorNation, ProvinceTable, TileOwnerTag};
+    use crate::{AutoGreatPowerState, MinorNation, ProvinceTable, TileContext};
 
     fn set_owned(state: &mut GameState, nation: NationId, provinces: &[u16]) {
         let common = state.nations.common(nation).unwrap().clone();
@@ -588,7 +588,11 @@ mod tests {
         *state.nations.common_mut(nation).unwrap() = crate::NationCommonState::from_parts(
             common.display_name,
             status,
-            provinces.iter().copied().map(ProvinceId::new).collect(),
+            provinces
+                .iter()
+                .copied()
+                .map(|id| ProvinceId::new(usize::from(id)))
+                .collect(),
             common.treasury,
             common.home_tile,
             common.trade_policy_by_nation,
@@ -602,11 +606,15 @@ mod tests {
         adjacency: &[u16],
         region_class: Option<u8>,
     ) {
-        state.map.provinces[ProvinceId::new(province)] = ProvinceState::new(
-            owner.map(NationId::new),
-            owner.map(NationId::new),
+        state.map.provinces[ProvinceId::new(usize::from(province))] = ProvinceState::new(
+            owner.and_then(NationId::from_retail_slot),
+            owner.and_then(NationId::from_retail_slot),
             ProvinceDevelopmentStage::None,
-            adjacency.iter().copied().map(ProvinceId::new).collect(),
+            adjacency
+                .iter()
+                .copied()
+                .map(|id| ProvinceId::new(usize::from(id)))
+                .collect(),
             vec![TileId::new(0); adjacency.len()],
             region_class,
             FortLevel::None,
@@ -625,7 +633,9 @@ mod tests {
     }
 
     fn add_minor(state: &mut GameState, slot: u8, status: CountryStatus, owned: &[u16]) {
-        let minor = MinorNationId::new(slot);
+        let minor = NationId::from_retail_slot(slot)
+            .and_then(NationId::as_minor)
+            .expect("test minor uses a retail minor slot");
         state.nations.minors.insert(
             minor,
             MinorNation {
@@ -634,7 +644,11 @@ mod tests {
                     crate::NationCommonState::from_parts(
                         template.display_name.clone(),
                         status,
-                        owned.iter().copied().map(ProvinceId::new).collect(),
+                        owned
+                            .iter()
+                            .copied()
+                            .map(|id| ProvinceId::new(usize::from(id)))
+                            .collect(),
                         template.treasury,
                         template.home_tile,
                         template.trade_policy_by_nation.clone(),
@@ -650,28 +664,29 @@ mod tests {
     fn province_owner_change_updates_map_country_and_town_state_in_retail_order() {
         let mut state = crate::test_support::game_state();
         state.map.provinces = ProvinceTable::default();
-        set_owned(&mut state, NationId::new(0), &[5, 2]);
+        set_owned(&mut state, MajorNationId::new(0).nation(), &[5, 2]);
         set_province(&mut state, 5, Some(0), &[], Some(0));
         set_province(&mut state, 2, Some(0), &[], Some(0));
-        state.map.provinces[ProvinceId::new(2)].former_owner = Some(NationId::new(6));
-        set_owned(&mut state, NationId::new(1), &[9]);
+        state.map.provinces[ProvinceId::new(2)].former_owner = Some(MajorNationId::new(6).nation());
+        set_owned(&mut state, MajorNationId::new(1).nation(), &[9]);
         set_province(&mut state, 9, Some(1), &[], Some(0));
         for tile in [20, 21] {
             state.map[TileId::new(tile)].province = Some(ProvinceId::new(2));
             state.map[TileId::new(tile)].owner_nation =
-                Some(TileOwnerTag::from_nation(NationId::new(0)));
+                Some(TileContext::from_nation(MajorNationId::new(0)));
         }
         state.map[TileId::new(20)].flags = crate::TileFlags::from_bits_retain(0x14);
         state.nations.majors[&MajorNationId::new(0)].towns.insert(
             TileId::new(20),
-            crate::TownState::for_frog_city(TileId::new(20), NationId::new(0)),
+            crate::TownState::for_frog_city(TileId::new(20), MajorNationId::new(0).nation()),
         );
         state.map.provinces[ProvinceId::new(2)].linked_tiles =
             vec![TileId::new(20), TileId::new(21)];
         state.map[TileId::new(22)].province = Some(ProvinceId::new(5));
-        state.map[TileId::new(22)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
+        state.map[TileId::new(22)].owner_nation =
+            Some(TileContext::from_nation(MajorNationId::new(0)));
 
-        state.change_province_owner(ProvinceId::new(2), NationId::new(1));
+        state.change_province_owner(ProvinceId::new(2), MajorNationId::new(1).nation());
 
         assert_eq!(
             state
@@ -691,21 +706,21 @@ mod tests {
         );
         assert_eq!(
             state.map.provinces[ProvinceId::new(2)].owner(),
-            Some(NationId::new(1))
+            Some(MajorNationId::new(1).nation())
         );
         assert_eq!(
             state.map.provinces[ProvinceId::new(2)].former_owner(),
-            Some(NationId::new(6))
+            Some(MajorNationId::new(6).nation())
         );
         for tile in [20, 21] {
             assert_eq!(
                 state.map[TileId::new(tile)].owner_nation,
-                Some(TileOwnerTag::from_nation(NationId::new(1)))
+                Some(TileContext::from_nation(MajorNationId::new(1)))
             );
         }
         assert_eq!(
             state.map[TileId::new(22)].owner_nation,
-            Some(TileOwnerTag::from_nation(NationId::new(0)))
+            Some(TileContext::from_nation(MajorNationId::new(0)))
         );
         assert_eq!(state.map[TileId::new(20)].owner_border_mask, 0x3d);
         assert!(
@@ -717,8 +732,8 @@ mod tests {
             .towns
             .get(&TileId::new(20))
             .unwrap();
-        assert_eq!(moved_town.owner_nation, NationId::new(1));
-        state.change_province_owner(ProvinceId::new(9), NationId::new(1));
+        assert_eq!(moved_town.owner_nation, MajorNationId::new(1).nation());
+        state.change_province_owner(ProvinceId::new(9), MajorNationId::new(1).nation());
         assert_eq!(
             state
                 .nations
@@ -729,12 +744,14 @@ mod tests {
         );
 
         state.set_country_status(
-            NationId::new(1),
-            CountryStatus::ProtectorateOf(NationId::new(0)),
+            MajorNationId::new(1).nation(),
+            CountryStatus::ProtectorateOf(MajorNationId::new(0).nation()),
         );
         assert_eq!(
-            state.nations.country_status(NationId::new(1)),
-            Some(CountryStatus::ProtectorateOf(NationId::new(0)))
+            state.nations.country_status(MajorNationId::new(1).nation()),
+            Some(CountryStatus::ProtectorateOf(
+                MajorNationId::new(0).nation()
+            ))
         );
     }
 
@@ -742,14 +759,19 @@ mod tests {
     fn automatic_great_power_add_queues_the_retail_defense_mission_and_reward() {
         let mut state = crate::test_support::game_state();
         state.map.provinces = ProvinceTable::default();
-        set_owned(&mut state, NationId::new(0), &[2]);
+        set_owned(&mut state, MajorNationId::new(0).nation(), &[2]);
         set_province(&mut state, 2, Some(0), &[10], Some(0));
         state.map.provinces[ProvinceId::new(2)].linked_tiles = vec![TileId::new(20)];
         state.map[TileId::new(20)].province = Some(ProvinceId::new(2));
-        state.map[TileId::new(20)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
+        state.map[TileId::new(20)].owner_nation =
+            Some(TileContext::from_nation(MajorNationId::new(0)));
 
         let destination_regions: Vec<u16> = (10..18).collect();
-        set_owned(&mut state, NationId::new(1), &destination_regions);
+        set_owned(
+            &mut state,
+            MajorNationId::new(1).nation(),
+            &destination_regions,
+        );
         for province in destination_regions {
             set_province(&mut state, province, Some(1), &[], Some(0));
         }
@@ -761,18 +783,18 @@ mod tests {
         state.civilian_units.insert(
             crate::CivilianUnitId::new(1),
             crate::CivilianUnitState::new(
-                NationId::new(0),
+                MajorNationId::new(0).nation(),
                 crate::CivilianUnitKind::Miner,
                 crate::CivilianLocation::OnMap(TileId::new(20)),
                 crate::CivilianWorkOrder::Idle,
-                NationId::new(0),
+                MajorNationId::new(0).nation(),
                 0,
                 false,
             )
             .unwrap(),
         );
 
-        state.change_province_owner(ProvinceId::new(2), NationId::new(1));
+        state.change_province_owner(ProvinceId::new(2), MajorNationId::new(1).nation());
 
         assert!(state.civilian_units.is_empty());
         assert_eq!(
@@ -810,7 +832,7 @@ mod tests {
                 nation,
                 data: MissionData::DefendProvince { province, .. },
                 ..
-            }] if *nation == NationId::new(1) && *province == ProvinceId::new(2)
+            }] if *nation == MajorNationId::new(1).nation() && *province == ProvinceId::new(2)
         ));
     }
 
@@ -822,28 +844,30 @@ mod tests {
         set_province(&mut state, 2, Some(7), &[], Some(0));
         state.map.provinces[ProvinceId::new(2)].linked_tiles = vec![TileId::new(20)];
         state.map[TileId::new(20)].province = Some(ProvinceId::new(2));
-        state.map[TileId::new(20)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(7)));
+        state.map[TileId::new(20)].owner_nation =
+            Some(TileContext::from_nation(MinorNationId::new(0)));
         state.map[TileId::new(20)].secondary_owner_nation = Some(MajorNationId::new(2));
-        set_owned(&mut state, NationId::new(1), &[]);
-        state.map[TileId::new(1)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(2)));
+        set_owned(&mut state, MajorNationId::new(1).nation(), &[]);
+        state.map[TileId::new(1)].owner_nation =
+            Some(TileContext::from_nation(MajorNationId::new(2)));
         state.civilian_units.insert(
             crate::CivilianUnitId::new(1),
             crate::CivilianUnitState::new(
-                NationId::new(2),
+                MajorNationId::new(2).nation(),
                 crate::CivilianUnitKind::Miner,
                 crate::CivilianLocation::OnMap(TileId::new(20)),
                 crate::CivilianWorkOrder::Sleep,
-                NationId::new(2),
+                MajorNationId::new(2).nation(),
                 0,
                 false,
             )
             .unwrap(),
         );
 
-        state.change_province_owner(ProvinceId::new(2), NationId::new(1));
+        state.change_province_owner(ProvinceId::new(2), MajorNationId::new(1).nation());
 
         assert!(
-            state.nations.minors[&MinorNationId::new(7)]
+            state.nations.minors[&MinorNationId::new(0)]
                 .common
                 .owned_regions()
                 .is_empty()
@@ -863,53 +887,63 @@ mod tests {
     fn territory_class_comparison_includes_colonies_in_retail_order_only() {
         let mut state = crate::test_support::game_state();
         state.map.provinces = ProvinceTable::default();
-        set_owned(&mut state, NationId::new(0), &[9, 2]);
+        set_owned(&mut state, MajorNationId::new(0).nation(), &[9, 2]);
         set_province(&mut state, 9, Some(0), &[], Some(5));
         set_province(&mut state, 2, Some(0), &[], Some(3));
         add_minor(
             &mut state,
             7,
-            CountryStatus::ColonyOf(NationId::new(0)),
+            CountryStatus::ColonyOf(MajorNationId::new(0).nation()),
             &[8],
         );
         set_province(&mut state, 8, Some(7), &[], Some(7));
         add_minor(
             &mut state,
             8,
-            CountryStatus::ProtectorateOf(NationId::new(0)),
+            CountryStatus::ProtectorateOf(MajorNationId::new(0).nation()),
             &[7],
         );
         set_province(&mut state, 7, Some(8), &[], Some(11));
 
-        set_owned(&mut state, NationId::new(1), &[1]);
+        set_owned(&mut state, MajorNationId::new(1).nation(), &[1]);
         set_province(&mut state, 1, Some(1), &[], Some(7));
-        set_owned(&mut state, NationId::new(2), &[3]);
+        set_owned(&mut state, MajorNationId::new(2).nation(), &[3]);
         set_province(&mut state, 3, Some(2), &[], Some(11));
-        set_owned(&mut state, NationId::new(3), &[4]);
+        set_owned(&mut state, MajorNationId::new(3).nation(), &[4]);
         set_province(&mut state, 4, Some(3), &[], Some(3));
-        set_owned(&mut state, NationId::new(4), &[5]);
+        set_owned(&mut state, MajorNationId::new(4).nation(), &[5]);
         set_province(&mut state, 5, Some(4), &[], Some(13));
         add_minor(
             &mut state,
             9,
-            CountryStatus::ColonyOf(NationId::new(4)),
+            CountryStatus::ColonyOf(MajorNationId::new(4).nation()),
             &[6],
         );
         set_province(&mut state, 6, Some(9), &[], Some(5));
 
-        assert!(state.do_nation_territories_share_region_class(NationId::new(0), NationId::new(1)));
-        assert!(
-            !state.do_nation_territories_share_region_class(NationId::new(0), NationId::new(2))
-        );
-        assert!(state.do_nation_territories_share_region_class(NationId::new(0), NationId::new(3)));
-        assert!(state.do_nation_territories_share_region_class(NationId::new(0), NationId::new(4)));
+        assert!(state.do_nation_territories_share_region_class(
+            MajorNationId::new(0).nation(),
+            MajorNationId::new(1).nation()
+        ));
+        assert!(!state.do_nation_territories_share_region_class(
+            MajorNationId::new(0).nation(),
+            MajorNationId::new(2).nation()
+        ));
+        assert!(state.do_nation_territories_share_region_class(
+            MajorNationId::new(0).nation(),
+            MajorNationId::new(3).nation()
+        ));
+        assert!(state.do_nation_territories_share_region_class(
+            MajorNationId::new(0).nation(),
+            MajorNationId::new(4).nation()
+        ));
     }
 
     #[test]
     fn border_link_uses_owned_and_adjacency_order_with_direct_owners() {
         let mut state = crate::test_support::game_state();
         state.map.provinces = ProvinceTable::default();
-        set_owned(&mut state, NationId::new(0), &[10, 4]);
+        set_owned(&mut state, MajorNationId::new(0).nation(), &[10, 4]);
         set_province(&mut state, 10, Some(0), &[12, 3], Some(0));
         set_province(&mut state, 12, Some(2), &[], Some(0));
         set_province(&mut state, 3, Some(1), &[], Some(0));
@@ -919,30 +953,40 @@ mod tests {
         add_minor(
             &mut state,
             7,
-            CountryStatus::ColonyOf(NationId::new(4)),
+            CountryStatus::ColonyOf(MajorNationId::new(4).nation()),
             &[],
         );
 
-        assert!(state.are_nations_border_linked(NationId::new(0), NationId::new(1)));
-        assert!(state.are_nations_border_linked(NationId::new(0), NationId::new(3)));
-        assert!(!state.are_nations_border_linked(NationId::new(0), NationId::new(4)));
+        assert!(state.are_nations_border_linked(
+            MajorNationId::new(0).nation(),
+            MajorNationId::new(1).nation()
+        ));
+        assert!(state.are_nations_border_linked(
+            MajorNationId::new(0).nation(),
+            MajorNationId::new(3).nation()
+        ));
+        assert!(!state.are_nations_border_linked(
+            MajorNationId::new(0).nation(),
+            MajorNationId::new(4).nation()
+        ));
     }
 
     #[test]
     fn isolated_province_is_unavailable_without_an_ocean_context() {
         let mut state = crate::test_support::game_state();
         state.map.provinces = ProvinceTable::default();
-        set_owned(&mut state, NationId::new(0), &[2]);
+        set_owned(&mut state, MajorNationId::new(0).nation(), &[2]);
         set_province(&mut state, 2, Some(0), &[], Some(0));
         state.map.provinces[ProvinceId::new(2)].linked_tiles = vec![TileId::new(20)];
         state.map[TileId::new(20)].province = Some(ProvinceId::new(2));
-        state.map[TileId::new(20)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
-        set_owned(&mut state, NationId::new(1), &[10]);
+        state.map[TileId::new(20)].owner_nation =
+            Some(TileContext::from_nation(MajorNationId::new(0)));
+        set_owned(&mut state, MajorNationId::new(1).nation(), &[10]);
         set_province(&mut state, 10, Some(1), &[], Some(0));
         let destination = &mut state.nations.majors[&MajorNationId::new(1)];
         destination.auto = Some(AutoGreatPowerState::default());
 
-        state.change_province_owner(ProvinceId::new(2), NationId::new(1));
+        state.change_province_owner(ProvinceId::new(2), MajorNationId::new(1).nation());
         assert_eq!(
             state.nations.majors[&MajorNationId::new(1)]
                 .auto
@@ -958,12 +1002,13 @@ mod tests {
     fn isolated_province_is_available_when_an_ocean_context_contains_it() {
         let mut state = crate::test_support::game_state();
         state.map.provinces = ProvinceTable::default();
-        set_owned(&mut state, NationId::new(0), &[2]);
+        set_owned(&mut state, MajorNationId::new(0).nation(), &[2]);
         set_province(&mut state, 2, Some(0), &[], Some(0));
         state.map.provinces[ProvinceId::new(2)].linked_tiles = vec![TileId::new(20)];
         state.map[TileId::new(20)].province = Some(ProvinceId::new(2));
-        state.map[TileId::new(20)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
-        set_owned(&mut state, NationId::new(1), &[10]);
+        state.map[TileId::new(20)].owner_nation =
+            Some(TileContext::from_nation(MajorNationId::new(0)));
+        set_owned(&mut state, MajorNationId::new(1).nation(), &[10]);
         set_province(&mut state, 10, Some(1), &[], Some(0));
         let destination = &mut state.nations.majors[&MajorNationId::new(1)];
         destination.auto = Some(AutoGreatPowerState::default());
@@ -977,7 +1022,7 @@ mod tests {
             secondary_neighbors: vec![ProvinceId::new(2)],
         }));
 
-        state.change_province_owner(ProvinceId::new(2), NationId::new(1));
+        state.change_province_owner(ProvinceId::new(2), MajorNationId::new(1).nation());
         assert_eq!(
             state.nations.majors[&MajorNationId::new(1)]
                 .auto
@@ -992,7 +1037,7 @@ mod tests {
                 nation,
                 data: MissionData::DefendProvince { province, .. },
                 ..
-            }] if *nation == NationId::new(1) && *province == ProvinceId::new(2)
+            }] if *nation == MajorNationId::new(1).nation() && *province == ProvinceId::new(2)
         ));
     }
 
@@ -1000,22 +1045,23 @@ mod tests {
     fn lose_province_kills_civilians_and_off_map_units_but_keeps_stationed_military() {
         let mut state = crate::test_support::game_state();
         state.map.provinces = ProvinceTable::default();
-        set_owned(&mut state, NationId::new(0), &[5, 2]);
+        set_owned(&mut state, MajorNationId::new(0).nation(), &[5, 2]);
         set_province(&mut state, 5, Some(0), &[], Some(0));
         set_province(&mut state, 2, Some(0), &[], Some(0));
-        set_owned(&mut state, NationId::new(1), &[9]);
+        set_owned(&mut state, MajorNationId::new(1).nation(), &[9]);
         set_province(&mut state, 9, Some(1), &[], Some(0));
         state.map.provinces[ProvinceId::new(2)].linked_tiles = vec![TileId::new(20)];
         state.map[TileId::new(20)].province = Some(ProvinceId::new(2));
-        state.map[TileId::new(20)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
+        state.map[TileId::new(20)].owner_nation =
+            Some(TileContext::from_nation(MajorNationId::new(0)));
         state.civilian_units.insert(
             crate::CivilianUnitId::new(1),
             crate::CivilianUnitState::new(
-                NationId::new(0),
+                MajorNationId::new(0).nation(),
                 crate::CivilianUnitKind::Miner,
                 crate::CivilianLocation::OnMap(TileId::new(20)),
                 crate::CivilianWorkOrder::Idle,
-                NationId::new(0),
+                MajorNationId::new(0).nation(),
                 0,
                 false,
             )
@@ -1026,11 +1072,11 @@ mod tests {
         state.military_units.insert(
             stationed,
             crate::MilitaryUnitState::new(
-                NationId::new(0),
+                MajorNationId::new(0).nation(),
                 crate::MilitaryUnitKind::Minutemen,
                 Some(ProvinceId::new(2)),
                 crate::MilitaryOrder::idle([None; 3], [None; 3]),
-                NationId::new(0),
+                MajorNationId::new(0).nation(),
                 0,
                 true,
                 String::new(),
@@ -1043,11 +1089,11 @@ mod tests {
         state.military_units.insert(
             detached,
             crate::MilitaryUnitState::new(
-                NationId::new(0),
+                MajorNationId::new(0).nation(),
                 crate::MilitaryUnitKind::Minutemen,
                 None,
                 crate::MilitaryOrder::idle([None; 3], [None; 3]),
-                NationId::new(0),
+                MajorNationId::new(0).nation(),
                 0,
                 true,
                 String::new(),
@@ -1058,7 +1104,7 @@ mod tests {
             ),
         );
 
-        state.change_province_owner(ProvinceId::new(2), NationId::new(1));
+        state.change_province_owner(ProvinceId::new(2), MajorNationId::new(1).nation());
 
         assert!(state.civilian_units.is_empty());
         assert_eq!(state.military_units.len(), 1);

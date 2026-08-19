@@ -29,7 +29,7 @@ pub(super) const DEAL_CATEGORY_ORDER: [TradeCommodity; TradeCommodity::LENGTH] =
     TradeCommodity::Horses,
     TradeCommodity::Oil,
 ];
-pub(super) const NO_RESOURCE: i16 = -10;
+pub(super) const NO_RESOURCE: i32 = -10;
 pub(super) const GRANT_DELTA_SCALE: f32 = -1.0 / 255.0;
 pub(super) const RELATION_SCALE: f64 = 1.0 / 255.0;
 pub(super) const RELATION_RAND_SCALE: f64 = 32767.0;
@@ -62,8 +62,8 @@ pub(super) const PROCESSED_NEED: [ResourceKind; 5] = [
 pub struct PendingTradeOffer {
     pub buyer: NationId,
     pub seller: NationId,
-    pub amount: i16,
-    pub price: i16,
+    pub amount: i32,
+    pub price: i32,
     pub commodity: TradeCommodity,
 }
 
@@ -78,19 +78,19 @@ pub enum TradeProgress {
 pub(super) struct RankedDeal {
     pub(super) buyer: NationId,
     pub(super) seller: NationId,
-    pub(super) offer_amount: i16,
-    pub(super) standing: i16,
+    pub(super) offer_amount: i32,
+    pub(super) standing: i32,
     pub(super) price: i32,
     pub(super) category: TradeCommodity,
 }
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub(super) struct TradePhase {
-    pub(super) recurring_grant: MinorNationTable<ResourceTable<i16>>,
-    pub(super) status_by_major: MinorNationTable<ResourceTable<[i16; MAJOR_NATION_COUNT]>>,
+    pub(super) recurring_grant: MinorNationTable<ResourceTable<i32>>,
+    pub(super) status_by_major: MinorNationTable<ResourceTable<[i32; MAJOR_NATION_COUNT]>>,
     pub(super) deals: TradeCommodityTable<Vec<RankedDeal>>,
-    pub(super) arms_basic_split: i16,
-    pub(super) arms_advanced_split: i16,
+    pub(super) arms_basic_split: i32,
+    pub(super) arms_advanced_split: i32,
 }
 
 impl TradePhase {
@@ -175,7 +175,7 @@ impl GameState {
     ///
     /// `amount` is the purchased quantity (`0` rejects). `stop_buying` is the `nomo`
     /// checkbox and becomes `SetDealResults` shortfall.
-    pub fn reply_to_trade_offer(&mut self, amount: i16, stop_buying: bool) -> TradeProgress {
+    pub fn reply_to_trade_offer(&mut self, amount: i32, stop_buying: bool) -> TradeProgress {
         let mut session = match std::mem::take(&mut self.continuation) {
             crate::turn_flow::TurnContinuation::Trade(session) => session,
             other => {
@@ -227,8 +227,8 @@ impl GameState {
         while let Some(commodity) = session.category {
             let deal = session.phase.deals[commodity][session.entry_ordinal - 1];
             let mut transfer = self.amount_unsold(deal.seller, commodity.resource());
-            if let Some(seller_major) = MajorNationId::from_nation(deal.seller)
-                && MajorNationId::from_nation(deal.buyer).is_none()
+            if let Some(seller_major) = NationId::as_major(deal.seller)
+                && NationId::as_major(deal.buyer).is_none()
             {
                 transfer = transfer.min(self.available_merchant(seller_major));
             }
@@ -239,7 +239,7 @@ impl GameState {
                         deal.buyer,
                         deal.seller,
                         transfer,
-                        deal.price as i16,
+                        deal.price as i32,
                         commodity,
                     )
                     .inspect(|offer| session.pending = Some(*offer))
@@ -284,15 +284,15 @@ impl GameState {
         self.nations.majors[&nation].economy.diplomacy_eligible
     }
 
-    fn city_stock(&self, nation: MajorNationId, resource: ResourceKind) -> i16 {
+    fn city_stock(&self, nation: MajorNationId, resource: ResourceKind) -> i32 {
         self.nations.majors[&nation].city.stockpile[resource]
     }
 
-    fn trade_offer_cap(&self, nation: MajorNationId) -> i16 {
+    fn trade_offer_cap(&self, nation: MajorNationId) -> i32 {
         self.nations.majors[&nation].economy.capacities.trade_offer
     }
 
-    fn available_merchant(&self, nation: MajorNationId) -> i16 {
+    fn available_merchant(&self, nation: MajorNationId) -> i32 {
         self.nations.majors[&nation]
             .economy
             .capacities
@@ -307,7 +307,7 @@ impl GameState {
         &mut self.nations.majors[&nation].economy.foreign_trade
     }
 
-    fn set_trade_potential(&mut self, nation: MajorNationId, resource: ResourceKind, value: i16) {
+    fn set_trade_potential(&mut self, nation: MajorNationId, resource: ResourceKind, value: i32) {
         self.nations.majors[&nation]
             .economy
             .set_item_potential(resource, value);
@@ -360,7 +360,7 @@ impl GameState {
     }
 
     fn random_eligible_peer(&mut self, nation: MajorNationId) -> Option<MajorNationId> {
-        let candidate = MajorNationId::new((self.rng.next_crt_rand() % 7) as u8);
+        let candidate = MajorNationId::new((self.rng.next_crt_rand() % 7) as usize);
         (self.major_is_trade_eligible(candidate)
             && !self.nations_at_war(candidate.nation(), nation.nation())
             && candidate != nation)
@@ -372,13 +372,13 @@ impl GameState {
         &mut self,
         buyer: MajorNationId,
         seller: NationId,
-        amount: i16,
-        available: i16,
-        price: i16,
+        amount: i32,
+        available: i32,
+        price: i32,
         commodity: TradeCommodity,
         shortfall_if_short: bool,
         phase: &mut TradePhase,
-    ) -> i16 {
+    ) -> i32 {
         let take = amount.min(available);
         self.set_deal_results(
             buyer.nation(),
@@ -396,7 +396,7 @@ impl GameState {
         &mut self,
         buyer: MajorNationId,
         commodity: TradePartnerCommodity,
-        split: i16,
+        split: i32,
     ) {
         if self.foreign_trade(buyer).trade_partner_enabled[commodity] {
             let trade = self.foreign_trade_mut(buyer);
@@ -410,8 +410,8 @@ impl GameState {
         &mut self,
         buyer: MajorNationId,
         seller: NationId,
-        amount: i16,
-        price: i16,
+        amount: i32,
+        price: i32,
         commodity: TradeCommodity,
         shortfall_if_short: bool,
         phase: &mut TradePhase,
@@ -445,9 +445,9 @@ impl GameState {
 
 pub(super) fn offer_or_grant(
     state: &mut MinorNation,
-    recurring: &ResourceTable<i16>,
+    recurring: &ResourceTable<i32>,
     resource: ResourceKind,
-    threshold: i16,
+    threshold: i32,
     price: i32,
 ) {
     if i32::from(threshold) < price {
@@ -461,9 +461,9 @@ pub(super) fn trade_commodity(resource: ResourceKind) -> TradeCommodity {
     TradeCommodity::from_resource(resource).expect("market commodity")
 }
 
-pub(super) fn resource_code(commodity: Option<TradeCommodity>) -> i16 {
+pub(super) fn resource_code(commodity: Option<TradeCommodity>) -> i32 {
     commodity.map_or(NO_RESOURCE, |commodity| {
-        i16::from(commodity.resource().retail())
+        i32::from(commodity.resource().retail())
     })
 }
 
@@ -515,7 +515,7 @@ pub(super) fn minor_offer_base(turn: i32) -> f64 {
     )
 }
 
-pub(super) fn trade_power(base: f64, exponent: i16) -> f64 {
+pub(super) fn trade_power(base: f64, exponent: i32) -> f64 {
     let mut result = 1.0;
     for _ in 0..exponent.max(0) {
         result *= base;
@@ -523,7 +523,7 @@ pub(super) fn trade_power(base: f64, exponent: i16) -> f64 {
     result
 }
 
-pub(super) fn offer_factor(base: f64, amount: i16) -> f64 {
+pub(super) fn offer_factor(base: f64, amount: i32) -> f64 {
     if amount == 1 {
         1.0
     } else {
@@ -532,11 +532,11 @@ pub(super) fn offer_factor(base: f64, amount: i16) -> f64 {
     }
 }
 
-pub(super) fn subsidy_from_stock(stock: i16) -> i16 {
+pub(super) fn subsidy_from_stock(stock: i32) -> i32 {
     if stock == 0 {
         0
     } else {
-        (i32::from(stock) / 2).min(5) as i16
+        (i32::from(stock) / 2).min(5) as i32
     }
 }
 
@@ -552,7 +552,7 @@ pub(super) fn trades_first(proposal: TradeCommodity, category: TradeCommodity) -
     proposal
 }
 
-pub(super) fn insert_sorted<T>(list: &mut Vec<T>, item: T, mut cmp: impl FnMut(&T, &T) -> i16) {
+pub(super) fn insert_sorted<T>(list: &mut Vec<T>, item: T, mut cmp: impl FnMut(&T, &T) -> i32) {
     if let Some(index) = list.iter().position(|existing| cmp(&item, existing) != 1) {
         list.insert(index, item);
     } else {
@@ -560,7 +560,7 @@ pub(super) fn insert_sorted<T>(list: &mut Vec<T>, item: T, mut cmp: impl FnMut(&
     }
 }
 
-pub(super) fn compare_deals(a: &RankedDeal, b: &RankedDeal) -> i16 {
+pub(super) fn compare_deals(a: &RankedDeal, b: &RankedDeal) -> i32 {
     let invert = MANUFACTURED_COMMODITIES.contains(&a.category);
     let mut score_a = if invert {
         (0xff - i32::from(a.standing)) * a.price
@@ -573,15 +573,15 @@ pub(super) fn compare_deals(a: &RankedDeal, b: &RankedDeal) -> i16 {
         -(b.price * i32::from(b.standing))
     };
     if score_a == score_b {
-        score_a = (i32::from(a.offer_amount) * i32::from(a.buyer.get())
+        score_a = (i32::from(a.offer_amount) * (a.buyer.get() as i32)
             + a.price
-            + i32::from(a.seller.get()) * i32::from(a.standing)
+            + (a.seller.get() as i32) * i32::from(a.standing)
             + i32::from(a.category as u8))
             % 7;
         score_b = (i32::from(b.category as u8)
-            + i32::from(b.offer_amount) * i32::from(b.buyer.get())
+            + i32::from(b.offer_amount) * (b.buyer.get() as i32)
             + b.price
-            + i32::from(b.seller.get()) * i32::from(b.standing))
+            + (b.seller.get() as i32) * i32::from(b.standing))
             % 7;
     }
     if score_a <= score_b { -1 } else { 1 }
@@ -591,11 +591,11 @@ pub(super) fn compare_by_nation(
     a: &TradeDealBookEntry,
     b: &TradeDealBookEntry,
     rng: &mut RngState,
-) -> i16 {
-    compare_relationship(i16::from(a.nation.get()), i16::from(b.nation.get()), rng)
+) -> i32 {
+    compare_relationship((a.nation.get() as i32), (b.nation.get() as i32), rng)
 }
 
-pub(super) fn compare_relationship(a_key: i16, b_key: i16, rng: &mut RngState) -> i16 {
+pub(super) fn compare_relationship(a_key: i32, b_key: i32, rng: &mut RngState) -> i32 {
     if b_key < a_key {
         1
     } else if a_key < b_key {
@@ -647,8 +647,8 @@ mod tests {
         let TradeProgress::Offer(offer) = progress else {
             panic!("human buyer must be interrupted by the Offer Sheet, got {progress:?}");
         };
-        assert_eq!(offer.buyer, NationId::new(0));
-        assert_eq!(offer.seller, NationId::new(1));
+        assert_eq!(offer.buyer, MajorNationId::new(0).nation());
+        assert_eq!(offer.seller, MajorNationId::new(1).nation());
         assert_eq!(offer.commodity, TradeCommodity::Clothing);
         assert!(offer.amount > 0);
         assert_eq!(state.pending_trade_offer(), Some(offer));

@@ -326,7 +326,7 @@ fn project_game_score(
     if super::projection_idle(&session, !added.is_empty()) {
         return;
     }
-    let Some(nation) = MajorNationId::from_nation(session.game.turn().active_nation) else {
+    let Some(nation) = NationId::as_major(session.game.turn().active_nation) else {
         return;
     };
     let rows = session.game.generate_game_score(nation).rows();
@@ -341,7 +341,7 @@ fn on_game_score_close(
     save_dir: Res<SaveDirectory>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    if let Some(nation) = MajorNationId::from_nation(session.game.turn().active_nation) {
+    if let Some(nation) = NationId::as_major(session.game.turn().active_nation) {
         persist_high_score(&session.game, nation, &save_dir.0);
     }
     apply_turn_stop(session.game.close_game_score(), &mut next_state);

@@ -170,7 +170,7 @@ fn sync_army_toolbar(
         );
         return;
     };
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
+    let nation = NationId::as_major(session.game.turn().active_nation)
         .expect("army toolbar requires an active major nation");
     let counts_state = session.game.army_toolbar_counts(province);
     for (entity, placard, mut image) in &mut placards {
@@ -221,7 +221,7 @@ fn hide_empty_toolbar(
     >,
     counts: &mut Query<(&ChildOf, &mut Text, &ArmyCountLabel)>,
 ) {
-    let Some(nation) = MajorNationId::from_nation(state.turn().active_nation) else {
+    let Some(nation) = NationId::as_major(state.turn().active_nation) else {
         return;
     };
     let empty = ArmyToolbarCounts::default();

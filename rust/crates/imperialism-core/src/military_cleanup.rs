@@ -15,7 +15,7 @@ const ATTACK_RESOURCE_SCALE: DifficultyTable<FortLevelTable<f32>> = DifficultyTa
     FortLevelTable::from_array([2.1, 2.3, 2.5, 2.7]),
     FortLevelTable::from_array([2.3, 2.5, 2.7, 2.9]),
 ]);
-const NAVY_QUEUE_PROFILE: NavyPriorityTable<i16> = NavyPriorityTable::from_array([40, 40, 20, 0]);
+const NAVY_QUEUE_PROFILE: NavyPriorityTable<i32> = NavyPriorityTable::from_array([40, 40, 20, 0]);
 const UNIT_PRIORITY_WEIGHT: f32 = 0.33;
 const PRESSURE_UNSET: f32 = -1.0;
 const PRESSURE_RATIO_CAP: f32 = 1.0;
@@ -70,7 +70,7 @@ impl GameState {
             if !self.nation_is_eligible_for_optional_phase(nation.nation()) {
                 continue;
             }
-            let slot = usize::from(nation.get());
+            let slot = nation.table_index();
             let mut category = NavyPriorityTable::default();
             for ship in self.ships.values() {
                 if ship.nation != nation.nation() {
@@ -131,7 +131,7 @@ impl GameState {
         nation: MajorNationId,
         metrics: &mut NationOrderPriorityMetrics,
     ) {
-        let slot = usize::from(nation.get());
+        let slot = nation.table_index();
         let mut total_regions = 0;
         let mut compatible_regions = 0;
         self.count_pressure_regions(nation.nation(), &mut total_regions, &mut compatible_regions);
@@ -358,7 +358,7 @@ impl GameState {
             if sum == 0 {
                 return [0; 5];
             }
-            return costs.map(|cost| (f32::from(cost) * pressure / sum as f32).to_bits());
+            return costs.map(|cost| ((cost as f32) * pressure / sum as f32).to_bits());
         }
         let mut scale = pressure;
         if NationId::all().any(|other| self.at_war(nation, other)) {
@@ -374,7 +374,7 @@ impl GameState {
         };
         profile
             .components()
-            .map(|weight| (f32::from(weight) * scale * 0.01).to_bits())
+            .map(|weight| ((weight as f32) * scale * 0.01).to_bits())
     }
 
     fn attack_required_equipage(&self, target: ProvinceId) -> [u32; 5] {
@@ -400,7 +400,7 @@ impl GameState {
         };
         profile
             .components()
-            .map(|weight| (f32::from(weight) * scale * 0.01).to_bits())
+            .map(|weight| ((weight as f32) * scale * 0.01).to_bits())
     }
 
     fn province_is_mission_compatible(&self, province: ProvinceId) -> bool {
@@ -413,25 +413,25 @@ impl GameState {
             .iter()
             .any(|&neighbor| {
                 let neighbor_owner = self.map.provinces[neighbor].owner();
-                neighbor_owner.is_none_or(|nation| MajorNationId::from_nation(nation).is_some())
+                neighbor_owner.is_none_or(|nation| NationId::as_major(nation).is_some())
                     && neighbor_owner != owner
             })
         {
             return true;
         }
         let exclude = owner
-            .and_then(MajorNationId::from_nation)
+            .and_then(NationId::as_major)
             .map(|major| (1u16 << major.get()) ^ 0x7f)
             .unwrap_or(0x7f);
         self.ocean.zones.iter().enumerate().any(|(ordinal, kind)| {
-            let zone = OceanZoneId::new(ordinal as u16);
+            let zone = OceanZoneId::new(ordinal);
             self.zone_nation_key_mask(zone) & exclude != 0
                 && kind.zone().secondary_neighbors.contains(&province)
         })
     }
 
     fn latest_militia_kind(&self, nation: NationId) -> MilitaryUnitKind {
-        let Some(major) = MajorNationId::from_nation(nation) else {
+        let Some(major) = NationId::as_major(nation) else {
             return MilitaryUnitKind::Minutemen;
         };
         let active = &self.technology.military_unit_ability_active_by_nation[major];
@@ -541,7 +541,7 @@ fn queue_divergence(category: NavyPriorityTable<f32>) -> f32 {
     let accum = NavyPriorityComponent::ALL
         .into_iter()
         .map(|component| {
-            (category[component] / sum - f32::from(NAVY_QUEUE_PROFILE[component]) * 0.01).abs()
+            (category[component] / sum - (NAVY_QUEUE_PROFILE[component] as f32) * 0.01).abs()
         })
         .sum::<f32>();
     sum * (1.0 - accum * 0.5)
@@ -555,7 +555,7 @@ fn defend_pressure_scale(
     let Some(metrics) = metrics else {
         return 1.0;
     };
-    let Some(major) = MajorNationId::from_nation(nation) else {
+    let Some(major) = NationId::as_major(nation) else {
         return 1.0;
     };
     let slot = usize::from(major.get());
@@ -580,7 +580,7 @@ mod tests {
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
             aggression: NavalAggression::Cautious,
-            nation: NationId::new(0),
+            nation: MajorNationId::new(0).nation(),
             name: String::new(),
             strength: 100,
             experience: 0,
@@ -652,7 +652,7 @@ mod tests {
         state.nations.majors[&ineligible].city.stockpile[ResourceKind::Food] = 2;
         state.set_country_status(
             ineligible.nation(),
-            CountryStatus::ProtectorateOf(NationId::new(0)),
+            CountryStatus::ProtectorateOf(MajorNationId::new(0).nation()),
         );
 
         let mut expected = state.clone();
@@ -750,7 +750,7 @@ mod tests {
         let nation = MajorNationId::new(0);
         state.nations.majors[&nation].auto = Some(AutoGreatPowerState::default());
         let province = ProvinceId::new(3);
-        seed_owned_province(&mut state, province, NationId::new(1));
+        seed_owned_province(&mut state, province, MajorNationId::new(1).nation());
         let mission = state.object_ids.mission();
         state
             .missions
@@ -777,7 +777,7 @@ mod tests {
                 order: TaskForceOrder::Patrol,
                 target: TaskForceTarget::Zone(OceanZoneId::new(0)),
                 location: OceanZoneId::new(0),
-                nation: NationId::new(0),
+                nation: MajorNationId::new(0).nation(),
                 defeated: false,
                 ingot_tile: -1,
                 flagship: Some(ShipId::new(0)),
@@ -791,7 +791,7 @@ mod tests {
                 order: TaskForceOrder::Sail,
                 target: TaskForceTarget::Zone(OceanZoneId::new(1)),
                 location: OceanZoneId::new(0),
-                nation: NationId::new(0),
+                nation: MajorNationId::new(0).nation(),
                 defeated: false,
                 ingot_tile: -1,
                 flagship: Some(ShipId::new(1)),
@@ -825,7 +825,7 @@ mod tests {
                 target_province: target,
                 amassing_province: None,
             }),
-            path_nation: Some(NationId::new(1)),
+            path_nation: Some(MajorNationId::new(1).nation()),
             state: 2,
             importance_bits: 0,
             held: false,
@@ -872,7 +872,7 @@ mod tests {
         let nation = MajorNationId::new(0);
         state.nations.majors[&nation].auto = Some(AutoGreatPowerState::default());
         let target = ProvinceId::new(4);
-        seed_owned_province(&mut state, target, NationId::new(1));
+        seed_owned_province(&mut state, target, MajorNationId::new(1).nation());
         state.map.provinces[target].set_city_score(1000);
         let mission = state.object_ids.mission();
         state
@@ -901,7 +901,7 @@ mod tests {
         let nation = MajorNationId::new(0);
         state.nations.majors[&nation].auto = Some(AutoGreatPowerState::default());
         let tile = TileId::new(1);
-        state.map[tile].former_owner_nation = Some(TileOwnerTag::from_nation(nation.nation()));
+        state.map[tile].former_owner_nation = Some(TileContext::from_nation(nation.nation()));
         state.ocean.zones = vec![
             ZoneKind::Zone(Zone {
                 display_name: String::new(),

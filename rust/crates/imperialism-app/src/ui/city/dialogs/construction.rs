@@ -22,7 +22,7 @@ pub(in crate::ui::city) struct ConstructionDialog {
 pub(in crate::ui::city) struct ExpansionDialog {
     slot: CityFacilitySlot,
     building_name: String,
-    next_capacity: i16,
+    next_capacity: i32,
     next_level: u8,
     can_reserve: bool,
 }
@@ -33,7 +33,7 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
     session: &mut GameSession,
     slot: CityFacilitySlot,
 ) {
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
+    let nation = NationId::as_major(session.game.turn().active_nation)
         .expect("City screen requires an active major nation");
     let (capacity_value, can_reserve) = match slot {
         CityFacilitySlot::PowerPlant => {
@@ -249,7 +249,7 @@ pub(in crate::ui::city) fn bind_expansion_dialog(
     tree: &RetailTree,
     slot: CityFacilitySlot,
     building_name: String,
-    next_capacity: i16,
+    next_capacity: i32,
     next_level: u8,
     can_reserve: bool,
 ) {
@@ -284,7 +284,7 @@ pub(in crate::ui::city) fn on_city_expansion_open(
     let Ok(open) = openers.get(activate.entity) else {
         return;
     };
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
+    let nation = NationId::as_major(session.game.turn().active_nation)
         .expect("City screen requires an active major nation");
     let (next_capacity, needed, next_level) = {
         let major = session.game.nations().major(nation);
@@ -367,7 +367,7 @@ pub(in crate::ui::city) fn on_city_building_change_choice(
     let Ok(choice) = choices.get(activate.entity) else {
         return;
     };
-    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
+    let nation = NationId::as_major(session.game.turn().active_nation)
         .expect("City screen requires an active major nation");
     if choice.slot == CityFacilitySlot::PowerPlant {
         if choice.accept {

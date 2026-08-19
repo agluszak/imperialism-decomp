@@ -2,10 +2,22 @@ use crate::TileId;
 use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Serialize};
 
-pub const STRATEGIC_MAP_WIDTH: u16 = 108;
-pub const STRATEGIC_MAP_HEIGHT: u16 = 60;
+pub const STRATEGIC_MAP_WIDTH: i32 = 108;
+pub const STRATEGIC_MAP_HEIGHT: i32 = 60;
 pub const STRATEGIC_TILE_COUNT: usize =
     STRATEGIC_MAP_WIDTH as usize * STRATEGIC_MAP_HEIGHT as usize;
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct MapPosition {
+    pub row: i32,
+    pub column: i32,
+}
+
+impl MapPosition {
+    pub const fn new(row: i32, column: i32) -> Self {
+        Self { row, column }
+    }
+}
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
@@ -125,42 +137,48 @@ impl MapGeometry {
         self.topology.wraps_horizontally()
     }
 
-    pub fn tile(self, row: u16, column: u16) -> Option<TileId> {
-        if row >= STRATEGIC_MAP_HEIGHT || column >= STRATEGIC_MAP_WIDTH {
+    pub fn tile(self, pos: MapPosition) -> Option<TileId> {
+        if pos.row < 0
+            || pos.column < 0
+            || pos.row >= STRATEGIC_MAP_HEIGHT
+            || pos.column >= STRATEGIC_MAP_WIDTH
+        {
             return None;
         }
-        Some(TileId::from_index_unchecked(
-            row * STRATEGIC_MAP_WIDTH + column,
-        ))
+        let index = pos.row as usize * STRATEGIC_MAP_WIDTH as usize + pos.column as usize;
+        Some(TileId::from_index_unchecked(index))
     }
 
-    pub const fn row_column(self, tile: TileId) -> (u16, u16) {
-        let index = tile.get();
-        (index / STRATEGIC_MAP_WIDTH, index % STRATEGIC_MAP_WIDTH)
+    pub const fn position(self, tile: TileId) -> MapPosition {
+        let index = tile.index() as i32;
+        MapPosition {
+            row: index / STRATEGIC_MAP_WIDTH,
+            column: index % STRATEGIC_MAP_WIDTH,
+        }
     }
 
     pub fn neighbor(self, tile: TileId, direction: HexDirection) -> Option<TileId> {
-        let (row, column) = self.row_column(tile);
-        let odd_row = row & 1 != 0;
+        let pos = self.position(tile);
+        let odd_row = pos.row & 1 != 0;
         let (row_delta, column_delta) = match direction {
-            HexDirection::NorthEast => (-1, i16::from(odd_row)),
+            HexDirection::NorthEast => (-1, i32::from(odd_row)),
             HexDirection::East => (0, 1),
-            HexDirection::SouthEast => (1, i16::from(odd_row)),
+            HexDirection::SouthEast => (1, i32::from(odd_row)),
             HexDirection::SouthWest => (1, if odd_row { 0 } else { -1 }),
             HexDirection::West => (0, -1),
             HexDirection::NorthWest => (-1, if odd_row { 0 } else { -1 }),
         };
-        let next_row = i32::from(row) + row_delta;
-        if !(0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&next_row) {
+        let next_row = pos.row + row_delta;
+        if !(0..STRATEGIC_MAP_HEIGHT).contains(&next_row) {
             return None;
         }
-        let mut next_column = i32::from(column) + i32::from(column_delta);
+        let mut next_column = pos.column + column_delta;
         if self.topology.wraps_horizontally() {
-            next_column = next_column.rem_euclid(i32::from(STRATEGIC_MAP_WIDTH));
-        } else if !(0..i32::from(STRATEGIC_MAP_WIDTH)).contains(&next_column) {
+            next_column = next_column.rem_euclid(STRATEGIC_MAP_WIDTH);
+        } else if !(0..STRATEGIC_MAP_WIDTH).contains(&next_column) {
             return None;
         }
-        self.tile(next_row as u16, next_column as u16)
+        self.tile(MapPosition::new(next_row, next_column))
     }
 
     pub(crate) fn direction_to(self, source: TileId, destination: TileId) -> Option<HexDirection> {
@@ -181,31 +199,31 @@ mod tests {
     #[test]
     fn round_trips_retail_tile_coordinates() {
         let geometry = MapGeometry::new(MapTopology::Wrapping);
-        let last = geometry.tile(59, 107).unwrap();
-        assert_eq!(last.get(), 6479);
-        assert_eq!(geometry.row_column(last), (59, 107));
+        let last = geometry.tile(MapPosition::new(59, 107)).unwrap();
+        assert_eq!(last.index(), 6479);
+        assert_eq!(geometry.position(last), MapPosition::new(59, 107));
     }
 
     #[test]
     fn uses_the_retail_odd_row_neighbor_layout() {
         let geometry = MapGeometry::new(MapTopology::Wrapping);
-        let even = geometry.tile(2, 10).unwrap();
-        let odd = geometry.tile(3, 10).unwrap();
+        let even = geometry.tile(MapPosition::new(2, 10)).unwrap();
+        let odd = geometry.tile(MapPosition::new(3, 10)).unwrap();
         assert_eq!(
             geometry.neighbor(even, HexDirection::NorthEast),
-            geometry.tile(1, 10)
+            geometry.tile(MapPosition::new(1, 10))
         );
         assert_eq!(
             geometry.neighbor(even, HexDirection::NorthWest),
-            geometry.tile(1, 9)
+            geometry.tile(MapPosition::new(1, 9))
         );
         assert_eq!(
             geometry.neighbor(odd, HexDirection::NorthEast),
-            geometry.tile(2, 11)
+            geometry.tile(MapPosition::new(2, 11))
         );
         assert_eq!(
             geometry.neighbor(odd, HexDirection::NorthWest),
-            geometry.tile(2, 10)
+            geometry.tile(MapPosition::new(2, 10))
         );
     }
 
@@ -213,17 +231,17 @@ mod tests {
     fn applies_the_retail_horizontal_and_vertical_edge_rules() {
         let wrapping = MapGeometry::new(MapTopology::Wrapping);
         let bounded = MapGeometry::new(MapTopology::Bounded);
-        let left = wrapping.tile(2, 0).unwrap();
+        let left = wrapping.tile(MapPosition::new(2, 0)).unwrap();
         assert_eq!(
             wrapping.neighbor(left, HexDirection::West),
-            wrapping.tile(2, 107)
+            wrapping.tile(MapPosition::new(2, 107))
         );
         assert_eq!(bounded.neighbor(left, HexDirection::West), None);
         assert_eq!(
             wrapping.neighbor(left, HexDirection::NorthWest),
-            wrapping.tile(1, 107)
+            wrapping.tile(MapPosition::new(1, 107))
         );
-        let top = wrapping.tile(0, 20).unwrap();
+        let top = wrapping.tile(MapPosition::new(0, 20)).unwrap();
         assert_eq!(wrapping.neighbor(top, HexDirection::NorthEast), None);
     }
 }

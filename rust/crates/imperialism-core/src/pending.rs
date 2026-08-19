@@ -7,31 +7,31 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct PendingActionState {
     status: PendingActionStatus,
-    payload: Option<i16>,
+    payload: Option<i32>,
 }
 
 impl PendingActionState {
-    pub const fn new(status: PendingActionStatus, payload: Option<i16>) -> Self {
+    pub const fn new(status: PendingActionStatus, payload: Option<i32>) -> Self {
         Self { status, payload }
     }
     pub const fn status(self) -> PendingActionStatus {
         self.status
     }
-    pub const fn payload(self) -> Option<i16> {
+    pub const fn payload(self) -> Option<i32> {
         self.payload
     }
     pub(crate) fn queue(&mut self) {
         self.status = PendingActionStatus::QUEUED;
         self.payload = None;
     }
-    pub(crate) fn queue_with_payload(&mut self, payload: i16) {
+    pub(crate) fn queue_with_payload(&mut self, payload: i32) {
         self.status = PendingActionStatus::QUEUED;
         self.payload = Some(payload);
     }
     pub(crate) fn set_status(&mut self, status: PendingActionStatus) {
         self.status = status;
     }
-    pub(crate) fn set_payload(&mut self, payload: Option<i16>) {
+    pub(crate) fn set_payload(&mut self, payload: Option<i32>) {
         self.payload = payload;
     }
     /// Army/navy growth reward level recovered from the status byte.
@@ -39,7 +39,7 @@ impl PendingActionState {
     /// Queued has no completed level, `0` is level zero, and handled growth
     /// statuses `0x33..=0x39` are `status - 0x33`. Other action kinds assign
     /// different meaning to the same values.
-    pub const fn growth_reward_level(self) -> Option<i16> {
+    pub const fn growth_reward_level(self) -> Option<i32> {
         self.status.growth_reward_level()
     }
 }
@@ -75,11 +75,11 @@ impl PendingActionStatus {
         self.0 == 0
     }
 
-    pub const fn growth_reward_level(self) -> Option<i16> {
+    pub const fn growth_reward_level(self) -> Option<i32> {
         match self.0 {
             0 => Some(0),
             0x32 => None,
-            0x33..=0x39 => Some(self.0 as i16 - 0x33),
+            0x33..=0x39 => Some(self.0 as i32 - 0x33),
             _ => None,
         }
     }

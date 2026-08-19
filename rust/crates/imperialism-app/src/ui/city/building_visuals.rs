@@ -307,7 +307,7 @@ pub(in crate::ui::city) fn spawn_city_buildings(
     for visual in visuals {
         let level = city_building_level(state, nation, visual.slot);
         let offset = i16::from(visual.slot as u8);
-        let mask_picture = PictureId::new(7100 + level * 16 + offset);
+        let mask_picture = PictureId::new(7100 + level as i16 * 16 + offset);
         let mask = match assets.indexed_picture(mask_picture) {
             Ok(indexed) => match CityBuildingHitMask::from_indexed_picture(&indexed) {
                 Some(mask) => mask,
@@ -418,7 +418,7 @@ pub(in crate::ui::city) fn spawn_city_building_actions(
 ) {
     let active_actions: Vec<_> = actions
         .iter()
-        .filter(|action| city_building_level(state, nation, action.slot) == i16::from(action.level))
+        .filter(|action| city_building_level(state, nation, action.slot) == i32::from(action.level))
         .collect();
     for (draw_order, action) in active_actions.iter().enumerate() {
         let indexed = match assets.indexed_picture(action.picture_id) {

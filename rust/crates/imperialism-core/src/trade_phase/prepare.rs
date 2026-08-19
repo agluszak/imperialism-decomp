@@ -77,9 +77,9 @@ impl GameState {
         phase.recurring_grant[minor] = ResourceTable::default();
         phase.status_by_major[minor] = ResourceTable::default();
 
-        let owner = TileOwnerTag::from_nation(minor.nation());
+        let owner = TileContext::from_nation(minor.nation());
         for index in 0..STRATEGIC_TILE_COUNT {
-            let tile = &self.map[TileId::new(index as u16)];
+            let tile = &self.map[TileId::new(index)];
             if tile.owner_nation != Some(owner) {
                 continue;
             }

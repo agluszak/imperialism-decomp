@@ -12,7 +12,8 @@ use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress, ScrollArea};
 use imperialism_core::{
-    CountryStatus, MajorNationId, Technology, TechnologyResearchRejection, TechnologyResearchStatus,
+    CountryStatus, MajorNationId, NationId, Technology, TechnologyResearchRejection,
+    TechnologyResearchStatus,
 };
 use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc};
 
@@ -94,7 +95,7 @@ fn on_open_technology_store(
     if controls.get(activate.entity).is_err() {
         return;
     }
-    let Some(nation) = MajorNationId::from_nation(session.game.turn().active_nation) else {
+    let Some(nation) = NationId::as_major(session.game.turn().active_nation) else {
         return;
     };
     if matches!(

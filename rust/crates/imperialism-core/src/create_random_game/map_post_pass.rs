@@ -7,7 +7,7 @@ use super::*;
 pub fn capital_selection_view_origin(world: &MapMgr, human_nation: MajorNationId) -> TileId {
     const VIEWPORT_TILE_SPAN: i32 = 9;
 
-    let owner = TileOwnerTag::from_nation(human_nation.nation());
+    let owner = TileContext::from_nation(human_nation.nation());
     let geometry = world.geometry();
     let mut column_sum = 0_u32;
     let mut row_sum = 0_u32;
@@ -23,7 +23,7 @@ pub fn capital_selection_view_origin(world: &MapMgr, human_nation: MajorNationId
         if world[tile].owner_nation != Some(owner) {
             continue;
         }
-        let (row, column) = geometry.row_column(tile);
+        let MapPosition { row, column } = geometry.position(tile);
         let row = i32::from(row);
         let column = i32::from(column);
         column_sum += column as u32;
@@ -42,9 +42,9 @@ pub fn capital_selection_view_origin(world: &MapMgr, human_nation: MajorNationId
         "random-game human nation must own capital-selection territory"
     );
     if west_count != 0 && east_count != 0 {
-        column_sum += west_count * u32::from(STRATEGIC_MAP_WIDTH);
+        column_sum += west_count * STRATEGIC_MAP_WIDTH as u32;
     }
-    let mut column = (column_sum / tile_count) as i32 % i32::from(STRATEGIC_MAP_WIDTH);
+    let mut column = (column_sum / tile_count) as i32 % STRATEGIC_MAP_WIDTH;
     let mut row = (row_sum / tile_count) as i32;
 
     if column < min_column - 1 {
@@ -64,14 +64,14 @@ pub fn capital_selection_view_origin(world: &MapMgr, human_nation: MajorNationId
         column = column.clamp(1, 0x6e - VIEWPORT_TILE_SPAN);
     }
     if column < 0 {
-        column += i32::from(STRATEGIC_MAP_WIDTH);
-    } else if column >= i32::from(STRATEGIC_MAP_WIDTH) {
-        column -= i32::from(STRATEGIC_MAP_WIDTH);
+        column += STRATEGIC_MAP_WIDTH;
+    } else if column >= STRATEGIC_MAP_WIDTH {
+        column -= STRATEGIC_MAP_WIDTH;
     }
     row = row.clamp(0, 0x35);
 
     geometry
-        .tile(row as u16, column as u16)
+        .tile(MapPosition::new(row, column))
         .expect("capital-selection view origin is inside the strategic map")
 }
 pub(super) struct TilePostPassState {
@@ -126,10 +126,7 @@ pub(super) fn apply_tile_post_passes(
 fn build_province_resource_presence_masks(tiles: &[TileState]) -> Vec<i8> {
     let province_count = tiles
         .iter()
-        .filter_map(|tile| {
-            tile.province
-                .map(|province| usize::from(province.get()) + 1)
-        })
+        .filter_map(|tile| tile.province.map(|province| province.index() + 1))
         .max()
         .unwrap_or(0);
     let mut masks = vec![0_u8; province_count];
@@ -140,7 +137,7 @@ fn build_province_resource_presence_masks(tiles: &[TileState]) -> Vec<i8> {
         let Some(province) = tile.province else {
             continue;
         };
-        let mask = &mut masks[usize::from(province.get())];
+        let mask = &mut masks[province.index()];
         for resource in tile.edge_resources.into_iter().flatten() {
             let resource = resource.retail();
             if resource < 8 {
@@ -160,10 +157,7 @@ pub(super) fn assign_province_fallback_capitals(
 ) -> Vec<Option<TileId>> {
     let province_count = tiles
         .iter()
-        .filter_map(|tile| {
-            tile.province
-                .map(|province| usize::from(province.get()) + 1)
-        })
+        .filter_map(|tile| tile.province.map(|province| province.index() + 1))
         .max()
         .unwrap_or(0);
     let mut linked_by_province: Vec<Vec<usize>> = vec![Vec::new(); province_count];
@@ -175,7 +169,7 @@ pub(super) fn assign_province_fallback_capitals(
         let Some(province) = tile.province else {
             continue;
         };
-        linked_by_province[usize::from(province.get())].push(index);
+        linked_by_province[province.index()].push(index);
     }
 
     for (province_index, linked) in linked_by_province.iter().enumerate() {
@@ -185,7 +179,7 @@ pub(super) fn assign_province_fallback_capitals(
 
         let mut interior = Vec::new();
         for &tile_index in linked {
-            let tile_id = TileId::new(tile_index as u16);
+            let tile_id = TileId::new(tile_index);
             let has_foreign_neighbor =
                 geometry
                     .neighbors(tile_id)
@@ -194,7 +188,7 @@ pub(super) fn assign_province_fallback_capitals(
                     .any(|neighbor| {
                         let neighbor_tile = &tiles[usize::from(neighbor.get())];
                         match neighbor_tile.province {
-                            Some(province) => usize::from(province.get()) != province_index,
+                            Some(province) => province.index() != province_index,
                             None => false,
                         }
                     });
@@ -228,7 +222,7 @@ pub(super) fn assign_province_fallback_capitals(
 
         initialize_tile_neighbor_connection_mask_if_needed(tiles, chosen);
         tiles[chosen].flags = TileFlags::PROVINCE_ANCHOR_STATE;
-        province_capitals[province_index] = Some(TileId::new(chosen as u16));
+        province_capitals[province_index] = Some(TileId::new(chosen));
     }
     province_capitals
 }

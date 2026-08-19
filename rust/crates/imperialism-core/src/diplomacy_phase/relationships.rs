@@ -18,7 +18,7 @@ impl GameState {
         }
     }
 
-    pub(crate) fn set_relationship(&mut self, source: NationId, target: NationId, standing: i16) {
+    pub(crate) fn set_relationship(&mut self, source: NationId, target: NationId, standing: i32) {
         if standing == self.diplomacy.standings[source][target] {
             return;
         }
@@ -39,10 +39,10 @@ impl GameState {
         self.diplomacy.standings[source][target] = clamped;
         self.diplomacy.standings[target][source] = clamped;
 
-        if MajorNationId::from_nation(source).is_some() {
+        if NationId::as_major(source).is_some() {
             self.copy_colony_standings_from(source);
         }
-        if MajorNationId::from_nation(target).is_some() {
+        if NationId::as_major(target).is_some() {
             self.copy_colony_standings_from(target);
         }
     }
@@ -79,14 +79,14 @@ impl GameState {
         }
         self.diplomacy.relationships[source][target] = relationship;
         self.diplomacy.relationships[target][source] = relationship;
-        let turn = self.turn.economic_turn as i16;
+        let turn = self.turn.economic_turn as i32;
         self.diplomacy.relationship_turns[source][target] = Some(turn);
         self.diplomacy.relationship_turns[target][source] = Some(turn);
 
-        if MajorNationId::from_nation(source).is_some() {
+        if NationId::as_major(source).is_some() {
             self.dispatch_aligned_minor_relationship(source, target, relationship);
         }
-        if MajorNationId::from_nation(target).is_some() {
+        if NationId::as_major(target).is_some() {
             self.dispatch_aligned_minor_relationship(target, source, relationship);
         }
 
@@ -106,15 +106,13 @@ impl GameState {
                 if self.diplomacy.standings[source][target] <= 0x31 {
                     self.set_relationship(source, target, 0x32);
                 }
-                if let Some(major) = MajorNationId::from_nation(source) {
+                if let Some(major) = NationId::as_major(source) {
                     self.nations.majors[&major].economy.candidate_nation_flags[target] = 0;
                 }
-                if let Some(major) = MajorNationId::from_nation(target) {
+                if let Some(major) = NationId::as_major(target) {
                     self.nations.majors[&major].economy.candidate_nation_flags[source] = 0;
                 }
-                if MajorNationId::from_nation(source).is_some()
-                    && MajorNationId::from_nation(target).is_some()
-                {
+                if NationId::as_major(source).is_some() && NationId::as_major(target).is_some() {
                     self.set_mission_level(source, target, DiplomaticMissionLevel::Embassy);
                     self.set_pair_trade_policy(source, target, TradePolicyScore::NEUTRAL);
                 }
@@ -213,7 +211,7 @@ impl GameState {
         if inflict_penalty {
             self.inflict_war_penalty(source, target, false);
         }
-        if let Some(major) = MajorNationId::from_nation(target)
+        if let Some(major) = NationId::as_major(target)
             && self.nations.majors[&major].auto.is_none()
         {
             self.add_diplomacy_notice(major, source, 0x139);
@@ -240,7 +238,7 @@ impl GameState {
             }
         } else {
             let adjustment = ((0x5a - i32::from(pair_standing)) * i32::from(pair_standing)) / 200;
-            let delta = adjustment as i16;
+            let delta = adjustment as i32;
             if delta < 0 {
                 self.set_relationship(source, target, pair_standing + delta);
             }
@@ -254,8 +252,8 @@ impl GameState {
             {
                 continue;
             }
-            let divisor = if MajorNationId::from_nation(target).is_none() {
-                if MajorNationId::from_nation(candidate).is_none() {
+            let divisor = if NationId::as_major(target).is_none() {
+                if NationId::as_major(candidate).is_none() {
                     if self.in_consortium_with(candidate, source) {
                         2
                     } else {
@@ -264,7 +262,7 @@ impl GameState {
                 } else {
                     8
                 }
-            } else if MajorNationId::from_nation(candidate).is_some() {
+            } else if NationId::as_major(candidate).is_some() {
                 4
             } else {
                 8
@@ -273,10 +271,10 @@ impl GameState {
             let target_candidate = self.diplomacy.standings[target][candidate];
             let mut adjustment = ((0x5a - i32::from(target_candidate)) * i32::from(pair_standing))
                 / (divisor * 0x32);
-            if source == NationId::new(0) {
-                adjustment = i32::from(adjustment as i16) / 2;
+            if source == MajorNationId::new(0).nation() {
+                adjustment = i32::from(adjustment as i32) / 2;
             }
-            let delta = adjustment as i16;
+            let delta = adjustment as i32;
             let applied = if current < 0x32 {
                 if delta > 0 && current + delta > 0x31 {
                     0x31 - current

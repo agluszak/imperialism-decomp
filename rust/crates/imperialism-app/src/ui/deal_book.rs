@@ -386,7 +386,7 @@ fn hover_deal_book_tabs(
     };
     let row = deal_book_tab_index(screen.oil_drilling, commodity)
         .expect("displayed deal-book commodity has a visible tab");
-    let top = f32::from(row) * TAB_ROW_HEIGHT;
+    let top = row as f32 * TAB_ROW_HEIGHT;
     node.top = Val::Px(top);
     image.rect = Some(Rect::new(0.0, top, 31.0, top + TAB_ROW_HEIGHT));
     *visibility = Visibility::Visible;

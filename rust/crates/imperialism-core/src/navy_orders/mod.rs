@@ -4,7 +4,7 @@ use crate::*;
 use enum_map::{Enum, EnumMap};
 use indexmap::IndexMap;
 
-const UNREACHED: i16 = 0x29a;
+const UNREACHED: i32 = 0x29a;
 
 #[derive(Clone, Copy, Debug, Enum, Eq, PartialEq)]
 pub(crate) enum NavyPriorityComponent {
@@ -27,7 +27,7 @@ pub(crate) type NavyPriorityTable<T> = EnumMap<NavyPriorityComponent, T>;
 
 /// Retail navy toolbar classes `cls0` through `cls3`.
 #[derive(Clone, Copy, Debug, Enum, Eq, PartialEq)]
-#[repr(i16)]
+#[repr(i32)]
 pub enum NavyToolbarClass {
     Class0,
     Class1,
@@ -38,7 +38,7 @@ pub enum NavyToolbarClass {
 pub type NavyToolbarClassTable<T> = EnumMap<NavyToolbarClass, T>;
 
 impl NavyToolbarClass {
-    pub const fn from_retail(value: i16) -> Option<Self> {
+    pub const fn from_retail(value: i32) -> Option<Self> {
         match value {
             0 => Some(Self::Class0),
             1 => Some(Self::Class1),
@@ -140,11 +140,11 @@ pub(crate) const NAVY_DESCRIPTORS: ShipTypeTable<NavyOrderDescriptor> =
 
 /// Retail industrial-cost lookup used by navy category 3. Separate from the
 /// arms table even though the numbers currently match.
-const INDUSTRY_COST: ShipTypeTable<i16> =
+const INDUSTRY_COST: ShipTypeTable<i32> =
     ShipTypeTable::from_array([0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18]);
 
-pub(crate) fn ship_stock_cap(ship_type: ShipType) -> i16 {
-    NAVY_DESCRIPTORS[ship_type].stock_cap as i16
+pub(crate) fn ship_stock_cap(ship_type: ShipType) -> i32 {
+    NAVY_DESCRIPTORS[ship_type].stock_cap as i32
 }
 
 pub(crate) fn ship_creates_navy_object(ship_type: ShipType) -> bool {
@@ -154,12 +154,12 @@ pub(crate) fn ship_creates_navy_object(ship_type: ShipType) -> bool {
 pub(crate) fn ship_capabilities(ship_type: ShipType) -> ShipCapabilities {
     let descriptor = NAVY_DESCRIPTORS[ship_type];
     ShipCapabilities {
-        resolve_weight: descriptor.resolve_weight as i16,
-        calculation_weight: descriptor.calculate_weight as i16,
-        task_force_weight: descriptor.task_force_weight as i16,
-        stock_capacity: descriptor.stock_cap as i16,
-        navy_priority_weight: descriptor.navy_priority_weight as i16,
-        resource_weight: descriptor.resource_weight as i16,
+        resolve_weight: descriptor.resolve_weight as i32,
+        calculation_weight: descriptor.calculate_weight as i32,
+        task_force_weight: descriptor.task_force_weight as i32,
+        stock_capacity: descriptor.stock_cap as i32,
+        navy_priority_weight: descriptor.navy_priority_weight as i32,
+        resource_weight: descriptor.resource_weight as i32,
     }
 }
 
@@ -240,7 +240,7 @@ pub use naval_battle::{NavyBattle, NavyTargeting, NavyUnitView};
 pub use player::{NavyOrder, NavySelectionClick, NavyTileClick, NavyToolbarCounts};
 
 impl GameState {
-    fn zone_hop_distances_from(&self, origin: OceanZoneId) -> Vec<i16> {
+    fn zone_hop_distances_from(&self, origin: OceanZoneId) -> Vec<i32> {
         let mut distances = vec![UNREACHED; self.ocean.zones.len()];
         let start = usize::from(origin.get());
         if start >= distances.len() {
@@ -297,7 +297,7 @@ impl GameState {
         let Some(ZoneKind::PortZone(port)) = self.ocean.zones.get(usize::from(zone.get())) else {
             return false;
         };
-        self.map[port.port_tile].owner_nation == Some(TileOwnerTag::from_nation(nation))
+        self.map[port.port_tile].owner_nation == Some(TileContext::from_nation(nation))
     }
 
     fn zone(&self, zone: OceanZoneId) -> &Zone {
@@ -339,18 +339,18 @@ fn navy_state_mut(data: &mut MissionData) -> Option<&mut NavyMissionState> {
     }
 }
 
-const NAVY_CONTROL_PROFILE: NavyPriorityTable<i16> = NavyPriorityTable::from_array([40, 40, 20, 0]);
-const NAVY_ESCORT_PROFILE: NavyPriorityTable<i16> = NavyPriorityTable::from_array([40, 30, 30, 0]);
+const NAVY_CONTROL_PROFILE: NavyPriorityTable<i32> = NavyPriorityTable::from_array([40, 40, 20, 0]);
+const NAVY_ESCORT_PROFILE: NavyPriorityTable<i32> = NavyPriorityTable::from_array([40, 30, 30, 0]);
 
-fn navy_required_from_profile(profile: NavyPriorityTable<i16>, total: f32) -> [u32; 4] {
+fn navy_required_from_profile(profile: NavyPriorityTable<i32>, total: f32) -> [u32; 4] {
     profile.as_array().map(|weight| {
         // Retail multiplies the two float operands first, then promotes that product for
         // the final multiply by the double-precision 0.01 global.
-        ((f64::from(f32::from(weight) * total) * 0.01) as f32).to_bits()
+        ((f64::from((weight as f32) * total) * 0.01) as f32).to_bits()
     })
 }
 
-fn hop_distance(distances: &[i16], zone: OceanZoneId) -> i16 {
+fn hop_distance(distances: &[i32], zone: OceanZoneId) -> i32 {
     distances
         .get(usize::from(zone.get()))
         .copied()
@@ -367,7 +367,7 @@ fn accumulate_ship_categories(
         return;
     }
     let baselines = navy_category_baselines(enabled);
-    let scale = f32::from(ship.strength) / f32::from(max_strength);
+    let scale = (ship.strength as f32) / (max_strength as f32);
     vector[NavyPriorityComponent::Resolve] +=
         ship_priority_contribution(ship, NavyPriorityComponent::Resolve, &baselines) as f32 * scale;
     vector[NavyPriorityComponent::Strength] +=
@@ -430,7 +430,7 @@ pub(super) mod tests {
             ship_type: ShipType::Frigate,
             location: OceanZoneId::new(0),
             aggression: NavalAggression::Cautious,
-            nation: NationId::new(0),
+            nation: MajorNationId::new(0).nation(),
             name: String::new(),
             strength: 900,
             experience: 0,
@@ -446,7 +446,7 @@ pub(super) mod tests {
     fn navy_capitol_warning_fires_when_hostile_ships_outscore_friendly() {
         let mut state = game_state();
         let tile = TileId::new(1);
-        state.map[tile].former_owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
+        state.map[tile].former_owner_nation = Some(TileContext::from_nation(MajorNationId::new(0)));
         state.ocean.zones = vec![
             ZoneKind::Zone(zone(vec![OceanZoneId::new(1)])),
             ZoneKind::PortZone(PortZone {
@@ -461,14 +461,14 @@ pub(super) mod tests {
                 ship_type: ShipType::Frigate,
                 location: OceanZoneId::new(0),
                 aggression: NavalAggression::Cautious,
-                nation: NationId::new(1),
+                nation: MajorNationId::new(1).nation(),
                 name: String::new(),
                 strength: 900,
                 experience: 0,
                 selection: ShipSelection::Available,
             },
         );
-        state.diplomacy.relationships[NationId::new(0)][NationId::new(1)] =
+        state.diplomacy.relationships[MajorNationId::new(0)][MajorNationId::new(1)] =
             DiplomaticRelationship::War;
         assert!(state.navy_capitol_threatened(MajorNationId::new(0)));
     }

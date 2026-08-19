@@ -5,10 +5,7 @@ pub(super) fn build_province_adjacency(world: &MapMgr) -> Vec<Vec<ProvinceId>> {
     let province_count = world
         .tiles
         .iter()
-        .filter_map(|tile| {
-            tile.province
-                .map(|province| usize::from(province.get()) + 1)
-        })
+        .filter_map(|tile| tile.province.map(|province| province.index() + 1))
         .max()
         .unwrap_or(0);
     let mut adjacency = vec![Vec::new(); province_count];
@@ -17,12 +14,8 @@ pub(super) fn build_province_adjacency(world: &MapMgr) -> Vec<Vec<ProvinceId>> {
         let Some(province) = tile.province else {
             continue;
         };
-        let province_index = usize::from(province.get());
-        for neighbor in geometry
-            .neighbors(TileId::new(index as u16))
-            .into_iter()
-            .flatten()
-        {
+        let province_index = province.index();
+        for neighbor in geometry.neighbors(TileId::new(index)).into_iter().flatten() {
             let Some(neighbor_province) = world[neighbor].province else {
                 continue;
             };
@@ -48,11 +41,7 @@ fn build_province_adjacency_anchors(
         if tile.province != Some(province) {
             continue;
         }
-        for neighbor in geometry
-            .neighbors(TileId::new(index as u16))
-            .into_iter()
-            .flatten()
-        {
+        for neighbor in geometry.neighbors(TileId::new(index)).into_iter().flatten() {
             let Some(neighbor_province) = world[neighbor].province else {
                 continue;
             };
@@ -83,7 +72,7 @@ pub(super) fn build_province_state(
     let adjacency = build_province_adjacency(world);
     let mut provinces = ProvinceTable::default();
     for (index, generated) in map.provinces().iter().enumerate() {
-        let province = ProvinceId::new(index as u16);
+        let province = ProvinceId::new(index);
         let owner = generated
             .owner
             .nation()
@@ -103,7 +92,7 @@ pub(super) fn build_province_state(
             .enumerate()
             .filter_map(|(tile, state)| {
                 (state.terrain != TerrainKind::Water && state.province == Some(province))
-                    .then_some(TileId::new(tile as u16))
+                    .then_some(TileId::new(tile))
             })
             .collect::<Vec<_>>();
         let last_turn_tick = if linked_tiles.iter().any(|&tile| {
@@ -147,13 +136,13 @@ pub(super) fn build_province_state(
 /// `IsNodeTypeLinkUnavailableAndNoActiveMapActionContext` for Accept-time owned provinces.
 pub(super) fn province_mission_available(
     province: ProvinceId,
-    nation: TileOwnerTag,
+    nation: TileContext,
     world: &MapMgr,
     province_capitals: &[Option<TileId>],
     adjacency: &[Vec<ProvinceId>],
     zones: &[ZoneKind],
 ) -> bool {
-    let province_usize = usize::from(province.get());
+    let province_usize = province.index();
     let neighbors = &adjacency[province_usize];
     for &adjacent in neighbors {
         let Some(capital) = province_capitals[usize::from(adjacent.get())] else {
@@ -185,7 +174,7 @@ pub(super) fn queue_map_action_missions_for_port_zone_candidates(
     zones: &[ZoneKind],
     nation: MajorNationId,
 ) -> Vec<MissionState> {
-    let owner = TileOwnerTag::from_nation(nation.nation());
+    let owner = TileContext::from_nation(nation.nation());
     let owned = owned_province_ids(world, province_capitals, owner);
     let mut missions = Vec::new();
 
@@ -235,14 +224,14 @@ pub(super) fn queue_map_action_missions_for_port_zone_candidates(
 pub(super) fn initialize_ai_targets(
     nations: &mut Nations,
     mission_queues: &MajorNationTable<Vec<MissionState>>,
-    live_zone_count: u16,
+    live_zone_count: usize,
 ) {
     for nation in MajorNationId::all() {
         let Some(auto) = nations.major_mut(nation).auto.as_mut() else {
             continue;
         };
         auto.zone_targets
-            .resize(usize::from(live_zone_count), AiTargetState::Unmarked);
+            .resize(live_zone_count, AiTargetState::Unmarked);
         for mission in &mission_queues[nation] {
             let target = match &mission.data {
                 MissionData::ControlSeaZone(navy) | MissionData::Escort(navy) => navy.target_zone,

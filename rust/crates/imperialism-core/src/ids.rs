@@ -1,20 +1,20 @@
 use serde::{Deserialize, Serialize};
 
-macro_rules! bounded_id {
-    ($name:ident, $inner:ty, $count:expr, $label:literal) => {
+macro_rules! dense_id {
+    ($name:ident, $count:expr, $label:literal) => {
         #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
         #[serde(transparent)]
-        pub struct $name($inner);
+        pub struct $name(usize);
 
         impl $name {
-            pub const COUNT: $inner = $count;
+            pub const COUNT: usize = $count;
 
-            pub const fn new(value: $inner) -> Self {
+            pub const fn new(value: usize) -> Self {
                 assert!(value < Self::COUNT, concat!($label, " is out of range"));
                 Self(value)
             }
 
-            pub const fn try_new(value: $inner) -> Option<Self> {
+            pub const fn try_new(value: usize) -> Option<Self> {
                 if value < Self::COUNT {
                     Some(Self(value))
                 } else {
@@ -22,7 +22,7 @@ macro_rules! bounded_id {
                 }
             }
 
-            pub const fn get(self) -> $inner {
+            pub const fn get(self) -> usize {
                 self.0
             }
 
@@ -36,7 +36,7 @@ macro_rules! bounded_id {
             where
                 D: serde::Deserializer<'de>,
             {
-                let value = <$inner>::deserialize(deserializer)?;
+                let value = usize::deserialize(deserializer)?;
                 Self::try_new(value).ok_or_else(|| {
                     serde::de::Error::custom(format_args!(
                         concat!($label, " {} is out of range"),
@@ -48,49 +48,68 @@ macro_rules! bounded_id {
     };
 }
 
-bounded_id!(NationId, u8, 23, "nation ID");
-bounded_id!(MajorNationId, u8, 7, "major-nation ID");
-bounded_id!(TileId, u16, 6_480, "strategic tile ID");
-bounded_id!(ProvinceId, u16, 0x180, "province ID");
+dense_id!(MajorNationId, 7, "major-nation ID");
+dense_id!(TileId, 6_480, "strategic tile ID");
+dense_id!(ProvinceId, 0x180, "province ID");
+
+impl From<MajorNationId> for NationId {
+    fn from(id: MajorNationId) -> Self {
+        Self::Major(id)
+    }
+}
+
+impl From<MinorNationId> for NationId {
+    fn from(id: MinorNationId) -> Self {
+        Self::Minor(id)
+    }
+}
 
 impl MajorNationId {
-    pub const fn from_nation(nation: NationId) -> Option<Self> {
-        if nation.get() < Self::COUNT {
-            Some(Self(nation.get()))
-        } else {
-            None
-        }
+    pub const fn nation(self) -> NationId {
+        NationId::Major(self)
     }
 
-    pub const fn nation(self) -> NationId {
-        NationId::new(self.0)
+    pub(crate) const fn table_index(self) -> usize {
+        self.0
     }
 }
 
 impl TileId {
-    pub(crate) const fn from_index_unchecked(value: u16) -> Self {
+    pub(crate) const fn from_index_unchecked(value: usize) -> Self {
         Self(value)
+    }
+
+    pub(crate) const fn index(self) -> usize {
+        self.0
+    }
+}
+
+impl ProvinceId {
+    pub(crate) const fn index(self) -> usize {
+        self.0
+    }
+}
+
+impl MajorNationId {
+    pub(crate) const fn index(self) -> usize {
+        self.0
     }
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(transparent)]
-pub struct MinorNationId(u8);
+pub struct MinorNationId(usize);
 
 impl MinorNationId {
-    pub(crate) const FIRST: u8 = MajorNationId::COUNT;
-    pub const COUNT: u8 = NationId::COUNT - Self::FIRST;
+    pub const COUNT: usize = 16;
 
-    pub const fn new(value: u8) -> Self {
-        assert!(
-            value >= Self::FIRST && value < NationId::COUNT,
-            "minor-nation ID is out of range"
-        );
+    pub const fn new(value: usize) -> Self {
+        assert!(value < Self::COUNT, "minor-nation ID is out of range");
         Self(value)
     }
 
-    const fn try_new(value: u8) -> Option<Self> {
-        if value >= Self::FIRST && value < NationId::COUNT {
+    pub const fn try_new(value: usize) -> Option<Self> {
+        if value < Self::COUNT {
             Some(Self(value))
         } else {
             None
@@ -98,19 +117,23 @@ impl MinorNationId {
     }
 
     pub const fn nation(self) -> NationId {
-        NationId::new(self.0)
+        NationId::Minor(self)
     }
 
-    pub const fn get(self) -> u8 {
+    pub const fn get(self) -> usize {
+        self.0
+    }
+
+    pub(crate) const fn index(self) -> usize {
         self.0
     }
 
     pub(crate) const fn table_index(self) -> usize {
-        (self.0 - Self::FIRST) as usize
+        self.0
     }
 
     pub fn all() -> impl DoubleEndedIterator<Item = Self> + ExactSizeIterator {
-        (Self::FIRST..NationId::COUNT).map(Self::new)
+        (0..Self::COUNT).map(Self::new)
     }
 }
 
@@ -119,42 +142,155 @@ impl<'de> Deserialize<'de> for MinorNationId {
     where
         D: serde::Deserializer<'de>,
     {
-        let value = u8::deserialize(deserializer)?;
+        let value = usize::deserialize(deserializer)?;
         Self::try_new(value).ok_or_else(|| {
-            serde::de::Error::custom(format_args!(
-                "minor-nation ID {value} is out of range {}..={}",
-                Self::FIRST,
-                NationId::COUNT - 1
-            ))
+            serde::de::Error::custom(format_args!("minor-nation ID {value} is out of range"))
         })
     }
 }
 
-// A strategic-tile ownership context. Values above the nation range identify
-// non-nation map contexts, so this deliberately is not a NationId.
+/// Semantic nation identity. Major and minor IDs are independently zero-based.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-#[serde(transparent)]
-pub struct TileOwnerTag(u8);
+pub enum NationId {
+    Major(MajorNationId),
+    Minor(MinorNationId),
+}
 
-impl TileOwnerTag {
-    pub const fn new(value: u8) -> Self {
-        Self(value)
+impl NationId {
+    pub const COUNT: usize = MajorNationId::COUNT + MinorNationId::COUNT;
+
+    pub const fn as_major(self) -> Option<MajorNationId> {
+        match self {
+            Self::Major(id) => Some(id),
+            Self::Minor(_) => None,
+        }
+    }
+
+    pub const fn as_minor(self) -> Option<MinorNationId> {
+        match self {
+            Self::Minor(id) => Some(id),
+            Self::Major(_) => None,
+        }
+    }
+
+    pub fn expect_minor(self) -> MinorNationId {
+        self.as_minor().expect("nation must be a minor")
+    }
+
+    pub(crate) const fn from_table_index(index: usize) -> Self {
+        if index < MajorNationId::COUNT {
+            Self::Major(MajorNationId(index))
+        } else {
+            Self::Minor(MinorNationId(index - MajorNationId::COUNT))
+        }
+    }
+
+    pub(crate) const fn table_index(self) -> usize {
+        match self {
+            Self::Major(id) => id.0,
+            Self::Minor(id) => MajorNationId::COUNT + id.0,
+        }
+    }
+
+    pub(crate) const fn bit(self) -> u32 {
+        1 << self.table_index()
+    }
+
+    pub fn all() -> impl DoubleEndedIterator<Item = Self> + ExactSizeIterator {
+        (0..Self::COUNT).map(Self::from_table_index)
+    }
+
+    /// Retail combined slot `0..23`. Call only at the format/oracle boundary.
+    pub const fn from_retail_slot(slot: u8) -> Option<Self> {
+        let index = slot as usize;
+        if index < Self::COUNT {
+            Some(Self::from_table_index(index))
+        } else {
+            None
+        }
+    }
+
+    /// Retail combined slot `0..23`. Call only at the format/oracle boundary.
+    pub const fn retail_slot(self) -> u8 {
+        self.table_index() as u8
+    }
+
+    /// Retail combined slot. Prefer [`Self::retail_slot`] at format boundaries
+    /// and [`Self::as_major`] / [`Self::as_minor`] in gameplay.
+    pub const fn get(self) -> u8 {
+        self.retail_slot()
+    }
+}
+
+/// Ownership or map context of a strategic tile.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub enum TileContext {
+    Nation(NationId),
+    Ocean(OceanZoneId),
+    Unknown(i32),
+}
+
+impl From<NationId> for TileContext {
+    fn from(nation: NationId) -> Self {
+        Self::Nation(nation)
+    }
+}
+
+impl From<MajorNationId> for TileContext {
+    fn from(id: MajorNationId) -> Self {
+        Self::Nation(id.nation())
+    }
+}
+
+impl From<MinorNationId> for TileContext {
+    fn from(id: MinorNationId) -> Self {
+        Self::Nation(id.nation())
+    }
+}
+
+impl TileContext {
+    pub fn from_nation(nation: impl Into<NationId>) -> Self {
+        Self::Nation(nation.into())
+    }
+
+    /// Retail owner byte: `0..23` is a nation, `23 + zone` is an ocean zone.
+    pub const fn from_retail_tag(tag: u8) -> Self {
+        match NationId::from_retail_slot(tag) {
+            Some(nation) => Self::Nation(nation),
+            None => Self::Ocean(OceanZoneId(tag as usize - NationId::COUNT)),
+        }
+    }
+
+    /// Retail owner byte used by v62 saves and map generation traces.
+    pub const fn to_retail_tag(self) -> u8 {
+        match self {
+            Self::Nation(nation) => nation.retail_slot(),
+            Self::Ocean(zone) => (NationId::COUNT + zone.0) as u8,
+            Self::Unknown(value) => value as u8,
+        }
+    }
+
+    /// Retail owner byte. Prefer [`Self::from_retail_tag`].
+    pub const fn new(tag: u8) -> Self {
+        Self::from_retail_tag(tag)
     }
 
     pub const fn get(self) -> u8 {
-        self.0
-    }
-
-    pub const fn from_nation(nation: NationId) -> Self {
-        Self(nation.get())
+        self.to_retail_tag()
     }
 
     pub const fn nation(self) -> Option<NationId> {
-        NationId::try_new(self.0)
+        match self {
+            Self::Nation(nation) => Some(nation),
+            Self::Ocean(_) | Self::Unknown(_) => None,
+        }
     }
 
-    pub const fn is_claimed_nation(self) -> bool {
-        self.0 < NationId::COUNT
+    pub const fn ocean(self) -> Option<OceanZoneId> {
+        match self {
+            Self::Ocean(zone) => Some(zone),
+            Self::Nation(_) | Self::Unknown(_) => None,
+        }
     }
 }
 
@@ -196,17 +332,21 @@ impl CivilianUnitId {
     }
 }
 
-/// Zero-based ordinal in the retail ocean manager's shared sea/port-zone table.
+/// Identity of an entry in the ocean manager's shared sea/port-zone table.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(transparent)]
-pub struct OceanZoneId(u16);
+pub struct OceanZoneId(usize);
 
 impl OceanZoneId {
-    pub const fn new(value: u16) -> Self {
+    pub const fn new(value: usize) -> Self {
         Self(value)
     }
 
-    pub const fn get(self) -> u16 {
+    pub(crate) const fn index(self) -> usize {
+        self.0
+    }
+
+    pub const fn get(self) -> usize {
         self.0
     }
 }

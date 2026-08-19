@@ -14,7 +14,7 @@ pub enum DiplomaticRelationship {
 }
 
 impl DiplomaticRelationship {
-    pub const fn try_from_retail(value: i16) -> Option<Self> {
+    pub const fn try_from_retail(value: i32) -> Option<Self> {
         match value {
             2 => Some(Self::Alliance),
             3 => Some(Self::NonAggressionPact),
@@ -25,7 +25,7 @@ impl DiplomaticRelationship {
         }
     }
 
-    pub const fn retail(self) -> i16 {
+    pub const fn retail(self) -> i32 {
         match self {
             Self::Alliance => 2,
             Self::NonAggressionPact => 3,
@@ -46,7 +46,7 @@ pub enum DiplomaticMissionLevel {
 }
 
 impl DiplomaticMissionLevel {
-    pub const fn try_from_retail(value: i16) -> Option<Self> {
+    pub const fn try_from_retail(value: i32) -> Option<Self> {
         match value {
             0 => Some(Self::None),
             1 => Some(Self::TradeConsulate),
@@ -55,7 +55,7 @@ impl DiplomaticMissionLevel {
         }
     }
 
-    pub const fn retail(self) -> i16 {
+    pub const fn retail(self) -> i32 {
         match self {
             Self::None => 0,
             Self::TradeConsulate => 1,
@@ -68,9 +68,9 @@ impl DiplomaticMissionLevel {
 pub struct DiplomaticCongressState {
     pub chairman: Option<MajorNationId>,
     pub counterpart: Option<MajorNationId>,
-    pub chairman_support: i16,
-    pub counterpart_support: i16,
-    pub neutral_support: i16,
+    pub chairman_support: i32,
+    pub counterpart_support: i32,
+    pub neutral_support: i32,
 }
 
 /// Persistent `TDiplomacyMgr` state plus its two constructor-restored runtime values.
@@ -82,12 +82,12 @@ pub struct DiplomaticCongressState {
 /// the v62 payload alone cannot reconstruct them.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct DiplomacyState {
-    pub standings: NationTable<NationTable<i16>>,
+    pub standings: NationTable<NationTable<i32>>,
     pub relationships: NationTable<NationTable<DiplomaticRelationship>>,
-    pub relationship_turns: NationTable<NationTable<Option<i16>>>,
-    pub influence_thresholds: ProvinceTable<i16>,
+    pub relationship_turns: NationTable<NationTable<Option<i32>>>,
+    pub influence_thresholds: ProvinceTable<i32>,
     pub influence_sides: ProvinceTable<Option<MajorNationId>>,
-    pub last_diplomatic_effort_turn: i16,
+    pub last_diplomatic_effort_turn: i32,
     pub mission_levels: NationTable<NationTable<DiplomaticMissionLevel>>,
     pub congress: DiplomaticCongressState,
     pub special_relation_sources: MinorNationTable<Option<MajorNationId>>,
@@ -108,17 +108,15 @@ impl DiplomacyState {
             NationTable::from_fn(|target| {
                 if source == target {
                     0xff
-                } else if source.get() >= MinorNationId::FIRST
-                    && target.get() >= MinorNationId::FIRST
+                } else if let (Some(source_minor), Some(target_minor)) =
+                    (source.as_minor(), target.as_minor())
                 {
-                    if (source.get() - MinorNationId::FIRST) / 4
-                        == (target.get() - MinorNationId::FIRST) / 4
-                    {
+                    if source_minor.get() / 4 == target_minor.get() / 4 {
                         0x96
                     } else {
                         0x6e
                     }
-                } else if MajorNationId::from_nation(source).is_some()
+                } else if source.as_major().is_some()
                     && source != human
                     && difficulty > Difficulty::Normal
                 {
@@ -134,8 +132,8 @@ impl DiplomacyState {
         });
         let mut mission_levels = NationTable::from_fn(|source| {
             NationTable::from_fn(|target| {
-                if MajorNationId::from_nation(source).is_some()
-                    && MajorNationId::from_nation(target).is_some()
+                if source.as_major().is_some()
+                    && NationId::as_major(target).is_some()
                     && source != target
                 {
                     DiplomaticMissionLevel::Embassy
@@ -146,9 +144,9 @@ impl DiplomacyState {
         });
 
         if difficulty == Difficulty::Introductory {
-            let first_minor = (rng.next_rand() as u8 % 4) * 4 + MinorNationId::FIRST;
-            for target in first_minor..first_minor + 4 {
-                let target = NationId::new(target);
+            let first_minor = (rng.next_rand() as usize % 4) * 4;
+            for offset in 0..4 {
+                let target = MinorNationId::new(first_minor + offset).nation();
                 let human = human_nation.nation();
                 mission_levels[human][target] = DiplomaticMissionLevel::TradeConsulate;
                 mission_levels[target][human] = DiplomaticMissionLevel::TradeConsulate;
@@ -162,9 +160,8 @@ impl DiplomacyState {
                 if source == human_nation {
                     continue;
                 }
-                let target = NationId::new(
-                    rng.next_rand() as u8 % MinorNationId::COUNT + MinorNationId::FIRST,
-                );
+                let target =
+                    MinorNationId::new(rng.next_rand() as usize % MinorNationId::COUNT).nation();
                 let source = source.nation();
                 mission_levels[source][target] = DiplomaticMissionLevel::TradeConsulate;
                 mission_levels[target][source] = DiplomaticMissionLevel::TradeConsulate;
@@ -283,7 +280,7 @@ pub enum DiplomacyPolicy {
 }
 
 impl DiplomacyPolicy {
-    pub const fn try_from_retail(value: i16) -> Option<Self> {
+    pub const fn try_from_retail(value: i32) -> Option<Self> {
         match value {
             0x12d => Some(Self::JoinEmpire),
             0x12e => Some(Self::Alliance),
@@ -297,7 +294,7 @@ impl DiplomacyPolicy {
         }
     }
 
-    pub const fn retail(self) -> i16 {
+    pub const fn retail(self) -> i32 {
         match self {
             Self::JoinEmpire => 0x12d,
             Self::Alliance => 0x12e,
@@ -341,7 +338,7 @@ pub struct DiplomacyWarJoinPrompt {
     pub kind: DiplomacyWarJoinKind,
     pub pair_first: NationId,
     pub pair_second: NationId,
-    pub cursor: u8,
+    pub cursor: usize,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -400,7 +397,7 @@ pub enum PlayerDiplomacyRejection {
 }
 
 impl PlayerDiplomacyRejection {
-    pub const fn proposal_mode(self) -> i16 {
+    pub const fn proposal_mode(self) -> i32 {
         match self {
             Self::EmbassyRequired => 1,
             Self::AlreadyAtWar => 2,
@@ -653,7 +650,7 @@ impl GameState {
         PlayerDiplomacyOrderResult::Applied
     }
 
-    pub fn diplomacy_standing(&self, source: NationId, target: NationId) -> i16 {
+    pub fn diplomacy_standing(&self, source: NationId, target: NationId) -> i32 {
         self.diplomacy.standings[source][target]
     }
 
@@ -708,12 +705,12 @@ impl GameState {
                 if at_war {
                     return Err(PlayerDiplomacyRejection::AlreadyAtWar);
                 }
-                if MajorNationId::from_nation(target).is_some() {
+                if NationId::as_major(target).is_some() {
                     return Err(PlayerDiplomacyRejection::JoinEmpireRequiresMinor);
                 }
             }
             PlayerDiplomacyAction::Alliance => {
-                if MajorNationId::from_nation(target).is_none() {
+                if NationId::as_major(target).is_none() {
                     return Err(PlayerDiplomacyRejection::AllianceRequiresGreatPower);
                 }
                 if at_war {
@@ -733,7 +730,7 @@ impl GameState {
                 if relationship == DiplomaticRelationship::NonAggressionPact {
                     return Err(PlayerDiplomacyRejection::AlreadyHaveNonAggressionPact);
                 }
-                if MajorNationId::from_nation(target).is_some() {
+                if NationId::as_major(target).is_some() {
                     return Err(PlayerDiplomacyRejection::NonAggressionPactRequiresMinor);
                 }
             }
@@ -896,12 +893,12 @@ impl GameState {
                 }) {
                     true
                 } else {
-                    let mut tie_seed = i32::from(minor.get()) * 7
-                        + i32::from(major.get())
+                    let mut tie_seed = (minor.get() as i32) * 7
+                        + (major.get() as i32)
                         + self.turn.economic_turn
                         + score;
                     if tie_seed == 0 {
-                        tie_seed = i32::from(minor.get());
+                        tie_seed = (minor.get() as i32);
                     }
                     let draw = (tie_seed as u32).wrapping_mul(0x015a_4e35).wrapping_add(1);
                     (draw >> 12) & 1 != 0
@@ -974,16 +971,28 @@ mod tests {
         let state =
             DiplomacyState::for_random_start(MajorNationId::new(6), Difficulty::Normal, &mut rng);
 
-        assert_eq!(state.standings[NationId::new(0)][NationId::new(0)], 0xff);
-        assert_eq!(state.standings[NationId::new(0)][NationId::new(1)], 0x5a);
-        assert_eq!(state.standings[NationId::new(7)][NationId::new(10)], 0x96);
-        assert_eq!(state.standings[NationId::new(7)][NationId::new(11)], 0x6e);
         assert_eq!(
-            state.mission_levels[NationId::new(0)][NationId::new(1)],
+            state.standings[MajorNationId::new(0)][MajorNationId::new(0)],
+            0xff
+        );
+        assert_eq!(
+            state.standings[MajorNationId::new(0)][MajorNationId::new(1)],
+            0x5a
+        );
+        assert_eq!(
+            state.standings[MinorNationId::new(0)][MinorNationId::new(3)],
+            0x96
+        );
+        assert_eq!(
+            state.standings[MinorNationId::new(0)][MinorNationId::new(4)],
+            0x6e
+        );
+        assert_eq!(
+            state.mission_levels[MajorNationId::new(0)][MajorNationId::new(1)],
             DiplomaticMissionLevel::Embassy
         );
         assert_eq!(
-            state.mission_levels[NationId::new(0)][NationId::new(7)],
+            state.mission_levels[MajorNationId::new(0)][MinorNationId::new(0)],
             DiplomaticMissionLevel::None
         );
         assert_eq!(rng.state(), 1, "Normal initialization consumes no CRT draw");
@@ -1000,7 +1009,8 @@ mod tests {
         assert_eq!(introductory_rng.state(), 2_745_024);
         for target in 11..15 {
             assert_eq!(
-                introductory.mission_levels[NationId::new(6)][NationId::new(target)],
+                introductory.mission_levels[MajorNationId::new(6)]
+                    [NationId::from_retail_slot(target as u8).unwrap()],
                 DiplomaticMissionLevel::TradeConsulate
             );
         }
@@ -1017,7 +1027,7 @@ mod tests {
         }
         assert_eq!(hard_rng, expected_rng);
         assert_eq!(
-            hard.mission_levels[NationId::new(0)][NationId::new(16)],
+            hard.mission_levels[MajorNationId::new(0)][MinorNationId::new(2)],
             DiplomaticMissionLevel::TradeConsulate
         );
     }
@@ -1031,7 +1041,13 @@ mod tests {
             &mut rng,
         );
 
-        assert_eq!(state.standings[NationId::new(0)][NationId::new(0)], 0x6e);
-        assert_eq!(state.standings[NationId::new(6)][NationId::new(6)], 0xff);
+        assert_eq!(
+            state.standings[MajorNationId::new(0)][MajorNationId::new(0)],
+            0x6e
+        );
+        assert_eq!(
+            state.standings[MajorNationId::new(6)][MajorNationId::new(6)],
+            0xff
+        );
     }
 }

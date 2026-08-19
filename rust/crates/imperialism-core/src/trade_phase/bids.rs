@@ -291,7 +291,7 @@ impl GameState {
             }
         } else if resource != ResourceKind::Horses {
             let stock = self.city_stock(seller, resource);
-            let mut cap = 10_i16.min(stock);
+            let mut cap = 10.min(stock);
             cap = cap.min(self.trade_offer_cap(seller));
             if self.nations.majors[&seller].economy.item_potentials[resource] == -1 {
                 return;
@@ -304,7 +304,7 @@ impl GameState {
         if horses != 0
             && self.nations.majors[&seller].economy.item_potentials[ResourceKind::Horses] != -1
         {
-            let mut amount = i16::from(horses != 1) + 1;
+            let mut amount = i32::from(horses != 1) + 1;
             amount = amount.min(self.trade_offer_cap(seller));
             self.set_trade_potential(seller, ResourceKind::Horses, amount);
         }

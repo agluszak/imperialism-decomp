@@ -464,7 +464,7 @@ impl GameState {
             TradeCommodity::Coal,
             TradeCommodity::Iron,
         ] {
-            let mut priority = self.market.rows[commodity].price as i16;
+            let mut priority = self.market.rows[commodity].price as i32;
             if matches!(commodity, TradeCommodity::Coal | TradeCommodity::Iron) {
                 priority -= 15;
             }
@@ -475,7 +475,7 @@ impl GameState {
                 &mut prices,
                 (
                     TradeCommodity::Oil,
-                    self.market.rows[TradeCommodity::Oil].price as i16 - 15,
+                    self.market.rows[TradeCommodity::Oil].price as i32 - 15,
                 ),
                 compare_commodity_price,
             );
@@ -495,7 +495,7 @@ impl GameState {
             4
         };
         let budget = self.trade_offer_cap(nation) / divisor;
-        let mut allocated = 0_i16;
+        let mut allocated = 0;
         for resource in prices.into_iter().rev() {
             if budget <= allocated {
                 break;
@@ -539,7 +539,7 @@ impl GameState {
     pub(super) fn arms_set_trade_bids(&mut self, nation: MajorNationId) {
         let prices = self.sorted_processed_prices();
         let budget = self.trade_offer_cap(nation) / 2;
-        let mut allocated = 0_i16;
+        let mut allocated = 0;
         for resource in prices.into_iter().rev() {
             if allocated >= budget {
                 break;
@@ -584,7 +584,7 @@ impl GameState {
             cap / 2
         };
         let prices = self.sorted_processed_prices();
-        let mut amounts = ResourceTable::<i16>::default();
+        let mut amounts = ResourceTable::<i32>::default();
         let mut selected_prices = prices.into_iter().rev().cycle();
         let mut iteration = 0_i32;
         while target > 0 && iteration < i32::from(target) * 3 {
@@ -617,7 +617,7 @@ impl GameState {
                 &mut prices,
                 (
                     resource,
-                    self.market.rows[trade_commodity(resource)].price as i16,
+                    self.market.rows[trade_commodity(resource)].price as i32,
                 ),
                 compare_resource_price,
             );
@@ -661,14 +661,14 @@ impl GameState {
     }
 }
 
-fn compare_commodity_rank(a: &(TradeCommodity, i16), b: &(TradeCommodity, i16)) -> i16 {
+fn compare_commodity_rank(a: &(TradeCommodity, i32), b: &(TradeCommodity, i32)) -> i32 {
     if a.1 <= b.1 { 1 } else { -1 }
 }
 
-fn compare_commodity_price(a: &(TradeCommodity, i16), b: &(TradeCommodity, i16)) -> i16 {
+fn compare_commodity_price(a: &(TradeCommodity, i32), b: &(TradeCommodity, i32)) -> i32 {
     if a.1 <= b.1 { -1 } else { 1 }
 }
 
-fn compare_resource_price(a: &(ResourceKind, i16), b: &(ResourceKind, i16)) -> i16 {
+fn compare_resource_price(a: &(ResourceKind, i32), b: &(ResourceKind, i32)) -> i32 {
     if a.1 <= b.1 { -1 } else { 1 }
 }

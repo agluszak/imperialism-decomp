@@ -74,7 +74,7 @@ pub(super) fn city_marker_offset(state: &GameState, tile: TileId) -> Option<u16>
     let flags = tile_state.flags.bits();
     let minor_sprites = tile_state
         .former_owner_nation
-        .is_some_and(|owner| owner.get() >= MajorNationId::COUNT);
+        .is_some_and(|owner| usize::from(owner.get()) >= MajorNationId::COUNT);
     if !minor_sprites {
         if flags & 1 != 0 {
             return Some(0x6c0);
@@ -130,13 +130,10 @@ fn fort_marker_offset(state: &GameState, tile: TileId) -> Option<u16> {
 }
 
 pub(super) fn town_transport_linked(state: &GameState, tile: TileId) -> bool {
-    let Some(owner) = state.map()[tile]
-        .owner_nation
-        .and_then(TileOwnerTag::nation)
-    else {
+    let Some(owner) = state.map()[tile].owner_nation.and_then(TileContext::nation) else {
         return true;
     };
-    let Some(major) = MajorNationId::from_nation(owner) else {
+    let Some(major) = NationId::as_major(owner) else {
         return true;
     };
     state
@@ -233,7 +230,7 @@ fn resource_is_prospectable(resource: &ResourceKind) -> bool {
 }
 
 fn resource_visible_to_active_nation(state: &GameState, tile: TileId) -> bool {
-    MajorNationId::from_nation(state.turn().active_nation)
+    NationId::as_major(state.turn().active_nation)
         .is_some_and(|nation| state.map()[tile].development.resource_visible_to_majors[nation])
 }
 

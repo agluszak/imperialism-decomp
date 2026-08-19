@@ -27,7 +27,7 @@ pub(in crate::ui::city) fn on_city_amount_bar_click(
     {
         0
     } else if capacity > 0 {
-        (i32::from(x) * i32::from(capacity) / i32::from(INDUSTRY_BAR_WIDTH) + 1) as i16
+        i32::from(x) * capacity / i32::from(INDUSTRY_BAR_WIDTH) + 1
     } else {
         1
     };

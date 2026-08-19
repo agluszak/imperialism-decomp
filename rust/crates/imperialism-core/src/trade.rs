@@ -6,11 +6,11 @@ use crate::*;
 pub enum PlayerTradeOrder {
     None,
     Buy,
-    Sell(i16),
+    Sell(i32),
 }
 
 impl PlayerTradeOrder {
-    fn from_potential(value: i16) -> Self {
+    fn from_potential(value: i32) -> Self {
         if value < 0 {
             Self::Buy
         } else if value > 0 {
@@ -51,9 +51,9 @@ pub enum TransportAllocation {
 /// The authoritative values displayed by one retail transport-ledger row.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct TransportRowStatus {
-    pub allocated: i16,
-    pub available: i16,
-    pub limit: Option<i16>,
+    pub allocated: i32,
+    pub available: i32,
+    pub limit: Option<i32>,
     pub adjustable: bool,
     pub can_decrease: bool,
     pub can_increase: bool,
@@ -146,7 +146,7 @@ impl GameState {
         &mut self,
         nation: MajorNationId,
         commodity: TradeCommodity,
-        delta: i16,
+        delta: i32,
     ) -> PlayerTradeOrder {
         assert!(matches!(delta, -1 | 1), "trade offer step must be -1 or 1");
         assert!(
@@ -175,8 +175,8 @@ impl GameState {
         &mut self,
         nation: MajorNationId,
         resource: ResourceKind,
-        amount: i16,
-        price: i16,
+        amount: i32,
+        price: i32,
     ) {
         let MajorNation {
             common, economy, ..
@@ -237,8 +237,8 @@ impl GameState {
         &mut self,
         nation: MajorNationId,
         resource: ResourceKind,
-        requested: i16,
-    ) -> i16 {
+        requested: i32,
+    ) -> i32 {
         let MajorNation {
             economy: major,
             city,
@@ -255,7 +255,7 @@ impl GameState {
         &mut self,
         nation: MajorNationId,
         allocation: TransportAllocation,
-        delta: i16,
+        delta: i32,
     ) -> bool {
         assert!(
             delta == -1 || delta == 1,
@@ -550,14 +550,14 @@ impl GameState {
 }
 
 fn transport_allocation_total(
-    amounts: &ResourceTable<i16>,
+    amounts: &ResourceTable<i32>,
     allocation: TransportAllocation,
-) -> i16 {
+) -> i32 {
     let (primary, secondary) = allocation.resources();
     amounts[primary] + secondary.map_or(0, |resource| amounts[resource])
 }
 
-fn transport_row_limit(major: &MajorNation, allocation: TransportAllocation) -> Option<i16> {
+fn transport_row_limit(major: &MajorNation, allocation: TransportAllocation) -> Option<i32> {
     let city = &major.city;
     let building =
         |slot| city.building_type(slot, &major.economy, major.common.owned_region_count());
@@ -599,7 +599,7 @@ fn split_transport_allocation(
     major: &mut GreatPowerState,
     primary: ResourceKind,
     secondary: ResourceKind,
-    total: i16,
+    total: i32,
 ) {
     let primary_target = major.need_current_by_type[primary].min(total);
     major.update_need_target(primary, primary_target);
@@ -610,8 +610,8 @@ fn settle_purchase(
     common: &mut NationCommonState,
     major: &mut GreatPowerState,
     resource: ResourceKind,
-    amount: i16,
-    price: i16,
+    amount: i32,
+    price: i32,
 ) {
     major.purchased_items_by_resource[resource] += amount;
     let cost = i32::from(price) * i32::from(amount);
@@ -684,7 +684,7 @@ mod tests {
                     false, true, true, true, true, true, true, true, true, true,
                 ]),
                 difficulty: Difficulty::Easy,
-                active_nation: NationId::new(6),
+                active_nation: MajorNationId::new(6).nation(),
                 last_turn_alert_tick: 0,
                 turn_alert_mask: 0,
                 turn_cooldown_defer_counter: 0,
@@ -903,7 +903,7 @@ mod tests {
     #[test]
     fn diplomacy_grant_settlement_replaces_or_rejects_grants() {
         let nation = MajorNationId::new(6);
-        let target = NationId::new(8);
+        let target = MinorNationId::new(1);
         let mut game = state();
         let state = &mut game.nations.majors[&nation];
         state.common.treasury = 10_000;
@@ -913,7 +913,7 @@ mod tests {
             amount: 10_000,
             recurring: true,
         };
-        assert!(game.set_diplomacy_grant(nation, target, Some(recurring_ten_thousand)));
+        assert!(game.set_diplomacy_grant(nation, target.nation(), Some(recurring_ten_thousand)));
 
         let state = &game.nations.majors[&nation];
         let major = &state.economy;
@@ -927,7 +927,7 @@ mod tests {
         let before_rejected = game.clone();
         assert!(!game.set_diplomacy_grant(
             nation,
-            NationId::new(9),
+            MinorNationId::new(2).nation(),
             Some(DiplomacyGrant {
                 amount: 1_000,
                 recurring: false,
@@ -937,13 +937,13 @@ mod tests {
 
         assert!(game.set_diplomacy_grant(
             nation,
-            target,
+            target.nation(),
             Some(DiplomacyGrant {
                 amount: 3_000,
                 recurring: true,
             }),
         ));
-        assert!(game.set_diplomacy_grant(nation, target, None));
+        assert!(game.set_diplomacy_grant(nation, target.nation(), None));
         let state = &game.nations.majors[&nation];
         let major = &state.economy;
         assert_eq!(state.common.treasury, 10_000);
@@ -954,7 +954,7 @@ mod tests {
     #[test]
     fn decrements_trade_policy_score_through_the_retail_steps() {
         let nation = MajorNationId::new(6);
-        let target = NationId::new(0);
+        let target = MajorNationId::new(0);
         let mut game = state();
 
         for (score, treasury, expected) in [
@@ -969,7 +969,7 @@ mod tests {
             common.trade_policy_by_nation[target] = TradePolicyScore::new(score);
             common.treasury = treasury;
 
-            game.decrement_trade_policy_score(nation, target);
+            game.decrement_trade_policy_score(nation, target.nation());
 
             assert_eq!(
                 game.nations.majors[&nation].common.trade_policy_by_nation[target],

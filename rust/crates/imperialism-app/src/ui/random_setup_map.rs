@@ -11,7 +11,8 @@ use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
 use imperialism_core::{
-    MAJOR_NATION_COUNT, MajorNationId, MapGeometry, MapTopology, NationId, TileId, TileOwnerTag,
+    MAJOR_NATION_COUNT, MajorNationId, MapGeometry, MapPosition, MapTopology, NationId,
+    TileContext, TileId,
 };
 use imperialism_formats::{DibPalette, FourCc, PictureId, Rgb, fourcc};
 
@@ -112,7 +113,7 @@ fn sync_random_setup_coat(
 }
 
 fn coat_picture_id(nation: MajorNationId) -> PictureId {
-    PictureId::new(FIRST_MAJOR_NATION_COAT_PICTURE + i16::from(nation.get()))
+    PictureId::new(FIRST_MAJOR_NATION_COAT_PICTURE + nation.get() as i16)
 }
 
 fn sync_random_setup_flag(
@@ -148,7 +149,7 @@ fn sync_random_setup_flag(
         if flag.nation == Some(setup.nation) {
             continue;
         }
-        let left = f32::from(setup.nation.get()) * FLAG_WIDTH as f32;
+        let left = setup.nation.get() as f32 * FLAG_WIDTH as f32;
         let rect = Rect::new(left, 0.0, left + FLAG_WIDTH as f32, FLAG_HEIGHT as f32);
         if let Some(mut image_node) = image_node {
             image_node.image = handle.clone();
@@ -234,14 +235,14 @@ fn on_map_preview_click(
 }
 
 pub(crate) fn compose_owner_preview_indices(
-    owner_at: impl Fn(TileId) -> Option<TileOwnerTag>,
+    owner_at: impl Fn(TileId) -> Option<TileContext>,
     selected_nation: NationId,
 ) -> Vec<u8> {
     compose_owner_preview_indices_with_fill(owner_at, selected_nation, nation_owner_palette)
 }
 
 pub(crate) fn compose_owner_preview_indices_with_fill(
-    owner_at: impl Fn(TileId) -> Option<TileOwnerTag>,
+    owner_at: impl Fn(TileId) -> Option<TileContext>,
     selected_nation: NationId,
     fill: impl Fn(NationId) -> u8,
 ) -> Vec<u8> {
@@ -252,10 +253,10 @@ pub(crate) fn compose_owner_preview_indices_with_fill(
     let geometry = MapGeometry::new(MapTopology::Bounded);
 
     for tile_id in TileId::all() {
-        let (row, column) = geometry.row_column(tile_id);
+        let MapPosition { row, column } = geometry.position(tile_id);
         let odd_row = row & 1 != 0;
-        let px = 3 * usize::from(column) + usize::from(odd_row);
-        let py = 3 * usize::from(row);
+        let px = 3 * column as usize + usize::from(odd_row);
+        let py = 3 * row as usize;
         let neighbor_tags = geometry
             .neighbors(tile_id)
             .map(|neighbor| owner_tag(&owner_at, neighbor));
@@ -353,21 +354,18 @@ fn compose_preview_indices(
     tiles: &[imperialism_core::GeneratedTerrainTile],
     selected_nation: MajorNationId,
 ) -> Vec<u8> {
-    compose_owner_preview_indices(
-        |tile| tiles[usize::from(tile.get())].owner,
-        selected_nation.nation(),
-    )
+    compose_owner_preview_indices(|tile| tiles[tile.get()].owner, selected_nation.nation())
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum PreviewOwner {
     Border,
     Unowned,
-    Tagged(TileOwnerTag),
+    Tagged(TileContext),
 }
 
 fn owner_tag(
-    owner_at: &impl Fn(TileId) -> Option<TileOwnerTag>,
+    owner_at: &impl Fn(TileId) -> Option<TileContext>,
     tile: Option<TileId>,
 ) -> PreviewOwner {
     match tile {
@@ -393,7 +391,7 @@ fn preview_palette(owner: PreviewOwner, fill: &impl Fn(NationId) -> u8) -> u8 {
 }
 
 fn nation_owner_palette(nation: NationId) -> u8 {
-    match MajorNationId::from_nation(nation) {
+    match NationId::as_major(nation) {
         Some(major) => major_nation_palette(major),
         None => 0x0b,
     }
@@ -449,7 +447,7 @@ fn is_selection_maskable(palette: u8) -> bool {
 }
 
 fn major_nation_palette(nation: MajorNationId) -> u8 {
-    MAJOR_NATION_PALETTES[usize::from(nation.get())]
+    MAJOR_NATION_PALETTES[nation.get()]
 }
 
 fn nation_at_preview_position(
@@ -471,7 +469,7 @@ fn nation_at_preview_position(
 }
 
 fn nation_for_palette(palette: u8) -> Option<MajorNationId> {
-    MajorNationId::all().find(|&nation| MAJOR_NATION_PALETTES[usize::from(nation.get())] == palette)
+    MajorNationId::all().find(|&nation| MAJOR_NATION_PALETTES[nation.get()] == palette)
 }
 
 pub(crate) fn preview_image_from_indices(palette_indices: &[u8], palette: &DibPalette) -> Image {
@@ -511,10 +509,10 @@ fn preview_image(palette_indices: &[u8], palette: &DibPalette) -> Image {
 mod tests {
     use super::*;
     use imperialism_core::{
-        GeneratedTerrainTile, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, TerrainKind, TileOwnerTag,
+        GeneratedTerrainTile, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, TerrainKind, TileContext,
     };
 
-    fn tiles(owner: Option<TileOwnerTag>) -> Vec<GeneratedTerrainTile> {
+    fn tiles(owner: Option<TileContext>) -> Vec<GeneratedTerrainTile> {
         vec![
             GeneratedTerrainTile {
                 terrain: TerrainKind::Plains,
@@ -530,7 +528,7 @@ mod tests {
     #[test]
     fn renders_major_nation_palette_indices() {
         let pixels =
-            compose_preview_indices(&tiles(Some(TileOwnerTag::new(0))), MajorNationId::new(1));
+            compose_preview_indices(&tiles(Some(TileContext::new(0))), MajorNationId::new(1));
 
         assert_eq!(pixels.len(), PREVIEW_PIXEL_COUNT);
         assert_eq!(pixels[90 * PREVIEW_WIDTH + 90], 0x16);
@@ -538,9 +536,8 @@ mod tests {
 
     #[test]
     fn distinct_sea_zones_render_as_one_unbordered_ocean() {
-        let mut map = tiles(Some(TileOwnerTag::new(NationId::COUNT)));
-        map[usize::from(TileId::new(1000).get())].owner =
-            Some(TileOwnerTag::new(NationId::COUNT + 1));
+        let mut map = tiles(Some(TileContext::new(NationId::COUNT as u8)));
+        map[TileId::new(1000).get()].owner = Some(TileContext::new((NationId::COUNT + 1) as u8));
 
         let pixels = compose_preview_indices(&map, MajorNationId::new(1));
 
@@ -564,7 +561,7 @@ mod tests {
     #[test]
     fn retains_the_native_odd_row_stride_spill() {
         let mut map = tiles(None);
-        map[STRATEGIC_MAP_WIDTH as usize + 107].owner = Some(TileOwnerTag::new(0));
+        map[STRATEGIC_MAP_WIDTH as usize + 107].owner = Some(TileContext::new(0));
 
         let pixels = compose_preview_indices(&map, MajorNationId::new(1));
 

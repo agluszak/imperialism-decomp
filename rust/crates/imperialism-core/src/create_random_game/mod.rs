@@ -27,18 +27,15 @@ use sea_zones::*;
 const SCATTERED_SHIPS_IMPORTANCE_BITS: u32 = 981_668_463;
 
 /// `kMapTileActionStateAnchor`.
-const ACTION_STATE_ANCHOR: i16 = 3;
+const ACTION_STATE_ANCHOR: i32 = 3;
 
-const ACTION_STATE_PORT_ZONE_MARKER: i16 = -14;
+const ACTION_STATE_PORT_ZONE_MARKER: i32 = -14;
 
-const ACTION_STATE_ZONE_CENTER: i16 = -16;
+const ACTION_STATE_ZONE_CENTER: i32 = -16;
 
-const ACTION_STATE_ZONE_NORTH_WEST: i16 = -18;
+const ACTION_STATE_ZONE_NORTH_WEST: i32 = -18;
 
-const ACTION_STATE_ZONE_NORTH_EAST: i16 = -20;
-
-/// Water-region owner tags are biased by this amount (`label + 0x17`).
-const SEA_OWNER_BIAS: u8 = 0x17;
+const ACTION_STATE_ZONE_NORTH_EAST: i32 = -20;
 
 /// Starting treasury by difficulty for human majors (`g_anNationStartingTreasuryByLocale`).
 ///
@@ -49,7 +46,7 @@ const STARTING_TREASURY_BY_DIFFICULTY: EnumMap<Difficulty, i32> =
 /// Scenario city stock presets (`g_Rebuild_Primary_Nation_Value_00653570`).
 ///
 /// Row index is the difficulty for human majors, or forced Normal for AI majors.
-const CITY_STOCK_PRESET_BY_DIFFICULTY: EnumMap<Difficulty, ResourceTable<i16>> =
+const CITY_STOCK_PRESET_BY_DIFFICULTY: EnumMap<Difficulty, ResourceTable<i32>> =
     EnumMap::from_array([
         ResourceTable::from_array([
             20, 20, 40, 30, 30, 10, 0, 20, 20, 20, 20, 20, 0, 10, 10, 10, 10, 10, 5, 0, 5, 0, 0,
@@ -69,12 +66,12 @@ const CITY_STOCK_PRESET_BY_DIFFICULTY: EnumMap<Difficulty, ResourceTable<i16>> =
     ]);
 
 /// Production-order values forced by `ApplyScenarioRelationPresetAndSpawnFrogCity`.
-const SCENARIO_FORCED_PRODUCTION: ProductionTable<i16> =
+const SCENARIO_FORCED_PRODUCTION: ProductionTable<i32> =
     ProductionTable::from_array([0, 0, 0, 0, 0, 0, 0, 999, 999, 999, 999, 0, 0, 999, 999, 0]);
 
 /// `TCity::ICity` starter capacity retained by human Introductory/Easy cities
 /// before `ApplyScenarioRelationPresetAndSpawnFrogCity` forces the other slots.
-const LOW_DIFFICULTY_HUMAN_PRODUCTION: ProductionTable<i16> =
+const LOW_DIFFICULTY_HUMAN_PRODUCTION: ProductionTable<i32> =
     ProductionTable::from_array([2, 1, 2, 1, 2, 1, 0, 999, 999, 999, 999, 0, 0, 999, 999, 0]);
 
 /// Localized retail strings consumed while an accepted random map becomes a game.
@@ -120,7 +117,7 @@ pub fn create_random_game(
     let technology = TechnologyState::for_random_start(runtime_seed);
     let mut world = MapMgr::new(preview.topology, post.tiles);
     for (index, generated) in preview.map.provinces().iter().enumerate() {
-        world.provinces[ProvinceId::new(index as u16)].region_class = Some(generated.region_class);
+        world.provinces[ProvinceId::new(index)].region_class = Some(generated.region_class);
     }
     world.map_data_ready = true;
     world.recruit_search_active = true;
@@ -202,7 +199,7 @@ pub fn create_random_game(
         ocean_zones.push(ZoneKind::PortZone(PortZone {
             zone: Zone {
                 display_name: String::new(),
-                status_code: Some(20 + (port_status_rng.next_sample_15() & 3) as i16),
+                status_code: Some(20 + (port_status_rng.next_sample_15() & 3) as i32),
                 target_tile: Some(port.sea_tile),
                 seed_owner: Some(port.seed_owner),
                 active_tile: port.active_tile,

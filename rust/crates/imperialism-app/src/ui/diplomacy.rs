@@ -86,7 +86,7 @@ enum DiplomacyRelationshipNotch {
 }
 
 impl DiplomacyRelationshipNotch {
-    fn from_standing(standing: i16) -> Self {
+    fn from_standing(standing: i32) -> Self {
         if standing <= 0x14 {
             Self::Hostile
         } else if standing <= 0x31 {
@@ -1107,7 +1107,7 @@ fn spawn_diplomacy_panel_text(
         .insert((DiplomacyText::Council(0), Visibility::Inherited));
     let council_label_layout = styles.row_layout.with_justify(Justify::Right);
     for row in 0..3_u8 {
-        let top = 60.0 + f32::from(row) * 16.0;
+        let top = 60.0 + row as f32 * 16.0;
         let entity = spawn_shadowed_text(
             commands,
             council,
@@ -1346,7 +1346,7 @@ fn on_diplomacy_map_click(
     };
     let Some(target) = session.game.map()[tile]
         .owner_nation
-        .and_then(TileOwnerTag::nation)
+        .and_then(TileContext::nation)
     else {
         return;
     };
@@ -1429,7 +1429,7 @@ fn tile_at_diplomacy_position(normalized: Vec2) -> Option<TileId> {
     let row = row_pixel as u16 / MAP_TILE_SCALE;
     let odd_offset = MAP_ODD_ROW_OFFSET * (row & 1);
     let column = (column_pixel as u16).checked_sub(odd_offset)? / MAP_TILE_SCALE;
-    MapGeometry::new(MapTopology::Bounded).tile(row, column)
+    MapGeometry::new(MapTopology::Bounded).tile(MapPosition::new(i32::from(row), i32::from(column)))
 }
 
 fn sync_diplomacy_map_cursor(
@@ -1463,7 +1463,7 @@ fn sync_diplomacy_map_cursor(
     let Some(target) = tile_at_diplomacy_position(normalized).and_then(|tile| {
         session.game.map()[tile]
             .owner_nation
-            .and_then(TileOwnerTag::nation)
+            .and_then(TileContext::nation)
     }) else {
         request_turn_event_cursor(&mut requested, DIPLOMACY_IDLE_CURSOR);
         return;
@@ -1538,7 +1538,7 @@ fn bind_diplomacy_notice(
     session: Res<GameSession>,
 ) {
     let (root, notice) = *notice;
-    let body = get_string(&assets, 0x2754, notice.0.proposal_mode() - 1);
+    let body = get_string(&assets, 0x2754, (notice.0.proposal_mode() - 1) as i16);
     let linger = bind_linger_dialog(root, &tree);
     linger.set_title(
         &mut commands,
@@ -1547,7 +1547,7 @@ fn bind_diplomacy_notice(
     );
     linger.set_body(&mut commands, &mut assets, body);
     let source = session.active_major_nation();
-    let coat_picture = PictureId::new(9500 + i16::from(source.get()));
+    let coat_picture = PictureId::new(9500 + source.get() as i16);
     if let Ok(image) = assets.picture(coat_picture) {
         commands.entity(linger.coat).insert(ImageNode::new(image));
     }
@@ -1587,7 +1587,7 @@ fn bind_diplomacy_entanglement_notice(
     linger.set_title(&mut commands, &mut assets, title);
     linger.set_body(&mut commands, &mut assets, body);
     let source = session.active_major_nation();
-    let coat_picture = PictureId::new(9500 + i16::from(source.get()));
+    let coat_picture = PictureId::new(9500 + source.get() as i16);
     if let Ok(image) = assets.picture(coat_picture) {
         commands.entity(linger.coat).insert(ImageNode::new(image));
     }
@@ -1952,7 +1952,7 @@ fn project_diplomacy_text(
         return;
     }
     let state = &session.game;
-    let source = MajorNationId::from_nation(state.turn().active_nation)
+    let source = NationId::as_major(state.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     let major = state.nations().major(source);
     let (name, labels_by_row, values_by_row) = diplomacy_information(state, screen.framed_nation);
@@ -2035,10 +2035,10 @@ fn project_diplomacy_text(
                     continue;
                 }
                 if let Some(node) = node.as_mut() {
-                    let (row, column) = state.map().geometry().row_column(anchor);
-                    let offset = f32::from(MajorNationId::from_nation(nation).is_none());
-                    node.left = Val::Px(f32::from(column) * 5.0 - 45.0 + offset);
-                    node.top = Val::Px(f32::from(row) * 5.0 - 6.0 + offset);
+                    let MapPosition { row, column } = state.map().geometry().position(anchor);
+                    let offset = f32::from(NationId::as_major(nation).is_none());
+                    node.left = Val::Px(column as f32 * 5.0 - 45.0 + offset);
+                    node.top = Val::Px(row as f32 * 5.0 - 6.0 + offset);
                 }
                 text.0.clear();
                 text.0.push_str(display_name);
@@ -2080,7 +2080,7 @@ fn sync_diplomacy_information(
 
     let mode = screen.interaction_mode();
     let show_compat = matches!(mode, 1 | 2 | 4);
-    let framed_major = MajorNationId::from_nation(screen.framed_nation);
+    let framed_major = NationId::as_major(screen.framed_nation);
     let framed_trade = state.nation(screen.framed_nation);
     for (icon, mut image, mut node, mut visibility) in &mut icons {
         let (anchor, atlas_offset, left_offset, top_offset) = match icon.kind {
@@ -2174,9 +2174,9 @@ fn sync_diplomacy_information(
             *visibility = Visibility::Hidden;
             continue;
         };
-        let (row, column) = state.map().geometry().row_column(anchor);
-        node.left = Val::Px(f32::from(column) * 5.0 - 8.0 + left_offset);
-        node.top = Val::Px(f32::from(row) * 5.0 + top_offset);
+        let MapPosition { row, column } = state.map().geometry().position(anchor);
+        node.left = Val::Px(column as f32 * 5.0 - 8.0 + left_offset);
+        node.top = Val::Px(row as f32 * 5.0 + top_offset);
         image.rect = Some(Rect::new(
             atlas_offset as f32,
             0.0,
@@ -2251,7 +2251,7 @@ fn diplomacy_information(
         }
         Some(CountryStatus::ProtectorateOf(_)) => labels[1] = "Anarchy".to_owned(),
         Some(CountryStatus::Independent) => {
-            if let Some(major) = MajorNationId::from_nation(nation) {
+            if let Some(major) = NationId::as_major(nation) {
                 labels[1] = "Military:".to_owned();
                 labels[2] = "Industry:".to_owned();
                 values[1] = INFORMATION_BAND_NAMES
@@ -2261,7 +2261,7 @@ fn diplomacy_information(
                     [usize::from(state.diplomacy_industry_band(major))]
                 .to_owned();
             } else {
-                let minor = MinorNationId::new(nation.get());
+                let minor = nation.expect_minor();
                 labels[1] = "Most Favored".to_owned();
                 labels[2] = "Trading Nation:".to_owned();
                 values[2] = state
@@ -2380,11 +2380,7 @@ fn representative_tile_for_nation(state: &GameState, nation: NationId) -> Option
     let mut fallback = None;
 
     for tile in TileId::all() {
-        if state.map()[tile]
-            .owner_nation
-            .and_then(TileOwnerTag::nation)
-            != Some(nation)
-        {
+        if state.map()[tile].owner_nation.and_then(TileContext::nation) != Some(nation) {
             continue;
         }
         fallback = Some(tile);
@@ -2396,15 +2392,15 @@ fn representative_tile_for_nation(state: &GameState, nation: NationId) -> Option
         {
             continue;
         }
-        let (row, column) = geometry.row_column(tile);
+        let MapPosition { row, column } = geometry.position(tile);
         if column < 25 {
             west_count += 1;
         }
         if column > 83 {
             east_count += 1;
         }
-        column_sum += u32::from(column);
-        row_sum += u32::from(row);
+        column_sum += column as u32;
+        row_sum += row as u32;
         tile_count += 1;
     }
 
@@ -2418,12 +2414,12 @@ fn representative_tile_for_nation(state: &GameState, nation: NationId) -> Option
         .flatten();
     }
     if west_count != 0 && east_count != 0 {
-        column_sum += west_count * u32::from(STRATEGIC_MAP_WIDTH);
+        column_sum += west_count * STRATEGIC_MAP_WIDTH as u32;
     }
-    let column = (column_sum / tile_count) % u32::from(STRATEGIC_MAP_WIDTH);
+    let column = (column_sum / tile_count) % STRATEGIC_MAP_WIDTH as u32;
     let row = row_sum / tile_count;
     Some(TileId::new(
-        (row * u32::from(STRATEGIC_MAP_WIDTH) + column) as u16,
+        (row * STRATEGIC_MAP_WIDTH as u32 + column) as usize,
     ))
 }
 
@@ -2473,7 +2469,7 @@ mod tests {
     fn treaty_radio_value_change_selects_that_pact() {
         let mut app = App::new();
         app.world_mut().spawn(DiplomacyScreen {
-            framed_nation: NationId::new(0),
+            framed_nation: MajorNationId::new(0).nation(),
             mode: DiplomacyMode::Treaties { row: 5 },
         });
         let radio = app
@@ -2565,7 +2561,7 @@ mod tests {
 
     fn alliance_offer_state() -> GameState {
         let mut parts = fixture_parts();
-        let player = MajorNationId::from_nation(parts.turn.active_nation)
+        let player = NationId::as_major(parts.turn.active_nation)
             .expect("beginning-of-game fixture names a major nation");
         let computer = MajorNationId::new(if player.get() == 0 { 1 } else { 0 });
         rebuild_nations(&mut parts, |id, major| {
@@ -2585,10 +2581,10 @@ mod tests {
 
     fn war_join_state() -> GameState {
         let mut parts = fixture_parts();
-        let player = MajorNationId::from_nation(parts.turn.active_nation)
+        let player = NationId::as_major(parts.turn.active_nation)
             .expect("beginning-of-game fixture names a major nation");
         let computer = MajorNationId::new(if player.get() == 0 { 1 } else { 0 });
-        let minor = NationId::new(7);
+        let minor = MinorNationId::new(0);
         rebuild_nations(&mut parts, |id, major| {
             if id != computer {
                 return;
@@ -2608,7 +2604,7 @@ mod tests {
             parts.diplomacy.standings[minor][other.nation()] = 0x5a;
         }
         let mut state = GameState::from_parts(parts);
-        state.set_country_status(minor, CountryStatus::Independent);
+        state.set_country_status(minor.nation(), CountryStatus::Independent);
         let TurnStop::DiplomacyWarJoin = state.finish_player_orders(true, &[]) else {
             panic!("declare-war on the favorite's minor must stop for the war-join dialog");
         };

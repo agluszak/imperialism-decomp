@@ -111,7 +111,7 @@ struct TransportScreen;
 #[derive(Component, Clone, Copy)]
 struct TransportAdjust {
     allocation: TransportAllocation,
-    delta: i16,
+    delta: i32,
 }
 
 #[derive(Component, Clone, Copy)]
@@ -828,19 +828,19 @@ fn transport_string(assets: &RetailUiAssets, offset: i16) -> String {
 
 fn allocation_amount(
     allocation: TransportAllocation,
-    mut amount: impl FnMut(ResourceKind) -> i16,
-) -> i16 {
+    mut amount: impl FnMut(ResourceKind) -> i32,
+) -> i32 {
     let (primary, secondary) = allocation.resources();
     amount(primary) + secondary.map_or(0, amount)
 }
 
-fn transport_gauge_width(value: i16, total: i16) -> f32 {
+fn transport_gauge_width(value: i32, total: i32) -> f32 {
     if total <= 0 {
         return 0.0;
     }
-    let pixels_per_unit = 113.0 / f32::from(total);
-    let remainder = 113.0 - pixels_per_unit * f32::from(total);
-    let value = f32::from(value);
+    let pixels_per_unit = 113.0 / total as f32;
+    let remainder = 113.0 - pixels_per_unit * total as f32;
+    let value = value as f32;
     let width = if remainder < value {
         remainder * (pixels_per_unit + 1.0) + (value - remainder) * pixels_per_unit
     } else {
@@ -864,7 +864,7 @@ mod tests {
         let mut province_names_by_nation = NationTable::default();
         for nation in NationId::all() {
             localized_nation_names[nation] = format!("N{}", nation.get());
-            let count = if MajorNationId::from_nation(nation).is_some() {
+            let count = if NationId::as_major(nation).is_some() {
                 8
             } else {
                 4
@@ -962,7 +962,7 @@ mod tests {
     #[test]
     fn activating_generated_arrows_updates_allocation_and_caption() {
         let state = fixture_state();
-        let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
+        let nation = NationId::as_major(state.turn().active_nation).unwrap();
         let binding = TRANSPORT_ROWS
             .into_iter()
             .find(|binding| {

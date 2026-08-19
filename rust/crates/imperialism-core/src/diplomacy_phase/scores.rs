@@ -20,7 +20,7 @@ impl GameState {
                 .max(self.naval_force(peer));
         }
         let tick = self.clamped_quarter() as f32;
-        let standing = f32::from(self.diplomacy.standings[nation.nation()][target]);
+        let standing = (self.diplomacy.standings[nation.nation()][target] as f32);
         let combined = own + ally as f32;
         let score =
             (strongest / combined + (standing + own) / (tick + combined - STRENGTH_OFFSET)) * 0.5;
@@ -142,7 +142,7 @@ impl GameState {
         ally: f32,
     ) -> f32 {
         let year = self.clamped_quarter() as f32;
-        let standing = f32::from(self.diplomacy.standings[nation.nation()][target.nation()]);
+        let standing = (self.diplomacy.standings[nation.nation()][target.nation()] as f32);
         let denom = standing - ally * ALLY_WEIGHT + target_score;
         let numer = year + self_score - YEAR_BIAS;
         #[allow(clippy::float_cmp)]
@@ -183,7 +183,7 @@ impl GameState {
         target: NationId,
         secondary: NationId,
     ) -> f32 {
-        let Some(target) = MajorNationId::from_nation(target) else {
+        let Some(target) = NationId::as_major(target) else {
             return self.military_power(nation);
         };
         Self::ratio(
@@ -199,7 +199,7 @@ impl GameState {
         target: NationId,
         secondary: NationId,
     ) -> f32 {
-        let Some(target) = MajorNationId::from_nation(target) else {
+        let Some(target) = NationId::as_major(target) else {
             return self.naval_force(nation);
         };
         Self::ratio(
@@ -217,11 +217,11 @@ impl GameState {
         self_score: f32,
         ally: f32,
     ) -> f32 {
-        let Some(target_major) = MajorNationId::from_nation(target) else {
+        let Some(target_major) = NationId::as_major(target) else {
             return self_score;
         };
-        let standing_target = f32::from(self.diplomacy.standings[nation.nation()][target]);
-        let standing_partner = f32::from(self.diplomacy.standings[nation.nation()][partner]);
+        let standing_target = (self.diplomacy.standings[nation.nation()][target] as f32);
+        let standing_partner = (self.diplomacy.standings[nation.nation()][partner] as f32);
         let denom = standing_target - ally * ALLY_WEIGHT + self.target_force(target_major, partner);
         #[allow(clippy::float_cmp)]
         if denom == 0.0 {
@@ -262,11 +262,11 @@ impl GameState {
     }
 
     pub(super) fn allied_army_of(&self, nation: NationId) -> f32 {
-        MajorNationId::from_nation(nation).map_or(0.0, |major| self.allied_army(major))
+        NationId::as_major(nation).map_or(0.0, |major| self.allied_army(major))
     }
 
     pub(super) fn allied_navy_of(&self, nation: NationId) -> f32 {
-        MajorNationId::from_nation(nation).map_or(0.0, |major| self.allied_navy(major))
+        NationId::as_major(nation).map_or(0.0, |major| self.allied_navy(major))
     }
 
     pub(super) fn pair_ratio(
@@ -381,9 +381,8 @@ impl GameState {
         } else {
             self.allied_army(opponent)
         };
-        let standing_opp = f32::from(self.diplomacy.standings[nation.nation()][opponent.nation()]);
-        let standing_partner =
-            f32::from(self.diplomacy.standings[nation.nation()][partner.nation()]);
+        let standing_opp = (self.diplomacy.standings[nation.nation()][opponent.nation()] as f32);
+        let standing_partner = (self.diplomacy.standings[nation.nation()][partner.nation()] as f32);
         let denom = standing_opp - ally * ALLY_WEIGHT + opponent_score;
         let mut numer = if swap {
             standing_partner - partner_score * ALLY_WEIGHT + self_score

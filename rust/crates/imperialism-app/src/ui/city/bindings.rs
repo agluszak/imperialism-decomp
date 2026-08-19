@@ -13,7 +13,7 @@ pub(in crate::ui::city) struct CityOrderBinding {
 pub(in crate::ui::city) struct IndustryPage {
     pub(in crate::ui::city) slot: CityFacilitySlot,
     pub(in crate::ui::city) orders: &'static [CityOrderBinding],
-    pub(in crate::ui::city) stocks: &'static [(ResourceKind, FourCc, i16)],
+    pub(in crate::ui::city) stocks: &'static [(ResourceKind, FourCc, i32)],
 }
 
 #[derive(Clone, Copy)]
@@ -102,11 +102,11 @@ const fn stock_binding(
     resource: ResourceKind,
     page: usize,
     stock: usize,
-) -> (ResourceKind, FourCc, i16) {
+) -> (ResourceKind, FourCc, i32) {
     (
         resource,
         generated::INDUSTRY_PAGE_CONTROLS[page].stocks[stock].0,
-        generated::INDUSTRY_PAGE_CONTROLS[page].stocks[stock].1,
+        generated::INDUSTRY_PAGE_CONTROLS[page].stocks[stock].1 as i32,
     )
 }
 
@@ -394,7 +394,7 @@ pub(in crate::ui::city) fn city_building_click(
 
 fn city_building_click_action(
     slot: CityFacilitySlot,
-    building_type: i16,
+    building_type: i32,
     oil_drilling: bool,
 ) -> Option<CityBuildingClick> {
     if slot.is_capacity_center() && building_type == 0 {
@@ -408,7 +408,7 @@ pub(in crate::ui::city) fn city_building_level(
     state: &GameState,
     nation: MajorNationId,
     slot: CityFacilitySlot,
-) -> i16 {
+) -> i32 {
     let major = state.nations().major(nation);
     major.city.next_building_type(
         slot,
@@ -426,7 +426,7 @@ pub(in crate::ui::city) fn city_is_expanding(city: &CityState, slot: CityFacilit
 pub(in crate::ui::city) fn city_building_picture(
     city: &CityState,
     slot: CityFacilitySlot,
-    level: i16,
+    level: i32,
 ) -> Option<PictureId> {
     let expanding = city_is_expanding(city, slot);
     let should_draw = level >= 1
@@ -445,7 +445,7 @@ pub(in crate::ui::city) fn city_building_picture(
     let offset = i16::from(slot.retail());
     let normal = level == 0 || offset > 5 || !expanding || !slot.is_capacity_center();
     Some(PictureId::new(
-        (if normal { 7000 } else { 7300 }) + level * 16 + offset,
+        (if normal { 7000 } else { 7300 }) + level as i16 * 16 + offset,
     ))
 }
 
@@ -463,7 +463,7 @@ pub(in crate::ui::city) const fn city_string_index(zero_based_index: i16) -> i16
     zero_based_index + 1
 }
 
-pub(in crate::ui::city) fn format_retail_number(template: &str, value: i16) -> String {
+pub(in crate::ui::city) fn format_retail_number(template: &str, value: i32) -> String {
     fill_brackets(template, &[&value.to_string()])
 }
 
@@ -515,7 +515,7 @@ mod tests {
     #[test]
     fn beginning_of_game_does_not_open_unbuilt_oil_or_power() {
         let state = crate::ui::test_support::beginning_of_game();
-        let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
+        let nation = NationId::as_major(state.turn().active_nation).unwrap();
         assert_eq!(
             city_building_click(&state, nation, CityFacilitySlot::OilRefinery),
             None

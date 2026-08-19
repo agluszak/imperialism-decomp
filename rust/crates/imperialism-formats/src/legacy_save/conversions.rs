@@ -16,12 +16,39 @@ pub(super) fn option_i8(value: Option<u8>) -> i8 {
     value.map(|value| value as i8).unwrap_or(-1)
 }
 
-pub(super) fn option_i16(value: Option<u16>) -> i16 {
-    value.map(|value| value as i16).unwrap_or(-1)
+pub(super) fn option_i16(value: Option<usize>) -> i16 {
+    match value {
+        Some(value) => i16::try_from(value).expect("optional index fits retail i16"),
+        None => -1,
+    }
 }
 
-pub(super) fn option_i32(value: Option<u16>) -> i32 {
-    value.map(i32::from).unwrap_or(-1)
+pub(super) fn option_i32(value: Option<usize>) -> i32 {
+    value.map(|value| value as i32).unwrap_or(-1)
+}
+
+pub(super) fn n(value: i16) -> i32 {
+    i32::from(value)
+}
+
+pub(super) fn ns<const N: usize>(values: [i16; N]) -> [i32; N] {
+    values.map(i32::from)
+}
+
+pub(super) fn r16(value: i32) -> i16 {
+    i16::try_from(value).expect("value fits retail i16")
+}
+
+pub(super) fn r16s<const N: usize>(values: [i32; N]) -> [i16; N] {
+    values.map(r16)
+}
+
+pub(super) fn labor(values: [i16; 3]) -> LaborPool {
+    LaborPool::new(n(values[0]), n(values[1]), n(values[2]))
+}
+
+pub(super) fn labor_i16(pool: LaborPool) -> [i16; 3] {
+    [r16(pool.low), r16(pool.medium), r16(pool.high)]
 }
 
 pub(super) fn production_constraint_from_retail(value: i16) -> ProductionConstraint {
@@ -127,8 +154,12 @@ pub(super) fn foreign_minister_personality_to_retail(
 pub(super) fn country_status_from_retail(value: i16) -> CountryStatus {
     match value {
         -1 => CountryStatus::Independent,
-        100..=122 => CountryStatus::ProtectorateOf(NationId::new((value - 100) as u8)),
-        200..=222 => CountryStatus::ColonyOf(NationId::new((value - 200) as u8)),
+        100..=122 => CountryStatus::ProtectorateOf(
+            NationId::from_retail_slot((value - 100) as u8).expect("encoded protectorate nation"),
+        ),
+        200..=222 => CountryStatus::ColonyOf(
+            NationId::from_retail_slot((value - 200) as u8).expect("encoded colony nation"),
+        ),
         _ => panic!("unrecovered encoded nation status {value}"),
     }
 }
@@ -136,7 +167,7 @@ pub(super) fn country_status_from_retail(value: i16) -> CountryStatus {
 pub(super) fn country_status_to_retail(status: CountryStatus) -> i16 {
     match status {
         CountryStatus::Independent => -1,
-        CountryStatus::ProtectorateOf(nation) => 100 + i16::from(nation.get()),
-        CountryStatus::ColonyOf(nation) => 200 + i16::from(nation.get()),
+        CountryStatus::ProtectorateOf(nation) => 100 + i16::from(nation.retail_slot()),
+        CountryStatus::ColonyOf(nation) => 200 + i16::from(nation.retail_slot()),
     }
 }

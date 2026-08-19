@@ -110,7 +110,7 @@ fn newspaper_spec_text(assets: &RetailUiAssets, state: &GameState) -> String {
     if state.turn().economic_turn % 4 != 0 {
         return String::new();
     }
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
+    let nation = NationId::as_major(state.turn().active_nation)
         .expect("newspaper requires an active major nation");
     let template = get_string(assets, 0x275e, 0);
     fill_brackets(
@@ -132,7 +132,7 @@ fn fill_newspaper_stories(
     state: &GameState,
     news: &NewsTable,
 ) {
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
+    let nation = NationId::as_major(state.turn().active_nation)
         .expect("newspaper requires an active major nation");
     let Some(page) = state.news().pages[nation].as_ref() else {
         return;
@@ -263,7 +263,7 @@ fn format_nation_names(
             continue;
         }
         if string_group {
-            names.push(get_string(assets, 0x2711, i16::from(nation.get())));
+            names.push(get_string(assets, 0x2711, nation.get() as i16));
         } else if let Some(name) = state.nations().display_name(nation) {
             names.push(name.to_owned());
         }

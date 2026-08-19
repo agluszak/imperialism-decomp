@@ -100,7 +100,7 @@ impl GameState {
                         MissionData::Invade { attack, .. } => attack.clone(),
                         _ => continue,
                     };
-                    let Some(major) = MajorNationId::from_nation(nation) else {
+                    let Some(major) = NationId::as_major(nation) else {
                         continue;
                     };
                     if self.map.provinces[attack.target_province].explored_by_majors()[major] {
@@ -147,7 +147,7 @@ impl GameState {
                 let units: Vec<_> = attack.army.units.iter().rev().copied().collect();
                 self.redeploy_units_stationed_in(&units, present, attack.target_province);
             } else if !self.at_war(nation, owner)
-                && let Some(major) = MajorNationId::from_nation(nation)
+                && let Some(major) = NationId::as_major(nation)
                 && self.nations.majors[&major]
                     .economy
                     .diplomacy_policy_by_nation[owner]
@@ -192,7 +192,7 @@ impl GameState {
         let Some(common) = self.nations.common(nation) else {
             return false;
         };
-        if MajorNationId::from_nation(nation).is_none() {
+        if NationId::as_major(nation).is_none() {
             return true;
         }
         !matches!(common.status(), CountryStatus::ProtectorateOf(_))
@@ -200,7 +200,7 @@ impl GameState {
 
     pub(crate) fn recompute_tile_strategic_score_heatmap(&mut self) {
         let mut resource_weights = ResourceTable::<i32>::default();
-        for resource in 0_i16..=16 {
+        for resource in 0..=16 {
             let commodity = TradeCommodity::from_retail(resource)
                 .expect("manufactured heatmap weights use trade commodities");
             resource_weights[commodity.resource()] = self.market.rows[commodity].base_price;
@@ -236,7 +236,7 @@ impl GameState {
             let Some(capitol) = self.map[home].province else {
                 continue;
             };
-            region_scores[capitol] += if MajorNationId::from_nation(nation).is_some() {
+            region_scores[capitol] += if NationId::as_major(nation).is_some() {
                 10_000
             } else {
                 8_000
@@ -266,7 +266,7 @@ impl GameState {
         if !is_recruit_quarter_tick_gate(self.turn.economic_turn) {
             return;
         }
-        let threshold = if MajorNationId::from_nation(nation).is_some() {
+        let threshold = if NationId::as_major(nation).is_some() {
             4
         } else {
             3
@@ -333,7 +333,7 @@ impl GameState {
     }
 
     pub(crate) fn militia_kind(&self, nation: NationId) -> MilitaryUnitKind {
-        let Some(major) = MajorNationId::from_nation(nation) else {
+        let Some(major) = NationId::as_major(nation) else {
             return MilitaryUnitKind::Minutemen;
         };
         let abilities = &self.technology.military_unit_ability_active_by_nation[major];
@@ -443,15 +443,15 @@ mod tests {
     fn grow_militia_on_the_quarter_gate_inserts_sleeping_minutemen() {
         let mut state = game_state();
         state.turn.economic_turn = 6;
-        let nation = NationId::new(0);
+        let nation = MajorNationId::new(0);
         let province = ProvinceId::new(3);
         state
             .nations
-            .append_owned_region_during_construction(nation, province);
+            .append_owned_region_during_construction(nation.nation(), province);
         let _ = state.do_military();
         assert_eq!(state.military_units.len(), 1);
         let (_, unit) = state.military_units.first().expect("militia was created");
-        assert_eq!(unit.nation, nation);
+        assert_eq!(unit.nation, nation.nation());
         assert_eq!(unit.unit_type, MilitaryUnitKind::Minutemen);
         assert_eq!(unit.stationed_province, Some(province));
         assert_eq!(unit.order.code(), MilitaryOrderCode::Sleep);
@@ -519,13 +519,17 @@ mod tests {
     }
 
     fn set_owned_province(state: &mut GameState, province: u16, owner: u8, adjacent: &[u16]) {
-        let owner = NationId::new(owner);
-        let id = ProvinceId::new(province);
+        let owner = NationId::from_retail_slot(owner).unwrap();
+        let id = ProvinceId::new(usize::from(province));
         state.map.provinces[id] = ProvinceState::new(
             Some(owner),
             Some(owner),
             ProvinceDevelopmentStage::None,
-            adjacent.iter().copied().map(ProvinceId::new).collect(),
+            adjacent
+                .iter()
+                .copied()
+                .map(|id| ProvinceId::new(usize::from(id)))
+                .collect(),
             vec![TileId::new(0); adjacent.len()],
             None,
             FortLevel::None,

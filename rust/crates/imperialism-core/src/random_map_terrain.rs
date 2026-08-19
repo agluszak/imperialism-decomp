@@ -6,7 +6,7 @@ use crate::random_map::{CoarseMap, generate_coarse_random_map};
 use crate::{
     EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, HexDirection, HexDirectionTable, MapGeometry,
     MapTopology, OceanRoute, OceanZoneId, ProvinceId, RANDOM_MAP_CLASS_COUNT, RetailCrtRng,
-    RetailLcg, RiverSegment, TerrainKind, TileId, TileOwnerTag, hash_retail_scenario_tag,
+    RetailLcg, RiverSegment, TerrainKind, TileContext, TileId, hash_retail_scenario_tag,
 };
 use serde::{Deserialize, Deserializer, Serialize};
 
@@ -119,14 +119,14 @@ pub(crate) struct GeneratedTerrainTileScratch {
     pub river_sprite_code: u8,
     pub owner_nation: i8,
     pub gate_flag: i8,
-    pub province_index: i16,
+    pub province_index: i32,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct GeneratedTerrainTile {
     pub terrain: TerrainKind,
     pub river: Option<RiverSegment>,
-    pub owner: Option<TileOwnerTag>,
+    pub owner: Option<TileContext>,
     pub gate: Option<GenerationGate>,
     pub province: Option<ProvinceId>,
 }
@@ -148,7 +148,7 @@ impl GenerationGate {
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct GeneratedProvince {
-    pub owner: TileOwnerTag,
+    pub owner: TileContext,
     pub region_class: u8,
 }
 
@@ -186,7 +186,7 @@ impl GeneratedMap {
     }
 
     pub fn tile(&self, tile: TileId) -> GeneratedTerrainTile {
-        self.tiles[usize::from(tile.get())]
+        self.tiles[tile.index()]
     }
 
     pub fn tiles(&self) -> &[GeneratedTerrainTile] {
@@ -511,7 +511,7 @@ fn generate_random_map_impl(
                 after_keyword: after_keyword.expect("trace collection summarizes scenario keyword"),
                 map_lcg_after_validation: rng.state(),
                 rotation_column,
-                seed_candidate_tiles: seed_candidate_tiles.map(|tile| i32::from(tile.get())),
+                seed_candidate_tiles: seed_candidate_tiles.map(|tile| (tile.get() as i32)),
                 accepted,
             });
         }
@@ -521,7 +521,7 @@ fn generate_random_map_impl(
                 provinces
                     .into_iter()
                     .map(|province| GeneratedProvince {
-                        owner: TileOwnerTag::new(
+                        owner: TileContext::new(
                             u8::try_from(province.owner_nation)
                                 .expect("accepted province owner is nonnegative"),
                         ),
@@ -622,10 +622,10 @@ fn randomize_templates_and_smooth(
 fn randomize_template_banks(
     tiles: &mut [GeneratedTerrainTileScratch],
     coarse_index: i32,
-    base: i16,
-    class3: i16,
-    class4: i16,
-    class5: i16,
+    base: i32,
+    class3: i32,
+    class4: i32,
+    class5: i32,
     rng: &mut RetailLcg,
 ) {
     let cell = fine_cell_base(coarse_index);
@@ -1066,9 +1066,9 @@ fn normalize_generated_tile(tile: GeneratedTerrainTileScratch) -> GeneratedTerra
     GeneratedTerrainTile {
         terrain: tile.terrain_kind,
         river: RiverSegment::from_connection_code(tile.river_sprite_code),
-        owner: u8::try_from(tile.owner_nation).ok().map(TileOwnerTag::new),
+        owner: u8::try_from(tile.owner_nation).ok().map(TileContext::new),
         gate: (tile.gate_flag != -1).then_some(GenerationGate(tile.gate_flag)),
-        province: u16::try_from(tile.province_index)
+        province: usize::try_from(tile.province_index)
             .ok()
             .and_then(ProvinceId::try_new),
     }
@@ -1141,15 +1141,9 @@ fn generate_water_region_ids(
 ) {
     let mut labels = tiles
         .iter()
-        .map(|tile| {
-            if tile.terrain_kind == WATER {
-                -1_i16
-            } else {
-                -2_i16
-            }
-        })
+        .map(|tile| if tile.terrain_kind == WATER { -1 } else { -2 })
         .collect::<Vec<_>>();
-    let mut region_count = 0_i16;
+    let mut region_count = 0;
     if region_rows > 0 {
         let mut row_base = 0;
         for _row_index in 0..region_rows {
@@ -1424,7 +1418,7 @@ fn validate_seed_candidates(
             if has_candidate {
                 let slot = &mut candidates[class as usize];
                 if slot.get() == 0 || rng.next_sample_15() % 5 == 3 {
-                    *slot = TileId::new(neighbor as u16);
+                    *slot = TileId::new(neighbor);
                 }
                 break;
             }
@@ -1442,8 +1436,8 @@ fn keyword_matches(text: &[u8], keyword: &[u8]) -> bool {
 
 fn full_neighbor(geometry: MapGeometry, tile: usize, direction: HexDirection) -> Option<usize> {
     geometry
-        .neighbor(TileId::new(tile as u16), direction)
-        .map(|tile| usize::from(tile.get()))
+        .neighbor(TileId::new(tile), direction)
+        .map(|tile| tile.index())
 }
 
 fn sampled_hex_direction(rng: &mut RetailLcg) -> HexDirection {
@@ -1469,12 +1463,12 @@ fn sampled_river_direction(rng: &mut RetailLcg) -> HexDirection {
     }
 }
 
-fn coarse_class(coarse: &CoarseMap, index: i32) -> i16 {
+fn coarse_class(coarse: &CoarseMap, index: i32) -> i32 {
     coarse
         .grid
         .flattened()
         .nth(index as usize)
-        .map(i16::from)
+        .map(i32::from)
         .expect("retail coarse neighbor index is valid")
 }
 
@@ -1519,7 +1513,7 @@ mod tests {
         tiles.iter().fold(0x811c_9dc5, |hash, tile| {
             let province = tile
                 .province
-                .map_or(-1, |province| province.get() as i16)
+                .map_or(-1, |province| province.get() as i32)
                 .to_le_bytes();
             [
                 tile.terrain.retail() as u8,

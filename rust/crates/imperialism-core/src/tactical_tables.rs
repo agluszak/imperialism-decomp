@@ -123,7 +123,7 @@ pub(crate) const COVER_DAMAGE: ArmyCategoryTable<[f32; 5]> = ArmyCategoryTable::
     [1.0, 0.8, 0.7, 0.6, 0.5],
 ]);
 
-pub(crate) const MOVE_COST: ArmyCategoryTable<TacticalTerrainTable<i16>> =
+pub(crate) const MOVE_COST: ArmyCategoryTable<TacticalTerrainTable<i32>> =
     ArmyCategoryTable::from_array([
         TacticalTerrainTable::from_array([10, 20, 30, 15, 999]),
         TacticalTerrainTable::from_array([10, 10, 10, 10, 999]),

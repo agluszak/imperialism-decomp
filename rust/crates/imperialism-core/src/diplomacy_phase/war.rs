@@ -7,7 +7,7 @@ impl GameState {
         target: NationId,
         annex: Option<NationId>,
     ) {
-        if let Some(major) = MajorNationId::from_nation(source)
+        if let Some(major) = NationId::as_major(source)
             && self.is_auto(major)
         {
             self.set_enemy(major, target);
@@ -40,7 +40,7 @@ impl GameState {
                 false,
             );
         }
-        if let Some(target) = MajorNationId::from_nation(pair.second) {
+        if let Some(target) = NationId::as_major(pair.second) {
             if self.is_auto(target) {
                 self.set_enemy(target, pair.first);
             }
@@ -56,8 +56,8 @@ impl GameState {
             pair.first,
             pair.second,
         );
-        if MajorNationId::from_nation(pair.second).is_some()
-            && let Some(source) = MajorNationId::from_nation(pair.first)
+        if NationId::as_major(pair.second).is_some()
+            && let Some(source) = NationId::as_major(pair.first)
         {
             self.add_diplomacy_notice(source, pair.second, 0xc8);
         }
@@ -68,9 +68,9 @@ impl GameState {
         &mut self,
         first: NationId,
         second: NationId,
-        start: u8,
+        start: usize,
     ) -> DiplomacyPhaseResult {
-        if MajorNationId::from_nation(second).is_none() {
+        if NationId::as_major(second).is_none() {
             if start == 0
                 && self.is_independent(second)
                 && let Some(favorite) = self.favorite_with_embassy(second)
@@ -230,10 +230,10 @@ impl GameState {
         if already {
             return;
         }
-        let Some(source_major) = MajorNationId::from_nation(source) else {
+        let Some(source_major) = NationId::as_major(source) else {
             return;
         };
-        let Some(target_major) = MajorNationId::from_nation(target) else {
+        let Some(target_major) = NationId::as_major(target) else {
             return;
         };
         let combined = if self.are_nations_border_linked(source, nation.nation()) {
@@ -259,7 +259,7 @@ impl GameState {
     }
 
     pub(super) fn evaluate_join_war(&mut self, nation: MajorNationId, target: NationId) -> bool {
-        let Some(target_major) = MajorNationId::from_nation(target) else {
+        let Some(target_major) = NationId::as_major(target) else {
             return false;
         };
         if self.is_capitol_threatened(target_major) {

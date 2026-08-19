@@ -8,7 +8,7 @@ use serde::Deserialize;
 struct CityItemOrderCase {
     nation: MajorNationId,
     output: ManufacturedItem,
-    quantity: i16,
+    quantity: i32,
 }
 
 #[derive(Debug, Deserialize)]

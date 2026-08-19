@@ -2,7 +2,7 @@ use super::{ACTIVE_NATION_NAME_LENGTH, SAVE_LABEL_LENGTH};
 use super::{
     BattleReportText, CityWindowLayout, LegacyGameStateContext, LegacySaveV62, LoadedGame,
 };
-use imperialism_core::{GameState, PhaseCode, STRATEGIC_TILE_COUNT, TileId, TileOwnerTag};
+use imperialism_core::{GameState, PhaseCode, STRATEGIC_TILE_COUNT, TileContext, TileId};
 use std::fs::OpenOptions;
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
@@ -135,7 +135,7 @@ pub fn peek_save_header(bytes: &[u8]) -> Option<SaveHeaderInfo> {
 }
 
 /// Tile-owner tags the Load/Save satellite preview reads from the save header.
-pub fn peek_save_preview_owners(bytes: &[u8]) -> Option<Vec<Option<TileOwnerTag>>> {
+pub fn peek_save_preview_owners(bytes: &[u8]) -> Option<Vec<Option<TileContext>>> {
     let end = HEADER_OWNERS_OFFSET + STRATEGIC_TILE_COUNT;
     if bytes.len() < end {
         return None;
@@ -145,7 +145,7 @@ pub fn peek_save_preview_owners(bytes: &[u8]) -> Option<Vec<Option<TileOwnerTag>
             .iter()
             .map(|&byte| {
                 let value = byte as i8;
-                (value != -1).then(|| TileOwnerTag::new(value as u8))
+                (value != -1).then(|| TileContext::new(value as u8))
             })
             .collect(),
     )
@@ -373,7 +373,7 @@ mod tests {
         bytes[HEADER_OWNERS_OFFSET + 1] = 0xff;
         let owners = peek_save_preview_owners(&bytes).unwrap();
         assert_eq!(owners.len(), STRATEGIC_TILE_COUNT);
-        assert_eq!(owners[0], Some(TileOwnerTag::new(3)));
+        assert_eq!(owners[0], Some(TileContext::new(3)));
         assert_eq!(owners[1], None);
         assert!(peek_save_preview_owners(&bytes[..HEADER_OWNERS_OFFSET]).is_none());
     }

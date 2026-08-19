@@ -337,10 +337,10 @@ fn active_minimap_view(
         .game
         .map()
         .geometry()
-        .tile(
-            viewport.ocean.origin.y as u16,
-            viewport.ocean.origin.x as u16,
-        )
+        .tile(MapPosition::new(
+            viewport.ocean.origin.y,
+            viewport.ocean.origin.x,
+        ))
         .expect("retail ocean origin is inside the map");
     (origin, marker)
 }
@@ -392,7 +392,7 @@ pub(super) fn compose_minimap_atlas(state: &GameState) -> Vec<u8> {
     let fill = view_mgr_color(0x32);
     let mut atlas = vec![fill; ATLAS_WIDTH * ATLAS_HEIGHT];
     for index in 0..STRATEGIC_TILE_COUNT {
-        let tile = TileId::new(index as u16);
+        let tile = TileId::new(index);
         let Some(palette_index) = atlas_owner_palette(state.map()[tile].owner_nation) else {
             continue;
         };
@@ -432,7 +432,7 @@ fn smooth_minimap_atlas(atlas: &mut [u8]) {
     atlas.copy_from_slice(&scratch);
 }
 
-fn atlas_owner_palette(owner: Option<TileOwnerTag>) -> Option<u8> {
+fn atlas_owner_palette(owner: Option<TileContext>) -> Option<u8> {
     let owner_code = match owner {
         None => -1,
         Some(tag) => i16::from(tag.get()),
@@ -445,7 +445,7 @@ fn atlas_owner_palette(owner: Option<TileOwnerTag>) -> Option<u8> {
 }
 
 pub(super) fn minimap_window(origin: TileId, marker: ViewportMarker) -> MiniMapWindow {
-    let index = i32::from(origin.get());
+    let index = origin.get() as i32;
     let mut source_column = index % MAP_COLUMNS;
     let mut source_row = index / MAP_COLUMNS;
     source_column -= (FRAME_WIDTH / 2 - marker.half_width) / 2 + 1;
@@ -828,18 +828,22 @@ mod tests {
         let mut parts = beginning_of_game_parts_with(strategic_map_beginning_context());
         for row in 9..=11 {
             for column in 9..=11 {
-                let tile = parts.map.geometry().tile(row, column).unwrap();
-                parts.map[tile].owner_nation = Some(TileOwnerTag::new(0));
+                let tile = parts
+                    .map
+                    .geometry()
+                    .tile(MapPosition::new(row, column))
+                    .unwrap();
+                parts.map[tile].owner_nation = Some(TileContext::new(0));
             }
         }
-        let sea = parts.map.geometry().tile(10, 40).unwrap();
-        parts.map[sea].owner_nation = Some(TileOwnerTag::new(0x17));
+        let sea = parts.map.geometry().tile(MapPosition::new(10, 40)).unwrap();
+        parts.map[sea].owner_nation = Some(TileContext::new(0x17));
         let state = GameState::from_parts(parts);
         let atlas = compose_minimap_atlas(&state);
         assert_eq!(atlas[20 * ATLAS_WIDTH + 20], view_mgr_color(0x3e));
         assert_eq!(atlas[20 * ATLAS_WIDTH + 80], view_mgr_color(0x32));
-        assert_eq!(atlas_owner_palette(Some(TileOwnerTag::new(0))), Some(0x15));
-        assert_eq!(atlas_owner_palette(Some(TileOwnerTag::new(0x17))), None);
+        assert_eq!(atlas_owner_palette(Some(TileContext::new(0))), Some(0x15));
+        assert_eq!(atlas_owner_palette(Some(TileContext::new(0x17))), None);
         assert_eq!(atlas_owner_palette(None), Some(0xff));
         assert_eq!(view_mgr_color(0x3e), 0x15);
         assert_eq!(view_mgr_color(0x32), 0x1a);

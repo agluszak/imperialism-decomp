@@ -211,8 +211,7 @@ fn spawn_ocean_labels(
             );
         }
 
-        for slot in 0..NationId::COUNT {
-            let nation = NationId::new(slot);
+        for nation in NationId::all() {
             let Some(name) = session.game.nations().display_name(nation) else {
                 continue;
             };
@@ -308,7 +307,7 @@ fn ocean_label_position(
     tile: TileId,
     ocean: &OceanViewport,
 ) -> Option<Vec2> {
-    let (row, column) = geometry.row_column(tile);
+    let MapPosition { row, column } = geometry.position(tile);
     let y = (i32::from(row) - ocean.origin.y) * OCEAN_CELL_PIXELS + 8;
     let x = (i32::from(column) - ocean.origin.x).rem_euclid(RETAIL_MAP_COLUMNS) * OCEAN_CELL_PIXELS
         + i32::from(row & 1) * 8;
@@ -351,7 +350,7 @@ fn ocean_tile_at_position(state: &GameState, normalized: Vec2, origin: IVec2) ->
     } else {
         return None;
     };
-    state.map().geometry().tile(row as u16, column as u16)
+    state.map().geometry().tile(MapPosition::new(row, column))
 }
 
 fn indexed_image(indices: &[u8], palette: &DibPalette) -> Image {
@@ -441,7 +440,12 @@ mod tests {
     #[test]
     fn ocean_labels_persist_when_the_viewport_moves() {
         let session = GameSession::new(beginning_of_game_with(strategic_map_beginning_context()));
-        let tile = session.game.map().geometry().tile(10, 10).unwrap();
+        let tile = session
+            .game
+            .map()
+            .geometry()
+            .tile(MapPosition::new(10, 10))
+            .unwrap();
         let mut app = App::new();
         app.insert_resource(session);
         app.add_systems(Update, sync_ocean_labels);

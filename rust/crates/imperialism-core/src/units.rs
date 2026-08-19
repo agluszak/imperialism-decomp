@@ -411,7 +411,7 @@ impl MilitaryUnitKind {
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[repr(i16)]
+#[repr(i32)]
 pub enum MilitaryEra {
     First = 0,
     Second = 1,
@@ -420,7 +420,7 @@ pub enum MilitaryEra {
 }
 
 impl MilitaryEra {
-    pub const fn from_retail(value: i16) -> Option<Self> {
+    pub const fn from_retail(value: i32) -> Option<Self> {
         match value {
             0 => Some(Self::First),
             1 => Some(Self::Second),
@@ -430,7 +430,7 @@ impl MilitaryEra {
         }
     }
 
-    pub const fn retail(self) -> i16 {
+    pub const fn retail(self) -> i32 {
         match self {
             Self::First => 0,
             Self::Second => 1,
@@ -467,13 +467,13 @@ pub struct MilitaryUnitState {
     pub(crate) stationed_province: Option<ProvinceId>,
     pub(crate) order: MilitaryOrder,
     pub(crate) owner_nation: NationId,
-    pub(crate) roster_id: i16,
+    pub(crate) roster_id: i32,
     pub(crate) registered: bool,
     pub(crate) name: String,
-    pub(crate) strength: i16,
+    pub(crate) strength: i32,
     pub(crate) era: MilitaryEra,
-    pub(crate) experience: i16,
-    pub(crate) battle_flags: i16,
+    pub(crate) experience: i32,
+    pub(crate) battle_flags: i32,
 }
 
 impl MilitaryUnitState {
@@ -484,13 +484,13 @@ impl MilitaryUnitState {
         stationed_province: Option<ProvinceId>,
         order: MilitaryOrder,
         owner_nation: NationId,
-        roster_id: i16,
+        roster_id: i32,
         registered: bool,
         name: String,
-        strength: i16,
+        strength: i32,
         era: MilitaryEra,
-        experience: i16,
-        battle_flags: i16,
+        experience: i32,
+        battle_flags: i32,
     ) -> Self {
         Self {
             nation,
@@ -528,7 +528,7 @@ impl MilitaryUnitState {
         self.owner_nation
     }
 
-    pub const fn roster_id(&self) -> i16 {
+    pub const fn roster_id(&self) -> i32 {
         self.roster_id
     }
 
@@ -540,7 +540,7 @@ impl MilitaryUnitState {
         &self.name
     }
 
-    pub const fn strength(&self) -> i16 {
+    pub const fn strength(&self) -> i32 {
         self.strength
     }
 
@@ -548,11 +548,11 @@ impl MilitaryUnitState {
         self.era
     }
 
-    pub const fn experience(&self) -> i16 {
+    pub const fn experience(&self) -> i32 {
         self.experience
     }
 
-    pub const fn battle_flags(&self) -> i16 {
+    pub const fn battle_flags(&self) -> i32 {
         self.battle_flags
     }
 }
@@ -697,7 +697,7 @@ pub struct CivilianUnitState {
     pub(crate) location: CivilianLocation,
     pub(crate) order: CivilianWorkOrder,
     pub(crate) owner_nation: NationId,
-    pub(crate) roster_id: i16,
+    pub(crate) roster_id: i32,
     pub(crate) registered: bool,
     /// Per-tile prepend chain (`nextAtLocation14`). Tracked-list order stays in `civilian_units`.
     #[serde(skip)]
@@ -726,7 +726,7 @@ impl CivilianUnitState {
         location: CivilianLocation,
         order: CivilianWorkOrder,
         owner_nation: NationId,
-        roster_id: i16,
+        roster_id: i32,
         registered: bool,
     ) -> Option<Self> {
         let valid_location = match order {
@@ -769,7 +769,7 @@ impl CivilianUnitState {
         self.owner_nation
     }
 
-    pub const fn roster_id(&self) -> i16 {
+    pub const fn roster_id(&self) -> i32 {
         self.roster_id
     }
 

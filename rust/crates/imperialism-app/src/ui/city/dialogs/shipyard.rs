@@ -11,12 +11,12 @@ struct ShipyardRowData {
     description: String,
     picture: Handle<Image>,
     materials: Vec<ShipyardMaterialData>,
-    stats: [i16; 6],
+    stats: [i32; 6],
 }
 
 struct ShipyardMaterialData {
     resource: ResourceKind,
-    required: i16,
+    required: i32,
     picture: Handle<Image>,
 }
 
@@ -38,7 +38,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
     tree: &RetailTree,
     state: &GameState,
 ) {
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
+    let nation = NationId::as_major(state.turn().active_nation)
         .expect("City active nation is a major nation");
     let city = &state.nations().major(nation).city;
     let material_pictures = SHIPYARD_MATERIALS.map(|resource| {
