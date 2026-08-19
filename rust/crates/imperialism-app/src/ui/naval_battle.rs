@@ -29,7 +29,6 @@ enum NavalBattleAction {
     Done,
     Auto,
     Retreat,
-    CycleTargeting,
 }
 
 #[derive(Component)]
@@ -193,11 +192,8 @@ fn bind_naval_battle_controls(commands: &mut Commands, root: Entity, tree: &Reta
         .insert((NavalBattleAction::Retreat, ActivateOnPress))
         .observe(on_naval_battle_activate)
         .remove::<InteractionDisabled>();
-    commands
-        .entity(tree.find(root, fourcc!("targ")))
-        .insert((NavalBattleAction::CycleTargeting, ActivateOnPress))
-        .observe(on_naval_battle_activate)
-        .remove::<InteractionDisabled>();
+    // Retail `targ` cycles reachable enemy units. Navy damage targeting instead comes
+    // from separate `hull`/`crew`/`sail` controls which are absent from view 3800.
     let field = tree.find(root, fourcc!("DLOG"));
     commands
         .entity(field)
@@ -454,14 +450,6 @@ fn on_naval_battle_activate(
                 apply_turn_stop(stop, &mut next_state);
             }
         }
-        NavalBattleAction::CycleTargeting => {
-            let next = match session.game.navy_battle().map(NavyBattle::targeting) {
-                Some(NavyTargeting::Hull) => NavyTargeting::Crew,
-                Some(NavyTargeting::Crew) => NavyTargeting::Sail,
-                _ => NavyTargeting::Hull,
-            };
-            session.game.set_navy_targeting(next);
-        }
     }
     if let Some(music) = music.as_mut() {
         cue_tactical_result(&session.game, music, time.as_deref());
@@ -613,7 +601,6 @@ mod tests {
         commands.spawn((RetailTag(fourcc!("done")), Node::default(), ChildOf(root)));
         commands.spawn((RetailTag(fourcc!("auto")), Node::default(), ChildOf(root)));
         commands.spawn((RetailTag(fourcc!("retr")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("targ")), Node::default(), ChildOf(root)));
         commands.spawn((
             RetailTag(fourcc!("DLOG")),
             Node {
